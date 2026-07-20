@@ -18,7 +18,6 @@ A6, "framework as its own instance") — descrição candidata, não prova.
   resíduo = sombra ⊕ estrutura; bateria de sombras; contagem pressupõe separação; dualidade
   sonda-ativa/sinal-passivo; regra-do-verbo; e a dinâmica (ponto de Yoneda como alvo
   inatingível, anomalia como motor). Cada um com âncora Lean e collapse-test.
-- Ideias irmãs (jogo das Torres etc.) vivem em `IDEAS.md` no repo `domainspec-lean-formalization`.
 
 ## Fio comum
 
@@ -28,7 +27,9 @@ clarear a sombra escalar.
 
 ## Pendências (bloqueiam avanço, precisam de decisão humana)
 
-- **P-ACESSO** — doc de micro-economia do Vladimir não achado no público; MOGT (game theory,
-  `Arcanum/research/mogt-agentic-conversation/`) é o análogo mais próximo. Apontar/liberar.
 - **P-NOME / P-LOCAL** — nome e lugar definitivos do repo.
-- **P-ESCOPO** — o jogo das Torres é projeto à parte ou interface desta mesma máquina?
+
+> A camada de decisão é o MOGT, em `Arcanum/research/mogt-agentic-conversation/` — não um
+> doc de micro-economia à parte. Honestidade: o nome "teoria dos jogos" superestima; é
+> **otimização multi-objetivo** (5 objetivos, dominância de Pareto) + barganha limitada.
+> Estatuto: **design + dry-run, 0% empírico** (claims "insufficient evidence").

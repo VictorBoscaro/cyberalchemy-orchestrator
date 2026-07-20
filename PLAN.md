@@ -48,11 +48,15 @@ prova de que o processo obedeça o framework; é uma descrição candidata, fals
 | protocolo de definições | fonte-única-de-verdade + estrutura por-termo + drift-audit | `Arcanum/definitions/DEFINITIONS.md` | público |
 | âncoras Lean CT | resíduo, Yoneda-como-tradução, comma-connected (zig-zag) | `domainspec-lean-formalization/lean-formalization/` | local |
 
-**Pendência crítica de acesso:** o doc de micro-economia que o Victor atribui ao
-**Vladimir** NÃO foi encontrado em nada público (a org só tem Arcanum/mars/visualization;
-domainspec-core é privado). Vlad aparece como *destinatário* dos memos `TO-VLAD*`, não
-como autor de uma tese micro-econômica. **Não assumir que existe** — Victor aponta ou dá
-acesso ao domainspec-core privado. Até lá, MOGT (game theory) é o análogo mais próximo.
+**Resolvido (2026-07-20):** a "micro-economia" é o **MOGT**, em
+`Arcanum/research/mogt-agentic-conversation/` (público), não um doc separado. Não é
+pendência de acesso; é a camada de decisão do orquestrador (ver E4). Correção honesta: o
+nome "teoria dos jogos" superestima — é **otimização multi-objetivo** (objetivos
+{quality, cost, latency, safety, escalation_risk}, dominância de Pareto, regime
+`bargaining_guided` opcional). Estatuto: **design + dry-run, 0% empírico** — herda o
+"claim ≤ proof" (todas as claims "insufficient evidence", experimentos "not started").
+Valor maior para nós está no **scaffolding de research** ao redor (catálogo/ledger/inventory/
+receipt), não no modelo de decisão em si.
 
 ---
 
@@ -78,17 +82,10 @@ Regra flagged pelo Victor como necessária. Adotamos, com um campo a mais.
 âncora num arquivo real (regra herdada do CLAUDE.md do repo-mãe). Sonda e zig-zag são
 apenas os dois primeiros exemplos.
 
-**Tabela-semente (candidata, a ser tipada):**
-
-| Construto | Tipo CT candidato | Âncora | Tipo do paralelo |
-|---|---|---|---|
-| sonda/probe (recon) | elemento generalizado / functor-of-points (Yoneda) | `YonedaAsTranslation.y`, `Probe.lean` | candidato forte |
-| probe (experiment) | falsificação Popperiana | `experiment/SKILL.md` | rima nominal (≠ Yoneda) |
-| zig-zag | identidades triangulares / `EqvGen` ida-e-volta | `P1Positive.CommaConnected`, `probe_zigzag_nf.lean` | candidato forte |
-| sequential | composição `∘` | `connections` | estrutural |
-| dispatch | diagrama tipado `J → Cat` | schema v0.6.0 | candidato |
-| feedback / robot-talks | ? (2-célula / (co)limite de perspectivas) | — | aberto |
-| residue de uma síntese | `FunctorialResidueStructure` / unit de Lan não-iso | `FunctorialResidueStructure.lean` | estrutural |
+**A tabela vive em [MAPPING.md](MAPPING.md)** (fonte-única do mapping, protocolo §3): §1 = a
+tabela-semente (7 construtos herdados), §2 = os paralelos derivados da skill-base
+`domainspec-subagents-strategy` (concat/synthesis, feedback-como-2-cell, sonda-plural,
+meta/A6, …). Não duplicar aqui — editar lá.
 
 **Regra-do-verbo (a partir da direção do Victor).** Um verbo (implements/validates/
 refines/…) é uma **ação sobre um objeto que deveria preservar a simetria do objeto sob
@@ -130,9 +127,9 @@ obrigação real** — ver E3.
 
 ## Pendências / perguntas abertas
 
-- **P-ACESSO.** doc micro-econômico do Vladimir: não-encontrado no público. Apontar/liberar
-  `domainspec-core` privado, ou confirmar que é MOGT, ou que ainda não foi escrito.
 - **P-NOME.** nome e local definitivos do repo (hoje: pasta-irmã local provisória).
-- **P-ESCOPO.** o jogo das Torres (IDEAS.md I1) é projeto à parte ou interface sobre esta
-  mesma máquina?
 - **P-CT.** feedback e robot-talks ainda sem tipo CT — resolver em E2/E3.
+
+*(Resolvido: a "micro-economia" é o MOGT — teoria dos jogos — em
+`Arcanum/research/mogt-agentic-conversation/`, não um doc separado do Vladimir. O jogo das
+Torres é outro projeto, fora daqui.)*
