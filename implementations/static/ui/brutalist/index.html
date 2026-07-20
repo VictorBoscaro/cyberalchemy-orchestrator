@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DISPATCH CONTROL PLANE</title>
+<style>
+  /* ============================================================
+     BRUTALISTA / IMPRESSO
+     branco #fff · tinta #000 · um acento #ff2200
+     bordas grossas · zero raio · sombra dura deslocada
+     ============================================================ */
+
+  :root{
+    --ink:#000;
+    --paper:#fff;
+    --blood:#ff2200;
+    --b:4px solid #000;
+    --b3:3px solid #000;
+    --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", "Consolas", "Liberation Mono", monospace;
+    --heavy: "Arial Black", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{ margin:0; padding:0; background:var(--paper); color:var(--ink); }
+
+  body{
+    font-family:var(--mono);
+    font-size:13px;
+    line-height:1.45;
+    -webkit-font-smoothing:none;
+  }
+
+  ::selection{ background:var(--blood); color:#fff; }
+
+  h1,h2,h3,h4{
+    font-family:var(--heavy);
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:-0.035em;
+    margin:0;
+    line-height:0.92;
+  }
+
+  a{ color:var(--ink); }
+
+  /* ---------- primitivas ---------- */
+
+  .tag{
+    display:inline-block;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--heavy);
+    font-weight:900;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:3px 7px 2px;
+    white-space:nowrap;
+  }
+  .tag.red{ background:var(--blood); color:#fff; }
+  .tag.hollow{ background:var(--paper); color:var(--ink); border:2px solid var(--ink); padding:1px 5px; }
+  .tag.hollow-red{ background:var(--paper); color:var(--blood); border:2px solid var(--blood); padding:1px 5px; }
+  .tag.tilt{ transform:rotate(-1deg); }
+
+  .rule{ border:0; border-top:var(--b); margin:0; }
+  .rule.thin{ border-top:var(--b3); }
+  .rule.red{ border-top:6px solid var(--blood); }
+
+  .u{ text-decoration:underline; text-decoration-thickness:4px; text-underline-offset:4px; }
+
+  .num{
+    font-family:var(--heavy);
+    font-weight:900;
+    letter-spacing:-0.05em;
+    line-height:0.8;
+  }
+
+  .lbl{
+    font-family:var(--heavy);
+    font-weight:900;
+    font-size:10px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+  }
+
+  .mut{ opacity:0.55; }
+
+  /* ---------- topo ---------- */
+
+  #app{ max-width:1500px; margin:0 auto; border-left:var(--b); border-right:var(--b); }
+
+  .masthead{
+    border-bottom:var(--b);
+    padding:18px 20px 12px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .masthead h1{ font-size:clamp(34px,6.4vw,86px); }
+  .masthead .sub{ font-size:11px; letter-spacing:0.22em; text-transform:uppercase; margin-top:8px; }
+
+  #live-indicator{
+    display:inline-flex; align-items:center; gap:8px;
+    border:var(--b); padding:7px 11px;
+    font-family:var(--heavy); font-weight:900; font-size:12px;
+    text-transform:uppercase; letter-spacing:0.06em;
+    background:var(--paper);
+    box-shadow:6px 6px 0 var(--ink);
+  }
+  #live-indicator .dot{ width:13px; height:13px; background:var(--ink); display:block; }
+  #live-indicator.on{ background:var(--ink); color:var(--paper); }
+  #live-indicator.on .dot{ background:var(--blood); }
+  #live-indicator.off{ border-color:var(--blood); color:var(--blood); box-shadow:6px 6px 0 var(--blood); }
+  #live-indicator.off .dot{ background:var(--blood); }
+
+  /* ---------- placar ---------- */
+
+  .scoreboard{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); border-bottom:var(--b); }
+  .score{ border-right:var(--b); padding:12px 14px 10px; }
+  .score:last-child{ border-right:0; }
+  .score .k{ font-size:clamp(38px,5.2vw,72px); }
+  .score .n{ margin-top:6px; }
+  .score.blood{ background:var(--blood); color:#fff; }
+  .score.inverse{ background:var(--ink); color:var(--paper); }
+
+  /* ---------- pendentes: domina o topo ---------- */
+
+  .pending-zone{ border-bottom:var(--b); }
+  .pending-head{
+    background:var(--blood); color:#fff;
+    padding:14px 20px 12px;
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px;
+    border-bottom:var(--b);
+  }
+  .pending-head h2{ font-size:clamp(26px,4.6vw,58px); }
+  .pending-head .stamp{
+    background:var(--paper); color:var(--ink);
+    border:var(--b3); padding:5px 10px;
+    font-family:var(--heavy); font-weight:900; font-size:11px;
+    letter-spacing:0.1em; text-transform:uppercase;
+    transform:rotate(-1deg);
+  }
+
+  #pending-list{ display:block; }
+
+  .pending-card{
+    border-bottom:var(--b);
+    padding:0;
+    background:var(--paper);
+  }
+  .pending-card:last-child{ border-bottom:0; }
+
+  .pc-top{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    padding:14px 20px 10px;
+  }
+  .pc-title{ font-family:var(--heavy); font-weight:900; font-size:clamp(19px,2.5vw,32px); text-transform:uppercase; letter-spacing:-0.03em; line-height:1; }
+  .pc-body{ padding:0 20px 16px; display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:0; }
+  @media(max-width:900px){ .pc-body{ grid-template-columns:1fr; } }
+  .pc-col{ border:var(--b3); padding:12px 14px; margin-right:-3px; }
+  .pc-col:last-child{ margin-right:0; }
+  .pc-goal{ font-size:15px; font-weight:700; }
+
+  .gate{
+    border-top:var(--b);
+    background:var(--ink); color:var(--paper);
+    padding:12px 20px;
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px;
+  }
+  .gate .why{ font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
+
+  button[data-testid="dispatch-button"]{
+    font-family:var(--heavy); font-weight:900;
+    font-size:20px; letter-spacing:0.02em; text-transform:uppercase;
+    background:var(--blood); color:#fff;
+    border:var(--b); border-color:var(--paper);
+    padding:11px 26px;
+    cursor:not-allowed;
+    box-shadow:7px 7px 0 var(--paper);
+  }
+  button[data-testid="dispatch-button"][disabled]{ opacity:1; }
+  button[data-testid="dispatch-button"]::after{ content:" ▸"; }
+
+  .empty-pending{
+    padding:26px 20px;
+    font-family:var(--heavy); font-weight:900;
+    font-size:clamp(18px,3vw,34px); text-transform:uppercase; letter-spacing:-0.02em;
+  }
+  .empty-pending small{ display:block; font-family:var(--mono); font-weight:400; font-size:12px; letter-spacing:0.08em; margin-top:8px; text-transform:none; }
+
+  /* ---------- filtros ---------- */
+
+  .filters{ border-bottom:var(--b); padding:12px 20px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .filters .lbl{ margin-right:4px; }
+  .chip{
+    font-family:var(--mono); font-size:11px; font-weight:700;
+    background:var(--paper); color:var(--ink);
+    border:var(--b3); padding:4px 9px;
+    cursor:pointer; text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .chip[aria-pressed="true"]{ background:var(--ink); color:var(--paper); }
+  .chip.blood[aria-pressed="true"]{ background:var(--blood); color:#fff; border-color:var(--blood); }
+  .chip .c{ opacity:0.6; margin-left:5px; }
+  input[type="search"]{
+    font-family:var(--mono); font-size:12px;
+    border:var(--b3); padding:5px 9px; min-width:230px;
+    background:var(--paper); color:var(--ink); outline:none;
+  }
+  input[type="search"]:focus{ box-shadow:5px 5px 0 var(--blood); }
+
+  /* ---------- repos / dispatches ---------- */
+
+  .repo-section{ border-bottom:var(--b); }
+  .repo-head{
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:10px;
+    padding:11px 20px 9px;
+    background:var(--ink); color:var(--paper);
+    cursor:pointer;
+  }
+  .repo-head h3{ font-size:clamp(16px,2.1vw,26px); }
+  .repo-head .stats{ font-size:11px; letter-spacing:0.08em; margin-left:auto; text-transform:uppercase; }
+  .repo-head .caret{ font-family:var(--heavy); font-weight:900; }
+
+  .repo-issues{ border-bottom:var(--b3); padding:0 20px; }
+  .repo-issues details{ padding:7px 0; }
+  .repo-issues summary{ cursor:pointer; font-family:var(--heavy); font-weight:900; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; }
+  .repo-issues .wlist{ margin:8px 0 4px; padding:9px 11px; border-left:6px solid var(--blood); background:var(--paper); max-height:190px; overflow:auto; font-size:11px; }
+  .repo-issues .wlist div{ padding:1px 0; }
+  .repo-err{ background:var(--blood); color:#fff; padding:8px 20px; font-weight:700; }
+
+  .cards{ display:block; }
+
+  .dispatch-card{ border-bottom:var(--b3); }
+  .dispatch-card:last-child{ border-bottom:0; }
+  .dispatch-card[data-state="open"]{ border-left:10px solid var(--blood); }
+  .dispatch-card[data-state="closed"]{ border-left:10px solid var(--ink); }
+  .dispatch-card.legacy{ background:repeating-linear-gradient(45deg,#fff,#fff 9px,#f0f0f0 9px,#f0f0f0 18px); }
+
+  .dc-head{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:9px 14px; cursor:pointer; }
+  .dc-head:hover{ background:var(--blood); color:#fff; }
+  .dc-head:hover .tag{ background:#fff; color:var(--ink); }
+  .dc-id{ font-family:var(--heavy); font-weight:900; font-size:14px; letter-spacing:-0.01em; }
+  .dc-goal{ flex:1 1 340px; min-width:0; font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .dc-meta{ font-size:10px; letter-spacing:0.08em; text-transform:uppercase; }
+
+  .dc-detail{ display:none; padding:0 14px 16px; border-top:var(--b3); }
+  .dispatch-card.expanded .dc-detail{ display:block; }
+  .dispatch-card.expanded > .dc-head{ background:var(--ink); color:var(--paper); }
+  .dispatch-card.expanded > .dc-head .tag{ background:var(--paper); color:var(--ink); }
+  .dispatch-card.expanded > .dc-head .tag.red{ background:var(--blood); color:#fff; }
+
+  .field{ border-bottom:var(--b3); padding:9px 0; }
+  .field:last-child{ border-bottom:0; }
+  .field .lbl{ display:block; margin-bottom:4px; }
+
+  .kv{ display:flex; flex-wrap:wrap; gap:6px 18px; font-size:11px; padding:9px 0; border-bottom:var(--b3); }
+  .kv b{ font-family:var(--heavy); font-weight:900; }
+
+  /* grupo / agentes */
+  .group{ border:var(--b3); margin-top:14px; }
+  .group-head{ background:var(--ink); color:var(--paper); padding:7px 11px; display:flex; flex-wrap:wrap; gap:9px; align-items:center; }
+  .group-head .gid{ font-family:var(--heavy); font-weight:900; font-size:17px; text-transform:uppercase; }
+  .antibias{ border-bottom:var(--b3); padding:9px 11px; border-left:10px solid var(--blood); }
+  .antibias .lbl{ color:var(--blood); display:block; margin-bottom:3px; }
+
+  .agents{ display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); }
+  .agent{ border-right:var(--b3); border-bottom:var(--b3); padding:10px 11px; }
+  .agent:last-child{ border-right:0; }
+  .agent .who{ font-family:var(--heavy); font-weight:900; font-size:15px; text-transform:uppercase; letter-spacing:-0.02em; }
+  .agent .specs{ font-size:10px; letter-spacing:0.07em; text-transform:uppercase; margin:5px 0 7px; }
+  .angle{ border-left:6px solid var(--ink); padding:6px 9px; font-size:11.5px; background:var(--paper); }
+  .angle .lbl{ display:block; }
+  .prompt{ margin-top:8px; font-size:11px; border:2px dashed var(--ink); padding:7px 9px; max-height:130px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+
+  /* conexões */
+  .conns{ margin-top:14px; border:var(--b3); }
+  .conns .ch{ background:var(--ink); color:var(--paper); padding:5px 11px; }
+  .conn{ display:flex; flex-wrap:wrap; align-items:center; gap:9px; padding:7px 11px; border-bottom:2px solid #000; font-size:12px; }
+  .conn:last-child{ border-bottom:0; }
+  .conn .node{ font-family:var(--heavy); font-weight:900; text-transform:uppercase; border:2px solid var(--ink); padding:2px 7px; }
+  .conn .arrow{ font-family:var(--heavy); font-weight:900; font-size:15px; letter-spacing:-0.06em; }
+  .conn.sequential .arrow{ color:var(--ink); }
+  .conn.zigzag{ background:#f2f2f2; }
+  .conn.zigzag .arrow{ color:var(--ink); }
+  .conn.feedback{ background:var(--blood); color:#fff; }
+  .conn.feedback .node{ border-color:#fff; }
+
+  .close-box{ margin-top:14px; border:var(--b3); }
+  .close-box .chd{ background:var(--ink); color:var(--paper); padding:5px 11px; }
+  .close-box.alert{ border-color:var(--blood); }
+  .close-box.alert .chd{ background:var(--blood); }
+  .close-box .cb{ padding:9px 11px; }
+  .fb{ border-left:6px solid var(--ink); padding:6px 9px; margin-top:7px; font-size:11.5px; }
+
+  .more{
+    width:100%; display:block; text-align:center;
+    font-family:var(--heavy); font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:0.1em;
+    background:var(--paper); color:var(--ink); border:0; border-top:var(--b3);
+    padding:10px; cursor:pointer;
+  }
+  .more:hover{ background:var(--ink); color:var(--paper); }
+
+  .colophon{ padding:16px 20px 40px; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; }
+</style>
+</head>
+<body>
+
+<div id="app" data-testid="app">
+  <div class="masthead">
+    <div>
+      <h1>Dispatch<br>Control&nbsp;Plane</h1>
+      <div class="sub">Leitor · fase 1 · somente leitura · gate humano</div>
+    </div>
+    <div id="live-indicator" data-testid="live-indicator" class="off"><span class="dot"></span><span id="live-text">desconectado</span></div>
+  </div>
+
+  <div class="scoreboard" id="scoreboard"></div>
+
+  <div class="pending-zone">
+    <div class="pending-head">
+      <h2>Sheets pendentes</h2>
+      <span class="stamp">aguardando confirmação humana</span>
+      <span class="tag tilt" style="background:#fff;color:#000" id="pending-count-tag">0</span>
+    </div>
+    <div id="pending-list" data-testid="pending-list"></div>
+  </div>
+
+  <div class="filters">
+    <span class="lbl">Filtrar</span>
+    <button class="chip blood" data-f="state" data-v="all" aria-pressed="true">Todas</button>
+    <button class="chip blood" data-f="state" data-v="open" aria-pressed="false">Abertas</button>
+    <button class="chip blood" data-f="state" data-v="closed" aria-pressed="false">Fechadas</button>
+    <button class="chip blood" data-f="state" data-v="live" aria-pressed="false">Live</button>
+    <button class="chip blood" data-f="state" data-v="reserved" aria-pressed="false">Reservadas</button>
+    <button class="chip blood" data-f="state" data-v="flagged" aria-pressed="false">Legacy/órfãs</button>
+    <input type="search" id="q" placeholder="buscar id / objetivo…" aria-label="buscar">
+  </div>
+  <div class="filters" id="repo-filters">
+    <span class="lbl">Repos</span>
+  </div>
+
+  <div id="dispatch-list" data-testid="dispatch-list"></div>
+
+  <div class="colophon">
+    Fonte: <span id="src">/api/snapshot</span> · nada é escrito por esta página ·
+    <span id="stamp-time">—</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var LIVE_TYPES = { research:1, review:1, experiment:1 };
+  var ALERT_REASONS = { error:1, dissent_irreconcilable:1, loop_ceiling_reached:1, user_abort:1 };
+  var PAGE = 40;
+
+  var snapshot = null;
+  var byId = {};              // "repo id" -> dispatch
+  var state = { st:"all", q:"", repos:null, shown:{}, collapsed:{} };
+
+  function esc(s){
+    if(s === null || s === undefined) return "";
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function txt(v, fb){ return (v === null || v === undefined || v === "") ? (fb || "—") : String(v); }
+  function arr(v){ return Array.isArray(v) ? v : []; }
+
+  function shortDate(iso){
+    if(!iso) return "—";
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return String(iso).slice(0,16);
+    function p(n){ return (n<10?"0":"") + n; }
+    return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  function isLive(d){
+    if(d && typeof d._live === "boolean") return d._live;
+    return !!(d && LIVE_TYPES[d.dispatch_type]);
+  }
+
+  // ---------- placar ----------
+
+  function renderScoreboard(){
+    var repos = arr(snapshot.repos);
+    var total = 0, open = 0, pending = 0, live = 0, warn = 0, err = 0;
+    repos.forEach(function(r){
+      total += (r.total_dispatches || 0);
+      open  += (r.open_dispatches || 0);
+      pending += arr(r.pending).length;
+      warn += arr(r.warnings).length;
+      if(r.error) err++;
+      arr(r.dispatches).forEach(function(d){ if(isLive(d)) live++; });
+    });
+    var cfg = snapshot.config || {};
+    var cells = [
+      { k: total, n: "dispatches no ledger", cls:"", tid:"total-count" },
+      { k: open,  n: "abertas agora", cls:"blood" },
+      { k: pending, n: "sheets pendentes", cls: pending ? "blood" : "inverse" },
+      { k: repos.length, n: "repos lidos (cfg " + txt(cfg.repo_count) + ")", cls:"" },
+      { k: warn, n: "avisos de leitura", cls:"" },
+      { k: err, n: "erros fatais", cls: err ? "blood" : "" }
+    ];
+    document.getElementById("scoreboard").innerHTML = cells.map(function(c){
+      return '<div class="score ' + c.cls + '"' + (c.tid ? ' data-testid="' + c.tid + '"' : "") + '>' +
+             '<div class="num k">' + c.k + '</div>' +
+             '<div class="n lbl">' + c.n + '</div></div>';
+    }).join("");
+  }
+
+  // ---------- sheets pendentes ----------
+
+  function agentBlock(a){
+    var name = a.agent_name ? esc(a.agent_name) : "<span class='mut'>sem nome designado</span>";
+    var specs = [
+      "papel: " + esc(txt(a.role)),
+      "modelo: " + esc(txt(a.model)),
+      "tokens: " + esc(txt(a.token_budget))
+    ].join(" · ");
+    var angle = a.angle
+      ? '<div class="angle"><span class="lbl">Angle</span>' + esc(a.angle) + '</div>'
+      : '<div class="angle mut"><span class="lbl">Angle</span>não declarado</div>';
+    var prompt = a.initial_prompt
+      ? '<div class="prompt">' + esc(a.initial_prompt) + (a._prompt_truncated ? "\n\n[…prompt truncado pelo leitor]" : "") + '</div>'
+      : "";
+    return '<div class="agent">' +
+             '<div class="who">' + name + '</div>' +
+             '<div class="specs">' + specs + '</div>' +
+             angle + prompt +
+           '</div>';
+  }
+
+  function groupBlock(g){
+    var agents = arr(g.agents);
+    var flags = "";
+    if(g.robot_talks) flags += '<span class="tag red">robot talks</span>';
+    if(g.layers) flags += '<span class="tag">camadas ' + esc(g.layers) + '</span>';
+    return '<div class="group">' +
+      '<div class="group-head">' +
+        '<span class="gid">' + esc(txt(g.group_id, "grupo sem id")) + '</span>' +
+        '<span class="tag hollow" style="background:#000;color:#fff;border-color:#fff">n = ' + esc(txt(g.n, agents.length)) + '</span>' +
+        flags +
+      '</div>' +
+      (g.anti_bias
+        ? '<div class="antibias"><span class="lbl">Eixo de tensão · anti-bias do grupo</span>' + esc(g.anti_bias) + '</div>'
+        : '<div class="antibias mut"><span class="lbl">Eixo de tensão · anti-bias do grupo</span>não declarado</div>') +
+      '<div class="agents">' + (agents.length ? agents.map(agentBlock).join("") : '<div class="agent mut">sem agentes</div>') + '</div>' +
+    '</div>';
+  }
+
+  function connBlock(list){
+    if(!arr(list).length) return "";
+    var rows = arr(list).map(function(c){
+      var t = String(c.type || "").toLowerCase();
+      var cls, arrow, label;
+      if(t === "feedback"){ cls = "feedback"; arrow = "◀╌╌╌╌"; label = "feedback"; }
+      else if(t === "zig-zag" || t === "zigzag"){ cls = "zigzag"; arrow = "╱╲╱╲▶"; label = "zig-zag"; }
+      else { cls = "sequential"; arrow = "━━━━▶"; label = t || "sequential"; }
+      return '<div class="conn ' + cls + '">' +
+        '<span class="node">' + esc(txt(c.from)) + '</span>' +
+        '<span class="arrow">' + arrow + '</span>' +
+        '<span class="node">' + esc(txt(c.to)) + '</span>' +
+        '<span class="tag ' + (cls === "feedback" ? "" : "hollow") + '">' + esc(label) + '</span>' +
+        (c.loop_cap ? '<span class="tag red">loop cap ' + esc(c.loop_cap) + '</span>' : "") +
+      '</div>';
+    }).join("");
+    return '<div class="conns"><div class="ch lbl">Conexões · arestas tipadas</div>' + rows + '</div>';
+  }
+
+  function sheetBody(sheet, agentCount, live){
+    var groups = arr(sheet.groups);
+    return '<div class="pc-body">' +
+      '<div class="pc-col">' +
+        '<span class="lbl">Objetivo</span>' +
+        '<div class="pc-goal">' + esc(txt(sheet.goal)) + '</div>' +
+        '<div class="field"><span class="lbl">Contexto</span>' + esc(txt(sheet.context)) + '</div>' +
+        '<div class="field"><span class="lbl">Anti-bias global</span>' +
+          (sheet.anti_bias_global ? esc(sheet.anti_bias_global) : '<span class="mut">não declarado</span>') + '</div>' +
+      '</div>' +
+      '<div class="pc-col">' +
+        '<div class="field"><span class="lbl">Tipo</span>' + esc(txt(sheet.dispatch_type)) + ' · ' + (live ? "LIVE" : "RESERVADO") + '</div>' +
+        '<div class="field"><span class="lbl">Agentes</span><span class="num" style="font-size:38px">' + esc(txt(agentCount, groups.length)) + '</span></div>' +
+        '<div class="field"><span class="lbl">Max loops</span>' + esc(txt(sheet.max_loops)) + '</div>' +
+        '<div class="field"><span class="lbl">Aprovador final</span>' + esc(txt(sheet.final_approver)) + '</div>' +
+        '<div class="field"><span class="lbl">Pasta de trabalho</span>' + esc(txt(sheet.working_folder)) + '</div>' +
+        '<div class="field"><span class="lbl">Invocado por</span>' + esc(txt(sheet.invoked_by)) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="padding:0 20px 18px">' +
+      (groups.length ? groups.map(groupBlock).join("") : '<div class="group"><div class="antibias mut">sheet sem grupos declarados</div></div>') +
+      connBlock(sheet.connections) +
+    '</div>';
+  }
+
+  function renderPending(){
+    var host = document.getElementById("pending-list");
+    var items = [];
+    arr(snapshot.repos).forEach(function(r){
+      arr(r.pending).forEach(function(p){ items.push({ repo:r.name, p:p }); });
+    });
+    document.getElementById("pending-count-tag").textContent =
+      items.length + (items.length === 1 ? " sheet" : " sheets");
+
+    if(!items.length){
+      host.innerHTML = '<div class="empty-pending">Zero sheets pendentes.' +
+        '<small>Nenhuma proposta aguarda o gate humano neste momento. Quando uma sheet for escrita em <code>telemetry/agents/pending/</code>, ela aparece aqui no topo.</small></div>';
+      return;
+    }
+
+    host.innerHTML = items.map(function(it, i){
+      var p = it.p;
+      var sheet = p.sheet || {};
+      var live = (typeof p._live === "boolean") ? p._live : !!LIVE_TYPES[sheet.dispatch_type];
+      var err = p._error
+        ? '<div class="repo-err">Erro ao ler a sheet: ' + esc(p._error) + '</div>'
+        : "";
+      return '<div class="pending-card" data-testid="pending-card">' +
+        err +
+        '<div class="pc-top">' +
+          '<span class="tag red tilt">pendente</span>' +
+          '<span class="pc-title">' + esc(txt(sheet.dispatch_id, p._file)) + '</span>' +
+          '<span class="tag ' + (live ? "" : "hollow-red") + '">' + (live ? "live" : "reservado") + '</span>' +
+          '<span class="tag hollow">' + esc(txt(sheet.dispatch_type)) + '</span>' +
+          '<span class="tag hollow">repo: ' + esc(it.repo) + '</span>' +
+          '<span class="tag hollow">' + esc(txt(p._agent_count, "?")) + ' agentes</span>' +
+          '<span class="tag hollow">schema ' + esc(txt(sheet.schema_version)) + '</span>' +
+        '</div>' +
+        sheetBody(sheet, p._agent_count, live) +
+        '<div class="gate">' +
+          '<button data-testid="dispatch-button" disabled title="confirmar dispara na Fase 2" ' +
+            'aria-label="Disparar — confirmar dispara na Fase 2">Disparar</button>' +
+          '<div class="why"><b>Fase 1 é leitor.</b><br>O botão marca o lugar do gate humano — confirmar dispara na Fase 2.</div>' +
+          '<div class="why" style="margin-left:auto">arquivo: ' + esc(txt(p._file)) +
+            (p._mtime ? '<br>mtime: ' + esc(shortDate(new Date(p._mtime * 1000).toISOString())) : "") + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  // ---------- filtros ----------
+
+  function matches(d){
+    var s = state.st;
+    if(s === "open" && d._state !== "open") return false;
+    if(s === "closed" && d._state !== "closed") return false;
+    if(s === "live" && !isLive(d)) return false;
+    if(s === "reserved" && isLive(d)) return false;
+    if(s === "flagged" && !(d._legacy || d._orphan_close)) return false;
+    if(state.q){
+      var hay = ((d.dispatch_id || "") + " " + (d.goal || "") + " " + (d.dispatch_type || "")).toLowerCase();
+      if(hay.indexOf(state.q) === -1) return false;
+    }
+    return true;
+  }
+
+  function renderRepoFilters(){
+    var host = document.getElementById("repo-filters");
+    var repos = arr(snapshot.repos);
+    if(state.repos === null){
+      state.repos = {};
+      repos.forEach(function(r){ state.repos[r.name] = true; });
+    }
+    var html = '<span class="lbl">Repos</span>' +
+      '<button class="chip" data-repo="__all">todos</button>' +
+      '<button class="chip" data-repo="__none">nenhum</button>';
+    html += repos.map(function(r){
+      var on = state.repos[r.name] !== false;
+      return '<button class="chip" data-repo="' + esc(r.name) + '" aria-pressed="' + on + '">' +
+        esc(r.name) + '<span class="c">' + (r.total_dispatches || 0) + '</span></button>';
+    }).join("");
+    host.innerHTML = html;
+  }
+
+  // ---------- dispatches ----------
+
+  function dispatchCard(repoName, d){
+    var key = repoName + " " + d.dispatch_id;
+    var stt = d._state === "open" ? "open" : "closed";
+    var live = isLive(d);
+    var close = d._close || null;
+    var reason = close ? (close.exit_reason || "") : "";
+    var alert = ALERT_REASONS[reason] ? true : false;
+
+    var tags = "";
+    tags += '<span class="tag ' + (stt === "open" ? "red" : "") + '">' + (stt === "open" ? "aberta" : "fechada") + '</span>';
+    if(stt === "closed" && reason){
+      tags += '<span class="tag ' + (alert ? "red" : "hollow") + '">' + esc(reason) + '</span>';
+    }
+    tags += '<span class="tag ' + (live ? "" : "hollow-red") + '">' + (live ? "live" : "reservado") + '</span>';
+    if(d.dispatch_type) tags += '<span class="tag hollow">' + esc(d.dispatch_type) + '</span>';
+    if(d._legacy) tags += '<span class="tag hollow-red">legacy · sem groups</span>';
+    if(d._orphan_close) tags += '<span class="tag red">close órfã</span>';
+
+    return '<div class="dispatch-card' + (d._legacy ? " legacy" : "") + '" data-testid="dispatch-card" ' +
+             'data-dispatch-id="' + esc(d.dispatch_id) + '" data-state="' + stt + '" data-key="' + esc(key) + '">' +
+      '<div class="dc-head">' +
+        '<span class="dc-id">' + esc(txt(d.dispatch_id)) + '</span>' +
+        tags +
+        '<span class="dc-goal">' + esc(txt(d.goal)) + '</span>' +
+        '<span class="dc-meta">' + esc(txt(d._agent_count, 0)) + ' ag · ' + esc(shortDate(d.created || (close && close.closed))) + '</span>' +
+        '<span class="caret" style="font-family:Arial Black,sans-serif;font-weight:900">+</span>' +
+      '</div>' +
+      '<div class="dc-detail"></div>' +
+    '</div>';
+  }
+
+  function detailHTML(d){
+    var close = d._close || null;
+    var out = "";
+
+    out += '<div class="kv">' +
+      '<span><b>tipo</b> ' + esc(txt(d.dispatch_type)) + '</span>' +
+      '<span><b>schema</b> ' + esc(txt(d.schema_version)) + '</span>' +
+      '<span><b>criada</b> ' + esc(shortDate(d.created)) + '</span>' +
+      '<span><b>por</b> ' + esc(txt(d.invoked_by)) + '</span>' +
+      '<span><b>max loops</b> ' + esc(txt(d.max_loops)) + '</span>' +
+      '<span><b>aprovador</b> ' + esc(txt(d.final_approver)) + '</span>' +
+      '<span><b>pasta</b> ' + esc(txt(d.working_folder)) + '</span>' +
+    '</div>';
+
+    out += '<div class="field"><span class="lbl">Objetivo</span>' + esc(txt(d.goal)) + '</div>';
+    if(d.context) out += '<div class="field"><span class="lbl">Contexto</span>' + esc(d.context) + '</div>';
+    out += '<div class="field"><span class="lbl">Anti-bias global</span>' +
+      (d.anti_bias_global ? esc(d.anti_bias_global) : '<span class="mut">não declarado</span>') + '</div>';
+
+    if(d._orphan_close){
+      out += '<div class="field"><span class="lbl" style="color:#ff2200">Close órfã</span>' +
+        'Existe uma close row sem a dispatch row correspondente — a proposta nunca foi escrita no ledger, só o encerramento.</div>';
+    }
+    if(d._legacy){
+      out += '<div class="field"><span class="lbl" style="color:#ff2200">Row legacy</span>' +
+        'Row anterior à v0.5.2: não carrega <code>groups</code>. Grupos, agentes e eixos de tensão são desconhecidos, não vazios.</div>';
+    }
+
+    var groups = arr(d.groups);
+    if(groups.length) out += groups.map(groupBlock).join("");
+    else if(!d._legacy) out += '<div class="group"><div class="antibias mut">sem grupos declarados</div></div>';
+
+    out += connBlock(d.connections);
+
+    if(close){
+      var reason = close.exit_reason || "—";
+      var alert = ALERT_REASONS[reason] ? true : false;
+      var sp = close.agents_spawned || {};
+      var tree = sp.tree && typeof sp.tree === "object"
+        ? Object.keys(sp.tree).map(function(k){ return esc(k) + ": " + esc(sp.tree[k]); }).join(" · ")
+        : "—";
+      out += '<div class="close-box' + (alert ? " alert" : "") + '">' +
+        '<div class="chd lbl">Encerramento · ' + esc(reason) + (alert ? " · ATENÇÃO" : "") + '</div>' +
+        '<div class="cb">' +
+          '<div class="kv" style="border-bottom:0;padding-top:0">' +
+            '<span><b>fechada em</b> ' + esc(shortDate(close.closed)) + '</span>' +
+            '<span><b>agentes gerados</b> ' + esc(txt(sp.total)) + '</span>' +
+            '<span><b>loops usados</b> ' + esc(txt(sp.loops_used)) + '</span>' +
+          '</div>' +
+          '<div class="field"><span class="lbl">Árvore</span>' + tree + '</div>' +
+          (arr(close.feedback_prompts).length
+            ? '<div class="field"><span class="lbl">Prompts de feedback</span>' +
+              arr(close.feedback_prompts).map(function(f){ return '<div class="fb">' + esc(f) + '</div>'; }).join("") + '</div>'
+            : "") +
+        '</div></div>';
+    } else if(d._state === "open"){
+      out += '<div class="close-box alert"><div class="chd lbl">Sem close row · dispatch viva</div>' +
+        '<div class="cb">Nenhum encerramento no ledger. Esta dispatch continua aberta.</div></div>';
+    }
+    return out;
+  }
+
+  function renderDispatches(){
+    var host = document.getElementById("dispatch-list");
+    var html = "";
+    byId = {};
+
+    arr(snapshot.repos).forEach(function(r){
+      if(state.repos && state.repos[r.name] === false) return;
+
+      var list = arr(r.dispatches).filter(matches);
+      list.forEach(function(d){ byId[r.name + " " + d.dispatch_id] = d; });
+
+      var shown = state.shown[r.name] || PAGE;
+      var slice = list.slice(0, shown);
+      var collapsed = !!state.collapsed[r.name];
+
+      html += '<section class="repo-section" data-testid="repo-section" data-repo="' + esc(r.name) + '">';
+      html += '<div class="repo-head" data-toggle-repo="' + esc(r.name) + '">' +
+        '<span class="caret">' + (collapsed ? "+" : "–") + '</span>' +
+        '<h3>' + esc(r.name) + '</h3>' +
+        (r.ledger_exists === false ? '<span class="tag red">sem ledger</span>' : "") +
+        '<span class="tag" style="background:#fff;color:#000">' + (r.total_dispatches || 0) + ' total</span>' +
+        '<span class="tag red">' + (r.open_dispatches || 0) + ' abertas</span>' +
+        (arr(r.pending).length ? '<span class="tag red tilt">' + arr(r.pending).length + ' pendente</span>' : "") +
+        '<span class="stats">exibindo ' + slice.length + ' de ' + list.length + ' (leitor limita a ' + esc(txt((snapshot.config || {}).limit, 40)) + '/repo)</span>' +
+      '</div>';
+
+      if(r.error){
+        html += '<div class="repo-err">ERRO FATAL DE LEITURA: ' + esc(r.error) + '</div>';
+      }
+      if(arr(r.warnings).length){
+        html += '<div class="repo-issues"><details><summary>' + arr(r.warnings).length +
+          ' aviso(s) de leitura — rows toleradas</summary><div class="wlist">' +
+          arr(r.warnings).map(function(w){ return '<div>' + esc(w) + '</div>'; }).join("") +
+          '</div></details></div>';
+      }
+
+      if(!collapsed){
+        html += '<div class="cards">';
+        if(!slice.length){
+          html += '<div style="padding:14px" class="mut">Nenhuma dispatch corresponde ao filtro neste repo.</div>';
+        } else {
+          html += slice.map(function(d){ return dispatchCard(r.name, d); }).join("");
+        }
+        html += '</div>';
+        if(list.length > slice.length){
+          html += '<button class="more" data-more="' + esc(r.name) + '">Mostrar mais ' +
+            Math.min(PAGE, list.length - slice.length) + ' ▾</button>';
+        }
+      }
+      html += '</section>';
+    });
+
+    if(!html){
+      html = '<div class="empty-pending">Nenhum repo selecionado.<small>Use os filtros de repo acima.</small></div>';
+    }
+    host.innerHTML = html;
+  }
+
+  // ---------- eventos ----------
+
+  document.addEventListener("click", function(ev){
+    var t = ev.target;
+
+    var head = t.closest ? t.closest(".dc-head") : null;
+    if(head){
+      var card = head.parentNode;
+      card.classList.toggle("expanded");
+      var det = card.querySelector(".dc-detail");
+      if(card.classList.contains("expanded")){
+        if(!det.getAttribute("data-filled")){
+          var d = byId[card.getAttribute("data-key")];
+          det.innerHTML = d ? detailHTML(d) : "<div class='mut'>detalhe indisponível</div>";
+          det.setAttribute("data-filled", "1");
+        }
+        head.querySelector(".caret").textContent = "–";
+      } else {
+        head.querySelector(".caret").textContent = "+";
+      }
+      return;
+    }
+
+    var rh = t.closest ? t.closest("[data-toggle-repo]") : null;
+    if(rh){
+      var rn = rh.getAttribute("data-toggle-repo");
+      state.collapsed[rn] = !state.collapsed[rn];
+      renderDispatches();
+      return;
+    }
+
+    if(t.hasAttribute && t.hasAttribute("data-more")){
+      var mn = t.getAttribute("data-more");
+      state.shown[mn] = (state.shown[mn] || PAGE) + PAGE;
+      renderDispatches();
+      return;
+    }
+
+    if(t.hasAttribute && t.hasAttribute("data-repo")){
+      var rp = t.getAttribute("data-repo");
+      if(rp === "__all"){ arr(snapshot.repos).forEach(function(r){ state.repos[r.name] = true; }); }
+      else if(rp === "__none"){ arr(snapshot.repos).forEach(function(r){ state.repos[r.name] = false; }); }
+      else { state.repos[rp] = state.repos[rp] === false; }
+      renderRepoFilters();
+      renderDispatches();
+      return;
+    }
+
+    if(t.hasAttribute && t.getAttribute("data-f") === "state"){
+      state.st = t.getAttribute("data-v");
+      Array.prototype.forEach.call(document.querySelectorAll('[data-f="state"]'), function(b){
+        b.setAttribute("aria-pressed", String(b === t));
+      });
+      state.shown = {};
+      renderDispatches();
+      return;
+    }
+  });
+
+  var qEl = document.getElementById("q");
+  var qTimer = null;
+  qEl.addEventListener("input", function(){
+    clearTimeout(qTimer);
+    qTimer = setTimeout(function(){
+      state.q = qEl.value.trim().toLowerCase();
+      state.shown = {};
+      renderDispatches();
+    }, 160);
+  });
+
+  // ---------- ao vivo ----------
+
+  function setLive(on, note){
+    var el = document.getElementById("live-indicator");
+    el.className = on ? "on" : "off";
+    document.getElementById("live-text").textContent = on ? "ao vivo · conectado" : ("sem sinal · " + (note || "desconectado"));
+  }
+
+  function renderAll(){
+    renderScoreboard();
+    renderPending();
+    renderRepoFilters();
+    renderDispatches();
+    document.getElementById("stamp-time").textContent = "última leitura " + shortDate(new Date().toISOString());
+  }
+
+  function boot(){
+    fetch("/api/snapshot")
+      .then(function(r){ return r.json(); })
+      .then(function(j){ snapshot = j; renderAll(); connect(); })
+      .catch(function(e){
+        snapshot = { repos: [], config: {} };
+        renderAll();
+        setLive(false, "falha ao carregar snapshot");
+      });
+  }
+
+  function connect(){
+    if(typeof EventSource === "undefined"){ setLive(false, "sem EventSource"); return; }
+    var es;
+    try { es = new EventSource("/api/stream"); }
+    catch(e){ setLive(false, "stream indisponível"); return; }
+
+    es.addEventListener("open", function(){ setLive(true); });
+    es.addEventListener("snapshot", function(ev){
+      try {
+        snapshot = JSON.parse(ev.data);
+        renderAll();
+        setLive(true);
+      } catch(e){ /* payload inválido: mantém o último render */ }
+    });
+    es.addEventListener("error", function(){
+      setLive(false, "reconectando…");
+    });
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

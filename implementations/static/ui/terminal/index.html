@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DISPATCH CONTROL PLANE :: TERMINAL</title>
+<style>
+  :root{
+    --bg:#0a0f0a;
+    --bg2:#0c140c;
+    --p:#33ff66;          /* fósforo */
+    --p-dim:#1e8f42;      /* fósforo apagado */
+    --p-faint:#125a2b;    /* moldura */
+    --amber:#ffb000;
+    --amber-dim:#8a6000;
+    --red:#ff4444;
+    --red-dim:#8a2020;
+    --glow:0 0 3px rgba(51,255,102,.45);
+  }
+  *{box-sizing:border-box;border-radius:0!important;}
+  html,body{margin:0;padding:0;background:var(--bg);}
+  body{
+    font-family:ui-monospace,"Cascadia Mono","Cascadia Code",Consolas,"DejaVu Sans Mono",monospace;
+    font-size:13px;line-height:1.45;
+    color:var(--p);text-shadow:var(--glow);
+    padding:0 0 60px 0;
+    -webkit-font-smoothing:none;
+  }
+  /* ---- scanlines + vinheta CRT ---- */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 2px,
+      rgba(0,0,0,.22) 3px,
+      rgba(0,0,0,.22) 4px);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%);
+  }
+
+  a{color:var(--p);}
+  ::selection{background:var(--p);color:var(--bg);text-shadow:none;}
+
+  .dim{color:var(--p-dim);text-shadow:none;}
+  .faint{color:var(--p-faint);text-shadow:none;}
+  .amber{color:var(--amber);text-shadow:0 0 3px rgba(255,176,0,.45);}
+  .red{color:var(--red);text-shadow:0 0 3px rgba(255,68,68,.45);}
+  .up{text-transform:uppercase;}
+  .mono-pre{white-space:pre;}
+
+  /* ---- status line ---- */
+  header#statusline{
+    position:sticky;top:0;z-index:50;
+    background:var(--bg);
+    border-bottom:1px solid var(--p-faint);
+    padding:4px 10px 5px 10px;
+  }
+  .sl-row{display:flex;flex-wrap:wrap;gap:0;align-items:baseline;white-space:pre;}
+  .sl-seg{padding:0 10px 0 0;}
+  .sl-sep{color:var(--p-faint);padding:0 10px 0 0;}
+  .sl-key{color:var(--p-dim);text-shadow:none;}
+  .sl-title{color:var(--bg);background:var(--p);text-shadow:none;padding:0 6px;font-weight:700;}
+  .sl-grow{flex:1 1 auto;}
+
+  #live-ind{white-space:pre;}
+  #live-ind.on{color:var(--p);}
+  #live-ind.off{color:var(--red);text-shadow:0 0 3px rgba(255,68,68,.5);}
+  .cursor{animation:blink 1.05s steps(1,end) infinite;}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+  /* ---- painéis com box-drawing ---- */
+  .panel{margin:14px 10px;}
+  .pline{white-space:pre;overflow:hidden;color:var(--p-faint);text-shadow:none;font-size:13px;line-height:1.2;}
+  .pbody{border-left:1px solid var(--p-faint);border-right:1px solid var(--p-faint);padding:8px 12px;}
+  .ptitle{color:var(--p);text-shadow:var(--glow);}
+
+  .panel-alert .pline{color:var(--amber);text-shadow:0 0 3px rgba(255,176,0,.35);}
+  .panel-alert .pbody{border-color:var(--amber-dim);}
+
+  /* ---- controles ---- */
+  #controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:6px 0;}
+  label.ctl{color:var(--p-dim);text-shadow:none;text-transform:uppercase;font-size:12px;}
+  select,input[type=text]{
+    font:inherit;background:#060906;color:var(--p);text-shadow:var(--glow);
+    border:1px solid var(--p-faint);padding:2px 6px;outline:none;
+  }
+  select:focus,input[type=text]:focus{border-color:var(--p);}
+  input[type=text]{min-width:230px;}
+  .chk{color:var(--p-dim);text-shadow:none;cursor:pointer;text-transform:uppercase;font-size:12px;user-select:none;}
+  .chk input{accent-color:#33ff66;vertical-align:-1px;}
+
+  /* ---- botão de disparo (gate fase 2) ---- */
+  button.dispatch-btn{
+    font:inherit;text-transform:uppercase;letter-spacing:.06em;
+    background:transparent;color:var(--amber-dim);
+    border:1px solid var(--amber-dim);
+    padding:5px 16px;margin-top:6px;
+    cursor:not-allowed;text-shadow:none;
+  }
+  button.dispatch-btn[disabled]{opacity:.85;}
+
+  /* ---- pendentes ---- */
+  #pending-list{}
+  .pending-card{border:1px solid var(--amber);padding:0 0 10px 0;margin:0 0 14px 0;background:rgba(255,176,0,.045);}
+  .pending-head{
+    background:var(--amber);color:#150c00;text-shadow:none;
+    padding:3px 10px;font-weight:700;text-transform:uppercase;
+    display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;
+  }
+  .pending-head .pid{font-weight:700;}
+  .pending-body{padding:8px 12px 0 12px;}
+  .empty-pending{color:var(--p-dim);text-shadow:none;padding:10px 12px;border:1px dashed var(--p-faint);}
+
+  /* ---- kv grid ---- */
+  .kv{display:grid;grid-template-columns:max-content 1fr;gap:0 14px;margin:2px 0 8px 0;}
+  .kv dt{color:var(--p-dim);text-shadow:none;text-transform:uppercase;font-size:12px;white-space:nowrap;}
+  .kv dd{margin:0 0 1px 0;}
+
+  /* ---- tags ---- */
+  .tag{display:inline-block;padding:0 6px;border:1px solid currentColor;text-transform:uppercase;font-size:11px;line-height:1.5;text-shadow:none;white-space:nowrap;}
+  .tag-live{color:var(--p);border-color:var(--p);}
+  .tag-reserved{color:var(--amber);border-color:var(--amber);}
+  .tag-open{color:var(--bg);background:var(--p);border-color:var(--p);font-weight:700;}
+  .tag-closed{color:var(--p-dim);border-color:var(--p-faint);}
+  .tag-legacy{color:var(--amber);border-color:var(--amber-dim);}
+  .tag-orphan{color:var(--red);border-color:var(--red);}
+  .tag-err{color:var(--red);border-color:var(--red);}
+  .tag-ok{color:var(--p-dim);border-color:var(--p-faint);}
+
+  /* ---- lista de dispatches ---- */
+  .repo-section{margin:0 0 6px 0;border-top:1px solid var(--p-faint);}
+  .repo-head{
+    display:flex;flex-wrap:wrap;gap:0;align-items:baseline;white-space:pre;
+    padding:4px 4px;cursor:pointer;background:var(--bg2);
+  }
+  .repo-head:hover{background:#122012;}
+  .repo-name{color:var(--p);font-weight:700;text-transform:uppercase;}
+  .repo-meta{color:var(--p-dim);text-shadow:none;}
+  .repo-body{padding:2px 0 6px 0;}
+
+  details.diag{margin:2px 0 6px 14px;}
+  details.diag summary{cursor:pointer;color:var(--amber);list-style:none;text-transform:uppercase;font-size:12px;}
+  details.diag summary::-webkit-details-marker{display:none;}
+  details.diag pre{margin:4px 0 0 0;padding:6px 8px;border-left:2px solid var(--amber-dim);
+    color:var(--amber);text-shadow:none;font:inherit;white-space:pre-wrap;max-height:220px;overflow:auto;}
+
+  .dcard{border-left:2px solid var(--p-faint);margin:0 0 1px 14px;}
+  .dcard[data-state="open"]{border-left-color:var(--p);}
+  .dcard.is-orphan{border-left-color:var(--red);}
+  .drow{display:flex;gap:10px;align-items:baseline;padding:2px 8px;cursor:pointer;white-space:nowrap;}
+  .drow:hover{background:#122012;}
+  .drow .caret{color:var(--p-faint);width:1ch;flex:0 0 auto;}
+  .drow .date{color:var(--p-dim);text-shadow:none;flex:0 0 auto;}
+  .drow .did{flex:0 0 auto;max-width:46ch;overflow:hidden;text-overflow:ellipsis;}
+  .drow .goal{color:var(--p-dim);text-shadow:none;flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+  .drow .tags{flex:0 0 auto;display:flex;gap:4px;}
+  .ddetail{padding:6px 12px 12px 20px;border-top:1px dotted var(--p-faint);background:#080d08;}
+
+  /* ---- grupos / agentes ---- */
+  .group{border:1px solid var(--p-faint);margin:8px 0;}
+  .group-head{background:var(--bg2);padding:2px 8px;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;}
+  .group-id{color:var(--p);font-weight:700;text-transform:uppercase;}
+  .antibias{padding:4px 8px;border-bottom:1px dotted var(--p-faint);}
+  .antibias .lbl{color:var(--amber);text-shadow:none;text-transform:uppercase;font-size:11px;}
+  .antibias .val{color:var(--amber);text-shadow:none;}
+  .agent{padding:5px 8px;border-top:1px dotted var(--p-faint);}
+  .agent:first-of-type{border-top:none;}
+  .agent-line{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;}
+  .agent-name{color:var(--p);font-weight:700;}
+  .agent-name.anon{color:var(--p-dim);font-weight:400;text-shadow:none;}
+  .role{color:var(--bg);background:var(--p-dim);text-shadow:none;padding:0 5px;text-transform:uppercase;font-size:11px;}
+  .angle{margin:2px 0 0 0;padding:2px 0 2px 8px;border-left:2px solid var(--p-faint);}
+  .angle .lbl{color:var(--p-dim);text-shadow:none;text-transform:uppercase;font-size:11px;}
+  .noangle{color:var(--red);text-shadow:none;font-size:12px;text-transform:uppercase;}
+  .prompt{margin:3px 0 0 0;color:var(--p-dim);text-shadow:none;white-space:pre-wrap;
+    max-height:6.5em;overflow:hidden;position:relative;font-size:12px;padding-left:8px;border-left:1px dotted var(--p-faint);}
+  .prompt.open{max-height:none;}
+  .promptbtn{background:none;border:none;font:inherit;color:var(--p-faint);cursor:pointer;padding:0;text-transform:uppercase;font-size:11px;}
+
+  /* ---- conexões ---- */
+  .conns{margin:8px 0 0 0;}
+  .conn{white-space:pre;padding:1px 0;}
+  .conn.sequential{color:var(--p);}
+  .conn.zigzag{color:#66ffcc;text-shadow:0 0 3px rgba(102,255,204,.4);}
+  .conn.feedback{color:var(--amber);text-shadow:none;}
+  .conn.other{color:var(--p-dim);text-shadow:none;}
+
+  .closebox{margin:8px 0 0 0;border:1px solid var(--p-faint);padding:5px 8px;}
+  .closebox.bad{border-color:var(--red);}
+  .closebox.warnish{border-color:var(--amber-dim);}
+  .exit-resolved{color:var(--p);}
+  .exit-bad{color:var(--red);}
+  .exit-warn{color:var(--amber);}
+  .fbp{margin:3px 0 0 12px;color:var(--p-dim);text-shadow:none;white-space:pre-wrap;font-size:12px;}
+
+  .sectionlbl{color:var(--p-dim);text-shadow:none;text-transform:uppercase;font-size:11px;letter-spacing:.1em;margin-top:8px;}
+  .nores{color:var(--p-dim);text-shadow:none;padding:10px 14px;}
+  hr.rule{border:none;border-top:1px solid var(--p-faint);margin:6px 0;}
+</style>
+</head>
+<body>
+<div id="root" data-testid="app">
+  <header id="statusline">
+    <div class="sl-row">
+      <span class="sl-title">DISPATCH CONTROL PLANE</span>
+      <span class="sl-sep"> </span>
+      <span class="sl-seg"><span class="sl-key">FASE </span>1 &middot; <span class="sl-key">LEITOR</span></span>
+      <span class="sl-sep">│</span>
+      <span class="sl-seg"><span class="sl-key">REPOS </span><span id="repo-count">--</span></span>
+      <span class="sl-sep">│</span>
+      <span class="sl-seg" data-testid="total-count"><span class="sl-key">DISPATCHES </span><span id="total-n">--</span></span>
+      <span class="sl-sep">│</span>
+      <span class="sl-seg"><span class="sl-key">ABERTAS </span><span id="open-n">--</span></span>
+      <span class="sl-sep">│</span>
+      <span class="sl-seg"><span class="sl-key">PENDENTES </span><span id="pend-n">--</span></span>
+      <span class="sl-grow"></span>
+      <span class="sl-seg"><span class="sl-key">T </span><span id="clock">--:--:--</span></span>
+      <span class="sl-sep">│</span>
+      <span class="sl-seg"><span class="sl-key">SSE </span><span id="live-ind" class="off" data-testid="live-indicator"><span class="cursor">&#9611;</span> iniciando</span></span>
+    </div>
+  </header>
+
+  <!-- ====== PENDENTES: o objeto mais importante da tela ====== -->
+  <section class="panel panel-alert" id="pending-panel">
+    <div class="pline" id="pending-top">╔═ AGUARDANDO CONFIRMAÇÃO HUMANA ═╗</div>
+    <div class="pbody">
+      <div id="pending-list" data-testid="pending-list"></div>
+    </div>
+    <div class="pline" id="pending-bot">╚═╝</div>
+  </section>
+
+  <!-- ====== HISTÓRICO ====== -->
+  <section class="panel" id="history-panel">
+    <div class="pline" id="hist-top">┌─ LEDGER ─┐</div>
+    <div class="pbody">
+      <div id="controls">
+        <span><label class="ctl" for="f-repo">REPO </label>
+          <select id="f-repo"><option value="">(todos)</option></select></span>
+        <span><label class="ctl" for="f-state">ESTADO </label>
+          <select id="f-state">
+            <option value="">(todos)</option>
+            <option value="open">abertas</option>
+            <option value="closed">fechadas</option>
+          </select></span>
+        <span><label class="ctl" for="f-type">TIPO </label>
+          <select id="f-type">
+            <option value="">(todos)</option>
+            <option value="__live">só LIVE</option>
+            <option value="__reserved">só RESERVED</option>
+            <option value="research">research</option>
+            <option value="review">review</option>
+            <option value="experiment">experiment</option>
+            <option value="code">code</option>
+            <option value="plan">plan</option>
+            <option value="suggestion">suggestion</option>
+          </select></span>
+        <span><label class="ctl" for="f-q">BUSCA </label>
+          <input type="text" id="f-q" placeholder="id, objetivo, agente, angle…" autocomplete="off"></span>
+        <label class="chk"><input type="checkbox" id="f-flag"> só legacy/órfãs</label>
+        <span class="dim" id="filter-count"></span>
+      </div>
+      <hr class="rule">
+      <div id="dispatch-list" data-testid="dispatch-list"></div>
+    </div>
+    <div class="pline" id="hist-bot">└─┘</div>
+  </section>
+
+  <div class="panel"><div class="pline faint" id="legend"></div></div>
+</div>
+
+<script>
+"use strict";
+(function(){
+
+/* ============ util ============ */
+var LIVE_TYPES = {research:1, review:1, experiment:1};
+
+function esc(s){
+  if(s===null||s===undefined) return "";
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function nz(v, fallback){
+  if(v===null||v===undefined||v==="") return fallback===undefined?"—":fallback;
+  return v;
+}
+function el(id){ return document.getElementById(id); }
+
+/* linha de moldura com box-drawing que preenche a largura do painel */
+function frameTop(node, title, chars){
+  var w = Math.max(20, Math.floor(node.clientWidth / charW()) - 1);
+  var t = title ? " " + title + " " : "";
+  var left = chars[0] + chars[1] + chars[1];
+  var fill = Math.max(2, w - left.length - t.length - 1);
+  node.textContent = left + t + rep(chars[1], fill) + chars[2];
+}
+function frameBot(node, chars){
+  var w = Math.max(20, Math.floor(node.clientWidth / charW()) - 1);
+  node.textContent = chars[3] + rep(chars[1], Math.max(2, w-2)) + chars[4];
+}
+function rep(c,n){ var s=""; for(var i=0;i<n;i++) s+=c; return s; }
+var _cw = 0;
+function charW(){
+  if(_cw) return _cw;
+  var probe = document.createElement("span");
+  probe.style.cssText = "position:absolute;visibility:hidden;white-space:pre;font:inherit;";
+  probe.textContent = rep("─", 100);
+  document.body.appendChild(probe);
+  _cw = probe.getBoundingClientRect().width / 100 || 8;
+  probe.parentNode.removeChild(probe);
+  return _cw;
+}
+function redrawFrames(){
+  var pl = el("pending-panel");
+  frameTop(el("pending-top"), "▲ SHEETS PENDENTES — GATE HUMANO ▲", ["╔","═","╗","╚","╝"]);
+  frameBot(el("pending-bot"), ["╔","═","╗","╚","╝"]);
+  frameTop(el("hist-top"), "LEDGER — HISTÓRICO DE DISPATCHES", ["┌","─","┐","└","┘"]);
+  frameBot(el("hist-bot"), ["┌","─","┐","└","┘"]);
+  var w = Math.max(20, Math.floor(el("legend").clientWidth / charW()) - 1);
+  el("legend").textContent =
+    "├" + rep("─", Math.max(2,w-2)) + "┤\n" +
+    "  LEGENDA  ── sequential   ╲╱ zig-zag   ◀══ feedback (loop_cap)   " +
+    "[LIVE] research|review|experiment   [RESERVED] code|plan|suggestion\n" +
+    "  ▊ leitura apenas — esta tela nunca escreve no ledger.";
+}
+
+function fmtDate(iso){
+  if(!iso) return "--------- --:--";
+  var d = new Date(iso);
+  if(isNaN(d.getTime())) return String(iso).slice(0,16);
+  function p(n){ return (n<10?"0":"")+n; }
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes());
+}
+function pad(s, n){
+  s = String(s===null||s===undefined?"":s);
+  while(s.length < n) s += " ";
+  return s;
+}
+
+/* ============ estado ============ */
+var SNAP = null;
+var expanded = {};        /* dispatch key -> bool */
+var repoOpen = {};        /* repo name -> bool (default aberto) */
+var filters = {repo:"", state:"", type:"", q:"", flag:false};
+
+/* ============ tags ============ */
+function typeTag(d){
+  var t = d.dispatch_type;
+  var live = (d._live !== undefined && d._live !== null) ? !!d._live : !!LIVE_TYPES[t];
+  if(!t) return '<span class="tag tag-reserved">tipo ausente</span>';
+  return '<span class="tag ' + (live?'tag-live':'tag-reserved') + '">' +
+         esc(t) + ' · ' + (live?'LIVE':'RESERVED') + '</span>';
+}
+function stateTag(d){
+  if(d._state === "open") return '<span class="tag tag-open">▊ ABERTA</span>';
+  return '<span class="tag tag-closed">fechada</span>';
+}
+function exitClass(r){
+  if(r === "error" || r === "dissent_irreconcilable") return "exit-bad";
+  if(r === "loop_ceiling_reached" || r === "user_abort") return "exit-warn";
+  return "exit-resolved";
+}
+
+/* ============ render: agentes / grupos / conexões ============ */
+function renderGroups(groups, opts){
+  if(!groups || !groups.length){
+    return '<div class="sectionlbl">GRUPOS</div><div class="dim">— sem bloco `groups` (row anterior à v0.5.2) —</div>';
+  }
+  var out = '<div class="sectionlbl">GRUPOS &amp; AGENTES · ' + groups.length + '</div>';
+  groups.forEach(function(g){
+    var agents = g.agents || [];
+    out += '<div class="group">';
+    out += '<div class="group-head">';
+    out += '<span class="group-id">' + esc(nz(g.group_id, "(sem id)")) + '</span>';
+    out += '<span class="dim">N=' + esc(nz(g.n, agents.length)) + '</span>';
+    out += '<span class="dim">AGENTES=' + agents.length + '</span>';
+    if(g.layers !== undefined && g.layers !== null) out += '<span class="dim">CAMADAS=' + esc(g.layers) + '</span>';
+    if(g.robot_talks) out += '<span class="tag tag-live">robot_talks</span>';
+    out += '</div>';
+
+    var solo = agents.length < 2 && (g.n === undefined || g.n === null || g.n < 2);
+    if(g.anti_bias){
+      out += '<div class="antibias"><span class="lbl">◆ ANTI-BIAS DO GRUPO ▸ </span>' +
+             '<span class="val">' + esc(g.anti_bias) + '</span></div>';
+    }else if(solo){
+      out += '<div class="antibias"><span class="lbl">◆ ANTI-BIAS DO GRUPO ▸ </span>' +
+             '<span class="dim">n/a — grupo unitário, não há par para tensionar</span></div>';
+    }else{
+      out += '<div class="antibias"><span class="lbl">◆ ANTI-BIAS DO GRUPO ▸ </span>' +
+             '<span class="noangle">▲ NÃO DECLARADO — grupo de ' + agents.length +
+             ' agentes sem eixo de tensão</span></div>';
+    }
+
+    if(!agents.length){
+      out += '<div class="agent dim">— nenhum agente listado —</div>';
+    }
+    agents.forEach(function(a, i){
+      out += '<div class="agent">';
+      out += '<div class="agent-line">';
+      out += '<span class="faint">' + pad("[" + (i+1) + "]", 4) + '</span>';
+      if(a.agent_name) out += '<span class="agent-name">' + esc(a.agent_name) + '</span>';
+      else out += '<span class="agent-name anon">(anônimo)</span>';
+      out += '<span class="role">' + esc(nz(a.role, "?")) + '</span>';
+      out += '<span class="dim">MODELO ' + esc(nz(a.model, "—")) + '</span>';
+      out += '<span class="dim">TOKENS ' + esc(nz(a.token_budget, "—")) + '</span>';
+      out += '</div>';
+      if(a.angle){
+        out += '<div class="angle"><span class="lbl">↳ ANGLE ▸ </span>' + esc(a.angle) + '</div>';
+      }else if(solo){
+        out += '<div class="angle"><span class="dim">↳ sem angle — papel único no grupo</span></div>';
+      }else{
+        out += '<div class="angle"><span class="noangle">↳ ▲ SEM ANGLE — o agente não recebeu lado do eixo de tensão</span></div>';
+      }
+      if(a.initial_prompt){
+        var pid = "p" + Math.random().toString(36).slice(2,9);
+        out += '<div class="prompt" id="' + pid + '">' + esc(a.initial_prompt) +
+               (a._prompt_truncated ? '<span class="amber"> …[PROMPT TRUNCADO PELO LEITOR]</span>' : '') + '</div>';
+        out += '<button class="promptbtn" data-prompt="' + pid + '">[+] ver prompt inteiro</button>';
+      }
+      out += '</div>';
+    });
+    out += '</div>';
+  });
+  return out;
+}
+
+function renderConns(conns){
+  var out = '<div class="sectionlbl">CONEXÕES' + (conns && conns.length ? ' · ' + conns.length : '') + '</div>';
+  if(!conns || !conns.length){
+    return out + '<div class="dim">— sem arestas declaradas —</div>';
+  }
+  out += '<div class="conns">';
+  conns.forEach(function(c){
+    var t = String(c.type || "");
+    var cls = t === "sequential" ? "sequential" : (t === "zig-zag" ? "zigzag" : (t === "feedback" ? "feedback" : "other"));
+    var arrow;
+    if(t === "sequential")      arrow = " ─────────▶ ";
+    else if(t === "zig-zag")    arrow = " ─╲╱─╲╱──▶ ";
+    else if(t === "feedback")   arrow = " ◀════╡╞═══ ";
+    else                        arrow = " ·········▶ ";
+    var cap = (c.loop_cap !== undefined && c.loop_cap !== null) ? "  ⟲ loop_cap=" + esc(c.loop_cap) : "";
+    out += '<div class="conn ' + cls + '">' +
+             pad(esc(nz(c.from,"?")), 22) + arrow + pad(esc(nz(c.to,"?")), 22) +
+             '  [' + esc(nz(t,"?")) + ']' + cap +
+           '</div>';
+  });
+  out += '</div>';
+  return out;
+}
+
+function renderHead(d, agentCount, mtime){
+  var out = '<dl class="kv">';
+  function row(k,v){ out += '<dt>' + k + '</dt><dd>' + v + '</dd>'; }
+  row('OBJETIVO', esc(nz(d.goal, "(sem objetivo registrado)")));
+  if(d.context) row('CONTEXTO', esc(d.context));
+  if(d.anti_bias_global) row('ANTI-BIAS GLOBAL', '<span class="amber">' + esc(d.anti_bias_global) + '</span>');
+  if(d.created){
+    row('CRIADA', esc(fmtDate(d.created)) + ' <span class="faint">' + esc(d.created) + '</span>');
+  }else if(mtime){
+    row('SHEET ESCRITA', esc(fmtDate(new Date(mtime * 1000).toISOString())) +
+        ' <span class="faint">(mtime — ainda não há linha no ledger)</span>');
+  }else{
+    row('CRIADA', '<span class="dim">— sem timestamp —</span>');
+  }
+  row('INVOCADA POR', esc(nz(d.invoked_by)));
+  row('MAX_LOOPS / APROVADOR', esc(nz(d.max_loops)) + ' <span class="faint">/</span> ' + esc(nz(d.final_approver)));
+  row('PASTA', esc(nz(d.working_folder)));
+  var ac = (agentCount !== undefined && agentCount !== null) ? agentCount : nz(d._agent_count, 0);
+  row('SCHEMA', esc(nz(d.schema_version)) + ' <span class="faint">·</span> <span class="dim">' + esc(ac) + ' agente(s)</span>');
+  out += '</dl>';
+  return out;
+}
+
+function renderClose(d){
+  var c = d._close;
+  if(!c){
+    return '<div class="closebox"><span class="tag tag-open">▊ EM EXECUÇÃO</span> ' +
+           '<span class="dim">— sem close row no ledger; a dispatch está viva.</span></div>';
+  }
+  var r = c.exit_reason;
+  var cls = exitClass(r);
+  var box = (cls === "exit-bad") ? "closebox bad" : (cls === "exit-warn" ? "closebox warnish" : "closebox");
+  var out = '<div class="' + box + '">';
+  out += '<div><span class="dim">ENCERRAMENTO ▸ </span><span class="' + cls + '">' +
+         esc(nz(r,"(sem exit_reason)")).toUpperCase() + '</span>' +
+         '<span class="dim">  em ' + esc(fmtDate(c.closed)) + '</span></div>';
+  var sp = c.agents_spawned;
+  if(sp){
+    var tree = sp.tree || {};
+    var parts = [];
+    Object.keys(tree).forEach(function(k){ if(tree[k]) parts.push(k + "=" + tree[k]); });
+    out += '<div class="dim">AGENTES GERADOS ▸ total=' + esc(nz(sp.total,"?")) +
+           '  loops_used=' + esc(nz(sp.loops_used,"?")) +
+           (parts.length ? '  árvore: ' + esc(parts.join(" ")) : '') + '</div>';
+  }
+  if(c.feedback_prompts && c.feedback_prompts.length){
+    out += '<div class="dim">PROMPTS DE FEEDBACK ▸ ' + c.feedback_prompts.length + '</div>';
+    c.feedback_prompts.forEach(function(f){ out += '<div class="fbp">› ' + esc(f) + '</div>'; });
+  }
+  out += '</div>';
+  return out;
+}
+
+/* ============ PENDENTES ============ */
+function renderPending(){
+  var host = el("pending-list");
+  var items = [];
+  (SNAP.repos || []).forEach(function(r){
+    (r.pending || []).forEach(function(p){ items.push({repo:r.name, p:p}); });
+  });
+  items.sort(function(a,b){ return (b.p._mtime||0) - (a.p._mtime||0); });
+
+  if(!items.length){
+    host.innerHTML = '<div class="empty-pending">' +
+      '▸ NENHUMA SHEET PENDENTE. Nada aguarda confirmação humana neste momento — ' +
+      'os 11 repositórios foram varridos e a fila pré-confirm está vazia.</div>';
+    el("pend-n").textContent = "0";
+    return;
+  }
+  el("pend-n").textContent = String(items.length);
+
+  var out = "";
+  items.forEach(function(it){
+    var p = it.p, s = p.sheet || {};
+    var live = (p._live !== undefined && p._live !== null) ? !!p._live : !!LIVE_TYPES[s.dispatch_type];
+    out += '<div class="pending-card" data-testid="pending-card">';
+    out += '<div class="pending-head">';
+    out += '<span>▲ SHEET PENDENTE</span>';
+    out += '<span class="pid">' + esc(nz(s.dispatch_id, p._file)) + '</span>';
+    out += '<span>REPO ' + esc(it.repo) + '</span>';
+    out += '<span>' + esc(nz(s.dispatch_type,"tipo?")) + ' · ' + (live ? "LIVE" : "RESERVED") + '</span>';
+    out += '<span>' + esc(nz(p._agent_count, 0)) + ' AGENTES</span>';
+    out += '</div>';
+    out += '<div class="pending-body">';
+
+    if(p._error){
+      out += '<div class="closebox bad"><span class="red">ERRO AO LER A SHEET ▸ ' + esc(p._error) + '</span></div>';
+    }
+    if(s._example || s._note){
+      out += '<div class="dim">⚠ ' + esc(nz(s._note, "fixture de demonstração")) + '</div>';
+    }
+    out += '<div class="dim faint">ARQUIVO ' + esc(nz(p._path, p._file)) + '</div>';
+    out += renderHead(s, p._agent_count, p._mtime);
+    out += renderGroups(s.groups);
+    out += renderConns(s.connections);
+    out += '<button class="dispatch-btn" data-testid="dispatch-button" disabled ' +
+           'title="confirmar dispara na Fase 2" aria-disabled="true">' +
+           '▶ DISPARAR &nbsp;<span>[BLOQUEADO — FASE 2]</span></button>';
+    out += '<div class="faint">o gate humano vive aqui; na Fase 1 esta tela só lê.</div>';
+    out += '</div></div>';
+  });
+  host.innerHTML = out;
+}
+
+/* ============ HISTÓRICO ============ */
+function matches(d, repoName){
+  if(filters.repo && repoName !== filters.repo) return false;
+  if(filters.state && d._state !== filters.state) return false;
+  if(filters.type){
+    var t = d.dispatch_type || "";
+    var live = (d._live !== undefined && d._live !== null) ? !!d._live : !!LIVE_TYPES[t];
+    if(filters.type === "__live"){ if(!live) return false; }
+    else if(filters.type === "__reserved"){ if(live) return false; }
+    else if(t !== filters.type) return false;
+  }
+  if(filters.flag && !(d._legacy || d._orphan_close)) return false;
+  if(filters.q){
+    var q = filters.q.toLowerCase();
+    var hay = [d.dispatch_id, d.goal, d.context, d.anti_bias_global, d.working_folder, d.dispatch_type].join(" ");
+    (d.groups||[]).forEach(function(g){
+      hay += " " + (g.group_id||"") + " " + (g.anti_bias||"");
+      (g.agents||[]).forEach(function(a){
+        hay += " " + (a.agent_name||"") + " " + (a.role||"") + " " + (a.angle||"") + " " + (a.model||"");
+      });
+    });
+    if(hay.toLowerCase().indexOf(q) === -1) return false;
+  }
+  return true;
+}
+
+function renderHistory(){
+  var host = el("dispatch-list");
+  var out = "";
+  var shown = 0, sections = 0;
+
+  (SNAP.repos || []).forEach(function(r){
+    if(filters.repo && r.name !== filters.repo) return;
+    var list = (r.dispatches || []).filter(function(d){ return matches(d, r.name); });
+    var hasDiag = (r.warnings && r.warnings.length) || r.error;
+    if(!list.length && !hasDiag && filters.repo !== r.name) {
+      /* ainda assim mostramos o repo para que o inventário de 11 seja legível,
+         a menos que um filtro de texto/estado esteja ativo */
+      if(filters.q || filters.state || filters.type || filters.flag) return;
+    }
+    sections++;
+    shown += list.length;
+    var open = repoOpen[r.name] !== false;
+    out += '<div class="repo-section" data-testid="repo-section" data-repo="' + esc(r.name) + '">';
+    out += '<div class="repo-head" data-repo-toggle="' + esc(r.name) + '">';
+    out += '<span class="faint">' + (open ? "▼ " : "▶ ") + '</span>';
+    out += '<span class="repo-name">' + esc(pad(r.name, 34)) + '</span>';
+    out += '<span class="repo-meta">TOTAL ' + pad(nz(r.total_dispatches,0), 6) +
+           ' ABERTAS ' + pad(nz(r.open_dispatches,0), 5) +
+           ' EXIBIDAS ' + pad(list.length, 5) + '</span>';
+    if(!r.ledger_exists) out += '<span class="tag tag-reserved">sem ledger</span>';
+    if(r.error) out += '<span class="tag tag-err">ERRO</span>';
+    if(r.warnings && r.warnings.length) out += '<span class="tag tag-legacy">' + r.warnings.length + ' avisos</span>';
+    out += '</div>';
+
+    if(open){
+      out += '<div class="repo-body">';
+      if(r.error){
+        out += '<details class="diag" open><summary>▸ ERRO FATAL DE LEITURA</summary><pre class="red">' +
+               esc(r.error) + '</pre></details>';
+      }
+      if(r.warnings && r.warnings.length){
+        out += '<details class="diag"><summary>▸ ' + r.warnings.length +
+               ' AVISO(S) DE PARSING — rows antigas ilegíveis (não-fatal)</summary><pre>' +
+               esc(r.warnings.join("\n")) + '</pre></details>';
+      }
+      if(!list.length){
+        out += '<div class="nores">— nenhuma dispatch corresponde ao filtro neste repo —</div>';
+      }
+      list.forEach(function(d){
+        var key = r.name + "//" + d.dispatch_id;
+        var isOpenCard = !!expanded[key];
+        out += '<div class="dcard' + (d._orphan_close ? ' is-orphan' : '') + '" data-testid="dispatch-card" ' +
+               'data-dispatch-id="' + esc(d.dispatch_id) + '" data-state="' + esc(d._state || "closed") + '" ' +
+               'data-key="' + esc(key) + '">';
+        out += '<div class="drow" data-toggle="' + esc(key) + '">';
+        out += '<span class="caret">' + (isOpenCard ? "▾" : "▸") + '</span>';
+        out += '<span class="date">' + esc(fmtDate(d.created || (d._close && d._close.closed))) + '</span>';
+        out += '<span class="did">' + esc(nz(d.dispatch_id, "(sem id)")) + '</span>';
+        out += '<span class="tags">' + stateTag(d) + typeTag(d);
+        if(d._legacy) out += '<span class="tag tag-legacy">legacy · sem groups</span>';
+        if(d._orphan_close) out += '<span class="tag tag-orphan">close órfã</span>';
+        if(d._close && d._close.exit_reason && d._close.exit_reason !== "resolved" && d._close.exit_reason !== "success"){
+          out += '<span class="tag ' + (exitClass(d._close.exit_reason) === "exit-bad" ? "tag-err" : "tag-legacy") + '">' +
+                 esc(d._close.exit_reason) + '</span>';
+        }
+        out += '</span>';
+        out += '<span class="goal">' + esc(nz(d.goal, "")) + '</span>';
+        out += '<span class="dim">' + esc(nz(d._agent_count, 0)) + 'a</span>';
+        out += '</div>';
+        if(isOpenCard){
+          out += '<div class="ddetail">';
+          if(d._orphan_close){
+            out += '<div class="closebox bad"><span class="red">▲ CLOSE ROW ÓRFÃ — ' +
+                   'existe um encerramento no ledger sem a dispatch row correspondente. ' +
+                   'Só os dados de fechamento estão disponíveis.</span></div>';
+          }
+          if(d._legacy){
+            out += '<div class="closebox warnish"><span class="amber">▲ ROW LEGACY (pré-v0.5.2) — ' +
+                   'sem bloco `groups`; a topologia de agentes não foi registrada.</span></div>';
+          }
+          out += renderHead(d);
+          out += renderClose(d);
+          out += renderGroups(d.groups);
+          out += renderConns(d.connections);
+          out += '</div>';
+        }
+        out += '</div>';
+      });
+      out += '</div>';
+    }
+    out += '</div>';
+  });
+
+  if(!sections){
+    out = '<div class="nores">— nenhum repositório corresponde ao filtro —</div>';
+  }
+  host.innerHTML = out;
+  el("filter-count").textContent = "▸ " + shown + " dispatch(es) exibida(s) em " + sections + " repo(s)";
+}
+
+/* ============ topo / status ============ */
+function renderStatus(){
+  var repos = SNAP.repos || [];
+  var total = 0, open = 0;
+  repos.forEach(function(r){
+    total += (r.total_dispatches || 0);
+    open  += (r.open_dispatches || 0);
+  });
+  el("repo-count").textContent = String((SNAP.config && SNAP.config.repo_count) || repos.length);
+  el("total-n").textContent = String(total);
+  el("open-n").textContent = String(open);
+}
+
+function fillRepoSelect(){
+  var sel = el("f-repo");
+  var cur = sel.value;
+  var names = (SNAP.repos || []).map(function(r){ return r.name; });
+  var html = '<option value="">(todos os ' + names.length + ' repos)</option>';
+  (SNAP.repos || []).forEach(function(r){
+    html += '<option value="' + esc(r.name) + '">' + esc(r.name) + '  [' + (r.total_dispatches||0) + ']</option>';
+  });
+  sel.innerHTML = html;
+  if(names.indexOf(cur) !== -1) sel.value = cur;
+}
+
+function renderAll(){
+  if(!SNAP) return;
+  renderStatus();
+  renderPending();
+  renderHistory();
+  redrawFrames();
+}
+
+/* ============ SSE / fetch ============ */
+function setLive(state){
+  var n = el("live-ind");
+  if(state === "on"){
+    n.className = "on";
+    n.innerHTML = '<span class="cursor">&#9611;</span> conectado';
+  }else if(state === "wait"){
+    n.className = "off";
+    n.innerHTML = '<span class="cursor">&#9611;</span> reconectando…';
+  }else{
+    n.className = "off";
+    n.innerHTML = '<span class="cursor">&#9611;</span> SEM SINAL';
+  }
+}
+
+function applySnapshot(data){
+  SNAP = data;
+  fillRepoSelect();
+  renderAll();
+}
+
+function loadOnce(){
+  var x = new XMLHttpRequest();
+  x.open("GET", "/api/snapshot", true);
+  x.onload = function(){
+    if(x.status >= 200 && x.status < 300){
+      try{ applySnapshot(JSON.parse(x.responseText)); }
+      catch(e){ fail("JSON inválido em /api/snapshot: " + e.message); }
+    }else{
+      fail("HTTP " + x.status + " em /api/snapshot");
+    }
+  };
+  x.onerror = function(){ fail("falha de rede em /api/snapshot"); };
+  x.send();
+}
+function fail(msg){
+  setLive("off");
+  if(!SNAP){
+    el("dispatch-list").innerHTML = '<div class="nores red">▲ ' + esc(msg) + '</div>';
+    el("pending-list").innerHTML = '<div class="empty-pending red">▲ leitor indisponível — ' + esc(msg) + '</div>';
+  }
+}
+
+var es = null;
+function connect(){
+  if(!window.EventSource){ setLive("off"); return; }
+  try{ es = new EventSource("/api/stream"); }
+  catch(e){ setLive("off"); return; }
+  es.onopen = function(){ setLive("on"); };
+  es.addEventListener("snapshot", function(ev){
+    setLive("on");
+    try{ applySnapshot(JSON.parse(ev.data)); }catch(e){ /* ignora frame ruim */ }
+  });
+  es.onerror = function(){
+    setLive("wait");
+    if(es && es.readyState === 2){
+      setLive("off");
+      es = null;
+      setTimeout(connect, 3000);
+    }
+  };
+}
+
+/* ============ eventos ============ */
+document.addEventListener("click", function(ev){
+  var t = ev.target;
+  while(t && t !== document.body){
+    if(t.getAttribute){
+      var k = t.getAttribute("data-toggle");
+      if(k){ expanded[k] = !expanded[k]; renderHistory(); return; }
+      var rp = t.getAttribute("data-repo-toggle");
+      if(rp){ repoOpen[rp] = (repoOpen[rp] === false); renderHistory(); return; }
+      var pb = t.getAttribute("data-prompt");
+      if(pb){
+        var node = document.getElementById(pb);
+        if(node){
+          node.classList.toggle("open");
+          t.textContent = node.classList.contains("open") ? "[-] recolher prompt" : "[+] ver prompt inteiro";
+        }
+        return;
+      }
+    }
+    t = t.parentNode;
+  }
+});
+
+function bind(id, evt, fn){ var n = el(id); if(n) n.addEventListener(evt, fn); }
+bind("f-repo","change",function(e){ filters.repo = e.target.value; renderHistory(); });
+bind("f-state","change",function(e){ filters.state = e.target.value; renderHistory(); });
+bind("f-type","change",function(e){ filters.type = e.target.value; renderHistory(); });
+bind("f-flag","change",function(e){ filters.flag = e.target.checked; renderHistory(); });
+var qt = null;
+bind("f-q","input",function(e){
+  var v = e.target.value;
+  if(qt) clearTimeout(qt);
+  qt = setTimeout(function(){ filters.q = v; renderHistory(); }, 140);
+});
+
+var rt = null;
+window.addEventListener("resize", function(){
+  if(rt) clearTimeout(rt);
+  rt = setTimeout(function(){ _cw = 0; redrawFrames(); }, 120);
+});
+
+function tick(){
+  var d = new Date();
+  function p(n){ return (n<10?"0":"")+n; }
+  el("clock").textContent = p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds());
+}
+setInterval(tick, 1000); tick();
+
+/* ============ boot ============ */
+setLive("wait");
+redrawFrames();
+loadOnce();
+connect();
+
+})();
+</script>
+</body>
+</html>

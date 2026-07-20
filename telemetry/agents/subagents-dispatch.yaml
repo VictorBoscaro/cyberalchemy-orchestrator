@@ -1,0 +1,65 @@
+# subagents-dispatch.yaml — registry of subagent dispatches (one row per dispatch,
+# plus one close row per dispatch — append-only, never edited in place).
+# Written by the register-dispatch skill. `groups`/`connections` (dispatch rows) and
+# `agents_spawned`/`feedback_prompts` (close rows) are JSON columns.
+dispatches:
+  - dispatch_id: "2026-07-20-linear-ui-multilevel"
+    schema_version: "0.6.0"
+    created: "2026-07-20T15:29:07.986Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "code"
+    goal: "Reconstruir a variante linear do control plane em tres niveis (painel de repos com contagem por dispatch_type, drill-down por repo com plot diario e filtros, detalhe de dispatch com diagrama de topologia) e adicionar no servidor os endpoints de agregacao que esses niveis exigem."
+    context: "A UI linear atual e um scroll unico e plano sobre /api/snapshot, limitado a 40 dispatches por repo; o humano a considera desajeitada para 11 repos e ~700 dispatches. O leitor e somente-leitura e nove outras variantes compartilham o mesmo contrato de testids e os mesmos endpoints, entao os endpoints existentes sao imutaveis e o trabalho e aditivo. Os dois grupos trabalham em paralelo contra um contrato de API fixado pelo parent antes do dispatch, e por isso nao se comunicam entre si."
+    max_loops: 1
+    final_approver: "parent"
+    working_folder: "implementations/"
+    groups: [{"group_id":"backend","n":1,"agents":[{"agent_name":null,"role":"writer","model":"claude-opus-4-8","token_budget":4000,"initial_prompt":"Adicionar em server/ledger.py um cache de parse com chave (mtime_ns, size) e os helpers de agregacao iso_date/summarize_repo/slim/daily_series, e em server/main.py os endpoints GET /api/overview e GET /api/repo/{name}. Restricao dura: /api/snapshot, /api/stream e /api/dispatch mantem forma identica, porque nove outras variantes de UI dependem delas. Somente leitura. Estender tests/test_ledger.py cobrindo fallback de data pelo prefixo do dispatch_id, preenchimento de lacunas na serie diaria, e invalidacao do cache."}]},{"group_id":"frontend","n":1,"agents":[{"agent_name":null,"role":"writer","model":"claude-opus-4-8","token_budget":4000,"initial_prompt":"Reescrever static/ui/linear/index.html como app de tres niveis roteado por location.hash, preservando a linguagem visual atual. Nivel 0: sheets pendentes primeiro, faixa de hoje, grade de repos com contagem por dispatch_type. Nivel 1: plot SVG de barras empilhadas por dia e tipo, filtros, lista completa. Nivel 2: diagrama de topologia com grupos, agentes por role, marcacao de robot_talks e arestas tipadas sequential/zig-zag/feedback com loop_cap. Restricao dura: arquivo unico autocontido sem dependencia externa, todos os data-testid do UI-CONTRACT presentes no primeiro render sem interacao, rotulos em portugues."}]}]
+  - dispatch_id: "2026-07-20-control-plane-backend-review"
+    schema_version: "0.6.0"
+    created: "2026-07-20T15:42:06.344Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Atacar a camada de agregacao recem-adicionada ao leitor (cache de parse, iso_date, summarize_repo, slim, daily_series, GET /api/overview, GET /api/repo/{name}) e devolver as falhas reais antes que a UI de tres niveis passe a depender dela."
+    context: "O leitor e somente-leitura e nove variantes de UI dependem de /api/snapshot, /api/stream e /api/dispatch manterem forma identica; a mudanca e aditiva mas refatorou read_repo e find_dispatch para passarem por um cache novo, chaveado em (st_mtime_ns, st_size), contra um ledger append-only escrito por um processo externo. O autor declarou cinco desvios do spec e afirma que /api/snapshot ficou byte-identico, verificado por comparacao propria. Nenhuma das duas afirmacoes deve ser aceita sem prova independente."
+    max_loops: 1
+    final_approver: "parent"
+    parent_dispatch_id: "2026-07-20-linear-ui-multilevel"
+    anti_bias_global: "autoridade do documento vs autoridade da execucao"
+    working_folder: "implementations/"
+    groups: [{"group_id":"revisores","n":2,"anti_bias":"fonte de autoridade (contrato escrito e principios declarados do modulo vs comportamento observado em execucao)","agents":[{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":3000,"angle":"le apenas: julga o codigo contra UI-CONTRACT.md, os dois principios do docstring de ledger.py, a convencao de prefixo _ e o vocabulario do append-dispatch.cjs. Onde codigo e documento discordam, o achado vale mesmo que o codigo demonstravelmente funcione.","initial_prompt":"Revisar contra o contrato escrito: invariancia de /api/snapshot em caminhos que a comparacao do autor nao cobriria (ledger ilegivel, error setado, OSError no meio da leitura), o cache contra a invariante append-only, a decisao de shallow-copy rastreada por todos os chamadores, a convencao de prefixo _ nas chaves novas, o fallback de data pelo prefixo do dispatch_id apoiado numa convencao que o appender nao impoe, dia UTC versus dia local do usuario, e os cinco desvios auto-declarados. Cada achado com file:line."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":3000,"angle":"nao confia em nenhuma afirmacao que nao tenha executado: reproduz a invariancia fazendo checkout da versao anterior e diffando, ataca o cache com escritas de mesmo tamanho, fuzza os helpers com lixo real, e testa path traversal em /api/repo/{name}. Todo achado precisa de comando e saida colados.","initial_prompt":"Revisar por execucao: sondas descartaveis em temp, servidor proprio numa porta diferente da 8765 do usuario. Reproduzir independentemente a afirmacao de byte-identidade do /api/snapshot; atacar a invalidacao do cache com escrita de mesmo tamanho e mtime na mesma granularidade do filesystem Windows; fuzzar iso_date/slim/summarize_repo/daily_series com created nao-string, dispatch_id sem prefixo de data, data de 1970 disparando o cap de 1000 dias, groups nao-lista; testar path traversal e nomes URL-inseguros em /api/repo/{name}; reproduzir os numeros de timing com spread, nao um numero so; e quebrar deliberadamente uma feature nova para provar que o teste correspondente pega."}]}]
+  - dispatch_id: "2026-07-20-control-plane-backend-fixes"
+    schema_version: "0.6.0"
+    created: "2026-07-20T16:04:40.607Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "code"
+    goal: "Aplicar a rodada consolidada de correcoes que as duas revisoes do backend produziram: fechar o 500 que mata o SSE, guardar join_rows contra id nao-hashavel, corrigir a precedencia de data e o outlier futuro do grafico, estreitar o compartilhamento do cache, dedup das varreduras de diretorio, cobrir a camada de endpoints com testes, e atualizar os documentos de contrato."
+    context: "Duas revisoes opostas (contrato escrito vs execucao) do backend recem-adicionado convergiram numa lista de achados com file:line. Os de maior impacto: read_pending faz path.stat() fora do try e derruba /api/snapshot, /api/overview, /api/repo e o gerador SSE; a camada main.py nao tem nenhum teste (9 de 22 mutantes sobrevivem); o dia UTC nao esta declarado em lugar nenhum que o usuario veja; e o UI-CONTRACT.md ainda lista tres endpoints. O leitor e somente-leitura e nove variantes de UI dependem de /api/snapshot, /api/stream e /api/dispatch manterem forma identica."
+    max_loops: 1
+    final_approver: "parent"
+    parent_dispatch_id: "2026-07-20-linear-ui-multilevel"
+    working_folder: "implementations/"
+    groups: [{"group_id":"fixer","n":1,"agents":[{"agent_name":null,"role":"writer","model":"claude-opus-4-8","token_budget":5000,"initial_prompt":"Aplicar a lista consolidada de correcoes de revisao em server/ledger.py, server/main.py, tests/test_ledger.py (+ novo tests/test_main.py) e UI-CONTRACT.md/README.md, sem alterar a forma de /api/snapshot, /api/stream e /api/dispatch. Cada correcao vem com file:line e justificativa; nada de escrita em ledger; rodar a suite inteira e o test_ui ao final."}]}]
+  - dispatch_id: "2026-07-20-linear-ui-fixes"
+    schema_version: "0.6.0"
+    created: "2026-07-20T16:23:22.683Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "code"
+    goal: "Reconciliar o caminho de fallback da UI linear com a semantica do servidor (dia UTC, reserved exclui legacy, precedencia de data, _capped), declarar o referencial UTC onde o usuario ve, parar de renderizar live/reserved/legacy como particao fechada, e exercitar de verdade o caminho rico contra um servidor que agora tem /api/overview e /api/repo."
+    context: "A UI linear de tres niveis foi construida mas todo o caminho rico rodou em fallback porque o servidor na porta 8765 era anterior aos endpoints; toda screenshot e o caminho degradado. A revisao de contrato mostrou que o fallback reimplementa as agregacoes do servidor com semantica divergente em quatro pontos (dia local vs UTC, reserved inclui legacy, _day so por created, _capped em lugar diferente). O backend acabou de ser corrigido e agora documenta o referencial UTC e o fato de que total nao e particionado por live/reserved/legacy. O arquivo e unico e autocontido e nove outras variantes compartilham o mesmo contrato de testids."
+    max_loops: 1
+    final_approver: "parent"
+    parent_dispatch_id: "2026-07-20-linear-ui-multilevel"
+    working_folder: "implementations/"
+    groups: [{"group_id":"ui-fixer","n":1,"agents":[{"agent_name":null,"role":"writer","model":"claude-opus-4-8","token_budget":4000,"initial_prompt":"Corrigir static/ui/linear/index.html: alinhar overviewFromSnapshot/repoFromSnapshot/buildSeries a semantica do servidor agora documentada no UI-CONTRACT.md, declarar UTC na tela, nao apresentar live/reserved/legacy como particao, e testar o caminho rico contra um servidor com os novos endpoints. Arquivo unico, sem dependencia externa, todos os testids no primeiro render, rotulos em portugues, somente leitura. Rodar test_ui.py linear e a suite inteira ao final."}]}]
+  - dispatch_id: "2026-07-20-linear-ui-agent-prompt-discovery"
+    schema_version: "0.6.0"
+    created: "2026-07-20T16:50:36.383Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "code"
+    goal: "No nivel de dispatch da UI linear, tornar o no do agente clicavel para revelar o initial_prompt completo, e tornar robot_talks/zig-zag/feedback descobriveis (badges na lista e um filtro) para que o usuario nao precise adivinhar qual dispatch os contem."
+    context: "O usuario abriu dispatches e nao viu robot talks nem zig-zag: os recursos so sao desenhados quando presentes e os dispatches recentes sao sequential simples, embora existam 117 com robot_talks, 161 com zig-zag e 88 com feedback nos ledgers reais. Alem disso ele quer clicar no agente dentro do diagrama e ver o prompt com que foi inicializado; hoje o prompt so aparece num details na lista de agentes abaixo do diagrama, nao no proprio no do diagrama. O arquivo e unico e autocontido, nove outras variantes compartilham o contrato de testids, e o /api/dispatch ja devolve o initial_prompt inteiro."
+    max_loops: 1
+    final_approver: "parent"
+    parent_dispatch_id: "2026-07-20-linear-ui-multilevel"
+    working_folder: "implementations/"
+    groups: [{"group_id":"ui-impl","n":1,"agents":[{"agent_name":null,"role":"writer","model":"claude-opus-4-8","token_budget":4000,"initial_prompt":"Editar static/ui/linear/index.html: no nivel 2, tornar cada no de agente do diagrama clicavel abrindo o initial_prompt completo (mais nome/role/model/token_budget/angle); e tornar robot_talks/zig-zag/feedback descobriveis via badges nos cards da lista do nivel 1 e um filtro. Arquivo unico sem dependencia externa, testids intactos no primeiro render, portugues, somente leitura. Verificar contra dispatches reais concretos com Playwright e screenshots, e rodar test_ui.py linear e a suite inteira."}]}]

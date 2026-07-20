@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora · Dispatch Control Plane</title>
+<style>
+/* ============================================================
+   AURORA — vidro fosco sobre luz difusa
+   Zero dependência externa. Apenas fontes do sistema.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a14;
+
+  --glass: rgba(255,255,255,0.06);
+  --glass-strong: rgba(255,255,255,0.10);
+  --glass-soft: rgba(255,255,255,0.035);
+  --edge: rgba(255,255,255,0.12);
+  --edge-soft: rgba(255,255,255,0.07);
+
+  --t1: rgba(255,255,255,1);
+  --t2: rgba(255,255,255,0.70);
+  --t3: rgba(255,255,255,0.45);
+
+  --violet: #7c3aed;
+  --blue:   #2563eb;
+  --cyan:   #06b6d4;
+  --pink:   #db2777;
+
+  --ok:    #34d399;
+  --warn:  #fbbf24;
+  --alert: #fb7185;
+
+  --r: 16px;
+  --r-sm: 10px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--t1);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- A AURORA ---------- */
+
+#aurora {
+  position: fixed;
+  inset: -25vmax;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(90px) saturate(130%);
+  opacity: 0.85;
+}
+#aurora .blob {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+#aurora .b1 {
+  width: 62vmax; height: 62vmax; top: -6vmax; left: -4vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(124,58,237,.85), rgba(124,58,237,0) 66%);
+  animation: drift1 26s var(--ease) infinite alternate;
+}
+#aurora .b2 {
+  width: 70vmax; height: 70vmax; top: 4vmax; right: -12vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(37,99,235,.80), rgba(37,99,235,0) 66%);
+  animation: drift2 31s var(--ease) infinite alternate;
+}
+#aurora .b3 {
+  width: 55vmax; height: 55vmax; bottom: -10vmax; left: 14vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(6,182,212,.72), rgba(6,182,212,0) 66%);
+  animation: drift3 24s var(--ease) infinite alternate;
+}
+#aurora .b4 {
+  width: 48vmax; height: 48vmax; bottom: 2vmax; right: 6vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(219,39,119,.62), rgba(219,39,119,0) 66%);
+  animation: drift4 29s var(--ease) infinite alternate;
+}
+
+@keyframes drift1 {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  50%  { transform: translate3d(9vmax, 6vmax, 0) scale(1.12); }
+  100% { transform: translate3d(4vmax, 13vmax, 0) scale(1.04); }
+}
+@keyframes drift2 {
+  0%   { transform: translate3d(0,0,0) scale(1.05); }
+  50%  { transform: translate3d(-11vmax, 8vmax, 0) scale(0.94); }
+  100% { transform: translate3d(-5vmax, 15vmax, 0) scale(1.08); }
+}
+@keyframes drift3 {
+  0%   { transform: translate3d(0,0,0) scale(0.96); }
+  50%  { transform: translate3d(13vmax, -9vmax, 0) scale(1.14); }
+  100% { transform: translate3d(3vmax, -4vmax, 0) scale(1); }
+}
+@keyframes drift4 {
+  0%   { transform: translate3d(0,0,0) scale(1.1); }
+  50%  { transform: translate3d(-8vmax, -12vmax, 0) scale(0.92); }
+  100% { transform: translate3d(-14vmax, -3vmax, 0) scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #aurora .blob { animation: none; }
+}
+
+/* véu que garante legibilidade do texto sobre a aurora */
+#veil {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(10,10,20,0) 0%, rgba(10,10,20,.42) 70%, rgba(10,10,20,.70) 100%),
+    linear-gradient(180deg, rgba(10,10,20,.20), rgba(10,10,20,.44));
+}
+
+/* ---------- ESTRUTURA ---------- */
+
+.shell {
+  position: relative;
+  z-index: 2;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 22px 22px 90px;
+}
+
+/* ---------- VIDRO ---------- */
+
+.glass {
+  position: relative;
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--edge);
+  border-radius: var(--r);
+  box-shadow: 0 18px 50px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.10);
+}
+/* highlight sutil na borda superior */
+.glass::before {
+  content: "";
+  position: absolute; left: 12%; right: 12%; top: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+/* ---------- TOPO ---------- */
+
+.topbar {
+  position: sticky; top: 14px; z-index: 40;
+  background: rgba(255,255,255,0.075);
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  padding: 15px 20px;
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.brand { display: flex; align-items: baseline; gap: 11px; margin-right: auto; }
+.brand h1 {
+  font-size: 19px; font-weight: 300; letter-spacing: .12em;
+  text-transform: uppercase; margin: 0;
+}
+.brand .sub { font-size: 11.5px; color: var(--t3); letter-spacing: .06em; }
+
+.stat { text-align: right; line-height: 1.2; }
+.stat .n { font-size: 21px; font-weight: 300; font-variant-numeric: tabular-nums; }
+.stat .l { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--t3); }
+.stat .n.accent { color: #a5b4fc; }
+
+/* indicador ao vivo */
+.live {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 7px 14px 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--edge);
+  background: rgba(255,255,255,.05);
+  /* sem text-transform: o texto renderizado tem que continuar sendo
+     literalmente "conectado" para innerText e textContent baterem. */
+  font-size: 11.5px; letter-spacing: .09em;
+  color: var(--t2);
+  transition: all .5s var(--ease);
+  white-space: nowrap;
+}
+.live .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--t3); transition: all .5s var(--ease);
+}
+.live[data-on="1"] { border-color: rgba(52,211,153,.42); background: rgba(52,211,153,.11); color: rgba(209,250,229,.92); }
+.live[data-on="1"] .dot { background: var(--ok); box-shadow: 0 0 0 0 rgba(52,211,153,.6); animation: pulse 2.4s ease-out infinite; }
+.live[data-on="0"] { border-color: rgba(251,113,133,.42); background: rgba(251,113,133,.11); color: rgba(255,228,230,.92); }
+.live[data-on="0"] .dot { background: var(--alert); }
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(52,211,153,.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(52,211,153,0); }
+  100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+}
+
+/* ---------- TÍTULOS DE SEÇÃO ---------- */
+
+.section-head {
+  display: flex; align-items: center; gap: 14px;
+  margin: 0 0 14px; padding: 0 4px;
+}
+.section-head h2 {
+  margin: 0; font-size: 12px; font-weight: 400;
+  letter-spacing: .19em; text-transform: uppercase; color: var(--t2);
+}
+.section-head .rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--edge), transparent); }
+
+/* ---------- SHEETS PENDENTES (o objeto mais importante) ---------- */
+
+#pending-wrap { margin-bottom: 30px; }
+
+.pending-hero {
+  padding: 20px 20px 22px;
+  background: rgba(255,255,255,0.085);
+  border-color: rgba(255,255,255,.20);
+  box-shadow: 0 24px 70px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.16),
+              0 0 0 1px rgba(124,58,237,.16), 0 0 60px rgba(124,58,237,.16);
+}
+.pending-hero .section-head h2 { color: #e9d5ff; font-size: 13px; }
+
+.pending-card {
+  position: relative;
+  border-radius: var(--r);
+  padding: 20px 22px;
+  background:
+    linear-gradient(135deg, rgba(124,58,237,.20), rgba(6,182,212,.13) 55%, rgba(219,39,119,.14)),
+    rgba(255,255,255,0.085);
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 12px 34px rgba(0,0,0,.30);
+  overflow: hidden;
+}
+.pending-card + .pending-card { margin-top: 16px; }
+.pending-card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border-radius: var(--r);
+  background: radial-gradient(140% 100% at 0% 0%, rgba(255,255,255,.10), transparent 55%);
+}
+.pending-top {
+  display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 12px; position: relative; z-index: 1;
+}
+.pending-top .idwrap { min-width: 260px; flex: 1; }
+.pending-id {
+  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+  font-size: 15px; letter-spacing: -.01em; word-break: break-word;
+}
+.pending-file { font-size: 11px; color: var(--t3); margin-top: 3px;
+  font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
+.pending-goal { font-size: 15.5px; font-weight: 300; line-height: 1.5; margin: 12px 0 4px; position: relative; z-index: 1; }
+.pending-ctx { font-size: 13px; color: var(--t2); line-height: 1.6; position: relative; z-index: 1; }
+
+.gate-row {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.14);
+  position: relative; z-index: 1;
+}
+.btn-dispatch {
+  font: inherit; font-size: 13px; letter-spacing: .09em; text-transform: uppercase;
+  padding: 11px 26px; border-radius: 999px;
+  color: rgba(255,255,255,.55);
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.22);
+  backdrop-filter: blur(8px);
+  cursor: not-allowed;
+  transition: all .3s var(--ease);
+}
+.btn-dispatch:disabled { opacity: 1; }
+.btn-dispatch:hover:disabled { background: rgba(255,255,255,.14); color: rgba(255,255,255,.72); }
+.gate-note { font-size: 11.5px; color: var(--t3); letter-spacing: .04em; }
+
+.empty {
+  padding: 26px 22px; text-align: center;
+  border: 1px dashed rgba(255,255,255,.16); border-radius: var(--r);
+  background: rgba(255,255,255,.03);
+}
+.empty .big { font-size: 15px; color: var(--t2); }
+.empty .small { font-size: 12px; color: var(--t3); margin-top: 5px; }
+
+/* ---------- BADGES DE VIDRO ---------- */
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3.5px 11px; border-radius: 999px;
+  font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.14);
+  color: var(--t2);
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+}
+.badge.live    { background: rgba(6,182,212,.16);  border-color: rgba(6,182,212,.42);  color: #a5f3fc; }
+.badge.reserved{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.16); color: var(--t3); }
+.badge.open    { background: rgba(52,211,153,.14); border-color: rgba(52,211,153,.40); color: #a7f3d0; }
+.badge.closed  { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.15); color: var(--t3); }
+.badge.good    { background: rgba(52,211,153,.13); border-color: rgba(52,211,153,.34); color: #a7f3d0; }
+.badge.warn    { background: rgba(251,191,36,.14); border-color: rgba(251,191,36,.40); color: #fde68a; }
+.badge.alert   { background: rgba(251,113,133,.16);border-color: rgba(251,113,133,.46); color: #fecdd3; }
+.badge.legacy  { background: rgba(148,163,184,.15);border-color: rgba(148,163,184,.40); color: #e2e8f0; }
+.badge.orphan  { background: rgba(219,39,119,.17); border-color: rgba(219,39,119,.46); color: #fbcfe8; }
+.badge.violet  { background: rgba(124,58,237,.20); border-color: rgba(139,92,246,.46); color: #ddd6fe; }
+.badge.pending { background: rgba(219,39,119,.22); border-color: rgba(244,114,182,.55); color: #fce7f3; font-weight: 400; }
+.badge.plain   { text-transform: none; letter-spacing: .02em; font-size: 11px;
+                 font-family: ui-monospace, Consolas, monospace; }
+
+.badge-row { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+
+/* ---------- CONTROLES ---------- */
+
+.controls {
+  padding: 13px 16px; margin-bottom: 20px;
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.field { display: flex; align-items: center; gap: 8px; }
+.field label { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--t3); }
+select, input[type="search"] {
+  font: inherit; font-size: 13px; color: var(--t1);
+  background: rgba(255,255,255,.07);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-sm);
+  padding: 7px 11px;
+  outline: none;
+  transition: all .25s var(--ease);
+  backdrop-filter: blur(8px);
+}
+select:focus, input[type="search"]:focus {
+  border-color: rgba(165,180,252,.6); background: rgba(255,255,255,.11);
+  box-shadow: 0 0 0 3px rgba(124,58,237,.16);
+}
+select option { background: #14142a; color: #fff; }
+input[type="search"] { min-width: 220px; }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  font: inherit; font-size: 11px; letter-spacing: .07em; text-transform: uppercase;
+  padding: 6px 13px; border-radius: 999px; cursor: pointer;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--t3);
+  transition: all .25s var(--ease);
+}
+.chip:hover { color: var(--t2); background: rgba(255,255,255,.09); }
+.chip[aria-pressed="true"] {
+  background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.34); color: var(--t1);
+}
+
+/* ---------- REPO ---------- */
+
+.repo { padding: 16px 18px 18px; margin-bottom: 18px; }
+.repo-head {
+  display: flex; align-items: center; gap: 13px; flex-wrap: wrap; cursor: pointer;
+  user-select: none;
+}
+.repo-head .caret {
+  color: var(--t3); font-size: 11px; width: 13px; flex: none;
+  transition: transform .3s var(--ease);
+}
+.repo[data-open="1"] .repo-head .caret { transform: rotate(90deg); }
+.repo-name {
+  font-size: 15px; font-weight: 400; letter-spacing: .01em;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.repo-metrics { display: flex; gap: 16px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+.metric { text-align: right; line-height: 1.15; }
+.metric .n { font-size: 15px; font-variant-numeric: tabular-nums; }
+.metric .l { font-size: 9.5px; letter-spacing: .11em; text-transform: uppercase; color: var(--t3); }
+.metric .n.open { color: #6ee7b7; }
+.metric .n.zero { color: var(--t3); }
+
+.repo-body { margin-top: 14px; }
+.repo-body[hidden] { display: none; }
+
+/* avisos / erros recolhidos */
+details.notes { margin-top: 10px; }
+details.notes > summary {
+  cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; letter-spacing: .07em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px;
+  background: rgba(251,191,36,.11); border: 1px solid rgba(251,191,36,.32); color: #fde68a;
+  transition: all .25s var(--ease);
+}
+details.notes > summary::-webkit-details-marker { display: none; }
+details.notes > summary:hover { background: rgba(251,191,36,.18); }
+details.notes.err > summary { background: rgba(251,113,133,.13); border-color: rgba(251,113,133,.4); color: #fecdd3; }
+.notes-body {
+  margin-top: 9px; padding: 11px 14px;
+  background: rgba(0,0,0,.22); border: 1px solid var(--edge-soft); border-radius: var(--r-sm);
+  max-height: 230px; overflow: auto;
+  font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; color: var(--t2);
+}
+.notes-body div { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+.notes-body div:last-child { border-bottom: 0; }
+
+/* ---------- DISPATCH CARD ---------- */
+/* Sem backdrop-filter aqui: os cards vivem DENTRO de um painel de vidro.
+   Isso mantém a página fluida com centenas de cards. */
+
+.card {
+  border-radius: var(--r-sm);
+  border: 1px solid var(--edge-soft);
+  background: rgba(255,255,255,.035);
+  margin-bottom: 8px;
+  transition: background .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
+  overflow: hidden;
+}
+.card:hover { background: rgba(255,255,255,.065); border-color: rgba(255,255,255,.15); }
+.card[data-state="open"] {
+  border-left: 2px solid rgba(52,211,153,.6);
+  background: rgba(52,211,153,.055);
+}
+.card[data-state="open"]:hover { background: rgba(52,211,153,.09); }
+.card.expanded { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.20);
+  box-shadow: 0 10px 30px rgba(0,0,0,.28); }
+
+.card-head {
+  display: flex; align-items: center; gap: 11px; flex-wrap: wrap;
+  padding: 11px 14px; cursor: pointer; user-select: none;
+}
+.card-head .caret { color: var(--t3); font-size: 10px; width: 11px; flex: none; transition: transform .3s var(--ease); }
+.card.expanded .card-head .caret { transform: rotate(90deg); }
+.card-id {
+  font-family: ui-monospace, Consolas, monospace; font-size: 12.5px;
+  color: var(--t1); word-break: break-all;
+}
+.card-goal {
+  flex: 1 1 240px; min-width: 0; font-size: 12.5px; color: var(--t2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.card-when { font-size: 11px; color: var(--t3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.card-body { padding: 4px 16px 18px; border-top: 1px solid rgba(255,255,255,.08); }
+.card-body[hidden] { display: none; }
+
+.block-title {
+  font-size: 10px; letter-spacing: .17em; text-transform: uppercase;
+  color: var(--t3); margin: 16px 0 8px;
+}
+
+.kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 9px 18px; }
+.kv .k { font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--t3); }
+.kv .v { font-size: 12.5px; color: var(--t2); word-break: break-word;
+  font-family: ui-monospace, Consolas, monospace; }
+
+.prose { font-size: 13px; color: var(--t2); line-height: 1.62; white-space: pre-wrap; word-break: break-word; }
+.prose.strong { color: var(--t1); font-size: 13.5px; }
+
+/* eixo de tensão — conteúdo de primeira classe */
+.tension {
+  padding: 11px 14px; border-radius: var(--r-sm);
+  background: linear-gradient(100deg, rgba(124,58,237,.16), rgba(6,182,212,.10));
+  border: 1px solid rgba(139,92,246,.30);
+}
+.tension .lbl { font-size: 9.5px; letter-spacing: .15em; text-transform: uppercase; color: #c4b5fd; }
+.tension .txt { font-size: 12.5px; color: rgba(255,255,255,.86); margin-top: 3px; }
+
+/* grupos */
+.group {
+  border-radius: var(--r-sm); border: 1px solid var(--edge-soft);
+  background: rgba(255,255,255,.035); padding: 13px 15px; margin-bottom: 11px;
+}
+.group-head { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 9px; }
+.group-id { font-family: ui-monospace, Consolas, monospace; font-size: 13px; color: var(--t1); }
+
+.agents { display: grid; grid-template-columns: repeat(auto-fill, minmax(285px, 1fr)); gap: 10px; }
+.agent {
+  border-radius: var(--r-sm); padding: 11px 13px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.10);
+  border-top: 1px solid rgba(255,255,255,.18);
+}
+.agent-name { font-size: 13px; color: var(--t1); }
+.agent-name.anon { color: var(--t3); font-style: italic; font-weight: 300; }
+.agent-meta { font-size: 11px; color: var(--t3); margin-top: 3px;
+  font-family: ui-monospace, Consolas, monospace; }
+.angle {
+  margin-top: 9px; padding: 8px 10px; border-radius: 8px;
+  background: rgba(6,182,212,.10); border-left: 2px solid rgba(6,182,212,.55);
+  font-size: 12px; color: rgba(255,255,255,.80); line-height: 1.5;
+}
+.angle .lbl { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #a5f3fc; display: block; margin-bottom: 2px; }
+.angle.none { background: rgba(255,255,255,.04); border-left-color: rgba(255,255,255,.18); color: var(--t3); font-style: italic; }
+.angle.none .lbl { color: var(--t3); }
+
+details.prompt { margin-top: 9px; }
+details.prompt > summary {
+  cursor: pointer; list-style: none; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--t3); transition: color .2s var(--ease);
+}
+details.prompt > summary::-webkit-details-marker { display: none; }
+details.prompt > summary:hover { color: var(--t2); }
+details.prompt .pbody {
+  margin-top: 7px; padding: 10px 12px; border-radius: 8px;
+  background: rgba(0,0,0,.28); border: 1px solid var(--edge-soft);
+  font-size: 12px; color: var(--t2); white-space: pre-wrap; line-height: 1.55;
+  max-height: 300px; overflow: auto;
+}
+
+/* conexões tipadas */
+.conns { display: flex; flex-direction: column; gap: 7px; }
+.conn {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 8px 13px; border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  font-size: 12px;
+}
+.conn .node { font-family: ui-monospace, Consolas, monospace; color: var(--t1); }
+.conn .arrow { font-size: 15px; line-height: 1; letter-spacing: -.05em; }
+.conn .type { font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; margin-left: auto; }
+.conn.sequential { border-color: rgba(37,99,235,.42); background: rgba(37,99,235,.11); }
+.conn.sequential .arrow, .conn.sequential .type { color: #bfdbfe; }
+.conn.zigzag { border-color: rgba(6,182,212,.42); background: rgba(6,182,212,.10);
+  border-style: dashed; }
+.conn.zigzag .arrow, .conn.zigzag .type { color: #a5f3fc; }
+.conn.feedback { border-color: rgba(219,39,119,.48); background: rgba(219,39,119,.13); }
+.conn.feedback .arrow, .conn.feedback .type { color: #fbcfe8; }
+.conn.other { border-style: dotted; }
+.conn .cap {
+  font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px;
+  background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.18); color: var(--t2);
+}
+
+/* fechamento */
+.close-box {
+  border-radius: var(--r-sm); padding: 13px 15px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--edge-soft);
+}
+.close-box.alert { background: rgba(251,113,133,.10); border-color: rgba(251,113,133,.34); }
+.close-box.warn  { background: rgba(251,191,36,.09);  border-color: rgba(251,191,36,.30); }
+.tree { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 9px; }
+.fb { margin-top: 10px; }
+.fb .item {
+  font-size: 12px; color: var(--t2); line-height: 1.55;
+  padding: 8px 11px; margin-top: 6px; border-radius: 8px;
+  background: rgba(0,0,0,.22); border-left: 2px solid rgba(251,113,133,.45);
+  white-space: pre-wrap;
+}
+
+.load-more {
+  font: inherit; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+  width: 100%; padding: 10px; margin-top: 4px; cursor: pointer;
+  border-radius: var(--r-sm); color: var(--t2);
+  background: rgba(255,255,255,.05); border: 1px solid var(--edge);
+  transition: all .25s var(--ease);
+}
+.load-more:hover { background: rgba(255,255,255,.11); color: var(--t1); }
+
+.muted { color: var(--t3); font-size: 12.5px; }
+.nowrap { white-space: nowrap; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 999px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.26); background-clip: content-box; }
+
+@media (max-width: 720px) {
+  .shell { padding: 14px 12px 70px; }
+  .topbar { top: 8px; }
+  .card-goal { flex-basis: 100%; white-space: normal; }
+}
+</style>
+</head>
+<body>
+
+<div id="aurora" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+<div id="veil" aria-hidden="true"></div>
+
+<div class="shell">
+
+  <header class="topbar glass">
+    <div class="brand">
+      <h1>Aurora</h1>
+      <span class="sub">plano de controle de dispatches · leitor</span>
+    </div>
+
+    <div class="stat">
+      <div class="n" data-testid="total-count" id="total-count">—</div>
+      <div class="l">dispatches no total</div>
+    </div>
+    <div class="stat">
+      <div class="n accent" id="open-count">—</div>
+      <div class="l">abertas</div>
+    </div>
+    <div class="stat">
+      <div class="n" id="repo-count">—</div>
+      <div class="l">repositórios</div>
+    </div>
+
+    <div class="live" data-testid="live-indicator" id="live-indicator" data-on="0">
+      <span class="dot"></span><span id="live-text">ligando…</span>
+    </div>
+  </header>
+
+  <main id="app" data-testid="app">
+    <div class="empty glass" style="padding:44px 22px">
+      <div class="big">carregando o estado do disco…</div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+"use strict";
+
+/* ==========================================================
+   estado
+   ========================================================== */
+
+var SNAP = null;
+var expanded = new Set();     // dispatch_id expandidos
+var repoOpen = {};            // repo -> bool
+var fullCache = {};           // "repo::id" -> dispatch completa
+var shown = {};               // repo -> quantos cards mostrar
+var PAGE = 12;
+
+var filters = { repo: "*", state: "all", q: "" };
+
+var LIVE_TYPES = { research: 1, review: 1, experiment: 1 };
+
+/* ==========================================================
+   utilitários
+   ========================================================== */
+
+function esc(v) {
+  if (v === null || v === undefined) return "";
+  return String(v)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function has(v) { return v !== null && v !== undefined && v !== ""; }
+function arr(v) { return Array.isArray(v) ? v : []; }
+function num(v) { return (typeof v === "number" && isFinite(v)) ? v : 0; }
+
+function fmtDate(iso) {
+  if (!has(iso)) return "—";
+  var d = new Date(iso);
+  if (isNaN(d.getTime())) return String(iso);
+  function p(n) { return n < 10 ? "0" + n : "" + n; }
+  return p(d.getDate()) + "/" + p(d.getMonth() + 1) + "/" + d.getFullYear() +
+         " " + p(d.getHours()) + ":" + p(d.getMinutes());
+}
+function fmtMtime(sec) {
+  if (typeof sec !== "number") return "—";
+  return fmtDate(new Date(sec * 1000).toISOString());
+}
+
+function isLive(d) {
+  if (typeof d._live === "boolean") return d._live;
+  return !!LIVE_TYPES[d.dispatch_type];
+}
+
+var EXIT_TONE = {
+  resolved: "good", success: "good",
+  loop_ceiling_reached: "warn", user_abort: "warn",
+  error: "alert", dissent_irreconcilable: "alert"
+};
+function exitTone(r) { return EXIT_TONE[r] || "warn"; }
+
+var CONN_CLASS = { "sequential": "sequential", "zig-zag": "zigzag", "zigzag": "zigzag", "feedback": "feedback" };
+var CONN_ARROW = { "sequential": "→", "zig-zag": "⇄", "zigzag": "⇄", "feedback": "↺" };
+
+/* ==========================================================
+   blocos de render compartilhados (sheet pendente e dispatch)
+   ========================================================== */
+
+function agentHtml(a) {
+  a = a || {};
+  var name = has(a.agent_name)
+    ? '<div class="agent-name">' + esc(a.agent_name) + "</div>"
+    : '<div class="agent-name anon">sem persona atribuída</div>';
+
+  var bits = [];
+  if (has(a.model)) bits.push(esc(a.model));
+  if (has(a.token_budget)) bits.push("~" + esc(a.token_budget) + " tokens");
+  var meta = bits.length ? '<div class="agent-meta">' + bits.join(" · ") + "</div>" : "";
+
+  var role = has(a.role)
+    ? '<span class="badge plain">' + esc(a.role) + "</span>"
+    : '<span class="badge plain" style="opacity:.6">papel ausente</span>';
+
+  var angle = has(a.angle)
+    ? '<div class="angle"><span class="lbl">ângulo</span>' + esc(a.angle) + "</div>"
+    : '<div class="angle none"><span class="lbl">ângulo</span>não declarado</div>';
+
+  var prompt = "";
+  if (has(a.initial_prompt)) {
+    var trunc = a._prompt_truncated
+      ? ' <span style="color:#fde68a">(truncado — abra o card para buscar íntegra)</span>' : "";
+    prompt = '<details class="prompt"><summary>prompt inicial' + trunc +
+             '</summary><div class="pbody">' + esc(a.initial_prompt) + "</div></details>";
+  }
+
+  return '<div class="agent"><div class="badge-row" style="margin-bottom:6px">' + role + "</div>" +
+         name + meta + angle + prompt + "</div>";
+}
+
+function groupHtml(g) {
+  g = g || {};
+  var agents = arr(g.agents);
+  var badges = [];
+  if (has(g.n)) badges.push('<span class="badge">n = ' + esc(g.n) + "</span>");
+  badges.push('<span class="badge">' + agents.length + (agents.length === 1 ? " agente" : " agentes") + "</span>");
+  if (has(g.role)) badges.push('<span class="badge plain">' + esc(g.role) + "</span>");
+  if (has(g.layers)) badges.push('<span class="badge">' + esc(g.layers) + " camada(s)</span>");
+  if (g.robot_talks) badges.push('<span class="badge violet">robot talks</span>');
+
+  var tension = has(g.anti_bias)
+    ? '<div class="tension" style="margin-bottom:11px"><span class="lbl">anti-viés do grupo · eixo de tensão</span>' +
+      '<div class="txt">' + esc(g.anti_bias) + "</div></div>"
+    : '<div class="muted" style="margin-bottom:11px">sem anti-viés declarado para o grupo</div>';
+
+  var body = agents.length
+    ? '<div class="agents">' + agents.map(agentHtml).join("") + "</div>"
+    : '<div class="muted">grupo sem agentes</div>';
+
+  return '<div class="group"><div class="group-head">' +
+         '<span class="group-id">' + esc(has(g.group_id) ? g.group_id : "(grupo sem id)") + "</span>" +
+         badges.join("") + "</div>" + tension + body + "</div>";
+}
+
+function connsHtml(list) {
+  list = arr(list);
+  if (!list.length) return '<div class="muted">sem conexões declaradas</div>';
+  return '<div class="conns">' + list.map(function (c) {
+    c = c || {};
+    var t = has(c.type) ? String(c.type) : "?";
+    var cls = CONN_CLASS[t] || "other";
+    var ar = CONN_ARROW[t] || "→";
+    var cap = has(c.loop_cap) ? '<span class="cap">loop cap ' + esc(c.loop_cap) + "</span>" : "";
+    return '<div class="conn ' + cls + '">' +
+             '<span class="node">' + esc(has(c.from) ? c.from : "?") + "</span>" +
+             '<span class="arrow">' + ar + "</span>" +
+             '<span class="node">' + esc(has(c.to) ? c.to : "?") + "</span>" +
+             cap +
+             '<span class="type">' + esc(t) + "</span>" +
+           "</div>";
+  }).join("") + "</div>";
+}
+
+function kvHtml(pairs) {
+  var out = pairs.filter(function (p) { return has(p[1]); }).map(function (p) {
+    return '<div><div class="k">' + esc(p[0]) + '</div><div class="v">' + esc(p[1]) + "</div></div>";
+  });
+  return out.length ? '<div class="kv">' + out.join("") + "</div>" : "";
+}
+
+function typeBadges(d) {
+  var t = has(d.dispatch_type) ? d.dispatch_type : null;
+  var out = "";
+  out += t
+    ? '<span class="badge plain">' + esc(t) + "</span>"
+    : '<span class="badge plain" style="opacity:.6">tipo ausente</span>';
+  out += isLive(d)
+    ? '<span class="badge live" title="research, review e experiment executam de verdade">live</span>'
+    : '<span class="badge reserved" title="tipo reservado — não executa nesta fase">reservado</span>';
+  return out;
+}
+
+/* ==========================================================
+   sheets pendentes
+   ========================================================== */
+
+function pendingCardHtml(p, repoName) {
+  var s = (p && p.sheet) ? p.sheet : {};
+  var agentCount = has(p._agent_count) ? p._agent_count
+    : arr(s.groups).reduce(function (a, g) { return a + arr(g.agents).length; }, 0);
+  var liveFlag = (typeof p._live === "boolean") ? p._live : !!LIVE_TYPES[s.dispatch_type];
+
+  var head = "";
+  head += '<span class="badge pending">aguardando confirmação</span>';
+  head += has(s.dispatch_type)
+    ? '<span class="badge plain">' + esc(s.dispatch_type) + "</span>"
+    : '<span class="badge plain" style="opacity:.6">tipo ausente</span>';
+  head += liveFlag ? '<span class="badge live">live</span>' : '<span class="badge reserved">reservado</span>';
+  head += '<span class="badge">' + agentCount + (agentCount === 1 ? " agente" : " agentes") + "</span>";
+  if (s._example) head += '<span class="badge warn">fixture de exemplo</span>';
+
+  var err = has(p._error)
+    ? '<div class="close-box alert" style="margin-top:12px"><b>erro ao ler a sheet:</b> ' + esc(p._error) + "</div>"
+    : "";
+
+  var global = has(s.anti_bias_global)
+    ? '<div class="tension" style="margin-top:14px"><span class="lbl">anti-viés global</span>' +
+      '<div class="txt">' + esc(s.anti_bias_global) + "</div></div>"
+    : "";
+
+  var meta = kvHtml([
+    ["repositório", repoName],
+    ["arquivo", p._file],
+    ["modificado", fmtMtime(p._mtime)],
+    ["schema", s.schema_version],
+    ["max loops", s.max_loops],
+    ["aprovador final", s.final_approver],
+    ["pasta de trabalho", s.working_folder],
+    ["invocado por", s.invoked_by]
+  ]);
+
+  var groups = arr(s.groups);
+  var groupsHtml = groups.length
+    ? groups.map(groupHtml).join("")
+    : '<div class="muted">sheet sem grupos declarados</div>';
+
+  return '' +
+  '<article class="pending-card" data-testid="pending-card">' +
+    '<div class="pending-top">' +
+      '<div class="idwrap">' +
+        '<div class="pending-id">' + esc(has(s.dispatch_id) ? s.dispatch_id : (p._file || "(sem id)")) + "</div>" +
+        '<div class="pending-file">' + esc(p._path || p._file || "") + "</div>" +
+      "</div>" +
+      '<div class="badge-row">' + head + "</div>" +
+    "</div>" +
+
+    (has(s.goal) ? '<div class="pending-goal">' + esc(s.goal) + "</div>" : '<div class="pending-goal muted">sem objetivo declarado</div>') +
+    (has(s.context) ? '<div class="pending-ctx">' + esc(s.context) + "</div>" : "") +
+    (s._note ? '<div class="pending-ctx" style="margin-top:8px;opacity:.65">' + esc(s._note) + "</div>" : "") +
+    err +
+
+    '<div class="gate-row">' +
+      '<button class="btn-dispatch" data-testid="dispatch-button" disabled ' +
+        'title="confirmar dispara na Fase 2">Disparar</button>' +
+      '<span class="gate-note">gate humano · o botão marca o lugar da confirmação, mas confirmar dispara na Fase 2</span>' +
+    "</div>" +
+
+    global +
+    '<div class="block-title">metadados da proposta</div>' + (meta || '<div class="muted">—</div>') +
+    '<div class="block-title">grupos e agentes</div>' + groupsHtml +
+    '<div class="block-title">conexões</div>' + connsHtml(s.connections) +
+  "</article>";
+}
+
+function renderPending(repos) {
+  var items = [];
+  repos.forEach(function (r) {
+    arr(r.pending).forEach(function (p) { items.push({ p: p, repo: r.name }); });
+  });
+
+  var inner;
+  if (!items.length) {
+    inner = '<div class="empty"><div class="big">Nenhuma sheet pendente.</div>' +
+            '<div class="small">Nada aguardando o gate humano neste momento — os 11 repositórios estão limpos de propostas pré-confirm.</div></div>';
+  } else {
+    inner = items.map(function (it) { return pendingCardHtml(it.p, it.repo); }).join("");
+  }
+
+  var count = items.length;
+  return '' +
+  '<section class="pending-hero glass" id="pending-wrap">' +
+    '<div class="section-head">' +
+      "<h2>Sheets pendentes · gate humano</h2>" +
+      '<span class="badge ' + (count ? "pending" : "") + '">' + count + (count === 1 ? " proposta" : " propostas") + "</span>" +
+      '<span class="rule"></span>' +
+    "</div>" +
+    '<div data-testid="pending-list" id="pending-list">' + inner + "</div>" +
+  "</section>";
+}
+
+/* ==========================================================
+   dispatches
+   ========================================================== */
+
+function cardHeadHtml(d) {
+  var state = d._state === "open" ? "open" : "closed";
+  var badges = "";
+  badges += state === "open"
+    ? '<span class="badge open">aberta</span>'
+    : '<span class="badge closed">fechada</span>';
+  badges += typeBadges(d);
+
+  if (d._close && has(d._close.exit_reason)) {
+    badges += '<span class="badge ' + exitTone(d._close.exit_reason) + '">' + esc(d._close.exit_reason) + "</span>";
+  }
+  if (d._legacy) badges += '<span class="badge legacy" title="row anterior à v0.5.2, sem grupos">legacy</span>';
+  if (d._orphan_close) badges += '<span class="badge orphan" title="close row sem a dispatch row correspondente">close órfã</span>';
+
+  var ac = has(d._agent_count) ? d._agent_count : null;
+  if (ac !== null) badges += '<span class="badge">' + esc(ac) + (ac === 1 ? " agente" : " agentes") + "</span>";
+
+  return '<div class="card-head">' +
+    '<span class="caret">▶</span>' +
+    '<span class="card-id">' + esc(d.dispatch_id || "(sem id)") + "</span>" +
+    '<span class="card-goal">' + esc(has(d.goal) ? d.goal : "sem objetivo declarado") + "</span>" +
+    '<span class="badge-row">' + badges + "</span>" +
+    '<span class="card-when">' + esc(fmtDate(d.created || (d._close && d._close.closed))) + "</span>" +
+  "</div>";
+}
+
+function cardBodyHtml(d, loading) {
+  var h = "";
+
+  h += '<div class="block-title">identificação</div>';
+  h += kvHtml([
+    ["criada", fmtDate(d.created)],
+    ["invocada por", d.invoked_by],
+    ["schema", d.schema_version],
+    ["max loops", d.max_loops],
+    ["aprovador final", d.final_approver],
+    ["modo de saída", d.output_mode],
+    ["pasta de trabalho", d.working_folder],
+    ["dispatch pai", d.parent_dispatch_id]
+  ]) || '<div class="muted">sem metadados.</div>';
+
+  if (d._legacy) {
+    h += '<div class="close-box warn" style="margin-top:14px">' +
+         "<b>Row legacy.</b> Anterior à v0.5.2: não traz <code>groups</code>. " +
+         "O que existe é o que está acima — não há composição de agentes registrada.</div>";
+  }
+  if (d._orphan_close) {
+    h += '<div class="close-box alert" style="margin-top:14px">' +
+         "<b>Close órfã.</b> Existe uma close row no ledger, mas a dispatch row correspondente nunca foi escrita. " +
+         "O fechamento abaixo é tudo que se sabe desta dispatch.</div>";
+  }
+
+  if (has(d.goal)) {
+    h += '<div class="block-title">objetivo</div><div class="prose strong">' + esc(d.goal) + "</div>";
+  }
+  if (has(d.context)) {
+    h += '<div class="block-title">contexto</div><div class="prose">' + esc(d.context) + "</div>";
+  }
+  if (has(d.anti_bias_global)) {
+    h += '<div class="block-title">eixo de tensão global</div>' +
+         '<div class="tension"><span class="lbl">anti-viés global</span><div class="txt">' +
+         esc(d.anti_bias_global) + "</div></div>";
+  }
+
+  var groups = arr(d.groups);
+  h += '<div class="block-title">grupos e agentes' + (loading ? " · buscando prompts íntegros…" : "") + "</div>";
+  h += groups.length ? groups.map(groupHtml).join("")
+                     : '<div class="muted">sem grupos (row legacy ou close órfã).</div>';
+
+  h += '<div class="block-title">conexões</div>' + connsHtml(d.connections);
+
+  if (d._close) {
+    var c = d._close;
+    var tone = exitTone(c.exit_reason);
+    var box = tone === "alert" ? "alert" : (tone === "warn" ? "warn" : "");
+    h += '<div class="block-title">fechamento</div>';
+    h += '<div class="close-box ' + box + '">';
+    h += '<div class="badge-row"><span class="badge ' + tone + '">' +
+         esc(has(c.exit_reason) ? c.exit_reason : "motivo ausente") + "</span>" +
+         '<span class="badge">' + esc(fmtDate(c.closed)) + "</span>";
+    if (c.agents_spawned && has(c.agents_spawned.total)) {
+      h += '<span class="badge">' + esc(c.agents_spawned.total) + " agentes gerados</span>";
+    }
+    if (c.agents_spawned && has(c.agents_spawned.loops_used)) {
+      h += '<span class="badge">' + esc(c.agents_spawned.loops_used) + " loop(s) usados</span>";
+    }
+    h += "</div>";
+
+    var tree = (c.agents_spawned && c.agents_spawned.tree) ? c.agents_spawned.tree : null;
+    if (tree && typeof tree === "object") {
+      var chips = Object.keys(tree).filter(function (k) { return num(tree[k]) > 0; })
+        .map(function (k) { return '<span class="badge plain">' + esc(k) + ": " + esc(tree[k]) + "</span>"; });
+      if (chips.length) h += '<div class="tree">' + chips.join("") + "</div>";
+    }
+
+    var fps = arr(c.feedback_prompts);
+    if (fps.length) {
+      h += '<div class="fb"><div class="k" style="font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)">' +
+           "prompts de feedback (" + fps.length + ")</div>" +
+           fps.map(function (t) { return '<div class="item">' + esc(t) + "</div>"; }).join("") + "</div>";
+    }
+    h += "</div>";
+  } else {
+    h += '<div class="block-title">fechamento</div>' +
+         '<div class="close-box"><span class="badge open">ainda aberta</span> ' +
+         '<span class="muted">nenhuma close row no ledger — esta dispatch está viva.</span></div>';
+  }
+
+  return '<div class="card-body">' + h + "</div>";
+}
+
+function cardHtml(d, repoName) {
+  var state = d._state === "open" ? "open" : "closed";
+  var id = d.dispatch_id || "";
+  var key = repoName + "::" + id;
+  var isOpen = expanded.has(key);
+  var src = (isOpen && fullCache[key]) ? fullCache[key] : d;
+
+  return '<article class="card' + (isOpen ? " expanded" : "") + '"' +
+      ' data-testid="dispatch-card"' +
+      ' data-dispatch-id="' + esc(id) + '"' +
+      ' data-state="' + state + '"' +
+      ' data-key="' + esc(key) + '">' +
+    cardHeadHtml(d) +
+    (isOpen ? cardBodyHtml(src, !fullCache[key]) : "") +
+  "</article>";
+}
+
+/* ==========================================================
+   filtros
+   ========================================================== */
+
+function matches(d) {
+  if (filters.state === "open" && d._state !== "open") return false;
+  if (filters.state === "closed" && d._state === "open") return false;
+  if (filters.state === "live" && !isLive(d)) return false;
+  if (filters.state === "flag" && !(d._legacy || d._orphan_close)) return false;
+  if (filters.q) {
+    var q = filters.q.toLowerCase();
+    var hay = (d.dispatch_id || "") + " " + (d.goal || "") + " " + (d.dispatch_type || "") +
+              " " + (d.anti_bias_global || "");
+    if (hay.toLowerCase().indexOf(q) === -1) return false;
+  }
+  return true;
+}
+
+/* ==========================================================
+   repos
+   ========================================================== */
+
+function repoHtml(r) {
+  var name = r.name;
+  var all = arr(r.dispatches);
+  var list = all.filter(matches);
+  var open = repoOpen[name];
+  if (open === undefined) open = true;
+
+  var limit = shown[name] || PAGE;
+  var slice = list.slice(0, limit);
+
+  var badges = "";
+  if (arr(r.pending).length) badges += '<span class="badge pending">' + arr(r.pending).length + " pendente(s)</span>";
+  if (r.ledger_exists === false) badges += '<span class="badge warn">sem ledger</span>';
+  if (has(r.error)) badges += '<span class="badge alert">erro de leitura</span>';
+  if (arr(r.warnings).length) badges += '<span class="badge warn">' + arr(r.warnings).length + " aviso(s)</span>";
+
+  var notes = "";
+  if (has(r.error)) {
+    notes += '<details class="notes err"><summary>erro fatal de leitura</summary>' +
+             '<div class="notes-body"><div>' + esc(r.error) + "</div></div></details> ";
+  }
+  if (arr(r.warnings).length) {
+    notes += '<details class="notes"><summary>' + arr(r.warnings).length +
+             " aviso(s) de parsing</summary><div class=\"notes-body\">" +
+             arr(r.warnings).map(function (w) { return "<div>" + esc(w) + "</div>"; }).join("") +
+             "</div></details>";
+  }
+
+  var body;
+  if (!all.length) {
+    body = '<div class="empty" style="padding:18px"><div class="big">Nenhuma dispatch no ledger deste repositório.</div></div>';
+  } else if (!list.length) {
+    body = '<div class="empty" style="padding:18px"><div class="big">Nenhuma dispatch bate com o filtro atual.</div>' +
+           '<div class="small">' + all.length + " row(s) carregada(s) neste repositório.</div></div>";
+  } else {
+    body = slice.map(function (d) { return cardHtml(d, name); }).join("");
+    if (list.length > slice.length) {
+      body += '<button class="load-more" data-more="' + esc(name) + '">mostrar mais ' +
+              Math.min(PAGE, list.length - slice.length) + " de " + (list.length - slice.length) + " restantes</button>";
+    }
+  }
+
+  var openN = num(r.open_dispatches);
+  return '' +
+  '<section class="repo glass" data-testid="repo-section" data-repo="' + esc(name) + '" data-open="' + (open ? 1 : 0) + '">' +
+    '<div class="repo-head" data-toggle-repo="' + esc(name) + '">' +
+      '<span class="caret">▶</span>' +
+      '<span class="repo-name">' + esc(name) + "</span>" +
+      '<span class="badge-row">' + badges + "</span>" +
+      '<div class="repo-metrics">' +
+        '<div class="metric"><div class="n ' + (openN ? "open" : "zero") + '">' + openN + '</div><div class="l">abertas</div></div>' +
+        '<div class="metric"><div class="n">' + num(r.total_dispatches) + '</div><div class="l">no ledger</div></div>' +
+        '<div class="metric"><div class="n">' + list.length + "/" + all.length + '</div><div class="l">exibidas</div></div>' +
+      "</div>" +
+    "</div>" +
+    '<div class="repo-body"' + (open ? "" : " hidden") + ">" +
+      (notes ? '<div style="margin-bottom:12px">' + notes + "</div>" : "") +
+      body +
+    "</div>" +
+  "</section>";
+}
+
+/* ==========================================================
+   render principal
+   ========================================================== */
+
+function render() {
+  var app = document.getElementById("app");
+  if (!SNAP) return;
+
+  var repos = arr(SNAP.repos);
+  var cfg = SNAP.config || {};
+
+  var total = repos.reduce(function (a, r) { return a + num(r.total_dispatches); }, 0);
+  var totalOpen = repos.reduce(function (a, r) { return a + num(r.open_dispatches); }, 0);
+  document.getElementById("total-count").textContent = String(total);
+  document.getElementById("open-count").textContent = String(totalOpen);
+  document.getElementById("repo-count").textContent = String(has(cfg.repo_count) ? cfg.repo_count : repos.length);
+
+  var visible = repos.filter(function (r) { return filters.repo === "*" || r.name === filters.repo; });
+
+  var opts = ['<option value="*">todos os repositórios</option>'].concat(
+    repos.map(function (r) {
+      return '<option value="' + esc(r.name) + '"' + (filters.repo === r.name ? " selected" : "") + ">" +
+             esc(r.name) + " (" + num(r.total_dispatches) + ")</option>";
+    })
+  ).join("");
+
+  var chips = [
+    ["all", "todas"], ["open", "abertas"], ["closed", "fechadas"],
+    ["live", "live"], ["flag", "legacy / órfãs"]
+  ].map(function (c) {
+    return '<button class="chip" data-state="' + c[0] + '" aria-pressed="' +
+           (filters.state === c[0] ? "true" : "false") + '">' + c[1] + "</button>";
+  }).join("");
+
+  var renderedCount = visible.reduce(function (a, r) { return a + arr(r.dispatches).filter(matches).length; }, 0);
+
+  var html = "";
+  html += renderPending(repos);
+
+  html += '<section class="controls glass">' +
+            '<div class="field"><label for="f-repo">repositório</label>' +
+              '<select id="f-repo">' + opts + "</select></div>" +
+            '<div class="field"><label>estado</label><div class="chips">' + chips + "</div></div>" +
+            '<div class="field"><label for="f-q">busca</label>' +
+              '<input type="search" id="f-q" placeholder="id, objetivo, tipo…" value="' + esc(filters.q) + '"></div>' +
+            '<div style="margin-left:auto" class="muted nowrap">' + renderedCount +
+              " row(s) após filtro · janela de " + esc(has(cfg.limit) ? cfg.limit : "?") + " por repo</div>" +
+          "</section>";
+
+  html += '<div class="section-head"><h2>Histórico de dispatches</h2><span class="rule"></span></div>';
+  html += '<div data-testid="dispatch-list" id="dispatch-list">';
+  html += visible.length ? visible.map(repoHtml).join("")
+        : '<div class="empty glass"><div class="big">Nenhum repositório corresponde ao filtro.</div></div>';
+  html += "</div>";
+
+  app.innerHTML = html;
+
+  // reconecta os controles
+  var sel = document.getElementById("f-repo");
+  if (sel) sel.addEventListener("change", function () { filters.repo = this.value; shown = {}; render(); });
+
+  var q = document.getElementById("f-q");
+  if (q) {
+    q.addEventListener("input", function () {
+      filters.q = this.value.trim();
+      shown = {};
+      render();
+      var el = document.getElementById("f-q");
+      if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+    });
+  }
+}
+
+/* ==========================================================
+   interação (delegada — sobrevive a re-render)
+   ========================================================== */
+
+document.addEventListener("click", function (ev) {
+  var chip = ev.target.closest ? ev.target.closest(".chip[data-state]") : null;
+  if (chip) { filters.state = chip.getAttribute("data-state"); shown = {}; render(); return; }
+
+  var more = ev.target.closest ? ev.target.closest("[data-more]") : null;
+  if (more) {
+    var rn = more.getAttribute("data-more");
+    shown[rn] = (shown[rn] || PAGE) + PAGE;
+    render();
+    return;
+  }
+
+  var rh = ev.target.closest ? ev.target.closest("[data-toggle-repo]") : null;
+  if (rh) {
+    var name = rh.getAttribute("data-toggle-repo");
+    repoOpen[name] = !(repoOpen[name] === undefined ? true : repoOpen[name]);
+    render();
+    return;
+  }
+
+  var head = ev.target.closest ? ev.target.closest(".card-head") : null;
+  if (head) {
+    var card = head.closest(".card");
+    var key = card.getAttribute("data-key");
+    if (expanded.has(key)) expanded.delete(key);
+    else { expanded.add(key); fetchFull(key); }
+    render();
+    return;
+  }
+}, false);
+
+/* busca a dispatch íntegra (prompts sem truncar) ao expandir */
+function fetchFull(key) {
+  if (fullCache[key]) return;
+  var i = key.indexOf("::");
+  var repo = key.slice(0, i), id = key.slice(i + 2);
+  if (!repo || !id) return;
+  fetch("/api/dispatch/" + encodeURIComponent(repo) + "/" + encodeURIComponent(id))
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) {
+      if (!j) return;
+      fullCache[key] = (j && j.dispatch_id) ? j : (j.dispatch || j);
+      if (expanded.has(key)) render();
+    })
+    .catch(function () { /* silencioso: o card já mostra a versão truncada */ });
+}
+
+/* ==========================================================
+   dados: snapshot + SSE
+   ========================================================== */
+
+function setLive(on, label) {
+  var el = document.getElementById("live-indicator");
+  var tx = document.getElementById("live-text");
+  el.setAttribute("data-on", on ? "1" : "0");
+  // "conectado" só aparece quando realmente está ligado
+  tx.textContent = on ? "ao vivo · conectado" : (label || "sem ligação ao servidor");
+}
+
+function loadSnapshot() {
+  return fetch("/api/snapshot")
+    .then(function (r) { return r.json(); })
+    .then(function (j) { SNAP = j; render(); })
+    .catch(function (e) {
+      document.getElementById("app").innerHTML =
+        '<div class="empty glass" style="padding:40px 22px"><div class="big">Não foi possível ler o snapshot.</div>' +
+        '<div class="small">' + esc(e && e.message ? e.message : e) + "</div></div>";
+    });
+}
+
+function connect() {
+  var es;
+  try { es = new EventSource("/api/stream"); }
+  catch (e) { setLive(false, "stream indisponível"); return; }
+
+  es.addEventListener("open", function () { setLive(true); });
+  es.addEventListener("snapshot", function (ev) {
+    setLive(true);
+    try { SNAP = JSON.parse(ev.data); render(); } catch (e) { /* payload parcial: ignora */ }
+  });
+  es.addEventListener("error", function () {
+    setLive(false, "ligação caiu · retentando");
+  });
+}
+
+loadSnapshot().then(connect);
+</script>
+</body>
+</html>

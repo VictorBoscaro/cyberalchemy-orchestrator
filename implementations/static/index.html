@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dispatch control plane — escolha uma UI</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 32px;
+    background: #0b0d10; color: #e6e9ef;
+    font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: -0.02em; }
+  .sub { color: #8b94a5; margin: 0 0 8px; }
+  .stats { color: #6f7a8d; font-size: 13px; margin-bottom: 34px; font-variant-numeric: tabular-nums; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+  a.card {
+    display: block; padding: 18px; border-radius: 10px; text-decoration: none;
+    background: #14181e; border: 1px solid #232935; color: inherit;
+    transition: border-color .15s, transform .15s, background .15s;
+  }
+  a.card:hover { border-color: #3d7dff; transform: translateY(-2px); background: #171c24; }
+  .n { font-size: 11px; color: #6f7a8d; font-variant-numeric: tabular-nums; }
+  .name { font-size: 16px; font-weight: 600; margin: 4px 0 5px; }
+  .desc { font-size: 13px; color: #8b94a5; line-height: 1.45; }
+  footer { margin-top: 40px; color: #5b6474; font-size: 12px; }
+  code { background: #191e26; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Dispatch control plane</h1>
+  <p class="sub">Fase 1 — o leitor. Dez variantes de UI sobre a mesma API. Escolha uma.</p>
+  <p class="stats" id="stats">carregando…</p>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    Todas consomem <code>/api/snapshot</code> e <code>/api/stream</code>.
+    Somente leitura — nada aqui escreve no ledger.
+  </footer>
+</div>
+
+<script>
+const VARIANTS = [
+  ["terminal",        "Terminal CRT",      "Fósforo verde, monoespaçado, molduras desenhadas com caracteres."],
+  ["mission-control", "Mission Control",   "Telemetria estilo NASA: grade densa, mostradores, tudo tabular."],
+  ["brutalist",       "Brutalista",        "Preto e branco duro, bordas pesadas, tipografia enorme."],
+  ["linear",          "Linear / Produto",  "SaaS moderno e limpo, claro, denso e calmo."],
+  ["cyberpunk",       "Cyberpunk Neon",    "Escuro com magenta e ciano, brilho, cantos chanfrados."],
+  ["blueprint",       "Blueprint Técnico", "Ciano sobre azul-marinho, papel quadriculado, cotas e anotações."],
+  ["grimoire",        "Grimório Alquímico","Pergaminho, serifada, ornamentos — o nome do repo levado a sério."],
+  ["radar",           "Radar / ATC",       "Controle de tráfego aéreo: varredura, listas densas, âmbar sobre verde."],
+  ["swiss",           "Suíço Editorial",   "Grade tipográfica, muito branco, acento vermelho, hierarquia rígida."],
+  ["aurora",          "Aurora / Vidro",    "Painéis foscos sobre gradiente, profundidade, suave."],
+];
+
+const grid = document.getElementById("grid");
+VARIANTS.forEach(([slug, name, desc], i) => {
+  const a = document.createElement("a");
+  a.className = "card";
+  a.href = `/static/ui/${slug}/index.html`;
+  a.innerHTML = `<div class="n">${String(i + 1).padStart(2, "0")}</div>
+                 <div class="name"></div><div class="desc"></div>`;
+  a.querySelector(".name").textContent = name;
+  a.querySelector(".desc").textContent = desc;
+  grid.appendChild(a);
+});
+
+fetch("/api/snapshot").then(r => r.json()).then(d => {
+  const repos = d.repos.length;
+  const disp = d.repos.reduce((t, r) => t + r.total_dispatches, 0);
+  const open = d.repos.reduce((t, r) => t + r.open_dispatches, 0);
+  const pend = d.repos.reduce((t, r) => t + r.pending.length, 0);
+  document.getElementById("stats").textContent =
+    `${repos} repos · ${disp} dispatches · ${open} abertas · ${pend} sheets pendentes`;
+}).catch(e => { document.getElementById("stats").textContent = "API fora do ar: " + e; });
+</script>
+</body>
+</html>

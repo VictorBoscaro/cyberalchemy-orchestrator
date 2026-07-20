@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dispatch Control Plane — leitor</title>
+<style>
+  /* ============================================================
+     SUÍÇO / EDITORIAL — grade de 12 colunas, filetes de 1px,
+     um único acento vermelho. Sem caixas, sem cartões.
+     ============================================================ */
+
+  :root{
+    --paper:#faf9f7;
+    --ink:#111111;
+    --ink-60:rgba(17,17,17,.60);
+    --ink-40:rgba(17,17,17,.40);
+    --ink-22:rgba(17,17,17,.22);
+    --ink-12:rgba(17,17,17,.12);
+    --red:#e8320c;
+    --sans:"Helvetica Neue",Helvetica,Arial,system-ui,"Segoe UI",sans-serif;
+    --gutter:24px;
+    --margin:clamp(20px,5.5vw,96px);
+    --maxw:1560px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    text-align:left;
+  }
+  ::selection{background:var(--red);color:var(--paper)}
+
+  /* ---------- a grade ---------- */
+  .grid{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 var(--margin);
+    display:grid;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    column-gap:var(--gutter);
+  }
+  /* guias da grade, opacidade baixíssima */
+  #guides{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    display:none;
+  }
+  #guides.on{display:block}
+  #guides .grid{height:100%}
+  #guides i{
+    display:block;height:100%;
+    background:rgba(17,17,17,.030);
+    border-left:1px solid rgba(232,50,12,.055);
+  }
+  main,header,footer{position:relative;z-index:1}
+
+  /* ---------- tipografia ---------- */
+  .lbl{
+    font-size:9.5px;line-height:1.2;
+    text-transform:uppercase;
+    letter-spacing:.19em;
+    font-weight:500;
+    color:var(--ink-60);
+  }
+  .lbl.red{color:var(--red)}
+  .num{
+    font-size:clamp(44px,6.2vw,86px);
+    font-weight:500;
+    letter-spacing:-.045em;
+    line-height:.82;
+    color:var(--red);
+    font-variant-numeric:tabular-nums;
+  }
+  h1{
+    font-size:clamp(38px,7.4vw,104px);
+    font-weight:500;
+    letter-spacing:-.045em;
+    line-height:.90;
+    margin:0;
+  }
+  h2{
+    font-size:clamp(24px,3.1vw,44px);
+    font-weight:500;
+    letter-spacing:-.035em;
+    line-height:1.0;
+    margin:0;
+  }
+  h3{
+    font-size:clamp(18px,2.0vw,27px);
+    font-weight:500;
+    letter-spacing:-.028em;
+    line-height:1.12;
+    margin:0;
+  }
+  .measure{max-width:34em}
+  .measure-narrow{max-width:26em}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  /* ---------- filetes ---------- */
+  .rule{border-top:1px solid var(--ink);height:0;margin:0}
+  .rule-thin{border-top:1px solid var(--ink-22);height:0;margin:0}
+  .rule-red{border-top:1px solid var(--red);height:0;margin:0}
+
+  /* ---------- cabeçalho ---------- */
+  header.masthead{padding-top:26px}
+  .masthead .grid + .grid{margin-top:0}
+  .mast-top{align-items:baseline;padding-bottom:12px}
+  .mast-top .brand{grid-column:1/8}
+  .mast-top .live{grid-column:10/13;text-align:left}
+  .mast-title{grid-column:1/11;padding:26px 0 8px}
+  .mast-sub{grid-column:1/6;padding-bottom:34px}
+  .mast-stats{grid-column:7/13;padding-bottom:34px;align-self:end}
+
+  #live-indicator{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+  #live-indicator .dot{width:8px;height:8px;background:var(--red);display:block;flex:none}
+  #live-indicator.down .dot{background:transparent;box-shadow:inset 0 0 0 1px var(--ink-40)}
+  #live-indicator.down{color:var(--ink-40)}
+
+  .statline{display:flex;gap:38px;flex-wrap:wrap;align-items:baseline}
+  .stat b{
+    display:block;font-size:clamp(26px,3.4vw,46px);font-weight:500;
+    letter-spacing:-.04em;line-height:.95;font-variant-numeric:tabular-nums;
+  }
+  .stat span{display:block;margin-top:7px}
+
+  /* ---------- seções ---------- */
+  section{padding-top:0}
+  .sec-head{padding:22px 0 0}
+  .sec-head .n{grid-column:1/2}
+  .sec-head .t{grid-column:2/9}
+  .sec-head .aside{grid-column:10/13;align-self:end;padding-bottom:4px}
+  .sec-body{padding:34px 0 96px}
+
+  /* ---------- pendentes (o objeto mais importante) ---------- */
+  .pending{background:transparent}
+  .pend{padding:0 0 8px;border-top:3px solid var(--red);margin-top:26px}
+  .pend:first-child{margin-top:0}
+  .pend-head{padding:20px 0 0}
+  .pend-head .kicker{grid-column:1/13;padding-bottom:14px;display:flex;gap:18px;flex-wrap:wrap;align-items:baseline}
+  .pend-head .goal{grid-column:1/9}
+  .pend-head .act{grid-column:10/13;align-self:start}
+  .pend-goal{
+    font-size:clamp(23px,2.9vw,40px);font-weight:500;
+    letter-spacing:-.032em;line-height:1.08;margin:0;
+  }
+  .pend-ctx{grid-column:1/6;padding:26px 0 0}
+  .pend-tension{grid-column:6/10;padding:26px 0 0}
+  .pend-meta{grid-column:10/13;padding:26px 0 0}
+  .pend-groups{grid-column:1/13;padding:40px 0 0}
+
+  button.dispatch{
+    -webkit-appearance:none;appearance:none;
+    font-family:var(--sans);
+    font-size:10px;letter-spacing:.19em;text-transform:uppercase;font-weight:500;
+    background:var(--red);color:var(--paper);
+    border:0;border-radius:0;
+    padding:15px 20px;width:100%;
+    text-align:left;cursor:not-allowed;
+    line-height:1.2;
+  }
+  button.dispatch[disabled]{
+    background:transparent;color:var(--ink-40);
+    box-shadow:inset 0 0 0 1px var(--ink-22);
+  }
+  .act .hint{margin-top:9px;color:var(--ink-40)}
+
+  /* ---------- índice de repos / filtro ---------- */
+  .index{padding:0}
+  .index ul{list-style:none;margin:0;padding:0}
+  .index li{border-top:1px solid var(--ink-12)}
+  .index li:first-child{border-top:1px solid var(--ink)}
+  .index button{
+    -webkit-appearance:none;appearance:none;background:none;border:0;border-radius:0;
+    font-family:var(--sans);font-size:13px;color:var(--ink);
+    width:100%;text-align:left;padding:9px 0;cursor:pointer;
+    display:flex;align-items:baseline;gap:12px;letter-spacing:-.01em;
+  }
+  .index button:hover{color:var(--red)}
+  .index button .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .index button .ct{font-variant-numeric:tabular-nums;color:var(--ink-40);font-size:11px}
+  .index button .op{color:var(--red);font-size:11px;font-variant-numeric:tabular-nums;min-width:2.4em}
+  .index li.sel button{color:var(--red);font-weight:500}
+  .index li.sel button .ct{color:var(--red)}
+
+  .chips{display:flex;gap:0;flex-wrap:wrap;margin-top:2px}
+  .chip{
+    -webkit-appearance:none;appearance:none;background:none;border:0;border-radius:0;
+    font-family:var(--sans);cursor:pointer;padding:7px 16px 7px 0;
+    font-size:9.5px;text-transform:uppercase;letter-spacing:.19em;color:var(--ink-40);
+  }
+  .chip[aria-pressed="true"]{color:var(--red);text-decoration:underline;text-underline-offset:5px}
+
+  /* ---------- histórico ---------- */
+  .repo-sec{padding:0 0 62px}
+  .repo-head{padding:0 0 10px;align-items:baseline;border-bottom:1px solid var(--ink)}
+  .repo-head .rn{grid-column:1/7}
+  .repo-head .rm{grid-column:8/13;align-self:end;display:flex;gap:26px;justify-content:flex-start;flex-wrap:wrap}
+  .repo-name{font-size:clamp(17px,1.9vw,25px);font-weight:500;letter-spacing:-.03em;line-height:1.1}
+  .repo-path{margin-top:6px;color:var(--ink-40);font-size:10.5px;letter-spacing:.02em;word-break:break-all}
+
+  details.notes{margin-top:16px}
+  details.notes summary{cursor:pointer;list-style:none;display:inline-block;padding:5px 0}
+  details.notes summary::-webkit-details-marker{display:none}
+  details.notes summary:hover{color:var(--red)}
+  details.notes .body{padding:8px 0 4px;border-top:1px solid var(--ink-12);margin-top:6px}
+  details.notes .body p{margin:0 0 5px;font-size:11.5px;color:var(--ink-60);max-width:56em}
+  .err{color:var(--red)}
+
+  /* ---------- uma dispatch ---------- */
+  .disp{border-bottom:1px solid var(--ink-12);padding:0}
+  .disp:hover{background:rgba(17,17,17,.014)}
+  .disp .row{padding:15px 0 16px;cursor:pointer;align-items:start}
+  .disp .c-when{grid-column:1/3}
+  .disp .c-main{grid-column:3/9}
+  .disp .c-tags{grid-column:9/11}
+  .disp .c-end{grid-column:11/13}
+  .disp.open-state{border-left:0}
+
+  .when{font-variant-numeric:tabular-nums;font-size:12px;letter-spacing:-.01em}
+  .when .t{color:var(--ink-40);font-size:10.5px}
+  .did{font-size:15px;font-weight:500;letter-spacing:-.022em;line-height:1.2;word-break:break-word}
+  .goal{margin-top:7px;font-size:13px;color:var(--ink-60);line-height:1.4;max-width:44em}
+
+  .state{display:inline-flex;align-items:baseline;gap:8px}
+  .state .sq{width:8px;height:8px;display:inline-block;transform:translateY(-1px);flex:none}
+  .st-open .sq{background:var(--red)}
+  .st-closed .sq{box-shadow:inset 0 0 0 1px var(--ink-40)}
+  .st-open{color:var(--red)}
+  .st-closed{color:var(--ink-40)}
+
+  .tag{display:inline-block;margin:0 14px 5px 0}
+  .tag.reserved{color:var(--ink-40);text-decoration:line-through;text-decoration-thickness:1px}
+  .tag.live{color:var(--ink)}
+  .tag.flag{color:var(--red)}
+  .exit{font-size:11px;letter-spacing:.02em}
+  .exit.bad{color:var(--red);font-weight:500}
+
+  /* ---------- detalhe expandido ---------- */
+  .detail{padding:6px 0 40px;border-top:1px solid var(--ink-12);margin-top:2px}
+  .d-left{grid-column:3/7;padding-top:22px}
+  .d-mid{grid-column:7/10;padding-top:22px}
+  .d-right{grid-column:10/13;padding-top:22px}
+  .d-full{grid-column:3/13;padding-top:34px}
+  .d-wide{grid-column:1/13}
+  .field{margin-bottom:20px}
+  .field p{margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink)}
+  .field p.dim{color:var(--ink-60)}
+
+  /* grupos e agentes */
+  .group{border-top:1px solid var(--ink);padding:14px 0 26px;margin-top:22px}
+  .group:first-of-type{margin-top:0}
+  .g-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .g-id{font-size:16px;font-weight:500;letter-spacing:-.025em}
+  .g-bias{margin-top:9px;font-size:12.5px;line-height:1.45;max-width:52em}
+  .g-bias .k{color:var(--red)}
+  .agents{margin-top:18px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter)}
+  .agent{grid-column:span 4;border-top:1px solid var(--ink-22);padding:11px 0 0;margin-bottom:20px}
+  @media(max-width:1000px){.agent{grid-column:span 6}}
+  @media(max-width:680px){.agent{grid-column:span 12}}
+  .a-name{font-size:14.5px;font-weight:500;letter-spacing:-.02em;line-height:1.2}
+  .a-name.anon{color:var(--ink-40);font-style:italic;font-weight:400}
+  .a-meta{margin-top:7px;font-size:10.5px;color:var(--ink-40);letter-spacing:.02em}
+  .a-angle{margin-top:9px;font-size:12.5px;line-height:1.45;border-left:1px solid var(--red);padding-left:11px}
+  .a-angle.none{border-left-color:var(--ink-12);color:var(--ink-40)}
+  .a-prompt{margin-top:10px;font-size:11.5px;line-height:1.5;color:var(--ink-60)}
+  .a-prompt .cut{color:var(--red)}
+
+  /* conexões */
+  .conns{margin-top:6px}
+  .conn{display:flex;align-items:center;gap:14px;padding:9px 0;border-top:1px solid var(--ink-12);font-size:12.5px}
+  .conn:first-child{border-top:1px solid var(--ink-22)}
+  .conn .from,.conn .to{white-space:nowrap;letter-spacing:-.01em}
+  .conn svg{flex:none;display:block}
+  .conn .kind{margin-left:auto;text-align:left}
+  .conn.feedback .from,.conn.feedback .to{color:var(--red)}
+  .conn .cap{color:var(--red);font-variant-numeric:tabular-nums}
+
+  /* fechamento */
+  .tree{margin-top:8px;font-size:12px;font-variant-numeric:tabular-nums}
+  .tree span{display:inline-block;margin:0 16px 5px 0;color:var(--ink-60)}
+  .tree b{font-weight:500;color:var(--ink)}
+  .fbk{margin-top:10px}
+  .fbk li{font-size:12px;line-height:1.5;color:var(--ink-60);margin-bottom:9px;max-width:48em}
+  .fbk ol{margin:0;padding-left:1.3em}
+
+  .empty{padding:30px 0 10px;color:var(--ink-40)}
+  .more{padding:14px 0 0;color:var(--ink-40);font-size:11px}
+
+  footer{padding:30px 0 60px;border-top:1px solid var(--ink)}
+  footer .a{grid-column:1/7}
+  footer .b{grid-column:8/13}
+  .ghost{
+    -webkit-appearance:none;appearance:none;background:none;border:0;padding:0;
+    font-family:var(--sans);font-size:9.5px;text-transform:uppercase;letter-spacing:.19em;
+    color:var(--ink-40);cursor:pointer;
+  }
+  .ghost:hover{color:var(--red)}
+
+  @media(max-width:900px){
+    .mast-title,.mast-sub,.mast-stats,.mast-top .brand,.mast-top .live,
+    .sec-head .n,.sec-head .t,.sec-head .aside,
+    .pend-head .goal,.pend-head .act,.pend-ctx,.pend-tension,.pend-meta,.pend-groups,
+    .repo-head .rn,.repo-head .rm,
+    .disp .c-when,.disp .c-main,.disp .c-tags,.disp .c-end,
+    .d-left,.d-mid,.d-right,.d-full,footer .a,footer .b{grid-column:1/13}
+    .disp .c-when{padding-bottom:6px}
+    .disp .c-tags,.disp .c-end{padding-top:9px}
+    #guides{display:none !important}
+  }
+</style>
+</head>
+<body>
+
+<div id="guides" class="on" aria-hidden="true">
+  <div class="grid">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+</div>
+
+<div id="root" data-testid="app"></div>
+
+<script>
+"use strict";
+(function(){
+
+/* ---------------------------------------------------------------- estado */
+var S = {
+  snap: null,
+  connected: false,
+  repo: "*",          // "*" = todos
+  onlyOpen: "todos",  // todos | abertas | fechadas
+  open: {},           // dispatch key -> true
+  full: {},           // dispatch key -> payload sem truncar
+  guides: true
+};
+
+/* ------------------------------------------------------------- utilitários */
+function esc(v){
+  if(v===null||v===undefined) return "";
+  return String(v).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function has(v){ return v!==null && v!==undefined && v!=="" ; }
+function arr(v){ return Array.isArray(v) ? v : []; }
+function txt(v,fb){ return has(v) ? String(v) : (fb||"—"); }
+function key(repo,d,i){ return repo+"::"+(d && d.dispatch_id ? d.dispatch_id : "?")+"::"+i; }
+
+function fmtDate(iso){
+  if(!has(iso)) return {d:"—",t:""};
+  var m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/);
+  if(!m) return {d:String(iso).slice(0,10),t:""};
+  return {d:m[3]+"."+m[2]+"."+m[1].slice(2), t:m[4]+":"+m[5]};
+}
+function nf(n){
+  n = Number(n)||0;
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,".");
+}
+
+var LIVE_TYPES = {research:1, review:1, experiment:1};
+var BAD_EXITS  = {error:1, dissent_irreconcilable:1};
+
+/* ------------------------------------------------------------ agregações */
+function totals(){
+  var t={total:0,open:0,pend:0,repos:0,warn:0,err:0,shown:0};
+  if(!S.snap) return t;
+  arr(S.snap.repos).forEach(function(r){
+    t.repos++;
+    t.total += Number(r.total_dispatches)||0;
+    t.open  += Number(r.open_dispatches)||0;
+    t.pend  += arr(r.pending).length;
+    t.warn  += arr(r.warnings).length;
+    if(has(r.error)) t.err++;
+    t.shown += arr(r.dispatches).length;
+  });
+  return t;
+}
+function visibleRepos(){
+  var rs = arr(S.snap && S.snap.repos);
+  if(S.repo!=="*") rs = rs.filter(function(r){ return r.name===S.repo; });
+  return rs;
+}
+function filterDispatches(list){
+  if(S.onlyOpen==="abertas")  return list.filter(function(d){ return d._state==="open"; });
+  if(S.onlyOpen==="fechadas") return list.filter(function(d){ return d._state!=="open"; });
+  return list;
+}
+
+/* ------------------------------------------------------------- fragmentos */
+
+function connSvg(type){
+  // arestas tipadas, visualmente distintas — SVG inline, sem dependência
+  if(type==="zig-zag"){
+    return '<svg width="62" height="14" viewBox="0 0 62 14" aria-hidden="true">'+
+      '<polyline points="1,11 12,3 23,11 34,3 45,11 54,6" fill="none" stroke="#111" stroke-width="1"/>'+
+      '<path d="M53 2 L60 6 L53 10 Z" fill="#111"/></svg>';
+  }
+  if(type==="feedback"){
+    return '<svg width="62" height="14" viewBox="0 0 62 14" aria-hidden="true">'+
+      '<path d="M8 10 C 18 -3, 44 -3, 54 10" fill="none" stroke="#e8320c" stroke-width="1"/>'+
+      '<path d="M13 4 L6 11 L14 12 Z" fill="#e8320c"/></svg>';
+  }
+  // sequential (e desconhecidos)
+  return '<svg width="62" height="14" viewBox="0 0 62 14" aria-hidden="true">'+
+    '<line x1="1" y1="7" x2="54" y2="7" stroke="#111" stroke-width="1"/>'+
+    '<path d="M53 3 L60 7 L53 11 Z" fill="#111"/></svg>';
+}
+
+function connsHtml(conns){
+  conns = arr(conns);
+  if(!conns.length) return '<p class="dim" style="font-size:12.5px;margin:6px 0 0">Sem conexões declaradas.</p>';
+  return '<div class="conns">'+conns.map(function(c){
+    var t = has(c.type) ? String(c.type) : "sequential";
+    var cls = t==="feedback" ? "feedback" : (t==="zig-zag" ? "zigzag" : "sequential");
+    return '<div class="conn '+cls+'">'+
+      '<span class="from">'+esc(txt(c.from))+'</span>'+
+      connSvg(t)+
+      '<span class="to">'+esc(txt(c.to))+'</span>'+
+      '<span class="kind lbl">'+esc(t)+
+        (has(c.loop_cap) ? ' <span class="cap">×'+esc(c.loop_cap)+'</span>' : '')+
+      '</span></div>';
+  }).join("")+'</div>';
+}
+
+function agentHtml(a, fullPrompt){
+  a = a || {};
+  var nm = has(a.agent_name)
+    ? '<div class="a-name">'+esc(a.agent_name)+'</div>'
+    : '<div class="a-name anon">sem persona</div>';
+  var meta = [];
+  if(has(a.role)) meta.push(esc(a.role));
+  if(has(a.model)) meta.push(esc(a.model));
+  meta.push(has(a.token_budget) ? esc(a.token_budget)+' tok' : 'orçamento —');
+  var angle = has(a.angle)
+    ? '<div class="a-angle">'+esc(a.angle)+'</div>'
+    : '<div class="a-angle none">sem ângulo declarado</div>';
+  var pr = "";
+  var p = has(fullPrompt) ? fullPrompt : a.initial_prompt;
+  if(has(p)){
+    pr = '<div class="a-prompt">'+esc(p)+
+      (a._prompt_truncated && !has(fullPrompt) ? ' <span class="cut">[truncado]</span>' : '')+'</div>';
+  }
+  return '<div class="agent">'+nm+
+    '<div class="a-meta">'+meta.join(' &nbsp;/&nbsp; ')+'</div>'+
+    angle+pr+'</div>';
+}
+
+function groupsHtml(groups, fullGroups){
+  groups = arr(groups);
+  if(!groups.length) return '';
+  return groups.map(function(g,gi){
+    g = g||{};
+    var fg = fullGroups && fullGroups[gi] ? fullGroups[gi] : null;
+    var ag = arr(g.agents);
+    var bits = [];
+    if(has(g.n)) bits.push('n='+esc(g.n));
+    bits.push(ag.length+' agente'+(ag.length===1?'':'s'));
+    if(g.robot_talks) bits.push('robot-talks');
+    if(has(g.layers)) bits.push('camadas '+esc(g.layers));
+    return '<div class="group">'+
+      '<div class="g-head"><span class="g-id">'+esc(txt(g.group_id,'grupo sem id'))+'</span>'+
+        '<span class="lbl">'+bits.join(' &nbsp;·&nbsp; ')+'</span></div>'+
+      '<div class="g-bias">'+
+        (has(g.anti_bias)
+          ? '<span class="lbl red">eixo de tensão</span> '+esc(g.anti_bias)
+          : '<span class="lbl">sem eixo de tensão declarado</span>')+
+      '</div>'+
+      '<div class="agents">'+ag.map(function(a,ai){
+        var fp = fg && arr(fg.agents)[ai] ? arr(fg.agents)[ai].initial_prompt : null;
+        return agentHtml(a, fp);
+      }).join('')+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* ------------------------------------------------------------ 01 PENDENTES */
+function pendingHtml(){
+  var items = [];
+  arr(S.snap && S.snap.repos).forEach(function(r){
+    arr(r.pending).forEach(function(p){ items.push({repo:r.name, p:p}); });
+  });
+
+  var head =
+    '<div class="grid sec-head">'+
+      '<div class="n">01</div>'+
+      '<div class="t"><h2>Sheets pendentes</h2>'+
+        '<p class="lbl" style="margin-top:14px">aguardando o gate humano — pré-confirm</p></div>'+
+      '<div class="aside lbl">'+ (items.length ? esc(items.length)+' aguardando' : 'nenhuma') +'</div>'+
+    '</div>'+
+    '<div class="grid"><div style="grid-column:1/13;padding-top:16px"><div class="rule-red"></div></div></div>';
+
+  var body;
+  if(!items.length){
+    body = '<div class="grid"><div style="grid-column:2/8" class="sec-body">'+
+      '<h3>Nenhuma sheet aguardando confirmação.</h3>'+
+      '<p class="measure" style="color:var(--ink-60);margin-top:14px">'+
+      'A fila pré-confirm está vazia. Nada foi proposto ao gate humano neste momento; '+
+      'o histórico abaixo é somente leitura.</p></div></div>';
+  } else {
+    body = '<div class="sec-body">'+items.map(function(it){
+      var p = it.p, sh = p.sheet || {};
+      var live = has(sh.dispatch_type) ? !!LIVE_TYPES[sh.dispatch_type] : !!p._live;
+      var mt = p._mtime ? new Date(Number(p._mtime)*1000) : null;
+      var mtS = mt ? (("0"+mt.getDate()).slice(-2)+"."+("0"+(mt.getMonth()+1)).slice(-2)+"."+String(mt.getFullYear()).slice(2)+" "+("0"+mt.getHours()).slice(-2)+":"+("0"+mt.getMinutes()).slice(-2)) : "—";
+      var ac = has(p._agent_count) ? p._agent_count : arr(sh.groups).reduce(function(s,g){return s+arr(g.agents).length;},0);
+
+      return '<div class="pend" data-testid="pending-card">'+
+        '<div class="grid pend-head">'+
+          '<div class="kicker">'+
+            '<span class="lbl red">proposta · '+esc(it.repo)+'</span>'+
+            '<span class="lbl">'+(live?'live':'reservado')+' · '+esc(txt(sh.dispatch_type))+'</span>'+
+            '<span class="lbl">'+esc(txt(sh.dispatch_id))+'</span>'+
+            (p._error ? '<span class="lbl red">falha ao ler: '+esc(p._error)+'</span>' : '')+
+            (sh._example ? '<span class="lbl">fixture de demonstração</span>' : '')+
+          '</div>'+
+          '<div class="goal"><p class="pend-goal">'+esc(txt(sh.goal,'(sheet sem objetivo)'))+'</p></div>'+
+          '<div class="act">'+
+            '<button class="dispatch" data-testid="dispatch-button" disabled '+
+              'title="confirmar dispara na Fase 2" '+
+              'aria-label="Disparar — confirmar dispara na Fase 2">'+
+              'Disparar<br>— habilitado na Fase 2</button>'+
+            '<p class="hint lbl">o gate existe, o botão ainda não</p>'+
+          '</div>'+
+        '</div>'+
+        '<div class="grid">'+
+          '<div class="pend-ctx">'+
+            '<span class="lbl">contexto</span>'+
+            '<p class="measure-narrow" style="margin-top:9px;font-size:13px;line-height:1.5">'+esc(txt(sh.context,'—'))+'</p>'+
+          '</div>'+
+          '<div class="pend-tension">'+
+            '<span class="lbl red">anti-viés global</span>'+
+            '<p class="measure-narrow" style="margin-top:9px;font-size:13px;line-height:1.5">'+esc(txt(sh.anti_bias_global,'não declarado'))+'</p>'+
+          '</div>'+
+          '<div class="pend-meta">'+
+            '<span class="lbl">ficha</span>'+
+            '<p style="margin-top:9px;font-size:12px;line-height:1.7;color:var(--ink-60)" class="tnum">'+
+              ac+' agentes · '+arr(sh.groups).length+' grupos<br>'+
+              'max_loops '+esc(txt(sh.max_loops))+' · aprovador '+esc(txt(sh.final_approver))+'<br>'+
+              'schema '+esc(txt(sh.schema_version))+'<br>'+
+              esc(txt(sh.working_folder))+'<br>'+
+              esc(txt(sh.invoked_by))+'<br>'+
+              'arquivo '+esc(txt(p._file))+' · '+esc(mtS)+
+            '</p>'+
+          '</div>'+
+          '<div class="pend-groups">'+
+            '<span class="lbl">grupos, agentes e eixos de tensão</span>'+
+            '<div style="margin-top:16px">'+groupsHtml(sh.groups)+'</div>'+
+            '<div style="margin-top:26px;max-width:58em"><span class="lbl">conexões</span>'+connsHtml(sh.connections)+'</div>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }).join('')+'</div>';
+  }
+
+  return '<section class="pending">'+head+
+    '<div data-testid="pending-list">'+body+'</div>'+
+  '</section>';
+}
+
+/* ------------------------------------------------------------- 02 ÍNDICE */
+function indexHtml(){
+  var t = totals();
+  var repos = arr(S.snap && S.snap.repos);
+  var li = '<li'+(S.repo==="*"?' class="sel"':'')+'><button data-repo="*">'+
+    '<span class="nm">Todos os repositórios</span>'+
+    '<span class="op tnum">'+nf(t.open)+'</span>'+
+    '<span class="ct">'+nf(t.total)+'</span></button></li>' +
+    repos.map(function(r){
+      return '<li'+(S.repo===r.name?' class="sel"':'')+'><button data-repo="'+esc(r.name)+'">'+
+        '<span class="nm">'+esc(r.name)+'</span>'+
+        '<span class="op tnum">'+(Number(r.open_dispatches)?nf(r.open_dispatches):'')+'</span>'+
+        '<span class="ct">'+nf(r.total_dispatches)+'</span></button></li>';
+    }).join('');
+
+  return '<section>'+
+    '<div class="grid sec-head">'+
+      '<div class="n">02</div>'+
+      '<div class="t"><h2>Índice</h2>'+
+        '<p class="lbl" style="margin-top:14px">'+nf(t.repos)+' repositórios · filtro por repo e por estado</p></div>'+
+      '<div class="aside lbl">coluna esquerda: abertas</div>'+
+    '</div>'+
+    '<div class="grid"><div style="grid-column:1/13;padding-top:16px"><div class="rule"></div></div></div>'+
+    '<div class="grid sec-body" style="padding-bottom:70px">'+
+      '<div class="index" style="grid-column:1/6"><ul id="repo-index">'+li+'</ul></div>'+
+      '<div style="grid-column:7/10">'+
+        '<span class="lbl">estado</span>'+
+        '<div class="chips" id="state-chips">'+
+          ['todos','abertas','fechadas'].map(function(k){
+            return '<button class="chip" data-state="'+k+'" aria-pressed="'+(S.onlyOpen===k)+'">'+k+'</button>';
+          }).join('')+
+        '</div>'+
+        '<p class="measure-narrow" style="margin-top:22px;font-size:12.5px;color:var(--ink-60);line-height:1.55">'+
+        'O leitor recebe as '+esc(txt(S.snap&&S.snap.config&&S.snap.config.limit,'N'))+
+        ' dispatches mais recentes de cada repo. Os totais acima são do ledger inteiro.</p>'+
+      '</div>'+
+      '<div style="grid-column:11/13">'+
+        '<span class="lbl">avisos</span>'+
+        '<p style="margin-top:9px;font-size:12.5px;line-height:1.55;color:var(--ink-60)" class="tnum">'+
+          nf(t.warn)+' linhas ilegíveis toleradas<br>'+
+          (t.err? '<span class="err">'+nf(t.err)+' repo(s) com erro fatal</span>' : 'nenhum erro fatal')+
+        '</p>'+
+      '</div>'+
+    '</div>'+
+  '</section>';
+}
+
+/* ---------------------------------------------------------- 03 HISTÓRICO */
+function dispatchRowHtml(repoName, d, i){
+  d = d || {};
+  var k = key(repoName, d, i);
+  var isOpen = d._state === "open";
+  var when = fmtDate(d.created || (d._close && d._close.closed));
+  var live = has(d.dispatch_type) ? !!LIVE_TYPES[d.dispatch_type] : !!d._live;
+  var ex = d._close && d._close.exit_reason;
+
+  var tags = [];
+  if(has(d.dispatch_type)){
+    tags.push('<span class="tag '+(live?'live':'reserved')+'">'+esc(d.dispatch_type)+'</span>');
+    tags.push('<span class="tag '+(live?'live':'reserved')+' lbl">'+(live?'live':'reservado')+'</span>');
+  } else {
+    tags.push('<span class="tag lbl">tipo ausente</span>');
+  }
+  if(d._legacy)       tags.push('<span class="tag flag lbl">legacy — sem grupos</span>');
+  if(d._orphan_close) tags.push('<span class="tag flag lbl">close órfã</span>');
+
+  var end = '';
+  if(isOpen){
+    end = '<span class="state st-open"><span class="sq"></span><span class="lbl red">aberta</span></span>';
+  } else {
+    end = '<span class="state st-closed"><span class="sq"></span><span class="lbl">fechada</span></span>'+
+      (has(ex) ? '<div class="exit'+(BAD_EXITS[ex]?' bad':'')+'" style="margin-top:8px">'+esc(ex)+'</div>' : '');
+  }
+  end += '<div class="lbl" style="margin-top:8px">'+esc(has(d._agent_count)?d._agent_count:0)+' agentes</div>';
+
+  var detail = S.open[k] ? detailHtml(repoName, d, k) : '';
+
+  return '<article class="disp'+(isOpen?' open-state':'')+'" data-testid="dispatch-card" '+
+      'data-dispatch-id="'+esc(txt(d.dispatch_id,''))+'" data-state="'+(isOpen?'open':'closed')+'">'+
+    '<div class="grid row" data-key="'+esc(k)+'" role="button" tabindex="0" aria-expanded="'+(!!S.open[k])+'">'+
+      '<div class="c-when"><div class="when">'+esc(when.d)+'<br><span class="t">'+esc(when.t)+'</span></div></div>'+
+      '<div class="c-main"><div class="did">'+esc(txt(d.dispatch_id,'(sem id)'))+'</div>'+
+        '<div class="goal">'+esc(txt(d.goal,'(sem objetivo registrado)'))+'</div></div>'+
+      '<div class="c-tags">'+tags.join('')+'</div>'+
+      '<div class="c-end">'+end+'</div>'+
+    '</div>'+
+    detail+
+  '</article>';
+}
+
+function detailHtml(repoName, d, k){
+  var f = S.full[k] || null;         // payload sem truncar, se já buscado
+  var groups = arr(d.groups);
+  var c = d._close || null;
+
+  var left = '<div class="d-left">'+
+    '<div class="field"><span class="lbl">objetivo</span><p>'+esc(txt(d.goal))+'</p></div>'+
+    (has(d.context) ? '<div class="field"><span class="lbl">contexto</span><p class="dim">'+esc(d.context)+'</p></div>' : '')+
+  '</div>';
+
+  var mid = '<div class="d-mid">'+
+    '<div class="field"><span class="lbl red">anti-viés global</span>'+
+      '<p'+(has(d.anti_bias_global)?'':' class="dim"')+'>'+esc(txt(d.anti_bias_global,'não declarado'))+'</p></div>'+
+    '<div class="field"><span class="lbl">conexões</span>'+connsHtml(d.connections)+'</div>'+
+  '</div>';
+
+  var right = '<div class="d-right">'+
+    '<div class="field"><span class="lbl">ficha</span>'+
+      '<p class="dim tnum" style="line-height:1.75;font-size:12px">'+
+        'schema '+esc(txt(d.schema_version))+'<br>'+
+        'max_loops '+esc(txt(d.max_loops))+' · aprovador '+esc(txt(d.final_approver))+'<br>'+
+        esc(txt(d.working_folder))+'<br>'+
+        esc(txt(d.invoked_by))+'<br>'+
+        'repo '+esc(repoName)+
+      '</p></div>'+
+    (c ? '<div class="field"><span class="lbl">fechamento</span>'+
+      '<p class="'+(BAD_EXITS[c.exit_reason]?'':'dim')+'" style="font-size:12.5px">'+
+        (BAD_EXITS[c.exit_reason]?'<span class="err">':'')+esc(txt(c.exit_reason))+(BAD_EXITS[c.exit_reason]?'</span>':'')+
+        ' · '+esc(fmtDate(c.closed).d)+' '+esc(fmtDate(c.closed).t)+'</p>'+
+      (c.agents_spawned ? '<div class="tree"><span>total <b>'+esc(txt(c.agents_spawned.total,0))+'</b></span>'+
+        '<span>loops <b>'+esc(txt(c.agents_spawned.loops_used,0))+'</b></span>'+
+        Object.keys(c.agents_spawned.tree||{}).filter(function(kk){return Number((c.agents_spawned.tree||{})[kk])>0;})
+          .map(function(kk){ return '<span>'+esc(kk)+' <b>'+esc(c.agents_spawned.tree[kk])+'</b></span>'; }).join('')+
+      '</div>' : '')+
+      (arr(c.feedback_prompts).length ? '<div class="fbk"><span class="lbl">prompts de feedback</span><ol>'+
+        arr(c.feedback_prompts).map(function(p){ return '<li>'+esc(p)+'</li>'; }).join('')+'</ol></div>' : '')+
+    '</div>' : '')+
+  '</div>';
+
+  var full = '<div class="d-full">';
+  if(groups.length){
+    full += '<span class="lbl">grupos · agentes · ângulo contra o anti-viés</span>'+
+      '<div style="margin-top:16px">'+groupsHtml(groups, f && arr(f.groups))+'</div>';
+    if(d._prompts_truncated && !f){
+      full += '<p class="more">prompts truncados pelo leitor — <button class="ghost" data-full="'+esc(k)+'" data-repo="'+esc(repoName)+'" data-id="'+esc(txt(d.dispatch_id,''))+'">carregar prompts completos</button></p>';
+    }
+  } else if(d._orphan_close){
+    full += '<p class="dim" style="font-size:13px;max-width:40em">Close row órfã: existe o fechamento no ledger, mas a dispatch row correspondente nunca foi escrita. Nada a exibir sobre grupos.</p>';
+  } else if(d._legacy){
+    full += '<p class="dim" style="font-size:13px;max-width:40em">Row legacy (anterior a v0.5.2): não declara <b>groups</b>. Composição de agentes indisponível.</p>';
+  } else {
+    full += '<p class="dim" style="font-size:13px">Sem grupos declarados.</p>';
+  }
+  full += '</div>';
+
+  return '<div class="grid detail">'+left+mid+right+full+'</div>';
+}
+
+function historyHtml(){
+  var t = totals();
+  var repos = visibleRepos();
+
+  var head = '<section>'+
+    '<div class="grid sec-head">'+
+      '<div class="n">03</div>'+
+      '<div class="t"><h2>Histórico</h2>'+
+        '<p class="lbl" style="margin-top:14px">'+
+          '<span data-testid="total-count">'+nf(t.total)+' dispatches no ledger</span>'+
+          ' · '+nf(t.shown)+' carregadas · '+nf(t.open)+' abertas</p></div>'+
+      '<div class="aside lbl">clique numa linha para abrir</div>'+
+    '</div>'+
+    '<div class="grid"><div style="grid-column:1/13;padding-top:16px"><div class="rule"></div></div></div>';
+
+  var body = repos.map(function(r){
+    var list = filterDispatches(arr(r.dispatches));
+    var notes = "";
+    if(has(r.error) || arr(r.warnings).length){
+      notes = '<details class="notes"><summary class="lbl'+(has(r.error)?' red':'')+'">'+
+        (has(r.error)?'erro fatal de leitura · ':'')+
+        arr(r.warnings).length+' aviso(s) — abrir</summary><div class="body">'+
+        (has(r.error)?'<p class="err">'+esc(r.error)+'</p>':'')+
+        arr(r.warnings).slice(0,200).map(function(w){ return '<p>'+esc(w)+'</p>'; }).join('')+
+        (arr(r.warnings).length>200?'<p>… e mais '+(arr(r.warnings).length-200)+'</p>':'')+
+      '</div></details>';
+    }
+
+    return '<div class="repo-sec" data-testid="repo-section" data-repo="'+esc(r.name)+'">'+
+      '<div class="grid repo-head">'+
+        '<div class="rn"><div class="repo-name">'+esc(r.name)+'</div>'+
+          '<div class="repo-path">'+esc(txt(r.path))+'</div>'+notes+'</div>'+
+        '<div class="rm">'+
+          '<span class="lbl tnum">'+nf(r.total_dispatches)+' no ledger</span>'+
+          '<span class="lbl tnum'+(Number(r.open_dispatches)?' red':'')+'">'+nf(r.open_dispatches)+' abertas</span>'+
+          '<span class="lbl tnum">'+nf(list.length)+' exibidas</span>'+
+          (r.ledger_exists===false?'<span class="lbl red">sem ledger</span>':'')+
+        '</div>'+
+      '</div>'+
+      (list.length
+        ? list.map(function(d,i){ return dispatchRowHtml(r.name, d, i); }).join('')
+        : '<div class="grid"><div style="grid-column:3/9" class="empty">Nenhuma dispatch sob o filtro atual.</div></div>')+
+    '</div>';
+  }).join('');
+
+  if(!repos.length) body = '<div class="grid"><div style="grid-column:3/9" class="empty">Nenhum repositório.</div></div>';
+
+  return head+'<div class="sec-body" data-testid="dispatch-list">'+body+'</div></section>';
+}
+
+/* ------------------------------------------------------------ render raiz */
+function render(){
+  var t = totals();
+  var cfg = (S.snap && S.snap.config) || {};
+
+  var mast = '<header class="masthead">'+
+    '<div class="grid mast-top">'+
+      '<div class="brand lbl">cyberalchemy · orquestrador · leitor de ledger — fase 1</div>'+
+      '<div class="live">'+
+        '<span id="live-indicator" data-testid="live-indicator" class="lbl '+(S.connected?'':'down')+'">'+
+          '<span class="dot"></span>'+(S.connected?'ao vivo · conectado':'ao vivo · sem conexão')+
+        '</span>'+
+      '</div>'+
+    '</div>'+
+    '<div class="grid"><div style="grid-column:1/13"><div class="rule"></div></div></div>'+
+    '<div class="grid">'+
+      '<div class="mast-title"><h1>Dispatch<br>Control Plane</h1></div>'+
+    '</div>'+
+    '<div class="grid">'+
+      '<div class="mast-sub"><p class="measure-narrow" style="font-size:13.5px;line-height:1.5;color:var(--ink-60)">'+
+        'Leitura append-only do ledger. Nada é escrito daqui. O gate humano vive no topo: '+
+        'sheets pendentes primeiro, histórico depois.</p></div>'+
+      '<div class="mast-stats"><div class="statline">'+
+        '<div class="stat"><b>'+nf(t.pend)+'</b><span class="lbl red">pendentes</span></div>'+
+        '<div class="stat"><b>'+nf(t.open)+'</b><span class="lbl">abertas</span></div>'+
+        '<div class="stat"><b>'+nf(t.total)+'</b><span class="lbl">dispatches</span></div>'+
+        '<div class="stat"><b>'+nf(t.repos)+'</b><span class="lbl">repos</span></div>'+
+      '</div></div>'+
+    '</div>'+
+  '</header>';
+
+  var foot = '<footer class="grid">'+
+    '<div class="a"><p class="lbl">leitor somente-leitura · poll '+esc(txt(cfg.poll_seconds,'—'))+'s · limite '+esc(txt(cfg.limit,'—'))+'/repo</p></div>'+
+    '<div class="b"><button class="ghost" id="toggle-guides">'+(S.guides?'ocultar':'mostrar')+' guias da grade</button></div>'+
+  '</footer>';
+
+  var el = document.getElementById("root");
+  if(!S.snap){
+    el.innerHTML = mast+'<div class="grid"><div style="grid-column:2/8;padding:60px 0"><h3>Carregando o ledger…</h3></div></div>';
+    return;
+  }
+  el.innerHTML = mast + pendingHtml() + indexHtml() + historyHtml() + foot;
+  document.getElementById("guides").className = S.guides ? "on" : "";
+}
+
+/* --------------------------------------------------------------- eventos */
+document.addEventListener("click", function(e){
+  var g = e.target.closest && e.target.closest("#toggle-guides");
+  if(g){ S.guides = !S.guides; render(); return; }
+
+  var fb = e.target.closest && e.target.closest("[data-full]");
+  if(fb){ loadFull(fb.getAttribute("data-repo"), fb.getAttribute("data-id"), fb.getAttribute("data-full")); return; }
+
+  var ri = e.target.closest && e.target.closest("#repo-index button");
+  if(ri){ S.repo = ri.getAttribute("data-repo"); render(); window.scrollTo({top:window.scrollY}); return; }
+
+  var ch = e.target.closest && e.target.closest("#state-chips .chip");
+  if(ch){ S.onlyOpen = ch.getAttribute("data-state"); render(); return; }
+
+  var row = e.target.closest && e.target.closest(".disp .row");
+  if(row){
+    var k = row.getAttribute("data-key");
+    if(S.open[k]) delete S.open[k]; else S.open[k] = true;
+    render();
+    return;
+  }
+});
+document.addEventListener("keydown", function(e){
+  if(e.key!=="Enter" && e.key!==" ") return;
+  var row = e.target.closest && e.target.closest(".disp .row");
+  if(!row) return;
+  e.preventDefault();
+  var k = row.getAttribute("data-key");
+  if(S.open[k]) delete S.open[k]; else S.open[k] = true;
+  render();
+});
+
+function loadFull(repo, id, k){
+  if(!repo || !id) return;
+  fetch("/api/dispatch/"+encodeURIComponent(repo)+"/"+encodeURIComponent(id))
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){ if(j){ S.full[k] = j.dispatch || j; render(); } })
+    .catch(function(){});
+}
+
+/* ------------------------------------------------------------ dados / SSE */
+function apply(data){ S.snap = data; render(); }
+
+function boot(){
+  render();
+  fetch("/api/snapshot")
+    .then(function(r){ return r.json(); })
+    .then(apply)
+    .catch(function(){ S.snap = S.snap || {repos:[],config:{}}; render(); });
+
+  if(typeof EventSource === "undefined") return;
+  var es;
+  try { es = new EventSource("/api/stream"); } catch(err){ return; }
+  es.addEventListener("open", function(){ S.connected = true; render(); });
+  es.addEventListener("snapshot", function(ev){
+    S.connected = true;
+    try { apply(JSON.parse(ev.data)); } catch(err){ render(); }
+  });
+  es.addEventListener("error", function(){ S.connected = false; render(); });
+}
+
+if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+else boot();
+
+})();
+</script>
+</body>
+</html>

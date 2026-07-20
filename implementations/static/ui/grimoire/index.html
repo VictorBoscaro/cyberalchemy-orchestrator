@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grimório de Despachos — Cyberalchemy</title>
+<style>
+  :root{
+    --parchment:#f2e8d5;
+    --parchment-deep:#e8dcc2;
+    --ink:#3b2a1a;
+    --ink-soft:#6b5540;
+    --ink-faint:#8d7a63;
+    --rubric:#8b2f1d;
+    --rubric-soft:#a8543f;
+    --gold:#9a7b32;
+    --verdigris:#4a6b52;
+    --rule:#c9b795;
+    --rule-strong:#a8916a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background-color:var(--parchment);
+    background-image:
+      radial-gradient(ellipse 60% 40% at 12% 8%, rgba(139,47,29,.045), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 88% 18%, rgba(154,123,50,.06), transparent 70%),
+      radial-gradient(ellipse 70% 45% at 30% 62%, rgba(59,42,26,.035), transparent 72%),
+      radial-gradient(ellipse 45% 30% at 78% 82%, rgba(139,47,29,.035), transparent 70%),
+      radial-gradient(ellipse 40% 25% at 50% 40%, rgba(232,220,194,.5), transparent 75%),
+      radial-gradient(circle at 20% 30%, rgba(59,42,26,.02) 0 1px, transparent 2px),
+      radial-gradient(circle at 70% 75%, rgba(59,42,26,.02) 0 1px, transparent 2px);
+    color:var(--ink);
+    font-family:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:28px 26px 90px}
+
+  /* ── Cabeçalho ─────────────────────────────────────────── */
+  header.codex{
+    border:3px double var(--rule-strong);
+    padding:18px 24px 14px;
+    position:relative;
+    background:rgba(255,252,244,.35);
+  }
+  header.codex:after{
+    content:"⚗";position:absolute;right:14px;top:6px;
+    font-size:26px;color:var(--rubric);opacity:.5;
+  }
+  h1{
+    margin:0;
+    font-size:34px;
+    font-variant:small-caps;
+    letter-spacing:.06em;
+    font-weight:400;
+    color:var(--rubric);
+  }
+  .subtitle{
+    margin:2px 0 0;font-style:italic;color:var(--ink-soft);font-size:14.5px;
+  }
+  .colophon{
+    display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;
+    margin-top:14px;padding-top:11px;border-top:1px solid var(--rule);
+    font-size:13.5px;
+  }
+  .colophon .lab{font-variant:small-caps;letter-spacing:.05em;color:var(--ink-faint)}
+  .colophon b{font-weight:700;color:var(--ink)}
+  [data-testid="live-indicator"]{
+    font-variant:small-caps;letter-spacing:.06em;
+    border:1px solid var(--rule-strong);padding:2px 10px;
+    background:rgba(255,255,255,.35);
+  }
+  .live-on{color:var(--verdigris);border-color:var(--verdigris)!important}
+  .live-off{color:var(--rubric);border-color:var(--rubric)!important}
+  .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:currentColor}
+
+  /* ── Controles ─────────────────────────────────────────── */
+  .controls{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-left:auto}
+  select,input[type=search]{
+    font-family:inherit;font-size:14px;color:var(--ink);
+    background:rgba(255,253,246,.7);
+    border:1px solid var(--rule-strong);border-radius:0;
+    padding:3px 6px;
+  }
+  label.ctl{font-variant:small-caps;letter-spacing:.05em;color:var(--ink-faint);font-size:13.5px}
+  .chk{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--ink-soft)}
+
+  /* ── Divisórias ornamentais ────────────────────────────── */
+  .divider{
+    display:flex;align-items:center;gap:14px;margin:34px 0 16px;
+    color:var(--rubric);
+  }
+  .divider:before,.divider:after{content:"";flex:1;height:0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule)}
+  .divider .glyphs{font-size:15px;letter-spacing:.5em;opacity:.75}
+  h2.section{
+    margin:0;font-size:22px;font-variant:small-caps;letter-spacing:.07em;
+    font-weight:400;color:var(--rubric);white-space:nowrap;
+  }
+  h2.section .num{font-style:italic;color:var(--ink-faint);font-size:16px;margin-right:8px}
+
+  .lede{margin:0 0 16px;font-size:15px;color:var(--ink-soft);max-width:74ch}
+  .lede::first-letter{
+    float:left;font-size:52px;line-height:.82;padding:4px 8px 0 0;
+    color:var(--rubric);font-weight:400;
+  }
+
+  /* ── Legenda de símbolos ───────────────────────────────── */
+  .legend{
+    border:1px solid var(--rule-strong);padding:9px 14px;
+    display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;
+    background:rgba(255,252,244,.4);font-size:13.5px;margin-bottom:18px;
+  }
+  .legend .cap{font-variant:small-caps;letter-spacing:.06em;color:var(--ink-faint);margin-right:4px}
+  .legend span.item{white-space:nowrap}
+  .sigil{color:var(--rubric);font-size:15px;margin-right:5px}
+
+  /* ── Pergaminhos pendentes ─────────────────────────────── */
+  [data-testid="pending-list"]{display:block}
+  .pending-card{
+    position:relative;
+    border:4px double var(--rubric);
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139,47,29,.05), transparent 70%),
+      rgba(255,251,242,.72);
+    padding:26px 34px 22px 30px;
+    margin-bottom:22px;
+    box-shadow:0 1px 0 rgba(59,42,26,.12), 0 10px 26px -18px rgba(59,42,26,.6);
+  }
+  .pending-card:before{
+    content:"";position:absolute;inset:5px;border:1px solid rgba(139,47,29,.35);pointer-events:none;
+  }
+  .seal{
+    position:absolute;top:-18px;right:10px;
+    width:86px;height:86px;border-radius:50%;
+    background:radial-gradient(circle at 34% 30%, #a8402a, #8b2f1d 55%, #6d2415 100%);
+    color:#f2e8d5;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 4px 10px -3px rgba(59,42,26,.65), inset 0 0 0 3px rgba(242,232,213,.22);
+    font-variant:small-caps;letter-spacing:.05em;text-align:center;line-height:1.05;
+  }
+  .seal .s-glyph{font-size:23px;line-height:1}
+  .seal .s-text{font-size:9.5px;opacity:.92;margin-top:2px;max-width:62px;line-height:1.15}
+  .pending-card h3{
+    margin:0 88px 4px 0;font-size:21px;font-weight:400;
+    font-variant:small-caps;letter-spacing:.04em;color:var(--rubric);
+  }
+  .pending-card .did{font-family:Georgia,serif;font-style:italic;font-size:13.5px;color:var(--ink-faint);margin:0 88px 12px 0;word-break:break-all}
+  .goal{font-size:16.5px;margin:0 0 10px}
+  .goal::first-letter{float:left;font-size:46px;line-height:.85;padding:3px 7px 0 0;color:var(--rubric)}
+  .ctx{font-size:14.5px;color:var(--ink-soft);margin:0 0 14px;font-style:italic}
+
+  .gate{
+    display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+    border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);
+    padding:12px 0;margin:16px 0 4px;
+  }
+  button[data-testid="dispatch-button"]{
+    font-family:inherit;font-size:15.5px;font-variant:small-caps;letter-spacing:.1em;
+    padding:8px 26px;border:2px double var(--rubric);border-radius:0;
+    background:rgba(139,47,29,.07);color:var(--rubric);
+    cursor:not-allowed;opacity:.62;
+  }
+  button[data-testid="dispatch-button"]:disabled{filter:grayscale(.15)}
+  .gate .note{font-size:13px;color:var(--ink-faint);font-style:italic}
+
+  .empty-scroll{
+    border:2px dashed var(--rule-strong);padding:22px 26px;
+    background:rgba(255,252,244,.45);text-align:center;
+    font-style:italic;color:var(--ink-soft);
+  }
+  .empty-scroll .glyph{display:block;font-size:26px;color:var(--rubric);opacity:.55;margin-bottom:6px}
+
+  /* ── Eixo de tensão ────────────────────────────────────── */
+  .tension{
+    border-left:4px double var(--rubric);
+    background:rgba(139,47,29,.045);
+    padding:8px 14px;margin:10px 0;
+  }
+  .tension .cap{
+    font-variant:small-caps;letter-spacing:.09em;color:var(--rubric);font-size:12.5px;display:block;
+  }
+  .tension .axis{font-size:15px;font-style:italic}
+  .tension.global{border-left-width:6px;padding:10px 16px}
+
+  /* ── Grupos e agentes ──────────────────────────────────── */
+  .group{
+    border:1px solid var(--rule-strong);
+    background:rgba(255,253,247,.45);
+    padding:11px 14px;margin:12px 0;
+  }
+  .group > h4{
+    margin:0 0 6px;font-size:15.5px;font-weight:400;
+    font-variant:small-caps;letter-spacing:.06em;color:var(--ink);
+    display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;
+  }
+  .group .meta{font-size:12.5px;color:var(--ink-faint);font-variant:normal;letter-spacing:0;font-style:italic}
+  table.agents{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+  table.agents th{
+    text-align:left;font-weight:400;font-variant:small-caps;letter-spacing:.06em;
+    color:var(--ink-faint);font-size:12.5px;border-bottom:1px solid var(--rule);
+    padding:3px 8px 3px 0;white-space:nowrap;
+  }
+  table.agents td{padding:5px 8px 5px 0;border-bottom:1px dotted var(--rule);vertical-align:top}
+  table.agents tr:last-child td{border-bottom:none}
+  .agent-name{font-variant:small-caps;letter-spacing:.03em}
+  .agent-name.anon{font-variant:normal;font-style:italic;color:var(--ink-faint)}
+  .mono-ish{font-size:13px;color:var(--ink-soft)}
+  td.mono-ish{white-space:nowrap}
+  table.agents td .notes summary{font-size:12px;color:var(--rubric)}
+  .angle{font-style:italic;color:var(--ink)}
+  .angle.none{color:var(--ink-faint);font-style:italic}
+  .budget{text-align:right;white-space:nowrap;color:var(--ink-soft)}
+
+  /* ── Conexões ──────────────────────────────────────────── */
+  .conns{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:7px 12px;align-items:center}
+  .conns .cap{font-variant:small-caps;letter-spacing:.07em;color:var(--ink-faint);font-size:12.5px}
+  .edge{
+    font-size:13.5px;padding:2px 9px;border:1px solid var(--rule-strong);
+    background:rgba(255,255,255,.4);white-space:nowrap;
+  }
+  .edge .arrow{margin:0 5px;font-weight:700}
+  .edge.sequential{border-style:solid;color:var(--ink)}
+  .edge.sequential .arrow{color:var(--ink-soft)}
+  .edge.zigzag{border-style:dashed;color:var(--gold)}
+  .edge.zigzag .arrow{color:var(--gold)}
+  .edge.feedback{border-style:double;border-width:3px;color:var(--rubric);background:rgba(139,47,29,.05)}
+  .edge.feedback .arrow{color:var(--rubric)}
+  .edge .cap-n{font-variant:small-caps;font-size:12px;color:var(--rubric);margin-left:6px}
+
+  /* ── Repos ─────────────────────────────────────────────── */
+  .repo{margin:26px 0 0;border-top:3px double var(--rule-strong);padding-top:12px}
+  .repo > h3{
+    margin:0 0 2px;font-size:19px;font-weight:400;
+    font-variant:small-caps;letter-spacing:.07em;color:var(--ink);
+    display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;
+  }
+  .repo .tally{font-size:13px;color:var(--ink-faint);font-variant:normal;letter-spacing:0;font-style:italic}
+  .repo .path{font-size:12px;color:var(--ink-faint);word-break:break-all;margin:0 0 8px}
+  details.notes{margin:6px 0 10px;font-size:13.5px}
+  details.notes > summary{
+    cursor:pointer;font-variant:small-caps;letter-spacing:.05em;color:var(--rubric);
+    list-style:none;
+  }
+  details.notes > summary::-webkit-details-marker{display:none}
+  details.notes > summary:before{content:"❧ ";opacity:.7}
+  details.notes ul{margin:6px 0 0 18px;padding:0;color:var(--ink-soft)}
+  details.notes li{margin:2px 0;word-break:break-word}
+  .fatal{border:2px solid var(--rubric);background:rgba(139,47,29,.07);padding:8px 12px;color:var(--rubric);font-size:14px;margin:8px 0}
+
+  /* ── Cartas de despacho ────────────────────────────────── */
+  .dcard{
+    border:1px solid var(--rule-strong);
+    border-left:5px solid var(--rule-strong);
+    background:rgba(255,253,247,.5);
+    padding:12px 16px;margin:12px 0;
+  }
+  .dcard[data-state="open"]{border-left-color:var(--rubric);background:rgba(139,47,29,.035)}
+  .dcard[data-state="closed"]{border-left-color:var(--rule-strong)}
+  .dcard .head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline}
+  .dcard .title{
+    font-size:16.5px;font-variant:small-caps;letter-spacing:.03em;color:var(--ink);
+    word-break:break-word;flex:1 1 340px;
+  }
+  .dcard .when{font-size:12.5px;color:var(--ink-faint);font-style:italic;white-space:nowrap}
+  .dcard .goal-line{margin:6px 0 0;font-size:15px}
+  .roles-strip{margin:7px 0 0;font-size:15px;letter-spacing:.18em;color:var(--rubric)}
+  .roles-strip .none{font-size:12.5px;letter-spacing:0;color:var(--ink-faint);font-style:italic}
+
+  .marks{display:flex;flex-wrap:wrap;gap:6px}
+  .mark{
+    font-size:12px;font-variant:small-caps;letter-spacing:.07em;
+    padding:1px 8px;border:1px solid var(--rule-strong);white-space:nowrap;
+    background:rgba(255,255,255,.4);color:var(--ink-soft);
+  }
+  .mark.open{color:var(--rubric);border-color:var(--rubric);background:rgba(139,47,29,.08);font-weight:700}
+  .mark.closed{color:var(--ink-faint)}
+  .mark.live{color:var(--verdigris);border-color:var(--verdigris)}
+  .mark.reserved{color:var(--gold);border-color:var(--gold);border-style:dashed}
+  .mark.good{color:var(--verdigris);border-color:var(--verdigris)}
+  .mark.alert{color:#fdf3e6;background:var(--rubric);border-color:var(--rubric);font-weight:700}
+  .mark.warn{color:var(--rubric);border-color:var(--rubric);border-style:dashed}
+  .mark.legacy{color:var(--gold);border-color:var(--gold);border-style:dotted}
+
+  details.more{margin-top:9px}
+  details.more > summary{
+    cursor:pointer;font-variant:small-caps;letter-spacing:.06em;font-size:13px;color:var(--rubric);
+    list-style:none;border-top:1px solid var(--rule);padding-top:7px;
+  }
+  details.more > summary::-webkit-details-marker{display:none}
+  details.more > summary:before{content:"⁘ ";opacity:.7}
+  .kv{display:flex;flex-wrap:wrap;gap:4px 20px;font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .kv b{font-variant:small-caps;letter-spacing:.05em;font-weight:400;color:var(--ink-faint)}
+  .closebox{border:1px solid var(--rule);padding:8px 12px;margin:10px 0 0;background:rgba(255,255,255,.35);font-size:13.5px}
+  .closebox .cap{font-variant:small-caps;letter-spacing:.07em;color:var(--ink-faint);font-size:12.5px}
+  .fb{margin:6px 0 0 16px;padding:0;color:var(--ink-soft);font-size:13px}
+  .fb li{margin:3px 0}
+  .prompt{
+    white-space:pre-wrap;font-size:13px;color:var(--ink-soft);
+    border-left:2px solid var(--rule);padding-left:9px;margin:4px 0 0;
+  }
+  .trunc{color:var(--rubric);font-variant:small-caps;font-size:11.5px;letter-spacing:.05em}
+  .more-btn{
+    display:block;margin:16px auto 0;font-family:inherit;font-size:14px;
+    font-variant:small-caps;letter-spacing:.08em;color:var(--rubric);
+    background:rgba(255,252,244,.6);border:2px double var(--rubric);padding:6px 22px;cursor:pointer;
+  }
+  footer.colofon{
+    margin-top:46px;border-top:3px double var(--rule-strong);padding-top:10px;
+    font-size:12.5px;color:var(--ink-faint);font-style:italic;text-align:center;
+  }
+  .nothing{font-style:italic;color:var(--ink-faint);padding:10px 0}
+</style>
+</head>
+<body>
+<div class="page" id="root" data-testid="app">
+  <p class="nothing">Abrindo o grimório…</p>
+</div>
+
+<script>
+"use strict";
+(function(){
+
+/* ═══ Símbolos alquímicos por papel ═══ */
+var SIGILS = {
+  explorer:    {g:"🜁", n:"Ar — Explorador"},        /* 🜁 */
+  synthesizer: {g:"☿",       n:"Mercúrio — Sintetizador"}, /* ☿ */
+  skeptic:     {g:"🜂", n:"Fogo — Cético"},           /* 🜂 */
+  writer:      {g:"🜄", n:"Água — Escriba"},          /* 🜄 */
+  auditor:     {g:"🜃", n:"Terra — Auditor"},         /* 🜃 */
+  _unknown:    {g:"🜍", n:"Enxofre — papel ignoto"}   /* 🜍 */
+};
+function sigilOf(role){ return SIGILS[role] || SIGILS._unknown; }
+
+var LIVE_TYPES = {research:1, review:1, experiment:1};
+
+var EXIT_PT = {
+  resolved:"resolvido",
+  success:"resolvido",
+  loop_ceiling_reached:"teto de laços atingido",
+  dissent_irreconcilable:"dissenso irreconciliável",
+  user_abort:"abortado pelo operador",
+  error:"erro"
+};
+function exitTone(r){
+  if(r === "error" || r === "dissent_irreconcilable") return "alert";
+  if(r === "loop_ceiling_reached" || r === "user_abort") return "warn";
+  return "good";
+}
+
+/* ═══ Helpers de DOM (sem innerHTML em dado vindo da API) ═══ */
+function el(tag, cls, text){
+  var n = document.createElement(tag);
+  if(cls) n.className = cls;
+  if(text !== undefined && text !== null && text !== "") n.textContent = String(text);
+  return n;
+}
+function add(parent){
+  for(var i=1;i<arguments.length;i++){ if(arguments[i]) parent.appendChild(arguments[i]); }
+  return parent;
+}
+function mark(cls, text){ return el("span","mark "+cls, text); }
+function txt(v, fallback){
+  if(v === null || v === undefined || v === "") return (fallback === undefined ? "—" : fallback);
+  return String(v);
+}
+function fmtDate(iso){
+  if(!iso) return "data ignota";
+  var d = new Date(iso);
+  if(isNaN(d.getTime())) return String(iso);
+  var p = function(x){ return (x<10?"0":"")+x; };
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" · "+p(d.getHours())+"h"+p(d.getMinutes());
+}
+function fmtMtime(ts){
+  if(!ts && ts !== 0) return "—";
+  return fmtDate(new Date(ts*1000).toISOString());
+}
+function countAgents(sheet){
+  var n = 0, gs = (sheet && sheet.groups) || [];
+  for(var i=0;i<gs.length;i++){ n += ((gs[i] && gs[i].agents) || []).length; }
+  return n;
+}
+
+/* ═══ Eixo de tensão ═══ */
+function tensionBlock(label, value, isGlobal){
+  if(!value) return null;
+  var box = el("div", "tension" + (isGlobal ? " global" : ""));
+  add(box, el("span","cap", label), el("div","axis", value));
+  return box;
+}
+
+/* ═══ Conexões tipadas ═══ */
+function connectionsBlock(conns){
+  if(!conns || !conns.length) return null;
+  var wrap = el("div","conns");
+  add(wrap, el("span","cap","Arestas"));
+  conns.forEach(function(c){
+    if(!c) return;
+    var t = c.type || "sequential";
+    var cls = t === "feedback" ? "feedback" : (t === "zig-zag" || t === "zigzag" ? "zigzag" : "sequential");
+    var arrow = cls === "feedback" ? "↺" : (cls === "zigzag" ? "⇄" : "→");
+    var e = el("span","edge "+cls);
+    add(e, el("span",null,txt(c.from)), el("span","arrow",arrow), el("span",null,txt(c.to)));
+    e.appendChild(el("span","cap-n"," "+t));
+    if(c.loop_cap !== undefined && c.loop_cap !== null){
+      e.appendChild(el("span","cap-n","teto "+c.loop_cap));
+    }
+    wrap.appendChild(e);
+  });
+  return wrap;
+}
+
+/* ═══ Grupo + agentes ═══ */
+function groupBlock(g, withPrompts){
+  if(!g) return null;
+  var box = el("div","group");
+  var h = el("h4");
+  add(h, el("span",null,"❦ "+txt(g.group_id, "grupo sem nome")));
+  var bits = [];
+  if(g.n !== undefined && g.n !== null) bits.push("n = "+g.n);
+  if(g.role) bits.push("papel: "+g.role);
+  if(g.layers !== undefined && g.layers !== null) bits.push("camadas: "+g.layers);
+  if(g.robot_talks) bits.push("robot-talks ativo");
+  var agents = g.agents || [];
+  bits.push(agents.length + (agents.length === 1 ? " agente" : " agentes"));
+  add(h, el("span","meta", bits.join(" · ")));
+  box.appendChild(h);
+
+  var t = tensionBlock("Eixo de tensão do grupo — anti_bias", g.anti_bias, false);
+  if(t) box.appendChild(t);
+  else box.appendChild(el("div","meta","sem anti_bias declarado neste grupo"));
+
+  if(agents.length){
+    var tab = el("table","agents");
+    var thead = el("thead"), tr = el("tr");
+    ["","Agente","Papel","Modelo","Ângulo (contra o eixo)","Tokens"].forEach(function(c){
+      tr.appendChild(el("th",null,c));
+    });
+    thead.appendChild(tr); tab.appendChild(thead);
+    var tb = el("tbody");
+    agents.forEach(function(a){
+      a = a || {};
+      var s = sigilOf(a.role);
+      var row = el("tr");
+      var c0 = el("td"); c0.appendChild(el("span","sigil",s.g)); c0.title = s.n; row.appendChild(c0);
+
+      var c1 = el("td");
+      if(a.agent_name) c1.appendChild(el("span","agent-name", a.agent_name));
+      else c1.appendChild(el("span","agent-name anon","anônimo"));
+      if(withPrompts && a.initial_prompt){
+        var p = el("div","prompt", a.initial_prompt);
+        if(a._prompt_truncated) p.appendChild(el("div","trunc","— prompt truncado pelo leitor —"));
+        if(withPrompts === "open"){
+          c1.appendChild(p);
+        } else {
+          var dp = el("details","notes");
+          dp.appendChild(el("summary", null, "prompt inicial"));
+          dp.appendChild(p);
+          c1.appendChild(dp);
+        }
+      }
+      row.appendChild(c1);
+
+      row.appendChild(el("td","mono-ish", txt(a.role,"?")));
+      row.appendChild(el("td","mono-ish", txt(a.model,"modelo não declarado")));
+
+      var c4 = el("td");
+      if(a.angle) c4.appendChild(el("span","angle", a.angle));
+      else c4.appendChild(el("span","angle none","sem ângulo declarado"));
+      row.appendChild(c4);
+
+      row.appendChild(el("td","budget", a.token_budget === undefined || a.token_budget === null ? "—" : (a.token_budget + " tk")));
+      tb.appendChild(row);
+    });
+    tab.appendChild(tb);
+    box.appendChild(tab);
+  } else {
+    box.appendChild(el("div","meta","nenhum agente descrito"));
+  }
+  return box;
+}
+
+/* ═══ Selo pendente ═══ */
+function pendingCard(p, repoName){
+  var sheet = (p && p.sheet) || {};
+  var card = el("article","pending-card");
+  card.setAttribute("data-testid","pending-card");
+
+  var seal = el("div","seal");
+  add(seal, el("div","s-glyph","⚗"), el("div","s-text","aguarda selo"));
+  seal.title = "Invocação pré-confirm — o ledger só é escrito após o selo humano";
+  card.appendChild(seal);
+
+  add(card, el("h3", null, "Invocação aguardando selo — " + repoName));
+  add(card, el("p","did", txt(sheet.dispatch_id, p._file || "sem identificador")));
+
+  if(p._error){
+    add(card, el("div","fatal","Falha ao ler a sheet: " + p._error));
+  }
+
+  var marks = el("div","marks");
+  var isLive = (p._live !== undefined && p._live !== null) ? !!p._live : !!LIVE_TYPES[sheet.dispatch_type];
+  add(marks,
+    mark(isLive ? "live" : "reserved", isLive ? "LIVE" : "RESERVADO"),
+    mark("", "tipo: " + txt(sheet.dispatch_type,"não declarado")),
+    mark("", (p._agent_count !== undefined && p._agent_count !== null ? p._agent_count : countAgents(sheet)) + " agentes"),
+    mark("", "laços máx.: " + txt(sheet.max_loops)),
+    mark("", "aprovador: " + txt(sheet.final_approver))
+  );
+  if(sheet._example) add(marks, mark("legacy","fixture de demonstração"));
+  card.appendChild(marks);
+
+  if(sheet.goal) add(card, el("p","goal", sheet.goal));
+  if(sheet.context) add(card, el("p","ctx", sheet.context));
+  if(sheet._note) add(card, el("p","ctx", "Nota do arquivo: " + sheet._note));
+
+  var gt = tensionBlock("O eixo de tensão da invocação — anti_bias_global", sheet.anti_bias_global, true);
+  if(gt) card.appendChild(gt);
+
+  /* Gate humano */
+  var gate = el("div","gate");
+  var btn = el("button", null, "⚑ Disparar");
+  btn.setAttribute("data-testid","dispatch-button");
+  btn.disabled = true;
+  btn.setAttribute("aria-disabled","true");
+  btn.title = "confirmar dispara na Fase 2";
+  add(gate, btn, el("span","note","Fase 1 é leitura apenas — confirmar dispara na Fase 2. O selo ainda não pode ser lacrado."));
+  card.appendChild(gate);
+
+  (sheet.groups || []).forEach(function(g){ card.appendChild(groupBlock(g, "open")); });
+  var cb = connectionsBlock(sheet.connections);
+  if(cb) card.appendChild(cb);
+
+  var kv = el("div","kv");
+  [["Arquivo", p._file],["Pasta de trabalho", sheet.working_folder],["Invocado por", sheet.invoked_by],
+   ["Esquema", sheet.schema_version],["Modificado", fmtMtime(p._mtime)],["Caminho", p._path]].forEach(function(pair){
+    var s = el("span"); s.appendChild(el("b", null, pair[0]+": ")); s.appendChild(document.createTextNode(txt(pair[1])));
+    kv.appendChild(s);
+  });
+  card.appendChild(kv);
+  return card;
+}
+
+/* ═══ Carta de despacho ═══ */
+function dispatchCard(d){
+  var card = el("article","dcard");
+  card.setAttribute("data-testid","dispatch-card");
+  card.setAttribute("data-dispatch-id", txt(d.dispatch_id,""));
+  var state = d._state || (d._close ? "closed" : "open");
+  card.setAttribute("data-state", state);
+
+  var head = el("div","head");
+  add(head, el("span","title", txt(d.dispatch_id,"despacho sem identificador")));
+  add(head, el("span","when", fmtDate(d.created)));
+  card.appendChild(head);
+
+  var marks = el("div","marks");
+  marks.style.marginTop = "6px";
+  add(marks, mark(state === "open" ? "open" : "closed", state === "open" ? "◉ aberta" : "✕ fechada"));
+  var isLive = d._live !== undefined ? !!d._live : !!LIVE_TYPES[d.dispatch_type];
+  add(marks, mark(isLive ? "live" : "reserved", isLive ? "LIVE" : "RESERVADO"));
+  add(marks, mark("", "tipo: " + txt(d.dispatch_type,"não declarado")));
+  if(d._agent_count !== undefined && d._agent_count !== null) add(marks, mark("", d._agent_count + " agentes"));
+  if(d._legacy) add(marks, mark("legacy","legado — sem grupos"));
+  if(d._orphan_close) add(marks, mark("warn","fecho órfão — sem linha de abertura"));
+  if(d._close && d._close.exit_reason){
+    var r = d._close.exit_reason;
+    add(marks, mark(exitTone(r), "saída: " + (EXIT_PT[r] || r)));
+  }
+  card.appendChild(marks);
+
+  if(d.goal) add(card, el("p","goal-line", d.goal));
+
+  /* Faixa de sigilos dos papéis */
+  var strip = el("div","roles-strip");
+  var roles = [];
+  (d.groups || []).forEach(function(g){
+    ((g && g.agents) || []).forEach(function(a){ roles.push(sigilOf(a && a.role).g); });
+  });
+  if(roles.length){ strip.textContent = roles.join(" "); strip.title = "sigilos dos papéis convocados"; }
+  else { strip.appendChild(el("span","none","nenhum grupo registrado nesta linha")); }
+  card.appendChild(strip);
+
+  var gt = tensionBlock("Eixo de tensão global — anti_bias_global", d.anti_bias_global, true);
+  if(gt) card.appendChild(gt);
+
+  var det = el("details","more");
+  var sum = el("summary", null, "Abrir o fólio — grupos, ângulos, arestas e fecho");
+  det.appendChild(sum);
+  var body = el("div");
+  var built = false;
+  det.addEventListener("toggle", function(){
+    if(det.open && !built){
+      built = true;
+      if(d.context) body.appendChild(el("p","ctx", d.context));
+      var kv = el("div","kv");
+      [["Invocado por", d.invoked_by],["Esquema", d.schema_version],["Laços máx.", d.max_loops],
+       ["Aprovador final", d.final_approver],["Pasta", d.working_folder],["Despacho pai", d.parent_dispatch_id],
+       ["Modo de saída", d.output_mode]].forEach(function(pair){
+        if(pair[1] === undefined || pair[1] === null || pair[1] === "") return;
+        var s = el("span"); s.appendChild(el("b",null,pair[0]+": ")); s.appendChild(document.createTextNode(String(pair[1])));
+        kv.appendChild(s);
+      });
+      if(kv.childNodes.length) body.appendChild(kv);
+
+      var gs = d.groups || [];
+      if(gs.length){ gs.forEach(function(g){ body.appendChild(groupBlock(g, true)); }); }
+      else { body.appendChild(el("p","nothing", d._legacy ? "Linha legada: anterior à v0.5.2, não traz `groups`." : "Sem grupos registrados.")); }
+
+      var cb = connectionsBlock(d.connections);
+      if(cb) body.appendChild(cb);
+      else body.appendChild(el("p","nothing","Sem arestas declaradas."));
+
+      if(d._close){
+        var c = d._close;
+        var box = el("div","closebox");
+        add(box, el("span","cap","Fecho"));
+        var line = el("div");
+        line.textContent = "Encerrada em " + fmtDate(c.closed) + " — motivo: " + (EXIT_PT[c.exit_reason] || txt(c.exit_reason));
+        box.appendChild(line);
+        var sp = c.agents_spawned;
+        if(sp){
+          var parts = [];
+          if(sp.total !== undefined) parts.push("total " + sp.total);
+          if(sp.loops_used !== undefined) parts.push("laços usados " + sp.loops_used);
+          if(sp.tree){
+            var tr = [];
+            for(var k in sp.tree){ if(sp.tree[k]) tr.push(sigilOf(k).g + " " + k + " ×" + sp.tree[k]); }
+            if(tr.length) parts.push(tr.join(", "));
+          }
+          box.appendChild(el("div","mono-ish","Agentes gerados: " + parts.join(" · ")));
+        }
+        var fps = c.feedback_prompts || [];
+        if(fps.length){
+          box.appendChild(el("div","cap","Prompts de retorno"));
+          var ul = el("ul","fb");
+          fps.forEach(function(f){ ul.appendChild(el("li", null, f)); });
+          box.appendChild(ul);
+        }
+        body.appendChild(box);
+      } else {
+        body.appendChild(el("p","nothing","Ainda aberta — nenhuma linha de fecho no ledger."));
+      }
+    }
+  });
+  det.appendChild(body);
+  card.appendChild(det);
+  return card;
+}
+
+/* ═══ Estado da página ═══ */
+var STATE = { data:null, repo:"__all__", onlyOpen:false, query:"", shown:{} };
+var PAGE = 12;
+
+function render(){
+  var data = STATE.data;
+  var root = document.getElementById("root");
+  root.textContent = "";
+  if(!data){ root.appendChild(el("p","nothing","Sem dados.")); return; }
+
+  var repos = data.repos || [];
+  var totalAll = 0, openAll = 0, pendAll = 0;
+  repos.forEach(function(r){
+    totalAll += (r.total_dispatches || 0);
+    openAll += (r.open_dispatches || 0);
+    pendAll += ((r.pending || []).length);
+  });
+
+  /* ── cabeçalho ── */
+  var header = el("header","codex");
+  add(header, el("h1","","Grimório de Despachos"));
+  add(header, el("p","subtitle","Cyberalchemy — livro de invocações, selos e eixos de tensão. Fólio de leitura, Fase 1."));
+
+  var col = el("div","colophon");
+  var tc = el("span");
+  tc.setAttribute("data-testid","total-count");
+  tc.appendChild(el("span","lab","Total de despachos no ledger: "));
+  tc.appendChild(el("b", null, String(totalAll)));
+  col.appendChild(tc);
+
+  var op = el("span");
+  op.appendChild(el("span","lab","Abertas: "));
+  op.appendChild(el("b", null, String(openAll)));
+  col.appendChild(op);
+
+  var rp = el("span");
+  rp.appendChild(el("span","lab","Repositórios: "));
+  rp.appendChild(el("b", null, String((data.config && data.config.repo_count) || repos.length)));
+  col.appendChild(rp);
+
+  var li = el("span", "live-" + (LIVE_STATE.on ? "on" : "off"));
+  li.setAttribute("data-testid","live-indicator");
+  li.appendChild(el("span","live-dot"));
+  li.appendChild(document.createTextNode(LIVE_STATE.on ? "fluxo conectado" : "fluxo interrompido — " + LIVE_STATE.detail));
+  col.appendChild(li);
+
+  /* controles */
+  var ctl = el("div","controls");
+  var lbl = el("label","ctl"); lbl.textContent = "Repositório ";
+  var sel = el("select");
+  var optAll = el("option", null, "todos os " + repos.length + " fólios");
+  optAll.value = "__all__"; sel.appendChild(optAll);
+  repos.forEach(function(r){
+    var o = el("option", null, r.name + " (" + (r.total_dispatches||0) + ")");
+    o.value = r.name; sel.appendChild(o);
+  });
+  sel.value = STATE.repo;
+  sel.addEventListener("change", function(){ STATE.repo = sel.value; STATE.shown = {}; render(); });
+  lbl.appendChild(sel); ctl.appendChild(lbl);
+
+  var srch = el("input"); srch.type = "search"; srch.placeholder = "buscar no identificador ou no propósito…";
+  srch.value = STATE.query; srch.size = 30;
+  srch.addEventListener("input", function(){ STATE.query = srch.value; STATE.shown = {}; render(); });
+  var slbl = el("label","ctl"); slbl.textContent = "Busca "; slbl.appendChild(srch);
+  ctl.appendChild(slbl);
+
+  var ck = el("label","chk");
+  var cb = el("input"); cb.type = "checkbox"; cb.checked = STATE.onlyOpen;
+  cb.addEventListener("change", function(){ STATE.onlyOpen = cb.checked; STATE.shown = {}; render(); });
+  ck.appendChild(cb); ck.appendChild(document.createTextNode("somente abertas"));
+  ctl.appendChild(ck);
+
+  col.appendChild(ctl);
+  header.appendChild(col);
+  root.appendChild(header);
+
+  /* ── I. Invocações aguardando selo ── */
+  root.appendChild(sectionDivider("I", "Invocações aguardando selo"));
+  var lede = el("p","lede",
+    "Aqui repousa a proposta antes do selo. Nada é escrito no ledger enquanto a mão humana não confirmar: " +
+    "a sheet pendente é o único objeto desta página que pede decisão, e por isso abre o livro.");
+  root.appendChild(lede);
+
+  var plist = el("div");
+  plist.setAttribute("data-testid","pending-list");
+  var anyPending = false;
+  repos.forEach(function(r){
+    (r.pending || []).forEach(function(p){
+      anyPending = true;
+      plist.appendChild(pendingCard(p, r.name));
+    });
+  });
+  if(!anyPending){
+    var empty = el("div","empty-scroll");
+    add(empty, el("span","glyph","⚗"),
+        el("div", null, "Nenhuma invocação aguarda selo neste momento. A bancada está limpa — não há proposta pendente de confirmação humana."));
+    plist.appendChild(empty);
+  }
+  root.appendChild(plist);
+
+  /* ── II. Legenda ── */
+  root.appendChild(sectionDivider("II", "Cânon dos sigilos"));
+  var leg = el("div","legend");
+  leg.appendChild(el("span","cap","Papéis"));
+  ["explorer","synthesizer","skeptic","writer","auditor","_unknown"].forEach(function(k){
+    var s = sigilOf(k);
+    var item = el("span","item");
+    item.appendChild(el("span","sigil", s.g));
+    item.appendChild(document.createTextNode(s.n));
+    leg.appendChild(item);
+  });
+  root.appendChild(leg);
+
+  var leg2 = el("div","legend");
+  leg2.appendChild(el("span","cap","Arestas"));
+  [["sequential","sequencial →"],["zigzag","zig-zag ⇄"],["feedback","feedback ↺ (com teto de laços)"]].forEach(function(p){
+    leg2.appendChild(el("span","edge "+p[0], p[1]));
+  });
+  leg2.appendChild(el("span","cap","Natureza"));
+  leg2.appendChild(mark("live","LIVE — research · review · experiment"));
+  leg2.appendChild(mark("reserved","RESERVADO — code · plan · suggestion"));
+  root.appendChild(leg2);
+
+  /* ── III. Histórico ── */
+  root.appendChild(sectionDivider("III", "Fólios do ledger"));
+  root.appendChild(el("p","lede",
+    "Cada repositório traz o seu próprio fólio. O leitor entrega no máximo " +
+    ((data.config && data.config.limit) || 40) + " linhas por fólio, da mais recente à mais antiga; " +
+    "o total acima conta o ledger inteiro. Abra uma carta para ver os grupos, os ângulos e as arestas."));
+
+  var dlist = el("div");
+  dlist.setAttribute("data-testid","dispatch-list");
+  var q = STATE.query.trim().toLowerCase();
+  var rendered = 0;
+
+  repos.forEach(function(r){
+    if(STATE.repo !== "__all__" && r.name !== STATE.repo) return;
+    var sec = el("section","repo");
+    sec.setAttribute("data-testid","repo-section");
+    sec.setAttribute("data-repo", r.name);
+
+    var h3 = el("h3");
+    add(h3, el("span", null, "🜍 " + r.name));
+    add(h3, el("span","tally",
+      (r.total_dispatches||0) + " no ledger · " + (r.open_dispatches||0) + " abertas · " +
+      (r.dispatches||[]).length + " exibíveis · " + ((r.pending||[]).length) + " pendentes" +
+      (r.ledger_exists === false ? " · sem ledger no disco" : "")));
+    sec.appendChild(h3);
+    sec.appendChild(el("p","path", r.path || ""));
+
+    if(r.error){ sec.appendChild(el("div","fatal","Erro fatal de leitura: " + r.error)); }
+
+    var warns = r.warnings || [];
+    if(warns.length){
+      var det = el("details","notes");
+      det.appendChild(el("summary", null, warns.length + " aviso(s) de leitura — linhas antigas toleradas"));
+      var ul = el("ul");
+      warns.forEach(function(w){ ul.appendChild(el("li", null, w)); });
+      det.appendChild(ul);
+      sec.appendChild(det);
+    }
+
+    var ds = (r.dispatches || []).filter(function(d){
+      if(STATE.onlyOpen && (d._state || (d._close ? "closed":"open")) !== "open") return false;
+      if(!q) return true;
+      var hay = ((d.dispatch_id||"") + " " + (d.goal||"") + " " + (d.dispatch_type||"")).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+
+    if(!ds.length){
+      sec.appendChild(el("p","nothing","Nenhuma linha corresponde ao filtro neste fólio."));
+    } else {
+      var limit = STATE.shown[r.name] || PAGE;
+      ds.slice(0, limit).forEach(function(d){ sec.appendChild(dispatchCard(d)); rendered++; });
+      if(ds.length > limit){
+        var b = el("button","more-btn","revelar mais " + Math.min(PAGE, ds.length - limit) + " de " + ds.length);
+        b.addEventListener("click", function(){ STATE.shown[r.name] = limit + PAGE; render(); });
+        sec.appendChild(b);
+      }
+    }
+    dlist.appendChild(sec);
+  });
+
+  root.appendChild(dlist);
+
+  var f = el("footer","colofon");
+  f.textContent = "🜁 🜂 🜃 🜄 ☿ — leitor somente-leitura; o ledger é append-only e nada aqui escreve nele. " +
+                  rendered + " cartas desenhadas · sondagem do disco a cada " +
+                  ((data.config && data.config.poll_seconds) || 1) + "s.";
+  root.appendChild(f);
+}
+
+function sectionDivider(num, title){
+  var d = el("div","divider");
+  var h = el("h2","section");
+  h.appendChild(el("span","num", num + "."));
+  h.appendChild(document.createTextNode(title));
+  var g = el("span","glyphs","🜁🜂🜃🜄");
+  d.appendChild(h);
+  d.appendChild(g);
+  return d;
+}
+
+/* ═══ Transporte: SSE com queda para polling ═══ */
+var LIVE_STATE = { on:false, detail:"iniciando" };
+
+function setLive(on, detail){
+  LIVE_STATE.on = on;
+  LIVE_STATE.detail = detail || "";
+  var n = document.querySelector('[data-testid="live-indicator"]');
+  if(n){
+    n.className = "live-" + (on ? "on" : "off");
+    n.textContent = "";
+    n.appendChild(el("span","live-dot"));
+    n.appendChild(document.createTextNode(on ? "fluxo conectado" : "fluxo interrompido — " + LIVE_STATE.detail));
+  }
+}
+
+function fetchSnapshot(){
+  return fetch("/api/snapshot", {cache:"no-store"}).then(function(r){ return r.json(); });
+}
+
+function boot(){
+  fetchSnapshot().then(function(d){
+    STATE.data = d; render(); connect();
+  }).catch(function(e){
+    STATE.data = {repos:[], config:{}};
+    render();
+    setLive(false, "falha ao ler /api/snapshot: " + e);
+  });
+}
+
+var pollTimer = null;
+function connect(){
+  if(typeof EventSource === "undefined"){ startPolling("EventSource indisponível"); return; }
+  var es;
+  try { es = new EventSource("/api/stream"); }
+  catch(e){ startPolling("stream inacessível"); return; }
+
+  es.addEventListener("open", function(){ setLive(true, ""); });
+  es.addEventListener("snapshot", function(ev){
+    try{
+      STATE.data = JSON.parse(ev.data);
+      LIVE_STATE.on = true;
+      render();
+    }catch(e){ /* payload inválido: mantém a última visão boa */ }
+  });
+  es.addEventListener("error", function(){
+    setLive(false, "reconectando…");
+  });
+}
+
+function startPolling(why){
+  setLive(false, why);
+  if(pollTimer) return;
+  pollTimer = setInterval(function(){
+    fetchSnapshot().then(function(d){ STATE.data = d; render(); }).catch(function(){});
+  }, 4000);
+}
+
+if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+else boot();
+
+})();
+</script>
+</body>
+</html>

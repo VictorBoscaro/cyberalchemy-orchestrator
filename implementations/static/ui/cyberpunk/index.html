@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CYBERALCHEMY // DISPATCH CONTROL PLANE</title>
+<style>
+/* ============================================================
+   CYBERPUNK NEON — dispatch control plane (leitor, fase 1)
+   Zero dependência externa. Fontes do sistema apenas.
+   ============================================================ */
+
+:root{
+  --bg:#0a0612;
+  --panel:#0f0a1c;
+  --panel2:#140d24;
+  --ink:#e6dcf5;
+  --ink-dim:#a396bd;
+  --ink-faint:#6f6188;
+  --mag:#ff2d95;
+  --cy:#00e5ff;
+  --ac:#f0ff2d;
+  --edge:#2a1d43;
+  --edge-hot:#432a63;
+  --chamfer: polygon(0 9px, 9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%);
+  --chamfer-sm: polygon(0 5px, 5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%);
+  --mono: ui-monospace, "Cascadia Mono", "Consolas", "SFMono-Regular", "Menlo", "DejaVu Sans Mono", monospace;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -8%, rgba(255,45,149,.16), transparent 62%),
+    radial-gradient(ellipse 70% 50% at 8% 42%, rgba(0,229,255,.10), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 96% 88%, rgba(255,45,149,.08), transparent 60%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--mono);
+  font-size:13px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  padding:0 0 80px;
+}
+
+/* varredura diagonal de fundo, bem sutil */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(45deg, rgba(255,255,255,.014) 0 1px, transparent 1px 9px);
+}
+
+.wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 18px}
+
+/* ---------- utilidades ---------- */
+.label{
+  font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:700;
+}
+.chamf{clip-path:var(--chamfer)}
+.num{font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.hide{display:none !important}
+
+/* moldura chanfrada com "borda" neon: casca colorida + miolo escuro */
+.frame{clip-path:var(--chamfer);padding:1px;background:var(--edge)}
+.frame > .in{clip-path:var(--chamfer);background:var(--panel)}
+.frame.cy{background:linear-gradient(135deg,#00e5ff,#0b4a5c 60%,#00e5ff)}
+.frame.mag{background:linear-gradient(135deg,#ff2d95,#5c0b34 60%,#ff2d95)}
+.frame.ac{background:repeating-linear-gradient(45deg,#f0ff2d 0 8px,#8a3d00 8px 16px)}
+
+/* ---------- cabeçalho ---------- */
+header.top{
+  position:sticky;top:0;z-index:40;
+  background:linear-gradient(180deg,rgba(10,6,18,.97),rgba(10,6,18,.88));
+  border-bottom:1px solid var(--edge-hot);
+  backdrop-filter:blur(6px);
+  padding:12px 0 11px;
+  margin-bottom:20px;
+}
+.top-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+
+h1.glitch{
+  margin:0;font-size:26px;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;color:#fff;position:relative;
+  text-shadow:2px 0 var(--mag), -2px 0 var(--cy), 0 0 22px rgba(255,45,149,.45);
+  animation:glitch 6.5s infinite steps(1);
+}
+h1.glitch span{color:var(--mag);text-shadow:none}
+@keyframes glitch{
+  0%,96%   {text-shadow:2px 0 var(--mag), -2px 0 var(--cy), 0 0 22px rgba(255,45,149,.45)}
+  96.5%    {text-shadow:-4px 0 var(--mag), 4px 1px var(--cy), 0 0 22px rgba(0,229,255,.5); transform:translateX(1px)}
+  97.5%    {text-shadow:4px -1px var(--cy), -4px 0 var(--mag), 0 0 22px rgba(255,45,149,.45); transform:translateX(-2px)}
+  98.5%    {text-shadow:2px 0 var(--mag), -2px 0 var(--cy), 0 0 30px rgba(240,255,45,.4)}
+}
+.subtitle{color:var(--ink-dim);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;margin-top:3px}
+.spacer{flex:1}
+
+/* indicador SSE */
+.live{
+  display:inline-flex;align-items:center;gap:8px;
+  clip-path:var(--chamfer-sm);padding:6px 13px;
+  font-size:11px;letter-spacing:.2em;font-weight:700;
+  border:0;
+  /* small-caps em vez de text-transform: mantém o texto do DOM em caixa baixa
+     (o teste procura "conectado") sem abrir mão do visual em caixa alta. */
+  font-variant-caps:all-small-caps;
+}
+.live.on{background:rgba(0,229,255,.10);color:var(--cy);box-shadow:inset 0 0 0 1px var(--cy), 0 0 14px rgba(0,229,255,.28)}
+.live.off{background:rgba(255,45,149,.12);color:var(--mag);box-shadow:inset 0 0 0 1px var(--mag), 0 0 14px rgba(255,45,149,.3)}
+.live .dot{width:7px;height:7px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:currentColor}
+.live.on .dot{animation:pulse 1.6s infinite ease-in-out}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.62)}}
+
+/* métricas */
+.metrics{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 24px}
+.metric{
+  clip-path:var(--chamfer-sm);background:var(--panel2);
+  box-shadow:inset 0 0 0 1px var(--edge-hot);
+  padding:7px 15px 6px;min-width:96px;
+}
+.metric b{display:block;font-size:19px;font-weight:800;letter-spacing:.04em;line-height:1.15}
+.metric.m-cy b{color:var(--cy);text-shadow:0 0 12px rgba(0,229,255,.5)}
+.metric.m-mag b{color:var(--mag);text-shadow:0 0 12px rgba(255,45,149,.5)}
+.metric.m-ac b{color:var(--ac);text-shadow:0 0 12px rgba(240,255,45,.45)}
+.metric.m-ink b{color:var(--ink)}
+
+/* ---------- seções ---------- */
+section{margin-bottom:30px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.sec-head h2{
+  margin:0;font-size:12.5px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;
+}
+.sec-head .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--edge-hot),transparent)}
+.sec-head .cnt{font-size:10px;letter-spacing:.15em;color:var(--ink-faint)}
+h2.hot{color:var(--ac);text-shadow:0 0 16px rgba(240,255,45,.4)}
+h2.cool{color:var(--cy);text-shadow:0 0 14px rgba(0,229,255,.35)}
+
+/* ---------- tarja de aviso ---------- */
+.hazard{
+  height:9px;
+  background:repeating-linear-gradient(45deg,#f0ff2d 0 11px,#120a02 11px 22px);
+  opacity:.85;
+}
+.hazard.thin{height:5px;opacity:.7}
+
+/* ---------- sheets pendentes ---------- */
+#pending-list{display:flex;flex-direction:column;gap:16px}
+
+.pcard{
+  clip-path:var(--chamfer);padding:1px;
+  background:linear-gradient(135deg,#f0ff2d,#ff2d95 45%,#00e5ff);
+  filter:drop-shadow(0 0 14px rgba(240,255,45,.22));
+}
+.pcard > .in{clip-path:var(--chamfer);background:#100a1e}
+.pcard-body{padding:16px 20px 18px}
+.pcard-top{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.pcard-id{
+  font-size:16px;font-weight:800;color:#fff;letter-spacing:.03em;word-break:break-all;
+  text-shadow:0 0 14px rgba(255,45,149,.45);
+}
+.pcard-file{color:var(--ink-faint);font-size:10px;letter-spacing:.1em;margin-top:3px;word-break:break-all}
+.pcard-goal{
+  margin:13px 0 0;padding:11px 14px;color:#f2ecff;font-size:13px;line-height:1.62;
+  clip-path:var(--chamfer-sm);background:rgba(255,45,149,.07);
+  box-shadow:inset 3px 0 0 var(--mag);
+}
+.pcard-ctx{
+  margin:9px 0 0;padding:10px 14px;color:var(--ink-dim);font-size:12px;line-height:1.6;
+  clip-path:var(--chamfer-sm);background:rgba(255,255,255,.028);
+  box-shadow:inset 3px 0 0 var(--edge-hot);
+}
+
+/* botão do gate (fase 2) */
+.gate{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px dashed var(--edge-hot)}
+button.fire{
+  font-family:var(--mono);font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;
+  padding:11px 26px;border:0;color:#f0ff2d;
+  clip-path:var(--chamfer-sm);
+  background:repeating-linear-gradient(45deg,rgba(240,255,45,.13) 0 7px,rgba(240,255,45,.05) 7px 14px);
+  box-shadow:inset 0 0 0 1px rgba(240,255,45,.55);
+  cursor:not-allowed;opacity:.62;
+}
+button.fire:disabled{cursor:not-allowed}
+.gate-note{color:var(--ink-faint);font-size:10px;letter-spacing:.14em;text-transform:uppercase;max-width:460px;line-height:1.7}
+
+.empty{
+  padding:26px 22px;text-align:center;clip-path:var(--chamfer);
+  background:var(--panel);box-shadow:inset 0 0 0 1px var(--edge-hot);
+}
+.empty b{display:block;color:var(--cy);font-size:13px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:6px}
+.empty span{color:var(--ink-dim);font-size:11.5px;letter-spacing:.08em}
+
+/* ---------- selos / chips ---------- */
+.tag{
+  display:inline-flex;align-items:center;gap:5px;
+  clip-path:var(--chamfer-sm);padding:3px 9px;
+  font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+  white-space:nowrap;
+}
+.t-live{background:rgba(0,229,255,.12);color:#7df3ff;box-shadow:inset 0 0 0 1px rgba(0,229,255,.65)}
+.t-res {background:rgba(163,150,189,.10);color:var(--ink-dim);box-shadow:inset 0 0 0 1px var(--edge-hot)}
+.t-open{background:rgba(240,255,45,.13);color:var(--ac);box-shadow:inset 0 0 0 1px rgba(240,255,45,.6)}
+.t-closed{background:rgba(163,150,189,.07);color:var(--ink-faint);box-shadow:inset 0 0 0 1px var(--edge)}
+.t-ok  {background:rgba(0,229,255,.10);color:#6fe9ff;box-shadow:inset 0 0 0 1px rgba(0,229,255,.45)}
+.t-alert{background:rgba(255,45,149,.16);color:#ff7ab8;box-shadow:inset 0 0 0 1px var(--mag);text-shadow:0 0 10px rgba(255,45,149,.5)}
+.t-warn{background:rgba(240,255,45,.10);color:var(--ac);box-shadow:inset 0 0 0 1px rgba(240,255,45,.45)}
+.t-legacy{background:rgba(255,45,149,.07);color:#d78ab5;box-shadow:inset 0 0 0 1px rgba(255,45,149,.4)}
+.t-type{background:rgba(255,255,255,.045);color:var(--ink-dim);box-shadow:inset 0 0 0 1px var(--edge-hot)}
+.tagrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+
+/* ---------- barra de filtros ---------- */
+.filters{
+  clip-path:var(--chamfer);background:var(--panel2);
+  box-shadow:inset 0 0 0 1px var(--edge-hot);
+  padding:13px 16px;display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:20px;
+}
+.fgroup{display:flex;flex-direction:column;gap:5px}
+select,input[type=search]{
+  font-family:var(--mono);font-size:11.5px;color:var(--ink);
+  background:#0a0612;border:1px solid var(--edge-hot);
+  padding:7px 10px;min-width:190px;outline:none;
+  clip-path:var(--chamfer-sm);
+}
+select:focus,input[type=search]:focus{border-color:var(--cy);box-shadow:0 0 10px rgba(0,229,255,.3)}
+input[type=search]::placeholder{color:var(--ink-faint)}
+.segs{display:flex;gap:0}
+.seg{
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+  padding:8px 13px;background:#0a0612;color:var(--ink-faint);
+  border:1px solid var(--edge-hot);border-right:0;cursor:pointer;
+}
+.seg:last-child{border-right:1px solid var(--edge-hot)}
+.seg:first-child{clip-path:polygon(0 5px,5px 0,100% 0,100% 100%,0 100%)}
+.seg:last-child{clip-path:polygon(0 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%)}
+.seg[aria-pressed=true]{background:rgba(0,229,255,.12);color:var(--cy);border-color:var(--cy);text-shadow:0 0 8px rgba(0,229,255,.6)}
+
+/* ---------- repo ---------- */
+.repo{margin-bottom:14px;clip-path:var(--chamfer);background:var(--panel);box-shadow:inset 0 0 0 1px var(--edge)}
+.repo-head{
+  display:flex;align-items:center;gap:13px;flex-wrap:wrap;
+  padding:11px 16px;cursor:pointer;user-select:none;
+  background:linear-gradient(90deg,rgba(255,45,149,.09),rgba(0,229,255,.045) 55%,transparent);
+  border-bottom:1px solid var(--edge);
+}
+.repo-head:hover{background:linear-gradient(90deg,rgba(255,45,149,.16),rgba(0,229,255,.08) 55%,transparent)}
+.repo-idx{color:var(--mag);font-size:11px;font-weight:800;letter-spacing:.1em;text-shadow:0 0 10px rgba(255,45,149,.55)}
+.repo-name{font-size:14px;font-weight:800;color:#fff;letter-spacing:.05em}
+.repo-caret{color:var(--cy);font-size:11px;width:12px}
+.repo-stats{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.rs{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.rs b{color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.04em}
+.rs.o b{color:var(--ac);text-shadow:0 0 10px rgba(240,255,45,.45)}
+.rs.w b{color:var(--mag)}
+.repo-body{padding:12px 16px 16px}
+
+/* diagnósticos por repo */
+details.diag{margin-bottom:12px}
+details.diag > summary{
+  list-style:none;cursor:pointer;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+  padding:6px 11px;clip-path:var(--chamfer-sm);
+}
+details.diag > summary::-webkit-details-marker{display:none}
+details.diag.warn > summary{color:var(--ac);background:rgba(240,255,45,.08);box-shadow:inset 0 0 0 1px rgba(240,255,45,.4)}
+details.diag.err  > summary{color:#ff7ab8;background:rgba(255,45,149,.12);box-shadow:inset 0 0 0 1px var(--mag)}
+.diag-list{max-height:220px;overflow:auto;margin-top:7px;padding:9px 12px;background:#0a0612;
+  box-shadow:inset 0 0 0 1px var(--edge);font-size:11px;color:var(--ink-dim);line-height:1.65}
+.diag-list div{padding:2px 0;border-bottom:1px dotted var(--edge);word-break:break-word}
+.diag-list div:last-child{border-bottom:0}
+
+/* ---------- cartão de dispatch ---------- */
+#dispatch-list .repo-body{display:flex;flex-direction:column;gap:7px}
+.dcard{clip-path:var(--chamfer-sm);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--edge)}
+.dcard[data-state=open]{
+  background:linear-gradient(90deg,rgba(240,255,45,.07),var(--panel2) 26%);
+  box-shadow:inset 0 0 0 1px rgba(240,255,45,.4), 0 0 12px rgba(240,255,45,.07);
+}
+.dcard.alert{box-shadow:inset 0 0 0 1px rgba(255,45,149,.55), 0 0 12px rgba(255,45,149,.1)}
+.dcard.orphan{box-shadow:inset 0 0 0 1px rgba(255,45,149,.35);background:repeating-linear-gradient(45deg,rgba(255,45,149,.05) 0 9px,transparent 9px 18px),var(--panel2)}
+.dhead{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;cursor:pointer;user-select:none}
+.dhead:hover{background:rgba(255,255,255,.03)}
+.dseq{color:var(--ink-faint);font-size:10.5px;font-weight:700;letter-spacing:.06em;padding-top:2px;min-width:34px}
+.dmain{flex:1;min-width:0}
+.did{font-size:12.5px;font-weight:700;color:#fff;letter-spacing:.03em;word-break:break-all}
+.dcard[data-state=open] .did{color:var(--ac);text-shadow:0 0 12px rgba(240,255,45,.35)}
+.dgoal{color:var(--ink-dim);font-size:12px;line-height:1.55;margin-top:4px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dcard.open-body .dgoal{-webkit-line-clamp:unset;color:var(--ink)}
+.dmeta{display:flex;gap:9px;flex-wrap:wrap;margin-top:7px;align-items:center}
+.dtime{color:var(--ink-faint);font-size:10px;letter-spacing:.1em;white-space:nowrap}
+
+/* corpo expandido */
+.dbody{padding:0 14px 15px 60px;border-top:1px solid var(--edge)}
+.block{margin-top:14px}
+.block > .label{display:block;margin-bottom:7px}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.kv .cell{padding:7px 11px;background:rgba(255,255,255,.028);clip-path:var(--chamfer-sm);
+  box-shadow:inset 2px 0 0 var(--edge-hot)}
+.kv .cell .label{display:block;margin-bottom:2px}
+.kv .cell .v{color:var(--ink);font-size:11.5px;word-break:break-word}
+.prose{color:var(--ink);font-size:12px;line-height:1.68;padding:10px 13px;
+  background:rgba(255,255,255,.028);clip-path:var(--chamfer-sm);box-shadow:inset 2px 0 0 var(--cy)}
+
+/* eixo de tensão global */
+.axis{
+  padding:10px 14px;clip-path:var(--chamfer-sm);
+  background:linear-gradient(90deg,rgba(255,45,149,.11),rgba(0,229,255,.11));
+  box-shadow:inset 0 0 0 1px var(--edge-hot);
+  color:#f4ecff;font-size:12px;line-height:1.6;
+}
+.axis .label{display:block;margin-bottom:3px;color:var(--ac)}
+
+/* grupos */
+.groups{display:flex;flex-direction:column;gap:10px}
+.grp{clip-path:var(--chamfer-sm);background:#0b0715;box-shadow:inset 0 0 0 1px var(--edge-hot)}
+.grp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 12px;
+  background:linear-gradient(90deg,rgba(0,229,255,.09),transparent 70%);border-bottom:1px solid var(--edge)}
+.grp-id{color:var(--cy);font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  text-shadow:0 0 10px rgba(0,229,255,.45)}
+.grp-n{color:var(--ink-faint);font-size:10px;letter-spacing:.14em}
+.grp-bias{padding:8px 12px;font-size:11.5px;color:#ffc4e2;line-height:1.55;
+  background:repeating-linear-gradient(45deg,rgba(255,45,149,.06) 0 10px,transparent 10px 20px);
+  border-bottom:1px solid var(--edge)}
+.grp-bias .label{color:var(--mag);margin-right:7px}
+.agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:8px;padding:10px 12px}
+.agent{padding:9px 11px;background:rgba(255,255,255,.026);clip-path:var(--chamfer-sm);
+  box-shadow:inset 2px 0 0 var(--edge-hot)}
+.agent.r-explorer{box-shadow:inset 2px 0 0 var(--cy)}
+.agent.r-skeptic{box-shadow:inset 2px 0 0 var(--mag)}
+.agent.r-synthesizer{box-shadow:inset 2px 0 0 var(--ac)}
+.agent.r-writer{box-shadow:inset 2px 0 0 #9b6bff}
+.agent.r-auditor{box-shadow:inset 2px 0 0 #ff8a3d}
+.agent-top{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.agent-name{color:#fff;font-size:12px;font-weight:700}
+.agent-name.anon{color:var(--ink-faint);font-style:italic;font-weight:400}
+.agent-role{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:800}
+.r-explorer .agent-role{color:var(--cy)}
+.r-skeptic .agent-role{color:var(--mag)}
+.r-synthesizer .agent-role{color:var(--ac)}
+.r-writer .agent-role{color:#b18cff}
+.r-auditor .agent-role{color:#ff9c5c}
+.agent-spec{color:var(--ink-faint);font-size:10px;letter-spacing:.08em;margin-top:3px}
+.agent-angle{margin-top:6px;color:#dbd0ee;font-size:11.5px;line-height:1.55;
+  padding-left:9px;border-left:1px dashed var(--edge-hot)}
+.agent-angle .label{color:var(--cy);margin-right:6px}
+.agent-noangle{margin-top:6px;color:var(--ink-faint);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+
+/* conexões */
+.conns{display:flex;flex-direction:column;gap:5px}
+.conn{display:flex;align-items:center;gap:9px;padding:6px 11px;font-size:11.5px;
+  clip-path:var(--chamfer-sm);background:rgba(255,255,255,.026)}
+.conn .node{color:#fff;font-weight:700}
+.conn .arrow{font-weight:800;letter-spacing:.05em;white-space:nowrap}
+.conn .kind{margin-left:auto;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.conn.c-sequential{box-shadow:inset 2px 0 0 var(--cy)}
+.conn.c-sequential .arrow,.conn.c-sequential .kind{color:var(--cy)}
+.conn.c-zigzag{box-shadow:inset 2px 0 0 var(--ac);
+  background:repeating-linear-gradient(45deg,rgba(240,255,45,.06) 0 8px,transparent 8px 16px)}
+.conn.c-zigzag .arrow,.conn.c-zigzag .kind{color:var(--ac)}
+.conn.c-feedback{box-shadow:inset 2px 0 0 var(--mag);
+  background:repeating-linear-gradient(-45deg,rgba(255,45,149,.07) 0 8px,transparent 8px 16px)}
+.conn.c-feedback .arrow,.conn.c-feedback .kind{color:var(--mag)}
+.conn.c-other{box-shadow:inset 2px 0 0 var(--ink-faint)}
+.cap{padding:1px 7px;font-size:9.5px;font-weight:800;letter-spacing:.1em;color:#0a0612;background:var(--mag);
+  clip-path:var(--chamfer-sm)}
+
+/* encerramento */
+.close-box{padding:11px 13px;clip-path:var(--chamfer-sm);background:rgba(255,255,255,.026);
+  box-shadow:inset 2px 0 0 var(--edge-hot)}
+.close-box.bad{box-shadow:inset 2px 0 0 var(--mag);background:rgba(255,45,149,.07)}
+.tree{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.tree .t{font-size:10px;letter-spacing:.1em;color:var(--ink-dim);padding:2px 8px;
+  background:rgba(255,255,255,.04);clip-path:var(--chamfer-sm)}
+.tree .t b{color:var(--cy);font-weight:800}
+.fb{margin-top:8px}
+.fb div{color:var(--ink-dim);font-size:11.5px;line-height:1.6;padding:6px 0 6px 10px;
+  border-left:1px dashed var(--edge-hot);margin-top:5px}
+
+.truncated{color:var(--ac);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;margin-top:5px}
+.nores{padding:16px;text-align:center;color:var(--ink-faint);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+
+footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--edge);
+  color:var(--ink-faint);font-size:10px;letter-spacing:.16em;text-transform:uppercase;text-align:center}
+
+@media (max-width:720px){
+  h1.glitch{font-size:19px}
+  .dbody{padding-left:14px}
+  .repo-stats{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap" data-testid="app" id="app">
+
+  <header class="top">
+    <div class="top-row">
+      <div>
+        <h1 class="glitch">CYBERALCHEMY <span>//</span> DISPATCH CONTROL PLANE</h1>
+        <div class="subtitle">Leitor append-only &middot; Fase 1 &middot; gate humano somente-leitura</div>
+      </div>
+      <div class="spacer"></div>
+      <div id="live-indicator" class="live off" data-testid="live-indicator">
+        <i class="dot"></i><span id="live-text">iniciando enlace</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="metrics" id="metrics"></div>
+
+  <section id="pending-sec">
+    <div class="sec-head">
+      <h2 class="hot">&#9650; Sheets pendentes &mdash; aguardando confirmação</h2>
+      <div class="rule"></div>
+      <div class="cnt" id="pending-count"></div>
+    </div>
+    <div class="hazard" style="margin-bottom:14px"></div>
+    <div id="pending-list" data-testid="pending-list"></div>
+  </section>
+
+  <section id="hist-sec">
+    <div class="sec-head">
+      <h2 class="cool">&#9632; Histórico do ledger</h2>
+      <div class="rule"></div>
+      <div class="cnt" id="shown-count"></div>
+    </div>
+
+    <div class="filters">
+      <div class="fgroup">
+        <label class="label" for="f-repo">Repositório</label>
+        <select id="f-repo"><option value="">todos os repositórios</option></select>
+      </div>
+      <div class="fgroup">
+        <label class="label" for="f-q">Busca (id / objetivo)</label>
+        <input type="search" id="f-q" placeholder="filtrar…" autocomplete="off">
+      </div>
+      <div class="fgroup">
+        <span class="label">Estado</span>
+        <div class="segs" id="f-state">
+          <button class="seg" data-v="" aria-pressed="true">Todas</button>
+          <button class="seg" data-v="open" aria-pressed="false">Abertas</button>
+          <button class="seg" data-v="closed" aria-pressed="false">Fechadas</button>
+        </div>
+      </div>
+      <div class="fgroup">
+        <span class="label">Execução</span>
+        <div class="segs" id="f-live">
+          <button class="seg" data-v="" aria-pressed="true">Todas</button>
+          <button class="seg" data-v="live" aria-pressed="false">Live</button>
+          <button class="seg" data-v="res" aria-pressed="false">Reservadas</button>
+        </div>
+      </div>
+      <div class="fgroup">
+        <span class="label">Sinalizações</span>
+        <div class="segs" id="f-flag">
+          <button class="seg" data-v="" aria-pressed="true">Todas</button>
+          <button class="seg" data-v="alert" aria-pressed="false">Alerta</button>
+          <button class="seg" data-v="legacy" aria-pressed="false">Legacy / órfãs</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="dispatch-list" data-testid="dispatch-list"></div>
+  </section>
+
+  <footer>
+    <span id="total-count" data-testid="total-count">total 0 dispatches no ledger</span>
+    &nbsp;&middot;&nbsp; leitor somente-leitura &middot; nada é escrito no ledger por esta tela
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------- estado ---------------- */
+var SNAP = {repos:[], config:{}};
+var filters = {repo:"", q:"", state:"", live:"", flag:""};
+var openRepos = Object.create(null);   // nome -> bool (colapso)
+var openCards = Object.create(null);   // chave -> bool (expansão)
+var LIVE_TYPES = {research:1, review:1, experiment:1};
+
+/* ---------------- helpers ---------------- */
+function esc(s){
+  if(s===null||s===undefined) return "";
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function pad(n,w){ n = String(n==null?0:n); while(n.length<w) n = "0"+n; return n; }
+function has(v){ return v!==null && v!==undefined && String(v).trim()!==""; }
+function txt(v, fallback){ return has(v) ? String(v) : (fallback||"—"); }
+
+function fmtDate(iso){
+  if(!has(iso)) return "—";
+  var d = new Date(iso);
+  if(isNaN(d.getTime())) return String(iso);
+  var p = function(x){ return pad(x,2); };
+  return d.getFullYear()+"."+p(d.getMonth()+1)+"."+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes());
+}
+function fmtMtime(ts){
+  if(typeof ts !== "number") return "—";
+  return fmtDate(new Date(ts*1000).toISOString());
+}
+function isLive(d){
+  if(d && typeof d._live === "boolean") return d._live;
+  return !!(d && d.dispatch_type && LIVE_TYPES[d.dispatch_type]);
+}
+var BAD_EXIT = {error:1, dissent_irreconcilable:1};
+function connClass(t){
+  var k = String(t||"").toLowerCase();
+  if(k==="sequential") return "c-sequential";
+  if(k==="zig-zag"||k==="zigzag"||k==="zig zag") return "c-zigzag";
+  if(k==="feedback") return "c-feedback";
+  return "c-other";
+}
+function connArrow(t){
+  var c = connClass(t);
+  if(c==="c-sequential") return "──▶";
+  if(c==="c-zigzag") return "◀─▶";
+  if(c==="c-feedback") return "↺ ◀───";
+  return "──";
+}
+
+/* ---------------- selos ---------------- */
+function tagLive(d){
+  return isLive(d)
+    ? '<span class="tag t-live">◉ live</span>'
+    : '<span class="tag t-res">◌ reservada</span>';
+}
+function tagState(d){
+  if(d._state === "open") return '<span class="tag t-open">▲ aberta</span>';
+  return '<span class="tag t-closed">■ fechada</span>';
+}
+function tagExit(d){
+  var c = d._close;
+  if(!c || !has(c.exit_reason)) return "";
+  var r = c.exit_reason;
+  var cls = BAD_EXIT[r] ? "t-alert" : (r==="resolved"||r==="success" ? "t-ok" : "t-warn");
+  var mark = BAD_EXIT[r] ? "✖" : (r==="resolved"||r==="success" ? "✔" : "!");
+  return '<span class="tag '+cls+'">'+mark+' '+esc(r)+'</span>';
+}
+function tagFlags(d){
+  var out = "";
+  if(d._orphan_close) out += '<span class="tag t-alert">⚠ close órfã</span>';
+  if(d._legacy) out += '<span class="tag t-legacy">▤ legacy</span>';
+  return out;
+}
+function tagType(d){
+  return '<span class="tag t-type">'+esc(txt(d.dispatch_type,"tipo ausente"))+'</span>';
+}
+
+/* ---------------- grupos e agentes ---------------- */
+function renderAgent(a){
+  var role = String((a && a.role) || "").toLowerCase();
+  var cls = "agent r-" + (role.replace(/[^a-z]/g,"") || "none");
+  var name = has(a.agent_name)
+    ? '<span class="agent-name">'+esc(a.agent_name)+'</span>'
+    : '<span class="agent-name anon">agente anônimo</span>';
+  var spec = [];
+  if(has(a.model)) spec.push("modelo "+a.model);
+  if(a.token_budget!==null && a.token_budget!==undefined) spec.push("orçamento "+a.token_budget+" tk");
+  var angle = has(a.angle)
+    ? '<div class="agent-angle"><span class="label">ângulo</span>'+esc(a.angle)+'</div>'
+    : '<div class="agent-noangle">sem ângulo declarado</div>';
+  var trunc = a._prompt_truncated ? '<div class="truncated">▚ prompt truncado pelo leitor</div>' : "";
+  return '<div class="'+cls+'">'
+    + '<div class="agent-top">'+name+'<span class="agent-role">'+esc(txt(role,"papel ?"))+'</span></div>'
+    + '<div class="agent-spec">'+esc(spec.join("  ·  ") || "sem especificação")+'</div>'
+    + angle + trunc
+    + '</div>';
+}
+
+function renderGroups(groups){
+  if(!groups || !groups.length){
+    return '<div class="prose" style="box-shadow:inset 2px 0 0 var(--mag)">'
+      + 'Sem <b>groups</b> nesta row &mdash; formato anterior à v0.5.2. A topologia de agentes não foi registrada.'
+      + '</div>';
+  }
+  var html = '<div class="groups">';
+  for(var i=0;i<groups.length;i++){
+    var g = groups[i] || {};
+    var ags = g.agents || [];
+    var meta = [];
+    if(g.n!==null && g.n!==undefined) meta.push("n="+g.n);
+    meta.push(ags.length+" agente"+(ags.length===1?"":"s"));
+    if(g.layers!==null && g.layers!==undefined) meta.push("camadas "+g.layers);
+    if(g.robot_talks) meta.push("robot_talks ativo");
+    html += '<div class="grp">'
+      + '<div class="grp-head">'
+        + '<span class="grp-id">'+esc(txt(g.group_id,"grupo sem id"))+'</span>'
+        + '<span class="grp-n">'+esc(meta.join("  ·  "))+'</span>'
+      + '</div>'
+      + '<div class="grp-bias"><span class="label">anti-viés do grupo</span>'
+        + (has(g.anti_bias) ? esc(g.anti_bias) : '<span style="color:var(--ink-faint)">não declarado — sem eixo de tensão neste grupo</span>')
+      + '</div>'
+      + '<div class="agents">' + (ags.length ? ags.map(renderAgent).join("") :
+          '<div class="agent"><div class="agent-noangle">nenhum agente listado</div></div>') + '</div>'
+      + '</div>';
+  }
+  return html + '</div>';
+}
+
+function renderConns(conns){
+  if(!conns || !conns.length){
+    return '<div class="conn c-other"><span style="color:var(--ink-faint)">nenhuma conexão declarada</span></div>';
+  }
+  var html = '<div class="conns">';
+  for(var i=0;i<conns.length;i++){
+    var c = conns[i] || {};
+    var k = connClass(c.type);
+    html += '<div class="conn '+k+'">'
+      + '<span class="node">'+esc(txt(c.from,"?"))+'</span>'
+      + '<span class="arrow">'+connArrow(c.type)+'</span>'
+      + '<span class="node">'+esc(txt(c.to,"?"))+'</span>'
+      + ((c.loop_cap!==null && c.loop_cap!==undefined) ? '<span class="cap">loop cap '+esc(c.loop_cap)+'</span>' : "")
+      + '<span class="kind">'+esc(txt(c.type,"tipo ?"))+'</span>'
+      + '</div>';
+  }
+  return html + '</div>';
+}
+
+/* corpo comum a sheet pendente e a dispatch */
+function renderBody(d){
+  var html = "";
+  var cells = [];
+  function cell(l,v){ cells.push('<div class="cell"><span class="label">'+l+'</span><span class="v">'+esc(txt(v))+'</span></div>'); }
+  cell("tipo", d.dispatch_type);
+  cell("schema", d.schema_version);
+  cell("criada", has(d.created)?fmtDate(d.created):null);
+  cell("invocada por", d.invoked_by);
+  cell("máx. loops", (d.max_loops===null||d.max_loops===undefined)?null:d.max_loops);
+  cell("aprovador final", d.final_approver);
+  cell("pasta de trabalho", d.working_folder);
+  cell("agentes", (d._agent_count===null||d._agent_count===undefined)?null:d._agent_count);
+  html += '<div class="block"><span class="label">Parâmetros</span><div class="kv">'+cells.join("")+'</div></div>';
+
+  if(has(d.context)){
+    html += '<div class="block"><span class="label">Contexto</span><div class="prose">'+esc(d.context)+'</div></div>';
+  }
+  html += '<div class="block"><div class="axis"><span class="label">Eixo de tensão global (anti_bias_global)</span>'
+    + (has(d.anti_bias_global) ? esc(d.anti_bias_global) : '<span style="color:var(--ink-dim)">não declarado nesta row</span>')
+    + '</div></div>';
+
+  html += '<div class="block"><span class="label">Grupos &amp; agentes &mdash; ângulo contra anti-viés</span>'+renderGroups(d.groups)+'</div>';
+  html += '<div class="block"><span class="label">Conexões</span>'+renderConns(d.connections)+'</div>';
+
+  if(d._prompts_truncated){
+    html += '<div class="truncated">▚ prompts truncados nesta listagem — consulte /api/dispatch/… para o texto integral</div>';
+  }
+  return html;
+}
+
+function renderClose(c){
+  if(!c) return "";
+  var bad = BAD_EXIT[c.exit_reason] ? " bad" : "";
+  var sp = c.agents_spawned || {};
+  var tree = sp.tree || {};
+  var chips = "";
+  for(var k in tree){ if(Object.prototype.hasOwnProperty.call(tree,k)){
+    chips += '<span class="t">'+esc(k)+' <b>'+pad(tree[k],2)+'</b></span>';
+  }}
+  var fb = "";
+  if(c.feedback_prompts && c.feedback_prompts.length){
+    fb = '<div class="fb"><span class="label">Prompts de retorno ('+pad(c.feedback_prompts.length,2)+')</span>'
+       + c.feedback_prompts.map(function(p){ return '<div>'+esc(p)+'</div>'; }).join("") + '</div>';
+  }
+  return '<div class="block"><span class="label">Encerramento</span><div class="close-box'+bad+'">'
+    + '<div class="tagrow">'
+      + '<span class="tag '+(bad?'t-alert':'t-ok')+'">saída: '+esc(txt(c.exit_reason,"?"))+'</span>'
+      + '<span class="dtime">fechada em '+esc(fmtDate(c.closed))+'</span>'
+      + (has(c.invoked_by)?'<span class="dtime">· por '+esc(c.invoked_by)+'</span>':'')
+    + '</div>'
+    + '<div class="tree">'
+      + '<span class="t">total <b>'+pad(sp.total||0,2)+'</b></span>'
+      + '<span class="t">loops <b>'+pad(sp.loops_used||0,2)+'</b></span>'
+      + chips
+    + '</div>' + fb
+    + '</div></div>';
+}
+
+/* ---------------- sheets pendentes ---------------- */
+function renderPending(){
+  var host = document.getElementById("pending-list");
+  var items = [];
+  SNAP.repos.forEach(function(r){
+    (r.pending||[]).forEach(function(p){ items.push({repo:r.name, p:p}); });
+  });
+  items.sort(function(a,b){ return (b.p._mtime||0) - (a.p._mtime||0); });
+
+  document.getElementById("pending-count").textContent =
+    items.length ? pad(items.length,2) + " aguardando o gate" : "fila limpa";
+
+  if(!items.length){
+    host.innerHTML = '<div class="empty"><b>Nenhuma sheet pendente</b>'
+      + '<span>Zero propostas pré-confirm na fila. Nada aguarda o gate humano neste momento.</span></div>';
+    return;
+  }
+
+  host.innerHTML = items.map(function(it, i){
+    var p = it.p || {};
+    var s = p.sheet || {};
+    var key = "P:"+it.repo+":"+(p._file||i);
+    var open = openCards[key] !== false; /* pendentes começam abertas */
+    var errBox = has(p._error)
+      ? '<div class="prose" style="box-shadow:inset 2px 0 0 var(--mag);color:#ff9ecb;margin-top:11px">'
+        + '⚠ erro ao ler a sheet: '+esc(p._error)+'</div>' : "";
+    var note = has(s._note)
+      ? '<div class="prose" style="box-shadow:inset 2px 0 0 var(--ac);margin-top:9px;font-size:11.5px;color:var(--ink-dim)">'
+        + '<span class="label" style="display:block;color:var(--ac);margin-bottom:3px">'
+        + (s._example ? 'Nota da sheet — marcada como exemplo' : 'Nota da sheet') + '</span>'
+        + esc(s._note) + '</div>' : "";
+
+    return '<article class="pcard" data-testid="pending-card" data-sheet-file="'+esc(p._file)+'">'
+      + '<div class="in">'
+      + '<div class="hazard thin"></div>'
+      + '<div class="pcard-body">'
+        + '<div class="pcard-top">'
+          + '<div style="flex:1;min-width:240px">'
+            + '<div class="label" style="color:var(--ac)">Proposta '+pad(i+1,2)+' &mdash; pré-confirm &middot; '+esc(it.repo)+'</div>'
+            + '<div class="pcard-id">'+esc(txt(s.dispatch_id, p._file || "sheet sem id"))+'</div>'
+            + '<div class="pcard-file">'+esc(txt(p._file))+' &middot; mtime '+esc(fmtMtime(p._mtime))+'</div>'
+          + '</div>'
+          + '<div class="tagrow">'
+            + (p._live===false ? '<span class="tag t-res">◌ reservada</span>' : tagLive({_live:p._live, dispatch_type:s.dispatch_type}))
+            + tagType(s)
+            + '<span class="tag t-warn">'+pad(p._agent_count||0,2)+' agentes</span>'
+            + '<span class="tag t-open">⧗ aguardando confirmação</span>'
+          + '</div>'
+        + '</div>'
+        + (has(s.goal) ? '<div class="pcard-goal"><span class="label" style="display:block;color:var(--mag);margin-bottom:3px">Objetivo</span>'+esc(s.goal)+'</div>' : '')
+        + (has(s.context) ? '<div class="pcard-ctx"><span class="label" style="display:block;margin-bottom:3px">Contexto</span>'+esc(s.context)+'</div>' : '')
+        + errBox + note
+        + '<div class="gate">'
+          + '<button type="button" class="fire" data-testid="dispatch-button" disabled '
+            + 'title="confirmar dispara na Fase 2">▶ Disparar &mdash; Fase 2</button>'
+          + '<span class="gate-note">Gate humano. O botão marca o lugar da confirmação; '
+            + 'nesta fase a tela apenas lê o disco &mdash; confirmar dispara na Fase 2.</span>'
+        + '</div>'
+        + '<details class="diag" style="margin-top:14px" '+(open?"open":"")+' data-key="'+esc(key)+'">'
+          + '<summary style="color:var(--cy);background:rgba(0,229,255,.07);box-shadow:inset 0 0 0 1px rgba(0,229,255,.4)">'
+            + '▾ topologia completa da proposta</summary>'
+          + renderBody({
+              dispatch_type:s.dispatch_type, schema_version:s.schema_version, created:s.created,
+              invoked_by:s.invoked_by, max_loops:s.max_loops, final_approver:s.final_approver,
+              working_folder:s.working_folder, _agent_count:p._agent_count,
+              anti_bias_global:s.anti_bias_global, groups:s.groups, connections:s.connections
+            })
+        + '</details>'
+      + '</div></div></article>';
+  }).join("");
+}
+
+/* ---------------- histórico ---------------- */
+function matches(d, repoName){
+  if(filters.repo && repoName !== filters.repo) return false;
+  if(filters.state && d._state !== filters.state) return false;
+  if(filters.live === "live" && !isLive(d)) return false;
+  if(filters.live === "res"  &&  isLive(d)) return false;
+  if(filters.flag === "alert"){
+    var r = d._close && d._close.exit_reason;
+    if(!(r && BAD_EXIT[r]) && !d._orphan_close) return false;
+  }
+  if(filters.flag === "legacy" && !d._legacy && !d._orphan_close) return false;
+  if(filters.q){
+    var q = filters.q.toLowerCase();
+    var hay = ((d.dispatch_id||"")+" "+(d.goal||"")+" "+(d.dispatch_type||"")+" "+(d.working_folder||"")).toLowerCase();
+    if(hay.indexOf(q) === -1) return false;
+  }
+  return true;
+}
+
+function renderDispatchCard(d, repoName, seq){
+  var key = "D:"+repoName+":"+(d.dispatch_id||seq);
+  var expanded = !!openCards[key];
+  var state = (d._state === "open") ? "open" : "closed";
+  var badExit = d._close && BAD_EXIT[d._close.exit_reason];
+  var cls = "dcard" + (badExit ? " alert" : "") + (d._orphan_close ? " orphan" : "") + (expanded ? " open-body" : "");
+
+  var head = '<div class="dhead" data-toggle-card="'+esc(key)+'">'
+    + '<span class="dseq">' + (expanded ? "▾ " : "▸ ") + pad(seq,3) + '</span>'
+    + '<div class="dmain">'
+      + '<div class="did">'+esc(txt(d.dispatch_id,"(sem dispatch_id)"))+'</div>'
+      + '<div class="dgoal">'+esc(txt(d.goal,"(sem objetivo registrado)"))+'</div>'
+      + '<div class="dmeta">'
+        + tagState(d) + tagLive(d) + tagType(d) + tagExit(d) + tagFlags(d)
+        + '<span class="dtime">'+esc(has(d.created) ? fmtDate(d.created)
+             : (d._close && has(d._close.closed) ? fmtDate(d._close.closed)+" (só close)" : "sem data"))+'</span>'
+        + '<span class="dtime">· '+pad(d._agent_count||0,2)+' agentes</span>'
+      + '</div>'
+    + '</div></div>';
+
+  var body = "";
+  if(expanded){
+    if(d._orphan_close){
+      body += '<div class="block"><div class="prose" style="box-shadow:inset 2px 0 0 var(--mag);color:#ffb0d6">'
+        + '<b>Close órfã.</b> Existe uma close row sem a dispatch row correspondente no ledger. '
+        + 'A execução foi encerrada, mas o registro de abertura nunca foi escrito — a topologia é irrecuperável a partir daqui.'
+        + '</div></div>';
+    }
+    if(d._legacy && !d._orphan_close){
+      body += '<div class="block"><div class="prose" style="box-shadow:inset 2px 0 0 var(--mag);color:#ffb0d6">'
+        + '<b>Row legacy.</b> Anterior à v0.5.2 — sem o bloco <code>groups</code>.</div></div>';
+    }
+    if(has(d.goal)){
+      body += '<div class="block"><span class="label">Objetivo</span><div class="prose">'+esc(d.goal)+'</div></div>';
+    }
+    body += renderBody(d);
+    body += d._close ? renderClose(d._close)
+      : '<div class="block"><div class="close-box" style="box-shadow:inset 2px 0 0 var(--ac)">'
+        + '<span class="tag t-open">▲ em execução</span> '
+        + '<span class="dtime" style="margin-left:8px">sem close row — a dispatch continua viva</span></div></div>';
+    body = '<div class="dbody">'+body+'</div>';
+  }
+
+  return '<article class="'+cls+'" data-testid="dispatch-card" data-dispatch-id="'+esc(d.dispatch_id||"")+'" '
+    + 'data-state="'+state+'">'+head+body+'</article>';
+}
+
+function renderRepos(){
+  var host = document.getElementById("dispatch-list");
+  var html = "", shown = 0, idx = 0, sections = 0;
+
+  SNAP.repos.forEach(function(r){
+    idx++;
+    if(filters.repo && r.name !== filters.repo) return;
+    var list = (r.dispatches||[]).filter(function(d){ return matches(d, r.name); });
+    var isOpen = openRepos[r.name] !== false;
+    shown += list.length;
+    sections++;
+
+    var diag = "";
+    if(has(r.error)){
+      diag += '<details class="diag err" open><summary>✖ erro fatal de leitura</summary>'
+        + '<div class="diag-list"><div>'+esc(r.error)+'</div></div></details>';
+    }
+    if(r.warnings && r.warnings.length){
+      diag += '<details class="diag warn"><summary>⚠ '+pad(r.warnings.length,2)+' aviso(s) de leitura — rows ilegíveis, não-fatal</summary>'
+        + '<div class="diag-list">' + r.warnings.map(function(w){ return '<div>'+esc(w)+'</div>'; }).join("") + '</div></details>';
+    }
+    if(!r.ledger_exists){
+      diag += '<details class="diag warn" open><summary>▤ este repositório ainda não tem ledger</summary>'
+        + '<div class="diag-list"><div>Nenhum arquivo de ledger encontrado. Só há sheets pendentes, se houver.</div></div></details>';
+    }
+
+    var body = "";
+    if(isOpen){
+      body = '<div class="repo-body">' + diag
+        + (list.length ? list.map(function(d,i){ return renderDispatchCard(d, r.name, i+1); }).join("")
+           : '<div class="nores">nenhuma dispatch corresponde ao filtro neste repositório</div>')
+        + '</div>';
+    }
+
+    html += '<div class="repo" data-testid="repo-section" data-repo="'+esc(r.name)+'">'
+      + '<div class="repo-head" data-toggle-repo="'+esc(r.name)+'">'
+        + '<span class="repo-caret">'+(isOpen?"▾":"▸")+'</span>'
+        + '<span class="repo-idx">'+pad(idx,2)+'</span>'
+        + '<span class="repo-name">'+esc(r.name)+'</span>'
+        + (has(r.error) ? '<span class="tag t-alert">✖ erro</span>' : '')
+        + ((r.pending&&r.pending.length) ? '<span class="tag t-warn">⧗ '+pad(r.pending.length,2)+' pendente(s)</span>' : '')
+        + '<div class="repo-stats">'
+          + '<span class="rs">ledger <b>'+pad(r.total_dispatches||0,3)+'</b></span>'
+          + '<span class="rs o">abertas <b>'+pad(r.open_dispatches||0,2)+'</b></span>'
+          + '<span class="rs">exibindo <b>'+pad(list.length,2)+'</b></span>'
+          + ((r.warnings&&r.warnings.length) ? '<span class="rs w">avisos <b>'+pad(r.warnings.length,3)+'</b></span>' : '')
+        + '</div>'
+      + '</div>' + body + '</div>';
+  });
+
+  host.innerHTML = html || '<div class="nores">nenhum repositório corresponde ao filtro</div>';
+  document.getElementById("shown-count").textContent =
+    pad(shown,3) + " dispatches exibidas · " + pad(sections,2) + " repositórios";
+}
+
+/* ---------------- métricas + total ---------------- */
+function renderMetrics(){
+  var total=0, open=0, pend=0, warn=0, err=0, live=0, shownRows=0;
+  SNAP.repos.forEach(function(r){
+    total += r.total_dispatches||0;
+    open  += r.open_dispatches||0;
+    pend  += (r.pending||[]).length;
+    warn  += (r.warnings||[]).length;
+    if(has(r.error)) err++;
+    (r.dispatches||[]).forEach(function(d){ shownRows++; if(isLive(d)) live++; });
+  });
+  var repos = SNAP.repos.length;
+  var limit = (SNAP.config && SNAP.config.limit) || "—";
+
+  document.getElementById("metrics").innerHTML =
+      m("m-ac","Sheets pendentes",pad(pend,2))
+    + m("m-mag","Dispatches abertas",pad(open,3))
+    + m("m-cy","Total no ledger",pad(total,3))
+    + m("m-ink","Repositórios",pad(repos,2))
+    + m("m-cy","LIVE carregadas",pad(live,3)+"/"+pad(shownRows,3))
+    + m("m-ac","Avisos",pad(warn,3))
+    + m("m-mag","Repos com erro",pad(err,2))
+    + m("m-ink","Limite por repo",pad(limit,2));
+
+  document.getElementById("total-count").textContent =
+    "total " + total + " dispatches no ledger · " + open + " abertas · " + pend + " sheet(s) pendente(s) · " + repos + " repositórios";
+
+  function m(cls,label,val){
+    return '<div class="metric '+cls+'"><span class="label">'+label+'</span><b class="num">'+val+'</b></div>';
+  }
+}
+
+function syncRepoSelect(){
+  var sel = document.getElementById("f-repo");
+  var want = SNAP.repos.map(function(r){ return r.name; }).join("|");
+  if(sel.getAttribute("data-sig") === want) return;
+  sel.setAttribute("data-sig", want);
+  var cur = filters.repo;
+  sel.innerHTML = '<option value="">todos os repositórios ('+SNAP.repos.length+')</option>'
+    + SNAP.repos.map(function(r){
+        return '<option value="'+esc(r.name)+'">'+esc(r.name)+' — '+(r.total_dispatches||0)+'</option>';
+      }).join("");
+  sel.value = cur;
+}
+
+function renderAll(){
+  syncRepoSelect();
+  renderMetrics();
+  renderPending();
+  renderRepos();
+}
+
+/* ---------------- eventos ---------------- */
+document.addEventListener("click", function(ev){
+  var repoEl = ev.target.closest ? ev.target.closest("[data-toggle-repo]") : null;
+  if(repoEl){
+    var n = repoEl.getAttribute("data-toggle-repo");
+    openRepos[n] = (openRepos[n] === false);
+    renderRepos();
+    return;
+  }
+  var cardEl = ev.target.closest ? ev.target.closest("[data-toggle-card]") : null;
+  if(cardEl){
+    var k = cardEl.getAttribute("data-toggle-card");
+    openCards[k] = !openCards[k];
+    renderRepos();
+    return;
+  }
+  var seg = ev.target.closest ? ev.target.closest(".seg") : null;
+  if(seg){
+    var box = seg.parentNode;
+    Array.prototype.forEach.call(box.children, function(b){ b.setAttribute("aria-pressed", b===seg ? "true" : "false"); });
+    var v = seg.getAttribute("data-v");
+    if(box.id === "f-state") filters.state = v;
+    if(box.id === "f-live")  filters.live  = v;
+    if(box.id === "f-flag")  filters.flag  = v;
+    renderRepos();
+  }
+});
+document.getElementById("f-repo").addEventListener("change", function(){
+  filters.repo = this.value; renderRepos();
+});
+var qTimer = null;
+document.getElementById("f-q").addEventListener("input", function(){
+  var v = this.value;
+  clearTimeout(qTimer);
+  qTimer = setTimeout(function(){ filters.q = v; renderRepos(); }, 140);
+});
+/* preserva estado <details> das sheets pendentes entre re-renders */
+document.addEventListener("toggle", function(ev){
+  var d = ev.target;
+  if(d && d.tagName === "DETAILS" && d.hasAttribute("data-key")){
+    openCards[d.getAttribute("data-key")] = d.open;
+  }
+}, true);
+
+/* ---------------- enlace ---------------- */
+function setLive(on, note){
+  var el = document.getElementById("live-indicator");
+  el.className = "live " + (on ? "on" : "off");
+  /* o texto contém "conectado" apenas quando ligado */
+  document.getElementById("live-text").textContent = on ? "enlace conectado" : (note || "enlace caiu");
+  el.setAttribute("title", on ? "SSE ativo em /api/stream" : "sem stream — usando o último snapshot lido");
+}
+
+function apply(data){
+  if(!data || !data.repos) return;
+  SNAP = data;
+  renderAll();
+}
+
+function loadSnapshot(){
+  return fetch("/api/snapshot", {cache:"no-store"})
+    .then(function(r){ return r.json(); })
+    .then(apply)
+    .catch(function(e){ setLive(false, "falha ao ler snapshot"); console.error(e); });
+}
+
+function connect(){
+  if(typeof EventSource === "undefined"){ setLive(false, "sem suporte a SSE"); return; }
+  var es;
+  try { es = new EventSource("/api/stream"); }
+  catch(e){ setLive(false, "enlace caiu"); return; }
+
+  es.addEventListener("open", function(){ setLive(true); });
+  es.addEventListener("snapshot", function(ev){
+    setLive(true);
+    try { apply(JSON.parse(ev.data)); } catch(e){ console.error("snapshot inválido", e); }
+  });
+  es.addEventListener("message", function(ev){
+    setLive(true);
+    try { var d = JSON.parse(ev.data); if(d && d.repos) apply(d); } catch(e){}
+  });
+  es.addEventListener("error", function(){
+    setLive(false, "enlace caiu — reconectando");
+  });
+}
+
+/* arranque */
+renderAll();
+loadSnapshot().then(connect);
+
+})();
+</script>
+</body>
+</html>

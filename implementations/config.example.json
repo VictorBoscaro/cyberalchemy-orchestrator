@@ -1,0 +1,18 @@
+{
+  "_comment": "Copie para config.json para sobrescrever a auto-descoberta. Sem este arquivo, o servidor varre o diretório pai do repo atrás de pastas com telemetry/agents/.",
+
+  "scan_roots": ["C:/Users/victo"],
+
+  "repos": [
+    "C:/Users/victo/Arcanum",
+    "C:/Users/victo/domainspec-lean-formalization",
+    "C:/Users/victo/business-philosopher",
+    "C:/Users/victo/cyberalchemy-orchestrator"
+  ],
+
+  "host": "127.0.0.1",
+  "port": 8765,
+  "poll_seconds": 1.0,
+  "limit": 40,
+  "prompt_limit": 280
+}
