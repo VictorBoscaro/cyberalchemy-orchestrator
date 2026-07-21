@@ -54,7 +54,7 @@ PLAN.md §1 A6).
   (2003/08); Ellis–Masatlioglu (2022).
 - **Non-categorical approach to the noise axis (contrast):** Costello & Watts, *Surprisingly
   rational: probability theory plus noise*.
-- **The repo's own substrate:** `HYP-ORCH-NOISE`, `MAPPING.md`, anti-bias discipline
+- **The repo's own substrate:** `HYP-ORCH-NOISE`, `FRAMINGS.md` (CT mapping, §2), anti-bias discipline
   (`check-tension`, P5/P14).
 
 ## Structure (outline, to be detailed later)

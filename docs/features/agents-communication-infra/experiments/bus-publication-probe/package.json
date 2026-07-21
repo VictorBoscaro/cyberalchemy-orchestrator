@@ -1,0 +1,14 @@
+{
+  "name": "agent-bus-publication-probe",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/mcp-server.mjs",
+    "test": "node --test",
+    "verify": "node src/verify-result.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

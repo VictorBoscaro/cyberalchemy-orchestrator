@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "agent-bus-probe-seat-a": {
+      "command": "node",
+      "args": [
+        "C:/Users/victo/cyberalchemy-orchestrator/docs/features/agents-communication-infra/experiments/bus-publication-probe/src/mcp-server.mjs"
+      ],
+      "env": {
+        "BUS_JOURNAL_PATH": "C:/tmp/agent-bus-probe/journal.jsonl",
+        "BUS_PHASE_STATE_PATH": "C:/tmp/agent-bus-probe/phase-state.json",
+        "BUS_CONTEXT_JSON": "{\"run_id\":\"run-probe-1\",\"dispatch_id\":\"dispatch-probe-1\",\"group_id\":\"group-probe-1\",\"group_version\":1,\"seat_id\":\"seat-a\",\"agent_instance_id\":\"agent-a-1\",\"attempt_id\":\"attempt-a-1\",\"actor_principal_id\":\"principal-seat-a\",\"phase\":\"collect\"}"
+      }
+    }
+  }
+}

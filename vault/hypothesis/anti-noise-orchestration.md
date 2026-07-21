@@ -27,17 +27,34 @@ without signal). The repo's current architecture attacks **bias** masterfully �
 **has no named noise axis**. This thesis proposes the second axis, and claims that the
 two compose:
 
-> **`judgment residue = bias ⊕ noise`** — and reducing them calls for **distinct
-> tools**, applied at **distinct stages** of the agent pipeline.
-
-> **Revision (2026-07-20, promoted by the `seam-feasibility` research).** `⊕` **is
-> not a free orthogonal direct sum**. It holds as an Amari Pythagorean theorem **under
-> an imported Legendre potential `F`** (dually flat geometry; **without** a Fisher
-> metric) — and that `F` is precisely the *"anchored common scale / MAP"* already used
-> in this thesis, which thus pays the toll without naming it. **Without `F`**, the
-> honest form is `residue = bias * noise`: two entropic (KL) contributions, **not**
-> orthogonal legs. Proof and boundaries in
-> `docs/essays/anti-noise-orchestrator/research/seam-feasibility/findings.md`.
+> **Core statement (honest framing).** Every judgment can be scored by an
+> **expected loss** against an (unknown) target. That expected loss carries a
+> **bias** part (systematic, directional error of the *aggregate*) and a **noise**
+> part (dispersion of individual judgments about their aggregate). They are **not**
+> free-standing orthogonal legs: whether they separate cleanly or interact through a
+> cross term depends on an explicit **dependency object** — in the scoring regime the
+> error-covariance Σ (A1), in the categorical/entropic regime the joint law `D(A^N)` /
+> mutual information (Seam 2), formalized as the loss's convex potential `F` (the
+> "anchored common scale"). The design (distinct tools at distinct stages) targets the
+> two components; the *exact* separation is the conditional refinement below.
+>
+> > **Conditional theorem — proven under `F` (`seam-feasibility`; the "what we proved
+> > under F" refinement, NOT a weaker restatement).** *When* the loss is the Bregman
+> > divergence `D_F` of a Legendre potential `F`, **and** aggregation randomizes the
+> > **first** slot (M-projection / reverse-KL orientation), the expected loss splits
+> > **exactly**, Amari generalized-Pythagoras: a bias leg **⊥** a noise leg, **zero
+> > cross term** — this is the `⊕`. In that regime the aggregate is the
+> > **Banerjee-optimal** minimizer of expected loss (mechanical aggregation provably
+> > optimal), and the split is **exclusive to Bregman** (an iff, arXiv 2501.18581).
+> > **Without `F`, or with the slot flipped**, the honest form is
+> > `residue = R_bias + R_noise + R_interaction` (the doc's `bias * noise`): two
+> > entropic (KL) contributions **plus a non-zero Jensen cross term**, not orthogonal
+> > legs. **Two boundaries stay honest:** (i) `F = MAP / anchored common scale` is
+> > **asserted by naming, not constructed** — not yet shown to be a convex,
+> > divergence-generating Legendre potential (`[[OQ-10]]`); (ii) whether the split
+> > survives **composition of stages** is **OPEN** (the DPI contracts KL and plausibly
+> > rotates the residue out of ⊥ — the 4th collapse-test / OBL-E3). Proof and
+> > boundaries: `docs/essays/anti-noise-orchestrator/research/seam-feasibility/findings.md`.
 
 The thesis is falsifiable (see *Collapse-tests*). It is also a **self-application**:
 the process that produces knowledge here is an instance of the epistemological
@@ -64,16 +81,23 @@ The repo already runs a mature anti-bias discipline, which I am **not** reinvent
 All of this is **anti-bias**. What's missing is the **anti-noise** — and the instinct
 that originated it ("individual evaluations, aggregation at the end; sometimes with
 discussion in between") is *exactly* the canonical noise-reduction lever (Kahneman,
-Sibony, Sunstein, *Noise*, 2021): the average of N **independent** judgments cancels
-noise on the order of √N.
+Sibony, Sunstein, *Noise*, 2021): the average of N judgments shrinks the **standard
+error of the aggregate** by ~1/√N (a finite-variance / Bienaymé fact) — a reduction in
+the dispersion of the *mean*, not of any individual judgment, and 1/√N (not √N) in the
+estimator's units.
 
 > **Revision (2026-07-20, `seam-feasibility`).** `√N` is an **L2/CLT** fact — it
 > holds under the Gaussian/quadratic regime (`F=‖·‖²`, where the mean is the Banerjee
 > minimizer). **Outside the CLT** (entropic regime), concentration is **Sanov /
-> large-deviation, not 1/N**. State `√N` as the special case; the general guarantee is
-> "aggregation = m-projection onto the flat family, monotone under independence,"
-> with a **regime-dependent exponent**. The design (aggregating independents)
-> survives; the exponent is conditional.
+> large-deviation, not 1/N**. Disambiguate the four quantities "√N" silently
+> conflates: **Var(ē) ∝ 1/N** (Bienaymé; finite variance only), **sd(ē) ∝ 1/√N** (its
+> root — the literal gain), **SNR ∝ √N**, and the **large-deviation rate ∝ N** (Sanov
+> tail exponent). The first three are L2/CLT facts governing *typical* fluctuations and
+> hold generally with finite variance; the fourth governs the *tails* and is the
+> genuinely regime-sensitive object (CLT and Sanov **coexist** — typical vs tail — they
+> are not rival regimes). So: "1/√N" is the sd-gain, not conditional beyond finite
+> variance; only the **LDP rate** is regime-dependent. The design (aggregating
+> independents) survives; only the tail exponent is conditional.
 
 ## The central thesis
 
@@ -83,7 +107,7 @@ Three references, operating at **three orthogonal levels** — not a ranked list
 | Axis | Role | Question it answers |
 |---|---|---|
 | **Category theory** | *in what* — the substrate/type | what the objects and morphisms **are** (already the repo's spine: `residue`, Yoneda, functor) |
-| **Kahneman** | *why / what* — the error model | how judgment fails (`bias ⊕ noise`) and which protocols correct it (MAP, ETE, hygiene) |
+| **Kahneman** | *why / what* — the error model | how judgment fails (`bias ⊕ noise` — licensed by F; else += R_interaction) and which protocols correct it (MAP, ETE, hygiene) |
 | **Thaler / Nudge** | *how* — choice architecture | how to make hygiene the **effortless default**, not a costly choice |
 
 CT is the **ground** (everything types onto it), Kahneman is the **primary lens**
@@ -91,7 +115,9 @@ that motivates the design, Thaler is the **mechanism** that implements Kahneman'
 prescriptions. "Kahneman first" holds as the motivating lens; CT is not
 "third/lesser" — it is the ground.
 
-### `bias ⊥ noise` — the reframe that reorganizes everything
+### `bias ✻ noise` (⊥ only under `F`) — the covariance reframe that reorganizes everything
+
+> *(`✻` = the honest combinator: it is the orthogonal `⊕` under a Legendre potential `F`, else it carries a non-zero cross term — `residue = R_bias + R_noise + R_interaction`.)*
 
 The central point of *Noise* is that bias and noise are **orthogonal** and call for
 opposite tools:
@@ -100,19 +126,29 @@ opposite tools:
 - **Noise** → **independence + aggregation, anchored common scale, decision
   hygiene.**
 
-And here is the core of the design: **tension and independence contradict each
-other.** Anti-bias *correlates* agents in deliberate opposition; anti-noise
-aggregation demands the opposite — independence (the average only cancels noise to
-the extent of independence; correlation ρ puts a floor on the gain). The resolution
-is **separation by stage**:
+And here is the design's central subtlety, **stated honestly as covariance
+engineering**: tension and independence do **not** contradict — they are **two
+settings of one error-covariance knob**. The variance of the aggregate is governed by
+the full covariance matrix, `Var(ē) = σ²·[1 + (N−1)ρ̄] / N`, where ρ̄ is the mean
+pairwise error-correlation — **not** by independence per se. Independence (ρ̄=0) is
+the *convenient* case giving the clean 1/N; it is **sufficient, not necessary**.
+**Negative** error-correlation does strictly better — at ρ̄ = −1/(N−1) the aggregate
+variance goes to **zero**. Anti-bias tension *is* deliberately induced negative
+error-correlation, so it is not the enemy of noise reduction — it is the **best case**
+of the same lever. The design move is therefore not to separate two contradictory
+disciplines but to **place two points on one decorrelation axis** (ρ̄<0 = tension,
+ρ̄=0 = independence), staged where each is cheapest to obtain:
 
 - **Generate/investigate stage** → governed by **tension** (opposed probes — as
   today).
 - **Evaluate/judge stage** → governed by **independence** (independent scorers,
-  common scale, source-blind).
+  common scale, producer-blind).
 
-Two axes, two stages, two populations. This separation dissolves the contradiction
-and is the most load-bearing design principle of this thesis.
+Two points on one decorrelation axis, staged where each is cheap: engineer ρ̄<0
+(opposed probes) where you can generate them; fall back to ρ̄=0 (independent,
+producer-blind scorers) where you must. This is the most load-bearing design principle
+of this thesis — and separation-by-stage is a **practical allocation of the covariance
+knob**, not the resolution of a real mathematical tension (there was none).
 
 > **Revision (2026-07-20, `seam-feasibility`).** "Orthogonal" here is **licensed,
 > not free**: `bias ⊥ noise` is only a direct sum under the potential `F` (= the
@@ -120,7 +156,9 @@ and is the most load-bearing design principle of this thesis.
 > (M-projection/reverse-KL); reversed, the cross term reappears (Jensen gap). And
 > there is an **open** structural limit: orthogonality has to survive **composition
 > across stages** to be categorical — native monotonicity (the data-processing
-> inequality: channels *contract* KL) rotates the residue out of ⊥.
+> inequality: channels *contract* KL) **plausibly** rotates the residue out of ⊥ —
+> this is **conjectured, not proven** (see the compositionality collapse-test); the
+> DPI *suggests* such a composite exists but no exhibit is in hand.
 > Separation-by-stage is the *design* answer; the *formal* guarantee through
 > composition is **unproven** (see new collapse-test).
 
@@ -168,7 +206,7 @@ in the `discovery` kind, and there it is **optional** — the `research` kind do
 **not** require it; we do not inherit the `discovery` chain from the other vault,
 see `[[OQ-6]]`.) Framing is the choice of **lens** — in the repo's vocabulary, the
 choice of codomain `C` (README "common thread"; `FRAMINGS.md`). And, because framing
-**is a judgment**, it carries the thesis's **two** components (`bias ⊕ noise`) — so
+**is a judgment**, it carries the thesis's **two** components (`bias ⊕ noise` — licensed by F; else += R_interaction) — so
 it gets **two** treatments, not just one:
 
 - **Bias arm (tension).** Frames are directional; **opposed** framings expose the
@@ -178,8 +216,16 @@ it gets **two** treatments, not just one:
   bias, frame the same problem in **dispersed** ways: that is noise, not opposition.
   The same engineering from `[[OQ-4]]` applies here — **N independent frames, logged
   blind**, and **frame dispersion as a first-class signal** (high dispersion =
-  ill-posed problem; you don't average questions). This arm is new and not yet
+  ill-posed problem **— the trigger separating 'ill-posed' from 'rich' is unresolved,
+  see `[[OQ-8]]`**; you don't average questions). This arm is new and not yet
   built.
+
+> *(Consistency note, post-A1: the frame stage carrying **both** a tension arm and an
+> independence arm is **not** a violation of the design principle. Under the covariance
+> view both arms are points on the one decorrelation axis — tension is ρ̄<0,
+> independent-dispersion is ρ̄=0 — so a single stage may legitimately hold both. "Two
+> stages" is a placement heuristic for where each point is cheapest, not a partition
+> theorem.)*
 
 An ill-posed frame poisons the entire downstream source filter.
 
@@ -198,14 +244,19 @@ pass raises no new inconsistency") is desirable but **PENDING** — it is not wh
 evidence should hang off a referencing discipline that crosses research→findings:
 
 - **Paper key.** Every paper/source has a stable identifier; precedence
-  **DOI > arXiv ID > URL > content-hash** (fallback). The key enables **dedup**
-  (same key = same paper) and the query "has this already been researched?".
+  **DOI > arXiv ID > URL > content-hash** (fallback). The key resolves an explicit
+  **`(work_id, version_id)`** pair: `work_id` identifies the **work** (precedence
+  DOI > arXiv > URL > hash), `version_id` a **separate slot** for the v1/v2 /
+  preprint↔published distinction. **Dedup is by `work_id`**; **claim-anchoring/provenance
+  by the full pair**. Fields are **PENDING**; naming the pair stops "same key = same
+  paper" from conflating work-identity (what dedup needs) with version-identity (what
+  provenance needs).
 - **Research → findings flow.** In the aggregated `research`, agents **write down
   the sources consulted** — each with a key and status (used / discarded + why).
   These sources **propagate** to `findings` via `derives-from`; the synthesis does
   not invent sources.
 - **Every statement referenced — with two safeguards.** Every claim in `findings`
-  carries **≥1 key**; a claim with no key = **suspect**, not silently accepted. But
+  carries **≥1 key**; a claim with no key = **suspect**, not silently accepted (routing by claim-class — empirical-no-key blocked, inferential-with-`reasoning` admitted, un-typed suspect — see `[[OQ-7]]`). But
   raw fail-closed **manufactures exactly the availability bias the thesis fights**
   (Goodhart): it forces discarding a claim that is true-but-unanchorable, or
   slapping on the nearest key just to pass — and a GREEN coverage dashboard ends up
@@ -221,20 +272,22 @@ evidence should hang off a referencing discipline that crosses research→findin
 This reinforces two lines already present: traceability/blinding and the
 a-priori↔a-posteriori divergence from `[[OQ-4]]`.
 
-## The pipeline as a worked example — two-level hierarchical ETE
+## The pipeline as a worked example — two-level hierarchical aggregation (asymmetric ETE)
 
-The research flow designed in the sessions is, formally, a two-level
-**Estimate-Talk-Estimate** (Delphi): register independently → discuss →
-re-register, within each agent, and again among the synthesizers.
+The research flow combines two levels, **not symmetrically**. Within each agent: a
+full **Estimate-Talk-Estimate** (Delphi) — register independently → discuss →
+re-register (adjustments 1 & 4, the frozen pair). Among the synthesizers (F→G→H):
+**Estimate→Talk→Approve** — there is no re-register step after discussion today; a
+synthesizer-level re-register is **PENDING**, not built.
 
 ```mermaid
 flowchart TD
     F0["Frame (opposed framings)<br/>problem+context → question — BIAS axis"] --> A
     A["Investigate (tensioned group)<br/>opposed probes — BIAS axis"] --> B["Freeze raw<br/>independent frozen position"]
-    B --> C["Per-agent reviewer/compressor<br/>short output · free inference"]
+    B --> C["Per-agent reviewer/compressor<br/>short output · typed deltas {preserved/omitted/reformulated/inferred}"]
     C --> D["Freeze the PAIR<br/>initial + final (P14)"]
     D --> E["Append to the master file<br/>append-only"]
-    E --> F["Cross-agent judgment<br/>anchored common scale · SOURCE-BLIND — NOISE axis"]
+    E --> F["Cross-agent judgment (scores the raw frozen finding B; compressed output C = audit/human digest, inferred-flagged deltas visible-but-discounted)<br/>anchored common scale · PRODUCER-BLIND — NOISE axis"]
     F --> G["Synthesizers discuss<br/>fork guard: dispersion≠dissent"]
     G --> H["Approver (P12)<br/>no self-approval"]
     B -. evidence persists .-> E
@@ -269,20 +322,22 @@ The **five adjustments** that make the flow honest under the noise axis:
 The operational spine: one line per principle, pointing to the real artifact **or**
 flagging what's left to build.
 
+*Status legend (rising evidence): `mapped` (a formal map exists) < `proven-under-conditions` (theorem given stated conditions) < `survived` (a map changed ≥1 decision) < `operational` (used by default). Nothing in this thesis is yet `operational`.*
+
 | Principle | Axis | Why | Where the design lives |
 |---|---|---|---|
 | Pairwise tension | K·CT | correlated bias cancels under opposition | `check-tension` (Tests 1–4), `anti-bias-vector-composition`, P5 |
-| Independence-by-stage | K | √N only holds with independence | **PENDING** — the new axis of this thesis |
+| Independence-by-stage | K | √N-order gain needs low error-correlation (ρ̄≤0), not strict independence — the decorrelation axis (see the covariance recast) | **PENDING** — the new axis of this thesis |
 | ETE / freeze-before-discussing | K | cascade/anchoring before registration | primitive **exists** (P14 initial+final); the freezing rule is **PENDING** |
-| MAP / anchored common scale | K | relative judgment is less noisy; decompose into independent dimensions | **PENDING** — candidate: the 6 facets of `knowledge-taxonomy` |
-| Blinding (source-blind) | K·T | kills halo/source-bias | **PENDING** — ledger records `agent_name`/`model`; blind evaluation is new |
-| Mechanical aggregation > clinical | K | simple rule beats holistic fusion | partial: `robot_talks:true`→synthesize / concat (P7); fork guard **PENDING** |
-| Fork guard | K | don't crush the correct minority | `exit_reason: dissent_irreconcilable` **exists** |
+| MAP / anchored common scale | K | relative judgment is less noisy; decompose into independent dimensions | **PENDING** — two unreconciled components: OQ-2's per-`dispatch_type` quality rubric (scores) + the 6 `knowledge-taxonomy` facets (classify); their boundary (esp. `source_confidence`/`content_certainty`) is open |
+| Blinding (producer-blind) | K·T | kills halo/source-bias | **PENDING** — ledger records `agent_name`/`model`; blind evaluation is new — the evaluator is blind to **producer-identity** (`agent_name`/`model`/persona — kills halo) but **not** to the **scientific source** of the evidence (the paper key), because the citation-quality check (`supports` vs `mentioned`, `claim ≤ proof`) requires seeing where the evidence came from — hence **producer-blind, evidence-sighted** |
+| Mechanical aggregation > clinical | K | simple rule beats holistic fusion | partial: `robot_talks:true`→synthesize / concat (P7) |
+| Fork guard | K | don't crush the correct minority | **enum EXISTS** (`exit_reason: dissent_irreconcilable` — the escalation *channel*); **detector PENDING** (the structural dispersion≠fork classifier, `[[BET-FORK]]`). The channel to *report* a fork is built; the mechanism to *detect* one is not. |
 | Hygiene default | T | make the hygienic path the default | human-gate + `check-tension` that **blocks** (already choice architecture) |
 | Deliberate sludge | T | friction that forces the correct sequence | **PENDING** — gate that blocks discussion before freezing |
-| Token-budget as nudge | T | scarcity forces compression/decision | `token_budget` in schema v0.6.0 **exists**; use as a nudge is design |
-| CT operationalization (~1:1 analogy) | CT | informal Kahneman → objects that compose/measure; use **only where the mapping is tight**, otherwise it stays informal | **operational** (`seam-feasibility`): ⊕↦Amari-Pythagorean under `F`, √N↦regime-dependent concentration, aggregation↦m-projection, nudge↦morphism on the coupling fiber; **OPEN**: ⊥ surviving composition (DPI). See `[[BET-CT]]` |
-| Frame (framing the question) | K·CT | an ill-posed lens poisons everything downstream; framing is a judgment (bias ⊕ noise) | **PENDING** — new stage; tension arm + independent-dispersion arm (`[[OQ-4]]`) |
+| Token-budget as nudge | T | scarcity forces compression/decision | `token_budget` in schema v0.6.0 **exists** as one generic field; adjustment 3 needs **two** — `output_budget` (caps what the agent emits) and `deliberation_budget` (protects the evaluator's System-2 reasoning); a single field cannot encode both (they pull opposite ways). The split is **PENDING**, not built |
+| CT operationalization (~1:1 analogy) | CT (Seam 2) · info-geom (Seam 1) | informal Kahneman → objects that compose/measure; use **only where the mapping is tight**, otherwise it stays informal | **candidate — none yet adjudicated** (`seam-feasibility`; OQ-10). **One construct native-categorical:** nudge ↦ coupling-fiber morphism on `D(A^N)` (non-monic marginalization; no imported `F`; "acts on M not on A/B does not typecheck" is a genuine categorical *correction*). **One F-conditional and non-native:** bias✻noise ↦ Bregman/Amari split — **info-geometry / convex analysis, not CT** (findings.md: "non-native"), holding only under an **asserted** `F=MAP`. `√N`↦concentration and aggregation↦m-projection belong to `[[BET-√N]]`, **not this row**. Composition **OPEN** (⊥ vs DPI). **No decision has moved, so BET-CT's *corrects/predicts* clause is UNMET.** See `[[BET-CT]]`, `[[OQ-9]]`, `[[OQ-10]]` |
+| Frame (framing the question) | K·CT | an ill-posed lens poisons everything downstream; framing is a judgment (bias ⊕ noise — licensed by F; else += R_interaction) | **PENDING** — new stage; tension arm + independent-dispersion arm (`[[OQ-4]]`) |
 | Refine (loop operator) | — | improvement through bounded iteration, cross-cutting any node | skill `refine` **exists** (fixed conveyor + budget); solo convergence **PENDING** (not the zig-zag nor the dispatch dials) |
 | Citation spine (key + flow + claim↦ref) | K | evidence without an anchor is not evidence (`claim ≤ proof`) | partial: `derives-from` **exists**; key + link-quality (`supports`/`mentioned`) + `reasoning` valve **PENDING** |
 
@@ -294,12 +349,32 @@ Each one carries a **recommendation**, not just the question. None is decided.
 *Recommendation:* **pure compressor** (the agent's assumed advocate), with true
 judging deferred to the cross-agent step. Keeps the noise axis clean and avoids an
 isolated absolute score.
+*Preservation obligation (PENDING).* "Pure compressor" is only nominal unless the
+compressor is bound to a **preservation contract**: every span of its output is typed
+`{preserved, omitted, reformulated, inferred}`, and `inferred` is **flagged** so the
+cross-agent judge can **discount** it. Without this, "free inference" lets the
+compressor add/select/reinterpret — which *is* judging, contradicting adjustment 2.
+The detector is **not built (PENDING)**; the commitment now is to *name* the
+obligation. Whether compression choices themselves leak verdict-bias is **untested — a
+candidate for a future BET.**
 
 **OQ-2 — Is the common scale a fixed global rubric, or per `dispatch_type`?**
 *Recommendation:* **per `dispatch_type`** — `research` (novelty, evidence, reach)
 and a future `implementation-tournament` (correctness, internal consistency, cost)
 have genuinely different dimensions; a single rubric would become too generic to
 measure anything.
+**Named distinction — annotation-schema (TYPE) vs evaluation-rubric (QUALITY).** The
+doc offers *two* candidates for "the anchored common scale" and must not conflate them:
+OQ-2's per-`dispatch_type` **rubric** scores *how good* a piece is (QUALITY); OQ-4's
+**6 facets** classify *what it is* (TYPE). They are orthogonal. **Node F judges on the
+QUALITY rubric (OQ-2); the TYPE facets (OQ-4) are an orthogonal annotation whose
+*dispersion* is a noise signal, not the judgment scale.** Whether facets feed a rubric
+dimension, coexist, or stay unwired is **PENDING**; and `source_confidence`/`content_certainty`
+sit inside the 6 facets yet read as quality-adjacent — whether they migrate to the
+rubric is an **open sub-question**. *(Cross-ref formal: findings.md identifies the 6
+facets with the dual coordinates `η=∇F`; that makes them a **candidate carrier** for
+`F`, not a discharged one — do not promote "facets = F" to fact until OQ-10 bullet 1
+is answered.)*
 
 **OQ-3 — Agent-pool persona: who picks it, and at which stage does it apply?**
 Each agent picks a name from `agent-pool.yaml` as its **persona**, tied to a role
@@ -333,8 +408,12 @@ designed to **eliminate** inter-tagger variance via shared rules — using it to
     incorrectly).
   - "Average" of a categorical label **is not an average** — it's a
     **vote/distribution**. And the distribution *is* the noise measure
-    (inter-tagger reliability): strong agreement = low noise = high confidence;
-    spread = ambiguous item **or** a bad boundary.
+    (inter-tagger reliability): strong agreement = low *observed* dispersion = low
+    noise **only if raters are independent**, and even then warrants confidence only
+    **pending the downstream-quality correlation** (agreement bounds *noise*, not
+    *bias*: low-noise consensus among correlated raters is shared bias masquerading as
+    reliability — the tag collapse-test and BET-TAG carry that check); spread =
+    ambiguous item **or** a bad boundary.
   - **Independence here too.** Tags logged **blind** and frozen before any
     comparison. The "last agent to compare" needs to **judge first (frozen), then
     compare** — otherwise it is itself anchored by the stack.
@@ -348,8 +427,13 @@ designed to **eliminate** inter-tagger variance via shared rules — using it to
 **OQ-5 — Does implementation fusion happen now, or does it stay `code`-RESERVED?**
 In the worktree case ("dispatch K groups, pick the best or merge"), `code` is
 **RESERVED** in the constitution. *Recommendation:* frontier — **blind rubric
-selection** as default (an argmax robust to noise if the selection is blind);
-**fusion** only when the dimensions are separable and each piece carries its own
+selection** as default — but **argmax over noisy scores is *not* noise-robust**: the
+max of noisy estimates carries a **positive selection bias** (winner's / optimizer's
+curse), and blinding removes halo/source bias but not this max-inflation (the two are
+orthogonal). Control it with **aggregate-then-select** (rank on the panel score, not
+one draw), a **data-split** (select on fold A, estimate the winner's value on held-out
+fold B), or a **margin gate** (accept only if top − runner-up > k·σ). **Fusion** only
+when the dimensions are separable and each piece carries its own
 proof (`claim ≤ proof` per piece), because cherry-picking destroys internal
 consistency (a real software risk).
 
@@ -372,8 +456,14 @@ risk, not a taxonomy question. `[[discovery-as-root]]`
 Proposed precedence **DOI > arXiv > URL > hash**; but neither MOGT-scaffolding nor
 CANONICAL-KINDS brings a bibliographic schema or deduplication — it's a piece to be
 invented. *Recommendation:* a stable per-source key in the append-only ledger;
-dedup by key on entry; an orphan claim (no key) rejected by the
-observability-output validator. `[[citation-spine]]`
+dedup by key on entry; orphan handling **by claim-class** (this resolves the main-text
+"suspect, not silently accepted" vs a flat "rejected"): **empirical/external claim, no
+key → blocked** (an empirical assertion with no evidence source is not evidence);
+**inferential claim carrying the explicit `reasoning`/self-evidence key → admitted**
+(the truth-by-reasoning valve; not an orphan); **un-typed claim (no key, no
+`reasoning`) → suspect** — surfaced and escalated to the judge, never silently accepted
+nor silently discarded. The routing rule is **PENDING**; the commitment now is to name
+the three classes rather than leave two contradicting sentences. `[[citation-spine]]`
 
 **OQ-8 — How to build the frame's noise arm (independent frames +
 dispersion-as-signal)?**
@@ -398,7 +488,7 @@ don't surrender to CT" excuses every hit — so no accumulation of per-construct
 failures can refute the universal. It also counts the nudge (whose single-judgment
 optic *collapsed* before being re-typed) as a "survived" mapping; and its *Carries*
 double-counts √N/aggregation (which belong to `[[BET-√N]]`), while the table row
-lists **4** survived mappings vs BET-CT's **3** (aggregation↦m-projection dropped).
+lists **4** survived mappings vs BET-CT's **3** (aggregation↦m-projection dropped). [Addressed 2026-07-21 by the critique-redteam edits: the CT table row and BET-CT no longer count "survived" maps (now "candidate — none yet adjudicated / not yet survived", corrects/predicts UNMET); this OQ is retained as the audit trail that prompted the fix.]
 *Recommendation:* re-scope BET-CT strictly per-construct **or** pre-commit a
 threshold ("false if ≥k named constructs collapse"); record the nudge as "candidate 1
 falsified, re-typed", not a clean survival; reserve "survived" for after a decision
@@ -459,6 +549,15 @@ count/training, so residual spread can be attributed.
   disperse, the frame's noise arm measures nothing; if they disperse always with no
   recoverable signal, it's a chronically ill-posed problem — in neither case does
   dispersion-as-signal (`[[OQ-4]]`) hold up.
+- **Discipline: dispersion is an *internal* quantity and cannot alone distinguish
+  "ill-posed" from "rich" — that verdict needs an *external target* (downstream
+  decision quality, a labeled reference, or a held-out outcome).** Without an external
+  criterion, low-vs-high dispersion is unfalsifiable narration. This binds the tag
+  collapse-test above too: "tag distribution correlates with downstream quality" **is**
+  the external target; state it as primary, raw dispersion subordinate. (The
+  freeze-pair / initial+final test remains valid **as-is** — it is a legitimate
+  *mechanism-inertness* test, "does the ETE ever move?", not a stability-of-answer
+  test; keep it.)
 - **(new, `seam-feasibility`) Compositionality.** If the `bias ⊕ noise`
   decomposition and the nudge re-typing only hold **pointwise per stage** and do
   **not** survive the functorial composition of stages/dispatch, then
@@ -485,9 +584,14 @@ to avoid duplication (single source).
   analogy" only where the fit is tight.
 - *Carries:* the passage from informal-thesis → computable architecture; the `⊕`,
   the `√N`, the aggregation.
-- *Status:* **survived once** (`seam-feasibility`: ⊕↦Amari-Pythagorean under
-  `F`, √N↦regime-dependent concentration, nudge↦coupling-fiber). **In-test:**
-  persona, tag, fork-guard.
+- *Status:* **candidate — not yet survived** (`seam-feasibility` exhibited *maps*, but
+  no decision has moved; OQ-9 reserves "survived" for the predict/correct test, OQ-10
+  marks the identifications un-adjudicated). Of the maps: **nudge↦coupling-fiber is
+  native-categorical** (Markov, no `F`); **bias✻noise↦Bregman/Amari is non-native
+  (info-geometry) and F-conditional**, with `F=MAP` **asserted-by-naming, not
+  constructed**; **`√N` and aggregation belong to `[[BET-√N]]`, not counted here**
+  (removes the table/BET double-count OQ-9 flagged). **In-test:** persona, tag,
+  fork-guard — and the *corrects/predicts* clause for the surviving maps.
 - *Falsifier (per construct):* false **for that construct** if the candidate tool
   **collapses into identity** or has to **touch the content** (which is what the
   single-judgment optic did to the nudge — hence moving up a floor). Thesis-level
@@ -501,16 +605,20 @@ to avoid duplication (single source).
   surrender to CT**).
 
 **BET-√N — independence gives a material noise reduction.**
-- *Bet:* independent evaluators, common scale, source-blind, reduce noise with gain
+- *Bet:* independent evaluators, common scale, producer-blind, reduce noise with gain
   **∝ √N_effective** (exponent conditional on regime — see the `seam`
   revision).
 - *Carries:* the entire anti-noise lever (aggregation, MAP, scorer panel).
 - *Status:* **in-test**.
 - *Falsifier:* false if **N_effective ≈ 1** — error covariance between scorers
-  (same base model, different personas) high enough that the average doesn't beat
-  a single good scorer.
+  (same base model, different personas) high enough that the average doesn't beat a
+  **pre-designated (ex-ante) single scorer**.
 - *Experiment:* N scorers score a labeled set; measure error covariance vs.
-  reference; compare average-error vs. best-individual-error.
+  reference; compare average-error against a **pre-registered or expected/random
+  single scorer** (**not** the ex-post argmin — an oracle unavailable at decision time
+  that rigs the test toward falsification, and which contradicts this bet's own 'single
+  good scorer'). Optionally data-split: pick the 'best' scorer on fold A, compare
+  average vs. that scorer's error on held-out fold B.
 - *If it falls:* swap independence for **structural diversity** (distinct
   evidence/corpora/tools) as the primary decorrelation source; or re-budget,
   accepting a small gain.
@@ -579,7 +687,7 @@ re-description.**
   `telemetry/agents/subagents-dispatch.yaml` (ledger).
 - **Would promote to:** a future *anti-noise constitution* (executable rules),
   `DEFINITIONS` entries (`noise`, `nudge`, `sludge`, `MAP`, `ETE`, `common-scale`,
-  each with a categorical type) and `MAPPING.md`. None of this is written here —
+  each with a categorical type) and the CT mapping (now §2 of `FRAMINGS.md`). None of this is written here —
   this is the hypothesis, not the law.
 - **External references:** Kahneman, Sibony & Sunstein, *Noise* (2021); Thaler &
   Sunstein, *Nudge*; `knowledge-taxonomy` @ `cyberAlchemyAI` (facets as a candidate

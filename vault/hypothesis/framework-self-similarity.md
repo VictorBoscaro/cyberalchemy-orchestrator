@@ -37,7 +37,7 @@ private: true   # do-not-publish — fractality is a private proof target; exclu
 > ([FRAMINGS.md F6–F7](../../FRAMINGS.md)) — and the loop by which the orchestrator runs —
 > tensioned dispatch → close → enrich the model — are the *same structure* at two different
 > scales; the `meta:true` + `parent_dispatch_id` lineage (a free monad over a well-founded tree,
-> [MAPPING.md](../../MAPPING.md)) is the *zoom* that relates the scales.**
+> [FRAMINGS.md §2](../../FRAMINGS.md#2--interpretation-functor)) is the *zoom* that relates the scales.**
 
 This is the earnable half of AX-3 (the *declared* self-application made into a *structural,
 falsifiable* claim). It is **not** UNITY: P-FACES-INSTANCE says the faces are instances of one
@@ -151,5 +151,5 @@ orchestration loop). Anything weaker than full+faithful is **not** "≡". The ca
 | [`README.md` H-PORT-6](../../README.md) | `contextualizes` | H-PORT-6's honest residue (genericity as consequence of the CT thesis) lives here; the over-claim (categoricity ⇒ domain-independence) is quarantined out. |
 | [meta-ontology research](../../research/meta-ontology/SEED.md) | `contextualizes` | The governance-recursion convergence is fractality stated at the governance level — a candidate witness of BET-FRACTAL. |
 | [FRAMINGS.md](../../FRAMINGS.md) | `grounds` | F6/F7 (anomaly → enrich `C`; the resolution zoom) is the ascension loop this hypothesis maps from. |
-| [MAPPING.md](../../MAPPING.md) | `grounds` | `meta:true` + lineage as free monad over a well-founded tree = the scale-zoom mechanism. |
+| [FRAMINGS.md §2](../../FRAMINGS.md#2--interpretation-functor) | `grounds` | `meta:true` + lineage as free monad over a well-founded tree = the scale-zoom mechanism. |
 | [[anti-noise-orchestration]] | `contextualizes` | Supplies the OQ-9 immunization guard (no retreat clause) and the shadow/structure noise lever the falsifier reuses. |
