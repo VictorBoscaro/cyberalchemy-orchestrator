@@ -86,12 +86,43 @@
 - **Collapse-test:** Cai se, em domínios ricos, o ponto de Yoneda for atingível (motor para);
   ou se toda "anomalia" for sempre re-expressível na resolução atual (sinal sem separador
   novo) — aí não há estrutura a extrair, só ruído.
+- **Status (2026-07-20):** parcialmente deflacionado pelo debate das 3 sondas — a face
+  *inatingível* sobrevive (o lema de persistência concorda: resíduo positivo em todo nível
+  finito), mas o enquadramento "ponto de Yoneda = alvo que se *atinge*" cai: `y` é FF de graça
+  e o endpoint resíduo-0 é vacuoso (`Knowledge.total`). O conteúdo é a **trajetória ordenada de
+  enriquecimento** — ver F7 e memória `yoneda-ascension-thesis-verdict`.
+
+## F7 — Duas espécies de sonda = os dois eixos independentes, com ordem de apresentação
+
+- **Forma tipada:** A sonda tem duas espécies, uma por eixo *independente* de descoberta:
+  **sonda-de-reconhecimento** (acha *quais objetos/tipos existem* — eixo `¬EssSurj →
+  NewObjects`) e **sonda-de-ligação** (estabelece *as relações* entre objetos já achados —
+  eixo `¬Full → NewRelations`, os mapas-teste de Yoneda). Os eixos são independentes, mas a
+  **ordem recon→ligação não é arbitrária**: é uma **dependência de formação-de-tipo** — uma
+  ligação vive em `Hom(A,B)`, cujo tipo é mal-formado enquanto `A,B` não existem. Logo a
+  estrutura é um **poset graduado** (estratificação bem-fundada objeto→relação; o nome "Reedy"
+  é analogia, não a estrutura homônima), não uma escada linear nem uma necessidade lógica. A
+  leitura raso→profundo ("buscar por cima, depois pesquisa profunda") é o **eixo-β de
+  resolução** (sub-família grossa que ainda não separa → enriquecer até separar), que compõe
+  com o eixo objeto→relação.
+- **Âncora:** eixos = `distilled-knowledge/knowledge-evolution-typing.md` em
+  `domainspec-lean-formalization` (`¬EssSurj→NewObjects` ⊥ `¬Full→NewRelations`); família de
+  ligações reconstrói = `ProbeTypology.lean:38` `representables_separate`, `:49`
+  `representables_isSeparating`. — *Rótulo (fraco):* as "duas espécies operacionais = os dois
+  rungs", o poset de Reedy e o eixo-β são **síntese** (debate 2026-07-20), **sem decl Lean** —
+  a testemunha de convergência graduada (sub-família falha → adicionar sonda restaura FF) é
+  **obrigação aberta**.
+- **Collapse-test:** Cai se as espécies não forem independentes (uma sonda que é recon *e*
+  ligação ao mesmo tempo desfaz o produto de eixos), ou se a ordem não for forçada pela
+  tipagem de `Hom` (um objeto universal que deixe linkar antes de achar).
 
 ---
 
 ## Fio comum
 
-F1–F5 são a **anatomia estática**; F6 é a **dinâmica**. Todas circulam o mesmo lever —
+F1–F5 são a **anatomia estática**; F6 é a **dinâmica**; **F7 refina a sonda ativa de F4 nos
+dois eixos independentes de descoberta (objeto ⊥ relação) e ordena-os por apresentação
+(recon→ligação)**. Todas circulam o mesmo lever —
 **thin vs não-thin, a escolha de `C`**. A sombra escalar (F1) e cada métrica (F2) são os
 codomínios thin onde a estrutura se perde; F3 mostra que até a contagem, o piso desse regime,
 já pressupõe um sinal individuante que ela não fabrica; F4 nomeia a saída — trocar a projeção
