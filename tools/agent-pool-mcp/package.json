@@ -1,0 +1,20 @@
+{
+  "name": "agent-pool-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cross-repo MCP server that selects subagent agent_names from the canonical agent pool. Deterministic core (tag-overlap, vocab membership) + a cheap LLM boundary adjudicator that guards against coining duplicate tags.",
+  "bin": {
+    "agent-pool-mcp": "src/server.mjs"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "js-yaml": "^4.1.0",
+    "zod": "^3.23.0"
+  }
+}
