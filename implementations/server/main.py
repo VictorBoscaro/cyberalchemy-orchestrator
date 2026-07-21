@@ -1,11 +1,11 @@
-"""Fase 1 — o leitor.
+"""Phase 1 — the reader.
 
-Serve, ao vivo, as sheets pendentes (pré-confirm) e o histórico de dispatches
-lido dos ledgers append-only de vários repos.
+Serves, live, the pending sheets (pre-confirm) and the dispatch history read from
+the append-only ledgers of several repos.
 
-Este servidor é **somente leitura**. O botão "Disparar" é a Fase 2: ele grava um
-confirm, e quem executa a cadeia (check-tension → register-dispatch → agentes)
-continua sendo o Claude na sessão. Nada aqui escreve no ledger.
+This server is **read-only**. The "Fire" button is Phase 2: it writes a confirm,
+and whoever runs the chain (check-tension → register-dispatch → agents) is still
+Claude in the session. Nothing here writes to the ledger.
 """
 
 from __future__ import annotations
@@ -26,24 +26,24 @@ from . import ledger
 CFG = config_module.load()
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 
-# Teto da lista "tudo que está aberto". 200 cabe numa tela rolável; acima disso
-# o que o humano precisa não é uma lista mais longa, é um filtro.
+# Cap on the "everything that's open" list. 200 fits a scrollable screen; beyond
+# that what the human needs isn't a longer list, it's a filter.
 OPEN_ALL_CAP = 200
 
-app = FastAPI(title="Dispatch control plane — leitor", version="0.1.0")
+app = FastAPI(title="Dispatch control plane — reader", version="0.1.0")
 
 
 def today_utc() -> str:
-    """O dia de hoje em UTC — o MESMO referencial de `ledger.iso_date`.
+    """Today's day in UTC — the SAME reference frame as `ledger.iso_date`.
 
-    Se aqui usássemos o dia local e lá o UTC, "hoje" da UI não bateria com o
-    bucket `_day` das rows por algumas horas todo dia. Um só referencial.
+    If we used local time here and UTC there, the UI's "today" wouldn't match the
+    rows' `_day` bucket for a few hours every day. A single reference frame.
     """
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
 
 def _sort_key(row: dict[str, Any]) -> str:
-    """Ordena por recência tolerando ausência: `created`, senão o dia, senão nada."""
+    """Sorts by recency, tolerating absence: `created`, else the day, else nothing."""
     created = row.get("created")
     if isinstance(created, str):
         return created
@@ -71,27 +71,27 @@ async def api_snapshot() -> dict:
 async def api_dispatch(repo_name: str, dispatch_id: str) -> dict:
     for repo in CFG.resolved_repos():
         if repo.name == repo_name:
-            # O parse é SEMPRE leniente e nunca levanta `LedgerError` — o antigo
-            # `except LedgerError` aqui era código morto. Um ledger ilegível vira
-            # `.error` (OSError capturado no parse), e `find_dispatch` só olha
-            # `ledger_exists`, então sem este teste um erro de leitura se
-            # disfarçaria de 404 "dispatch não encontrada". Surface como 500.
+            # The parse is ALWAYS lenient and never raises `LedgerError` — the old
+            # `except LedgerError` here was dead code. An unreadable ledger becomes
+            # `.error` (OSError caught in the parse), and `find_dispatch` only looks
+            # at `ledger_exists`, so without this check a read error would disguise
+            # itself as a 404 "dispatch not found". Surface it as a 500.
             data = ledger.load_repo_rows(repo, copy=False)
             if data.error:
                 raise HTTPException(status_code=500, detail=data.error)
             found = ledger.find_dispatch(repo, dispatch_id)
             if found is None:
-                raise HTTPException(status_code=404, detail="dispatch não encontrada")
+                raise HTTPException(status_code=404, detail="dispatch not found")
             return found
-    raise HTTPException(status_code=404, detail="repo não encontrado")
+    raise HTTPException(status_code=404, detail="repo not found")
 
 
 @app.get("/api/overview")
 async def api_overview() -> dict:
-    """Painel de topo: agregados de TODOS os repos + o que pede atenção humana.
+    """Top panel: aggregates of ALL repos + what needs human attention.
 
-    Distinto do `/api/snapshot`, que serve a janela recente de cada repo. Aqui
-    nada é truncado por `limit` — as contagens são sobre o ledger inteiro.
+    Distinct from `/api/snapshot`, which serves each repo's recent window. Here
+    nothing is truncated by `limit` — the counts are over the entire ledger.
     """
     today = today_utc()
     repos = CFG.resolved_repos()
@@ -106,9 +106,9 @@ async def api_overview() -> dict:
     today_totals = {"created": 0, "closed": 0}
 
     for repo in repos:
-        # Lê as sheets pendentes UMA vez por repo e reusa: `summarize_repo` só
-        # precisa da contagem e a lista de atenção precisa das entries. Antes eram
-        # dois `read_pending` por repo por request (um glob de disco cada).
+        # Read the pending sheets ONCE per repo and reuse: `summarize_repo` only
+        # needs the count and the attention list needs the entries. Before there
+        # were two `read_pending` per repo per request (a disk glob each).
         pending = ledger.read_pending(repo)
         summary = ledger.summarize_repo(repo, today=today, pending=pending)
         summaries.append(summary)
@@ -122,8 +122,8 @@ async def api_overview() -> dict:
         for kind, count in summary["by_type"].items():
             totals_by_type[kind] = totals_by_type.get(kind, 0) + count
 
-        # `_repo` marca a origem: as listas de atenção misturam repos, e sem a
-        # etiqueta o cliente não consegue linkar de volta para o drill-down.
+        # `_repo` marks the origin: the attention lists mix repos, and without the
+        # label the client can't link back to the drill-down.
         for entry in pending:
             entry["_repo"] = repo.name
             pending_all.append(entry)
@@ -145,8 +145,9 @@ async def api_overview() -> dict:
         "open_today": open_today,
         "open_all": open_all[:OPEN_ALL_CAP],
     }
-    # A flag vive no contêiner `attention`, não na lista: JSON não deixa anotar
-    # um array. `_open_all_total` é o número real, para a UI dizer "200 de N".
+    # The flag lives on the `attention` container, not the list: JSON doesn't let
+    # you annotate an array. `_open_all_total` is the real number, so the UI can say
+    # "200 of N".
     if len(open_all) > OPEN_ALL_CAP:
         attention["_capped"] = True
         attention["_open_all_total"] = len(open_all)
@@ -175,29 +176,29 @@ async def api_repo(
     state: str | None = Query(None, pattern="^(open|closed|all)$"),
     type: str | None = Query(None),
 ) -> dict:
-    """Drill-down de um repo: histórico COMPLETO em peso de listagem.
+    """Drill-down of a repo: the COMPLETE history at listing weight.
 
-    ASSIMETRIA DELIBERADA: `state` e `type` filtram SÓ `dispatches`. O `summary`
-    e a `series` descrevem sempre o repo inteiro, sem filtro. Se o gráfico
-    encolhesse junto com a lista, o usuário perderia a referência exatamente
-    quando está comparando um recorte contra o todo — e o eixo mudaria de escala
-    a cada clique. O gráfico é o pano de fundo; a lista é o recorte.
+    DELIBERATE ASYMMETRY: `state` and `type` filter ONLY `dispatches`. The `summary`
+    and the `series` always describe the entire repo, unfiltered. If the chart
+    shrank along with the list, the user would lose the reference exactly when
+    comparing a slice against the whole — and the axis would rescale on every click.
+    The chart is the backdrop; the list is the slice.
     """
     repo = next((r for r in CFG.resolved_repos() if r.name == repo_name), None)
     if repo is None:
-        raise HTTPException(status_code=404, detail="repo não encontrado")
+        raise HTTPException(status_code=404, detail="repo not found")
 
     data = ledger.load_repo_rows(repo, copy=False)
     today = today_utc()
-    pending = ledger.read_pending(repo)  # uma leitura, reusada por summary e pela resposta
+    pending = ledger.read_pending(repo)  # one read, reused by summary and by the response
 
-    # Normaliza para o default: assim o handler também é chamável direto de
-    # dentro do processo (testes), onde os defaults chegariam como objetos
-    # `Query` em vez de string e filtrariam a lista inteira fora.
+    # Normalize to the default: this way the handler is also callable directly from
+    # inside the process (tests), where the defaults would arrive as `Query` objects
+    # instead of strings and would filter the whole list out.
     state = state if isinstance(state, str) else "all"
     kind = type if isinstance(type, str) and type else None
 
-    rows = [ledger.slim(row) for row in reversed(data.rows)]  # mais nova primeiro
+    rows = [ledger.slim(row) for row in reversed(data.rows)]  # newest first
     if state != "all":
         rows = [r for r in rows if r["_state"] == state]
     if kind:
@@ -222,11 +223,11 @@ def _sse(event: str, data: dict) -> str:
 
 @app.get("/api/stream")
 async def api_stream() -> StreamingResponse:
-    """SSE. Emite o snapshot inteiro sempre que o disco muda.
+    """SSE. Emits the entire snapshot whenever the disk changes.
 
-    Diffar não vale a pena aqui: o payload é pequeno (limitado por `limit`) e o
-    snapshot inteiro é trivialmente correto — um cliente que conecta no meio já
-    chega com o estado certo.
+    Diffing isn't worth it here: the payload is small (bounded by `limit`) and the
+    entire snapshot is trivially correct — a client that connects mid-stream
+    arrives with the right state already.
     """
 
     async def gen():
@@ -260,7 +261,7 @@ def main() -> None:
     import uvicorn
 
     repos = CFG.resolved_repos()
-    print(f"observando {len(repos)} repos:")
+    print(f"observing {len(repos)} repos:")
     for repo in repos:
         print(f"  - {repo}")
     print(f"\n  http://{CFG.host}:{CFG.port}\n")

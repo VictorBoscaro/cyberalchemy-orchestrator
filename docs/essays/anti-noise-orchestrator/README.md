@@ -2,7 +2,7 @@
 
 > **Status:** high-level draft, **unreviewed**, local. `Claim ≤ proof`. This README
 > raises the paper (thesis, refs, contribution) to *later* go into detail. Derives from
-> `vault/hypothesis/orquestracao-anti-ruido.md` (`HYP-ORCH-NOISE`). Created 2026-07-20.
+> `vault/hypothesis/anti-noise-orchestration.md` (`HYP-ORCH-NOISE`). Created 2026-07-20.
 
 ## Thesis (one sentence)
 

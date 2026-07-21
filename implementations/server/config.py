@@ -1,8 +1,8 @@
-"""Configuração do leitor: quais repos observar.
+"""Reader configuration: which repos to observe.
 
-Sem `config.json`, o servidor auto-descobre — varre o diretório pai do repo
-atrás de qualquer pasta que já tenha ledger ou sheets pendentes. Isso funciona
-sem setup porque os dispatches já vivem espalhados por vários repos.
+Without a `config.json`, the server auto-discovers — it scans the repo's parent
+directory for any folder that already has a ledger or pending sheets. This works
+with no setup because the dispatches already live spread across several repos.
 """
 
 from __future__ import annotations
@@ -17,13 +17,14 @@ from .ledger import LEDGER_RELPATH, PENDING_RELPATH
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = REPO_ROOT / "implementations" / "config.json"
 
-# TTL do cache de `resolved_repos`. A varredura (um `iterdir` do diretório pai,
-# ex. C:/Users/victo) custa dezenas de ms e roda a CADA request e a cada poll do
-# SSE. Cacheamos por um tempo curto em vez de chavear no mtime do pai porque, no
-# Windows, um repo que GANHA um ledger dentro de um filho já existente NÃO muda o
-# mtime do pai (muda o do `telemetry/` do filho) — mtime-do-pai perderia esse
-# caso de auto-descoberta. Um TTL curto re-varre no máximo a cada RESCAN_TTL s;
-# com poll_seconds=1.0 um repo novo aparece em um ou dois ciclos de poll.
+# TTL of the `resolved_repos` cache. The scan (an `iterdir` of the parent
+# directory, e.g. C:/Users/victo) costs tens of ms and runs on EVERY request and
+# every SSE poll. We cache for a short time rather than key on the parent's mtime
+# because, on Windows, a repo that GAINS a ledger inside an already-existing child
+# does NOT change the parent's mtime (it changes the child's `telemetry/` mtime) —
+# parent-mtime would miss that auto-discovery case. A short TTL re-scans at most
+# every RESCAN_TTL s; with poll_seconds=1.0 a new repo shows up in one or two poll
+# cycles.
 RESCAN_TTL = 2.0
 
 
@@ -36,18 +37,18 @@ class Config:
     poll_seconds: float = 1.0
     limit: int = 40
     prompt_limit: int = 280
-    # Cache do scan (FIX 6b). Não entram em igualdade/repr do dataclass.
+    # Scan cache (FIX 6b). Excluded from the dataclass's equality/repr.
     _repos_cache: list[Path] | None = field(
         default=None, compare=False, repr=False
     )
     _repos_cache_at: float = field(default=0.0, compare=False, repr=False)
 
     def resolved_repos(self) -> list[Path]:
-        """Repos explícitos + os auto-descobertos, deduplicados e ordenados.
+        """Explicit repos + the auto-discovered ones, deduplicated and sorted.
 
-        Memoizado por `RESCAN_TTL` segundos: o scan é caro e roda a cada request/
-        poll, mas um repo novo ainda precisa aparecer sem reiniciar o servidor —
-        daí o TTL curto em vez de cache permanente.
+        Memoized for `RESCAN_TTL` seconds: the scan is expensive and runs on every
+        request/poll, but a new repo still needs to appear without restarting the
+        server — hence the short TTL rather than a permanent cache.
         """
         now = time.monotonic()
         if self._repos_cache is not None and now - self._repos_cache_at < RESCAN_TTL:

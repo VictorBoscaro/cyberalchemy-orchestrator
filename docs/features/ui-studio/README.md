@@ -104,7 +104,7 @@ variant generation; per-agent cost fleet-telemetry (that's the *other* half — 
 | E-15 | **Frontend constitution** `CONST-FE` — density⊥fatigue axis; FE-1..FE-8; validation modes (`deterministic`/`review`/`none-yet`); the `Promotion Boundary` that **calls for this harness** | [vault/constitution/frontend-constitution.md](../../../vault/constitution/frontend-constitution.md) | ✅ |
 | E-16 | **Current FastAPI + SSE server** — endpoints `/api/snapshot`, `/api/overview`, `/api/repo/{name}`, `/api/dispatch/...`, `/api/stream`; **no `/api/vote` yet** | [implementations/server/main.py](../../../implementations/server/main.py) | ✅ |
 | E-17 | **Validated append-only ledger** (discipline to reuse for votes) | [implementations/server/ledger.py](../../../implementations/server/ledger.py), [telemetry/agents/subagents-dispatch.yaml](../../../telemetry/agents/subagents-dispatch.yaml) | ✅ |
-| E-18 | **Pending store** wired end-to-end but with no producer (only the `_example` fixture) — the gate watches here | [telemetry/agents/pending/2026-07-19-exemplo-ui-control-plane.json](../../../telemetry/agents/pending/2026-07-19-exemplo-ui-control-plane.json) | ✅ |
+| E-18 | **Pending store** wired end-to-end but with no producer (only the `_example` fixture) — the gate watches here | [telemetry/agents/pending/2026-07-19-example-ui-control-plane.json](../../../telemetry/agents/pending/2026-07-19-example-ui-control-plane.json) | ✅ |
 | E-19 | **10 UI variants** = the harness's candidate "generations" | [implementations/static/ui/](../../../implementations/static/ui/) (`aurora, blueprint, brutalist, cyberpunk, grimoire, linear, mission-control, radar, swiss, terminal`) | ✅ |
 
 ## 6. Design decisions carried over here

@@ -1,0 +1,71 @@
+{
+  "_example": true,
+  "_note": "DEMONSTRATION FIXTURE — not a real dispatch. It exists so the UIs have a pending sheet to render. Delete it once the real flow is up.",
+
+  "dispatch_id": "2026-07-19-example-ui-control-plane",
+  "schema_version": "0.6.0",
+  "dispatch_type": "research",
+  "goal": "Determine whether a control plane based on a pending sheet preserves the ledger's append-only discipline or introduces a parallel write path.",
+  "context": "The ledger is only written after the human confirm, so a UI that reads only the ledger can never be the gate. The pending sheet is the proposed pre-confirm artifact. We need to know whether it creates a second source of truth. Outputs feed the Phase 2 decision.",
+  "max_loops": 2,
+  "final_approver": "parent",
+  "anti_bias_global": "architecture optimism vs invariant conservatism",
+  "working_folder": "research/pending-sheet-invariant/",
+  "invoked_by": "victorboscaro@gmail.com",
+
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 2,
+      "anti_bias": "source of authority (ledger discipline vs control-plane practice)",
+      "agents": [
+        {
+          "agent_name": "Lamport, Leslie",
+          "role": "explorer",
+          "model": "claude-sonnet-5",
+          "token_budget": 900,
+          "angle": "defends the append-only invariant — looks for every path where the pending sheet becomes a parallel write",
+          "initial_prompt": "Survey how append-only systems handle pre-commit state. Does the pending sheet introduce a second source of truth? Return: concrete mechanisms with citations, or a defended no. Budget ~900 tokens."
+        },
+        {
+          "agent_name": "Hohpe, Gregor",
+          "role": "explorer",
+          "model": "claude-sonnet-5",
+          "token_budget": 900,
+          "angle": "defends control-plane ergonomics — looks for the cost of NOT having a pre-confirm artifact",
+          "initial_prompt": "Survey control-plane patterns with a human gate (staged changes, plan/apply, PR review). How does the pre-confirm artifact relate to the committed log? Return patterns with sources. Budget ~900 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "agents": [
+        {
+          "agent_name": null,
+          "role": "synthesizer",
+          "model": "claude-opus-4-8",
+          "token_budget": 2500,
+          "initial_prompt": "Reconcile the explorers' returns into a candidate picture: every claim that bears weight cites the return it rests on. Budget ~2500 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "skeptic",
+      "agents": [
+        {
+          "agent_name": null,
+          "role": "skeptic",
+          "model": "claude-opus-4-8",
+          "token_budget": 1200,
+          "initial_prompt": "Attack the synthesis. The strongest case that the pending sheet BREAKS the ledger discipline. Budget ~1200 tokens."
+        }
+      ]
+    }
+  ],
+
+  "connections": [
+    { "from": "explorers", "to": "synthesizer", "type": "sequential" },
+    { "from": "synthesizer", "to": "skeptic", "type": "sequential" },
+    { "from": "skeptic", "to": "synthesizer", "type": "feedback", "loop_cap": 2 }
+  ]
+}

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CYBERALCHEMY // DISPATCH CONTROL PLANE</title>
 <style>
 /* ============================================================
-   CYBERPUNK NEON — dispatch control plane (leitor, fase 1)
-   Zero dependência externa. Fontes do sistema apenas.
+   CYBERPUNK NEON — dispatch control plane (reader, phase 1)
+   Zero external dependency. System fonts only.
    ============================================================ */
 
 :root{
@@ -45,7 +45,7 @@ body{
   padding:0 0 80px;
 }
 
-/* varredura diagonal de fundo, bem sutil */
+/* diagonal background sweep, very subtle */
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background:repeating-linear-gradient(45deg, rgba(255,255,255,.014) 0 1px, transparent 1px 9px);
@@ -53,7 +53,7 @@ body::before{
 
 .wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 18px}
 
-/* ---------- utilidades ---------- */
+/* ---------- utilities ---------- */
 .label{
   font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--ink-faint);font-weight:700;
@@ -62,14 +62,14 @@ body::before{
 .num{font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .hide{display:none !important}
 
-/* moldura chanfrada com "borda" neon: casca colorida + miolo escuro */
+/* chamfered frame with neon "border": colored shell + dark core */
 .frame{clip-path:var(--chamfer);padding:1px;background:var(--edge)}
 .frame > .in{clip-path:var(--chamfer);background:var(--panel)}
 .frame.cy{background:linear-gradient(135deg,#00e5ff,#0b4a5c 60%,#00e5ff)}
 .frame.mag{background:linear-gradient(135deg,#ff2d95,#5c0b34 60%,#ff2d95)}
 .frame.ac{background:repeating-linear-gradient(45deg,#f0ff2d 0 8px,#8a3d00 8px 16px)}
 
-/* ---------- cabeçalho ---------- */
+/* ---------- header ---------- */
 header.top{
   position:sticky;top:0;z-index:40;
   background:linear-gradient(180deg,rgba(10,6,18,.97),rgba(10,6,18,.88));
@@ -96,14 +96,14 @@ h1.glitch span{color:var(--mag);text-shadow:none}
 .subtitle{color:var(--ink-dim);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;margin-top:3px}
 .spacer{flex:1}
 
-/* indicador SSE */
+/* SSE indicator */
 .live{
   display:inline-flex;align-items:center;gap:8px;
   clip-path:var(--chamfer-sm);padding:6px 13px;
   font-size:11px;letter-spacing:.2em;font-weight:700;
   border:0;
-  /* small-caps em vez de text-transform: mantém o texto do DOM em caixa baixa
-     (o teste procura "conectado") sem abrir mão do visual em caixa alta. */
+  /* small-caps instead of text-transform: keeps the DOM text in lower case
+     (the test looks for "connected") without giving up the upper-case look. */
   font-variant-caps:all-small-caps;
 }
 .live.on{background:rgba(0,229,255,.10);color:var(--cy);box-shadow:inset 0 0 0 1px var(--cy), 0 0 14px rgba(0,229,255,.28)}
@@ -112,7 +112,7 @@ h1.glitch span{color:var(--mag);text-shadow:none}
 .live.on .dot{animation:pulse 1.6s infinite ease-in-out}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.62)}}
 
-/* métricas */
+/* metrics */
 .metrics{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 24px}
 .metric{
   clip-path:var(--chamfer-sm);background:var(--panel2);
@@ -125,7 +125,7 @@ h1.glitch span{color:var(--mag);text-shadow:none}
 .metric.m-ac b{color:var(--ac);text-shadow:0 0 12px rgba(240,255,45,.45)}
 .metric.m-ink b{color:var(--ink)}
 
-/* ---------- seções ---------- */
+/* ---------- sections ---------- */
 section{margin-bottom:30px}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .sec-head h2{
@@ -136,7 +136,7 @@ section{margin-bottom:30px}
 h2.hot{color:var(--ac);text-shadow:0 0 16px rgba(240,255,45,.4)}
 h2.cool{color:var(--cy);text-shadow:0 0 14px rgba(0,229,255,.35)}
 
-/* ---------- tarja de aviso ---------- */
+/* ---------- warning stripe ---------- */
 .hazard{
   height:9px;
   background:repeating-linear-gradient(45deg,#f0ff2d 0 11px,#120a02 11px 22px);
@@ -144,7 +144,7 @@ h2.cool{color:var(--cy);text-shadow:0 0 14px rgba(0,229,255,.35)}
 }
 .hazard.thin{height:5px;opacity:.7}
 
-/* ---------- sheets pendentes ---------- */
+/* ---------- pending sheets ---------- */
 #pending-list{display:flex;flex-direction:column;gap:16px}
 
 .pcard{
@@ -171,7 +171,7 @@ h2.cool{color:var(--cy);text-shadow:0 0 14px rgba(0,229,255,.35)}
   box-shadow:inset 3px 0 0 var(--edge-hot);
 }
 
-/* botão do gate (fase 2) */
+/* gate button (phase 2) */
 .gate{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px dashed var(--edge-hot)}
 button.fire{
   font-family:var(--mono);font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;
@@ -191,7 +191,7 @@ button.fire:disabled{cursor:not-allowed}
 .empty b{display:block;color:var(--cy);font-size:13px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:6px}
 .empty span{color:var(--ink-dim);font-size:11.5px;letter-spacing:.08em}
 
-/* ---------- selos / chips ---------- */
+/* ---------- seals / chips ---------- */
 .tag{
   display:inline-flex;align-items:center;gap:5px;
   clip-path:var(--chamfer-sm);padding:3px 9px;
@@ -209,7 +209,7 @@ button.fire:disabled{cursor:not-allowed}
 .t-type{background:rgba(255,255,255,.045);color:var(--ink-dim);box-shadow:inset 0 0 0 1px var(--edge-hot)}
 .tagrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 
-/* ---------- barra de filtros ---------- */
+/* ---------- filter bar ---------- */
 .filters{
   clip-path:var(--chamfer);background:var(--panel2);
   box-shadow:inset 0 0 0 1px var(--edge-hot);
@@ -254,7 +254,7 @@ input[type=search]::placeholder{color:var(--ink-faint)}
 .rs.w b{color:var(--mag)}
 .repo-body{padding:12px 16px 16px}
 
-/* diagnósticos por repo */
+/* per-repo diagnostics */
 details.diag{margin-bottom:12px}
 details.diag > summary{
   list-style:none;cursor:pointer;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
@@ -268,7 +268,7 @@ details.diag.err  > summary{color:#ff7ab8;background:rgba(255,45,149,.12);box-sh
 .diag-list div{padding:2px 0;border-bottom:1px dotted var(--edge);word-break:break-word}
 .diag-list div:last-child{border-bottom:0}
 
-/* ---------- cartão de dispatch ---------- */
+/* ---------- dispatch card ---------- */
 #dispatch-list .repo-body{display:flex;flex-direction:column;gap:7px}
 .dcard{clip-path:var(--chamfer-sm);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--edge)}
 .dcard[data-state=open]{
@@ -289,7 +289,7 @@ details.diag.err  > summary{color:#ff7ab8;background:rgba(255,45,149,.12);box-sh
 .dmeta{display:flex;gap:9px;flex-wrap:wrap;margin-top:7px;align-items:center}
 .dtime{color:var(--ink-faint);font-size:10px;letter-spacing:.1em;white-space:nowrap}
 
-/* corpo expandido */
+/* expanded body */
 .dbody{padding:0 14px 15px 60px;border-top:1px solid var(--edge)}
 .block{margin-top:14px}
 .block > .label{display:block;margin-bottom:7px}
@@ -301,7 +301,7 @@ details.diag.err  > summary{color:#ff7ab8;background:rgba(255,45,149,.12);box-sh
 .prose{color:var(--ink);font-size:12px;line-height:1.68;padding:10px 13px;
   background:rgba(255,255,255,.028);clip-path:var(--chamfer-sm);box-shadow:inset 2px 0 0 var(--cy)}
 
-/* eixo de tensão global */
+/* global tension axis */
 .axis{
   padding:10px 14px;clip-path:var(--chamfer-sm);
   background:linear-gradient(90deg,rgba(255,45,149,.11),rgba(0,229,255,.11));
@@ -310,7 +310,7 @@ details.diag.err  > summary{color:#ff7ab8;background:rgba(255,45,149,.12);box-sh
 }
 .axis .label{display:block;margin-bottom:3px;color:var(--ac)}
 
-/* grupos */
+/* groups */
 .groups{display:flex;flex-direction:column;gap:10px}
 .grp{clip-path:var(--chamfer-sm);background:#0b0715;box-shadow:inset 0 0 0 1px var(--edge-hot)}
 .grp-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 12px;
@@ -345,7 +345,7 @@ details.diag.err  > summary{color:#ff7ab8;background:rgba(255,45,149,.12);box-sh
 .agent-angle .label{color:var(--cy);margin-right:6px}
 .agent-noangle{margin-top:6px;color:var(--ink-faint);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
 
-/* conexões */
+/* connections */
 .conns{display:flex;flex-direction:column;gap:5px}
 .conn{display:flex;align-items:center;gap:9px;padding:6px 11px;font-size:11.5px;
   clip-path:var(--chamfer-sm);background:rgba(255,255,255,.026)}
@@ -364,7 +364,7 @@ details.diag.err  > summary{color:#ff7ab8;background:rgba(255,45,149,.12);box-sh
 .cap{padding:1px 7px;font-size:9.5px;font-weight:800;letter-spacing:.1em;color:#0a0612;background:var(--mag);
   clip-path:var(--chamfer-sm)}
 
-/* encerramento */
+/* closure */
 .close-box{padding:11px 13px;clip-path:var(--chamfer-sm);background:rgba(255,255,255,.026);
   box-shadow:inset 2px 0 0 var(--edge-hot)}
 .close-box.bad{box-shadow:inset 2px 0 0 var(--mag);background:rgba(255,45,149,.07)}
@@ -396,11 +396,11 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--edge);
     <div class="top-row">
       <div>
         <h1 class="glitch">CYBERALCHEMY <span>//</span> DISPATCH CONTROL PLANE</h1>
-        <div class="subtitle">Leitor append-only &middot; Fase 1 &middot; gate humano somente-leitura</div>
+        <div class="subtitle">Append-only reader &middot; Phase 1 &middot; read-only human gate</div>
       </div>
       <div class="spacer"></div>
       <div id="live-indicator" class="live off" data-testid="live-indicator">
-        <i class="dot"></i><span id="live-text">iniciando enlace</span>
+        <i class="dot"></i><span id="live-text">starting link</span>
       </div>
     </div>
   </header>
@@ -409,7 +409,7 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--edge);
 
   <section id="pending-sec">
     <div class="sec-head">
-      <h2 class="hot">&#9650; Sheets pendentes &mdash; aguardando confirmação</h2>
+      <h2 class="hot">&#9650; Pending sheets &mdash; awaiting confirmation</h2>
       <div class="rule"></div>
       <div class="cnt" id="pending-count"></div>
     </div>
@@ -419,42 +419,42 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--edge);
 
   <section id="hist-sec">
     <div class="sec-head">
-      <h2 class="cool">&#9632; Histórico do ledger</h2>
+      <h2 class="cool">&#9632; Ledger history</h2>
       <div class="rule"></div>
       <div class="cnt" id="shown-count"></div>
     </div>
 
     <div class="filters">
       <div class="fgroup">
-        <label class="label" for="f-repo">Repositório</label>
-        <select id="f-repo"><option value="">todos os repositórios</option></select>
+        <label class="label" for="f-repo">Repository</label>
+        <select id="f-repo"><option value="">all repositories</option></select>
       </div>
       <div class="fgroup">
-        <label class="label" for="f-q">Busca (id / objetivo)</label>
-        <input type="search" id="f-q" placeholder="filtrar…" autocomplete="off">
+        <label class="label" for="f-q">Search (id / goal)</label>
+        <input type="search" id="f-q" placeholder="filter…" autocomplete="off">
       </div>
       <div class="fgroup">
-        <span class="label">Estado</span>
+        <span class="label">State</span>
         <div class="segs" id="f-state">
-          <button class="seg" data-v="" aria-pressed="true">Todas</button>
-          <button class="seg" data-v="open" aria-pressed="false">Abertas</button>
-          <button class="seg" data-v="closed" aria-pressed="false">Fechadas</button>
+          <button class="seg" data-v="" aria-pressed="true">All</button>
+          <button class="seg" data-v="open" aria-pressed="false">Open</button>
+          <button class="seg" data-v="closed" aria-pressed="false">Closed</button>
         </div>
       </div>
       <div class="fgroup">
-        <span class="label">Execução</span>
+        <span class="label">Execution</span>
         <div class="segs" id="f-live">
-          <button class="seg" data-v="" aria-pressed="true">Todas</button>
+          <button class="seg" data-v="" aria-pressed="true">All</button>
           <button class="seg" data-v="live" aria-pressed="false">Live</button>
-          <button class="seg" data-v="res" aria-pressed="false">Reservadas</button>
+          <button class="seg" data-v="res" aria-pressed="false">Reserved</button>
         </div>
       </div>
       <div class="fgroup">
-        <span class="label">Sinalizações</span>
+        <span class="label">Flags</span>
         <div class="segs" id="f-flag">
-          <button class="seg" data-v="" aria-pressed="true">Todas</button>
-          <button class="seg" data-v="alert" aria-pressed="false">Alerta</button>
-          <button class="seg" data-v="legacy" aria-pressed="false">Legacy / órfãs</button>
+          <button class="seg" data-v="" aria-pressed="true">All</button>
+          <button class="seg" data-v="alert" aria-pressed="false">Alert</button>
+          <button class="seg" data-v="legacy" aria-pressed="false">Legacy / orphan</button>
         </div>
       </div>
     </div>
@@ -463,8 +463,8 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--edge);
   </section>
 
   <footer>
-    <span id="total-count" data-testid="total-count">total 0 dispatches no ledger</span>
-    &nbsp;&middot;&nbsp; leitor somente-leitura &middot; nada é escrito no ledger por esta tela
+    <span id="total-count" data-testid="total-count">total 0 dispatches in the ledger</span>
+    &nbsp;&middot;&nbsp; read-only reader &middot; nothing is written to the ledger by this screen
   </footer>
 </div>
 
@@ -472,11 +472,11 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--edge);
 (function(){
 "use strict";
 
-/* ---------------- estado ---------------- */
+/* ---------------- state ---------------- */
 var SNAP = {repos:[], config:{}};
 var filters = {repo:"", q:"", state:"", live:"", flag:""};
-var openRepos = Object.create(null);   // nome -> bool (colapso)
-var openCards = Object.create(null);   // chave -> bool (expansão)
+var openRepos = Object.create(null);   // name -> bool (collapse)
+var openCards = Object.create(null);   // key -> bool (expansion)
 var LIVE_TYPES = {research:1, review:1, experiment:1};
 
 /* ---------------- helpers ---------------- */
@@ -521,15 +521,15 @@ function connArrow(t){
   return "──";
 }
 
-/* ---------------- selos ---------------- */
+/* ---------------- seals ---------------- */
 function tagLive(d){
   return isLive(d)
     ? '<span class="tag t-live">◉ live</span>'
-    : '<span class="tag t-res">◌ reservada</span>';
+    : '<span class="tag t-res">◌ reserved</span>';
 }
 function tagState(d){
-  if(d._state === "open") return '<span class="tag t-open">▲ aberta</span>';
-  return '<span class="tag t-closed">■ fechada</span>';
+  if(d._state === "open") return '<span class="tag t-open">▲ open</span>';
+  return '<span class="tag t-closed">■ closed</span>';
 }
 function tagExit(d){
   var c = d._close;
@@ -541,31 +541,31 @@ function tagExit(d){
 }
 function tagFlags(d){
   var out = "";
-  if(d._orphan_close) out += '<span class="tag t-alert">⚠ close órfã</span>';
+  if(d._orphan_close) out += '<span class="tag t-alert">⚠ orphan close</span>';
   if(d._legacy) out += '<span class="tag t-legacy">▤ legacy</span>';
   return out;
 }
 function tagType(d){
-  return '<span class="tag t-type">'+esc(txt(d.dispatch_type,"tipo ausente"))+'</span>';
+  return '<span class="tag t-type">'+esc(txt(d.dispatch_type,"type missing"))+'</span>';
 }
 
-/* ---------------- grupos e agentes ---------------- */
+/* ---------------- groups and agents ---------------- */
 function renderAgent(a){
   var role = String((a && a.role) || "").toLowerCase();
   var cls = "agent r-" + (role.replace(/[^a-z]/g,"") || "none");
   var name = has(a.agent_name)
     ? '<span class="agent-name">'+esc(a.agent_name)+'</span>'
-    : '<span class="agent-name anon">agente anônimo</span>';
+    : '<span class="agent-name anon">anonymous agent</span>';
   var spec = [];
-  if(has(a.model)) spec.push("modelo "+a.model);
-  if(a.token_budget!==null && a.token_budget!==undefined) spec.push("orçamento "+a.token_budget+" tk");
+  if(has(a.model)) spec.push("model "+a.model);
+  if(a.token_budget!==null && a.token_budget!==undefined) spec.push("budget "+a.token_budget+" tk");
   var angle = has(a.angle)
-    ? '<div class="agent-angle"><span class="label">ângulo</span>'+esc(a.angle)+'</div>'
-    : '<div class="agent-noangle">sem ângulo declarado</div>';
-  var trunc = a._prompt_truncated ? '<div class="truncated">▚ prompt truncado pelo leitor</div>' : "";
+    ? '<div class="agent-angle"><span class="label">angle</span>'+esc(a.angle)+'</div>'
+    : '<div class="agent-noangle">no angle declared</div>';
+  var trunc = a._prompt_truncated ? '<div class="truncated">▚ prompt truncated by the reader</div>' : "";
   return '<div class="'+cls+'">'
-    + '<div class="agent-top">'+name+'<span class="agent-role">'+esc(txt(role,"papel ?"))+'</span></div>'
-    + '<div class="agent-spec">'+esc(spec.join("  ·  ") || "sem especificação")+'</div>'
+    + '<div class="agent-top">'+name+'<span class="agent-role">'+esc(txt(role,"role ?"))+'</span></div>'
+    + '<div class="agent-spec">'+esc(spec.join("  ·  ") || "no spec")+'</div>'
     + angle + trunc
     + '</div>';
 }
@@ -573,7 +573,7 @@ function renderAgent(a){
 function renderGroups(groups){
   if(!groups || !groups.length){
     return '<div class="prose" style="box-shadow:inset 2px 0 0 var(--mag)">'
-      + 'Sem <b>groups</b> nesta row &mdash; formato anterior à v0.5.2. A topologia de agentes não foi registrada.'
+      + 'No <b>groups</b> in this row &mdash; format prior to v0.5.2. The agent topology was not recorded.'
       + '</div>';
   }
   var html = '<div class="groups">';
@@ -582,19 +582,19 @@ function renderGroups(groups){
     var ags = g.agents || [];
     var meta = [];
     if(g.n!==null && g.n!==undefined) meta.push("n="+g.n);
-    meta.push(ags.length+" agente"+(ags.length===1?"":"s"));
-    if(g.layers!==null && g.layers!==undefined) meta.push("camadas "+g.layers);
-    if(g.robot_talks) meta.push("robot_talks ativo");
+    meta.push(ags.length+" agent"+(ags.length===1?"":"s"));
+    if(g.layers!==null && g.layers!==undefined) meta.push("layers "+g.layers);
+    if(g.robot_talks) meta.push("robot_talks active");
     html += '<div class="grp">'
       + '<div class="grp-head">'
-        + '<span class="grp-id">'+esc(txt(g.group_id,"grupo sem id"))+'</span>'
+        + '<span class="grp-id">'+esc(txt(g.group_id,"group without id"))+'</span>'
         + '<span class="grp-n">'+esc(meta.join("  ·  "))+'</span>'
       + '</div>'
-      + '<div class="grp-bias"><span class="label">anti-viés do grupo</span>'
-        + (has(g.anti_bias) ? esc(g.anti_bias) : '<span style="color:var(--ink-faint)">não declarado — sem eixo de tensão neste grupo</span>')
+      + '<div class="grp-bias"><span class="label">group anti-bias</span>'
+        + (has(g.anti_bias) ? esc(g.anti_bias) : '<span style="color:var(--ink-faint)">not declared — no tension axis in this group</span>')
       + '</div>'
       + '<div class="agents">' + (ags.length ? ags.map(renderAgent).join("") :
-          '<div class="agent"><div class="agent-noangle">nenhum agente listado</div></div>') + '</div>'
+          '<div class="agent"><div class="agent-noangle">no agents listed</div></div>') + '</div>'
       + '</div>';
   }
   return html + '</div>';
@@ -602,7 +602,7 @@ function renderGroups(groups){
 
 function renderConns(conns){
   if(!conns || !conns.length){
-    return '<div class="conn c-other"><span style="color:var(--ink-faint)">nenhuma conexão declarada</span></div>';
+    return '<div class="conn c-other"><span style="color:var(--ink-faint)">no connection declared</span></div>';
   }
   var html = '<div class="conns">';
   for(var i=0;i<conns.length;i++){
@@ -613,39 +613,39 @@ function renderConns(conns){
       + '<span class="arrow">'+connArrow(c.type)+'</span>'
       + '<span class="node">'+esc(txt(c.to,"?"))+'</span>'
       + ((c.loop_cap!==null && c.loop_cap!==undefined) ? '<span class="cap">loop cap '+esc(c.loop_cap)+'</span>' : "")
-      + '<span class="kind">'+esc(txt(c.type,"tipo ?"))+'</span>'
+      + '<span class="kind">'+esc(txt(c.type,"type ?"))+'</span>'
       + '</div>';
   }
   return html + '</div>';
 }
 
-/* corpo comum a sheet pendente e a dispatch */
+/* body common to pending sheet and dispatch */
 function renderBody(d){
   var html = "";
   var cells = [];
   function cell(l,v){ cells.push('<div class="cell"><span class="label">'+l+'</span><span class="v">'+esc(txt(v))+'</span></div>'); }
-  cell("tipo", d.dispatch_type);
+  cell("type", d.dispatch_type);
   cell("schema", d.schema_version);
-  cell("criada", has(d.created)?fmtDate(d.created):null);
-  cell("invocada por", d.invoked_by);
-  cell("máx. loops", (d.max_loops===null||d.max_loops===undefined)?null:d.max_loops);
-  cell("aprovador final", d.final_approver);
-  cell("pasta de trabalho", d.working_folder);
-  cell("agentes", (d._agent_count===null||d._agent_count===undefined)?null:d._agent_count);
-  html += '<div class="block"><span class="label">Parâmetros</span><div class="kv">'+cells.join("")+'</div></div>';
+  cell("created", has(d.created)?fmtDate(d.created):null);
+  cell("invoked by", d.invoked_by);
+  cell("max loops", (d.max_loops===null||d.max_loops===undefined)?null:d.max_loops);
+  cell("final approver", d.final_approver);
+  cell("working folder", d.working_folder);
+  cell("agents", (d._agent_count===null||d._agent_count===undefined)?null:d._agent_count);
+  html += '<div class="block"><span class="label">Parameters</span><div class="kv">'+cells.join("")+'</div></div>';
 
   if(has(d.context)){
-    html += '<div class="block"><span class="label">Contexto</span><div class="prose">'+esc(d.context)+'</div></div>';
+    html += '<div class="block"><span class="label">Context</span><div class="prose">'+esc(d.context)+'</div></div>';
   }
-  html += '<div class="block"><div class="axis"><span class="label">Eixo de tensão global (anti_bias_global)</span>'
-    + (has(d.anti_bias_global) ? esc(d.anti_bias_global) : '<span style="color:var(--ink-dim)">não declarado nesta row</span>')
+  html += '<div class="block"><div class="axis"><span class="label">Global tension axis (anti_bias_global)</span>'
+    + (has(d.anti_bias_global) ? esc(d.anti_bias_global) : '<span style="color:var(--ink-dim)">not declared in this row</span>')
     + '</div></div>';
 
-  html += '<div class="block"><span class="label">Grupos &amp; agentes &mdash; ângulo contra anti-viés</span>'+renderGroups(d.groups)+'</div>';
-  html += '<div class="block"><span class="label">Conexões</span>'+renderConns(d.connections)+'</div>';
+  html += '<div class="block"><span class="label">Groups &amp; agents &mdash; angle against anti-bias</span>'+renderGroups(d.groups)+'</div>';
+  html += '<div class="block"><span class="label">Connections</span>'+renderConns(d.connections)+'</div>';
 
   if(d._prompts_truncated){
-    html += '<div class="truncated">▚ prompts truncados nesta listagem — consulte /api/dispatch/… para o texto integral</div>';
+    html += '<div class="truncated">▚ prompts truncated in this listing — see /api/dispatch/… for the full text</div>';
   }
   return html;
 }
@@ -661,14 +661,14 @@ function renderClose(c){
   }}
   var fb = "";
   if(c.feedback_prompts && c.feedback_prompts.length){
-    fb = '<div class="fb"><span class="label">Prompts de retorno ('+pad(c.feedback_prompts.length,2)+')</span>'
+    fb = '<div class="fb"><span class="label">Feedback prompts ('+pad(c.feedback_prompts.length,2)+')</span>'
        + c.feedback_prompts.map(function(p){ return '<div>'+esc(p)+'</div>'; }).join("") + '</div>';
   }
-  return '<div class="block"><span class="label">Encerramento</span><div class="close-box'+bad+'">'
+  return '<div class="block"><span class="label">Closure</span><div class="close-box'+bad+'">'
     + '<div class="tagrow">'
-      + '<span class="tag '+(bad?'t-alert':'t-ok')+'">saída: '+esc(txt(c.exit_reason,"?"))+'</span>'
-      + '<span class="dtime">fechada em '+esc(fmtDate(c.closed))+'</span>'
-      + (has(c.invoked_by)?'<span class="dtime">· por '+esc(c.invoked_by)+'</span>':'')
+      + '<span class="tag '+(bad?'t-alert':'t-ok')+'">exit: '+esc(txt(c.exit_reason,"?"))+'</span>'
+      + '<span class="dtime">closed at '+esc(fmtDate(c.closed))+'</span>'
+      + (has(c.invoked_by)?'<span class="dtime">· by '+esc(c.invoked_by)+'</span>':'')
     + '</div>'
     + '<div class="tree">'
       + '<span class="t">total <b>'+pad(sp.total||0,2)+'</b></span>'
@@ -678,7 +678,7 @@ function renderClose(c){
     + '</div></div>';
 }
 
-/* ---------------- sheets pendentes ---------------- */
+/* ---------------- pending sheets ---------------- */
 function renderPending(){
   var host = document.getElementById("pending-list");
   var items = [];
@@ -688,11 +688,11 @@ function renderPending(){
   items.sort(function(a,b){ return (b.p._mtime||0) - (a.p._mtime||0); });
 
   document.getElementById("pending-count").textContent =
-    items.length ? pad(items.length,2) + " aguardando o gate" : "fila limpa";
+    items.length ? pad(items.length,2) + " waiting on the gate" : "queue clear";
 
   if(!items.length){
-    host.innerHTML = '<div class="empty"><b>Nenhuma sheet pendente</b>'
-      + '<span>Zero propostas pré-confirm na fila. Nada aguarda o gate humano neste momento.</span></div>';
+    host.innerHTML = '<div class="empty"><b>No pending sheet</b>'
+      + '<span>Zero pre-confirm proposals in the queue. Nothing awaits the human gate right now.</span></div>';
     return;
   }
 
@@ -700,14 +700,14 @@ function renderPending(){
     var p = it.p || {};
     var s = p.sheet || {};
     var key = "P:"+it.repo+":"+(p._file||i);
-    var open = openCards[key] !== false; /* pendentes começam abertas */
+    var open = openCards[key] !== false; /* pending start open */
     var errBox = has(p._error)
       ? '<div class="prose" style="box-shadow:inset 2px 0 0 var(--mag);color:#ff9ecb;margin-top:11px">'
-        + '⚠ erro ao ler a sheet: '+esc(p._error)+'</div>' : "";
+        + '⚠ error reading the sheet: '+esc(p._error)+'</div>' : "";
     var note = has(s._note)
       ? '<div class="prose" style="box-shadow:inset 2px 0 0 var(--ac);margin-top:9px;font-size:11.5px;color:var(--ink-dim)">'
         + '<span class="label" style="display:block;color:var(--ac);margin-bottom:3px">'
-        + (s._example ? 'Nota da sheet — marcada como exemplo' : 'Nota da sheet') + '</span>'
+        + (s._example ? 'Sheet note — marked as example' : 'Sheet note') + '</span>'
         + esc(s._note) + '</div>' : "";
 
     return '<article class="pcard" data-testid="pending-card" data-sheet-file="'+esc(p._file)+'">'
@@ -716,29 +716,29 @@ function renderPending(){
       + '<div class="pcard-body">'
         + '<div class="pcard-top">'
           + '<div style="flex:1;min-width:240px">'
-            + '<div class="label" style="color:var(--ac)">Proposta '+pad(i+1,2)+' &mdash; pré-confirm &middot; '+esc(it.repo)+'</div>'
-            + '<div class="pcard-id">'+esc(txt(s.dispatch_id, p._file || "sheet sem id"))+'</div>'
+            + '<div class="label" style="color:var(--ac)">Proposal '+pad(i+1,2)+' &mdash; pre-confirm &middot; '+esc(it.repo)+'</div>'
+            + '<div class="pcard-id">'+esc(txt(s.dispatch_id, p._file || "sheet without id"))+'</div>'
             + '<div class="pcard-file">'+esc(txt(p._file))+' &middot; mtime '+esc(fmtMtime(p._mtime))+'</div>'
           + '</div>'
           + '<div class="tagrow">'
-            + (p._live===false ? '<span class="tag t-res">◌ reservada</span>' : tagLive({_live:p._live, dispatch_type:s.dispatch_type}))
+            + (p._live===false ? '<span class="tag t-res">◌ reserved</span>' : tagLive({_live:p._live, dispatch_type:s.dispatch_type}))
             + tagType(s)
-            + '<span class="tag t-warn">'+pad(p._agent_count||0,2)+' agentes</span>'
-            + '<span class="tag t-open">⧗ aguardando confirmação</span>'
+            + '<span class="tag t-warn">'+pad(p._agent_count||0,2)+' agents</span>'
+            + '<span class="tag t-open">⧗ awaiting confirmation</span>'
           + '</div>'
         + '</div>'
-        + (has(s.goal) ? '<div class="pcard-goal"><span class="label" style="display:block;color:var(--mag);margin-bottom:3px">Objetivo</span>'+esc(s.goal)+'</div>' : '')
-        + (has(s.context) ? '<div class="pcard-ctx"><span class="label" style="display:block;margin-bottom:3px">Contexto</span>'+esc(s.context)+'</div>' : '')
+        + (has(s.goal) ? '<div class="pcard-goal"><span class="label" style="display:block;color:var(--mag);margin-bottom:3px">Goal</span>'+esc(s.goal)+'</div>' : '')
+        + (has(s.context) ? '<div class="pcard-ctx"><span class="label" style="display:block;margin-bottom:3px">Context</span>'+esc(s.context)+'</div>' : '')
         + errBox + note
         + '<div class="gate">'
           + '<button type="button" class="fire" data-testid="dispatch-button" disabled '
-            + 'title="confirmar dispara na Fase 2">▶ Disparar &mdash; Fase 2</button>'
-          + '<span class="gate-note">Gate humano. O botão marca o lugar da confirmação; '
-            + 'nesta fase a tela apenas lê o disco &mdash; confirmar dispara na Fase 2.</span>'
+            + 'title="confirm dispatches in Phase 2">▶ Dispatch &mdash; Phase 2</button>'
+          + '<span class="gate-note">Human gate. The button marks the place of confirmation; '
+            + 'in this phase the screen only reads the disk &mdash; confirming dispatches in Phase 2.</span>'
         + '</div>'
         + '<details class="diag" style="margin-top:14px" '+(open?"open":"")+' data-key="'+esc(key)+'">'
           + '<summary style="color:var(--cy);background:rgba(0,229,255,.07);box-shadow:inset 0 0 0 1px rgba(0,229,255,.4)">'
-            + '▾ topologia completa da proposta</summary>'
+            + '▾ full topology of the proposal</summary>'
           + renderBody({
               dispatch_type:s.dispatch_type, schema_version:s.schema_version, created:s.created,
               invoked_by:s.invoked_by, max_loops:s.max_loops, final_approver:s.final_approver,
@@ -750,7 +750,7 @@ function renderPending(){
   }).join("");
 }
 
-/* ---------------- histórico ---------------- */
+/* ---------------- history ---------------- */
 function matches(d, repoName){
   if(filters.repo && repoName !== filters.repo) return false;
   if(filters.state && d._state !== filters.state) return false;
@@ -779,13 +779,13 @@ function renderDispatchCard(d, repoName, seq){
   var head = '<div class="dhead" data-toggle-card="'+esc(key)+'">'
     + '<span class="dseq">' + (expanded ? "▾ " : "▸ ") + pad(seq,3) + '</span>'
     + '<div class="dmain">'
-      + '<div class="did">'+esc(txt(d.dispatch_id,"(sem dispatch_id)"))+'</div>'
-      + '<div class="dgoal">'+esc(txt(d.goal,"(sem objetivo registrado)"))+'</div>'
+      + '<div class="did">'+esc(txt(d.dispatch_id,"(no dispatch_id)"))+'</div>'
+      + '<div class="dgoal">'+esc(txt(d.goal,"(no goal recorded)"))+'</div>'
       + '<div class="dmeta">'
         + tagState(d) + tagLive(d) + tagType(d) + tagExit(d) + tagFlags(d)
         + '<span class="dtime">'+esc(has(d.created) ? fmtDate(d.created)
-             : (d._close && has(d._close.closed) ? fmtDate(d._close.closed)+" (só close)" : "sem data"))+'</span>'
-        + '<span class="dtime">· '+pad(d._agent_count||0,2)+' agentes</span>'
+             : (d._close && has(d._close.closed) ? fmtDate(d._close.closed)+" (close only)" : "no date"))+'</span>'
+        + '<span class="dtime">· '+pad(d._agent_count||0,2)+' agents</span>'
       + '</div>'
     + '</div></div>';
 
@@ -793,22 +793,22 @@ function renderDispatchCard(d, repoName, seq){
   if(expanded){
     if(d._orphan_close){
       body += '<div class="block"><div class="prose" style="box-shadow:inset 2px 0 0 var(--mag);color:#ffb0d6">'
-        + '<b>Close órfã.</b> Existe uma close row sem a dispatch row correspondente no ledger. '
-        + 'A execução foi encerrada, mas o registro de abertura nunca foi escrito — a topologia é irrecuperável a partir daqui.'
+        + '<b>Orphan close.</b> There is a close row without the corresponding dispatch row in the ledger. '
+        + 'The execution was closed, but the opening record was never written — the topology is unrecoverable from here.'
         + '</div></div>';
     }
     if(d._legacy && !d._orphan_close){
       body += '<div class="block"><div class="prose" style="box-shadow:inset 2px 0 0 var(--mag);color:#ffb0d6">'
-        + '<b>Row legacy.</b> Anterior à v0.5.2 — sem o bloco <code>groups</code>.</div></div>';
+        + '<b>Legacy row.</b> Prior to v0.5.2 — without the <code>groups</code> block.</div></div>';
     }
     if(has(d.goal)){
-      body += '<div class="block"><span class="label">Objetivo</span><div class="prose">'+esc(d.goal)+'</div></div>';
+      body += '<div class="block"><span class="label">Goal</span><div class="prose">'+esc(d.goal)+'</div></div>';
     }
     body += renderBody(d);
     body += d._close ? renderClose(d._close)
       : '<div class="block"><div class="close-box" style="box-shadow:inset 2px 0 0 var(--ac)">'
-        + '<span class="tag t-open">▲ em execução</span> '
-        + '<span class="dtime" style="margin-left:8px">sem close row — a dispatch continua viva</span></div></div>';
+        + '<span class="tag t-open">▲ running</span> '
+        + '<span class="dtime" style="margin-left:8px">no close row — the dispatch is still alive</span></div></div>';
     body = '<div class="dbody">'+body+'</div>';
   }
 
@@ -830,23 +830,23 @@ function renderRepos(){
 
     var diag = "";
     if(has(r.error)){
-      diag += '<details class="diag err" open><summary>✖ erro fatal de leitura</summary>'
+      diag += '<details class="diag err" open><summary>✖ fatal read error</summary>'
         + '<div class="diag-list"><div>'+esc(r.error)+'</div></div></details>';
     }
     if(r.warnings && r.warnings.length){
-      diag += '<details class="diag warn"><summary>⚠ '+pad(r.warnings.length,2)+' aviso(s) de leitura — rows ilegíveis, não-fatal</summary>'
+      diag += '<details class="diag warn"><summary>⚠ '+pad(r.warnings.length,2)+' read warning(s) — unreadable rows, non-fatal</summary>'
         + '<div class="diag-list">' + r.warnings.map(function(w){ return '<div>'+esc(w)+'</div>'; }).join("") + '</div></details>';
     }
     if(!r.ledger_exists){
-      diag += '<details class="diag warn" open><summary>▤ este repositório ainda não tem ledger</summary>'
-        + '<div class="diag-list"><div>Nenhum arquivo de ledger encontrado. Só há sheets pendentes, se houver.</div></div></details>';
+      diag += '<details class="diag warn" open><summary>▤ this repository has no ledger yet</summary>'
+        + '<div class="diag-list"><div>No ledger file found. Only pending sheets, if any.</div></div></details>';
     }
 
     var body = "";
     if(isOpen){
       body = '<div class="repo-body">' + diag
         + (list.length ? list.map(function(d,i){ return renderDispatchCard(d, r.name, i+1); }).join("")
-           : '<div class="nores">nenhuma dispatch corresponde ao filtro neste repositório</div>')
+           : '<div class="nores">no dispatch matches the filter in this repository</div>')
         + '</div>';
     }
 
@@ -855,23 +855,23 @@ function renderRepos(){
         + '<span class="repo-caret">'+(isOpen?"▾":"▸")+'</span>'
         + '<span class="repo-idx">'+pad(idx,2)+'</span>'
         + '<span class="repo-name">'+esc(r.name)+'</span>'
-        + (has(r.error) ? '<span class="tag t-alert">✖ erro</span>' : '')
-        + ((r.pending&&r.pending.length) ? '<span class="tag t-warn">⧗ '+pad(r.pending.length,2)+' pendente(s)</span>' : '')
+        + (has(r.error) ? '<span class="tag t-alert">✖ error</span>' : '')
+        + ((r.pending&&r.pending.length) ? '<span class="tag t-warn">⧗ '+pad(r.pending.length,2)+' pending</span>' : '')
         + '<div class="repo-stats">'
           + '<span class="rs">ledger <b>'+pad(r.total_dispatches||0,3)+'</b></span>'
-          + '<span class="rs o">abertas <b>'+pad(r.open_dispatches||0,2)+'</b></span>'
-          + '<span class="rs">exibindo <b>'+pad(list.length,2)+'</b></span>'
-          + ((r.warnings&&r.warnings.length) ? '<span class="rs w">avisos <b>'+pad(r.warnings.length,3)+'</b></span>' : '')
+          + '<span class="rs o">open <b>'+pad(r.open_dispatches||0,2)+'</b></span>'
+          + '<span class="rs">showing <b>'+pad(list.length,2)+'</b></span>'
+          + ((r.warnings&&r.warnings.length) ? '<span class="rs w">warnings <b>'+pad(r.warnings.length,3)+'</b></span>' : '')
         + '</div>'
       + '</div>' + body + '</div>';
   });
 
-  host.innerHTML = html || '<div class="nores">nenhum repositório corresponde ao filtro</div>';
+  host.innerHTML = html || '<div class="nores">no repository matches the filter</div>';
   document.getElementById("shown-count").textContent =
-    pad(shown,3) + " dispatches exibidas · " + pad(sections,2) + " repositórios";
+    pad(shown,3) + " dispatches shown · " + pad(sections,2) + " repositories";
 }
 
-/* ---------------- métricas + total ---------------- */
+/* ---------------- metrics + total ---------------- */
 function renderMetrics(){
   var total=0, open=0, pend=0, warn=0, err=0, live=0, shownRows=0;
   SNAP.repos.forEach(function(r){
@@ -886,17 +886,17 @@ function renderMetrics(){
   var limit = (SNAP.config && SNAP.config.limit) || "—";
 
   document.getElementById("metrics").innerHTML =
-      m("m-ac","Sheets pendentes",pad(pend,2))
-    + m("m-mag","Dispatches abertas",pad(open,3))
-    + m("m-cy","Total no ledger",pad(total,3))
-    + m("m-ink","Repositórios",pad(repos,2))
-    + m("m-cy","LIVE carregadas",pad(live,3)+"/"+pad(shownRows,3))
-    + m("m-ac","Avisos",pad(warn,3))
-    + m("m-mag","Repos com erro",pad(err,2))
-    + m("m-ink","Limite por repo",pad(limit,2));
+      m("m-ac","Pending sheets",pad(pend,2))
+    + m("m-mag","Open dispatches",pad(open,3))
+    + m("m-cy","Total in ledger",pad(total,3))
+    + m("m-ink","Repositories",pad(repos,2))
+    + m("m-cy","LIVE loaded",pad(live,3)+"/"+pad(shownRows,3))
+    + m("m-ac","Warnings",pad(warn,3))
+    + m("m-mag","Repos with error",pad(err,2))
+    + m("m-ink","Limit per repo",pad(limit,2));
 
   document.getElementById("total-count").textContent =
-    "total " + total + " dispatches no ledger · " + open + " abertas · " + pend + " sheet(s) pendente(s) · " + repos + " repositórios";
+    "total " + total + " dispatches in the ledger · " + open + " open · " + pend + " pending sheet(s) · " + repos + " repositories";
 
   function m(cls,label,val){
     return '<div class="metric '+cls+'"><span class="label">'+label+'</span><b class="num">'+val+'</b></div>';
@@ -909,7 +909,7 @@ function syncRepoSelect(){
   if(sel.getAttribute("data-sig") === want) return;
   sel.setAttribute("data-sig", want);
   var cur = filters.repo;
-  sel.innerHTML = '<option value="">todos os repositórios ('+SNAP.repos.length+')</option>'
+  sel.innerHTML = '<option value="">all repositories ('+SNAP.repos.length+')</option>'
     + SNAP.repos.map(function(r){
         return '<option value="'+esc(r.name)+'">'+esc(r.name)+' — '+(r.total_dispatches||0)+'</option>';
       }).join("");
@@ -923,7 +923,7 @@ function renderAll(){
   renderRepos();
 }
 
-/* ---------------- eventos ---------------- */
+/* ---------------- events ---------------- */
 document.addEventListener("click", function(ev){
   var repoEl = ev.target.closest ? ev.target.closest("[data-toggle-repo]") : null;
   if(repoEl){
@@ -959,7 +959,7 @@ document.getElementById("f-q").addEventListener("input", function(){
   clearTimeout(qTimer);
   qTimer = setTimeout(function(){ filters.q = v; renderRepos(); }, 140);
 });
-/* preserva estado <details> das sheets pendentes entre re-renders */
+/* preserves <details> state of the pending sheets between re-renders */
 document.addEventListener("toggle", function(ev){
   var d = ev.target;
   if(d && d.tagName === "DETAILS" && d.hasAttribute("data-key")){
@@ -967,13 +967,13 @@ document.addEventListener("toggle", function(ev){
   }
 }, true);
 
-/* ---------------- enlace ---------------- */
+/* ---------------- link ---------------- */
 function setLive(on, note){
   var el = document.getElementById("live-indicator");
   el.className = "live " + (on ? "on" : "off");
-  /* o texto contém "conectado" apenas quando ligado */
-  document.getElementById("live-text").textContent = on ? "enlace conectado" : (note || "enlace caiu");
-  el.setAttribute("title", on ? "SSE ativo em /api/stream" : "sem stream — usando o último snapshot lido");
+  /* the text contains "connected" only when linked */
+  document.getElementById("live-text").textContent = on ? "link connected" : (note || "link disconnected");
+  el.setAttribute("title", on ? "SSE active on /api/stream" : "no stream — using the last snapshot read");
 }
 
 function apply(data){
@@ -986,30 +986,30 @@ function loadSnapshot(){
   return fetch("/api/snapshot", {cache:"no-store"})
     .then(function(r){ return r.json(); })
     .then(apply)
-    .catch(function(e){ setLive(false, "falha ao ler snapshot"); console.error(e); });
+    .catch(function(e){ setLive(false, "failed to read snapshot"); console.error(e); });
 }
 
 function connect(){
-  if(typeof EventSource === "undefined"){ setLive(false, "sem suporte a SSE"); return; }
+  if(typeof EventSource === "undefined"){ setLive(false, "no SSE support"); return; }
   var es;
   try { es = new EventSource("/api/stream"); }
-  catch(e){ setLive(false, "enlace caiu"); return; }
+  catch(e){ setLive(false, "link dropped"); return; }
 
   es.addEventListener("open", function(){ setLive(true); });
   es.addEventListener("snapshot", function(ev){
     setLive(true);
-    try { apply(JSON.parse(ev.data)); } catch(e){ console.error("snapshot inválido", e); }
+    try { apply(JSON.parse(ev.data)); } catch(e){ console.error("invalid snapshot", e); }
   });
   es.addEventListener("message", function(ev){
     setLive(true);
     try { var d = JSON.parse(ev.data); if(d && d.repos) apply(d); } catch(e){}
   });
   es.addEventListener("error", function(){
-    setLive(false, "enlace caiu — reconectando");
+    setLive(false, "link dropped — reconnecting");
   });
 }
 
-/* arranque */
+/* startup */
 renderAll();
 loadSnapshot().then(connect);
 

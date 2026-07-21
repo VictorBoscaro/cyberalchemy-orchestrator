@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -272,82 +272,82 @@
   <div class="hd-top">
     <div class="brand">
       <h1>Mission Control</h1>
-      <div class="sub">Dispatch Control Plane · Fase 1 · Leitor</div>
+      <div class="sub">Dispatch Control Plane · Phase 1 · Reader</div>
     </div>
     <div class="clock">
-      <span class="lbl">Relógio de missão</span>
+      <span class="lbl">Mission clock</span>
       <span class="v num" id="clock">T+00:00:00</span>
     </div>
     <div class="clock">
-      <span class="lbl">Último pacote</span>
+      <span class="lbl">Last packet</span>
       <span class="v num" id="lastPacket" style="color:var(--txt)">——:——:——</span>
     </div>
     <div class="hd-spacer"></div>
     <div class="link-box">
-      <span class="lbl">Telemetria</span>
+      <span class="lbl">Telemetry</span>
       <div class="link-line" id="live-indicator" data-testid="live-indicator">
-        <span class="led wait" id="led"></span><span id="liveText">conectando…</span>
+        <span class="led wait" id="led"></span><span id="liveText">connecting…</span>
       </div>
       <div class="link-line" style="font-size:10px;color:var(--txt-mute)">
-        <span id="pktCount" class="num">0</span>&nbsp;pacotes recebidos
+        <span id="pktCount" class="num">0</span>&nbsp;packets received
       </div>
     </div>
   </div>
 
   <div class="counters">
     <div class="ctr"><span class="v num" id="cTotal" data-testid="total-count">0</span><span class="lbl">Dispatches (total)</span></div>
-    <div class="ctr"><span class="v num cyan" id="cOpen">0</span><span class="lbl">Abertas</span></div>
-    <div class="ctr"><span class="v num amber" id="cPend">0</span><span class="lbl">Sheets pendentes</span></div>
+    <div class="ctr"><span class="v num cyan" id="cOpen">0</span><span class="lbl">Open</span></div>
+    <div class="ctr"><span class="v num amber" id="cPend">0</span><span class="lbl">Pending sheets</span></div>
     <div class="ctr"><span class="v num" id="cRepos">0</span><span class="lbl">Repos</span></div>
-    <div class="ctr"><span class="v num mint" id="cLive">0</span><span class="lbl">Live carregadas</span></div>
-    <div class="ctr"><span class="v num" id="cLoaded">0</span><span class="lbl">Carregadas / janela</span></div>
-    <div class="ctr"><span class="v num amber" id="cWarn">0</span><span class="lbl">Avisos</span></div>
-    <div class="ctr"><span class="v num red" id="cErr">0</span><span class="lbl">Erros de leitura</span></div>
-    <div class="ctr"><span class="v num red" id="cAlert">0</span><span class="lbl">Saídas anômalas</span></div>
+    <div class="ctr"><span class="v num mint" id="cLive">0</span><span class="lbl">Live loaded</span></div>
+    <div class="ctr"><span class="v num" id="cLoaded">0</span><span class="lbl">Loaded / window</span></div>
+    <div class="ctr"><span class="v num amber" id="cWarn">0</span><span class="lbl">Warnings</span></div>
+    <div class="ctr"><span class="v num red" id="cErr">0</span><span class="lbl">Read errors</span></div>
+    <div class="ctr"><span class="v num red" id="cAlert">0</span><span class="lbl">Anomalous exits</span></div>
   </div>
 
   <div class="controls">
     <label><span class="lbl">Repo</span>
-      <select id="fRepo"><option value="">todos</option></select>
+      <select id="fRepo"><option value="">all</option></select>
     </label>
-    <label><span class="lbl">Estado</span>
+    <label><span class="lbl">State</span>
       <span class="seg" id="fState">
-        <button data-v="" aria-pressed="true">Todas</button>
-        <button data-v="open" aria-pressed="false">Abertas</button>
-        <button data-v="closed" aria-pressed="false">Fechadas</button>
+        <button data-v="" aria-pressed="true">All</button>
+        <button data-v="open" aria-pressed="false">Open</button>
+        <button data-v="closed" aria-pressed="false">Closed</button>
       </span>
     </label>
-    <label><span class="lbl">Classe</span>
+    <label><span class="lbl">Class</span>
       <span class="seg" id="fLive">
-        <button data-v="" aria-pressed="true">Todas</button>
+        <button data-v="" aria-pressed="true">All</button>
         <button data-v="live" aria-pressed="false">Live</button>
-        <button data-v="reserved" aria-pressed="false">Reservadas</button>
+        <button data-v="reserved" aria-pressed="false">Reserved</button>
       </span>
     </label>
-    <label><span class="lbl">Tipo</span>
-      <select id="fType"><option value="">todos</option></select>
+    <label><span class="lbl">Type</span>
+      <select id="fType"><option value="">all</option></select>
     </label>
-    <label><span class="lbl">Busca</span>
-      <input type="search" id="fQ" placeholder="id, objetivo, agente, ângulo…">
+    <label><span class="lbl">Search</span>
+      <input type="search" id="fQ" placeholder="id, goal, agent, angle…">
     </label>
     <span class="lbl" id="filterInfo" style="margin-left:auto"></span>
   </div>
 </header>
 
 <main>
-  <!-- ============ SHEETS PENDENTES ============ -->
+  <!-- ============ PENDING SHEETS ============ -->
   <section class="block" id="pendingBlock">
     <div class="block-hd">
-      <h2>◈ Sheets pendentes — gate humano</h2>
+      <h2>◈ Pending sheets — human gate</h2>
       <span class="cnt" id="pendHdCount">0</span>
     </div>
     <div id="pending-list" data-testid="pending-list"></div>
   </section>
 
-  <!-- ============ HISTÓRICO ============ -->
+  <!-- ============ HISTORY ============ -->
   <section class="block">
     <div class="block-hd">
-      <h2>Histórico de dispatches</h2>
+      <h2>Dispatch history</h2>
       <span class="cnt" id="histHdCount"></span>
     </div>
     <div id="dispatch-list" data-testid="dispatch-list"></div>
@@ -355,7 +355,7 @@
 </main>
 
 <footer>
-  Leitor somente-leitura · nenhuma escrita no ledger · <span id="cfgLine" class="num"></span>
+  Read-only reader · no writes to the ledger · <span id="cfgLine" class="num"></span>
 </footer>
 </div>
 
@@ -394,7 +394,7 @@ function fmtEpoch(sec){
   if (isNaN(t.getTime())) return "—";
   return t.getFullYear()+"-"+pad(t.getMonth()+1)+"-"+pad(t.getDate())+" "+pad(t.getHours())+":"+pad(t.getMinutes());
 }
-/* exit_reason -> severidade */
+/* exit_reason -> severity */
 var EXIT_SEV = {
   resolved:"ok", success:"ok",
   loop_ceiling_reached:"warn", user_abort:"warn",
@@ -416,7 +416,7 @@ function connGlyph(t){
   if (k === "feedback") return "↺";
   return "··▶";
 }
-/* orçamento -> largura do medidor (escala log-ish contra o teto observado) */
+/* budget -> meter width (log-ish scale against the observed ceiling) */
 var BUDGET_MAX = 10000;
 function budgetPct(v){
   var n = Number(v);
@@ -424,7 +424,7 @@ function budgetPct(v){
   return Math.max(3, Math.min(100, (n / BUDGET_MAX) * 100));
 }
 
-/* --------------------------------------------------------------- estado UI */
+/* --------------------------------------------------------------- UI state */
 var SNAP = null;
 var OPEN_DETAIL = {};          /* repo::id -> true */
 var COLLAPSED_REPO = {};       /* repo -> true */
@@ -432,7 +432,7 @@ var F = { repo:"", state:"", live:"", type:"", q:"" };
 var PKT = 0;
 var T0 = Date.now();
 
-/* ------------------------------------------------------------- relógio */
+/* ------------------------------------------------------------- clock */
 setInterval(function(){
   var s = Math.floor((Date.now() - T0) / 1000);
   var h = Math.floor(s/3600), m = Math.floor((s%3600)/60);
@@ -449,15 +449,15 @@ function setLink(state, text){
 function connect(){
   var es;
   try { es = new EventSource("/api/stream"); }
-  catch (err){ setLink("off", "sem conexão"); return; }
+  catch (err){ setLink("off", "disconnected"); return; }
   es.addEventListener("snapshot", function(ev){
     try { ingest(JSON.parse(ev.data)); }
-    catch (err){ /* payload inválido: mantém o último bom */ }
-    setLink("on", "conectado");
+    catch (err){ /* invalid payload: keep the last good one */ }
+    setLink("on", "connected");
   });
-  es.onopen  = function(){ setLink("on", "conectado"); };
+  es.onopen  = function(){ setLink("on", "connected"); };
   es.onerror = function(){
-    setLink("off", "queda de sinal — reconectando");
+    setLink("off", "signal loss — reconnecting");
   };
 }
 function bootstrap(){
@@ -465,10 +465,10 @@ function bootstrap(){
     .then(function(r){ return r.json(); })
     .then(function(j){ ingest(j); })
     .catch(function(){
-      setLink("off", "falha ao carregar snapshot");
+      setLink("off", "failed to load snapshot");
       document.getElementById("pending-list").innerHTML =
-        '<div class="pending-empty"><span class="lbl">Sem link</span>' +
-        '<span>Não foi possível ler /api/snapshot.</span></div>';
+        '<div class="pending-empty"><span class="lbl">No link</span>' +
+        '<span>Could not read /api/snapshot.</span></div>';
     });
   connect();
 }
@@ -483,7 +483,7 @@ function ingest(snap){
   render();
 }
 
-/* --------------------------------------------------------------- filtros */
+/* --------------------------------------------------------------- filters */
 function matchQ(d, q){
   if (!q) return true;
   var hay = [d.dispatch_id, d.goal, d.context, d.dispatch_type,
@@ -515,7 +515,7 @@ function render(){
   var repos = SNAP.repos || [];
   var cfg = SNAP.config || {};
 
-  /* ---------- métricas globais ---------- */
+  /* ---------- global metrics ---------- */
   var total=0, open=0, warn=0, err=0, pend=0, loaded=0, live=0, alert=0;
   var types = {};
   var allPending = [];
@@ -547,36 +547,36 @@ function render(){
   document.getElementById("cErr").textContent    = err;
   document.getElementById("cAlert").textContent  = alert;
   document.getElementById("cfgLine").textContent =
-    "janela=" + (cfg.limit != null ? cfg.limit : "?") + "/repo · poll=" +
+    "window=" + (cfg.limit != null ? cfg.limit : "?") + "/repo · poll=" +
     (cfg.poll_seconds != null ? cfg.poll_seconds : "?") + "s";
 
   syncSelect("fRepo", repos.map(function(r){ return r.name; }), F.repo);
   syncSelect("fType", Object.keys(types).sort(), F.type);
 
-  /* ---------- pendentes ---------- */
+  /* ---------- pending ---------- */
   renderPending(allPending);
   document.getElementById("pendHdCount").textContent =
-    pend === 0 ? "0 — nenhuma aguardando" : (pend + " aguardando confirmação");
+    pend === 0 ? "0 — none waiting" : (pend + " waiting for confirmation");
 
-  /* ---------- histórico ---------- */
+  /* ---------- history ---------- */
   var host = document.getElementById("dispatch-list");
   var html = [], shown = 0, sections = 0;
   for (var n=0;n<repos.length;n++){
     var rp = repos[n];
     if (F.repo && rp.name !== F.repo) continue;
     var list = (rp.dispatches || []).filter(passes);
-    /* repo sem match some do painel só quando há busca/filtro ativo e nada sobra */
+    /* a repo with no match drops from the panel only when a search/filter is active and nothing remains */
     var filtering = !!(F.state || F.live || F.type || F.q);
     if (filtering && list.length === 0) continue;
     shown += list.length; sections++;
     html.push(repoSection(rp, list));
   }
   host.innerHTML = html.length ? html.join("") :
-    '<div class="empty">Nenhuma dispatch corresponde aos filtros</div>';
+    '<div class="empty">No dispatch matches the filters</div>';
   document.getElementById("histHdCount").textContent =
-    shown + " de " + loaded + " carregadas · " + sections + " repos";
+    shown + " of " + loaded + " loaded · " + sections + " repos";
   document.getElementById("filterInfo").textContent =
-    (F.state||F.live||F.type||F.q) ? "filtro ativo" : "";
+    (F.state||F.live||F.type||F.q) ? "filter active" : "";
 }
 
 function syncSelect(id, values, cur){
@@ -584,7 +584,7 @@ function syncSelect(id, values, cur){
   var sig = values.join("|");
   if (sel.getAttribute("data-sig") === sig){ sel.value = cur; return; }
   sel.setAttribute("data-sig", sig);
-  var o = ['<option value="">todos</option>'];
+  var o = ['<option value="">all</option>'];
   for (var i=0;i<values.length;i++){
     o.push('<option value="'+E(values[i])+'">'+E(values[i])+'</option>');
   }
@@ -598,8 +598,8 @@ function renderPending(items){
   if (!items.length){
     host.innerHTML =
       '<div class="pending-empty">' +
-        '<span class="lbl">Fila limpa</span>' +
-        '<span>Nenhuma sheet pendente. Nada aguarda o gate humano neste momento.</span>' +
+        '<span class="lbl">Queue clear</span>' +
+        '<span>No pending sheets. Nothing is waiting on the human gate right now.</span>' +
       '</div>';
     return;
   }
@@ -614,33 +614,33 @@ function pendingCard(repo, pen){
   h.push('<article class="pcard" data-testid="pending-card">');
 
   h.push('<div class="pcard-hd">');
-  h.push('<span class="badge b-warn">◈ Pendente</span>');
-  h.push('<span class="id">' + E(s.dispatch_id || pen._file || "sheet sem id") + '</span>');
-  h.push('<span class="badge b-type">' + E(s.dispatch_type || "tipo?") + '</span>');
+  h.push('<span class="badge b-warn">◈ Pending</span>');
+  h.push('<span class="id">' + E(s.dispatch_id || pen._file || "sheet without id") + '</span>');
+  h.push('<span class="badge b-type">' + E(s.dispatch_type || "type?") + '</span>');
   h.push(live ? '<span class="badge b-live">Live</span>'
-              : '<span class="badge b-res">Reservada — Fase 2</span>');
+              : '<span class="badge b-res">Reserved — Phase 2</span>');
   h.push('<span class="badge">' + E(repo.name) + '</span>');
-  if (s._example) h.push('<span class="badge b-legacy">Fixture de demonstração</span>');
-  if (pen._error) h.push('<span class="badge b-err">Erro: ' + E(pen._error) + '</span>');
+  if (s._example) h.push('<span class="badge b-legacy">Demo fixture</span>');
+  if (pen._error) h.push('<span class="badge b-err">Error: ' + E(pen._error) + '</span>');
   h.push('</div>');
 
-  h.push('<div class="pcard-goal"><span class="lbl">Objetivo</span><br>' + E(s.goal || "—") + '</div>');
-  if (s.context) h.push('<div class="pcard-ctx"><span class="lbl">Contexto</span><br>' + E(s.context) + '</div>');
+  h.push('<div class="pcard-goal"><span class="lbl">Goal</span><br>' + E(s.goal || "—") + '</div>');
+  if (s.context) h.push('<div class="pcard-ctx"><span class="lbl">Context</span><br>' + E(s.context) + '</div>');
   if (s._note) h.push('<div class="pcard-ctx" style="color:#d6a76a">' + E(s._note) + '</div>');
 
   h.push('<div class="pcard-meta">');
-  h.push(mcell("Agentes", ac));
-  h.push(mcell("Grupos", (s.groups||[]).length));
+  h.push(mcell("Agents", ac));
+  h.push(mcell("Groups", (s.groups||[]).length));
   h.push(mcell("Max loops", s.max_loops != null ? s.max_loops : "—"));
-  h.push(mcell("Aprovador final", s.final_approver || "—"));
+  h.push(mcell("Final approver", s.final_approver || "—"));
   h.push(mcell("Schema", s.schema_version || "—"));
-  h.push(mcell("Arquivo", pen._file || "—"));
-  h.push(mcell("Modificada", fmtEpoch(pen._mtime)));
+  h.push(mcell("File", pen._file || "—"));
+  h.push(mcell("Modified", fmtEpoch(pen._mtime)));
   h.push('</div>');
 
   if (s.anti_bias_global){
     h.push('<div style="padding:8px 14px;border-bottom:1px solid var(--line-soft)">');
-    h.push('<span class="lbl">Eixo anti-viés global</span>');
+    h.push('<span class="lbl">Global anti-bias axis</span>');
     h.push('<div class="axis">' + E(s.anti_bias_global) + '</div></div>');
   }
 
@@ -648,16 +648,16 @@ function pendingCard(repo, pen){
   h.push(groupsBlock(s.groups));
   h.push(connectionsBlock(s.connections));
   if (s.working_folder){
-    h.push('<div class="kv" style="margin-top:8px"><div><span class="k">Pasta de trabalho</span>' +
+    h.push('<div class="kv" style="margin-top:8px"><div><span class="k">Working folder</span>' +
            '<span class="v">' + E(s.working_folder) + '</span></div>' +
-           '<div><span class="k">Invocado por</span><span class="v">' + E(s.invoked_by||"—") + '</span></div></div>');
+           '<div><span class="k">Invoked by</span><span class="v">' + E(s.invoked_by||"—") + '</span></div></div>');
   }
   h.push('</div>');
 
   h.push('<div class="pcard-foot">');
-  h.push('<span class="gate-note">Gate humano — o disparo só é armado na Fase 2. Este leitor não escreve no ledger.</span>');
+  h.push('<span class="gate-note">Human gate — dispatch is only armed in Phase 2. This reader does not write to the ledger.</span>');
   h.push('<button class="fire" data-testid="dispatch-button" disabled ' +
-         'title="confirmar dispara na Fase 2" aria-disabled="true">▶ Disparar (Fase 2)</button>');
+         'title="confirm dispatch in Phase 2" aria-disabled="true">▶ Dispatch (Phase 2)</button>');
   h.push('</div>');
 
   h.push('</article>');
@@ -683,18 +683,18 @@ function repoSection(rp, list){
   h.push('<div class="repo-hd js-repo" data-repo="' + E(rp.name) + '">');
   h.push('<span class="caret">' + (collapsed ? "▸" : "▾") + '</span>');
   h.push('<span class="nm">' + E(rp.name) + '</span>');
-  if (!rp.ledger_exists) h.push('<span class="badge b-warn">sem ledger</span>');
-  if (rp.error)          h.push('<span class="badge b-err">erro de leitura</span>');
-  if ((rp.pending||[]).length) h.push('<span class="badge b-warn">' + rp.pending.length + ' pendente(s)</span>');
+  if (!rp.ledger_exists) h.push('<span class="badge b-warn">no ledger</span>');
+  if (rp.error)          h.push('<span class="badge b-err">read error</span>');
+  if ((rp.pending||[]).length) h.push('<span class="badge b-warn">' + rp.pending.length + ' pending</span>');
 
   h.push('<div class="repo-stats">');
   h.push('<div class="stat"><span class="lbl">Total</span><span class="v num">' + total + '</span></div>');
-  h.push('<div class="stat"><span class="lbl">Abertas</span><span class="v num cyan">' + open + '</span>' +
-         '<span class="gauge g-mint" title="abertas / total"><i style="width:' + openPct.toFixed(1) + '%;background:var(--cyan)"></i></span></div>');
-  h.push('<div class="stat"><span class="lbl">Janela</span><span class="v num">' + (rp.dispatches||[]).length + '</span>' +
-         '<span class="gauge" title="carregadas / total"><i style="width:' + loadPct.toFixed(1) + '%"></i></span></div>');
-  h.push('<div class="stat"><span class="lbl">Exibindo</span><span class="v num amber">' + list.length + '</span></div>');
-  if (warns.length) h.push('<div class="stat"><span class="lbl">Avisos</span><span class="v num amber">' + warns.length + '</span></div>');
+  h.push('<div class="stat"><span class="lbl">Open</span><span class="v num cyan">' + open + '</span>' +
+         '<span class="gauge g-mint" title="open / total"><i style="width:' + openPct.toFixed(1) + '%;background:var(--cyan)"></i></span></div>');
+  h.push('<div class="stat"><span class="lbl">Window</span><span class="v num">' + (rp.dispatches||[]).length + '</span>' +
+         '<span class="gauge" title="loaded / total"><i style="width:' + loadPct.toFixed(1) + '%"></i></span></div>');
+  h.push('<div class="stat"><span class="lbl">Showing</span><span class="v num amber">' + list.length + '</span></div>');
+  if (warns.length) h.push('<div class="stat"><span class="lbl">Warnings</span><span class="v num amber">' + warns.length + '</span></div>');
   h.push('</div></div>');
 
   if (collapsed){ h.push('</section>'); return h.join(""); }
@@ -704,11 +704,11 @@ function repoSection(rp, list){
   if (rp.error || warns.length){
     h.push('<div class="repo-notes">');
     if (rp.error){
-      h.push('<details class="notes" open><summary>Erro fatal de leitura</summary>' +
+      h.push('<details class="notes" open><summary>Fatal read error</summary>' +
              '<div class="prose" style="color:var(--red)">' + E(rp.error) + '</div></details>');
     }
     if (warns.length){
-      h.push('<details class="notes"><summary>' + warns.length + ' aviso(s) — rows toleradas/ilegíveis</summary><ul>');
+      h.push('<details class="notes"><summary>' + warns.length + ' warning(s) — tolerated/unreadable rows</summary><ul>');
       for (var w=0; w<warns.length && w<400; w++) h.push('<li>' + E(warns[w]) + '</li>');
       if (warns.length > 400) h.push('<li>… (+' + (warns.length-400) + ')</li>');
       h.push('</ul></details>');
@@ -717,14 +717,14 @@ function repoSection(rp, list){
   }
 
   if (!list.length){
-    h.push('<div class="empty">Nenhuma dispatch nesta janela</div></div></section>');
+    h.push('<div class="empty">No dispatch in this window</div></div></section>');
     return h.join("");
   }
 
   h.push('<div class="grid-hd">' +
-    '<span></span><span>Dispatch ID</span><span>Tipo</span><span>Classe</span>' +
-    '<span>Estado</span><span style="text-align:right">Agts</span><span>Criada</span>' +
-    '<span>Saída</span><span></span></div>');
+    '<span></span><span>Dispatch ID</span><span>Type</span><span>Class</span>' +
+    '<span>State</span><span style="text-align:right">Agts</span><span>Created</span>' +
+    '<span>Exit</span><span></span></div>');
 
   for (var i=0;i<list.length;i++) h.push(dispatchRow(rp, list[i]));
 
@@ -734,7 +734,7 @@ function repoSection(rp, list){
 
 /* -------------------------------------------------------------- DISPATCH */
 function dispatchRow(rp, d){
-  var id = d.dispatch_id || "(sem id)";
+  var id = d.dispatch_id || "(no id)";
   var key = rp.name + "::" + id;
   var st = d._state || "closed";
   var opened = !!OPEN_DETAIL[key];
@@ -755,15 +755,15 @@ function dispatchRow(rp, d){
   h.push('<span>' + (isLive(d) ? '<span class="badge b-live">Live</span>'
                                : '<span class="badge b-res">Reserv.</span>') + '</span>');
   var stBadge = st === "open"
-      ? '<span class="badge b-open">Aberta</span>'
-      : '<span class="badge b-closed">Fechada</span>';
-  if (d._orphan_close) stBadge += ' <span class="badge b-orphan">Órfã</span>';
+      ? '<span class="badge b-open">Open</span>'
+      : '<span class="badge b-closed">Closed</span>';
+  if (d._orphan_close) stBadge += ' <span class="badge b-orphan">Orphan</span>';
   else if (d._legacy)  stBadge += ' <span class="badge b-legacy">Legacy</span>';
   h.push('<span>' + stBadge + '</span>');
   h.push('<span class="ag num">' + agentCount(d) + '</span>');
   h.push('<span class="dt num">' + E(fmtStamp(d.created || (cl && cl.closed))) + '</span>');
   h.push('<span class="exit ' + sev + '">' +
-         (st === "open" ? '<span style="color:var(--cyan)">em voo</span>'
+         (st === "open" ? '<span style="color:var(--cyan)">in flight</span>'
                         : E((cl && cl.exit_reason) || "—")) + '</span>');
   h.push('<span class="caret">' + (opened ? "▾" : "▸") + '</span>');
   h.push('</div>');
@@ -777,34 +777,34 @@ function detailBlock(d){
   h.push('<div class="detail">');
 
   if (d._orphan_close){
-    h.push('<div class="dsec"><span class="badge b-orphan">Close row órfã</span> ' +
-      '<span class="prose" style="display:inline">A dispatch row correspondente nunca foi escrita no ledger — ' +
-      'só existe o fechamento.</span></div>');
+    h.push('<div class="dsec"><span class="badge b-orphan">Orphan close row</span> ' +
+      '<span class="prose" style="display:inline">The corresponding dispatch row was never written to the ledger — ' +
+      'only the closure exists.</span></div>');
   }
   if (d._legacy && !d._orphan_close){
-    h.push('<div class="dsec"><span class="badge b-legacy">Row legacy</span> ' +
-      '<span class="prose" style="display:inline">Anterior à v0.5.2 — sem <code>groups</code>. ' +
-      'Composição de agentes indisponível.</span></div>');
+    h.push('<div class="dsec"><span class="badge b-legacy">Legacy row</span> ' +
+      '<span class="prose" style="display:inline">Prior to v0.5.2 — no <code>groups</code>. ' +
+      'Agent composition unavailable.</span></div>');
   }
 
-  h.push('<div class="dsec"><span class="lbl">Objetivo</span>' +
+  h.push('<div class="dsec"><span class="lbl">Goal</span>' +
          '<div class="prose">' + E(d.goal || "—") + '</div></div>');
   if (d.context){
-    h.push('<div class="dsec"><span class="lbl">Contexto</span>' +
+    h.push('<div class="dsec"><span class="lbl">Context</span>' +
            '<div class="prose">' + E(d.context) + '</div></div>');
   }
 
-  h.push('<div class="dsec"><span class="lbl">Parâmetros</span><div class="kv">');
-  h.push(kv("Criada", d.created ? fmtStamp(d.created) : "—"));
-  h.push(kv("Invocada por", d.invoked_by));
+  h.push('<div class="dsec"><span class="lbl">Parameters</span><div class="kv">');
+  h.push(kv("Created", d.created ? fmtStamp(d.created) : "—"));
+  h.push(kv("Invoked by", d.invoked_by));
   h.push(kv("Schema", d.schema_version));
   h.push(kv("Max loops", d.max_loops));
-  h.push(kv("Aprovador final", d.final_approver));
-  h.push(kv("Pasta de trabalho", d.working_folder));
+  h.push(kv("Final approver", d.final_approver));
+  h.push(kv("Working folder", d.working_folder));
   h.push('</div></div>');
 
   if (d.anti_bias_global){
-    h.push('<div class="dsec"><span class="lbl">Eixo anti-viés global</span>' +
+    h.push('<div class="dsec"><span class="lbl">Global anti-bias axis</span>' +
            '<div class="axis">' + E(d.anti_bias_global) + '</div></div>');
   }
 
@@ -814,14 +814,14 @@ function detailBlock(d){
   if (cl){
     var sev = exitSev(cl.exit_reason);
     var col = sev === "ok" ? "var(--mint)" : (sev === "bad" ? "var(--red)" : "var(--amber)");
-    h.push('<div class="dsec"><span class="lbl">Fechamento</span><div class="kv">');
-    h.push('<div><span class="k">Motivo de saída</span><span class="v" style="color:' + col + '">' +
+    h.push('<div class="dsec"><span class="lbl">Closure</span><div class="kv">');
+    h.push('<div><span class="k">Exit reason</span><span class="v" style="color:' + col + '">' +
            E(cl.exit_reason || "—") + '</span></div>');
-    h.push(kv("Fechada em", cl.closed ? fmtStamp(cl.closed) : "—"));
-    h.push(kv("Fechada por", cl.invoked_by));
+    h.push(kv("Closed at", cl.closed ? fmtStamp(cl.closed) : "—"));
+    h.push(kv("Closed by", cl.invoked_by));
     var sp = cl.agents_spawned || {};
-    h.push(kv("Agentes gerados", sp.total));
-    h.push(kv("Loops usados", sp.loops_used));
+    h.push(kv("Agents spawned", sp.total));
+    h.push(kv("Loops used", sp.loops_used));
     h.push('</div>');
     if (sp.tree && typeof sp.tree === "object"){
       h.push('<div class="tree" style="margin-top:7px">');
@@ -832,14 +832,14 @@ function detailBlock(d){
     }
     var fp = cl.feedback_prompts || [];
     if (fp.length){
-      h.push('<div style="margin-top:8px"><span class="lbl">Prompts de feedback (' + fp.length + ')</span>');
+      h.push('<div style="margin-top:8px"><span class="lbl">Feedback prompts (' + fp.length + ')</span>');
       for (var i=0;i<fp.length;i++) h.push('<div class="fb">' + E(fp[i]) + '</div>');
       h.push('</div>');
     }
     h.push('</div>');
   } else {
-    h.push('<div class="dsec"><span class="lbl">Fechamento</span>' +
-           '<div class="prose" style="color:var(--cyan)">Sem close row — dispatch aberta, ainda em voo.</div></div>');
+    h.push('<div class="dsec"><span class="lbl">Closure</span>' +
+           '<div class="prose" style="color:var(--cyan)">No close row — dispatch open, still in flight.</div></div>');
   }
 
   h.push('</div>');
@@ -850,33 +850,33 @@ function kv(k, v){
          E(v == null || v === "" ? "—" : v) + '</span></div>';
 }
 
-/* ---------------------------------------------------------------- GRUPOS */
+/* ---------------------------------------------------------------- GROUPS */
 function groupsBlock(groups){
   var g = groups || [];
   if (!g.length){
-    return '<div class="dsec"><span class="lbl">Grupos e agentes</span>' +
-           '<div class="prose" style="color:var(--txt-mute)">Sem <code>groups</code> nesta row.</div></div>';
+    return '<div class="dsec"><span class="lbl">Groups and agents</span>' +
+           '<div class="prose" style="color:var(--txt-mute)">No <code>groups</code> in this row.</div></div>';
   }
-  var h = ['<div class="dsec"><span class="lbl">Grupos e agentes — ângulo × anti-viés</span>'];
+  var h = ['<div class="dsec"><span class="lbl">Groups and agents — angle × anti-bias</span>'];
   for (var i=0;i<g.length;i++){
     var grp = g[i] || {};
     var ags = grp.agents || [];
     h.push('<div class="grp">');
     h.push('<div class="grp-hd">');
-    h.push('<span class="gid">' + E(grp.group_id || "grupo") + '</span>');
+    h.push('<span class="gid">' + E(grp.group_id || "group") + '</span>');
     if (grp.role)               h.push('<span class="badge">' + E(grp.role) + '</span>');
     h.push('<span class="badge">n=' + E(grp.n != null ? grp.n : ags.length) + '</span>');
-    if (grp.layers != null)     h.push('<span class="badge">camadas ' + E(grp.layers) + '</span>');
+    if (grp.layers != null)     h.push('<span class="badge">layers ' + E(grp.layers) + '</span>');
     if (grp.robot_talks)        h.push('<span class="badge b-warn">robot_talks</span>');
     h.push('</div>');
 
     if (grp.anti_bias){
       h.push('<div style="padding:7px 10px;border-bottom:1px solid var(--line-soft)">' +
-             '<span class="lbl">Anti-viés do grupo</span>' +
+             '<span class="lbl">Group anti-bias</span>' +
              '<div class="axis">' + E(grp.anti_bias) + '</div></div>');
     }
     if (!ags.length){
-      h.push('<div class="empty">Grupo sem agentes declarados</div>');
+      h.push('<div class="empty">Group with no declared agents</div>');
     }
     for (var j=0;j<ags.length;j++) h.push(agentRow(ags[j] || {}));
     h.push('</div>');
@@ -893,20 +893,20 @@ function agentRow(a){
   var h = ['<div class="agent">'];
 
   h.push('<div class="who">');
-  h.push('<div class="nm' + (nm ? "" : " anon") + '">' + E(nm || "anônimo") + '</div>');
-  h.push('<div class="role">' + E(a.role || "papel?") + '</div>');
-  h.push('<div class="mdl">' + E(a.model || "modelo?") + '</div>');
+  h.push('<div class="nm' + (nm ? "" : " anon") + '">' + E(nm || "anonymous") + '</div>');
+  h.push('<div class="role">' + E(a.role || "role?") + '</div>');
+  h.push('<div class="mdl">' + E(a.model || "model?") + '</div>');
   h.push('</div>');
 
   h.push('<div class="meter"><span class="lbl">Tokens</span>' +
          '<div class="bar"><i class="' + (hi ? "hi" : "") + '" style="width:' + pct.toFixed(1) + '%"></i></div>' +
          '<div class="t">' + E(tb != null ? tb : "—") + '</div></div>');
 
-  h.push('<div class="angle"><span class="lbl">Ângulo</span><br>');
-  h.push(a.angle ? E(a.angle) : '<span class="none">sem ângulo declarado</span>');
+  h.push('<div class="angle"><span class="lbl">Angle</span><br>');
+  h.push(a.angle ? E(a.angle) : '<span class="none">no declared angle</span>');
   if (a.initial_prompt){
     h.push('<div class="prompt">' + E(a.initial_prompt) +
-           (a._prompt_truncated ? '\n… [prompt truncado pelo leitor]' : '') + '</div>');
+           (a._prompt_truncated ? '\n… [prompt truncated by reader]' : '') + '</div>');
   }
   h.push('</div>');
 
@@ -914,14 +914,14 @@ function agentRow(a){
   return h.join("");
 }
 
-/* ------------------------------------------------------------- CONEXÕES */
+/* ------------------------------------------------------------- CONNECTIONS */
 function connectionsBlock(conns){
   var c = conns || [];
   if (!c.length){
-    return '<div class="dsec"><span class="lbl">Conexões</span>' +
-           '<div class="prose" style="color:var(--txt-mute)">Nenhuma aresta declarada.</div></div>';
+    return '<div class="dsec"><span class="lbl">Connections</span>' +
+           '<div class="prose" style="color:var(--txt-mute)">No edges declared.</div></div>';
   }
-  var h = ['<div class="dsec"><span class="lbl">Conexões — arestas tipadas</span><div class="conns">'];
+  var h = ['<div class="dsec"><span class="lbl">Connections — typed edges</span><div class="conns">'];
   for (var i=0;i<c.length;i++){
     var e = c[i] || {};
     h.push('<div class="conn ' + connClass(e.type) + '">');
@@ -938,7 +938,7 @@ function connectionsBlock(conns){
   return h.join("");
 }
 
-/* ------------------------------------------------------------- INTERAÇÃO */
+/* ------------------------------------------------------------- INTERACTION */
 document.addEventListener("click", function(ev){
   var repoHd = ev.target.closest ? ev.target.closest(".js-repo") : null;
   if (repoHd){

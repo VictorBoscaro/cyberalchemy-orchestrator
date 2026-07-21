@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Grimório de Despachos — Cyberalchemy</title>
+<title>Grimoire of Dispatches — Cyberalchemy</title>
 <style>
   :root{
     --parchment:#f2e8d5;
@@ -38,7 +38,7 @@
   }
   .page{max-width:1180px;margin:0 auto;padding:28px 26px 90px}
 
-  /* ── Cabeçalho ─────────────────────────────────────────── */
+  /* ── Header ────────────────────────────────────────────── */
   header.codex{
     border:3px double var(--rule-strong);
     padding:18px 24px 14px;
@@ -76,7 +76,7 @@
   .live-off{color:var(--rubric);border-color:var(--rubric)!important}
   .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:currentColor}
 
-  /* ── Controles ─────────────────────────────────────────── */
+  /* ── Controls ──────────────────────────────────────────── */
   .controls{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-left:auto}
   select,input[type=search]{
     font-family:inherit;font-size:14px;color:var(--ink);
@@ -87,7 +87,7 @@
   label.ctl{font-variant:small-caps;letter-spacing:.05em;color:var(--ink-faint);font-size:13.5px}
   .chk{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--ink-soft)}
 
-  /* ── Divisórias ornamentais ────────────────────────────── */
+  /* ── Ornamental dividers ───────────────────────────────── */
   .divider{
     display:flex;align-items:center;gap:14px;margin:34px 0 16px;
     color:var(--rubric);
@@ -106,7 +106,7 @@
     color:var(--rubric);font-weight:400;
   }
 
-  /* ── Legenda de símbolos ───────────────────────────────── */
+  /* ── Symbol legend ─────────────────────────────────────── */
   .legend{
     border:1px solid var(--rule-strong);padding:9px 14px;
     display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;
@@ -116,7 +116,7 @@
   .legend span.item{white-space:nowrap}
   .sigil{color:var(--rubric);font-size:15px;margin-right:5px}
 
-  /* ── Pergaminhos pendentes ─────────────────────────────── */
+  /* ── Pending scrolls ───────────────────────────────────── */
   [data-testid="pending-list"]{display:block}
   .pending-card{
     position:relative;
@@ -172,7 +172,7 @@
   }
   .empty-scroll .glyph{display:block;font-size:26px;color:var(--rubric);opacity:.55;margin-bottom:6px}
 
-  /* ── Eixo de tensão ────────────────────────────────────── */
+  /* ── Tension axis ──────────────────────────────────────── */
   .tension{
     border-left:4px double var(--rubric);
     background:rgba(139,47,29,.045);
@@ -184,7 +184,7 @@
   .tension .axis{font-size:15px;font-style:italic}
   .tension.global{border-left-width:6px;padding:10px 16px}
 
-  /* ── Grupos e agentes ──────────────────────────────────── */
+  /* ── Groups and agents ─────────────────────────────────── */
   .group{
     border:1px solid var(--rule-strong);
     background:rgba(255,253,247,.45);
@@ -213,7 +213,7 @@
   .angle.none{color:var(--ink-faint);font-style:italic}
   .budget{text-align:right;white-space:nowrap;color:var(--ink-soft)}
 
-  /* ── Conexões ──────────────────────────────────────────── */
+  /* ── Connections ───────────────────────────────────────── */
   .conns{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:7px 12px;align-items:center}
   .conns .cap{font-variant:small-caps;letter-spacing:.07em;color:var(--ink-faint);font-size:12.5px}
   .edge{
@@ -249,7 +249,7 @@
   details.notes li{margin:2px 0;word-break:break-word}
   .fatal{border:2px solid var(--rubric);background:rgba(139,47,29,.07);padding:8px 12px;color:var(--rubric);font-size:14px;margin:8px 0}
 
-  /* ── Cartas de despacho ────────────────────────────────── */
+  /* ── Dispatch cards ────────────────────────────────────── */
   .dcard{
     border:1px solid var(--rule-strong);
     border-left:5px solid var(--rule-strong);
@@ -315,33 +315,33 @@
 </head>
 <body>
 <div class="page" id="root" data-testid="app">
-  <p class="nothing">Abrindo o grimório…</p>
+  <p class="nothing">Opening the grimoire…</p>
 </div>
 
 <script>
 "use strict";
 (function(){
 
-/* ═══ Símbolos alquímicos por papel ═══ */
+/* ═══ Alchemical symbols by role ═══ */
 var SIGILS = {
-  explorer:    {g:"🜁", n:"Ar — Explorador"},        /* 🜁 */
-  synthesizer: {g:"☿",       n:"Mercúrio — Sintetizador"}, /* ☿ */
-  skeptic:     {g:"🜂", n:"Fogo — Cético"},           /* 🜂 */
-  writer:      {g:"🜄", n:"Água — Escriba"},          /* 🜄 */
-  auditor:     {g:"🜃", n:"Terra — Auditor"},         /* 🜃 */
-  _unknown:    {g:"🜍", n:"Enxofre — papel ignoto"}   /* 🜍 */
+  explorer:    {g:"🜁", n:"Air — Explorer"},        /* 🜁 */
+  synthesizer: {g:"☿",       n:"Mercury — Synthesizer"}, /* ☿ */
+  skeptic:     {g:"🜂", n:"Fire — Skeptic"},           /* 🜂 */
+  writer:      {g:"🜄", n:"Water — Scribe"},          /* 🜄 */
+  auditor:     {g:"🜃", n:"Earth — Auditor"},         /* 🜃 */
+  _unknown:    {g:"🜍", n:"Sulphur — unknown role"}   /* 🜍 */
 };
 function sigilOf(role){ return SIGILS[role] || SIGILS._unknown; }
 
 var LIVE_TYPES = {research:1, review:1, experiment:1};
 
 var EXIT_PT = {
-  resolved:"resolvido",
-  success:"resolvido",
-  loop_ceiling_reached:"teto de laços atingido",
-  dissent_irreconcilable:"dissenso irreconciliável",
-  user_abort:"abortado pelo operador",
-  error:"erro"
+  resolved:"resolved",
+  success:"resolved",
+  loop_ceiling_reached:"loop ceiling reached",
+  dissent_irreconcilable:"irreconcilable dissent",
+  user_abort:"aborted by operator",
+  error:"error"
 };
 function exitTone(r){
   if(r === "error" || r === "dissent_irreconcilable") return "alert";
@@ -349,7 +349,7 @@ function exitTone(r){
   return "good";
 }
 
-/* ═══ Helpers de DOM (sem innerHTML em dado vindo da API) ═══ */
+/* ═══ DOM helpers (no innerHTML on API data) ═══ */
 function el(tag, cls, text){
   var n = document.createElement(tag);
   if(cls) n.className = cls;
@@ -366,11 +366,11 @@ function txt(v, fallback){
   return String(v);
 }
 function fmtDate(iso){
-  if(!iso) return "data ignota";
+  if(!iso) return "unknown date";
   var d = new Date(iso);
   if(isNaN(d.getTime())) return String(iso);
   var p = function(x){ return (x<10?"0":"")+x; };
-  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" · "+p(d.getHours())+"h"+p(d.getMinutes());
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" · "+p(d.getHours())+":"+p(d.getMinutes());
 }
 function fmtMtime(ts){
   if(!ts && ts !== 0) return "—";
@@ -382,7 +382,7 @@ function countAgents(sheet){
   return n;
 }
 
-/* ═══ Eixo de tensão ═══ */
+/* ═══ Tension axis ═══ */
 function tensionBlock(label, value, isGlobal){
   if(!value) return null;
   var box = el("div", "tension" + (isGlobal ? " global" : ""));
@@ -390,11 +390,11 @@ function tensionBlock(label, value, isGlobal){
   return box;
 }
 
-/* ═══ Conexões tipadas ═══ */
+/* ═══ Typed connections ═══ */
 function connectionsBlock(conns){
   if(!conns || !conns.length) return null;
   var wrap = el("div","conns");
-  add(wrap, el("span","cap","Arestas"));
+  add(wrap, el("span","cap","Edges"));
   conns.forEach(function(c){
     if(!c) return;
     var t = c.type || "sequential";
@@ -404,37 +404,37 @@ function connectionsBlock(conns){
     add(e, el("span",null,txt(c.from)), el("span","arrow",arrow), el("span",null,txt(c.to)));
     e.appendChild(el("span","cap-n"," "+t));
     if(c.loop_cap !== undefined && c.loop_cap !== null){
-      e.appendChild(el("span","cap-n","teto "+c.loop_cap));
+      e.appendChild(el("span","cap-n","ceiling "+c.loop_cap));
     }
     wrap.appendChild(e);
   });
   return wrap;
 }
 
-/* ═══ Grupo + agentes ═══ */
+/* ═══ Group + agents ═══ */
 function groupBlock(g, withPrompts){
   if(!g) return null;
   var box = el("div","group");
   var h = el("h4");
-  add(h, el("span",null,"❦ "+txt(g.group_id, "grupo sem nome")));
+  add(h, el("span",null,"❦ "+txt(g.group_id, "unnamed group")));
   var bits = [];
   if(g.n !== undefined && g.n !== null) bits.push("n = "+g.n);
-  if(g.role) bits.push("papel: "+g.role);
-  if(g.layers !== undefined && g.layers !== null) bits.push("camadas: "+g.layers);
-  if(g.robot_talks) bits.push("robot-talks ativo");
+  if(g.role) bits.push("role: "+g.role);
+  if(g.layers !== undefined && g.layers !== null) bits.push("layers: "+g.layers);
+  if(g.robot_talks) bits.push("robot-talks active");
   var agents = g.agents || [];
-  bits.push(agents.length + (agents.length === 1 ? " agente" : " agentes"));
+  bits.push(agents.length + (agents.length === 1 ? " agent" : " agents"));
   add(h, el("span","meta", bits.join(" · ")));
   box.appendChild(h);
 
-  var t = tensionBlock("Eixo de tensão do grupo — anti_bias", g.anti_bias, false);
+  var t = tensionBlock("Group tension axis — anti_bias", g.anti_bias, false);
   if(t) box.appendChild(t);
-  else box.appendChild(el("div","meta","sem anti_bias declarado neste grupo"));
+  else box.appendChild(el("div","meta","no anti_bias declared in this group"));
 
   if(agents.length){
     var tab = el("table","agents");
     var thead = el("thead"), tr = el("tr");
-    ["","Agente","Papel","Modelo","Ângulo (contra o eixo)","Tokens"].forEach(function(c){
+    ["","Agent","Role","Model","Angle (against the axis)","Tokens"].forEach(function(c){
       tr.appendChild(el("th",null,c));
     });
     thead.appendChild(tr); tab.appendChild(thead);
@@ -447,15 +447,15 @@ function groupBlock(g, withPrompts){
 
       var c1 = el("td");
       if(a.agent_name) c1.appendChild(el("span","agent-name", a.agent_name));
-      else c1.appendChild(el("span","agent-name anon","anônimo"));
+      else c1.appendChild(el("span","agent-name anon","anonymous"));
       if(withPrompts && a.initial_prompt){
         var p = el("div","prompt", a.initial_prompt);
-        if(a._prompt_truncated) p.appendChild(el("div","trunc","— prompt truncado pelo leitor —"));
+        if(a._prompt_truncated) p.appendChild(el("div","trunc","— prompt truncated by the reader —"));
         if(withPrompts === "open"){
           c1.appendChild(p);
         } else {
           var dp = el("details","notes");
-          dp.appendChild(el("summary", null, "prompt inicial"));
+          dp.appendChild(el("summary", null, "initial prompt"));
           dp.appendChild(p);
           c1.appendChild(dp);
         }
@@ -463,11 +463,11 @@ function groupBlock(g, withPrompts){
       row.appendChild(c1);
 
       row.appendChild(el("td","mono-ish", txt(a.role,"?")));
-      row.appendChild(el("td","mono-ish", txt(a.model,"modelo não declarado")));
+      row.appendChild(el("td","mono-ish", txt(a.model,"model not declared")));
 
       var c4 = el("td");
       if(a.angle) c4.appendChild(el("span","angle", a.angle));
-      else c4.appendChild(el("span","angle none","sem ângulo declarado"));
+      else c4.appendChild(el("span","angle none","no angle declared"));
       row.appendChild(c4);
 
       row.appendChild(el("td","budget", a.token_budget === undefined || a.token_budget === null ? "—" : (a.token_budget + " tk")));
@@ -476,56 +476,56 @@ function groupBlock(g, withPrompts){
     tab.appendChild(tb);
     box.appendChild(tab);
   } else {
-    box.appendChild(el("div","meta","nenhum agente descrito"));
+    box.appendChild(el("div","meta","no agent described"));
   }
   return box;
 }
 
-/* ═══ Selo pendente ═══ */
+/* ═══ Pending seal ═══ */
 function pendingCard(p, repoName){
   var sheet = (p && p.sheet) || {};
   var card = el("article","pending-card");
   card.setAttribute("data-testid","pending-card");
 
   var seal = el("div","seal");
-  add(seal, el("div","s-glyph","⚗"), el("div","s-text","aguarda selo"));
-  seal.title = "Invocação pré-confirm — o ledger só é escrito após o selo humano";
+  add(seal, el("div","s-glyph","⚗"), el("div","s-text","awaits seal"));
+  seal.title = "Pre-confirm invocation — the ledger is only written after the human seal";
   card.appendChild(seal);
 
-  add(card, el("h3", null, "Invocação aguardando selo — " + repoName));
-  add(card, el("p","did", txt(sheet.dispatch_id, p._file || "sem identificador")));
+  add(card, el("h3", null, "Invocation awaiting seal — " + repoName));
+  add(card, el("p","did", txt(sheet.dispatch_id, p._file || "no identifier")));
 
   if(p._error){
-    add(card, el("div","fatal","Falha ao ler a sheet: " + p._error));
+    add(card, el("div","fatal","Failed to read the sheet: " + p._error));
   }
 
   var marks = el("div","marks");
   var isLive = (p._live !== undefined && p._live !== null) ? !!p._live : !!LIVE_TYPES[sheet.dispatch_type];
   add(marks,
-    mark(isLive ? "live" : "reserved", isLive ? "LIVE" : "RESERVADO"),
-    mark("", "tipo: " + txt(sheet.dispatch_type,"não declarado")),
-    mark("", (p._agent_count !== undefined && p._agent_count !== null ? p._agent_count : countAgents(sheet)) + " agentes"),
-    mark("", "laços máx.: " + txt(sheet.max_loops)),
-    mark("", "aprovador: " + txt(sheet.final_approver))
+    mark(isLive ? "live" : "reserved", isLive ? "LIVE" : "RESERVED"),
+    mark("", "type: " + txt(sheet.dispatch_type,"not declared")),
+    mark("", (p._agent_count !== undefined && p._agent_count !== null ? p._agent_count : countAgents(sheet)) + " agents"),
+    mark("", "max loops: " + txt(sheet.max_loops)),
+    mark("", "approver: " + txt(sheet.final_approver))
   );
-  if(sheet._example) add(marks, mark("legacy","fixture de demonstração"));
+  if(sheet._example) add(marks, mark("legacy","demonstration fixture"));
   card.appendChild(marks);
 
   if(sheet.goal) add(card, el("p","goal", sheet.goal));
   if(sheet.context) add(card, el("p","ctx", sheet.context));
-  if(sheet._note) add(card, el("p","ctx", "Nota do arquivo: " + sheet._note));
+  if(sheet._note) add(card, el("p","ctx", "File note: " + sheet._note));
 
-  var gt = tensionBlock("O eixo de tensão da invocação — anti_bias_global", sheet.anti_bias_global, true);
+  var gt = tensionBlock("The invocation's tension axis — anti_bias_global", sheet.anti_bias_global, true);
   if(gt) card.appendChild(gt);
 
-  /* Gate humano */
+  /* Human gate */
   var gate = el("div","gate");
-  var btn = el("button", null, "⚑ Disparar");
+  var btn = el("button", null, "⚑ Dispatch");
   btn.setAttribute("data-testid","dispatch-button");
   btn.disabled = true;
   btn.setAttribute("aria-disabled","true");
-  btn.title = "confirmar dispara na Fase 2";
-  add(gate, btn, el("span","note","Fase 1 é leitura apenas — confirmar dispara na Fase 2. O selo ainda não pode ser lacrado."));
+  btn.title = "confirm dispatches in Phase 2";
+  add(gate, btn, el("span","note","Phase 1 is read-only — confirm dispatches in Phase 2. The seal cannot yet be sealed."));
   card.appendChild(gate);
 
   (sheet.groups || []).forEach(function(g){ card.appendChild(groupBlock(g, "open")); });
@@ -533,8 +533,8 @@ function pendingCard(p, repoName){
   if(cb) card.appendChild(cb);
 
   var kv = el("div","kv");
-  [["Arquivo", p._file],["Pasta de trabalho", sheet.working_folder],["Invocado por", sheet.invoked_by],
-   ["Esquema", sheet.schema_version],["Modificado", fmtMtime(p._mtime)],["Caminho", p._path]].forEach(function(pair){
+  [["File", p._file],["Working folder", sheet.working_folder],["Invoked by", sheet.invoked_by],
+   ["Schema", sheet.schema_version],["Modified", fmtMtime(p._mtime)],["Path", p._path]].forEach(function(pair){
     var s = el("span"); s.appendChild(el("b", null, pair[0]+": ")); s.appendChild(document.createTextNode(txt(pair[1])));
     kv.appendChild(s);
   });
@@ -542,7 +542,7 @@ function pendingCard(p, repoName){
   return card;
 }
 
-/* ═══ Carta de despacho ═══ */
+/* ═══ Dispatch card ═══ */
 function dispatchCard(d){
   var card = el("article","dcard");
   card.setAttribute("data-testid","dispatch-card");
@@ -551,42 +551,42 @@ function dispatchCard(d){
   card.setAttribute("data-state", state);
 
   var head = el("div","head");
-  add(head, el("span","title", txt(d.dispatch_id,"despacho sem identificador")));
+  add(head, el("span","title", txt(d.dispatch_id,"dispatch without identifier")));
   add(head, el("span","when", fmtDate(d.created)));
   card.appendChild(head);
 
   var marks = el("div","marks");
   marks.style.marginTop = "6px";
-  add(marks, mark(state === "open" ? "open" : "closed", state === "open" ? "◉ aberta" : "✕ fechada"));
+  add(marks, mark(state === "open" ? "open" : "closed", state === "open" ? "◉ open" : "✕ closed"));
   var isLive = d._live !== undefined ? !!d._live : !!LIVE_TYPES[d.dispatch_type];
-  add(marks, mark(isLive ? "live" : "reserved", isLive ? "LIVE" : "RESERVADO"));
-  add(marks, mark("", "tipo: " + txt(d.dispatch_type,"não declarado")));
-  if(d._agent_count !== undefined && d._agent_count !== null) add(marks, mark("", d._agent_count + " agentes"));
-  if(d._legacy) add(marks, mark("legacy","legado — sem grupos"));
-  if(d._orphan_close) add(marks, mark("warn","fecho órfão — sem linha de abertura"));
+  add(marks, mark(isLive ? "live" : "reserved", isLive ? "LIVE" : "RESERVED"));
+  add(marks, mark("", "type: " + txt(d.dispatch_type,"not declared")));
+  if(d._agent_count !== undefined && d._agent_count !== null) add(marks, mark("", d._agent_count + " agents"));
+  if(d._legacy) add(marks, mark("legacy","legacy — no groups"));
+  if(d._orphan_close) add(marks, mark("warn","orphan close — no opening line"));
   if(d._close && d._close.exit_reason){
     var r = d._close.exit_reason;
-    add(marks, mark(exitTone(r), "saída: " + (EXIT_PT[r] || r)));
+    add(marks, mark(exitTone(r), "exit: " + (EXIT_PT[r] || r)));
   }
   card.appendChild(marks);
 
   if(d.goal) add(card, el("p","goal-line", d.goal));
 
-  /* Faixa de sigilos dos papéis */
+  /* Role sigil strip */
   var strip = el("div","roles-strip");
   var roles = [];
   (d.groups || []).forEach(function(g){
     ((g && g.agents) || []).forEach(function(a){ roles.push(sigilOf(a && a.role).g); });
   });
-  if(roles.length){ strip.textContent = roles.join(" "); strip.title = "sigilos dos papéis convocados"; }
-  else { strip.appendChild(el("span","none","nenhum grupo registrado nesta linha")); }
+  if(roles.length){ strip.textContent = roles.join(" "); strip.title = "sigils of the summoned roles"; }
+  else { strip.appendChild(el("span","none","no group recorded on this line")); }
   card.appendChild(strip);
 
-  var gt = tensionBlock("Eixo de tensão global — anti_bias_global", d.anti_bias_global, true);
+  var gt = tensionBlock("Global tension axis — anti_bias_global", d.anti_bias_global, true);
   if(gt) card.appendChild(gt);
 
   var det = el("details","more");
-  var sum = el("summary", null, "Abrir o fólio — grupos, ângulos, arestas e fecho");
+  var sum = el("summary", null, "Open the folio — groups, angles, edges and closure");
   det.appendChild(sum);
   var body = el("div");
   var built = false;
@@ -595,9 +595,9 @@ function dispatchCard(d){
       built = true;
       if(d.context) body.appendChild(el("p","ctx", d.context));
       var kv = el("div","kv");
-      [["Invocado por", d.invoked_by],["Esquema", d.schema_version],["Laços máx.", d.max_loops],
-       ["Aprovador final", d.final_approver],["Pasta", d.working_folder],["Despacho pai", d.parent_dispatch_id],
-       ["Modo de saída", d.output_mode]].forEach(function(pair){
+      [["Invoked by", d.invoked_by],["Schema", d.schema_version],["Max loops", d.max_loops],
+       ["Final approver", d.final_approver],["Folder", d.working_folder],["Parent dispatch", d.parent_dispatch_id],
+       ["Output mode", d.output_mode]].forEach(function(pair){
         if(pair[1] === undefined || pair[1] === null || pair[1] === "") return;
         var s = el("span"); s.appendChild(el("b",null,pair[0]+": ")); s.appendChild(document.createTextNode(String(pair[1])));
         kv.appendChild(s);
@@ -606,41 +606,41 @@ function dispatchCard(d){
 
       var gs = d.groups || [];
       if(gs.length){ gs.forEach(function(g){ body.appendChild(groupBlock(g, true)); }); }
-      else { body.appendChild(el("p","nothing", d._legacy ? "Linha legada: anterior à v0.5.2, não traz `groups`." : "Sem grupos registrados.")); }
+      else { body.appendChild(el("p","nothing", d._legacy ? "Legacy line: prior to v0.5.2, does not carry `groups`." : "No groups recorded.")); }
 
       var cb = connectionsBlock(d.connections);
       if(cb) body.appendChild(cb);
-      else body.appendChild(el("p","nothing","Sem arestas declaradas."));
+      else body.appendChild(el("p","nothing","No edges declared."));
 
       if(d._close){
         var c = d._close;
         var box = el("div","closebox");
-        add(box, el("span","cap","Fecho"));
+        add(box, el("span","cap","Closure"));
         var line = el("div");
-        line.textContent = "Encerrada em " + fmtDate(c.closed) + " — motivo: " + (EXIT_PT[c.exit_reason] || txt(c.exit_reason));
+        line.textContent = "Closed on " + fmtDate(c.closed) + " — reason: " + (EXIT_PT[c.exit_reason] || txt(c.exit_reason));
         box.appendChild(line);
         var sp = c.agents_spawned;
         if(sp){
           var parts = [];
           if(sp.total !== undefined) parts.push("total " + sp.total);
-          if(sp.loops_used !== undefined) parts.push("laços usados " + sp.loops_used);
+          if(sp.loops_used !== undefined) parts.push("loops used " + sp.loops_used);
           if(sp.tree){
             var tr = [];
             for(var k in sp.tree){ if(sp.tree[k]) tr.push(sigilOf(k).g + " " + k + " ×" + sp.tree[k]); }
             if(tr.length) parts.push(tr.join(", "));
           }
-          box.appendChild(el("div","mono-ish","Agentes gerados: " + parts.join(" · ")));
+          box.appendChild(el("div","mono-ish","Agents spawned: " + parts.join(" · ")));
         }
         var fps = c.feedback_prompts || [];
         if(fps.length){
-          box.appendChild(el("div","cap","Prompts de retorno"));
+          box.appendChild(el("div","cap","Feedback prompts"));
           var ul = el("ul","fb");
           fps.forEach(function(f){ ul.appendChild(el("li", null, f)); });
           box.appendChild(ul);
         }
         body.appendChild(box);
       } else {
-        body.appendChild(el("p","nothing","Ainda aberta — nenhuma linha de fecho no ledger."));
+        body.appendChild(el("p","nothing","Still open — no closing line in the ledger."));
       }
     }
   });
@@ -649,7 +649,7 @@ function dispatchCard(d){
   return card;
 }
 
-/* ═══ Estado da página ═══ */
+/* ═══ Page state ═══ */
 var STATE = { data:null, repo:"__all__", onlyOpen:false, query:"", shown:{} };
 var PAGE = 12;
 
@@ -657,7 +657,7 @@ function render(){
   var data = STATE.data;
   var root = document.getElementById("root");
   root.textContent = "";
-  if(!data){ root.appendChild(el("p","nothing","Sem dados.")); return; }
+  if(!data){ root.appendChild(el("p","nothing","No data.")); return; }
 
   var repos = data.repos || [];
   var totalAll = 0, openAll = 0, pendAll = 0;
@@ -667,39 +667,39 @@ function render(){
     pendAll += ((r.pending || []).length);
   });
 
-  /* ── cabeçalho ── */
+  /* ── header ── */
   var header = el("header","codex");
-  add(header, el("h1","","Grimório de Despachos"));
-  add(header, el("p","subtitle","Cyberalchemy — livro de invocações, selos e eixos de tensão. Fólio de leitura, Fase 1."));
+  add(header, el("h1","","Grimoire of Dispatches"));
+  add(header, el("p","subtitle","Cyberalchemy — book of invocations, seals and tension axes. Reading folio, Phase 1."));
 
   var col = el("div","colophon");
   var tc = el("span");
   tc.setAttribute("data-testid","total-count");
-  tc.appendChild(el("span","lab","Total de despachos no ledger: "));
+  tc.appendChild(el("span","lab","Total dispatches in the ledger: "));
   tc.appendChild(el("b", null, String(totalAll)));
   col.appendChild(tc);
 
   var op = el("span");
-  op.appendChild(el("span","lab","Abertas: "));
+  op.appendChild(el("span","lab","Open: "));
   op.appendChild(el("b", null, String(openAll)));
   col.appendChild(op);
 
   var rp = el("span");
-  rp.appendChild(el("span","lab","Repositórios: "));
+  rp.appendChild(el("span","lab","Repositories: "));
   rp.appendChild(el("b", null, String((data.config && data.config.repo_count) || repos.length)));
   col.appendChild(rp);
 
   var li = el("span", "live-" + (LIVE_STATE.on ? "on" : "off"));
   li.setAttribute("data-testid","live-indicator");
   li.appendChild(el("span","live-dot"));
-  li.appendChild(document.createTextNode(LIVE_STATE.on ? "fluxo conectado" : "fluxo interrompido — " + LIVE_STATE.detail));
+  li.appendChild(document.createTextNode(LIVE_STATE.on ? "stream connected" : "stream interrupted — " + LIVE_STATE.detail));
   col.appendChild(li);
 
-  /* controles */
+  /* controls */
   var ctl = el("div","controls");
-  var lbl = el("label","ctl"); lbl.textContent = "Repositório ";
+  var lbl = el("label","ctl"); lbl.textContent = "Repository ";
   var sel = el("select");
-  var optAll = el("option", null, "todos os " + repos.length + " fólios");
+  var optAll = el("option", null, "all " + repos.length + " folios");
   optAll.value = "__all__"; sel.appendChild(optAll);
   repos.forEach(function(r){
     var o = el("option", null, r.name + " (" + (r.total_dispatches||0) + ")");
@@ -709,27 +709,27 @@ function render(){
   sel.addEventListener("change", function(){ STATE.repo = sel.value; STATE.shown = {}; render(); });
   lbl.appendChild(sel); ctl.appendChild(lbl);
 
-  var srch = el("input"); srch.type = "search"; srch.placeholder = "buscar no identificador ou no propósito…";
+  var srch = el("input"); srch.type = "search"; srch.placeholder = "search by identifier or purpose…";
   srch.value = STATE.query; srch.size = 30;
   srch.addEventListener("input", function(){ STATE.query = srch.value; STATE.shown = {}; render(); });
-  var slbl = el("label","ctl"); slbl.textContent = "Busca "; slbl.appendChild(srch);
+  var slbl = el("label","ctl"); slbl.textContent = "Search "; slbl.appendChild(srch);
   ctl.appendChild(slbl);
 
   var ck = el("label","chk");
   var cb = el("input"); cb.type = "checkbox"; cb.checked = STATE.onlyOpen;
   cb.addEventListener("change", function(){ STATE.onlyOpen = cb.checked; STATE.shown = {}; render(); });
-  ck.appendChild(cb); ck.appendChild(document.createTextNode("somente abertas"));
+  ck.appendChild(cb); ck.appendChild(document.createTextNode("open only"));
   ctl.appendChild(ck);
 
   col.appendChild(ctl);
   header.appendChild(col);
   root.appendChild(header);
 
-  /* ── I. Invocações aguardando selo ── */
-  root.appendChild(sectionDivider("I", "Invocações aguardando selo"));
+  /* ── I. Invocations awaiting seal ── */
+  root.appendChild(sectionDivider("I", "Invocations awaiting seal"));
   var lede = el("p","lede",
-    "Aqui repousa a proposta antes do selo. Nada é escrito no ledger enquanto a mão humana não confirmar: " +
-    "a sheet pendente é o único objeto desta página que pede decisão, e por isso abre o livro.");
+    "Here rests the proposal before the seal. Nothing is written to the ledger until the human hand confirms: " +
+    "the pending sheet is the only object on this page that asks for a decision, and so it opens the book.");
   root.appendChild(lede);
 
   var plist = el("div");
@@ -744,15 +744,15 @@ function render(){
   if(!anyPending){
     var empty = el("div","empty-scroll");
     add(empty, el("span","glyph","⚗"),
-        el("div", null, "Nenhuma invocação aguarda selo neste momento. A bancada está limpa — não há proposta pendente de confirmação humana."));
+        el("div", null, "No invocation awaits a seal at this moment. The workbench is clean — there is no proposal pending human confirmation."));
     plist.appendChild(empty);
   }
   root.appendChild(plist);
 
-  /* ── II. Legenda ── */
-  root.appendChild(sectionDivider("II", "Cânon dos sigilos"));
+  /* ── II. Legend ── */
+  root.appendChild(sectionDivider("II", "Canon of the sigils"));
   var leg = el("div","legend");
-  leg.appendChild(el("span","cap","Papéis"));
+  leg.appendChild(el("span","cap","Roles"));
   ["explorer","synthesizer","skeptic","writer","auditor","_unknown"].forEach(function(k){
     var s = sigilOf(k);
     var item = el("span","item");
@@ -763,21 +763,21 @@ function render(){
   root.appendChild(leg);
 
   var leg2 = el("div","legend");
-  leg2.appendChild(el("span","cap","Arestas"));
-  [["sequential","sequencial →"],["zigzag","zig-zag ⇄"],["feedback","feedback ↺ (com teto de laços)"]].forEach(function(p){
+  leg2.appendChild(el("span","cap","Edges"));
+  [["sequential","sequential →"],["zigzag","zig-zag ⇄"],["feedback","feedback ↺ (with loop ceiling)"]].forEach(function(p){
     leg2.appendChild(el("span","edge "+p[0], p[1]));
   });
-  leg2.appendChild(el("span","cap","Natureza"));
+  leg2.appendChild(el("span","cap","Nature"));
   leg2.appendChild(mark("live","LIVE — research · review · experiment"));
-  leg2.appendChild(mark("reserved","RESERVADO — code · plan · suggestion"));
+  leg2.appendChild(mark("reserved","RESERVED — code · plan · suggestion"));
   root.appendChild(leg2);
 
-  /* ── III. Histórico ── */
-  root.appendChild(sectionDivider("III", "Fólios do ledger"));
+  /* ── III. History ── */
+  root.appendChild(sectionDivider("III", "Folios of the ledger"));
   root.appendChild(el("p","lede",
-    "Cada repositório traz o seu próprio fólio. O leitor entrega no máximo " +
-    ((data.config && data.config.limit) || 40) + " linhas por fólio, da mais recente à mais antiga; " +
-    "o total acima conta o ledger inteiro. Abra uma carta para ver os grupos, os ângulos e as arestas."));
+    "Each repository brings its own folio. The reader delivers at most " +
+    ((data.config && data.config.limit) || 40) + " lines per folio, from the most recent to the oldest; " +
+    "the total above counts the entire ledger. Open a card to see the groups, the angles and the edges."));
 
   var dlist = el("div");
   dlist.setAttribute("data-testid","dispatch-list");
@@ -793,18 +793,18 @@ function render(){
     var h3 = el("h3");
     add(h3, el("span", null, "🜍 " + r.name));
     add(h3, el("span","tally",
-      (r.total_dispatches||0) + " no ledger · " + (r.open_dispatches||0) + " abertas · " +
-      (r.dispatches||[]).length + " exibíveis · " + ((r.pending||[]).length) + " pendentes" +
-      (r.ledger_exists === false ? " · sem ledger no disco" : "")));
+      (r.total_dispatches||0) + " in the ledger · " + (r.open_dispatches||0) + " open · " +
+      (r.dispatches||[]).length + " displayable · " + ((r.pending||[]).length) + " pending" +
+      (r.ledger_exists === false ? " · no ledger on disk" : "")));
     sec.appendChild(h3);
     sec.appendChild(el("p","path", r.path || ""));
 
-    if(r.error){ sec.appendChild(el("div","fatal","Erro fatal de leitura: " + r.error)); }
+    if(r.error){ sec.appendChild(el("div","fatal","Fatal read error: " + r.error)); }
 
     var warns = r.warnings || [];
     if(warns.length){
       var det = el("details","notes");
-      det.appendChild(el("summary", null, warns.length + " aviso(s) de leitura — linhas antigas toleradas"));
+      det.appendChild(el("summary", null, warns.length + " read warning(s) — old lines tolerated"));
       var ul = el("ul");
       warns.forEach(function(w){ ul.appendChild(el("li", null, w)); });
       det.appendChild(ul);
@@ -819,12 +819,12 @@ function render(){
     });
 
     if(!ds.length){
-      sec.appendChild(el("p","nothing","Nenhuma linha corresponde ao filtro neste fólio."));
+      sec.appendChild(el("p","nothing","No line matches the filter in this folio."));
     } else {
       var limit = STATE.shown[r.name] || PAGE;
       ds.slice(0, limit).forEach(function(d){ sec.appendChild(dispatchCard(d)); rendered++; });
       if(ds.length > limit){
-        var b = el("button","more-btn","revelar mais " + Math.min(PAGE, ds.length - limit) + " de " + ds.length);
+        var b = el("button","more-btn","reveal " + Math.min(PAGE, ds.length - limit) + " more of " + ds.length);
         b.addEventListener("click", function(){ STATE.shown[r.name] = limit + PAGE; render(); });
         sec.appendChild(b);
       }
@@ -835,8 +835,8 @@ function render(){
   root.appendChild(dlist);
 
   var f = el("footer","colofon");
-  f.textContent = "🜁 🜂 🜃 🜄 ☿ — leitor somente-leitura; o ledger é append-only e nada aqui escreve nele. " +
-                  rendered + " cartas desenhadas · sondagem do disco a cada " +
+  f.textContent = "🜁 🜂 🜃 🜄 ☿ — read-only reader; the ledger is append-only and nothing here writes to it. " +
+                  rendered + " cards drawn · disk polled every " +
                   ((data.config && data.config.poll_seconds) || 1) + "s.";
   root.appendChild(f);
 }
@@ -852,8 +852,8 @@ function sectionDivider(num, title){
   return d;
 }
 
-/* ═══ Transporte: SSE com queda para polling ═══ */
-var LIVE_STATE = { on:false, detail:"iniciando" };
+/* ═══ Transport: SSE with fallback to polling ═══ */
+var LIVE_STATE = { on:false, detail:"starting" };
 
 function setLive(on, detail){
   LIVE_STATE.on = on;
@@ -863,7 +863,7 @@ function setLive(on, detail){
     n.className = "live-" + (on ? "on" : "off");
     n.textContent = "";
     n.appendChild(el("span","live-dot"));
-    n.appendChild(document.createTextNode(on ? "fluxo conectado" : "fluxo interrompido — " + LIVE_STATE.detail));
+    n.appendChild(document.createTextNode(on ? "stream connected" : "stream interrupted — " + LIVE_STATE.detail));
   }
 }
 
@@ -877,16 +877,16 @@ function boot(){
   }).catch(function(e){
     STATE.data = {repos:[], config:{}};
     render();
-    setLive(false, "falha ao ler /api/snapshot: " + e);
+    setLive(false, "failed to read /api/snapshot: " + e);
   });
 }
 
 var pollTimer = null;
 function connect(){
-  if(typeof EventSource === "undefined"){ startPolling("EventSource indisponível"); return; }
+  if(typeof EventSource === "undefined"){ startPolling("EventSource unavailable"); return; }
   var es;
   try { es = new EventSource("/api/stream"); }
-  catch(e){ startPolling("stream inacessível"); return; }
+  catch(e){ startPolling("stream unreachable"); return; }
 
   es.addEventListener("open", function(){ setLive(true, ""); });
   es.addEventListener("snapshot", function(ev){
@@ -894,10 +894,10 @@ function connect(){
       STATE.data = JSON.parse(ev.data);
       LIVE_STATE.on = true;
       render();
-    }catch(e){ /* payload inválido: mantém a última visão boa */ }
+    }catch(e){ /* invalid payload: keep the last good view */ }
   });
   es.addEventListener("error", function(){
-    setLive(false, "reconectando…");
+    setLive(false, "reconnecting…");
   });
 }
 

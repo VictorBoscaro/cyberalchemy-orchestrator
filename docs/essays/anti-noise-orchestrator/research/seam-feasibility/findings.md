@@ -4,7 +4,7 @@
 > **Method:** tensioned dispatch `2026-07-20-costura-feasibility` (ledger) — two pairs
 > constructor⊥collapser (one per seam), independent positions frozen before
 > synthesizing; `check-tension` gate passed (both PASS) before firing. Self-application A6.
-> **Status:** completed, `resolved`. Provisional source: `vault/hypothesis/orquestracao-anti-ruido.md`
+> **Status:** completed, `resolved`. Provisional source: `vault/hypothesis/anti-noise-orchestration.md`
 > (HYP-ORCH-NOISE, candidate/exploratory — this research revises it). Created 2026-07-20.
 
 ## Global verdict

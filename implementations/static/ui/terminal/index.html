@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,9 +8,9 @@
   :root{
     --bg:#0a0f0a;
     --bg2:#0c140c;
-    --p:#33ff66;          /* fósforo */
-    --p-dim:#1e8f42;      /* fósforo apagado */
-    --p-faint:#125a2b;    /* moldura */
+    --p:#33ff66;          /* phosphor */
+    --p-dim:#1e8f42;      /* dim phosphor */
+    --p-faint:#125a2b;    /* frame */
     --amber:#ffb000;
     --amber-dim:#8a6000;
     --red:#ff4444;
@@ -26,7 +26,7 @@
     padding:0 0 60px 0;
     -webkit-font-smoothing:none;
   }
-  /* ---- scanlines + vinheta CRT ---- */
+  /* ---- scanlines + CRT vignette ---- */
   body::before{
     content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
     background:repeating-linear-gradient(
@@ -71,7 +71,7 @@
   .cursor{animation:blink 1.05s steps(1,end) infinite;}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 
-  /* ---- painéis com box-drawing ---- */
+  /* ---- panels with box-drawing ---- */
   .panel{margin:14px 10px;}
   .pline{white-space:pre;overflow:hidden;color:var(--p-faint);text-shadow:none;font-size:13px;line-height:1.2;}
   .pbody{border-left:1px solid var(--p-faint);border-right:1px solid var(--p-faint);padding:8px 12px;}
@@ -80,7 +80,7 @@
   .panel-alert .pline{color:var(--amber);text-shadow:0 0 3px rgba(255,176,0,.35);}
   .panel-alert .pbody{border-color:var(--amber-dim);}
 
-  /* ---- controles ---- */
+  /* ---- controls ---- */
   #controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:6px 0;}
   label.ctl{color:var(--p-dim);text-shadow:none;text-transform:uppercase;font-size:12px;}
   select,input[type=text]{
@@ -92,7 +92,7 @@
   .chk{color:var(--p-dim);text-shadow:none;cursor:pointer;text-transform:uppercase;font-size:12px;user-select:none;}
   .chk input{accent-color:#33ff66;vertical-align:-1px;}
 
-  /* ---- botão de disparo (gate fase 2) ---- */
+  /* ---- dispatch button (gate phase 2) ---- */
   button.dispatch-btn{
     font:inherit;text-transform:uppercase;letter-spacing:.06em;
     background:transparent;color:var(--amber-dim);
@@ -102,7 +102,7 @@
   }
   button.dispatch-btn[disabled]{opacity:.85;}
 
-  /* ---- pendentes ---- */
+  /* ---- pending ---- */
   #pending-list{}
   .pending-card{border:1px solid var(--amber);padding:0 0 10px 0;margin:0 0 14px 0;background:rgba(255,176,0,.045);}
   .pending-head{
@@ -130,7 +130,7 @@
   .tag-err{color:var(--red);border-color:var(--red);}
   .tag-ok{color:var(--p-dim);border-color:var(--p-faint);}
 
-  /* ---- lista de dispatches ---- */
+  /* ---- dispatch list ---- */
   .repo-section{margin:0 0 6px 0;border-top:1px solid var(--p-faint);}
   .repo-head{
     display:flex;flex-wrap:wrap;gap:0;align-items:baseline;white-space:pre;
@@ -159,7 +159,7 @@
   .drow .tags{flex:0 0 auto;display:flex;gap:4px;}
   .ddetail{padding:6px 12px 12px 20px;border-top:1px dotted var(--p-faint);background:#080d08;}
 
-  /* ---- grupos / agentes ---- */
+  /* ---- groups / agents ---- */
   .group{border:1px solid var(--p-faint);margin:8px 0;}
   .group-head{background:var(--bg2);padding:2px 8px;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;}
   .group-id{color:var(--p);font-weight:700;text-transform:uppercase;}
@@ -180,7 +180,7 @@
   .prompt.open{max-height:none;}
   .promptbtn{background:none;border:none;font:inherit;color:var(--p-faint);cursor:pointer;padding:0;text-transform:uppercase;font-size:11px;}
 
-  /* ---- conexões ---- */
+  /* ---- connections ---- */
   .conns{margin:8px 0 0 0;}
   .conn{white-space:pre;padding:1px 0;}
   .conn.sequential{color:var(--p);}
@@ -207,49 +207,49 @@
     <div class="sl-row">
       <span class="sl-title">DISPATCH CONTROL PLANE</span>
       <span class="sl-sep"> </span>
-      <span class="sl-seg"><span class="sl-key">FASE </span>1 &middot; <span class="sl-key">LEITOR</span></span>
+      <span class="sl-seg"><span class="sl-key">PHASE </span>1 &middot; <span class="sl-key">READER</span></span>
       <span class="sl-sep">│</span>
       <span class="sl-seg"><span class="sl-key">REPOS </span><span id="repo-count">--</span></span>
       <span class="sl-sep">│</span>
       <span class="sl-seg" data-testid="total-count"><span class="sl-key">DISPATCHES </span><span id="total-n">--</span></span>
       <span class="sl-sep">│</span>
-      <span class="sl-seg"><span class="sl-key">ABERTAS </span><span id="open-n">--</span></span>
+      <span class="sl-seg"><span class="sl-key">OPEN </span><span id="open-n">--</span></span>
       <span class="sl-sep">│</span>
-      <span class="sl-seg"><span class="sl-key">PENDENTES </span><span id="pend-n">--</span></span>
+      <span class="sl-seg"><span class="sl-key">PENDING </span><span id="pend-n">--</span></span>
       <span class="sl-grow"></span>
       <span class="sl-seg"><span class="sl-key">T </span><span id="clock">--:--:--</span></span>
       <span class="sl-sep">│</span>
-      <span class="sl-seg"><span class="sl-key">SSE </span><span id="live-ind" class="off" data-testid="live-indicator"><span class="cursor">&#9611;</span> iniciando</span></span>
+      <span class="sl-seg"><span class="sl-key">SSE </span><span id="live-ind" class="off" data-testid="live-indicator"><span class="cursor">&#9611;</span> starting</span></span>
     </div>
   </header>
 
-  <!-- ====== PENDENTES: o objeto mais importante da tela ====== -->
+  <!-- ====== PENDING: the most important object on the screen ====== -->
   <section class="panel panel-alert" id="pending-panel">
-    <div class="pline" id="pending-top">╔═ AGUARDANDO CONFIRMAÇÃO HUMANA ═╗</div>
+    <div class="pline" id="pending-top">╔═ AWAITING HUMAN CONFIRMATION ═╗</div>
     <div class="pbody">
       <div id="pending-list" data-testid="pending-list"></div>
     </div>
     <div class="pline" id="pending-bot">╚═╝</div>
   </section>
 
-  <!-- ====== HISTÓRICO ====== -->
+  <!-- ====== HISTORY ====== -->
   <section class="panel" id="history-panel">
     <div class="pline" id="hist-top">┌─ LEDGER ─┐</div>
     <div class="pbody">
       <div id="controls">
         <span><label class="ctl" for="f-repo">REPO </label>
-          <select id="f-repo"><option value="">(todos)</option></select></span>
-        <span><label class="ctl" for="f-state">ESTADO </label>
+          <select id="f-repo"><option value="">(all)</option></select></span>
+        <span><label class="ctl" for="f-state">STATE </label>
           <select id="f-state">
-            <option value="">(todos)</option>
-            <option value="open">abertas</option>
-            <option value="closed">fechadas</option>
+            <option value="">(all)</option>
+            <option value="open">open</option>
+            <option value="closed">closed</option>
           </select></span>
-        <span><label class="ctl" for="f-type">TIPO </label>
+        <span><label class="ctl" for="f-type">TYPE </label>
           <select id="f-type">
-            <option value="">(todos)</option>
-            <option value="__live">só LIVE</option>
-            <option value="__reserved">só RESERVED</option>
+            <option value="">(all)</option>
+            <option value="__live">LIVE only</option>
+            <option value="__reserved">RESERVED only</option>
             <option value="research">research</option>
             <option value="review">review</option>
             <option value="experiment">experiment</option>
@@ -257,9 +257,9 @@
             <option value="plan">plan</option>
             <option value="suggestion">suggestion</option>
           </select></span>
-        <span><label class="ctl" for="f-q">BUSCA </label>
-          <input type="text" id="f-q" placeholder="id, objetivo, agente, angle…" autocomplete="off"></span>
-        <label class="chk"><input type="checkbox" id="f-flag"> só legacy/órfãs</label>
+        <span><label class="ctl" for="f-q">SEARCH </label>
+          <input type="text" id="f-q" placeholder="id, goal, agent, angle…" autocomplete="off"></span>
+        <label class="chk"><input type="checkbox" id="f-flag"> legacy/orphan only</label>
         <span class="dim" id="filter-count"></span>
       </div>
       <hr class="rule">
@@ -288,7 +288,7 @@ function nz(v, fallback){
 }
 function el(id){ return document.getElementById(id); }
 
-/* linha de moldura com box-drawing que preenche a largura do painel */
+/* frame line with box-drawing that fills the panel's width */
 function frameTop(node, title, chars){
   var w = Math.max(20, Math.floor(node.clientWidth / charW()) - 1);
   var t = title ? " " + title + " " : "";
@@ -314,16 +314,16 @@ function charW(){
 }
 function redrawFrames(){
   var pl = el("pending-panel");
-  frameTop(el("pending-top"), "▲ SHEETS PENDENTES — GATE HUMANO ▲", ["╔","═","╗","╚","╝"]);
+  frameTop(el("pending-top"), "▲ PENDING SHEETS — HUMAN GATE ▲", ["╔","═","╗","╚","╝"]);
   frameBot(el("pending-bot"), ["╔","═","╗","╚","╝"]);
-  frameTop(el("hist-top"), "LEDGER — HISTÓRICO DE DISPATCHES", ["┌","─","┐","└","┘"]);
+  frameTop(el("hist-top"), "LEDGER — DISPATCH HISTORY", ["┌","─","┐","└","┘"]);
   frameBot(el("hist-bot"), ["┌","─","┐","└","┘"]);
   var w = Math.max(20, Math.floor(el("legend").clientWidth / charW()) - 1);
   el("legend").textContent =
     "├" + rep("─", Math.max(2,w-2)) + "┤\n" +
-    "  LEGENDA  ── sequential   ╲╱ zig-zag   ◀══ feedback (loop_cap)   " +
+    "  LEGEND  ── sequential   ╲╱ zig-zag   ◀══ feedback (loop_cap)   " +
     "[LIVE] research|review|experiment   [RESERVED] code|plan|suggestion\n" +
-    "  ▊ leitura apenas — esta tela nunca escreve no ledger.";
+    "  ▊ read-only — this screen never writes to the ledger.";
 }
 
 function fmtDate(iso){
@@ -339,23 +339,23 @@ function pad(s, n){
   return s;
 }
 
-/* ============ estado ============ */
+/* ============ state ============ */
 var SNAP = null;
 var expanded = {};        /* dispatch key -> bool */
-var repoOpen = {};        /* repo name -> bool (default aberto) */
+var repoOpen = {};        /* repo name -> bool (default open) */
 var filters = {repo:"", state:"", type:"", q:"", flag:false};
 
 /* ============ tags ============ */
 function typeTag(d){
   var t = d.dispatch_type;
   var live = (d._live !== undefined && d._live !== null) ? !!d._live : !!LIVE_TYPES[t];
-  if(!t) return '<span class="tag tag-reserved">tipo ausente</span>';
+  if(!t) return '<span class="tag tag-reserved">type missing</span>';
   return '<span class="tag ' + (live?'tag-live':'tag-reserved') + '">' +
          esc(t) + ' · ' + (live?'LIVE':'RESERVED') + '</span>';
 }
 function stateTag(d){
-  if(d._state === "open") return '<span class="tag tag-open">▊ ABERTA</span>';
-  return '<span class="tag tag-closed">fechada</span>';
+  if(d._state === "open") return '<span class="tag tag-open">▊ OPEN</span>';
+  return '<span class="tag tag-closed">closed</span>';
 }
 function exitClass(r){
   if(r === "error" || r === "dissent_irreconcilable") return "exit-bad";
@@ -363,61 +363,61 @@ function exitClass(r){
   return "exit-resolved";
 }
 
-/* ============ render: agentes / grupos / conexões ============ */
+/* ============ render: agents / groups / connections ============ */
 function renderGroups(groups, opts){
   if(!groups || !groups.length){
-    return '<div class="sectionlbl">GRUPOS</div><div class="dim">— sem bloco `groups` (row anterior à v0.5.2) —</div>';
+    return '<div class="sectionlbl">GROUPS</div><div class="dim">— no `groups` block (row prior to v0.5.2) —</div>';
   }
-  var out = '<div class="sectionlbl">GRUPOS &amp; AGENTES · ' + groups.length + '</div>';
+  var out = '<div class="sectionlbl">GROUPS &amp; AGENTS · ' + groups.length + '</div>';
   groups.forEach(function(g){
     var agents = g.agents || [];
     out += '<div class="group">';
     out += '<div class="group-head">';
-    out += '<span class="group-id">' + esc(nz(g.group_id, "(sem id)")) + '</span>';
+    out += '<span class="group-id">' + esc(nz(g.group_id, "(no id)")) + '</span>';
     out += '<span class="dim">N=' + esc(nz(g.n, agents.length)) + '</span>';
-    out += '<span class="dim">AGENTES=' + agents.length + '</span>';
-    if(g.layers !== undefined && g.layers !== null) out += '<span class="dim">CAMADAS=' + esc(g.layers) + '</span>';
+    out += '<span class="dim">AGENTS=' + agents.length + '</span>';
+    if(g.layers !== undefined && g.layers !== null) out += '<span class="dim">LAYERS=' + esc(g.layers) + '</span>';
     if(g.robot_talks) out += '<span class="tag tag-live">robot_talks</span>';
     out += '</div>';
 
     var solo = agents.length < 2 && (g.n === undefined || g.n === null || g.n < 2);
     if(g.anti_bias){
-      out += '<div class="antibias"><span class="lbl">◆ ANTI-BIAS DO GRUPO ▸ </span>' +
+      out += '<div class="antibias"><span class="lbl">◆ GROUP ANTI-BIAS ▸</span>' +
              '<span class="val">' + esc(g.anti_bias) + '</span></div>';
     }else if(solo){
-      out += '<div class="antibias"><span class="lbl">◆ ANTI-BIAS DO GRUPO ▸ </span>' +
-             '<span class="dim">n/a — grupo unitário, não há par para tensionar</span></div>';
+      out += '<div class="antibias"><span class="lbl">◆ GROUP ANTI-BIAS ▸</span>' +
+             '<span class="dim">n/a — unitary group, no pair to place in tension</span></div>';
     }else{
-      out += '<div class="antibias"><span class="lbl">◆ ANTI-BIAS DO GRUPO ▸ </span>' +
-             '<span class="noangle">▲ NÃO DECLARADO — grupo de ' + agents.length +
-             ' agentes sem eixo de tensão</span></div>';
+      out += '<div class="antibias"><span class="lbl">◆ GROUP ANTI-BIAS ▸</span>' +
+             '<span class="noangle">▲ NOT DECLARED — group of ' + agents.length +
+             ' agents with no tension axis</span></div>';
     }
 
     if(!agents.length){
-      out += '<div class="agent dim">— nenhum agente listado —</div>';
+      out += '<div class="agent dim">— no agents listed —</div>';
     }
     agents.forEach(function(a, i){
       out += '<div class="agent">';
       out += '<div class="agent-line">';
       out += '<span class="faint">' + pad("[" + (i+1) + "]", 4) + '</span>';
       if(a.agent_name) out += '<span class="agent-name">' + esc(a.agent_name) + '</span>';
-      else out += '<span class="agent-name anon">(anônimo)</span>';
+      else out += '<span class="agent-name anon">(anonymous)</span>';
       out += '<span class="role">' + esc(nz(a.role, "?")) + '</span>';
-      out += '<span class="dim">MODELO ' + esc(nz(a.model, "—")) + '</span>';
+      out += '<span class="dim">MODEL ' + esc(nz(a.model, "—")) + '</span>';
       out += '<span class="dim">TOKENS ' + esc(nz(a.token_budget, "—")) + '</span>';
       out += '</div>';
       if(a.angle){
         out += '<div class="angle"><span class="lbl">↳ ANGLE ▸ </span>' + esc(a.angle) + '</div>';
       }else if(solo){
-        out += '<div class="angle"><span class="dim">↳ sem angle — papel único no grupo</span></div>';
+        out += '<div class="angle"><span class="dim">↳ no angle — sole role in the group</span></div>';
       }else{
-        out += '<div class="angle"><span class="noangle">↳ ▲ SEM ANGLE — o agente não recebeu lado do eixo de tensão</span></div>';
+        out += '<div class="angle"><span class="noangle">↳ ▲ NO ANGLE — the agent received no side of the tension axis</span></div>';
       }
       if(a.initial_prompt){
         var pid = "p" + Math.random().toString(36).slice(2,9);
         out += '<div class="prompt" id="' + pid + '">' + esc(a.initial_prompt) +
-               (a._prompt_truncated ? '<span class="amber"> …[PROMPT TRUNCADO PELO LEITOR]</span>' : '') + '</div>';
-        out += '<button class="promptbtn" data-prompt="' + pid + '">[+] ver prompt inteiro</button>';
+               (a._prompt_truncated ? '<span class="amber"> …[PROMPT TRUNCATED BY THE READER]</span>' : '') + '</div>';
+        out += '<button class="promptbtn" data-prompt="' + pid + '">[+] view full prompt</button>';
       }
       out += '</div>';
     });
@@ -427,9 +427,9 @@ function renderGroups(groups, opts){
 }
 
 function renderConns(conns){
-  var out = '<div class="sectionlbl">CONEXÕES' + (conns && conns.length ? ' · ' + conns.length : '') + '</div>';
+  var out = '<div class="sectionlbl">CONNECTIONS' + (conns && conns.length ? ' · ' + conns.length : '') + '</div>';
   if(!conns || !conns.length){
-    return out + '<div class="dim">— sem arestas declaradas —</div>';
+    return out + '<div class="dim">— no edges declared —</div>';
   }
   out += '<div class="conns">';
   conns.forEach(function(c){
@@ -453,22 +453,22 @@ function renderConns(conns){
 function renderHead(d, agentCount, mtime){
   var out = '<dl class="kv">';
   function row(k,v){ out += '<dt>' + k + '</dt><dd>' + v + '</dd>'; }
-  row('OBJETIVO', esc(nz(d.goal, "(sem objetivo registrado)")));
-  if(d.context) row('CONTEXTO', esc(d.context));
-  if(d.anti_bias_global) row('ANTI-BIAS GLOBAL', '<span class="amber">' + esc(d.anti_bias_global) + '</span>');
+  row('GOAL', esc(nz(d.goal, "(no goal recorded)")));
+  if(d.context) row('CONTEXT', esc(d.context));
+  if(d.anti_bias_global) row('GLOBAL ANTI-BIAS', '<span class="amber">' + esc(d.anti_bias_global) + '</span>');
   if(d.created){
-    row('CRIADA', esc(fmtDate(d.created)) + ' <span class="faint">' + esc(d.created) + '</span>');
+    row('CREATED', esc(fmtDate(d.created)) + ' <span class="faint">' + esc(d.created) + '</span>');
   }else if(mtime){
-    row('SHEET ESCRITA', esc(fmtDate(new Date(mtime * 1000).toISOString())) +
-        ' <span class="faint">(mtime — ainda não há linha no ledger)</span>');
+    row('SHEET WRITTEN', esc(fmtDate(new Date(mtime * 1000).toISOString())) +
+        ' <span class="faint">(mtime — no ledger row yet)</span>');
   }else{
-    row('CRIADA', '<span class="dim">— sem timestamp —</span>');
+    row('CREATED', '<span class="dim">— no timestamp —</span>');
   }
-  row('INVOCADA POR', esc(nz(d.invoked_by)));
-  row('MAX_LOOPS / APROVADOR', esc(nz(d.max_loops)) + ' <span class="faint">/</span> ' + esc(nz(d.final_approver)));
-  row('PASTA', esc(nz(d.working_folder)));
+  row('INVOKED BY', esc(nz(d.invoked_by)));
+  row('MAX_LOOPS / APPROVER', esc(nz(d.max_loops)) + ' <span class="faint">/</span> ' + esc(nz(d.final_approver)));
+  row('FOLDER', esc(nz(d.working_folder)));
   var ac = (agentCount !== undefined && agentCount !== null) ? agentCount : nz(d._agent_count, 0);
-  row('SCHEMA', esc(nz(d.schema_version)) + ' <span class="faint">·</span> <span class="dim">' + esc(ac) + ' agente(s)</span>');
+  row('SCHEMA', esc(nz(d.schema_version)) + ' <span class="faint">·</span> <span class="dim">' + esc(ac) + ' agent(s)</span>');
   out += '</dl>';
   return out;
 }
@@ -476,34 +476,34 @@ function renderHead(d, agentCount, mtime){
 function renderClose(d){
   var c = d._close;
   if(!c){
-    return '<div class="closebox"><span class="tag tag-open">▊ EM EXECUÇÃO</span> ' +
-           '<span class="dim">— sem close row no ledger; a dispatch está viva.</span></div>';
+    return '<div class="closebox"><span class="tag tag-open">▊ RUNNING</span> ' +
+           '<span class="dim">— no close row in the ledger; the dispatch is alive.</span></div>';
   }
   var r = c.exit_reason;
   var cls = exitClass(r);
   var box = (cls === "exit-bad") ? "closebox bad" : (cls === "exit-warn" ? "closebox warnish" : "closebox");
   var out = '<div class="' + box + '">';
-  out += '<div><span class="dim">ENCERRAMENTO ▸ </span><span class="' + cls + '">' +
-         esc(nz(r,"(sem exit_reason)")).toUpperCase() + '</span>' +
-         '<span class="dim">  em ' + esc(fmtDate(c.closed)) + '</span></div>';
+  out += '<div><span class="dim">CLOSURE ▸ </span><span class="' + cls + '">' +
+         esc(nz(r,"(no exit_reason)")).toUpperCase() + '</span>' +
+         '<span class="dim">  at ' + esc(fmtDate(c.closed)) + '</span></div>';
   var sp = c.agents_spawned;
   if(sp){
     var tree = sp.tree || {};
     var parts = [];
     Object.keys(tree).forEach(function(k){ if(tree[k]) parts.push(k + "=" + tree[k]); });
-    out += '<div class="dim">AGENTES GERADOS ▸ total=' + esc(nz(sp.total,"?")) +
+    out += '<div class="dim">AGENTS SPAWNED ▸ total=' + esc(nz(sp.total,"?")) +
            '  loops_used=' + esc(nz(sp.loops_used,"?")) +
-           (parts.length ? '  árvore: ' + esc(parts.join(" ")) : '') + '</div>';
+           (parts.length ? '  tree: ' + esc(parts.join(" ")) : '') + '</div>';
   }
   if(c.feedback_prompts && c.feedback_prompts.length){
-    out += '<div class="dim">PROMPTS DE FEEDBACK ▸ ' + c.feedback_prompts.length + '</div>';
+    out += '<div class="dim">FEEDBACK PROMPTS ▸ ' + c.feedback_prompts.length + '</div>';
     c.feedback_prompts.forEach(function(f){ out += '<div class="fbp">› ' + esc(f) + '</div>'; });
   }
   out += '</div>';
   return out;
 }
 
-/* ============ PENDENTES ============ */
+/* ============ PENDING ============ */
 function renderPending(){
   var host = el("pending-list");
   var items = [];
@@ -514,8 +514,8 @@ function renderPending(){
 
   if(!items.length){
     host.innerHTML = '<div class="empty-pending">' +
-      '▸ NENHUMA SHEET PENDENTE. Nada aguarda confirmação humana neste momento — ' +
-      'os 11 repositórios foram varridos e a fila pré-confirm está vazia.</div>';
+      '▸ NO PENDING SHEETS. Nothing awaits human confirmation at this moment — ' +
+      'the 11 repositories were swept and the pre-confirm queue is empty.</div>';
     el("pend-n").textContent = "0";
     return;
   }
@@ -527,34 +527,34 @@ function renderPending(){
     var live = (p._live !== undefined && p._live !== null) ? !!p._live : !!LIVE_TYPES[s.dispatch_type];
     out += '<div class="pending-card" data-testid="pending-card">';
     out += '<div class="pending-head">';
-    out += '<span>▲ SHEET PENDENTE</span>';
+    out += '<span>▲ PENDING SHEET</span>';
     out += '<span class="pid">' + esc(nz(s.dispatch_id, p._file)) + '</span>';
     out += '<span>REPO ' + esc(it.repo) + '</span>';
-    out += '<span>' + esc(nz(s.dispatch_type,"tipo?")) + ' · ' + (live ? "LIVE" : "RESERVED") + '</span>';
-    out += '<span>' + esc(nz(p._agent_count, 0)) + ' AGENTES</span>';
+    out += '<span>' + esc(nz(s.dispatch_type,"type?")) + ' · ' + (live ? "LIVE" : "RESERVED") + '</span>';
+    out += '<span>' + esc(nz(p._agent_count, 0)) + ' AGENTS</span>';
     out += '</div>';
     out += '<div class="pending-body">';
 
     if(p._error){
-      out += '<div class="closebox bad"><span class="red">ERRO AO LER A SHEET ▸ ' + esc(p._error) + '</span></div>';
+      out += '<div class="closebox bad"><span class="red">ERROR READING THE SHEET ▸ ' + esc(p._error) + '</span></div>';
     }
     if(s._example || s._note){
-      out += '<div class="dim">⚠ ' + esc(nz(s._note, "fixture de demonstração")) + '</div>';
+      out += '<div class="dim">⚠ ' + esc(nz(s._note, "demonstration fixture")) + '</div>';
     }
-    out += '<div class="dim faint">ARQUIVO ' + esc(nz(p._path, p._file)) + '</div>';
+    out += '<div class="dim faint">FILE ' + esc(nz(p._path, p._file)) + '</div>';
     out += renderHead(s, p._agent_count, p._mtime);
     out += renderGroups(s.groups);
     out += renderConns(s.connections);
     out += '<button class="dispatch-btn" data-testid="dispatch-button" disabled ' +
-           'title="confirmar dispara na Fase 2" aria-disabled="true">' +
-           '▶ DISPARAR &nbsp;<span>[BLOQUEADO — FASE 2]</span></button>';
-    out += '<div class="faint">o gate humano vive aqui; na Fase 1 esta tela só lê.</div>';
+           'title="confirm dispatch in Phase 2" aria-disabled="true">' +
+           '▶ DISPATCH &nbsp;<span>[BLOCKED — PHASE 2]</span></button>';
+    out += '<div class="faint">the human gate lives here; in Phase 1 this screen only reads.</div>';
     out += '</div></div>';
   });
   host.innerHTML = out;
 }
 
-/* ============ HISTÓRICO ============ */
+/* ============ HISTORY ============ */
 function matches(d, repoName){
   if(filters.repo && repoName !== filters.repo) return false;
   if(filters.state && d._state !== filters.state) return false;
@@ -590,8 +590,8 @@ function renderHistory(){
     var list = (r.dispatches || []).filter(function(d){ return matches(d, r.name); });
     var hasDiag = (r.warnings && r.warnings.length) || r.error;
     if(!list.length && !hasDiag && filters.repo !== r.name) {
-      /* ainda assim mostramos o repo para que o inventário de 11 seja legível,
-         a menos que um filtro de texto/estado esteja ativo */
+      /* we still show the repo so the inventory of 11 stays legible,
+         unless a text/state filter is active */
       if(filters.q || filters.state || filters.type || filters.flag) return;
     }
     sections++;
@@ -602,26 +602,26 @@ function renderHistory(){
     out += '<span class="faint">' + (open ? "▼ " : "▶ ") + '</span>';
     out += '<span class="repo-name">' + esc(pad(r.name, 34)) + '</span>';
     out += '<span class="repo-meta">TOTAL ' + pad(nz(r.total_dispatches,0), 6) +
-           ' ABERTAS ' + pad(nz(r.open_dispatches,0), 5) +
-           ' EXIBIDAS ' + pad(list.length, 5) + '</span>';
-    if(!r.ledger_exists) out += '<span class="tag tag-reserved">sem ledger</span>';
-    if(r.error) out += '<span class="tag tag-err">ERRO</span>';
-    if(r.warnings && r.warnings.length) out += '<span class="tag tag-legacy">' + r.warnings.length + ' avisos</span>';
+           ' OPEN ' + pad(nz(r.open_dispatches,0), 5) +
+           ' SHOWN ' + pad(list.length, 5) + '</span>';
+    if(!r.ledger_exists) out += '<span class="tag tag-reserved">no ledger</span>';
+    if(r.error) out += '<span class="tag tag-err">ERROR</span>';
+    if(r.warnings && r.warnings.length) out += '<span class="tag tag-legacy">' + r.warnings.length + ' warnings</span>';
     out += '</div>';
 
     if(open){
       out += '<div class="repo-body">';
       if(r.error){
-        out += '<details class="diag" open><summary>▸ ERRO FATAL DE LEITURA</summary><pre class="red">' +
+        out += '<details class="diag" open><summary>▸ FATAL READ ERROR</summary><pre class="red">' +
                esc(r.error) + '</pre></details>';
       }
       if(r.warnings && r.warnings.length){
         out += '<details class="diag"><summary>▸ ' + r.warnings.length +
-               ' AVISO(S) DE PARSING — rows antigas ilegíveis (não-fatal)</summary><pre>' +
+               ' PARSING WARNING(S) — old rows unreadable (non-fatal)</summary><pre>' +
                esc(r.warnings.join("\n")) + '</pre></details>';
       }
       if(!list.length){
-        out += '<div class="nores">— nenhuma dispatch corresponde ao filtro neste repo —</div>';
+        out += '<div class="nores">— no dispatch matches the filter in this repo —</div>';
       }
       list.forEach(function(d){
         var key = r.name + "//" + d.dispatch_id;
@@ -632,10 +632,10 @@ function renderHistory(){
         out += '<div class="drow" data-toggle="' + esc(key) + '">';
         out += '<span class="caret">' + (isOpenCard ? "▾" : "▸") + '</span>';
         out += '<span class="date">' + esc(fmtDate(d.created || (d._close && d._close.closed))) + '</span>';
-        out += '<span class="did">' + esc(nz(d.dispatch_id, "(sem id)")) + '</span>';
+        out += '<span class="did">' + esc(nz(d.dispatch_id, "(no id)")) + '</span>';
         out += '<span class="tags">' + stateTag(d) + typeTag(d);
-        if(d._legacy) out += '<span class="tag tag-legacy">legacy · sem groups</span>';
-        if(d._orphan_close) out += '<span class="tag tag-orphan">close órfã</span>';
+        if(d._legacy) out += '<span class="tag tag-legacy">legacy · no groups</span>';
+        if(d._orphan_close) out += '<span class="tag tag-orphan">orphan close</span>';
         if(d._close && d._close.exit_reason && d._close.exit_reason !== "resolved" && d._close.exit_reason !== "success"){
           out += '<span class="tag ' + (exitClass(d._close.exit_reason) === "exit-bad" ? "tag-err" : "tag-legacy") + '">' +
                  esc(d._close.exit_reason) + '</span>';
@@ -647,13 +647,13 @@ function renderHistory(){
         if(isOpenCard){
           out += '<div class="ddetail">';
           if(d._orphan_close){
-            out += '<div class="closebox bad"><span class="red">▲ CLOSE ROW ÓRFÃ — ' +
-                   'existe um encerramento no ledger sem a dispatch row correspondente. ' +
-                   'Só os dados de fechamento estão disponíveis.</span></div>';
+            out += '<div class="closebox bad"><span class="red">▲ ORPHAN CLOSE ROW — ' +
+                   'there is a closure in the ledger with no corresponding dispatch row. ' +
+                   'Only the closing data is available.</span></div>';
           }
           if(d._legacy){
-            out += '<div class="closebox warnish"><span class="amber">▲ ROW LEGACY (pré-v0.5.2) — ' +
-                   'sem bloco `groups`; a topologia de agentes não foi registrada.</span></div>';
+            out += '<div class="closebox warnish"><span class="amber">▲ LEGACY ROW (pre-v0.5.2) — ' +
+                   'no `groups` block; the agent topology was not recorded.</span></div>';
           }
           out += renderHead(d);
           out += renderClose(d);
@@ -669,10 +669,10 @@ function renderHistory(){
   });
 
   if(!sections){
-    out = '<div class="nores">— nenhum repositório corresponde ao filtro —</div>';
+    out = '<div class="nores">— no repository matches the filter —</div>';
   }
   host.innerHTML = out;
-  el("filter-count").textContent = "▸ " + shown + " dispatch(es) exibida(s) em " + sections + " repo(s)";
+  el("filter-count").textContent = "▸ " + shown + " dispatch(es) shown in " + sections + " repo(s)";
 }
 
 /* ============ topo / status ============ */
@@ -692,7 +692,7 @@ function fillRepoSelect(){
   var sel = el("f-repo");
   var cur = sel.value;
   var names = (SNAP.repos || []).map(function(r){ return r.name; });
-  var html = '<option value="">(todos os ' + names.length + ' repos)</option>';
+  var html = '<option value="">(all ' + names.length + ' repos)</option>';
   (SNAP.repos || []).forEach(function(r){
     html += '<option value="' + esc(r.name) + '">' + esc(r.name) + '  [' + (r.total_dispatches||0) + ']</option>';
   });
@@ -713,13 +713,13 @@ function setLive(state){
   var n = el("live-ind");
   if(state === "on"){
     n.className = "on";
-    n.innerHTML = '<span class="cursor">&#9611;</span> conectado';
+    n.innerHTML = '<span class="cursor">&#9611;</span> connected';
   }else if(state === "wait"){
     n.className = "off";
-    n.innerHTML = '<span class="cursor">&#9611;</span> reconectando…';
+    n.innerHTML = '<span class="cursor">&#9611;</span> reconnecting…';
   }else{
     n.className = "off";
-    n.innerHTML = '<span class="cursor">&#9611;</span> SEM SINAL';
+    n.innerHTML = '<span class="cursor">&#9611;</span> disconnected';
   }
 }
 
@@ -735,19 +735,19 @@ function loadOnce(){
   x.onload = function(){
     if(x.status >= 200 && x.status < 300){
       try{ applySnapshot(JSON.parse(x.responseText)); }
-      catch(e){ fail("JSON inválido em /api/snapshot: " + e.message); }
+      catch(e){ fail("invalid JSON at /api/snapshot: " + e.message); }
     }else{
-      fail("HTTP " + x.status + " em /api/snapshot");
+      fail("HTTP " + x.status + " at /api/snapshot");
     }
   };
-  x.onerror = function(){ fail("falha de rede em /api/snapshot"); };
+  x.onerror = function(){ fail("network failure at /api/snapshot"); };
   x.send();
 }
 function fail(msg){
   setLive("off");
   if(!SNAP){
     el("dispatch-list").innerHTML = '<div class="nores red">▲ ' + esc(msg) + '</div>';
-    el("pending-list").innerHTML = '<div class="empty-pending red">▲ leitor indisponível — ' + esc(msg) + '</div>';
+    el("pending-list").innerHTML = '<div class="empty-pending red">▲ reader unavailable — ' + esc(msg) + '</div>';
   }
 }
 
@@ -759,7 +759,7 @@ function connect(){
   es.onopen = function(){ setLive("on"); };
   es.addEventListener("snapshot", function(ev){
     setLive("on");
-    try{ applySnapshot(JSON.parse(ev.data)); }catch(e){ /* ignora frame ruim */ }
+    try{ applySnapshot(JSON.parse(ev.data)); }catch(e){ /* ignore bad frame */ }
   });
   es.onerror = function(){
     setLive("wait");
@@ -771,7 +771,7 @@ function connect(){
   };
 }
 
-/* ============ eventos ============ */
+/* ============ events ============ */
 document.addEventListener("click", function(ev){
   var t = ev.target;
   while(t && t !== document.body){
@@ -785,7 +785,7 @@ document.addEventListener("click", function(ev){
         var node = document.getElementById(pb);
         if(node){
           node.classList.toggle("open");
-          t.textContent = node.classList.contains("open") ? "[-] recolher prompt" : "[+] ver prompt inteiro";
+          t.textContent = node.classList.contains("open") ? "[-] collapse prompt" : "[+] view full prompt";
         }
         return;
       }

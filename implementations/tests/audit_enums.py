@@ -1,7 +1,7 @@
-"""Auditoria: valores fora dos enums do schema v0.6.0 nos ledgers reais.
+"""Audit: values outside the v0.6.0 schema enums in the real ledgers.
 
-Não é um teste de código — é uma sonda sobre os DADOS. O leitor é deliberadamente
-leniente, então valor fora do enum passa silencioso; isto o torna visível.
+Not a code test — it's a probe over the DATA. The reader is deliberately lenient,
+so a value outside the enum passes silently; this makes it visible.
 """
 
 from __future__ import annotations
@@ -68,19 +68,19 @@ def main() -> int:
     def show(title: str, counter: Counter, allowed: set[str]) -> None:
         print(f"\n{title}")
         for value, n in counter.most_common():
-            mark = "  " if value in allowed else "<-- FORA DO ENUM"
+            mark = "  " if value in allowed else "<-- OUTSIDE THE ENUM"
             print(f"  {str(value):<28} {n:>5}  {mark}")
 
     show("dispatch_type", types, DISPATCH_TYPES)
     show("exit_reason", exits, EXIT_REASONS)
-    show("role (agentes)", roles, AGENT_ROLES)
+    show("role (agents)", roles, AGENT_ROLES)
     show("connections.type", conns, CONNECTION_TYPES)
 
-    print(f"\n{len(offenders)} ocorrência(s) fora do enum")
+    print(f"\n{len(offenders)} occurrence(s) outside the enum")
     for o in offenders[:20]:
         print(f"  {o}")
     if len(offenders) > 20:
-        print(f"  … e mais {len(offenders) - 20}")
+        print(f"  … and {len(offenders) - 20} more")
     return 0
 
 

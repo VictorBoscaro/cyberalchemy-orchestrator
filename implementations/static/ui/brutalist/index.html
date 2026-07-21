@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DISPATCH CONTROL PLANE</title>
 <style>
   /* ============================================================
-     BRUTALISTA / IMPRESSO
-     branco #fff · tinta #000 · um acento #ff2200
-     bordas grossas · zero raio · sombra dura deslocada
+     BRUTALIST / PRINT
+     white #fff · ink #000 · one accent #ff2200
+     thick borders · zero radius · hard offset shadow
      ============================================================ */
 
   :root{
@@ -45,7 +45,7 @@
 
   a{ color:var(--ink); }
 
-  /* ---------- primitivas ---------- */
+  /* ---------- primitives ---------- */
 
   .tag{
     display:inline-block;
@@ -87,7 +87,7 @@
 
   .mut{ opacity:0.55; }
 
-  /* ---------- topo ---------- */
+  /* ---------- top ---------- */
 
   #app{ max-width:1500px; margin:0 auto; border-left:var(--b); border-right:var(--b); }
 
@@ -117,7 +117,7 @@
   #live-indicator.off{ border-color:var(--blood); color:var(--blood); box-shadow:6px 6px 0 var(--blood); }
   #live-indicator.off .dot{ background:var(--blood); }
 
-  /* ---------- placar ---------- */
+  /* ---------- scoreboard ---------- */
 
   .scoreboard{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); border-bottom:var(--b); }
   .score{ border-right:var(--b); padding:12px 14px 10px; }
@@ -127,7 +127,7 @@
   .score.blood{ background:var(--blood); color:#fff; }
   .score.inverse{ background:var(--ink); color:var(--paper); }
 
-  /* ---------- pendentes: domina o topo ---------- */
+  /* ---------- pending: dominates the top ---------- */
 
   .pending-zone{ border-bottom:var(--b); }
   .pending-head{
@@ -192,7 +192,7 @@
   }
   .empty-pending small{ display:block; font-family:var(--mono); font-weight:400; font-size:12px; letter-spacing:0.08em; margin-top:8px; text-transform:none; }
 
-  /* ---------- filtros ---------- */
+  /* ---------- filters ---------- */
 
   .filters{ border-bottom:var(--b); padding:12px 20px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
   .filters .lbl{ margin-right:4px; }
@@ -260,7 +260,7 @@
   .kv{ display:flex; flex-wrap:wrap; gap:6px 18px; font-size:11px; padding:9px 0; border-bottom:var(--b3); }
   .kv b{ font-family:var(--heavy); font-weight:900; }
 
-  /* grupo / agentes */
+  /* group / agents */
   .group{ border:var(--b3); margin-top:14px; }
   .group-head{ background:var(--ink); color:var(--paper); padding:7px 11px; display:flex; flex-wrap:wrap; gap:9px; align-items:center; }
   .group-head .gid{ font-family:var(--heavy); font-weight:900; font-size:17px; text-transform:uppercase; }
@@ -276,7 +276,7 @@
   .angle .lbl{ display:block; }
   .prompt{ margin-top:8px; font-size:11px; border:2px dashed var(--ink); padding:7px 9px; max-height:130px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
 
-  /* conexões */
+  /* connections */
   .conns{ margin-top:14px; border:var(--b3); }
   .conns .ch{ background:var(--ink); color:var(--paper); padding:5px 11px; }
   .conn{ display:flex; flex-wrap:wrap; align-items:center; gap:9px; padding:7px 11px; border-bottom:2px solid #000; font-size:12px; }
@@ -313,31 +313,31 @@
   <div class="masthead">
     <div>
       <h1>Dispatch<br>Control&nbsp;Plane</h1>
-      <div class="sub">Leitor · fase 1 · somente leitura · gate humano</div>
+      <div class="sub">Reader · phase 1 · read-only · human gate</div>
     </div>
-    <div id="live-indicator" data-testid="live-indicator" class="off"><span class="dot"></span><span id="live-text">desconectado</span></div>
+    <div id="live-indicator" data-testid="live-indicator" class="off"><span class="dot"></span><span id="live-text">disconnected</span></div>
   </div>
 
   <div class="scoreboard" id="scoreboard"></div>
 
   <div class="pending-zone">
     <div class="pending-head">
-      <h2>Sheets pendentes</h2>
-      <span class="stamp">aguardando confirmação humana</span>
+      <h2>Pending sheets</h2>
+      <span class="stamp">awaiting human confirmation</span>
       <span class="tag tilt" style="background:#fff;color:#000" id="pending-count-tag">0</span>
     </div>
     <div id="pending-list" data-testid="pending-list"></div>
   </div>
 
   <div class="filters">
-    <span class="lbl">Filtrar</span>
-    <button class="chip blood" data-f="state" data-v="all" aria-pressed="true">Todas</button>
-    <button class="chip blood" data-f="state" data-v="open" aria-pressed="false">Abertas</button>
-    <button class="chip blood" data-f="state" data-v="closed" aria-pressed="false">Fechadas</button>
+    <span class="lbl">Filter</span>
+    <button class="chip blood" data-f="state" data-v="all" aria-pressed="true">All</button>
+    <button class="chip blood" data-f="state" data-v="open" aria-pressed="false">Open</button>
+    <button class="chip blood" data-f="state" data-v="closed" aria-pressed="false">Closed</button>
     <button class="chip blood" data-f="state" data-v="live" aria-pressed="false">Live</button>
-    <button class="chip blood" data-f="state" data-v="reserved" aria-pressed="false">Reservadas</button>
-    <button class="chip blood" data-f="state" data-v="flagged" aria-pressed="false">Legacy/órfãs</button>
-    <input type="search" id="q" placeholder="buscar id / objetivo…" aria-label="buscar">
+    <button class="chip blood" data-f="state" data-v="reserved" aria-pressed="false">Reserved</button>
+    <button class="chip blood" data-f="state" data-v="flagged" aria-pressed="false">Legacy/orphans</button>
+    <input type="search" id="q" placeholder="search id / goal…" aria-label="search">
   </div>
   <div class="filters" id="repo-filters">
     <span class="lbl">Repos</span>
@@ -346,7 +346,7 @@
   <div id="dispatch-list" data-testid="dispatch-list"></div>
 
   <div class="colophon">
-    Fonte: <span id="src">/api/snapshot</span> · nada é escrito por esta página ·
+    Source: <span id="src">/api/snapshot</span> · nothing is written by this page ·
     <span id="stamp-time">—</span>
   </div>
 </div>
@@ -385,7 +385,7 @@
     return !!(d && LIVE_TYPES[d.dispatch_type]);
   }
 
-  // ---------- placar ----------
+  // ---------- scoreboard ----------
 
   function renderScoreboard(){
     var repos = arr(snapshot.repos);
@@ -400,12 +400,12 @@
     });
     var cfg = snapshot.config || {};
     var cells = [
-      { k: total, n: "dispatches no ledger", cls:"", tid:"total-count" },
-      { k: open,  n: "abertas agora", cls:"blood" },
-      { k: pending, n: "sheets pendentes", cls: pending ? "blood" : "inverse" },
-      { k: repos.length, n: "repos lidos (cfg " + txt(cfg.repo_count) + ")", cls:"" },
-      { k: warn, n: "avisos de leitura", cls:"" },
-      { k: err, n: "erros fatais", cls: err ? "blood" : "" }
+      { k: total, n: "dispatches in ledger", cls:"", tid:"total-count" },
+      { k: open,  n: "open now", cls:"blood" },
+      { k: pending, n: "pending sheets", cls: pending ? "blood" : "inverse" },
+      { k: repos.length, n: "repos read (cfg " + txt(cfg.repo_count) + ")", cls:"" },
+      { k: warn, n: "read warnings", cls:"" },
+      { k: err, n: "fatal errors", cls: err ? "blood" : "" }
     ];
     document.getElementById("scoreboard").innerHTML = cells.map(function(c){
       return '<div class="score ' + c.cls + '"' + (c.tid ? ' data-testid="' + c.tid + '"' : "") + '>' +
@@ -414,20 +414,20 @@
     }).join("");
   }
 
-  // ---------- sheets pendentes ----------
+  // ---------- pending sheets ----------
 
   function agentBlock(a){
-    var name = a.agent_name ? esc(a.agent_name) : "<span class='mut'>sem nome designado</span>";
+    var name = a.agent_name ? esc(a.agent_name) : "<span class='mut'>no name assigned</span>";
     var specs = [
-      "papel: " + esc(txt(a.role)),
-      "modelo: " + esc(txt(a.model)),
+      "role: " + esc(txt(a.role)),
+      "model: " + esc(txt(a.model)),
       "tokens: " + esc(txt(a.token_budget))
     ].join(" · ");
     var angle = a.angle
       ? '<div class="angle"><span class="lbl">Angle</span>' + esc(a.angle) + '</div>'
-      : '<div class="angle mut"><span class="lbl">Angle</span>não declarado</div>';
+      : '<div class="angle mut"><span class="lbl">Angle</span>not declared</div>';
     var prompt = a.initial_prompt
-      ? '<div class="prompt">' + esc(a.initial_prompt) + (a._prompt_truncated ? "\n\n[…prompt truncado pelo leitor]" : "") + '</div>'
+      ? '<div class="prompt">' + esc(a.initial_prompt) + (a._prompt_truncated ? "\n\n[…prompt truncated by reader]" : "") + '</div>'
       : "";
     return '<div class="agent">' +
              '<div class="who">' + name + '</div>' +
@@ -440,17 +440,17 @@
     var agents = arr(g.agents);
     var flags = "";
     if(g.robot_talks) flags += '<span class="tag red">robot talks</span>';
-    if(g.layers) flags += '<span class="tag">camadas ' + esc(g.layers) + '</span>';
+    if(g.layers) flags += '<span class="tag">layers ' + esc(g.layers) + '</span>';
     return '<div class="group">' +
       '<div class="group-head">' +
-        '<span class="gid">' + esc(txt(g.group_id, "grupo sem id")) + '</span>' +
+        '<span class="gid">' + esc(txt(g.group_id, "group without id")) + '</span>' +
         '<span class="tag hollow" style="background:#000;color:#fff;border-color:#fff">n = ' + esc(txt(g.n, agents.length)) + '</span>' +
         flags +
       '</div>' +
       (g.anti_bias
-        ? '<div class="antibias"><span class="lbl">Eixo de tensão · anti-bias do grupo</span>' + esc(g.anti_bias) + '</div>'
-        : '<div class="antibias mut"><span class="lbl">Eixo de tensão · anti-bias do grupo</span>não declarado</div>') +
-      '<div class="agents">' + (agents.length ? agents.map(agentBlock).join("") : '<div class="agent mut">sem agentes</div>') + '</div>' +
+        ? '<div class="antibias"><span class="lbl">Tension axis · group anti-bias</span>' + esc(g.anti_bias) + '</div>'
+        : '<div class="antibias mut"><span class="lbl">Tension axis · group anti-bias</span>not declared</div>') +
+      '<div class="agents">' + (agents.length ? agents.map(agentBlock).join("") : '<div class="agent mut">no agents</div>') + '</div>' +
     '</div>';
   }
 
@@ -470,30 +470,30 @@
         (c.loop_cap ? '<span class="tag red">loop cap ' + esc(c.loop_cap) + '</span>' : "") +
       '</div>';
     }).join("");
-    return '<div class="conns"><div class="ch lbl">Conexões · arestas tipadas</div>' + rows + '</div>';
+    return '<div class="conns"><div class="ch lbl">Connections · typed edges</div>' + rows + '</div>';
   }
 
   function sheetBody(sheet, agentCount, live){
     var groups = arr(sheet.groups);
     return '<div class="pc-body">' +
       '<div class="pc-col">' +
-        '<span class="lbl">Objetivo</span>' +
+        '<span class="lbl">Goal</span>' +
         '<div class="pc-goal">' + esc(txt(sheet.goal)) + '</div>' +
-        '<div class="field"><span class="lbl">Contexto</span>' + esc(txt(sheet.context)) + '</div>' +
-        '<div class="field"><span class="lbl">Anti-bias global</span>' +
-          (sheet.anti_bias_global ? esc(sheet.anti_bias_global) : '<span class="mut">não declarado</span>') + '</div>' +
+        '<div class="field"><span class="lbl">Context</span>' + esc(txt(sheet.context)) + '</div>' +
+        '<div class="field"><span class="lbl">Global anti-bias</span>' +
+          (sheet.anti_bias_global ? esc(sheet.anti_bias_global) : '<span class="mut">not declared</span>') + '</div>' +
       '</div>' +
       '<div class="pc-col">' +
-        '<div class="field"><span class="lbl">Tipo</span>' + esc(txt(sheet.dispatch_type)) + ' · ' + (live ? "LIVE" : "RESERVADO") + '</div>' +
-        '<div class="field"><span class="lbl">Agentes</span><span class="num" style="font-size:38px">' + esc(txt(agentCount, groups.length)) + '</span></div>' +
+        '<div class="field"><span class="lbl">Type</span>' + esc(txt(sheet.dispatch_type)) + ' · ' + (live ? "LIVE" : "RESERVED") + '</div>' +
+        '<div class="field"><span class="lbl">Agents</span><span class="num" style="font-size:38px">' + esc(txt(agentCount, groups.length)) + '</span></div>' +
         '<div class="field"><span class="lbl">Max loops</span>' + esc(txt(sheet.max_loops)) + '</div>' +
-        '<div class="field"><span class="lbl">Aprovador final</span>' + esc(txt(sheet.final_approver)) + '</div>' +
-        '<div class="field"><span class="lbl">Pasta de trabalho</span>' + esc(txt(sheet.working_folder)) + '</div>' +
-        '<div class="field"><span class="lbl">Invocado por</span>' + esc(txt(sheet.invoked_by)) + '</div>' +
+        '<div class="field"><span class="lbl">Final approver</span>' + esc(txt(sheet.final_approver)) + '</div>' +
+        '<div class="field"><span class="lbl">Working folder</span>' + esc(txt(sheet.working_folder)) + '</div>' +
+        '<div class="field"><span class="lbl">Invoked by</span>' + esc(txt(sheet.invoked_by)) + '</div>' +
       '</div>' +
     '</div>' +
     '<div style="padding:0 20px 18px">' +
-      (groups.length ? groups.map(groupBlock).join("") : '<div class="group"><div class="antibias mut">sheet sem grupos declarados</div></div>') +
+      (groups.length ? groups.map(groupBlock).join("") : '<div class="group"><div class="antibias mut">sheet with no declared groups</div></div>') +
       connBlock(sheet.connections) +
     '</div>';
   }
@@ -508,8 +508,8 @@
       items.length + (items.length === 1 ? " sheet" : " sheets");
 
     if(!items.length){
-      host.innerHTML = '<div class="empty-pending">Zero sheets pendentes.' +
-        '<small>Nenhuma proposta aguarda o gate humano neste momento. Quando uma sheet for escrita em <code>telemetry/agents/pending/</code>, ela aparece aqui no topo.</small></div>';
+      host.innerHTML = '<div class="empty-pending">Zero pending sheets.' +
+        '<small>No proposal is awaiting the human gate right now. When a sheet is written to <code>telemetry/agents/pending/</code>, it appears here at the top.</small></div>';
       return;
     }
 
@@ -518,32 +518,32 @@
       var sheet = p.sheet || {};
       var live = (typeof p._live === "boolean") ? p._live : !!LIVE_TYPES[sheet.dispatch_type];
       var err = p._error
-        ? '<div class="repo-err">Erro ao ler a sheet: ' + esc(p._error) + '</div>'
+        ? '<div class="repo-err">Error reading sheet: ' + esc(p._error) + '</div>'
         : "";
       return '<div class="pending-card" data-testid="pending-card">' +
         err +
         '<div class="pc-top">' +
-          '<span class="tag red tilt">pendente</span>' +
+          '<span class="tag red tilt">pending</span>' +
           '<span class="pc-title">' + esc(txt(sheet.dispatch_id, p._file)) + '</span>' +
-          '<span class="tag ' + (live ? "" : "hollow-red") + '">' + (live ? "live" : "reservado") + '</span>' +
+          '<span class="tag ' + (live ? "" : "hollow-red") + '">' + (live ? "live" : "reserved") + '</span>' +
           '<span class="tag hollow">' + esc(txt(sheet.dispatch_type)) + '</span>' +
           '<span class="tag hollow">repo: ' + esc(it.repo) + '</span>' +
-          '<span class="tag hollow">' + esc(txt(p._agent_count, "?")) + ' agentes</span>' +
+          '<span class="tag hollow">' + esc(txt(p._agent_count, "?")) + ' agents</span>' +
           '<span class="tag hollow">schema ' + esc(txt(sheet.schema_version)) + '</span>' +
         '</div>' +
         sheetBody(sheet, p._agent_count, live) +
         '<div class="gate">' +
-          '<button data-testid="dispatch-button" disabled title="confirmar dispara na Fase 2" ' +
-            'aria-label="Disparar — confirmar dispara na Fase 2">Disparar</button>' +
-          '<div class="why"><b>Fase 1 é leitor.</b><br>O botão marca o lugar do gate humano — confirmar dispara na Fase 2.</div>' +
-          '<div class="why" style="margin-left:auto">arquivo: ' + esc(txt(p._file)) +
+          '<button data-testid="dispatch-button" disabled title="confirm dispatch in Phase 2" ' +
+            'aria-label="Dispatch — confirm dispatch in Phase 2">Dispatch</button>' +
+          '<div class="why"><b>Phase 1 is a reader.</b><br>The button marks the place of the human gate — confirm dispatch in Phase 2.</div>' +
+          '<div class="why" style="margin-left:auto">file: ' + esc(txt(p._file)) +
             (p._mtime ? '<br>mtime: ' + esc(shortDate(new Date(p._mtime * 1000).toISOString())) : "") + '</div>' +
         '</div>' +
       '</div>';
     }).join("");
   }
 
-  // ---------- filtros ----------
+  // ---------- filters ----------
 
   function matches(d){
     var s = state.st;
@@ -567,8 +567,8 @@
       repos.forEach(function(r){ state.repos[r.name] = true; });
     }
     var html = '<span class="lbl">Repos</span>' +
-      '<button class="chip" data-repo="__all">todos</button>' +
-      '<button class="chip" data-repo="__none">nenhum</button>';
+      '<button class="chip" data-repo="__all">all</button>' +
+      '<button class="chip" data-repo="__none">none</button>';
     html += repos.map(function(r){
       var on = state.repos[r.name] !== false;
       return '<button class="chip" data-repo="' + esc(r.name) + '" aria-pressed="' + on + '">' +
@@ -588,14 +588,14 @@
     var alert = ALERT_REASONS[reason] ? true : false;
 
     var tags = "";
-    tags += '<span class="tag ' + (stt === "open" ? "red" : "") + '">' + (stt === "open" ? "aberta" : "fechada") + '</span>';
+    tags += '<span class="tag ' + (stt === "open" ? "red" : "") + '">' + (stt === "open" ? "open" : "closed") + '</span>';
     if(stt === "closed" && reason){
       tags += '<span class="tag ' + (alert ? "red" : "hollow") + '">' + esc(reason) + '</span>';
     }
-    tags += '<span class="tag ' + (live ? "" : "hollow-red") + '">' + (live ? "live" : "reservado") + '</span>';
+    tags += '<span class="tag ' + (live ? "" : "hollow-red") + '">' + (live ? "live" : "reserved") + '</span>';
     if(d.dispatch_type) tags += '<span class="tag hollow">' + esc(d.dispatch_type) + '</span>';
-    if(d._legacy) tags += '<span class="tag hollow-red">legacy · sem groups</span>';
-    if(d._orphan_close) tags += '<span class="tag red">close órfã</span>';
+    if(d._legacy) tags += '<span class="tag hollow-red">legacy · no groups</span>';
+    if(d._orphan_close) tags += '<span class="tag red">orphan close</span>';
 
     return '<div class="dispatch-card' + (d._legacy ? " legacy" : "") + '" data-testid="dispatch-card" ' +
              'data-dispatch-id="' + esc(d.dispatch_id) + '" data-state="' + stt + '" data-key="' + esc(key) + '">' +
@@ -615,32 +615,32 @@
     var out = "";
 
     out += '<div class="kv">' +
-      '<span><b>tipo</b> ' + esc(txt(d.dispatch_type)) + '</span>' +
+      '<span><b>type</b> ' + esc(txt(d.dispatch_type)) + '</span>' +
       '<span><b>schema</b> ' + esc(txt(d.schema_version)) + '</span>' +
-      '<span><b>criada</b> ' + esc(shortDate(d.created)) + '</span>' +
-      '<span><b>por</b> ' + esc(txt(d.invoked_by)) + '</span>' +
+      '<span><b>created</b> ' + esc(shortDate(d.created)) + '</span>' +
+      '<span><b>by</b> ' + esc(txt(d.invoked_by)) + '</span>' +
       '<span><b>max loops</b> ' + esc(txt(d.max_loops)) + '</span>' +
-      '<span><b>aprovador</b> ' + esc(txt(d.final_approver)) + '</span>' +
-      '<span><b>pasta</b> ' + esc(txt(d.working_folder)) + '</span>' +
+      '<span><b>approver</b> ' + esc(txt(d.final_approver)) + '</span>' +
+      '<span><b>folder</b> ' + esc(txt(d.working_folder)) + '</span>' +
     '</div>';
 
-    out += '<div class="field"><span class="lbl">Objetivo</span>' + esc(txt(d.goal)) + '</div>';
-    if(d.context) out += '<div class="field"><span class="lbl">Contexto</span>' + esc(d.context) + '</div>';
-    out += '<div class="field"><span class="lbl">Anti-bias global</span>' +
-      (d.anti_bias_global ? esc(d.anti_bias_global) : '<span class="mut">não declarado</span>') + '</div>';
+    out += '<div class="field"><span class="lbl">Goal</span>' + esc(txt(d.goal)) + '</div>';
+    if(d.context) out += '<div class="field"><span class="lbl">Context</span>' + esc(d.context) + '</div>';
+    out += '<div class="field"><span class="lbl">Global anti-bias</span>' +
+      (d.anti_bias_global ? esc(d.anti_bias_global) : '<span class="mut">not declared</span>') + '</div>';
 
     if(d._orphan_close){
-      out += '<div class="field"><span class="lbl" style="color:#ff2200">Close órfã</span>' +
-        'Existe uma close row sem a dispatch row correspondente — a proposta nunca foi escrita no ledger, só o encerramento.</div>';
+      out += '<div class="field"><span class="lbl" style="color:#ff2200">Orphan close</span>' +
+        'There is a close row without the corresponding dispatch row — the proposal was never written to the ledger, only the closure.</div>';
     }
     if(d._legacy){
-      out += '<div class="field"><span class="lbl" style="color:#ff2200">Row legacy</span>' +
-        'Row anterior à v0.5.2: não carrega <code>groups</code>. Grupos, agentes e eixos de tensão são desconhecidos, não vazios.</div>';
+      out += '<div class="field"><span class="lbl" style="color:#ff2200">Legacy row</span>' +
+        'Row prior to v0.5.2: does not carry <code>groups</code>. Groups, agents and tension axes are unknown, not empty.</div>';
     }
 
     var groups = arr(d.groups);
     if(groups.length) out += groups.map(groupBlock).join("");
-    else if(!d._legacy) out += '<div class="group"><div class="antibias mut">sem grupos declarados</div></div>';
+    else if(!d._legacy) out += '<div class="group"><div class="antibias mut">no declared groups</div></div>';
 
     out += connBlock(d.connections);
 
@@ -652,22 +652,22 @@
         ? Object.keys(sp.tree).map(function(k){ return esc(k) + ": " + esc(sp.tree[k]); }).join(" · ")
         : "—";
       out += '<div class="close-box' + (alert ? " alert" : "") + '">' +
-        '<div class="chd lbl">Encerramento · ' + esc(reason) + (alert ? " · ATENÇÃO" : "") + '</div>' +
+        '<div class="chd lbl">Closure · ' + esc(reason) + (alert ? " · ATTENTION" : "") + '</div>' +
         '<div class="cb">' +
           '<div class="kv" style="border-bottom:0;padding-top:0">' +
-            '<span><b>fechada em</b> ' + esc(shortDate(close.closed)) + '</span>' +
-            '<span><b>agentes gerados</b> ' + esc(txt(sp.total)) + '</span>' +
-            '<span><b>loops usados</b> ' + esc(txt(sp.loops_used)) + '</span>' +
+            '<span><b>closed at</b> ' + esc(shortDate(close.closed)) + '</span>' +
+            '<span><b>agents spawned</b> ' + esc(txt(sp.total)) + '</span>' +
+            '<span><b>loops used</b> ' + esc(txt(sp.loops_used)) + '</span>' +
           '</div>' +
-          '<div class="field"><span class="lbl">Árvore</span>' + tree + '</div>' +
+          '<div class="field"><span class="lbl">Tree</span>' + tree + '</div>' +
           (arr(close.feedback_prompts).length
-            ? '<div class="field"><span class="lbl">Prompts de feedback</span>' +
+            ? '<div class="field"><span class="lbl">Feedback prompts</span>' +
               arr(close.feedback_prompts).map(function(f){ return '<div class="fb">' + esc(f) + '</div>'; }).join("") + '</div>'
             : "") +
         '</div></div>';
     } else if(d._state === "open"){
-      out += '<div class="close-box alert"><div class="chd lbl">Sem close row · dispatch viva</div>' +
-        '<div class="cb">Nenhum encerramento no ledger. Esta dispatch continua aberta.</div></div>';
+      out += '<div class="close-box alert"><div class="chd lbl">No close row · dispatch alive</div>' +
+        '<div class="cb">No closure in the ledger. This dispatch remains open.</div></div>';
     }
     return out;
   }
@@ -691,19 +691,19 @@
       html += '<div class="repo-head" data-toggle-repo="' + esc(r.name) + '">' +
         '<span class="caret">' + (collapsed ? "+" : "–") + '</span>' +
         '<h3>' + esc(r.name) + '</h3>' +
-        (r.ledger_exists === false ? '<span class="tag red">sem ledger</span>' : "") +
+        (r.ledger_exists === false ? '<span class="tag red">no ledger</span>' : "") +
         '<span class="tag" style="background:#fff;color:#000">' + (r.total_dispatches || 0) + ' total</span>' +
-        '<span class="tag red">' + (r.open_dispatches || 0) + ' abertas</span>' +
-        (arr(r.pending).length ? '<span class="tag red tilt">' + arr(r.pending).length + ' pendente</span>' : "") +
-        '<span class="stats">exibindo ' + slice.length + ' de ' + list.length + ' (leitor limita a ' + esc(txt((snapshot.config || {}).limit, 40)) + '/repo)</span>' +
+        '<span class="tag red">' + (r.open_dispatches || 0) + ' open</span>' +
+        (arr(r.pending).length ? '<span class="tag red tilt">' + arr(r.pending).length + ' pending</span>' : "") +
+        '<span class="stats">showing ' + slice.length + ' of ' + list.length + ' (reader limits to ' + esc(txt((snapshot.config || {}).limit, 40)) + '/repo)</span>' +
       '</div>';
 
       if(r.error){
-        html += '<div class="repo-err">ERRO FATAL DE LEITURA: ' + esc(r.error) + '</div>';
+        html += '<div class="repo-err">FATAL READ ERROR: ' + esc(r.error) + '</div>';
       }
       if(arr(r.warnings).length){
         html += '<div class="repo-issues"><details><summary>' + arr(r.warnings).length +
-          ' aviso(s) de leitura — rows toleradas</summary><div class="wlist">' +
+          ' read warning(s) — tolerated rows</summary><div class="wlist">' +
           arr(r.warnings).map(function(w){ return '<div>' + esc(w) + '</div>'; }).join("") +
           '</div></details></div>';
       }
@@ -711,13 +711,13 @@
       if(!collapsed){
         html += '<div class="cards">';
         if(!slice.length){
-          html += '<div style="padding:14px" class="mut">Nenhuma dispatch corresponde ao filtro neste repo.</div>';
+          html += '<div style="padding:14px" class="mut">No dispatch matches the filter in this repo.</div>';
         } else {
           html += slice.map(function(d){ return dispatchCard(r.name, d); }).join("");
         }
         html += '</div>';
         if(list.length > slice.length){
-          html += '<button class="more" data-more="' + esc(r.name) + '">Mostrar mais ' +
+          html += '<button class="more" data-more="' + esc(r.name) + '">Show more ' +
             Math.min(PAGE, list.length - slice.length) + ' ▾</button>';
         }
       }
@@ -725,12 +725,12 @@
     });
 
     if(!html){
-      html = '<div class="empty-pending">Nenhum repo selecionado.<small>Use os filtros de repo acima.</small></div>';
+      html = '<div class="empty-pending">No repo selected.<small>Use the repo filters above.</small></div>';
     }
     host.innerHTML = html;
   }
 
-  // ---------- eventos ----------
+  // ---------- events ----------
 
   document.addEventListener("click", function(ev){
     var t = ev.target;
@@ -743,7 +743,7 @@
       if(card.classList.contains("expanded")){
         if(!det.getAttribute("data-filled")){
           var d = byId[card.getAttribute("data-key")];
-          det.innerHTML = d ? detailHTML(d) : "<div class='mut'>detalhe indisponível</div>";
+          det.innerHTML = d ? detailHTML(d) : "<div class='mut'>detail unavailable</div>";
           det.setAttribute("data-filled", "1");
         }
         head.querySelector(".caret").textContent = "–";
@@ -800,12 +800,12 @@
     }, 160);
   });
 
-  // ---------- ao vivo ----------
+  // ---------- live ----------
 
   function setLive(on, note){
     var el = document.getElementById("live-indicator");
     el.className = on ? "on" : "off";
-    document.getElementById("live-text").textContent = on ? "ao vivo · conectado" : ("sem sinal · " + (note || "desconectado"));
+    document.getElementById("live-text").textContent = on ? "live · connected" : ("no signal · " + (note || "disconnected"));
   }
 
   function renderAll(){
@@ -813,7 +813,7 @@
     renderPending();
     renderRepoFilters();
     renderDispatches();
-    document.getElementById("stamp-time").textContent = "última leitura " + shortDate(new Date().toISOString());
+    document.getElementById("stamp-time").textContent = "last read " + shortDate(new Date().toISOString());
   }
 
   function boot(){
@@ -823,15 +823,15 @@
       .catch(function(e){
         snapshot = { repos: [], config: {} };
         renderAll();
-        setLive(false, "falha ao carregar snapshot");
+        setLive(false, "failed to load snapshot");
       });
   }
 
   function connect(){
-    if(typeof EventSource === "undefined"){ setLive(false, "sem EventSource"); return; }
+    if(typeof EventSource === "undefined"){ setLive(false, "no EventSource"); return; }
     var es;
     try { es = new EventSource("/api/stream"); }
-    catch(e){ setLive(false, "stream indisponível"); return; }
+    catch(e){ setLive(false, "stream unavailable"); return; }
 
     es.addEventListener("open", function(){ setLive(true); });
     es.addEventListener("snapshot", function(ev){
@@ -839,10 +839,10 @@
         snapshot = JSON.parse(ev.data);
         renderAll();
         setLive(true);
-      } catch(e){ /* payload inválido: mantém o último render */ }
+      } catch(e){ /* invalid payload: keep the last render */ }
     });
     es.addEventListener("error", function(){
-      setLive(false, "reconectando…");
+      setLive(false, "reconnecting…");
     });
   }
 

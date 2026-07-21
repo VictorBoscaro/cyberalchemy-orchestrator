@@ -1,9 +1,9 @@
 ---
-tags: [portability, translation, agents, dispatch, ledger]
+tags: [decision-science, portability, translation, agents, dispatch, ledger]
 node_type: conceptual
 is_session: true
 layer: architecture, domain, application
-nature: explanatory, procedural
+nature: explanatory, reference
 status: active
 created: 2026-07-20
 timestamp: 2026-07-20T22:18:33-03:00
@@ -14,10 +14,10 @@ contradictions_found: false
 specs_updated: [README.md]
 promoted_candidates: []
 expected_importance: 7
-importance_rationale: "Establishes portability/genericity as a new falsifiable design axis (H-PORT-1..6) at the repo's front door and normalizes the whole core-docs surface to English, but is purely declarative — no collapse-test ran and no code/behavior changed."
+importance_rationale: "Establishes portability/genericity as a new falsifiable design axis (H-PORT-1..6), reframes the README to a decision-science-first identity with its founding claim stated as a hypothesis under claim ≤ proof, and normalizes the core-docs surface to English — all declarative: no collapse-test ran and no code/behavior changed."
 ---
 
-# README overhaul, genericity goal, and full core-docs PT→EN translation
+# README overhaul + decision-science reframe, genericity goal, and full core-docs PT→EN translation
 
 ## Summary
 
@@ -40,29 +40,31 @@ zero residual Portuguese across the 15 in-scope docs. A byproduct finding: git H
 held PLAN/FRAMINGS/MAPPING/OBLIGATIONS in English while the working tree held Portuguese
 copies, so translating them restored a match with HEAD (they show as unmodified). Both
 multi-agent efforts were registered in the append-only ledger — two dispatch rows plus two
-close rows — per the register-dispatch discipline.
+close rows — per the register-dispatch discipline. After the close, the README opening was
+reframed from a category-theory-first identity to a decision-science-first one: its motivation
+now reads as a falsifiable founding hypothesis — that multi-agent judgment fails like human
+judgment (correlated bias, noise, framing) — grounded in Kahneman/Thaler, category theory and
+information theory, and a scientific-process main loop that is named but not yet built, and a
+claim ≤ proof sweep downgraded the intro's remaining overclaims to hypotheses.
 
 ## Open questions
 
-Is English now the repo's language of record? The 15 core docs are English, but
-`sessions/*`, one Portuguese quote in `vault/constitution/engine-constitution.md`, and the
-vendored `.claude/skills/` remain Portuguese — no policy yet decides whether the
-out-of-scope surface follows, or whether the Portuguese working-tree/English-HEAD split on
-the four root docs signals a prior, partially-reverted translation pass that should be
-reconciled before more docs move.
+Is English now the repo's language of record? The 15 core docs are English, but the
+out-of-scope surface stays Portuguese — the `sessions/*` logs, one quoted phrase in the
+engine constitution, the vendored `.claude/skills/`, and the ten UI labels (the last
+entangled with the Playwright testid contract that asserts them). No policy yet decides
+whether that surface follows the core docs into English.
 
 ## Recommendation
 
 If the goal is a fully English repo, the keystone is deciding the language-of-record
-question above before touching anything else — the licensing fact is that the 15 in-scope
-docs are verified Portuguese-free and the ledger is consistent, so the substrate is a clean
-base to extend from. Once decided, two mechanical tracks follow under the same
-translator+reviewer discipline: (1) the low-risk cleanup of `sessions/*`, the
-engine-constitution quote, and any own (non-vendored) skills; (2) the higher-risk UI phase —
-translating the ten UI labels while synchronizing `test_ui.py` atomically. Treat track (2)
-as a hunch about risk, not a settled plan: the ten UIs share one testid contract and PT
-labels are asserted by the Playwright suite, so label and test must move in the same step or
-the suite breaks.
+question above before extending further — the licensing fact is that the 15 in-scope docs
+are verified Portuguese-free and the ledger is consistent, so the core is a clean base. Once
+decided, the out-of-scope surface named above splits into two tracks under the same
+translator+reviewer discipline: the prose (session logs, the engine-constitution quote,
+vendored skills) is low-risk; the ten UI labels are higher-risk and must move in the same
+atomic step as the Playwright suite that asserts them, or the tests break. Treat the UI
+track as a risk hunch, not a settled plan.
 
 ## Files touched
 
@@ -81,5 +83,4 @@ the suite breaks.
 - docs/essays/orquestrador-anti-ruido/research/prior-art-ct-kahneman-thaler/findings.md
 - docs/features/ui-studio/README.md
 - docs/features/ui-studio/verification.md
-- telemetry/agents/subagents-dispatch.yaml (2 dispatch + 2 close rows)
-- docs/readme-candidates/ (created then deleted — does not persist)
+- telemetry/agents/subagents-dispatch.yaml

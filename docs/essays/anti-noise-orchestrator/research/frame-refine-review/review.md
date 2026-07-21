@@ -5,7 +5,7 @@ description: "Tensioned review (n=2, internal-fit vs external-soundness axis) of
 evidence_for: [HYP-ORCH-NOISE]
 created: 2026-07-20
 last_updated: 2026-07-20
-tags: [review, frame, refine, citacao, anti-ruido, claim-proof]
+tags: [review, frame, refine, citation, anti-noise, claim-proof]
 ---
 
 # Review — frame/refine/citation additions to HYP-ORCH-NOISE

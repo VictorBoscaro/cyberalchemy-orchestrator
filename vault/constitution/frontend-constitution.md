@@ -102,8 +102,8 @@ Do not load this constitution when:
 
 > These rules are stated as **hypotheses, not ratified law.** Each is a `candidate` claim
 > carrying two confidence labels from the vault's
-> [ontology-conventions](../ontology-conventions.md): **veracidade** (external evidence —
-> how tested against reality) and **convicção** (how hard we bet on it / how much it drives
+> [ontology-conventions](../ontology-conventions.md): **veracity** (external evidence —
+> how tested against reality) and **conviction** (how hard we bet on it / how much it drives
 > design). Every rule is **self-contained**: the claim (the rule text), its two labels,
 > **what would falsify it**, and its validation mode (`deterministic` | `review` | `hybrid`
 > | `none-yet`; `none-yet` = intent recorded but not promotable until a validation route
@@ -117,8 +117,8 @@ No element renders its full depth unconditionally. Every dense element exposes a
 (click/keyboard). Depth levels — summary → detail → structure — live *inside the item*,
 not only in the route (`location.hash`).
 
-- **veracidade:** low — the density ⊥ fatigue axis is `none-yet`; no harness or measurement exists yet.
-- **convicção:** high — the whole constitution is built on this; it drives every other rule.
+- **veracity:** low — the density ⊥ fatigue axis is `none-yet`; no harness or measurement exists yet.
+- **conviction:** high — the whole constitution is built on this; it drives every other rule.
 - **Falsified if:** revealing structure on demand does not lower measured fatigue versus a fixed layout at equal density — per-element opt-in yields equal-or-worse fatigue.
 - **Validation:** `hybrid` — Playwright: a node/edge/card starts collapsed and expands under interaction.
 
@@ -128,8 +128,8 @@ Qualifiers, metadata, and legends (`loop_cap`, edge type `sequential`/`zig-zag`/
 anti-bias axes) leave the visual flow and become tooltips. A single, universal tooltip
 system (`#tt` + `data-tip` attributes), one per variant.
 
-- **veracidade:** low — untested here, and it carries a known accessibility risk: hover-only info is unreachable on touch and keyboard.
-- **convicção:** medium — a strong preference, weaker than FE-1 and in open tension with accessibility.
+- **veracity:** low — untested here, and it carries a known accessibility risk: hover-only info is unreachable on touch and keyboard.
+- **conviction:** medium — a strong preference, weaker than FE-1 and in open tension with accessibility.
 - **Falsified if:** moving qualifiers to hover measurably raises task error/time (users miss info they needed), or a real user population cannot reach hover — i.e., the "secondary" info turns out to be primary.
 - **Validation:** `hybrid` — static check that `#tt` exists and `data-tip` renders; Playwright hover shows the text.
 
@@ -138,8 +138,8 @@ system (`#tt` + `data-tip` attributes), one per variant.
 Every interactive element reacts to proximity (lowers visual entropy). Menus, drawers,
 and modals close **instantly** on outside-click and `Esc` — zero delay.
 
-- **veracidade:** low — borrowed "physics" from the newspaper (some external precedent), but untested in this repo.
-- **convicção:** high — an explicit user requirement (the "item 3").
+- **veracity:** low — borrowed "physics" from the newspaper (some external precedent), but untested in this repo.
+- **conviction:** high — an explicit user requirement (the "item 3").
 - **Falsified if:** zero-delay dismiss produces measurable accidental dismissals / rage-clicks — i.e., a small delay would cut error more than instant dismiss helps.
 - **Validation:** `deterministic` — Playwright: outside-click and `Esc` close in < 1 frame; no close-`setTimeout`.
 
@@ -151,8 +151,8 @@ embedded, not in a separate manual), exposed through a **discreet, uniform affor
 pushed.** **Bounded by FE-1:** collapsed by default — self-documentation does not license
 verbosity.
 
-- **veracidade:** low — untested; the affordance design is not built yet.
-- **convicção:** high — the user elevated self-explanation to a principle (FE-9's sibling).
+- **veracity:** low — untested; the affordance design is not built yet.
+- **conviction:** high — the user elevated self-explanation to a principle (FE-9's sibling).
 - **Falsified if:** elements cannot carry their context without either violating FE-1 (verbosity returns) or the context going unread — i.e., self-documentation adds cost with no measured comprehension gain.
 - **Validation:** `review` — peer review: each new element has a compact form + context revealable via discreet affordance.
 
@@ -163,8 +163,8 @@ only headers. Empty = icon/signal + message in pt-BR (e.g., the gate watching an
 pending store must *say* it is empty, not show a hollow table). Error = inline, visible,
 with retry.
 
-- **veracidade:** medium — a well-established industry pattern, though not yet tested in *this* system.
-- **convicção:** high — non-negotiable, cheap, clearly right.
+- **veracity:** medium — a well-established industry pattern, though not yet tested in *this* system.
+- **conviction:** high — non-negotiable, cheap, clearly right.
 - **Falsified if:** explicit empty/error states do not reduce user confusion versus a blank surface. (Unlikely — this rule is closer to axiom than hypothesis; the weak falsifier is itself the signal it should promote early.)
 - **Validation:** `hybrid` — tests in `implementations/tests/`: mock 0 rows → empty-state; mock 500 → error-state.
 
@@ -173,8 +173,8 @@ with retry.
 Only one item/drawer/modal open simultaneously; opening another closes the previous.
 Expanded state is tracked by a single key.
 
-- **veracidade:** low — untested, and in known tension with the "observe N subagents" mission.
-- **convicção:** medium — a UX choice, not load-bearing; may be scoped to modals/drawers only.
+- **veracity:** low — untested, and in known tension with the "observe N subagents" mission.
+- **conviction:** medium — a UX choice, not load-bearing; may be scoped to modals/drawers only.
 - **Falsified if:** monitoring multiple agents genuinely needs several simultaneous panels — i.e., single-focus measurably slows multi-agent observation.
 - **Validation:** `deterministic` — Playwright: opening B while A is open closes A.
 
@@ -184,8 +184,8 @@ Where a convention exists (day in UTC with a UTC-3 user; `toLocaleString` pt-BR;
 by type), the screen **declares** the convention instead of assuming silent agreement
 between observers.
 
-- **veracidade:** medium — declaring units/referents is established good practice.
-- **convicção:** medium — worth doing, but rarely decisive.
+- **veracity:** medium — declaring units/referents is established good practice.
+- **conviction:** medium — worth doing, but rarely decisive.
 - **Falsified if:** users never misread an undeclared convention — i.e., the declaration adds clutter (fatigue) with no measured drop in misinterpretation.
 - **Validation:** `review` — review: every temporal/numeric scale names its referent.
 
@@ -195,8 +195,8 @@ There is **one** living variant; the others are candidates or dead. The choice g
 through a Decision Gate and uses the density ⊥ fatigue axis as a **measured** criterion
 (see [Promotion Boundary](#promotion-boundary)), not preference.
 
-- **veracidade:** low — explicitly `none-yet`: no measurement route (fitness harness) exists.
-- **convicção:** high — this is the promotion mechanism for the whole constitution.
+- **veracity:** low — explicitly `none-yet`: no measurement route (fitness harness) exists.
+- **conviction:** high — this is the promotion mechanism for the whole constitution.
 - **Falsified if:** "cleaner" can only ever be defended by preference and never by measure (the harness proves impossible or meaningless) — then FE-8 collapses and the constitution stays `candidate`.
 - **Validation:** `none-yet` — the measurement route (fitness harness) is missing; blocks promotion.
 
@@ -209,8 +209,8 @@ has a **quiet marker** (always present, ignorable) and is self-explanatory via
 nothing competes with the content. The explanation reuses the stable `data-*-id` the
 harness uses to score (score and self-explanation are dual).
 
-- **veracidade:** low — untested; explain-mode is not built yet.
-- **convicção:** high — the user elevated "the obvious needs no manual" to a principle.
+- **veracity:** low — untested; explain-mode is not built yet.
+- **conviction:** high — the user elevated "the obvious needs no manual" to a principle.
 - **Falsified if:** explain-mode goes unused or users still cannot act without instruction — i.e., self-explanatory ⊥ discreet proves unsatisfiable (the marker is either missed because too quiet, or it competes with content).
 - **Validation:** `hybrid` — deterministic (accessible name, keyboard focus, tab order; configurable dwell) + review (soft-gradient of friction/obviousness).
 
@@ -224,8 +224,8 @@ explanation anchor (FE-9), the harness score key (FE-8), and the ablation handle
 [ontology-conventions](../ontology-conventions.md) applied to *interventions*, not labels:
 rules must be independent enough that an ablation delta attributes to exactly one of them.
 
-- **veracidade:** low — nothing is built yet.
-- **convicção:** high — without this, every "Falsified if" above is decorative; the whole falsifiability program *depends* on it.
+- **veracity:** low — nothing is built yet.
+- **conviction:** high — without this, every "Falsified if" above is decorative; the whole falsifiability program *depends* on it.
 - **Falsified if:** a rule cannot be removed without regressing unrelated rules (implementations are coupled), so no clean per-rule density/fatigue delta is measurable — the bets become unfalsifiable in practice.
 - **Validation:** `hybrid` — deterministic (each rule has a flag + a metric emitter at its `data-*-id`; toggling one leaves the others green) + review (an ablation experiment attributes a delta to exactly one rule).
 
@@ -327,9 +327,9 @@ rules a thesis earns), the two are linked and share collapse-tests.
 | Document | Relationship | Description |
 |---|---|---|
 | [FRAMINGS.md F1](../../FRAMINGS.md) (`residue = shadow ⊕ structure`) | `grounded-in` | The lever these rules apply to the visual surface. F1 is a `candidate`, unreviewed framing — so is this constitution. |
-| The **density ⊥ fatigue** thesis | `promotes-from` | The falsifiable hypothesis behind the whole axis. It currently lives only as F1; it should graduate into its own `vault/hypothesis/` doc (like [[orquestracao-anti-ruido]]) so the promotion is auditable. |
-| [[orquestracao-anti-ruido]] (HYP-ORCH-NOISE) | `sibling` | The anti-noise thesis uses the same `shadow ⊕ structure` decomposition (`residue = bias ⊕ noise`); shares the collapse-test discipline. |
-| [[ontology-conventions]] | `governed-by` | Defines the `veracidade`/`convicção` labels and the hypothesis → premise arc each rule above carries. |
+| The **density ⊥ fatigue** thesis | `promotes-from` | The falsifiable hypothesis behind the whole axis. It currently lives only as F1; it should graduate into its own `vault/hypothesis/` doc (like [[anti-noise-orchestration]]) so the promotion is auditable. |
+| [[anti-noise-orchestration]] (HYP-ORCH-NOISE) | `sibling` | The anti-noise thesis uses the same `shadow ⊕ structure` decomposition (`residue = bias ⊕ noise`); shares the collapse-test discipline. |
+| [[ontology-conventions]] | `governed-by` | Defines the `veracity`/`conviction` labels and the hypothesis → premise arc each rule above carries. |
 | `UI-CONTRACT.md` | `presentation-of` | The data contract this constitution presents but does not govern. |
 
 **Falsifiability (collapse-tests for the axis itself):**

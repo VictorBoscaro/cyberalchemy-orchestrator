@@ -81,7 +81,7 @@ Screenshots land in `tests/screenshots/`.
 
 ## Fixture
 
-`telemetry/agents/pending/2026-07-19-exemplo-ui-control-plane.json` is a
+`telemetry/agents/pending/2026-07-19-example-ui-control-plane.json` is a
 **demo** sheet (marked with `"_example": true`), not a real dispatch. It
 exists so the UIs have something to render. Delete it once the real flow is up.
 

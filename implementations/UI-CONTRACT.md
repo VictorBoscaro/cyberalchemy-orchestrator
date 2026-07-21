@@ -50,7 +50,7 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
       "ledger_exists": true,
       "total_dispatches": 334,      // total in the ledger
       "open_dispatches": 23,        // no close row
-      "warnings": ["linha 13: ..."],// old rows unreadable (non-fatal)
+      "warnings": ["line 13: ..."], // old rows unreadable (non-fatal)
       "error": null,                // fatal read failure
       "pending": [ /* pre-confirm sheets — see below */ ],
       "dispatches": [ /* the N most recent, newest first */ ]
@@ -73,13 +73,13 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
   "context": "…",
   "max_loops": 1,
   "final_approver": "parent",
-  "anti_bias_global": "otimismo de novidade vs ceticismo de precedente",
+  "anti_bias_global": "novelty optimism vs precedent skepticism",
   "working_folder": "research/…/",
   "groups": [
     {
       "group_id": "explorers",
       "n": 2,
-      "anti_bias": "corpus de origem (literatura formal vs blogs de prática)",
+      "anti_bias": "source corpus (formal literature vs practice blogs)",
       "robot_talks": false,            // optional
       "layers": 1,                     // optional
       "agents": [
@@ -88,7 +88,7 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
           "role": "explorer",                 // explorer|synthesizer|skeptic|writer|auditor (appender enum)
           "model": "claude-sonnet-5",
           "token_budget": 800,
-          "angle": "fica com o lado da literatura formal",
+          "angle": "takes the side of the formal literature",
           "initial_prompt": "…",
           "_prompt_truncated": true           // present only if truncated
         }
@@ -120,8 +120,8 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
 
 ```jsonc
 {
-  "_file": "2026-07-19-exemplo.json",
-  "_path": "C:\\…\\telemetry\\agents\\pending\\2026-07-19-exemplo.json",
+  "_file": "2026-07-19-example.json",
+  "_path": "C:\\…\\telemetry\\agents\\pending\\2026-07-19-example.json",
   "_mtime": 1752900000.0,
   "_error": null,
   "_agent_count": 4,
@@ -143,7 +143,7 @@ Aggregates for ALL repos + the human attention queues. Nothing truncated by `lim
   "totals": {
     "repos": 11,
     "total": 703, "open": 43, "closed": 660, "pending": 1,
-    "by_type": { "research": 500, "review": 140, "(sem tipo)": 55 },  // summed per repo
+    "by_type": { "research": 500, "review": 140, "(no type)": 55 },  // summed per repo
     "today": { "created": 3, "closed": 1 }                            // UTC day
   },
   "today": "2026-07-20",           // TODAY's day in UTC
@@ -167,7 +167,7 @@ Each object in `repos` (and the `summary` from `/api/repo`) — a repo's aggrega
   "total": 181,                   // all joined rows (not the `limit` window)
   "open": 5, "closed": 176,
   "legacy": 12,                   // pre-v0.5.2 rows (no `groups`)
-  "by_type": { "research": 150, "review": 20, "(sem tipo)": 11 },
+  "by_type": { "research": 150, "review": 20, "(no type)": 11 },
   "live": 170,                    // dispatch_type LIVE (research/review/experiment)
   "reserved": 4,                  // non-LIVE and non-legacy type
   "pending_count": 0,
@@ -187,7 +187,7 @@ Each object in `repos` (and the `summary` from `/api/repo`) — a repo's aggrega
 ```jsonc
 {
   "name": "domainspec-core", "path": "C:\\…", "ledger_exists": true, "error": null,
-  "warnings": [ "linha 13: …" ],
+  "warnings": [ "line 13: …" ],
   "summary": { /* same shape as the `repos` object above — ALWAYS the entire repo */ },
   "series": { /* daily histogram — see below */ },
   "pending": [ /* this repo's pending sheets */ ],
@@ -247,7 +247,7 @@ In order of importance — the UI exists for the **human gate**:
 1. **Pending sheets first, with strong emphasis.** This is the proposal
    awaiting confirmation: the most important object on the screen. If there are zero,
    say so explicitly instead of leaving it empty.
-2. **"Disparar" button on each pending sheet — `disabled`**, with the label
+2. **"Dispatch" button on each pending sheet — `disabled`**, with the label
    making clear it's Phase 2 (e.g., title "confirmar dispara na Fase 2").
    It marks the gate's place; it doesn't work yet.
 3. **Open vs closed.** A dispatch with no close row is alive. When closing,
@@ -273,7 +273,7 @@ The Playwright test is the same for all ten. Without these attributes, the varia
 | testid | Where |
 |---|---|
 | `app` | Root element, after the first render. |
-| `live-indicator` | SSE state. Must contain the text `conectado` when connected. |
+| `live-indicator` | SSE state. Must contain the text `connected` when connected. |
 | `pending-list` | Container for pending sheets (exists even with zero). |
 | `pending-card` | One per pending sheet. |
 | `dispatch-button` | One per pending sheet, `disabled`. |

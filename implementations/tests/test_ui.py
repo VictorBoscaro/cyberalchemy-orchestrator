@@ -1,13 +1,13 @@
-"""Teste Playwright — roda o MESMO contrato contra todas as variantes de UI.
+"""Playwright test — runs the SAME contract against every UI variant.
 
-Exige o servidor no ar (`python -m server.main` a partir de implementations/).
+Requires the server to be up (`python -m server.main` from implementations/).
 
-    python implementations/tests/test_ui.py            # todas
-    python implementations/tests/test_ui.py terminal   # só uma
+    python implementations/tests/test_ui.py            # all
+    python implementations/tests/test_ui.py terminal   # just one
 
-Além dos testids, cada variante é checada em coisas que só aparecem no browser:
-erro de console, JS que não renderizou, dependência externa (a página tem que
-funcionar offline), e conexão SSE viva. Screenshots vão para
+Beyond the testids, each variant is checked for things that only show up in the
+browser: console errors, JS that failed to render, external dependencies (the page
+must work offline), and a live SSE connection. Screenshots go to
 `implementations/tests/screenshots/`.
 """
 
@@ -74,7 +74,7 @@ def test_variant(page, variant: str) -> Report:
     page.on("console", lambda m: console_errors.append(m.text) if m.type == "error" else None)
     page.on("requestfailed", lambda r: failed_requests.append(r.url))
 
-    # Uma página que só funciona online falha o requisito de autocontida.
+    # A page that only works online fails the self-contained requirement.
     external: list[str] = []
     page.on(
         "request",
@@ -84,71 +84,71 @@ def test_variant(page, variant: str) -> Report:
     )
 
     url = f"{BASE}/static/ui/{variant}/index.html"
-    # NÃO usar `networkidle`: o SSE mantém uma requisição aberta para sempre, então
-    # a rede nunca fica ociosa e o goto estoura o timeout. Esperamos o app abaixo.
+    # Do NOT use `networkidle`: the SSE keeps a request open forever, so the
+    # network never goes idle and goto blows the timeout. We wait for the app below.
     response = page.goto(url, wait_until="domcontentloaded", timeout=20000)
 
-    if not rep.check("página carrega (HTTP 200)", response is not None and response.status == 200,
+    if not rep.check("page loads (HTTP 200)", response is not None and response.status == 200,
                      f"(status {response.status if response else 'n/a'})"):
         return rep
 
-    # O render é assíncrono: espera o app aparecer em vez de dormir.
+    # The render is async: wait for the app to appear instead of sleeping.
     try:
         page.wait_for_selector('[data-testid="app"]', timeout=10000)
     except Exception:
-        rep.check("app renderiza", False, "(timeout esperando [data-testid=app])")
+        rep.check("app renders", False, "(timeout waiting for [data-testid=app])")
         return rep
-    rep.check("app renderiza", True)
+    rep.check("app renders", True)
 
-    # O shell costuma pintar antes dos dados (fetch/SSE são assíncronos).
-    # Esperar o primeiro card evita contar cedo demais e culpar a UI por timing.
+    # The shell usually paints before the data (fetch/SSE are async).
+    # Waiting for the first card avoids counting too early and blaming the UI for timing.
     try:
         page.wait_for_selector('[data-testid="dispatch-card"]', timeout=10000)
     except Exception:
-        pass  # a checagem de contagem abaixo reporta o problema de verdade
+        pass  # the count check below reports the real problem
 
     for testid in REQUIRED_TESTIDS:
         count = page.locator(f'[data-testid="{testid}"]').count()
-        rep.check(f"testid '{testid}'", count > 0, "(ausente)")
+        rep.check(f"testid '{testid}'", count > 0, "(missing)")
 
-    # Dados reais chegaram na tela?
+    # Did real data reach the screen?
     cards = page.locator('[data-testid="dispatch-card"]').count()
-    rep.check("renderizou dispatches", cards > 0, f"(veio {cards})")
+    rep.check("rendered dispatches", cards > 0, f"(got {cards})")
 
     pending = page.locator('[data-testid="pending-card"]').count()
-    rep.check("renderizou a sheet pendente", pending >= 1, f"(veio {pending})")
+    rep.check("rendered the pending sheet", pending >= 1, f"(got {pending})")
 
     repos = page.locator('[data-testid="repo-section"]').count()
-    rep.check("renderizou repos", repos > 0, f"(veio {repos})")
+    rep.check("rendered repos", repos > 0, f"(got {repos})")
 
-    # O botão do gate existe e está desabilitado (Fase 2 ainda não liga).
+    # The gate button exists and is disabled (Phase 2 does not wire it yet).
     btn = page.locator('[data-testid="dispatch-button"]').first
     if btn.count() > 0:
-        rep.check("botão Disparar desabilitado", btn.is_disabled(), "(está habilitado!)")
+        rep.check("Dispatch button disabled", btn.is_disabled(), "(it is enabled!)")
 
-    # Atributos por card exigidos pelo contrato.
+    # Per-card attributes required by the contract.
     first = page.locator('[data-testid="dispatch-card"]').first
-    rep.check("card tem data-dispatch-id", bool(first.get_attribute("data-dispatch-id")))
+    rep.check("card has data-dispatch-id", bool(first.get_attribute("data-dispatch-id")))
     state = first.get_attribute("data-state")
-    rep.check("card tem data-state válido", state in ("open", "closed"), f"(veio {state!r})")
+    rep.check("card has valid data-state", state in ("open", "closed"), f"(got {state!r})")
 
-    # O total tem que ser um número plausível, não placeholder.
+    # The total must be a plausible number, not a placeholder.
     total_text = page.locator('[data-testid="total-count"]').first.inner_text()
     has_digit = any(ch.isdigit() for ch in total_text)
-    rep.check("total-count mostra número", has_digit, f"(texto {total_text!r})")
+    rep.check("total-count shows a number", has_digit, f"(text {total_text!r})")
 
-    # SSE ligado. O handshake leva um instante e algumas variantes pintam um
-    # estado inicial antes disso — então esperamos em vez de ler uma vez só.
-    # ATENÇÃO: "desconectado" CONTÉM "conectado". Uma checagem ingênua de
-    # substring passa justamente no caso que deveria reprovar, então o estado
-    # negativo é excluído explicitamente.
+    # SSE is up. The handshake takes a moment and some variants paint an initial
+    # state before that — so we wait instead of reading once.
+    # NOTE: "disconnected" CONTAINS "connected". A naive substring check would
+    # pass in exactly the case that should fail, so the negative state is
+    # excluded explicitly.
     try:
         page.wait_for_function(
             """() => {
                 const el = document.querySelector('[data-testid="live-indicator"]');
                 if (!el) return false;
                 const t = el.innerText.toLowerCase();
-                return t.includes('conectado') && !t.includes('desconectado');
+                return t.includes('connected') && !t.includes('disconnected');
             }""",
             timeout=8000,
         )
@@ -156,28 +156,28 @@ def test_variant(page, variant: str) -> Report:
     except Exception:
         live_ok = False
     live_text = page.locator('[data-testid="live-indicator"]').first.inner_text().lower()
-    rep.check("indicador diz conectado", live_ok, f"(texto {live_text!r})")
+    rep.check("indicator says connected", live_ok, f"(text {live_text!r})")
 
-    # A asserção acima só vale se souber reprovar: confirma que o texto atual
-    # não é o estado negativo disfarçado.
+    # The assertion above only counts if it can fail: confirm the current text
+    # is not the negative state in disguise.
     rep.check(
-        "indicador não está em estado de queda",
-        "desconectado" not in live_text and "interrompid" not in live_text,
-        f"(texto {live_text!r})",
+        "indicator is not in a down state",
+        "disconnected" not in live_text and "interrupt" not in live_text,
+        f"(text {live_text!r})",
     )
 
-    # Nada quebrado no console, nada externo.
+    # Nothing broken in the console, nothing external.
     real_errors = [e for e in console_errors if "favicon" not in e.lower()]
-    rep.check("sem erro de console", not real_errors, f"({real_errors[:2]})")
-    # O SSE é uma requisição que fica aberta; ela é abortada quando a página é
-    # fechada. Isso é o encerramento normal, não uma falha da UI.
+    rep.check("no console error", not real_errors, f"({real_errors[:2]})")
+    # The SSE is a request that stays open; it is aborted when the page is
+    # closed. That is the normal teardown, not a UI failure.
     real_failures = [u for u in failed_requests if "/api/stream" not in u]
-    rep.check("sem requisição falha", not real_failures, f"({real_failures[:2]})")
-    rep.check("sem dependência externa", not external, f"({external[:2]})")
+    rep.check("no failed request", not real_failures, f"({real_failures[:2]})")
+    rep.check("no external dependency", not external, f"({external[:2]})")
 
-    # A página tem que ter altura real (não um corpo vazio de 0px).
+    # The page must have real height (not an empty 0px body).
     height = page.evaluate("document.body.scrollHeight")
-    rep.check("página tem conteúdo", height > 400, f"(altura {height}px)")
+    rep.check("page has content", height > 400, f"(height {height}px)")
 
     SHOTS.mkdir(parents=True, exist_ok=True)
     page.screenshot(path=str(SHOTS / f"{variant}.png"), full_page=False)
@@ -199,8 +199,8 @@ def main(only: list[str]) -> int:
         ctx = browser.new_context(viewport={"width": 1440, "height": 900})
         for variant in present:
             print(f"\n=== {variant} ===")
-            # Uma página nova por variante: reusar a mesma acumula os listeners
-            # de console/rede, e as falhas de uma variante vazavam para a seguinte.
+            # A fresh page per variant: reusing the same one accumulates the
+            # console/network listeners, and one variant's failures leaked into the next.
             page = ctx.new_page()
             try:
                 rep = test_variant(page, variant)
@@ -209,21 +209,21 @@ def main(only: list[str]) -> int:
             reports.append(rep)
             for f in rep.failed:
                 print(f"  FAIL  {f}")
-            print(f"  {len(rep.passed)} passaram, {len(rep.failed)} falharam")
+            print(f"  {len(rep.passed)} passed, {len(rep.failed)} failed")
         browser.close()
 
     print("\n" + "=" * 58)
     for rep in reports:
-        mark = "OK  " if rep.ok else "FALHA"
+        mark = "OK  " if rep.ok else "FAIL "
         print(f"{mark}  {rep.variant:<18} {len(rep.passed)}/{len(rep.passed) + len(rep.failed)}")
     for variant in missing:
-        print(f"AUSENTE  {variant}")
+        print(f"MISSING  {variant}")
 
     broken = [r.variant for r in reports if not r.ok]
     if broken or missing:
-        print(f"\nquebradas: {broken or 'nenhuma'} | ausentes: {missing or 'nenhuma'}")
+        print(f"\nbroken: {broken or 'none'} | missing: {missing or 'none'}")
         return 1
-    print(f"\ntodas as {len(reports)} variantes passaram")
+    print(f"\nall {len(reports)} variants passed")
     return 0
 
 

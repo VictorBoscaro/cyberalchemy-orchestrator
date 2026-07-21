@@ -19,7 +19,7 @@ updated_at: 2026-07-20
 > pipelines, `use_cases → domain → infrastructure` layers, fund-administrator golden sets)
 > was **left out on purpose** — none of it grounds here. Most rules below **ratify practice
 > the code already earned** (see [ledger.py](../../implementations/server/ledger.py)), so
-> several carry `veracidade: high` — unlike [[frontend-constitution]], which bets on things
+> several carry `veracity: high` — unlike [[frontend-constitution]], which bets on things
 > not yet built. Statute: `candidate`, unreviewed. Claim ≤ proof.
 
 ---
@@ -40,7 +40,7 @@ noise the surface then presents as fact.
 
 The mechanism is the repo's own lever, `residue = shadow ⊕ structure`
 ([FRAMINGS.md F1](../../FRAMINGS.md)) and the anti-noise discipline of
-[[orquestracao-anti-ruido]] (`residue = bias ⊕ noise`), applied one layer below the UI: a
+[[anti-noise-orchestration]] (`residue = bias ⊕ noise`), applied one layer below the UI: a
 derived number is a **shadow** of the rows that produced it, and it must never claim more
 than the **structure** underneath it supports. A reader should leave this section knowing
 what "good engine code" means here: not *more validation everywhere*, but **strictness where
@@ -103,10 +103,10 @@ Do not load this constitution when:
 ## Rules
 
 > These rules are stated as **hypotheses, not ratified law.** Each is a `candidate` claim
-> carrying two confidence labels from [[ontology-conventions]]: **veracidade** (external
-> evidence — how tested against reality) and **convicção** (how hard we bet on it). Unlike
+> carrying two confidence labels from [[ontology-conventions]]: **veracity** (external
+> evidence — how tested against reality) and **conviction** (how hard we bet on it). Unlike
 > [[frontend-constitution]], most rules here **ratify behavior the code already practices**,
-> so their veracidade is often `high` — they are close to premises already. Every rule is
+> so their veracity is often `high` — they are close to premises already. Every rule is
 > **self-contained**: the claim, its two labels, **what would falsify it**, and its
 > validation mode (`deterministic` | `review` | `hybrid` | `none-yet`). When a rule survives
 > its falsifier under real use it graduates from hypothesis to **premise** and drops the
@@ -120,10 +120,10 @@ against the current schema — closed enums, required fields, `working_folder` n
 `vault/` — before it touches the file (`append-dispatch.cjs:137` `validateDispatch`). The
 Python reader NEVER writes ([ledger.py:21](../../implementations/server/ledger.py#L21)).
 
-- **veracidade:** medium — the reader/appender split is real and old, **but** the 2026-07-18
+- **veracity:** medium — the reader/appender split is real and old, **but** the 2026-07-18
   enum-drift (two close rows that bypassed the validated appender — see [[ledger-enum-drift-finding]])
   is a live counterexample: the invariant is aspired, not yet enforced end-to-end.
-- **convicção:** high — this is the integrity spine. A corrupt ledger poisons every endpoint
+- **conviction:** high — this is the integrity spine. A corrupt ledger poisons every endpoint
   and every aggregation downstream; nothing else in the engine matters if this leaks.
 - **Falsified if:** a second writer proves genuinely necessary (e.g. a compaction or
   migration tool) and cannot route through the appender's validation without losing a real
@@ -140,10 +140,10 @@ an unreadable row becomes a warning and is skipped; the rest of the ledger is se
 ([ledger.py:11-19](../../implementations/server/ledger.py#L11-L19)). Never lose a repo's
 whole history over one malformed row.
 
-- **veracidade:** high — implemented and tested: `parse_ledger` has explicit `strict`/
+- **veracity:** high — implemented and tested: `parse_ledger` has explicit `strict`/
   `lenient` modes; strict raises `LedgerError` on the first problem, lenient accumulates
   `warnings` and continues.
-- **convicção:** high — the asymmetry *is* the design; collapsing either side (lenient write
+- **conviction:** high — the asymmetry *is* the design; collapsing either side (lenient write
   or strict read) breaks the artifact or the UI.
 - **Falsified if:** leniency on read ever masks a corruption that then propagates downstream —
   a skipped row that should have *blocked* — i.e. the asymmetry hides a fault the strict side
@@ -161,9 +161,9 @@ so a sheet deleted mid-scan does not 500 three endpoints and the stream
 ([ledger.py:404-411](../../implementations/server/ledger.py#L404-L411)), the daily-series span
 cap so one corrupt `1970` date cannot balloon the axis to tens of thousands of buckets.
 
-- **veracidade:** high — every one of these guards exists **with a comment naming the exact
+- **veracity:** high — every one of these guards exists **with a comment naming the exact
   500 it prevents**, several pinned to tests. This rule ratifies observed practice.
-- **convicção:** high — one repo's bad row must never darken the whole control plane; the SSE
+- **conviction:** high — one repo's bad row must never darken the whole control plane; the SSE
   generator dying takes every connected UI with it.
 - **Falsified if:** swallowing a fault ever hides a real regression that a hard failure would
   have surfaced sooner — resilience buying silence.
@@ -179,9 +179,9 @@ traceable to the rows that produced it, and any set that is **not** a partition 
 not implied (live/reserved/legacy do **not** sum to total —
 [ledger.py:586-593](../../implementations/server/ledger.py#L586)).
 
-- **veracidade:** high — `summarize_repo` reads the whole ledger (`copy=False` over all rows);
+- **veracity:** high — `summarize_repo` reads the whole ledger (`copy=False` over all rows);
   the non-partition caveat is pinned to `test_legacy_live_double_count`.
-- **convicção:** high — this is the anti-noise discipline ([[orquestracao-anti-ruido]]) at the
+- **conviction:** high — this is the anti-noise discipline ([[anti-noise-orchestration]]) at the
   data layer: a number that misleads is *bias* the surface injects, exactly the residue this
   repo exists to cancel.
 - **Falsified if:** full-ledger aggregation becomes too costly to serve per request **and** a
@@ -199,8 +199,8 @@ historical data. The prefix guarantees a **shadow** (computed) never collides wi
 (a real key). Container/aggregate objects that are *not* rows (`summarize_repo`'s `total`,
 `open`, `by_type`) are exempt — they have no ledger namespace to protect.
 
-- **veracidade:** high — the convention is stated and followed throughout the module.
-- **convicção:** medium — load-bearing for row-shaped objects, but a naming discipline, not an
+- **veracity:** high — the convention is stated and followed throughout the module.
+- **conviction:** medium — load-bearing for row-shaped objects, but a naming discipline, not an
   axis of the system.
 - **Falsified if:** a future real ledger key legitimately begins with `_` (the shadow collides
   with structure after all), or the row/aggregate boundary stops being clear enough to apply
@@ -216,9 +216,9 @@ Rows written under a prior schema are **historical artifacts**: parsed structura
 keys keep passing"). A schema bump adds forward validation for *new* writes; it never
 retroactively invalidates history.
 
-- **veracidade:** high — practiced: `_legacy` marking on rows without `groups`, `LIVE_TYPES`
+- **veracity:** high — practiced: `_legacy` marking on rows without `groups`, `LIVE_TYPES`
   gating, and the appender explicitly never re-validating old keys.
-- **convicção:** high — the ledger *is* the audit trail; rewriting or rejecting history
+- **conviction:** high — the ledger *is* the audit trail; rewriting or rejecting history
   destroys the thing it exists to preserve.
 - **Falsified if:** a schema change renders old rows genuinely unreadable (not merely legacy)
   such that structural-only parsing yields a *wrong* aggregate — backward tolerance breaking a
@@ -234,9 +234,9 @@ the module reconstructs what it touches, and the list container is privatized pe
 ([ledger.py:245-333](../../implementations/server/ledger.py#L245)). Re-reading unchanged input
 returns identical output without re-parsing.
 
-- **veracidade:** high — the fingerprint + copy-on-write discipline is implemented, with a
+- **veracity:** high — the fingerprint + copy-on-write discipline is implemented, with a
   `parse_count` probe that lets a test *prove* the cache hit (not infer it from timing).
-- **convicção:** high — determinism is what lets `/api/stream` poll every second without
+- **conviction:** high — determinism is what lets `/api/stream` poll every second without
   re-parsing the largest (~1.5 MB) ledger each tick.
 - **Falsified if:** an out-of-band edit preserves the exact size **and** `mtime_ns`
   (fingerprint collision) and serves stale — the content-key assumption breaks.
@@ -250,10 +250,10 @@ Every non-obvious guard states the **exact failure it prevents**; every invarian
 `test_legacy_live_double_count`). "Claim ≤ proof" applies to code the same way it applies to a
 hypothesis: a defended behavior names its collapse-test.
 
-- **veracidade:** high — the module is uniformly written this way; this rule ratifies observed
+- **veracity:** high — the module is uniformly written this way; this rule ratifies observed
   practice rather than proposing it.
-- **convicção:** high — it is the repo's whole epistemic ethos (FRAMINGS, OBLIGATIONS: *"risco
-  nomeado, não escondido"*) applied to the engine; without it EG-1..EG-7's "Falsified if" lines
+- **conviction:** high — it is the repo's whole epistemic ethos (FRAMINGS, OBLIGATIONS: *"named risk,
+  not hidden"*) applied to the engine; without it EG-1..EG-7's "Falsified if" lines
   have nowhere to land in the code.
 - **Falsified if:** comment density measurably slows change without preventing a proportionate
   share of regressions — documentation as ceremony rather than proof.
@@ -344,7 +344,7 @@ Required before canonical status:
 
 - **Trace the drift.** EG-1 cannot promote until the [[ledger-enum-drift-finding]] is
   investigated: *how* did two close rows reach the file without `validateDispatch`? The answer
-  either yields the single-writer guard (and EG-1's veracidade rises to `high`) or reveals a
+  either yields the single-writer guard (and EG-1's veracity rises to `high`) or reveals a
   legitimate second writer (and EG-1 is amended, not promoted). This is the pre-condition the
   memory already flags for Phase 2.
 - **EG-8 gets at least a lint-level check** (or is accepted as permanently `review`),
@@ -367,10 +367,10 @@ linked and share collapse-tests.
 | [ledger.py](../../implementations/server/ledger.py) | `implements` | The module that already practices EG-2..EG-8; this constitution reads its earned discipline back out as law. |
 | `register-dispatch/append-dispatch.cjs` | `implements` | The strict validated appender — the write contract EG-1/EG-6 defend. |
 | [[ledger-enum-drift-finding]] | `grounds` | The audit (2026-07-18 close rows bypassing the appender) that motivates EG-1 and blocks its promotion. |
-| [[ontology-conventions]] | `governed-by` | Defines the `veracidade`/`convicção` labels and the hypothesis → premise arc each rule carries; EG-5 is its orthogonality principle applied to *code fields* (a shadow that must not collide with structure). |
+| [[ontology-conventions]] | `governed-by` | Defines the `veracity`/`conviction` labels and the hypothesis → premise arc each rule carries; EG-5 is its orthogonality principle applied to *code fields* (a shadow that must not collide with structure). |
 | [[frontend-constitution]] | `sibling` | Governs the *form* of the data this engine produces; they meet at `UI-CONTRACT.md` and neither crosses the seam. |
 | [FRAMINGS.md F1](../../FRAMINGS.md) (`residue = shadow ⊕ structure`) | `grounded-in` | EG-4 (derived number ≤ its rows) and EG-5 (computed ≠ real key) are this lever applied to the data layer. |
-| [[orquestracao-anti-ruido]] (HYP-ORCH-NOISE) | `sibling` | EG-4 is the anti-noise thesis (`residue = bias ⊕ noise`) enforced at the point numbers are derived. |
+| [[anti-noise-orchestration]] (HYP-ORCH-NOISE) | `sibling` | EG-4 is the anti-noise thesis (`residue = bias ⊕ noise`) enforced at the point numbers are derived. |
 | `OBLIGATIONS.md` | `contextualizes` | Shares the "name the collapse-test, hide no risk" discipline EG-8 makes a rule. |
 
 **Falsifiability (collapse-tests for the constitution itself):**

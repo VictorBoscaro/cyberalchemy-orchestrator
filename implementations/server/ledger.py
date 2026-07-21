@@ -1,33 +1,33 @@
-"""Leitor do ledger append-only de dispatches de subagentes.
+"""Reader for the append-only ledger of subagent dispatches.
 
-Espelha as formas de linha escritas por `register-dispatch/append-dispatch.cjs`:
-toda linha não-comentário é `dispatches:`, um início de row `  - key: <json>`,
-ou uma continuação `    key: <json>`. Todo valor é JSON.
+Mirrors the line forms written by `register-dispatch/append-dispatch.cjs`:
+every non-comment line is `dispatches:`, a row start `  - key: <json>`, or a
+continuation `    key: <json>`. Every value is JSON.
 
-DOIS PRINCÍPIOS que este módulo segue:
+TWO PRINCIPLES this module follows:
 
-1. **Estrutural apenas.** Rows escritas em schemas pré-v0.5.2 são artefatos
-   históricos e nunca são revalidadas semanticamente — elas carregam chaves
-   antigas (`status`, `agents` no topo, `corpus`, ...) e continuam passando.
+1. **Structural only.** Rows written under pre-v0.5.2 schemas are historical
+   artifacts and are never re-validated semantically — they carry old keys
+   (`status`, top-level `agents`, `corpus`, ...) and keep passing.
 
-2. **Leniente por padrão — ao contrário do appender.** O appender é estrito
-   porque *protege* o arquivo: ele recusa escrever num ledger corrompido. O
-   leitor tem o trabalho oposto — mostrar o que existe. Ledgers reais contêm
-   rows antigas prettificadas (JSON multi-linha, vírgulas finais) que o
-   appender rejeitaria; perder o histórico inteiro de um repo por causa de uma
-   row assim seria pior do que exibi-la. Em modo leniente, uma row ilegível
-   vira um aviso e é pulada; o resto do ledger é servido.
+2. **Lenient by default — unlike the appender.** The appender is strict because
+   it *protects* the file: it refuses to write into a corrupted ledger. The
+   reader has the opposite job — show what's there. Real ledgers contain old
+   prettified rows (multi-line JSON, trailing commas) that the appender would
+   reject; losing a repo's entire history over one such row would be worse than
+   displaying it. In lenient mode an unreadable row becomes a warning and is
+   skipped; the rest of the ledger is served.
 
-Este módulo NUNCA escreve. O ledger é append-only e pertence ao appender.
+This module NEVER writes. The ledger is append-only and belongs to the appender.
 
-CONVENÇÃO (escopada a objetos com FORMA DE ROW): num objeto que compartilha o
-namespace de uma row do ledger, todo campo calculado por este leitor leva prefixo
-`_`. Isso não é cosmético — a chave `status` existe de verdade nas rows pré-v0.5.2,
-então um campo calculado chamado `status` sobrescreveria o dado histórico; o `_`
-garante que um calculado nunca colida com uma chave do namespace do próprio ledger.
-A regra NÃO se aplica a objetos-contêiner/agregado que não são rows e não têm esse
-namespace a proteger (`summarize_repo` devolve `total`, `open`, `by_type`, ... sem
-prefixo de propósito — não há chave de ledger para sombrear ali).
+CONVENTION (scoped to objects with ROW SHAPE): in an object that shares a ledger
+row's namespace, every field computed by this reader carries a `_` prefix. This
+isn't cosmetic — the `status` key really exists on pre-v0.5.2 rows, so a computed
+field named `status` would overwrite the historical data; the `_` guarantees a
+computed field never collides with a key from the ledger's own namespace. The rule
+does NOT apply to container/aggregate objects that are not rows and have no such
+namespace to protect (`summarize_repo` returns `total`, `open`, `by_type`, ...
+without a prefix on purpose — there's no ledger key to shadow there).
 """
 
 from __future__ import annotations
@@ -39,23 +39,23 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
-# Como o appender (append-dispatch.cjs:315), mas com o valor opcional: rows
-# antigas prettificadas abrem o valor na linha seguinte (`    agents:`).
+# Like the appender (append-dispatch.cjs:315), but with the value optional: old
+# prettified rows open the value on the next line (`    agents:`).
 ROW_RE = re.compile(r"^(  - |    )([A-Za-z_][A-Za-z0-9_]*):(?: (.*))?$")
 
 LEDGER_RELPATH = Path("telemetry") / "agents" / "subagents-dispatch.yaml"
 PENDING_RELPATH = Path("telemetry") / "agents" / "pending"
 
-# Só estes três são dispatcháveis sob v0.6.0; o resto é nome reservado.
+# Only these three are dispatchable under v0.6.0; the rest are reserved names.
 LIVE_TYPES = {"research", "review", "experiment"}
 
-# Bucket para dispatches sem `dispatch_type` (rows pré-v0.5.2 não têm o campo).
-# Um rótulo explícito em vez de `None` porque a chave vai virar coluna de gráfico
-# e legenda na UI — e `null` como nome de série é pior do que uma palavra.
-NO_TYPE = "(sem tipo)"
+# Bucket for dispatches without a `dispatch_type` (pre-v0.5.2 rows lack the field).
+# An explicit label rather than `None` because the key becomes a chart column and a
+# legend in the UI — and `null` as a series name is worse than a word.
+NO_TYPE = "(no type)"
 
-# Um span de dias maior que isto quase certamente vem de data corrompida (uma
-# row com `1970-01-01` geraria ~20 mil buckets). Ver `daily_series`.
+# A day span larger than this almost certainly comes from a corrupted date (a
+# row with `1970-01-01` would generate ~20k buckets). See `daily_series`.
 MAX_SPAN_DAYS = 1000
 
 _MISSING = object()
@@ -64,7 +64,7 @@ _ISO_DAY_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})")
 
 
 class LedgerError(Exception):
-    """O ledger está estruturalmente corrompido (só levantado em modo estrito)."""
+    """The ledger is structurally corrupted (only raised in strict mode)."""
 
 
 @dataclass
@@ -74,24 +74,24 @@ class ParseResult:
 
 
 def _loads(text: str) -> tuple[Any, str | None]:
-    """JSON, tolerando vírgula final (legal em YAML flow, ilegal em JSON)."""
+    """JSON, tolerating a trailing comma (legal in YAML flow, illegal in JSON)."""
     try:
         return json.loads(text), None
     except json.JSONDecodeError as exc:
         cleaned = re.sub(r",(\s*[\]}])", r"\1", text)
         if cleaned != text:
             try:
-                return json.loads(cleaned), "vírgula final tolerada"
+                return json.loads(cleaned), "trailing comma tolerated"
             except json.JSONDecodeError:
                 pass
         return _MISSING, str(exc)
 
 
 def parse_ledger(text: str, *, lenient: bool = True) -> ParseResult:
-    """Converte o texto do ledger em rows brutas, em ordem de arquivo.
+    """Converts the ledger text into raw rows, in file order.
 
-    Em modo estrito levanta `LedgerError` no primeiro problema (a semântica do
-    appender). Em modo leniente acumula avisos e segue.
+    In strict mode it raises `LedgerError` at the first problem (the appender's
+    semantics). In lenient mode it accumulates warnings and carries on.
     """
     result = ParseResult()
     current: dict[str, Any] | None = None
@@ -100,12 +100,12 @@ def parse_ledger(text: str, *, lenient: bool = True) -> ParseResult:
 
     def problem(lineno: int, why: str) -> None:
         if not lenient:
-            raise LedgerError(f"linha {lineno}: {why}")
-        result.warnings.append(f"linha {lineno}: {why}")
+            raise LedgerError(f"line {lineno}: {why}")
+        result.warnings.append(f"line {lineno}: {why}")
 
     while i < len(lines):
         lineno = i + 1
-        line = lines[i].rstrip("\r")  # tolera conversão CRLF
+        line = lines[i].rstrip("\r")  # tolerates CRLF conversion
         i += 1
 
         if line == "" or line.startswith("#") or line == "dispatches:":
@@ -113,42 +113,42 @@ def parse_ledger(text: str, *, lenient: bool = True) -> ParseResult:
 
         match = ROW_RE.match(line)
         if not match:
-            problem(lineno, "forma de linha não reconhecida")
+            problem(lineno, "unrecognized line form")
             continue
 
         indent, key, inline = match.groups()
 
-        # Valor possivelmente multi-linha: acumula até virar JSON válido ou até
-        # a próxima linha de row.
+        # Possibly multi-line value: accumulate until it becomes valid JSON or
+        # until the next row line.
         buffer = inline if inline is not None else ""
-        value, err = (_MISSING, "valor vazio")
+        value, err = (_MISSING, "empty value")
         if buffer.strip():
             value, err = _loads(buffer)
         while value is _MISSING and i < len(lines):
             nxt = lines[i].rstrip("\r")
             if ROW_RE.match(nxt):
-                break  # começou outra chave — o valor nunca fechou
+                break  # another key started — the value never closed
             buffer += "\n" + nxt
             i += 1
             if buffer.strip():
                 value, err = _loads(buffer)
 
         if value is _MISSING:
-            problem(lineno, f'valor de "{key}" não é JSON válido ({err})')
+            problem(lineno, f'value of "{key}" is not valid JSON ({err})')
             continue
         if err:
-            result.warnings.append(f'linha {lineno}: "{key}" — {err}')
+            result.warnings.append(f'line {lineno}: "{key}" — {err}')
 
         if indent == "  - ":
             if key not in ("dispatch_id", "close_of"):
-                problem(lineno, f'row deve começar com dispatch_id ou close_of, veio "{key}"')
+                problem(lineno, f'row must start with dispatch_id or close_of, got "{key}"')
                 current = None
                 continue
             current = {key: value}
             result.rows.append(current)
         else:
             if current is None:
-                problem(lineno, "continuação antes de qualquer row")
+                problem(lineno, "continuation before any row")
                 continue
             current[key] = value
 
@@ -156,11 +156,11 @@ def parse_ledger(text: str, *, lenient: bool = True) -> ParseResult:
 
 
 def join_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Casa cada dispatch row com sua close row (a disciplina dos dois appends).
+    """Match each dispatch row with its close row (the two-append discipline).
 
-    Retorna mais antigo primeiro. Uma dispatch sem close row está aberta; uma
-    close row órfã (dispatch nunca registrada) é uma quebra da disciplina
-    upstream e é exposta como tal em vez de silenciada.
+    Returns oldest first. A dispatch without a close row is open; an orphan close
+    row (dispatch never registered) is a break of the upstream discipline and is
+    exposed as such rather than silenced.
     """
     dispatches: dict[str, dict[str, Any]] = {}
     order: list[str] = []
@@ -169,12 +169,12 @@ def join_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for row in rows:
         if "dispatch_id" in row:
             did = row["dispatch_id"]
-            # Um id é contratualmente uma string não-vazia (append-dispatch.cjs:145).
-            # Uma row cujo `dispatch_id` parseou para lista/objeto JSON não é
-            # hasheável e, usada como chave de dict, levantaria TypeError —
-            # derrubando o parse INTEIRO do repo (join_rows roda antes do cache) e
-            # dando 500 em todo endpoint. Pular a row honra o Princípio 1 (uma row
-            # ilegível vira aviso e é pulada; o resto do ledger é servido).
+            # An id is contractually a non-empty string (append-dispatch.cjs:145).
+            # A row whose `dispatch_id` parsed to a JSON list/object is not
+            # hashable and, used as a dict key, would raise TypeError — bringing
+            # down the ENTIRE parse of the repo (join_rows runs before the cache)
+            # and 500ing every endpoint. Skipping the row honors Principle 1 (an
+            # unreadable row becomes a warning and is skipped; the rest is served).
             if not isinstance(did, str):
                 continue
             if did not in dispatches:
@@ -192,7 +192,7 @@ def join_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         close = closes.get(did)
         row["_close"] = close
         row["_state"] = "closed" if close else "open"
-        # Rows pré-v0.5.2 não têm `groups`; marcamos em vez de tentar adaptar.
+        # Pre-v0.5.2 rows lack `groups`; we mark rather than try to adapt.
         row["_legacy"] = "groups" not in row
         row["_live"] = row.get("dispatch_type") in LIVE_TYPES
         row["_agent_count"] = count_agents(row)
@@ -203,7 +203,7 @@ def join_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             joined.append(
                 {
                     "dispatch_id": close_of,
-                    "goal": "(close row órfã — a dispatch row nunca foi escrita)",
+                    "goal": "(orphan close row — the dispatch row was never written)",
                     "_orphan_close": True,
                     "_close": close,
                     "_state": "closed",
@@ -228,13 +228,13 @@ def count_agents(row: dict[str, Any]) -> int:
 
 
 # ---------------------------------------------------------------------------
-# Cache de parse
+# Parse cache
 # ---------------------------------------------------------------------------
 
 
 @dataclass
 class RepoRows:
-    """O ledger de um repo já parseado e joinado, mais o contexto da leitura."""
+    """A repo's ledger already parsed and joined, plus the read context."""
 
     rows: list[dict[str, Any]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
@@ -242,34 +242,33 @@ class RepoRows:
     error: str | None = None
 
 
-# path do ledger -> (fingerprint, RepoRows). Memo de processo, sem expiração:
-# a chave JÁ é o conteúdo (mtime_ns + tamanho), então uma entrada obsoleta é
-# impossível de acertar. O teto de memória é o número de repos observados.
-# A chave ASSUME que todo write muda o tamanho do arquivo — verdade para o
-# appender append-only, que sempre acrescenta uma row. Uma edição fora-de-banda
-# que preservasse o tamanho exato poderia servir stale até o próximo append.
+# ledger path -> (fingerprint, RepoRows). Process memo, no expiry: the key IS
+# already the content (mtime_ns + size), so hitting a stale entry is impossible.
+# The memory ceiling is the number of observed repos. The key ASSUMES every write
+# changes the file size — true for the append-only appender, which always appends a
+# row. An out-of-band edit that preserved the exact size could serve stale until
+# the next append.
 _CACHE: dict[str, tuple[tuple[int, int] | None, RepoRows]] = {}
 
-# Contador de parses de verdade. Existe para o teste conseguir provar que o
-# cache pegou — sem ele o "não reparseou" só seria observável por tempo, que é
-# métrica frágil.
+# Counter of real parses. Exists so the test can prove the cache hit — without it
+# "didn't reparse" would only be observable by time, which is a fragile metric.
 _parse_count = 0
 
 
 def clear_cache() -> None:
-    """Esvazia o memo. Só testes precisam: em produção a fingerprint basta."""
+    """Empties the memo. Only tests need it: in production the fingerprint suffices."""
     global _parse_count
     _CACHE.clear()
     _parse_count = 0
 
 
 def parse_count() -> int:
-    """Quantos parses reais aconteceram desde o último `clear_cache`."""
+    """How many real parses have happened since the last `clear_cache`."""
     return _parse_count
 
 
 def _fingerprint(path: Path) -> tuple[int, int] | None:
-    """A MESMA impressão que `signature` usa — mtime_ns + tamanho, ou None."""
+    """The SAME fingerprint `signature` uses — mtime_ns + size, or None."""
     try:
         stat = path.stat()
     except OSError:
@@ -278,30 +277,30 @@ def _fingerprint(path: Path) -> tuple[int, int] | None:
 
 
 def load_repo_rows(repo: Path, *, copy: bool = True) -> RepoRows:
-    """Rows joinadas de um repo, reparseando só quando o arquivo mudou.
+    """A repo's joined rows, reparsing only when the file changed.
 
-    O parse completo do maior ledger real (~1.5 MB) custa centenas de ms, e o
-    `/api/stream` bate no disco a cada segundo enquanto as novas agregações
-    precisam do ledger INTEIRO (não dá mais para escapar truncando por `limit`).
-    Sem memo, o custo por request cresceria com o histórico — que é append-only
-    e só cresce.
+    A full parse of the largest real ledger (~1.5 MB) costs hundreds of ms, and
+    `/api/stream` hits the disk every second while the new aggregations need the
+    ENTIRE ledger (truncating by `limit` is no longer an escape). Without a memo,
+    the per-request cost would grow with history — which is append-only and only
+    grows.
 
-    `copy=True` devolve os dicts de TOPO copiados, para que quem receber possa
-    anotar campos (`_repo`, ...) sem contaminar o cache. A cópia é rasa de
-    propósito: os aninhados (`groups`, `connections`) pesam quase tudo, e
-    nenhuma função deste módulo os edita in-place — `truncate_prompts` e `slim`
-    reconstroem o que tocam. Copiar fundo aqui custaria mais que o parse que o
-    cache economiza.
+    `copy=True` returns the TOP-level dicts copied, so the receiver can annotate
+    fields (`_repo`, ...) without contaminating the cache. The copy is shallow on
+    purpose: the nested values (`groups`, `connections`) weigh almost everything,
+    and no function in this module edits them in-place — `truncate_prompts` and
+    `slim` rebuild what they touch. A deep copy here would cost more than the parse
+    the cache saves.
 
-    A garantia REAL de `copy=False`: os VALORES (dicts de topo e aninhados) são
-    compartilhados com o cache — seguro pela disciplina copy-on-write de todo
-    escritor deste módulo, que reconstrói o que toca em vez de mutar — mas o
-    CONTÊINER da lista é privado por chamador (uma cópia rasa `list(rows)`). Sem
-    isso, um `data.rows.reverse()`/`.sort()` em qualquer chamador corromperia
-    permanentemente a ordem cronológica que o cache serve a `read_repo`,
-    `first_day`/`last_day` e `daily_series`. A cópia da lista é O(n) de ponteiros,
-    barata perto do parse — fecha o buraco de mutação de contêiner sem tocar nos
-    ~1.5 MB de aninhados.
+    The REAL guarantee of `copy=False`: the VALUES (top-level and nested dicts) are
+    shared with the cache — safe thanks to the copy-on-write discipline of every
+    writer in this module, which rebuilds what it touches rather than mutating —
+    but the list CONTAINER is private per caller (a shallow `list(rows)` copy).
+    Without it, a `data.rows.reverse()`/`.sort()` in any caller would permanently
+    corrupt the chronological order the cache serves to `read_repo`,
+    `first_day`/`last_day` and `daily_series`. The list copy is O(n) of pointers,
+    cheap next to the parse — it closes the container-mutation hole without touching
+    the ~1.5 MB of nested values.
     """
     global _parse_count
 
@@ -318,7 +317,7 @@ def load_repo_rows(repo: Path, *, copy: bool = True) -> RepoRows:
         _CACHE[key] = (fingerprint, data)
 
     if not copy:
-        # Valores compartilhados, contêiner da lista privado por chamador.
+        # Values shared, list container private per caller.
         return RepoRows(
             rows=list(data.rows),
             warnings=data.warnings,
@@ -334,7 +333,7 @@ def load_repo_rows(repo: Path, *, copy: bool = True) -> RepoRows:
 
 
 def _read_repo_rows(ledger_path: Path) -> RepoRows:
-    """Leitura crua de um ledger. Um ledger ausente não é erro — é um repo novo."""
+    """Raw read of a ledger. A missing ledger is not an error — it's a new repo."""
     if not ledger_path.is_file():
         return RepoRows(ledger_exists=False)
     try:
@@ -350,7 +349,7 @@ def _read_repo_rows(ledger_path: Path) -> RepoRows:
 
 
 def truncate_prompts(row: dict[str, Any], limit: int) -> dict[str, Any]:
-    """Encolhe os `initial_prompt` para a listagem. O detalhe serve o texto inteiro."""
+    """Shrinks the `initial_prompt`s for the listing. The detail view serves the full text."""
     groups = row.get("groups")
     if not isinstance(groups, list):
         return row
@@ -382,10 +381,10 @@ def truncate_prompts(row: dict[str, Any], limit: int) -> dict[str, Any]:
 
 
 def read_pending(repo: Path) -> list[dict[str, Any]]:
-    """Lê as sheets pré-confirm de `telemetry/agents/pending/*.json`.
+    """Reads the pre-confirm sheets from `telemetry/agents/pending/*.json`.
 
-    Este é o artefato NOVO do control plane: a sheet que o humano revisa antes
-    de confirmar. Não faz parte do ledger e é a única superfície editável.
+    This is the NEW control-plane artifact: the sheet the human reviews before
+    confirming. It's not part of the ledger and is the only editable surface.
     """
     pending_dir = repo / PENDING_RELPATH
     if not pending_dir.is_dir():
@@ -400,16 +399,16 @@ def read_pending(repo: Path) -> list[dict[str, Any]]:
             "_error": None,
         }
         try:
-            # `stat` DENTRO da guarda, junto do read: o dir de pending é a única
-            # superfície editável, então uma sheet pode ser apagada/renomeada
-            # entre o `glob` acima e o `stat` aqui. Fora da guarda esse OSError
-            # subiria como 500 em /api/snapshot, /api/overview E /api/repo, e
-            # ainda mataria o gerador do SSE — derrubando toda UI conectada. Uma
-            # sheet que some no meio da varredura degrada a uma entry com `_error`.
+            # `stat` INSIDE the guard, alongside the read: the pending dir is the
+            # only editable surface, so a sheet can be deleted/renamed between the
+            # `glob` above and the `stat` here. Outside the guard that OSError would
+            # bubble up as a 500 in /api/snapshot, /api/overview AND /api/repo, and
+            # would even kill the SSE generator — taking down every connected UI. A
+            # sheet that vanishes mid-scan degrades to an entry with `_error`.
             entry["_mtime"] = path.stat().st_mtime
             sheet = json.loads(path.read_text(encoding="utf-8-sig"))
         except (OSError, json.JSONDecodeError) as exc:
-            entry["_error"] = f"sheet ilegível: {exc}"
+            entry["_error"] = f"unreadable sheet: {exc}"
             entry["sheet"] = None
         else:
             entry["sheet"] = sheet
@@ -421,10 +420,10 @@ def read_pending(repo: Path) -> list[dict[str, Any]]:
 
 
 def read_repo(repo: Path, limit: int, prompt_limit: int) -> dict[str, Any]:
-    """Estado de um repo: sheets pendentes + as `limit` dispatches mais recentes.
+    """A repo's state: pending sheets + the `limit` most recent dispatches.
 
-    Passa pelo cache de parse, mas a FORMA do retorno é intocada: dez variantes
-    de UI e os testes já consomem exatamente estas chaves.
+    Goes through the parse cache, but the SHAPE of the return is untouched: ten UI
+    variants and the tests already consume exactly these keys.
     """
     data = load_repo_rows(repo)
     result: dict[str, Any] = {
@@ -447,7 +446,7 @@ def read_repo(repo: Path, limit: int, prompt_limit: int) -> dict[str, Any]:
     result["total_dispatches"] = len(joined)
     result["open_dispatches"] = sum(1 for d in joined if d["_state"] == "open")
 
-    # Mais recentes primeiro; o ledger é cronológico por append.
+    # Most recent first; the ledger is chronological by append.
     result["dispatches"] = [
         truncate_prompts(d, prompt_limit) for d in reversed(joined)
     ][:limit]
@@ -455,7 +454,7 @@ def read_repo(repo: Path, limit: int, prompt_limit: int) -> dict[str, Any]:
 
 
 def find_dispatch(repo: Path, dispatch_id: str) -> dict[str, Any] | None:
-    """Uma dispatch, sem truncar nada — para a visão de detalhe."""
+    """One dispatch, truncating nothing — for the detail view."""
     data = load_repo_rows(repo)
     if not data.ledger_exists:
         return None
@@ -466,12 +465,12 @@ def find_dispatch(repo: Path, dispatch_id: str) -> dict[str, Any] | None:
 
 
 # ---------------------------------------------------------------------------
-# Agregações
+# Aggregations
 # ---------------------------------------------------------------------------
 
 
 def _iso_day(value: Any) -> str | None:
-    """`YYYY-MM-DD` do começo de uma string ISO-8601, se houver."""
+    """`YYYY-MM-DD` from the start of an ISO-8601 string, if any."""
     if not isinstance(value, str):
         return None
     match = _ISO_DAY_RE.match(value.strip())
@@ -481,29 +480,29 @@ def _iso_day(value: Any) -> str | None:
     try:
         date(year, month, day)
     except ValueError:
-        return None  # 2026-13-45 casa o regex mas não é um dia
+        return None  # 2026-13-45 matches the regex but isn't a day
     return match.group(0)
 
 
 def iso_date(row: dict[str, Any]) -> str | None:
-    """O dia `YYYY-MM-DD` de uma dispatch, com fallback pelo `dispatch_id`.
+    """A dispatch's `YYYY-MM-DD` day, with a fallback via the `dispatch_id`.
 
-    O dia é derivado do UTC do `created` (que termina em `Z`), NÃO do fuso do
-    usuário. É uma escolha, e a escolha é essa por um motivo: o `dispatch_id` —
-    a única fonte de dia que as rows legacy têm — já é escrito com prefixo de
-    data, e servidor e cliente precisam concordar sobre em qual coluna do
-    gráfico uma dispatch cai. Converter para o local do navegador faria a mesma
-    row pular de bucket dependendo de quem olha. Na prática o desvio é de no
-    máximo um dia, e só para dispatches perto da virada UTC.
+    The day is derived from the UTC of `created` (which ends in `Z`), NOT the
+    user's timezone. It's a choice, and it's that choice for a reason: the
+    `dispatch_id` — the only source of a day that legacy rows have — is already
+    written with a date prefix, and server and client must agree on which chart
+    column a dispatch falls in. Converting to the browser's local time would make
+    the same row jump buckets depending on who's looking. In practice the drift is
+    at most one day, and only for dispatches near the UTC rollover.
 
-    Precedência: `created` → `_close.closed` → prefixo do `dispatch_id` → None.
-    O `_close.closed` vem ANTES do prefixo do id porque é STAMPADO pelo appender
-    (append-dispatch.cjs:351) — é autoritativo, enquanto o prefixo `YYYY-MM-DD`
-    do id é só convenção não-forçada (o appender não valida o formato do id). Uma
-    close row órfã com id malformado ainda tem o timestamp exato do fechamento em
-    `_close.closed`; sem essa precedência ela ficaria sem data com o dado à mão.
-    O prefixo do id fica por último — é o que recupera o dia das rows pré-v0.5.2
-    que não têm `created` nem `_close`.
+    Precedence: `created` → `_close.closed` → `dispatch_id` prefix → None. The
+    `_close.closed` comes BEFORE the id prefix because it's STAMPED by the appender
+    (append-dispatch.cjs:351) — it's authoritative, whereas the id's `YYYY-MM-DD`
+    prefix is just an unenforced convention (the appender doesn't validate the id
+    format). An orphan close row with a malformed id still has the exact closing
+    timestamp in `_close.closed`; without this precedence it would be left dateless
+    with the data in hand. The id prefix comes last — it's what recovers the day
+    for pre-v0.5.2 rows that have neither `created` nor `_close`.
     """
     day = _iso_day(row.get("created"))
     if day:
@@ -517,7 +516,7 @@ def iso_date(row: dict[str, Any]) -> str | None:
 
 
 def _type_of(row: dict[str, Any]) -> str:
-    """`dispatch_type`, ou o bucket explícito quando ausente/não-string."""
+    """`dispatch_type`, or the explicit bucket when absent/non-string."""
     value = row.get("dispatch_type")
     return value if isinstance(value, str) and value else NO_TYPE
 
@@ -525,15 +524,15 @@ def _type_of(row: dict[str, Any]) -> str:
 def summarize_repo(
     repo: Path, *, today: str, pending: list[dict[str, Any]] | None = None
 ) -> dict[str, Any]:
-    """Agregados sobre o ledger INTEIRO de um repo (não sobre a janela `limit`).
+    """Aggregates over a repo's ENTIRE ledger (not over the `limit` window).
 
-    Contagens são sempre sobre todas as rows joinadas: um painel que dissesse
-    "181 dispatches" mas contasse só as 40 servidas seria uma mentira silenciosa.
+    Counts are always over all joined rows: a panel that said "181 dispatches" but
+    counted only the 40 served would be a silent lie.
 
-    `pending` é opcional só por PERFORMANCE: aqui só se usa `len(pending)` para
-    `pending_count`, mas o `/api/overview` já lê as sheets pendentes por repo para
-    a lista de atenção. Passá-las evita um segundo `read_pending` (um glob de
-    disco) por repo por request. Ausente, lê por conta própria.
+    `pending` is optional only for PERFORMANCE: here only `len(pending)` is used,
+    for `pending_count`, but `/api/overview` already reads the pending sheets per
+    repo for the attention list. Passing them avoids a second `read_pending` (a
+    disk glob) per repo per request. Absent, it reads on its own.
     """
     data = load_repo_rows(repo, copy=False)
     rows = data.rows
@@ -583,18 +582,18 @@ def summarize_repo(
         "legacy": legacy_count,
         "by_type": dict(sorted(by_type.items())),
         "live": live_count,
-        # RESERVED = tipo não-dispatchável sob v0.6.0. Rows legacy ficam de fora
-        # dos dois lados: elas são de antes da distinção existir.
-        # CAVEAT (não é partição): `total == live + reserved + legacy` NÃO é
-        # garantido. Uma research row cujo `groups` falhou no parse leniente fica
-        # SEM `groups` → `_legacy=True` E `_live=True` ao mesmo tempo, contada nas
-        # duas contagens. A UI NÃO deve renderizar live/reserved/legacy como uma
-        # partição fechada de `total`. (Pinado em test_legacy_live_double_count.)
+        # RESERVED = a type not dispatchable under v0.6.0. Legacy rows stay out of
+        # both sides: they predate the distinction existing.
+        # CAVEAT (not a partition): `total == live + reserved + legacy` is NOT
+        # guaranteed. A research row whose `groups` failed the lenient parse ends up
+        # WITHOUT `groups` → `_legacy=True` AND `_live=True` at once, counted in both
+        # counts. The UI must NOT render live/reserved/legacy as a closed partition
+        # of `total`. (Pinned in test_legacy_live_double_count.)
         "reserved": sum(1 for r in rows if not r.get("_live") and not r.get("_legacy")),
         "pending_count": len(pending),
         "today": {"created": created_today, "closed": closed_today},
-        # Mesmo número que `open`, com nome próprio: a superfície "em execução"
-        # da UI é conceitualmente outra coisa e pode divergir na Fase 2.
+        # Same number as `open`, under its own name: the UI's "running" surface is
+        # conceptually a different thing and may diverge in Phase 2.
         "open_now": open_count,
         "first_day": min(days) if days else None,
         "last_day": max(days) if days else None,
@@ -603,7 +602,7 @@ def summarize_repo(
 
 
 def _group_stats(row: dict[str, Any]) -> dict[str, Any]:
-    """Achata `groups`/`connections` em contagens — o suficiente para a listagem."""
+    """Flattens `groups`/`connections` into counts — enough for the listing."""
     roles: dict[str, int] = {}
     group_count = 0
     robot_talks = False
@@ -639,12 +638,12 @@ def _group_stats(row: dict[str, Any]) -> dict[str, Any]:
 
 
 def slim(row: dict[str, Any], *, goal_limit: int = 240) -> dict[str, Any]:
-    """A dispatch em peso de listagem: cabeçalho + contagens, zero prompt.
+    """The dispatch at listing weight: header + counts, zero prompt.
 
-    As listagens novas percorrem o ledger inteiro (~700 rows), e é o
-    `initial_prompt` que carrega quase todo o byte. `truncate_prompts` encolhe
-    os prompts mas ainda envia a árvore de `groups`; aqui ela some inteira e
-    vira contagem. Quem quiser o texto pede `/api/dispatch/{repo}/{id}`.
+    The new listings walk the entire ledger (~700 rows), and it's `initial_prompt`
+    that carries almost every byte. `truncate_prompts` shrinks the prompts but
+    still sends the `groups` tree; here it disappears entirely and becomes a count.
+    Whoever wants the text requests `/api/dispatch/{repo}/{id}`.
     """
     goal = row.get("goal")
     truncated = False
@@ -655,8 +654,8 @@ def slim(row: dict[str, Any], *, goal_limit: int = 240) -> dict[str, Any]:
     close = row.get("_close")
     slim_close = None
     if isinstance(close, dict):
-        # Só o que a listagem mostra. `agents_spawned` e `feedback_prompts`
-        # ficam para o detalhe — `feedback_prompts` é texto longo.
+        # Only what the listing shows. `agents_spawned` and `feedback_prompts`
+        # are left for the detail view — `feedback_prompts` is long text.
         slim_close = {
             "closed": close.get("closed"),
             "exit_reason": close.get("exit_reason"),
@@ -690,12 +689,12 @@ def slim(row: dict[str, Any], *, goal_limit: int = 240) -> dict[str, Any]:
 def daily_series(
     rows: list[dict[str, Any]], *, days: int | None = None
 ) -> dict[str, Any]:
-    """Histograma diário empilhado por `dispatch_type`.
+    """Daily histogram stacked by `dispatch_type`.
 
-    Os dias são CONTÍGUOS entre o primeiro e o último observado, com zeros nos
-    vazios. Pular os dias sem dispatch encolheria o eixo e faria uma cadência
-    irregular parecer regular — o gráfico mentiria exatamente sobre o que ele
-    existe para mostrar.
+    The days are CONTIGUOUS from the first to the last observed, with zeros in the
+    empty ones. Skipping the days without a dispatch would shrink the axis and make
+    an irregular cadence look regular — the chart would lie about exactly what it
+    exists to show.
     """
     counts: dict[str, dict[str, int]] = {}
     totals: dict[str, int] = {}
@@ -725,12 +724,12 @@ def daily_series(
     first = date.fromisoformat(min(counts))
     last = date.fromisoformat(max(counts))
 
-    # Clampa a borda SUPERIOR da janela a HOJE (UTC). O passado remoto já é capado
-    # por MAX_SPAN_DAYS abaixo, mas o futuro não era: um único typo de século (uma
-    # row datada 2126) viraria a âncora `last` e empurraria todas as rows reais
-    # para fora do range — o gráfico ficaria vazio por causa de UMA row. Datas
-    # além de hoje são out_of_range, não âncora. (Skew de relógio dentro do span é
-    # inofensivo — o ponto é o outlier de futuro distante que redefine o eixo.)
+    # Clamp the UPPER edge of the window to TODAY (UTC). The remote past is already
+    # capped by MAX_SPAN_DAYS below, but the future wasn't: a single century typo (a
+    # row dated 2126) would become the `last` anchor and push every real row out of
+    # range — the chart would go empty over ONE row. Dates beyond today are
+    # out_of_range, not an anchor. (Clock skew within the span is harmless — the
+    # point is the far-future outlier that redefines the axis.)
     today = datetime.now(timezone.utc).date()
     if last > today:
         last = today
@@ -738,9 +737,9 @@ def daily_series(
         first = last
     span = (last - first).days + 1
 
-    # Uma única data corrompida (1970) esticaria o eixo para dezenas de milhares
-    # de buckets e derrubaria o cliente. Preferimos os dias mais RECENTES: o
-    # passado remoto de um ledger vivo é o que menos interessa.
+    # A single corrupted date (1970) would stretch the axis to tens of thousands of
+    # buckets and crash the client. We prefer the most RECENT days: the remote past
+    # of a live ledger is what matters least.
     truncated_span = span > MAX_SPAN_DAYS
     if truncated_span:
         span = MAX_SPAN_DAYS
@@ -779,19 +778,19 @@ def daily_series(
         "totals": totals,
         "max_day": max_day,
         "undated": undated,
-        # Rows datadas que caíram fora da janela (por cap de span ou por `days`).
-        # `totals` conta só o que está plotado, então este número é o que faltaria
-        # para fechar com `summarize_repo.total`.
+        # Dated rows that fell outside the window (by span cap or by `days`).
+        # `totals` counts only what's plotted, so this number is what would be
+        # missing to reconcile with `summarize_repo.total`.
         "out_of_range": out_of_range,
         "truncated_span": truncated_span,
     }
 
 
 def signature(repos: list[Path]) -> tuple:
-    """Impressão barata do estado em disco, para detectar mudança sem reparsear.
+    """Cheap fingerprint of the on-disk state, to detect change without reparsing.
 
-    Cobre o ledger e cada sheet pendente (mtime + tamanho). Um append muda o
-    tamanho; uma edição de sheet muda o mtime.
+    Covers the ledger and each pending sheet (mtime + size). An append changes the
+    size; a sheet edit changes the mtime.
     """
     parts: list[tuple] = []
     for repo in repos:

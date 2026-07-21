@@ -6,7 +6,7 @@ authority_level: exploratory
 owner: Victor
 created: 2026-07-20
 last_updated: 2026-07-20
-tags: [orquestracao, kahneman, thaler, categorias, ruido, vies, ETE, nudge, anti-bias, tagueamento, persona, frame, refine, citacao, chave-de-paper]
+tags: [orchestration, kahneman, thaler, categories, noise, bias, ETE, nudge, anti-bias, tagging, persona, frame, refine, citation, paper-key]
 ---
 
 # Thesis — The orchestrator as a noise-reduction machine
@@ -30,14 +30,14 @@ two compose:
 > **`judgment residue = bias ⊕ noise`** — and reducing them calls for **distinct
 > tools**, applied at **distinct stages** of the agent pipeline.
 
-> **Revision (2026-07-20, promoted by the `costura-feasibility` research).** `⊕` **is
+> **Revision (2026-07-20, promoted by the `seam-feasibility` research).** `⊕` **is
 > not a free orthogonal direct sum**. It holds as an Amari Pythagorean theorem **under
 > an imported Legendre potential `F`** (dually flat geometry; **without** a Fisher
 > metric) — and that `F` is precisely the *"anchored common scale / MAP"* already used
 > in this thesis, which thus pays the toll without naming it. **Without `F`**, the
 > honest form is `residue = bias * noise`: two entropic (KL) contributions, **not**
 > orthogonal legs. Proof and boundaries in
-> `docs/essays/orquestrador-anti-ruido/research/costura-feasibility/findings.md`.
+> `docs/essays/anti-noise-orchestrator/research/seam-feasibility/findings.md`.
 
 The thesis is falsifiable (see *Collapse-tests*). It is also a **self-application**:
 the process that produces knowledge here is an instance of the epistemological
@@ -67,7 +67,7 @@ discussion in between") is *exactly* the canonical noise-reduction lever (Kahnem
 Sibony, Sunstein, *Noise*, 2021): the average of N **independent** judgments cancels
 noise on the order of √N.
 
-> **Revision (2026-07-20, `costura-feasibility`).** `√N` is an **L2/CLT** fact — it
+> **Revision (2026-07-20, `seam-feasibility`).** `√N` is an **L2/CLT** fact — it
 > holds under the Gaussian/quadratic regime (`F=‖·‖²`, where the mean is the Banerjee
 > minimizer). **Outside the CLT** (entropic regime), concentration is **Sanov /
 > large-deviation, not 1/N**. State `√N` as the special case; the general guarantee is
@@ -114,7 +114,7 @@ is **separation by stage**:
 Two axes, two stages, two populations. This separation dissolves the contradiction
 and is the most load-bearing design principle of this thesis.
 
-> **Revision (2026-07-20, `costura-feasibility`).** "Orthogonal" here is **licensed,
+> **Revision (2026-07-20, `seam-feasibility`).** "Orthogonal" here is **licensed,
 > not free**: `bias ⊥ noise` is only a direct sum under the potential `F` (= the
 > *anchored common scale*) and with the divergence oriented in the **first slot**
 > (M-projection/reverse-KL); reversed, the cross term reappears (Jensen gap). And
@@ -142,7 +142,7 @@ the `check-tension` gate that *blocks*, the append-only ledger, the human-gate a
 button are choice architecture. Naming the axis just makes explicit what is already
 latent.
 
-> **Revision (2026-07-20, `costura-feasibility`).** "Nudge = morphism over the
+> **Revision (2026-07-20, `seam-feasibility`).** "Nudge = morphism over the
 > process" **does not type inside a single-judgment optic** — there the 2-cell is
 > the *coend witness* itself and collapses (either it's the identity, or it touches
 > the content). The teeth are **real one floor up**, in the **coupling fiber** of the
@@ -281,7 +281,7 @@ flagging what's left to build.
 | Hygiene default | T | make the hygienic path the default | human-gate + `check-tension` that **blocks** (already choice architecture) |
 | Deliberate sludge | T | friction that forces the correct sequence | **PENDING** — gate that blocks discussion before freezing |
 | Token-budget as nudge | T | scarcity forces compression/decision | `token_budget` in schema v0.6.0 **exists**; use as a nudge is design |
-| CT operationalization (~1:1 analogy) | CT | informal Kahneman → objects that compose/measure; use **only where the mapping is tight**, otherwise it stays informal | **operational** (`costura-feasibility`): ⊕↦Amari-Pythagorean under `F`, √N↦regime-dependent concentration, aggregation↦m-projection, nudge↦morphism on the coupling fiber; **OPEN**: ⊥ surviving composition (DPI). See `[[BET-CT]]` |
+| CT operationalization (~1:1 analogy) | CT | informal Kahneman → objects that compose/measure; use **only where the mapping is tight**, otherwise it stays informal | **operational** (`seam-feasibility`): ⊕↦Amari-Pythagorean under `F`, √N↦regime-dependent concentration, aggregation↦m-projection, nudge↦morphism on the coupling fiber; **OPEN**: ⊥ surviving composition (DPI). See `[[BET-CT]]` |
 | Frame (framing the question) | K·CT | an ill-posed lens poisons everything downstream; framing is a judgment (bias ⊕ noise) | **PENDING** — new stage; tension arm + independent-dispersion arm (`[[OQ-4]]`) |
 | Refine (loop operator) | — | improvement through bounded iteration, cross-cutting any node | skill `refine` **exists** (fixed conveyor + budget); solo convergence **PENDING** (not the zig-zag nor the dispatch dials) |
 | Citation spine (key + flow + claim↦ref) | K | evidence without an anchor is not evidence (`claim ≤ proof`) | partial: `derives-from` **exists**; key + link-quality (`supports`/`mentioned`) + `reasoning` valve **PENDING** |
@@ -373,7 +373,7 @@ Proposed precedence **DOI > arXiv > URL > hash**; but neither MOGT-scaffolding n
 CANONICAL-KINDS brings a bibliographic schema or deduplication — it's a piece to be
 invented. *Recommendation:* a stable per-source key in the append-only ledger;
 dedup by key on entry; an orphan claim (no key) rejected by the
-observability-output validator. `[[espinha-de-citacao]]`
+observability-output validator. `[[citation-spine]]`
 
 **OQ-8 — How to build the frame's noise arm (independent frames +
 dispersion-as-signal)?**
@@ -384,7 +384,7 @@ the table; still to design: how many frames, how to measure dispersion of questi
 (non-averageable), and the trigger that separates "ill-posed" from "rich".
 *Recommendation:* reuse the dispersion-as-noise engineering from OQ-4, don't invent
 a new metric. Raised by the red-team in `2026-07-20-anti-ruido-frame-refine-review`.
-`[[frame-braco-de-ruido]]`
+`[[frame-noise-arm]]`
 
 > The four OQs below were raised by the delta red-team
 > `2026-07-20-hyp-orch-noise-delta-review` (attackers: Fritz on CT-substance, Popper
@@ -405,9 +405,9 @@ falsified, re-typed", not a clean survival; reserve "survived" for after a decis
 actually moves (the predict/correct test, not mere existence of a map); reconcile the
 mapping list between the table row and BET-CT.
 
-**OQ-10 — Do the `costura-feasibility` formal identifications hold? (challenges a
+**OQ-10 — Do the `seam-feasibility` formal identifications hold? (challenges a
 promoted research finding — owner's call)**
-The same red-team flagged four fidelity gaps in the promoted `costura` revisions,
+The same red-team flagged four fidelity gaps in the promoted `seam` revisions,
 none yet adjudicated:
 - **`F = anchored common scale / MAP`** is asserted by naming, not constructed —
   Amari-Pythagoras needs `F` to be a convex Legendre potential *generating* the
@@ -424,7 +424,7 @@ none yet adjudicated:
   governs typical `1/√N` fluctuations, the LDP governs the tails); `√N` is an
   L2/Bienaymé fact needing only finite variance.
 *Recommendation:* these challenge a **promoted** research finding, so route them back
-to `costura-feasibility` to defend or correct (don't silently overwrite) — either
+to `seam-feasibility` to defend or correct (don't silently overwrite) — either
 display `F` explicitly (convex potential + its Bregman divergence + the m-flat
 submanifold) or fall back to the honest `residue = bias * noise`; separate the
 (F-independent) minimizer from the (F-dependent) rate; reword CLT/Sanov as coexisting.
@@ -459,7 +459,7 @@ count/training, so residual spread can be attributed.
   disperse, the frame's noise arm measures nothing; if they disperse always with no
   recoverable signal, it's a chronically ill-posed problem — in neither case does
   dispersion-as-signal (`[[OQ-4]]`) hold up.
-- **(new, `costura-feasibility`) Compositionality.** If the `bias ⊕ noise`
+- **(new, `seam-feasibility`) Compositionality.** If the `bias ⊕ noise`
   decomposition and the nudge re-typing only hold **pointwise per stage** and do
   **not** survive the functorial composition of stages/dispatch, then
   separation-by-stage is a design tool with no formal guarantee — and the thesis
@@ -485,7 +485,7 @@ to avoid duplication (single source).
   analogy" only where the fit is tight.
 - *Carries:* the passage from informal-thesis → computable architecture; the `⊕`,
   the `√N`, the aggregation.
-- *Status:* **survived once** (`costura-feasibility`: ⊕↦Amari-Pythagorean under
+- *Status:* **survived once** (`seam-feasibility`: ⊕↦Amari-Pythagorean under
   `F`, √N↦regime-dependent concentration, nudge↦coupling-fiber). **In-test:**
   persona, tag, fork-guard.
 - *Falsifier (per construct):* false **for that construct** if the candidate tool
@@ -502,7 +502,7 @@ to avoid duplication (single source).
 
 **BET-√N — independence gives a material noise reduction.**
 - *Bet:* independent evaluators, common scale, source-blind, reduce noise with gain
-  **∝ √N_effective** (exponent conditional on regime — see the `costura`
+  **∝ √N_effective** (exponent conditional on regime — see the `seam`
   revision).
 - *Carries:* the entire anti-noise lever (aggregation, MAP, scorer panel).
 - *Status:* **in-test**.

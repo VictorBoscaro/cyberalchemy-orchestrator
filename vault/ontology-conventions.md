@@ -53,7 +53,7 @@ are surfaced when existing labels fail to disambiguate nodes.
 3. [`layer` — System Scope](#layer--system-scope)
 4. [`nature` — Document Format](#nature--document-format)
 5. [`status` — Maturity Level](#status--maturity-level)
-6. [`veracidade` and `convicção` — The Two Dimensions of Confidence](#veracidade-and-convicção--the-two-dimensions-of-confidence)
+6. [`veracity` and `conviction` — The Two Dimensions of Confidence](#veracity-and-conviction--the-two-dimensions-of-confidence)
 7. [`tags` — Domain Keywords](#tags--domain-keywords)
 8. [Edge Types (Connections Section)](#edge-types-connections-section)
 9. [The Orthogonality Principle](#the-orthogonality-principle)
@@ -75,8 +75,8 @@ session_ref: <session-id> | null       # Optional — the session that produced 
 layer: ontology | architecture | domain | application | external  # Multi-value allowed
 nature: explanatory | procedural | reference | technical          # Multi-value allowed
 status: draft | exploratory | active | consolidated | evergreen
-veracidade: high | medium | low        # Belief nodes only (see applicability)
-convicção: high | medium | low         # Belief nodes only (see applicability)
+veracity: high | medium | low        # Belief nodes only (see applicability)
+conviction: high | medium | low         # Belief nodes only (see applicability)
 version: 0.x.x
 last_updated: YYYY-MM-DD
 ---
@@ -91,7 +91,7 @@ last_updated: YYYY-MM-DD
 `node_type` classifies **what role this document plays** in the knowledge graph — what
 kind of claim it makes and how it participates. The role is intrinsic and does not change
 with maturity: an axiom stays an axiom whether it's `draft` or `evergreen`. Trust levels
-are captured by `status`, `veracidade`, and `convicção`.
+are captured by `status`, `veracity`, and `conviction`.
 
 The clearest way to assign `node_type` is to ask: *"If someone challenges this document,
 what is the right response?"*
@@ -118,17 +118,17 @@ knowledge graph**. An axiom anchors the graph — everything derives from it. A 
 a branch that might be pruned. A constitution is a law that governs behavior. Without
 `node_type`, every document looks equally authoritative.
 
-### How it differs from `status` and `convicção`
+### How it differs from `status` and `conviction`
 
 - **`node_type`** measures the **role** — what kind of claim it makes. It almost never
   changes. An axiom stays an axiom; a spec stays a spec.
 - **`status`** measures the **maturity** — how much it's been reviewed and tested. It
   changes frequently, from `draft` toward `evergreen`.
-- **`convicção`** measures the **bet** — how committed the team is. It shifts as strategy
-  shifts. A premise can go from `high` to `low` convicção.
+- **`conviction`** measures the **bet** — how committed the team is. It shifts as strategy
+  shifts. A premise can go from `high` to `low` conviction.
 
 > **The hypothesis → premise → law arc (this repo's extension).** A `candidate` framing
-> in `vault/hypothesis/` is a falsifiable thesis (`node_type: premise`, low veracidade). A
+> in `vault/hypothesis/` is a falsifiable thesis (`node_type: premise`, low veracity). A
 > `constitution` ratifies the rules a thesis has earned. In this repo we go one step
 > finer: **each rule inside a candidate constitution is itself a hypothesis** — it states a
 > claim and what would falsify it, and carries its own confidence labels — until it
@@ -219,10 +219,10 @@ Each status level has precise **entry and exit criteria**. See
 
 ---
 
-## `veracidade` and `convicção` — The Two Dimensions of Confidence
+## `veracity` and `conviction` — The Two Dimensions of Confidence
 
 Every belief document (and, in this repo, every candidate **rule**) can be labeled with
-two confidence metrics: **veracidade** (evidence) and **convicção** (commitment).
+two confidence metrics: **veracity** (evidence) and **conviction** (commitment).
 
 ### Why two dimensions?
 
@@ -232,20 +232,20 @@ responses. Orthogonality eliminates the ambiguity.
 
 ### The difference between them
 
-**Veracidade** measures how much the world confirms this — external evidence, determined
+**Veracity** measures how much the world confirms this — external evidence, determined
 by reality (data, tests, production results). It changes through evidence. Low = "we
 haven't tested this yet." High = "this has been tested and confirmed."
 
-**Convicção** measures how hard the team is betting on this — internal posture,
+**Conviction** measures how hard the team is betting on this — internal posture,
 determined by the team (strategy, priorities, resource allocation). It changes through
 decisions. Low = "we aren't committing resources." High = "we are building around this."
 
 ### The 2×2 Matrix
 
-- `veracidade:low` + `convicção:high` → **A Strategic Bet.** Building around it before it's proven.
-- `veracidade:high` + `convicção:low` → **An Ignored Fact.** Established, but we don't act on it.
-- `veracidade:high` + `convicção:high` → **A Consolidated Law.** Proven and actively driving design.
-- `veracidade:low` + `convicção:low` → **A Loose Thread.** Untested, nobody acting on it. Record, don't build on.
+- `veracity:low` + `conviction:high` → **A Strategic Bet.** Building around it before it's proven.
+- `veracity:high` + `conviction:low` → **An Ignored Fact.** Established, but we don't act on it.
+- `veracity:high` + `conviction:high` → **A Consolidated Law.** Proven and actively driving design.
+- `veracity:low` + `conviction:low` → **A Loose Thread.** Untested, nobody acting on it. Record, don't build on.
 
 ### Applicability
 
@@ -257,7 +257,7 @@ observable, not estimated).
 > **This repo's extension for `constitution`.** ZefraHub omits these fields for
 > constitutions (a constitution is ratified or not — that's `status`). Here, while a
 > constitution is `candidate`/unreviewed, **each of its rules is treated as a falsifiable
-> hypothesis** and carries `veracidade`/`convicção` **inline, per rule** — because a
+> hypothesis** and carries `veracity`/`conviction` **inline, per rule** — because a
 > candidate rule is a claim before it is law. The document-level constitution still omits
 > the fields; only the rules carry them, and they drop away when a rule is promoted to a
 > premise and the constitution is ratified. See [[frontend-constitution]].
@@ -307,7 +307,7 @@ For the full catalog of 14 edge types, see [Appendix C](#appendix-c-edge-type-ca
 > resolved before a document moves up a level. Its **absence does not mean the vault is
 > contradiction-free** — only that none have been formally identified.
 
-> `validates` is the mechanism for a document to increase its `veracidade` over time.
+> `validates` is the mechanism for a document to increase its `veracity` over time.
 
 ---
 
@@ -323,7 +323,7 @@ two levels:
 
 ### Level 1: Labels
 
-The 7 labels (`node_type`, `layer`, `nature`, `status`, `veracidade`, `convicção`,
+The 7 labels (`node_type`, `layer`, `nature`, `status`, `veracity`, `conviction`,
 `tags`) are designed so that **knowing one gives no information about another.**
 
 > **Admission question for a new label:** *"Can I predict this label's value from the
@@ -386,15 +386,15 @@ The test: *"If someone challenges this, what is the right response?"*
 | node_type | Definition | Example (this repo) |
 | --- | --- | --- |
 | `axiom` | Foundational commitment taken as given. Revising it forces rethinking everything built on it. | `PLAN.md` §1 (A6 "framework as its own instance") |
-| `premise` | Working bet — an informed hypothesis that guides decisions but may be disproven. Carries confidence labels. | [[orquestracao-anti-ruido]] (HYP-ORCH-NOISE) |
+| `premise` | Working bet — an informed hypothesis that guides decisions but may be disproven. Carries confidence labels. | [[anti-noise-orchestration]] (HYP-ORCH-NOISE) |
 | `constitution` | An enforceable rule set, formally ratified. Versioned, amended through governance. | [[frontend-constitution]] (CONST-FE) |
 | `discovery` | Exploratory mapping of a possibility space; investigates options without prescribing. | UI prior-art recon (2026-07-20 research dispatch) |
 | `implementation-plan` | Actionable roadmap with phases, dependencies, success criteria. | `PLAN.md` phase/E-item breakdown |
 | `spec` | Behavioral description kept in sync with code. | `implementations/UI-CONTRACT.md` |
 | `audit` | Evaluative assessment of current state against rules/quality standards. | ledger enum-drift finding (2026-07-18 close rows) |
 | `conceptual` | Explanatory context that grounds understanding without prescribing behavior. | `README.md`, `FRAMINGS.md` |
-| `essay` | A committed argument from lived experience; authorial voice is part of the meaning. | `docs/essays/orquestrador-anti-ruido/README.md` |
-| `test` | A record of executable validation; generates evidence that raises `veracidade`. | `implementations/tests/` runs |
+| `essay` | A committed argument from lived experience; authorial voice is part of the meaning. | `docs/essays/anti-noise-orchestrator/README.md` |
+| `test` | A record of executable validation; generates evidence that raises `veracity`. | `implementations/tests/` runs |
 | `backlog` | Prioritized pending work / open questions awaiting scheduling. | Next-Step lists in session notes |
 | `readme` | Reflects what's actually in a directory. | any `README.md` |
 
@@ -427,7 +427,7 @@ The test: *"If someone challenges this, what is the right response?"*
 | **consolidated** | Version ≥ 1.0; no open `contradicts` edges; referenced by ≥2 lower-level docs. | Formal review confirms it; no open controversy. |
 | **evergreen** | Approved by formal review; no known contradictions; tested against multiple real scenarios. | Only leaves by documented refutation + formal review — **never by abandonment.** |
 
-### `veracidade` (evidence) — Operational Criteria
+### `veracity` (evidence) — Operational Criteria
 
 | Value | Criteria |
 | --- | --- |
@@ -435,7 +435,7 @@ The test: *"If someone challenges this, what is the right response?"*
 | **medium** | Derived from established principles/industry patterns, but not yet tested in *this* system. Reasonable extrapolation. |
 | **low** | Untested hypothesis, projection, or interpretation. Only a plausible argument. |
 
-### `convicção` (commitment) — Operational Criteria
+### `conviction` (commitment) — Operational Criteria
 
 | Value | Criteria |
 | --- | --- |
@@ -443,9 +443,9 @@ The test: *"If someone challenges this, what is the right response?"*
 | **medium** | Influences decisions but doesn't block them. We'd adjust course if disproven, without a rewrite. |
 | **low** | Exploration, no firm position. Noted, not acted on. |
 
-### `veracidade` Criteria by `node_type` (selected)
+### `veracity` Criteria by `node_type` (selected)
 
-| node_type | `veracidade: high` means | `veracidade: low` means |
+| node_type | `veracity: high` means | `veracity: low` means |
 | --- | --- | --- |
 | **axiom** | Well-established principle in the field | Novel assumption, no external validation |
 | **premise** | Hypothesis tested in production or backed by data | Untested working bet |
@@ -464,7 +464,7 @@ The test: *"If someone challenges this, what is the right response?"*
 | `derives-from` | A was motivated by, built upon, or generated by B | The canonical parent→child chain |
 | `grounds` | A is the foundation B is built upon | Theoretical inverse of `derives-from` |
 | `implements` | A is the concrete implementation of B | B is a spec/constitution; A is code or a concrete doc |
-| `validates` | A provides evidence or tests that prove B | Increases B's `veracidade` |
+| `validates` | A provides evidence or tests that prove B | Increases B's `veracity` |
 | `promotes-from` | A is a ratification of the thesis stated in B | Constitution ← hypothesis (this repo's arc) |
 | `exemplifies` | A is a concrete example of B | B is abstract; A is an instance |
 | `refines` | A is a more detailed version of B | Incremental depth, same topic |
@@ -485,12 +485,12 @@ The test: *"If someone challenges this, what is the right response?"*
 | **`layer`** | *What part of the system does it concern?* | Scope: ontology, architecture, domain, application, external | `node_type`, `nature` |
 | **`nature`** | *What structural format does it use?* | Reading instruction: prose, steps, table, schema | `node_type`, `layer` |
 | **`status`** | *How mature/trusted is it?* | Lifecycle: draft → … → evergreen | `node_type`, `nature` |
-| **`veracidade`** | *How much evidence backs it?* | External evidence: how tested against reality | `convicção` |
-| **`convicção`** | *How hard are we betting on it?* | Internal commitment: how much it drives decisions | `veracidade` |
+| **`veracity`** | *How much evidence backs it?* | External evidence: how tested against reality | `conviction` |
+| **`conviction`** | *How hard are we betting on it?* | Internal commitment: how much it drives decisions | `veracity` |
 | **`tags`** | *What specific topics does it touch?* | Domain keywords | All others |
 
 > **Why not fewer labels?** Merging `node_type` and `status` would lose "an axiom in
-> draft" vs "a premise that's consolidated." Merging `veracidade` and `convicção` would
+> draft" vs "a premise that's consolidated." Merging `veracity` and `conviction` would
 > lose "a strategic bet" vs "an ignored fact." Each label captures information no other
 > can express.
 
@@ -498,7 +498,7 @@ The test: *"If someone challenges this, what is the right response?"*
 
 | Document | Type | Description |
 | --- | --- | --- |
-| [[frontend-constitution]] | `exemplifies` | First constitution whose rules carry per-rule `veracidade`/`convicção` + inline falsifiability. |
-| [[orquestracao-anti-ruido]] | `contextualizes` | Anti-noise thesis; its `residue = bias ⊕ noise` shares the entropy/orthogonality lever. |
+| [[frontend-constitution]] | `exemplifies` | First constitution whose rules carry per-rule `veracity`/`conviction` + inline falsifiability. |
+| [[anti-noise-orchestration]] | `contextualizes` | Anti-noise thesis; its `residue = bias ⊕ noise` shares the entropy/orthogonality lever. |
 | [FRAMINGS.md](../FRAMINGS.md) | `grounds` | F1/F2 (`shadow ⊕ structure`, entropy as log-cardinality) is the formal root of the orthogonality principle. |
 | ZefraHub `ontology-conventions.md` v1.4.0 | `derives-from` | Source document this was ported and adapted from. |

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -137,7 +137,7 @@
   .sec-head .hint { font-size: 12px; color: var(--text-3); }
   .sec { margin-bottom: 30px; }
 
-  /* ---------- pendentes ---------- */
+  /* ---------- pending ---------- */
   .pending-zone {
     background: linear-gradient(180deg, #f4f4fe, rgba(244,244,254,0));
     border: 1px solid #e2e2f5; border-radius: 12px; padding: 16px; margin-bottom: 30px;
@@ -171,7 +171,7 @@
   }
   .empty b { display: block; color: var(--text); font-weight: 580; margin-bottom: 2px; }
 
-  /* ---------- painel: hoje ---------- */
+  /* ---------- panel: today ---------- */
   .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(390px, 1fr)); gap: 18px; align-items: start; }
   .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-1); overflow: hidden; }
   .panel-head {
@@ -219,7 +219,7 @@
   .pill.plain { background: transparent; border: 0; color: var(--text-3); font-weight: 450; padding: 1px 2px; }
   .pill .swatch { width: 7px; height: 7px; border-radius: 2px; flex: none; }
 
-  /* ---------- repo grid (nível 0) ---------- */
+  /* ---------- repo grid (level 0) ---------- */
   .repo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 12px; }
   a.repo-card {
     display: block; background: var(--surface); border: 1px solid var(--border);
@@ -241,7 +241,7 @@
   .rc-path { font-size: 10.5px; color: var(--text-3); font-family: var(--mono); margin-top: 8px;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  /* ---------- repo header (nível 1) ---------- */
+  /* ---------- repo header (level 1) ---------- */
   .repo-hero { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 15px 17px; box-shadow: var(--shadow-1); margin-bottom: 18px; }
   .repo-hero h2 { margin: 0; font-size: 17px; font-weight: 640; letter-spacing: -.018em; }
   .repo-hero .path { font-size: 11.5px; color: var(--text-3); font-family: var(--mono); margin-top: 2px; word-break: break-all; }
@@ -279,7 +279,7 @@
   .plot-note { font-size: 11.5px; color: var(--text-3); margin-top: 2px; }
   .plot-note.warn { color: var(--amber); }
 
-  /* ---------- filtros ---------- */
+  /* ---------- filters ---------- */
   .filters { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
   .search {
     padding: 5px 9px; border: 1px solid var(--border); border-radius: 6px;
@@ -299,7 +299,7 @@
   }
   .load-more:hover { background: var(--surface-alt); }
 
-  /* ---------- nível 2 ---------- */
+  /* ---------- level 2 ---------- */
   .d-hero { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; box-shadow: var(--shadow-1); margin-bottom: 16px; }
   .d-id { font-family: var(--mono); font-size: 12px; color: var(--text-2); }
   .d-goal { font-size: 19px; font-weight: 600; letter-spacing: -.018em; margin: 8px 0 0; line-height: 1.35; max-width: 74ch; }
@@ -325,7 +325,7 @@
   .axis-hero.none .lbl { color: var(--text-3); }
   .axis-hero.none .txt { font-size: 13px; color: var(--text-3); }
 
-  /* topologia */
+  /* topology */
   .topo-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-1); margin-bottom: 16px; overflow: hidden; }
   .topo-head { display: flex; align-items: center; gap: 8px; padding: 9px 14px; background: var(--surface-alt); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
   .topo-head h3 { margin: 0; font-size: 12.5px; font-weight: 600; }
@@ -367,7 +367,7 @@
   .conn.zigzag .ctype { color: var(--amber); }
   .conn.feedback .ctype { color: var(--accent); }
 
-  /* grupos detalhados */
+  /* detailed groups */
   .group { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow-1); }
   .group-head { display: flex; align-items: center; gap: 8px; padding: 8px 13px; background: var(--surface-alt); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
   .group-head .gid { font-weight: 600; font-size: 12.5px; font-family: var(--mono); }
@@ -381,7 +381,7 @@
   .agent .nm { font-size: 12.5px; font-weight: 550; }
   .agent .nm.anon { color: var(--text-3); font-weight: 450; font-style: italic; }
   .agent .angle { font-size: 12.5px; color: var(--text-2); margin-top: 4px; max-width: 82ch; }
-  .agent .angle::before { content: "↳  ângulo: "; color: var(--text-3); }
+  .agent .angle::before { content: "↳  angle: "; color: var(--text-3); }
   .agent .no-angle { font-size: 12px; color: var(--text-3); margin-top: 4px; font-style: italic; }
   .agent details { margin-top: 6px; }
   .agent details > summary { cursor: pointer; font-size: 11.5px; color: var(--accent); list-style: none; display: inline-block; }
@@ -407,7 +407,7 @@
   .boot { padding: 60px; text-align: center; color: var(--text-3); }
   .back { font-size: 12.5px; color: var(--accent); }
 
-  /* ---------- badges de topologia no cartão (nível 1) ---------- */
+  /* ---------- topology badges on the card (level 1) ---------- */
   .cbadges { display: inline-flex; gap: 5px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
   .cbadge {
     display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 550;
@@ -418,7 +418,7 @@
   .cbadge.rt { color: #4a4ac4; background: var(--accent-soft); border-color: #dedef2; }
   .cbadge.rt .cbadge-sw { border-radius: 2px; border: 1.5px dashed var(--accent); background: transparent; }
 
-  /* ---------- legenda da topologia (nível 2) ---------- */
+  /* ---------- topology legend (level 2) ---------- */
   .topo-legend {
     display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center;
     padding: 7px 14px; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -428,7 +428,7 @@
   .topo-legend .t svg { display: block; }
   .topo-legend .t .rt-line { width: 16px; border-top: 2px dashed var(--accent); display: inline-block; }
 
-  /* ---------- nó de agente clicável no diagrama ---------- */
+  /* ---------- clickable agent node in the diagram ---------- */
   .ta.ta-click { cursor: pointer; border-radius: 6px; }
   .ta.ta-click:hover { background: var(--accent-soft); box-shadow: 0 0 0 4px var(--accent-soft); }
   .ta.ta-click:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -438,7 +438,7 @@
   }
   .ta.ta-click:hover::after, .ta.ta-click:focus-visible::after { color: var(--accent); }
 
-  /* ---------- modal de detalhe do agente ---------- */
+  /* ---------- agent detail modal ---------- */
   .agent-modal-backdrop {
     position: fixed; inset: 0; z-index: 100; background: rgba(24,24,27,.42);
     display: flex; align-items: flex-start; justify-content: center;
@@ -486,27 +486,27 @@
 </style>
 </head>
 <body>
-<div id="root"><div class="boot">Carregando estado…</div></div>
+<div id="root"><div class="boot">Loading state…</div></div>
 
 <script>
 (function () {
   "use strict";
 
-  /* ===================== estado ===================== */
+  /* ===================== state ===================== */
   var PAGE = 25;
-  // Espelha server/main.py:OPEN_ALL_CAP — o teto da lista "tudo que está aberto".
+  // Mirrors server/main.py:OPEN_ALL_CAP — the cap of the "everything that is open" list.
   var OPEN_ALL_CAP = 200;
 
   var S = {
     route: { level: 0 },
-    caps: null,            // {overview:bool, repo:bool} — descoberto via /openapi.json
+    caps: null,            // {overview:bool, repo:bool} — discovered via /openapi.json
     overview: null,
     overviewErr: null,
-    snapshot: null,        // só no modo degradado
-    repos: {},             // nome -> {data, err, loading}
+    snapshot: null,        // only in degraded mode
+    repos: {},             // name -> {data, err, loading}
     disp: {},              // "repo|id" -> {data, err, loading}
     connected: false,
-    degraded: false,       // true quando /api/overview não existe
+    degraded: false,       // true when /api/overview does not exist
     filters: { state: "all", type: "all", q: "", conn: "all" },
     span: "auto",
     limit: PAGE,
@@ -561,22 +561,22 @@
     var t = new Date(iso).getTime();
     if (isNaN(t)) return "";
     var s = Math.floor((Date.now() - t) / 1000);
-    if (s < 0) return "agora";
-    if (s < 60) return "agora";
+    if (s < 0) return "now";
+    if (s < 60) return "now";
     if (s < 3600) return Math.floor(s / 60) + " min";
     if (s < 86400) return Math.floor(s / 3600) + " h";
     if (s < 2592000) return Math.floor(s / 86400) + " d";
-    return Math.floor(s / 2592000) + " mes";
+    return Math.floor(s / 2592000) + " mo";
   }
   function dayOf(iso) {
-    // O `created` do ledger é ISO-8601 Z: seus 10 primeiros chars SÃO o dia UTC.
-    // Fatiar a string é o casamento mais barato e correto com `ledger._iso_day`.
+    // The ledger's `created` is ISO-8601 Z: its first 10 chars ARE the UTC day.
+    // Slicing the string is the cheapest and correct match with `ledger._iso_day`.
     var s = str(iso);
     return /^\d{4}-\d{2}-\d{2}/.test(s) ? s.slice(0, 10) : null;
   }
-  // Espelha `ledger.iso_date`: precedência created → _close.closed → prefixo do
-  // dispatch_id → sem data. Tudo em UTC, para uma row cair na MESMA barra
-  // independente de qual caminho (rico ou básico) a serviu.
+  // Mirrors `ledger.iso_date`: precedence created → _close.closed → prefix of the
+  // dispatch_id → no date. All in UTC, so a row falls on the SAME bar
+  // regardless of which path (rich or basic) served it.
   function isoDate(row) {
     row = obj(row);
     var day = dayOf(row.created);
@@ -585,8 +585,8 @@
     if (day) return day;
     return dayOf(row.dispatch_id);
   }
-  // Dia de HOJE em UTC — o MESMO referencial de `server.main.today_utc`. Usar o dia
-  // LOCAL aqui faria "hoje" da UI divergir do `_day` das rows por algumas horas.
+  // TODAY's day in UTC — the SAME reference as `server.main.today_utc`. Using the
+  // LOCAL day here would make the UI's "today" diverge from the rows' `_day` by a few hours.
   function utcToday() {
     var d = new Date();
     var p = function (n) { return n < 10 ? "0" + n : "" + n; };
@@ -606,7 +606,7 @@
     research: "#5b5bd6", review: "#1d4ed8", experiment: "#17803d",
     code: "#a35b06", plan: "#0e7490", suggestion: "#9333ea"
   };
-  var NO_TYPE = "(sem tipo)";
+  var NO_TYPE = "(no type)";
   function typeColor(t) {
     var k = t || NO_TYPE;
     if (k === NO_TYPE) return "#c4c4cc";
@@ -622,11 +622,11 @@
     error: "danger", dissent_irreconcilable: "danger"
   };
   var EXIT_LABEL = {
-    resolved: "resolvida", success: "resolvida",
-    loop_ceiling_reached: "teto de loops", user_abort: "abortada",
-    error: "erro", dissent_irreconcilable: "dissenso irreconciliável"
+    resolved: "resolved", success: "resolved",
+    loop_ceiling_reached: "loop ceiling", user_abort: "aborted",
+    error: "error", dissent_irreconcilable: "irreconcilable dissent"
   };
-  var MONTHS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+  var MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
   function isLive(d) {
     if (d && typeof d._live === "boolean") return d._live;
@@ -634,7 +634,7 @@
   }
   function pill(text, cls) { return el("span", "pill " + (cls || ""), text); }
 
-  /* ===================== rota ===================== */
+  /* ===================== route ===================== */
   function safeDecode(s) { try { return decodeURIComponent(s); } catch (e) { return s; } }
 
   function parseRoute() {
@@ -651,7 +651,7 @@
 
   /* ===================== fetch ===================== */
   function apiBase() {
-    // funciona servido pelo próprio leitor; cai para 127.0.0.1:8765 se aberto do disco
+    // works when served by the reader itself; falls back to 127.0.0.1:8765 if opened from disk
     return location.protocol === "file:" ? "http://127.0.0.1:8765" : "";
   }
   function jget(path) {
@@ -665,7 +665,7 @@
     });
   }
 
-  // Descobre quais endpoints existem SEM disparar 404 (que polui o console).
+  // Discovers which endpoints exist WITHOUT triggering a 404 (which pollutes the console).
   function probeCaps() {
     return jget("/openapi.json").then(function (spec) {
       var paths = Object.keys(obj(spec && spec.paths));
@@ -677,7 +677,7 @@
     });
   }
 
-  /* ===================== degradação: derivar de /api/snapshot ===================== */
+  /* ===================== degradation: derive from /api/snapshot ===================== */
   function slimFrom(d, repoName) {
     var groups = arr(d.groups);
     var roles = {};
@@ -689,13 +689,13 @@
       arr(g.agents).forEach(function (a) {
         a = obj(a);
         agentCount++;
-        var r = a.role || "(sem papel)";
+        var r = a.role || "(no role)";
         roles[r] = (roles[r] || 0) + 1;
       });
     });
     var ctypes = [];
     arr(d.connections).forEach(function (c) {
-      var t = obj(c).type || "sem tipo";
+      var t = obj(c).type || "no type";
       if (ctypes.indexOf(t) === -1) ctypes.push(t);
     });
     var close = d._close ? { closed: obj(d._close).closed, exit_reason: obj(d._close).exit_reason } : null;
@@ -727,8 +727,8 @@
       var k = d.dispatch_type || NO_TYPE;
       byType[k] = (byType[k] || 0) + 1;
       if (d._live) live++;
-      // RESERVED espelha o servidor: tipo não-LIVE E não-legacy. Rows legacy ficam
-      // de fora dos dois lados — são de antes da distinção existir (ledger.py:593).
+      // RESERVED mirrors the server: non-LIVE AND non-legacy type. Legacy rows are
+      // left out of both sides — they predate the distinction (ledger.py:593).
       else if (!d._legacy) reserved++;
       if (d._legacy) legacy++;
       if (d._day === today) tCreated++;
@@ -794,9 +794,9 @@
     openToday.sort(byCreated);
     recent.sort(byCreated);
 
-    // Espelha `attention` do servidor: capa `open_all` em OPEN_ALL_CAP e, quando
-    // passa disso, marca `_capped` (bool) + `_open_all_total` (int) — a MESMA
-    // forma do rico, para o render ler uma só forma independente do caminho.
+    // Mirrors the server's `attention`: caps `open_all` at OPEN_ALL_CAP and, when
+    // it exceeds that, sets `_capped` (bool) + `_open_all_total` (int) — the SAME
+    // shape as the rich path, so the render reads a single shape regardless of path.
     var attention = { pending: pending, open_today: openToday, open_all: openAll.slice(0, OPEN_ALL_CAP) };
     if (openAll.length > OPEN_ALL_CAP) {
       attention._capped = true;
@@ -830,9 +830,9 @@
         return c;
       }),
       dispatches: slims,
-      // Truncamento da JANELA do snapshot (só as N mais recentes vieram). É OUTRO
-      // conceito que o `attention._capped` do servidor — nome próprio para não
-      // colidir. O rico (/api/repo) traz o histórico inteiro e nunca seta isto.
+      // Truncation of the snapshot WINDOW (only the N most recent came). It is ANOTHER
+      // concept than the server's `attention._capped` — its own name so it does not
+      // collide. The rich path (/api/repo) brings the whole history and never sets this.
       _snapshot_capped: slims.length < sum.total ? slims.length : 0
     };
   }
@@ -873,7 +873,7 @@
     return { days: days, types: types, series: series, totals: totals, max_day: maxDay, undated: undated };
   }
 
-  /* ===================== carregamento ===================== */
+  /* ===================== loading ===================== */
   function loadOverview(force) {
     if (S.overviewLoading) return;
     if (S.overview && !force) return;
@@ -922,7 +922,7 @@
     }
     var use = function (snap) {
       var d = repoFromSnapshot(snap, name);
-      if (!d) { fail(new Error("repositório desconhecido")); return; }
+      if (!d) { fail(new Error("unknown repository")); return; }
       S.repos[name] = { loading: false, data: d, err: null };
       render();
     };
@@ -947,7 +947,7 @@
       });
   }
 
-  // Só na borda em que o painel não tem NENHUMA dispatch para mostrar.
+  // Only in the edge case where the panel has NO dispatch to show.
   function ensureRecentFallback() {
     if (S.degraded || S.snapshot || S.recentLoading) return;
     S.recentLoading = true;
@@ -995,7 +995,7 @@
     try { es = new EventSource(apiBase() + "/api/stream"); } catch (e) { return; }
     es.addEventListener("open", function () { S.connected = true; paintLive(); });
     es.addEventListener("snapshot", function () {
-      // Sinal de mudança: o payload não é usado direto; recarregamos o nível atual.
+      // Change signal: the payload is not used directly; we reload the current level.
       var first = !S.connected;
       S.connected = true;
       paintLive();
@@ -1008,7 +1008,7 @@
     n.setAttribute("data-testid", "live-indicator");
     n.setAttribute("data-live", S.connected ? "on" : "off");
     n.appendChild(el("span", "pulse"));
-    n.appendChild(el("span", null, S.connected ? "ao vivo · conectado" : "sem conexão ao vivo"));
+    n.appendChild(el("span", null, S.connected ? "live · connected" : "no live connection"));
     return n;
   }
   function paintLive() {
@@ -1027,7 +1027,7 @@
     brand.appendChild(mark);
     var bt = el("div");
     bt.appendChild(el("div", "brand-name", "Dispatch Control Plane"));
-    bt.appendChild(el("div", "brand-sub", "leitor — fase 1"));
+    bt.appendChild(el("div", "brand-sub", "reader — phase 1"));
     brand.appendChild(bt);
     aside.appendChild(brand);
 
@@ -1035,7 +1035,7 @@
     var ov = S.overview;
     var repos = arr(ov && ov.repos);
     var lbl = el("div", "side-label");
-    lbl.appendChild(el("span", null, "Repositórios"));
+    lbl.appendChild(el("span", null, "Repositories"));
     lbl.appendChild(el("span", null, String(repos.length)));
     nav.appendChild(lbl);
 
@@ -1043,7 +1043,7 @@
     all.href = "#/";
     all.setAttribute("aria-current", S.route.level === 0 ? "true" : "false");
     all.appendChild(el("span", "dot on"));
-    all.appendChild(el("span", "nm", "Painel"));
+    all.appendChild(el("span", "nm", "Dashboard"));
     nav.appendChild(all);
 
     repos.slice().sort(function (a, b2) {
@@ -1066,8 +1066,8 @@
 
     var cfg = obj(ov && ov.config);
     var foot = el("div", "side-foot");
-    foot.textContent = "limite " + (cfg.limit != null ? cfg.limit : "?") + "/repo · poll " +
-      (cfg.poll_seconds != null ? cfg.poll_seconds : "?") + "s" + (S.degraded ? " · modo básico" : "");
+    foot.textContent = "limit " + (cfg.limit != null ? cfg.limit : "?") + "/repo · poll " +
+      (cfg.poll_seconds != null ? cfg.poll_seconds : "?") + "s" + (S.degraded ? " · basic mode" : "");
     aside.appendChild(foot);
     return aside;
   }
@@ -1077,9 +1077,9 @@
     var cr = el("div", "crumbs");
     var r = S.route;
     if (r.level === 0) {
-      cr.appendChild(el("h1", null, "Painel"));
+      cr.appendChild(el("h1", null, "Dashboard"));
     } else {
-      cr.appendChild(link("#/", null, "Painel"));
+      cr.appendChild(link("#/", null, "Dashboard"));
       cr.appendChild(el("span", "sep", "/"));
       if (r.level === 1) {
         cr.appendChild(el("h1", null, r.repo));
@@ -1097,7 +1097,7 @@
     tot.setAttribute("data-testid", "total-count");
     tot.appendChild(el("b", null, String(num(t.total))));
     tot.appendChild(document.createTextNode(
-      " dispatches · " + num(t.open) + " abertas · " + num(t.pending) + " a confirmar"));
+      " dispatches · " + num(t.open) + " open · " + num(t.pending) + " to confirm"));
     bar.appendChild(tot);
     bar.appendChild(buildLive());
     return bar;
@@ -1115,7 +1115,7 @@
     return g;
   }
 
-  /* ===================== cartões ===================== */
+  /* ===================== cards ===================== */
   function countAgentsOf(d) {
     var n = 0;
     arr(d.groups).forEach(function (g) { n += arr(obj(g).agents).length; });
@@ -1124,7 +1124,7 @@
 
   function dispatchCard(repoName, d, opt) {
     opt = opt || {};
-    var id = d.dispatch_id || "(sem id)";
+    var id = d.dispatch_id || "(no id)";
     var state = d._state === "open" ? "open" : "closed";
     var close = obj(d._close);
     var exitR = close.exit_reason;
@@ -1143,7 +1143,7 @@
     a.appendChild(ic);
 
     var m = el("div", "dc-main");
-    m.appendChild(el("div", "dc-goal", d.goal || "(sem goal)"));
+    m.appendChild(el("div", "dc-goal", d.goal || "(no goal)"));
     var meta = el("div", "dc-meta");
     if (opt.showRepo && repoName) {
       meta.appendChild(el("span", "dc-repo", repoName));
@@ -1171,15 +1171,15 @@
     }
     m.appendChild(meta);
 
-    // Badges de topologia: robot talks e cada aresta NÃO-sequencial (sequential é
-    // o padrão e não vira badge). As cores casam com EDGE_COLOR do diagrama.
+    // Topology badges: robot talks and each NON-sequential edge (sequential is
+    // the default and does not become a badge). The colors match the diagram's EDGE_COLOR.
     var badges = topoBadges(d);
     if (badges) m.appendChild(badges);
 
     a.appendChild(m);
 
     var tail = el("div", "dc-tail");
-    if (d._orphan_close) tail.appendChild(pill("close órfã", "info"));
+    if (d._orphan_close) tail.appendChild(pill("orphan close", "info"));
     if (d._legacy && !d._orphan_close) tail.appendChild(pill("legacy", "warn"));
     if (d.dispatch_type) {
       var tp = pill(d.dispatch_type, "ghost");
@@ -1187,12 +1187,12 @@
       sw.style.background = typeColor(d.dispatch_type);
       tp.insertBefore(sw, tp.firstChild);
       tail.appendChild(tp);
-      if (!isLive(d)) tail.appendChild(pill("RESERVADO", "reserved"));
+      if (!isLive(d)) tail.appendChild(pill("RESERVED", "reserved"));
     } else if (!d._orphan_close) {
-      tail.appendChild(pill("sem tipo", "warn"));
+      tail.appendChild(pill("no type", "warn"));
     }
-    if (state === "open") tail.appendChild(pill("aberta", "open"));
-    else tail.appendChild(pill(EXIT_LABEL[exitR] || exitR || "fechada", EXIT_TONE[exitR] || "closed"));
+    if (state === "open") tail.appendChild(pill("open", "open"));
+    else tail.appendChild(pill(EXIT_LABEL[exitR] || exitR || "closed", EXIT_TONE[exitR] || "closed"));
     if (d.created) tail.appendChild(el("span", "pill plain", relTime(d.created)));
     a.appendChild(tail);
     return a;
@@ -1218,14 +1218,14 @@
     return p;
   }
 
-  /* ===================== nível 0 — painel ===================== */
+  /* ===================== level 0 — panel ===================== */
   function viewPainel() {
     var wrap = el("div", "content");
     var ov = S.overview;
 
     if (!ov) {
       wrap.appendChild(el("div", "skeleton",
-        S.overviewErr ? ("Não foi possível ler a API: " + S.overviewErr) : "Carregando o painel…"));
+        S.overviewErr ? ("Could not read the API: " + S.overviewErr) : "Loading the dashboard…"));
       return wrap;
     }
     if (S.notice) {
@@ -1236,42 +1236,42 @@
     var att = obj(ov.attention);
     wrap.appendChild(buildPendingZone(arr(att.pending)));
 
-    /* --- Hoje --- */
+    /* --- Today --- */
     var openToday = arr(att.open_today);
     var openAll = arr(att.open_all);
     var sec = el("section", "sec");
     var sh = el("div", "sec-head");
-    sh.appendChild(el("h2", null, "Hoje"));
-    // "hoje" é o dia de calendário em UTC (server.main.today_utc). Como o usuário
-    // está em UTC-3, entre 21h e a meia-noite local isto já é o dia SEGUINTE —
-    // por isso o rótulo UTC explícito ao lado da data.
+    sh.appendChild(el("h2", null, "Today"));
+    // "today" is the calendar day in UTC (server.main.today_utc). Since the user
+    // is in UTC-3, between 9pm and local midnight this is already the NEXT day —
+    // hence the explicit UTC label next to the date.
     sh.appendChild(el("span", "hint", (ov.today || utcToday()) + " (UTC) · " +
-      num(obj(ov.totals).total) + " dispatches em " + arr(ov.repos).length + " repositórios"));
+      num(obj(ov.totals).total) + " dispatches in " + arr(ov.repos).length + " repositories"));
     sec.appendChild(sh);
 
     if (!openToday.length && !openAll.length) {
       ensureRecentFallback();
       var rec = recentAcross();
       sec.appendChild(dispatchListPanel(
-        "Recentes", rec.length ? rec.length + "" : "",
+        "Recent", rec.length ? rec.length + "" : "",
         null, rec,
-        "Nenhuma dispatch registrada em nenhum repositório."));
+        "No dispatches recorded in any repository."));
       var note = el("p", "plot-note");
-      note.textContent = "Nada foi criado hoje e nada está aberto — mostrando as dispatches mais recentes.";
+      note.textContent = "Nothing was created today and nothing is open — showing the most recent dispatches.";
       sec.appendChild(note);
     } else {
       var cols = el("div", "cols");
       cols.appendChild(dispatchListPanel(
-        "Criadas hoje (UTC)", String(openToday.length), null, openToday,
-        "Nenhuma dispatch foi criada hoje."));
-      // Quando a lista de abertas passou do teto, o hint mostra "200 de N" — lê
-      // `_capped`/`_open_all_total`, a forma agora idêntica em rico e básico.
+        "Created today (UTC)", String(openToday.length), null, openToday,
+        "No dispatches were created today."));
+      // When the open list exceeds the cap, the hint shows "200 of N" — reads
+      // `_capped`/`_open_all_total`, the shape now identical in rich and basic.
       var openAllHint = att._capped
-        ? (openAll.length + " de " + num(att._open_all_total))
+        ? (openAll.length + " of " + num(att._open_all_total))
         : String(openAll.length);
       cols.appendChild(dispatchListPanel(
-        "Abertas agora", openAllHint, null, openAll,
-        "Nenhuma dispatch aberta — todo o ledger está fechado."));
+        "Open now", openAllHint, null, openAll,
+        "No dispatch open — the whole ledger is closed."));
       sec.appendChild(cols);
     }
     wrap.appendChild(sec);
@@ -1279,8 +1279,8 @@
     /* --- Repos --- */
     var rsec = el("section", "sec");
     var rh = el("div", "sec-head");
-    rh.appendChild(el("h2", null, "Repositórios"));
-    rh.appendChild(el("span", "hint", "clique para abrir o histórico e o gráfico do repositório"));
+    rh.appendChild(el("h2", null, "Repositories"));
+    rh.appendChild(el("span", "hint", "click to open the repository's history and chart"));
     rsec.appendChild(rh);
     var grid = el("div", "repo-grid");
     arr(ov.repos).slice().sort(function (a, b) {
@@ -1290,14 +1290,14 @@
       if (oa !== ob) return ob - oa;
       return num(b.total) - num(a.total);
     }).forEach(function (r) { grid.appendChild(repoCard(r)); });
-    if (!arr(ov.repos).length) grid.appendChild(el("div", "empty", "Nenhum repositório configurado."));
+    if (!arr(ov.repos).length) grid.appendChild(el("div", "empty", "No repository configured."));
     rsec.appendChild(grid);
     wrap.appendChild(rsec);
 
     if (S.degraded) {
       var d = el("p", "plot-note warn");
-      d.textContent = "Modo básico: a API estendida (/api/overview) não está disponível, então os números por tipo " +
-        "vêm apenas das dispatches mais recentes de cada repositório servidas por /api/snapshot.";
+      d.textContent = "Basic mode: the extended API (/api/overview) is not available, so the per-type numbers " +
+        "come only from the most recent dispatches of each repository served by /api/snapshot.";
       wrap.appendChild(d);
     }
     return wrap;
@@ -1311,16 +1311,16 @@
 
     var top = el("div", "rc-top");
     top.appendChild(el("span", "rc-name", r.name));
-    if (r.error) top.appendChild(pill("erro", "danger"));
-    else if (num(r.warning_count)) top.appendChild(pill(num(r.warning_count) + " avisos", "warn"));
-    if (!r.ledger_exists) top.appendChild(pill("sem ledger", "reserved"));
+    if (r.error) top.appendChild(pill("error", "danger"));
+    else if (num(r.warning_count)) top.appendChild(pill(num(r.warning_count) + " warnings", "warn"));
+    if (!r.ledger_exists) top.appendChild(pill("no ledger", "reserved"));
     a.appendChild(top);
 
     var nums = el("div", "rc-nums");
     nums.appendChild(el("span", "rc-total", String(num(r.total))));
     nums.appendChild(el("span", "rc-unit", "dispatches"));
-    if (num(r.open)) nums.appendChild(pill(num(r.open) + " abertas", "open"));
-    if (num(r.pending_count)) nums.appendChild(pill(num(r.pending_count) + " a confirmar", "live"));
+    if (num(r.open)) nums.appendChild(pill(num(r.open) + " open", "open"));
+    if (num(r.pending_count)) nums.appendChild(pill(num(r.pending_count) + " to confirm", "live"));
     a.appendChild(nums);
 
     var by = obj(r.by_type);
@@ -1340,14 +1340,14 @@
 
     var types = el("div", "rc-types");
     if (!keys.length) {
-      types.appendChild(el("span", null, "sem dispatches tipadas"));
+      types.appendChild(el("span", null, "no typed dispatches"));
     } else {
       keys.slice(0, 6).forEach(function (k) {
         var t = el("span", "t");
         var sw = el("i");
         sw.style.background = typeColor(k);
         t.appendChild(sw);
-        t.appendChild(el("span", null, k === NO_TYPE ? "sem tipo" : k));
+        t.appendChild(el("span", null, k === NO_TYPE ? "no type" : k));
         t.appendChild(el("b", null, String(by[k])));
         types.appendChild(t);
       });
@@ -1359,31 +1359,31 @@
       var s = el("div", "rc-path");
       s.style.color = "var(--amber)";
       s.style.fontFamily = "inherit";
-      s.textContent = "tipos medidos sobre as " + r._sample + " mais recentes";
+      s.textContent = "types measured over the " + r._sample + " most recent";
       a.appendChild(s);
     }
     a.appendChild(el("div", "rc-path", r.path || ""));
     return a;
   }
 
-  /* ===================== pendentes ===================== */
+  /* ===================== pending ===================== */
   function buildPendingZone(entries) {
     var zone = el("section", "pending-zone");
     var head = el("div", "sec-head");
-    head.appendChild(el("h2", null, "A confirmar"));
-    head.appendChild(el("span", "gate-tag", "gate humano"));
+    head.appendChild(el("h2", null, "To confirm"));
+    head.appendChild(el("span", "gate-tag", "human gate"));
     head.appendChild(el("span", "hint",
-      entries.length ? entries.length + (entries.length === 1 ? " sheet aguardando confirmação" : " sheets aguardando confirmação")
-                     : "nenhuma sheet aguardando confirmação"));
+      entries.length ? entries.length + (entries.length === 1 ? " sheet awaiting confirmation" : " sheets awaiting confirmation")
+                     : "no sheet awaiting confirmation"));
     zone.appendChild(head);
 
     var list = el("div");
     list.setAttribute("data-testid", "pending-list");
     if (!entries.length) {
       var e = el("div", "empty");
-      e.appendChild(el("b", null, "Nenhuma sheet aguardando confirmação."));
+      e.appendChild(el("b", null, "No sheet awaiting confirmation."));
       e.appendChild(document.createTextNode(
-        "Nada em telemetry/agents/pending/ em nenhum dos " + arr(S.overview && S.overview.repos).length + " repositórios."));
+        "Nothing in telemetry/agents/pending/ in any of the " + arr(S.overview && S.overview.repos).length + " repositories."));
       list.appendChild(e);
     } else {
       entries.forEach(function (p) { list.appendChild(pendingCard(obj(p))); });
@@ -1413,18 +1413,18 @@
       tp.insertBefore(sw, tp.firstChild);
       tags.appendChild(tp);
     } else {
-      tags.appendChild(pill("sem tipo", "warn"));
+      tags.appendChild(pill("no type", "warn"));
     }
-    tags.appendChild(pill(liveP ? "LIVE" : "RESERVADO", liveP ? "ok" : "reserved"));
+    tags.appendChild(pill(liveP ? "LIVE" : "RESERVED", liveP ? "ok" : "reserved"));
     var ac = p._agent_count != null ? p._agent_count : countAgentsOf(sheet);
-    tags.appendChild(pill(ac + (ac === 1 ? " agente" : " agentes"), "ghost"));
+    tags.appendChild(pill(ac + (ac === 1 ? " agent" : " agents"), "ghost"));
     var gs = arr(sheet.groups);
-    if (gs.length) tags.appendChild(pill(gs.length + (gs.length === 1 ? " grupo" : " grupos"), "ghost"));
-    if (sheet._example) tags.appendChild(pill("fixture de demonstração", "warn"));
-    if (p._error) tags.appendChild(pill("sheet ilegível", "danger"));
+    if (gs.length) tags.appendChild(pill(gs.length + (gs.length === 1 ? " group" : " groups"), "ghost"));
+    if (sheet._example) tags.appendChild(pill("demo fixture", "warn"));
+    if (p._error) tags.appendChild(pill("unreadable sheet", "danger"));
     left.appendChild(tags);
 
-    left.appendChild(el("h3", "pending-goal", sheet.goal || (p._error ? "(sheet não pôde ser lida)" : "(sem goal)")));
+    left.appendChild(el("h3", "pending-goal", sheet.goal || (p._error ? "(sheet could not be read)" : "(no goal)")));
     left.appendChild(el("div", "pending-id", str(sheet.dispatch_id || p._file || "—") +
       (p._file && sheet.dispatch_id ? "  ·  " + p._file : "")));
     if (sheet.context) left.appendChild(el("p", "pending-ctx", sheet.context));
@@ -1435,18 +1435,18 @@
     btn.setAttribute("data-testid", "dispatch-button");
     btn.type = "button";
     btn.disabled = true;
-    btn.title = "confirmar dispara na Fase 2";
+    btn.title = "confirm dispatches in Phase 2";
     btn.appendChild(icon(ICON.bolt, 13));
-    btn.appendChild(document.createTextNode("Disparar"));
+    btn.appendChild(document.createTextNode("Dispatch"));
     right.appendChild(btn);
-    right.appendChild(el("div", "phase-note", "desativado — Fase 2"));
+    right.appendChild(el("div", "phase-note", "disabled — Phase 2"));
     top.appendChild(right);
     card.appendChild(top);
 
     if (p._error) {
       var eb = el("div", "banner err");
       eb.style.marginTop = "12px";
-      eb.textContent = "Erro ao ler a sheet: " + p._error + (p._path ? " — " + p._path : "");
+      eb.textContent = "Error reading the sheet: " + p._error + (p._path ? " — " + p._path : "");
       card.appendChild(eb);
       return card;
     }
@@ -1454,7 +1454,7 @@
     if (sheet.anti_bias_global) {
       var ax = el("div", "axis-hero");
       ax.style.margin = "12px 0 0";
-      ax.appendChild(el("div", "lbl", "eixo de tensão global"));
+      ax.appendChild(el("div", "lbl", "global tension axis"));
       ax.appendChild(el("div", "txt", sheet.anti_bias_global));
       card.appendChild(ax);
     }
@@ -1469,12 +1469,12 @@
         g = obj(g);
         var line = el("div", "prose");
         line.style.fontSize = "12.5px";
-        var b = el("b", null, (g.group_id || "grupo") + " · " + arr(g.agents).length + " ag" +
+        var b = el("b", null, (g.group_id || "group") + " · " + arr(g.agents).length + " ag" +
           (g.robot_talks ? " · robot talks" : ""));
         b.style.fontFamily = "var(--mono)";
         b.style.color = "var(--text)";
         line.appendChild(b);
-        line.appendChild(document.createTextNode(g.anti_bias ? " — eixo: " + g.anti_bias : " — sem anti_bias declarado"));
+        line.appendChild(document.createTextNode(g.anti_bias ? " — axis: " + g.anti_bias : " — no anti_bias declared"));
         gl.appendChild(line);
       });
       card.appendChild(gl);
@@ -1482,7 +1482,7 @@
 
     var det = el("details");
     det.style.marginTop = "10px";
-    var sm = el("summary", "back", "ver a sheet inteira");
+    var sm = el("summary", "back", "view the whole sheet");
     sm.style.cursor = "pointer";
     sm.style.listStyle = "none";
     det.appendChild(sm);
@@ -1491,7 +1491,7 @@
     arr(sheet.groups).forEach(function (g) { body.appendChild(groupBlock(obj(g))); });
     var conns = arr(sheet.connections);
     if (conns.length) {
-      body.appendChild(el("div", "block-label", "Conexões (" + conns.length + ")"));
+      body.appendChild(el("div", "block-label", "Connections (" + conns.length + ")"));
       conns.forEach(function (c) { body.appendChild(connRow(obj(c))); });
     }
     if (p._path) {
@@ -1505,19 +1505,19 @@
     return card;
   }
 
-  /* ===================== nível 1 — repo ===================== */
+  /* ===================== level 1 — repo ===================== */
   function viewRepo() {
     var wrap = el("div", "content");
     var name = S.route.repo;
     var slot = S.repos[name] || {};
 
     if (slot.err) {
-      wrap.appendChild(el("div", "banner err", "Não foi possível ler o repositório “" + name + "”: " + slot.err));
-      wrap.appendChild(link("#/", "back", "← voltar ao painel"));
+      wrap.appendChild(el("div", "banner err", "Could not read the repository “" + name + "”: " + slot.err));
+      wrap.appendChild(link("#/", "back", "← back to panel"));
       return wrap;
     }
     if (!slot.data) {
-      wrap.appendChild(el("div", "skeleton", "Carregando " + name + "…"));
+      wrap.appendChild(el("div", "skeleton", "Loading " + name + "…"));
       return wrap;
     }
     var R = slot.data;
@@ -1533,9 +1533,9 @@
     ht.style.gap = "10px";
     ht.style.flexWrap = "wrap";
     ht.appendChild(el("h2", null, name));
-    if (R.error) ht.appendChild(pill("erro fatal de leitura", "danger"));
-    if (!R.ledger_exists) ht.appendChild(pill("sem ledger", "reserved"));
-    if (sum.last_created) ht.appendChild(el("span", "pill plain", "última há " + relTime(sum.last_created)));
+    if (R.error) ht.appendChild(pill("fatal read error", "danger"));
+    if (!R.ledger_exists) ht.appendChild(pill("no ledger", "reserved"));
+    if (sum.last_created) ht.appendChild(el("span", "pill plain", "last " + relTime(sum.last_created) + " ago"));
     hero.appendChild(ht);
     hero.appendChild(el("div", "path", R.path || ""));
 
@@ -1546,24 +1546,24 @@
       s.appendChild(el("div", "k", k));
       stats.appendChild(s);
     }
-    stat(num(sum.total), "total no ledger");
-    stat(num(sum.open), "abertas", "hot");
-    stat(num(sum.closed), "fechadas");
-    stat(num(sum.pending_count), "a confirmar", "gate");
-    stat(num(sum.live), "ao vivo");
-    stat(num(sum.reserved), "reservadas");
+    stat(num(sum.total), "total in ledger");
+    stat(num(sum.open), "open", "hot");
+    stat(num(sum.closed), "closed");
+    stat(num(sum.pending_count), "to confirm", "gate");
+    stat(num(sum.live), "live");
+    stat(num(sum.reserved), "reserved");
     if (num(sum.legacy)) stat(num(sum.legacy), "legacy");
-    if (sum.first_day) stat(sum.first_day + " → " + (sum.last_day || "?"), "período");
+    if (sum.first_day) stat(sum.first_day + " → " + (sum.last_day || "?"), "period");
     hero.appendChild(stats);
-    // NÃO é partição: `total == ao vivo + reservadas + legacy` não é garantido —
-    // uma research row cujo `groups` falhou no parse conta em "ao vivo" E em
-    // "legacy" ao mesmo tempo (ledger.py:590). São recortes independentes.
+    // NOT a partition: `total == live + reserved + legacy` is not guaranteed —
+    // a research row whose `groups` failed to parse counts in "live" AND in
+    // "legacy" at the same time (ledger.py:590). They are independent slices.
     hero.appendChild(el("p", "plot-note",
-      "ao vivo · reservadas · legacy são recortes independentes — podem se sobrepor e não somam ao total."));
+      "live · reserved · legacy are independent slices — they can overlap and do not sum to the total."));
 
     if (R.error) {
       var de = el("details", "diag error");
-      var se = el("summary", null, "Erro fatal de leitura");
+      var se = el("summary", null, "Fatal read error");
       de.appendChild(se);
       var be = el("div", "diag-body");
       be.appendChild(el("div", null, String(R.error)));
@@ -1573,7 +1573,7 @@
     var warns = arr(R.warnings);
     if (warns.length) {
       var dw = el("details", "diag");
-      dw.appendChild(el("summary", null, warns.length + " avisos de parsing (não-fatais) — expandir"));
+      dw.appendChild(el("summary", null, warns.length + " parsing warnings (non-fatal) — expand"));
       var bw = el("div", "diag-body");
       warns.forEach(function (w) { bw.appendChild(el("div", null, String(w))); });
       dw.appendChild(bw);
@@ -1581,13 +1581,13 @@
     }
     wrap.appendChild(hero);
 
-    /* pendentes do repo */
+    /* pending of the repo */
     var pend = arr(R.pending);
     if (pend.length) {
       var pz = el("section", "pending-zone");
       var ph = el("div", "sec-head");
-      ph.appendChild(el("h2", null, "A confirmar neste repositório"));
-      ph.appendChild(el("span", "gate-tag", "gate humano"));
+      ph.appendChild(el("h2", null, "To confirm in this repository"));
+      ph.appendChild(el("span", "gate-tag", "human gate"));
       pz.appendChild(ph);
       var pl = el("div");
       pend.forEach(function (p) {
@@ -1600,7 +1600,7 @@
       wrap.appendChild(pz);
     }
 
-    /* gráfico */
+    /* chart */
     wrap.appendChild(plotCard(obj(R.series), R));
 
     /* filtros + lista */
@@ -1623,22 +1623,22 @@
 
     var sec = el("section", "sec");
     var sh = el("div", "sec-head");
-    sh.appendChild(el("h2", null, "Histórico"));
-    sh.appendChild(el("span", "hint", "a consulta filtra a lista; o gráfico acima continua descrevendo o repositório inteiro"));
+    sh.appendChild(el("h2", null, "History"));
+    sh.appendChild(el("span", "hint", "the query filters the list; the chart above still describes the whole repository"));
     sec.appendChild(sh);
 
     var filters = el("div", "filters");
-    filters.appendChild(seg([["all", "Todas"], ["open", "Abertas"], ["closed", "Fechadas"]], f.state,
+    filters.appendChild(seg([["all", "All"], ["open", "Open"], ["closed", "Closed"]], f.state,
       function (v) { f.state = v; S.limit = PAGE; render(); }));
 
     var typesPresent = {};
     all.forEach(function (d) { typesPresent[d.dispatch_type || NO_TYPE] = (typesPresent[d.dispatch_type || NO_TYPE] || 0) + 1; });
     var sel = el("select", "sel");
-    var o0 = el("option", null, "Todos os tipos");
+    var o0 = el("option", null, "All types");
     o0.value = "all";
     sel.appendChild(o0);
     Object.keys(typesPresent).sort().forEach(function (k) {
-      var o = el("option", null, (k === NO_TYPE ? "sem tipo" : k) + " (" + typesPresent[k] + ")");
+      var o = el("option", null, (k === NO_TYPE ? "no type" : k) + " (" + typesPresent[k] + ")");
       o.value = k;
       if (f.type === k) o.selected = true;
       sel.appendChild(o);
@@ -1647,8 +1647,8 @@
     sel.addEventListener("change", function () { f.type = sel.value; S.limit = PAGE; render(); });
     filters.appendChild(sel);
 
-    // Filtro de topologia: robot talks / zig-zag / feedback. Compõe com os demais
-    // filtros (estado/tipo/busca) sobre a lista já carregada.
+    // Topology filter: robot talks / zig-zag / feedback. Composes with the other
+    // filters (state/type/search) over the already-loaded list.
     var nRobot = 0, nZig = 0, nFb = 0;
     all.forEach(function (d) {
       if (d._robot_talks) nRobot++;
@@ -1656,11 +1656,11 @@
       if (hasEdge(d, "feedback")) nFb++;
     });
     var csel = el("select", "sel");
-    csel.title = "Filtrar por topologia";
-    [["all", "Toda topologia"],
-     ["robot", "com robot talks (" + nRobot + ")"],
-     ["zigzag", "com zig-zag (" + nZig + ")"],
-     ["feedback", "com feedback (" + nFb + ")"]].forEach(function (o) {
+    csel.title = "Filter by topology";
+    [["all", "All topology"],
+     ["robot", "with robot talks (" + nRobot + ")"],
+     ["zigzag", "with zig-zag (" + nZig + ")"],
+     ["feedback", "with feedback (" + nFb + ")"]].forEach(function (o) {
       var op = el("option", null, o[1]);
       op.value = o[0];
       if (f.conn === o[0]) op.selected = true;
@@ -1672,27 +1672,27 @@
 
     var inp = el("input", "search");
     inp.type = "search";
-    inp.placeholder = "Buscar no goal ou no dispatch_id…";
+    inp.placeholder = "Search in goal or dispatch_id…";
     inp.value = f.q;
     inp.addEventListener("input", function () { f.q = inp.value; S.limit = PAGE; render({ focus: "search" }); });
     filters.appendChild(inp);
-    filters.appendChild(el("span", "match", list.length + " de " + all.length + " linhas"));
+    filters.appendChild(el("span", "match", list.length + " of " + all.length + " rows"));
     sec.appendChild(filters);
 
     var body = el("div");
     body.setAttribute("data-testid", "dispatch-list");
     if (!list.length) {
       var e = el("div", "empty");
-      e.appendChild(el("b", null, all.length ? "Nenhuma dispatch bate com os filtros." : "Nenhuma dispatch neste repositório."));
-      e.appendChild(document.createTextNode(all.length ? "Há " + all.length + " linhas neste repositório." :
-        (R.ledger_exists ? "O ledger deste repositório está vazio." : "Este repositório ainda não tem ledger.")));
+      e.appendChild(el("b", null, all.length ? "No dispatch matches the filters." : "No dispatch in this repository."));
+      e.appendChild(document.createTextNode(all.length ? "There are " + all.length + " rows in this repository." :
+        (R.ledger_exists ? "This repository's ledger is empty." : "This repository does not have a ledger yet.")));
       body.appendChild(e);
     } else {
       var rows = el("div", "rows");
       list.slice(0, S.limit).forEach(function (d) { rows.appendChild(dispatchCard(name, d, {})); });
       if (list.length > S.limit) {
-        var more = el("button", "load-more", "Mostrar mais " + Math.min(PAGE, list.length - S.limit) +
-          " (faltam " + (list.length - S.limit) + ")");
+        var more = el("button", "load-more", "Show more " + Math.min(PAGE, list.length - S.limit) +
+          " (" + (list.length - S.limit) + " remaining)");
         more.type = "button";
         more.addEventListener("click", function () { S.limit += PAGE; render(); });
         rows.appendChild(more);
@@ -1703,14 +1703,14 @@
 
     if (num(R._snapshot_capped)) {
       sec.appendChild(el("p", "plot-note warn",
-        "Modo básico: a API entregou apenas as " + R._snapshot_capped + " dispatches mais recentes de " +
-        num(sum.total) + ". O gráfico e os filtros cobrem só essa fatia."));
+        "Basic mode: the API delivered only the " + R._snapshot_capped + " most recent dispatches of " +
+        num(sum.total) + ". The chart and filters cover only that slice."));
     }
     wrap.appendChild(sec);
     return wrap;
   }
 
-  /* ===================== gráfico ===================== */
+  /* ===================== chart ===================== */
   function plotCard(series, R) {
     var card = el("section", "plot-card");
     var days = arr(series.days);
@@ -1719,10 +1719,10 @@
     var totals = obj(series.totals);
 
     var head = el("div", "plot-head");
-    head.appendChild(el("h3", null, "Dispatches por dia"));
+    head.appendChild(el("h3", null, "Dispatches per day"));
     head.appendChild(el("span", "spacer"));
     if (days.length > 40) {
-      head.appendChild(seg([["30", "30 d"], ["90", "90 d"], ["all", "tudo"]], effectiveSpan(days),
+      head.appendChild(seg([["30", "30 d"], ["90", "90 d"], ["all", "all"]], effectiveSpan(days),
         function (v) { S.span = v; render(); }));
     }
     card.appendChild(head);
@@ -1733,7 +1733,7 @@
       var i = el("i");
       i.style.background = typeColor(t);
       s.appendChild(i);
-      s.appendChild(el("span", null, t === NO_TYPE ? "sem tipo" : t));
+      s.appendChild(el("span", null, t === NO_TYPE ? "no type" : t));
       s.appendChild(el("b", null, String(num(totals[t]))));
       legend.appendChild(s);
     });
@@ -1741,9 +1741,9 @@
 
     if (!days.length) {
       card.appendChild(el("div", "panel-empty",
-        "Nenhuma dispatch datada neste repositório — não há série temporal para desenhar."));
+        "No dated dispatch in this repository — there is no time series to draw."));
       if (num(series.undated)) {
-        card.appendChild(el("p", "plot-note warn", num(series.undated) + " linhas sem data e por isso fora do gráfico."));
+        card.appendChild(el("p", "plot-note warn", num(series.undated) + " rows without a date and therefore outside the chart."));
       }
       return card;
     }
@@ -1759,17 +1759,17 @@
     card.appendChild(wrapSvg);
 
     var noteBits = [];
-    noteBits.push(vDays.length + (vDays.length === 1 ? " dia" : " dias") +
+    noteBits.push(vDays.length + (vDays.length === 1 ? " day" : " days") +
       " · " + vDays[0] + " → " + vDays[vDays.length - 1]);
-    if (start > 0) noteBits.push("recorte de " + days.length + " dias no total");
-    // Os buckets do eixo são dias de calendário em UTC (ledger.daily_series), não
-    // no fuso local — a última barra é "hoje" em UTC.
-    noteBits.push("dias em UTC");
+    if (start > 0) noteBits.push("slice of " + days.length + " days total");
+    // The axis buckets are calendar days in UTC (ledger.daily_series), not
+    // in local time — the last bar is "today" in UTC.
+    noteBits.push("days in UTC");
     card.appendChild(el("p", "plot-note", noteBits.join(" · ")));
     if (num(series.undated)) {
       card.appendChild(el("p", "plot-note warn",
-        num(series.undated) + (num(series.undated) === 1 ? " linha sem data" : " linhas sem data") +
-        " — contam nos totais, mas não aparecem no gráfico."));
+        num(series.undated) + (num(series.undated) === 1 ? " row without a date" : " rows without a date") +
+        " — they count in the totals, but do not appear in the chart."));
     }
     return card;
   }
@@ -1807,9 +1807,9 @@
     if (maxDay <= 0) maxDay = 1;
 
     var s = svgn("svg", { viewBox: "0 0 " + W + " " + H, preserveAspectRatio: "xMidYMid meet", role: "img" });
-    s.setAttribute("aria-label", "dispatches por dia, empilhadas por tipo");
+    s.setAttribute("aria-label", "dispatches per day, stacked by type");
 
-    // grade
+    // grid
     var ticks = maxDay <= 4 ? maxDay : 4;
     for (var g = 0; g <= ticks; g++) {
       var val = Math.round(maxDay * g / ticks);
@@ -1820,7 +1820,7 @@
       s.appendChild(lab);
     }
 
-    // barras
+    // bars
     var yScale = function (v) { return (v / maxDay) * ph; };
     for (var i2 = 0; i2 < n; i2++) {
       var x = padL + i2 * slot + (slot - barW) / 2;
@@ -1838,7 +1838,7 @@
       }
     }
 
-    // alvos de hover
+    // hover targets
     for (var i3 = 0; i3 < n; i3++) {
       var hit = svgn("rect", {
         "class": "plot-hit", x: (padL + i3 * slot).toFixed(2), y: padT,
@@ -1846,7 +1846,7 @@
       });
       var lines = [days[i3] + " — " + perDay[i3].total + (perDay[i3].total === 1 ? " dispatch" : " dispatches")];
       for (var t3 = 0; t3 < types.length; t3++) {
-        if (perDay[i3].parts[t3]) lines.push("  " + (types[t3] === NO_TYPE ? "sem tipo" : types[t3]) + ": " + perDay[i3].parts[t3]);
+        if (perDay[i3].parts[t3]) lines.push("  " + (types[t3] === NO_TYPE ? "no type" : types[t3]) + ": " + perDay[i3].parts[t3]);
       }
       var ttl = svgn("title");
       ttl.textContent = lines.join("\n");
@@ -1854,7 +1854,7 @@
       s.appendChild(hit);
     }
 
-    // eixo x
+    // x axis
     var lastX = -1e9;
     var minGap = 58;
     var lastYear = null;
@@ -1884,7 +1884,7 @@
     return s;
   }
 
-  /* ===================== nível 2 — dispatch ===================== */
+  /* ===================== level 2 — dispatch ===================== */
   function viewDispatch() {
     var wrap = el("div", "content");
     var repoName = S.route.repo, id = S.route.id;
@@ -1899,11 +1899,11 @@
 
     if (slot.err) {
       wrap.appendChild(el("div", "banner err",
-        "Não foi possível carregar a dispatch “" + id + "” em " + repoName + ": " + slot.err));
+        "Could not load dispatch “" + id + "” in " + repoName + ": " + slot.err));
       return wrap;
     }
     if (!slot.data) {
-      wrap.appendChild(el("div", "skeleton", "Carregando a dispatch…"));
+      wrap.appendChild(el("div", "skeleton", "Loading the dispatch…"));
       return wrap;
     }
     var d = slot.data;
@@ -1916,8 +1916,8 @@
     /* hero */
     var hero = el("section", "d-hero");
     var tags = el("div", "tags");
-    tags.appendChild(state === "open" ? pill("aberta", "open")
-      : pill(EXIT_LABEL[close && close.exit_reason] || (close && close.exit_reason) || "fechada",
+    tags.appendChild(state === "open" ? pill("open", "open")
+      : pill(EXIT_LABEL[close && close.exit_reason] || (close && close.exit_reason) || "closed",
              EXIT_TONE[close && close.exit_reason] || "closed"));
     if (d.dispatch_type) {
       var tp = pill(d.dispatch_type, "ghost");
@@ -1925,18 +1925,18 @@
       sw.style.background = typeColor(d.dispatch_type);
       tp.insertBefore(sw, tp.firstChild);
       tags.appendChild(tp);
-      tags.appendChild(pill(live ? "LIVE" : "RESERVADO", live ? "ok" : "reserved"));
+      tags.appendChild(pill(live ? "LIVE" : "RESERVED", live ? "ok" : "reserved"));
     } else {
-      tags.appendChild(pill("sem dispatch_type", "warn"));
+      tags.appendChild(pill("no dispatch_type", "warn"));
     }
-    if (d._legacy && !d._orphan_close) tags.appendChild(pill("row legacy", "warn"));
-    if (d._orphan_close) tags.appendChild(pill("close órfã", "info"));
-    tags.appendChild(pill(num(d._agent_count || countAgentsOf(d)) + " agentes", "ghost"));
-    if (groups.length) tags.appendChild(pill(groups.length + (groups.length === 1 ? " grupo" : " grupos"), "ghost"));
+    if (d._legacy && !d._orphan_close) tags.appendChild(pill("legacy row", "warn"));
+    if (d._orphan_close) tags.appendChild(pill("orphan close", "info"));
+    tags.appendChild(pill(num(d._agent_count || countAgentsOf(d)) + " agents", "ghost"));
+    if (groups.length) tags.appendChild(pill(groups.length + (groups.length === 1 ? " group" : " groups"), "ghost"));
     hero.appendChild(tags);
 
     hero.appendChild(el("div", "d-id", str(d.dispatch_id || id)));
-    hero.appendChild(el("h2", "d-goal", d.goal || "(sem goal)"));
+    hero.appendChild(el("h2", "d-goal", d.goal || "(no goal)"));
     if (d.context) hero.appendChild(el("p", "d-ctx", d.context));
 
     var kv = el("dl", "kv");
@@ -1947,56 +1947,56 @@
       w.appendChild(el("dd", null, v));
       kv.appendChild(w);
     }
-    pair("Criada", d.created ? fmtDate(d.created) : null);
-    if (close && close.closed) pair("Fechada", fmtDate(close.closed));
-    pair("Invocada por", d.invoked_by);
-    pair("Pasta de trabalho", d.working_folder);
-    pair("Máx. loops", d.max_loops);
-    pair("Aprovador final", d.final_approver);
+    pair("Created", d.created ? fmtDate(d.created) : null);
+    if (close && close.closed) pair("Closed", fmtDate(close.closed));
+    pair("Invoked by", d.invoked_by);
+    pair("Working folder", d.working_folder);
+    pair("Max loops", d.max_loops);
+    pair("Final approver", d.final_approver);
     pair("Schema", d.schema_version);
-    pair("Modo de saída", d.output_mode);
-    pair("Dispatch pai", d.parent_dispatch_id);
+    pair("Output mode", d.output_mode);
+    pair("Parent dispatch", d.parent_dispatch_id);
     if (kv.childNodes.length) hero.appendChild(kv);
     wrap.appendChild(hero);
 
     if (!live && d.dispatch_type) {
       wrap.appendChild(el("div", "banner reserved",
-        "Tipo RESERVADO (" + d.dispatch_type + "): só research, review e experiment são LIVE sob v0.6.0. Esta dispatch não executa."));
+        "RESERVED type (" + d.dispatch_type + "): only research, review and experiment are LIVE under v0.6.0. This dispatch does not execute."));
     }
 
-    /* anti-viés */
+    /* anti-bias */
     var ax = el("section", "axis-hero" + (d.anti_bias_global ? "" : " none"));
-    ax.appendChild(el("div", "lbl", "anti-viés global — o eixo em que os agentes são opostos"));
+    ax.appendChild(el("div", "lbl", "global anti-bias — the axis on which the agents are opposed"));
     ax.appendChild(el("div", "txt", d.anti_bias_global ||
-      "Esta row não declara anti_bias_global. Sem eixo global registrado, a tensão só existe (se existir) dentro de cada grupo."));
+      "This row does not declare anti_bias_global. Without a registered global axis, tension only exists (if at all) within each group."));
     wrap.appendChild(ax);
 
-    /* topologia */
+    /* topology */
     wrap.appendChild(topologyCard(d, groups, conns));
 
-    /* agentes */
+    /* agents */
     if (groups.length) {
       var gsec = el("section", "sec");
       var gh = el("div", "sec-head");
-      gh.appendChild(el("h2", null, "Agentes e ângulos"));
-      gh.appendChild(el("span", "hint", "cada ângulo é a posição do agente CONTRA o anti_bias do seu grupo"));
+      gh.appendChild(el("h2", null, "Agents and angles"));
+      gh.appendChild(el("span", "hint", "each angle is the agent's position AGAINST its group's anti_bias"));
       gsec.appendChild(gh);
       groups.forEach(function (g) { gsec.appendChild(groupBlock(obj(g))); });
       wrap.appendChild(gsec);
     }
 
-    /* fechamento */
+    /* closure */
     var csec = el("section", "sec");
-    csec.appendChild(el("div", "block-label", "Fechamento"));
+    csec.appendChild(el("div", "block-label", "Closure"));
     if (close) {
       var tone = EXIT_TONE[close.exit_reason] || "closed";
       var cb = el("div", "close-box" + (tone === "danger" ? " bad" : ""));
       var hdr = el("div", "tags");
-      hdr.appendChild(pill(EXIT_LABEL[close.exit_reason] || close.exit_reason || "sem exit_reason", tone));
-      if (close.closed) hdr.appendChild(pill("fechada em " + fmtDate(close.closed), "ghost"));
+      hdr.appendChild(pill(EXIT_LABEL[close.exit_reason] || close.exit_reason || "no exit_reason", tone));
+      if (close.closed) hdr.appendChild(pill("closed on " + fmtDate(close.closed), "ghost"));
       var sp = obj(close.agents_spawned);
-      if (sp.total != null) hdr.appendChild(pill(sp.total + " agentes gerados", "ghost"));
-      if (sp.loops_used != null) hdr.appendChild(pill(sp.loops_used + " loops usados", "ghost"));
+      if (sp.total != null) hdr.appendChild(pill(sp.total + " agents spawned", "ghost"));
+      if (sp.loops_used != null) hdr.appendChild(pill(sp.loops_used + " loops used", "ghost"));
       cb.appendChild(hdr);
       var tree = obj(sp.tree);
       var tk = Object.keys(tree);
@@ -2012,34 +2012,34 @@
       }
       var fbs = arr(close.feedback_prompts);
       if (fbs.length) {
-        cb.appendChild(el("div", "block-label", "Feedback de encerramento (" + fbs.length + ")"));
+        cb.appendChild(el("div", "block-label", "Closing feedback (" + fbs.length + ")"));
         fbs.forEach(function (f) { cb.appendChild(el("div", "fb", String(f))); });
       }
       csec.appendChild(cb);
     } else {
       var oc = el("div", "close-box");
-      oc.appendChild(pill("ainda aberta — sem close row no ledger", "open"));
+      oc.appendChild(pill("still open — no close row in the ledger", "open"));
       csec.appendChild(oc);
     }
     wrap.appendChild(csec);
     return wrap;
   }
 
-  /* ---------- topologia ---------- */
+  /* ---------- topology ---------- */
   function topologyCard(d, groups, conns) {
     var card = el("section", "topo-card");
     var head = el("div", "topo-head");
-    head.appendChild(el("h3", null, "Como esta dispatch funciona"));
+    head.appendChild(el("h3", null, "How this dispatch works"));
     head.appendChild(el("span", "spacer"));
-    head.appendChild(el("span", "count", groups.length + (groups.length === 1 ? " grupo" : " grupos")));
-    head.appendChild(el("span", "count", conns.length + (conns.length === 1 ? " conexão" : " conexões")));
+    head.appendChild(el("span", "count", groups.length + (groups.length === 1 ? " group" : " groups")));
+    head.appendChild(el("span", "count", conns.length + (conns.length === 1 ? " connection" : " connections")));
     card.appendChild(head);
 
     if (d._orphan_close) {
       var b1 = el("div", "banner orphan");
       b1.style.margin = "14px";
-      b1.textContent = "Close row órfã: existe fechamento no ledger, mas a dispatch row nunca foi escrita. " +
-        "Não há topologia registrada — só o bloco de encerramento é conhecido.";
+      b1.textContent = "Orphan close row: a closure exists in the ledger, but the dispatch row was never written. " +
+        "There is no registered topology — only the closing block is known.";
       card.appendChild(b1);
       return card;
     }
@@ -2047,14 +2047,14 @@
       var b2 = el("div", "banner legacy");
       b2.style.margin = "14px";
       b2.textContent = d._legacy
-        ? "Row legacy (anterior a v0.5.2): sem topologia registrada. Esta row não tem o bloco groups, então não há grupos, ângulos nem eixo de tensão para desenhar."
-        : "Esta row não declara nenhum grupo — não há topologia para desenhar.";
+        ? "Legacy row (before v0.5.2): no registered topology. This row has no groups block, so there are no groups, angles, or tension axis to draw."
+        : "This row declares no group — there is no topology to draw.";
       card.appendChild(b2);
       return card;
     }
 
-    // Legenda: nomeia os três tipos de aresta e a convenção de robot talks, para
-    // que o traço desenhado seja legível. Clique num agente abre o prompt inicial.
+    // Legend: names the three edge types and the robot talks convention, so
+    // the drawn trace is legible. Clicking an agent opens the initial prompt.
     var legend = el("div", "topo-legend");
     [["sequential", "sequential"], ["zigzag", "zig-zag"], ["feedback", "feedback"]].forEach(function (p) {
       var t = el("span", "t");
@@ -2066,12 +2066,12 @@
     if (anyRobot) {
       var rtL = el("span", "t");
       rtL.appendChild(el("span", "rt-line"));
-      rtL.appendChild(el("span", null, "robot talks — agentes conversam entre si"));
+      rtL.appendChild(el("span", null, "robot talks — agents talk to each other"));
       legend.appendChild(rtL);
     }
     var hint = el("span", "t");
     hint.style.color = "var(--text-3)";
-    hint.appendChild(el("span", null, "clique num agente para ver o prompt inicial"));
+    hint.appendChild(el("span", null, "click an agent to view the initial prompt"));
     legend.appendChild(hint);
     card.appendChild(legend);
 
@@ -2086,9 +2086,9 @@
 
     var foot = el("div", "topo-foot");
     if (!conns.length) {
-      foot.appendChild(el("p", "prose", "Nenhuma conexão declarada — os grupos não têm arestas entre si."));
+      foot.appendChild(el("p", "prose", "No connection declared — the groups have no edges between them."));
     } else {
-      foot.appendChild(el("div", "block-label", "Conexões declaradas"));
+      foot.appendChild(el("div", "block-label", "Declared connections"));
       conns.forEach(function (c) { foot.appendChild(connRow(obj(c))); });
     }
     card.appendChild(foot);
@@ -2101,7 +2101,7 @@
     ids.forEach(function (i) { indeg[i] = 0; adj[i] = []; });
     conns.forEach(function (c) {
       c = obj(c);
-      if (String(c.type || "").toLowerCase() === "feedback") return; // aresta de retorno não define ordem
+      if (String(c.type || "").toLowerCase() === "feedback") return; // return edge does not define order
       if (indeg[c.to] === undefined || adj[c.from] === undefined) return;
       adj[c.from].push(c.to);
       indeg[c.to]++;
@@ -2129,36 +2129,36 @@
     var n = el("div", "topo-group");
     n.setAttribute("data-gid", str(g.group_id));
     var h = el("div", "tg-head");
-    h.appendChild(el("div", "tg-id", g.group_id || "(grupo sem id)"));
+    h.appendChild(el("div", "tg-id", g.group_id || "(group without id)"));
     var tg = el("div", "tg-tags");
     tg.appendChild(pill("n = " + (g.n != null ? g.n : agents.length), "ghost"));
-    if (g.layers != null) tg.appendChild(pill(g.layers + (g.layers === 1 ? " camada" : " camadas"), "info"));
+    if (g.layers != null) tg.appendChild(pill(g.layers + (g.layers === 1 ? " layer" : " layers"), "info"));
     if (g.robot_talks) tg.appendChild(pill("robot talks", "live"));
     h.appendChild(tg);
     n.appendChild(h);
 
     var bias = el("div", "tg-bias");
     if (g.anti_bias) {
-      bias.appendChild(el("b", null, "eixo · "));
+      bias.appendChild(el("b", null, "axis · "));
       bias.appendChild(document.createTextNode(g.anti_bias));
     } else {
       bias.style.color = "var(--text-3)";
-      bias.textContent = "sem anti_bias declarado";
+      bias.textContent = "no anti_bias declared";
     }
     n.appendChild(bias);
 
     var box = el("div", "tg-agents" + (g.robot_talks ? " rt" : ""));
     if (!agents.length) {
-      box.appendChild(el("div", "sub", "grupo sem agentes declarados"));
+      box.appendChild(el("div", "sub", "group with no declared agents"));
     }
     agents.forEach(function (a, i) {
       a = obj(a);
       var row = el("div", "ta ta-click");
-      var label = a.agent_name || ((a.role || "agente") + " #" + (i + 1));
+      var label = a.agent_name || ((a.role || "agent") + " #" + (i + 1));
       row.setAttribute("role", "button");
       row.setAttribute("tabindex", "0");
-      row.setAttribute("aria-label", "Ver o prompt inicial de " + label);
-      row.title = "Ver o prompt inicial de " + label;
+      row.setAttribute("aria-label", "View the initial prompt of " + label);
+      row.title = "View the initial prompt of " + label;
       var dot = el("span", "dot");
       dot.style.background = ROLE_COLOR[a.role] || "#a1a1aa";
       row.appendChild(dot);
@@ -2170,7 +2170,7 @@
       if (a.role) sub.push(a.role);
       if (a.model) sub.push(a.model);
       if (a.token_budget != null) sub.push("~" + a.token_budget + " tok");
-      body.appendChild(el("div", "sub", sub.join(" · ") || "sem modelo declarado"));
+      body.appendChild(el("div", "sub", sub.join(" · ") || "no model declared"));
       row.appendChild(body);
       var activate = function () { openAgentModal(a, g, d, i, row); };
       row.addEventListener("click", activate);
@@ -2188,7 +2188,7 @@
       rt.style.borderBottom = "0";
       rt.style.color = "var(--accent)";
       rt.style.fontSize = "11px";
-      rt.textContent = "robot talks: os agentes deste grupo conversam entre si antes de entregar.";
+      rt.textContent = "robot talks: the agents in this group talk to each other before delivering.";
       n.appendChild(rt);
     }
     return n;
@@ -2203,13 +2203,13 @@
     return "other";
   }
 
-  // true se a dispatch (row slim) tem ao menos uma aresta do tipo `kind`.
+  // true if the dispatch (slim row) has at least one edge of type `kind`.
   function hasEdge(d, kind) {
     return arr(obj(d)._connection_types).some(function (t) { return edgeKind(t) === kind; });
   }
 
-  // Badges compactos para o cartão de nível 1. Retorna null quando não há nada
-  // a mostrar (mantém o cartão limpo). sequential é o padrão e não vira badge.
+  // Compact badges for the level 1 card. Returns null when there is nothing
+  // to show (keeps the card clean). sequential is the default and does not become a badge.
   function topoBadges(d) {
     d = obj(d);
     var box = el("div", "cbadges");
@@ -2232,8 +2232,8 @@
     return box.childNodes.length ? box : null;
   }
 
-  // Glifo em miniatura de uma aresta, para a legenda do diagrama — mesma forma
-  // e cor que connRow desenha, para legenda e traço coincidirem.
+  // Miniature glyph of an edge, for the diagram legend — same shape
+  // and color that connRow draws, so legend and stroke coincide.
   function edgeLegendGlyph(kind) {
     var s = svgn("svg", { width: 30, height: 12, viewBox: "0 0 30 12", fill: "none" });
     var color = EDGE_COLOR[kind] || EDGE_COLOR.other;
@@ -2329,12 +2329,12 @@
       if (kind === "feedback") p.setAttribute("stroke-dasharray", "6 4");
       if (kind === "other") p.setAttribute("stroke-dasharray", "2 3");
       var ttl = svgn("title");
-      ttl.textContent = str(c.from) + " → " + str(c.to) + " · " + str(c.type || "sem tipo") +
+      ttl.textContent = str(c.from) + " → " + str(c.to) + " · " + str(c.type || "no type") +
         (c.loop_cap != null ? " · loop_cap " + c.loop_cap : "");
       p.appendChild(ttl);
       s.appendChild(p);
 
-      var label = str(c.type || "sem tipo") + (c.loop_cap != null ? " ×" + c.loop_cap : "");
+      var label = str(c.type || "no type") + (c.loop_cap != null ? " ×" + c.loop_cap : "");
       var tx = svgn("text", {
         x: labX.toFixed(1), y: labY.toFixed(1), "text-anchor": "middle",
         "font-size": 9.5, fill: color, stroke: "#ffffff", "stroke-width": 3,
@@ -2360,13 +2360,13 @@
     return d;
   }
 
-  /* ---------- modal: prompt do agente ---------- */
-  // Escolha: um overlay modal (em vez de rolar até o <details> abaixo) porque o
-  // usuário pediu "clicar no agente e VER o prompt" — a revelação tem que ser
-  // imediata e inequívoca. O modal fica em document.body (fora de #root), então
-  // um re-render por SSE não o apaga. Teclado: foco vai para o botão fechar ao
-  // abrir, Esc/backdrop/× fecham, Tab é preso ao modal e o foco volta ao nó de
-  // origem ao fechar.
+  /* ---------- modal: agent prompt ---------- */
+  // Choice: a modal overlay (instead of scrolling to the <details> below) because the
+  // user asked to "click the agent and SEE the prompt" — the reveal has to be
+  // immediate and unambiguous. The modal lives in document.body (outside #root), so
+  // a re-render via SSE does not erase it. Keyboard: focus goes to the close button on
+  // open, Esc/backdrop/× close it, Tab is trapped in the modal and focus returns to the
+  // origin node on close.
   function closeAgentModal() {
     var back = document.querySelector(".agent-modal-backdrop");
     if (!back) return;
@@ -2384,8 +2384,8 @@
     var modal = el("div", "agent-modal");
     modal.setAttribute("role", "dialog");
     modal.setAttribute("aria-modal", "true");
-    var label = a.agent_name || ((a.role || "agente") + " #" + (num(index) + 1));
-    modal.setAttribute("aria-label", "Detalhe do agente " + label);
+    var label = a.agent_name || ((a.role || "agent") + " #" + (num(index) + 1));
+    modal.setAttribute("aria-label", "Agent detail " + label);
 
     var head = el("div", "am-head");
     var hl = el("div", "am-head-l");
@@ -2396,44 +2396,44 @@
     head.appendChild(hl);
     var close = el("button", "am-close");
     close.type = "button";
-    close.setAttribute("aria-label", "Fechar detalhe do agente");
+    close.setAttribute("aria-label", "Close agent detail");
     close.textContent = "×";
     close.addEventListener("click", closeAgentModal);
     head.appendChild(close);
     modal.appendChild(head);
 
     var meta = el("div", "am-meta");
-    meta.appendChild(pill(str(g.group_id || "grupo"), "ghost"));
-    var rp = pill(a.role || "sem papel", "");
+    meta.appendChild(pill(str(g.group_id || "group"), "ghost"));
+    var rp = pill(a.role || "no role", "");
     rp.style.color = ROLE_COLOR[a.role] || "var(--text-2)";
     meta.appendChild(rp);
-    meta.appendChild(pill(a.model || "modelo?", "ghost"));
-    meta.appendChild(pill(a.token_budget != null ? "~" + a.token_budget + " tok" : "sem orçamento", "ghost"));
+    meta.appendChild(pill(a.model || "model?", "ghost"));
+    meta.appendChild(pill(a.token_budget != null ? "~" + a.token_budget + " tok" : "no budget", "ghost"));
     if (g.robot_talks) meta.appendChild(pill("robot talks", "live"));
     modal.appendChild(meta);
 
     var body = el("div", "am-body");
 
     var tb = el("div", "am-tension");
-    tb.appendChild(el("div", "am-lbl", "ângulo do agente"));
+    tb.appendChild(el("div", "am-lbl", "agent angle"));
     tb.appendChild(el("div", "am-angle", a.angle ||
-      "sem ângulo declarado — não participa do eixo de tensão do grupo"));
-    tb.appendChild(el("div", "am-lbl", "eixo do grupo (anti_bias)"));
-    tb.appendChild(el("div", "am-axis", g.anti_bias || "sem anti_bias declarado neste grupo"));
+      "no angle declared — does not take part in the group's tension axis"));
+    tb.appendChild(el("div", "am-lbl", "group axis (anti_bias)"));
+    tb.appendChild(el("div", "am-axis", g.anti_bias || "no anti_bias declared in this group"));
     if (d.anti_bias_global) {
-      tb.appendChild(el("div", "am-lbl", "anti-viés global da dispatch"));
+      tb.appendChild(el("div", "am-lbl", "dispatch global anti-bias"));
       tb.appendChild(el("div", "am-axis", d.anti_bias_global));
     }
     body.appendChild(tb);
 
-    body.appendChild(el("div", "am-lbl", "prompt inicial" + (a._prompt_truncated ? " (truncado)" : "")));
+    body.appendChild(el("div", "am-lbl", "initial prompt" + (a._prompt_truncated ? " (truncated)" : "")));
     if (a.initial_prompt) {
       var pre = el("pre", "am-prompt");
       pre.textContent = a.initial_prompt;
       pre.setAttribute("tabindex", "0");
       body.appendChild(pre);
     } else {
-      body.appendChild(el("div", "am-noprompt", "sem initial_prompt registrado"));
+      body.appendChild(el("div", "am-noprompt", "no initial_prompt recorded"));
     }
     modal.appendChild(body);
     back.appendChild(modal);
@@ -2458,25 +2458,25 @@
     close.focus();
   }
 
-  /* ---------- grupos detalhados ---------- */
+  /* ---------- detailed groups ---------- */
   function groupBlock(g) {
     var wrap = el("div", "group");
     var head = el("div", "group-head");
-    head.appendChild(el("span", "gid", g.group_id || "(grupo sem id)"));
+    head.appendChild(el("span", "gid", g.group_id || "(group without id)"));
     var agents = arr(g.agents);
     head.appendChild(pill("n = " + (g.n != null ? g.n : agents.length), "ghost"));
-    head.appendChild(pill(agents.length + (agents.length === 1 ? " agente" : " agentes"), ""));
-    if (g.layers != null) head.appendChild(pill(g.layers + (g.layers === 1 ? " camada" : " camadas"), "info"));
+    head.appendChild(pill(agents.length + (agents.length === 1 ? " agent" : " agents"), ""));
+    if (g.layers != null) head.appendChild(pill(g.layers + (g.layers === 1 ? " layer" : " layers"), "info"));
     if (g.robot_talks) head.appendChild(pill("robot talks", "live"));
     wrap.appendChild(head);
 
     var bias = el("div", "group-bias");
     if (g.anti_bias) {
-      bias.appendChild(el("b", null, "anti-viés do grupo · "));
+      bias.appendChild(el("b", null, "group anti-bias · "));
       bias.appendChild(document.createTextNode(g.anti_bias));
     } else {
       bias.style.color = "var(--text-3)";
-      bias.textContent = "sem anti_bias declarado neste grupo";
+      bias.textContent = "no anti_bias declared in this group";
     }
     wrap.appendChild(bias);
 
@@ -2484,7 +2484,7 @@
     if (!agents.length) {
       var e = el("div", "agent");
       e.style.color = "var(--text-3)";
-      e.textContent = "grupo sem agentes declarados";
+      e.textContent = "group with no declared agents";
       wrap.appendChild(e);
     }
     return wrap;
@@ -2503,24 +2503,24 @@
 
     var who = el("div", "who");
     who.appendChild(el("span", "nm" + (a.agent_name ? "" : " anon"),
-      a.agent_name || ((a.role || "agente") + " #" + ((i || 0) + 1) + " — sem nome")));
-    var rp = pill(a.role || "sem papel", "");
+      a.agent_name || ((a.role || "agent") + " #" + ((i || 0) + 1) + " — no name")));
+    var rp = pill(a.role || "no role", "");
     rp.style.color = ROLE_COLOR[a.role] || "var(--text-2)";
     who.appendChild(rp);
-    who.appendChild(pill(a.model || "modelo?", "ghost"));
-    who.appendChild(pill(a.token_budget != null ? "~" + a.token_budget + " tok" : "sem orçamento", "ghost"));
+    who.appendChild(pill(a.model || "model?", "ghost"));
+    who.appendChild(pill(a.token_budget != null ? "~" + a.token_budget + " tok" : "no budget", "ghost"));
     body.appendChild(who);
 
     if (a.angle) body.appendChild(el("div", "angle", a.angle));
-    else body.appendChild(el("div", "no-angle", "sem ângulo declarado — não participa do eixo de tensão do grupo"));
+    else body.appendChild(el("div", "no-angle", "no angle declared — does not take part in the group's tension axis"));
 
     if (a.initial_prompt) {
       var dt = el("details");
-      dt.appendChild(el("summary", null, "prompt inicial" + (a._prompt_truncated ? " (truncado)" : "")));
+      dt.appendChild(el("summary", null, "initial prompt" + (a._prompt_truncated ? " (truncated)" : "")));
       dt.appendChild(el("pre", null, a.initial_prompt));
       body.appendChild(dt);
     } else {
-      body.appendChild(el("div", "no-angle", "sem initial_prompt registrado"));
+      body.appendChild(el("div", "no-angle", "no initial_prompt recorded"));
     }
     row.appendChild(body);
     return row;
@@ -2543,7 +2543,7 @@
         : '<path d="M36 3 L41 7 L36 11" stroke="' + color + '" stroke-width="1.6" fill="none" stroke-linecap="round"/>');
     row.appendChild(s);
     row.appendChild(el("span", "node", c.to || "?"));
-    row.appendChild(el("span", "ctype", c.type || "sem tipo"));
+    row.appendChild(el("span", "ctype", c.type || "no type"));
     if (c.loop_cap != null) row.appendChild(pill("loop_cap " + c.loop_cap, "warn"));
     return row;
   }
@@ -2571,8 +2571,8 @@
       else view = viewPainel();
     } catch (e) {
       view = el("div", "content");
-      view.appendChild(el("div", "banner err", "Falha ao renderizar este nível: " + String(e && e.message || e)));
-      view.appendChild(link("#/", "back", "← voltar ao painel"));
+      view.appendChild(el("div", "banner err", "Failed to render this level: " + String(e && e.message || e)));
+      view.appendChild(link("#/", "back", "← back to dashboard"));
     }
     main.appendChild(view);
     app.appendChild(main);
@@ -2583,7 +2583,7 @@
 
     var jobs = POST;
     POST = [];
-    jobs.forEach(function (fn) { try { fn(); } catch (e) { /* diagrama é decorativo se falhar */ } });
+    jobs.forEach(function (fn) { try { fn(); } catch (e) { /* the diagram is decorative if it fails */ } });
 
     if (opt.focus === "search") {
       var i = root.querySelector(".search");
@@ -2614,7 +2614,7 @@
   render();
   ensureData();
   connectStream();
-  // rede de segurança caso o SSE não esteja disponível
+  // safety net in case SSE is not available
   setInterval(function () { if (!S.connected) reloadAll(); }, 5000);
 })();
 </script>

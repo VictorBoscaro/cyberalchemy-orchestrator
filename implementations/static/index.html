@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dispatch control plane — escolha uma UI</title>
+<title>Dispatch control plane — choose a UI</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
@@ -33,29 +33,29 @@
 <body>
 <div class="wrap">
   <h1>Dispatch control plane</h1>
-  <p class="sub">Fase 1 — o leitor. Dez variantes de UI sobre a mesma API. Escolha uma.</p>
-  <p class="stats" id="stats">carregando…</p>
+  <p class="sub">Phase 1 — the reader. Ten UI variants over the same API. Choose one.</p>
+  <p class="stats" id="stats">loading…</p>
 
   <div class="grid" id="grid"></div>
 
   <footer>
-    Todas consomem <code>/api/snapshot</code> e <code>/api/stream</code>.
-    Somente leitura — nada aqui escreve no ledger.
+    All consume <code>/api/snapshot</code> and <code>/api/stream</code>.
+    Read-only — nothing here writes to the ledger.
   </footer>
 </div>
 
 <script>
 const VARIANTS = [
-  ["terminal",        "Terminal CRT",      "Fósforo verde, monoespaçado, molduras desenhadas com caracteres."],
-  ["mission-control", "Mission Control",   "Telemetria estilo NASA: grade densa, mostradores, tudo tabular."],
-  ["brutalist",       "Brutalista",        "Preto e branco duro, bordas pesadas, tipografia enorme."],
-  ["linear",          "Linear / Produto",  "SaaS moderno e limpo, claro, denso e calmo."],
-  ["cyberpunk",       "Cyberpunk Neon",    "Escuro com magenta e ciano, brilho, cantos chanfrados."],
-  ["blueprint",       "Blueprint Técnico", "Ciano sobre azul-marinho, papel quadriculado, cotas e anotações."],
-  ["grimoire",        "Grimório Alquímico","Pergaminho, serifada, ornamentos — o nome do repo levado a sério."],
-  ["radar",           "Radar / ATC",       "Controle de tráfego aéreo: varredura, listas densas, âmbar sobre verde."],
-  ["swiss",           "Suíço Editorial",   "Grade tipográfica, muito branco, acento vermelho, hierarquia rígida."],
-  ["aurora",          "Aurora / Vidro",    "Painéis foscos sobre gradiente, profundidade, suave."],
+  ["terminal",        "Terminal CRT",      "Green phosphor, monospaced, frames drawn with characters."],
+  ["mission-control", "Mission Control",   "NASA-style telemetry: dense grid, gauges, everything tabular."],
+  ["brutalist",       "Brutalist",         "Hard black and white, heavy borders, huge typography."],
+  ["linear",          "Linear / Product",  "Modern, clean SaaS: light, dense and calm."],
+  ["cyberpunk",       "Cyberpunk Neon",    "Dark with magenta and cyan, glow, chamfered corners."],
+  ["blueprint",       "Technical Blueprint","Cyan on navy, grid paper, dimensions and annotations."],
+  ["grimoire",        "Alchemical Grimoire","Parchment, serif, ornaments — the repo name taken seriously."],
+  ["radar",           "Radar / ATC",       "Air traffic control: sweep, dense lists, amber on green."],
+  ["swiss",           "Editorial Swiss",   "Typographic grid, lots of white, red accent, rigid hierarchy."],
+  ["aurora",          "Aurora / Glass",    "Frosted panels over a gradient, depth, soft."],
 ];
 
 const grid = document.getElementById("grid");
@@ -76,8 +76,8 @@ fetch("/api/snapshot").then(r => r.json()).then(d => {
   const open = d.repos.reduce((t, r) => t + r.open_dispatches, 0);
   const pend = d.repos.reduce((t, r) => t + r.pending.length, 0);
   document.getElementById("stats").textContent =
-    `${repos} repos · ${disp} dispatches · ${open} abertas · ${pend} sheets pendentes`;
-}).catch(e => { document.getElementById("stats").textContent = "API fora do ar: " + e; });
+    `${repos} repos · ${disp} dispatches · ${open} open · ${pend} pending sheets`;
+}).catch(e => { document.getElementById("stats").textContent = "API down: " + e; });
 </script>
 </body>
 </html>
