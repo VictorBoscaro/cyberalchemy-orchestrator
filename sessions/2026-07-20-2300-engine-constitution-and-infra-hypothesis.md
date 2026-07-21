@@ -45,7 +45,7 @@ the agent-level id, the ledger→bus projection, the retention tiers, and freeze
 ourselves. The tag design was corrected from "agents decide tags" to "agents emit `proposed`,
 an engine adjudicates," with predicted↔produced divergence modelled as two independent residue
 counters (schema ⊥ instance). I wrote the durable **HYP-ORCH-INFRA**
-(`vault/hypothesis/orquestracao-infra.md`) plus the medium-retention discussion trail
+(`vault/hypothesis/orchestration-infra.md`) plus the medium-retention discussion trail
 (`research/agent-events-infra-hypothesis/`), holding the reuse-vs-couple tension explicitly
 open. A registered two-reviewer dispatch (coherence ⊥ evidence) returned NEEDS-REVISION /
 ACCURATE-WITH-CORRECTIONS — catching EG-1 treated as settled, `corpus_hash_at_emit` presented
@@ -54,9 +54,9 @@ self-contradictory projection collapse-test — all incorporated before this nod
 
 ## Contradictions
 
-- questions [[engine-constitution]] — the infra hypothesis's projection argument leans on EG-1 ("one validated writer"), but EG-1 is `veracidade: medium` and promotion-blocked by the 2026-07-18 enum-drift; the review caught it being treated as settled. Unresolved.
-- questions [[orquestracao-anti-ruido]] — whether KT's schema ⊥ instance residue split (η^sch ⊥ η^ins) is the *same* decomposition as HYP-ORCH-NOISE's `bias ⊕ noise`, or a distinct orthogonal pair. Unresolved.
-- questions [[orquestracao-infra]] — its two load-bearing open questions stay undecided: reuse-vs-couple (vendored KT schema vs. opt-in runtime dep, turning on KT's installability) and live-listening under `zig-zag`/`feedback` edges (is mid-flight cross-agent reaction always re-invocation?).
+- questions [[engine-constitution]] — the infra hypothesis's projection argument leans on EG-1 ("one validated writer"), but EG-1 is `veracity: medium` and promotion-blocked by the 2026-07-18 enum-drift; the review caught it being treated as settled. Unresolved.
+- questions [[anti-noise-orchestration]] — whether KT's schema ⊥ instance residue split (η^sch ⊥ η^ins) is the *same* decomposition as HYP-ORCH-NOISE's `bias ⊕ noise`, or a distinct orthogonal pair. Unresolved.
+- questions [[orchestration-infra]] — its two load-bearing open questions stay undecided: reuse-vs-couple (vendored KT schema vs. opt-in runtime dep, turning on KT's installability) and live-listening under `zig-zag`/`feedback` edges (is mid-flight cross-agent reaction always re-invocation?).
 
 ## Next steps
 
@@ -75,7 +75,7 @@ hypothesis before elaborating the hypothesis itself.
 ## Files touched
 
 - vault/constitution/engine-constitution.md
-- vault/hypothesis/orquestracao-infra.md
+- vault/hypothesis/orchestration-infra.md
 - research/agent-events-infra-hypothesis/research.md
 - research/agent-events-infra-hypothesis/findings.md
 - research/agent-events-infra-hypothesis/review-coherence.md

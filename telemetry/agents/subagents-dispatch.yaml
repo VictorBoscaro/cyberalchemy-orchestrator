@@ -341,3 +341,280 @@ dispatches:
     anti_bias_global: "conventions-compliance vs epistemic-honesty"
     working_folder: "research/review-claim-graph-axioms/"
     groups: [{"group_id":"reviewers","n":2,"anti_bias":"attack-vector (conventions-compliance vs epistemic-honesty)","agents":[{"agent_name":null,"role":"auditor","model":"claude-opus-4-8","token_budget":1500,"angle":"conventions-compliance & internal-consistency: frontmatter/node_type validity, edge types real per ontology-conventions Appendix C, cross-ref integrity (DEF-ORCH-004/005, OBL-E3, H-PORT-6, F6, anti-noise line 140), orthogonality vs existing nodes","initial_prompt":"Review vault/axioms.md and vault/hypothesis/claim-graph.md ONLY on the conventions/internal-consistency attack-vector, against vault/ontology-conventions.md. Verify: frontmatter correctness and node_type choice (axiom vs premise); every Connections edge uses a real Appendix C type; cross-references resolve (DEF-ORCH-004/005 in definitions/DEFINITIONS.md, OBL-E3 in OBLIGATIONS.md, H-PORT-6 in README.md, F6 in FRAMINGS.md, the anti-noise line-140 Thaler reference, orchestration-infra Open-question 4); Level-2 orthogonality vs anti-noise-orchestration.md and orchestration-infra.md; internal consistency between the two nodes. Return structured findings (severity, file+location, problem, concrete fix). Do not rewrite files."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":1500,"angle":"epistemic-honesty & overreach: did AX-1 axiomatize the hard question (efficacy)? is the contradicts-to-README edge honest or a dodge? is 'three faces meet here' load-bearing or decoration? is decompositor=dual-of-H-PORT-6 earned given categoricity != domain-independence? are the collapse-tests/bets genuinely falsifiable?","initial_prompt":"Review vault/axioms.md and vault/hypothesis/claim-graph.md ONLY on the epistemic-honesty attack-vector, grounded in the repo's claim-<=-proof discipline and the README founding-hypothesis framing. Attack: whether AX-1's value/efficacy split is clean or efficacy is smuggled in; whether promoting debiasing-value to axiom is defensible vs violates the founding stance; whether the contradicts-to-README edge is honest or leaves a live inconsistency; whether the three-faces mappings and the decompositor=dual-of-H-PORT-6 claim are load-bearing or decoration (categoricity != domain-independence); whether each collapse-test and bet is a real, terminating falsifier or unfalsifiable-as-written. Return structured findings (severity, file+location, epistemic problem, concrete fix). Quote offending text. Do not rewrite files."}]}]
+  - close_of: "2026-07-20-review-claim-graph-axioms"
+    closed: "2026-07-21T02:47:40.795Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"explorer":0,"synthesizer":0,"skeptic":1,"writer":0,"auditor":1,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-cav2-canonical-kinds-sweep"
+    schema_version: "0.6.0"
+    created: "2026-07-21T03:09:36.463Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "research"
+    goal: "Map how domainspec-core (CANONICAL-KINDS, cyberAlchemy-v2 authority spine, domainspec-v2 meta-types) already realizes a stratified meta-ontology, to feed this repo's meta-ontology design (BL-1 / H-META-1)."
+    context: "We are designing a meta-ontology M with three strata: domain-content types, document/carrier types, and assertion/epistemic types (the reflexive scientific-process layer). domainspec-core is the canonical home of this machinery (cav2 authority spine: authority kinds, definitions tower, constitutions, promotion lifecycle). This read-only sweep locates and synthesizes that prior art; outputs seed research/meta-ontology/ and inform where to register the direction in this repo."
+    max_loops: 1
+    final_approver: "parent"
+    working_folder: "research/meta-ontology/"
+    groups: [{"group_id":"explorer","n":1,"agents":[{"agent_name":null,"role":"explorer","model":"claude-opus-4-8","token_budget":4000,"initial_prompt":"Read-only map of c:/Users/victo/domainspec-core. Priorities: (1) CANONICAL-KINDS (grep CANONICAL-KIND / meta-kind / KINDS) — path, what it is, the actual enumeration, flat or stratified; (2) cyberAlchemy-v2/authority spine (authority kinds, definitions tower, constitutions, promotion lifecycle) + CRAFT/SOURCE-MAP; (3) projects/domainspec-v2 authority + definitions (AUTHORITY-MODEL, source-spine, meta-types, relationships, AXIOMS); (4) root authority/constitution/axiom/decision-gate/definitions-governance docs. Read through the lens of three strata: (i) domain-content types, (ii) document/carrier types, (iii) assertion/epistemic types (reflexive, governs promotion of the others + itself). Return path-cited: CANONICAL-KINDS enumeration; the cav2 promotion gate; stratum mapping (which files realize (i)/(ii)/(iii), flag any label that FUSES carrier-kind with epistemic-role); meta-level-vs-object-level split; the reflexive/epistemic layer (veracity/conviction, challenge contracts, axioms, decision-gate); top ~8 files to read later with one-line why; honest gaps (declared vs enforced). Map + synthesis, not a dump; do not modify any file."}]}]
+  - dispatch_id: "2026-07-21-ledger-meta-ontology-sweep"
+    schema_version: "0.6.0"
+    created: "2026-07-21T03:10:21.518Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "research"
+    goal: "Map the ledger / event-record machinery across domainspec-core and arcanum, to decide whether 'the ledger' is a fourth meta-ontology stratum (the typed operational trace) and how a v-next ledger should be shaped."
+    context: "Companion to the cav2 kinds sweep. We are enumerating the meta-ontologies this repo needs: domain/code, documents, and now the ledger (the append-only typed record of orchestration events), which will probably need improving. This read-only sweep inventories the ledger family (dispatch/decision/gap/receipt), its schemas and append/close discipline, and the sharpest weaknesses a v-next unified event-log meta-ontology should fix. Outputs seed research/meta-ontology/."
+    max_loops: 1
+    final_approver: "parent"
+    working_folder: "research/meta-ontology/"
+    groups: [{"group_id":"explorer","n":1,"agents":[{"agent_name":null,"role":"explorer","model":"claude-opus-4-8","token_budget":4000,"initial_prompt":"Read-only map of ledger/event-record machinery in c:/Users/victo/domainspec-core (root subagents-dispatch.yaml + telemetry/, arcanum/, projects/domainspec-v2 DECISION-LEDGER/GAP-LEDGER/.craft). Grep: ledger, subagents-dispatch, append-only, close_of, DECISION-LEDGER, GAP-LEDGER, decision receipt, event, schema_version. Lens: is 'the ledger' one thing or a family, and is it a fourth meta-ontology stratum (the typed operational trace)? Return path-cited: inventory of ledgers (path/what/shape/append-only?); dispatch+close row schema and appender; entry-kind taxonomy (dispatch/close/decision/gap/receipt — any unifying event meta-type?); arcanum specifics; meta-level-vs-object-level (is the schema governed/versioned with a growing entry-type set, or bespoke per file?); what a unified typed event-log meta-ontology would need + 2-3 sharpest weaknesses of the current design; top ~8 files to read later; honest gaps (declared vs enforced). Map + synthesis, not a dump; do not modify any file."}]}]
+  - dispatch_id: "2026-07-21-meta-ontology-artifacts-review"
+    schema_version: "0.6.0"
+    created: "2026-07-21T03:37:04.820Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Review the meta-ontology artifacts (research/meta-ontology/SEED.md, SOURCES.md, and BACKLOG.md BL-1..BL-4) for fidelity to the owner's stated model and for claim-<=-proof honesty."
+    context: "These were just authored to capture a multi-turn design: a meta-ontology M with four substrates (domain, documents, ledger-of-epistemic-units, operational trace) + a provenance spine, corrected live by the owner (the ledger is a typed graph of epistemic units - assertions/hypotheses/definitions - separate from the dispatch trace; domain=code is open). Two opposed reviewers audit the snapshot before it settles. Outputs are review notes, not edits."
+    max_loops: 1
+    final_approver: "parent"
+    working_folder: "research/meta-ontology/"
+    groups: [{"group_id":"reviewers","n":2,"anti_bias":"attack-vector: fidelity-drift detection vs over-claim/decoration detection","agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":2500,"angle":"fidelity to what the owner actually said","initial_prompt":"Read c:/Users/victo/cyberalchemy-orchestrator/research/meta-ontology/SEED.md, SOURCES.md, and BACKLOG.md (BL-1..BL-4). Your angle: FIDELITY to the owner's stated model. Check that these are present and not distorted: (1) FOUR substrates - domain (with domain=code as an OPEN question, not decided), documents, ledger-of-epistemic-units, operational trace - plus a provenance spine; (2) the ledger is a TYPED GRAPH of several epistemic-unit kinds (assertions, hypotheses, definitions, ...) that connect via typed edges, each type with properties, each node with a provenance trail; (3) the ledger is SEPARATE from the dispatch/operational trace, bound only by the provenance link; (4) governance labels ride on the nodes. Flag: anything the owner said that is missing or softened; any structure the artifacts INVENTED that the owner did not say (e.g. an over-specified type list presented as decided). Return a short list of fidelity findings, each with file+line and a concrete fix. Read-only; do not edit."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":2500,"angle":"claim <= proof: hunt over-claim and decoration","initial_prompt":"Read c:/Users/victo/cyberalchemy-orchestrator/research/meta-ontology/SEED.md, SOURCES.md, and BACKLOG.md (BL-1..BL-4). Your angle: claim <= proof. Hunt: (1) any statement asserted as settled that is actually a candidate/hypothesis (should carry an OQ or collapse-test); (2) any 'X is a consequence of Y' that is really assumed, not shown (esp. the H-META-1 'governed typed graph' convergence note and the F1 shadow-structure mapping); (3) stratum-fusion smuggled back in (carrier mixed with epistemic-role); (4) source anchors that overstate 'enforced' vs 'declared/candidate'; (5) decoration - category-theory language that adds no falsifiable content. For each, name file+line, why it over-claims, and the minimal honest rewrite (or the collapse-test it needs). Be adversarial but fair. Read-only; do not edit."}]}]
+  - dispatch_id: "2026-07-21-infra-reconciliation-review"
+    schema_version: "0.6.0"
+    created: "2026-07-21T03:40:35.564Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Verify the agent-events infra artifacts and the new ledger-enum-drift audit node are consistent after a concurrent English-translation/rename pass, before session close."
+    context: "Concurrent sessions translated and renamed this work (orquestracao-infra -> orchestration-infra, veracidade/convicção -> veracity/conviction, orquestracao-anti-ruido -> anti-noise-orchestration). I created a new vault/audit node to resolve a dangling [[ledger-enum-drift-finding]] link. Two independent reviewers check integrity on opposed axes: link/convention correctness vs content/evidence honesty (no lost corrections, no overclaim in the new node). Subagents never see the parent conversation; this framing plus each initial_prompt is the only channel."
+    max_loops: 1
+    final_approver: "parent"
+    anti_bias_global: "conventions & link-integrity vs. content & evidence honesty"
+    working_folder: "research/agent-events-infra-hypothesis/"
+    groups: [{"group_id":"reviewers","n":2,"anti_bias":"conventions & link-integrity vs. content & evidence honesty","agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":1500,"angle":"conventions & link-integrity — every [[wikilink]] resolves, the new audit node's frontmatter/node_type/edge-types are valid per ontology-conventions, no residual Portuguese names or veracidade/convicção, cross-file consistency","initial_prompt":"See parent-provided review brief. Verify link-integrity and conventions across vault/audit/ledger-enum-drift-finding.md, vault/hypothesis/orchestration-infra.md, research/agent-events-infra-hypothesis/{research.md,findings.md}, sessions/2026-07-20-2300-engine-constitution-and-infra-hypothesis.md against vault/ontology-conventions.md. Return PASS or a prioritized list (file/location/problem/fix). Do not edit files."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":1500,"angle":"content & evidence honesty — the new audit node does not overclaim (check against append-dispatch.cjs and CONST-ENG), and the post-review corrections survived the concurrent translation of orchestration-infra.md / findings.md","initial_prompt":"See parent-provided review brief. Attack the new audit node for overclaim (verify exit_reason validation in append-dispatch.cjs; the 'a 2026-07-18 success row cannot have passed the appender' claim), and confirm orchestration-infra.md still holds the post-review corrections (EG-1 caveat + collapse-test, corpus_hash PENDING, reuse-vs-couple held open, non-duplicative reword). Return PASS or a prioritized list, quoting offending text. Do not edit files."}]}]
+  - close_of: "2026-07-21-infra-reconciliation-review"
+    closed: "2026-07-21T03:44:26.315Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"auditor":1,"skeptic":1,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-orchestrator-reference-sweep"
+    schema_version: "0.6.0"
+    created: "2026-07-21T03:53:40.436Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "research"
+    goal: "Gather reference material from sibling repos (domainspec, business-philosopher) to judge whether the orchestrator's category-theory thesis is a rigorous program or an evocative metaphor."
+    context: "The user asked for an evaluation of the cyberalchemy-orchestrator proposal and then to pull more references. Two sibling repos carry the load: domainspec (README + any paper, the formal/Lean grounding side) and business-philosopher (essays, meta-references, and 'the theorem'). Outputs inform the reasonableness assessment; no repo files are modified."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    working_folder: "research/orchestrator-reference-sweep/"
+    groups: [{"group_id":"reference-readers","n":2,"robot_talks":false,"anti_bias":"grounding lens: formal-proof anchor vs philosophical meta-narrative","agents":[{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":1500,"angle":"owns the formal-proof grounding side — reads domainspec's README and paper hunting the Lean/theorem anchor that would make the CT thesis rigorous","initial_prompt":"Read ../domainspec README and any paper/thesis. Report its purpose, its relationship to the orchestrator, and whether its core claims are proven, candidate, or speculative — quoting load-bearing passages. Focus on whether it grounds the orchestrator's ORCH-category / Yoneda / residue thesis."},{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":1500,"angle":"owns the philosophical/meta-reference side — reads business-philosopher essays hunting the meta-references idea and 'the theorem' framing","initial_prompt":"Read ../business-philosopher essays, focusing on meta-references (self-reference, framework-as-instance, Yoneda-style meta) and 'the theorem'. State the theorem verbatim with assumptions and status. Judge whether the CT grounding of knowledge is rigorous program or evocative metaphor."}]}]
+    connections: []
+  - dispatch_id: "2026-07-21-meta-level-correction-locate"
+    schema_version: "0.6.0"
+    created: "2026-07-21T03:57:10.453Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "research"
+    goal: "Locate every site in the repo that must change to reflect the corrected meta-level claim, and propose the exact edit per site; then review that list for completeness and over-reach."
+    context: "The corrected claim: there is no fixed meta-level; EVERY level grows under its own governance at its own rate (object-level via definitions/decision-gate; meta-level via constitution-governance + grandfathering - domainspec-core bumped schema_version 0.5.2->0.6.0, so the meta-level demonstrably moved). What is universal is the governance recursion (level_n = alphabet_n + gate_n, gate_n governed at level_n+1), not any fixed floor; the tower is convergent (higher levels mutate slower = practical, not terminal, fixity - F6-consistent). Output is a decision (site-list + proposed edits), reviewed before the parent applies it. This changes the central bet H-META-1."
+    max_loops: 1
+    final_approver: "parent"
+    anti_bias_global: "coverage-completeness vs edit-precision"
+    working_folder: "research/meta-ontology/"
+    groups: [{"group_id":"locators","n":2,"anti_bias":"methodology: explicit-assertion scan vs dependency-tracing","agents":[{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":1500,"angle":"explicit assertions of a fixed meta-level / two-level split","initial_prompt":"READ-ONLY. Scan the repo c:/Users/victo/cyberalchemy-orchestrator for every EXPLICIT statement that the meta-level is fixed while only the object-level grows, or that frames the kinds as a 'two-level split' with a fixed meta. Grep files: research/meta-ontology/SEED.md, BACKLOG.md, README.md, FRAMINGS.md, OBLIGATIONS.md, definitions/DEFINITIONS.md, vault/**. For each hit return: file:line, the exact current sentence, and a proposed rewrite consistent with 'every level grows under its own governance; universality = the governance recursion, not a fixed floor; convergent tower = practical not terminal fixity'. Return a ranked list only; do not edit anything."},{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":1500,"angle":"implicit/dependent claims that become inconsistent under the correction","initial_prompt":"READ-ONLY. Scan the repo c:/Users/victo/cyberalchemy-orchestrator for claims that DEPEND ON a fixed meta-level and would become inconsistent under the correction, even if they don't say 'fixed' literally. Targets: H-META-1 (BACKLOG.md BL-1), H-PORT-6 and the genericity section (README.md), any 'domain-independent BASE' phrasing, FRAMINGS F6/F7, SEED.md OQ-4. For each: file:line, the current claim, WHY it silently assumes a fixed meta/terminal level, and a proposed rewrite. The point is to catch dependencies the literal-scan misses. Return a ranked list only; do not edit anything."}]},{"group_id":"reviewers","n":2,"anti_bias":"attack-vector: miss-detection vs over-reach-detection","agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":1200,"angle":"completeness - did the locators miss any site?","initial_prompt":"Review the locators' consolidated site-list (provided). Angle: COMPLETENESS. Independently spot-check the repo for sites the locators missed - especially dependent claims in README/FRAMINGS/definitions. Return: missed sites (file:line + proposed edit), or confirm the list is complete. Read-only."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":1200,"angle":"over-reach - flag sites where local 'fixed' is correct and must NOT change","initial_prompt":"Review the locators' consolidated site-list (provided). Angle: OVER-REACH. Flag any proposed edit that would wrongly change a site where 'fixed' is locally correct (e.g. a place describing schema_version as exactly '0.6.0' for the appender, or a genuinely-fixed invariant), or where the rewrite over-corrects into a new over-claim. Return: edits to drop or soften, with reasons. Read-only."}]}]
+    connections: [{"from":"locators","to":"reviewers","type":"sequential"}]
+  - close_of: "2026-07-21-orchestrator-reference-sweep"
+    closed: "2026-07-21T03:58:56.500Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"explorer":2,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-residue-definition-lean-catalog"
+    schema_version: "0.6.0"
+    created: "2026-07-21T03:59:36.894Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "research"
+    goal: "Catalog every distinct Lean definition of 'residue' in domainspec-lean-formalization and destructure the strongest one — the residue functor (FunctorialResidueStructure / noise_anti)."
+    context: "Follow-up to the reference sweep: the user wants the precise categorical definition(s) of residue in the sibling Lean repo, verbatim, with sorry-free status, so the orchestrator's 'residue = shadow ⊕ structure' claim can be judged against its actual formal anchor. Read-only; no files modified."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    working_folder: "research/residue-definition-lean-catalog/"
+    groups: [{"group_id":"lean-reader","n":1,"agents":[{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":2000,"initial_prompt":"Read ../domainspec-lean-formalization. Catalog every distinct Lean definition of residue; deep-dive the residue functor (FunctorialResidueStructure/UniversalResidueFunctor/noise_anti) with verbatim Lean and sorry-free status; summarize proof-status files (PRIZES/OPEN-SORRIES/COUNT-WALL/README)."}]}]
+    connections: []
+  - close_of: "2026-07-21-residue-definition-lean-catalog"
+    closed: "2026-07-21T04:03:16.239Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":1,"tree":{"explorer":1,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-readme-audit-repo-map"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:05:04.862Z"
+    invoked_by: "victorboscaro@outlook.com"
+    dispatch_type: "research"
+    goal: "Map the current state of the whole repository and identify what the root README.md must update to match reality."
+    context: "The user opened the repo and asked for a first-orientation ('what is this?') plus an audit of the root README against the actual tree. Three read-only explorer agents fan out over disjoint directory scopes so the README claims (phases, counts, file layout, status) can be checked against what is really on disk. Framework-as-its-own-instance (A6): this mapping dispatch is itself recorded here."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    working_folder: "."
+    groups: [{"group_id":"explore-thesis-layer","n":1,"agents":[{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":1500,"initial_prompt":"Explore definitions/, vault/, research/ (thorough). Report tree, per-file purpose, key IDs (HYP-*/CONST-*/OBL-*), dates/status. Read-only."}]},{"group_id":"explore-runnable-layer","n":1,"agents":[{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":1500,"initial_prompt":"Explore implementations/, tools/, telemetry/, sessions/ (skip node_modules). Report tree, per-file purpose, the MCP server, ledger/telemetry formats, key IDs. Read-only."}]},{"group_id":"explore-docs-and-roots","n":1,"agents":[{"agent_name":null,"role":"explorer","model":"claude-sonnet-5","token_budget":1500,"initial_prompt":"Explore docs/ and read BACKLOG/FRAMINGS/MAPPING/OBLIGATIONS/PLAN root markdown fully. Report tree, per-file role, vocabulary, current phase/status. Read-only."}]}]
+  - close_of: "2026-07-21-readme-audit-repo-map"
+    closed: "2026-07-21T04:07:57.773Z"
+    invoked_by: "victorboscaro@outlook.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":3,"tree":{"explorer":3,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-readme-audit-edits-review"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:13:07.673Z"
+    invoked_by: "victorboscaro@outlook.com"
+    dispatch_type: "review"
+    goal: "Review the 9 edits just applied to the root README.md — both per-claim truth against disk and whole-document coherence."
+    context: "After auditing README.md against the real tree, the parent applied 9 edits (ledger-count conflation, enum-drift honesty note, synthesizer role, candidate constitutions, vault/research/sessions structure, BACKLOG/axioms/audit navigation, removal of the dead docs/readme-candidates reference). Two tensioned reviewers verify the change before it stands. Framework-as-its-own-instance (A6): the review is logged here."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    working_folder: "docs/readme-audit-review/"
+    groups: [{"group_id":"readme-reviewers","n":2,"anti_bias":"per-claim truth-to-disk vs whole-document coherence & leftover-staleness","agents":[{"agent_name":null,"role":"skeptic","model":"claude-sonnet-5","token_budget":1200,"angle":"owns per-claim factual verification against the filesystem — hunts inflated/false new claims, ignores prose flow","initial_prompt":"Verify each changed README claim literally against disk (counts, paths, IDs, statuses). Return VERIFIED/WRONG/IMPRECISE per claim."},{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":1200,"angle":"owns global document coherence — assumes facts are right, hunts internal contradictions, broken links, voice drift, and stale spots left elsewhere","initial_prompt":"Read the whole README; find contradictions with unchanged text, dangling links/anchors, voice drift, missed staleness, and structure/navigation parity gaps."}]}]
+  - dispatch_id: "2026-07-21-meta-level-diffs-review"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:14:03.137Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Review the applied diffs (SEED.md, BACKLOG.md, README.md) for the meta-level correction: fidelity to the vetted edit plan, no smuggled over-claim, and internal/cross-file consistency."
+    context: "The parent applied ~13 surgical edits per a plan vetted by a locate dispatch (2 locators + completeness/over-reach reviewers). Three independent reviewers now check the result. Key guards: the correction is 'no fixed meta-level; governance recursion; convergent tower = PRACTICAL not terminal fixity (a candidate, NOT proven)'. H-META-1 was kept as the retired hypothesis with an appended Update note introducing H-META-1'; it was NOT overwritten. README genericity table (257-267) and SOURCES.md A3 cell (line 27) were deliberately LEFT UNTOUCHED."
+    max_loops: 1
+    final_approver: "parent"
+    working_folder: "research/meta-ontology/"
+    groups: [{"group_id":"diff-reviewers","n":3,"anti_bias":"attack-vector: plan-fidelity vs epistemic-over-claim vs internal-consistency","agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":1800,"angle":"fidelity to the vetted edit plan","initial_prompt":"READ-ONLY. Run `git diff -- research/meta-ontology/SEED.md BACKLOG.md README.md` in c:/Users/victo/cyberalchemy-orchestrator and read the changed passages. Check FIDELITY to the vetted plan: (APPLIED) SEED 'The question' + line-33 thesis + substrates 'two-level' + convergence note + governance section heading/bullets + OQ-4 now use the governance-recursion framing; BACKLOG BL-1 'the fixed part is the meta-level' + 'iff there is a meta-schema M' + DS-D1 'two-level structure' now recursion; an 'Update 2026-07-21' note was ADDED after H-META-1's collapse-(b) introducing H-META-1'; README H-PORT-6 got only a light 'practical not terminal' nuance. (MUST BE UNTOUCHED) README.md 257-267 genericity substrate/content table, and SOURCES.md line 27 (A3 cell) — confirm these did NOT change. Report: any planned edit missing, any unplanned edit present, and whether the two must-not-touch sites are intact. Terse."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":1800,"angle":"smuggled over-claim / lost hedges","initial_prompt":"READ-ONLY. Read research/meta-ontology/SEED.md and BACKLOG.md (BL-1) in c:/Users/victo/cyberalchemy-orchestrator, focusing on the edited passages (governance recursion, convergence note, OQ-4, the H-META-1' Update). Hunt: (1) is 'the tower converges / higher levels mutate slower' anywhere asserted as ESTABLISHED FACT rather than a candidate with its own collapse-test? It must stay hedged. (2) Did the convergence note keep its 'may be' + collapse-tests? (3) Did introducing H-META-1' accidentally CONCEDE the very thing a collapse-test should test (i.e. did it delete the falsifiable subject)? (4) Any NEW over-claim the correction introduced (e.g. stating the recursion is well-founded as fact). For each: file:line, why, minimal fix. Be adversarial."},{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":1800,"angle":"internal + cross-file consistency","initial_prompt":"READ-ONLY. Read research/meta-ontology/SEED.md, BACKLOG.md, and the H-PORT-6 area of README.md in c:/Users/victo/cyberalchemy-orchestrator. Check CONSISTENCY after the edits: (1) any remaining 'fixed meta-level' / 'two-level split' phrasing that now CONTRADICTS a nearby corrected passage? (2) Is `H-META-1'` used consistently (vs bare `H-META-1`) across SEED + BACKLOG + README — and does the retired `H-META-1` still make sense as the named superseded hypothesis? (3) Did renaming SEED's '## Meta-level vs object-level' heading to '## The governance recursion' break any in-doc cross-reference or the Links section? (4) Do the `level_n / gate_n / level_{n+1}` notation and the schema_version 0.5.2->0.6.0 evidence read consistently everywhere they now appear? Report inconsistencies with file:line + fix. Terse."}]}]
+  - dispatch_id: "2026-07-21-oble3-synthesis-colimit-lean-brief"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:14:57.169Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "research"
+    goal: "Author a two-part brief into the sibling Lean repo describing what is needed to discharge OBL-E3 (ORCH sequential fragment as a category) and prove synthesis-under-tension as a genuine second morphism-level instance of the residue functor."
+    context: "Follow-up to the residue-definition catalog: the residue functor is proven sorry-free but only on the diamond toy, and PRIZES.md marks a second morphism-level instance OPEN — the exact slot OBL-E3 sub-3 needs. The brief pairs business motivation with a technical Lean design. Artifacts are authored into ../domainspec-lean-formalization/TO-ME/oble3-synthesis-as-second-residue-instance/ (cross-repo); this working_folder is the orchestrator-side tracking record only."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    working_folder: "research/oble3-synthesis-colimit-lean-brief/"
+    groups: [{"group_id":"motivation-writer","n":1,"agents":[{"agent_name":null,"role":"writer","model":"claude-sonnet-5","token_budget":1400,"initial_prompt":"Write 00-motivation-and-business-context.md into the sibling Lean repo's TO-ME folder: where the OBL-E3 / synthesis=colimit idea comes from (anti-noise orchestration hypothesis, CT thesis, substrate-bet, formal-twin meta-reference), what motivates it (residue functor proven only on the diamond toy; second instance OPEN as a prize), what justifies it now (claim <= proof). Grounded in the orchestrator's README/OBLIGATIONS/MAPPING/vault and business-philosopher. Non-triumphalist."}]},{"group_id":"technical-writer","n":1,"agents":[{"agent_name":null,"role":"writer","model":"claude-opus-4-8","token_budget":2000,"initial_prompt":"Write 01-technical-approach.md: the Lean design for (1) ORCH sequential fragment as a category and (2) synthesis-under-tension as a second morphism-level instance of FunctorialResidueStructure, discharging OBL-E3 sub-3 and closing the open prize. Grounded by reading FunctorialResidueStructure.lean, DiamondSurplusResidue.lean, ResidueMorphism.lean, BeatsCountCriterion.lean, ThinCodomainCollapse.lean, PRIZES/COUNT-WALL and the orchestrator's OBLIGATIONS/MAPPING. Concrete file/decl plan (SynthesisResidue.lean), discharge-mapping table, anti-toy collapse-test, build-gate discipline."}]}]
+    connections: [{"from":"motivation-writer","to":"technical-writer","type":"sequential"}]
+  - close_of: "2026-07-21-readme-audit-edits-review"
+    closed: "2026-07-21T04:15:53.686Z"
+    invoked_by: "victorboscaro@outlook.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"skeptic":1,"auditor":1,"helpers":0},"loops_used":1}
+  - close_of: "2026-07-21-oble3-synthesis-colimit-lean-brief"
+    closed: "2026-07-21T04:19:52.048Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"writer":2,"helpers":0},"loops_used":1}
+  - close_of: "2026-07-21-cav2-canonical-kinds-sweep"
+    closed: "2026-07-21T04:21:28.426Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":1,"tree":{"explorer":1,"helpers":0},"loops_used":1}
+  - close_of: "2026-07-21-ledger-meta-ontology-sweep"
+    closed: "2026-07-21T04:21:28.558Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":1,"tree":{"explorer":1,"helpers":0},"loops_used":1}
+  - close_of: "2026-07-21-meta-level-correction-locate"
+    closed: "2026-07-21T04:21:28.673Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":4,"tree":{"explorer":2,"auditor":1,"skeptic":1,"helpers":0},"loops_used":1}
+  - close_of: "2026-07-21-meta-level-diffs-review"
+    closed: "2026-07-21T04:21:28.806Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":3,"tree":{"auditor":2,"skeptic":1,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-oble3-doc-correction-review"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:25:27.220Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Review the three orchestrator doc edits (DEFINITIONS DEF-ORCH-001, OBLIGATIONS OBL-E3 sub-3, MAPPING) that added the separation-vs-invariant-factor ceiling and the @6edb664 anchor pins."
+    context: "After correcting the docs so they stop implying OBL-E3 sub-3 closes the second-instance prize, two independent reviewers audit the edits: one hunts residual overclaim and factual anchor errors against the real Lean, the other hunts incomplete/inconsistent propagation across the three docs and any missed doc. Read-only; no files modified by the reviewers."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    anti_bias_global: "minimize-what-is-asserted (overclaim + anchor-accuracy skepticism) vs maximize-propagation (correction completeness + cross-doc consistency)"
+    working_folder: "research/oble3-doc-correction-review/"
+    groups: [{"group_id":"reviewers","n":2,"robot_talks":false,"anti_bias":"assertion-minimizing skepticism vs propagation-maximizing completeness audit","agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":1500,"angle":"overclaim + factual-anchor skeptic — assumes the edits assert more than the Lean proves; verifies line numbers, decl names, SHA, sorry-free status against the real repo","initial_prompt":"Adversarial review of the three doc edits: verify every anchor (FunctorialResidueStructure.lean:97, separation_is_functor_action:513, tierC_pigeonhole_not_injective, @6edb664, sorry-free) against the actual Lean at 6edb664; flag residual overclaim and missing build-verify hedges."},{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":1500,"angle":"completeness + consistency auditor — assumes the correction was propagated incompletely; checks the ceiling is stated consistently across all three docs, cross-refs resolve, and no other doc still carries the old framing","initial_prompt":"Audit propagation of the separation-vs-invariant-factor ceiling across OBLIGATIONS/MAPPING/DEFINITIONS; check cross-refs (TO-ME path, PRIZES.md, @6edb664 pin) resolve; grep README/PLAN/FRAMINGS/vault for uncorrected mentions; flag drift risk from over-restatement."}]}]
+    connections: []
+  - dispatch_id: "2026-07-21-root-hypothesis-tension"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:32:27.326Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Decide whether the AX-2/AX-3 root-unity + self-similarity/fractality claim deserves first-class vault hypothesis status, and if so how to place it (file vs premise vs open-question) and reconcile it with the axiom layer."
+    context: "AX-2 frames the scientific process as the T0 root with decision-science/categorical/engineering as three faces=instances; AX-3 records framework-as-its-own-instance and admits self-similarity/fractality 'remains to be earned'. This structural claim currently sits improperly in the axiom layer. A tensioned pair evaluated whether to promote it, guarding against the OQ-9/BET-CT immunization pathology. Outputs feed the axiom-reconciliation + a candidate new hypothesis node."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    anti_bias_global: "constructive category-theory formalization vs Popperian falsificationist skepticism"
+    working_folder: "sessions/2026-07-21-root-hypothesis-tension/"
+    groups: [{"group_id":"tensioned-evaluators","n":2,"robot_talks":false,"anti_bias":"method+corpus: constructive-formalization (CT/Lakatos proofs-and-refutations) vs falsificationism (Popper, demarcation/immunization-hunting)","agents":[{"agent_name":null,"role":"synthesizer","model":"claude-opus-4-8","token_budget":2500,"angle":"constructive: assume the unifying structure is real; construct the sharpest falsifiable form, split UNITY vs FRACTALITY, recommend vault placement and AX reconciliation","initial_prompt":"Constructive-formalization agent in a blind tensioned pair. Read vault/axioms.md (AX-2/AX-3), README common thread, vault/hypothesis/anti-noise-orchestration.md (as model + OQ-9 precedent), OBLIGATIONS.md (OBL-E3), ontology-conventions. Decide if UNITY (faces=instances of T0) and FRACTALITY (ascension-loop == orchestration-loop across scales) are one hypothesis or two; give each the sharpest actually-fireable collapse-test; recommend vault placement + AX-2/AX-3 reconciliation; connect to OBL-E3, H-PORT-6, meta-ontology. Keep initial position visible (P14). Name your see-structure-everywhere bias."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":2500,"angle":"falsificationist: attack whether the claim is falsifiable at all; hunt immunization (OQ-9/BET-CT precedent, F6 self-deflation); argue defer/demote and the minimum pre-registration if created","initial_prompt":"Popperian-falsification agent in a blind tensioned pair. Read vault/axioms.md (AX-2/AX-3), vault/hypothesis/anti-noise-orchestration.md (OQ-9 attacking BET-CT's retreat-clause immunization), README F6/F7 honesty note, OBLIGATIONS.md (OBL-E3 OPEN), ontology-conventions node-admission/orthogonality. For UNITY and FRACTALITY separately: can each ever be declared false? Diagnose immunization; check redundancy vs AX-2 and the OBL-E3 gate on FRACTALITY. Verdict: first-class hypothesis now, or defer/demote? If created, the minimum pre-registered, decision-moving falsifier. Keep initial position visible (P14). Name your reject-ambitious-synthesis bias."}]}]
+  - close_of: "2026-07-21-root-hypothesis-tension"
+    closed: "2026-07-21T04:32:40.132Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"synthesizer":1,"skeptic":1,"helpers":0},"loops_used":1}
+  - close_of: "2026-07-21-oble3-doc-correction-review"
+    closed: "2026-07-21T04:35:10.005Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"auditor":2,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-axiom-redteam-review"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:40:51.900Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Review the red-team of 'the fixed motor = scientific process + anti-bias' (research/meta-ontology/axiom-layer-redteam.md) from three opposed angles: rescue the original hypothesis, destroy the surviving form, and audit logical validity/consistency."
+    context: "An owner hypothesis (the fixed grounding layer of the meta-ontology = scientific process + anti-bias) was red-teamed with 5 attacks; the argument concluded 'no absolutely-fixed layer; a slowest-moving layer = generation + type-appropriate-warrant + (de-bias as premise not axiom)', and demoted anti-bias out of the axiom layer. Three independent reviewers stress-test that reasoning. The doc is exploratory, not a decision. Reconcile with the repo's F6 (no terminal codomain), H-META-1' (governance recursion), and node_type axiom-vs-premise ontology."
+    max_loops: 1
+    final_approver: "parent"
+    working_folder: "research/meta-ontology/"
+    groups: [{"group_id":"reviewers","n":3,"anti_bias":"attack-vector: rescue-original vs destroy-survivor vs validity-audit","agents":[{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":2200,"angle":"rescue the original hypothesis — find where the red-team over-refuted or strawmanned","initial_prompt":"READ-ONLY. Read c:/Users/victo/cyberalchemy-orchestrator/research/meta-ontology/axiom-layer-redteam.md. Your angle: DEFEND the original owner hypothesis (fixed motor = scientific process + anti-bias) by attacking the red-team's attacks. Hunt: (1) Is A2's demotion of anti-bias an over-reach? Distinguish the *mechanism* (LLM independence, structurally weak on shared base model) from the *commitment/form* ('actively seek disconfirmation and independent check') — is there a version of anti-bias that IS axiomatic and that A2 wrongly threw out with the mechanism? (2) Does A1 conflate a method's *content* (which evolves) with its *form/commitment* (which may not)? (3) Does A5 prove too much — if 'constitutive of a chosen game' disqualifies something as axiom, does ANYTHING qualify as an axiom, making the category vacuous? For each: state the strongest rescue and whether it succeeds. Be a real advocate, not a strawman."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":2200,"angle":"destroy the surviving form — what fatal flaw did the red-team miss","initial_prompt":"READ-ONLY. Read c:/Users/victo/cyberalchemy-orchestrator/research/meta-ontology/axiom-layer-redteam.md. Your angle: attack the SURVIVING (strengthened) form, not the original. Hunt for fatal flaws the red-team let through: (1) Is 'the slowest-moving layer' vacuous? Everything sits on some rate continuum; does naming the slowest one 'the ground' explain anything, or just relabel? (2) Is 'revision under type-appropriate warrant' a genuine unification, or a bag of unrelated methods (falsify/prove/define/decide) relabeled to hide that there is NO single motor? (3) Is the 'self-referential bonus' a circular trick — using falsification to bless falsification, and reading 'anti-bias got demoted' as a result when it was assumed by the setup? (4) Any attack that DOESN'T actually land (e.g. is A4's 'generation' really part of a *fixed* layer, or does it belong elsewhere)? For each: file:line, why fatal/weak, minimal fix."},{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":2000,"angle":"logical validity + consistency with the repo","initial_prompt":"READ-ONLY. Read c:/Users/victo/cyberalchemy-orchestrator/research/meta-ontology/axiom-layer-redteam.md (and, if useful, FRAMINGS.md F6, BACKLOG.md H-META-1', vault/ontology-conventions.md node_type table). Angle: VALIDITY + CONSISTENCY. Check: (1) is each attack (A1-A5) a valid inference, or a non-sequitur? (2) Do any attacks contradict each other (e.g. does A5's 'constitutive-of-commitment' undercut A1's 'asymptote-as-ground', or A3's 'type-appropriate warrant')? (3) Does the surviving form actually cohere with F6, H-META-1', and the axiom-vs-premise ontology, or does it quietly re-introduce a terminal object? (4) Are any verdict labels ('fatal', 'refines', 'gap') stronger than the argument supports? Report tersely: findings with a one-line fix each; confirm what is sound."}]}]
+  - dispatch_id: "2026-07-21-fractal-hypothesis-review"
+    schema_version: "0.6.0"
+    created: "2026-07-21T04:47:23.444Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Review the just-written vault changes (AX-2/AX-3 reconciliation + P-FACES-INSTANCE + new HYP-ORCH-FRACTAL) for governance-convention compliance and falsifiability teeth before they settle."
+    context: "Following the root-hypothesis-tension dispatch, three governed edits were written: AX-2 trimmed + premise P-FACES-INSTANCE, AX-3 stance-only, and a new private hypothesis framework-self-similarity.md gated below OBL-E3. A tensioned review pair audits them: one for ontology-conventions compliance (node_type, orthogonality, single-source, node-admission, edges), one for whether the pre-registered falsifiers actually fire or reintroduce the OQ-9 retreat-clause immunization. Outputs drive the accept/edit decision."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    parent_dispatch_id: "2026-07-21-root-hypothesis-tension"
+    anti_bias_global: "internal governance-compliance (obey the vault's own rules) vs external falsifiability (would the claims actually fail)"
+    working_folder: "sessions/2026-07-21-root-hypothesis-tension/"
+    groups: [{"group_id":"tensioned-reviewers","n":2,"robot_talks":false,"anti_bias":"governance-compliance (ontology-conventions: node_type/labels/orthogonality/node-admission/edges) vs epistemic-teeth (falsifiability, immunization-hunting, OQ-9/OQ-11 precedent)","agents":[{"agent_name":null,"role":"auditor","model":"claude-opus-4-8","token_budget":2200,"angle":"governance-compliance: does the work obey the vault's own constitution (node_type, 7-label orthogonality, single-source, Level-2 node-admission, edge directionality, wikilink resolution, no dangling contradiction)","initial_prompt":"Governance-compliance auditor in a blind tensioned review pair. Review vault/axioms.md (trimmed AX-2/AX-3 + P-FACES-INSTANCE) and the new vault/hypothesis/framework-self-similarity.md against vault/ontology-conventions.md. Check node_type, veracity/conviction applicability + values, the non-standard private key, Level-2 node-admission (does the new file earn its existence vs AX-3+P-FACES-INSTANCE), single-source/orthogonality, edge-type/direction correctness, wikilink resolution, and coherence of the AX reconciliation. Deliver initial verdict (P14), defect list with file:line + severity, final ACCEPT/ACCEPT-WITH-EDITS/REJECT."},{"agent_name":null,"role":"skeptic","model":"claude-opus-4-8","token_budget":2200,"angle":"epistemic-teeth: do the pre-registered falsifiers actually fire, or was the OQ-9/OQ-11 retreat-clause immunization reintroduced (esp. the OBL-E3 gating and the decision-moving counterfactual)","initial_prompt":"Falsifiability skeptic in a blind tensioned review pair. Attack P-FACES-INSTANCE's falsifier and HYP-ORCH-FRACTAL's 4-part pre-registered falsifier + OBL-E3 gating. Read the two files plus vault/hypothesis/anti-noise-orchestration.md (OQ-9/OQ-11 immunization precedent) and README F6/F7 vacuity precedent. Press: is 'moves a design decision' observable/pre-registered or a moving goalpost? Is 'enrich C' operationalized sharply? Is '≡ = same functor' actually pinned? Does 'held veracity:low until OBL-E3 moves' function as a permanent immunizer? Deliver initial verdict (P14), strongest surviving attack per claim, concrete tooth-giving fixes, final ACCEPT/ACCEPT-WITH-EDITS/REJECT/DEFER."}]}]
+  - close_of: "2026-07-21-fractal-hypothesis-review"
+    closed: "2026-07-21T04:47:33.812Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":2,"tree":{"auditor":1,"skeptic":1,"helpers":0},"loops_used":1}
+  - close_of: "2026-07-21-axiom-redteam-review"
+    closed: "2026-07-21T04:49:43.327Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":3,"tree":{"skeptic":2,"auditor":1,"helpers":0},"loops_used":1}
+  - dispatch_id: "2026-07-21-close-session-node"
+    schema_version: "0.6.0"
+    created: "2026-07-21T05:07:50.873Z"
+    invoked_by: "victorboscaro@gmail.com"
+    dispatch_type: "review"
+    goal: "Close the session per the close-session skill: classify the session node (Sonnet) and review it with two independent Sonnet reviewers (frontmatter/classification + body-discipline) before finalizing."
+    context: "Session covered the cross-repo reference sweep, the OBL-E3/synthesis-colimit brief authored into the sibling Lean repo, and the doc-correction pass with anchor fixes. This dispatch runs the close-session classification + two-reviewer gate over the assembled node."
+    max_loops: 1
+    final_approver: "parent"
+    meta: true
+    working_folder: "sessions/"
+    groups: [{"group_id":"classifier","n":1,"agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":800,"initial_prompt":"Classify the session node per ontology-conventions.md: node_type, tags, layer, nature, expected_importance + rationale, contradiction edges, files touched. Return classification fields only."}]},{"group_id":"review-frontmatter","n":1,"agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":600,"initial_prompt":"Review the assembled session node's classification + frontmatter against ontology-conventions.md; check well-formedness and the 200-line body cap. Return PASS or concrete problems."}]},{"group_id":"review-body","n":1,"agents":[{"agent_name":null,"role":"auditor","model":"claude-sonnet-5","token_budget":600,"initial_prompt":"Review the assembled session node's body discipline: three forward registers obey the discriminating test + subset rule, Open questions node-less, Recommendation names a license or self-labels, no narration. Return PASS or concrete problems."}]}]
+    connections: [{"from":"classifier","to":"review-frontmatter","type":"sequential"},{"from":"classifier","to":"review-body","type":"sequential"}]
+  - close_of: "2026-07-21-close-session-node"
+    closed: "2026-07-21T05:15:06.606Z"
+    invoked_by: "victorboscaro@gmail.com"
+    exit_reason: "resolved"
+    agents_spawned: {"total":5,"tree":{"auditor":5,"helpers":0},"loops_used":1}

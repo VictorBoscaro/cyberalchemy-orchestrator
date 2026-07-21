@@ -5,8 +5,8 @@ is_session: false
 layer: ontology, architecture, application
 nature: reference
 status: draft
-version: 0.2.0
-last_updated: 2026-07-20
+version: 0.2.1
+last_updated: 2026-07-21
 ---
 
 # cyberalchemy-orchestrator *(provisional name)*
@@ -98,11 +98,21 @@ The ledger is only written **after** human confirm — that's the gate. A UI tha
 ledger would always arrive late, because it could never *be* the gate; that's why Phase 1 also
 reads the pending sheet (`telemetry/agents/pending/`), the only pre-confirm, editable artifact.
 The two sides have opposite postures by design: the `register-dispatch` skill's **appender** is
-**strict** (refuses to write outside schema v0.6.0 and refuses to write to an already-corrupted
-ledger — it protects the file), while the control plane's **reader** is **lenient** (it even
+**strict** (refuses to write a record outside schema v0.6.0, and refuses to append to a
+**structurally** corrupted ledger — malformed line shapes, invalid JSON, duplicate ids; it does
+**not**, however, re-validate enum values on rows already on disk, which are grandfathered — so it
+protects the file's *structure*, not the historical correctness of every prior row), while the
+control plane's **reader** is **lenient** (it even
 shows old prettified rows that the appender would reject — see
 [the two decisions](#two-decisions-the-real-data-forced)). A hook blocks reading the ledger via
 direct Bash; structural reading always goes through `server/ledger.py`.
+
+That strictness is a property of the write **path**, not a guarantee about every row already on
+disk. An audit ([`vault/audit/ledger-enum-drift-finding.md`](vault/audit/ledger-enum-drift-finding.md))
+found two 2026-07-18 rows carrying an out-of-enum `exit_reason: "success"` that could only have
+**bypassed** the validated appender. It's a live counterexample — it currently holds the engine
+constitution's single-writer rule (`EG-1`) at `veracity: medium` and blocks its promotion, and
+it's the keystone to resolve before Phase 2 lets a button write.
 
 ## What already runs today vs. what is thesis
 
@@ -112,11 +122,14 @@ This is the point where it's worth being more honest than excited.
 
 - The **read control plane** (Phase 1): FastAPI + SSE server in
   [`implementations/`](implementations/), with ten UI variants over the same API,
-  a lenient ledger parser, parser tests (`tests/test_ledger.py`), and Playwright tests
-  against the ten variants (`tests/test_ui.py`).
+  a lenient ledger parser, parser tests (`tests/test_ledger.py`), endpoint tests
+  (`tests/test_main.py`), and Playwright tests against the ten variants (`tests/test_ui.py`).
 - The **real ledger**: [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml)
-  already has ~700 real dispatches recorded across 11 sibling repos by the `register-dispatch`
-  skill — including, literally, the dispatches that built and reviewed the control plane itself.
+  holds **this repo's own ~30 dispatches** (≈49 rows counting their close rows), written by the
+  `register-dispatch` skill — including, literally, the dispatches that built and reviewed the
+  control plane itself. That file is only this repo's slice; across **all the sibling repos the
+  control plane auto-discovers**, the aggregate is on the order of ~700 dispatches under a single
+  `schema_version` (this is the cross-repo total, not the content of any one file).
 - The **agent-pool-mcp**: a runnable MCP server at [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/)
   (`npm run smoke` doesn't need an API key), which selects `agent_name` from the
   canonical pool in [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml)
@@ -238,7 +251,7 @@ enums) — live in the [`register-dispatch`](.claude/skills/register-dispatch/SK
 | `final_approver` | `"parent"` or the `agent_name` of a dedicated approver (never a member of the working group). |
 | `anti_bias_global` | tension axis for the entire dispatch (required with ≥2 groups in fan-out). |
 
-Each `agents[]` entry carries `role` (`explorer \| skeptic \| writer \| auditor`), `model`,
+Each `agents[]` entry carries `role` (`explorer \| synthesizer \| skeptic \| writer \| auditor \| planner \| coder`), `model`,
 `token_budget`, `initial_prompt`, `agent_name` (from the pool or `null`), and `angle` (required if
 `n≥2`). The **close row** closes with `close_of` (the `dispatch_id`), `exit_reason`
 (`resolved \| loop_ceiling_reached \| dissent_irreconcilable \| user_abort \| error`),
@@ -263,7 +276,7 @@ repo):
 
 | Layer | What it is | Portable? |
 |---|---|---|
-| **Substrate** | dispatch schema (`schema_version 0.6.0`), skills (`register-dispatch`, `check-tension`, `subagents-strategy`), append-only ledger, control plane, agent pool | **is the goal** — should drop into any repo |
+| **Substrate** | dispatch schema (`schema_version 0.6.0`), skills (`register-dispatch`, `check-tension`, `domainspec-subagents-strategy`), append-only ledger, control plane, agent pool | **is the goal** — should drop into any repo |
 | **Content** | the categorical thesis (FRAMINGS/MAPPING/OBLIGATIONS/DEFINITIONS), the vault, `HYP-ORCH-NOISE`, the essays | **no** — it's the subject matter of this specific repository |
 
 ### What is already evidence of genericity today
@@ -273,8 +286,9 @@ It's not just aspiration — part of the design already points there, and it's v
 - The control plane **auto-discovers** any sibling repo that has `telemetry/agents/` (ledger
   or pending), reading it **read-only**, with no instrumentation on the target — pure filesystem
   ([`implementations/server/config.py`](implementations/server/config.py), `_scan_repos`).
-- The ledger already spans **11 repos** under a single `schema_version` — it's not single-repo by
-  accident, it's multi-repo by construction.
+- The dispatches the plane discovers already span **~11 sibling repos** (a union of per-repo
+  ledgers) under a single `schema_version` — it's not single-repo by accident, it's multi-repo by
+  construction.
 - `agent_name` is resolved against **one** canonical pool via a cross-repo MCP server;
   other repos are **consumers**, not carrying copies that drift
   ([`tools/agent-pool-mcp/README.md`](tools/agent-pool-mcp/README.md)).
@@ -309,7 +323,9 @@ by design" to stop being a slogan.
   question becomes: what's the minimal portability kit? — see OQ-PORT below).
 - **H-PORT-6 — Genericity = the A6/CT thesis at the tool level** *(speculative; bridge to
   the thesis)*. If the orchestration language really is a category `ORCH` (OBL-E3), then
-  `ORCH` is the **domain-independent base category** and each repo's content is a functor
+  `ORCH` is the **domain-independent base category** (a *practically*-stable level in the governance
+  recursion — its own gate governed one level up, not a terminal floor; see BL-1 / H-META-1') and
+  each repo's content is a functor
   *leaving* `ORCH` toward that domain's codomain — genericity would be a *consequence*
   of the thesis, not an engineering accident. *Collapse:* if OBL-E3 hits its collapse-test (only
   the `sequential` fragment is a category), this bridge drops to analogy — and practical
@@ -408,7 +424,9 @@ the argumentative weight:
 The central finding — **concat = coproduct vs. synthesis = pushout** — ties the `robot_talks`
 mechanics directly to DEF-ORCH-001: a synthesis under tension *literally* produces the two-faced
 object the repo calls residue. It's also half the way to discharging
-sub-obligation 3 of OBL-E3.
+sub-obligation 3 of OBL-E3 — but only at the *separation* bar: this route does **not** close the
+open *invariant-factor* prize (that needs a non-concrete codomain), so "discharges sub-3" ≠ "closes
+the residue prize" (see [`OBLIGATIONS.md`](OBLIGATIONS.md) sub-3).
 
 ### OBL-E3 — the test that decides everything
 
@@ -421,7 +439,8 @@ Nothing in this vault is a result until a specific obligation is discharged. It 
 
 Three sub-obligations, all of which must hold: (1) associativity of chained connections;
 (2) identity laws of the pass-through group; (3) the residue of a synthesis being the **same
-object** as `FunctorialResidueStructure` — not just a count-shaped residue.
+object** as `FunctorialResidueStructure` — not just a count-shaped residue (dischargeable at the
+*separation* bar only; it does **not** close the invariant-factor prize — see `OBLIGATIONS.md` sub-3).
 
 The risk is named in the document itself: `zig-zag` and `feedback` are *loops*, and the
 honest guess is that only the `sequential` fragment is a category outright; the other two are
@@ -443,6 +462,7 @@ discipline that separates this repository from a glossary decorated with arrows.
 cyberalchemy-orchestrator/
 ├── PLAN.md                        # the lean object: problem + step plan E0-E4, with collapse-tests
 ├── FRAMINGS.md, MAPPING.md, OBLIGATIONS.md   # the thesis layer (framings, CT mapping, falsifiable target)
+├── BACKLOG.md                     # parking lot of named-but-unplanned candidates (BL-1..4)
 ├── definitions/DEFINITIONS.md     # definitions protocol, DEF-ORCH-* terms
 ├── .claude/skills/                # this repo's operational skills (portable substrate)
 │   ├── register-dispatch/         # owner of the sheet's shape + the appender (append-dispatch.cjs)
@@ -450,7 +470,7 @@ cyberalchemy-orchestrator/
 │   ├── domainspec-subagents-strategy/  # the router: when to dispatch, 4-step lifecycle
 │   └── ...                        # dozens of other skills (research, review, close-session, ...)
 ├── telemetry/agents/
-│   ├── subagents-dispatch.yaml    # THE LEDGER — append-only, ~700 real rows, 11 repos
+│   ├── subagents-dispatch.yaml    # THE LEDGER — append-only; ~30 dispatches here, ~700 across discovered repos
 │   ├── agent-pool.yaml            # canonical agent_name pool (419 tagged entries)
 │   └── pending/                   # pre-confirm sheets (1 demo fixture today)
 ├── implementations/               # the dispatch control plane (Phase 1)
@@ -460,9 +480,16 @@ cyberalchemy-orchestrator/
 │   ├── UI-CONTRACT.md             # normative contract (API + testids)
 │   └── tests/                     # test_ledger.py, test_main.py, test_ui.py (Playwright)
 ├── tools/agent-pool-mcp/          # MCP server — cross-repo agent_name selection
-├── vault/constitution/, vault/hypothesis/   # ratified rules and exploratory hypotheses
-├── research/, sessions/           # ad hoc investigations and closed session nodes
-└── docs/                          # features, essays, and README candidates (docs/readme-candidates/)
+├── vault/                         # governed knowledge base
+│   ├── ontology-conventions.md    # the vault's own constitution (7 orthogonal labels)
+│   ├── axioms.md                  # AX-1..3 (assumed, incl. A6 framework-as-instance)
+│   ├── constitution/              # CONST-ENG, CONST-FE — CANDIDATE (unreviewed), not yet ratified
+│   ├── hypothesis/                # HYP-ORCH-NOISE, HYP-ORCH-INFRA, HYP-CLAIM-GRAPH
+│   └── audit/                     # ledger-enum-drift-finding — the live appender-bypass counterexample
+├── research/                      # investigations: agent-name-selection-arch, permguard-kernel (DEFER),
+│                                  #  agent-events-infra-hypothesis, meta-ontology
+├── sessions/                      # 14 closed session nodes (close-session outputs)
+└── docs/                          # features/ui-studio and essays/anti-noise-orchestrator
 ```
 
 ### Navigation
@@ -473,14 +500,19 @@ cyberalchemy-orchestrator/
 | [`FRAMINGS.md`](FRAMINGS.md) | Ledger of framings F1–F7 — the anatomy of the categorical thesis. |
 | [`MAPPING.md`](MAPPING.md) | Living ledger of construct ⟷ CT type, with strength and collapse-test per row. |
 | [`OBLIGATIONS.md`](OBLIGATIONS.md) | The single falsifiable target (OBL-E3). |
+| [`BACKLOG.md`](BACKLOG.md) | Parking lot of named-but-unplanned candidates (BL-1..4); each with a falsifiable core + graduation path. |
 | [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Normative vocabulary (residue, separation, shadow, probe, verb) — single source per term. |
 | [`implementations/`](implementations/) | The runnable control plane. See [`implementations/README.md`](implementations/README.md) and the contract [`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md). |
 | [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/) | Cross-repo MCP that selects `agent_name` from the canonical pool. |
 | [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml) | The append-only ledger — the operational heart. Never edit in place; only via `register-dispatch`. |
 | [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml) | Canonical pool of personas (`agent_name`), with tags and `role_fit`. |
 | [`telemetry/agents/pending/`](telemetry/agents/pending/) | Pre-confirm sheets — the only editable surface before the ledger. |
-| [`vault/hypothesis/`](vault/hypothesis/) | Exploratory hypotheses, not yet promoted to constitution (e.g., `HYP-ORCH-NOISE`). |
-| [`vault/constitution/`](vault/constitution/) | Already-ratified rules; see also [`vault/ontology-conventions.md`](vault/ontology-conventions.md). |
+| [`vault/hypothesis/`](vault/hypothesis/) | Exploratory hypotheses, not yet promoted: `HYP-ORCH-NOISE` (anti-noise), `HYP-ORCH-INFRA` (event-bus/infra), `HYP-CLAIM-GRAPH` (assertion-level typing). |
+| [`vault/constitution/`](vault/constitution/) | **Candidate** constitutions (`CONST-ENG`, `CONST-FE`) — unreviewed, not yet ratified; see also [`vault/ontology-conventions.md`](vault/ontology-conventions.md) (the ratified one) and [`vault/axioms/axioms.md`](vault/axioms/axioms.md). |
+| [`vault/audit/`](vault/audit/) | Ledger audits — `ledger-enum-drift-finding` is the live counterexample that blocks `EG-1`'s promotion. |
+| [`vault/axioms/axioms.md`](vault/axioms/axioms.md) | The three assumed axioms (AX-1..3), including A6 "framework as its own instance" (referenced above). |
+| [`research/`](research/) | Investigations (never promoted to the vault): agent-name-selection-arch, permguard-kernel (DEFER), agent-events-infra-hypothesis, meta-ontology. |
+| [`sessions/`](sessions/) | 14 closed session nodes journaling the work (close-session outputs). |
 | [`docs/essays/anti-noise-orchestrator/`](docs/essays/anti-noise-orchestrator/) | Essay derived from `HYP-ORCH-NOISE` — the orchestrator as a noise-reduction machine (bias ⊕ noise). |
 | [`docs/features/ui-studio/`](docs/features/ui-studio/) | Feature in design: fitness harness for the UI variants. |
 | [`.claude/skills/`](.claude/skills/) | Skills executable via Claude Code — `register-dispatch`, `check-tension`, `robot-talks`, among dozens of others. |

@@ -1,5 +1,5 @@
 {
-  "_comment": "Copie para config.json para sobrescrever a auto-descoberta. Sem este arquivo, o servidor varre o diretório pai do repo atrás de pastas com telemetry/agents/.",
+  "_comment": "Copy to config.json to override auto-discovery. Without this file, the server scans the repo's parent directory for folders containing telemetry/agents/.",
 
   "scan_roots": ["C:/Users/victo"],
 
