@@ -56,7 +56,7 @@ force-feeds.**
 
 1. [Scope](#scope)
 2. [Selection Predicates](#selection-predicates)
-3. [Rules](#rules) (FE-1 … FE-9)
+3. [Rules](#rules) (FE-1 … FE-10)
 4. [Examples](#examples) · [Non-Examples](#non-examples)
 5. [Composition](#composition)
 6. [Validation](#validation)
@@ -213,6 +213,21 @@ harness uses to score (score and self-explanation are dual).
 - **convicção:** high — the user elevated "the obvious needs no manual" to a principle.
 - **Falsified if:** explain-mode goes unused or users still cannot act without instruction — i.e., self-explanatory ⊥ discreet proves unsatisfiable (the marker is either missed because too quiet, or it competes with content).
 - **Validation:** `hybrid` — deterministic (accessible name, keyboard focus, tab order; configurable dwell) + review (soft-gradient of friction/obviousness).
+
+### FE-10: Every Rule Is an Ablatable, Instrumented Unit
+
+**Build as law, test as bet.** Each rule above is implemented as an *independently
+toggleable* behavior bound to a stable `data-*-id` that also **emits its density/fatigue
+metric**. Turning one rule off must not require touching another's code. That id is the
+explanation anchor (FE-9), the harness score key (FE-8), and the ablation handle (here) —
+**one id, three duals.** This is the orthogonality principle of
+[ontology-conventions](../ontology-conventions.md) applied to *interventions*, not labels:
+rules must be independent enough that an ablation delta attributes to exactly one of them.
+
+- **veracidade:** low — nothing is built yet.
+- **convicção:** high — without this, every "Falsified if" above is decorative; the whole falsifiability program *depends* on it.
+- **Falsified if:** a rule cannot be removed without regressing unrelated rules (implementations are coupled), so no clean per-rule density/fatigue delta is measurable — the bets become unfalsifiable in practice.
+- **Validation:** `hybrid` — deterministic (each rule has a flag + a metric emitter at its `data-*-id`; toggling one leaves the others green) + review (an ablation experiment attributes a delta to exactly one rule).
 
 ---
 
