@@ -258,7 +258,7 @@ o que falta construir.
 | Default de higiene | T | tornar o caminho higiênico o default | human-gate + `check-tension` que **bloqueia** (já é choice architecture) |
 | Sludge deliberado | T | fricção que força a sequência correta | **PENDENTE** — gate que impede a discussão antes do congelamento |
 | Token-budget como nudge | T | escassez força compressão/decisão | `token_budget` no schema v0.6.0 **existe**; uso como nudge é design |
-| Tipo categórico por construto | CT | tudo compõe e mede resíduo | `MAPPING.md` / PLAN §4 (disciplina já adotada) |
+| Operacionalização CT (analogia ~1:1) | CT | Kahneman informal → objetos que compõem/medem; usar **só onde o mapa é apertado**, senão fica informal | **operacional** (`costura-feasibility`): ⊕↦Pitágoras-Amari sob `F`, √N↦concentração-por-regime, agregação↦m-projeção, nudge↦morfismo na fibra-de-acoplamento; **ABERTO**: ⊥ sobreviver à composição (DPI). Ver `[[BET-CT]]` |
 | Frame (enquadrar a pergunta) | K·CT | lente mal-posta envenena tudo downstream; enquadrar é um juízo (viés ⊕ ruído) | **PENDENTE** — estágio novo; braço de tensão + braço de dispersão-independente (`[[OQ-4]]`) |
 | Refine (operador de loop) | — | melhora por iteração limitada, transversal a qualquer nó | skill `refine` **existe** (esteira fixa + budget); convergência solo **PENDENTE** (não é o zig-zag nem os dials de dispatch) |
 | Espinha de citação (chave + fluxo + claim↦ref) | K | evidência sem âncora não é evidência (`claim ≤ proof`) | parcial: `derives-from` **existe**; chave + qualidade-do-vínculo (`supports`/`mentioned`) + válvula `reasoning` **PENDENTE** |
@@ -371,6 +371,86 @@ não inventar métrica nova. Levantada pelo red-team em `2026-07-20-anti-ruido-f
   acima). *Falsifica:* exibir dois estágios cuja composição destrói a ortogonalidade (a DPI
   sugere que existe). *Sobrevive:* uma prova de que bias/ruído-do-composto se constroem dos
   bias/ruído-das-partes.
+
+## Apostas registradas
+
+As apostas são as **assunções load-bearing** desta tese, mantidas em *proof-zero* e
+declaradas para poderem ser falseadas — "primeiro assumir verdade, depois pensar como falsear,
+depois o experimento". Schema: *Aposta* (assumida verdadeira) · *Carrega* (o que depende dela) ·
+*Status* · *Falseador* · *Experimento* (adiado) · *Se cai* (resíduo). Os *Collapse-tests* acima
+são os falseadores em nível-de-tese; aqui cada assunção carrega o seu — apontando o collapse-test
+quando já existe, para não duplicar (fonte única).
+
+**BET-CT — operacionalização por analogia ~1:1.**
+- *Aposta:* para cada construto de ruído existe uma ferramenta CT que mapeia **≥ ~1:1** e
+  **corrige/prediz** (não só re-rotula). CT é *como* operacionalizamos Kahneman — nem eixo
+  motivador nem cenário; é "analogia mais que analogia" só onde o encaixe é apertado.
+- *Carrega:* a passagem tese-informal → arquitetura computável; o `⊕`, o `√N`, a agregação.
+- *Status:* **sobreviveu** uma vez (`costura-feasibility`: ⊕↦Pitágoras-Amari sob `F`,
+  √N↦concentração-por-regime, nudge↦fibra-de-acoplamento). **Em-teste:** persona, tag, fork-guard.
+- *Falseador (por construto):* falsa **para aquele construto** se a ferramenta candidata
+  **colapsa em identidade** ou tem de **tocar o conteúdo** (foi o que a óptica de juízo único fez
+  no nudge — daí subir de andar). Falseador de tese = o collapse-test de **composicionalidade**
+  (⊥ não sobrevive à composição / DPI).
+- *Experimento (adiado):* para o próximo construto, exibir o mapa formal e testar se muda ≥1
+  decisão; para a composição, exibir dois estágios cuja composição destrói a ortogonalidade.
+- *Se cai (local):* aquele construto fica **informal / Kahneman-only** — sem perda pro resto; a
+  disciplina é seletiva por construção (**não nos rendemos a CT**).
+
+**BET-√N — independência dá redução material de ruído.**
+- *Aposta:* avaliadores independentes, escala comum, cegos à fonte, reduzem ruído com ganho
+  **∝ √N_efetivo** (expoente condicional ao regime — ver revisão `costura`).
+- *Carrega:* toda a alavanca anti-ruído (agregação, MAP, painel de scorers).
+- *Status:* **em-teste**.
+- *Falseador:* falsa se **N_efetivo ≈ 1** — a covariância de erro entre scorers (mesmo
+  base-model, personas distintas) alta a ponto de a média não bater um único scorer bom.
+- *Experimento:* N scorers pontuam um conjunto rotulado; medir covariância de erro vs
+  referência; comparar erro-da-média vs erro-do-melhor-individual.
+- *Se cai:* trocar independência por **diversidade estrutural** (evidência/corpora/tools
+  distintos) como fonte primária de descorrelação; ou re-orçar aceitando ganho pequeno.
+
+**BET-PERSONA — persona diversifica a geração, não só o estilo.**
+- *Aposta:* personas opostas diversificam a *distribuição de conteúdo* amostrada, não só o
+  registro de superfície.
+- *Carrega:* persona como fonte de tensão no estágio-gerar (`[[OQ-3]]`).
+- *Status:* **em-teste** (red-team marcou como não-provado).
+- *Falseador:* falsa se, fixando tarefa+evidência e variando **só** a persona, os outputs
+  substantivos (claims, escolhas — não estilo) forem estatisticamente indistinguíveis.
+- *Experimento:* mesmo prompt de tarefa, só persona varia; medir divergência de conteúdo vs de
+  estilo; conteúdo ≈ 0 → falseada.
+- *Se cai:* mover a diversidade pro eixo estrutural; rebaixar persona a cosmético.
+
+**BET-TAG — a dispersão de tags mede ruído (não ambiguidade).**
+- *Aposta:* o espalhamento de tags entre agentes independentes é dominado por **ruído-de-rater**
+  (reduzível), não por ambiguidade-do-item ou defeito-de-fronteira.
+- *Carrega:* `[[OQ-4]]` (a "distribuição = medida de ruído"); usar a distribuição como confiabilidade.
+- *Status:* **em-teste**.
+- *Falseador:* falsa se **afiar as âncoras** (as 6 facetas) não reduzir o espalhamento — se é
+  ambiguidade/fronteira, âncora melhor não ajuda. (Complementa o collapse-test de que a
+  distribuição precisa correlacionar com qualidade downstream.)
+- *Experimento:* mesmo conjunto, âncoras vagas vs afiadas; medir mudança no espalhamento.
+- *Se cai:* separar os 3 baldes (ruído / ambiguidade / fronteira) antes de agregar.
+
+**BET-THALER — a lente do nudge vira restrição de design, não só re-descrição.**
+- *Aposta:* nomear "nudge governa processo, não conteúdo" gera uma **restrição checável** sobre
+  decisões futuras (não só re-descreve os gates existentes).
+- *Carrega:* a legitimidade do eixo Thaler como mais que pedagógico.
+- *Status:* **em-teste** (red-team marcou o eixo como majoritariamente relabel).
+- *Falseador:* falsa se, ao longo de N decisões de design, a lente nunca **barrar nem alterar**
+  uma escolha que não teríamos barrado sem ela.
+- *Experimento:* registrar decisões e marcar quais a regra processo-não-conteúdo mudou.
+- *Se cai:* rebaixar Thaler de eixo a **lente** (vocabulário útil), mantendo só o sludge/
+  freeze-gate como prescrição — que é downstream do Kahneman.
+
+**BET-FORK — o guarda-de-fork é mecanizável sem oráculo.**
+- *Aposta:* sinais **estruturais** (bimodalidade + claims incompatíveis explícitos) separam
+  *fork-real* de *dispersão* sem precisar saber qual lado está certo.
+- *Carrega:* o ajuste 5 (guarda-de-fork); evita esmagar a minoria correta.
+- *Status:* **em-teste** (red-team: como escrito, exige o oráculo que a premissa nega).
+- *Falseador:* falsa se, num conjunto rotulado de casos, os forks sinalizados por estrutura não
+  correlacionarem com os forks-de-decisão reais.
+- *Experimento:* casos rotulados fork/dispersão; medir precisão/recall do detector estrutural.
+- *Se cai:* o guarda vira **gatilho-de-escalação-ao-humano**, não decisão automática.
 
 ## Connections
 
