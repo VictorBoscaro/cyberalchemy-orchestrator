@@ -1,5 +1,5 @@
 ---
-tags: [orquestrador, cyberalchemy, dispatch-control-plane, ledger, portability, category-theory, residue, yoneda, navigation]
+tags: [orchestrator, cyberalchemy, dispatch-control-plane, ledger, portability, category-theory, residue, yoneda, navigation]
 node_type: readme
 is_session: false
 layer: ontology, architecture, application
@@ -26,30 +26,42 @@ read first.**
 
 ## What is this?
 
-This repo has two layers, and confusing them is the easiest mistake to make on a first
-read.
+**cyberalchemy-orchestrator** is an agent-orchestration project that treats coordinating
+LLM agents as a problem in the science of decision-making — the study of **bias, noise, and
+nudges** — rather than a plumbing problem. When you fan work out to several agents, what comes
+back is only as good as the judgment behind it. The project's founding **hypothesis** is that
+multi-agent judgment fails the way human judgment does: agents on the same base model agree
+too readily (correlated bias), their answers scatter for reasons unrelated to the task
+(noise), and how a task is framed quietly steers the outcome. This is a claim to be tested,
+not a settled fact — but a productive one, because each failure it names already has a known
+countermeasure in decision science, which turns "orchestrate agents well" into concrete,
+falsifiable moves. If it holds, the orchestrator's job is to organize the agents to counter
+those failures — pairing them on deliberately opposed angles, keeping them blind to one
+another, aggregating independent judgments, auditing the result — instead of spawning agents
+and gluing together whatever they return. Whether those countermeasures actually cancel the
+failures, rather than just relabel them, is itself a hypothesis under test: agents sharing a
+base model produce correlated errors, which caps how much independence can buy.
 
-The **concrete** layer is a **subagent orchestrator**: a dispatch discipline
-(agent groups + typed connections `sequential` / `zig-zag` / `feedback`, recorded
-in an append-only ledger) and, on top of it, a **control plane** — a FastAPI + SSE server with
-ten UI variants that read, live, what is pending human confirmation and what has already
-been dispatched. This runs today, has tests, and you can bring it up locally in minutes (see
-[Quick Start](#quick-start--how-to-run)).
+Those three levers are borrowed from the science of judgment: **Kahneman** on bias and noise,
+**Thaler** on nudges and choice architecture. Under the hood, we are trying to ground the
+tooling in **category theory** and **information theory** — a candidate framing, not a proven
+one — to pin down what a dispatch is, what a synthesis loses, and when a label adds information
+rather than noise. The main loop is meant to run on **epistemology and the scientific
+process**: state a falsifiable claim, probe it, keep what survives, enrich the model from what
+breaks. That loop isn't built yet — it is the next thing to add — but the discipline it implies
+(`claim ≤ proof` — certainty no larger than the evidence; every construct falsifiable with a
+collapse-test) already runs through the repo.
 
-The **thesis** layer is more ambitious and much less mature: the bet that this very
-orchestration language (groups, connections, dispatches) **is** a mathematical category —
-objects, morphisms, composition, identity — and that ascending in knowledge means
-enriching that category's codomain toward the Yoneda point, never summarizing it to a number.
-This thesis hasn't been proven anywhere yet; it lives in [`FRAMINGS.md`](FRAMINGS.md),
-[`MAPPING.md`](MAPPING.md), and in the single falsifiable target of [`OBLIGATIONS.md`](OBLIGATIONS.md).
-
-The two layers touch at one point: the very work of building this repo is done via
-dispatches recorded in the **same ledger** the orchestrator operates — the thesis calls this
-*"framework as its own instance"* (BACKLOG A6). The underlying ambition behind all of this is
-to model **knowledge** — what it is, what properties it has, how it relates, who acts on
-it — with enough structure to produce systems, including itself; the orchestrator is
-the first executable slice of that ambition, not the whole project (see
-[`PLAN.md §1`](PLAN.md#1-problem)).
+What exists **today** is the orchestration substrate: a **dispatch discipline** (agent
+groups, typed connections, an anti-bias gate, an append-only ledger) and a **control plane** —
+a FastAPI + SSE server with ten UI variants that read, live, what is pending human
+confirmation and what has already been dispatched. It runs, has tests, and comes up locally in
+minutes (see [Quick Start](#quick-start--how-to-run)). The decision-science loop and the
+categorical typing of the tools are the **thesis layer** — mostly still on paper
+([`FRAMINGS.md`](FRAMINGS.md), [`MAPPING.md`](MAPPING.md), [`OBLIGATIONS.md`](OBLIGATIONS.md)),
+not proven. One self-referential twist links the two: building this repo is itself done
+through dispatches recorded in the **same ledger** the orchestrator operates —
+*"framework as its own instance"* (BACKLOG A6; see [`PLAN.md §1`](PLAN.md#1-problem)).
 
 > **Design goal (new, 2026-07-20):** the concrete layer must be **generic — droppable
 > into any repo with near-zero integration**, independent of that repo's domain. The
@@ -122,9 +134,9 @@ This is the point where it's worth being more honest than excited.
   orchestrator constructs (probe, verb, residue, zig-zag) and category theory are
   anchored hypotheses (often in `domainspec-lean-formalization`), not theorems
   of this repo.
-- **[`vault/hypothesis/orquestracao-anti-ruido.md`](vault/hypothesis/orquestracao-anti-ruido.md)**
+- **[`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md)**
   (`HYP-ORCH-NOISE`) — the thesis that the orchestrator is a "noise-reduction machine" —
-  status `candidate` / `exploratory` explicit in the frontmatter, with sections marked `PENDENTE`.
+  status `candidate` / `exploratory` explicit in the frontmatter, with sections marked `PENDING`.
 - **Generic portability** (the goal below) — today it's partial evidence + hypothesis, not an
   empirical guarantee; see the collapse-tests for each `H-PORT-*`.
 - **Phase 2 of the control plane** (the "Dispatch" button that writes the confirm) is not
@@ -469,7 +481,7 @@ cyberalchemy-orchestrator/
 | [`telemetry/agents/pending/`](telemetry/agents/pending/) | Pre-confirm sheets — the only editable surface before the ledger. |
 | [`vault/hypothesis/`](vault/hypothesis/) | Exploratory hypotheses, not yet promoted to constitution (e.g., `HYP-ORCH-NOISE`). |
 | [`vault/constitution/`](vault/constitution/) | Already-ratified rules; see also [`vault/ontology-conventions.md`](vault/ontology-conventions.md). |
-| [`docs/essays/orquestrador-anti-ruido/`](docs/essays/orquestrador-anti-ruido/) | Essay derived from `HYP-ORCH-NOISE` — the orchestrator as a noise-reduction machine (bias ⊕ noise). |
+| [`docs/essays/anti-noise-orchestrator/`](docs/essays/anti-noise-orchestrator/) | Essay derived from `HYP-ORCH-NOISE` — the orchestrator as a noise-reduction machine (bias ⊕ noise). |
 | [`docs/features/ui-studio/`](docs/features/ui-studio/) | Feature in design: fitness harness for the UI variants. |
 | [`.claude/skills/`](.claude/skills/) | Skills executable via Claude Code — `register-dispatch`, `check-tension`, `robot-talks`, among dozens of others. |
 
