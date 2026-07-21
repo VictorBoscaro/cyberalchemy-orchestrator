@@ -107,11 +107,14 @@
   com o eixo objeto→relação.
 - **Âncora:** eixos = `distilled-knowledge/knowledge-evolution-typing.md` em
   `domainspec-lean-formalization` (`¬EssSurj→NewObjects` ⊥ `¬Full→NewRelations`); família de
-  ligações reconstrói = `ProbeTypology.lean:38` `representables_separate`, `:49`
-  `representables_isSeparating`. — *Rótulo (fraco):* as "duas espécies operacionais = os dois
-  rungs", o poset de Reedy e o eixo-β são **síntese** (debate 2026-07-20), **sem decl Lean** —
-  a testemunha de convergência graduada (sub-família falha → adicionar sonda restaura FF) é
-  **obrigação aberta**.
+  ligações **separa** (morfismos paralelos) = `ProbeTypology.lean:38` `representables_separate`,
+  `:49` `representables_isSeparating` — a *reconstrução* completa é Yoneda FF (ver F4). —
+  *Rótulo:* as "duas espécies operacionais = os dois rungs", a estratificação bem-fundada e o
+  eixo-β são **síntese** (debate 2026-07-20), **sem decl Lean** — a testemunha de convergência
+  graduada (sub-família falha → adicionar sonda restaura FF) é **obrigação aberta**. Ainda: a
+  subdivisão recon/ligação é uma partição *nova* da sonda de DEF-ORCH-004 (que hoje cobre só a
+  metade *ligação*, `A→X`) e usa "reconhecimento" num escopo mais estreito que o "(recon)" de
+  MAPPING §1 — **pendente de reconciliação fonte-única**.
 - **Collapse-test:** Cai se as espécies não forem independentes (uma sonda que é recon *e*
   ligação ao mesmo tempo desfaz o produto de eixos), ou se a ordem não for forçada pela
   tipagem de `Hom` (um objeto universal que deixe linkar antes de achar).
@@ -120,9 +123,9 @@
 
 ## Fio comum
 
-F1–F5 são a **anatomia estática**; F6 é a **dinâmica**; **F7 refina a sonda ativa de F4 nos
-dois eixos independentes de descoberta (objeto ⊥ relação) e ordena-os por apresentação
-(recon→ligação)**. Todas circulam o mesmo lever —
+F1–F5 são a **anatomia estática**; F6 é a **dinâmica**; **F7 refina o eixo de ligação de F4
+(os mapas-teste `A→X`) e acrescenta um eixo novo de reconhecimento (objeto/EssSurj), ordenando
+os dois por apresentação (recon→ligação)**. Todas circulam o mesmo lever —
 **thin vs não-thin, a escolha de `C`**. A sombra escalar (F1) e cada métrica (F2) são os
 codomínios thin onde a estrutura se perde; F3 mostra que até a contagem, o piso desse regime,
 já pressupõe um sinal individuante que ela não fabrica; F4 nomeia a saída — trocar a projeção
