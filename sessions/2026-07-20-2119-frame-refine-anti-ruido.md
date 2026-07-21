@@ -11,7 +11,7 @@ expires: 2026-09-18
 conversation_id: dc4ee8f8-d74d-4ec2-90e4-5a0db21e65f8
 decisions_made: true
 contradictions_found: true
-specs_updated: [vault/hypothesis/orquestracao-anti-ruido.md, MAPPING.md]
+specs_updated: [vault/hypothesis/orquestracao-anti-ruido.md, MAPPING.md, PLAN.md]
 promoted_candidates: []
 expected_importance: 7
 importance_rationale: "Introduz frame/refine/espinha-de-citação no coração da hipótese anti-ruído e pega dois erros ALTOS via review tensionada antes de propagarem — mas é design-only, ainda não implementado nem testado."
@@ -63,14 +63,19 @@ concorrente do mesmo doc por outra sessão (anotações `costura-feasibility`).
   mesma máquina, ou dois **modos** dela? Decidido que a interface é única com funções diferentes;
   não decidido se a distinção é de tipo ou de modo — muda a arquitetura.
 
+## Next steps
+
+1. Atacar **OQ-8** — o braço de ruído do frame — reusando a engenharia de
+   distribuição-como-ruído da OQ-4 (N frames independentes logados cegos, dispersão como sinal
+   de primeira classe); não inventar métrica nova. Em `vault/hypothesis/orquestracao-anti-ruido.md`.
+
 ## Recommendation
 
-O keystone para a próxima sessão é o **estágio 1 do pipeline (qual assunto pesquisar)** — o único
-dos quatro que nenhuma fonte (MOGT, CANONICAL-KINDS) cobriu e onde a review já localizou o buraco:
-o braço de ruído do frame (OQ-8) e o risco de input-raiz sem dono (OQ-6). A licença é a review
-fechada como `resolved`, que converteu a lacuna em open-questions precisas em vez de design vago.
-Atacar OQ-8 reusando a engenharia de distribuição-como-ruído da OQ-4 (recomendação, não resultado),
-não inventar métrica nova.
+De todos os itens forward, o keystone é o Next step 1 (OQ-8, o braço de ruído do frame),
+reforçado pela aresta `questions` sobre esse mesmo furo. A licença é a review fechada como
+`resolved`, que converteu a lacuna estrutural em open-question precisa em vez de design vago — o
+caminho está localizado, falta o desenho. Priorizá-lo antes da Open question de arquitetura
+(dispatch_type vs modos), que pode esperar até haver um segundo tipo real para tensionar.
 
 ## Files touched
 
