@@ -3,3 +3,10 @@ __pycache__/
 *.log
 .server.*
 node_modules/
+
+# Local DomainSpec framework mount and shared skill junctions.
+# These mirror ../zagr-plataforma: framework code stays owned by ~/domainspec.
+/domainspec
+/.claude/skills/domainspec-spec-feature
+/.claude/skills/domainspec-emit-signals
+/.claude/skills/domainspec-feature-glossary
