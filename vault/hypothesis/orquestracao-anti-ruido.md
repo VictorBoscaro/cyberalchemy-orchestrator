@@ -386,6 +386,63 @@ the table; still to design: how many frames, how to measure dispersion of questi
 a new metric. Raised by the red-team in `2026-07-20-anti-ruido-frame-refine-review`.
 `[[frame-braco-de-ruido]]`
 
+> The four OQs below were raised by the delta red-team
+> `2026-07-20-hyp-orch-noise-delta-review` (attackers: Fritz on CT-substance, Popper
+> on falsifiability) over the *Registered bets* section and the CT table row. Parked
+> here to refine, not yet fixed.
+
+**OQ-9 — Is `[[BET-CT]]` actually falsifiable, or does its retreat clause immunize it?**
+The bet states a *universal* ("for every noise construct there exists a ~1:1 CT
+tool") while its falsifier only fires *per-construct*, and "If it falls (local)… we
+don't surrender to CT" excuses every hit — so no accumulation of per-construct
+failures can refute the universal. It also counts the nudge (whose single-judgment
+optic *collapsed* before being re-typed) as a "survived" mapping; and its *Carries*
+double-counts √N/aggregation (which belong to `[[BET-√N]]`), while the table row
+lists **4** survived mappings vs BET-CT's **3** (aggregation↦m-projection dropped).
+*Recommendation:* re-scope BET-CT strictly per-construct **or** pre-commit a
+threshold ("false if ≥k named constructs collapse"); record the nudge as "candidate 1
+falsified, re-typed", not a clean survival; reserve "survived" for after a decision
+actually moves (the predict/correct test, not mere existence of a map); reconcile the
+mapping list between the table row and BET-CT.
+
+**OQ-10 — Do the `costura-feasibility` formal identifications hold? (challenges a
+promoted research finding — owner's call)**
+The same red-team flagged four fidelity gaps in the promoted `costura` revisions,
+none yet adjudicated:
+- **`F = anchored common scale / MAP`** is asserted by naming, not constructed —
+  Amari-Pythagoras needs `F` to be a convex Legendre potential *generating* the
+  divergence; the MAP is a scoring construct not shown to be convex / differentiable
+  / divergence-generating.
+- **Nudge well-definedness** is justified by an irrelevant property ("well-defined
+  because marginalization is non-monic") — the join→product-of-marginals map is
+  well-defined unconditionally; non-monicity explains the *earlier* optic collapse,
+  not the soundness.
+- **Banerjee** is pinned to `F=‖·‖²`, but the mean minimizes expected Bregman loss
+  for *every* Bregman divergence; regime-dependence lives in the *rate*, not the
+  minimizer.
+- **CLT vs Sanov** are framed as mutually exclusive regimes — they coexist (CLT
+  governs typical `1/√N` fluctuations, the LDP governs the tails); `√N` is an
+  L2/Bienaymé fact needing only finite variance.
+*Recommendation:* these challenge a **promoted** research finding, so route them back
+to `costura-feasibility` to defend or correct (don't silently overwrite) — either
+display `F` explicitly (convex potential + its Bregman divergence + the m-flat
+submanifold) or fall back to the honest `residue = bias * noise`; separate the
+(F-independent) minimizer from the (F-dependent) rate; reword CLT/Sanov as coexisting.
+
+**OQ-11 — Can `[[BET-THALER]]`'s falsifier ever terminate?**
+Its falsifier ("across N design decisions, the lens never blocks nor alters a choice
+we wouldn't have blocked without it") has unbounded N (never declarable false) and
+rests on an unobservable counterfactual ("wouldn't have blocked without it").
+*Recommendation:* pre-register a fixed N and the specific candidate decisions, judged
+blind before the lens is applied.
+
+**OQ-12 — Does `[[BET-TAG]]`'s falsifier isolate rater-noise from boundary-defect?**
+Sharper anchors also fix *boundary* defects (a sharper facet = a sharper boundary),
+so "anchors don't help ⇒ it's ambiguity/boundary" doesn't cleanly separate the three
+buckets the bet trichotomizes.
+*Recommendation:* add a control that moves anchor quality independently of rater
+count/training, so residual spread can be attributed.
+
 ## Collapse-tests (what falsifies this thesis)
 
 - If "independence" and "tension" **cannot** coexist through separation-by-stage —
