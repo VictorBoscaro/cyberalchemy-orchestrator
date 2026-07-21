@@ -5,8 +5,8 @@ is_session: false
 layer: ontology
 nature: reference
 status: active
-version: 1.0.0
-last_updated: 2026-07-20
+version: 1.1.0
+last_updated: 2026-07-21
 ---
 
 # Vault Conventions
@@ -79,8 +79,17 @@ veracity: high | medium | low        # Belief nodes only (see applicability)
 conviction: high | medium | low         # Belief nodes only (see applicability)
 version: 0.x.x
 last_updated: YYYY-MM-DD
+private: true                            # Optional — do-not-publish flag (see below); omitted = publishable
 ---
 ```
+
+> **The optional `private` key.** A boolean do-not-publish flag. Omitted (the default) means
+> publishable. It is **orthogonal to the 7 epistemic labels** — publishability is independent of
+> role, layer, nature, maturity, evidence, commitment, and topic (a `veracity: high` node can be
+> private; a `veracity: low` node can be public) — so it passes the Level-1 admission test and
+> earns its place. Use it for **private proof targets**: nodes excluded from
+> `publication-research-pipeline`, `reading-learning-package`, the README, and the essays, even if
+> discharged. First consumer: [[framework-self-similarity]].
 
 ---
 

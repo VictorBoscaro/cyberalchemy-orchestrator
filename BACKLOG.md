@@ -24,17 +24,20 @@ step — never by silent implementation. IDs are `BL-<n>`; they are stable once 
 **The idea.** A meta-type system for this repo's domain (knowledge / orchestration itself): the
 domain is a **typed graph** — nodes carry a *meta-type*, edges carry a *typed connection* — and,
 crucially, **the alphabet of meta-types and their connections is updatable under governance**, not
-frozen. The fixed part is the *meta-level* (what counts as a meta-type, a connection, a
-well-formedness criterion, a promotion gate); the *object-level* (the actual meta-types and the
-edges between them) grows over the life of the project. This is why it reads as a **process of
-discovery**, plausibly a future version ("v5") rather than a thing to define once.
+frozen. And there is **no fixed floor**: every level grows under its own gate — the *object-level*
+(the actual meta-types and edges) under its gate, and *that gate* under a gate one level up
+(`level_n = alphabet_n + gate_n`, `gate_n` governed at `level_{n+1}`). What repeats is the
+recursion, not a fixed meta-level; the tower merely *converges* — upper levels mutate slower, so
+they read as fixed without being fixed (a candidate, see H-META-1'). This is why it reads as a
+**process of discovery**, plausibly a future version ("v5") rather than a thing to define once.
 
 **Why it exists (the seam it closes).** It is the honest grounding for ORCH's
 domain-independence — the one `H-PORT-6` reached for but could not carry. Last analysis:
 categoricity ⊥ domain-independence, so "ORCH is a category" does **not** buy genericity. The real
-grounding is different: ORCH is domain-independent **iff** there is a meta-schema `M` such that
-every domain `D` is an instance-of-`M`, and ORCH is written at the level of `M`, not of any `D`.
-Then genericity is a *consequence of the meta-schema* (not of the CT thesis) — and it is testable.
+grounding is different: ORCH is domain-independent **iff** there is a governance *recursion* `M`
+such that every domain `D` is an instance-of-`M` at some practical level, and ORCH is written at
+that level — its own gate governed one level up, not a single terminal `M`. Then genericity is a
+*consequence of the recursion being well-founded* (not of the CT thesis) — and it is testable.
 
 **The distinction that makes it non-contradictory.** This is emphatically **not** a *fixed
 universal domain schema* — an alphabet of concrete types rich enough for every domain. In this
@@ -48,7 +51,7 @@ growing* the alphabet, never in a fixed alphabet. That reconciliation *is* the "
 
 **Prior art (already a working prototype, restricted to one regime).**
 [`domainspec-v2`'s meta-type system](../domainspec-core/projects/domainspec-v2/definitions/meta-types/meta-types.md)
-(DS-D1) is exactly this two-level structure, built and machine-checked — but only for the
+(DS-D1) is exactly this governance recursion, built and machine-checked at (at least) two visible rungs — but only for the
 *software* regime: 13 confirmed meta-types of 24 candidates (Entity, Value Object, Operation,
 Query, Rule, Policy, Event, State Machine, …), each with a `.schema.yml` well-formedness
 criterion, a `candidate → active` promotion lifecycle, and a *challenge contract*. Note the
@@ -72,6 +75,19 @@ stays fixed). *Collapse:*
   this is `H-PORT-1`) must not be conflated with genericity of *coverage* (never finished). If BL-1
   is ever sold as "coverage for free," it collapses to the same over-claim `H-PORT-6` made.
 
+**Update 2026-07-21 — collapse-(a) fired; H-META-1 → H-META-1'.** The "meta-level is fixed" bet
+failed its own collapse-test: a governed meta-level demonstrably moves — domainspec-core's
+dispatch-trace schema bumped `schema_version` 0.5.2→0.6.0 (a *sibling* meta-level, stratum iv; the
+kind-governance layer D48/D49/D40 moves by a different mechanism — D49 gates kind-table amendments
+via constitution-governance). But (a)'s framing was itself off — "the wall moved up one level" is **not** a failure;
+a level's gate being governed one level up is the *law at every `n`* (`gate_n` governed at
+`level_{n+1}`), not a defect. The successor hypothesis is **H-META-1' — the governance *recursion*
+is universal:** every level grows under its own gate; the tower is *convergent* (higher levels
+mutate slower ⇒ practical, not terminal, fixity — F6-consistent, since F6 denies any terminal
+level). H-META-1' is itself a **candidate**, with its own collapse-test: **does the tower converge —
+is there a level whose gate churns as fast as what it governs (no practical fixity)?** Convergence
+is *not* asserted as proven.
+
 **Related prior art caveat.** Reading (a) — a fixed universal domain schema — is the classic
 **upper-ontology** dream (Cyc, SUMO, BFO): decades of partial success, never universal coverage.
 BL-1 escapes that failure mode *only* by enumerating the *kinds* of concept + a growth protocol,
@@ -84,7 +100,91 @@ in [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) as its object-leve
 [`OBLIGATIONS.md` OBL-E3](OBLIGATIONS.md) (both ask whether the orchestration language has a
 formal spine, from opposite ends — OBL-E3 about *composition*, BL-1 about *domain-independence*).
 
-**Status.** IDEA / parked candidate. Not researched (deliberately — no dispatch run). Graduation
-path: promote H-META-1 into a `vault/hypothesis/` doc, or open an `OBL-META` once (and if) the
-genericity goal is prioritized. Depends on nothing external; the prototype to study already exists
-in `domainspec-v2`.
+**Status.** IDEA / parked candidate. Prior-art sweeps run 2026-07-21 (see
+[`research/meta-ontology/`](research/meta-ontology/SEED.md) + `SOURCES.md`); the structure of `M`
+is drafted there. Graduation path: promote H-META-1' into a `vault/hypothesis/` doc, or open an
+`OBL-META` once (and if) the genericity goal is prioritized. Depends on nothing external; the
+prototypes to study already exist in `domainspec-core` (DS-D1, cav2 authority spine, Craft ledger).
+
+---
+
+## BL-2 — De-fuse carrier-kind ⊕ epistemic-role
+
+**The idea.** Split the two things this repo's `node_type` (and even domainspec-core's
+CANONICAL-KINDS) fuse into one label: the **document/carrier kind** (`readme`, `spec`, `session`,
+`ledger`) and the **epistemic/claim role** (`axiom`, `premise`, `discovery`, `decision`). They are
+different strata; a `readme` is not a claim, an `axiom` is *only* a claim.
+
+**Why.** `vault/ontology-conventions.md`'s `node_type` is titled "Epistemic Role" but co-enumerates
+carriers and claim-kinds, violating its own orthogonality principle (every label statistically
+independent). Recognizing the strata *re-orthogonalizes* the schema — which the doc says it wants.
+
+**Not novel — aligns upstream.** domainspec-core is already de-fusing this: OQ-7 +
+`authority/decisions/2026-07-13-canonical-kind-one-label.md` split `canonical_kind` (carrier) from
+`node_type` (role) and push role into *edges*. BL-2 = adopt that split here.
+
+**Falsifiable core.** After the split, no instance needs two type labels to be classified: carrier
+is read off the artifact, role off its claim. *Collapse:* if some artifact genuinely needs both an
+independent carrier-type AND an independent role-type that cannot be derived from each other, the
+two axes are not cleanly separable and the fusion was carrying real information.
+
+**Connections.** Feeds [`research/meta-ontology/SEED.md`](research/meta-ontology/SEED.md) (the
+Documents ⟂ Ledger-of-assertions separation); counter-example source A5/A8 in `SOURCES.md`.
+
+**Status.** IDEA / actionable-today (independent of the rest). Not scheduled.
+
+---
+
+## BL-3 — The ledger as a typed knowledge-graph of epistemic units, separate from the operational trace
+
+**The idea** *(owner direction, 2026-07-21).* The **ledger is where the epistemic units live** — an
+append-only **typed graph** holding *several* kinds of node (assertions, **hypotheses**,
+**definitions**, premises, decisions) that **connect via typed edges**, each node-type with its own
+**properties**, and each node carrying a **provenance trail** (which research/dispatch generated it,
+its lineage). This needs its own **type system**: a node-type alphabet, an edge-type catalog, and a
+per-type property schema — the DS-D1 move (meta-types + relationship signatures + per-type schema)
+applied to the epistemic stratum (see OQ-5 in the SEED). The **dispatch/operational trace is a
+*separate* store** (events; may be agent-populated), bound to the ledger by the provenance link:
+epistemic-node → generating dispatch/research → trail. Governance labels (veracity ⊥ conviction,
+authority, promotion-state) ride on the nodes, not on the events.
+
+**Why (and the v-next shape).** The ledger sweep found the operational trace (System A) is
+append-only + hook-enforced but has a **closed 2-kind alphabet welded into `append-dispatch.cjs`**,
+while Craft's `ledger-core.schema.yml` has the right **open id+type+payload envelope** but is
+mutable-in-place and unenforced. v-next = **marry System A's discipline to Craft's envelope**, add a
+`supersede`/`amend` event (append, never edit-in-place), and build the **provenance spine** that is
+absent today (four disjoint id-spaces, no typed cross-link — the sweep's weakness #2, which is
+*exactly* the trail the owner requires).
+
+**F1 grounding.** Documents = shadow (state, discards the path); trail-linked ledger + trace =
+structure (the ordered trajectory F6/F7 call the content). Editing state in place collapses
+structure → shadow; an appended `supersede` preserves the trajectory. This is the *theoretical*
+reason append-only is non-negotiable for the ledger.
+
+**Falsifiable core.** Every assertion resolves to a non-empty provenance trail terminating in a
+recorded dispatch/research event. *Collapse:* if assertions routinely exist with no recoverable
+generating event (orphan claims), either the trace is lossy or assertions are authored outside the
+machine — and the "trail" guarantee is decorative.
+
+**Connections.** [`research/meta-ontology/SEED.md`](research/meta-ontology/SEED.md) (substrates
+Ledger + Trace + spine); `SOURCES.md` B1/B2/B3/B7. Interacts with this repo's own ledger enum-drift
+(local to this repo; domainspec-core's trace is clean).
+
+**Status.** IDEA / parked candidate. Largest of the three; needs OQ-3 (event envelope) decided first.
+
+---
+
+## BL-4 — Open question: is the Domain ontology the same meta-type as the Code ontology?
+
+**The question** *(owner, 2026-07-21).* The substrate model currently treats "domain" and "code" as
+one meta-type (the Domain stratum). This may be wrong — it is explicitly open.
+
+**Falsifiable core (either direction).** They are **one** iff a single meta-type alphabet types both
+domain concepts and code constructs with no residue. *Collapse to two:* a construct exists in code
+with no domain correlate (or vice-versa) that the shared alphabet cannot type without being
+stretched. (domainspec-v2's spec-ontology-unification tower is prior art bearing on this — it
+treats spec and code as one typed graph; study whether that holds or leaks.)
+
+**Connections.** OQ-1 in [`research/meta-ontology/SEED.md`](research/meta-ontology/SEED.md).
+
+**Status.** OPEN QUESTION. Resolve before fixing the Domain stratum's alphabet.

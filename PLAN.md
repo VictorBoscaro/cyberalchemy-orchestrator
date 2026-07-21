@@ -103,8 +103,9 @@ typed `connections` compose associatively, the agent-language **is** a
 category (not *seems like*), and the residue of an orchestration is the same object the parent repo
 studies — closing the A6 loop. **Collapses the decoration** if (a) zig-zag/feedback don't compose
 associatively (it's just an annotated DAG), or (b) the synthesis-residue is not the same object
-as `FunctorialResidueStructure` (and not just count-shaped). Typing (a) or (b) is the **first
-real obligation** — see E3.
+as `FunctorialResidueStructure` (and not just count-shaped; note the discharge reaches only the
+*separation* bar, not the invariant-factor prize — see OBLIGATIONS.md sub-3). Typing (a) or (b) is
+the **first real obligation** — see E3.
 
 ---
 

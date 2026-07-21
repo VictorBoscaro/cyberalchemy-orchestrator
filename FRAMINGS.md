@@ -12,8 +12,8 @@
 - **Typed form:** The residue decomposes into two faces — the *shadow* (object-level
   scalar invariant: count/entropy/magnitude) and the *structure* (categorical object:
   morphisms/types/rules). The structure strictly dominates the shadow when the codomain is not thin.
-- **Anchor:** `FunctorialResidueStructure.lean:97` `structure FunctorialResidueStructure`,
-  `:513` `separation_is_functor_action`; entropy = log-cardinality in
+- **Anchor:** `FunctorialResidueStructure.lean:120` `structure FunctorialResidueStructure`,
+  `:545` `separation_is_functor_action`; entropy = log-cardinality in
   `SecondLawDiscrete.lean:288` `entropy_nondecreasing_under_temporal_coarsening`.
 - **Collapse-test:** If the structure were recoverable from the shadow, the faces collapse into one —
   but decategorifying is irreversible (the "beats count" wall).
@@ -23,7 +23,7 @@
 - **Typed form:** Each scalar metric is a functor into a thin category — a distinct
   projection direction (count < entropy < magnitude in how much they see). Projection separates
   but does not reconstruct; ascending = swapping the codomain `C` for a non-thin one, not clarifying the shadow.
-- **Anchor:** `FunctorialResidueStructure.lean:162` `ofAntitoneSet` (§2, `C = (Set O, ⊆)` =
+- **Anchor:** `FunctorialResidueStructure.lean:189` `ofAntitoneSet` (§2, `C = (Set O, ⊆)` =
   degenerate thin instance, "the wall"); thin collapse in `ThinCodomainCollapse.lean:98`
   `thin_codomain_noise_hom_subsingleton` and `BeatsCountCriterion.lean:196`
   `thin_hom_readout_not_beatsCount`.

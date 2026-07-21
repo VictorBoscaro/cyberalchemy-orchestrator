@@ -26,7 +26,13 @@ truth: each term is defined normatively in exactly ONE place; boundaries do not 
   the shadow is *count-capped* and does not beat the count. Residue ≠ the verb that generates
   it (DEF-ORCH-005).
 - **Categorical type + anchor:** `structure FunctorialResidueStructure` —
-  `lean-formalization/FunctorialResidueStructure.lean:97`; action `separation_is_functor_action` — `:513`.
+  `lean-formalization/FunctorialResidueStructure.lean:120`; action `separation_is_functor_action` — `:545`.
+  Anchor pinned: `domainspec-lean-formalization @ 6edb664` — reported **sorry-free** by source
+  inspection + that repo's own audit (`COUNT-WALL.md`, `ROOT-CONTRADICTIONS.md`); **not**
+  re-verified against the build gate in this session (`lake build` + `#print axioms` pending).
+  **Reading ceiling:** this anchor witnesses residue only at the *separation* bar
+  (output-cardinality-visible, as the diamond does), **not** the stronger *invariant-factor* bar;
+  the scope + the closing mechanism live once in OBL-E3 sub-3.
 - **Related:** DEF-ORCH-002, DEF-ORCH-003, DEF-ORCH-005.
 
 ---
