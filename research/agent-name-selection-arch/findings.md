@@ -63,3 +63,30 @@ So the bar to beat is: *an LLM eyeballs 419 names, tag-blind, unverified.*
   *conditional* backlog item, gated on first **measuring** the false-negative rate of naive overlap
   against real past angles (both poles named this exact falsification test).
 - **Not building:** (a) RAG, (b) MCP-agent, (d) learned-opposition (until the label accrues).
+
+## Revision (2026-07-20, same day) — MCP reinstated for a different job
+
+The owner surfaced a use the two poles' rejection did **not** cover. They rejected
+**MCP-for-retrieval** ("spend an LLM call to do a set-intersection"). The owner instead wants
+**MCP-for-boundary-adjudication**: *"the agent may register a new tag, but only after we
+guarantee it doesn't already exist."* A pure set-intersection **cannot** answer "is the wanted
+concept already in the vocabulary under a different name?" — that is semantic, not lexical. This
+was demonstrated live: `check_vocab("sheaf-semantics")` returns only lexical `*-semantics`
+suggestions and misses the conceptually-correct `sheaf-theory` / `topos-theory` (zero substring
+overlap). So the boundary genuinely needs a cheap LLM.
+
+Decision updated to the **cross-repo MCP** shape, canonical pool **here** (owner picks). Built as
+`tools/agent-pool-mcp/`:
+- **deterministic core** — `search_pool` (tag-overlap ∩ role_fit), `check_vocab` (membership +
+  cheap did-you-mean). No LLM.
+- **boundary path** — `recommend_agents`: deterministic prefilter → a cheap Haiku that returns up
+  to N **unordered** names + a coverage verdict, with names validated against the pool and any
+  "new" tag that already exists rejected deterministically (two-layer guarantee).
+- Consumers (`domainspec-lean-formalization`, future repos) call the server; the pool stays a
+  single source of truth here. `search_pool`/`check_vocab` need no API key; `recommend_agents`
+  degrades to the deterministic prefilter without one.
+- **Latent bug found by building it:** the pool's front-matter had unquoted scalars with
+  `colon-space` (`description`, the "Two known issues to revisit:" note) → invalid YAML that no
+  machine had parsed before. Fixed in the canonical pool.
+
+Idea 2 (name-level pairwise opposition) and its telemetry-label prerequisite remain **backlog**.

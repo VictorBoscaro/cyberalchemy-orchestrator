@@ -1,7 +1,7 @@
 ---
 profile: subagents-strategy
 name: Agent pool — scientists, philosophers, thinkers for agent dispatch
-description: Allowed-names pool for subagent dispatch. Each spawned agent gets an `agent_name` from this list, ideally matched to a dispatch angle by `tags` (topical expertise) and to a stage by `role` (explorer / skeptic / writer / auditor). The companion to domainspec-subagents-strategy-constitution.md — the pool the constitution's `agent_name` field draws from. `cited: true` = the person is cited in the source repo; `cited: false` = a proposed foundational figure. Project authors (Boscaro, Rondelli) excluded by construction.
+description: "Allowed-names pool for subagent dispatch. Each spawned agent gets an `agent_name` from this list, ideally matched to a dispatch angle by `tags` (topical expertise) and to a stage by `role` (explorer / skeptic / writer / auditor). The companion to domainspec-subagents-strategy-constitution.md — the pool the constitution's `agent_name` field draws from. `cited: true` = the person is cited in the source repo; `cited: false` = a proposed foundational figure. Project authors (Boscaro, Rondelli) excluded by construction."
 node_type: agent-pool
 layer: meta
 nature: reference
@@ -14,7 +14,7 @@ notes:
   - role_fit is a default suggestion; the dispatch may override per-agent.
   - "v0.5.0 (2026-07-20): SCHEMA CHANGE. `where_cited` (provenance paths) replaced by `cited` (bool) + `tags` (topical expertise for dispatch matching). All 419 entries carry >=3 kebab-case tags except 7 roster-flagged stubs. The 721-tag canonical vocabulary lives in research/pool-tagging/canonical-vocabulary.md (regenerated from usage); merge synonyms into it, do not coin free tags. Built via dispatches 2026-07-20-pool-tagging-math-pilot (math, full tagger+reviewer+robot-talk loop) and 2026-07-20-pool-tagging-rollout (other 10 fields, tagger-per-field + one cross-field reviewer)."
   - "(pre-v0.5.0) Where a person appears in many files, only top-3 were listed in where_cited."
-  - Two known issues to revisit: "Newt, Isaac" corrected to "Newton, Isaac"; duplicate Bekenstein entries deduped; "KCBS" (acronym, not person) removed.
+  - 'Two known issues to revisit: "Newt, Isaac" corrected to "Newton, Isaac"; duplicate Bekenstein entries deduped; "KCBS" (acronym, not person) removed.'
   - "v0.2.0: role_fit promoted to ordered list (primary, secondary, tertiary) — many scientists wear multiple hats."
   - "v0.4.0 (2026-07-20): added a large batch grouped under the '=== v0.4.0 additions ===' banner below. Two provenance kinds: CITED (where_cited holds a real in-repo path, surfaced by the cited-but-unpooled sweep) and PROPOSED-FOUNDATIONAL (where_cited: [], gap-fillers for software-development/business/statistics/ai-ml not yet cited — same modality as the v0.3.0 curated additions). Dedupe criterion changed from surname to FULL NAME: this recovers surname-homonyms previously blocked — Penrose, Edith (vs Roger); Booch, Grady (vs Ryan Grady); Bell, C. Gordon (vs John S. Bell); Johnson, Ralph (vs Mark Johnson); Yanovski, Lior (vs Noson Yanofsky, distinct spelling). Generators must therefore disambiguate agent_name by full name, not surname."
 ---
