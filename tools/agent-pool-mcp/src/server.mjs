@@ -8,7 +8,7 @@ import { checkVocab, searchPool } from "./select.mjs";
 import { recommendAgents } from "./adjudicate.mjs";
 import { loadPool, POOL_PATH } from "./pool.mjs";
 
-const ROLE = z.enum(["explorer", "skeptic", "writer", "auditor", "synthesizer"]);
+const ROLE = z.enum(["explorer", "synthesizer", "skeptic", "writer", "auditor", "planner", "coder"]);
 const server = new McpServer({ name: "agent-pool", version: "0.1.0" });
 
 server.tool(

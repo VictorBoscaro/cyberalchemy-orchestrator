@@ -104,7 +104,7 @@ const LIVE_TYPES = new Set(['research', 'review', 'experiment']);
 const WORKING_FOLDER_TYPES = new Set(['research', 'experiment']);
 // Group `role` was removed from the row schema at v0.6.0 (constitution §11 / CR-2): a group's
 // function is read off its agents' roles, its workflow position off its connections.
-const AGENT_ROLES = ['explorer', 'skeptic', 'writer', 'auditor'];
+const AGENT_ROLES = ['explorer', 'synthesizer', 'skeptic', 'writer', 'auditor', 'planner', 'coder'];
 const CONNECTION_TYPES = ['sequential', 'zig-zag', 'feedback'];
 const EXIT_REASONS = ['resolved', 'loop_ceiling_reached', 'dissent_irreconcilable', 'user_abort', 'error'];
 
