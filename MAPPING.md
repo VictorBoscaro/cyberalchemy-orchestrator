@@ -1,57 +1,62 @@
-# MAPPING — paralelos construto ⟷ tipo CT (ledger vivo)
+# MAPPING — construct ⟷ CT type parallels (living ledger)
 
-> Estatuto: brainstorm/candidato, **não-revisado**. Claim ≤ proof: cada linha é um
-> **paralelo candidato a tipar**, não um resultado. Onde a âncora é fraca (memória / Lean
-> não-commitado / síntese nossa) está rotulado. Fonte-única do mapping (protocolo §3 do PLAN):
-> a tabela vive **aqui**; PLAN §4 aponta, não duplica.
+> Status: brainstorm/candidate, **not reviewed**. Claim ≤ proof: each row is a
+> **candidate parallel to be typed**, not a result. Where the anchor is weak (memory / uncommitted
+> Lean / our own synthesis) it is labeled. Single source of truth for the mapping (PLAN protocol §3):
+> the table lives **here**; PLAN §4 points to it, does not duplicate it.
 >
-> **Regra herdada.** Todo construto da linguagem-de-agentes → seu tipo em CT + âncora num
-> arquivo real. A base operacional é a skill `domainspec-subagents-strategy`
-> (`domainspec/.claude/skills/domainspec-subagents-strategy/SKILL.md`) + constituição
-> `subagents-strategy-constitution-proposal.md` (v0.6.3). Criado 2026-07-19.
+> **Inherited rule.** Every construct of the agent-language → its type in CT + anchor in a
+> real file. The operational base is the skill `domainspec-subagents-strategy`
+> (`domainspec/.claude/skills/domainspec-subagents-strategy/SKILL.md`) + constitution
+> `subagents-strategy-constitution-proposal.md` (v0.6.3). Created 2026-07-19.
 
 ---
 
-## 1. Tabela-semente (herdada de PLAN §4)
+## 1. Seed table (inherited from PLAN §4)
 
-| Construto | Tipo CT candidato | Âncora | Força |
+| Construct | Candidate CT type | Anchor | Strength |
 |---|---|---|---|
-| sonda/probe (recon) | elemento generalizado / functor-of-points (Yoneda) | `YonedaAsTranslation.y`, `Probe.lean` | candidato forte |
-| probe (experiment) | falsificação Popperiana | `experiment/SKILL.md` | rima nominal (≠ Yoneda) |
-| zig-zag | identidades triangulares / `EqvGen` ida-e-volta | `P1Positive.CommaConnected`, `probe_zigzag_nf.lean` | candidato forte |
-| sequential | composição `∘` | `connections` | estrutural |
-| dispatch | diagrama tipado `J → Cat` | schema v0.6.x | candidato |
-| feedback / robot-talks | ? (2-célula / (co)limite de perspectivas) | — | aberto → ver §2 |
-| residue de uma síntese | `FunctorialResidueStructure` / unit de Lan não-iso | `FunctorialResidueStructure.lean` | estrutural |
+| probe (recon) | generalized element / functor-of-points (Yoneda) | `YonedaAsTranslation.y`, `Probe.lean` | strong candidate |
+| probe (experiment) | Popperian falsification | `experiment/SKILL.md` | nominal rhyme (≠ Yoneda) |
+| zig-zag | triangle identities / `EqvGen` back-and-forth | `P1Positive.CommaConnected`, `probe_zigzag_nf.lean` | strong candidate |
+| sequential | composition `∘` | `connections` | structural |
+| dispatch | typed diagram `J → Cat` | schema v0.6.x | candidate |
+| feedback / robot-talks | ? (2-cell / (co)limit of perspectives) | — | open → see §2 |
+| residue of a synthesis | `FunctorialResidueStructure` / non-iso Lan unit | `FunctorialResidueStructure.lean` | structural |
 
-## 2. Paralelos derivados da skill `subagents-strategy` (sessão 2026-07-19)
+> **Note (F7):** the "(recon)" in the *probe* row above is the **broad** sense (active probe vs.
+> experiment), **not** the recognition *species* from F7 (object axis/`¬EssSurj`). The partition
+> by species is in §2, row `probe: species`. Single source of truth for the term: DEF-ORCH-004.
 
-| Construto | Semântica literal na skill | Tipo CT candidato | Força / o que resolve |
+## 2. Parallels derived from the `subagents-strategy` skill (2026-07-19 session)
+
+| Construct | Literal semantics in the skill | Candidate CT type | Strength / what it resolves |
 |---|---|---|---|
-| **concat vs. synthesis** (P7) | `robot_talks:true → sintetiza`; senão `concat`; "aggregation is **derived**, never a field"; "a bare concat is never the final deliverable" | **concat = coproduto** (thin, count-shaped) vs. **synthesis = pushout/colimit** (identifica sobreposições na tensão; **gera resíduo**) | **forte.** Liga direto a `FunctorialResidueStructure` (DEF-ORCH-001); meio caminho da sub-obrigação 3 de OBL-E3 |
-| **feedback edge** | "`feedback` edges **never count as dependencies**"; conditional; back-edge p/ puxar material | **NÃO 1-morfismo** — 2-célula / estrutura extra (fora do 1-esqueleto) | **evidência positiva** p/ o risco de OBLIGATIONS. Move P-CT: feedback = 2-cell, não morfismo |
-| **check-tension / anti-bias axes** (P5) | par n≥2 tensionado; eixo ∈ {methodology, source-corpus, attack-vector, temporal-prior}; 2 agentes verificam | **família separadora de sondas** (jointly-faithful); cada eixo = direção de probe ortogonal; o gate = enriquecer `C` não-thin | **forte.** Dá à sonda (DEF-ORCH-004) forma *plural*; amarra F4 + F6 (eixo = separador/anomalia) |
-| **meta + lineage** (P13) | `meta:true` = dispatch *sobre* dispatching; `parent_dispatch_id`; cadeia finita/acíclica | **endofunctor / free monad**; linhagem = árvore bem-fundada (operad de dispatches) | **forte.** Tese A6 ("framework as its own instance") mecanizada num campo do registro |
-| **final_approver** (P12) | auditor dedicado, nunca membro de grupo (no self-approval); recebe o `working_folder` inteiro | **cone terminal / limite** do diagrama; auditor = ápice fora do diagrama | candidato |
-| **exit_reason** | vocabulário fechado `resolved\|loop_ceiling_reached\|dissent_irreconcilable\|user_abort\|error` | mapa classificante p/ objeto **thin** finito = a **sombra** do run | candidato — liga DEF-ORCH-003 (leitura escalar, lossy; o resíduo real é o artefato) |
-| **dependency scheduling / READY** (P4) | READY quando toda aresta `sequential`/`zig-zag` que entra produziu; todos READY lançam concorrentes; ordem declarada é só tiebreak | diagrama `J → Cat`; escala = ordem topológica do **poset** de dependências | reforça `dispatch = J → Cat` da §1 |
-| **collapse-detection** (P14) | synthesizer downstream de robot-talks **precisa** das posições **inicial E final** | guardar o **morfismo**, não só o objeto = *beats count* (não decategorificar) | candidato — instância viva de F1/F3 |
+| **concat vs. synthesis** (P7) | `robot_talks:true → synthesizes`; otherwise `concat`; "aggregation is **derived**, never a field"; "a bare concat is never the final deliverable" | **concat = coproduct** (thin, count-shaped) vs. **synthesis = pushout/colimit** (identifies overlaps in the tension; **generates residue**) | **strong.** Links directly to `FunctorialResidueStructure` (DEF-ORCH-001); halfway point of OBL-E3's sub-obligation 3 |
+| **feedback edge** | "`feedback` edges **never count as dependencies**"; conditional; back-edge to pull material | **NOT a 1-morphism** — 2-cell / extra structure (outside the 1-skeleton) | **positive evidence** for the OBLIGATIONS risk. Moves P-CT: feedback = 2-cell, not a morphism |
+| **check-tension / anti-bias axes** (P5) | tensioned n≥2 pair; axis ∈ {methodology, source-corpus, attack-vector, temporal-prior}; 2 agents verify | **separating family of probes** (jointly-faithful); each axis = orthogonal probe direction; the gate = enriching non-thin `C` | **strong.** Gives the probe (DEF-ORCH-004) a *plural* form; ties together F4 + F6 (axis = separator/anomaly) |
+| **meta + lineage** (P13) | `meta:true` = dispatch *about* dispatching; `parent_dispatch_id`; finite/acyclic chain | **endofunctor / free monad**; lineage = well-founded tree (operad of dispatches) | **strong.** Thesis A6 ("framework as its own instance") mechanized in a registry field |
+| **final_approver** (P12) | dedicated auditor, never a group member (no self-approval); receives the entire `working_folder` | **terminal cone / limit** of the diagram; auditor = apex outside the diagram | candidate |
+| **exit_reason** | closed vocabulary `resolved\|loop_ceiling_reached\|dissent_irreconcilable\|user_abort\|error` | classifying map to a finite **thin** object = the run's **shadow** | candidate — links to DEF-ORCH-003 (scalar reading, lossy; the real residue is the artifact) |
+| **dependency scheduling / READY** (P4) | READY when every incoming `sequential`/`zig-zag` edge has produced; all READY launch concurrently; declared order is only a tiebreak | `J → Cat` diagram; scale = topological order of the dependency **poset** | reinforces §1's `dispatch = J → Cat` |
+| **collapse-detection** (P14) | the synthesizer downstream of robot-talks **needs** both the **initial AND final** positions | keep the **morphism**, not just the object = *beats count* (do not decategorify) | candidate — live instance of F1/F3 |
+| **probe: recon/connection species** (F7) | the two probe species (normed in DEF-ORCH-004) on the two axes: recon↔`¬EssSurj`, connection↔`¬Full` (the `A→X`); order = presentation dependency | **partition by independent axis** = graded poset (object→relation stratification) | **candidate** — anchor `knowledge-evolution-typing.md` + `ProbeTypology.lean:38,:49` (separates, does not reconstruct); distinct from the broad "(recon)" alias in §1; see F7 + DEF-ORCH-004 |
 
-## 3. Estatuto e collapse-tests
+## 3. Status and collapse-tests
 
-- **concat/synthesis (o achado central).** *Collapse:* se a síntese for, na prática, um merge
-  count-shaped, cai no mesmo collapse-test (b) de OBL-E3 — vira analogia, não pushout.
-- **feedback = 2-cell.** *Collapse:* se `feedback` compuser associativamente como aresta de
-  1-nível, volta a ser morfismo e o risco de OBLIGATIONS se dissolve (improvável dado
+- **concat/synthesis (the central finding).** *Collapse:* if the synthesis is, in practice, a
+  count-shaped merge, it falls into the same collapse-test (b) as OBL-E3 — becomes an analogy, not a pushout.
+- **feedback = 2-cell.** *Collapse:* if `feedback` composes associatively as a 1-level
+  edge, it goes back to being a morphism and the OBLIGATIONS risk dissolves (unlikely given
   "never counts as a dependency").
-- **sonda-plural.** *Collapse:* se os 4 eixos não forem jointly-faithful (algum objeto
-  indistinguível por toda a família), a família não reconstrói e o paralelo Yoneda-FF enfraquece.
-- **meta/A6.** *Collapse:* se a linhagem admitir ciclo, deixa de ser árvore bem-fundada / free
-  monad — mas a constituição exige finita e acíclica.
+- **plural probe.** *Collapse:* if the 4 axes are not jointly-faithful (some object
+  indistinguishable across the whole family), the family does not reconstruct and the Yoneda-FF parallel weakens.
+- **meta/A6.** *Collapse:* if the lineage admits a cycle, it stops being a well-founded tree / free
+  monad — but the constitution requires it to be finite and acyclic.
 
-## 4. Pendências que estas linhas tocam
+## 4. Open items that these rows touch
 
-- **P-CT** (PLAN): feedback/robot-talks — **encaminhado** por §2 (feedback = 2-cell; synthesis
-  = colimit). Falta tipar em Lean.
-- **OBL-E3 sub-3** (resíduo-de-síntese = mesmo objeto): a linha concat/synthesis é a rota
-  concreta de descarga — tipar `synthesize` como pushout cujo unit não-iso É `FunctorialResidueStructure`.
+- **P-CT** (PLAN): feedback/robot-talks — **advanced** by §2 (feedback = 2-cell; synthesis
+  = colimit). Still needs typing in Lean.
+- **OBL-E3 sub-3** (synthesis-residue = same object): the concat/synthesis row is the
+  concrete discharge route — type `synthesize` as a pushout whose non-iso unit IS `FunctorialResidueStructure`.

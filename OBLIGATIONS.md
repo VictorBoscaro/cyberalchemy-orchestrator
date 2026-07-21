@@ -1,40 +1,41 @@
-# OBLIGATIONS — alvos falsificáveis (candidato)
+# OBLIGATIONS — falsifiable targets (candidate)
 
-*O que teria de ser provado para o vault deixar de ser metáfora. Cada obrigação é enunciada
-com precisão + carrega seu collapse-test. Nenhuma está descarregada. Não-revisado.*
+*What would have to be proven for the vault to stop being a metaphor. Each obligation is stated
+with precision + carries its collapse-test. None is discharged. Not reviewed.*
 
 ---
 
-## OBL-E3 — A linguagem de orquestração é uma categoria? *(o teste que decide tudo)*
+## OBL-E3 — Is the orchestration language a category? *(the test that decides everything)*
 
-**Claim a descarregar.** Existe uma categoria `ORCH` onde:
-- **objetos** = grupos de dispatch;
-- **morfismos** = `connections` tipadas (`sequential` / `zig-zag` / `feedback`);
-- **composição** = concatenação de pipeline;
-- **identidade** = grupo pass-through.
+**Claim to discharge.** There exists a category `ORCH` where:
+- **objects** = dispatch groups;
+- **morphisms** = typed `connections` (`sequential` / `zig-zag` / `feedback`);
+- **composition** = pipeline concatenation;
+- **identity** = pass-through group.
 
-**Sub-obrigações (todas precisam valer):**
-1. **Associatividade.** `(h∘g)∘f = h∘(g∘f)` para conexões encadeadas.
-2. **Leis de identidade.** pass-through é unidade à esquerda e à direita.
-3. **Resíduo = mesmo objeto.** O resíduo de uma síntese (o que um `synthesizer`/merge perde)
-   é o **mesmo** objeto que `FunctorialResidueStructure`
-   (`lean-formalization/FunctorialResidueStructure.lean:97`), via um funtor de `ORCH`-sínteses
-   para a estrutura de resíduo — **não** só um resíduo count-shaped.
+**Sub-obligations (all must hold):**
+1. **Associativity.** `(h∘g)∘f = h∘(g∘f)` for chained connections.
+2. **Identity laws.** pass-through is a left and right unit.
+3. **Residue = same object.** The residue of a synthesis (what a `synthesizer`/merge loses)
+   is the **same** object as `FunctorialResidueStructure`
+   (`lean-formalization/FunctorialResidueStructure.lean:97`), via a functor from `ORCH`-syntheses
+   to the residue structure — **not** just a count-shaped residue.
 
-**Risco nomeado (não escondido).** `zig-zag` e `feedback` são *loops*, não claramente
-morfismos. Palpite honesto: só o fragmento `sequential` é categoria de cara; `zig-zag`/`feedback`
-provavelmente são estrutura extra (2-células? uma bicategoria? um sistema de fatoração?) e
-**não** morfismos de 1-nível. Se for isso, o claim se restringe ao fragmento sequential.
+**Named risk (not hidden).** `zig-zag` and `feedback` are *loops*, not clearly
+morphisms. Honest guess: only the `sequential` fragment is a category outright; `zig-zag`/`feedback`
+are probably extra structure (2-cells? a bicategory? a factorization system?) and
+**not** 1-level morphisms. If that's the case, the claim narrows to the sequential fragment.
 
-**Collapse-test (duplo).**
-- (a) Se `zig-zag`/`feedback` não compõem associativamente, `ORCH` é categoria só no
-  fragmento `sequential` (um DAG) — e o paralelo CT é **decoração** para essas arestas.
-- (b) Se o resíduo-de-síntese for demonstravelmente count-shaped (não alcança
-  `FunctorialResidueStructure`), a sub-obrigação 3 colapsa a **analogia**, e o "mesmo resíduo"
-  cai a zero contribuição.
+**Collapse-test (double).**
+- (a) If `zig-zag`/`feedback` do not compose associatively, `ORCH` is a category only on the
+  `sequential` fragment (a DAG) — and the CT parallel is **decoration** for those edges.
+- (b) If the synthesis-residue is demonstrably count-shaped (it does not reach
+  `FunctorialResidueStructure`), sub-obligation 3 collapses the **analogy**, and the "same residue"
+  drops to zero contribution.
 
-**Onde vive.** Lean, no repo `domainspec-lean-formalization`. Custo: sessão dedicada, não
-inline. Depende de: nada externo — é descarregável já, se e quando valer o investimento.
+**Where it lives.** Lean, in the repo `domainspec-lean-formalization`. Cost: dedicated session, not
+inline. Depends on: nothing external — it is dischargeable now, if and when the investment is
+worth it.
 
-**Status.** OPEN. É o primeiro alvo real; até descarregá-lo (ou bater o collapse-test), tudo
-no vault é candidato tipado, não resultado.
+**Status.** OPEN. It's the first real target; until it's discharged (or it hits the collapse-test),
+everything in the vault is a typed candidate, not a result.

@@ -1,136 +1,159 @@
-# DEFINITIONS — vocabulário normativo (v0.1, candidato)
+# DEFINITIONS — normative vocabulary (v0.1, candidate)
 
-*Não-revisado. Claim ≤ proof: nada aqui é resultado provado; onde a âncora é fraca
-(nível-memória, Lean não-commitado, ou síntese nossa) isso está rotulado inline.*
-*Adota o protocolo de definições de `Arcanum/definitions/DEFINITIONS.md` — fonte única de
-verdade: cada termo é definido normativamente em exatamente UM lugar; as fronteiras não colidem.*
+*Unreviewed. Claim ≤ proof: nothing here is a proven result; where the anchor is weak
+(memory-level, uncommitted Lean, or our own synthesis) this is labeled inline.*
+*Adopts the definitions protocol from `Arcanum/definitions/DEFINITIONS.md` — single source of
+truth: each term is defined normatively in exactly ONE place; boundaries do not collide.*
 
 ---
 
 ### DEF-ORCH-001
 
 - **ID:** DEF-ORCH-001
-- **Status:** candidato
-- **Termo + Aliases:** **resíduo** (*residue*, "o que se perde na tradução")
-- **Voz científica/formal:** O objeto categórico que mede o que um morfismo/tradução deixa de
-  preservar, tipado contra `FunctorialResidueStructure` — a ação de separação como ação
-  funtorial, não como conjunto de perdas. Tem duas faces decompostas como soma: **sombra ⊕
-  estrutura** (face escalar object-level ⊕ face morphism-level).
-- **Interpretação operacional:** Quando um agente/verbo transforma um artefato de conhecimento
-  (schema → instância, merge, coarsening), o resíduo é *o objeto* que carrega a distinção
-  sobrevivente — não o relatório textual da perda, mas a coisa contra a qual "vencer a
-  contagem" é sequer definível.
-- **Voz coloquial:** É o que a tradução perdeu, guardado como uma coisa em vez de um lamento.
-- **Fronteira:** EXCLUI a **sombra** (DEF-ORCH-003): o resíduo é o objeto de duas faces; a
-  sombra é *apenas uma* delas (a escalar). Um resíduo cuja única face não-trivial é a sombra
-  está *count-capped* e não bate a contagem. Resíduo ≠ o verbo que o gera (DEF-ORCH-005).
-- **Tipo categórico + âncora:** `structure FunctorialResidueStructure` —
-  `lean-formalization/FunctorialResidueStructure.lean:97`; ação `separation_is_functor_action` — `:513`.
-- **Relacionadas:** DEF-ORCH-002, DEF-ORCH-003, DEF-ORCH-005.
+- **Status:** candidate
+- **Term + Aliases:** **residue** (*residue*, "what is lost in translation")
+- **Scientific/formal voice:** The categorical object that measures what a morphism/translation
+  fails to preserve, typed against `FunctorialResidueStructure` — the separation action as a
+  functorial action, not as a set of losses. It has two faces decomposed as a sum: **shadow ⊕
+  structure** (scalar object-level face ⊕ morphism-level face).
+- **Operational interpretation:** When an agent/verb transforms a knowledge artifact
+  (schema → instance, merge, coarsening), the residue is *the object* that carries the
+  surviving distinction — not the textual report of the loss, but the thing against which
+  "beating the count" is even definable.
+- **Colloquial voice:** It's what the translation lost, kept as a thing instead of a lament.
+- **Boundary:** EXCLUDES the **shadow** (DEF-ORCH-003): the residue is the two-faced object;
+  the shadow is *only one* of them (the scalar one). A residue whose only non-trivial face is
+  the shadow is *count-capped* and does not beat the count. Residue ≠ the verb that generates
+  it (DEF-ORCH-005).
+- **Categorical type + anchor:** `structure FunctorialResidueStructure` —
+  `lean-formalization/FunctorialResidueStructure.lean:97`; action `separation_is_functor_action` — `:513`.
+- **Related:** DEF-ORCH-002, DEF-ORCH-003, DEF-ORCH-005.
 
 ---
 
 ### DEF-ORCH-002
 
 - **ID:** DEF-ORCH-002
-- **Status:** candidato
-- **Termo + Aliases:** **separação** (*separation*, "distinguir")
-- **Voz científica/formal:** O primitivo: distinguir dois objetos. Precede a contagem — sem
-  sinal individuante não há o que contar; indiscernível = idêntico. Formalmente, o critério
-  que separa uma ação que apenas *tampa* a contagem (`CountCapped`) de uma que a *bate* (`BeatsCount`).
-- **Interpretação operacional:** Antes de o orquestrador contar, agrupar ou pontuar qualquer
-  coisa, algum mapa precisou distinguir dois artefatos. Separação é essa operação anterior; a
-  contagem é derivada dela, nunca o contrário.
-- **Voz coloquial:** Primeiro você distingue duas coisas; só depois faz sentido contá-las.
-- **Fronteira:** EXCLUI a contagem e a sombra: separação é *anterior* — é a condição da
-  contagem, não um caso dela. RÓTULO (fraco): a lição "separation IS count" (dentro de CIC) é
-  nível-memória — `separation-is-count-two-routes-closed` — e **não tem declaração Lean**;
-  trata-se de um teto observado, não de um teorema aqui.
-- **Tipo categórico + âncora:** `CountCapped` — `lean-formalization/BeatsCountCriterion.lean:111`;
+- **Status:** candidate
+- **Term + Aliases:** **separation** (*separation*, "to distinguish")
+- **Scientific/formal voice:** The primitive: to distinguish two objects. It precedes counting
+  — without an individuating signal there is nothing to count; indiscernible = identical.
+  Formally, the criterion that separates an action that merely *caps* the count (`CountCapped`)
+  from one that *beats* it (`BeatsCount`).
+- **Operational interpretation:** Before the orchestrator counts, groups, or scores anything,
+  some map had to distinguish two artifacts. Separation is that prior operation; the count is
+  derived from it, never the reverse.
+- **Colloquial voice:** First you distinguish two things; only then does counting them make
+  sense.
+- **Boundary:** EXCLUDES counting and the shadow: separation is *prior* — it is the condition
+  for counting, not a case of it. (weak) label: the lesson "separation IS count" (within CIC)
+  is memory-level — `separation-is-count-two-routes-closed` — and **has no Lean declaration**;
+  it is an observed ceiling, not a theorem here.
+- **Categorical type + anchor:** `CountCapped` — `lean-formalization/BeatsCountCriterion.lean:111`;
   `BeatsCount` — `:118`; `not_countCapped_of_beatsCount` — `:140`.
-- **Relacionadas:** DEF-ORCH-001, DEF-ORCH-003.
+- **Related:** DEF-ORCH-001, DEF-ORCH-003.
 
 ---
 
 ### DEF-ORCH-003
 
 - **ID:** DEF-ORCH-003
-- **Status:** candidato
-- **Termo + Aliases:** **sombra** (*shadow*, contagem/entropia/magnitude)
-- **Voz científica/formal:** A face escalar, object-level, do resíduo: um funtor para uma
-  categoria *thin*. Separa mas não reconstrói (lossy). Casos: entropia = log-cardinalidade;
-  magnitude; qualquer leitura numérica invariante.
-- **Interpretação operacional:** Métricas do orquestrador — número de nós, entropia de uma
-  partição, tamanho de um merge. Úteis para ordenar, inúteis para inverter: dada a sombra, não
-  se recupera o objeto.
-- **Voz coloquial:** É o número que resume o objeto e joga fora o objeto.
-- **Fronteira:** EXCLUI a face morphism-level do resíduo (DEF-ORCH-001): sobre uma categoria
-  thin, nenhuma leitura morphism-level bate a contagem — o colapso é estrutural. A sombra é
-  *uma* face; nunca as duas.
-- **Tipo categórico + âncora:** entropia = log-cardinalidade,
+- **Status:** candidate
+- **Term + Aliases:** **shadow** (*shadow*, count/entropy/magnitude)
+- **Scientific/formal voice:** The scalar, object-level face of the residue: a functor to a
+  *thin* category. It separates but does not reconstruct (lossy). Cases: entropy =
+  log-cardinality; magnitude; any invariant numerical reading.
+- **Operational interpretation:** Orchestrator metrics — number of nodes, entropy of a
+  partition, size of a merge. Useful for ordering, useless for inverting: given the shadow,
+  the object cannot be recovered.
+- **Colloquial voice:** It's the number that summarizes the object and throws the object away.
+- **Boundary:** EXCLUDES the morphism-level face of the residue (DEF-ORCH-001): over a thin
+  category, no morphism-level reading beats the count — the collapse is structural. The
+  shadow is *one* face; never both.
+- **Categorical type + anchor:** entropy = log-cardinality,
   `entropy_nondecreasing_under_temporal_coarsening` — `lean-formalization/SecondLawDiscrete.lean:288`;
-  colapso thin `thin_codomain_noise_hom_subsingleton` — `ThinCodomainCollapse.lean:98`;
-  `thin_hom_readout_not_beatsCount` — `BeatsCountCriterion.lean:196`. RÓTULO (fraco):
-  magnitude-como-sombra é memória + Lean não-commitado.
-- **Relacionadas:** DEF-ORCH-001, DEF-ORCH-002.
+  thin collapse `thin_codomain_noise_hom_subsingleton` — `ThinCodomainCollapse.lean:98`;
+  `thin_hom_readout_not_beatsCount` — `BeatsCountCriterion.lean:196`. (weak) label:
+  magnitude-as-shadow is memory + uncommitted Lean.
+- **Related:** DEF-ORCH-001, DEF-ORCH-002.
 
 ---
 
 ### DEF-ORCH-004
 
 - **ID:** DEF-ORCH-004
-- **Status:** candidato
-- **Termo + Aliases:** **sonda** (*probe/recon*, mapa-teste)
-- **Voz científica/formal:** A interrogação ativa de um objeto por mapas-teste `A → X` que
-  *nós* escolhemos (Yoneda). A família completa desses mapas reconstrói o objeto: o mergulho
-  de Yoneda é fully faithful.
-- **Interpretação operacional:** O orquestrador conhece um artefato não por inspeção interna,
-  mas pelo conjunto de perguntas `A → X` que consegue endereçar a ele; a totalidade das
-  respostas *é* o artefato.
-- **Voz coloquial:** Você conhece a coisa pelo conjunto completo de perguntas que consegue fazer a ela.
-- **Fronteira:** DESAMBIGUAÇÃO obrigatória: **sonda-recon** (Yoneda, ESTE termo — reconstrução
-  por mapas-teste) ≠ **probe-experimento** (falsificação Popperiana, NÃO é este termo, vive em
-  `experiment/SKILL.md`). EXCLUI o **verbo** (DEF-ORCH-005): a sonda *lê* o objeto sem
-  transformá-lo; o verbo *age* sobre ele.
-- **Tipo categórico + âncora:** `y` — `lean-formalization/YonedaAsTranslation.lean:41`;
-  `Faithful` — `:45`; `Full` — `:50`; `schema_residue_vanishes` — `:58`; identidade
-  functor-of-points (este sentido) `Probe.lean:8-13` (é um `example`, thin). RÓTULO (fraco): a
-  dualidade sonda-ativa / sinal-passivo é síntese nossa, **não** é claim do repo.
-- **Relacionadas:** DEF-ORCH-001, DEF-ORCH-005.
+- **Status:** candidate
+- **Term + Aliases:** **probe** (*probe/recon*, test-map)
+- **Scientific/formal voice:** The active interrogation of an object by test-maps `A → X` that
+  *we* choose (Yoneda). The complete family of these maps reconstructs the object: the Yoneda
+  embedding is fully faithful.
+- **Species axis:** the probe has two species, one per *independent* axis of discovery —
+  **linking** (establishes relations, `¬Full` axis; these are the test-maps `A→X`) and
+  **recognition** (discovers *which objects/types exist*, `¬EssSurj` axis). **This entry
+  normatizes both**; the *framing* (species ≅ axes, ordering, β-axis) is F7. Full
+  **reconstruction** (FF) is the limit of the family of linkings, while the **separation** of
+  parallel morphisms by a sub-family is the graded step (open obligation). The order
+  recon→linking is not arbitrary: it is the type-formation dependency (`Hom(A,B)` needs
+  `A,B`). Collapse-test: F7.
+- **Operational interpretation:** The orchestrator knows an artifact not by internal
+  inspection, but by the set of questions `A → X` it can address to it; the totality of the
+  answers *is* the artifact.
+- **Colloquial voice:** You know the thing by the complete set of questions you can ask it.
+- **Boundary:** mandatory DISAMBIGUATION — **three** senses of "recon" that do NOT collapse:
+  (1) **active-probe/Yoneda** (THIS entire term — interrogation by test-maps, the broad
+  "recon" alias from MAPPING §1) ≠ (2) **probe-experiment** (Popperian falsification, NOT
+  this term, lives in `experiment/SKILL.md`); and, *within* this term, (3) the **recognition
+  species** (object axis/`¬EssSurj`) is **narrower** than (1) — **never** use bare "recon" for
+  the species; write "recognition" (the probe is the *recognition-probe*). EXCLUDES the
+  **verb** (DEF-ORCH-005): the probe *reads* the object without transforming it; the verb
+  *acts* on it.
+- **Categorical type + anchor:** `y` — `lean-formalization/YonedaAsTranslation.lean:41`;
+  `Faithful` — `:45`; `Full` — `:50`; `schema_residue_vanishes` — `:58`; functor-of-points
+  identity (this sense) `Probe.lean:8-13` (it is an `example`, thin). **Recognition species
+  (F7):** `¬EssSurj→NewObjects` in `domainspec-lean-formalization/distilled-
+  knowledge/knowledge-evolution-typing.md`; **separation** (parallel morphisms) by family =
+  `ProbeTypology.lean:38` `representables_separate`, `:49` `representables_isSeparating`.
+  (weak) label: the active-probe / passive-signal duality **and** the species subdivision are
+  our own synthesis (2026-07-20 debate), **not** a repo claim — no Lean decl for the
+  partition.
+- **Related:** DEF-ORCH-001, DEF-ORCH-005; framing in F7 (FRAMINGS).
 
 ---
 
 ### DEF-ORCH-005
 
 - **ID:** DEF-ORCH-005
-- **Status:** candidato
-- **Termo + Aliases:** **verbo** (*verb/action*, ação sobre objeto)
-- **Voz científica/formal:** Uma ação sobre um objeto = um morfismo **mais** a condição sob a
-  qual ele preserva a simetria do objeto. Dentro da condição, é preservador (iso/Aut); fora
-  dela, gera resíduo. Morfismo ≠ simetria: só isomorfismos/Aut preservam distinções.
-- **Interpretação operacional:** Cada verbo do orquestrador (merge, refine, forget, translate)
-  é um morfismo com uma zona de segurança declarada; aplicá-lo fora dessa zona produz resíduo
-  — e é *aí* que há informação a formalizar.
-- **Voz coloquial:** Uma ação que, quando sai da faixa onde é reversível, começa a perder coisas.
-- **Fronteira:** EXCLUI o **resíduo** (DEF-ORCH-001): o verbo é a *causa* (o morfismo aplicado),
-  o resíduo é o *efeito* (o objeto perdido). EXCLUI a **sonda** (DEF-ORCH-004): sonda lê, verbo
-  transforma. RÓTULO (fraco): a caracterização "verbo = morfismo + condição de preservação" é
-  nível-memória (`symmetry-invertible-lever-is-enrichment`), **sem declaração Lean**.
-- **Tipo categórico + âncora:** memória `symmetry-invertible-lever-is-enrichment` (morfismo ≠
-  simetria; só iso/Aut preserva). Nenhuma decl Lean dedicada — rótulo fraco assumido.
-- **Relacionadas:** DEF-ORCH-001, DEF-ORCH-004.
+- **Status:** candidate
+- **Term + Aliases:** **verb** (*verb/action*, action on object)
+- **Scientific/formal voice:** An action on an object = a morphism **plus** the condition
+  under which it preserves the object's symmetry. Within the condition, it is preserving
+  (iso/Aut); outside it, it generates residue. Morphism ≠ symmetry: only isomorphisms/Aut
+  preserve distinctions.
+- **Operational interpretation:** Each orchestrator verb (merge, refine, forget, translate) is
+  a morphism with a declared safety zone; applying it outside that zone produces residue —
+  and that is *where* there is information to formalize.
+- **Colloquial voice:** An action that, once it leaves the range where it's reversible, starts
+  losing things.
+- **Boundary:** EXCLUDES the **residue** (DEF-ORCH-001): the verb is the *cause* (the
+  morphism applied), the residue is the *effect* (the lost object). EXCLUDES the **probe**
+  (DEF-ORCH-004): the probe reads, the verb transforms. (weak) label: the characterization
+  "verb = morphism + preservation condition" is memory-level
+  (`symmetry-invertible-lever-is-enrichment`), **with no Lean declaration**.
+- **Categorical type + anchor:** memory `symmetry-invertible-lever-is-enrichment` (morphism ≠
+  symmetry; only iso/Aut preserves). No dedicated Lean decl — weak label assumed.
+- **Related:** DEF-ORCH-001, DEF-ORCH-004.
 
 ---
 
-## Tabela de fronteiras
+## Boundary table
 
-Para cada termo, o UM traço que o separa mais nitidamente do vizinho mais próximo
-(demonstra que as fronteiras não colidem):
+For each term, the ONE trait that separates it most sharply from its closest neighbor
+(demonstrates that the boundaries do not collide):
 
-| Termo | Traço separador mais nítido (vs. vizinho) |
+| Term | Sharpest separating trait (vs. neighbor) |
 |---|---|
-| **resíduo** (001) | Tem DUAS faces (sombra ⊕ estrutura); vizinho *sombra* tem só uma. É o *efeito* de um verbo, não o verbo. |
-| **separação** (002) | É *anterior* à contagem — condição, não caso; vizinho *sombra* é já uma leitura numérica derivada. |
-| **sombra** (003) | Funtor para categoria *thin*, lossy, não reconstrói; vizinha *sonda* (Yoneda completa) reconstrói. |
-| **sonda** (004) | *Lê* o objeto sem transformá-lo (Yoneda FF); vizinho *verbo* *age* e pode gerar resíduo. |
-| **verbo** (005) | É o morfismo aplicado + condição de simetria (a *causa*); vizinho *resíduo* é o objeto perdido (o *efeito*). |
+| **residue** (001) | Has TWO faces (shadow ⊕ structure); neighbor *shadow* has only one. It is the *effect* of a verb, not the verb. |
+| **separation** (002) | Is *prior* to counting — a condition, not a case; neighbor *shadow* is already a derived numerical reading. |
+| **shadow** (003) | Functor to a *thin* category, lossy, does not reconstruct; neighbor *probe* (full Yoneda) reconstructs. |
+| **probe** (004) | *Reads* the object without transforming it (Yoneda FF); neighbor *verb* *acts* and can generate residue. |
+| **verb** (005) | Is the applied morphism + symmetry condition (the *cause*); neighbor *residue* is the lost object (the *effect*). |

@@ -1,135 +1,136 @@
-# PLAN — Máquina de Conhecimento / Orquestrador de Agentes (semente)
+# PLAN — Knowledge Machine / Agent Orchestrator (seed)
 
-> **Nome do repo:** provisório (`cyberalchemy-orchestrator`). Renomear.
-> **Status:** PLANO / brainstorm. Não-revisado. Local, sem push. Claim ≤ proof.
-> Este é o **objeto enxuto** — só o plano. O vault cresce em cima dele depois.
-> Origem: sessão 2026-07-18 com Victor, após recon de 5 sondas.
-
----
-
-## 0. O que este objeto é (e não é)
-
-**É:** o plano mínimo para começar a construir um vault que modela **conhecimento**
-(o que é, propriedades, relações, efeitos, quem age sobre ele) e, como primeira peça
-concreta, um **orquestrador de agentes**.
-
-**Não é:** o vault. Não é código. Não é uma afirmação de que algo já funciona. Nada
-aqui está tipado em Lean ainda; onde eu digo "é uma categoria / é Yoneda", leia
-**candidato a tipar**, não resultado.
+> **Repo name:** provisional (`cyberalchemy-orchestrator`). Rename.
+> **Status:** PLAN / brainstorm. Unreviewed. Local, no push. Claim ≤ proof.
+> This is the **lean object** — just the plan. The vault grows on top of it later.
+> Origin: 2026-07-18 session with Victor, after recon of 5 probes.
 
 ---
 
-## 1. Problema
+## 0. What this object is (and isn't)
 
-Modelar conhecimento com estrutura suficiente para **produzir sistemas** — inclusive
-a si mesmo, usando a si mesmo. A primeira fatia executável dessa ambição é um
-orquestrador de agentes que investiga, sintetiza e critica conhecimento.
+**Is:** the minimal plan to start building a vault that models **knowledge**
+(what it is, properties, relations, effects, who acts on it) and, as the first
+concrete piece, an **agent orchestrator**.
 
-**Tese (registrada, não inflada).** O próprio trabalho é uma *instância* do framework
-epistemológico que ele estuda. Isso **já está nomeado** no repo-mãe (BACKLOG A6,
-"framework as its own instance") — não é claim novo, é a auto-aplicação apontada para
-o processo de produção de conhecimento. Honestidade: uma instância *declarada* não é
-prova de que o processo obedeça o framework; é uma descrição candidata, falsificável.
+**Isn't:** the vault. Isn't code. Isn't a claim that something already works. Nothing
+here is typed in Lean yet; where I say "it's a category / it's Yoneda," read
+**candidate to type**, not a result.
 
 ---
 
-## 2. Mapa — material bruto que JÁ existe (o 1º trabalho é consolidar, não criar)
+## 1. Problem
 
-| Fonte | O que fornece | Onde | Acesso |
+Model knowledge with enough structure to **produce systems** — including
+itself, using itself. The first executable slice of this ambition is an
+agent orchestrator that investigates, synthesizes, and critiques knowledge.
+
+**Thesis (recorded, not inflated).** The work itself is an *instance* of the
+epistemological framework it studies. This is **already named** in the parent repo
+(BACKLOG A6, "framework as its own instance") — it's not a new claim, it's the
+self-application pointed at the process of knowledge production. Honesty: a *declared*
+instance is not proof that the process obeys the framework; it's a candidate,
+falsifiable description.
+
+---
+
+## 2. Map — raw material that ALREADY exists (the 1st job is to consolidate, not create)
+
+| Source | What it provides | Where | Access |
 |---|---|---|---|
-| robot-talks | investigação paralela por *concern* + confronto no eixo de tensão | `.claude/skills/robot-talks/` (Arcanum + lean-formalization) | local/público |
-| subagents-strategy | router: trigger, human-gate, invariantes (tensão, claim≤proof) | `Arcanum` skills + `ARCANUM-SUBAGENT-STRATEGY.md` | local |
-| DISPATCH-COMPOSITION-MODEL | ontologia de dispatch em 4 níveis, **edges tipados**, retry-bounded | `Arcanum/TO-VLAD/DISPATCH-COMPOSITION-MODEL.md` | público |
-| MOGT | camada de decisão multi-objetivo {qualidade,custo,latência,segurança,escalação}; "decision receipt"; regime Nash-bargaining | `Arcanum/research/mogt-agentic-conversation/` | público — **experimentos não-iniciados** |
-| trilha CT | monoidal categories / multicategories como framing formal | `Arcanum/research/monoidal-categories-multicategories/` | público |
-| Orquestração por Pulso | ciclos Descida/Execução/Subida, buses efêmeros, função-custo (entropia/tokens/latência/fidelidade) | `business-philosopher/assuntos/orquestracao-multi-agente/` | local |
-| Economia de atenção | tokens como moeda; carregar por redução-de-incerteza-por-token | `business-philosopher/assuntos/agents-optimization/` | local |
-| domainspec-language | a "linguagem do sistema", já CT-orientada (objetos/morfismos, presheaf/Lan, FDM) | `domainspec-core/.../domainspec-language/` | local |
-| protocolo de definições | fonte-única-de-verdade + estrutura por-termo + drift-audit | `Arcanum/definitions/DEFINITIONS.md` | público |
-| âncoras Lean CT | resíduo, Yoneda-como-tradução, comma-connected (zig-zag) | `domainspec-lean-formalization/lean-formalization/` | local |
+| robot-talks | parallel investigation by *concern* + confrontation on the tension axis | `.claude/skills/robot-talks/` (Arcanum + lean-formalization) | local/public |
+| subagents-strategy | router: trigger, human-gate, invariants (tension, claim≤proof) | `Arcanum` skills + `ARCANUM-SUBAGENT-STRATEGY.md` | local |
+| DISPATCH-COMPOSITION-MODEL | dispatch ontology in 4 levels, **typed edges**, retry-bounded | `Arcanum/TO-VLAD/DISPATCH-COMPOSITION-MODEL.md` | public |
+| MOGT | multi-objective decision layer {quality,cost,latency,safety,escalation}; "decision receipt"; Nash-bargaining regime | `Arcanum/research/mogt-agentic-conversation/` | public — **experiments not started** |
+| CT track | monoidal categories / multicategories as formal framing | `Arcanum/research/monoidal-categories-multicategories/` | public |
+| Pulse Orchestration | Descent/Execution/Ascent cycles, ephemeral buses, cost function (entropy/tokens/latency/fidelity) | `business-philosopher/assuntos/orquestracao-multi-agente/` | local |
+| Attention economy | tokens as currency; charge by reduction-of-uncertainty-per-token | `business-philosopher/assuntos/agents-optimization/` | local |
+| domainspec-language | the "system language," already CT-oriented (objects/morphisms, presheaf/Lan, FDM) | `domainspec-core/.../domainspec-language/` | local |
+| definitions protocol | single-source-of-truth + per-term structure + drift-audit | `Arcanum/definitions/DEFINITIONS.md` | public |
+| Lean CT anchors | residue, Yoneda-as-translation, comma-connected (zig-zag) | `domainspec-lean-formalization/lean-formalization/` | local |
 
-**Resolvido (2026-07-20):** a "micro-economia" é o **MOGT**, em
-`Arcanum/research/mogt-agentic-conversation/` (público), não um doc separado. Não é
-pendência de acesso; é a camada de decisão do orquestrador (ver E4). Correção honesta: o
-nome "teoria dos jogos" superestima — é **otimização multi-objetivo** (objetivos
-{quality, cost, latency, safety, escalation_risk}, dominância de Pareto, regime
-`bargaining_guided` opcional). Estatuto: **design + dry-run, 0% empírico** — herda o
-"claim ≤ proof" (todas as claims "insufficient evidence", experimentos "not started").
-Valor maior para nós está no **scaffolding de research** ao redor (catálogo/ledger/inventory/
-receipt), não no modelo de decisão em si.
-
----
-
-## 3. Protocolo de definições (adotado de `Arcanum/definitions/DEFINITIONS.md`)
-
-Regra flagged pelo Victor como necessária. Adotamos, com um campo a mais.
-
-- **Fonte única de verdade.** Um termo é definido normativamente em UM lugar; downstream
-  só explica/aplica/referencia, nunca redefine.
-- **Estrutura por-termo:** Status · Termo+Aliases · Voz Científica/Formal · Interpretação
-  Operacional · Voz Coloquial · Contexto de Domínio · **Fronteira** (o que fica de fora) ·
-  Consumidores (paths) · Relacionadas.
-- **IDs namespaced** (ex.: `DEF-ORCH-*` para este repo vs `DS-*`/`DEF-ARC-*` herdados).
-- **Drift-audit:** um arquivo que rastreia divergência entre a definição normativa e os usos.
-- **CAMPO NOVO — Tipo categórico:** cada definição carrega seu **mapping CT + âncora**
-  (ver §4). Uma definição sem tipo categórico é candidata, não fechada.
+**Resolved (2026-07-20):** the "micro-economy" is **MOGT**, at
+`Arcanum/research/mogt-agentic-conversation/` (public), not a separate doc. It is not
+an access pending item; it's the orchestrator's decision layer (see E4). Honest
+correction: the name "game theory" overstates it — it's **multi-objective optimization**
+(objectives {quality, cost, latency, safety, escalation_risk}, Pareto dominance, optional
+`bargaining_guided` regime). Status: **design + dry-run, 0% empirical** — it inherits
+"claim ≤ proof" (all claims "insufficient evidence," experiments "not started").
+The greater value for us is in the surrounding **research scaffolding** (catalog/ledger/inventory/
+receipt), not in the decision model itself.
 
 ---
 
-## 4. Disciplina de mapping categórico (a espinha do vault)
+## 3. Definitions protocol (adopted from `Arcanum/definitions/DEFINITIONS.md`)
 
-**Regra.** Todo construto da linguagem-de-agentes → seu tipo em teoria das categorias +
-âncora num arquivo real (regra herdada do CLAUDE.md do repo-mãe). Sonda e zig-zag são
-apenas os dois primeiros exemplos.
+Rule flagged by Victor as necessary. We adopt it, with one extra field.
 
-**A tabela vive em [MAPPING.md](MAPPING.md)** (fonte-única do mapping, protocolo §3): §1 = a
-tabela-semente (7 construtos herdados), §2 = os paralelos derivados da skill-base
-`domainspec-subagents-strategy` (concat/synthesis, feedback-como-2-cell, sonda-plural,
-meta/A6, …). Não duplicar aqui — editar lá.
-
-**Regra-do-verbo (a partir da direção do Victor).** Um verbo (implements/validates/
-refines/…) é uma **ação sobre um objeto que deveria preservar a simetria do objeto sob
-certas premissas**. Correção honesta do repo-mãe: um morfismo *qualquer* NÃO preserva
-simetria — só isos/automorfismos preservam, e **a perda de simetria É o resíduo**
-(memória `symmetry-invertible-lever-is-enrichment`). Logo o tipo de um verbo é:
-
-> **verbo = morfismo + a condição sob a qual ele é simetria-preservante.**
-> As "premissas" do Victor = exatamente essa condição. Fora dela, o verbo gera resíduo —
-> e isso torna o resíduo **mensurável por verbo**, que é o que dá valor à disciplina.
-
-**Claim-forte (rebaixado a candidato, com collapse-test).** Se `groups`=objetos e
-`connections` tipadas compõem associativamente, a linguagem-de-agentes **é** uma
-categoria (não *parece*), e o resíduo de uma orquestração é o mesmo objeto que o repo-mãe
-estuda — fechando o laço A6. **Colapsa a decoração** se (a) zig-zag/feedback não compõem
-associativamente (é só DAG anotado), ou (b) o resíduo-de-síntese não for o mesmo objeto
-que `FunctorialResidueStructure` (e não só count-shaped). Tipar (a) ou (b) é a **primeira
-obrigação real** — ver E3.
+- **Single source of truth.** A term is normatively defined in ONE place; downstream
+  only explains/applies/references, never redefines.
+- **Per-term structure:** Status · Term+Aliases · Scientific/Formal Voice · Operational
+  Interpretation · Colloquial Voice · Domain Context · **Boundary** (what's left out) ·
+  Consumers (paths) · Related.
+- **Namespaced IDs** (e.g., `DEF-ORCH-*` for this repo vs. inherited `DS-*`/`DEF-ARC-*`).
+- **Drift-audit:** a file that tracks divergence between the normative definition and its uses.
+- **NEW FIELD — Categorical type:** each definition carries its **CT mapping + anchor**
+  (see §4). A definition without a categorical type is a candidate, not closed.
 
 ---
 
-## 5. Plano por etapas (cada uma carrega seu collapse-test)
+## 4. Categorical mapping discipline (the vault's spine)
 
-- **E0 — este PLAN.** Feito. Collapse: se não sobreviver à revisão de consistência, refaz.
-- **E1 — vault mínimo + vocabulário de movimentos.** README + este plano + a tabela §4
-  como doc inicial, ancorada em `DISPATCH-COMPOSITION-MODEL.md`. *Collapse:* se a tabela
-  não fechar um mapping por construto, é glossário, não linguagem.
-- **E2 — primeiras definições no protocolo §3.** ~5 termos (sonda, zig-zag, verbo,
-  resíduo, dispatch) escritos com os 9 campos + tipo categórico. *Collapse:* se duas
-  definições precisarem se redefinir mutuamente, a fronteira está errada.
-- **E3 — testar o claim-forte (§4).** Tipar (a) leis de categoria OU (b) resíduo=mesmo-objeto.
-  *Collapse-test já embutido:* se só der pra "provar" reexibindo a diamond, é decoração.
-  Esta é a fatia que decide se o repo é matemática ou metáfora.
-- **E4 — camada de decisão (MOGT) como "física" do orquestrador.** Adotar o "decision
-  receipt" e os objetivos multi-critério. *Bloqueado* por: (i) o doc do Vladimir (acesso),
-  (ii) MOGT ter zero experimento rodado — herda o mesmo "sem evidência ainda".
+**Rule.** Every construct of the agent-language → its type in category theory +
+anchor in a real file (rule inherited from the parent repo's CLAUDE.md). Probe and zig-zag
+are just the first two examples.
+
+**The table lives in [MAPPING.md](MAPPING.md)** (single source of the mapping, protocol §3): §1 = the
+seed table (7 inherited constructs), §2 = the parallels derived from the base skill
+`domainspec-subagents-strategy` (concat/synthesis, feedback-as-2-cell, plural-probe,
+meta/A6, …). Do not duplicate here — edit there.
+
+**Verb-rule (from Victor's direction).** A verb (implements/validates/
+refines/…) is an **action on an object that should preserve the object's symmetry under
+certain premises**. Honest correction from the parent repo: an *arbitrary* morphism does NOT preserve
+symmetry — only isos/automorphisms preserve it, and **the loss of symmetry IS the residue**
+(memory `symmetry-invertible-lever-is-enrichment`). Hence the type of a verb is:
+
+> **verb = morphism + the condition under which it is symmetry-preserving.**
+> Victor's "premises" = exactly this condition. Outside it, the verb generates residue —
+> and this makes the residue **measurable per verb**, which is what gives the discipline its value.
+
+**Strong claim (downgraded to candidate, with collapse-test).** If `groups`=objects and
+typed `connections` compose associatively, the agent-language **is** a
+category (not *seems like*), and the residue of an orchestration is the same object the parent repo
+studies — closing the A6 loop. **Collapses the decoration** if (a) zig-zag/feedback don't compose
+associatively (it's just an annotated DAG), or (b) the synthesis-residue is not the same object
+as `FunctorialResidueStructure` (and not just count-shaped). Typing (a) or (b) is the **first
+real obligation** — see E3.
 
 ---
 
-## Pendências / perguntas abertas
+## 5. Step-by-step plan (each one carries its own collapse-test)
 
-- **P-NOME.** nome e local definitivos do repo (hoje: pasta-irmã local provisória).
-- **P-CT.** feedback e robot-talks ainda sem tipo CT — resolver em E2/E3.
+- **E0 — this PLAN.** Done. Collapse: if it doesn't survive the consistency review, redo it.
+- **E1 — minimal vault + vocabulary of moves.** README + this plan + the §4 table
+  as the initial doc, anchored in `DISPATCH-COMPOSITION-MODEL.md`. *Collapse:* if the table
+  doesn't close a mapping per construct, it's a glossary, not a language.
+- **E2 — first definitions in protocol §3.** ~5 terms (probe, zig-zag, verb,
+  residue, dispatch) written with the 9 fields + categorical type. *Collapse:* if two
+  definitions need to mutually redefine each other, the boundary is wrong.
+- **E3 — test the strong claim (§4).** Type (a) category laws OR (b) residue=same-object.
+  *Collapse-test already built in:* if it can only be "proven" by re-displaying the diamond, it's decoration.
+  This is the slice that decides whether the repo is mathematics or metaphor.
+- **E4 — decision layer (MOGT) as the orchestrator's "physics."** Adopt the "decision
+  receipt" and the multi-criteria objectives. *Blocked* by: (i) Vladimir's doc (access),
+  (ii) MOGT having zero experiments run — inherits the same "no evidence yet."
 
-*(Resolvido: a "micro-economia" é o MOGT — teoria dos jogos — em
-`Arcanum/research/mogt-agentic-conversation/`, não um doc separado do Vladimir. O jogo das
-Torres é outro projeto, fora daqui.)*
+---
+
+## Pending items / open questions
+
+- **P-NOME.** definitive name and location of the repo (today: provisional local sibling folder).
+- **P-CT.** feedback and robot-talks still without a CT type — resolve in E2/E3.
+
+*(Resolved: the "micro-economy" is MOGT — game theory — at
+`Arcanum/research/mogt-agentic-conversation/`, not a separate doc from Vladimir. The Towers
+game is a different project, outside this one.)*
