@@ -8,17 +8,19 @@
  * <record.json> is a UTF-8 JSON file (a file arg, not stdin, so shell encoding
  * — e.g. PowerShell's UTF-16 pipes — can't corrupt the payload).
  *
- * SCHEMA — subagents-strategy constitution v0.6.0 (row schema; group `role`
- * removed at v0.6.0 — §11). Two row kinds, both appended by this script
+ * SCHEMA — subagents-strategy constitution v0.6.1 (row schema; group `role`
+ * removed at v0.6.0 — §11; `output_mode` added at v0.6.1 — §14). Two row kinds,
+ * both appended by this script
  * (Principle 3: two appends, one place):
  *
  *   DISPATCH ROW — keyed by `dispatch_id`. Required: dispatch_id,
- *     schema_version ("0.6.0" exactly), dispatch_type
+ *     schema_version ("0.6.1" exactly), dispatch_type
  *     (research|code|review|plan|suggestion|experiment), goal, context, max_loops (1..5),
  *     final_approver, groups[] (each group: group_id, agents[] — NO group
- *     `role` field; each agent: role explorer|skeptic|writer|auditor, model,
+ *     `role` field; each agent: role explorer|synthesizer|skeptic|writer|auditor|planner|coder, model,
  *     token_budget, initial_prompt). Optional: meta (true), parent_dispatch_id,
  *     anti_bias_global, working_folder (REQUIRED for research/experiment; optional for review — inline since 2026-06-16; never vault/),
+ *     output_mode (review only: inline|persisted — where review.md lands; §14),
  *     invoked_by (tooling extension, not in constitution §5),
  *     connections[] ({from,to,type,loop_cap?}).
  *   CLOSE ROW — keyed by `close_of`. Required: exit_reason
@@ -42,7 +44,7 @@
  * `project_dir` is a control key (repo-root fallback), never emitted.
  *
  * VALIDATION SPLIT (grandfathering — constitution §2):
- *   - The INCOMING record is validated STRICTLY against the v0.5.2 schema
+ *   - The INCOMING record is validated STRICTLY against the v0.6.1 schema
  *     before append: required fields, closed enums, conditional fields
  *     (working_folder on research/experiment; anti_bias/angle at n >= 2;
  *     anti_bias_global when >= 2 groups have >= 2 agents; n ==
@@ -92,7 +94,7 @@ const isNonEmptyStr = (v) => isStr(v) && v.trim() !== '';
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 
 // ---------------------------------------------------------------- schema
-const SCHEMA_VERSION = '0.6.0';   // row schema: group `role` removed at v0.6.0 (constitution §11)
+const SCHEMA_VERSION = '0.6.1';   // row schema: group `role` removed at v0.6.0 (§11); `output_mode` added at v0.6.1 (§14)
 const DISPATCH_TYPES = ['research', 'code', 'review', 'plan', 'suggestion', 'experiment'];
 // LIVE per constitution §5 (review 2026-06-12; experiment 2026-06-14, owner decisions); others
 // RESERVED (code, plan, suggestion) — recorded but not yet dispatchable.
@@ -107,11 +109,13 @@ const WORKING_FOLDER_TYPES = new Set(['research', 'experiment']);
 const AGENT_ROLES = ['explorer', 'synthesizer', 'skeptic', 'writer', 'auditor', 'planner', 'coder'];
 const CONNECTION_TYPES = ['sequential', 'zig-zag', 'feedback'];
 const EXIT_REASONS = ['resolved', 'loop_ceiling_reached', 'dissent_irreconcilable', 'user_abort', 'error'];
+const OUTPUT_MODES = ['inline', 'persisted'];   // review-only row field (§14): where review.md lands
 
 const DISPATCH_KEYS = new Set([
   'dispatch_id', 'schema_version', 'dispatch_type', 'goal', 'context',
   'max_loops', 'final_approver', 'groups',                       // required
   'meta', 'parent_dispatch_id', 'anti_bias_global', 'working_folder',
+  'output_mode',                                                 // optional (review-only, §14)
   'invoked_by', 'connections',                                   // optional
   'project_dir',                                                 // control key, not emitted
 ]);
@@ -139,7 +143,7 @@ function validateDispatch(rec) {
   for (const k of Object.keys(rec)) {
     if (DISPATCH_KEYS.has(k)) continue;
     if (REMOVED_KEYS.has(k)) errs.push(`"${k}" was removed by schema v0.5.2 — drop it from the record`);
-    else if (LEGACY_LEDGER_KEYS.has(k)) errs.push(`"${k}" is a pre-v0.5.2 ledger-row key, not in the v0.5.2 schema — drop it from the record`);
+    else if (LEGACY_LEDGER_KEYS.has(k)) errs.push(`"${k}" is a pre-v0.5.2 ledger-row key, not in the v${SCHEMA_VERSION} schema — drop it from the record`);
     else errs.push(`unknown key "${k}" on a dispatch record`);
   }
   if (!isNonEmptyStr(rec.dispatch_id)) errs.push('dispatch_id is required and must be a non-empty string');
@@ -166,6 +170,18 @@ function validateDispatch(rec) {
       const wf = rec.working_folder.replace(/^\.[\/\\]+/, '');
       if (/^vault([\/\\]|$)/i.test(wf)) errs.push(`working_folder must never point into vault/ (§5: "Never vault/**") — got ${J(rec.working_folder)}`);
     }
+  }
+
+  // output_mode — review-only row field (§14). Records where review.md lands
+  // (inline = chat, no file; persisted = <working_folder>/review.md); never
+  // inferred from working_folder presence, so review must declare it explicitly.
+  if (rec.output_mode !== undefined) {
+    if (rec.dispatch_type !== 'review') errs.push(`output_mode is only valid when dispatch_type is "review" (§14) — got dispatch_type ${J(rec.dispatch_type)}`);
+    else if (!OUTPUT_MODES.includes(rec.output_mode)) errs.push(`output_mode must be one of ${OUTPUT_MODES.join(' | ')} (got ${J(rec.output_mode)})`);
+    else if (rec.output_mode === 'persisted' && rec.working_folder === undefined) errs.push('output_mode "persisted" requires working_folder (§14: review.md is written to <working_folder>/review.md)');
+    else if (rec.output_mode === 'inline' && rec.working_folder !== undefined) errs.push('output_mode "inline" must not carry a working_folder (§14: an inline review writes no file)');
+  } else if (rec.dispatch_type === 'review') {
+    errs.push('output_mode is required when dispatch_type is "review" (inline | persisted) — confirmed at the gate, recorded on the row (§14)');
   }
 
   const groupIds = new Set();
@@ -235,7 +251,7 @@ function validateClose(rec) {
   for (const k of Object.keys(rec)) {
     if (k === 'dispatch_id' || CLOSE_KEYS.has(k)) continue;
     if (REMOVED_KEYS.has(k)) errs.push(`"${k}" was removed by schema v0.5.2 — drop it from the record`);
-    else if (LEGACY_LEDGER_KEYS.has(k)) errs.push(`"${k}" is a pre-v0.5.2 ledger-row key, not in the v0.5.2 schema — drop it from the record`);
+    else if (LEGACY_LEDGER_KEYS.has(k)) errs.push(`"${k}" is a pre-v0.5.2 ledger-row key, not in the v${SCHEMA_VERSION} schema — drop it from the record`);
     else errs.push(`unknown key "${k}" on a close record`);
   }
   if (!isNonEmptyStr(rec.close_of)) errs.push('close_of must be a non-empty string');
@@ -365,7 +381,7 @@ if (dispatchIds.has(rec.dispatch_id)) {
 }
 
 if (!LIVE_TYPES.has(rec.dispatch_type)) {
-  console.log(`note: dispatch_type "${rec.dispatch_type}" is a RESERVED type — only ${[...LIVE_TYPES].map(J).join(' and ')} are LIVE under v0.6.0; recording anyway.`);
+  console.log(`note: dispatch_type "${rec.dispatch_type}" is a RESERVED type — only ${[...LIVE_TYPES].map(J).join(' and ')} are LIVE under v${SCHEMA_VERSION}; recording anyway.`);
 }
 
 const lines = [

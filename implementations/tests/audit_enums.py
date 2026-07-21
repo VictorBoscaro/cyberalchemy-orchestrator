@@ -1,4 +1,4 @@
-"""Audit: values outside the v0.6.0 schema enums in the real ledgers.
+"""Audit: values outside the current v0.6.1 schema enums in real ledgers.
 
 Not a code test — it's a probe over the DATA. The reader is deliberately lenient,
 so a value outside the enum passes silently; this makes it visible.
@@ -17,8 +17,9 @@ from server import ledger  # noqa: E402
 
 EXIT_REASONS = {"resolved", "loop_ceiling_reached", "dissent_irreconcilable", "user_abort", "error"}
 DISPATCH_TYPES = {"research", "code", "review", "plan", "suggestion", "experiment"}
-AGENT_ROLES = {"explorer", "synthesizer", "skeptic", "writer", "auditor"}
+AGENT_ROLES = {"explorer", "synthesizer", "skeptic", "writer", "auditor", "planner", "coder"}
 CONNECTION_TYPES = {"sequential", "zig-zag", "feedback"}
+OUTPUT_MODES = {"inline", "persisted"}
 
 
 def main() -> int:
@@ -27,6 +28,7 @@ def main() -> int:
     types: Counter[str] = Counter()
     roles: Counter[str] = Counter()
     conns: Counter[str] = Counter()
+    output_modes: Counter[str] = Counter()
     offenders: list[str] = []
 
     for repo in cfg.resolved_repos():
@@ -40,6 +42,12 @@ def main() -> int:
                 types[dt] += 1
                 if dt not in DISPATCH_TYPES:
                     offenders.append(f"{repo.name}/{row['dispatch_id']}: dispatch_type={dt!r}")
+
+            output_mode = row.get("output_mode")
+            if output_mode is not None:
+                output_modes[output_mode] += 1
+                if output_mode not in OUTPUT_MODES:
+                    offenders.append(f"{repo.name}/{row['dispatch_id']}: output_mode={output_mode!r}")
 
             close = row.get("_close")
             if close:
@@ -75,6 +83,7 @@ def main() -> int:
     show("exit_reason", exits, EXIT_REASONS)
     show("role (agents)", roles, AGENT_ROLES)
     show("connections.type", conns, CONNECTION_TYPES)
+    show("output_mode", output_modes, OUTPUT_MODES)
 
     print(f"\n{len(offenders)} occurrence(s) outside the enum")
     for o in offenders[:20]:

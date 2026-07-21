@@ -14,7 +14,10 @@ This skill is the gate; it owns no field and no type judgment.
 ## When it runs
 
 Between **Propose** and **Confirm** in the lifecycle (router §3), for any sheet that has a
-**subject group** — a group with `n ≥ 2` and role `investigate` or `evaluate`. A sheet with
+**subject group** — a **fan-out group**: any group with `n ≥ 2`. (v0.6.0 removed the
+group-level `role` field — §11 — so the trigger is the fan-out itself, not a group role;
+every `n ≥ 2` group already carries the `anti_bias` axis and per-agent `angle`s that
+Principle 5 requires, and is exactly what must be tensioned.) A sheet with
 no subject group has nothing to tension; the gate passes trivially.
 
 ## The two agents (independent)
@@ -40,8 +43,8 @@ Per subject group:
 - **Test 1 — axis.** `anti_bias` names one canonical axis (methodology / source-corpus /
   attack-vector / temporal-prior) or a declared composite. Outside the vocabulary → REJECT.
 - **Test 2 — clone.** No two `angle`s share the same core noun phrase → else REJECT.
-- **Test 3 — spread.** Not all agents share one methodology/corpus (`investigate`) or one
-  attack-gate (`evaluate`) → else REJECT.
+- **Test 3 — spread.** Not all agents share one methodology/corpus (investigation-type
+  work) or one attack-gate (evaluation-type work) → else REJECT.
 - **Test 4 — evidence.** Every unordered pair carries its predicted-disagreement sentence
   ("a_i runs X, a_j runs Y on the [axis] axis; a bias in a_i would be exposed by a_j") →
   else REJECT.

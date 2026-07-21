@@ -46,10 +46,11 @@ dispatches:
     groups: [{"group_id":"explorers","n":2,"anti_bias":"axis","agents":[{"role":"explorer","model":"m","token_budget":800,"initial_prompt":"AAAAAAAAAA","angle":"a"},{"role":"explorer","model":"m","token_budget":800,"initial_prompt":"B","angle":"b"}]}]
     connections: [{"from":"explorers","to":"explorers","type":"feedback","loop_cap":2}]
   - dispatch_id: "2026-06-13-beta"
-    schema_version: "0.6.0"
+    schema_version: "0.6.1"
     dispatch_type: "review"
     goal: "objective beta"
-    groups: [{"group_id":"g","agents":[{"role":"auditor","model":"m","token_budget":10,"initial_prompt":"p"}]}]
+    output_mode: "inline"
+    groups: [{"group_id":"g","agents":[{"role":"planner","model":"m","token_budget":10,"initial_prompt":"p"},{"role":"coder","model":"m","token_budget":10,"initial_prompt":"p"}]}]
   - close_of: "2026-06-12-alpha"
     closed: "2026-06-12T19:00:00.000Z"
     exit_reason: "resolved"
@@ -71,7 +72,7 @@ ORPHAN = """dispatches:
 
 
 def test_parse_and_join() -> None:
-    print("\nparse + join (schema v0.6.0)")
+    print("\nparse + join (schema v0.6.0 and v0.6.1)")
     parsed = ledger.parse_ledger(LEDGER_OK)
     check("3 raw rows", len(parsed.rows) == 3, f"(got {len(parsed.rows)})")
     check("clean ledger raises no warning", parsed.warnings == [], f"({parsed.warnings})")
@@ -92,6 +93,12 @@ def test_parse_and_join() -> None:
     check("agent count", alpha["_agent_count"] == 2)
     check("research is LIVE", alpha["_live"] is True)
     check("v0.6.0 is not legacy", alpha["_legacy"] is False)
+    check("v0.6.1 is not legacy", beta["_legacy"] is False)
+    check("v0.6.1 output_mode is preserved", beta["output_mode"] == "inline")
+    check(
+        "v0.6.1 planner/coder roles are preserved",
+        [a["role"] for a in beta["groups"][0]["agents"]] == ["planner", "coder"],
+    )
 
 
 def test_truncation() -> None:

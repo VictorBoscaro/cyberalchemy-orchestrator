@@ -62,19 +62,23 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
 
 ### A dispatch
 
+The current writer emits schema `0.6.1`. The reader remains deliberately
+compatible with historical `0.6.0` rows and does not rewrite ledger data.
+
 ```jsonc
 {
   "dispatch_id": "2026-06-12-residue-precedent-sweep",
-  "schema_version": "0.6.0",
+  "schema_version": "0.6.1",
   "created": "2026-06-12T18:00:00.000Z",
   "invoked_by": "victorboscaro@gmail.com",
-  "dispatch_type": "research",        // research|code|review|plan|suggestion|experiment
+  "dispatch_type": "review",          // research|code|review|plan|suggestion|experiment
   "goal": "…",
   "context": "…",
   "max_loops": 1,
   "final_approver": "parent",
   "anti_bias_global": "novelty optimism vs precedent skepticism",
   "working_folder": "research/…/",
+  "output_mode": "persisted",         // review only: inline|persisted
   "groups": [
     {
       "group_id": "explorers",
@@ -85,7 +89,7 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
       "agents": [
         {
           "agent_name": "Abramsky, Samson",   // can be null
-          "role": "explorer",                 // explorer|synthesizer|skeptic|writer|auditor (appender enum)
+          "role": "explorer",                 // explorer|synthesizer|skeptic|writer|auditor|planner|coder
           "model": "claude-sonnet-5",
           "token_budget": 800,
           "angle": "takes the side of the formal literature",
