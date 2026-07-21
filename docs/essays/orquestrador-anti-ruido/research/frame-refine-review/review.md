@@ -1,41 +1,41 @@
 ---
 canonical_kind: review
-title: "Review — adições frame/refine/citação à HYP-ORCH-NOISE"
-description: "Review tensionado (n=2, eixo fit-interno vs solidez-externa) das edições de 2026-07-20 à hipótese anti-ruído: frame, refine, espinha de citação, OQ-6/7. Um achado ALTO factual (question é do discovery, não research) e um ALTO estrutural (frame precisa de braço de ruído). Todos os consertos aplicados."
+title: "Review — frame/refine/citation additions to HYP-ORCH-NOISE"
+description: "Tensioned review (n=2, internal-fit vs external-soundness axis) of the 2026-07-20 edits to the anti-noise hypothesis: frame, refine, citation spine, OQ-6/7. One factual HIGH finding (question belongs to discovery, not research) and one structural HIGH finding (frame needs a noise arm). All fixes applied."
 evidence_for: [HYP-ORCH-NOISE]
 created: 2026-07-20
 last_updated: 2026-07-20
 tags: [review, frame, refine, citacao, anti-ruido, claim-proof]
 ---
 
-# Review — adições frame/refine/citação à HYP-ORCH-NOISE
+# Review — frame/refine/citation additions to HYP-ORCH-NOISE
 
-Dispatch `2026-07-20-anti-ruido-frame-refine-review` (review, n=2, `output_mode` persistido).
-Eixo de tensão: **fit-interno (consistência + claim≤proof)** vs **solidez-externa (ideias
-verdadeiras ou decorativas)**. Os dois revisores discordaram no ponto de carga previsto — se o
-frame pertence só ao eixo tensão — o que validou o desenho da tensão.
+Dispatch `2026-07-20-anti-ruido-frame-refine-review` (review, n=2, `output_mode` persisted).
+Tension axis: **internal-fit (consistency + claim≤proof)** vs **external-soundness (true or
+decorative ideas)**. The two reviewers disagreed at the predicted load point — whether the
+frame belongs only to the tension axis — which validated the tension design.
 
-## Achados (severidade · verdito · conserto)
+## Findings (severity · verdict · fix)
 
-| # | Sev | Achado | Verdito | Conserto aplicado |
+| # | Sev | Finding | Verdict | Fix applied |
 |---|---|---|---|---|
-| 1 | **ALTO** | `question` foi citado como campo que "o kind `research` já exige"; na verdade é do kind `discovery` e **opcional**. Pior: ancorava no modelo `discovery` que a OQ-6 rejeita. | confirmado (ambos) | Reescrito como anotação de âncora honesta; removida a exigência falsa; reconciliado com `[[OQ-6]]`. |
-| 2 | **ALTO** | Frame posto só no eixo tensão contradiz a ortogonalidade `viés ⊕ ruído` da própria tese; frames independentes dispersam (ruído), não se opõem — a máquina de tensão (`check-tension`) nem se aplica. O doc já tem o tratamento certo em OQ-4 e não o aplicou ao frame. | confirmado (cético); consistência disse "não quebra regra" — conciliável | Frame agora tem **dois braços**: tensão (viés) + dispersão-independente (ruído, à la OQ-4, PENDENTE). Collapse-test ganhou o modo de falha por dispersão. |
-| 3 | MÉDIO | `refine` descrito como "operador universal com convergência do zig-zag"; a skill real é esteira fixa de ~10 estágios + budget, e `loop_cap`/`max_loops` são de dispatch, não de artefato solo. Critério do zig-zag fabricado. | confirmado (ambos) | Rebaixado: refine termina por esteira fixa + budget; convergência-solo marcada **PENDENTE**. |
-| 4 | MÉDIO | Citação fail-closed cru fabrica viés de disponibilidade/Goodhart (descarta verdade-inancorável; cola chave só pra passar; cobertura VERDE mede conformidade). Falta `supports` vs `mentioned`; colide com ajuste 3. | confirmado (cético) | "Invariante" → "disciplina candidata"; duas salvaguardas: qualidade-do-vínculo (`supports`/`mentioned`) + válvula `reasoning` para verdade-por-raciocínio. |
-| 5 | BAIXO | OQ-6 sub-enquadrada como taxonomia; o input-raiz (reconhecimento-de-problema) está sem dono = risco vivo. | confirmado (cético) | OQ-6 ganhou parágrafo "risco vivo: input-raiz não-auditado". |
-| 6 | BAIXO | Âncora "codomínio C"/"fio comum" apontava PLAN/MAPPING (não literais lá); vivem em README/FRAMINGS. | confirmado (consistência) | Âncora corrigida para README/FRAMINGS. |
+| 1 | **HIGH** | `question` was cited as a field that "the `research` kind already requires"; in fact it belongs to the `discovery` kind and is **optional**. Worse: it anchored on the `discovery` model that OQ-6 rejects. | confirmed (both) | Rewritten as an honest anchor annotation; the false requirement removed; reconciled with `[[OQ-6]]`. |
+| 2 | **HIGH** | Placing the frame only on the tension axis contradicts the thesis's own `bias ⊕ noise` orthogonality; independent frames disperse (noise), they don't oppose — the tension machinery (`check-tension`) doesn't even apply. The doc already has the right treatment in OQ-4 and didn't apply it to the frame. | confirmed (skeptic); consistency said "doesn't break the rule" — reconcilable | Frame now has **two arms**: tension (bias) + independent-dispersion (noise, à la OQ-4, PENDING). Collapse-test gained the dispersion failure mode. |
+| 3 | MEDIUM | `refine` described as "universal operator with zig-zag convergence"; the actual skill is a fixed pipeline of ~10 stages + budget, and `loop_cap`/`max_loops` belong to the dispatch, not to a solo artifact. Zig-zag criterion fabricated. | confirmed (both) | Downgraded: refine ends via fixed pipeline + budget; solo-convergence marked **PENDING**. |
+| 4 | MEDIUM | Raw fail-closed citation fabricates availability/Goodhart bias (discards unanchorable truth; pastes a key just to pass; GREEN coverage measures conformity). Missing `supports` vs `mentioned`; collides with adjustment 3. | confirmed (skeptic) | "Invariant" → "candidate discipline"; two safeguards: link-quality (`supports`/`mentioned`) + `reasoning` valve for truth-by-reasoning. |
+| 5 | LOW | OQ-6 under-framed as a taxonomy; the root-input (problem-recognition) is unowned = live risk. | confirmed (skeptic) | OQ-6 gained a "live risk: unaudited root-input" paragraph. |
+| 6 | LOW | Anchor "codomain C"/"common thread" pointed to PLAN/MAPPING (not literally there); they live in README/FRAMINGS. | confirmed (consistency) | Anchor corrected to README/FRAMINGS. |
 
-## Passou (sem conserto)
+## Passed (no fix)
 
-- Frame no eixo tensão **não** quebra a separação gerar→tensão / avaliar→independência (o
-  conserto #2 *adiciona* o braço de ruído, não remove o de tensão).
-- Espinha de citação **não** conflita com os 5 ajustes do ETE (reforça o ajuste 4).
-- Higiene: OQ sem colisão, mermaid válido, frontmatter/tags coerentes, `derives-from` é âncora real.
+- Frame on the tension axis does **not** break the generate→tension / evaluate→independence
+  separation (fix #2 *adds* the noise arm, it doesn't remove the tension one).
+- Citation spine does **not** conflict with the ETE's 5 adjustments (it reinforces adjustment 4).
+- Hygiene: no OQ collisions, valid mermaid, coherent frontmatter/tags, `derives-from` is a real anchor.
 
-## Nota de método
+## Method note
 
-Dispatch registrada e fechada no ledger (`telemetry/agents/subagents-dispatch.yaml`) — a
-disciplina anti-viés do repo aplicada ao próprio trabalho (auto-aplicação A6). `exit_reason:
-resolved` — nenhum dissenso irreconciliável; a discordância dos revisores foi **conciliável**
-(frame ganha os dois braços).
+Dispatch logged and closed in the ledger (`telemetry/agents/subagents-dispatch.yaml`) — the
+repo's anti-bias discipline applied to its own work (self-application A6). `exit_reason:
+resolved` — no irreconcilable dissent; the reviewers' disagreement was **reconcilable**
+(frame gains both arms).

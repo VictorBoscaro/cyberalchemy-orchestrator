@@ -1,6 +1,6 @@
 ---
 hypothesis_id: HYP-ORCH-NOISE
-title: "Tese — O orquestrador como máquina de redução de ruído (Kahneman ⊕ Thaler ⊕ Categorias)"
+title: "Thesis — The orchestrator as a noise-reduction machine (Kahneman ⊕ Thaler ⊕ Category Theory)"
 status: candidate
 authority_level: exploratory
 owner: Victor
@@ -9,458 +9,521 @@ last_updated: 2026-07-20
 tags: [orquestracao, kahneman, thaler, categorias, ruido, vies, ETE, nudge, anti-bias, tagueamento, persona, frame, refine, citacao, chave-de-paper]
 ---
 
-# Tese — O orquestrador como máquina de redução de ruído
+# Thesis — The orchestrator as a noise-reduction machine
 
-> **Estatuto:** `candidate`, `exploratory`. Isto **não legisla** — raciocina. É a
-> hipótese de onde uma constituição futura vai *promover* regras, não a regra. Toda
-> afirmação abaixo é para se **discutir**, não ratificar. `Claim ≤ proof`: cada "você
-> já faz X" aponta um artefato real do repo; onde não há artefato, está marcado
-> **PENDENTE**.
+> **Status:** `candidate`, `exploratory`. This **does not legislate** — it reasons. It is
+> the hypothesis from which a future constitution will *promote* rules, not the rule
+> itself. Every claim below is meant to be **discussed**, not ratified. `Claim ≤ proof`:
+> each "you already do X" points to a real artifact in the repo; where there is no
+> artifact, it is marked **PENDING**.
 
-## Abertura
+## Opening
 
-O orquestrador de agentes que este repo constrói toma **juízos** o tempo todo: qual
-achado é sólido, qual implementação é melhor, o que sintetizar, como classificar o
-conhecimento produzido. Todo juízo carrega dois erros independentes — **viés** (erro
-direcional, correlacionado) e **ruído** (dispersão indesejada, variabilidade sem sinal).
-A arquitetura atual do repo ataca **viés** com maestria — e **não tem o eixo de ruído
-nomeado**. Esta tese propõe o segundo eixo, e afirma que os dois compõem:
+The agent orchestrator this repo builds makes **judgments** all the time: which
+finding is solid, which implementation is better, what to synthesize, how to classify
+the knowledge produced. Every judgment carries two independent errors — **bias**
+(directional error, correlated) and **noise** (unwanted dispersion, variability
+without signal). The repo's current architecture attacks **bias** masterfully — and
+**has no named noise axis**. This thesis proposes the second axis, and claims that the
+two compose:
 
-> **`resíduo de juízo = viés ⊕ ruído`** — e reduzi-los pede **ferramentas distintas**,
-> aplicadas em **estágios distintos** do pipeline de agentes.
+> **`judgment residue = bias ⊕ noise`** — and reducing them calls for **distinct
+> tools**, applied at **distinct stages** of the agent pipeline.
 
-> **Revisão (2026-07-20, promovida pela pesquisa `costura-feasibility`).** O `⊕` **não é
-> soma-direta ortogonal grátis**. Ele vale como um Pitágoras de Amari **sob um potencial de
-> Legendre `F` importado** (geometria dualmente plana; **sem** métrica de Fisher) — e esse
-> `F` é a própria *"escala comum ancorada / MAP"* já usada nesta tese, que assim paga o
-> imposto sem nomear. **Sem `F`**, a forma honesta é `resíduo = viés * ruído`: duas
-> contribuições entrópicas (KL), **não** pernas ortogonais. Prova e fronteiras em
+> **Revision (2026-07-20, promoted by the `costura-feasibility` research).** `⊕` **is
+> not a free orthogonal direct sum**. It holds as an Amari Pythagorean theorem **under
+> an imported Legendre potential `F`** (dually flat geometry; **without** a Fisher
+> metric) — and that `F` is precisely the *"anchored common scale / MAP"* already used
+> in this thesis, which thus pays the toll without naming it. **Without `F`**, the
+> honest form is `residue = bias * noise`: two entropic (KL) contributions, **not**
+> orthogonal legs. Proof and boundaries in
 > `docs/essays/orquestrador-anti-ruido/research/costura-feasibility/findings.md`.
 
-A tese é falsificável (ver *Collapse-tests*). Ela é também uma **auto-aplicação**: o
-processo que produz conhecimento aqui é uma instância do framework epistemológico que
-ele estuda (PLAN.md §1, "framework as its own instance", A6).
+The thesis is falsifiable (see *Collapse-tests*). It is also a **self-application**:
+the process that produces knowledge here is an instance of the epistemological
+framework it studies (PLAN.md §1, "framework as its own instance", A6).
 
-## Contexto — o que já existe (o eixo do viés)
+## Context — what already exists (the bias axis)
 
-O repo já opera uma disciplina anti-viés madura, que **não** estou reinventando:
+The repo already runs a mature anti-bias discipline, which I am **not** reinventing:
 
-- **Tensão pairwise** (`anti-bias-vector-composition`): quando N agentes compartilham
-  um macro-objetivo, seus micro-vetores (ângulo, metodologia, corpus) são **opostos
-  estruturalmente** para que o viés interno de um seja forçado à tona por outro — não
-  apenas *não-sobrepostos*. Mais agentes não quebram a correlação; oposição estrutural
-  quebra.
-- **Gate executável** (`check-tension`): dois agentes independentes rodam os Testes 1–4
-  e só um "ambos PASS" chega ao human confirm (constituição P5).
-- **Invariantes universais** (`domainspec-subagents-strategy`): `claim ≤ proof` (P10),
-  aprovação final sem auto-aprovação (P12), `exit_reason` de vocabulário fechado incluindo
-  `dissent_irreconcilable`, e a primitiva **initial AND final positions** para detecção de
-  colapso (P14).
-- **Ledger append-only** de dispatch (`register-dispatch`, schema v0.6.0) com `token_budget`
-  por agente e `robot_talks` por grupo.
+- **Pairwise tension** (`anti-bias-vector-composition`): when N agents share a
+  macro-objective, their micro-vectors (angle, methodology, corpus) are
+  **structurally opposed** so that one agent's internal bias is forced to the
+  surface by another — not merely *non-overlapping*. More agents does not break the
+  correlation; structural opposition does.
+- **Executable gate** (`check-tension`): two independent agents run Tests 1–4, and
+  only a "both PASS" reaches the human confirm (constitution P5).
+- **Universal invariants** (`domainspec-subagents-strategy`): `claim ≤ proof` (P10),
+  final approval without self-approval (P12), a closed-vocabulary `exit_reason`
+  including `dissent_irreconcilable`, and the **initial AND final positions**
+  primitive for collapse detection (P14).
+- **Append-only dispatch ledger** (`register-dispatch`, schema v0.6.0) with
+  per-agent `token_budget` and per-group `robot_talks`.
 
-Tudo isso é **anti-viés**. O que falta é o **anti-ruído** — e o instinto que o originou
-("avaliações individuais, agregação ao final; às vezes com discussão no meio") é
-*exatamente* a alavanca canônica de redução de ruído (Kahneman, Sibony, Sunstein, *Noise*,
-2021): a média de N juízos **independentes** cancela ruído na ordem de √N.
+All of this is **anti-bias**. What's missing is the **anti-noise** — and the instinct
+that originated it ("individual evaluations, aggregation at the end; sometimes with
+discussion in between") is *exactly* the canonical noise-reduction lever (Kahneman,
+Sibony, Sunstein, *Noise*, 2021): the average of N **independent** judgments cancels
+noise on the order of √N.
 
-> **Revisão (2026-07-20, `costura-feasibility`).** O `√N` é fato **L2/CLT** — vale sob o
-> regime gaussiano/quadrático (`F=‖·‖²`, onde a média é o minimizador de Banerjee). **Fora do
-> CLT** (regime entrópico) a concentração é **Sanov / large-deviation, não 1/N**. Enunciar
-> `√N` como o caso especial; a garantia geral é "agregação = m-projeção na família plana,
-> monótona sob independência", com **expoente dependente de regime**. O design (agregar
-> independentes) sobrevive; o expoente é condicional.
+> **Revision (2026-07-20, `costura-feasibility`).** `√N` is an **L2/CLT** fact — it
+> holds under the Gaussian/quadratic regime (`F=‖·‖²`, where the mean is the Banerjee
+> minimizer). **Outside the CLT** (entropic regime), concentration is **Sanov /
+> large-deviation, not 1/N**. State `√N` as the special case; the general guarantee is
+> "aggregation = m-projection onto the flat family, monotone under independence,"
+> with a **regime-dependent exponent**. The design (aggregating independents)
+> survives; the exponent is conditional.
 
-## A tese central
+## The central thesis
 
-Três referências, operando em **três níveis ortogonais** — não uma lista ranqueada. Elas
-**compõem**, não competem:
+Three references, operating at **three orthogonal levels** — not a ranked list. They
+**compose**, they don't compete:
 
-| Eixo | Papel | Pergunta que responde |
+| Axis | Role | Question it answers |
 |---|---|---|
-| **Teoria das categorias** | *em quê* — o substrato/tipo | o que os objetos e morfismos **são** (já é a espinha do repo: `resíduo`, Yoneda, functor) |
-| **Kahneman** | *por quê / o quê* — o modelo de erro | como o juízo falha (`viés ⊕ ruído`) e quais protocolos o corrigem (MAP, ETE, higiene) |
-| **Thaler / Nudge** | *como* — a arquitetura de escolha | como tornar a higiene o **default sem esforço**, não uma escolha custosa |
+| **Category theory** | *in what* — the substrate/type | what the objects and morphisms **are** (already the repo's spine: `residue`, Yoneda, functor) |
+| **Kahneman** | *why / what* — the error model | how judgment fails (`bias ⊕ noise`) and which protocols correct it (MAP, ETE, hygiene) |
+| **Thaler / Nudge** | *how* — choice architecture | how to make hygiene the **effortless default**, not a costly choice |
 
-CT é o **chão** (tudo tipa nele), Kahneman é a **lente primária** que motiva o design,
-Thaler é o **mecanismo** que implementa as prescrições de Kahneman. "Kahneman primeiro"
-vale como lente motivadora; CT não é "terceiro/menor" — é o solo.
+CT is the **ground** (everything types onto it), Kahneman is the **primary lens**
+that motivates the design, Thaler is the **mechanism** that implements Kahneman's
+prescriptions. "Kahneman first" holds as the motivating lens; CT is not
+"third/lesser" — it is the ground.
 
-### `viés ⊥ ruído` — o reframe que reorganiza tudo
+### `bias ⊥ noise` — the reframe that reorganizes everything
 
-O ponto central de *Noise* é que viés e ruído são **ortogonais** e pedem ferramentas
-opostas:
+The central point of *Noise* is that bias and noise are **orthogonal** and call for
+opposite tools:
 
-- **Viés** → **tensão, oposição, red-team.** (o que o repo já faz)
-- **Ruído** → **independência + agregação, escala comum ancorada, higiene de decisão.**
+- **Bias** → **tension, opposition, red-team.** (what the repo already does)
+- **Noise** → **independence + aggregation, anchored common scale, decision
+  hygiene.**
 
-E aqui está o núcleo do design: **tensão e independência se contradizem.** O anti-viés
-*correlaciona* agentes em oposição deliberada; a agregação anti-ruído exige o oposto —
-independência (a média só cancela ruído na medida da independência; a correlação ρ põe
-um piso no ganho). A resolução é **separar por estágio**:
+And here is the core of the design: **tension and independence contradict each
+other.** Anti-bias *correlates* agents in deliberate opposition; anti-noise
+aggregation demands the opposite — independence (the average only cancels noise to
+the extent of independence; correlation ρ puts a floor on the gain). The resolution
+is **separation by stage**:
 
-- **Estágio gerar/investigar** → governado por **tensão** (sondas opostas — como hoje).
-- **Estágio avaliar/julgar** → governado por **independência** (scorers independentes,
-  escala comum, cegos à fonte).
+- **Generate/investigate stage** → governed by **tension** (opposed probes — as
+  today).
+- **Evaluate/judge stage** → governed by **independence** (independent scorers,
+  common scale, source-blind).
 
-Dois eixos, dois estágios, duas populações. Essa separação dissolve a contradição e é o
-princípio de design mais carregado desta tese.
+Two axes, two stages, two populations. This separation dissolves the contradiction
+and is the most load-bearing design principle of this thesis.
 
-> **Revisão (2026-07-20, `costura-feasibility`).** "Ortogonal" aqui é **licenciado, não
-> grátis**: `viés ⊥ ruído` só é soma-direta sob o potencial `F` (= a *escala comum ancorada*)
-> e com a divergência orientada no **primeiro slot** (M-projection/reverse-KL); invertida, o
-> termo cruzado reaparece (gap de Jensen). E há um limite estrutural **aberto**: a
-> ortogonalidade tem de sobreviver à **composição dos estágios** para ser categórica — a
-> monotonicidade nativa (desigualdade de processamento de dados: canais *contraem* KL) gira o
-> resíduo para fora de ⊥. A separação-por-estágio é a resposta de *design*; a garantia
-> *formal* através da composição é **não-provada** (ver novo collapse-test).
+> **Revision (2026-07-20, `costura-feasibility`).** "Orthogonal" here is **licensed,
+> not free**: `bias ⊥ noise` is only a direct sum under the potential `F` (= the
+> *anchored common scale*) and with the divergence oriented in the **first slot**
+> (M-projection/reverse-KL); reversed, the cross term reappears (Jensen gap). And
+> there is an **open** structural limit: orthogonality has to survive **composition
+> across stages** to be categorical — native monotonicity (the data-processing
+> inequality: channels *contract* KL) rotates the residue out of ⊥.
+> Separation-by-stage is the *design* answer; the *formal* guarantee through
+> composition is **unproven** (see new collapse-test).
 
-### A disciplina do nudge — processo, nunca conteúdo
+### The discipline of the nudge — process, never content
 
-Um nudge pressupõe um arquiteto que já sabe o resultado bom e empurra para lá. Mas o
-ponto de *Noise* é que você **não sabe** a resposta certa — está reduzindo erro que não
-enxerga. Logo, se você "nudge" o *achado*, injeta exatamente o viés que quer cancelar. A
-regra:
+A nudge presupposes an architect who already knows the good outcome and pushes
+toward it. But the point of *Noise* is that you **don't know** the right answer —
+you're reducing error you can't see. So if you "nudge" the *finding*, you inject
+exactly the bias you're trying to cancel. The rule:
 
-> **Nudge governa a arquitetura do PROCESSO, nunca o CONTEÚDO do juízo.**
+> **The nudge governs the architecture of the PROCESS, never the CONTENT of the
+> judgment.**
 
-Nudges legítimos (processo): default = juízo independente logado primeiro; **sludge
-deliberado** = você *não consegue* abrir a discussão sem congelar sua posição; `token_budget`
-= escassez que força compressão; saliência = o botão do human-gate. E note: o repo **já
-faz Thaler sem nomear** — o `check-tension` gate que *bloqueia*, o ledger append-only, o
-human-gate como botão são arquitetura de escolha. Nomear o eixo só torna explícito o que
-já é latente.
+Legitimate nudges (process): default = independent judgment logged first;
+**deliberate sludge** = you *cannot* open the discussion without freezing your
+position first; `token_budget` = scarcity that forces compression; salience = the
+human-gate button. And note: the repo **already does Thaler without naming it** —
+the `check-tension` gate that *blocks*, the append-only ledger, the human-gate as a
+button are choice architecture. Naming the axis just makes explicit what is already
+latent.
 
-> **Revisão (2026-07-20, `costura-feasibility`).** "Nudge = morfismo sobre o processo" **não
-> se tipa numa óptica de juízo único** — ali a 2-célula é o próprio *witness do coend* e
-> colapsa (ou é identidade, ou toca o conteúdo). Os dentes são **reais um andar acima**, na
-> **fibra de acoplamento** da lei conjunta `D(A^N)`: o nudge de independência `J ↦ ⊗ᵢ(πᵢ∗J)`
-> **fixa toda marginal (conteúdo)** e **mata a correlação (processo)**, bem-definido porque a
-> marginalização é **não-mônica**; a queda de variância na agregação é o próprio detector.
-> **Re-tipo:** partir o vocabulário de nudge em (a) *nudges de fibra-de-acoplamento* sobre
-> `D(A^N)` para a agregação — independência, congelar-antes-do-canal (ajuste 1 = matar um
-> acoplamento de ancoragem antes que se forme), blinding, e a neutralização de persona de
-> OQ-3 (= ⊗-marginalizar um prior correlacionado); e (b) *nudges de óptica/lente* só para o
-> pipeline per-agente explorer→reviewer (ajuste 2, compressor≠juiz), onde a óptica é honesta.
+> **Revision (2026-07-20, `costura-feasibility`).** "Nudge = morphism over the
+> process" **does not type inside a single-judgment optic** — there the 2-cell is
+> the *coend witness* itself and collapses (either it's the identity, or it touches
+> the content). The teeth are **real one floor up**, in the **coupling fiber** of the
+> joint law `D(A^N)`: the independence nudge `J ↦ ⊗ᵢ(πᵢ∗J)` **fixes every marginal
+> (content)** and **kills the correlation (process)**, well-defined because
+> marginalization is **non-monic**; the variance drop in aggregation is itself the
+> detector. **Re-typing:** split the nudge vocabulary into (a) *coupling-fiber
+> nudges* over `D(A^N)` for aggregation — independence, freeze-before-the-channel
+> (adjustment 1 = kill an anchoring coupling before it forms), blinding, and the
+> persona neutralization of OQ-3 (= ⊗-marginalizing a correlated prior); and
+> (b) *optic/lens nudges*, only for the per-agent explorer→reviewer pipeline
+> (adjustment 2, compressor≠judge), where the optic is honest.
 
-## O frame e o refine — a frente do pipeline e o operador transversal
+## The frame and the refine — the front of the pipeline and the cross-cutting operator
 
-Antes de investigar, há um ato que a versão anterior desta tese não nomeava: **enquadrar**.
+Before investigating, there is an act that the previous version of this thesis did
+not name: **framing**.
 
-**Frame.** Dado um contexto e um problema, qual a melhor maneira de enquadrar a
-pergunta/ponto-de-vista? A saída do frame **não é um tópico**, é uma **pergunta bem-formada**.
-(*Anotação de âncora, pós-revisão:* o campo `question` mais próximo vive no kind `discovery`, e
-lá é **opcional** — o kind `research` **não** o exige; não herdamos a cadeia `discovery` do
-outro vault, ver `[[OQ-6]]`.) Enquadrar é a escolha da **lente** — no vocabulário do repo, a
-escolha do codomínio `C` (README "fio comum"; `FRAMINGS.md`). E, porque enquadrar **é um
-juízo**, ele carrega os **dois** componentes da tese (`viés ⊕ ruído`) — então recebe os **dois**
-tratamentos, não um só:
+**Frame.** Given a context and a problem, what is the best way to frame the
+question/point of view? The frame's output **is not a topic**, it is a **well-formed
+question**. (*Anchor annotation, post-revision:* the closest `question` field lives
+in the `discovery` kind, and there it is **optional** — the `research` kind does
+**not** require it; we do not inherit the `discovery` chain from the other vault,
+see `[[OQ-6]]`.) Framing is the choice of **lens** — in the repo's vocabulary, the
+choice of codomain `C` (README "common thread"; `FRAMINGS.md`). And, because framing
+**is a judgment**, it carries the thesis's **two** components (`bias ⊕ noise`) — so
+it gets **two** treatments, not just one:
 
-- **Braço de viés (tensão).** Enquadramentos são direcionais; molduras **opostas** expõem o
-  viés de quem enquadra. É o braço que o mermaid mostra (`F0`, eixo VIÉS).
-- **Braço de ruído (independência) — PENDENTE.** Dois analistas competentes, sem viés
-  compartilhado, enquadram o mesmo problema de formas **dispersas**: isso é ruído, não oposição.
-  Aplica-se aqui a mesma engenharia de `[[OQ-4]]` — **N frames independentes, logados cegos**, e
-  a **dispersão dos frames como sinal de primeira classe** (alta dispersão = problema mal-posto;
-  não se tira média de perguntas). Este braço é novo e ainda não construído.
+- **Bias arm (tension).** Frames are directional; **opposed** framings expose the
+  bias of whoever is framing. This is the arm the mermaid diagram shows (`F0`, BIAS
+  axis).
+- **Noise arm (independence) — PENDING.** Two competent analysts, with no shared
+  bias, frame the same problem in **dispersed** ways: that is noise, not opposition.
+  The same engineering from `[[OQ-4]]` applies here — **N independent frames, logged
+  blind**, and **frame dispersion as a first-class signal** (high dispersion =
+  ill-posed problem; you don't average questions). This arm is new and not yet
+  built.
 
-Um frame mal-posto envenena todo o filtro de fontes downstream.
+An ill-posed frame poisons the entire downstream source filter.
 
-**Refine — operador transversal, não estágio.** `refine` melhora um artefato por iteração e,
-em princípio, é aplicável a qualquer nó (frame, research, findings). *Ressalva pós-revisão
-(honestidade de âncora):* a skill `refine` real **não** é um "loop até convergência" — é uma
-**esteira canônica fixa (~10 estágios)** capada por *budget de preset*, rodada uma vez; e os
-dials `loop_cap`/`max_loops` são de **loop de dispatch entre grupos**, não contadores de
-iteração de um artefato solo. Logo, como forma de terminação, refine hoje **completa a esteira
-fixa + budget**. Um **critério de convergência para artefato solo** ("parar quando uma passada
-não levanta inconsistência nova") é desejável mas **PENDENTE** — não é o que o `zig_zag` nem a
-skill `refine` do repo fazem hoje.
+**Refine — cross-cutting operator, not a stage.** `refine` improves an artifact
+through iteration and, in principle, applies to any node (frame, research,
+findings). *Post-revision caveat (anchor honesty):* the real `refine` skill is
+**not** a "loop until convergence" — it is a **fixed canonical conveyor
+(~10 stages)** capped by *preset budget*, run once; and the `loop_cap`/`max_loops`
+dials belong to the **dispatch loop between groups**, not iteration counters for a
+single artifact. So, as a form of termination, refine today **completes the fixed
+conveyor + budget**. A **convergence criterion for a solo artifact** ("stop when a
+pass raises no new inconsistency") is desirable but **PENDING** — it is not what
+`zig_zag` nor the repo's `refine` skill do today.
 
-**A espinha de citação — disciplina candidata (não invariante fechada).** A evidência do
-pipeline deve pender de uma disciplina de referência que atravessa research→findings:
+**The citation spine — candidate discipline (not a closed invariant).** Pipeline
+evidence should hang off a referencing discipline that crosses research→findings:
 
-- **Chave de paper.** Todo paper/fonte tem um identificador estável; precedência
-  **DOI > arXiv ID > URL > hash-de-conteúdo** (fallback). A chave habilita **dedup** (mesma
-  chave = mesmo paper) e a consulta "isto já foi pesquisado?".
-- **Fluxo research → findings.** No `research` (agregado), os agentes **escrevem as fontes
-  consultadas** — cada uma com chave e status (usada / descartada + porquê). Essas fontes
-  **propagam** ao `findings` via `derives-from`; a síntese não inventa fontes.
-- **Toda afirmação referenciada — com duas salvaguardas.** Cada claim do `findings` carrega
-  **≥1 chave**; claim sem chave = **suspeita**, não silenciosamente aceita. Mas fail-closed
-  **cru fabrica o viés de disponibilidade que a tese combate** (Goodhart): força a descartar
-  claim verdadeira-mas-inancorável, ou a colar a chave mais próxima só pra passar — e um
-  dashboard de cobertura VERDE passa a medir *conformidade*, não verdade. Duas salvaguardas
-  obrigatórias, então:
-  1. **Qualidade do vínculo, não só presença.** O output de observabilidade distingue
-     `supports` (a fonte de fato sustenta a claim) de `mentioned` (apenas citada) — cobertura
-     mede **bem-referenciada**, não referenciada.
-  2. **Válvula para verdade-por-raciocínio.** Uma claim inferencial legítima usa uma chave
-     explícita `reasoning`/auto-evidência — para não **estrangular a inferência** (coerente com
-     o ajuste 3), tornando o *tipo* de âncora visível em vez de forçar teatro de citação.
+- **Paper key.** Every paper/source has a stable identifier; precedence
+  **DOI > arXiv ID > URL > content-hash** (fallback). The key enables **dedup**
+  (same key = same paper) and the query "has this already been researched?".
+- **Research → findings flow.** In the aggregated `research`, agents **write down
+  the sources consulted** — each with a key and status (used / discarded + why).
+  These sources **propagate** to `findings` via `derives-from`; the synthesis does
+  not invent sources.
+- **Every statement referenced — with two safeguards.** Every claim in `findings`
+  carries **≥1 key**; a claim with no key = **suspect**, not silently accepted. But
+  raw fail-closed **manufactures exactly the availability bias the thesis fights**
+  (Goodhart): it forces discarding a claim that is true-but-unanchorable, or
+  slapping on the nearest key just to pass — and a GREEN coverage dashboard ends up
+  measuring *compliance*, not truth. Two mandatory safeguards, then:
+  1. **Link quality, not just presence.** The observability output distinguishes
+     `supports` (the source actually substantiates the claim) from `mentioned`
+     (merely cited) — coverage measures **well-referenced**, not referenced.
+  2. **A valve for truth-by-reasoning.** A legitimate inferential claim uses an
+     explicit `reasoning`/self-evidence key — so as not to **strangle inference**
+     (consistent with adjustment 3), making the *type* of anchor visible instead of
+     forcing citation theater.
 
-Isto reforça duas linhas já presentes: a rastreabilidade/blinding e a divergência
-a-priori↔a-posteriori de `[[OQ-4]]`.
+This reinforces two lines already present: traceability/blinding and the
+a-priori↔a-posteriori divergence from `[[OQ-4]]`.
 
-## O pipeline como exemplo trabalhado — ETE hierárquico de dois níveis
+## The pipeline as a worked example — two-level hierarchical ETE
 
-O fluxo de pesquisa desenhado nas sessões é, formalmente, um **Estimate-Talk-Estimate**
-(Delphi) de dois níveis: registra independente → discute → re-registra, dentro de cada
-agente, e de novo entre os sintetizadores.
+The research flow designed in the sessions is, formally, a two-level
+**Estimate-Talk-Estimate** (Delphi): register independently → discuss →
+re-register, within each agent, and again among the synthesizers.
 
 ```mermaid
 flowchart TD
-    F0["Frame (enquadramentos opostos)<br/>problema+contexto → pergunta — eixo VIÉS"] --> A
-    A["Investigar (grupo tensionado)<br/>sondas opostas — eixo VIÉS"] --> B["Congela bruto<br/>posição independente frozen"]
-    B --> C["Reviewer/compressor por agente<br/>output curto · inferência livre"]
-    C --> D["Congela o PAR<br/>initial + final (P14)"]
-    D --> E["Append no arquivo maior<br/>append-only"]
-    E --> F["Juízo cross-agente<br/>escala comum ancorada · CEGO à fonte — eixo RUÍDO"]
-    F --> G["Sintetizadores discutem<br/>guarda de fork: dispersão≠dissenso"]
-    G --> H["Approver (P12)<br/>sem auto-aprovação"]
-    B -. evidência persiste .-> E
-    D -. evidência persiste .-> E
+    F0["Frame (opposed framings)<br/>problem+context → question — BIAS axis"] --> A
+    A["Investigate (tensioned group)<br/>opposed probes — BIAS axis"] --> B["Freeze raw<br/>independent frozen position"]
+    B --> C["Per-agent reviewer/compressor<br/>short output · free inference"]
+    C --> D["Freeze the PAIR<br/>initial + final (P14)"]
+    D --> E["Append to the master file<br/>append-only"]
+    E --> F["Cross-agent judgment<br/>anchored common scale · SOURCE-BLIND — NOISE axis"]
+    F --> G["Synthesizers discuss<br/>fork guard: dispersion≠dissent"]
+    G --> H["Approver (P12)<br/>no self-approval"]
+    B -. evidence persists .-> E
+    D -. evidence persists .-> E
 ```
 
-Os **cinco ajustes** que tornam o fluxo honesto sob o eixo do ruído:
+The **five adjustments** that make the flow honest under the noise axis:
 
-1. **Congelar antes do canal.** O reviewer *é um canal*. O achado bruto do agente é
-   congelado **antes** da conversa com o reviewer abrir — senão o reviewer ancora o
-   agente e o √N evapora. O arquivo guarda o **par** (pré e pós), que é a primitiva P14.
-2. **Compressor ≠ juiz.** Um reviewer 1:1 dedicado ao "seu" agente vira **advogado** e
-   produz score absoluto isolado (altíssimo ruído). Separe: *comprimir* é per-agente (ok,
-   modelável como helper P11); *julgar em escala comum* é cross-agente e vem depois.
-3. **Output curto ✅, inferência estrangulada ❌.** Apertar tokens de saída é bom nudge
-   (compressão). Cortar o *raciocínio* de quem julga aumenta ruído (System-2
-   sub-engajado). Orce a saída; não estrangule a deliberação do avaliador.
-4. **TTL vs evidência.** Rascunho de raciocínio expira (prazo de dias). Mas o par
-   initial+final que *substancia* a redução de ruído é **prova** — sem ele não se audita
-   que o processo obedeceu a tese (A6). O TTL apaga o rascunho; o par (ou seu digest)
-   **persiste**.
-5. **Guarda de fork.** A agregação reduz ruído mas pode **esmagar a minoria correta**.
-   Distinga **dispersão** (ruído → medeie) de **fork** (sinal → escale como
-   `dissent_irreconcilable`). Sem esse guarda, o programa anti-ruído degenera em consenso
-   prematuro — a própria falha que *Noise* alerta.
+1. **Freeze before the channel.** The reviewer *is a channel*. The agent's raw
+   finding is frozen **before** the conversation with the reviewer opens —
+   otherwise the reviewer anchors the agent and √N evaporates. The file stores the
+   **pair** (pre and post), which is the P14 primitive.
+2. **Compressor ≠ judge.** A 1:1 reviewer dedicated to "its" agent turns into an
+   **advocate** and produces an isolated absolute score (very high noise). Separate
+   them: *compressing* is per-agent (fine, modelable as a P11 helper); *judging on a
+   common scale* is cross-agent and comes later.
+3. **Short output ✅, strangled inference ❌.** Tightening output tokens is a good
+   nudge (compression). Cutting the *reasoning* of whoever is judging increases
+   noise (System-2 under-engaged). Budget the output; don't strangle the
+   evaluator's deliberation.
+4. **TTL vs. evidence.** Reasoning drafts expire (a matter of days). But the
+   initial+final pair that *substantiates* the noise reduction is **proof** —
+   without it there's no auditing whether the process obeyed the thesis (A6). The
+   TTL erases the draft; the pair (or its digest) **persists**.
+5. **Fork guard.** Aggregation reduces noise but can **crush the correct minority**.
+   Distinguish **dispersion** (noise → average it) from **fork** (signal → escalate
+   as `dissent_irreconcilable`). Without this guard, the anti-noise program
+   degenerates into premature consensus — the very failure *Noise* warns about.
 
-## Onde mora o design de cada princípio
+## Where each principle's design lives
 
-A espinha operacional: uma linha por princípio, apontando o artefato real **ou** marcando
-o que falta construir.
+The operational spine: one line per principle, pointing to the real artifact **or**
+flagging what's left to build.
 
-| Princípio | Eixo | Por quê | Onde mora o design |
+| Principle | Axis | Why | Where the design lives |
 |---|---|---|---|
-| Tensão pairwise | K·CT | viés correlacionado cancela sob oposição | `check-tension` (Testes 1–4), `anti-bias-vector-composition`, P5 |
-| Independência-por-estágio | K | √N só vale com independência | **PENDENTE** — o eixo novo desta tese |
-| ETE / congelar-antes-de-discutir | K | cascata/ancoragem antes do registro | primitiva **existe** (P14 initial+final); a regra de congelamento é **PENDENTE** |
-| MAP / escala comum ancorada | K | juízo relativo é menos ruidoso; decompor em dimensões independentes | **PENDENTE** — candidato: as 6 facetas da `knowledge-taxonomy` |
-| Blinding (cego à fonte) | K·T | mata halo/viés-de-fonte | **PENDENTE** — ledger grava `agent_name`/`model`; a avaliação cega é nova |
-| Agregação mecânica > clínica | K | regra simples bate fusão holística | parcial: `robot_talks:true`→synthesize / concat (P7); guarda de fork **PENDENTE** |
-| Guarda de fork | K | não esmagar a minoria correta | `exit_reason: dissent_irreconcilable` **existe** |
-| Default de higiene | T | tornar o caminho higiênico o default | human-gate + `check-tension` que **bloqueia** (já é choice architecture) |
-| Sludge deliberado | T | fricção que força a sequência correta | **PENDENTE** — gate que impede a discussão antes do congelamento |
-| Token-budget como nudge | T | escassez força compressão/decisão | `token_budget` no schema v0.6.0 **existe**; uso como nudge é design |
-| Operacionalização CT (analogia ~1:1) | CT | Kahneman informal → objetos que compõem/medem; usar **só onde o mapa é apertado**, senão fica informal | **operacional** (`costura-feasibility`): ⊕↦Pitágoras-Amari sob `F`, √N↦concentração-por-regime, agregação↦m-projeção, nudge↦morfismo na fibra-de-acoplamento; **ABERTO**: ⊥ sobreviver à composição (DPI). Ver `[[BET-CT]]` |
-| Frame (enquadrar a pergunta) | K·CT | lente mal-posta envenena tudo downstream; enquadrar é um juízo (viés ⊕ ruído) | **PENDENTE** — estágio novo; braço de tensão + braço de dispersão-independente (`[[OQ-4]]`) |
-| Refine (operador de loop) | — | melhora por iteração limitada, transversal a qualquer nó | skill `refine` **existe** (esteira fixa + budget); convergência solo **PENDENTE** (não é o zig-zag nem os dials de dispatch) |
-| Espinha de citação (chave + fluxo + claim↦ref) | K | evidência sem âncora não é evidência (`claim ≤ proof`) | parcial: `derives-from` **existe**; chave + qualidade-do-vínculo (`supports`/`mentioned`) + válvula `reasoning` **PENDENTE** |
+| Pairwise tension | K·CT | correlated bias cancels under opposition | `check-tension` (Tests 1–4), `anti-bias-vector-composition`, P5 |
+| Independence-by-stage | K | √N only holds with independence | **PENDING** — the new axis of this thesis |
+| ETE / freeze-before-discussing | K | cascade/anchoring before registration | primitive **exists** (P14 initial+final); the freezing rule is **PENDING** |
+| MAP / anchored common scale | K | relative judgment is less noisy; decompose into independent dimensions | **PENDING** — candidate: the 6 facets of `knowledge-taxonomy` |
+| Blinding (source-blind) | K·T | kills halo/source-bias | **PENDING** — ledger records `agent_name`/`model`; blind evaluation is new |
+| Mechanical aggregation > clinical | K | simple rule beats holistic fusion | partial: `robot_talks:true`→synthesize / concat (P7); fork guard **PENDING** |
+| Fork guard | K | don't crush the correct minority | `exit_reason: dissent_irreconcilable` **exists** |
+| Hygiene default | T | make the hygienic path the default | human-gate + `check-tension` that **blocks** (already choice architecture) |
+| Deliberate sludge | T | friction that forces the correct sequence | **PENDING** — gate that blocks discussion before freezing |
+| Token-budget as nudge | T | scarcity forces compression/decision | `token_budget` in schema v0.6.0 **exists**; use as a nudge is design |
+| CT operationalization (~1:1 analogy) | CT | informal Kahneman → objects that compose/measure; use **only where the mapping is tight**, otherwise it stays informal | **operational** (`costura-feasibility`): ⊕↦Amari-Pythagorean under `F`, √N↦regime-dependent concentration, aggregation↦m-projection, nudge↦morphism on the coupling fiber; **OPEN**: ⊥ surviving composition (DPI). See `[[BET-CT]]` |
+| Frame (framing the question) | K·CT | an ill-posed lens poisons everything downstream; framing is a judgment (bias ⊕ noise) | **PENDING** — new stage; tension arm + independent-dispersion arm (`[[OQ-4]]`) |
+| Refine (loop operator) | — | improvement through bounded iteration, cross-cutting any node | skill `refine` **exists** (fixed conveyor + budget); solo convergence **PENDING** (not the zig-zag nor the dispatch dials) |
+| Citation spine (key + flow + claim↦ref) | K | evidence without an anchor is not evidence (`claim ≤ proof`) | partial: `derives-from` **exists**; key + link-quality (`supports`/`mentioned`) + `reasoning` valve **PENDING** |
 
 ## Open questions
 
-Cada uma carrega uma **recomendação**, não só a pergunta. Nenhuma está decidida.
+Each one carries a **recommendation**, not just the question. None is decided.
 
-**OQ-1 — O reviewer per-agente é compressor puro ou já é juiz?**
-*Recomendação:* **compressor puro** (advogado assumido do agente), com o julgar-de-verdade
-adiado para o passo cross-agente. Mantém o eixo do ruído limpo e evita score absoluto
-isolado.
+**OQ-1 — Is the per-agent reviewer a pure compressor, or already a judge?**
+*Recommendation:* **pure compressor** (the agent's assumed advocate), with true
+judging deferred to the cross-agent step. Keeps the noise axis clean and avoids an
+isolated absolute score.
 
-**OQ-2 — A escala comum é rubrica fixa global ou por `dispatch_type`?**
-*Recomendação:* **por `dispatch_type`** — `research` (novidade, evidência, alcance) e um
-futuro `implementation-tournament` (correção, consistência interna, custo) têm dimensões
-genuinamente diferentes; uma rubrica única viraria genérica demais para medir algo.
+**OQ-2 — Is the common scale a fixed global rubric, or per `dispatch_type`?**
+*Recommendation:* **per `dispatch_type`** — `research` (novelty, evidence, reach)
+and a future `implementation-tournament` (correctness, internal consistency, cost)
+have genuinely different dimensions; a single rubric would become too generic to
+measure anything.
 
-**OQ-3 — Persona do agent-pool: quem escolhe, e ela vale em qual estágio?**
-Cada agente escolhe um nome do `agent-pool.yaml` como **persona**, ligada ao papel
-(`role_fit`: explorer/skeptic/writer/auditor). Uma persona é um **prior** — dois-gumes:
-diversifica o estágio *gerar* (priors opostos ajudam a tensão), mas **injeta viés
-correlacionado** no estágio *julgar* (que deveria ser independente-em-escala-comum).
-*Recomendação:* persona **atribuída pelo dispatcher** (não auto-selecionada — auto-seleção
-colapsa a diversidade: todos pegam o "generalista forte"), **ativa em investigar/tensão**
-e **neutralizada/cega em avaliar/taguear**. Fork aberto: a persona liga a `role_fit` como
-default ou é livre?
+**OQ-3 — Agent-pool persona: who picks it, and at which stage does it apply?**
+Each agent picks a name from `agent-pool.yaml` as its **persona**, tied to a role
+(`role_fit`: explorer/skeptic/writer/auditor). A persona is a **prior** —
+double-edged: it diversifies the *generate* stage (opposed priors help tension), but
+**injects correlated bias** into the *judge* stage (which should be
+independent-on-a-common-scale). *Recommendation:* persona **assigned by the
+dispatcher** (not self-selected — self-selection collapses diversity: everyone
+grabs the "strong generalist"), **active in investigate/tension** and
+**neutralized/blind in evaluate/tag**. Open fork: does the persona tie to
+`role_fit` by default, or is it free?
 
-**OQ-4 — Vale classificar o conhecimento de cada output (explorer + reviewer) numa
-taxonomia? Se sim, como taguear?**
-Recon da `knowledge-taxonomy` (`github.com/cyberAlchemyAI/knowledge-taxonomy`, não acessível
-direto; triangulado por auditorias locais): ela tem **3 camadas** — 8 tipos superiores, 6
-**facetas** (`domain, nature, normativity, temporality, source_confidence, content_certainty`),
-12 famílias de arestas. As **6 facetas são a parte crível**: enums controlados, validação
-estrita, e — o dado mais forte — **convergência empírica** (4 classificadores independentes,
-"zero mudanças de eixo" em 58 artefatos / 35+ domínios). Os 8 tipos e as 12 arestas são
-**fuzzy** (multi-label + motor de regras ainda spec-only). Ressalva de fundo: a KT foi
-desenhada para **eliminar** variância inter-taggers via regras compartilhadas — usá-la para
-**medir** desacordo de agentes independentes é um pouco *off-label*.
-*Recomendação (e resposta ao "todos dão tags e tiramos a média"):*
-  - **Sim, vale** — mas só se a tag *fizer algo* downstream (retrieval, roteamento,
-    estrutura do vault). Tag decorativa é cerimônia; o nº de taggers é um **dial**
-    proporcional ao que a tag alimenta, não fixo.
-  - Use as **6 facetas** como escala comum ancorada. **Não** use os 8 tipos / 12 arestas
-    como escala de desacordo (multi-label faz dois taggers "concordarem" errado).
-  - "Média" de rótulo categórico **não é média** — é **voto/distribuição**. E a
-    distribuição *é* a medida de ruído (confiabilidade inter-tagger): concordância forte =
-    baixo ruído = alta confiança; espalhamento = item ambíguo **ou** fronteira ruim.
-  - **Independência aqui também.** Tags logadas **cegas** e congeladas antes de qualquer
-    comparação. O "último agente que compara" precisa **julgar primeiro (frozen), depois
-    comparar** — senão ele mesmo é ancorado pela pilha.
-  - **Fronteira pré/pós é sinal, não ruído.** O dispatcher tagueia *a-priori* (predição do
-    conhecimento); explorer/reviewer tagueiam *a-posteriori* (do output). A **divergência**
-    predito↔produzido mede se a pesquisa foi onde se esperava ou **descobriu fora do eixo**
-    (resíduo/serendipity). **Não** medeie através dessa fronteira — dois agregados
-    (a-priori e a-posteriori) e a distância entre eles como quantidade de primeira classe.
+**OQ-4 — Is it worth classifying each output's knowledge (explorer + reviewer)
+into a taxonomy? If so, how to tag it?**
+Reconnaissance of `knowledge-taxonomy` (`github.com/cyberAlchemyAI/knowledge-taxonomy`,
+not directly accessible; triangulated via local audits): it has **3 layers** — 8
+top-level types, 6 **facets** (`domain, nature, normativity, temporality,
+source_confidence, content_certainty`), 12 edge families. The **6 facets are the
+credible part**: controlled enums, strict validation, and — the strongest data
+point — **empirical convergence** (4 independent classifiers, "zero axis changes"
+across 58 artifacts / 35+ domains). The 8 types and 12 edges are **fuzzy**
+(multi-label + a rule engine that's still spec-only). Background caveat: the KT was
+designed to **eliminate** inter-tagger variance via shared rules — using it to
+**measure** disagreement among independent agents is a bit *off-label*.
+*Recommendation (and answer to "everyone tags and we average"):*
+  - **Yes, it's worth it** — but only if the tag *does something* downstream
+    (retrieval, routing, vault structure). A decorative tag is ceremony; the number
+    of taggers is a **dial** proportional to what the tag feeds, not fixed.
+  - Use the **6 facets** as the anchored common scale. **Don't** use the 8 types /
+    12 edges as a disagreement scale (multi-label makes two taggers "agree"
+    incorrectly).
+  - "Average" of a categorical label **is not an average** — it's a
+    **vote/distribution**. And the distribution *is* the noise measure
+    (inter-tagger reliability): strong agreement = low noise = high confidence;
+    spread = ambiguous item **or** a bad boundary.
+  - **Independence here too.** Tags logged **blind** and frozen before any
+    comparison. The "last agent to compare" needs to **judge first (frozen), then
+    compare** — otherwise it is itself anchored by the stack.
+  - **The pre/post boundary is signal, not noise.** The dispatcher tags *a-priori*
+    (prediction of the knowledge); explorer/reviewer tag *a-posteriori* (from the
+    output). The **divergence** predicted↔produced measures whether the research
+    went where expected or **discovered off-axis** (residue/serendipity). **Don't**
+    average across that boundary — two aggregates (a-priori and a-posteriori) and
+    the distance between them as a first-class quantity.
 
-**OQ-5 — Fusão de implementações entra agora ou fica `code`-RESERVED?**
-No caso worktree ("dispara K grupos, escolhe o melhor ou funde"), `code` está **RESERVED**
-na constituição. *Recomendação:* frontier — **seleção cega por rubrica** como default
-(argmax robusto a ruído se a seleção for cega); **fusão** só quando as dimensões forem
-separáveis e cada peça carregar sua própria prova (`claim ≤ proof` por peça), porque
-cherry-pick destrói consistência interna (risco real de software).
+**OQ-5 — Does implementation fusion happen now, or does it stay `code`-RESERVED?**
+In the worktree case ("dispatch K groups, pick the best or merge"), `code` is
+**RESERVED** in the constitution. *Recommendation:* frontier — **blind rubric
+selection** as default (an argmax robust to noise if the selection is blind);
+**fusion** only when the dimensions are separable and each piece carries its own
+proof (`claim ≤ proof` per piece), because cherry-picking destroys internal
+consistency (a real software risk).
 
-**OQ-6 — O frame é a raiz do pipeline, ou há algo antes dele?**
-A leitura anterior sugeriu `discovery` como raiz da linhagem (`findings→research→discovery`,
-o modelo do vault `domainspec-core`) — **rejeitado para este repo** (o modelo deles não é o
-nosso). Fica salvo como ideia a reconciliar, não importada: se existe um ato de *reconhecimento
-de problema* anterior ao *enquadramento*, ou se o frame é a própria raiz.
-*Recomendação:* tratar **frame como a frente** por ora e deixar "o que precede o frame" como
-fork aberto — não herdar a cadeia `discovery` do outro vault sem decidir que ela é nossa.
-*Risco vivo (não só arquivístico):* o frame recebe "um problema" como **dado** — mas o
-**reconhecimento-de-problema está a montante do primeiro estágio governado e hoje sem dono**.
-"Frame mal-posto envenena o downstream" sobe um nível: um *problema* mal-reconhecido envenena o
-frame. Input-raiz não-auditado é risco aberto, não questão de taxonomia. `[[discovery-as-root]]`
+**OQ-6 — Is the frame the root of the pipeline, or is there something before it?**
+The earlier reading suggested `discovery` as the lineage root
+(`findings→research→discovery`, the `domainspec-core` vault's model) — **rejected
+for this repo** (their model isn't ours). It's kept as an idea to reconcile, not
+imported: whether there is an act of *problem recognition* prior to *framing*, or
+whether the frame is itself the root.
+*Recommendation:* treat **frame as the front** for now and leave "what precedes the
+frame" as an open fork — don't inherit the `discovery` chain from the other vault
+without deciding it's ours.
+*Live risk (not just archival):* the frame receives "a problem" as **given** — but
+**problem-recognition sits upstream of the first governed stage and today has no
+owner**. "An ill-posed frame poisons the downstream" moves up one level: a
+poorly-recognized *problem* poisons the frame. An unaudited root input is an open
+risk, not a taxonomy question. `[[discovery-as-root]]`
 
-**OQ-7 — Qual é a chave canônica de paper, e onde vive o dedup?**
-Precedência proposta **DOI > arXiv > URL > hash**; mas nem MOGT-scaffolding nem CANONICAL-KINDS
-trazem schema bibliográfico ou deduplicação — é peça a inventar. *Recomendação:* chave estável
-por fonte no ledger append-only; dedup por chave na entrada; claim-órfã (sem chave) reprovada
-pelo validador do output de observabilidade. `[[espinha-de-citacao]]`
+**OQ-7 — What is the canonical paper key, and where does dedup live?**
+Proposed precedence **DOI > arXiv > URL > hash**; but neither MOGT-scaffolding nor
+CANONICAL-KINDS brings a bibliographic schema or deduplication — it's a piece to be
+invented. *Recommendation:* a stable per-source key in the append-only ledger;
+dedup by key on entry; an orphan claim (no key) rejected by the
+observability-output validator. `[[espinha-de-citacao]]`
 
-**OQ-8 — Como construir o braço de ruído do frame (frames independentes + dispersão-como-sinal)?**
-O frame ganhou, no design, um segundo braço além da tensão: N enquadramentos **independentes**,
-logados cegos, com a **dispersão dos frames como sinal de primeira classe** (à la `[[OQ-4]]`) —
-alta dispersão = problema mal-posto. Marcado PENDENTE no texto e na tabela; falta desenhar:
-quantos frames, como medir dispersão de perguntas (não-mediáveis), e o gatilho que separa
-"mal-posto" de "rico". *Recomendação:* reusar a engenharia de distribuição-como-ruído da OQ-4,
-não inventar métrica nova. Levantada pelo red-team em `2026-07-20-anti-ruido-frame-refine-review`.
+**OQ-8 — How to build the frame's noise arm (independent frames +
+dispersion-as-signal)?**
+In the design, the frame gained a second arm beyond tension: N **independent**
+framings, logged blind, with **frame dispersion as a first-class signal** (à la
+`[[OQ-4]]`) — high dispersion = ill-posed problem. Marked PENDING in the text and
+the table; still to design: how many frames, how to measure dispersion of questions
+(non-averageable), and the trigger that separates "ill-posed" from "rich".
+*Recommendation:* reuse the dispersion-as-noise engineering from OQ-4, don't invent
+a new metric. Raised by the red-team in `2026-07-20-anti-ruido-frame-refine-review`.
 `[[frame-braco-de-ruido]]`
 
-## Collapse-tests (o que falsifica esta tese)
+## Collapse-tests (what falsifies this thesis)
 
-- Se a "independência" e a "tensão" **não** puderem coexistir por separação de estágio —
-  isto é, se o mesmo grupo precisar ser oposto *e* independente ao mesmo tempo — o design
-  de dois eixos colapsa e vira retórica.
-- Se a distribuição de tags **não** correlacionar com qualquer qualidade downstream
-  observável, o tagueamento é decoração e cai (OQ-4).
-- Se o par initial+final nunca divergir na prática (colapso sempre), o ETE não está
-  medindo nada e vira cerimônia (ajuste 4/5).
-- Se enquadramentos opostos convergirem sempre à mesma pergunta (todo frame dá o mesmo
-  `question`), o estágio **frame** não separa nada e vira cerimônia — o refine sobre ele também.
-- E o modo de falha oposto (braço de ruído): se frames **independentes** nunca dispersarem, o
-  braço de ruído do frame não mede nada; se dispersarem sempre sem sinal recuperável, é problema
-  cronicamente mal-posto — em nenhum caso a dispersão-como-sinal (`[[OQ-4]]`) se sustenta.
-- **(novo, `costura-feasibility`) Composicionalidade.** Se a decomposição `viés ⊕ ruído` e o
-  re-tipo do nudge só valerem **pontualmente por estágio** e **não** sobrevierem à composição
-  functorial dos estágios/dispatch, então a separação-por-estágio é ferramenta de design sem
-  garantia formal — e a tese não descarrega OBL-E3 (que é exatamente esta pergunta um andar
-  acima). *Falsifica:* exibir dois estágios cuja composição destrói a ortogonalidade (a DPI
-  sugere que existe). *Sobrevive:* uma prova de que bias/ruído-do-composto se constroem dos
-  bias/ruído-das-partes.
+- If "independence" and "tension" **cannot** coexist through separation-by-stage —
+  that is, if the same group needs to be opposed *and* independent at the same
+  time — the two-axis design collapses and becomes rhetoric.
+- If tag distribution does **not** correlate with any observable downstream
+  quality, tagging is decoration and falls (OQ-4).
+- If the initial+final pair never diverges in practice (always collapses), the ETE
+  is measuring nothing and becomes ceremony (adjustments 4/5).
+- If opposed framings always converge on the same question (every frame yields the
+  same `question`), the **frame** stage separates nothing and becomes ceremony —
+  refine over it too.
+- And the opposite failure mode (noise arm): if **independent** frames never
+  disperse, the frame's noise arm measures nothing; if they disperse always with no
+  recoverable signal, it's a chronically ill-posed problem — in neither case does
+  dispersion-as-signal (`[[OQ-4]]`) hold up.
+- **(new, `costura-feasibility`) Compositionality.** If the `bias ⊕ noise`
+  decomposition and the nudge re-typing only hold **pointwise per stage** and do
+  **not** survive the functorial composition of stages/dispatch, then
+  separation-by-stage is a design tool with no formal guarantee — and the thesis
+  does not discharge OBL-E3 (which is exactly this question one floor up).
+  *Falsifies:* exhibiting two stages whose composition destroys orthogonality (the
+  DPI suggests it exists). *Survives:* a proof that the bias/noise of the composite
+  is built from the bias/noise of the parts.
 
-## Apostas registradas
+## Registered bets
 
-As apostas são as **assunções load-bearing** desta tese, mantidas em *proof-zero* e
-declaradas para poderem ser falseadas — "primeiro assumir verdade, depois pensar como falsear,
-depois o experimento". Schema: *Aposta* (assumida verdadeira) · *Carrega* (o que depende dela) ·
-*Status* · *Falseador* · *Experimento* (adiado) · *Se cai* (resíduo). Os *Collapse-tests* acima
-são os falseadores em nível-de-tese; aqui cada assunção carrega o seu — apontando o collapse-test
-quando já existe, para não duplicar (fonte única).
+Bets are this thesis's **load-bearing assumptions**, held at *proof-zero* and
+stated so they can be falsified — "first assume true, then think about how to
+falsify, then the experiment." Schema: *Bet* (assumed true) · *Carries* (what
+depends on it) · *Status* · *Falsifier* · *Experiment* (deferred) · *If it falls*
+(residue). The *Collapse-tests* above are the thesis-level falsifiers; here each
+assumption carries its own — pointing to the collapse-test when one already exists,
+to avoid duplication (single source).
 
-**BET-CT — operacionalização por analogia ~1:1.**
-- *Aposta:* para cada construto de ruído existe uma ferramenta CT que mapeia **≥ ~1:1** e
-  **corrige/prediz** (não só re-rotula). CT é *como* operacionalizamos Kahneman — nem eixo
-  motivador nem cenário; é "analogia mais que analogia" só onde o encaixe é apertado.
-- *Carrega:* a passagem tese-informal → arquitetura computável; o `⊕`, o `√N`, a agregação.
-- *Status:* **sobreviveu** uma vez (`costura-feasibility`: ⊕↦Pitágoras-Amari sob `F`,
-  √N↦concentração-por-regime, nudge↦fibra-de-acoplamento). **Em-teste:** persona, tag, fork-guard.
-- *Falseador (por construto):* falsa **para aquele construto** se a ferramenta candidata
-  **colapsa em identidade** ou tem de **tocar o conteúdo** (foi o que a óptica de juízo único fez
-  no nudge — daí subir de andar). Falseador de tese = o collapse-test de **composicionalidade**
-  (⊥ não sobrevive à composição / DPI).
-- *Experimento (adiado):* para o próximo construto, exibir o mapa formal e testar se muda ≥1
-  decisão; para a composição, exibir dois estágios cuja composição destrói a ortogonalidade.
-- *Se cai (local):* aquele construto fica **informal / Kahneman-only** — sem perda pro resto; a
-  disciplina é seletiva por construção (**não nos rendemos a CT**).
+**BET-CT — operationalization by ~1:1 analogy.**
+- *Bet:* for every noise construct there exists a CT tool that maps **≥ ~1:1** and
+  **corrects/predicts** (not just re-labels). CT is *how* we operationalize
+  Kahneman — neither the motivating axis nor a scenario; it's "more than an
+  analogy" only where the fit is tight.
+- *Carries:* the passage from informal-thesis → computable architecture; the `⊕`,
+  the `√N`, the aggregation.
+- *Status:* **survived once** (`costura-feasibility`: ⊕↦Amari-Pythagorean under
+  `F`, √N↦regime-dependent concentration, nudge↦coupling-fiber). **In-test:**
+  persona, tag, fork-guard.
+- *Falsifier (per construct):* false **for that construct** if the candidate tool
+  **collapses into identity** or has to **touch the content** (which is what the
+  single-judgment optic did to the nudge — hence moving up a floor). Thesis-level
+  falsifier = the **compositionality** collapse-test (⊥ doesn't survive composition
+  / DPI).
+- *Experiment (deferred):* for the next construct, exhibit the formal map and test
+  whether it changes ≥1 decision; for composition, exhibit two stages whose
+  composition destroys orthogonality.
+- *If it falls (local):* that construct stays **informal / Kahneman-only** — no
+  loss to the rest; the discipline is selective by construction (**we don't
+  surrender to CT**).
 
-**BET-√N — independência dá redução material de ruído.**
-- *Aposta:* avaliadores independentes, escala comum, cegos à fonte, reduzem ruído com ganho
-  **∝ √N_efetivo** (expoente condicional ao regime — ver revisão `costura`).
-- *Carrega:* toda a alavanca anti-ruído (agregação, MAP, painel de scorers).
-- *Status:* **em-teste**.
-- *Falseador:* falsa se **N_efetivo ≈ 1** — a covariância de erro entre scorers (mesmo
-  base-model, personas distintas) alta a ponto de a média não bater um único scorer bom.
-- *Experimento:* N scorers pontuam um conjunto rotulado; medir covariância de erro vs
-  referência; comparar erro-da-média vs erro-do-melhor-individual.
-- *Se cai:* trocar independência por **diversidade estrutural** (evidência/corpora/tools
-  distintos) como fonte primária de descorrelação; ou re-orçar aceitando ganho pequeno.
+**BET-√N — independence gives a material noise reduction.**
+- *Bet:* independent evaluators, common scale, source-blind, reduce noise with gain
+  **∝ √N_effective** (exponent conditional on regime — see the `costura`
+  revision).
+- *Carries:* the entire anti-noise lever (aggregation, MAP, scorer panel).
+- *Status:* **in-test**.
+- *Falsifier:* false if **N_effective ≈ 1** — error covariance between scorers
+  (same base model, different personas) high enough that the average doesn't beat
+  a single good scorer.
+- *Experiment:* N scorers score a labeled set; measure error covariance vs.
+  reference; compare average-error vs. best-individual-error.
+- *If it falls:* swap independence for **structural diversity** (distinct
+  evidence/corpora/tools) as the primary decorrelation source; or re-budget,
+  accepting a small gain.
 
-**BET-PERSONA — persona diversifica a geração, não só o estilo.**
-- *Aposta:* personas opostas diversificam a *distribuição de conteúdo* amostrada, não só o
-  registro de superfície.
-- *Carrega:* persona como fonte de tensão no estágio-gerar (`[[OQ-3]]`).
-- *Status:* **em-teste** (red-team marcou como não-provado).
-- *Falseador:* falsa se, fixando tarefa+evidência e variando **só** a persona, os outputs
-  substantivos (claims, escolhas — não estilo) forem estatisticamente indistinguíveis.
-- *Experimento:* mesmo prompt de tarefa, só persona varia; medir divergência de conteúdo vs de
-  estilo; conteúdo ≈ 0 → falseada.
-- *Se cai:* mover a diversidade pro eixo estrutural; rebaixar persona a cosmético.
+**BET-PERSONA — persona diversifies generation, not just style.**
+- *Bet:* opposed personas diversify the sampled *content distribution*, not just
+  surface register.
+- *Carries:* persona as a source of tension in the generate stage (`[[OQ-3]]`).
+- *Status:* **in-test** (red-team flagged it as unproven).
+- *Falsifier:* false if, holding task+evidence fixed and varying **only** the
+  persona, the substantive outputs (claims, choices — not style) are statistically
+  indistinguishable.
+- *Experiment:* same task prompt, only the persona varies; measure content
+  divergence vs. style divergence; content ≈ 0 → falsified.
+- *If it falls:* move diversity to the structural axis; demote persona to
+  cosmetic.
 
-**BET-TAG — a dispersão de tags mede ruído (não ambiguidade).**
-- *Aposta:* o espalhamento de tags entre agentes independentes é dominado por **ruído-de-rater**
-  (reduzível), não por ambiguidade-do-item ou defeito-de-fronteira.
-- *Carrega:* `[[OQ-4]]` (a "distribuição = medida de ruído"); usar a distribuição como confiabilidade.
-- *Status:* **em-teste**.
-- *Falseador:* falsa se **afiar as âncoras** (as 6 facetas) não reduzir o espalhamento — se é
-  ambiguidade/fronteira, âncora melhor não ajuda. (Complementa o collapse-test de que a
-  distribuição precisa correlacionar com qualidade downstream.)
-- *Experimento:* mesmo conjunto, âncoras vagas vs afiadas; medir mudança no espalhamento.
-- *Se cai:* separar os 3 baldes (ruído / ambiguidade / fronteira) antes de agregar.
+**BET-TAG — tag dispersion measures noise (not ambiguity).**
+- *Bet:* the spread of tags across independent agents is dominated by
+  **rater-noise** (reducible), not by item-ambiguity or boundary-defect.
+- *Carries:* `[[OQ-4]]` (the "distribution = noise measure"); using the
+  distribution as reliability.
+- *Status:* **in-test**.
+- *Falsifier:* false if **sharpening the anchors** (the 6 facets) doesn't reduce
+  the spread — if it's ambiguity/boundary, a better anchor doesn't help.
+  (Complements the collapse-test that the distribution needs to correlate with
+  downstream quality.)
+- *Experiment:* same set, vague vs. sharp anchors; measure the change in spread.
+- *If it falls:* separate the 3 buckets (noise / ambiguity / boundary) before
+  aggregating.
 
-**BET-THALER — a lente do nudge vira restrição de design, não só re-descrição.**
-- *Aposta:* nomear "nudge governa processo, não conteúdo" gera uma **restrição checável** sobre
-  decisões futuras (não só re-descreve os gates existentes).
-- *Carrega:* a legitimidade do eixo Thaler como mais que pedagógico.
-- *Status:* **em-teste** (red-team marcou o eixo como majoritariamente relabel).
-- *Falseador:* falsa se, ao longo de N decisões de design, a lente nunca **barrar nem alterar**
-  uma escolha que não teríamos barrado sem ela.
-- *Experimento:* registrar decisões e marcar quais a regra processo-não-conteúdo mudou.
-- *Se cai:* rebaixar Thaler de eixo a **lente** (vocabulário útil), mantendo só o sludge/
-  freeze-gate como prescrição — que é downstream do Kahneman.
+**BET-THALER — the nudge lens becomes a design constraint, not just
+re-description.**
+- *Bet:* naming "nudge governs process, not content" generates a **checkable
+  constraint** on future decisions (not just re-describing existing gates).
+- *Carries:* the legitimacy of the Thaler axis as more than pedagogical.
+- *Status:* **in-test** (red-team flagged the axis as mostly a relabel).
+- *Falsifier:* false if, across N design decisions, the lens never **blocks nor
+  alters** a choice we wouldn't have blocked without it.
+- *Experiment:* log decisions and mark which ones the process-not-content rule
+  changed.
+- *If it falls:* demote Thaler from axis to **lens** (useful vocabulary), keeping
+  only the sludge/freeze-gate as prescription — which is downstream of Kahneman.
 
-**BET-FORK — o guarda-de-fork é mecanizável sem oráculo.**
-- *Aposta:* sinais **estruturais** (bimodalidade + claims incompatíveis explícitos) separam
-  *fork-real* de *dispersão* sem precisar saber qual lado está certo.
-- *Carrega:* o ajuste 5 (guarda-de-fork); evita esmagar a minoria correta.
-- *Status:* **em-teste** (red-team: como escrito, exige o oráculo que a premissa nega).
-- *Falseador:* falsa se, num conjunto rotulado de casos, os forks sinalizados por estrutura não
-  correlacionarem com os forks-de-decisão reais.
-- *Experimento:* casos rotulados fork/dispersão; medir precisão/recall do detector estrutural.
-- *Se cai:* o guarda vira **gatilho-de-escalação-ao-humano**, não decisão automática.
+**BET-FORK — the fork guard is mechanizable without an oracle.**
+- *Bet:* **structural** signals (bimodality + explicit incompatible claims)
+  separate real-fork from dispersion without needing to know which side is right.
+- *Carries:* adjustment 5 (fork guard); avoids crushing the correct minority.
+- *Status:* **in-test** (red-team: as written, it requires the oracle the premise
+  denies).
+- *Falsifier:* false if, on a labeled case set, structurally-flagged forks don't
+  correlate with real decision-forks.
+- *Experiment:* labeled fork/dispersion cases; measure precision/recall of the
+  structural detector.
+- *If it falls:* the guard becomes a **human-escalation trigger**, not an
+  automatic decision.
 
 ## Connections
 
-- **Deriva de:** as sessões de design 2026-07-19/20 (anti-viés → anti-ruído) e do núcleo
-  existente: `.claude/skills/anti-bias-vector-composition/`, `.claude/skills/check-tension/`,
-  `.claude/skills/domainspec-subagents-strategy/`, `.claude/skills/robot-talks/`.
-- **Aterra em:** `PLAN.md` (§1 A6, §4 disciplina CT), `telemetry/agents/agent-pool.yaml`
-  (personas), `telemetry/agents/subagents-dispatch.yaml` (ledger).
-- **Promoveria para:** uma futura *constituição anti-ruído* (regras executáveis), entradas
-  de `DEFINITIONS` (`ruído`, `nudge`, `sludge`, `MAP`, `ETE`, `escala-comum`, cada uma com
-  tipo categórico) e `MAPPING.md`. Nada disso escrito aqui — esta é a hipótese, não a lei.
-- **Referências externas:** Kahneman, Sibony & Sunstein, *Noise* (2021); Thaler & Sunstein,
-  *Nudge*; `knowledge-taxonomy` @ `cyberAlchemyAI` (facetas como escala candidata, `[[OQ-4]]`).
+- **Derives from:** the 2026-07-19/20 design sessions (anti-bias → anti-noise) and
+  the existing core: `.claude/skills/anti-bias-vector-composition/`,
+  `.claude/skills/check-tension/`, `.claude/skills/domainspec-subagents-strategy/`,
+  `.claude/skills/robot-talks/`.
+- **Grounds in:** `PLAN.md` (§1 A6, §4 CT discipline),
+  `telemetry/agents/agent-pool.yaml` (personas),
+  `telemetry/agents/subagents-dispatch.yaml` (ledger).
+- **Would promote to:** a future *anti-noise constitution* (executable rules),
+  `DEFINITIONS` entries (`noise`, `nudge`, `sludge`, `MAP`, `ETE`, `common-scale`,
+  each with a categorical type) and `MAPPING.md`. None of this is written here —
+  this is the hypothesis, not the law.
+- **External references:** Kahneman, Sibony & Sunstein, *Noise* (2021); Thaler &
+  Sunstein, *Nudge*; `knowledge-taxonomy` @ `cyberAlchemyAI` (facets as a candidate
+  scale, `[[OQ-4]]`).

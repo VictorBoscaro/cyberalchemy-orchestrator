@@ -1,45 +1,45 @@
-# Contrato de UI — Fase 1 (leitor)
+# UI Contract — Phase 1 (reader)
 
-Todas as variantes consomem a mesma API e obedecem os mesmos `data-testid`, para
-que um único teste Playwright rode contra as dez. **Só a estética varia.**
+All variants consume the same API and follow the same `data-testid`s, so
+that a single Playwright test runs against all ten. **Only the aesthetics vary.**
 
-## Onde o arquivo mora
+## Where the file lives
 
-`implementations/static/ui/<slug>/index.html` — **um único arquivo autocontido**.
-CSS e JS inline. **Zero dependência externa** (sem CDN, sem fonte remota, sem
-build): a página tem que abrir offline. Use apenas fontes do sistema
+`implementations/static/ui/<slug>/index.html` — **a single self-contained file**.
+Inline CSS and JS. **Zero external dependencies** (no CDN, no remote font, no
+build): the page has to open offline. Use only system fonts
 (`ui-monospace`, `Georgia`, `system-ui`, etc.).
 
 ## API
 
-| Endpoint | O que devolve |
+| Endpoint | What it returns |
 |---|---|
-| `GET /api/snapshot` | O estado inteiro, janela recente por repo (ver forma abaixo). |
-| `GET /api/stream` | SSE. Emite `event: snapshot` com o mesmo payload sempre que o disco muda. Conecte com `EventSource` e re-renderize. |
-| `GET /api/dispatch/{repo_name}/{dispatch_id}` | Uma dispatch sem truncar os prompts (para um painel de detalhe). 404 se o repo/id não existe; 500 se o ledger existe mas não pôde ser lido. |
-| `GET /api/overview` | Painel de topo: agregados de TODOS os repos + o que pede atenção humana (ver forma abaixo). Nada é truncado por `limit`. |
-| `GET /api/repo/{repo_name}` | Drill-down de um repo: histórico COMPLETO em peso de listagem (rows `slim`), mais `summary` e `series`. Filtros opcionais `?state=open\|closed\|all` e `?type=<dispatch_type>` (ver a ASSIMETRIA abaixo). 404 se o repo não existe; 422 se `state` está fora do enum. |
+| `GET /api/snapshot` | The entire state, recent window per repo (see shape below). |
+| `GET /api/stream` | SSE. Emits `event: snapshot` with the same payload whenever the disk changes. Connect with `EventSource` and re-render. |
+| `GET /api/dispatch/{repo_name}/{dispatch_id}` | A single dispatch without truncating the prompts (for a detail panel). 404 if the repo/id doesn't exist; 500 if the ledger exists but couldn't be read. |
+| `GET /api/overview` | Top panel: aggregates for ALL repos + what needs human attention (see shape below). Nothing is truncated by `limit`. |
+| `GET /api/repo/{repo_name}` | Drill-down of a repo: the FULL history at listing weight (`slim` rows), plus `summary` and `series`. Optional filters `?state=open\|closed\|all` and `?type=<dispatch_type>` (see the ASYMMETRY below). 404 if the repo doesn't exist; 422 if `state` is outside the enum. |
 
-**Convenção do prefixo `_` (escopada a objetos com FORMA DE ROW):** num objeto que
-compartilha o namespace de uma row do ledger (uma dispatch, uma sheet), todo campo
-com prefixo `_` é calculado pelo leitor e os demais vêm literalmente do ledger — o
-`_` existe para um campo calculado nunca sombrear uma chave real do ledger (ex.:
-`status` nas rows pré-v0.5.2). A regra NÃO vale para objetos-contêiner/agregado que
-não são rows (`summary`, `series`, `totals`, `attention`): eles não têm namespace de
-ledger a proteger e por isso devolvem chaves sem prefixo de propósito (`total`,
+**The `_` prefix convention (scoped to row-shaped objects):** in an object that
+shares the namespace of a ledger row (a dispatch, a sheet), every field
+with a `_` prefix is computed by the reader and the rest come literally from the ledger — the
+`_` exists so that a computed field never shadows a real ledger key (e.g.,
+`status` in pre-v0.5.2 rows). The rule does NOT apply to container/aggregate objects that
+aren't rows (`summary`, `series`, `totals`, `attention`): they have no
+ledger namespace to protect, and so they return keys without a prefix on purpose (`total`,
 `open`, `by_type`, ...).
 
-### Referencial de DIA — UTC
+### DAY reference — UTC
 
-`today`, o `_day` de cada dispatch e os buckets de `series["days"]` são **dias de
-calendário em UTC**, não no fuso do navegador. É deliberado: servidor e todos os
-clientes precisam concordar em qual barra do gráfico uma row cai. Se um cliente
-usasse o dia LOCAL, a mesma row pularia de bucket dependendo de quem olha, e "hoje"
-da UI divergiria do `_day` das rows por algumas horas todo dia. Derive o dia do
-campo `_day`/`today` que a API já dá — **não** recompute a partir de `created` com
-`new Date()` no fuso local.
+`today`, each dispatch's `_day`, and the buckets of `series["days"]` are **UTC
+calendar days**, not the browser's timezone. This is deliberate: the server and all
+clients need to agree on which chart bar a row falls into. If a client
+used the LOCAL day, the same row would jump buckets depending on who's looking, and the UI's "today"
+would diverge from the rows' `_day` by a few hours every day. Derive the day from the
+`_day`/`today` field the API already gives you — **do not** recompute it from `created` with
+`new Date()` in the local timezone.
 
-### Forma do `/api/snapshot`
+### Shape of `/api/snapshot`
 
 ```jsonc
 {
@@ -48,19 +48,19 @@ campo `_day`/`today` que a API já dá — **não** recompute a partir de `creat
       "name": "domainspec-lean-formalization",
       "path": "C:\\Users\\victo\\...",
       "ledger_exists": true,
-      "total_dispatches": 334,      // total no ledger
-      "open_dispatches": 23,        // sem close row
-      "warnings": ["linha 13: ..."],// rows antigas ilegíveis (não-fatal)
-      "error": null,                // falha fatal de leitura
-      "pending": [ /* sheets pré-confirm — ver abaixo */ ],
-      "dispatches": [ /* as N mais recentes, mais nova primeiro */ ]
+      "total_dispatches": 334,      // total in the ledger
+      "open_dispatches": 23,        // no close row
+      "warnings": ["linha 13: ..."],// old rows unreadable (non-fatal)
+      "error": null,                // fatal read failure
+      "pending": [ /* pre-confirm sheets — see below */ ],
+      "dispatches": [ /* the N most recent, newest first */ ]
     }
   ],
   "config": { "limit": 40, "poll_seconds": 1.0, "repo_count": 11 }
 }
 ```
 
-### Uma dispatch
+### A dispatch
 
 ```jsonc
 {
@@ -80,17 +80,17 @@ campo `_day`/`today` que a API já dá — **não** recompute a partir de `creat
       "group_id": "explorers",
       "n": 2,
       "anti_bias": "corpus de origem (literatura formal vs blogs de prática)",
-      "robot_talks": false,            // opcional
-      "layers": 1,                     // opcional
+      "robot_talks": false,            // optional
+      "layers": 1,                     // optional
       "agents": [
         {
-          "agent_name": "Abramsky, Samson",   // pode ser null
-          "role": "explorer",                 // explorer|synthesizer|skeptic|writer|auditor (enum do appender)
+          "agent_name": "Abramsky, Samson",   // can be null
+          "role": "explorer",                 // explorer|synthesizer|skeptic|writer|auditor (appender enum)
           "model": "claude-sonnet-5",
           "token_budget": 800,
           "angle": "fica com o lado da literatura formal",
           "initial_prompt": "…",
-          "_prompt_truncated": true           // presente só se cortado
+          "_prompt_truncated": true           // present only if truncated
         }
       ]
     }
@@ -100,13 +100,13 @@ campo `_day`/`today` que a API já dá — **não** recompute a partir de `creat
     { "from": "skeptic", "to": "synthesizer", "type": "feedback", "loop_cap": 2 }
   ],
 
-  // calculados pelo leitor:
+  // computed by the reader:
   "_state": "open",        // "open" | "closed"
-  "_live": true,           // dispatch_type é LIVE (research/review/experiment)
-  "_legacy": false,        // row pré-v0.5.2, sem `groups`
+  "_live": true,           // dispatch_type is LIVE (research/review/experiment)
+  "_legacy": false,        // pre-v0.5.2 row, no `groups`
   "_agent_count": 3,
-  "_orphan_close": true,   // presente só em close row sem dispatch row
-  "_close": {              // null enquanto aberta
+  "_orphan_close": true,   // present only on a close row without a dispatch row
+  "_close": {              // null while open
     "close_of": "…",
     "closed": "2026-06-12T19:00:00.000Z",
     "exit_reason": "resolved",  // resolved|loop_ceiling_reached|dissent_irreconcilable|user_abort|error
@@ -116,7 +116,7 @@ campo `_day`/`today` que a API já dá — **não** recompute a partir de `creat
 }
 ```
 
-### Uma sheet pendente
+### A pending sheet
 
 ```jsonc
 {
@@ -126,169 +126,169 @@ campo `_day`/`today` que a API já dá — **não** recompute a partir de `creat
   "_error": null,
   "_agent_count": 4,
   "_live": true,
-  "sheet": { /* mesma forma da dispatch, SEM os campos `_` nem `_close` */ }
+  "sheet": { /* same shape as the dispatch, WITHOUT the `_` fields or `_close` */ }
 }
 ```
 
-> `_mtime` é `null` (em vez de um float epoch) quando `_error` está setado — a
-> sheet sumiu/ficou ilegível entre a varredura e a leitura.
+> `_mtime` is `null` (instead of an epoch float) when `_error` is set — the
+> sheet disappeared or became unreadable between the scan and the read.
 
-### Forma do `/api/overview`
+### Shape of `/api/overview`
 
-Agregados de TODOS os repos + as filas de atenção humana. Nada truncado por `limit`.
+Aggregates for ALL repos + the human attention queues. Nothing truncated by `limit`.
 
 ```jsonc
 {
-  "repos": [ /* um objeto `summary` por repo — ver forma abaixo */ ],
+  "repos": [ /* one `summary` object per repo — see shape below */ ],
   "totals": {
     "repos": 11,
     "total": 703, "open": 43, "closed": 660, "pending": 1,
-    "by_type": { "research": 500, "review": 140, "(sem tipo)": 55 },  // soma por repo
-    "today": { "created": 3, "closed": 1 }                            // dia UTC
+    "by_type": { "research": 500, "review": 140, "(sem tipo)": 55 },  // summed per repo
+    "today": { "created": 3, "closed": 1 }                            // UTC day
   },
-  "today": "2026-07-20",           // dia de HOJE em UTC
+  "today": "2026-07-20",           // TODAY's day in UTC
   "attention": {
-    "pending": [ /* sheet pendente + "_repo": "<nome>" */ ],
-    "open_today": [ /* dispatch `slim` + "_repo", aberta e com _day == today */ ],
-    "open_all":  [ /* dispatch `slim` + "_repo", toda aberta; no MÁX. 200 */ ],
-    "_capped": true,               // presente SÓ quando open_all passou de 200
-    "_open_all_total": 253         // presente SÓ quando capado — o total real
+    "pending": [ /* pending sheet + "_repo": "<name>" */ ],
+    "open_today": [ /* `slim` dispatch + "_repo", open and with _day == today */ ],
+    "open_all":  [ /* `slim` dispatch + "_repo", all open; MAX. 200 */ ],
+    "_capped": true,               // present ONLY when open_all exceeded 200
+    "_open_all_total": 253         // present ONLY when capped — the real total
   },
   "config": { "limit": 40, "poll_seconds": 1.0, "repo_count": 11 }
 }
 ```
 
-Cada objeto em `repos` (e o `summary` de `/api/repo`) — o agregado de um repo:
+Each object in `repos` (and the `summary` from `/api/repo`) — a repo's aggregate:
 
 ```jsonc
 {
   "name": "domainspec-core", "path": "C:\\…", "ledger_exists": true, "error": null,
-  "warning_count": 0,             // quantas rows antigas geraram aviso
-  "total": 181,                   // todas as rows joinadas (não a janela `limit`)
+  "warning_count": 0,             // how many old rows produced a warning
+  "total": 181,                   // all joined rows (not the `limit` window)
   "open": 5, "closed": 176,
-  "legacy": 12,                   // rows pré-v0.5.2 (sem `groups`)
+  "legacy": 12,                   // pre-v0.5.2 rows (no `groups`)
   "by_type": { "research": 150, "review": 20, "(sem tipo)": 11 },
   "live": 170,                    // dispatch_type LIVE (research/review/experiment)
-  "reserved": 4,                  // tipo não-LIVE e não-legacy
+  "reserved": 4,                  // non-LIVE and non-legacy type
   "pending_count": 0,
   "today": { "created": 0, "closed": 0 },
-  "open_now": 5,                  // == open (nome próprio; pode divergir na Fase 2)
-  "first_day": "2026-01-01", "last_day": "2026-07-19",  // dias UTC
-  "last_created": "2026-07-19T20:00:00.000Z"            // ISO cru mais recente
+  "open_now": 5,                  // == open (own name; may diverge in Phase 2)
+  "first_day": "2026-01-01", "last_day": "2026-07-19",  // UTC days
+  "last_created": "2026-07-19T20:00:00.000Z"            // most recent raw ISO
 }
 ```
 
-> **Não é partição:** `total == live + reserved + legacy` **não** é garantido. Uma
-> research row cujo `groups` falhou no parse leniente fica sem `groups` e conta em
-> `live` E em `legacy` ao mesmo tempo. Não renderize os três como fatias de um todo.
+> **Not a partition:** `total == live + reserved + legacy` is **not** guaranteed. A
+> research row whose `groups` failed lenient parsing ends up without `groups` and counts in
+> `live` AND in `legacy` at the same time. Don't render the three as slices of a whole.
 
-### Forma do `/api/repo/{repo_name}`
+### Shape of `/api/repo/{repo_name}`
 
 ```jsonc
 {
   "name": "domainspec-core", "path": "C:\\…", "ledger_exists": true, "error": null,
   "warnings": [ "linha 13: …" ],
-  "summary": { /* mesma forma do objeto de `repos` acima — SEMPRE o repo inteiro */ },
-  "series": { /* histograma diário — ver abaixo */ },
-  "pending": [ /* sheets pendentes deste repo */ ],
-  "dispatches": [ /* rows `slim`, mais nova primeiro; ESTA lista é filtrada */ ]
+  "summary": { /* same shape as the `repos` object above — ALWAYS the entire repo */ },
+  "series": { /* daily histogram — see below */ },
+  "pending": [ /* this repo's pending sheets */ ],
+  "dispatches": [ /* `slim` rows, newest first; THIS list is filtered */ ]
 }
 ```
 
-**ASSIMETRIA deliberada:** `?state=` e `?type=` filtram **só** `dispatches`. O
-`summary` e a `series` descrevem sempre o repo inteiro — o gráfico é o pano de
-fundo estável, a lista é o recorte. Se a série encolhesse junto, o eixo mudaria de
-escala a cada clique.
+**Deliberate ASYMMETRY:** `?state=` and `?type=` filter **only** `dispatches`. The
+`summary` and `series` always describe the entire repo — the chart is the stable
+backdrop, the list is the cut. If the series shrank along with it, the axis would change
+scale on every click.
 
-A lista `dispatches` é **`slim`** (contagens em vez de prompts, e `_close`
-enxuto): é lossy para as chaves antigas das rows legacy. Para a row inteira (todos
-os campos, prompts sem corte), peça `GET /api/dispatch/{repo}/{dispatch_id}`.
+The `dispatches` list is **`slim`** (counts instead of prompts, and a trimmed-down
+`_close`): it's lossy for the old keys of legacy rows. For the entire row (all
+fields, uncut prompts), request `GET /api/dispatch/{repo}/{dispatch_id}`.
 
-Uma row `slim`:
+A `slim` row:
 
 ```jsonc
 {
-  "dispatch_id": "…", "created": "…Z", "_day": "2026-06-12",  // _day é UTC
-  "dispatch_type": "research", "goal": "… (cortado em ~240 chars)",
+  "dispatch_id": "…", "created": "…Z", "_day": "2026-06-12",  // _day is UTC
+  "dispatch_type": "research", "goal": "… (cut to ~240 chars)",
   "invoked_by": "…", "working_folder": "…", "max_loops": 1,
   "final_approver": "parent", "anti_bias_global": "…",
   "_state": "open", "_live": true, "_legacy": false, "_agent_count": 3,
-  "_close": { "closed": "…Z", "exit_reason": "resolved" },  // null enquanto aberta
-  "_goal_truncated": true,        // só se o goal foi cortado
-  "_orphan_close": true,          // só em close row órfã
+  "_close": { "closed": "…Z", "exit_reason": "resolved" },  // null while open
+  "_goal_truncated": true,        // only if the goal was cut
+  "_orphan_close": true,          // only on an orphan close row
   "_group_count": 2, "_robot_talks": false,
   "_roles": { "explorer": 2, "writer": 1 },
   "_connection_types": [ "feedback", "sequential" ]
 }
 ```
 
-O histograma `series` (de `daily_series`):
+The `series` histogram (from `daily_series`):
 
 ```jsonc
 {
-  "days": [ "2026-06-01", "2026-06-02", … ],  // contíguos, UTC; borda superior = hoje
-  "types": [ "research", "review" ],          // ordenado
-  "series": { "research": [1,0,2,…], "review": [0,1,0,…] },  // alinhado a `days`
-  "totals": { "research": 42, "review": 8 },  // só o que está PLOTADO
-  "max_day": 5,                               // a coluna empilhada mais alta
-  "undated": 3,                               // rows sem dia legível
-  "out_of_range": 1,                          // rows datadas fora da janela…
-  "truncated_span": false                     // …(cap de 1000 dias, futuro, ou days=N)
+  "days": [ "2026-06-01", "2026-06-02", … ],  // contiguous, UTC; upper edge = today
+  "types": [ "research", "review" ],          // sorted
+  "series": { "research": [1,0,2,…], "review": [0,1,0,…] },  // aligned to `days`
+  "totals": { "research": 42, "review": 8 },  // only what's PLOTTED
+  "max_day": 5,                               // the tallest stacked column
+  "undated": 3,                               // rows without a readable day
+  "out_of_range": 1,                          // rows dated outside the window…
+  "truncated_span": false                     // …(cap of 1000 days, future, or days=N)
 }
 ```
 
-> Invariante: `sum(totals) + out_of_range + undated == total de rows`. Uma data no
-> futuro distante (typo de século) não ancora o eixo — vira `out_of_range`.
+> Invariant: `sum(totals) + out_of_range + undated == total rows`. A date in the
+> distant future (century typo) does not anchor the axis — it becomes `out_of_range`.
 
-## O que a tela precisa comunicar
+## What the screen needs to communicate
 
-Em ordem de importância — a UI existe para o **gate humano**:
+In order of importance — the UI exists for the **human gate**:
 
-1. **Sheets pendentes em primeiro lugar, com destaque forte.** É a proposta
-   aguardando confirmação: o objeto mais importante da tela. Se houver zero,
-   diga isso explicitamente em vez de deixar vazio.
-2. **Botão "Disparar" em cada sheet pendente — `disabled`**, com o rótulo
-   deixando claro que é Fase 2 (ex.: título "confirmar dispara na Fase 2").
-   Ele marca o lugar do gate; ainda não funciona.
-3. **Aberta vs fechada.** Uma dispatch sem close row está viva. Ao fechar,
-   mostre o `exit_reason` (`resolved` é bom; `error` e
-   `dissent_irreconcilable` merecem cor de alerta).
-4. **Grupos e agentes**: papel, modelo, orçamento de tokens, `agent_name`, e o
-   **`angle`** de cada agente contra o **`anti_bias`** do grupo. O eixo de
-   tensão é conteúdo de primeira classe, não decoração.
-5. **`connections` como arestas tipadas**: `sequential`, `zig-zag`, `feedback`
-   precisam ser visualmente distintos; mostre `loop_cap` quando houver.
-6. **LIVE vs RESERVED.** Só `research`, `review` e `experiment` são LIVE.
-   `code`, `plan`, `suggestion` são reservados — marque-os visivelmente.
-7. **Rows legacy** (`_legacy: true`, sem `groups`) e **`_orphan_close`** devem
-   aparecer como o que são, não sumir.
-8. **Avisos e erros por repo** acessíveis (podem ficar recolhidos).
-9. **Indicador de conexão ao vivo** (SSE conectado / caído).
-10. Filtro ou agrupamento por repo — são 11 repos e ~700 dispatches.
+1. **Pending sheets first, with strong emphasis.** This is the proposal
+   awaiting confirmation: the most important object on the screen. If there are zero,
+   say so explicitly instead of leaving it empty.
+2. **"Disparar" button on each pending sheet — `disabled`**, with the label
+   making clear it's Phase 2 (e.g., title "confirmar dispara na Fase 2").
+   It marks the gate's place; it doesn't work yet.
+3. **Open vs closed.** A dispatch with no close row is alive. When closing,
+   show the `exit_reason` (`resolved` is good; `error` and
+   `dissent_irreconcilable` deserve an alert color).
+4. **Groups and agents**: role, model, token budget, `agent_name`, and each agent's
+   **`angle`** against the group's **`anti_bias`**. The tension axis is first-class
+   content, not decoration.
+5. **`connections` as typed edges**: `sequential`, `zig-zag`, `feedback`
+   need to be visually distinct; show `loop_cap` when present.
+6. **LIVE vs RESERVED.** Only `research`, `review`, and `experiment` are LIVE.
+   `code`, `plan`, `suggestion` are reserved — mark them visibly.
+7. **Legacy rows** (`_legacy: true`, no `groups`) and **`_orphan_close`** must
+   appear as what they are, not disappear.
+8. **Warnings and errors per repo** accessible (can be collapsed).
+9. **Live connection indicator** (SSE connected / down).
+10. Filter or grouping by repo — there are 11 repos and ~700 dispatches.
 
-## `data-testid` obrigatórios
+## Required `data-testid`s
 
-O teste Playwright é o mesmo para as dez. Sem estes atributos, a variante falha.
+The Playwright test is the same for all ten. Without these attributes, the variant fails.
 
-| testid | Onde |
+| testid | Where |
 |---|---|
-| `app` | Elemento raiz, depois do primeiro render. |
-| `live-indicator` | Estado do SSE. Deve conter o texto `conectado` quando ligado. |
-| `pending-list` | Contêiner das sheets pendentes (existe mesmo com zero). |
-| `pending-card` | Um por sheet pendente. |
-| `dispatch-button` | Um por sheet pendente, `disabled`. |
-| `dispatch-list` | Contêiner do histórico. |
-| `dispatch-card` | Um por dispatch renderizada. |
-| `repo-section` | Um por repo exibido (ou por grupo de repo). |
-| `total-count` | Elemento cujo texto contém o total de dispatches. |
+| `app` | Root element, after the first render. |
+| `live-indicator` | SSE state. Must contain the text `conectado` when connected. |
+| `pending-list` | Container for pending sheets (exists even with zero). |
+| `pending-card` | One per pending sheet. |
+| `dispatch-button` | One per pending sheet, `disabled`. |
+| `dispatch-list` | Container for the history. |
+| `dispatch-card` | One per rendered dispatch. |
+| `repo-section` | One per repo shown (or per repo group). |
+| `total-count` | Element whose text contains the total dispatch count. |
 
-Além disso, cada `dispatch-card` deve carregar
-`data-dispatch-id="<dispatch_id>"` e `data-state="open|closed"`.
+In addition, every `dispatch-card` must carry
+`data-dispatch-id="<dispatch_id>"` and `data-state="open|closed"`.
 
-## Regras
+## Rules
 
-- Português nos rótulos.
-- Tem que aguentar `null`/ausente em quase tudo: rows antigas não têm `groups`,
-  `agent_name` pode ser `null`, `connections` pode não existir.
-- ~700 dispatches no total — não trave a página; a API já limita a 40 por repo.
-- Nada de escrever: é um leitor.
+- Portuguese in labels.
+- Has to handle `null`/missing in almost everything: old rows don't have `groups`,
+  `agent_name` can be `null`, `connections` may not exist.
+- ~700 dispatches total — don't freeze the page; the API already limits to 40 per repo.
+- No writing: it's a reader.

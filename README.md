@@ -49,7 +49,7 @@ dispatches recorded in the **same ledger** the orchestrator operates — the the
 to model **knowledge** — what it is, what properties it has, how it relates, who acts on
 it — with enough structure to produce systems, including itself; the orchestrator is
 the first executable slice of that ambition, not the whole project (see
-[`PLAN.md §1`](PLAN.md#1-problema)).
+[`PLAN.md §1`](PLAN.md#1-problem)).
 
 > **Design goal (new, 2026-07-20):** the concrete layer must be **generic — droppable
 > into any repo with near-zero integration**, independent of that repo's domain. The
@@ -328,14 +328,14 @@ number that summarizes the object and discards the object. If `C` is **non-thin*
 carry structure — types, rules, distinct compositions), the reading preserves the **structure**
 that the shadow discards. The **residue** — what any translation or synthesis fails to preserve —
 decomposes exactly into these two faces: `residue = shadow ⊕ structure`
-([FRAMINGS.md F1](FRAMINGS.md#f1--resíduo--sombra--estrutura)).
+([FRAMINGS.md F1](FRAMINGS.md#f1--residue--shadow--structure)).
 
 Ascending in knowledge, under this lever, **never** means sharpening the shadow — refining the
 metric. It means **enriching `C`**: swapping the thin codomain for a richer one, until the
 object's active interrogation by test-maps (`A → X`, a **probe**, in the Yoneda sense) becomes
 *fully faithful* — the **Yoneda point**. An **anomaly** — two things the current lens
 identified as one revealing themselves as distinct under a new probe — is the engine that points
-to where `C` needs to grow ([FRAMINGS.md F6](FRAMINGS.md#f6--o-ponto-de-yoneda-como-alvo-a-anomalia-como-motor-a-dinâmica)).
+to where `C` needs to grow ([FRAMINGS.md F6](FRAMINGS.md#f6--the-yoneda-point-as-target-the-anomaly-as-engine-the-dynamics)).
 
 ```mermaid
 flowchart LR
@@ -351,11 +351,11 @@ flowchart LR
 
 **Honesty note on the diagram.** The naive reading — "the Yoneda point is a target
 reached at the end of a finite ladder" — has already run into a debate recorded in
-[FRAMINGS.md F6 (status 2026-07-20)](FRAMINGS.md#f6--o-ponto-de-yoneda-como-alvo-a-anomalia-como-motor-a-dinâmica):
+[FRAMINGS.md F6 (status 2026-07-20)](FRAMINGS.md#f6--the-yoneda-point-as-target-the-anomaly-as-engine-the-dynamics):
 `y` is *fully faithful* for free and the residue-zero endpoint is vacuous. What survives is not
 the arrival, it's the **ordered trajectory of enrichment** — and even that trajectory has
 structure:
-[F7](FRAMINGS.md#f7--duas-espécies-de-sonda--os-dois-eixos-independentes-com-ordem-de-apresentação)
+[F7](FRAMINGS.md#f7--two-probe-species--the-two-independent-axes-with-presentation-order)
 distinguishes a recognition-probe (which finds *which objects exist*) from a linking-probe
 (which establishes *the relations* between them), with the second depending on the first's
 typing — not a linear ladder, a graded poset.
@@ -364,7 +364,7 @@ typing — not a linear ladder, a graded poset.
 
 Single source: [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md). Each term carries
 Status · Scientific/formal voice · Operational interpretation · Boundary · Categorical type +
-Lean anchor — all `status: candidato`, none promoted to premise.
+Lean anchor — all `status: candidate`, none promoted to premise.
 
 | ID | Term | The trait, in one line |
 |---|---|---|

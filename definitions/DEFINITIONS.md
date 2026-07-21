@@ -90,7 +90,7 @@ truth: each term is defined normatively in exactly ONE place; boundaries do not 
 - **Species axis:** the probe has two species, one per *independent* axis of discovery —
   **linking** (establishes relations, `¬Full` axis; these are the test-maps `A→X`) and
   **recognition** (discovers *which objects/types exist*, `¬EssSurj` axis). **This entry
-  normatizes both**; the *framing* (species ≅ axes, ordering, β-axis) is F7. Full
+  covers both normatively**; the *framing* (species ≅ axes, ordering, β-axis) is F7. Full
   **reconstruction** (FF) is the limit of the family of linkings, while the **separation** of
   parallel morphisms by a sub-family is the graded step (open obligation). The order
   recon→linking is not arbitrary: it is the type-formation dependency (`Hom(A,B)` needs

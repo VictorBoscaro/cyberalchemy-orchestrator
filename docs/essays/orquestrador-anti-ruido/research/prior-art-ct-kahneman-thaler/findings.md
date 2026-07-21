@@ -1,42 +1,42 @@
-# Prior-art — CT × Kahneman × Thaler: a novidade já foi feita?
+# Prior-art — CT × Kahneman × Thaler: has the novelty already been done?
 
-> **Pergunta:** alguém já ligou formalmente **teoria das categorias** a erro de juízo
-> estilo-Kahneman (viés/ruído) e/ou a arquitetura de escolha estilo-Thaler (nudge)?
-> **Método:** 3 dispatches tensionados (ledger `2026-07-20-kahneman-thaler-ct-prior-art`
-> + `-gapclose`), posições independentes congeladas antes de agregar — a própria
-> HYP-ORCH-NOISE aplicada a si mesma (A6). **Estatuto:** concluída, `resolved`. Criado 2026-07-20.
+> **Question:** has anyone formally linked **category theory** to Kahneman-style
+> judgment error (bias/noise) and/or Thaler-style choice architecture (nudge)?
+> **Method:** 3 tensioned dispatches (ledger `2026-07-20-kahneman-thaler-ct-prior-art`
+> + `-gapclose`), independent positions frozen before aggregating — HYP-ORCH-NOISE itself
+> applied to itself (A6). **Status:** completed, `resolved`. Created 2026-07-20.
 
-## Veredito
+## Verdict
 
-**O centro está vazio — e sobreviveu a busca adversarial.** A tríplice interseção
-(CT-como-substrato × decomposição viés⊕ruído × camada de nudge) **não está ocupada**.
-Dois agentes independentes com vetores opostos chegaram ao mesmo veredito sem se ver
-(baixo ruído → alta confiança), confirmado por um 3º sweep nas bases não-web.
+**The center is empty — and it survived adversarial search.** The triple intersection
+(CT-as-substrate × bias⊕noise decomposition × nudge layer) **is not occupied**.
+Two independent agents with opposed vectors reached the same verdict without seeing
+each other (low noise → high confidence), confirmed by a 3rd sweep across non-web databases.
 
-- **CT × nudge/choice-architecture: completamente vazia** — a parte mais forte da novidade.
-- **A vizinhança normativa não modela o erro:** *Evidential Decision Theory via Partial
-  Markov Categories* (Di Lavore–Román, LICS 2023) é decisão ideal, sem viés nem ruído. O
-  movimento "viés = desvio de uma transformação natural" está **não reivindicado**.
+- **CT × nudge/choice-architecture: completely empty** — the strongest part of the novelty.
+- **The normative neighborhood does not model error:** *Evidential Decision Theory via Partial
+  Markov Categories* (Di Lavore–Román, LICS 2023) is ideal decision-making, with no bias or noise. The
+  move "bias = deviation from a natural transformation" is **unclaimed**.
 
-## A costura da contribuição (achado mais valioso)
+## The seam of the contribution (most valuable finding)
 
-Os **statistical games** do programa do cérebro bayesiano composicional (Smithe,
-arXiv:2109.04461; Braithwaite–Hedges–Smithe, MFCS 2023, arXiv:2305.06112) já fazem **três**
-das quatro peças: juízo sobre substrato monoidal (lentes bayesianas sobre categorias de
-Markov) + juiz como minimizador de um funcional de erro. **O que não fazem:** o erro é
-*free energy*, um escalar — nunca refatorado na decomposição ortogonal **viés ⊕ ruído**, e
-sem morfismo de nudge sobre o substrato. **Essa é a costura exata do paper.**
+The **statistical games** of the compositional Bayesian brain program (Smithe,
+arXiv:2109.04461; Braithwaite–Hedges–Smithe, MFCS 2023, arXiv:2305.06112) already do **three**
+of the four pieces: judgment over a monoidal substrate (Bayesian lenses over Markov
+categories) + judge as minimizer of an error functional. **What they don't do:** the error is
+*free energy*, a scalar — never refactored into the orthogonal **bias ⊕ noise** decomposition, and
+no nudge morphism over the substrate. **That is the exact seam of the paper.**
 
-## Minas de título a desarmar (citar-e-desarmar)
+## Title-mines to disarm (cite-and-disarm)
 
-"Categorização" (agrupar em baldes) ≠ "teoria das categorias". Um revisor pode brandir:
+"Categorization" (grouping into buckets) ≠ "category theory". A reviewer might brandish:
 
 - **Fryer & Jackson**, *A Categorical Model of Cognition and Biased Decision-Making*
   (NBER w9579, 2003; BE-JTE 2008) — https://www.nber.org/papers/w9579
 - **Ellis & Masatlioglu**, *Choice with endogenous categorization* (Review of Economic
-  Studies, 2022) — mesma família.
+  Studies, 2022) — same family.
 
-## Vizinhos que o paper precisa citar (must-cite)
+## Neighbors the paper needs to cite (must-cite)
 
 1. Kahneman, Sibony & Sunstein, *Noise* (2021)
 2. Thaler & Sunstein, *Nudge* (2008)
@@ -48,23 +48,23 @@ sem morfismo de nudge sobre o substrato. **Essa é a costura exata do paper.**
 8. Braithwaite–Hedges–Smithe, *The Compositional Structure of Bayesian Inference* (MFCS 2023) — arXiv:2305.06112
 9. Capucci–Gavranović–Hedges–Rischel, *Towards Foundations of Categorical Cybernetics* (ACT 2021) — arXiv:2105.06332
 10. *Choice Structures in Games* (GEB 2023) — arXiv:2304.11575
-11. Costello & Watts, *Surprisingly rational: probability theory plus noise explains biases* — abordagem **não-categórica** do eixo ruído (contraste).
+11. Costello & Watts, *Surprisingly rational: probability theory plus noise explains biases* — **non-categorical** approach to the noise axis (contrast).
 
-## Near-misses (CT-de-verdade, mas objeto errado)
+## Near-misses (real CT, but wrong object)
 
-- Phillips & Wilson, *Categorial Compositionality* (PLoS CB 2010) — objeto = sistematicidade.
-- Ehresmann & Vanbremeersch, *Memory Evolutive Systems* (2007) — objeto = hierarquia/emergência.
+- Phillips & Wilson, *Categorial Compositionality* (PLoS CB 2010) — object = systematicity.
+- Ehresmann & Vanbremeersch, *Memory Evolutive Systems* (2007) — object = hierarchy/emergence.
 
-## Risco residual (honestidade)
+## Residual risk (honesty)
 
-**MathSciNet ficou atrás de paywall institucional** (gateway LibLynx) — única base não
-verificada. Mitigação: a base-irmã **zbMATH voltou vazia**, então MathSciNet quase certamente
-não difere. Fecha 100% com acesso AMS institucional (query de 2 min). As demais bases
-(zbMATH via API aberta, PhilPapers, Google Scholar, índice web) foram alcançadas.
+**MathSciNet stayed behind an institutional paywall** (LibLynx gateway) — the only
+unverified database. Mitigation: the sibling database **zbMATH came back empty**, so MathSciNet
+almost certainly doesn't differ. Closes 100% with institutional AMS access (2-min query). The other
+databases (zbMATH via open API, PhilPapers, Google Scholar, web index) were reached.
 
-## Auditoria
+## Audit
 
 Ledger: `telemetry/agents/subagents-dispatch.yaml` — dispatches
-`2026-07-20-kahneman-thaler-ct-prior-art` (2 explorers tensionados: cético-do-vazio ⊥
-cartógrafo-de-vizinhos) e `2026-07-20-kahneman-thaler-ct-prior-art-gapclose` (1 explorer,
-bases não-web). Queries por eixo e por base registradas nos retornos dos agentes.
+`2026-07-20-kahneman-thaler-ct-prior-art` (2 tensioned explorers: skeptic-of-the-void ⊥
+neighbor-cartographer) and `2026-07-20-kahneman-thaler-ct-prior-art-gapclose` (1 explorer,
+non-web databases). Queries per axis and per database recorded in the agents' returns.

@@ -1,110 +1,110 @@
-# Feasibility das costuras — viés⊕ruído (Kahneman×CT) e nudge (Thaler×CT)
+# Seam feasibility — bias⊕noise (Kahneman×CT) and nudge (Thaler×CT)
 
-> **Pergunta:** as duas costuras centrais do paper se tipam formalmente, ou são analogia?
-> **Método:** dispatch tensionado `2026-07-20-costura-feasibility` (ledger) — dois pares
-> construtor⊥colapsador (um por costura), posições independentes congeladas antes de
-> sintetizar; gate `check-tension` passado (both PASS) antes do disparo. Auto-aplicação A6.
-> **Estatuto:** concluída, `resolved`. Fonte provisória: `vault/hypothesis/orquestracao-anti-ruido.md`
-> (HYP-ORCH-NOISE, candidate/exploratory — esta pesquisa a revisa). Criado 2026-07-20.
+> **Question:** do the paper's two central seams type formally, or are they analogy?
+> **Method:** tensioned dispatch `2026-07-20-costura-feasibility` (ledger) — two pairs
+> constructor⊥collapser (one per seam), independent positions frozen before
+> synthesizing; `check-tension` gate passed (both PASS) before firing. Self-application A6.
+> **Status:** completed, `resolved`. Provisional source: `vault/hypothesis/orquestracao-anti-ruido.md`
+> (HYP-ORCH-NOISE, candidate/exploratory — this research revises it). Created 2026-07-20.
 
-## Veredito global
+## Global verdict
 
-**A tese NÃO quebra.** A **camada de design sobrevive inteira e sem métrica** (ambos os
-colapsadores concedem isso explicitamente). A **camada formal/quantitativa precisa de dois
-re-tipos** — e os dois aterram na **mesma casa: probabilidade categórica** (categorias de
-Markov com estrutura estatística extra), *fora* da óptica nua e da ortogonalidade euclidiana.
-Essa co-localização é o resultado estrutural mais forte que o dispatch produziu.
+**The thesis does NOT break.** The **design layer survives whole and metric-free** (both
+collapsers concede this explicitly). The **formal/quantitative layer needs two
+re-typings** — and both land in the **same house: categorical probability** (Markov
+categories with extra statistical structure), *outside* naked optics and Euclidean orthogonality.
+This co-location is the strongest structural result the dispatch produced.
 
-## Costura 1 — Kahneman×CT: `resíduo = viés ⊕ ruído`
+## Seam 1 — Kahneman×CT: `residue = bias ⊕ noise`
 
-**Veredito: `real-sob-condições X`.** Nem analogia (a rota Bregman fecha essa saída), nem
-real incondicional (a ortogonalidade euclidiana metric-free é falsa).
+**Verdict: `real-under-conditions X`.** Neither analogy (the Bregman route closes that exit), nor
+unconditionally real (metric-free Euclidean orthogonality is false).
 
-**Convergência construtor↔colapsador** (Fritz e Leinster, sem se ver, no mesmo objeto — baixo
-ruído): a decomposição é um **teorema real** via divergência de Bregman / geometria dualmente
-plana (Pitágoras generalizado de Amari), **sem métrica de Fisher** — só o pareamento primal–dual
-de Legendre. Média = único minimizador do Bregman esperado (Banerjee 2005) ⇒ agregação mecânica
-= minimizador de ruído provadamente ótimo (a alavanca √N com justificativa, não retórica).
+**Constructor↔collapser convergence** (Fritz and Leinster, without seeing each other, on the same object — low
+noise): the decomposition is a **real theorem** via Bregman divergence / dually flat
+geometry (Amari's generalized Pythagoras), **without the Fisher metric** — only the Legendre
+primal–dual pairing. Mean = unique minimizer of expected Bregman (Banerjee 2005) ⇒ mechanical aggregation
+= provably optimal noise minimizer (the √N lever with justification, not rhetoric).
 
-**A condição X, em três peças:**
-1. **Adicionar exatamente um potencial de Legendre `F`** (entropia/free-energy generalizada).
-   Dele saem `D_F`, coords duais `η=∇F`, o pareamento-como-ortogonalidade, a conexão e-afim.
-   O split é **exclusivo** de Bregman (arXiv 2501.18581). *Achado de ouro:* esse `F` **é** a
-   "escala comum ancorada / MAP" que a tese já usa — ela paga o imposto sem nomear.
-2. **Slot-lock:** aniquilação exata do termo cruzado só com jogo aleatório no **primeiro**
-   argumento `D_F(a,s)` (orientação M-projection / reverse-KL). Inverter → gap de Jensen ≠ 0.
-3. **Composicionalidade — ABERTA, e é a fronteira real.** Decompôs *um* jogo; se viés⊕ruído
-   é functorial ao longo da composição de lentes é não-provado (a composição mistura os dois
-   slots de `D_F`). Fritz boundary-2 ≡ Leinster OBS2 (a DPI contrai KL, gira o resíduo para
-   fora de ⊥) — os dois nomeiam a mesma fronteira dos dois lados.
+**Condition X, in three pieces:**
+1. **Add exactly one Legendre potential `F`** (generalized entropy/free-energy).
+   From it come `D_F`, dual coords `η=∇F`, pairing-as-orthogonality, the e-affine connection.
+   The split is **exclusive** to Bregman (arXiv 2501.18581). *Golden finding:* this `F` **is** the
+   "anchored common scale / MAP" that the thesis already uses — it pays the toll without naming it.
+2. **Slot-lock:** exact annihilation of the cross term only with randomization on the **first**
+   argument of `D_F(a,s)` (M-projection / reverse-KL orientation). Flip it → Jensen gap ≠ 0.
+3. **Compositionality — OPEN, and it is the real frontier.** It decomposed *one* game; whether bias⊕noise
+   is functorial along the composition of lenses is unproven (composition mixes the two
+   `D_F` slots). Fritz boundary-2 ≡ Leinster OBS2 (the DPI contracts KL, rotates the residue
+   out of ⊥) — the two name the same frontier from both sides.
 
-**Força:** profundo mas taxado e pontual (teorema exato dado `F` e slot; não-nativo; status
-composicional aberto). Não descarrega OBL-E3 — vive no funcional de perda, não na composição
-de dispatch.
+**Strength:** deep but taxed and pointwise (exact theorem given `F` and slot; non-native; status
+compositionally open). Does not discharge OBL-E3 — it lives in the loss functional, not in the composition
+of dispatch.
 
-## Costura 2 — Thaler×CT: `nudge = processo ≠ conteúdo`
+## Seam 2 — Thaler×CT: `nudge = process ≠ content`
 
-**Veredito: `real-sob-condições X`,** X = **re-tipar fora da óptica de juízo único.**
+**Verdict: `real-under-conditions X`,** X = **re-type outside the single-judgment optic.**
 
-**Adjudicação do fork Myers⊥Jacobs → "vacuoso na óptica, real na fibra de acoplamento"
-(endossado).** A 2-célula de Myers (`φ:M→M'`) é *verbatim* o gerador da relação de coend →
-dicotomia sem meio: nudge **coerente** = identidade na óptica (vacuoso); **incoerente** = muda
-`get/put` = tocou conteúdo. Como `M` é ligado por `∫^M`, não há functor `Optic→C` que devolva
-"o resíduo" — "age em M, não em A/B" **não typechecka**. Myers concede exatamente esse buraco
-(a fibração-do-resíduo ausente); Jacobs a fornece.
+**Adjudication of the Myers⊥Jacobs fork → "vacuous in the optic, real in the coupling fiber"
+(endorsed).** Myers's 2-cell (`φ:M→M'`) is *verbatim* the generator of the coend relation → a
+dichotomy with no middle: **coherent** nudge = identity in the optic (vacuous); **incoherent** = changes
+`get/put` = touched content. Since `M` is bound by `∫^M`, there is no functor `Optic→C` that returns
+"the residue" — "acts on M, not on A/B" **does not typecheck**. Myers concedes exactly this gap
+(the missing residue fibration); Jacobs supplies it.
 
-**Os mesmos dentes, relocados:** ambos concordam que processo≠conteúdo *tem* dentes e num
-morfismo preserva-conteúdo/move-resíduo. Jacobs **subsume** Myers: os nudges reais (congelar,
-independência-então-agregar) agem na **lei conjunta** `D(A^N)`. O independence-nudge
-`J ↦ ⊗_i(π_i∗ J)` é **identidade em toda marginal** (conteúdo intacto) e **não-identidade no
-conjunto** (mata correlação), detectado pela queda de variância na agregação (o claim √N-sobre-ρ).
-Bem-definido nativamente porque **marginalização `D(A^N)→∏D(A)` é não-mônica**.
+**The same teeth, relocated:** both agree that process≠content *has* teeth, in a
+content-preserving/residue-moving morphism. Jacobs **subsumes** Myers: the real nudges (freeze,
+independence-then-aggregate) act on the **joint law** `D(A^N)`. The independence-nudge
+`J ↦ ⊗_i(π_i∗ J)` is **identity on every marginal** (content intact) and **non-identity on the
+joint** (kills correlation), detected by the variance drop under aggregation (the √N-over-ρ claim).
+Natively well-defined because **marginalization `D(A^N)→∏D(A)` is non-monic**.
 
-**Força:** nativamente bem-tipado (não-monicidade é fato de Markov, sem `F` importado), mas
-payload positivo mais fino que o Seam 1. **Jacobs > Myers.**
+**Strength:** natively well-typed (non-monicity is a Markov fact, no imported `F`), but
+positive payload thinner than Seam 1. **Jacobs > Myers.**
 
-## Meta cross-seam — uma casa só
+## Cross-seam meta — one house only
 
-As duas casas convergem apertado e **substantivamente**: o baricentro `ā=E[a]` (Seam 1) **é** a
-agregação; a queda de variância do mean-pushforward (Seam 2) **é** a mesma agregação agindo no
-conjunto. O `F` que o Seam 1 importa = a escala ancorada que torna juízos comensuráveis o
-bastante para marginalizar/agregar no Seam 2. **Seam 1 dá o teorema de otimalidade da alavanca
-(sob `F`); Seam 2 dá a ação bem-tipada dessa alavanca sobre a lei conjunta (nativa).** A
-variância-sob-agregação de um é o detector do outro. Não dominam — **compõem**.
+The two houses converge tightly and **substantively**: the barycenter `ā=E[a]` (Seam 1) **is** the
+aggregation; the variance drop of the mean-pushforward (Seam 2) **is** the same aggregation acting on the
+joint. The `F` that Seam 1 imports = the anchored scale that makes judgments commensurable
+enough to marginalize/aggregate in Seam 2. **Seam 1 gives the optimality theorem of the lever
+(under `F`); Seam 2 gives the well-typed action of that lever on the joint law (native).** The
+variance-under-aggregation of one is the detector of the other. They do not dominate — **they compose**.
 
-## Implicação para a tese-fonte (HYP-ORCH-NOISE) — três re-tipos
+## Implication for the source thesis (HYP-ORCH-NOISE) — three re-typings
 
-1. **`viés ⊕ ruído` / `viés ⊥ ruído` → promover "escala comum ancorada" de heurística a
-   PORTADOR FORMAL.** Nomeá-la como o potencial de Legendre `F` / coordenada dualmente plana;
-   declarar que a ortogonalidade e o √N são *licenciados por ela*, não por CT sozinha. Sem `F`,
-   a forma honesta é `resíduo = viés * ruído` (duas contribuições entrópicas, não pernas
-   ortogonais). Responde OQ-2 (rubrica por `dispatch_type` = escolha de `F`) e OQ-4 (as 6
-   facetas = coords duais `η=∇F`).
-2. **`√N` → revisão de regime.** Fato L2/CLT sob `F=‖·‖²`; fora do CLT a concentração é
-   Sanov/large-deviation, **não 1/N**. Enunciar √N como caso gaussiano especial; garantia geral
-   = "agregação = m-projeção na família plana, monótona sob independência", expoente condicional.
-3. **Nudge processo≠conteúdo → re-tipo (não quebra).** Partir o vocabulário de nudge em duas
-   classes tipadas: (a) **nudges de fibra-de-acoplamento** sobre `D(A^N)` para a agregação
-   (independência, congelar-antes-do-canal, blinding); (b) **nudges de óptica/lente** só para o
-   pipeline per-agente explorer→reviewer (compressor≠juiz). Afia o ajuste 1 (congelar = matar um
-   acoplamento de ancoragem antes que se forme) e OQ-3 (persona = prior correlacionado = um
-   acoplamento no estágio de julgar → neutralizar = ⊗ marginalizar).
+1. **`bias ⊕ noise` / `bias ⊥ noise` → promote "anchored common scale" from heuristic to
+   FORMAL CARRIER.** Name it as the Legendre potential `F` / dually flat coordinate;
+   state that orthogonality and √N are *licensed by it*, not by CT alone. Without `F`,
+   the honest form is `residue = bias * noise` (two entropic contributions, not orthogonal
+   legs). Answers OQ-2 (rubric by `dispatch_type` = choice of `F`) and OQ-4 (the 6
+   facets = dual coords `η=∇F`).
+2. **`√N` → regime revision.** L2/CLT fact under `F=‖·‖²`; outside the CLT, concentration is
+   Sanov/large-deviation, **not 1/N**. State √N as the special Gaussian case; the general guarantee
+   = "aggregation = m-projection onto the flat family, monotone under independence," conditional exponent.
+3. **Nudge process≠content → re-type (does not break).** Split the nudge vocabulary into two
+   typed classes: (a) **coupling-fiber nudges** on `D(A^N)` for aggregation
+   (independence, freeze-before-channel, blinding); (b) **optic/lens nudges** only for the
+   per-agent explorer→reviewer pipeline (compressor≠judge). Sharpens fix 1 (freeze = kill a
+   coupling of anchoring before it forms) and OQ-3 (persona = correlated prior = a
+   coupling at the judging stage → neutralize = ⊗ marginalize).
 
-## Guarda de fork
+## Fork guard
 
-Ambos os seams são **dispersão, não dissenso** (`resolved`, não `dissent_irreconcilable`):
-Fritz-b2 ≡ Leinster-OBS2; Jacobs subsume Myers e ambos convergem no morfismo preserva-marginal.
-**O fork genuíno a escalar é COMPOSICIONALIDADE** — viés⊕ruído e o re-tipo do nudge são
-functoriais ao longo da composição de estágios/dispatch, ou só pontuais por estágio? Isto deve
-virar o **4º collapse-test** da tese: *a decomposição sobrevive à composição functorial dos
-estágios, ou só pontualmente dentro de cada estágio?* A separação-por-estágio é a resposta de
-*design*; a garantia *formal* através da composição é não-provada.
+Both seams are **dispersion, not dissent** (`resolved`, not `dissent_irreconcilable`):
+Fritz-b2 ≡ Leinster-OBS2; Jacobs subsumes Myers and both converge on the marginal-preserving morphism.
+**The genuine fork to escalate is COMPOSITIONALITY** — are bias⊕noise and the nudge re-type
+functorial along the composition of stages/dispatch, or only pointwise per stage? This must
+become the thesis's **4th collapse-test**: *does the decomposition survive functorial composition of the
+stages, or only pointwise within each stage?* Separation-by-stage is the *design*
+answer; the *formal* guarantee across composition is unproven.
 
-## Auditoria
+## Audit
 
 Ledger `telemetry/agents/subagents-dispatch.yaml` — dispatch `2026-07-20-costura-feasibility`
-(4 explorers tensionados: Fritz⊥Leinster, Myers⊥Jacobs; synthesizer Riehl). Gate `check-tension`
-por Loregian+Capucci (infraestrutura, não registrada). Fontes técnicas: Banerjee JMLR 2005;
+(4 tensioned explorers: Fritz⊥Leinster, Myers⊥Jacobs; synthesizer Riehl). `check-tension` gate
+by Loregian+Capucci (infrastructure, unregistered). Technical sources: Banerjee JMLR 2005;
 Pfau arXiv 2511.08789; arXiv 2501.18581; Amari (info geometry); Smithe arXiv 2306.17009 /
-2109.04461; Riley arXiv 1809.00738; Clarke et al. arXiv 2001.07488; não-monicidade de
-marginalização (Fritz-style Markov categories).
+2109.04461; Riley arXiv 1809.00738; Clarke et al. arXiv 2001.07488; non-monicity of
+marginalization (Fritz-style Markov categories).

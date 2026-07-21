@@ -1,74 +1,74 @@
-# Ensaio — O Orquestrador como Máquina de Redução de Ruído
+# Essay — The Orchestrator as a Noise-Reduction Machine
 
-> **Estatuto:** rascunho alto-nível, **não-revisado**, local. `Claim ≤ proof`. Este README
-> levanta o paper (tese, refs, contribuição) para *depois* entrar no detalhe. Deriva de
-> `vault/hypothesis/orquestracao-anti-ruido.md` (`HYP-ORCH-NOISE`). Criado 2026-07-20.
+> **Status:** high-level draft, **unreviewed**, local. `Claim ≤ proof`. This README
+> raises the paper (thesis, refs, contribution) to *later* go into detail. Derives from
+> `vault/hypothesis/orquestracao-anti-ruido.md` (`HYP-ORCH-NOISE`). Created 2026-07-20.
 
-## Tese (uma frase)
+## Thesis (one sentence)
 
-Um orquestrador de agentes é, formalmente, uma **máquina de redução de erro de juízo**;
-os referenciais **compõem** — não competem — sobre a alavanca nativa do repo
-`resíduo = viés ⊕ ruído`.
+An agent orchestrator is, formally, a **judgment-error-reduction machine**;
+the reference frameworks **compose** — they do not compete — on the repo's native lever
+`residue = bias ⊕ noise`.
 
-## Os níveis (decisão de escopo em aberto)
+## The levels (open scope decision)
 
-| Nível | Papel | Estatuto no paper |
+| Level | Role | Status in the paper |
 |---|---|---|
-| **Teoria das categorias** | *em quê* — substrato de tipo | **pilar central** |
-| **Kahneman / *Noise*** | *por quê* — modelo de erro (viés ⊕ ruído) | **pilar central** |
-| **Thaler / *Nudge*** | *como* — arquitetura de escolha do processo | **pilar central** (decisão 2026-07-20: primário por ora) |
+| **Category theory** | *in what* — type substrate | **central pillar** |
+| **Kahneman / *Noise*** | *why* — error model (bias ⊕ noise) | **central pillar** |
+| **Thaler / *Nudge*** | *how* — process choice architecture | **central pillar** (decision 2026-07-20: primary for now) |
 
-> **Decisão (2026-07-20, revisada).** Os **três** entram como argumentos primários. Chegou-se
-> a considerar rebaixar Thaler a corolário (dois pilares de registro homogêneo, mais foco),
-> **mas** a varredura de prior-art mostrou que **CT × nudge é a célula mais vazia de todas** —
-> o território de novidade mais indiscutível. Largar Thaler abriria mão disso. Portanto Thaler
-> é primário e **exige pesquisa própria de feasibility** (nudge = morfismo sobre a lente/o
-> processo, nunca sobre o conteúdo do juízo — isso se tipa, ou é analogia?).
+> **Decision (2026-07-20, revised).** All **three** enter as primary arguments. There was
+> consideration of downgrading Thaler to a corollary (two pillars of homogeneous standing, more
+> focus), **but** the prior-art sweep showed that **CT × nudge is the emptiest cell of all** —
+> the most indisputable territory of novelty. Dropping Thaler would give that up. Therefore Thaler
+> is primary and **requires its own feasibility research** (nudge = morphism over the lens/the
+> process, never over the content of the judgment — does this actually type, or is it an analogy?).
 
-## Contribuição nova (a costura)
+## New contribution (the seam)
 
-Refatorar o funcional de erro **escalar** dos *statistical games* composicionais
-(Smithe; Braithwaite–Hedges–Smithe) na decomposição **ortogonal viés ⊕ ruído** do *Noise*,
-sobre substrato de **categorias de Markov** (Fritz) — e (se Thaler entrar) adicionar um
-**morfismo Nudge** que age sobre o *processo* (a lente/o tipo), nunca sobre o conteúdo.
-Ninguém uniu esses referenciais: **provado por varredura auditável em 5 bases** (ver
+Refactor the **scalar** error functional of compositional *statistical games*
+(Smithe; Braithwaite–Hedges–Smithe) into the **orthogonal bias ⊕ noise** decomposition from
+*Noise*, over a substrate of **Markov categories** (Fritz) — and (if Thaler enters) add a
+**Nudge morphism** that acts on the *process* (the lens/the type), never on the content.
+No one has united these frameworks: **proven by an auditable sweep across 5 databases** (see
 `research/prior-art-ct-kahneman-thaler/`).
 
-## Argumento-âncora — `viés ⊥ ruído`
+## Anchor argument — `bias ⊥ noise`
 
-Viés pede **tensão/oposição**; ruído pede **independência/agregação** — ferramentas
-contraditórias, resolvidas por **separação de estágio** (tensão no *gerar*, independência no
-*avaliar*). O próprio processo de produção deste paper é uma instância disso (auto-aplicação,
+Bias calls for **tension/opposition**; noise calls for **independence/aggregation** —
+contradictory tools, resolved by **stage separation** (tension in *generating*, independence in
+*evaluating*). The very production process of this paper is an instance of this (self-application,
 PLAN.md §1 A6).
 
-## Referências (alto nível, agrupadas)
+## References (high level, grouped)
 
-- **Fundamentos do erro:** Kahneman, Sibony & Sunstein, *Noise* (2021); Thaler & Sunstein,
+- **Foundations of error:** Kahneman, Sibony & Sunstein, *Noise* (2021); Thaler & Sunstein,
   *Nudge* (2008).
-- **Substrato categórico:** Fritz, *Markov categories* (Adv. Math. 2020); Ghani–Hedges–
+- **Categorical substrate:** Fritz, *Markov categories* (Adv. Math. 2020); Ghani–Hedges–
   Winschel–Zahn, *Compositional Game Theory* (LICS 2018); Di Lavore–Román, *Evidential
   Decision Theory via Partial Markov Categories* (LICS 2023).
-- **A costura / vizinho mais próximo:** Smithe, *Compositional Bayesian Brain* (2022);
+- **The seam / nearest neighbor:** Smithe, *Compositional Bayesian Brain* (2022);
   Braithwaite–Hedges–Smithe (MFCS 2023); Capucci et al., *Categorical Cybernetics* (2021).
-- **Citar-e-desarmar (minas de título — "categorização" ≠ "categorias"):** Fryer–Jackson
+- **Cite-and-defuse (title mines — "categorization" ≠ "categories"):** Fryer–Jackson
   (2003/08); Ellis–Masatlioglu (2022).
-- **Abordagem não-categórica do eixo ruído (contraste):** Costello & Watts, *Surprisingly
+- **Non-categorical approach to the noise axis (contrast):** Costello & Watts, *Surprisingly
   rational: probability theory plus noise*.
-- **Substrato do próprio repo:** `HYP-ORCH-NOISE`, `MAPPING.md`, disciplina anti-viés
+- **The repo's own substrate:** `HYP-ORCH-NOISE`, `MAPPING.md`, anti-bias discipline
   (`check-tension`, P5/P14).
 
-## Estrutura (esboço, a detalhar depois)
+## Structure (outline, to be detailed later)
 
-1. O juízo tem dois erros ortogonais (viés ⊕ ruído) — e o orquestrador os toma o tempo todo.
-2. CT como substrato de tipo — por que o erro precisa de um chão categórico.
-3. A costura: decompor o funcional dos statistical games em viés ⊕ ruído.
-4. `viés ⊥ ruído` → separação de estágio (tensão vs independência).
-5. (minor) Nudge como arquitetura do processo.
-6. Auto-aplicação (A6) + collapse-tests.
+1. Judgment has two orthogonal errors (bias ⊕ noise) — and the orchestrator incurs them all the time.
+2. CT as type substrate — why error needs categorical ground.
+3. The seam: decomposing the statistical games functional into bias ⊕ noise.
+4. `bias ⊥ noise` → stage separation (tension vs. independence).
+5. (minor) Nudge as process architecture.
+6. Self-application (A6) + collapse-tests.
 
-## Pesquisas (`research/`)
+## Research (`research/`)
 
-Container de investigações, uma pasta por pergunta:
+Container of investigations, one folder per question:
 
-- **`prior-art-ct-kahneman-thaler/`** — a novidade já foi feita? Veredito: **centro vazio**
-  (auditável, 5 bases). ✅ concluída.
+- **`prior-art-ct-kahneman-thaler/`** — has the novelty already been done? Verdict: **empty
+  center** (auditable, 5 databases). ✅ completed.

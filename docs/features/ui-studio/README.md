@@ -1,6 +1,6 @@
 ---
 feature: ui-studio
-title: UI Studio — control plane + harness de UI-fitness
+title: UI Studio — control plane + UI-fitness harness
 status: draft
 created: 2026-07-20
 authority: candidate
@@ -9,159 +9,160 @@ verification: paired-audit-passed
 
 # UI Studio
 
-> **Nota de leitura.** Este README é **navegação, contexto e evidência** — não backlog
-> nem ideias soltas (regra do `readme-pattern`). Toda linha das tabelas é **citada**.
-> Caminhos sem prefixo são **relativos à raiz do repo** (`cyberalchemy-orchestrator`);
-> caminhos com `../` apontam para **repos irmãos** (`../ZefraHub`, `../domainspec`,
+> **Reading note.** This README is **navigation, context, and evidence** — not a backlog
+> nor loose ideas (the `readme-pattern` rule). Every line in the tables is **cited**.
+> Paths without a prefix are **relative to the repo root** (`cyberalchemy-orchestrator`);
+> paths with `../` point to **sibling repos** (`../ZefraHub`, `../domainspec`,
 > `../domainspec-core`, `../Arcanum`).
 >
-> **Status de verificação** (coluna `V`): **✅** = verificado de 1ª-mão. As linhas E-1…E-4
-> e E-15…E-19 eu li nesta sessão; as linhas E-5…E-14 (antes segunda-mão) foram **confirmadas
-> de 1ª-mão pelo dispatch de review pareado** `2026-07-20-ui-studio-readme-verify` — auditores
-> de **confirmação e falsificação** sobre o corpus idêntico, ver [verification.md](verification.md).
-> As 10 resolvem; as correções de caracterização que a auditoria pediu **já estão aplicadas
-> abaixo**. Claim ≤ proof: nenhuma linha aqui é segunda-mão.
+> **Verification status** (column `V`): **✅** = verified first-hand. Rows E-1…E-4
+> and E-15…E-19 I read in this session; rows E-5…E-14 (previously second-hand) were **confirmed
+> first-hand by the paired review dispatch** `2026-07-20-ui-studio-readme-verify` — auditors
+> for **confirmation and falsification** over the identical corpus, see [verification.md](verification.md).
+> All 10 resolve; the characterization corrections the audit requested are **already applied
+> below**. Claim ≤ proof: no line here is second-hand.
 
 ---
 
 ## 1. What is this?
 
-O **UI Studio** é a feature que junta duas metades sob um mesmo teto: (a) o **control
-plane** que organiza, dispara e observa subagentes, e (b) um **harness de UI-fitness** —
-a superfície onde um humano **pontua e comenta cada elemento da UI** (nota por-item +
-notas por categoria + uma nota geral), para escolher, entre as variantes, qual UI sobrevive.
-O harness é a **rota de validação** que a `Promotion Boundary` da constituição de frontend
+**UI Studio** is the feature that brings two halves under one roof: (a) the **control
+plane** that organizes, triggers, and observes subagents, and (b) a **UI-fitness harness** —
+the surface where a human **scores and comments on each UI element** (per-item score +
+category scores + an overall score), to choose, among the variants, which UI survives.
+The harness is the **validation route** that the frontend constitution's `Promotion Boundary`
 ([vault/constitution/frontend-constitution.md](../../../vault/constitution/frontend-constitution.md),
-`CONST-FE`) marcou como `none-yet`.
+`CONST-FE`) marked as `none-yet`.
 
 ## 2. Business Context
 
-Este repo é uma máquina de conhecimento cuja primeira peça concreta é um **orquestrador de
-agentes** ([PLAN.md](../../../PLAN.md), [README.md](../../../README.md)). A Fase 1 entregou
-uma UI linear multinível + endpoints de agregação sobre um ledger append-only
+This repo is a knowledge machine whose first concrete piece is an **agent orchestrator**
+([PLAN.md](../../../PLAN.md), [README.md](../../../README.md)). Phase 1 delivered
+a linear multilevel UI + aggregation endpoints over an append-only ledger
 ([sessions/2026-07-20-1352-linear-multilevel-ui.md](../../../sessions/2026-07-20-1352-linear-multilevel-ui.md)).
-O humano avaliou a UI como **verbosa demais**; a resposta não é apagar informação, é
-**tornar a densidade opt-in** e depois **medir** o resultado — daí o harness. Há **três
-prior arts** nos repos irmãos que já modelaram exatamente esse problema; o objetivo do
-primeiro corte é **reusar, não reinventar**.
+The human rated the UI as **too verbose**; the answer is not to erase information, it's
+to **make density opt-in** and then **measure** the result — hence the harness. There are
+**three prior arts** in sibling repos that already modeled exactly this problem; the goal of
+the first cut is to **reuse, not reinvent**.
 
 ## 3. Why it matters
 
-Sem medida, "mais clean" é achismo. O harness converte "achei verbosa" em **delta
-mensurável por regra da constituição**, fecha o laço com a camada de decisão do repo (MOGT
-/ decision-receipt, [PLAN.md](../../../PLAN.md) §5 E4) e resolve o *next step* herdado de
-**escolher 1 das 10 variantes e apagar 9**. Mitiga também o risco concreto observado nos
-prior arts (§5): construir o engine evolutivo autônomo **antes** de o loop fechar uma vez —
-os três o deferiram ou nunca o dispararam.
+Without measurement, "cleaner" is a guess. The harness converts "I found it verbose" into a
+**delta measurable by constitution rule**, closes the loop with the repo's decision layer
+(MOGT / decision-receipt, [PLAN.md](../../../PLAN.md) §5 E4) and resolves the inherited *next
+step* of **picking 1 of the 10 variants and deleting the other 9**. It also mitigates the
+concrete risk observed in the prior arts (§5): building the autonomous evolutionary engine
+**before** the loop closes once — all three deferred it or never triggered it.
 
-## 4. Objetivo & escopo do primeiro corte
+## 4. Goal & scope of the first cut
 
-**Primeiro corte = só o substrato de medição** (recomendado, evidenciado 3× em §5):
+**First cut = only the measurement substrate** (recommended, evidenced 3× in §5):
 
-- voto **append-only validado** (não blob mutável) — disciplina do `register-dispatch`;
-- **captura por-elemento**: comment + score 1–5, ligado ao elemento por um id estável;
-- **agregação** por categoria (regras `CONST-FE`) e **overall** por variante;
-- **humano faz a mutação** (decision-receipt). **Engine autônomo fica adiado.**
+- **validated append-only** vote (not a mutable blob) — `register-dispatch` discipline;
+- **per-element capture**: comment + score 1–5, tied to the element by a stable id;
+- **aggregation** by category (`CONST-FE` rules) and **overall** per variant;
+- **the human performs the mutation** (decision-receipt). **The autonomous engine is deferred.**
 
-Fora de escopo no 1º corte: Multi-Armed Bandit / Darwin autônomo; geração automática de
-variantes; fleet-telemetry de custo por agente (é a *outra* metade — ver E-13/E-14).
+Out of scope in the 1st cut: autonomous Multi-Armed Bandit / Darwin; automatic
+variant generation; per-agent cost fleet-telemetry (that's the *other* half — see E-13/E-14).
 
-## 5. Evidência — o que temos e onde está
+## 5. Evidence — what we have and where it is
 
-### 5a. Prior arts do harness (voto por-item + categorias + overall)
+### 5a. Harness prior arts (per-item vote + categories + overall)
 
-| ID | Evidência | Localização | V |
+| ID | Evidence | Location | V |
 |----|-----------|-------------|---|
-| E-1 | **Newspaper — schema de voto atômico**: `AtomicVote {generation_id, metric_name, score 1–5, comment}`, 9 métricas canônicas + `global_fitness`, `internal_score = score−3`, 5 handoffs do loop | [../ZefraHub/specs/newspaper/docs/protocol/data-exchange-protocol.md](../../../../ZefraHub/specs/newspaper/docs/protocol/data-exchange-protocol.md) | ✅ |
-| E-2 | **Newspaper — arquitetura de 6 agentes** (Orchestrator, Platform Architect, Data/Backend, Darwin-Gödel, UI Evolution, Editor-in-Chief) + mermaid do laço genético | [../ZefraHub/specs/newspaper/docs/architecture/agent_ecosystem_overview.md](../../../../ZefraHub/specs/newspaper/docs/architecture/agent_ecosystem_overview.md) | ✅ |
-| E-3 | **Newspaper — missão**: equilíbrio *densidade máxima ⊥ fadiga mínima*; regras imutáveis (hover ubíquo, fecho instantâneo, tooltip universal `#tt`+`data-tip`) | [../ZefraHub/specs/newspaper/agents/ui_evolution/manifesto.md](../../../../ZefraHub/specs/newspaper/agents/ui_evolution/manifesto.md) | ✅ |
-| E-4 | **Newspaper — backend de voto**: `POST /api/vote` (`validate_vote` ~L346, `save_vote` ~L377) persistindo em `telemetry_db.json` (**blob mutável — o ponto que melhoramos**) | [../ZefraHub/specs/newspaper/evolution/evolution_server.py](../../../../ZefraHub/specs/newspaper/evolution/evolution_server.py) | ✅ |
-| E-5 | **ui-prototyping-studio — data model**: `CommentEvent {target{selector,elementLabel,odId}, severity, intent, note, createdBy/At}`, `AnnotationTarget` (bind por `data-od-id`), `MutationBatch`, `RevisionManifestEntry`, `DiffSummaryHonest` (lineage append-only) | `../domainspec-core/arcanum/projects/ui-prototyping-studio/backend/src/modules/ui-prototyping-studio/domain/models.ts` | ✅ |
-| E-6 | **ui-prototyping-studio — loop de fitness**: `CycleCandidate.score` (finito, winner=max, auto-accept top, append 1 revisão), explore/exploit, teto de ciclo | `../domainspec-core/arcanum/projects/ui-prototyping-studio/backend/src/modules/ui-prototyping-studio/application/run-cycle.ts` | ✅ |
-| E-7 | **ui-prototyping-studio — rubrica `critique`**: 5 categorias (Philosophy consistency, **Visual hierarchy**, Detail execution, **Functionality**, Innovation) 0–10 + parágrafo de evidência 30–80 palavras por nota (nota sem evidência é rejeitada) + radar SVG + Keep/Fix/Quick-win | `../domainspec-core/arcanum/projects/ui-prototyping-studio/provenance/open-design-reference/skills-references/open-design/skills/critique/SKILL.md` | ✅ |
-| E-8 | **ui-prototyping-studio — captura + rotas**: overlay `annotateClickScript` + `POST /comment` no CLI; rotas REST (`POST …/comments`, `…/mutation-batches/synthesize\|approve\|apply`, `…/handoff/export`) | `../domainspec-core/arcanum/projects/ui-prototyping-studio/backend/src/cli/studio.ts`, `.../interface/http-routes.ts` | ✅ |
-| E-9 | **ui-prototyping-studio — frontend React** (a mesma feature com UI): `AnnotationPanel.tsx`, `MutationApprovalPanel.tsx`, `RevisionTimeline.tsx`; taxonomia de erro `AUTO_APPLY_FORBIDDEN` / `APPROVAL_STALE` em `src/lib/api.ts` | `../domainspec/apps/web/src/components/ui-prototyping-studio/`, `../domainspec/apps/web/src/lib/api.ts` | ✅ |
-| E-10 | **Newspaper (espelho no domainspec)** — mesma harness (index.html — `<title>` "Genetic Control Center", H1 "Genetic Platform" — + ~19 `gen_*.html` + `evolution_server.py` + `telemetry_db.json` + `generations_manifest.json`) | `../domainspec/implementation/app-frontend/visualizations/newspaper/evolution/` | ✅ |
+| E-1 | **Newspaper — atomic vote schema**: `AtomicVote {generation_id, metric_name, score 1–5, comment}`, 9 canonical metrics + `global_fitness`, `internal_score = score−3`, 5 loop handoffs | [../ZefraHub/specs/newspaper/docs/protocol/data-exchange-protocol.md](../../../../ZefraHub/specs/newspaper/docs/protocol/data-exchange-protocol.md) | ✅ |
+| E-2 | **Newspaper — 6-agent architecture** (Orchestrator, Platform Architect, Data/Backend, Darwin-Gödel, UI Evolution, Editor-in-Chief) + mermaid diagram of the genetic loop | [../ZefraHub/specs/newspaper/docs/architecture/agent_ecosystem_overview.md](../../../../ZefraHub/specs/newspaper/docs/architecture/agent_ecosystem_overview.md) | ✅ |
+| E-3 | **Newspaper — mission**: balance between *maximum density ⊥ minimum fatigue*; immutable rules (ubiquitous hover, instant close, universal tooltip `#tt`+`data-tip`) | [../ZefraHub/specs/newspaper/agents/ui_evolution/manifesto.md](../../../../ZefraHub/specs/newspaper/agents/ui_evolution/manifesto.md) | ✅ |
+| E-4 | **Newspaper — vote backend**: `POST /api/vote` (`validate_vote` ~L346, `save_vote` ~L377) persisting to `telemetry_db.json` (**mutable blob — the point we improved on**) | [../ZefraHub/specs/newspaper/evolution/evolution_server.py](../../../../ZefraHub/specs/newspaper/evolution/evolution_server.py) | ✅ |
+| E-5 | **ui-prototyping-studio — data model**: `CommentEvent {target{selector,elementLabel,odId}, severity, intent, note, createdBy/At}`, `AnnotationTarget` (bind via `data-od-id`), `MutationBatch`, `RevisionManifestEntry`, `DiffSummaryHonest` (append-only lineage) | `../domainspec-core/arcanum/projects/ui-prototyping-studio/backend/src/modules/ui-prototyping-studio/domain/models.ts` | ✅ |
+| E-6 | **ui-prototyping-studio — fitness loop**: `CycleCandidate.score` (finite, winner=max, auto-accept top, append 1 revision), explore/exploit, cycle ceiling | `../domainspec-core/arcanum/projects/ui-prototyping-studio/backend/src/modules/ui-prototyping-studio/application/run-cycle.ts` | ✅ |
+| E-7 | **ui-prototyping-studio — `critique` rubric**: 5 categories (Philosophy consistency, **Visual hierarchy**, Detail execution, **Functionality**, Innovation) 0–10 + 30–80 word evidence paragraph per score (a score without evidence is rejected) + SVG radar + Keep/Fix/Quick-win | `../domainspec-core/arcanum/projects/ui-prototyping-studio/provenance/open-design-reference/skills-references/open-design/skills/critique/SKILL.md` | ✅ |
+| E-8 | **ui-prototyping-studio — capture + routes**: `annotateClickScript` overlay + `POST /comment` in the CLI; REST routes (`POST …/comments`, `…/mutation-batches/synthesize\|approve\|apply`, `…/handoff/export`) | `../domainspec-core/arcanum/projects/ui-prototyping-studio/backend/src/cli/studio.ts`, `.../interface/http-routes.ts` | ✅ |
+| E-9 | **ui-prototyping-studio — React frontend** (the same feature with a UI): `AnnotationPanel.tsx`, `MutationApprovalPanel.tsx`, `RevisionTimeline.tsx`; error taxonomy `AUTO_APPLY_FORBIDDEN` / `APPROVAL_STALE` in `src/lib/api.ts` | `../domainspec/apps/web/src/components/ui-prototyping-studio/`, `../domainspec/apps/web/src/lib/api.ts` | ✅ |
+| E-10 | **Newspaper (mirrored in domainspec)** — same harness (index.html — `<title>` "Genetic Control Center", H1 "Genetic Platform" — + ~19 `gen_*.html` + `evolution_server.py` + `telemetry_db.json` + `generations_manifest.json`) | `../domainspec/implementation/app-frontend/visualizations/newspaper/evolution/` | ✅ |
 
-### 5b. Princípios de governança (o que evita virar "metrics wall")
+### 5b. Governance principles (what keeps it from becoming a "metrics wall")
 
-| ID | Evidência | Localização | V |
+| ID | Evidence | Location | V |
 |----|-----------|-------------|---|
-| E-11 | **hard-gate vs soft-gradient** (subseção *UX-constraint exploit/explore fitness* **[DEFERRED]**, ~L171–200 — **não** o §3, que é o Scope): hard gate descarta (L180); soft gradient *pontua, nunca descarta* (L183); ML2 fitness = heurística + self-critique + objetivo humano (L190); OQ-5 = pesos do soft-score (L200). A "honesty rule" que citei **não é cláusula titulada** — é o **honest-diff mandate** (`DiffSummaryHonest`, counts do before/after real), em §2b/§4/§5. **Reforça a decisão §6.5**: a própria camada de fitness do studio está marcada [DEFERRED]. | `../Arcanum/.../ui-prototyping-studio/SPEC.md` (byte-idêntico ao de `../domainspec-core/...`) | ✅ |
-| E-12 | **Sinal action-bearing**: todo sinal roteia para *owner + action + evidence* (L394, L243, L414); "avoid empty dashboards" / "not a global score" (L243, L394). Nomes de superfície são **paráfrase**, não verbatim: "cockpit" humano (Harness Graph + Calibration Queue, L403), "Fleet Telemetry" (L404) | `../domainspec/PRODUCT-COMPONENTS-IDEA.md` | ✅ |
+| E-11 | **hard-gate vs soft-gradient** (subsection *UX-constraint exploit/explore fitness* **[DEFERRED]**, ~L171–200 — **not** §3, which is Scope): hard gate discards (L180); soft gradient *scores, never discards* (L183); ML2 fitness = heuristic + self-critique + human objective (L190); OQ-5 = soft-score weights (L200). The "honesty rule" I cited **is not a titled clause** — it's the **honest-diff mandate** (`DiffSummaryHonest`, real before/after counts), in §2b/§4/§5. **Reinforces the §6.5 decision**: the studio's own fitness layer is marked [DEFERRED]. | `../Arcanum/.../ui-prototyping-studio/SPEC.md` (byte-identical to the one in `../domainspec-core/...`) | ✅ |
+| E-12 | **Action-bearing signal**: every signal routes to *owner + action + evidence* (L394, L243, L414); "avoid empty dashboards" / "not a global score" (L243, L394). Surface names are a **paraphrase**, not verbatim: human "cockpit" (Harness Graph + Calibration Queue, L403), "Fleet Telemetry" (L404) | `../domainspec/PRODUCT-COMPONENTS-IDEA.md` | ✅ |
 
-### 5c. Observar os agentes (a outra metade — fleet telemetry)
+### 5c. Observing the agents (the other half — fleet telemetry)
 
-| ID | Evidência | Localização | V |
+| ID | Evidence | Location | V |
 |----|-----------|-------------|---|
-| E-13 | **agents-telemetry** — `events` SQLite (`ts, session_id, agent_id, event dispatch.start/end, tool, tokens, duration_ms…`) + hook `log.sh` (Pre/PostToolUse) | `../domainspec/internal_tools/agents-telemetry/scripts/schema.sql`, `.../scripts/log.sh` | ✅ |
-| E-14 | **Seam "dispatch a partir da UI"** — `openclaw.mjs` spawna processos de agente lendo seats de `router.yaml`, ligado ao `server.mjs` | `../domainspec-core/projects/goldenquill/apps/tilth_ui/src/openclaw.mjs` | ✅ |
+| E-13 | **agents-telemetry** — `events` SQLite (`ts, session_id, agent_id, event dispatch.start/end, tool, tokens, duration_ms…`) + `log.sh` hook (Pre/PostToolUse) | `../domainspec/internal_tools/agents-telemetry/scripts/schema.sql`, `.../scripts/log.sh` | ✅ |
+| E-14 | **"dispatch from the UI" seam** — `openclaw.mjs` spawns agent processes reading seats from `router.yaml`, wired to `server.mjs` | `../domainspec-core/projects/goldenquill/apps/tilth_ui/src/openclaw.mjs` | ✅ |
 
-### 5d. Base neste repo (onde o harness pluga)
+### 5d. Base in this repo (where the harness plugs in)
 
-| ID | Evidência | Localização | V |
+| ID | Evidence | Location | V |
 |----|-----------|-------------|---|
-| E-15 | **Constituição de frontend** `CONST-FE` — eixo densidade⊥fadiga; FE-1..FE-8; modos de validação (`deterministic`/`review`/`none-yet`); `Promotion Boundary` que **pede este harness** | [vault/constitution/frontend-constitution.md](../../../vault/constitution/frontend-constitution.md) | ✅ |
-| E-16 | **Servidor FastAPI + SSE atual** — endpoints `/api/snapshot`, `/api/overview`, `/api/repo/{name}`, `/api/dispatch/...`, `/api/stream`; **sem `/api/vote` ainda** | [implementations/server/main.py](../../../implementations/server/main.py) | ✅ |
-| E-17 | **Ledger append-only + validado** (disciplina a reusar para os votos) | [implementations/server/ledger.py](../../../implementations/server/ledger.py), [telemetry/agents/subagents-dispatch.yaml](../../../telemetry/agents/subagents-dispatch.yaml) | ✅ |
-| E-18 | **Store de pendentes** ligado ponta-a-ponta mas sem produtor (só o fixture `_example`) — o gate observa aqui | [telemetry/agents/pending/2026-07-19-exemplo-ui-control-plane.json](../../../telemetry/agents/pending/2026-07-19-exemplo-ui-control-plane.json) | ✅ |
-| E-19 | **10 variantes de UI** = as "gerações" candidatas do harness | [implementations/static/ui/](../../../implementations/static/ui/) (`aurora, blueprint, brutalist, cyberpunk, grimoire, linear, mission-control, radar, swiss, terminal`) | ✅ |
+| E-15 | **Frontend constitution** `CONST-FE` — density⊥fatigue axis; FE-1..FE-8; validation modes (`deterministic`/`review`/`none-yet`); the `Promotion Boundary` that **calls for this harness** | [vault/constitution/frontend-constitution.md](../../../vault/constitution/frontend-constitution.md) | ✅ |
+| E-16 | **Current FastAPI + SSE server** — endpoints `/api/snapshot`, `/api/overview`, `/api/repo/{name}`, `/api/dispatch/...`, `/api/stream`; **no `/api/vote` yet** | [implementations/server/main.py](../../../implementations/server/main.py) | ✅ |
+| E-17 | **Validated append-only ledger** (discipline to reuse for votes) | [implementations/server/ledger.py](../../../implementations/server/ledger.py), [telemetry/agents/subagents-dispatch.yaml](../../../telemetry/agents/subagents-dispatch.yaml) | ✅ |
+| E-18 | **Pending store** wired end-to-end but with no producer (only the `_example` fixture) — the gate watches here | [telemetry/agents/pending/2026-07-19-exemplo-ui-control-plane.json](../../../telemetry/agents/pending/2026-07-19-exemplo-ui-control-plane.json) | ✅ |
+| E-19 | **10 UI variants** = the harness's candidate "generations" | [implementations/static/ui/](../../../implementations/static/ui/) (`aurora, blueprint, brutalist, cyberpunk, grimoire, linear, mission-control, radar, swiss, terminal`) | ✅ |
 
-## 6. Decisões de design carregadas para cá
+## 6. Design decisions carried over here
 
-1. **O harness É a superfície de validação do `CONST-FE`.** Mapeamento direto (E-11 ≡ E-15):
-   `deterministic` (FE-3/5/6) → **hard gate** (Playwright, descarta no fail); `review`
-   (FE-1/4/7) → **soft gradient** (humano 1–5 + comment, nunca auto-descarta); `none-yet`
-   (eixo densidade⊥fadiga, FE-8) → **resíduo human-objective**.
-2. **Append-only sobre blob** (E-17 sobre E-4): voto nunca é editado, é apendado e validado.
-3. **Três granularidades** que o humano pediu: `overall (sombra) ⊃ categoria (regra FE) ⊃
-   item (comment+score = estrutura)`. Framing CT do repo: `resíduo = sombra ⊕ estrutura` —
-   por isso comment *e* nota em cada item.
-4. **Sinal action-bearing** (E-12): candidato a **amendment do FE-8** — o overall não pode
-   ser número solto; roteia para dono + ação (qual regra, qual correção).
-5. **Substrato antes do engine** (E-6/E-11 deferidos + newspaper P0): 3× confirmação de que
-   o autônomo não paga primeiro.
-6. **Auto-explicação dual, discreta** (`CONST-FE` FE-4/FE-9; raiz filosófica: *form ≡ content,
-   radical legibility instead of enigma*, E-3): o **mesmo `data-*-id`** que deixa pontuar um
-   elemento deixa ele **se explicar** — score é o julgamento externo, explicação é o relato do
-   próprio elemento. Concretização decidida: **explain-mode** (toggle discreto) + **marcador
-   quieto** sempre presente; no modo, *dwell* (mouse parado ~3s, **configurável**) revela o
-   elemento. "Óbvio/intuitivo" entra como **categoria pontuada** no harness (soft-gradient de
-   fricção + checks de a11y), não como boa-intenção.
+1. **The harness IS the `CONST-FE` validation surface.** Direct mapping (E-11 ≡ E-15):
+   `deterministic` (FE-3/5/6) → **hard gate** (Playwright, discards on fail); `review`
+   (FE-1/4/7) → **soft gradient** (human 1–5 + comment, never auto-discards); `none-yet`
+   (density⊥fatigue axis, FE-8) → **human-objective residue**.
+2. **Append-only over blob** (E-17 over E-4): a vote is never edited, it's appended and validated.
+3. **Three granularities** the human asked for: `overall (shadow) ⊃ category (FE rule) ⊃
+   item (comment+score = structure)`. The repo's CT framing: `residue = shadow ⊕ structure` —
+   hence comment *and* score on each item.
+4. **Action-bearing signal** (E-12): candidate for an **FE-8 amendment** — the overall can't
+   be a loose number; it routes to owner + action (which rule, which fix).
+5. **Substrate before engine** (E-6/E-11 deferred + newspaper P0): 3× confirmation that
+   the autonomous part doesn't come first.
+6. **Discreet dual self-explanation** (`CONST-FE` FE-4/FE-9; philosophical root: *form ≡
+   content, radical legibility instead of enigma*, E-3): the **same `data-*-id`** that lets an
+   element be scored also lets it **explain itself** — the score is the external judgment,
+   the explanation is the element's own account. Concretization decided: **explain-mode**
+   (discreet toggle) + **quiet marker** always present; in that mode, *dwell* (mouse idle
+   ~3s, **configurable**) reveals the element. "Obvious/intuitive" enters as a **scored
+   category** in the harness (soft-gradient of friction + a11y checks), not as good
+   intentions.
 
-## 7. Tabela de roteamento — referências por necessidade de build
+## 7. Routing table — references by build need
 
-| Precisamos de… | Referência canônica | ID | Papel na nossa build |
+| We need… | Canonical reference | ID | Role in our build |
 |----------------|---------------------|----|----------------------|
-| Schema de voto (nota+comment+overall) | E-1 (newspaper) ⊕ E-5 (studio `CommentEvent`) | E-1, E-5 | **fonte do data model** — merge: bind por-elemento (studio) + score 1–5/comment (newspaper) |
-| Categorias + overall + evidência por nota | E-7 (`critique`) | E-7 | forma das categorias; **substituir as 9 métricas de jornal pelas regras `CONST-FE`** |
-| Física de captura por-elemento (`data-*-id`, overlay) | E-8 (`annotateClickScript`) ⊕ E-3 (`#tt`/`data-tip`) | E-8, E-3 | widget `#vote` irmão do `#tt`; id estável por elemento |
-| Persistência sem perda | E-17 (ledger append-only) **melhorando** E-4 | E-17, E-4 | `telemetry/fitness/votes.ndjson` validado |
-| Endpoint de voto/agregação | E-16 (FastAPI atual) | E-16 | `POST /api/vote`, `GET /api/fitness` no mesmo servidor |
-| Gate humano antes de mutar | E-9 (`AUTO_APPLY_FORBIDDEN`) ⊕ E-11 (two-gate) | E-9, E-11 | mutação = decision-receipt confirmado |
-| Não virar dashboard inerte | E-12 (action-bearing) | E-12 | regra: todo score → owner + action + evidence |
-| Critério de sobrevivência das variantes | E-6 (fitness loop) + E-19 (10 variantes) | E-6, E-19 | overall por variante escolhe 1, mata 9 |
-| Template visual de dashboard | E-7 vizinho `live-dashboard` | E-7 | referência visual (KPI/sparkline) — não copiar lógica |
-| Observar os agentes (2ª metade) | E-13 (SQLite+hook), E-14 (openclaw seam) | E-13, E-14 | fleet telemetry — **fase posterior** |
+| Vote schema (score+comment+overall) | E-1 (newspaper) ⊕ E-5 (studio `CommentEvent`) | E-1, E-5 | **data model source** — merge: per-element bind (studio) + score 1–5/comment (newspaper) |
+| Categories + overall + evidence per score | E-7 (`critique`) | E-7 | shape of the categories; **replace the 9 newspaper metrics with the `CONST-FE` rules** |
+| Per-element capture physics (`data-*-id`, overlay) | E-8 (`annotateClickScript`) ⊕ E-3 (`#tt`/`data-tip`) | E-8, E-3 | `#vote` widget, sibling to `#tt`; stable id per element |
+| Lossless persistence | E-17 (append-only ledger) **improving on** E-4 | E-17, E-4 | validated `telemetry/fitness/votes.ndjson` |
+| Vote/aggregation endpoint | E-16 (current FastAPI) | E-16 | `POST /api/vote`, `GET /api/fitness` on the same server |
+| Human gate before mutating | E-9 (`AUTO_APPLY_FORBIDDEN`) ⊕ E-11 (two-gate) | E-9, E-11 | mutation = confirmed decision-receipt |
+| Not becoming an inert dashboard | E-12 (action-bearing) | E-12 | rule: every score → owner + action + evidence |
+| Variant survival criterion | E-6 (fitness loop) + E-19 (10 variants) | E-6, E-19 | overall per variant picks 1, kills 9 |
+| Visual dashboard template | E-7 neighbor `live-dashboard` | E-7 | visual reference (KPI/sparkline) — do not copy the logic |
+| Observing the agents (2nd half) | E-13 (SQLite+hook), E-14 (openclaw seam) | E-13, E-14 | fleet telemetry — **later phase** |
 
 ## 8. Open questions
 
-- **OQ-1** — Pesos do soft-gradient (herdada de E-11/OQ-5): como combinar as notas de
-  categoria `review` num overall sem inventar precisão? Candidato: média + variância exposta,
-  nunca um único escalar limpo.
-- **OQ-2** — O bind por-elemento usa `data-od-id` (studio) ou um id nosso? Depende de
-  verificar E-5 de 1ª-mão.
-- **OQ-3** — Amendment do FE-8 (action-bearing) entra agora ou depois de 1 ciclo real?
+- **OQ-1** — Soft-gradient weights (inherited from E-11/OQ-5): how to combine category
+  scores from `review` into an overall without inventing false precision? Candidate: mean +
+  exposed variance, never a single clean scalar.
+- **OQ-2** — Does the per-element bind use `data-od-id` (studio) or an id of our own? Depends
+  on verifying E-5 first-hand.
+- **OQ-3** — Does the FE-8 amendment (action-bearing) land now or after 1 real cycle?
 
 ## 9. Next steps
 
-1. **Feito** — verificação de 1ª-mão via dispatch pareado `2026-07-20-ui-studio-readme-verify`; as 10 resolvem, correções aplicadas. Ver [verification.md](verification.md).
-2. Destilar o **spec executável** do 1º corte (`vault/spec/ui-fitness-harness.md`) a partir
-   desta evidência.
-3. Implementar `POST /api/vote` + `votes.ndjson` validado + widget `#vote`.
+1. **Done** — first-hand verification via paired dispatch `2026-07-20-ui-studio-readme-verify`; all 10 resolve, corrections applied. See [verification.md](verification.md).
+2. Distill the **executable spec** of the 1st cut (`vault/spec/ui-fitness-harness.md`) from
+   this evidence.
+3. Implement `POST /api/vote` + validated `votes.ndjson` + `#vote` widget.
 
 ## 📁 Navigation
 
-- **[README.md](README.md)**: este mapa — objetivo, contexto, evidência citada e roteamento.
-- *(planejado)* **`spec.md`**: o spec executável do primeiro corte (após verificação §9.1).
-- **[verification.md](verification.md)**: retorno do dispatch pareado — veredicto por-ID (confirmação + falsificação) e as correções aplicadas.
+- **[README.md](README.md)**: this map — goal, context, cited evidence, and routing.
+- *(planned)* **`spec.md`**: the executable spec of the first cut (after §9.1 verification).
+- **[verification.md](verification.md)**: paired dispatch return — per-ID verdict (confirmation + falsification) and the corrections applied.
