@@ -56,11 +56,12 @@ _SPAWNED = {"total": 1, "tree": {"explorer": 1}, "loops_used": 1}
 def _dispatch(did: str, dtype: str, created: str) -> str:
     return (
         f"  - dispatch_id: {json.dumps(did)}\n"
-        f'    schema_version: "0.6.0"\n'
+        f'    schema_version: "0.6.1"\n'
         f"    created: {json.dumps(created)}\n"
         f"    dispatch_type: {json.dumps(dtype)}\n"
         f"    goal: {json.dumps('goal of ' + did)}\n"
-        f"    groups: {json.dumps(_GROUP)}\n"
+        + ('    output_mode: "inline"\n' if dtype == "review" else "")
+        + f"    groups: {json.dumps(_GROUP)}\n"
     )
 
 
@@ -86,6 +87,14 @@ def _write_repo(root: Path, name: str, text: str) -> None:
     path = root / name / ledger.LEDGER_RELPATH
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def _write_pending(root: Path, repo: str, sheet_file: str, sheet: dict) -> Path:
+    """Drops a pre-confirm sheet into a repo's pending dir; returns the dir."""
+    pending_dir = root / repo / ledger.PENDING_RELPATH
+    pending_dir.mkdir(parents=True, exist_ok=True)
+    (pending_dir / sheet_file).write_text(json.dumps(sheet), encoding="utf-8")
+    return pending_dir
 
 
 def _client(root: Path) -> TestClient:
@@ -253,6 +262,52 @@ def test_snapshot_shape(root: Path) -> None:
     check("dispatches limited to config.limit (40)", len(repo["dispatches"]) == 40, f"({len(repo['dispatches'])})")
 
 
+def test_confirm(root: Path) -> None:
+    print("\nPOST /api/confirm — the Phase-2 write verb (marker in pending, NOT the ledger)")
+    _write_repo(root, "alpha", _asym_repo())
+    pending_dir = _write_pending(
+        root, "alpha", "2026-07-21-sheet.json", {"dispatch_type": "research", "goal": "g"}
+    )
+    client = _client(root)
+
+    # Happy path: confirm writes the marker and returns it.
+    resp = client.post("/api/confirm", json={"repo": "alpha", "file": "2026-07-21-sheet.json"})
+    check("confirm 200", resp.status_code == 200, f"({resp.status_code})")
+    body = resp.json()
+    check("confirm ok=True", body.get("ok") is True)
+    check("marker named <sheet>.confirmed", body.get("marker") == "2026-07-21-sheet.json.confirmed")
+    check("marker file exists on disk", (pending_dir / "2026-07-21-sheet.json.confirmed").is_file())
+
+    # The reader reflects the confirm, and the `.confirmed` marker is NOT itself
+    # read back as a sheet (the `*.json` glob excludes it).
+    repo_view = client.get("/api/repo/alpha").json()
+    sheets = repo_view["pending"]
+    check("still exactly one pending sheet (marker not globbed)", len(sheets) == 1, f"({len(sheets)})")
+    check("sheet marked _confirmed=True", sheets and sheets[0].get("_confirmed") is True)
+
+    # Idempotent: re-confirm succeeds.
+    check("re-confirm 200 (idempotent)", client.post(
+        "/api/confirm", json={"repo": "alpha", "file": "2026-07-21-sheet.json"}
+    ).status_code == 200)
+
+    # Guards.
+    check("unknown repo -> 404", client.post(
+        "/api/confirm", json={"repo": "nope", "file": "2026-07-21-sheet.json"}
+    ).status_code == 404)
+    check("missing sheet -> 404", client.post(
+        "/api/confirm", json={"repo": "alpha", "file": "ghost.json"}
+    ).status_code == 404)
+    check("path traversal -> 400", client.post(
+        "/api/confirm", json={"repo": "alpha", "file": "../../etc/passwd.json"}
+    ).status_code == 400)
+    check("non-json name -> 400", client.post(
+        "/api/confirm", json={"repo": "alpha", "file": "2026-07-21-sheet"}
+    ).status_code == 400)
+    check("confirm never touched the ledger", not (
+        root / "alpha" / ledger.LEDGER_RELPATH
+    ).read_text(encoding="utf-8").__contains__("confirmed"))
+
+
 # --------------------------------------------------------------------------
 # Mutant verification: I confirm the tests above KILL each mutant. Where I can,
 # I mutate the real production code (OPEN_ALL_CAP) and check via the LIVE
@@ -362,6 +417,8 @@ def main() -> int:
         test_snapshot_shape(Path(t6))
     with tempfile.TemporaryDirectory() as t7:
         test_mutants(Path(t7))
+    with tempfile.TemporaryDirectory() as t8:
+        test_confirm(Path(t8))
 
     print()
     if FAILURES:

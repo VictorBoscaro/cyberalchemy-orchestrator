@@ -46,7 +46,12 @@ ROW_RE = re.compile(r"^(  - |    )([A-Za-z_][A-Za-z0-9_]*):(?: (.*))?$")
 LEDGER_RELPATH = Path("telemetry") / "agents" / "subagents-dispatch.yaml"
 PENDING_RELPATH = Path("telemetry") / "agents" / "pending"
 
-# Only these three are dispatchable under v0.6.0; the rest are reserved names.
+# Suffix of the confirm marker written next to a pending sheet when the human
+# confirms it (Phase 2). `<sheet>.json` -> `<sheet>.json.confirmed`. Deliberately
+# NOT ending in `.json`, so `read_pending`'s `*.json` glob never picks it up.
+CONFIRM_MARKER_SUFFIX = ".confirmed"
+
+# Only these three are dispatchable under v0.6.1; the rest are reserved names.
 LIVE_TYPES = {"research", "review", "experiment"}
 
 # Bucket for dispatches without a `dispatch_type` (pre-v0.5.2 rows lack the field).
@@ -397,6 +402,11 @@ def read_pending(repo: Path) -> list[dict[str, Any]]:
             "_path": str(path),
             "_mtime": None,
             "_error": None,
+            # A sibling `<sheet>.confirmed` marker (written by POST /api/confirm)
+            # means the human confirmed this sheet. It lives OUTSIDE the `*.json`
+            # glob, so it never reads back as a sheet of its own. Reading it here
+            # keeps this module write-free (the marker is written in `main`).
+            "_confirmed": (pending_dir / (path.name + CONFIRM_MARKER_SUFFIX)).exists(),
         }
         try:
             # `stat` INSIDE the guard, alongside the read: the pending dir is the
@@ -582,7 +592,7 @@ def summarize_repo(
         "legacy": legacy_count,
         "by_type": dict(sorted(by_type.items())),
         "live": live_count,
-        # RESERVED = a type not dispatchable under v0.6.0. Legacy rows stay out of
+        # RESERVED = a type not dispatchable under v0.6.1. Legacy rows stay out of
         # both sides: they predate the distinction existing.
         # CAVEAT (not a partition): `total == live + reserved + legacy` is NOT
         # guaranteed. A research row whose `groups` failed the lenient parse ends up

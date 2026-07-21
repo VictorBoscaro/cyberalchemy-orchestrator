@@ -121,10 +121,21 @@ def test_variant(page, variant: str) -> Report:
     repos = page.locator('[data-testid="repo-section"]').count()
     rep.check("rendered repos", repos > 0, f"(got {repos})")
 
-    # The gate button exists and is disabled (Phase 2 does not wire it yet).
+    # The gate button. `linear` has Phase 2 wired (POST /api/confirm): an
+    # unconfirmed sheet's button is ENABLED, a confirmed sheet's is disabled
+    # ("Confirmed"). The other variants have not wired Phase 2, so their button
+    # stays disabled. Read the card's data-confirmed so the check is deterministic
+    # regardless of whether the demo sheet has been confirmed on this server.
     btn = page.locator('[data-testid="dispatch-button"]').first
     if btn.count() > 0:
-        rep.check("Dispatch button disabled", btn.is_disabled(), "(it is enabled!)")
+        if variant == "linear":
+            confirmed = page.locator('[data-testid="pending-card"]').first.get_attribute("data-confirmed")
+            if confirmed == "1":
+                rep.check("Dispatch button disabled (already confirmed)", btn.is_disabled(), "(it is enabled!)")
+            else:
+                rep.check("Dispatch button enabled (Phase 2 wired)", not btn.is_disabled(), "(it is disabled!)")
+        else:
+            rep.check("Dispatch button disabled", btn.is_disabled(), "(it is enabled!)")
 
     # Per-card attributes required by the contract.
     first = page.locator('[data-testid="dispatch-card"]').first

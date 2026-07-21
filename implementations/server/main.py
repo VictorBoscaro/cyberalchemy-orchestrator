@@ -3,9 +3,12 @@
 Serves, live, the pending sheets (pre-confirm) and the dispatch history read from
 the append-only ledgers of several repos.
 
-This server is **read-only**. The "Fire" button is Phase 2: it writes a confirm,
-and whoever runs the chain (check-tension → register-dispatch → agents) is still
-Claude in the session. Nothing here writes to the ledger.
+This server is **read-only against the ledger**. Its one write verb — Phase 2's
+`POST /api/confirm` — drops a confirm marker in the pending dir ("the only
+editable surface"), never the append-only ledger. Whoever runs the chain that
+follows (check-tension → register-dispatch → agents) is still Claude in the
+session, watching for the marker; the validated appender remains the sole ledger
+writer (EG-1).
 """
 
 from __future__ import annotations
@@ -19,6 +22,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 
 from . import config as config_module
 from . import ledger
@@ -215,6 +219,56 @@ async def api_repo(
         "pending": pending,
         "dispatches": rows,
     }
+
+
+class ConfirmRequest(BaseModel):
+    repo: str
+    file: str
+
+
+@app.post("/api/confirm")
+async def api_confirm(req: ConfirmRequest) -> dict:
+    """Phase-2 write verb: mark a pending sheet as human-confirmed.
+
+    This is the ONLY write this server performs, and it lands in the pending dir
+    — "the only editable surface" (ledger.read_pending) — NEVER the append-only
+    ledger. The validated appender (register-dispatch) still writes the actual
+    dispatch row later, so EG-1's one-validated-writer boundary is untouched.
+    All this does is drop a `<sheet>.confirmed` marker the orchestrator watches
+    for; confirming is idempotent (re-confirm just refreshes the timestamp).
+    """
+    repo = next((r for r in CFG.resolved_repos() if r.name == req.repo), None)
+    if repo is None:
+        raise HTTPException(status_code=404, detail="repo not found")
+
+    # Path-traversal guard: `file` must be a bare sheet filename living directly
+    # in the pending dir, never a path. Reject separators, parent refs, and
+    # non-`.json` names up front, then confirm the resolved parent really is the
+    # pending dir (defence in depth against symlink/normalization surprises).
+    name = req.file
+    if (
+        not name
+        or "/" in name
+        or "\\" in name
+        or ".." in name
+        or not name.endswith(".json")
+    ):
+        raise HTTPException(status_code=400, detail="invalid sheet filename")
+
+    pending_dir = (repo / ledger.PENDING_RELPATH).resolve()
+    sheet = (pending_dir / name).resolve()
+    if sheet.parent != pending_dir:
+        raise HTTPException(status_code=400, detail="sheet escapes pending dir")
+    if not sheet.is_file():
+        raise HTTPException(status_code=404, detail="pending sheet not found")
+
+    confirmed_at = datetime.now(timezone.utc).isoformat()
+    marker = pending_dir / (name + ledger.CONFIRM_MARKER_SUFFIX)
+    marker.write_text(
+        json.dumps({"sheet": name, "confirmed_at": confirmed_at}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    return {"ok": True, "marker": marker.name, "confirmed_at": confirmed_at}
 
 
 def _sse(event: str, data: dict) -> str:

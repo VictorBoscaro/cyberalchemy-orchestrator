@@ -109,10 +109,18 @@ variant generation; per-agent cost fleet-telemetry (that's the *other* half — 
 
 ## 6. Design decisions carried over here
 
-1. **The harness IS the `CONST-FE` validation surface.** Direct mapping (E-11 ≡ E-15):
-   `deterministic` (FE-3/5/6) → **hard gate** (Playwright, discards on fail); `review`
-   (FE-1/4/7) → **soft gradient** (human 1–5 + comment, never auto-discards); `none-yet`
-   (density⊥fatigue axis, FE-8) → **human-objective residue**.
+1. **The harness IS the `CONST-FE` validation surface.** Direct mapping (E-11 ≡ E-15),
+   honoring the constitution's **three** validation modes (read first-hand off each rule's
+   `Validation` field): `deterministic` (FE-3/6) → **hard gate** (Playwright, discards on
+   fail); `review` (FE-4/7) → **soft gradient** (human 1–5 + comment, never auto-discards);
+   `hybrid` (FE-1/2/5/9/10) → **both** (a deterministic sub-check gates *and* a soft-gradient
+   human score applies to the same element); `none-yet` (density⊥fatigue axis, FE-8) →
+   **human-objective residue**. *(Correction 2026-07-21: an earlier two-bucket map here
+   misfiled FE-1 and FE-5 — both `hybrid` per [frontend-constitution.md:123](../../../vault/constitution/frontend-constitution.md#L123),
+   [:169](../../../vault/constitution/frontend-constitution.md#L169) — as
+   `review`/`deterministic`. The paired verification ([verification.md](verification.md))
+   audited only citations E-5…E-14, never this internal CONST-FE cross-reference — a scope
+   blind spot, not an auditor miss.)*
 2. **Append-only over blob** (E-17 over E-4): a vote is never edited, it's appended and validated.
 3. **Three granularities** the human asked for: `overall (shadow) ⊃ category (FE rule) ⊃
    item (comment+score = structure)`. The repo's CT framing: `residue = shadow ⊕ structure` —

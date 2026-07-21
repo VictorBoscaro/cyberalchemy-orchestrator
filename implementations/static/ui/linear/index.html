@@ -163,6 +163,8 @@
   }
   .btn-dispatch:disabled { background: #c9c9ea; border-color: #c0c0e3; color: #f4f4ff; cursor: not-allowed; box-shadow: none; }
   .phase-note { font-size: 11px; color: var(--text-3); text-align: right; margin-top: 4px; }
+  .phase-note.ok { color: #1f9d55; }
+  .phase-note.err { color: #d4404a; }
   .tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 
   .empty {
@@ -661,6 +663,18 @@
         e.status = r.status;
         throw e;
       }
+      return r.json();
+    });
+  }
+  // Phase-2 write verb: confirm a pending sheet. Writes a marker in the pending
+  // dir (never the ledger); the orchestrator watches for it. See POST /api/confirm.
+  function postConfirm(repo, file) {
+    return fetch(apiBase() + "/api/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ repo: repo, file: file }),
+    }).then(function (r) {
+      if (!r.ok) { var e = new Error("HTTP " + r.status); e.status = r.status; throw e; }
       return r.json();
     });
   }
@@ -1397,6 +1411,7 @@
     var repoName = p._repo || "(repo?)";
     var card = el("article", "pending-card");
     card.setAttribute("data-testid", "pending-card");
+    card.setAttribute("data-confirmed", p._confirmed ? "1" : "0");
 
     var top = el("div", "pending-top");
     var left = el("div");
@@ -1434,12 +1449,50 @@
     var btn = el("button", "btn-dispatch");
     btn.setAttribute("data-testid", "dispatch-button");
     btn.type = "button";
-    btn.disabled = true;
-    btn.title = "confirm dispatches in Phase 2";
-    btn.appendChild(icon(ICON.bolt, 13));
-    btn.appendChild(document.createTextNode("Dispatch"));
+    var note = el("div", "phase-note", "");
+
+    function setBtn(iconD, text) {
+      while (btn.firstChild) btn.removeChild(btn.firstChild);
+      btn.appendChild(icon(iconD, 13));
+      btn.appendChild(document.createTextNode(text));
+    }
+    function showConfirmed() {
+      btn.disabled = true;
+      setBtn(ICON.closed, "Confirmed");
+      btn.title = "confirmed — the orchestrator picks it up from here";
+      note.className = "phase-note ok";
+      note.textContent = "confirmed — awaiting orchestrator";
+      card.setAttribute("data-confirmed", "1");
+    }
+
+    if (p._error) {
+      // An unreadable sheet can't be confirmed — nothing valid to hand off.
+      btn.disabled = true;
+      setBtn(ICON.bolt, "Dispatch");
+      btn.title = "sheet is unreadable";
+      note.textContent = "disabled — unreadable sheet";
+    } else if (p._confirmed) {
+      showConfirmed();
+    } else {
+      setBtn(ICON.bolt, "Dispatch");
+      btn.title = "confirm this sheet — writes a marker the orchestrator watches for";
+      note.textContent = "confirm to hand off to the orchestrator";
+      btn.addEventListener("click", function () {
+        if (btn.disabled) return;
+        btn.disabled = true;
+        setBtn(ICON.bolt, "Confirming…");
+        note.className = "phase-note";
+        note.textContent = "";
+        postConfirm(repoName, p._file).then(showConfirmed).catch(function (e) {
+          btn.disabled = false;
+          setBtn(ICON.bolt, "Dispatch");
+          note.className = "phase-note err";
+          note.textContent = "confirm failed (" + (e && e.status ? "HTTP " + e.status : "network") + ") — retry";
+        });
+      });
+    }
     right.appendChild(btn);
-    right.appendChild(el("div", "phase-note", "disabled — Phase 2"));
+    right.appendChild(note);
     top.appendChild(right);
     card.appendChild(top);
 
@@ -1961,7 +2014,7 @@
 
     if (!live && d.dispatch_type) {
       wrap.appendChild(el("div", "banner reserved",
-        "RESERVED type (" + d.dispatch_type + "): only research, review and experiment are LIVE under v0.6.0. This dispatch does not execute."));
+        "RESERVED type (" + d.dispatch_type + "): only research, review and experiment are LIVE under v0.6.1. This dispatch does not execute."));
     }
 
     /* anti-bias */
