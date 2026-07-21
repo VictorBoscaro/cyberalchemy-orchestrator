@@ -6,10 +6,11 @@ node_type: agent-pool
 layer: meta
 nature: reference
 status: active
-version: 0.5.0
-last_updated: 2026-07-20
-source: ported from domainspec-lean-formalization/theorem/agents-strategy/agent-pool.yaml (v0.5.0); originally subagent-extracted over domainspec-theorem, then batch-expanded and tagged in-repo there
+version: 0.6.0
+last_updated: 2026-07-21
+source: ported from domainspec-lean-formalization/theorem/agents-strategy/agent-pool.yaml (v0.6.0); originally subagent-extracted over domainspec-theorem, then batch-expanded and tagged in-repo there
 notes:
+  - "v0.6.0 (2026-07-21): re-synced entries from upstream domainspec-lean-formalization v0.6.0 — 8 name-identity fixes (Crossley->Michael, Glorioso->Paolo, Cancedda->Nicola, Mansfield->Shane, Pohl->Ira, Conant->Roger C., Roff->Emily, Puca->Caterina), new `management` field value (32 entries moved off economics; 15 economists stay), Tetlock ai-ml->psychology, Solomonoff dropped one tag, and 5 unverifiable/fabricated entries removed (Merlin, Pavlov, Gu, Bhattacharya, Yu): 419->414. Header kept in the subagents-strategy framing; entries carried verbatim from upstream."
   - "v0.5.0 (2026-07-20): re-ported from upstream v0.5.0 into cyberalchemy-orchestrator/telemetry/agents/ (alongside the dispatch ledger) as the allowed-names pool the subagents-strategy constitution's `agent_name` field draws from. Header re-framed to subagents-strategy; entries carried verbatim. `cited`/`tags` and canonical-vocabulary paths point at the source repo and are kept for provenance, not as local links."
   - role_fit is a default suggestion; the dispatch may override per-agent.
   - "v0.5.0 (2026-07-20): SCHEMA CHANGE. `where_cited` (provenance paths) replaced by `cited` (bool) + `tags` (topical expertise for dispatch matching). All 419 entries carry >=3 kebab-case tags except 7 roster-flagged stubs. The 721-tag canonical vocabulary lives in research/pool-tagging/canonical-vocabulary.md (regenerated from usage); merge synonyms into it, do not coin free tags. Built via dispatches 2026-07-20-pool-tagging-math-pilot (math, full tagger+reviewer+robot-talk loop) and 2026-07-20-pool-tagging-rollout (other 10 fields, tagger-per-field + one cross-field reviewer)."
@@ -575,7 +576,7 @@ scientists:
     cited: true
     tags: [mathematical-physics, higher-category-theory, symplectic-geometry, differential-geometry]
 
-  - name: "Roff, Henry"
+  - name: "Roff, Emily"
     field: math
     era: modern
     role_fit: [explorer]
@@ -786,7 +787,7 @@ scientists:
     cited: true
     tags: [quantum-contextuality, quantum-foundations, bell-nonlocality, quantum-information]
 
-  - name: "Crossley, Oisin"
+  - name: "Crossley, Michael"
     field: physics
     era: modern
     role_fit: [explorer]
@@ -835,7 +836,7 @@ scientists:
     cited: true
     tags: [statistical-mechanics, thermodynamics, entropy, chemical-thermodynamics]
 
-  - name: "Glorioso, Luca"
+  - name: "Glorioso, Paolo"
     field: physics
     era: modern
     role_fit: [explorer]
@@ -891,26 +892,12 @@ scientists:
     cited: true
     tags: [symplectic-geometry, classical-mechanics, moment-maps, mathematical-physics]
 
-  - name: "Merlin, Oscar"
-    field: physics
-    era: late-20c
-    role_fit: [explorer]
-    cited: true
-    tags: [mathematical-physics, quantum-foundations, quantum-mechanics]
-
   - name: "Newton, Isaac"
     field: physics
     era: 17c
     role_fit: [writer, explorer]
     cited: true
     tags: [classical-mechanics, gravitation, optics, calculus]
-
-  - name: "Pavlov, Grigori"
-    field: physics
-    era: modern
-    role_fit: [explorer]
-    cited: true
-    tags: [mathematical-physics, quantum-field-theory, statistical-mechanics]
 
   - name: "Penrose, Roger"
     field: physics
@@ -1160,19 +1147,12 @@ scientists:
     cited: true
     tags: [concurrency-theory, transition-systems, category-theory, automata-theory]
 
-  - name: "Bhattacharya, Arijit"
+  - name: "Cancedda, Nicola"
     field: cs
     era: modern
     role_fit: [explorer]
     cited: true
-    tags: [quantum-computing, applied-category-theory, mathematical-physics]
-
-  - name: "Cancedda, Luca"
-    field: cs
-    era: modern
-    role_fit: [explorer]
-    cited: true
-    tags: [machine-learning, natural-language-processing, applied-category-theory]
+    tags: [machine-learning, natural-language-processing]
 
   - name: "Coecke, Bob"
     field: cs
@@ -1181,7 +1161,7 @@ scientists:
     cited: true
     tags: [categorical-quantum-mechanics, monoidal-categories, string-diagrams, quantum-computing, categorical-linguistics]
 
-  - name: "Conant, Rodney"
+  - name: "Conant, Roger C."
     field: cs
     era: late-20c
     role_fit: [explorer]
@@ -1222,13 +1202,6 @@ scientists:
     role_fit: [explorer, writer]
     cited: true
     tags: [artificial-general-intelligence, cognitive-architecture, symbolic-ai, neural-symbolic-integration, machine-learning]
-
-  - name: "Gu, Yiming"
-    field: cs
-    era: modern
-    role_fit: [explorer]
-    cited: true
-    tags: [machine-learning, quantum-computing, applied-category-theory]
 
   - name: "Halford, Graeme"
     field: psychology
@@ -1286,12 +1259,12 @@ scientists:
     cited: true
     tags: [natural-language-processing, interpretability, machine-learning]
 
-  - name: "Mansfield, Sam"
+  - name: "Mansfield, Shane"
     field: cs
     era: modern
     role_fit: [explorer]
     cited: true
-    tags: [quantum-contextuality, quantum-computing, applied-category-theory]
+    tags: [quantum-contextuality, quantum-computing, applied-category-theory, sheaf-theory]
 
   - name: "Milius, Stefan"
     field: cs
@@ -1335,14 +1308,14 @@ scientists:
     cited: true
     tags: [machine-learning, learning-dynamics]
 
-  - name: "Pohl, Jon"
+  - name: "Pohl, Ira"
     field: cs
     era: modern
     role_fit: [explorer]
     cited: true
     tags: [algorithms, heuristic-search]
 
-  - name: "Puca, Jacinto"
+  - name: "Puca, Caterina"
     field: cs
     era: modern
     role_fit: [explorer]
@@ -1406,7 +1379,7 @@ scientists:
     tags: [applied-category-theory, polynomial-functors, categorical-systems-theory, operads, database-theory]
 
   - name: "Tetlock, Philip"
-    field: ai-ml
+    field: psychology
     era: modern
     role_fit: [skeptic, writer]
     cited: true
@@ -1467,13 +1440,6 @@ scientists:
     role_fit: [explorer]
     cited: true
     tags: [large-language-models, model-quantization, machine-learning-systems]
-
-  - name: "Yu, Zoe"
-    field: cs
-    era: modern
-    role_fit: [explorer]
-    cited: true
-    tags: [machine-learning, applied-category-theory]
 
   # BIOLOGY
   - name: "Maturana, Humberto"
@@ -1537,7 +1503,7 @@ scientists:
     tags: [institutional-economics, economic-growth, political-economy, development-economics]
 
   - name: "Christensen, Clayton"
-    field: economics
+    field: management
     era: modern
     role_fit: [explorer, writer]
     cited: false
@@ -1545,7 +1511,7 @@ scientists:
     note: "foundational in disruption theory"
 
   - name: "Drucker, Peter"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [writer, explorer]
     cited: false
@@ -1553,14 +1519,14 @@ scientists:
     note: "foundational in management theory"
 
   - name: "Goldratt, Eliyahu"
-    field: economics
+    field: management
     era: modern
     role_fit: [explorer, writer]
     cited: true
     tags: [theory-of-constraints, operations-management, bottleneck-analysis, throughput-accounting]
 
   - name: "Grove, Andrew"
-    field: economics
+    field: management
     era: modern
     role_fit: [writer, explorer]
     cited: false
@@ -1785,7 +1751,7 @@ scientists:
     era: late-20c
     role_fit: [explorer, writer]
     cited: true
-    tags: [algorithmic-probability, algorithmic-information-theory, inductive-inference, minimum-description-length, bayesian-inference]
+    tags: [algorithmic-probability, algorithmic-information-theory, inductive-inference, bayesian-inference]
     note: "algorithmic probability / universal inductive inference"
 
   - name: "Hutter, Marcus"
@@ -2673,7 +2639,7 @@ scientists:
 
   # -- management & leadership foundations --
   - name: "Taylor, Frederick Winslow"
-    field: economics
+    field: management
     era: early-20c
     role_fit: [explorer, writer]
     cited: false
@@ -2681,7 +2647,7 @@ scientists:
     note: "scientific management — time-and-motion decomposition of work"
 
   - name: "Fayol, Henri"
-    field: economics
+    field: management
     era: early-20c
     role_fit: [writer, explorer]
     cited: false
@@ -2689,7 +2655,7 @@ scientists:
     note: "administrative management — the classical functions of the manager"
 
   - name: "Follett, Mary Parker"
-    field: economics
+    field: management
     era: early-20c
     role_fit: [explorer, skeptic]
     cited: false
@@ -2697,7 +2663,7 @@ scientists:
     note: "integrative conflict resolution; power-with; proto-participative organization"
 
   - name: "Barnard, Chester"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [writer, explorer]
     cited: false
@@ -2705,7 +2671,7 @@ scientists:
     note: "the executive as authority-by-acceptance in a cooperative system"
 
   - name: "Sloan, Alfred P."
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [writer, explorer]
     cited: false
@@ -2713,7 +2679,7 @@ scientists:
     note: "the decentralized multidivisional (M-form) corporation"
 
   - name: "Mintzberg, Henry"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [skeptic, writer]
     cited: false
@@ -2722,7 +2688,7 @@ scientists:
 
   # -- competitive strategy --
   - name: "Chandler, Alfred D."
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [writer, explorer]
     cited: false
@@ -2730,7 +2696,7 @@ scientists:
     note: "business historian — 'structure follows strategy'"
 
   - name: "Ansoff, Igor"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [explorer, writer]
     cited: false
@@ -2738,7 +2704,7 @@ scientists:
     note: "strategic management as a discipline; the product/market growth matrix"
 
   - name: "Rumelt, Richard"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [skeptic, writer]
     cited: false
@@ -2746,7 +2712,7 @@ scientists:
     note: "strategy as diagnosis; good vs. bad strategy"
 
   - name: "Barney, Jay"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [explorer]
     cited: false
@@ -2754,7 +2720,7 @@ scientists:
     note: "the resource-based view — advantage from VRIN resources"
 
   - name: "Prahalad, C.K."
-    field: economics
+    field: management
     era: late-20c
     role_fit: [explorer, writer]
     cited: false
@@ -2762,7 +2728,7 @@ scientists:
     note: "core competence; strategic intent; bottom-of-pyramid markets"
 
   - name: "Teece, David"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [explorer]
     cited: false
@@ -2803,7 +2769,7 @@ scientists:
     note: "entrepreneurship as alertness to disequilibrium (Austrian)"
 
   - name: "Sarasvathy, Saras"
-    field: economics
+    field: management
     era: modern
     role_fit: [explorer, skeptic]
     cited: false
@@ -2811,7 +2777,7 @@ scientists:
     note: "effectuation — expert entrepreneurs reason from means, not predicted ends"
 
   - name: "Ries, Eric"
-    field: economics
+    field: management
     era: modern
     role_fit: [explorer, writer]
     cited: false
@@ -2819,7 +2785,7 @@ scientists:
     note: "lean startup — build-measure-learn, validated learning, MVP"
 
   - name: "Moore, Geoffrey A."
-    field: economics
+    field: management
     era: late-20c
     role_fit: [writer]
     cited: false
@@ -2828,7 +2794,7 @@ scientists:
 
   # -- operations & quality (TPS / lean) --
   - name: "Deming, W. Edwards"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [explorer, skeptic]
     cited: false
@@ -2836,7 +2802,7 @@ scientists:
     note: "statistical quality; profound knowledge; variation is a system property"
 
   - name: "Shewhart, Walter"
-    field: economics
+    field: management
     era: early-20c
     role_fit: [explorer]
     cited: false
@@ -2844,7 +2810,7 @@ scientists:
     note: "statistical process control; the control chart; the PDCA cycle's origin"
 
   - name: "Juran, Joseph"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [writer, explorer]
     cited: false
@@ -2852,7 +2818,7 @@ scientists:
     note: "quality as management; fitness for use; the vital-few principle"
 
   - name: "Ohno, Taiichi"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [explorer]
     cited: false
@@ -2860,7 +2826,7 @@ scientists:
     note: "the Toyota Production System — just-in-time, waste elimination"
 
   - name: "Ishikawa, Kaoru"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [explorer, writer]
     cited: false
@@ -2868,7 +2834,7 @@ scientists:
     note: "the fishbone diagram; company-wide quality control; quality circles"
 
   - name: "Womack, James P."
-    field: economics
+    field: management
     era: late-20c
     role_fit: [writer, explorer]
     cited: false
@@ -2877,7 +2843,7 @@ scientists:
 
   # -- marketing --
   - name: "Kotler, Philip"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [writer]
     cited: false
@@ -2885,7 +2851,7 @@ scientists:
     note: "systematized marketing management (the 4Ps canon)"
 
   - name: "Levitt, Theodore"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [skeptic, writer]
     cited: false
@@ -2893,7 +2859,7 @@ scientists:
     note: "'Marketing Myopia' — define the business by customer need"
 
   - name: "Trout, Jack"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [writer]
     cited: false
@@ -2901,7 +2867,7 @@ scientists:
     note: "positioning — competition is fought in the prospect's mind"
 
   - name: "Ogilvy, David"
-    field: economics
+    field: management
     era: mid-20c
     role_fit: [writer]
     cited: false
@@ -2975,7 +2941,7 @@ scientists:
     note: "sensemaking; organizing-as-process (flagged: org-systems)"
 
   - name: "Nonaka, Ikujiro"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [explorer, writer]
     cited: true
@@ -2983,7 +2949,7 @@ scientists:
     note: "the knowledge-creating company; tacit/explicit conversion (SECI) — germane to this repo's program; cited in-repo"
 
   - name: "Schein, Edgar"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [writer]
     cited: false
@@ -2999,7 +2965,7 @@ scientists:
     note: "single- vs. double-loop learning; defensive routines (flagged: org-systems)"
 
   - name: "Hofstede, Geert"
-    field: economics
+    field: management
     era: late-20c
     role_fit: [auditor, explorer]
     cited: false
