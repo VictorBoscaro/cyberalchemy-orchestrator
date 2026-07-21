@@ -58,10 +58,10 @@ a FastAPI + SSE server with ten UI variants that read, live, what is pending hum
 confirmation and what has already been dispatched. It runs, has tests, and comes up locally in
 minutes (see [Quick Start](#quick-start--how-to-run)). The decision-science loop and the
 categorical typing of the tools are the **thesis layer** — mostly still on paper
-([`FRAMINGS.md`](FRAMINGS.md), [`MAPPING.md`](MAPPING.md), [`OBLIGATIONS.md`](OBLIGATIONS.md)),
+([`FRAMINGS.md`](FRAMINGS.md), [`OBLIGATIONS.md`](OBLIGATIONS.md)),
 not proven. One self-referential twist links the two: building this repo is itself done
 through dispatches recorded in the **same ledger** the orchestrator operates —
-*"framework as its own instance"* (BACKLOG A6; see [`PLAN.md §1`](PLAN.md#1-problem)).
+*"framework as its own instance"* (BACKLOG A6; see [`docs/PLAN.md §1`](docs/PLAN.md#1-the-business-problem)).
 
 > **Design goal (new, 2026-07-20):** the concrete layer must be **generic — droppable
 > into any repo with near-zero integration**, independent of that repo's domain. The
@@ -73,20 +73,52 @@ through dispatches recorded in the **same ledger** the orchestrator operates —
 
 ## How the pieces fit together
 
+### Capability view — stable abstraction
+
+This first view names the responsibilities without making the current YAML ledger look like the
+whole future persistence model:
+
+```mermaid
+flowchart TD
+    U[User request] --> A[Authoring and dispatch strategy]
+    A --> G[Validation and human gate]
+    G --> OP[Persist confirmed opening]
+    OP --> R[Orchestration runtime]
+    R --> E[Agent execution]
+    E --> D[Deliberation and composition]
+    D --> O[Result and human follow-up]
+
+    OP --> P[(Persistence and provenance)]
+    R --> P
+    E --> P
+    D --> P
+    P --> O
+```
+
+`Persistence and provenance` is deliberately abstract here. In the target architecture it covers
+the current high-level audit ledger, a durable runtime event journal, accepted bus publications
+recorded in that journal,
+artifacts, contextual knowledge and reconstructible realtime projections.
+
+### Current operational path — implemented today
+
 ```mermaid
 flowchart TD
     A["1. Propose<br/>strategist fills in the sheet<br/>goal · context · groups · typed connections<br/>(sequential / zig-zag / feedback)"]
-    B{"2. check-tension<br/>anti-bias gate — only if some group has n≥2<br/>and role investigate/evaluate"}
+    B{"2. check-tension<br/>anti-bias gate — only if some group<br/>is a fan-out group (n≥2)"}
     A --> B
     B -- "fails, or the two evaluators disagree" --> A
     B -- "both PASS (Tests 1-4)" --> P
     P["Pending sheet<br/>telemetry/agents/pending/&lt;id&gt;.json<br/>the only editable surface, pre-confirm"]
     P --> C["3. Human confirm<br/>explicit affirmation — silence doesn't count"]
-    C --> D["4. Register + run<br/>skill register-dispatch writes the dispatch row"]
-    D --> L[("Append-only ledger<br/>telemetry/agents/subagents-dispatch.yaml<br/>never edited in place")]
-    D --> E["Subagents dispatched<br/>groups ready by connections dependency,<br/>agents in parallel within the group"]
+    C --> D["4. Register opening"]
+    D --> W["Validated opening appender"]
+    W --> L[("Current audit ledger<br/>telemetry/agents/subagents-dispatch.yaml<br/>append-only; never edited in place")]
+    W -- "append succeeds" --> E["Subagents dispatched by dependency,<br/>agents parallel within each group"]
+    W -- "append fails" --> X["Stop: no subagent starts"]
     E --> F["5. Close — close row<br/>exit_reason · agents_spawned"]
-    F --> L
+    F --> CW["Validated close appender"]
+    CW --> L
     L -. "read live (read-only)" .-> UI["Control plane<br/>FastAPI + SSE — implementations/server/"]
     P -. "read live" .-> UI
     UI --> V["10 UI variants<br/>implementations/static/ui/*"]
@@ -94,11 +126,15 @@ flowchart TD
     L -. "this dispatch itself also becomes<br/>a row here — self-instance (A6)" .-> L
 ```
 
-The ledger is only written **after** human confirm — that's the gate. A UI that only read the
+The opening row is appended **after** human confirmation and **before** any subagent is dispatched.
+If that append fails, execution does not start. At termination, “updating” the audit ledger means
+appending the close row; the opening row is never mutated.
+
+A UI that only read the
 ledger would always arrive late, because it could never *be* the gate; that's why Phase 1 also
 reads the pending sheet (`telemetry/agents/pending/`), the only pre-confirm, editable artifact.
 The two sides have opposite postures by design: the `register-dispatch` skill's **appender** is
-**strict** (refuses to write a record outside schema v0.6.0, and refuses to append to a
+**strict** (refuses to write a record outside schema v0.6.1, and refuses to append to a
 **structurally** corrupted ledger — malformed line shapes, invalid JSON, duplicate ids; it does
 **not**, however, re-validate enum values on rows already on disk, which are grandfathered — so it
 protects the file's *structure*, not the historical correctness of every prior row), while the
@@ -106,6 +142,77 @@ control plane's **reader** is **lenient** (it even
 shows old prettified rows that the appender would reject — see
 [the two decisions](#two-decisions-the-real-data-forced)). A hook blocks reading the ledger via
 direct Bash; structural reading always goes through `server/ledger.py`.
+
+### Target runtime — candidate, not implemented
+
+The runtime keeps the same authorization discipline while adding governed logical buses backed by
+a durable event journal, recovery and separate authorities. The existing YAML telemetry continues
+as the **audit ledger**: it records the
+confirmed opening before execution and the official close after termination, but it does not carry
+every runtime message or transition.
+
+```mermaid
+flowchart TD
+    U[Skill / UI / CLI] --> C[Command API]
+    C --> K[Deterministic kernel]
+    K -->|accept confirm| J[(Event journal)]
+
+    J -->|run.created + outbox| AM[Opening materializer]
+    AM --> OA[Validated opening appender]
+    OA -->|append full opening row| AL[(Current audit ledger<br/>subagents-dispatch.yaml)]
+    OA -->|verified append result| Q{Opening row persisted?}
+    Q -- no --> AP[opening pending<br/>do not start agents]
+    AP -. "reconcile by dispatch_id" .-> AM
+    Q -- "yes: persist opening acknowledgement" --> J
+
+    J -->|opening acknowledgement makes run ready| K
+    K -->|only now| A[Agent adapters]
+    A <--> P[Provider CLIs / APIs]
+    A -->|normalized lifecycle and results| K
+
+    A -. "scoped agent tool call" .-> TB[Tool broker]
+    TB <--> B[Bus API]
+    B -->|validate and accept publications| J
+    J -->|authorized reveal and delivery| B
+
+    J --> H[Delivery / group handoff]
+    H --> K
+    J --> RT[Realtime projection]
+    RT --> UI[UI]
+
+    A -->|authorized upload| AS[(Artifact store)]
+    AS -->|ack + content hash| B
+    J -. context proposal .-> KP[Knowledge promotion]
+    KP --> KS[(Knowledge / provenance store)]
+    KP -. promoted or rejected .-> J
+
+    J -->|terminal event + outbox| CM[Close materializer]
+    CM --> CA[Validated close appender]
+    CA -->|append close row| AL
+    CA -->|verified append result| CQ{Close row persisted?}
+    CQ -- no --> CP[close pending<br/>reconcile]
+    CP -. "reconcile by close_of" .-> CM
+    CQ -- "yes: persist close acknowledgement" --> J
+```
+
+The ordering invariant is:
+
+```text
+human confirm
+  → run.created in the event journal
+  → opening row persisted in the current audit ledger
+  → opening acknowledgement
+  → agent effects may begin
+  → terminal event
+  → append-only close row
+```
+
+The event journal is the recoverable runtime authority; the audit ledger remains the high-level
+authorization/outcome record and keeps its existing validated appender as its only physical write
+path. A materialization failure is visible and retryable—it never silently permits agents to run
+without an official opening. On retry, the materializer first reconciles by `dispatch_id` or
+`close_of`: an identical existing row counts as already applied; a divergent row becomes
+`reconciliation_required` instead of triggering a duplicate append.
 
 That strictness is a property of the write **path**, not a guarantee about every row already on
 disk. An audit ([`vault/audit/ledger-enum-drift-finding.md`](vault/audit/ledger-enum-drift-finding.md))
@@ -133,7 +240,7 @@ This is the point where it's worth being more honest than excited.
 - The **agent-pool-mcp**: a runnable MCP server at [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/)
   (`npm run smoke` doesn't need an API key), which selects `agent_name` from the
   canonical pool in [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml)
-  (419 tagged entries).
+  (414 tagged entries).
 - The **operational skills** in [`.claude/skills/`](.claude/skills/) —
   `register-dispatch`, `check-tension`, `robot-talks`, `domainspec-subagents-strategy` —
   executable via Claude Code today, not a future roadmap.
@@ -142,8 +249,8 @@ This is the point where it's worth being more honest than excited.
 
 - **[OBLIGATIONS.md](OBLIGATIONS.md)** — the question "is the orchestration language really a
   category?" (OBL-E3) is **OPEN**. Without it discharged, every parallel in
-  `MAPPING.md` is a typed candidate, not a result.
-- **[MAPPING.md](MAPPING.md)** and **[FRAMINGS.md](FRAMINGS.md)** — the parallels between
+  the CT mapping (now §2 of `FRAMINGS.md`) is a typed candidate, not a result.
+- **[FRAMINGS.md](FRAMINGS.md)** — the parallels between
   orchestrator constructs (probe, verb, residue, zig-zag) and category theory are
   anchored hypotheses (often in `domainspec-lean-formalization`), not theorems
   of this repo.
@@ -243,7 +350,7 @@ enums) — live in the [`register-dispatch`](.claude/skills/register-dispatch/SK
 | Field (dispatch row) | What |
 |---|---|
 | `dispatch_id` | `YYYY-MM-DD-<slug>` — dedup key. |
-| `schema_version` | exactly `"0.6.0"`. |
+| `schema_version` | exactly `"0.6.1"`. Historical `0.6.0` rows remain readable. |
 | `dispatch_type` | `research \| review \| experiment` (LIVE); `code \| plan \| suggestion` reserved. |
 | `goal` / `context` | objective (1-2 sentences) / framing (2-4 sentences) — the only channel the subagents receive. |
 | `groups` | JSON array: each group has `group_id`, `agents[]`, `n`, `robot_talks`, `anti_bias` (required if `n≥2`). |
@@ -276,7 +383,7 @@ repo):
 
 | Layer | What it is | Portable? |
 |---|---|---|
-| **Substrate** | dispatch schema (`schema_version 0.6.0`), skills (`register-dispatch`, `check-tension`, `domainspec-subagents-strategy`), append-only ledger, control plane, agent pool | **is the goal** — should drop into any repo |
+| **Substrate** | dispatch schema (`schema_version 0.6.1`, with historical `0.6.0` read compatibility), skills (`register-dispatch`, `check-tension`, `domainspec-subagents-strategy`), append-only ledger, control plane, agent pool | **is the goal** — should drop into any repo |
 | **Content** | the categorical thesis (FRAMINGS/MAPPING/OBLIGATIONS/DEFINITIONS), the vault, `HYP-ORCH-NOISE`, the essays | **no** — it's the subject matter of this specific repository |
 
 ### What is already evidence of genericity today
@@ -406,7 +513,7 @@ Lean anchor — all `status: candidate`, none promoted to premise.
 
 The inherited rule is strict: **every construct in the agent-language needs a type in category
 theory and an anchor in a real Lean file**. The full table (a living ledger, with
-status and strength per row) lives in [`MAPPING.md`](MAPPING.md); this is the sample that carries
+status and strength per row) lives in [`FRAMINGS.md` §2](FRAMINGS.md#2--interpretation-functor); this is the sample that carries
 the argumentative weight:
 
 | Construct (agent-language) | Candidate CT type | Strength |
@@ -461,7 +568,7 @@ discipline that separates this repository from a glossary decorated with arrows.
 ```
 cyberalchemy-orchestrator/
 ├── PLAN.md                        # the lean object: problem + step plan E0-E4, with collapse-tests
-├── FRAMINGS.md, MAPPING.md, OBLIGATIONS.md   # the thesis layer (framings, CT mapping, falsifiable target)
+├── FRAMINGS.md, OBLIGATIONS.md   # the thesis layer (framings + CT mapping + join, falsifiable target)
 ├── BACKLOG.md                     # parking lot of named-but-unplanned candidates (BL-1..4)
 ├── definitions/DEFINITIONS.md     # definitions protocol, DEF-ORCH-* terms
 ├── .claude/skills/                # this repo's operational skills (portable substrate)
@@ -471,7 +578,7 @@ cyberalchemy-orchestrator/
 │   └── ...                        # dozens of other skills (research, review, close-session, ...)
 ├── telemetry/agents/
 │   ├── subagents-dispatch.yaml    # THE LEDGER — append-only; ~30 dispatches here, ~700 across discovered repos
-│   ├── agent-pool.yaml            # canonical agent_name pool (419 tagged entries)
+│   ├── agent-pool.yaml            # canonical agent_name pool (414 tagged entries)
 │   └── pending/                   # pre-confirm sheets (1 demo fixture today)
 ├── implementations/               # the dispatch control plane (Phase 1)
 │   ├── server/                    # main.py, ledger.py, config.py (cross-repo auto-discovery)
@@ -496,9 +603,8 @@ cyberalchemy-orchestrator/
 
 | Path | What |
 |---|---|
-| [`PLAN.md`](PLAN.md) | The lean object: problem, map of the raw material, E0-E4 plan with collapse-tests, definitions protocol. |
-| [`FRAMINGS.md`](FRAMINGS.md) | Ledger of framings F1–F7 — the anatomy of the categorical thesis. |
-| [`MAPPING.md`](MAPPING.md) | Living ledger of construct ⟷ CT type, with strength and collapse-test per row. |
+| [`docs/PLAN.md`](docs/PLAN.md) | Current orientation: business problem, hypothesis, three fronts, present evidence and information still being gathered. |
+| [`FRAMINGS.md`](FRAMINGS.md) | Stratified CT ledger: F1–F7 framings anatomy (§1) + construct ⟷ CT-type mapping (§2) + join/soundness (§3) + open items (§4). |
 | [`OBLIGATIONS.md`](OBLIGATIONS.md) | The single falsifiable target (OBL-E3). |
 | [`BACKLOG.md`](BACKLOG.md) | Parking lot of named-but-unplanned candidates (BL-1..4); each with a falsifiable core + graduation path. |
 | [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Normative vocabulary (residue, separation, shadow, probe, verb) — single source per term. |
@@ -524,9 +630,9 @@ If this is your first visit, read these three documents **in this order**:
 1. **[`implementations/README.md`](implementations/README.md)** — the piece that already runs:
    what the control plane is, why it exists (the ledger is only written post-confirm, so a UI
    that only reads it always arrives late), and how to bring it up locally.
-2. **[`PLAN.md`](PLAN.md)** — the lean object behind everything: the problem, the raw material
-   already scattered across other repos, and the step plan (E0-E4, each with its own
-   collapse-test).
+2. **[`docs/PLAN.md`](docs/PLAN.md)** — the current orientation behind everything: the business
+   problem, the hypothesis, the three fronts, what already runs and what information is still
+   being gathered.
 3. **[`OBLIGATIONS.md`](OBLIGATIONS.md)** — if you want the depth of the thesis: the single
    falsifiable target (OBL-E3) that decides whether the orchestration language is mathematics or
    metaphor. Optional reading for those who just want to use the control plane.
