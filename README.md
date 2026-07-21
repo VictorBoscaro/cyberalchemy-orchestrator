@@ -9,164 +9,165 @@ version: 0.2.0
 last_updated: 2026-07-20
 ---
 
-# cyberalchemy-orchestrator *(nome provisório)*
+# cyberalchemy-orchestrator *(provisional name)*
 
-> **Estatuto:** semente / brainstorm, **não-revisado**, local (sem remote, sem push).
-> `Claim ≤ proof`: toda afirmação abaixo vale só até onde o arquivo linkado prova — leia
-> "é uma categoria" como "candidato a tipar", não como resultado. **Nada neste repo está
-> tipado em Lean**; as âncoras Lean apontam para o repo-irmão `domainspec-lean-formalization`.
-> A disciplina de dispatch (check-tension → confirm → ledger → close) roda de verdade; o
-> control plane que **lê** o ledger (Fase 1) está construído e testado; o botão que
-> **escreve** (Fase 2) existe na UI mas está `disabled` por design. Criado 2026-07-18,
-> primeira sessão de trabalho real 2026-07-20.
+> **Status:** seed / brainstorm, **unreviewed**, local (no remote, no push).
+> `Claim ≤ proof`: every statement below holds only as far as the linked file proves it — read
+> "is a category" as "candidate to be typed," not as a result. **Nothing in this repo is
+> typed in Lean**; the Lean anchors point to the sibling repo `domainspec-lean-formalization`.
+> The dispatch discipline (check-tension → confirm → ledger → close) runs for real; the
+> control plane that **reads** the ledger (Phase 1) is built and tested; the button that
+> **writes** (Phase 2) exists in the UI but is `disabled` by design. Created 2026-07-18,
+> first real working session 2026-07-20.
 
-Este README orienta quem abre o repo pela primeira vez: **o que é isto, o que já roda hoje
-vs. o que ainda é tese, como subir a peça concreta, e quais três documentos ler primeiro.**
+This README orients whoever opens the repo for the first time: **what this is, what already runs
+today vs. what is still thesis, how to bring up the concrete piece, and which three documents to
+read first.**
 
-## O que é isto?
+## What is this?
 
-Este repo tem duas camadas, e confundi-las é o erro mais fácil de cometer na primeira
-leitura.
+This repo has two layers, and confusing them is the easiest mistake to make on a first
+read.
 
-A camada **concreta** é um **orquestrador de subagentes**: uma disciplina de dispatch
-(grupos de agentes + conexões tipadas `sequential` / `zig-zag` / `feedback`, registradas
-num ledger append-only) e, sobre ela, um **control plane** — um servidor FastAPI + SSE com
-dez variantes de UI que leem, ao vivo, o que está pendente de confirmação humana e o que já
-foi disparado. Isso roda hoje, tem testes, e você pode subir localmente em minutos (ver
-[Quick Start](#quick-start--como-rodar)).
+The **concrete** layer is a **subagent orchestrator**: a dispatch discipline
+(agent groups + typed connections `sequential` / `zig-zag` / `feedback`, recorded
+in an append-only ledger) and, on top of it, a **control plane** — a FastAPI + SSE server with
+ten UI variants that read, live, what is pending human confirmation and what has already
+been dispatched. This runs today, has tests, and you can bring it up locally in minutes (see
+[Quick Start](#quick-start--how-to-run)).
 
-A camada **tese** é mais ambiciosa e muito menos madura: a aposta de que essa própria
-linguagem de orquestração (grupos, conexões, dispatches) **é** uma categoria matemática —
-objetos, morfismos, composição, identidade — e que ascender no conhecimento significa
-enriquecer o codomínio dessa categoria rumo ao ponto de Yoneda, nunca resumi-la a um número.
-Essa tese ainda não foi provada em lugar nenhum; ela vive em [`FRAMINGS.md`](FRAMINGS.md),
-[`MAPPING.md`](MAPPING.md) e no alvo falsificável único de [`OBLIGATIONS.md`](OBLIGATIONS.md).
+The **thesis** layer is more ambitious and much less mature: the bet that this very
+orchestration language (groups, connections, dispatches) **is** a mathematical category —
+objects, morphisms, composition, identity — and that ascending in knowledge means
+enriching that category's codomain toward the Yoneda point, never summarizing it to a number.
+This thesis hasn't been proven anywhere yet; it lives in [`FRAMINGS.md`](FRAMINGS.md),
+[`MAPPING.md`](MAPPING.md), and in the single falsifiable target of [`OBLIGATIONS.md`](OBLIGATIONS.md).
 
-As duas camadas se tocam num ponto: o próprio trabalho de construir este repo é feito por
-dispatches gravados no **mesmo ledger** que o orquestrador opera — a tese chama isso de
-*"framework as its own instance"* (BACKLOG A6). A ambição de fundo por trás de tudo é
-modelar **conhecimento** — o que é, que propriedades tem, como se relaciona, quem age sobre
-ele — com estrutura suficiente para produzir sistemas, inclusive a si mesmo; o orquestrador é
-a primeira fatia executável dessa ambição, não o projeto inteiro (ver
+The two layers touch at one point: the very work of building this repo is done via
+dispatches recorded in the **same ledger** the orchestrator operates — the thesis calls this
+*"framework as its own instance"* (BACKLOG A6). The underlying ambition behind all of this is
+to model **knowledge** — what it is, what properties it has, how it relates, who acts on
+it — with enough structure to produce systems, including itself; the orchestrator is
+the first executable slice of that ambition, not the whole project (see
 [`PLAN.md §1`](PLAN.md#1-problema)).
 
-> **Meta de design (nova, 2026-07-20):** a camada concreta deve ser **genérica — dropável
-> em qualquer repo com integração próxima de zero**, independente do domínio daquele repo. A
-> tese categórica é o conteúdo *particular* deste repositório; o substrato de orquestração
-> (schema de dispatch, skills, ledger, control plane, pool de agentes) não deveria depender
-> dela. Que propriedades isso exige, e o que já é evidência disso hoje, está em
-> [Meta: dropável em qualquer repo](#meta-dropável-em-qualquer-repo-genérico-por-design) —
-> levantado ali como hipóteses falsificáveis, não como fato consumado.
+> **Design goal (new, 2026-07-20):** the concrete layer must be **generic — droppable
+> into any repo with near-zero integration**, independent of that repo's domain. The
+> categorical thesis is the *particular* content of this repository; the orchestration substrate
+> (dispatch schema, skills, ledger, control plane, agent pool) shouldn't depend
+> on it. What properties this requires, and what is already evidence of it today, is in
+> [Goal: droppable into any repo](#goal-droppable-into-any-repo-generic-by-design) —
+> raised there as falsifiable hypotheses, not as settled fact.
 
-## Como as peças se encaixam
+## How the pieces fit together
 
 ```mermaid
 flowchart TD
-    A["1. Propose<br/>estrategista preenche a sheet<br/>goal · context · groups · connections tipadas<br/>(sequential / zig-zag / feedback)"]
-    B{"2. check-tension<br/>gate anti-viés — só se algum grupo tem n≥2<br/>e role investigate/evaluate"}
+    A["1. Propose<br/>strategist fills in the sheet<br/>goal · context · groups · typed connections<br/>(sequential / zig-zag / feedback)"]
+    B{"2. check-tension<br/>anti-bias gate — only if some group has n≥2<br/>and role investigate/evaluate"}
     A --> B
-    B -- "reprova, ou os dois avaliadores discordam" --> A
-    B -- "ambos PASS (Tests 1-4)" --> P
-    P["Sheet pendente<br/>telemetry/agents/pending/&lt;id&gt;.json<br/>única superfície editável, pré-confirm"]
-    P --> C["3. Confirm humano<br/>afirmação explícita — silêncio não conta"]
-    C --> D["4. Register + run<br/>skill register-dispatch grava a dispatch row"]
-    D --> L[("Ledger append-only<br/>telemetry/agents/subagents-dispatch.yaml<br/>nunca editado em linha")]
-    D --> E["Subagentes disparados<br/>grupos prontos por dependência de connections,<br/>agentes em paralelo dentro do grupo"]
+    B -- "fails, or the two evaluators disagree" --> A
+    B -- "both PASS (Tests 1-4)" --> P
+    P["Pending sheet<br/>telemetry/agents/pending/&lt;id&gt;.json<br/>the only editable surface, pre-confirm"]
+    P --> C["3. Human confirm<br/>explicit affirmation — silence doesn't count"]
+    C --> D["4. Register + run<br/>skill register-dispatch writes the dispatch row"]
+    D --> L[("Append-only ledger<br/>telemetry/agents/subagents-dispatch.yaml<br/>never edited in place")]
+    D --> E["Subagents dispatched<br/>groups ready by connections dependency,<br/>agents in parallel within the group"]
     E --> F["5. Close — close row<br/>exit_reason · agents_spawned"]
     F --> L
-    L -. "lido ao vivo (read-only)" .-> UI["Control plane<br/>FastAPI + SSE — implementations/server/"]
-    P -. "lido ao vivo" .-> UI
-    UI --> V["10 variantes de UI<br/>implementations/static/ui/*"]
-    V -. "Fase 2 — botão Disparar (hoje disabled)" .-> C
-    L -. "este próprio dispatch também vira<br/>uma row aqui — auto-instância (A6)" .-> L
+    L -. "read live (read-only)" .-> UI["Control plane<br/>FastAPI + SSE — implementations/server/"]
+    P -. "read live" .-> UI
+    UI --> V["10 UI variants<br/>implementations/static/ui/*"]
+    V -. "Phase 2 — Dispatch button (disabled today)" .-> C
+    L -. "this dispatch itself also becomes<br/>a row here — self-instance (A6)" .-> L
 ```
 
-O ledger só é escrito **depois** do confirm humano — é o gate. Uma UI que lesse só o ledger
-sempre chegaria tarde, porque nunca poderia *ser* o gate; por isso a Fase 1 lê também a sheet
-pendente (`telemetry/agents/pending/`), o único artefato pré-confirm e editável. Os dois lados
-têm posturas opostas por design: o **appender** da skill `register-dispatch` é **estrito**
-(recusa gravar fora do schema v0.6.0 e se recusa a escrever num ledger já corrompido — ele
-protege o arquivo), enquanto o **leitor** do control plane é **leniente** (mostra até rows
-antigas prettificadas que o appender rejeitaria — ver [as duas decisões](#duas-decisões-que-os-dados-reais-forçaram)).
-Um hook bloqueia leitura do ledger via Bash direto; a leitura estrutural passa sempre pelo
-`server/ledger.py`.
+The ledger is only written **after** human confirm — that's the gate. A UI that only read the
+ledger would always arrive late, because it could never *be* the gate; that's why Phase 1 also
+reads the pending sheet (`telemetry/agents/pending/`), the only pre-confirm, editable artifact.
+The two sides have opposite postures by design: the `register-dispatch` skill's **appender** is
+**strict** (refuses to write outside schema v0.6.0 and refuses to write to an already-corrupted
+ledger — it protects the file), while the control plane's **reader** is **lenient** (it even
+shows old prettified rows that the appender would reject — see
+[the two decisions](#two-decisions-the-real-data-forced)). A hook blocks reading the ledger via
+direct Bash; structural reading always goes through `server/ledger.py`.
 
-## O que já roda hoje vs. o que é tese
+## What already runs today vs. what is thesis
 
-Este é o ponto onde vale ser mais honesto do que empolgado.
+This is the point where it's worth being more honest than excited.
 
-**Roda hoje (código, com testes, você pode executar agora):**
+**Runs today (code, with tests, you can run it now):**
 
-- O **control plane de leitura** (Fase 1): servidor FastAPI + SSE em
-  [`implementations/`](implementations/), com dez variantes de UI sobre a mesma API,
-  parser leniente do ledger, testes de parser (`tests/test_ledger.py`) e testes Playwright
-  contra as dez variantes (`tests/test_ui.py`).
-- O **ledger real**: [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml)
-  já tem ~700 dispatches reais registrados em 11 repos-irmãos pela skill `register-dispatch` —
-  incluindo, literalmente, os dispatches que construíram e revisaram o próprio control plane.
-- O **agent-pool-mcp**: servidor MCP rodável em [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/)
-  (`npm run smoke` não precisa de chave de API), que seleciona `agent_name` a partir do pool
-  canônico de [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml)
-  (419 entradas tagueadas).
-- As **skills operacionais** em [`.claude/skills/`](.claude/skills/) —
+- The **read control plane** (Phase 1): FastAPI + SSE server in
+  [`implementations/`](implementations/), with ten UI variants over the same API,
+  a lenient ledger parser, parser tests (`tests/test_ledger.py`), and Playwright tests
+  against the ten variants (`tests/test_ui.py`).
+- The **real ledger**: [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml)
+  already has ~700 real dispatches recorded across 11 sibling repos by the `register-dispatch`
+  skill — including, literally, the dispatches that built and reviewed the control plane itself.
+- The **agent-pool-mcp**: a runnable MCP server at [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/)
+  (`npm run smoke` doesn't need an API key), which selects `agent_name` from the
+  canonical pool in [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml)
+  (419 tagged entries).
+- The **operational skills** in [`.claude/skills/`](.claude/skills/) —
   `register-dispatch`, `check-tension`, `robot-talks`, `domainspec-subagents-strategy` —
-  executáveis via Claude Code hoje, não roteiro futuro.
+  executable via Claude Code today, not a future roadmap.
 
-**É tese / candidato, não prova:**
+**Is thesis / candidate, not proof:**
 
-- **[OBLIGATIONS.md](OBLIGATIONS.md)** — a pergunta "a linguagem de orquestração é uma
-  categoria de verdade?" (OBL-E3) está **OPEN**. Sem ela descarregada, todo paralelo em
-  `MAPPING.md` é candidato tipado, não resultado.
-- **[MAPPING.md](MAPPING.md)** e **[FRAMINGS.md](FRAMINGS.md)** — os paralelos entre
-  construtos do orquestrador (sonda, verbo, resíduo, zig-zag) e teoria das categorias são
-  hipóteses com âncora (frequentemente em `domainspec-lean-formalization`), não teoremas
-  deste repo.
+- **[OBLIGATIONS.md](OBLIGATIONS.md)** — the question "is the orchestration language really a
+  category?" (OBL-E3) is **OPEN**. Without it discharged, every parallel in
+  `MAPPING.md` is a typed candidate, not a result.
+- **[MAPPING.md](MAPPING.md)** and **[FRAMINGS.md](FRAMINGS.md)** — the parallels between
+  orchestrator constructs (probe, verb, residue, zig-zag) and category theory are
+  anchored hypotheses (often in `domainspec-lean-formalization`), not theorems
+  of this repo.
 - **[`vault/hypothesis/orquestracao-anti-ruido.md`](vault/hypothesis/orquestracao-anti-ruido.md)**
-  (`HYP-ORCH-NOISE`) — a tese de que o orquestrador é uma "máquina de redução de ruído" —
-  status `candidate` / `exploratory` explícito no frontmatter, com seções marcadas `PENDENTE`.
-- A **portabilidade genérica** (a meta abaixo) — hoje é evidência parcial + hipótese, não uma
-  garantia empírica; ver os collapse-tests de cada `H-PORT-*`.
-- A **Fase 2 do control plane** (o botão "Disparar" que grava o confirm) não está
-  implementada; todo botão nas dez UIs está `disabled` de propósito.
-- **Nada neste repo está tipado em Lean** — as âncoras Lean citadas apontam para o repo-irmão
-  `domainspec-lean-formalization`; aqui são referência, não prova local.
+  (`HYP-ORCH-NOISE`) — the thesis that the orchestrator is a "noise-reduction machine" —
+  status `candidate` / `exploratory` explicit in the frontmatter, with sections marked `PENDENTE`.
+- **Generic portability** (the goal below) — today it's partial evidence + hypothesis, not an
+  empirical guarantee; see the collapse-tests for each `H-PORT-*`.
+- **Phase 2 of the control plane** (the "Dispatch" button that writes the confirm) is not
+  implemented; every button in the ten UIs is `disabled` on purpose.
+- **Nothing in this repo is typed in Lean** — the cited Lean anchors point to the sibling repo
+  `domainspec-lean-formalization`; here they are reference, not local proof.
 
-## Quick Start / Como rodar
+## Quick Start / How to Run
 
-### 1. Control plane (o leitor)
+### 1. Control plane (the reader)
 
 ```sh
 cd implementations
 pip install -r requirements.txt
 python -m server.main
-# http://127.0.0.1:8765  — a raiz serve o hub de seleção das dez variantes de UI
+# http://127.0.0.1:8765  — the root serves the selection hub for the ten UI variants
 ```
 
-`requirements.txt` vive dentro de `implementations/`, não na raiz — entre na pasta **antes**
-de instalar. É **somente leitura**: nenhum comando aqui escreve no ledger. Sem `config.json`,
-o servidor **auto-descobre** — varre o diretório pai atrás de qualquer pasta-irmã com
-`telemetry/agents/`; para fixar a lista, copie `implementations/config.example.json` para
+`requirements.txt` lives inside `implementations/`, not in the root — enter the folder **before**
+installing. It's **read-only**: no command here writes to the ledger. Without `config.json`,
+the server **auto-discovers** — it scans the parent directory for any sibling folder with
+`telemetry/agents/`; to pin the list, copy `implementations/config.example.json` to
 `implementations/config.json`.
 
-### 2. Testes
+### 2. Tests
 
 ```sh
-python implementations/tests/test_ledger.py       # parser + smoke contra os ledgers reais
-python implementations/tests/test_ui.py           # Playwright nas dez variantes
-python implementations/tests/test_ui.py terminal  # só uma variante
+python implementations/tests/test_ledger.py       # parser + smoke against the real ledgers
+python implementations/tests/test_ui.py           # Playwright across the ten variants
+python implementations/tests/test_ui.py terminal  # just one variant
 ```
 
-Screenshots caem em `implementations/tests/screenshots/`.
+Screenshots land in `implementations/tests/screenshots/`.
 
-### 3. MCP agent-pool (seleção de `agent_name`)
+### 3. agent-pool MCP (`agent_name` selection)
 
 ```sh
 cd tools/agent-pool-mcp
 npm install
-npm run smoke          # caminhos determinísticos, sem chave de API
+npm run smoke          # deterministic paths, no API key
 ```
 
-Registro cross-repo, escopo de usuário — em `~/.claude.json` (ou `.mcp.json` de um repo):
+Cross-repo registration, user scope — in `~/.claude.json` (or a repo's `.mcp.json`):
 
 ```json
 {
@@ -180,308 +181,311 @@ Registro cross-repo, escopo de usuário — em `~/.claude.json` (ou `.mcp.json` 
 }
 ```
 
-Sem `ANTHROPIC_API_KEY`, `recommend_agents` degrada para o pré-filtro determinístico (modo
-`deterministic-fallback`); `search_pool` e `check_vocab` nunca precisam de chave.
+Without `ANTHROPIC_API_KEY`, `recommend_agents` degrades to the deterministic pre-filter (mode
+`deterministic-fallback`); `search_pool` and `check_vocab` never need a key.
 
-## API do control plane
+## Control plane API
 
-| Endpoint | O quê |
+| Endpoint | What |
 |---|---|
-| `GET /api/snapshot` | Estado inteiro, janela recente por repo (até `limit`=40 por repo). |
-| `GET /api/stream` | SSE — emite `event: snapshot` sempre que o disco muda; conecte com `EventSource`. |
-| `GET /api/dispatch/{repo}/{dispatch_id}` | Uma dispatch sem truncar prompts (painel de detalhe). 404/500 conforme o caso. |
-| `GET /api/overview` | Agregados de TODOS os repos + filas de atenção humana (pendentes, abertas hoje, todas abertas — cap 200). Nada truncado por `limit`. |
-| `GET /api/repo/{name}` | Drill-down de um repo: histórico completo `slim` + `summary` + `series` (histograma diário). Filtros `?state=open\|closed\|all` e `?type=<dispatch_type>` filtram só a lista, nunca o `summary`/`series`. |
+| `GET /api/snapshot` | Entire state, recent window per repo (up to `limit`=40 per repo). |
+| `GET /api/stream` | SSE — emits `event: snapshot` whenever the disk changes; connect with `EventSource`. |
+| `GET /api/dispatch/{repo}/{dispatch_id}` | A single dispatch without truncating prompts (detail panel). 404/500 as appropriate. |
+| `GET /api/overview` | Aggregates across ALL repos + human-attention queues (pending, opened today, all open — cap 200). Nothing truncated by `limit`. |
+| `GET /api/repo/{name}` | Drill-down of a single repo: full `slim` history + `summary` + `series` (daily histogram). Filters `?state=open\|closed\|all` and `?type=<dispatch_type>` filter only the list, never the `summary`/`series`. |
 
-Contrato completo (formas exatas, `data-testid` obrigatórios, convenção de prefixo `_` para
-campos calculados, referencial de dia em UTC): [`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md).
+Full contract (exact shapes, required `data-testid`s, `_` prefix convention for
+calculated fields, UTC day reference): [`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md).
 
-#### Duas decisões que os dados reais forçaram
+#### Two decisions the real data forced
 
-1. **O leitor é leniente; o appender é estrito.** Rows antigas prettificadas (JSON
-   multi-linha, vírgulas finais) que o appender rejeitaria ainda precisam aparecer — em modo
-   estrito o leitor devolvia 0 dispatches para o repo `domainspec`; leniente, devolve 55.
-2. **Prefixo `_` é escopado a objetos com FORMA DE ROW.** `status` é uma chave real de rows
-   pré-v0.5.2; um campo calculado com esse nome, num objeto que compartilha o namespace de
-   uma row, sobrescreveria dado histórico. Agregados que não são rows (`summary`, `series`,
-   `totals`) não têm esse namespace a proteger e usam chaves sem prefixo.
+1. **The reader is lenient; the appender is strict.** Old prettified rows (multi-line
+   JSON, trailing commas) that the appender would reject still need to show up — in strict
+   mode the reader returned 0 dispatches for the `domainspec` repo; lenient, it returns 55.
+2. **The `_` prefix is scoped to objects with ROW SHAPE.** `status` is a real key on pre-v0.5.2
+   rows; a calculated field with that name, in an object that shares a row's namespace,
+   would overwrite historical data. Aggregates that aren't rows (`summary`, `series`,
+   `totals`) have no such namespace to protect and use unprefixed keys.
 
-## Anatomia de uma dispatch row / close row
+## Anatomy of a dispatch row / close row
 
-Cada dispatch contribui **exatamente dois appends** no mesmo ledger (Principle 3 da
-constituição de subagents-strategy): a **dispatch row** no disparo e a **close row** no
-fechamento. `groups`/`connections` (dispatch) e `agents_spawned`/`feedback_prompts` (close)
-são colunas JSON dentro da linha YAML. Os campos que carregam o peso — a forma completa (e os
-enums) vive na skill [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md):
+Each dispatch contributes **exactly two appends** to the same ledger (Principle 3 of the
+subagents-strategy constitution): the **dispatch row** at dispatch time and the **close row** at
+close. `groups`/`connections` (dispatch) and `agents_spawned`/`feedback_prompts` (close)
+are JSON columns inside the YAML row. The fields that carry the weight — the full shape (and the
+enums) — live in the [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md) skill:
 
-| Campo (dispatch row) | O quê |
+| Field (dispatch row) | What |
 |---|---|
-| `dispatch_id` | `YYYY-MM-DD-<slug>` — chave de dedup. |
-| `schema_version` | `"0.6.0"` exato. |
-| `dispatch_type` | `research \| review \| experiment` (LIVE); `code \| plan \| suggestion` reservados. |
-| `goal` / `context` | objetivo (1-2 frases) / framing (2-4 frases) — o único canal que os subagentes recebem. |
-| `groups` | array JSON: cada grupo tem `group_id`, `agents[]`, `n`, `robot_talks`, `anti_bias` (obrigatório se `n≥2`). |
-| `connections` | array de arestas `{from, to, type, loop_cap?}` — `type` ∈ `sequential \| zig-zag \| feedback`; `loop_cap` só em loops. |
-| `final_approver` | `"parent"` ou o `agent_name` de um aprovador dedicado (nunca membro do grupo de trabalho). |
-| `anti_bias_global` | eixo de tensão do dispatch inteiro (obrigatório com ≥2 grupos em fan-out). |
+| `dispatch_id` | `YYYY-MM-DD-<slug>` — dedup key. |
+| `schema_version` | exactly `"0.6.0"`. |
+| `dispatch_type` | `research \| review \| experiment` (LIVE); `code \| plan \| suggestion` reserved. |
+| `goal` / `context` | objective (1-2 sentences) / framing (2-4 sentences) — the only channel the subagents receive. |
+| `groups` | JSON array: each group has `group_id`, `agents[]`, `n`, `robot_talks`, `anti_bias` (required if `n≥2`). |
+| `connections` | array of edges `{from, to, type, loop_cap?}` — `type` ∈ `sequential \| zig-zag \| feedback`; `loop_cap` only on loops. |
+| `final_approver` | `"parent"` or the `agent_name` of a dedicated approver (never a member of the working group). |
+| `anti_bias_global` | tension axis for the entire dispatch (required with ≥2 groups in fan-out). |
 
-Cada `agents[]` carrega `role` (`explorer \| skeptic \| writer \| auditor`), `model`,
-`token_budget`, `initial_prompt`, `agent_name` (do pool ou `null`) e `angle` (obrigatório se
-`n≥2`). A **close row** fecha com `close_of` (o `dispatch_id`), `exit_reason`
+Each `agents[]` entry carries `role` (`explorer \| skeptic \| writer \| auditor`), `model`,
+`token_budget`, `initial_prompt`, `agent_name` (from the pool or `null`), and `angle` (required if
+`n≥2`). The **close row** closes with `close_of` (the `dispatch_id`), `exit_reason`
 (`resolved \| loop_ceiling_reached \| dissent_irreconcilable \| user_abort \| error`),
-`agents_spawned` (`{total, tree, loops_used}`) e `feedback_prompts` (cada pedido de uma aresta
-`feedback`, verbatim). Timestamps (`created`, `closed`) são carimbados pelo appender — enviá-los
-é rejeitado.
+`agents_spawned` (`{total, tree, loops_used}`), and `feedback_prompts` (each request from a
+`feedback` edge, verbatim). Timestamps (`created`, `closed`) are stamped by the appender — sending
+them is rejected.
 
-## Fases
+## Phases
 
-| Fase | O quê | Estado |
+| Phase | What | State |
 |---|---|---|
-| **Fase 1 — o leitor** | FastAPI + SSE somente-leitura sobre o ledger e as sheets pendentes; dez variantes de UI sobre um contrato de testids único. | **Feita** — testada (`test_ledger.py`, `test_ui.py`). |
-| **Fase 2 — o botão** | `POST /confirm` grava o confirm; o Claude, esperando via `Monitor`, segue a cadeia normal (`check-tension` → `register-dispatch` → agentes → close row). Quem dispara continua sendo o Claude na sessão — preserva contexto e a cadeia de skills. | Planejada — o botão "Disparar" já existe em toda UI, `disabled`. |
-| **Fase 3 — edição** | Editar a sheet pendente antes do confirm (hoje só leitura). | Planejada. |
+| **Phase 1 — the reader** | Read-only FastAPI + SSE over the ledger and the pending sheets; ten UI variants over a single testid contract. | **Done** — tested (`test_ledger.py`, `test_ui.py`). |
+| **Phase 2 — the button** | `POST /confirm` writes the confirm; Claude, waiting via `Monitor`, follows the normal chain (`check-tension` → `register-dispatch` → agents → close row). The one who dispatches remains Claude in the session — preserving context and the skill chain. | Planned — the "Dispatch" button already exists in every UI, `disabled`. |
+| **Phase 3 — editing** | Edit the pending sheet before confirm (today, read-only). | Planned. |
 
-## Meta: dropável em qualquer repo *(genérico por design)*
+## Goal: droppable into any repo *(generic by design)*
 
-Uma meta de primeira classe deste projeto: o **substrato de orquestração** deve servir
-qualquer repositório com integração próxima de zero — independente do domínio do alvo. Vale
-separar o que é **substrato** (genérico, portável) do que é **conteúdo** (particular deste
+A first-class goal of this project: the **orchestration substrate** must serve
+any repository with near-zero integration — independent of the target's domain. It's worth
+separating what is **substrate** (generic, portable) from what is **content** (particular to this
 repo):
 
-| Camada | O que é | Portável? |
+| Layer | What it is | Portable? |
 |---|---|---|
-| **Substrato** | schema de dispatch (`schema_version 0.6.0`), skills (`register-dispatch`, `check-tension`, `subagents-strategy`), ledger append-only, control plane, pool de agentes | **é a meta** — deveria dropar em qualquer repo |
-| **Conteúdo** | a tese categórica (FRAMINGS/MAPPING/OBLIGATIONS/DEFINITIONS), o vault, `HYP-ORCH-NOISE`, os ensaios | **não** — é o assunto deste repositório específico |
+| **Substrate** | dispatch schema (`schema_version 0.6.0`), skills (`register-dispatch`, `check-tension`, `subagents-strategy`), append-only ledger, control plane, agent pool | **is the goal** — should drop into any repo |
+| **Content** | the categorical thesis (FRAMINGS/MAPPING/OBLIGATIONS/DEFINITIONS), the vault, `HYP-ORCH-NOISE`, the essays | **no** — it's the subject matter of this specific repository |
 
-### O que já é evidência de genericidade hoje
+### What is already evidence of genericity today
 
-Não é só aspiração — parte do design já aponta para lá, e isso é verificável:
+It's not just aspiration — part of the design already points there, and it's verifiable:
 
-- O control plane **auto-descobre** qualquer repo-irmão que tenha `telemetry/agents/` (ledger
-  ou pending), lendo-o **read-only**, sem nenhuma instrumentação no alvo — puro filesystem
+- The control plane **auto-discovers** any sibling repo that has `telemetry/agents/` (ledger
+  or pending), reading it **read-only**, with no instrumentation on the target — pure filesystem
   ([`implementations/server/config.py`](implementations/server/config.py), `_scan_repos`).
-- O ledger já atravessa **11 repos** sob um único `schema_version` — não é single-repo por
-  acidente, é multi-repo por construção.
-- O `agent_name` é resolvido contra **um** pool canônico via um servidor MCP cross-repo;
-  outros repos são **consumidores**, não portam cópias que derivam
+- The ledger already spans **11 repos** under a single `schema_version` — it's not single-repo by
+  accident, it's multi-repo by construction.
+- `agent_name` is resolved against **one** canonical pool via a cross-repo MCP server;
+  other repos are **consumers**, not carrying copies that drift
   ([`tools/agent-pool-mcp/README.md`](tools/agent-pool-mcp/README.md)).
-- As skills vivem em `.claude/skills/` — unidades de copy-in, não código acoplado a este repo.
+- The skills live in `.claude/skills/` — copy-in units, not code coupled to this repo.
 
-### Hipóteses de portabilidade (candidatas, falsificáveis)
+### Portability hypotheses (candidates, falsifiable)
 
-Seguindo a disciplina `claim ≤ proof` do repo, cada propriedade necessária vira uma hipótese
-com seu **collapse-test**. Nenhuma está descarregada; são o que teria que valer para "genérico
-por design" deixar de ser slogan.
+Following the repo's `claim ≤ proof` discipline, each required property becomes a hypothesis
+with its own **collapse-test**. None is discharged; they are what would have to hold for "generic
+by design" to stop being a slogan.
 
-- **H-PORT-1 — Substrato ⊥ domínio.** A camada de orquestração é separável de todo conteúdo
-  de domínio: um repo *sem* o vault/tese ainda opera a disciplina inteira. *Collapse:* se
-  alguma skill (`register-dispatch`/`check-tension`) hard-codar conceitos da tese CT a ponto de
-  não rodar sem `definitions/` ou `FRAMINGS.md`, o substrato não é separável.
-- **H-PORT-2 — O schema é o único contrato.** Um repo é "observável" **se e somente se** tem
-  `telemetry/agents/` com um ledger conforme o `schema_version` — nada mais. *Collapse:* se
-  observar um repo novo exigir qualquer coisa além da pasta + schema (config manual, código no
-  alvo), o contrato não é o schema sozinho. *(Evidência a favor hoje: a auto-descoberta dispara
-  exatamente sobre esse sinal.)*
-- **H-PORT-3 — Observação read-only = zero-integração.** O plano observa sem o repo-alvo fazer
-  nada: sem hook no alvo, sem emissão de eventos, sem SDK — só o disco. *Collapse:* se algum
-  repo precisar instrumentar/emitir para aparecer, a integração não é zero.
-- **H-PORT-4 — Vocabulário único, N consumidores.** O `agent_name` é resolvido contra UM pool
-  canônico compartilhado; repos não portam cópias divergentes. *Collapse:* se pools por-repo
-  derivarem e não reconciliarem, a genericidade do vocabulário quebra — que é justamente a razão
-  declarada de o MCP existir.
-- **H-PORT-5 — Skills copy-in, config-free.** Dropar
-  `.claude/skills/{register-dispatch, check-tension, domainspec-subagents-strategy}` num repo
-  basta para operar a disciplina; nenhum fio por-repo. *Collapse:* se qualquer wiring específico
-  do repo for necessário, "copy-in" é falso e o substrato precisa de um **instalador** (e aí a
-  pergunta vira: qual é o kit mínimo de portabilidade? — ver OQ-PORT abaixo).
-- **H-PORT-6 — Genericidade = a tese A6/CT no nível da ferramenta** *(especulativa; ponte com
-  a tese)*. Se a linguagem de orquestração for mesmo uma categoria `ORCH` (OBL-E3), então
-  `ORCH` é a **categoria-base domínio-independente** e o conteúdo de cada repo é um funtor
-  *saindo* de `ORCH` para o codomínio daquele domínio — a genericidade seria uma *consequência*
-  da tese, não um acidente de engenharia. *Collapse:* se OBL-E3 bater seu collapse-test (só o
-  fragmento `sequential` é categoria), essa ponte cai a analogia — e a genericidade prática
-  continua valendo mesmo assim, porque **H-PORT-1..5 não dependem de H-PORT-6**.
+- **H-PORT-1 — Substrate ⊥ domain.** The orchestration layer is separable from all domain
+  content: a repo *without* the vault/thesis still operates the entire discipline. *Collapse:* if
+  any skill (`register-dispatch`/`check-tension`) hard-codes CT-thesis concepts to the point of
+  not running without `definitions/` or `FRAMINGS.md`, the substrate is not separable.
+- **H-PORT-2 — The schema is the only contract.** A repo is "observable" **if and only if** it has
+  `telemetry/agents/` with a ledger conforming to `schema_version` — nothing else. *Collapse:* if
+  observing a new repo requires anything beyond the folder + schema (manual config, code in the
+  target), the contract isn't the schema alone. *(Supporting evidence today: auto-discovery fires
+  on exactly that signal.)*
+- **H-PORT-3 — Read-only observation = zero-integration.** The plane observes without the target
+  repo doing anything: no hook on the target, no event emission, no SDK — just the disk.
+  *Collapse:* if any repo needs to instrument/emit to show up, the integration isn't zero.
+- **H-PORT-4 — Single vocabulary, N consumers.** `agent_name` is resolved against ONE shared
+  canonical pool; repos don't carry divergent copies. *Collapse:* if per-repo pools
+  drift and don't reconcile, the vocabulary's genericity breaks — which is exactly the stated
+  reason the MCP exists.
+- **H-PORT-5 — Skills copy-in, config-free.** Dropping
+  `.claude/skills/{register-dispatch, check-tension, domainspec-subagents-strategy}` into a repo
+  is enough to operate the discipline; no per-repo wiring. *Collapse:* if any repo-specific
+  wiring is needed, "copy-in" is false and the substrate needs an **installer** (and then the
+  question becomes: what's the minimal portability kit? — see OQ-PORT below).
+- **H-PORT-6 — Genericity = the A6/CT thesis at the tool level** *(speculative; bridge to
+  the thesis)*. If the orchestration language really is a category `ORCH` (OBL-E3), then
+  `ORCH` is the **domain-independent base category** and each repo's content is a functor
+  *leaving* `ORCH` toward that domain's codomain — genericity would be a *consequence*
+  of the thesis, not an engineering accident. *Collapse:* if OBL-E3 hits its collapse-test (only
+  the `sequential` fragment is a category), this bridge drops to analogy — and practical
+  genericity still holds regardless, because **H-PORT-1..5 don't depend on H-PORT-6**.
 
-> **OQ-PORT (pergunta aberta).** Qual é o **kit mínimo de portabilidade** e como ele é
-> entregue — submódulo git, script instalador (como o `copilot/install.sh` do `domainspec`),
-> ou cópia manual? E o que, exatamente, um repo-alvo precisa ter *antes* (só a pasta
-> `telemetry/agents/`? um `.mcp.json`? nada?). Ainda não decidido; candidato a virar a próxima
-> obrigação `OBL-PORT` se a meta de genericidade for priorizada.
+> **OQ-PORT (open question).** What is the **minimal portability kit** and how is it
+> delivered — git submodule, installer script (like `domainspec`'s `copilot/install.sh`),
+> or manual copy? And what, exactly, does a target repo need to have *beforehand* (just the
+> `telemetry/agents/` folder? a `.mcp.json`? nothing?). Not yet decided; candidate to become the
+> next `OBL-PORT` obligation if the genericity goal gets prioritized.
 
 ---
 
-## Camada de profundidade — a tese categórica *(opcional)*
+## Depth layer — the categorical thesis *(optional)*
 
-*Tudo a partir daqui é para quem quer a tese. Se você só vem usar o control plane, pode parar
-antes desta seção — nada aqui muda como a peça concreta roda.*
+*Everything from here on is for whoever wants the thesis. If you're only here to use the control
+plane, you can stop before this section — nothing here changes how the concrete piece runs.*
 
-### O fio comum
+### The common thread
 
-Toda a anatomia do repositório — resíduo, sombra, separação, sonda, verbo — circula uma única
-alavanca: **thin vs. não-thin, a escolha do codomínio `C`**.
+The entire anatomy of the repository — residue, shadow, separation, probe, verb — circles a
+single lever: **thin vs. non-thin, the choice of codomain `C`**.
 
-Um objeto de conhecimento `X` é visto através de um funtor para algum codomínio `C`. Se `C` é
-**thin** (entre dois objetos há no máximo um morfismo — o caso degenerado de uma ordem ou de
-um conjunto), a leitura que se obtém é uma **sombra**: contagem, entropia, magnitude — um
-número que resume o objeto e joga fora o objeto. Se `C` é **não-thin** (morfismos carregam
-estrutura — tipos, regras, composições distintas), a leitura preserva a **estrutura** que a
-sombra descarta. O **resíduo** — o que qualquer tradução ou síntese deixa de preservar —
-decompõe-se exatamente nessas duas faces: `resíduo = sombra ⊕ estrutura`
+A knowledge object `X` is seen through a functor into some codomain `C`. If `C` is
+**thin** (between two objects there is at most one morphism — the degenerate case of an order or
+a set), the reading obtained is a **shadow**: count, entropy, magnitude — a
+number that summarizes the object and discards the object. If `C` is **non-thin** (morphisms
+carry structure — types, rules, distinct compositions), the reading preserves the **structure**
+that the shadow discards. The **residue** — what any translation or synthesis fails to preserve —
+decomposes exactly into these two faces: `residue = shadow ⊕ structure`
 ([FRAMINGS.md F1](FRAMINGS.md#f1--resíduo--sombra--estrutura)).
 
-Ascender no conhecimento, sob essa alavanca, **nunca** significa clarear a sombra — apurar a
-métrica. Significa **enriquecer `C`**: trocar o codomínio thin por um mais rico, até que a
-interrogação ativa do objeto por mapas-teste (`A → X`, uma **sonda**, no sentido de Yoneda) se
-torne *fully faithful* — o **ponto de Yoneda**. Uma **anomalia** — duas coisas que a lente
-atual identificava revelando-se distintas sob uma sonda nova — é o motor que aponta onde `C`
-precisa crescer ([FRAMINGS.md F6](FRAMINGS.md#f6--o-ponto-de-yoneda-como-alvo-a-anomalia-como-motor-a-dinâmica)).
+Ascending in knowledge, under this lever, **never** means sharpening the shadow — refining the
+metric. It means **enriching `C`**: swapping the thin codomain for a richer one, until the
+object's active interrogation by test-maps (`A → X`, a **probe**, in the Yoneda sense) becomes
+*fully faithful* — the **Yoneda point**. An **anomaly** — two things the current lens
+identified as one revealing themselves as distinct under a new probe — is the engine that points
+to where `C` needs to grow ([FRAMINGS.md F6](FRAMINGS.md#f6--o-ponto-de-yoneda-como-alvo-a-anomalia-como-motor-a-dinâmica)).
 
 ```mermaid
 flowchart LR
-    S["Sombra escalar<br/>(contagem · entropia · magnitude)<br/>funtor para C thin — lossy"] -.->|"nunca reconstrói"| X["Objeto de conhecimento X"]
-    P["Sonda ativa<br/>mapas-teste A → X (Yoneda)"] -->|"família completa"| X
-    X --> R{"Resíduo = sombra ⊕ estrutura"}
-    R -->|"falha-de-FF detectada:<br/>anomalia = separador invisível<br/>à resolução atual"| A["Anomalia"]
-    A -->|"dispara"| E["Enriquecer C<br/>(trocar o codomínio —<br/>nunca clarear a sombra)"]
-    E --> C2["C mais rico"]
-    C2 -.->|"nova sonda"| P
-    C2 -.->|"orienta rumo a,<br/>sem atingir<br/>(resíduo estrutural persiste)"| Y["Ponto de Yoneda<br/>FF, resíduo 0"]
+    S["Scalar shadow<br/>(count · entropy · magnitude)<br/>functor into C thin — lossy"] -.->|"never reconstructs"| X["Knowledge object X"]
+    P["Active probe<br/>test-maps A → X (Yoneda)"] -->|"complete family"| X
+    X --> R{"Residue = shadow ⊕ structure"}
+    R -->|"FF-failure detected:<br/>anomaly = separator invisible<br/>at the current resolution"| A["Anomaly"]
+    A -->|"triggers"| E["Enrich C<br/>(swap the codomain —<br/>never sharpen the shadow)"]
+    E --> C2["Richer C"]
+    C2 -.->|"new probe"| P
+    C2 -.->|"orients toward,<br/>without reaching<br/>(structural residue persists)"| Y["Yoneda point<br/>FF, residue 0"]
 ```
 
-**Nota de honestidade sobre o diagrama.** A leitura ingênua — "o ponto de Yoneda é um alvo que
-se atinge no fim de uma escada finita" — já caiu num debate registrado em
+**Honesty note on the diagram.** The naive reading — "the Yoneda point is a target
+reached at the end of a finite ladder" — has already run into a debate recorded in
 [FRAMINGS.md F6 (status 2026-07-20)](FRAMINGS.md#f6--o-ponto-de-yoneda-como-alvo-a-anomalia-como-motor-a-dinâmica):
-`y` é *fully faithful* de graça e o endpoint resíduo-zero é vacuoso. O que sobrevive não é a
-chegada, é a **trajetória ordenada de enriquecimento** — e mesmo essa trajetória tem estrutura:
+`y` is *fully faithful* for free and the residue-zero endpoint is vacuous. What survives is not
+the arrival, it's the **ordered trajectory of enrichment** — and even that trajectory has
+structure:
 [F7](FRAMINGS.md#f7--duas-espécies-de-sonda--os-dois-eixos-independentes-com-ordem-de-apresentação)
-distingue uma sonda-de-reconhecimento (que acha *quais objetos existem*) de uma sonda-de-ligação
-(que estabelece *as relações* entre eles), com a segunda dependendo de tipagem da primeira — não
-uma escada linear, um poset graduado.
+distinguishes a recognition-probe (which finds *which objects exist*) from a linking-probe
+(which establishes *the relations* between them), with the second depending on the first's
+typing — not a linear ladder, a graded poset.
 
-### Vocabulário normativo — as 5 definições
+### Normative vocabulary — the 5 definitions
 
-Fonte única: [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md). Cada termo carrega
-Status · Voz científica/formal · Interpretação operacional · Fronteira · Tipo categórico + âncora
-Lean — todas `status: candidato`, nenhuma promovida a premissa.
+Single source: [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md). Each term carries
+Status · Scientific/formal voice · Operational interpretation · Boundary · Categorical type +
+Lean anchor — all `status: candidato`, none promoted to premise.
 
-| ID | Termo | O traço, em uma linha |
+| ID | Term | The trait, in one line |
 |---|---|---|
-| DEF-ORCH-001 | **resíduo** | O objeto de duas faces (sombra ⊕ estrutura) que um verbo deixa de preservar — não o relatório da perda, a coisa em si. |
-| DEF-ORCH-002 | **separação** | O primitivo anterior à contagem: sem sinal individuante, indiscernível = idêntico; contar é derivado, nunca fundacional. |
-| DEF-ORCH-003 | **sombra** | A face escalar do resíduo — funtor para uma categoria *thin*; separa, mas não reconstrói. |
-| DEF-ORCH-004 | **sonda** | Interrogação ativa por mapas-teste `A → X`; a família completa reconstrói o objeto (Yoneda *fully faithful*). |
-| DEF-ORCH-005 | **verbo** | Um morfismo mais a condição sob a qual preserva a simetria do objeto; fora dela, gera resíduo — mensurável por-verbo. |
+| DEF-ORCH-001 | **residue** | The two-faced object (shadow ⊕ structure) that a verb fails to preserve — not the report of the loss, the thing itself. |
+| DEF-ORCH-002 | **separation** | The primitive prior to counting: without an individuating signal, indiscernible = identical; counting is derived, never foundational. |
+| DEF-ORCH-003 | **shadow** | The scalar face of residue — a functor into a *thin* category; separates, but doesn't reconstruct. |
+| DEF-ORCH-004 | **probe** | Active interrogation via test-maps `A → X`; the complete family reconstructs the object (Yoneda *fully faithful*). |
+| DEF-ORCH-005 | **verb** | A morphism plus the condition under which it preserves the object's symmetry; outside it, generates residue — measurable per-verb. |
 
-### Construto ⟷ tipo categórico (a espinha do vault)
+### Construct ⟷ categorical type (the vault's backbone)
 
-A regra herdada é dura: **todo construto da linguagem-de-agentes precisa de um tipo em teoria
-das categorias e de uma âncora num arquivo Lean real**. A tabela completa (ledger vivo, com
-estatuto e força por linha) vive em [`MAPPING.md`](MAPPING.md); esta é a amostra que carrega o
-peso argumentativo:
+The inherited rule is strict: **every construct in the agent-language needs a type in category
+theory and an anchor in a real Lean file**. The full table (a living ledger, with
+status and strength per row) lives in [`MAPPING.md`](MAPPING.md); this is the sample that carries
+the argumentative weight:
 
-| Construto (linguagem-de-agentes) | Tipo CT candidato | Força |
+| Construct (agent-language) | Candidate CT type | Strength |
 |---|---|---|
-| `concat` de resultados (sem `robot_talks`) | **coproduto** — thin, count-shaped | estrutural |
-| `synthesis` (com `robot_talks: true`, tensão) | **pushout / colimit** — identifica sobreposição, **gera resíduo mensurável** | candidato forte |
-| conexão `sequential` | composição `∘` | estrutural |
-| conexão `zig-zag` | identidades triangulares / `EqvGen` ida-e-volta | candidato forte |
-| conexão `feedback` | **NÃO** um morfismo de 1-nível — 2-célula (fora do 1-esqueleto) | candidato — evidência para o risco de OBL-E3 |
-| dispatch (grupos + conexões) | diagrama tipado `J → Cat` | candidato |
-| `check-tension` / eixos anti-viés (n≥2) | família de sondas jointly-faithful — cada eixo, um separador ortogonal | candidato forte |
-| `meta:true` + `parent_dispatch_id` (linhagem) | endofunctor / **free monad** sobre árvore bem-fundada — mecaniza a tese A6 | candidato forte |
-| resíduo de uma síntese | `FunctorialResidueStructure` — unit de Lan não-iso | estrutural |
+| `concat` of results (without `robot_talks`) | **coproduct** — thin, count-shaped | structural |
+| `synthesis` (with `robot_talks: true`, tension) | **pushout / colimit** — identifies overlap, **generates measurable residue** | strong candidate |
+| `sequential` connection | composition `∘` | structural |
+| `zig-zag` connection | triangle identities / `EqvGen` back-and-forth | strong candidate |
+| `feedback` connection | **NOT** a 1-level morphism — a 2-cell (outside the 1-skeleton) | candidate — evidence for OBL-E3's risk |
+| dispatch (groups + connections) | typed diagram `J → Cat` | candidate |
+| `check-tension` / anti-bias axes (n≥2) | family of jointly-faithful probes — each axis, an orthogonal separator | strong candidate |
+| `meta:true` + `parent_dispatch_id` (lineage) | endofunctor / **free monad** over a well-founded tree — mechanizes the A6 thesis | strong candidate |
+| residue of a synthesis | `FunctorialResidueStructure` — non-iso unit of Lan | structural |
 
-O achado central — **concat = coproduto vs. synthesis = pushout** — liga a mecânica do
-`robot_talks` diretamente a DEF-ORCH-001: uma síntese sob tensão *literalmente* produz o objeto
-de duas faces que o repo chama de resíduo. É também metade do caminho para descarregar a
-sub-obrigação 3 de OBL-E3.
+The central finding — **concat = coproduct vs. synthesis = pushout** — ties the `robot_talks`
+mechanics directly to DEF-ORCH-001: a synthesis under tension *literally* produces the two-faced
+object the repo calls residue. It's also half the way to discharging
+sub-obligation 3 of OBL-E3.
 
-### OBL-E3 — o teste que decide tudo
+### OBL-E3 — the test that decides everything
 
-Nada neste vault é resultado até que uma obrigação específica seja descarregada. Ela vive em
+Nothing in this vault is a result until a specific obligation is discharged. It lives in
 [`OBLIGATIONS.md`](OBLIGATIONS.md):
 
-> Existe uma categoria `ORCH` onde **objetos** = grupos de dispatch, **morfismos** =
-> `connections` tipadas (`sequential` / `zig-zag` / `feedback`), **composição** = concatenação
-> de pipeline, **identidade** = grupo pass-through?
+> Does a category `ORCH` exist where **objects** = dispatch groups, **morphisms** =
+> typed `connections` (`sequential` / `zig-zag` / `feedback`), **composition** = pipeline
+> concatenation, **identity** = pass-through group?
 
-Três sub-obrigações, todas precisam valer: (1) associatividade das conexões encadeadas;
-(2) leis de identidade do grupo pass-through; (3) o resíduo de uma síntese ser o **mesmo objeto**
-que `FunctorialResidueStructure` — não apenas um resíduo count-shaped.
+Three sub-obligations, all of which must hold: (1) associativity of chained connections;
+(2) identity laws of the pass-through group; (3) the residue of a synthesis being the **same
+object** as `FunctorialResidueStructure` — not just a count-shaped residue.
 
-O risco está nomeado no próprio documento: `zig-zag` e `feedback` são *loops*, e o palpite
-honesto é que só o fragmento `sequential` é categoria de cara; os outros dois são provavelmente
-estrutura extra (2-células? uma bicategoria?), não morfismos de 1-nível. O **collapse-test é
-duplo**: (a) se `zig-zag`/`feedback` não compõem associativamente, `ORCH` é categoria só no
-fragmento `sequential` (um DAG) e o paralelo CT vira decoração para as outras arestas; (b) se o
-resíduo-de-síntese for demonstravelmente count-shaped, a sub-obrigação 3 colapsa a analogia.
+The risk is named in the document itself: `zig-zag` and `feedback` are *loops*, and the
+honest guess is that only the `sequential` fragment is a category outright; the other two are
+probably extra structure (2-cells? a bicategory?), not 1-level morphisms. The **collapse-test is
+twofold**: (a) if `zig-zag`/`feedback` don't compose associatively, `ORCH` is a category only on
+the `sequential` fragment (a DAG) and the CT parallel becomes decoration for the other edges;
+(b) if the synthesis-residue is demonstrably count-shaped, sub-obligation 3 collapses the
+analogy.
 
-**Status: OPEN.** Até descarregar OBL-E3 (ou bater um dos dois collapse-tests), tudo neste vault
-é candidato tipado, não resultado — inclusive as tabelas acima. Essa é a disciplina que separa
-este repositório de um glossário decorado com setas.
+**Status: OPEN.** Until OBL-E3 is discharged (or hits one of the two collapse-tests), everything
+in this vault is a typed candidate, not a result — including the tables above. This is the
+discipline that separates this repository from a glossary decorated with arrows.
 
 ---
 
-## Estrutura do repositório
+## Repository structure
 
 ```
 cyberalchemy-orchestrator/
-├── PLAN.md                        # o objeto enxuto: problema + plano por etapas E0-E4, com collapse-tests
-├── FRAMINGS.md, MAPPING.md, OBLIGATIONS.md   # a camada tese (enquadramentos, mapping CT, alvo falsificável)
-├── definitions/DEFINITIONS.md     # protocolo de definições, termos DEF-ORCH-*
-├── .claude/skills/                # skills operacionais deste repo (substrato portável)
-│   ├── register-dispatch/         # dono da forma da sheet + o appender (append-dispatch.cjs)
-│   ├── check-tension/             # o gate anti-viés init-time (Tests 1-4)
-│   ├── domainspec-subagents-strategy/  # o router: quando dispatchar, lifecycle de 4 passos
-│   └── ...                        # dezenas de outras skills (research, review, close-session, ...)
+├── PLAN.md                        # the lean object: problem + step plan E0-E4, with collapse-tests
+├── FRAMINGS.md, MAPPING.md, OBLIGATIONS.md   # the thesis layer (framings, CT mapping, falsifiable target)
+├── definitions/DEFINITIONS.md     # definitions protocol, DEF-ORCH-* terms
+├── .claude/skills/                # this repo's operational skills (portable substrate)
+│   ├── register-dispatch/         # owner of the sheet's shape + the appender (append-dispatch.cjs)
+│   ├── check-tension/             # the init-time anti-bias gate (Tests 1-4)
+│   ├── domainspec-subagents-strategy/  # the router: when to dispatch, 4-step lifecycle
+│   └── ...                        # dozens of other skills (research, review, close-session, ...)
 ├── telemetry/agents/
-│   ├── subagents-dispatch.yaml    # O LEDGER — append-only, ~700 rows reais, 11 repos
-│   ├── agent-pool.yaml            # pool canônico de agent_name (419 entradas tagueadas)
-│   └── pending/                   # sheets pré-confirm (1 fixture de demonstração hoje)
-├── implementations/               # o dispatch control plane (Fase 1)
-│   ├── server/                    # main.py, ledger.py, config.py (auto-descoberta cross-repo)
-│   ├── static/ui/<slug>/          # dez variantes de UI (aurora, blueprint, brutalist, cyberpunk,
+│   ├── subagents-dispatch.yaml    # THE LEDGER — append-only, ~700 real rows, 11 repos
+│   ├── agent-pool.yaml            # canonical agent_name pool (419 tagged entries)
+│   └── pending/                   # pre-confirm sheets (1 demo fixture today)
+├── implementations/               # the dispatch control plane (Phase 1)
+│   ├── server/                    # main.py, ledger.py, config.py (cross-repo auto-discovery)
+│   ├── static/ui/<slug>/          # ten UI variants (aurora, blueprint, brutalist, cyberpunk,
 │   │                              #  grimoire, linear, mission-control, radar, swiss, terminal)
-│   ├── UI-CONTRACT.md             # contrato normativo (API + testids)
+│   ├── UI-CONTRACT.md             # normative contract (API + testids)
 │   └── tests/                     # test_ledger.py, test_main.py, test_ui.py (Playwright)
-├── tools/agent-pool-mcp/          # servidor MCP — seleção de agent_name cross-repo
-├── vault/constitution/, vault/hypothesis/   # regras ratificadas e hipóteses exploratórias
-├── research/, sessions/           # investigações pontuais e nós de sessão fechados
-└── docs/                          # features, ensaios, e os candidatos de README (docs/readme-candidates/)
+├── tools/agent-pool-mcp/          # MCP server — cross-repo agent_name selection
+├── vault/constitution/, vault/hypothesis/   # ratified rules and exploratory hypotheses
+├── research/, sessions/           # ad hoc investigations and closed session nodes
+└── docs/                          # features, essays, and README candidates (docs/readme-candidates/)
 ```
 
-### Navegação
+### Navigation
 
-| Caminho | O quê |
+| Path | What |
 |---|---|
-| [`PLAN.md`](PLAN.md) | O objeto enxuto: problema, mapa do material bruto, plano E0-E4 com collapse-tests, protocolo de definições. |
-| [`FRAMINGS.md`](FRAMINGS.md) | Ledger dos enquadramentos F1–F7 — a anatomia da tese categórica. |
-| [`MAPPING.md`](MAPPING.md) | Ledger vivo construto ⟷ tipo CT, com força e collapse-test por linha. |
-| [`OBLIGATIONS.md`](OBLIGATIONS.md) | O alvo falsificável único (OBL-E3). |
-| [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Vocabulário normativo (resíduo, separação, sombra, sonda, verbo) — fonte única por termo. |
-| [`implementations/`](implementations/) | O control plane rodável. Ver [`implementations/README.md`](implementations/README.md) e o contrato [`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md). |
-| [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/) | MCP cross-repo que seleciona `agent_name` do pool canônico. |
-| [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml) | O ledger append-only — o coração operacional. Nunca editar em linha; só via `register-dispatch`. |
-| [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml) | Pool canônico de personas (`agent_name`), com tags e `role_fit`. |
-| [`telemetry/agents/pending/`](telemetry/agents/pending/) | Sheets pré-confirm — a única superfície editável antes do ledger. |
-| [`vault/hypothesis/`](vault/hypothesis/) | Hipóteses exploratórias, ainda não promovidas a constituição (ex.: `HYP-ORCH-NOISE`). |
-| [`vault/constitution/`](vault/constitution/) | Regras já ratificadas; ver também [`vault/ontology-conventions.md`](vault/ontology-conventions.md). |
-| [`docs/essays/orquestrador-anti-ruido/`](docs/essays/orquestrador-anti-ruido/) | Ensaio derivado da `HYP-ORCH-NOISE` — o orquestrador como máquina de redução de ruído (viés ⊕ ruído). |
-| [`docs/features/ui-studio/`](docs/features/ui-studio/) | Feature em design: harness de fitness para as variantes de UI. |
-| [`.claude/skills/`](.claude/skills/) | Skills executáveis via Claude Code — `register-dispatch`, `check-tension`, `robot-talks`, entre dezenas de outras. |
+| [`PLAN.md`](PLAN.md) | The lean object: problem, map of the raw material, E0-E4 plan with collapse-tests, definitions protocol. |
+| [`FRAMINGS.md`](FRAMINGS.md) | Ledger of framings F1–F7 — the anatomy of the categorical thesis. |
+| [`MAPPING.md`](MAPPING.md) | Living ledger of construct ⟷ CT type, with strength and collapse-test per row. |
+| [`OBLIGATIONS.md`](OBLIGATIONS.md) | The single falsifiable target (OBL-E3). |
+| [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Normative vocabulary (residue, separation, shadow, probe, verb) — single source per term. |
+| [`implementations/`](implementations/) | The runnable control plane. See [`implementations/README.md`](implementations/README.md) and the contract [`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md). |
+| [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/) | Cross-repo MCP that selects `agent_name` from the canonical pool. |
+| [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml) | The append-only ledger — the operational heart. Never edit in place; only via `register-dispatch`. |
+| [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml) | Canonical pool of personas (`agent_name`), with tags and `role_fit`. |
+| [`telemetry/agents/pending/`](telemetry/agents/pending/) | Pre-confirm sheets — the only editable surface before the ledger. |
+| [`vault/hypothesis/`](vault/hypothesis/) | Exploratory hypotheses, not yet promoted to constitution (e.g., `HYP-ORCH-NOISE`). |
+| [`vault/constitution/`](vault/constitution/) | Already-ratified rules; see also [`vault/ontology-conventions.md`](vault/ontology-conventions.md). |
+| [`docs/essays/orquestrador-anti-ruido/`](docs/essays/orquestrador-anti-ruido/) | Essay derived from `HYP-ORCH-NOISE` — the orchestrator as a noise-reduction machine (bias ⊕ noise). |
+| [`docs/features/ui-studio/`](docs/features/ui-studio/) | Feature in design: fitness harness for the UI variants. |
+| [`.claude/skills/`](.claude/skills/) | Skills executable via Claude Code — `register-dispatch`, `check-tension`, `robot-talks`, among dozens of others. |
 
-## Por onde começar
+## Where to start
 
-Se esta é sua primeira visita, leia estes três documentos **nesta ordem**:
+If this is your first visit, read these three documents **in this order**:
 
-1. **[`implementations/README.md`](implementations/README.md)** — a peça que já roda: o que o
-   control plane é, por que existe (o ledger só é escrito pós-confirm, então uma UI que só o lê
-   sempre chega tarde), e como subir localmente.
-2. **[`PLAN.md`](PLAN.md)** — o objeto enxuto por trás de tudo: o problema, o material bruto já
-   espalhado por outros repos, e o plano em etapas (E0-E4, cada uma com seu collapse-test).
-3. **[`OBLIGATIONS.md`](OBLIGATIONS.md)** — se você quiser a profundidade da tese: o único alvo
-   falsificável (OBL-E3) que decide se a linguagem de orquestração é matemática ou metáfora.
-   Leitura opcional para quem só quer usar o control plane.
+1. **[`implementations/README.md`](implementations/README.md)** — the piece that already runs:
+   what the control plane is, why it exists (the ledger is only written post-confirm, so a UI
+   that only reads it always arrives late), and how to bring it up locally.
+2. **[`PLAN.md`](PLAN.md)** — the lean object behind everything: the problem, the raw material
+   already scattered across other repos, and the step plan (E0-E4, each with its own
+   collapse-test).
+3. **[`OBLIGATIONS.md`](OBLIGATIONS.md)** — if you want the depth of the thesis: the single
+   falsifiable target (OBL-E3) that decides whether the orchestration language is mathematics or
+   metaphor. Optional reading for those who just want to use the control plane.
 
-Para a definição de qualquer termo (`sonda`, `zig-zag`, `resíduo`, `dispatch`, ...):
+For the definition of any term (`probe`, `zig-zag`, `residue`, `dispatch`, ...):
 [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md).
