@@ -148,22 +148,36 @@ já é latente.
 Antes de investigar, há um ato que a versão anterior desta tese não nomeava: **enquadrar**.
 
 **Frame.** Dado um contexto e um problema, qual a melhor maneira de enquadrar a
-pergunta/ponto-de-vista? A saída do frame **não é um tópico**, é uma **pergunta bem-formada**
-(o campo `question` que o kind `research` já exige). Enquadrar é a escolha da **lente** — no
-vocabulário do repo, a escolha do codomínio `C` (PLAN "fio comum"; `MAPPING.md`). Por isso o
-frame **pertence ao eixo do viés/tensão**, não ao da independência: enquadramentos são juízos
-direcionais e devem ser **opostos** (várias molduras confrontadas), não agregados. Um frame
-mal-posto envenena todo o filtro de fontes downstream.
+pergunta/ponto-de-vista? A saída do frame **não é um tópico**, é uma **pergunta bem-formada**.
+(*Anotação de âncora, pós-revisão:* o campo `question` mais próximo vive no kind `discovery`, e
+lá é **opcional** — o kind `research` **não** o exige; não herdamos a cadeia `discovery` do
+outro vault, ver `[[OQ-6]]`.) Enquadrar é a escolha da **lente** — no vocabulário do repo, a
+escolha do codomínio `C` (README "fio comum"; `FRAMINGS.md`). E, porque enquadrar **é um
+juízo**, ele carrega os **dois** componentes da tese (`viés ⊕ ruído`) — então recebe os **dois**
+tratamentos, não um só:
 
-**Refine — operador transversal, não estágio.** `refine` é um **loop limitado aplicável a
-qualquer nó** (frame, research, findings): melhora o artefato por iteração. Não é uma etapa
-própria — é um operador que qualquer estágio pode carregar. O cap e a parada já existem: o
-`loop_cap`/`max_loops` da constituição e o critério de convergência do zig-zag ("termina quando
-nenhuma passada levanta inconsistência nova"). Sem cap + convergência, refine vira loop
-infinito — então herda ambos por padrão. (Casa com a skill `refine` já presente.)
+- **Braço de viés (tensão).** Enquadramentos são direcionais; molduras **opostas** expõem o
+  viés de quem enquadra. É o braço que o mermaid mostra (`F0`, eixo VIÉS).
+- **Braço de ruído (independência) — PENDENTE.** Dois analistas competentes, sem viés
+  compartilhado, enquadram o mesmo problema de formas **dispersas**: isso é ruído, não oposição.
+  Aplica-se aqui a mesma engenharia de `[[OQ-4]]` — **N frames independentes, logados cegos**, e
+  a **dispersão dos frames como sinal de primeira classe** (alta dispersão = problema mal-posto;
+  não se tira média de perguntas). Este braço é novo e ainda não construído.
 
-**A espinha de citação — invariante, não sugestão.** Toda a evidência do pipeline pende de
-uma disciplina de referência que atravessa research→findings:
+Um frame mal-posto envenena todo o filtro de fontes downstream.
+
+**Refine — operador transversal, não estágio.** `refine` melhora um artefato por iteração e,
+em princípio, é aplicável a qualquer nó (frame, research, findings). *Ressalva pós-revisão
+(honestidade de âncora):* a skill `refine` real **não** é um "loop até convergência" — é uma
+**esteira canônica fixa (~10 estágios)** capada por *budget de preset*, rodada uma vez; e os
+dials `loop_cap`/`max_loops` são de **loop de dispatch entre grupos**, não contadores de
+iteração de um artefato solo. Logo, como forma de terminação, refine hoje **completa a esteira
+fixa + budget**. Um **critério de convergência para artefato solo** ("parar quando uma passada
+não levanta inconsistência nova") é desejável mas **PENDENTE** — não é o que o `zig_zag` nem a
+skill `refine` do repo fazem hoje.
+
+**A espinha de citação — disciplina candidata (não invariante fechada).** A evidência do
+pipeline deve pender de uma disciplina de referência que atravessa research→findings:
 
 - **Chave de paper.** Todo paper/fonte tem um identificador estável; precedência
   **DOI > arXiv ID > URL > hash-de-conteúdo** (fallback). A chave habilita **dedup** (mesma
@@ -171,10 +185,18 @@ uma disciplina de referência que atravessa research→findings:
 - **Fluxo research → findings.** No `research` (agregado), os agentes **escrevem as fontes
   consultadas** — cada uma com chave e status (usada / descartada + porquê). Essas fontes
   **propagam** ao `findings` via `derives-from`; a síntese não inventa fontes.
-- **Toda afirmação referenciada.** Cada claim do `findings` carrega **≥1 chave**. Claim sem
-  chave = **inválida** (fail-closed) — e é aqui que o **output de observabilidade** (o 2º
-  output, ao lado do markdown) fica mais forte: mede cobertura ("N claims, M referenciadas") e
-  sinaliza as órfãs. A disciplina deixa de ser boa-vontade e vira **verificável**.
+- **Toda afirmação referenciada — com duas salvaguardas.** Cada claim do `findings` carrega
+  **≥1 chave**; claim sem chave = **suspeita**, não silenciosamente aceita. Mas fail-closed
+  **cru fabrica o viés de disponibilidade que a tese combate** (Goodhart): força a descartar
+  claim verdadeira-mas-inancorável, ou a colar a chave mais próxima só pra passar — e um
+  dashboard de cobertura VERDE passa a medir *conformidade*, não verdade. Duas salvaguardas
+  obrigatórias, então:
+  1. **Qualidade do vínculo, não só presença.** O output de observabilidade distingue
+     `supports` (a fonte de fato sustenta a claim) de `mentioned` (apenas citada) — cobertura
+     mede **bem-referenciada**, não referenciada.
+  2. **Válvula para verdade-por-raciocínio.** Uma claim inferencial legítima usa uma chave
+     explícita `reasoning`/auto-evidência — para não **estrangular a inferência** (coerente com
+     o ajuste 3), tornando o *tipo* de âncora visível em vez de forçar teatro de citação.
 
 Isto reforça duas linhas já presentes: a rastreabilidade/blinding e a divergência
 a-priori↔a-posteriori de `[[OQ-4]]`.
@@ -237,9 +259,9 @@ o que falta construir.
 | Sludge deliberado | T | fricção que força a sequência correta | **PENDENTE** — gate que impede a discussão antes do congelamento |
 | Token-budget como nudge | T | escassez força compressão/decisão | `token_budget` no schema v0.6.0 **existe**; uso como nudge é design |
 | Tipo categórico por construto | CT | tudo compõe e mede resíduo | `MAPPING.md` / PLAN §4 (disciplina já adotada) |
-| Frame (enquadrar a pergunta) | K·CT | lente mal-posta envenena tudo downstream; enquadrar é escolher `C` | **PENDENTE** — estágio novo, a frente do pipeline (eixo tensão) |
-| Refine (operador de loop) | — | melhora por iteração limitada, transversal a qualquer nó | skill `refine` **existe**; cap = `loop_cap`/`max_loops`; convergência = zig-zag |
-| Espinha de citação (chave + fluxo + claim↦ref) | K | evidência sem âncora não é evidência (`claim ≤ proof`) | parcial: `derives-from` **existe**; chave de paper + validador de claim-órfã **PENDENTE** |
+| Frame (enquadrar a pergunta) | K·CT | lente mal-posta envenena tudo downstream; enquadrar é um juízo (viés ⊕ ruído) | **PENDENTE** — estágio novo; braço de tensão + braço de dispersão-independente (`[[OQ-4]]`) |
+| Refine (operador de loop) | — | melhora por iteração limitada, transversal a qualquer nó | skill `refine` **existe** (esteira fixa + budget); convergência solo **PENDENTE** (não é o zig-zag nem os dials de dispatch) |
+| Espinha de citação (chave + fluxo + claim↦ref) | K | evidência sem âncora não é evidência (`claim ≤ proof`) | parcial: `derives-from` **existe**; chave + qualidade-do-vínculo (`supports`/`mentioned`) + válvula `reasoning` **PENDENTE** |
 
 ## Open questions
 
@@ -308,13 +330,25 @@ nosso). Fica salvo como ideia a reconciliar, não importada: se existe um ato de
 de problema* anterior ao *enquadramento*, ou se o frame é a própria raiz.
 *Recomendação:* tratar **frame como a frente** por ora e deixar "o que precede o frame" como
 fork aberto — não herdar a cadeia `discovery` do outro vault sem decidir que ela é nossa.
-`[[discovery-as-root]]`
+*Risco vivo (não só arquivístico):* o frame recebe "um problema" como **dado** — mas o
+**reconhecimento-de-problema está a montante do primeiro estágio governado e hoje sem dono**.
+"Frame mal-posto envenena o downstream" sobe um nível: um *problema* mal-reconhecido envenena o
+frame. Input-raiz não-auditado é risco aberto, não questão de taxonomia. `[[discovery-as-root]]`
 
 **OQ-7 — Qual é a chave canônica de paper, e onde vive o dedup?**
 Precedência proposta **DOI > arXiv > URL > hash**; mas nem MOGT-scaffolding nem CANONICAL-KINDS
 trazem schema bibliográfico ou deduplicação — é peça a inventar. *Recomendação:* chave estável
 por fonte no ledger append-only; dedup por chave na entrada; claim-órfã (sem chave) reprovada
 pelo validador do output de observabilidade. `[[espinha-de-citacao]]`
+
+**OQ-8 — Como construir o braço de ruído do frame (frames independentes + dispersão-como-sinal)?**
+O frame ganhou, no design, um segundo braço além da tensão: N enquadramentos **independentes**,
+logados cegos, com a **dispersão dos frames como sinal de primeira classe** (à la `[[OQ-4]]`) —
+alta dispersão = problema mal-posto. Marcado PENDENTE no texto e na tabela; falta desenhar:
+quantos frames, como medir dispersão de perguntas (não-mediáveis), e o gatilho que separa
+"mal-posto" de "rico". *Recomendação:* reusar a engenharia de distribuição-como-ruído da OQ-4,
+não inventar métrica nova. Levantada pelo red-team em `2026-07-20-anti-ruido-frame-refine-review`.
+`[[frame-braco-de-ruido]]`
 
 ## Collapse-tests (o que falsifica esta tese)
 
@@ -327,6 +361,16 @@ pelo validador do output de observabilidade. `[[espinha-de-citacao]]`
   medindo nada e vira cerimônia (ajuste 4/5).
 - Se enquadramentos opostos convergirem sempre à mesma pergunta (todo frame dá o mesmo
   `question`), o estágio **frame** não separa nada e vira cerimônia — o refine sobre ele também.
+- E o modo de falha oposto (braço de ruído): se frames **independentes** nunca dispersarem, o
+  braço de ruído do frame não mede nada; se dispersarem sempre sem sinal recuperável, é problema
+  cronicamente mal-posto — em nenhum caso a dispersão-como-sinal (`[[OQ-4]]`) se sustenta.
+- **(novo, `costura-feasibility`) Composicionalidade.** Se a decomposição `viés ⊕ ruído` e o
+  re-tipo do nudge só valerem **pontualmente por estágio** e **não** sobrevierem à composição
+  functorial dos estágios/dispatch, então a separação-por-estágio é ferramenta de design sem
+  garantia formal — e a tese não descarrega OBL-E3 (que é exatamente esta pergunta um andar
+  acima). *Falsifica:* exibir dois estágios cuja composição destrói a ortogonalidade (a DPI
+  sugere que existe). *Sobrevive:* uma prova de que bias/ruído-do-composto se constroem dos
+  bias/ruído-das-partes.
 
 ## Connections
 
