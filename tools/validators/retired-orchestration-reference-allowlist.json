@@ -1,0 +1,371 @@
+{
+  "schema_version": "1.0.0",
+  "guard_id": "domainspec-v2-zero-active-saga-reference-guard",
+  "manifest": "projects/domainspec-v2/development/saga-removal/runs/SWU-SGRM-001/ACTIVE-REFERENCE-MANIFEST.json",
+  "exceptions": [
+    {
+      "path": "projects/domainspec-v2/.craft/ledger.yml",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 3,
+      "match_digest": "fb0459c363f86f37fe1a4c61d3039f64939d1f8f03c3cc1568eb3cc0dc21e467"
+    },
+    {
+      "path": "projects/domainspec-v2/development/comprehension-novice-test/DEFINE.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "2915aa7c3ac69bfc87f49fad2e101e29318b241a66e69d80c43da26dc5d17046"
+    },
+    {
+      "path": "projects/domainspec-v2/development/comprehension-novice-test/DESIGN.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "443567d818e3d5114ee466ff2fc190baac89d737915b6d32080371bfd46d7408"
+    },
+    {
+      "path": "projects/domainspec-v2/development/comprehension-novice-test/stall-dataset.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 8,
+      "match_digest": "ec4d28719fe9865b20ef2fadf9695286b2ec0a7a2e6fe2b035f2aab349c91849"
+    },
+    {
+      "path": "projects/domainspec-v2/development/comprehension-novice-test/task-coverage-audit.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 3,
+      "match_digest": "c5b0c4c9d37e54761ebb7645576f28c365a38e129189ec5f0b64f71069589214"
+    },
+    {
+      "path": "projects/domainspec-v2/development/comprehension-novice-test/WORK-PACK.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "0208d930185f7ced5636219a5c7eafaae6e647b93b9bae39e836bd4699a2d943"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/decisions/DEC-DSD1-SAGA-FORK.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 26,
+      "match_digest": "4d588e992257407c045719f3a9e328f1f3895c9d336677024eab3f0c3c7957ea"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/ds-d1-improvement.dispatch.json",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 8,
+      "match_digest": "d287078da14163f243c81e099b70a332cf247bc8100dff78ff52ece1bb6a7583"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/EXECUTION-PACK.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "a9ab9bf788874044f3109f0bb335a66273ca620f1459382ef4a0ea59a7d4f75a"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/IMPLEMENTATION-LAYERING.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 1,
+      "match_digest": "8dda375c2c21ff4828d1f71a12187fc1276c295207802aee676228c3c7143f8a"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/PLAN-TRANSPORT.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 6,
+      "match_digest": "2e9902872cabe66a4d56299a700efa70efbccc7205f5f3f7c85438db87adc393"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/WORK-PACK.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 28,
+      "match_digest": "14206a0193e7c95635cb79d24b2259c25a41022d781efbf0b452ef7cbd849acb"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/work-pack/shared/context.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "ea233792815ee4686c7fc8c89c4fe980a482bd0d1b5afd342039d81b4e0a563a"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/work-pack/shared/cross-task-gaps.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 1,
+      "match_digest": "437cbefbd3710c1bfd53909ec4c873c6b8bb4ff9fe317b92e781a7e8842f44e0"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/work-pack/shared/traceability.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 4,
+      "match_digest": "f78a3368bf0bfe5349a784be423866c041f02ce0141ecb66fa62d1d3030bef33"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/work-pack/tasks/TASK-DSD1-SAGA.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 15,
+      "match_digest": "9755907f699ad15e60d85f435211799d8df51d71ef8ba8de57e001d6b155fba8"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/work-pack/waves/W2.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "8e853bc11c88ddfc8ce7fbf85667b0375ad5c05ecc5f0bbc07b8b13d89c44525"
+    },
+    {
+      "path": "projects/domainspec-v2/development/meta-type-formalization/DESIGN.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 3,
+      "match_digest": "502afaf3d3d76534d3108c2b0b6f65881ffbe274f9a0aba16d21e20034b669c1"
+    },
+    {
+      "path": "projects/domainspec-v2/development/meta-type-formalization/implementation-layering.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "79057c0126444c4b337609eb08589199a8b66ddc3d2c5d097fbfd2b4b884cb1a"
+    },
+    {
+      "path": "projects/domainspec-v2/development/meta-type-formalization/WORK-PACK.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 6,
+      "match_digest": "99471ee7586a869aa9d64d9aec0ce0cf5cb3dcc24b06715ba237c02f87c57b12"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/DESIGN-TRANSPORT.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 4,
+      "match_digest": "e0701b4a8175c60601bcaba3a7e72132e1da246cb2bb15da0c55a6ac39a4cebd"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/DESIGN.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 13,
+      "match_digest": "21ea7b74ab45e1d8c7b4cf8d38dfacba2e6b3e19a67f2bf064779989167fc374"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/DISTILL-VALIDATION.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 7,
+      "match_digest": "51a882c2e286b022fab386ec71d305d1ca1742ae9b32ad4ea7718d0be97e0a3d"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/EXECUTION-PACK.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 1,
+      "match_digest": "1efa0ba72b17caef50340e77613a21def73b5002bc7e0aa085d8f824666def35"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/GLOSSARY-CONSISTENCY.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 4,
+      "match_digest": "3a366c289fe8cdbd205ce00d5f9844bea10953224a3b26945772f9403ccb6344"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/IMPLEMENTATION-LAYERING.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 9,
+      "match_digest": "adde8da4f2aef3bac228523fcea648e0eac93d89a8a4e83d848c23eb840bffb1"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/PLAN-TRANSPORT.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 3,
+      "match_digest": "68a0984da916cbf1d1b9827d8ff44ea66bd8db30e76c183e8c14b8a3ecf18427"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/WORK-PACK.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 18,
+      "match_digest": "9cf499177cbe0719c81c02263933fa1d790000b949981aa50ea823110f53f280"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/work-pack/shared/context.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 4,
+      "match_digest": "c1f7a5e6516e05046895535d7315875383d67f22d6f76917232a268e14a7af76"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/work-pack/shared/traceability.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 5,
+      "match_digest": "ec4f45eec04008da8e3391617833c0f2964702b98d6dd11d53738a77fe87532f"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/work-pack/tasks/TASK-R3H-IDENTITY.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 1,
+      "match_digest": "db4822d29d9f35da4b862c48a63365e4f056149d5dd4d507285f75d9dca750cd"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/work-pack/tasks/TASK-R3H-PROJECTION-VALIDATION.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 1,
+      "match_digest": "f21453f300d52c2cf031cce359210c4efe6c4e690d97eb159e29c621bf9bd9f6"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/work-pack/tasks/TASK-R3H-SAGA-LAWS.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 12,
+      "match_digest": "80e8d895ea9e100a1d5cff566b2a4506f39d7b9ad6f8ffcc9355d8d5d2979a32"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-l2-relationship-hardening/work-pack/waves/W2.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "d99c5521a0bc3c36ba1565dd5fa3186fc0704fbf1fd31c65a525de7835c9bec1"
+    },
+    {
+      "path": "projects/domainspec-v2/development/reformulate-batch1/HANDOFF-novice-test-edge-findings.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 14,
+      "match_digest": "515bd593ae940d79bbaeddf497b15fb9d337a97bf8e22ad914164cfc7a411519"
+    },
+    {
+      "path": "projects/domainspec-v2/development/spec-comprehension-model/DESIGN.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 3,
+      "match_digest": "d432ce124bca2956085818fffc2887bb4765bdfe71337b450821db4b0569ae47"
+    },
+    {
+      "path": "projects/domainspec-v2/development/spec-comprehension-model/ORDER.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "051c3935c92cde927cb8495d97ebfb47ee360cee68d7ebc1454e133a8cd4bf43"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ui-meta-type-repair/INVOKE-TRANSPORT.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 1,
+      "match_digest": "9cadd1f728c3b270ef06a9d5eb12a4ec80118bb8dfeed2bb76caba3c7188abf7"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ui-meta-type-repair/research/2026-07-11-findings-repair-architecture/DISPATCH-PROPOSAL.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 research uses the retired term as precedent, not active authority.",
+      "expected_match_count": 1,
+      "match_digest": "8c8e276f5e9af6da7726b097d8b10327ae96f0ab6aba705f9451c861dbcc919f"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ui-meta-type-repair/research/2026-07-11-findings-repair-architecture/findings.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 research uses the retired term as precedent, not active authority.",
+      "expected_match_count": 1,
+      "match_digest": "74e67e8543889627105a3acbe90dc50e0015e2c4ac976317e28680138cbc2ec4"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ui-meta-type-repair/research/2026-07-11-findings-repair-architecture/INVENTORY-LOOKUP.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 research uses the retired term as precedent, not active authority.",
+      "expected_match_count": 2,
+      "match_digest": "5675ae3fbfb0494b257fadf2b1b7eba07bf4569e6e40057000425756ae4ec441"
+    },
+    {
+      "path": "projects/domainspec-v2/development/ui-meta-type-repair/research/2026-07-11-findings-repair-architecture/research.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 research uses the retired term as precedent, not active authority.",
+      "expected_match_count": 3,
+      "match_digest": "ffa3a181602ea092775938f498370a62cee021a103372e4b3d87d69bceb01170"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-closeout-plan/research/2026-07-12-second-corpus-selection/findings.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 research uses the retired term as superseded historical evidence, not active authority.",
+      "expected_match_count": 1,
+      "match_digest": "94d756c727da013a949ebbd6d29bec874632809765d0dac86a18713480f06fb1"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-closeout-plan/research/2026-07-12-second-corpus-selection/research.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 research preserves verbatim retired-term precedent as superseded historical evidence, not active authority.",
+      "expected_match_count": 2,
+      "match_digest": "ead4835bf846a64587043bf446beec62882a8c1db4f732ebad81f842bdfe421d"
+    },
+    {
+      "path": "projects/domainspec-v2/development/architecture-pattern-enforcement/cards/backend/README.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "SWU-R3C-005 classifies the retired backend card as rejected historical evidence and explicitly denies active type authority.",
+      "expected_match_count": 2,
+      "match_digest": "669e1aa05888fe3a4cba1fc328c3cb9530b610394fd527b000a66455f04836c5"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-closeout-plan/research/2026-07-12-backend-card-triage/findings.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 findings classify the retired card as rejected or superseded evidence, not active authority.",
+      "expected_match_count": 9,
+      "match_digest": "77826374479af6ad7dbcf332bf6ac186ad8adcff41b6f4130bae151184bd6118"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-closeout-plan/research/2026-07-12-backend-card-triage/research.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 research preserves verbatim retired-card analysis as rejected historical evidence, not active authority.",
+      "expected_match_count": 11,
+      "match_digest": "5801d655fe7fc9b2aa586a09b2737b523028b7fab3a527e1021a4fd9f28e3356"
+    },
+    {
+      "path": "projects/domainspec-v2/development/r3-closeout-plan/research/2026-07-12-relationship-card-triage/research.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "Post-SGRM-001 verbatim research records the retired pre-migration signature as historical provenance, not active authority.",
+      "expected_match_count": 1,
+      "match_digest": "953ee4e93b95f03d220a8a24f853a4f49d4d3d69cb9a3205449c1b5bcd9e4e22"
+    },
+    {
+      "path": "projects/domainspec-v2/IMPORT-MANIFEST.md",
+      "disposition": "post-manifest-historical-reference",
+      "reason": "SWU-R3C-005 records the retired card as DROP and dropped provenance, not active authority.",
+      "expected_match_count": 1,
+      "match_digest": "f5a8cd778b2fbcafec7bd5af833440d31541e1e61e17e2533fb77f27f43661db"
+    },
+    {
+      "path": "projects/domainspec-v2/discovery/domainspec-v2-discovery.md",
+      "disposition": "reviewed-current-plan-reference",
+      "reason": "SGRM-006 reviewed this file as cancelled, superseded, completed-decision, or historical-baseline evidence.",
+      "expected_match_count": 2,
+      "match_digest": "421d41394d09935c519c01f3995a8a5ed70131786d61cca6375dbdb891b68072"
+    },
+    {
+      "path": "projects/domainspec-v2/impl/spec/__fixtures__/relationships/bad-saga-orchestrates-operation/SPEC.md",
+      "disposition": "negative-proof",
+      "reason": "SGRM-005 receipt-backed rejection proof; this match must remain negative and content-pinned.",
+      "expected_match_count": 2,
+      "match_digest": "875271cbf8e84dc5fb923a207dd32fd246e171abbdb96780c303093001149c52"
+    },
+    {
+      "path": "projects/domainspec-v2/impl/tools/tests/validate-relationships.test.ts",
+      "disposition": "negative-proof",
+      "reason": "SGRM-005 receipt-backed rejection proof; this match must remain negative and content-pinned.",
+      "expected_match_count": 1,
+      "match_digest": "3185ad92ebbf7c88b2b7acea7c7dbc6eb8c64c09d499cce3ad41696bd3f194ab"
+    }
+  ]
+}

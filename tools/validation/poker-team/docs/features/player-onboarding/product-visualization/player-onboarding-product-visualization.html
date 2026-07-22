@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Player Onboarding User Journeys</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #111827;
+      --muted: #4b5563;
+      --line: #dbe2ee;
+      --brand: #0f766e;
+      --brand-soft: #e6fffa;
+      --accent: #1d4ed8;
+      --warn: #9a3412;
+      --radius: 14px;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 450px at 10% -5%, #d7f9f3 0%, transparent 65%),
+        radial-gradient(1000px 420px at 100% 0%, #dbeafe 0%, transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1240px, 93vw);
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: clamp(26px, 4vw, 40px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    p {
+      margin: 8px 0;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .card h3 {
+      margin-bottom: 6px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .topnav {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .topnav a {
+      text-decoration: none;
+      color: var(--brand);
+      border: 1px solid #bde8e2;
+      background: #f0fdfa;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .topnav a:hover {
+      background: #ccfbf1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 0;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      text-align: left;
+      padding: 8px 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+    }
+
+    .journey {
+      border: 1px solid #d6e4ff;
+      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 40%);
+    }
+
+    .journey-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .journey-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stack > * + * {
+      margin-top: 14px;
+    }
+
+    .timeline {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .timeline li {
+      margin-bottom: 6px;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 12px 14px;
+      font-weight: 700;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    details > div {
+      padding: 12px 14px 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      font-size: 12px;
+      color: #334155;
+      margin-right: 6px;
+    }
+
+    .tag-journey {
+      border-color: #bfdbfe;
+      background: #eff6ff;
+      color: #1e3a8a;
+    }
+
+    .tag-cap {
+      border-color: #99f6e4;
+      background: #f0fdfa;
+      color: #115e59;
+    }
+
+    .warning {
+      border-left: 4px solid #f59e0b;
+      background: #fffbeb;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: var(--warn);
+      font-size: 14px;
+    }
+
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+      font-size: 0.92em;
+      background: #f3f4f6;
+      padding: 1px 5px;
+      border-radius: 6px;
+    }
+
+    .notes {
+      width: 100%;
+      min-height: 140px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      resize: vertical;
+      font: inherit;
+    }
+
+    .notes-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button {
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    button:hover {
+      background: #eef2f7;
+    }
+
+    footer {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" id="top">
+      <span class="eyebrow">Journey-Centered Visualization</span>
+      <h1>Player Onboarding User Journeys</h1>
+      <p class="muted">
+        Single-page journey dossier that integrates capability ownership, operation contracts,
+        detailed rules, data structures, and product KPIs in the same flow view.
+      </p>
+
+      <div class="topnav">
+        <a href="#journey-map">Journey Map</a>
+        <a href="#journey-1">Journey 1</a>
+        <a href="#journey-2">Journey 2</a>
+        <a href="#journey-3">Journey 3</a>
+        <a href="#rule-authority">Rule Authority</a>
+        <a href="#kpis">KPIs</a>
+        <a href="#data-structures">Data Structures</a>
+        <a href="#notes">Iteration Notes</a>
+      </div>
+    </header>
+
+    <section class="section card" id="journey-map">
+      <h2>Integrated Journey Map</h2>
+      <p>
+        The module has three connected user journeys: candidate intake journey, reviewer decision
+        journey, and approved-handoff plus optimization journey.
+      </p>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Journey 1</h3>
+          <p>Candidate Guided Intake (Acquire + Qualify)</p>
+          <p class="muted">Capabilities: CAP-01, CAP-02, CAP-03</p>
+        </div>
+        <div class="card">
+          <h3>Journey 2</h3>
+          <p>Reviewer Controlled Decision (Decide)</p>
+          <p class="muted">Capability: CAP-04</p>
+        </div>
+        <div class="card">
+          <h3>Journey 3</h3>
+          <p>Approved Handoff and Funnel Optimization (Activate + Optimize)</p>
+          <p class="muted">Capabilities: CAP-05, CAP-06</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Journey</th>
+            <th>Capabilities</th>
+            <th>Primary Operations</th>
+            <th>Main Product Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Candidate Guided Intake</td>
+            <td>CAP-01, CAP-02, CAP-03</td>
+            <td><code>GET /onboarding/flow</code>, <code>POST /onboarding/candidates</code></td>
+            <td>Compliant and qualified candidate submissions</td>
+          </tr>
+          <tr>
+            <td>Reviewer Controlled Decision</td>
+            <td>CAP-04</td>
+            <td><code>GET /admin/onboarding/candidates</code>, <code>GET /admin/onboarding/candidates/{id}</code>, <code>PATCH /onboarding/candidates/{id}/review</code></td>
+            <td>Authorized and auditable approve/reject decisioning</td>
+          </tr>
+          <tr>
+            <td>Approved Handoff + Optimize</td>
+            <td>CAP-05, CAP-06</td>
+            <td><code>CandidateApplicationReviewed</code> consumption, telemetry collection</td>
+            <td>Reliable downstream intake and measurable funnel tuning</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning" style="margin-top: 12px;">
+        Canonical references are preserved across this document, including
+        <code>SubmitCandidateApplication.R1</code>,
+        <code>ReviewCandidateApplication.R1</code>, and
+        <code>CandidateApplicationLifecycle.I1</code>.
+      </div>
+    </section>
+
+    <section class="section card journey" id="journey-1">
+      <div class="journey-head">
+        <h2>Journey 1: Candidate Guided Intake</h2>
+        <div class="journey-badges">
+          <span class="tag tag-journey">Acquire + Qualify</span>
+          <span class="tag tag-cap">CAP-01</span>
+          <span class="tag tag-cap">CAP-02</span>
+          <span class="tag tag-cap">CAP-03</span>
+        </div>
+      </div>
+      <p>
+        Candidate journey from opening onboarding content through compliant, deduplicated
+        submission persistence.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Journey Sequence</h3>
+          <ol class="timeline">
+            <li>Open onboarding and load grouped rules screens.</li>
+            <li>Read rules and register acceptance.</li>
+            <li>Unlock candidate form only after acceptance.</li>
+            <li>Submit candidate payload for validation and duplicate checks.</li>
+            <li>Persist <code>CandidateApplication</code> with <code>SUBMITTED</code> state.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Integrated Capability Outcome</h3>
+          <p><strong>CAP-01:</strong> clear rules-first flow composition.</p>
+          <p><strong>CAP-02:</strong> hard compliance gate on rules + LGPD.</p>
+          <p><strong>CAP-03:</strong> qualified, deduplicated persisted application.</p>
+        </div>
+      </div>
+
+      <details open>
+        <summary>Operations and Detailed Description</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Description</th>
+                <th>Key Inputs</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>GET /onboarding/flow</code></td>
+                <td>Composes regulation version and grouped screens using RuleScreenGroupingPolicy.</td>
+                <td>Optional <code>regulationVersion</code> query override</td>
+                <td><code>{ regulationVersion, groups[], acceptanceRequired: true, lgpdConsentRequired: true }</code></td>
+              </tr>
+              <tr>
+                <td><code>POST /onboarding/candidates</code> via <code>SubmitCandidateApplication</code></td>
+                <td>Validates compliance, qualification, and duplicates before persistence and event emission.</td>
+                <td>Personal profile, availability, compliance evidence, optional tracker detail</td>
+                <td><code>201 { id, status, submittedAt, confirmation: 'submitted' }</code> or deterministic <code>400/409</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Rules in This Journey</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Rule</th>
+                <th>Failure Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>CandidateOnboardingFlow.I1</code></td><td>Form cannot be submitted without rules acceptance.</td><td>Form remains locked / submission blocked</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R1</code></td><td>Rules acceptance version and timestamp are mandatory.</td><td>400</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R2</code></td><td>LGPD consent is mandatory.</td><td>400</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R3</code></td><td>All required fields must be present and non-empty.</td><td>400</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R4</code></td><td>Email must satisfy minimal format pattern.</td><td>400</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R5</code></td><td>Duplicate by canonical email or WhatsApp is blocked.</td><td>409 <code>DUPLICATE_CANDIDATE</code></td></tr>
+              <tr><td><code>SubmitCandidateApplication.R6</code></td><td>At least one preferred time window is required.</td><td>400</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R7</code></td><td><code>trackerDetail</code> is mandatory when tracker usage is YES or OTHER.</td><td>400</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R8</code></td><td><code>cityState</code> must follow <code>City/State</code> pattern.</td><td>400</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R9</code></td><td>Candidate must be at least 18 years old.</td><td>400</td></tr>
+              <tr><td><code>CandidateApplicationLifecycle.I2</code></td><td>Submitted/reviewed records always include rules acceptance evidence.</td><td>Lifecycle integrity breach</td></tr>
+              <tr><td><code>CandidateApplicationLifecycle.I3</code></td><td>Submitted/reviewed records always include LGPD consent evidence.</td><td>Lifecycle integrity breach</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Journey Data Structures</summary>
+        <div class="grid grid-2">
+          <div>
+            <h3>Submission Payload Core</h3>
+            <table>
+              <thead><tr><th>Field Group</th><th>Fields</th></tr></thead>
+              <tbody>
+                <tr><td>Identity</td><td><code>fullName, birthDate, cityState, whatsapp, email</code></td></tr>
+                <tr><td>Profile</td><td><code>educationLevel, currentWorkStatus, primaryModality</code></td></tr>
+                <tr><td>Availability</td><td><code>dailyPokerAvailability, preferredTimeWindows, weeklyDaysAvailability</code></td></tr>
+                <tr><td>Experience</td><td><code>pokerExperienceRange, trackerUsage, trackerDetail</code></td></tr>
+                <tr><td>Compliance</td><td><code>lgpdConsentAccepted, acceptedRegulationVersion, acceptedRegulationAt</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Persisted Entity Snapshot</h3>
+            <table>
+              <thead><tr><th>Structure</th><th>Important Fields</th></tr></thead>
+              <tbody>
+                <tr><td><code>CandidateApplication</code></td><td><code>id, canonical email key, ruleAcceptance, status=SUBMITTED, submittedAt</code></td></tr>
+                <tr><td><code>RuleAcceptance</code></td><td><code>regulationVersion, acceptedAt, acceptanceSource='onboarding-flow'</code></td></tr>
+                <tr><td>State transition</td><td><code>[new] -&gt; SUBMITTED</code></td></tr>
+                <tr><td>Produced event</td><td><code>CandidateApplicationSubmitted{applicationId, canonicalEmail, acceptedRegulationVersion, acceptedRegulationAt, occurredAt}</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="section card journey" id="journey-2">
+      <div class="journey-head">
+        <h2>Journey 2: Reviewer Controlled Decision</h2>
+        <div class="journey-badges">
+          <span class="tag tag-journey">Decide</span>
+          <span class="tag tag-cap">CAP-04</span>
+        </div>
+      </div>
+      <p>
+        Authenticated operations and leadership users pull backlog entries, inspect details,
+        and perform deterministic approve/reject review decisions.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Journey Sequence</h3>
+          <ol class="timeline">
+            <li>Open admin review page and list candidates.</li>
+            <li>Select one application and open full detail.</li>
+            <li>Submit <code>APPROVE</code> or <code>REJECT</code> decision.</li>
+            <li>Persist final status plus review metadata.</li>
+            <li>Emit <code>CandidateApplicationReviewed</code> event.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Integrated Capability Outcome</h3>
+          <p><strong>CAP-04:</strong> reviewer actions are permissioned, state-safe, and auditable.</p>
+          <p class="muted">Final transitions: <code>SUBMITTED|UNDER_REVIEW -&gt; APPROVED|REJECTED</code></p>
+        </div>
+      </div>
+
+      <details open>
+        <summary>Operations and Detailed Description</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Description</th>
+                <th>Auth Model</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>GET /admin/onboarding/candidates</code> (<code>ListCandidateApplications</code>)</td>
+                <td>Lists candidate backlog with optional status and pagination filters.</td>
+                <td>Bearer + <code>player-onboarding.review.listCandidates</code></td>
+                <td><code>{ items[], page, limit, total }</code></td>
+              </tr>
+              <tr>
+                <td><code>GET /admin/onboarding/candidates/{id}</code> (<code>GetCandidateApplicationById</code>)</td>
+                <td>Fetches complete candidate payload for manual decision context.</td>
+                <td>Bearer + <code>player-onboarding.review.getCandidateDetail</code></td>
+                <td><code>{ candidateApplication }</code></td>
+              </tr>
+              <tr>
+                <td><code>PATCH /onboarding/candidates/{id}/review</code> (<code>ReviewCandidateApplication</code>)</td>
+                <td>Validates authorization, state, and decision semantics; persists final status and review metadata.</td>
+                <td>Bearer + <code>player-onboarding.review.evaluateApplication</code></td>
+                <td><code>{ id, status, reviewedAt }</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Rules in This Journey</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Rule</th>
+                <th>Failure Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>ReviewCandidateApplication.R1</code></td><td>Caller must be authenticated and authorized to review.</td><td>401/403</td></tr>
+              <tr><td><code>ReviewCandidateApplication.R2</code></td><td>Application must exist.</td><td>404</td></tr>
+              <tr><td><code>ReviewCandidateApplication.R3</code></td><td>Only <code>SUBMITTED</code> or <code>UNDER_REVIEW</code> can be decided.</td><td>400</td></tr>
+              <tr><td><code>ReviewCandidateApplication.R4</code></td><td>Decision must be <code>APPROVE</code> or <code>REJECT</code>.</td><td>400</td></tr>
+              <tr><td><code>CandidateApplicationLifecycle.I1</code></td><td>Closed states cannot transition back to active states.</td><td>Lifecycle integrity breach</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Journey Data Structures</summary>
+        <div class="grid grid-2">
+          <div>
+            <h3>Review Request and Query Shapes</h3>
+            <table>
+              <thead><tr><th>Contract</th><th>Fields</th></tr></thead>
+              <tbody>
+                <tr><td>Review request</td><td><code>id, decision(APPROVE|REJECT), reviewDecisionNote?</code></td></tr>
+                <tr><td>Backlog filter</td><td><code>status?, page?, limit?</code></td></tr>
+                <tr><td>Backlog result</td><td><code>items[], page, limit, total</code></td></tr>
+                <tr><td>Detail result</td><td><code>candidateApplication</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Review Persistence and Event</h3>
+            <table>
+              <thead><tr><th>Structure</th><th>Important Fields</th></tr></thead>
+              <tbody>
+                <tr><td><code>CandidateApplication</code> update</td><td><code>status, reviewedAt, reviewedBy, reviewDecisionNote, retentionUntil</code></td></tr>
+                <tr><td>Calculation C1</td><td><code>nextStatus = APPROVED | REJECTED</code></td></tr>
+                <tr><td>Calculation C2</td><td><code>retentionUntil = reviewedAt + 365d</code> only for reject</td></tr>
+                <tr><td>Produced event</td><td><code>CandidateApplicationReviewed{applicationId, decision, nextStatus, reviewedBy, reviewedAt, retentionUntil}</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="section card journey" id="journey-3">
+      <div class="journey-head">
+        <h2>Journey 3: Approved Handoff and Funnel Optimization</h2>
+        <div class="journey-badges">
+          <span class="tag tag-journey">Activate + Optimize</span>
+          <span class="tag tag-cap">CAP-05</span>
+          <span class="tag tag-cap">CAP-06</span>
+        </div>
+      </div>
+      <p>
+        Approved decisions must produce deterministic handoff payloads for player-management,
+        while telemetry continuously validates funnel quality and policy safety.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Journey Sequence</h3>
+          <ol class="timeline">
+            <li>Reviewer approves candidate in Journey 2.</li>
+            <li>System emits <code>CandidateApplicationReviewed</code> with final status.</li>
+            <li>Downstream player-management consumes approved intake payload.</li>
+            <li>Observability tracks conversion, latency, and rule-risk signals.</li>
+            <li>Product and operations tune policy/UX based on trend and alert feedback.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Integrated Capability Outcome</h3>
+          <p><strong>CAP-05:</strong> deterministic handoff quality for downstream activation.</p>
+          <p><strong>CAP-06:</strong> measurable funnel health and guardrail monitoring.</p>
+        </div>
+      </div>
+
+      <details open>
+        <summary>Operations and Detailed Description</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Contract</th>
+                <th>Description</th>
+                <th>Critical Guarantee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ReviewCandidateApplication.P6</code></td>
+                <td>Approved decision publishes deterministic intake handoff for player-management.</td>
+                <td>Activation payload is complete and reproducible</td>
+              </tr>
+              <tr>
+                <td><code>CandidateApplicationReviewed</code> consume path</td>
+                <td>Downstream service receives approved application identity and review metadata.</td>
+                <td>No missing fields in approved payload</td>
+              </tr>
+              <tr>
+                <td>Telemetry loop (CAP-06)</td>
+                <td>Collects state, operation, rule, workflow, and business KPI metrics for continuous optimization.</td>
+                <td>Coverage remains aligned to declared observability contracts</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Rules in This Journey</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Rule / Constraint</th>
+                <th>Consequence on Fail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>ReviewCandidateApplication.P6</code></td><td>Approved decisions publish deterministic handoff payload for player-management.</td><td>Activation contract breach</td></tr>
+              <tr><td><code>CandidateApplicationLifecycle.I1</code></td><td>Final states remain terminal and cannot revert.</td><td>Lifecycle drift</td></tr>
+              <tr><td><code>CandidateApplicationLifecycle.I2</code></td><td>Rules acceptance evidence remains present after submission/review.</td><td>Compliance integrity breach</td></tr>
+              <tr><td><code>CandidateApplicationLifecycle.I3</code></td><td>LGPD consent evidence remains present after submission/review.</td><td>Compliance integrity breach</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R5</code></td><td>Duplicate defense protects funnel quality signal integrity.</td><td>Funnel pollution / noisy conversion metrics</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Journey Data Structures</summary>
+        <div class="grid grid-2">
+          <div>
+            <h3>Approved Handoff Minimum Fields</h3>
+            <table>
+              <thead><tr><th>Data Group</th><th>Required Fields</th></tr></thead>
+              <tbody>
+                <tr><td>Candidate identity</td><td><code>applicationId, canonicalEmail</code></td></tr>
+                <tr><td>Review decision context</td><td><code>decision, nextStatus, reviewedAt, reviewedBy</code></td></tr>
+                <tr><td>Compliance evidence</td><td><code>acceptedRegulationVersion, acceptedRegulationAt</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Observability Metric Families</h3>
+            <table>
+              <thead><tr><th>Family</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td>State transitions + invariants</td><td>Detects illegal lifecycle behavior</td></tr>
+                <tr><td>Operation duration + invocation</td><td>Health of decision and submission paths</td></tr>
+                <tr><td>Rule violations</td><td>Compliance/abuse friction visibility</td></tr>
+                <tr><td>Workflow completion</td><td>Drop-off and throughput by journey stage</td></tr>
+                <tr><td>Business KPIs</td><td>Demand, quality, decision velocity, activation reliability</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="section card" id="rule-authority">
+      <h2>Rule Authority by Journey</h2>
+      <p class="muted">Shared rules remain epic-level authority and operation rules remain capability-level authority.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Journey</th>
+            <th>Shared Canonical Rules</th>
+            <th>Operation-Owned Canonical Rules</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Journey 1</td>
+            <td><code>CandidateOnboardingFlow.I1</code>, <code>CandidateApplicationLifecycle.I2</code>, <code>CandidateApplicationLifecycle.I3</code></td>
+            <td><code>SubmitCandidateApplication.R1..R9</code></td>
+          </tr>
+          <tr>
+            <td>Journey 2</td>
+            <td><code>CandidateApplicationLifecycle.I1</code></td>
+            <td><code>ReviewCandidateApplication.R1..R4</code></td>
+          </tr>
+          <tr>
+            <td>Journey 3</td>
+            <td><code>CandidateApplicationLifecycle.I1..I3</code>, <code>SubmitCandidateApplication.R5</code></td>
+            <td><code>ReviewCandidateApplication.P6</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section card" id="kpis">
+      <h2>Journey-Integrated Product KPIs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Journey</th>
+            <th>KPI</th>
+            <th>Healthy Signal</th>
+            <th>Risk Signal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Journey 1</td>
+            <td>Qualified submission volume</td>
+            <td>Stable or growing weekly trend</td>
+            <td>Sudden drop</td>
+          </tr>
+          <tr>
+            <td>Journey 1</td>
+            <td>SubmitCandidateApplication.R1 and SubmitCandidateApplication.R2 violations</td>
+            <td>Below 5% each</td>
+            <td>Rising trend</td>
+          </tr>
+          <tr>
+            <td>Journey 1 and Journey 3</td>
+            <td>Duplicate block ratio (SubmitCandidateApplication.R5)</td>
+            <td>Stable baseline</td>
+            <td>Spikes indicating abuse or messaging gaps</td>
+          </tr>
+          <tr>
+            <td>Journey 2</td>
+            <td>Time to review</td>
+            <td>p50 &lt; 24h, p95 &lt; 72h</td>
+            <td>Growing backlog</td>
+          </tr>
+          <tr>
+            <td>Journey 3</td>
+            <td>Approved handoff completeness</td>
+            <td>100% required payload fields present</td>
+            <td>Any missing field</td>
+          </tr>
+          <tr>
+            <td>Journey 3</td>
+            <td>Invalid lifecycle transition count</td>
+            <td>0</td>
+            <td>Any increment is P0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section card" id="data-structures">
+      <h2>Shared Data Structure Backbone</h2>
+      <p class="muted">The same structures power all journeys, from intake through review and activation.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Structure</th>
+            <th>Type</th>
+            <th>Used In Journeys</th>
+            <th>Key Fields</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>CandidateApplication</code></td>
+            <td>Entity</td>
+            <td>1, 2, 3</td>
+            <td><code>id, fullName, email, ruleAcceptance, status, reviewedAt, retentionUntil</code></td>
+          </tr>
+          <tr>
+            <td><code>RuleAcceptance</code></td>
+            <td>Value Object</td>
+            <td>1, 3</td>
+            <td><code>regulationVersion, acceptedAt, acceptanceSource</code></td>
+          </tr>
+          <tr>
+            <td><code>CandidateApplicationSubmitted</code></td>
+            <td>Event</td>
+            <td>1</td>
+            <td><code>applicationId, canonicalEmail, acceptedRegulationVersion, acceptedRegulationAt, occurredAt</code></td>
+          </tr>
+          <tr>
+            <td><code>CandidateApplicationReviewed</code></td>
+            <td>Event</td>
+            <td>2, 3</td>
+            <td><code>applicationId, decision, nextStatus, reviewedBy, reviewedAt, retentionUntil</code></td>
+          </tr>
+          <tr>
+            <td><code>ApplicationStatus</code></td>
+            <td>Enum</td>
+            <td>1, 2, 3</td>
+            <td><code>SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED</code></td>
+          </tr>
+          <tr>
+            <td><code>ListCandidateApplications</code> result</td>
+            <td>Query read model</td>
+            <td>2</td>
+            <td><code>items[], page, limit, total</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section card" id="notes">
+      <h2>Iteration Notes</h2>
+      <p class="muted">
+        Local note pad for review sessions. Notes persist in this browser via local storage.
+      </p>
+      <textarea id="notesBox" class="notes" placeholder="Write feedback, decisions, and next actions..."></textarea>
+      <div class="notes-actions">
+        <button id="saveBtn" type="button">Save Notes</button>
+        <button id="clearBtn" type="button">Clear Notes</button>
+        <a href="#top" style="margin-left: auto; align-self: center;">Back to top</a>
+      </div>
+    </section>
+
+    <footer>
+      Player Onboarding User Journeys HTML<br />
+      Generated from canonical workflow, operation, capability, and data-structure artifacts.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var key = "playerOnboardingProductVisualizationNotes";
+      var notes = document.getElementById("notesBox");
+      var save = document.getElementById("saveBtn");
+      var clear = document.getElementById("clearBtn");
+
+      if (notes) {
+        var stored = localStorage.getItem(key);
+        if (stored) {
+          notes.value = stored;
+        }
+      }
+
+      if (save && notes) {
+        save.addEventListener("click", function () {
+          localStorage.setItem(key, notes.value || "");
+          save.textContent = "Saved";
+          setTimeout(function () {
+            save.textContent = "Save Notes";
+          }, 900);
+        });
+      }
+
+      if (clear && notes) {
+        clear.addEventListener("click", function () {
+          notes.value = "";
+          localStorage.removeItem(key);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

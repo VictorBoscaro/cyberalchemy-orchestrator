@@ -1,0 +1,10 @@
+Issue Type,Summary,Description,Epic Link,Labels
+Story,Gate submission by rules acceptance and consent,"As a candidate, I can only submit when acceptedRegulationVersion, acceptedRegulationAt, and lgpdConsentAccepted are valid.",PO-COMPLIANCE-INTAKE,player-onboarding
+Story,Block duplicates by canonical email and WhatsApp,"As operations, I need deterministic duplicate blocking to keep the queue clean and prevent repeated candidate intake.",PO-COMPLIANCE-INTAKE,player-onboarding
+Story,Persist compliant submissions as SUBMITTED,"As operations, I receive only review-ready candidate applications with required fields and compliance evidence.",PO-COMPLIANCE-INTAKE,player-onboarding
+Story,Authorize review decisions by permission,"As a reviewer, I can approve or reject only when authenticated and authorized.",PO-REVIEW-GOVERNANCE,player-onboarding
+Story,Enforce lifecycle guards on review actions,"As operations, review decisions are valid only for SUBMITTED or UNDER_REVIEW states.",PO-REVIEW-GOVERNANCE,player-onboarding
+Story,Set deterministic retention cutoff for rejections,"As governance owner, rejected applications always store retentionUntil = reviewedAt + 365 days.",PO-REVIEW-GOVERNANCE,player-onboarding
+Story,Track conversion and submission throughput,"As product owner, I monitor daily submissions and funnel conversion to assess onboarding health.",PO-OBSERVABLE-FUNNEL,player-onboarding
+Story,Track review latency and backlog risk,"As operations lead, I monitor time-to-review and queue accumulation for staffing and policy decisions.",PO-OBSERVABLE-FUNNEL,player-onboarding
+Story,Detect telemetry coverage drift,"As engineering lead, I need observability alignment checks to catch missing or mismatched instruments.",PO-OBSERVABLE-FUNNEL,player-onboarding

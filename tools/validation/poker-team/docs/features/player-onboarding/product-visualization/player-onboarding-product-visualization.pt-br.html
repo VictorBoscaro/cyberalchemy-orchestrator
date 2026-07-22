@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jornadas do Usuário - Player Onboarding</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #111827;
+      --muted: #4b5563;
+      --line: #dbe2ee;
+      --brand: #0f766e;
+      --brand-soft: #e6fffa;
+      --accent: #1d4ed8;
+      --warn: #9a3412;
+      --radius: 14px;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 450px at 10% -5%, #d7f9f3 0%, transparent 65%),
+        radial-gradient(1000px 420px at 100% 0%, #dbeafe 0%, transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1240px, 93vw);
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: clamp(26px, 4vw, 40px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    p {
+      margin: 8px 0;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .card h3 {
+      margin-bottom: 6px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .topnav {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .topnav a {
+      text-decoration: none;
+      color: var(--brand);
+      border: 1px solid #bde8e2;
+      background: #f0fdfa;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .topnav a:hover {
+      background: #ccfbf1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 0;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      text-align: left;
+      padding: 8px 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+    }
+
+    .journey {
+      border: 1px solid #d6e4ff;
+      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 40%);
+    }
+
+    .journey-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .journey-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stack > * + * {
+      margin-top: 14px;
+    }
+
+    .timeline {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .timeline li {
+      margin-bottom: 6px;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 12px 14px;
+      font-weight: 700;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    details > div {
+      padding: 12px 14px 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      font-size: 12px;
+      color: #334155;
+      margin-right: 6px;
+    }
+
+    .tag-journey {
+      border-color: #bfdbfe;
+      background: #eff6ff;
+      color: #1e3a8a;
+    }
+
+    .tag-cap {
+      border-color: #99f6e4;
+      background: #f0fdfa;
+      color: #115e59;
+    }
+
+    .warning {
+      border-left: 4px solid #f59e0b;
+      background: #fffbeb;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: var(--warn);
+      font-size: 14px;
+    }
+
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+      font-size: 0.92em;
+      background: #f3f4f6;
+      padding: 1px 5px;
+      border-radius: 6px;
+    }
+
+    .notes {
+      width: 100%;
+      min-height: 140px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      resize: vertical;
+      font: inherit;
+    }
+
+    .notes-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button {
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    button:hover {
+      background: #eef2f7;
+    }
+
+    footer {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" id="top">
+      <span class="eyebrow">Visualização Centrada em Jornadas</span>
+      <h1>Jornadas do Usuário de Player Onboarding</h1>
+      <p class="muted">
+        Dossiê de jornada em página única que unifica o escopo de sistema (capabilities),
+        contratos operacionais, regras de negócio detalhadas, estruturas de dados vitais e métricas de sucesso (KPIs)
+        em uma visualização holística de fluxo.
+      </p>
+      <div class="topnav">
+        <a href="#journey-map">Visão Geral</a>
+        <a href="#journey-1">1. Captação (Intake)</a>
+        <a href="#journey-2">2. Avaliação (Review)</a>
+        <a href="#journey-3">3. Transição (Handoff)</a>
+        <a href="#rule-authority">Garantia de Regras</a>
+        <a href="#kpis">Indicadores de Sucesso (KPIs)</a>
+        <a href="#data-structures">Modelo de Dados</a>
+        <a href="#notes">Revisão e Notas</a>
+      </div>
+    </header>
+
+    <section class="section card" id="journey-map">
+      <h2>Mapeamento Integrado das Jornadas</h2>
+      <p>
+        A implantação conta com três fases interligadas: a captação estruturada do candidato,
+        a tomada de decisão pelo time revisor e o repasse transparente dos aprovados integrando otimização guiada por dados.
+      </p>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Jornada 1</h3>
+          <p>Captação Guiada do Candidato (Aquisição + Qualificação)</p>
+          <p class="muted">Escopo: CAP-01, CAP-02, CAP-03</p>
+        </div>
+        <div class="card">
+          <h3>Jornada 2</h3>
+          <p>Decisão Controlada pelo Revisor (Deliberação)</p>
+          <p class="muted">Escopo: CAP-04</p>
+        </div>
+        <div class="card">
+          <h3>Jornada 3</h3>
+          <p>Repasse (Handoff) dos Aprovados e Otimização (Ativação)</p>
+          <p class="muted">Escopo: CAP-05, CAP-06</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Jornada</th>
+            <th>Capabilities Envolvidas</th>
+            <th>Mecanismos Operacionais</th>
+            <th>Objetivo do Produto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Captação Guiada</td>
+            <td>CAP-01, CAP-02, CAP-03</td>
+            <td><code>GET /onboarding/flow</code>, <code>POST /onboarding/candidates</code></td>
+            <td>Garantir submissões válidas, qualificadas e dentro das normas legais</td>
+          </tr>
+          <tr>
+            <td>2. Decisão Controlada</td>
+            <td>CAP-04</td>
+            <td><code>GET /admin/onboarding/candidates</code>, <code>GET {id}</code>, <code>PATCH /review</code></td>
+            <td>Permitir aprovação/rejeição com total segurança auditável e rastreabilidade</td>
+          </tr>
+          <tr>
+            <td>3. Handoff Otimizado</td>
+            <td>CAP-05, CAP-06</td>
+            <td>Consumo de <code>CandidateApplicationReviewed</code> e sistema de telemetria</td>
+            <td>Alimentar ecossistema com dados limpos e gerar insumos para ajuste fino do funil</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning" style="margin-top: 12px;">
+        As referências canônicas do sistema permanecem documentadas, incluindo rastreabilidadde para
+        <code>SubmitCandidateApplication.R1</code>,
+        <code>ReviewCandidateApplication.R1</code> e
+        <code>CandidateApplicationLifecycle.I1</code>.
+      </div>
+    </section>
+
+    <section class="section card journey" id="journey-1">
+      <div class="journey-head">
+        <h2>Jornada 1: Captação Guiada do Candidato</h2>
+        <div class="journey-badges">
+          <span class="tag tag-journey">Aquisição + Qualificação</span>
+          <span class="tag tag-cap">CAP-01</span>
+          <span class="tag tag-cap">CAP-02</span>
+          <span class="tag tag-cap">CAP-03</span>
+        </div>
+      </div>
+      <p>
+        Abrange os passos executados pelo candidato desde o primeiro acesso ao formulário até a persistência
+        bem-sucedida de seus dados devidamente validados e sem risco de duplicidade de conta.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Fluxo do Usuário</h3>
+          <ol class="timeline">
+            <li>Acessa o conteúdo inicial que apresenta o agrupamento de regras.</li>
+            <li>Revisa as diretrizes e assina o consentimento exigido.</li>
+            <li>Recebe acesso ao formulário interativo somente após os aceites obrigatórios.</li>
+            <li>Envia submissão disparando o filtro de duplicatas e regras de negócio.</li>
+            <li>Sucesso: a aplicação (<code>CandidateApplication</code>) nasce com o status <code>SUBMITTED</code>.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Valor Entregue pelo Sistema</h3>
+          <p><strong>CAP-01:</strong> Experiência de admissão segmentada por conhecimento prévio de regras.</p>
+          <p><strong>CAP-02:</strong> Restrição absoluta contra registros que burlam compliance ou a LGPD.</p>
+          <p><strong>CAP-03:</strong> Conversão do preenchimento em dados de inscrição blindados contra concorrência e spam.</p>
+        </div>
+      </div>
+
+      <details open>
+        <summary>Camada Operacional e Mecânica</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Operação Executada</th>
+                <th>Propósito e Aplicação</th>
+                <th>Parâmetros Principais</th>
+                <th>Retorno de Sucesso / Risco</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>GET /onboarding/flow</code></td>
+                <td>Orquestra dinamicamente as cláusulas e telas usando a engine RuleScreenGroupingPolicy.</td>
+                <td>Sobrescrita da versão via <code>regulationVersion</code></td>
+                <td>Estrutura <code>{ regulationVersion, groups[], acceptanceRequired, lgpdConsentRequired }</code></td>
+              </tr>
+              <tr>
+                <td><code>POST /onboarding/candidates</code> via processo de Intake</td>
+                <td>Realiza dupla checagem de conformidade de negócio, dados limpos e restrição estrita de colisão na plataforma.</td>
+                <td>Perfil, contato, preferências de horário, nível de experiência e termo LGPD verificado</td>
+                <td><code>201 { id, status: SUBMITTED }</code> ou <code>400 / 409</code> reportado com rigor</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Amarras e Regras de Negócio (Policies)</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Referência Oculta</th>
+                <th>Diretriz Obrigatória de Produto</th>
+                <th>Comportamento em Falha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>CandidateOnboardingFlow.I1</code></td><td>Nenhum formulário prossegue sem manifestação de acordo prévio de regras.</td><td>Interface não libera preenchimento de dados</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R1</code></td><td>Para validade legal, versão lida e carimbo de tempo (timestamp) de aceite são mandatórios.</td><td>Erro na porta de entrada (HTTP 400)</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R2</code></td><td>O consentimento oficial da LGPD é indispensável.</td><td>Rejeição Automática (HTTP 400)</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R3</code></td><td>Campos definidos no mapeamento de experiência como obrigatórios não podem vir nulos.</td><td>Rejeição Automática (HTTP 400)</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R4</code></td><td>O campo e-mail sofrerá detecção sanitária básica de estrutura lógica.</td><td>Formatação Inválida (HTTP 400)</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R5</code></td><td>Tentativas de múltiplas contas do mesmo usuário pelo viés do WhatsApp ou E-mail base disparam proteção dupla.</td><td>Falha de Colisão (HTTP 409) - <code>DUPLICATE_CANDIDATE</code></td></tr>
+              <tr><td><code>SubmitCandidateApplication.R6</code></td><td>Preferência temporal: ao menos uma indicação coerente de fuso horário é compulsória.</td><td>Rejeição Automática (HTTP 400)</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R7</code></td><td>Quando o uso do tracker for classificado como YES ou OTHER, a descrição minuciosa (<code>trackerDetail</code>) é estritamente exigida.</td><td>Rejeição Automática (HTTP 400)</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R8</code></td><td>Padronização geográfica garante formato estrito <code>Cidade/UF</code> visando relatórios íntegros.</td><td>Rejeição Automática (HTTP 400)</td></tr>
+              <tr><td><code>SubmitCandidateApplication.R9</code></td><td>O cálculo demográfico bloqueia submissões de usuários que possuam menos de 18 anos civis.</td><td>Bloqueio Legal (HTTP 400)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Anatomia Oculta dos Dados Salvos</summary>
+        <div class="grid grid-2">
+          <div>
+            <h3>Raio-X do Payload Recebido</h3>
+            <table>
+              <thead><tr><th>Categorização</th><th>Propriedades de Valor</th></tr></thead>
+              <tbody>
+                <tr><td>Identidade</td><td><code>fullName, birthDate, cityState, whatsapp, email</code></td></tr>
+                <tr><td>Background</td><td><code>educationLevel, currentWorkStatus, primaryModality</code></td></tr>
+                <tr><td>Logística Pessoal</td><td><code>dailyPokerAvailability, preferredTimeWindows, weeklyDaysAvailability</code></td></tr>
+                <tr><td>Maturidade Poker</td><td><code>pokerExperienceRange, trackerUsage, trackerDetail</code></td></tr>
+                <tr><td>Cerca Legal</td><td><code>lgpdConsentAccepted, acceptedRegulationVersion, acceptedRegulationAt</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Sementes de Infraestrutura (Eventos)</h3>
+            <table>
+              <thead><tr><th>Bloco Funcional</th><th>Atributos Sistêmicos</th></tr></thead>
+              <tbody>
+                <tr><td>Estado Vitalício (Lifecycle)</td><td><code>CandidateApplication</code> nasce com <code>status=SUBMITTED</code>, acoplado à chave canônica forte do usuário</td></tr>
+                <tr><td>Rastreio do Acordo Legal</td><td>O nodo englobado de compliance amarra a versão do edital, timestamp de geração e fonte da entrada (<code>onboarding-flow</code>)</td></tr>
+                <tr><td>Emissão do Suplemento</td><td>Dispara via barramento de mensagens o aviso de <code>CandidateApplicationSubmitted</code> com metadados cruciais para telemetria imediata</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Histórias de Usuário (User Stories)</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Ator Principal</th>
+                <th>Necessidade (O Que)</th>
+                <th>Finalidade (Para Que)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Como Candidato</strong></td>
+                <td>quero poder ler as regras e fornecer meu consentimento prévio</td>
+                <td>para que eu entenda as normas e minha aplicação seja legalmente válida.</td>
+              </tr>
+              <tr>
+                <td><strong>Como Candidato</strong></td>
+                <td>quero preencher um fluxo com meus dados demográficos e experiência</td>
+                <td>para que eu possa ser avaliado corretamente pelas equipes da plataforma.</td>
+              </tr>
+              <tr>
+                <td><strong>Como Sistema</strong></td>
+                <td>quero bloquear submissões de usuários já existentes</td>
+                <td>para garantir que a base de candidatos e funis de marketing não sejam poluídos.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="section card journey" id="journey-2">
+      <div class="journey-head">
+        <h2>Jornada 2: Avaliação Controlada pelo Revisor</h2>
+        <div class="journey-badges">
+          <span class="tag tag-journey">Tomada de Decisão</span>
+          <span class="tag tag-cap">CAP-04</span>
+        </div>
+      </div>
+      <p>
+        Operadores logados e autorizados extraem processos pendentes do backlog (fila), inspecionam o histórico minucioso do indivíduo e decidem, de forma documentada e rastreável, pela admissão (Approve) ou corte (Reject).
+      </p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Fluxo do Operador/Moderador</h3>
+          <ol class="timeline">
+            <li>Navega ao funil de revisão interno, onde filtros recuperam as demandas ativas.</li>
+            <li>Expande um card isolado para uma visão densa do percurso do candidato.</li>
+            <li>Delibera pela resolução prestando o carimbo <code>APPROVE</code> ou <code>REJECT</code>, podendo apontar parecer textual interno.</li>
+            <li>A máquina bloqueia modificações adicionais mudando a aplicação para o estado morto de auditoria.</li>
+            <li>Novo alerta global avisa quem depende dessa aprovação de que a janela final fechou.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Valor Entregue pelo Sistema</h3>
+          <p><strong>CAP-04:</strong> Uma engrenagem fechada, sem margem a desvios de poder, em que apenas pessoas reais com chancela predeterminada cravam transições de estado finais e seguras.</p>
+          <p class="muted">Limites impostos: <code>SUBMITTED</code> ou <code>UNDER_REVIEW</code> fluindo inevitavelmente a <code>APPROVED</code> ou <code>REJECTED</code>.</p>
+        </div>
+      </div>
+
+      <details open>
+        <summary>Camada Operacional e Mecânica</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Operação Executada</th>
+                <th>Finalidade</th>
+                <th>Blindagem de Permissão (ACL)</th>
+                <th>Retorno e Eficácia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>GET /admin/onboarding/candidates</code></td>
+                <td>Busca elástica de banco com foco em paginação eficiente e cruzamento inteligente para o gestor.</td>
+                <td>Tóken seguro associado a trait <code>player-onboarding.review.listCandidates</code></td>
+                <td>Inventário organizado por recência: <code>{ items[], page, limit, total }</code></td>
+              </tr>
+              <tr>
+                <td><code>GET /admin/onboarding/candidates/{id}</code></td>
+                <td>Resgate atomizado contendo cem por cento do log informacional submetido desde o onboarding inicial.</td>
+                <td>Tóken seguro associado a trait <code>player-onboarding.review.getCandidateDetail</code></td>
+                <td>Raio-X: <code>{ candidateApplication }</code> pronto para análise limpa do corpo gestor</td>
+              </tr>
+              <tr>
+                <td><code>PATCH /onboarding/candidates/{id}/review</code></td>
+                <td>Gravação irrevogável da autoridade humana sobre a vida deste processo. Bloqueia interferências paralelas.</td>
+                <td>Tóken seguro associado a trait <code>player-onboarding.review.evaluateApplication</code></td>
+                <td>Retorno restrito: <code>{ id, status final, momento de ação }</code> garantindo clareza terminal.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Amarras e Regras de Negócio (Policies)</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Referência Oculta</th>
+                <th>Diretriz Obrigatória de Produto</th>
+                <th>Comportamento em Falha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>ReviewCandidateApplication.R1</code></td><td>A identificação positiva da interface como operador provido de permissão é insubstituível.</td><td>Queda Segura (HTTP 401/403) blindando a listagem e leitura indevida</td></tr>
+              <tr><td><code>ReviewCandidateApplication.R2</code></td><td>Não submete veredito para identificadores irreais tentando ataques à base limpa.</td><td>Recurso Desconhecido (HTTP 404)</td></tr>
+              <tr><td><code>ReviewCandidateApplication.R3</code></td><td>Deliberações apenas ocorrem sobre processos estantes. Tentar aprovar mortos gera quebra dura.</td><td>Intervenção Inválida (HTTP 400)</td></tr>
+              <tr><td><code>ReviewCandidateApplication.R4</code></td><td>Estados voláteis alienígenas bloqueam. A máquina processará o veredito rigidamente atrelado à <code>APPROVE</code> ou <code>REJECT</code>.</td><td>Concessão Indefinida (HTTP 400)</td></tr>
+              <tr><td><code>CandidateApplicationLifecycle.I1</code></td><td>Com essa transição efetuada de ponta a ponta, retentivas operacionais perdem tração e as portas ativas das submissões morrem.</td><td>Quebra Estrutural (Logs Graves na Auditoria Base)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Histórias de Usuário (User Stories)</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Ator Principal</th>
+                <th>Necessidade (O Que)</th>
+                <th>Finalidade (Para Que)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Como Avaliador/Moderador</strong></td>
+                <td>quero acessar uma lista ordenada das submissões pendentes</td>
+                <td>para que eu consiga focar meu esforço nos registros mais recentes ou prioritários.</td>
+              </tr>
+              <tr>
+                <td><strong>Como Avaliador/Moderador</strong></td>
+                <td>quero visualizar todo o detalhamento preenchido pelo candidato em tela única</td>
+                <td>para que eu possa tomar uma decisão pautada no cenário integral da inscrição.</td>
+              </tr>
+              <tr>
+                <td><strong>Como Avaliador/Moderador</strong></td>
+                <td>quero emitir minha decisão terminal de "Aprovar" ou "Rejeitar" de modo seguro</td>
+                <td>para finalizar a etapa do candidato, gerando auditoria clara da minha chancela.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="section card journey" id="journey-3">
+      <div class="journey-head">
+        <h2>Jornada 3: Transição (Handoff) de Aprovados e Otimização Exata</h2>
+        <div class="journey-badges">
+          <span class="tag tag-journey">Ativação Progressiva Exata</span>
+          <span class="tag tag-cap">CAP-05</span>
+          <span class="tag tag-cap">CAP-06</span>
+        </div>
+      </div>
+      <p>
+        A ponte invisível que garante valor inestimável — a decisão aprovada transita dados para ecossistemas vitais (Player Management) sem fricção. Simultaneamente, a engrenagem de monitoramento de performance valida ruídos, tráfego e eventuais furos, baseando os comitês estratégicos para refinamento no regulamento ou atração de público mais qualificado.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Fluxo Técnico Interno (Behind the Scenes)</h3>
+          <ol class="timeline">
+            <li>Momento da chancela confirmada de aptidão na jornada retroativa.</li>
+            <li>Liberação unívoca propaga aviso sistêmico final a todo bloco operacional dependente.</li>
+            <li>A entidade autônoma subjacente, encarregada do player-management, converte os insumos seguros e instaura o cidadão formalizado.</li>
+            <li>Camada métrica absorve latências temporais inter-etapas e mede integridades.</li>
+            <li>Mesa de produto detecta a fricção dos cortes precoces de retenção, alterando campanhas e polindo texto para as rodadas seguintes.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Valor Entregue pelo Sistema</h3>
+          <p><strong>CAP-05:</strong> Imunidade contra vazamentos de percurso no funil final; o dado é rico, consolidado em mão de quem mais precisa.</p>
+          <p><strong>CAP-06:</strong> Os pulsos digitais formam visões concretas de como andam as taxas reais de finalização da aplicação vis-à-vis ao engajamento e abusos isolados.</p>
+        </div>
+      </div>
+
+      <details open>
+        <summary>Camada Operacional e Mecânica</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Elemento de Transmissão</th>
+                <th>Significância Funcional</th>
+                <th>Sustentáculo Intransponível</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Operação Interna .P6</code></td>
+                <td>Canos preenchidos disparam os fluxos garantidos aos sub-sistemas de base de membros oficiais.</td>
+                <td>Garantia de Payload Blindado Integrando Somente Concluintes Reais</td>
+              </tr>
+              <tr>
+                <td>Consumidor Nativo de Notificações <code>Reviewed</code></td>
+                <td>Comportamento desengatado propicia escalar reações à chancela e disparar processos sem onerar ou derrubar instâncias em paralelo.</td>
+                <td>Disparo Contado, Sem Interrupção de Fluxo ou Perdas Graves</td>
+              </tr>
+              <tr>
+                <td>Fórmula Integrada OTel+Log (CAP-06)</td>
+                <td>Varredura de telemetria cruza latências temporais entre envio do candidato e sua chancela avaliada para identificar lentidões mortais.</td>
+                <td>Respeito Intocável aos Padrões de Observabilidade Sem Sujar Ponto Específico do Código do Serviço Regulado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>Histórias de Usuário (User Stories)</summary>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Ator Principal</th>
+                <th>Necessidade (O Que)</th>
+                <th>Finalidade (Para Que)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Como Sistema de Player Management</strong></td>
+                <td>preciso receber de forma automática o payload de submissões aprovadas</td>
+                <td>para internalizar um novo jogador e desencadear o pacote de onboarding final prático.</td>
+              </tr>
+              <tr>
+                <td><strong>Como Time de Negócio e Operações</strong></td>
+                <td>quero extrair relatórios integrados mostrando a média temporal entre captação e aprovação</td>
+                <td>para identificar gargalos operacionais no fluxo produtivo.</td>
+              </tr>
+              <tr>
+                <td><strong>Como Arquiteto de Software</strong></td>
+                <td>preciso capturar os logs e alertas de transições inválidas (ou duplicatas detectadas)</td>
+                <td>para ajustar falhas na interface do cliente ou responder a potenciais ataques de spam na base.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="section card" id="rule-authority">
+      <h2>Diretrizes Centrais de Defesa da Aplicação (Governância)</h2>
+      <p class="muted">Preservativo lógico indicando os contornos da aplicação de negócio limitados por Jornada frente às diretrizes originais.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Etapa da Jornada</th>
+            <th>Garantias Macro do Epic</th>
+            <th>Regras Isoladas da Etapa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Acesso a Captação (Intake)</td>
+            <td><code>CandidateOnboardingFlow.I1</code>, <code>CandidateApplicationLifecycle.I2 e I3</code></td>
+            <td><code>SubmitCandidateApplication.R1 ao R9</code> (Cobertura Plena da Entrada)</td>
+          </tr>
+          <tr>
+            <td>Polo Decisório de Resolução</td>
+            <td><code>CandidateApplicationLifecycle.I1</code></td>
+            <td><code>ReviewCandidateApplication.R1 ao R4</code> (Tratamento dos Erros Operacionais)</td>
+          </tr>
+          <tr>
+            <td>Ecossistema de Handoff</td>
+            <td><code>CandidateApplicationLifecycle.I1 ao I3</code>, <code>Submit.R5</code></td>
+            <td><code>ReviewCandidateApplication.P6</code> (Propagação Segura para Outras Zonas)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section card" id="kpis">
+      <h2>Indicadores de Ação e Qualidade de Produto (KPIs)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Visão Específica</th>
+            <th>Indicador Medido</th>
+            <th>Margem Positiva</th>
+            <th>Sinalizador Analítico de Estresse (Alerta)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Captação Bruta</td>
+            <td>Tendemétrica (Volume de preenchimentos consolidados sem furo técnico)</td>
+            <td>Linha sustentada sem quedas contínuas nos fechamentos da semana</td>
+            <td>Mergulho Vertical (Indício Gravíssimo de Interrupção Crata)</td>
+          </tr>
+          <tr>
+            <td>Qualificação Funcional</td>
+            <td>Batidas no Bloqueio Base (Ausência do consentimento LGPD imediato ou dados chave)</td>
+            <td>Margem basal esmaecida girando a curtos percentuais de perda normal</td>
+            <td>O excesso prolongado demonstra ambiguidade do painel aos novos engajamentos</td>
+          </tr>
+          <tr>
+            <td>Sanidade Sistêmica Conjunta</td>
+            <td>Bloqueios Mágicos de Colisão por Duplicatas e Spam (Barreira ativa de e-mail/WhatsApp clonados)</td>
+            <td>Normalidade regular controlando a saúde do dado. Sem picos incontroláveis de anomalias</td>
+            <td>Spikes prolongados expõe ou abusos do modelo orgânico ou furos no painel interativo front</td>
+          </tr>
+          <tr>
+            <td>Reversão Temporária e Avaliativa</td>
+            <td>Contador Operacional Direto das Fichas Penduradas no Backlog de Avaliadores</td>
+            <td>Despacho comum da deliberação: Tempo de Mediana aceitavelmente abaixo de curtas horas úteis processadas em lote (p50 < 24h)</td>
+            <td>Encalhe progressivo expunha ineficência humana a se tratar pela liderança perante as demandas operacionais</td>
+          </tr>
+          <tr>
+            <td>Integridade Analítica de Retorno</td>
+            <td>Plenitude Contábil do Handoff Enviado Pós Aprovação</td>
+            <td>Precisão de todos os campos definidos em escopo estrito preenchidos fielmente sem nulos forçados a estragarem dados downstream</td>
+            <td>Falta súbita acionaria o controle funcional prioritário parando aprovações para salvar base do player management dependente.</td>
+          </tr>
+          <tr>
+            <td>Integridade de Processo Subjacente</td>
+            <td>Rupturas do Estado Formal Final e Terminal de Concorrência e Lifecycle</td>
+            <td>Zeros puros e perpétuos em quebras ou modificação das instâncias previamente sepultadas/aprovadas</td>
+            <td>Incidência igual a 1 configura alerta primário P0 - Corrija Arquitetura de Fuga. Foco Absoluto Dev.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section card" id="data-structures">
+      <h2>Topologia Simplificada do Objeto Principal (Modelo de Dados)</h2>
+      <p class="muted">Os ossos que ligam todas transições operacionais mantendo consistência ininterrupta frente as manipulações operacionais e técnicas de vida da aplicação.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Nomenclatura Interna do Componente Estrutural</th>
+            <th>Categoria Subjacente da Plataforma</th>
+            <th>Amplitud de Utilização Nas Cadeias de Uso</th>
+            <th>Propriedades Analíticas Fixadas ao Padrão Crítico do Negócio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>CandidateApplication</code></td>
+            <td>Unidade Forte (Entity Absoluta de Manipulação)</td>
+            <td>Pleno (1, 2, 3)</td>
+            <td><code>id, fullName, email, ruleAcceptance, status, reviewedAt, retentionUntil</code> - Sustentáculo do Histórico do Candidato Vivo.</td>
+          </tr>
+          <tr>
+            <td><code>RuleAcceptance</code></td>
+            <td>Componente Cativado Sem Sentido de Vida Próprio (Value Object)</td>
+            <td>Frentes Integradas de Entradas 1, 3</td>
+            <td><code>regulationVersion, acceptedAt, acceptanceSource</code> - Blindando a Transversal Legal Ocorrida Previamente ao Sucesso Funcional da Captura.</td>
+          </tr>
+          <tr>
+            <td><code>CandidateApplicationSubmitted</code></td>
+            <td>Estopim do Fluxo Original do Concluinte (Message Event)</td>
+            <td>Captura Orgânica Singular (1)</td>
+            <td><code>applicationId, canonicalEmail, acceptedRegulationVersion, acceptedRegulationAt, occurredAt</code> - Marcando no Tempo o Ocorrido Primário Irrefutável na História do Player.</td>
+          </tr>
+          <tr>
+            <td><code>CandidateApplicationReviewed</code></td>
+            <td>Despacho Sistêmico da Mesa Final de Resolução e Verbeto Operacional (Message Event)</td>
+            <td>Transições Dependentes Subsequenciais Mútuas (2, 3)</td>
+            <td><code>applicationId, decision, nextStatus, reviewedBy, reviewedAt, retentionUntil</code> - Prova Categórica Final Ocorrida Internamente Carimbada Por Equipe Interna Validada (Admin).</td>
+          </tr>
+          <tr>
+            <td><code>ApplicationStatus</code></td>
+            <td>Relação Exata Limita (Enum Fixo do Tipo Lifecycle Integro)</td>
+            <td>Todas Etapas Plenas Atômicas (1, 2, 3)</td>
+            <td><code>SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED</code> - Fronteiras Finitas e Restritas do Mundo Visível Da Aplicação e Limite Total.</td>
+          </tr>
+          <tr>
+            <td><code>ListCandidateApplications</code> Resultado Fixo Front Integrado</td>
+            <td>Perspectiva Aberta Com Formatação Para Interface Visual Operadora Administrativa (Read Query Model)</td>
+            <td>Manipulação Pelo Avaliador Interno Final Operante Central Ativo (2)</td>
+            <td><code>items[], page, limit, total</code> - Facilitador Direto Funcional Frontal de Agregação Da Fila Operativa Eficiente Sem Necessidades Excedentes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section card" id="notes">
+      <h2>Notas e Fechamento Operativo e Feedback das Demos</h2>
+      <p class="muted">
+        Bloco dinâmico de avaliação local retendo impressões ativas, fechamento analítico de paineis, ou mesmo pontuação rápida geradora de feedbacks a outras avaliações das reuniões. (Salvado diretamente e eficientemente sem servidores extras através das próprias opções e API's locais deste navegador por Storage simples do Usuário.)
+      </p>
+      <textarea id="notesBox" class="notes" placeholder="Despejar e apontar resoluções de reuniões rápidas ou pontos da próxima sprint interativa e rebaixamento rápido dos ajustes de revisão..."></textarea>
+      <div class="notes-actions">
+        <button id="saveBtn" type="button">Armazenar na Máquina a Observação Real</button>
+        <button id="clearBtn" type="button">Zerar Conteúdo do Log da Sessão Atual Base</button>
+        <a href="#top" style="margin-left: auto; align-self: center;">Voltar de Volta Diretamente ao Foco Primordial</a>
+      </div>
+    </section>
+
+    <footer>
+      Dossiê Transcrito e Formalizado de Jornadas do Usuário (Operacional Base HTML em Português-BR)<br />
+      Consolidação Derivada das Estruturas e Fatos Absolutos Canônicos dos Relatórios Fechados da Tecnologia Direta em Regra.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var key = "playerOnboardingProductVisualizationNotesPtBrFinal";
+      var notes = document.getElementById("notesBox");
+      var save = document.getElementById("saveBtn");
+      var clear = document.getElementById("clearBtn");
+
+      var saved = localStorage.getItem(key);
+      if (saved) notes.value = saved;
+
+      save.addEventListener("click", function () {
+        localStorage.setItem(key, notes.value);
+        var old = save.innerText;
+        save.innerText = "Feito ✓";
+        setTimeout(function () {
+          save.innerText = old;
+        }, 1500);
+      });
+
+      clear.addEventListener("click", function () {
+        if (confirm("Tens convicção firme ao prever essa limpeza irreversível das anotações listadas pontuadas locais e restrições aqui do histórico logado agora mesmo já escritas formalizadas?")) {
+          localStorage.removeItem(key);
+          notes.value = "";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

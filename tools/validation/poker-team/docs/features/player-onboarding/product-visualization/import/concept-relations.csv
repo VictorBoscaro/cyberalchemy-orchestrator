@@ -1,0 +1,15 @@
+from_concept,edge,to_concept,boundary,contract_type,evidence
+player-onboarding.PublicOnboardingAPI,exposes,player-onboarding.SubmitCandidateApplication,internal,REST endpoint,interfaces.md
+player-onboarding.CandidateOnboardingFlow,orchestrates,player-onboarding.SubmitCandidateApplication,internal,workflow orchestration,workflows.md
+player-onboarding.SubmitCandidateRequestToEntity,maps,player-onboarding.CandidateApplication,internal,mapping contract,mappings.md
+player-onboarding.RuleScreenGroupingPolicy,applies,player-onboarding.SubmitCandidateApplication,internal,policy contract,workflows.md
+player-onboarding.SubmitCandidateApplication,produces,player-onboarding.CandidateApplicationSubmitted,internal,event contract,operations.md
+player-onboarding.CandidateApplicationSubmitted,transitions,player-onboarding.CandidateApplicationState,internal,state transition,states.md
+player-onboarding.ReviewCandidateApplication,produces,player-onboarding.CandidateApplicationReviewed,internal,event contract,operations.md
+player-onboarding.CandidateApplicationReviewed,transitions,player-onboarding.CandidateApplicationState,internal,state transition,states.md
+player-onboarding.CandidateApplication,contains,player-onboarding.RuleAcceptance,internal,entity composition,domain.md
+player-onboarding.CandidateApplication,uses,player-onboarding.ApplicationStatus,internal,enum lifecycle model,domain.md
+player-onboarding.ReviewCandidateApplication,depends-on,auth-access-control,external,authorization dependency,SPEC.md
+player-onboarding.CandidateApplicationReviewed,produces-for,player-management,external,approved intake handoff,SPEC.md|events.md
+player-onboarding.PublicOnboardingAPI,consumed-by,web,external,public UX contract,SPEC.md|interfaces.md
+player-onboarding.ListCandidateApplications,consumed-by,operations,external,review backlog read model,queries.md|interfaces.md

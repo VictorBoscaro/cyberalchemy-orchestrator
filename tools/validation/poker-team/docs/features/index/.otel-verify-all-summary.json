@@ -1,0 +1,263 @@
+{
+  "generatedAt": "2026-04-30T17:15:27.898Z",
+  "features": [
+    {
+      "feature": "auth-access-control",
+      "declared": 31,
+      "instrumented": 24,
+      "partial": 3,
+      "missing": 4,
+      "extra": 10,
+      "verdict": "FLAG",
+      "p0Missing": [],
+      "changeRequests": [
+        {
+          "metric": "business.active_sessions",
+          "priority": "P1",
+          "action": "Add"
+        },
+        {
+          "metric": "business.login_success_rate",
+          "priority": "P1",
+          "action": "Add"
+        },
+        {
+          "metric": "http.server.request.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "workflow.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "workflow.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.authorization_deny_rate",
+          "priority": "P2",
+          "action": "Add"
+        },
+        {
+          "metric": "business.avg_session_duration",
+          "priority": "P2",
+          "action": "Add"
+        }
+      ]
+    },
+    {
+      "feature": "financial-settlement",
+      "declared": 27,
+      "instrumented": 22,
+      "partial": 3,
+      "missing": 2,
+      "extra": 5,
+      "verdict": "FLAG",
+      "p0Missing": [],
+      "changeRequests": [
+        {
+          "metric": "event.consume",
+          "priority": "P1",
+          "action": "Add"
+        },
+        {
+          "metric": "event.consumer.lag",
+          "priority": "P1",
+          "action": "Add"
+        },
+        {
+          "metric": "http.server.request.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.avg_settlement_value",
+          "priority": "P2",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.preview_before_settlement",
+          "priority": "P3",
+          "action": "Fix"
+        }
+      ]
+    },
+    {
+      "feature": "player-makeup",
+      "declared": 33,
+      "instrumented": 28,
+      "partial": 5,
+      "missing": 0,
+      "extra": 8,
+      "verdict": "FLAG",
+      "p0Missing": [],
+      "changeRequests": [
+        {
+          "metric": "http.server.request.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "workflow.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.avg_debt_per_player",
+          "priority": "P2",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.players_in_debt",
+          "priority": "P2",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.total_makeup_outstanding",
+          "priority": "P2",
+          "action": "Fix"
+        }
+      ]
+    },
+    {
+      "feature": "player-management",
+      "declared": 13,
+      "instrumented": 10,
+      "partial": 3,
+      "missing": 0,
+      "extra": 5,
+      "verdict": "FLAG",
+      "p0Missing": [],
+      "changeRequests": [
+        {
+          "metric": "http.server.request.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.active_coaches",
+          "priority": "P2",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.coach_assignment_ratio",
+          "priority": "P2",
+          "action": "Fix"
+        }
+      ]
+    },
+    {
+      "feature": "player-onboarding",
+      "declared": 19,
+      "instrumented": 14,
+      "partial": 2,
+      "missing": 3,
+      "extra": 13,
+      "verdict": "FLAG",
+      "p0Missing": [],
+      "changeRequests": [
+        {
+          "metric": "http.server.request.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "workflow.step.duration",
+          "priority": "P1",
+          "action": "Add"
+        },
+        {
+          "metric": "business.approval_rate",
+          "priority": "P2",
+          "action": "Add"
+        },
+        {
+          "metric": "funnel.conversion_rate",
+          "priority": "P2",
+          "action": "Fix"
+        },
+        {
+          "metric": "funnel.drop_off",
+          "priority": "P2",
+          "action": "Add"
+        }
+      ]
+    },
+    {
+      "feature": "player-progression",
+      "declared": 7,
+      "instrumented": 5,
+      "partial": 2,
+      "missing": 0,
+      "extra": 2,
+      "verdict": "FLAG",
+      "p0Missing": [],
+      "changeRequests": [
+        {
+          "metric": "http.server.request.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.eligibility_rate",
+          "priority": "P2",
+          "action": "Fix"
+        }
+      ]
+    },
+    {
+      "feature": "player-stats",
+      "declared": 16,
+      "instrumented": 11,
+      "partial": 3,
+      "missing": 2,
+      "extra": 5,
+      "verdict": "FLAG",
+      "p0Missing": [],
+      "changeRequests": [
+        {
+          "metric": "event.consume",
+          "priority": "P1",
+          "action": "Add"
+        },
+        {
+          "metric": "event.consumer.lag",
+          "priority": "P1",
+          "action": "Add"
+        },
+        {
+          "metric": "http.server.request.duration",
+          "priority": "P1",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.active_players_with_stats",
+          "priority": "P2",
+          "action": "Fix"
+        },
+        {
+          "metric": "business.correction_rate",
+          "priority": "P2",
+          "action": "Fix"
+        }
+      ]
+    }
+  ],
+  "verdictCounts": {
+    "PASS": 0,
+    "FLAG": 7,
+    "BLOCK": 0
+  },
+  "changedReports": [
+    "docs/features/auth-access-control/OBSERVABILITY-REPORT.md",
+    "docs/features/financial-settlement/OBSERVABILITY-REPORT.md",
+    "docs/features/player-makeup/OBSERVABILITY-REPORT.md",
+    "docs/features/player-management/OBSERVABILITY-REPORT.md",
+    "docs/features/player-onboarding/OBSERVABILITY-REPORT.md",
+    "docs/features/player-progression/OBSERVABILITY-REPORT.md",
+    "docs/features/player-stats/OBSERVABILITY-REPORT.md"
+  ]
+}

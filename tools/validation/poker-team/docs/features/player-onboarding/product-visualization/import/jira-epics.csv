@@ -1,0 +1,4 @@
+Issue Type,Summary,Epic Name,Description,Labels
+Epic,Player Onboarding - Compliance Intake Engine,PO-COMPLIANCE-INTAKE,"Build and maintain the public onboarding path that enforces rules acceptance, LGPD consent, and submission quality gates before candidate persistence.","player-onboarding;operations"
+Epic,Player Onboarding - Review Governance,PO-REVIEW-GOVERNANCE,"Deliver controlled reviewer decisions with deterministic lifecycle transitions, permission checks, and retention behavior for rejected records.","player-onboarding;operations"
+Epic,Player Onboarding - Observable Funnel,PO-OBSERVABLE-FUNNEL,"Operate onboarding as a measurable funnel with conversion, backlog, compliance, and decision-latency visibility.","player-onboarding;observability"
