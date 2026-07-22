@@ -14,6 +14,26 @@ last_updated: 2026-07-21
 
 # AUDIT — does a close-row ever enrich `C`? (falsifier 1 of HYP-ORCH-FRACTAL)
 
+## Objective
+
+Find out whether closing out a batch of agent work in the ledger can ever teach the system
+a genuinely **new distinction** — a new *kind* of thing it can now tell apart — or whether it
+only ever fills in categories that were fixed in advance.
+
+## Context
+
+One of the project's boldest claims is that the method it uses to grow knowledge — *state a
+claim, test it, keep what survives, learn something new from what breaks* — is the **same
+underlying structure** as the loop it runs to coordinate agents ("the framework as its own
+instance"). For that to hold, both loops must match at their most important step: the moment
+the system learns something genuinely new, not just records more data. This audit tests that
+step on the orchestration side. The answer — provable from the ledger's schema, not merely
+observed — is **no**: a close record can only fill in a fixed set of fields, so it can never
+add a new distinction. That means the two loops are *not* the same structure today, and the
+ambitious claim can't hold until the ledger is redesigned (the planned BL-3 ledger) to let a
+close carry real new structure. So this audit both deflates an over-claim and tells that
+future redesign exactly what it must deliver.
+
 > **Verdict: NO — and it is provable from the schema, not merely observed.** This **fires**
 > falsifier 1 of [[framework-self-similarity]]: at the current ledger design the orchestration
 > loop's close step is a **shadow** append, never a codomain enrichment. The finding is `veracity:

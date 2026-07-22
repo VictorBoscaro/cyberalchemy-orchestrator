@@ -13,6 +13,22 @@ last_updated: 2026-07-21
 
 # Ledger enum-drift finding — two close rows bypassed the validated appender
 
+## Objective
+
+Check whether every "close" record in the real ledger was written through the one validated
+gate the project relies on — or whether some got in another way.
+
+## Context
+
+The ledger is the project's system of record: every batch of agent work is logged there, and
+one rule is meant to keep it trustworthy — *every* write goes through a single validated
+appender that rejects anything malformed. This audit found two records from 2026-07-18 that
+could only have been added by hand, bypassing that gate. That matters because the project's
+next big step — letting a button in the UI trigger real dispatches — assumes the ledger has
+exactly one write path. Until we understand how those two records got in, that single-writer
+rule stays unproven, and anything built on top of it is provisional. This is the audit the main
+README flags as the keystone to resolve before that step.
+
 > The canonical vault home for the finding [[engine-constitution]] EG-1 cites as its live
 > counterexample. An audit, not a bet: it reports what the ledgers actually contain.
 

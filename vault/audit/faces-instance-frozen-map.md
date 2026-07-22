@@ -14,6 +14,27 @@ last_updated: 2026-07-21
 
 # AUDIT — P-FACES-INSTANCE frozen correspondence map (pre-registration + adjudication)
 
+## Objective
+
+Write down **in advance** — before checking the outcome — a side-by-side map lining up each
+step of the project's core method with a matching step in each of its three self-descriptions
+(as a decision-science system, as a category-theory object, and as the actual running
+orchestrator). Then judge honestly which steps have a real match and which don't.
+
+## Context
+
+The project describes itself through three "faces" and claims all three are versions of one
+core loop: *state a claim, test it, keep what survives, learn something new from what breaks*.
+If that's true, every step of the loop should have a genuine counterpart in each face. The
+honest way to test it is to commit to the map *before* seeing how well it fits — so the result
+can't be quietly fitted afterward. That's why this document is "frozen" and dated. The verdict:
+the decision-science and category-theory faces line up completely, but the running-system face
+is missing its "learn something new" step — the exact same gap found by [[close-row-enrich-c]].
+That two independent checks break at the same joint is itself a weak sign they really are about
+one structure. It also parks a decision for the future ledger redesign (BL-3): should closing a
+batch of work be allowed to *teach the system something new*, or only record a richer log? The
+owner has consciously left that open for now.
+
 > **Frozen 2026-07-21, before adjudication** (the `OQ-11` discipline: a map drawn after seeing the
 > outcome does not count). This is the pre-registration [[axioms]] P-FACES-INSTANCE requires so its
 > falsifier can fire. **Result: the map fires *partially* — the engineering face's `enrich` operation
