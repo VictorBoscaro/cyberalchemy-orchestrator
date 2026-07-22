@@ -79,6 +79,10 @@ importance_rationale: "{sentence}"
 ## Files touched
 
 {Flat bullet list of paths. No table, no descriptions.}
+
+## Extra section
+
+{This must contain something specific that the user say to register from this session.}
 ```
 
 ### Forward registers
