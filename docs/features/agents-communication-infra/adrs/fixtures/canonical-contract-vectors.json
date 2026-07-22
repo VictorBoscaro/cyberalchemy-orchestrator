@@ -1,0 +1,163 @@
+{
+  "fixture_id": "canonical-python-contracts@1",
+  "status": "contract_fixture_not_runtime_proof",
+  "schema_version": "aci.canonical-contract-vectors@1",
+  "dependency_policy": {
+    "validator": "pydantic-core through Pydantic v2",
+    "validated_with": {"pydantic": "2.13.4", "pydantic-core": "2.46.4"},
+    "production_pins_to_apply_before_TASK_010": ["pydantic==2.13.4", "pydantic-core==2.46.4"],
+    "lock_expectation": "Production declares and resolves both exact pins. Changing either version requires rerunning and reviewing every vector before acceptance; transitive resolution is not evidence."
+  },
+  "canonicalization": {
+    "character_encoding": "UTF-8 without BOM",
+    "unicode": "Normalize every string value and object key to NFC before duplicate-key detection and ordering.",
+    "objects": "Reject duplicate keys after NFC normalization; order keys by Unicode scalar value; emit no insignificant whitespace.",
+    "arrays": "Preserve array order and recursively canonicalize every member.",
+    "omitted_and_null": "A missing optional field is omitted. An explicitly supplied nullable field is retained as null. They are not digest-equivalent.",
+    "integers": "Only signed 64-bit integers are admitted; emit base-10 JSON integers with no leading plus or leading zero and normalize negative zero to zero.",
+    "decimals": "Decimal contract fields are supplied as strings, never JSON binary floats. Parse exactly, reject NaN/Infinity/exponent output, remove a leading plus and redundant leading/trailing zeros, and emit a plain decimal string; normalize every zero to '0'. A schema that requires fixed scale must define that scale in its versioned projection.",
+    "timestamps": "Require timezone-aware RFC 3339 input; project to UTC with exactly millisecond precision and terminal Z. Reject naive timestamps and precision that cannot be represented exactly at milliseconds.",
+    "json_strings": "Escape quotation mark, reverse solidus and control characters only; use lowercase hexadecimal in required \\u00xx escapes and emit other Unicode as UTF-8.",
+    "digest": "The literal prefix 'sha256:' followed by lowercase 64-hex SHA-256 over the exact canonical UTF-8 bytes, with no newline."
+  },
+  "target_schemas": {
+    "aci.fixture.contract@1": "Required schema_version=aci.contract@1, label:string, items:array, count:int64, amount:decimal string and occurred_at:timezone-aware timestamp; metadata is optional nullable.",
+    "aci.fixture.contract@2": "Same fixture shape as @1 but requires schema_version=aci.contract@2.",
+    "aci.fixture.integer@1": "Required schema_version=aci.integer@1 and value:int64; retain raw JSON integer spelling through validation.",
+    "aci.fixture.timestamp@1": "Required schema_version=aci.timestamp@1 and occurred_at:timezone-aware timestamp exactly representable at milliseconds.",
+    "aci.fixture.decimal@1": "Required schema_version=aci.decimal@1 and amount:finite decimal string; JSON numeric tokens are rejected.",
+    "aci.fixture.numeric-boundaries@1": "Required schema_version=aci.contract@1, minimum:int64, maximum:int64, amount:decimal string and occurred_at:timezone-aware timestamp.",
+    "aci.fixture.unicode-object@1": "Requires schema_version; retains every other raw object pair recursively until NFC collision detection and then admits fixture payload keys."
+  },
+  "vectors": [
+    {
+      "id": "V-ACI-CANON-001-omitted-optional",
+      "target_schema": "aci.fixture.contract@1",
+      "equivalent_inputs": [
+        {
+          "schema_version": "aci.contract@1",
+          "label": "cafe\u0301",
+          "items": [3, 1, 2],
+          "count": 7,
+          "amount": "+0012.3400",
+          "occurred_at": "2026-07-21T14:11:12.345-03:00"
+        },
+        {
+          "occurred_at": "2026-07-21T17:11:12.345Z",
+          "amount": "12.34",
+          "count": 7,
+          "items": [3, 1, 2],
+          "label": "caf\u00e9",
+          "schema_version": "aci.contract@1"
+        }
+      ],
+      "canonical_utf8": "{\"amount\":\"12.34\",\"count\":7,\"items\":[3,1,2],\"label\":\"caf\u00e9\",\"occurred_at\":\"2026-07-21T17:11:12.345Z\",\"schema_version\":\"aci.contract@1\"}",
+      "byte_length": 135,
+      "digest": "sha256:b95f58480e9f58c5d958023aa757c4f55dba7bdc1288fd05cd9a4f47d4ba3276"
+    },
+    {
+      "id": "V-ACI-CANON-002-explicit-null",
+      "target_schema": "aci.fixture.contract@1",
+      "equivalent_inputs": [
+        {
+          "schema_version": "aci.contract@1",
+          "metadata": null,
+          "label": "caf\u00e9",
+          "items": [3, 1, 2],
+          "count": 7,
+          "amount": "12.340",
+          "occurred_at": "2026-07-21T17:11:12.345+00:00"
+        }
+      ],
+      "canonical_utf8": "{\"amount\":\"12.34\",\"count\":7,\"items\":[3,1,2],\"label\":\"caf\u00e9\",\"metadata\":null,\"occurred_at\":\"2026-07-21T17:11:12.345Z\",\"schema_version\":\"aci.contract@1\"}",
+      "byte_length": 151,
+      "digest": "sha256:8c41eaa6d528109a979fc175bdd33fb909ba071d85081b380b01f07115df9242",
+      "must_differ_from": "V-ACI-CANON-001-omitted-optional"
+    },
+    {
+      "id": "V-ACI-CANON-003-ordering-unicode-arrays",
+      "target_schema": "aci.fixture.unicode-object@1",
+      "equivalent_inputs": [
+        {
+          "\u00e9": "NFC",
+          "schema_version": "aci.contract@1",
+          "array": [{"b": 2, "a": 1}, null, "e\u0301"],
+          "a": {"z": 2, "a": 1}
+        },
+        {
+          "a": {"a": 1, "z": 2},
+          "array": [{"a": 1, "b": 2}, null, "\u00e9"],
+          "schema_version": "aci.contract@1",
+          "e\u0301": "NFC"
+        }
+      ],
+      "canonical_utf8": "{\"a\":{\"a\":1,\"z\":2},\"array\":[{\"a\":1,\"b\":2},null,\"\u00e9\"],\"schema_version\":\"aci.contract@1\",\"\u00e9\":\"NFC\"}",
+      "byte_length": 98,
+      "digest": "sha256:3fae81e54e1c160267a63fadd01424eac2558c04764fdf00c323916582c3be95"
+    },
+    {
+      "id": "V-ACI-CANON-004-integers-decimal-timestamp",
+      "target_schema": "aci.fixture.numeric-boundaries@1",
+      "equivalent_inputs": [
+        {
+          "schema_version": "aci.contract@1",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807,
+          "amount": "-0.000",
+          "occurred_at": "2026-07-21T17:11:12Z"
+        }
+      ],
+      "canonical_utf8": "{\"amount\":\"0\",\"maximum\":9223372036854775807,\"minimum\":-9223372036854775808,\"occurred_at\":\"2026-07-21T17:11:12.000Z\",\"schema_version\":\"aci.contract@1\"}",
+      "byte_length": 150,
+      "digest": "sha256:1f8856360b31e663eb65ed98a1cec145a6183a42a6b17395235554ebff37f63f"
+    },
+    {
+      "id": "V-ACI-CANON-005-schema-version-changes-identity",
+      "target_schema": "aci.fixture.contract@2",
+      "equivalent_inputs": [{"schema_version": "aci.contract@2", "label": "caf\u00e9", "items": [3, 1, 2], "count": 7, "amount": "12.34", "occurred_at": "2026-07-21T17:11:12.345Z"}],
+      "canonical_utf8": "{\"amount\":\"12.34\",\"count\":7,\"items\":[3,1,2],\"label\":\"caf\u00e9\",\"occurred_at\":\"2026-07-21T17:11:12.345Z\",\"schema_version\":\"aci.contract@2\"}",
+      "byte_length": 135,
+      "digest": "sha256:b55355abf566e70b25df67a7ed52831d8ea4da62e47e09a7a14640e29961c730",
+      "must_differ_from": "V-ACI-CANON-001-omitted-optional"
+    },
+    {
+      "id": "V-ACI-CANON-006-integer-zero-and-negative-zero",
+      "target_schema": "aci.fixture.integer@1",
+      "equivalent_raw_inputs": ["{\"schema_version\":\"aci.integer@1\",\"value\":0}", "{\"value\":-0,\"schema_version\":\"aci.integer@1\"}"],
+      "canonical_utf8": "{\"schema_version\":\"aci.integer@1\",\"value\":0}",
+      "byte_length": 44,
+      "digest": "sha256:cb36a643b3e8b8fde5866f922fc39ea42e5867a51e6a3bf8f62e5bcc7ff38e2d"
+    }
+  ],
+  "rejection_vectors": [
+    {"id": "R-ACI-CANON-001-json-float-for-decimal", "target_schema": "aci.fixture.decimal@1", "raw_json": "{\"schema_version\":\"aci.decimal@1\",\"amount\":0.1}", "expected_error": {"stage": "boundary_validation", "code": "CANON_DECIMAL_STRING_REQUIRED"}},
+    {"id": "R-ACI-CANON-002-int64-overflow", "target_schema": "aci.fixture.integer@1", "raw_json": "{\"schema_version\":\"aci.integer@1\",\"value\":9223372036854775808}", "expected_error": {"stage": "boundary_validation", "code": "CANON_INTEGER_OUT_OF_RANGE"}},
+    {"id": "R-ACI-CANON-003-naive-timestamp", "target_schema": "aci.fixture.timestamp@1", "raw_json": "{\"schema_version\":\"aci.timestamp@1\",\"occurred_at\":\"2026-07-21T17:11:12\"}", "expected_error": {"stage": "boundary_validation", "code": "CANON_TIMESTAMP_TIMEZONE_REQUIRED"}},
+    {"id": "R-ACI-CANON-004-submillisecond-timestamp", "target_schema": "aci.fixture.timestamp@1", "raw_json": "{\"schema_version\":\"aci.timestamp@1\",\"occurred_at\":\"2026-07-21T17:11:12.3451Z\"}", "expected_error": {"stage": "canonical_projection", "code": "CANON_TIMESTAMP_PRECISION_LOSS"}},
+    {"id": "R-ACI-CANON-005-nfc-key-collision", "target_schema": "aci.fixture.unicode-object@1", "raw_json": "{\"schema_version\":\"aci.unicode-object@1\",\"payload\":{\"e\\u0301\":1,\"\\u00e9\":2}}", "expected_error": {"stage": "canonical_projection", "code": "CANON_DUPLICATE_KEY_AFTER_NFC"}},
+    {"id": "R-ACI-CANON-006-nonfinite-decimal", "target_schema": "aci.fixture.decimal@1", "raw_json": "{\"schema_version\":\"aci.decimal@1\",\"amount\":\"NaN\"}", "expected_error": {"stage": "boundary_validation", "code": "CANON_DECIMAL_NONFINITE"}}
+  ],
+  "idempotency_expectations": [
+    {
+      "scope_key": "run/run-1",
+      "idempotency_key": "command-1",
+      "first_vector": "V-ACI-CANON-001-omitted-optional",
+      "retry_vector": "V-ACI-CANON-001-omitted-optional",
+      "expected": "same_digest_returns_byte_identical_stored_receipt_and_writes_nothing"
+    },
+    {
+      "scope_key": "run/run-1",
+      "idempotency_key": "command-1",
+      "first_vector": "V-ACI-CANON-001-omitted-optional",
+      "retry_vector": "V-ACI-CANON-002-explicit-null",
+      "expected": "IDEMPOTENCY_CONFLICT_and_writes_nothing"
+    },
+    {
+      "scope_key": "run/run-1",
+      "idempotency_key": "command-2",
+      "first_vector": "V-ACI-CANON-001-omitted-optional",
+      "retry_vector": "V-ACI-CANON-001-omitted-optional",
+      "expected": "independent_command_identity_even_though_digest_matches_command-1"
+    }
+  ]
+}

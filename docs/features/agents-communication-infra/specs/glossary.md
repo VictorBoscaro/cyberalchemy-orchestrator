@@ -1,0 +1,117 @@
+---
+feature: agents-communication-infra
+version: 0.2.0
+status: draft
+updatedAt: 2026-07-21
+docType: glossary
+---
+
+# Glossary: Agents Communication Infra
+
+Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.md#concept-registry). Linked aspect documents remain authoritative for fields, behavior and lifecycle.
+
+## Feature Language
+
+| Term | Meaning |
+|---|---|
+| Authority | The authenticated right to accept a command, publish content, reveal data or write an authoritative store. |
+| Logical operation | Stable unit of work that survives physical retries. |
+| Physical attempt | One provider execution of a logical operation. |
+| Sealed collection | Phase in which agents may publish but cannot read peer contributions. |
+| Official close | Audit-ledger close row independently verified after a run terminal fact. |
+| Replay | Pure reduction of persisted accepted facts, never repetition of effects. |
+
+## Terms
+
+| Term | Concept ID | Type | Definition | Source |
+|---|---|---|---|---|
+| ConfirmedDispatch | `agents-communication-infra.ConfirmedDispatch` | Entity | Immutable human-approved dispatch authority. | [Domain](domain.md#confirmeddispatch) |
+| Run | `agents-communication-infra.Run` | Entity | Lifecycle aggregate for one confirmed dispatch. | [Domain](domain.md#run) |
+| Group | `agents-communication-infra.Group` | Entity | Versioned bounded protocol stage within a run. | [Domain](domain.md#group) |
+| Seat | `agents-communication-infra.Seat` | Entity | Logical quorum slot independent of retries or model instances. | [Domain](domain.md#seat) |
+| Attempt | `agents-communication-infra.Attempt` | Entity | One physical provider execution of a logical operation. | [Domain](domain.md#attempt) |
+| Contribution | `agents-communication-infra.Contribution` | Entity | Schema-valid message accepted for one seat/round/type key. | [Domain](domain.md#contribution) |
+| PublicationCandidate | `agents-communication-infra.PublicationCandidate` | Entity | Durable publication evidence awaiting parent receipt verification and official acceptance. | [Domain](domain.md#publicationcandidate) |
+| EffectIntent | `agents-communication-infra.EffectIntent` | Entity | Durable request for work outside the journal transaction. | [Domain](domain.md#effectintent) |
+| Artifact | `agents-communication-infra.Artifact` | Entity | Immutable content-addressed evidence metadata. | [Domain](domain.md#artifact) |
+| EffectiveInputArtifact | `agents-communication-infra.EffectiveInputArtifact` | Entity | Ordered manifest of observable input presented to an attempt. | [Domain](domain.md#effectiveinputartifact) |
+| RawProviderOutput | `agents-communication-infra.RawProviderOutput` | Entity | Immutable provider-native output that is evidence, not protocol authority. | [Domain](domain.md#rawprovideroutput) |
+| RevealManifest | `agents-communication-infra.RevealManifest` | Entity | Frozen message/hash set authorized for peer delivery. | [Domain](domain.md#revealmanifest) |
+| GroupResult | `agents-communication-infra.GroupResult` | Entity | Unique typed protocol commitment for one group version. | [Domain](domain.md#groupresult) |
+| DispatchSpec | `agents-communication-infra.DispatchSpec` | Value Object | Frozen executable graph, policies, schemas, capabilities and budgets. | [Domain](domain.md#dispatchspec) |
+| AgentInvocationPlan | `agents-communication-infra.AgentInvocationPlan` | Value Object | Provider-neutral scheduler decision before adapter materialization. | [Domain](domain.md#agentinvocationplan) |
+| MaterializedAgentInvocation | `agents-communication-infra.MaterializedAgentInvocation` | Value Object | Deterministic adapter translation with exact observable and native input references. | [Domain](domain.md#materializedagentinvocation) |
+| AgentExecutionRequest | `agents-communication-infra.AgentExecutionRequest` | Value Object | Provider-neutral task and capability contract for one attempt. | [Domain](domain.md#agentexecutionrequest) |
+| BusPublication | `agents-communication-infra.BusPublication` | Value Object | Agent-authored content request with no self-asserted authority fields. | [Domain](domain.md#buspublication) |
+| PublicationReceipt | `agents-communication-infra.PublicationReceipt` | Value Object | Persisted event/message/hash/key/offset proof of accepted publication. | [Domain](domain.md#publicationreceipt) |
+| AgentTerminalResult | `agents-communication-infra.AgentTerminalResult` | Value Object | Versioned provider-neutral terminal envelope with optional publication receipt. | [Domain](domain.md#agentterminalresult) |
+| EffectiveInputEntry | `agents-communication-infra.EffectiveInputEntry` | Value Object | One typed, ordered and provenance-bound element of effective model input. | [Domain](domain.md#effectiveinputentry) |
+| ResourceBudget | `agents-communication-infra.ResourceBudget` | Value Object | Finite time, token, tool, payload and artifact limits. | [Domain](domain.md#resourcebudget) |
+| SandboxPolicy | `agents-communication-infra.SandboxPolicy` | Value Object | Frozen default-deny filesystem, network, process and credential isolation contract. | [Domain](domain.md#sandboxpolicy) |
+| ExecutionAuthorityFence | `agents-communication-infra.ExecutionAuthorityFence` | Value Object | Runtime epoch and cutover evidence checked before every external start. | [Domain](domain.md#executionauthorityfence) |
+| RuntimeCommand | `agents-communication-infra.RuntimeCommand` | Value Object | Idempotent compare-and-set request for a runtime change. | [Domain](domain.md#runtimecommand) |
+| RuntimeEventEnvelope | `agents-communication-infra.RuntimeEventEnvelope` | Value Object | Immutable fact envelope carrying identity, order, schema and provenance. | [Domain](domain.md#runtimeeventenvelope) |
+| AggregateVersion | `agents-communication-infra.AggregateVersion` | Value Object | Contiguous per-aggregate compare-and-set position. | [Domain](domain.md#aggregateversion) |
+| JournalOffset | `agents-communication-infra.JournalOffset` | Value Object | Globally ordered local journal position. | [Domain](domain.md#journaloffset) |
+| ContentDigest | `agents-communication-infra.ContentDigest` | Value Object | Algorithm-qualified digest of canonical bytes. | [Domain](domain.md#contentdigest) |
+| ArtifactId | `agents-communication-infra.ArtifactId` | Value Object | Stable identity of immutable artifact metadata. | [Domain](domain.md#artifactid) |
+| SeatId | `agents-communication-infra.SeatId` | Value Object | Stable identity of one logical participation slot. | [Domain](domain.md#seatid) |
+| VersionedReference | `agents-communication-infra.VersionedReference` | Value Object | Name, immutable version and digest of executable/schema material. | [Domain](domain.md#versionedreference) |
+| ManifestEntry | `agents-communication-infra.ManifestEntry` | Value Object | Accepted message identity paired with its payload digest. | [Domain](domain.md#manifestentry) |
+| ExecutionAuthorityMode | `agents-communication-infra.ExecutionAuthorityMode` | Enum / Type | Exclusive legacy-managed or runtime-managed ownership choice. | [Domain](domain.md#executionauthoritymode) |
+| ReconciliationState | `agents-communication-infra.ReconciliationState` | Enum / Type | Cross-store state distinguishing pending, applied and divergent outcomes. | [Domain](domain.md#reconciliationstate) |
+| RetryClass | `agents-communication-infra.RetryClass` | Enum / Type | Whether an effect may safely be repeated after uncertainty. | [Domain](domain.md#retryclass) |
+| EffectStatus | `agents-communication-infra.EffectStatus` | Enum / Type | Durable lifecycle of an external effect intent. | [Domain](domain.md#effectstatus) |
+| ArtifactClassification | `agents-communication-infra.ArtifactClassification` | Enum / Type | Access and redaction category for artifact evidence. | [Domain](domain.md#artifactclassification) |
+| AcceptRuntimeCommand | `agents-communication-infra.AcceptRuntimeCommand` | Operation | Common atomic command acceptance boundary. | [Operations](operations.md#acceptruntimecommand) |
+| ConfirmRuntimeDispatch | `agents-communication-infra.ConfirmRuntimeDispatch` | Operation | Freezes runtime authority and requests official opening. | [Operations](operations.md#confirmruntimedispatch) |
+| StartAgentAttempt | `agents-communication-infra.StartAgentAttempt` | Operation | Durably requests one provider execution after opening. | [Operations](operations.md#startagentattempt) |
+| PublishBusContribution | `agents-communication-infra.PublishBusContribution` | Operation | Authenticates, validates and accepts one bus message. | [Operations](operations.md#publishbuscontribution) |
+| VerifyPublicationReceipt | `agents-communication-infra.VerifyPublicationReceipt` | Operation | Matches an agent result to persisted acceptance evidence. | [Operations](operations.md#verifypublicationreceipt) |
+| CloseCollection | `agents-communication-infra.CloseCollection` | Operation | Freezes the eligible accepted-message set without revealing it. | [Operations](operations.md#closecollection) |
+| PublishRevealManifest | `agents-communication-infra.PublishRevealManifest` | Operation | Persists exact peer-visibility authority. | [Operations](operations.md#publishrevealmanifest) |
+| CommitGroupResult | `agents-communication-infra.CommitGroupResult` | Operation | Commits one typed verdict/result for a group version. | [Operations](operations.md#commitgroupresult) |
+| CancelRun | `agents-communication-infra.CancelRun` | Operation | Requests bounded cancellation without pretending acknowledgement is terminal. | [Operations](operations.md#cancelrun) |
+| RecordUsageObservation | `agents-communication-infra.RecordUsageObservation` | Operation | Accepts nullable provider-reported usage with provenance. | [Operations](operations.md#recordusageobservation) |
+| GetRuntimeProjection | `agents-communication-infra.GetRuntimeProjection` | Query | Rebuilds a snapshot plus ordered cursor deltas. | [Queries](queries.md#getruntimeprojection) |
+| GetRunStatus | `agents-communication-infra.GetRunStatus` | Query | Reads latest committed run projection and source lag. | [Queries](queries.md#getrunstatus) |
+| GetVisibleGroupMessages | `agents-communication-infra.GetVisibleGroupMessages` | Query | Returns only messages authorized by persisted phase/manifest policy. | [Queries](queries.md#getvisiblegroupmessages) |
+| RunLifecycle | `agents-communication-infra.RunLifecycle` | State Machine | Separates confirmation, opening, execution terminal and official close. | [States](states.md#runlifecycle) |
+| GroupLifecycle | `agents-communication-infra.GroupLifecycle` | State Machine | Governs collection, reveal, voting, commitment and cancellation. | [States](states.md#grouplifecycle) |
+| AttemptLifecycle | `agents-communication-infra.AttemptLifecycle` | State Machine | Governs provider start, running, tool wait and physical terminal outcomes. | [States](states.md#attemptlifecycle) |
+| EventJournal | `agents-communication-infra.EventJournal` | Interface | Atomic authoritative boundary for local runtime facts and intents. | [Interfaces](interfaces.md#internal-eventjournal) |
+| AgentAdapter | `agents-communication-infra.AgentAdapter` | Interface | Provider-neutral start/event/result/cancel/status contract. | [Interfaces](interfaces.md#internal-agentadapter) |
+| DeliberationBus | `agents-communication-infra.DeliberationBus` | Interface | Authenticated publication and manifest-authorized reveal boundary. | [Interfaces](interfaces.md#internal-deliberationbus) |
+| RuntimeCommandAPI | `agents-communication-infra.RuntimeCommandAPI` | Interface | Authenticated external command and projection transport. | [Interfaces](interfaces.md#external-runtime-command-api-http-or-equivalent-command-transport) |
+| AgentToolGateway | `agents-communication-infra.AgentToolGateway` | Interface | Least-capability tool surface exposed to an agent. | [Interfaces](interfaces.md#external-agent-tool-gateway-mcp-or-equivalent) |
+| ArtifactBoundary | `agents-communication-infra.ArtifactBoundary` | Interface | Finalizes, hashes, classifies and retrieves immutable evidence. | [Interfaces](interfaces.md#internal-artifact-boundary) |
+| SandboxLauncher | `agents-communication-infra.SandboxLauncher` | Interface | Enforces sandbox policy and authority fence before process creation. | [Interfaces](interfaces.md#internal-sandboxlauncher) |
+| AuditLedgerAppenderPort | `agents-communication-infra.AuditLedgerAppenderPort` | Interface | Sole runtime-facing port to the existing validated audit-ledger appender. | [Interfaces](interfaces.md#internal-audit-ledger-appender-port) |
+| RunExecutionWorkflow | `agents-communication-infra.RunExecutionWorkflow` | Workflow | Orchestrates confirmation through verified official closure. | [Workflows](workflows.md#runexecutionworkflow) |
+| GroupDeliberationWorkflow | `agents-communication-infra.GroupDeliberationWorkflow` | Workflow | Orchestrates sealed collection, reveal, vote and commitment. | [Workflows](workflows.md#groupdeliberationworkflow) |
+| ReceiptGatedPublicationWorkflow | `agents-communication-infra.ReceiptGatedPublicationWorkflow` | Workflow | Makes persisted receipt verification mandatory for official results. | [Workflows](workflows.md#receiptgatedpublicationworkflow) |
+| AuditLedgerMaterializer | `agents-communication-infra.AuditLedgerMaterializer` | Workflow | Reconciles and projects opening/close only through the validated appender. | [Workflows](workflows.md#auditledgermaterializer) |
+| ExternalEffectReconciliationWorkflow | `agents-communication-infra.ExternalEffectReconciliationWorkflow` | Workflow | Converges retryable effects and exposes unknown non-retryable outcomes. | [Workflows](workflows.md#externaleffectreconciliationworkflow) |
+| ExecutionAuthorityCutoverWorkflow | `agents-communication-infra.ExecutionAuthorityCutoverWorkflow` | Workflow | Prevents legacy/runtime dual ownership during migration. | [Workflows](workflows.md#executionauthoritycutoverworkflow) |
+| AgentInvocationPlanToMaterializedInvocation | `agents-communication-infra.AgentInvocationPlanToMaterializedInvocation` | Mapping | Materializes a plan into exact observable/native input and a sealed execution request. | [Mappings](mappings.md#agentinvocationplantomaterializedinvocation) |
+| RawProviderOutputToCanonicalObservations | `agents-communication-infra.RawProviderOutputToCanonicalObservations` | Mapping | Converts provider-native evidence into non-authoritative canonical observations. | [Mappings](mappings.md#rawprovideroutputtocanonicalobservations) |
+| BusPublicationToContribution | `agents-communication-infra.BusPublicationToContribution` | Mapping | Combines agent content with runtime authority to create an accepted contribution. | [Mappings](mappings.md#buspublicationtocontribution) |
+| RevealManifestToEffectiveInput | `agents-communication-infra.RevealManifestToEffectiveInput` | Mapping | Delivers authorized peer evidence into a later attempt input. | [Mappings](mappings.md#revealmanifesttoeffectiveinput) |
+| FrozenAuthorityToAuditLedgerRow | `agents-communication-infra.FrozenAuthorityToAuditLedgerRow` | Mapping | Derives canonical official rows from frozen run authority. | [Mappings](mappings.md#frozenauthoritytoauditledgerrow) |
+| RuntimeTerminalToExitReason | `agents-communication-infra.RuntimeTerminalToExitReason` | Mapping | Maps the unique run cause to one audit exit reason. | [Mappings](mappings.md#runtimeterminaltoexitreason) |
+| UsageObservationToRollups | `agents-communication-infra.UsageObservationToRollups` | Mapping | Aggregates usage while preserving nulls, counts and provider semantics. | [Mappings](mappings.md#usageobservationtorollups) |
+| UsageObservation | `agents-communication-infra.UsageObservation` | Event | Immutable provider-attributed usage fact with nullable dimensions. | [Events](events.md#usageobserved) |
+| PricingSource | `agents-communication-infra.PricingSource` | Entity | Immutable versioned pricing applicability and unit-semantics evidence. | [Persistence](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) |
+| UsageRollup | `agents-communication-infra.UsageRollup` | Value Object | Rebuildable nullable usage aggregation through an explicit journal offset. | [Persistence](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) |
+| CostCalculation | `agents-communication-infra.CostCalculation` | Calculation | Immutable calculation tied to compatible usage, pricing digest, currency and source offset. | [Persistence](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) |
+| SoleWriterEvidenceBundle | `agents-communication-infra.SoleWriterEvidenceBundle` | Value Object | Host-scoped process, ACL, writer-inventory and negative-test proof for one validated writer; lint alone is insufficient. | [Domain](domain.md#solewriterevidencebundle) |
+| ExternalToolAdoptionPolicy | `agents-communication-infra.ExternalToolAdoptionPolicy` | Policy | Classifies a tool by allowed seam and rejects overlapping authority. | [Rules](rules.md#aci-r15--external-tool-adoption-policy) |
+| CanonicalContractPolicy | `agents-communication-infra.CanonicalContractPolicy` | Policy | Separates Pydantic validation from runtime-owned canonical bytes and digest acceptance. | [Rules](rules.md#aci-r16--canonical-contract-policy) |
+| BoundaryValidationPolicy | `agents-communication-infra.BoundaryValidationPolicy` | Policy | Allows a derived language-native validator only for an inventoried non-authoritative consumer. | [Rules](rules.md#aci-r17--derived-boundary-validation-policy) |
+| ProviderAdapterAdmissionGate | `agents-communication-infra.ProviderAdapterAdmissionGate` | Rule | Requires common conformance, sandbox, recovery, receipt and usage evidence before a real adapter runs. | [Rules](rules.md#aci-r18--provider-adapter-admission-gate) |
+
+## Maintenance Rules
+
+- Keep this table in one-to-one sync with [SPEC.md](SPEC.md#concept-registry).
+- Change authoritative behavior in the linked aspect first; never introduce it here.
+- Preserve IDs across wording changes and version any semantic rename.

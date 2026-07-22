@@ -9,11 +9,12 @@ state transitions and effect reconciliation contract.
 - **Dependencies:** L1 pass; OQ-CAPABILITIES, OQ-CREDENTIALS, OQ-UNKNOWN-EFFECT and
   OQ-RESOURCE-LIMITS accepted.
 - **Write scope:** one provider adapter, shared conformance fixtures, credential/sandbox integration.
+- **Implementation selection:** repository-local subprocess adapter behind `SandboxLauncher`; no Octopus/Eve kernel dependency and no PydanticAI dependency in this task.
 
 ## Smallest Working Units
 
 - **SWU-ACI-017 — Adapter contract suite:** canonical request/result/event fixtures, capability
-  declaration and tests reusable by every provider.
+  declaration and tests reusable by every provider, including the `ProviderAdapterAdmissionGate` receipt.
 - **SWU-ACI-018 — CLI adapter lifecycle:** idempotent start, cursor, status/reconciliation, result
   validation and cancellation; native metadata stays namespaced.
 - **SWU-ACI-019 — Output/late/unknown policy:** malformed, partial, late and unreconciled outcomes
@@ -32,3 +33,15 @@ state transitions and effect reconciliation contract.
 
 The fake and real adapter pass the same operational conformance suite, unknown effects never appear
 as success and no provider-specific branch is added to the kernel.
+
+## DomainSpec Coverage
+
+| Source Aspect | Coverage IDs |
+|---|---|
+| `domain.md` | `agents-communication-infra.EffectiveInputArtifact`, `agents-communication-infra.RawProviderOutput`, `agents-communication-infra.AgentExecutionRequest`, `agents-communication-infra.RetryClass` |
+| `operations.md` | `agents-communication-infra.RecordUsageObservation` |
+| `interfaces.md` | `agents-communication-infra.AgentAdapter`, `agents-communication-infra.SandboxLauncher` |
+| `mappings.md` | `agents-communication-infra.AgentInvocationPlanToMaterializedInvocation`, `agents-communication-infra.RawProviderOutputToCanonicalObservations`, `agents-communication-infra.UsageObservationToRollups` |
+| `events.md` | `agents-communication-infra.UsageObservation` |
+| `persistence-and-replay.md` | `agents-communication-infra.PricingSource`, `agents-communication-infra.UsageRollup`, `agents-communication-infra.CostCalculation` |
+| `rules.md` | `agents-communication-infra.ProviderAdapterAdmissionGate` |

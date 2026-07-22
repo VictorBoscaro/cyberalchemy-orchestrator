@@ -34,3 +34,14 @@ and reconnecting observers are introduced.
 
 Every fault/race fixture has one allowed terminal, projections rebuild from the journal, stale
 capabilities fail and no pre-reveal peer content is visible through any controlled surface.
+
+## DomainSpec Coverage
+
+| Source Aspect | Coverage IDs |
+|---|---|
+| `domain.md` | `agents-communication-infra.Contribution`, `agents-communication-infra.PublicationCandidate`, `agents-communication-infra.Artifact`, `agents-communication-infra.RevealManifest`, `agents-communication-infra.BusPublication`, `agents-communication-infra.PublicationReceipt`, `agents-communication-infra.EffectiveInputEntry`, `agents-communication-infra.ArtifactId`, `agents-communication-infra.ManifestEntry`, `agents-communication-infra.EffectStatus`, `agents-communication-infra.ArtifactClassification` |
+| `operations.md` | `agents-communication-infra.PublishBusContribution`, `agents-communication-infra.VerifyPublicationReceipt`, `agents-communication-infra.CloseCollection`, `agents-communication-infra.PublishRevealManifest`, `agents-communication-infra.CancelRun` |
+| `queries.md` | `agents-communication-infra.GetRuntimeProjection`, `agents-communication-infra.GetVisibleGroupMessages` |
+| `interfaces.md` | `agents-communication-infra.DeliberationBus`, `agents-communication-infra.AgentToolGateway`, `agents-communication-infra.ArtifactBoundary` |
+| `workflows.md` | `agents-communication-infra.ReceiptGatedPublicationWorkflow` |
+| `mappings.md` | `agents-communication-infra.BusPublicationToContribution`, `agents-communication-infra.RevealManifestToEffectiveInput` |

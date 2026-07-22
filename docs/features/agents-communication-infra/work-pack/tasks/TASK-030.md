@@ -58,3 +58,14 @@ effect intent and `opening.verified`. A repeated start/result creates no second 
 
 All L0 falsifiers pass and the result explicitly states what fake execution does not prove: real
 provider reconciliation, process sandboxing, alternate-channel sealing and product value.
+
+## DomainSpec Coverage
+
+| Source Aspect | Coverage IDs |
+|---|---|
+| `domain.md` | `agents-communication-infra.ConfirmedDispatch`, `agents-communication-infra.Group`, `agents-communication-infra.Seat`, `agents-communication-infra.Attempt`, `agents-communication-infra.GroupResult`, `agents-communication-infra.SeatId`, `agents-communication-infra.AgentInvocationPlan`, `agents-communication-infra.MaterializedAgentInvocation`, `agents-communication-infra.AgentTerminalResult` |
+| `operations.md` | `agents-communication-infra.ConfirmRuntimeDispatch`, `agents-communication-infra.StartAgentAttempt`, `agents-communication-infra.CommitGroupResult` |
+| `queries.md` | `agents-communication-infra.GetRunStatus` |
+| `states.md` | `agents-communication-infra.GroupLifecycle`, `agents-communication-infra.AttemptLifecycle` |
+| `interfaces.md` | `agents-communication-infra.RuntimeCommandAPI` |
+| `workflows.md` | `agents-communication-infra.RunExecutionWorkflow`, `agents-communication-infra.GroupDeliberationWorkflow`, `agents-communication-infra.ExecutionAuthorityCutoverWorkflow` |

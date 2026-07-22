@@ -13,6 +13,7 @@ docType: execution-pack
 | Field | Value |
 |---|---|
 | `planningGateStatus` | **block** — W0 decisions only |
+| `specAuthoringGateStatus` | **pass** — W0 DomainSpec contracts only; runtime remains blocked |
 | `complexity` | high |
 | `baselineWave` | W0 |
 | `activePlanRef` | [W0](work-pack/waves/W0.md) |
@@ -26,7 +27,7 @@ docType: execution-pack
 
 | Wave | Objective | Entry gate | Exit gate | Status | Evidence target |
 |---|---|---|---|---|---|
-| [W0](work-pack/waves/W0.md) | Freeze Slice-0 authority and protocol contracts. | Plan exists. | Five Slice-0 OQs accepted; EG-1 guard ready; plan gate promoted. | not-started | ADRs, schema, transition and crash tables |
+| [W0](work-pack/waves/W0.md) | Freeze Slice-0 authority and protocol contracts. | Plan exists. | Slice-0 OQs plus Pydantic/canonical vectors accepted; EG-1 bundle schema, drift disposition, guard spec and named tests frozen; plan gate promoted for TASK-010 only. | not-started | ADRs, schema, canonical vectors, transition, crash and sole-writer guard test specifications |
 | [W1](work-pack/waves/W1.md) | Prove one deterministic replayable run. | W0 pass. | S-001 tests and falsifiers pass. | blocked | state hashes, ledger receipts, fault matrix |
 | [W2](work-pack/waves/W2.md) | Prove sealing, recovery and realtime. | W1 pass and Slice-1 ADRs. | S-002 tests pass. | blocked | ACL/race/reconnect/reconciliation evidence |
 | [W3](work-pack/waves/W3.md) | Prove one real adapter safely. | W2 pass and adapter ADRs. | S-003 conformance passes. | blocked | adapter and security receipts |
@@ -76,6 +77,10 @@ docType: execution-pack
 | D-004 | locked | Current validated appender remains sole physical audit-ledger writer. | Engine constitution EG-1 |
 | D-005 | locked | MVP is single-host/single-tenant; distributed infrastructure is deferred. | Feature README sections 1.1 and 12 |
 | D-006 | proposed | Implement runtime package beside the existing FastAPI reader under `implementations/server/runtime/`. | This plan; confirm in W0 |
+| D-007 | locked | Python/FastAPI remains the host; Pydantic validates but runtime-owned canonical bytes/digests define acceptance. | External Tool Adoptions ETD-1/ETD-2 |
+| D-008 | locked | First real provider is a repository-local subprocess behind `SandboxLauncher`; Octopus/Eve remain outside the kernel. | External Tool Adoptions ETD-3/ETD-4 |
+| D-009 | locked | PydanticAI is deferred, Zod is derived-boundary-only, and lint alone cannot prove EG-1. | External Tool Adoptions ETD-5–ETD-7 |
+| D-010 | locked | W0 specifies the sole-writer evidence contract; TASK-020 supplies complete target-host proof before materializer cutover, without blocking TASK-010 journal work. | B-003 / D-012 |
 
 ## Closure obligations
 
@@ -83,4 +88,3 @@ docType: execution-pack
 - TASK-AUDIT-ALIGNMENT must audit authorities, dependency direction and absence of kernel business branches.
 - TASK-AUDIT-LAYERING must reject promotion unsupported by prior-layer evidence.
 - Any closure `flag` or `block` creates a remediation task; closure findings are never deleted.
-

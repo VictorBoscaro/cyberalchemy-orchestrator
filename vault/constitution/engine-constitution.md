@@ -407,7 +407,7 @@ linked and share collapse-tests.
 
 | Document | Relationship | Description |
 |---|---|---|
-| [agents-communication-infra discovery](../../docs/features/agents-communication-infra/discovery/agents-communication-infra.md) | `governs` | Applies EG-1/EG-6 to the proposed journal-to-audit materialization seam while preserving the live drift caveat. |
+| [agents-communication-infra discovery](../../docs/features/agents-communication-infra/discovery/feature-discovery/agents-communication-infra.md) | `governs` | Applies EG-1/EG-6 to the proposed journal-to-audit materialization seam while preserving the live drift caveat. |
 | [ledger.py](../../implementations/server/ledger.py) | `implements` | The module that already practices EG-2..EG-8; this constitution reads its earned discipline back out as law. |
 | `register-dispatch/append-dispatch.cjs` | `implements` | The strict validated appender — the write contract EG-1/EG-6 defend. |
 | [[ledger-enum-drift-finding]] | `grounds` | The audit (2026-07-18 close rows bypassing the appender) that motivates EG-1 and blocks its promotion. |

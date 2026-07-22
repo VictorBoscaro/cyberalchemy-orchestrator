@@ -77,7 +77,7 @@ session preserves the single human gate and the one-validated-writer boundary.
 
 | Document | Type | Description |
 |---|---|---|
-| [`discovery/agents-communication-infra.md`](discovery/agents-communication-infra.md) | `grounds` | Supplies the implemented marker/session seam that the runtime migration discovery must preserve or replace explicitly. |
+| [`discovery/feature-discovery/agents-communication-infra.md`](discovery/feature-discovery/agents-communication-infra.md) | `grounds` | Supplies the implemented marker/session seam that the runtime migration discovery must preserve or replace explicitly. |
 | `README.md` (this feature) | `refines` | The full Phase-1/Phase-2 proposal; this is the concrete Phase-2 slice that shipped. |
 | `vault/constitution/engine-constitution.md` (EG-1) | `respects` | Confirm writes a pending-dir marker, never the ledger; the validated appender stays the sole ledger writer. |
 | `vault/hypothesis/orchestration-infra.md` (HYP-ORCH-INFRA) | `instantiates` | "Transport is ephemeral, the accepted fact survives in the ledger" — applied to the smallest surface. |

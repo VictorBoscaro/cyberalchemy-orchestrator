@@ -19,6 +19,7 @@ decision state live under [`work-pack/`](work-pack/).
 | Field | Value | Notes |
 |---|---|---|
 | `workPackGateStatus` | **block** | Documentation-only W0 may proceed. Runtime code is blocked until Slice-0 ADRs are accepted. |
+| `specAuthoringGateStatus` | **pass — W0 contracts only** | DomainSpec artifacts may ratify or defer discovery decisions; this does not promote runtime implementation or close B-001 through B-003. |
 | `complexity` | high | Persistence, authorization, external effects and migration cross several authority boundaries. |
 | `outputMode` | split | Tasks and waves have independent contracts. |
 | `executionPackRef` | [EXECUTION-PACK.md](EXECUTION-PACK.md) | Wave scheduler and delivery-stage coverage. |
@@ -37,8 +38,8 @@ decision state live under [`work-pack/`](work-pack/).
   endpoint, current ledger parser and current validated appender.
 - **Success condition:** Slices 0-4 pass their own falsifiers and the existing skills/UI become
   clients of one command/runtime boundary rather than parallel executors.
-- **Current authorization:** planning artifacts only. No runtime implementation is authorized by
-  this work-pack while the gate is `block`.
+- **Current authorization:** planning, ADR and DomainSpec contract artifacts only. No runtime
+  implementation is authorized by this work-pack while the gate is `block`.
 
 ## Delivery boundary
 
@@ -101,9 +102,9 @@ selection after dependencies pass.
 
 | Blocker | Scope | Description | Owner | Next action |
 |---|---|---|---|---|
-| B-001 | Slice 0 | OQ-PERSISTENCE, OQ-STREAM and OQ-LEDGER-CONSISTENCY do not yet define the SQLite schema, transaction boundary, offset scope or cross-store repair contract. The ledger question is promoted from the README's Slice-1 grouping because opening is already a Slice-0 gate. | architecture owner | Complete SWU-ACI-001 and SWU-ACI-002. |
-| B-002 | Slice 0 | OQ-DECISION, OQ-TERMINAL and OQ-SNAPSHOT are unresolved. | product/protocol owner | Complete TASK-000 ADR set. |
-| B-003 | Current ledger | EG-1 remains medium-veracity because historical enum drift has not been traced and there is no sole-writer guard. | engine owner | Add drift finding disposition and writer-boundary test before materializer cutover. |
+| B-001 | Slice 0 | ADR-001 now accepts the SQLite transaction/offset and canonical-byte contracts for `SWU-ACI-001`; dependency-lock and runtime crash evidence remain downstream. The blocker remains open because `SWU-ACI-002` and the rest of TASK-000 are incomplete. | architecture owner | Complete SWU-ACI-002 and the remaining TASK-000 obligations; TASK-010 later applies the accepted pins and supplies executable crash/conformance evidence. |
+| B-002 | Slice 0 | Decision, terminal and snapshot contracts are specified/proposed in DomainSpec, but are not W0-accepted or evidenced. | product/protocol owner | Complete TASK-000 ADR set and attach acceptance/fixture evidence. |
+| B-003 | Audit materializer/cutover | EG-1 remains medium-veracity until W0 freezes the bundle schema, drift disposition, guard spec and named tests and TASK-020 proves the complete bundle on the target host. This does not block TASK-010 journal work. | engine owner | Freeze the contract in TASK-000; produce process identity, ACL, writer inventory and negative bypass evidence in TASK-020 before cutover; lint is auxiliary only. |
 | B-004 | Invoke process | `.claude/skills/invoke/plan.md` referenced by the local skill is absent. | Invoke package owner | Treat this plan as template-based fallback; repair/regenerate skill separately. |
 | B-005 | Slice 1+ | Slice-specific open questions in README section 17 require ADRs before their wave. | wave owner | Resolve in each wave's entry gate; do not pull them into W0. |
 
@@ -151,7 +152,9 @@ SWU at a time and must generate their own bounded execution receipt.
 ## Gate checks
 
 1. W0 may edit planning/ADR artifacts while `workPackGateStatus = block`; no runtime code may start.
-2. Promote the gate to `pass` only when B-001 through B-003 have acceptance evidence.
+2. Promote runtime entry for TASK-010 only when B-001/B-002 are accepted and B-003's W0 contract
+   obligations are frozen. Keep audit materializer/cutover blocked until TASK-020 supplies B-003's
+   complete target-host physical evidence.
 3. Select exactly one SWU before each mutation-capable handoff.
 4. Parallel SWUs require disjoint write scopes or an explicit merge owner.
 5. A failed slice falsifier stops promotion; later waves do not compensate for it.
@@ -162,7 +165,8 @@ SWU at a time and must generate their own bounded execution receipt.
 
 ## Required links
 
-- [Application discovery](discovery/agents-communication-infra.md)
+- [Application discovery](discovery/feature-discovery/agents-communication-infra.md)
+- [External Tool Adoptions](discovery/external-tool-adoptions.md)
 - [Implementation layering](IMPLEMENTATION-LAYERING.md)
 - [Execution pack](EXECUTION-PACK.md)
 - [Shared context](work-pack/shared/context.md)
@@ -177,5 +181,6 @@ SWU at a time and must generate their own bounded execution receipt.
 
 | Date | Change | Author |
 |---|---|---|
+| 2026-07-21 | Ratified ETD-1–ETD-7, added canonical-contract/provider-admission/sole-writer evidence gates and retained runtime block. | DomainSpec spec writer |
 | 2026-07-21 | Linked the pipeline-visible application discovery as the authority source for DomainSpec authoring. | Codex / discovery-writing |
 | 2026-07-21 | Initial detailed migration work-pack. | Codex / Invoke fallback |

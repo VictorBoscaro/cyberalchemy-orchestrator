@@ -40,3 +40,11 @@ hash. No reducer emits an effect or reads infrastructure.
 - Command/event/outbox atomicity has a fault test at every transaction boundary.
 - The first closed lifecycle trace is representable, even though no external effect has run yet.
 
+## DomainSpec Coverage
+
+| Source Aspect | Coverage IDs |
+|---|---|
+| `domain.md` | `agents-communication-infra.Run`, `agents-communication-infra.EffectIntent`, `agents-communication-infra.RuntimeCommand`, `agents-communication-infra.RuntimeEventEnvelope`, `agents-communication-infra.AggregateVersion`, `agents-communication-infra.JournalOffset` |
+| `operations.md` | `agents-communication-infra.AcceptRuntimeCommand` |
+| `states.md` | `agents-communication-infra.RunLifecycle` |
+| `interfaces.md` | `agents-communication-infra.EventJournal` |

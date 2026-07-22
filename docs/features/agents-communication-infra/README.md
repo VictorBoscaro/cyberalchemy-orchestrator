@@ -1197,7 +1197,7 @@ A arquitetura deve ser revista se:
 
 ## 16. Documentos relacionados
 
-- [`discovery/agents-communication-infra.md`](discovery/agents-communication-infra.md) — discovery
+- [`discovery/feature-discovery/agents-communication-infra.md`](discovery/feature-discovery/agents-communication-infra.md) — discovery
   de aplicação derivada desta arquitetura candidata; preserva decisões/OQs como entrada rastreável
   para a futura SPEC DomainSpec.
 - [`README.md`](../../../README.md) — visão geral, schema e control plane atuais.

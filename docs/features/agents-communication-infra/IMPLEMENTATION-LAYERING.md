@@ -22,7 +22,7 @@ the next layer adds provider, portability, or recipe complexity.
   validated audit-ledger appender, read APIs and disk-watching SSE already exist. Journal, kernel,
   outbox, runtime adapters and protocol buses do not.
 - **Source architecture:** [README.md](README.md), especially sections 3, 4, 9, 11, 12 and 14.
-- **Source discovery:** [discovery/agents-communication-infra.md](discovery/agents-communication-infra.md), which owns the migration problem, candidate decisions and OQ trace.
+- **Source discovery:** [discovery/feature-discovery/agents-communication-infra.md](discovery/feature-discovery/agents-communication-infra.md), which owns the migration problem, candidate decisions and OQ trace.
 - **Executable plan:** [WORK-PACK.md](WORK-PACK.md).
 
 ## Layer boundary rule
