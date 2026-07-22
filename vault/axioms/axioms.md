@@ -184,9 +184,11 @@ survive as **collapse conditions, not assumptions**:
   AX-1's agent applicability (P-AGENT-TRANSFER) collapses. Stated so the existential assumption is
   explicit and falsifiable, not silent.
 
-> **Reconciliation flagged (not yet done).** [`README.md`](../../README.md) frames the founding claim
-> as a falsifiable hypothesis; AX-1 promotes its **value half** to a commitment while keeping
-> agent-transfer and efficacy as premises. README and AX-1 must be **reconciled** — neither
+> **Reconciliation in progress (2026-07-21).** [`README.md`](../../README.md) now states the split
+> explicitly — the **value** (debiasing is worth building around) as a commitment, and
+> **agent-transfer + efficacy** as the falsifiable part — matching this axiom's partition; the same
+> split is drawn as the method-vs-content distinction in [`docs/PLAN.md`](../../docs/PLAN.md) §2. The
+> distinction is now named on both sides; what remains is the promotion decision itself — neither
 > presupposed as the side that yields — before either moves up a level.
 
 ## Connections
@@ -199,5 +201,5 @@ survive as **collapse conditions, not assumptions**:
 | [[framework-self-similarity]] | `grounds` | AX-3's stance grounds it; the reflexive self-similarity claim was demoted here (`HYP-ORCH-FRACTAL`), which `depends-on` P-FACES-INSTANCE. |
 | [[axiom-layer-redteam]] | `derives-from` | The three-kinds partition, AX-2's type-appropriate-warrant fix, and AX-4/AX-5 come from its reconciled landing. |
 | [[BACKLOG]] (BL-2) | `exemplifies` | This restructure is BL-2 (de-fuse kinds under one label) applied to the axiom layer itself. |
-| [`README.md`](../../README.md) | `contradicts` | ⚠️ README frames debiasing-value as hypothesis; AX-1 promotes it to a commitment. Reconcile before either moves up. |
+| [`README.md`](../../README.md) | `contradicts` | ⚠️ Narrowed (2026-07-21): README now states the value/efficacy split explicitly; the residual is only the pending promotion decision (which side yields), still open before either moves up. |
 | [[ontology-conventions]] | `depends-on` | Uses its `axiom` vs `premise` distinction and confidence dimensions. |

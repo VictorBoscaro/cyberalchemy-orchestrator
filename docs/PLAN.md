@@ -43,12 +43,23 @@ falsified.
 
 ## 2. The hypothesis
 
-> **Working hypothesis.** Treat the orchestrator's job as *decision hygiene*, and try to give that
-> hygiene *category-theoretic types*. Neither half is established; the second is the more
-> speculative.
+> **Working hypothesis.** Treat the orchestrator's job as *decision hygiene*, try to give that
+> hygiene *category-theoretic types* — and run both inside one *method*: hold every claim to the
+> warrant its type supports, keep what survives, enrich from what breaks. The method is the frame,
+> not a bet; the two theses inside it are the bets, and the second is the more speculative.
 
-Two parts:
+Three parts — and the first is the **frame** the other two run inside, not a third peer:
 
+- **The method (the frame).** The repo operates one loop — **state a claim → probe it → keep what
+  survives → enrich the model from what breaks** — holding each claim to no more than the warrant
+  its *type* supports (`claim ≤ proof`). Falsification is the *empirical* slice of that warrant, not
+  the whole: a claim can also be discharged by proof (a Lean anchor), by grounded use (a definition),
+  or by an owner's gate (a decision). This is the **T0 root** — fixed *as the frame of the
+  enterprise*, the one thing not itself under test, so that a collapse-test can *mean* something
+  ([`vault/axioms/axioms.md`](../vault/axioms/axioms.md), AX-2, with AX-4 *independent check* and
+  AX-5 *fallibilism* as the other two method invariants). It is not aspirational: the discipline
+  already runs (every construct below carries a collapse-test; every belief carries `veracity` held
+  apart from `conviction`). What is **not** built is the *automated* form of this loop — see the coda.
 - **Decision hygiene (the moves).** Borrowed from the science of judgment: **Kahneman** on *bias
   and noise* (two errors that may be independent, each calling for a different tool) and **Thaler**
   on *nudges* (making the hygienic path the default). This is where the concrete moves come from —
@@ -61,10 +72,12 @@ Two parts:
   (what the merge lost); feedback as a 2-cell rather than a plain edge. These are candidates to be
   checked, not results — see the open obligation in §3.2.
 
-The loop this is ultimately meant to run is the scientific process itself: state a falsifiable
-claim → probe it → keep what survives → enrich the model from what breaks. That loop is **not built
-yet**. What already runs is the surrounding discipline (`claim ≤ proof`; every construct paired
-with a collapse-test), not the loop.
+**The coda — the loop as a *machine*, still unbuilt.** The method above already runs *by hand*: the
+scientific process is the frame we work inside, not a future feature. What is not built is its
+*automated* form — a claim entering the ledger → surviving refutation attempts → connecting into a
+"golden" graph of held-true nodes, reopenable when a sharper test family arrives. That machine is
+**not built yet**. What already runs is the surrounding discipline (`claim ≤ proof`; every construct
+paired with a collapse-test), not the machine.
 
 **Two caveats we do not want to bury:**
 1. The category-theoretic typing is **candidate for us, though partly formalized elsewhere**.
@@ -84,13 +97,16 @@ with a collapse-test), not the loop.
 
 ## 3. The three fronts
 
-We do not treat the three as independent, parallel pieces. There is an intended relationship
-between them — and the relationship is itself part of what is unproven, so we state it as intent,
-not as fact:
+We do not treat the three as independent, parallel pieces. They share a floor that is *not* one of
+them — the **method** of §2 (the T0 root: claim ≤ proof, keep what survives, enrich from what
+breaks), which is what makes any front correctable rather than merely asserted. On that floor there
+is an intended relationship between the three — and the relationship is itself part of what is
+unproven, so we state it as intent, not as fact:
 
 ```text
       ┌─────────────────────────────────────────────────────┐
-      │  FRONT 2 — Category theory  (the intended ground)    │
+      │  FRONT 2 — Category theory                           │
+      │  (the intended ground *for typing the other two*)   │
       │  would type what a judgment is, and what a merge     │
       │  loses  — OPEN, nothing typed here yet               │
       └───────────────┬─────────────────────┬───────────────┘
@@ -102,6 +118,12 @@ not as fact:
       │ principles the        │(intends to  enforce)         │
       │ judgments should obey │   │ mostly unbuilt           │
       └───────────────────────┘   └─────────────────────────┘
+      ════════════════════════════════════════════════════════
+       THE METHOD — the T0 root (AX-2 / AX-4 / AX-5): state a
+       claim → probe it → keep what survives → enrich from what
+       breaks. The floor all three fronts stand on — the frame,
+       not under test. Its discipline runs today; its automated
+       loop does not.
 ```
 
 The intent: Front 2 would supply the types for both Front 1 and Front 3, and Front 3 would make
@@ -109,7 +131,10 @@ Front 1's principles enforceable in code rather than merely asked-for. Both are 
 results — Front 2's typing is an open obligation (§3.2) and most of Front 3 is unbuilt (§3.3). *If*
 the shape holds, it matters for a plain reason: a principle the architecture does not enforce stays
 aspirational, and a type with nothing to type buys nothing. Whether it holds is exactly what we do
-not yet know.
+not yet know. Two senses of "ground" must not be confused: Front 2 is the intended ground *for
+typing* the fronts; the **method** is the ground *of the enterprise* — the floor that lets a
+collapse-test mean something. Front 2 could collapse to the sequential fragment (§3.2) and the
+method floor would stand untouched.
 
 Each front below states what it is, where it already lives, and — as plainly as we can — its
 current standing.

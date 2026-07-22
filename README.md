@@ -40,17 +40,32 @@ those failures — pairing them on deliberately opposed angles, keeping them bli
 another, aggregating independent judgments, auditing the result — instead of spawning agents
 and gluing together whatever they return. Whether those countermeasures actually cancel the
 failures, rather than just relabel them, is itself a hypothesis under test: agents sharing a
-base model produce correlated errors, which caps how much independence can buy.
+base model produce correlated errors, which caps how much independence can buy. Two things sit
+inside that founding claim and the axiom layer keeps them apart: *that debiasing agents is worth
+building around* is a **value commitment**, held regardless of proof
+([`vault/axioms/axioms.md`](vault/axioms/axioms.md), AX-1); *whether the failures transfer to agents,
+and whether the countermeasures cancel rather than relabel them* is the **falsifiable** part. This
+README states the founding claim as one hypothesis; AX-1 promotes only its value half — the two are
+being reconciled, with neither presupposed as the side that yields.
 
 Those three levers are borrowed from the science of judgment: **Kahneman** on bias and noise,
 **Thaler** on nudges and choice architecture. Under the hood, we are trying to ground the
 tooling in **category theory** and **information theory** — a candidate framing, not a proven
 one — to pin down what a dispatch is, what a synthesis loses, and when a label adds information
-rather than noise. The main loop is meant to run on **epistemology and the scientific
-process**: state a falsifiable claim, probe it, keep what survives, enrich the model from what
-breaks. That loop isn't built yet — it is the next thing to add — but the discipline it implies
-(`claim ≤ proof` — certainty no larger than the evidence; every construct falsifiable with a
-collapse-test) already runs through the repo.
+rather than noise. Beneath both of those sits the repo's **operating method** — not a feature still to build but the
+frame everything else runs inside: **state a claim → probe it → keep what survives → enrich the
+model from what breaks**, holding each claim to no more than the warrant its *type* supports
+(`claim ≤ proof` — certainty no larger than the evidence). Falsification is the *empirical* slice of
+that warrant, not the whole of it: a claim can equally be discharged by proof (a Lean anchor), by
+grounded use (a definition), or by an owner's gate (a decision). This method is the **T0 root** —
+fixed *as the frame of the enterprise*, the one thing not itself under test, so that a collapse-test
+can *mean* something ([`vault/axioms/axioms.md`](vault/axioms/axioms.md), AX-2 with AX-4 *independent
+check* and AX-5 *fallibilism*). Two tempos live here and only one is built: the **discipline**
+already runs through the repo — every construct carries a collapse-test, every belief carries
+evidence (`veracity`) held apart from commitment (`conviction`), every rule earns promotion from
+hypothesis to law only by surviving its own falsifier — while the **automated loop** that would run
+this end-to-end (a claim entering the ledger, surviving refutation, connecting into a "golden" graph
+of held-true nodes) is *not* built; it is the next thing to add.
 
 What exists **today** is the orchestration substrate: a **dispatch discipline** (agent
 groups, typed connections, an anti-bias gate, an append-only ledger) and a **control plane** —
