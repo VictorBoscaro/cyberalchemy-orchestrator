@@ -12,7 +12,7 @@ decisions_made: true
 contradictions_found: false
 specs_updated:
   - docs/features/agents-communication-infra/README.md
-  - docs/features/agents-communication-infra/discovery/agents-communication-infra.md
+  - docs/features/agents-communication-infra/discovery/feature-discovery/agents-communication-infra.md
   - docs/features/agents-communication-infra/IMPLEMENTATION-LAYERING.md
   - docs/features/agents-communication-infra/WORK-PACK.md
   - docs/features/agents-communication-infra/EXECUTION-PACK.md
@@ -62,7 +62,7 @@ Build the subscription-backed `codex_cli` vertical slice next, because the lande
 - docs/features/agents-communication-infra/WORK-PACK.md
 - docs/features/agents-communication-infra/EXECUTION-PACK.md
 - docs/features/agents-communication-infra/phase-2-confirm-handoff.md
-- docs/features/agents-communication-infra/discovery/agents-communication-infra.md
+- docs/features/agents-communication-infra/discovery/feature-discovery/agents-communication-infra.md
 - docs/features/agents-communication-infra/experiments/bus-publication-probe/.gitignore
 - docs/features/agents-communication-infra/experiments/bus-publication-probe/README.md
 - docs/features/agents-communication-infra/experiments/bus-publication-probe/mcp.example.json
