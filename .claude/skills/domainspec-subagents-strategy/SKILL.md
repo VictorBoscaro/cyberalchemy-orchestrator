@@ -44,6 +44,11 @@ result is a real dispatch and re-enters propose/confirm/register/close.
 
 ## Two-level planning model
 
+The `StructuralGraphProposal` and `ConcreteDispatchProposal` names below apply only to real
+dispatches. The unregistered discovery bootstrap uses the distinct
+`DiscoveryBootstrapStructuralProposal` / `DiscoveryBootstrapConcreteProposal` contract owned by
+`discovery-writing`; it does not pretend to be derived from a pending dispatch sheet.
+
 Every non-trivial dispatch is built as two immutable, session-local projections derived from one
 pending sheet:
 
@@ -113,8 +118,10 @@ schema. Slots carry data only: instructions, authority, lenses, source boundarie
 contracts are forbidden. Bind every referenced file as `{path, sha256}` and digest the manifest.
 Changing template text or any instruction/authority/lens/source-boundary/output contract
 invalidates concrete confirmation; supplying conforming data does not. ACI alone owns a true
-`EffectiveInputArtifact`. If ACI/runtime cannot persist and bind dynamic inputs, any registered
-dispatch whose robot-talks path depends on them is `UNAVAILABLE`; do not claim durable binding.
+`EffectiveInputArtifact`. Every registered topology that needs post-confirmation downstream input
+is `UNAVAILABLE` unless ACI/runtime persists and binds its manifest; this is not limited to
+robot-talks. Unregistered bootstrap helper loops may use a `WorkflowInputManifest` as workflow
+evidence only and never claim durable binding.
 
 ## Lifecycle — the universal four steps
 
@@ -148,7 +155,7 @@ workflow-level until ratified in discovery/SPEC/ACI.
 - **P5 — pairwise tension.** Any n ≥ 2 group must be pairwise tensioned (predictable disagreement per pair, named axis, per-agent position); two independent **check-tension** helpers must both PASS the exact concrete digest before human confirmation.
 - **P7 — aggregation is derived,** never a field: `robot_talks: true` → the group synthesizes; otherwise → concat. *(Non-binding note, per P7's own framing: a bare concat is never the dispatch's final deliverable.)*
 - **P10 — claim ≤ proof** in every artifact produced.
-- **P12 — final approval.** Every dispatch names a `final_approver`: `parent` (default) or a dedicated approver group whose single agent's role is `auditor` and that does no other work; never a working-group member (no self-approval); falls back to `parent` if its group never runs; the approver receives the full `working_folder`. The selected confirmation lifecycle may contain one or two pre-run planning gates. P12 forbids adding a new human gate after execution begins.
+- **P12 — final approval.** Every dispatch names a `final_approver`: `parent` (default) or a dedicated approver group whose single agent's role is `auditor` and that does no other work; never a working-group member (no self-approval); falls back to `parent` if its group never runs. The approver receives the complete evidence bundle: for persisted output, the full `working_folder`; for inline review, the complete `review.md` payload plus the frozen target corpus as exact path/hash pairs. The selected confirmation lifecycle may contain one or two pre-run planning gates. P12 forbids adding a new human gate after execution begins.
 - **Three dials, three scopes.** `layers` (group) / `loop_cap` (edge) / `max_loops` (dispatch) — one scenario, one dial; if two seem to fit, the smallest scope wins.
 - **exit_reason.** Closed vocabulary: `resolved | loop_ceiling_reached | dissent_irreconcilable | user_abort | error`.
 - **P8 — trust-but-verify.** If a subagent wrote files or claimed a check passed, inspect the actual diff / run the actual check before treating it as done.

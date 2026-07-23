@@ -9,6 +9,10 @@ from hashlib import sha256
 from argparse import ArgumentParser
 from pathlib import Path
 
+import yaml
+from yaml.constructor import ConstructorError
+from yaml.resolver import BaseResolver
+
 
 REQUIRED_FRONTMATTER = {
     "tags",
@@ -22,6 +26,7 @@ REQUIRED_FRONTMATTER = {
     "version",
     "last_updated",
 }
+ALLOWED_FRONTMATTER = REQUIRED_FRONTMATTER
 ALLOWED_LAYER = {"ontology", "architecture", "domain", "application", "external"}
 ALLOWED_NATURE = {"explanatory", "reference", "technical"}
 ALLOWED_STATUS = {"draft", "exploratory", "active", "consolidated", "evergreen"}
@@ -43,6 +48,35 @@ LOCATION_TOKEN = re.compile(
     r"|(?:\[[^\]]+\]\([^)]+\)|(?:[A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+)"
     r"\s+§\s*[A-Za-z0-9][A-Za-z0-9.-]*"
     r")"
+)
+
+
+class UniqueKeyLoader(yaml.SafeLoader):
+    """Safe YAML loader that rejects duplicate mapping keys."""
+
+
+def construct_unique_mapping(
+    loader: UniqueKeyLoader,
+    node: yaml.MappingNode,
+    deep: bool = False,
+) -> dict[object, object]:
+    mapping: dict[object, object] = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        if key in mapping:
+            raise ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                f"duplicate key: {key}",
+                key_node.start_mark,
+            )
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+UniqueKeyLoader.add_constructor(
+    BaseResolver.DEFAULT_MAPPING_TAG,
+    construct_unique_mapping,
 )
 
 
@@ -134,31 +168,29 @@ def main() -> int:
     validate_trailing_whitespace(lines, errors)
     validate_repo_path(path, errors)
 
-    frontmatter = read_frontmatter(lines, errors)
-    key_list = re.findall(
-        r"(?m)^([A-Za-z_][A-Za-z0-9_-]*):",
-        frontmatter,
-    )
-    keys = set(key_list)
-    for key in sorted({item for item in key_list if key_list.count(item) > 1}):
-        errors.append(f"duplicate top-level frontmatter key: {key}")
+    frontmatter_text = read_frontmatter(lines, errors)
+    frontmatter = parse_frontmatter(frontmatter_text, errors)
+    keys = set(frontmatter)
     for key in sorted(REQUIRED_FRONTMATTER - keys):
         errors.append(f"required frontmatter key is missing: {key}")
-    if scalar(frontmatter, "node_type") != "discovery":
+    for key in sorted(keys - ALLOWED_FRONTMATTER):
+        errors.append(f"unknown frontmatter key is forbidden: {key}")
+    if frontmatter.get("node_type") != "discovery":
         errors.append("node_type must be discovery")
-    if scalar(frontmatter, "is_session") != "false":
-        errors.append("is_session must be false")
+    if frontmatter.get("is_session") is not False:
+        errors.append("is_session must be YAML boolean false")
     validate_values(frontmatter, errors)
+    version = frontmatter_version(frontmatter)
 
     validate_heading_order(outside_text, errors)
-    validate_objective(outside_text, errors)
+    validate_objective(outside_text, version, errors)
     validate_business_context(outside_text, errors)
     validate_core_concepts(outside_text, errors)
     validate_open_questions(outside_text, errors)
     validate_decision_table(outside_text, errors)
     validate_connections_table(outside_text, errors)
     validate_flow(text, outside_text, errors)
-    validate_changelog(outside_text, errors)
+    validate_changelog(outside_text, version, errors)
     validate_links(path, outside_text, errors)
     validate_research_links(path, outside_text, research_sources, errors)
     validate_source_footer(
@@ -336,39 +368,76 @@ def read_frontmatter(lines: list[str], errors: list[str]) -> str:
     return "\n".join(lines[1:end])
 
 
-def scalar(frontmatter: str, name: str) -> str:
-    match = re.search(
-        rf"(?m)^{re.escape(name)}:\s*(.*?)\s*$",
-        frontmatter,
-    )
-    return match.group(1).strip() if match else ""
+def parse_frontmatter(
+    frontmatter: str,
+    errors: list[str],
+) -> dict[str, object]:
+    if not frontmatter:
+        return {}
+    try:
+        parsed = yaml.load(frontmatter, Loader=UniqueKeyLoader)
+    except yaml.YAMLError as exc:
+        errors.append(f"frontmatter YAML is invalid or has duplicate keys: {exc}")
+        return {}
+    if not isinstance(parsed, dict):
+        errors.append("frontmatter must be one YAML mapping")
+        return {}
+    if not all(isinstance(key, str) for key in parsed):
+        errors.append("frontmatter keys must be strings")
+        return {}
+    return parsed
 
 
-def list_values(frontmatter: str, name: str) -> set[str]:
-    raw = scalar(frontmatter, name)
-    if raw.startswith("[") and raw.endswith("]"):
-        raw = raw[1:-1]
-    return {item.strip() for item in raw.split(",") if item.strip()}
+def frontmatter_version(frontmatter: dict[str, object]) -> str:
+    value = frontmatter.get("version")
+    return value if isinstance(value, str) else ""
 
 
-def validate_values(frontmatter: str, errors: list[str]) -> None:
+def validate_values(
+    frontmatter: dict[str, object],
+    errors: list[str],
+) -> None:
+    tags = frontmatter.get("tags")
+    if (
+        not isinstance(tags, list)
+        or not tags
+        or any(not isinstance(item, str) or not item.strip() for item in tags)
+    ):
+        errors.append("tags must be a non-empty YAML list of non-empty strings")
     for name, allowed in (
         ("layer", ALLOWED_LAYER),
         ("nature", ALLOWED_NATURE),
     ):
-        actual = list_values(frontmatter, name)
-        if not actual or not actual <= allowed:
+        raw = frontmatter.get(name)
+        if (
+            not isinstance(raw, list)
+            or not raw
+            or any(not isinstance(item, str) or not item.strip() for item in raw)
+        ):
+            errors.append(f"{name} must be a non-empty YAML list of strings")
+            continue
+        actual = set(raw)
+        if not actual <= allowed:
             errors.append(
                 f"{name} must contain only {sorted(allowed)}; got {sorted(actual)}"
             )
-    if scalar(frontmatter, "status") not in ALLOWED_STATUS:
+    status = frontmatter.get("status")
+    if not isinstance(status, str) or status not in ALLOWED_STATUS:
         errors.append(f"status must be one of {sorted(ALLOWED_STATUS)}")
     for name in ("veracity", "conviction"):
-        if scalar(frontmatter, name) not in ALLOWED_CONFIDENCE:
+        value = frontmatter.get(name)
+        if not isinstance(value, str) or value not in ALLOWED_CONFIDENCE:
             errors.append(f"{name} must be one of {sorted(ALLOWED_CONFIDENCE)}")
-    if re.fullmatch(r"\d+\.\d+\.\d+", scalar(frontmatter, "version")) is None:
+    version = frontmatter_version(frontmatter)
+    if re.fullmatch(r"\d+\.\d+\.\d+", version) is None:
         errors.append("version must use semantic numeric form X.Y.Z")
-    if not valid_date(scalar(frontmatter, "last_updated")):
+    last_updated = frontmatter.get("last_updated")
+    date_text = (
+        last_updated.isoformat()
+        if hasattr(last_updated, "isoformat")
+        else last_updated
+    )
+    if not isinstance(date_text, str) or not valid_date(date_text):
         errors.append("last_updated must be a real calendar date in YYYY-MM-DD")
 
 
@@ -453,13 +522,27 @@ def prose_sentence_count(prose: str) -> int:
     )
 
 
-def validate_objective(text: str, errors: list[str]) -> None:
+def validate_objective(
+    text: str,
+    version: str,
+    errors: list[str],
+) -> None:
     objective = h2_section(text, "Objective")
     if objective is None:
         return
-    for marker in ("**Status:**", "**Owner:**"):
-        if marker not in objective:
-            errors.append(f"Objective block is missing {marker}")
+    status = re.search(
+        r"(?m)^\*\*Status:\*\*\s+v(\d+\.\d+\.\d+)\s+—\s+(\S.*?)\s*$",
+        objective,
+    )
+    if status is None:
+        errors.append(
+            "Status must be one exact non-empty line: "
+            "**Status:** v<version> — <provenance text>"
+        )
+    elif status.group(1) != version:
+        errors.append("Status version must equal frontmatter version")
+    if "**Owner:**" not in objective:
+        errors.append("Objective block is missing **Owner:**")
     owner = re.search(r"(?m)^\*\*Owner:\*\*\s*(\S+)\s*$", objective)
     if owner is None:
         errors.append("Owner must appear alone on its bold-label line")
@@ -729,8 +812,10 @@ def extract_mermaid_bodies(block: str) -> list[str]:
     bodies: list[str] = []
     lines = block.splitlines()
     index = 0
+    in_comment = False
     while index < len(lines):
-        opening = re.match(r"^ {0,3}(`{3,}|~{3,})mermaid\s*$", lines[index])
+        visible, in_comment = mask_html_comments(lines[index], in_comment)
+        opening = re.match(r"^ {0,3}(`{3,}|~{3,})mermaid\s*$", visible)
         if opening is None:
             index += 1
             continue
@@ -751,7 +836,11 @@ def extract_mermaid_bodies(block: str) -> list[str]:
     return bodies
 
 
-def validate_changelog(text: str, errors: list[str]) -> None:
+def validate_changelog(
+    text: str,
+    version: str,
+    errors: list[str],
+) -> None:
     block = h2_section(text, "Appendix — Changelog")
     if block is None:
         return
@@ -775,6 +864,9 @@ def validate_changelog(text: str, errors: list[str]) -> None:
     if not rows:
         errors.append("Appendix — Changelog requires at least one data row")
         return
+    newest_version = rows[0][0].removeprefix("v") if rows[0] else ""
+    if newest_version != version:
+        errors.append("newest changelog version must equal frontmatter version")
     for row in rows:
         if (
             len(row) != 3
@@ -1069,11 +1161,23 @@ def run_self_tests() -> int:
         "empty Mermaid rejection",
         any("non-comment statement" in item for item in errors),
     )
+    commented_flow = (
+        "## Flow Diagram\n<!--\n```mermaid\nflowchart TD\nA-->B\n```\n-->\n"
+        "This paragraph explains the flow.\n## Appendix — Changelog\n"
+    )
+    outside, _ = text_outside_fences(commented_flow.splitlines())
+    errors = []
+    validate_flow(commented_flow, outside, errors)
+    check(
+        "HTML-commented Mermaid invisible",
+        any("exactly one Mermaid" in item for item in errors),
+    )
 
     errors = []
     validate_changelog(
         "## Appendix — Changelog\n| Version | Date | Changes |\n"
         "| --- | --- | --- |\n| 1.2.3 | 2026-02-30 | Changed. |\n",
+        "1.2.3",
         errors,
     )
     check("changelog date validation", bool(errors))
@@ -1081,17 +1185,59 @@ def run_self_tests() -> int:
     validate_changelog(
         "## Appendix — Changelog\n| Version | Date | Changes |\n"
         "| --- | --- | --- |\n| 1.2.3 | 2026-07-23 | Changed. |\n",
+        "1.2.3",
         errors,
     )
     check("changelog valid row", not errors)
+    errors = []
+    validate_changelog(
+        "## Appendix — Changelog\n| Version | Date | Changes |\n"
+        "| --- | --- | --- |\n| 1.2.2 | 2026-07-23 | Changed. |\n",
+        "1.2.3",
+        errors,
+    )
+    check(
+        "frontmatter/changelog version equality",
+        any("equal frontmatter" in item for item in errors),
+    )
 
     errors = []
     objective = (
         "## Objective\nOne. Two. Three. Four.\n\n"
-        "**Status:** v1\n**Owner:** @owner\n"
+        "**Status:** v1.0.0 — checked source packet\n**Owner:** @owner\n"
     )
-    validate_objective(objective, errors)
+    validate_objective(objective, "1.0.0", errors)
     check("Objective sentence ceiling", any("at most 3" in item for item in errors))
+    errors = []
+    validate_objective(
+        "## Objective\nOne.\n**Status:** v1.0.1 — provenance\n**Owner:** @owner\n",
+        "1.0.0",
+        errors,
+    )
+    check(
+        "frontmatter/Status version equality",
+        any("equal frontmatter" in item for item in errors),
+    )
+
+    errors = []
+    parsed = parse_frontmatter(
+        "tags: [a]\ntags: [b]\nnode_type: discovery\n",
+        errors,
+    )
+    check("YAML duplicate rejection", not parsed and bool(errors))
+    errors = []
+    parsed = parse_frontmatter(
+        "tags: a\nlayer: [domain]\nnature: [technical]\n"
+        "status: active\nveracity: high\nconviction: high\n"
+        "version: 1.0.0\nlast_updated: 2026-07-23\n",
+        errors,
+    )
+    validate_values(parsed, errors)
+    check(
+        "typed nonempty list schema",
+        any("tags must be a non-empty YAML list" in item for item in errors),
+    )
+    check("unknown frontmatter defense", "scope" not in ALLOWED_FRONTMATTER)
 
     repo_root = find_repo_root(Path(__file__).resolve())
     if repo_root is not None:

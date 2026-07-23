@@ -94,9 +94,10 @@ attackers ──sequential──▶ synthesizer ◀──zig-zag──▶ verifi
   predeclares slots for both sets. After the attackers finish, the host materializes their
   positions as a separately canonicalized and digested workflow-only `WorkflowInputManifest`, with
   each file reference bound as an explicit `{path, sha256}` pair, and invokes the unchanged
-  template with that data manifest. ACI alone owns a true `EffectiveInputArtifact`; for a registered
-  dispatch, if ACI/runtime cannot persist and bind the dynamic input, this robot-talks topology is
-  `UNAVAILABLE`. Later attacker material never changes the confirmed template. Since review
+  template with that data manifest. ACI alone owns a true `EffectiveInputArtifact`; every
+  registered topology needing post-confirmation downstream input is `UNAVAILABLE` unless
+  ACI/runtime persists and binds its manifest. An unregistered helper loop treats the manifest as
+  workflow evidence only. Later attacker material never changes the confirmed template. Since review
   persists no transcript, the durable review record of collapse remains the one-line collapse
   note in `review.md`'s Coverage section, not a file of returns.
 - **Verifiers** — `skeptic`s in a zig-zag exchange with the synthesizer.
@@ -110,6 +111,10 @@ attackers ──sequential──▶ synthesizer ◀──zig-zag──▶ verifi
 approver **does no other work in the dispatch**; the coverage auditor audits coverage, which is work.
 So the approver is **`parent`**, or a *separate* agent that does nothing but approve. Both can coexist:
 the auditor fires the zero-findings flag, and the approver checks that it fired.
+
+The final approver receives the complete evidence bundle. For persisted mode that is the full
+`working_folder`; for inline mode it is the complete inline `review.md` payload plus the frozen
+target corpus as exact path/hash pairs.
 
 **Author-approval warning (open gap, P12).** P12 forbids the approver from sitting in a working group —
 it does **not** forbid `parent` from being the author of the artifact under review. When the strategist
@@ -163,8 +168,9 @@ A finding the verifier refutes is **dropped, not softened** — claim ≤ proof,
 why the artifact survived each attempt. ALL attackers returning zero findings is a red flag —
 treat it as a failure to attack, not as cleanliness. **Who fires it:** the coverage auditor fires
 this flag; a dedicated `final_approver` only *checks that the auditor fired it* — a dedicated
-approver does no other work. When no coverage-auditor group is declared and `final_approver` is
-`parent`, `parent` fires the flag itself — `parent` is the strategist session, not a dedicated
+approver does no other work. When no coverage-auditor seat exists, assign the full coverage audit,
+Coverage-section authorship, and zero-findings check explicitly to `parent` or the synthesizer in
+the confirmed proposal. When assigned to `parent`, it is the strategist session, not a dedicated
 approver bound by "no other work".
 
 ## 4. Write the report — `review.md`

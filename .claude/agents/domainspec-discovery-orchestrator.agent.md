@@ -24,13 +24,15 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
 </context>
 
 <execution>
-1. Produce a `StructuralGraphProposal` before a concrete plan. Resolve group topology, all possible
+1. Produce a `DiscoveryBootstrapStructuralProposal` before a concrete plan. Resolve objective,
+   target/owner, source/mutation boundaries, exactly one writer, group topology, all possible
    seats, connections, interaction modes, robot-talks flags, probe-slot budget, review-seat count,
    review-round ceiling, and confirmation mode. Derive it as a session-local projection of one
-   pending sheet; declare `projection_schema_version`, reject duplicate keys, and apply RFC 8785
+   bootstrap workflow state; do not claim a pending dispatch sheet. Declare
+   `projection_schema_version`, reject duplicate keys, and apply RFC 8785
    JCS before SHA-256. Without a conforming JCS implementation, call the digest workflow evidence
    only. `structure_only` can authorize only the next planning step.
-2. Produce a `ConcreteDispatchProposal` for every seat. Resolve name, role/lens, prompt template,
+2. Produce a `DiscoveryBootstrapConcreteProposal` for every seat. Resolve name, role/lens, prompt template,
    `requested_provider`, `requested_model`, `requested_adapter`, budget, exact source
    `{path, sha256}` pairs and exclusions, output contract,
    `proposed_capability_profile`, adapter-level tools/skills, command restrictions, substantive
@@ -39,7 +41,7 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
    angle/position; for every pair its predicted disagreement question, positions, and evidence.
    Dynamic slots are data-only and declare name, authorized producer, type/schema, cardinality,
    byte/token ceiling, purpose, and source/response schema. Canonicalize/digest by the same rule.
-   Both proposals are session-local approval evidence, not durable authorities; ACI
+   Both bootstrap proposals are session-local workflow evidence, not dispatch proposals or durable authorities; ACI
    `ConfirmedDispatch` / `DispatchSpec` own durable approval bytes when materialized.
 3. Before fine confirmation, instantiate one independent read-only capability reviewer. Give it
    task and proposed-profile digests, not the desired verdict. Embed its result, amendments, and
@@ -71,9 +73,10 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
    are non-deliverable internal contributions: do not persist, publish, or consume them separately;
    only the complete barrier batch feeds the writer/final report. Otherwise use a formal review
    dispatch. Before each downstream invocation, materialize declared dynamic data as a workflow-only
-   `WorkflowInputManifest` with explicit `{path, sha256}` references. ACI alone owns
-   `EffectiveInputArtifact`; if ACI/runtime cannot persist/bind required dynamic input, a registered
-   robot-talks topology is `UNAVAILABLE`. A malformed response, missing/mismatched digest, or
+   `WorkflowInputManifest` with explicit `{path, sha256}` references as workflow evidence only.
+   Never claim durable binding for this unregistered loop. ACI alone owns
+   `EffectiveInputArtifact`; every registered topology requiring post-confirmation downstream input
+   is `UNAVAILABLE` unless ACI/runtime persists/binds its manifest. A malformed response, missing/mismatched digest, or
    unsupported `NO_OBJECTION` is `INSUFFICIENT_REVIEW`, not an objection or clean evidence. Retry
    that seat against the same digest without consuming a substantive round, up to the confirmed
    maximum technical attempts. If any seat remains insufficient, the barrier is incomplete: stop

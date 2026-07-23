@@ -34,7 +34,7 @@ nature: [explanatory, reference, technical — what applies]
 status: active
 veracity: <low|medium|high>     # evidence quality
 conviction: <low|medium|high>   # decision confidence
-version: 0.1.0
+version: 0.1.0                  # new targets only; semver-bump existing targets
 last_updated: <YYYY-MM-DD>
 ---
 ```
@@ -51,7 +51,12 @@ What is being changed and what the end state looks like. No motivation here — 
 
 **Quality gate:** If you cannot write this in 3 sentences, the scope is unresolved. Stop and clarify with the user before continuing.
 
-Immediately below the Objective, add a bold-label block: `**Status:**` (version + one-line provenance), `**Owner:**` (@handle), and, when a sibling discovery exists, `**Companion:**` — a relative link plus one sentence declaring the ownership split: what the companion owns and that this doc treats it as defined. If the companion is version-locked, pin the version.
+Immediately below the Objective, add the exact non-empty line
+`**Status:** v<frontmatter-version> — <provenance text>`, then `**Owner:**` (@handle), and, when a
+sibling discovery exists, `**Companion:**` — a relative link plus one sentence declaring the
+ownership split. Use `0.1.0` only for a new target. For an existing target, preserve locked
+decisions and apply the appropriate semver bump; the Status and newest changelog versions must
+equal frontmatter.
 
 The owner handle is a required briefing input. Do not infer it from Git authorship or a previous
 document; refuse authoring when it is absent.
@@ -139,7 +144,8 @@ without their own explicit authorization.
 After `Connections`, place `## Flow Diagram`, then `## Appendix — Changelog`. The Flow section
 contains one Mermaid fence and a non-empty explanatory paragraph of at most four sentences. The
 changelog uses exact header `| Version | Date | Changes |` and contains at least one row with
-semantic version, real `YYYY-MM-DD` date, and non-empty change text. The confirmed provenance mode is exactly
+semantic version, real `YYYY-MM-DD` date, and non-empty change text. Put the newest row first; its
+version equals frontmatter and the Status line. The confirmed provenance mode is exactly
 one of:
 
 - `dispatch`: the final non-empty line, outside code fences, is
@@ -191,9 +197,17 @@ Exactly one controlled writer may persist only the confirmed parent-owned discov
 return `WriterHandoff`; do not register it or misclassify it as research/review/experiment. If a
 discovery dispatch type is ratified, formal register open/close becomes mandatory.
 
-The `StructuralGraphProposal` resolves the number of probe slots and review seats, their
+The bootstrap structural schema contains objective, confirmed target/owner, source and mutation
+boundaries, exactly one writer, probe-slot budget, two or three isolated reviewer seats,
+`robot_talks: false`, connections, review-round ceiling, budgets, and confirmation mode. The
+bootstrap concrete schema contains every helper/writer/reviewer name, role/lens, immutable prompt
+template and typed data slots, exact source path/hash bindings, requested provider/model/adapter,
+budgets, output contracts, proposed capability profiles, reviewer instantiation/retry rules,
+provenance mode, capability-review evidence, tension matrix, and resolution provenance.
+
+The `DiscoveryBootstrapStructuralProposal` resolves the number of probe slots and review seats, their
 connections, whether any group uses `robot-talks`, the interaction mode, the maximum review rounds,
-and the confirmation mode. The `ConcreteDispatchProposal` then resolves every agent name,
+and the confirmation mode. The `DiscoveryBootstrapConcreteProposal` then resolves every agent name,
 role/lens, immutable `prompt_template`, source boundary and exact path-to-SHA-256 bindings,
 `requested_provider`, `requested_model`, `requested_adapter`, budget, output contract,
 `proposed_capability_profile`, reviewer instantiation rule, and retry limit. It includes the group
@@ -202,7 +216,8 @@ positions, and evidence. All potential seats are declared before execution. An u
 not spawned; changing a seat, lens, or prompt template later requires a new proposal revision and
 the applicable gate.
 
-Both proposals are session-local projections derived from one pending sheet. Declare
+Both bootstrap proposals are session-local workflow evidence, not dispatch projections and not
+derived from a pending dispatch sheet. Declare
 `projection_schema_version`, reject duplicate object keys, and use RFC 8785 JCS before SHA-256. If
 a conforming JCS implementation is absent, the local digest is workflow evidence only, never
 portable or durable. ACI `ConfirmedDispatch` / `DispatchSpec` own durable approval bytes and
@@ -215,15 +230,16 @@ visible and explain why one reviewer cannot subsume another.
 
 Before fine confirmation, a read-only capability reviewer checks each task against its
 `proposed_capability_profile`. Embed its result, amendments, task digest, and profile digest in the
-`ConcreteDispatchProposal`. Tool names in agent frontmatter are proposal-level adapter requests;
+`DiscoveryBootstrapConcreteProposal`. Tool names in agent frontmatter are proposal-level adapter requests;
 the proposal also states logical capabilities and restricted command classes. Effective grants,
 model, and sandbox remain ACI/runtime-owned. Record `effective_enforcement` as `observable` or
 `non_observable`. An observable semantic mismatch fails closed; when non-observable, report the
 gap and never call requested values effective. `Bash` never means unrestricted shell by implication.
 
 After capability review, run two independent check-tension helpers against the same canonical
-concrete digest. Concrete confirmation requires PASS from both. If either fails, revise the pending
-sheet, regenerate and re-digest the affected projections, and run two fresh independent checks.
+concrete digest. Concrete confirmation requires PASS from both. If either fails, revise the
+bootstrap proposal, regenerate and re-digest the affected projections, and run two fresh
+independent checks.
 
 Every resolved concrete field records `ResolutionProvenance`: `user_set`, `recipe_default`,
 `skill_constraint`, `orchestrator_inferred`, or `capability_reviewer_amendment`, plus a source
@@ -236,9 +252,11 @@ data-only slots with name, authorized producer, data type/schema, cardinality, b
 purpose, and source/response schema. Instructions, authority, lenses, source boundaries, and output
 contracts cannot be dynamic. For an unregistered workflow, the host may materialize current data
 into a workflow-only `WorkflowInputManifest`, bind files as `{path, sha256}`, and digest it. ACI
-alone owns a true `EffectiveInputArtifact`. If ACI/runtime cannot persist and bind required dynamic
-inputs, a dynamic-input-dependent registered robot-talks topology is `UNAVAILABLE`. Changing an
-instruction, authority, lens, source boundary, or output contract invalidates concrete confirmation.
+alone owns a true `EffectiveInputArtifact`. Every registered topology needing post-confirmation
+downstream input is `UNAVAILABLE` unless ACI/runtime persists and binds its manifest. The
+unregistered bootstrap may use a manifest as workflow evidence only and cannot claim durable
+binding. Changing an instruction, authority, lens, source boundary, or output contract invalidates
+concrete confirmation.
 
 Supported confirmation modes:
 
@@ -409,7 +427,7 @@ The concrete proposal explicitly selects `provenance_mode: dispatch | basis | no
 
 Every source is bound by explicit path→SHA-256 pair, never by position in an ordered tuple. An
 optional research source is also an exact path→hash pair; never derive it by changing a findings
-basename. Its link must occur in the substantive owning section before `## Flow Diagram`.
+basename. Its link must occur in the substantive owning section before `## Connections`.
 Deterministic validation can prove that exact path is linked there, but reviewers own whether that
 section and the corresponding decision row are semantically the true provenance owners. Never
 fabricate a dispatch ID.

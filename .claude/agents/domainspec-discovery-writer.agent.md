@@ -19,8 +19,8 @@ The target path must match one of two patterns, reflecting the discovery's conce
 - **Application target** — `docs/features/<feature>/discovery/<slug>.md`. For discoveries whose claims live or die with a specific feature (feature design, refactor scoping, tradeoffs internal to one capability). The vault is reserved for codified discipline; application discoveries belong with the feature they concern.
 
 The classification is the strategist's call at dispatch time and is confirmed by the user before
-this agent is dispatched. There is no `regime` frontmatter field — existing labels (`layer`,
-`scope`, `tags`) carry the conceptual discrimination; the path encodes the operational choice.
+this agent is dispatched. There is no `regime` or `scope` frontmatter field — `layer` and `tags`
+plus the path carry the conceptual discrimination.
 
 You are dispatched by the discovery orchestrator only after explicit user confirmation under
 `.claude/skills/domainspec-subagents-strategy/SKILL.md` Lifecycle step 2 (**Confirm**). If dispatched
@@ -68,7 +68,7 @@ Reference docs to honor:
    support a material claim, boundary, or decision, route the gap to Open Questions and report the
    missing evidence to the orchestrator.
 5. Write the discovery node at the target path, following the discovery-writing skill's mandatory section order and quality checks. Map the findings into the skill's sections:
-   - **Frontmatter** — per the skill's template (`node_type: discovery`, `is_session: false`, `layer` / `nature` / `status`, `version: 0.1.0`, `last_updated: <today>`, `tags: [...]`). If `ontology-conventions.md` changes confidence-field applicability, honor it.
+   - **Frontmatter** — per the skill's template (`node_type: discovery`, `is_session: false`, `layer` / `nature` / `status`, `last_updated: <today>`, `tags: [...]`). Use `version: 0.1.0` only for a new target. For an existing target, preserve locked decisions and bump semver according to the actual change; never reset its version. If `ontology-conventions.md` changes confidence-field applicability, honor it.
    - **Objective** (≤3 sentences) + Status/Owner/Companion block.
    - **Business Context** — Why now / What's broken (dated, with locations) / What stays the same
      (owning docs linked) — derived from the checked source/evidence packet when one is present,
