@@ -23,7 +23,7 @@ REQUIRED_FRONTMATTER = {
     "last_updated",
 }
 ALLOWED_LAYER = {"ontology", "architecture", "domain", "application", "external"}
-ALLOWED_NATURE = {"explanatory", "procedural", "reference", "technical"}
+ALLOWED_NATURE = {"explanatory", "reference", "technical"}
 ALLOWED_STATUS = {"draft", "exploratory", "active", "consolidated", "evergreen"}
 ALLOWED_CONFIDENCE = {"low", "medium", "high"}
 ORDERED_HEADINGS = [
@@ -130,7 +130,7 @@ def main() -> int:
     outside_text, fences_balanced = text_outside_fences(lines)
 
     if not fences_balanced:
-        errors.append("code fences are unbalanced")
+        errors.append("code fence or HTML comment is unclosed")
     validate_trailing_whitespace(lines, errors)
     validate_repo_path(path, errors)
 
@@ -241,15 +241,9 @@ def text_outside_fences(lines: list[str]) -> tuple[str, bool]:
     outside: list[str] = []
     fence_char: str | None = None
     fence_length = 0
+    in_comment = False
     for line in lines:
-        if fence_char is None:
-            opening = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line)
-            if opening:
-                fence_char = opening.group(1)[0]
-                fence_length = len(opening.group(1))
-                outside.append("")
-                continue
-        else:
+        if fence_char is not None:
             closing = re.match(
                 rf"^ {{0,3}}{re.escape(fence_char)}{{{fence_length},}}\s*$",
                 line,
@@ -259,11 +253,36 @@ def text_outside_fences(lines: list[str]) -> tuple[str, bool]:
                 fence_length = 0
             outside.append("")
             continue
-        if fence_char is not None:
+        masked, in_comment = mask_html_comments(line, in_comment)
+        opening = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", masked)
+        if opening:
+            fence_char = opening.group(1)[0]
+            fence_length = len(opening.group(1))
             outside.append("")
         else:
-            outside.append(line)
-    return "\n".join(outside), fence_char is None
+            outside.append(masked)
+    return "\n".join(outside), fence_char is None and not in_comment
+
+
+def mask_html_comments(line: str, in_comment: bool) -> tuple[str, bool]:
+    visible: list[str] = []
+    cursor = 0
+    while cursor < len(line):
+        if in_comment:
+            close = line.find("-->", cursor)
+            if close < 0:
+                return "".join(visible), True
+            in_comment = False
+            cursor = close + 3
+            continue
+        opening = line.find("<!--", cursor)
+        if opening < 0:
+            visible.append(line[cursor:])
+            break
+        visible.append(line[cursor:opening])
+        in_comment = True
+        cursor = opening + 4
+    return "".join(visible), in_comment
 
 
 def validate_trailing_whitespace(lines: list[str], errors: list[str]) -> None:
@@ -497,11 +516,14 @@ def validate_business_context(text: str, errors: list[str]) -> None:
         )
     elif not re.search(r"\w", broken):
         errors.append("What's broken must be non-empty")
-    elif LOCATION_TOKEN.search(broken) is None:
-        errors.append(
-            "What's broken must contain at least one location-like token "
-            "(path[:line], Class.method, or §section)"
-        )
+    else:
+        entries = broken_entries(broken)
+        for index, entry in enumerate(entries, 1):
+            if LOCATION_TOKEN.search(entry) is None:
+                errors.append(
+                    f"What's broken entry {index} lacks a strict location "
+                    "(file:line, Class.method, or doc §section)"
+                )
     date_match = re.search(
         r"\*\*What's broken \(as of (\d{4}-\d{2}-\d{2})\)\*\*",
         business,
@@ -512,6 +534,36 @@ def validate_business_context(text: str, errors: list[str]) -> None:
         errors.append("Business Context requires exact subsection **What stays the same**")
     elif not re.search(r"[A-Za-z0-9]", stays):
         errors.append("What stays the same must be non-empty")
+
+
+def broken_entries(block: str) -> list[str]:
+    bullets = [
+        match.group(0).strip()
+        for match in re.finditer(
+            r"(?ms)^\s*(?:[-*+]|\d+\.)\s+.*?"
+            r"(?=^\s*(?:[-*+]|\d+\.)\s+|^\s*\|.*\|\s*$|\Z)",
+            block,
+        )
+    ]
+    table_entries: list[str] = []
+    table_group: list[str] = []
+    for line in (*block.splitlines(), ""):
+        if re.match(r"^\s*\|.*\|\s*$", line):
+            table_group.append(line.strip())
+            continue
+        if table_group:
+            non_separator = [
+                item
+                for item in table_group
+                if not all(
+                    re.fullmatch(r":?-{3,}:?", cell.strip())
+                    for cell in item.strip("|").split("|")
+                )
+            ]
+            table_entries.extend(non_separator[1:])
+            table_group = []
+    entries = bullets + table_entries
+    return entries if entries else [block.strip()]
 
 
 def validate_core_concepts(text: str, errors: list[str]) -> None:
@@ -650,14 +702,17 @@ def validate_flow(raw_text: str, outside_text: str, errors: list[str]) -> None:
     if block is None:
         return
     raw_block = raw_h2_section(raw_text, outside_text, "Flow Diagram")
-    mermaid_fences = (
-        re.findall(r"(?m)^ {0,3}(?:`{3,}|~{3,})mermaid\s*$", raw_block)
-        if raw_block is not None
-        else []
-    )
-    if len(mermaid_fences) != 1:
+    mermaid_bodies = extract_mermaid_bodies(raw_block or "")
+    if len(mermaid_bodies) != 1:
         errors.append(
             "Flow Diagram must contain exactly one Mermaid fence before the changelog"
+        )
+    elif not any(
+        line.strip() and not line.lstrip().startswith("%%")
+        for line in mermaid_bodies[0].splitlines()
+    ):
+        errors.append(
+            "Flow Diagram Mermaid fence requires at least one non-comment statement"
         )
     body = re.sub(r"(?m)^##\s+Flow Diagram\s*$", "", block, count=1).strip()
     if not re.search(r"[A-Za-z0-9]", body):
@@ -668,6 +723,32 @@ def validate_flow(raw_text: str, outside_text: str, errors: list[str]) -> None:
         errors.append(
             f"Flow Diagram explanatory paragraph must be at most 4 sentences; found {count}"
         )
+
+
+def extract_mermaid_bodies(block: str) -> list[str]:
+    bodies: list[str] = []
+    lines = block.splitlines()
+    index = 0
+    while index < len(lines):
+        opening = re.match(r"^ {0,3}(`{3,}|~{3,})mermaid\s*$", lines[index])
+        if opening is None:
+            index += 1
+            continue
+        marker = opening.group(1)[0]
+        length = len(opening.group(1))
+        body: list[str] = []
+        index += 1
+        while index < len(lines):
+            if re.match(
+                rf"^ {{0,3}}{re.escape(marker)}{{{length},}}\s*$",
+                lines[index],
+            ):
+                bodies.append("\n".join(body))
+                break
+            body.append(lines[index])
+            index += 1
+        index += 1
+    return bodies
 
 
 def validate_changelog(text: str, errors: list[str]) -> None:
@@ -880,6 +961,16 @@ def run_self_tests() -> int:
     check("tilde fence matching", balanced and "## spoof" not in outside)
     _, balanced = text_outside_fences(["````", "~~~", "```"])
     check("fence type and length mismatch rejection", not balanced)
+    hidden, balanced = text_outside_fences(
+        ["<!--", "**Source dispatch:** `spoof` — [x](x.md)", "-->", "visible"]
+    )
+    check(
+        "HTML comment masking",
+        balanced and "Source dispatch" not in hidden and "visible" in hidden,
+    )
+    _, balanced = text_outside_fences(["<!-- unclosed"])
+    check("unclosed HTML comment rejection", not balanced)
+    check("nature exact contract", "procedural" not in ALLOWED_NATURE)
     check("real calendar dates", valid_date("2026-07-23") and not valid_date("2026-02-30"))
     test_parser = ArgumentParser(add_help=False)
     _, parsed_digest = parse_binding(
@@ -899,6 +990,15 @@ def run_self_tests() -> int:
         and LOCATION_TOKEN.search("ClassName.method") is not None
         and LOCATION_TOKEN.search("design.md §2.1") is not None
         and LOCATION_TOKEN.search("src/a.py") is None,
+    )
+    entries = broken_entries(
+        "- Broken at src/a.py:12.\n- Missing strict location.\n"
+    )
+    check(
+        "per-broken-entry location",
+        len(entries) == 2
+        and LOCATION_TOKEN.search(entries[0]) is not None
+        and LOCATION_TOKEN.search(entries[1]) is None,
     )
 
     errors: list[str] = []
@@ -958,6 +1058,17 @@ def run_self_tests() -> int:
     errors = []
     validate_flow(two_flows, outside, errors)
     check("duplicate Mermaid rejection", any("exactly one" in item for item in errors))
+    empty_flow = (
+        "## Flow Diagram\n```mermaid\n%% only a comment\n```\n"
+        "This paragraph explains the flow.\n## Appendix — Changelog\n"
+    )
+    outside, _ = text_outside_fences(empty_flow.splitlines())
+    errors = []
+    validate_flow(empty_flow, outside, errors)
+    check(
+        "empty Mermaid rejection",
+        any("non-comment statement" in item for item in errors),
+    )
 
     errors = []
     validate_changelog(
@@ -1006,6 +1117,22 @@ def run_self_tests() -> int:
             errors,
         )
         check("fenced footer spoof ignored", not errors)
+        errors = []
+        validate_source_footer(
+            discovery,
+            [
+                "<!--",
+                "**Source dispatch:** `spoof` — [findings](../../../source.md)",
+                "-->",
+                "ordinary terminal text",
+            ],
+            "none",
+            None,
+            None,
+            [],
+            errors,
+        )
+        check("HTML-comment footer spoof ignored", not errors)
 
     if failures:
         for failure in failures:

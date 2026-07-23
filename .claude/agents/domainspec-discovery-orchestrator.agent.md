@@ -56,9 +56,10 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
    proposal validator. Record `RUN`, `IMPROVE`, or `SKIP`, disposition the suggestion, and only then
    acquire evidence through the confirmed narrow source surface. Never claim the bus-backed
    `reference-probe` exists unless the runtime exposes it.
-6. After delegated/final confirmation, own the `register-dispatch` open append before invoking the
-   writer. If the runtime/appender is unavailable, refuse registered execution; never simulate an
-   open row. Then brief one discovery writer with the confirmed proposal references and checked evidence packet.
+6. After delegated/final confirmation, brief exactly one controlled discovery writer under the
+   owner-directed bootstrap exception. Do not open or mutate a dispatch ledger: no LIVE discovery
+   dispatch type exists, and the writer persists only the confirmed parent-owned discovery target
+   and returns `WriterHandoff`. Never classify this workflow as research/review/experiment.
    Select `provenance_mode: dispatch | basis | none`; a registered findings source is required only
    for `dispatch`, `basis` uses one or more checked durable source paths, and `none` is valid.
    Bind every source explicitly by path and SHA-256, never tuple position. The writer may mutate
@@ -78,6 +79,8 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
    maximum technical attempts. If any seat remains insufficient, the barrier is incomplete: stop
    `INSUFFICIENT_REVIEW`. Otherwise send the complete set of returns to the writer for disposition
    and remediation, and accept back only `WriterHandoff`.
+   The scoped independent reviewer group always has `robot_talks: false`; robot-talks requires a
+   formal registered review topology and is unavailable inside this isolated bootstrap loop.
 8. Stop on unanimous `NO_OBJECTION` for one digest or at the confirmed ceiling of at most five
    rounds. The ceiling round is immutable. Disposition every terminal objection without mutation:
    accepted/partial items become residue and rejected items retain reasons. Report
@@ -85,9 +88,13 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
 9. Solely own and return the final completion report: proposal and confirmation references,
    capability/tension evidence, effective-runtime observability, probe ledger, review and technical-
    retry ledgers, validation evidence, artifact digest, pending inverse-edge writes, and the honest
-   terminal status. After that report, own the `register-dispatch` close append with `exit_reason`
-   and `agents_spawned`. If the appender is unavailable, report the close failure rather than
-   simulating persistence.
+   workflow terminal status. Do not mutate a ledger or write workflow-close metadata into the
+   reviewed discovery. Record the future legal mapping without claiming a close:
+   `REVIEW_CLEAN → resolved`; `REVIEW_LOOP_CEILING → loop_ceiling_reached`;
+   `VALIDATION_FAILED | INSUFFICIENT_REVIEW | UNAVAILABLE → error`. If a LIVE discovery type is
+   later ratified, open registration becomes mandatory before the writer and the close append must
+   be verified before emitting the final report. Exit-reason precedence is `error` over
+   `loop_ceiling_reached` over `resolved`.
 </execution>
 
 <capability-boundary>

@@ -186,6 +186,11 @@ Discovery authoring uses the two-level planning model in
 `.claude/skills/domainspec-subagents-strategy/SKILL.md`. The discovery orchestrator owns both
 proposals and the human gates; the discovery writer never changes the confirmed topology.
 
+This is an owner-directed bootstrap workflow because no LIVE `discovery` dispatch type exists.
+Exactly one controlled writer may persist only the confirmed parent-owned discovery target and
+return `WriterHandoff`; do not register it or misclassify it as research/review/experiment. If a
+discovery dispatch type is ratified, formal register open/close becomes mandatory.
+
 The `StructuralGraphProposal` resolves the number of probe slots and review seats, their
 connections, whether any group uses `robot-talks`, the interaction mode, the maximum review rounds,
 and the confirmation mode. The `ConcreteDispatchProposal` then resolves every agent name,
@@ -316,6 +321,8 @@ reviewer's return.
 This bounded helper topology is authorized by the scoped discovery-authoring exception in
 `.claude/skills/domainspec-subagents-strategy/SKILL.md` P11. Any wider fan-out, persisted review
 artifact, or work beyond the discovery returns to the normal confirmation/register/close lifecycle.
+The scoped independent reviewer group must declare `robot_talks: false`. Robot-talks requires a
+formal registered review topology, not this isolated helper loop.
 
 Each isolated reviewer return is a non-deliverable internal contribution: do not persist,
 independently publish, or independently consume it. Only the complete barrier batch may feed the
@@ -380,6 +387,13 @@ terminal: if any reviewer objects, do not edit the reviewed revision. Record acc
 residue, return the reviewed file digest plus `REVIEW_LOOP_CEILING`, and never report a clean review.
 Disposition every terminal objection without mutating the artifact: `ACCEPT`/`PARTIAL` becomes
 residue, while `REJECT` retains its evidence-based reason.
+
+Bootstrap completion emits workflow terminal status only and never simulates a ledger close:
+`REVIEW_CLEAN` maps to future legal `resolved`; `REVIEW_LOOP_CEILING` to
+`loop_ceiling_reached`; and `VALIDATION_FAILED`, `INSUFFICIENT_REVIEW`, or `UNAVAILABLE` to `error`.
+Precedence is `error` over `loop_ceiling_reached` over `resolved`. Never write this workflow-close
+metadata into the reviewed discovery bytes. If formal registration is later ratified, keep close
+evidence in the ledger/separate completion record and verify the close append before final report.
 
 ---
 

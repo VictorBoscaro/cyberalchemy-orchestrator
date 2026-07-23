@@ -107,7 +107,8 @@ Reference docs to honor:
    fixed without new authority, report the gap in `WriterHandoff`.
 10. Return only `WriterHandoff`; never issue a final completion report, probe/review ledger, or
     terminal `REVIEW_CLEAN` / `REVIEW_LOOP_CEILING` decision. Those belong solely to the
-    orchestrator.
+    orchestrator. Never write workflow terminal status, `exit_reason`, `agents_spawned`, or ledger
+    close evidence into the reviewed discovery bytes.
 </execution>
 
 <output>
