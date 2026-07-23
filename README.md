@@ -207,13 +207,17 @@ For any term (`probe`, `zig-zag`, `residue`, `dispatch`): [`definitions/DEFINITI
 ## Going deeper — the thesis *(optional)*
 
 Everything above is enough to use the repo. Underneath sits a research bet, in three fronts, none of
-it required reading to run the concrete piece:
+it required reading to run the concrete piece. The first two fronts each have a **funnel essay** that
+opens at the everyday problem and ramps to full technical density:
 
 - **Decision-making (the why).** Treat orchestration as *decision hygiene* — countering correlated
-  bias, noise, and framing, à la Kahneman and Thaler. → [`docs/PLAN.md`](docs/PLAN.md),
+  bias, noise, and framing, à la Kahneman and Thaler. →
+  [`docs/essays/decision-hygiene-hypothesis/`](docs/essays/decision-hygiene-hypothesis/README.md)
+  (the essay), then [`docs/PLAN.md`](docs/PLAN.md) and
   [`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md).
 - **Category theory (the formal ground).** Give the orchestration constructs categorical types
   (probe→Yoneda, synthesis→pushout/residue, connections→composition/2-cells) — a candidate, decided
-  by OBL-E3. → [`FRAMINGS.md`](FRAMINGS.md), [`OBLIGATIONS.md`](OBLIGATIONS.md).
+  by OBL-E3. → [`docs/essays/categorical-theory-hypothesis/`](docs/essays/categorical-theory-hypothesis/README.md)
+  (the essay), then [`FRAMINGS.md`](FRAMINGS.md) and [`OBLIGATIONS.md`](OBLIGATIONS.md).
 - **System architecture (the how).** An event/bus/journal runtime that would make those principles
   enforceable end-to-end — largely a proposal today. → [`docs/features/`](docs/features/).

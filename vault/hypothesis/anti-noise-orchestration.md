@@ -17,6 +17,14 @@ tags: [orchestration, kahneman, thaler, categories, noise, bias, ETE, nudge, ant
 > each "you already do X" points to a real artifact in the repo; where there is no
 > artifact, it is marked **PENDING**.
 
+> **Split into two funnel essays (2026-07-23).** This thesis bundles three lenses
+> (Kahneman ⊕ Thaler ⊕ Category Theory). Each of the two research lenses now has its own
+> reader-facing essay that opens at the everyday problem and ramps to full density:
+> [`docs/essays/decision-hygiene-hypothesis/`](../../docs/essays/decision-hygiene-hypothesis/README.md)
+> (the bias/noise/nudge lens) and
+> [`docs/essays/categorical-theory-hypothesis/`](../../docs/essays/categorical-theory-hypothesis/README.md)
+> (the categorical lens). This node remains the governed source they derive from.
+
 ## Opening
 
 The agent orchestrator this repo builds makes **judgments** all the time: which
