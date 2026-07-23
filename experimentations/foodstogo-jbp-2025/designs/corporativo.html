@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Joint Business Plan 2025 · FOODSToGo &times; Rappi</title>
+<style>
+  @page { size: A4; margin: 16mm; }
+
+  :root{
+    --navy:#0B2545;
+    --slate:#334155;
+    --accent:#1D4ED8;
+    --rule:#cbd5e1;
+    --rule-soft:#e2e8f0;
+    --zebra:#f4f6f9;
+    --ink:#1e293b;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin:0; padding:0; }
+
+  body{
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    font-size: 10.5pt;
+    line-height: 1.5;
+    background:#ffffff;
+  }
+
+  .page   { break-after: page; min-height: 244mm; position:relative; padding-bottom:14mm; }
+  .blank  { break-after: page; min-height: 244mm; }
+  .page:last-of-type { break-after: auto; }
+
+  h1,h2,h3,h4 { font-family: Georgia, 'Times New Roman', serif; color: var(--navy); margin:0; }
+
+  .accent { color: var(--accent); }
+  .navy { color: var(--navy); }
+  .bold { font-weight: bold; }
+
+  /* ---------- Footer ---------- */
+  .footer{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    border-top:0.6pt solid var(--rule);
+    padding-top:4pt;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size:7.6pt;
+    letter-spacing:0.04em;
+    color:#64748b;
+    display:flex; justify-content:space-between;
+  }
+
+  /* ---------- Section chrome ---------- */
+  .eyebrow{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:7.6pt;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:bold;
+    margin-bottom:6pt;
+  }
+  .sec-title{
+    font-size:20pt;
+    line-height:1.12;
+    letter-spacing:-0.01em;
+    color:var(--navy);
+    margin-bottom:8pt;
+  }
+  .sec-rule{
+    height:1.4pt;
+    background:var(--navy);
+    width:100%;
+    margin:0 0 6pt 0;
+  }
+  .lead{
+    font-style:italic;
+    color:var(--slate);
+    font-size:11.5pt;
+    line-height:1.45;
+    margin:10pt 0 14pt 0;
+    padding-left:12pt;
+    border-left:2.4pt solid var(--accent);
+  }
+
+  h3.block{
+    font-size:11pt;
+    margin:14pt 0 4pt 0;
+    color:var(--navy);
+  }
+  h3.block .num{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:8.5pt;
+    color:var(--accent);
+    font-weight:bold;
+    margin-right:5pt;
+    letter-spacing:0.03em;
+  }
+  p { margin:4pt 0; }
+  ul { margin:5pt 0; padding-left:16pt; }
+  li { margin:2.5pt 0; }
+
+  /* ---------- Tables ---------- */
+  table{
+    border-collapse:collapse;
+    width:100%;
+    margin:8pt 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:9pt;
+  }
+  th{
+    background:var(--navy);
+    color:#ffffff;
+    text-align:left;
+    padding:5pt 7pt;
+    font-weight:bold;
+    font-size:8.4pt;
+    letter-spacing:0.02em;
+    border:0.5pt solid var(--navy);
+  }
+  td{
+    padding:4.5pt 7pt;
+    border:0.5pt solid var(--rule-soft);
+    color:var(--ink);
+  }
+  tbody tr:nth-child(even){ background:var(--zebra); }
+  td.num, th.num { text-align:right; font-variant-numeric: tabular-nums; }
+  tr.highlight td{ background:#eef2fb; font-weight:bold; color:var(--navy); }
+  tr.highlight td .accent{ color:var(--accent); }
+  .romi{ color:var(--accent); font-weight:bold; }
+
+  caption{
+    caption-side:bottom;
+    text-align:left;
+    font-family: Georgia, serif;
+    font-style:italic;
+    font-size:8pt;
+    color:#64748b;
+    padding-top:4pt;
+  }
+
+  /* ---------- Callout ---------- */
+  .callout{
+    border:0.6pt solid var(--rule);
+    border-left:3pt solid var(--accent);
+    background:#f8fafc;
+    padding:8pt 11pt;
+    margin:10pt 0;
+    font-size:10pt;
+  }
+  .callout .k{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:7.4pt;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:bold;
+    display:block;
+    margin-bottom:3pt;
+  }
+
+  .note{
+    font-size:9pt;
+    color:var(--slate);
+    font-style:italic;
+  }
+
+  /* ---------- KPI strip ---------- */
+  .kpis{ display:flex; gap:10pt; margin:12pt 0; }
+  .kpi{
+    flex:1;
+    border:0.6pt solid var(--rule);
+    border-top:2.4pt solid var(--navy);
+    padding:9pt 10pt;
+    background:#ffffff;
+  }
+  .kpi .label{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:7.2pt;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:#64748b;
+  }
+  .kpi .val{
+    font-size:17pt;
+    color:var(--navy);
+    font-weight:bold;
+    line-height:1.1;
+    margin-top:3pt;
+  }
+  .kpi .val.acc{ color:var(--accent); }
+  .kpi .sub{ font-size:8pt; color:var(--slate); margin-top:2pt; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    break-after:page;
+    min-height:265mm;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:6mm 0;
+  }
+  .cover-top .brandline{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:8.5pt;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:bold;
+  }
+  .cover-mid{ margin-top:auto; margin-bottom:auto; }
+  .cover-year{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:9pt;
+    letter-spacing:0.3em;
+    color:var(--slate);
+    margin-bottom:14pt;
+  }
+  .cover-title{
+    font-size:40pt;
+    line-height:1.06;
+    letter-spacing:-0.015em;
+    color:var(--navy);
+    font-weight:normal;
+  }
+  .cover-rule{
+    height:2pt;
+    background:var(--navy);
+    width:64mm;
+    margin:16pt 0;
+  }
+  .cover-sub{
+    font-size:14pt;
+    font-style:italic;
+    color:var(--slate);
+    max-width:150mm;
+    line-height:1.4;
+  }
+  .cover-keys{
+    border-top:0.8pt solid var(--rule);
+    padding-top:12pt;
+    display:flex;
+    gap:8mm;
+  }
+  .ckey{ flex:1; }
+  .ckey .kl{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:7pt;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#64748b;
+    display:block;
+    margin-bottom:4pt;
+  }
+  .ckey .kv{
+    font-size:12.5pt;
+    color:var(--navy);
+    font-weight:bold;
+    line-height:1.2;
+  }
+  .ckey .kv .accent{ color:var(--accent); }
+  .cover-author{
+    font-size:9.5pt;
+    color:var(--slate);
+    letter-spacing:0.04em;
+    margin-top:14pt;
+    padding-top:8pt;
+    border-top:0.6pt solid var(--rule-soft);
+  }
+
+  .chain{
+    font-family: 'Consolas','Courier New', monospace;
+    font-size:8.6pt;
+    line-height:1.65;
+    background:#f8fafc;
+    border:0.6pt solid var(--rule);
+    border-left:3pt solid var(--navy);
+    padding:9pt 12pt;
+    color:var(--slate);
+    white-space:pre-wrap;
+    margin:8pt 0;
+  }
+  .two-col{ column-count:2; column-gap:9mm; }
+</style>
+</head>
+<body>
+
+<!-- ============ CAPA ============ -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="brandline">RappiAds &nbsp;·&nbsp; Joint Business Plan</div>
+  </div>
+
+  <div class="cover-mid">
+    <div class="cover-year">2025</div>
+    <h1 class="cover-title">Joint Business Plan 2025<br>FOODSToGo &times; Rappi</h1>
+    <div class="cover-rule"></div>
+    <div class="cover-sub">Transformar a afinidade de marca que já existe em vendas incrementais e mensuráveis</div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cover-keys">
+      <div class="ckey">
+        <span class="kl">Investimento proposto</span>
+        <span class="kv"><span class="accent">700.000 USD</span> / ano<br><span style="font-weight:normal;font-size:9pt;color:#64748b">JBP anual</span></span>
+      </div>
+      <div class="ckey">
+        <span class="kl">Retorno esperado &middot; cenário Base</span>
+        <span class="kv">3.044.125 USD em GMV incremental</span>
+      </div>
+      <div class="ckey">
+        <span class="kl">Retorno sobre investimento</span>
+        <span class="kv">ROMI <span class="accent">+65%</span></span>
+      </div>
+    </div>
+    <div class="cover-author">Apresentado por <strong>Leonardo Stonoga</strong> &nbsp;·&nbsp; RappiAds &nbsp;·&nbsp; 2025</div>
+  </div>
+</section>
+
+<!-- ============ ABORDAGEM CFO ============ -->
+<section class="page">
+  <div class="eyebrow">Abordagem 1 &nbsp;·&nbsp; CFO</div>
+  <h2 class="sec-title">Eixo ROI / eficiência do capital</h2>
+  <div class="sec-rule"></div>
+  <div class="lead">"Todo dólar deste plano é defensável. Mesmo no pior cenário, o retorno é positivo."</div>
+
+  <h3 class="block"><span class="num">1</span>O problema em uma linha</h3>
+  <p>A FOODSToGo já vende 3,24M USD por ano na Rappi de forma inteiramente <span class="bold">orgânica</span>, sem nunca ter investido em ativação de longo prazo. Não é uma projeção otimista nem uma promessa: é demanda que já acontece hoje, sozinha. E é justamente por acontecer sozinha que ela é <span class="bold">dinheiro deixado na mesa</span>. A pergunta do CFO não é "vale a pena entrar num canal novo", é "quanto dessa demanda existente estamos escolhendo não capturar".</p>
+
+  <h3 class="block"><span class="num">2</span>A proposta financeira</h3>
+  <p>A resposta é investir <span class="bold accent">700k USD por ano</span> em ativações digitais na Rappi (o JBP), distribuídos por um mix diversificado que chamamos de <span class="bold">Blend Recomendado</span>. A lógica é a única que interessa a esta mesa: cada dólar aplicado gera <span class="bold">GMV incremental</span>, e a margem de contribuição desse GMV precisa superar o próprio investimento. Se supera, o capital se paga e sobra. A seção seguinte mostra em quanto.</p>
+
+  <h3 class="block"><span class="num">3</span>Os números: cenário Base, Blend @700k</h3>
+  <p>Colocando 700k no cenário mais provável: quanto GMV isso vira, quanto disso é margem, e quanto sobra depois de devolver o investimento.</p>
+  <table>
+    <thead><tr><th>Métrica</th><th class="num">Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Investimento anual</td><td class="num">700.000 USD</td></tr>
+      <tr><td>ROAS efetivo (retorno em GMV por USD)</td><td class="num">4,35×</td></tr>
+      <tr><td>GMV incremental gerado</td><td class="num">3.044.125 USD</td></tr>
+      <tr><td>Margem de contribuição incremental (38%)</td><td class="num">1.156.768 USD</td></tr>
+      <tr class="highlight"><td>Retorno líquido de margem (margem menos investimento)</td><td class="num">456.768 USD</td></tr>
+      <tr class="highlight"><td>ROMI</td><td class="num"><span class="accent">+65%</span></td></tr>
+      <tr><td>Pedidos incrementais/ano</td><td class="num">~169.000</td></tr>
+    </tbody>
+  </table>
+  <p>Lido de cima para baixo: 700k viram 3,04M de GMV, esse GMV carrega 1,16M de margem de contribuição, e depois de devolver o investimento sobram <span class="bold">456.768 USD</span>. Cada dólar volta com 1,65. A pergunta natural do CFO agora é a certa: e se o mundo não for o cenário Base.</p>
+
+  <h3 class="block"><span class="num">4</span>Faixa de risco: 3 cenários</h3>
+  <p>É aqui que o plano se defende: não pela promessa do Base, mas pelo que acontece quando o Base não se confirma. A tabela estressa o mesmo investimento de 700k para baixo e para cima.</p>
+  <table>
+    <thead><tr><th>Cenário</th><th class="num">ROAS</th><th class="num">Ret. líquido de margem</th><th class="num">ROMI</th></tr></thead>
+    <tbody>
+      <tr><td>Conservador</td><td class="num">3,26×</td><td class="num">167.576 USD</td><td class="num"><span class="romi">+24%</span></td></tr>
+      <tr class="highlight"><td>Base</td><td class="num">4,35×</td><td class="num">456.768 USD</td><td class="num"><span class="accent">+65%</span></td></tr>
+      <tr><td>Otimista</td><td class="num">5,44×</td><td class="num">745.959 USD</td><td class="num"><span class="romi">+107%</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <span class="k">O ponto que decide a conversa</span>
+    o piso é positivo. No cenário Conservador, com o ROAS caindo para 3,26×, o plano ainda devolve o investimento e entrega <span class="accent bold">+24%</span> de ROMI. Não existe, dentro da faixa modelada, um cenário em que o capital não se paga: é uma <span class="bold">alocação de capital com downside protegido</span>, não uma aposta. O que está em discussão não é se há retorno, é o tamanho dele.
+  </div>
+
+  <h3 class="block"><span class="num">5</span>Por que 700k, e não mais nem menos: ancoragem de tiers, Base</h3>
+  <p>Se o piso já é positivo, a pergunta seguinte é de dimensionamento: por que 700k e não 400k, por que não 1M. A tabela responde comparando os três tamanhos no cenário Base.</p>
+  <table>
+    <thead><tr><th>Tier</th><th class="num">Investimento</th><th class="num">ROMI</th><th class="num">Ret. líquido de margem</th></tr></thead>
+    <tbody>
+      <tr><td>Enxuto</td><td class="num">400k</td><td class="num">+83%</td><td class="num">331.063 USD</td></tr>
+      <tr class="highlight"><td>Alvo (JBP)</td><td class="num"><span class="accent">700k</span></td><td class="num"><span class="accent">+65%</span></td><td class="num">456.768 USD</td></tr>
+      <tr><td>Ampliado</td><td class="num">1M</td><td class="num">+55%</td><td class="num">549.764 USD</td></tr>
+    </tbody>
+  </table>
+  <p>Repare no que a coluna de ROMI esconde. O tier Enxuto tem o ROMI percentual mais alto, +83%, e um CFO desatento pararia aí. Mas ROMI é eficiência, não é resultado: com 400k ele entrega 331k de retorno absoluto e <span class="bold">deixa dinheiro na mesa</span>. No outro extremo, o Ampliado bate na <span class="bold">saturação</span>, cada dólar adicional rende menos porque o canal tem limite de absorção, e por isso o ROMI cai para +55%. O tier de <span class="bold">700k é o ponto onde as duas curvas se cruzam</span>: ROMI ainda alto e retorno absoluto substancial. É a escolha racional, não a intermediária por conveniência.</p>
+
+  <h3 class="block"><span class="num">6</span>Ressalva de honestidade: constrói credibilidade</h3>
+  <p>Uma palavra sobre o que "retorno líquido de margem" significa. <span class="bold">Não é lucro líquido de DRE.</span> É a margem de contribuição incremental menos o investimento em mídia, e portanto fica <span class="bold">antes</span> de custos fixos, opex, impostos e logística. A métrica de retorno é <span class="bold">ROMI</span> (Return on Marketing Investment), calculada sobre base de margem de contribuição. Apresentamos a métrica correta de marketing, não uma promessa de fundo de resultado que este plano não tem como sustentar. É essa distinção que garante que todo número acima resista à auditoria.</p>
+
+  <h3 class="block"><span class="num">7</span>Pedido</h3>
+  <p>Aprovar o JBP de <span class="bold accent">700k USD</span> para 2025.</p>
+
+  <div class="footer"><span>Leonardo Stonoga · RappiAds · JBP FOODSToGo 2025</span><span>Abordagem CFO</span></div>
+</section>
+
+<!-- ============ BRANCO 1 ============ -->
+<div class="blank"></div>
+
+<!-- ============ ABORDAGEM CMO ============ -->
+<section class="page">
+  <div class="eyebrow">Abordagem 2 &nbsp;·&nbsp; CMO</div>
+  <h2 class="sec-title">Eixo território de marca / momentos de consumo</h2>
+  <div class="sec-rule"></div>
+  <div class="lead">"A Rappi é onde o território de vocês já acontece. Só falta a marca estar presente na hora certa."</div>
+
+  <h3 class="block"><span class="num">1</span>O território da FOODSToGo</h3>
+  <p>O território de uma marca não é um slogan: é o conjunto de situações reais em que ela é lembrada. O da FOODSToGo é nítido: gente junta em casa, o encontro entre amigos, a hora que antecede o evento, o público <span class="bold">jovem-adulto</span> que decide no impulso e compra pela ocasião. Isso não é uma aposta sobre o consumidor da Rappi: é a descrição dele. Consumo por momento, decisão rápida, concentração nos fins de semana e nas datas. A marca e o canal já falam a mesma língua; falta a marca aparecer no instante em que a ocasião chega.</p>
+
+  <h3 class="block"><span class="num">2</span>O que os dados de consumo mostram</h3>
+  <p>A demanda da FOODSToGo não é constante ao longo do ano, ela <span class="bold">pulsa</span>: sobe quando a ocasião chega e recua quando ela passa. O histórico orgânico prova o desenho. Fora das datas, a operação corre numa base de aproximadamente <span class="bold">250k por mês</span>. Contra ela, três meses se destacam: a festa junina puxa junho a <span class="bold">305k</span>, a temporada de eventos da primavera leva outubro a <span class="bold">310k</span>, e as festas de fim de ano abrem dezembro a <span class="bold">380k</span>. Cada pico é uma ocasião do território virando volume. O plano só sincroniza a presença com esse pulso.</p>
+
+  <h3 class="block"><span class="num">3</span>A estratégia de marketing: Momentos de Consumo</h3>
+  <p>Se a demanda se concentra em janelas, o investimento também deve. A estratégia de <span class="bold">Momentos de Consumo</span> concentra a ativação nos picos do território, quando cada dólar encontra um consumidor já inclinado a comprar, em vez de diluir esforço nos vales do calendário. O mix privilegia a ativação nas datas e o alcance do usuário na hora da decisão, apoiado por presença de marca o ano inteiro e por mecânicas de fundo de funil que convertem intenção em venda.</p>
+
+  <h3 class="block"><span class="num">4</span>As alavancas: features RappiAds e o papel de cada uma</h3>
+  <ul>
+    <li><span class="bold">Ativação de Momento:</span> o coração do plano. Concentra o esforço nas datas-chave, onde a demanda já está no pico.</li>
+    <li><span class="bold">Push Segmentado:</span> alcança o usuário certo na hora da decisão, quando a ocasião abre.</li>
+    <li><span class="bold">Brand Page / Loja:</span> dá à marca um território próprio dentro do app, presente também fora dos picos.</li>
+    <li><span class="bold">Banner Home / Categoria:</span> mantém a marca no topo do funil, construindo lembrança antes da data chegar.</li>
+    <li><span class="bold">Sponsored Products / Cupom Cofinanciado:</span> fecham o ciclo, transformando a intenção despertada em venda.</li>
+  </ul>
+
+  <h3 class="block"><span class="num">5</span>Impacto de marca + negócio</h3>
+  <table>
+    <thead><tr><th>Métrica</th><th>Valor (Base)</th></tr></thead>
+    <tbody>
+      <tr><td>GMV incremental/ano</td><td>3.044.125 USD</td></tr>
+      <tr><td>Pedidos incrementais/ano</td><td>~169.000 novas ocasiões de consumo</td></tr>
+      <tr><td>Presença nos 3 grandes momentos</td><td>Junho · Outubro · Dezembro</td></tr>
+    </tbody>
+  </table>
+  <p>O ganho não é só de vendas. Cada um desses ~169.000 pedidos é uma <span class="bold">ocasião de marca</span> vivida pelo consumidor no momento em que ele mais associa a FOODSToGo à situação. Marca e venda no mesmo movimento: a compra reforça a lembrança, e a lembrança prepara a próxima compra.</p>
+
+  <h3 class="block"><span class="num">6</span>Por que agora</h3>
+  <p>A FOODSToGo <span class="bold">nunca</span> ativou de forma estruturada e de longo prazo na Rappi. Os picos de junho, outubro e dezembro estão abertos, e quem ocupá-los primeiro vira o <span class="bold">default</span> na cabeça do jovem-adulto: a marca lembrada quando a ocasião chega. Território que não se ocupa, o concorrente ocupa. A janela está aberta agora, e não fica aberta de graça para sempre.</p>
+
+  <div class="footer"><span>Leonardo Stonoga · RappiAds · JBP FOODSToGo 2025</span><span>Abordagem CMO</span></div>
+</section>
+
+<!-- ============ BRANCO 2 ============ -->
+<div class="blank"></div>
+
+<!-- ============ ABORDAGEM CEO ============ -->
+<section class="page">
+  <div class="eyebrow">Abordagem 3 &nbsp;·&nbsp; CEO</div>
+  <h2 class="sec-title">Eixo crescimento / oportunidade estratégica</h2>
+  <div class="sec-rule"></div>
+  <div class="lead">"Vocês são a empresa de alimentos mais importante do Brasil e ainda operam na Rappi no modo orgânico. Existe um degrau inteiro de crescimento que vocês nunca subiram, intocado bem embaixo de vocês."</div>
+
+  <h3 class="block"><span class="num">1</span>A tese de crescimento</h3>
+  <p>A FOODSToGo já é líder de mercado e já vende na Rappi todos os dias, mas vende no piloto automático: nunca houve investimento estruturado no canal. O que existe hoje é demanda que aparece sozinha, sem que ninguém a construa, a defenda ou a acelere.</p>
+  <p>Liderança de categoria, um canal de altíssima afinidade com o público de vocês e <span class="bold">investimento estruturado igual a zero</span>. Essa combinação é rara: é a maior oportunidade de crescimento de baixo risco disponível hoje, e ninguém a está capturando. O JBP é o mecanismo que transforma essa presença passiva em um <span class="bold">motor de crescimento gerenciado</span>, com plano, alavancas e metas. A pergunta para o CEO não é "vale a pena gastar em mídia na Rappi", é "por que uma empresa líder deixaria um degrau inteiro de crescimento parado, quando ele é dela por direito e de baixo risco".</p>
+
+  <h3 class="block"><span class="num">2</span>O tamanho do movimento</h3>
+  <p>Fixada a tese, o número não é uma promessa de mídia: é a medida de quão grande é esse degrau intocado. No cenário Base, o JBP praticamente dobra a operação da FOODSToGo na Rappi em um único ano.</p>
+  <table>
+    <thead><tr><th>Operação Rappi</th><th class="num">Hoje (orgânico)</th><th class="num">Com JBP (Base)</th><th class="num">Variação</th></tr></thead>
+    <tbody>
+      <tr><td>GMV anual</td><td class="num">3.240.000 USD</td><td class="num">6.284.125 USD</td><td class="num"><span class="accent bold">~+94%</span></td></tr>
+      <tr><td>Pedidos/ano</td><td class="num">orgânicos, sem ativação</td><td class="num">+169.000 incrementais</td><td class="num">novo patamar de base</td></tr>
+    </tbody>
+  </table>
+  <p>3,24 milhões de GMV que já existem hoje passam a 6,28 milhões: são <span class="bold">3,04M USD de GMV incremental</span> e cerca de 169 mil pedidos novos por ano. Não é uma otimização de margem na beirada, é a operação quase inteira de novo, construída sobre demanda que já pulsa.</p>
+
+  <h3 class="block"><span class="num">3</span>Por que é estratégico, não tático</h3>
+  <ul>
+    <li><span class="bold">Território.</span> Nenhum concorrente ativou longo prazo neste canal ainda. Quem ocupar primeiro os grandes momentos de consumo vira o default na cabeça do jovem-adulto, e essa janela fecha para quem chegar depois.</li>
+    <li><span class="bold">Dados proprietários.</span> Ativar gera inteligência de consumo por ocasião que hoje vocês não têm; ela não expira no fim da campanha e sustenta decisão de portfólio, preço e calendário nos anos seguintes.</li>
+    <li><span class="bold">Parceria, não avulso.</span> O JBP é um acordo plurianual de co-construção com a Rappi, não uma compra de espaço: traz previsibilidade, prioridade e um interlocutor com pele no jogo.</li>
+  </ul>
+
+  <h3 class="block"><span class="num">4</span>Escolha de ambição: tiers</h3>
+  <p>Há três degraus, e o meio não é uma média preguiçosa: é o ponto onde ambição de crescimento e disciplina de retorno se encontram.</p>
+  <table>
+    <thead><tr><th>Tier</th><th class="num">Investimento</th><th class="num">GMV incremental</th><th>Leitura estratégica</th></tr></thead>
+    <tbody>
+      <tr><td>Enxuto</td><td class="num">400k</td><td class="num">1,92M</td><td>Testar o canal com cautela</td></tr>
+      <tr class="highlight"><td>Alvo (JBP)</td><td class="num"><span class="accent">700k</span></td><td class="num">3,04M</td><td>Crescer com retorno protegido</td></tr>
+      <tr><td>Ampliado</td><td class="num">1M</td><td class="num">4,08M</td><td>Escalar de forma agressiva</td></tr>
+    </tbody>
+  </table>
+  <p>O Enxuto prova o ponto, mas deixa crescimento na mesa num ano em que a janela está aberta. O Ampliado escala, mas entra em saturação e paga mais caro por dólar de retorno. O <span class="bold">Alvo, 700k</span>, é o passo certo para o ano 1 de uma parceria plurianual: ambicioso o bastante para importar, disciplinado o bastante para se defender.</p>
+
+  <h3 class="block"><span class="num">5</span>Faixa de resultado: o risco está contido</h3>
+  <p>O que torna a decisão confortável é o formato do risco. Varrendo do Conservador ao Otimista, o ROMI vai de <span class="bold accent">+24% a +107%</span> e permanece <span class="bold">positivo em toda a faixa</span>. O piso é protegido e o teto é material: o downside é limitado, o upside é grande, e o pior caso ainda cresce a operação. Essa é a assimetria que se procura numa aposta de crescimento.</p>
+
+  <h3 class="block"><span class="num">6</span>A decisão</h3>
+  <p>Assinar o JBP 2025 de <span class="bold accent">700k USD</span> e subir o degrau que já é de vocês, estabelecendo a FOODSToGo como líder também no canal digital de delivery, antes que o concorrente descubra que ele estava aberto.</p>
+
+  <div class="footer"><span>Leonardo Stonoga · RappiAds · JBP FOODSToGo 2025</span><span>Abordagem CEO</span></div>
+</section>
+
+<!-- ============ BRANCO 3 ============ -->
+<div class="blank"></div>
+
+<!-- ============ APENDICE TECNICO · pag 1 ============ -->
+<section class="page">
+  <div class="eyebrow">Apêndice técnico</div>
+  <h2 class="sec-title">Camada técnica: exposta, honesta, auditável</h2>
+  <div class="sec-rule"></div>
+  <p class="note">Esta seção existe para dar rastreabilidade e credibilidade. As páginas de negócio acima se sustentam sozinhas na leitura, mas todo número que aparece nelas nasce aqui. Se algum valor lá em cima não puder ser reconstruído a partir daqui, é erro nosso, não licença poética. Modelo reprodutível: <span style="font-family:Consolas,monospace;font-size:9pt">model/motor.py</span> gera <span style="font-family:Consolas,monospace;font-size:9pt">model/model.json</span>, e é contra esse arquivo que cada linha abaixo pode ser conferida.</p>
+
+  <h3 class="block"><span class="num">T1</span>Natureza dos dados</h3>
+  <p>O Excel do briefing (as abas "Pricelist e Projeção", "Features" e "Histórico de Vendas") <span class="bold">não foi fornecido</span>. Portanto, nenhum número deste apêndice é medição: todos são <span class="bold">modelados sinteticamente</span>, calibrados em ordens de grandeza plausíveis para CPG de alimentos em q-commerce na Rappi Brasil. Isso não enfraquece o modelo, delimita o que ele é. <span class="bold">Cada premissa está isolada e é substituível</span>: trocar um valor sintético pelo número real da FOODSToGo ajusta a magnitude do resultado sem tocar na lógica que o produz. O que estamos entregando é o motor, não a verdade sobre o mercado.</p>
+
+  <h3 class="block"><span class="num">T2</span>Premissas centrais</h3>
+  <p>As quatro premissas abaixo são as entradas de que todo o resto depende.</p>
+  <ul>
+    <li><span class="bold">Ticket médio:</span> 18 USD por pedido. Converte GMV em número de pedidos e vice-versa.</li>
+    <li><span class="bold">Margem de contribuição:</span> 38%. É a fração da venda que sobra para cobrir a mídia e gerar retorno; não é margem líquida de DRE (ver T6).</li>
+    <li><span class="bold">Histórico orgânico de 12 meses:</span> 3.240.000 USD, com base mensal em torno de 250k e picos claros de ocasião em junho (305k), outubro (310k) e dezembro (380k).</li>
+    <li><span class="bold">Spend de referência:</span> 700k, ponto de ancoragem da curva de saturação. <span class="bold">Elasticidade de saturação:</span> 0,18, o expoente que governa o quão rápido o retorno decresce quando o investimento sobe.</li>
+  </ul>
+
+  <h3 class="block"><span class="num">T3</span>Catálogo de features: Pricelist sintético, preço-teto anual a negociar</h3>
+  <p>As colunas são o teto anual de investimento por feature (limite comercial, a negociar), o ROAS base atribuído a cada uma (retorno em GMV por USD, antes de cenário e saturação) e o papel de funil que ela cumpre. É deste catálogo que as estratégias de T4 tiram seus ROAS ponderados.</p>
+  <table>
+    <thead><tr><th>Feature</th><th>Funil</th><th class="num">Teto anual (USD)</th><th class="num">ROAS base</th><th>Papel</th></tr></thead>
+    <tbody>
+      <tr><td>Banner Home</td><td>Topo</td><td class="num">140.000</td><td class="num">2,6</td><td>Alcance</td></tr>
+      <tr><td>Banner Categoria</td><td>Meio</td><td class="num">90.000</td><td class="num">3,2</td><td>Alcance</td></tr>
+      <tr><td>Push Segmentado</td><td>Meio</td><td class="num">70.000</td><td class="num">4,1</td><td>Momentos</td></tr>
+      <tr><td>Sponsored Products</td><td>Fundo</td><td class="num">160.000</td><td class="num">5,2</td><td>Performance</td></tr>
+      <tr><td>Cupom Cofinanciado</td><td>Fundo</td><td class="num">120.000</td><td class="num">4,6</td><td>Performance</td></tr>
+      <tr><td>Brand Page / Loja</td><td>Topo</td><td class="num">80.000</td><td class="num">2,9</td><td>Alcance</td></tr>
+      <tr><td>Ativação de Momento</td><td>Fundo</td><td class="num">130.000</td><td class="num">5,6</td><td>Momentos</td></tr>
+      <tr><td>Vídeo / Rich Media</td><td>Topo</td><td class="num">60.000</td><td class="num">2,4</td><td>Alcance</td></tr>
+    </tbody>
+  </table>
+  <p>O ROAS base cresce conforme se desce o funil: alcance no topo rende menos por USD, performance e momentos no fundo rendem mais. Nenhuma feature é descartada; o que muda entre estratégias é o peso que cada papel recebe.</p>
+
+  <h3 class="block"><span class="num">T4</span>As três estratégias: mix de alocação do investimento por papel</h3>
+  <p>Cada estratégia divide o mesmo investimento entre os três papéis de funil. As colunas Alcance, Momentos e Performance somam 100% e mostram para onde vai o dinheiro; o ROAS ponderado é a consequência direta desse mix, calculado sobre os ROAS base de T3.</p>
+  <table>
+    <thead><tr><th>Estratégia</th><th class="num">Alcance</th><th class="num">Momentos</th><th class="num">Performance</th><th class="num">ROAS ponderado</th></tr></thead>
+    <tbody>
+      <tr><td>Alcance</td><td class="num">65%</td><td class="num">10%</td><td class="num">25%</td><td class="num">3,51×</td></tr>
+      <tr><td>Performance</td><td class="num">15%</td><td class="num">20%</td><td class="num">65%</td><td class="num">4,57×</td></tr>
+      <tr><td>Momentos</td><td class="num">20%</td><td class="num">55%</td><td class="num">25%</td><td class="num">4,45×</td></tr>
+      <tr class="highlight"><td>Blend Recomendado</td><td class="num">25%</td><td class="num">40%</td><td class="num">35%</td><td class="num"><span class="accent">4,35×</span></td></tr>
+    </tbody>
+  </table>
+  <p>Comparação @700k, cenário Base, em ROMI: Alcance +34% · Performance +74% · Momentos +69% · <span class="bold">Blend +65%</span>. O Blend não é a estratégia de maior ROMI puro (Performance é); ele abre mão de alguns pontos de eficiência em troca de <span class="bold">diversificação de risco</span> entre papéis e <span class="bold">construção de território de marca</span>, já que a fatia de Alcance sustenta a presença da FOODSToGo no horizonte plurianual, não só na conversão do ano 1.</p>
+
+  <div class="footer"><span>Leonardo Stonoga · RappiAds · JBP FOODSToGo 2025</span><span>Apêndice técnico · 1/2</span></div>
+</section>
+
+<!-- ============ APENDICE TECNICO · pag 2 ============ -->
+<section class="page">
+  <div class="eyebrow">Apêndice técnico &nbsp;·&nbsp; continuação</div>
+  <h2 class="sec-title">Modelagem, nomenclatura e resultados</h2>
+  <div class="sec-rule"></div>
+
+  <h3 class="block"><span class="num">T5</span>Como o retorno é modelado: a cadeia</h3>
+  <p>O motor inteiro, em cinco passos. Partindo do investimento de um tier, cada linha é uma multiplicação ou subtração explícita, sem etapa escondida. Quem quiser refazer a conta a mão consegue.</p>
+  <div class="chain">investimento (tier)
+  → ROAS_efetivo = ROAS_ponderado × fator_cenário × fator_saturação
+  → GMV_incremental = investimento × ROAS_efetivo
+  → margem_contrib_incremental = GMV_incremental × 38%
+  → retorno_líquido_margem = margem_contrib_incremental menos investimento
+  → ROMI = retorno_líquido_margem / investimento</div>
+  <ul>
+    <li><span class="bold">Fator de cenário:</span> Conservador 0,75 · Base 1,00 · Otimista 1,25. É o estresse aplicado uniformemente para cima e para baixo.</li>
+    <li><span class="bold">Fator de saturação:</span> (700k / investimento)^0,18, limitado ao intervalo [0,70; 1,15]. Modela retornos decrescentes: quanto mais o spend passa de 700k, mais o fator cai; abaixo de 700k ele premia, mas o teto de 1,15 impede prometer milagre em investimento baixo.</li>
+  </ul>
+
+  <h3 class="block"><span class="num">T6</span>Aviso de nomenclatura: importante</h3>
+  <div class="callout">
+    <span class="k">Nomenclatura</span>
+    <span style="font-family:Consolas,monospace;font-size:9pt">retorno_líquido_margem</span> <span class="bold">não é lucro líquido</span>. É a margem de contribuição incremental <span class="bold">menos</span> o investimento em mídia, e portanto fica <span class="bold">antes</span> de custos fixos, opex, impostos e logística. A métrica de retorno que reportamos é o <span class="bold">ROMI</span> (Return on Marketing Investment), calculada sobre base de margem de contribuição, e não um ROI de fundo de DRE. Quem ler "+65%" como lucro contábil estará lendo o número errado: ele é retorno de marketing, e é assim que deve ser tratado em qualquer decisão de aprovação.
+  </div>
+
+  <h3 class="block"><span class="num">T7</span>Matriz completa de resultados: resumo por estratégia @700k</h3>
+  <p>A tabela recorta os resultados no tier de 700k. As três primeiras linhas mostram o Blend estressado nos três cenários (o intervalo de risco do plano); as três últimas fixam o cenário Base e trocam a estratégia, para situar o Blend contra as alternativas.</p>
+  <table>
+    <thead><tr><th>Estratégia</th><th>Cenário</th><th class="num">GMV incremental</th><th class="num">Ret. líq. de margem</th><th class="num">ROMI</th></tr></thead>
+    <tbody>
+      <tr><td>Blend</td><td>Conservador</td><td class="num">2.283.094</td><td class="num">167.576</td><td class="num"><span class="romi">+24%</span></td></tr>
+      <tr class="highlight"><td>Blend</td><td>Base</td><td class="num">3.044.125</td><td class="num">456.768</td><td class="num"><span class="accent">+65%</span></td></tr>
+      <tr><td>Blend</td><td>Otimista</td><td class="num">3.805.156</td><td class="num">745.959</td><td class="num"><span class="romi">+107%</span></td></tr>
+      <tr><td>Performance</td><td>Base</td><td class="num">3.199.875</td><td class="num">515.952</td><td class="num"><span class="romi">+74%</span></td></tr>
+      <tr><td>Momentos</td><td>Base</td><td class="num">3.113.250</td><td class="num">483.035</td><td class="num"><span class="romi">+69%</span></td></tr>
+      <tr><td>Alcance</td><td>Base</td><td class="num">2.459.625</td><td class="num">234.658</td><td class="num"><span class="romi">+34%</span></td></tr>
+    </tbody>
+    <caption>Matriz integral das 36 combinações estratégia × tier × cenário em model/model.json.</caption>
+  </table>
+  <p>Nas linhas do Blend, o piso (Conservador) já é positivo, +24% de ROMI, e o intervalo até o Otimista é largo mas sempre acima de zero. Nas linhas de Base, Performance entrega o maior ROMI isolado (+74%), o que confirma o custo assumido de propósito ao escolher o Blend (+65%) em nome de risco e território, conforme T4.</p>
+
+  <h3 class="block"><span class="num">T8</span>Limitações declaradas</h3>
+  <p>Fechamos pelo que o modelo não faz, porque um apêndice honesto precisa marcar suas próprias bordas.</p>
+  <ul>
+    <li>Os dados são sintéticos. Substituí-los pelos reais valida ou ajusta as magnitudes, não a lógica da cadeia de T5.</li>
+    <li>ROAS e margem são premissas de entrada, não observações medidas. Todo o resultado herda a incerteza dessas duas escolhas.</li>
+    <li>O modelo não estima canibalização de outros canais nem custos operacionais além da margem de contribuição. Ele mede retorno de marketing sobre margem incremental, e nada além disso.</li>
+  </ul>
+
+  <div class="footer"><span>Leonardo Stonoga · RappiAds · JBP FOODSToGo 2025</span><span>Apêndice técnico · 2/2</span></div>
+</section>
+
+</body>
+</html>

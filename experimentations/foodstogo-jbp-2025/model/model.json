@@ -1,0 +1,612 @@
+{
+  "moeda": "USD",
+  "premissas": {
+    "ticket_medio": 18.0,
+    "margem_contribuicao": 0.38,
+    "spend_referencia": 700000,
+    "elasticidade_saturacao": 0.18,
+    "roas_por_papel": {
+      "alcance": 2.775,
+      "momentos": 4.85,
+      "performance": 4.9
+    }
+  },
+  "nomenclatura": {
+    "metrica_retorno": "ROMI (Return on Marketing Investment)",
+    "base": "margem de contribuicao incremental",
+    "aviso": "retorno_liquido_margem = margem de contribuicao incremental - investimento em midia. NAO e lucro liquido: fica antes de custos fixos, opex, impostos e logistica."
+  },
+  "historico_gmv_mensal": {
+    "2024-01": 210000,
+    "2024-02": 225000,
+    "2024-03": 240000,
+    "2024-04": 235000,
+    "2024-05": 250000,
+    "2024-06": 305000,
+    "2024-07": 260000,
+    "2024-08": 255000,
+    "2024-09": 270000,
+    "2024-10": 310000,
+    "2024-11": 300000,
+    "2024-12": 380000
+  },
+  "historico_gmv_total_12m": 3240000,
+  "features": [
+    {
+      "nome": "Banner Home",
+      "funil": "topo",
+      "preco_teto_anual": 140000,
+      "roas_base": 2.6,
+      "papel": "alcance"
+    },
+    {
+      "nome": "Banner Categoria",
+      "funil": "meio",
+      "preco_teto_anual": 90000,
+      "roas_base": 3.2,
+      "papel": "alcance"
+    },
+    {
+      "nome": "Push Segmentado",
+      "funil": "meio",
+      "preco_teto_anual": 70000,
+      "roas_base": 4.1,
+      "papel": "momentos"
+    },
+    {
+      "nome": "Sponsored Products",
+      "funil": "fundo",
+      "preco_teto_anual": 160000,
+      "roas_base": 5.2,
+      "papel": "performance"
+    },
+    {
+      "nome": "Cupom Cofinanciado",
+      "funil": "fundo",
+      "preco_teto_anual": 120000,
+      "roas_base": 4.6,
+      "papel": "performance"
+    },
+    {
+      "nome": "Brand Page / Loja",
+      "funil": "topo",
+      "preco_teto_anual": 80000,
+      "roas_base": 2.9,
+      "papel": "alcance"
+    },
+    {
+      "nome": "Ativacao de Momento",
+      "funil": "fundo",
+      "preco_teto_anual": 130000,
+      "roas_base": 5.6,
+      "papel": "momentos"
+    },
+    {
+      "nome": "Video / Rich Media",
+      "funil": "topo",
+      "preco_teto_anual": 60000,
+      "roas_base": 2.4,
+      "papel": "alcance"
+    }
+  ],
+  "estrategias": {
+    "Alcance": {
+      "tese": "Construir presenca de marca no topo do funil; barato por impressao, reach amplo, conversao difusa. Menor risco, ROI mais lento.",
+      "mix": {
+        "alcance": 0.65,
+        "momentos": 0.1,
+        "performance": 0.25
+      },
+      "roas_ponderado": 3.514
+    },
+    "Performance": {
+      "tese": "Capturar intencao no fundo do funil; venda direta rapida, reach mais estreito, ROI mais rapido.",
+      "mix": {
+        "alcance": 0.15,
+        "momentos": 0.2,
+        "performance": 0.65
+      },
+      "roas_ponderado": 4.571
+    },
+    "Momentos": {
+      "tese": "Concentrar investimento nas janelas de pico do territorio da marca (fim de semana, festas, pre-evento). Maior eficiencia por USD.",
+      "mix": {
+        "alcance": 0.2,
+        "momentos": 0.55,
+        "performance": 0.25
+      },
+      "roas_ponderado": 4.447
+    },
+    "Blend Recomendado": {
+      "tese": "Ancorado em Momentos + Performance com base de Alcance para sustentar a marca. Equilibra ROI e construcao de territorio.",
+      "mix": {
+        "alcance": 0.25,
+        "momentos": 0.4,
+        "performance": 0.35
+      },
+      "roas_ponderado": 4.349
+    }
+  },
+  "cenarios": {
+    "Conservador": 0.75,
+    "Base": 1.0,
+    "Otimista": 1.25
+  },
+  "tiers": {
+    "Enxuto": 400000,
+    "Alvo (JBP)": 700000,
+    "Ampliado": 1000000
+  },
+  "resultados": [
+    {
+      "estrategia": "Alcance",
+      "tier": "Enxuto",
+      "cenario": "Conservador",
+      "investimento": 400000,
+      "roas_efetivo": 2.915,
+      "gmv_incremental": 1165840.03,
+      "margem_contrib_incremental": 443019.21,
+      "retorno_liquido_margem": 43019.21,
+      "romi": 0.1075,
+      "pedidos_incrementais": 64768
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Enxuto",
+      "cenario": "Base",
+      "investimento": 400000,
+      "roas_efetivo": 3.886,
+      "gmv_incremental": 1554453.37,
+      "margem_contrib_incremental": 590692.28,
+      "retorno_liquido_margem": 190692.28,
+      "romi": 0.4767,
+      "pedidos_incrementais": 86358
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Enxuto",
+      "cenario": "Otimista",
+      "investimento": 400000,
+      "roas_efetivo": 4.858,
+      "gmv_incremental": 1943066.71,
+      "margem_contrib_incremental": 738365.35,
+      "retorno_liquido_margem": 338365.35,
+      "romi": 0.8459,
+      "pedidos_incrementais": 107948
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Alvo (JBP)",
+      "cenario": "Conservador",
+      "investimento": 700000,
+      "roas_efetivo": 2.635,
+      "gmv_incremental": 1844718.75,
+      "margem_contrib_incremental": 700993.13,
+      "retorno_liquido_margem": 993.13,
+      "romi": 0.0014,
+      "pedidos_incrementais": 102484
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Alvo (JBP)",
+      "cenario": "Base",
+      "investimento": 700000,
+      "roas_efetivo": 3.514,
+      "gmv_incremental": 2459625.0,
+      "margem_contrib_incremental": 934657.5,
+      "retorno_liquido_margem": 234657.5,
+      "romi": 0.3352,
+      "pedidos_incrementais": 136645
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Alvo (JBP)",
+      "cenario": "Otimista",
+      "investimento": 700000,
+      "roas_efetivo": 4.392,
+      "gmv_incremental": 3074531.25,
+      "margem_contrib_incremental": 1168321.88,
+      "retorno_liquido_margem": 468321.88,
+      "romi": 0.669,
+      "pedidos_incrementais": 170807
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Ampliado",
+      "cenario": "Conservador",
+      "investimento": 1000000,
+      "roas_efetivo": 2.471,
+      "gmv_incremental": 2471438.28,
+      "margem_contrib_incremental": 939146.55,
+      "retorno_liquido_margem": -60853.45,
+      "romi": -0.0609,
+      "pedidos_incrementais": 137302
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Ampliado",
+      "cenario": "Base",
+      "investimento": 1000000,
+      "roas_efetivo": 3.295,
+      "gmv_incremental": 3295251.04,
+      "margem_contrib_incremental": 1252195.4,
+      "retorno_liquido_margem": 252195.4,
+      "romi": 0.2522,
+      "pedidos_incrementais": 183069
+    },
+    {
+      "estrategia": "Alcance",
+      "tier": "Ampliado",
+      "cenario": "Otimista",
+      "investimento": 1000000,
+      "roas_efetivo": 4.119,
+      "gmv_incremental": 4119063.8,
+      "margem_contrib_incremental": 1565244.24,
+      "retorno_liquido_margem": 565244.24,
+      "romi": 0.5652,
+      "pedidos_incrementais": 228836
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Enxuto",
+      "cenario": "Conservador",
+      "investimento": 400000,
+      "roas_efetivo": 3.792,
+      "gmv_incremental": 1516711.84,
+      "margem_contrib_incremental": 576350.5,
+      "retorno_liquido_margem": 176350.5,
+      "romi": 0.4409,
+      "pedidos_incrementais": 84261
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Enxuto",
+      "cenario": "Base",
+      "investimento": 400000,
+      "roas_efetivo": 5.056,
+      "gmv_incremental": 2022282.45,
+      "margem_contrib_incremental": 768467.33,
+      "retorno_liquido_margem": 368467.33,
+      "romi": 0.9212,
+      "pedidos_incrementais": 112349
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Enxuto",
+      "cenario": "Otimista",
+      "investimento": 400000,
+      "roas_efetivo": 6.32,
+      "gmv_incremental": 2527853.07,
+      "margem_contrib_incremental": 960584.16,
+      "retorno_liquido_margem": 560584.16,
+      "romi": 1.4015,
+      "pedidos_incrementais": 140436
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Alvo (JBP)",
+      "cenario": "Conservador",
+      "investimento": 700000,
+      "roas_efetivo": 3.428,
+      "gmv_incremental": 2399906.25,
+      "margem_contrib_incremental": 911964.38,
+      "retorno_liquido_margem": 211964.38,
+      "romi": 0.3028,
+      "pedidos_incrementais": 133328
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Alvo (JBP)",
+      "cenario": "Base",
+      "investimento": 700000,
+      "roas_efetivo": 4.571,
+      "gmv_incremental": 3199875.0,
+      "margem_contrib_incremental": 1215952.5,
+      "retorno_liquido_margem": 515952.5,
+      "romi": 0.7371,
+      "pedidos_incrementais": 177770
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Alvo (JBP)",
+      "cenario": "Otimista",
+      "investimento": 700000,
+      "roas_efetivo": 5.714,
+      "gmv_incremental": 3999843.75,
+      "margem_contrib_incremental": 1519940.63,
+      "retorno_liquido_margem": 819940.63,
+      "romi": 1.1713,
+      "pedidos_incrementais": 222213
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Ampliado",
+      "cenario": "Conservador",
+      "investimento": 1000000,
+      "roas_efetivo": 3.215,
+      "gmv_incremental": 3215243.61,
+      "margem_contrib_incremental": 1221792.57,
+      "retorno_liquido_margem": 221792.57,
+      "romi": 0.2218,
+      "pedidos_incrementais": 178624
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Ampliado",
+      "cenario": "Base",
+      "investimento": 1000000,
+      "roas_efetivo": 4.287,
+      "gmv_incremental": 4286991.48,
+      "margem_contrib_incremental": 1629056.76,
+      "retorno_liquido_margem": 629056.76,
+      "romi": 0.6291,
+      "pedidos_incrementais": 238166
+    },
+    {
+      "estrategia": "Performance",
+      "tier": "Ampliado",
+      "cenario": "Otimista",
+      "investimento": 1000000,
+      "roas_efetivo": 5.359,
+      "gmv_incremental": 5358739.35,
+      "margem_contrib_incremental": 2036320.95,
+      "retorno_liquido_margem": 1036320.95,
+      "romi": 1.0363,
+      "pedidos_incrementais": 297707
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Enxuto",
+      "cenario": "Conservador",
+      "investimento": 400000,
+      "roas_efetivo": 3.689,
+      "gmv_incremental": 1475652.37,
+      "margem_contrib_incremental": 560747.9,
+      "retorno_liquido_margem": 160747.9,
+      "romi": 0.4019,
+      "pedidos_incrementais": 81980
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Enxuto",
+      "cenario": "Base",
+      "investimento": 400000,
+      "roas_efetivo": 4.919,
+      "gmv_incremental": 1967536.5,
+      "margem_contrib_incremental": 747663.87,
+      "retorno_liquido_margem": 347663.87,
+      "romi": 0.8692,
+      "pedidos_incrementais": 109307
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Enxuto",
+      "cenario": "Otimista",
+      "investimento": 400000,
+      "roas_efetivo": 6.149,
+      "gmv_incremental": 2459420.62,
+      "margem_contrib_incremental": 934579.84,
+      "retorno_liquido_margem": 534579.84,
+      "romi": 1.3364,
+      "pedidos_incrementais": 136634
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Alvo (JBP)",
+      "cenario": "Conservador",
+      "investimento": 700000,
+      "roas_efetivo": 3.336,
+      "gmv_incremental": 2334937.5,
+      "margem_contrib_incremental": 887276.25,
+      "retorno_liquido_margem": 187276.25,
+      "romi": 0.2675,
+      "pedidos_incrementais": 129718
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Alvo (JBP)",
+      "cenario": "Base",
+      "investimento": 700000,
+      "roas_efetivo": 4.447,
+      "gmv_incremental": 3113250.0,
+      "margem_contrib_incremental": 1183035.0,
+      "retorno_liquido_margem": 483035.0,
+      "romi": 0.6901,
+      "pedidos_incrementais": 172958
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Alvo (JBP)",
+      "cenario": "Otimista",
+      "investimento": 700000,
+      "roas_efetivo": 5.559,
+      "gmv_incremental": 3891562.5,
+      "margem_contrib_incremental": 1478793.75,
+      "retorno_liquido_margem": 778793.75,
+      "romi": 1.1126,
+      "pedidos_incrementais": 216197
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Ampliado",
+      "cenario": "Conservador",
+      "investimento": 1000000,
+      "roas_efetivo": 3.128,
+      "gmv_incremental": 3128202.56,
+      "margem_contrib_incremental": 1188716.97,
+      "retorno_liquido_margem": 188716.97,
+      "romi": 0.1887,
+      "pedidos_incrementais": 173789
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Ampliado",
+      "cenario": "Base",
+      "investimento": 1000000,
+      "roas_efetivo": 4.171,
+      "gmv_incremental": 4170936.75,
+      "margem_contrib_incremental": 1584955.96,
+      "retorno_liquido_margem": 584955.96,
+      "romi": 0.585,
+      "pedidos_incrementais": 231718
+    },
+    {
+      "estrategia": "Momentos",
+      "tier": "Ampliado",
+      "cenario": "Otimista",
+      "investimento": 1000000,
+      "roas_efetivo": 5.214,
+      "gmv_incremental": 5213670.94,
+      "margem_contrib_incremental": 1981194.96,
+      "retorno_liquido_margem": 981194.96,
+      "romi": 0.9812,
+      "pedidos_incrementais": 289648
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Enxuto",
+      "cenario": "Conservador",
+      "investimento": 400000,
+      "roas_efetivo": 3.607,
+      "gmv_incremental": 1442887.75,
+      "margem_contrib_incremental": 548297.34,
+      "retorno_liquido_margem": 148297.34,
+      "romi": 0.3707,
+      "pedidos_incrementais": 80160
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Enxuto",
+      "cenario": "Base",
+      "investimento": 400000,
+      "roas_efetivo": 4.81,
+      "gmv_incremental": 1923850.33,
+      "margem_contrib_incremental": 731063.12,
+      "retorno_liquido_margem": 331063.12,
+      "romi": 0.8277,
+      "pedidos_incrementais": 106880
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Enxuto",
+      "cenario": "Otimista",
+      "investimento": 400000,
+      "roas_efetivo": 6.012,
+      "gmv_incremental": 2404812.91,
+      "margem_contrib_incremental": 913828.91,
+      "retorno_liquido_margem": 513828.91,
+      "romi": 1.2846,
+      "pedidos_incrementais": 133600
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Alvo (JBP)",
+      "cenario": "Conservador",
+      "investimento": 700000,
+      "roas_efetivo": 3.262,
+      "gmv_incremental": 2283093.75,
+      "margem_contrib_incremental": 867575.62,
+      "retorno_liquido_margem": 167575.62,
+      "romi": 0.2394,
+      "pedidos_incrementais": 126838
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Alvo (JBP)",
+      "cenario": "Base",
+      "investimento": 700000,
+      "roas_efetivo": 4.349,
+      "gmv_incremental": 3044125.0,
+      "margem_contrib_incremental": 1156767.5,
+      "retorno_liquido_margem": 456767.5,
+      "romi": 0.6525,
+      "pedidos_incrementais": 169118
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Alvo (JBP)",
+      "cenario": "Otimista",
+      "investimento": 700000,
+      "roas_efetivo": 5.436,
+      "gmv_incremental": 3805156.25,
+      "margem_contrib_incremental": 1445959.37,
+      "retorno_liquido_margem": 745959.37,
+      "romi": 1.0657,
+      "pedidos_incrementais": 211397
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Ampliado",
+      "cenario": "Conservador",
+      "investimento": 1000000,
+      "roas_efetivo": 3.059,
+      "gmv_incremental": 3058745.56,
+      "margem_contrib_incremental": 1162323.31,
+      "retorno_liquido_margem": 162323.31,
+      "romi": 0.1623,
+      "pedidos_incrementais": 169930
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Ampliado",
+      "cenario": "Base",
+      "investimento": 1000000,
+      "roas_efetivo": 4.078,
+      "gmv_incremental": 4078327.42,
+      "margem_contrib_incremental": 1549764.42,
+      "retorno_liquido_margem": 549764.42,
+      "romi": 0.5498,
+      "pedidos_incrementais": 226573
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Ampliado",
+      "cenario": "Otimista",
+      "investimento": 1000000,
+      "roas_efetivo": 5.098,
+      "gmv_incremental": 5097909.27,
+      "margem_contrib_incremental": 1937205.52,
+      "retorno_liquido_margem": 937205.52,
+      "romi": 0.9372,
+      "pedidos_incrementais": 283217
+    }
+  ],
+  "resumo_recomendado_700k": [
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Alvo (JBP)",
+      "cenario": "Conservador",
+      "investimento": 700000,
+      "roas_efetivo": 3.262,
+      "gmv_incremental": 2283093.75,
+      "margem_contrib_incremental": 867575.62,
+      "retorno_liquido_margem": 167575.62,
+      "romi": 0.2394,
+      "pedidos_incrementais": 126838
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Alvo (JBP)",
+      "cenario": "Base",
+      "investimento": 700000,
+      "roas_efetivo": 4.349,
+      "gmv_incremental": 3044125.0,
+      "margem_contrib_incremental": 1156767.5,
+      "retorno_liquido_margem": 456767.5,
+      "romi": 0.6525,
+      "pedidos_incrementais": 169118
+    },
+    {
+      "estrategia": "Blend Recomendado",
+      "tier": "Alvo (JBP)",
+      "cenario": "Otimista",
+      "investimento": 700000,
+      "roas_efetivo": 5.436,
+      "gmv_incremental": 3805156.25,
+      "margem_contrib_incremental": 1445959.37,
+      "retorno_liquido_margem": 745959.37,
+      "romi": 1.0657,
+      "pedidos_incrementais": 211397
+    }
+  ]
+}
