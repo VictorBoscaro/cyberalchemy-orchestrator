@@ -15,8 +15,12 @@ modifies a skill or README file.
    three columns per unit: `A` (raw self-compressibility), `B` (conditioned
    rate), `Δ = A − B`.
 3. Applies **P-GUARD**: a unit near-duplicate of ≥ 2 distinct other units
-   (`pair_B(u, v) ≤ NEARDUP_TAU`) is `protected` and lifted out of the cut
-   ranking.
+   (`pair_B(u, v) ≤ NEARDUP_TAU` **and** `pair_B(u, v) ≤ NEARDUP_K · A(u)`) is
+   `protected` and lifted out of the cut ranking. The second clause is a
+   scale-invariant companion, calibrated 2026-07-23 to `NEARDUP_K = 0.65`
+   (was disabled at `1.0`) — see [CALIBRATION.md](CALIBRATION.md) and
+   discovery OQ-AS6 for the labelled set, the ratio finding, and the honest
+   gzip ceiling it did not close.
 4. Applies **MinLengthFloor**: units under ~100 word-proxy tokens are
    reported, not ranked.
 5. Emits a `RankedRedundancyMap` (CSV + JSON + human digest), ranked
@@ -53,6 +57,7 @@ Written under `./out/` next to the script:
 | Flag | Default | Meaning |
 |---|---|---|
 | `--neardup-tau` | 0.25 | P-GUARD near-duplicate threshold on `pair_B` |
+| `--neardup-k` | 0.65 | P-GUARD scale-invariant companion: also require `pair_B ≤ k·A(u)` (calibrated 2026-07-23; `1.0` disables it) |
 | `--cut-tau` | 0.15 | `verdict_hint = cut` threshold on `B` |
 | `--merge-tau` | 0.5 | `verdict_hint = merge` threshold on `B` |
 | `--tighten-a-tau` | 0.35 | `verdict_hint = tighten` threshold on `A` |
@@ -82,6 +87,28 @@ informational — it still happens to clear `NEARDUP_TAU` (0.25) and get
 caught by P-GUARD, just not the tighter `≈0` acceptance threshold. This is
 a corpus fact, not a script bug: rerun `--acceptance` after any corpus
 change and check the reported window-exceeded count.
+
+## P-GUARD calibration (OQ-AS6) and its honest ceiling
+
+At the pinned absolute `NEARDUP_TAU = 0.25` alone, `protected` over-triggers:
+`pair_B(u, v)` is upper-bounded by `A(u)`, so a dense, low-`A` unit whose own
+rate happens to sit near `NEARDUP_TAU` (e.g. `repository-harness`, `A≈0.25`)
+registers as a near-duplicate of nearly the whole corpus (68/68 on this
+run). The `--neardup-k` companion (`pair_B ≤ k·A(u)`) is now enabled by
+default at `k = 0.65`, calibrated against a small in-repo labelled set (see
+[CALIBRATION.md](CALIBRATION.md)). This drops `protected` from 12 to 5 units
+on the current corpus and removes the flagship artifact
+(`repository-harness`) along with five others. **Ceiling, stated honestly:**
+no single `k` cleanly separates every genuine cross-skill repetition from
+every artifact — the ratio distributions overlap — so this default is a
+defensible reduction, not a solved calibration. It still loses one
+paraphrase-only genuine case (`whisper`) that gzip cannot reliably
+distinguish from noise, and it cannot recover `ontology-view` (its `pair_B`
+to its own siblings exceeds `NEARDUP_TAU` outright, a `pair_B` asymmetry
+independent of `k`). Separating template-conformance boilerplate (shared
+"Composed Arcanum spell" generator scaffolding) from deliberate rule
+restatement is out of gzip's reach; both currently look identical to a
+byte-length compressor. That distinction needs the S2 LM kernel.
 
 ## Scope
 

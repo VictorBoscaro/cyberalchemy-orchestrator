@@ -40,13 +40,30 @@ from typing import Dict, List, Optional, Tuple
 DEFAULT_NEARDUP_TAU = 0.25
 # Scale-invariant P-GUARD companion (review finding 2026-07-23, OQ-AS6): pair_B(u,v) is
 # upper-bounded by A(u), so an absolute NEARDUP_TAU over-triggers when A(u) approx TAU
-# (a dense low-A unit registers as near-dup of the whole corpus). Optional companion:
-# also require the partner to explain a share of u's own compressibility, pair_B <= k*A(u).
-# DEFAULT k=1.0 DISABLES it (pair_B <= A always holds) so the shipped default reproduces
-# the discovery's pinned absolute-TAU predicate exactly. A calibration pass before S1
-# should set k ~ 0.85 (separates the A-approx-TAU artifact from genuine repetition);
-# left as owner's calibration decision, not hardcoded. Run with --neardup-k 0.85 to try it.
-DEFAULT_NEARDUP_K = 1.0
+# (a dense low-A unit registers as near-dup of the whole corpus -- verified:
+# repository-harness, A=0.25, flagged near-dup of 68/68 at k=1.0/disabled). The companion
+# requires the partner to explain a share of u's own compressibility, pair_B <= k*A(u).
+#
+# Calibration pass (2026-07-23, s0/CALIBRATION.md): a 10-pair labelled set (positives =
+# ontology-view/system-view/engineer-view triad + sigil-maintenance-loop/
+# observed-invocation-loop + whisper/invoke,necronomicon; negatives = 8 unrelated skill
+# pairs) shows pair_B/A(u) ratios that OVERLAP between genuine repetition (0.58-0.92) and
+# unrelated/artifact pairs (0.66-0.96) -- no k cleanly separates every case (confirms the
+# discovery's k~0.85 note: that trims only 12->11). A sweep of the *protected-set* (not
+# single pairs) finds a stable plateau at k in [0.635, 0.69]: it drops 6 of the 8
+# artifact-judged units (repository-harness, ontology-harness, arcanum-bootstrap,
+# necronomicon, observed-invocation-loop, publication-research-pipeline) while keeping
+# system-view, engineer-view, sigil-maintenance-loop protected (12 -> 5 protected units).
+# k=0.65 is the chosen default -- mid-plateau, not a cliff edge. Ceiling, stated honestly:
+# this still loses whisper (paraphrase-only overlap, ratio 0.83-0.92, gzip can't
+# distinguish it from noise) and never recovers ontology-view (its pair_B to its own
+# siblings exceeds NEARDUP_TAU outright -- an asymmetry of pair_B itself, not something k
+# can fix) -- and it still keeps discovery-to-inventory/implementation-readiness
+# protected, which are structurally the same "Composed Arcanum spell" generator-template
+# stub as sigil-maintenance-loop (shared boilerplate headers, not necessarily a restated
+# rule) -- gzip cannot tell template-conformance apart from content-restatement; that
+# needs the S2 LM kernel. Run with --neardup-k 1.0 to reproduce the old disabled behavior.
+DEFAULT_NEARDUP_K = 0.65
 DEFAULT_CUT_TAU = 0.15
 DEFAULT_MERGE_TAU = 0.5
 DEFAULT_TIGHTEN_A_TAU = 0.35
@@ -138,7 +155,9 @@ def load_units(skills_glob: str, root: Path) -> List[Unit]:
     paths = sorted(root.glob(skills_glob), key=lambda p: p.as_posix())
     units = []
     for p in paths:
-        text = p.read_text(encoding="utf-8")
+        # utf-8-sig: BOM-safe -- a leading BOM would otherwise land inside the
+        # first line and break FRONTMATTER_RE's `^---` anchor match.
+        text = p.read_text(encoding="utf-8-sig")
         rel = p.relative_to(root).as_posix()
         units.append(Unit(rel, text))
     return units
@@ -391,8 +410,8 @@ def run_acceptance(root: Path, skills_glob: str, taus: Taus, acceptance_tau: flo
         rp = find_readme_partner(sp)
         if rp is None:
             continue
-        skill_unit = Unit(sp.relative_to(root).as_posix(), sp.read_text(encoding="utf-8"))
-        readme_unit = Unit(rp.relative_to(root).as_posix(), rp.read_text(encoding="utf-8"))
+        skill_unit = Unit(sp.relative_to(root).as_posix(), sp.read_text(encoding="utf-8-sig"))
+        readme_unit = Unit(rp.relative_to(root).as_posix(), rp.read_text(encoding="utf-8-sig"))
         pairs.append((skill_unit, readme_unit))
         if skill_unit.body == readme_unit.body:
             identical_pairs.append((skill_unit, readme_unit))
@@ -480,7 +499,7 @@ def run_acceptance(root: Path, skills_glob: str, taus: Taus, acceptance_tau: flo
     # 32KB of the path-sorted corpus. ---
     all_units = []
     for sp in skill_paths:
-        all_units.append(Unit(sp.relative_to(root).as_posix(), sp.read_text(encoding="utf-8")))
+        all_units.append(Unit(sp.relative_to(root).as_posix(), sp.read_text(encoding="utf-8-sig")))
     for _, readme_unit in pairs:
         all_units.append(readme_unit)
     all_units.sort(key=lambda u: u.path)
@@ -548,7 +567,9 @@ def main(argv=None) -> int:
     parser.add_argument("--neardup-tau", type=float, default=DEFAULT_NEARDUP_TAU)
     parser.add_argument("--neardup-k", type=float, default=DEFAULT_NEARDUP_K,
                         help="scale-invariant P-GUARD companion: near-dup also requires "
-                             "pair_B <= k*A(u) (default 0.5)")
+                             f"pair_B <= k*A(u) (default {DEFAULT_NEARDUP_K}, calibrated "
+                             "2026-07-23, see CALIBRATION.md; 1.0 reproduces the disabled/"
+                             "absolute-tau-only behavior)")
     parser.add_argument("--cut-tau", type=float, default=DEFAULT_CUT_TAU)
     parser.add_argument("--merge-tau", type=float, default=DEFAULT_MERGE_TAU)
     parser.add_argument("--tighten-a-tau", type=float, default=DEFAULT_TIGHTEN_A_TAU)
