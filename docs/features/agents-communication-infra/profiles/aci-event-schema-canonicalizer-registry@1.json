@@ -1,0 +1,61 @@
+{
+  "schema_ref": "apt.aci-profile-registration-request@1",
+  "profile_id": "aci.event-schema-canonicalizer-registry",
+  "profile_version": "1",
+  "profile_owner": "agents-communication-infra",
+  "requested_by": "agent-provenance-telemetry",
+  "registration_status": "pending-aci-owner",
+  "closed_contract": {
+    "canonicalizer": {
+      "profile_id": "aci.canonical-json",
+      "profile_version": "1",
+      "profile_digest": "sha256:6ed22971449c8ea911f9b885d26b01e6eb2e77f208cd8bc6419dff31d97b7ade",
+      "contract_artifact": "integration/stage-a/schemas/aci-canonical-json@1.json",
+      "encoding": "utf-8",
+      "digest": "sha256-lowercase-hex",
+      "object_keys": "unicode-codepoint-order",
+      "arrays": "semantic-order-preserved",
+      "unknown_fields": "reject"
+    },
+    "registered_event_schemas": [
+      {
+        "event_type": "apt.session_started",
+        "schema_ref": "apt.session-started@1",
+        "schema_digest": "sha256:98d6611ca5aa4f408df17ace9c6a7860c1d7c06f78383163e1f5056c70e3f6d8"
+      },
+      {
+        "event_type": "apt.session_context_rebound",
+        "schema_ref": "apt.session-context-rebound@1",
+        "schema_digest": "sha256:e7f0e51e53ed5d024f3fb9c042fd84ddc7557768a559909b8f30fa470cc137dc"
+      },
+      {
+        "event_type": "apt.session_dispatch_linked",
+        "schema_ref": "apt.session-dispatch-linked@1",
+        "schema_digest": "sha256:879376ac53b10903d8452d6925b1805df34c69c380c76666005fcc66c63d1029"
+      },
+      {
+        "event_type": "apt.research_capture_appended",
+        "schema_ref": "apt.research-capture-appended@1",
+        "schema_digest": "sha256:ef9c7de795e435866814b93e26fd19819fd41fa2d46eeeb0fe7601afd1c7034a"
+      },
+      {
+        "event_type": "apt.research_fact_appended",
+        "schema_ref": "apt.research-fact-appended@1",
+        "schema_digest": "sha256:9c6ca70c632a5dac4f6f9e4e223fed23042ba9851a354a4cae8674a97df5d5f8"
+      },
+      {
+        "event_type": "apt.reference_probe_lineage_appended",
+        "schema_ref": "apt.reference-probe-lineage-appended@1",
+        "schema_digest": "sha256:e60af09653effee389c9d1cdf3f2e507c926b055f13166d0fe1093d086c5400a"
+      }
+    ],
+    "acceptance": {
+      "schema_ref_and_digest_match": "required",
+      "canonicalizer_profile_and_digest_match": "required",
+      "unregistered_or_mismatched": "reject-before-append",
+      "caller_supplied_owner_fields": "forbidden"
+    }
+  },
+  "aci_registration_ref": null,
+  "aci_registration_receipt": null
+}

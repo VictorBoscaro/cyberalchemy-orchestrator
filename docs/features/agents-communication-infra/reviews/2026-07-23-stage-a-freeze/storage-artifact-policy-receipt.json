@@ -1,0 +1,37 @@
+{
+  "schema": "aci.storage-artifact-policy-review-receipt/v1",
+  "receipt_id": "ACI-STORAGE-ARTIFACT-PASS-2026-07-23",
+  "reviewer_identity": "Rawls",
+  "reviewed_at": "2026-07-23",
+  "scope": "SWU-ACI-APT-VS-001",
+  "verdict": "PASS",
+  "reviewed_artifacts": [
+    {
+      "path": "docs/features/agents-communication-infra/storage-and-artifact-policy.md",
+      "sha256": "5a222c4f17d4d01ce0cbaa0b0dae43a192f9dffa6747114646c5404d6c85b78d"
+    },
+    {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-a/storage-artifact-policy-review.md",
+      "sha256": "4875b0859cf2c9f2666ceef092d9c20b3c58462985c22212bf0cea393ad51083"
+    },
+    {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-a/policies/apt-artifact-policy-bundle@1.json",
+      "sha256": "6345bde1c44f9832ce6a4c8e07f5f9484ac265ff4c96276d4dfa47c590149299"
+    }
+  ],
+  "checks": {
+    "single_aci_sqlite_and_artifact_writer": "PASS",
+    "artifact_event_head_uniqueness_receipt_atomicity": "PASS",
+    "final_answer_body_only_in_artifacts_body": "PASS",
+    "classification_authorization_retention_tombstone": "PASS",
+    "projection_rebuild_lag_and_restart_contract": "PASS",
+    "dispatch_ledger_unchanged": "PASS"
+  },
+  "enablement_effect": {
+    "exact_swu_mutation_entry": "satisfied",
+    "local_pilot_serve": "blocked",
+    "production": "blocked",
+    "audit_materializer_and_cutover": "blocked"
+  },
+  "objections": []
+}

@@ -1,0 +1,48 @@
+{
+  "schema_ref": "apt.aci-profile-registration-request@1",
+  "profile_id": "apt.reference-probe-lineage",
+  "profile_version": "1",
+  "profile_owner": "agent-provenance-telemetry",
+  "registry_owner": "agents-communication-infra",
+  "registration_status": "pending-aci-owner",
+  "closed_contract": {
+    "accepted_source": {
+      "message_projection": "messages",
+      "required_official_event": "verified-official-acceptance-event",
+      "required_receipt": "verified-publication-receipt",
+      "publication_candidate": "never-authoritative",
+      "consistency_boundary": "same-complete-verified-aci-command-group",
+      "visibility": "all-three-visible-at-or-before-lineage-accepted-prefix"
+    },
+    "recommendation_identity": [
+      "probe_id",
+      "bundle_digest",
+      "recommendation_id"
+    ],
+    "delivery_subject_key": "aci-canonical-digest-of-recommendation-identity",
+    "lineage_items": [
+      "delivery_origin",
+      "research_reference_use"
+    ],
+    "ordering": [
+      "delivery_origin-before-dependent-reference-use",
+      "kind-rank-then-stable-subject-key"
+    ],
+    "evidence": [
+      "exact-profile-registration",
+      "official-publication-acceptance",
+      "bundle-digest",
+      "optional-host-source-observation"
+    ],
+    "semantic_limits": {
+      "delivery_alone_proves_access": false,
+      "delivery_alone_proves_consultation": false,
+      "delivery_alone_proves_claim_support": false,
+      "reference_use_requires_byte-exact-extraction-evidence": true
+    },
+    "result_partition_profile": "aci.transactional-semantic-uniqueness-result-mapping@1",
+    "atomic_group_profile": "aci.atomic-command-receipt-accepted-prefix-read-grouping@1"
+  },
+  "aci_registration_ref": null,
+  "aci_registration_receipt": null
+}

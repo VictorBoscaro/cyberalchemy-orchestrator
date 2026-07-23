@@ -126,8 +126,8 @@ unchanged.
 | Gate | Requirement | Current |
 |---|---|---|
 | A | TASK-105 pure module receipt and frozen APT profile requests | ready |
-| B | ACI registration receipts for all four exact profile digests | pending |
-| C | independent storage/artifact policy PASS | pending |
-| D | owner mutation-gate change plus independent post-change receipt | pending |
-| E | implementation + unit/contract/crash/security evidence | blocked by B-D |
+| B | ACI registration receipts for all four exact profile digests | PASS |
+| C | independent storage/artifact policy PASS | PASS |
+| D | owner mutation-gate change plus independent post-change receipt | PASS |
+| E | implementation + unit/contract/crash/security evidence | ready; not yet executed |
 | F | subprocess restart E2E and root/reviewer closure | blocked by E |

@@ -9,5 +9,4 @@ dispatches:
     max_loops: 1
     final_approver: "root-reviewer"
     working_folder: "research/fixtures/local-probe"
-    groups: [{"group_id":"probe","agents":[{"role":"researcher","model":"fixture-model","token_budget":1000,"initial_prompt":"Publish one reference-probe result.","agent_name":"fixture-agent"}],"n":1,"robot_talks":false,"layers":1}]
-
+    groups: [{"group_id":"probe","agents":[{"role":"explorer","model":"fixture-model","token_budget":1000,"initial_prompt":"Publish one reference-probe result.","agent_name":"mars-researcher.agent"}],"n":1,"robot_talks":false,"layers":1}]

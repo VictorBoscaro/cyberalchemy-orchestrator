@@ -1,43 +1,72 @@
 {
   "schema": "aci.profile-registry-manifest/v1",
-  "status": "pending-independent-review",
+  "status": "registered-independent-pass-cycle-5",
   "canonicalization": "aci-cjson-1",
+  "binding_rule": "The authoritative_profile_path bytes and both authoritative digests are normative. local_review_mirror is non-authoritative and must have the same parsed aci-cjson-1 projection.",
   "profiles": [
     {
       "profile_id": "aci.atomic-command-receipt-accepted-prefix-read-grouping",
       "profile_version": "1",
-      "path": "profiles/aci.atomic-command-receipt-accepted-prefix-read-grouping.v1.json",
-      "file_digest": "sha256:b9df42b97242ab2852aa0d2225d7e82a1b0fe23985b2b59c9c9b25adae35d6a2",
-      "canonical_digest": "sha256:1988d0bae102e80ee8c8feb3d8831174a818beee1eecea68718288bb5bd6df46",
-      "canonical_size_bytes": 893,
-      "review_status": "pending"
+      "authoritative_owner": "agent-provenance-telemetry",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/aci-atomic-command-receipt-accepted-prefix-read-grouping@1.json",
+      "authoritative_file_digest": "sha256:c9d92a07969e8b2adbceda140098381a0db760a9cbd38242d93deb9831195543",
+      "canonical_digest": "sha256:5462b985ddb82a28a502ad0bcb25cd02f0faa7339e1e4850150fec8c87c46c65",
+      "canonical_size_bytes": 1207,
+      "local_review_mirror": {
+        "path": "profiles/aci-atomic-command-receipt-accepted-prefix-read-grouping@1.json",
+        "file_digest": "sha256:3cb67c9b3606a1cd46e163ec9aa9fc460ea3b827824aa618badaada3a24d3516"
+      },
+      "registration_receipt_id": "ACI-PROFILE-REG-001",
+      "registration_receipt_path": "profile-registration-receipts.json",
+      "review_status": "PASS"
     },
     {
       "profile_id": "aci.transactional-semantic-uniqueness-result-mapping",
       "profile_version": "1",
-      "path": "profiles/aci.transactional-semantic-uniqueness-result-mapping.v1.json",
-      "file_digest": "sha256:a0a13c63e1edbfc0da16c174c905b6e1e6ac0c5e0e58bbb59f84cc4954047a6d",
-      "canonical_digest": "sha256:65cf6f6fcd8ee46feb569f2b5a982e34ffbf9688f5c0f0971a5a752f2139fcad",
-      "canonical_size_bytes": 1387,
-      "review_status": "pending"
+      "authoritative_owner": "agent-provenance-telemetry",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/aci-transactional-semantic-uniqueness-result-mapping@1.json",
+      "authoritative_file_digest": "sha256:ff276b204d66f7ef20a0513feffa347caaa27dff4f2183e5c84099568eaad990",
+      "canonical_digest": "sha256:2aa692e27e1931dcd9d4d54f683edc81107b0a570d645d0547cbd25018690fd2",
+      "canonical_size_bytes": 1002,
+      "local_review_mirror": {
+        "path": "profiles/aci-transactional-semantic-uniqueness-result-mapping@1.json",
+        "file_digest": "sha256:6ff8015db03a5b7a83b22ee5e75d0f874fbe0be52aee21ef1be470f55015c51d"
+      },
+      "registration_receipt_id": "ACI-PROFILE-REG-002",
+      "registration_receipt_path": "profile-registration-receipts.json",
+      "review_status": "PASS"
     },
     {
       "profile_id": "aci.event-schema-canonicalizer-registry",
       "profile_version": "1",
-      "path": "profiles/aci.event-schema-canonicalizer-registry.v1.json",
-      "file_digest": "sha256:f3e49352d89262cd4dd7f6cfbb6c3cf3c60a51039ba5c4348bfeb36924d42b8c",
-      "canonical_digest": "sha256:51aa3d5cd05a954ed9f9613c31327ec96f47f22e16efc5f1c612b288bab95783",
-      "canonical_size_bytes": 887,
-      "review_status": "pending"
+      "authoritative_owner": "agent-provenance-telemetry",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/aci-event-schema-canonicalizer-registry@1.json",
+      "authoritative_file_digest": "sha256:38db921f9047b72ade1b6ffc91789c6ce3e7f9cbd7ec3d6cdc719827d84ef7b1",
+      "canonical_digest": "sha256:4caed76f44d8a586ec7af1e41d03a610295955556f50c64f05e962ddf9064c53",
+      "canonical_size_bytes": 2053,
+      "local_review_mirror": {
+        "path": "profiles/aci-event-schema-canonicalizer-registry@1.json",
+        "file_digest": "sha256:38db921f9047b72ade1b6ffc91789c6ce3e7f9cbd7ec3d6cdc719827d84ef7b1"
+      },
+      "registration_receipt_id": "ACI-PROFILE-REG-003",
+      "registration_receipt_path": "profile-registration-receipts.json",
+      "review_status": "PASS"
     },
     {
       "profile_id": "apt.reference-probe-lineage",
       "profile_version": "1",
-      "path": "profiles/apt.reference-probe-lineage.v1.json",
-      "file_digest": "sha256:31441e222fbd3a18cfb2a38f33e1e9f063e721f54fe64a9ec0be2ff5e786ea31",
-      "canonical_digest": "sha256:ea71d4df292b2bba727d8de05daffdbd4d2456b4df4626b46c6fd090ecb8324e",
-      "canonical_size_bytes": 980,
-      "review_status": "pending"
+      "authoritative_owner": "agent-provenance-telemetry",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/apt-reference-probe-lineage@1.json",
+      "authoritative_file_digest": "sha256:a99d2580888e907f400e4630b464279aa3d5a58e7fe5ca1353ba305c28940016",
+      "canonical_digest": "sha256:f011871582dd2618b4512d21b79a8a6fdb67fde8a2be96752ce4abd48cecaa09",
+      "canonical_size_bytes": 1487,
+      "local_review_mirror": {
+        "path": "profiles/apt-reference-probe-lineage@1.json",
+        "file_digest": "sha256:a99d2580888e907f400e4630b464279aa3d5a58e7fe5ca1353ba305c28940016"
+      },
+      "registration_receipt_id": "ACI-PROFILE-REG-004",
+      "registration_receipt_path": "profile-registration-receipts.json",
+      "review_status": "PASS"
     }
   ]
 }

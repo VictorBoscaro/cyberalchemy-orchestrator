@@ -1,0 +1,22 @@
+CREATE TABLE artifacts(
+  artifact_id TEXT PRIMARY KEY,
+  content_hash TEXT NOT NULL UNIQUE,
+  body BLOB NOT NULL,
+  media_type TEXT NOT NULL,
+  schema_ref TEXT NOT NULL,
+  classification TEXT NOT NULL CHECK(classification IN ('runtime-internal','sensitive-input','sensitive-output','reveal-authorized','public')),
+  size_bytes INTEGER NOT NULL CHECK(size_bytes>=0),
+  storage_ref TEXT NOT NULL UNIQUE,
+  redaction_policy_ref TEXT NOT NULL,
+  retention_policy_ref TEXT NOT NULL,
+  tombstone_policy_ref TEXT NOT NULL,
+  authorization_policy_ref TEXT NOT NULL,
+  policy_bundle_digest TEXT NOT NULL,
+  finalization_receipt_ref TEXT NOT NULL UNIQUE,
+  finalized_at TEXT NOT NULL,
+  created_event_id TEXT,
+  created_at TEXT NOT NULL,
+  tombstoned_at TEXT,
+  tombstone_reason TEXT,
+  CHECK((tombstoned_at IS NULL)=(tombstone_reason IS NULL))
+);

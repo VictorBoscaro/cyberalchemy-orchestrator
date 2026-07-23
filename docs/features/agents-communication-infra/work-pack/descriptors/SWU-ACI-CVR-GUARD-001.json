@@ -110,6 +110,7 @@
   "execution_receipt_schema": {
     "domain": "aci.cvr.execution-receipt/v1",
     "schema_version": 1,
+    "schema_authority": "docs/features/agents-communication-infra/work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol",
     "top_level_order": [
       "domain",
       "schema_version",
@@ -120,22 +121,276 @@
       "claim_sha256",
       "descriptor_sha256",
       "approval_packet_digest",
+      "acceptance_set_digest",
+      "authority_policy_digest",
+      "repository_binding_digest",
+      "audience",
+      "executor_principal_id",
+      "finalizer_principal_id",
+      "launch_context_sha256",
       "execution_session_id",
       "predecessor_evidence",
       "observed_effects",
       "cleanup_evidence",
       "outcome",
-      "reason"
+      "reason",
+      "finalizer_attestation"
     ],
     "allowed_outcomes": [
       "PASS",
       "BLOCK",
-      "FLAG",
       "INTERRUPTED"
     ],
+    "allowed_reason_codes": [
+      "completed",
+      "verification_failed",
+      "cancelled",
+      "interrupted",
+      "cleanup_failed",
+      "integrity_failure",
+      "expired",
+      "crash_recovery_blocked"
+    ],
+    "field_types": {
+      "authorization_sha256": "sha256",
+      "claim_sha256": "sha256",
+      "descriptor_sha256": "sha256",
+      "approval_packet_digest": "sha256",
+      "acceptance_set_digest": "sha256",
+      "authority_policy_digest": "sha256",
+      "repository_binding_digest": "sha256",
+      "audience": "bounded_nfc_string",
+      "executor_principal_id": "bounded_nfc_string",
+      "finalizer_principal_id": "bounded_nfc_string",
+      "launch_context_sha256": "sha256",
+      "execution_session_id": "bounded_nfc_string",
+      "predecessor_evidence": "aci.cvr.predecessor-evidence/v1[]",
+      "observed_effects": "aci.cvr.observed-effect/v1[]",
+      "cleanup_evidence": "aci.cvr.cleanup-evidence/v1",
+      "outcome": "PASS|BLOCK|INTERRUPTED",
+      "reason": "aci.cvr.terminal-reason/v1",
+      "finalizer_attestation": "aci.cvr.finalizer-attestation/v1"
+    },
+    "nested_schemas": {
+      "predecessor_evidence_order": [
+        "canonical_swu_id",
+        "execution_receipt_sha256",
+        "baseline_sha256"
+      ],
+      "predecessor_evidence_unique_key": [
+        "canonical_swu_id"
+      ],
+      "observed_effect_order": [
+        "kind",
+        "locator",
+        "pre_state",
+        "pre_sha256",
+        "post_state",
+        "post_sha256",
+        "size"
+      ],
+      "observed_effect_unique_sort_key": [
+        "kind",
+        "locator"
+      ],
+      "cleanup_evidence_order": [
+        "status",
+        "residual_paths"
+      ],
+      "locator_record_order": [
+        "kind",
+        "locator"
+      ],
+      "locator_kinds": {
+        "repository_file": "posix_repository_relative_member_of_repository_write_scope",
+        "host_temp_entry": "absolute_windows_equal_to_or_beneath_authorized_temp_directory"
+      },
+      "cleanup_status": [
+        "pristine",
+        "residual",
+        "unknown"
+      ],
+      "cleanup_residual_cardinality": {
+        "pristine": "zero",
+        "residual": "one_or_more",
+        "unknown": "zero_or_more_known"
+      },
+      "residual_locator_unique_sort_key": [
+        "kind",
+        "locator"
+      ],
+      "terminal_reason_order": [
+        "code",
+        "detail"
+      ],
+      "finalizer_attestation_order": [
+        "scheme",
+        "principal_id",
+        "credential_binding_digest",
+        "authority_policy_digest",
+        "launch_context_sha256"
+      ],
+      "finalizer_attestation_scheme": "external-authenticated-launch-context/v1",
+      "outcome_reason_matrix": {
+        "PASS": [
+          "completed"
+        ],
+        "BLOCK": [
+          "verification_failed",
+          "cancelled",
+          "cleanup_failed",
+          "integrity_failure",
+          "expired",
+          "crash_recovery_blocked"
+        ],
+        "INTERRUPTED": [
+          "cancelled",
+          "interrupted"
+        ]
+      },
+      "unknown_fields": "reject"
+    },
     "unknown_fields": "reject",
     "creation": "create_if_absent_byte_idempotent",
     "digest_preimage_prefix": "aci.cvr.execution-receipt/v1\\x00"
+  },
+  "authority_contract": {
+    "owner_acceptance_schema": "aci.cvr.owner-acceptance-set/v1",
+    "authorization_schema": "aci.cvr.authorization/v1",
+    "claim_schema": "aci.cvr.claim/v1",
+    "launch_context_schema": "aci.cvr.authority-launch-context/v1",
+    "audience": "aci-cvr-guard-bootstrap",
+    "owner_slot_order": [
+      "architecture_owner",
+      "product_protocol_owner",
+      "host_operator_owner"
+    ],
+    "owner_acceptance_record_order": [
+      "slot",
+      "principal_id",
+      "credential_binding_digest",
+      "approval_packet_digest",
+      "decision",
+      "accepted_at",
+      "evidence_digest"
+    ],
+    "root_issuer_order": [
+      "principal_id",
+      "credential_binding_digest",
+      "authority_policy_digest"
+    ],
+    "repository_binding_order": [
+      "repository_id",
+      "root_fingerprint"
+    ],
+    "ephemeral_host_effect_scope_item_order": [
+      "kind",
+      "locator",
+      "allowed_uses"
+    ],
+    "nonce_encoding": "64_lowercase_hex_characters_encoding_32_bytes",
+    "authorization_body_order": [
+      "authorization_nonce",
+      "authority_policy_digest",
+      "repository_binding",
+      "acceptance_set_digest",
+      "canonical_swu_id",
+      "descriptor_path",
+      "descriptor_sha256",
+      "approval_packet_schema",
+      "approval_packet_digest",
+      "approval_packet",
+      "owner_acceptance_records",
+      "root_issuer",
+      "audience",
+      "executor_principal_id",
+      "finalizer_principal_id",
+      "repository_write_scope",
+      "ephemeral_host_effect_scope",
+      "repository_write_scope_sha256",
+      "ephemeral_host_effect_scope_sha256",
+      "test_ids",
+      "exact_commands",
+      "exact_commands_sha256",
+      "allowed_index_url",
+      "not_before",
+      "issued_at",
+      "expires_at",
+      "reason"
+    ],
+    "claim_body_order": [
+      "authorization_id",
+      "authorization_sha256",
+      "canonical_swu_id",
+      "descriptor_sha256",
+      "approval_packet_digest",
+      "acceptance_set_digest",
+      "authority_policy_digest",
+      "repository_binding_digest",
+      "audience",
+      "executor_principal_id",
+      "finalizer_principal_id",
+      "execution_session_id",
+      "claim_nonce",
+      "claimed_at",
+      "lease_expires_at"
+    ],
+    "launch_context_body_order": [
+      "launch_nonce",
+      "audience",
+      "authority_policy_digest",
+      "repository_binding_digest",
+      "canonical_swu_id",
+      "authorization_id",
+      "authorization_sha256",
+      "claim_sha256",
+      "acceptance_set_digest",
+      "authenticated_owner_bindings",
+      "authenticated_root_principal_id",
+      "authenticated_executor_principal_id",
+      "authenticated_finalizer_principal_id",
+      "execution_session_id",
+      "observed_at",
+      "expires_at"
+    ],
+    "launch_context_envelope_order": [
+      "domain",
+      "schema_version",
+      "launch_context_id",
+      "body"
+    ],
+    "launch_context_id_prefix": "aci.cvr.authority-launch-context-id/v1\\x00",
+    "launch_context_digest_prefix": "aci.cvr.authority-launch-context/v1\\x00",
+    "authenticated_owner_binding_order": [
+      "slot",
+      "principal_id",
+      "credential_binding_digest",
+      "evidence_digest"
+    ],
+    "finalizer_kind": "external_bootstrap",
+    "claim_is_immutable_lease": true,
+    "claim_creation": "create_exclusive_compare_and_set",
+    "claim_time_order": "authorization.issued_at <= claimed_at < lease_expires_at <= authorization.expires_at",
+    "launch_time_order": "authorization.not_before <= authorization.issued_at <= claim.claimed_at <= observed_at <= context.expires_at <= min(authorization.expires_at, claim.lease_expires_at)",
+    "canonical_time": "rfc3339_utc_seconds_z",
+    "launch_context_transport": "external_one_shot_authenticated_handle",
+    "workspace_transport_denied": [
+      "repository_file",
+      "argv",
+      "environment"
+    ],
+    "required_external_bindings": [
+      "authority_policy_digest",
+      "repository_binding_digest",
+      "authenticated_owner_bindings",
+      "authenticated_root_principal_id",
+      "authenticated_executor_principal_id",
+      "authenticated_finalizer_principal_id",
+      "execution_session_id",
+      "trusted_observed_at",
+      "nonce_source"
+    ],
+    "assurance": "integrity_and_advisory_workflow_only"
   },
   "finalization": {
     "owner": "external_authority_owned_bootstrap_finalizer",

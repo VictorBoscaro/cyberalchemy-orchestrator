@@ -18,19 +18,19 @@ decision state live under [`work-pack/`](work-pack/).
 
 | Field | Value | Notes |
 |---|---|---|
-| `workPackGateStatus` | **W0-authored / independent-review-pending** | Stage-A documentation is complete; runtime mutation remains blocked until the digest-bound reviewer/root receipts pass. |
-| `mutationTestAuthorization` | **pending — NON-PASS** | May become `pass_for_exact_swu` only for `SWU-ACI-APT-VS-001`; no live/local DB is authorized. |
+| `workPackGateStatus` | **pass-for-exact-swu** | Stage-A/TASK-000/W0 passed independent review cycle 5/5. This pass selects only `SWU-ACI-APT-VS-001`; every other runtime SWU remains blocked. |
+| `mutationTestAuthorization` | **pass_for_exact_swu** | Owner-authorized on 2026-07-23 for descriptor-bound source, migrations, tests and temporary/repository-local pilot DB work in `SWU-ACI-APT-VS-001`. |
 | `localPilotServeEnablement` | **block** | Separate post-implementation reviewer/root gate; loopback serving is not authorized by W0. |
 | `productionEnablement` | **block** | External network, provider execution, materializer and audit-ledger cutover are excluded. |
 | `cvrImplementationGateStatus` | **approval_packet_prepared — NON-PASS** | Prepared for named owner review; no owner acceptance, active exception or implementation authorization exists. |
 | `cvrAuthorizationPredicate` | Global gates, or proposed exact descriptor-bound authorization for one enumerated CVR SWU | Proposed branch is non-operative until the coordinated five-entry packet is accepted; currently false. |
-| `specAuthoringGateStatus` | **pass — W0 contracts only** | DomainSpec artifacts may ratify or defer discovery decisions; this does not promote runtime implementation or close B-001 through B-003. |
+| `specAuthoringGateStatus` | **pass — W0 contracts only** | DomainSpec artifacts are frozen for the exact selected SWU. This does not authorize any other runtime unit or physical cutover. |
 | `complexity` | high | Persistence, authorization, external effects and migration cross several authority boundaries. |
 | `outputMode` | split | Tasks and waves have independent contracts. |
 | `executionPackRef` | [EXECUTION-PACK.md](EXECUTION-PACK.md) | Wave scheduler and delivery-stage coverage. |
 | `layeringArtifactRef` | [IMPLEMENTATION-LAYERING.md](IMPLEMENTATION-LAYERING.md) | Decision-first promotion boundaries. |
 | `dispatchTechniqueTrace` | [section below](#dispatch-technique-trace) | Selected techniques affect gates and receipts. |
-| `distillValidationStatus` | **review-pending** | W0 artifacts and the exact named-SWU descriptor are authored; independent digest review remains. |
+| `distillValidationStatus` | **pass** | W0 artifacts and the exact named-SWU descriptor passed independent digest review cycle 5/5. |
 | `activeLayerWindow` | L0 | W0 decisions, then Slice 0 only. |
 | `lastUpdatedAt` | 2026-07-23 | Stage-A W0 closure corpus authored. |
 | `readinessProfile` | pilot | Single-host, single-tenant runtime. |
@@ -43,8 +43,9 @@ decision state live under [`work-pack/`](work-pack/).
   endpoint, current ledger parser and current validated appender.
 - **Success condition:** Slices 0-4 pass their own falsifiers and the existing skills/UI become
   clients of one command/runtime boundary rather than parallel executors.
-- **Current authorization:** Stage-A planning/ADR/profile/fixture artifacts only. No runtime
-  implementation or local serving is authorized while the independent receipt is pending.
+- **Current authorization:** descriptor-bound implementation and mutation tests for the exact
+  `SWU-ACI-APT-VS-001` only. Local serving remains blocked until implementation evidence receives
+  a separate independent enablement decision.
 
 ## Delivery boundary
 
@@ -79,10 +80,10 @@ Excluded until later phases:
 
 | Task | Goal | Layer | Complexity | Waves | Gate | Status |
 |---|---|---|---|---|---|---|
-| [TASK-000](work-pack/tasks/TASK-000.md) | Resolve Slice-0 decisions and freeze contracts. | L0 | high | W0 | independent digest review | authored-complete; acceptance-pending |
-| [SWU-ACI-APT-VS-001](work-pack/tasks/TASK-APT-VS-001.md) | Local Session/link/bus/probe/research vertical slice. | L0 | high | W1 bounded | exact cross-workpack predicate | descriptor-frozen; mutation-blocked |
+| [TASK-000](work-pack/tasks/TASK-000.md) | Resolve Slice-0 decisions and freeze contracts. | L0 | high | W0 | independent digest review cycle 5/5 PASS | completed |
+| [SWU-ACI-APT-VS-001](work-pack/tasks/TASK-APT-VS-001.md) | Local Session/link/bus/probe/research vertical slice. | L0 | high | W1 bounded | exact cross-workpack predicate | selected; mutation-test authorized |
 | [TASK-CVR](work-pack/tasks/TASK-CVR.md) | Prepare and, only after exact authorization, deliver canonical vault reads in artifact then edge slices. | L0 adjunct | high | W0 adjunct | global block + nominal gate | documentation-prepared; implementation-blocked |
-| [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | only exact named SWU may be selected after receipts | not-started; mutation-blocked |
+| [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | exact `SWU-ACI-APT-VS-001` selected | ready; exact-SWU mutation authorized |
 | [TASK-020](work-pack/tasks/TASK-020.md) | Implement audit-ledger opening/close materializers and reconciliation. | L0/L1 | high | W1-W2 | blocked by TASK-000/010 | not-started |
 | [TASK-030](work-pack/tasks/TASK-030.md) | Execute the fixed protocol with deterministic fake adapters. | L0 | high | W1 | blocked by TASK-010/020 | not-started |
 | [TASK-040](work-pack/tasks/TASK-040.md) | Add durable outbox, recovery, sealing, races and runtime SSE. | L1 | high | W2 | blocked by S-001 | not-started |
@@ -102,22 +103,24 @@ pass:
 
 | SWU | Parent | Goal | Dependencies | Write scope | Done criteria | Evidence | Verification | Owner |
 |---|---|---|---|---|---|---|---|---|
-| `SWU-ACI-APT-VS-001` | bounded TASK-010/APT integration | Implement the exact local vertical slice. | [cross-workpack predicate](work-pack/tasks/TASK-APT-VS-001.md#entry-predicate) | descriptor-bound runtime/test paths only | Complete test matrix and execution receipt; no broadened claims. | mutation receipt, state/artifact hashes, independent implementation PASS | independent review plus root approval | pending |
+| `SWU-ACI-APT-VS-001` | bounded TASK-010/APT integration | Implement the exact local vertical slice. | [cross-workpack predicate](work-pack/tasks/TASK-APT-VS-001.md#entry-predicate) | descriptor-bound runtime/test paths only | Complete test matrix and execution receipt; no broadened claims. | mutation receipt, state/artifact hashes, independent implementation PASS | independent review plus root approval | selected |
 
-All runtime SWUs remain unselected while `mutationTestAuthorization` is pending.
+All runtime SWUs except the exact `SWU-ACI-APT-VS-001` remain unselected. Local-pilot serving is
+still separately blocked until implementation evidence and an independent enablement review pass.
 
 ## Blockers
 
 | Blocker | Scope | Description | Owner | Next action |
 |---|---|---|---|---|
-| B-001 | Slice 0 | Closure corpus is authored: ADR-001 plus ADR-002, profiles, fixtures and exact descriptor. | architecture owner | Independent digest-bound corpus PASS closes it; runtime crash evidence remains implementation acceptance, not W0. |
-| B-002 | Slice 0 | Fixed decision, terminal, snapshot and compatibility contracts plus fixtures are authored. | product/protocol owner | Independent product/protocol PASS over the exact manifest closes it. |
-| B-003 | Audit materializer/cutover | W0 bundle schema, historical-drift disposition, guard algorithm and named tests are authored/frozen candidates. Physical host proof and cutover remain open. | engine owner | Reviewer freezes the W0 contract; TASK-020 later supplies process/ACL/inventory/bypass evidence. |
+| B-001 | closed | ADR-001 plus ADR-002, exact profiles, executable fixtures and the named descriptor passed independent Stage-A review cycle 5/5. | architecture owner | Runtime crash evidence remains an implementation-exit obligation. |
+| B-002 | closed | Fixed decision, terminal, snapshot and compatibility contracts plus golden trace passed independent Stage-A review cycle 5/5. | product/protocol owner | Preserve the frozen trace and exact profile bindings during implementation. |
+| B-003 | W0 contract frozen; physical proof blocked | Bundle schema, historical-drift disposition, guard algorithm and named tests passed W0 review. No host/process/ACL/cutover claim exists. | engine owner | TASK-020 later supplies process/ACL/inventory/bypass evidence before any materializer or cutover. |
 | B-004 | Invoke process | `.claude/skills/invoke/plan.md` referenced by the local skill is absent. | Invoke package owner | Treat this plan as template-based fallback; repair/regenerate skill separately. |
 | B-005 | Slice 1+ | Slice-specific open questions in README section 17 require ADRs before their wave. | wave owner | Resolve in each wave's entry gate; do not pull them into W0. |
 | B-CVR-001 | Canonical vault reads | Coordinated five-entry packet and owner/root acceptance do not exist; proposed per-SWU predicate is non-operative. | architecture + product/protocol + host/operator + root owners | Accept ADR/spec/tests/task plus selected deterministic descriptor; preserve global integration blocks. |
 | B-CVR-002 | CVR guard bootstrap | GUARD-001 and external trusted bootstrap evidence do not exist. | root/authority owner | Issue one exact bootstrap auth/claim and write only `implementations/vault_read_guard/` plus tests. |
 | B-CVR-003 | CVR execution authority | No content-addressed authorization/claim/ExecutionReceipt exists. | root + external bootstrap finalizer/common guard owner | Materialize exactly three artifacts; external finalizer alone completes GUARD, common guard alone completes CVR-001/002, and root never writes receipts. |
+| B-CVR-004 | CVR external trust boundary | Workspace hashes do not authenticate principals, trusted time/nonces or executor/finalizer identity. | host authority provider + root/operator | Supply versioned trust policy, reproducible repository binding, one-shot external AuthorityLaunchContext and target-filesystem CAS evidence before authorization. |
 
 ## Dispatch technique trace
 
@@ -142,7 +145,7 @@ SWU at a time and must generate their own bounded execution receipt.
 |---|---|---|
 | Smallest coherent unit | pass | One accepted persistence ADR is the first useful unit; runtime code before it would encode accidental authority. |
 | Recomposition proof | pass | The L0 command -> journal -> materializer -> fake adapter -> terminal chain is a strict subset of the target runtime. |
-| Hidden acceptance-critical gaps | review-pending | The W0 decisions are explicit; independent acceptance and downstream physical/runtime evidence remain. |
+| Hidden acceptance-critical gaps | pass for W0 | Independent Stage-A review closed W0 gaps; runtime evidence and physical cutover proof remain explicit downstream gates. |
 | Deferred complexity | pass | Real providers, generic recipes, distributed workers and rich memory are assigned to later layers. |
 | Navigation to first unit | pass | Review the W0 closure packet, then authorize only `SWU-ACI-APT-VS-001`. |
 
@@ -158,7 +161,7 @@ SWU at a time and must generate their own bounded execution receipt.
   would obscure replay proof.
 - **Reconciliation:** defer them to L3/L4; L0 has fixed seats, fixed rule and fake adapters.
 - **Stable tension:** the exact SQLite durability/offset contract and legacy cutover semantics
-  remain ADR decisions, so the implementation gate stays blocked.
+  are frozen for the exact selected SWU; local serving and physical cutover stay blocked.
 
 ## Gate checks
 

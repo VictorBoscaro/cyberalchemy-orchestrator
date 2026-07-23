@@ -2,9 +2,9 @@
 
 ## Status
 
-- Descriptor: frozen candidate
-- Documentation gate: Stage-A authoring complete pending independent review
-- Mutation-test authorization: pending
+- Descriptor: frozen and accepted
+- Documentation gate: Stage-A independent PASS cycle 5/5
+- Mutation-test authorization: `pass_for_exact_swu`
 - Local-pilot serve enablement: blocked
 - Production, external network, provider execution, materializer and audit-ledger cutover: blocked
 
@@ -57,4 +57,3 @@ The complete descriptor test matrix passes; authoritative-table hashes survive p
 the ledger byte hash never changes; no request body supplies authority; a candidate becomes official
 only through atomic parent verification; reference-probe lineage resolves an official message and
 the exact registered profile.
-

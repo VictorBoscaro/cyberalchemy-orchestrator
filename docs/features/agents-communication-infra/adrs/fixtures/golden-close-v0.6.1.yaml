@@ -3,5 +3,4 @@ dispatches:
     closed: "2026-07-23T12:10:00.000Z"
     invoked_by: "fixture@example.invalid"
     exit_reason: "resolved"
-    agents_spawned: 1
-
+    agents_spawned: {"total":1,"tree":{"explorer":["mars-researcher.agent"]},"loops_used":0}

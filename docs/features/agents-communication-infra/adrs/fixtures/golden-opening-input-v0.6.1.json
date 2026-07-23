@@ -1,0 +1,28 @@
+{
+  "dispatch_id": "2026-07-23-local-probe-fixture",
+  "schema_version": "0.6.1",
+  "dispatch_type": "research",
+  "goal": "Prove the bounded local provenance and bus vertical slice.",
+  "context": "Golden W0 compatibility fixture; no live agent or ledger mutation.",
+  "max_loops": 1,
+  "final_approver": "root-reviewer",
+  "working_folder": "research/fixtures/local-probe",
+  "groups": [
+    {
+      "group_id": "probe",
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "fixture-model",
+          "token_budget": 1000,
+          "initial_prompt": "Publish one reference-probe result.",
+          "agent_name": "mars-researcher.agent"
+        }
+      ],
+      "n": 1,
+      "robot_talks": false,
+      "layers": 1
+    }
+  ]
+}
+

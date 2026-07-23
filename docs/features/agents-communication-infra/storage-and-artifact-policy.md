@@ -1,10 +1,10 @@
 ---
 feature: agents-communication-infra
 title: Storage, artifact and rebuild authority policy
-status: proposed-accepted-pending-independent-review
+status: accepted-independent-PASS
 version: 1
 date: 2026-07-23
-runtime_gate: block
+runtime_gate: pass-for-exact-swu-mutation-only
 ---
 
 # Storage, artifact and rebuild authority policy
@@ -75,4 +75,3 @@ This policy authorizes no runtime code by itself. Test mutation requires the exa
 `SWU-ACI-APT-VS-001` authorization receipt. Local pilot serving requires a later independent PASS.
 Production, external networking, agent execution, materializer and audit-ledger cutover remain
 blocked.
-

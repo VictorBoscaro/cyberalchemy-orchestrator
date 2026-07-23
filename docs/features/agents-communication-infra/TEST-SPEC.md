@@ -5,7 +5,7 @@ is_session: false
 layer: application
 nature: [procedural, technical]
 status: draft
-version: 0.3.0
+version: 0.4.0
 last_updated: 2026-07-23
 ---
 
@@ -410,27 +410,47 @@ bootstrap finalizer; its diff is confined to the descriptor-listed paths.
 Exercise authorization preimages with omitted versus injected `authorization_id` and derived
 paths, field reorderings, duplicates, Unicode variants and byte drift. Only the specified domain
 separator and compact canonical JSON derive the expected ID/path. Repeat for claim and
-`ExecutionReceipt`; assert exactly three per-execution artifacts exist.
+`ExecutionReceipt`; assert exactly three per-execution artifacts exist. Reject a missing,
+duplicated or reordered owner slot, any non-`ACCEPT` decision, acceptance-set drift, principal or
+credential mismatch, packet/policy/repository/SWU/audience transplant, nonce replay and
+non-canonical UTC. Hash equality alone never satisfies the authenticated-principal check. Golden
+vectors independently derive the launch-context ID and digest from its body/envelope prefixes and
+reject field-order, owner-binding, timestamp-bound and envelope drift.
 
 ### T-CVR-AUTH3 — Closed descriptor and scope
 
 Try caller-supplied paths, commands, test IDs, index, receipt locator and scope. Each fails before
 effects. Only the enumerated SWU and its exact deterministic descriptor can reach direct worker
-invocation.
+invocation. Reject a missing, workspace/argv/environment-supplied, adulterated or expired
+`AuthorityLaunchContext`; reject root/executor/finalizer, repository binding, policy, audience,
+session, authenticated three-owner binding or launch-context drift. The accepted context arrives
+only through the injected external authority-provider boundary.
 
 ### T-CVR-AUTH4 — Sole terminal authority
 
 Make a worker or root return forged/writer-created receipt material. Assert it remains
 non-authoritative. For GUARD bootstrap only the external authority-owned bootstrap finalizer may
 create the receipt; for CVR-001/002 only the common guard/finalizer may do so. Exactly one is
-applicable, never both. Identical receipt bytes read idempotently and divergent bytes fail integrity.
+applicable, never both. Reject a receipt whose finalizer attestation, launch-context digest or
+executor/finalizer principal differs. Identical receipt bytes read idempotently and divergent bytes
+fail integrity. Round-trip every closed nested receipt schema and reject wrong type, unknown field,
+invalid state/hash/null pairing, unsorted residue/effect/predecessor data and an outcome/reason code
+outside the descriptor. Reject repository/host locator kind confusion, locators outside their
+authorized scopes, non-object residual locators and every outcome/reason combination absent from
+the closed matrix. Reject duplicate predecessor IDs, duplicate effect/residual `(kind, locator)`
+keys and cleanup-status/cardinality mismatches.
 
 ### T-CVR-AUTH5 — Crash and cancellation matrix
 
 Test hard crash with pristine scope and same-session retry; partial write, drift or unknown cleanup
 with no reinvocation and root-requested `BLOCK` from the one applicable finalizer; controlled
 interruption with terminal receipt; and post-receipt replay rejection. Assert root never writes a
-receipt and verify exact residual-path and cleanup evidence.
+receipt and verify exact residual-path and cleanup evidence. Race two claims and require exactly one
+create-exclusive winner; reject a different-session retry, expired immutable lease, stale launch
+context, nonce reuse, a claim before authorization issuance, `claimed_at >= lease_expires_at`,
+launch observation before `claimed_at`, lease after authorization expiry and delete-and-replay
+evidence. Assert no lease, renewal,
+revocation or fourth authority artifact is persisted.
 
 ### T-CVR-AUTH6 — CVR-002 predecessor binding
 

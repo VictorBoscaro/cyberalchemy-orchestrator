@@ -63,7 +63,7 @@ deterministic, bounded, effect-free artifact projection before edge identity or 
 | Unit | Value gained | Main cost | Promotion evidence | Current state |
 |---|---|---|---|---|
 | `SWU-ACI-CVR-000` | Parser, scope, limits, module and delivery contracts become reviewable. | Owner/reviewer time and unresolved authorization. | Exact-document review plus named owner/root acceptance. | Documentation prepared; not accepted as implementation authority. |
-| `SWU-ACI-CVR-GUARD-001` | Pure verification, closed descriptors and direct worker invocation become executable. | External trusted bootstrap with exactly one external authority-owned bootstrap finalizer, canonical schemas and crash tests. | Exact one-time root bootstrap plus T-CVR-AUTH1–5. | Blocked pending five-entry packet acceptance. |
+| `SWU-ACI-CVR-GUARD-001` | Pure verification, closed descriptors and direct worker invocation become executable. | External trusted bootstrap with exactly one external authority-owned bootstrap finalizer, canonical schemas and crash tests. | Exact one-time root bootstrap, authenticated external AuthorityLaunchContext, target-filesystem CAS proof plus T-CVR-AUTH1–5. | Blocked pending packet acceptance and external trust prerequisites. |
 | `SWU-ACI-CVR-001` | Capture/snapshot, artifact list/get and raw Connections declaration preservation become executable. | Restricted loader, dependency lock, canonical digest vectors, confinement/privacy and zero-effect tests. | Applicable artifact/raw-declaration T-CVR receipts and terminal scoped receipt. | Blocked by global and nominal gates. |
 | `SWU-ACI-CVR-002` | Endpoint resolution and logical edges extend the same core. | Resolution and predecessor-baseline fixtures. | CVR-001 PASS/baseline, delta/prehash proof, full CVR-001 rerun and T-CVR-AUTH6. | Deferred and blocked. |
 
@@ -74,7 +74,9 @@ The descriptor-bound per-SWU branch is non-operative until the coordinated packe
 GUARD-001 then uses a non-recursive external trusted bootstrap; later workers run only through the
 guard. Each execution has exactly three content-addressed authority artifacts and one
 authority-created terminal receipt. Descriptors are governance entries, not execution artifacts.
-The unrestricted host boundary is advisory, not a sandbox.
+The immutable claim is the only lease; the launch context is external/ephemeral and only its digest
+enters the receipt. Workspace hashes prove integrity, not authenticated identity. The unrestricted
+host boundary is advisory, not a sandbox.
 
 ## Recommended next layer
 

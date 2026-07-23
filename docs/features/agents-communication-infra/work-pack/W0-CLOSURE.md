@@ -1,7 +1,7 @@
 ---
 feature: agents-communication-infra
 title: W0 closure packet
-status: pending-independent-review
+status: PASS-independent-review-cycle-5-of-5
 date: 2026-07-23
 ---
 
@@ -9,16 +9,16 @@ date: 2026-07-23
 
 ## Authored disposition
 
-| Obligation | Authored result | Effective result before reviewer PASS |
+| Obligation | Authored result | Effective result |
 |---|---|---|
 | SWU-ACI-001 persistence/replay ADR | accepted by prior independent receipt | accepted |
-| SWU-ACI-002 compatibility/terminal/snapshot ADR and fixtures | complete | pending |
-| B-001 | closure conditions authored | open pending corpus receipt |
-| B-002 | closure conditions authored | open pending corpus receipt |
-| B-003 W0 contract | schema, drift disposition, guard and named tests frozen | pending corpus receipt; physical proof/cutover open |
-| TASK-010 selection | exact `SWU-ACI-APT-VS-001` descriptor prepared | not selected until cross-workpack/root receipt |
-| Profile registrations | four canonical definitions and digest manifest prepared | pending |
-| Storage/artifact ownership | policy prepared | pending |
+| SWU-ACI-002 compatibility/terminal/snapshot ADR and fixtures | complete | accepted by Stage-A reviewer receipt |
+| B-001 | closure conditions authored | closed |
+| B-002 | closure conditions authored | closed |
+| B-003 W0 contract | schema, drift disposition, guard and named tests frozen | frozen; physical proof/cutover open |
+| TASK-010 selection | exact `SWU-ACI-APT-VS-001` descriptor prepared | selected only inside the exact named SWU |
+| Profile registrations | four canonical definitions and digest manifest prepared | four exact registration receipts PASS |
+| Storage/artifact ownership | policy prepared | independent storage receipt PASS |
 
 ## B-003 drift disposition
 
@@ -32,17 +32,16 @@ erase or declare it repaired. The disposition is:
 - require TASK-020 target-host process, ACL, deployed writer inventory and negative bypass evidence
   before any materializer/cutover.
 
-## Required independent acceptance
+## Independent acceptance
 
-The reviewer must recompute the artifact manifest and profile canonical digests, review ADR-002,
-fixtures, storage policy, task/descriptor and cross-task status changes, and return `PASS` or
-specific findings. The root then records the cross-feature predicate, APT TASK-105 evidence and
-owner decisions. This packet cannot self-promote.
+Rawls recomputed the artifact manifest and profile canonical digests, reviewed ADR-002, fixtures,
+storage policy, task/descriptor and cross-task status changes, and returned PASS at cycle 5/5.
+The exact receipt is
+[`ACI-STAGE-A-PASS-RAWLS-2026-07-23`](../reviews/2026-07-23-stage-a-freeze/reviewer-receipt.json).
 
-## Gate result after a future PASS
+## Gate result
 
-Only `mutationTestAuthorization=pass_for_exact_swu` may become true. It permits temporary/test DB
+`mutationTestAuthorization=pass_for_exact_swu` permits temporary/test DB
 mutation for the descriptor-bound implementation. `localPilotServeEnablement` remains blocked
 until implementation evidence and a separate reviewer/root decision. Production, cutover,
 materializer, provider execution and external network remain blocked.
-

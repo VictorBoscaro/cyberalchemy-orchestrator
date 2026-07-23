@@ -72,7 +72,7 @@ and `docs/features/agents-communication-infra/work-pack/waves/W0.md`.
 |---|---|---|---|
 | `artifact_dependencies` | accepted five-entry packet | GUARD PASS receipt | CVR-001 PASS receipt and byte baseline |
 | `execution_authority_preconditions` | exact root-owned one-time bootstrap authorization and claim | active exact authorization and claim | fresh exact authorization and claim |
-| `invocation_evidence` | external expected packet/auth/claim digests and session | external expected digests/session + descriptor | predecessor/baseline/delta/prehash digests + external session |
+| `invocation_evidence` | one-shot external AuthorityLaunchContext + packet/auth/claim digests | external launch context + descriptor-bound digests | predecessor/baseline/delta/prehash digests + external launch context |
 | `write_scope` | guard package and tests only | vault-read package, local lock and tests | descriptor-bound allowed delta in vault-read package/tests |
 | `completion_evidence` | authority-owned ExecutionReceipt + T-CVR-AUTH1–5 | authority-owned ExecutionReceipt with byte baseline | authority-owned ExecutionReceipt with both test groups and final delta |
 | `ownership` | external executor invokes; one external authority-owned bootstrap finalizer completes | worker owns product code only; common guard invokes/finalizes | worker owns delta only; common guard invokes/finalizes |
@@ -80,6 +80,9 @@ and `docs/features/agents-communication-infra/work-pack/waves/W0.md`.
 Each CVR execution persists exactly authorization, claim and `ExecutionReceipt` under its
 content-derived authorization ID. Descriptors are governance packet entries. The generic receipt
 shape below applies to non-CVR manifest entries; CVR uses the canonical authority receipt.
+The claim is the immutable create-exclusive lease; the AuthorityLaunchContext is external and
+ephemeral, never a fourth artifact. Its authority provider must authenticate policy, repository,
+root/executor/finalizer principals, session and trusted time outside the workspace.
 
 ## Execution receipt
 

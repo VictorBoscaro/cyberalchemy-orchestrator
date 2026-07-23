@@ -19,6 +19,9 @@ rules and lifecycle contracts remain in their linked source aspects.
 | Term | Meaning in this feature | Related Concepts |
 |---|---|---|
 | Session | The coarse durable context that groups related dispatches without equating a runtime context to a curated Markdown session note. | [Session](domain.md#session), [SessionRecord](queries.md#sessionrecord) |
+| Conversation | A host-owned possible origin for a Session, named only by opaque origin references in L0; it is not Session identity and its transcript is not stored. | [Experimental runtime E0](experimental-runtime-l0.md#frozen-boundaries), [Session](domain.md#session) |
+| Reference Scout | The product capability that performs bounded reconnaissance of references. Frozen v1 schema/profile/concept identifiers may retain the legacy `reference-probe` name. | [Reference Scout contract](../probes/reference-scout-tool.md), [Experimental runtime E0](experimental-runtime-l0.md#frozen-boundaries) |
+| Publication-receipt spike | The separate ACI experiment that tests durable publication and receipt mechanics; it is not the Reference Scout capability. | [Reference Scout naming boundary](../probes/reference-scout-tool.md#naming-boundary) |
 | Context binding | The association between one originating host context and the Session it currently reuses. | [StartNewSession](operations.md#startnewsession), [SessionContextRebound](events.md#sessioncontextrebound) |
 | Dispatch scope | The confirmed intent and inputs already owned by an existing Dispatch, viewed without transferring that ownership to APT. | [DispatchScopeProjection](queries.md#dispatchscopeprojection), [DispatchAuthoritySnapshotRef](domain.md#dispatchauthoritysnapshotref) |
 | Research capture | One identity-bearing record of an expected contribution outcome, distinct from later interpretation of that outcome. | [ResearchCapture](domain.md#researchcapture), [CaptureStatus](domain.md#capturestatus) |

@@ -1,0 +1,49 @@
+{
+  "schema_ref": "apt.aci-profile-registration-request@1",
+  "profile_id": "aci.atomic-command-receipt-accepted-prefix-read-grouping",
+  "profile_version": "1",
+  "profile_owner": "agents-communication-infra",
+  "requested_by": "agent-provenance-telemetry",
+  "registration_status": "pending-aci-owner",
+  "closed_contract": {
+    "transaction": {
+      "begin_mode": "immediate",
+      "members": [
+        "finalized_artifacts",
+        "ordered_events",
+        "all_affected_aggregate_heads",
+        "semantic_uniqueness_keys",
+        "command_receipt"
+      ],
+      "visibility": "all-or-none"
+    },
+    "idempotency": {
+      "scope": "trusted-context-plus-idempotency-key",
+      "same_command_digest": "return-original-receipt",
+      "different_command_digest": "idempotency-conflict"
+    },
+    "grouping": {
+      "event_offsets": "contiguous",
+      "event_ordinals": "zero-based-and-contiguous",
+      "receipt_first_last_offsets": "exact-group-boundary",
+      "partial_group_read": "forbidden"
+    },
+    "accepted_prefix": {
+      "read_unit": "complete-verified-command-group",
+      "requested_offset_inside_group": "previous-complete-boundary",
+      "gap_overlap_digest_mismatch": "read-integrity-failure"
+    },
+    "receipt_required_fields": [
+      "command_id",
+      "command_digest",
+      "status",
+      "first_offset",
+      "last_offset",
+      "event_ids",
+      "artifact_ids",
+      "recorded_at"
+    ]
+  },
+  "aci_registration_ref": null,
+  "aci_registration_receipt": null
+}

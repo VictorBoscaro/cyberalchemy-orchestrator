@@ -52,3 +52,20 @@ support; no telemetry-driven decisions; and no projection without an explicit as
 
 Recommended next layer: L0 through TASK-105. Promotion remains blocked until all required ACI
 registrations have exact reviewer-verified digests and the owner records the mutation gate PASS.
+
+## Experimental Runtime Track E0
+
+E0 is a parallel evidence track, not a promotion or renumbering of L0–L3.
+
+| Decision question | Minimum working unit | Explicitly deferred | Exit evidence |
+|---|---|---|---|
+| After E0, do append-before-ack journal facts and command receipts deterministically rebuild Session and Reference Scout projections under retry, conflict and replay? | One isolated local SQLite runtime with six commands, experimental receipts, four rebuildable projections and restart/replay tests. | ACI registration, production adapter, dispatch-ledger mutation/materializer, transcript storage, compression/masking, multi-agent acquisition, cutover and scale. | [Experimental runtime E0](specs/experimental-runtime-l0.md) required tests pass; receipts are visibly experimental; no YAML is written; replay matches live projections. |
+
+Boundary heuristic: E0 stops after the minimum durability/replay decision. Adding a dispatch-ledger
+writer, source acquisition or production registration would unlock different decisions at
+substantially higher coordination cost and therefore belongs to a later layer.
+
+Non-regression from the main track still applies: one authority per edge, no inline raw body, no
+telemetry-driven mutation, no inferred source access and no projection without an explicit source
+offset. E0 additionally preserves Session ≠ Conversation, Reference Scout compatibility aliases and
+the separation of the two residue constructions.

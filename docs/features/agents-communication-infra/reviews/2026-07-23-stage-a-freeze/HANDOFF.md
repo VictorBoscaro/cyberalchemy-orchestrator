@@ -1,8 +1,13 @@
 # Stage-A independent-review handoff
 
-Cycle 2 incorporates every cycle-1 finding: exact APT-requested profile identities, transactional
-semantic uniqueness rules, `dissent_irreconcilable`, exact opening/close bytes and digests, a
-complete command/event/state trace, repaired SPEC links and regenerated manifests.
+Cycle 3 incorporates the cycle-2 findings. ACI registrations now normatively import the exact
+APT-owned request paths and raw/canonical digests; local files are non-authoritative mirrors.
+Consequently the full accepted-prefix/grouping, semantic collision, per-event schema/canonicalizer
+and probe-lineage rules are bound without paraphrase. The golden inputs use the allowed `explorer`
+role and real `mars-researcher.agent`; the real `append-dispatch.cjs` accepted both opening and close
+in a fresh temporary repository with exit code 0 for each. The trace contains explicit
+question/answer/problem/claim/formalization/reference-use facts, an authorized artifact read,
+restart and rebuilt query results.
 
 The authoring agent did not approve this corpus. The reviewer must:
 

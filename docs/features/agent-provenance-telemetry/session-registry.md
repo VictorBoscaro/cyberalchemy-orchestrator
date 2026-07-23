@@ -2,7 +2,7 @@
 feature: agent-provenance-telemetry
 artifact: coarse-session-registry
 status: proposed
-version: 0.3.0
+version: 0.4.0
 created: 2026-07-23
 last_updated: 2026-07-23
 ---
@@ -22,7 +22,7 @@ session
   │    │              └─ activation / tool operation
   │    └─ research
   │         └─ question / answer / reference use / problem / claim / formalization
-  └─ reference-probe
+  └─ reference-scout
        └─ probe group
             └─ probe seat / attempt
 ```
@@ -31,9 +31,13 @@ The first dataset does not reproduce transcripts, prompts or agent outputs. It g
 a stable session identity and permits simple questions such as “how did this work start?”, “what is
 it currently called?” and “how many dispatches descended from it?”.
 
-A runtime session is not the same thing as a curated Markdown document under `sessions/`, and it is
-not necessarily identical to a host conversation. A conversation, CLI command, scheduled job or API
-request can originate a session.
+A runtime Session is not the same thing as a curated Markdown document under `sessions/`, and it is
+not a host Conversation. A Conversation, CLI command, scheduled job or API request can originate a
+Session through an opaque `origin_kind`/`origin_ref`; that reference does not copy the Conversation,
+make their identities equal or authorize transcript storage.
+
+The first storage cut contains no prompt, message, response, chain of thought or raw conversation
+body. Compression and masking are deferred rather than silently approximated.
 
 ## Ensure, do not duplicate
 
@@ -130,9 +134,10 @@ The structured research child is defined by
 those two edges. Neither the dispatch ledger nor research facts duplicate `session_id`,
 `research_refs`, answers or formalizations.
 
-A probe may exist directly under the session or inside a dispatch/agent activation. Its mandatory
-`session_id` supplies the coarse parent. If later research arises from it, the research
-dispatch/artifact also records the originating `probe_id`.
+A Reference Scout may exist directly under the Session or inside a dispatch/agent activation. Its
+mandatory `session_id` supplies the coarse parent. If later research arises from it, the research
+dispatch/artifact also records the originating Scout identity. Frozen v1 lineage may retain
+`probe_id`; new projection and operation names use `scout_run_id`/`reference_scout`.
 
 ## Naming
 
@@ -159,9 +164,14 @@ Names must not contain secrets or pretend to be user-authored. Repeated names ar
 
 ## First storage cut
 
-Use the same append-before-ack journal/bus authority selected for the reference-probe slice and build
+Use the same append-before-ack journal/bus authority selected for the Reference Scout slice and build
 a small read projection for UI/telemetry. Do not create an independently editable YAML registry that
 would become a second source of truth.
+
+The isolated [experimental runtime E0](specs/experimental-runtime-l0.md) may use SQLite to prove
+this rule. Its journal events and receipts are the experimental authority; `sessions` and
+`session_dispatch_links` are rebuildable projections. It is shadow-only, writes no dispatch YAML
+and does not lift the ACI mutation gate.
 
 ## Connections
 
@@ -174,5 +184,6 @@ would become a second source of truth.
 
 | Version | Date | Change |
 |---|---|---|
+| 0.4.0 | 2026-07-23 | Separates Session from Conversation, forbids transcript storage in E0, adopts Reference Scout product naming and links the shadow-only SQLite proof. |
 | 0.3.0 | 2026-07-23 | Adds ensure idempotency, authorized session rollover and a single authoritative Session→Dispatch edge. |
 | 0.2.0 | 2026-07-23 | Added Research as a dispatch child projection while preserving session fact ownership. No decision in this document is locked by a SPEC. |

@@ -5,7 +5,7 @@ is_session: false
 layer: application
 nature: [reference]
 status: draft
-version: 0.2.3
+version: 0.2.4
 last_updated: 2026-07-23
 ---
 
@@ -14,6 +14,17 @@ last_updated: 2026-07-23
 All notable domain/specification changes to **agents-communication-infra** are recorded here.
 
 ## 2026-07-23
+
+### CVR external authority boundary (0.2.4)
+
+- Closed the three-owner acceptance, root issuer, authorization, immutable claim-lease,
+  AuthorityLaunchContext and finalizer-binding schemas.
+- Kept exactly three persisted authority artifacts; the one-shot launch context remains external
+  and ephemeral.
+- Added negative tests for identity/policy/repository/audience drift, claim races, nonce/lease/time
+  failures, launch-context substitution and wrong-finalizer receipts.
+- Recorded that hashes prove integrity rather than identity and kept implementation blocked on an
+  external trust provider, repository binding, trusted UTC/nonces and filesystem CAS evidence.
 
 ### CVR authority-guard coordination (0.2.3)
 

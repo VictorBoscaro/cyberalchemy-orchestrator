@@ -30,7 +30,7 @@ APT owns:
 
 - Session, research-capture and extracted-fact schemas and invariants;
 - application operations and ACI-subordinate append/query ports;
-- mapping accepted probe evidence into typed research lineage;
+- mapping accepted Reference Scout evidence into typed research lineage;
 - deterministic Session, Dispatch and Research projections at an explicit event offset.
 
 APT does not own the Work Bus, event journal, receipt store, canonicalizer, artifact boundary,
@@ -54,7 +54,8 @@ digest/receipt, fact append and probe-lineage implementation remain blocked.
 | SC-APT-02 | [Focused discovery v0.2.0](../discovery/session-dispatch-research-records.md) | yes | APT-D1 through APT-D15, authority spine and capture/fact contracts. |
 | SC-APT-03 | [Work-pack](../WORK-PACK.md) | yes | Documentation-only gate, artifact-only L0 and mutation evidence predicate. |
 | SC-APT-04 | [Coarse session registry](../session-registry.md) | yes | Ensure, rollover and sole Session-to-Dispatch relation. |
-| SC-APT-05 | [Reference-probe contract](../probes/reference-probe-tool.md) | yes | Profile-bound bundle and source-observation lineage. |
+| SC-APT-05 | [Reference Scout contract](../probes/reference-scout-tool.md) | yes | Product naming, profile-bound bundle and source-observation lineage; frozen v1 wire identifiers retain `reference-probe`. |
+| SC-APT-06 | [Experimental runtime E0](experimental-runtime-l0.md) | yes | Shadow-only SQLite proof; journal/receipts are authority and semantic tables are projections. |
 | SC-ACI-01 | [ACI SPEC](../../agents-communication-infra/specs/SPEC.md) | yes | Sole runtime, journal, bus, artifact-finalization boundary and receipt authority. |
 | SC-ACI-02 | [ACI architecture](../../agents-communication-infra/specs/architecture.md#scope-boundary) | yes | Disjoint ownership and interface boundaries. |
 | SC-ACI-03 | [ACI atomic acceptance](../../agents-communication-infra/specs/persistence-and-replay.md#4-atomic-command-acceptance) | yes | Transaction, idempotency, CAS, effect and receipt semantics. |
@@ -82,7 +83,7 @@ digest/receipt, fact append and probe-lineage implementation remain blocked.
 | Existing dispatch ledger/appender | Owns immutable dispatch/close rows and audit compatibility; lifecycle is derived from those rows. | [Focused discovery scope](../discovery/session-dispatch-research-records.md#what-stays-the-same) |
 | ACI runtime boundary | Owns canonicalization, journal, bus, artifact boundary/finalization, atomic acceptance and receipts. | [ACI high-level structure](../../agents-communication-infra/specs/architecture.md#view-2-high-level-structure-view) |
 | Host source-observation boundary | Owns `host.SourceObservation`; APT may hold a validated nullable reference only. | [Reference lineage](../discovery/session-dispatch-research-records.md#43-reference-uses-and-checks) |
-| Reference-probe caller/profile registry | Supplies committed profile-bound recommendation evidence. | [Reference-probe bus slice](../probes/reference-probe-tool.md#bus-slice) |
+| Reference Scout caller/profile registry | Supplies committed profile-bound recommendation evidence. | [Reference Scout bus slice](../probes/reference-scout-tool.md#bus-slice) |
 | Existing read surfaces | Consume non-authoritative Session, Dispatch and Research projections. | [Deterministic Read Models](SPEC.md#capabilities) |
 
 ## View 2: High-Level Structure View
@@ -203,7 +204,7 @@ sequenceDiagram
 | Link dispatch | Verify existing dispatch and absence of another link; append `SessionDispatchLinked`. | Duplicate identical link is idempotent; contradictory session link rejects without a fact. | [Authority matrix](../discovery/session-dispatch-research-records.md#34-authority-matrix) |
 | Append capture | Verify dispatch pin/status evidence; for captured/partial verify exactly one governed artifact; append immutable capture. | Missing artifact, forbidden inline raw, invalid missing evidence, digest mismatch or stale predecessor rejects before append. | [Capture contract](../discovery/session-dispatch-research-records.md#41-immutable-researchcapture) |
 | Append child fact | Verify current capture digest, exact selector and extraction actor/method; append fact or predecessor revision. | Dangling capture, normalized/mismatched bytes, stale predecessor or forbidden self-adjudication rejects; capture remains intact. | [Extraction provenance](../discovery/session-dispatch-research-records.md#42-append-only-child-facts-and-extractionprovenance) |
-| Append probe lineage | Bind receipt/profile/optional host refs; transactionally partition the request; submit one fact per `submitted_new` item and return `existing_exact ∪ accepted(submitted_new)` plus a receipt covering only `submitted_new`. | Missing/mismatched evidence, global fact-ID mismatch, forward/dangling refs or any pre-commit failpoint makes no new fact visible; existing refs remain outside the failed/new receipt; post-commit retry returns the persisted partition/mapping. | [Probe invocation/profile](../probes/reference-probe-tool.md#invocation) |
+| Append Scout lineage | Bind receipt/profile/optional host refs; transactionally partition the request; submit one fact per `submitted_new` item and return `existing_exact ∪ accepted(submitted_new)` plus a receipt covering only `submitted_new`. | Missing/mismatched evidence, global fact-ID mismatch, forward/dangling refs or any pre-commit failpoint makes no new fact visible; existing refs remain outside the failed/new receipt; post-commit retry returns the persisted partition/mapping. | [Scout invocation/profile](../probes/reference-scout-tool.md#invocation) |
 | Replay/read | Host sends a closed QueryIntent with `requested_o`; the query binder resolves verified grouping/owner manifests and the variant-specific immutable Dispatch snapshot, derives the last complete verified `effective_as_of`, then invokes the pure reducer. | Unknown variant, omitted authority field, digest/snapshot mismatch or invalid group fails closed; ledger reorder changes locator only; current mutable external Dispatch state never enters the result/hash. | [Read-model rules](../discovery/session-dispatch-research-records.md#5-three-level-read-models) |
 
 There is no semantic rollback of an accepted fact. Correction appends a CAS-linked successor.
@@ -235,7 +236,7 @@ Infrastructure retry is compensation for uncertain delivery, not deletion or mut
 | Physical artifact backend | transitive external | Selected behind ACI artifact boundary | APT has no direct credential, client, path or write dependency. |
 | Existing dispatch reader/appender | outbound | [Focused compatibility boundary](../discovery/session-dispatch-research-records.md#what-stays-the-same) | Read pinned snapshot; never write YAML or add L0 keys/joins. |
 | Host source-observation owner interface | outbound external dependency | [Reference lineage](../discovery/session-dispatch-research-records.md#43-reference-uses-and-checks) | Route external host owner → binder → application → bound value/domain; APT neither defines nor owns the interface or event. |
-| ACI profile/receipt verifier | outbound | [Probe bus slice](../probes/reference-probe-tool.md#bus-slice) | Probe-origin append rejects unless exact profile and receipt verify. |
+| ACI profile/receipt verifier | outbound | [Scout bus slice](../probes/reference-scout-tool.md#bus-slice) | Scout-origin append rejects unless exact profile and receipt verify. |
 | ACI transactional semantic registry/result mapper | outbound | Required `aci.transactional-semantic-uniqueness-result-mapping@1` profile | Enforces global `fact_id` uniqueness; compares canonical payload digest, `subject_id` and `supersedes_fact_id`; commits total request mapping while command/receipt covers only `submitted_new`. |
 | Existing UI/read surfaces | outbound | [Three-level read models](../discovery/session-dispatch-research-records.md#5-three-level-read-models) | Consume projections; cannot become write authority. |
 
@@ -278,7 +279,7 @@ Infrastructure retry is compensation for uncertain delivery, not deletion or mut
 | `DispatchAuthoritySnapshotRef` | Dispatch snapshot adapter | Discriminated `aci_managed` or `legacy_ledger` pinned reference; deterministic hash covers discriminator and every variant field. | [SPEC capability boundary](SPEC.md#capability-boundaries) |
 | `host.SourceObservation` reference | Host acquisition boundary | Optional trusted access evidence. | [Host-owned external concept](SPEC.md#host-owned-external-concept) |
 | Owner-bound rollover authorization evidence | External host authorization owner interface | One authorized session-binding CAS; application consumes the value before domain-bound submission, while accepted fact pins policy version/digest and evidence digest. | [Session capability](SPEC.md#capabilities) |
-| Probe bundle/profile/receipt evidence | ACI probe publication/profile authority | Authorize probe-origin lineage mapping. | [Probe output bundle](../probes/reference-probe-tool.md#output-bundle) |
+| Scout bundle/profile/receipt evidence | ACI Scout publication/profile authority | Authorize Scout-origin lineage mapping. | [Scout output bundle](../probes/reference-scout-tool.md#output-bundle) |
 | Probe-lineage atomic batch receipt | ACI receipt authority | Proves exactly the ordered `submitted_new` lineage facts committed together; `existing_exact` remains only in the total result mapping, retains original acceptance and is never a receipt member or reaccepted. | [ACI atomic acceptance](../../agents-communication-infra/specs/persistence-and-replay.md#4-atomic-command-acceptance) |
 | Transactional semantic result mapping | ACI semantic uniqueness/result-mapping profile | Maps every request key to an exact preexisting ref or newly accepted ref; only the latter appear in the command receipt. | [Required profile](../WORK-PACK.md#required-aci-transactional-semantic-uniquenessresult-mapping-profile) |
 | Read-model snapshot/hash/cursor | Pure projection reducer | Session, Dispatch and Research read surfaces. | [Read models](../discovery/session-dispatch-research-records.md#5-three-level-read-models) |
@@ -317,6 +318,10 @@ Infrastructure retry is compensation for uncertain delivery, not deletion or mut
 | APT-ARCH-D1 | Pin a complete discriminated `aci_managed | legacy_ledger` dispatch authority variant for deterministic projections. | Read live dispatch vs one generic ref vs explicit union. | External mutable reads cannot enter a deterministic hash; both authority modes stay replayable. |
 | APT-ARCH-D2 | Consume rollover authorization evidence bound by an external host owner interface before submitting the operation. | Caller-declared `policy_ref` vs externally owner-bound evidence. | Prevent APT/caller self-authorization and cross-context replay without creating an APT-owned authorization concept. |
 | APT-WP-D3 | Forbid inline raw in L0. | Inline/artifact union vs artifact-only pilot. | Bounded-pilot data risk control. |
+| APT-E0-D1 | Permit an isolated SQLite shadow proof with journal/receipts as experimental authority and semantic tables as rebuildable projections. | Wait for production ACI adapter vs experimental local proof. | Tests the minimum durability/replay decision without cutover or a competing production owner. |
+| APT-E0-D2 | Keep Session distinct from host Conversation and store only opaque origin references. | Session equals conversation vs explicit boundary. | Hosts may originate work through conversations, CLI, jobs or API requests; no transcript is needed for identity. |
+| APT-E0-D3 | Rename the product concept to Reference Scout while retaining frozen v1 `reference-probe` identifiers. | Physical mass rename vs compatibility alias. | Removes ambiguity with technical probes without invalidating registered evidence. |
+| APT-E0-D4 | Keep the two residue constructions separate and add no `residue_score`. | Unify/compress now vs preserve typed states. | No theorem establishes commensurability; compression/masking is deferred. |
 
 No decision in this log elevates the runtime or mutation gate.
 
@@ -333,6 +338,8 @@ No decision in this log elevates the runtime or mutation gate.
 | APT-RK7 | Profile mismatch admits unverifiable probe lineage. | Exact profile ID/version/digest and committed receipt gate. | Probe/ACI owners |
 | APT-RK8 | Partial probe-lineage batch or ambiguous mixed-result receipt makes existing facts appear newly accepted. | Partition before submit; atomic batch of `submitted_new`; total status/ref mapping outside receipt membership; member/commit failpoints. | Probe/ACI owners |
 | APT-RK9 | Caller forges/replays rollover authority or crosses context/session binding. | Host-owned bound evidence with exact policy digest, expiry and nonce; forged/stale/replay/cross-context tests. | Host/session owners |
+| APT-RK10 | The experimental SQLite adapter is mistaken for the production ACI authority. | Explicit `experimental` receipt namespace, shadow-only gate, no ledger writes and no cutover path. | E0 runtime owner |
+| APT-RK11 | Session origin references drift into transcript storage. | Closed command allowlists and negative tests for prompt/message/response/body fields. | E0 runtime owner |
 
 ## Downstream Planning Notes
 

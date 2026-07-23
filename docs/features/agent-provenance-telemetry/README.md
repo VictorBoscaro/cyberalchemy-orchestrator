@@ -13,10 +13,10 @@ last_updated: 2026-07-23
 
 Compatibility feature for reconstructing which conversation and turn caused a dispatch, which later
 dispatches descended from it, what topics each logical agent seat reported working on and which papers
-were observed through mediated research tools. Version 0.6 also proposes one bounded
-`reference-probe` tool: ordinary agents may retrieve relevant internal and/or external references
+were observed through mediated research tools. Version 0.6 also proposed one bounded tool, now named
+`reference-scout`: ordinary agents may retrieve relevant internal and/or external references
 through a small, bus-backed worker/reviewer group. A larger shape uses two tensioned groups and a
-bounded cross-lens exchange.
+bounded cross-lens exchange. Frozen v1 identifiers retain the `reference-probe` compatibility name.
 
 Topic capture is intentionally weak and observational. An agent deposits only a flat JSON list of
 free tags. The telemetry system adds lineage and stores the observation; it does not assign tag IDs,
@@ -37,8 +37,9 @@ runtime.
 - [Topic-tag host contract](../../../.claude/skills/emit-topic-tags/references/host-contract.md)
 - [Conformance and semantic release tests](../../../.claude/skills/emit-topic-tags/references/conformance.md)
 - [Preregistered empirical probes](probes/README.md)
-- [Reference-probe tool and first bus slice](probes/reference-probe-tool.md)
+- [Reference Scout tool and first bus slice](probes/reference-scout-tool.md)
 - [Coarse session registry](session-registry.md)
+- [Experimental Session + Reference Scout runtime E0](specs/experimental-runtime-l0.md)
 - [Current-state inventory](research/current-state-inventory.md)
 - [Independent review of the previous registry design](reviews/2026-07-22-system-tags-and-lens-review.md)
 
@@ -50,7 +51,7 @@ contract.
 
 Instrument the smallest useful slice: conversation/turn lineage, dispatch origin edges, mediated
 source observations, reference-delivery manifests and one flat free-tag emission per agent
-activation. Add a bounded, bus-backed `reference-probe` tool whose scope, human distance and budget
+activation. Add a bounded, bus-backed `reference-scout` tool whose scope, human distance and budget
 are host-stamped. Its minimum shape is one worker plus one reviewer; its larger shape is two
 tensioned worker/reviewer groups. Both return only reviewed recommendations of where to look.
 Introduce a still coarser session dataset above dispatches so all subsequent telemetry shares one

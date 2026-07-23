@@ -110,9 +110,9 @@ No authorization, claim or receipt exists in the documentation phase. A future a
 execution persists exactly three authority artifacts, each at a content-addressed fixed path:
 
 ```text
-work-pack/authorizations/<authorization_id>/authorization.json
-work-pack/authorizations/<authorization_id>/claim.json
-work-pack/authorizations/<authorization_id>/execution-receipt.json
+docs/features/agents-communication-infra/work-pack/authorizations/<authorization_id>/authorization.json
+docs/features/agents-communication-infra/work-pack/authorizations/<authorization_id>/claim.json
+docs/features/agents-communication-infra/work-pack/authorizations/<authorization_id>/execution-receipt.json
 ```
 
 The authorization preimage excludes `authorization_id` and every path derived from it. Its bytes
@@ -132,14 +132,51 @@ receipt.
 The authorization body closed schema binds:
 
 ```text
-canonical_swu_id; descriptor_path; descriptor_sha256;
+authorization_nonce; authority_policy_digest; repository_binding{};
+acceptance_set_digest; canonical_swu_id; descriptor_path; descriptor_sha256;
 approval_packet_schema; approval_packet_digest; approval_packet[];
 owner_acceptance_records[]; root_issuer{};
+audience; executor_principal_id; finalizer_principal_id;
 repository_write_scope[]; ephemeral_host_effect_scope[];
 repository_write_scope_sha256; ephemeral_host_effect_scope_sha256;
 test_ids[]; exact_commands[]; exact_commands_sha256; allowed_index_url;
-issued_at; expires_at; reason
+not_before; issued_at; expires_at; reason
 ```
+
+`owner_acceptance_records` contains exactly three closed records in fixed order
+`architecture_owner`, `product_protocol_owner`, `host_operator_owner`. Each record has fixed field
+order `slot`, `principal_id`, `credential_binding_digest`, `approval_packet_digest`, `decision`,
+`accepted_at`, `evidence_digest`; `decision` is exactly `ACCEPT`. The acceptance-set digest is
+SHA-256 over `b"aci.cvr.owner-acceptance-set/v1\x00"` plus the canonical array bytes. A hash proves
+binding and integrity, not identity: the external authority policy and launch context must
+authenticate each principal/credential and prove that its evidence accepts the same packet.
+
+`root_issuer` is a closed object with fixed field order `principal_id`,
+`credential_binding_digest`, `authority_policy_digest`. Root is the authorization issuer, never a
+substitute for an owner slot. `repository_binding` has fixed field order `repository_id`,
+`root_fingerprint`; its canonical object digest uses
+`b"aci.cvr.repository-binding/v1\x00"`. `audience`, executor and finalizer principals must match the
+external launch context. `authorization_nonce`, `claim_nonce` and `launch_nonce` are each 64
+lowercase hexadecimal characters encoding 32 bytes supplied by the authority channel. Timestamps
+are canonical RFC 3339 UTC seconds (`YYYY-MM-DDTHH:MM:SSZ`), with
+`not_before <= issued_at < expires_at`; offsets, fractions and leap seconds are rejected.
+
+Repository paths remain POSIX repository-relative NFC strings. Each
+`ephemeral_host_effect_scope` item is instead a closed object with fixed order `kind`, `locator`,
+`allowed_uses`: GUARD permits one `os_temp_directory` whose already-expanded absolute Windows
+locator satisfies the descriptor template and whose uses match the descriptor exactly. The three
+derived array digests use distinct prefixes
+`aci.cvr.repository-write-scope/v1\x00`,
+`aci.cvr.ephemeral-host-effect-scope/v1\x00` and
+`aci.cvr.exact-commands/v1\x00`. `allowed_index_url` is JSON `null` for GUARD.
+
+Unless a narrower rule is stated, every field ending in `_sha256` or `_digest` is
+`sha256:<64 lowercase hex>`; IDs, principals, audience, reason text and evidence labels are
+non-empty NFC strings without control characters and with a 1024-byte UTF-8 ceiling. Schema and
+decision fields are the exact literals named here. Arrays reject duplicates; set-like arrays sort
+by canonical UTF-8 bytes, while packet entries, owner slots, commands and tests use their declared
+semantic order. JSON booleans, nulls and integers are admitted only where this contract names them;
+floats are always rejected.
 
 Before claim creation, the root may withdraw the offered authorization through its external
 trusted control channel; withdrawal creates no repository artifact and the claim must not be
@@ -147,8 +184,17 @@ created. Authorization JSON contains no mutable or anticipatory revocation state
 creation, withdrawal is no longer a state transition: the root requests controlled cancellation
 and the guard/finalizer records a terminal `BLOCK` or `INTERRUPTED` receipt.
 
-The claim body binds `authorization_id`, `authorization_sha256`, authenticated
-`execution_session_id`, packet, descriptor, scopes and commands. The persisted `claim.json` bytes
+The claim body is closed with fixed field order `authorization_id`, `authorization_sha256`,
+`canonical_swu_id`, `descriptor_sha256`, `approval_packet_digest`, `acceptance_set_digest`,
+`authority_policy_digest`, `repository_binding_digest`, `audience`, `executor_principal_id`,
+`finalizer_principal_id`, `execution_session_id`, `claim_nonce`, `claimed_at`,
+`lease_expires_at`. The claim is the one immutable lease: create-exclusive creation at the sole
+claim path is its compare-and-set winner, `lease_expires_at <= authorization.expires_at`, and retry
+is allowed only for the same authenticated session and byte-identical claim while the lease is
+valid. Canonical time ordering is
+`authorization.issued_at <= claimed_at < lease_expires_at <= authorization.expires_at`. There is
+no renewal file, mutable lease, revocation record or fourth authority artifact.
+The persisted `claim.json` bytes
 are the closed compact-JSON envelope with fixed top-level order `domain`, `schema_version`, `body`
 and the canonical-JSON rules above. The claim digest preimage is
 `b"aci.cvr.claim/v1\x00" + persisted_claim_json_bytes`; `claim_sha256` is SHA-256 over that
@@ -157,8 +203,40 @@ claim path. The expected authorization digest, claim digest and authenticated se
 the guard through a root-controlled channel outside the repository/workspace. Workspace bytes
 cannot select or override those values.
 
+The authority provider supplies one ephemeral
+`aci.cvr.authority-launch-context/v1` outside the workspace through a one-shot authenticated
+launcher boundary, never through repository files, command arguments or environment variables.
+The canonical body order is `launch_nonce`, `audience`,
+`authority_policy_digest`, `repository_binding_digest`, `canonical_swu_id`, `authorization_id`,
+`authorization_sha256`, `claim_sha256`, `acceptance_set_digest`,
+`authenticated_owner_bindings`,
+`authenticated_root_principal_id`, `authenticated_executor_principal_id`,
+`authenticated_finalizer_principal_id`, `execution_session_id`, `observed_at`, `expires_at`.
+`authenticated_owner_bindings` contains exactly the three owner slots in fixed order; each closed
+record is `slot`, `principal_id`, `credential_binding_digest`, `evidence_digest` and must equal the
+corresponding accepted record. The provider thereby attests that it authenticated all three
+principal/credential/evidence bindings, rather than merely echoing the acceptance-set digest.
+
+The ID preimage is `b"aci.cvr.authority-launch-context-id/v1\x00"` plus the canonical body bytes;
+`launch_context_id` is `aci-cvr-launch-<64 lowercase hex SHA-256>`. The delivered closed envelope
+has fixed order `domain`, `schema_version`, `launch_context_id`, `body`. Its digest preimage is
+`b"aci.cvr.authority-launch-context/v1\x00"` plus the exact envelope bytes, producing
+`launch_context_sha256`. The provider enforces unique nonces and
+`authorization.not_before <= authorization.issued_at <= claim.claimed_at <= observed_at <=
+expires_at <= min(authorization.expires_at, claim.lease_expires_at)`; an identical same-session
+delivery is idempotent, while nonce reuse with
+different bytes, expired context or divergent ID is rejected. The guard compares every binding
+before effects and records only `launch_context_sha256` in the receipt. The context is neither
+persisted nor a fourth artifact and confers no authority beyond the externally authenticated
+provider that created it.
+
 The receipt body binds authorization/claim/descriptor/packet digests, session, predecessor
-evidence, observed effects, cleanup evidence, outcome and reason. The persisted
+evidence, acceptance set, authority policy, repository binding, audience, executor, finalizer,
+launch-context digest, observed effects, cleanup evidence, outcome and reason. It also records a
+closed `finalizer_attestation` with fixed field order `scheme`, `principal_id`,
+`credential_binding_digest`, `authority_policy_digest`, `launch_context_sha256`; scheme v1 is
+exactly `external-authenticated-launch-context/v1` and is a launcher binding, not a cryptographic
+signature. The persisted
 `execution-receipt.json` bytes are the closed compact-JSON envelope with fixed top-level order
 `domain`, `schema_version`, `body` and the canonical-JSON rules above. The receipt digest preimage
 is `b"aci.cvr.execution-receipt/v1\x00" + persisted_execution_receipt_json_bytes`;
@@ -166,6 +244,37 @@ is `b"aci.cvr.execution-receipt/v1\x00" + persisted_execution_receipt_json_bytes
 `authorization_id` verifies. Create-if-absent idempotency compares the persisted JSON bytes
 byte-for-byte and recomputes the digest using this single preimage rule; a divergent existing file
 is an integrity failure and is never overwritten.
+
+The receipt nested schemas are closed:
+
+- `predecessor_evidence` is an array with unique `canonical_swu_id`, sorted by that key, of records with fixed order
+  `canonical_swu_id`, `execution_receipt_sha256`, `baseline_sha256`; GUARD uses an empty array and
+  `baseline_sha256` may be null only where the predecessor contract has no baseline;
+- `observed_effects` is an array with unique `(kind, locator)`, sorted by canonical
+  `(kind UTF-8 bytes, locator UTF-8 bytes)`, of records with fixed order
+  `kind`, `locator`, `pre_state`, `pre_sha256`, `post_state`, `post_sha256`, `size`; states are
+  `absent|file`, a hash is null exactly for `absent`, and size is a non-negative integer or null for
+  absent. Kind is `repository_file|host_temp_entry`: repository locators are POSIX
+  repository-relative paths present in `repository_write_scope`, while host locators are absolute
+  Windows paths equal to or lexically beneath the one authorized temp directory. Any other locator
+  or kind/scope mismatch invalidates the receipt;
+- `cleanup_evidence` has fixed order `status`, `residual_paths`; status is
+  `pristine|residual|unknown`. `residual_paths` is a unique canonical-locator-sorted array of
+  closed records with fixed order `kind`, `locator`, using the same two kind/scope rules and unique
+  canonical `(kind, locator)` ordering. `pristine` requires an empty array, `residual` requires a
+  non-empty array, and `unknown` permits zero or more known residual locators without inventing
+  evidence;
+- `reason` has fixed order `code`, `detail`; code is a closed implementation enum bound by the
+  selected descriptor and detail is a bounded NFC string or null; and
+- `finalizer_attestation` has the fixed fields and literal scheme defined above.
+
+Receipt `outcome` is exactly `PASS|BLOCK|INTERRUPTED`. The closed outcome/reason matrix is:
+`PASS -> completed`; `INTERRUPTED -> cancelled|interrupted`; and
+`BLOCK -> verification_failed|cancelled|cleanup_failed|integrity_failure|expired|
+crash_recovery_blocked`. `PASS` additionally requires pristine cleanup and no residual paths,
+while `BLOCK` and `INTERRUPTED` preserve all known effects/residue. All digest,
+principal, audience, session and locator fields use the scalar/path rules above. The descriptor
+binds these schema IDs, orders and outcome constraints; unknown nested or top-level fields fail.
 
 After GUARD bootstrap, the authority-owned common guard consists of one pure verifier, one closed descriptor for each enumerated
 SWU and one finalizer. The caller supplies only the enumerated SWU ID plus the external expected
@@ -199,6 +308,13 @@ path. Because the current host grants agents unrestricted shell/filesystem autho
 advisory governance boundary, not a sandbox or a structural security boundary; external expected
 digests/session prevent workspace-only substitution but cannot stop a principal with equivalent
 host authority from bypassing the sanctioned entry point.
+
+Hashes and create-exclusive files prove byte binding and local collision behavior only. Executable
+authorization additionally requires, outside the workspace: a versioned trust policy and digest;
+an authority provider that authenticates stable principals/credentials and supplies the launch
+context; a reproducible repository binding; trusted UTC and nonce sources; proven create-exclusive
+semantics on the target filesystem; and authenticated executor/finalizer identities. Until all six
+exist, schemas may be reviewed but no acceptance record, authorization or claim is executable.
 
 ## SWU-ACI-CVR-000 — Documentation packet
 
@@ -249,9 +365,10 @@ implementations/tests/vault_read_guard -p "test_*.py"`. The implementation is Py
 library-only: dependency and network/index scopes are empty.
 
 Its ephemeral scope is one descriptor-named OS temporary directory used only for the isolated
-interpreter and test cache. The accepted GUARD descriptor freezes exact
-expanded file paths, pre-write hashes/absence, commands, tests, dependency/index policy and that
-temporary locator before bootstrap execution. It excludes `implementations/vault_read/**`,
+interpreter and test cache. The accepted GUARD descriptor freezes exact repository paths,
+pre-write hashes/absence, commands, tests, dependency/index policy and the temporary-locator
+template; the authorization freezes the one expanded absolute locator before bootstrap execution.
+It excludes `implementations/vault_read/**`,
 server, API, MCP, bus, APT, canonical data, every governance descriptor and all authority artifact
 paths. No generic shell session, nested authorization, self-verification, root-written receipt or
 second bootstrap/finalizer is permitted.
@@ -281,6 +398,8 @@ Exit evidence must prove:
 - implementation workers cannot import, write or invoke authority artifact paths; and
 - the advisory-boundary limitation is observable in operator documentation and test names.
 
+The named verification set for this unit is `T-CVR-AUTH1` through `T-CVR-AUTH5`.
+
 Explicitly deferred are artifact semantics, edge semantics, server/API/MCP/bus wiring and any
 claim that unrestricted host access has become sandboxed. Promotion to CVR-001 requires a terminal
 `PASS` receipt for this guard SWU and independent authority/implementability review.
@@ -296,7 +415,7 @@ claim that unrestricted host access has become sandboxed. Promotion to CVR-001 r
 Explicitly excluded: `implementations/server/**`, `implementations/requirements.txt`, APIs/routes,
 bus, APT, inventory/cache implementation, canonical-source mutation and every path not listed
 above. Every authority implementation path and every artifact under
-`work-pack/authorizations/**` is excluded; the implementation writer returns outcome evidence to
+`docs/features/agents-communication-infra/work-pack/authorizations/**` is excluded; the implementation writer returns outcome evidence to
 the guard and creates no authorization, claim or receipt.
 
 `repository_write_scope` is exactly those implementation/test paths. Authorization, claim and
@@ -330,6 +449,9 @@ exact temp root is mandatory and recorded.
   results, pre-claim withdrawal or post-claim cancellation evidence when applicable,
   authorization consumption and remaining blockers.
 
+The authority subset for this unit is `T-CVR-AUTH2` through `T-CVR-AUTH5`, in addition to its
+applicable artifact/raw-declaration tests.
+
 No executable CVR tests are claimed to exist yet. At selection time the CVR-001 closed descriptor
 must freeze exact test paths and commands. The guard owns environment creation, dependency
 installation, worker invocation, diff validation, cleanup and finalization; duplicated
@@ -352,7 +474,7 @@ this receipt and baseline as authority preconditions.
 
 No dependency mutation is allowed without a newly accepted ADR. All exclusions from CVR-001
 continue to apply, including every authority implementation path and
-`work-pack/authorizations/**`.
+`docs/features/agents-communication-infra/work-pack/authorizations/**`.
 
 ### Dependencies, done criteria and verification
 
@@ -371,12 +493,14 @@ T-CVR-6/10/12. The final diff must equal the descriptor-bound allowed delta. The
 authority-created CVR-002 `ExecutionReceipt` records both test groups, predecessor and baseline
 digests, observed pre-write hashes, final delta, cleanup and outcome.
 
+The predecessor-specific authority test for this unit is `T-CVR-AUTH6`.
+
 At selection, the CVR-002 closed descriptor freezes all exact commands and test paths. The common
 guard owns bootstrap, verification, invocation, cleanup and receipt creation; no CVR-002-specific
 PowerShell wrapper exists. CVR-002 never reuses the CVR-001 environment, authorization or claim.
 
 ## Terminal states
 
-`pass`, `block`, `flag` and `interrupted` require the authority-owned exact `ExecutionReceipt`,
+`pass`, `block` and `interrupted` require the authority-owned exact `ExecutionReceipt`,
 which consumes the named authorization and records the outcome/reason. Retry requires a new
 authorization and claim. No CVR unit promotes TASK-000, W0 or unrelated runtime work.

@@ -5,7 +5,7 @@ is_session: false
 layer: [application, ontology]
 nature: [technical, reference]
 status: draft
-version: 0.5.0
+version: 0.6.0
 last_updated: 2026-07-23
 ---
 
@@ -20,7 +20,7 @@ Markdown files. It does not authorize runtime implementation while
 [ADR-CVR-001](../adrs/ADR-CVR-001.md) is a proposed decision prepared for owner
 review, not an accepted implementation authority. `runtimeGate=block` and
 `workPackGateStatus=block` take precedence over its non-pass
-`cvrImplementationGate=approval_packet_prepared`.
+`cvrImplementationGateStatus=approval_packet_prepared`.
 
 The contract settles only the vault-read portion of
 [Agent tools and delegated supervision](../discovery/agent-tools-and-delegated-supervision.md#6-stateless-canonical-vault-reads).
@@ -450,7 +450,7 @@ Before implementation is authorized, executable fixtures must cover:
 | SWU | Contract slice | Global gates | Nominal CVR gate | Current state |
 | --- | --- | --- | --- | --- |
 | `SWU-ACI-CVR-000` | Five-entry packet plus seven derived indexes: 12 governed artifacts including the descriptor. | `runtimeGate=block`; `workPackGateStatus=block` | `approval_packet_prepared` | Documentation prepared for owner review only. |
-| `SWU-ACI-CVR-GUARD-001` | Pure verifier, fixed descriptors and common CVR-001/002 finalizer; bootstrap has one external finalizer. | `runtimeGate=block`; `workPackGateStatus=block` | Proposed one-time root bootstrap via external trusted executor. | Blocked pending five-entry packet acceptance. |
+| `SWU-ACI-CVR-GUARD-001` | Pure verifier, fixed descriptors and common CVR-001/002 finalizer; bootstrap has one external finalizer. | `runtimeGate=block`; `workPackGateStatus=block` | Proposed one-time root bootstrap via external trusted executor. | Blocked pending packet acceptance and external trust prerequisites. |
 | `SWU-ACI-CVR-001` | Capture/snapshot core, artifact projection, raw Connections declarations, `list_artifacts`, `get_artifact`, and applicable tests. | `runtimeGate=block`; `workPackGateStatus=block` | No `pass_with_named_swu_authorization` exists. | Blocked. |
 | `SWU-ACI-CVR-002` | Endpoint resolution, logical-edge projection, `list_edges`, `get_edge`, and applicable tests. | `runtimeGate=block`; `workPackGateStatus=block` | No `pass_with_named_swu_authorization` exists. | Blocked and deferred until CVR-001 acceptance. |
 
@@ -472,10 +472,17 @@ non-recursive and uses an external trusted executor with only
 
 Every later execution persists exactly three content-addressed authority artifacts:
 `authorization.json`, `claim.json` and the guard-created `execution-receipt.json` under
-`work-pack/authorizations/<authorization_id>/`. There is no mutable pointer, persisted
+`docs/features/agents-communication-infra/work-pack/authorizations/<authorization_id>/`. There is no mutable pointer, persisted
 `ClaimReceipt`, revocation artifact or second terminal receipt. Descriptors are deterministic,
 immutable governance packet entries, not per-execution artifacts. This protects the sanctioned
 workflow from drift; unrestricted host access remains advisory and is not a sandbox.
+
+Authority identity is external to this projection. The authorization binds the three-owner
+acceptance set, policy, repository, audience, executor and finalizer; the claim is an immutable
+create-exclusive lease. A one-shot external `AuthorityLaunchContext` supplies authenticated
+principal/session/time bindings and is never persisted; the receipt stores only its digest and
+finalizer binding. This packet defines byte integrity, not a trust provider, cryptographic identity
+or non-bypassable host boundary.
 
 ## Decisions
 
@@ -500,7 +507,7 @@ workflow from drift; unrestricted host access remains advisory and is not a sand
 ## Gate Result
 
 - Status: **block**
-- CVR proposal status: `cvrImplementationGate=approval_packet_prepared` (**non-pass**).
+- CVR proposal status: `cvrImplementationGateStatus=approval_packet_prepared` (**non-pass**).
 - Predicate:
   The proposed descriptor-bound per-SWU branch is non-operative until the coordinated five-entry
   packet is accepted.
@@ -515,6 +522,7 @@ workflow from drift; unrestricted host access remains advisory and is not a sand
 
 | Version | Date | Change |
 | --- | --- | --- |
+| 0.6.0 | 2026-07-23 | Closed the external authority binding proposal for acceptance set, immutable claim lease, launch context and finalizer receipt while retaining all implementation blocks. |
 | 0.5.0 | 2026-07-23 | Added non-recursive GUARD-001, five-entry packets, three-artifact authority lifecycle, sole finalization and CVR-002 baseline/delta non-regression; status remains non-pass. |
 | 0.4.0 | 2026-07-23 | Unified the gate predicate, append-only authorization/claim semantics, complete `get_edge` cap set and exact isolated command contract; status remains non-pass. |
 | 0.3.0 | 2026-07-23 | Prepared owner-review remediation: authority-neutral status, parser ceilings, staged privacy, operation-specific capture, canonical projection bytes/digests, and raw-declaration ownership in CVR-001. |

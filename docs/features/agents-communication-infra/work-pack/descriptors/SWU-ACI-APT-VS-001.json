@@ -100,7 +100,7 @@
     "T-API",
     "T-REGRESSION"
   ],
-  "mutation_test_authorization": "pending-independent-review-and-root-receipt",
+  "mutation_test_authorization": "pass_for_exact_swu",
   "local_pilot_serve_enablement": "blocked-separate-post-implementation-gate",
   "permanently_out_of_scope_for_this_authorization": [
     "production",

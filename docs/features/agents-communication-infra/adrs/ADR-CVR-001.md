@@ -33,7 +33,7 @@ authorized = (runtimeGate=pass AND workPackGateStatus=pass) OR
 
 This per-SWU branch is a **non-operative proposal** until this ADR, the CVR spec,
 TEST-SPEC, TASK-CVR and the selected deterministic descriptor are amended and accepted as one
-five-entry packet. Consequently, `cvrImplementationGate=approval_packet_prepared` is a non-pass state.
+five-entry packet. Consequently, `cvrImplementationGateStatus=approval_packet_prepared` is a non-pass state.
 For initial bootstrap, the fifth entry is exactly
 `docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-CVR-GUARD-001.json`.
 It cannot override either global block. Only the root/project owner together with the
@@ -187,7 +187,7 @@ exactly its one returned logical edge. Nested declarations, sections and residue
 consume additional result slots. A whole-source `invalid_utf8` item is one node and
 therefore consumes one artifact-result slot.
 
-### D5 — Three delivery units, one core
+### D5 — Four staged units, one core
 
 | SWU | Scope | Global gates | Nominal CVR gate | Current state |
 | --- | --- | --- | --- | --- |
@@ -266,10 +266,19 @@ Before any executable CVR SWU can receive a nominal, consumable authorization:
    the guard, which alone creates the terminal `ExecutionReceipt`.
 
 Each execution has exactly three authority artifacts under
-`work-pack/authorizations/<authorization_id>/`: canonical `authorization.json`, `claim.json` and
+`docs/features/agents-communication-infra/work-pack/authorizations/<authorization_id>/`: canonical `authorization.json`, `claim.json` and
 `execution-receipt.json`. There is no `current` pointer, persisted `ClaimReceipt`, revocation file
 or second receipt. Root withdrawal is pre-claim only; post-claim cancellation terminalizes.
 This is an advisory governance boundary on the unrestricted host, not a sandbox.
+
+The authorization binds a fixed three-owner acceptance set, external authority-policy and
+repository-binding digests, audience, executor and finalizer. The claim is the single immutable
+create-exclusive lease. An ephemeral `AuthorityLaunchContext` supplied outside the workspace binds
+authenticated root/executor/finalizer identities, session, trusted observed time and all governing
+digests; only its digest enters the receipt. It is not a fourth artifact or new authority. Hashes
+prove integrity, never identity. A trust policy/provider, reproducible repository binding, trusted
+clock/nonces, target-filesystem create-exclusive proof and authenticated executor/finalizer remain
+external prerequisites, so the proposal remains non-pass.
 
 Approval of this ADR alone is insufficient. The feature-wide `runtimeGate` and
 `workPackGateStatus` remain independently controlling and blocked.

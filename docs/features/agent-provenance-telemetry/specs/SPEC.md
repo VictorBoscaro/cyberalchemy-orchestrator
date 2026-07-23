@@ -5,7 +5,7 @@ is_session: false
 layer: [domain, application, infrastructure]
 nature: [technical, reference]
 status: draft
-version: 0.1.0
+version: 0.1.1
 last_updated: 2026-07-23
 derived_from: ../discovery/session-dispatch-research-records.md@0.2.0
 specAuthoringGate: in-review
@@ -19,7 +19,7 @@ mutationGate: block
 
 Agent Provenance Telemetry (APT) owns the incremental contracts that connect a coarse Session to the
 existing Dispatch and to immutable Research captures plus append-only extracted facts. It owns
-deterministic provenance read models and reference-probe lineage, but remains subordinate to Agents
+deterministic provenance read models and Reference Scout lineage, but remains subordinate to Agents
 Communication Infra (ACI) for journal, bus, artifact, canonicalization and receipt authority.
 
 This specification ratifies information ownership and behavior, not a deployed runtime. No APT
@@ -32,7 +32,7 @@ the [work-pack mutation gate](../WORK-PACK.md#mutation-gate-authority-and-eviden
 graph TD
     SR[Session Registry] --> DSP[Dispatch Scope Projection]
     DSP --> RCF[Research Capture and Facts]
-    RPL[Reference Probe Lineage] --> RCF
+    RPL[Reference Scout Lineage] --> RCF
     SR --> DRM[Deterministic Read Models]
     DSP --> DRM
     RCF --> DRM
@@ -45,7 +45,7 @@ graph TD
 | Session Registry | Ensures one coarse session per execution context and supports explicit authorized rollover. | `EnsureSession`, `StartNewSession`, `LinkSessionDispatch`, `SessionRecord` | ID, start instant, immutable initial name and sole Session-to-Dispatch link only; rename is outside L0. |
 | Dispatch Scope Projection | Reads a pinned dispatch authority snapshot and projects session/research joins without mutating the strict ledger. | `DispatchScopeProjection`, `DispatchAuthoritySnapshotRef`, `ProvenanceFactsToReadModels` | No new dispatch keys, reverse joins or lifecycle owner. |
 | Research Capture & Facts | Seals one producer outcome and appends attributed questions, answers, uses, checks, problems, claim extractions and formalizations. | `AppendResearchCapture`, `AppendResearchFact`, `ResearchCapture` | `captured`/`partial` require exactly one artifact raw return; `missing` forbids it and requires expectation/failure evidence. |
-| Reference Probe Lineage | Maps an ACI-committed, profile-bound probe recommendation into typed research lineage while referencing host-owned source observations. | `AppendReferenceProbeLineage`, `ProbeBundleToReferenceLineage`, `ACIProtocolProfileBinding` | Small profile only; no second bus, source-observation owner or claim adjudication. |
+| Reference Scout Lineage | Maps an ACI-committed, profile-bound Scout recommendation into typed research lineage while referencing host-owned source observations. | Legacy v1 IDs `AppendReferenceProbeLineage`, `ProbeBundleToReferenceLineage`, `ACIProtocolProfileBinding` | Small profile only; frozen v1 wire IDs retain `reference-probe`; no second bus, source-observation owner or claim adjudication. |
 | Deterministic Read Models | Rebuilds Session, Dispatch and Research projections at an explicit event offset. | `SessionRecord`, `DispatchScopeProjection`, `ResearchRecord` | As-of, dedupe and supersession formulas are replay-tested; granular views remain derived. |
 
 ### Capability Boundaries
@@ -55,7 +55,7 @@ graph TD
 | Session Registry | Ensure is idempotent by context key; rollover atomically emits successor start and context rebound; the initial name is immutable in L0 and future `RenameSession` is not authorized. |
 | Dispatch Scope Projection | The deterministic hash uses one variant-specific `DispatchAuthoritySnapshotRef`: `aci_managed` pins Dispatch ID, artifact ref/digest and accepted event/offset, while `legacy_ledger` pins canonical ledger-row identity plus row digest and excludes only its optional non-authoritative row-index locator. Current mutable external Dispatch state is neither an input nor display context for the deterministic result. |
 | Research Capture & Facts | Capture is immutable: `captured`/`partial` contain exactly one `ArtifactReference`; `missing` contains none and records expected contribution plus failure evidence. Extracted fact revisions append predecessor-linked Entities. |
-| Reference Probe Lineage | Exact ACI profile/bundle receipts gate `host.SourceObservation <- optional ProbeRecommendationRef <- ResearchReferenceUse -> ResearchReferenceClaimRelation -> ResearchClaimExtraction`; APT references but never owns the host event. |
+| Reference Scout Lineage | Exact ACI profile/bundle receipts gate `host.SourceObservation <- optional ProbeRecommendationRef <- ResearchReferenceUse -> ResearchReferenceClaimRelation -> ResearchClaimExtraction`; the product name is Scout while frozen v1 concept/wire IDs remain compatibility aliases. APT references but never owns the host event. |
 | Deterministic Read Models | `SessionRecord`, `DispatchScopeProjection` and `ResearchRecord` accept inclusive `requested_o`, derive `effective_as_of` as the last complete verified group boundary not after it, preserve explicit supersession/dedupe and have zero replay effects. |
 
 ## Domain Concepts
@@ -198,6 +198,13 @@ particular, APT-D12 fixes the two sole join authorities, APT-D13 separates immut
 facts and query projection, APT-D14 forbids a parallel bus/ledger, and APT-D15 requires deterministic
 as-of replay. Ratification does not assert implementation.
 
+The [experimental runtime E0](experimental-runtime-l0.md) additionally freezes: Session is not
+Conversation; journal events and receipts are experimental authority while semantic tables are
+rebuildable projections; no transcript, compression or masking is in scope; Reference Scout is the
+product name with frozen `reference-probe` v1 identifiers preserved; and no metric unifies the two
+independent residue constructions. E0 is shadow-only and does not lift `runtimeGate` or
+`mutationGate`.
+
 ## Open-Question Disposition
 
 | Question | Disposition for this specification |
@@ -238,6 +245,7 @@ not imply implementation readiness or runtime approval.
 | [Rules](rules.md) | Testable authority and integrity invariants | APT-R1 through APT-R8 |
 | [Persistence and Replay](persistence-and-replay.md) | Local adapter, atomicity, receipts and replay proofs | idempotency, CAS, offsets, crash recovery |
 | [Observability](observability.md) | Non-authoritative logs, traces and metrics | correlation, redaction, signal boundaries |
+| [Experimental Runtime L0](experimental-runtime-l0.md) | Isolated SQLite journal/receipt proof and rebuildable Session/Scout projections | shadow-only operations, replay, compatibility boundaries |
 
 ## Cross-Feature Dependencies
 
@@ -245,7 +253,7 @@ not imply implementation readiness or runtime approval.
 |---|---|---|---|
 | Session Registry | [ACI Confirmed runtime authority](../../agents-communication-infra/specs/SPEC.md#capabilities) | ACI event/journal append contract | Reuses one writer, canonical event and receipt authority. |
 | Research Capture & Facts | [ACI Recovery and official closure contracts](../../agents-communication-infra/specs/persistence-and-replay.md#4-atomic-command-acceptance) | append-before-ack event and artifact references | Makes capture durable without a second store authority. |
-| Reference Probe Lineage | [ACI Receipt-gated publication](../../agents-communication-infra/specs/SPEC.md#receipt-gated-deliberation) | exact protocol profile, publication and receipt evidence | Accepts only committed probe lineage. |
+| Reference Scout Lineage | [ACI Receipt-gated publication](../../agents-communication-infra/specs/SPEC.md#receipt-gated-deliberation) | exact protocol profile, publication and receipt evidence | Accepts only committed Scout lineage; frozen v1 wire identifiers retain `probe`. |
 | Deterministic Read Models | [ACI Read and accountability](../../agents-communication-infra/specs/SPEC.md#operator-projection-and-usage-accountability) | verified group-boundary and replay contract | Preserves explicit `requested_o`/`effective_as_of`, staleness and deterministic reconstruction. |
 
 ### Host-Owned External Concept
@@ -282,6 +290,8 @@ The TEST-SPEC includes this status/cardinality matrix:
 ## References
 
 - [Focused discovery v0.2.0](../discovery/session-dispatch-research-records.md)
+- [Reference Scout](../probes/reference-scout-tool.md)
+- [Experimental runtime E0](experimental-runtime-l0.md)
 - [Work-pack (draft; document gate reviewed)](../WORK-PACK.md)
 - [ACI specification](../../agents-communication-infra/specs/SPEC.md)
 - [ACI architecture scope](../../agents-communication-infra/specs/architecture.md#scope-boundary)

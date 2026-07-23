@@ -1,0 +1,58 @@
+{
+  "schema": "aci.profile-registration-receipts/v1",
+  "reviewer_identity": "Rawls",
+  "reviewed_at": "2026-07-23",
+  "verdict": "PASS",
+  "profile_registry_manifest_path": "profile-registry-manifest.json",
+  "profile_registry_manifest_sha256": "sha256:c94e4eb4dfffd1436309db4fd2c29e32e5169129899abda434e439377ea1ddce",
+  "registrations": [
+    {
+      "receipt_id": "ACI-PROFILE-REG-001",
+      "profile_id": "aci.atomic-command-receipt-accepted-prefix-read-grouping",
+      "profile_version": "1",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/aci-atomic-command-receipt-accepted-prefix-read-grouping@1.json",
+      "authoritative_file_digest": "sha256:c9d92a07969e8b2adbceda140098381a0db760a9cbd38242d93deb9831195543",
+      "canonical_digest": "sha256:5462b985ddb82a28a502ad0bcb25cd02f0faa7339e1e4850150fec8c87c46c65",
+      "canonical_size_bytes": 1207,
+      "verdict": "PASS"
+    },
+    {
+      "receipt_id": "ACI-PROFILE-REG-002",
+      "profile_id": "aci.transactional-semantic-uniqueness-result-mapping",
+      "profile_version": "1",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/aci-transactional-semantic-uniqueness-result-mapping@1.json",
+      "authoritative_file_digest": "sha256:ff276b204d66f7ef20a0513feffa347caaa27dff4f2183e5c84099568eaad990",
+      "canonical_digest": "sha256:2aa692e27e1931dcd9d4d54f683edc81107b0a570d645d0547cbd25018690fd2",
+      "canonical_size_bytes": 1002,
+      "verdict": "PASS"
+    },
+    {
+      "receipt_id": "ACI-PROFILE-REG-003",
+      "profile_id": "aci.event-schema-canonicalizer-registry",
+      "profile_version": "1",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/aci-event-schema-canonicalizer-registry@1.json",
+      "authoritative_file_digest": "sha256:38db921f9047b72ade1b6ffc91789c6ce3e7f9cbd7ec3d6cdc719827d84ef7b1",
+      "canonical_digest": "sha256:4caed76f44d8a586ec7af1e41d03a610295955556f50c64f05e962ddf9064c53",
+      "canonical_size_bytes": 2053,
+      "verdict": "PASS"
+    },
+    {
+      "receipt_id": "ACI-PROFILE-REG-004",
+      "profile_id": "apt.reference-probe-lineage",
+      "profile_version": "1",
+      "authoritative_profile_path": "docs/features/agent-provenance-telemetry/integration/stage-a/profiles/apt-reference-probe-lineage@1.json",
+      "authoritative_file_digest": "sha256:a99d2580888e907f400e4630b464279aa3d5a58e7fe5ca1353ba305c28940016",
+      "canonical_digest": "sha256:f011871582dd2618b4512d21b79a8a6fdb67fde8a2be96752ce4abd48cecaa09",
+      "canonical_size_bytes": 1487,
+      "verdict": "PASS"
+    }
+  ],
+  "gate_effect": {
+    "all_required_aci_profile_receipts": "PASS",
+    "scope": "SWU-ACI-APT-VS-001-only",
+    "local_pilot_serve": "blocked",
+    "production": "blocked",
+    "audit_materializer_and_cutover": "blocked"
+  },
+  "objections": []
+}

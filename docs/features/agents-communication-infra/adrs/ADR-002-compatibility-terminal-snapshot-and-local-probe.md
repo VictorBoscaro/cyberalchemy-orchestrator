@@ -2,14 +2,14 @@
 feature: agents-communication-infra
 adr: ADR-002
 title: Compatibility, terminal, snapshot and bounded local-probe contracts
-status: proposed-accepted-pending-independent-review
-acceptance_status: pending
+status: accepted
+acceptance_status: PASS-cycle-5-of-5
 acceptance_receipt: ../reviews/2026-07-23-stage-a-freeze/reviewer-receipt.json
 date: 2026-07-23
 layer: L0
 slice: S-000
 swu: SWU-ACI-002
-runtime_gate: block
+runtime_gate: pass-for-exact-swu-mutation-only
 ---
 
 # ADR-002: Compatibility, terminal, snapshot and bounded local-probe contracts

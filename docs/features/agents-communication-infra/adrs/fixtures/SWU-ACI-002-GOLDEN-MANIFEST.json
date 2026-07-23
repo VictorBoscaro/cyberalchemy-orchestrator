@@ -2,28 +2,41 @@
   "schema": "aci.swu-002-golden-manifest/v1",
   "fixtures": [
     {
+      "kind": "accepted-opening-appender-input",
+      "path": "golden-opening-input-v0.6.1.json",
+      "size_bytes": 756,
+      "sha256": "sha256:69616ddd1fcb1abf22dfc1a178ed1d57098c8d504cd53f2ad2635b6c2592b18b",
+      "appender_exit_code": 0
+    },
+    {
+      "kind": "accepted-close-appender-input",
+      "path": "golden-close-input-v0.6.1.json",
+      "size_bytes": 209,
+      "sha256": "sha256:ae2015ec63b2111f429c0c7cf31ec72eddd12a4414a70e5732e72d0f7b7d1a5e",
+      "appender_exit_code": 0
+    },
+    {
       "kind": "exact-opening-ledger-bytes",
       "path": "golden-opening-v0.6.1.yaml",
-      "size_bytes": 694,
-      "sha256": "sha256:7e60384f6572cd267b28a92955e168166405c3c49da92c8335507f2baa359166",
+      "size_bytes": 699,
+      "sha256": "sha256:a5e1d52ca5edb3a8ac9b447ef1489da151d8d32c49dc2ea4d813abc3c6c82cbe",
       "dispatch_id": "2026-07-23-local-probe-fixture",
       "appender_contract_version": "0.6.1"
     },
     {
       "kind": "exact-close-ledger-bytes",
       "path": "golden-close-v0.6.1.yaml",
-      "size_bytes": 191,
-      "sha256": "sha256:caa84b94f647b68829bba394efaf02d9031d7f09e8805c5046f52e7b472f441b",
+      "size_bytes": 261,
+      "sha256": "sha256:44410a627dd6ecddbbb6a54bbf0393bf96e40d1fca37b4b4c379663106dd444b",
       "close_of": "2026-07-23-local-probe-fixture",
       "exit_reason": "resolved"
     },
     {
       "kind": "command-event-state-trace",
       "path": "local-probe-end-to-end-trace.json",
-      "size_bytes": 3915,
-      "sha256": "sha256:c119606ac83ef7098d6172bc9930d3200afd7612f28203bb3b1b3e4a13edeccc",
-      "terminal_state": "official-probe-lineage-current"
+      "size_bytes": 14542,
+      "sha256": "sha256:decd1413410e8493140ab8f8410c1edf90ef030cbf54d0f9d261771582d15dd5",
+      "terminal_state": "research-projection-rebuilt-with-answer-reference-problem-formalization"
     }
   ]
 }
-
