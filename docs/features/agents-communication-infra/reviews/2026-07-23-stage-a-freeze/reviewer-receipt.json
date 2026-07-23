@@ -6,7 +6,7 @@
   "review_cycle": "5/5",
   "reviewed_at": "2026-07-23",
   "artifact_manifest_path": "artifact-manifest.json",
-  "artifact_manifest_sha256": "sha256:037a8bbaa6e361d56d6dda3790ce93fdd1361a3518bd89a47e93ef1256a55e66",
+  "artifact_manifest_sha256": "sha256:8856e4407942a4754d23df8f935b2d3db6f4d7934e49ea75bf8a579f0a7d3ae1",
   "profile_registry_manifest_path": "profile-registry-manifest.json",
   "profile_registry_manifest_sha256": "sha256:c94e4eb4dfffd1436309db4fd2c29e32e5169129899abda434e439377ea1ddce",
   "supporting_receipts": [

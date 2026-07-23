@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sqlite3
 from dataclasses import replace
 from typing import Any
 
@@ -114,6 +115,7 @@ class ProvenanceService:
         ):
             raise ConflictError("capture batch authority/evidence mismatch")
         known_subjects: dict[str, str] = {}
+        known_claim_statements: dict[str, str] = {}
         entity_fields = {
             "research_question": {
                 "research_question_id", "research_capture_id", "fact",
@@ -243,6 +245,8 @@ class ProvenanceService:
                             "logic_family", "assumptions", "scope",
                         )
                     )
+                    and selected.get("claim")
+                    == known_claim_statements.get(entity["research_claim_id"])
                     and set(selected)
                     == {
                         "mode", "type", "claim", "notation", "latex", "legend",
@@ -263,6 +267,8 @@ class ProvenanceService:
                 if known_subjects.get(subject_id) != expected_kind:
                     raise ConflictError("fact batch edge is dangling or wrong-kind")
             known_subjects[fact["subject_id"]] = kind
+            if kind == "research_claim":
+                known_claim_statements[fact["subject_id"]] = entity["statement"]
 
     @staticmethod
     def _bound_envelope(records: list[dict[str, Any]]) -> tuple[bytes, list[dict[str, Any]]]:
@@ -323,11 +329,7 @@ class ProvenanceService:
         for name, limit in (("references", 128), ("problems", 128), ("formalizations", 64)):
             if not isinstance(intent[name], list) or len(intent[name]) > limit:
                 raise ValidationError(f"{name} must be a bounded list")
-        with self.runtime.database.connect() as conn:
-            link = conn.execute(
-                "SELECT * FROM dispatch_links WHERE dispatch_id=? AND session_id=?",
-                (dispatch_id, intent["session_id"]),
-            ).fetchone()
+        link = self.runtime.apt_dispatch_link(dispatch_id, intent["session_id"])
         if not link:
             raise ConflictError("accepted session-to-dispatch link is required")
         dispatch_snapshot = self.runtime.legacy.resolve(
@@ -449,18 +451,24 @@ class ProvenanceService:
         aggregate_id = self.runtime._stable_id(
             "apt.research:", [dispatch_id, contribution]
         )
-        with self.runtime.database.connect() as conn:
-            prior = conn.execute(
-                """SELECT result_receipt_json FROM command_receipts
-                   WHERE scope_key=? AND idempotency_key=?""",
-                (aggregate_id, idempotency_key),
-            ).fetchone()
+        prior = self.runtime.apt_command_result(aggregate_id, idempotency_key)
         if prior:
-            result = json.loads(prior["result_receipt_json"])
+            result = prior
             if result.get("submission_digest") != submission_digest:
                 raise IdempotencyConflict(
                     "research idempotency key reused with different submission"
                 )
+            try:
+                state = self.runtime.projections.catch_up_apt(self.runtime.journal)
+                result["projection_status"] = (
+                    "current"
+                    if state["current"]
+                    and int(state["apt_source_through_offset"])
+                    >= int(result["last_offset"])
+                    else "pending"
+                )
+            except Exception:
+                result["projection_status"] = "pending"
             return result
 
         records: list[dict[str, Any]] = [
@@ -521,14 +529,11 @@ class ProvenanceService:
             "finalization_receipt_ref": prepared.finalization_receipt_ref,
         }
         capture_id = self.runtime._stable_id("cap_", submission_digest)
-        with self.runtime.database.connect() as conn:
-            existing_capture_projection = conn.execute(
-                """SELECT payload_json FROM apt_research_captures_projection
-                   WHERE research_capture_id=?""",
-                (capture_id,),
-            ).fetchone()
+        existing_capture_projection = self.runtime.apt_capture_projection_payload(
+            capture_id
+        )
         captured_at = (
-            parse_strict_json(existing_capture_projection["payload_json"])["captured_at"]
+            existing_capture_projection["captured_at"]
             if existing_capture_projection
             else link["linked_at"]
         )
@@ -741,44 +746,47 @@ class ProvenanceService:
             }
             for kind, entity in facts
         )
-        with self.runtime.database.connect() as conn:
-            capture_existing = conn.execute(
-                "SELECT * FROM apt_capture_keys WHERE research_capture_id=?",
-                (capture_id,),
-            ).fetchone()
-            for item in items:
-                if item["kind"] == "capture":
-                    existing = capture_existing
-                    exact = (
-                        existing
-                        and existing["capture_digest"]
-                        == self.runtime._content_digest_string(capture["capture_digest"])
-                    )
-                    accepted = existing["accepted_event_id"] if existing else None
-                else:
-                    fact = item["payload"]["payload"]["fact"]
-                    existing = conn.execute(
-                        "SELECT * FROM apt_semantic_facts WHERE fact_id=?",
-                        (fact["fact_id"],),
-                    ).fetchone()
-                    exact = (
-                        existing
-                        and existing["canonical_payload_digest"]
-                        == item["semantic_digest"]
-                        and existing["subject_id"] == fact["subject_id"]
-                        and existing["supersedes_fact_id"] == fact["supersedes_fact_id"]
-                    )
-                    accepted = existing["accepted_event_id"] if existing else None
-                if existing and not exact:
-                    raise ConflictError(f"semantic conflict for {item['item_key']}")
-                item["status"] = "existing_exact" if existing else "submitted_new"
-                item["accepted_event_id"] = accepted
+        fact_envelopes = [
+            item["payload"]["payload"]["fact"]
+            for item in items
+            if item["kind"] != "capture"
+        ]
+        capture_existing, existing_facts = self.runtime.apt_semantic_partition(
+            capture_id,
+            self.runtime._content_digest_string(capture["capture_digest"]),
+            fact_envelopes,
+        )
+        for item in items:
+            if item["kind"] == "capture":
+                existing = capture_existing
+                exact = (
+                    existing
+                    and existing["capture_digest"]
+                    == self.runtime._content_digest_string(capture["capture_digest"])
+                )
+                accepted = existing["accepted_event_id"] if existing else None
+            else:
+                fact = item["payload"]["payload"]["fact"]
+                existing = existing_facts.get(fact["fact_id"])
+                exact = (
+                    existing
+                    and existing["canonical_payload_digest"]
+                    == item["semantic_digest"]
+                    and existing["subject_id"] == fact["subject_id"]
+                    and existing["supersedes_fact_id"] == fact["supersedes_fact_id"]
+                )
+                accepted = existing["accepted_event_id"] if existing else None
+            if existing and not exact:
+                raise ConflictError(f"semantic conflict for {item['item_key']}")
+            item["status"] = "existing_exact" if existing else "submitted_new"
+            item["accepted_event_id"] = accepted
         new_items = [item for item in items if item["status"] == "submitted_new"]
         if not new_items:
             result = {
                 "status": "existing_exact",
                 "submitted": False,
                 "submission_digest": submission_digest,
+                "research_capture_id": capture_id,
                 "semantic_results": [
                     {
                         "item_key": item["item_key"],
@@ -932,7 +940,20 @@ class ProvenanceService:
                 mutate=mutate,
             )
         except IdempotencyConflict:
-            raise
+            if not _retry_after_race:
+                raise
+            # A concurrent exact request may have committed after our initial
+            # receipt lookup but before journal acceptance. Re-enter once so
+            # the authoritative receipt check decides exact retry vs conflict.
+            return self.append_research_submission(
+                token=token,
+                dispatch_id=dispatch_id,
+                idempotency_key=idempotency_key,
+                intent=intent,
+                _retry_after_race=False,
+            )
+        except sqlite3.IntegrityError as exc:
+            raise ConflictError("research semantic currentness conflict") from exc
         except ConflictError:
             if not _retry_after_race:
                 raise
@@ -965,11 +986,7 @@ class ProvenanceService:
         )
         result = self.runtime.projections.get_apt_research(capture_id)
         capture = result["capture"]
-        with self.runtime.database.connect() as conn:
-            link = conn.execute(
-                "SELECT session_id FROM dispatch_links WHERE dispatch_id=?",
-                (capture["dispatch_id"],),
-            ).fetchone()
+        link = self.runtime.apt_dispatch_link(capture["dispatch_id"])
         if (
             not link
             or context.context.get("session_id") != link["session_id"]
@@ -982,11 +999,7 @@ class ProvenanceService:
         context = self.runtime.capabilities.resolve(
             token, action="projection.read", phase="observe"
         )
-        with self.runtime.database.connect() as conn:
-            link = conn.execute(
-                "SELECT session_id FROM dispatch_links WHERE dispatch_id=?",
-                (dispatch_id,),
-            ).fetchone()
+        link = self.runtime.apt_dispatch_link(dispatch_id)
         if (
             not link
             or context.context.get("session_id") != link["session_id"]
@@ -999,18 +1012,10 @@ class ProvenanceService:
         context = self.runtime.capabilities.resolve(
             token, action="artifact.read", phase="collect"
         )
-        with self.runtime.database.connect() as conn:
-            capture = conn.execute(
-                """SELECT c.*,l.session_id FROM apt_research_captures_projection c
-                   JOIN dispatch_links l ON l.dispatch_id=c.dispatch_id
-                   WHERE c.research_capture_id=?""",
-                (capture_id,),
-            ).fetchone()
-            answer = conn.execute(
-                """SELECT * FROM apt_research_answers_projection
-                   WHERE research_capture_id=? ORDER BY research_answer_id LIMIT 1""",
-                (capture_id,),
-            ).fetchone()
+        # Protected reads are projection-bound too: a lagging projector must
+        # return PROJECTION_LAG rather than disclose from a newer authority row.
+        self.runtime.projections.get_apt_research(capture_id)
+        capture, answer = self.runtime.apt_answer_binding(capture_id)
         if not capture or not answer:
             raise NotFoundError("research answer not found")
         if (

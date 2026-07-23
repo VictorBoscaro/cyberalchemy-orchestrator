@@ -25,22 +25,28 @@
     "001_aci_slice0.sql",
     "002_artifact_store.sql",
     "003_profile_capability.sql",
-    "004_apt_projection.sql"
+    "004_apt_projection.sql",
+    "005_apt_granular_projection.sql",
+    "006_apt_projector_state.sql",
+    "007_session_origin_heads.sql"
   ],
   "commands": [
     "aci.register-protocol-profile@1",
     "apt.ensure-session@1",
+    "apt.start-new-session@1",
     "apt.link-session-dispatch@1",
     "aci.activate-local-probe-context@1",
     "aci.publish-bus-contribution@1",
     "aci.verify-publication-receipt@1",
     "apt.append-research-capture@1",
     "apt.append-research-fact@1",
-    "apt.append-reference-probe-lineage@1"
+    "apt.append-reference-probe-lineage@1",
+    "apt.append-bound-research-submission@1"
   ],
   "events": [
     "aci.protocol_profile_registered@1",
     "apt.session_started@1",
+    "apt.session_context_rebound@1",
     "apt.session_dispatch_linked@1",
     "aci.local_probe_context_activated@1",
     "publication.persisted",
@@ -68,8 +74,30 @@
     "POST /api/runtime/bus/publications/verify",
     "GET /api/runtime/events?after={offset}&through={offset}",
     "GET /api/runtime/artifacts/{artifact_id}",
-    "GET /api/runtime/projections/{name}/{key}"
+    "GET /api/runtime/projections/{name}/{key}",
+    "POST /api/provenance/sessions/ensure",
+    "POST /api/provenance/sessions/start-new",
+    "POST /api/provenance/sessions/{session_id}/dispatches",
+    "POST /api/provenance/dispatches/{repo_id}/{dispatch_id}/research",
+    "GET /api/provenance/sessions/{session_id}",
+    "GET /api/provenance/dispatches/{repo_id}/{dispatch_id}",
+    "GET /api/provenance/research/{capture_id}",
+    "GET /api/provenance/research/{capture_id}/answer"
   ],
+  "projection_runtime": {
+    "projector": "apt-granular@1",
+    "durable_state": "apt_projection_state",
+    "catch_up": "verified-complete-groups-through-accepted-prefix",
+    "rebuild": "discard-read-models-and-deterministically-replay-from-zero",
+    "write_response_when_projection_lags": {
+      "http_status": 202,
+      "projection_status": "pending"
+    },
+    "lagging_read": {
+      "http_status": 503,
+      "error_code": "PROJECTION_LAG"
+    }
+  },
   "trusted_cli": [
     "runtime migrate",
     "runtime register-profiles",
@@ -101,6 +129,7 @@
     "T-REGRESSION"
   ],
   "mutation_test_authorization": "pass_for_exact_swu",
+  "implementation_status": "implemented-and-verified",
   "local_pilot_serve_enablement": "blocked-separate-post-implementation-gate",
   "permanently_out_of_scope_for_this_authorization": [
     "production",

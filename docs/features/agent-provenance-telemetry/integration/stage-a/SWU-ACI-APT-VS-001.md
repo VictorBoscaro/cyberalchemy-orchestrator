@@ -1,8 +1,9 @@
 # SWU-ACI-APT-VS-001 — Session, Dispatch and Structured Research Vertical Slice
 
-- Status: `ready-for-independent-review`
-- Mutation authorization: `pending`
-- Runtime implementation: `not-started`
+- Status: `implemented-and-verified`
+- Mutation authorization: `pass-for-exact-swu`
+- Runtime implementation: `complete-for-descriptor`
+- Production/local-pilot serve: `disabled; separate enablement gate remains blocked`
 - Scope owner: APT application contracts; ACI owns every authority-bearing runtime facility.
 
 ## Outcome
@@ -92,6 +93,11 @@ The watermark is the highest complete verified group scanned, including skipped 
 Every projection row records accepted event ID, offset and payload digest. Projection tables are
 discardable and may never become command, replay, receipt or dispatch authority.
 
+The implementation materializes this surface through ordered migrations
+`005_apt_granular_projection.sql`, `006_apt_projector_state.sql` and
+`007_session_origin_heads.sql`. Catch-up scans verified complete command groups; rebuild deletes
+only discardable APT read models and deterministically replays from offset zero.
+
 ## Strict dispatch compatibility
 
 Mutation repos use an explicit stable repo-ID-to-realpath map; UI auto-discovery remains read-only.
@@ -129,5 +135,8 @@ unchanged.
 | B | ACI registration receipts for all four exact profile digests | PASS |
 | C | independent storage/artifact policy PASS | PASS |
 | D | owner mutation-gate change plus independent post-change receipt | PASS |
-| E | implementation + unit/contract/crash/security evidence | ready; not yet executed |
-| F | subprocess restart E2E and root/reviewer closure | blocked by E |
+| E | implementation + unit/contract/crash/security evidence | PASS |
+| F | subprocess restart E2E and root/reviewer closure | PASS; reviewer cycle 4/5, no objection |
+
+Passing E and F does not enable serving. Production and local-pilot composition remain disabled
+until a separate enablement decision and receipt.

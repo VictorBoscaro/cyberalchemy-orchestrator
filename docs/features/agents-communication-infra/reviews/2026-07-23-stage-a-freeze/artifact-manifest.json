@@ -21,7 +21,7 @@
     {"path":"reviews/2026-07-23-stage-a-freeze/profile-registration-receipts.json","sha256":"585b166f73bfc2c347e450a443384afac6c36ed180d553d5f4999a2e2dc6a7cf"},
     {"path":"reviews/2026-07-23-stage-a-freeze/storage-artifact-policy-receipt.json","sha256":"30c672468476689510642289ec984356f310ca2d799f2b953057b277672b4904"},
     {"path":"work-pack/tasks/TASK-APT-VS-001.md","sha256":"9e757d13a71ba75acc7a957f7134f582efbb3ad5f1da42e1bb6d2f11ae14933d"},
-    {"path":"work-pack/descriptors/SWU-ACI-APT-VS-001.json","sha256":"db84a0b2d2b92aa728ccf4498c7882a0236814263351797a06ae11dd2786e797"},
+    {"path":"work-pack/descriptors/SWU-ACI-APT-VS-001.json","sha256":"e86bb1f286c5dfdd627ad800cc66e8766aac7ae0f81d5029879ad0f8c3ba0e3e"},
     {"path":"work-pack/W0-CLOSURE.md","sha256":"7e6483d12a9d7b3d5861e553d754403f298d186a01b2805bfc20b1797b133508"},
     {"path":"WORK-PACK.md","sha256":"e4b618a45db0f8fd0bf335e46576fe7fb8f9d85be62e3b8b3f6abdfae3e21f87"},
     {"path":"work-pack/tasks/TASK-000.md","sha256":"b7556f7fe2557a8c9d76deebd6f90e2ee6c1c74c10540342205c353bbb9d57db"},

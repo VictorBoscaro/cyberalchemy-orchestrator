@@ -1,10 +1,10 @@
 {
   "schema": "aci.stage-b-execution-receipt/v1",
   "swu_id": "SWU-ACI-APT-VS-001",
-  "status": "pending-independent-implementation-review",
+  "status": "pass-implemented-and-verified-production-serve-disabled",
   "executed_at": "2026-07-23",
   "scope": "local-single-host-provenance-bus-vertical-slice",
-  "source_inventory": {
+  "stage_a_source_inventory_snapshot": {
     "file_count": 25,
     "canonical_inventory_sha256": "sha256:885719939a3609ddedd9c5ec816356c86c305aabc0f8644f3ca44560afff31d7",
     "runtime_root": "implementations/server/runtime",
@@ -23,21 +23,29 @@
       "exit_code": 0
     },
     {
-      "command": "python -m unittest implementations.tests.runtime.test_stage_b -q",
+      "command": "python -m unittest discover -s implementations/tests/runtime -p \"test_*.py\" -q",
       "result": "PASS",
-      "tests_run": 18,
+      "tests_run": 26,
       "exit_code": 0
     },
     {
-      "command": "python implementations/tests/test_main.py",
+      "command": "python -m unittest discover -s tests -p \"test_*.py\" -q",
+      "working_directory": "implementations/agent-runtime",
       "result": "PASS",
-      "summary": "all main tests passed",
+      "tests_run": 31,
       "exit_code": 0
     },
     {
-      "command": "python implementations/tests/test_ledger.py",
+      "command": "npm.cmd test",
+      "working_directory": "tools/agent-provenance-telemetry",
       "result": "PASS",
-      "summary": "all tests passed; 828 real dispatches parsed",
+      "tests_run": 27,
+      "exit_code": 0
+    },
+    {
+      "command": "npm.cmd run typecheck",
+      "working_directory": "tools/agent-provenance-telemetry",
+      "result": "PASS",
       "exit_code": 0
     },
     {
@@ -49,14 +57,54 @@
   "implemented_commands": [
     "aci.register-protocol-profile@1",
     "apt.ensure-session@1",
+    "apt.start-new-session@1",
     "apt.link-session-dispatch@1",
     "aci.activate-local-probe-context@1",
     "aci.publish-bus-contribution@1",
     "aci.verify-publication-receipt@1",
     "apt.append-research-capture@1",
     "apt.append-research-fact@1",
-    "apt.append-reference-probe-lineage@1"
+    "apt.append-reference-probe-lineage@1",
+    "apt.append-bound-research-submission@1"
   ],
+  "implemented_surface": {
+    "migrations": [
+      "005_apt_granular_projection.sql",
+      "006_apt_projector_state.sql",
+      "007_session_origin_heads.sql"
+    ],
+    "http_prefix": "/api/provenance",
+    "http_routes": [
+      "POST /api/provenance/sessions/ensure",
+      "POST /api/provenance/sessions/start-new",
+      "POST /api/provenance/sessions/{session_id}/dispatches",
+      "POST /api/provenance/dispatches/{repo_id}/{dispatch_id}/research",
+      "GET /api/provenance/sessions/{session_id}",
+      "GET /api/provenance/dispatches/{repo_id}/{dispatch_id}",
+      "GET /api/provenance/research/{capture_id}",
+      "GET /api/provenance/research/{capture_id}/answer"
+    ],
+    "session_rollover": {
+      "command": "apt.start-new-session@1",
+      "events": [
+        "apt.session_started@1",
+        "apt.session_context_rebound@1"
+      ],
+      "head_update": "current-origin-head-CAS"
+    },
+    "projection": {
+      "catch_up": "verified-complete-groups",
+      "rebuild": "deterministic-from-zero",
+      "pending_write_response": {
+        "http_status": 202,
+        "projection_status": "pending"
+      },
+      "lagging_read": {
+        "http_status": 503,
+        "error_code": "PROJECTION_LAG"
+      }
+    }
+  },
   "safety_state": {
     "local_pilot_serve_enablement": "blocked",
     "production": "blocked",
@@ -65,12 +113,12 @@
     "provider_adapter": "absent",
     "legacy_runtime_cutover": "absent",
     "legacy_ledger_mutation": "absent",
-    "apt_raw_projection_routes_or_tables": "absent"
+    "apt_granular_projection_routes_and_tables": "implemented-test-only-composition"
   },
   "approval": {
     "implementation_author": "runtime_bus_orchestrator",
     "self_approved": false,
-    "independent_reviewer": "pending",
+    "independent_reviewer": "pass-no-objection-cycle-4-of-5",
     "findings": []
   }
 }

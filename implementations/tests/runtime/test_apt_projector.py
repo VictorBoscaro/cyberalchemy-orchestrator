@@ -1,18 +1,50 @@
 from __future__ import annotations
 
 import json
+import shutil
+import tempfile
 import unittest
+from pathlib import Path
 
 from implementations.server.runtime.canonical import canonical_digest
 from implementations.server.runtime.projections import ProjectionLagError
 from implementations.server.runtime.provenance import ProvenanceService
+from implementations.server.runtime.service import RuntimeService, RuntimeSettings
 from implementations.tests.runtime.test_apt_stage_b import (
-    AptResearchEndToEndTests,
     DISPATCH_ID,
+    GOLDEN_LEDGER,
+    REPO,
 )
 
 
-class AptIndependentProjectorTests(AptResearchEndToEndTests):
+class AptIndependentProjectorTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        self.ledger = self.root / "ledger.yaml"
+        shutil.copyfile(GOLDEN_LEDGER, self.ledger)
+        self.settings = RuntimeSettings(self.root / "runtime.db", REPO, self.ledger)
+        self.runtime = RuntimeService(self.settings)
+        self.runtime.open()
+        self.runtime.register_profiles()
+        self.session_id = self.runtime.ensure_session(
+            origin_digest="sha256:" + "7" * 64, name="APT projector"
+        )["session"]["session_id"]
+        self.runtime.link_session_dispatch(
+            session_id=self.session_id, dispatch_id=DISPATCH_ID
+        )
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def token(self, action: str, phase: str, context: dict[str, str]) -> str:
+        return self.runtime.issue_capability(
+            principal_id="apt-projector",
+            action=action,
+            phase=phase,
+            context=context,
+        )["token"]
+
     def _intent(self, contribution: str) -> dict:
         return {
             "session_id": self.session_id,
@@ -52,6 +84,14 @@ class AptIndependentProjectorTests(AptResearchEndToEndTests):
         self.assertIsNotNone(durable)
         self.assertEqual(json.loads(durable[0])["projection_status"], "pending")
         self.assertEqual(projected, 0)
+        pending_state = self.runtime.projections.apt_state()
+        self.assertGreaterEqual(
+            pending_state["source_through_offset"], receipt["last_offset"]
+        )
+        self.assertLess(
+            pending_state["apt_source_through_offset"], receipt["last_offset"]
+        )
+        self.assertFalse(pending_state["current"])
         with self.assertRaises(ProjectionLagError):
             provenance.get_research(
                 token=self.token("projection.read", "observe", scope),

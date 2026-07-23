@@ -216,6 +216,10 @@ class ProjectionManager:
                     INSERT INTO apt_reference_lineage_projection(
                       delivery_subject_key,accepted_event_id,accepted_offset,payload_json
                     ) VALUES(?,?,?,?)
+                    ON CONFLICT(delivery_subject_key) DO UPDATE SET
+                      accepted_event_id=excluded.accepted_event_id,
+                      accepted_offset=excluded.accepted_offset,
+                      payload_json=excluded.payload_json
                     """,
                     (
                         payload["delivery_subject_key"],
@@ -454,6 +458,35 @@ class ProjectionManager:
                     if event["event_type"].startswith("apt.")
                 ]
                 self.apply_apt_group(conn, apt_events)
+                by_session: dict[str, list[dict[str, Any]]] = {}
+                by_dispatch: dict[str, list[dict[str, Any]]] = {}
+                for event in apt_events:
+                    if event["event_type"] == "apt.session_started":
+                        session_id = event["payload"]["session"]["session_id"]
+                        by_session.setdefault(session_id, []).append(event)
+                    elif event["event_type"] == "apt.session_context_rebound":
+                        session_id = event["payload"]["successor_session_id"]
+                        by_session.setdefault(session_id, []).append(event)
+                    elif event["event_type"] == "apt.session_dispatch_linked":
+                        link = event["payload"]["link"]
+                        by_session.setdefault(link["session_id"], []).append(event)
+                        by_dispatch.setdefault(link["dispatch_id"], []).append(event)
+                for session_id, events in by_session.items():
+                    self.apply_complete_group(
+                        conn,
+                        projection_name="apt.session-record",
+                        projection_key=session_id,
+                        events=events,
+                        last_offset=int(group["last_offset"]),
+                    )
+                for dispatch_id, events in by_dispatch.items():
+                    self.apply_complete_group(
+                        conn,
+                        projection_name="apt.dispatch-scope",
+                        projection_key=dispatch_id,
+                        events=events,
+                        last_offset=int(group["last_offset"]),
+                    )
                 by_capture: dict[str, list[dict[str, Any]]] = {}
                 for event in apt_events:
                     if event["event_type"] == "apt.research_capture_appended":
@@ -503,7 +536,10 @@ class ProjectionManager:
             ):
                 conn.execute(f"DELETE FROM {table}")
             conn.execute(
-                "DELETE FROM runtime_projections WHERE projection_name='apt.research-record'"
+                """DELETE FROM runtime_projections
+                   WHERE projection_name IN (
+                     'apt.session-record','apt.dispatch-scope','apt.research-record'
+                   )"""
             )
             conn.execute(
                 """

@@ -18,6 +18,7 @@ MIGRATION_NAMES = (
     "004_apt_projection.sql",
     "005_apt_granular_projection.sql",
     "006_apt_projector_state.sql",
+    "007_session_origin_heads.sql",
 )
 
 

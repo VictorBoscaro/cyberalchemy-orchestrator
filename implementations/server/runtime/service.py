@@ -14,7 +14,13 @@ from .artifacts import ArtifactStore
 from .canonical import canonical_bytes, canonical_digest, canonical_text, parse_strict_json
 from .capabilities import CapabilityManager
 from .database import RuntimeDatabase
-from .errors import ConflictError, IntegrityError, NotFoundError, ValidationError
+from .errors import (
+    ConflictError,
+    IdempotencyConflict,
+    IntegrityError,
+    NotFoundError,
+    ValidationError,
+)
 from .journal import EventDraft, PrerequisiteHead, RuntimeCommand, RuntimeJournal
 from .legacy import StrictLegacySnapshotResolver
 from .profiles import ProfileImporter, VerifiedProfile
@@ -76,16 +82,131 @@ class RuntimeService:
         bindings = ProfileImporter.event_bindings(self._profiles)
         bindings.update(ACI_SCHEMAS)
         self.journal.bind_event_schemas(bindings)
+        self.journal.bind_payload_validators(
+            {
+                "apt.session_started": self._validate_session_started_event,
+                "apt.session_context_rebound": self._validate_session_rebound_event,
+                "apt.session_dispatch_linked": self._validate_session_linked_event,
+            }
+        )
         return {"applied_migrations": applied, "policy": self.database.verify_policy()}
+
+    @staticmethod
+    def _require_exact_fields(
+        value: Any, fields: set[str], label: str
+    ) -> dict[str, Any]:
+        if not isinstance(value, dict) or set(value) != fields:
+            raise IntegrityError(f"{label} payload shape is invalid")
+        return value
+
+    @classmethod
+    def _validate_session_started_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "session",
+                "actor_ref",
+                "actor_authentication_ref",
+                "actor_authentication_digest",
+                "rollover_authorization",
+            },
+            "SessionStarted",
+        )
+        cls._require_exact_fields(
+            payload["session"],
+            {
+                "session_id",
+                "origin_kind",
+                "origin_ref",
+                "ensure_key",
+                "start_operation_id",
+                "started_at",
+                "initial_name",
+            },
+            "Session",
+        )
+        rollover = payload["rollover_authorization"]
+        if rollover is None:
+            if (
+                payload["actor_authentication_ref"] is None
+                or payload["actor_authentication_digest"] is None
+            ):
+                raise IntegrityError("ensure authentication evidence is required")
+        else:
+            cls._require_exact_fields(
+                rollover,
+                {
+                    "authorization_policy_ref",
+                    "authorization_policy_digest",
+                    "authorization_evidence_ref",
+                    "authorization_evidence_digest",
+                },
+                "rollover authorization",
+            )
+            if (
+                payload["actor_authentication_ref"] is not None
+                or payload["actor_authentication_digest"] is not None
+            ):
+                raise IntegrityError("rollover authentication slots must be null")
+
+    @classmethod
+    def _validate_session_rebound_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "origin_kind",
+                "origin_ref",
+                "predecessor_session_id",
+                "successor_session_id",
+                "rebound_at",
+                "actor_ref",
+                "authorization_policy_ref",
+                "authorization_policy_digest",
+                "authorization_evidence_ref",
+                "authorization_evidence_digest",
+            },
+            "SessionContextRebound",
+        )
+
+    @classmethod
+    def _validate_session_linked_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "link",
+                "origin_kind",
+                "origin_ref",
+                "dispatch_snapshot_ref",
+                "actor_ref",
+                "authorization_policy_ref",
+                "authorization_policy_digest",
+                "authorization_evidence_ref",
+                "authorization_evidence_digest",
+            },
+            "SessionDispatchLinked",
+        )
+        cls._require_exact_fields(
+            payload["link"],
+            {
+                "session_dispatch_link_id",
+                "session_id",
+                "dispatch_id",
+                "link_operation_id",
+                "linked_at",
+            },
+            "SessionDispatchLink",
+        )
 
     def _register_projection_ports(self) -> None:
         def session_reducer(state, event):
             result = dict(state)
             if event["event_type"] == "apt.session_started":
-                result["session"] = event["payload"]
+                result["session"] = event["payload"]["session"]
                 result.setdefault("dispatch_ids", [])
+            elif event["event_type"] == "apt.session_context_rebound":
+                result["current_session_id"] = event["payload"]["successor_session_id"]
             elif event["event_type"] == "apt.session_dispatch_linked":
-                dispatch_id = event["payload"]["dispatch_id"]
+                dispatch_id = event["payload"]["link"]["dispatch_id"]
                 result["dispatch_ids"] = sorted(
                     set(result.get("dispatch_ids", [])) | {dispatch_id}
                 )
@@ -95,7 +216,8 @@ class RuntimeService:
         def dispatch_reducer(state, event):
             return {
                 **state,
-                "dispatch_link": event["payload"],
+                "dispatch_link": event["payload"]["link"],
+                "dispatch_snapshot_ref": event["payload"]["dispatch_snapshot_ref"],
                 "effective_as_of": event["journal_offset"],
             }
 
@@ -143,6 +265,21 @@ class RuntimeService:
     @staticmethod
     def _stable_id(prefix: str, value: Any) -> str:
         return prefix + canonical_digest(value).removeprefix("sha256:")[:32]
+
+    def _catch_up_apt_status(self, receipt: dict[str, Any]) -> dict[str, Any]:
+        result = dict(receipt)
+        try:
+            state = self.projections.catch_up_apt(self.journal)
+            result["projection_status"] = (
+                "current"
+                if state["current"]
+                and int(state["apt_source_through_offset"])
+                >= int(receipt["last_offset"])
+                else "pending"
+            )
+        except Exception:
+            result["projection_status"] = "pending"
+        return result
 
     def _event(
         self,
@@ -266,18 +403,35 @@ class RuntimeService:
         )
 
     def ensure_session(
-        self, *, origin_digest: str, name: str, idempotency_key: str = "ensure"
+        self,
+        *,
+        origin_digest: str,
+        name: str,
+        idempotency_key: str = "ensure",
+        actor_ref: str = "runtime-bootstrap",
+        actor_authentication_ref: str = "host-auth:runtime-bootstrap",
+        actor_authentication_digest: str = "sha256:" + "0" * 64,
     ) -> dict[str, Any]:
         if not origin_digest.startswith("sha256:") or not name:
             raise ValidationError("session origin digest and name are required")
         session_id = self._stable_id("ses_", origin_digest)
         aggregate_id = f"apt.session-binding:{origin_digest}"
         started_at = self.now().isoformat()
-        payload = {
+        session_entity = {
             "session_id": session_id,
-            "origin_digest": origin_digest,
-            "name": name,
+            "origin_kind": "host_context",
+            "origin_ref": origin_digest,
+            "ensure_key": self._stable_id("ensure_", origin_digest),
+            "start_operation_id": idempotency_key,
             "started_at": started_at,
+            "initial_name": name,
+        }
+        payload = {
+            "session": session_entity,
+            "actor_ref": actor_ref,
+            "actor_authentication_ref": actor_authentication_ref,
+            "actor_authentication_digest": actor_authentication_digest,
+            "rollover_authorization": None,
         }
         command = self._command(
             command_name="apt.ensure-session@1",
@@ -292,7 +446,15 @@ class RuntimeService:
         event = self._event("apt.session_started", payload)
 
         def result(records, base):
-            return {**base, "session": payload}
+            return {
+                **base,
+                "session": {
+                    "session_id": session_id,
+                    "origin_digest": origin_digest,
+                    "name": name,
+                    "started_at": started_at,
+                },
+            }
 
         def mutate(conn, records, _result):
             conn.execute(
@@ -302,24 +464,217 @@ class RuntimeService:
                 """,
                 (session_id, origin_digest, name, started_at, records[0].event_id),
             )
-            self.projections.apply_complete_group(
-                conn,
-                projection_name="apt.session-record",
-                projection_key=session_id,
-                events=[
-                    {
-                        "event_type": "apt.session_started",
-                        "payload": payload,
-                        "event_id": records[0].event_id,
-                        "journal_offset": records[0].journal_offset,
-                    }
-                ],
-                last_offset=records[0].journal_offset,
+            conn.execute(
+                """
+                INSERT INTO session_origin_heads(
+                  origin_digest,current_session_id,head_version,rebound_event_id
+                ) VALUES(?,?,1,NULL)
+                ON CONFLICT(origin_digest) DO NOTHING
+                """,
+                (origin_digest, session_id),
             )
-
-        return self.journal.accept(
+        receipt = self.journal.accept(
             command, [event], next_state=payload, result_builder=result, mutate=mutate
         )
+        return self._catch_up_apt_status(receipt)
+
+    def start_new_session(
+        self,
+        *,
+        token: str,
+        name: str,
+        expected_current_session_id: str,
+        idempotency_key: str,
+    ) -> dict[str, Any]:
+        context = self.capabilities.resolve(
+            token, action="session.start-new", phase="bootstrap"
+        )
+        required_context = {
+            "origin_digest",
+            "authorization_policy_ref",
+            "authorization_policy_digest",
+            "authorization_evidence_ref",
+            "authorization_evidence_digest",
+            "expected_current_session_id",
+            "nonce",
+        }
+        if not required_context.issubset(context.context) or not name or not idempotency_key:
+            raise ValidationError("start-new authorization/name/idempotency is incomplete")
+        origin_digest = context.context["origin_digest"]
+        aggregate_id = f"apt.session-binding:{origin_digest}"
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                """SELECT result_receipt_json FROM command_receipts
+                   WHERE scope_key=? AND idempotency_key=?""",
+                (aggregate_id, idempotency_key),
+            ).fetchone()
+            if prior:
+                result = json.loads(prior["result_receipt_json"])
+                if (
+                    result.get("session", {}).get("origin_digest") != origin_digest
+                    or result.get("session", {}).get("name") != name
+                ):
+                    raise IdempotencyConflict(
+                        "start-new key reused with different intent"
+                    )
+                return self._catch_up_apt_status(result)
+            head = conn.execute(
+                "SELECT * FROM session_origin_heads WHERE origin_digest=?",
+                (origin_digest,),
+            ).fetchone()
+        if not head:
+            raise NotFoundError("session origin binding does not exist")
+        predecessor = head["current_session_id"]
+        if (
+            expected_current_session_id != predecessor
+            or context.context["expected_current_session_id"] != predecessor
+        ):
+            raise ConflictError("expected current Session CAS is stale")
+        successor = self._stable_id(
+            "ses_", [origin_digest, predecessor, idempotency_key]
+        )
+        rebound_at = self.now().isoformat()
+        session_entity = {
+            "session_id": successor,
+            "origin_kind": "host_context",
+            "origin_ref": origin_digest,
+            "ensure_key": self._stable_id(
+                "ensure_", [origin_digest, predecessor, idempotency_key]
+            ),
+            "start_operation_id": idempotency_key,
+            "started_at": rebound_at,
+            "initial_name": name,
+        }
+        session_payload = {
+            "session": session_entity,
+            "actor_ref": context.principal_id,
+            "actor_authentication_ref": None,
+            "actor_authentication_digest": None,
+            "rollover_authorization": {
+                "authorization_policy_ref": context.context[
+                    "authorization_policy_ref"
+                ],
+                "authorization_policy_digest": context.context[
+                    "authorization_policy_digest"
+                ],
+                "authorization_evidence_ref": context.context[
+                    "authorization_evidence_ref"
+                ],
+                "authorization_evidence_digest": context.context[
+                    "authorization_evidence_digest"
+                ],
+            },
+        }
+        rebound_payload = {
+            "origin_kind": "host_context",
+            "origin_ref": origin_digest,
+            "predecessor_session_id": predecessor,
+            "successor_session_id": successor,
+            "rebound_at": rebound_at,
+            "actor_ref": context.principal_id,
+            "authorization_policy_ref": context.context["authorization_policy_ref"],
+            "authorization_policy_digest": context.context[
+                "authorization_policy_digest"
+            ],
+            "authorization_evidence_ref": context.context[
+                "authorization_evidence_ref"
+            ],
+            "authorization_evidence_digest": context.context[
+                "authorization_evidence_digest"
+            ],
+        }
+        aggregate_head = self.journal.head(aggregate_id)
+        command = self._command(
+            command_name="apt.start-new-session@1",
+            scope_key=aggregate_id,
+            idempotency_key=idempotency_key,
+            aggregate_type="apt.session-binding",
+            aggregate_id=aggregate_id,
+            expected_version=aggregate_head["current_version"],
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "session.start-new",
+            },
+            intent={
+                "origin_digest": origin_digest,
+                "predecessor_session_id": predecessor,
+                "successor_session_id": successor,
+                "name": name,
+                "expected_head_version": int(head["head_version"]),
+            },
+        )
+        events = [
+            self._event("apt.session_started", session_payload),
+            self._event("apt.session_context_rebound", rebound_payload),
+        ]
+
+        def result(records, base):
+            return {
+                **base,
+                "session": {
+                    "session_id": successor,
+                    "origin_digest": origin_digest,
+                    "name": name,
+                    "started_at": rebound_at,
+                },
+                "predecessor_session_id": predecessor,
+                "rebound_event_id": records[1].event_id,
+            }
+
+        def mutate(conn, records, _result):
+            conn.execute(
+                """INSERT INTO sessions(session_id,origin_digest,name,started_at,event_id)
+                   VALUES(?,?,?,?,?)""",
+                (
+                    successor,
+                    origin_digest,
+                    name,
+                    rebound_at,
+                    records[0].event_id,
+                ),
+            )
+            updated = conn.execute(
+                """
+                UPDATE session_origin_heads
+                SET current_session_id=?,head_version=head_version+1,
+                    rebound_event_id=?
+                WHERE origin_digest=? AND current_session_id=? AND head_version=?
+                """,
+                (
+                    successor,
+                    records[1].event_id,
+                    origin_digest,
+                    predecessor,
+                    head["head_version"],
+                ),
+            )
+            if updated.rowcount != 1:
+                raise ConflictError("session origin head CAS lost")
+            conn.execute(
+                """INSERT INTO session_context_rebounds(
+                     predecessor_session_id,successor_session_id,origin_digest,
+                     rebound_event_id,rebound_at
+                   ) VALUES(?,?,?,?,?)""",
+                (
+                    predecessor,
+                    successor,
+                    origin_digest,
+                    records[1].event_id,
+                    rebound_at,
+                ),
+            )
+        receipt = self.journal.accept(
+            command,
+            events,
+            next_state={
+                "current_session_id": successor,
+                "head_version": int(head["head_version"]) + 1,
+            },
+            result_builder=result,
+            mutate=mutate,
+        )
+        return self._catch_up_apt_status(receipt)
 
     def link_session_dispatch(
         self,
@@ -327,25 +682,42 @@ class RuntimeService:
         session_id: str,
         dispatch_id: str,
         idempotency_key: str = "link",
+        actor_ref: str = "runtime-bootstrap",
+        authorization_policy_ref: str = "host.dispatch-link@1",
+        authorization_policy_digest: str = "sha256:" + "0" * 64,
+        authorization_evidence_ref: str = "host-evidence:runtime-bootstrap",
+        authorization_evidence_digest: str = "sha256:" + "0" * 64,
     ) -> dict[str, Any]:
         snapshot = self.legacy.resolve(self.settings.ledger_path, dispatch_id)
         with self.database.connect() as conn:
             session = conn.execute(
                 "SELECT * FROM sessions WHERE session_id=?", (session_id,)
             ).fetchone()
-        if not session:
-            raise NotFoundError("session not found")
+            current = (
+                conn.execute(
+                    """SELECT * FROM session_origin_heads
+                       WHERE origin_digest=? AND current_session_id=?""",
+                    (session["origin_digest"], session_id),
+                ).fetchone()
+                if session
+                else None
+            )
+        if not session or not current:
+            raise ConflictError("Session is not the current origin binding")
         session_head = self.journal.head(
             f"apt.session-binding:{session['origin_digest']}"
         )
         aggregate_id = f"apt.dispatch-link:{dispatch_id}"
-        payload = {
+        link_entity = {
             "session_dispatch_link_id": self._stable_id(
                 "lnk_", [session_id, dispatch_id, snapshot.row_digest]
             ),
             "session_id": session_id,
             "dispatch_id": dispatch_id,
-            "snapshot": {
+            "link_operation_id": idempotency_key,
+            "linked_at": self.now().isoformat(),
+        }
+        dispatch_snapshot_ref = {
                 "kind": "legacy_ledger",
                 "ledger_row_identity": {
                     "dispatch_id": dispatch_id,
@@ -354,7 +726,17 @@ class RuntimeService:
                     "contract_version": snapshot.contract_version,
                 },
                 "row_digest": snapshot.row_digest,
-            },
+        }
+        payload = {
+            "link": link_entity,
+            "origin_kind": "host_context",
+            "origin_ref": session["origin_digest"],
+            "dispatch_snapshot_ref": dispatch_snapshot_ref,
+            "actor_ref": actor_ref,
+            "authorization_policy_ref": authorization_policy_ref,
+            "authorization_policy_digest": authorization_policy_digest,
+            "authorization_evidence_ref": authorization_evidence_ref,
+            "authorization_evidence_digest": authorization_evidence_digest,
         }
         command = self._command(
             command_name="apt.link-session-dispatch@1",
@@ -380,7 +762,13 @@ class RuntimeService:
         event = self._event("apt.session_dispatch_linked", payload)
 
         def result(records, base):
-            return {**base, "dispatch_link": payload}
+            return {
+                **base,
+                "dispatch_link": {
+                    **link_entity,
+                    "snapshot": dispatch_snapshot_ref,
+                },
+            }
 
         def mutate(conn, records, _result):
             self.legacy.verify_unchanged(snapshot)
@@ -399,33 +787,13 @@ class RuntimeService:
                     snapshot.row_digest,
                     canonical_text(snapshot.row),
                     records[0].event_id,
-                    self.now().isoformat(),
+                    link_entity["linked_at"],
                 ),
             )
-            projected = {
-                "event_type": "apt.session_dispatch_linked",
-                "payload": payload,
-                "event_id": records[0].event_id,
-                "journal_offset": records[0].journal_offset,
-            }
-            self.projections.apply_complete_group(
-                conn,
-                projection_name="apt.session-record",
-                projection_key=session_id,
-                events=[projected],
-                last_offset=records[0].journal_offset,
-            )
-            self.projections.apply_complete_group(
-                conn,
-                projection_name="apt.dispatch-scope",
-                projection_key=dispatch_id,
-                events=[projected],
-                last_offset=records[0].journal_offset,
-            )
-
-        return self.journal.accept(
+        receipt = self.journal.accept(
             command, [event], next_state=payload, result_builder=result, mutate=mutate
         )
+        return self._catch_up_apt_status(receipt)
 
     def activate_local_probe(
         self,
@@ -1376,6 +1744,20 @@ class RuntimeService:
             raise ValidationError("lineage request field set is invalid")
         if request["actor_ref"] != context.principal_id or not request["lineage_items"]:
             raise ValidationError("lineage actor/items are invalid")
+        request_digest = canonical_digest(request)
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                """SELECT result_receipt_json FROM command_receipts
+                   WHERE scope_key=? AND idempotency_key=?""",
+                (aggregate_id, idempotency_key),
+            ).fetchone()
+        if prior:
+            prior_result = json.loads(prior["result_receipt_json"])
+            if prior_result.get("request_digest") != request_digest:
+                raise IdempotencyConflict(
+                    "lineage idempotency key reused with different request"
+                )
+            return prior_result
         prepared: list[dict[str, Any]] = []
         seen: set[tuple[int, str]] = set()
         delivery_refs: dict[str, dict[str, Any]] = {}
@@ -1419,15 +1801,13 @@ class RuntimeService:
                         (item["delivery_subject_key"],),
                     ).fetchone()
                 if existing:
-                    if (
-                        existing["canonical_payload_digest"] != semantic
-                        or existing["expected_head_event_id"]
-                        != item["expected_head_event_id"]
-                    ):
-                        raise ConflictError("delivery semantic identity conflict")
-                    status = "existing_exact"
-                    accepted_event_id = existing["accepted_event_id"]
+                    if item["expected_head_event_id"] != existing["accepted_event_id"]:
+                        raise ConflictError("delivery head CAS is stale or arbitrary")
+                    status = "submitted_new"
+                    accepted_event_id = None
                 else:
+                    if item["expected_head_event_id"] is not None:
+                        raise ConflictError("first delivery head must be null")
                     status = "submitted_new"
                     accepted_event_id = None
                 prepared.append(
@@ -1508,7 +1888,7 @@ class RuntimeService:
         prepared.sort(key=lambda member: (member["rank"], member["key"]))
         new_items = [member for member in prepared if member["status"] == "submitted_new"]
         if not new_items:
-            return {
+            existing_result = {
                 "status": "existing_exact",
                 "submitted": False,
                 "results": [
@@ -1521,6 +1901,14 @@ class RuntimeService:
                     for member in prepared
                 ],
             }
+            try:
+                state = self.projections.catch_up_apt(self.journal)
+                existing_result["projection_status"] = (
+                    "current" if state["current"] else "pending"
+                )
+            except Exception:
+                existing_result["projection_status"] = "pending"
+            return existing_result
         events = [
             self._event(
                 member["event_type"],
@@ -1573,37 +1961,55 @@ class RuntimeService:
                         "accepted_event_id": event_id,
                     }
                 )
-            return {**base, "semantic_results": results}
+            return {
+                **base,
+                "request_digest": request_digest,
+                "semantic_results": results,
+            }
 
         def mutate(conn, records, result_receipt):
             record_iter = iter(records)
-            projected_by_capture: dict[str, list[dict[str, Any]]] = {}
-            new_delivery_events: dict[str, dict[str, Any]] = {}
             for member in prepared:
                 if member["status"] == "submitted_new":
                     record = next(record_iter)
                     event_id = record.event_id
                     if member["rank"] == 0:
-                        conn.execute(
-                            """
-                            INSERT INTO apt_delivery_keys(
-                              delivery_subject_key,canonical_payload_digest,
-                              expected_head_event_id,accepted_event_id
-                            ) VALUES(?,?,?,?)
-                            """,
-                            (
-                                member["key"],
-                                member["semantic_digest"],
-                                member["event_payload"]["expected_head_event_id"],
-                                event_id,
-                            ),
-                        )
-                        new_delivery_events[member["key"]] = {
-                            "event_type": member["event_type"],
-                            "payload": member["event_payload"],
-                            "event_id": event_id,
-                            "journal_offset": record.journal_offset,
-                        }
+                        expected_head = member["event_payload"][
+                            "expected_head_event_id"
+                        ]
+                        current = conn.execute(
+                            """SELECT accepted_event_id FROM apt_delivery_keys
+                               WHERE delivery_subject_key=?""",
+                            (member["key"],),
+                        ).fetchone()
+                        if current:
+                            if expected_head != current["accepted_event_id"]:
+                                raise ConflictError("delivery head CAS lost")
+                            updated = conn.execute(
+                                """UPDATE apt_delivery_keys
+                                   SET canonical_payload_digest=?,
+                                       expected_head_event_id=?,accepted_event_id=?
+                                   WHERE delivery_subject_key=? AND accepted_event_id=?""",
+                                (
+                                    member["semantic_digest"],
+                                    expected_head,
+                                    event_id,
+                                    member["key"],
+                                    expected_head,
+                                ),
+                            )
+                            if updated.rowcount != 1:
+                                raise ConflictError("delivery head CAS lost")
+                        else:
+                            if expected_head is not None:
+                                raise ConflictError("first delivery head must be null")
+                            conn.execute(
+                                """INSERT INTO apt_delivery_keys(
+                                     delivery_subject_key,canonical_payload_digest,
+                                     expected_head_event_id,accepted_event_id
+                                   ) VALUES(?,?,NULL,?)""",
+                                (member["key"], member["semantic_digest"], event_id),
+                            )
                     else:
                         entity = member["entity"]
                         envelope = entity["fact"]
@@ -1623,16 +2029,6 @@ class RuntimeService:
                                 member["semantic_digest"],
                                 event_id,
                             ),
-                        )
-                        projected_by_capture.setdefault(
-                            entity["research_capture_id"], []
-                        ).append(
-                            {
-                                "event_type": member["event_type"],
-                                "payload": member["event_payload"],
-                                "event_id": event_id,
-                                "journal_offset": record.journal_offset,
-                            }
                         )
                 else:
                     event_id = member["accepted_event_id"]
@@ -1658,34 +2054,7 @@ class RuntimeService:
                         event_id,
                     ),
                 )
-            # A delivery has no capture key of its own.  Materialize it into
-            # every newly dependent research record, ahead of the reference
-            # use, so readback retains the official probe origin.
-            for member in prepared:
-                if member["rank"] != 1 or member["status"] != "submitted_new":
-                    continue
-                ref = member["entity"]["probe_recommendation_ref"]
-                subject = canonical_digest(
-                    {
-                        "probe_id": ref["probe_id"],
-                        "bundle_digest": ref["bundle_digest"],
-                        "recommendation_id": ref["recommendation_id"],
-                    }
-                )
-                delivery_event = new_delivery_events.get(subject)
-                if delivery_event:
-                    capture_id = member["entity"]["research_capture_id"]
-                    projected_by_capture[capture_id].insert(0, delivery_event)
-            for capture_id, projected in projected_by_capture.items():
-                self.projections.apply_complete_group(
-                    conn,
-                    projection_name="apt.research-record",
-                    projection_key=capture_id,
-                    events=projected,
-                    last_offset=records[-1].journal_offset,
-                )
-
-        return self.journal.accept(
+        receipt = self.journal.accept(
             command,
             events,
             next_state={
@@ -1694,6 +2063,19 @@ class RuntimeService:
             result_builder=result,
             mutate=mutate,
         )
+        result_receipt = dict(receipt)
+        try:
+            state = self.projections.catch_up_apt(self.journal)
+            result_receipt["projection_status"] = (
+                "current"
+                if state["current"]
+                and int(state["apt_source_through_offset"])
+                >= int(receipt["last_offset"])
+                else "pending"
+            )
+        except Exception:
+            result_receipt["projection_status"] = "pending"
+        return result_receipt
 
     def _verify_probe_recommendation(self, ref: dict[str, Any]) -> None:
         required = {
@@ -1883,6 +2265,80 @@ class RuntimeService:
             phase=phase,
             context=context,
             expires_at=expires_at,
+        )
+
+    # ACI-owned read ports used by the APT application binder. They prevent
+    # domain/application code from acquiring database handles or issuing SQL.
+    def apt_command_result(
+        self, scope_key: str, idempotency_key: str
+    ) -> dict[str, Any] | None:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                """SELECT result_receipt_json FROM command_receipts
+                   WHERE scope_key=? AND idempotency_key=?""",
+                (scope_key, idempotency_key),
+            ).fetchone()
+        return json.loads(row["result_receipt_json"]) if row else None
+
+    def apt_dispatch_link(
+        self, dispatch_id: str, session_id: str | None = None
+    ) -> dict[str, Any] | None:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                """SELECT * FROM dispatch_links WHERE dispatch_id=?
+                   AND (? IS NULL OR session_id=?)""",
+                (dispatch_id, session_id, session_id),
+            ).fetchone()
+        return dict(row) if row else None
+
+    def apt_capture_projection_payload(self, capture_id: str) -> dict[str, Any] | None:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                """SELECT payload_json FROM apt_research_captures_projection
+                   WHERE research_capture_id=?""",
+                (capture_id,),
+            ).fetchone()
+        return parse_strict_json(row["payload_json"]) if row else None
+
+    def apt_semantic_partition(
+        self,
+        capture_id: str,
+        capture_digest: str,
+        facts: list[dict[str, Any]],
+    ) -> tuple[dict[str, Any] | None, dict[str, dict[str, Any]]]:
+        with self.database.connect() as conn:
+            capture = conn.execute(
+                "SELECT * FROM apt_capture_keys WHERE research_capture_id=?",
+                (capture_id,),
+            ).fetchone()
+            rows: dict[str, dict[str, Any]] = {}
+            for fact in facts:
+                row = conn.execute(
+                    "SELECT * FROM apt_semantic_facts WHERE fact_id=?",
+                    (fact["fact_id"],),
+                ).fetchone()
+                if row:
+                    rows[fact["fact_id"]] = dict(row)
+        return (dict(capture) if capture else None, rows)
+
+    def apt_answer_binding(
+        self, capture_id: str
+    ) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+        with self.database.connect() as conn:
+            capture = conn.execute(
+                """SELECT c.*,l.session_id FROM apt_research_captures_projection c
+                   JOIN dispatch_links l ON l.dispatch_id=c.dispatch_id
+                   WHERE c.research_capture_id=?""",
+                (capture_id,),
+            ).fetchone()
+            answer = conn.execute(
+                """SELECT * FROM apt_research_answers_projection
+                   WHERE research_capture_id=? ORDER BY research_answer_id LIMIT 1""",
+                (capture_id,),
+            ).fetchone()
+        return (
+            dict(capture) if capture else None,
+            dict(answer) if answer else None,
         )
 
     def get_session(self, session_id: str) -> dict[str, Any]:

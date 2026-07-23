@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from typing import Any, Callable
 
 from .artifacts import ArtifactStore, PreparedArtifact
-from .canonical import canonical_digest, canonical_text, digest_bytes
+from .canonical import canonical_digest, canonical_text, digest_bytes, parse_strict_json
 from .database import RuntimeDatabase
 from .errors import (
     IdempotencyConflict,
@@ -115,11 +115,17 @@ class RuntimeJournal:
         self.artifacts = artifacts
         self._now = now or (lambda: datetime.now(timezone.utc))
         self._schema_bindings: dict[str, tuple[str, str]] = {}
+        self._payload_validators: dict[str, Callable[[dict[str, Any]], None]] = {}
 
     def bind_event_schemas(
         self, bindings: dict[str, tuple[str, str]]
     ) -> None:
         self._schema_bindings = dict(bindings)
+
+    def bind_payload_validators(
+        self, validators: dict[str, Callable[[dict[str, Any]], None]]
+    ) -> None:
+        self._payload_validators = dict(validators)
 
     def head(self, aggregate_id: str) -> dict[str, Any]:
         with self.database.connect() as conn:
@@ -386,6 +392,12 @@ class RuntimeJournal:
                 raise IntegrityError(f"event schema binding mismatch: {event.event_type}")
             if not event.schema_digest.startswith("sha256:"):
                 raise IntegrityError("schema digest must be algorithm-qualified")
+            validator = self._payload_validators.get(event.event_type)
+            if validator:
+                payload = parse_strict_json(event.payload.body)
+                if not isinstance(payload, dict):
+                    raise IntegrityError("event payload must be a JSON object")
+                validator(payload)
 
     def read_complete_groups(
         self, *, after: int = 0, through: int | None = None

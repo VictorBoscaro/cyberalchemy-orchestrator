@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Header, HTTPException, Query
+from fastapi import APIRouter, Header, HTTPException, Query, Response
 
 from .errors import AuthorizationError, RuntimeContractError, ValidationError
 from .provenance import ProvenanceService
@@ -227,6 +227,13 @@ def create_provenance_router(
                 origin_digest=origin_digest,
                 name=intent["name"],
                 idempotency_key=idempotency_key,
+                actor_ref=context.principal_id,
+                actor_authentication_ref=context.context.get(
+                    "actor_authentication_ref", "host-auth:" + context.principal_id
+                ),
+                actor_authentication_digest=context.context.get(
+                    "actor_authentication_digest", "sha256:" + "0" * 64
+                ),
             )
 
         return call(execute)
@@ -252,15 +259,51 @@ def create_provenance_router(
                 session_id=session_id,
                 dispatch_id=intent["dispatch_id"],
                 idempotency_key=idempotency_key,
+                actor_ref=context.principal_id,
+                authorization_policy_ref=context.context[
+                    "authorization_policy_ref"
+                ],
+                authorization_policy_digest=context.context[
+                    "authorization_policy_digest"
+                ],
+                authorization_evidence_ref=context.context[
+                    "authorization_evidence_ref"
+                ],
+                authorization_evidence_digest=context.context[
+                    "authorization_evidence_digest"
+                ],
             )
 
         return call(execute)
+
+    @router.post("/sessions/start-new")
+    def start_new_session(
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        runtime, _ = services()
+        if set(intent) != {"name", "expected_current_session_id"}:
+            return call(
+                lambda: (_ for _ in ()).throw(
+                    ValidationError("start-new intent field set is invalid")
+                )
+            )
+        return call(
+            lambda: runtime.start_new_session(
+                token=_bearer(authorization),
+                name=intent["name"],
+                expected_current_session_id=intent["expected_current_session_id"],
+                idempotency_key=idempotency_key,
+            )
+        )
 
     @router.post("/dispatches/{repo_id}/{dispatch_id}/research")
     def append_research(
         repo_id: str,
         dispatch_id: str,
         intent: dict[str, Any],
+        response: Response,
         authorization: Annotated[str, Header(alias="Authorization")],
         idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
     ) -> dict[str, Any]:
@@ -269,12 +312,15 @@ def create_provenance_router(
         def execute():
             if repo_id != runtime.settings.repo_id:
                 raise ValidationError("repository is outside this runtime")
-            return provenance.append_research_submission(
+            receipt = provenance.append_research_submission(
                 token=_bearer(authorization),
                 dispatch_id=dispatch_id,
                 idempotency_key=idempotency_key,
                 intent=intent,
             )
+            if receipt.get("projection_status") == "pending":
+                response.status_code = 202
+            return receipt
 
         return call(execute)
 
