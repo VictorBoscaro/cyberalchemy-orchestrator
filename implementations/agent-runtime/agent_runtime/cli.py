@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Sequence
 
@@ -18,7 +19,10 @@ def _parser() -> argparse.ArgumentParser:
     command = subparsers.add_parser("command")
     command.add_argument("command_name")
     command.add_argument("operation_id")
-    command.add_argument("payload_json", help="JSON object; transcripts/prompts are rejected")
+    command.add_argument(
+        "payload_json",
+        help="JSON object, or '-' to read it from stdin; transcripts/prompts are rejected",
+    )
 
     receipt = subparsers.add_parser("verify-receipt")
     receipt.add_argument("receipt_id")
@@ -32,6 +36,8 @@ def _parser() -> argparse.ArgumentParser:
             "session_dispatch_links",
             "reference_scout_runs",
             "reference_recommendations",
+            "observation_probe_runs",
+            "probe_observations",
             "journal_events",
             "command_receipts",
         ],
@@ -49,7 +55,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.action == "init":
             output = {"database": str(args.database), "initialized": True}
         elif args.action == "command":
-            payload = json.loads(args.payload_json)
+            payload_json = sys.stdin.read() if args.payload_json == "-" else args.payload_json
+            payload = json.loads(payload_json)
             output = runtime.execute(args.command_name, args.operation_id, payload)
         elif args.action == "verify-receipt":
             output = runtime.verify_receipt(args.receipt_id)

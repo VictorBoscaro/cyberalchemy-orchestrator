@@ -36,6 +36,39 @@ OPEN_ALL_CAP = 200
 
 app = FastAPI(title="Dispatch control plane — reader", version="0.1.0")
 
+# Descriptor-required runtime routes are present but inert.  A separate accepted
+# local-pilot receipt must replace this closed gate before they can call service
+# code from the production reader process.
+from .runtime.api import create_router as create_runtime_router
+from .runtime.api import create_provenance_router
+from .runtime.service import RuntimeService, RuntimeSettings
+
+_runtime_service: RuntimeService | None = None
+
+
+def _runtime_provider() -> RuntimeService:
+    global _runtime_service
+    if _runtime_service is None:
+        _runtime_service = RuntimeService(
+            RuntimeSettings(
+                database_path=CFG.runtime_database,
+                repo_root=config_module.REPO_ROOT,
+                ledger_path=CFG.runtime_ledger,
+                local_pilot_serve_enabled=False,
+                repo_id=CFG.runtime_repo_id,
+            )
+        )
+        _runtime_service.open()
+    return _runtime_service
+
+
+app.include_router(
+    create_runtime_router(_runtime_provider, enabled=lambda: False)
+)
+app.include_router(
+    create_provenance_router(_runtime_provider, enabled=lambda: False)
+)
+
 
 def today_utc() -> str:
     """Today's day in UTC — the SAME reference frame as `ledger.iso_date`.

@@ -17,10 +17,10 @@ from .errors import (
     VersionConflict,
 )
 
-CANONICALIZER_PROFILE_ID = "aci.event-schema-canonicalizer-registry"
+CANONICALIZER_PROFILE_ID = "aci.canonical-json"
 CANONICALIZER_PROFILE_VERSION = "1"
 CANONICALIZER_PROFILE_DIGEST = (
-    "sha256:4caed76f44d8a586ec7af1e41d03a610295955556f50c64f05e962ddf9064c53"
+    "sha256:6ed22971449c8ea911f9b885d26b01e6eb2e77f208cd8bc6419dff31d97b7ade"
 )
 
 
@@ -380,7 +380,9 @@ class RuntimeJournal:
     def _verify_event_schemas(self, events: list[EventDraft]) -> None:
         for event in events:
             binding = self._schema_bindings.get(event.event_type)
-            if binding and binding != (event.schema_ref, event.schema_digest):
+            if binding is None:
+                raise IntegrityError(f"event type is unregistered: {event.event_type}")
+            if binding != (event.schema_ref, event.schema_digest):
                 raise IntegrityError(f"event schema binding mismatch: {event.event_type}")
             if not event.schema_digest.startswith("sha256:"):
                 raise IntegrityError("schema digest must be algorithm-qualified")
@@ -479,7 +481,9 @@ class RuntimeJournal:
                 ):
                     raise IntegrityError("canonicalizer identity mismatch")
                 binding = self._schema_bindings.get(row["event_type"])
-                if binding and binding != (row["schema_ref"], row["schema_digest"]):
+                if binding is None:
+                    raise IntegrityError("event type is unregistered")
+                if binding != (row["schema_ref"], row["schema_digest"]):
                     raise IntegrityError("event schema registry mismatch")
             seen_event_ids.update(ids)
             groups.append(

@@ -8,6 +8,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Header, HTTPException, Query
 
 from .errors import AuthorizationError, RuntimeContractError, ValidationError
+from .provenance import ProvenanceService
 from .service import RuntimeService
 
 
@@ -167,5 +168,174 @@ def create_router(
             return runtime.projections.get(name, key)
 
         return call(execute)
+
+    return router
+
+
+def create_provenance_router(
+    service_provider: Callable[[], RuntimeService],
+    *,
+    enabled: Callable[[], bool],
+) -> APIRouter:
+    """Frozen intent-only APT surface; production composition keeps it gated."""
+    router = APIRouter(prefix="/api/provenance", tags=["provenance"])
+
+    def services() -> tuple[RuntimeService, ProvenanceService]:
+        if not enabled():
+            raise HTTPException(
+                503,
+                detail={
+                    "code": "LOCAL_PILOT_SERVE_BLOCKED",
+                    "message": "a separate serve-enablement receipt is required",
+                },
+            )
+        runtime = service_provider()
+        return runtime, ProvenanceService(runtime)
+
+    def call(fn):
+        try:
+            return fn()
+        except RuntimeContractError as exc:
+            status = {
+                "AUTHORIZATION_DENIED": 403,
+                "NOT_FOUND": 404,
+                "VALIDATION_ERROR": 400,
+                "READ_INTEGRITY_FAILURE": 400,
+            }.get(exc.code, 409)
+            raise HTTPException(
+                status, detail={"code": exc.code, "message": str(exc)}
+            ) from exc
+
+    @router.post("/sessions/ensure")
+    def ensure_session(
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        runtime, _ = services()
+
+        def execute():
+            if set(intent) != {"name"}:
+                raise ValidationError("ensure-session intent field set is invalid")
+            context = runtime.capabilities.resolve(
+                _bearer(authorization), action="session.ensure", phase="bootstrap"
+            )
+            origin_digest = context.context.get("origin_digest")
+            if not isinstance(origin_digest, str):
+                raise AuthorizationError("host-derived session origin is required")
+            return runtime.ensure_session(
+                origin_digest=origin_digest,
+                name=intent["name"],
+                idempotency_key=idempotency_key,
+            )
+
+        return call(execute)
+
+    @router.post("/sessions/{session_id}/dispatches")
+    def link_dispatch(
+        session_id: str,
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        runtime, _ = services()
+
+        def execute():
+            if set(intent) != {"dispatch_id"}:
+                raise ValidationError("dispatch-link intent field set is invalid")
+            context = runtime.capabilities.resolve(
+                _bearer(authorization), action="dispatch.link", phase="bootstrap"
+            )
+            if context.context.get("session_id") != session_id:
+                raise AuthorizationError("session link scope mismatch")
+            return runtime.link_session_dispatch(
+                session_id=session_id,
+                dispatch_id=intent["dispatch_id"],
+                idempotency_key=idempotency_key,
+            )
+
+        return call(execute)
+
+    @router.post("/dispatches/{repo_id}/{dispatch_id}/research")
+    def append_research(
+        repo_id: str,
+        dispatch_id: str,
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        runtime, provenance = services()
+
+        def execute():
+            if repo_id != runtime.settings.repo_id:
+                raise ValidationError("repository is outside this runtime")
+            return provenance.append_research_submission(
+                token=_bearer(authorization),
+                dispatch_id=dispatch_id,
+                idempotency_key=idempotency_key,
+                intent=intent,
+            )
+
+        return call(execute)
+
+    @router.get("/sessions/{session_id}")
+    def get_session(
+        session_id: str,
+        authorization: Annotated[str, Header(alias="Authorization")],
+    ) -> dict[str, Any]:
+        runtime, _ = services()
+
+        def execute():
+            context = runtime.capabilities.resolve(
+                _bearer(authorization), action="session.read", phase="observe"
+            )
+            if context.context.get("session_id") != session_id:
+                raise AuthorizationError("session read scope mismatch")
+            return runtime.get_session(session_id)
+
+        return call(execute)
+
+    @router.get("/dispatches/{repo_id}/{dispatch_id}")
+    def get_dispatch(
+        repo_id: str,
+        dispatch_id: str,
+        authorization: Annotated[str, Header(alias="Authorization")],
+    ) -> dict[str, Any]:
+        runtime, provenance = services()
+
+        def execute():
+            if repo_id != runtime.settings.repo_id:
+                raise ValidationError("repository is outside this runtime")
+            return provenance.get_dispatch(
+                token=_bearer(authorization), dispatch_id=dispatch_id
+            )
+
+        return call(execute)
+
+    @router.get("/research/{capture_id}")
+    def get_research(
+        capture_id: str,
+        authorization: Annotated[str, Header(alias="Authorization")],
+    ) -> dict[str, Any]:
+        _, provenance = services()
+        return call(
+            lambda: provenance.get_research(
+                token=_bearer(authorization), capture_id=capture_id
+            )
+        )
+
+    @router.get("/research/{capture_id}/answer")
+    def get_answer(
+        capture_id: str,
+        authorization: Annotated[str, Header(alias="Authorization")],
+    ) -> dict[str, str]:
+        _, provenance = services()
+        return call(
+            lambda: {
+                "final_answer": provenance.get_answer(
+                    token=_bearer(authorization), capture_id=capture_id
+                )
+            }
+        )
 
     return router

@@ -289,6 +289,52 @@ class RuntimeTest(unittest.TestCase):
             )
         self.assertEqual(len(self.runtime.projection("journal_events")), 1)
 
+    def test_scout_can_launch_directly_under_session_without_dispatch(self) -> None:
+        self.ensure_session()
+        receipt = self.runtime.start_reference_scout(
+            "op-session-direct-scout",
+            scout_run_id="scout-session-direct",
+            probe_id="probe-session-direct",
+            session_id="ses-1",
+            dispatch_id=None,
+            objective_ref="artifact:direct-objective",
+            shape="small",
+            source_mode="internal",
+            protocol_profile_id="apt.reference-probe-lineage",
+            protocol_profile_version="1",
+            protocol_profile_digest="sha256:profile",
+        )
+
+        run = self.runtime.projection("reference_scout_runs")[0]
+        self.assertIsNone(run["dispatch_id"])
+        self.assertEqual(run["launch_mode"], "session_direct")
+        self.assertEqual(receipt["result"]["launch_mode"], "session_direct")
+
+    def test_dispatch_bound_scout_derives_launch_mode(self) -> None:
+        self.ensure_session()
+        self.runtime.link_session_dispatch(
+            "op-mode-link",
+            session_dispatch_link_id="link-mode",
+            session_id="ses-1",
+            dispatch_id="dispatch-mode",
+        )
+        self.runtime.start_reference_scout(
+            "op-dispatch-bound-scout",
+            scout_run_id="scout-dispatch-bound",
+            probe_id="probe-dispatch-bound",
+            session_id="ses-1",
+            dispatch_id="dispatch-mode",
+            objective_ref="artifact:dispatch-objective",
+            shape="small",
+            source_mode="internal",
+            protocol_profile_id="apt.reference-probe-lineage",
+            protocol_profile_version="1",
+            protocol_profile_digest="sha256:profile",
+        )
+
+        run = self.runtime.projection("reference_scout_runs")[0]
+        self.assertEqual(run["launch_mode"], "dispatch_bound")
+
     def test_restart_preserves_idempotency_and_projections(self) -> None:
         first = self.ensure_session()
         self.runtime.close()

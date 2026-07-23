@@ -8,6 +8,31 @@ across the repos. Ten UI variants over the same API.
 > appender of the `register-dispatch` skill. The "Dispatch" button exists in
 > every UI, but it's `disabled`: turning it on is Phase 2.
 
+## Stage-B runtime core
+
+`server/runtime/` contains the descriptor-bounded
+`SWU-ACI-APT-VS-001` local runtime: SQLite command groups, immutable
+artifacts, exact profile imports, opaque capabilities, strict legacy snapshots,
+session/dispatch linking and the candidate-to-official reference-probe path.
+
+Here `reference-probe` names a frozen v1 lineage/profile compatibility surface.
+It is neither the `ReferenceScoutTool`/`ScoutRun` workflow nor the future
+general `ProbeTool`/`ProbeRun` observational capability. The Stage-B identifiers
+remain unchanged so registered schemas, digests and receipts keep their meaning.
+
+It is not enabled for serving. The production reader mounts the intent routes
+behind a closed gate, and `python -m server.runtime serve --local-pilot`
+fails before opening a database or socket. Only a separate accepted
+local-pilot receipt may change that.
+
+Trusted, non-serving commands use:
+
+```sh
+python -m server.runtime migrate
+python -m server.runtime register-profiles
+python -m server.runtime verify-store
+```
+
 ## Run
 
 ```sh

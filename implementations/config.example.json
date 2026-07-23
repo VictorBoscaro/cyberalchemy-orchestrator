@@ -14,5 +14,8 @@
   "port": 8765,
   "poll_seconds": 1.0,
   "limit": 40,
-  "prompt_limit": 280
+  "prompt_limit": 280,
+  "runtime_database": "telemetry/runtime/aci-slice0.sqlite3",
+  "runtime_ledger": "telemetry/agents/subagents-dispatch.yaml",
+  "runtime_repo_id": "cyberalchemy-orchestrator"
 }

@@ -34,11 +34,16 @@ _COMMAND_TO_EVENT = {
     "ensure_session": "session.started",
     "link_session_dispatch": "session.dispatch_linked",
     # Product operations use Reference Scout terminology. Frozen v1 wire/event
-    # identifiers retain probe.* compatibility names.
+    # identifiers retain probe.* compatibility names. Each probe_id below is a
+    # legacy alias for the same ScoutRun, never a separate ProbeRun entity.
     "start_reference_scout": "probe.requested",
     "publish_scout_contribution": "probe.contribution.published",
     "commit_reference_bundle": "probe.bundle.committed",
     "deliver_reference_bundle": "probe.bundle.delivered",
+    "start_observation_probe": "observation_probe.requested",
+    "publish_probe_observation": "observation_probe.observation.published",
+    "commit_observation_probe": "observation_probe.committed",
+    "deliver_observation_probe": "observation_probe.delivered",
 }
 
 _COMMAND_FIELDS = {
@@ -60,6 +65,17 @@ _COMMAND_FIELDS = {
     },
     "commit_reference_bundle": {"scout_run_id", "probe_id", "bundle_digest"},
     "deliver_reference_bundle": {"scout_run_id", "probe_id", "delivered_at"},
+    "start_observation_probe": {
+        "probe_run_id", "session_id", "dispatch_id", "target_ref", "question_ref",
+        "lens_ref", "lens_version", "lens_digest", "observation_schema_ref",
+        "requested_at",
+    },
+    "publish_probe_observation": {
+        "observation_id", "probe_run_id", "observation_key", "value",
+        "evidence_ref", "observed_by_seat_id",
+    },
+    "commit_observation_probe": {"probe_run_id", "observations_digest"},
+    "deliver_observation_probe": {"probe_run_id", "delivered_at"},
 }
 
 _FORBIDDEN_KEYS = {
@@ -101,6 +117,15 @@ def _optional_text(payload: Mapping[str, Any], key: str) -> str | None:
         return None
     if not isinstance(value, str) or not value.strip():
         raise InvalidCommand(f"{key} must be null or a non-empty string")
+    return value
+
+
+def _required_sha256_ref(payload: Mapping[str, Any], key: str) -> str:
+    value = _required_text(payload, key)
+    prefix = "sha256:"
+    digest = value[len(prefix):] if value.startswith(prefix) else ""
+    if len(digest) != 64 or any(character not in "0123456789abcdef" for character in digest):
+        raise InvalidCommand(f"{key} must be sha256 followed by 64 lowercase hex characters")
     return value
 
 
@@ -183,6 +208,35 @@ class Runtime:
                 "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (1, ?)",
                 (_now(),),
             )
+            scout_columns = {
+                row["name"]
+                for row in connection.execute(
+                    "PRAGMA table_info(reference_scout_runs)"
+                ).fetchall()
+            }
+            if "launch_mode" not in scout_columns:
+                connection.execute(
+                    """
+                    ALTER TABLE reference_scout_runs
+                    ADD COLUMN launch_mode TEXT NOT NULL DEFAULT 'session_direct'
+                    CHECK (launch_mode IN ('dispatch_bound', 'session_direct'))
+                    """
+                )
+                connection.execute(
+                    """
+                    UPDATE reference_scout_runs
+                    SET launch_mode = 'dispatch_bound'
+                    WHERE dispatch_id IS NOT NULL
+                    """
+                )
+            connection.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (2, ?)",
+                (_now(),),
+            )
+            connection.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (3, ?)",
+                (_now(),),
+            )
 
     def execute(
         self, command_name: str, operation_id: str, payload: Mapping[str, Any]
@@ -217,6 +271,10 @@ class Runtime:
                 receipt = self._receipt_dict(existing, replayed=True)
                 replayed = True
             else:
+                if command_name == "start_observation_probe":
+                    _required_sha256_ref(normalized_payload, "lens_digest")
+                elif command_name == "commit_observation_probe":
+                    _required_sha256_ref(normalized_payload, "observations_digest")
                 receipt = self._execute_new(
                     connection, command_name, operation_id, normalized_payload, payload_digest
                 )
@@ -372,6 +430,24 @@ class Runtime:
     def deliver_reference_bundle(self, operation_id: str, **payload: Any) -> dict[str, Any]:
         return self.execute("deliver_reference_bundle", operation_id, payload)
 
+    def start_observation_probe(self, operation_id: str, **payload: Any) -> dict[str, Any]:
+        return self.execute("start_observation_probe", operation_id, payload)
+
+    def publish_probe_observation(
+        self, operation_id: str, **payload: Any
+    ) -> dict[str, Any]:
+        return self.execute("publish_probe_observation", operation_id, payload)
+
+    def commit_observation_probe(
+        self, operation_id: str, **payload: Any
+    ) -> dict[str, Any]:
+        return self.execute("commit_observation_probe", operation_id, payload)
+
+    def deliver_observation_probe(
+        self, operation_id: str, **payload: Any
+    ) -> dict[str, Any]:
+        return self.execute("deliver_observation_probe", operation_id, payload)
+
     def _apply(
         self,
         connection: sqlite3.Connection,
@@ -390,6 +466,10 @@ class Runtime:
             "probe.contribution.published": self._apply_contribution_published,
             "probe.bundle.committed": self._apply_bundle_committed,
             "probe.bundle.delivered": self._apply_bundle_delivered,
+            "observation_probe.requested": self._apply_observation_probe_started,
+            "observation_probe.observation.published": self._apply_probe_observation_published,
+            "observation_probe.committed": self._apply_observation_probe_committed,
+            "observation_probe.delivered": self._apply_observation_probe_delivered,
         }
         return handlers[event_type](
             connection, payload, event_id, operation_id, occurred_at, seq
@@ -507,6 +587,7 @@ class Runtime:
         probe_id = _required_text(p, "probe_id")
         session_id = _required_text(p, "session_id")
         dispatch_id = _optional_text(p, "dispatch_id")
+        launch_mode = "dispatch_bound" if dispatch_id else "session_direct"
         objective_ref = _required_text(p, "objective_ref")
         shape = _required_text(p, "shape")
         source_mode = _required_text(p, "source_mode")
@@ -546,16 +627,17 @@ class Runtime:
         c.execute(
             """
             INSERT INTO reference_scout_runs(
-                scout_run_id, session_id, dispatch_id, objective_ref, shape,
+                scout_run_id, session_id, dispatch_id, launch_mode, objective_ref, shape,
                 probe_id, source_mode, protocol_profile_id, protocol_profile_version,
                 protocol_profile_digest,
                 requested_at, state, source_through_seq
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'requested', ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'requested', ?)
             """,
             (
                 scout_run_id,
                 session_id,
                 dispatch_id,
+                launch_mode,
                 objective_ref,
                 shape,
                 probe_id,
@@ -572,6 +654,7 @@ class Runtime:
             "probe_id": probe_id,
             "session_id": session_id,
             "dispatch_id": dispatch_id,
+            "launch_mode": launch_mode,
             "state": "requested",
         }
 
@@ -712,6 +795,182 @@ class Runtime:
             "bundle_digest": run["bundle_digest"],
         }
 
+    def _apply_observation_probe_started(
+        self, c: sqlite3.Connection, p: Mapping[str, Any], event_id: str,
+        operation_id: str, at: str, seq: int
+    ) -> dict[str, Any]:
+        probe_run_id = _required_text(p, "probe_run_id")
+        session_id = _required_text(p, "session_id")
+        dispatch_id = _optional_text(p, "dispatch_id")
+        launch_mode = "dispatch_bound" if dispatch_id else "session_direct"
+        if not c.execute(
+            "SELECT 1 FROM sessions WHERE session_id = ?", (session_id,)
+        ).fetchone():
+            raise DomainConflict(f"unknown session_id: {session_id}")
+        if dispatch_id:
+            link = c.execute(
+                "SELECT session_id FROM session_dispatch_links WHERE dispatch_id = ?",
+                (dispatch_id,),
+            ).fetchone()
+            if not link:
+                raise DomainConflict("dispatch must have an existing session link")
+            if link["session_id"] != session_id:
+                raise DomainConflict("dispatch belongs to another session")
+        if c.execute(
+            "SELECT 1 FROM observation_probe_runs WHERE probe_run_id = ?",
+            (probe_run_id,),
+        ).fetchone():
+            raise DomainConflict("probe_run_id already exists")
+        requested_at = _optional_text(p, "requested_at") or at
+        fields = (
+            _required_text(p, "target_ref"),
+            _required_text(p, "question_ref"),
+            _required_text(p, "lens_ref"),
+            _required_text(p, "lens_version"),
+            _required_text(p, "lens_digest"),
+            _required_text(p, "observation_schema_ref"),
+        )
+        c.execute(
+            """
+            INSERT INTO observation_probe_runs(
+                probe_run_id, session_id, dispatch_id, launch_mode, target_ref,
+                question_ref, lens_ref, lens_version, lens_digest,
+                observation_schema_ref, requested_at, state, source_through_seq
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'requested', ?)
+            """,
+            (probe_run_id, session_id, dispatch_id, launch_mode, *fields, requested_at, seq),
+        )
+        return {
+            "probe_run_id": probe_run_id,
+            "session_id": session_id,
+            "dispatch_id": dispatch_id,
+            "launch_mode": launch_mode,
+            "state": "requested",
+        }
+
+    def _apply_probe_observation_published(
+        self, c: sqlite3.Connection, p: Mapping[str, Any], event_id: str,
+        operation_id: str, at: str, seq: int
+    ) -> dict[str, Any]:
+        observation_id = _required_text(p, "observation_id")
+        probe_run_id = _required_text(p, "probe_run_id")
+        observation_key = _required_text(p, "observation_key")
+        if "value" not in p:
+            raise InvalidCommand("value is required")
+        value = p["value"]
+        try:
+            value_json = _canonical_json(value)
+        except (TypeError, ValueError) as error:
+            raise InvalidCommand("value must be canonical JSON") from error
+        run = c.execute(
+            "SELECT state FROM observation_probe_runs WHERE probe_run_id = ?",
+            (probe_run_id,),
+        ).fetchone()
+        if not run:
+            raise DomainConflict(f"unknown probe_run_id: {probe_run_id}")
+        if run["state"] not in ("requested", "observing"):
+            raise DomainConflict("observations are accepted only before probe commit")
+        if c.execute(
+            """
+            SELECT 1 FROM probe_observations
+            WHERE observation_id = ? OR (probe_run_id = ? AND observation_key = ?)
+            """,
+            (observation_id, probe_run_id, observation_key),
+        ).fetchone():
+            raise DomainConflict("observation_id or run/key identity already exists")
+        c.execute(
+            """
+            INSERT INTO probe_observations(
+                observation_id, probe_run_id, observation_key, value_json,
+                evidence_ref, observed_by_seat_id, source_event_id, source_through_seq
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                observation_id, probe_run_id, observation_key, value_json,
+                _optional_text(p, "evidence_ref"),
+                _required_text(p, "observed_by_seat_id"), event_id, seq,
+            ),
+        )
+        c.execute(
+            """
+            UPDATE observation_probe_runs
+            SET state = 'observing', source_through_seq = ?
+            WHERE probe_run_id = ?
+            """,
+            (seq, probe_run_id),
+        )
+        return {
+            "probe_run_id": probe_run_id,
+            "observation_id": observation_id,
+            "observation_key": observation_key,
+            "source_event_id": event_id,
+        }
+
+    def _apply_observation_probe_committed(
+        self, c: sqlite3.Connection, p: Mapping[str, Any], event_id: str,
+        operation_id: str, at: str, seq: int
+    ) -> dict[str, Any]:
+        probe_run_id = _required_text(p, "probe_run_id")
+        observations_digest = _required_text(p, "observations_digest")
+        run = c.execute(
+            "SELECT state FROM observation_probe_runs WHERE probe_run_id = ?",
+            (probe_run_id,),
+        ).fetchone()
+        if not run:
+            raise DomainConflict(f"unknown probe_run_id: {probe_run_id}")
+        if run["state"] not in ("requested", "observing"):
+            raise DomainConflict("only an uncommitted probe can be committed")
+        count = c.execute(
+            "SELECT COUNT(*) AS n FROM probe_observations WHERE probe_run_id = ?",
+            (probe_run_id,),
+        ).fetchone()["n"]
+        c.execute(
+            """
+            UPDATE observation_probe_runs
+            SET state = 'committed', observations_digest = ?,
+                committed_event_id = ?, source_through_seq = ?
+            WHERE probe_run_id = ?
+            """,
+            (observations_digest, event_id, seq, probe_run_id),
+        )
+        return {
+            "probe_run_id": probe_run_id,
+            "state": "committed",
+            "observations_digest": observations_digest,
+            "observation_count": count,
+        }
+
+    def _apply_observation_probe_delivered(
+        self, c: sqlite3.Connection, p: Mapping[str, Any], event_id: str,
+        operation_id: str, at: str, seq: int
+    ) -> dict[str, Any]:
+        probe_run_id = _required_text(p, "probe_run_id")
+        delivered_at = _optional_text(p, "delivered_at") or at
+        run = c.execute(
+            """
+            SELECT state, observations_digest FROM observation_probe_runs
+            WHERE probe_run_id = ?
+            """,
+            (probe_run_id,),
+        ).fetchone()
+        if not run:
+            raise DomainConflict(f"unknown probe_run_id: {probe_run_id}")
+        if run["state"] != "committed":
+            raise DomainConflict("only a committed probe can be delivered")
+        c.execute(
+            """
+            UPDATE observation_probe_runs
+            SET state = 'delivered', delivered_at = ?, source_through_seq = ?
+            WHERE probe_run_id = ?
+            """,
+            (delivered_at, seq, probe_run_id),
+        )
+        return {
+            "probe_run_id": probe_run_id,
+            "state": "delivered",
+            "observations_digest": run["observations_digest"],
+        }
+
     @staticmethod
     def _receipt_dict(row: sqlite3.Row, replayed: bool) -> dict[str, Any]:
         return {
@@ -771,6 +1030,8 @@ class Runtime:
     def replay(self) -> dict[str, int]:
         """Rebuild every projection in one transaction from the ordered journal."""
         projection_tables = (
+            "probe_observations",
+            "observation_probe_runs",
             "reference_recommendations",
             "reference_scout_runs",
             "session_dispatch_links",
@@ -881,6 +1142,8 @@ class Runtime:
             "session_dispatch_links",
             "reference_scout_runs",
             "reference_recommendations",
+            "observation_probe_runs",
+            "probe_observations",
             "journal_events",
             "command_receipts",
         }

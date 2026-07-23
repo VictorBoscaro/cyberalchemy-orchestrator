@@ -76,6 +76,7 @@ class ArtifactStore:
         retention_policy_ref: str = "aci.retention.local-proof@1",
         tombstone_policy_ref: str = "aci.tombstone.retain-digest@1",
         authorization_policy_ref: str = "aci.artifact.runtime-operator@1",
+        policy_bundle_digest: str | None = None,
         created_event_id: str | None = None,
     ) -> PreparedArtifact:
         if not isinstance(body, bytes):
@@ -105,7 +106,7 @@ class ArtifactStore:
             retention_policy_ref=retention_policy_ref,
             tombstone_policy_ref=tombstone_policy_ref,
             authorization_policy_ref=authorization_policy_ref,
-            policy_bundle_digest=canonical_digest(policy),
+            policy_bundle_digest=policy_bundle_digest or canonical_digest(policy),
             finalization_receipt_ref="afr_" + self._id(),
             finalized_at=finalized_at,
             created_event_id=created_event_id,

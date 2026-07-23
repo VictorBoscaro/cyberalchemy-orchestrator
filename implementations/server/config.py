@@ -37,6 +37,10 @@ class Config:
     poll_seconds: float = 1.0
     limit: int = 40
     prompt_limit: int = 280
+    runtime_database: Path = REPO_ROOT / "telemetry" / "runtime" / "aci-slice0.sqlite3"
+    runtime_ledger: Path = REPO_ROOT / LEDGER_RELPATH
+    runtime_local_pilot_enabled: bool = False
+    runtime_repo_id: str = "cyberalchemy-orchestrator"
     # Scan cache (FIX 6b). Excluded from the dataclass's equality/repr.
     _repos_cache: list[Path] | None = field(
         default=None, compare=False, repr=False
@@ -86,8 +90,22 @@ def load() -> Config:
             cfg.repos = [Path(p) for p in raw["repos"]]
         if "scan_roots" in raw:
             cfg.scan_roots = [Path(p) for p in raw["scan_roots"]]
-        for key in ("port", "host", "poll_seconds", "limit", "prompt_limit"):
+        for key in (
+            "port",
+            "host",
+            "poll_seconds",
+            "limit",
+            "prompt_limit",
+            "runtime_repo_id",
+        ):
             if key in raw:
                 setattr(cfg, key, raw[key])
+        if "runtime_database" in raw:
+            value = Path(raw["runtime_database"])
+            cfg.runtime_database = value if value.is_absolute() else REPO_ROOT / value
+        if "runtime_ledger" in raw:
+            value = Path(raw["runtime_ledger"])
+            cfg.runtime_ledger = value if value.is_absolute() else REPO_ROOT / value
+        # A config file cannot self-authorize local-pilot serving.
 
     return cfg

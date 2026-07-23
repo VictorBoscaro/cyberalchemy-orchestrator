@@ -1,0 +1,76 @@
+{
+  "schema": "aci.stage-b-execution-receipt/v1",
+  "swu_id": "SWU-ACI-APT-VS-001",
+  "status": "pending-independent-implementation-review",
+  "executed_at": "2026-07-23",
+  "scope": "local-single-host-provenance-bus-vertical-slice",
+  "source_inventory": {
+    "file_count": 25,
+    "canonical_inventory_sha256": "sha256:885719939a3609ddedd9c5ec816356c86c305aabc0f8644f3ca44560afff31d7",
+    "runtime_root": "implementations/server/runtime",
+    "test_root": "implementations/tests/runtime",
+    "migration_sha256": {
+      "001_aci_slice0.sql": "sha256:7ef0ca80cd8ef59f697a08938a7d2b757de50fd24bba438efb4aac59fe6e9889",
+      "002_artifact_store.sql": "sha256:507ed3f567d497ffb7849537c495f633398c3c0e01b7b2871951fdd28b68833d",
+      "003_profile_capability.sql": "sha256:ffe9901082da7e9be2dc733b064e6bbff43d250ef8e31315b99ba2004a88d47f",
+      "004_apt_projection.sql": "sha256:68a8cb3e37c6ec8a646d5fb4887045e1d59c7a468a9948af2912de74c7717023"
+    }
+  },
+  "verification": [
+    {
+      "command": "python -m compileall -q implementations/server/runtime implementations/tests/runtime",
+      "result": "PASS",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_stage_b -q",
+      "result": "PASS",
+      "tests_run": 18,
+      "exit_code": 0
+    },
+    {
+      "command": "python implementations/tests/test_main.py",
+      "result": "PASS",
+      "summary": "all main tests passed",
+      "exit_code": 0
+    },
+    {
+      "command": "python implementations/tests/test_ledger.py",
+      "result": "PASS",
+      "summary": "all tests passed; 828 real dispatches parsed",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check -- descriptor-bounded implementation paths",
+      "result": "PASS",
+      "exit_code": 0
+    }
+  ],
+  "implemented_commands": [
+    "aci.register-protocol-profile@1",
+    "apt.ensure-session@1",
+    "apt.link-session-dispatch@1",
+    "aci.activate-local-probe-context@1",
+    "aci.publish-bus-contribution@1",
+    "aci.verify-publication-receipt@1",
+    "apt.append-research-capture@1",
+    "apt.append-research-fact@1",
+    "apt.append-reference-probe-lineage@1"
+  ],
+  "safety_state": {
+    "local_pilot_serve_enablement": "blocked",
+    "production": "blocked",
+    "external_network": "absent",
+    "automatic_agent_launch": "absent",
+    "provider_adapter": "absent",
+    "legacy_runtime_cutover": "absent",
+    "legacy_ledger_mutation": "absent",
+    "apt_raw_projection_routes_or_tables": "absent"
+  },
+  "approval": {
+    "implementation_author": "runtime_bus_orchestrator",
+    "self_approved": false,
+    "independent_reviewer": "pending",
+    "findings": []
+  }
+}

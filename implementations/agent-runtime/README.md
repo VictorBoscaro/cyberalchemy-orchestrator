@@ -5,6 +5,7 @@ This isolated, local-only shadow runtime proves the smallest durable slice for:
 - sessions and opaque host/conversation correlation;
 - session-to-dispatch links;
 - `reference-scout` runs and recommendations;
+- `observation-probe` / Sonda runs and normalized observations;
 - append-only journal events and verifiable command receipts;
 - deterministic projection replay.
 - read/compare-only shadow reconciliation against `subagents-dispatch.yaml`.
@@ -19,11 +20,24 @@ agents, store transcripts, or constitute a production cutover.
 - The product capability is `reference-scout`. Product commands and projections
   use Scout names; frozen v1 wire compatibility retains `probe_id` and
   `probe.*` event names.
+- Every Scout belongs to one Session. `dispatch_bound` Scouts additionally belong
+  to a linked Dispatch; `session_direct` Scouts are launched by the host/root with
+  `dispatch_id = null`. They are Dispatch-orphaned only, never Session-orphaned.
+- Recommendations are normalized rows for the owning Scout run's
+  `recommendations[]` output, not a separate orchestration level.
+- `ObservationProbeTool` (Sonda in pt-BR) is separate from Reference Scout.
+  A `ProbeRun` observes `target_ref` through a versioned `lens_ref` and emits
+  `observations[]`; it does not emit recommendations or promote facts.
+- New Probe events use `observation_probe.*`. The old `probe.*` namespace
+  remains exclusively the frozen Reference Scout v1 wire alias.
+- Every Probe belongs to one Session and may be `dispatch_bound` or
+  `session_direct`, under the same ownership rule as Scout.
 - The existing `bus-publication-probe` experiment is understood as a
   publication-receipt spike. Its dirty directory is intentionally untouched.
 - `journal_events` and `command_receipts` are authoritative. `sessions`,
-  `session_dispatch_links`, `reference_scout_runs`, and
-  `reference_recommendations` are rebuildable projections.
+  `session_dispatch_links`, `reference_scout_runs`,
+  `reference_recommendations`, `observation_probe_runs`, and
+  `probe_observations` are rebuildable projections.
 - `Residue.lean` and `CodensityUnitResidue.lean` are not unified. This runtime
   has no `residue_score`. If source evaluation needs comparability, the only
   explicit states are `comparable`, `incommensurable`, and `count_capped`.
@@ -55,16 +69,30 @@ The API supports:
 - `publish_scout_contribution`
 - `commit_reference_bundle`
 - `deliver_reference_bundle`
+- `start_observation_probe`
+- `publish_probe_observation`
+- `commit_observation_probe`
+- `deliver_observation_probe`
 
 Example from this directory:
 
 ```powershell
 python -m agent_runtime --database .\shadow.sqlite3 init
-python -m agent_runtime --database .\shadow.sqlite3 command ensure_session op-1 '{"session_id":"ses-1","ensure_key":"host:opaque-1","origin_kind":"codex","origin_ref":"conversation:opaque-1"}'
+$payload = @{
+  session_id = "ses-1"
+  ensure_key = "host:opaque-1"
+  origin_kind = "codex"
+  origin_ref = "conversation:opaque-1"
+} | ConvertTo-Json -Compress
+$payload | python -m agent_runtime --database .\shadow.sqlite3 command ensure_session op-1 -
 python -m agent_runtime --database .\shadow.sqlite3 show sessions
 python -m agent_runtime --database .\shadow.sqlite3 replay
 python -m agent_runtime --database .\shadow.sqlite3 reconcile-ledger C:\repo\telemetry\agents\subagents-dispatch.yaml dispatch-1
 ```
+
+Using `-` reads the command payload from stdin and avoids native Windows
+argument parsing removing JSON quotation marks. Direct positional JSON remains
+supported on shells that preserve it.
 
 The library exposes the same operations through `agent_runtime.Runtime`.
 
@@ -92,8 +120,10 @@ treats comparison as acknowledgement.
   read/compare-only;
 - no outbox, multi-process writer service, retention, backup, or recovery job;
 - no authorization, artifact store, redaction, compression, or masking;
+- no registry or executor for lenses yet; the runtime durably binds their
+  reference, version, digest, and observation schema;
 - receipts prove local durable publication, not remote delivery;
-- no schema upgrade beyond migration version 1;
+- migrations currently cover schema versions 1 through 3;
 - no write materializer or cutover for `subagents-dispatch.yaml`;
 - timestamps and IDs are host-generated rather than supplied by a trusted
   runtime authority.

@@ -57,6 +57,18 @@ class ProfileImporter:
             or request.get("profile_version") != entry["profile_version"]
         ):
             raise IntegrityError("authoritative profile identity mismatch")
+        mirror = (
+            self.repo_root
+            / "docs/features/agents-communication-infra"
+            / entry["local_review_mirror"]["path"]
+        ).resolve()
+        mirror_raw = mirror.read_bytes()
+        if (
+            digest_bytes(mirror_raw)
+            != entry["local_review_mirror"]["file_digest"]
+            or canonical_bytes(parse_strict_json(mirror_raw)) != canonical
+        ):
+            raise IntegrityError("non-authoritative review mirror is not canonical-equal")
         return VerifiedProfile(
             profile_id=entry["profile_id"],
             profile_version=entry["profile_version"],

@@ -16,7 +16,17 @@ MIGRATION_NAMES = (
     "002_artifact_store.sql",
     "003_profile_capability.sql",
     "004_apt_projection.sql",
+    "005_apt_granular_projection.sql",
+    "006_apt_projector_state.sql",
 )
+
+
+class _ClosingConnection(sqlite3.Connection):
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            return super().__exit__(exc_type, exc_value, traceback)
+        finally:
+            self.close()
 
 
 class RuntimeDatabase:
@@ -32,6 +42,7 @@ class RuntimeDatabase:
             timeout=self.busy_timeout_ms / 1000,
             isolation_level=None,
             check_same_thread=False,
+            factory=_ClosingConnection,
         )
         conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA foreign_keys=ON")

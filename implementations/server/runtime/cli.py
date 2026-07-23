@@ -27,6 +27,7 @@ def settings_from_environment() -> RuntimeSettings:
             )
         ),
         local_pilot_serve_enabled=False,
+        repo_id=os.environ.get("ACI_REPO_ID", "cyberalchemy-orchestrator"),
     )
 
 
@@ -41,7 +42,13 @@ def parser() -> argparse.ArgumentParser:
     issue.add_argument("--phase", required=True)
     issue.add_argument("--context-json", required=True)
     issue.add_argument("--expires-at")
-    activate = commands.add_parser("activate-local-probe")
+    activate = commands.add_parser(
+        "activate-local-probe",
+        help=(
+            "activate the frozen v1 reference-probe lineage context; "
+            "this is not a general ProbeTool or a Reference Scout launch"
+        ),
+    )
     for name in (
         "session-id",
         "dispatch-id",
@@ -59,6 +66,12 @@ def parser() -> argparse.ArgumentParser:
 
 def run(argv: Sequence[str] | None = None) -> dict:
     args = parser().parse_args(argv)
+    if args.command == "serve":
+        # The rejected command must be zero-effect: no DB directory, migration,
+        # profile read or socket is touched before the separate gate exists.
+        raise GateBlockedError(
+            "local-pilot serving remains blocked pending a separate review receipt"
+        )
     runtime = RuntimeService(settings_from_environment())
     opened = runtime.open()
     if args.command == "migrate":
@@ -85,9 +98,7 @@ def run(argv: Sequence[str] | None = None) -> dict:
             attempt_id=args.attempt_id,
             operation_id=args.operation_id,
         )
-    raise GateBlockedError(
-        "local-pilot serving remains blocked pending a separate review receipt"
-    )
+    raise AssertionError("unreachable")
 
 
 def main() -> None:

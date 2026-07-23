@@ -57,9 +57,13 @@ CREATE TABLE IF NOT EXISTS session_dispatch_links (
 
 CREATE TABLE IF NOT EXISTS reference_scout_runs (
     scout_run_id TEXT PRIMARY KEY,
+    -- Frozen v1 wire alias for this same ScoutRun; not a ProbeRun foreign key.
     probe_id TEXT NOT NULL UNIQUE,
     session_id TEXT NOT NULL REFERENCES sessions(session_id),
     dispatch_id TEXT,
+    launch_mode TEXT NOT NULL CHECK (
+        launch_mode IN ('dispatch_bound', 'session_direct')
+    ),
     objective_ref TEXT NOT NULL,
     shape TEXT NOT NULL,
     source_mode TEXT NOT NULL,
@@ -94,9 +98,48 @@ CREATE TABLE IF NOT EXISTS reference_recommendations (
     UNIQUE (scout_run_id, reference_id)
 ) STRICT;
 
+CREATE TABLE IF NOT EXISTS observation_probe_runs (
+    probe_run_id TEXT PRIMARY KEY,
+    session_id TEXT NOT NULL REFERENCES sessions(session_id),
+    dispatch_id TEXT,
+    launch_mode TEXT NOT NULL CHECK (
+        launch_mode IN ('dispatch_bound', 'session_direct')
+    ),
+    target_ref TEXT NOT NULL,
+    question_ref TEXT NOT NULL,
+    lens_ref TEXT NOT NULL,
+    lens_version TEXT NOT NULL,
+    lens_digest TEXT NOT NULL,
+    observation_schema_ref TEXT NOT NULL,
+    requested_at TEXT NOT NULL,
+    state TEXT NOT NULL CHECK (
+        state IN ('requested', 'observing', 'committed', 'delivered')
+    ),
+    observations_digest TEXT,
+    committed_event_id TEXT,
+    delivered_at TEXT,
+    source_through_seq INTEGER NOT NULL
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS probe_observations (
+    observation_id TEXT PRIMARY KEY,
+    probe_run_id TEXT NOT NULL REFERENCES observation_probe_runs(probe_run_id),
+    observation_key TEXT NOT NULL,
+    value_json TEXT NOT NULL,
+    evidence_ref TEXT,
+    observed_by_seat_id TEXT NOT NULL,
+    source_event_id TEXT NOT NULL,
+    source_through_seq INTEGER NOT NULL,
+    UNIQUE (probe_run_id, observation_key)
+) STRICT;
+
 CREATE INDEX IF NOT EXISTS idx_events_type_seq
     ON journal_events(event_type, seq);
 CREATE INDEX IF NOT EXISTS idx_scout_session
     ON reference_scout_runs(session_id, requested_at);
 CREATE INDEX IF NOT EXISTS idx_recommendations_run
     ON reference_recommendations(scout_run_id, recommendation_id);
+CREATE INDEX IF NOT EXISTS idx_probe_session
+    ON observation_probe_runs(session_id, requested_at);
+CREATE INDEX IF NOT EXISTS idx_observations_run
+    ON probe_observations(probe_run_id, observation_id);
