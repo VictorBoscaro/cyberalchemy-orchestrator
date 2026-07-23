@@ -31,8 +31,8 @@ without that confirmation, refuse.
 Required briefing inputs (from the strategist):
 
 - **Provenance mode and checked source packet**:
-  - `dispatch`: exact registered dispatch ID and exact findings `path=sha256`;
-  - `basis`: one or more exact durable source-basis `path=sha256` bindings;
+  - `dispatch`: exact registered dispatch ID and exact findings `path=sha256:<64-hex>`;
+  - `basis`: one or more exact durable source-basis `path=sha256:<64-hex>` bindings;
   - `none`: no mandatory source.
   Optional research sources are also explicit `{path, sha256}` pairs. Read every supplied source in
   full and verify its hash before using it; never infer a path from tuple position or basename.
@@ -90,14 +90,15 @@ Reference docs to honor:
    Reviewers are instantiated by the orchestrator. When it returns a complete round after the
    barrier, triage every objection explicitly, remediate accepted or partial objections before the
    terminal round, synchronize the diagram, and return the new digest. On the confirmed terminal
-   round, do not edit the reviewed revision; unresolved accepted objections become residue.
+   round, disposition every objection without editing the reviewed revision: accepted/partial
+   objections become residue and rejected objections retain evidence-based reasons.
 9. Run the validator with the exact confirmed mode:
    - dispatch:
-     `python .claude/skills/discovery-writing/scripts/validate-discovery.py <target> --provenance-mode dispatch --expected-source <path=sha256> --dispatch-id <id>`;
+     `python .claude/skills/discovery-writing/scripts/validate-discovery.py <target> --provenance-mode dispatch --expected-source <path=sha256:64-hex> --dispatch-id <id>`;
    - basis: the same command with `--provenance-mode basis` and repeated
-     `--source-basis <path=sha256>`;
+     `--source-basis <path=sha256:64-hex>`;
    - none: the same command with `--provenance-mode none`.
-   Add repeated `--research-source <path=sha256>` arguments when applicable. The validator
+   Add repeated `--research-source <path=sha256:64-hex>` arguments when applicable. The validator
    recomputes all supplied hashes before writing/review and reports
    trailing whitespace for tracked and untracked files, so it is the repository-safe whitespace
    check for either state. Then run `git status --short -- <target-path>`, inspect the full target,

@@ -113,9 +113,9 @@ by amendment, never silently deleted.
 
 ### Decisions Baked In
 
-A decision register table is always present: `| <P>D-N | Decision | Where |`. Add one row per design
+A decision register table is always present with exact header `| ID | Decision | Where |`. Add one row per design
 decision the document commits to, with `Where` pointing at the owning §section. When no decision
-was ratified, keep the table and use one explicit `— | No decisions ratified. | —` row. Pick a
+was ratified, keep the table and use the exact `| — | No decisions ratified. | — |` row. Pick a
 per-doc ID prefix (OD, WD, …) and reference actual decisions by ID throughout the body, not by
 restating them. These IDs are load-bearing: the downstream SPEC's Authority line locks them and
 its OD-Trace table must resolve every one to an aspect block.
@@ -138,7 +138,8 @@ without their own explicit authorization.
 
 After `Connections`, place `## Flow Diagram`, then `## Appendix — Changelog`. The Flow section
 contains one Mermaid fence and a non-empty explanatory paragraph of at most four sentences. The
-changelog contains at least one version/date/change entry. The confirmed provenance mode is exactly
+changelog uses exact header `| Version | Date | Changes |` and contains at least one row with
+semantic version, real `YYYY-MM-DD` date, and non-empty change text. The confirmed provenance mode is exactly
 one of:
 
 - `dispatch`: the final non-empty line, outside code fences, is
@@ -403,3 +404,7 @@ A verified probe may support a decision only when the owning section and decisio
 the durable source/location, state the probe mode (`tool_probe` or `helper_probe`), and preserve
 material limitations. Otherwise it may only qualify a claim or Open Question. Never fabricate a
 decision from an uncited helper return.
+
+Pass validator source bindings as `path=sha256:<64-lowercase-hex>` for `--expected-source` and each
+repeated `--source-basis` / `--research-source`. The validator recomputes every binding before
+review. Provenance links themselves remain relative repository-contained Markdown links.

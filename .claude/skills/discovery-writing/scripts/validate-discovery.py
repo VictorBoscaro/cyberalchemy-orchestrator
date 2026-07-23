@@ -62,21 +62,23 @@ def main() -> int:
     parser.add_argument(
         "--provenance-mode",
         choices=("dispatch", "basis", "none"),
-        required=True,
     )
-    parser.add_argument("--expected-source")
+    parser.add_argument(
+        "--expected-source",
+        help="Exact dispatch findings path=sha256:<64-hex> binding.",
+    )
     parser.add_argument("--dispatch-id")
     parser.add_argument(
         "--source-basis",
         action="append",
         default=[],
-        help="Exact path=sha256 binding; repeat once per basis source.",
+        help="Exact path=sha256:<64-hex> binding; repeat once per basis source.",
     )
     parser.add_argument(
         "--research-source",
         action="append",
         default=[],
-        help="Exact path=sha256 binding linked before Connections; repeat as needed.",
+        help="Exact path=sha256:<64-hex> binding linked before Connections; repeat as needed.",
     )
     args = parser.parse_args()
 
@@ -84,6 +86,8 @@ def main() -> int:
         return run_self_tests()
     if not args.discovery:
         parser.error("discovery is required unless --self-test is used")
+    if not args.provenance_mode:
+        parser.error("--provenance-mode is required unless --self-test is used")
     validate_cli_contract(parser, args)
     path = Path(args.discovery).resolve()
     expected_binding = (
@@ -112,8 +116,9 @@ def main() -> int:
     for source, expected_hash in required_bindings:
         if not source.is_file():
             parser.error(f"source not found: {source}")
-        actual_hash = sha256(source.read_bytes()).hexdigest()
-        if actual_hash != expected_hash:
+        source_bytes = source.read_bytes()
+        actual_hash = sha256(source_bytes).hexdigest()
+        if not hash_matches(expected_hash, source_bytes):
             parser.error(
                 f"source hash mismatch: {source} "
                 f"(expected {expected_hash}, got {actual_hash})"
@@ -216,10 +221,20 @@ def parse_binding(
     raw: str,
 ) -> tuple[Path, str]:
     path_text, separator, digest = raw.rpartition("=")
-    digest = digest.removeprefix("sha256:").lower()
-    if not separator or not path_text or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
-        parser.error(f"{option} must use exact path=sha256 binding syntax")
-    return Path(path_text).resolve(), digest
+    if not digest.startswith("sha256:"):
+        parser.error(f"{option} must use exact path=sha256:<64-hex> syntax")
+    digest_value = digest.removeprefix("sha256:").lower()
+    if (
+        not separator
+        or not path_text
+        or re.fullmatch(r"[0-9a-f]{64}", digest_value) is None
+    ):
+        parser.error(f"{option} must use exact path=sha256:<64-hex> syntax")
+    return Path(path_text).resolve(), digest_value
+
+
+def hash_matches(expected_hash: str, data: bytes) -> bool:
+    return sha256(data).hexdigest() == expected_hash
 
 
 def text_outside_fences(lines: list[str]) -> tuple[str, bool]:
@@ -850,6 +865,155 @@ def relative_link_within_repo(path: Path, target: str) -> bool:
     except ValueError:
         return False
     return True
+
+
+def run_self_tests() -> int:
+    failures: list[str] = []
+
+    def check(name: str, condition: bool) -> None:
+        if not condition:
+            failures.append(name)
+
+    outside, balanced = text_outside_fences(
+        ["~~~mermaid", "## spoof", "~~~~", "## Objective"]
+    )
+    check("tilde fence matching", balanced and "## spoof" not in outside)
+    _, balanced = text_outside_fences(["````", "~~~", "```"])
+    check("fence type and length mismatch rejection", not balanced)
+    check("real calendar dates", valid_date("2026-07-23") and not valid_date("2026-02-30"))
+    test_parser = ArgumentParser(add_help=False)
+    _, parsed_digest = parse_binding(
+        test_parser,
+        "--source-basis",
+        "source.md=sha256:" + ("a" * 64),
+    )
+    check("path-hash binding syntax", parsed_digest == "a" * 64)
+    check(
+        "source hash recomputation",
+        hash_matches(sha256(b"source").hexdigest(), b"source")
+        and not hash_matches("0" * 64, b"source"),
+    )
+    check(
+        "strict locations",
+        LOCATION_TOKEN.search("src/a.py:12") is not None
+        and LOCATION_TOKEN.search("ClassName.method") is not None
+        and LOCATION_TOKEN.search("design.md §2.1") is not None
+        and LOCATION_TOKEN.search("src/a.py") is None,
+    )
+
+    errors: list[str] = []
+    validate_heading_order(
+        "## Preface\nx\n## Objective\nx\n## Appendix — Changelog\nx",
+        errors,
+    )
+    check("Objective first H2", any("first H2" in item for item in errors))
+    errors = []
+    validate_heading_order(
+        "## Objective\nx\n## Appendix — Changelog\nx\n## Extra\nx",
+        errors,
+    )
+    check("no H2 after ending", any("final H2" in item for item in errors))
+
+    errors = []
+    validate_open_questions(
+        "## Open Questions\nOQ-X1\n**Question:** Q?\n"
+        "**Recommendation:** R.\nSettlement stage: SPEC.\n"
+        "OQ-X2\n**Question:** Q?\n## Decisions Baked In\n",
+        errors,
+    )
+    check(
+        "per-OQ fields",
+        any("OQ-X2 is missing **Recommendation:**" in item for item in errors)
+        and any("OQ-X2 is missing a settlement stage" in item for item in errors),
+    )
+
+    errors = []
+    validate_decision_table(
+        "## Decisions Baked In\n| ID | Decision | Where |\n"
+        "| --- | --- | --- |\n| — | No decisions ratified. | — |\n",
+        errors,
+    )
+    check("exact no-decisions row", not errors)
+    errors = []
+    validate_decision_table(
+        "## Decisions Baked In\n| ID | Decision | Where |\n"
+        "| --- | --- | --- |\n",
+        errors,
+    )
+    check("decision row required", bool(errors))
+
+    one_flow = (
+        "## Flow Diagram\n~~~mermaid\nflowchart TD\nA-->B\n~~~\n"
+        "This paragraph explains the flow.\n## Appendix — Changelog\n"
+    )
+    outside, _ = text_outside_fences(one_flow.splitlines())
+    errors = []
+    validate_flow(one_flow, outside, errors)
+    check("exactly one Mermaid fence", not errors)
+    two_flows = one_flow.replace(
+        "This paragraph",
+        "```mermaid\nflowchart TD\nB-->C\n```\nThis paragraph",
+    )
+    outside, _ = text_outside_fences(two_flows.splitlines())
+    errors = []
+    validate_flow(two_flows, outside, errors)
+    check("duplicate Mermaid rejection", any("exactly one" in item for item in errors))
+
+    errors = []
+    validate_changelog(
+        "## Appendix — Changelog\n| Version | Date | Changes |\n"
+        "| --- | --- | --- |\n| 1.2.3 | 2026-02-30 | Changed. |\n",
+        errors,
+    )
+    check("changelog date validation", bool(errors))
+    errors = []
+    validate_changelog(
+        "## Appendix — Changelog\n| Version | Date | Changes |\n"
+        "| --- | --- | --- |\n| 1.2.3 | 2026-07-23 | Changed. |\n",
+        errors,
+    )
+    check("changelog valid row", not errors)
+
+    errors = []
+    objective = (
+        "## Objective\nOne. Two. Three. Four.\n\n"
+        "**Status:** v1\n**Owner:** @owner\n"
+    )
+    validate_objective(objective, errors)
+    check("Objective sentence ceiling", any("at most 3" in item for item in errors))
+
+    repo_root = find_repo_root(Path(__file__).resolve())
+    if repo_root is not None:
+        discovery = repo_root / "docs/features/x/discovery/y.md"
+        check(
+            "relative provenance containment",
+            relative_link_within_repo(discovery, "../../../source.md")
+            and not relative_link_within_repo(discovery, "../../../../../../outside.md"),
+        )
+        errors = []
+        validate_source_footer(
+            discovery,
+            [
+                "```text",
+                "**Source dispatch:** `spoof` — [findings](../../../source.md)",
+                "```",
+                "ordinary terminal text",
+            ],
+            "none",
+            None,
+            None,
+            [],
+            errors,
+        )
+        check("fenced footer spoof ignored", not errors)
+
+    if failures:
+        for failure in failures:
+            print(f"[self-test] FAIL: {failure}")
+        print(f"validator self-test: FAIL ({len(failures)} issue(s))")
+        return 1
+    print("validator self-test: PASS")
+    return 0
 
 
 if __name__ == "__main__":
