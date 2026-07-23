@@ -26,6 +26,20 @@ P001–P006 were preregistered before discovery v0.1.0. P007 was added in v0.2.0
 system-governed tag registry and isolated agent views, but before any empirical run. Its
 metrics and decision thresholds therefore remain prospective rather than fitted to results.
 
+## Meaning of Probe in this registry
+
+These files are preregistered empirical Probe protocols: they observe a target under a declared
+method and decision lens. In the agent-tool taxonomy, the reusable capability is `ProbeTool`
+(displayed as **Sonda** in pt-BR), one execution is a `ProbeRun` with an explicit `lens_ref`, and its
+owned results are `observations[]`.
+
+They are not Reference Scout runs. Reference Scout uses
+`ReferenceScoutTool -> ScoutRun -> recommendations[]` to find where to look. Probe records what was
+observed through a lens. Neither family transforms its target or promotes its output to fact, and
+Reference Scout is not declared a Probe subtype in this version. Frozen `probe_id`, `probe.*` and
+`reference-probe` identifiers attached to the historical Scout v1 protocol remain compatibility
+identifiers and do not change this distinction.
+
 ## Shared evidence boundary
 
 - A topic snapshot is testimony: it records what one agent said it was working on at one activation.

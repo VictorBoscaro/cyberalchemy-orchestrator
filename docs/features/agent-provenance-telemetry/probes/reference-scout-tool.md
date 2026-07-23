@@ -16,11 +16,13 @@ persist recommendations of where the caller should look for relevant context. It
 authorized internal research towers and mediated external sources. It does not answer the caller's
 question, adjudicate the hypothesis, edit source material or start a full research project.
 
-`reference-probe`, `probe` and `sonda` are legacy conversational aliases. New product surfaces,
-runtime operation names and projection names use Scout terminology. Already frozen v1 wire,
-schema/profile and APT concept identifiers containing `probe` or `reference-probe` remain valid
-compatibility identifiers until an explicit versioned migration; they do not rename the product
-concept back to Probe.
+`reference-probe` is the legacy compatibility name for this capability. Bare `Probe` and **Sonda**
+are not Scout aliases: they are reserved for the general observational
+`ProbeTool -> ProbeRun(lens_ref) -> observations[]` family. New Scout product surfaces, runtime
+operation names and projection names use Scout terminology. Already frozen v1 wire, schema/profile
+and APT concept identifiers containing `probe` or `reference-probe` remain valid compatibility
+identifiers until an explicit versioned migration; they do not rename the product concept back to
+Probe.
 
 ## Naming boundary
 
@@ -30,6 +32,31 @@ metric. The experimental ACI executable currently located at
 [the publication spike](../../agents-communication-infra/experiments/bus-publication-probe/README.md)
 is a distinct
 **publication-receipt spike**: it tests durable publish/receipt mechanics and is not this tool.
+
+`ScoutRun` is therefore the canonical runtime entity. A general `Probe` belongs to the broader
+orchestration vocabulary: it reads an object through an explicit observational construction/lens
+and may participate in preregistered empirical or formal tests. Reference Scout is narrower: it
+reconnoitres sources and returns navigation recommendations. The frozen `probe_id` on a Scout run
+is a v1 wire alias for the same run, not composition, containment or a second runtime object.
+
+The agent-facing capability is `ReferenceScoutTool`; a particular invocation is a `ScoutRun`.
+Their relationship is:
+
+```text
+ReferenceScoutTool -> ScoutRun -> recommendations[]
+```
+
+The distinct general observational family is:
+
+```text
+ProbeTool -> ProbeRun(lens_ref) -> observations[]
+```
+
+In pt-BR UI copy, Probe may be displayed as **Sonda**. This is localization, not a third entity.
+Reference Scout is not declared a Probe subtype in this version. The two families may share Session,
+optional Dispatch, bus, receipt and replay infrastructure, but their output contracts remain
+different: Scout recommends where to look; Probe records what an explicit lens observed. Neither
+transforms the target or promotes a recommendation/observation to a fact.
 
 ## Classification and ownership
 
@@ -140,9 +167,16 @@ The host stamps:
 The caller cannot assert lineage, widen authority or select a larger budget than its inherited
 session/run remainder.
 
-When `dispatch_id` is present, the host resolves its sole `session.dispatch_linked` edge and requires
-the stamped `session_id` to match exactly. An unlinked dispatch or mismatch is rejected before any
-Scout event is published. A Scout without a dispatch continues to use its direct session lineage.
+Every Scout has a mandatory `session_id` and exactly one derived launch mode:
+
+| Launch mode | Dispatch binding | Meaning |
+|---|---|---|
+| `dispatch_bound` | `dispatch_id` is required and resolves through the sole `session.dispatch_linked` edge to the same Session. | Reconnaissance delegated within an existing Dispatch/activation. |
+| `session_direct` | `dispatch_id` is null. | The authorized host/root requests reconnaissance directly in the Session before or outside a Dispatch. |
+
+The host derives the mode from the presence of `dispatch_id`; callers cannot stamp it independently.
+An unlinked Dispatch or Session mismatch is rejected before publication. A `session_direct` Scout
+may be informally called Dispatch-orphaned, but it is never Session-orphaned.
 
 ## Distance
 
@@ -227,6 +261,7 @@ This slice reuses the journal, artifact, receipt and group-deliberation contract
   "protocol_profile_digest": "sha256:<pending-aci-owner-registration>",
   "shape": "small",
   "objective": "Recommend references bearing on the ownership hypothesis",
+  "launch_mode": "session_direct",
   "research_tower_snapshot_ref": "artifact-...",
   "recommendations": [
     {
@@ -256,8 +291,10 @@ The profile values above identify the real pending v1 profile family but the dig
 illustrative. The Scout is not ACI-enabled until the exact registered digest and owner receipt
 verify.
 
-The caller receives recommendations of where to inspect and why. The probe does not supply the
-caller's final conclusion.
+The caller receives the Scout run's `recommendations[]`: identified output parameters describing
+where to inspect and why. Storage may normalize them into one row per recommendation for uniqueness,
+attribution and replay, but their aggregate owner remains the `ScoutRun`. The Scout does not supply
+the caller's final conclusion.
 
 ## Session and downstream research lineage
 
@@ -288,7 +325,7 @@ count. A current-name/rename projection is post-L0.
 | condition | result |
 |---|---|
 | no relevant reference found | Commit an empty reviewed bundle with a typed `search_scope_summary`; `comparability_state` is exactly `comparable`, `incommensurable` or `count_capped`, never a numeric residue score. |
-| one probe seat fails | Commit a typed partial only when the bound profile sets `partial_commit_policy=allow_typed_partial`; `forbid` rejects commit. A partial is never presented as reviewed consensus. |
+| one Scout seat fails | Commit a typed partial only when the bound profile sets `partial_commit_policy=allow_typed_partial`; `forbid` rejects commit. A partial is never presented as reviewed consensus. |
 | internal or external channel partially fails | Preserve surviving recommendations plus typed channel failure. |
 | requested scope exceeds authority | Reject before acquisition and record the denied request. |
 | persistence fails before commit | Do not deliver recommendations without an accepted `probe.bundle.committed` event and receipt whose member/event IDs and bundle digest verify. |
@@ -319,21 +356,21 @@ count. A current-name/rename projection is post-L0.
 
 ## Implementation order
 
-1. Establish coarse session identity before probe registration.
+1. Establish coarse session identity before Scout registration.
 2. Freeze small/tensioned recipes, response schemas, budgets and research-tower snapshots.
 3. Implement the append-before-ack bus path and stable receipts.
 4. Run the two-agent small shape against bounded internal towers.
 5. Add mediated external acquisition to the same shape.
 6. Add the four-agent tensioned shape, sealed `v1`, zig-zag reveal and `v2`.
 7. Add caller-authorized second-round control.
-8. Project session → probe → reference → later research lineage.
+8. Project Session → ScoutRun → recommendation → later research lineage.
 9. Test retries, crashes, partial seats, unauthorized scope, replay and lost delivery.
 
 ## Connections
 
 | Document | Type | Description |
 |---|---|---|
-| [Feature discovery — Reference probe and bus](../discovery.md#reference-probe-and-bus) | `grounds` | Introduces the bounded acquisition workflow and authority boundary. |
+| [Feature discovery — Reference Scout and bus](../discovery.md#reference-scout-and-bus) | `grounds` | Introduces the bounded acquisition workflow and authority boundary. |
 | [Feature specification](../specs/SPEC.md#capability-boundaries) | `specified-by` | Fixes Reference Scout lineage ownership and the frozen v1 compatibility surface. |
 | [ACI receipt-gated deliberation](../../agents-communication-infra/specs/SPEC.md#receipt-gated-deliberation) | `depends-on` | Owns publication, profile and receipt execution. |
 | [Session–Dispatch–Research records](../discovery/session-dispatch-research-records.md) | `consumed-by` | Downstream ResearchReferenceUse consumes host-observed Scout evidence. |

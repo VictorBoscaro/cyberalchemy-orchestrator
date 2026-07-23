@@ -1,0 +1,45 @@
+{
+  "lens_id": "agent-pool-scientist-tags",
+  "lens_version": "1",
+  "target_schema": "agent-pool@0.6.0",
+  "mode": "observation_only",
+  "authority": "non_mutating_non_promotional",
+  "question": "Which coarse dimensions and fine tags already exist in the pinned agent pool, and what evidence bands can describe scientist-like profiles without coercing ambiguous entries?",
+  "primary_field_labels": {
+    "biology": "science-natural",
+    "physics": "science-natural",
+    "psychology": "science-behavioral",
+    "economics": "science-social",
+    "logic": "science-formal",
+    "math": "science-formal",
+    "ai-ml": "science-computational",
+    "cs": "science-computational",
+    "systems": "science-computational"
+  },
+  "manual_review_fields": [
+    "management",
+    "philosophy",
+    "other"
+  ],
+  "observation_keys": [
+    "snapshot_summary",
+    "field_distribution",
+    "scientist_evidence_bands",
+    "tag_semantics",
+    "knowledge_taxonomy_boundary",
+    "mcp_visibility_limits"
+  ],
+  "invariants": [
+    "field is observed coarse evidence, not a claim about profession",
+    "profile tags are fine expertise labels, not observed behavior",
+    "absence of a tag is not negative evidence",
+    "role_fit is an orchestration-role prior, not historical occupation",
+    "cited=false means proposed foundational, not low confidence",
+    "ambiguous fields remain manual_review or unresolved",
+    "no output is written into agent-pool.yaml",
+    "lens labels remain outside the agent-pool tag vocabulary",
+    "Knowledge Taxonomy facets classify records and never become expertise tags",
+    "observations are not promoted facts"
+  ],
+  "output_schema_ref": "apt.observation.agent-pool-scientist-tags@1"
+}

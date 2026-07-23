@@ -17,3 +17,7 @@ operation identifiers containing `reference-probe` remain valid v1 compatibility
 product language, runtime operation names and projection names use `reference-scout`.
 
 This alias does not describe the separate ACI publication-receipt spike.
+
+It also does not identify Reference Scout with the general `ProbeTool -> ProbeRun(lens_ref) ->
+observations[]` family. A Scout invocation is a `ScoutRun` owning `recommendations[]`; frozen v1
+`probe` spellings on that run are compatibility identifiers, not evidence of subtype or containment.

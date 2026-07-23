@@ -17,7 +17,7 @@ question: What is the smallest observational contract that lets the system recon
 
 ## Decision
 
-Start with observation, not ontology, and acquire undeclared references through bounded probes rather
+Start with observation, not ontology, and acquire undeclared references through bounded Scouts rather
 than ambient exploration by the working agent.
 
 Each agent deposits a flat list of topic strings. The system records that list with the activation,
@@ -28,12 +28,13 @@ protocol in v0.3.
 This supersedes the registry/resolution design in v0.2. The older contract fixtures and curation notes
 remain historical inputs, not active requirements.
 
-Version 0.6 adds a proposed `reference-probe` tool and coarse session registry. This does not turn
-telemetry into a truth authority. A small probe uses one worker and one reviewer; a larger probe uses
-two tensioned worker/reviewer groups. Both retrieve relevant internal and/or external references,
+Version 0.6 added a proposed tool under the legacy `reference-probe` name; its canonical name is now
+`ReferenceScoutTool`, alongside the coarse session registry. This does not turn telemetry into a
+truth authority. A small Scout uses one worker and one reviewer; a larger Scout uses two tensioned
+worker/reviewer groups. Both retrieve relevant internal and/or external references,
 commit their exchanges and recommendation bundle through the bus, and return only where-to-look
 guidance to the caller. The full
-contracts are [`probes/reference-probe-tool.md`](probes/reference-probe-tool.md) and
+contracts are [`probes/reference-scout-tool.md`](probes/reference-scout-tool.md) and
 [`session-registry.md`](session-registry.md).
 
 Version 0.7 adds the focused
@@ -49,7 +50,7 @@ formalizations. Dispatch-level counts and statuses are projections over those re
 3. What subjects did each logical agent seat say were relevant to its activation?
 4. Which papers and other sources did each seat actually access through mediated tools?
 5. What repeated terms, co-occurrences, differences and changes appear across those observations?
-6. Which bounded probe operation found each reference, and to which activation or exchange was that
+6. Which bounded ScoutRun found each reference, and to which activation or exchange was that
    committed bundle demonstrably delivered?
 7. Which exact question did each research contribution investigate, and what final answer returned?
 8. Which references were merely mentioned, host-observed, located or independently checked?
@@ -95,24 +96,24 @@ may add relations such as `triggered`, `reviews` or `refines` without rewriting 
 Agent observations bind to `group_id`, `seat_id`, `attempt_id` and `activation_id`. A retry keeps its
 logical seat and creates a new attempt. Persona names are optional labels, not identity.
 
-## Reference probe and bus
+## Reference Scout and bus
 
-Every ordinary activation may be offered one bounded `reference-probe` tool. The minimum probe has
-one worker and one reviewer using robot-talks to check reference fit. A larger probe has two such
+Every ordinary activation may be offered one bounded `ReferenceScoutTool`. The minimum Scout has
+one worker and one reviewer using robot-talks to check reference fit. A larger Scout has two such
 groups tensioned by opposed angles—normally support versus refutation—and uses a persisted zig-zag:
 each group publishes `v1`, receives the other lens and publishes `v2`. The caller may authorize one
 additional cross round; it is never automatic.
 
-Without an explicit user request, an agent may use its probe when a material conclusion needs context
+Without an explicit user request, an agent may use its Scout when a material conclusion needs context
 not already present. Greater human distance narrows the question, result count, budget and normally
 selects the two-agent shape. A useful default is to seek references that could contradict the
 caller's provisional conclusion.
 
-The probe is the first small bus slice: it persists seat contributions, group versions,
+The Scout is the first small bus slice: it persists seat contributions, group versions,
 robot-talks/zig-zag handoffs when present, the final reference bundle and delivery receipt. Delivery
 proves tool-boundary presentation, not attention or belief.
 
-Probe agents may search mediated internet sources and a frozen snapshot of research towers. For the
+Scout agents may search mediated internet sources and a frozen snapshot of research towers. For the
 first cut, a tower is any authorized directory whose path contains a segment exactly `research` or
 beginning with `research-`. Corpus location never creates another group. Explicit tower
 tagging/cataloguing is deferred and tracked in the repository backlog.
@@ -120,8 +121,8 @@ tagging/cataloguing is deferred and tracked in the repository backlog.
 ## Coarse session identity
 
 Before dispatch/topic/reference detail, the runtime ensures one stable session identity. Any
-orchestration or probe skill calls an idempotent `ensure_session`: it creates a session only when the
-current context lacks one, then every later skill, dispatch, group, seat, attempt and probe inherits
+orchestration or Scout/Probe tool calls an idempotent `ensure_session`: it creates a session only when the
+current context lacks one, then every later skill, dispatch, group, seat, attempt and tool run inherits
 the same ID.
 
 The authoritative minimal facts are `session.started`, `session.name_changed` and
@@ -264,7 +265,7 @@ new derived record and never rewrite the original lists.
 ## Source, paper and internal-reference observations
 
 Paper/source capture belongs at the mediated search, open or fetch boundary rather than in agent
-prose. Internal file references opened through a probe use the same observation boundary, with a
+prose. Internal file references opened through a Scout use the same observation boundary, with a
 workspace-relative locator plus content digest instead of a mutable path alone. The tool deposits an
 observation when it actually returns or exposes a source:
 
@@ -287,8 +288,8 @@ observation when it actually returns or exposes a source:
 Search-result visibility is distinct from opening or reading. Bibliographic metadata is observed,
 not silently corrected. Full text and copyrighted content remain outside telemetry.
 
-Each probe operation commits its own immutable reference bundle before delivery. At dispatch close,
-the system may build a derived manifest of activation, topic-emission, probe-bundle and
+Each ScoutRun commits its own immutable reference bundle before delivery. At dispatch close,
+the system may build a derived manifest of activation, topic-emission, Scout bundle and
 source-observation references. The agent does not have to reproduce the bibliography in its final
 answer for telemetry to exist.
 
@@ -300,7 +301,7 @@ The projection distinguishes:
 - `cited_by`: accepted contributions or synthesis artifacts that explicitly referenced it.
 
 The first three are host-observable. `cited_by` is an attributed claim of use, not evidence of
-cognitive influence. Partial, contradictory and empty probe results remain in provenance.
+cognitive influence. Partial, contradictory and empty Scout results remain in provenance.
 
 ## Failure semantics
 
@@ -314,10 +315,10 @@ cognitive influence. Partial, contradictory and empty probe results remain in pr
 | Source tool fails before returning a source | Record tool failure, not a paper observation. |
 | Retry occurs | Create a new attempt/activation observation; never overwrite. |
 | Lineage is unavailable | Preserve explicit unresolved lineage rather than fabricate a parent. |
-| Probe asks for a wider path/domain than authorized | Reject the widening and record it; never search anyway. |
-| Probe budget is exhausted | Return `budget_insufficient` or a committed partial bundle with explicit residue. |
-| Probe persistence fails before commit | Do not expose unlogged references to the caller. |
-| One probe seat fails | Preserve a typed partial; do not call it reviewed consensus. |
+| Scout asks for a wider path/domain than authorized | Reject the widening and record it; never search anyway. |
+| Scout budget is exhausted | Return `budget_insufficient` or a committed partial bundle with explicit residue. |
+| Scout persistence fails before commit | Do not expose unlogged references to the caller. |
+| One Scout seat fails | Preserve a typed partial; do not call it reviewed consensus. |
 
 ## Empirical work
 
@@ -351,7 +352,8 @@ Useful first measurements are:
 6. Add `ensure_session` plus the append-only coarse session facts and projection.
 7. Freeze the Session–Dispatch–Research identities and raw-first research contracts/fixtures.
 8. Capture exact final returns and link host source observations to attributed reference uses/checks.
-9. Add the `reference-probe` request/observation/bundle/receipt bus slice.
+9. Add the Reference Scout request/contribution/bundle/receipt bus slice, preserving frozen v1
+   `reference-probe`, `probe_id` and `probe.*` identifiers at the wire boundary.
 10. Persist before acknowledgement and return only committed reference bundles.
 11. Build per-session, per-dispatch, per-research and per-conversation read projections.
 12. Run the saved empirical probes before introducing semantic equivalence or registry machinery.
@@ -369,7 +371,7 @@ Useful first measurements are:
 - no claim that delivery proves attention, belief or causal influence;
 - no ambient workspace/domain discovery by ordinary agents when reference scope is absent;
 - no group partition by internal/external source or repository path;
-- no implementation or final-answer work by probe agents;
+- no implementation or final-answer work by Scout agents;
 - no automatic promotion of research claims or mathematical/logical notation;
 - no independently editable session registry beside the journal/bus projection.
 
@@ -383,7 +385,7 @@ versioned projections. It is not required to begin collecting evidence.
 |---|---|---|
 | [Session–Dispatch–Research records](discovery/session-dispatch-research-records.md) | `grounds` | Focused discovery that owns the structured research level introduced in v0.7. |
 | [Coarse session registry](session-registry.md) | `grounds` | Owns the start-time session facts consumed by the three-level model. |
-| [Reference-probe tool](probes/reference-probe-tool.md) | `grounds` | Owns host-observed acquisition/access evidence reused by research reference uses. |
+| [Reference Scout tool](probes/reference-scout-tool.md) | `grounds` | Owns host-observed acquisition/access evidence reused by research reference uses. |
 
 ## Appendix — Changelog
 

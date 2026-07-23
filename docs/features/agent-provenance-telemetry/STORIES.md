@@ -9,6 +9,13 @@
 These stories derive behavior from the reviewed DomainSpec corpus and focused discovery. They do
 not claim implementation, executable tests, runtime profile registration or UI interaction.
 
+> **Taxonomy/compatibility note:** New product language uses
+> `ReferenceScoutTool -> ScoutRun -> recommendations[]`. The `Reference Probe Lineage` headings and
+> identifiers below are frozen v1 compatibility surfaces, not a claim that Scout is a Probe subtype.
+> The separate general family is `ProbeTool` (pt-BR: **Sonda**) ->
+> `ProbeRun(lens_ref) -> observations[]`. Tool and Run are distinct, and neither family promotes an
+> output to fact.
+
 ## Session Registry
 
 ### US-1: Ensure one coarse Session for a host context

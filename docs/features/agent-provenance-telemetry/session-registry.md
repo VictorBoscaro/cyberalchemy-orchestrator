@@ -20,11 +20,12 @@ session
   │    │    └─ seat
   │    │         └─ attempt
   │    │              └─ activation / tool operation
+  │    ├─ reference-scout (dispatch_bound)
+  │    │    └─ recommendations[]
   │    └─ research
   │         └─ question / answer / reference use / problem / claim / formalization
-  └─ reference-scout
-       └─ probe group
-            └─ probe seat / attempt
+  └─ reference-scout (session_direct)
+       └─ recommendations[]
 ```
 
 The first dataset does not reproduce transcripts, prompts or agent outputs. It gives later telemetry
@@ -41,7 +42,7 @@ body. Compression and masking are deferred rather than silently approximated.
 
 ## Ensure, do not duplicate
 
-Any orchestration or probe skill begins by calling an idempotent `ensure_session` boundary:
+Any orchestration, Scout or Probe tool begins by calling an idempotent `ensure_session` boundary:
 
 - if the current execution context already has `session_id`, reuse it;
 - otherwise create one `session.started` fact using a host-minted opaque ID;
@@ -85,7 +86,7 @@ The authoritative first cut is append-only:
   "ensure_key": "ensure:<opaque-context-key>",
   "start_operation_id": "operation:<opaque-id>",
   "started_at": "2026-07-23T03:15:43Z",
-  "name": "Agent provenance and reference probes"
+  "name": "Agent provenance and Reference Scouts"
 }
 ```
 
@@ -96,7 +97,7 @@ A changing name is a later fact, not an edit of history:
   "event_type": "session.name_changed",
   "session_id": "session-01",
   "changed_at": "2026-07-23T04:10:00Z",
-  "name": "Reference probe bus and hierarchical session telemetry"
+  "name": "Reference Scout bus and hierarchical session telemetry"
 }
 ```
 
@@ -124,7 +125,7 @@ The rebuildable coarse dataset exposes:
 | `dispatch_count` | distinct linked dispatch IDs |
 | `last_activity_at` | latest session-linked fact |
 
-Later projections may add group, seat, attempt, probe and reference counts without changing the
+Later projections may add group, seat, attempt, ScoutRun, ProbeRun and reference counts without changing the
 original facts.
 
 The structured research child is defined by
@@ -134,10 +135,28 @@ The structured research child is defined by
 those two edges. Neither the dispatch ledger nor research facts duplicate `session_id`,
 `research_refs`, answers or formalizations.
 
-A Reference Scout may exist directly under the Session or inside a dispatch/agent activation. Its
-mandatory `session_id` supplies the coarse parent. If later research arises from it, the research
-dispatch/artifact also records the originating Scout identity. Frozen v1 lineage may retain
-`probe_id`; new projection and operation names use `scout_run_id`/`reference_scout`.
+A Reference Scout has exactly one mandatory Session parent and one of two derived launch modes:
+
+- `dispatch_bound`: `dispatch_id` is present and its sole `session.dispatch_linked` edge resolves to
+  the same `session_id`;
+- `session_direct`: `dispatch_id` is null and the authorized host/root launches bounded
+  reconnaissance directly from the Session.
+
+The second mode is conversationally an “orphan Scout” only with respect to Dispatch; it is never
+orphaned from Session. `launch_mode` is derived from `dispatch_id`, not caller-authored.
+Recommendations are the Scout run's ordered/identified output collection (`recommendations[]`);
+their normalized projection rows do not create a new orchestration level.
+
+If later research arises from a recommendation, the research dispatch/artifact records the
+originating `scout_run_id` and recommendation identity. `ScoutRun` is the canonical operational
+concept. Frozen v1 lineage may retain `probe_id` and `probe.*` event names as compatibility
+identifiers, but they do not denote a second entity.
+
+`ReferenceScoutTool` is the capability an agent invokes; `ScoutRun` is the Session-owned execution
+record. In a separate family, `ProbeTool` (pt-BR UI: **Sonda**) creates a `ProbeRun` that requires a
+`lens_ref` and owns `observations[]`. Scout recommendations identify paths to inspect, whereas Probe
+observations state what a lens observed. Neither becomes a fact automatically, and the shared
+Session/optional-Dispatch shape does not make Scout a subtype of Probe.
 
 ## Naming
 

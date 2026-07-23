@@ -46,6 +46,14 @@ L0 also requires the ACI-owned binding
 profile_digest=<ACI-registered digest>}`. Until ACI registers and a reviewer verifies the exact
 digest/receipt, fact append and probe-lineage implementation remain blocked.
 
+At the agent boundary, capability definitions and executions are separate:
+`ReferenceScoutTool -> ScoutRun -> recommendations[]` and
+`ProbeTool -> ProbeRun(lens_ref) -> observations[]`. Scout discovers navigation targets; Probe
+observes a target through an explicit lens. Neither mutates its target or promotes its output to a
+fact. They may reuse the same Session/optional-Dispatch, ACI bus, receipt and replay services without
+an inheritance relationship; Reference Scout is not specified as a Probe subtype in this version.
+**Sonda** is only the pt-BR product label for `ProbeTool`/`ProbeRun`, not a third domain concept.
+
 ## Source Contracts
 
 | Contract ID | Source | Required | Notes |

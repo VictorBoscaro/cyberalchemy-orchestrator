@@ -103,7 +103,9 @@ truth: each term is defined normatively in exactly ONE place; boundaries do not 
   `A,B`). Collapse-test: F7.
 - **Operational interpretation:** The orchestrator knows an artifact not by internal
   inspection, but by the set of questions `A → X` it can address to it; the totality of the
-  answers *is* the artifact.
+  answers *is* the artifact. At the agent-tool boundary, `ProbeTool` is the reusable capability and
+  `ProbeRun` is one execution applying an explicit, versioned `lens_ref`; that run owns
+  `observations[]`. **Sonda** is the pt-BR UI label for the same Probe concept, not a third entity.
 - **Colloquial voice:** You know the thing by the complete set of questions you can ask it.
 - **Boundary:** mandatory DISAMBIGUATION — **three** senses of "recon" that do NOT collapse:
   (1) **active-probe/Yoneda** (THIS entire term — interrogation by test-maps, the broad
@@ -112,7 +114,12 @@ truth: each term is defined normatively in exactly ONE place; boundaries do not 
   species** (object axis/`¬EssSurj`) is **narrower** than (1) — **never** use bare "recon" for
   the species; write "recognition" (the probe is the *recognition-probe*). EXCLUDES the
   **verb** (DEF-ORCH-005): the probe *reads* the object without transforming it; the verb
-  *acts* on it.
+  *acts* on it. EXCLUDES **Reference Scout**: `ReferenceScoutTool -> ScoutRun ->
+  recommendations[]` discovers paths and references, while `ProbeTool -> ProbeRun(lens_ref) ->
+  observations[]` observes through a lens. Shared runtime infrastructure does not establish a
+  subtype relation, and neither recommendation nor observation is automatically promoted to fact.
+  Frozen Scout v1 spellings (`reference-probe`, `probe_id`, `probe.*`) are compatibility identifiers,
+  not uses of this general Probe concept.
 - **Categorical type + anchor:** `y` — `lean-formalization/YonedaAsTranslation.lean:41`;
   `Faithful` — `:45`; `Full` — `:50`; `schema_residue_vanishes` — `:58`; functor-of-points
   identity (this sense) `Probe.lean:8-13` (it is an `example`, thin). **Recognition species

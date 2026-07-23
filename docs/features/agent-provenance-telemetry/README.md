@@ -29,6 +29,36 @@ to be absorbed later by the event journal, artifact boundary and projections of
 [`agents-communication-infra`](../agents-communication-infra/README.md), without preserving a parallel
 runtime.
 
+## Tool and run taxonomy
+
+The capability and its durable execution are different objects:
+
+```text
+ReferenceScoutTool -> ScoutRun -> recommendations[]
+ProbeTool           -> ProbeRun(lens_ref) -> observations[]
+```
+
+`ReferenceScoutTool` is the agent-callable capability for finding paths, URLs, symbols and other
+places worth inspecting. One invocation creates a `ScoutRun`; its owned output is
+`recommendations[]`. `ProbeTool` is the broader observational capability shown in pt-BR interfaces
+as **Sonda**. One invocation creates a `ProbeRun`, which applies an explicit, versioned `lens_ref`
+and owns `observations[]`.
+
+A recommendation says where to look. An observation says what was observed through a declared
+lens. Neither output transforms the target, adjudicates truth or promotes a fact. A later,
+separately authorized process may consume either output, but must preserve its provenance and
+epistemic type.
+
+Scout and Probe share Session, optional Dispatch, bus, receipt and replay infrastructure. That
+shared infrastructure does not make Reference Scout a subtype of Probe; no inheritance relation is
+adopted until multiple concrete Probe cases justify one. Frozen v1 Scout identifiers such as
+`probe_id`, `probe.*` and `reference-probe` remain compatibility names only.
+
+The experimental E0 runtime now persists the first shadow-only `ObservationProbeTool` slice:
+Session-owned `ProbeRun` records, optional Dispatch binding, pinned lens coordinates,
+`observations[]`, commit/delivery receipts and replay. It does not yet execute lenses or provide a
+lens registry; the host supplies observations produced under a pinned lens.
+
 ## Documents
 
 - [Feature discovery](discovery.md)
@@ -40,6 +70,7 @@ runtime.
 - [Reference Scout tool and first bus slice](probes/reference-scout-tool.md)
 - [Coarse session registry](session-registry.md)
 - [Experimental Session + Reference Scout runtime E0](specs/experimental-runtime-l0.md)
+- [Candidate Observation Probe lenses](probes/lenses/README.md)
 - [Current-state inventory](research/current-state-inventory.md)
 - [Independent review of the previous registry design](reviews/2026-07-22-system-tags-and-lens-review.md)
 

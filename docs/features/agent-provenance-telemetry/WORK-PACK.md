@@ -18,6 +18,13 @@ research facts, deterministic read projections, and the bounded reference-probe 
 increment is subordinate to Agents Communication Infra (ACI); it does not create a second bus,
 journal, appender, artifact service, receipt authority or dispatch lifecycle.
 
+> **Taxonomy/compatibility note:** The bounded capability is now
+> `ReferenceScoutTool -> ScoutRun -> recommendations[]`. Existing `reference-probe`, `probe_id`,
+> `probe.*` and Probe-named APT profile/concept IDs in this frozen work pack remain v1 compatibility
+> identifiers only. The separate general observational family is `ProbeTool` (pt-BR: **Sonda**) ->
+> `ProbeRun(lens_ref) -> observations[]`; Scout is not declared its subtype, Tool is not Run, and
+> neither output is automatically promoted to fact.
+
 This work-pack authorizes planning plus isolated construction of a pure module and executable tests.
 The DomainSpec files, stories, TEST-SPEC and UI applicability decision passed their individual and
 corpus-wide review gates. Authority-bearing ACI integration and runtime enablement remain blocked

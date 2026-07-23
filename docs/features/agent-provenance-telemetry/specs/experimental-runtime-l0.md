@@ -9,13 +9,14 @@ runtimeGate: shadow-only
 productionCutoverGate: block
 ---
 
-# Experimental Runtime L0: Session and Reference Scout
+# Experimental Runtime L0: Session, Reference Scout and Observation Probe
 
 ## Decision
 
-This document permits one local SQLite vertical slice to test durable Session and Reference Scout
-behavior. It does not promote the experiment to the ACI runtime, enable a production writer, mutate
-the dispatch ledger contract or satisfy the feature's blocked mutation gate.
+This document permits one local SQLite vertical slice to test durable Session, Reference Scout and
+Observation Probe/Sonda behavior. It does not promote the experiment to the ACI runtime, enable a
+production writer, mutate the dispatch ledger contract or satisfy the feature's blocked mutation
+gate.
 
 The experiment answers:
 
@@ -43,6 +44,10 @@ The experiment answers:
    `CodensityUnitResidue.lean` non-invertibility remain separate constructions. E0 introduces no
    `residue_score`, ordering, conversion or privileged metric. If source evidence carries
    `incommensurable` or `count_capped`, those states remain explicit and uncompressed.
+7. **Observation Probe is separate from Scout.** New `observation_probe.*` events create
+   `ProbeRun` records bound to explicit lens coordinates and normalized `observations[]`.
+   Frozen Scout `probe_id` and `probe.*` names never identify these runs. E0 stores lens
+   references/digests but does not yet execute or register lenses.
 
 ## Authority model
 
@@ -119,6 +124,7 @@ must not become a competing join authority.
 | `probe_id` | Frozen v1 compatibility identity mapped one-to-one to `scout_run_id`; not a second run. |
 | `session_id` | Mandatory existing Session. |
 | `dispatch_id` | Nullable opaque identity; when present it must resolve to the same Session through the E0 link projection, without claiming external existence. |
+| `launch_mode` | Runtime-derived: `dispatch_bound` iff `dispatch_id` is present, otherwise `session_direct`. It is never caller-authored, and a direct Scout remains Session-bound. |
 | `objective_ref` | Opaque bounded objective/evidence reference, never a raw conversation body. |
 | `shape`, `source_mode` | Closed E0 enums: shape is `small` or `tensioned`; source mode is `internal`, `external` or `internal-and-external`. E0 persists them but launches neither shape. |
 | `protocol_profile_id/version/digest` | Mandatory host-declared coordinates, syntactically validated and replayed exactly. They are `unverified_host_coordinates`, not ACI registration or Scout execution authorization. The pending APT lineage profile is not reused as an execution profile. |
@@ -128,6 +134,10 @@ must not become a competing join authority.
 | `source_through_seq` | Last accepted E0 journal offset reflected by the row. |
 
 ### `reference_recommendations`
+
+This table is the normalized projection of the owning Scout run's `recommendations[]` output
+parameter. It supports stable identity, per-seat attribution and replay; it is not a sibling
+orchestration aggregate and cannot exist without its `scout_run_id`.
 
 | Field | Constraint |
 |---|---|
@@ -145,9 +155,28 @@ must not become a competing join authority.
 Scout lifecycle events. Replay updates it only from those accepted event types; recommendation rows
 do not introduce a second clock.
 
+### `observation_probe_runs`
+
+| Field | Constraint |
+|---|---|
+| `probe_run_id` | Primary key in the new Observation Probe namespace; independent of frozen Scout `probe_id`. |
+| `session_id`, `dispatch_id`, `launch_mode` | Mandatory Session parent and optional same-Session Dispatch binding, derived as `session_direct` or `dispatch_bound`. |
+| `target_ref`, `question_ref` | Opaque target and question references; no raw prompt/body. |
+| `lens_ref`, `lens_version`, `lens_digest` | Exact pinned observation lens coordinates; digest requires canonical `sha256:` plus 64 lowercase hexadecimal characters. |
+| `observation_schema_ref` | Declared output schema for normalized observations. |
+| `state` | `requested`, `observing`, `committed` or `delivered`. |
+| `observations_digest`, `committed_event_id`, `delivered_at` | Nullable until the matching accepted transition. |
+| `source_through_seq` | Last accepted E0 journal offset reflected by the row. |
+
+### `probe_observations`
+
+This is the normalized projection of one owning `ProbeRun.observations[]`. Each row has stable
+`observation_id`, run-unique `observation_key`, canonical `value_json`, optional `evidence_ref`,
+exact `observed_by_seat_id` and source event/offset. No fact/promotion table or command exists.
+
 ## Command and receipt contract
 
-The E0 Interface exposes these six local commands. They are adapter commands for the isolated proof,
+The E0 Interface exposes these ten local commands. They are adapter commands for the isolated proof,
 not newly ratified DomainSpec Operations, production ACI wire names or an assertion that the full
 Scout Workflow exists:
 
@@ -159,6 +188,10 @@ Scout Workflow exists:
 | `publish_scout_contribution` | Persist a seat-attributed contribution before acknowledgement. |
 | `commit_reference_bundle` | Atomically append a committed bundle fact and materialize its recommendations. |
 | `deliver_reference_bundle` | Append delivery only after a committed bundle/receipt verifies. |
+| `start_observation_probe` | Start one Session-owned, optionally Dispatch-bound ProbeRun with pinned lens coordinates. |
+| `publish_probe_observation` | Persist one seat-attributed canonical observation before acknowledgement. |
+| `commit_observation_probe` | Commit the observation collection under a validated SHA-256 digest. |
+| `deliver_observation_probe` | Append delivery only after the ProbeRun is committed. |
 
 Missing profile coordinates, malformed digest syntax, out-of-enum shape/source mode and a caller
 claiming `profile_verification_state=verified` are rejected before mutation. E0 cannot detect a

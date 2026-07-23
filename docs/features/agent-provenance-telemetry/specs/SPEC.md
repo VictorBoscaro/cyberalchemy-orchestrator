@@ -26,6 +26,14 @@ This specification ratifies information ownership and behavior, not a deployed r
 runtime, store, ACI profile registration or UI wiring exists merely because this corpus is accepted;
 the [work-pack mutation gate](../WORK-PACK.md#mutation-gate-authority-and-evidence) remains blocked.
 
+The cross-document taxonomy is
+`ReferenceScoutTool -> ScoutRun -> recommendations[]` and, separately,
+`ProbeTool -> ProbeRun(lens_ref) -> observations[]`. **Sonda** is the pt-BR UI label for Probe, not
+another concept or a Scout alias. Tool definitions are not execution records; Scout finds paths,
+Probe observes through a lens, and neither transforms its target or promotes output to fact. No
+Scout-as-Probe subtype relation is specified. Probe-named v1 APT concepts and wire identifiers below
+remain compatibility surfaces until a versioned migration.
+
 ## Module Map
 
 ```mermaid

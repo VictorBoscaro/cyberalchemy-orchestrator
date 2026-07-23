@@ -196,22 +196,22 @@ treats spec and code as one typed graph; study whether that holds or leaks.)
 **The idea** *(owner direction, 2026-07-23).* Replace path-shape discovery of research material with
 an explicit catalogue. A research tower is currently approximated as any authorized directory with a
 path segment exactly `research` or beginning with `research-`. That convention is useful for the
-first reference-probe slice but says nothing about subject, authority, freshness, coverage, source
+first Reference Scout slice but says nothing about subject, authority, freshness, coverage, source
 kind or whether two towers overlap.
 
 The future catalogue should give every tower a stable ID, repository/root reference, topic tags,
-short description, authority/visibility policy and coverage metadata. Reference-probes consume a
+short description, authority/visibility policy and coverage metadata. Reference Scouts consume a
 frozen catalogue snapshot rather than rediscovering directory names at runtime. This is indexing for
 context acquisition, not the future knowledge/information system itself.
 
-**Falsifiable core.** For a representative probe corpus, a catalogue snapshot identifies every
+**Falsifiable core.** For a representative Scout corpus, a catalogue snapshot identifies every
 eligible research root without path guessing and lets a caller select relevant towers more precisely
 than the `research*` name heuristic. *Collapse:* if tower membership and relevance cannot be made
 stable enough to outperform bounded path discovery, retain the heuristic as observation rather than
 promoting a registry.
 
-**Connections.** `docs/features/agent-provenance-telemetry/probes/reference-probe-tool.md`;
+**Connections.** `docs/features/agent-provenance-telemetry/probes/reference-scout-tool.md`;
 agent-provenance source observations; future information-system work deliberately deferred.
 
-**Status.** IDEA / parked. The first probe-bus slice may use and record the coarse path snapshot;
+**Status.** IDEA / parked. The first Scout bus slice may use and record the coarse path snapshot;
 catalogue design comes later.
