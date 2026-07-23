@@ -264,10 +264,7 @@ def validate_trailing_whitespace(lines: list[str], errors: list[str]) -> None:
 
 
 def validate_repo_path(path: Path, errors: list[str]) -> None:
-    repo_root = next(
-        (parent for parent in (path.parent, *path.parents) if (parent / ".git").exists()),
-        None,
-    )
+    repo_root = find_repo_root(path)
     if repo_root is None:
         errors.append("target is not inside a Git repository")
         return
@@ -280,6 +277,13 @@ def validate_repo_path(path: Path, errors: list[str]) -> None:
         errors.append(
             f"target path is outside the two allowed discovery shapes: {relative}"
         )
+
+
+def find_repo_root(path: Path) -> Path | None:
+    return next(
+        (parent for parent in (path.parent, *path.parents) if (parent / ".git").exists()),
+        None,
+    )
 
 
 def read_frontmatter(lines: list[str], errors: list[str]) -> str:
@@ -350,6 +354,30 @@ def h2_section(text: str, heading: str) -> str | None:
         text,
     )
     return match.group(0) if match else None
+
+
+def raw_h2_section(raw_text: str, outside_text: str, heading: str) -> str | None:
+    raw_lines = raw_text.splitlines()
+    outside_lines = outside_text.splitlines()
+    start = next(
+        (
+            index
+            for index, line in enumerate(outside_lines)
+            if re.fullmatch(rf"##\s+{re.escape(heading)}\s*", line)
+        ),
+        None,
+    )
+    if start is None:
+        return None
+    end = next(
+        (
+            index
+            for index, line in enumerate(outside_lines[start + 1:], start + 1)
+            if re.match(r"^##\s+", line)
+        ),
+        len(raw_lines),
+    )
+    return "\n".join(raw_lines[start:end])
 
 
 def validate_heading_order(text: str, errors: list[str]) -> None:
@@ -540,15 +568,25 @@ def has_table_header(block: str, expected: tuple[str, ...]) -> bool:
 
 
 def table_data_rows(block: str, expected_header: tuple[str, ...]) -> list[list[str]]:
-    rows = table_rows(block)
     expected_lower = tuple(item.lower() for item in expected_header)
-    for index, row in enumerate(rows):
-        if tuple(cell.lower() for cell in row) == expected_lower:
-            return [
-                candidate
-                for candidate in rows[index + 1:]
-                if not all(re.fullmatch(r":?-{3,}:?", cell) for cell in candidate)
+    lines = block.splitlines()
+    for index, line in enumerate(lines):
+        if not re.match(r"^\s*\|.*\|\s*$", line):
+            continue
+        row = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if tuple(cell.lower() for cell in row) != expected_lower:
+            continue
+        result: list[list[str]] = []
+        for candidate_line in lines[index + 1:]:
+            if not re.match(r"^\s*\|.*\|\s*$", candidate_line):
+                break
+            candidate = [
+                cell.strip()
+                for cell in candidate_line.strip().strip("|").split("|")
             ]
+            if not all(re.fullmatch(r":?-{3,}:?", cell) for cell in candidate):
+                result.append(candidate)
+        return result
     return []
 
 
@@ -596,9 +634,16 @@ def validate_flow(raw_text: str, outside_text: str, errors: list[str]) -> None:
     block = h2_section(outside_text, "Flow Diagram")
     if block is None:
         return
-    raw_block = h2_section(raw_text, "Flow Diagram")
-    if raw_block is None or "```mermaid" not in raw_block:
-        errors.append("Flow Diagram must contain a Mermaid fence before the changelog")
+    raw_block = raw_h2_section(raw_text, outside_text, "Flow Diagram")
+    mermaid_fences = (
+        re.findall(r"(?m)^ {0,3}(?:`{3,}|~{3,})mermaid\s*$", raw_block)
+        if raw_block is not None
+        else []
+    )
+    if len(mermaid_fences) != 1:
+        errors.append(
+            "Flow Diagram must contain exactly one Mermaid fence before the changelog"
+        )
     body = re.sub(r"(?m)^##\s+Flow Diagram\s*$", "", block, count=1).strip()
     if not re.search(r"[A-Za-z0-9]", body):
         errors.append("Flow Diagram requires a non-empty explanatory paragraph")
@@ -623,14 +668,28 @@ def validate_changelog(text: str, errors: list[str]) -> None:
     footer_at = re.search(r"(?m)^\*\*Source (?:dispatch|basis):\*\*", body)
     if footer_at:
         body = body[: footer_at.start()]
-    has_entry = (
-        re.search(r"(?m)^\s*[-*]\s+\S", body) is not None
-        or len(table_rows(body)) >= 3
-    )
-    if not has_entry:
+    header = ("Version", "Date", "Changes")
+    if not has_table_header(body, header):
         errors.append(
-            "Appendix — Changelog requires at least one bullet or table data row"
+            "Appendix — Changelog requires exact table header "
+            "| Version | Date | Changes |"
         )
+        return
+    rows = table_data_rows(body, header)
+    if not rows:
+        errors.append("Appendix — Changelog requires at least one data row")
+        return
+    for row in rows:
+        if (
+            len(row) != 3
+            or re.fullmatch(r"v?\d+\.\d+\.\d+", row[0]) is None
+            or not valid_date(row[1])
+            or not re.search(r"\w", row[2])
+        ):
+            errors.append(
+                "each changelog row requires semver, real YYYY-MM-DD date, "
+                f"and non-empty change text: {' | '.join(row)}"
+            )
 
 
 def local_link_targets(path: Path, text: str) -> list[Path]:
@@ -644,11 +703,25 @@ def local_link_targets(path: Path, text: str) -> list[Path]:
 
 
 def validate_links(path: Path, text: str, errors: list[str]) -> None:
+    repo_root = find_repo_root(path)
     for match in re.finditer(r"\[[^\]]+\]\(([^)]+)\)", text):
         target = match.group(1).split("#", 1)[0]
         if not target or re.match(r"^(?:https?|mailto):", target):
             continue
+        if Path(target).is_absolute():
+            line = text[: match.start()].count("\n") + 1
+            errors.append(f"local link must be relative at line {line}: {target}")
+            continue
         resolved = (path.parent / target).resolve()
+        if repo_root is not None:
+            try:
+                resolved.relative_to(repo_root)
+            except ValueError:
+                line = text[: match.start()].count("\n") + 1
+                errors.append(
+                    f"local link escapes repository at line {line}: {target}"
+                )
+                continue
         if not resolved.exists():
             line = text[: match.start()].count("\n") + 1
             errors.append(f"broken local link at line {line}: {target}")
@@ -722,6 +795,11 @@ def validate_source_footer(
         if match.group(1) != dispatch_id:
             errors.append("Source dispatch footer lacks the expected dispatch id")
         target = match.group(3).split("#", 1)[0]
+        if not relative_link_within_repo(path, target):
+            errors.append(
+                "Source dispatch footer link must be relative and resolve within the repository"
+            )
+            return
         resolved = (path.parent / target).resolve()
         if resolved != expected_source:
             errors.append(
@@ -744,6 +822,14 @@ def validate_source_footer(
             "Source basis footer must contain only semicolon-separated Markdown links"
         )
         return
+    for part in parts:
+        target_match = re.fullmatch(r"\[[^\]]+\]\(([^)]+)\)", part)
+        assert target_match is not None
+        if not relative_link_within_repo(path, target_match.group(1).split("#", 1)[0]):
+            errors.append(
+                "Source basis footer links must be relative and resolve within the repository"
+            )
+            return
     resolved = local_link_targets(path, "\n".join(parts))
     if len(resolved) != len(set(resolved)):
         errors.append("Source basis footer contains duplicate paths")
@@ -751,6 +837,19 @@ def validate_source_footer(
         errors.append(
             "Source basis footer must link every and only the supplied --source-basis paths"
         )
+
+
+def relative_link_within_repo(path: Path, target: str) -> bool:
+    if not target or Path(target).is_absolute():
+        return False
+    repo_root = find_repo_root(path)
+    if repo_root is None:
+        return False
+    try:
+        (path.parent / target).resolve().relative_to(repo_root)
+    except ValueError:
+        return False
+    return True
 
 
 if __name__ == "__main__":
