@@ -123,9 +123,10 @@ the parent may not resolve it. This is a stated gap in P12, not a rule it curren
 
 ## 2. Run it
 
-Spawn each group's agents with the Agent tool — **ALL agents of a group in ONE message**, so they
-run in parallel. Each agent's confirmed `prompt_template` is its launch template; only declared
-data slots may be supplied separately.
+Invoke subagents through the runtime's adapter-neutral subagent surface — **ALL agents of a group
+in one parallel launch when supported**. `Task` is the adapter mapping in runtimes that expose that
+name; it is not a universal protocol primitive. Each agent's confirmed `prompt_template` is its
+launch template; only declared data slots may be supplied separately.
 
 Schedule groups **by dependency**: a group is READY when every group with a `sequential`/`zig-zag`
 edge into it has produced what it must respond to (a zig-zag edge counts only in its `from`→`to`
@@ -228,7 +229,7 @@ and never let an attacker verify its own attack.
 - **Record/sheet mechanics + field definitions** — the `register-dispatch` skill: the two appends,
   the appender, validation, and enums (including `output_mode`).
 - **Discussion rules for a `robot_talks` group** — the `robot-talks` skill governs the intra-group
-  confrontation, except that this dispatch keeps its single human gate at the entry confirm and
-  adds no second gate.
+  confrontation. The selected lifecycle may use one or two pre-run planning gates, but robot-talks
+  adds no human gate after execution begins.
 - **Anti-bias gate** — the `check-tension` skill runs the pairwise-tension rubric on the sheet at
   the confirm gate.

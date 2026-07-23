@@ -26,6 +26,13 @@ confirmed discovery target/source scopes, and are reported by the orchestrator. 
 persisted review, target expansion, or separately consumable result is a real dispatch and re-enters
 propose/confirm/register/close.
 
+It may also use exactly one controlled writer that persists only the confirmed, parent-owned
+discovery target and returns only `WriterHandoff`. That target is the parent's workflow artifact,
+not an independently consumable writer deliverable, so this writer is not a dispatch. This is a
+bootstrap exception because no LIVE `discovery` dispatch type exists. Never misclassify it as
+`research`, `review`, or `experiment`. If a discovery dispatch type is ratified, its writer and
+formal reviews must use register open/close.
+
 *(The general helper-vs-dispatch boundary remains provisional; this exception settles only the
 bounded discovery-authoring case above.)*
 
@@ -130,6 +137,8 @@ dispatch whose robot-talks path depends on them is `UNAVAILABLE`; do not claim d
 4. **Close.** Report `exit_reason` + `agents_spawned` in chat — and in the persisted deliverable when there is one (`findings.md` for research; `review.md` for a `persisted` review; an `inline` review reports in chat only) — and append the close row. Two appends, one ledger, append-only (P3).
 
 For the record shape, the appender, and the close-row mechanics: **register-dispatch owns them** — see Pointers.
+Steps 3–4 apply to actual dispatches. The scoped discovery bootstrap is not a dispatch: it performs
+no ledger mutation and emits workflow terminal status only.
 
 ## Universal invariants (every dispatch_type)
 
@@ -139,7 +148,7 @@ workflow-level until ratified in discovery/SPEC/ACI.
 - **P5 — pairwise tension.** Any n ≥ 2 group must be pairwise tensioned (predictable disagreement per pair, named axis, per-agent position); two independent **check-tension** helpers must both PASS the exact concrete digest before human confirmation.
 - **P7 — aggregation is derived,** never a field: `robot_talks: true` → the group synthesizes; otherwise → concat. *(Non-binding note, per P7's own framing: a bare concat is never the dispatch's final deliverable.)*
 - **P10 — claim ≤ proof** in every artifact produced.
-- **P12 — final approval.** Every dispatch names a `final_approver`: `parent` (default) or a dedicated approver group whose single agent's role is `auditor` and that does no other work; never a working-group member (no self-approval); falls back to `parent` if its group never runs; the approver receives the full `working_folder`. One human gate only — the entry confirm.
+- **P12 — final approval.** Every dispatch names a `final_approver`: `parent` (default) or a dedicated approver group whose single agent's role is `auditor` and that does no other work; never a working-group member (no self-approval); falls back to `parent` if its group never runs; the approver receives the full `working_folder`. The selected confirmation lifecycle may contain one or two pre-run planning gates. P12 forbids adding a new human gate after execution begins.
 - **Three dials, three scopes.** `layers` (group) / `loop_cap` (edge) / `max_loops` (dispatch) — one scenario, one dial; if two seem to fit, the smallest scope wins.
 - **exit_reason.** Closed vocabulary: `resolved | loop_ceiling_reached | dissent_irreconcilable | user_abort | error`.
 - **P8 — trust-but-verify.** If a subagent wrote files or claimed a check passed, inspect the actual diff / run the actual check before treating it as done.
@@ -173,5 +182,5 @@ is not yet populated.
 - **Form — record/sheet fill mechanics:** `register-dispatch` (`.claude/skills/register-dispatch/SKILL.md`; appender `.claude/skills/register-dispatch/append-dispatch.cjs`) — field tables, enums, the appender, the close row, `invoked_by`.
 - **Definitions + skeleton:** inline in `register-dispatch` (field tables, enums, schema, annotated example).
 - **Agent names:** `telemetry/agents/agent-pool.yaml`.
-- **Anti-bias design:** `.claude/skills/anti-bias-vector-composition/SKILL.md` (the `check-tension` gate enforces it; the vault discovery `implementation/domainspec/vault/discovery/anti-bias-vector-composition/` is the knowledge home).
+- **Anti-bias design:** `.claude/skills/anti-bias-vector-composition/SKILL.md` (the `check-tension` gate enforces it; the planned vault discovery `implementation/domainspec/vault/discovery/anti-bias-vector-composition/` is currently absent/non-resolvable, not an existing knowledge home).
 - **Init-time tensioning gate:** `check-tension` (`.claude/skills/check-tension/SKILL.md`) — run two independent helpers against the same concrete digest; only "both PASS" reaches the human.
