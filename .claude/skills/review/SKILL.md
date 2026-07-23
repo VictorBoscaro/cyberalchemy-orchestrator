@@ -1,6 +1,6 @@
 ---
 name: review
-description: Red-team dispatch over EXISTING artifacts (skills, constitutions, code, docs) — attack what exists and hunt flaws to improve it. Routed here from domainspec-subagents-strategy as the LIVE type skill for `dispatch_type: review`. Defines review-type judgment only — attack lenses, severity taxonomy, verification discipline, and the change-request report shape. A review produces ONE artifact, `review.md` (the cited change-request report), and the human chooses at the confirm gate whether it is delivered inline (chat) or persisted to a `working_folder`. Use research (not review) when the question is whether a NEW claim/candidate survives; use review when the target already exists and the deliverable is verified change requests.
+description: "Red-team dispatch over EXISTING artifacts (skills, constitutions, code, docs) — attack what exists and hunt flaws to improve it. Routed here from domainspec-subagents-strategy as the LIVE type skill for `dispatch_type: review`. Defines review-type judgment only — attack lenses, severity taxonomy, verification discipline, and the change-request report shape. A review produces ONE artifact, `review.md` (the cited change-request report), and the human chooses at the confirm gate whether it is delivered inline (chat) or persisted to a `working_folder`. Use research (not review) when the question is whether a NEW claim/candidate survives; use review when the target already exists and the deliverable is verified change requests."
 ---
 
 # review — operating guide for `dispatch_type: review`
@@ -90,9 +90,15 @@ attackers ──sequential──▶ synthesizer ◀──zig-zag──▶ verifi
 - **Attackers** — a group of `explorer`s, n 2–4, `robot_talks` recommended.
 - **Synthesizer** — 1 `writer`, exchanging with the verifiers via **zig-zag**. Because the
   attacker group runs `robot_talks`, the synthesizer MUST receive each attacker's **initial AND
-  final** positions (P14, collapse detection). Since review persists no transcript, the strategist
-  passes both **in the synthesizer's `initial_prompt`** — and the durable record of collapse is
-  the one-line collapse note in `review.md`'s Coverage section, not a file of returns.
+  final** positions (P14, collapse detection). The confirmed synthesizer `prompt_template`
+  predeclares slots for both sets. After the attackers finish, the host materializes their
+  positions as a separately canonicalized and digested workflow-only `WorkflowInputManifest`, with
+  each file reference bound as an explicit `{path, sha256}` pair, and invokes the unchanged
+  template with that data manifest. ACI alone owns a true `EffectiveInputArtifact`; for a registered
+  dispatch, if ACI/runtime cannot persist and bind the dynamic input, this robot-talks topology is
+  `UNAVAILABLE`. Later attacker material never changes the confirmed template. Since review
+  persists no transcript, the durable review record of collapse remains the one-line collapse
+  note in `review.md`'s Coverage section, not a file of returns.
 - **Verifiers** — `skeptic`s in a zig-zag exchange with the synthesizer.
 - The **feedback** back-edge exists only when there is a verifier/auditor group AND material may be
   missing — never by default (shown dashed).

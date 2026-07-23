@@ -1,11 +1,15 @@
 ---
 name: domainspec-subagents-strategy
-description: Route any subagent dispatch — check the Principle-1 trigger, hold the human gate, enforce the universal invariants, then route by dispatch_type to the owning type skill (research, review, and experiment are LIVE; code/plan/suggestion are reserved). The record/sheet form is owned by register-dispatch; field definitions by constitution §5. This skill defines no field and no type-specific judgment — it routes.
+description: Owner-directed current workflow contract for routing subagent dispatches, proposal and confirmation gates, universal workflow invariants, and dispatch-type routing. Use for workflow-level dispatch planning; register-dispatch owns persisted row mechanics, and ratified discovery/SPEC/ACI artifacts own runtime authority.
 ---
 
-**Governing doc:** operationalizes `internal_tools/subagents-dispatch-hooks/constitution/subagents-strategy-constitution-proposal.md` (v0.6.3-proposal). The live vault constitution is still v0.3.0; where the two conflict, v0.6.x wins (owner decision 2026-06-12; doc bumped 0.6.0 → 0.6.1 → 0.6.2 → 0.6.3 per §10 / §12 / §13 / §14). The wire `schema_version` is `"0.6.1"` (§10.1: it bumps only on a *row-schema* change — §14 added the `output_mode` key, so 0.6.0 → 0.6.1).
-
-> **Read budget — do NOT open the constitution to run a dispatch.** The full operational form is inline: routing + invariants here, every field/enum/schema/skeleton/close-row in `register-dispatch`. The constitution (822 lines) is **authority-of-last-resort** — open it *only* to adjudicate a genuine conflict between this skill and the constitution, never as a routine lookup. The `§N` cites below are provenance anchors for that rare case, not an instruction to read.
+**Current workflow contract:** by owner direction dated 2026-07-23, use this skill for the current
+dispatch workflow. Its additions remain workflow-level until ratified in discovery/SPEC/ACI; this
+skill does not self-promote to runtime or governing authority. `register-dispatch` owns persisted
+row mechanics. The historical
+`internal_tools/subagents-dispatch-hooks/constitution/subagents-strategy-constitution-proposal.md`
+is absent; that absence grants no authority, and its former section citations are non-resolvable
+provenance. The current wire `schema_version` remains `"0.6.1"` until the row owner changes it.
 
 ## When to dispatch (P1) — and what is not a dispatch (P11)
 
@@ -25,18 +29,43 @@ propose/confirm/register/close.
 *(The general helper-vs-dispatch boundary remains provisional; this exception settles only the
 bounded discovery-authoring case above.)*
 
+**Proposal-gate helper exception (owner direction, 2026-07-23):** one read-only capability
+reviewer plus exactly two independent read-only check-tension helpers may inspect one pending
+proposal revision without first registering a dispatch. They must not persist or independently
+publish a deliverable. Any added helper, wider scope, persisted output, or separately consumable
+result is a real dispatch and re-enters propose/confirm/register/close.
+
 ## Two-level planning model
 
-Every non-trivial dispatch is built as two immutable projections over the same eventual full sheet:
+Every non-trivial dispatch is built as two immutable, session-local projections derived from one
+pending sheet:
 
 1. **`StructuralGraphProposal`** — objective, boundaries, group/seat counts, abstract roles, probe /
    writer / reviewer positions, connections, `robot_talks`, `sequential` / `zig-zag` / `feedback`,
    loop ceilings, output joins, budget envelope and confirmation mode. It contains no persona names,
    concrete models, complete prompts, concrete sources or resolved tools.
 2. **`ConcreteDispatchProposal`** — exact `seat_id`, agent/persona label, role/type/lens,
-   provider/model/adapter, skills and digests, initial prompt, response contract, sources/snapshots,
-   tool profile, command classes, write/network/sandbox scopes, exact budgets, reviewer
-   instantiation and per-edge rounds. It references the exact structural revision/digest.
+   `requested_provider`, `requested_model`, `requested_adapter`, skills and digests, immutable
+   `prompt_template`, response contract,
+   exact source path→SHA-256 bindings, `proposed_capability_profile`, command classes, proposed
+   write/network/sandbox scopes, exact budgets, reviewer instantiation and per-edge rounds. Embed
+   the capability review's result, amendments, task digest, and proposed-profile digest in this
+   proposal. For every group include the anti-bias axis; for every seat include its angle/position;
+   for every pair include the predicted disagreement question, both predicted positions, and
+   evidence supporting that prediction. It references the exact structural revision/digest.
+
+Each projection declares `projection_schema_version`, rejects duplicate object keys, and uses
+RFC 8785 JSON Canonicalization Scheme (JCS) before SHA-256. If no conforming JCS implementation is
+available, a locally sorted/compact JSON digest is workflow evidence only and must not be called
+portable or durable. The projections are session-local approval evidence, not authorities or
+partial dispatch records. When ACI support is materialized, `ConfirmedDispatch` / `DispatchSpec`
+own the durable approved bytes and receipts.
+
+The proposal records only a `proposed_capability_profile`. Effective model selection, grants, and
+sandbox enforcement remain ACI/runtime-owned. Record `effective_enforcement:
+observable | non_observable`. When observable, compare effective semantics with the confirmed
+request and fail closed on mismatch; when non-observable, report the gap and never call requested
+provider/model/adapter or proposed tools effective.
 
 The orchestrator builds the structure first and the concrete resolution second even when the user
 chooses to see only the final proposal. For now every seat and review/probe slot is resolved before
@@ -63,18 +92,34 @@ Do not implement delegated execution from structure-only approval. That requires
   and final confirmation derived from it.
 - A concrete-only change creates a new concrete revision and invalidates final confirmation while
   preserving a still-matching structural confirmation.
-- A physical retry changes attempt identity, not either proposal.
+- A physical or protocol retry changes attempt identity, not either proposal.
 - Confirmation binds revision ID plus digest. A chat acknowledgement is not a durable runtime
   receipt; until ACI materializes these entities, report the gate as workflow evidence only.
 
-## Lifecycle — the universal four steps (§3)
+### Frozen prompts and dynamic inputs
+
+Final confirmation freezes each `prompt_template`; later returns never amend it. Before a
+downstream invocation, the host materializes the template's declared dynamic slots into a separate
+workflow-only `WorkflowInputManifest`, canonicalized by the same rule. Each slot declares name,
+authorized producer, data type/schema, cardinality, byte/token ceiling, purpose, and source/response
+schema. Slots carry data only: instructions, authority, lenses, source boundaries, and output
+contracts are forbidden. Bind every referenced file as `{path, sha256}` and digest the manifest.
+Changing template text or any instruction/authority/lens/source-boundary/output contract
+invalidates concrete confirmation; supplying conforming data does not. ACI alone owns a true
+`EffectiveInputArtifact`. If ACI/runtime cannot persist and bind dynamic inputs, any registered
+dispatch whose robot-talks path depends on them is `UNAVAILABLE`; do not claim durable binding.
+
+## Lifecycle — the universal four steps
 
 1. **Propose.** Build `StructuralGraphProposal` first. According to `confirmation_mode`, present it or
    continue to `ConcreteDispatchProposal`. Before concrete confirmation, run one read-only
-   capability reviewer over every seat's logical tool profile; surface its allow/deny amendments
-   with the proposal. The concrete proposal **states where artifacts land** (`working_folder` or
-   inline), output mode, exact agents, prompts, sources, tools and limits. Before any user-facing
-   proposal, run the **check-tension gate** over the applicable projection; only a PASS proceeds.
+   capability reviewer over every seat's proposed logical tool profile and embed its result,
+   amendments, and digests in the concrete proposal. The proposal **states where artifacts land**
+   (`working_folder` or inline), output mode, exact agents, prompt templates, path→hash sources,
+   proposed capabilities, and limits. Then run **two independent check-tension helpers** over the
+   same concrete revision. Only two PASS results on its exact digest may reach concrete
+   confirmation. Any failure returns the sheet for revision, recanonicalization, and two fresh
+   checks; never average or waive the results.
 2. **Confirm.** Each required gate needs an explicit affirmative; silence or a question is not
    confirmation. Nothing registers, persists as a dispatch row, or executes before all gates required
    by the selected mode pass. Structure confirmation freezes only the structural revision. Final
@@ -88,27 +133,36 @@ For the record shape, the appender, and the close-row mechanics: **register-disp
 
 ## Universal invariants (every dispatch_type)
 
-These bullets are operational restatements of constitution §4; §4 is authoritative on conflict.
+These bullets are authoritative operational invariants for the current strategy.
 
-- **P5 — pairwise tension.** Any n ≥ 2 group must be pairwise tensioned (predictable disagreement per pair, named axis, per-agent position); checked by the **check-tension gate** (two independent agents) before the human confirm — untensioned sheets go back to the strategist for revision.
+- **P5 — pairwise tension.** Any n ≥ 2 group must be pairwise tensioned (predictable disagreement per pair, named axis, per-agent position); two independent **check-tension** helpers must both PASS the exact concrete digest before human confirmation.
 - **P7 — aggregation is derived,** never a field: `robot_talks: true` → the group synthesizes; otherwise → concat. *(Non-binding note, per P7's own framing: a bare concat is never the dispatch's final deliverable.)*
 - **P10 — claim ≤ proof** in every artifact produced.
 - **P12 — final approval.** Every dispatch names a `final_approver`: `parent` (default) or a dedicated approver group whose single agent's role is `auditor` and that does no other work; never a working-group member (no self-approval); falls back to `parent` if its group never runs; the approver receives the full `working_folder`. One human gate only — the entry confirm.
-- **Three dials, three scopes.** `layers` (group) / `loop_cap` (edge) / `max_loops` (dispatch) — one scenario, one dial; if two seem to fit, the smallest scope wins. Decision table: constitution §5.
-- **exit_reason.** Closed vocabulary: `resolved | loop_ceiling_reached | dissent_irreconcilable | user_abort | error`. Precedence + decision procedure: constitution §5.
+- **Three dials, three scopes.** `layers` (group) / `loop_cap` (edge) / `max_loops` (dispatch) — one scenario, one dial; if two seem to fit, the smallest scope wins.
+- **exit_reason.** Closed vocabulary: `resolved | loop_ceiling_reached | dissent_irreconcilable | user_abort | error`.
 - **P8 — trust-but-verify.** If a subagent wrote files or claimed a check passed, inspect the actual diff / run the actual check before treating it as done.
 - **P13 — meta + lineage.** A dispatch about dispatching is `meta: true`; `parent_dispatch_id` exists only on a dispatch planned by a meta dispatch; a meta-planned child re-enters the confirm gate.
-- **P14 — robot-talks binding.** A group with `robot_talks: true` binds `vault/constitution/robot-talks-constitution.md`. Structural/final confirmations happen before execution and form one planning lifecycle; robot-talks may not introduce additional mid-run human gates. A synthesizer downstream of a robot-talks group MUST receive each agent's initial AND final positions (collapse detection).
+- **P14 — robot-talks binding.** A group with `robot_talks: true` binds the existing
+  `.claude/skills/robot-talks/SKILL.md`. Its historical constitution/rationale path is absent and
+  is non-resolvable provenance. This strategy's single planning lifecycle overrides robot-talks'
+  additional human-gate and session-preservation instructions for a dispatch. A downstream
+  synthesizer's confirmed prompt template declares data-only slots for every agent's initial and
+  final positions. For an unregistered workflow, the host may supply them through a separately
+  digested `WorkflowInputManifest`. For a registered dispatch, ACI/runtime must persist and bind
+  the dynamic input; otherwise this topology is `UNAVAILABLE`.
 
 ## Routing by dispatch_type
 
-LIVE status is **declared by constitution §5** (promoting a reserved type goes through §7's premise-debt re-confrontation — an owner act); a LIVE row must also point to an existing skill — a consistency check, not the definition. Routing to a RESERVED type: **refuse and tell the user** the type is not yet populated.
+LIVE status is declared by this table; changing a reserved type is an owner act. A LIVE row must
+also point to an existing skill. Routing to a RESERVED type: **refuse and tell the user** the type
+is not yet populated.
 
 | dispatch_type | status | skill |
 |---|---|---|
 | `research` | LIVE | `.claude/skills/research/SKILL.md` — research-type judgment: canonical shape, roles, gates, outputs |
 | `code` | RESERVED — must not be dispatched until populated | none |
-| `review` | LIVE (populated 2026-06-12, owner decision) | `.claude/skills/review/SKILL.md` — red-team judgment: attack lenses, severity taxonomy, verification discipline, the change-request report. **One artifact: `review.md`** (the synthesis — no `attacks.md`, no `findings.md`); `output_mode` picks chat vs `<working_folder>/review.md` (§14) |
+| `review` | LIVE (populated 2026-06-12, owner decision) | `.claude/skills/review/SKILL.md` — red-team judgment: attack lenses, severity taxonomy, verification discipline, the change-request report. **One artifact: `review.md`** (the synthesis — no `attacks.md`, no `findings.md`); `output_mode` picks chat vs `<working_folder>/review.md` |
 | `plan` | RESERVED — must not be dispatched until populated | none |
 | `suggestion` | RESERVED — must not be dispatched until populated | none |
 | `experiment` | LIVE (populated 2026-06-14, owner decision) | `.claude/skills/experiment/SKILL.md` — falsification judgment: pre-registered criterion freeze, validity gates, SURVIVED/FALSIFIED/INVALID verdict (propose phase only — INVALID may be rendered here; SURVIVED/FALSIFIED rendered at the separate downstream run) |
@@ -116,7 +170,7 @@ LIVE status is **declared by constitution §5** (promoting a reserved type goes 
 ## Pointers (single owners)
 
 - **Form — record/sheet fill mechanics:** `register-dispatch` (`.claude/skills/register-dispatch/SKILL.md`; appender `.claude/skills/register-dispatch/append-dispatch.cjs`) — field tables, enums, the appender, the close row, `invoked_by`.
-- **Definitions + skeleton:** inline in `register-dispatch` (field tables, enums, schema v0.6.0, annotated example) — read there, not the constitution. Constitution §5 (parameter reference) / §6 (skeleton YAML) are the upstream authority only.
+- **Definitions + skeleton:** inline in `register-dispatch` (field tables, enums, schema, annotated example).
 - **Agent names:** `telemetry/agents/agent-pool.yaml`.
 - **Anti-bias design:** `.claude/skills/anti-bias-vector-composition/SKILL.md` (the `check-tension` gate enforces it; the vault discovery `implementation/domainspec/vault/discovery/anti-bias-vector-composition/` is the knowledge home).
-- **Init-time tensioning gate:** `check-tension` (`.claude/skills/check-tension/SKILL.md`) — the two independent agents that verify Tests 1–4 before the human confirm; only "both PASS" reaches the human.
+- **Init-time tensioning gate:** `check-tension` (`.claude/skills/check-tension/SKILL.md`) — run two independent helpers against the same concrete digest; only "both PASS" reaches the human.
