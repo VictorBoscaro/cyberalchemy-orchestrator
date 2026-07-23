@@ -10,3 +10,7 @@ node_modules/
 /.claude/skills/domainspec-spec-feature
 /.claude/skills/domainspec-emit-signals
 /.claude/skills/domainspec-feature-glossary
+
+# Append-only dispatch ledger — managed locally via the official appender
+# (register-dispatch / append-dispatch.cjs), not through ordinary git edits.
+/telemetry/agents/subagents-dispatch.yaml
