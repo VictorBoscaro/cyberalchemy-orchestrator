@@ -14,3 +14,6 @@ node_modules/
 # Append-only dispatch ledger — managed locally via the official appender
 # (register-dispatch / append-dispatch.cjs), not through ordinary git edits.
 /telemetry/agents/subagents-dispatch.yaml
+
+# Assay S0 generated audit output (reproducible by running assay_s0.py).
+/internal-tools/research/document-information-estimator/s0/out/

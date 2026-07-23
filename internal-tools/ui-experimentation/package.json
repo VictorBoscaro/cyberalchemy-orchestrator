@@ -1,0 +1,15 @@
+{
+  "name": "ui-experimentation",
+  "version": "1.0.0",
+  "description": "Dez telas standalone (HTML puro, sem servidor obrigatorio) para **ver os dispatches que tem estrutura de grafo, escolher um, clicar e ver os agentes e seus dados de forma bonita**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer-core": "^25.3.0"
+  }
+}
