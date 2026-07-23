@@ -133,7 +133,8 @@ For the record shape, the appender, and the close-row mechanics: **register-disp
 
 ## Universal invariants (every dispatch_type)
 
-These bullets are authoritative operational invariants for the current strategy.
+By owner direction dated 2026-07-23, treat these as current workflow invariants. They remain
+workflow-level until ratified in discovery/SPEC/ACI.
 
 - **P5 — pairwise tension.** Any n ≥ 2 group must be pairwise tensioned (predictable disagreement per pair, named axis, per-agent position); two independent **check-tension** helpers must both PASS the exact concrete digest before human confirmation.
 - **P7 — aggregation is derived,** never a field: `robot_talks: true` → the group synthesizes; otherwise → concat. *(Non-binding note, per P7's own framing: a bare concat is never the dispatch's final deliverable.)*

@@ -124,7 +124,8 @@ the parent may not resolve it. This is a stated gap in P12, not a rule it curren
 ## 2. Run it
 
 Spawn each group's agents with the Agent tool — **ALL agents of a group in ONE message**, so they
-run in parallel. Each agent's `initial_prompt` is its launch prompt.
+run in parallel. Each agent's confirmed `prompt_template` is its launch template; only declared
+data slots may be supplied separately.
 
 Schedule groups **by dependency**: a group is READY when every group with a `sequential`/`zig-zag`
 edge into it has produced what it must respond to (a zig-zag edge counts only in its `from`→`to`
