@@ -128,9 +128,10 @@ without their own explicit authorization.
 
 ### Flow Diagram, Changelog, and Source Footer
 
-After `Connections`, place `## Flow Diagram`, then `## Appendix — Changelog`. The final content in
-the file is the **Source dispatch** footer. This is the canonical ending order. The diagram is
-created before review and synchronized after remediation; the changelog and footer remain last.
+After `Connections`, place `## Flow Diagram`, then `## Appendix — Changelog`. When the confirmed
+provenance mode requires one, the final content is the **Source dispatch** or **Source basis**
+footer. This is the canonical ending order. The diagram is created before review and synchronized
+after remediation; the changelog and optional footer remain last.
 
 ---
 
@@ -141,14 +142,59 @@ created before review and synchronized after remediation; the changelog and foot
 - [ ] "What stays" is non-empty and names the owning doc for every shared concept
 - [ ] Core concepts have stable PascalCase names (and meta-types where clear)
 - [ ] Every ratified decision has an ID, a `Where` §, and is cited by ID in the body
-- [ ] Open questions have IDs, recommendations, and settlement stages — not just questions
+- [ ] Open questions have IDs, recommendations, and settlement stages — or the section says exactly `No open questions.`
 - [ ] Connections table present; pending inverse edges reported without out-of-scope writes
 - [ ] Version bumped ⇒ changelog entry written (with the locked-decisions statement)
 - [ ] No implementation steps disguised as design decisions — if it's "do X then Y", it belongs in an implementation plan
 - [ ] File is at a pipeline-visible path (`docs/features/<feature>/discovery/<slug>.md` or `vault/discovery/<topic>-definitions/<slug>.md`)
 - [ ] Every invoked probe passed the Probe Proposal Gate; accepted/rejected improvements and reasons are present in the completion report
-- [ ] Independent Review Loop (below) reached two `NO_OBJECTION` returns in one round, or stopped honestly at the three-round ceiling with residue reported
+- [ ] Independent Review Loop (below) reached `NO_OBJECTION` from every confirmed reviewer in one round, or stopped honestly at the confirmed round ceiling with residue reported
 - [ ] Flow Diagram Gate (below) executed — flow diagram present and synchronized with the reviewed body
+
+---
+
+## Orchestration and Confirmation
+
+Discovery authoring uses the two-level planning model in
+`.claude/skills/domainspec-subagents-strategy/SKILL.md`. The discovery orchestrator owns both
+proposals and the human gates; the discovery writer never changes the confirmed topology.
+
+The `StructuralGraphProposal` resolves the number of probe slots and review seats, their
+connections, whether any group uses `robot-talks`, the interaction mode, the maximum review rounds,
+and the confirmation mode. The `ConcreteDispatchProposal` then resolves every agent name,
+role/lens, initial prompt, source boundary, model/budget, output contract, tool/skill profile,
+reviewer instantiation rule, and retry limit. All potential seats are declared before execution. An
+unused optional probe slot is not spawned; changing a seat or lens later requires a new proposal
+revision and the applicable gate.
+
+For every review group with two or three seats, the concrete proposal includes a P5 tension matrix:
+one row per reviewer pair, a named disagreement axis, the question likely to split them, and each
+seat's predicted position. Complementary labels alone are not tension. The matrix must make overlap
+visible and explain why one reviewer cannot subsume another.
+
+Before fine confirmation, a read-only capability reviewer checks each task against its proposed
+tool/skill profile. Its task digest and tool-profile digest are part of the concrete proposal. Tool
+names in agent frontmatter are adapter-level grants; the proposal also states the logical
+capabilities and any restricted command classes. `Bash` never means unrestricted shell by
+implication.
+
+Every resolved concrete field records `ResolutionProvenance`: `user_set`, `recipe_default`,
+`skill_constraint`, `orchestrator_inferred`, or `capability_reviewer_amendment`, plus a source
+reference or digest and a short reason. A structural change invalidates the concrete and final
+confirmations. A concrete-only change invalidates final confirmation. Retry creates a new attempt
+under the same confirmed revision; it does not silently change the plan.
+
+Supported confirmation modes:
+
+- `structure_and_final`: confirm structure, resolve the concrete plan, then confirm it.
+- `final_only`: show the structure as context and require only confirmation of the complete concrete
+  plan.
+- `structure_only`: authorize continued planning only. It never authorizes probes, writing, review,
+  promotion, or any other execution.
+
+Until durable gate receipts exist, preserve proposal revision IDs, SHA-256 digests, explicit user
+acknowledgements, and the capability-review reference in the completion report. Do not describe a
+chat acknowledgement as a bus receipt.
 
 ---
 
@@ -162,7 +208,8 @@ One probe-budget slot includes at most one validator helper plus one acquisition
 forbids both proposal helpers and acquisitions; turn unresolved evidence gaps into Open Questions.
 Once all slots are consumed, do the same. Report supplied, consumed, and remaining slots.
 
-Before each probe, spawn one small read-only helper to evaluate the proposal. Give it the current
+For each confirmed probe slot that the orchestrator proposes to use, spawn one small read-only
+helper to evaluate the proposal. Give it the current
 discovery objective, the precise information gap, the proposed question, intended sources, and
 budget. Do not give it the answer the writer hopes to obtain. Require this response:
 
@@ -174,7 +221,7 @@ Suggested scope: <sources, exclusions, and stopping condition>
 Risk: <duplication, authority, cost, or confirmation-bias risk>
 ```
 
-The writer decides `ACCEPT`, `PARTIAL`, or `REJECT` for the suggested improvement and records a
+The orchestrator decides `ACCEPT`, `PARTIAL`, or `REJECT` for the suggested improvement and records a
 one-line reason. `SKIP` is advisory, not a veto, but running despite it requires naming the decision
 that still needs evidence. Keep this decision in the completion report; put it in the discovery only
 when it materially qualifies the evidence.
@@ -187,8 +234,8 @@ Then use the narrowest available acquisition surface:
 3. Never simulate receipts, bus persistence, reviewer consensus, or canonical authority.
 
 Require the probe to return sources/locations, findings, limitations, and an explicit no-result
-outcome. The writer remains responsible for checking material references and for deciding whether
-the return changes the discovery.
+outcome. The orchestrator checks material references and decides what enters the writer briefing;
+the writer remains responsible for Claim <= Proof in the artifact.
 
 ---
 
@@ -197,32 +244,38 @@ the return changes the discovery.
 After the body passes the quality checks, create or update a `## Flow Diagram` section containing one
 Mermaid overview and a paragraph of at most four sentences. The diagram must use only concepts from
 the body. It must exist before the first independent review so reviewers inspect the complete
-artifact; after every remediation in rounds 1–2, synchronize it before starting the next review
-round. Keep `Appendix — Changelog` and the Source dispatch footer after it.
+artifact; after every remediation before the terminal round, synchronize it before starting the
+next review round. Keep `Appendix — Changelog` and the confirmed optional provenance footer after
+it.
 
-When an agent tool is available, a diagram helper may edit only this section. Otherwise the writer
-produces it directly. The requirement is a synchronized diagram, not a particular model or helper.
+The writer produces and synchronizes this section. A separate diagram helper requires its own
+predeclared seat and tool profile. The requirement is a synchronized diagram, not a particular
+model or helper.
 
 ---
 
 ## Independent Review Loop
 
-Read `.claude/skills/review/SKILL.md` before launching reviewers. After the complete draft and Flow
-Diagram exist, launch exactly two fresh read-only reviewers independently.
+The orchestrator reads `.claude/skills/review/SKILL.md` before launching reviewers. After the
+complete draft and Flow Diagram exist, launch the confirmed two or three fresh read-only reviewers
+independently. Reviewers in a round receive the same frozen digest and never receive another
+reviewer's return.
 
 This bounded helper topology is authorized by the scoped discovery-authoring exception in
 `.claude/skills/domainspec-subagents-strategy/SKILL.md` P11. Any wider fan-out, persisted review
 artifact, or work beyond the discovery returns to the normal confirmation/register/close lifecycle.
 
-Launch the two reviewers together when the tool supports parallel tasks, but never show either
-reviewer the other's return.
+Launch all reviewers in a round together when the tool supports parallel tasks.
 
-- **Reviewer A — content/fidelity:** attack contradictions with sources or governing documents,
+- **Content/fidelity lens:** attack contradictions with sources or governing documents,
   unsupported decisions, missing promised scope, undefined concepts, unresolved IDs, and
   claim-greater-than-proof.
-- **Reviewer B — form/operability/reference integrity:** attack mandatory structure, clarity for a
+- **Form/operability/reference-integrity lens:** attack mandatory structure, clarity for a
   fresh reader, executable guidance, path/link validity, table/diagram legibility, ownership drift,
   and whether the discovery can feed a SPEC without invention.
+- **Optional architecture/provenance lens:** when the structural proposal contains a third seat,
+  attack ownership boundaries, graph semantics, invalidation, gate/provenance claims, capability
+  minimization, and reuse versus duplication of adjacent systems.
 
 Each reviewer reads the entire current discovery and material sources. Require:
 
@@ -235,30 +288,39 @@ Survival evidence: <required for NO_OBJECTION: attempted attacks and why the art
 Checks performed: <reads/commands>
 ```
 
-Compute the digest before launching the pair and require both to echo it. A missing/mismatched digest
+Compute the digest before launching the group and require every reviewer to echo it. A missing or
+mismatched digest
 or a `NO_OBJECTION` without concrete survival evidence is an insufficient review and counts as an
-objection. When both return zero objections, the writer explicitly checks the review skill's
+objection. When every return has zero objections, the orchestrator explicitly checks the review skill's
 all-zero-findings red flag: each lens must name its attempted attacks and evidence of survival before
-the pair can yield `REVIEW_CLEAN`.
+the group can yield `REVIEW_CLEAN`.
 
-For each objection in rounds 1–2, the writer records `ACCEPT`, `PARTIAL`, or `REJECT` with a
-one-line, evidence-based reason, then rewrites every accepted/partial item. Rejection is allowed;
+After the round barrier, the orchestrator sends all independent returns together to the writer. For
+each objection before the terminal round, the writer records `ACCEPT`, `PARTIAL`, or `REJECT` with
+a one-line, evidence-based reason, then rewrites every accepted/partial item. Rejection is allowed;
 silent discard is not. Re-run deterministic checks and synchronize the Flow Diagram before the next
 round.
 
-Use fresh reviewers on every round. Stop early only when both reviewers independently return
-`NO_OBJECTION` against the same frozen revision. Run at most three rounds. Round 3 is terminal: if
-either reviewer objects, do not edit the reviewed revision. Record accepted objections as residue,
-return the reviewed file digest plus `REVIEW_LOOP_CEILING`, and never report a clean review.
+Use fresh reviewer activations on every round, with the exact confirmed seats and lenses. The round
+machine is: freeze artifact bytes and digest; launch the sealed group; close the all-reviewer
+barrier; validate and batch the returns; let the writer disposition and remediate; run checks and
+synchronize the diagram; freeze the next digest; then launch the next fresh activations. Reviewers
+receive the artifact and confirmed sources, never peer returns. Stop early
+only when every reviewer independently returns `NO_OBJECTION` against the same frozen revision. Run
+at most the confirmed ceiling, which must be between one and five rounds. The ceiling round is
+terminal: if any reviewer objects, do not edit the reviewed revision. Record accepted objections as
+residue, return the reviewed file digest plus `REVIEW_LOOP_CEILING`, and never report a clean review.
 
 ---
 
 ## Provenance (repo addition)
 
 When the discovery derives from a registered research dispatch, end the document with a **Source
-dispatch** footer containing its dispatch id and the exact findings path supplied in the briefing.
-Use only that path; an optional `research.md` is its explicitly resolved sibling, never a basename
-guess.
+dispatch** footer containing its exact dispatch id and exact findings path supplied in the briefing.
+The concrete plan also carries the exact optional research source path when one is used; never
+derive it by changing the findings basename. When there is no registered research dispatch, the
+concrete plan explicitly selects either a final `**Source basis:**` footer with exact durable source
+links or no provenance footer. Never fabricate a dispatch ID.
 
 A verified probe may support a decision only when the owning section and decision-register row cite
 the durable source/location, state the probe mode (`tool_probe` or `helper_probe`), and preserve

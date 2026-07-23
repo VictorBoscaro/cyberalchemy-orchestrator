@@ -39,16 +39,26 @@ ORDERED_HEADINGS = [
 def main() -> int:
     parser = ArgumentParser()
     parser.add_argument("discovery")
-    parser.add_argument("--expected-source", required=True)
-    parser.add_argument("--dispatch-id", required=True)
+    parser.add_argument("--expected-source")
+    parser.add_argument("--dispatch-id")
+    parser.add_argument("--research-source")
     args = parser.parse_args()
 
     path = Path(args.discovery).resolve()
-    expected_source = Path(args.expected_source).resolve()
+    if bool(args.expected_source) != bool(args.dispatch_id):
+        parser.error("--expected-source and --dispatch-id must be supplied together")
+    expected_source = (
+        Path(args.expected_source).resolve() if args.expected_source else None
+    )
+    research_source = (
+        Path(args.research_source).resolve() if args.research_source else None
+    )
     if not path.is_file():
         parser.error(f"discovery not found: {path}")
-    if not expected_source.is_file():
+    if expected_source is not None and not expected_source.is_file():
         parser.error(f"expected source not found: {expected_source}")
+    if research_source is not None and not research_source.is_file():
+        parser.error(f"research source not found: {research_source}")
 
     errors: list[str] = []
     text = path.read_text(encoding="utf-8")
@@ -72,13 +82,13 @@ def main() -> int:
             )
 
     frontmatter = read_frontmatter(lines, errors)
-    keys = {
-        match.group(1)
-        for match in re.finditer(
-            r"(?m)^([A-Za-z_][A-Za-z0-9_-]*):",
-            frontmatter,
-        )
-    }
+    key_list = re.findall(
+        r"(?m)^([A-Za-z_][A-Za-z0-9_-]*):",
+        frontmatter,
+    )
+    keys = set(key_list)
+    for key in sorted({item for item in key_list if key_list.count(item) > 1}):
+        errors.append(f"duplicate top-level frontmatter key: {key}")
     for key in sorted(REQUIRED_FRONTMATTER - keys):
         errors.append(f"required frontmatter key is missing: {key}")
 
@@ -116,19 +126,36 @@ def main() -> int:
         for marker in ("**Status:**", "**Owner:**"):
             if marker not in objective:
                 errors.append(f"Objective block is missing {marker}")
+        owner = re.search(r"(?m)^\*\*Owner:\*\*\s*(\S+)\s*$", objective)
+        if owner is None:
+            errors.append("Owner must appear alone on its bold-label line")
+        elif re.fullmatch(
+            r"@[A-Za-z0-9][A-Za-z0-9._-]*",
+            owner.group(1),
+        ) is None:
+            errors.append(
+                "Owner must be one exact @handle using letters, numbers, dot, underscore, or hyphen"
+            )
 
     open_questions = section(text, "Open Questions", "Decisions Baked In")
     if open_questions is None:
         errors.append("Open Questions block is missing")
     else:
         oq_ids = set(re.findall(r"\bOQ-[A-Za-z0-9]+", open_questions))
-        if not oq_ids:
-            errors.append("Open Questions section has no OQ identifier")
-        for marker in ("**Question:**", "**Recommendation:**"):
-            if marker not in open_questions:
-                errors.append(f"Open Questions section is missing {marker}")
-        if re.search(r"(?i)settle(?:ment)? (?:in|stage)", open_questions) is None:
-            errors.append("Open Questions section is missing a settlement stage")
+        no_questions = re.fullmatch(
+            r"(?is)##\s+Open Questions\s*\n+\s*No open questions\.\s*",
+            open_questions,
+        )
+        if not oq_ids and no_questions is None:
+            errors.append(
+                "Open Questions must contain OQ identifiers or exactly 'No open questions.'"
+            )
+        if oq_ids:
+            for marker in ("**Question:**", "**Recommendation:**"):
+                if marker not in open_questions:
+                    errors.append(f"Open Questions section is missing {marker}")
+            if re.search(r"(?i)settle(?:ment)? (?:in|stage)", open_questions) is None:
+                errors.append("Open Questions section is missing a settlement stage")
 
     flow = section(text, "Flow Diagram", "Appendix — Changelog")
     if flow is None or "```mermaid" not in flow:
@@ -142,6 +169,7 @@ def main() -> int:
         text,
         expected_source,
         args.dispatch_id,
+        research_source,
         errors,
     )
 
@@ -235,19 +263,31 @@ def validate_links(path: Path, text: str, errors: list[str]) -> None:
 def validate_source_footer(
     path: Path,
     text: str,
-    expected_source: Path,
-    dispatch_id: str,
+    expected_source: Path | None,
+    dispatch_id: str | None,
+    research_source: Path | None,
     errors: list[str],
 ) -> None:
     footer_match = re.search(
         r"(?is)\*\*source dispatch(?::)?\*\*:?.*\Z",
         text.strip(),
     )
+    if expected_source is None:
+        if footer_match is not None:
+            errors.append(
+                "Source dispatch footer exists but no expected dispatch was supplied"
+            )
+        validate_research_link(path, text, research_source, errors)
+        return
     if footer_match is None:
         errors.append("final Source dispatch footer is missing")
         return
     footer = footer_match.group(0)
-    if dispatch_id not in footer:
+    footer_id = re.search(
+        r"(?is)^\*\*source dispatch(?::)?\*\*:?\s*`([^`]+)`",
+        footer,
+    )
+    if footer_id is None or footer_id.group(1) != dispatch_id:
         errors.append("Source dispatch footer lacks the expected dispatch id")
     footer_targets = []
     for link in re.findall(r"\[[^\]]+\]\(([^)]+)\)", footer):
@@ -257,6 +297,26 @@ def validate_source_footer(
     if expected_source not in footer_targets:
         errors.append(
             "Source dispatch footer does not link the exact expected findings path"
+        )
+    validate_research_link(path, text, research_source, errors)
+
+
+def validate_research_link(
+    path: Path,
+    text: str,
+    research_source: Path | None,
+    errors: list[str],
+) -> None:
+    if research_source is None:
+        return
+    linked = {
+        (path.parent / target.split("#", 1)[0]).resolve()
+        for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", text)
+        if target and not re.match(r"^(?:https?|mailto):", target)
+    }
+    if research_source not in linked:
+        errors.append(
+            "document does not link the exact explicitly resolved research source"
         )
 
 
