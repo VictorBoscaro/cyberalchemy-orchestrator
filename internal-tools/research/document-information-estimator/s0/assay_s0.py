@@ -38,6 +38,15 @@ from typing import Dict, List, Optional, Tuple
 # ---------------------------------------------------------------------------
 
 DEFAULT_NEARDUP_TAU = 0.25
+# Scale-invariant P-GUARD companion (review finding 2026-07-23, OQ-AS6): pair_B(u,v) is
+# upper-bounded by A(u), so an absolute NEARDUP_TAU over-triggers when A(u) approx TAU
+# (a dense low-A unit registers as near-dup of the whole corpus). Optional companion:
+# also require the partner to explain a share of u's own compressibility, pair_B <= k*A(u).
+# DEFAULT k=1.0 DISABLES it (pair_B <= A always holds) so the shipped default reproduces
+# the discovery's pinned absolute-TAU predicate exactly. A calibration pass before S1
+# should set k ~ 0.85 (separates the A-approx-TAU artifact from genuine repetition);
+# left as owner's calibration decision, not hardcoded. Run with --neardup-k 0.85 to try it.
+DEFAULT_NEARDUP_K = 1.0
 DEFAULT_CUT_TAU = 0.15
 DEFAULT_MERGE_TAU = 0.5
 DEFAULT_TIGHTEN_A_TAU = 0.35
@@ -206,8 +215,10 @@ def compute_pair_matrix(units: List[Unit]) -> Dict[str, Dict[str, float]]:
 
 
 class Taus:
-    def __init__(self, neardup, cut, merge, tighten_a, tighten_delta, floor):
+    def __init__(self, neardup, cut, merge, tighten_a, tighten_delta, floor,
+                 neardup_k=DEFAULT_NEARDUP_K):
         self.neardup = neardup
+        self.neardup_k = neardup_k
         self.cut = cut
         self.merge = merge
         self.tighten_a = tighten_a
@@ -217,6 +228,7 @@ class Taus:
     def as_dict(self) -> dict:
         return {
             "NEARDUP_TAU": self.neardup,
+            "NEARDUP_K": self.neardup_k,
             "CUT_TAU": self.cut,
             "MERGE_TAU": self.merge,
             "TIGHTEN_A_TAU": self.tighten_a,
@@ -240,9 +252,13 @@ def build_ranked_map(units: List[Unit], taus: Taus) -> List[dict]:
         if pairs:
             merge_partner, merge_partner_pb = min(pairs.items(), key=lambda kv: kv[1])
 
-        # P-GUARD: near-dup of v iff pair_B(u, v) <= NEARDUP_TAU; protected if
-        # >= 2 distinct such v.
-        near_dup_partners = sorted(v for v, pb in pairs.items() if pb <= taus.neardup)
+        # P-GUARD: near-dup of v iff pair_B(u, v) <= NEARDUP_TAU AND pair_B <= k*A(u)
+        # (compound guard, review finding OQ-AS6: absolute TAU alone over-triggers when
+        # A(u) approx TAU). Protected if >= 2 distinct such v.
+        neardup_rel = taus.neardup_k * A
+        near_dup_partners = sorted(
+            v for v, pb in pairs.items() if pb <= taus.neardup and pb <= neardup_rel
+        )
         protected_flag = len(near_dup_partners) >= 2
 
         # cut: B <= CUT_TAU and exactly one dominant partner with pair_B <= CUT_TAU
@@ -530,6 +546,9 @@ def main(argv=None) -> int:
                          help="Run the S0->S1 acceptance gate instead of a normal map run.")
 
     parser.add_argument("--neardup-tau", type=float, default=DEFAULT_NEARDUP_TAU)
+    parser.add_argument("--neardup-k", type=float, default=DEFAULT_NEARDUP_K,
+                        help="scale-invariant P-GUARD companion: near-dup also requires "
+                             "pair_B <= k*A(u) (default 0.5)")
     parser.add_argument("--cut-tau", type=float, default=DEFAULT_CUT_TAU)
     parser.add_argument("--merge-tau", type=float, default=DEFAULT_MERGE_TAU)
     parser.add_argument("--tighten-a-tau", type=float, default=DEFAULT_TIGHTEN_A_TAU)
@@ -543,7 +562,8 @@ def main(argv=None) -> int:
     script_dir = Path(__file__).resolve().parent
     root = args.root or find_repo_root(script_dir)
     taus = Taus(args.neardup_tau, args.cut_tau, args.merge_tau,
-                args.tighten_a_tau, args.tighten_delta_tau, args.min_length_floor)
+                args.tighten_a_tau, args.tighten_delta_tau, args.min_length_floor,
+                neardup_k=args.neardup_k)
 
     if args.acceptance:
         ok = run_acceptance(root, args.skills_glob, taus, args.acceptance_tau)
