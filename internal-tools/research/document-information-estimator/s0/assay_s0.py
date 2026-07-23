@@ -419,8 +419,8 @@ def run_acceptance(root: Path, skills_glob: str, taus: Taus, acceptance_tau: flo
           f"({sum(1 for r in a1_rows if r[4])}/{len(a1_rows)} window-safe pairs within tau)")
     if window_exceeded_pairs:
         print(f"  (excluded from the gate, reported separately -- body exceeds the "
-              f"{LZ77_WINDOW_BYTES}-byte LZ77 window, so §3.2's window-safety premise "
-              f"does not hold for these):")
+              f"{LZ77_WINDOW_BYTES}-byte LZ77 window, so section 3.2's window-safety "
+              f"premise does not hold for these):")
         for skill_unit, readme_unit in window_exceeded_pairs:
             pb_su = pair_B(skill_unit, readme_unit)
             pb_us = pair_B(readme_unit, skill_unit)
