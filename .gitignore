@@ -17,3 +17,9 @@ node_modules/
 
 # Assay S0 generated audit output (reproducible by running assay_s0.py).
 /internal-tools/research/document-information-estimator/s0/out/
+
+# Runtime SQLite databases — regenerable runtime state, not source.
+/telemetry/runtime/
+
+# FOODSToGo JBP render output — reproduced deterministically by render.sh.
+/experimentations/foodstogo-jbp-2025/out/
