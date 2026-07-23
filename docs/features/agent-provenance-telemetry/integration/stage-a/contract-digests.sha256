@@ -1,0 +1,8 @@
+6345bde1c44f9832ce6a4c8e07f5f9484ac265ff4c96276d4dfa47c590149299  integration/stage-a/policies/apt-artifact-policy-bundle@1.json
+6ed22971449c8ea911f9b885d26b01e6eb2e77f208cd8bc6419dff31d97b7ade  integration/stage-a/schemas/aci-canonical-json@1.json
+e60af09653effee389c9d1cdf3f2e507c926b055f13166d0fe1093d086c5400a  integration/stage-a/schemas/apt.reference-probe-lineage-appended@1.json
+ef9c7de795e435866814b93e26fd19819fd41fa2d46eeeb0fe7601afd1c7034a  integration/stage-a/schemas/apt.research-capture-appended@1.json
+9c6ca70c632a5dac4f6f9e4e223fed23042ba9851a354a4cae8674a97df5d5f8  integration/stage-a/schemas/apt.research-fact-appended@1.json
+e7f0e51e53ed5d024f3fb9c042fd84ddc7557768a559909b8f30fa470cc137dc  integration/stage-a/schemas/apt.session-context-rebound@1.json
+879376ac53b10903d8452d6925b1805df34c69c380c76666005fcc66c63d1029  integration/stage-a/schemas/apt.session-dispatch-linked@1.json
+98d6611ca5aa4f408df17ace9c6a7860c1d7c06f78383163e1f5056c70e3f6d8  integration/stage-a/schemas/apt.session-started@1.json

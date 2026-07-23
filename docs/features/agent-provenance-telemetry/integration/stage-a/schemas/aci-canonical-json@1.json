@@ -1,0 +1,13 @@
+{
+  "schema_ref": "aci.canonicalizer-profile@1",
+  "profile_id": "aci.canonical-json",
+  "profile_version": "1",
+  "encoding": "utf-8",
+  "digest_algorithm": "sha256-lowercase-hex",
+  "object_key_order": "unicode-codepoint-order",
+  "array_order": "preserve-semantic-order",
+  "number_policy": "finite-json-numbers-only",
+  "duplicate_object_keys": "reject",
+  "unknown_fields": "reject-according-to-bound-schema"
+}
+

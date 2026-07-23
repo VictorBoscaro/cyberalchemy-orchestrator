@@ -35,8 +35,8 @@ rules and lifecycle contracts remain in their linked source aspects.
 ## Terms
 
 The 58 rows below correspond one-for-one with the current
-[SPEC Concept Registry](SPEC.md#concept-registry). Aspect anchors are canonical planned locations;
-final anchor validation remains pending until each aspect passes its own file gate.
+[SPEC Concept Registry](SPEC.md#concept-registry). Aspect anchors are canonical locations validated
+through the individual file-review gates; corpus-wide review remains in progress.
 
 | Term | Concept ID | Type | Definition | Source |
 |---|---|---|---|---|
@@ -120,9 +120,9 @@ their ownership.
 - Concept IDs and DomainSpec meta-types: matched to [SPEC.md](SPEC.md#concept-registry).
 - Duplicate formal terms/IDs: none.
 - Existing external source paths: validated.
-- Planned APT aspect anchors: final validation pending as `domain.md`, `operations.md`,
-  `queries.md`, `interfaces.md`, `mappings.md`, `workflows.md`, `rules.md` and `events.md` pass
-  their file gates.
+- APT aspect anchors: validated at the individual file gates across `domain.md`, `operations.md`,
+  `queries.md`, `interfaces.md`, `mappings.md`, `workflows.md`, `rules.md` and `events.md`;
+  corpus-wide no-objection receipt remains outstanding.
 
 ## Maintenance Rules
 

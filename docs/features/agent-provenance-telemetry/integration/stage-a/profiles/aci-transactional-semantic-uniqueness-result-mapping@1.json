@@ -1,0 +1,45 @@
+{
+  "schema_ref": "apt.aci-profile-registration-request@1",
+  "profile_id": "aci.transactional-semantic-uniqueness-result-mapping",
+  "profile_version": "1",
+  "profile_owner": "agents-communication-infra",
+  "requested_by": "agent-provenance-telemetry",
+  "registration_status": "pending-aci-owner",
+  "closed_contract": {
+    "global_fact_identity": {
+      "unique_key": "fact_id",
+      "exact_collision_tuple": [
+        "canonical_payload_digest",
+        "subject_id",
+        "supersedes_fact_id"
+      ],
+      "exact_collision": "existing_exact",
+      "different_collision": "group_conflict"
+    },
+    "request_partition": [
+      "existing_exact",
+      "submitted_new",
+      "conflict"
+    ],
+    "zero_new": {
+      "submit_command": false,
+      "claim_new_receipt": false,
+      "result": "existing_exact"
+    },
+    "mixed_request": {
+      "receipt_members": "accepted-submitted_new-only",
+      "result_mapping": "existing_exact-union-accepted-submitted_new",
+      "existing_members_reaccepted": false
+    },
+    "atomic_members": [
+      "new-fact-events",
+      "fact-heads",
+      "global-fact-keys",
+      "total-result-mapping",
+      "receipt-for-new-members"
+    ]
+  },
+  "aci_registration_ref": null,
+  "aci_registration_receipt": null
+}
+

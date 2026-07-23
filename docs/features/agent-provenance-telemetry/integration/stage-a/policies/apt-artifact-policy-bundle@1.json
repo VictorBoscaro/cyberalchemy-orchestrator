@@ -1,0 +1,39 @@
+{
+  "schema_ref": "apt.artifact-policy-bundle@1",
+  "classification_enum": [
+    "runtime-internal",
+    "sensitive-input",
+    "sensitive-output",
+    "reveal-authorized",
+    "public"
+  ],
+  "research_submission_classification": "sensitive-output",
+  "retention_policy": {
+    "policy_ref": "apt.retention.local-sensitive-output@1",
+    "mode": "retain-until-explicit-owner-tombstone",
+    "automatic_expiry": false
+  },
+  "tombstone_policy": {
+    "policy_ref": "apt.tombstone.preserve-identity-and-audit@1",
+    "bytes_after_tombstone": "unavailable",
+    "preserve": [
+      "artifact_id",
+      "content_digest",
+      "metadata",
+      "acceptance_receipt",
+      "audit_events"
+    ]
+  },
+  "authorization_policy": {
+    "policy_ref": "apt.authorization.provenance-artifact-read@1",
+    "required_binding": [
+      "authenticated_principal",
+      "session_id",
+      "dispatch_id",
+      "research_capture_id",
+      "artifact_id"
+    ],
+    "default": "deny"
+  },
+  "unknown_policy_or_classification": "reject-before-append-or-read"
+}

@@ -53,10 +53,10 @@ graph TD
 | Capability | Binding constraint |
 |---|---|
 | Session Registry | Ensure is idempotent by context key; rollover atomically emits successor start and context rebound; the initial name is immutable in L0 and future `RenameSession` is not authorized. |
-| Dispatch Scope Projection | The deterministic hash uses a `DispatchAuthoritySnapshotRef` pinning immutable row/artifact, digest and accepted offset; any separately fetched current external snapshot is display-only and excluded from that hash. |
+| Dispatch Scope Projection | The deterministic hash uses one variant-specific `DispatchAuthoritySnapshotRef`: `aci_managed` pins Dispatch ID, artifact ref/digest and accepted event/offset, while `legacy_ledger` pins canonical ledger-row identity plus row digest and excludes only its optional non-authoritative row-index locator. Current mutable external Dispatch state is neither an input nor display context for the deterministic result. |
 | Research Capture & Facts | Capture is immutable: `captured`/`partial` contain exactly one `ArtifactReference`; `missing` contains none and records expected contribution plus failure evidence. Extracted fact revisions append predecessor-linked Entities. |
 | Reference Probe Lineage | Exact ACI profile/bundle receipts gate `host.SourceObservation <- optional ProbeRecommendationRef <- ResearchReferenceUse -> ResearchReferenceClaimRelation -> ResearchClaimExtraction`; APT references but never owns the host event. |
-| Deterministic Read Models | `SessionRecord`, `DispatchScopeProjection` and `ResearchRecord` are Queries with `as_of_event_id`, explicit supersession/dedupe and zero replay effects. |
+| Deterministic Read Models | `SessionRecord`, `DispatchScopeProjection` and `ResearchRecord` accept inclusive `requested_o`, derive `effective_as_of` as the last complete verified group boundary not after it, preserve explicit supersession/dedupe and have zero replay effects. |
 
 ## Domain Concepts
 
@@ -76,7 +76,7 @@ graph TD
 | [ExtractionProvenance](domain.md#extractionprovenance) | Value Object | Actor, method/version, mode, capture digest and exact selector. |
 | [RawSelector](domain.md#rawselector) | Value Object | UTF-8 byte, half-open offsets; selected bytes and raw artifact digest must verify. |
 | [ArtifactReference](domain.md#artifactreference) | Value Object | Content digest, media type, classification, redaction, retention and tombstone policy. |
-| [DispatchAuthoritySnapshotRef](domain.md#dispatchauthoritysnapshotref) | Value Object | Immutable dispatch row/artifact ref, digest and accepted offset pinned into deterministic queries. |
+| [DispatchAuthoritySnapshotRef](domain.md#dispatchauthoritysnapshotref) | Value Object | Closed immutable authority pin: the `aci_managed` variant carries artifact/digest plus accepted event/offset; the `legacy_ledger` variant carries canonical ledger-row identity plus row digest and no accepted-offset field. |
 | [ProbeRecommendationRef](domain.md#proberecommendationref) | Value Object | Conditional field constraint: `probe_ref present ⇒ exact profile_binding`; also pins recommendation, bundle digest and source-observation refs. |
 | [ACIProtocolProfileBinding](domain.md#aciprotocolprofilebinding) | Value Object | Exact registered ACI profile ID, version and digest; equal only by all three fields. |
 | [CaptureStatus](domain.md#capturestatus) | Enum / Type | `captured`, `partial`, `missing`; `superseded` is derived, never stored status. |
@@ -219,8 +219,9 @@ no historical backfill.
 
 ## Aspect Docs
 
-These are planned W1 links under the approved `specs/` layout; they become authoritative only after
-their individual review gates pass.
+These W1 aspect documents now exist and have completed their individual file-review gates. Their
+cross-document authority remains subject to the corpus-wide gate currently in review; this does
+not imply implementation readiness or runtime approval.
 
 | Aspect | Contains | Key Concepts |
 |---|---|---|
@@ -245,7 +246,7 @@ their individual review gates pass.
 | Session Registry | [ACI Confirmed runtime authority](../../agents-communication-infra/specs/SPEC.md#capabilities) | ACI event/journal append contract | Reuses one writer, canonical event and receipt authority. |
 | Research Capture & Facts | [ACI Recovery and official closure contracts](../../agents-communication-infra/specs/persistence-and-replay.md#4-atomic-command-acceptance) | append-before-ack event and artifact references | Makes capture durable without a second store authority. |
 | Reference Probe Lineage | [ACI Receipt-gated publication](../../agents-communication-infra/specs/SPEC.md#receipt-gated-deliberation) | exact protocol profile, publication and receipt evidence | Accepts only committed probe lineage. |
-| Deterministic Read Models | [ACI Read and accountability](../../agents-communication-infra/specs/SPEC.md#operator-projection-and-usage-accountability) | cursor/offset and replay contract | Preserves explicit staleness and deterministic reconstruction. |
+| Deterministic Read Models | [ACI Read and accountability](../../agents-communication-infra/specs/SPEC.md#operator-projection-and-usage-accountability) | verified group-boundary and replay contract | Preserves explicit `requested_o`/`effective_as_of`, staleness and deterministic reconstruction. |
 
 ### Host-Owned External Concept
 
@@ -257,18 +258,20 @@ their individual review gates pass.
 
 | Consumer | Consumes Capability | Via | What |
 |---|---|---|---|
-| Existing orchestration read surfaces | Deterministic Read Models | `ProvenanceQueryPort` | Session, Dispatch and Research rows with explicit as-of cursor. |
+| Existing orchestration read surfaces | Deterministic Read Models | `ProvenanceQueryPort` | Session, Dispatch and Research rows with explicit `requested_o` and verified `effective_as_of`; no independent APT cursor. |
 | Research authors and reviewers | Research Capture & Facts | `ResearchRecord` | Exact capture outcome/evidence; artifact witness for `captured`/`partial` only, plus attributed structured extractions. |
 | Future assertion capture | Research Capture & Facts | explicit future mapping only | Research-local claim extraction with provenance; never implicit promotion. |
 | Future ontology/definition governance | Research Capture & Facts | `FormalizationCandidate` | Interpreted notation and review trail, not accepted vocabulary. |
 
 ## Stories and Tests
 
-Planned acceptance scenarios live in [User Stories](../STORIES.md). Exact rule, operation, query,
-workflow and negative-path coverage will be derived in [Test Specification](../TEST-SPEC.md). Neither
-file may authorize implementation before its own review receipt and the work-pack mutation gate.
+Acceptance scenarios live in [User Stories](../STORIES.md). Exact rule, operation, query, workflow
+and negative-path coverage is registered in the file-gate-reviewed
+[Test Specification](../TEST-SPEC.md). Its cases remain `planned/not-run`, the corpus-wide gate is
+still in review, and neither document authorizes implementation before readiness and the work-pack
+mutation gate.
 
-The future TEST-SPEC must include this status/cardinality matrix:
+The TEST-SPEC includes this status/cardinality matrix:
 
 | Status | Positive fixture | Required negative fixtures |
 |---|---|---|

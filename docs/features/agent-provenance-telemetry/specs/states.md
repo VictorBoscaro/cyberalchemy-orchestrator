@@ -64,12 +64,15 @@ field. `ordered_payload_digest` is the ACI canonical digest of that ordered list
 command/operation and event identities where the registered event contract already provides them;
 it does not require every event payload to repeat invented receipt fields.
 
-There is no commit-barrier event. A complete, verified grouping makes `last_offset` the valid
-`as_of` boundary and applies all grouped events exactly once as one logical change. An internal scan
-that stops in `[first_offset,last_offset)` buffers the incomplete group and exposes the preceding
-valid boundary. Missing/duplicate event IDs, missing offsets, a noncontiguous range, count mismatch,
-command/event-identity mismatch or ordered-payload digest mismatch fails closed without applying any
-member.
+There is no commit-barrier event. A caller supplies `requested_o`; the reducer exposes
+`effective_as_of(requested_o)`, defined as the greatest verified group `last_offset` not greater
+than `requested_o`, or the explicit genesis boundary when no such group exists. A complete,
+verified grouping applies all grouped events exactly once as one logical change at its
+`last_offset`. A scan requested inside `[first_offset,last_offset)` buffers the incomplete group
+and exposes the preceding verified boundary (or genesis). Every public projection returns both
+`requested_o` and `effective_as_of`. Missing/duplicate event IDs, missing offsets, a noncontiguous
+range, count mismatch, command/event-identity mismatch or ordered-payload digest mismatch fails
+closed without applying any member.
 
 Single-event commands use `event_count=1`, one event ID, and `first_offset=last_offset`. Multiple
 verified command groups reduce deterministically by global `last_offset` order; overlapping ranges
@@ -84,6 +87,39 @@ lineage command group containing
 lineage is valid; a partial or digest-invalid lineage group is buffered or rejected and contributes
 no lineage projection.
 
+### Transactional Semantic Uniqueness and Result Mapping Profile
+
+Entity-fact append and probe-lineage ingestion require a second, distinct proposed ACI profile:
+
+```text
+profile_id      = aci.transactional-semantic-uniqueness-result-mapping
+profile_version = 1
+profile_digest  = <exact digest published by the ACI registry>
+```
+
+It is an L0 implementation blocker until the exact digest and registration receipt verify. Its
+semantic unique key is global `fact_id`. On collision, ACI compares the stored canonical payload
+digest, `subject_id` and `supersedes_fact_id`; all three equal means `existing_exact`, while any
+mismatch is an identity conflict.
+
+```text
+operation_result = existing_exact ∪ accepted(submitted_new)
+receipt.members   = accepted(submitted_new)
+existing_exact ∩ receipt.members = ∅
+```
+
+The total probe request-key mapping records both sets, but only `submitted_new` participates in
+new-event atomicity, head changes, offsets, grouping digest and receipt. An existing exact member
+remains visible through its original acceptance and is not reaccepted.
+
+| ID | Invariant | Formal |
+|---|---|---|
+| APT-SEM-I1 | Fact identity is globally unique. | `unique_key(fact)=fact_id` |
+| APT-SEM-I2 | Exact collision compares all semantic identity evidence. | `existing_exact ⇔ same(payload_digest,subject_id,supersedes_fact_id)` |
+| APT-SEM-I3 | Probe result is total without reacceptance. | `result=existing_exact∪accepted(submitted_new) ∧ existing_exact∩accepted(submitted_new)=∅` |
+| APT-SEM-I4 | Atomic grouping and receipt cover only new submissions. | `receipt.members=accepted(submitted_new) ∧ atomic_scope=submitted_new` |
+| APT-SEM-I5 | Missing/mismatched profile fails before mutation. | `¬verified(profile_binding) ⇒ Δ(unique_registry,journal,heads,receipt,result_mapping)=0` |
+
 ### Atomic Group Invariants
 
 | ID | Invariant | Formal |
@@ -91,7 +127,7 @@ no lineage projection.
 | APT-GROUP-I1 | No grouped member affects a projection before the complete receipt/read grouping verifies. | `¬verified(g) ⇒ Δprojection_g=0` |
 | APT-GROUP-I2 | A verified command group changes logical state exactly once at `last_offset`. | `verified(g) ⇒ apply_count(g)=1` |
 | APT-GROUP-I3 | Group membership is complete, contiguous, unique and payload-digest-bound. | `count=last-first+1=|unique(ordered_event_ids)| ∧ verify(ordered_payload_digest)` |
-| APT-GROUP-I4 | Public as-of replay exposes only verified group boundaries. | `valid_as_of(o) ⇒ ∃g: o=g.last_offset ∧ verified(g)` |
+| APT-GROUP-I4 | Public replay accepts any requested offset but exposes the greatest verified boundary not after it, or genesis before the first verified group. | `effective_as_of(requested_o)=max({g.last_offset | verified(g) ∧ g.last_offset≤requested_o}∪{genesis}) ∧ response.exposes(requested_o,effective_as_of)` |
 | APT-GROUP-I5 | Command groups have one deterministic total reduction order. | `g₁≺g₂ ⇔ g₁.last_offset<g₂.last_offset` |
 | APT-GROUP-I6 | Probe publication and APT lineage are separate commitments. | `visible(bundle) ⇏ visible(lineage) ∧ partial(lineage_group) ⇒ Δlineage=0` |
 
@@ -336,8 +372,17 @@ ontology or governance acceptance.
 - Atomic-group tests cover missing/duplicate/reordered event IDs, noncontiguous range,
   count/command/digest mismatch, mid-group `as_of`, exactly-once application and deterministic
   ordering of multiple `last_offset` boundaries.
+- As-of tests cover `requested_o` between two verified groups and before the first group; responses
+  expose both offsets and select the preceding verified `last_offset` or genesis respectively.
 - Enablement tests require the exact registered ACI receipt/read-grouping profile ID, version and
   digest; absent or mismatched registration keeps the runtime gate blocked.
+- Fact/probe enablement tests separately require the exact
+  `aci.transactional-semantic-uniqueness-result-mapping@1` registration digest and receipt; absent
+  or mismatched registration keeps implementation blocked.
+- Semantic-race tests use global `fact_id` collisions and compare canonical payload digest,
+  `subject_id` and `supersedes_fact_id`.
+- Mixed probe tests assert `result=existing_exact∪accepted(submitted_new)`, while event grouping,
+  head changes and receipt membership contain only `submitted_new`.
 - Probe tests accept a committed bundle with no APT lineage, and reject/buffer incomplete or
   digest-invalid lineage groups without hiding the bundle.
 - Idempotent same-payload command retries are tested at the append boundary as zero-journal-delta
