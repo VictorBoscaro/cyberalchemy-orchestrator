@@ -1,0 +1,36 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UI Experimentation · 10 variantes</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Inter",system-ui,sans-serif;background:#0d0f16;color:#e8ecf5;padding:44px}
+h1{margin:0 0 6px;font-size:24px}p.sub{margin:0 0 30px;opacity:.6;font-size:14px;max-width:720px;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{display:flex;flex-direction:column;gap:7px;padding:18px;border:1px solid #262b3a;border-radius:14px;text-decoration:none;color:inherit;background:#12151f;transition:.12s}
+.card:hover{border-color:#5f7bff;transform:translateY(-2px);background:#161a27}
+.num{font-size:11px;opacity:.4;letter-spacing:.1em}
+.ct{font-size:16px;font-weight:600}.cd{font-size:12.5px;opacity:.72;line-height:1.45}
+.cg{font-size:11px;opacity:.45;margin-top:4px}
+footer{margin-top:34px;font-size:12px;opacity:.5;line-height:1.6;max-width:760px}
+code{background:#1c2130;padding:1px 5px;border-radius:4px}
+</style></head><body>
+<h1>UI Experimentation &mdash; 10 variantes</h1>
+<p class="sub">Cada variante e um visualizador standalone de tela unica: lista os dispatches
+<em>com estrutura de grafo</em>, mostra o grafo agentes&harr;revisores ao clicar num dispatch, e
+revela os dados do agente (prompt, angulo, papel, modelo, orcamento) ao clicar num no.
+Mesmo comportamento (CONST-FE: FE-1/2/3/5/6) em todas; linguagem visual distinta em cada.</p>
+<div class="grid">
+<a class="card" href="variants/blueprint.html"><span class="num">01</span><span class="ct">Blueprint</span><span class="cd">planta tecnica: ciano sobre azul-marinho, grade milimetrada, nos como cotas</span><span class="cg">geometria: columns</span></a>
+<a class="card" href="variants/editorial.html"><span class="num">02</span><span class="ct">Editorial</span><span class="cd">jornal impresso: serifada, tinta sobre creme, fios e capitulares, grafo em faixas</span><span class="cg">geometria: rows</span></a>
+<a class="card" href="variants/terminal.html"><span class="num">03</span><span class="ct">Terminal</span><span class="cd">CRT fosforo verde: monospace, scanlines, nos como prompts, grafo em eixo temporal</span><span class="cg">geometria: timeline</span></a>
+<a class="card" href="variants/brutalist.html"><span class="num">04</span><span class="ct">Brutalist</span><span class="cd">neo-brutalista: bordas pretas grossas, blocos crus, sombras duras, nos espalhados</span><span class="cg">geometria: scatter</span></a>
+<a class="card" href="variants/glass.html"><span class="num">05</span><span class="ct">Glass</span><span class="cd">glassmorphism: paineis foscos, gradiente aurora, desfoque, grafo radial</span><span class="cg">geometria: radial</span></a>
+<a class="card" href="variants/orbital.html"><span class="num">06</span><span class="ct">Orbital</span><span class="cd">sistema orbital: espaco profundo, grupos em aneis concentricos, corpos luminosos</span><span class="cg">geometria: orbit</span></a>
+<a class="card" href="variants/swiss.html"><span class="num">07</span><span class="ct">Swiss</span><span class="cd">estilo suico: Helvetica, vermelho-preto-branco, grade rigida, faixas horizontais</span><span class="cg">geometria: rows</span></a>
+<a class="card" href="variants/mission.html"><span class="num">08</span><span class="ct">Mission Control</span><span class="cd">console de operacoes: escuro, ambar+teal, telemetria, grafo radial de estacao</span><span class="cg">geometria: radial</span></a>
+<a class="card" href="variants/sketch.html"><span class="num">09</span><span class="ct">Sketch</span><span class="cd">caderno desenhado a mao: papel quadriculado, bordas irregulares, nos rabiscados</span><span class="cg">geometria: scatter</span></a>
+<a class="card" href="variants/mono.html"><span class="num">10</span><span class="ct">Mono</span><span class="cd">monocromatico minimo: linhas finas, muito espaco, tipografia quieta, colunas</span><span class="cg">geometria: columns</span></a>
+</div>
+<footer>Dados: <code>data/dispatches.json</code> (extraidos por <code>extract.py</code> de
+<code>telemetry/agents/subagents-dispatch.yaml</code> &mdash; apenas dispatches estruturados).
+Abra servido (<code>python -m http.server</code>) ou por duplo-clique (fallback <code>data/dispatches.js</code>).</footer>
+</body></html>

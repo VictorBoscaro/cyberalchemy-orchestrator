@@ -1,0 +1,1206 @@
+{
+  "generated_from": "telemetry/agents/subagents-dispatch.yaml",
+  "selection": "structured dispatches only (>=2 agents OR reviewer/skeptic/auditor OR connections)",
+  "total_structured_found": 46,
+  "corpus_size": 8,
+  "dispatches": [
+    {
+      "dispatch_id": "2026-07-20-docs-pt-en-translation",
+      "dispatch_type": "code",
+      "created": "2026-07-21T01:17:32.737Z",
+      "goal": "Translate all 15 in-scope repository documentation files from Portuguese to English, each via an independent translator plus a paired reviewer (zig-zag up to 3x).",
+      "context": "A read-only recon probe inventoried which docs need translation and what must not be touched (append-only ledger, vendored skills, session logs, fixtures). Then one translator per doc overwrote it in English (glossary-consistent; identifiers, data-testids, API routes, Lean anchors, paths/filenames and mermaid structure preserved), and one reviewer per doc compared the English against a PT snapshot and returned PASS or a fix-list. Fixes were applied and cross-file README anchors reslugged. Scope excluded sessions/, code comments and UI strings per the human's decision.",
+      "anti_bias_global": "production vs verification (translate vs review) over a subject-partitioned doc set",
+      "max_loops": 3,
+      "working_folder": null,
+      "groups": [
+        {
+          "group_id": "recon",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-sonnet-5",
+              "token_budget": 2000,
+              "angle": null,
+              "initial_prompt": "Read-only inventory of all Portuguese docs needing PT->EN translation; classify TRANSLATE / CODE-PT / DO-NOT-TOUCH with reasons; extract the core-5 term glossary; report a file total for dimensioning the translator+reviewer pairs."
+            }
+          ]
+        },
+        {
+          "group_id": "translators",
+          "n": 15,
+          "anti_bias": "subject partition (one doc per translator; no opposition axis)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 2500,
+              "angle": "owns README.md",
+              "initial_prompt": "Translate README.md PT->EN in place; glossary-consistent; preserve identifiers, routes, Lean anchors, paths/filenames, frontmatter, mermaid structure."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "owns PLAN.md",
+              "initial_prompt": "Translate PLAN.md PT->EN in place; preserve IDs (E0-E4, P-NOME/P-CT), paths, proper nouns."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "owns FRAMINGS.md",
+              "initial_prompt": "Translate FRAMINGS.md (F1-F7) PT->EN in place; preserve Lean anchors/decls, math notation, memory-name backticks."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": "owns MAPPING.md",
+              "initial_prompt": "Translate MAPPING.md PT->EN in place; preserve table structure, Lean decls, field identifiers, IDs."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1000,
+              "angle": "owns OBLIGATIONS.md",
+              "initial_prompt": "Translate OBLIGATIONS.md (OBL-E3) PT->EN in place; preserve ORCH, connection enums, FunctorialResidueStructure anchor, notation."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "owns definitions/DEFINITIONS.md",
+              "initial_prompt": "Translate definitions/DEFINITIONS.md PT->EN in place; canonical glossary source; fix residue/separation/shadow/probe/verb aliases; preserve all Lean anchors."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": "owns implementations/README.md",
+              "initial_prompt": "Translate implementations/README.md PT->EN in place; preserve paths, routes, commands, field names."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 2000,
+              "angle": "owns implementations/UI-CONTRACT.md",
+              "initial_prompt": "Translate ONLY the prose of implementations/UI-CONTRACT.md PT->EN; preserve every data-testid, JSON key, enum value, API route and param name intact (Playwright-critical)."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 3000,
+              "angle": "owns vault/hypothesis/orquestracao-anti-ruido.md",
+              "initial_prompt": "Translate vault/hypothesis/orquestracao-anti-ruido.md (HYP-ORCH-NOISE) PT->EN in place; preserve frontmatter controlled-vocab, IDs (OQ-*, BET-*), wikilinks, citations, formulas, mermaid."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1000,
+              "angle": "owns docs/essays/orquestrador-anti-ruido/README.md",
+              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/README.md PT->EN in place; preserve folder slug, paths, IDs, proper nouns."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "owns costura-feasibility/findings.md",
+              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/research/costura-feasibility/findings.md PT->EN in place; preserve mathematician names, technical terms, notation, IDs."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 800,
+              "angle": "owns frame-refine-review/review.md",
+              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/research/frame-refine-review/review.md PT->EN in place; preserve frontmatter, IDs, field names, ledger path."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": "owns prior-art-ct-kahneman-thaler/findings.md",
+              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/research/prior-art-ct-kahneman-thaler/findings.md PT->EN in place; preserve paper titles, author names, arXiv IDs, URLs, database names."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "owns docs/features/ui-studio/README.md",
+              "initial_prompt": "Translate docs/features/ui-studio/README.md PT->EN in place; preserve cross-repo paths, evidence IDs, symbol/file names, frontmatter."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 900,
+              "angle": "owns docs/features/ui-studio/verification.md",
+              "initial_prompt": "Translate docs/features/ui-studio/verification.md PT->EN in place; preserve evidence IDs (E-5..E-14), paths, symbols, verdict tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewers",
+          "n": 15,
+          "anti_bias": "subject partition (one doc per reviewer; verifies its paired translation)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "reviews README.md",
+              "initial_prompt": "Review README.md EN vs PT snapshot: no residual PT, fidelity, glossary, preserved identifiers/anchors; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1000,
+              "angle": "reviews PLAN.md",
+              "initial_prompt": "Review PLAN.md EN vs PT snapshot; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": "reviews FRAMINGS.md",
+              "initial_prompt": "Review FRAMINGS.md EN vs PT snapshot; check CT fidelity and preserved Lean anchors/notation; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1000,
+              "angle": "reviews MAPPING.md",
+              "initial_prompt": "Review MAPPING.md EN vs PT snapshot; check table cells and preserved decls/IDs; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 800,
+              "angle": "reviews OBLIGATIONS.md",
+              "initial_prompt": "Review OBLIGATIONS.md EN vs PT snapshot; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": "reviews definitions/DEFINITIONS.md",
+              "initial_prompt": "Review definitions/DEFINITIONS.md EN vs PT snapshot; verify core-5 terms and all Lean anchors; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 900,
+              "angle": "reviews implementations/README.md",
+              "initial_prompt": "Review implementations/README.md EN vs PT snapshot; confirm paths/routes/commands intact; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "reviews implementations/UI-CONTRACT.md",
+              "initial_prompt": "Review implementations/UI-CONTRACT.md: confirm ZERO contract identifiers/testids/routes changed (Playwright-critical) and prose fidelity; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1500,
+              "angle": "reviews vault/hypothesis/orquestracao-anti-ruido.md",
+              "initial_prompt": "Review vault/hypothesis/orquestracao-anti-ruido.md EN vs PT snapshot; check OQ-*/bets/citations/wikilinks/formulas preserved; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 800,
+              "angle": "reviews docs/essays/orquestrador-anti-ruido/README.md",
+              "initial_prompt": "Review docs/essays/orquestrador-anti-ruido/README.md EN vs PT snapshot; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": "reviews costura-feasibility/findings.md",
+              "initial_prompt": "Review costura-feasibility/findings.md EN vs PT snapshot; check names/notation/IDs preserved; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 700,
+              "angle": "reviews frame-refine-review/review.md",
+              "initial_prompt": "Review frame-refine-review/review.md EN vs PT snapshot; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1000,
+              "angle": "reviews prior-art-ct-kahneman-thaler/findings.md",
+              "initial_prompt": "Review prior-art-ct-kahneman-thaler/findings.md EN vs PT snapshot; check paper titles/authors/arXiv/URLs preserved; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": "reviews docs/features/ui-studio/README.md",
+              "initial_prompt": "Review docs/features/ui-studio/README.md EN vs PT snapshot; check cross-repo paths/IDs/symbols preserved; VERDICT PASS or FIX list."
+            },
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 800,
+              "angle": "reviews docs/features/ui-studio/verification.md",
+              "initial_prompt": "Review docs/features/ui-studio/verification.md EN vs PT snapshot; VERDICT PASS or FIX list."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "recon",
+          "to": "translators",
+          "type": "sequential"
+        },
+        {
+          "from": "translators",
+          "to": "reviewers",
+          "type": "sequential"
+        },
+        {
+          "from": "reviewers",
+          "to": "translators",
+          "type": "zig-zag",
+          "loop_cap": 3
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 31,
+          "tree": {
+            "explorer": 1,
+            "synthesizer": 0,
+            "skeptic": 0,
+            "writer": 15,
+            "auditor": 15,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "README: residual `status: candidato` -> `status: candidate`.",
+          "DEFINITIONS: calque 'normatizes both' -> 'covers both normatively'.",
+          "UI-CONTRACT line 212: untranslated example comment 'cortado em ~240 chars' -> 'cut to ~240 chars' (no contract identifier touched).",
+          "frame-refine-review: 'collides with fix 3' -> 'collides with adjustment 3' (ajuste = ETE numbered adjustment, not this review's fix).",
+          "ui-studio/verification L59: residual 'cockpit humano' -> 'human cockpit'."
+        ]
+      },
+      "_score": 170.49
+    },
+    {
+      "dispatch_id": "2026-07-21-anti-noise-critique-redteam",
+      "dispatch_type": "review",
+      "created": "2026-07-21T05:31:04.089Z",
+      "goal": "Red-team a 20-point external critique of HYP-ORCH-NOISE, adjudicate which points survive, then edit the hypothesis document to be as consistent and honest as possible (open questions, listed bets, and proven-under-conditions results all intact).",
+      "context": "A user pasted a 20-point critique attacking vault/hypothesis/anti-noise-orchestration.md and its supporting research docs/essays/anti-noise-orchestrator/research/seam-feasibility/findings.md. The critique alleges statistical errors (covariance vs independence, winner's curse), formal overreach (F unconstructed, IG mislabeled as category theory), and pipeline inconsistencies (ETE, source-blind, fork guard, citation spine). Many points may already be conceded by the document's own OQ-9/OQ-10/BETs. The pipeline red-teams the critique itself first (is it right, already-conceded, overstated, or wrong), then reconciles a change-set, edits, re-reviews, and finally approves. Self-application A6: the orchestrator applies the anti-bias/anti-noise discipline the document theorizes.",
+      "anti_bias_global": "defend the document (it already confessed / the proven-under-conditions result is real) vs prosecute the critique (the math and pipeline are genuinely inconsistent)",
+      "max_loops": 2,
+      "working_folder": "docs/essays/anti-noise-orchestrator/research/critique-redteam/",
+      "groups": [
+        {
+          "group_id": "attackers",
+          "n": 5,
+          "anti_bias": "five tensioned red-team lenses on the critique: document-already-confessed vs statistical-correctness vs CT/formal-fidelity vs pipeline-engineering vs meta-consistency-of-the-critique",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-sonnet-5",
+              "token_budget": 2000,
+              "angle": "L1 document-already-confessed: attacks the critique by showing which points the doc's own OQ/BET/Revision/collapse-test already raise; residual defect = status-label lies",
+              "initial_prompt": "See parent dispatch: red-team the 20-point critique through the 'document already confessed' lens over cluster C1,C3,C4,C5,C12,C14,C17,C18; per-point verdict {NEW-AND-CORRECT|ALREADY-CONCEDED|STATUS-LABEL-BUG|OVERSTATED|WRONG} with quoted evidence; net residual edits."
+            },
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 2000,
+              "angle": "L2 statistical-correctness: verifies the critique's math (covariance vs independence C2, winner's curse C13, ex-post oracle C16, disagreement-vs-error C1/C15) and judges the central reformulation",
+              "initial_prompt": "See parent dispatch: statistics lens over C1,C2,C13,C15,C16 and the central reformulation; rate each CORRECT-LOAD-BEARING/OVERSTATED/WRONG with rigorous justification; name the single most load-bearing statistical defect."
+            },
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 2000,
+              "angle": "L3 CT/formal-fidelity: judges whether the critique represents the seam-feasibility construction faithfully or attacks a strawman (Bregman-not-Fisher, slot-lock, non-monicity, Banerjee)",
+              "initial_prompt": "See parent dispatch: formal-fidelity lens over C3,C4,C5,C17,C18; decide per point CRITIQUE-CORRECT / OQ-ALREADY-SAYS-IT / MISREADS-FORMAL-WORK / STATUS-LABEL-BUG with quotes from the seam findings; write the honest status line the CT layer should carry."
+            },
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-sonnet-5",
+              "token_budget": 2000,
+              "angle": "L4 pipeline-engineering: rules each alleged pipeline contradiction REAL-CONTRADICTION/MISREADING/UNDERSPECIFIED-GAP with severity",
+              "initial_prompt": "See parent dispatch: pipeline lens over C6,C7,C8,C9,C10,C11,C14,C19,C20; quote both sides of each alleged contradiction, assign severity CRITICAL/MAJOR/MINOR, one-line fix each."
+            },
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 2000,
+              "angle": "L5 meta-consistency-of-the-critique: attacks the critique for double-counting, overreach, and whether its reformulation would discard the proven-under-conditions result",
+              "initial_prompt": "See parent dispatch: meta lens; collapse the 20 points to the minimal distinct-defect set; find double-counting/overreach/internal collisions; state precisely what the reformulation would wrongly discard (the seam Bregman/Amari theorem)."
+            }
+          ]
+        },
+        {
+          "group_id": "adjudicate-design",
+          "n": 2,
+          "anti_bias": "for the pipeline/citation change-set: surgical-minimal edit (preserve intent, rename only) vs structural fix (the contradiction is real and needs a new mechanism)",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "synthesizer",
+              "model": "claude-opus-4-8",
+              "token_budget": 3000,
+              "angle": "minimalist: the pipeline points are mostly wording/label fixes; resist adding unbuilt machinery",
+              "initial_prompt": "From the attackers' surviving pipeline findings (C6,C7,C8,C9,C10,C11,C14,C19,C20) produce the smallest honest change-set that removes the contradictions without inventing unbuilt mechanisms; mark what stays PENDING/open."
+            },
+            {
+              "agent_name": null,
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 3000,
+              "angle": "structuralist: nominal renames leave the contradiction; demand the doc state the missing distinction (producer-blind, claim-class citation policy, work/version id, two budgets)",
+              "initial_prompt": "Attack the minimalist change-set: where a rename hides a real gap, demand the doc name the missing distinction explicitly, as an open question if unbuilt. Converge with the minimalist via robot-talks."
+            }
+          ]
+        },
+        {
+          "group_id": "adjudicate-formal",
+          "n": 2,
+          "anti_bias": "for the statistical/formal change-set: the decomposition is real-under-conditions and must be defended vs the labels overclaim and must be downgraded to honest status",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "synthesizer",
+              "model": "claude-opus-4-8",
+              "token_budget": 3000,
+              "angle": "defender: the seam Bregman/Amari result is proven-under-conditions; keep it, fix only the status labels and the covariance framing",
+              "initial_prompt": "From the attackers' surviving statistical/formal findings (C1,C2,C3,C4,C5,C13,C15,C16,C17,C18) produce the change-set that reframes tension-vs-independence as decorrelation/covariance, fixes winner's curse and the ex-post comparator, and corrects status labels WITHOUT discarding the proven-under-conditions Bregman result."
+            },
+            {
+              "agent_name": null,
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 3000,
+              "angle": "downgrader: 'operational'/'survived once' lie; the CT layer is information geometry not categorical; demand honest status and the weaker expected-loss core",
+              "initial_prompt": "Attack the defender's change-set: force honest status lines ('candidate mapping, formally unconstructed and under challenge'), and adjudicate whether the core statement should adopt the weaker expected-loss framing. Converge with the defender via robot-talks; zig-zag with adjudicate-design on shared points (C1/C15 external-target)."
+            }
+          ]
+        },
+        {
+          "group_id": "editors",
+          "n": 2,
+          "anti_bias": "edit scope: statistical/formal sections vs pipeline/citation sections (disjoint ownership to avoid edit conflict on one file)",
+          "robot_talks": false,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-opus-4-8",
+              "token_budget": 4000,
+              "angle": "owns the statistical/formal edits (Opening, central thesis, Revisions, CT table row, BET-CT, BET-√N, OQ-9/10)",
+              "initial_prompt": "Apply the approved formal change-set to anti-noise-orchestration.md: reframe bias-vs-independence via covariance, correct status labels, fix BET-√N comparator; return exact edits made."
+            },
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-opus-4-8",
+              "token_budget": 4000,
+              "angle": "owns the pipeline/citation edits (diagram/adjustments, source-blind, fork-guard table rows, citation spine, OQ-1/2/4/5/7)",
+              "initial_prompt": "Apply the approved pipeline change-set to anti-noise-orchestration.md: ETE labeling, producer-blind rename, compressor typed-deltas, two-budget, fork-guard status, claim-class citation policy, work/version id; return exact edits made."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewers",
+          "n": 2,
+          "anti_bias": "over-correction (the edits threw away a real result / added unbuilt claims) vs under-correction (a contradiction survived the edit)",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 2500,
+              "angle": "over-correction guard: check no proven-under-conditions result was demoted and no new unbuilt claim was asserted as done",
+              "initial_prompt": "Red-team the edited anti-noise-orchestration.md for over-correction: lost nuance, demoted real results, PENDING items now falsely asserted; quote the edited lines."
+            },
+            {
+              "agent_name": null,
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 2500,
+              "angle": "under-correction guard: check every surviving critique point was actually resolved and no status label still lies",
+              "initial_prompt": "Red-team the edited anti-noise-orchestration.md for under-correction: any surviving critique-point still unaddressed, any label still contradicting an OQ; quote the edited lines."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "attackers",
+          "to": "adjudicate-design",
+          "type": "sequential"
+        },
+        {
+          "from": "attackers",
+          "to": "adjudicate-formal",
+          "type": "sequential"
+        },
+        {
+          "from": "adjudicate-design",
+          "to": "adjudicate-formal",
+          "type": "zig-zag",
+          "loop_cap": 3
+        },
+        {
+          "from": "adjudicate-design",
+          "to": "editors",
+          "type": "sequential"
+        },
+        {
+          "from": "adjudicate-formal",
+          "to": "editors",
+          "type": "sequential"
+        },
+        {
+          "from": "editors",
+          "to": "reviewers",
+          "type": "sequential"
+        },
+        {
+          "from": "reviewers",
+          "to": "editors",
+          "type": "feedback",
+          "loop_cap": 2
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 15,
+          "tree": {
+            "explorer": 5,
+            "synthesizer": 2,
+            "skeptic": 4,
+            "writer": 3,
+            "auditor": 1,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "Fix-editor (Stage 4 feedback): apply 6 reviewer-surfaced consistency fixes — residual source-blind at A1 text, the surviving 'sqrtN only holds with independence' table cell, define the ✻ glyph, place the ⊕-licensed-by-F caveat at first recurrence, annotate stale OQ-9, and add the claim-class pointer to the main-text 'suspect'."
+        ]
+      },
+      "_score": 92.43
+    },
+    {
+      "dispatch_id": "2026-07-22-agents-protocol-readme-update-review",
+      "dispatch_type": "review",
+      "created": "2026-07-22T18:42:09.294Z",
+      "goal": "Red-team review das alterações feitas no README agents-communication-protocols, verificando fidelidade às decisões humanas, coerência interna e compatibilidade com autoridades e mecanismos reais do repositório.",
+      "context": "O alvo primário é o diff e o documento completo docs/features/agents-communication-infra/discovery/agents-communication-protocols/README.md. As decisões humanas confirmadas são protocolo obrigatório, persistido e imutável por revisão da skill; o orquestrador consome o protocolo; parâmetros vêm do usuário ou são inferidos por complexidade; skill_id e digest transitivo detectam mudança; o protocolo decompõe tarefas, workers, reviewers e gates. Os atacantes cobrem o documento inteiro, sem partição de targets.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": null,
+      "groups": [
+        {
+          "group_id": "attackers",
+          "n": 2,
+          "anti_bias": "composite methodology + source-corpus + attack-vector",
+          "robot_talks": false,
+          "agents": [
+            {
+              "agent_name": "Liskov, Barbara",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3500,
+              "angle": "formal requirements-traceability and definitional/scope attack over the confirmed human invariants, the full README and its diff; tests omissions, contradictions, ambiguity and whether mandatory semantics survived the edit",
+              "initial_prompt": "Read the full target README and its git diff. Build a trace from each confirmed human invariant to the edited artifact, then attack internal consistency, definitions, scope, lifecycle, authority and missing semantics. Read-only. Cover the entire README. Every candidate finding must quote the target, cite exact lines, classify severity and propose a one-line fix. Report sections attacked without findings."
+            },
+            {
+              "agent_name": "Wirth, Niklaus",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3500,
+              "angle": "empirical repository and counterexample/operability attack over SPEC, skills, schemas, gates, file layout and current implementation; tests whether new claims fit existing authority and can be operationalized",
+              "initial_prompt": "Read the full target README and its git diff. Attack every new or changed claim against the actual SPEC, skills, schemas, gates, implementation and repository layout. Search for counterexamples, authority conflicts, impossible lifecycles, undefined identifiers and non-operational requirements. Read-only. Cover the entire README. Every candidate finding must quote the target and cite exact repo lines, classify severity and propose a one-line fix. Report sections attacked without findings."
+            }
+          ]
+        },
+        {
+          "group_id": "synthesizer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Brooks, Frederick P.",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3500,
+              "angle": null,
+              "initial_prompt": "Synthesize attacker returns into candidate verified change requests. Deduplicate, separate internal inconsistencies from repo mismatches, preserve requirement traceability, and retain only claims with literal target quotes and exact repo evidence. Read-only; do not write review.md."
+            }
+          ]
+        },
+        {
+          "group_id": "verifiers",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Popper, Karl",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3000,
+              "angle": null,
+              "initial_prompt": "Try to refute every synthesized finding against the literal target, confirmed intent and actual repository. Drop refuted findings rather than softening them. Correct evidence and severity for survivors. Read-only."
+            }
+          ]
+        },
+        {
+          "group_id": "coverage",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Meyer, Bertrand",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1800,
+              "angle": null,
+              "initial_prompt": "Audit full-section coverage under both lenses, confirm every survivor quotes the target and no refuted finding remains, and author the Coverage section. Read-only."
+            }
+          ]
+        },
+        {
+          "group_id": "final_approval",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Parnas, David",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Act only as dedicated final approver. Accept or reject the final verified change-request list after checking evidence discipline, refuted-finding removal and coverage. Do no other dispatch work."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "attackers",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "synthesizer",
+          "to": "verifiers",
+          "type": "zig-zag",
+          "loop_cap": 2
+        },
+        {
+          "from": "verifiers",
+          "to": "coverage",
+          "type": "sequential"
+        },
+        {
+          "from": "coverage",
+          "to": "final_approval",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 6,
+          "tree": {
+            "explorer": 2,
+            "writer": 1,
+            "skeptic": 1,
+            "auditor": 2,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": null
+      },
+      "_score": 51.09
+    },
+    {
+      "dispatch_id": "2026-07-23-assay-forward-research",
+      "dispatch_type": "research",
+      "created": "2026-07-23T05:41:23.664Z",
+      "goal": "Resolve the Assay probe's ranked forward questions: is L(unit|corpus) already owned by LLMLingua/LongLLMLingua (wrap vs build for Column B), where is the behavioral-equivalence eval gap, and are the in-repo assets ready for the S0 gzip-only prolixity audit (skills segment? composed-spell duplication real? dispatch.yaml replayable?).",
+      "context": "internal-tools/research/document-information-estimator holds a committed pre-PoC brief (README) + probe (initial-considerations.md). Assay = one engine marginal_information(unit|corpus); first use case = prolixity of our own system, gzip-first, LM only if it beats gzip, P-GUARD mandatory. This executes the probe's §6 research map: Track 1 external prior art vs Track 2 in-repo asset audit. Read-only; output feeds the build ladder S0-S2 and forks F1-F4. Delta>0-on-private-content and the LM-vs-gzip bake-off are OUT of scope (build-time; no logprob server exists yet).",
+      "anti_bias_global": "adopt-what-exists optimism vs prove-it-on-our-own-corpus / build-the-gap skepticism",
+      "max_loops": 2,
+      "working_folder": "internal-tools/research/document-information-estimator/forward-research/",
+      "groups": [
+        {
+          "group_id": "explorers",
+          "n": 3,
+          "anti_bias": "source-corpus x methodology (declared composite)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Xiao, Guangxuan",
+              "role": "explorer",
+              "model": "claude-sonnet-4-6",
+              "token_budget": 1000,
+              "angle": "external ML / prompt-compression corpus — operator-ownership: does LongLLMLingua already implement L(unit|corpus) well enough to WRAP vs build?",
+              "initial_prompt": "You are an explorer in research dispatch 2026-07-23-assay-forward-research (Assay = document-information-estimator; one engine marginal_information(unit|corpus); first use case = prolixity of our own instruction system, gzip-first). Your corpus: external ML / prompt-compression literature and tools. Your angle: operator-ownership — does LLMLingua / LongLLMLingua (Microsoft) already implement L(unit|corpus) = per-token perplexity of a unit conditioned on a corpus, well enough that Assay's Column B is a WRAP not a build? LongLLMLingua's 'perplexity of the question conditioned on documents' is the claim to verify. Also sweep instruction-redundancy-for-LLM-agents prior art. Return, with citations: (a) the strongest owner candidate for L(unit|corpus) and how completely it covers our primitive; (b) a wrap-vs-build verdict with the specific gap that would force a build; (c) any instruction-redundancy prior art. Precedent-first: finding an owner is a WIN (build-from-owned), not a kill. Read-only; write nothing outside internal-tools/research/document-information-estimator/forward-research/. Budget ~1000 tokens."
+            },
+            {
+              "agent_name": "Liu, Nelson",
+              "role": "explorer",
+              "model": "claude-sonnet-4-6",
+              "token_budget": 1000,
+              "angle": "external NLP / faithfulness corpus — is behavioral-equivalence eval of compressed prompts owned or our contribution gap?",
+              "initial_prompt": "You are an explorer in research dispatch 2026-07-23-assay-forward-research. Your corpus: external NLP / faithfulness / evaluation literature. Your angle: does anyone own the BEHAVIORAL-EQUIVALENCE evaluation of compressed/trimmed prompts — not 'benchmark score preserved' but 'same tool choices, same gate outcomes, same agent trajectory' after compression? The Assay probe claims this is the weakest-covered thread externally and likely our contribution. Return, with citations: (a) SOTA for faithfulness / behavioral-equivalence eval of compressed prompts and instruction-following preservation; (b) whether it is owned or a genuine gap — name the closest owner and exactly what it does NOT cover (agent-trajectory equivalence); (c) any independent statement of the P-GUARD idea (tighten safety constraints as the prompt shrinks). Precedent-first: a found owner is build-from-owned, not a kill. Read-only; write nothing outside internal-tools/research/document-information-estimator/forward-research/. Budget ~1000 tokens."
+            },
+            {
+              "agent_name": "Shannon, Claude",
+              "role": "explorer",
+              "model": "claude-sonnet-4-6",
+              "token_budget": 1100,
+              "angle": "in-repo empirical measurement — is the repo ready for the S0 gzip-only prolixity audit (segmentation, composed-spell duplication ground-truth, replayability, store status, logprob harness)?",
+              "initial_prompt": "You are an explorer in research dispatch 2026-07-23-assay-forward-research. Your corpus: THIS repo (in-repo empirical measurement, not literature). Your angle: is the repo ready for Assay's S0 gzip-only prolixity audit? Measure/verify using Read/Grep/Glob (Bash is hook-blocked for the ledger): (a) do the ~66 .claude/skills/*/SKILL.md segment into scorable units? give counts/sizes; (b) do composed spells (paired-views, repository-harness) contain MEASURABLE duplication of their components' prose — the built-in ground-truth redundancy case? show evidence; (c) is telemetry/agents/subagents-dispatch.yaml replayable as a behavioral task set (rows carry goal/context/groups/role/angle/gate outcomes)? ~how many rows; (d) is the vault/hypothesis claim-graph (HYP-CLAIM-GRAPH) still a hypothesis doc, not a queryable store? (e) is there an existing logprob harness anywhere, or is tools/agent-pool-mcp the pattern to reuse for shipping Assay as a repo-local MCP? Do NOT run any LM. Report gzip-separation feasibility only to the extent stdlib reasoning allows. Read-only; write nothing outside internal-tools/research/document-information-estimator/forward-research/. Budget ~1100 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "synthesizer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "writer",
+              "model": "claude-opus-4-8",
+              "token_budget": 2800,
+              "angle": null,
+              "initial_prompt": "You are the writer/synthesizer in research dispatch 2026-07-23-assay-forward-research. Draft internal-tools/research/document-information-estimator/forward-research/findings.md from the three explorers' collected returns (also write research.md with their verbatim returns). Produce the verdict matrix (candidate | owner/precedent | witnessed? | sound? | verdict | use-mode) over the candidates: (1) adopt-vs-build LongLLMLingua for Column B; (2) behavioral-equivalence eval — owned or our gap; (3) repo-asset readiness for S0. Every load-bearing claim CITES the collected return it rests on (P10 claim <= proof; keystone claims carry their inline collapse-test). Explicitly flag Delta>0-on-private-content and the LM-vs-gzip bake-off as BUILD-TIME obligations (S3/S4), out of this dispatch's scope. Close with the one-line answer to the goal. Budget ~2800 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewers",
+          "n": 2,
+          "anti_bias": "attack-vector (skeptic gate)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Tetlock, Philip",
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 1200,
+              "angle": "precedent gate — ownership attribution + calibration of the LongLLMLingua owner-claim",
+              "initial_prompt": "You are a skeptic in research dispatch 2026-07-23-assay-forward-research, running the PRECEDENT gate only. Attack the synthesizer's findings on ownership attribution: who actually owns L(unit|corpus) and the behavioral-equivalence eval? Find the OWNER, not just 'something similar'; calibrate the LongLLMLingua owner-claim (is the coverage as complete as claimed?). Finding an owner is NOT a kill — it relabels the candidate build-from-owned (owner exists, repo doesn't yet deploy) or already-deployed; an empty search certifies precedent-clean -> novel-attempt. Never emit a terminal KILL from this gate. If you surface owner-siblings or papers the explorers missed, state them as the feedback to send back to explorers. Read-only; write nothing outside the working_folder. Budget ~1200 tokens."
+            },
+            {
+              "agent_name": "Gigerenzer, Gerd",
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 1200,
+              "angle": "definitional-soundness gate — does Assay collapse to re-skinned LongLLMLingua + gzip once the falsifier is stripped?",
+              "initial_prompt": "You are a skeptic in research dispatch 2026-07-23-assay-forward-research, running the DEFINITIONAL-SOUNDNESS gate only. Attack whether Assay collapses to something already named, re-skinned. Procedure: subtract LongLLMLingua's perplexity-pruning AND gzip's frugal baseline from Assay's proposed contribution; is the RESIDUE non-empty? The claimed residue is: the behavioral-equivalence-on-instructions falsifier + the P-GUARD genre-guard (low-surprisal != cuttable for instructions) + the relative-to-self-corpus reading. Collapse-test, state it inline: 'strip the behavioral falsifier and Assay == LongLLMLingua perplexity-pruning.' Verdict: sound (residue non-empty — name it) or tautological/re-skin (terminal KILL as a typed negative — what it would have contributed + the exact fact that zeroed it). Read-only; write nothing outside the working_folder. Budget ~1200 tokens."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "explorers",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "synthesizer",
+          "to": "reviewers",
+          "type": "zig-zag",
+          "loop_cap": 1
+        },
+        {
+          "from": "reviewers",
+          "to": "explorers",
+          "type": "feedback",
+          "loop_cap": 1
+        }
+      ],
+      "close": null,
+      "_score": 44.26
+    },
+    {
+      "dispatch_id": "2026-07-21-roadmap-build-order",
+      "dispatch_type": "research",
+      "created": "2026-07-21T05:36:48.314Z",
+      "goal": "Produce the best-possible ordered BUILD roadmap for PLAN.md — what to build and in what order, with dependencies and done-criteria — via two opposed drafters, a synthesizer, two opposed reviewers, and a dedicated final approver who can veto and force a revision round.",
+      "context": "ROADMAP is not the BACKLOG: BACKLOG.md parks named-but-unplanned candidates; the ROADMAP must state what to build and in what order, dependency-aware. The repo is a T0-loop epistemology engine with three faces (decision / categorical / engineering) and a missing provenance spine (BL-3). Two opposed sequencing priors are drafted, synthesized into one ordered roadmap, adversarially reviewed on two orthogonal lenses, then judged by a final approver; rejection triggers a revision loop. Outputs feed PLAN.md §7.",
+      "anti_bias_global": "sequencing prior — maximize-unblock/throughput vs. falsify-biggest-existential-risk-first; and review lens — feasibility/dependencies vs. honesty/precision",
+      "max_loops": 3,
+      "working_folder": "research/roadmap-build-order/",
+      "groups": [
+        {
+          "group_id": "drafters",
+          "n": 2,
+          "anti_bias": "sequencing prior — maximize-unblock/dependency-critical-path vs. falsify-biggest-existential-risk-first",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 2000,
+              "angle": "maximize-unblock / dependency-critical-path — order by what unblocks the most downstream work first",
+              "initial_prompt": "Read the repo at c:/Users/victo/cyberalchemy-orchestrator (PLAN.md, OBLIGATIONS.md, BACKLOG.md, vault/, implementations/). Produce an ORDERED BUILD ROADMAP (what to build, in what order). CONTEXT: the repo is a T0-loop epistemology engine (claim->probe->keep->enrich, NOT yet built) with three faces (decision-science HYP-ORCH-NOISE / categorical OBL-E3 / engineering ledger+control-plane) tied only if a provenance spine exists — that spine is ABSENT and named BL-3 (typed enrich/supersede ledger). RUNS TODAY: control-plane Phase 1 (read-only FastAPI+SSE, 10 UIs, tested), agent-pool MCP, dispatch discipline; Phase-2 write button disabled. BLOCKERS: enum-drift (two 2026-07-18 close rows bypassed the validated appender -> holds EG-1 at veracity:medium, BLOCKS Phase 2); OBL-E3 sub-3 (dischargeable NOW in sibling Lean repo per brief ../domainspec-lean-formalization/TO-ME/oble3-synthesis-as-second-residue-instance/); BL-3 (pivot unlock); portability hardwired to C:/Users/victo; cheap fixes (TO-ME citation prefix, verify sibling Lean build-gate). YOUR SEQUENCING PRIOR: maximize-unblock — treat the engine/infra critical path (enum-drift -> EG-1 restored -> Phase 2 -> BL-3 -> mechanized loop) as spine because BL-3 unlocks four things at once; put cheapest highest-leverage unblockers first. For each item give: id, what gets built (concrete artifact/endpoint/decl), testable done-criterion, dependencies, collapse/abort condition. Keep claim<=proof: never turn a candidate thesis into a settled build step; mark BUILD vs PROOF items. CRITICAL: ROADMAP != BACKLOG — select and sequence, don't dump the backlog. Return clean Markdown for PLAN.md + 3-sentence rationale for your ordering. Budget ~2000 tokens."
+            },
+            {
+              "agent_name": null,
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 2000,
+              "angle": "falsify-biggest-existential-risk-first — order by what most cheaply kills the whole premise if it is wrong",
+              "initial_prompt": "Read the repo at c:/Users/victo/cyberalchemy-orchestrator (PLAN.md, OBLIGATIONS.md, BACKLOG.md, vault/, implementations/). Produce an ORDERED BUILD ROADMAP (what to build, in what order). CONTEXT: the repo is a T0-loop epistemology engine (claim->probe->keep->enrich, NOT yet built) with three faces (decision-science HYP-ORCH-NOISE / categorical OBL-E3 / engineering ledger+control-plane) tied only if a provenance spine exists — that spine is ABSENT and named BL-3 (typed enrich/supersede ledger). RUNS TODAY: control-plane Phase 1 (read-only), agent-pool MCP, dispatch discipline; Phase-2 write button disabled. RISKS: (1) the categorical face may be METAPHOR — OBL-E3 asks if the orchestration language is a category ORCH; if zig-zag/feedback don't compose or synthesis-residue is count-shaped, a third of the thesis collapses; it is dischargeable NOW (sibling Lean brief ../domainspec-lean-formalization/TO-ME/oble3-synthesis-as-second-residue-instance/) independent of infra. (2) ledger integrity — the enum-drift proves the validated write path was BYPASSED (holds EG-1 at veracity:medium); if the substrate isn't actually append-only-safe, every 'auditable' claim is hollow. (3) framework-self-similarity is already FALSIFIED at current design (no close row enriches C). YOUR SEQUENCING PRIOR: falsify-biggest-existential-risk-first — sequence to resolve the largest veracity/existential risks (OBL-E3 sub-3, enum-drift reproduction) BEFORE investing in build-out; a cheap experiment that could collapse the premise outranks a feature. For each item give: id, what gets built/tested, testable done-criterion, dependencies, collapse/abort condition. Keep claim<=proof; mark BUILD vs PROOF items. CRITICAL: ROADMAP != BACKLOG — select and sequence. Return clean Markdown for PLAN.md + 3-sentence rationale. Budget ~2000 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "synthesizer",
+          "n": null,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "synthesizer",
+              "model": "claude-opus-4-8",
+              "token_budget": 2800,
+              "angle": "reconcile the two opposed roadmaps into one ordered build plan",
+              "initial_prompt": "You will receive two ordered BUILD roadmaps for the repo c:/Users/victo/cyberalchemy-orchestrator, drafted under opposed sequencing priors (maximize-unblock vs. falsify-biggest-existential-risk-first). Reconcile them into ONE ordered build roadmap for PLAN.md §7. Requirements: (a) ROADMAP != BACKLOG — an ordered, dependency-aware BUILD plan, not a candidate dump; cross-reference BACKLOG.md as the distinct parking lot. (b) Recognize the two tracks are partly parallel (engine/infra vs. thesis/CT proof) and say which items are on the critical path vs. parallelizable. (c) Every item: id, what gets built (concrete), testable done-criterion, dependencies (by id), collapse/abort condition, and BUILD-vs-PROOF tag. (d) Keep claim<=proof; do not smuggle a candidate thesis in as a settled build step. (e) Where the two drafts disagree on order, decide and give a one-line reason. Return clean Markdown ready to drop into PLAN.md + a short 'why this order' rationale. Budget ~2800 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewers",
+          "n": 2,
+          "anti_bias": "review lens — feasibility/dependencies (is it buildable and correctly ordered?) vs. honesty/precision (claim<=proof, ROADMAP!=BACKLOG, testable done-criteria)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 1600,
+              "angle": "feasibility & dependencies — is each item buildable, are dependencies correct/complete, is the order executable, any hidden blocker?",
+              "initial_prompt": "Review the synthesized ordered BUILD roadmap (provided) against the real repo at c:/Users/victo/cyberalchemy-orchestrator. LENS: feasibility & dependencies. Check: is each item actually buildable as stated; are its dependencies correct and complete (no missing prerequisite, no false dependency); is the ordering executable end-to-end; is any hidden blocker glossed over (e.g. the enum-drift gating Phase 2, the sibling-repo Lean toolchain, the AgentOut anti-toy gate for OBL-E3)? Cite specific files/anchors. Return a PASS/FAIL verdict plus a concrete list of required fixes (each actionable). Budget ~1600 tokens."
+            },
+            {
+              "agent_name": null,
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 1600,
+              "angle": "honesty & precision (claim<=proof) — overclaim check, ROADMAP!=BACKLOG boundary, testable done-criteria, no metaphor-as-milestone",
+              "initial_prompt": "Review the synthesized ordered BUILD roadmap (provided) against the real repo at c:/Users/victo/cyberalchemy-orchestrator. LENS: honesty & precision under claim<=proof. Check: is the ROADMAP!=BACKLOG boundary clean (no parking-lot dump); is any candidate/thesis smuggled in as a settled build step (e.g. treating OBL-E3 as 'done' rather than a proof attempt with a collapse-test); does every item carry a precise, testable done-criterion; any overclaim or metaphor dressed as a milestone; are BUILD vs PROOF items honestly separated? Return a PASS/FAIL verdict plus a concrete list of required fixes (each actionable). Budget ~1600 tokens."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "drafters",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "synthesizer",
+          "to": "reviewers",
+          "type": "sequential"
+        },
+        {
+          "from": "reviewers",
+          "to": "synthesizer",
+          "type": "zig-zag",
+          "loop_cap": 2
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 6,
+          "tree": {
+            "explorer": 2,
+            "synthesizer": 1,
+            "skeptic": 2,
+            "writer": 0,
+            "auditor": 1,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "Reviewers (feasibility): FT-1 cites the wrong validator (exit_reason is gated by validateClose:242, not validateDispatch); FT-1 outcome-set omits the older-appender/hook-off branch; B-1 'zero out-of-enum rows' unreachable on an append-only ledger; B-2's Monitor-wakes-Claude is not a wired primitive; D-1->B-1 is a false dependency.",
+          "Reviewers (honesty): P-1 under-gates fractality (needs full OBL-E3 composition adjudication, not just FT-2); P-1 abort too weak; TR-1/TR-2 lack done-criteria; 'only BL-3 graduated' overstates; B-1 references a non-existent guard artifact and silently grandfathers the two rows.",
+          "Final approver (Lakatos) REJECT of v2: B-1 smuggled FT-1 outcome (i) as settled ('hook existed and was bypassed') and inherited the validateDispatch->validateClose mis-anchor — rewrite B-1 conditional on FT-1 and fold the mis-anchor correction into its done-criteria. v3 ACCEPTED."
+        ]
+      },
+      "_score": 41.16
+    },
+    {
+      "dispatch_id": "2026-07-22-agents-communication-protocols-review",
+      "dispatch_type": "review",
+      "created": "2026-07-22T17:41:10.987Z",
+      "goal": "Avaliar criticamente inconsistências internas do README de agents-communication-protocols e divergências verificáveis entre suas afirmações e o restante do repositório.",
+      "context": "O alvo primário é docs/features/agents-communication-infra/discovery/agents-communication-protocols/README.md. O corpus de validação inclui todos os arquivos do repo que o README cita ou pressupõe, mais código, schemas, testes, telemetry e governança necessários para verificar seus claims. Cada atacante lê o README inteiro e pesquisa o corpus inteiro; não há partição de targets.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": null,
+      "groups": [
+        {
+          "group_id": "attackers",
+          "n": 2,
+          "anti_bias": "composite attack-vector + source-corpus",
+          "robot_talks": false,
+          "agents": [
+            {
+              "agent_name": "van Lamsweerde, Axel",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3500,
+              "angle": "governance/reference-integrity attack over constitutions, skills, specs and authoritative docs; checks contradiction, silent extension, dangling ownership and terminology drift",
+              "initial_prompt": "Read the target README in full and attack it through fidelity/governance and ownership/reference-integrity. Search the entire repository for constitutions, skills, specs, authoritative docs, definitions and cited targets needed to verify every candidate. Identify internal contradictions and repo mismatches. Read-only. Every candidate finding must quote the README, cite exact repo paths and lines, assign severity, and propose a one-line fix. Also report sections attacked with no finding. Do not partition the target: cover the whole README."
+            },
+            {
+              "agent_name": "Hewitt, Carl",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3500,
+              "angle": "mechanics/operability attack over runtime code, schemas, hooks, tests and telemetry; checks whether claimed entities, invariants and workflows exist and can execute",
+              "initial_prompt": "Read the target README in full and attack it through mechanics/correctness and operability. Search the entire repository for runtime code, schemas, hooks, tests, telemetry and actual file layout needed to verify every candidate. Identify internal contradictions and claims that do not exist or cannot execute as described. Read-only. Every candidate finding must quote the README, cite exact repo paths and lines, assign severity, and propose a one-line fix. Also report sections attacked with no finding. Do not partition the target: cover the whole README."
+            }
+          ]
+        },
+        {
+          "group_id": "synthesizer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Wiener, Norbert",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3500,
+              "angle": null,
+              "initial_prompt": "Synthesize the two attacker returns into a candidate review. Deduplicate, distinguish internal inconsistencies from repo mismatches, and retain only findings backed by literal quotations and exact file/line evidence. Rank severity under the review taxonomy and include one-line proposed fixes. Do not edit files."
+            }
+          ]
+        },
+        {
+          "group_id": "verifiers",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Meadows, Donella H.",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 3000,
+              "angle": null,
+              "initial_prompt": "Independently verify and try to refute every candidate finding against the literal README and actual repository. Run relevant read-only checks. Drop refuted claims rather than softening them; correct evidence, line citations and severity for survivors. Return a verified list plus explicit refutations. Do not edit files."
+            }
+          ]
+        },
+        {
+          "group_id": "coverage",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Hamming, Richard",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1800,
+              "angle": null,
+              "initial_prompt": "Audit that every README section was attacked under both declared lenses, that no refuted finding survives, and that each surviving finding quotes the target and cites exact repo evidence. Produce the Coverage section and flag material omissions. Do not edit files."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "attackers",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "synthesizer",
+          "to": "verifiers",
+          "type": "zig-zag",
+          "loop_cap": 2
+        },
+        {
+          "from": "verifiers",
+          "to": "coverage",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 5,
+          "tree": {
+            "explorer": 2,
+            "writer": 1,
+            "skeptic": 1,
+            "auditor": 1,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": null
+      },
+      "_score": 39.17
+    },
+    {
+      "dispatch_id": "2026-07-22-bus-contracts-review",
+      "dispatch_type": "review",
+      "created": "2026-07-22T19:36:36.476Z",
+      "goal": "Revisar o discovery bus-contracts e produzir change requests verificadas para inconsistências internas, ambiguidades, pontos pouco claros e contratos frágeis.",
+      "context": "O target é docs/features/agents-communication-infra/discovery/bus-contracts/README.md. Quatro atacantes independentes leem o corpus inteiro por lentes tensionadas; dois skeptics verificam os retornos contra o texto literal. O parent sintetiza somente findings sobreviventes no review.md; atacantes e verificadores são read-only.",
+      "anti_bias_global": "finding generation vs false-positive elimination",
+      "max_loops": 2,
+      "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-22-bus-contracts/",
+      "groups": [
+        {
+          "group_id": "attackers",
+          "n": 4,
+          "anti_bias": "attack-vector: governance fidelity vs mechanics/correctness vs ownership/reference-integrity vs operability/abuse",
+          "robot_talks": false,
+          "agents": [
+            {
+              "agent_name": "Dijkstra, Edsger W.",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1800,
+              "angle": "fidelity/governance: tenta provar que o discovery contradiz decisões do usuário, seu próprio escopo ou autoridades existentes",
+              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md e os documentos locais que ele afirma representar. Ataque somente pela lente fidelity/governance: contradições internas, extensão silenciosa de autoridade, conflito com decisões explícitas do usuário, escopo ou SPEC. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
+            },
+            {
+              "agent_name": "Hoare, C. A. R.",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1800,
+              "angle": "mechanics/correctness: tenta quebrar fluxos de submit/persist/receipt/verify/route/rework e seus estados de falha",
+              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md. Ataque somente pela lente mechanics/correctness: execute mentalmente submit, persistência, receipt, verificação, roteamento, review, rework, retry e falhas; procure estados impossíveis ou subespecificados. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
+            },
+            {
+              "agent_name": "Parnas, David",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1800,
+              "angle": "ownership/reference integrity: tenta encontrar dupla autoridade, conceitos sem dono, referências ausentes e fronteiras bus/journal/artifact/config inconsistentes",
+              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md e verifique referências locais relevantes. Ataque somente pela lente ownership/reference integrity: dupla autoridade, conceitos sem dono, referências incorretas, fronteiras inconsistentes entre bus, journal, artifact store, configuração e repositório. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
+            },
+            {
+              "agent_name": "Liskov, Barbara",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1800,
+              "angle": "operability/abuse: tenta executar e abusar do contrato com payload mínimo, replacement, ACL, worktree sujo e capabilities erradas",
+              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md. Ataque somente pela lente operability/abuse: tente operar e explorar o contrato usando payload mínimo, replacement, paths sobrepostos, worktree sujo, capability errada, spoofing, ausência de destinatário e campos automáticos indisponíveis. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
+            }
+          ]
+        },
+        {
+          "group_id": "verifiers",
+          "n": 2,
+          "anti_bias": "methodology: literal refutation vs adversarial survivability",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Lamport, Leslie",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": "literal refutation: elimina findings que não sejam demonstrados por quote exata ou contradição verificável no artifact",
+              "initial_prompt": "Receba os quatro retornos independentes e releia o target completo. Verifique cada finding contra citação e linha literais; refute falsos positivos, duplicatas e severidade inflada. Não edite arquivos. Retorne apenas findings que sobrevivem, findings refutados com motivo e gaps de cobertura."
+            },
+            {
+              "agent_name": "Brooks, Frederick P.",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": "adversarial survivability: mantém gaps operacionais quando o texto não contém contrato suficiente para refutar o cenário de falha",
+              "initial_prompt": "Receba os quatro retornos independentes e releia o target completo. Tente refutar cada finding, mas preserve omissões load-bearing quando um operador precisaria inventar comportamento; cheque cobertura e severidade. Não edite arquivos. Retorne apenas findings que sobrevivem, findings refutados com motivo e gaps de cobertura."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "attackers",
+          "to": "verifiers",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 6,
+          "tree": {
+            "explorer": 4,
+            "skeptic": 2,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": null
+      },
+      "_score": 32.77
+    },
+    {
+      "dispatch_id": "2026-07-21-close-session-node",
+      "dispatch_type": "review",
+      "created": "2026-07-21T05:07:50.873Z",
+      "goal": "Close the session per the close-session skill: classify the session node (Sonnet) and review it with two independent Sonnet reviewers (frontmatter/classification + body-discipline) before finalizing.",
+      "context": "Session covered the cross-repo reference sweep, the OBL-E3/synthesis-colimit brief authored into the sibling Lean repo, and the doc-correction pass with anchor fixes. This dispatch runs the close-session classification + two-reviewer gate over the assembled node.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": "sessions/",
+      "groups": [
+        {
+          "group_id": "classifier",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 800,
+              "angle": null,
+              "initial_prompt": "Classify the session node per ontology-conventions.md: node_type, tags, layer, nature, expected_importance + rationale, contradiction edges, files touched. Return classification fields only."
+            }
+          ]
+        },
+        {
+          "group_id": "review-frontmatter",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 600,
+              "angle": null,
+              "initial_prompt": "Review the assembled session node's classification + frontmatter against ontology-conventions.md; check well-formedness and the 200-line body cap. Return PASS or concrete problems."
+            }
+          ]
+        },
+        {
+          "group_id": "review-body",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": null,
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 600,
+              "angle": null,
+              "initial_prompt": "Review the assembled session node's body discipline: three forward registers obey the discriminating test + subset rule, Open questions node-less, Recommendation names a license or self-labels, no narration. Return PASS or concrete problems."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "classifier",
+          "to": "review-frontmatter",
+          "type": "sequential"
+        },
+        {
+          "from": "classifier",
+          "to": "review-body",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 5,
+          "tree": {
+            "auditor": 5,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": null
+      },
+      "_score": 31.31
+    }
+  ]
+}
