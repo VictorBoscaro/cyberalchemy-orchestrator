@@ -3,7 +3,7 @@
 window.__DISPATCHES__ = {
   "generated_from": "telemetry/agents/subagents-dispatch.yaml",
   "selection": "structured dispatches (>=2 agents OR reviewer/skeptic/auditor OR connections) AND every agent has a name",
-  "total_structured_found": 8,
+  "total_structured_found": 9,
   "corpus_size": 8,
   "dispatches": [
     {
@@ -466,6 +466,82 @@ window.__DISPATCHES__ = {
       "_score": 27.77
     },
     {
+      "dispatch_id": "2026-07-23-assay-discovery",
+      "dispatch_type": "research",
+      "created": "2026-07-23T06:32:12.039Z",
+      "goal": "Author the Assay discovery, concrete enough that the first functional build (S0 gzip-only prolixity audit over .claude/skills) can be implemented directly WITHOUT a spec, while faithfully carrying the closed research verdict (honest contribution = one object + P-GUARD hypothesis; self-corpus prolixity = re-skin/application).",
+      "context": "Follow-on to 2026-07-23-assay-forward-research (closed resolved). The discovery-orchestrator planned this but its runtime lacked Write/Task, so the parent executes the CDP it designed. Writer authors the discovery; two tensioned reviewers attack it on definitional-fidelity vs spec-readiness. Owner decision: no spec for the throwaway functional test; specs come later on expansion.",
+      "anti_bias_global": null,
+      "max_loops": 2,
+      "working_folder": "internal-tools/research/document-information-estimator/discovery/",
+      "groups": [
+        {
+          "group_id": "writer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Shannon, Claude",
+              "role": "writer",
+              "model": "claude-opus-4-8",
+              "token_budget": 4000,
+              "angle": null,
+              "initial_prompt": "Author internal-tools/research/document-information-estimator/discovery/assay-discovery.md for the Assay tool. First invoke the discovery-writing skill and follow its structure. Read the three authoritative sources: internal-tools/research/document-information-estimator/README.md, initial-considerations.md, and forward-research/findings.md (the closed verdict — anchor on it, do NOT re-litigate). Honor the verdict exactly: kernel L(unit|corpus) = build-from-owned (wrap llmlingua get_ppl(condition_mode='after')); honest contribution = ONE object (behavioral-equivalence-on-instructions) + P-GUARD as a falsifiable novel-attempt hypothesis; 'self-corpus prolixity' is a re-skin APPLICATION of owned kernel+gzip, NOT a distinct measurement object (do not re-inflate it); first functional build = S0 gzip-only. Make the S0 section concrete enough to build with no spec: Units = one per .claude/skills/*/SKILL.md, file-tier, body = text after the closing --- of YAML frontmatter (strip and record frontmatter). Corpus = concatenation of the OTHER unit bodies used as a gzip preset-dictionary context. Metric = ConditionedGzipRatio B = (len(gzip(corpus+unit)) - len(gzip(corpus))) / len(unit_bytes); report Column A = raw gzip ratio, B, and Delta = A-B as THREE separate columns, never blended; rank ascending by B (rate, never total). P-GUARD = flag any unit that is a near-duplicate of >=2 distinct other units as PROTECTED ('possibly deliberate repetition', never top-cut); MinLengthFloor ~100 tokens (short units reported, not ranked). Output = RankedRedundancyMap: unit_path, n_bytes, A, B, Delta, merge_partner, protected_flag, verdict_hint{cut|merge|tighten|keep|protected|below-floor} - a review signal, never an autocut. Acceptance test = with README bodies also in the corpus, the body-identical SKILL<->README pairs must score B~=0 and top the map (ground truth: as of 2026-07-23, 13/48 body-identical pairs; 69 SKILL.md total - COMPUTE at build time, do not hardcode). Mark the LM kernel and the behavioral-equivalence falsifier as explicitly LATER rungs (S2/S3, S5), not S0. Carry the open forks F1-F4 from the probe. Write the file, then return a ~200-token summary (do not paste the whole file)."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewers",
+          "n": 2,
+          "anti_bias": "attack-vector (review lens): definitional-fidelity vs spec-readiness",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Gigerenzer, Gerd",
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 1400,
+              "angle": "definitional-fidelity lens — attacks any re-inflation of demoted claims",
+              "initial_prompt": "Review internal-tools/research/document-information-estimator/discovery/assay-discovery.md on the DEFINITIONAL-FIDELITY lens ONLY. Does it faithfully carry forward-research/findings.md's honest contribution WITHOUT re-inflating? Check specifically: (1) is 'self-corpus prolixity' framed as a re-skin APPLICATION, not a distinct novel measurement object? (2) is the contribution stated as ONE object (behavioral-equivalence-on-instructions) + P-GUARD as a falsifiable hypothesis, not more? (3) does S0 claim only what gzip-only can prove, not implied broader validation? (4) is the kernel labeled build-from-owned (not novel)? Flag every overclaim with the exact line. This is a persisted review; write nothing outside the working_folder. Return ~1400 tokens: PASS or a numbered list of fidelity violations + fixes."
+            },
+            {
+              "agent_name": "van Lamsweerde, Axel",
+              "role": "skeptic",
+              "model": "claude-opus-4-8",
+              "token_budget": 1400,
+              "angle": "spec-readiness / implementability lens — attacks under-specification that blocks building S0",
+              "initial_prompt": "Review internal-tools/research/document-information-estimator/discovery/assay-discovery.md on the SPEC-READINESS / IMPLEMENTABILITY lens ONLY. Could a competent engineer build S0 directly from this with NO spec? Check every pin is present and unambiguous: unit definition + frontmatter-stripping rule; corpus assembly (preset-dictionary); the ConditionedGzipRatio B formula (exact); the three-column A/B/Delta rule; ranking direction; P-GUARD protected-set rule (>=2 distinct near-dupes) + near-duplicate criterion; MinLengthFloor; the RankedRedundancyMap output fields; the ground-truth acceptance test (body-identical pairs score B~=0). Flag every build-blocking gap or ambiguity with the exact missing decision. Do NOT add specifics not licensed by findings.md - if a needed decision is genuinely unspecified, say so as an open decision, don't invent it. This is a persisted review; write nothing outside the working_folder. Return ~1400 tokens: BUILDABLE or a numbered list of build-blocking gaps."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "writer",
+          "to": "reviewers",
+          "type": "zig-zag",
+          "loop_cap": 1
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 5,
+          "tree": {
+            "writer": 1,
+            "skeptic": 2,
+            "helpers": 2
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "Zig-zag revision (loop_cap 1), applied by final_approver: GAP-A add TIGHTEN_DELTA_TAU (default 0.10) so verdict_hint 'tighten' is deterministic; GAP-B restate the S0 acceptance gate on the window-safe pair_B (Assertion 1) and demote full-corpus B to diagnostic (Assertion 1b) to resolve the 32KB-LZ77-window vs path-sort collision; fidelity advisory: cite findings' 12/48-over-66 as source of record, harness recomputes at build time."
+        ]
+      },
+      "_score": 24.09
+    },
+    {
       "dispatch_id": "2026-07-20-hyp-orch-noise-redteam",
       "dispatch_type": "review",
       "created": "2026-07-20T23:07:18.829Z",
@@ -631,56 +707,6 @@ window.__DISPATCHES__ = {
         "feedback_prompts": null
       },
       "_score": 7.67
-    },
-    {
-      "dispatch_id": "2026-07-22-bus-contracts-post-remediation-review",
-      "dispatch_type": "review",
-      "created": "2026-07-22T19:52:14.657Z",
-      "goal": "Verificar se as remediações do bus-contracts atendem às change requests sem regressões e se o documento remediado permanece operável como contrato autônomo.",
-      "context": "O target é docs/features/agents-communication-infra/discovery/bus-contracts/README.md após a primeira revisão e remediação. Um agente audita rastreabilidade contra o review anterior e outro executa ataque clean-room de operabilidade; ambos são independentes e read-only. O parent verifica citações e persiste somente o review.md final.",
-      "anti_bias_global": null,
-      "max_loops": 1,
-      "working_folder": "docs/features/agents-communication-infra/discovery/bus-contracts/review/",
-      "groups": [
-        {
-          "group_id": "post_reviewers",
-          "n": 2,
-          "anti_bias": "attack-vector: remediation traceability vs clean-room operability",
-          "robot_talks": false,
-          "agents": [
-            {
-              "agent_name": "Fowler, Martin",
-              "role": "explorer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 2200,
-              "angle": "remediation traceability: compara cada change request com a versão remediada, procurando omissão, correção parcial ou regressão documental",
-              "initial_prompt": "Leia a skill de review, o review anterior e o target remediado completos. Verifique cada uma das 18 change requests contra evidência textual atual e ataque regressões introduzidas pela remediação. Não edite arquivos. Retorne findings com arquivo, linha, quote, severidade e fix, mais uma matriz remediado/parcial/aberto/refutado."
-            },
-            {
-              "agent_name": "Booch, Grady",
-              "role": "explorer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 2200,
-              "angle": "clean-room operability: ignora a intenção da remediação e tenta operar/quebrar o documento revisado como contrato autônomo",
-              "initial_prompt": "Leia a skill de review e o target remediado completo sem confiar na intenção do review anterior. Tente executar e quebrar o contrato ponta a ponta, distinguindo perguntas deliberadamente abertas de omissões load-bearing. Não edite arquivos. Retorne somente findings verificáveis com arquivo, linha, quote, severidade e fix; defenda ataques que o target sobreviver."
-            }
-          ]
-        }
-      ],
-      "connections": [],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 2,
-          "tree": {
-            "explorer": 2,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": null
-      },
-      "_score": 6.48
     }
   ]
 };
