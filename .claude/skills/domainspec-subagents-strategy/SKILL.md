@@ -11,12 +11,76 @@ description: Route any subagent dispatch — check the Principle-1 trigger, hold
 
 Dispatch only when at least one trigger holds: **synthesis** (3+ sources to combine), **context protection** (raw output ≫ what the parent needs), **isolation** (discardable exploration), **parallelism** (independent tasks). Otherwise work inline.
 
-**Helper rule (P11):** a single agent spawned *by* a running agent, within its parent's scope, is not a dispatch — no row, no gate; it is reported post-hoc in the parent's `agents_spawned`. It escalates to a real dispatch when it fans out (2+) or outgrows the parent's scope. *(The exact helper-vs-dispatch boundary is provisional — an open question, not settled law.)*
+**Helper rule (P11):** a single agent spawned *by* a running agent, within its parent's scope, is not a dispatch — no row, no gate; it is reported post-hoc in the parent's `agents_spawned`. It escalates to a real dispatch when it fans out (2+) or outgrows the parent's scope.
+
+**Scoped discovery-authoring exception (owner direction, 2026-07-23):** the
+`discovery-writing` workflow may use (a) one read-only validator followed by at most one read-only
+acquisition helper per confirmed probe slot and (b) the review topology confirmed for that
+discovery, bounded to 2–3 mutually isolated read-only reviewers per round and at most 5 rounds. They
+remain helpers only while they produce no independent/persisted deliverable, stay within the
+confirmed discovery target/source scopes, and are reported by the orchestrator. Any wider fan-out,
+persisted review, target expansion, or separately consumable result is a real dispatch and re-enters
+propose/confirm/register/close.
+
+*(The general helper-vs-dispatch boundary remains provisional; this exception settles only the
+bounded discovery-authoring case above.)*
+
+## Two-level planning model
+
+Every non-trivial dispatch is built as two immutable projections over the same eventual full sheet:
+
+1. **`StructuralGraphProposal`** — objective, boundaries, group/seat counts, abstract roles, probe /
+   writer / reviewer positions, connections, `robot_talks`, `sequential` / `zig-zag` / `feedback`,
+   loop ceilings, output joins, budget envelope and confirmation mode. It contains no persona names,
+   concrete models, complete prompts, concrete sources or resolved tools.
+2. **`ConcreteDispatchProposal`** — exact `seat_id`, agent/persona label, role/type/lens,
+   provider/model/adapter, skills and digests, initial prompt, response contract, sources/snapshots,
+   tool profile, command classes, write/network/sandbox scopes, exact budgets, reviewer
+   instantiation and per-edge rounds. It references the exact structural revision/digest.
+
+The orchestrator builds the structure first and the concrete resolution second even when the user
+chooses to see only the final proposal. For now every seat and review/probe slot is resolved before
+execution. Runtime changes to agent, lens, prompt, source or tools are deferred until a separate
+reconfiguration-gate contract exists.
+
+### Confirmation modes
+
+The user selects one mode before the first confirmation:
+
+- `structure_and_final` — show and confirm the structural graph, resolve the concrete proposal, then
+  show and confirm every concrete field.
+- `final_only` — build and digest the structure internally, then show one concrete proposal containing
+  both topology and all resolved details for confirmation.
+- `structure_only` — confirm only that planning may continue. It never authorizes execution; the
+  resolved proposal must return for a final confirmation.
+
+Do not implement delegated execution from structure-only approval. That requires a future
+`DelegatedResolutionEnvelope` and SPEC decision.
+
+### Invalidation
+
+- A structural change creates a new structural revision and invalidates every concrete resolution
+  and final confirmation derived from it.
+- A concrete-only change creates a new concrete revision and invalidates final confirmation while
+  preserving a still-matching structural confirmation.
+- A physical retry changes attempt identity, not either proposal.
+- Confirmation binds revision ID plus digest. A chat acknowledgement is not a durable runtime
+  receipt; until ACI materializes these entities, report the gate as workflow evidence only.
 
 ## Lifecycle — the universal four steps (§3)
 
-1. **Propose.** The strategist fills the sheet — consulting the type skill (routing table below) for type judgment — and proposes it in chat, stating for each tensioned pair the question on which the two agents are predicted to disagree (P5). The proposal **states where the dispatch's artifacts will be saved** — the `working_folder` path, or **inline** (no files) where the type allows it. `research`/`experiment` always persist and require a `working_folder`. **`review` must declare `output_mode`** (`inline` | `persisted`) — its single artifact is `review.md`, rendered in chat or written to `<working_folder>/review.md` (§14). Before presenting to the human, run the **check-tension gate** (Pointers): two independent agents verify the sheet is genuinely tensioned (Tests 1–4); the sheet reaches the human only if **both PASS**, otherwise it returns here for revision.
-2. **Confirm.** The human's explicit affirmative — silence or a question is not confirmation. Nothing persists before it. **The same gate confirms the artifact destination** (universal, any `dispatch_type`): the human explicitly confirms the `working_folder` path the artifacts will be saved to — or, for a `review`, explicitly picks **`inline` vs `persisted`**. That pick is **recorded on the row as `output_mode`**, never inferred from an absent `working_folder` (§14). Do not register or write artifacts to a folder the human has not confirmed. The confirmed sheet is **frozen**; any strategist edit after confirm — including the folder or the output mode — re-enters the gate (P2).
+1. **Propose.** Build `StructuralGraphProposal` first. According to `confirmation_mode`, present it or
+   continue to `ConcreteDispatchProposal`. Before concrete confirmation, run one read-only
+   capability reviewer over every seat's logical tool profile; surface its allow/deny amendments
+   with the proposal. The concrete proposal **states where artifacts land** (`working_folder` or
+   inline), output mode, exact agents, prompts, sources, tools and limits. Before any user-facing
+   proposal, run the **check-tension gate** over the applicable projection; only a PASS proceeds.
+2. **Confirm.** Each required gate needs an explicit affirmative; silence or a question is not
+   confirmation. Nothing registers, persists as a dispatch row, or executes before all gates required
+   by the selected mode pass. Structure confirmation freezes only the structural revision. Final
+   confirmation freezes the concrete proposal and artifact destination. Any later change applies the
+   invalidation rules above and re-enters only the affected gate(s). The final confirmed concrete
+   sheet remains the input to `register-dispatch`; the current wire row is unchanged.
 3. **Register + run.** Append the dispatch row, then schedule groups **by dependency** (P4, amended 2026-06-12): a group is READY when every group with a `sequential`/`zig-zag` edge into it has produced what it must respond to (zig-zag counts only in its `from`→`to` direction — the `from` endpoint opens the exchange); launch all READY groups concurrently; `feedback` edges never count as dependencies; a sheet with no connections declares its groups independent; declared order is narration tiebreak only. Agents inside a group run in parallel. An agent error degrades to a **partial group result** that downstream groups and the `final_approver` must be told about.
 4. **Close.** Report `exit_reason` + `agents_spawned` in chat — and in the persisted deliverable when there is one (`findings.md` for research; `review.md` for a `persisted` review; an `inline` review reports in chat only) — and append the close row. Two appends, one ledger, append-only (P3).
 
@@ -34,7 +98,7 @@ These bullets are operational restatements of constitution §4; §4 is authorita
 - **exit_reason.** Closed vocabulary: `resolved | loop_ceiling_reached | dissent_irreconcilable | user_abort | error`. Precedence + decision procedure: constitution §5.
 - **P8 — trust-but-verify.** If a subagent wrote files or claimed a check passed, inspect the actual diff / run the actual check before treating it as done.
 - **P13 — meta + lineage.** A dispatch about dispatching is `meta: true`; `parent_dispatch_id` exists only on a dispatch planned by a meta dispatch; a meta-planned child re-enters the confirm gate.
-- **P14 — robot-talks binding.** A group with `robot_talks: true` binds `vault/constitution/robot-talks-constitution.md`; this constitution's single-gate rule overrides any extra human gate it would prescribe. A synthesizer downstream of a robot-talks group MUST receive each agent's initial AND final positions (collapse detection).
+- **P14 — robot-talks binding.** A group with `robot_talks: true` binds `vault/constitution/robot-talks-constitution.md`. Structural/final confirmations happen before execution and form one planning lifecycle; robot-talks may not introduce additional mid-run human gates. A synthesizer downstream of a robot-talks group MUST receive each agent's initial AND final positions (collapse detection).
 
 ## Routing by dispatch_type
 

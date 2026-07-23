@@ -21,7 +21,7 @@ Check `.claude/skills/custom/frontmatter.md` for how to create the frontmatter.
 
 ## Edges
 
-Check `.claude/skills/custom/edges.md` for how to wire the discovery into the graph via its `## Connections` block. A discovery typically declares `derives-from` toward the research/findings it stands on, `cites` toward any constitution it leans on, and `supersedes` toward the discovery it replaces (if any).
+Check the `## Connections` section of `.claude/skills/custom/frontmatter.md` (the 14 edge types) for how to wire the discovery into the graph via its `## Connections` block. A discovery typically declares `derives-from` toward the research/findings it stands on, `cites` toward any constitution it leans on, and `supersedes` toward the discovery it replaces (if any).
 
 ---
 

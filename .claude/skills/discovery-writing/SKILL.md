@@ -1,10 +1,10 @@
 ---
 name: discovery-writing
-description: How to write a discovery document — problem space, design decisions, and implementation detail. Use when authoring or restructuring a feature discovery (docs/features/<feature>/discovery/<slug>.md) or any discovery-stage design document. Not for implementation plans or task lists.
+description: How to write a discovery document covering problem space, design decisions, and implementation detail. Use when authoring or restructuring a feature discovery at a pipeline-visible discovery path or any discovery-stage design document. Not for implementation plans or task lists.
 ---
 # Discovery Writing
 
-> Ported from ZefraHub (`.claude/skills/custom/discovery-writing.md`) 2026-07-14; adapted for zagr-plataforma (corpus frontmatter, this repo's vault paths, Grep/Read instead of GitNexus) and extended with the corpus + pipeline conventions the original omitted (decision register, OQ IDs, connections, versioning, pipeline-visible paths).
+> Ported from ZefraHub (`.claude/skills/custom/discovery-writing.md`) 2026-07-14 and adapted to this repository's corpus, vault paths, decision register, OQ IDs, connections, versioning, and pipeline-visible paths.
 
 ## Purpose
 
@@ -16,24 +16,24 @@ If the output of this session is a list of tasks, you are writing an implementat
 
 ## File Location (pipeline-visible)
 
-Write application discoveries to `docs/features/<feature>/discovery/<slug>.md` and knowledge discoveries to `vault/discovery/<topic>-definitions/<slug>.md` — these are the ONLY two paths the DomainSpec Step 0 gate globs (`domainspec-pipeline` step 3d, `domainspec-spec-feature` step 0.3). A discovery anywhere else (feature root, `discoveries/` plural) halts the pipeline with "No discovery exists for <feature>". If a SPEC.md already links an Authority path, keep that link resolvable when moving files.
+Write application discoveries to `docs/features/<feature>/discovery/<slug>.md` and knowledge discoveries to `vault/discovery/<topic>-definitions/<slug>.md`. These are the only two target shapes this skill and the `domainspec-discovery-writer` accept. A different path requires changing the owning pipeline/agent contract first; a changelog note is not an override. If a SPEC.md already links an Authority path, keep that link resolvable when moving files.
 
 ---
 
 ## Frontmatter Template
 
-Match the existing corpus convention (exemplars: `docs/features/zagr-marketplace/discoveries/marketplace-without-payment-api/DISCOVERY.md`, `docs/dlocal-integration/DISCOVERY.md`):
+Use this repository-local contract:
 
 ```yaml
 ---
 tags: [<feature>, <domain keywords>]
 node_type: discovery
 is_session: false
-layer: [architecture, domain | market | application — what applies]
+layer: [ontology | architecture | domain | application | external — what applies]
 nature: [explanatory, reference, technical — what applies]
 status: active
-veracidade: <low|medium|high>   # evidence quality
-convicção: <low|medium|high>    # decision confidence
+veracity: <low|medium|high>     # evidence quality
+conviction: <low|medium|high>   # decision confidence
 version: 0.1.0
 last_updated: <YYYY-MM-DD>
 ---
@@ -53,11 +53,16 @@ What is being changed and what the end state looks like. No motivation here — 
 
 Immediately below the Objective, add a bold-label block: `**Status:**` (version + one-line provenance), `**Owner:**` (@handle), and, when a sibling discovery exists, `**Companion:**` — a relative link plus one sentence declaring the ownership split: what the companion owns and that this doc treats it as defined. If the companion is version-locked, pin the version.
 
+The owner handle is a required briefing input. Do not infer it from Git authorship or a previous
+document; refuse authoring when it is absent.
+
 ---
 
 ### 1. Business Context
 
-Open the section with one sentence anchoring this work to the repo's overall goal — link [docs/PROJECT-OVERVIEW.md](../../docs/PROJECT-OVERVIEW.md) (or the project's equivalent) so a reader can trace why this feature serves the project at all.
+Open the section with one sentence anchoring this work to the repo's overall goal. Resolve the
+project overview that actually exists (this repository currently uses root `README.md`) and compute
+the relative Markdown link from the target file; never copy a fixed relative path.
 
 Three subsections, all required:
 
@@ -90,9 +95,16 @@ One section per area of change. Typical sections (use what applies):
 - **Service / execution flow** — sequence of operations, what changes vs. today (a before/after table is often clearest)
 - **Phases and gates** (when the discovery stages downstream work) — a roadmap diagram plus an exit-criteria table (`| From → To | Mandatory criteria |`) with an explicit `any → ESCAPE` row; escape hatches must name concrete alternatives, not "reassess". State the honest-gate rule: what it costs to discover the failure now vs. at the next phase.
 - **Cleanup** — what gets deleted, with location and reason
-- **Open questions** — numbered `OQ-<prefix>N`, each with a bold **Question:** and **Recommendation:** pair and a named settlement stage ("Settle in SPEC" / plan / implementation). The recommendation must be adoptable as-is: the spec-writer ratifies within its bounds without a user round and records `OQ-N ratified → <choice>`. Questions are closed by amendment (a DD-N citing the OQ), never silently deleted.
 
 Diagrams are embedded in the section they explain, not collected at the end: data model as one `classDiagram` (field-level `%%` comments for nullability/ownership semantics), each non-trivial flow as a `sequenceDiagram` with `autonumber`, boundary/scope contrasts as a two-subgraph `flowchart` with a labeled dashed edge for the join key.
+
+---
+
+### Open Questions
+
+Collect unresolved items after the detailed specifications. Use numbered `OQ-<prefix>N` entries,
+each with a bold **Question:**, **Recommendation:** and named settlement stage. Questions are closed
+by amendment, never silently deleted.
 
 ---
 
@@ -108,6 +120,18 @@ Once a SPEC cites this document's version, the register is **locked**: never edi
 
 A table `| Document | Type | Description |` of typed edges to related docs (`derives-from`, `cites`, `created-by`, `modified-by`, `supersedes`, …): the predecessor discovery, sibling discoveries the seam touches, source findings, any derived child. Edges are bidirectional: when this doc declares an edge to another, add the inverse row to that document (a patch-level version bump + changelog entry there).
 
+The writer is authorized to edit only the user-confirmed discovery target. Record required inverse
+edge updates as pending follow-up paths in the completion report; do not mutate linked documents
+without their own explicit authorization.
+
+---
+
+### Flow Diagram, Changelog, and Source Footer
+
+After `Connections`, place `## Flow Diagram`, then `## Appendix — Changelog`. The final content in
+the file is the **Source dispatch** footer. This is the canonical ending order. The diagram is
+created before review and synchronized after remediation; the changelog and footer remain last.
+
 ---
 
 ## Quality Checks Before Finishing
@@ -118,42 +142,125 @@ A table `| Document | Type | Description |` of typed edges to related docs (`der
 - [ ] Core concepts have stable PascalCase names (and meta-types where clear)
 - [ ] Every ratified decision has an ID, a `Where` §, and is cited by ID in the body
 - [ ] Open questions have IDs, recommendations, and settlement stages — not just questions
-- [ ] Connections table present; inverse edges added to the linked docs
+- [ ] Connections table present; pending inverse edges reported without out-of-scope writes
 - [ ] Version bumped ⇒ changelog entry written (with the locked-decisions statement)
 - [ ] No implementation steps disguised as design decisions — if it's "do X then Y", it belongs in an implementation plan
-- [ ] File is at a pipeline-visible path (`docs/features/<feature>/discovery/<slug>.md` or `vault/discovery/<topic>-definitions/<slug>.md`) — or the operator-designated path, with the deviation noted in the changelog
-- [ ] Review Gate (below) run — the reviewer's accepted findings applied
-- [ ] Final Step (below) executed — flow diagram appended
+- [ ] File is at a pipeline-visible path (`docs/features/<feature>/discovery/<slug>.md` or `vault/discovery/<topic>-definitions/<slug>.md`)
+- [ ] Every invoked probe passed the Probe Proposal Gate; accepted/rejected improvements and reasons are present in the completion report
+- [ ] Independent Review Loop (below) reached two `NO_OBJECTION` returns in one round, or stopped honestly at the three-round ceiling with residue reported
+- [ ] Flow Diagram Gate (below) executed — flow diagram present and synchronized with the reviewed body
 
 ---
 
-## Final Step — Mermaid Flow Diagram (mandatory, last action)
+## Evidence Acquisition — Probe Proposal Gate
 
-After the Review Gate fixes are applied and the Quality Checks pass, dispatch a **Sonnet subagent** to append a `## Flow Diagram` section to the discovery file containing a mermaid overview diagram of what the discovery describes (this is the whole-document overview; the per-section inline diagrams above remain mandatory and are not a substitute).
+Use a probe only for a bounded information gap that can change a claim, decision, boundary, or open
+question. Ordinary repository reads, exact lookups, link checks, and validation commands are not
+probes. Do not use a probe merely to make the discovery look researched.
 
-Do not invoke it before the body is complete, do not skip it. **Exception:** if you are running as a subagent without access to the Agent tool, produce the diagram yourself as the last action instead — the requirement is the diagram, not the dispatch.
+One probe-budget slot includes at most one validator helper plus one acquisition. A budget of `0`
+forbids both proposal helpers and acquisitions; turn unresolved evidence gaps into Open Questions.
+Once all slots are consumed, do the same. Report supplied, consumed, and remaining slots.
 
-Use the Agent tool with `subagent_type: "general-purpose"` and `model: "sonnet"`. The prompt must be self-contained — the subagent has not seen this conversation:
+Before each probe, spawn one small read-only helper to evaluate the proposal. Give it the current
+discovery objective, the precise information gap, the proposed question, intended sources, and
+budget. Do not give it the answer the writer hopes to obtain. Require this response:
 
-> Read the discovery at `<absolute path to the .md file>`. Append a new section titled `## Flow Diagram` at the end of the file. The section must contain:
-> 1. One mermaid diagram (`flowchart`, `sequenceDiagram`, or `stateDiagram-v2` — pick whichever best fits the discovery's nature) that captures the system, flow, or state transitions the discovery describes. Nodes/edges should mirror the entities and relationships named in the discovery body — do not invent new concepts.
-> 2. A short paragraph (≤4 sentences) below the diagram explaining what the diagram shows and how to read it, in the same vocabulary the discovery uses.
->
-> Constraints: edit the file in place using Edit (do not rewrite it). Do not modify any existing section. Do not add the diagram if a `## Flow Diagram` section already exists — update it in place instead.
+```text
+Verdict: RUN | IMPROVE | SKIP
+Necessity: <what decision the probe can change, or why it is redundant>
+Suggested question: <smallest falsifiable/retrievable question>
+Suggested scope: <sources, exclusions, and stopping condition>
+Risk: <duplication, authority, cost, or confirmation-bias risk>
+```
+
+The writer decides `ACCEPT`, `PARTIAL`, or `REJECT` for the suggested improvement and records a
+one-line reason. `SKIP` is advisory, not a veto, but running despite it requires naming the decision
+that still needs evidence. Keep this decision in the completion report; put it in the discovery only
+when it materially qualifies the evidence.
+
+Then use the narrowest available acquisition surface:
+
+1. Use a real, authorized probe tool when the runtime exposes one.
+2. Otherwise, use one bounded read-only Task helper and label it `helper_probe`; this is not evidence
+   that the bus-backed `reference-probe` runtime exists.
+3. Never simulate receipts, bus persistence, reviewer consensus, or canonical authority.
+
+Require the probe to return sources/locations, findings, limitations, and an explicit no-result
+outcome. The writer remains responsible for checking material references and for deciding whether
+the return changes the discovery.
 
 ---
 
-## Review Gate (mandatory, after the body is written)
+## Flow Diagram Gate
 
-Spawn ONE reviewer subagent — attack discipline per the `review` skill (`.claude/skills/review/SKILL.md`), but run as a plain helper: **no dispatch row, no ledger registration**. It reviews EVERYTHING and returns numbered apontamentos (exact section, what is wrong, concrete fix), covering both dimensions:
+After the body passes the quality checks, create or update a `## Flow Diagram` section containing one
+Mermaid overview and a paragraph of at most four sentences. The diagram must use only concepts from
+the body. It must exist before the first independent review so reviewers inspect the complete
+artifact; after every remediation in rounds 1–2, synchronize it before starting the next review
+round. Keep `Appendix — Changelog` and the Source dispatch footer after it.
 
-- **Content** — inconsistencies and gaps in the actual content: claims that contradict the source findings/evidence or each other, missing areas the scope promises but no section covers, decisions without rationale, open questions without recommendations, concepts used but never defined, numbers/IDs that don't resolve.
-- **Form** — organization (section order per this skill), clarity for a reader who hasn't seen the sources, Business Context sufficiency including the repo-overall-goal link, table/diagram legibility, and whether the relative links resolve on disk.
+When an agent tool is available, a diagram helper may edit only this section. Otherwise the writer
+produces it directly. The requirement is a synchronized diagram, not a particular model or helper.
 
-Apply the accepted apontamentos before the Final Step; rejected ones need a one-line reason in your report. When running as a subagent without the Agent tool, return the draft and ask the invoking strategist to run this gate.
+---
+
+## Independent Review Loop
+
+Read `.claude/skills/review/SKILL.md` before launching reviewers. After the complete draft and Flow
+Diagram exist, launch exactly two fresh read-only reviewers independently.
+
+This bounded helper topology is authorized by the scoped discovery-authoring exception in
+`.claude/skills/domainspec-subagents-strategy/SKILL.md` P11. Any wider fan-out, persisted review
+artifact, or work beyond the discovery returns to the normal confirmation/register/close lifecycle.
+
+Launch the two reviewers together when the tool supports parallel tasks, but never show either
+reviewer the other's return.
+
+- **Reviewer A — content/fidelity:** attack contradictions with sources or governing documents,
+  unsupported decisions, missing promised scope, undefined concepts, unresolved IDs, and
+  claim-greater-than-proof.
+- **Reviewer B — form/operability/reference integrity:** attack mandatory structure, clarity for a
+  fresh reader, executable guidance, path/link validity, table/diagram legibility, ownership drift,
+  and whether the discovery can feed a SPEC without invention.
+
+Each reviewer reads the entire current discovery and material sources. Require:
+
+```text
+Revision digest: sha256:<digest supplied by the writer>
+Verdict: NO_OBJECTION | OBJECTIONS
+Objections:
+1. <severity> — <file/section and quoted evidence> — <problem> — <concrete fix>
+Survival evidence: <required for NO_OBJECTION: attempted attacks and why the artifact survived>
+Checks performed: <reads/commands>
+```
+
+Compute the digest before launching the pair and require both to echo it. A missing/mismatched digest
+or a `NO_OBJECTION` without concrete survival evidence is an insufficient review and counts as an
+objection. When both return zero objections, the writer explicitly checks the review skill's
+all-zero-findings red flag: each lens must name its attempted attacks and evidence of survival before
+the pair can yield `REVIEW_CLEAN`.
+
+For each objection in rounds 1–2, the writer records `ACCEPT`, `PARTIAL`, or `REJECT` with a
+one-line, evidence-based reason, then rewrites every accepted/partial item. Rejection is allowed;
+silent discard is not. Re-run deterministic checks and synchronize the Flow Diagram before the next
+round.
+
+Use fresh reviewers on every round. Stop early only when both reviewers independently return
+`NO_OBJECTION` against the same frozen revision. Run at most three rounds. Round 3 is terminal: if
+either reviewer objects, do not edit the reviewed revision. Record accepted objections as residue,
+return the reviewed file digest plus `REVIEW_LOOP_CEILING`, and never report a clean review.
 
 ---
 
 ## Provenance (repo addition)
 
-When the discovery derives from a registered research dispatch, end the document with a **Source dispatch** footer: dispatch id, link to the `research/findings.md` it builds on. Do not fabricate decisions the findings don't support — if the findings don't surface a decision, say so in an open question instead.
+When the discovery derives from a registered research dispatch, end the document with a **Source
+dispatch** footer containing its dispatch id and the exact findings path supplied in the briefing.
+Use only that path; an optional `research.md` is its explicitly resolved sibling, never a basename
+guess.
+
+A verified probe may support a decision only when the owning section and decision-register row cite
+the durable source/location, state the probe mode (`tool_probe` or `helper_probe`), and preserve
+material limitations. Otherwise it may only qualify a claim or Open Question. Never fabricate a
+decision from an uncited helper return.
