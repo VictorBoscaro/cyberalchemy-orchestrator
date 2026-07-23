@@ -1,0 +1,24 @@
+{
+  "batch_id": "apt-seed-registry-candidates-v01",
+  "status": "candidate_batch_not_registry",
+  "pool_snapshot": "sha256:5c7b9745a336670ecb55df1276912166954a0d7960443f0df787405564099eba",
+  "selection_method": "purposive_8_pool_present_plus_8_exact_runtime_residue_before_probe_fixture_selection",
+  "candidates": [
+    {"tag_id": "candidate:software-engineering", "canonical_label": "software-engineering", "origin": "pool_present", "pool_usage_count": 20, "field_distribution": {"cs": 20}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:information-theory", "canonical_label": "information-theory", "origin": "pool_present", "pool_usage_count": 19, "field_distribution": {"ai-ml": 1, "cs": 8, "math": 5, "physics": 4, "psychology": 1}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:programming-language-design", "canonical_label": "programming-language-design", "origin": "pool_present", "pool_usage_count": 12, "field_distribution": {"cs": 12}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:epistemology", "canonical_label": "epistemology", "origin": "pool_present", "pool_usage_count": 10, "field_distribution": {"philosophy": 10}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:decision-theory", "canonical_label": "decision-theory", "origin": "pool_present", "pool_usage_count": 10, "field_distribution": {"ai-ml": 1, "cs": 2, "math": 6, "psychology": 1}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:distributed-systems", "canonical_label": "distributed-systems", "origin": "pool_present", "pool_usage_count": 8, "field_distribution": {"cs": 8}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:software-architecture", "canonical_label": "software-architecture", "origin": "pool_present", "pool_usage_count": 6, "field_distribution": {"cs": 6}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:formal-verification", "canonical_label": "formal-verification", "origin": "pool_present", "pool_usage_count": 5, "field_distribution": {"cs": 5}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:telemetry", "canonical_label": "telemetry", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:provenance", "canonical_label": "provenance", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:event-sourcing", "canonical_label": "event-sourcing", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:idempotency", "canonical_label": "idempotency", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:replay", "canonical_label": "replay", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:canonicalization", "canonical_label": "canonicalization", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:agent-orchestration", "canonical_label": "agent-orchestration", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
+    {"tag_id": "candidate:multi-agent-systems", "canonical_label": "multi-agent-systems", "origin": "runtime_exact_residue", "pool_usage_count": 0, "field_distribution": {}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"}
+  ]
+}

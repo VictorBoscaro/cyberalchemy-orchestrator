@@ -1,0 +1,191 @@
+{
+  "fixture_id": "agent-provenance-telemetry-contracts@1",
+  "status": "contract_fixture_not_runtime_proof",
+  "schema_version": "apt.contract-vectors@1",
+  "canonical_policy": "aci-cjson-1",
+  "vectors": [
+    {
+      "id": "APT-C001-free-emission",
+      "kind": "topic.emission_observed@1",
+      "digest_field": "emission_digest",
+      "record_without_digest": {
+        "activation_seq": 1,
+        "attempt_id": "attempt-1",
+        "capture_phase": "free",
+        "conversation_id": "conversation-1",
+        "dispatch_id": "dispatch-1",
+        "emission_id": "topic-emission-1",
+        "group_id": "researchers",
+        "observed_terms": ["event-sourcing", "provenance"],
+        "schema_version": "apt.topic-emission@1",
+        "seat_id": "seat-1",
+        "selected_tag_ids": [],
+        "trigger": "initial",
+        "turn_id": "turn-1",
+        "writer_observed_at": "2026-07-22T12:00:00.000Z"
+      },
+      "expected_digest": "sha256:dd202b8475f7752009c257d6965f7bb9e8cf79e0f72e3dc2dc282c3b9a17699d"
+    },
+    {
+      "id": "APT-C002-assisted-emission",
+      "kind": "topic.emission_observed@1",
+      "digest_field": "emission_digest",
+      "record_without_digest": {
+        "activation_seq": 1,
+        "attempt_id": "attempt-1",
+        "capture_phase": "assisted",
+        "conversation_id": "conversation-1",
+        "dispatch_id": "dispatch-1",
+        "emission_id": "topic-emission-2",
+        "free_emission_ref": "topic-emission-1",
+        "group_id": "researchers",
+        "observed_terms": [],
+        "registry_version": "conformance-registry@1",
+        "schema_version": "apt.topic-emission@1",
+        "seat_id": "seat-1",
+        "selected_tag_ids": ["tag:event-sourcing", "tag:provenance"],
+        "trigger": "initial",
+        "turn_id": "turn-1",
+        "writer_observed_at": "2026-07-22T12:00:01.000Z"
+      },
+      "expected_digest": "sha256:8ed713f39747a2d85dee3395f639606220f0c44a816752a627911151640a970b"
+    },
+    {
+      "id": "APT-C003-registry",
+      "kind": "tag.registry_snapshot@1",
+      "digest_field": "registry_digest",
+      "record_without_digest": {
+        "registry_version": "conformance-registry@1",
+        "schema_version": "apt.tag-registry@1",
+        "tags": [
+          {
+            "aliases": [],
+            "canonical_label": "event-sourcing",
+            "definition": "Represent state changes as an ordered sequence of durable events.",
+            "provenance_refs": ["synthetic-conformance-fixture"],
+            "resolution_eligible": true,
+            "status": "accepted",
+            "tag_id": "tag:event-sourcing"
+          },
+          {
+            "aliases": [],
+            "canonical_label": "provenance",
+            "definition": "Record attributable origin and transformation lineage for an observation.",
+            "provenance_refs": ["synthetic-conformance-fixture"],
+            "resolution_eligible": true,
+            "status": "accepted",
+            "tag_id": "tag:provenance"
+          }
+        ]
+      },
+      "expected_digest": "sha256:bee235d705edc3eee31b85f6368c268112c17616a5b88c7a6f5d43a56c028faa"
+    },
+    {
+      "id": "APT-C004-resolution",
+      "kind": "tag.resolution_projected@1",
+      "digest_field": "resolution_digest",
+      "record_without_digest": {
+        "emission_ref": "topic-emission-1",
+        "mapping_trace": [],
+        "registry_version": "conformance-registry@1",
+        "resolution_id": "tag-resolution-1",
+        "resolver_version": "exact-alias-resolver@1",
+        "schema_version": "apt.tag-resolution@1",
+        "system_resolved_tag_ids": ["tag:event-sourcing", "tag:provenance"],
+        "unmapped_terms": []
+      },
+      "expected_digest": "sha256:961946bdce87cbe2dc4ac594f57ae25c1cc94350ed001c2099ecca036277f278"
+    },
+    {
+      "id": "APT-C005-lens",
+      "kind": "lens.projected@1",
+      "digest_field": "lens_digest",
+      "record_without_digest": {
+        "interpretation_limit": "tag_presence_only",
+        "lens_id": "lens-1",
+        "perspectives": [
+          {
+            "seat_id": "seat-1",
+            "supporting_resolution_refs": ["tag-resolution-1"],
+            "tag_ids": ["tag:provenance"]
+          }
+        ],
+        "projection_version": "lens-projection@1",
+        "registry_version": "conformance-registry@1",
+        "residue_refs": [],
+        "resolution_refs": ["tag-resolution-1"],
+        "schema_version": "apt.lens@1",
+        "scope": {"dispatch_id": "dispatch-1", "round": 1},
+        "shared_core": [
+          {
+            "seat_support": 1,
+            "supporting_resolution_refs": ["tag-resolution-1"],
+            "tag_id": "tag:event-sourcing"
+          }
+        ]
+      },
+      "expected_digest": "sha256:25fa5c91ca738cd89c912ee77a42c0ef66ced04d84a121fcdec8ad45940da8e6"
+    }
+  ],
+  "rejection_vectors": [
+    {
+      "id": "APT-R001-free-selects-tags",
+      "kind": "topic.emission_observed@1",
+      "mutate_from": "APT-C001-free-emission",
+      "patch": {"selected_tag_ids": ["tag:event-sourcing"]},
+      "expected_error": "FREE_EMISSION_SELECTS_TAGS"
+    },
+    {
+      "id": "APT-R002-assisted-missing-free-ref",
+      "kind": "topic.emission_observed@1",
+      "mutate_from": "APT-C002-assisted-emission",
+      "remove": ["free_emission_ref"],
+      "expected_error": "ASSISTED_FREE_REF_REQUIRED"
+    },
+    {
+      "id": "APT-R003-resolution-embeds-raw-terms",
+      "kind": "tag.resolution_projected@1",
+      "mutate_from": "APT-C004-resolution",
+      "patch": {"observed_terms": ["rewritten"]},
+      "expected_error": "UNKNOWN_FIELD"
+    },
+    {
+      "id": "APT-R004-lens-unsupported-reference",
+      "kind": "lens.projected@1",
+      "mutate_from": "APT-C005-lens",
+      "patch_path": ["shared_core", 0, "supporting_resolution_refs"],
+      "patch_value": ["tag-resolution-missing"],
+      "expected_error": "LENS_SUPPORT_OUTSIDE_INPUT"
+    },
+    {
+      "id": "APT-R005-accepted-tag-without-definition",
+      "kind": "tag.registry_snapshot@1",
+      "mutate_from": "APT-C003-registry",
+      "patch_path": ["tags", 0, "definition"],
+      "patch_value": "",
+      "expected_error": "ACCEPTED_TAG_DEFINITION_REQUIRED"
+    },
+    {
+      "id": "APT-R006-assisted-selects-unknown-tag",
+      "kind": "topic.emission_observed@1",
+      "mutate_from": "APT-C002-assisted-emission",
+      "patch": {"selected_tag_ids": ["tag:unknown"]},
+      "expected_error": "ASSISTED_TAG_NOT_ELIGIBLE"
+    },
+    {
+      "id": "APT-R007-resolution-uses-unknown-tag",
+      "kind": "tag.resolution_projected@1",
+      "mutate_from": "APT-C004-resolution",
+      "patch": {"system_resolved_tag_ids": ["tag:unknown"]},
+      "expected_error": "RESOLUTION_TAG_NOT_ELIGIBLE"
+    },
+    {
+      "id": "APT-R008-lens-tag-outside-resolution",
+      "kind": "lens.projected@1",
+      "mutate_from": "APT-C005-lens",
+      "patch_path": ["shared_core", 0, "tag_id"],
+      "patch_value": "tag:unknown",
+      "expected_error": "LENS_TAG_OUTSIDE_RESOLUTIONS"
+    }
+  ]
+}
