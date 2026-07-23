@@ -4,8 +4,8 @@ feature: Agents Communication Infra
 type: interfaces
 title: "Agents Communication Infra — Interfaces"
 status: draft
-version: 0.2.0
-derived-from: discovery/feature-discovery/agents-communication-infra.md@0.2.1
+version: 0.2.1
+derived-from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 ---
 
 # Interfaces: Agents Communication Infra
@@ -38,7 +38,7 @@ not by HTTP status codes.
 | `dispatch_id` | opaque ID | [ConfirmedDispatch](domain.md#confirmeddispatch).dispatch_id |
 | `pending_sheet_ref` | artifact/file reference | [ConfirmedDispatch](domain.md#confirmeddispatch).source_bytes_artifact_id |
 | `pending_sheet_digest` | SHA-256 digest | [ConfirmedDispatch](domain.md#confirmeddispatch).digest |
-| `execution_authority_mode` | [ExecutionAuthorityMode](domain.md#executionauthoritymode) | [ConfirmedDispatch](domain.md#confirmeddispatch).authority_mode |
+| `execution_authority_mode` | [ExecutionAuthorityMode](domain.md#executionauthoritymode) | Pre-confirmation routing choice; only `runtime-managed` maps to [ConfirmedDispatch](domain.md#confirmeddispatch).authority_mode, while `legacy-managed` preserves the legacy/session path and is rejected by this endpoint. |
 | `idempotency_key` | non-empty string | [RuntimeCommand](domain.md#runtimecommand).idempotency_key |
 | `expected_version` | non-negative integer or `null` for creation | [RuntimeCommand](domain.md#runtimecommand).expected_version |
 
@@ -50,14 +50,16 @@ resolution is part of the authenticated command boundary, not client-supplied ru
 |---|---|
 | `pending_sheet_bytes` | Read `pending_sheet_ref` once, verify `pending_sheet_digest` against the exact bytes, finalize those bytes through [ArtifactBoundary](#internal-artifact-boundary), and bind the resulting artifact ID to `ConfirmedDispatch.source_bytes_artifact_id`. |
 | `dispatch_id` | Use the authenticated path/body identity only after exact equality and authorization checks. |
-| `execution_authority_mode` | Use the submitted pre-confirmation mode only after the current [ExecutionAuthorityFence](domain.md#executionauthorityfence) proves the legacy/runtime ownership choice. |
+| `execution_authority_mode` | Validate the submitted pre-confirmation choice against the current cutover state. `legacy-managed` returns the operation's typed rejection and preserves the legacy/session path without creating `ConfirmedDispatch` or `Run`; only `runtime-managed` is compiled into `ConfirmRuntimeDispatch`. |
 | `dispatch_spec_ref`, `dispatch_spec_digest` | Compile the exact verified pending bytes with the operator-selected profile, finalize the immutable [DispatchSpec](domain.md#dispatchspec), and verify its digest before acceptance. |
 | `schema_versions` | Resolve the complete command, event, recipe/profile and payload-schema version set referenced by the finalized dispatch spec; any missing or mutable version rejects confirmation. |
 | `capability_resolution_ref` | Resolve adapter/model/tool capabilities against the finalized dispatch spec, persist the immutable resolution artifact and reject any semantics-changing mismatch. |
 | command envelope | Bind `idempotency_key`, `expected_version`, authenticated principal, causation and correlation to the [RuntimeCommand](domain.md#runtimecommand); none are inferred from pending-sheet content. |
 
-Failure to read, hash, compile, finalize or resolve any row above returns `422` and creates no run,
-journal fact or audit effect. The server does not reread the mutable source after acceptance.
+Failure to read, hash, compile, finalize or resolve any row above returns `422` and creates no
+`ConfirmedDispatch`, run, journal fact or audit effect. A `legacy-managed` routing choice has this
+same effect and preserves the legacy/session path. The server does not reread the mutable source
+after acceptance.
 
 **Responses**
 
@@ -66,7 +68,7 @@ journal fact or audit effect. The server does not reread the mutable source afte
 | `202` | command transaction committed | stable command receipt, [Run](domain.md#run).run_id, [JournalOffset](domain.md#journaloffset) |
 | `200` | identical idempotent replay | the original stable command receipt |
 | `409` | key reused with another digest, stale aggregate version or authority mode already assigned | stable error code and current version where disclosure is authorized |
-| `422` | draft, digest, schema or confirmation authority invalid | rule violations; no run or audit effect created |
+| `422` | draft, digest, schema or confirmation authority invalid, including `legacy-managed` routing | rule violations; no `ConfirmedDispatch`, run, journal fact or audit effect created |
 
 The response confirms journal acceptance, not audit-ledger opening. Provider/tool work remains
 blocked until the [AuditLedgerMaterializer](workflows.md#auditledgermaterializer) records verified

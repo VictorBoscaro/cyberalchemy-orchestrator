@@ -1,0 +1,43 @@
+{
+  "schema": "aci.profile-registry-manifest/v1",
+  "status": "pending-independent-review",
+  "canonicalization": "aci-cjson-1",
+  "profiles": [
+    {
+      "profile_id": "aci.atomic-command-receipt-accepted-prefix-read-grouping",
+      "profile_version": "1",
+      "path": "profiles/aci.atomic-command-receipt-accepted-prefix-read-grouping.v1.json",
+      "file_digest": "sha256:b9df42b97242ab2852aa0d2225d7e82a1b0fe23985b2b59c9c9b25adae35d6a2",
+      "canonical_digest": "sha256:1988d0bae102e80ee8c8feb3d8831174a818beee1eecea68718288bb5bd6df46",
+      "canonical_size_bytes": 893,
+      "review_status": "pending"
+    },
+    {
+      "profile_id": "aci.transactional-semantic-uniqueness-result-mapping",
+      "profile_version": "1",
+      "path": "profiles/aci.transactional-semantic-uniqueness-result-mapping.v1.json",
+      "file_digest": "sha256:a0a13c63e1edbfc0da16c174c905b6e1e6ac0c5e0e58bbb59f84cc4954047a6d",
+      "canonical_digest": "sha256:65cf6f6fcd8ee46feb569f2b5a982e34ffbf9688f5c0f0971a5a752f2139fcad",
+      "canonical_size_bytes": 1387,
+      "review_status": "pending"
+    },
+    {
+      "profile_id": "aci.event-schema-canonicalizer-registry",
+      "profile_version": "1",
+      "path": "profiles/aci.event-schema-canonicalizer-registry.v1.json",
+      "file_digest": "sha256:f3e49352d89262cd4dd7f6cfbb6c3cf3c60a51039ba5c4348bfeb36924d42b8c",
+      "canonical_digest": "sha256:51aa3d5cd05a954ed9f9613c31327ec96f47f22e16efc5f1c612b288bab95783",
+      "canonical_size_bytes": 887,
+      "review_status": "pending"
+    },
+    {
+      "profile_id": "apt.reference-probe-lineage",
+      "profile_version": "1",
+      "path": "profiles/apt.reference-probe-lineage.v1.json",
+      "file_digest": "sha256:31441e222fbd3a18cfb2a38f33e1e9f063e721f54fe64a9ec0be2ff5e786ea31",
+      "canonical_digest": "sha256:ea71d4df292b2bba727d8de05daffdbd4d2456b4df4626b46c6fd090ecb8324e",
+      "canonical_size_bytes": 980,
+      "review_status": "pending"
+    }
+  ]
+}

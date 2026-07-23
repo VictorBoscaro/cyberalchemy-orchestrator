@@ -1,0 +1,34 @@
+{
+  "schema": "aci.slice0.compatibility-fixtures/v1",
+  "terminal_mapping": [
+    {"runtime_cause": "committed_goal_satisfied", "exit_reason": "resolved"},
+    {"runtime_cause": "committed_irreconcilable_dissent", "exit_reason": "dissent_irreconcilable"},
+    {"runtime_cause": "declared_loop_ceiling_reached", "exit_reason": "loop_ceiling_reached"},
+    {"runtime_cause": "authorized_cancellation_won", "exit_reason": "user_abort"},
+    {"runtime_cause": "technical_outcome_prevented", "exit_reason": "error"}
+  ],
+  "legacy_opening": {
+    "dispatch_id": "2026-07-23-local-probe-fixture",
+    "row_kind": "opening",
+    "appender_identity": "register-dispatch/append-dispatch.cjs",
+    "contract_version": "0.6.1",
+    "required_result": "strict_snapshot_only"
+  },
+  "reconciliation": [
+    {"identity": "same", "normalized_row": "same", "result": "verified"},
+    {"identity": "same", "normalized_row": "different", "result": "reconciliation_required"},
+    {"identity": "absent", "normalized_row": "not_applicable", "result": "not_found"}
+  ],
+  "publication": {
+    "candidate_event": "publication.persisted",
+    "candidate_status": "persisted_candidate",
+    "official_transition": "parent_verify_atomic",
+    "official_table": "messages",
+    "candidate_alone_is_official": false
+  },
+  "cutover": {
+    "audit_ledger_writer": "register-dispatch/append-dispatch.cjs",
+    "runtime_materializer_enabled": false,
+    "legacy_and_runtime_dual_ownership_allowed": false
+  }
+}

@@ -331,7 +331,7 @@ provider_process_created => launched_by(SandboxLauncher)
 | OQ-ETA2 | **Evidence shape ratified; cutover proof open** | ACI-R1 and [SoleWriterEvidenceBundle](domain.md#solewriterevidencebundle); W0 freezes schema/guard/tests, while TASK-020 supplies physical evidence before cutover without blocking TASK-010. |
 | OQ-ETA4 | **Disposed: no identified ACI Node consumer** | ACI-R17; do not add Zod now. |
 | OQ-ETA5 | **Deferred post-first-provider** | ACI-R18; no PydanticAI dependency now. |
-| OQ-ETA6 | **Disposed as non-blocking provenance maintenance** | [External-tool discovery](discovery/external-tool-adoptions.md). |
+| OQ-ETA6 | **Disposed as non-blocking provenance maintenance** | [External-tool discovery](../discovery/external-tool-adoptions.md). |
 
 ## Connections
 
@@ -339,5 +339,5 @@ provider_process_created => launched_by(SandboxLauncher)
 |---|---|---|
 | [Domain model](domain.md) | `enforces` | Entities and value objects constrained here. |
 | [Persistence and replay](persistence-and-replay.md) | `implements-contract` | Candidate store constraints that make ACI-R5–R7 and ACI-R14 executable. |
-| [Discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Authority for decisions ACI-D1–ACI-D15 and OQ settlements. |
-| [External Tool Adoptions v0.1.0](discovery/external-tool-adoptions.md) | `derives-from` | Authority for ETD-1–ETD-7 and OQ-ETA dispositions. |
+| [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Authority for decisions ACI-D1–ACI-D15 and OQ settlements. |
+| [External Tool Adoptions v0.1.0](../discovery/external-tool-adoptions.md) | `derives-from` | Authority for ETD-1–ETD-7 and OQ-ETA dispositions. |

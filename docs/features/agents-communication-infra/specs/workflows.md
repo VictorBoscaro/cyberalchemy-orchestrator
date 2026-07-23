@@ -4,8 +4,8 @@ feature: Agents Communication Infra
 type: workflows
 title: "Agents Communication Infra — Workflows"
 status: draft
-version: 0.1.0
-derived-from: discovery/feature-discovery/agents-communication-infra.md@0.2.1
+version: 0.1.1
+derived-from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 ---
 
 # Workflows: Agents Communication Infra
@@ -22,8 +22,9 @@ derived-from: discovery/feature-discovery/agents-communication-infra.md@0.2.1
 
 ### Steps
 
-1. Freeze the approved bytes, digest, policy/schema/recipe versions and
-   [ExecutionAuthorityMode](domain.md#executionauthoritymode) into [ConfirmedDispatch](domain.md#confirmeddispatch).
+1. After [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) accepts the already selected
+   `runtime-managed` mode, freeze the approved bytes, digest, policy/schema/recipe versions and that
+   mode into [ConfirmedDispatch](domain.md#confirmeddispatch).
 2. Atomically append run creation/opening intent, aggregate head and stable command receipt.
 3. Run [AuditLedgerMaterializer](#auditledgermaterializer); do not start an adapter before exact
    opening verification is journaled.
@@ -165,12 +166,13 @@ silently replacing the publisher.
 [AcceptRuntimeCommand](operations.md#acceptruntimecommand)  
 **Compensation Strategy:** disable runtime ownership before a new confirmation and return future
 dispatches to legacy mode; never reinterpret partial runtime state  
-**Idempotency:** mode assignment is immutable for a confirmed dispatch
+**Idempotency:** the pre-confirmation routing choice is stable for one proposal revision; after
+runtime acceptance, `runtime-managed` is immutable in `ConfirmedDispatch`
 
 | Mode | Runtime behavior | Legacy/session behavior | Marker/sheet behavior |
 |---|---|---|---|
-| `runtime-managed` | creates exactly one runtime run and issues a monotonic cutover epoch | watcher disable is verified and evidence-bound before start | marker is compatibility projection; cleanup is retryable only after opening verification |
-| `legacy-managed` | creates no runtime run | existing session chain owns execution | existing marker flow remains authoritative transport |
+| `runtime-managed` | creates exactly one `ConfirmedDispatch` and runtime `Run`, then issues a monotonic cutover epoch | watcher disable is verified and evidence-bound before start | marker is compatibility projection; cleanup is retryable only after opening verification |
+| `legacy-managed` | creates neither `ConfirmedDispatch` nor runtime `Run` | existing session chain owns execution | existing marker flow remains authoritative transport |
 
 This settles OQ-ACI6: dual execution is forbidden, rollback applies to not-yet-confirmed work, and a
 confirmed runtime-managed dispatch cannot be silently handed to the legacy watcher.

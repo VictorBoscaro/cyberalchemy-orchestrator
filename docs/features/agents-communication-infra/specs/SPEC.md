@@ -5,10 +5,10 @@ is_session: false
 layer: application
 nature: [technical, reference]
 status: draft
-version: 0.2.0
-last_updated: 2026-07-21
-derived_from: discovery/feature-discovery/agents-communication-infra.md@0.2.1
-additional_authority: discovery/external-tool-adoptions.md@0.1.0
+version: 0.2.2
+last_updated: 2026-07-23
+derived_from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
+additional_authority: ../discovery/external-tool-adoption/external-tool-adoptions.md@0.1.0
 specAuthoringGate: pass
 runtimeGate: block
 ---
@@ -19,9 +19,15 @@ runtimeGate: block
 
 This feature owns the single-host, single-tenant runtime that turns one immutable human-confirmed dispatch into journaled protocol facts, controlled effects and one officially closed outcome. It owns authenticated agent publication, sealed reveal, provider-neutral attempts, replay and projections; the existing validated appender remains the only intended physical writer of official audit-ledger rows.
 
-This baseline locks the authority and vocabulary of the operator-designated [discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md). `specAuthoringGate=pass` means the decisions are specified; `runtimeGate=block` means implementation is not authorized until W0 and EG-1 evidence close.
+This baseline derives authority and vocabulary from the operator-designated
+[discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md), with the
+runtime-only confirmation clarification in
+[Agent tools and delegated supervision v0.1.1](../discovery/agent-tools-and-delegated-supervision.md)
+refining the earlier generic wording of ACI-D3. `specAuthoringGate=pass` means the decisions are
+specified; `runtimeGate=block` means implementation is not authorized until W0 and EG-1 evidence
+close.
 
-The external-dependency boundary is additionally ratified from [External Tool Adoptions v0.1.0](discovery/external-tool-adoptions.md): Python/FastAPI remains the runtime host, Pydantic core validates boundary models, and the runtime retains canonicalization, sealing, digest and persistence authority.
+The external-dependency boundary is additionally ratified from [External Tool Adoptions v0.1.0](../discovery/external-tool-adoption/external-tool-adoptions.md): Python/FastAPI remains the runtime host, Pydantic core validates boundary models, and the runtime retains canonicalization, sealing, digest and persistence authority.
 
 ## Module Map
 
@@ -63,13 +69,13 @@ Runs fake, Codex and later provider adapters through one canonical request, obse
 
 Provides cursor-addressable, rebuildable run views and immutable provider-attributed usage observations while preserving nullable dimensions and avoiding unsupported billing claims. See [GetRuntimeProjection](queries.md#getruntimeprojection), [RecordUsageObservation](operations.md#recordusageobservation) and [Observability](observability.md).
 
-## Authority Locked From Discovery v0.2.1
+## Authority Derived and Refined From Discovery
 
 | Decision | Ratified contract | Where |
 |---|---|---|
 | ACI-D1 | `agents-communication-infra` owns the single target runtime; no parallel runtime feature is created. | [Architecture scope boundary](architecture.md#scope-boundary) |
 | ACI-D2 | Journal, audit ledger, adapters, projections and compatibility surfaces own disjoint facts. | [ACI-R1](rules.md#aci-r1--disjoint-authority-and-one-physical-writer) |
-| ACI-D3 | Human confirmation freezes one immutable `ConfirmedDispatch` and digest. | [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) |
+| ACI-D3 | Runtime-managed human confirmation freezes one immutable `ConfirmedDispatch` and digest; a legacy routing choice stays outside this operation. | [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) |
 | ACI-D4 | The event journal is workflow authority and replay reduces persisted facts only. | [Pure replay](persistence-and-replay.md#6-replay-algorithm-and-proof-obligation) |
 | ACI-D5 | The current validated appender is the intended sole physical audit-ledger writer; cutover awaits enforcement evidence. | [AuditLedgerMaterializer](workflows.md#auditledgermaterializer) |
 | ACI-D6 | No provider or tool effect starts before verified official opening. | [ACI-R13](rules.md#aci-r13--audit-opening-gates-every-providertool-effect) |
@@ -207,6 +213,17 @@ IDs below are unique and authoritative for registry synchronization.
 | [CanonicalContractPolicy](rules.md#aci-r16--canonical-contract-policy) | `agents-communication-infra.CanonicalContractPolicy` | Policy |
 | [BoundaryValidationPolicy](rules.md#aci-r17--derived-boundary-validation-policy) | `agents-communication-infra.BoundaryValidationPolicy` | Policy |
 | [ProviderAdapterAdmissionGate](rules.md#aci-r18--provider-adapter-admission-gate) | `agents-communication-infra.ProviderAdapterAdmissionGate` | Rule |
+| [VaultReadScope](canonical-vault-reads.md#vaultreadscope) | `agents-communication-infra.VaultReadScope` | Value Object |
+| [VaultSourceSelector](canonical-vault-reads.md#vaultsourceselector) | `agents-communication-infra.VaultSourceSelector` | Value Object |
+| [VaultSourceSnapshot](canonical-vault-reads.md#vaultsourcesnapshot) | `agents-communication-infra.VaultSourceSnapshot` | Value Object |
+| [VaultNodeProjection](canonical-vault-reads.md#vaultnodeprojection) | `agents-communication-infra.VaultNodeProjection` | Value Object |
+| [VaultEdgeDeclarationProjection](canonical-vault-reads.md#vaultedgedeclarationprojection) | `agents-communication-infra.VaultEdgeDeclarationProjection` | Value Object |
+| [LogicalVaultEdgeProjection](canonical-vault-reads.md#logicalvaultedgeprojection) | `agents-communication-infra.LogicalVaultEdgeProjection` | Value Object |
+| [VaultReadAPI](canonical-vault-reads.md#vaultreadapi) | `agents-communication-infra.VaultReadAPI` | Interface |
+| [ListVaultArtifacts](canonical-vault-reads.md#listvaultartifacts) | `agents-communication-infra.ListVaultArtifacts` | Query |
+| [GetVaultArtifact](canonical-vault-reads.md#getvaultartifact) | `agents-communication-infra.GetVaultArtifact` | Query |
+| [ListLogicalVaultEdges](canonical-vault-reads.md#listlogicalvaultedges) | `agents-communication-infra.ListLogicalVaultEdges` | Query |
+| [GetLogicalVaultEdge](canonical-vault-reads.md#getlogicalvaultedge) | `agents-communication-infra.GetLogicalVaultEdge` | Query |
 
 `RuntimeEventType` wire values and the explicitly labeled internal transitions in `operations.md`
 are intentionally not registry concepts; they are closed vocabularies/decompositions of registered
@@ -243,18 +260,20 @@ implementation-planning authority until W0 decisions are accepted and evidenced.
 
 ## References
 
-- [Discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md)
-- [External Tool Adoptions v0.1.0](discovery/external-tool-adoptions.md)
-- [External-tool findings v0.1.1](../../../research/external-tools-verification/findings.md)
+- [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md)
+- [External Tool Adoptions v0.1.0](../discovery/external-tool-adoption/external-tool-adoptions.md)
+- [External-tool findings v0.1.1](../../../../research/external-tools-verification/findings.md)
 - [Architecture](architecture.md)
-- [Test specification](TEST-SPEC.md)
-- [Work pack](WORK-PACK.md)
+- [Test specification](../TEST-SPEC.md)
+- [Work pack](../WORK-PACK.md)
 
 ## Decision Precedence
 
-The persistence, transaction, terminal, snapshot and repair contracts in these drafts are
-**specified/proposed, not W0-accepted**. Discovery decisions ACI-D1 through ACI-D15 retain their
-individual identities; accepted W0 ADRs take precedence over proposed details where they amend them.
+The persistence and transaction contracts are W0-accepted by ADR-001. Terminal, snapshot,
+compatibility and repair contracts have a complete W0 acceptance corpus in ADR-002 but remain
+**independent-review pending** until its digest-bound receipt passes. Discovery decisions ACI-D1
+through ACI-D15 retain their individual identities; accepted W0 ADRs take precedence over proposed
+details where they amend them.
 External-tool decisions ETD-1 through ETD-7 are binding adoption constraints. Their unresolved
 version, host-enforcement and evidence parameters remain explicit gates rather than implicit defaults.
 
@@ -277,6 +296,10 @@ version, host-enforcement and evidence parameters remain explicit gates rather t
 | `agents-communication-infra.BoundaryValidationPolicy` | constrains | `agents-communication-infra.RuntimeCommandAPI` | [rule](rules.md#aci-r17--derived-boundary-validation-policy) |
 | `agents-communication-infra.ProviderAdapterAdmissionGate` | gates | `agents-communication-infra.SandboxLauncher` | [rule](rules.md#aci-r18--provider-adapter-admission-gate) |
 | `agents-communication-infra.SoleWriterEvidenceBundle` | evidences | `agents-communication-infra.AuditLedgerAppenderPort` | [domain](domain.md#solewriterevidencebundle) |
+| `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.ListVaultArtifacts` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
+| `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.GetVaultArtifact` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
+| `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.ListLogicalVaultEdges` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
+| `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.GetLogicalVaultEdge` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
 
 ## Aspect Docs
 
@@ -285,6 +308,7 @@ version, host-enforcement and evidence parameters remain explicit gates rather t
 | [Architecture](architecture.md) | Six views, boundaries, decisions, risks and implementation gate |
 | [Glossary](glossary.md) | Plain-language definitions for the registry |
 | [Domain](domain.md) | Entities, values and enums |
+| [Canonical vault reads](canonical-vault-reads.md) | W0 stateless source snapshots, read projections, four queries and effect-free rules |
 | [Rules](rules.md) | Authority, replay, sealing, durability and evidence invariants |
 | [Persistence and replay](persistence-and-replay.md) | SQLite/WAL contract, tables, crash boundaries and replay proof |
 | [Operations](operations.md) | Mutation contracts |
@@ -295,7 +319,7 @@ version, host-enforcement and evidence parameters remain explicit gates rather t
 | [States](states.md) | Run, group and attempt lifecycles |
 | [Events](events.md) | Accepted facts and consumers |
 | [Observability](observability.md) | Metrics, SLO obligations and alerts |
-| [Test Spec](TEST-SPEC.md) | Contract, crash, replay, sealing and conformance fixtures |
+| [Test Spec](../TEST-SPEC.md) | Contract, crash, replay, sealing and conformance fixtures |
 
 ## Scope and Dependencies
 
@@ -311,4 +335,4 @@ The feature depends on human confirmation, the current validated audit-ledger ap
 
 ## Change History
 
-See [CHANGELOG.md](CHANGELOG.md).
+See [CHANGELOG.md](../CHANGELOG.md).

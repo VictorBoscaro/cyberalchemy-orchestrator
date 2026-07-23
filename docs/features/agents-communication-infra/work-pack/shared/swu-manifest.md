@@ -5,8 +5,13 @@ may be selected for mutation unless the wave explicitly proves disjoint write sc
 
 | SWU | Parent | Dependencies | Write scope | Done / acceptance evidence | Validation | Owner |
 |---|---|---|---|---|---|---|
+| SWU-ACI-CVR-000 | TASK-CVR | none | five-entry packet plus seven derived indexes (12 governed artifacts, descriptor included) | `approval_packet_prepared`; proposed predicate non-operative | five-entry digest plus link/diff review | controlled writer prepares; AuthoritySlots accept |
+| SWU-ACI-CVR-GUARD-001 | TASK-CVR | accepted five-entry packet + exact root bootstrap auth/claim | exact descriptor-listed guard/test paths | pure verifier, closed descriptors, direct invocation and one terminal receipt | T-CVR-AUTH1–5 | external trusted executor invokes; exactly one external authority-owned bootstrap finalizer owns completion |
+| SWU-ACI-CVR-001 | TASK-CVR | GUARD PASS + exact auth/claim | `implementations/vault_read/**/*.py`; local lock; `implementations/tests/vault_read/**/*.py` | artifact/raw-declaration reads plus byte baseline in authority receipt | complete CVR-001 selection + T-CVR-AUTH2–5 | worker implements; guard invokes/finalizes |
+| SWU-ACI-CVR-002 | TASK-CVR | CVR-001 PASS receipt + byte baseline + exact auth/claim | descriptor-bound allowed delta only | endpoint/logical-edge reads without artifact regression | full CVR-001 rerun + edge tests + T-CVR-AUTH6 | worker implements; guard invokes/finalizes |
 | ACI-001 | TASK-000 | none | ADRs/decision ledger | accepted persistence ADR, schema and crash table | architecture review | manual |
 | ACI-002 | TASK-000 | none | ADRs/feature questions | accepted compatibility/ledger/protocol ADRs and EG-1 guard spec | constitution review | manual |
+| SWU-ACI-APT-VS-001 | bounded TASK-010/APT integration | 001,002 + APT-105 + four profile/storage/root receipts | exact descriptor runtime/tests | local session -> strict link -> publish -> parent official -> APT lineage -> restart | full descriptor matrix + independent review | exact authorization only |
 | ACI-003 | TASK-010 | 001 | runtime persistence/tests | atomic journal/head/outbox and dedupe/CAS receipts | persistence tests | local-fallback |
 | ACI-004 | TASK-010 | 001 | runtime domain/tests | pure replay with stable state hash | reducer tests | local-fallback |
 | ACI-005 | TASK-020 | 002-004 | opening materializer/tests | verified opening or explicit reconciliation | crash/fault tests | local-fallback |
@@ -38,6 +43,44 @@ may be selected for mutation unless the wave explicitly proves disjoint write sc
 | ACI-031 | TASK-080 | 028-030 | skill/UI/API clients | cutover/rollback and no dual owner | compatibility E2E | local-fallback |
 | ACI-032 | TASK-080 | 031 | audit/check | zero business/provider kernel branches | static scan/review | manual |
 
+The manifest uses canonical IDs `SWU-ACI-CVR-000`, `SWU-ACI-CVR-GUARD-001`,
+`SWU-ACI-CVR-001` and `SWU-ACI-CVR-002`. Strict order is
+`000 -> GUARD-001 -> 001 -> 002`; all remain blocked and no nominal authorization exists.
+
+The canonical `aci.cvr.approval-packet/v1` digest scope is exactly:
+`docs/features/agents-communication-infra/adrs/ADR-CVR-001.md`;
+`docs/features/agents-communication-infra/specs/canonical-vault-reads.md`;
+`docs/features/agents-communication-infra/TEST-SPEC.md`;
+`docs/features/agents-communication-infra/work-pack/tasks/TASK-CVR.md`;
+and exactly one deterministic
+`docs/features/agents-communication-infra/work-pack/descriptors/<canonical_swu_id>.json`.
+The initial GUARD packet uses the concrete fifth entry
+`docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-CVR-GUARD-001.json`.
+
+The derived status/index scope, validated by links/diff but excluded from the packet digest, is:
+`docs/features/agents-communication-infra/WORK-PACK.md`;
+`docs/features/agents-communication-infra/IMPLEMENTATION-LAYERING.md`;
+`docs/features/agents-communication-infra/CHANGELOG.md`;
+`docs/features/agents-communication-infra/work-pack/shared/swu-manifest.md`;
+`docs/features/agents-communication-infra/work-pack/shared/cross-task-decisions.md`;
+`docs/features/agents-communication-infra/work-pack/shared/cross-task-gaps.md`;
+and `docs/features/agents-communication-infra/work-pack/waves/W0.md`.
+
+## CVR authority-field separation
+
+| Field | GUARD-001 | CVR-001 | CVR-002 |
+|---|---|---|---|
+| `artifact_dependencies` | accepted five-entry packet | GUARD PASS receipt | CVR-001 PASS receipt and byte baseline |
+| `execution_authority_preconditions` | exact root-owned one-time bootstrap authorization and claim | active exact authorization and claim | fresh exact authorization and claim |
+| `invocation_evidence` | external expected packet/auth/claim digests and session | external expected digests/session + descriptor | predecessor/baseline/delta/prehash digests + external session |
+| `write_scope` | guard package and tests only | vault-read package, local lock and tests | descriptor-bound allowed delta in vault-read package/tests |
+| `completion_evidence` | authority-owned ExecutionReceipt + T-CVR-AUTH1–5 | authority-owned ExecutionReceipt with byte baseline | authority-owned ExecutionReceipt with both test groups and final delta |
+| `ownership` | external executor invokes; one external authority-owned bootstrap finalizer completes | worker owns product code only; common guard invokes/finalizes | worker owns delta only; common guard invokes/finalizes |
+
+Each CVR execution persists exactly authorization, claim and `ExecutionReceipt` under its
+content-derived authorization ID. Descriptors are governance packet entries. The generic receipt
+shape below applies to non-CVR manifest entries; CVR uses the canonical authority receipt.
+
 ## Execution receipt
 
 Every selected SWU returns:
@@ -51,4 +94,3 @@ state_or_event_hashes: []
 blockers: []
 handoff_note: ""
 ```
-

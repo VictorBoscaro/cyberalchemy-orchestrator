@@ -1,0 +1,34 @@
+{
+  "profile_id": "aci.event-schema-canonicalizer-registry",
+  "profile_version": "1",
+  "canonicalizer": {
+    "profile_id": "aci-cjson-1",
+    "encoding": "utf-8",
+    "digest": "sha256",
+    "object_key_order": "unicode-codepoint-lexicographic",
+    "array_order": "preserved",
+    "floats": "forbidden",
+    "duplicate_keys": "forbidden",
+    "unknown_fields": "forbidden-by-registered-schema"
+  },
+  "event_schemas": [
+    "aci.protocol_profile_registered@1",
+    "apt.session_started@1",
+    "apt.session_dispatch_linked@1",
+    "aci.local_probe_context_activated@1",
+    "publication.persisted",
+    "position.accepted",
+    "reference_probe.accepted@1",
+    "publication.candidate_abandoned",
+    "apt.research_capture_appended@1",
+    "apt.research_fact_appended@1",
+    "apt.reference_probe_lineage_appended@1"
+  ],
+  "invariants": [
+    "schema-id-version-digest-exact-match",
+    "event-payload-digest-over-registered-projection",
+    "stored-bytes-verify-before-replay",
+    "unknown-schema-or-canonicalizer-fails-closed"
+  ]
+}
+

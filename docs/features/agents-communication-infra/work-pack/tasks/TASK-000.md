@@ -36,6 +36,10 @@ migration code. This task authorizes contracts, not runtime implementation.
 
 ### SWU-ACI-002 — Compatibility, ledger and protocol ADR set
 
+- **Status:** authored complete; independent digest-bound review pending.
+- **Primary output:** [ADR-002](../../adrs/ADR-002-compatibility-terminal-snapshot-and-local-probe.md),
+  its compatibility fixtures, sole-writer test plan, storage policy and profile registry.
+
 - **Dependencies:** none; may run beside SWU-ACI-001 with disjoint ADR files.
 - **Write scope:** `docs/features/agents-communication-infra/adrs/`, feature README question status,
   writer-boundary test specification.
@@ -60,6 +64,10 @@ migration code. This task authorizes contracts, not runtime implementation.
   contract obligations (bundle schema, drift disposition, guard specification and named tests) are
   frozen. B-003's physical proof remains open for TASK-020/materializer cutover without blocking
   TASK-010.
+
+The authored completion packet is [W0-CLOSURE.md](../W0-CLOSURE.md). It cannot self-close the
+blockers: the independent reviewer must bind the exact artifact manifest, after which root may
+select only the named `SWU-ACI-APT-VS-001` mutation-test scope.
 
 ## DomainSpec Coverage
 

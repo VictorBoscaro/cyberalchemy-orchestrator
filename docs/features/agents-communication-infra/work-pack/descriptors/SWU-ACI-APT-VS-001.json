@@ -1,0 +1,115 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-APT-VS-001",
+  "scope": "local-single-host-provenance-bus-vertical-slice",
+  "entry_predicate": [
+    "apt-task-105-accepted",
+    "aci-swu-001-accepted",
+    "aci-swu-002-accepted",
+    "b-001-closed",
+    "b-002-closed",
+    "b-003-w0-contract-frozen",
+    "four-profile-registration-receipts-pass",
+    "storage-artifact-review-pass",
+    "architecture-product-engine-root-exact-swu-approval"
+  ],
+  "write_scope": [
+    "implementations/server/runtime/**",
+    "implementations/tests/runtime/**",
+    "implementations/server/config.py",
+    "implementations/config.example.json",
+    "implementations/server/main.py",
+    "implementations/requirements.txt"
+  ],
+  "migrations": [
+    "001_aci_slice0.sql",
+    "002_artifact_store.sql",
+    "003_profile_capability.sql",
+    "004_apt_projection.sql"
+  ],
+  "commands": [
+    "aci.register-protocol-profile@1",
+    "apt.ensure-session@1",
+    "apt.link-session-dispatch@1",
+    "aci.activate-local-probe-context@1",
+    "aci.publish-bus-contribution@1",
+    "aci.verify-publication-receipt@1",
+    "apt.append-research-capture@1",
+    "apt.append-research-fact@1",
+    "apt.append-reference-probe-lineage@1"
+  ],
+  "events": [
+    "aci.protocol_profile_registered@1",
+    "apt.session_started@1",
+    "apt.session_dispatch_linked@1",
+    "aci.local_probe_context_activated@1",
+    "publication.persisted",
+    "position.accepted",
+    "reference_probe.accepted@1",
+    "publication.candidate_abandoned",
+    "apt.research_capture_appended@1",
+    "apt.research_fact_appended@1",
+    "apt.reference_probe_lineage_appended@1"
+  ],
+  "aggregate_patterns": [
+    "aci.protocol-registry",
+    "apt.session-binding:<origin_digest>",
+    "apt.dispatch-link:<dispatch_id>",
+    "aci.local-probe:<session_id>:<dispatch_id>:<probe_id>:<profile_digest>",
+    "apt.research-capture:<dispatch_id>:<expected_contribution_id>",
+    "apt.research-fact:<subject_kind>:<subject_id>",
+    "apt.disposition-chain:<canonical_target_digest>",
+    "apt.assessment-chain:<canonical_target_digest>"
+  ],
+  "http": [
+    "GET /api/runtime/session",
+    "POST /api/runtime/dispatch-links",
+    "POST /api/runtime/bus/publications",
+    "POST /api/runtime/bus/publications/verify",
+    "GET /api/runtime/events?after={offset}&through={offset}",
+    "GET /api/runtime/artifacts/{artifact_id}",
+    "GET /api/runtime/projections/{name}/{key}"
+  ],
+  "trusted_cli": [
+    "runtime migrate",
+    "runtime register-profiles",
+    "runtime activate-local-probe",
+    "runtime issue-capability",
+    "runtime verify-store",
+    "runtime serve --local-pilot"
+  ],
+  "profiles": [
+    "aci.atomic-command-receipt-accepted-prefix-read-grouping@1",
+    "aci.transactional-semantic-uniqueness-result-mapping@1",
+    "aci.event-schema-canonicalizer-registry@1",
+    "apt.reference-probe-lineage@1"
+  ],
+  "test_families": [
+    "T-GATE",
+    "T-MIG",
+    "T-TXN",
+    "T-IDEM",
+    "T-ART",
+    "T-LEDGER",
+    "T-CAP",
+    "T-PUB",
+    "T-VERIFY",
+    "T-GROUP",
+    "T-REPLAY",
+    "T-APT",
+    "T-API",
+    "T-REGRESSION"
+  ],
+  "mutation_test_authorization": "pending-independent-review-and-root-receipt",
+  "local_pilot_serve_enablement": "blocked-separate-post-implementation-gate",
+  "permanently_out_of_scope_for_this_authorization": [
+    "production",
+    "external-network",
+    "automatic-agent-launch",
+    "provider-adapter",
+    "audit-ledger-write",
+    "audit-materializer",
+    "legacy-runtime-cutover",
+    "reveal-vote-deliberation-group-commit"
+  ]
+}

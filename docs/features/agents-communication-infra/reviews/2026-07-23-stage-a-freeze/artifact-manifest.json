@@ -1,0 +1,32 @@
+{
+  "schema": "aci.stage-a-artifact-manifest/v1",
+  "status": "pending-independent-review-cycle-2",
+  "scope": "docs/features/agents-communication-infra",
+  "artifacts": [
+    {"path":"adrs/ADR-002-compatibility-terminal-snapshot-and-local-probe.md","sha256":"97d621abb16590961ce1d85f25cf9bef79cb1d3ee1d38fbfd58c8c363e6054a8"},
+    {"path":"storage-and-artifact-policy.md","sha256":"81e99c5b06b80863a69722fc0a961267f60b87d369db4055c99fa9a864bbe479"},
+    {"path":"adrs/fixtures/slice0-compatibility-fixtures.json","sha256":"8225db2ab255b26440bb1554323e3c8eb0c57c5ff5e6ba3becc1955b5387037b"},
+    {"path":"adrs/fixtures/SWU-ACI-002-SOLE-WRITER-TEST-PLAN.md","sha256":"7cce56bc13f4e0151de7a9baa711c1f2a464a2b23cf3931a7d0e20ad57796ab0"},
+    {"path":"adrs/fixtures/golden-opening-v0.6.1.yaml","sha256":"7e60384f6572cd267b28a92955e168166405c3c49da92c8335507f2baa359166"},
+    {"path":"adrs/fixtures/golden-close-v0.6.1.yaml","sha256":"caa84b94f647b68829bba394efaf02d9031d7f09e8805c5046f52e7b472f441b"},
+    {"path":"adrs/fixtures/local-probe-end-to-end-trace.json","sha256":"c119606ac83ef7098d6172bc9930d3200afd7612f28203bb3b1b3e4a13edeccc"},
+    {"path":"adrs/fixtures/SWU-ACI-002-GOLDEN-MANIFEST.json","sha256":"d8fb51edac469e402e2456084166b84024ace26e16cd4e7c9a5751febe277daf"},
+    {"path":"profiles/README.md","sha256":"04089b1faa546a1875e05912ffd6beff242169a4666e2bd347a3ecaa818dc61b"},
+    {"path":"profiles/aci.atomic-command-receipt-accepted-prefix-read-grouping.v1.json","sha256":"b9df42b97242ab2852aa0d2225d7e82a1b0fe23985b2b59c9c9b25adae35d6a2"},
+    {"path":"profiles/aci.transactional-semantic-uniqueness-result-mapping.v1.json","sha256":"a0a13c63e1edbfc0da16c174c905b6e1e6ac0c5e0e58bbb59f84cc4954047a6d"},
+    {"path":"profiles/aci.event-schema-canonicalizer-registry.v1.json","sha256":"f3e49352d89262cd4dd7f6cfbb6c3cf3c60a51039ba5c4348bfeb36924d42b8c"},
+    {"path":"profiles/apt.reference-probe-lineage.v1.json","sha256":"31441e222fbd3a18cfb2a38f33e1e9f063e721f54fe64a9ec0be2ff5e786ea31"},
+    {"path":"work-pack/tasks/TASK-APT-VS-001.md","sha256":"78712991654ef6abd29478cb5de3380a17661f048e75106772297b1bc558781e"},
+    {"path":"work-pack/descriptors/SWU-ACI-APT-VS-001.json","sha256":"3bd86271ad648c04aaaf0d028bf681a557028061a9875c74c9535e1f35ab66c3"},
+    {"path":"work-pack/W0-CLOSURE.md","sha256":"2f456f9bd07e129746ce34ab25bbf8aeae58daa243d1eaf6117534915e6cabb3"},
+    {"path":"WORK-PACK.md","sha256":"8a28e5d111c4cc989e24312311e9f5e160c942655ea6889083f5a0f7db041944"},
+    {"path":"work-pack/tasks/TASK-000.md","sha256":"f6c94e1cf6a25f567d4e2919d5315b397b44586c12f9316674cb79e2bc7560b5"},
+    {"path":"work-pack/shared/cross-task-decisions.md","sha256":"0f1dba3c1a4cf33b852ba1f5aa4a51a665f1031c30f43c6110d41014d89f0457"},
+    {"path":"work-pack/shared/cross-task-gaps.md","sha256":"c4d4fcd0cb7e785fabb502543fb39df3f7e610eeb2d176f64d6706a35ed8fc9f"},
+    {"path":"work-pack/shared/swu-manifest.md","sha256":"0fdb788efee79d0bd1ad634644825f7f009ccd168eaf3269af22047b4bfc0293"},
+    {"path":"work-pack/waves/W0.md","sha256":"52e33caf9fbd0c9e3fed4eebcaaf70fe0adb9c4372eff3311ce0d0969f7cf61b"},
+    {"path":"EXECUTION-PACK.md","sha256":"9cf169bb86e08e7f5ee33de1eecf7ead670164fe3da458c96a6ab46213865783"},
+    {"path":"README.md","sha256":"7bf3774a6c6147bb60f6f5ca3e12ed65f96b43be0289d36788b87eb88fcefc81"},
+    {"path":"specs/SPEC.md","sha256":"e5ca492e7b535f3164644fc78d56b3862a039d3861521734978c8e1c74afbe05"}
+  ]
+}

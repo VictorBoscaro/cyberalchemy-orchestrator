@@ -5,8 +5,8 @@ is_session: false
 layer: domain
 nature: [technical, reference]
 status: draft
-version: 0.2.0
-last_updated: 2026-07-21
+version: 0.2.1
+last_updated: 2026-07-23
 ---
 
 # Domain: Agents Communication Infra
@@ -28,12 +28,13 @@ change creates another dispatch rather than mutating this entity.
 | `source_bytes_artifact_id` | [ArtifactId](#artifactid) | yes | Exact approved bytes. |
 | `dispatch_spec` | [DispatchSpec](#dispatchspec) | yes | Compiled executable contract. |
 | `digest` | [ContentDigest](#contentdigest) | yes | Digest over the canonical frozen authority. |
-| `authority_mode` | [ExecutionAuthorityMode](#executionauthoritymode) | yes | Exclusive legacy/runtime owner chosen before confirmation. |
+| `authority_mode` | [ExecutionAuthorityMode](#executionauthoritymode) | yes | Must equal `runtime-managed`; preserves the pre-confirmation cutover choice as accepted runtime evidence. |
 | `confirmed_by` | string | yes | Authenticated human principal. |
 | `confirmed_at` | timestamp | yes | Recorded confirmation observation. |
 
-**Identity:** `dispatch_id`; immutable after acceptance. During compatibility, one
-[ConfirmedDispatch](#confirmeddispatch) creates at most one [Run](#run).
+**Identity:** `dispatch_id`; immutable after acceptance. An accepted
+[ConfirmedDispatch](#confirmeddispatch) creates exactly one [Run](#run); choosing
+`legacy-managed` routes the dispatch away from `ConfirmRuntimeDispatch` and creates neither entity.
 
 ### Run
 
@@ -498,8 +499,8 @@ Opaque logical participation identity. Equality is exact string equality.
 
 | Value | Description |
 |---|---|
-| `legacy-managed` | Legacy session owns execution; no runtime Run exists. |
-| `runtime-managed` | Runtime owns execution; compatibility marker cannot authorize a watcher. |
+| `legacy-managed` | Pre-confirmation routing choice: the legacy session owns execution; no runtime `ConfirmedDispatch` or `Run` exists. |
+| `runtime-managed` | Accepted runtime confirmation freezes `ConfirmedDispatch` and creates exactly one `Run`; the compatibility marker cannot authorize a watcher. |
 
 ### ReconciliationState
 
@@ -550,6 +551,6 @@ Opaque logical participation identity. Equality is exact string equality.
 
 | Document | Type | Description |
 |---|---|---|
-| [Discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Source decisions and OQ dispositions. |
+| [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Source decisions and OQ dispositions. |
 | [Rules](rules.md) | `governed-by` | Cross-entity invariants and authority rules. |
 | [Persistence and replay](persistence-and-replay.md) | `maps` | Candidate storage ownership and transaction contract. |

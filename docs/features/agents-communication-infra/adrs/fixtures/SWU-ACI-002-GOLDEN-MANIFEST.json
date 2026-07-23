@@ -1,0 +1,29 @@
+{
+  "schema": "aci.swu-002-golden-manifest/v1",
+  "fixtures": [
+    {
+      "kind": "exact-opening-ledger-bytes",
+      "path": "golden-opening-v0.6.1.yaml",
+      "size_bytes": 694,
+      "sha256": "sha256:7e60384f6572cd267b28a92955e168166405c3c49da92c8335507f2baa359166",
+      "dispatch_id": "2026-07-23-local-probe-fixture",
+      "appender_contract_version": "0.6.1"
+    },
+    {
+      "kind": "exact-close-ledger-bytes",
+      "path": "golden-close-v0.6.1.yaml",
+      "size_bytes": 191,
+      "sha256": "sha256:caa84b94f647b68829bba394efaf02d9031d7f09e8805c5046f52e7b472f441b",
+      "close_of": "2026-07-23-local-probe-fixture",
+      "exit_reason": "resolved"
+    },
+    {
+      "kind": "command-event-state-trace",
+      "path": "local-probe-end-to-end-trace.json",
+      "size_bytes": 3915,
+      "sha256": "sha256:c119606ac83ef7098d6172bc9930d3200afd7612f28203bb3b1b3e4a13edeccc",
+      "terminal_state": "official-probe-lineage-current"
+    }
+  ]
+}
+

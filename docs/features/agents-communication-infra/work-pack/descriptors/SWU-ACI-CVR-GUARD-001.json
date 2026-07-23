@@ -1,0 +1,153 @@
+{
+  "domain": "aci.cvr.swu-descriptor/v1",
+  "schema_version": 1,
+  "status": "proposal_non_authorizing",
+  "canonical_swu_id": "SWU-ACI-CVR-GUARD-001",
+  "owner": "root_authority",
+  "bootstrap_executor": "external_trusted_bootstrap_executor",
+  "bootstrap_mode": "nonrecursive_one_time",
+  "repository_paths": [
+    "implementations/vault_read_guard/__init__.py",
+    "implementations/vault_read_guard/canonical.py",
+    "implementations/vault_read_guard/descriptors.py",
+    "implementations/vault_read_guard/finalizer.py",
+    "implementations/vault_read_guard/guard.py",
+    "implementations/vault_read_guard/verifier.py",
+    "implementations/tests/vault_read_guard/test_authority_identity.py",
+    "implementations/tests/vault_read_guard/test_bootstrap_boundary.py",
+    "implementations/tests/vault_read_guard/test_crash_matrix.py",
+    "implementations/tests/vault_read_guard/test_descriptor_scope.py",
+    "implementations/tests/vault_read_guard/test_finalizer.py"
+  ],
+  "repository_preconditions": [
+    {
+      "path": "implementations/vault_read_guard/__init__.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/vault_read_guard/canonical.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/vault_read_guard/descriptors.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/vault_read_guard/finalizer.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/vault_read_guard/guard.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/vault_read_guard/verifier.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/tests/vault_read_guard/test_authority_identity.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/tests/vault_read_guard/test_bootstrap_boundary.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/tests/vault_read_guard/test_crash_matrix.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/tests/vault_read_guard/test_descriptor_scope.py",
+      "pre_write_state": "absent"
+    },
+    {
+      "path": "implementations/tests/vault_read_guard/test_finalizer.py",
+      "pre_write_state": "absent"
+    }
+  ],
+  "commands": [
+    "py -3.12 -m compileall implementations/vault_read_guard implementations/tests/vault_read_guard",
+    "py -3.12 -m unittest discover -s implementations/tests/vault_read_guard -p \"test_*.py\""
+  ],
+  "test_ids": [
+    "T-CVR-AUTH1",
+    "T-CVR-AUTH2",
+    "T-CVR-AUTH3",
+    "T-CVR-AUTH4",
+    "T-CVR-AUTH5"
+  ],
+  "dependency_policy": {
+    "runtime": "python_stdlib_only",
+    "dependency_files": [],
+    "network": false,
+    "package_indexes": []
+  },
+  "ephemeral_temp_policy": {
+    "root_template": "<system-temp>/aci-cvr-guard-001-<32-lowercase-hex>",
+    "allowed_uses": [
+      "isolated_interpreter",
+      "test_cache"
+    ],
+    "cleanup": "required_and_receipted",
+    "repository_writes": false
+  },
+  "denied_scopes": [
+    "implementations/vault_read/**",
+    "implementations/server/**",
+    "docs/features/agents-communication-infra/work-pack/descriptors/**",
+    "docs/features/agents-communication-infra/work-pack/authorizations/**",
+    "api",
+    "mcp",
+    "bus",
+    "apt",
+    "canonical_data"
+  ],
+  "predecessor_requirements": {
+    "terminal_receipt": null,
+    "approval_packet_acceptance": "required_before_authorization",
+    "bootstrap_authorization": "exact_one_time_external_root_authorization"
+  },
+  "execution_receipt_schema": {
+    "domain": "aci.cvr.execution-receipt/v1",
+    "schema_version": 1,
+    "top_level_order": [
+      "domain",
+      "schema_version",
+      "body"
+    ],
+    "required_body_fields": [
+      "authorization_sha256",
+      "claim_sha256",
+      "descriptor_sha256",
+      "approval_packet_digest",
+      "execution_session_id",
+      "predecessor_evidence",
+      "observed_effects",
+      "cleanup_evidence",
+      "outcome",
+      "reason"
+    ],
+    "allowed_outcomes": [
+      "PASS",
+      "BLOCK",
+      "FLAG",
+      "INTERRUPTED"
+    ],
+    "unknown_fields": "reject",
+    "creation": "create_if_absent_byte_idempotent",
+    "digest_preimage_prefix": "aci.cvr.execution-receipt/v1\\x00"
+  },
+  "finalization": {
+    "owner": "external_authority_owned_bootstrap_finalizer",
+    "count": 1,
+    "root_may_request": [
+      "cancel",
+      "block"
+    ],
+    "root_writes_receipt": false,
+    "guard_being_created_writes_receipt": false
+  },
+  "assurance": "advisory_not_sandbox",
+  "creates_authorization": false,
+  "gate_effect": "none"
+}

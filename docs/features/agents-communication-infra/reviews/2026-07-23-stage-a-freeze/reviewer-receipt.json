@@ -1,0 +1,27 @@
+{
+  "schema": "aci.stage-a-reviewer-receipt/v1",
+  "status": "pending",
+  "reviewer": "pending-independent-reviewer",
+  "artifact_manifest_path": "artifact-manifest.json",
+  "artifact_manifest_sha256": "sha256:df6c970578282383e8160c09f1a5a0989dd68bb2ac0266da034deec7f4bff354",
+  "profile_registry_manifest_path": "profile-registry-manifest.json",
+  "profile_registry_manifest_sha256": "sha256:ef5cce6b39c34530ba790142cc09f1d3c1181cc0a918f2cf53f06f956aea32be",
+  "checks": {
+    "architecture_compatibility_snapshot_reconciliation": "pending",
+    "product_protocol_decision_terminal_profile": "pending",
+    "engine_b003_w0_contract_only": "pending",
+    "storage_artifact_ownership": "pending",
+    "named_swu_implementability": "pending",
+    "digest_recomputation": "pending"
+  },
+  "gate_effect_if_pass": {
+    "b_001": "closed",
+    "b_002": "closed",
+    "b_003_w0_contract": "frozen",
+    "b_003_physical_proof_cutover": "blocked",
+    "mutation_test_authorization": "eligible_for-separate-root-receipt",
+    "local_pilot_serve_enablement": "blocked",
+    "production_enablement": "blocked"
+  },
+  "findings": []
+}

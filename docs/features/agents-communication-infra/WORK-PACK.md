@@ -2,7 +2,7 @@
 module: agents-communication-infra
 version: current
 status: draft
-updatedAt: 2026-07-21
+updatedAt: 2026-07-23
 docType: work-pack
 ---
 
@@ -18,16 +18,21 @@ decision state live under [`work-pack/`](work-pack/).
 
 | Field | Value | Notes |
 |---|---|---|
-| `workPackGateStatus` | **block** | Documentation-only W0 may proceed. Runtime code is blocked until Slice-0 ADRs are accepted. |
+| `workPackGateStatus` | **W0-authored / independent-review-pending** | Stage-A documentation is complete; runtime mutation remains blocked until the digest-bound reviewer/root receipts pass. |
+| `mutationTestAuthorization` | **pending — NON-PASS** | May become `pass_for_exact_swu` only for `SWU-ACI-APT-VS-001`; no live/local DB is authorized. |
+| `localPilotServeEnablement` | **block** | Separate post-implementation reviewer/root gate; loopback serving is not authorized by W0. |
+| `productionEnablement` | **block** | External network, provider execution, materializer and audit-ledger cutover are excluded. |
+| `cvrImplementationGateStatus` | **approval_packet_prepared — NON-PASS** | Prepared for named owner review; no owner acceptance, active exception or implementation authorization exists. |
+| `cvrAuthorizationPredicate` | Global gates, or proposed exact descriptor-bound authorization for one enumerated CVR SWU | Proposed branch is non-operative until the coordinated five-entry packet is accepted; currently false. |
 | `specAuthoringGateStatus` | **pass — W0 contracts only** | DomainSpec artifacts may ratify or defer discovery decisions; this does not promote runtime implementation or close B-001 through B-003. |
 | `complexity` | high | Persistence, authorization, external effects and migration cross several authority boundaries. |
 | `outputMode` | split | Tasks and waves have independent contracts. |
 | `executionPackRef` | [EXECUTION-PACK.md](EXECUTION-PACK.md) | Wave scheduler and delivery-stage coverage. |
 | `layeringArtifactRef` | [IMPLEMENTATION-LAYERING.md](IMPLEMENTATION-LAYERING.md) | Decision-first promotion boundaries. |
 | `dispatchTechniqueTrace` | [section below](#dispatch-technique-trace) | Selected techniques affect gates and receipts. |
-| `distillValidationStatus` | **flag** | Smallest unit closes; blocker ADRs and the missing local Invoke plan contract are recorded. |
+| `distillValidationStatus` | **review-pending** | W0 artifacts and the exact named-SWU descriptor are authored; independent digest review remains. |
 | `activeLayerWindow` | L0 | W0 decisions, then Slice 0 only. |
-| `lastUpdatedAt` | 2026-07-21 | Initial plan. |
+| `lastUpdatedAt` | 2026-07-23 | Stage-A W0 closure corpus authored. |
 | `readinessProfile` | pilot | Single-host, single-tenant runtime. |
 
 ## Objective summary
@@ -38,8 +43,8 @@ decision state live under [`work-pack/`](work-pack/).
   endpoint, current ledger parser and current validated appender.
 - **Success condition:** Slices 0-4 pass their own falsifiers and the existing skills/UI become
   clients of one command/runtime boundary rather than parallel executors.
-- **Current authorization:** planning, ADR and DomainSpec contract artifacts only. No runtime
-  implementation is authorized by this work-pack while the gate is `block`.
+- **Current authorization:** Stage-A planning/ADR/profile/fixture artifacts only. No runtime
+  implementation or local serving is authorized while the independent receipt is pending.
 
 ## Delivery boundary
 
@@ -74,8 +79,10 @@ Excluded until later phases:
 
 | Task | Goal | Layer | Complexity | Waves | Gate | Status |
 |---|---|---|---|---|---|---|
-| [TASK-000](work-pack/tasks/TASK-000.md) | Resolve Slice-0 decisions and freeze contracts. | L0 | high | W0 | ready for docs | not-started |
-| [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | blocked by TASK-000 | not-started |
+| [TASK-000](work-pack/tasks/TASK-000.md) | Resolve Slice-0 decisions and freeze contracts. | L0 | high | W0 | independent digest review | authored-complete; acceptance-pending |
+| [SWU-ACI-APT-VS-001](work-pack/tasks/TASK-APT-VS-001.md) | Local Session/link/bus/probe/research vertical slice. | L0 | high | W1 bounded | exact cross-workpack predicate | descriptor-frozen; mutation-blocked |
+| [TASK-CVR](work-pack/tasks/TASK-CVR.md) | Prepare and, only after exact authorization, deliver canonical vault reads in artifact then edge slices. | L0 adjunct | high | W0 adjunct | global block + nominal gate | documentation-prepared; implementation-blocked |
+| [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | only exact named SWU may be selected after receipts | not-started; mutation-blocked |
 | [TASK-020](work-pack/tasks/TASK-020.md) | Implement audit-ledger opening/close materializers and reconciliation. | L0/L1 | high | W1-W2 | blocked by TASK-000/010 | not-started |
 | [TASK-030](work-pack/tasks/TASK-030.md) | Execute the fixed protocol with deterministic fake adapters. | L0 | high | W1 | blocked by TASK-010/020 | not-started |
 | [TASK-040](work-pack/tasks/TASK-040.md) | Add durable outbox, recovery, sealing, races and runtime SSE. | L1 | high | W2 | blocked by S-001 | not-started |
@@ -87,26 +94,30 @@ Excluded until later phases:
 | [TASK-AUDIT-ALIGNMENT](work-pack/tasks/TASK-AUDIT-ALIGNMENT.md) | Audit implementation against architecture and authorities. | L4 | high | W7 | after S-006 | not-started |
 | [TASK-AUDIT-LAYERING](work-pack/tasks/TASK-AUDIT-LAYERING.md) | Audit that promotion evidence justified every layer. | L4 | medium | W7 | after S-006 | not-started |
 
-## First selected Smallest Working Unit
+## Selection state
 
-Only the following unit is selected while the gate is blocked:
+`SWU-ACI-001` is complete. The next and only prepared mutation unit is
+`SWU-ACI-APT-VS-001`, but it is not selected until the cross-workpack predicate and root receipt
+pass:
 
 | SWU | Parent | Goal | Dependencies | Write scope | Done criteria | Evidence | Verification | Owner |
 |---|---|---|---|---|---|---|---|---|
-| `SWU-ACI-001` | TASK-000 | Draft and decide the persistence/transaction ADR for Slice 0. | none | `docs/features/agents-communication-infra/adrs/` and decision ledger | ADR answers OQ-PERSISTENCE, OQ-STREAM and journal/outbox transaction boundary with alternatives and tests. | Accepted ADR plus schema sketch and crash-boundary table. | Human review against README sections 4.2, 9.1, 12 and 14. | manual |
+| `SWU-ACI-APT-VS-001` | bounded TASK-010/APT integration | Implement the exact local vertical slice. | [cross-workpack predicate](work-pack/tasks/TASK-APT-VS-001.md#entry-predicate) | descriptor-bound runtime/test paths only | Complete test matrix and execution receipt; no broadened claims. | mutation receipt, state/artifact hashes, independent implementation PASS | independent review plus root approval | pending |
 
-All other SWUs remain unselected. Their task files contain the execution contracts required for
-selection after dependencies pass.
+All runtime SWUs remain unselected while `mutationTestAuthorization` is pending.
 
 ## Blockers
 
 | Blocker | Scope | Description | Owner | Next action |
 |---|---|---|---|---|
-| B-001 | Slice 0 | ADR-001 now accepts the SQLite transaction/offset and canonical-byte contracts for `SWU-ACI-001`; dependency-lock and runtime crash evidence remain downstream. The blocker remains open because `SWU-ACI-002` and the rest of TASK-000 are incomplete. | architecture owner | Complete SWU-ACI-002 and the remaining TASK-000 obligations; TASK-010 later applies the accepted pins and supplies executable crash/conformance evidence. |
-| B-002 | Slice 0 | Decision, terminal and snapshot contracts are specified/proposed in DomainSpec, but are not W0-accepted or evidenced. | product/protocol owner | Complete TASK-000 ADR set and attach acceptance/fixture evidence. |
-| B-003 | Audit materializer/cutover | EG-1 remains medium-veracity until W0 freezes the bundle schema, drift disposition, guard spec and named tests and TASK-020 proves the complete bundle on the target host. This does not block TASK-010 journal work. | engine owner | Freeze the contract in TASK-000; produce process identity, ACL, writer inventory and negative bypass evidence in TASK-020 before cutover; lint is auxiliary only. |
+| B-001 | Slice 0 | Closure corpus is authored: ADR-001 plus ADR-002, profiles, fixtures and exact descriptor. | architecture owner | Independent digest-bound corpus PASS closes it; runtime crash evidence remains implementation acceptance, not W0. |
+| B-002 | Slice 0 | Fixed decision, terminal, snapshot and compatibility contracts plus fixtures are authored. | product/protocol owner | Independent product/protocol PASS over the exact manifest closes it. |
+| B-003 | Audit materializer/cutover | W0 bundle schema, historical-drift disposition, guard algorithm and named tests are authored/frozen candidates. Physical host proof and cutover remain open. | engine owner | Reviewer freezes the W0 contract; TASK-020 later supplies process/ACL/inventory/bypass evidence. |
 | B-004 | Invoke process | `.claude/skills/invoke/plan.md` referenced by the local skill is absent. | Invoke package owner | Treat this plan as template-based fallback; repair/regenerate skill separately. |
 | B-005 | Slice 1+ | Slice-specific open questions in README section 17 require ADRs before their wave. | wave owner | Resolve in each wave's entry gate; do not pull them into W0. |
+| B-CVR-001 | Canonical vault reads | Coordinated five-entry packet and owner/root acceptance do not exist; proposed per-SWU predicate is non-operative. | architecture + product/protocol + host/operator + root owners | Accept ADR/spec/tests/task plus selected deterministic descriptor; preserve global integration blocks. |
+| B-CVR-002 | CVR guard bootstrap | GUARD-001 and external trusted bootstrap evidence do not exist. | root/authority owner | Issue one exact bootstrap auth/claim and write only `implementations/vault_read_guard/` plus tests. |
+| B-CVR-003 | CVR execution authority | No content-addressed authorization/claim/ExecutionReceipt exists. | root + external bootstrap finalizer/common guard owner | Materialize exactly three artifacts; external finalizer alone completes GUARD, common guard alone completes CVR-001/002, and root never writes receipts. |
 
 ## Dispatch technique trace
 
@@ -131,9 +142,9 @@ SWU at a time and must generate their own bounded execution receipt.
 |---|---|---|
 | Smallest coherent unit | pass | One accepted persistence ADR is the first useful unit; runtime code before it would encode accidental authority. |
 | Recomposition proof | pass | The L0 command -> journal -> materializer -> fake adapter -> terminal chain is a strict subset of the target runtime. |
-| Hidden acceptance-critical gaps | flag | Five Slice-0 OQs and EG-1 drift remain explicit blockers. |
+| Hidden acceptance-critical gaps | review-pending | The W0 decisions are explicit; independent acceptance and downstream physical/runtime evidence remain. |
 | Deferred complexity | pass | Real providers, generic recipes, distributed workers and rich memory are assigned to later layers. |
-| Navigation to first unit | pass | Start at TASK-000 / SWU-ACI-001, then W0 exit gate. |
+| Navigation to first unit | pass | Review the W0 closure packet, then authorize only `SWU-ACI-APT-VS-001`. |
 
 ### Proposer/Balancer trace
 
@@ -152,9 +163,10 @@ SWU at a time and must generate their own bounded execution receipt.
 ## Gate checks
 
 1. W0 may edit planning/ADR artifacts while `workPackGateStatus = block`; no runtime code may start.
-2. Promote runtime entry for TASK-010 only when B-001/B-002 are accepted and B-003's W0 contract
-   obligations are frozen. Keep audit materializer/cutover blocked until TASK-020 supplies B-003's
-   complete target-host physical evidence.
+2. Promote mutation entry only for the exact `SWU-ACI-APT-VS-001` descriptor when B-001/B-002 are
+   independently closed, B-003's W0 contract is independently frozen, the four profiles and
+   storage policy pass, APT TASK-105 is accepted and the root receipt binds every digest. Keep
+   local serving separate and materializer/cutover blocked until TASK-020 physical evidence.
 3. Select exactly one SWU before each mutation-capable handoff.
 4. Parallel SWUs require disjoint write scopes or an explicit merge owner.
 5. A failed slice falsifier stops promotion; later waves do not compensate for it.
@@ -162,11 +174,18 @@ SWU at a time and must generate their own bounded execution receipt.
    appender as sole physical writer.
 7. Every completed SWU returns an execution receipt: files touched, validation results, state/event
    hashes where applicable, unresolved blockers and next handoff.
+8. `cvrImplementationGateStatus=approval_packet_prepared` is non-pass. The proposed per-SWU branch
+   remains non-operative until the five-entry packet is accepted. Order is
+   `000 -> GUARD-001 -> 001 -> 002`; no integration surface is included.
+9. Future execution state consists only of content-addressed `authorization.json`, `claim.json`
+   and authority-owned `execution-receipt.json`. Descriptors are fixed governance entries. There
+   is no current pointer, revocation artifact, ClaimReceipt or second receipt; host enforcement is
+   advisory rather than sandboxing.
 
 ## Required links
 
 - [Application discovery](discovery/feature-discovery/agents-communication-infra.md)
-- [External Tool Adoptions](discovery/external-tool-adoptions.md)
+- [External Tool Adoptions](discovery/external-tool-adoption/external-tool-adoptions.md)
 - [Implementation layering](IMPLEMENTATION-LAYERING.md)
 - [Execution pack](EXECUTION-PACK.md)
 - [Shared context](work-pack/shared/context.md)
@@ -176,11 +195,13 @@ SWU at a time and must generate their own bounded execution receipt.
 - [Shared SWU manifest](work-pack/shared/swu-manifest.md)
 - [Wave W0](work-pack/waves/W0.md)
 - [Task TASK-000](work-pack/tasks/TASK-000.md)
+- [Task TASK-CVR](work-pack/tasks/TASK-CVR.md)
 
 ## Change log
 
 | Date | Change | Author |
 |---|---|---|
+| 2026-07-23 | Added the prepared, non-pass CVR ApprovalPacket lane and exact SWU contracts while preserving both global runtime blocks. | controlled documentation writer |
 | 2026-07-21 | Ratified ETD-1–ETD-7, added canonical-contract/provider-admission/sole-writer evidence gates and retained runtime block. | DomainSpec spec writer |
 | 2026-07-21 | Linked the pipeline-visible application discovery as the authority source for DomainSpec authoring. | Codex / discovery-writing |
 | 2026-07-21 | Initial detailed migration work-pack. | Codex / Invoke fallback |

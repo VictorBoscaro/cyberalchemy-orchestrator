@@ -1224,14 +1224,18 @@ o registro canônico provisório. Uma questão bloqueante precisa ser resolvida 
 
 1. **OQ-PERSISTENCE:** assumindo SQLite/WAL no proof slice, qual schema/boundary transacional reúne
    event append, aggregate version, constraints e outbox, e qual configuração de durability é aceita?
-2. **OQ-DECISION:** qual regra fixa inicial será usada — unanimidade, maioria qualificada ou ausência
-   de veto — e como `dissent` difere de ausência de quorum?
-3. **OQ-TERMINAL:** quais exit reasons pertencem a attempt, group e run, e como mapeiam para o enum
-   de auditoria atual sem confundir cancel, timeout, budget, partial e technical error?
+2. **OQ-DECISION — decisão aceita no corpus, receipt independente pendente:** o profile
+   `fixed-two-seat-proof@1` exige dois votos; igualdade produz `consensus`, conflito produz
+   `dissent`, e menos de dois produz `no_quorum`. O profile local-probe não executa votação.
+3. **OQ-TERMINAL — decisão aceita no corpus, receipt independente pendente:** somente a causa
+   terminal única do run mapeia para `resolved`, `dissent_irreconcilable`,
+   `loop_ceiling_reached`, `user_abort` ou `error`,
+   conforme [ADR-002](adrs/ADR-002-compatibility-terminal-snapshot-and-local-probe.md).
 4. **OQ-STREAM:** qual é o escopo de `journal_offset`, e checkpoints usam um stream global, por run
    ou por aggregate?
-5. **OQ-SNAPSHOT:** quais inputs externos precisam ser capturados no manifest para que o state
-   reduction seja auditável sem prometer reprodução do modelo?
+5. **OQ-SNAPSHOT — decisão aceita no corpus, receipt independente pendente:** inputs, profiles,
+   schemas, capabilities e bytes externos são artefatos imutáveis content-addressed; legacy
+   dispatch usa snapshot estrito com identidade e dois digests, sem prometer reprodução do modelo.
 
 ### Bloqueiam Slice 1
 
@@ -1243,8 +1247,10 @@ o registro canônico provisório. Uma questão bloqueante precisa ser resolvida 
    como representa completion tardia?
 9. **OQ-RETENTION:** qual conjunto mínimo de eventos/payloads/checkpoints permanece para recovery e
    auditoria, e quais classes admitem TTL, redaction ou crypto-erasure?
-10. **OQ-LEDGER-CONSISTENCY:** qual materializer abre/fecha o audit ledger, como detecta drift e qual
-    é o procedimento de repair/cutover/rollback sem reescrever histórico?
+10. **OQ-LEDGER-CONSISTENCY — contrato W0 congelado no corpus; prova física aberta:** o appender
+    validado continua único writer; identidade igual + row idêntica é `verified`, divergência é
+    `reconciliation_required`; TASK-020 ainda deve provar processo/ACL/inventário/bypass antes de
+    materializer ou cutover.
 11. **OQ-REALTIME:** assumindo SSE no MVP e command API separada, qual formato, assinatura,
     expiração, autorização e gap recovery rege cursors, e qual evidência futura justificaria trocar
     o transporte?

@@ -5,7 +5,7 @@ type: queries
 title: "Agents Communication Infra — Queries"
 status: draft
 version: 0.1.0
-derived-from: discovery/feature-discovery/agents-communication-infra.md@0.2.1
+derived-from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 ---
 
 # Queries: Agents Communication Infra

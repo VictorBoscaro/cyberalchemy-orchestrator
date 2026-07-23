@@ -2,7 +2,7 @@
 module: agents-communication-infra
 version: current
 status: draft
-updatedAt: 2026-07-21
+updatedAt: 2026-07-23
 docType: execution-pack
 ---
 
@@ -12,7 +12,10 @@ docType: execution-pack
 
 | Field | Value |
 |---|---|
-| `planningGateStatus` | **block** — W0 decisions only |
+| `planningGateStatus` | **W0 authored; independent review pending** — runtime mutation remains blocked |
+| `mutationTestAuthorization` | **pending — NON-PASS** for exact `SWU-ACI-APT-VS-001` only |
+| `localPilotServeEnablement` | **block** — separate post-implementation gate |
+| `productionEnablement` | **block** |
 | `specAuthoringGateStatus` | **pass** — W0 DomainSpec contracts only; runtime remains blocked |
 | `complexity` | high |
 | `baselineWave` | W0 |
@@ -20,15 +23,15 @@ docType: execution-pack
 | `workPackManifest` | [WORK-PACK.md](WORK-PACK.md) |
 | `layeringArtifact` | [IMPLEMENTATION-LAYERING.md](IMPLEMENTATION-LAYERING.md) |
 | `activeLayerWindow` | L0 |
-| `lastPlannedAt` | 2026-07-21 |
+| `lastPlannedAt` | 2026-07-23 |
 | `readinessProfile` | pilot |
 
 ## Wave status board
 
 | Wave | Objective | Entry gate | Exit gate | Status | Evidence target |
 |---|---|---|---|---|---|
-| [W0](work-pack/waves/W0.md) | Freeze Slice-0 authority and protocol contracts. | Plan exists. | Slice-0 OQs plus Pydantic/canonical vectors accepted; EG-1 bundle schema, drift disposition, guard spec and named tests frozen; plan gate promoted for TASK-010 only. | not-started | ADRs, schema, canonical vectors, transition, crash and sole-writer guard test specifications |
-| [W1](work-pack/waves/W1.md) | Prove one deterministic replayable run. | W0 pass. | S-001 tests and falsifiers pass. | blocked | state hashes, ledger receipts, fault matrix |
+| [W0](work-pack/waves/W0.md) | Freeze Slice-0 authority and protocol contracts. | Plan exists. | Digest-bound independent PASS over ADRs, fixtures, profiles, storage policy and exact descriptor. | authored-complete; review-pending | W0 closure packet and reviewer receipt |
+| [W1](work-pack/waves/W1.md) | Prove one deterministic replayable run. | Exact mutation receipt, not a global W0 promotion. | Named-SWU test matrix passes. | blocked | state hashes, artifact/ledger receipts, fault matrix |
 | [W2](work-pack/waves/W2.md) | Prove sealing, recovery and realtime. | W1 pass and Slice-1 ADRs. | S-002 tests pass. | blocked | ACL/race/reconnect/reconciliation evidence |
 | [W3](work-pack/waves/W3.md) | Prove one real adapter safely. | W2 pass and adapter ADRs. | S-003 conformance passes. | blocked | adapter and security receipts |
 | [W4](work-pack/waves/W4.md) | Decide product value. | W3 pass and preregistration. | continue, simplify or stop decision. | blocked | blinded evaluation report |
@@ -40,12 +43,12 @@ docType: execution-pack
 
 | Stage | Required | Wave | Status | Evidence / rule |
 |---|---|---|---|---|
-| discover | yes | W0 | in-progress | Current-state anchors in shared context. |
-| design-baseline | yes | W0 | not-started | Accepted ADRs and frozen contracts. |
-| specification | yes | W0-W6 | not-started | Versioned event, command, adapter and recipe schemas per slice. |
+| discover | yes | W0 | complete for named slice | Current-state anchors and strict seam inventory. |
+| design-baseline | yes | W0 | review-pending | ADR-001 accepted; ADR-002 corpus awaits digest-bound PASS. |
+| specification | yes | W0-W6 | complete for named slice | Exact descriptor, profiles, commands/events and gates frozen. |
 | scenarios | yes | W1-W6 | not-started | Golden traces and failure scenarios. |
 | tests | yes | W1-W7 | not-started | Tests precede or accompany each implementation SWU. |
-| implementation | yes | W1-W6 | blocked | Starts only after W0 pass. |
+| implementation | yes | W1-W6 | blocked | Starts only with exact named-SWU mutation receipt. |
 | interface-experience | yes | W2/W6 | blocked | Runtime SSE first; command UI/client cutover last. |
 | telemetry-spec | yes | W1-W3 | not-started | Correlation IDs, state hashes and resource observations. |
 | telemetry-instrument | yes | W1-W3 | not-started | Journal/projection/adapter instrumentation. |
@@ -81,6 +84,8 @@ docType: execution-pack
 | D-008 | locked | First real provider is a repository-local subprocess behind `SandboxLauncher`; Octopus/Eve remain outside the kernel. | External Tool Adoptions ETD-3/ETD-4 |
 | D-009 | locked | PydanticAI is deferred, Zod is derived-boundary-only, and lint alone cannot prove EG-1. | External Tool Adoptions ETD-5–ETD-7 |
 | D-010 | locked | W0 specifies the sole-writer evidence contract; TASK-020 supplies complete target-host proof before materializer cutover, without blocking TASK-010 journal work. | B-003 / D-012 |
+| D-011 | review-pending | Candidate publication becomes official only through atomic parent verification and a unique `messages` fact. | ADR-002 |
+| D-012 | review-pending | Mutation-test, local-pilot serving and production/cutover are three distinct gates. | W0 closure packet |
 
 ## Closure obligations
 

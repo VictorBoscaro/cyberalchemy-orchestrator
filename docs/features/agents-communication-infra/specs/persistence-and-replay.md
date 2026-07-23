@@ -449,4 +449,4 @@ audit-writer drift disposition and sole-writer guard still require acceptance ev
 | [Rules](rules.md) | `governed-by` | Atomicity, idempotency, authority and replay invariants. |
 | [TASK-000](work-pack/tasks/TASK-000.md) | `specified-by` | W0 decision task this contract informs without completing. |
 | [Engine constitution](../../../vault/constitution/engine-constitution.md) | `governed-by` | EG-1 scoped writer and EG-6 historical-artifact rules. |
-| [Discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Sections 5.1–5.3 and OQ recommendations. |
+| [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Sections 5.1–5.3 and OQ recommendations. |

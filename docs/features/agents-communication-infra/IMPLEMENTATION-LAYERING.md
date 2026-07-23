@@ -2,8 +2,9 @@
 module: agents-communication-infra
 version: current
 status: draft
-updatedAt: 2026-07-21
+updatedAt: 2026-07-23
 docType: implementation-layering
+owners: [architecture_owner, product_protocol_owner, host_operator_owner, root_final_approver]
 ---
 
 # Implementation Layering: Agents Communication Infra
@@ -51,6 +52,29 @@ evidence; completing tasks without that evidence does not promote the layer.
 7. Realtime and query projections are reconstructible and never become workflow authority.
 8. Later layers retain state hashes and fault fixtures from all earlier layers.
 9. A layer may add one bounded improvement theme but may not silently pull later-layer scope forward.
+10. The CVR adjunct never imports or adds routes to `implementations/server/`, mutates canonical
+    sources, emits runtime/APT/bus facts, or treats an inventory/cache as authority.
+
+## CVR adjunct boundary
+
+**Decision sentence:** after this adjunct, we know whether admitted Markdown bytes can produce a
+deterministic, bounded, effect-free artifact projection before edge identity or transport is added.
+
+| Unit | Value gained | Main cost | Promotion evidence | Current state |
+|---|---|---|---|---|
+| `SWU-ACI-CVR-000` | Parser, scope, limits, module and delivery contracts become reviewable. | Owner/reviewer time and unresolved authorization. | Exact-document review plus named owner/root acceptance. | Documentation prepared; not accepted as implementation authority. |
+| `SWU-ACI-CVR-GUARD-001` | Pure verification, closed descriptors and direct worker invocation become executable. | External trusted bootstrap with exactly one external authority-owned bootstrap finalizer, canonical schemas and crash tests. | Exact one-time root bootstrap plus T-CVR-AUTH1–5. | Blocked pending five-entry packet acceptance. |
+| `SWU-ACI-CVR-001` | Capture/snapshot, artifact list/get and raw Connections declaration preservation become executable. | Restricted loader, dependency lock, canonical digest vectors, confinement/privacy and zero-effect tests. | Applicable artifact/raw-declaration T-CVR receipts and terminal scoped receipt. | Blocked by global and nominal gates. |
+| `SWU-ACI-CVR-002` | Endpoint resolution and logical edges extend the same core. | Resolution and predecessor-baseline fixtures. | CVR-001 PASS/baseline, delta/prehash proof, full CVR-001 rerun and T-CVR-AUTH6. | Deferred and blocked. |
+
+The order is strict: `000 -> GUARD-001 -> 001 -> 002`. CVR is an adjunct to L0, not evidence that L0, TASK-000
+or W0 passed. Promotion must retain the preceding unit's golden vectors, source authority,
+admission parity, complete-call bounds, import isolation and zero-effect proofs.
+The descriptor-bound per-SWU branch is non-operative until the coordinated packet is accepted.
+GUARD-001 then uses a non-recursive external trusted bootstrap; later workers run only through the
+guard. Each execution has exactly three content-addressed authority artifacts and one
+authority-created terminal receipt. Descriptors are governance entries, not execution artifacts.
+The unrestricted host boundary is advisory, not a sandbox.
 
 ## Recommended next layer
 

@@ -24,11 +24,11 @@ Owned: runtime commands, event reduction, attempts, publication receipts, sealed
 | ID | Source | Required | Role |
 |---|---|---:|---|
 | SC-001 | [SPEC.md](SPEC.md) | yes | Capability, registry and gate source |
-| SC-002 | [Discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md) | yes | Locked authority ACI-D1–D15 and OQ-ACI1–10 |
+| SC-002 | [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md) | yes | Locked authority ACI-D1–D15 and OQ-ACI1–10 |
 | SC-003 | [Rules](rules.md) | yes | Cross-cutting invariants |
 | SC-004 | [Persistence and replay](persistence-and-replay.md) | yes | Candidate W0 storage/recovery contract |
 | SC-005 | [Work pack W0](work-pack/waves/W0.md) | yes | Implementation-entry evidence |
-| SC-006 | [External Tool Adoptions v0.1.0](discovery/external-tool-adoptions.md) | yes | External dependency and provider-admission authority ETD-1–ETD-7 |
+| SC-006 | [External Tool Adoptions v0.1.0](../discovery/external-tool-adoptions.md) | yes | External dependency and provider-admission authority ETD-1–ETD-7 |
 
 ## Design Goals and Non-Goals
 
@@ -214,7 +214,7 @@ sequenceDiagram
 
 ## Decision Log
 
-ACI-D1–D15 and OQ-ACI1–10 are adopted without renumbering from [discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md). ETD-1–ETD-7 and the recorded OQ-ETA dispositions are adopted from [External Tool Adoptions v0.1.0](discovery/external-tool-adoptions.md). Later changes require versioned amendments.
+ACI-D1–D15 and OQ-ACI1–10 are adopted without renumbering from [discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md). ETD-1–ETD-7 and the recorded OQ-ETA dispositions are adopted from [External Tool Adoptions v0.1.0](../discovery/external-tool-adoptions.md). Later changes require versioned amendments.
 
 ## Risks
 

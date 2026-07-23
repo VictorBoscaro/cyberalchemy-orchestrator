@@ -1,7 +1,7 @@
 # Operations: Agents Communication Infra
 
 This file specifies the mutation side of the single-host runtime. It ratifies the
-operator-designated [discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md)
+operator-designated [discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md)
 without authorizing runtime implementation. Commands request change; only committed events in the
 [event journal](events.md#common-runtime-event-envelope) are facts; external work is represented by
 durable effect intents and is never repeated by replay.
@@ -71,7 +71,7 @@ therefore cannot pass validation using independently stale aggregate snapshots.
 | ID | Rule | Formal |
 | --- | --- | --- |
 | O-CONF-1 | Authority mode is selected before confirmation. | `mode = runtime-managed` |
-| O-CONF-2 | A runtime-managed dispatch creates exactly one run; a legacy-managed dispatch creates none. | `runtimeManaged(d) <=> existsUnique(run(d))` |
+| O-CONF-2 | An accepted runtime confirmation creates exactly one `ConfirmedDispatch` and one run; a legacy-selected proposal is rejected before either entity exists. | `acceptedConfirmRuntimeDispatch(d) => runtimeManaged(d) and existsUnique(confirmedDispatch(d)) and existsUnique(run(d))` |
 | O-CONF-3 | The sheet bytes, spec, versions, policies and capability resolution are immutable after acceptance. | `accepted(d) => digest(authority(d)) = constant` |
 | O-CONF-4 | The compatibility `.confirmed` marker has no execution authority for this run. | `runtimeManaged(d) => legacyWatcherMayExecute(d) = false` |
 | O-CONF-5 | During the MVP, rerun means a new confirmed dispatch and a new run. | `rerun => new(dispatch_id) and new(run_id)` |
@@ -93,7 +93,7 @@ therefore cannot pass validation using independently stale aggregate snapshots.
 
 | Condition | Result |
 | --- | --- |
-| Mode is `legacy-managed` | Reject; preserve the legacy path and create no runtime run. |
+| Pre-confirmation routing choice is `legacy-managed` | Reject; preserve the legacy path and create no `ConfirmedDispatch`, runtime `Run`, journal fact or audit effect. |
 | Existing dispatch/run identity has identical digest | Return the stable original receipt. |
 | Existing identity has a different digest | Permanent identity conflict; no state change. |
 | Capability combination changes semantics | Reject until a new spec version is explicitly reconfirmed. |
@@ -102,10 +102,10 @@ therefore cannot pass validation using independently stale aggregate snapshots.
 
 **Ratified.** `ExecutionAuthorityMode` is assigned before confirmation. Runtime-managed confirmation
 freezes the source and makes the marker a compatibility projection ignored by legacy watchers;
-legacy-managed dispatches never create a runtime [`RunLifecycle`](states.md#runlifecycle). Rollback
-is allowed only before confirmation by selecting `legacy-managed`; after runtime confirmation it
-requires an explicit terminal/repair path and must never transfer partial runtime state into a
-legacy success.
+a legacy-selected proposal never creates a runtime `ConfirmedDispatch` or
+[`RunLifecycle`](states.md#runlifecycle). Routing to legacy is allowed only before runtime
+confirmation; after runtime confirmation, change requires an explicit terminal/repair path and must
+never transfer partial runtime state into a legacy success.
 
 ### Internal transition — VerifyAuditOpening
 

@@ -1,0 +1,41 @@
+{
+  "profile_id": "apt.reference-probe-lineage",
+  "profile_version": "1",
+  "canonicalizer": "aci-cjson-1",
+  "message_type": "reference_probe",
+  "publication_event": "publication.persisted",
+  "official_event": "reference_probe.accepted@1",
+  "lineage_event": "apt.reference_probe_lineage_appended@1",
+  "required_capability_fields": [
+    "audience",
+    "actions",
+    "session_id",
+    "dispatch_snapshot_digest",
+    "local_probe_aggregate_id",
+    "local_probe_expected_head",
+    "group_id",
+    "group_version",
+    "seat_id",
+    "agent_instance_id",
+    "attempt_id",
+    "operation_id",
+    "actor_principal_id",
+    "phase",
+    "round_id",
+    "message_schema_allowlist",
+    "payload_budget",
+    "classification_allowlist",
+    "visibility_policy",
+    "issued_at",
+    "expires_at",
+    "profile_digest"
+  ],
+  "invariants": [
+    "opaque-server-side-capability-resolution",
+    "candidate-must-be-parent-verified",
+    "official-message-must-match-probe-bundle-and-profile",
+    "lineage-references-official-event-or-verified-receipt-only",
+    "delivery-and-use-items-append-atomically",
+    "raw-capability-token-never-persists-or-logs"
+  ]
+}

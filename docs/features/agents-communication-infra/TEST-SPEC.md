@@ -5,53 +5,72 @@ is_session: false
 layer: application
 nature: [procedural, technical]
 status: draft
-version: 0.2.0
-last_updated: 2026-07-21
+version: 0.3.0
+last_updated: 2026-07-23
 ---
 
 # Test Spec: Agents Communication Infra
 
-This document specifies contract tests, not test code. Fixtures derive from [rules.md](rules.md), lifecycle transitions, operation postconditions, [persistence crash boundaries](persistence-and-replay.md#5-crash-boundaries-and-observable-outcomes) and the executable [bus probe](experiments/bus-publication-probe/README.md).
+This document specifies contract tests, not test code. Fixtures derive from [rules.md](specs/rules.md), lifecycle transitions, operation postconditions, [persistence crash boundaries](specs/persistence-and-replay.md#5-crash-boundaries-and-observable-outcomes) and the executable [bus probe](experiments/bus-publication-probe/README.md).
 
 ## Test Matrix
 
 | ID | Test | Validates |
 |---|---|---|
-| [T-ACI-R1](#t-aci-r1--authority-and-writer-boundary) | Only journal writer and validated ledger appender can mutate their stores | [ACI-R1](rules.md#aci-r1--disjoint-authority-and-one-physical-writer) |
-| [T-ACI-R2](#t-aci-r2--runtime-derived-authority) | Agent authority-field injection is rejected | [ACI-R2](rules.md#aci-r2--runtime-derived-authority) |
-| [T-ACI-R3](#t-aci-r3--append-before-ack) | Receipt exists only after commit and parent verification | [ACI-R3](rules.md#aci-r3--append-before-receipt-and-parent-verification) |
-| [T-ACI-R4](#t-aci-r4--sealed-collection-and-reveal) | Collection stays sealed until persisted matching reveal | [ACI-R4](rules.md#aci-r4--sealed-collection-and-manifest-only-reveal) |
-| [T-ACI-R5](#t-aci-r5--idempotency-and-cas) | Retry, digest conflict and expected-version races differ | [ACI-R5](rules.md#aci-r5--command-idempotency-is-not-conflict-tolerance) |
-| [T-ACI-R6](#t-aci-r6--atomic-command-acceptance) | Receipt, events, head and new intents are all-or-none | [ACI-R6](rules.md#aci-r6--atomic-local-acceptance) |
-| [T-ACI-R7](#t-aci-r7--pure-replay) | Replay from zero/checkpoint yields same hash with zero effects | [ACI-R7](rules.md#aci-r7--pure-replay) |
-| [T-ACI-R8](#t-aci-r8--logical-uniqueness) | Retries/attempts cannot create a second logical contribution/result | [ACI-R8](rules.md#aci-r8--logical-uniqueness-survives-retries) |
-| [T-ACI-R9](#t-aci-r9--artifact-separation-and-input-manifest) | Effective input, raw output and contribution remain distinct and linked | [ACI-R9](rules.md#aci-r9--input-output-and-accepted-message-are-distinct-evidence) |
-| [T-ACI-R10](#t-aci-r10--mixed-provider-conformance) | Mixed providers use the same protocol/state/event shapes | [ACI-R10](rules.md#aci-r10--provider-heterogeneity-cannot-fork-protocol) |
-| [T-ACI-R11](#t-aci-r11--sensitive-artifact-governance) | Sensitive access, secret rejection and tombstone provenance fail closed | [ACI-R11](rules.md#aci-r11--sensitive-immutable-artifact-governance) |
-| [T-ACI-R12](#t-aci-r12--usage-nullability-and-provenance) | Missing usage stays null and cost needs priced provenance | [ACI-R12](rules.md#aci-r12--usage-observations-preserve-provider-semantics) |
-| [T-ACI-R13](#t-aci-r13--verified-opening-barrier) | No provider/tool effect starts before exact opening verification | [ACI-R13](rules.md#aci-r13--audit-opening-gates-every-providertool-effect) |
-| [T-ACI-R14](#t-aci-r14--sqlite-durability-policy) | Writer startup asserts WAL, FULL and migration checksum | [ACI-R14](rules.md#aci-r14--durability-is-a-feature-level-contract) |
-| [T-ACI-R15](#t-aci-r15--candidate-versus-official-publication) | Candidate persistence alone never counts toward close/quorum | [Receipt workflow](workflows.md#receiptgatedpublicationworkflow) |
-| [T-ACI-R16](#t-aci-r16--canonical-receipt-and-terminal-result) | Receipt/result versions and exact field parsing fail closed | [PublicationReceipt](domain.md#publicationreceipt) |
-| [T-ACI-R17](#t-aci-r17--invocation-materialization-boundary) | Plan, materialization, sealed request and start effect remain ordered/distinct | [StartAgentAttempt](operations.md#startagentattempt) |
-| [T-ACI-R18](#t-aci-r18--typed-reveal-input-provenance) | Reveal input preserves manifest/message/author/hash/policy | [EffectiveInputEntry](domain.md#effectiveinputentry) |
-| [T-ACI-R19](#t-aci-r19--sandbox-authority-and-budget-fence) | Sandbox, authority cutover and finite budgets fail closed | [SandboxLauncher](interfaces.md#internal-sandboxlauncher) |
-| [T-ACI-R20](#t-aci-r20--causal-start-prerequisites) | Start cannot race past close/cancel using stale dependency heads | [RuntimeCommand](domain.md#runtimecommand) |
-| [T-ACI-R21](#t-aci-r21--candidate-abandonment-and-replacement) | Unknown orphan candidates release their key only through authorized audited CAS | [PublicationCandidate](domain.md#publicationcandidate) |
-| [T-ACI-ETA1](#t-aci-eta1--external-tool-authority-classification) | External tools cannot acquire kernel or authoritative-store ownership | [ExternalToolAdoptionPolicy](rules.md#aci-r15--external-tool-adoption-policy) |
-| [T-ACI-ETA2](#t-aci-eta2--canonical-python-contract-vectors) | Boundary validation and runtime-owned canonical sealing remain distinct | [CanonicalContractPolicy](rules.md#aci-r16--canonical-contract-policy) |
-| [T-ACI-ETA3](#t-aci-eta3--derived-node-boundary-parity) | Any derived Node validator stays non-normative and vector-compatible | [BoundaryValidationPolicy](rules.md#aci-r17--derived-boundary-validation-policy) |
-| [T-ACI-ETA4](#t-aci-eta4--subprocess-provider-admission-gate) | A real subprocess provider cannot bypass launcher or admission evidence | [ProviderAdapterAdmissionGate](rules.md#aci-r18--provider-adapter-admission-gate) |
-| [T-ACI-ETA5](#t-aci-eta5--sole-writer-evidence-completeness) | The sole-writer evidence schema and component checks fail closed | [SoleWriterEvidenceBundle](domain.md#solewriterevidencebundle) |
-| [T-ACI-S1](#t-aci-s1--run-lifecycle-and-terminal-precedence) | Run accepts only listed transitions and one terminal winner | [RunLifecycle](states.md#runlifecycle) |
-| [T-ACI-S2](#t-aci-s2--group-decision-and-sealing) | Consensus, dissent and no-quorum stay distinct | [GroupLifecycle](states.md#grouplifecycle) |
-| [T-ACI-S3](#t-aci-s3--attempt-cancel-races) | Completion/failure/unknown/cancel races have one allowed terminal | [AttemptLifecycle](states.md#attemptlifecycle) |
-| [T-ACI-C1](#t-aci-c1--transaction-crash-boundaries) | Every local acceptance crash yields all four members or none | [Crash boundaries](persistence-and-replay.md#5-crash-boundaries-and-observable-outcomes) |
-| [T-ACI-C2](#t-aci-c2--audit-append-crash-reconciliation) | Absent, identical and divergent audit rows converge correctly | [Cross-store reconciliation](persistence-and-replay.md#8-cross-store-reconciliation) |
-| [T-ACI-C3](#t-aci-c3--closed-before-reveal-restart) | Restart between close and reveal preserves sealed access | [Publication/reveal persistence](persistence-and-replay.md#7-publication-reveal-and-artifact-persistence) |
-| [T-ACI-C4](#t-aci-c4--publish-to-terminal-recovery) | Crash anywhere from publish through terminal verification converges once | [Receipt workflow](workflows.md#receiptgatedpublicationworkflow) |
-| [T-ACI-C5](#t-aci-c5--effect-outcome-idempotency-matrix) | Terminal outcome retries compare digest before claim/epoch guards | [Atomic effect-outcome acceptance](persistence-and-replay.md#41-atomic-effect-outcome-acceptance) |
+| [T-ACI-R1](#t-aci-r1--authority-and-writer-boundary) | Only journal writer and validated ledger appender can mutate their stores | [ACI-R1](specs/rules.md#aci-r1--disjoint-authority-and-one-physical-writer) |
+| [T-ACI-R2](#t-aci-r2--runtime-derived-authority) | Agent authority-field injection is rejected | [ACI-R2](specs/rules.md#aci-r2--runtime-derived-authority) |
+| [T-ACI-R3](#t-aci-r3--append-before-ack) | Receipt exists only after commit and parent verification | [ACI-R3](specs/rules.md#aci-r3--append-before-receipt-and-parent-verification) |
+| [T-ACI-R4](#t-aci-r4--sealed-collection-and-reveal) | Collection stays sealed until persisted matching reveal | [ACI-R4](specs/rules.md#aci-r4--sealed-collection-and-manifest-only-reveal) |
+| [T-ACI-R5](#t-aci-r5--idempotency-and-cas) | Retry, digest conflict and expected-version races differ | [ACI-R5](specs/rules.md#aci-r5--command-idempotency-is-not-conflict-tolerance) |
+| [T-ACI-R6](#t-aci-r6--atomic-command-acceptance) | Receipt, events, head and new intents are all-or-none | [ACI-R6](specs/rules.md#aci-r6--atomic-local-acceptance) |
+| [T-ACI-R7](#t-aci-r7--pure-replay) | Replay from zero/checkpoint yields same hash with zero effects | [ACI-R7](specs/rules.md#aci-r7--pure-replay) |
+| [T-ACI-R8](#t-aci-r8--logical-uniqueness) | Retries/attempts cannot create a second logical contribution/result | [ACI-R8](specs/rules.md#aci-r8--logical-uniqueness-survives-retries) |
+| [T-ACI-R9](#t-aci-r9--artifact-separation-and-input-manifest) | Effective input, raw output and contribution remain distinct and linked | [ACI-R9](specs/rules.md#aci-r9--input-output-and-accepted-message-are-distinct-evidence) |
+| [T-ACI-R10](#t-aci-r10--mixed-provider-conformance) | Mixed providers use the same protocol/state/event shapes | [ACI-R10](specs/rules.md#aci-r10--provider-heterogeneity-cannot-fork-protocol) |
+| [T-ACI-R11](#t-aci-r11--sensitive-artifact-governance) | Sensitive access, secret rejection and tombstone provenance fail closed | [ACI-R11](specs/rules.md#aci-r11--sensitive-immutable-artifact-governance) |
+| [T-ACI-R12](#t-aci-r12--usage-nullability-and-provenance) | Missing usage stays null and cost needs priced provenance | [ACI-R12](specs/rules.md#aci-r12--usage-observations-preserve-provider-semantics) |
+| [T-ACI-R13](#t-aci-r13--verified-opening-barrier) | No provider/tool effect starts before exact opening verification | [ACI-R13](specs/rules.md#aci-r13--audit-opening-gates-every-providertool-effect) |
+| [T-ACI-R14](#t-aci-r14--sqlite-durability-policy) | Writer startup asserts WAL, FULL and migration checksum | [ACI-R14](specs/rules.md#aci-r14--durability-is-a-feature-level-contract) |
+| [T-ACI-R15](#t-aci-r15--candidate-versus-official-publication) | Candidate persistence alone never counts toward close/quorum | [Receipt workflow](specs/workflows.md#receiptgatedpublicationworkflow) |
+| [T-ACI-R16](#t-aci-r16--canonical-receipt-and-terminal-result) | Receipt/result versions and exact field parsing fail closed | [PublicationReceipt](specs/domain.md#publicationreceipt) |
+| [T-ACI-R17](#t-aci-r17--invocation-materialization-boundary) | Plan, materialization, sealed request and start effect remain ordered/distinct | [StartAgentAttempt](specs/operations.md#startagentattempt) |
+| [T-ACI-R18](#t-aci-r18--typed-reveal-input-provenance) | Reveal input preserves manifest/message/author/hash/policy | [EffectiveInputEntry](specs/domain.md#effectiveinputentry) |
+| [T-ACI-R19](#t-aci-r19--sandbox-authority-and-budget-fence) | Sandbox, authority cutover and finite budgets fail closed | [SandboxLauncher](specs/interfaces.md#internal-sandboxlauncher) |
+| [T-ACI-R20](#t-aci-r20--causal-start-prerequisites) | Start cannot race past close/cancel using stale dependency heads | [RuntimeCommand](specs/domain.md#runtimecommand) |
+| [T-ACI-R21](#t-aci-r21--candidate-abandonment-and-replacement) | Unknown orphan candidates release their key only through authorized audited CAS | [PublicationCandidate](specs/domain.md#publicationcandidate) |
+| [T-ACI-ETA1](#t-aci-eta1--external-tool-authority-classification) | External tools cannot acquire kernel or authoritative-store ownership | [ExternalToolAdoptionPolicy](specs/rules.md#aci-r15--external-tool-adoption-policy) |
+| [T-ACI-ETA2](#t-aci-eta2--canonical-python-contract-vectors) | Boundary validation and runtime-owned canonical sealing remain distinct | [CanonicalContractPolicy](specs/rules.md#aci-r16--canonical-contract-policy) |
+| [T-ACI-ETA3](#t-aci-eta3--derived-node-boundary-parity) | Any derived Node validator stays non-normative and vector-compatible | [BoundaryValidationPolicy](specs/rules.md#aci-r17--derived-boundary-validation-policy) |
+| [T-ACI-ETA4](#t-aci-eta4--subprocess-provider-admission-gate) | A real subprocess provider cannot bypass launcher or admission evidence | [ProviderAdapterAdmissionGate](specs/rules.md#aci-r18--provider-adapter-admission-gate) |
+| [T-ACI-ETA5](#t-aci-eta5--sole-writer-evidence-completeness) | The sole-writer evidence schema and component checks fail closed | [SoleWriterEvidenceBundle](specs/domain.md#solewriterevidencebundle) |
+| [T-ACI-S1](#t-aci-s1--run-lifecycle-and-terminal-precedence) | Run accepts only listed transitions and one terminal winner | [RunLifecycle](specs/states.md#runlifecycle) |
+| [T-ACI-S2](#t-aci-s2--group-decision-and-sealing) | Consensus, dissent and no-quorum stay distinct | [GroupLifecycle](specs/states.md#grouplifecycle) |
+| [T-ACI-S3](#t-aci-s3--attempt-cancel-races) | Completion/failure/unknown/cancel races have one allowed terminal | [AttemptLifecycle](specs/states.md#attemptlifecycle) |
+| [T-ACI-C1](#t-aci-c1--transaction-crash-boundaries) | Every local acceptance crash yields all four members or none | [Crash boundaries](specs/persistence-and-replay.md#5-crash-boundaries-and-observable-outcomes) |
+| [T-ACI-C2](#t-aci-c2--audit-append-crash-reconciliation) | Absent, identical and divergent audit rows converge correctly | [Cross-store reconciliation](specs/persistence-and-replay.md#8-cross-store-reconciliation) |
+| [T-ACI-C3](#t-aci-c3--closed-before-reveal-restart) | Restart between close and reveal preserves sealed access | [Publication/reveal persistence](specs/persistence-and-replay.md#7-publication-reveal-and-artifact-persistence) |
+| [T-ACI-C4](#t-aci-c4--publish-to-terminal-recovery) | Crash anywhere from publish through terminal verification converges once | [Receipt workflow](specs/workflows.md#receiptgatedpublicationworkflow) |
+| [T-ACI-C5](#t-aci-c5--effect-outcome-idempotency-matrix) | Terminal outcome retries compare digest before claim/epoch guards | [Atomic effect-outcome acceptance](specs/persistence-and-replay.md#41-atomic-effect-outcome-acceptance) |
 | [T-ACI-P1](#t-aci-p1--probe-regression-corpus) | Production contract retains all ten publication-probe behaviors | [Probe](experiments/bus-publication-probe/README.md#run-the-contract-tests) |
+| [T-CVR-1](#t-cvr-1--selector-and-root-confinement) | Selectors cannot escape effective roots lexically or after resolution | [CVR-R2](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-2](#t-cvr-2--link-and-hidden-denial) | Hidden components and links/reparse points fail closed | [CVR-R6](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-3](#t-cvr-3--privacy-and-directlist-parity) | Private or denied paths are non-enumerable and list/get agree | [CVR-R3](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-4](#t-cvr-4--snapshot-coherence-under-mutation) | Mutation yields one byte-coherent result or snapshot conflict | [CVR-R4/R5](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-5](#t-cvr-5--encoding-frontmatter-and-residue) | BOM/UTF-8/frontmatter variants preserve exact typed outcomes | [CVR-R7](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-6](#t-cvr-6--deterministic-order-and-digests) | Nodes, edges, supports and SHA-256 digests are deterministic | [CVR-R4](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-7](#t-cvr-7--bounded-edge-normalization) | CVR-002 folds duplicates and only the documented inverse pair | [CVR-R8](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-8](#t-cvr-8--unresolved-edge-evidence) | CVR-001 preserves raw declarations; CVR-002 resolves endpoints without dropping residue | [CVR-R7](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-9](#t-cvr-9--stale-and-projection-conflicts) | Expected source/projection digest drift returns typed conflict | [Closed outcomes](specs/canonical-vault-reads.md#closed-outcomes) |
+| [T-CVR-10](#t-cvr-10--hard-bounds-and-complete-results) | Every success is complete and every cap breach returns no partial result | [CVR-R10](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-11](#t-cvr-11--inventory-semantic-independence) | Inventory presence cannot change results or admission | [CVR-R1](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-12](#t-cvr-12--zero-effects-and-provenance) | Read calls write and emit nothing and mint no APT/host facts | [CVR-R9](specs/canonical-vault-reads.md#formal-rules) |
+| [T-CVR-AUTH1](#t-cvr-auth1--nonrecursive-guard-bootstrap) | GUARD bootstrap cannot authorize itself | [TASK-CVR](work-pack/tasks/TASK-CVR.md#non-recursive-bootstrap-authority) |
+| [T-CVR-AUTH2](#t-cvr-auth2--canonical-authority-identities) | Authorization, claim and receipt identities are canonical and content-addressed | [TASK-CVR](work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol) |
+| [T-CVR-AUTH3](#t-cvr-auth3--closed-descriptor-and-scope) | Caller cannot inject paths, commands, tests or scope | [TASK-CVR](work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol) |
+| [T-CVR-AUTH4](#t-cvr-auth4--sole-terminal-authority) | Exactly one applicable finalizer creates the receipt: external bootstrap finalizer for GUARD, common guard for CVR-001/002 | [TASK-CVR](work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol) |
+| [T-CVR-AUTH5](#t-cvr-auth5--crash-and-cancellation-matrix) | Recovery is fail-closed and session-bound | [TASK-CVR](work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol) |
+| [T-CVR-AUTH6](#t-cvr-auth6--cvr-002-predecessor-binding) | CVR-002 binds and revalidates CVR-001 evidence | [TASK-CVR](work-pack/tasks/TASK-CVR.md#swu-aci-cvr-002--edge-projection) |
+| [T-ACI-AUTH1](#t-aci-auth1--runtime-only-confirmed-dispatch) | Legacy routing creates no ACI runtime entity; runtime confirmation creates exactly one dispatch/run pair | [ConfirmRuntimeDispatch](specs/operations.md#confirmruntimedispatch) |
 
 ## Test Details
 
@@ -252,9 +271,181 @@ failed criterion leaves the adapter unavailable.
 
 ### T-ACI-ETA5 — Sole-writer evidence completeness
 
-Validate one [SoleWriterEvidenceBundle](domain.md#solewriterevidencebundle) for the exact writer and
+Validate one [SoleWriterEvidenceBundle](specs/domain.md#solewriterevidencebundle) for the exact writer and
 host profile. Remove each process-identity, ACL, writer-inventory or negative-bypass component in
 turn and assert EG-1 remains open. A bundle containing only the single-import lint must fail.
+
+## Canonical Vault Read Contracts
+
+### T-CVR-1 — Selector and root confinement
+
+Exercise relative, absolute, case-mismatched, empty, dot and parent segments against
+lexical and resolved roots. Only normalized repository-relative `.md` files under one
+effective root can enter a snapshot.
+
+### T-CVR-2 — Link and hidden denial
+
+Create hidden components and platform-supported symlink, junction or reparse fixtures.
+Every list and direct get denies them without exposing the resolved target.
+
+### T-CVR-3 — Privacy and direct/list parity
+
+For `allow_private=false`, a private existing file, a denied file and a missing file all
+return the same `not_found` shape. The same selector is absent from list output. Repeat
+with the authorized scope and assert list/get parity. Exercise staged precedence with
+private+malformed, private+oversized and hidden+oversized sources: an unprivileged call
+does not enumerate them or charge them to public aggregate/result caps; a privileged
+private source is parsed as residue when applicable and consumes its caps. Assert no
+denied metadata or failure class distinguishes a private source from missing.
+
+### T-CVR-4 — Snapshot coherence under mutation
+
+Inject add, remove and byte-change failpoints during capture. A call returns projections
+whose source digests all belong to one snapshot or returns `snapshot_conflict`; it never
+mixes observations. Assert list captures all admitted visible sources while direct get
+validates and captures only its selected source. Mutation during quarantine/admission
+recheck must either enter the selected admitted snapshot coherently or conflict; direct
+get must not scan or fail because an unrelated admitted source changes.
+
+### T-CVR-5 — Encoding, frontmatter and residue
+
+Cover UTF-8, BOM, invalid encoding, current and legacy frontmatter, invalid YAML,
+unterminated fences, absent Connections, canonical tables, legacy headers and free-form
+rows. For invalid UTF-8 assert exactly one ordered `invalid_utf8`
+`VaultNodeProjection` with the source byte digest and safe byte-span locator,
+`title=null`, `sections=[]`, `connections=[]`, typed frontmatter residue, no exposed
+undecoded or decoded source bytes, and one consumed artifact-result slot. No fixture is
+silently repaired or dropped and no malformed source invents an edge.
+Assert exact-limit success and `+1` `parse_limit_exceeded` whole-source residue for:
+65,536 frontmatter bytes, depth 32, 10,000 YAML nodes, 4,096 collection items and
+32,768 scalar UTF-8 bytes. Aliases, merge keys and custom tags are forbidden residues,
+not expansions or repairs.
+
+### T-CVR-6 — Deterministic order and digests
+
+Permute filesystem enumeration and declaration discovery. Artifact order, logical-edge
+order, supporting-declaration order, canonical bytes and SHA-256 digests remain equal.
+Golden vectors assert exact compact UTF-8 JSON bytes for `aci.cvr.snapshot/v1` and
+`aci.cvr.node/v1`, fixed field order, NFC normalization, required nulls, integer-only
+numbers, float/NaN rejection, deterministic escaping, exact `snapshot_digest` and exact
+node `projection_digest`.
+
+### T-CVR-7 — Bounded edge normalization
+
+Collapse exact same-direction duplicates and a matching `derives-from`/`grounds` pair.
+Assert all other relation directions/spellings remain distinct. This is a CVR-002
+endpoint-resolution/logical-projection test; CVR-001 must not fold raw declarations.
+
+### T-CVR-8 — Unresolved edge evidence
+
+Use broken paths, duplicate wiki names, external targets and malformed rows. Assert typed
+raw residue remains source-located and no logical endpoint identity is minted. In
+CVR-001 every recognized but not resolved target is preserved with
+`resolution=unresolved`; malformed rows remain `malformed`. In CVR-002 assert endpoint
+resolution changes only the derived resolution/logical view and never rewrites the raw
+declaration.
+
+### T-CVR-9 — Stale and projection conflicts
+
+Mutate a selected file after recording its digest and mutate logical support after
+recording a projection digest. Assert `selector_stale` and `projection_conflict`
+respectively, with no host path leakage.
+Execute the total per-method precedence table with pairwise collisions for every
+adjacent stage and the named nonadjacent security pairs: invalid-request+private,
+private+oversized, hidden+oversized, capture-race+stale and
+snapshot-conflict+projection-conflict. Assert exactly one stable outcome and no lower
+stage observation.
+
+### T-CVR-10 — Hard bounds and complete results
+
+Cross each cap independently by one while all other caps remain permissive:
+
+1. one candidate source has `max_file_bytes + 1` bytes;
+2. aggregate candidate bytes are `max_total_bytes + 1`, with every source within
+   `max_file_bytes`;
+3. candidate source count is `max_files + 1`, with byte caps respected; and
+4. complete top-level projected item count is `max_results + 1`, with source and byte caps respected.
+
+For every case assert only `result_set_too_large`: no partial items, continuation or reusable
+snapshot reference. Run the result-cap boundary independently for every method:
+`list_artifacts` counts top-level nodes, `get_artifact` counts exactly its returned
+node, `list_edges` counts top-level logical edges, and `get_edge` counts exactly its
+returned logical edge. Nested sections, declarations and residue never count
+separately; one whole-source invalid item counts as one node. For both direct gets,
+verify that an effective `max_results` below one is `policy_unavailable`, not a partial
+or empty success.
+For `get_edge`, add an unrelated visible oversized/candidate-count source and assert
+the complete edge-source candidate set closes with `result_set_too_large` before
+capture/parsing/selection, identically to `list_edges`; selecting a small edge does not
+bypass corpus caps.
+For parser ceilings, independently exercise exact and `+1` cases from T-CVR-5 and
+assert `parse_limit_exceeded` is one whole-source result item rather than
+`result_set_too_large`; source, aggregate and result caps retain their existing
+call-closing precedence after privacy exclusion.
+
+### T-CVR-11 — Inventory semantic independence
+
+Run the same corpus and scope with the optional inventory absent, correct and stale.
+For identical admitted source bytes, effective scope and parser version, the canonical
+result and admission decision remain byte-equivalent. Mutate only an inventory
+projection and assert it cannot change admission, result bytes or digests; mutate the
+admitted source bytes and assert the source change, rather than inventory state,
+controls the next coherent result. This is the executable mapping for CVR-R1.
+
+### T-CVR-12 — Zero effects and provenance
+
+Install spies for filesystem writes, ledgers, caches, events, `SourceObservation`, APT
+extraction/reference facts and runtime artifacts. All counters remain zero after each
+success and closed error.
+
+### T-CVR-AUTH1 — Nonrecursive guard bootstrap
+
+Attempt to verify or finalize GUARD bootstrap through the guard it creates and assert rejection.
+The only accepted fixture uses an exact root-owned one-time bootstrap authorization, external
+expected digests/session, the external trusted executor and exactly one external authority-owned
+bootstrap finalizer; its diff is confined to the descriptor-listed paths.
+
+### T-CVR-AUTH2 — Canonical authority identities
+
+Exercise authorization preimages with omitted versus injected `authorization_id` and derived
+paths, field reorderings, duplicates, Unicode variants and byte drift. Only the specified domain
+separator and compact canonical JSON derive the expected ID/path. Repeat for claim and
+`ExecutionReceipt`; assert exactly three per-execution artifacts exist.
+
+### T-CVR-AUTH3 — Closed descriptor and scope
+
+Try caller-supplied paths, commands, test IDs, index, receipt locator and scope. Each fails before
+effects. Only the enumerated SWU and its exact deterministic descriptor can reach direct worker
+invocation.
+
+### T-CVR-AUTH4 — Sole terminal authority
+
+Make a worker or root return forged/writer-created receipt material. Assert it remains
+non-authoritative. For GUARD bootstrap only the external authority-owned bootstrap finalizer may
+create the receipt; for CVR-001/002 only the common guard/finalizer may do so. Exactly one is
+applicable, never both. Identical receipt bytes read idempotently and divergent bytes fail integrity.
+
+### T-CVR-AUTH5 — Crash and cancellation matrix
+
+Test hard crash with pristine scope and same-session retry; partial write, drift or unknown cleanup
+with no reinvocation and root-requested `BLOCK` from the one applicable finalizer; controlled
+interruption with terminal receipt; and post-receipt replay rejection. Assert root never writes a
+receipt and verify exact residual-path and cleanup evidence.
+
+### T-CVR-AUTH6 — CVR-002 predecessor binding
+
+Mutate independently the CVR-001 PASS receipt, byte baseline, allowed delta and each pre-write
+hash. Every mismatch blocks before invocation. The accepted fixture reruns the complete CVR-001
+suite before CVR-002 tests and records both groups and the exact final delta.
+
+### T-ACI-AUTH1 — Runtime-only confirmed dispatch
+
+Submit the same valid pending proposal with each pre-confirmation routing choice. For
+`legacy-managed`, assert the runtime confirmation endpoint returns its typed rejection and creates
+zero `ConfirmedDispatch`, `Run`, journal fact and audit effect while preserving the legacy/session
+path. For `runtime-managed`, assert one accepted confirmation creates exactly one immutable
+`ConfirmedDispatch` and exactly one `Run`; identical replay returns the stable receipt and cannot
+create a second pair.
 
 ## Fixture Corpus
 

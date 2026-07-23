@@ -1,0 +1,42 @@
+{
+  "profile_id": "aci.transactional-semantic-uniqueness-result-mapping",
+  "profile_version": "1",
+  "canonicalizer": "aci-cjson-1",
+  "semantic_keys": [
+    "global-fact-id",
+    "session-origin-binding",
+    "session-ensure-key",
+    "dispatch-session-link",
+    "research-capture-dispatch-contribution",
+    "research-fact-subject-head",
+    "publication-aggregate-seat-round-message-type"
+  ],
+  "result_partition": [
+    "existing_exact",
+    "submitted_new",
+    "conflict"
+  ],
+  "result_mapping": [
+    "accepted_new",
+    "submitted_retry",
+    "semantic_existing",
+    "idempotency_conflict",
+    "version_conflict",
+    "semantic_conflict"
+  ],
+  "invariants": [
+    "fact-id-is-globally-unique-across-all-research-captures-and-fact-kinds",
+    "fact-id-collision-compares-canonical-tuple-fact-id-payload-digest-research-capture-id-subject-id-kind",
+    "existing-exact-appends-zero-events-and-returns-existing-semantic-result",
+    "submitted-new-appends-one-atomic-command-group-and-returns-only-its-new-receipt",
+    "conflict-appends-zero-events-and-returns-no-success-receipt",
+    "zero-new-means-no-event-no-head-change-no-artifact-reference-and-no-projection-change",
+    "receipt-only-new-means-a-receipt-cannot-be-minted-for-existing-exact-or-conflict",
+    "submitted-command-identity-is-independent-of-semantic-identity",
+    "semantic-existing-appends-no-domain-event",
+    "one-dispatch-links-to-one-session",
+    "one-active-publication-candidate-per-logical-key",
+    "one-official-message-per-logical-key",
+    "candidate-is-not-official"
+  ]
+}

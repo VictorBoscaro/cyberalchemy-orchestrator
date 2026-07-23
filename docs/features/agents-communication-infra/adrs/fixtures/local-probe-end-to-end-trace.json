@@ -1,0 +1,107 @@
+{
+  "schema": "aci.local-probe-e2e-trace/v1",
+  "initial_state": {
+    "journal_offset": 0,
+    "session_binding": "unbound",
+    "dispatch_link": "absent",
+    "local_probe": "absent",
+    "publication": "absent",
+    "official_message": "absent",
+    "research_capture": "absent"
+  },
+  "steps": [
+    {
+      "ordinal": 1,
+      "command": "aci.register-protocol-profile@1",
+      "aggregate": "aci.protocol-registry",
+      "expected_version": 0,
+      "events": ["aci.protocol_profile_registered@1"],
+      "next_version": 1,
+      "state": "required-profile-set-registered"
+    },
+    {
+      "ordinal": 2,
+      "command": "apt.ensure-session@1",
+      "aggregate": "apt.session-binding:<origin_digest>",
+      "expected_version": 0,
+      "events": ["apt.session_started@1"],
+      "next_version": 1,
+      "state": "session-bound"
+    },
+    {
+      "ordinal": 3,
+      "command": "apt.link-session-dispatch@1",
+      "aggregate": "apt.dispatch-link:2026-07-23-local-probe-fixture",
+      "expected_version": 0,
+      "prerequisites": ["apt.session-binding:<origin_digest>@1"],
+      "events": ["apt.session_dispatch_linked@1"],
+      "next_version": 1,
+      "state": "strict-legacy-snapshot-linked"
+    },
+    {
+      "ordinal": 4,
+      "command": "aci.activate-local-probe-context@1",
+      "aggregate": "aci.local-probe:<session_id>:2026-07-23-local-probe-fixture:<probe_id>:<profile_digest>",
+      "expected_version": 0,
+      "prerequisites": ["aci.protocol-registry@1", "apt.dispatch-link:2026-07-23-local-probe-fixture@1"],
+      "events": ["aci.local_probe_context_activated@1"],
+      "next_version": 1,
+      "state": "collecting-with-opaque-agent-and-parent-capabilities"
+    },
+    {
+      "ordinal": 5,
+      "command": "aci.publish-bus-contribution@1",
+      "aggregate": "aci.local-probe:<session_id>:2026-07-23-local-probe-fixture:<probe_id>:<profile_digest>",
+      "expected_version": 1,
+      "events": ["publication.persisted"],
+      "next_version": 2,
+      "state": "persisted-candidate-not-official"
+    },
+    {
+      "ordinal": 6,
+      "command": "aci.verify-publication-receipt@1",
+      "aggregate": "aci.local-probe:<session_id>:2026-07-23-local-probe-fixture:<probe_id>:<profile_digest>",
+      "expected_version": 2,
+      "events": ["reference_probe.accepted@1"],
+      "next_version": 3,
+      "state": "one-official-message"
+    },
+    {
+      "ordinal": 7,
+      "command": "apt.append-research-capture@1",
+      "aggregate": "apt.research-capture:2026-07-23-local-probe-fixture:<expected_contribution_id>",
+      "expected_version": 0,
+      "prerequisites": ["aci.local-probe:<session_id>:2026-07-23-local-probe-fixture:<probe_id>:<profile_digest>@3"],
+      "events": ["apt.research_capture_appended@1"],
+      "next_version": 1,
+      "state": "capture-references-finalized-raw-answer-and-official-message"
+    },
+    {
+      "ordinal": 8,
+      "command": "apt.append-research-fact@1",
+      "aggregate": "apt.research-fact:question:<question_id>",
+      "expected_version": 0,
+      "events": ["apt.research_fact_appended@1"],
+      "next_version": 1,
+      "state": "question-fact-current"
+    },
+    {
+      "ordinal": 9,
+      "command": "apt.append-reference-probe-lineage@1",
+      "aggregate": "apt.research-fact:reference_use:<reference_use_id>",
+      "expected_version": 0,
+      "prerequisites": ["aci.local-probe:<session_id>:2026-07-23-local-probe-fixture:<probe_id>:<profile_digest>@3"],
+      "events": ["apt.reference_probe_lineage_appended@1"],
+      "next_version": 1,
+      "state": "official-probe-lineage-current"
+    }
+  ],
+  "restart_assertions": [
+    "every-command-group-is-complete-and-offset-ordered",
+    "authoritative-artifact-event-candidate-message-hashes-match",
+    "session-dispatch-research-projections-rebuild-byte-identically",
+    "audit-ledger-bytes-are-unchanged",
+    "candidate-alone-never-appears-as-official"
+  ]
+}
+

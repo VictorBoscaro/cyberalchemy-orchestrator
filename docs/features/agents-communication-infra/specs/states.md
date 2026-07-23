@@ -1,7 +1,7 @@
 # State Machines: Agents Communication Infra
 
 These state machines ratify the finite protocol in
-[discovery v0.2.1](discovery/feature-discovery/agents-communication-infra.md). Reducers are pure:
+[discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md). Reducers are pure:
 only committed events move state, every transition uses an expected aggregate version, and any
 non-listed transition is rejected. Provider names and semantic workflow types never select a state
 machine branch.
@@ -74,7 +74,7 @@ ceiling. Later terminal observations are retained as ignored facts and cannot re
 
 | ID | Invariant | Formal |
 | --- | --- | --- |
-| RUN-I1 | A legacy-managed dispatch never has a runtime run. | `legacyManaged(d) => not exists(run(d))` |
+| RUN-I1 | A legacy-selected proposal stays outside runtime confirmation and has no runtime entities. | `legacySelected(p) => not exists(confirmedDispatch(p)) and not exists(run(p))` |
 | RUN-I2 | No provider/tool effect starts before verified opening. | `providerOrToolEffectStarted => state in {ready,running,execution_terminal,close_pending,closed}` |
 | RUN-I3 | Exactly one run terminal fact wins. | `count(winningTerminal(run)) <= 1` |
 | RUN-I4 | `execution_terminal` does not imply official closure. | `state=execution_terminal => not closeVerified` |

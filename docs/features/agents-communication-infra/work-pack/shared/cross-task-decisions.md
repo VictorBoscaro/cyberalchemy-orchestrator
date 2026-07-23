@@ -26,6 +26,19 @@
 | D-101 | Put runtime code under `implementations/server/runtime/`. | Dependency review shows it can coexist with reader APIs without circular imports. |
 | D-104 | Expose distinct lifecycle states: `confirmed`, `opening_pending`, `ready`, `running`, `execution_terminal`, `close_pending`, `closed`, `reconciliation_required`. | Transition table and API schema. |
 | D-105 | Slice 0 is internally gated as 0A contracts, 0B journal, 0C opening barrier, 0D fake execution/close, then 0E fixed group protocol. | Each sub-gate has an independent falsifier and receipt. |
+| D-106 | The bounded APT vertical slice uses one ACI SQLite authority, ACI ArtifactStore and ACI ProjectionManager; it never writes the audit ledger. | ADR-002 and storage policy; exact named-SWU receipt required. |
+| D-107 | Test mutation and local-pilot serving are separate gates; production, external network, provider execution, materializer and cutover stay blocked. | `SWU-ACI-APT-VS-001` descriptor and W0 closure packet. |
+| D-108 | A publication candidate becomes official only in an atomic parent-verification command that writes the official event and unique `messages` fact. | ADR-002; candidate/receipt/message fault tests. |
+| D-109 | Runtime authority comes from opaque server-side capability resolution; HTTP/loopback and request bodies never supply identity, phase or scope. | Exact capability profile in the named SWU. |
+| D-110 | Four immutable digest-bound profiles are required, including reference-probe because the selected outcome includes official probe lineage. | Profile registry; removing implementation removes the profile and claim. |
+| D-CVR-001 | Keep CVR as a transport-neutral L0 adjunct under `implementations/vault_read/`, delivered as documentation, artifacts plus raw declarations, then endpoint/logical edges. | Named owner/root acceptance of the exact ApprovalPacket; CVR-001 proves source projection/preservation before CVR-002 extends the same core. |
+| D-CVR-002 | Use an empty-default host policy and an exactly pinned restricted YAML loader, with source bytes authoritative over inventory. | Host/operator and architecture acceptance plus reproducible pin/loader goldens. |
+| D-CVR-003 | A named CVR authorization is single-use and exact-scope; prepared status and the proposed predicate are non-pass/non-operative. | Root approves/requests cancellation only; one external bootstrap finalizer completes GUARD, while the common guard/finalizer exclusively completes CVR-001/002. |
+| D-CVR-004 | Use staged privacy admission, operation-specific capture and typed/versioned canonical JSON digests. | Privacy precedence, unrelated-source get, parser-ceiling and exact-byte golden fixtures. |
+| D-CVR-005 | Bind acceptance to four shared documents plus one deterministic closed descriptor. | Descriptors are immutable governance entries, not per-execution artifacts. |
+| D-CVR-006 | Sequence `000 -> GUARD-001 -> 001 -> 002`; bootstrap GUARD non-recursively with an external trusted executor. | No self-authorization or integration surface enters the carve-out. |
+| D-CVR-007 | Persist exactly one content-addressed authorization, claim and applicable authority-owned `ExecutionReceipt` per execution: the external bootstrap finalizer owns GUARD completion, while the common guard/finalizer owns CVR-001/002 completion. | No execution has two finalizers; no current pointer, revocation artifact, ClaimReceipt or second receipt; withdrawal is pre-claim and cancellation terminalizes. |
+| D-CVR-008 | CVR-002 binds CVR-001 PASS receipt/baseline, allowed delta and pre-write hashes and reruns CVR-001 tests. | Edge work cannot silently mutate or regress the artifact layer. |
 
 ## Decision discipline
 
