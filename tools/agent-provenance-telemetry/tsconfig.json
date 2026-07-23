@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "types": ["node"],
+    "typeRoots": ["../test-derivation-engine/node_modules/@types"],
+    "baseUrl": ".",
+    "paths": {
+      "vitest": ["../test-derivation-engine/node_modules/vitest/dist/index.d.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

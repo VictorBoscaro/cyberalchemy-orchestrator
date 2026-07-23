@@ -1,0 +1,14 @@
+{
+  "name": "@cyberalchemy/agent-provenance-telemetry",
+  "version": "0.0.0-l0",
+  "private": true,
+  "type": "module",
+  "description": "Pure L0 APT contracts; no durable or authority-bearing adapter.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "..\\test-derivation-engine\\node_modules\\.bin\\vitest.cmd run",
+    "typecheck": "..\\test-derivation-engine\\node_modules\\.bin\\tsc.cmd --noEmit -p tsconfig.json"
+  }
+}
