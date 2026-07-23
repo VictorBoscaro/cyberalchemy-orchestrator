@@ -48,6 +48,18 @@ def load_json_col(v):
     return v
 
 
+def all_named(groups):
+    """True only if the dispatch has at least one agent and EVERY agent carries a
+    non-empty agent_name. Dispatches with any anonymous (null) agent are excluded."""
+    saw_agent = False
+    for g in groups:
+        for a in as_list(g.get("agents")):
+            saw_agent = True
+            if not (a.get("agent_name") or "").strip():
+                return False
+    return saw_agent
+
+
 def is_structured(groups, connections):
     if connections:
         return True
@@ -126,6 +138,8 @@ def main():
         connections = load_json_col(r.get("connections"))
         if not is_structured(groups, connections):
             continue
+        if not all_named(groups):
+            continue
         d = {
             "dispatch_id": r["dispatch_id"],
             "dispatch_type": r.get("dispatch_type"),
@@ -151,7 +165,7 @@ def main():
 
     payload = {
         "generated_from": "telemetry/agents/subagents-dispatch.yaml",
-        "selection": "structured dispatches only (>=2 agents OR reviewer/skeptic/auditor OR connections)",
+        "selection": "structured dispatches (>=2 agents OR reviewer/skeptic/auditor OR connections) AND every agent has a name",
         "total_structured_found": len(structured),
         "corpus_size": len(corpus),
         "dispatches": corpus,

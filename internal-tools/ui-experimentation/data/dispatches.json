@@ -1,548 +1,9 @@
 {
   "generated_from": "telemetry/agents/subagents-dispatch.yaml",
-  "selection": "structured dispatches only (>=2 agents OR reviewer/skeptic/auditor OR connections)",
-  "total_structured_found": 46,
+  "selection": "structured dispatches (>=2 agents OR reviewer/skeptic/auditor OR connections) AND every agent has a name",
+  "total_structured_found": 8,
   "corpus_size": 8,
   "dispatches": [
-    {
-      "dispatch_id": "2026-07-20-docs-pt-en-translation",
-      "dispatch_type": "code",
-      "created": "2026-07-21T01:17:32.737Z",
-      "goal": "Translate all 15 in-scope repository documentation files from Portuguese to English, each via an independent translator plus a paired reviewer (zig-zag up to 3x).",
-      "context": "A read-only recon probe inventoried which docs need translation and what must not be touched (append-only ledger, vendored skills, session logs, fixtures). Then one translator per doc overwrote it in English (glossary-consistent; identifiers, data-testids, API routes, Lean anchors, paths/filenames and mermaid structure preserved), and one reviewer per doc compared the English against a PT snapshot and returned PASS or a fix-list. Fixes were applied and cross-file README anchors reslugged. Scope excluded sessions/, code comments and UI strings per the human's decision.",
-      "anti_bias_global": "production vs verification (translate vs review) over a subject-partitioned doc set",
-      "max_loops": 3,
-      "working_folder": null,
-      "groups": [
-        {
-          "group_id": "recon",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-sonnet-5",
-              "token_budget": 2000,
-              "angle": null,
-              "initial_prompt": "Read-only inventory of all Portuguese docs needing PT->EN translation; classify TRANSLATE / CODE-PT / DO-NOT-TOUCH with reasons; extract the core-5 term glossary; report a file total for dimensioning the translator+reviewer pairs."
-            }
-          ]
-        },
-        {
-          "group_id": "translators",
-          "n": 15,
-          "anti_bias": "subject partition (one doc per translator; no opposition axis)",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 2500,
-              "angle": "owns README.md",
-              "initial_prompt": "Translate README.md PT->EN in place; glossary-consistent; preserve identifiers, routes, Lean anchors, paths/filenames, frontmatter, mermaid structure."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "owns PLAN.md",
-              "initial_prompt": "Translate PLAN.md PT->EN in place; preserve IDs (E0-E4, P-NOME/P-CT), paths, proper nouns."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "owns FRAMINGS.md",
-              "initial_prompt": "Translate FRAMINGS.md (F1-F7) PT->EN in place; preserve Lean anchors/decls, math notation, memory-name backticks."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1200,
-              "angle": "owns MAPPING.md",
-              "initial_prompt": "Translate MAPPING.md PT->EN in place; preserve table structure, Lean decls, field identifiers, IDs."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1000,
-              "angle": "owns OBLIGATIONS.md",
-              "initial_prompt": "Translate OBLIGATIONS.md (OBL-E3) PT->EN in place; preserve ORCH, connection enums, FunctorialResidueStructure anchor, notation."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "owns definitions/DEFINITIONS.md",
-              "initial_prompt": "Translate definitions/DEFINITIONS.md PT->EN in place; canonical glossary source; fix residue/separation/shadow/probe/verb aliases; preserve all Lean anchors."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1200,
-              "angle": "owns implementations/README.md",
-              "initial_prompt": "Translate implementations/README.md PT->EN in place; preserve paths, routes, commands, field names."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 2000,
-              "angle": "owns implementations/UI-CONTRACT.md",
-              "initial_prompt": "Translate ONLY the prose of implementations/UI-CONTRACT.md PT->EN; preserve every data-testid, JSON key, enum value, API route and param name intact (Playwright-critical)."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 3000,
-              "angle": "owns vault/hypothesis/orquestracao-anti-ruido.md",
-              "initial_prompt": "Translate vault/hypothesis/orquestracao-anti-ruido.md (HYP-ORCH-NOISE) PT->EN in place; preserve frontmatter controlled-vocab, IDs (OQ-*, BET-*), wikilinks, citations, formulas, mermaid."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1000,
-              "angle": "owns docs/essays/orquestrador-anti-ruido/README.md",
-              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/README.md PT->EN in place; preserve folder slug, paths, IDs, proper nouns."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "owns costura-feasibility/findings.md",
-              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/research/costura-feasibility/findings.md PT->EN in place; preserve mathematician names, technical terms, notation, IDs."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 800,
-              "angle": "owns frame-refine-review/review.md",
-              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/research/frame-refine-review/review.md PT->EN in place; preserve frontmatter, IDs, field names, ledger path."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1200,
-              "angle": "owns prior-art-ct-kahneman-thaler/findings.md",
-              "initial_prompt": "Translate docs/essays/orquestrador-anti-ruido/research/prior-art-ct-kahneman-thaler/findings.md PT->EN in place; preserve paper titles, author names, arXiv IDs, URLs, database names."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "owns docs/features/ui-studio/README.md",
-              "initial_prompt": "Translate docs/features/ui-studio/README.md PT->EN in place; preserve cross-repo paths, evidence IDs, symbol/file names, frontmatter."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-sonnet-5",
-              "token_budget": 900,
-              "angle": "owns docs/features/ui-studio/verification.md",
-              "initial_prompt": "Translate docs/features/ui-studio/verification.md PT->EN in place; preserve evidence IDs (E-5..E-14), paths, symbols, verdict tokens."
-            }
-          ]
-        },
-        {
-          "group_id": "reviewers",
-          "n": 15,
-          "anti_bias": "subject partition (one doc per reviewer; verifies its paired translation)",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "reviews README.md",
-              "initial_prompt": "Review README.md EN vs PT snapshot: no residual PT, fidelity, glossary, preserved identifiers/anchors; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1000,
-              "angle": "reviews PLAN.md",
-              "initial_prompt": "Review PLAN.md EN vs PT snapshot; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1200,
-              "angle": "reviews FRAMINGS.md",
-              "initial_prompt": "Review FRAMINGS.md EN vs PT snapshot; check CT fidelity and preserved Lean anchors/notation; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1000,
-              "angle": "reviews MAPPING.md",
-              "initial_prompt": "Review MAPPING.md EN vs PT snapshot; check table cells and preserved decls/IDs; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 800,
-              "angle": "reviews OBLIGATIONS.md",
-              "initial_prompt": "Review OBLIGATIONS.md EN vs PT snapshot; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1200,
-              "angle": "reviews definitions/DEFINITIONS.md",
-              "initial_prompt": "Review definitions/DEFINITIONS.md EN vs PT snapshot; verify core-5 terms and all Lean anchors; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 900,
-              "angle": "reviews implementations/README.md",
-              "initial_prompt": "Review implementations/README.md EN vs PT snapshot; confirm paths/routes/commands intact; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "reviews implementations/UI-CONTRACT.md",
-              "initial_prompt": "Review implementations/UI-CONTRACT.md: confirm ZERO contract identifiers/testids/routes changed (Playwright-critical) and prose fidelity; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1500,
-              "angle": "reviews vault/hypothesis/orquestracao-anti-ruido.md",
-              "initial_prompt": "Review vault/hypothesis/orquestracao-anti-ruido.md EN vs PT snapshot; check OQ-*/bets/citations/wikilinks/formulas preserved; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 800,
-              "angle": "reviews docs/essays/orquestrador-anti-ruido/README.md",
-              "initial_prompt": "Review docs/essays/orquestrador-anti-ruido/README.md EN vs PT snapshot; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1200,
-              "angle": "reviews costura-feasibility/findings.md",
-              "initial_prompt": "Review costura-feasibility/findings.md EN vs PT snapshot; check names/notation/IDs preserved; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 700,
-              "angle": "reviews frame-refine-review/review.md",
-              "initial_prompt": "Review frame-refine-review/review.md EN vs PT snapshot; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1000,
-              "angle": "reviews prior-art-ct-kahneman-thaler/findings.md",
-              "initial_prompt": "Review prior-art-ct-kahneman-thaler/findings.md EN vs PT snapshot; check paper titles/authors/arXiv/URLs preserved; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 1200,
-              "angle": "reviews docs/features/ui-studio/README.md",
-              "initial_prompt": "Review docs/features/ui-studio/README.md EN vs PT snapshot; check cross-repo paths/IDs/symbols preserved; VERDICT PASS or FIX list."
-            },
-            {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 800,
-              "angle": "reviews docs/features/ui-studio/verification.md",
-              "initial_prompt": "Review docs/features/ui-studio/verification.md EN vs PT snapshot; VERDICT PASS or FIX list."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "recon",
-          "to": "translators",
-          "type": "sequential"
-        },
-        {
-          "from": "translators",
-          "to": "reviewers",
-          "type": "sequential"
-        },
-        {
-          "from": "reviewers",
-          "to": "translators",
-          "type": "zig-zag",
-          "loop_cap": 3
-        }
-      ],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 31,
-          "tree": {
-            "explorer": 1,
-            "synthesizer": 0,
-            "skeptic": 0,
-            "writer": 15,
-            "auditor": 15,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": [
-          "README: residual `status: candidato` -> `status: candidate`.",
-          "DEFINITIONS: calque 'normatizes both' -> 'covers both normatively'.",
-          "UI-CONTRACT line 212: untranslated example comment 'cortado em ~240 chars' -> 'cut to ~240 chars' (no contract identifier touched).",
-          "frame-refine-review: 'collides with fix 3' -> 'collides with adjustment 3' (ajuste = ETE numbered adjustment, not this review's fix).",
-          "ui-studio/verification L59: residual 'cockpit humano' -> 'human cockpit'."
-        ]
-      },
-      "_score": 170.49
-    },
-    {
-      "dispatch_id": "2026-07-21-anti-noise-critique-redteam",
-      "dispatch_type": "review",
-      "created": "2026-07-21T05:31:04.089Z",
-      "goal": "Red-team a 20-point external critique of HYP-ORCH-NOISE, adjudicate which points survive, then edit the hypothesis document to be as consistent and honest as possible (open questions, listed bets, and proven-under-conditions results all intact).",
-      "context": "A user pasted a 20-point critique attacking vault/hypothesis/anti-noise-orchestration.md and its supporting research docs/essays/anti-noise-orchestrator/research/seam-feasibility/findings.md. The critique alleges statistical errors (covariance vs independence, winner's curse), formal overreach (F unconstructed, IG mislabeled as category theory), and pipeline inconsistencies (ETE, source-blind, fork guard, citation spine). Many points may already be conceded by the document's own OQ-9/OQ-10/BETs. The pipeline red-teams the critique itself first (is it right, already-conceded, overstated, or wrong), then reconciles a change-set, edits, re-reviews, and finally approves. Self-application A6: the orchestrator applies the anti-bias/anti-noise discipline the document theorizes.",
-      "anti_bias_global": "defend the document (it already confessed / the proven-under-conditions result is real) vs prosecute the critique (the math and pipeline are genuinely inconsistent)",
-      "max_loops": 2,
-      "working_folder": "docs/essays/anti-noise-orchestrator/research/critique-redteam/",
-      "groups": [
-        {
-          "group_id": "attackers",
-          "n": 5,
-          "anti_bias": "five tensioned red-team lenses on the critique: document-already-confessed vs statistical-correctness vs CT/formal-fidelity vs pipeline-engineering vs meta-consistency-of-the-critique",
-          "robot_talks": true,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-sonnet-5",
-              "token_budget": 2000,
-              "angle": "L1 document-already-confessed: attacks the critique by showing which points the doc's own OQ/BET/Revision/collapse-test already raise; residual defect = status-label lies",
-              "initial_prompt": "See parent dispatch: red-team the 20-point critique through the 'document already confessed' lens over cluster C1,C3,C4,C5,C12,C14,C17,C18; per-point verdict {NEW-AND-CORRECT|ALREADY-CONCEDED|STATUS-LABEL-BUG|OVERSTATED|WRONG} with quoted evidence; net residual edits."
-            },
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 2000,
-              "angle": "L2 statistical-correctness: verifies the critique's math (covariance vs independence C2, winner's curse C13, ex-post oracle C16, disagreement-vs-error C1/C15) and judges the central reformulation",
-              "initial_prompt": "See parent dispatch: statistics lens over C1,C2,C13,C15,C16 and the central reformulation; rate each CORRECT-LOAD-BEARING/OVERSTATED/WRONG with rigorous justification; name the single most load-bearing statistical defect."
-            },
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 2000,
-              "angle": "L3 CT/formal-fidelity: judges whether the critique represents the seam-feasibility construction faithfully or attacks a strawman (Bregman-not-Fisher, slot-lock, non-monicity, Banerjee)",
-              "initial_prompt": "See parent dispatch: formal-fidelity lens over C3,C4,C5,C17,C18; decide per point CRITIQUE-CORRECT / OQ-ALREADY-SAYS-IT / MISREADS-FORMAL-WORK / STATUS-LABEL-BUG with quotes from the seam findings; write the honest status line the CT layer should carry."
-            },
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-sonnet-5",
-              "token_budget": 2000,
-              "angle": "L4 pipeline-engineering: rules each alleged pipeline contradiction REAL-CONTRADICTION/MISREADING/UNDERSPECIFIED-GAP with severity",
-              "initial_prompt": "See parent dispatch: pipeline lens over C6,C7,C8,C9,C10,C11,C14,C19,C20; quote both sides of each alleged contradiction, assign severity CRITICAL/MAJOR/MINOR, one-line fix each."
-            },
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 2000,
-              "angle": "L5 meta-consistency-of-the-critique: attacks the critique for double-counting, overreach, and whether its reformulation would discard the proven-under-conditions result",
-              "initial_prompt": "See parent dispatch: meta lens; collapse the 20 points to the minimal distinct-defect set; find double-counting/overreach/internal collisions; state precisely what the reformulation would wrongly discard (the seam Bregman/Amari theorem)."
-            }
-          ]
-        },
-        {
-          "group_id": "adjudicate-design",
-          "n": 2,
-          "anti_bias": "for the pipeline/citation change-set: surgical-minimal edit (preserve intent, rename only) vs structural fix (the contradiction is real and needs a new mechanism)",
-          "robot_talks": true,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "synthesizer",
-              "model": "claude-opus-4-8",
-              "token_budget": 3000,
-              "angle": "minimalist: the pipeline points are mostly wording/label fixes; resist adding unbuilt machinery",
-              "initial_prompt": "From the attackers' surviving pipeline findings (C6,C7,C8,C9,C10,C11,C14,C19,C20) produce the smallest honest change-set that removes the contradictions without inventing unbuilt mechanisms; mark what stays PENDING/open."
-            },
-            {
-              "agent_name": null,
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 3000,
-              "angle": "structuralist: nominal renames leave the contradiction; demand the doc state the missing distinction (producer-blind, claim-class citation policy, work/version id, two budgets)",
-              "initial_prompt": "Attack the minimalist change-set: where a rename hides a real gap, demand the doc name the missing distinction explicitly, as an open question if unbuilt. Converge with the minimalist via robot-talks."
-            }
-          ]
-        },
-        {
-          "group_id": "adjudicate-formal",
-          "n": 2,
-          "anti_bias": "for the statistical/formal change-set: the decomposition is real-under-conditions and must be defended vs the labels overclaim and must be downgraded to honest status",
-          "robot_talks": true,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "synthesizer",
-              "model": "claude-opus-4-8",
-              "token_budget": 3000,
-              "angle": "defender: the seam Bregman/Amari result is proven-under-conditions; keep it, fix only the status labels and the covariance framing",
-              "initial_prompt": "From the attackers' surviving statistical/formal findings (C1,C2,C3,C4,C5,C13,C15,C16,C17,C18) produce the change-set that reframes tension-vs-independence as decorrelation/covariance, fixes winner's curse and the ex-post comparator, and corrects status labels WITHOUT discarding the proven-under-conditions Bregman result."
-            },
-            {
-              "agent_name": null,
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 3000,
-              "angle": "downgrader: 'operational'/'survived once' lie; the CT layer is information geometry not categorical; demand honest status and the weaker expected-loss core",
-              "initial_prompt": "Attack the defender's change-set: force honest status lines ('candidate mapping, formally unconstructed and under challenge'), and adjudicate whether the core statement should adopt the weaker expected-loss framing. Converge with the defender via robot-talks; zig-zag with adjudicate-design on shared points (C1/C15 external-target)."
-            }
-          ]
-        },
-        {
-          "group_id": "editors",
-          "n": 2,
-          "anti_bias": "edit scope: statistical/formal sections vs pipeline/citation sections (disjoint ownership to avoid edit conflict on one file)",
-          "robot_talks": false,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-opus-4-8",
-              "token_budget": 4000,
-              "angle": "owns the statistical/formal edits (Opening, central thesis, Revisions, CT table row, BET-CT, BET-√N, OQ-9/10)",
-              "initial_prompt": "Apply the approved formal change-set to anti-noise-orchestration.md: reframe bias-vs-independence via covariance, correct status labels, fix BET-√N comparator; return exact edits made."
-            },
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-opus-4-8",
-              "token_budget": 4000,
-              "angle": "owns the pipeline/citation edits (diagram/adjustments, source-blind, fork-guard table rows, citation spine, OQ-1/2/4/5/7)",
-              "initial_prompt": "Apply the approved pipeline change-set to anti-noise-orchestration.md: ETE labeling, producer-blind rename, compressor typed-deltas, two-budget, fork-guard status, claim-class citation policy, work/version id; return exact edits made."
-            }
-          ]
-        },
-        {
-          "group_id": "reviewers",
-          "n": 2,
-          "anti_bias": "over-correction (the edits threw away a real result / added unbuilt claims) vs under-correction (a contradiction survived the edit)",
-          "robot_talks": true,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 2500,
-              "angle": "over-correction guard: check no proven-under-conditions result was demoted and no new unbuilt claim was asserted as done",
-              "initial_prompt": "Red-team the edited anti-noise-orchestration.md for over-correction: lost nuance, demoted real results, PENDING items now falsely asserted; quote the edited lines."
-            },
-            {
-              "agent_name": null,
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 2500,
-              "angle": "under-correction guard: check every surviving critique point was actually resolved and no status label still lies",
-              "initial_prompt": "Red-team the edited anti-noise-orchestration.md for under-correction: any surviving critique-point still unaddressed, any label still contradicting an OQ; quote the edited lines."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "attackers",
-          "to": "adjudicate-design",
-          "type": "sequential"
-        },
-        {
-          "from": "attackers",
-          "to": "adjudicate-formal",
-          "type": "sequential"
-        },
-        {
-          "from": "adjudicate-design",
-          "to": "adjudicate-formal",
-          "type": "zig-zag",
-          "loop_cap": 3
-        },
-        {
-          "from": "adjudicate-design",
-          "to": "editors",
-          "type": "sequential"
-        },
-        {
-          "from": "adjudicate-formal",
-          "to": "editors",
-          "type": "sequential"
-        },
-        {
-          "from": "editors",
-          "to": "reviewers",
-          "type": "sequential"
-        },
-        {
-          "from": "reviewers",
-          "to": "editors",
-          "type": "feedback",
-          "loop_cap": 2
-        }
-      ],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 15,
-          "tree": {
-            "explorer": 5,
-            "synthesizer": 2,
-            "skeptic": 4,
-            "writer": 3,
-            "auditor": 1,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": [
-          "Fix-editor (Stage 4 feedback): apply 6 reviewer-surfaced consistency fixes — residual source-blind at A1 text, the surviving 'sqrtN only holds with independence' table cell, define the ✻ glyph, place the ⊕-licensed-by-F caveat at first recurrence, annotate stale OQ-9, and add the claim-class pointer to the main-text 'suspect'."
-        ]
-      },
-      "_score": 92.43
-    },
     {
       "dispatch_id": "2026-07-22-agents-protocol-readme-update-review",
       "dispatch_type": "review",
@@ -681,226 +142,6 @@
         "feedback_prompts": null
       },
       "_score": 51.09
-    },
-    {
-      "dispatch_id": "2026-07-23-assay-forward-research",
-      "dispatch_type": "research",
-      "created": "2026-07-23T05:41:23.664Z",
-      "goal": "Resolve the Assay probe's ranked forward questions: is L(unit|corpus) already owned by LLMLingua/LongLLMLingua (wrap vs build for Column B), where is the behavioral-equivalence eval gap, and are the in-repo assets ready for the S0 gzip-only prolixity audit (skills segment? composed-spell duplication real? dispatch.yaml replayable?).",
-      "context": "internal-tools/research/document-information-estimator holds a committed pre-PoC brief (README) + probe (initial-considerations.md). Assay = one engine marginal_information(unit|corpus); first use case = prolixity of our own system, gzip-first, LM only if it beats gzip, P-GUARD mandatory. This executes the probe's §6 research map: Track 1 external prior art vs Track 2 in-repo asset audit. Read-only; output feeds the build ladder S0-S2 and forks F1-F4. Delta>0-on-private-content and the LM-vs-gzip bake-off are OUT of scope (build-time; no logprob server exists yet).",
-      "anti_bias_global": "adopt-what-exists optimism vs prove-it-on-our-own-corpus / build-the-gap skepticism",
-      "max_loops": 2,
-      "working_folder": "internal-tools/research/document-information-estimator/forward-research/",
-      "groups": [
-        {
-          "group_id": "explorers",
-          "n": 3,
-          "anti_bias": "source-corpus x methodology (declared composite)",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Xiao, Guangxuan",
-              "role": "explorer",
-              "model": "claude-sonnet-4-6",
-              "token_budget": 1000,
-              "angle": "external ML / prompt-compression corpus — operator-ownership: does LongLLMLingua already implement L(unit|corpus) well enough to WRAP vs build?",
-              "initial_prompt": "You are an explorer in research dispatch 2026-07-23-assay-forward-research (Assay = document-information-estimator; one engine marginal_information(unit|corpus); first use case = prolixity of our own instruction system, gzip-first). Your corpus: external ML / prompt-compression literature and tools. Your angle: operator-ownership — does LLMLingua / LongLLMLingua (Microsoft) already implement L(unit|corpus) = per-token perplexity of a unit conditioned on a corpus, well enough that Assay's Column B is a WRAP not a build? LongLLMLingua's 'perplexity of the question conditioned on documents' is the claim to verify. Also sweep instruction-redundancy-for-LLM-agents prior art. Return, with citations: (a) the strongest owner candidate for L(unit|corpus) and how completely it covers our primitive; (b) a wrap-vs-build verdict with the specific gap that would force a build; (c) any instruction-redundancy prior art. Precedent-first: finding an owner is a WIN (build-from-owned), not a kill. Read-only; write nothing outside internal-tools/research/document-information-estimator/forward-research/. Budget ~1000 tokens."
-            },
-            {
-              "agent_name": "Liu, Nelson",
-              "role": "explorer",
-              "model": "claude-sonnet-4-6",
-              "token_budget": 1000,
-              "angle": "external NLP / faithfulness corpus — is behavioral-equivalence eval of compressed prompts owned or our contribution gap?",
-              "initial_prompt": "You are an explorer in research dispatch 2026-07-23-assay-forward-research. Your corpus: external NLP / faithfulness / evaluation literature. Your angle: does anyone own the BEHAVIORAL-EQUIVALENCE evaluation of compressed/trimmed prompts — not 'benchmark score preserved' but 'same tool choices, same gate outcomes, same agent trajectory' after compression? The Assay probe claims this is the weakest-covered thread externally and likely our contribution. Return, with citations: (a) SOTA for faithfulness / behavioral-equivalence eval of compressed prompts and instruction-following preservation; (b) whether it is owned or a genuine gap — name the closest owner and exactly what it does NOT cover (agent-trajectory equivalence); (c) any independent statement of the P-GUARD idea (tighten safety constraints as the prompt shrinks). Precedent-first: a found owner is build-from-owned, not a kill. Read-only; write nothing outside internal-tools/research/document-information-estimator/forward-research/. Budget ~1000 tokens."
-            },
-            {
-              "agent_name": "Shannon, Claude",
-              "role": "explorer",
-              "model": "claude-sonnet-4-6",
-              "token_budget": 1100,
-              "angle": "in-repo empirical measurement — is the repo ready for the S0 gzip-only prolixity audit (segmentation, composed-spell duplication ground-truth, replayability, store status, logprob harness)?",
-              "initial_prompt": "You are an explorer in research dispatch 2026-07-23-assay-forward-research. Your corpus: THIS repo (in-repo empirical measurement, not literature). Your angle: is the repo ready for Assay's S0 gzip-only prolixity audit? Measure/verify using Read/Grep/Glob (Bash is hook-blocked for the ledger): (a) do the ~66 .claude/skills/*/SKILL.md segment into scorable units? give counts/sizes; (b) do composed spells (paired-views, repository-harness) contain MEASURABLE duplication of their components' prose — the built-in ground-truth redundancy case? show evidence; (c) is telemetry/agents/subagents-dispatch.yaml replayable as a behavioral task set (rows carry goal/context/groups/role/angle/gate outcomes)? ~how many rows; (d) is the vault/hypothesis claim-graph (HYP-CLAIM-GRAPH) still a hypothesis doc, not a queryable store? (e) is there an existing logprob harness anywhere, or is tools/agent-pool-mcp the pattern to reuse for shipping Assay as a repo-local MCP? Do NOT run any LM. Report gzip-separation feasibility only to the extent stdlib reasoning allows. Read-only; write nothing outside internal-tools/research/document-information-estimator/forward-research/. Budget ~1100 tokens."
-            }
-          ]
-        },
-        {
-          "group_id": "synthesizer",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "writer",
-              "model": "claude-opus-4-8",
-              "token_budget": 2800,
-              "angle": null,
-              "initial_prompt": "You are the writer/synthesizer in research dispatch 2026-07-23-assay-forward-research. Draft internal-tools/research/document-information-estimator/forward-research/findings.md from the three explorers' collected returns (also write research.md with their verbatim returns). Produce the verdict matrix (candidate | owner/precedent | witnessed? | sound? | verdict | use-mode) over the candidates: (1) adopt-vs-build LongLLMLingua for Column B; (2) behavioral-equivalence eval — owned or our gap; (3) repo-asset readiness for S0. Every load-bearing claim CITES the collected return it rests on (P10 claim <= proof; keystone claims carry their inline collapse-test). Explicitly flag Delta>0-on-private-content and the LM-vs-gzip bake-off as BUILD-TIME obligations (S3/S4), out of this dispatch's scope. Close with the one-line answer to the goal. Budget ~2800 tokens."
-            }
-          ]
-        },
-        {
-          "group_id": "reviewers",
-          "n": 2,
-          "anti_bias": "attack-vector (skeptic gate)",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Tetlock, Philip",
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 1200,
-              "angle": "precedent gate — ownership attribution + calibration of the LongLLMLingua owner-claim",
-              "initial_prompt": "You are a skeptic in research dispatch 2026-07-23-assay-forward-research, running the PRECEDENT gate only. Attack the synthesizer's findings on ownership attribution: who actually owns L(unit|corpus) and the behavioral-equivalence eval? Find the OWNER, not just 'something similar'; calibrate the LongLLMLingua owner-claim (is the coverage as complete as claimed?). Finding an owner is NOT a kill — it relabels the candidate build-from-owned (owner exists, repo doesn't yet deploy) or already-deployed; an empty search certifies precedent-clean -> novel-attempt. Never emit a terminal KILL from this gate. If you surface owner-siblings or papers the explorers missed, state them as the feedback to send back to explorers. Read-only; write nothing outside the working_folder. Budget ~1200 tokens."
-            },
-            {
-              "agent_name": "Gigerenzer, Gerd",
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 1200,
-              "angle": "definitional-soundness gate — does Assay collapse to re-skinned LongLLMLingua + gzip once the falsifier is stripped?",
-              "initial_prompt": "You are a skeptic in research dispatch 2026-07-23-assay-forward-research, running the DEFINITIONAL-SOUNDNESS gate only. Attack whether Assay collapses to something already named, re-skinned. Procedure: subtract LongLLMLingua's perplexity-pruning AND gzip's frugal baseline from Assay's proposed contribution; is the RESIDUE non-empty? The claimed residue is: the behavioral-equivalence-on-instructions falsifier + the P-GUARD genre-guard (low-surprisal != cuttable for instructions) + the relative-to-self-corpus reading. Collapse-test, state it inline: 'strip the behavioral falsifier and Assay == LongLLMLingua perplexity-pruning.' Verdict: sound (residue non-empty — name it) or tautological/re-skin (terminal KILL as a typed negative — what it would have contributed + the exact fact that zeroed it). Read-only; write nothing outside the working_folder. Budget ~1200 tokens."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "explorers",
-          "to": "synthesizer",
-          "type": "sequential"
-        },
-        {
-          "from": "synthesizer",
-          "to": "reviewers",
-          "type": "zig-zag",
-          "loop_cap": 1
-        },
-        {
-          "from": "reviewers",
-          "to": "explorers",
-          "type": "feedback",
-          "loop_cap": 1
-        }
-      ],
-      "close": null,
-      "_score": 44.26
-    },
-    {
-      "dispatch_id": "2026-07-21-roadmap-build-order",
-      "dispatch_type": "research",
-      "created": "2026-07-21T05:36:48.314Z",
-      "goal": "Produce the best-possible ordered BUILD roadmap for PLAN.md — what to build and in what order, with dependencies and done-criteria — via two opposed drafters, a synthesizer, two opposed reviewers, and a dedicated final approver who can veto and force a revision round.",
-      "context": "ROADMAP is not the BACKLOG: BACKLOG.md parks named-but-unplanned candidates; the ROADMAP must state what to build and in what order, dependency-aware. The repo is a T0-loop epistemology engine with three faces (decision / categorical / engineering) and a missing provenance spine (BL-3). Two opposed sequencing priors are drafted, synthesized into one ordered roadmap, adversarially reviewed on two orthogonal lenses, then judged by a final approver; rejection triggers a revision loop. Outputs feed PLAN.md §7.",
-      "anti_bias_global": "sequencing prior — maximize-unblock/throughput vs. falsify-biggest-existential-risk-first; and review lens — feasibility/dependencies vs. honesty/precision",
-      "max_loops": 3,
-      "working_folder": "research/roadmap-build-order/",
-      "groups": [
-        {
-          "group_id": "drafters",
-          "n": 2,
-          "anti_bias": "sequencing prior — maximize-unblock/dependency-critical-path vs. falsify-biggest-existential-risk-first",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 2000,
-              "angle": "maximize-unblock / dependency-critical-path — order by what unblocks the most downstream work first",
-              "initial_prompt": "Read the repo at c:/Users/victo/cyberalchemy-orchestrator (PLAN.md, OBLIGATIONS.md, BACKLOG.md, vault/, implementations/). Produce an ORDERED BUILD ROADMAP (what to build, in what order). CONTEXT: the repo is a T0-loop epistemology engine (claim->probe->keep->enrich, NOT yet built) with three faces (decision-science HYP-ORCH-NOISE / categorical OBL-E3 / engineering ledger+control-plane) tied only if a provenance spine exists — that spine is ABSENT and named BL-3 (typed enrich/supersede ledger). RUNS TODAY: control-plane Phase 1 (read-only FastAPI+SSE, 10 UIs, tested), agent-pool MCP, dispatch discipline; Phase-2 write button disabled. BLOCKERS: enum-drift (two 2026-07-18 close rows bypassed the validated appender -> holds EG-1 at veracity:medium, BLOCKS Phase 2); OBL-E3 sub-3 (dischargeable NOW in sibling Lean repo per brief ../domainspec-lean-formalization/TO-ME/oble3-synthesis-as-second-residue-instance/); BL-3 (pivot unlock); portability hardwired to C:/Users/victo; cheap fixes (TO-ME citation prefix, verify sibling Lean build-gate). YOUR SEQUENCING PRIOR: maximize-unblock — treat the engine/infra critical path (enum-drift -> EG-1 restored -> Phase 2 -> BL-3 -> mechanized loop) as spine because BL-3 unlocks four things at once; put cheapest highest-leverage unblockers first. For each item give: id, what gets built (concrete artifact/endpoint/decl), testable done-criterion, dependencies, collapse/abort condition. Keep claim<=proof: never turn a candidate thesis into a settled build step; mark BUILD vs PROOF items. CRITICAL: ROADMAP != BACKLOG — select and sequence, don't dump the backlog. Return clean Markdown for PLAN.md + 3-sentence rationale for your ordering. Budget ~2000 tokens."
-            },
-            {
-              "agent_name": null,
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 2000,
-              "angle": "falsify-biggest-existential-risk-first — order by what most cheaply kills the whole premise if it is wrong",
-              "initial_prompt": "Read the repo at c:/Users/victo/cyberalchemy-orchestrator (PLAN.md, OBLIGATIONS.md, BACKLOG.md, vault/, implementations/). Produce an ORDERED BUILD ROADMAP (what to build, in what order). CONTEXT: the repo is a T0-loop epistemology engine (claim->probe->keep->enrich, NOT yet built) with three faces (decision-science HYP-ORCH-NOISE / categorical OBL-E3 / engineering ledger+control-plane) tied only if a provenance spine exists — that spine is ABSENT and named BL-3 (typed enrich/supersede ledger). RUNS TODAY: control-plane Phase 1 (read-only), agent-pool MCP, dispatch discipline; Phase-2 write button disabled. RISKS: (1) the categorical face may be METAPHOR — OBL-E3 asks if the orchestration language is a category ORCH; if zig-zag/feedback don't compose or synthesis-residue is count-shaped, a third of the thesis collapses; it is dischargeable NOW (sibling Lean brief ../domainspec-lean-formalization/TO-ME/oble3-synthesis-as-second-residue-instance/) independent of infra. (2) ledger integrity — the enum-drift proves the validated write path was BYPASSED (holds EG-1 at veracity:medium); if the substrate isn't actually append-only-safe, every 'auditable' claim is hollow. (3) framework-self-similarity is already FALSIFIED at current design (no close row enriches C). YOUR SEQUENCING PRIOR: falsify-biggest-existential-risk-first — sequence to resolve the largest veracity/existential risks (OBL-E3 sub-3, enum-drift reproduction) BEFORE investing in build-out; a cheap experiment that could collapse the premise outranks a feature. For each item give: id, what gets built/tested, testable done-criterion, dependencies, collapse/abort condition. Keep claim<=proof; mark BUILD vs PROOF items. CRITICAL: ROADMAP != BACKLOG — select and sequence. Return clean Markdown for PLAN.md + 3-sentence rationale. Budget ~2000 tokens."
-            }
-          ]
-        },
-        {
-          "group_id": "synthesizer",
-          "n": null,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "synthesizer",
-              "model": "claude-opus-4-8",
-              "token_budget": 2800,
-              "angle": "reconcile the two opposed roadmaps into one ordered build plan",
-              "initial_prompt": "You will receive two ordered BUILD roadmaps for the repo c:/Users/victo/cyberalchemy-orchestrator, drafted under opposed sequencing priors (maximize-unblock vs. falsify-biggest-existential-risk-first). Reconcile them into ONE ordered build roadmap for PLAN.md §7. Requirements: (a) ROADMAP != BACKLOG — an ordered, dependency-aware BUILD plan, not a candidate dump; cross-reference BACKLOG.md as the distinct parking lot. (b) Recognize the two tracks are partly parallel (engine/infra vs. thesis/CT proof) and say which items are on the critical path vs. parallelizable. (c) Every item: id, what gets built (concrete), testable done-criterion, dependencies (by id), collapse/abort condition, and BUILD-vs-PROOF tag. (d) Keep claim<=proof; do not smuggle a candidate thesis in as a settled build step. (e) Where the two drafts disagree on order, decide and give a one-line reason. Return clean Markdown ready to drop into PLAN.md + a short 'why this order' rationale. Budget ~2800 tokens."
-            }
-          ]
-        },
-        {
-          "group_id": "reviewers",
-          "n": 2,
-          "anti_bias": "review lens — feasibility/dependencies (is it buildable and correctly ordered?) vs. honesty/precision (claim<=proof, ROADMAP!=BACKLOG, testable done-criteria)",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": null,
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 1600,
-              "angle": "feasibility & dependencies — is each item buildable, are dependencies correct/complete, is the order executable, any hidden blocker?",
-              "initial_prompt": "Review the synthesized ordered BUILD roadmap (provided) against the real repo at c:/Users/victo/cyberalchemy-orchestrator. LENS: feasibility & dependencies. Check: is each item actually buildable as stated; are its dependencies correct and complete (no missing prerequisite, no false dependency); is the ordering executable end-to-end; is any hidden blocker glossed over (e.g. the enum-drift gating Phase 2, the sibling-repo Lean toolchain, the AgentOut anti-toy gate for OBL-E3)? Cite specific files/anchors. Return a PASS/FAIL verdict plus a concrete list of required fixes (each actionable). Budget ~1600 tokens."
-            },
-            {
-              "agent_name": null,
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 1600,
-              "angle": "honesty & precision (claim<=proof) — overclaim check, ROADMAP!=BACKLOG boundary, testable done-criteria, no metaphor-as-milestone",
-              "initial_prompt": "Review the synthesized ordered BUILD roadmap (provided) against the real repo at c:/Users/victo/cyberalchemy-orchestrator. LENS: honesty & precision under claim<=proof. Check: is the ROADMAP!=BACKLOG boundary clean (no parking-lot dump); is any candidate/thesis smuggled in as a settled build step (e.g. treating OBL-E3 as 'done' rather than a proof attempt with a collapse-test); does every item carry a precise, testable done-criterion; any overclaim or metaphor dressed as a milestone; are BUILD vs PROOF items honestly separated? Return a PASS/FAIL verdict plus a concrete list of required fixes (each actionable). Budget ~1600 tokens."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "drafters",
-          "to": "synthesizer",
-          "type": "sequential"
-        },
-        {
-          "from": "synthesizer",
-          "to": "reviewers",
-          "type": "sequential"
-        },
-        {
-          "from": "reviewers",
-          "to": "synthesizer",
-          "type": "zig-zag",
-          "loop_cap": 2
-        }
-      ],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 6,
-          "tree": {
-            "explorer": 2,
-            "synthesizer": 1,
-            "skeptic": 2,
-            "writer": 0,
-            "auditor": 1,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": [
-          "Reviewers (feasibility): FT-1 cites the wrong validator (exit_reason is gated by validateClose:242, not validateDispatch); FT-1 outcome-set omits the older-appender/hook-off branch; B-1 'zero out-of-enum rows' unreachable on an append-only ledger; B-2's Monitor-wakes-Claude is not a wired primitive; D-1->B-1 is a false dependency.",
-          "Reviewers (honesty): P-1 under-gates fractality (needs full OBL-E3 composition adjudication, not just FT-2); P-1 abort too weak; TR-1/TR-2 lack done-criteria; 'only BL-3 graduated' overstates; B-1 references a non-existent guard artifact and silently grandfathers the two rows.",
-          "Final approver (Lakatos) REJECT of v2: B-1 smuggled FT-1 outcome (i) as settled ('hook existed and was bypassed') and inherited the validateDispatch->validateClose mis-anchor — rewrite B-1 conditional on FT-1 and fold the mis-anchor correction into its done-criteria. v3 ACCEPTED."
-        ]
-      },
-      "_score": 41.16
     },
     {
       "dispatch_id": "2026-07-22-agents-communication-protocols-review",
@@ -1118,73 +359,89 @@
       "_score": 32.77
     },
     {
-      "dispatch_id": "2026-07-21-close-session-node",
-      "dispatch_type": "review",
-      "created": "2026-07-21T05:07:50.873Z",
-      "goal": "Close the session per the close-session skill: classify the session node (Sonnet) and review it with two independent Sonnet reviewers (frontmatter/classification + body-discipline) before finalizing.",
-      "context": "Session covered the cross-repo reference sweep, the OBL-E3/synthesis-colimit brief authored into the sibling Lean repo, and the doc-correction pass with anchor fixes. This dispatch runs the close-session classification + two-reviewer gate over the assembled node.",
-      "anti_bias_global": null,
+      "dispatch_id": "2026-07-20-costura-feasibility",
+      "dispatch_type": "research",
+      "created": "2026-07-20T23:40:08.167Z",
+      "goal": "Determinar se as duas costuras centrais do paper se tipam formalmente ou sao analogia: (1) decomposicao ortogonal vies+ruido (MSE = vies^2 + ruido^2) sobre o funcional de erro dos statistical games em categorias de Markov; (2) nudge/choice-architecture como morfismo sobre a lente-de-escolha, agindo no processo e nao no conteudo.",
+      "context": "Deriva da tese PROVISORIA vault/hypothesis/orquestracao-anti-ruido.md (HYP-ORCH-NOISE, authority exploratory/candidate — raciocina, nao legisla; esta pesquisa PODE revisa-la). Testa o risco de OBL-E3 (linguagem = categoria de verdade, ou rima). Dois pares tensionados construtor-vs-colapsador (um por costura), posicoes independentes congeladas antes de sintetizar; o synthesizer fecha com a implicacao para a tese-fonte. Auto-aplicacao A6: o processo que testa a tese e instancia dela.",
+      "anti_bias_global": "construcao-formal vs colapso (no-go / vacuidade)",
       "max_loops": 1,
-      "working_folder": "sessions/",
+      "working_folder": "docs/essays/orquestrador-anti-ruido/research/costura-feasibility/",
       "groups": [
         {
-          "group_id": "classifier",
-          "n": 1,
-          "anti_bias": null,
+          "group_id": "kahneman-seam-probes",
+          "n": 2,
+          "anti_bias": "methodology (prova construtiva de decomposicao vs argumento de no-go / obstrucao)",
           "robot_talks": null,
           "agents": [
             {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 800,
-              "angle": null,
-              "initial_prompt": "Classify the session node per ontology-conventions.md: node_type, tags, layer, nature, expected_importance + rationale, contradiction edges, files touched. Return classification fields only."
+              "agent_name": "Fritz, Tobias",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1800,
+              "angle": "CONSTRUTOR: constroi a decomposicao vies^2+ruido^2 sobre o funcional dos statistical games via enriquecimento por divergencia de Bregman / geometria dualmente-plana (Pitagoras generalizado de Amari, sem produto interno nu)",
+              "initial_prompt": "Voce e o CONSTRUTOR da costura Kahneman x CT. Leia primeiro vault/hypothesis/orquestracao-anti-ruido.md (a tese-FONTE, PROVISORIA — candidate/exploratory; raciocina, nao legisla; esta pesquisa pode revisa-la), MAPPING.md e OBLIGATIONS.md (OBL-E3: a linguagem e uma categoria de verdade ou analogia?). Tarefa: CONSTRUIR, sobre o funcional de erro dos statistical games / lentes bayesianas (Smithe; Braithwaite-Hedges-Smithe) numa categoria de Markov (Fritz), uma decomposicao do erro numa estrutura ORTOGONAL vies + ruido — o analogo categorico de MSE = vies^2 + ruido^2. Rota viva a pressionar: divergencias de Bregman / geometria dualmente-plana dao um teorema de Pitagoras GENERALIZADO (Amari) que NAO exige produto interno nu. Mostre se esse enriquecimento vive nativamente no funcional ou precisa ser ADICIONADO (e, se adicionado, o que exatamente). Entregue: a construcao (ou o parcial mais longe alcancado), a estrutura precisa exigida, e uma fronteira honesta onde para. claim <= proof. Congele sua posicao de forma independente — nao hedge em direcao ao colapsador. ~1800 tokens."
+            },
+            {
+              "agent_name": "Leinster, Tom",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1800,
+              "angle": "COLAPSADOR: exibe a obstrucao — ortogonalidade euclidiana exige produto interno / Hilbert que categorias de Markov nao fornecem nativamente; KL nao e soma de quadrados; a media-raiz-N pressupoe estrutura metrica ausente",
+              "initial_prompt": "Voce e o COLAPSADOR da costura Kahneman x CT. Leia vault/hypothesis/orquestracao-anti-ruido.md (tese-FONTE PROVISORIA, candidate/exploratory; esta pesquisa pode revisa-la) e OBLIGATIONS.md (OBL-E3). Tarefa: PROVAR que a decomposicao ortogonal vies+ruido e analogia importada, nao estrutura nativa. O split pitagorico vies^2+ruido^2 e um fato de L2/Hilbert; categorias de Markov nuas nao carregam produto interno; KL nao e soma de quadrados; a media-raiz-N que cancela ruido pressupoe uma media metrica/convexa ausente do substrato categorico. Exiba a obstrucao mais afiada: que estrutura ESPECIFICA teria de ser ADICIONADA, e o que quebra se ela nao estiver la. Se a construcao so sobrevive importando andaime de Hilbert/metrica, nomeie isso como o imposto-da-analogia. Entregue o argumento de no-go / obstrucao mais forte, honestamente delimitado. claim <= proof. Congele de forma independente. ~1800 tokens."
             }
           ]
         },
         {
-          "group_id": "review-frontmatter",
-          "n": 1,
-          "anti_bias": null,
+          "group_id": "thaler-seam-probes",
+          "n": 2,
+          "anti_bias": "methodology (tipagem construtiva do nudge-morfismo vs argumento de vacuidade / trivialidade)",
           "robot_talks": null,
           "agents": [
             {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 600,
-              "angle": null,
-              "initial_prompt": "Review the assembled session node's classification + frontmatter against ontology-conventions.md; check well-formedness and the 200-line body cap. Return PASS or concrete problems."
+              "agent_name": "Myers, David Jaz",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1800,
+              "angle": "CONSTRUTOR: exibe uma 2-celula de lente / mapa de optica com dentes de comonoide-fatoracao, formalmente distinta de pre-composicao, tal que 'age no leg de contexto e fixa o de conteudo' vira um predicado categorico real",
+              "initial_prompt": "Voce e o CONSTRUTOR da costura Thaler x CT. Leia vault/hypothesis/orquestracao-anti-ruido.md (tese-FONTE PROVISORIA; nudge governa o PROCESSO, nunca o CONTEUDO; esta pesquisa pode revisa-la). Tarefa: tipar 'nudge / arquitetura de escolha' como um morfismo agindo sobre a lente-de-escolha / optica — e mostrar que carrega CONTEUDO categorico NAO-TRIVIAL, formalmente DISTINTO de pre-composicao trivial. Lidere com a testemunha distintiva: uma 2-celula de lente / mapa-de-optica / reparametrizacao com dentes de comonoide/fatoracao, tal que 'age no processo, nao no conteudo' vire um predicado categorico real (ex.: fixa o leg forward/conteudo enquanto age no leg backward/contexto). Voce SERA COBRADO a exibir estrutura especifica, NAO o slogan 'nudge = morfismo'. Se nao conseguir fornecer os dentes, diga-o explicitamente. Entregue: a construcao + a distincao exata de pre-composicao. claim <= proof. Congele de forma independente. ~1800 tokens."
+            },
+            {
+              "agent_name": "Jacobs, Bart",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1800,
+              "angle": "COLAPSADOR: prova que 'nudge como morfismo' e vacuo — toda transformacao de processo e trivialmente um morfismo; ataca a testemunha do construtor mostrando que a 2-celula colapsa sob as equivalencias da categoria de optica",
+              "initial_prompt": "Voce e o COLAPSADOR da costura Thaler x CT. Leia vault/hypothesis/orquestracao-anti-ruido.md (tese-FONTE PROVISORIA; esta pesquisa pode revisa-la). Tarefa: PROVAR que 'nudge como morfismo' e vacuo — toda transformacao de processo e trivialmente um morfismo, e a distincao processo != conteudo nao tem dentes categoricos (relabeling, nao estrutura). Ataque a testemunha que o construtor tentaria erguer: a 2-celula de lente / mapa de optica e genuinamente distinta de pre-composicao, ou colapsa sob as equivalencias da categoria de optica? Mostre onde 'age no processo nao no conteudo' falha em ser bem-definido categoricamente. Entregue o argumento de vacuidade mais afiado, honestamente delimitado — se HOUVER conteudo irredutivel que voce nao consegue deflacionar, conceda exatamente isso. claim <= proof. Congele de forma independente. ~1800 tokens."
             }
           ]
         },
         {
-          "group_id": "review-body",
-          "n": 1,
+          "group_id": "synthesizer",
+          "n": null,
           "anti_bias": null,
           "robot_talks": null,
           "agents": [
             {
-              "agent_name": null,
-              "role": "auditor",
-              "model": "claude-sonnet-5",
-              "token_budget": 600,
+              "agent_name": "Riehl, Emily",
+              "role": "synthesizer",
+              "model": "claude-opus-4-8",
+              "token_budget": 3500,
               "angle": null,
-              "initial_prompt": "Review the assembled session node's body discipline: three forward registers obey the discriminating test + subset rule, Open questions node-less, Recommendation names a license or self-labels, no narration. Return PASS or concrete problems."
+              "initial_prompt": "Voce e o synthesizer. Recebe as QUATRO posicoes independentes CONGELADAS (A/B na costura Kahneman x CT; C/D na costura Thaler x CT) como retornadas, sem ancoragem. Reconcilie POR COSTURA num veredito ∈ {real | real-sob-condicoes X | analogia}. Os dois grupos compartilham o template construtor-vs-colapsador, entao compare a FORCA da construcao sobrevivente, nao apenas conte vereditos. Segure cada construtor ao must-exhibit-nontrivial-content: se o construtor do nudge retornou apenas 'transformacoes de processo sao morfismos', rebaixe essa costura a analogia. Depois — OBRIGATORIO — emita a secao 'Implicacao para a tese-fonte (HYP-ORCH-NOISE)': a tese provisoria fica de pe, precisa de revisao, ou quebra, e como (ex.: se vies+ruido exige estrutura metrica adicionada, a costura correta pode nao ser ortogonalidade euclidiana). claim <= proof. ~3500 tokens."
             }
           ]
         }
       ],
       "connections": [
         {
-          "from": "classifier",
-          "to": "review-frontmatter",
+          "from": "kahneman-seam-probes",
+          "to": "synthesizer",
           "type": "sequential"
         },
         {
-          "from": "classifier",
-          "to": "review-body",
+          "from": "thaler-seam-probes",
+          "to": "synthesizer",
           "type": "sequential"
         }
       ],
@@ -1193,14 +450,235 @@
         "agents_spawned": {
           "total": 5,
           "tree": {
-            "auditor": 5,
+            "explorer": 4,
+            "synthesizer": 1,
+            "skeptic": 0,
+            "writer": 0,
+            "auditor": 0,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": []
+      },
+      "_score": 27.77
+    },
+    {
+      "dispatch_id": "2026-07-20-hyp-orch-noise-redteam",
+      "dispatch_type": "review",
+      "created": "2026-07-20T23:07:18.829Z",
+      "goal": "Red-team the anti-noise hypothesis HYP-ORCH-NOISE to surface flaws worth fixing before any promotion to a constitution.",
+      "context": "vault/hypothesis/orquestracao-anti-ruido.md proposes a second (noise) axis atop the repo's existing anti-bias machinery, grounded in Kahneman/Thaler/category-theory. Three independent attackers hit it from three tensioned attack-vectors: vacuity/redundancy, source-fidelity, and operational counter-example. Findings feed the doc's open questions and collapse-tests. Inline delivery (no working_folder).",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": null,
+      "groups": [
+        {
+          "group_id": "attackers",
+          "n": 3,
+          "anti_bias": "attack-vector (vacuity/redundancy vs source-fidelity vs operational counter-example)",
+          "robot_talks": false,
+          "agents": [
+            {
+              "agent_name": "Feyerabend, Paul",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1800,
+              "angle": "vacuity/redundancy — the thesis relabels existing anti-bias machinery and decorates with CT; separation-by-stage is a rename, not a resolution; CT axis is ornamental",
+              "initial_prompt": "You are a red-team attacker. Read the target document at vault/hypothesis/orquestracao-anti-ruido.md IN FULL (read-only; do NOT modify any file). Attack it from ONE lens only: VACUITY / REDUNDANCY. Press this thesis: the document adds nothing over the repo's EXISTING anti-bias machinery (check-tension, P5, P14, the ledger) and merely decorates it with category theory. Hunt specifically: (a) is 'separacao-por-estagio' (tension in the generate stage, independence in the judge stage) a genuine RESOLUTION of the tension-vs-independence contradiction, or just a renaming of it? (b) does the CT axis ('tipo categorico por construto') do any load-bearing work, or is it ornamental? (c) does the two-level ETE pipeline add anything over the existing P14 initial+final primitive it cites? (d) do the 'voce ja faz X' claims reveal the thesis is just relabeling what exists? For EACH finding return: the section + a QUOTATION from the doc (the quotation is the evidence; a finding with no quote is not a finding), a severity (CRITICAL = breaks the thesis, MAJOR = load-bearing gap, MINOR = wording), and a one-line proposed fix. Claim <= proof: if you cannot quote the doc, you have no finding; a refuted-in-your-own-head finding is dropped, not softened. You run INDEPENDENTLY: do not assume or reference other attackers. If you find nothing, state exactly what you attacked and why it survived each attempt. Budget ~1800 tokens of output."
+            },
+            {
+              "agent_name": "Gigerenzer, Gerd",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1800,
+              "angle": "source-fidelity — Kahneman/Thaler/sqrt-N/MAP misapplied; average-of-categorical=distribution=noise conflates inter-rater reliability with noise; orthogonality overstated",
+              "initial_prompt": "You are a red-team attacker. Read the target document at vault/hypothesis/orquestracao-anti-ruido.md IN FULL (read-only; do NOT modify any file). Attack it from ONE lens only: SOURCE-FIDELITY — is the imported theory (Kahneman & Noise 2021, Thaler & Nudge, the sqrt-N aggregation result, MAP, ETE/Delphi) used FAITHFULLY, or misapplied? Hunt specifically: (a) the sqrt-N noise-cancellation claim assumes independent, unbiased, identically-distributed estimators — does the doc justify those preconditions or smuggle them? (b) the claim 'media de rotulo categorico = distribuicao = medida de ruido' — does it correctly map to inter-rater reliability, or does it conflate reliability, noise, and genuine ambiguity? (c) is the 'vies PERP ruido' orthogonality claim faithful to Kahneman's decomposition (system noise = level + pattern + occasion noise), or overstated? (d) is 'nudge governs process not content' and the sludge/default framing faithful to Thaler? (e) is MAP (Mediating Assessments Protocol) characterized correctly? For EACH finding return: the section + a QUOTATION from the doc (the quote is the evidence; no quote = no finding), a severity (CRITICAL = the borrowed theory is misused in a way that breaks a load-bearing claim, MAJOR = a real fidelity gap, MINOR = imprecise phrasing), and a one-line proposed fix. Claim <= proof: quote or it is not a finding; drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, say what you attacked and why it survived. Budget ~1800 tokens of output."
+            },
+            {
+              "agent_name": "Taleb, Nassim Nicholas",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1800,
+              "angle": "operational counter-example — shared base-model correlated errors put a floor under sqrt-N; blinding/independence illusory under one orchestrator; ETE+tagging not cost-proportionate",
+              "initial_prompt": "You are a red-team attacker. Read the target document at vault/hypothesis/orquestracao-anti-ruido.md IN FULL (read-only; do NOT modify any file). Attack it from ONE lens only: OPERATIONAL COUNTER-EXAMPLE — does the design survive contact with the REAL substrate (LLM agents), regardless of whether the concepts are internally coherent? Hunt specifically: (a) LLM agents drawing on the same base model produce CORRELATED errors regardless of assigned persona/angle — this puts a hard floor under sqrt-N noise cancellation that the doc never acknowledges; find where the doc assumes independence it cannot have. (b) is 'blinding'/'cego a fonte' achievable when a SINGLE orchestrator composes every agent's prompt and knows every source? (c) does 'persona como prior' actually shift the sampling distribution of an LLM, or only its surface style? (d) is the two-level ETE + per-dispatch tagging cost-proportionate, or ceremony that burns tokens for marginal noise reduction? (e) is the fork-guard (dispersao vs fork) operable, or does it require a judgment the pipeline cannot make? For EACH finding return: the section + a QUOTATION from the doc (the quote is the evidence; no quote = no finding), a severity (CRITICAL = the mechanism cannot work on the real substrate, MAJOR = a serious operational gap, MINOR = minor friction), and a one-line proposed fix. Claim <= proof: quote or it is not a finding; drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, say what you attacked and why it survived. Budget ~1800 tokens of output."
+            }
+          ]
+        }
+      ],
+      "connections": [],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 3,
+          "tree": {
+            "explorer": 3,
+            "skeptic": 0,
+            "writer": 0,
+            "auditor": 0,
             "helpers": 0
           },
           "loops_used": 1
         },
         "feedback_prompts": null
       },
-      "_score": 31.31
+      "_score": 11.54
+    },
+    {
+      "dispatch_id": "2026-07-20-agent-name-selection-arch",
+      "dispatch_type": "research",
+      "created": "2026-07-20T20:07:20.110Z",
+      "goal": "Decide the simplest mechanism, strictly better than today's manual/null agent_name, for selecting a subagent's agent_name from the tagged agent pool — evaluating RAG vs MCP-cheap-agent vs deterministic tag-overlap script vs enriched-category functor on value/complexity.",
+      "context": "Today agent_name is a manual, nullable free string disconnected from the check-tension gate; the pool's v0.5.0 tags/role_fit sit unused. The pool is 419 static entries with explicit discrete kebab tags. The user wants the simplest option that is strictly better; option 'pairwise-opposition of names' is deferred to backlog. This meta-dispatch dogfoods the repo's own dispatch discipline to inform an architecture decision.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": "research/agent-name-selection-arch/",
+      "groups": [
+        {
+          "group_id": "evaluators",
+          "n": 2,
+          "anti_bias": "methodology (minimalist-deterministic vs systems-retrieval)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Torvalds, Linus",
+              "role": "explorer",
+              "model": "claude-sonnet-5",
+              "token_budget": 600,
+              "angle": "minimalist-deterministic: simplest mechanism strictly better than manual/null; attacks premature RAG/MCP infra; ranks options by value/complexity",
+              "initial_prompt": "Argue the minimalist case for agent_name selection over a 419-entry static tagged pool. Options: RAG / MCP-cheap-agent / deterministic tag-overlap-and-role_fit script / enriched-category functor. Name the smallest shippable artifact, what you would NOT build, and the falsifier for going simple. Under 500 words, claim<=proof."
+            },
+            {
+              "agent_name": "Yu, Zoe",
+              "role": "skeptic",
+              "model": "claude-sonnet-5",
+              "token_budget": 600,
+              "angle": "systems-retrieval: where pure tag-overlap fails (synonyms, sparse tags, pairwise-opposition, telemetry feedback loop); smallest infra beyond a naive script that earns its cost",
+              "initial_prompt": "Skeptic of the just-write-a-script answer for agent_name selection over the tagged pool. Attack pure tag-overlap: synonym/near-miss tags in a 721-vocabulary, sparse-tag entries, the opposition requirement, the telemetry feedback loop. Identify the smallest infra that earns its cost; rank options by value/complexity; name the falsifier. Under 500 words, claim<=proof."
+            }
+          ]
+        }
+      ],
+      "connections": [],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 2,
+          "tree": {
+            "explorer": 1,
+            "skeptic": 1,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "Before building any tag-distance/cluster table, MEASURE the false-negative rate of naive tag-overlap against real past check-tension angles — both poles named this as the decisive falsification test."
+        ]
+      },
+      "_score": 10.51
+    },
+    {
+      "dispatch_id": "2026-07-20-hyp-orch-noise-delta-review",
+      "dispatch_type": "review",
+      "created": "2026-07-21T00:34:06.370Z",
+      "goal": "Red-team the delta added to HYP-ORCH-NOISE (the CT-operationalization table row + the new Apostas registry of six bets) before it settles.",
+      "context": "After the costura-feasibility research operationalized CT via information geometry, the CT design-table row was rewritten to name the tight mappings and the open composition item, and a new '## Apostas registradas' section (BET-CT, BET-vN, BET-PERSONA, BET-TAG, BET-THALER, BET-FORK) was added. Two independent attackers hit only this delta: CT-substance/mathematical-tightness (Fritz) vs falsifiability/form (Popper). Findings feed the doc. Inline (no working_folder).",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": null,
+      "groups": [
+        {
+          "group_id": "attackers",
+          "n": 2,
+          "anti_bias": "attack-vector (CT-substance/mathematical-tightness vs falsifiability/form)",
+          "robot_talks": false,
+          "agents": [
+            {
+              "agent_name": "Fritz, Tobias",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1600,
+              "angle": "CT-substance — is the ~1:1 CT/information-geometry mapping tight and correct across the six bets, or forced (CT-imperialism)? does any bet treat a formalism artifact as a finding?",
+              "initial_prompt": "You are a red-team attacker (agent_name: Fritz, Tobias). Read vault/hypothesis/orquestracao-anti-ruido.md, focusing on (1) the 'Operacionalizacao CT (analogia ~1:1)' row in the 'Onde mora o design' table and (2) the whole '## Apostas registradas' section (all six BET-*). Read-only; do NOT modify any file. Attack from ONE lens only: CT-SUBSTANCE / mathematical tightness. Is the ~1:1 CT / information-geometry mapping genuinely tight, or forced (CT-imperialism)? Specifically: (a) does the identification 'F = the common anchored scale / MAP' actually earn the Amari-Pythagoras-under-Legendre-F reading of the (+) decomposition, or is it asserted? (b) is the sqrt-N -> regime-conditional-concentration claim (CLT/L2 vs Sanov/large-deviation) correctly stated? (c) is 'nudge -> morphism on the coupling-fiber of D(A^N)' a real construction or hand-waving? (d) across ALL six bets (not just BET-CT), does any treat a FORMALISM ARTIFACT as a finding, or rest on a loose/forced categorical mapping? (e) is BET-CT's 'sobreviveu via costura' genuine evidence or post-hoc rationalization? For EACH finding: quote the doc (the quotation is the evidence; no quote = no finding), a severity (CRITICAL = the mapping is wrong/broken, MAJOR = loose or unearned, MINOR = imprecise), and a one-line fix. Claim <= proof: drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, state what you attacked and why it survived. Budget ~1600 tokens."
+            },
+            {
+              "agent_name": "Popper, Karl",
+              "role": "explorer",
+              "model": "claude-opus-4-8",
+              "token_budget": 1600,
+              "angle": "falsifiability/form — are the registered bets genuinely falsifiable, non-duplicative with collapse-tests, and honest about 'Carrega'/Status? is BET-CT unfalsifiable-in-practice?",
+              "initial_prompt": "You are a red-team attacker (agent_name: Popper, Karl). Read vault/hypothesis/orquestracao-anti-ruido.md, focusing on (1) the 'Operacionalizacao CT (analogia ~1:1)' table row and (2) the whole '## Apostas registradas' section (all six BET-*). Read-only; do NOT modify any file. Attack from ONE lens only: FALSIFIABILITY / FORM. For each registered bet: (a) is the Falseador a REAL observable that could actually come out false, or a disguised restatement of the Aposta? (b) is BET-CT ('for each construct a ~1:1 tool exists; false if it collapses to identity or must touch content') unfalsifiable-in-practice — can you ever declare it false, or does the 'seletiva por construcao / nao nos rendemos a CT' retreat clause make it immune to refutation? (c) does each bet's 'Carrega' correctly state what depends on it, or over/understate the blast radius? (d) do the bets DUPLICATE the collapse-tests (single-source-of-truth violation), or are the cross-references ('aponta o collapse-test quando ja existe') accurate? (e) is any bet's Status ('sobreviveu' / 'em-teste') claimed beyond its proof? For EACH finding: quote the doc (no quote = no finding), a severity (CRITICAL = unfalsifiable load-bearing bet or single-source violation, MAJOR = weak/duplicated falseador or mis-stated Carrega, MINOR = wording), and a one-line fix. Claim <= proof: drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, state what you attacked and why it survived. Budget ~1600 tokens."
+            }
+          ]
+        }
+      ],
+      "connections": [],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 2,
+          "tree": {
+            "explorer": 2,
+            "skeptic": 0,
+            "writer": 0,
+            "auditor": 0,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": null
+      },
+      "_score": 7.67
+    },
+    {
+      "dispatch_id": "2026-07-22-bus-contracts-post-remediation-review",
+      "dispatch_type": "review",
+      "created": "2026-07-22T19:52:14.657Z",
+      "goal": "Verificar se as remediações do bus-contracts atendem às change requests sem regressões e se o documento remediado permanece operável como contrato autônomo.",
+      "context": "O target é docs/features/agents-communication-infra/discovery/bus-contracts/README.md após a primeira revisão e remediação. Um agente audita rastreabilidade contra o review anterior e outro executa ataque clean-room de operabilidade; ambos são independentes e read-only. O parent verifica citações e persiste somente o review.md final.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": "docs/features/agents-communication-infra/discovery/bus-contracts/review/",
+      "groups": [
+        {
+          "group_id": "post_reviewers",
+          "n": 2,
+          "anti_bias": "attack-vector: remediation traceability vs clean-room operability",
+          "robot_talks": false,
+          "agents": [
+            {
+              "agent_name": "Fowler, Martin",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": "remediation traceability: compara cada change request com a versão remediada, procurando omissão, correção parcial ou regressão documental",
+              "initial_prompt": "Leia a skill de review, o review anterior e o target remediado completos. Verifique cada uma das 18 change requests contra evidência textual atual e ataque regressões introduzidas pela remediação. Não edite arquivos. Retorne findings com arquivo, linha, quote, severidade e fix, mais uma matriz remediado/parcial/aberto/refutado."
+            },
+            {
+              "agent_name": "Booch, Grady",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": "clean-room operability: ignora a intenção da remediação e tenta operar/quebrar o documento revisado como contrato autônomo",
+              "initial_prompt": "Leia a skill de review e o target remediado completo sem confiar na intenção do review anterior. Tente executar e quebrar o contrato ponta a ponta, distinguindo perguntas deliberadamente abertas de omissões load-bearing. Não edite arquivos. Retorne somente findings verificáveis com arquivo, linha, quote, severidade e fix; defenda ataques que o target sobreviver."
+            }
+          ]
+        }
+      ],
+      "connections": [],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 2,
+          "tree": {
+            "explorer": 2,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": null
+      },
+      "_score": 6.48
     }
   ]
 }
