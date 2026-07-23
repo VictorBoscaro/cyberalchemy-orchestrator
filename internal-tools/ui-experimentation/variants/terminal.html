@@ -26,13 +26,15 @@ html,body{height:100%;margin:0}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%}
-.edge{stroke-width:1.6px;opacity:.85}
-#nodes{position:absolute;inset:0}
-.node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
+.edge{stroke-width:1.7px;opacity:.85;fill:none}
+#nodes{position:absolute;inset:0;pointer-events:none}
+.stage-col{position:absolute;top:0;bottom:0;transform:translateX(-50%);display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:18px;pointer-events:none}
+.group-box{pointer-events:auto;display:flex;flex-direction:column;gap:6px;padding:8px 7px 9px;min-width:0}
+.node{cursor:default;user-select:none;text-align:center;min-width:0}
 .node.agent{cursor:pointer}
 .node .g-label{font-size:11px;letter-spacing:.04em}
 .node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
-.node .n-name{display:block;font-size:11px;line-height:1.1}
+.node .n-name{display:block;font-size:11px;line-height:1.15;overflow-wrap:anywhere}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 #legend .mark{margin-left:auto;opacity:.5}
@@ -65,13 +67,19 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
 .ditem::before{content:"> "}
 .ditem:hover,.ditem.sel{background:#062818;border-color:#4bff9f}
 .dtype{color:#2fd685}
-.node.group{border:1px solid #2fd685;padding:3px 7px;background:#04140d}
+.group-box{border:1px solid #0e3d28;background:rgba(3,17,11,.72);box-shadow:0 0 10px rgba(0,0,0,.35) inset}
+.group-box.rev{border-color:#5c4708;background:rgba(20,15,3,.6)}
+.node.group{border:1px solid #2fd685;padding:3px 7px;background:#04140d;text-shadow:0 0 6px rgba(75,255,159,.5)}
+.node.group.rev{color:#ffe26b;border-color:#8a6a10;text-shadow:0 0 6px rgba(255,226,107,.5)}
 .node.group::before{content:"["}.node.group::after{content:"]"}
 .node.agent{padding:5px 9px;border:1px solid #12603f;background:#03130c;text-shadow:0 0 6px rgba(75,255,159,.5)}
 .node.agent:hover,.node.agent.active{border-color:#7dffbf;box-shadow:0 0 12px rgba(75,255,159,.4)}
 .node.agent.rev{color:#ffe26b;border-color:#8a6a10;text-shadow:0 0 6px rgba(255,226,107,.5)}
 .node .n-role::before{content:"#"}
-.edge{stroke:#2fd685;stroke-dasharray:2 2}
+.edge{stroke:#2fd685}
+.edge-sequential{stroke-dasharray:none}
+.edge-zig-zag{stroke-dasharray:6 4}
+.edge-feedback{stroke-dasharray:2 4}
 #legend .dot.rev{background:#ffe26b}
 #panel{background:#04120c;border-left:1px solid #2fd685;color:#8dffc4}
 #p-name{color:#7dffbf}
@@ -106,7 +114,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
-      <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <svg id="edges" aria-hidden="true"></svg>
       <div id="nodes"></div>
       <div id="legend"><span class="dot rev"></span>revisor / cetico / auditor<span class="mark">?</span></div>
     </div>
@@ -213,123 +221,175 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
     renderGraph(state.current);
   }
 
-  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
+  // ---- geometry: pipeline stages (left→right). Returns {stages:[[gdesc]], edges, nStages}
+  // A "stage" is a column of groups; stage index = longest-path depth in the group DAG,
+  // so directed connections read as flow (attackers → synthesizer → verifiers).
   function geometry(d) {
-    var groups = d.groups || [], G = groups.length;
-    var nodes = [], gpos = {}, i, j;
-    var lay = V.layout;
+    var groups = d.groups || [];
+    var byId = {};
+    groups.forEach(function (g) { byId[g.group_id] = g; });
+    var conns = (d.connections || []).filter(function (c) { return byId[c.from] && byId[c.to]; });
 
-    function place(gi, group) {
-      var agents = group.agents || [], n = agents.length;
-      var gx, gy, cx, cy;
-      if (lay === "columns") {
-        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
-        });
-      } else if (lay === "rows") {
-        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
-        });
-      } else if (lay === "radial") {
-        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
-        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var aa = ai / Math.max(1, n) * 2 * Math.PI;
-          var r = n === 1 ? 0 : 11;
-          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
-        });
-      } else if (lay === "orbit") {
-        var rad = 10 + gi * (40 / Math.max(1, G));
-        cx = 50; cy = 50 - rad;
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
-          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
-        });
-      } else if (lay === "timeline") {
-        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
-        nodes.push(gnode(group, gx, 50));
-        agents.forEach(function (a, ai) {
-          var side = ai % 2 ? 1 : -1;
-          var step = Math.floor(ai / 2) + 1;
-          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
-        });
-      } else { // scatter — use unsigned shifts so positions never go negative
-        var h = hash(group.group_id + gi);
-        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var hh = hash((a.agent_name || "") + group.group_id + ai);
-          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
-        });
-      }
-      gpos[group.group_id] = { x: cx, y: cy };
+    // longest-path stage per group (DAG; connections in the corpus point forward)
+    var stage = {};
+    groups.forEach(function (g) { stage[g.group_id] = 0; });
+    var changed = true, guard = 0;
+    while (changed && guard++ < groups.length + 2) {
+      changed = false;
+      conns.forEach(function (c) {
+        if (stage[c.to] < stage[c.from] + 1) { stage[c.to] = stage[c.from] + 1; changed = true; }
+      });
     }
-    function gnode(group, x, y) {
-      return { id: "g:" + group.group_id, type: "group", x: x, y: y,
-        label: group.group_id, group: group,
-        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
+    // no edges + several groups: spread by array order so each is its own stage
+    if (!conns.length && groups.length > 1) {
+      groups.forEach(function (g, i) { stage[g.group_id] = i; });
     }
-    function anode(a, group, x, y) {
-      nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
-        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
-        tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
-    }
-    for (i = 0; i < G; i++) place(i, groups[i]);
 
-    var edges = [];
-    (d.connections || []).forEach(function (c) {
-      var f = gpos[c.from], t = gpos[c.to];
-      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
+    var maxStage = 0;
+    groups.forEach(function (g) { if (stage[g.group_id] > maxStage) maxStage = stage[g.group_id]; });
+    var stages = [];
+    for (var s = 0; s <= maxStage; s++) stages.push([]);
+
+    groups.forEach(function (g) {
+      var ags = (g.agents || []).map(function (a) {
+        return {
+          agent: a, group: g, rev: isRev(a), label: nameOf(a),
+          tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "")
+        };
+      });
+      var allRev = ags.length > 0 && ags.every(function (x) { return x.rev; });
+      stages[stage[g.group_id]].push({
+        id: g.group_id, group: g, agents: ags, rev: allRev,
+        tip: g.anti_bias ? ("anti-vies: " + g.anti_bias)
+          : ("grupo · " + (g.n || (g.agents || []).length) + " agente(s)")
+      });
     });
-    return { nodes: nodes, edges: edges };
+
+    var edges = conns.map(function (c) {
+      return {
+        from: c.from, to: c.to, type: c.type || "x",
+        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to
+      };
+    });
+    return { stages: stages, edges: edges, nStages: maxStage + 1 };
   }
   function clamp(v) { return Math.max(6, Math.min(94, v)); }
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
 
   // ---- render graph ------------------------------------------------------
+  var SVGNS = "http://www.w3.org/2000/svg";
   function renderGraph(d) {
     $("stage-empty").hidden = true;
     $("stage-title").textContent = d.dispatch_id;
     $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
     var geo = geometry(d);
-    var svg = $("edges"); svg.innerHTML = "";
-    geo.edges.forEach(function (e) {
-      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
-      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
-      p.setAttribute("class", "edge edge-" + (e.type || "x"));
-      p.setAttribute("fill", "none");
-      p.setAttribute("vector-effect", "non-scaling-stroke");
-      p.setAttribute("data-tip", e.tip);
-      svg.appendChild(p);
-    });
     var host = $("nodes"); host.innerHTML = "";
-    geo.nodes.forEach(function (nd) {
-      var el = document.createElement("div");
-      el.className = "node " + nd.type + (nd.rev ? " rev" : "");
-      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
-      el.setAttribute("data-tip", nd.tip);
-      el.setAttribute("data-explain", nd.type === "group"
-        ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
-        : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
-      el.innerHTML = nd.type === "group"
-        ? '<span class="g-label">' + esc(nd.label) + "</span>"
-        : '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
-          '<span class="n-name">' + esc(nd.label) + "</span>";
-      if (nd.type === "agent") {
-        el.tabIndex = 0;
-        el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
-        el.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
+    var svg = $("edges"); svg.innerHTML = "";
+
+    var nStages = geo.nStages;
+    var W = host.clientWidth || 1;
+    var stageGap = W / (nStages + 1);
+    // size-aware column width tied to the slot: boxW = 0.72·stageGap guarantees a
+    // 0.28·stageGap gap between adjacent stages, so boxes NEVER overlap or clip
+    // off-canvas at any viewport width / stage count (R2/R5); capped for readability.
+    var boxW = Math.min(156, stageGap * 0.72);
+
+    var boxEls = {}; // group_id -> box element (for boundary-to-boundary edges)
+    geo.stages.forEach(function (colGroups, si) {
+      var col = document.createElement("div");
+      col.className = "stage-col";
+      col.style.left = ((si + 1) / (nStages + 1) * 100) + "%";
+      col.style.width = boxW + "px";
+      colGroups.forEach(function (gd) {
+        var box = document.createElement("div");
+        box.className = "group-box" + (gd.rev ? " rev" : "");
+        box.setAttribute("data-gid", gd.id);
+
+        var head = document.createElement("div");
+        head.className = "node group" + (gd.rev ? " rev" : "");
+        head.setAttribute("data-tip", gd.tip);
+        head.setAttribute("data-explain", "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado.");
+        head.innerHTML = '<span class="g-label">' + esc(gd.id) + "</span>";
+        box.appendChild(head);
+
+        gd.agents.forEach(function (nd) {
+          var el = document.createElement("div");
+          el.className = "node agent" + (nd.rev ? " rev" : "");
+          el.setAttribute("data-tip", nd.tip);
+          el.setAttribute("data-explain", nd.rev
+            ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta."
+            : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento.");
+          el.innerHTML = '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
+            '<span class="n-name">' + esc(nd.label) + "</span>";
+          el.tabIndex = 0;
+          el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
+          el.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
+          });
+          box.appendChild(el);
         });
-      }
-      host.appendChild(el);
+        col.appendChild(box);
+        boxEls[gd.id] = box;
+      });
+      host.appendChild(col);
+    });
+
+    drawEdges(geo, boxEls, svg, host);
+
+    if (!renderGraph._resizeBound) {   // keep pixel-space edges aligned on viewport resize
+      renderGraph._resizeBound = true;
+      var rt;
+      window.addEventListener("resize", function () {
+        clearTimeout(rt);
+        rt = setTimeout(function () { if (state.current) renderGraph(state.current); }, 120);
+      });
+    }
+  }
+
+  // ---- directed typed edges: group→group, boundary-to-boundary, arrowheaded --
+  // Drawn in PIXEL space (getBoundingClientRect after layout); the SVG has no
+  // viewBox, so 1 user-unit = 1px and curves/arrows never distort (R5).
+  function drawEdges(geo, boxEls, svg, host) {
+    if (!geo.edges.length) return;
+    var base = host.getBoundingClientRect();
+    var defs = document.createElementNS(SVGNS, "defs");
+    defs.innerHTML = '<marker id="arrowT" viewBox="0 0 10 10" refX="9" refY="5" ' +
+      'markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2fd685"/></marker>';
+    svg.appendChild(defs);
+
+    function rectOf(el) {
+      var r = el.getBoundingClientRect();
+      return {
+        l: r.left - base.left, r: r.right - base.left,
+        cx: (r.left + r.right) / 2 - base.left, cy: (r.top + r.bottom) / 2 - base.top
+      };
+    }
+    geo.edges.forEach(function (e) {
+      var S = boxEls[e.from], T = boxEls[e.to];
+      if (!S || !T) return;
+      var a = rectOf(S), b = rectOf(T);
+      var fwd = b.cx >= a.cx, x1, x2;
+      if (fwd) { x1 = a.r; x2 = b.l; } else { x1 = a.l; x2 = b.r; }
+      var y1 = a.cy, y2 = b.cy, dx = x2 - x1;
+      var dd = "M" + x1 + " " + y1 + " C " + (x1 + dx * 0.5) + " " + y1 +
+        " " + (x2 - dx * 0.5) + " " + y2 + " " + x2 + " " + y2;
+
+      var hit = document.createElementNS(SVGNS, "path");   // wide invisible hit-area carries FE-2 tooltip
+      hit.setAttribute("d", dd);
+      hit.setAttribute("fill", "none");
+      hit.setAttribute("stroke", "transparent");
+      hit.setAttribute("stroke-width", "14");
+      hit.setAttribute("pointer-events", "stroke");
+      hit.setAttribute("data-tip", e.tip);
+      hit.setAttribute("data-explain", "Aresta " + e.type + ": fluxo direcionado entre estagios do pipeline.");
+      svg.appendChild(hit);
+
+      var p = document.createElementNS(SVGNS, "path");
+      p.setAttribute("d", dd);
+      p.setAttribute("class", "edge edge-" + e.type);
+      p.setAttribute("marker-end", "url(#arrowT)");
+      p.setAttribute("pointer-events", "none");
+      svg.appendChild(p);
     });
   }
 

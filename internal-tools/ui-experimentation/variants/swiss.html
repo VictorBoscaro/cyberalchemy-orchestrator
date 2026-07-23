@@ -25,14 +25,16 @@ html,body{height:100%;margin:0}
 #stage-meta{font-size:11px;opacity:.6}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
-#edges{position:absolute;inset:0;width:100%;height:100%}
-.edge{stroke-width:1.6px;opacity:.85}
+#edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.edge{fill:none;stroke-width:1.6px}
+.edge-hit{fill:none;stroke:transparent}
 #nodes{position:absolute;inset:0}
 .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
+.node.group{transform:translateY(-50%);text-align:left}
 .node.agent{cursor:pointer}
-.node .g-label{font-size:11px;letter-spacing:.04em}
+.node .g-label{font-size:11px;letter-spacing:.04em;white-space:nowrap}
 .node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
-.node .n-name{display:block;font-size:11px;line-height:1.1}
+.node .n-name{display:block;font-size:11px;line-height:1.15;overflow-wrap:anywhere}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 #legend .mark{margin-left:auto;opacity:.5}
@@ -72,7 +74,10 @@ body{font-family:"Helvetica Neue",Arial,sans-serif;color:#111;background:#fff}
 .node.agent.rev{border-left:4px solid #e2231a}
 .node .n-role{color:#e2231a;font-weight:700}
 .node.agent:hover .n-role{color:#ff6b60}
-.edge{stroke:#111;stroke-width:1.2px}
+.edge{stroke:#111;stroke-width:1.6px}
+.edge-zig-zag{stroke-dasharray:7 4}
+.edge-feedback{stroke-dasharray:2 4}
+.node.agent{max-width:260px}
 #legend .dot.rev{background:#e2231a}
 #panel{background:#fff;border-left:1px solid #111;color:#111}
 .p-role{color:#e2231a;font-weight:700}
@@ -107,7 +112,7 @@ body{font-family:"Helvetica Neue",Arial,sans-serif;color:#111;background:#fff}
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
-      <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <svg id="edges" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
       <div id="nodes"></div>
       <div id="legend"><span class="dot rev"></span>revisor / cetico / auditor<span class="mark">?</span></div>
     </div>
@@ -214,123 +219,176 @@ body{font-family:"Helvetica Neue",Arial,sans-serif;color:#111;background:#fff}
     renderGraph(state.current);
   }
 
-  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
+  // ---- geometry: logical model only (pixels resolved in renderGraph) -----
+  //   Swiss "rows": one horizontal band per group, stacked top→bottom.
+  //   nodes carry band index + order; edges are GROUP→GROUP with band spans.
   function geometry(d) {
-    var groups = d.groups || [], G = groups.length;
-    var nodes = [], gpos = {}, i, j;
-    var lay = V.layout;
+    var groups = d.groups || [];
+    var bandOf = {}, nodes = [], i;
+    for (i = 0; i < groups.length; i++) bandOf[groups[i].group_id] = i;
 
-    function place(gi, group) {
-      var agents = group.agents || [], n = agents.length;
-      var gx, gy, cx, cy;
-      if (lay === "columns") {
-        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
-        });
-      } else if (lay === "rows") {
-        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
-        });
-      } else if (lay === "radial") {
-        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
-        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var aa = ai / Math.max(1, n) * 2 * Math.PI;
-          var r = n === 1 ? 0 : 11;
-          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
-        });
-      } else if (lay === "orbit") {
-        var rad = 10 + gi * (40 / Math.max(1, G));
-        cx = 50; cy = 50 - rad;
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
-          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
-        });
-      } else if (lay === "timeline") {
-        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
-        nodes.push(gnode(group, gx, 50));
-        agents.forEach(function (a, ai) {
-          var side = ai % 2 ? 1 : -1;
-          var step = Math.floor(ai / 2) + 1;
-          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
-        });
-      } else { // scatter — use unsigned shifts so positions never go negative
-        var h = hash(group.group_id + gi);
-        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var hh = hash((a.agent_name || "") + group.group_id + ai);
-          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
-        });
-      }
-      gpos[group.group_id] = { x: cx, y: cy };
-    }
-    function gnode(group, x, y) {
-      return { id: "g:" + group.group_id, type: "group", x: x, y: y,
-        label: group.group_id, group: group,
-        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
-    }
-    function anode(a, group, x, y) {
-      nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
-        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
-        tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
-    }
-    for (i = 0; i < G; i++) place(i, groups[i]);
+    groups.forEach(function (g, gi) {
+      var ags = g.agents || [];
+      nodes.push({ id: "g:" + g.group_id, type: "group", band: gi,
+        label: g.group_id, group: g,
+        tip: g.anti_bias ? ("anti-vies: " + g.anti_bias)
+                         : ("grupo · " + (g.n || ags.length) + " agente(s)") });
+      ags.forEach(function (a, ai) {
+        nodes.push({ id: "a:" + g.group_id + ":" + ai, type: "agent", band: gi,
+          order: ai, count: ags.length, label: nameOf(a), agent: a, group: g,
+          rev: isRev(a),
+          tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
+      });
+    });
 
     var edges = [];
     (d.connections || []).forEach(function (c) {
-      var f = gpos[c.from], t = gpos[c.to];
-      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
+      if (bandOf[c.from] == null || bandOf[c.to] == null) return;
+      edges.push({ from: c.from, to: c.to,
+        fromBand: bandOf[c.from], toBand: bandOf[c.to], type: c.type || "",
+        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
     });
-    return { nodes: nodes, edges: edges };
+    return { nodes: nodes, edges: edges, bands: groups.length };
   }
-  function clamp(v) { return Math.max(6, Math.min(94, v)); }
-  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
 
-  // ---- render graph ------------------------------------------------------
+  // ---- render graph (pixel-space; SVG viewBox == container box, 1:1) ------
   function renderGraph(d) {
+    var SVGNS = "http://www.w3.org/2000/svg";
     $("stage-empty").hidden = true;
     $("stage-title").textContent = d.dispatch_id;
     $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+
     var geo = geometry(d);
-    var svg = $("edges"); svg.innerHTML = "";
-    geo.edges.forEach(function (e) {
-      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
-      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
-      p.setAttribute("class", "edge edge-" + (e.type || "x"));
-      p.setAttribute("fill", "none");
-      p.setAttribute("vector-effect", "non-scaling-stroke");
-      p.setAttribute("data-tip", e.tip);
-      svg.appendChild(p);
-    });
+    var wrap = $("stage-wrap");
+    var W = wrap.clientWidth || 900, H = wrap.clientHeight || 600;
     var host = $("nodes"); host.innerHTML = "";
+    var svg = $("edges"); svg.innerHTML = "";
+
+    // 1) build node elements (unpositioned) so we can measure real sizes -----
+    var groupEl = {};                     // group_id -> node model (with _el)
+    var byBand = {};                      // band -> [agent node models]
     geo.nodes.forEach(function (nd) {
       var el = document.createElement("div");
       el.className = "node " + nd.type + (nd.rev ? " rev" : "");
-      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
       el.setAttribute("data-tip", nd.tip);
       el.setAttribute("data-explain", nd.type === "group"
         ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
-        : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
+        : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta."
+                  : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
       el.innerHTML = nd.type === "group"
         ? '<span class="g-label">' + esc(nd.label) + "</span>"
         : '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
           '<span class="n-name">' + esc(nd.label) + "</span>";
       if (nd.type === "agent") {
         el.tabIndex = 0;
-        el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
-        el.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
-        });
+        (function (nd, el) {
+          el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
+          el.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
+          });
+        })(nd, el);
+        (byBand[nd.band] = byBand[nd.band] || []).push(nd);
+      } else {
+        groupEl[nd.group.group_id] = nd;
       }
+      nd._el = el;
       host.appendChild(el);
+    });
+
+    // 2) grid metrics -------------------------------------------------------
+    var B = geo.bands || 1;
+    var nonAdj = geo.edges.filter(function (e) { return Math.abs(e.toBand - e.fromBand) > 1; });
+    var LANE = 16;
+    var gutter = nonAdj.length ? (nonAdj.length * LANE + 8) : 0;
+    var LEFT = 20, RIGHT = 24, TOP = 18, BOT = 34;   // BOT keeps last band above #legend
+
+    var labelColW = 60;
+    geo.nodes.forEach(function (nd) {
+      if (nd.type === "group") labelColW = Math.max(labelColW, nd._el.offsetWidth);
+    });
+
+    var groupLeftX = LEFT + gutter;                  // left edge of group column
+    var spineX = groupLeftX + 10;                    // vertical connector lane (adjacent edges)
+    var agentsLeft = groupLeftX + labelColW + 26;
+    var agentsRight = W - RIGHT;
+    var areaW = Math.max(140, agentsRight - agentsLeft);
+    var usableH = Math.max(120, H - TOP - BOT);
+    var bandH = usableH / B;
+
+    // 3) place groups (left-aligned row headers) ----------------------------
+    geo.nodes.forEach(function (nd) {
+      if (nd.type !== "group") return;
+      var cy = TOP + (nd.band + 0.5) * bandH;
+      nd._el.style.left = groupLeftX + "px";
+      nd._el.style.top = cy + "px";
+      nd._cy = cy;
+    });
+
+    // 4) place agents (size-aware row per band; no overlap) -----------------
+    Object.keys(byBand).forEach(function (bk) {
+      var arr = byBand[bk], n = arr.length;
+      var slot = areaW / n, minGap = 16;
+      var maxW = Math.max(64, Math.min(slot - minGap, 260));
+      var cy = TOP + (Number(bk) + 0.5) * bandH;
+      arr.forEach(function (nd, k) {
+        var cx = agentsLeft + (k + 0.5) * slot;
+        nd._el.style.maxWidth = maxW + "px";
+        nd._el.style.left = cx + "px";
+        nd._el.style.top = cy + "px";
+        nd._cx = cx; nd._cy = cy;
+      });
+    });
+
+    // 5) SVG in pixel space — viewBox matches container so no aspect distortion
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    var defs = document.createElementNS(SVGNS, "defs");
+    var marker = document.createElementNS(SVGNS, "marker");
+    marker.setAttribute("id", "swiss-arrow");
+    marker.setAttribute("markerUnits", "userSpaceOnUse");
+    marker.setAttribute("markerWidth", "11");
+    marker.setAttribute("markerHeight", "11");
+    marker.setAttribute("refX", "8.5");
+    marker.setAttribute("refY", "5");
+    marker.setAttribute("orient", "auto");
+    var mpath = document.createElementNS(SVGNS, "path");
+    mpath.setAttribute("d", "M0 0 L9 5 L0 10 Z");
+    mpath.setAttribute("fill", "#e2231a");
+    marker.appendChild(mpath);
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+
+    // 6) directed group→group edges: thin black, red arrowheads -------------
+    var laneI = 0;
+    geo.edges.forEach(function (e) {
+      var s = groupEl[e.from], t = groupEl[e.to];
+      if (!s || !t) return;
+      var sh = s._el.offsetHeight, th = t._el.offsetHeight;
+      var down = t._cy > s._cy, dpath;
+      if (Math.abs(e.toBand - e.fromBand) === 1) {
+        // adjacent bands: straight vertical spine, boundary-to-boundary
+        var y1 = down ? s._cy + sh / 2 : s._cy - sh / 2;
+        var y2 = down ? t._cy - th / 2 : t._cy + th / 2;
+        dpath = "M " + spineX + " " + y1 + " L " + spineX + " " + y2;
+      } else {
+        // skip edge: orthogonal route through a left gutter lane
+        var lx = groupLeftX - (laneI + 1) * LANE; laneI++;
+        dpath = "M " + groupLeftX + " " + s._cy + " L " + lx + " " + s._cy +
+                " L " + lx + " " + t._cy + " L " + groupLeftX + " " + t._cy;
+      }
+      var cls = "edge-" + (e.type || "x").replace(/[^a-z0-9-]/gi, "");
+      var hit = document.createElementNS(SVGNS, "path");
+      hit.setAttribute("d", dpath);
+      hit.setAttribute("class", "edge-hit");
+      hit.setAttribute("stroke-width", "14");
+      hit.setAttribute("pointer-events", "stroke");
+      hit.setAttribute("data-tip", e.tip);
+      svg.appendChild(hit);
+      var p = document.createElementNS(SVGNS, "path");
+      p.setAttribute("d", dpath);
+      p.setAttribute("class", "edge " + cls);
+      p.setAttribute("marker-end", "url(#swiss-arrow)");
+      p.setAttribute("data-tip", e.tip);
+      svg.appendChild(p);
     });
   }
 

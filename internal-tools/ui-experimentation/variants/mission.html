@@ -78,6 +78,21 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
 .p-prompt button{border:1px solid #2a4046;background:#0c1a1e;color:#c9d6d3}
 #tt{background:#06100f;border:1px solid #37d6c4}
 
+/* ---- mission graph legibility ---- */
+#edges{z-index:1}
+#nodes{z-index:2}
+#stage-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle at 50% 46%,rgba(55,214,196,.06),transparent 60%)}
+.edge{fill:none;stroke:#37d6c4;opacity:.55;stroke-width:1.6px}
+.edge-zig-zag{stroke-dasharray:7 5}
+.edge-feedback{stroke-dasharray:2 5}
+#edges marker path{fill:#37d6c4}
+.hub-ring{fill:none;stroke:#37d6c4;opacity:.16;stroke-width:1px}
+.hub-dot{fill:#37d6c4;opacity:.5}
+.node.agent{max-width:154px}
+.node.group{max-width:184px;text-transform:uppercase}
+.node .n-name{overflow-wrap:anywhere}
+.node .g-label{overflow-wrap:anywhere;display:inline-block}
+
 </style>
 </head><body>
 
@@ -212,110 +227,202 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
     renderGraph(state.current);
   }
 
-  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
-  function geometry(d) {
+  // ---- geometry (mission-control radial): pixel-space layout -------------
+  // A central hub with each group as a "station" on a ring around it; the
+  // station's agents cluster in a compact grid just outside its nameplate.
+  // Returns {nodes:[{id,type,x,y,label,agent,group,rev,tip}], grects:{gid:{x,y,hw,hh}},
+  //          edges:[{from,to,type,tip}], hub:{x,y,r}|null}. All coords in px.
+  function geometry(d, W, H) {
     var groups = d.groups || [], G = groups.length;
-    var nodes = [], gpos = {}, i, j;
-    var lay = V.layout;
-
-    function place(gi, group) {
-      var agents = group.agents || [], n = agents.length;
-      var gx, gy, cx, cy;
-      if (lay === "columns") {
-        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
-        });
-      } else if (lay === "rows") {
-        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
-        });
-      } else if (lay === "radial") {
-        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
-        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var aa = ai / Math.max(1, n) * 2 * Math.PI;
-          var r = n === 1 ? 0 : 11;
-          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
-        });
-      } else if (lay === "orbit") {
-        var rad = 10 + gi * (40 / Math.max(1, G));
-        cx = 50; cy = 50 - rad;
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
-          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
-        });
-      } else if (lay === "timeline") {
-        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
-        nodes.push(gnode(group, gx, 50));
-        agents.forEach(function (a, ai) {
-          var side = ai % 2 ? 1 : -1;
-          var step = Math.floor(ai / 2) + 1;
-          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
-        });
-      } else { // scatter — use unsigned shifts so positions never go negative
-        var h = hash(group.group_id + gi);
-        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var hh = hash((a.agent_name || "") + group.group_id + ai);
-          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
-        });
+    var pad = 18;                                 // stage padding
+    var cx = W / 2, cy = H / 2;
+    // per-scale metrics: fit radius (stations stay on-stage) vs separation need
+    function metrics(s) {
+      var maxbw = 0, fitRs = Infinity, k;
+      for (k = 0; k < G; k++) {
+        var n = (groups[k].agents || []).length || 1;
+        var cols = n <= 1 ? 1 : (n <= 4 ? 2 : 3), rows = Math.ceil(n / cols);
+        var bw = cols * 148 * s + (cols - 1) * 14 * s, bh = rows * 50 * s + (rows - 1) * 12 * s;
+        var unitH = 26 * s + 12 * s + bh, th = -Math.PI / 2 + k * 2 * Math.PI / G;
+        maxbw = Math.max(maxbw, bw);
+        var ct = Math.abs(Math.cos(th)), st = Math.abs(Math.sin(th));
+        fitRs = Math.min(fitRs, ct < 1e-6 ? Infinity : (cx - pad - bw / 2) / ct,
+                                st < 1e-6 ? Infinity : (cy - pad - unitH / 2) / st);
       }
-      gpos[group.group_id] = { x: cx, y: cy };
+      return { fitRs: fitRs, sepNeed: (maxbw + 26 * s) / (2 * Math.sin(Math.PI / G)) };
     }
-    function gnode(group, x, y) {
-      return { id: "g:" + group.group_id, type: "group", x: x, y: y,
-        label: group.group_id, group: group,
-        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
+    // shrink uniformly only when a cramped stage cannot separate the stations (R2/R5)
+    var scale = 1;
+    if (G > 1) {
+      var m = metrics(1);
+      if (m.sepNeed > m.fitRs) {
+        scale = Math.max(0.66, m.fitRs / m.sepNeed); m = metrics(scale);
+        if (m.sepNeed > m.fitRs) scale = Math.max(0.6, scale * m.fitRs / m.sepNeed);
+      }
     }
-    function anode(a, group, x, y) {
-      nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
-        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
+    var AW = 148 * scale, AH = 50 * scale, GW = 176 * scale, GH = 26 * scale;
+    var gx = 14 * scale, gy = 12 * scale, nameGap = 12 * scale;
+    var nodes = [], grects = {}, hub = null, i;
+
+    function cl(v, lo, hi) { return hi < lo ? (lo + hi) / 2 : Math.max(lo, Math.min(hi, v)); }
+    function gnode(g, x, y) {
+      var nd = { id: "g:" + g.group_id, type: "group",
+        x: cl(x, pad + GW / 2, W - pad - GW / 2), y: cl(y, pad + GH / 2, H - pad - GH / 2),
+        label: g.group_id, group: g,
+        tip: g.anti_bias ? ("anti-vies: " + g.anti_bias)
+                         : ("estacao · " + (g.n || (g.agents || []).length) + " agente(s)") };
+      nodes.push(nd);
+    }
+    function anode(a, g, x, y) {
+      nodes.push({ id: "a:" + g.group_id + ":" + nodes.length, type: "agent",
+        x: cl(x, pad + AW / 2, W - pad - AW / 2), y: cl(y, pad + AH / 2, H - pad - AH / 2),
+        label: nameOf(a), agent: a, group: g, rev: isRev(a),
         tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
     }
-    for (i = 0; i < G; i++) place(i, groups[i]);
+    // block dims per group: compact grid, size-aware (R2)
+    function blockOf(g) {
+      var n = (g.agents || []).length || 1;
+      var cols = n <= 1 ? 1 : (n <= 4 ? 2 : 3), rows = Math.ceil(n / cols);
+      return { n: n, cols: cols, rows: rows,
+        bw: cols * AW + (cols - 1) * gx, bh: rows * AH + (rows - 1) * gy };
+    }
+    // station unit centred at sc: nameplate header stacked above the agent grid
+    // (vertical stack keeps label↔agent clearance constant at any station angle, R1)
+    function station(g, b, sc) {
+      var unitH = GH + nameGap + b.bh;
+      var npY = sc.y - unitH / 2 + GH / 2;        // nameplate on top
+      var bcY = sc.y + unitH / 2 - b.bh / 2;      // agent-grid centre below
+      gnode(g, sc.x, npY);
+      (g.agents || []).forEach(function (a, j) {
+        var col = j % b.cols, row = Math.floor(j / b.cols);
+        var rowCount = row === b.rows - 1 ? (b.n - row * b.cols) : b.cols;
+        anode(a, g, sc.x + (col - (rowCount - 1) / 2) * (AW + gx), bcY + (row - (b.rows - 1) / 2) * (AH + gy));
+      });
+    }
+
+    var blocks = groups.map(blockOf);
+    if (G === 1) {
+      // single station: unit centred on the hub, nameplate above, agents below (R1)
+      station(groups[0], blocks[0], { x: cx, y: cy });
+    } else if (G > 1) {
+      // stations on a ring; radius = largest that fits each station at its own angle,
+      // pushed out to keep neighbours apart (R2/R5)
+      var radialBound = Math.min(cx, cy) - pad;
+      var ths = [], maxbw = 0, fitRs = Infinity;
+      for (i = 0; i < G; i++) {
+        var th = -Math.PI / 2 + i * 2 * Math.PI / G; ths.push(th);
+        var bb = blocks[i], uH = GH + nameGap + bb.bh;
+        maxbw = Math.max(maxbw, bb.bw);
+        var ct = Math.abs(Math.cos(th)), st = Math.abs(Math.sin(th));
+        fitRs = Math.min(fitRs, ct < 1e-6 ? Infinity : (cx - pad - bb.bw / 2) / ct,
+                                st < 1e-6 ? Infinity : (cy - pad - uH / 2) / st);
+      }
+      var sepNeed = (maxbw + 26) / (2 * Math.sin(Math.PI / G));
+      var Rs = Math.min(fitRs, Math.max(sepNeed, radialBound * 0.34));
+      if (Rs > fitRs) Rs = fitRs;
+      if (!(Rs > 0)) Rs = Math.max(30, fitRs);
+      for (i = 0; i < G; i++) {
+        station(groups[i], blocks[i], { x: cx + Rs * Math.cos(ths[i]), y: cy + Rs * Math.sin(ths[i]) });
+      }
+      hub = { x: cx, y: cy, r: Math.max(16, Math.min(Rs * 0.5, radialBound * 0.2)) };
+    }
+
+    // group bounding rects (from clamped nodes) → boundary-to-boundary edges
+    nodes.forEach(function (nd) {
+      var id = nd.group.group_id;
+      var hw = nd.type === "agent" ? AW / 2 : GW / 2, hh = nd.type === "agent" ? AH / 2 : GH / 2;
+      var r = grects[id] || (grects[id] = { minx: 1e9, miny: 1e9, maxx: -1e9, maxy: -1e9 });
+      r.minx = Math.min(r.minx, nd.x - hw); r.maxx = Math.max(r.maxx, nd.x + hw);
+      r.miny = Math.min(r.miny, nd.y - hh); r.maxy = Math.max(r.maxy, nd.y + hh);
+    });
+    Object.keys(grects).forEach(function (k) {
+      var r = grects[k];
+      grects[k] = { x: (r.minx + r.maxx) / 2, y: (r.miny + r.maxy) / 2,
+        hw: (r.maxx - r.minx) / 2, hh: (r.maxy - r.miny) / 2 };
+    });
 
     var edges = [];
     (d.connections || []).forEach(function (c) {
-      var f = gpos[c.from], t = gpos[c.to];
-      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
+      if (grects[c.from] && grects[c.to])
+        edges.push({ from: c.from, to: c.to, type: c.type,
+          tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
     });
-    return { nodes: nodes, edges: edges };
+    return { nodes: nodes, grects: grects, edges: edges, hub: hub, scale: scale };
   }
-  function clamp(v) { return Math.max(6, Math.min(94, v)); }
-  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
+  // boundary point of a rect from its centre along direction (dx,dy)
+  function rayRect(R, dx, dy) {
+    var tx = dx !== 0 ? R.hw / Math.abs(dx) : Infinity;
+    var ty = dy !== 0 ? R.hh / Math.abs(dy) : Infinity;
+    var t = Math.min(tx, ty);
+    return { x: R.x + dx * t, y: R.y + dy * t };
+  }
 
   // ---- render graph ------------------------------------------------------
+  var SVGNS = "http://www.w3.org/2000/svg";
   function renderGraph(d) {
     $("stage-empty").hidden = true;
     $("stage-title").textContent = d.dispatch_id;
     $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
-    var geo = geometry(d);
+    var host = $("nodes"); host.innerHTML = "";
     var svg = $("edges"); svg.innerHTML = "";
+    // measure the stage in pixels so the SVG user unit == 1px (no aspect distortion, R5)
+    var r = host.getBoundingClientRect();
+    var W = Math.round(r.width) || host.clientWidth || 600;
+    var H = Math.round(r.height) || host.clientHeight || 400;
+    var geo = geometry(d, W, H);
+
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.setAttribute("preserveAspectRatio", "none"); // viewBox matches px size 1:1 → undistorted
+    var defs = document.createElementNS(SVGNS, "defs");
+    defs.innerHTML = '<marker id="mc-arrow" markerWidth="12" markerHeight="9" refX="9" refY="3.1" '
+      + 'orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L9,3.1 L0,6.2 Z"></path></marker>';
+    svg.appendChild(defs);
+
+    // decorative mission hub (non-interactive)
+    if (geo.hub) {
+      var h = geo.hub;
+      [h.r, h.r * 0.6].forEach(function (rr) {
+        var c = document.createElementNS(SVGNS, "circle");
+        c.setAttribute("cx", h.x); c.setAttribute("cy", h.y); c.setAttribute("r", rr);
+        c.setAttribute("class", "hub-ring"); svg.appendChild(c);
+      });
+      var dot = document.createElementNS(SVGNS, "circle");
+      dot.setAttribute("cx", h.x); dot.setAttribute("cy", h.y); dot.setAttribute("r", 3);
+      dot.setAttribute("class", "hub-dot"); svg.appendChild(dot);
+    }
+
+    // directed, typed group→group connectors, boundary-to-boundary (R3)
     geo.edges.forEach(function (e) {
-      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
-      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
+      var A = geo.grects[e.from], B = geo.grects[e.to]; if (!A || !B) return;
+      var dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1; dx /= L; dy /= L;
+      var s = rayRect(A, dx, dy), en = rayRect(B, -dx, -dy);
+      var gap = 6, arrow = 10, sx, sy, ex, ey;
+      var seg = (en.x - s.x) * dx + (en.y - s.y) * dy;   // signed boundary gap along d
+      if (seg < arrow + 8) {                             // near/overlapping rects: minimal stub into B
+        ex = en.x; ey = en.y; sx = en.x - dx * (arrow + 8); sy = en.y - dy * (arrow + 8);
+      } else {
+        sx = s.x + dx * gap; sy = s.y + dy * gap;
+        ex = en.x - dx * (gap + arrow); ey = en.y - dy * (gap + arrow);
+      }
+      var ml = Math.hypot(ex - sx, ey - sy), off = Math.min(ml * 0.14, 26);
+      var mx = (sx + ex) / 2 + (-dy) * off, my = (sy + ey) / 2 + dx * off;
+      var p = document.createElementNS(SVGNS, "path");
+      p.setAttribute("d", "M" + sx.toFixed(1) + " " + sy.toFixed(1) + " Q "
+        + mx.toFixed(1) + " " + my.toFixed(1) + " " + ex.toFixed(1) + " " + ey.toFixed(1));
       p.setAttribute("class", "edge edge-" + (e.type || "x"));
-      p.setAttribute("fill", "none");
-      p.setAttribute("vector-effect", "non-scaling-stroke");
+      p.setAttribute("marker-end", "url(#mc-arrow)");
       p.setAttribute("data-tip", e.tip);
       svg.appendChild(p);
     });
-    var host = $("nodes"); host.innerHTML = "";
+
     geo.nodes.forEach(function (nd) {
       var el = document.createElement("div");
       el.className = "node " + nd.type + (nd.rev ? " rev" : "");
-      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
+      el.style.left = nd.x + "px"; el.style.top = nd.y + "px";
+      if (geo.scale < 1) el.style.transform = "translate(-50%,-50%) scale(" + geo.scale.toFixed(3) + ")";
       el.setAttribute("data-tip", nd.tip);
       el.setAttribute("data-explain", nd.type === "group"
-        ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
+        ? "Estacao de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
         : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
       el.innerHTML = nd.type === "group"
         ? '<span class="g-label">' + esc(nd.label) + "</span>"

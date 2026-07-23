@@ -25,14 +25,17 @@ html,body{height:100%;margin:0}
 #stage-meta{font-size:11px;opacity:.6}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
-#edges{position:absolute;inset:0;width:100%;height:100%}
-.edge{stroke-width:1.6px;opacity:.85}
+#edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.edge{fill:none;stroke-width:1.4px;opacity:.9}
+.edge-zig-zag{stroke-dasharray:5 4}
+.edge-feedback{stroke-dasharray:1.5 4;stroke-linecap:round}
 #nodes{position:absolute;inset:0}
 .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
-.node.agent{cursor:pointer}
-.node .g-label{font-size:11px;letter-spacing:.04em}
+.node.agent{cursor:pointer;max-width:160px}
+.node.group{max-width:160px}
+.node .g-label{display:block;font-size:11px;letter-spacing:.04em;overflow-wrap:anywhere}
 .node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
-.node .n-name{display:block;font-size:11px;line-height:1.1}
+.node .n-name{display:block;font-size:11px;line-height:1.2;overflow-wrap:anywhere}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 #legend .mark{margin-left:auto;opacity:.5}
@@ -70,7 +73,7 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
 .node.agent:hover,.node.agent.active{border-color:#1b1b1b}
 .node.agent.rev{border-left:3px solid #1b1b1b}
 .node .n-role{color:#aaa}
-.edge{stroke:#c2c2c2;stroke-width:1px}
+.edge{stroke:#bdbdbd;stroke-width:1.4px}
 #legend .dot.rev{background:#1b1b1b}
 #panel{background:#fff;border-left:1px solid #e6e6e6;color:#1b1b1b}
 #p-name{font-weight:500}
@@ -105,7 +108,7 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
-      <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <svg id="edges" aria-hidden="true"></svg>
       <div id="nodes"></div>
       <div id="legend"><span class="dot rev"></span>revisor / cetico / auditor<span class="mark">?</span></div>
     </div>
@@ -212,124 +215,163 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
     renderGraph(state.current);
   }
 
-  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
+  // ---- geometry: logical column model (pixels are resolved in renderGraph)
+  //   returns { cols:[{group,gid,tip,agents:[{agent,group,rev,label,tip}]}], idx, edges }
+  //   MONO "columns": one quiet labeled column per group, agents stacked; edges GROUP→GROUP.
   function geometry(d) {
-    var groups = d.groups || [], G = groups.length;
-    var nodes = [], gpos = {}, i, j;
-    var lay = V.layout;
-
-    function place(gi, group) {
-      var agents = group.agents || [], n = agents.length;
-      var gx, gy, cx, cy;
-      if (lay === "columns") {
-        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
-        });
-      } else if (lay === "rows") {
-        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
-        nodes.push(gnode(group, gx, gy));
-        agents.forEach(function (a, ai) {
-          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
-        });
-      } else if (lay === "radial") {
-        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
-        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var aa = ai / Math.max(1, n) * 2 * Math.PI;
-          var r = n === 1 ? 0 : 11;
-          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
-        });
-      } else if (lay === "orbit") {
-        var rad = 10 + gi * (40 / Math.max(1, G));
-        cx = 50; cy = 50 - rad;
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
-          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
-        });
-      } else if (lay === "timeline") {
-        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
-        nodes.push(gnode(group, gx, 50));
-        agents.forEach(function (a, ai) {
-          var side = ai % 2 ? 1 : -1;
-          var step = Math.floor(ai / 2) + 1;
-          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
-        });
-      } else { // scatter — use unsigned shifts so positions never go negative
-        var h = hash(group.group_id + gi);
-        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
-        nodes.push(gnode(group, cx, cy));
-        agents.forEach(function (a, ai) {
-          var hh = hash((a.agent_name || "") + group.group_id + ai);
-          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
-        });
-      }
-      gpos[group.group_id] = { x: cx, y: cy };
-    }
-    function gnode(group, x, y) {
-      return { id: "g:" + group.group_id, type: "group", x: x, y: y,
-        label: group.group_id, group: group,
-        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
-    }
-    function anode(a, group, x, y) {
-      nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
-        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
-        tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
-    }
-    for (i = 0; i < G; i++) place(i, groups[i]);
-
+    var groups = d.groups || [];
+    var cols = groups.map(function (g) {
+      return {
+        group: g,
+        gid: g.group_id,
+        tip: g.anti_bias
+          ? ("anti-vies: " + g.anti_bias)
+          : ("grupo · " + (g.n || (g.agents || []).length) + " agente(s)"),
+        agents: (g.agents || []).map(function (a) {
+          return { agent: a, group: g, rev: isRev(a), label: nameOf(a),
+            tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") };
+        })
+      };
+    });
+    var idx = {};
+    cols.forEach(function (c, i) { idx[c.gid] = i; });
     var edges = [];
     (d.connections || []).forEach(function (c) {
-      var f = gpos[c.from], t = gpos[c.to];
-      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
+      if (idx[c.from] == null || idx[c.to] == null) return;
+      edges.push({ from: c.from, to: c.to, type: c.type || "",
+        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
     });
-    return { nodes: nodes, edges: edges };
+    return { cols: cols, idx: idx, edges: edges };
   }
-  function clamp(v) { return Math.max(6, Math.min(94, v)); }
-  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
 
-  // ---- render graph ------------------------------------------------------
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  function makeAgentNode(nd) {
+    var el = document.createElement("div");
+    el.className = "node agent" + (nd.rev ? " rev" : "");
+    el.setAttribute("data-tip", nd.tip);
+    el.setAttribute("data-explain", nd.rev
+      ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta."
+      : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento.");
+    el.innerHTML =
+      '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
+      '<span class="n-name">' + esc(nd.label) + "</span>";
+    el.tabIndex = 0;
+    el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
+    });
+    return el;
+  }
+  function makeGroupNode(col) {
+    var el = document.createElement("div");
+    el.className = "node group";
+    el.setAttribute("data-tip", col.tip);
+    el.setAttribute("data-explain", "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado.");
+    el.innerHTML = '<span class="g-label">' + esc(col.gid) + "</span>";
+    return el;
+  }
+  function arrowDefs(svg) {
+    var defs = document.createElementNS(SVGNS, "defs");
+    var m = document.createElementNS(SVGNS, "marker");
+    m.setAttribute("id", "mono-arrow");
+    m.setAttribute("viewBox", "0 0 10 10");
+    m.setAttribute("refX", "8.5"); m.setAttribute("refY", "5");
+    m.setAttribute("markerWidth", "7"); m.setAttribute("markerHeight", "7");
+    m.setAttribute("orient", "auto-start-reverse");
+    m.setAttribute("markerUnits", "userSpaceOnUse");
+    var p = document.createElementNS(SVGNS, "path");
+    p.setAttribute("d", "M0 0 L10 5 L0 10 z");
+    p.setAttribute("fill", "#9a9a9a");
+    m.appendChild(p); defs.appendChild(m); svg.appendChild(defs);
+  }
+  function drawEdge(svg, s, t, e, span) {
+    var rightward = t.x >= s.x;
+    var x1 = rightward ? s.x + s.gEl.offsetWidth / 2 : s.x - s.gEl.offsetWidth / 2;
+    var x2 = rightward ? t.x - t.gEl.offsetWidth / 2 : t.x + t.gEl.offsetWidth / 2;
+    var y1 = s.gy, y2 = t.gy;
+    // bow up into the reserved top band; more for skip-edges so the arc clears
+    // any intermediate group headers. capped so it never leaves the stage.
+    var bow = Math.min(Math.min(y1, y2) - 12, 22 + 16 * (Math.abs(span) - 1));
+    if (!(bow > 0)) bow = 8;
+    var mx = (x1 + x2) / 2, my = Math.min(y1, y2) - bow;
+    var p = document.createElementNS(SVGNS, "path");
+    p.setAttribute("d", "M" + x1 + " " + y1 + " Q " + mx + " " + my + " " + x2 + " " + y2);
+    p.setAttribute("class", "edge edge-" + (e.type || "x"));
+    p.setAttribute("marker-end", "url(#mono-arrow)");
+    p.setAttribute("data-tip", e.tip);
+    svg.appendChild(p);
+  }
+
+  // ---- render graph: pixel-space column layout (measure heights, then place)
   function renderGraph(d) {
     $("stage-empty").hidden = true;
     $("stage-title").textContent = d.dispatch_id;
     $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+
     var geo = geometry(d);
-    var svg = $("edges"); svg.innerHTML = "";
-    geo.edges.forEach(function (e) {
-      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
-      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
-      p.setAttribute("class", "edge edge-" + (e.type || "x"));
-      p.setAttribute("fill", "none");
-      p.setAttribute("vector-effect", "non-scaling-stroke");
-      p.setAttribute("data-tip", e.tip);
-      svg.appendChild(p);
-    });
+    var G = geo.cols.length;
     var host = $("nodes"); host.innerHTML = "";
-    geo.nodes.forEach(function (nd) {
-      var el = document.createElement("div");
-      el.className = "node " + nd.type + (nd.rev ? " rev" : "");
-      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
-      el.setAttribute("data-tip", nd.tip);
-      el.setAttribute("data-explain", nd.type === "group"
-        ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
-        : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
-      el.innerHTML = nd.type === "group"
-        ? '<span class="g-label">' + esc(nd.label) + "</span>"
-        : '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
-          '<span class="n-name">' + esc(nd.label) + "</span>";
-      if (nd.type === "agent") {
-        el.tabIndex = 0;
-        el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
-        el.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
-        });
-      }
-      host.appendChild(el);
+    var svg = $("edges"); svg.innerHTML = "";
+    if (!G) return;
+
+    var rect = $("stage-wrap").getBoundingClientRect();
+    var W = rect.width, H = rect.height;
+    var hasEdges = geo.edges.length > 0;
+    var padX = 26, bottomPad = 18;
+    var headerY = hasEdges ? 56 : 30;   // group-header row; top band above holds edge arcs
+    var agentsTop = headerY + 30;
+    var bandBottom = H - bottomPad;
+    var gap = 16;                        // generous vertical gap between agents
+    var colStep = (W - 2 * padX) / G;
+    var nodeMaxW = Math.max(96, Math.min(160, colStep - 18));
+
+    // pass 1: create header + agent nodes, set x + max-width so wrapping settles
+    geo.cols.forEach(function (col, ci) {
+      var xc = padX + colStep * (ci + 0.5);
+      col.x = xc; col.gy = headerY;
+
+      var gEl = makeGroupNode(col);
+      gEl.style.maxWidth = nodeMaxW + "px";
+      gEl.style.left = xc + "px";
+      gEl.style.top = headerY + "px";
+      host.appendChild(gEl);
+      col.gEl = gEl;
+
+      col.els = col.agents.map(function (nd) {
+        var el = makeAgentNode(nd);
+        el.style.maxWidth = nodeMaxW + "px";
+        el.style.left = xc + "px";
+        host.appendChild(el);
+        return el;
+      });
     });
+
+    // pass 2: measure agent heights, stack them centered in the column band
+    geo.cols.forEach(function (col) {
+      var n = col.els.length;
+      if (!n) return;
+      var heights = col.els.map(function (el) { return el.offsetHeight; });
+      var sum = heights.reduce(function (a, b) { return a + b; }, 0);
+      var bandH = bandBottom - agentsTop;
+      var g = gap;
+      var total = sum + g * (n - 1);
+      if (n > 1 && total > bandH) { g = Math.max(6, (bandH - sum) / (n - 1)); total = sum + g * (n - 1); }
+      var cursor = agentsTop + Math.max(0, (bandH - total) / 2);
+      col.els.forEach(function (el, i) {
+        el.style.top = (cursor + heights[i] / 2) + "px";
+        cursor += heights[i] + g;
+      });
+    });
+
+    // pass 3: directed group→group edges, boundary-to-boundary, arrowheads
+    if (hasEdges) {
+      arrowDefs(svg);
+      geo.edges.forEach(function (e) {
+        var s = geo.cols[geo.idx[e.from]], t = geo.cols[geo.idx[e.to]];
+        if (s && t) drawEdge(svg, s, t, e, geo.idx[e.to] - geo.idx[e.from]);
+      });
+    }
   }
 
   // ---- agent panel (FE-1 opt-in prompt, FE-6 single focus) --------------
