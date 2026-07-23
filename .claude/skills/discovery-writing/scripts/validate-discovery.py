@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Validate one discovery against the authoring contract."""
+"""Validate deterministic discovery structure; semantic review remains reviewer-owned."""
 
 from __future__ import annotations
 
 import re
+from datetime import datetime
+from hashlib import sha256
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -25,61 +27,107 @@ ALLOWED_NATURE = {"explanatory", "procedural", "reference", "technical"}
 ALLOWED_STATUS = {"draft", "exploratory", "active", "consolidated", "evergreen"}
 ALLOWED_CONFIDENCE = {"low", "medium", "high"}
 ORDERED_HEADINGS = [
-    "objective",
-    "1. business context",
-    "2. core concepts",
-    "open questions",
-    "decisions baked in",
-    "connections",
-    "flow diagram",
-    "appendix — changelog",
+    "Objective",
+    "1. Business Context",
+    "2. Core Concepts",
+    "Open Questions",
+    "Decisions Baked In",
+    "Connections",
+    "Flow Diagram",
+    "Appendix — Changelog",
 ]
+LOCATION_TOKEN = re.compile(
+    r"(?:"
+    r"(?:[A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+\.[A-Za-z0-9]+:\d+"
+    r"|[A-Z][A-Za-z0-9_]*\.[a-zA-Z_][A-Za-z0-9_]*"
+    r"|(?:\[[^\]]+\]\([^)]+\)|(?:[A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+)"
+    r"\s+§\s*[A-Za-z0-9][A-Za-z0-9.-]*"
+    r")"
+)
 
 
 def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("discovery")
+    parser = ArgumentParser(
+        description=(
+            "Validate deterministic discovery structure, exact provenance footer, "
+            "local links, and trailing whitespace. Semantic linkage remains reviewer-owned."
+        )
+    )
+    parser.add_argument("discovery", nargs="?")
+    parser.add_argument(
+        "--self-test",
+        action="store_true",
+        help="Run in-memory regression checks and exit.",
+    )
+    parser.add_argument(
+        "--provenance-mode",
+        choices=("dispatch", "basis", "none"),
+        required=True,
+    )
     parser.add_argument("--expected-source")
     parser.add_argument("--dispatch-id")
-    parser.add_argument("--research-source")
+    parser.add_argument(
+        "--source-basis",
+        action="append",
+        default=[],
+        help="Exact path=sha256 binding; repeat once per basis source.",
+    )
+    parser.add_argument(
+        "--research-source",
+        action="append",
+        default=[],
+        help="Exact path=sha256 binding linked before Connections; repeat as needed.",
+    )
     args = parser.parse_args()
 
+    if args.self_test:
+        return run_self_tests()
+    if not args.discovery:
+        parser.error("discovery is required unless --self-test is used")
+    validate_cli_contract(parser, args)
     path = Path(args.discovery).resolve()
-    if bool(args.expected_source) != bool(args.dispatch_id):
-        parser.error("--expected-source and --dispatch-id must be supplied together")
-    expected_source = (
-        Path(args.expected_source).resolve() if args.expected_source else None
+    expected_binding = (
+        parse_binding(parser, "--expected-source", args.expected_source)
+        if args.expected_source
+        else None
     )
-    research_source = (
-        Path(args.research_source).resolve() if args.research_source else None
-    )
+    source_bindings = [
+        parse_binding(parser, "--source-basis", item) for item in args.source_basis
+    ]
+    research_bindings = [
+        parse_binding(parser, "--research-source", item)
+        for item in args.research_source
+    ]
+    expected_source = expected_binding[0] if expected_binding else None
+    source_basis = [item[0] for item in source_bindings]
+    research_sources = [item[0] for item in research_bindings]
+
+    required_bindings = [
+        item
+        for item in (expected_binding, *source_bindings, *research_bindings)
+        if item is not None
+    ]
     if not path.is_file():
         parser.error(f"discovery not found: {path}")
-    if expected_source is not None and not expected_source.is_file():
-        parser.error(f"expected source not found: {expected_source}")
-    if research_source is not None and not research_source.is_file():
-        parser.error(f"research source not found: {research_source}")
+    for source, expected_hash in required_bindings:
+        if not source.is_file():
+            parser.error(f"source not found: {source}")
+        actual_hash = sha256(source.read_bytes()).hexdigest()
+        if actual_hash != expected_hash:
+            parser.error(
+                f"source hash mismatch: {source} "
+                f"(expected {expected_hash}, got {actual_hash})"
+            )
 
     errors: list[str] = []
     text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
+    outside_text, fences_balanced = text_outside_fences(lines)
 
-    repo_root = next(
-        (parent for parent in (path.parent, *path.parents) if (parent / ".git").exists()),
-        None,
-    )
-    if repo_root is None:
-        errors.append("target is not inside a Git repository")
-    else:
-        relative = path.relative_to(repo_root).as_posix()
-        allowed_path = (
-            re.fullmatch(r"docs/features/[^/]+/discovery/[^/]+\.md", relative)
-            or re.fullmatch(r"vault/discovery/[^/]+-definitions/[^/]+\.md", relative)
-        )
-        if allowed_path is None:
-            errors.append(
-                f"target path is outside the two allowed discovery shapes: {relative}"
-            )
+    if not fences_balanced:
+        errors.append("code fences are unbalanced")
+    validate_trailing_whitespace(lines, errors)
+    validate_repo_path(path, errors)
 
     frontmatter = read_frontmatter(lines, errors)
     key_list = re.findall(
@@ -91,85 +139,30 @@ def main() -> int:
         errors.append(f"duplicate top-level frontmatter key: {key}")
     for key in sorted(REQUIRED_FRONTMATTER - keys):
         errors.append(f"required frontmatter key is missing: {key}")
-
     if scalar(frontmatter, "node_type") != "discovery":
         errors.append("node_type must be discovery")
     if scalar(frontmatter, "is_session") != "false":
         errors.append("is_session must be false")
     validate_values(frontmatter, errors)
 
-    headings = [
-        (match.group(1).strip().lower(), text[: match.start()].count("\n") + 1)
-        for match in re.finditer(r"(?m)^##\s+(.+?)\s*$", text)
-    ]
-    cursor = -1
-    for required in ORDERED_HEADINGS:
-        found = next(
-            (
-                (index, line)
-                for index, (heading, line) in enumerate(headings)
-                if heading == required and index > cursor
-            ),
-            None,
-        )
-        if found is None:
-            errors.append(
-                f"required H2 heading is missing or misplaced: {required}"
-            )
-        else:
-            cursor = found[0]
-
-    objective = section(text, "Objective", r"1\. Business Context")
-    if objective is None:
-        errors.append("Objective block is missing")
-    else:
-        for marker in ("**Status:**", "**Owner:**"):
-            if marker not in objective:
-                errors.append(f"Objective block is missing {marker}")
-        owner = re.search(r"(?m)^\*\*Owner:\*\*\s*(\S+)\s*$", objective)
-        if owner is None:
-            errors.append("Owner must appear alone on its bold-label line")
-        elif re.fullmatch(
-            r"@[A-Za-z0-9][A-Za-z0-9._-]*",
-            owner.group(1),
-        ) is None:
-            errors.append(
-                "Owner must be one exact @handle using letters, numbers, dot, underscore, or hyphen"
-            )
-
-    open_questions = section(text, "Open Questions", "Decisions Baked In")
-    if open_questions is None:
-        errors.append("Open Questions block is missing")
-    else:
-        oq_ids = set(re.findall(r"\bOQ-[A-Za-z0-9]+", open_questions))
-        no_questions = re.fullmatch(
-            r"(?is)##\s+Open Questions\s*\n+\s*No open questions\.\s*",
-            open_questions,
-        )
-        if not oq_ids and no_questions is None:
-            errors.append(
-                "Open Questions must contain OQ identifiers or exactly 'No open questions.'"
-            )
-        if oq_ids:
-            for marker in ("**Question:**", "**Recommendation:**"):
-                if marker not in open_questions:
-                    errors.append(f"Open Questions section is missing {marker}")
-            if re.search(r"(?i)settle(?:ment)? (?:in|stage)", open_questions) is None:
-                errors.append("Open Questions section is missing a settlement stage")
-
-    flow = section(text, "Flow Diagram", "Appendix — Changelog")
-    if flow is None or "```mermaid" not in flow:
-        errors.append("Flow Diagram must contain a Mermaid fence before the changelog")
-    if text.count("```") % 2:
-        errors.append("code fences are unbalanced")
-
-    validate_links(path, text, errors)
+    validate_heading_order(outside_text, errors)
+    validate_objective(outside_text, errors)
+    validate_business_context(outside_text, errors)
+    validate_core_concepts(outside_text, errors)
+    validate_open_questions(outside_text, errors)
+    validate_decision_table(outside_text, errors)
+    validate_connections_table(outside_text, errors)
+    validate_flow(text, outside_text, errors)
+    validate_changelog(outside_text, errors)
+    validate_links(path, outside_text, errors)
+    validate_research_links(path, outside_text, research_sources, errors)
     validate_source_footer(
         path,
-        text,
+        lines,
+        args.provenance_mode,
         expected_source,
         args.dispatch_id,
-        research_source,
+        source_basis,
         errors,
     )
 
@@ -179,11 +172,114 @@ def main() -> int:
         print(f"discovery validation: FAIL ({len(errors)} issue(s))")
         return 1
 
+    heading_count = len(re.findall(r"(?m)^##\s+.+?\s*$", outside_text))
     print(
         "discovery validation: PASS "
-        f"(frontmatter={len(keys)} keys, headings={len(headings)})"
+        f"(frontmatter={len(keys)} keys, headings={heading_count}, "
+        f"provenance={args.provenance_mode}; semantic review still required)"
     )
     return 0
+
+
+def validate_cli_contract(parser: ArgumentParser, args: object) -> None:
+    mode = args.provenance_mode
+    has_dispatch_pair = bool(args.expected_source) and bool(args.dispatch_id)
+    has_partial_dispatch = bool(args.expected_source) != bool(args.dispatch_id)
+
+    if has_partial_dispatch:
+        parser.error("--expected-source and --dispatch-id must be supplied together")
+    if len(args.source_basis) != len(set(args.source_basis)):
+        parser.error("--source-basis paths must not be duplicated")
+    if len(args.research_source) != len(set(args.research_source)):
+        parser.error("--research-source paths must not be duplicated")
+    if mode == "dispatch":
+        if not has_dispatch_pair:
+            parser.error(
+                "dispatch mode requires --expected-source and --dispatch-id"
+            )
+        if args.source_basis:
+            parser.error("dispatch mode forbids --source-basis")
+    elif mode == "basis":
+        if has_dispatch_pair:
+            parser.error("basis mode forbids --expected-source and --dispatch-id")
+        if not args.source_basis:
+            parser.error("basis mode requires at least one --source-basis")
+    elif has_dispatch_pair or args.source_basis:
+        parser.error(
+            "none mode forbids --expected-source, --dispatch-id, and --source-basis"
+        )
+
+
+def parse_binding(
+    parser: ArgumentParser,
+    option: str,
+    raw: str,
+) -> tuple[Path, str]:
+    path_text, separator, digest = raw.rpartition("=")
+    digest = digest.removeprefix("sha256:").lower()
+    if not separator or not path_text or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+        parser.error(f"{option} must use exact path=sha256 binding syntax")
+    return Path(path_text).resolve(), digest
+
+
+def text_outside_fences(lines: list[str]) -> tuple[str, bool]:
+    outside: list[str] = []
+    fence_char: str | None = None
+    fence_length = 0
+    for line in lines:
+        if fence_char is None:
+            opening = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line)
+            if opening:
+                fence_char = opening.group(1)[0]
+                fence_length = len(opening.group(1))
+                outside.append("")
+                continue
+        else:
+            closing = re.match(
+                rf"^ {{0,3}}{re.escape(fence_char)}{{{fence_length},}}\s*$",
+                line,
+            )
+            if closing:
+                fence_char = None
+                fence_length = 0
+            outside.append("")
+            continue
+        if fence_char is not None:
+            outside.append("")
+        else:
+            outside.append(line)
+    return "\n".join(outside), fence_char is None
+
+
+def validate_trailing_whitespace(lines: list[str], errors: list[str]) -> None:
+    bad = [
+        str(index)
+        for index, line in enumerate(lines, 1)
+        if re.search(r"[ \t]+$", line)
+    ]
+    if bad:
+        errors.append(
+            "trailing whitespace at line(s): " + ", ".join(bad)
+        )
+
+
+def validate_repo_path(path: Path, errors: list[str]) -> None:
+    repo_root = next(
+        (parent for parent in (path.parent, *path.parents) if (parent / ".git").exists()),
+        None,
+    )
+    if repo_root is None:
+        errors.append("target is not inside a Git repository")
+        return
+    relative = path.relative_to(repo_root).as_posix()
+    allowed_path = (
+        re.fullmatch(r"docs/features/[^/]+/discovery/[^/]+\.md", relative)
+        or re.fullmatch(r"vault/discovery/[^/]+-definitions/[^/]+\.md", relative)
+    )
+    if allowed_path is None:
+        errors.append(
+            f"target path is outside the two allowed discovery shapes: {relative}"
+        )
 
 
 def read_frontmatter(lines: list[str], errors: list[str]) -> str:
@@ -234,19 +330,317 @@ def validate_values(frontmatter: str, errors: list[str]) -> None:
             errors.append(f"{name} must be one of {sorted(ALLOWED_CONFIDENCE)}")
     if re.fullmatch(r"\d+\.\d+\.\d+", scalar(frontmatter, "version")) is None:
         errors.append("version must use semantic numeric form X.Y.Z")
-    if re.fullmatch(
-        r"\d{4}-\d{2}-\d{2}",
-        scalar(frontmatter, "last_updated"),
-    ) is None:
-        errors.append("last_updated must use YYYY-MM-DD")
+    if not valid_date(scalar(frontmatter, "last_updated")):
+        errors.append("last_updated must be a real calendar date in YYYY-MM-DD")
 
 
-def section(text: str, start: str, end: str) -> str | None:
+def valid_date(value: str) -> bool:
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", value) is None:
+        return False
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        return False
+    return True
+
+
+def h2_section(text: str, heading: str) -> str | None:
     match = re.search(
-        rf"(?ims)^##\s+{re.escape(start)}\s*$.*?(?=^##\s+{end}\s*$)",
+        rf"(?ims)^##\s+{re.escape(heading)}\s*$.*?(?=^##\s+|\Z)",
         text,
     )
     return match.group(0) if match else None
+
+
+def validate_heading_order(text: str, errors: list[str]) -> None:
+    headings = [
+        match.group(1).strip()
+        for match in re.finditer(r"(?m)^##\s+(.+?)\s*$", text)
+    ]
+    if headings and headings[0] != "Objective":
+        errors.append("Objective must be the first H2 heading")
+    if headings and headings[-1] != "Appendix — Changelog":
+        errors.append("Appendix — Changelog must be the final H2 heading")
+    cursor = -1
+    for required in ORDERED_HEADINGS:
+        occurrences = [
+            index for index, heading in enumerate(headings) if heading == required
+        ]
+        if not occurrences:
+            errors.append(f"required exact H2 heading is missing: {required}")
+            continue
+        if len(occurrences) > 1:
+            errors.append(f"required H2 heading is duplicated: {required}")
+        found = next((index for index in occurrences if index > cursor), None)
+        if found is None:
+            errors.append(f"required H2 heading is misplaced: {required}")
+        else:
+            cursor = found
+
+
+def prose_sentence_count(prose: str) -> int:
+    prose = re.sub(r"\s+", " ", prose).strip()
+    if not prose:
+        return 0
+    return len(
+        [
+            item
+            for item in re.split(r"(?<=[.!?])\s+", prose)
+            if item.strip()
+        ]
+    )
+
+
+def validate_objective(text: str, errors: list[str]) -> None:
+    objective = h2_section(text, "Objective")
+    if objective is None:
+        return
+    for marker in ("**Status:**", "**Owner:**"):
+        if marker not in objective:
+            errors.append(f"Objective block is missing {marker}")
+    owner = re.search(r"(?m)^\*\*Owner:\*\*\s*(\S+)\s*$", objective)
+    if owner is None:
+        errors.append("Owner must appear alone on its bold-label line")
+    elif re.fullmatch(
+        r"@[A-Za-z0-9][A-Za-z0-9._-]*",
+        owner.group(1),
+    ) is None:
+        errors.append(
+            "Owner must be one exact @handle using letters, numbers, dot, underscore, or hyphen"
+        )
+
+    body = re.sub(r"(?m)^##\s+Objective\s*$", "", objective, count=1)
+    body = body.split("**Status:**", 1)[0]
+    body = re.sub(r"(?m)^\s*<!--.*?-->\s*$", "", body)
+    count = prose_sentence_count(body)
+    if count == 0:
+        errors.append("Objective must contain non-empty prose before the Status block")
+    elif count > 3:
+        errors.append(f"Objective must contain at most 3 sentences; found {count}")
+
+
+def subsection_content(
+    block: str,
+    start_pattern: str,
+    end_pattern: str | None,
+) -> str | None:
+    end = rf"(?=^{end_pattern}|\Z)" if end_pattern else r"(?=\Z)"
+    match = re.search(
+        rf"(?ims)^{start_pattern}\s*(?:—\s*)?(.*?){end}",
+        block,
+    )
+    return match.group(1).strip() if match else None
+
+
+def validate_business_context(text: str, errors: list[str]) -> None:
+    business = h2_section(text, "1. Business Context")
+    if business is None:
+        return
+    why_marker = r"\*\*Why now\*\*"
+    broken_marker = r"\*\*What's broken \(as of \d{4}-\d{2}-\d{2}\)\*\*"
+    stays_marker = r"\*\*What stays the same\*\*"
+    why = subsection_content(business, why_marker, broken_marker)
+    broken = subsection_content(business, broken_marker, stays_marker)
+    stays = subsection_content(business, stays_marker, None)
+
+    if why is None:
+        errors.append("Business Context requires exact subsection **Why now**")
+    elif not re.search(r"\w", why):
+        errors.append("Why now must be non-empty")
+    if broken is None:
+        errors.append(
+            "Business Context requires dated subsection "
+            "**What's broken (as of YYYY-MM-DD)**"
+        )
+    elif not re.search(r"\w", broken):
+        errors.append("What's broken must be non-empty")
+    elif LOCATION_TOKEN.search(broken) is None:
+        errors.append(
+            "What's broken must contain at least one location-like token "
+            "(path[:line], Class.method, or §section)"
+        )
+    date_match = re.search(
+        r"\*\*What's broken \(as of (\d{4}-\d{2}-\d{2})\)\*\*",
+        business,
+    )
+    if date_match is not None and not valid_date(date_match.group(1)):
+        errors.append("What's broken snapshot must use a real calendar date")
+    if stays is None:
+        errors.append("Business Context requires exact subsection **What stays the same**")
+    elif not re.search(r"[A-Za-z0-9]", stays):
+        errors.append("What stays the same must be non-empty")
+
+
+def validate_core_concepts(text: str, errors: list[str]) -> None:
+    core = h2_section(text, "2. Core Concepts")
+    if core is None:
+        return
+    headings = re.findall(r"(?m)^###\s+(.+?)\s*$", core)
+    if not headings:
+        errors.append("Core Concepts requires at least one PascalCase H3 heading")
+        return
+    invalid = [
+        heading
+        for heading in headings
+        if re.fullmatch(r"[A-Z][A-Za-z0-9]*", heading) is None
+    ]
+    if invalid:
+        errors.append(
+            "Core Concepts H3 headings must be bare PascalCase names; invalid: "
+            + ", ".join(invalid)
+        )
+
+
+def validate_open_questions(text: str, errors: list[str]) -> None:
+    block = h2_section(text, "Open Questions")
+    if block is None:
+        return
+    id_matches = list(
+        re.finditer(
+            r"(?m)^(?:#{3,6}\s+|\d+\.\s+|[-*]\s+)?(OQ-[A-Za-z0-9]+)\b",
+            block,
+        )
+    )
+    oq_ids = [match.group(1) for match in id_matches]
+    no_questions = re.fullmatch(
+        r"(?is)##\s+Open Questions\s*\n+\s*No open questions\.\s*",
+        block,
+    )
+    if not oq_ids and no_questions is None:
+        errors.append(
+            "Open Questions must contain OQ identifiers or exactly 'No open questions.'"
+        )
+    if len(oq_ids) != len(set(oq_ids)):
+        errors.append("Open Questions identifiers must be unique")
+    for index, match in enumerate(id_matches):
+        end = id_matches[index + 1].start() if index + 1 < len(id_matches) else len(block)
+        entry = block[match.start():end]
+        for marker in ("**Question:**", "**Recommendation:**"):
+            if marker not in entry:
+                errors.append(f"{match.group(1)} is missing {marker}")
+        if re.search(r"(?i)settle(?:ment)? (?:in|stage)", entry) is None:
+            errors.append(f"{match.group(1)} is missing a settlement stage")
+
+
+def table_rows(block: str) -> list[list[str]]:
+    rows: list[list[str]] = []
+    for line in block.splitlines():
+        if not re.match(r"^\s*\|.*\|\s*$", line):
+            continue
+        rows.append([cell.strip() for cell in line.strip().strip("|").split("|")])
+    return rows
+
+
+def has_table_header(block: str, expected: tuple[str, ...]) -> bool:
+    expected_lower = tuple(item.lower() for item in expected)
+    return any(
+        tuple(cell.lower() for cell in row) == expected_lower
+        for row in table_rows(block)
+    )
+
+
+def table_data_rows(block: str, expected_header: tuple[str, ...]) -> list[list[str]]:
+    rows = table_rows(block)
+    expected_lower = tuple(item.lower() for item in expected_header)
+    for index, row in enumerate(rows):
+        if tuple(cell.lower() for cell in row) == expected_lower:
+            return [
+                candidate
+                for candidate in rows[index + 1:]
+                if not all(re.fullmatch(r":?-{3,}:?", cell) for cell in candidate)
+            ]
+    return []
+
+
+def validate_decision_table(text: str, errors: list[str]) -> None:
+    block = h2_section(text, "Decisions Baked In")
+    header = ("ID", "Decision", "Where")
+    if block is not None and not has_table_header(block, header):
+        errors.append(
+            "Decisions Baked In requires exact table header | ID | Decision | Where |"
+        )
+        return
+    if block is None:
+        return
+    rows = table_data_rows(block, header)
+    no_decisions = [["—", "No decisions ratified.", "—"]]
+    if rows == no_decisions:
+        return
+    if not rows:
+        errors.append(
+            "Decisions Baked In requires a decision row or exact "
+            "| — | No decisions ratified. | — | row"
+        )
+        return
+    for row in rows:
+        if len(row) != 3 or re.fullmatch(r"[A-Z]+D-\d+", row[0]) is None:
+            errors.append(f"invalid decision row: {' | '.join(row)}")
+        elif not row[1] or re.search(r"§\s*\d", row[2]) is None:
+            errors.append(
+                f"decision {row[0]} requires non-empty text and a Where §section"
+            )
+
+
+def validate_connections_table(text: str, errors: list[str]) -> None:
+    block = h2_section(text, "Connections")
+    if block is not None and not has_table_header(
+        block, ("Document", "Type", "Description")
+    ):
+        errors.append(
+            "Connections requires exact table header "
+            "| Document | Type | Description |"
+        )
+
+
+def validate_flow(raw_text: str, outside_text: str, errors: list[str]) -> None:
+    block = h2_section(outside_text, "Flow Diagram")
+    if block is None:
+        return
+    raw_block = h2_section(raw_text, "Flow Diagram")
+    if raw_block is None or "```mermaid" not in raw_block:
+        errors.append("Flow Diagram must contain a Mermaid fence before the changelog")
+    body = re.sub(r"(?m)^##\s+Flow Diagram\s*$", "", block, count=1).strip()
+    if not re.search(r"[A-Za-z0-9]", body):
+        errors.append("Flow Diagram requires a non-empty explanatory paragraph")
+        return
+    count = prose_sentence_count(body)
+    if count > 4:
+        errors.append(
+            f"Flow Diagram explanatory paragraph must be at most 4 sentences; found {count}"
+        )
+
+
+def validate_changelog(text: str, errors: list[str]) -> None:
+    block = h2_section(text, "Appendix — Changelog")
+    if block is None:
+        return
+    body = re.sub(
+        r"(?m)^##\s+Appendix — Changelog\s*$",
+        "",
+        block,
+        count=1,
+    )
+    footer_at = re.search(r"(?m)^\*\*Source (?:dispatch|basis):\*\*", body)
+    if footer_at:
+        body = body[: footer_at.start()]
+    has_entry = (
+        re.search(r"(?m)^\s*[-*]\s+\S", body) is not None
+        or len(table_rows(body)) >= 3
+    )
+    if not has_entry:
+        errors.append(
+            "Appendix — Changelog requires at least one bullet or table data row"
+        )
+
+
+def local_link_targets(path: Path, text: str) -> list[Path]:
+    targets: list[Path] = []
+    for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", text):
+        target = target.split("#", 1)[0]
+        if not target or re.match(r"^(?:https?|mailto):", target):
+            continue
+        targets.append((path.parent / target).resolve())
+    return targets
 
 
 def validate_links(path: Path, text: str, errors: list[str]) -> None:
@@ -260,63 +654,102 @@ def validate_links(path: Path, text: str, errors: list[str]) -> None:
             errors.append(f"broken local link at line {line}: {target}")
 
 
+def validate_research_links(
+    path: Path,
+    text: str,
+    research_sources: list[Path],
+    errors: list[str],
+) -> None:
+    if not research_sources:
+        return
+    owner_area = text.split("## Connections", 1)[0]
+    linked = set(local_link_targets(path, owner_area))
+    for research_source in research_sources:
+        if research_source not in linked:
+            errors.append(
+                "research source is not linked in a substantive provenance-owner "
+                f"location before Connections: {research_source}"
+            )
+
+
 def validate_source_footer(
     path: Path,
-    text: str,
+    lines: list[str],
+    mode: str,
     expected_source: Path | None,
     dispatch_id: str | None,
-    research_source: Path | None,
+    source_basis: list[Path],
     errors: list[str],
 ) -> None:
-    footer_match = re.search(
-        r"(?is)\*\*source dispatch(?::)?\*\*:?.*\Z",
-        text.strip(),
-    )
-    if expected_source is None:
-        if footer_match is not None:
-            errors.append(
-                "Source dispatch footer exists but no expected dispatch was supplied"
-            )
-        validate_research_link(path, text, research_source, errors)
+    outside_text, _ = text_outside_fences(lines)
+    outside_lines = outside_text.splitlines()
+    nonempty = [(index, line) for index, line in enumerate(outside_lines) if line.strip()]
+    footer_lines = [
+        (index, line)
+        for index, line in nonempty
+        if re.match(r"(?i)^\*\*Source (?:dispatch|basis):\*\*", line.strip())
+    ]
+    last_line = nonempty[-1][1].strip() if nonempty else ""
+
+    expected_footer_kind = None if mode == "none" else mode
+    if expected_footer_kind is None:
+        if footer_lines:
+            errors.append("none mode forbids Source dispatch and Source basis footers")
         return
-    if footer_match is None:
-        errors.append("final Source dispatch footer is missing")
-        return
-    footer = footer_match.group(0)
-    footer_id = re.search(
-        r"(?is)^\*\*source dispatch(?::)?\*\*:?\s*`([^`]+)`",
-        footer,
-    )
-    if footer_id is None or footer_id.group(1) != dispatch_id:
-        errors.append("Source dispatch footer lacks the expected dispatch id")
-    footer_targets = []
-    for link in re.findall(r"\[[^\]]+\]\(([^)]+)\)", footer):
-        target = link.split("#", 1)[0]
-        if target and not re.match(r"^(?:https?|mailto):", target):
-            footer_targets.append((path.parent / target).resolve())
-    if expected_source not in footer_targets:
+    if len(footer_lines) != 1:
         errors.append(
-            "Source dispatch footer does not link the exact expected findings path"
+            f"{mode} mode requires exactly one Source {mode} footer outside code fences"
         )
-    validate_research_link(path, text, research_source, errors)
-
-
-def validate_research_link(
-    path: Path,
-    text: str,
-    research_source: Path | None,
-    errors: list[str],
-) -> None:
-    if research_source is None:
         return
-    linked = {
-        (path.parent / target.split("#", 1)[0]).resolve()
-        for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", text)
-        if target and not re.match(r"^(?:https?|mailto):", target)
-    }
-    if research_source not in linked:
+    footer_index, footer = footer_lines[0]
+    if footer_index != nonempty[-1][0]:
+        errors.append(f"Source {mode} footer must be the final non-empty line")
+        return
+    if footer.strip() != last_line:
+        errors.append(f"Source {mode} footer must be terminal")
+
+    if mode == "dispatch":
+        match = re.fullmatch(
+            r"\*\*Source dispatch:\*\* `([^`]+)` — \[([^\]]+)\]\(([^)]+)\)",
+            footer.strip(),
+        )
+        if match is None:
+            errors.append(
+                "Source dispatch footer must exactly match "
+                "**Source dispatch:** `<id>` — [findings](<relative-path>)"
+            )
+            return
+        if match.group(1) != dispatch_id:
+            errors.append("Source dispatch footer lacks the expected dispatch id")
+        target = match.group(3).split("#", 1)[0]
+        resolved = (path.parent / target).resolve()
+        if resolved != expected_source:
+            errors.append(
+                "Source dispatch footer does not link the exact expected findings path"
+            )
+        return
+
+    match = re.fullmatch(r"\*\*Source basis:\*\* (.+)", footer.strip())
+    if match is None:
         errors.append(
-            "document does not link the exact explicitly resolved research source"
+            "Source basis footer must exactly start with **Source basis:**"
+        )
+        return
+    parts = [part.strip() for part in match.group(1).split(";")]
+    if any(
+        re.fullmatch(r"\[[^\]]+\]\([^)]+\)", part) is None
+        for part in parts
+    ):
+        errors.append(
+            "Source basis footer must contain only semicolon-separated Markdown links"
+        )
+        return
+    resolved = local_link_targets(path, "\n".join(parts))
+    if len(resolved) != len(set(resolved)):
+        errors.append("Source basis footer contains duplicate paths")
+    if set(resolved) != set(source_basis) or len(resolved) != len(source_basis):
+        errors.append(
+            "Source basis footer must link every and only the supplied --source-basis paths"
         )
 
 

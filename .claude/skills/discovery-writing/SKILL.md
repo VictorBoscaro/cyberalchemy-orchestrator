@@ -45,7 +45,7 @@ last_updated: <YYYY-MM-DD>
 
 Sections must appear in this order. Do not skip or reorder them.
 
-### Objective (≤3 sentences, required first)
+### `## Objective` (exact H2, ≤3 sentences, required first)
 
 What is being changed and what the end state looks like. No motivation here — that goes in Business Context.
 
@@ -71,6 +71,9 @@ Three subsections, all required:
 **What's broken (as of <date>)** — Enumerate each problem with a specific location (`file.ts:line` or `ClassName.method` or doc §section). A problem without a location is unverified. Date the snapshot.
 
 **What stays the same** — Explicit scope boundary: list the assets, models, and behaviors that are out of scope. An unnamed boundary is an unbounded scope. When an in-scope concept is **owned by another document or sibling feature**, name the owning doc with a relative link and the seam by which this feature touches it (event, read model, mapping); every later mention cites `[link] §N.N` instead of restating the definition. One owner per concept — this doc may declare a seam contract against it, never a second definition. An unlisted shared concept invites duplicate registry entries downstream.
+
+When a checked source/evidence packet is present, derive all three Business Context subsections
+from it and preserve material limitations. Do not substitute unsupported briefing intuition.
 
 ---
 
@@ -108,9 +111,14 @@ by amendment, never silently deleted.
 
 ---
 
-### Decisions Baked In (required when the session ratified decisions)
+### Decisions Baked In
 
-A decision register: a table `| <P>D-N | Decision | Where |` — one row per design decision the document commits to, `Where` pointing at the owning §section. Pick a per-doc ID prefix (OD, WD, …) and reference decisions by ID throughout the body, not by restating them. These IDs are load-bearing: the downstream SPEC's Authority line locks them and its OD-Trace table must resolve every one to an aspect block.
+A decision register table is always present: `| <P>D-N | Decision | Where |`. Add one row per design
+decision the document commits to, with `Where` pointing at the owning §section. When no decision
+was ratified, keep the table and use one explicit `— | No decisions ratified. | —` row. Pick a
+per-doc ID prefix (OD, WD, …) and reference actual decisions by ID throughout the body, not by
+restating them. These IDs are load-bearing: the downstream SPEC's Authority line locks them and
+its OD-Trace table must resolve every one to an aspect block.
 
 Once a SPEC cites this document's version, the register is **locked**: never edit or renumber a locked row. Decisions ratified after the lock go in a `### Post-vX.Y.Z amendments` table below it as `DD-N | Decision | Where | Amends / motivated by`; each DD must cite the section it amends, the gap that motivated it, and which locked decisions remain untouched.
 
@@ -128,10 +136,20 @@ without their own explicit authorization.
 
 ### Flow Diagram, Changelog, and Source Footer
 
-After `Connections`, place `## Flow Diagram`, then `## Appendix — Changelog`. When the confirmed
-provenance mode requires one, the final content is the **Source dispatch** or **Source basis**
-footer. This is the canonical ending order. The diagram is created before review and synchronized
-after remediation; the changelog and optional footer remain last.
+After `Connections`, place `## Flow Diagram`, then `## Appendix — Changelog`. The Flow section
+contains one Mermaid fence and a non-empty explanatory paragraph of at most four sentences. The
+changelog contains at least one version/date/change entry. The confirmed provenance mode is exactly
+one of:
+
+- `dispatch`: the final non-empty line, outside code fences, is
+  `**Source dispatch:** \`<dispatch-id>\` — [findings](<relative-path>)`.
+- `basis`: the final non-empty line, outside code fences, is
+  `**Source basis:** [<label>](<relative-path>); ...`, containing every and only the confirmed
+  durable source-basis paths.
+- `none`: neither provenance footer appears.
+
+This is the canonical ending order. The diagram is created before review and synchronized after
+remediation; the changelog and optional footer remain last.
 
 ---
 
@@ -150,6 +168,14 @@ after remediation; the changelog and optional footer remain last.
 - [ ] Every invoked probe passed the Probe Proposal Gate; accepted/rejected improvements and reasons are present in the completion report
 - [ ] Independent Review Loop (below) reached `NO_OBJECTION` from every confirmed reviewer in one round, or stopped honestly at the confirmed round ceiling with residue reported
 - [ ] Flow Diagram Gate (below) executed — flow diagram present and synchronized with the reviewed body
+- [ ] `validate-discovery.py` passed with the explicit confirmed provenance mode; its trailing-
+  whitespace check covers tracked and untracked targets
+
+The validator owns deterministic syntax and structural minima only. Reviewers still own semantic
+questions: whether locations prove the stated breakage, PascalCase concepts are well chosen,
+decision rows link to their true owning sections, source links appear in the true provenance-owning
+claim/decision locations, connections are complete, and the Flow paragraph/diagram faithfully
+represent the body.
 
 ---
 
@@ -162,27 +188,51 @@ proposals and the human gates; the discovery writer never changes the confirmed 
 The `StructuralGraphProposal` resolves the number of probe slots and review seats, their
 connections, whether any group uses `robot-talks`, the interaction mode, the maximum review rounds,
 and the confirmation mode. The `ConcreteDispatchProposal` then resolves every agent name,
-role/lens, initial prompt, source boundary, model/budget, output contract, tool/skill profile,
-reviewer instantiation rule, and retry limit. All potential seats are declared before execution. An
-unused optional probe slot is not spawned; changing a seat or lens later requires a new proposal
-revision and the applicable gate.
+role/lens, immutable `prompt_template`, source boundary and exact path-to-SHA-256 bindings,
+`requested_provider`, `requested_model`, `requested_adapter`, budget, output contract,
+`proposed_capability_profile`, reviewer instantiation rule, and retry limit. It includes the group
+anti-bias axis, each seat's angle/position, and for each pair the predicted disagreement question,
+positions, and evidence. All potential seats are declared before execution. An unused optional probe slot is
+not spawned; changing a seat, lens, or prompt template later requires a new proposal revision and
+the applicable gate.
+
+Both proposals are session-local projections derived from one pending sheet. Declare
+`projection_schema_version`, reject duplicate object keys, and use RFC 8785 JCS before SHA-256. If
+a conforming JCS implementation is absent, the local digest is workflow evidence only, never
+portable or durable. ACI `ConfirmedDispatch` / `DispatchSpec` own durable approval bytes and
+receipts when available.
 
 For every review group with two or three seats, the concrete proposal includes a P5 tension matrix:
 one row per reviewer pair, a named disagreement axis, the question likely to split them, and each
 seat's predicted position. Complementary labels alone are not tension. The matrix must make overlap
 visible and explain why one reviewer cannot subsume another.
 
-Before fine confirmation, a read-only capability reviewer checks each task against its proposed
-tool/skill profile. Its task digest and tool-profile digest are part of the concrete proposal. Tool
-names in agent frontmatter are adapter-level grants; the proposal also states the logical
-capabilities and any restricted command classes. `Bash` never means unrestricted shell by
-implication.
+Before fine confirmation, a read-only capability reviewer checks each task against its
+`proposed_capability_profile`. Embed its result, amendments, task digest, and profile digest in the
+`ConcreteDispatchProposal`. Tool names in agent frontmatter are proposal-level adapter requests;
+the proposal also states logical capabilities and restricted command classes. Effective grants,
+model, and sandbox remain ACI/runtime-owned. Record `effective_enforcement` as `observable` or
+`non_observable`. An observable semantic mismatch fails closed; when non-observable, report the
+gap and never call requested values effective. `Bash` never means unrestricted shell by implication.
+
+After capability review, run two independent check-tension helpers against the same canonical
+concrete digest. Concrete confirmation requires PASS from both. If either fails, revise the pending
+sheet, regenerate and re-digest the affected projections, and run two fresh independent checks.
 
 Every resolved concrete field records `ResolutionProvenance`: `user_set`, `recipe_default`,
 `skill_constraint`, `orchestrator_inferred`, or `capability_reviewer_amendment`, plus a source
 reference or digest and a short reason. A structural change invalidates the concrete and final
 confirmations. A concrete-only change invalidates final confirmation. Retry creates a new attempt
 under the same confirmed revision; it does not silently change the plan.
+
+Final confirmation freezes prompt templates, not future returns. Each downstream template declares
+data-only slots with name, authorized producer, data type/schema, cardinality, byte/token ceiling,
+purpose, and source/response schema. Instructions, authority, lenses, source boundaries, and output
+contracts cannot be dynamic. For an unregistered workflow, the host may materialize current data
+into a workflow-only `WorkflowInputManifest`, bind files as `{path, sha256}`, and digest it. ACI
+alone owns a true `EffectiveInputArtifact`. If ACI/runtime cannot persist and bind required dynamic
+inputs, a dynamic-input-dependent registered robot-talks topology is `UNAVAILABLE`. Changing an
+instruction, authority, lens, source boundary, or output contract invalidates concrete confirmation.
 
 Supported confirmation modes:
 
@@ -192,9 +242,10 @@ Supported confirmation modes:
 - `structure_only`: authorize continued planning only. It never authorizes probes, writing, review,
   promotion, or any other execution.
 
-Until durable gate receipts exist, preserve proposal revision IDs, SHA-256 digests, explicit user
-acknowledgements, and the capability-review reference in the completion report. Do not describe a
-chat acknowledgement as a bus receipt.
+Until durable gate receipts exist, the orchestrator preserves proposal revision IDs, SHA-256
+digests, explicit user acknowledgements, the embedded capability-review result, and the two
+check-tension results in its final completion report. Do not describe a chat acknowledgement as a
+bus receipt.
 
 ---
 
@@ -265,6 +316,11 @@ This bounded helper topology is authorized by the scoped discovery-authoring exc
 `.claude/skills/domainspec-subagents-strategy/SKILL.md` P11. Any wider fan-out, persisted review
 artifact, or work beyond the discovery returns to the normal confirmation/register/close lifecycle.
 
+Each isolated reviewer return is a non-deliverable internal contribution: do not persist,
+independently publish, or independently consume it. Only the complete barrier batch may feed the
+writer's next `WriterHandoff` and the orchestrator's final report. If any return must be persisted
+or separately consumed, use a formal review dispatch.
+
 Launch all reviewers in a round together when the tool supports parallel tasks.
 
 - **Content/fidelity lens:** attack contradictions with sources or governing documents,
@@ -289,17 +345,28 @@ Checks performed: <reads/commands>
 ```
 
 Compute the digest before launching the group and require every reviewer to echo it. A missing or
-mismatched digest
-or a `NO_OBJECTION` without concrete survival evidence is an insufficient review and counts as an
-objection. When every return has zero objections, the orchestrator explicitly checks the review skill's
-all-zero-findings red flag: each lens must name its attempted attacks and evidence of survival before
-the group can yield `REVIEW_CLEAN`.
+mismatched digest, malformed verdict, missing required field, or `NO_OBJECTION` without concrete
+survival evidence is `INSUFFICIENT_REVIEW`: it is neither an objection nor clean evidence. Retry
+that seat against the same frozen digest and unchanged template/effective-input contract. A
+protocol-failure retry increments only the seat's technical-attempt counter and does not consume a
+substantive review round. The concrete proposal sets a maximum of one to three confirmed technical
+attempts per seat. If any seat remains insufficient when its attempt limit is exhausted, the
+barrier is incomplete; stop with `INSUFFICIENT_REVIEW` and do not disposition objections or claim a
+clean/ceiling round. When every valid return has zero objections, the orchestrator explicitly
+checks the review skill's all-zero-findings red flag: each lens must name its attempted attacks and
+evidence of survival before the group can yield `REVIEW_CLEAN`.
 
 After the round barrier, the orchestrator sends all independent returns together to the writer. For
 each objection before the terminal round, the writer records `ACCEPT`, `PARTIAL`, or `REJECT` with
 a one-line, evidence-based reason, then rewrites every accepted/partial item. Rejection is allowed;
 silent discard is not. Re-run deterministic checks and synchronize the Flow Diagram before the next
-round.
+round. The writer returns only a `WriterHandoff`: current digest, deterministic checks,
+dispositions, mutations made, pending inverse-edge paths, and unresolved gaps. The orchestrator
+alone owns the final completion report, probe ledger, review ledger, and terminal status.
+
+Before every review launch, require a `WriterHandoff` that names the target digest and reports PASS
+for every deterministic check. A missing PASS or failed check stops `VALIDATION_FAILED` with the
+digest and gap; launch no reviewer.
 
 Use fresh reviewer activations on every round, with the exact confirmed seats and lenses. The round
 machine is: freeze artifact bytes and digest; launch the sealed group; close the all-reviewer
@@ -310,17 +377,27 @@ only when every reviewer independently returns `NO_OBJECTION` against the same f
 at most the confirmed ceiling, which must be between one and five rounds. The ceiling round is
 terminal: if any reviewer objects, do not edit the reviewed revision. Record accepted objections as
 residue, return the reviewed file digest plus `REVIEW_LOOP_CEILING`, and never report a clean review.
+Disposition every terminal objection without mutating the artifact: `ACCEPT`/`PARTIAL` becomes
+residue, while `REJECT` retains its evidence-based reason.
 
 ---
 
 ## Provenance (repo addition)
 
-When the discovery derives from a registered research dispatch, end the document with a **Source
-dispatch** footer containing its exact dispatch id and exact findings path supplied in the briefing.
-The concrete plan also carries the exact optional research source path when one is used; never
-derive it by changing the findings basename. When there is no registered research dispatch, the
-concrete plan explicitly selects either a final `**Source basis:**` footer with exact durable source
-links or no provenance footer. Never fabricate a dispatch ID.
+The concrete proposal explicitly selects `provenance_mode: dispatch | basis | none`.
+
+- `dispatch` requires an existing registered source packet, exact dispatch ID, and exact findings
+  path; use the exact terminal Source dispatch syntax above.
+- `basis` requires a checked durable source packet and one or more exact source-basis paths; use the
+  exact terminal Source basis syntax above.
+- `none` requires no registered findings source and forbids both source footers.
+
+Every source is bound by explicit path→SHA-256 pair, never by position in an ordered tuple. An
+optional research source is also an exact path→hash pair; never derive it by changing a findings
+basename. Its link must occur in the substantive owning section before `## Flow Diagram`.
+Deterministic validation can prove that exact path is linked there, but reviewers own whether that
+section and the corresponding decision row are semantically the true provenance owners. Never
+fabricate a dispatch ID.
 
 A verified probe may support a decision only when the owning section and decision-register row cite
 the durable source/location, state the probe mode (`tool_probe` or `helper_probe`), and preserve
