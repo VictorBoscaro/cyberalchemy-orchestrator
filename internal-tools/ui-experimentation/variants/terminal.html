@@ -20,9 +20,7 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{padding:12px 20px 11px;font-size:12px;line-height:1.5}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%}
@@ -87,6 +85,27 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
 #p-prompt-body::before{content:"$ cat initial_prompt\A";white-space:pre;opacity:.5}
 #tt{background:#03130c;color:#4bff9f;border:1px solid #2fd685;border-radius:0}
 
+/* ---- theme: terminal · context header (status line / comment block) ---- */
+#stage-head{border-bottom:1px solid #0e3d28;background:rgba(3,17,11,.35)}
+#sh-idle{opacity:.5}
+#sh-status,#sh-headline,#sh-sub,#sh-idle{white-space:normal}
+#sh-status::before,#sh-headline::before,#sh-sub::before,#sh-idle::before{content:"# ";opacity:.5}
+#sh-status{letter-spacing:.02em}
+.sh-field{display:inline-block;margin-right:14px;white-space:nowrap}
+.sh-key{opacity:.5}
+.sh-type{display:inline-block;margin-right:14px;padding:1px 8px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:#04120c;background:#4bff9f;text-shadow:none;
+  box-shadow:0 0 11px rgba(75,255,159,.6)}
+.sh-exit{color:#7dffbf;text-shadow:0 0 6px rgba(75,255,159,.55)}
+#sh-headline{margin-top:3px;font-size:13px;color:#7dffbf;text-shadow:0 0 7px rgba(75,255,159,.4);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#sh-sub{margin-top:2px;font-size:11px;opacity:.6}
+#sh-ctx-toggle{margin-top:7px;font:inherit;font-size:11px;letter-spacing:.05em;cursor:pointer;
+  padding:2px 9px;color:#4bff9f;background:transparent;border:1px solid #12603f}
+#sh-ctx-toggle:hover{border-color:#7dffbf;box-shadow:0 0 10px rgba(75,255,159,.35)}
+#sh-ctx-body{margin-top:8px;font-size:11.5px;line-height:1.62;opacity:.72;
+  border-left:2px solid #12603f;padding-left:10px}
+
 </style>
 </head><body>
 
@@ -109,8 +128,14 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
 
   <main id="main">
     <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
+      <div id="sh-idle">awaiting dispatch — selecione um dispatch na lista a esquerda</div>
+      <div id="sh-body" hidden>
+        <div id="sh-status"></div>
+        <div id="sh-headline"></div>
+        <div id="sh-sub"></div>
+        <button id="sh-ctx-toggle" type="button" aria-expanded="false" hidden>contexto &#9656;</button>
+        <div id="sh-ctx-body" hidden></div>
+      </div>
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
@@ -186,6 +211,68 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function nameOf(a) { return a.agent_name || "(sem nome)"; }
+
+  // ---- context header (status line / comment block) ----------------------
+  // Enriches #stage-head from the selected dispatch object only (no graph geometry).
+  // FE-1: compact status band by default; the longer `context` framing is opt-in
+  // (a discreet "contexto" disclosure). FE-5: nulls omitted, never printed as "null".
+  // FE-7: counts + UTC zone declared on-screen.
+  function fieldTok(key, val, extraClass, tip) {
+    var cls = "sh-field" + (extraClass ? " " + extraClass : "");
+    var t = tip ? ' data-tip="' + esc(tip) + '"' : "";
+    return '<span class="' + cls + '"' + t + '><span class="sh-key">' + esc(key) + '=</span>' + esc(val) + "</span>";
+  }
+  function populateHead(d) {
+    $("sh-idle").hidden = true;
+    $("sh-body").hidden = false;
+
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+    var links = (d.connections || []).length;
+    var close = d.close || null;
+    var loopsUsed = (close && close.agents_spawned) ? close.agents_spawned.loops_used : null;
+
+    // status line: prominent TYPE token + KEY=value monospace fields
+    var status = '<span class="sh-type" data-tip="' + esc("tipo de dispatch (KIND): " + d.dispatch_type) +
+      '">' + esc(d.dispatch_type || "?") + "</span>";
+    status += fieldTok("AGENTS", ags.length, null, "total de agentes (soma sobre os grupos)");
+    status += fieldTok("GRP", (d.groups || []).length, null, "numero de grupos");
+    status += fieldTok("LINKS", links, null, "conexoes tipadas entre grupos");
+    status += fieldTok("REV", revs, null, "revisores: papeis skeptic/auditor/reviewer");
+    status += fieldTok("LOOPS", (loopsUsed != null ? loopsUsed : "—") + "/" + (d.max_loops != null ? d.max_loops : "?"),
+      null, "loops usados / max_loops");
+    if (close && close.exit_reason) {
+      status += fieldTok("EXIT", close.exit_reason, "sh-exit", "exit_reason do fechamento (OUTCOME)");
+    }
+    $("sh-status").innerHTML = status;
+
+    // headline: the goal (objetivo). Clamped to 2 lines; full text on hover (FE-2).
+    var hl = $("sh-headline");
+    hl.textContent = d.goal || "(sem objetivo declarado)";
+    if (d.goal) hl.setAttribute("data-tip", d.goal); else hl.removeAttribute("data-tip");
+
+    // sub line: id (secondary) + created (UTC declared) + folder/anti-bias if present
+    var sub = fieldTok("id", d.dispatch_id || "?");
+    sub += fieldTok("created", (d.created ? d.created.slice(0, 10) : "?") + " UTC", null,
+      d.created ? ("criado em " + d.created + " (UTC)") : null);
+    if (d.working_folder) sub += fieldTok("folder", d.working_folder);
+    if (d.anti_bias_global) sub += fieldTok("anti-bias", d.anti_bias_global, null, "eixo anti-vies global");
+    $("sh-sub").innerHTML = sub;
+
+    // FE-1 opt-in: longer `context` framing collapsed behind a discreet disclosure
+    var tog = $("sh-ctx-toggle"), body = $("sh-ctx-body");
+    if (d.context) {
+      tog.hidden = false;
+      body.textContent = d.context;
+      body.hidden = true;
+      tog.setAttribute("aria-expanded", "false");
+      tog.innerHTML = "contexto ▸";
+    } else {
+      tog.hidden = true;
+      body.hidden = true;
+      body.textContent = "";
+    }
+  }
 
   // ---- dispatch list -----------------------------------------------------
   function renderList() {
@@ -280,8 +367,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
   var SVGNS = "http://www.w3.org/2000/svg";
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    populateHead(d);
     var geo = geometry(d);
     var host = $("nodes"); host.innerHTML = "";
     var svg = $("edges"); svg.innerHTML = "";
@@ -458,6 +544,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in: summon context
+      var b = $("sh-ctx-body"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.innerHTML = open ? "contexto ▾" : "contexto ▸";
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");

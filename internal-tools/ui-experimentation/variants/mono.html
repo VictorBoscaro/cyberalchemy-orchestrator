@@ -20,9 +20,30 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{padding:15px 20px 11px;flex:0 0 auto}
+#sh-rest{margin:0;font-size:14px;font-weight:600;opacity:.5}
+#sh-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+#sh-kind{font-size:11px;text-transform:uppercase;letter-spacing:.2em;font-weight:600}
+#sh-outcome{font-size:9.5px;text-transform:uppercase;letter-spacing:.11em;opacity:.6;white-space:nowrap}
+#sh-headline{margin:6px 0 3px;font-size:15px;font-weight:500;line-height:1.34;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#sh-sub{margin:0;font-size:11px;letter-spacing:.02em;opacity:.5;overflow-wrap:anywhere}
+#sh-rule{height:1px;margin:10px 0 9px}
+#sh-metrics{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 24px}
+#sh-stats{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0}
+.sh-stat{display:inline-flex;align-items:baseline;gap:7px}
+.sh-stat dt,.sh-stat dd{margin:0}
+.sh-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;opacity:.5}
+.sh-val{font-size:13px;font-weight:500}
+#sh-facts{display:flex;flex-wrap:wrap;gap:6px 18px}
+#sh-facts[hidden]{display:none}
+.sh-fact{display:inline-flex;align-items:baseline;gap:7px;min-width:0}
+.sh-fval{font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
+#sh-ctx{margin-top:10px}
+#sh-ctx-toggle{padding:1px 0;border:0;background:none;font:inherit;font-size:10px;text-transform:uppercase;letter-spacing:.14em;cursor:pointer;opacity:.55}
+#sh-ctx-toggle:hover,#sh-ctx-toggle:focus-visible{opacity:.9}
+#sh-ctx-toggle::before{content:"+ "}
+#sh-ctx-toggle[aria-expanded="true"]::before{content:"\2013 "}
+#sh-ctx-body{margin:9px 0 2px;font-size:12.5px;line-height:1.6;max-width:74ch;max-height:30vh;overflow:auto}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -80,6 +101,19 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
 .p-role{color:#999}
 .p-prompt button{border:1px solid #d8d8d8;background:#fafafa;color:#1b1b1b}
 #tt{background:#1b1b1b}
+#stage-head{border-bottom:1px solid #ededed}
+#sh-kind{color:#1b1b1b}
+#sh-outcome{color:#7a7a7a}
+#sh-outcome[data-open]{color:#1b1b1b;opacity:.85}
+#sh-headline{color:#1b1b1b}
+#sh-sub{color:#8a8a8a}
+#sh-rule{background:#ececec}
+.sh-lbl{color:#9a9a9a}
+.sh-val{color:#1b1b1b}
+.sh-stat.rev .sh-lbl{color:#1b1b1b;opacity:.6}
+.sh-fval{color:#555}
+#sh-ctx-toggle{color:#1b1b1b}
+#sh-ctx-body{color:#3a3a3a;border-left:2px solid #e4e4e4;padding-left:12px}
 
 </style>
 </head><body>
@@ -103,8 +137,24 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
 
   <main id="main">
     <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
+      <p id="sh-rest">Selecione um dispatch</p>
+      <div id="sh-body" hidden>
+        <div id="sh-top">
+          <span id="sh-kind"></span>
+          <span id="sh-outcome"></span>
+        </div>
+        <h2 id="sh-headline"></h2>
+        <p id="sh-sub"></p>
+        <div id="sh-rule" aria-hidden="true"></div>
+        <div id="sh-metrics">
+          <dl id="sh-stats"></dl>
+          <div id="sh-facts" hidden></div>
+        </div>
+        <div id="sh-ctx" hidden>
+          <button id="sh-ctx-toggle" type="button" aria-expanded="false" data-tip="Enquadramento estendido — clique para abrir">contexto</button>
+          <p id="sh-ctx-body" hidden></p>
+        </div>
+      </div>
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
@@ -212,6 +262,7 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
     if (prev) prev.classList.remove("sel");
     if (li) li.classList.add("sel");
     closePanel();
+    renderHeader(state.current);   // populate the context header before measuring the stage
     renderGraph(state.current);
   }
 
@@ -303,11 +354,69 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
     svg.appendChild(p);
   }
 
+  // ---- context header: quiet stage-head band, populated from the dispatch --
+  //   FE-1: context is opt-in (collapsed). FE-5: nulls omitted. FE-7: time and
+  //   counts declared in UTC. Touches only #stage-head — never the graph body.
+  function fmtUTC(iso) {
+    if (!iso) return "";
+    var s = String(iso), day = s.slice(0, 10), tm = s.slice(11, 16);
+    return day + (tm ? (" · " + tm) : "") + " UTC";
+  }
+  function renderHeader(d) {
+    $("sh-rest").hidden = true;
+    $("sh-body").hidden = false;
+
+    $("sh-kind").textContent = d.dispatch_type || "—";
+
+    var oc = $("sh-outcome"), cl = d.close;
+    if (cl && cl.exit_reason) {                          // OUTCOME from close
+      var lu = cl.agents_spawned && cl.agents_spawned.loops_used;
+      oc.textContent = cl.exit_reason + (lu != null ? (" · " + lu + " loop" + (lu === 1 ? "" : "s")) : "");
+      oc.removeAttribute("data-open");
+    } else {                                             // FE-5: close === null
+      oc.textContent = "em aberto";
+      oc.setAttribute("data-open", "1");
+    }
+
+    $("sh-headline").textContent = d.goal || "(sem objetivo declarado)";
+    $("sh-sub").textContent = d.dispatch_id + " · " + fmtUTC(d.created);
+
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+    var stats = [["agentes", ags.length], ["grupos", (d.groups || []).length],
+                 ["ligações", (d.connections || []).length], ["revisores", revs]];
+    var sl = $("sh-stats"); sl.innerHTML = "";
+    stats.forEach(function (kv) {
+      sl.innerHTML += '<div class="sh-stat' + (kv[0] === "revisores" ? " rev" : "") +
+        '"><dt class="sh-lbl">' + esc(kv[0]) + '</dt><dd class="sh-val">' + kv[1] + "</dd></div>";
+    });
+
+    var facts = [];                                      // FE-5: nullable facts omitted
+    if (d.max_loops != null) facts.push(["max loops", esc(d.max_loops), null]);
+    if (d.anti_bias_global) facts.push(["eixo anti-viés", esc(d.anti_bias_global), d.anti_bias_global]);
+    if (d.working_folder) facts.push(["pasta", esc(shorten(d.working_folder, 40)), d.working_folder]);
+    var fl = $("sh-facts"); fl.innerHTML = "";
+    facts.forEach(function (f) {
+      var tip = f[2] ? (' data-tip="' + esc(f[2]) + '"') : "";   // FE-2: full value on hover
+      fl.innerHTML += '<span class="sh-fact"' + tip + '><span class="sh-lbl">' +
+        esc(f[0]) + '</span><span class="sh-fval">' + f[1] + "</span></span>";
+    });
+    fl.hidden = !facts.length;
+
+    var wrap = $("sh-ctx"), body = $("sh-ctx-body"), tog = $("sh-ctx-toggle");
+    if (d.context) {                                     // FE-1: opt-in, collapsed
+      wrap.hidden = false;
+      body.textContent = d.context;
+      body.hidden = true;
+      tog.setAttribute("aria-expanded", "false");
+    } else {
+      wrap.hidden = true;
+    }
+  }
+
   // ---- render graph: pixel-space column layout (measure heights, then place)
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
 
     var geo = geometry(d);
     var G = geo.cols.length;
@@ -439,6 +548,12 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in header context
+      var b = $("sh-ctx-body"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      if (state.current) renderGraph(state.current);   // reflow graph to the resized stage
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");

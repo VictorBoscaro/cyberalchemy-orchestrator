@@ -20,9 +20,26 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{position:relative;z-index:20;padding:12px 20px 10px;display:flex;flex-direction:column;gap:7px}
+.sh-idle{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.sh-idle-mark{font-size:15px;line-height:1}
+.sh-live{display:flex;flex-direction:column;gap:7px;min-width:0}
+.sh-row-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sh-type{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:3px 11px;border-radius:3px;white-space:nowrap}
+.sh-chips{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}
+.sh-chip{display:flex;flex-direction:column;align-items:center;line-height:1;padding:4px 9px;border-radius:6px;min-width:44px}
+.sh-chip-n{font-size:14px;font-weight:700}
+.sh-chip-k{font-size:8px;letter-spacing:.1em;margin-top:3px;opacity:.75}
+.sh-headline{margin:0;font-size:14px;font-weight:600;line-height:1.3}
+.sh-sub{display:block;font-size:10.5px;font-weight:400;opacity:.55;letter-spacing:.02em;margin-top:2px;word-break:break-word}
+.sh-fields{display:flex;flex-wrap:wrap;gap:5px 16px;font-size:10.5px}
+.sh-field{display:inline-flex;align-items:baseline;gap:6px;max-width:100%}
+.sh-fl{text-transform:uppercase;letter-spacing:.1em;font-size:8.5px;opacity:.6;white-space:nowrap}
+.sh-fv{font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh-ctx-toggle{align-self:flex-start;font:inherit;font-size:10px;text-transform:uppercase;letter-spacing:.12em;padding:2px 0;background:none;border:0;cursor:pointer}
+.sh-ctx-toggle::before{content:"▸ ";font-size:8px}
+.sh-ctx-toggle.on::before{content:"▾ "}
+.sh-ctx{position:absolute;top:100%;left:14px;right:14px;z-index:5;margin-top:2px;padding:13px 16px;font-size:12.5px;line-height:1.6;border-radius:8px;max-height:46vh;overflow:auto;white-space:pre-wrap;word-break:break-word}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%}
@@ -64,6 +81,27 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
 .ditem{border:1px solid #1b2350;border-radius:10px;background:rgba(14,18,44,.6)}
 .ditem:hover,.ditem.sel{border-color:#6f8bff;background:rgba(28,36,86,.7)}
 .dtype{color:#8ea2ff}
+/* stage head — HUD readout strip */
+#stage-head{border-bottom:1px solid #1b2350;background:linear-gradient(180deg,rgba(16,22,58,.6),rgba(8,10,26,0))}
+.sh-idle{color:#8ea2ff;opacity:.75}
+.sh-idle-mark{color:#9fb4ff;text-shadow:0 0 12px rgba(150,180,255,.85)}
+.sh-type{color:#05060f;background:linear-gradient(120deg,#9fb4ff,#6f8bff);box-shadow:0 0 16px rgba(120,150,255,.5)}
+.sh-type[data-kind="review"]{background:linear-gradient(120deg,#e6b24e,#c07a1e);box-shadow:0 0 16px rgba(230,178,78,.45)}
+.sh-type[data-kind="research"]{background:linear-gradient(120deg,#7fd0ff,#4a8ad0);box-shadow:0 0 16px rgba(127,208,255,.4)}
+.sh-type[data-kind="experiment"]{background:linear-gradient(120deg,#b98cff,#7a4ad0);box-shadow:0 0 16px rgba(185,140,255,.4)}
+.sh-type[data-kind="code"]{background:linear-gradient(120deg,#6fe0b0,#2f9a7a);box-shadow:0 0 16px rgba(111,224,176,.4)}
+.sh-type[data-kind="plan"]{background:linear-gradient(120deg,#ff9fb4,#d04a6f);box-shadow:0 0 16px rgba(255,159,180,.4)}
+.sh-type[data-kind="suggestion"]{background:linear-gradient(120deg,#d7c8ff,#8f7ad0)}
+.sh-headline{color:#eef2ff}
+.sh-chip{background:rgba(14,18,44,.7);border:1px solid #2a3468}
+.sh-chip-n{color:#aeb9ff;text-shadow:0 0 8px rgba(120,150,255,.4)}
+.sh-fl{color:#8ea2ff}
+.sh-fv{color:#cfd7ff}
+.sh-field.is-out .sh-fv{color:#9fe6c0}
+.sh-field.is-open .sh-fv{color:#e6b24e}
+.sh-ctx-toggle{color:#8ea2ff}
+.sh-ctx-toggle:hover,.sh-ctx-toggle.on{color:#cdd7ff;text-shadow:0 0 8px rgba(150,180,255,.6)}
+.sh-ctx{background:rgba(8,10,26,.97);border:1px solid #4a5aa8;color:#cfd7ff;box-shadow:0 12px 40px rgba(0,0,0,.55)}
 #stage-wrap::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 24px 8px rgba(150,180,255,.6)}
 .node.group{padding:3px 9px;border-radius:13px;border:1px solid #4a5aa8;background:rgba(10,14,36,.9);color:#aeb9ff;max-width:104px}
 .node.agent{width:auto;max-width:88px;padding:7px 10px;border-radius:50px;background:radial-gradient(circle at 35% 30%,#3b4da0,#141a44);border:1px solid #5a6cc0;box-shadow:0 0 16px rgba(90,120,255,.35)}
@@ -102,9 +140,21 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
   </aside>
 
   <main id="main">
-    <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
+    <div id="stage-head" data-state="idle">
+      <div id="sh-idle" class="sh-idle">
+        <span class="sh-idle-mark" aria-hidden="true">&#9677;</span>
+        <span class="sh-idle-txt">standby &middot; aguardando seleção de dispatch</span>
+      </div>
+      <div id="sh-live" class="sh-live" hidden>
+        <div class="sh-row-top">
+          <span id="sh-type" class="sh-type" data-tip="tipo do dispatch">&mdash;</span>
+          <div id="sh-chips" class="sh-chips"></div>
+        </div>
+        <h2 id="sh-headline" class="sh-headline"></h2>
+        <div id="sh-fields" class="sh-fields"></div>
+        <button id="sh-ctx-toggle" class="sh-ctx-toggle" type="button" aria-expanded="false" aria-controls="sh-ctx" hidden>contexto</button>
+      </div>
+      <div id="sh-ctx" class="sh-ctx" role="region" aria-label="Contexto do dispatch" hidden></div>
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
@@ -308,6 +358,106 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
     return { cx: cx, cy: cy, rings: radii, nodes: nodes, edges: edges };
   }
 
+  // ---- context header (HUD readout strip) --------------------------------
+  // Fills #stage-head when a dispatch is picked. Reads only the dispatch object
+  // (never the graph). FE-7: counts + created are DECLARED with their referent
+  // (UTC). FE-1/FE-6: the long framing paragraph (d.context) stays collapsed and
+  // is summoned per selection, resetting to closed on every pick. FE-5: nulls
+  // (anti_bias_global, working_folder, close) are omitted or shown as an honest
+  // "em aberto" — never a blank slot. FE-2: fine qualifiers ride the #tt tooltip.
+  function populateHead(d) {
+    var head = $("stage-head");
+    head.setAttribute("data-state", "live");
+    $("sh-idle").hidden = true;
+    $("sh-live").hidden = false;
+
+    function attr(s) { return esc(s).replace(/"/g, "&quot;"); }
+    function shField(label, value, opts) {
+      opts = opts || {};
+      var tip = opts.tip ? ' data-tip="' + attr(opts.tip) + '"' : "";
+      var cls = opts.cls ? " " + opts.cls : "";
+      return '<span class="sh-field' + cls + '"' + tip + '>' +
+        '<span class="sh-fl">' + esc(label) + "</span>" +
+        '<span class="sh-fv">' + esc(value) + "</span></span>";
+    }
+
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+
+    // TYPE readout — the "coding / research / review…" answer, prominent
+    var kind = d.dispatch_type || "others";
+    var typeEl = $("sh-type");
+    typeEl.textContent = kind;
+    typeEl.setAttribute("data-kind", kind);
+    typeEl.setAttribute("data-tip", "tipo do dispatch · o que este trabalho é");
+
+    // headline (goal) + secondary subtitle (dispatch_id)
+    $("sh-headline").innerHTML = esc(d.goal || "(sem objetivo declarado)") +
+      '<span class="sh-sub">' + esc(d.dispatch_id) + "</span>";
+
+    // telemetry stat chips — counts, referents declared in label + tooltip
+    var chips = [
+      ["AGENTES", ags.length, "total de agentes somados sobre os grupos"],
+      ["GRUPOS", (d.groups || []).length, "grupos de agentes neste dispatch"],
+      ["LIGAÇÕES", (d.connections || []).length, "arestas grupo→grupo (connections)"],
+      ["REVISORES", revs, "agentes com papel cético / auditor / revisor"],
+      ["LOOPS", d.max_loops, "teto de loops (max_loops)"]
+    ];
+    $("sh-chips").innerHTML = chips.map(function (c) {
+      if (c[1] == null) return "";
+      return '<span class="sh-chip" data-tip="' + attr(c[2]) + '">' +
+        '<span class="sh-chip-n">' + esc(c[1]) + "</span>" +
+        '<span class="sh-chip-k">' + esc(c[0]) + "</span></span>";
+    }).join("");
+
+    // luminous field strip — created (UTC declared), outcome, axis, folder
+    var out = "";
+    var created = d.created || "";
+    if (created) {
+      out += shField("CRIADO", created.slice(0, 10) + " " + created.slice(11, 16) + " UTC",
+        { tip: "carimbo de criação · fuso declarado UTC (FE-7)" });
+    }
+    if (d.close) {                                   // dispatch WITH close → outcome
+      var sp = d.close.agents_spawned || {}, lu = sp.loops_used;
+      var desf = d.close.exit_reason || "fechado";
+      if (lu != null) desf += " · " + lu + " loop" + (lu === 1 ? "" : "s");
+      out += shField("DESFECHO", desf, { cls: "is-out", tip: "exit_reason + loops usados no fechamento" });
+    } else {                                         // dispatch WITHOUT close → honest state
+      out += shField("DESFECHO", "em aberto", { cls: "is-open", tip: "sem fechamento (close) registrado" });
+    }
+    if (d.anti_bias_global) {                        // FE-5: null → omitted
+      out += shField("ANTI-VIÉS", shorten(d.anti_bias_global, 46), { tip: d.anti_bias_global });
+    }
+    if (d.working_folder) {                          // FE-5: null → omitted
+      out += shField("PASTA", shorten(d.working_folder, 40), { tip: d.working_folder });
+    }
+    $("sh-fields").innerHTML = out;
+
+    // FE-1 opt-in: the longer framing paragraph is collapsed, summoned on click;
+    // reset to closed on every pick (FE-6 single focus in the head).
+    var tog = $("sh-ctx-toggle"), panel = $("sh-ctx");
+    panel.hidden = true;
+    tog.setAttribute("aria-expanded", "false");
+    tog.classList.remove("on");
+    if (d.context) {
+      tog.hidden = false;
+      tog.textContent = "contexto";
+      panel.textContent = d.context;
+      if (!tog.__wired) {                            // wire once; self-contained to the head
+        tog.__wired = true;
+        tog.addEventListener("click", function () {
+          var open = panel.hidden;
+          panel.hidden = !open;
+          this.setAttribute("aria-expanded", String(open));
+          this.classList.toggle("on", open);
+        });
+      }
+    } else {
+      tog.hidden = true;
+      panel.textContent = "";
+    }
+  }
+
   // ---- render graph ------------------------------------------------------
   var SVGNS = "http://www.w3.org/2000/svg";
   function svgEl(name, attrs) {
@@ -317,8 +467,7 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
   }
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    populateHead(d);   // themed context header (touches only #stage-head)
 
     // measure the stage in device pixels AFTER layout so rings stay circular
     var wrap = $("stage-wrap");

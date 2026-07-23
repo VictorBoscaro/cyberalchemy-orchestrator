@@ -20,9 +20,20 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{position:relative;flex:0 0 auto;padding:12px 20px 10px}
+#stage-head .sh-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sh-type{font-size:10px;text-transform:uppercase;letter-spacing:.14em;padding:3px 10px}
+.sh-outcome{font-size:10px;text-transform:uppercase;letter-spacing:.1em;padding:2px 9px}
+.sh-goal{margin:8px 0 2px;font-size:16px;line-height:1.28;font-weight:700}
+.sh-id{margin:0;font-size:10.5px;opacity:.55;letter-spacing:.02em;word-break:break-all}
+.sh-stats{display:flex;flex-wrap:wrap;gap:5px 8px;margin:8px 0 0}
+.sh-stats:empty{display:none}
+.sh-scrib{font-size:10.5px;letter-spacing:.02em;padding:1px 8px;cursor:default}
+.sh-foot{display:flex;align-items:center;gap:12px;margin:8px 0 0;flex-wrap:wrap}
+.sh-when{font-size:10.5px;opacity:.6}
+.sh-ctx-toggle{font:inherit;font-size:11px;cursor:pointer;background:none;border:0;padding:2px 4px}
+.sh-ctx{position:absolute;left:16px;right:16px;top:100%;z-index:20;margin-top:-2px;max-height:42vh;overflow:auto;padding:14px 16px;font-size:12.5px;line-height:1.55}
+#stage-head[data-empty] .sh-goal{opacity:.55;font-weight:400}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #stage-empty[hidden]{display:none}
@@ -68,6 +79,19 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
 .ditem{border:2px solid #2b2b2b;border-radius:14px 8px 16px 6px;background:#fff}
 .ditem:hover,.ditem.sel{background:#fff6c9;transform:rotate(-.4deg)}
 .dtype{color:#c0392b}
+/* context header — hand-drawn index card / header note */
+#stage-head{border-bottom:2px dashed #2b2b2b}
+.sh-type{border:2px solid #c0392b;color:#c0392b;background:#fff;border-radius:12px 6px 14px 5px;font-weight:700;transform:rotate(-1.5deg)}
+.sh-outcome{border:2px solid #2b7a3f;color:#2b7a3f;background:#fff;border-radius:10px 16px 8px 14px;font-weight:700;transform:rotate(1.3deg)}
+.sh-outcome[data-open]{border-color:#b06a00;color:#b06a00}
+.sh-goal{color:#2b2b2b}
+.sh-scrib{border:1.5px solid #2b2b2b;border-radius:9px 5px 11px 6px;background:#fffdf2}
+.sh-scrib:nth-child(even){transform:rotate(-.7deg)}
+.sh-scrib:nth-child(odd){transform:rotate(.6deg)}
+.sh-ctx-toggle{color:#2b6cb0;text-decoration:underline wavy;text-underline-offset:3px}
+.sh-ctx-toggle:hover{color:#c0392b}
+.sh-ctx{border:2px solid #2b2b2b;border-radius:16px 8px 18px 10px;background:#fffef7;box-shadow:3px 4px 0 rgba(43,43,43,.2);
+  background-image:repeating-linear-gradient(#fffef7,#fffef7 21px,#e4ecf5 22px)}
 .node.group{padding:3px 10px;border:2px solid #2b2b2b;border-radius:20px 8px 22px 9px;background:#fff;font-weight:700}
 .node.agent{padding:7px 12px;border:2px solid #2b2b2b;border-radius:14px 20px 10px 18px;background:#fff;box-shadow:2px 3px 0 rgba(43,43,43,.25)}
 .node.agent:hover,.node.agent.active{background:#d7f0ff;transform:rotate(.6deg)}
@@ -106,10 +130,20 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
   </aside>
 
   <main id="main">
-    <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
-    </div>
+    <header id="stage-head" data-empty="1" aria-label="Cabecalho do dispatch">
+      <div class="sh-top">
+        <span id="sh-type" class="sh-type">—</span>
+        <span id="sh-outcome" class="sh-outcome" hidden></span>
+      </div>
+      <h2 id="sh-goal" class="sh-goal">Selecione um dispatch</h2>
+      <p id="sh-id" class="sh-id"></p>
+      <div id="sh-stats" class="sh-stats"></div>
+      <div class="sh-foot">
+        <span id="sh-when" class="sh-when"></span>
+        <button id="sh-ctx-toggle" class="sh-ctx-toggle" type="button" aria-expanded="false" aria-controls="sh-ctx" hidden>contexto</button>
+      </div>
+      <div id="sh-ctx" class="sh-ctx" role="region" aria-label="Contexto do dispatch" hidden></div>
+    </header>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
       <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -210,6 +244,70 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
   }
   function shorten(s, n) { s = s || ""; return s.length > n ? s.slice(0, n - 1) + "…" : s; }
 
+  // ---- context header (FE-1 opt-in context · FE-2 qualifiers · FE-7 UTC/counts) ----
+  // Enriches #stage-head from the picked dispatch object alone — needs no graph.
+  var MONTHS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+  function fmtUTC(iso) {                              // FE-7: zone declared explicitly, not implied
+    if (!iso) return "";
+    var t = new Date(iso); if (isNaN(t.getTime())) return String(iso);
+    var p = function (n) { return n < 10 ? "0" + n : "" + n; };
+    return t.getUTCDate() + " " + MONTHS[t.getUTCMonth()] + " " + t.getUTCFullYear() +
+      ", " + p(t.getUTCHours()) + ":" + p(t.getUTCMinutes()) + " UTC";
+  }
+  function scrib(txt, tip) {                          // FE-2: full value stays in the #tt tooltip
+    return '<span class="sh-scrib"' + (tip ? ' data-tip="' + esc(tip) + '"' : "") +
+      ">" + esc(txt) + "</span>";
+  }
+  function fillHead(d) {
+    var head = $("stage-head");
+    head.removeAttribute("data-empty");
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+
+    $("sh-type").textContent = d.dispatch_type || "outros";     // KIND — prominent TYPE tag
+    $("sh-type").className = "sh-type t-" + esc(d.dispatch_type || "others");
+    $("sh-goal").textContent = d.goal || "(sem objetivo registrado)";  // HEADLINE
+    $("sh-id").textContent = d.dispatch_id || "";               // secondary subtitle
+
+    // OUTCOME stamp — FE-5: null close renders an honest "em aberto", never a blank
+    var out = $("sh-outcome");
+    if (d.close && d.close.exit_reason) {
+      var loops = d.close.agents_spawned && d.close.agents_spawned.loops_used;
+      out.hidden = false; out.removeAttribute("data-open");
+      out.textContent = d.close.exit_reason;
+      out.setAttribute("data-tip", "encerrado" + (loops != null ? " · " + loops + " loop(s) usados" : ""));
+    } else {
+      out.hidden = false; out.setAttribute("data-open", "1");
+      out.textContent = "em aberto";
+      out.setAttribute("data-tip", "dispatch sem registro de encerramento");
+    }
+
+    // stat scribbles — compact band (FE-7 counts), not a wall
+    var stats = [
+      scrib(ags.length + " ag", "agentes no total"),
+      scrib(d.groups.length + " grp", "grupos"),
+      scrib(((d.connections || []).length) + " liga", "ligacoes entre grupos"),
+      scrib(revs + " rev", "revisor / cetico / auditor")
+    ];
+    if (d.max_loops != null) stats.push(scrib("max " + d.max_loops + " loop", "teto de loops"));
+    if (d.anti_bias_global) stats.push(scrib("anti-vies", "eixo anti-vies: " + d.anti_bias_global)); // FE-5: null omitted
+    if (d.working_folder) stats.push(scrib("pasta", "working_folder: " + d.working_folder));         // FE-5: null omitted
+    $("sh-stats").innerHTML = stats.join("");
+
+    $("sh-when").textContent = fmtUTC(d.created);
+
+    // context — FE-1: collapsed by default, summoned on click; toggle hidden when absent
+    var ctx = $("sh-ctx"), tog = $("sh-ctx-toggle");
+    if (d.context) {
+      tog.hidden = false;
+      ctx.textContent = d.context;
+      ctx.hidden = true; tog.setAttribute("aria-expanded", "false");
+      tog.textContent = "contexto";
+    } else {
+      tog.hidden = true; ctx.hidden = true; ctx.textContent = "";
+    }
+  }
+
   function pick(i, li) {
     state.current = state.data[i];
     var prev = document.querySelector(".ditem.sel");
@@ -257,8 +355,7 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
   // ---- render graph: clustered enclosures + pixel-space wobbly arrows ----
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    fillHead(d);
     var geo = geometry(d);
     var host = $("nodes"); host.innerHTML = "";
     $("edges").innerHTML = "";
@@ -439,6 +536,12 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in context (header)
+      var c = $("sh-ctx"), open = c.hidden;
+      c.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.textContent = open ? "ocultar contexto" : "contexto";
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");

@@ -20,9 +20,23 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{padding:14px 18px 0}
+#sh-rest{margin:0;font-size:13px;opacity:.6}
+#sh-card{display:flex;flex-direction:column;gap:8px}
+#sh-card[hidden]{display:none}
+.sh-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sh-pill{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.sh-when{margin-left:auto;font-size:10.5px;opacity:.6;letter-spacing:.03em;white-space:nowrap}
+#sh-headline{margin:0;font-size:15px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#sh-sub{margin:0;font-size:11px;opacity:.55;letter-spacing:.02em;word-break:break-word}
+.sh-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sh-chip{font-size:11px;padding:3px 9px;border-radius:8px;display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap;cursor:default}
+.sh-chip b{font-size:12px;font-weight:700}
+.sh-ctx-btn{align-self:flex-start;font:inherit;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;padding:2px 0;background:none;border:0;color:inherit;opacity:.6}
+.sh-ctx-btn::before{content:"›";display:inline-block;margin-right:5px;transition:transform .15s}
+.sh-ctx-btn[aria-expanded="true"]::before{transform:rotate(90deg)}
+.sh-ctx-btn:hover,.sh-ctx-btn[aria-expanded="true"]{opacity:1}
+.sh-ctx{margin:0;font-size:12.5px;line-height:1.55;opacity:.85}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%}
@@ -66,6 +80,15 @@ body{font-family:"Inter",system-ui,sans-serif;color:#eaf0ff;background:#171a3a;
 .ditem{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;backdrop-filter:blur(6px)}
 .ditem:hover,.ditem.sel{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4)}
 .dtype{color:#b9c6ff}
+#sh-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:16px;backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 10px 34px rgba(0,0,0,.2);padding:13px 16px}
+.sh-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#eaf0ff}
+.sh-type{background:rgba(185,198,255,.18);border-color:rgba(185,198,255,.5);color:#dfe6ff}
+.sh-outcome{background:rgba(255,210,127,.14);border-color:rgba(255,210,127,.45);color:#ffe4b0;text-transform:none;letter-spacing:.02em}
+#sh-sub{color:#c9d3ff}
+.sh-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eaf0ff}
+.sh-chip.is-rev{background:rgba(255,210,127,.12);border-color:rgba(255,210,127,.4)}
+.sh-chip.is-rev b{color:#ffd27f}
+.sh-ctx{border-top:1px solid rgba(255,255,255,.12);padding-top:8px}
 .node.group{padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(6px)}
 .node.agent{padding:9px 12px;border-radius:16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
 .node.agent:hover,.node.agent.active{background:rgba(255,255,255,.26);border-color:#fff}
@@ -101,10 +124,21 @@ body{font-family:"Inter",system-ui,sans-serif;color:#eaf0ff;background:#171a3a;
   </aside>
 
   <main id="main">
-    <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
-    </div>
+    <header id="stage-head" data-filled="false">
+      <p id="sh-rest">Selecione um dispatch a esquerda para inspecionar sua estrutura.</p>
+      <div id="sh-card" hidden>
+        <div class="sh-row">
+          <span id="sh-type" class="sh-pill sh-type"></span>
+          <span id="sh-outcome" class="sh-pill sh-outcome" hidden></span>
+          <span id="sh-when" class="sh-when"></span>
+        </div>
+        <h2 id="sh-headline"></h2>
+        <p id="sh-sub"></p>
+        <div id="sh-chips" class="sh-chips"></div>
+        <button id="sh-ctx-btn" type="button" class="sh-ctx-btn" aria-expanded="false" aria-controls="sh-ctx" hidden>contexto</button>
+        <p id="sh-ctx" class="sh-ctx" hidden></p>
+      </div>
+    </header>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
       <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
@@ -180,6 +214,73 @@ body{font-family:"Inter",system-ui,sans-serif;color:#eaf0ff;background:#171a3a;
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function nameOf(a) { return a.agent_name || "(sem nome)"; }
+
+  // ---- context header (FE-7 declare UTC · FE-1 opt-in context · FE-5 nulls) --
+  //   Reads only the dispatch object `d` — no graph geometry is touched.
+  function fmtUTC(iso) {
+    if (!iso) return "";              // FE-7: explicit ISO slice, no locale timezone shift
+    return iso.slice(0, 10) + " " + iso.slice(11, 16) + " UTC";
+  }
+  function numChip(label, val, extra) {
+    return '<span class="sh-chip' + (extra ? " " + extra : "") +
+      '"><b>' + esc(val) + "</b>" + esc(label) + "</span>";
+  }
+  function txtChip(label, full) {      // long qualifier: short label on-screen, full value on hover (FE-2)
+    return '<span class="sh-chip" data-tip="' + esc(full) + '">' + esc(label) +
+      " · " + esc(shorten(full, 26)) + "</span>";
+  }
+  function populateHead(d) {
+    var head = $("stage-head");
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+    var conns = (d.connections || []).length;
+    var grps = (d.groups || []).length;
+
+    $("sh-rest").hidden = true;
+    $("sh-card").hidden = false;
+    head.setAttribute("data-filled", "true");
+
+    // TYPE pill — answers "coding, research, review…"
+    var type = d.dispatch_type || "others";
+    var tp = $("sh-type");
+    tp.textContent = type;
+    tp.className = "sh-pill sh-type t-" + esc(type);
+
+    // OUTCOME pill from close (FE-5: omitted entirely when the dispatch is still open)
+    var oc = $("sh-outcome");
+    if (d.close && d.close.exit_reason) {
+      var loops = d.close.agents_spawned && d.close.agents_spawned.loops_used;
+      oc.textContent = d.close.exit_reason +
+        (loops != null ? " · " + loops + " loop" + (loops === 1 ? "" : "s") : "");
+      oc.hidden = false;
+    } else { oc.hidden = true; }
+
+    // HEADLINE = goal; dispatch_id demoted to a secondary subtitle
+    $("sh-headline").textContent = d.goal || "(sem objetivo declarado)";
+    $("sh-sub").textContent = d.dispatch_id || "";
+    $("sh-when").textContent = fmtUTC(d.created);
+
+    // labeled stat chips (FE-7: counts name their referent)
+    var chips = [
+      numChip("agentes", ags.length),
+      numChip("grupos", grps),
+      numChip("ligacoes", conns),
+      numChip("revisores", revs, revs ? "is-rev" : "")
+    ];
+    if (d.max_loops != null) chips.push(numChip("loop max", d.max_loops));
+    if (d.anti_bias_global) chips.push(txtChip("anti-vies", d.anti_bias_global));   // FE-5: only when present
+    if (d.working_folder) chips.push(txtChip("pasta", d.working_folder));           // FE-5: only when present
+    $("sh-chips").innerHTML = chips.join("");
+
+    // FE-1: longer framing paragraph stays collapsed behind a discreet disclosure
+    var cb = $("sh-ctx-btn"), cx = $("sh-ctx");
+    if (d.context) {
+      cx.textContent = d.context;
+      cx.hidden = true;
+      cb.hidden = false;
+      cb.setAttribute("aria-expanded", "false");
+    } else { cb.hidden = true; cx.hidden = true; }
+  }
 
   // ---- dispatch list -----------------------------------------------------
   function renderList() {
@@ -335,8 +436,7 @@ body{font-family:"Inter",system-ui,sans-serif;color:#eaf0ff;background:#171a3a;
   // ---- render graph ------------------------------------------------------
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    populateHead(d);
     // Re-flow on resize (pixel layout depends on the live stage box).
     if (!wiredResize) {
       wiredResize = true;
@@ -478,6 +578,11 @@ body{font-family:"Inter",system-ui,sans-serif;color:#eaf0ff;background:#171a3a;
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("sh-ctx-btn").addEventListener("click", function () {        // FE-1 opt-in: reveal framing context
+      var c = $("sh-ctx"), open = c.hidden;
+      c.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");

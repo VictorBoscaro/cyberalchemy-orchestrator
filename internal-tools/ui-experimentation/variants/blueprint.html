@@ -20,9 +20,29 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{padding:12px 18px 0}
+/* BLUEPRINT title block: labeled cells joined by cyan hairlines */
+.tblock{position:relative}
+.tb-idle{padding:11px 14px;font-size:12px;letter-spacing:.04em}
+.tb-row{display:flex;align-items:stretch}
+.tb-row.tb-stats{flex-wrap:wrap}
+.tb-type{align-self:stretch;display:flex;align-items:center;padding:0 15px;
+  font-size:15px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.tb-headwrap{flex:1;min-width:0;padding:8px 14px}
+.tb-goal{font-size:13.5px;line-height:1.3;font-weight:600;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tb-id{font-size:10px;letter-spacing:.05em;margin-top:3px;opacity:.55;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-when{display:flex;flex-direction:column;justify-content:center;padding:6px 15px;
+  min-width:120px;text-align:right;white-space:nowrap}
+.tb-cell{padding:6px 14px;display:flex;flex-direction:column;gap:2px;min-width:60px;justify-content:center}
+.tb-cell.tb-path{flex:1;min-width:150px;overflow:hidden}
+.tb-lbl{font-size:8.5px;text-transform:uppercase;letter-spacing:.12em;opacity:.55}
+.tb-num{font-size:13.5px;font-weight:600}
+.tb-path .tb-num{font-size:11px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-ctx-toggle{display:block;width:100%;text-align:left;padding:5px 14px;font:inherit;
+  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.tb-ctx{padding:10px 14px;font-size:12.5px;line-height:1.55}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%}
@@ -80,6 +100,25 @@ body{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;color:#bfe6ff;
 .gtick{stroke:#7fd8ff;stroke-width:1.4;fill:none;opacity:.8;vector-effect:non-scaling-stroke}
 .gtick.rev{stroke:#ffcf5f}
 #legend .dot.rev{background:#ffcf5f}
+/* title block — cyan hairlines on navy, engineering-drawing stamp */
+.tblock{border:1px solid #2f7ba6;background:rgba(8,30,48,.6)}
+.tb-idle{color:#7fd8ff;opacity:.75}
+.tb-row.tb-ident{border-bottom:1px solid #1d4d6e}
+.tb-type{background:#57d0ff;color:#062033}
+.tb-headwrap{border-left:1px solid #1d4d6e;border-right:1px solid #1d4d6e}
+.tb-goal{color:#e2f4ff}
+.tb-id{color:#7fb9d8}
+.tb-when .tb-val{font-size:12px;color:#bfe6ff}
+.tb-cell{border-right:1px solid #1d4d6e}
+.tb-cell:last-child{border-right:0}
+.tb-num{color:#8fe4ff}
+.tb-status.s-ok .tb-num{color:#7fe3ff}
+.tb-status.s-warn .tb-num{color:#ffcf5f}
+.tb-status.s-bad .tb-num{color:#ff9a9a}
+.tb-ctx-toggle{border:0;border-top:1px solid #1d4d6e;background:rgba(9,32,52,.55);color:#5fb6e0}
+.tb-ctx-toggle:hover{color:#8fe4ff;background:rgba(20,70,100,.5)}
+.tb-ctx-toggle[aria-expanded="true"]{color:#8fe4ff}
+.tb-ctx{border-top:1px solid #1d4d6e;color:#cdeeff;background:rgba(6,24,40,.5)}
 #panel{background:#0a2136;border-left:1px solid #2f7ba6;color:#cdeeff}
 .p-prompt button{border:1px solid #2f7ba6;background:#0c2b42;color:#bfe6ff}
 #p-name{color:#8fe4ff}
@@ -106,8 +145,25 @@ body{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;color:#bfe6ff;
 
   <main id="main">
     <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
+      <div class="tblock">
+        <div id="sh-idle" class="tb-idle">Selecione um dispatch a esquerda — o bloco-titulo descreve o despacho.</div>
+        <div id="sh-block" hidden>
+          <div class="tb-row tb-ident">
+            <span id="sh-type" class="tb-type" data-tip=""></span>
+            <div class="tb-headwrap">
+              <div id="sh-goal" class="tb-goal"></div>
+              <div id="sh-id" class="tb-id"></div>
+            </div>
+            <div class="tb-when">
+              <span class="tb-lbl">Emitido · UTC</span>
+              <span id="sh-when" class="tb-val"></span>
+            </div>
+          </div>
+          <div class="tb-row tb-stats" id="sh-stats"></div>
+          <button id="sh-ctx-toggle" type="button" class="tb-ctx-toggle" aria-expanded="false" hidden>contexto</button>
+          <div id="sh-ctx" class="tb-ctx" hidden></div>
+        </div>
+      </div>
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
@@ -295,6 +351,80 @@ body{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;color:#bfe6ff;
   }
   function clamp(v) { return Math.max(6, Math.min(94, v)); }
 
+  // ---- context header / title block (FE-1 opt-in, FE-5 nulls, FE-7 UTC) --
+  var OUTCOME = {
+    resolved: ["resolvido", "s-ok"],
+    loop_ceiling_reached: ["teto de loops", "s-warn"],
+    dissent_irreconcilable: ["dissenso", "s-warn"],
+    user_abort: ["abortado", "s-warn"],
+    error: ["erro", "s-bad"]
+  };
+  function tbCell(lbl, val, cls, tip) {
+    return '<div class="tb-cell ' + (cls || "") + '"' +
+      (tip ? ' data-tip="' + esc(tip) + '"' : "") + ">" +
+      '<span class="tb-lbl">' + esc(lbl) + "</span>" +
+      '<span class="tb-num">' + esc(val) + "</span></div>";
+  }
+  function fmtWhen(iso) {
+    if (!iso) return null;
+    var day = iso.slice(0, 10), tm = iso.slice(11, 16);
+    return day + (tm ? (" " + tm) : "");
+  }
+  // extends the pick/renderGraph populate step; no graph data is read here.
+  function populateHead(d) {
+    $("sh-idle").hidden = true;
+    $("sh-block").hidden = false;
+
+    // TYPE badge (the KIND) — anti-bias axis rides FE-2 hover, not permanent text
+    $("sh-type").textContent = d.dispatch_type || "?";
+    $("sh-type").setAttribute("data-tip", d.anti_bias_global
+      ? ("eixo anti-vies (global): " + d.anti_bias_global)
+      : ("tipo do dispatch: " + (d.dispatch_type || "?")));
+
+    // goal is the headline; dispatch_id demoted to subtitle
+    $("sh-goal").textContent = d.goal || "(sem objetivo declarado)";
+    $("sh-id").textContent = d.dispatch_id || "";
+
+    // created — UTC declared by the cell label (FE-7)
+    $("sh-when").textContent = fmtWhen(d.created) || "—";
+
+    // compact stat row — scalar shadows only; each label declares what it counts
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+    var close = d.close, lu = (close && close.agents_spawned) ? close.agents_spawned.loops_used : null;
+    var cells = "";
+    cells += tbCell("Agentes", ags.length);
+    cells += tbCell("Grupos", (d.groups || []).length);
+    cells += tbCell("Ligacoes", (d.connections || []).length);
+    cells += tbCell("Revisores", revs, "", "papeis cetico / auditor / revisor");
+    if (close && lu != null && d.max_loops != null) {
+      cells += tbCell("Loops uso/teto", lu + "/" + d.max_loops);
+    } else if (d.max_loops != null) {
+      cells += tbCell("Loops teto", d.max_loops);
+    }
+    if (close && close.exit_reason) {
+      var o = OUTCOME[close.exit_reason] || [close.exit_reason, ""];
+      cells += tbCell("Resultado", o[0], "tb-status " + o[1], "exit_reason: " + close.exit_reason);
+    }
+    if (d.working_folder) {
+      cells += tbCell("Saida", d.working_folder, "tb-path", d.working_folder);
+    }
+    $("sh-stats").innerHTML = cells;
+
+    // long framing paragraph — FE-1 opt-in: summoned, never force-fed
+    var ctxBtn = $("sh-ctx-toggle"), ctxBox = $("sh-ctx");
+    if (d.context) {
+      ctxBox.textContent = d.context;
+      ctxBox.hidden = true;
+      ctxBtn.hidden = false;
+      ctxBtn.setAttribute("aria-expanded", "false");
+      ctxBtn.textContent = "contexto";
+    } else {
+      ctxBox.textContent = ""; ctxBox.hidden = true;
+      ctxBtn.hidden = true; ctxBtn.setAttribute("aria-expanded", "false");
+    }
+  }
+
   // ---- render graph ------------------------------------------------------
   var SVGNS = "http://www.w3.org/2000/svg";
   function svgEl(name, attrs) {
@@ -304,8 +434,7 @@ body{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;color:#bfe6ff;
   }
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    populateHead(d);
 
     // pixel-space layout: 1 SVG unit = 1 px (viewBox matches the stage size),
     // so nothing is stretched — fixes the old preserveAspectRatio="none" distortion.
@@ -437,6 +566,12 @@ body{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;color:#bfe6ff;
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in: header context
+      var b = $("sh-ctx"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.textContent = open ? "ocultar contexto" : "contexto";
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");

@@ -20,9 +20,22 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{padding:14px 20px 12px}
+#stage-resting{font-size:13px;opacity:.6}
+.mh-kickerline{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.mh-kicker{font-size:11px;letter-spacing:.14em}
+.mh-outcome{font-size:10px;letter-spacing:.06em;white-space:nowrap}
+.mh-headline{margin:4px 0 2px;font-size:21px;line-height:1.18;font-weight:700;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-sub{font-size:11px;opacity:.6}
+.mh-rule{height:0;margin:9px 0 8px}
+.mh-dateline{font-size:11px;line-height:1.7;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 7px}
+.mh-dl{white-space:nowrap}
+.mh-tag{white-space:nowrap;cursor:help}
+.mh-sep{opacity:.4}
+.mh-ctxrow{margin-top:7px}
+.mh-ctx-toggle{border:0;background:none;font:inherit;font-size:11px;cursor:pointer;padding:0;color:inherit}
+.mh-ctx-body{margin:8px 0 0;font-size:13px;line-height:1.55}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%}
@@ -67,7 +80,20 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
 .ditem:hover,.ditem.sel{background:#e6dcc2}
 .dtype{font-style:italic;font-variant:small-caps;color:#7a5a2a;letter-spacing:.02em}
 .dgoal{font-size:14px}
-#stage-title{font-variant:small-caps;letter-spacing:.05em}
+#stage-head{border-bottom:3px double #20180f}
+#stage-resting{font-variant:small-caps;letter-spacing:.06em;font-style:italic}
+.mh-kicker{font-variant:small-caps;font-weight:700;color:#7a5a2a;
+  border-top:2px solid #20180f;padding-top:5px}
+.mh-outcome{font-variant:small-caps;font-style:italic;color:#7a5a2a;
+  border:1px solid #7a5a2a;padding:1px 7px}
+.mh-headline{font-family:Georgia,"Times New Roman",serif}
+.mh-sub{font-variant:small-caps;letter-spacing:.05em;font-style:italic}
+.mh-rule{border-bottom:1px solid #c1b697}
+.mh-dateline{font-variant:small-caps;letter-spacing:.03em;color:#3a2c1c}
+.mh-tag{font-style:italic;color:#7a5a2a;border-bottom:1px dotted #7a5a2a}
+.mh-ctx-toggle{font-variant:small-caps;font-style:italic;letter-spacing:.05em;color:#7a5a2a}
+.mh-ctx-body{border-top:1px solid #c9bfa6;border-left:2px solid #c1b697;
+  padding:8px 0 2px 12px;font-style:italic}
 .node.group{font-variant:small-caps;font-weight:700;border-bottom:2px solid #20180f;padding:2px 4px 4px;text-align:center;white-space:normal}
 .node.agent{padding:6px 10px;background:#fbf7ec;border:1px solid #20180f;box-shadow:3px 3px 0 #d8cdb0}
 .node.agent:hover,.node.agent.active{background:#fff;box-shadow:3px 3px 0 #b59a63}
@@ -105,8 +131,21 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
 
   <main id="main">
     <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
+      <div id="stage-resting">Selecione um dispatch para abrir o expediente.</div>
+      <div id="stage-masthead" hidden>
+        <div class="mh-kickerline">
+          <span id="stage-kicker" class="mh-kicker"></span>
+          <span id="stage-outcome" class="mh-outcome" hidden></span>
+        </div>
+        <h2 id="stage-title" class="mh-headline"></h2>
+        <div id="stage-sub" class="mh-sub"></div>
+        <div class="mh-rule" aria-hidden="true"></div>
+        <div id="stage-meta" class="mh-dateline"></div>
+        <div class="mh-ctxrow">
+          <button id="stage-ctx-toggle" type="button" class="mh-ctx-toggle" aria-expanded="false" hidden>contexto &rsaquo;</button>
+        </div>
+        <p id="stage-ctx-body" class="mh-ctx-body" hidden></p>
+      </div>
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
@@ -165,6 +204,7 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
     state.data = (payload && payload.dispatches) || [];
     if (!state.data.length) { show("st-empty"); return; }
     show("__none__");
+    resetHead();
     renderList();
   }
 
@@ -182,6 +222,81 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function nameOf(a) { return a.agent_name || "(sem nome)"; }
+  function escA(s) { return esc(s).replace(/"/g, "&quot;"); }  // safe inside "..." attribute
+
+  // ---- masthead / context header (FE-7 UTC declared, FE-1 opt-in context) --
+  var MONTHS = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  function fmtDateUTC(iso) {                       // FE-7: read + format in UTC, zone named
+    if (!iso) return "";
+    var t = new Date(iso);
+    if (isNaN(t.getTime())) return String(iso);
+    var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+    return t.getUTCDate() + " " + MONTHS[t.getUTCMonth()] + " " + t.getUTCFullYear() +
+      ", " + pad(t.getUTCHours()) + ":" + pad(t.getUTCMinutes()) + " UTC";
+  }
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+
+  function resetHead() {                            // resting state before any pick
+    $("stage-masthead").hidden = true;
+    $("stage-resting").hidden = false;
+  }
+
+  function fillHead(d) {
+    $("stage-resting").hidden = true;
+    $("stage-masthead").hidden = false;
+
+    // KICKER = the KIND; HEADLINE = the goal; SUBTITLE = the id
+    $("stage-kicker").textContent = d.dispatch_type || "dispatch";
+    $("stage-title").textContent = d.goal || d.dispatch_id || "(sem objetivo)";
+    $("stage-sub").textContent = d.dispatch_id || "";
+
+    // OUTCOME (only when a close row exists — FE-5: omit, never render "null")
+    var out = $("stage-outcome");
+    if (d.close && d.close.exit_reason) {
+      var sp = d.close.agents_spawned || {};
+      var loops = (sp.loops_used != null) ? (" · " + plural(sp.loops_used, "loop", "loops")) : "";
+      out.textContent = d.close.exit_reason + loops;
+      out.hidden = false;
+    } else { out.hidden = true; out.textContent = ""; }
+
+    // DATELINE / BYLINE — computed counts + date + loop ceiling (UTC declared)
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+    var cells = [];
+    if (d.created) cells.push(esc(fmtDateUTC(d.created)));
+    cells.push(esc(plural(ags.length, "agente", "agentes")));
+    cells.push(esc(plural((d.groups || []).length, "grupo", "grupos")));
+    cells.push(esc(plural((d.connections || []).length, "ligacao", "ligacoes")));
+    cells.push(esc(plural(revs, "revisor", "revisores")));
+    if (d.max_loops != null) cells.push(esc("teto " + plural(d.max_loops, "loop", "loops")));
+    var html = cells.map(function (c) { return '<span class="mh-dl">' + c + "</span>"; })
+      .join('<span class="mh-sep">·</span>');
+    // FE-2/FE-5: anti-bias axis + output path are qualifiers — a compact tag on
+    // screen (self-documenting they exist) with the full value summoned in #tt.
+    if (d.anti_bias_global) {
+      html += '<span class="mh-sep">·</span><span class="mh-tag" data-tip="Eixo anti-vies do dispatch: ' +
+        escA(d.anti_bias_global) + '">eixo anti-vies</span>';
+    }
+    if (d.working_folder) {
+      html += '<span class="mh-sep">·</span><span class="mh-tag" data-tip="Pasta de saida: ' +
+        escA(d.working_folder) + '">saida</span>';
+    }
+    $("stage-meta").innerHTML = html;
+
+    // CONTEXT — FE-1 opt-in: collapsed by default, revealed via discreet disclosure
+    var tog = $("stage-ctx-toggle"), body = $("stage-ctx-body");
+    if (d.context) {
+      body.textContent = d.context;
+      body.hidden = true;
+      tog.hidden = false;
+      tog.setAttribute("aria-expanded", "false");
+      tog.textContent = "contexto ›";
+    } else {
+      tog.hidden = true;
+      body.hidden = true;
+      body.textContent = "";
+    }
+  }
 
   // ---- dispatch list -----------------------------------------------------
   function renderList() {
@@ -297,8 +412,7 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
   // ---- render graph ------------------------------------------------------
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    fillHead(d);
 
     var NS = "http://www.w3.org/2000/svg";
     var host = $("nodes"), svg = $("edges");
@@ -454,6 +568,12 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("stage-ctx-toggle").addEventListener("click", function () { // FE-1 opt-in context
+      var b = $("stage-ctx-body"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.textContent = open ? "ocultar contexto ›" : "contexto ›";
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");

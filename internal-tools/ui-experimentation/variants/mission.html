@@ -20,9 +20,7 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
-#stage-title{font-size:14px;font-weight:600}
-#stage-meta{font-size:11px;opacity:.6}
+#stage-head{padding:12px 20px}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
 #edges{position:absolute;inset:0;width:100%;height:100%}
@@ -93,6 +91,38 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
 .node .n-name{overflow-wrap:anywhere}
 .node .g-label{overflow-wrap:anywhere;display:inline-block}
 
+/* ---- mission status banner (context header, amber+teal HUD) ---- */
+#stage-head{border-bottom:1px solid #16262b;background:linear-gradient(180deg,#0c1519,#0b1114);position:relative}
+#stage-head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(#f0a93b,#37d6c4);opacity:.7}
+#stage-head::after{content:"";position:absolute;right:0;top:0;width:10px;height:10px;border-top:1px solid #2a4046;border-right:1px solid #2a4046;opacity:.6}
+#mc-rest{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8aa0a0}
+#mc-rest .mc-rest-glyph{color:#f0a93b}
+#mc-rest .mc-rest-sub{text-transform:none;letter-spacing:.02em;opacity:.6}
+
+.mc-line{display:flex;align-items:baseline;gap:12px}
+.mc-type{flex:none;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border:1px solid #f0a93b;color:#f0a93b;background:rgba(240,169,59,.08);white-space:nowrap}
+#stage-title.mc-headline{flex:1;min-width:0;font-size:13.5px;font-weight:600;line-height:1.35;color:#dcebe7;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mc-outcome{flex:none;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1px solid #2a4046;color:#7fe4d8;white-space:nowrap}
+.mc-outcome[data-outcome="open"]{color:#f0a93b;border-color:#5a4326}
+
+.mc-sub{margin-top:5px;font-size:10.5px;letter-spacing:.03em;color:#6f8888;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mc-sub .mc-id{color:#8aa0a0}
+.mc-sub .mc-sep{opacity:.4}
+.mc-sub .mc-when{color:#37d6c4;opacity:.85}
+
+.mc-stats{margin-top:9px;display:flex;flex-wrap:wrap;gap:6px}
+.mc-stat{display:inline-flex;align-items:baseline;gap:5px;font-size:10px;letter-spacing:.06em;padding:2px 8px;border:1px solid #16262b;background:#0c171b}
+.mc-stat .mc-k{color:#5f7a7a;text-transform:uppercase}
+.mc-stat .mc-v{color:#c9d6d3;font-weight:600}
+.mc-stat.is-rev{border-color:#5a4326}
+.mc-stat.is-rev .mc-v{color:#ffce7a}
+
+.mc-ctx{margin-top:8px}
+.mc-ctx-toggle{font:inherit;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8aa0a0;background:none;border:0;padding:2px 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.mc-ctx-toggle:hover{color:#37d6c4}
+.mc-ctx-toggle .mc-ctx-caret{color:#f0a93b}
+.mc-ctx-body{margin:7px 0 2px;font-size:12px;line-height:1.6;color:#aebfbc;max-width:78ch;border-left:1px solid #2a4046;padding-left:11px}
+
 </style>
 </head><body>
 
@@ -114,10 +144,27 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
   </aside>
 
   <main id="main">
-    <div id="stage-head">
-      <span id="stage-title">Selecione um dispatch</span>
-      <span id="stage-meta"></span>
-    </div>
+    <header id="stage-head" data-mc="idle">
+      <div id="mc-rest">
+        <span class="mc-rest-glyph">&#9670;</span> STANDBY &middot; nenhum dispatch em foco
+        <span class="mc-rest-sub">selecione um alvo no painel a esquerda</span>
+      </div>
+      <div id="mc-banner" hidden>
+        <div class="mc-line">
+          <span id="mc-type" class="mc-type"></span>
+          <span id="stage-title" class="mc-headline"></span>
+          <span id="mc-outcome" class="mc-outcome" hidden></span>
+        </div>
+        <div id="stage-meta" class="mc-sub"></div>
+        <div id="mc-stats" class="mc-stats"></div>
+        <div id="mc-ctx" class="mc-ctx" hidden>
+          <button id="mc-ctx-toggle" type="button" class="mc-ctx-toggle" aria-expanded="false" aria-controls="mc-ctx-body">
+            <span class="mc-ctx-caret">&#9656;</span> contexto
+          </button>
+          <p id="mc-ctx-body" class="mc-ctx-body" hidden></p>
+        </div>
+      </div>
+    </header>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
       <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -192,6 +239,19 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function nameOf(a) { return a.agent_name || "(sem nome)"; }
+  // FE-7: render an ISO stamp as a readable date and DECLARE its zone (UTC) on-screen.
+  function fmtUTC(iso) {
+    if (!iso) return "data desconhecida";
+    var t = new Date(iso);
+    if (isNaN(t.getTime())) return String(iso);
+    var p = function (n) { return (n < 10 ? "0" : "") + n; };
+    return t.getUTCFullYear() + "-" + p(t.getUTCMonth() + 1) + "-" + p(t.getUTCDate())
+      + " " + p(t.getUTCHours()) + ":" + p(t.getUTCMinutes()) + " UTC";
+  }
+  function shortFolder(f) {
+    var parts = String(f).replace(/\/+$/, "").split("/");
+    return parts[parts.length - 1] || String(f);
+  }
 
   // ---- dispatch list -----------------------------------------------------
   function renderList() {
@@ -357,12 +417,95 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
     return { x: R.x + dx * t, y: R.y + dy * t };
   }
 
+  // ---- mission status banner (context header, NONE of this needs the graph)
+  // FE-1: context is opt-in (collapsed disclosure) · FE-2: qualifiers ride #tt ·
+  // FE-5: nulls omitted/handled · FE-7: UTC + counts declared on-screen.
+  function populateHead(d) {
+    $("stage-head").setAttribute("data-mc", "active");
+    $("mc-rest").hidden = true;
+    $("mc-banner").hidden = false;
+
+    // KIND — prominent TYPE status ("coding, research, review…")
+    var type = d.dispatch_type || "others";
+    var tEl = $("mc-type");
+    tEl.textContent = type;
+    tEl.setAttribute("data-tip", "KIND do dispatch (dispatch_type): " + type);
+
+    // HEADLINE — the objective; dispatch_id drops to the secondary subtitle line
+    var title = $("stage-title");
+    title.textContent = d.goal || "(sem objetivo declarado)";
+    title.setAttribute("data-tip", d.goal || "(sem objetivo declarado)");
+
+    // computed counts (summed off the dispatch object, not the rendered graph)
+    var ags = agentsOf(d);
+    var total = ags.length;
+    var grp = (d.groups || []).length;
+    var conns = (d.connections || []).length;
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+
+    // secondary line: dispatch_id + created, zone DECLARED as UTC (FE-7)
+    $("stage-meta").innerHTML =
+      '<span class="mc-id">' + esc(d.dispatch_id) + '</span>' +
+      '<span class="mc-sep">&middot;</span>' +
+      '<span class="mc-when" data-tip="carimbo de criacao (created), fuso declarado UTC — FE-7">'
+        + esc(fmtUTC(d.created)) + '</span>';
+
+    // OUTCOME — from close (may be null → declare "em curso"); loops_used qualifier
+    var oc = $("mc-outcome");
+    oc.hidden = false;
+    if (d.close && d.close.exit_reason) {
+      var loops = d.close.agents_spawned && d.close.agents_spawned.loops_used;
+      oc.textContent = "▮ " + d.close.exit_reason + (loops != null ? " · " + loops + "L" : "");
+      oc.setAttribute("data-outcome", "closed");
+      oc.setAttribute("data-tip", "OUTCOME de fechamento (close.exit_reason): " + d.close.exit_reason
+        + (loops != null ? " · loops_used=" + loops : ""));
+    } else {
+      oc.textContent = "▮ em curso";
+      oc.setAttribute("data-outcome", "open");
+      oc.setAttribute("data-tip", "sem registro de fechamento (close ausente)");
+    }
+
+    // telemetry stat fields — compact readouts, full detail rides #tt (FE-2)
+    var stats = [
+      { k: "AG", v: total, tip: total + " agente(s), somados sobre os grupos" },
+      { k: "GRP", v: grp, tip: grp + " grupo(s) / estacao(oes)" },
+      { k: "LIG", v: conns, tip: conns + " ligacao(oes) tipada(s) entre grupos" },
+      { k: "REV", v: revs, cls: revs ? "is-rev" : "", tip: revs + " revisor(es): papel skeptic/auditor/reviewer" },
+      { k: "LOOP", v: d.max_loops != null ? d.max_loops : "—",
+        tip: "max_loops = " + (d.max_loops != null ? d.max_loops : "nao declarado") }
+    ];
+    // FE-5: null anti_bias_global / working_folder are OMITTED, not shown empty
+    if (d.anti_bias_global)
+      stats.push({ k: "ANTI-VIES", v: "✓", cls: "is-rev",
+        tip: "eixo anti-vies global: " + d.anti_bias_global });
+    if (d.working_folder)
+      stats.push({ k: "PASTA", v: shortFolder(d.working_folder),
+        tip: "working_folder: " + d.working_folder });
+    $("mc-stats").innerHTML = stats.map(function (s) {
+      return '<span class="mc-stat' + (s.cls ? " " + s.cls : "") + '"'
+        + (s.tip ? ' data-tip="' + esc(s.tip) + '"' : "") + '>'
+        + '<span class="mc-k">' + esc(s.k) + '</span>'
+        + '<span class="mc-v">' + esc(s.v) + '</span></span>';
+    }).join("");
+
+    // FE-1: framing paragraph stays collapsed; revealed only via the "contexto" disclosure
+    var ctx = $("mc-ctx"), body = $("mc-ctx-body"), tog = $("mc-ctx-toggle");
+    if (d.context) {
+      ctx.hidden = false;
+      body.textContent = d.context;
+      body.hidden = true;
+      tog.setAttribute("aria-expanded", "false");
+      tog.querySelector(".mc-ctx-caret").textContent = "▸";
+    } else {
+      ctx.hidden = true;
+    }
+  }
+
   // ---- render graph ------------------------------------------------------
   var SVGNS = "http://www.w3.org/2000/svg";
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    $("stage-title").textContent = d.dispatch_id;
-    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    populateHead(d);   // themed context header (touches only #stage-head, not the graph body)
     var host = $("nodes"); host.innerHTML = "";
     var svg = $("edges"); svg.innerHTML = "";
     // measure the stage in pixels so the SVG user unit == 1px (no aspect distortion, R5)
@@ -504,6 +647,12 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("mc-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in: reveal framing paragraph
+      var b = $("mc-ctx-body"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.querySelector(".mc-ctx-caret").textContent = open ? "▾" : "▸";
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");
