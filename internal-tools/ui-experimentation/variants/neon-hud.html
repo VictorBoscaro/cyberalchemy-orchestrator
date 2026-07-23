@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neon HUD · dispatch.grid</title>
+<script src="../data/dispatches.js" onerror="void 0"></script>
+<script>window.__V__={layout:"timeline",brand:'NEON // dispatch.hud',bodyClass:"v-neon"};</script>
+<style>
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+#app{display:grid;grid-template-columns:320px 1fr;height:100vh;overflow:hidden}
+#sidebar{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.side-head{padding:18px 18px 10px}
+#brand{margin:0;font-size:18px;letter-spacing:.02em}
+#tagline{margin:4px 0 0;font-size:11px;opacity:.7}
+#states .state{padding:14px 18px;font-size:13px}
+#dlist{list-style:none;margin:0;padding:0 10px 24px;overflow:auto;flex:1;min-height:0}
+.ditem{padding:11px 12px;margin:7px 0;cursor:pointer;display:flex;flex-direction:column;gap:5px}
+.dtype{font-size:10px;text-transform:uppercase;letter-spacing:.12em;align-self:flex-start}
+.dgoal{font-size:13px;line-height:1.35}
+.dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
+#main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+#stage-head{padding:12px 20px 11px;font-size:12px;line-height:1.5}
+#stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
+#stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
+#stage-empty[hidden]{display:none}
+#edges{position:absolute;inset:0;width:100%;height:100%}
+.edge{stroke-width:1.7px;opacity:.85;fill:none}
+#nodes{position:absolute;inset:0;pointer-events:none}
+.stage-col{position:absolute;top:0;bottom:0;transform:translateX(-50%);display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:18px;pointer-events:none}
+.group-box{pointer-events:auto;display:flex;flex-direction:column;gap:6px;padding:8px 7px 9px;min-width:0}
+.node{cursor:default;user-select:none;text-align:center;min-width:0}
+.node.agent{cursor:pointer}
+.node .g-label{font-size:11px;letter-spacing:.04em}
+.node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
+.node .n-name{display:block;font-size:11px;line-height:1.15;overflow-wrap:anywhere}
+#legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
+#legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+#legend .mark{margin-left:auto;opacity:.5}
+#scrim{position:fixed;inset:0;background:rgba(4,6,12,.5);backdrop-filter:blur(2px);z-index:40}
+#panel{position:fixed;top:0;right:0;height:100vh;width:min(460px,92vw);z-index:50;overflow:auto;padding:26px 26px 40px}
+#p-close{position:absolute;top:14px;right:16px;border:0;background:none;font-size:26px;line-height:1;cursor:pointer;color:inherit}
+.p-role{font-size:11px;text-transform:uppercase;letter-spacing:.14em;opacity:.7}
+#p-name{margin:6px 0 16px;font-size:22px;word-break:break-word}
+.p-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 18px;font-size:12.5px}
+.p-meta dt{opacity:.55;text-transform:uppercase;font-size:10px;letter-spacing:.08em;align-self:center}
+.p-meta dd{margin:0}
+.p-angle{margin:0 0 18px}
+.p-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;opacity:.6;margin-bottom:5px}
+.p-angle p{margin:0;font-size:13.5px;line-height:1.5}
+.p-prompt button{width:100%;text-align:left;padding:11px 13px;font:inherit;font-size:12.5px;cursor:pointer}
+#p-prompt-body{margin-top:12px;font-size:13px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+#tt{position:fixed;z-index:60;max-width:250px;padding:7px 10px;font-size:11.5px;line-height:1.4;pointer-events:none;border-radius:5px;background:#0b0f1a;color:#e9edf6;box-shadow:0 6px 22px rgba(0,0,0,.4)}
+#explain{position:fixed;right:16px;bottom:16px;z-index:35;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:700;opacity:.5;border:1px solid currentColor;background:transparent;color:inherit}
+#explain[aria-pressed="true"]{opacity:1}
+body:not(.explain) .node[data-explain]::after{display:none}
+body.explain .node{outline:1px dashed rgba(127,127,127,.5)}
+
+/* ---- theme: neon-hud (synthwave) ---- */
+
+body{font-family:"IBM Plex Mono",ui-monospace,"Segoe UI",monospace;color:#bfe9ff;background:#0a0618}
+#app{position:relative;z-index:1}
+/* synthwave floor: perspective grid fading up from the horizon */
+body::before{content:"";position:fixed;left:-10%;right:-10%;bottom:0;height:46vh;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(34,224,255,.20) 0 1px, transparent 1px 70px),
+    repeating-linear-gradient(0deg, rgba(255,61,240,.16) 0 1px, transparent 1px 46px);
+  transform:perspective(320px) rotateX(66deg);transform-origin:bottom;
+  -webkit-mask-image:linear-gradient(transparent, #000 72%);mask-image:linear-gradient(transparent, #000 72%);
+  opacity:.55}
+/* horizon wash + scanline hint */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:30;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% 8%, rgba(255,61,240,.10), transparent 55%),
+    radial-gradient(ellipse 130% 55% at 50% 100%, rgba(34,224,255,.10), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 2px, transparent 2px 4px)}
+
+#sidebar{background:rgba(12,7,28,.82);border-right:1px solid rgba(34,224,255,.22);box-shadow:1px 0 20px rgba(34,224,255,.10)}
+#brand{color:#22e0ff;text-shadow:0 0 10px rgba(34,224,255,.75),0 0 24px rgba(34,224,255,.35)}
+#tagline{color:#8a7fb0}
+#states .state{color:#a9c8e0}
+.ditem{border:1px solid rgba(34,224,255,.16);background:rgba(20,10,40,.5);border-radius:3px}
+.ditem:hover,.ditem.sel{background:rgba(34,224,255,.10);border-color:#22e0ff;box-shadow:0 0 15px rgba(34,224,255,.28)}
+.ditem.sel{border-left:3px solid #ff3df0}
+.dtype{color:#ff8df5;text-shadow:0 0 8px rgba(255,61,240,.5)}
+.dgoal{color:#dcecff}
+.dstat{color:#7fb8d8}
+
+.group-box{border:1px solid rgba(34,224,255,.28);background:rgba(14,9,34,.66);border-radius:4px;
+  box-shadow:0 0 15px rgba(34,224,255,.12),inset 0 0 22px rgba(34,224,255,.05)}
+.group-box.rev{border-color:rgba(255,61,240,.42);background:rgba(30,10,34,.6);
+  box-shadow:0 0 15px rgba(255,61,240,.16),inset 0 0 22px rgba(255,61,240,.05)}
+.node.group{border:1px solid rgba(34,224,255,.5);padding:3px 7px;border-radius:3px;color:#9fecff;
+  background:rgba(8,20,34,.7);text-shadow:0 0 8px rgba(34,224,255,.6)}
+.node.group.rev{color:#ff9cf3;border-color:rgba(255,61,240,.55);text-shadow:0 0 8px rgba(255,61,240,.6)}
+.node.agent{padding:5px 9px;border:1px solid rgba(34,224,255,.42);border-radius:3px;color:#cdefff;
+  background:rgba(10,16,40,.72);text-shadow:0 0 7px rgba(34,224,255,.45)}
+.node.agent:hover,.node.agent.active{border-color:#22e0ff;box-shadow:0 0 17px rgba(34,224,255,.5);color:#eaffff}
+.node.agent.rev{color:#ffb3f5;border-color:rgba(255,61,240,.5);background:rgba(28,10,36,.72);text-shadow:0 0 7px rgba(255,61,240,.5)}
+.node.agent.rev:hover,.node.agent.rev.active{border-color:#ff3df0;box-shadow:0 0 17px rgba(255,61,240,.5);color:#ffe8fb}
+.node .n-role{opacity:.75}
+.node .n-role::before{content:"\25B8 "}
+.edge{stroke:#22e0ff;filter:drop-shadow(0 0 2.5px rgba(34,224,255,.85))}
+.edge-sequential{stroke-dasharray:none}
+.edge-zig-zag{stroke-dasharray:6 4}
+.edge-feedback{stroke-dasharray:2 4}
+#legend{color:#8a7fb0}
+#legend .dot.rev{background:#ff3df0;box-shadow:0 0 8px rgba(255,61,240,.7)}
+
+#scrim{background:rgba(6,3,16,.58)}
+#panel{background:linear-gradient(180deg,rgba(16,9,34,.98),rgba(10,6,22,.98));border-left:1px solid rgba(34,224,255,.4);
+  color:#cfe8ff;box-shadow:-18px 0 46px rgba(0,0,0,.55),-1px 0 24px rgba(34,224,255,.15)}
+#p-close{color:#22e0ff}
+.p-role{color:#ff8df5;text-shadow:0 0 7px rgba(255,61,240,.4)}
+#p-name{color:#22e0ff;text-shadow:0 0 12px rgba(34,224,255,.5)}
+.p-meta dd{color:#dcecff}
+.p-prompt button{border:1px solid rgba(34,224,255,.4);background:rgba(10,16,40,.7);color:#bfe9ff;border-radius:3px}
+.p-prompt button:hover{border-color:#22e0ff;box-shadow:0 0 12px rgba(34,224,255,.3)}
+#p-prompt-body::before{content:"\27E9 initial_prompt\A";white-space:pre;opacity:.6;color:#ff8df5}
+#tt{background:rgba(10,6,22,.96);color:#cfe8ff;border:1px solid rgba(34,224,255,.5);border-radius:3px;
+  box-shadow:0 0 20px rgba(34,224,255,.25)}
+#explain{border-color:rgba(34,224,255,.6);color:#22e0ff}
+
+/* ---- theme: neon-hud · stage HUD frame + corner ticks ---- */
+#stage-wrap{border:1px solid rgba(34,224,255,.16);border-radius:4px}
+#stage-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:
+    linear-gradient(#22e0ff,#22e0ff) 0 0/18px 2px no-repeat,
+    linear-gradient(#22e0ff,#22e0ff) 0 0/2px 18px no-repeat,
+    linear-gradient(#22e0ff,#22e0ff) 100% 0/18px 2px no-repeat,
+    linear-gradient(#22e0ff,#22e0ff) 100% 0/2px 18px no-repeat,
+    linear-gradient(#ff3df0,#ff3df0) 0 100%/18px 2px no-repeat,
+    linear-gradient(#ff3df0,#ff3df0) 0 100%/2px 18px no-repeat,
+    linear-gradient(#ff3df0,#ff3df0) 100% 100%/18px 2px no-repeat,
+    linear-gradient(#ff3df0,#ff3df0) 100% 100%/2px 18px no-repeat;
+  filter:drop-shadow(0 0 3px rgba(34,224,255,.6));opacity:.85}
+#stage-empty{color:#8a7fb0}
+
+/* ---- theme: neon-hud · context header (HUD readout) ---- */
+#stage-head{border-bottom:1px solid rgba(34,224,255,.22);background:rgba(12,7,28,.4)}
+#sh-idle{color:#8a7fb0}
+#sh-status,#sh-headline,#sh-sub,#sh-idle{white-space:normal}
+.sh-field{display:inline-block;margin-right:14px;white-space:nowrap}
+.sh-key{color:#8a7fb0}
+.sh-type{display:inline-block;margin-right:14px;padding:1px 8px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:#07131f;background:#22e0ff;border-radius:2px;text-shadow:none;
+  box-shadow:0 0 14px rgba(34,224,255,.6)}
+.sh-exit{color:#ff8df5;text-shadow:0 0 7px rgba(255,61,240,.5)}
+#sh-headline{margin-top:3px;font-size:13px;color:#9fecff;text-shadow:0 0 8px rgba(34,224,255,.35);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#sh-sub{margin-top:2px;font-size:11px;color:#7fb8d8}
+#sh-ctx-toggle{margin-top:7px;font:inherit;font-size:11px;letter-spacing:.05em;cursor:pointer;
+  padding:2px 9px;color:#22e0ff;background:transparent;border:1px solid rgba(34,224,255,.4);border-radius:3px}
+#sh-ctx-toggle:hover{border-color:#22e0ff;box-shadow:0 0 10px rgba(34,224,255,.3)}
+#sh-ctx-body{margin-top:8px;font-size:11.5px;line-height:1.62;color:#a9c8e0;
+  border-left:2px solid rgba(255,61,240,.5);padding-left:10px}
+
+</style>
+</head><body>
+
+<div id="app">
+  <aside id="sidebar">
+    <div class="side-head">
+      <h1 id="brand"></h1>
+      <p id="tagline">Dispatches com estrutura de grafo. Fuso: UTC.</p>
+    </div>
+    <div id="states">
+      <div id="st-loading" class="state">Carregando dispatches…</div>
+      <div id="st-error" class="state" hidden>
+        <p>Nao foi possivel carregar os dados.</p>
+        <button id="retry" type="button">Tentar novamente</button>
+      </div>
+      <div id="st-empty" class="state" hidden>Nenhum dispatch com estrutura para inspecionar.</div>
+    </div>
+    <ul id="dlist" aria-label="Dispatches estruturados"></ul>
+  </aside>
+
+  <main id="main">
+    <div id="stage-head">
+      <div id="sh-idle">awaiting dispatch — selecione um dispatch na lista a esquerda</div>
+      <div id="sh-body" hidden>
+        <div id="sh-status"></div>
+        <div id="sh-headline"></div>
+        <div id="sh-sub"></div>
+        <button id="sh-ctx-toggle" type="button" aria-expanded="false" hidden>contexto &#9656;</button>
+        <div id="sh-ctx-body" hidden></div>
+      </div>
+    </div>
+    <div id="stage-wrap">
+      <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
+      <svg id="edges" aria-hidden="true"></svg>
+      <div id="nodes"></div>
+      <div id="legend"><span class="dot rev"></span>revisor / cetico / auditor<span class="mark">?</span></div>
+    </div>
+  </main>
+</div>
+
+<div id="scrim" hidden></div>
+<aside id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="p-name">
+  <button id="p-close" type="button" aria-label="Fechar">&times;</button>
+  <div class="p-role" id="p-role"></div>
+  <h2 id="p-name"></h2>
+  <dl class="p-meta" id="p-meta"></dl>
+  <div class="p-angle" id="p-angle-wrap" hidden>
+    <div class="p-lbl">Angulo / tensao</div>
+    <p id="p-angle"></p>
+  </div>
+  <div class="p-prompt">
+    <button id="p-prompt-toggle" type="button" aria-expanded="false">Revelar prompt inicial completo</button>
+    <div id="p-prompt-body" hidden></div>
+  </div>
+</aside>
+
+<div id="tt" role="tooltip" hidden></div>
+<button id="explain" type="button" title="Modo explicacao" aria-pressed="false">?</button>
+
+<script>
+
+(function () {
+  "use strict";
+  var V = window.__V__ || { layout: "columns" };
+  var REV = { skeptic: 1, auditor: 1, reviewer: 1 };
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { data: null, current: null, focusEl: null };
+
+  // ---- data load: fetch json (served) with file:// script fallback -------
+  function load() {
+    show("st-loading");
+    fetch("../data/dispatches.json")
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(ready)
+      .catch(function () {
+        if (window.__DISPATCHES__) { ready(window.__DISPATCHES__); }
+        else { show("st-error"); }
+      });
+  }
+  function show(id) {
+    ["st-loading", "st-error", "st-empty"].forEach(function (s) {
+      var el = $(s); if (el) el.hidden = (s !== id);
+    });
+  }
+  function ready(payload) {
+    state.data = (payload && payload.dispatches) || [];
+    if (!state.data.length) { show("st-empty"); return; }
+    show("__none__");
+    renderList();
+  }
+
+  // ---- helpers -----------------------------------------------------------
+  function agentsOf(d) {
+    var out = [];
+    (d.groups || []).forEach(function (g) {
+      (g.agents || []).forEach(function (a) { out.push({ a: a, g: g }); });
+    });
+    return out;
+  }
+  function isRev(a) { return !!REV[(a.role || "").toLowerCase()]; }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function nameOf(a) { return a.agent_name || "(sem nome)"; }
+
+  // ---- context header (status line / comment block) ----------------------
+  // Enriches #stage-head from the selected dispatch object only (no graph geometry).
+  // FE-1: compact status band by default; the longer `context` framing is opt-in
+  // (a discreet "contexto" disclosure). FE-5: nulls omitted, never printed as "null".
+  // FE-7: counts + UTC zone declared on-screen.
+  function fieldTok(key, val, extraClass, tip) {
+    var cls = "sh-field" + (extraClass ? " " + extraClass : "");
+    var t = tip ? ' data-tip="' + esc(tip) + '"' : "";
+    return '<span class="' + cls + '"' + t + '><span class="sh-key">' + esc(key) + '=</span>' + esc(val) + "</span>";
+  }
+  function populateHead(d) {
+    $("sh-idle").hidden = true;
+    $("sh-body").hidden = false;
+
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+    var links = (d.connections || []).length;
+    var close = d.close || null;
+    var loopsUsed = (close && close.agents_spawned) ? close.agents_spawned.loops_used : null;
+
+    // status line: prominent TYPE token + KEY=value monospace fields
+    var status = '<span class="sh-type" data-tip="' + esc("tipo de dispatch (KIND): " + d.dispatch_type) +
+      '">' + esc(d.dispatch_type || "?") + "</span>";
+    status += fieldTok("AGENTS", ags.length, null, "total de agentes (soma sobre os grupos)");
+    status += fieldTok("GRP", (d.groups || []).length, null, "numero de grupos");
+    status += fieldTok("LINKS", links, null, "conexoes tipadas entre grupos");
+    status += fieldTok("REV", revs, null, "revisores: papeis skeptic/auditor/reviewer");
+    status += fieldTok("LOOPS", (loopsUsed != null ? loopsUsed : "—") + "/" + (d.max_loops != null ? d.max_loops : "?"),
+      null, "loops usados / max_loops");
+    if (close && close.exit_reason) {
+      status += fieldTok("EXIT", close.exit_reason, "sh-exit", "exit_reason do fechamento (OUTCOME)");
+    }
+    $("sh-status").innerHTML = status;
+
+    // headline: the goal (objetivo). Clamped to 2 lines; full text on hover (FE-2).
+    var hl = $("sh-headline");
+    hl.textContent = d.goal || "(sem objetivo declarado)";
+    if (d.goal) hl.setAttribute("data-tip", d.goal); else hl.removeAttribute("data-tip");
+
+    // sub line: id (secondary) + created (UTC declared) + folder/anti-bias if present
+    var sub = fieldTok("id", d.dispatch_id || "?");
+    sub += fieldTok("created", (d.created ? d.created.slice(0, 10) : "?") + " UTC", null,
+      d.created ? ("criado em " + d.created + " (UTC)") : null);
+    if (d.working_folder) sub += fieldTok("folder", d.working_folder);
+    if (d.anti_bias_global) sub += fieldTok("anti-bias", d.anti_bias_global, null, "eixo anti-vies global");
+    $("sh-sub").innerHTML = sub;
+
+    // FE-1 opt-in: longer `context` framing collapsed behind a discreet disclosure
+    var tog = $("sh-ctx-toggle"), body = $("sh-ctx-body");
+    if (d.context) {
+      tog.hidden = false;
+      body.textContent = d.context;
+      body.hidden = true;
+      tog.setAttribute("aria-expanded", "false");
+      tog.innerHTML = "contexto ▸";
+    } else {
+      tog.hidden = true;
+      body.hidden = true;
+      body.textContent = "";
+    }
+  }
+
+  // ---- dispatch list -----------------------------------------------------
+  function renderList() {
+    var ul = $("dlist");
+    ul.innerHTML = "";
+    state.data.forEach(function (d, i) {
+      var ags = agentsOf(d);
+      var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+      var li = document.createElement("li");
+      li.className = "ditem";
+      li.tabIndex = 0;
+      li.setAttribute("data-tip", (d.anti_bias_global || (d.groups[0] && d.groups[0].anti_bias) || "sem eixo anti-vies declarado"));
+      li.innerHTML =
+        '<span class="dtype t-' + esc(d.dispatch_type) + '">' + esc(d.dispatch_type) + "</span>" +
+        '<span class="dgoal">' + esc(shorten(d.goal, 96)) + "</span>" +
+        '<span class="dstat">' + ags.length + " ag · " + (d.groups.length) + " grp · " +
+        (d.connections ? d.connections.length : 0) + " liga · " + revs + " rev</span>";
+      li.addEventListener("click", function () { pick(i, li); });
+      li.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(i, li); }
+      });
+      ul.appendChild(li);
+    });
+  }
+  function shorten(s, n) { s = s || ""; return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+
+  function pick(i, li) {
+    state.current = state.data[i];
+    var prev = document.querySelector(".ditem.sel");
+    if (prev) prev.classList.remove("sel");
+    if (li) li.classList.add("sel");
+    closePanel();
+    renderGraph(state.current);
+  }
+
+  // ---- geometry: pipeline stages (left→right). Returns {stages:[[gdesc]], edges, nStages}
+  // A "stage" is a column of groups; stage index = longest-path depth in the group DAG,
+  // so directed connections read as flow (attackers → synthesizer → verifiers).
+  function geometry(d) {
+    var groups = d.groups || [];
+    var byId = {};
+    groups.forEach(function (g) { byId[g.group_id] = g; });
+    var conns = (d.connections || []).filter(function (c) { return byId[c.from] && byId[c.to]; });
+
+    // longest-path stage per group (DAG; connections in the corpus point forward)
+    var stage = {};
+    groups.forEach(function (g) { stage[g.group_id] = 0; });
+    var changed = true, guard = 0;
+    while (changed && guard++ < groups.length + 2) {
+      changed = false;
+      conns.forEach(function (c) {
+        if (stage[c.to] < stage[c.from] + 1) { stage[c.to] = stage[c.from] + 1; changed = true; }
+      });
+    }
+    // no edges + several groups: spread by array order so each is its own stage
+    if (!conns.length && groups.length > 1) {
+      groups.forEach(function (g, i) { stage[g.group_id] = i; });
+    }
+
+    var maxStage = 0;
+    groups.forEach(function (g) { if (stage[g.group_id] > maxStage) maxStage = stage[g.group_id]; });
+    var stages = [];
+    for (var s = 0; s <= maxStage; s++) stages.push([]);
+
+    groups.forEach(function (g) {
+      var ags = (g.agents || []).map(function (a) {
+        return {
+          agent: a, group: g, rev: isRev(a), label: nameOf(a),
+          tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "")
+        };
+      });
+      var allRev = ags.length > 0 && ags.every(function (x) { return x.rev; });
+      stages[stage[g.group_id]].push({
+        id: g.group_id, group: g, agents: ags, rev: allRev,
+        tip: g.anti_bias ? ("anti-vies: " + g.anti_bias)
+          : ("grupo · " + (g.n || (g.agents || []).length) + " agente(s)")
+      });
+    });
+
+    var edges = conns.map(function (c) {
+      return {
+        from: c.from, to: c.to, type: c.type || "x",
+        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to
+      };
+    });
+    return { stages: stages, edges: edges, nStages: maxStage + 1 };
+  }
+  function clamp(v) { return Math.max(6, Math.min(94, v)); }
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
+
+  // ---- render graph ------------------------------------------------------
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function renderGraph(d) {
+    $("stage-empty").hidden = true;
+    populateHead(d);
+    var geo = geometry(d);
+    var host = $("nodes"); host.innerHTML = "";
+    var svg = $("edges"); svg.innerHTML = "";
+
+    var nStages = geo.nStages;
+    var W = host.clientWidth || 1;
+    var stageGap = W / (nStages + 1);
+    // size-aware column width tied to the slot: boxW = 0.72·stageGap guarantees a
+    // 0.28·stageGap gap between adjacent stages, so boxes NEVER overlap or clip
+    // off-canvas at any viewport width / stage count (R2/R5); capped for readability.
+    var boxW = Math.min(156, stageGap * 0.72);
+
+    var boxEls = {}; // group_id -> box element (for boundary-to-boundary edges)
+    geo.stages.forEach(function (colGroups, si) {
+      var col = document.createElement("div");
+      col.className = "stage-col";
+      col.style.left = ((si + 1) / (nStages + 1) * 100) + "%";
+      col.style.width = boxW + "px";
+      colGroups.forEach(function (gd) {
+        var box = document.createElement("div");
+        box.className = "group-box" + (gd.rev ? " rev" : "");
+        box.setAttribute("data-gid", gd.id);
+
+        var head = document.createElement("div");
+        head.className = "node group" + (gd.rev ? " rev" : "");
+        head.setAttribute("data-tip", gd.tip);
+        head.setAttribute("data-explain", "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado.");
+        head.innerHTML = '<span class="g-label">' + esc(gd.id) + "</span>";
+        box.appendChild(head);
+
+        gd.agents.forEach(function (nd) {
+          var el = document.createElement("div");
+          el.className = "node agent" + (nd.rev ? " rev" : "");
+          el.setAttribute("data-tip", nd.tip);
+          el.setAttribute("data-explain", nd.rev
+            ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta."
+            : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento.");
+          el.innerHTML = '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
+            '<span class="n-name">' + esc(nd.label) + "</span>";
+          el.tabIndex = 0;
+          el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
+          el.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
+          });
+          box.appendChild(el);
+        });
+        col.appendChild(box);
+        boxEls[gd.id] = box;
+      });
+      host.appendChild(col);
+    });
+
+    drawEdges(geo, boxEls, svg, host);
+
+    if (!renderGraph._resizeBound) {   // keep pixel-space edges aligned on viewport resize
+      renderGraph._resizeBound = true;
+      var rt;
+      window.addEventListener("resize", function () {
+        clearTimeout(rt);
+        rt = setTimeout(function () { if (state.current) renderGraph(state.current); }, 120);
+      });
+    }
+  }
+
+  // ---- directed typed edges: group→group, boundary-to-boundary, arrowheaded --
+  // Drawn in PIXEL space (getBoundingClientRect after layout); the SVG has no
+  // viewBox, so 1 user-unit = 1px and curves/arrows never distort (R5).
+  function drawEdges(geo, boxEls, svg, host) {
+    if (!geo.edges.length) return;
+    var base = host.getBoundingClientRect();
+    var defs = document.createElementNS(SVGNS, "defs");
+    defs.innerHTML = '<marker id="arrowT" viewBox="0 0 10 10" refX="9" refY="5" ' +
+      'markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#22e0ff"/></marker>';
+    svg.appendChild(defs);
+
+    function rectOf(el) {
+      var r = el.getBoundingClientRect();
+      return {
+        l: r.left - base.left, r: r.right - base.left,
+        cx: (r.left + r.right) / 2 - base.left, cy: (r.top + r.bottom) / 2 - base.top
+      };
+    }
+    geo.edges.forEach(function (e) {
+      var S = boxEls[e.from], T = boxEls[e.to];
+      if (!S || !T) return;
+      var a = rectOf(S), b = rectOf(T);
+      var fwd = b.cx >= a.cx, x1, x2;
+      if (fwd) { x1 = a.r; x2 = b.l; } else { x1 = a.l; x2 = b.r; }
+      var y1 = a.cy, y2 = b.cy, dx = x2 - x1;
+      var dd = "M" + x1 + " " + y1 + " C " + (x1 + dx * 0.5) + " " + y1 +
+        " " + (x2 - dx * 0.5) + " " + y2 + " " + x2 + " " + y2;
+
+      var hit = document.createElementNS(SVGNS, "path");   // wide invisible hit-area carries FE-2 tooltip
+      hit.setAttribute("d", dd);
+      hit.setAttribute("fill", "none");
+      hit.setAttribute("stroke", "transparent");
+      hit.setAttribute("stroke-width", "14");
+      hit.setAttribute("pointer-events", "stroke");
+      hit.setAttribute("data-tip", e.tip);
+      hit.setAttribute("data-explain", "Aresta " + e.type + ": fluxo direcionado entre estagios do pipeline.");
+      svg.appendChild(hit);
+
+      var p = document.createElementNS(SVGNS, "path");
+      p.setAttribute("d", dd);
+      p.setAttribute("class", "edge edge-" + e.type);
+      p.setAttribute("marker-end", "url(#arrowT)");
+      p.setAttribute("pointer-events", "none");
+      svg.appendChild(p);
+    });
+  }
+
+  // ---- agent panel (FE-1 opt-in prompt, FE-6 single focus) --------------
+  function openPanel(a, g, el) {
+    closePanel();
+    state.focusEl = el; if (el) el.classList.add("active");
+    $("p-role").textContent = (a.role || "agente") + (isRev(a) ? " • revisor" : "");
+    $("p-role").className = "p-role" + (isRev(a) ? " is-rev" : "");
+    $("p-name").textContent = nameOf(a);
+    var meta = $("p-meta"); meta.innerHTML = "";
+    [["modelo", a.model], ["orcamento", a.token_budget != null ? (a.token_budget + " tok") : null],
+     ["grupo", g.group_id]].forEach(function (kv) {
+      if (kv[1] == null || kv[1] === "") return;
+      meta.innerHTML += "<dt>" + esc(kv[0]) + "</dt><dd>" + esc(kv[1]) + "</dd>";
+    });
+    var aw = $("p-angle-wrap");
+    if (a.angle) { aw.hidden = false; $("p-angle").textContent = a.angle; } else { aw.hidden = true; }
+    var body = $("p-prompt-body"), tog = $("p-prompt-toggle");
+    body.textContent = a.initial_prompt || "(sem prompt inicial registrado)";
+    body.hidden = true; tog.setAttribute("aria-expanded", "false");
+    tog.textContent = "Revelar prompt inicial completo";
+    $("scrim").hidden = false; $("panel").hidden = false;
+    $("panel").scrollTop = 0;
+  }
+  function closePanel() {
+    $("panel").hidden = true; $("scrim").hidden = true;
+    if (state.focusEl) { state.focusEl.classList.remove("active"); state.focusEl = null; }
+  }
+
+  // ---- tooltip system (FE-2: one #tt + data-tip) -------------------------
+  function initTooltip() {
+    var tt = $("tt"), on = false;
+    document.addEventListener("mouseover", function (e) {
+      // FE-9: inside explain-mode a node reveals "what it is + why it matters";
+      // otherwise the universal FE-2 tooltip shows secondary/qualifier info.
+      var xp = document.body.classList.contains("explain");
+      var t = e.target.closest ? e.target.closest(xp ? "[data-explain],[data-tip]" : "[data-tip]") : null;
+      if (!t) return;
+      var txt = (xp && t.getAttribute("data-explain")) || t.getAttribute("data-tip");
+      if (txt) { tt.textContent = txt; tt.hidden = false; on = true; place(e); }
+    });
+    document.addEventListener("mousemove", function (e) { if (on) place(e); });
+    document.addEventListener("mouseout", function (e) {
+      var t = e.target.closest ? e.target.closest("[data-tip]") : null;
+      if (t) { tt.hidden = true; on = false; }
+    });
+    function place(e) {
+      var x = e.clientX + 14, y = e.clientY + 16;
+      if (x + 260 > innerWidth) x = e.clientX - 260;
+      if (y + 60 > innerHeight) y = e.clientY - 50;
+      tt.style.left = x + "px"; tt.style.top = y + "px";
+    }
+  }
+
+  // ---- wire-up -----------------------------------------------------------
+  function init() {
+    document.body.classList.add(V.bodyClass || "");
+    $("brand").textContent = V.brand || "Dispatch Viewer";
+    $("retry").addEventListener("click", load);
+    $("p-close").addEventListener("click", closePanel);
+    $("scrim").addEventListener("click", closePanel);   // FE-3 instant outside-click
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanel(); }); // FE-3 Esc
+    $("p-prompt-toggle").addEventListener("click", function () {   // FE-1 opt-in density
+      var b = $("p-prompt-body"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in: summon context
+      var b = $("sh-ctx-body"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.innerHTML = open ? "contexto ▾" : "contexto ▸";
+    });
+    $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
+      var on = document.body.classList.toggle("explain");
+      this.setAttribute("aria-pressed", String(on));
+    });
+    initTooltip();
+    load();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+
+</script>
+</body></html>

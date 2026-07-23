@@ -379,16 +379,13 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
     var rowW = totalW + gap * Math.max(0, G - 1);
     var startX = pad + Math.max(0, (usableW - rowW) / 2);        // centre the rail
     var railY = pad + Math.max(0, (usableH - maxUnitH) / 2) + GH / 2;  // vertically centred
-    // shallow arch for the HUD feel: middle stations lift a touch (room for their
-    // agents below); the entry (left) and exit (right) sit lowest
-    var arc = G > 2 ? Math.min(34 * scale, Math.max(0, (usableH - maxUnitH) / 2)) : 0;
 
+    // nameplates ride ONE flat rail so the directed arrows are colinear and read
+    // as a single left→right flow spine (entry at far left, exit at far right)
     var cursor = startX;
     for (i = 0; i < G; i++) {
       var scx = cursor + sw[i] / 2;
-      var t = G > 1 ? i / (G - 1) : 0.5;
-      var scy = railY - (arc > 0 ? arc * Math.sin(Math.PI * t) : 0);
-      placeStation(groups[i], scx, scy);
+      placeStation(groups[i], scx, railY);
       cursor += sw[i] + gap;
     }
     // decorative radar hub, centred behind the flow (pure decoration, R-decor)

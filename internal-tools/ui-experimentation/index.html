@@ -1,9 +1,10 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UI Experimentation · 10 variantes</title>
+<title>UI Experimentation · 15 variantes</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:"Inter",system-ui,sans-serif;background:#0d0f16;color:#e8ecf5;padding:44px}
 h1{margin:0 0 6px;font-size:24px}p.sub{margin:0 0 30px;opacity:.6;font-size:14px;max-width:720px;line-height:1.5}
+h2.sec{margin:34px 0 14px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;font-weight:600}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
 .card{display:flex;flex-direction:column;gap:7px;padding:18px;border:1px solid #262b3a;border-radius:14px;text-decoration:none;color:inherit;background:#12151f;transition:.12s}
 .card:hover{border-color:#5f7bff;transform:translateY(-2px);background:#161a27}
@@ -13,11 +14,13 @@ h1{margin:0 0 6px;font-size:24px}p.sub{margin:0 0 30px;opacity:.6;font-size:14px
 footer{margin-top:34px;font-size:12px;opacity:.5;line-height:1.6;max-width:760px}
 code{background:#1c2130;padding:1px 5px;border-radius:4px}
 </style></head><body>
-<h1>UI Experimentation &mdash; 10 variantes</h1>
-<p class="sub">Cada variante e um visualizador standalone de tela unica: lista os dispatches
-<em>com estrutura de grafo</em>, mostra o grafo agentes&harr;revisores ao clicar num dispatch, e
-revela os dados do agente (prompt, angulo, papel, modelo, orcamento) ao clicar num no.
-Mesmo comportamento (CONST-FE: FE-1/2/3/5/6) em todas; linguagem visual distinta em cada.</p>
+<h1>UI Experimentation &mdash; 15 variantes</h1>
+<p class="sub">Cada variante e um visualizador standalone de tela unica: cabecalho de contexto no topo
+(tipo, objetivo, contagem de agentes/grupos/ligacoes/revisores, desfecho), grafo direcional
+agentes&harr;revisores ao clicar num dispatch, e os dados do agente (prompt, angulo, papel, modelo,
+orcamento) ao clicar num no. Mesmo comportamento (CONST-FE: FE-1/2/3/5/6/7/9) em todas; linguagem
+visual distinta em cada.</p>
+<h2 class="sec">10 originais</h2>
 <div class="grid">
 <a class="card" href="variants/blueprint.html"><span class="num">01</span><span class="ct">Blueprint</span><span class="cd">planta tecnica: ciano sobre azul-marinho, grade milimetrada, nos como cotas</span><span class="cg">geometria: columns</span></a>
 <a class="card" href="variants/editorial.html"><span class="num">02</span><span class="ct">Editorial</span><span class="cd">jornal impresso: serifada, tinta sobre creme, fios e capitulares, grafo em faixas</span><span class="cg">geometria: rows</span></a>
@@ -29,6 +32,14 @@ Mesmo comportamento (CONST-FE: FE-1/2/3/5/6) em todas; linguagem visual distinta
 <a class="card" href="variants/mission.html"><span class="num">08</span><span class="ct">Mission Control</span><span class="cd">console de operacoes: escuro, ambar+teal, telemetria, grafo radial de estacao</span><span class="cg">geometria: radial</span></a>
 <a class="card" href="variants/sketch.html"><span class="num">09</span><span class="ct">Sketch</span><span class="cd">caderno desenhado a mao: papel quadriculado, bordas irregulares, nos rabiscados</span><span class="cg">geometria: scatter</span></a>
 <a class="card" href="variants/mono.html"><span class="num">10</span><span class="ct">Mono</span><span class="cd">monocromatico minimo: linhas finas, muito espaco, tipografia quieta, colunas</span><span class="cg">geometria: columns</span></a>
+</div>
+<h2 class="sec">5 hightech</h2>
+<div class="grid">
+<a class="card" href="variants/hightech-minimal.html"><span class="num">11</span><span class="ct">Hightech Minimal</span><span class="cd">minimalista hightech: charcoal escuro, um acento azul eletrico, hairlines 1px, mono nos numeros</span><span class="cg">fluxo direcional</span></a>
+<a class="card" href="variants/neon-hud.html"><span class="num">12</span><span class="ct">Neon HUD</span><span class="cd">synthwave: base espacial, cyan+magenta com glow, grid em perspectiva, moldura HUD</span><span class="cg">fluxo direcional</span></a>
+<a class="card" href="variants/carbon.html"><span class="num">13</span><span class="ct">Carbon</span><span class="cd">industrial: fibra de carbono/grafite, paineis usinados, aco + acento ambar, revisores em laranja-perigo</span><span class="cg">fluxo direcional</span></a>
+<a class="card" href="variants/tron.html"><span class="num">14</span><span class="ct">Tron</span><span class="cd">wireframe vetorial: preto puro, linhas cyan brilhantes, grid em perspectiva, revisores em ambar</span><span class="cg">fluxo direcional</span></a>
+<a class="card" href="variants/holo.html"><span class="num">15</span><span class="ct">Holo</span><span class="cd">holografico iridescente: gradiente violeta&rarr;cyan&rarr;lime, arestas em gradiente, revisores em dourado</span><span class="cg">fluxo direcional</span></a>
 </div>
 <footer>Dados: <code>data/dispatches.json</code> (extraidos por <code>extract.py</code> de
 <code>telemetry/agents/subagents-dispatch.yaml</code> &mdash; apenas dispatches estruturados).

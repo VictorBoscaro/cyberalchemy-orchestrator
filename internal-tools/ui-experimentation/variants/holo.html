@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Holo · Dispatch Graph</title>
+<script src="../data/dispatches.js" onerror="void 0"></script>
+<script>window.__V__={layout:"columns",brand:'HOLO',bodyClass:"v-holo"};</script>
+<style>
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+#app{display:grid;grid-template-columns:320px 1fr;height:100vh;overflow:hidden}
+#sidebar{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.side-head{padding:18px 18px 10px}
+#brand{margin:0;font-size:18px;letter-spacing:.02em}
+#tagline{margin:4px 0 0;font-size:11px;opacity:.7}
+#states .state{padding:14px 18px;font-size:13px}
+#dlist{list-style:none;margin:0;padding:0 10px 24px;overflow:auto;flex:1;min-height:0}
+.ditem{padding:11px 12px;margin:7px 0;cursor:pointer;display:flex;flex-direction:column;gap:5px}
+.dtype{font-size:10px;text-transform:uppercase;letter-spacing:.12em;align-self:flex-start}
+.dgoal{font-size:13px;line-height:1.35}
+.dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
+#main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+#stage-head{padding:12px 18px 0}
+/* HOLO title block: labeled cells joined by luminous hairlines */
+.tblock{position:relative}
+.tb-idle{padding:11px 14px;font-size:12px;letter-spacing:.04em}
+.tb-row{display:flex;align-items:stretch}
+.tb-row.tb-stats{flex-wrap:wrap}
+.tb-type{align-self:stretch;display:flex;align-items:center;padding:0 15px;
+  font-size:15px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.tb-headwrap{flex:1;min-width:0;padding:8px 14px}
+.tb-goal{font-size:13.5px;line-height:1.3;font-weight:600;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tb-id{font-size:10px;letter-spacing:.05em;margin-top:3px;opacity:.55;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-when{display:flex;flex-direction:column;justify-content:center;padding:6px 15px;
+  min-width:120px;text-align:right;white-space:nowrap}
+.tb-cell{padding:6px 14px;display:flex;flex-direction:column;gap:2px;min-width:60px;justify-content:center}
+.tb-cell.tb-path{flex:1;min-width:150px;overflow:hidden}
+.tb-lbl{font-size:8.5px;text-transform:uppercase;letter-spacing:.12em;opacity:.55}
+.tb-num{font-size:13.5px;font-weight:600}
+.tb-path .tb-num{font-size:11px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-ctx-toggle{display:block;width:100%;text-align:left;padding:5px 14px;font:inherit;
+  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.tb-ctx{padding:10px 14px;font-size:12.5px;line-height:1.55}
+#stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
+#stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
+#stage-empty[hidden]{display:none}
+#edges{position:absolute;inset:0;width:100%;height:100%}
+.edge{stroke-width:1.6px;opacity:.85}
+#nodes{position:absolute;inset:0}
+.node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
+.node.agent{cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:2px;overflow:hidden}
+.node .g-label{font-size:11px;letter-spacing:.04em}
+.node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
+.node .n-name{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11px;line-height:1.15;word-break:break-word}
+#legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
+#legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+#legend .mark{margin-left:auto;opacity:.5}
+#scrim{position:fixed;inset:0;background:rgba(4,6,12,.5);backdrop-filter:blur(2px);z-index:40}
+#panel{position:fixed;top:0;right:0;height:100vh;width:min(460px,92vw);z-index:50;overflow:auto;padding:26px 26px 40px}
+#p-close{position:absolute;top:14px;right:16px;border:0;background:none;font-size:26px;line-height:1;cursor:pointer;color:inherit}
+.p-role{font-size:11px;text-transform:uppercase;letter-spacing:.14em;opacity:.7}
+#p-name{margin:6px 0 16px;font-size:22px;word-break:break-word}
+.p-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 18px;font-size:12.5px}
+.p-meta dt{opacity:.55;text-transform:uppercase;font-size:10px;letter-spacing:.08em;align-self:center}
+.p-meta dd{margin:0}
+.p-angle{margin:0 0 18px}
+.p-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;opacity:.6;margin-bottom:5px}
+.p-angle p{margin:0;font-size:13.5px;line-height:1.5}
+.p-prompt button{width:100%;text-align:left;padding:11px 13px;font:inherit;font-size:12.5px;cursor:pointer}
+#p-prompt-body{margin-top:12px;font-size:13px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+#tt{position:fixed;z-index:60;max-width:250px;padding:7px 10px;font-size:11.5px;line-height:1.4;pointer-events:none;border-radius:5px;background:#0b0f1a;color:#e9edf6;box-shadow:0 6px 22px rgba(0,0,0,.4)}
+#explain{position:fixed;right:16px;bottom:16px;z-index:35;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:700;opacity:.5;border:1px solid currentColor;background:transparent;color:inherit}
+#explain[aria-pressed="true"]{opacity:1}
+body:not(.explain) .node[data-explain]::after{display:none}
+body.explain .node{outline:1px dashed rgba(127,127,127,.5)}
+
+/* ---- theme: holographic / iridescent ---- */
+/* Iridescent accent axis: violet -> cyan -> lime. Used as a shared prismatic
+   sheen on borders, badges and brand text. It is DECORATION only — edge type
+   still lives in the tooltip; reviewer nodes keep a distinct warm gold so the
+   rainbow never encodes per-edge meaning (CONST-FE non-example respected). */
+:root{
+  --irid:linear-gradient(125deg,#b388ff 0%,#5fd8ff 46%,#8bff9e 100%);
+  --irid-soft:linear-gradient(125deg,rgba(179,136,255,.9),rgba(95,216,255,.9),rgba(139,255,158,.9));
+  --panel-a:rgba(28,22,56,.72);--panel-b:rgba(12,14,34,.82);
+  --gold:#ffcf5f;--ink:#eef1ff;
+}
+body{font-family:"Space Grotesk",ui-sans-serif,"Segoe UI",system-ui,Roboto,sans-serif;color:var(--ink);
+  background:
+    radial-gradient(1200px 720px at 12% -12%, rgba(150,90,255,.20), transparent 60%),
+    radial-gradient(1000px 820px at 104% 18%, rgba(50,220,255,.16), transparent 55%),
+    radial-gradient(940px 900px at 48% 122%, rgba(124,255,150,.13), transparent 56%),
+    #07060f}
+#sidebar{background:linear-gradient(180deg,rgba(22,16,46,.86),rgba(9,9,24,.92));
+  border-right:1px solid rgba(150,120,255,.30);box-shadow:1px 0 0 rgba(95,216,255,.10)}
+#brand{font-weight:700;background:var(--irid);-webkit-background-clip:text;background-clip:text;
+  color:transparent;filter:drop-shadow(0 0 9px rgba(120,180,255,.35))}
+#tagline{color:#b9b0e6}
+.ditem{border:1px solid rgba(150,120,255,.20);border-radius:11px;
+  background:linear-gradient(152deg,rgba(30,22,60,.50),rgba(14,15,38,.55))}
+.ditem:hover,.ditem.sel{border-color:transparent;
+  background:linear-gradient(rgba(30,24,66,.72),rgba(16,18,44,.72)) padding-box,var(--irid) border-box;
+  box-shadow:0 0 20px rgba(120,150,255,.22)}
+.dtype{color:#a9c8ff}
+.dgoal{color:#e7eaff}
+.node.group{padding:3px 10px;color:#e2e6ff;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  border-radius:13px;background:linear-gradient(152deg,rgba(30,22,60,.94),rgba(12,13,32,.94));
+  box-shadow:inset 0 1px 0 rgba(180,150,255,.24),0 0 0 1px rgba(150,120,255,.28)}
+.node.group.rev{color:#ffe6a8;box-shadow:inset 0 1px 0 rgba(255,207,95,.30),0 0 0 1px rgba(255,207,95,.45)}
+.node.agent{padding:7px 9px;border:1px solid transparent;border-radius:12px;color:var(--ink);
+  background:linear-gradient(155deg,rgba(26,20,52,.96),rgba(12,14,32,.96)) padding-box,var(--irid) border-box;
+  box-shadow:0 0 0 3px rgba(7,6,15,.72),0 6px 20px rgba(80,60,160,.28)}
+.node.agent:hover,.node.agent.active{filter:brightness(1.14);
+  box-shadow:0 0 0 3px rgba(7,6,15,.72),0 0 24px rgba(120,190,255,.60)}
+.node.agent.rev{color:#ffe6a8;
+  background:linear-gradient(155deg,rgba(46,33,18,.96),rgba(28,19,9,.96)) padding-box,
+    linear-gradient(125deg,#ffcf5f,#ff9a6b 55%,#ffe6a8) border-box;
+  box-shadow:0 0 0 3px rgba(7,6,15,.72),0 0 20px rgba(255,180,90,.35)}
+.node.agent.rev .n-role{color:#ffcf5f;opacity:.95}
+.edge{stroke:url(#edgeGrad);stroke-width:1.8px;filter:drop-shadow(0 0 2.5px rgba(95,200,255,.45))}
+.edge-zig-zag{stroke-dasharray:7 5}
+.edge-feedback{stroke-dasharray:2 5}
+.arrow{fill:#8be9ff}
+.gbox{fill:rgba(20,16,44,.32);stroke:rgba(150,120,255,.50);stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+.gbox.rev{stroke:rgba(255,207,95,.60)}
+.gdiv{stroke:rgba(150,120,255,.55);opacity:.6;vector-effect:non-scaling-stroke}
+.gdiv.rev{stroke:rgba(255,207,95,.55)}
+.gtick{stroke:#8be9ff;stroke-width:1.4;fill:none;opacity:.85;vector-effect:non-scaling-stroke}
+.gtick.rev{stroke:var(--gold)}
+#legend .dot.rev{background:var(--gold)}
+#legend{color:#cdd4ff}
+/* title block — prismatic frame over dark glass */
+.tblock{border:1px solid rgba(150,120,255,.32);border-radius:12px;
+  background:linear-gradient(152deg,var(--panel-a),var(--panel-b));
+  box-shadow:inset 0 1px 0 rgba(180,150,255,.18),0 0 26px rgba(90,120,255,.10)}
+.tb-idle{color:#c3b6ff;opacity:.85}
+.tb-row.tb-ident{border-bottom:1px solid rgba(150,120,255,.20)}
+.tb-type{background:var(--irid);color:#0a0818;
+  text-shadow:0 1px 0 rgba(255,255,255,.35);border-radius:11px 0 0 0}
+.tb-headwrap{border-left:1px solid rgba(150,120,255,.18);border-right:1px solid rgba(150,120,255,.18)}
+.tb-goal{color:#f0f2ff}
+.tb-id{color:#9a9fd8}
+.tb-when .tb-val{font-size:12px;color:#cdd4ff}
+.tb-cell{border-right:1px solid rgba(150,120,255,.16)}
+.tb-cell:last-child{border-right:0}
+.tb-num{color:#8be9ff}
+.tb-status.s-ok .tb-num{color:#7cff8a}
+.tb-status.s-warn .tb-num{color:#ffcf5f}
+.tb-status.s-bad .tb-num{color:#ff9aa2}
+.tb-ctx-toggle{border:0;border-top:1px solid rgba(150,120,255,.20);
+  background:rgba(20,16,44,.45);color:#b7a9ff}
+.tb-ctx-toggle:hover{color:#8be9ff;background:rgba(30,24,66,.55)}
+.tb-ctx-toggle[aria-expanded="true"]{color:#8be9ff}
+.tb-ctx{border-top:1px solid rgba(150,120,255,.20);color:#dfe2ff;background:rgba(14,14,34,.45)}
+#panel{border-left:1px solid transparent;color:#e6e9ff;
+  background:linear-gradient(155deg,rgba(26,20,54,.94),rgba(10,11,30,.96)) padding-box,var(--irid) border-box;
+  box-shadow:-24px 0 60px rgba(0,0,0,.45)}
+.p-role{color:#b7a9ff}
+.p-role.is-rev{color:var(--gold)}
+.p-meta dd{color:#e6e9ff}
+.p-prompt button{border:1px solid rgba(150,120,255,.35);border-radius:10px;
+  background:rgba(20,16,44,.55);color:#dfe2ff}
+.p-prompt button:hover{border-color:rgba(139,233,255,.6);color:#8be9ff}
+#p-name{background:var(--irid);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 8px rgba(120,180,255,.3))}
+#tt{background:rgba(16,14,38,.94);color:#eef1ff;border:1px solid rgba(150,120,255,.4);
+  box-shadow:0 8px 26px rgba(0,0,0,.5)}
+#explain{color:#b7a9ff}
+
+</style>
+</head><body>
+
+<div id="app">
+  <aside id="sidebar">
+    <div class="side-head">
+      <h1 id="brand"></h1>
+      <p id="tagline">Dispatches com estrutura de grafo. Fuso: UTC.</p>
+    </div>
+    <div id="states">
+      <div id="st-loading" class="state">Carregando dispatches…</div>
+      <div id="st-error" class="state" hidden>
+        <p>Nao foi possivel carregar os dados.</p>
+        <button id="retry" type="button">Tentar novamente</button>
+      </div>
+      <div id="st-empty" class="state" hidden>Nenhum dispatch com estrutura para inspecionar.</div>
+    </div>
+    <ul id="dlist" aria-label="Dispatches estruturados"></ul>
+  </aside>
+
+  <main id="main">
+    <div id="stage-head">
+      <div class="tblock">
+        <div id="sh-idle" class="tb-idle">Selecione um dispatch a esquerda — o bloco-titulo descreve o despacho.</div>
+        <div id="sh-block" hidden>
+          <div class="tb-row tb-ident">
+            <span id="sh-type" class="tb-type" data-tip=""></span>
+            <div class="tb-headwrap">
+              <div id="sh-goal" class="tb-goal"></div>
+              <div id="sh-id" class="tb-id"></div>
+            </div>
+            <div class="tb-when">
+              <span class="tb-lbl">Emitido · UTC</span>
+              <span id="sh-when" class="tb-val"></span>
+            </div>
+          </div>
+          <div class="tb-row tb-stats" id="sh-stats"></div>
+          <button id="sh-ctx-toggle" type="button" class="tb-ctx-toggle" aria-expanded="false" hidden>contexto</button>
+          <div id="sh-ctx" class="tb-ctx" hidden></div>
+        </div>
+      </div>
+    </div>
+    <div id="stage-wrap">
+      <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
+      <svg id="edges" aria-hidden="true"></svg>
+      <div id="nodes"></div>
+      <div id="legend"><span class="dot rev"></span>revisor / cetico / auditor<span class="mark">?</span></div>
+    </div>
+  </main>
+</div>
+
+<div id="scrim" hidden></div>
+<aside id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="p-name">
+  <button id="p-close" type="button" aria-label="Fechar">&times;</button>
+  <div class="p-role" id="p-role"></div>
+  <h2 id="p-name"></h2>
+  <dl class="p-meta" id="p-meta"></dl>
+  <div class="p-angle" id="p-angle-wrap" hidden>
+    <div class="p-lbl">Angulo / tensao</div>
+    <p id="p-angle"></p>
+  </div>
+  <div class="p-prompt">
+    <button id="p-prompt-toggle" type="button" aria-expanded="false">Revelar prompt inicial completo</button>
+    <div id="p-prompt-body" hidden></div>
+  </div>
+</aside>
+
+<div id="tt" role="tooltip" hidden></div>
+<button id="explain" type="button" title="Modo explicacao" aria-pressed="false">?</button>
+
+<script>
+
+(function () {
+  "use strict";
+  var V = window.__V__ || { layout: "columns" };
+  var REV = { skeptic: 1, auditor: 1, reviewer: 1 };
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { data: null, current: null, focusEl: null };
+
+  // ---- data load: fetch json (served) with file:// script fallback -------
+  function load() {
+    show("st-loading");
+    fetch("../data/dispatches.json")
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(ready)
+      .catch(function () {
+        if (window.__DISPATCHES__) { ready(window.__DISPATCHES__); }
+        else { show("st-error"); }
+      });
+  }
+  function show(id) {
+    ["st-loading", "st-error", "st-empty"].forEach(function (s) {
+      var el = $(s); if (el) el.hidden = (s !== id);
+    });
+  }
+  function ready(payload) {
+    state.data = (payload && payload.dispatches) || [];
+    if (!state.data.length) { show("st-empty"); return; }
+    show("__none__");
+    renderList();
+  }
+
+  // ---- helpers -----------------------------------------------------------
+  function agentsOf(d) {
+    var out = [];
+    (d.groups || []).forEach(function (g) {
+      (g.agents || []).forEach(function (a) { out.push({ a: a, g: g }); });
+    });
+    return out;
+  }
+  function isRev(a) { return !!REV[(a.role || "").toLowerCase()]; }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function nameOf(a) { return a.agent_name || "(sem nome)"; }
+
+  // ---- dispatch list -----------------------------------------------------
+  function renderList() {
+    var ul = $("dlist");
+    ul.innerHTML = "";
+    state.data.forEach(function (d, i) {
+      var ags = agentsOf(d);
+      var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+      var li = document.createElement("li");
+      li.className = "ditem";
+      li.tabIndex = 0;
+      li.setAttribute("data-tip", (d.anti_bias_global || (d.groups[0] && d.groups[0].anti_bias) || "sem eixo anti-vies declarado"));
+      li.innerHTML =
+        '<span class="dtype t-' + esc(d.dispatch_type) + '">' + esc(d.dispatch_type) + "</span>" +
+        '<span class="dgoal">' + esc(shorten(d.goal, 96)) + "</span>" +
+        '<span class="dstat">' + ags.length + " ag · " + (d.groups.length) + " grp · " +
+        (d.connections ? d.connections.length : 0) + " liga · " + revs + " rev</span>";
+      li.addEventListener("click", function () { pick(i, li); });
+      li.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(i, li); }
+      });
+      ul.appendChild(li);
+    });
+  }
+  function shorten(s, n) { s = s || ""; return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+
+  function pick(i, li) {
+    state.current = state.data[i];
+    var prev = document.querySelector(".ditem.sel");
+    if (prev) prev.classList.remove("sel");
+    if (li) li.classList.add("sel");
+    closePanel();
+    renderGraph(state.current);
+  }
+
+  // ---- geometry: HOLO columns, pixel-space (stage W×H). -------------------
+  // Groups become dimensioned technical boxes laid out as columns; agents are
+  // stacked inside their box; every box is vertically centred so a linear
+  // pipeline reads as a straight horizontal spine. Edges are group→group and
+  // routed orthogonally (right-angle elbows) boundary-to-boundary; column-
+  // skipping edges detour through a top "bus" lane so they never cross a box.
+  // Returns { boxes:[{x,y,w,h,rev}], nodes:[…px], edges:[{points:[{x,y}…],tip,type}] }
+  function geometry(d, W, H) {
+    var groups = d.groups || [], G = groups.length || 1;
+    var nodes = [], boxes = [], gInfo = {}, gi;
+
+    var PAD = Math.max(20, Math.min(46, Math.round(W * 0.035)));
+    var innerW = Math.max(120, W - 2 * PAD);
+    var colW = innerW / G;
+
+    // uniform agent-slot sizing (shared across groups); shrink to fit height
+    var maxN = 1;
+    groups.forEach(function (g) { maxN = Math.max(maxN, (g.agents || []).length); });
+    var HEADER = 30, BPX = 14, BPY = 14, wantAH = 52, wantGAP = 16;
+    var availH = Math.max(120, H - 2 * PAD);
+    var neededH = HEADER + BPY * 2 + maxN * wantAH + (maxN - 1) * wantGAP;
+    var s = Math.min(1, availH / neededH);
+    var AH = wantAH * s, GAP = wantGAP * s;
+
+    var AW = Math.max(66, Math.min(172, colW - 52));
+    var BOXW = Math.min(colW - 16, AW + BPX * 2);
+    if (BOXW < AW + 2 * BPX) AW = Math.max(40, BOXW - 2 * BPX);
+
+    function boxH(n) { return HEADER + BPY * 2 + n * AH + Math.max(0, n - 1) * GAP; }
+    var cyMid = H / 2, minTop = Infinity;
+
+    for (gi = 0; gi < G; gi++) {
+      var group = groups[gi], agents = group.agents || [], n = agents.length;
+      var cx = PAD + colW * (gi + 0.5);
+      var bh = boxH(n), bx = cx - BOXW / 2, by = cyMid - bh / 2;
+      minTop = Math.min(minTop, by);
+      var rev = agents.some(isRev);
+      boxes.push({ x: bx, y: by, w: BOXW, h: bh, rev: rev });
+      gInfo[group.group_id] = { gi: gi, cx: cx, box: { x: bx, y: by, w: BOXW, h: bh } };
+      nodes.push({ type: "group", x: cx, y: by + HEADER / 2, w: BOXW - 6,
+        label: group.group_id, group: group, rev: rev,
+        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias)
+                             : ("grupo · " + (group.n || n) + " agente(s)") });
+      var startY = by + HEADER + BPY + AH / 2;
+      agents.forEach(function (a, k) {
+        nodes.push({ type: "agent", x: cx, y: startY + k * (AH + GAP), w: AW, h: AH,
+          label: nameOf(a), agent: a, group: group, rev: isRev(a),
+          tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
+      });
+    }
+
+    // group→group orthogonal edges, boundary-to-boundary
+    var edges = [], skipIdx = 0;
+    (d.connections || []).forEach(function (c) {
+      var src = gInfo[c.from], tgt = gInfo[c.to];
+      if (!src || !tgt) return;
+      var dc = tgt.gi - src.gi, pts;
+      if (Math.abs(dc) === 1) {
+        // adjacent columns: side-to-side elbow at mid height (a straight spine)
+        var x1 = dc > 0 ? src.box.x + src.box.w : src.box.x;
+        var x2 = dc > 0 ? tgt.box.x : tgt.box.x + tgt.box.w;
+        var mx = (x1 + x2) / 2;
+        pts = [{ x: x1, y: cyMid }, { x: mx, y: cyMid }, { x: mx, y: cyMid }, { x: x2, y: cyMid }];
+      } else {
+        // column-skip (or self): detour through the top bus lane, clearing boxes
+        var busY = Math.max(6, minTop - 22 - (skipIdx++ * 7));
+        var sx = src.cx, tx = tgt.cx; if (sx === tx) tx += 0.01;
+        pts = [{ x: sx, y: src.box.y }, { x: sx, y: busY }, { x: tx, y: busY }, { x: tx, y: tgt.box.y }];
+      }
+      edges.push({ points: pts, type: c.type || "x",
+        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
+    });
+
+    return { boxes: boxes, nodes: nodes, edges: edges };
+  }
+  function clamp(v) { return Math.max(6, Math.min(94, v)); }
+
+  // ---- context header / title block (FE-1 opt-in, FE-5 nulls, FE-7 UTC) --
+  var OUTCOME = {
+    resolved: ["resolvido", "s-ok"],
+    loop_ceiling_reached: ["teto de loops", "s-warn"],
+    dissent_irreconcilable: ["dissenso", "s-warn"],
+    user_abort: ["abortado", "s-warn"],
+    error: ["erro", "s-bad"]
+  };
+  function tbCell(lbl, val, cls, tip) {
+    return '<div class="tb-cell ' + (cls || "") + '"' +
+      (tip ? ' data-tip="' + esc(tip) + '"' : "") + ">" +
+      '<span class="tb-lbl">' + esc(lbl) + "</span>" +
+      '<span class="tb-num">' + esc(val) + "</span></div>";
+  }
+  function fmtWhen(iso) {
+    if (!iso) return null;
+    var day = iso.slice(0, 10), tm = iso.slice(11, 16);
+    return day + (tm ? (" " + tm) : "");
+  }
+  // extends the pick/renderGraph populate step; no graph data is read here.
+  function populateHead(d) {
+    $("sh-idle").hidden = true;
+    $("sh-block").hidden = false;
+
+    // TYPE badge (the KIND) — anti-bias axis rides FE-2 hover, not permanent text
+    $("sh-type").textContent = d.dispatch_type || "?";
+    $("sh-type").setAttribute("data-tip", d.anti_bias_global
+      ? ("eixo anti-vies (global): " + d.anti_bias_global)
+      : ("tipo do dispatch: " + (d.dispatch_type || "?")));
+
+    // goal is the headline; dispatch_id demoted to subtitle
+    $("sh-goal").textContent = d.goal || "(sem objetivo declarado)";
+    $("sh-id").textContent = d.dispatch_id || "";
+
+    // created — UTC declared by the cell label (FE-7)
+    $("sh-when").textContent = fmtWhen(d.created) || "—";
+
+    // compact stat row — scalar shadows only; each label declares what it counts
+    var ags = agentsOf(d);
+    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
+    var close = d.close, lu = (close && close.agents_spawned) ? close.agents_spawned.loops_used : null;
+    var cells = "";
+    cells += tbCell("Agentes", ags.length);
+    cells += tbCell("Grupos", (d.groups || []).length);
+    cells += tbCell("Ligacoes", (d.connections || []).length);
+    cells += tbCell("Revisores", revs, "", "papeis cetico / auditor / revisor");
+    if (close && lu != null && d.max_loops != null) {
+      cells += tbCell("Loops uso/teto", lu + "/" + d.max_loops);
+    } else if (d.max_loops != null) {
+      cells += tbCell("Loops teto", d.max_loops);
+    }
+    if (close && close.exit_reason) {
+      var o = OUTCOME[close.exit_reason] || [close.exit_reason, ""];
+      cells += tbCell("Resultado", o[0], "tb-status " + o[1], "exit_reason: " + close.exit_reason);
+    }
+    if (d.working_folder) {
+      cells += tbCell("Saida", d.working_folder, "tb-path", d.working_folder);
+    }
+    $("sh-stats").innerHTML = cells;
+
+    // long framing paragraph — FE-1 opt-in: summoned, never force-fed
+    var ctxBtn = $("sh-ctx-toggle"), ctxBox = $("sh-ctx");
+    if (d.context) {
+      ctxBox.textContent = d.context;
+      ctxBox.hidden = true;
+      ctxBtn.hidden = false;
+      ctxBtn.setAttribute("aria-expanded", "false");
+      ctxBtn.textContent = "contexto";
+    } else {
+      ctxBox.textContent = ""; ctxBox.hidden = true;
+      ctxBtn.hidden = true; ctxBtn.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  // ---- render graph ------------------------------------------------------
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function svgEl(name, attrs) {
+    var e = document.createElementNS(SVGNS, name), k;
+    for (k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function renderGraph(d) {
+    $("stage-empty").hidden = true;
+    populateHead(d);
+
+    // pixel-space layout: 1 SVG unit = 1 px (viewBox matches the stage size),
+    // so nothing is stretched — fixes the old preserveAspectRatio="none" distortion.
+    var wrap = $("stage-wrap");
+    var W = wrap.clientWidth || 900, H = wrap.clientHeight || 560;
+    var geo = geometry(d, W, H);
+
+    var svg = $("edges");
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    svg.innerHTML = "";
+
+    // arrowhead marker (userSpaceOnUse ⇒ uniform size, orient auto ⇒ direction)
+    var defs = svgEl("defs", {});
+    // iridescent edge gradient (violet→cyan→lime) — a prismatic sheen on the
+    // directed strokes; purely decorative, edge TYPE stays in the tooltip.
+    var grad = svgEl("linearGradient", { id: "edgeGrad", x1: "0", y1: "0", x2: "1", y2: "1", gradientUnits: "objectBoundingBox" });
+    [["0", "#b388ff"], ["0.5", "#5fd8ff"], ["1", "#8bff9e"]].forEach(function (st) {
+      grad.appendChild(svgEl("stop", { offset: st[0], "stop-color": st[1] }));
+    });
+    defs.appendChild(grad);
+    var mk = svgEl("marker", { id: "arw", markerUnits: "userSpaceOnUse",
+      markerWidth: 12, markerHeight: 12, refX: 8.5, refY: 5, orient: "auto" });
+    mk.appendChild(svgEl("path", { d: "M0 0 L9 5 L0 10 Z", "class": "arrow" }));
+    defs.appendChild(mk);
+    svg.appendChild(defs);
+
+    // group boxes: dimensioned technical rectangles + title divider + corner ticks
+    geo.boxes.forEach(function (b) {
+      var rc = b.rev ? " rev" : "";
+      svg.appendChild(svgEl("rect", { x: b.x, y: b.y, width: b.w, height: b.h, "class": "gbox" + rc }));
+      svg.appendChild(svgEl("line", { x1: b.x, y1: b.y + 30, x2: b.x + b.w, y2: b.y + 30, "class": "gdiv" + rc }));
+      var t = 6, corners = [[b.x, b.y, 1, 1], [b.x + b.w, b.y, -1, 1], [b.x, b.y + b.h, 1, -1], [b.x + b.w, b.y + b.h, -1, -1]];
+      corners.forEach(function (c) {
+        svg.appendChild(svgEl("path", { "class": "gtick" + rc,
+          d: "M" + c[0] + " " + (c[1] + c[3] * t) + " L" + c[0] + " " + c[1] + " L" + (c[0] + c[2] * t) + " " + c[1] }));
+      });
+    });
+
+    // directed typed edges: orthogonal polyline + arrowhead; type stays in tooltip
+    geo.edges.forEach(function (e) {
+      var dd = "M" + e.points[0].x + " " + e.points[0].y, i;
+      for (i = 1; i < e.points.length; i++) dd += " L" + e.points[i].x + " " + e.points[i].y;
+      svg.appendChild(svgEl("path", { d: dd, "class": "edge edge-" + e.type, fill: "none",
+        "vector-effect": "non-scaling-stroke", "marker-end": "url(#arw)", "data-tip": e.tip }));
+    });
+
+    var host = $("nodes"); host.innerHTML = "";
+    geo.nodes.forEach(function (nd) {
+      var el = document.createElement("div");
+      el.className = "node " + nd.type + (nd.rev ? " rev" : "");
+      el.style.left = nd.x + "px"; el.style.top = nd.y + "px";
+      if (nd.w) el.style.width = nd.w + "px";
+      if (nd.type === "agent" && nd.h) el.style.height = nd.h + "px";
+      el.setAttribute("data-tip", nd.tip);
+      el.setAttribute("data-explain", nd.type === "group"
+        ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
+        : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
+      el.innerHTML = nd.type === "group"
+        ? '<span class="g-label">' + esc(nd.label) + "</span>"
+        : '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
+          '<span class="n-name">' + esc(nd.label) + "</span>";
+      if (nd.type === "agent") {
+        el.tabIndex = 0;
+        el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
+        el.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
+        });
+      }
+      host.appendChild(el);
+    });
+  }
+
+  // ---- agent panel (FE-1 opt-in prompt, FE-6 single focus) --------------
+  function openPanel(a, g, el) {
+    closePanel();
+    state.focusEl = el; if (el) el.classList.add("active");
+    $("p-role").textContent = (a.role || "agente") + (isRev(a) ? " • revisor" : "");
+    $("p-role").className = "p-role" + (isRev(a) ? " is-rev" : "");
+    $("p-name").textContent = nameOf(a);
+    var meta = $("p-meta"); meta.innerHTML = "";
+    [["modelo", a.model], ["orcamento", a.token_budget != null ? (a.token_budget + " tok") : null],
+     ["grupo", g.group_id]].forEach(function (kv) {
+      if (kv[1] == null || kv[1] === "") return;
+      meta.innerHTML += "<dt>" + esc(kv[0]) + "</dt><dd>" + esc(kv[1]) + "</dd>";
+    });
+    var aw = $("p-angle-wrap");
+    if (a.angle) { aw.hidden = false; $("p-angle").textContent = a.angle; } else { aw.hidden = true; }
+    var body = $("p-prompt-body"), tog = $("p-prompt-toggle");
+    body.textContent = a.initial_prompt || "(sem prompt inicial registrado)";
+    body.hidden = true; tog.setAttribute("aria-expanded", "false");
+    tog.textContent = "Revelar prompt inicial completo";
+    $("scrim").hidden = false; $("panel").hidden = false;
+    $("panel").scrollTop = 0;
+  }
+  function closePanel() {
+    $("panel").hidden = true; $("scrim").hidden = true;
+    if (state.focusEl) { state.focusEl.classList.remove("active"); state.focusEl = null; }
+  }
+
+  // ---- tooltip system (FE-2: one #tt + data-tip) -------------------------
+  function initTooltip() {
+    var tt = $("tt"), on = false;
+    document.addEventListener("mouseover", function (e) {
+      // FE-9: inside explain-mode a node reveals "what it is + why it matters";
+      // otherwise the universal FE-2 tooltip shows secondary/qualifier info.
+      var xp = document.body.classList.contains("explain");
+      var t = e.target.closest ? e.target.closest(xp ? "[data-explain],[data-tip]" : "[data-tip]") : null;
+      if (!t) return;
+      var txt = (xp && t.getAttribute("data-explain")) || t.getAttribute("data-tip");
+      if (txt) { tt.textContent = txt; tt.hidden = false; on = true; place(e); }
+    });
+    document.addEventListener("mousemove", function (e) { if (on) place(e); });
+    document.addEventListener("mouseout", function (e) {
+      var t = e.target.closest ? e.target.closest("[data-tip]") : null;
+      if (t) { tt.hidden = true; on = false; }
+    });
+    function place(e) {
+      var x = e.clientX + 14, y = e.clientY + 16;
+      if (x + 260 > innerWidth) x = e.clientX - 260;
+      if (y + 60 > innerHeight) y = e.clientY - 50;
+      tt.style.left = x + "px"; tt.style.top = y + "px";
+    }
+  }
+
+  // ---- wire-up -----------------------------------------------------------
+  function init() {
+    document.body.classList.add(V.bodyClass || "");
+    $("brand").textContent = V.brand || "Dispatch Viewer";
+    $("retry").addEventListener("click", load);
+    $("p-close").addEventListener("click", closePanel);
+    $("scrim").addEventListener("click", closePanel);   // FE-3 instant outside-click
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanel(); }); // FE-3 Esc
+    $("p-prompt-toggle").addEventListener("click", function () {   // FE-1 opt-in density
+      var b = $("p-prompt-body"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
+    });
+    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in: header context
+      var b = $("sh-ctx"), open = b.hidden;
+      b.hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.textContent = open ? "ocultar contexto" : "contexto";
+    });
+    $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
+      var on = document.body.classList.toggle("explain");
+      this.setAttribute("aria-pressed", String(on));
+    });
+    initTooltip();
+    load();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+
+</script>
+</body></html>
