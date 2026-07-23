@@ -42,50 +42,29 @@ graph TD
 
 | Capability | What | Key Aspects | First-Cut Boundary |
 |---|---|---|---|
-| Session Registry | Ensures one coarse session per execution context and supports explicit authorized rollover. | `EnsureSession`, `StartNewSession`, `LinkSessionDispatch`, `SessionRecord` | ID, start instant, current name and sole Session-to-Dispatch link only. |
-| Dispatch Scope Projection | Reads current dispatch intent and projects session/research joins without mutating the strict ledger. | `DispatchScopeProjection`, `ProvenanceFactsToReadModels` | No new dispatch keys, reverse joins or lifecycle owner. |
-| Research Capture & Facts | Seals one artifact-backed producer outcome and appends attributed questions, answers, uses, checks, problems, claim extractions and formalizations. | `AppendResearchCapture`, `AppendResearchFact`, `ResearchCapture` | Raw return is artifact-only at L0; facts never rewrite capture bytes. |
-| Reference Probe Lineage | Maps an ACI-committed, profile-bound probe recommendation into typed research lineage. | `AppendReferenceProbeLineage`, `ProbeBundleToReferenceLineage`, `ACIProtocolProfileBinding` | Small profile only; no second bus and no claim adjudication. |
+| Session Registry | Ensures one coarse session per execution context and supports explicit authorized rollover. | `EnsureSession`, `StartNewSession`, `LinkSessionDispatch`, `SessionRecord` | ID, start instant, immutable initial name and sole Session-to-Dispatch link only; rename is outside L0. |
+| Dispatch Scope Projection | Reads a pinned dispatch authority snapshot and projects session/research joins without mutating the strict ledger. | `DispatchScopeProjection`, `DispatchAuthoritySnapshotRef`, `ProvenanceFactsToReadModels` | No new dispatch keys, reverse joins or lifecycle owner. |
+| Research Capture & Facts | Seals one producer outcome and appends attributed questions, answers, uses, checks, problems, claim extractions and formalizations. | `AppendResearchCapture`, `AppendResearchFact`, `ResearchCapture` | `captured`/`partial` require exactly one artifact raw return; `missing` forbids it and requires expectation/failure evidence. |
+| Reference Probe Lineage | Maps an ACI-committed, profile-bound probe recommendation into typed research lineage while referencing host-owned source observations. | `AppendReferenceProbeLineage`, `ProbeBundleToReferenceLineage`, `ACIProtocolProfileBinding` | Small profile only; no second bus, source-observation owner or claim adjudication. |
 | Deterministic Read Models | Rebuilds Session, Dispatch and Research projections at an explicit event offset. | `SessionRecord`, `DispatchScopeProjection`, `ResearchRecord` | As-of, dedupe and supersession formulas are replay-tested; granular views remain derived. |
 
-### Session Registry
+### Capability Boundaries
 
-`EnsureSession` is idempotent by execution-context key. `StartNewSession` atomically starts a
-successor and rebinds the context after compare-and-swap; it does not close or mutate the predecessor.
-`session.dispatch_linked` is the sole persisted Session-to-Dispatch relation.
-
-### Dispatch Scope Projection
-
-`DispatchScopeProjection` consumes the current dispatch authority and APT facts. It may display a
-session, research counts and declared scope already present in the dispatch, but cannot add ledger
-keys, infer joins from timestamps or make research status a dispatch lifecycle state.
-
-### Research Capture & Facts
-
-One `ResearchCapture` is the immutable, identity-bearing outcome for an expected contribution and
-capture operation. Its raw witness is a classified content-addressed artifact reference. Extracted
-facts are separate identity-bearing Entities with `FactEnvelope` and `ExtractionProvenance`; a
-revision appends a predecessor-linked fact.
-
-### Reference Probe Lineage
-
-APT accepts probe lineage only after exact ACI protocol-profile and bundle receipts verify. A
-`ResearchReferenceUse` distinguishes attributed mention/citation/claimed consultation from the
-external host-owned source observation, and `ReferenceCheck` says exactly which check was performed.
-
-### Deterministic Read Models
-
-`SessionRecord`, `DispatchScopeProjection` and `ResearchRecord` are Queries/read models, not
-additional write authorities. Each returns `as_of_event_id`, applies explicit current-capture and
-fact-supersession rules, retains disagreement, and performs no provider/tool effect during replay.
+| Capability | Binding constraint |
+|---|---|
+| Session Registry | Ensure is idempotent by context key; rollover atomically emits successor start and context rebound; the initial name is immutable in L0 and future `RenameSession` is not authorized. |
+| Dispatch Scope Projection | The deterministic hash uses a `DispatchAuthoritySnapshotRef` pinning immutable row/artifact, digest and accepted offset; any separately fetched current external snapshot is display-only and excluded from that hash. |
+| Research Capture & Facts | Capture is immutable: `captured`/`partial` contain exactly one `ArtifactReference`; `missing` contains none and records expected contribution plus failure evidence. Extracted fact revisions append predecessor-linked Entities. |
+| Reference Probe Lineage | Exact ACI profile/bundle receipts gate `host.SourceObservation <- optional ProbeRecommendationRef <- ResearchReferenceUse -> ResearchReferenceClaimRelation -> ResearchClaimExtraction`; APT references but never owns the host event. |
+| Deterministic Read Models | `SessionRecord`, `DispatchScopeProjection` and `ResearchRecord` are Queries with `as_of_event_id`, explicit supersession/dedupe and zero replay effects. |
 
 ## Domain Concepts
 
 | Concept | Type | Key Constraints |
 |---|---|---|
-| [Session](domain.md#session) | Entity | Opaque identity; one start per `session_id` and `ensure_key`; rename does not change identity. |
+| [Session](domain.md#session) | Entity | Opaque identity; one start per `session_id` and `ensure_key`; initial name is immutable in L0. |
 | [SessionDispatchLink](domain.md#sessiondispatchlink) | Entity | One authoritative Session-to-Dispatch relation; duplicate retry is idempotent. |
-| [ResearchCapture](domain.md#researchcapture) | Entity | Exactly one Dispatch; immutable artifact-backed witness; predecessor-CAS supersession; stable digest. |
+| [ResearchCapture](domain.md#researchcapture) | Entity | Exactly one Dispatch; conditional raw-return cardinality by status; missing expectation/failure evidence; predecessor-CAS supersession; stable digest. |
 | [ResearchQuestion](domain.md#researchquestion) | Entity | Stable local identity; exact extraction provenance; optional typed derivation. |
 | [ResearchAnswer](domain.md#researchanswer) | Entity | Answers at least one question and selects exact raw bytes without copying the witness. |
 | [ResearchReferenceUse](domain.md#researchreferenceuse) | Entity | Attributed use is distinct from host access and from claim relation. |
@@ -97,7 +76,9 @@ fact-supersession rules, retains disagreement, and performs no provider/tool eff
 | [ExtractionProvenance](domain.md#extractionprovenance) | Value Object | Actor, method/version, mode, capture digest and exact selector. |
 | [RawSelector](domain.md#rawselector) | Value Object | UTF-8 byte, half-open offsets; selected bytes and raw artifact digest must verify. |
 | [ArtifactReference](domain.md#artifactreference) | Value Object | Content digest, media type, classification, redaction, retention and tombstone policy. |
-| [ProbeRecommendationRef](domain.md#proberecommendationref) | Value Object | Pins probe/recommendation, bundle digest, profile digest and source-observation refs. |
+| [DispatchAuthoritySnapshotRef](domain.md#dispatchauthoritysnapshotref) | Value Object | Immutable dispatch row/artifact ref, digest and accepted offset pinned into deterministic queries. |
+| [ProbeRecommendationRef](domain.md#proberecommendationref) | Value Object | Conditional field constraint: `probe_ref present ⇒ exact profile_binding`; also pins recommendation, bundle digest and source-observation refs. |
+| [ACIProtocolProfileBinding](domain.md#aciprotocolprofilebinding) | Value Object | Exact registered ACI profile ID, version and digest; equal only by all three fields. |
 | [CaptureStatus](domain.md#capturestatus) | Enum / Type | `captured`, `partial`, `missing`; `superseded` is derived, never stored status. |
 
 ## Concept Registry
@@ -123,7 +104,9 @@ for this feature and remain non-runtime until registry synchronization passes.
 | [RawSelector](domain.md#rawselector) | `agent-provenance-telemetry.RawSelector` | Value Object |
 | [ContentDigest](domain.md#contentdigest) | `agent-provenance-telemetry.ContentDigest` | Value Object |
 | [ArtifactReference](domain.md#artifactreference) | `agent-provenance-telemetry.ArtifactReference` | Value Object |
+| [DispatchAuthoritySnapshotRef](domain.md#dispatchauthoritysnapshotref) | `agent-provenance-telemetry.DispatchAuthoritySnapshotRef` | Value Object |
 | [ProbeRecommendationRef](domain.md#proberecommendationref) | `agent-provenance-telemetry.ProbeRecommendationRef` | Value Object |
+| [ACIProtocolProfileBinding](domain.md#aciprotocolprofilebinding) | `agent-provenance-telemetry.ACIProtocolProfileBinding` | Value Object |
 | [CaptureStatus](domain.md#capturestatus) | `agent-provenance-telemetry.CaptureStatus` | Enum / Type |
 | [ExtractionMode](domain.md#extractionmode) | `agent-provenance-telemetry.ExtractionMode` | Enum / Type |
 | [ReferenceUseKind](domain.md#referenceusekind) | `agent-provenance-telemetry.ReferenceUseKind` | Enum / Type |
@@ -143,7 +126,6 @@ for this feature and remain non-runtime until registry synchronization passes.
 | [ResearchRecord](queries.md#researchrecord) | `agent-provenance-telemetry.ResearchRecord` | Query |
 | [ProvenanceAppendPort](interfaces.md#provenanceappendport) | `agent-provenance-telemetry.ProvenanceAppendPort` | Interface |
 | [ProvenanceQueryPort](interfaces.md#provenancequeryport) | `agent-provenance-telemetry.ProvenanceQueryPort` | Interface |
-| [ACIProtocolProfileBinding](interfaces.md#aciprotocolprofilebinding) | `agent-provenance-telemetry.ACIProtocolProfileBinding` | Interface |
 | [APTFactToACIEvent](mappings.md#aptfacttoacievent) | `agent-provenance-telemetry.APTFactToACIEvent` | Mapping |
 | [ProbeBundleToReferenceLineage](mappings.md#probebundletoreferencelineage) | `agent-provenance-telemetry.ProbeBundleToReferenceLineage` | Mapping |
 | [ProvenanceFactsToReadModels](mappings.md#provenancefactstoreadmodels) | `agent-provenance-telemetry.ProvenanceFactsToReadModels` | Mapping |
@@ -173,23 +155,27 @@ Only canonical DomainSpec relationships are used.
 |---|---|---|---|---|
 | `agent-provenance-telemetry.ProvenanceAppendPort` | exposes | `agent-provenance-telemetry.EnsureSession` | `interfaces.md#provenanceappendport` | Internal contract; no runtime claim. |
 | `agent-provenance-telemetry.ProvenanceAppendPort` | exposes | `agent-provenance-telemetry.StartNewSession` | `interfaces.md#provenanceappendport` | Authorized atomic rollover. |
+| `agent-provenance-telemetry.ProvenanceAppendPort` | exposes | `agent-provenance-telemetry.LinkSessionDispatch` | `interfaces.md#provenanceappendport` | Sole Session-to-Dispatch relation. |
 | `agent-provenance-telemetry.ProvenanceAppendPort` | exposes | `agent-provenance-telemetry.AppendResearchCapture` | `interfaces.md#provenanceappendport` | Durable append-before-ack. |
+| `agent-provenance-telemetry.ProvenanceAppendPort` | exposes | `agent-provenance-telemetry.AppendResearchFact` | `interfaces.md#provenanceappendport` | Append-only extracted fact. |
+| `agent-provenance-telemetry.ProvenanceAppendPort` | exposes | `agent-provenance-telemetry.AppendReferenceProbeLineage` | `interfaces.md#provenanceappendport` | Profile/receipt-gated lineage. |
 | `agent-provenance-telemetry.ProvenanceQueryPort` | exposes | `agent-provenance-telemetry.SessionRecord` | `interfaces.md#provenancequeryport` | Read-only projection. |
 | `agent-provenance-telemetry.ProvenanceQueryPort` | exposes | `agent-provenance-telemetry.DispatchScopeProjection` | `interfaces.md#provenancequeryport` | Read-only projection. |
 | `agent-provenance-telemetry.ProvenanceQueryPort` | exposes | `agent-provenance-telemetry.ResearchRecord` | `interfaces.md#provenancequeryport` | Read-only projection. |
 | `agent-provenance-telemetry.SingleJoinAuthorityRule` | enforces | `agent-provenance-telemetry.LinkSessionDispatch` | `rules.md#apt-r1--single-join-authority` | Rejects duplicate/contradictory joins. |
 | `agent-provenance-telemetry.IdempotentAppendRule` | enforces | `agent-provenance-telemetry.AppendResearchCapture` | `rules.md#apt-r2--idempotent-append` | Same key/digest reuses receipt. |
-| `agent-provenance-telemetry.ArtifactOnlyRawReturnRule` | enforces | `agent-provenance-telemetry.AppendResearchCapture` | `rules.md#apt-r3--artifact-only-raw-return` | Inline raw forbidden at L0. |
+| `agent-provenance-telemetry.ArtifactOnlyRawReturnRule` | enforces | `agent-provenance-telemetry.AppendResearchCapture` | `rules.md#apt-r3--artifact-only-raw-return` | If raw is present it is exactly one artifact: `captured ∨ partial ⇒ |raw_return|=1`; `missing ⇒ |raw_return|=0 ∧ expected_contribution ∧ failure_evidence`. |
 | `agent-provenance-telemetry.ExtractionProvenanceRule` | enforces | `agent-provenance-telemetry.AppendResearchFact` | `rules.md#apt-r4--extraction-provenance` | Exact author/method/selector. |
 | `agent-provenance-telemetry.CaptureSupersessionRule` | enforces | `agent-provenance-telemetry.AppendResearchCapture` | `rules.md#apt-r5--capture-supersession` | Predecessor CAS, no cycles. |
 | `agent-provenance-telemetry.ProtocolProfileBindingRule` | enforces | `agent-provenance-telemetry.AppendReferenceProbeLineage` | `rules.md#apt-r7--protocol-profile-binding` | Exact ACI profile receipt. |
 | `agent-provenance-telemetry.EnsureSession` | produces | `agent-provenance-telemetry.SessionStarted` | `operations.md#ensuresession` | Only when ensure key is new. |
+| `agent-provenance-telemetry.StartNewSession` | produces | `agent-provenance-telemetry.SessionStarted` | `operations.md#startnewsession` | Same atomic batch and receipt as context rebound. |
 | `agent-provenance-telemetry.StartNewSession` | produces | `agent-provenance-telemetry.SessionContextRebound` | `operations.md#startnewsession` | Atomic with successor start. |
 | `agent-provenance-telemetry.LinkSessionDispatch` | produces | `agent-provenance-telemetry.SessionDispatchLinked` | `operations.md#linksessiondispatch` | Sole relation event. |
 | `agent-provenance-telemetry.AppendResearchCapture` | produces | `agent-provenance-telemetry.ResearchCaptureAppended` | `operations.md#appendresearchcapture` | Captured, partial or missing. |
 | `agent-provenance-telemetry.AppendResearchFact` | produces | `agent-provenance-telemetry.ResearchFactAppended` | `operations.md#appendresearchfact` | Append-only extraction. |
 | `agent-provenance-telemetry.AppendReferenceProbeLineage` | produces | `agent-provenance-telemetry.ReferenceProbeLineageAppended` | `operations.md#appendreferenceprobelineage` | Receipt-verified lineage. |
-| `agent-provenance-telemetry.ResearchCapture` | contains | `agent-provenance-telemetry.ArtifactReference` | `domain.md#researchcapture` | Raw witness metadata only. |
+| `agent-provenance-telemetry.ResearchCapture` | contains | `agent-provenance-telemetry.ArtifactReference` | `domain.md#researchcapture` | Conditional `0..1`: exactly one for `captured`/`partial`, zero for `missing`; never inline. |
 | `agent-provenance-telemetry.ResearchCapture` | contains | `agent-provenance-telemetry.ContentDigest` | `domain.md#researchcapture` | Canonical integrity. |
 | `agent-provenance-telemetry.ResearchQuestion` | contains | `agent-provenance-telemetry.ExtractionProvenance` | `domain.md#researchquestion` | Attributed extraction. |
 | `agent-provenance-telemetry.ResearchAnswer` | contains | `agent-provenance-telemetry.RawSelector` | `domain.md#researchanswer` | Exact witness selection. |
@@ -217,8 +203,8 @@ as-of replay. Ratification does not assert implementation.
 | Question | Disposition for this specification |
 |---|---|
 | OQ-APT1 | Settled: one `ResearchCapture` is the stable write unit; `ResearchRecord` is its as-of Query/read model. |
-| OQ-APT2 | Settled for L0: raw return is never inline; it is an ACI content-addressed artifact reference with digest and governance metadata. |
-| OQ-APT3 | Settled: human-provided or host-suggested initial name; rename appends a fact and never changes identity. |
+| OQ-APT2 | Settled for L0: when raw return exists it is never inline and is exactly one ACI content-addressed artifact reference with digest/governance metadata; `missing` has no raw return. |
+| OQ-APT3 | Partially settled: L0 stores a human-provided or host-suggested immutable initial name. Rename semantics and a future `RenameSession` operation are deferred; any future rename must preserve `session_id`. |
 | OQ-APT4 | Settled: identity, access-evidence and claim-support checks are distinct; producer self-report never proves access. |
 | OQ-APT5 | Deferred outside APT: formalization remains a candidate until a future ontology/definition authority accepts it. |
 | OQ-APT6 | Settled narrowly: `host_actor` may produce a capture for an already valid Dispatch; APT does not authorize a group-less dispatch. |
@@ -261,12 +247,18 @@ their individual review gates pass.
 | Reference Probe Lineage | [ACI Receipt-gated publication](../../agents-communication-infra/specs/SPEC.md#receipt-gated-deliberation) | exact protocol profile, publication and receipt evidence | Accepts only committed probe lineage. |
 | Deterministic Read Models | [ACI Read and accountability](../../agents-communication-infra/specs/SPEC.md#operator-projection-and-usage-accountability) | cursor/offset and replay contract | Preserves explicit staleness and deterministic reconstruction. |
 
+### Host-Owned External Concept
+
+| Concept ID | Type | Owner | Source Contract | APT Use |
+|---|---|---|---|---|
+| `host.SourceObservation` | Event | Host-mediated acquisition boundary | [Focused discovery reference lineage](../discovery/session-dispatch-research-records.md#43-reference-uses-and-checks) | Optional referenced evidence for `ResearchReferenceUse`; APT never mints, re-emits or changes it. |
+
 ## Produces For
 
 | Consumer | Consumes Capability | Via | What |
 |---|---|---|---|
 | Existing orchestration read surfaces | Deterministic Read Models | `ProvenanceQueryPort` | Session, Dispatch and Research rows with explicit as-of cursor. |
-| Research authors and reviewers | Research Capture & Facts | `ResearchRecord` | Exact artifact witness plus attributed structured extractions. |
+| Research authors and reviewers | Research Capture & Facts | `ResearchRecord` | Exact capture outcome/evidence; artifact witness for `captured`/`partial` only, plus attributed structured extractions. |
 | Future assertion capture | Research Capture & Facts | explicit future mapping only | Research-local claim extraction with provenance; never implicit promotion. |
 | Future ontology/definition governance | Research Capture & Facts | `FormalizationCandidate` | Interpreted notation and review trail, not accepted vocabulary. |
 
@@ -276,10 +268,18 @@ Planned acceptance scenarios live in [User Stories](../STORIES.md). Exact rule, 
 workflow and negative-path coverage will be derived in [Test Specification](../TEST-SPEC.md). Neither
 file may authorize implementation before its own review receipt and the work-pack mutation gate.
 
+The future TEST-SPEC must include this status/cardinality matrix:
+
+| Status | Positive fixture | Required negative fixtures |
+|---|---|---|
+| `captured` | Exactly one valid `ArtifactReference`. | Reject absent, multiple or inline raw returns. |
+| `partial` | Exactly one valid `ArtifactReference`. | Reject absent, multiple or inline raw returns. |
+| `missing` | No raw return; expected contribution and failure evidence present. | Reject any raw return or absent expectation/failure evidence. |
+
 ## References
 
 - [Focused discovery v0.2.0](../discovery/session-dispatch-research-records.md)
-- [Approved work-pack](../WORK-PACK.md)
+- [Work-pack (draft; document gate reviewed)](../WORK-PACK.md)
 - [ACI specification](../../agents-communication-infra/specs/SPEC.md)
 - [ACI architecture scope](../../agents-communication-infra/specs/architecture.md#scope-boundary)
 - [ACI atomic command acceptance](../../agents-communication-infra/specs/persistence-and-replay.md#4-atomic-command-acceptance)
