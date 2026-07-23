@@ -38,6 +38,7 @@ html,body{height:100%;margin:0}
 .mh-ctx-body{margin:8px 0 0;font-size:13px;line-height:1.55}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
+#stage-empty[hidden]{display:none}
 #edges{position:absolute;inset:0;width:100%;height:100%}
 .edge{stroke-width:1.6px;opacity:.85}
 #nodes{position:absolute;inset:0}
@@ -100,7 +101,7 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
 .node.agent.rev{border-width:2px;border-color:#7a5a2a;background:#f6ecd6;box-shadow:3px 3px 0 #c9a86a}
 .node.agent.rev .n-role{color:#7a5a2a;opacity:.95}
 .node .n-role{font-style:italic;text-transform:none;opacity:.75}
-.edge{stroke:#5a4a30;stroke-width:1.4px;opacity:.85}
+.edge{stroke:#5a4a30;stroke-width:1.6px;opacity:.92}
 .band-rule{stroke:#c1b697;stroke-width:1px;opacity:.9}
 #legend .dot.rev{background:#7a5a2a}
 #panel{background:#f8f3e7;border-left:3px double #20180f;color:#20180f}
@@ -342,7 +343,7 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
   function geometry(d, W, H) {
     var groups = d.groups || [], G = groups.length;
     var nodes = [], bands = {}, seps = [];
-    var PAD_T = 16, PAD_B = 16, MARGIN_L = 16, MARGIN_R = 22;
+    var PAD_T = 16, PAD_B = 16, MARGIN_L = 48, MARGIN_R = 22;
     var GUTTER = 128, NODE_W = 134, NODE_H = 52, GAP_X = 22, GAP_Y = 16;
     var agentX0 = MARGIN_L + GUTTER;
     var agentW = Math.max(NODE_W, W - agentX0 - MARGIN_R);
@@ -390,9 +391,9 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
       var y0 = midY - gridH / 2 + NODE_H / 2;
       (m.g.agents || []).forEach(function (a, ai) {
         var r = Math.floor(ai / m.cols), c = ai % m.cols;
-        var inRow = (r === m.rows - 1) ? (m.n - r * m.cols) : m.cols;
-        var rowW = inRow * NODE_W + (inRow - 1) * GAP_X;
-        var x0 = agentX0 + (agentW - rowW) / 2 + NODE_W / 2;
+        // LEFT-ALIGN each row against the gutter so agents cluster right next to
+        // their group label (close the old center-right gap), not floated across.
+        var x0 = agentX0 + NODE_W / 2;
         anode(a, m.g, x0 + c * (NODE_W + GAP_X), y0 + r * (NODE_H + GAP_Y));
       });
       bands[m.g.group_id] = { midY: midY };
@@ -452,9 +453,9 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
 
     // --- edges: pixel space, arrowhead marker, boundary-to-boundary ---------
     svg.innerHTML =
-      '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="7.5" refY="3.2" ' +
+      '<defs><marker id="arrow" markerWidth="13" markerHeight="13" refX="9" refY="4" ' +
       'orient="auto" markerUnits="userSpaceOnUse">' +
-      '<path d="M0,0 L8,3.2 L0,6.4 Z" fill="#5a4a30"></path></marker></defs>';
+      '<path d="M0,0 L10,4 L0,8 Z" fill="#5a4a30"></path></marker></defs>';
 
     geo.seps.forEach(function (s) {          // ruled newspaper band dividers
       var ln = document.createElementNS(NS, "line");
@@ -470,7 +471,12 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
     // This keeps the spine clear of the labels/agents it would otherwise cross,
     // and staggers endpoints so converging arrows never stack. Subtle per-type
     // dash only (no color rainbow, no on-screen label — the type lives in #tt).
-    var dash = { sequential: "1 3", feedback: "6 4", "zig-zag": "3 3", zigzag: "3 3" };
+    // Per-type dash keeps the newspaper restraint (single ink, no color, no
+    // on-screen label — the type lives in #tt): sequential = solid, zig-zag =
+    // long dash, feedback = fine dot. Each link gets its OWN left lane so the
+    // arcs never collapse into one spine; every arc carries an arrowhead at the
+    // target's boundary, so the group→group direction reads as flow.
+    var dash = { sequential: "", feedback: "2 5", "zig-zag": "8 5", zigzag: "8 5" };
     var outC = {}, inC = {};
     geo.edges.forEach(function (e, idx) {
       var a = gEls[e.from], b = gEls[e.to];
@@ -479,14 +485,16 @@ body{font-family:Georgia,"Times New Roman",serif;color:#20180f;background:#f4efe
       var oi = (outC[e.from] = (outC[e.from] || 0) + 1);
       var ii = (inC[e.to] = (inC[e.to] || 0) + 1);
       var sx = ra.left, sy = ra.cy + (oi - 1) * 8;             // leave source left edge
-      var ex = rb.left - 5, ey = rb.cy + (ii - 1) * 8;          // enter target left edge
-      var railX = Math.max(4, Math.min(ra.left, rb.left) - 14 - idx * 7);
+      var ex = rb.left - 6, ey = rb.cy + (ii - 1) * 8;          // enter target left edge (arrowhead)
+      var railX = Math.min(ra.left, rb.left) - 16 - idx * 6;    // distinct lane per link, bowed left
+      if (railX < 4) railX = 4;
       var p = document.createElementNS(NS, "path");
       p.setAttribute("d", "M" + sx + " " + sy +
         " C " + railX + " " + sy + " " + railX + " " + ey + " " + ex + " " + ey);
       p.setAttribute("class", "edge");
       p.setAttribute("fill", "none");
-      p.setAttribute("stroke-dasharray", dash[(e.type || "").toLowerCase()] || "2 3");
+      var da = dash[(e.type || "").toLowerCase()];
+      if (da) p.setAttribute("stroke-dasharray", da);
       p.setAttribute("marker-end", "url(#arrow)");
       p.setAttribute("data-tip", e.tip);
       svg.appendChild(p);

@@ -39,6 +39,7 @@ html,body{height:100%;margin:0}
 .sh-ctx{margin:0;font-size:12.5px;line-height:1.55;opacity:.85}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
+#stage-empty[hidden]{display:none}   /* attribute loses on specificity to the id rule above — force-hide on selection */
 #edges{position:absolute;inset:0;width:100%;height:100%}
 .edge{stroke-width:1.6px;opacity:.85}
 #nodes{position:absolute;inset:0}
@@ -348,7 +349,11 @@ body{font-family:"Inter",system-ui,sans-serif;color:#eaf0ff;background:#171a3a;
     } else {
       var Rx = Math.max(0, W / 2 - margin - maxHalfW);
       var Ry = Math.max(0, H / 2 - margin - maxHalfH);
-      var a0 = Math.PI; // start on the left so 2 groups read left→right in a landscape stage
+      // Enter top-left and sweep clockwise: flow-ordered groups read as a
+      // pipeline that starts where the eye lands (upper-left) and winds
+      // top → right → bottom → lower-left, leaving a clean open centre and a
+      // natural break on the left between the last step and the first.
+      var a0 = G === 2 ? Math.PI : -3 * Math.PI / 4;
       gl.forEach(function (o, i) {
         var ang = a0 + i * 2 * Math.PI / G;
         o.Cx = cx0 + Rx * Math.cos(ang);
@@ -382,9 +387,29 @@ body{font-family:"Inter",system-ui,sans-serif;color:#eaf0ff;background:#171a3a;
     return { gl: gl, overlap: overlap };
   }
 
+  // Order groups along the connection flow (sources first) so consecutive
+  // pipeline steps land on adjacent points of the ring — sequential edges become
+  // short perimeter arcs instead of chords that cross the open centre. Stable:
+  // ties keep the authored order; cycles/leftovers are appended untouched.
+  function flowOrder(groups, conns) {
+    var by = {}, indeg = {}, adj = {};
+    groups.forEach(function (g) { by[g.group_id] = g; indeg[g.group_id] = 0; adj[g.group_id] = []; });
+    (conns || []).forEach(function (c) {
+      if (by[c.from] && by[c.to]) { adj[c.from].push(c.to); indeg[c.to]++; }
+    });
+    var q = [], order = [];
+    groups.forEach(function (g) { if (indeg[g.group_id] === 0) q.push(g.group_id); });
+    while (q.length) {
+      var id = q.shift(); order.push(by[id]);
+      adj[id].forEach(function (t) { if (--indeg[t] === 0) q.push(t); });
+    }
+    if (order.length < groups.length) groups.forEach(function (g) { if (order.indexOf(g) < 0) order.push(g); });
+    return order;
+  }
+
   // Shrink the agent-cell footprint until the group hulls stop colliding.
   function layoutDispatch(d, W, H) {
-    var groups = d.groups || [], G = groups.length, scale = 1, res;
+    var groups = flowOrder(d.groups || [], d.connections), G = groups.length, scale = 1, res;
     for (var s = 0; s < 7; s++) {
       res = tryLayout(groups, G, W, H, scale);
       res.scale = scale;

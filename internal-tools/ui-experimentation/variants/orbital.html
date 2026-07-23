@@ -22,6 +22,7 @@ html,body{height:100%;margin:0}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
 #stage-head{position:relative;z-index:20;padding:12px 20px 10px;display:flex;flex-direction:column;gap:7px}
 .sh-idle{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.sh-idle[hidden],.sh-live[hidden]{display:none}
 .sh-idle-mark{font-size:15px;line-height:1}
 .sh-live{display:flex;flex-direction:column;gap:7px;min-width:0}
 .sh-row-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -42,14 +43,15 @@ html,body{height:100%;margin:0}
 .sh-ctx{position:absolute;top:100%;left:14px;right:14px;z-index:5;margin-top:2px;padding:13px 16px;font-size:12.5px;line-height:1.6;border-radius:8px;max-height:46vh;overflow:auto;white-space:pre-wrap;word-break:break-word}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
+#stage-empty[hidden]{display:none}
 #edges{position:absolute;inset:0;width:100%;height:100%}
 .edge{stroke-width:1.6px;opacity:.85}
 #nodes{position:absolute;inset:0}
 .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
 .node.agent{cursor:pointer}
-.node .g-label{display:block;font-size:10.5px;letter-spacing:.03em;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.node .g-label{display:block;font-size:10.5px;letter-spacing:.03em;max-width:130px;line-height:1.2;white-space:normal;overflow-wrap:anywhere}
 .node .n-role{display:block;font-size:8.5px;text-transform:uppercase;opacity:.7;letter-spacing:.06em}
-.node .n-name{display:block;font-size:10.5px;line-height:1.15;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:0 auto}
+.node .n-name{display:block;font-size:10.5px;line-height:1.18;max-width:116px;white-space:normal;overflow-wrap:break-word;margin:0 auto}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 #legend .mark{margin-left:auto;opacity:.5}
@@ -102,9 +104,8 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
 .sh-ctx-toggle{color:#8ea2ff}
 .sh-ctx-toggle:hover,.sh-ctx-toggle.on{color:#cdd7ff;text-shadow:0 0 8px rgba(150,180,255,.6)}
 .sh-ctx{background:rgba(8,10,26,.97);border:1px solid #4a5aa8;color:#cfd7ff;box-shadow:0 12px 40px rgba(0,0,0,.55)}
-#stage-wrap::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 24px 8px rgba(150,180,255,.6)}
-.node.group{padding:3px 9px;border-radius:13px;border:1px solid #4a5aa8;background:rgba(10,14,36,.9);color:#aeb9ff;max-width:104px}
-.node.agent{width:auto;max-width:88px;padding:7px 10px;border-radius:50px;background:radial-gradient(circle at 35% 30%,#3b4da0,#141a44);border:1px solid #5a6cc0;box-shadow:0 0 16px rgba(90,120,255,.35)}
+.node.group{padding:4px 11px;border-radius:13px;border:1px solid #6f83d8;background:rgba(12,16,42,.94);color:#cdd7ff;max-width:150px;box-shadow:0 0 18px rgba(120,150,255,.35),inset 0 0 10px rgba(90,120,255,.25);font-weight:600}
+.node.agent{width:auto;max-width:132px;padding:8px 12px;border-radius:22px;background:radial-gradient(circle at 35% 30%,#3b4da0,#141a44);border:1px solid #5a6cc0;box-shadow:0 0 16px rgba(90,120,255,.35)}
 .node.agent:hover,.node.agent.active{box-shadow:0 0 26px rgba(140,170,255,.7);border-color:#cdd7ff}
 .node.agent.rev{background:radial-gradient(circle at 35% 30%,#a06a1e,#3a2708);border-color:#e6b24e;box-shadow:0 0 20px rgba(230,178,78,.5)}
 .node.agent.rev .n-role{opacity:.9;color:#ffdd9e}
@@ -266,47 +267,60 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
   }
 
   // ---- geometry (ORBITAL, pixel-space) -----------------------------------
-  // Every group is a concentric orbit RING around the central star; its hub and
-  // agents are evenly spaced bodies ON that ring (n+1 slots → no collisions,
-  // no body sits on the star). Edges are GROUP→GROUP arcs between hubs.
-  // Works in device pixels (W,H of the stage) so rings stay circular (no
-  // aspect distortion) and never clip.
-  // returns {cx,cy, rings:[r...], nodes:[{id,type,x,y,label,agent,group,rev,tip}],
+  // LEGIBLE FLOW layout. The connections form a directed pipeline, so the group
+  // hubs are laid out along a left→right spine in TOPOLOGICAL order (Kahn), and
+  // each group is a tiny "solar system": its hub is the star and its agents orbit
+  // it CLOSE (biased above/below so the horizontal arrow lane between hubs stays
+  // clear → no tangle). Directed hub→hub arrows follow the flow. The concentric
+  // sky-rings are gone as a skeleton; the only rings drawn are the small per-hub
+  // orbits (decorative but meaningful — agents orbit their group). If there are
+  // more hubs than fit on one row the spine serpentines and the row-turn edge
+  // bows OUTWARD to skirt the stacked bodies.
+  // Works in device pixels (W,H) so orbits stay circular and never clip.
+  // returns {cx,cy, rings:[{cx,cy,r}...], nodes:[{id,type,x,y,label,agent,group,rev,tip}],
   //          edges:[{x1,y1,x2,y2,qx,qy,type,tip}]}
+
+  // topological (flow) order of the groups from the connection DAG; ties and any
+  // unreachable/cyclic remainder fall back to the declared order.
+  function flowOrder(groups, conns) {
+    var idx = {}, i;
+    for (i = 0; i < groups.length; i++) idx[groups[i].group_id] = i;
+    var indeg = {}, adj = {};
+    groups.forEach(function (g) { indeg[g.group_id] = 0; adj[g.group_id] = []; });
+    (conns || []).forEach(function (c) {
+      if (adj[c.from] && indeg[c.to] != null) { adj[c.from].push(c.to); indeg[c.to]++; }
+    });
+    var order = [], placed = {};
+    var queue = groups.filter(function (g) { return indeg[g.group_id] === 0; })
+                      .map(function (g) { return g.group_id; });
+    while (queue.length) {
+      queue.sort(function (a, b) { return idx[a] - idx[b]; });
+      var id = queue.shift();
+      if (placed[id]) continue;
+      placed[id] = 1; order.push(id);
+      adj[id].forEach(function (t) { if (--indeg[t] === 0) queue.push(t); });
+    }
+    groups.forEach(function (g) { if (!placed[g.group_id]) { placed[g.group_id] = 1; order.push(g.group_id); } });
+    return order.map(function (id) { return groups[idx[id]]; });
+  }
+
   function geometry(d, W, H) {
-    var groups = d.groups || [], G = groups.length;
-    var nodes = [], hub = {}, i;
+    var groups = flowOrder(d.groups || [], d.connections), G = groups.length;
+    var nodes = [], hub = {}, rings = [], i;
     var cx = W / 2, cy = H / 2;
 
-    // usable radius: reserve room for a body half-size + label at the outer ring
-    var Rmax = Math.min(W, H) / 2 - 62;
-    if (Rmax < 84) Rmax = Math.max(62, Math.min(W, H) / 2 - 24);
-    var CHORD = 112;  // min chord (px) between two bodies (covers the wider hub chip)
-    var GAP = 48;     // min radial gap (px) between rings (~one body height)
-    var FLOOR = Math.min(94, Rmax * 0.55); // inner ring never sits inside the star
+    var rOrb = 70;                                   // per-hub orbit radius (px)
+    var marginX = Math.max(96, W * 0.085);
+    var marginY = Math.max(rOrb + 56, H * 0.14);     // room for agent above/below hub
+    var availW = W - 2 * marginX, availH = H - 2 * marginY;
 
-    // ---- ring radii: even spread outward, kept monotonic with a min radial gap,
-    //      scaled to fit, then re-floored off the star ----
-    var radii = [], prev = 0;
-    for (i = 0; i < G; i++) {
-      var rEven = G === 1 ? Rmax * 0.6 : FLOOR + (Rmax - FLOOR) * (i / (G - 1));
-      var r = Math.max(rEven, prev + GAP, i === 0 ? FLOOR : 58);
-      radii.push(r); prev = r;
-    }
-    if (prev > Rmax) { var s = Rmax / prev; for (i = 0; i < G; i++) radii[i] *= s; }
-    if (radii[0] < 52) {                     // cramped stage: keep inner ring off the star
-      var lo = radii[0], hi = radii[G - 1] || lo, span = (hi - lo) || 1;
-      for (i = 0; i < G; i++) radii[i] = 52 + (radii[i] - lo) / span * (Rmax - 52);
-    }
+    // how many hubs fit per row (min ~190px per hub cell), then balance the rows
+    var maxPerRow = Math.max(1, Math.floor(W / 190));
+    var rows = Math.max(1, Math.ceil(G / maxPerRow));
+    var perRow = Math.max(1, Math.ceil(G / rows));
+    function colX(c) { return perRow === 1 ? cx : marginX + availW * (c / (perRow - 1)); }
+    function rowY(r) { return rows === 1 ? cy : marginY + availH * (r / (rows - 1)); }
 
-    // ---- place hubs + agents ----
-    // Hubs use golden-angle (phyllotaxis) placement so no two hubs share an angle.
-    // For G>1 each group is a compact CONSTELLATION: its agents fan tightly around
-    // the hub (not wrapping the whole ring), so groups stay clustered (R1) and
-    // golden separation keeps distinct groups from colliding (R2). A lone group
-    // (G==1) spreads evenly around its full ring for a balanced orbit.
-    var top = -Math.PI / 2;                  // 12 o'clock
-    var GOLD = 2.39996323;                   // golden angle (rad)
     function gnode(group, x, y) {
       return { id: "g:" + group.group_id, type: "group", x: x, y: y,
         label: group.group_id, group: group,
@@ -318,44 +332,45 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
         x: x, y: y, label: nameOf(a), agent: a, group: group, rev: isRev(a),
         tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
     }
+
+    // ---- place hubs along the (serpentine) spine + orbit their agents ----
     for (i = 0; i < G; i++) {
       var group = groups[i], agents = group.agents || [], n = agents.length;
-      var r = radii[i];
-      var ha = top + i * GOLD;                            // this group's angle
-      var slots = n + 1;                                  // hub + agents
-      // angular step that keeps bodies >= CHORD apart on this ring
-      var step = 2 * Math.asin(Math.min(0.92, CHORD / (2 * r)));
-      var spread = G === 1 ? (2 * Math.PI) / slots : step; // lone group: full ring
-      var start = G === 1 ? ha : ha - spread * (slots - 1) / 2; // centre fan on hub angle
-      var hubSlot = G === 1 ? 0 : Math.floor(slots / 2);  // hub anchors the cluster
-      var ai = 0;
-      for (var sInd = 0; sInd < slots; sInd++) {
-        var ang = start + sInd * spread;
-        var x = cx + r * Math.cos(ang), y = cy + r * Math.sin(ang);
-        if (sInd === hubSlot) {
-          hub[group.group_id] = { x: x, y: y };
-          nodes.push(gnode(group, x, y));
-        } else {
-          anode(agents[ai++], group, x, y);
-        }
+      var r = Math.floor(i / perRow), iInRow = i - r * perRow;
+      var c = (r % 2 === 0) ? iInRow : (perRow - 1 - iInRow);   // serpentine turn
+      var hx = colX(c), hy = rowY(r);
+      hub[group.group_id] = { x: hx, y: hy };
+      nodes.push(gnode(group, hx, hy));
+      if (n > 0) rings.push({ cx: hx, cy: hy, r: rOrb });
+      // agents orbit the hub, first below then spread — vertical bias keeps the
+      // horizontal arrow lane (at hub height) clear of bodies.
+      for (var ai = 0; ai < n; ai++) {
+        var ang = Math.PI / 2 + ai * (2 * Math.PI / n);
+        anode(agents[ai], group, hx + rOrb * Math.cos(ang), hy + rOrb * Math.sin(ang));
       }
     }
 
-    // ---- edges: group hub → group hub, bowed OUTWARD (away from the star) ----
+    // ---- directed edges: group hub → group hub, following the flow ----
+    // Horizontal (same-row) edges run near-straight through the clear lane; a
+    // vertical row-turn bows OUTWARD (away from stage centre) to skirt the
+    // above/below bodies of the two stacked hubs.
     var edges = [];
     (d.connections || []).forEach(function (c) {
       var f = hub[c.from], t = hub[c.to];
       if (!f || !t) return;
       var mx = (f.x + t.x) / 2, my = (f.y + t.y) / 2;
-      var ox = mx - cx, oy = my - cy, ol = Math.hypot(ox, oy) || 1;
-      var chord = Math.hypot(t.x - f.x, t.y - f.y);
-      var bow = Math.min(0.45 * chord, 58);
+      var dx = t.x - f.x, dy = t.y - f.y, chord = Math.hypot(dx, dy) || 1;
+      var px = -dy / chord, py = dx / chord;              // perpendicular unit
+      var vertical = Math.abs(dy) > Math.abs(dx);
+      var mag = vertical ? (rOrb + 44) : 10;
+      var bx = px * mag, by = py * mag;
+      if (vertical) { if (bx * (mx - cx) < 0) { bx = -bx; by = -by; } }
+      else { if (by * (my - cy) < 0) { bx = -bx; by = -by; } }
       edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y,
-        qx: mx + (ox / ol) * bow, qy: my + (oy / ol) * bow,
-        type: c.type || "",
+        qx: mx + bx, qy: my + by, type: c.type || "",
         tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
     });
-    return { cx: cx, cy: cy, rings: radii, nodes: nodes, edges: edges };
+    return { cx: cx, cy: cy, rings: rings, nodes: nodes, edges: edges };
   }
 
   // ---- context header (HUD readout strip) --------------------------------
@@ -488,9 +503,9 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
     mk.appendChild(svgEl("path", { d: "M0 0 L10 5 L0 10 L3 5 Z", class: "edge-arrow" }));
     defs.appendChild(mk); svg.appendChild(defs);
 
-    // orbit rings (the concentric-orbit metaphor, drawn faint behind everything)
+    // per-hub orbit rings (small, drawn faint — each group is its own little system)
     geo.rings.forEach(function (r) {
-      svg.appendChild(svgEl("circle", { class: "orbit-ring", cx: geo.cx, cy: geo.cy, r: r }));
+      svg.appendChild(svgEl("circle", { class: "orbit-ring", cx: r.cx, cy: r.cy, r: r.r }));
     });
 
     // directed typed edges: group hub → group hub, arrowhead at the target
@@ -499,8 +514,8 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
       // hub's rim (not its centre) and the tail leaves the source cleanly
       var d1 = Math.hypot(e.qx - e.x1, e.qy - e.y1) || 1;
       var d2 = Math.hypot(e.qx - e.x2, e.qy - e.y2) || 1;
-      var sx = e.x1 + (e.qx - e.x1) / d1 * 20, sy = e.y1 + (e.qy - e.y1) / d1 * 20;
-      var ex = e.x2 + (e.qx - e.x2) / d2 * 24, ey = e.y2 + (e.qy - e.y2) / d2 * 24;
+      var sx = e.x1 + (e.qx - e.x1) / d1 * 34, sy = e.y1 + (e.qy - e.y1) / d1 * 34;
+      var ex = e.x2 + (e.qx - e.x2) / d2 * 36, ey = e.y2 + (e.qy - e.y2) / d2 * 36;
       var p = svgEl("path", {
         d: "M" + sx + " " + sy + " Q " + e.qx + " " + e.qy + " " + ex + " " + ey,
         class: "edge edge-" + (e.type || "x").replace(/[^a-z0-9-]/gi, ""),

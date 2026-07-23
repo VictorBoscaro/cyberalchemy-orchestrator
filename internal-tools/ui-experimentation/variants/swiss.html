@@ -38,6 +38,7 @@ html,body{height:100%;margin:0}
 #sh-ctx-body{margin:8px 0 0;font-size:12.5px;line-height:1.55;max-width:82ch;padding-left:12px}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
+#stage-empty[hidden]{display:none}
 #edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .edge{fill:none;stroke-width:1.6px}
 .edge-hit{fill:none;stroke:transparent}
@@ -430,18 +431,29 @@ body{font-family:"Helvetica Neue",Arial,sans-serif;color:#111;background:#fff}
       nd._cy = cy;
     });
 
-    // 4) place agents (size-aware row per band; no overlap) -----------------
+    // 4) place agents (tight cluster per band, centered — no full-width span) --
+    //   A group's agents sit side-by-side as one block; the block is centered on
+    //   the stage so a 2-agent band never flings a member to the far edge and
+    //   single-agent bands don't leave the right half dead. Cluster width is the
+    //   sum of measured box widths + gaps, clamped to the agent field so it fits.
+    var GAP = 26;
+    var fieldC = W / 2;                               // stage horizontal center
     Object.keys(byBand).forEach(function (bk) {
       var arr = byBand[bk], n = arr.length;
-      var slot = areaW / n, minGap = 16;
-      var maxW = Math.max(64, Math.min(slot - minGap, 260));
-      var cy = TOP + (Number(bk) + 0.5) * bandH;
+      var maxW = Math.max(72, Math.min((areaW - (n - 1) * GAP) / n, 240));
+      arr.forEach(function (nd) { nd._el.style.maxWidth = maxW + "px"; });
+      var widths = arr.map(function (nd) { return Math.min(nd._el.offsetWidth, maxW); });
+      var clusterW = widths.reduce(function (s, w) { return s + w; }, 0) + (n - 1) * GAP;
+      // center on the stage, but never let the block cross into the group column
+      var startX = Math.max(agentsLeft, fieldC - clusterW / 2);
+      if (startX + clusterW > agentsRight) startX = agentsRight - clusterW;
+      var cy = TOP + (Number(bk) + 0.5) * bandH, x = startX;
       arr.forEach(function (nd, k) {
-        var cx = agentsLeft + (k + 0.5) * slot;
-        nd._el.style.maxWidth = maxW + "px";
+        var cx = x + widths[k] / 2;
         nd._el.style.left = cx + "px";
         nd._el.style.top = cy + "px";
         nd._cx = cx; nd._cy = cy;
+        x += widths[k] + GAP;
       });
     });
 
