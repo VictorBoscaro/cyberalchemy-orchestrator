@@ -14,7 +14,7 @@ last_updated: 2026-07-23
 > **Local, unreviewed, no remote.** Created 2026-07-18; first working session 2026-07-20.
 > The read side runs and is tested; the write side is built but **disabled by design**
 > (a known ledger defect gates it). `Claim ≤ proof`: any claim here holds only as far as the
-> file it links proves it — read "is a category" as *candidate*, not result.
+> file it links proves it — read every strong claim as *candidate*, not result.
 
 This README is a map, not a manifesto. It tells a first-time reader **what this repo is, what
 actually runs today, how to bring it up, and where to go next** — and routes into the deeper
@@ -23,7 +23,9 @@ material without pulling it up front.
 ## What is this?
 
 **cyberalchemy-orchestrator** is a substrate for **organizing, dispatching, and observing fleets of
-LLM subagents**. Concretely it gives you three things that run today:
+LLM subagents**. In practice: you have Claude Code split a job across several AI agents, every
+hand-off is logged to an append-only ledger, and a small local dashboard lets you watch it live.
+Concretely, three things run today:
 
 1. A **dispatch discipline** — a schema and an append-only **ledger** that records every fan-out of
    work to agents (who was dispatched, on what angle, how they connect, how it closed), plus a gate
@@ -53,7 +55,8 @@ Worth being honest about the line.
   ([`implementations/tests/`](implementations/tests/)).
 - The **ledger**: [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml)
   — append-only, holding this repo's own dispatches (including the ones that built the control plane),
-  written only through the `register-dispatch` appender.
+  with the `register-dispatch` appender as its only sanctioned write path (a known bypass is the
+  gating defect noted below).
 - The **agent-pool MCP**: [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/) — selects `agent_name`
   from [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml) (414 tagged entries);
   `npm run smoke` needs no API key.
@@ -83,7 +86,8 @@ python -m server.main
 ```
 
 Without a `config.json` it **auto-discovers**: it scans the parent directory for any sibling folder
-with `telemetry/agents/`. To pin the list, copy `implementations/config.example.json` to
+that has a `telemetry/agents/subagents-dispatch.yaml` ledger or a `telemetry/agents/pending/` folder.
+To pin the list, copy `implementations/config.example.json` to
 `implementations/config.json`.
 
 **2 — Tests.**
@@ -181,7 +185,7 @@ lives in [`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md).
 | [`vault/constitution/`](vault/constitution/) | Candidate constitutions — [`engine-constitution.md`](vault/constitution/engine-constitution.md) (EG-1..8) and [`frontend-constitution.md`](vault/constitution/frontend-constitution.md); unreviewed, not ratified. |
 | [`vault/hypothesis/`](vault/hypothesis/) | Exploratory hypotheses (anti-noise, infra, claim-graph, self-similarity) — not yet promoted. |
 | [`vault/audit/`](vault/audit/) | Ledger audits — [`ledger-enum-drift-finding.md`](vault/audit/ledger-enum-drift-finding.md) is the live defect that gates the write path. |
-| [`research/`](research/) | Investigations (never auto-promoted): agent-name-selection, agent-events-infra, meta-ontology, permguard-kernel, document-merge-debate, and more. |
+| [`research/`](research/) | Investigations (never auto-promoted): agent-name-selection-arch, agent-events-infra-hypothesis, meta-ontology, permguard-kernel, document-merge-debate, and more. |
 | [`docs/`](docs/) | Feature specs, essays, discovery, signals, and [`docs/archive/`](docs/archive/) (the retired detailed roadmap with the OBL/BL/EG codes). |
 | [`internal-tools/`](internal-tools/) | Auxiliary experiments — the [UI-experimentation](internal-tools/ui-experimentation/) source and a document-information-estimator. |
 | [`tools/`](tools/) | Engineering tooling beyond the MCP: validators, spec constitution, a test-derivation engine, and validation fixtures. |
