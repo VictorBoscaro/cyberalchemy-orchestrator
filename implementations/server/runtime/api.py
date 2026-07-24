@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
 from collections.abc import Callable
 from typing import Annotated, Any
 
@@ -16,6 +18,24 @@ def _bearer(value: str) -> str:
     if not value.startswith("Bearer ") or not value[7:]:
         raise AuthorizationError("Bearer capability required")
     return value[7:]
+
+
+def _require_authority_evidence(
+    context: dict[str, Any], *, references: tuple[str, ...], digests: tuple[str, ...]
+) -> None:
+    for field in references:
+        value = context.get(field)
+        if not isinstance(value, str) or not value:
+            raise AuthorizationError(f"{field} is required")
+    for field in digests:
+        value = context.get(field)
+        if not (
+            isinstance(value, str)
+            and value.startswith("sha256:")
+            and len(value) == 71
+            and all(character in "0123456789abcdef" for character in value[7:])
+        ):
+            raise AuthorizationError(f"{field} must be a qualified sha256 digest")
 
 
 def create_router(
@@ -77,10 +97,34 @@ def create_router(
             context = runtime.capabilities.resolve(
                 _bearer(authorization), action="dispatch.link", phase="bootstrap"
             )
+            _require_authority_evidence(
+                context.context,
+                references=(
+                    "authorization_policy_ref",
+                    "authorization_evidence_ref",
+                ),
+                digests=(
+                    "authorization_policy_digest",
+                    "authorization_evidence_digest",
+                ),
+            )
             return runtime.link_session_dispatch(
                 session_id=context.context["session_id"],
                 dispatch_id=intent["dispatch_id"],
                 idempotency_key=intent.get("idempotency_key", "link"),
+                actor_ref=context.principal_id,
+                authorization_policy_ref=context.context[
+                    "authorization_policy_ref"
+                ],
+                authorization_policy_digest=context.context[
+                    "authorization_policy_digest"
+                ],
+                authorization_evidence_ref=context.context[
+                    "authorization_evidence_ref"
+                ],
+                authorization_evidence_digest=context.context[
+                    "authorization_evidence_digest"
+                ],
             )
 
         return call(execute)
@@ -106,6 +150,171 @@ def create_router(
             return runtime.verify_publication(
                 _bearer(authorization), intent["publication_receipt"]
             )
+
+        return call(execute)
+
+    @router.post("/scouts")
+    def start_scout(
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        runtime = service()
+        expected = {
+            "session_id",
+            "dispatch_id",
+            "objective_ref",
+            "shape",
+            "source_mode",
+            "seat_id",
+            "attempt_id",
+            "operation_id",
+        }
+        if set(intent) != expected:
+            return call(
+                lambda: (_ for _ in ()).throw(
+                    ValidationError("Scout start intent field set is invalid")
+                )
+            )
+        return call(
+            lambda: runtime.start_reference_scout(
+                token=_bearer(authorization),
+                idempotency_key=idempotency_key,
+                **intent,
+            )
+        )
+
+    @router.post("/scouts/{scout_run_id}/commit")
+    def commit_scout(
+        scout_run_id: str,
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        if intent:
+            return call(
+                lambda: (_ for _ in ()).throw(
+                    ValidationError("Scout commit body must be empty")
+                )
+            )
+        return call(
+            lambda: service().commit_reference_scout(
+                token=_bearer(authorization),
+                scout_run_id=scout_run_id,
+                idempotency_key=idempotency_key,
+            )
+        )
+
+    @router.post("/scouts/{scout_run_id}/deliver")
+    def deliver_scout(
+        scout_run_id: str,
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        if intent:
+            return call(
+                lambda: (_ for _ in ()).throw(
+                    ValidationError("Scout delivery body must be empty")
+                )
+            )
+        return call(
+            lambda: service().deliver_reference_scout(
+                token=_bearer(authorization),
+                scout_run_id=scout_run_id,
+                idempotency_key=idempotency_key,
+            )
+        )
+
+    @router.post("/scouts/{scout_run_id}/terminate")
+    def terminate_scout(
+        scout_run_id: str,
+        intent: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+        idempotency_key: Annotated[str, Header(alias="Idempotency-Key")],
+    ) -> dict[str, Any]:
+        if set(intent) != {"outcome", "reason"}:
+            return call(
+                lambda: (_ for _ in ()).throw(
+                    ValidationError("Scout termination body is invalid")
+                )
+            )
+        return call(
+            lambda: service().terminate_reference_scout(
+                token=_bearer(authorization),
+                scout_run_id=scout_run_id,
+                outcome=intent["outcome"],
+                reason=intent["reason"],
+                idempotency_key=idempotency_key,
+            )
+        )
+
+    @router.get("/scouts/{scout_run_id}")
+    def get_scout(
+        scout_run_id: str,
+        authorization: Annotated[str, Header(alias="Authorization")],
+    ) -> dict[str, Any]:
+        runtime = service()
+
+        def execute():
+            context = runtime.capabilities.resolve(
+                _bearer(authorization), action="scout.read", phase="observe"
+            )
+            if context.context.get("scout_run_id") != scout_run_id:
+                raise AuthorizationError("Scout read scope mismatch")
+            return runtime.get_reference_scout(scout_run_id)
+
+        return call(execute)
+
+    @router.post("/dispatches/{dispatch_id}/ingestions")
+    def record_ingestion(
+        dispatch_id: str,
+        request: dict[str, Any],
+        authorization: Annotated[str, Header(alias="Authorization")],
+    ) -> dict[str, Any]:
+        runtime = service()
+
+        def execute():
+            if set(request) != {"intent", "content_base64"}:
+                raise ValidationError("ingestion request field set is invalid")
+            intent = request["intent"]
+            if not isinstance(intent, dict):
+                raise ValidationError("ingestion intent must be an object")
+            context = runtime.capabilities.resolve(
+                _bearer(authorization), action="ingestion.record", phase="observe"
+            )
+            if context.context.get("dispatch_id") != dispatch_id:
+                raise AuthorizationError("ingestion dispatch path scope mismatch")
+            encoded = request["content_base64"]
+            if encoded is None:
+                content = None
+            elif isinstance(encoded, str):
+                try:
+                    content = base64.b64decode(encoded, validate=True)
+                except (ValueError, binascii.Error) as exc:
+                    raise ValidationError("ingestion content is not valid base64") from exc
+            else:
+                raise ValidationError("ingestion content_base64 is invalid")
+            return runtime.record_dispatch_ingestion(
+                token=_bearer(authorization), intent=intent, content=content
+            )
+
+        return call(execute)
+
+    @router.get("/dispatches/{dispatch_id}/lineage")
+    def dispatch_lineage(
+        dispatch_id: str,
+        authorization: Annotated[str, Header(alias="Authorization")],
+    ) -> dict[str, Any]:
+        runtime = service()
+
+        def execute():
+            context = runtime.capabilities.resolve(
+                _bearer(authorization), action="dispatch.read", phase="observe"
+            )
+            if context.context.get("dispatch_id") != dispatch_id:
+                raise AuthorizationError("dispatch read scope mismatch")
+            return runtime.get_dispatch_operational_lineage(dispatch_id)
 
         return call(execute)
 
@@ -201,6 +410,7 @@ def create_provenance_router(
                 "NOT_FOUND": 404,
                 "VALIDATION_ERROR": 400,
                 "READ_INTEGRITY_FAILURE": 400,
+                "PROJECTION_LAG": 503,
             }.get(exc.code, 409)
             raise HTTPException(
                 status, detail={"code": exc.code, "message": str(exc)}
@@ -221,19 +431,24 @@ def create_provenance_router(
                 _bearer(authorization), action="session.ensure", phase="bootstrap"
             )
             origin_digest = context.context.get("origin_digest")
-            if not isinstance(origin_digest, str):
+            if (
+                not isinstance(origin_digest, str)
+            ):
                 raise AuthorizationError("host-derived session origin is required")
+            _require_authority_evidence(
+                context.context,
+                references=("actor_authentication_ref",),
+                digests=("actor_authentication_digest",),
+            )
             return runtime.ensure_session(
                 origin_digest=origin_digest,
                 name=intent["name"],
                 idempotency_key=idempotency_key,
                 actor_ref=context.principal_id,
-                actor_authentication_ref=context.context.get(
-                    "actor_authentication_ref", "host-auth:" + context.principal_id
-                ),
-                actor_authentication_digest=context.context.get(
-                    "actor_authentication_digest", "sha256:" + "0" * 64
-                ),
+                actor_authentication_ref=context.context["actor_authentication_ref"],
+                actor_authentication_digest=context.context[
+                    "actor_authentication_digest"
+                ],
             )
 
         return call(execute)
@@ -255,6 +470,17 @@ def create_provenance_router(
             )
             if context.context.get("session_id") != session_id:
                 raise AuthorizationError("session link scope mismatch")
+            _require_authority_evidence(
+                context.context,
+                references=(
+                    "authorization_policy_ref",
+                    "authorization_evidence_ref",
+                ),
+                digests=(
+                    "authorization_policy_digest",
+                    "authorization_evidence_digest",
+                ),
+            )
             return runtime.link_session_dispatch(
                 session_id=session_id,
                 dispatch_id=intent["dispatch_id"],
@@ -337,7 +563,7 @@ def create_provenance_router(
             )
             if context.context.get("session_id") != session_id:
                 raise AuthorizationError("session read scope mismatch")
-            return runtime.get_session(session_id)
+            return runtime.projections.get_apt_session(session_id)
 
         return call(execute)
 
@@ -383,5 +609,32 @@ def create_provenance_router(
                 )
             }
         )
+
+    return router
+
+
+def create_health_router(
+    service_provider: Callable[[], RuntimeService],
+    *,
+    enabled: Callable[[], bool],
+) -> APIRouter:
+    router = APIRouter(tags=["runtime-health"])
+
+    @router.get("/api/health")
+    def health() -> dict[str, Any]:
+        if not enabled():
+            raise HTTPException(
+                503,
+                detail={
+                    "code": "LOCAL_PILOT_SERVE_BLOCKED",
+                    "message": "a separate serve-enablement receipt is required",
+                },
+            )
+        try:
+            return service_provider().health()
+        except RuntimeContractError as exc:
+            raise HTTPException(
+                503, detail={"code": exc.code, "message": str(exc)}
+            ) from exc
 
     return router

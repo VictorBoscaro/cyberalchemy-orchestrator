@@ -57,10 +57,20 @@ class RuntimeFixture(unittest.TestCase):
 
     def activate(self):
         session = self.service.ensure_session(
-            origin_digest="sha256:" + "1" * 64, name="fixture"
+            origin_digest="sha256:" + "1" * 64,
+            name="fixture",
+            actor_ref="test-host",
+            actor_authentication_ref="test-auth:fixture",
+            actor_authentication_digest="sha256:" + "a" * 64,
         )["session"]["session_id"]
         self.service.link_session_dispatch(
-            session_id=session, dispatch_id=DISPATCH_ID
+            session_id=session,
+            dispatch_id=DISPATCH_ID,
+            actor_ref="test-host",
+            authorization_policy_ref="test.link@1",
+            authorization_policy_digest="sha256:" + "b" * 64,
+            authorization_evidence_ref="test-evidence:link",
+            authorization_evidence_digest="sha256:" + "c" * 64,
         )
         activation = self.service.activate_local_probe(
             session_id=session,

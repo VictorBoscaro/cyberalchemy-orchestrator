@@ -15,14 +15,15 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from implementations.server.runtime.api import create_provenance_router
+from implementations.server.runtime.api import create_health_router, create_provenance_router
 from implementations.server.runtime.errors import (
     AuthorizationError,
     ConflictError,
     IdempotencyConflict,
+    IntegrityError,
     ValidationError,
 )
-from implementations.server.runtime.canonical import canonical_digest
+from implementations.server.runtime.canonical import canonical_digest, canonical_text
 from implementations.server.runtime.provenance import ProvenanceService
 from implementations.server.runtime.service import RuntimeService, RuntimeSettings
 
@@ -48,10 +49,20 @@ class AptResearchEndToEndTests(unittest.TestCase):
         self.runtime.open()
         self.runtime.register_profiles()
         self.session_id = self.runtime.ensure_session(
-            origin_digest="sha256:" + "7" * 64, name="APT E2E"
+            origin_digest="sha256:" + "7" * 64,
+            name="APT E2E",
+            actor_ref="apt-e2e",
+            actor_authentication_ref="test-auth:apt-e2e",
+            actor_authentication_digest="sha256:" + "e" * 64,
         )["session"]["session_id"]
         self.runtime.link_session_dispatch(
-            session_id=self.session_id, dispatch_id=DISPATCH_ID
+            session_id=self.session_id,
+            dispatch_id=DISPATCH_ID,
+            actor_ref="apt-e2e",
+            authorization_policy_ref="test.link@1",
+            authorization_policy_digest="sha256:" + "f" * 64,
+            authorization_evidence_ref="test-evidence:apt-link",
+            authorization_evidence_digest="sha256:" + "1" * 64,
         )
 
     def tearDown(self) -> None:
@@ -276,6 +287,9 @@ class AptResearchEndToEndTests(unittest.TestCase):
         blocked_app.include_router(
             create_provenance_router(lambda: self.runtime, enabled=lambda: False)
         )
+        blocked_app.include_router(
+            create_health_router(lambda: self.runtime, enabled=lambda: False)
+        )
         self.assertEqual(
             TestClient(blocked_app)
             .get(
@@ -285,10 +299,17 @@ class AptResearchEndToEndTests(unittest.TestCase):
             .status_code,
             503,
         )
+        self.assertEqual(TestClient(blocked_app).get("/api/health").status_code, 503)
         enabled_app = FastAPI()
         enabled_app.include_router(
             create_provenance_router(lambda: self.runtime, enabled=lambda: True)
         )
+        enabled_app.include_router(
+            create_health_router(lambda: self.runtime, enabled=lambda: True)
+        )
+        health = TestClient(enabled_app).get("/api/health")
+        self.assertEqual(health.status_code, 200)
+        self.assertTrue(health.json()["ready"])
         answer_response = TestClient(enabled_app).get(
             f"/api/provenance/research/{capture_id}/answer",
             headers={
@@ -528,6 +549,42 @@ class AptResearchEndToEndTests(unittest.TestCase):
                         ],
                     },
                 )
+        barrier = threading.Barrier(2)
+        head_race: list[str] = []
+
+        def advance_delivery(suffix: str) -> None:
+            barrier.wait()
+            try:
+                self.runtime.append_apt_event(
+                    token=append_token,
+                    command_name="apt.append-reference-probe-lineage@1",
+                    aggregate_id="apt-lineage:test",
+                    expected_version=3,
+                    idempotency_key="lineage-head-race-" + suffix,
+                    payload={
+                        **request,
+                        "operation_id": "lineage-head-race-" + suffix,
+                        "lineage_items": [
+                            {
+                                **request["lineage_items"][0],
+                                "expected_head_event_id": advanced_head,
+                            }
+                        ],
+                    },
+                )
+                head_race.append("accepted")
+            except ConflictError:
+                head_race.append("conflict")
+
+        threads = [
+            threading.Thread(target=advance_delivery, args=(suffix,))
+            for suffix in ("a", "b")
+        ]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        self.assertEqual(sorted(head_race), ["accepted", "conflict"])
         forged = {
             **request,
             "lineage_items": [
@@ -553,6 +610,74 @@ class AptResearchEndToEndTests(unittest.TestCase):
                 idempotency_key="lineage-forged",
                 payload=forged,
             )
+        candidate_only_ref = {
+            **recommendation_ref,
+            "bundle_acceptance_ref": {
+                **recommendation_ref["bundle_acceptance_ref"],
+                "accepted_event_id": publication["publication_receipt"]["event_id"],
+                "evidence_digest": publication["publication_receipt"]["payload_hash"],
+            },
+        }
+        with self.assertRaises(ConflictError):
+            self.runtime.append_apt_event(
+                token=append_token,
+                command_name="apt.append-reference-probe-lineage@1",
+                aggregate_id="apt-lineage:test",
+                expected_version=4,
+                idempotency_key="lineage-candidate-only",
+                payload={
+                    **request,
+                    "operation_id": "lineage-candidate-only",
+                    "lineage_items": [
+                        {
+                            **request["lineage_items"][0],
+                            "probe_recommendation_ref": candidate_only_ref,
+                            "expected_head_event_id": advanced_head,
+                        }
+                    ],
+                },
+            )
+        with self.runtime.database.connect() as conn:
+            official_command_id = conn.execute(
+                "SELECT command_id FROM events WHERE event_id=?", (official_id,)
+            ).fetchone()[0]
+            official_receipt_json = conn.execute(
+                "SELECT result_receipt_json FROM command_receipts WHERE command_id=?",
+                (official_command_id,),
+            ).fetchone()[0]
+            tampered_receipt = json.loads(official_receipt_json)
+            tampered_receipt["official_message"]["accepted_event_id"] = "evt_forged"
+            conn.execute(
+                "UPDATE command_receipts SET result_receipt_json=? WHERE command_id=?",
+                (canonical_text(tampered_receipt), official_command_id),
+            )
+            conn.commit()
+        try:
+            with self.assertRaises(ConflictError):
+                self.runtime.append_apt_event(
+                    token=append_token,
+                    command_name="apt.append-reference-probe-lineage@1",
+                    aggregate_id="apt-lineage:test",
+                    expected_version=4,
+                    idempotency_key="lineage-forged-official-receipt",
+                    payload={
+                        **request,
+                        "operation_id": "lineage-forged-official-receipt",
+                        "lineage_items": [
+                            {
+                                **request["lineage_items"][0],
+                                "expected_head_event_id": advanced_head,
+                            }
+                        ],
+                    },
+                )
+        finally:
+            with self.runtime.database.connect() as conn:
+                conn.execute(
+                    "UPDATE command_receipts SET result_receipt_json=? WHERE command_id=?",
+                    (official_receipt_json, official_command_id),
+                )
+                conn.commit()
 
     def test_concurrent_exact_converges_and_divergent_currentness_conflicts(self) -> None:
         scope = {"session_id": self.session_id, "dispatch_id": DISPATCH_ID}
@@ -630,7 +755,13 @@ class AptResearchEndToEndTests(unittest.TestCase):
 
     def test_ensure_reuses_origin_and_explicit_start_new_rebinds(self) -> None:
         origin = "sha256:" + "7" * 64
-        ensured = self.runtime.ensure_session(origin_digest=origin, name="APT E2E")
+        ensured = self.runtime.ensure_session(
+            origin_digest=origin,
+            name="APT E2E",
+            actor_ref="apt-e2e",
+            actor_authentication_ref="test-auth:apt-e2e",
+            actor_authentication_digest="sha256:" + "e" * 64,
+        )
         self.assertEqual(ensured["session"]["session_id"], self.session_id)
         start_token = self.token(
             "session.start-new",
@@ -658,6 +789,33 @@ class AptResearchEndToEndTests(unittest.TestCase):
             idempotency_key="rollover-1",
         )
         self.assertEqual(started, retry)
+        with self.assertRaises(IdempotencyConflict):
+            self.runtime.start_new_session(
+                token=start_token,
+                name="successor",
+                expected_current_session_id="ses_arbitrary",
+                idempotency_key="rollover-1",
+            )
+        changed_nonce_token = self.token(
+            "session.start-new",
+            "bootstrap",
+            {
+                "origin_digest": origin,
+                "authorization_policy_ref": "host.session-rollover@1",
+                "authorization_policy_digest": "sha256:" + "a" * 64,
+                "authorization_evidence_ref": "host-evidence:rollover-1",
+                "authorization_evidence_digest": "sha256:" + "b" * 64,
+                "expected_current_session_id": self.session_id,
+                "nonce": "rollover-nonce-changed",
+            },
+        )
+        with self.assertRaises(IdempotencyConflict):
+            self.runtime.start_new_session(
+                token=changed_nonce_token,
+                name="successor",
+                expected_current_session_id=self.session_id,
+                idempotency_key="rollover-1",
+            )
         self.assertNotEqual(started["session"]["session_id"], self.session_id)
         with self.runtime.database.connect() as conn:
             rows = conn.execute(
@@ -671,6 +829,132 @@ class AptResearchEndToEndTests(unittest.TestCase):
         self.assertEqual(len(rows), 2)
         self.assertEqual(head["current_session_id"], started["session"]["session_id"])
         self.assertEqual(head["head_version"], 2)
+        with self.assertRaises(ConflictError):
+            self.runtime.link_session_dispatch(
+                session_id=self.session_id,
+                dispatch_id=DISPATCH_ID,
+                idempotency_key="stale-session-link",
+                actor_ref="apt-e2e",
+                authorization_policy_ref="test.link@1",
+                authorization_policy_digest="sha256:" + "f" * 64,
+                authorization_evidence_ref="test-evidence:stale-link",
+                authorization_evidence_digest="sha256:" + "1" * 64,
+            )
+        with self.assertRaises(ConflictError):
+            self.runtime.start_new_session(
+                token=start_token,
+                name="stale successor",
+                expected_current_session_id=self.session_id,
+                idempotency_key="stale-rollover",
+            )
+        invalid_event = self.runtime._event(
+            "apt.session_started", {"session_id": "caller-shaped"}
+        )
+        invalid_command = self.runtime._command(
+            command_name="test.invalid-session-payload@1",
+            scope_key="test.invalid-session-payload",
+            idempotency_key="invalid",
+            aggregate_type="test",
+            aggregate_id="test.invalid-session-payload",
+            expected_version=0,
+            authority={"principal_id": "test"},
+            intent={"invalid": True},
+        )
+        with self.assertRaises(IntegrityError):
+            self.runtime.journal.accept(
+                invalid_command, [invalid_event], next_state={"invalid": True}
+            )
+        with self.runtime.database.connect() as conn:
+            linked_body = bytes(
+                conn.execute(
+                    """SELECT a.body FROM events e
+                       JOIN artifacts a ON a.artifact_id=e.payload_ref
+                       WHERE e.event_type='apt.session_dispatch_linked' LIMIT 1"""
+                ).fetchone()[0]
+            )
+        malformed_link = json.loads(linked_body)
+        malformed_link["dispatch_snapshot_ref"]["ledger_row_identity"]["extra"] = True
+        malformed_event = self.runtime._event(
+            "apt.session_dispatch_linked", malformed_link
+        )
+        malformed_command = self.runtime._command(
+            command_name="test.invalid-link-snapshot@1",
+            scope_key="test.invalid-link-snapshot",
+            idempotency_key="invalid",
+            aggregate_type="test",
+            aggregate_id="test.invalid-link-snapshot",
+            expected_version=0,
+            authority={"principal_id": "test"},
+            intent={"invalid": True},
+        )
+        with self.assertRaises(IntegrityError):
+            self.runtime.journal.accept(
+                malformed_command, [malformed_event], next_state={"invalid": True}
+            )
+
+    def test_ensure_and_link_reject_empty_or_malformed_authority_evidence(self) -> None:
+        with self.assertRaises(AuthorizationError):
+            self.runtime.ensure_session(
+                origin_digest="sha256:" + "6" * 64,
+                name="invalid authority",
+                actor_ref="apt-e2e",
+                actor_authentication_ref="",
+                actor_authentication_digest="sha256:" + "2" * 64,
+            )
+        with self.assertRaises(AuthorizationError):
+            self.runtime.link_session_dispatch(
+                session_id=self.session_id,
+                dispatch_id=DISPATCH_ID,
+                actor_ref="apt-e2e",
+                authorization_policy_ref="test.link@1",
+                authorization_policy_digest="not-qualified",
+                authorization_evidence_ref="test-evidence:invalid",
+                authorization_evidence_digest="sha256:" + "3" * 64,
+                idempotency_key="invalid-authority-link",
+            )
+        app = FastAPI()
+        app.include_router(
+            create_provenance_router(lambda: self.runtime, enabled=lambda: True)
+        )
+        client = TestClient(app)
+        malformed_ensure_token = self.token(
+            "session.ensure",
+            "bootstrap",
+            {
+                "origin_digest": "sha256:" + "6" * 64,
+                "actor_authentication_ref": "test-auth:invalid",
+                "actor_authentication_digest": "sha256:not-a-digest",
+            },
+        )
+        ensure_response = client.post(
+            "/api/provenance/sessions/ensure",
+            headers={
+                "Authorization": "Bearer " + malformed_ensure_token,
+                "Idempotency-Key": "invalid-authority-ensure",
+            },
+            json={"name": "invalid authority"},
+        )
+        self.assertEqual(ensure_response.status_code, 403)
+        malformed_link_token = self.token(
+            "dispatch.link",
+            "bootstrap",
+            {
+                "session_id": self.session_id,
+                "authorization_policy_ref": "",
+                "authorization_policy_digest": "sha256:" + "4" * 64,
+                "authorization_evidence_ref": "test-evidence:invalid",
+                "authorization_evidence_digest": "sha256:" + "5" * 64,
+            },
+        )
+        link_response = client.post(
+            f"/api/provenance/sessions/{self.session_id}/dispatches",
+            headers={
+                "Authorization": "Bearer " + malformed_link_token,
+                "Idempotency-Key": "invalid-authority-link",
+            },
+            json={"dispatch_id": DISPATCH_ID},
+        )
+        self.assertEqual(link_response.status_code, 403)
 
     def test_http_subprocess_restart_round_trip_preserves_ledger(self) -> None:
         ledger_before = self.ledger.read_bytes()
@@ -678,17 +962,21 @@ class AptResearchEndToEndTests(unittest.TestCase):
         ensure_token = self.token(
             "session.ensure",
             "bootstrap",
-            {"origin_digest": "sha256:" + "7" * 64},
+            {
+                "origin_digest": "sha256:" + "7" * 64,
+                "actor_authentication_ref": "test-auth:apt-e2e",
+                "actor_authentication_digest": "sha256:" + "e" * 64,
+            },
         )
         link_token = self.token(
             "dispatch.link",
             "bootstrap",
             {
                 "session_id": self.session_id,
-                "authorization_policy_ref": "host.dispatch-link@1",
-                "authorization_policy_digest": "sha256:" + "c" * 64,
-                "authorization_evidence_ref": "host-evidence:link",
-                "authorization_evidence_digest": "sha256:" + "d" * 64,
+                "authorization_policy_ref": "test.link@1",
+                "authorization_policy_digest": "sha256:" + "f" * 64,
+                "authorization_evidence_ref": "test-evidence:apt-link",
+                "authorization_evidence_digest": "sha256:" + "1" * 64,
             },
         )
         append_token = self.token("apt.append", "capture", scope)

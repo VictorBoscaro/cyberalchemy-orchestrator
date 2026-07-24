@@ -37,7 +37,7 @@ until their distinct profile, executable-test and readiness evidence gates pass.
 | `plannerGateStatus` | `pass` | File gates and corpus-wide review passed; this authorizes task planning, not runtime enablement. |
 | `constructionGateStatus` | `pass` | Pure TypeScript module construction and test-only in-memory doubles are authorized; no durable adapter, bus, journal, profile registration or runtime export is allowed. |
 | `mutationGateStatus` | `pass-for-exact-swu` | Owner-authorized on 2026-07-23 only for `SWU-ACI-APT-VS-001`, after APT and ACI Stage-A independent PASS reviews. Enablement remains separately blocked. |
-| `enablementGateStatus` | `block` | Probe/runtime enablement remains blocked until registered profiles and crash/race/replay/redaction evidence pass. |
+| `enablementGateStatus` | `pass-local-pilot-only; operative` | Independent Stage-C review accepted only the explicit loopback pilot with a dedicated database and fail-closed startup. Production, external networking, providers, agent launch, materialization and cutover remain blocked. |
 | `complexity` | `high` | Crosses session, dispatch, research, probe, persistence, replay, UI and ACI boundaries. |
 | `architectureWave` | `Stage A` | Pure construction passed; APT integration governance is frozen for independent review while authority-bearing integration remains blocked. |
 | `activePlanRef` | `WORK-PACK.md#wave-status-board` | This file is the current planning entrypoint. |
@@ -84,11 +84,11 @@ Out of scope for this first increment:
 | `TASK-050` | Freeze the ACI protocol-profile mapping and reference-probe small-profile contract. | high | W1-W2 | Four exact ACI registration receipts independently verified | completed |
 | `TASK-100` | Run implementation-readiness for isolated construction and split one task-session per TASK/SWU. | high | W2 | construction readiness PASS; integration unaffected | completed |
 | `TASK-105` | Construct pure schemas, APT normalization/canonical-payload candidates, an injected canonicalizer interface, a pure reducer kernel over supplied verified fixtures, and executable tests under `tools/agent-provenance-telemetry/`; doubles stay test-only, in-memory and non-exported. | high | W2 | final reviewer PASS 5/5; 27/27 bounded cases, typecheck and contract vectors PASS; digest-bound receipt recorded | completed |
-| `TASK-110` | Integrate artifact-only raw capture, append port and ACI-subordinate adapter with the complete closed set of registered ACI profiles. | high | W3 | exact `SWU-ACI-APT-VS-001` mutation-test authorization and post-change receipt PASS | selected; ready |
-| `TASK-120` | Implement session/research operations and deterministic replay projections. | high | W3 | blocked by TASK-100/110 | blocked |
-| `TASK-130` | Wire the small reference-probe bus profile without creating a second runtime. | high | W3 | blocked by TASK-050/100/110 | blocked |
-| `TASK-140` | Wire derived Sessions, Dispatches and Research Records projections into existing read surfaces without adding ledger keys or persisted joins. | high | W3 | blocked by TASK-100/120 and UI re-entry if applicable | blocked |
-| `TASK-150` | Instrument classified/redacted operational logs, traces and metrics without making them workflow authority. | medium | W3 | blocked by TASK-100/110 | blocked |
+| `TASK-110` | Integrate artifact-only raw capture, append port and ACI-subordinate adapter with the complete closed set of registered ACI profiles. | high | W3 | Stage-B execution receipt and Stage-C local-pilot review PASS | completed for exact SWU |
+| `TASK-120` | Implement session/research operations and deterministic replay projections. | high | W3 | 42-test integrated runtime suite plus restart evidence | completed for local pilot |
+| `TASK-130` | Wire the small reference-probe bus profile without creating a second runtime. | high | W3 | frozen local-probe activation and registered profile evidence | completed for frozen profile and authoritative small Scout lifecycle; generic provider adapter remains deferred |
+| `TASK-140` | Wire derived Sessions, Dispatches and Research Records projections into existing read surfaces without adding ledger keys or persisted joins. | high | W3 | provenance API routes and granular projection are live locally | backend complete; legacy UI integration deferred |
+| `TASK-150` | Instrument classified/redacted operational logs, traces and metrics without making them workflow authority. | medium | W3 | native orchestration open/close journal events added; OTEL remains absent | in progress |
 | `TASK-VERIFY` | Run `domainspec-verify-feature agent-provenance-telemetry` and publish `VERIFICATION.md`. | high | W4 | blocked until implementation evidence | blocked |
 | `TASK-AUDIT-ALIGNMENT` | Run `domainspec-audit-alignment agent-provenance-telemetry` and publish `ALIGNMENT-REPORT.md`. | high | W4 | blocked until mutation evidence | blocked |
 | `TASK-AUDIT-LAYERING` | Run `domainspec-audit-layering agent-provenance-telemetry` and publish `LAYERING-ALIGNMENT-REPORT.md`. | high | W4 | blocked until mutation evidence | blocked |
@@ -150,8 +150,9 @@ and exact digests for:
 
 An unrelated receipt cannot satisfy a missing member, and a placeholder digest is always false.
 The APT-side frozen requests and their byte digests are recorded in
-`integration/stage-a/profile-digests.sha256`. These are registration inputs, not ACI registration
-receipts, and therefore do not make the conjunction true.
+`integration/stage-a/profile-digests.sha256`. For the exact Stage-B/C vertical slice, all four ACI
+registration receipts and the integrated evidence now pass. A changed or additional profile starts
+a new gate and cannot inherit those receipts.
 
 `enablementGateStatus` can pass only after integration passes and the exact crash/race/retry,
 replay/checkpoint, redaction/no-raw and telemetry-non-authority suites pass against the integrated
@@ -162,8 +163,10 @@ boundary. Construction evidence never substitutes for integration or enablement 
 L0 requires the exact ACI-owned binding
 `{profile_id=aci.transactional-semantic-uniqueness-result-mapping,
 profile_version=1, profile_digest=<ACI-registered digest>}`. The digest placeholder is not an
-implementation default: until ACI publishes and a reviewer verifies the exact digest and
-registration receipt, `TASK-110`, `TASK-120` and `TASK-130` remain blocked.
+implementation default. ACI published and independently verified the exact digest used by the
+Stage-B/C local pilot; TASK-110/120 and the frozen TASK-130 profile are complete for that bounded
+scope. Stage G also closes the dispatch-bound small Scout lifecycle and input-ingestion lineage.
+Generic provider launch, tensioned multi-seat Scout, and general Probe launch remain later units.
 
 The profile guarantees in one ACI journal transaction: global uniqueness by `fact_id`; collision
 comparison of canonical payload digest, `subject_id` and `supersedes_fact_id`; result identity
@@ -220,7 +223,7 @@ corpus but do not become competing concept registries.
 | W1 | Author and review every DomainSpec aspect plus derived stories/tests. | W0 documentation available. | Corpus-wide review has no objection and issues its receipt. | completed | Corpus review PASS 4/5; `STORIES.md`, planned/not-run `TEST-SPEC.md` and deferred L0 `UI-SPEC.md` approved. |
 | W2 | Construct the isolated pure module and executable contract tests; freeze ACI profile mappings separately. | W1 corpus-wide receipt and construction gate PASS. | TASK-100/105 pass; pure tests execute; no durable/runtime authority is introduced. | completed | TASK-105 final review PASS 5/5; fresh 27/27 bounded tests, typecheck and contract vectors PASS; source manifest and restricted acceptance receipt recorded. |
 | Stage A | Freeze the exact APT integration requests, storage policy and vertical-slice contract without runtime mutation. | W2 accepted. | Independent reviewers can verify exact digests and owner gate proposal without ambiguity. | passed | APT packet PASS cycle 2/5; ACI/TASK-000/W0 packet PASS cycle 5/5; four profiles and storage policy registered/PASS; owner selected the exact SWU. |
-| W3 | Integrate the modular local pilot with exact ACI profiles, then wire projections and classified telemetry. | Owner-recorded exact-SWU mutation pass plus independent post-change receipt. | Integrated suites pass; no parallel authority or layering violation remains; enablement evidence is ready for owner review. | selected; ready | Exact descriptor-bound code/migration/test mutation may start. Local serve remains blocked until implementation review. |
+| W3 | Integrate the modular local pilot with exact ACI profiles, then wire projections and classified telemetry. | Owner-recorded exact-SWU mutation pass plus independent post-change receipt. | Integrated suites pass; no parallel authority or layering violation remains; enablement evidence is ready for owner review. | in progress; local pilot operative | Stage B/C passed and the loopback pilot is live; general agent launch, OTEL, legacy UI integration and production remain incomplete. |
 | W4 | Run feature verification, alignment audit and layering audit; remediate findings. | W3 implementation evidence complete. | All three closure verdicts pass and registry/docs reflect actual state. | blocked | Requires W3 implementation evidence. |
 
 ## Pipeline Stage Coverage
@@ -234,10 +237,10 @@ All canonical stages remain listed even when deliberately skipped.
 | spec | yes | W1 | completed | Approved aspect corpus under `specs/` | none |
 | stories | yes | W1 | completed | `STORIES.md` PASS 2/5 | none |
 | tests | yes | W1-W3 | in-progress | TASK-105 27/27 bounded cases accepted; no full R/C family is claimed | L3/L4, operation, integration, replay and profile families remain planned/not-run. |
-| backend-implement | yes | W2-W3 | in-progress | TASK-105 pure construction accepted; TASK-110/120/130 remain integration-blocked | Authority-bearing implementation blocked. |
+| backend-implement | yes | W2-W3 | in-progress | TASK-105 and the exact Stage-B/C vertical slice are implemented; orchestration logging bridge is local/operator-mediated | Broader ACI materialization and agent launch remain blocked. |
 | ui-pipeline | yes | W1/W3 | skipped | `UI-SPEC.md` PASS 1/5 records L0 not applicable/deferred | Re-entry requires a later applicability decision. |
 | observability-spec | yes | W1 | completed | `specs/observability.md` approved after authorized remediation | Instrumentation remains an implementation task. |
-| instrument-otel | yes | W3 | blocked | TASK-150 | Blocked until TASK-100 and mutation authorization. |
+| instrument-otel | yes | W3 | pending | TASK-150 | Native journal evidence exists; OpenTelemetry instrumentation and verification remain outstanding. |
 | otel-verify | yes | W3-W4 | blocked | Planned observability verification output | Blocked until instrumentation exists. |
 | infra-deploy | yes | W4 | skipped | Pilot boundary in this work-pack | First increment is local-only; deployment requires a later authorized work-pack. |
 | registry-sync | yes | W4 | blocked | Planned DomainSpec/ACI profile registry evidence | Runs only after implementation and verification agree. |
@@ -272,14 +275,14 @@ return them to blocked status if the aspect corpus exposes a contradiction.
 | Blocker ID | Scope | Description | Owner | Next Action | Target |
 |---|---|---|---|---|---|
 | `APT-B1` | closed | DomainSpec corpus and exact coverage registry passed individual and corpus-wide gates. | spec group | No action; retain receipt history. | W1 |
-| `APT-B2` | integration | Storage, transaction and adapter contracts are specified; integrated crash/race receipts remain outstanding. | implementation group | Exercise crash/race fixtures only after exact ACI integration is authorized. | W3 |
-| `APT-B3` | probe enablement | Exact reference-probe registration receipt is PASS; integrated probe/crash evidence remains outstanding. | implementation group | Produce the descriptor-bound W3 evidence before probe/runtime enablement. | W3 |
+| `APT-B2` | bounded slice closed | Integrated storage, transaction, retry, crash and race evidence passes for the exact local pilot; provider/production evidence is outside this closure. | implementation group | Preserve the Stage-B receipt; open a new gate for broader adapters or materializers. | W3 |
+| `APT-B3` | frozen profile closed | Exact reference-probe registration, local activation, and the dispatch-bound small Scout bus lifecycle pass; a generic multi-seat provider launcher is not claimed. | implementation group | Use the provider-adapter gate before automatic external invocation. | W3 |
 | `APT-B4` | closed | TASK-105 pure L0 passed final reviewer cycle 5 with bounded evidence and no whole-family claim. | implementation orchestrator | Retain source manifest and acceptance receipt. | W2 |
-| `APT-B5` | UI mutation | `UI-SPEC.md` records the reviewed L0 decision as not applicable/deferred with zero UI concepts; no read-surface runtime integration or UI re-entry evidence exists. | architecture/spec group | Keep TASK-140 blocked until query runtime readiness; if UI becomes applicable, satisfy the explicit UI re-entry gate before wiring. | W2-W3 |
-| `APT-B6` | enablement | L0 artifact classification, redaction, retention and tombstone contracts are approved; executable integrated policy/privacy receipts remain outstanding. Inline raw is forbidden. | spec/security owners | Build pure policy tests in W2 and rerun against integrated boundaries before enablement. | W2-W3 |
-| `APT-B7` | integration/enablement | Exact semantic-uniqueness/result-mapping registration receipt is PASS; integrated collision, mixed-result, crash and race fixtures remain outstanding. | implementation group | Produce the descriptor-bound W3 evidence before integration completion or enablement. | W3 |
-| `APT-B8` | integration/enablement | Exact atomic receipt/accepted-prefix registration receipt is PASS; integrated grouping/read-prefix fixtures remain outstanding. | implementation group | Produce the descriptor-bound W3 evidence before integration completion or enablement. | W3 |
-| `APT-B9` | integration/enablement | Exact event-schema/canonicalizer registration receipt is PASS; executable compatibility evidence remains outstanding. | implementation group | Produce the descriptor-bound W3 evidence before integration completion or enablement. | W3 |
+| `APT-B5` | UI deferred | Provenance read APIs and projections are live locally; the legacy control-plane UI has not re-entered the APT applicability gate. | architecture/spec group | Treat backend TASK-140 as complete and open a separate UI unit if the legacy UI should consume it. | W3 |
+| `APT-B6` | local enablement closed | Artifact classification, no-inline-raw, retention/tombstone metadata and integrated privacy tests pass for the local pilot. | spec/security owners | Reopen for physical erasure, external serving or production retention policy. | W3 |
+| `APT-B7` | bounded slice closed | Exact semantic uniqueness/result mapping and integrated collision/mixed-result/retry fixtures pass for Stage B/C. | implementation group | Preserve receipt; reopen only for broadened work kinds. | W3 |
+| `APT-B8` | bounded slice closed | Atomic receipts, complete-group reads, accepted-prefix and crash fixtures pass for Stage B/C. | implementation group | Preserve receipt; TASK-020 cross-store materialization has its own gate. | W3 |
+| `APT-B9` | bounded slice closed | Event-schema/canonicalizer registration and executable compatibility pass for the exact local pilot. | implementation group | Bind new event families through a new source manifest and receipt. | W3 |
 | `APT-B10` | mutation | Closed by the independent digest-bound storage/artifact-policy PASS receipt. | security/storage reviewer | Preserve the frozen policy; executable privacy/redaction evidence remains under APT-B6 for enablement. | closed |
 
 The following are deferred, not blockers for the bounded pilot: historical backfill, bibliographic

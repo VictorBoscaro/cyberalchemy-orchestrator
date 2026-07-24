@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import sqlite3
 from dataclasses import replace
 from typing import Any
 
@@ -44,7 +43,6 @@ class ProvenanceService:
 
     def _validate_bound_batch(
         self,
-        conn,
         *,
         capture_payload: dict[str, Any],
         fact_payloads: list[dict[str, Any]],
@@ -84,10 +82,7 @@ class ProvenanceService:
             {key: value for key, value in capture.items() if key != "capture_digest"}
         ) != self.runtime._content_digest_string(capture["capture_digest"]):
             raise ValidationError("capture batch digest mismatch")
-        link = conn.execute(
-            "SELECT * FROM dispatch_links WHERE dispatch_id=?",
-            (capture["dispatch_id"],),
-        ).fetchone()
+        link = self.runtime.apt_dispatch_link(capture["dispatch_id"])
         raw = capture["raw_return"]
         if (
             not link
@@ -854,90 +849,19 @@ class ProvenanceService:
                 "projection_status": "pending",
             }
 
-        def mutate(conn, committed, result):
-            self._validate_bound_batch(
-                conn,
-                capture_payload=capture_payload,
-                fact_payloads=[item["payload"] for item in items if item["kind"] != "capture"],
-                artifact_id=prepared.artifact_id,
-                artifact_hash=prepared.content_hash,
-                artifact_body=artifact_body,
-            )
-            committed_iter = iter(committed)
-            result_by_key = {row["item_key"]: row for row in result["semantic_results"]}
-            for item in items:
-                if item["status"] == "submitted_new":
-                    record = next(committed_iter)
-                    accepted_event_id = record.event_id
-                    if item["kind"] == "capture":
-                        conn.execute(
-                            """
-                            INSERT INTO apt_capture_keys(
-                              research_capture_id,dispatch_id,expected_contribution_id,
-                              capture_operation_id,supersedes_capture_id,capture_digest,
-                              accepted_event_id,is_current
-                            ) VALUES(?,?,?,?,?,?,?,1)
-                            """,
-                            (
-                                capture_id,
-                                dispatch_id,
-                                contribution,
-                                capture["capture_operation_id"],
-                                None,
-                                self.runtime._content_digest_string(
-                                    capture["capture_digest"]
-                                ),
-                                accepted_event_id,
-                            ),
-                        )
-                    else:
-                        entity = item["payload"]["payload"]
-                        fact = entity["fact"]
-                        conn.execute(
-                            """
-                            INSERT INTO apt_semantic_facts(
-                              fact_id,research_capture_id,subject_id,fact_kind,
-                              supersedes_fact_id,canonical_payload_digest,
-                              accepted_event_id,is_current
-                            ) VALUES(?,?,?,?,?,?,?,1)
-                            """,
-                            (
-                                fact["fact_id"],
-                                capture_id,
-                                fact["subject_id"],
-                                item["kind"],
-                                fact["supersedes_fact_id"],
-                                item["semantic_digest"],
-                                accepted_event_id,
-                            ),
-                        )
-                else:
-                    accepted_event_id = item["accepted_event_id"]
-                mapped = result_by_key[item["item_key"]]
-                conn.execute(
-                    """
-                    INSERT INTO apt_semantic_request_results(
-                      request_key,item_key,request_digest,result_status,result_json,
-                      accepted_event_id
-                    ) VALUES(?,?,?,?,?,?)
-                    """,
-                    (
-                        f"{aggregate_id}:{idempotency_key}",
-                        item["item_key"],
-                        submission_digest,
-                        mapped["status"],
-                        canonical_text(mapped),
-                        accepted_event_id,
-                    ),
-                )
         try:
-            receipt = self.runtime.journal.accept(
+            receipt = self.runtime.accept_apt_research(
                 command,
                 events,
                 next_state={"submission_digest": submission_digest},
                 additional_artifacts=(prepared,) if capture_existing is None else (),
                 result_builder=result_builder,
-                mutate=mutate,
+                mutation_plan={
+                    "capture_payload": capture_payload,
+                    "items": items,
+                    "request_key": f"{aggregate_id}:{idempotency_key}",
+                    "submission_digest": submission_digest,
+                },
             )
         except IdempotencyConflict:
             if not _retry_after_race:
@@ -952,8 +876,6 @@ class ProvenanceService:
                 intent=intent,
                 _retry_after_race=False,
             )
-        except sqlite3.IntegrityError as exc:
-            raise ConflictError("research semantic currentness conflict") from exc
         except ConflictError:
             if not _retry_after_race:
                 raise

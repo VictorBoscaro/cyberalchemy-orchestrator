@@ -25,7 +25,7 @@
     {
       "command": "python -m unittest discover -s implementations/tests/runtime -p \"test_*.py\" -q",
       "result": "PASS",
-      "tests_run": 26,
+      "tests_run": 27,
       "exit_code": 0
     },
     {
@@ -82,13 +82,14 @@
       "GET /api/provenance/sessions/{session_id}",
       "GET /api/provenance/dispatches/{repo_id}/{dispatch_id}",
       "GET /api/provenance/research/{capture_id}",
-      "GET /api/provenance/research/{capture_id}/answer"
+      "GET /api/provenance/research/{capture_id}/answer",
+      "GET /api/health"
     ],
     "session_rollover": {
       "command": "apt.start-new-session@1",
       "events": [
-        "apt.session_started@1",
-        "apt.session_context_rebound@1"
+        {"event_type": "apt.session_started", "schema_ref": "apt.session-started@1"},
+        {"event_type": "apt.session_context_rebound", "schema_ref": "apt.session-context-rebound@1"}
       ],
       "head_update": "current-origin-head-CAS"
     },
@@ -113,7 +114,8 @@
     "provider_adapter": "absent",
     "legacy_runtime_cutover": "absent",
     "legacy_ledger_mutation": "absent",
-    "apt_granular_projection_routes_and_tables": "implemented-test-only-composition"
+    "apt_granular_projection_routes_and_tables": "implemented-test-only-composition",
+    "health_route": "implemented-test-only-enabled-production-hard-disabled"
   },
   "approval": {
     "implementation_author": "runtime_bus_orchestrator",

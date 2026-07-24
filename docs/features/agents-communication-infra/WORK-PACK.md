@@ -20,7 +20,7 @@ decision state live under [`work-pack/`](work-pack/).
 |---|---|---|
 | `workPackGateStatus` | **pass-for-exact-swu** | Stage-A/TASK-000/W0 passed independent review cycle 5/5. This pass selects only `SWU-ACI-APT-VS-001`; every other runtime SWU remains blocked. |
 | `mutationTestAuthorization` | **pass_for_exact_swu** | Owner-authorized on 2026-07-23 for descriptor-bound source, migrations, tests and temporary/repository-local pilot DB work in `SWU-ACI-APT-VS-001`. |
-| `localPilotServeEnablement` | **block** | Separate post-implementation reviewer/root gate; loopback serving is not authorized by W0. |
+| `localPilotServeEnablement` | **pass-local-pilot-only; operative** | Independent Stage-C review accepted only explicit `127.0.0.1` serving of `SWU-ACI-APT-VS-001` with its dedicated SQLite DB and verified Stage-B receipt. |
 | `productionEnablement` | **block** | External network, provider execution, materializer and audit-ledger cutover are excluded. |
 | `cvrImplementationGateStatus` | **approval_packet_prepared — NON-PASS** | Prepared for named owner review; no owner acceptance, active exception or implementation authorization exists. |
 | `cvrAuthorizationPredicate` | Global gates, or proposed exact descriptor-bound authorization for one enumerated CVR SWU | Proposed branch is non-operative until the coordinated five-entry packet is accepted; currently false. |
@@ -43,9 +43,11 @@ decision state live under [`work-pack/`](work-pack/).
   endpoint, current ledger parser and current validated appender.
 - **Success condition:** Slices 0-4 pass their own falsifiers and the existing skills/UI become
   clients of one command/runtime boundary rather than parallel executors.
-- **Current authorization:** descriptor-bound implementation and mutation tests for the exact
-  `SWU-ACI-APT-VS-001` only. Local serving remains blocked until implementation evidence receives
-  a separate independent enablement decision.
+- **Current authorization:** the exact `SWU-ACI-APT-VS-001` Stage-B implementation and Stage-C
+  loopback pilot are operative. The local orchestration logging bridge composes the validated
+  legacy appender with ACI Session/link/lifecycle receipts under explicit owner authorization;
+  Stage F makes it the fail-closed project hook for trusted local Claude and Codex Agent calls.
+  This is not TASK-020 materialization or production cutover.
 
 ## Delivery boundary
 
@@ -81,9 +83,9 @@ Excluded until later phases:
 | Task | Goal | Layer | Complexity | Waves | Gate | Status |
 |---|---|---|---|---|---|---|
 | [TASK-000](work-pack/tasks/TASK-000.md) | Resolve Slice-0 decisions and freeze contracts. | L0 | high | W0 | independent digest review cycle 5/5 PASS | completed |
-| [SWU-ACI-APT-VS-001](work-pack/tasks/TASK-APT-VS-001.md) | Local Session/link/bus/probe/research vertical slice. | L0 | high | W1 bounded | exact cross-workpack predicate | selected; mutation-test authorized |
+| [SWU-ACI-APT-VS-001](work-pack/tasks/TASK-APT-VS-001.md) | Local Session/link/bus/probe/research vertical slice. | L0 | high | W1 bounded | Stage-B and Stage-C receipts PASS | implemented; local pilot operative |
 | [TASK-CVR](work-pack/tasks/TASK-CVR.md) | Prepare and, only after exact authorization, deliver canonical vault reads in artifact then edge slices. | L0 adjunct | high | W0 adjunct | global block + nominal gate | documentation-prepared; implementation-blocked |
-| [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | exact `SWU-ACI-APT-VS-001` selected | ready; exact-SWU mutation authorized |
+| [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | exact `SWU-ACI-APT-VS-001` selected | bounded vertical slice implemented; broader Slice-1 work remains |
 | [TASK-020](work-pack/tasks/TASK-020.md) | Implement audit-ledger opening/close materializers and reconciliation. | L0/L1 | high | W1-W2 | blocked by TASK-000/010 | not-started |
 | [TASK-030](work-pack/tasks/TASK-030.md) | Execute the fixed protocol with deterministic fake adapters. | L0 | high | W1 | blocked by TASK-010/020 | not-started |
 | [TASK-040](work-pack/tasks/TASK-040.md) | Add durable outbox, recovery, sealing, races and runtime SSE. | L1 | high | W2 | blocked by S-001 | not-started |
@@ -97,16 +99,16 @@ Excluded until later phases:
 
 ## Selection state
 
-`SWU-ACI-001` is complete. The next and only prepared mutation unit is
-`SWU-ACI-APT-VS-001`, but it is not selected until the cross-workpack predicate and root receipt
-pass:
+`SWU-ACI-001` and the bounded `SWU-ACI-APT-VS-001` implementation are complete for their accepted
+scope. No other runtime SWU is selected:
 
 | SWU | Parent | Goal | Dependencies | Write scope | Done criteria | Evidence | Verification | Owner |
 |---|---|---|---|---|---|---|---|---|
 | `SWU-ACI-APT-VS-001` | bounded TASK-010/APT integration | Implement the exact local vertical slice. | [cross-workpack predicate](work-pack/tasks/TASK-APT-VS-001.md#entry-predicate) | descriptor-bound runtime/test paths only | Complete test matrix and execution receipt; no broadened claims. | mutation receipt, state/artifact hashes, independent implementation PASS | independent review plus root approval | selected |
 
 All runtime SWUs except the exact `SWU-ACI-APT-VS-001` remain unselected. Local-pilot serving is
-still separately blocked until implementation evidence and an independent enablement review pass.
+operative only on `127.0.0.1`; providers, TASK-020 materialization, external networking and
+production cutover remain blocked.
 
 ## Blockers
 

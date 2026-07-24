@@ -10,6 +10,7 @@
 | Stage A APT integration packet uses one ACI writer and disposable projections | selected-for-review | No APT SQL connection, migration authority or direct artifact finalization. |
 | Final answer bytes exist only in the protected ACI artifact BLOB | selected-for-review | Events, APT projections, receipts, logs, SSE and errors carry refs/digests only. |
 | Owner authorizes the exact `SWU-ACI-APT-VS-001` mutation-test scope | selected | Stage-A APT review passed cycle 2/5 and ACI/TASK-000/W0 review passed cycle 5/5; code, migrations and tests may proceed only inside the frozen descriptor. Local serve and production/cutover remain blocked. |
+| Owner selects loopback local-pilot enablement | operative-local-pilot-only | Independent Stage-C review passed. Serving is authorized only on `127.0.0.1`, with an explicit dedicated DB, fail-closed preflight and exact capability scopes. Production, external network, provider execution, automatic agent launch, materializer and cutover remain blocked. |
 
 `@victor` recorded the exact-SWU mutation decision on 2026-07-23 after the predicate in
 `../../WORK-PACK.md` passed independent review. The change remains non-operative until its

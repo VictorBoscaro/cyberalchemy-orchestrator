@@ -384,6 +384,7 @@ class RuntimeJournal:
                 )
 
     def _verify_event_schemas(self, events: list[EventDraft]) -> None:
+        decoded: list[dict[str, Any]] = []
         for event in events:
             binding = self._schema_bindings.get(event.event_type)
             if binding is None:
@@ -392,12 +393,40 @@ class RuntimeJournal:
                 raise IntegrityError(f"event schema binding mismatch: {event.event_type}")
             if not event.schema_digest.startswith("sha256:"):
                 raise IntegrityError("schema digest must be algorithm-qualified")
+            payload = parse_strict_json(event.payload.body)
+            decoded.append(payload)
             validator = self._payload_validators.get(event.event_type)
             if validator:
-                payload = parse_strict_json(event.payload.body)
                 if not isinstance(payload, dict):
                     raise IntegrityError("event payload must be a JSON object")
                 validator(payload)
+        types = [event.event_type for event in events]
+        if "apt.session_context_rebound" in types:
+            if types != ["apt.session_started", "apt.session_context_rebound"]:
+                raise IntegrityError("session rollover group shape/order is invalid")
+            started, rebound = decoded
+            session = started["session"]
+            authorization = started["rollover_authorization"]
+            if (
+                authorization is None
+                or session["origin_kind"] != rebound["origin_kind"]
+                or session["origin_ref"] != rebound["origin_ref"]
+                or session["session_id"] != rebound["successor_session_id"]
+                or started["actor_ref"] != rebound["actor_ref"]
+                or any(
+                    authorization[name] != rebound[name]
+                    for name in authorization
+                )
+            ):
+                raise IntegrityError("session rollover group bindings diverge")
+        elif (
+            "apt.session_started" in types
+            and decoded[types.index("apt.session_started")][
+                "rollover_authorization"
+            ]
+            is not None
+        ):
+            raise IntegrityError("rollover SessionStarted lacks rebound partner")
 
     def read_complete_groups(
         self, *, after: int = 0, through: int | None = None

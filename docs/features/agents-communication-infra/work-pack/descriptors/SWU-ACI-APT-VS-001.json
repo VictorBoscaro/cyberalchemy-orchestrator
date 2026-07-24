@@ -44,18 +44,17 @@
     "apt.append-bound-research-submission@1"
   ],
   "events": [
-    "aci.protocol_profile_registered@1",
-    "apt.session_started@1",
-    "apt.session_context_rebound@1",
-    "apt.session_dispatch_linked@1",
-    "aci.local_probe_context_activated@1",
-    "publication.persisted",
-    "position.accepted",
-    "reference_probe.accepted@1",
-    "publication.candidate_abandoned",
-    "apt.research_capture_appended@1",
-    "apt.research_fact_appended@1",
-    "apt.reference_probe_lineage_appended@1"
+    {"event_type": "aci.protocol_profile_registered@1", "schema_ref": "aci.protocol-profile-registered@1"},
+    {"event_type": "apt.session_started", "schema_ref": "apt.session-started@1"},
+    {"event_type": "apt.session_context_rebound", "schema_ref": "apt.session-context-rebound@1"},
+    {"event_type": "apt.session_dispatch_linked", "schema_ref": "apt.session-dispatch-linked@1"},
+    {"event_type": "aci.local_probe_context_activated@1", "schema_ref": "aci.local-probe-context-activated@1"},
+    {"event_type": "publication.persisted", "schema_ref": "aci.publication-persisted@1"},
+    {"event_type": "reference_probe.accepted@1", "schema_ref": "aci.reference-probe-accepted@1"},
+    {"event_type": "publication.candidate_abandoned", "schema_ref": "aci.publication-candidate-abandoned@1"},
+    {"event_type": "apt.research_capture_appended", "schema_ref": "apt.research-capture-appended@1"},
+    {"event_type": "apt.research_fact_appended", "schema_ref": "apt.research-fact-appended@1"},
+    {"event_type": "apt.reference_probe_lineage_appended", "schema_ref": "apt.reference-probe-lineage-appended@1"}
   ],
   "aggregate_patterns": [
     "aci.protocol-registry",
@@ -63,9 +62,7 @@
     "apt.dispatch-link:<dispatch_id>",
     "aci.local-probe:<session_id>:<dispatch_id>:<probe_id>:<profile_digest>",
     "apt.research-capture:<dispatch_id>:<expected_contribution_id>",
-    "apt.research-fact:<subject_kind>:<subject_id>",
-    "apt.disposition-chain:<canonical_target_digest>",
-    "apt.assessment-chain:<canonical_target_digest>"
+    "apt.research-fact:<subject_kind>:<subject_id>"
   ],
   "http": [
     "GET /api/runtime/session",
@@ -82,7 +79,8 @@
     "GET /api/provenance/sessions/{session_id}",
     "GET /api/provenance/dispatches/{repo_id}/{dispatch_id}",
     "GET /api/provenance/research/{capture_id}",
-    "GET /api/provenance/research/{capture_id}/answer"
+    "GET /api/provenance/research/{capture_id}/answer",
+    "GET /api/health"
   ],
   "projection_runtime": {
     "projector": "apt-granular@1",

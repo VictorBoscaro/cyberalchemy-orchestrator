@@ -50,10 +50,12 @@ insert and committed together.
 
 Reference-probe lineage is a separate optional ordered group using
 `apt.reference_probe_lineage_appended` / `apt.reference-probe-lineage-appended@1`. It may bind only
-an official row in ACI `messages`, its official accepted event and verified publication receipt.
-All three must belong to the same complete verified ACI command group and be visible at or before
-the accepted-prefix boundary used for lineage. `publication_candidates` and persisted-candidate
-events are never provenance authority.
+an official row in ACI `messages`, its official accepted event and the official verification command
+receipt. Those three belong to the same complete verified ACI command group. The predecessor
+candidate publication receipt must identify the candidate consumed by that verification command;
+it is evidence of ordered persistence, never provenance authority. Both groups must be visible at
+or before the accepted-prefix boundary used for lineage. `publication_candidates` and
+persisted-candidate events are never provenance authority.
 
 ## HTTP endpoints
 

@@ -11,10 +11,17 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .artifacts import ArtifactStore
-from .canonical import canonical_bytes, canonical_digest, canonical_text, parse_strict_json
+from .canonical import (
+    canonical_bytes,
+    canonical_digest,
+    canonical_text,
+    digest_bytes,
+    parse_strict_json,
+)
 from .capabilities import CapabilityManager
 from .database import RuntimeDatabase
 from .errors import (
+    AuthorizationError,
     ConflictError,
     IdempotencyConflict,
     IntegrityError,
@@ -39,6 +46,20 @@ ACI_SCHEMAS = {
         "publication.persisted": "aci.publication-persisted@1",
         "reference_probe.accepted@1": "aci.reference-probe-accepted@1",
         "publication.candidate_abandoned": "aci.publication-candidate-abandoned@1",
+        "orchestration.dispatch_opened@1": "aci.orchestration-dispatch-opened@1",
+        "orchestration.dispatch_closed@1": "aci.orchestration-dispatch-closed@1",
+        "reference_scout.run_requested@1": "aci.reference-scout-run-requested@1",
+        "reference_scout.recommendation_accepted@1": (
+            "aci.reference-scout-recommendation-accepted@1"
+        ),
+        "reference_scout.bundle_committed@1": (
+            "aci.reference-scout-bundle-committed@1"
+        ),
+        "reference_scout.bundle_delivered@1": (
+            "aci.reference-scout-bundle-delivered@1"
+        ),
+        "reference_scout.terminated@1": "aci.reference-scout-terminated@1",
+        "dispatch.ingestion_recorded@1": "aci.dispatch-ingestion-recorded@1",
     }.items()
 }
 
@@ -87,6 +108,26 @@ class RuntimeService:
                 "apt.session_started": self._validate_session_started_event,
                 "apt.session_context_rebound": self._validate_session_rebound_event,
                 "apt.session_dispatch_linked": self._validate_session_linked_event,
+                "orchestration.dispatch_opened@1": self._validate_dispatch_opened_event,
+                "orchestration.dispatch_closed@1": self._validate_dispatch_closed_event,
+                "reference_scout.run_requested@1": (
+                    self._validate_scout_requested_event
+                ),
+                "reference_scout.recommendation_accepted@1": (
+                    self._validate_scout_recommendation_event
+                ),
+                "reference_scout.bundle_committed@1": (
+                    self._validate_scout_bundle_event
+                ),
+                "reference_scout.bundle_delivered@1": (
+                    self._validate_scout_delivery_event
+                ),
+                "reference_scout.terminated@1": (
+                    self._validate_scout_terminated_event
+                ),
+                "dispatch.ingestion_recorded@1": (
+                    self._validate_dispatch_ingestion_event
+                ),
             }
         )
         return {"applied_migrations": applied, "policy": self.database.verify_policy()}
@@ -196,6 +237,232 @@ class RuntimeService:
             },
             "SessionDispatchLink",
         )
+        snapshot = cls._require_exact_fields(
+            payload["dispatch_snapshot_ref"],
+            {"kind", "ledger_row_identity", "row_digest"},
+            "DispatchAuthoritySnapshotRef",
+        )
+        if snapshot["kind"] != "legacy_ledger":
+            raise IntegrityError("local link requires legacy_ledger snapshot")
+        identity = cls._require_exact_fields(
+            snapshot["ledger_row_identity"],
+            {
+                "dispatch_id",
+                "row_kind",
+                "appender_identity",
+                "contract_version",
+            },
+            "LegacyLedgerRowIdentity",
+        )
+        if identity["dispatch_id"] != payload["link"]["dispatch_id"]:
+            raise IntegrityError("legacy ledger identity dispatch does not match link")
+        for field in ("row_kind", "appender_identity", "contract_version"):
+            if not isinstance(identity[field], str) or not identity[field]:
+                raise IntegrityError(f"legacy ledger identity {field} is malformed")
+        digest = snapshot["row_digest"]
+        if not (
+            isinstance(digest, str)
+            and digest.startswith("sha256:")
+            and len(digest) == 71
+            and all(character in "0123456789abcdef" for character in digest[7:])
+        ):
+            raise IntegrityError("legacy ledger row digest is malformed")
+
+    @classmethod
+    def _validate_dispatch_opened_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "dispatch_id",
+                "session_id",
+                "opened_at",
+                "actor_ref",
+                "authority_mode",
+                "ledger_path",
+                "ledger_digest",
+                "row_digest",
+                "row_bytes_digest",
+                "link_event_id",
+                "authorization_evidence_ref",
+                "authorization_evidence_digest",
+            },
+            "OrchestrationDispatchOpened",
+        )
+        if payload["authority_mode"] != "legacy-managed":
+            raise IntegrityError("orchestration bridge authority mode must be legacy-managed")
+
+    @classmethod
+    def _validate_dispatch_closed_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "dispatch_id",
+                "session_id",
+                "closed_at",
+                "actor_ref",
+                "exit_reason",
+                "agents_spawned",
+                "feedback_prompts",
+                "ledger_path",
+                "ledger_digest",
+                "row_digest",
+                "row_bytes_digest",
+                "authorization_evidence_ref",
+                "authorization_evidence_digest",
+            },
+            "OrchestrationDispatchClosed",
+        )
+
+    @classmethod
+    def _validate_scout_requested_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "scout_run_id",
+                "probe_id",
+                "session_id",
+                "dispatch_id",
+                "launch_mode",
+                "objective_ref",
+                "shape",
+                "source_mode",
+                "profile_binding",
+                "group_aggregate_id",
+                "seat_id",
+                "attempt_id",
+                "operation_id",
+                "requested_at",
+                "actor_ref",
+            },
+            "ReferenceScoutRunRequested",
+        )
+        cls._require_exact_fields(
+            payload["profile_binding"],
+            {"profile_id", "profile_version", "profile_digest"},
+            "ReferenceScoutProfileBinding",
+        )
+        if (
+            payload["launch_mode"] != "dispatch_bound"
+            or payload["shape"] not in {"small", "tensioned"}
+            or payload["source_mode"]
+            not in {"internal", "external", "internal-and-external"}
+        ):
+            raise IntegrityError("Reference Scout request enum is invalid")
+
+    @classmethod
+    def _validate_scout_recommendation_event(
+        cls, payload: dict[str, Any]
+    ) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "scout_run_id",
+                "probe_id",
+                "recommendation",
+                "message_id",
+                "publication_event_id",
+                "payload_ref",
+                "payload_hash",
+                "accepted_at",
+            },
+            "ReferenceScoutRecommendationAccepted",
+        )
+        cls._require_exact_fields(
+            payload["recommendation"],
+            {
+                "recommendation_id",
+                "reference_id",
+                "source_class",
+                "locator_observed",
+                "access_state",
+                "found_by_seat_id",
+                "evaluated_by_seat_id",
+                "evaluation",
+                "why_inspect",
+                "comparability_state",
+            },
+            "ReferenceScoutRecommendation",
+        )
+
+    @classmethod
+    def _validate_scout_bundle_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "scout_run_id",
+                "probe_id",
+                "bundle_artifact_id",
+                "bundle_digest",
+                "recommendation_ids",
+                "committed_at",
+                "actor_ref",
+            },
+            "ReferenceScoutBundleCommitted",
+        )
+
+    @classmethod
+    def _validate_scout_delivery_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "scout_run_id",
+                "probe_id",
+                "bundle_artifact_id",
+                "bundle_digest",
+                "delivered_at",
+                "actor_ref",
+            },
+            "ReferenceScoutBundleDelivered",
+        )
+
+    @classmethod
+    def _validate_scout_terminated_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "scout_run_id",
+                "probe_id",
+                "outcome",
+                "reason",
+                "terminated_at",
+                "actor_ref",
+            },
+            "ReferenceScoutTerminated",
+        )
+        if payload["outcome"] not in {"failed", "cancelled"}:
+            raise IntegrityError("Reference Scout termination outcome is invalid")
+
+    @classmethod
+    def _validate_dispatch_ingestion_event(
+        cls, payload: dict[str, Any]
+    ) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "ingestion_id",
+                "session_id",
+                "dispatch_id",
+                "host",
+                "agent_id",
+                "tool_use_id",
+                "tool_name",
+                "source_kind",
+                "locator",
+                "repo_relative_path",
+                "content_digest",
+                "artifact_id",
+                "media_type",
+                "size_bytes",
+                "coverage",
+                "purpose",
+                "observed_at",
+            },
+            "DispatchIngestionRecorded",
+        )
+        if payload["host"] not in {"claude", "codex"}:
+            raise IntegrityError("dispatch ingestion host is invalid")
+        if payload["coverage"] not in {"exact", "metadata_only", "opaque"}:
+            raise IntegrityError("dispatch ingestion coverage is invalid")
 
     def _register_projection_ports(self) -> None:
         def session_reducer(state, event):
@@ -407,11 +674,16 @@ class RuntimeService:
         *,
         origin_digest: str,
         name: str,
+        actor_ref: str,
+        actor_authentication_ref: str,
+        actor_authentication_digest: str,
         idempotency_key: str = "ensure",
-        actor_ref: str = "runtime-bootstrap",
-        actor_authentication_ref: str = "host-auth:runtime-bootstrap",
-        actor_authentication_digest: str = "sha256:" + "0" * 64,
     ) -> dict[str, Any]:
+        self._require_authority_evidence(
+            actor_ref=actor_ref,
+            references=(actor_authentication_ref,),
+            digests=(actor_authentication_digest,),
+        )
         if not origin_digest.startswith("sha256:") or not name:
             raise ValidationError("session origin digest and name are required")
         session_id = self._stable_id("ses_", origin_digest)
@@ -440,8 +712,19 @@ class RuntimeService:
             aggregate_type="apt.session-binding",
             aggregate_id=aggregate_id,
             expected_version=0,
-            authority={"principal_id": "runtime-bootstrap", "action": "session.ensure"},
-            intent={"origin_digest": origin_digest, "name": name},
+            authority={
+                "principal_id": actor_ref,
+                "action": "session.ensure",
+                "authentication_ref": actor_authentication_ref,
+                "authentication_digest": actor_authentication_digest,
+            },
+            intent={
+                "origin_digest": origin_digest,
+                "name": name,
+                "actor_ref": actor_ref,
+                "actor_authentication_ref": actor_authentication_ref,
+                "actor_authentication_digest": actor_authentication_digest,
+            },
         )
         event = self._event("apt.session_started", payload)
 
@@ -513,6 +796,13 @@ class RuntimeService:
                 if (
                     result.get("session", {}).get("origin_digest") != origin_digest
                     or result.get("session", {}).get("name") != name
+                    or result.get("expected_current_session_id")
+                    != expected_current_session_id
+                    or context.context["expected_current_session_id"]
+                    != expected_current_session_id
+                    or result.get("authorization_nonce")
+                    != context.context["nonce"]
+                    or result.get("capability_id") != context.capability_id
                 ):
                     raise IdempotencyConflict(
                         "start-new key reused with different intent"
@@ -595,9 +885,14 @@ class RuntimeService:
                 "capability_id": context.capability_id,
                 "principal_id": context.principal_id,
                 "action": "session.start-new",
+                "nonce": context.context["nonce"],
+                "authorization_evidence_digest": context.context[
+                    "authorization_evidence_digest"
+                ],
             },
             intent={
                 "origin_digest": origin_digest,
+                "expected_current_session_id": expected_current_session_id,
                 "predecessor_session_id": predecessor,
                 "successor_session_id": successor,
                 "name": name,
@@ -618,6 +913,9 @@ class RuntimeService:
                     "name": name,
                     "started_at": rebound_at,
                 },
+                "expected_current_session_id": predecessor,
+                "authorization_nonce": context.context["nonce"],
+                "capability_id": context.capability_id,
                 "predecessor_session_id": predecessor,
                 "rebound_event_id": records[1].event_id,
             }
@@ -681,13 +979,21 @@ class RuntimeService:
         *,
         session_id: str,
         dispatch_id: str,
+        actor_ref: str,
+        authorization_policy_ref: str,
+        authorization_policy_digest: str,
+        authorization_evidence_ref: str,
+        authorization_evidence_digest: str,
         idempotency_key: str = "link",
-        actor_ref: str = "runtime-bootstrap",
-        authorization_policy_ref: str = "host.dispatch-link@1",
-        authorization_policy_digest: str = "sha256:" + "0" * 64,
-        authorization_evidence_ref: str = "host-evidence:runtime-bootstrap",
-        authorization_evidence_digest: str = "sha256:" + "0" * 64,
     ) -> dict[str, Any]:
+        self._require_authority_evidence(
+            actor_ref=actor_ref,
+            references=(authorization_policy_ref, authorization_evidence_ref),
+            digests=(
+                authorization_policy_digest,
+                authorization_evidence_digest,
+            ),
+        )
         snapshot = self.legacy.resolve(self.settings.ledger_path, dispatch_id)
         with self.database.connect() as conn:
             session = conn.execute(
@@ -745,11 +1051,23 @@ class RuntimeService:
             aggregate_type="apt.dispatch-link",
             aggregate_id=aggregate_id,
             expected_version=0,
-            authority={"principal_id": "runtime-bootstrap", "action": "dispatch.link"},
+            authority={
+                "principal_id": actor_ref,
+                "action": "dispatch.link",
+                "authorization_policy_ref": authorization_policy_ref,
+                "authorization_policy_digest": authorization_policy_digest,
+                "authorization_evidence_ref": authorization_evidence_ref,
+                "authorization_evidence_digest": authorization_evidence_digest,
+            },
             intent={
                 "session_id": session_id,
                 "dispatch_id": dispatch_id,
-                "row_digest": snapshot.row_digest,
+                "actor_ref": actor_ref,
+                "dispatch_snapshot_ref": dispatch_snapshot_ref,
+                "authorization_policy_ref": authorization_policy_ref,
+                "authorization_policy_digest": authorization_policy_digest,
+                "authorization_evidence_ref": authorization_evidence_ref,
+                "authorization_evidence_digest": authorization_evidence_digest,
             },
             prerequisites=(
                 PrerequisiteHead(
@@ -794,6 +1112,333 @@ class RuntimeService:
             command, [event], next_state=payload, result_builder=result, mutate=mutate
         )
         return self._catch_up_apt_status(receipt)
+
+    def record_orchestration_dispatch_opened(
+        self,
+        *,
+        session_id: str,
+        dispatch_id: str,
+        actor_ref: str,
+        authorization_evidence_ref: str,
+        authorization_evidence_digest: str,
+        idempotency_key: str = "orchestration-open",
+    ) -> dict[str, Any]:
+        """Accept the launch gate only after the YAML opening is linked in ACI."""
+        self._require_authority_evidence(
+            actor_ref=actor_ref,
+            references=(authorization_evidence_ref,),
+            digests=(authorization_evidence_digest,),
+        )
+        snapshot = self.legacy.resolve(self.settings.ledger_path, dispatch_id)
+        with self.database.connect() as conn:
+            link = conn.execute(
+                "SELECT * FROM dispatch_links WHERE dispatch_id=? AND session_id=?",
+                (dispatch_id, session_id),
+            ).fetchone()
+        if not link:
+            raise NotFoundError("linked Session and dispatch are required before launch")
+        if link["row_digest"] != snapshot.row_digest:
+            raise IntegrityError("linked opening digest differs from current YAML row")
+        opened_at = snapshot.row.get("created")
+        if not isinstance(opened_at, str) or not opened_at:
+            raise IntegrityError("validated YAML opening has no created timestamp")
+        aggregate_id = f"aci.orchestration-dispatch:{dispatch_id}"
+        link_head = self.journal.head(f"apt.dispatch-link:{dispatch_id}")
+        payload = {
+            "dispatch_id": dispatch_id,
+            "session_id": session_id,
+            "opened_at": opened_at,
+            "actor_ref": actor_ref,
+            "authority_mode": "legacy-managed",
+            "ledger_path": link["ledger_path"],
+            "ledger_digest": link["ledger_digest"],
+            "row_digest": snapshot.row_digest,
+            "row_bytes_digest": snapshot.row_bytes_digest,
+            "link_event_id": link["event_id"],
+            "authorization_evidence_ref": authorization_evidence_ref,
+            "authorization_evidence_digest": authorization_evidence_digest,
+        }
+        command = self._command(
+            command_name="aci.record-orchestration-dispatch-opened@1",
+            scope_key=aggregate_id,
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.orchestration-dispatch",
+            aggregate_id=aggregate_id,
+            expected_version=0,
+            authority={
+                "principal_id": actor_ref,
+                "action": "orchestration.dispatch.open",
+                "authorization_evidence_ref": authorization_evidence_ref,
+                "authorization_evidence_digest": authorization_evidence_digest,
+            },
+            intent=payload,
+            prerequisites=(
+                PrerequisiteHead(
+                    aggregate_id=link_head["aggregate_id"],
+                    expected_version=link_head["current_version"],
+                    state_hash=link_head["state_hash"],
+                ),
+            ),
+        )
+        event = self._event("orchestration.dispatch_opened@1", payload)
+
+        def result(records, base):
+            return {
+                **base,
+                "orchestration_dispatch": {
+                    "dispatch_id": dispatch_id,
+                    "session_id": session_id,
+                    "status": "opened",
+                    "authority_mode": "legacy-managed",
+                    "event_id": records[0].event_id,
+                    "yaml_row_digest": snapshot.row_digest,
+                },
+            }
+
+        receipt = self.journal.accept(
+            command, [event], next_state=payload, result_builder=result
+        )
+        return self._catch_up_apt_status(receipt)
+
+    def record_orchestration_dispatch_closed(
+        self,
+        *,
+        session_id: str,
+        dispatch_id: str,
+        actor_ref: str,
+        authorization_evidence_ref: str,
+        authorization_evidence_digest: str,
+        idempotency_key: str = "orchestration-close",
+    ) -> dict[str, Any]:
+        """Accept the durable outcome only after the validated YAML close exists."""
+        self._require_authority_evidence(
+            actor_ref=actor_ref,
+            references=(authorization_evidence_ref,),
+            digests=(authorization_evidence_digest,),
+        )
+        snapshot = self.legacy.resolve_close(self.settings.ledger_path, dispatch_id)
+        with self.database.connect() as conn:
+            link = conn.execute(
+                "SELECT * FROM dispatch_links WHERE dispatch_id=? AND session_id=?",
+                (dispatch_id, session_id),
+            ).fetchone()
+            unfinished_scout = conn.execute(
+                """
+                SELECT scout_run_id,state FROM reference_scout_runs
+                WHERE dispatch_id=? AND state NOT IN ('delivered','failed','cancelled')
+                ORDER BY requested_at LIMIT 1
+                """,
+                (dispatch_id,),
+            ).fetchone()
+        if not link:
+            raise NotFoundError("linked Session and dispatch are required before close")
+        if unfinished_scout:
+            raise ConflictError(
+                "dispatch cannot close with unfinished Reference Scout "
+                f"{unfinished_scout['scout_run_id']} ({unfinished_scout['state']})"
+            )
+        aggregate_id = f"aci.orchestration-dispatch:{dispatch_id}"
+        head = self.journal.head(aggregate_id)
+        if head["current_version"] == 0:
+            raise ConflictError("orchestration opening must be accepted before close")
+        closed_at = snapshot.row.get("closed")
+        exit_reason = snapshot.row.get("exit_reason")
+        agents_spawned = snapshot.row.get("agents_spawned")
+        feedback_prompts = snapshot.row.get("feedback_prompts", [])
+        if (
+            not isinstance(closed_at, str)
+            or not closed_at
+            or not isinstance(exit_reason, str)
+            or not isinstance(agents_spawned, dict)
+            or not isinstance(feedback_prompts, list)
+        ):
+            raise IntegrityError("validated YAML close payload is incomplete")
+        payload = {
+            "dispatch_id": dispatch_id,
+            "session_id": session_id,
+            "closed_at": closed_at,
+            "actor_ref": actor_ref,
+            "exit_reason": exit_reason,
+            "agents_spawned": agents_spawned,
+            "feedback_prompts": feedback_prompts,
+            "ledger_path": snapshot.ledger_path,
+            "ledger_digest": snapshot.ledger_digest,
+            "row_digest": snapshot.row_digest,
+            "row_bytes_digest": snapshot.row_bytes_digest,
+            "authorization_evidence_ref": authorization_evidence_ref,
+            "authorization_evidence_digest": authorization_evidence_digest,
+        }
+        command = self._command(
+            command_name="aci.record-orchestration-dispatch-closed@1",
+            scope_key=aggregate_id,
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.orchestration-dispatch",
+            aggregate_id=aggregate_id,
+            expected_version=1,
+            authority={
+                "principal_id": actor_ref,
+                "action": "orchestration.dispatch.close",
+                "authorization_evidence_ref": authorization_evidence_ref,
+                "authorization_evidence_digest": authorization_evidence_digest,
+            },
+            intent=payload,
+        )
+        event = self._event("orchestration.dispatch_closed@1", payload)
+
+        def result(records, base):
+            return {
+                **base,
+                "orchestration_dispatch": {
+                    "dispatch_id": dispatch_id,
+                    "session_id": session_id,
+                    "status": "closed",
+                    "exit_reason": exit_reason,
+                    "event_id": records[0].event_id,
+                    "yaml_row_digest": snapshot.row_digest,
+                },
+            }
+
+        receipt = self.journal.accept(
+            command, [event], next_state=payload, result_builder=result
+        )
+        return self._catch_up_apt_status(receipt)
+
+    def require_orchestration_dispatch_can_close(
+        self,
+        *,
+        session_id: str,
+        dispatch_id: str,
+        actor_ref: str,
+        authorization_evidence_ref: str,
+        authorization_evidence_digest: str,
+    ) -> dict[str, Any]:
+        """Read-only guard that must pass before the YAML close side effect."""
+        self._require_authority_evidence(
+            actor_ref=actor_ref,
+            references=(authorization_evidence_ref,),
+            digests=(authorization_evidence_digest,),
+        )
+        with self.database.connect() as conn:
+            link = conn.execute(
+                "SELECT event_id,row_digest FROM dispatch_links "
+                "WHERE dispatch_id=? AND session_id=?",
+                (dispatch_id, session_id),
+            ).fetchone()
+            unfinished_scout = conn.execute(
+                """
+                SELECT scout_run_id,state FROM reference_scout_runs
+                WHERE dispatch_id=? AND state NOT IN ('delivered','failed','cancelled')
+                ORDER BY requested_at LIMIT 1
+                """,
+                (dispatch_id,),
+            ).fetchone()
+        if not link:
+            raise NotFoundError("linked Session and dispatch are required before close")
+        if unfinished_scout:
+            raise ConflictError(
+                "dispatch cannot close with unfinished Reference Scout "
+                f"{unfinished_scout['scout_run_id']} ({unfinished_scout['state']})"
+            )
+        head = self.journal.head(f"aci.orchestration-dispatch:{dispatch_id}")
+        if head["current_version"] not in {1, 2}:
+            raise ConflictError("accepted orchestration opening is required before close")
+        return {
+            "dispatch_id": dispatch_id,
+            "session_id": session_id,
+            "current_version": head["current_version"],
+            "current_event_id": head["last_event_id"],
+            "link_event_id": link["event_id"],
+            "opening_row_digest": link["row_digest"],
+        }
+
+    def get_orchestration_dispatch_log(
+        self, *, dispatch_id: str
+    ) -> dict[str, Any]:
+        """Return an integrity-checked YAML/ACI lifecycle view for one dispatch."""
+        if not isinstance(dispatch_id, str) or not dispatch_id.strip():
+            raise ValidationError("dispatch_id is required")
+        verification = self.journal.verify_store()
+        aggregate_id = f"aci.orchestration-dispatch:{dispatch_id}"
+        with self.database.connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT e.journal_offset,e.event_id,e.aggregate_version,e.event_type,
+                       e.command_id,e.recorded_at,e.payload_ref,e.payload_hash,
+                       a.body,a.size_bytes,a.content_hash
+                FROM events e
+                JOIN artifacts a ON a.artifact_id=e.payload_ref
+                WHERE e.aggregate_id=?
+                ORDER BY e.aggregate_version
+                """,
+                (aggregate_id,),
+            ).fetchall()
+            link = conn.execute(
+                """
+                SELECT dispatch_id,session_id,ledger_path,ledger_digest,row_digest,
+                       event_id,linked_at
+                FROM dispatch_links WHERE dispatch_id=?
+                """,
+                (dispatch_id,),
+            ).fetchone()
+        if not rows or not link:
+            raise NotFoundError("orchestration dispatch log not found")
+        events: list[dict[str, Any]] = []
+        for row in rows:
+            body = bytes(row["body"])
+            if (
+                len(body) != row["size_bytes"]
+                or digest_bytes(body) != row["content_hash"]
+                or row["payload_hash"] != row["content_hash"]
+            ):
+                raise IntegrityError("orchestration event artifact integrity mismatch")
+            payload = parse_strict_json(body)
+            if not isinstance(payload, dict) or payload.get("dispatch_id") != dispatch_id:
+                raise IntegrityError("orchestration event payload identity mismatch")
+            events.append(
+                {
+                    "journal_offset": row["journal_offset"],
+                    "event_id": row["event_id"],
+                    "aggregate_version": row["aggregate_version"],
+                    "event_type": row["event_type"],
+                    "command_id": row["command_id"],
+                    "recorded_at": row["recorded_at"],
+                    "payload_ref": row["payload_ref"],
+                    "payload_hash": row["payload_hash"],
+                    "payload": payload,
+                }
+            )
+        opening = self.legacy.resolve(self.settings.ledger_path, dispatch_id)
+        try:
+            closing = self.legacy.resolve_close(self.settings.ledger_path, dispatch_id)
+        except NotFoundError:
+            closing = None
+        return {
+            "dispatch_id": dispatch_id,
+            "status": "closed"
+            if events[-1]["event_type"] == "orchestration.dispatch_closed@1"
+            else "opened",
+            "database": str(self.settings.database_path.resolve()),
+            "journal_verification": verification,
+            "session_dispatch_link": dict(link),
+            "yaml": {
+                "ledger_path": opening.ledger_path,
+                "opening": {
+                    "row_digest": opening.row_digest,
+                    "row_bytes_digest": opening.row_bytes_digest,
+                    "record": opening.row,
+                },
+                "closing": (
+                    {
+                        "row_digest": closing.row_digest,
+                        "row_bytes_digest": closing.row_bytes_digest,
+                        "record": closing.row,
+                    }
+                    if closing
+                    else None
+                ),
+            },
+            "events": events,
+        }
 
     def activate_local_probe(
         self,
@@ -922,6 +1567,262 @@ class RuntimeService:
         )
         return {**receipt, "issued_capabilities_once": issued}
 
+    def start_reference_scout(
+        self,
+        *,
+        token: str,
+        session_id: str,
+        dispatch_id: str,
+        objective_ref: str,
+        shape: str,
+        source_mode: str,
+        seat_id: str,
+        attempt_id: str,
+        operation_id: str,
+        idempotency_key: str = "start",
+    ) -> dict[str, Any]:
+        """Start one dispatch-bound ScoutRun and atomically issue its bus authority."""
+        context = self.capabilities.resolve(
+            token, action="scout.start", phase="bootstrap"
+        )
+        bound = context.context
+        expected = {
+            "session_id": session_id,
+            "dispatch_id": dispatch_id,
+            "objective_ref": objective_ref,
+            "shape": shape,
+            "source_mode": source_mode,
+            "seat_id": seat_id,
+            "attempt_id": attempt_id,
+            "operation_id": operation_id,
+        }
+        if any(bound.get(key) != value for key, value in expected.items()):
+            raise AuthorizationError("Scout start intent differs from capability")
+        if shape != "small":
+            raise ValidationError(
+                "only the small single-seat Scout shape is operational"
+            )
+        if source_mode not in {"internal", "external", "internal-and-external"}:
+            raise ValidationError("Scout source mode is invalid")
+        for field, value in expected.items():
+            if not isinstance(value, str) or not value:
+                raise ValidationError(f"Scout {field} is required")
+        with self.database.connect() as conn:
+            link = conn.execute(
+                "SELECT * FROM dispatch_links WHERE dispatch_id=? AND session_id=?",
+                (dispatch_id, session_id),
+            ).fetchone()
+            profile = conn.execute(
+                """
+                SELECT * FROM protocol_profiles
+                WHERE profile_id='apt.reference-probe-lineage' AND profile_version='1'
+                """
+            ).fetchone()
+        if not link or not profile:
+            raise NotFoundError(
+                "linked dispatch and registered Scout compatibility profile are required"
+            )
+        orchestration_head = self.journal.head(
+            f"aci.orchestration-dispatch:{dispatch_id}"
+        )
+        if orchestration_head["current_version"] != 1:
+            raise ConflictError(
+                "Reference Scout may start only while orchestration is open"
+            )
+        scout_run_id = self._stable_id(
+            "sct_", [session_id, dispatch_id, operation_id]
+        )
+        probe_id = self._stable_id("probe_", scout_run_id)
+        group_aggregate_id = f"aci.reference-scout:{scout_run_id}"
+        payload = {
+            "scout_run_id": scout_run_id,
+            "probe_id": probe_id,
+            "session_id": session_id,
+            "dispatch_id": dispatch_id,
+            "launch_mode": "dispatch_bound",
+            "objective_ref": objective_ref,
+            "shape": shape,
+            "source_mode": source_mode,
+            "profile_binding": {
+                "profile_id": profile["profile_id"],
+                "profile_version": profile["profile_version"],
+                "profile_digest": profile["canonical_digest"],
+            },
+            "group_aggregate_id": group_aggregate_id,
+            "seat_id": seat_id,
+            "attempt_id": attempt_id,
+            "operation_id": operation_id,
+            "requested_at": self.now().isoformat(),
+            "actor_ref": context.principal_id,
+        }
+        capability_context = {
+            **payload,
+            "aggregate_id": group_aggregate_id,
+            "aggregate_type": "aci.reference-scout",
+            "bus_kind": "reference_scout",
+            "expected_round_id": "scout",
+        }
+
+        def issue_run_capabilities(conn=None):
+            return {
+                "agent": self.capabilities.issue(
+                    principal_id=f"agent:{attempt_id}",
+                    action="bus.publish",
+                    phase="collect",
+                    context=capability_context,
+                    conn=conn,
+                ),
+                "parent": self.capabilities.issue(
+                    principal_id=context.principal_id,
+                    action="bus.verify",
+                    phase="collect",
+                    context=capability_context,
+                    conn=conn,
+                ),
+                "committer": self.capabilities.issue(
+                    principal_id=context.principal_id,
+                    action="scout.commit",
+                    phase="finalize",
+                    context=capability_context,
+                    conn=conn,
+                ),
+                "deliverer": self.capabilities.issue(
+                    principal_id=context.principal_id,
+                    action="scout.deliver",
+                    phase="deliver",
+                    context=capability_context,
+                    conn=conn,
+                ),
+                "terminator": self.capabilities.issue(
+                    principal_id=context.principal_id,
+                    action="scout.terminate",
+                    phase="control",
+                    context=capability_context,
+                    conn=conn,
+                ),
+            }
+
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                """
+                SELECT result_receipt_json FROM command_receipts
+                WHERE scope_key=? AND idempotency_key=?
+                """,
+                (group_aggregate_id, idempotency_key),
+            ).fetchone()
+            existing_run = conn.execute(
+                "SELECT * FROM reference_scout_runs WHERE scout_run_id=?",
+                (scout_run_id,),
+            ).fetchone()
+        if prior:
+            if not existing_run or any(
+                existing_run[field] != value
+                for field, value in {
+                    "session_id": session_id,
+                    "dispatch_id": dispatch_id,
+                    "objective_ref": objective_ref,
+                    "shape": shape,
+                    "source_mode": source_mode,
+                    "seat_id": seat_id,
+                    "attempt_id": attempt_id,
+                    "operation_id": operation_id,
+                }.items()
+            ):
+                raise IdempotencyConflict(
+                    "Scout start key reused with different intent"
+                )
+            return {
+                **json.loads(prior["result_receipt_json"]),
+                "issued_capabilities_once": issue_run_capabilities(),
+                "capabilities_reissued": True,
+            }
+        link_head = self.journal.head(f"apt.dispatch-link:{dispatch_id}")
+        command = self._command(
+            command_name="aci.start-reference-scout@1",
+            scope_key=group_aggregate_id,
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.reference-scout",
+            aggregate_id=group_aggregate_id,
+            expected_version=0,
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "scout.start",
+                "phase": "bootstrap",
+            },
+            intent=payload,
+            prerequisites=(
+                PrerequisiteHead(
+                    link_head["aggregate_id"],
+                    link_head["current_version"],
+                    link_head["state_hash"],
+                ),
+                PrerequisiteHead(
+                    orchestration_head["aggregate_id"],
+                    orchestration_head["current_version"],
+                    orchestration_head["state_hash"],
+                ),
+            ),
+        )
+        event = self._event("reference_scout.run_requested@1", payload)
+        issued: dict[str, dict[str, str]] = {}
+
+        def mutate(conn, records, _result):
+            conn.execute(
+                """
+                INSERT INTO reference_scout_runs(
+                  scout_run_id,probe_id,session_id,dispatch_id,launch_mode,
+                  objective_ref,shape,source_mode,profile_id,profile_version,
+                  profile_digest,group_aggregate_id,seat_id,attempt_id,operation_id,
+                  state,requested_at,start_event_id,last_event_id,source_through_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'requested',?,?,?,?)
+                """,
+                (
+                    scout_run_id,
+                    probe_id,
+                    session_id,
+                    dispatch_id,
+                    "dispatch_bound",
+                    objective_ref,
+                    shape,
+                    source_mode,
+                    profile["profile_id"],
+                    profile["profile_version"],
+                    profile["canonical_digest"],
+                    group_aggregate_id,
+                    seat_id,
+                    attempt_id,
+                    operation_id,
+                    payload["requested_at"],
+                    records[0].event_id,
+                    records[0].event_id,
+                    records[0].journal_offset,
+                ),
+            )
+            issued.update(issue_run_capabilities(conn))
+
+        def result(records, base):
+            return {
+                **base,
+                "scout_run": {
+                    "scout_run_id": scout_run_id,
+                    "probe_id": probe_id,
+                    "session_id": session_id,
+                    "dispatch_id": dispatch_id,
+                    "state": "requested",
+                    "event_id": records[0].event_id,
+                },
+            }
+
+        receipt = self.journal.accept(
+            command,
+            [event],
+            next_state=payload,
+            result_builder=result,
+            mutate=mutate,
+        )
+        return {**receipt, "issued_capabilities_once": issued}
+
     def publish(self, token: str, intent: dict[str, Any]) -> dict[str, Any]:
         self.capabilities.reject_authority_fields(intent)
         allowed = {
@@ -941,10 +1842,17 @@ class RuntimeService:
         bound = context.context
         if intent.get("operation_id") != bound["operation_id"]:
             raise ConflictError("operation does not match capability")
-        if intent.get("round_id") != "probe":
-            raise ValidationError("local probe round must be 'probe'")
+        expected_round = bound.get("expected_round_id", "probe")
+        if intent.get("round_id") != expected_round:
+            raise ValidationError("bus round does not match capability")
         if not intent.get("message_type") or not intent.get("idempotency_key"):
             raise ValidationError("message type and idempotency key are required")
+        if bound.get("bus_kind") == "reference_scout" and not intent[
+            "message_type"
+        ].startswith("reference_scout:"):
+            raise ValidationError(
+                "Scout publication message type must bind a recommendation identity"
+            )
         if intent.get("reply_to_message_ids", []) != []:
             raise ValidationError("local probe publication has no visible peer replies")
 
@@ -1008,7 +1916,7 @@ class RuntimeService:
             command_name="aci.publish-bus-contribution@1",
             scope_key=publication_scope,
             idempotency_key=intent["idempotency_key"],
-            aggregate_type="aci.local-probe",
+            aggregate_type=bound.get("aggregate_type", "aci.local-probe"),
             aggregate_id=aggregate_id,
             expected_version=(
                 int(existing["expected_version"])
@@ -1155,21 +2063,105 @@ class RuntimeService:
                 return json.loads(row["result_receipt_json"])
             raise IntegrityError("official candidate lacks stored command receipt")
         aggregate_id = bound["aggregate_id"]
-        payload = {
-            "candidate_id": candidate["candidate_id"],
-            "message_id": candidate["message_id"],
-            "publication_event_id": candidate["publication_event_id"],
-            "profile_binding": {
-                "profile_id": bound["profile_binding"]["profile_id"],
-                "profile_version": bound["profile_binding"]["profile_version"],
-                "profile_digest": bound["profile_binding"]["profile_digest"],
-            },
-        }
+        is_scout = bound.get("bus_kind") == "reference_scout"
+        recommendation: dict[str, Any] | None = None
+        if is_scout:
+            with self.database.connect() as conn:
+                artifact = conn.execute(
+                    "SELECT body,content_hash FROM artifacts WHERE artifact_id=?",
+                    (candidate["payload_ref"],),
+                ).fetchone()
+                run = conn.execute(
+                    "SELECT * FROM reference_scout_runs WHERE scout_run_id=?",
+                    (bound.get("scout_run_id"),),
+                ).fetchone()
+            if (
+                not artifact
+                or artifact["content_hash"] != candidate["payload_hash"]
+                or not run
+                or run["state"] not in {"requested", "collecting"}
+            ):
+                raise ConflictError("Scout publication authority is no longer current")
+            recommendation = parse_strict_json(bytes(artifact["body"]))
+            expected_recommendation_fields = {
+                "recommendation_id",
+                "reference_id",
+                "source_class",
+                "locator_observed",
+                "access_state",
+                "found_by_seat_id",
+                "evaluated_by_seat_id",
+                "evaluation",
+                "why_inspect",
+                "comparability_state",
+            }
+            if (
+                not isinstance(recommendation, dict)
+                or set(recommendation) != expected_recommendation_fields
+            ):
+                raise ValidationError("Scout recommendation payload shape is invalid")
+            required_recommendation_fields = (
+                "recommendation_id",
+                "reference_id",
+                "source_class",
+                "locator_observed",
+                "access_state",
+                "found_by_seat_id",
+                "why_inspect",
+            )
+            if any(
+                not isinstance(recommendation[field], str)
+                or not recommendation[field]
+                for field in required_recommendation_fields
+            ):
+                raise ValidationError("Scout recommendation text field is invalid")
+            if recommendation["found_by_seat_id"] != bound["seat_id"]:
+                raise AuthorizationError(
+                    "Scout recommendation seat differs from capability"
+                )
+            comparability = recommendation["comparability_state"]
+            if comparability not in {
+                None,
+                "comparable",
+                "incommensurable",
+                "count_capped",
+            }:
+                raise ValidationError("Scout comparability state is invalid")
+            expected_message_type = (
+                "reference_scout:" + recommendation["recommendation_id"]
+            )
+            if candidate["message_type"] != expected_message_type:
+                raise ConflictError(
+                    "Scout message type does not bind recommendation identity"
+                )
+            payload = {
+                "scout_run_id": bound["scout_run_id"],
+                "probe_id": bound["probe_id"],
+                "recommendation": recommendation,
+                "message_id": candidate["message_id"],
+                "publication_event_id": candidate["publication_event_id"],
+                "payload_ref": candidate["payload_ref"],
+                "payload_hash": candidate["payload_hash"],
+                "accepted_at": self.now().isoformat(),
+            }
+            event_type = "reference_scout.recommendation_accepted@1"
+        else:
+            payload = {
+                "candidate_id": candidate["candidate_id"],
+                "message_id": candidate["message_id"],
+                "publication_event_id": candidate["publication_event_id"],
+                "profile_binding": {
+                    "profile_id": bound["profile_binding"]["profile_id"],
+                    "profile_version": bound["profile_binding"]["profile_version"],
+                    "profile_digest": bound["profile_binding"]["profile_digest"],
+                },
+            }
+            event_type = "reference_probe.accepted@1"
         command = self._command(
             command_name="aci.verify-publication-receipt@1",
             scope_key=f"{aggregate_id}:verify",
             idempotency_key="verify:" + candidate["publication_event_id"],
-            aggregate_type="aci.local-probe",
+            aggregate_type=bound.get("aggregate_type", "aci.local-probe"),
             aggregate_id=aggregate_id,
             # Both concurrent verifiers must seal the same semantic command.
             # Reading the mutable current head here made the losing verifier
@@ -1186,7 +2178,7 @@ class RuntimeService:
             },
             intent={"publication_receipt": publication_receipt},
         )
-        event = self._event("reference_probe.accepted@1", payload)
+        event = self._event(event_type, payload)
 
         def result(records, base):
             return {
@@ -1237,6 +2229,51 @@ class RuntimeService:
                     records[0].journal_offset,
                 ),
             )
+            if is_scout:
+                assert recommendation is not None
+                conn.execute(
+                    """
+                    INSERT INTO reference_recommendations(
+                      recommendation_id,scout_run_id,reference_id,source_class,
+                      locator_observed,access_state,found_by_seat_id,
+                      evaluated_by_seat_id,evaluation,why_inspect,
+                      comparability_state,message_id,payload_ref,payload_hash,
+                      source_event_id,source_through_offset
+                    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    """,
+                    (
+                        recommendation["recommendation_id"],
+                        bound["scout_run_id"],
+                        recommendation["reference_id"],
+                        recommendation["source_class"],
+                        recommendation["locator_observed"],
+                        recommendation["access_state"],
+                        recommendation["found_by_seat_id"],
+                        recommendation["evaluated_by_seat_id"],
+                        recommendation["evaluation"],
+                        recommendation["why_inspect"],
+                        recommendation["comparability_state"],
+                        candidate["message_id"],
+                        candidate["payload_ref"],
+                        candidate["payload_hash"],
+                        records[0].event_id,
+                        records[0].journal_offset,
+                    ),
+                )
+                updated_run = conn.execute(
+                    """
+                    UPDATE reference_scout_runs
+                    SET state='collecting',last_event_id=?,source_through_offset=?
+                    WHERE scout_run_id=? AND state IN ('requested','collecting')
+                    """,
+                    (
+                        records[0].event_id,
+                        records[0].journal_offset,
+                        bound["scout_run_id"],
+                    ),
+                )
+                if updated_run.rowcount != 1:
+                    raise ConflictError("Scout recommendation state CAS lost")
 
         return self.journal.accept(
             command,
@@ -1245,6 +2282,536 @@ class RuntimeService:
                 "phase": "official",
                 "official_message_id": candidate["message_id"],
             },
+            result_builder=result,
+            mutate=mutate,
+        )
+
+    def commit_reference_scout(
+        self,
+        *,
+        token: str,
+        scout_run_id: str,
+        idempotency_key: str = "commit",
+    ) -> dict[str, Any]:
+        context = self.capabilities.resolve(
+            token, action="scout.commit", phase="finalize"
+        )
+        bound = context.context
+        if bound.get("scout_run_id") != scout_run_id:
+            raise AuthorizationError("Scout commit scope mismatch")
+        aggregate_id = bound["aggregate_id"]
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                """
+                SELECT result_receipt_json FROM command_receipts
+                WHERE scope_key=? AND idempotency_key=?
+                """,
+                (f"{aggregate_id}:commit", idempotency_key),
+            ).fetchone()
+            run = conn.execute(
+                "SELECT * FROM reference_scout_runs WHERE scout_run_id=?",
+                (scout_run_id,),
+            ).fetchone()
+            recommendations = conn.execute(
+                """
+                SELECT recommendation_id,reference_id,source_class,locator_observed,
+                       access_state,found_by_seat_id,evaluated_by_seat_id,evaluation,
+                       why_inspect,comparability_state,message_id,payload_ref,payload_hash
+                FROM reference_recommendations
+                WHERE scout_run_id=? ORDER BY recommendation_id
+                """,
+                (scout_run_id,),
+            ).fetchall()
+        if prior:
+            return json.loads(prior["result_receipt_json"])
+        if not run or run["state"] not in {"requested", "collecting"}:
+            raise ConflictError("only an uncommitted Scout can be committed")
+        bundle = {
+            "schema": "aci.reference-scout-bundle/v1",
+            "scout_run_id": scout_run_id,
+            "probe_id": run["probe_id"],
+            "recommendations": [dict(row) for row in recommendations],
+        }
+        bundle_artifact = self.artifacts.prepare(
+            canonical_bytes(bundle),
+            media_type="application/json",
+            schema_ref="aci.reference-scout-bundle@1",
+            classification="sensitive-output",
+        )
+        committed_at = self.now().isoformat()
+        payload = {
+            "scout_run_id": scout_run_id,
+            "probe_id": run["probe_id"],
+            "bundle_artifact_id": bundle_artifact.artifact_id,
+            "bundle_digest": bundle_artifact.content_hash,
+            "recommendation_ids": [
+                row["recommendation_id"] for row in recommendations
+            ],
+            "committed_at": committed_at,
+            "actor_ref": context.principal_id,
+        }
+        head = self.journal.head(aggregate_id)
+        command = self._command(
+            command_name="aci.commit-reference-scout-bundle@1",
+            scope_key=f"{aggregate_id}:commit",
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.reference-scout",
+            aggregate_id=aggregate_id,
+            expected_version=head["current_version"],
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "scout.commit",
+                "phase": "finalize",
+            },
+            intent=payload,
+        )
+        event = self._event("reference_scout.bundle_committed@1", payload)
+
+        def mutate(conn, records, _result):
+            updated = conn.execute(
+                """
+                UPDATE reference_scout_runs
+                SET state='committed',bundle_artifact_id=?,bundle_digest=?,
+                    committed_at=?,last_event_id=?,source_through_offset=?
+                WHERE scout_run_id=? AND state IN ('requested','collecting')
+                """,
+                (
+                    bundle_artifact.artifact_id,
+                    bundle_artifact.content_hash,
+                    committed_at,
+                    records[0].event_id,
+                    records[0].journal_offset,
+                    scout_run_id,
+                ),
+            )
+            if updated.rowcount != 1:
+                raise ConflictError("Scout commit state CAS lost")
+
+        def result(records, base):
+            return {
+                **base,
+                "scout_bundle": {
+                    "scout_run_id": scout_run_id,
+                    "state": "committed",
+                    "bundle_artifact_id": bundle_artifact.artifact_id,
+                    "bundle_digest": bundle_artifact.content_hash,
+                    "recommendation_count": len(recommendations),
+                    "event_id": records[0].event_id,
+                },
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state=payload,
+            additional_artifacts=(bundle_artifact,),
+            result_builder=result,
+            mutate=mutate,
+        )
+
+    def deliver_reference_scout(
+        self,
+        *,
+        token: str,
+        scout_run_id: str,
+        idempotency_key: str = "deliver",
+    ) -> dict[str, Any]:
+        context = self.capabilities.resolve(
+            token, action="scout.deliver", phase="deliver"
+        )
+        bound = context.context
+        if bound.get("scout_run_id") != scout_run_id:
+            raise AuthorizationError("Scout delivery scope mismatch")
+        aggregate_id = bound["aggregate_id"]
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                """
+                SELECT result_receipt_json FROM command_receipts
+                WHERE scope_key=? AND idempotency_key=?
+                """,
+                (f"{aggregate_id}:deliver", idempotency_key),
+            ).fetchone()
+            run = conn.execute(
+                "SELECT * FROM reference_scout_runs WHERE scout_run_id=?",
+                (scout_run_id,),
+            ).fetchone()
+        if prior:
+            return json.loads(prior["result_receipt_json"])
+        if not run or run["state"] != "committed":
+            raise ConflictError("only a committed Scout can be delivered")
+        delivered_at = self.now().isoformat()
+        payload = {
+            "scout_run_id": scout_run_id,
+            "probe_id": run["probe_id"],
+            "bundle_artifact_id": run["bundle_artifact_id"],
+            "bundle_digest": run["bundle_digest"],
+            "delivered_at": delivered_at,
+            "actor_ref": context.principal_id,
+        }
+        head = self.journal.head(aggregate_id)
+        command = self._command(
+            command_name="aci.deliver-reference-scout-bundle@1",
+            scope_key=f"{aggregate_id}:deliver",
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.reference-scout",
+            aggregate_id=aggregate_id,
+            expected_version=head["current_version"],
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "scout.deliver",
+                "phase": "deliver",
+            },
+            intent=payload,
+        )
+        event = self._event("reference_scout.bundle_delivered@1", payload)
+
+        def mutate(conn, records, _result):
+            updated = conn.execute(
+                """
+                UPDATE reference_scout_runs
+                SET state='delivered',delivered_at=?,last_event_id=?,
+                    source_through_offset=?
+                WHERE scout_run_id=? AND state='committed'
+                """,
+                (
+                    delivered_at,
+                    records[0].event_id,
+                    records[0].journal_offset,
+                    scout_run_id,
+                ),
+            )
+            if updated.rowcount != 1:
+                raise ConflictError("Scout delivery state CAS lost")
+
+        def result(records, base):
+            return {
+                **base,
+                "scout_bundle": {
+                    "scout_run_id": scout_run_id,
+                    "state": "delivered",
+                    "bundle_artifact_id": run["bundle_artifact_id"],
+                    "bundle_digest": run["bundle_digest"],
+                    "event_id": records[0].event_id,
+                },
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state=payload,
+            result_builder=result,
+            mutate=mutate,
+        )
+
+    def terminate_reference_scout(
+        self,
+        *,
+        token: str,
+        scout_run_id: str,
+        outcome: str,
+        reason: str,
+        idempotency_key: str = "terminate",
+    ) -> dict[str, Any]:
+        context = self.capabilities.resolve(
+            token, action="scout.terminate", phase="control"
+        )
+        if context.context.get("scout_run_id") != scout_run_id:
+            raise AuthorizationError("Scout termination scope mismatch")
+        if outcome not in {"failed", "cancelled"}:
+            raise ValidationError("Scout termination outcome is invalid")
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValidationError("Scout termination reason is required")
+        aggregate_id = context.context["aggregate_id"]
+        scope_key = f"{aggregate_id}:terminate"
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                """
+                SELECT result_receipt_json FROM command_receipts
+                WHERE scope_key=? AND idempotency_key=?
+                """,
+                (scope_key, idempotency_key),
+            ).fetchone()
+            run = conn.execute(
+                "SELECT * FROM reference_scout_runs WHERE scout_run_id=?",
+                (scout_run_id,),
+            ).fetchone()
+        if prior:
+            return json.loads(prior["result_receipt_json"])
+        if not run or run["state"] in {"delivered", "failed", "cancelled"}:
+            raise ConflictError("Reference Scout is already terminal")
+        payload = {
+            "scout_run_id": scout_run_id,
+            "probe_id": run["probe_id"],
+            "outcome": outcome,
+            "reason": reason.strip(),
+            "terminated_at": self.now().isoformat(),
+            "actor_ref": context.principal_id,
+        }
+        head = self.journal.head(aggregate_id)
+        command = self._command(
+            command_name="aci.terminate-reference-scout@1",
+            scope_key=scope_key,
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.reference-scout",
+            aggregate_id=aggregate_id,
+            expected_version=head["current_version"],
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "scout.terminate",
+                "phase": "control",
+            },
+            intent=payload,
+        )
+        event = self._event("reference_scout.terminated@1", payload)
+
+        def mutate(conn, records, _result):
+            updated = conn.execute(
+                """
+                UPDATE reference_scout_runs
+                SET state=?,last_event_id=?,source_through_offset=?
+                WHERE scout_run_id=?
+                  AND state NOT IN ('delivered','failed','cancelled')
+                """,
+                (
+                    outcome,
+                    records[0].event_id,
+                    records[0].journal_offset,
+                    scout_run_id,
+                ),
+            )
+            if updated.rowcount != 1:
+                raise ConflictError("Scout termination state CAS lost")
+
+        def result(records, base):
+            return {
+                **base,
+                "scout_run": {
+                    "scout_run_id": scout_run_id,
+                    "state": outcome,
+                    "reason": reason.strip(),
+                    "event_id": records[0].event_id,
+                },
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state=payload,
+            result_builder=result,
+            mutate=mutate,
+        )
+
+    def record_dispatch_ingestion(
+        self,
+        *,
+        token: str,
+        intent: dict[str, Any],
+        content: bytes | None = None,
+    ) -> dict[str, Any]:
+        """Record one observable dispatch input or one explicitly opaque access."""
+        fields = {
+            "agent_id",
+            "tool_use_id",
+            "tool_name",
+            "source_kind",
+            "locator",
+            "repo_relative_path",
+            "media_type",
+            "coverage",
+            "purpose",
+            "observed_at",
+        }
+        if set(intent) != fields:
+            raise ValidationError("dispatch ingestion intent field set is invalid")
+        context = self.capabilities.resolve(
+            token, action="ingestion.record", phase="observe"
+        )
+        session_id = context.context.get("session_id")
+        dispatch_id = context.context.get("dispatch_id")
+        host = context.context.get("host")
+        if (
+            not isinstance(session_id, str)
+            or not session_id
+            or not isinstance(dispatch_id, str)
+            or not dispatch_id
+            or host not in {"claude", "codex"}
+        ):
+            raise AuthorizationError("dispatch ingestion capability scope is incomplete")
+        if context.context.get("intent_digest") != canonical_digest(intent):
+            raise AuthorizationError("dispatch ingestion differs from capability")
+        if context.context.get("tool_use_id") != intent["tool_use_id"]:
+            raise AuthorizationError("dispatch ingestion scope mismatch")
+        source_kinds = {
+            "repository_file",
+            "repository_search",
+            "external_url",
+            "mcp_resource",
+            "shell_opaque",
+        }
+        if intent["source_kind"] not in source_kinds:
+            raise ValidationError("dispatch ingestion source kind is invalid")
+        if intent["coverage"] not in {"exact", "metadata_only", "opaque"}:
+            raise ValidationError("dispatch ingestion coverage is invalid")
+        for field in (
+            "tool_use_id",
+            "tool_name",
+            "source_kind",
+            "locator",
+            "purpose",
+            "observed_at",
+        ):
+            if not isinstance(intent[field], str) or not intent[field]:
+                raise ValidationError(f"dispatch ingestion {field} is required")
+        if intent["source_kind"] == "repository_file" and (
+            not isinstance(intent["repo_relative_path"], str)
+            or not intent["repo_relative_path"]
+        ):
+            raise ValidationError("repository ingestion requires a relative path")
+        if intent["coverage"] == "exact" and content is None:
+            raise ValidationError("exact ingestion requires captured bytes")
+        if intent["coverage"] != "exact" and content is not None:
+            raise ValidationError("non-exact ingestion cannot carry captured bytes")
+        with self.database.connect() as conn:
+            link = conn.execute(
+                "SELECT * FROM dispatch_links WHERE dispatch_id=? AND session_id=?",
+                (dispatch_id, session_id),
+            ).fetchone()
+        if not link:
+            raise NotFoundError("dispatch ingestion requires an exact Session link")
+        orchestration_head = self.journal.head(
+            f"aci.orchestration-dispatch:{dispatch_id}"
+        )
+        if orchestration_head["current_version"] != 1:
+            raise ConflictError(
+                "dispatch ingestion is accepted only while orchestration is open"
+            )
+        prepared = (
+            self.artifacts.prepare(
+                content,
+                media_type=intent["media_type"] or "application/octet-stream",
+                schema_ref="aci.dispatch-ingested-input@1",
+                classification="sensitive-input",
+            )
+            if content is not None
+            else None
+        )
+        ingestion_id = self._stable_id(
+            "ing_",
+            [
+                host,
+                session_id,
+                dispatch_id,
+                intent["tool_use_id"],
+                intent["locator"],
+            ],
+        )
+        payload = {
+            "ingestion_id": ingestion_id,
+            "session_id": session_id,
+            "dispatch_id": dispatch_id,
+            "host": host,
+            **intent,
+            "content_digest": prepared.content_hash if prepared else None,
+            "artifact_id": prepared.artifact_id if prepared else None,
+            "size_bytes": len(prepared.body) if prepared else None,
+        }
+        aggregate_id = f"aci.dispatch-ingestion:{ingestion_id}"
+        record_digest = canonical_digest(payload)
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                """
+                SELECT result_receipt_json FROM command_receipts
+                WHERE scope_key=? AND idempotency_key='record'
+                """,
+                (aggregate_id,),
+            ).fetchone()
+        if prior:
+            prior_result = json.loads(prior["result_receipt_json"])
+            if prior_result.get("record_digest") != record_digest:
+                raise IdempotencyConflict(
+                    "ingestion identity reused with different evidence"
+                )
+            return prior_result
+        command = self._command(
+            command_name="aci.record-dispatch-ingestion@1",
+            scope_key=aggregate_id,
+            idempotency_key="record",
+            aggregate_type="aci.dispatch-ingestion",
+            aggregate_id=aggregate_id,
+            expected_version=0,
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "ingestion.record",
+                "phase": "observe",
+            },
+            intent=payload,
+            prerequisites=(
+                PrerequisiteHead(
+                    aggregate_id=orchestration_head["aggregate_id"],
+                    expected_version=orchestration_head["current_version"],
+                    state_hash=orchestration_head["state_hash"],
+                ),
+            ),
+        )
+        event = self._event("dispatch.ingestion_recorded@1", payload)
+
+        def mutate(conn, records, _result):
+            conn.execute(
+                """
+                INSERT INTO dispatch_ingestions(
+                  ingestion_id,session_id,dispatch_id,host,agent_id,tool_use_id,
+                  tool_name,source_kind,locator,repo_relative_path,content_digest,
+                  artifact_id,media_type,size_bytes,coverage,purpose,observed_at,
+                  event_id,accepted_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    ingestion_id,
+                    session_id,
+                    dispatch_id,
+                    host,
+                    intent["agent_id"],
+                    intent["tool_use_id"],
+                    intent["tool_name"],
+                    intent["source_kind"],
+                    intent["locator"],
+                    intent["repo_relative_path"],
+                    prepared.content_hash if prepared else None,
+                    prepared.artifact_id if prepared else None,
+                    intent["media_type"],
+                    len(prepared.body) if prepared else None,
+                    intent["coverage"],
+                    intent["purpose"],
+                    intent["observed_at"],
+                    records[0].event_id,
+                    records[0].journal_offset,
+                ),
+            )
+
+        def result(records, base):
+            return {
+                **base,
+                "record_digest": record_digest,
+                "ingestion": {
+                    "ingestion_id": ingestion_id,
+                    "session_id": session_id,
+                    "dispatch_id": dispatch_id,
+                    "coverage": intent["coverage"],
+                    "content_digest": prepared.content_hash if prepared else None,
+                    "artifact_id": prepared.artifact_id if prepared else None,
+                    "event_id": records[0].event_id,
+                },
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state=payload,
+            additional_artifacts=((prepared,) if prepared else ()),
             result_builder=result,
             mutate=mutate,
         )
@@ -2124,6 +3691,7 @@ class RuntimeService:
                 SELECT m.*,a.body,e.schema_ref,e.payload_hash AS acceptance_evidence_digest,
                        e.command_id,e.event_ordinal,e.event_count,
                        cr.first_offset,cr.last_offset,cr.event_count AS receipt_event_count,
+                       cr.result_receipt_json AS official_result_receipt_json,
                        pc.publication_event_id,pe.journal_offset AS publication_offset,
                        pcr.first_offset AS publication_first_offset,
                        pcr.last_offset AS publication_last_offset,
@@ -2188,6 +3756,10 @@ class RuntimeService:
         publication_receipt = parse_strict_json(
             bytes(message["publication_receipt_bytes"])
         )
+        official_receipt = parse_strict_json(
+            message["official_result_receipt_json"]
+        )
+        official_message = official_receipt.get("official_message", {})
         if (
             publication_receipt.get("event_id") != message["publication_event_id"]
             or publication_receipt.get("message_id") != message["message_id"]
@@ -2195,8 +3767,14 @@ class RuntimeService:
             or publication_receipt.get("journal_offset")
             != message["publication_offset"]
             or publication_receipt.get("status") != "persisted_candidate"
+            or official_message.get("accepted_event_id")
+            != acceptance["accepted_event_id"]
+            or official_message.get("message_id") != message["message_id"]
+            or official_message.get("payload_ref") != message["payload_ref"]
+            or official_message.get("payload_hash") != message["payload_hash"]
+            or official_message.get("accepted_offset") != message["accepted_offset"]
         ):
-            raise ConflictError("publication receipt identity mismatch")
+            raise ConflictError("official verification receipt identity mismatch")
         registry_ref = ref["profile_registration_ref"]
         if (
             set(registry_ref)
@@ -2237,6 +3815,28 @@ class RuntimeService:
         for field in ("probe_id", "recommendation_id", "bundle_digest"):
             if published.get(field) != ref[field]:
                 raise ConflictError("official recommendation identity mismatch")
+
+    @staticmethod
+    def _require_authority_evidence(
+        *,
+        actor_ref: Any,
+        references: tuple[Any, ...],
+        digests: tuple[Any, ...],
+    ) -> None:
+        if not isinstance(actor_ref, str) or not actor_ref:
+            raise AuthorizationError("authenticated actor reference is required")
+        if any(not isinstance(value, str) or not value for value in references):
+            raise AuthorizationError("authority evidence reference is required")
+        if any(
+            not (
+                isinstance(value, str)
+                and value.startswith("sha256:")
+                and len(value) == 71
+                and all(character in "0123456789abcdef" for character in value[7:])
+            )
+            for value in digests
+        ):
+            raise AuthorizationError("authority evidence digest must be qualified sha256")
 
     @staticmethod
     def _content_digest_string(value: Any) -> str:
@@ -2341,6 +3941,368 @@ class RuntimeService:
             dict(answer) if answer else None,
         )
 
+    def apt_research_mutation(self, plan: dict[str, Any]):
+        """Return the ACI-owned transactional port for one bound APT batch."""
+
+        def mutate(conn, committed, result):
+            capture_payload = plan["capture_payload"]
+            capture = capture_payload["research_capture"]
+            raw = capture["raw_return"]
+            link = conn.execute(
+                "SELECT * FROM dispatch_links WHERE dispatch_id=?",
+                (capture["dispatch_id"],),
+            ).fetchone()
+            artifact = conn.execute(
+                "SELECT * FROM artifacts WHERE artifact_id=?",
+                (raw["artifact_id"],),
+            ).fetchone()
+            if (
+                not link
+                or capture_payload["session_dispatch_link_id"]
+                != self._stable_id(
+                    "lnk_",
+                    [
+                        link["session_id"],
+                        capture["dispatch_id"],
+                        link["row_digest"],
+                    ],
+                )
+                or not artifact
+                or artifact["content_hash"]
+                != self._content_digest_string(raw["content_digest"])
+            ):
+                raise ConflictError("APT batch authority/artifact changed in transaction")
+            claim_statements: dict[str, str] = {}
+            for item in plan["items"]:
+                if item["kind"] == "capture":
+                    continue
+                entity = item["payload"]["payload"]
+                selector = entity["extraction"]["selector"]
+                start, end = (
+                    selector["start_inclusive"],
+                    selector["end_exclusive"],
+                )
+                body = bytes(artifact["body"])
+                if not (0 <= start < end <= len(body)):
+                    raise ValidationError("APT selector bounds changed")
+                selected_bytes = body[start:end]
+                if self._content_digest_string(
+                    selector["selected_text_digest"]
+                ) != digest_bytes(selected_bytes):
+                    raise ValidationError("APT selector digest changed")
+                frame = parse_strict_json(selected_bytes)
+                kind = item["kind"]
+                comparisons = {
+                    "research_question": frame.get("question_text")
+                    == entity.get("question_text"),
+                    "research_answer": set(frame)
+                    == {"mode", "type", "final_answer"},
+                    "reference_use": all(
+                        frame.get(key) == entity.get(key)
+                        for key in (
+                            "reference_kind",
+                            "locator_observed",
+                            "use_kind",
+                        )
+                    ),
+                    "research_problem": all(
+                        frame.get(key) == entity.get(key)
+                        for key in ("kind", "statement")
+                    ),
+                    "research_claim": frame.get("statement")
+                    == entity.get("statement"),
+                    "formalization_candidate": (
+                        frame.get("claim")
+                        == claim_statements.get(entity.get("research_claim_id"))
+                        and all(
+                            frame.get(key) == entity.get(key)
+                            for key in (
+                                "notation",
+                                "latex",
+                                "legend",
+                                "reading",
+                                "logic_family",
+                                "assumptions",
+                                "scope",
+                            )
+                        )
+                    ),
+                }
+                if frame.get("type") != {
+                    "research_question": "question",
+                    "research_answer": "answer",
+                    "reference_use": "reference",
+                    "research_problem": "problem",
+                    "research_claim": "claim",
+                    "formalization_candidate": "formalization",
+                }.get(kind) or not comparisons.get(kind, False):
+                    raise ValidationError("APT selected frame diverges from semantic entity")
+                if kind == "research_claim":
+                    claim_statements[entity["fact"]["subject_id"]] = entity["statement"]
+            committed_iter = iter(committed)
+            result_by_key = {
+                row["item_key"]: row for row in result["semantic_results"]
+            }
+            for item in plan["items"]:
+                if item["status"] == "submitted_new":
+                    record = next(committed_iter)
+                    accepted_event_id = record.event_id
+                    if item["kind"] == "capture":
+                        conn.execute(
+                            """INSERT INTO apt_capture_keys(
+                                 research_capture_id,dispatch_id,expected_contribution_id,
+                                 capture_operation_id,supersedes_capture_id,capture_digest,
+                                 accepted_event_id,is_current
+                               ) VALUES(?,?,?,?,?,?,?,1)""",
+                            (
+                                capture["research_capture_id"],
+                                capture["dispatch_id"],
+                                capture["expected_contribution_id"],
+                                capture["capture_operation_id"],
+                                capture["supersedes_capture_id"],
+                                self._content_digest_string(capture["capture_digest"]),
+                                accepted_event_id,
+                            ),
+                        )
+                    else:
+                        entity = item["payload"]["payload"]
+                        fact = entity["fact"]
+                        conn.execute(
+                            """INSERT INTO apt_semantic_facts(
+                                 fact_id,research_capture_id,subject_id,fact_kind,
+                                 supersedes_fact_id,canonical_payload_digest,
+                                 accepted_event_id,is_current
+                               ) VALUES(?,?,?,?,?,?,?,1)""",
+                            (
+                                fact["fact_id"],
+                                entity["research_capture_id"],
+                                fact["subject_id"],
+                                item["kind"],
+                                fact["supersedes_fact_id"],
+                                item["semantic_digest"],
+                                accepted_event_id,
+                            ),
+                        )
+                else:
+                    accepted_event_id = item["accepted_event_id"]
+                mapped = result_by_key[item["item_key"]]
+                conn.execute(
+                    """INSERT INTO apt_semantic_request_results(
+                         request_key,item_key,request_digest,result_status,result_json,
+                         accepted_event_id
+                       ) VALUES(?,?,?,?,?,?)""",
+                    (
+                        plan["request_key"],
+                        item["item_key"],
+                        plan["submission_digest"],
+                        mapped["status"],
+                        canonical_text(mapped),
+                        accepted_event_id,
+                    ),
+                )
+
+        return mutate
+
+    def accept_apt_research(
+        self,
+        command: RuntimeCommand,
+        events: list[EventDraft],
+        *,
+        next_state: dict[str, Any],
+        additional_artifacts=(),
+        result_builder=None,
+        mutation_plan: dict[str, Any],
+    ) -> dict[str, Any]:
+        try:
+            return self.journal.accept(
+                command,
+                events,
+                next_state=next_state,
+                additional_artifacts=additional_artifacts,
+                result_builder=result_builder,
+                mutate=self.apt_research_mutation(mutation_plan),
+            )
+        except sqlite3.IntegrityError as exc:
+            raise ConflictError("research semantic currentness conflict") from exc
+
+    def get_reference_scout(self, scout_run_id: str) -> dict[str, Any]:
+        self.journal.verify_store()
+        with self.database.connect() as conn:
+            run = conn.execute(
+                "SELECT * FROM reference_scout_runs WHERE scout_run_id=?",
+                (scout_run_id,),
+            ).fetchone()
+            if not run:
+                raise NotFoundError("Reference Scout run not found")
+            recommendations = conn.execute(
+                """
+                SELECT * FROM reference_recommendations
+                WHERE scout_run_id=? ORDER BY recommendation_id
+                """,
+                (scout_run_id,),
+            ).fetchall()
+            event_rows = {
+                row["event_id"]: row
+                for row in conn.execute(
+                    """
+                    SELECT e.event_id,e.payload_hash,a.body,a.content_hash
+                    FROM events e JOIN artifacts a ON a.artifact_id=e.payload_ref
+                    WHERE e.event_id IN (
+                      SELECT start_event_id FROM reference_scout_runs
+                      WHERE scout_run_id=?
+                      UNION
+                      SELECT source_event_id FROM reference_recommendations
+                      WHERE scout_run_id=?
+                    )
+                    """,
+                    (scout_run_id, scout_run_id),
+                ).fetchall()
+            }
+            bundle = (
+                conn.execute(
+                    "SELECT * FROM artifacts WHERE artifact_id=?",
+                    (run["bundle_artifact_id"],),
+                ).fetchone()
+                if run["bundle_artifact_id"]
+                else None
+            )
+        start_event = event_rows.get(run["start_event_id"])
+        if not start_event:
+            raise IntegrityError("Reference Scout start event is missing")
+        start_payload = parse_strict_json(bytes(start_event["body"]))
+        if (
+            start_event["payload_hash"] != start_event["content_hash"]
+            or digest_bytes(bytes(start_event["body"])) != start_event["content_hash"]
+            or start_payload.get("scout_run_id") != scout_run_id
+        ):
+            raise IntegrityError("Reference Scout start evidence is inconsistent")
+        for recommendation in recommendations:
+            evidence = event_rows.get(recommendation["source_event_id"])
+            if not evidence:
+                raise IntegrityError("Scout recommendation event is missing")
+            payload = parse_strict_json(bytes(evidence["body"]))
+            if (
+                evidence["payload_hash"] != evidence["content_hash"]
+                or digest_bytes(bytes(evidence["body"])) != evidence["content_hash"]
+                or payload.get("recommendation", {}).get("recommendation_id")
+                != recommendation["recommendation_id"]
+                or payload.get("message_id") != recommendation["message_id"]
+            ):
+                raise IntegrityError("Scout recommendation evidence is inconsistent")
+        if run["bundle_artifact_id"] and (
+            not bundle
+            or bundle["content_hash"] != run["bundle_digest"]
+            or digest_bytes(bytes(bundle["body"])) != run["bundle_digest"]
+        ):
+            raise IntegrityError("Reference Scout bundle artifact is inconsistent")
+        return {
+            "scout_run": dict(run),
+            "recommendations": [dict(row) for row in recommendations],
+        }
+
+    def get_dispatch_operational_lineage(
+        self, dispatch_id: str
+    ) -> dict[str, Any]:
+        self.journal.verify_store()
+        with self.database.connect() as conn:
+            link = conn.execute(
+                "SELECT * FROM dispatch_links WHERE dispatch_id=?", (dispatch_id,)
+            ).fetchone()
+            if not link:
+                raise NotFoundError("dispatch lineage not found")
+            scouts = conn.execute(
+                """
+                SELECT * FROM reference_scout_runs
+                WHERE dispatch_id=? ORDER BY requested_at,scout_run_id
+                """,
+                (dispatch_id,),
+            ).fetchall()
+            recommendations = conn.execute(
+                """
+                SELECT rr.* FROM reference_recommendations rr
+                JOIN reference_scout_runs sr
+                  ON sr.scout_run_id=rr.scout_run_id
+                WHERE sr.dispatch_id=?
+                ORDER BY rr.scout_run_id,rr.recommendation_id
+                """,
+                (dispatch_id,),
+            ).fetchall()
+            ingestions = conn.execute(
+                """
+                SELECT * FROM dispatch_ingestions
+                WHERE dispatch_id=? ORDER BY accepted_offset
+                """,
+                (dispatch_id,),
+            ).fetchall()
+            captures = conn.execute(
+                """
+                SELECT research_capture_id,expected_contribution_id,capture_status,
+                       raw_artifact_id,capture_digest,accepted_event_id,
+                       accepted_offset,is_current
+                FROM apt_research_captures_projection
+                WHERE dispatch_id=? ORDER BY accepted_offset
+                """,
+                (dispatch_id,),
+            ).fetchall()
+            ingestion_evidence = {
+                row["ingestion_id"]: row
+                for row in conn.execute(
+                    """
+                    SELECT di.ingestion_id,e.payload_hash,a.body,a.content_hash,
+                           input.body AS input_body,input.content_hash AS input_hash,
+                           input.size_bytes AS input_size
+                    FROM dispatch_ingestions di
+                    JOIN events e ON e.event_id=di.event_id
+                    JOIN artifacts a ON a.artifact_id=e.payload_ref
+                    LEFT JOIN artifacts input ON input.artifact_id=di.artifact_id
+                    WHERE di.dispatch_id=?
+                    """,
+                    (dispatch_id,),
+                ).fetchall()
+            }
+        for ingestion in ingestions:
+            evidence = ingestion_evidence.get(ingestion["ingestion_id"])
+            if not evidence:
+                raise IntegrityError("dispatch ingestion event is missing")
+            payload = parse_strict_json(bytes(evidence["body"]))
+            if (
+                evidence["payload_hash"] != evidence["content_hash"]
+                or digest_bytes(bytes(evidence["body"])) != evidence["content_hash"]
+                or payload.get("ingestion_id") != ingestion["ingestion_id"]
+            ):
+                raise IntegrityError("dispatch ingestion event is inconsistent")
+            if ingestion["coverage"] == "exact" and (
+                evidence["input_hash"] != ingestion["content_digest"]
+                or digest_bytes(bytes(evidence["input_body"]))
+                != ingestion["content_digest"]
+                or evidence["input_size"] != ingestion["size_bytes"]
+            ):
+                raise IntegrityError("dispatch ingestion artifact is inconsistent")
+        return {
+            "session_dispatch_link": dict(link),
+            "scout_runs": [dict(row) for row in scouts],
+            "recommendations": [dict(row) for row in recommendations],
+            "ingestions": [dict(row) for row in ingestions],
+            "research_captures": [dict(row) for row in captures],
+        }
+
+    def health(self) -> dict[str, Any]:
+        journal = self.journal.verify_store()
+        with self.database.connect() as conn:
+            profiles = int(
+                conn.execute("SELECT count(*) FROM protocol_profiles").fetchone()[0]
+            )
+        projection = self.projections.apt_state()
+        ready = profiles == 4 and bool(projection["current"])
+        return {
+            "status": "ready" if ready else "degraded",
+            "ready": ready,
+            "journal": journal,
+            "profiles": {"registered": profiles, "required": 4},
+            "projection": projection,
+            "production_serve_enabled": False,
+        }
+
     def get_session(self, session_id: str) -> dict[str, Any]:
         with self.database.connect() as conn:
             session = conn.execute(
@@ -2352,4 +4314,26 @@ class RuntimeService:
                 "SELECT dispatch_id,row_digest,event_id FROM dispatch_links WHERE session_id=? ORDER BY dispatch_id",
                 (session_id,),
             ).fetchall()
-        return {"session": dict(session), "dispatch_links": [dict(row) for row in links]}
+            scouts = conn.execute(
+                """
+                SELECT scout_run_id,dispatch_id,state,bundle_digest,requested_at
+                FROM reference_scout_runs
+                WHERE session_id=? ORDER BY requested_at,scout_run_id
+                """,
+                (session_id,),
+            ).fetchall()
+            ingestions = conn.execute(
+                """
+                SELECT ingestion_id,dispatch_id,source_kind,locator,coverage,
+                       content_digest,accepted_offset
+                FROM dispatch_ingestions
+                WHERE session_id=? ORDER BY accepted_offset
+                """,
+                (session_id,),
+            ).fetchall()
+        return {
+            "session": dict(session),
+            "dispatch_links": [dict(row) for row in links],
+            "scout_runs": [dict(row) for row in scouts],
+            "ingestions": [dict(row) for row in ingestions],
+        }

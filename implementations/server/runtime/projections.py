@@ -619,6 +619,23 @@ class ProjectionManager:
             result["effective_as_of"] = max_offset
         return result
 
+    def get_apt_session(self, session_id: str) -> dict[str, Any]:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                """SELECT max(journal_offset) FROM events WHERE event_id IN (
+                     SELECT event_id FROM sessions WHERE session_id=?
+                     UNION SELECT event_id FROM dispatch_links WHERE session_id=?
+                     UNION SELECT rebound_event_id FROM session_context_rebounds
+                           WHERE predecessor_session_id=? OR successor_session_id=?
+                   )""",
+                (session_id, session_id, session_id, session_id),
+            ).fetchone()
+        required_offset = int(row[0] or 0)
+        if required_offset == 0:
+            raise NotFoundError("session projection authority not found")
+        self._require_apt_offset(required_offset)
+        return self.get("apt.session-record", session_id)
+
     def get_apt_dispatch(self, dispatch_id: str) -> dict[str, Any]:
         import json
 

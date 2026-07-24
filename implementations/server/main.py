@@ -41,6 +41,7 @@ app = FastAPI(title="Dispatch control plane — reader", version="0.1.0")
 # code from the production reader process.
 from .runtime.api import create_router as create_runtime_router
 from .runtime.api import create_provenance_router
+from .runtime.api import create_health_router
 from .runtime.service import RuntimeService, RuntimeSettings
 
 _runtime_service: RuntimeService | None = None
@@ -67,6 +68,9 @@ app.include_router(
 )
 app.include_router(
     create_provenance_router(_runtime_provider, enabled=lambda: False)
+)
+app.include_router(
+    create_health_router(_runtime_provider, enabled=lambda: False)
 )
 
 
