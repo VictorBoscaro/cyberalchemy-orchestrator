@@ -44,6 +44,7 @@ a { color: inherit; text-decoration: none; }
 
 THEMES = {
     "01-editorial": """
+@page { background: #f8f2e8; }
 body { color: #211d18; background: #f8f2e8; font: 10.4pt/1.56 Georgia, serif; }
 main { padding-top: 8mm; }
 main::before { content: ""; display: block; width: 34mm; height: 2.5mm;
@@ -63,6 +64,7 @@ code:not(pre code) { color: #87321f; background: #eadfd1; padding: 0.2mm 0.7mm; 
 blockquote { margin: 5mm 0; padding: 2mm 5mm; border-left: 1.5mm solid #b4442a; }
 """,
     "02-swiss": """
+@page { background: #fff; }
 body { color: #111; background: white; font: 9.8pt/1.48 Arial, Helvetica, sans-serif; }
 main { border-top: 5mm solid #111; padding-top: 8mm; }
 main::before { content: ""; position: absolute; top: -5mm; right: 0; width: 28mm;
@@ -83,6 +85,7 @@ pre { padding: 4mm; background: #f1f1f1; border: 0.4mm solid #111; }
 code:not(pre code) { background: #efefef; padding: 0.2mm 0.6mm; }
 """,
     "03-blueprint": """
+@page { background: #0c2f4f; }
 body { color: #dcecff; background: #0c2f4f; font: 9.5pt/1.52 "Segoe UI", Arial, sans-serif; }
 main { padding: 7mm; border: 0.35mm solid #72b6e8;
   background-image: linear-gradient(rgba(114,182,232,.10) .25mm, transparent .25mm),
@@ -108,7 +111,7 @@ pre { padding: 4mm; color: #dff5ff; background: #061d31; border: 0.3mm solid #7d
 code:not(pre code) { color: #b9edff; background: #174d70; padding: 0.2mm 0.6mm; }
 """,
     "04-academic": """
-@page { size: A4; margin: 22mm 21mm 23mm; }
+@page { size: A4; margin: 22mm 21mm 23mm; background: #fff; }
 body { color: #171717; background: #fff; font: 10.2pt/1.62 "Times New Roman", Times, serif; }
 main { padding-top: 5mm; }
 main::before { content: ""; display: block; width: 100%; height: 0.3mm; background: #111;
@@ -127,6 +130,7 @@ pre { padding: 4mm; background: #f7f7f7; border-top: 0.3mm solid #222;
 code:not(pre code) { font-size: 0.92em; }
 """,
     "05-studio": """
+@page { background: #eef5ed; }
 body { color: #17231d; background: #eef5ed; font: 9.7pt/1.5 "Trebuchet MS", Arial, sans-serif; }
 main { padding: 9mm 8mm; background: white; border-radius: 5mm; box-shadow: inset 0 0 0 0.4mm #8ca891; }
 main::before { content: ""; display: block; width: 24mm; height: 24mm; float: right;
