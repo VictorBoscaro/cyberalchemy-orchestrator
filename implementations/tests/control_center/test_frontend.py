@@ -36,7 +36,8 @@ REQUIRED_TESTIDS = {
     "cc-scope", "cc-attention", "cc-source-health", "cc-search", "cc-filters",
     "cc-catalog", "cc-selection", "cc-open-detail", "cc-open-topology",
     "cc-detail", "cc-topology", "cc-topology-table", "cc-path-form",
-    "cc-path-result", "cc-back", "cc-status-live",
+    "cc-path-result", "cc-call-map", "cc-relationship-detail",
+    "cc-explain-toggle", "cc-back", "cc-status-live",
 }
 STATE_CASE_MAP = {
     "loading": "state-loading", "empty": "state-empty", "no-match": "state-no-match",
@@ -110,7 +111,9 @@ class ControlCenterFrontendTest(unittest.TestCase):
                 page.on("requestfailed", lambda request: failed_requests.append(request.url))
                 response = page.goto(f"{BASE}/static/control-center/{variant.lower()}/index.html", wait_until="domcontentloaded")
                 self.assertEqual(response.status, 200)
-                page.wait_for_function("() => document.querySelector('#result-count')?.textContent.includes('results')")
+                page.wait_for_function("() => document.querySelector('#result-count')?.textContent.includes('resultado')")
+                self.assertEqual(page.evaluate("Object.keys(window.__CC_FE__.flags).length"), 10)
+                self.assertTrue(page.evaluate("Object.values(window.__CC_FE__.flags).every(Boolean)"))
 
                 # CF-02: selection is inert until an explicit action.
                 page.locator("#search").fill("task-session")
@@ -119,37 +122,84 @@ class ControlCenterFrontendTest(unittest.TestCase):
                 page.locator('.catalog-item[data-id="task-session"]').click()
                 self.assertIn("task-session", page.locator("#selection").inner_text())
                 self.assertEqual(page.locator('[data-testid="cc-evidence"]').count(), 0)
-                self.assertIn("Identity changed", page.locator('[data-testid="cc-detail"]').inner_text())
+                self.assertIn("Identidade alterada", page.locator('[data-testid="cc-detail"]').inner_text())
 
                 # CF-03 / CF-05 / CF-06: honest evidence and local-only proposal.
                 page.locator('[data-testid="cc-open-detail"]').click()
                 page.wait_for_selector('[data-testid="cc-evidence"]')
                 self.assertEqual(page.evaluate("document.activeElement.id"), "detail-title")
                 detail = page.locator('[data-testid="cc-detail"]').inner_text()
-                self.assertIn("observed usage", detail.lower())
-                self.assertIn("Unknown", detail)
-                self.assertNotIn("Observed usage\n0", detail)
+                self.assertIn("uso observado", detail.lower())
+                self.assertIn("Desconhecido", detail)
+                self.assertNotIn("Uso observado\n0", detail)
                 self.assertIn("unknown-or-unavailable", detail)
                 self.assertIn("sigil-invocations", detail)
-                self.assertIn("Safe end of Phase 1", detail)
+                self.assertIn("Fim seguro da Fase 1", detail)
                 page.locator('[data-testid="cc-back"]').click()
                 self.assertEqual(page.evaluate("document.activeElement?.dataset?.id"), "task-session")
                 page.locator("#draft-text").fill("Improve the bounded local description")
                 page.locator("#save-draft").click()
-                self.assertIn("Saved locally", page.locator('[data-testid="cc-draft-status"]').inner_text())
+                self.assertIn("Salvo localmente", page.locator('[data-testid="cc-draft-status"]').inner_text())
                 page.locator("#validate-draft").click()
-                page.wait_for_function("() => document.querySelector('[data-testid=\"cc-draft-status\"]').textContent.includes('non-authoritative')")
+                page.wait_for_function("() => document.querySelector('[data-testid=\"cc-draft-status\"]').textContent.includes('não autoritativa')")
 
                 # CF-04: map and semantic table are both populated from the same response.
                 page.locator('[data-testid="cc-open-topology"]').click()
-                page.wait_for_function("() => document.querySelector('#topology-meta')?.textContent.includes('nodes')")
+                page.wait_for_function("() => document.querySelector('#topology-meta')?.textContent.includes('nós')")
                 self.assertGreater(page.locator("#topology-table tr").count(), 0)
+                call_map = page.locator('[data-testid="cc-call-map"]').inner_text()
+                self.assertIn("Quem chama esta skill", call_map)
+                self.assertIn("O que esta skill chama", call_map)
+                self.assertIn("Menções fracas, não chamadas", call_map)
+                self.assertIn("referência explícita", call_map)
+                self.assertGreater(page.locator("#graph marker").count(), 0)
+                self.assertGreater(page.locator("#graph .edge[data-direction]").count(), 0)
+                self.assertGreater(page.locator("#graph .graph-node[role=button][tabindex='0']").count(), 1)
+                self.assertIn("FE-1", page.locator("#call-map").get_attribute("data-fe-rule"))
+
+                # FE-1/FE-4/FE-6: relation structure is opt-in and only one evidence panel exists.
+                relations = page.locator(".relation-item:visible")
+                if not relations.count() and page.locator(".weak-relations summary").count():
+                    page.locator(".weak-relations summary").click()
+                    relations = page.locator(".relation-item:visible")
+                if relations.count():
+                    self.assertTrue(page.locator("#relationship-detail").is_hidden())
+                    relations.first.click()
+                    self.assertTrue(page.locator("#relationship-detail").is_visible())
+                    self.assertIn("por que esta seta existe?", page.locator("#relationship-detail").inner_text().lower())
+                    self.assertEqual(page.locator("#relationship-detail").count(), 1)
+                    page.keyboard.press("Escape")
+                    self.assertTrue(page.locator("#relationship-detail").is_hidden())
+                    relations.first.click()
+                    page.locator("#topology-title").click()
+                    self.assertTrue(page.locator("#relationship-detail").is_hidden())
+                if page.locator(".weak-relations[open]").count():
+                    page.locator(".weak-relations summary").click()
+
+                # FE-9: explain mode is explicit, delayed, keyboard dismissible and supplementary.
+                if variant == "A":
+                    page.locator("#explain-toggle").click()
+                    self.assertEqual(page.locator("#explain-toggle").get_attribute("aria-pressed"), "true")
+                    page.locator("#graph .graph-node").nth(1).hover()
+                    page.wait_for_timeout(3100)
+                    self.assertTrue(page.locator("#tt").is_visible())
+                    page.keyboard.press("Escape")
+                    self.assertTrue(page.locator("#tt").is_hidden())
+                    page.locator("#explain-toggle").click()
+
+                # Dedicated evidence for the directional skill-call question.
+                page.evaluate("document.querySelector('#status').classList.remove('visible')")
+                page.add_style_tag(content=".command-bar{position:static!important}")
+                page.screenshot(
+                    path=str(REPRESENTATIVE / f"variant-{variant}-skill-calls-desktop-light.png"),
+                    full_page=True,
+                )
 
                 # Path output preserves order/evidence and highlights the same table/graph identity.
                 page.locator("#path-target").fill("decision-gate")
                 page.locator("#path-limit").select_option("1")
                 page.locator("#path-form button").click()
-                page.wait_for_function("() => document.querySelector('#path-result')?.textContent.includes('truncated by declared limit')")
+                page.wait_for_function("() => document.querySelector('#path-result')?.textContent.includes('truncado pelo limite declarado')")
                 path_text = page.locator("#path-result").inner_text()
                 self.assertIn("task-session → decision-gate", path_text)
                 self.assertIn(".agents/skills/", path_text)
@@ -160,15 +210,27 @@ class ControlCenterFrontendTest(unittest.TestCase):
                 page.locator("#path-target").fill("not-a-real-skill")
                 page.locator("#path-form button").click()
                 page.wait_for_function("() => document.querySelector('#path-result')?.textContent.includes('invalid-endpoint')")
-                self.assertIn("No path asserted", page.locator("#path-result").inner_text())
+                self.assertIn("Nenhum caminho afirmado", page.locator("#path-result").inner_text())
                 self.assertEqual(page.locator(".path-hit").count(), 0)
+
+                # A graph node is a keyboard/click navigation control, not a static ornament.
+                related_node = page.locator("#graph .graph-node:not(.focus)").first
+                related_id = related_node.get_attribute("data-node-id")
+                related_node.click()
+                page.wait_for_function(
+                    "(id) => document.querySelector('#path-source')?.value === id && document.querySelector('#call-map')?.textContent.includes('Quem chama esta skill')",
+                    arg=related_id,
+                )
+                self.assertIn(related_id, page.locator("#selection").inner_text())
+                self.assertIn("Quem chama esta skill", page.locator("#call-map").inner_text())
+                self.assertGreater(page.evaluate("window.__CC_FE__.metrics['FE-10']['metric-emitted'] || 0"), 0)
 
                 # Dispatch hierarchy is a distinct real model.
                 page.locator('input[name="kind"][value="dispatch"]').check()
                 self.assertNotIn("task-session", page.locator('[data-testid="cc-detail"]').inner_text())
-                self.assertIn("filter changed", page.locator('[data-testid="cc-detail"]').inner_text())
-                self.assertIn("No relationships", page.locator("#topology-table").inner_text())
-                self.assertIn("Choose endpoints", page.locator("#path-result").inner_text())
+                self.assertIn("filtro mudou", page.locator('[data-testid="cc-detail"]').inner_text())
+                self.assertIn("Nenhuma relação", page.locator("#topology-table").inner_text())
+                self.assertIn("Escolha origem", page.locator("#path-result").inner_text())
                 self.assertEqual(page.locator('[data-testid="cc-draft"]').count(), 0)
                 page.locator("#search").fill("2026-07-20-linear-ui-multilevel")
                 page.locator("#search-form button").click()
@@ -177,8 +239,8 @@ class ControlCenterFrontendTest(unittest.TestCase):
                 page.locator(f'.catalog-item[data-id="{lineage_id}"]').click()
                 page.locator("#model").select_option("dispatch-lineage")
                 page.locator('[data-testid="cc-open-topology"]').click()
-                page.wait_for_function("() => document.querySelector('#topology-meta')?.textContent.includes('5 nodes')")
-                self.assertIn("parent_dispatch_id", page.locator("#topology-table").inner_text())
+                page.wait_for_function("() => document.querySelector('#topology-meta')?.textContent.includes('5 nós')")
+                self.assertIn("Dispatch pai", page.locator("#topology-table").inner_text())
 
                 # Fresh representative evidence after the reviewed interaction sequence.
                 page.evaluate("window.scrollTo(0, 0)")

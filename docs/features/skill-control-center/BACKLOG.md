@@ -101,6 +101,22 @@ Done for SCC-BL-004 through SCC-BL-008 when:
 These items were exposed by the implemented browser evidence. They do not invalidate the Phase 1
 experiment, but they block selecting a winner or treating any variant as production-ready.
 
+### SCC-BL-014 — Observed skill caller/callee telemetry
+
+The current graph can prove directed `explicit_path` source references and weak
+`named_reference` mentions. It cannot honestly claim that one skill executed another because the
+accepted invocation source does not yet record a proof-bound caller/callee pair.
+
+Done when:
+
+- every accepted managed invocation records caller skill ID, callee skill ID, invocation identity,
+  timestamp/window, source revision and durable evidence reference;
+- retries and duplicate delivery deduplicate to one logical directed call;
+- incomplete coverage remains unknown/partial and never becomes zero or “no caller”;
+- the UI can switch between “declared references” and “observed calls” without mixing them;
+- caller/callee counts, graph arrows, semantic table and evidence drawer expose identical edges;
+- replay, stale source, partial ingest, anonymous caller and removed-skill fixtures pass.
+
 ### SCC-BL-009 — Mobile topology legibility
 
 Make the visual graph readable without depending on zoom or tiny labels while preserving the
