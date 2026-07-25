@@ -679,6 +679,20 @@ class HostDispatchHook:
         ]
 
     def handle(self, event: dict[str, Any]) -> Any:
+        tool_name = event.get("tool_name")
+        if isinstance(tool_name, str) and tool_name != "Agent":
+            canonical_tool_name = next(
+                (
+                    candidate
+                    for candidate in ("spawn_agent", "followup_task")
+                    if tool_name.endswith(candidate)
+                ),
+                tool_name,
+            )
+            event = {
+                **event,
+                "tool_name": canonical_tool_name,
+            }
         event_name = event.get("hook_event_name")
         if event_name == "PreToolUse":
             return self.pre_tool_use(event)

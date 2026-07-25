@@ -171,6 +171,26 @@ class HostDispatchHookTests(unittest.TestCase):
         ):
             hook.pre_tool_use(event)
 
+    def test_codex_namespaced_spawn_tool_is_normalized(self) -> None:
+        hook = self.hook("codex")
+        event = self.event(self.root, host="codex")
+        event["tool_name"] = "collaboration.spawn_agent"
+
+        opened = hook.handle(event)
+
+        self.assertEqual(opened["status"], "opened")
+        self.assertTrue(opened["dispatch_id"].startswith("2026-07-24-auto-codex"))
+
+    def test_codex_flattened_spawn_tool_is_normalized(self) -> None:
+        hook = self.hook("codex")
+        event = self.event(self.root, host="codex")
+        event["tool_name"] = "collaborationspawn_agent"
+
+        opened = hook.handle(event)
+
+        self.assertEqual(opened["status"], "opened")
+        self.assertTrue(opened["dispatch_id"].startswith("2026-07-24-auto-codex"))
+
     def test_codex_running_response_closes_on_subagent_stop(self) -> None:
         hook = self.hook("codex")
         opened = hook.pre_tool_use(self.event(self.root, host="codex"))
@@ -316,7 +336,11 @@ class HostDispatchHookTests(unittest.TestCase):
         self.assertIn("Stop", claude["hooks"])
         self.assertEqual(
             codex["hooks"]["PreToolUse"][0]["matcher"],
-            "^(Agent|spawn_agent|followup_task)$",
+            "(^Agent$|spawn_agent$|followup_task$)",
+        )
+        self.assertEqual(
+            codex["hooks"]["PostToolUse"][0]["matcher"],
+            "(^Agent$|spawn_agent$|followup_task$)",
         )
         self.assertEqual(
             claude["hooks"]["PreToolUse"][0]["matcher"],

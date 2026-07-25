@@ -3,7 +3,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "^(Agent|spawn_agent|followup_task)$",
+        "matcher": "(^Agent$|spawn_agent$|followup_task$)",
         "hooks": [
           {
             "type": "command",
@@ -17,7 +17,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "^(Agent|spawn_agent|followup_task)$",
+        "matcher": "(^Agent$|spawn_agent$|followup_task$)",
         "hooks": [
           {
             "type": "command",
