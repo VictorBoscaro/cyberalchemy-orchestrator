@@ -11,12 +11,19 @@ node_modules/
 /.claude/skills/domainspec-emit-signals
 /.claude/skills/domainspec-feature-glossary
 
+# Local host-discovery mirror of .claude/{skills,agents} for Codex and other
+# hosts. Generated locally (copy or symlink); .claude/ stays the only source.
+/.agents/
+
 # Append-only dispatch ledger — managed locally via the official appender
 # (register-dispatch / append-dispatch.cjs), not through ordinary git edits.
 /telemetry/agents/subagents-dispatch.yaml
 
 # Assay S0 generated audit output (reproducible by running assay_s0.py).
-/internal-tools/research/document-information-estimator/s0/out/
+/internal-tools/document-information-estimator/s0/out/
+
+# Scratch dispatch proposals written next to the repo root by review runs.
+*.tmp.json
 
 # Runtime SQLite databases — regenerable runtime state, not source.
 /telemetry/runtime/
