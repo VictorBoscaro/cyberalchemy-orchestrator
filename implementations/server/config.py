@@ -41,6 +41,11 @@ class Config:
     runtime_ledger: Path = REPO_ROOT / LEDGER_RELPATH
     runtime_local_pilot_enabled: bool = False
     runtime_repo_id: str = "cyberalchemy-orchestrator"
+    # Explicit Phase 1 publication binding. Setting any member to null/empty in
+    # config.json fail-closes the entire six-route Control Center API (IF-I5).
+    control_center_host_id: str | None = "implementations-fastapi-loopback"
+    control_center_auth_contract_id: str | None = "local-loopback-process-boundary-v1"
+    control_center_route_owner_id: str | None = "@VictorBoscaro"
     # Scan cache (FIX 6b). Excluded from the dataclass's equality/repr.
     _repos_cache: list[Path] | None = field(
         default=None, compare=False, repr=False
@@ -64,6 +69,7 @@ class Config:
 
     def _scan_repos(self) -> list[Path]:
         found: dict[str, Path] = {}
+        scan_failed = False
 
         for repo in self.repos:
             if repo.is_dir():
@@ -72,11 +78,26 @@ class Config:
         for root in self.scan_roots:
             if not root.is_dir():
                 continue
-            for child in sorted(root.iterdir()):
+            try:
+                children = sorted(root.iterdir())
+            except OSError:
+                scan_failed = True
+                continue
+            for child in children:
                 if not child.is_dir():
                     continue
                 if (child / LEDGER_RELPATH).is_file() or (child / PENDING_RELPATH).is_dir():
                     found[str(child.resolve())] = child.resolve()
+
+        if (
+            scan_failed
+            and not found
+            and (
+                (REPO_ROOT / LEDGER_RELPATH).is_file()
+                or (REPO_ROOT / PENDING_RELPATH).is_dir()
+            )
+        ):
+            found[str(REPO_ROOT.resolve())] = REPO_ROOT.resolve()
 
         return sorted(found.values(), key=lambda p: p.name.lower())
 
@@ -97,6 +118,9 @@ def load() -> Config:
             "limit",
             "prompt_limit",
             "runtime_repo_id",
+            "control_center_host_id",
+            "control_center_auth_contract_id",
+            "control_center_route_owner_id",
         ):
             if key in raw:
                 setattr(cfg, key, raw[key])

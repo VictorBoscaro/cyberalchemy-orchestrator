@@ -1,0 +1,145 @@
+{
+  "authoritative_effects": [],
+  "authority_route": "unavailable",
+  "effective_values": {
+    "metadata.label": {
+      "origin": "proposal",
+      "value": "Research"
+    }
+  },
+  "fixture_id": "FX-DRAFT-v1",
+  "generated_at_utc": "2026-07-25T00:00:00Z",
+  "lifecycle_states": [
+    "clean",
+    "draft-dirty",
+    "draft-saved",
+    "validating",
+    "valid",
+    "invalid",
+    "save-failed"
+  ],
+  "operation_codes": {
+    "draft": [
+      "draft-saved",
+      "invalid-draft",
+      "forbidden-draft-state",
+      "draft-conflict",
+      "invalid-draft-schema",
+      "invalid-draft-patch",
+      "unsupported-target-kind",
+      "draft-state-ineligible",
+      "save-failed",
+      "protocol-error"
+    ],
+    "preference": [
+      "saved-local",
+      "invalid-local-scope",
+      "local-conflict",
+      "invalid-local-preference",
+      "forbidden-local-target",
+      "save-failed",
+      "protocol-error"
+    ],
+    "validation": [
+      "validation-valid",
+      "validation-invalid",
+      "draft-not-found",
+      "draft-conflict",
+      "validation-ineligible",
+      "validation-unavailable",
+      "validation-error",
+      "invalid-validator",
+      "forbidden-validation-effect",
+      "validation-save-failed",
+      "protocol-error"
+    ]
+  },
+  "owner": "@VictorBoscaro",
+  "proposed_patch": [
+    {
+      "op": "replace",
+      "path": "/metadata/label",
+      "value": "Research"
+    }
+  ],
+  "schema_version": "1",
+  "sha256": "dd2fe0e1b92ea6b0629f39779170406050779378873ab21efb5b07ef7619744a",
+  "source_revision": "phase1-local-operations-v1",
+  "state_cases": [
+    {
+      "case_id": "state-draft-dirty",
+      "producer": "local-edit",
+      "required_representation": "unsaved marker, target, base and diff",
+      "sha256": "4102126ab40f09f45695af87218366975e339db9c2e0ddbf693cb0b5bf99ea07",
+      "state_id": "draft-dirty",
+      "test_id": "cc-state-draft-dirty"
+    },
+    {
+      "case_id": "state-draft-saved",
+      "producer": "draft-saved",
+      "required_representation": "local revision, diff and validate action",
+      "sha256": "8e895731af58cd679f41f2e1dc6b56d19f5ee0e6b3ac90e43701751597c68f8b",
+      "state_id": "draft-saved",
+      "test_id": "cc-state-draft-saved"
+    },
+    {
+      "case_id": "state-validating",
+      "producer": "validation-started",
+      "required_representation": "attempt status, protected edit and live announcement",
+      "sha256": "b0e0265646a920687e1039c78692f017c0eda576fc63d014440d53fdc876f621",
+      "state_id": "validating",
+      "test_id": "cc-state-validating"
+    },
+    {
+      "case_id": "state-valid",
+      "producer": "validation-valid",
+      "required_representation": "valid non-authoritative preview and validator version",
+      "sha256": "f9a760129ea6d64f79cbaffb511be9692c29bd9f4d3a4e7679208fb19a0ec621",
+      "state_id": "valid",
+      "test_id": "cc-state-valid"
+    },
+    {
+      "case_id": "state-invalid",
+      "producer": "validation-invalid",
+      "required_representation": "field-linked findings and non-authoritative label",
+      "sha256": "8191feefce09eedbcd7576480ff4ce7dc93b4eb80349e03e18ef8c75e6acc33f",
+      "state_id": "invalid",
+      "test_id": "cc-state-invalid"
+    },
+    {
+      "case_id": "state-save-failed",
+      "producer": "retryable-persistence-error",
+      "required_representation": "retained input, unchanged revision and retry focus",
+      "sha256": "64a2eb7330dba2c0066693be66fb66d7c99012d00850902de06230aef3c157af",
+      "state_id": "save-failed",
+      "test_id": "cc-state-save-failed"
+    },
+    {
+      "case_id": "state-local-conflict",
+      "producer": "local-cas-mismatch",
+      "required_representation": "stored/caller revisions and refresh/review action",
+      "sha256": "2245a9ca2037a27cafd46d0f73c633471c9cbc3ac8e60de1d03206583c8fb8db",
+      "state_id": "local-conflict",
+      "test_id": "cc-state-local-conflict"
+    }
+  ],
+  "target": {
+    "base_revision_or_hash": "sha256:fixture-base",
+    "target_id": "research",
+    "target_kind": "skill"
+  },
+  "validation_previews": {
+    "invalid": {
+      "authoritative": false,
+      "findings": [
+        {
+          "code": "fixture-invalid-value"
+        }
+      ]
+    },
+    "valid": {
+      "authoritative": false,
+      "findings": []
+    }
+  }
+}

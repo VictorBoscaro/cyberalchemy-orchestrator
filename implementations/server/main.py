@@ -26,6 +26,8 @@ from pydantic import BaseModel
 
 from . import config as config_module
 from . import ledger
+from .control_center import ControlCenterService
+from .control_center.api import create_router as create_control_center_router
 
 CFG = config_module.load()
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
@@ -71,6 +73,49 @@ app.include_router(
 )
 app.include_router(
     create_health_router(_runtime_provider, enabled=lambda: False)
+)
+
+_control_center_service: ControlCenterService | None = None
+
+
+def _control_center_provider() -> ControlCenterService:
+    global _control_center_service
+    if _control_center_service is None:
+        _control_center_service = ControlCenterService(
+            repo_root=config_module.REPO_ROOT,
+            repos=CFG.resolved_repos(),
+        )
+    return _control_center_service
+
+
+def bind_control_center_routes(
+    target_app: FastAPI,
+    cfg: config_module.Config,
+    provider,
+) -> dict[str, Any]:
+    """Publish all six routes only when every configured IF-I5 member is present."""
+    binding = {
+        "host_id": cfg.control_center_host_id,
+        "auth_contract_id": cfg.control_center_auth_contract_id,
+        "route_owner_id": cfg.control_center_route_owner_id,
+    }
+    missing = sorted(key for key, value in binding.items() if not value)
+    if missing:
+        return {
+            "interface_state": "unavailable",
+            "published_routes": [],
+            "missing_bindings": missing,
+        }
+    target_app.include_router(create_control_center_router(provider))
+    return {
+        "interface_state": "available",
+        "published_route_count": 6,
+        "binding": binding,
+    }
+
+
+CONTROL_CENTER_INTERFACE_STATE = bind_control_center_routes(
+    app, CFG, _control_center_provider
 )
 
 

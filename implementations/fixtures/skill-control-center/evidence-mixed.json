@@ -1,0 +1,120 @@
+{
+  "cases": [
+    {
+      "attempt_count": 4,
+      "case_id": "complete-positive-fresh",
+      "completeness": "complete",
+      "conflict_count": 0,
+      "evidence_classes": [
+        "observed"
+      ],
+      "exhaustive": true,
+      "freshness": "fresh",
+      "logical_invocation_count": 3,
+      "redelivery_count": 1,
+      "retry_count": 1
+    },
+    {
+      "attempt_count": 0,
+      "case_id": "complete-zero-stale",
+      "complete_window_coverage": true,
+      "completeness": "complete",
+      "evidence_classes": [
+        "observed"
+      ],
+      "exhaustive": true,
+      "freshness": "stale",
+      "logical_invocation_count": 0,
+      "retry_count": 0
+    },
+    {
+      "attempt_count": 2,
+      "case_id": "partial-lower-bound",
+      "completeness": "partial",
+      "evidence_classes": [
+        "observed"
+      ],
+      "exhaustive": false,
+      "freshness": "unknown",
+      "logical_invocation_count": 2,
+      "retry_count": 0
+    },
+    {
+      "attempt_count": null,
+      "case_id": "unavailable-not-zero",
+      "completeness": "unavailable",
+      "conflict_count": null,
+      "evidence_classes": [
+        "unknown-or-unavailable"
+      ],
+      "exhaustive": false,
+      "freshness": "unknown",
+      "logical_invocation_count": null,
+      "redelivery_count": null,
+      "retry_count": null
+    },
+    {
+      "attempt_count": 2,
+      "case_id": "dedupe-retry-conflict",
+      "completeness": "complete",
+      "conflict_count": 1,
+      "deliveries": [
+        {
+          "attempt_id": "a1",
+          "event_id": "e1",
+          "producer": "fixture"
+        },
+        {
+          "attempt_id": "a1",
+          "event_id": "e1",
+          "producer": "fixture"
+        },
+        {
+          "attempt_id": "a2",
+          "event_id": "e2",
+          "producer": "fixture"
+        }
+      ],
+      "evidence_classes": [
+        "observed",
+        "declared"
+      ],
+      "exhaustive": true,
+      "freshness": "fresh",
+      "logical_invocation_count": 1,
+      "redelivery_count": 1,
+      "retry_count": 1
+    }
+  ],
+  "fixture_id": "FX-EVIDENCE-MIXED-v1",
+  "generated_at_utc": "2026-07-25T00:00:00Z",
+  "schema_version": "1",
+  "sha256": "096e1ec70fb01d3ac3e130183c431f42191fd443c367ab77e694735e6528896b",
+  "source_revision": "synthetic-evidence-v1",
+  "state_cases": [
+    {
+      "case_id": "state-observed",
+      "producer": "observed-evidence-answer",
+      "required_representation": "counts, window, proof, coverage, freshness and source",
+      "sha256": "6ee16aa7777aef6c14f2fe4ecbc2837f13ce87ad05e92cd77292afee1c65f214",
+      "state_id": "observed",
+      "test_id": "cc-state-observed"
+    },
+    {
+      "case_id": "state-stale",
+      "producer": "stale-degraded-source",
+      "required_representation": "source, SLA, origin, last ingest and impact",
+      "sha256": "6ff99aec4c0df29b5f00f9a3251fe080344192b7a728ac5f9a536b68314a2042",
+      "state_id": "stale",
+      "test_id": "cc-state-stale"
+    },
+    {
+      "case_id": "state-partial",
+      "producer": "partial-result-failed-partition",
+      "required_representation": "lower bound, retained facts and failed source",
+      "sha256": "0bc7858c177d891910855eb7ead554544e9df94c389c500db3934a322d456e68",
+      "state_id": "partial",
+      "test_id": "cc-state-partial"
+    }
+  ]
+}

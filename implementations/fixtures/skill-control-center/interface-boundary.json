@@ -1,0 +1,54 @@
+{
+  "cases": [
+    {
+      "auth_contract_id": "local-loopback-process-boundary-v1",
+      "case_id": "complete-binding",
+      "host_id": "implementations-fastapi-loopback",
+      "interface_state": "available",
+      "published_route_count": 6,
+      "route_owner_id": "@VictorBoscaro"
+    },
+    {
+      "auth_contract_id": "local-loopback-process-boundary-v1",
+      "case_id": "missing-host",
+      "host_id": null,
+      "interface_state": "unavailable",
+      "published_route_count": 0,
+      "route_owner_id": "@VictorBoscaro",
+      "safe_recovery": "Bind host_id at the composition root."
+    },
+    {
+      "auth_contract_id": null,
+      "case_id": "missing-auth-contract",
+      "host_id": "implementations-fastapi-loopback",
+      "interface_state": "unavailable",
+      "published_route_count": 0,
+      "route_owner_id": "@VictorBoscaro",
+      "safe_recovery": "Bind auth_contract_id at the composition root."
+    },
+    {
+      "auth_contract_id": "local-loopback-process-boundary-v1",
+      "case_id": "missing-route-owner",
+      "host_id": "implementations-fastapi-loopback",
+      "interface_state": "unavailable",
+      "published_route_count": 0,
+      "route_owner_id": null,
+      "safe_recovery": "Bind route_owner_id at the composition root."
+    }
+  ],
+  "fixture_id": "FX-INTERFACE-BOUNDARY-v1",
+  "generated_at_utc": "2026-07-25T00:00:00Z",
+  "schema_version": "1",
+  "sha256": "394b60bc0cbda3221c96a9e7ddc5f4c7212324d264c409370e35352f6a4a9bee",
+  "source_revision": "phase1-interface-v1",
+  "state_cases": [
+    {
+      "case_id": "state-read-api-unavailable",
+      "producer": "missing-if-i5-binding",
+      "required_representation": "no published call, missing binding and safe recovery",
+      "sha256": "92137204a6b08340c32b70010d28a582e6c265ca64b9ede487d4b01f7ede4434",
+      "state_id": "read-api-unavailable",
+      "test_id": "cc-state-read-api-unavailable"
+    }
+  ]
+}

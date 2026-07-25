@@ -22,5 +22,10 @@
 
   "runtime_database": "telemetry/runtime/aci-slice0.sqlite3",
   "runtime_ledger": "telemetry/agents/subagents-dispatch.yaml",
-  "runtime_repo_id": "cyberalchemy-orchestrator"
+  "runtime_repo_id": "cyberalchemy-orchestrator",
+
+  "_comment_control_center": "All three values are required together. Null or empty fail-closes the six-route Phase 1 read API.",
+  "control_center_host_id": "implementations-fastapi-loopback",
+  "control_center_auth_contract_id": "local-loopback-process-boundary-v1",
+  "control_center_route_owner_id": "@VictorBoscaro"
 }
