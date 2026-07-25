@@ -3,9 +3,13 @@ tags: [agents, research-plan, orchestration, events, actions, ontology, observab
 node_type: plan
 plan_type: research-program
 is_session: true
-plan_id: agent-language-research-program
+name: Agent Work Language Research
+plan_id: null
+identity_status: named-id-pending
+plan_role: research-subplan
+parent_plan: plans/governed-agent-work-infrastructure/PLAN.md
 status: proposed
-version: 0.12.0
+version: 0.16.0
 created_at: 2026-07-24
 last_updated: 2026-07-24
 entry_point:
@@ -15,9 +19,13 @@ entry_point:
     infrastructure, including events, actions, schedules, agent modes, sessions, definitions,
     hierarchy, observability, dashboards, Git integration, and progressive validation.
 authority: proposal-only
+authority_resolution:
+  status: resolved
+  authority_kind: repository-owner
+  basis: explicit owner direction in the originating conversation
 ---
 
-# Plan: Agent Language Research Program
+# Agent Work Language Research
 
 ## Why this plan exists
 
@@ -42,8 +50,8 @@ sessions and knowledge artifacts—without hiding authority, provenance, uncerta
 
 ## Inputs already available
 
-- [Event-driven obligations and task orchestration](../../research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md)
-- [Agent invocation and collaboration topology](../../research/agent-invocation-and-collaboration-topology/research-initial-definitions.md)
+- [Event-driven obligations and task orchestration](../../../../research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md)
+- [Agent invocation and collaboration topology](../../../../research/agent-invocation-and-collaboration-topology/research-initial-definitions.md)
 - Existing ACI architecture, domain, workflow, capability, journal, projection, and host-hook
   artifacts under `docs/features/agents-communication-infra/`
 - Existing subagent strategy, research, review, experiment, interrogation, observability, ontology,
@@ -146,10 +154,12 @@ observable agent-related constructs and sessions.
 
 ### R4 — Plans, task definitions, schedules, and execution
 
-Define Plan as an independent proposal session with its own properties, entry-point provenance,
-versions, decisions, and promotion state. Relate it to reusable task definitions, confirmed
-Dispatches, TaskRuns, schedules, conditions, event triggers, retries, cancellation, and the minimum
-worker-plus-reviewer topology.
+Apply the canonical [Plan contract](../../../README.md#canonical-definition): a Plan is an independent, versioned
+proposal with entry-point provenance and a mandatory authority-resolution step whose result may be
+resolved, absent, unknown, or contested. Research its unresolved properties, decisions, promotion
+state, and relationship to reusable task definitions, confirmed Dispatches, TaskRuns, schedules,
+conditions, event triggers, retries, cancellation, and the minimum worker-plus-reviewer topology.
+Plan acceptance never supplies execution authority.
 
 `Intent -> Plan -> Research -> Discovery/Design -> Spec -> Code -> Verification` is a candidate
 work grammar, not a universal linear pipeline. Its construct kinds may recur and relate
@@ -344,6 +354,24 @@ do not agree, a third layer uses fresh reviewers against the resulting frozen re
 downstream dynamic handoff is not yet durably bound by ACI, each layer is a separate confirmed
 Review Dispatch rather than one opaque multi-layer invocation.
 
+## Program research registry
+
+Research directories are evidence nodes owned by this Plan, not independent plans. New rounds,
+methods, mathematical topics, and reviewer layers must update or attach artifacts to an existing
+node whenever their question remains inside that node's boundary. A new directory is justified
+only by a new research question with a distinct authority or lifecycle boundary.
+
+| Stream | Research node | Role in this Plan | Current state |
+|---|---|---|---|
+| R1 | [Foundational kernel and formalization](../../../../research/foundational-kernel-and-formalization/research-initial-definitions.md) | Kernel alternatives, candidate invariants, bootstrap, evolution, and bounded formalization | Initial definitions proposed |
+| R1 | [Agent-language mathematical formalization](../../../../research/agent-language-mathematical-formalization/research-initial-definitions.md) | Mathematical correspondence, countermodels, and Lean-fit evidence for the single appendix in the system view | Design research synthesized; appendix draft authored; staged review pending |
+| R2/R4 | [Event-driven obligations and task orchestration](../../../../research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md) | Events, obligations, triggers, task definitions, and Dispatch-candidate lifecycle | Initial definitions proposed |
+| R3/R4 | [Agent invocation and collaboration topology](../../../../research/agent-invocation-and-collaboration-topology/research-initial-definitions.md) | Context materialization, agent topology, routing, and the no-nested-orchestrator constraint | Initial definitions proposed |
+
+The registry is the program-level view. Each node carries `related_plan` and `stream_id` metadata
+back to this Plan. Dispatch returns, findings, formalization drafts, and reviews remain inside or
+link to the corresponding node; they do not create folders merely to mirror execution rounds.
+
 ## Program gates
 
 - **G1 — Invariant and vocabulary readiness:** the minimal global laws are explicit, shared terms
@@ -378,19 +406,27 @@ Review Dispatch rather than one opaque multi-layer invocation.
    Lean translation obligations.
 8. Run the staged two-reviewer mathematical and Lean correspondence reviews, using a fresh third
    layer when two sequential layers disagree.
-9. Design the future `dispatch_type: plan` skill from this bootstrap example, then separately
+9. After the mathematical subset survives review, encode the accepted dependency cone in Lean,
+   run the selected real build target, audit dependencies, `sorry`, and axioms, and iterate until
+   the accepted obligations pass or a documented counterexample or dependency blocker changes the
+   model. A passing build remains formal evidence, not product correspondence or execution
+   authority.
+10. Design the future `dispatch_type: plan` skill from this bootstrap example, then separately
    decide whether to promote that router entry from RESERVED to LIVE.
-10. Only after that promotion, require plan-mode subagent outputs to be saved under `plans/`.
+11. Only after that promotion, require plan-mode subagent outputs to be saved under `plans/`.
 
 ## Open questions about the future Plan type
 
 - Is every Plan a session, or can a stable reusable PlanDefinition produce multiple PlanSessions?
 - Which fields are common to research, implementation, migration, experiment, and operational
   plans?
-- Does accepting a plan authorize only dispatch proposal generation, or any execution?
+- **Resolved in the Plan Contract:** accepting a Plan does not authorize execution. Still open:
+  which bounded consequences, such as generating DispatchCandidates, may acceptance authorize?
 - How are entry prompts, later amendments, rejected alternatives, and user decisions preserved?
 - What constitutes completion, supersession, cancellation, and reopening?
 - Can plans contain nested plans, and how are their budgets and authority bounded?
+- How is the mandatory authority search evidenced, and who may conclude `absent` rather than
+  `unknown`?
 - Can a Research target a Plan, can a Plan target a Research, and which relation expresses purpose,
   production, challenge, revision, containment, or promotion in each case?
 - Which validations must occur before a plan can be offered, accepted, scheduled, or executed?
@@ -491,6 +527,55 @@ a kernel:
 This remains a hypothesis because it can reproduce the same problem one level higher or create an
 infinite regress. Research must identify a bootstrap boundary: the smallest externally admitted
 contract that lets kernel agreements be checked without requiring another kernel above it.
+
+The phrase `kernel-of-kernels` must not collapse four distinct candidates:
+
+1. **a meta-contract for kernel declarations** — the rules under which a kernel can identify and
+   version itself, declare owned semantics and invariants, bind scope and authority, and expose
+   violation, compatibility, and lifecycle behavior;
+2. **a global invariant set** — the laws every accepted subsystem and composition must preserve,
+   regardless of which domain kernel owns the local semantics; and
+3. **a composition protocol** — the witnesses, translations, conflict rules, and residue needed to
+   describe whether two independently valid kernels may compose; and
+4. **a conformance checker** — a small, versioned implementation of explicit judgments that
+   accepts, rejects, or leaves an obligation unresolved relative to an admitted trust base.
+
+These candidates may share an implementation, but they do not have the same logical
+responsibility. A meta-contract can show that a domain kernel is well-formed relative to an
+accepted bootstrap; it does not derive the domain kernel's rules, prove them jointly satisfiable,
+or authorize their effects. A global invariant cannot be overridden merely because a local rule
+has higher operational authority. A composition conflict may require rejection, isolation,
+translation, explicit version change, or escalation; `priority` is not a universal resolution
+operator.
+
+The actual Lean theorem-prover kernel is a useful `analogy-only` design precedent for the bootstrap
+question. Lean permits rich syntax, tactics, macros, and elaboration outside a small trusted kernel,
+then checks elaborated declarations against a compact core type theory. The corresponding product
+hypothesis is that expressive authoring and inference may remain extensible while a smaller
+acceptance checker validates explicit evidence at selected boundaries. The analogy stops there:
+Lean's kernel checks type correctness of proof terms relative to an environment and admitted
+axioms; it does not govern runtime authority, provenance, temporal obligations, operational
+conflict, or external effects. The repository's `permguard` is separately called a “Lean kernel”
+because it is a verified policy decision program written in Lean; it is not the Lean prover's own
+kernel and must not be used as evidence for this architectural analogy.
+
+The bootstrap boundary should therefore distinguish at least:
+
+```text
+B0  = admitted roots, core checking rules, versions, owners, and assumptions
+M   = meta-contract for describing governable kernels and invariants
+G   = candidate global invariant set
+Ki  = one bounded domain kernel
+Q   = conformance checker for the admitted judgments
+Cij = compatibility/composition witness between Ki and Kj
+E   = runtime enforcement and effect boundary
+```
+
+The research question is not whether `M` proves every `Ki`. It is whether, relative to `B0`, the
+checker `Q` can decide or explicitly leave unresolved that a `Ki` is well-formed, that `Ki` and
+`Kj` are compatible under `Cij`, that accepted compositions preserve `G`, and that any resulting
+operation still crosses `E` under separately established authority. `M` specifies admissible
+declarations; `Q` checks judgments about them. Neither role silently owns the other.
 
 ## Interactive work-intent, Dispatch candidates, and realtime state
 

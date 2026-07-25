@@ -160,7 +160,7 @@ a genuine fork exists (a close-row can carry `exit_reason: dissent_irreconcilabl
 that decides when to use it does not. The freeze primitive (recording an initial and a final
 position) exists; the rule that you *cannot* open the discussion before freezing does not. This is
 the honest state: one axis enforced, the other named and designed but awaiting construction
-(`docs/PLAN.md` §3.1).
+(`plans/governed-agent-work-infrastructure/PLAN.md` §3.1).
 
 ## Full density: the error model, the ceiling, and the open question
 
@@ -237,7 +237,7 @@ falsified, not by being true a priori.
 - **Derives from:** `vault/hypothesis/anti-noise-orchestration.md` (`HYP-ORCH-NOISE`) — the
   red-teamed thesis with registered bets and collapse-tests this essay renders in accessible form,
   keeping only the decision-hygiene (Kahneman ⊕ Thaler) lens.
-- **Grounds in:** `docs/PLAN.md` (§1 the business problem, §2 the hypothesis, §3.1 the
+- **Grounds in:** `plans/governed-agent-work-infrastructure/PLAN.md` (§1 the business problem, §2 the hypothesis, §3.1 the
   decision-making front); `.claude/skills/check-tension/SKILL.md` and
   `.claude/skills/anti-bias-vector-composition/SKILL.md` (the built anti-bias gate and its design
   principle); `.claude/skills/register-dispatch/SKILL.md` (dispatch angles, `anti_bias`,

@@ -1,10 +1,29 @@
-# Stage D — Brokered Launcher Capability Bootstrap
+---
+tags: [plans, agent-provenance-telemetry, capabilities, launcher]
+node_type: plan-workstream
+name: Brokered Agent Launcher Capability Bootstrap
+owning_plan: plans/governed-agent-work-infrastructure/PLAN.md
+status: active
+version: 0.2.1
+authority: proposal-only
+authority_resolution:
+  status: unknown
+  search_note: migrated from feature-local storage; no durable governing-authority receipt was found in the artifact
+last_updated: 2026-07-24
+---
+
+# Brokered Agent Launcher Capability Bootstrap
+
+This is a bounded implementation slice of the
+[Governed Agent Work Infrastructure Plan](../PLAN.md), not an independent Plan.
 
 ## Decision and boundary
 
-The next exact unit is `SWU-ACI-APT-LCB-001`. It adds the authority substrate needed by a future
-agent launcher, but it does not launch a real provider. Its executable child is a deterministic
-fixture that can attempt authorized and adversarial tool calls.
+The current candidate for the next exact unit is `SWU-ACI-APT-LCB-001`, pending governing-authority
+resolution and admission against the current ACI and APT revisions. It would add the authority
+substrate needed by a future agent launcher, but it would not launch a real provider. Its
+executable child would be a deterministic fixture that can attempt authorized and adversarial
+tool calls.
 
 This boundary is required because the current implementation has two unsafe bootstrap shapes for a
 real child:
@@ -170,3 +189,11 @@ local pilot. A later SWU must separately admit a real adapter and launcher on th
 the existing `SandboxLauncher`, verified-opening, process cleanup, credential and provider
 conformance gates. Until that receipt exists, real provider execution and automatic launch remain
 blocked.
+
+## Open Questions
+
+- Which accepted owner or governing artifact has authority to keep, revise, complete, or supersede
+  this Stage D route?
+- Is `SWU-ACI-APT-LCB-001` still the next admissible unit under the current ACI and APT revisions?
+- Which later artifact will own the real-adapter admission decision after the fake-child boundary
+  is verified?

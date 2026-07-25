@@ -124,4 +124,4 @@ process" from framing into theorem. Second-best: the bias⊕noise **compositiona
 | `lean-formalization/README.md` | `derives-from` | Source of the sibling build-status claims; this audit adds the fragmented-target risk. |
 | [[anti-noise-orchestration]] | `contextualizes` | Front 1 thesis audited; covariance-knob coherent, bias⊕noise F-conditional and non-native. |
 | [[engine-constitution]] | `contextualizes` | EG-1 enum-drift ranked as the code-layer consistency fix. |
-| `docs/PLAN.md` | `contextualizes` | §2/§3.2/§5 assessed; provenance spine ranked as logically prior to OBL-E3. |
+| `plans/governed-agent-work-infrastructure/PLAN.md` | `contextualizes` | §2/§3.2/§5 assessed; provenance spine ranked as logically prior to OBL-E3. |

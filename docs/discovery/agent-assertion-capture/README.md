@@ -52,7 +52,7 @@ The orchestrator already captures **dispatch-level** facts (the append-only audi
 post-confirm by `register-dispatch`). But the **epistemic** work an agent does *inside* a session
 — the premises it adopts, the forks it resolves, the terms it defines, the doubts it hits —
 evaporates into the transcript the moment the session ends. That is exactly the gap
-[`docs/PLAN.md §5`](../../PLAN.md) names as the suspected **root** of three unsolved problems: the
+[`plans/governed-agent-work-infrastructure/PLAN.md §5`](../../../plans/governed-agent-work-infrastructure/PLAN.md) names as the suspected **root** of three unsolved problems: the
 missing `enrich` step in the claim→refutation→golden loop, the unenforced freeze, and the untyped
 self-reference — "a provenance spine (assertion → the dispatch/research that generated it → its
 trail) does not exist today; ids live in four disjoint spaces." This whole design was itself worked
@@ -70,8 +70,8 @@ instance of the problem it addresses.
   (HYP-ORCH-INFRA) declares a knowledge store that holds **promoted** content behind a governed
   promotion writer (agents "may propose through the bus"), but there is **no writer and no capture
   path**, and the bus does not exist yet. *(The full `proposed → accepted → superseded` lifecycle is
-  stated in [`docs/PLAN.md §3.3`](../../PLAN.md), not in HYP-ORCH-INFRA.)*
-- **No provenance spine.** [`docs/PLAN.md §5`](../../PLAN.md) — assertions cannot be traced to the
+  stated in [`plans/governed-agent-work-infrastructure/PLAN.md §3.3`](../../../plans/governed-agent-work-infrastructure/PLAN.md), not in HYP-ORCH-INFRA.)*
+- **No provenance spine.** [`plans/governed-agent-work-infrastructure/PLAN.md §5`](../../../plans/governed-agent-work-infrastructure/PLAN.md) — assertions cannot be traced to the
   dispatch/session/agent that produced them; the ids are disjoint.
 - **All new writes are gated.** [`vault/constitution/engine-constitution.md`](../../../vault/constitution/engine-constitution.md)
   EG-1 (single validated writer) stands at `veracity: medium`, blocked by the live enum-drift
@@ -148,7 +148,7 @@ linked.
 
 ### C5 — K-only floor ⊥ enrich-by-relation (where knowledge actually advances)
 
-Per [`docs/PLAN.md §5`](../../PLAN.md) — as a **candidate** anchor resting on an *unverified* Lean
+Per [`plans/governed-agent-work-infrastructure/PLAN.md §5`](../../../plans/governed-agent-work-infrastructure/PLAN.md) — as a **candidate** anchor resting on an *unverified* Lean
 decl (`omega_absorption_refuted`) in the sibling repo, **not** proven in-repo — append-only promotion
 is *conjectured* to be **K-only** and to never enrich the codomain `C` ("not even at the colimit"),
 so that enriching would require a **relation-adding / quotient** step.
@@ -298,7 +298,7 @@ declaration and the artifact disagree — rather than silently trusting either s
 | [HYP-ORCH-INFRA](../../../vault/hypothesis/orchestration-infra.md) | `depends-on` | Realizes its `proposed → promoted` knowledge store and the disjoint-authority split at the source. |
 | [`vault/audit/close-row-enrich-c.md`](../../../vault/audit/close-row-enrich-c.md) | `grounds` | The K-only ⊥ enrich-by-relation finding that C5 rests on. |
 | [`vault/constitution/engine-constitution.md`](../../../vault/constitution/engine-constitution.md) | `cites` | EG-1 (one validated writer) and EG-6 (history is an artifact) constrain the appender. |
-| [`docs/PLAN.md §5`](../../PLAN.md) | `derives-from` | The provenance-spine gap this layer is the root of. |
+| [`plans/governed-agent-work-infrastructure/PLAN.md §5`](../../../plans/governed-agent-work-infrastructure/PLAN.md) | `derives-from` | The provenance-spine gap this layer is the root of. |
 | [`vault/audit/ledger-enum-drift-finding.md`](../../../vault/audit/ledger-enum-drift-finding.md) | `blocked-by` | The live counterexample that gates any new writer (OQ-5). |
 
 ---

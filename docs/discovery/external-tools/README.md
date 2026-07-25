@@ -36,7 +36,7 @@ question: >
 
 ## What this is
 
-Front 3 of [`docs/PLAN.md §3.3`](../../PLAN.md) — the **communication / deliberation
+Front 3 of [`plans/governed-agent-work-infrastructure/PLAN.md §3.3`](../../../plans/governed-agent-work-infrastructure/PLAN.md) — the **communication / deliberation
 infrastructure** — is already specified on paper:
 [`docs/features/agents-communication-infra/README.md`](../../features/agents-communication-infra/README.md)
 and [`vault/hypothesis/orchestration-infra.md`](../../../vault/hypothesis/orchestration-infra.md)
@@ -126,5 +126,5 @@ UI-studio discovery cited its verification sweep.
 | [`docs/features/agents-communication-infra/`](../../features/agents-communication-infra/README.md) | `depends-on` | The bus/kernel/adapter contract (§4.4, §5) each candidate is tested against. |
 | [`vault/constitution/engine-constitution.md`](../../../vault/constitution/engine-constitution.md) | `governed-by` | EG-1 (single validated writer) — the invariant octopus could make structural and that every candidate must not violate. |
 | [`vault/audit/ledger-enum-drift-finding.md`](../../../vault/audit/ledger-enum-drift-finding.md) | `blocked-by` | The live counterexample gating any adopted writer (Wave W0). |
-| [`docs/PLAN.md §3.3`](../../PLAN.md) | `derives-from` | Front 3, the substrate this area shops for. |
+| [`plans/governed-agent-work-infrastructure/PLAN.md §3.3`](../../../plans/governed-agent-work-infrastructure/PLAN.md) | `derives-from` | Front 3, the substrate this area shops for. |
 | [agent-assertion-capture](../agent-assertion-capture/README.md) | `sibling` | The other open discovery under the same gate and the same disjoint-authority design. |

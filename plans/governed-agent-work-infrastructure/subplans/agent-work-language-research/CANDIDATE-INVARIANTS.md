@@ -3,9 +3,9 @@ tags: [agents, architecture, invariants, modularity, mathematics]
 node_type: candidate-invariant-set
 is_session: false
 status: proposed
-version: 0.2.0
-last_updated: 2026-07-24
-parent_plan: plans/agent-language-research-program/PLAN.md
+version: 0.4.1
+last_updated: 2026-07-25
+parent_plan: plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md
 authority: research-input-only
 ---
 
@@ -21,48 +21,92 @@ candidate kernel invariants before ratifying the first set.
 
 ## What “invariant” means here
 
-For a system state \(s\), an invariant is a predicate \(P(s)\) preserved by every valid transition
-\(t\):
+For a system state `s`, an invariant is a predicate `P(s)` preserved by every valid transition
+`t`:
 
-\[
-P(s) \land valid(t, s) \Rightarrow P(t(s)).
-\]
+```text
+P(s) and valid(t, s)  =>  P(t(s))
+```
 
-For modular composition, preservation matters as much as truth in isolated modules. If \(A\) and
-\(B\) are valid modules, their composition must preserve the kernel laws:
+For modular composition, preservation matters as much as truth in isolated modules. If `A` and
+`B` are valid modules, their composition must preserve the kernel laws:
 
-\[
-K(A) \land K(B) \land compatible(A,B) \Rightarrow K(A \otimes B).
-\]
+```text
+K(A) and K(B) and compatible(A, B)  =>  K(A (*) B)
+```
 
 This does not mean every value stays unchanged. Identities, classifications, relationships, and
 state may evolve; the laws governing how they evolve remain preserved.
 
 ## Two invariant levels
 
-Let \(I_K(v)\) be the kernel invariant set for system version \(v\), and let \(I_U(c)\) be the
-additional invariant set selected by one user configuration \(c\):
+Let `I_K(v)` be the kernel invariant set for system version `v`, and let `I_U(c)` be the
+additional invariant set selected by one user configuration `c`:
 
-\[
-I_{effective}(v,c) = I_K(v) \cup I_U(c).
-\]
+```text
+I_effective(v, c) = I_K(v) union I_U(c)
+```
 
-For a fixed kernel version, \(|I_K(v)|\) is fixed and inspectable. The user may easily change
-\(|I_U(c)|\) by adding, disabling, scoping, composing, or retiring user-level invariants.
+For a fixed kernel version, `|I_K(v)|` is fixed and inspectable. The user may easily change
+`|I_U(c)|` by adding, disabling, scoping, composing, or retiring user-level invariants.
 
 A user invariant may constrain the permitted state space further, but it cannot make a state valid
 when a kernel invariant rejects it:
 
-\[
-Valid(s,v,c) \Rightarrow
-\bigwedge_{i \in I_K(v)} i(s)
-\land
-\bigwedge_{j \in I_U(c)} j(s).
-\]
+```text
+ValidState(s, v, c)  =>  (for all i in I_K(v). i(s))  and  (for all j in I_U(c). j(s))
+```
 
 This requires a governed invariant mechanism with at least identity, version, scope, applicability,
 evaluation semantics, dependencies, enforcement or advisory mode, violation behavior, provenance,
 and lifecycle. Those fields are a research target, not a settled schema.
+
+## Invariant semantics are not invariant metadata
+
+The mathematical criterion and the governance record answer different questions:
+
+- `P` is an invariant when it is a predicate preserved by every transition admitted in its
+  scope;
+- an `InvariantRecord` makes the claim governable by identifying `P`, its version and scope, the
+  transitions it quantifies over, its owner and authority basis, its evaluation semantics,
+  dependencies, evidence, violation posture, and lifecycle.
+
+A complete record does not prove preservation. A preserved predicate without a sufficient record
+may be mathematically meaningful but unusable at an operational boundary. Research must preserve
+both judgments rather than defining one in terms of the other.
+
+## Contracts and checker responsibilities that must not collapse
+
+The working `kernel-of-kernels` language currently contains at least five separable responsibilities:
+
+1. `M`, a meta-contract for well-formed kernel and invariant declarations;
+2. `G`, the candidate global laws every accepted composition must preserve;
+3. `K_i`, bounded domain kernels with locally owned semantics;
+4. `C_ij`, explicit compatibility and composition witnesses between `K_i` and `K_j`; and
+5. `Q`, a small conformance checker that evaluates declared judgments.
+
+All of them are checked relative to an admitted finite bootstrap `B_0` and an accepted declaration
+context `Ctx`. Runtime effects remain behind a separate enforcement boundary `E`.
+
+```text
+B_0 ; Ctx  |-_Q  WellFormed_M(K_i)
+```
+
+does not mean that `M` logically derives the domain rules in `K_i`, that `K_i` is internally
+consistent, or that executing under `K_i` is authorized. Similarly,
+
+```text
+B_0 ; Ctx  |-_Q  C_ij : Compatible_G(K_i, K_j)
+```
+
+is evidence for one declared composition boundary, not a universal proof that the two kernels can
+interact safely under every translation, version, state, or external effect.
+
+Authority, precedence, and conflict must also remain distinct. Authority determines who may
+propose, accept, change, or enforce a rule in a scope. Precedence determines which rule is selected
+only where a declared composition policy permits selection. A genuine logical conflict may make
+the composition invalid; “higher authority wins” is not a general satisfiability theorem and cannot
+weaken a global invariant without an explicit kernel version change.
 
 ## Candidate minimal kernel
 
@@ -74,6 +118,11 @@ authority than was delegated to its definition or run.
 
 This permits manual, scheduled, conditional, and event-originated work without making the trigger
 itself an authorization.
+
+It also permits the [Plan contract](../../../README.md#canonical-definition) to preserve a Plan whose governing
+authority is absent, unknown, or contested. K1 applies when a proposal becomes consequential: the
+unresolved Plan may remain visible and revisable, but it cannot become binding, allocate
+authoritative resources, confirm a Dispatch, or cause an effect.
 
 ### K2 — Durable causality and provenance
 

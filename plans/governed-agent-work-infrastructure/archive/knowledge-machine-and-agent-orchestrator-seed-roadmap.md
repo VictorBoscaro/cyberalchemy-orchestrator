@@ -1,4 +1,21 @@
-# PLAN — Knowledge Machine / Agent Orchestrator (seed)
+---
+tags: [plans, orchestration, archived-roadmap]
+node_type: plan
+name: Knowledge Machine and Agent Orchestrator Seed Roadmap
+plan_id: null
+identity_status: archived-name-only
+plan_role: archived-predecessor
+related_root_plan: plans/governed-agent-work-infrastructure/PLAN.md
+status: superseded
+version: 0.3.0
+authority: proposal-only
+authority_resolution:
+  status: unknown
+  search_note: archived artifact; no durable governing-authority receipt was found in the artifact
+last_updated: 2026-07-24
+---
+
+# Knowledge Machine and Agent Orchestrator Seed Roadmap
 
 > **Repo name:** provisional (`cyberalchemy-orchestrator`). Rename (P-NOME, still open).
 > **Status:** PLAN / brainstorm. Unreviewed. Local, no push. Claim ≤ proof.
@@ -77,7 +94,7 @@ future decision layer — parked, not on the critical path (§7, Track B).
 - **NEW FIELD — Categorical type:** each definition carries its **CT mapping + anchor** (§4). A
   definition without a categorical type is a candidate, not closed.
 
-Terms live in [DEFINITIONS.md](definitions/DEFINITIONS.md) (residue, separation, shadow, probe, verb, …).
+Terms live in [DEFINITIONS.md](../../../definitions/DEFINITIONS.md) (residue, separation, shadow, probe, verb, …).
 Honest state: several anchors are **weak** — memory-level or own-synthesis, with no Lean declaration
 (verb-rule, shadow-as-magnitude, the probe species). These are labeled inline; they are candidates, not results.
 
@@ -88,7 +105,7 @@ Honest state: several anchors are **weak** — memory-level or own-synthesis, wi
 **Rule.** Every construct of the agent-language → its type in category theory + anchor in a real
 file (inherited from the parent repo's CLAUDE.md).
 
-**The table lives in [FRAMINGS.md §2](../../FRAMINGS.md#2--interpretation-functor)** (single source, protocol §3): §1 = seed table (7
+**The table lives in [FRAMINGS.md §2](../../../FRAMINGS.md#2--interpretation-functor)** (single source, protocol §3): §1 = seed table (7
 inherited constructs), §2 = parallels from the base skill `domainspec-subagents-strategy`
 (concat=coproduct / synthesis=pushout, feedback-as-2-cell, plural-probe=separating-family, meta/A6).
 Do not duplicate here — edit there.
@@ -105,7 +122,7 @@ compose associatively, the agent-language **is** a category, and the residue of 
 the same object the parent repo studies — closing the A6 loop. **Collapses to decoration** if (a)
 zig-zag/feedback don't compose associatively (it's an annotated DAG), or (b) the synthesis-residue
 is not the same object as `FunctorialResidueStructure` (and the discharge reaches only the
-*separation* bar, not the invariant-factor prize). Typing (a) or (b) is [OBL-E3](OBLIGATIONS.md) (§8).
+*separation* bar, not the invariant-factor prize). Typing (a) or (b) is [OBL-E3](../../../OBLIGATIONS.md) (§8).
 
 ---
 
@@ -115,7 +132,7 @@ Everything below is **one loop seen three ways**.
 
 ### 5.1 The T0 root loop
 `state a falsifiable claim → probe it → keep what survives → enrich the model from what breaks`
-(`vault/axioms/axioms.md`, T0 root; categorical form = [FRAMINGS.md](FRAMINGS.md) **F6**: anomaly →
+(`vault/axioms/axioms.md`, T0 root; categorical form = [FRAMINGS.md](../../../FRAMINGS.md) **F6**: anomaly →
 enrich `C` → shrink residue = "the scientific process"). The governing discipline — `claim ≤ proof`
 and `veracity ⊥ conviction` — already runs through every doc and the code (EG-8). **But the loop
 itself is NOT built.** The `enrich` step is *provably absent* from the current ledger: a close row
@@ -128,7 +145,7 @@ is the thing to add (§7).
 | Face | The loop, in that language | Home | State |
 |---|---|---|---|
 | **Decision-science** | claim = a debiasing move; probe = tensioned/independent dispatch; residue = `bias ⊕ noise` | [[anti-noise-orchestration]] (`HYP-ORCH-NOISE`) | candidate, low veracity; `⊕`-orthogonality partially deflated (holds only under an imported Legendre `F`, else `bias × noise`) |
-| **Categorical** | claim = a construct's CT type; probe = an active map `A→X`; residue = `FunctorialResidueStructure` | [FRAMINGS.md §2](../../FRAMINGS.md#2--interpretation-functor) + [OBL-E3](OBLIGATIONS.md) | OPEN; nothing typed *here* — anchors live in the **sibling** repo, build-gate unverified |
+| **Categorical** | claim = a construct's CT type; probe = an active map `A→X`; residue = `FunctorialResidueStructure` | [FRAMINGS.md §2](../../../FRAMINGS.md#2--interpretation-functor) + [OBL-E3](../../../OBLIGATIONS.md) | OPEN; nothing typed *here* — anchors live in the **sibling** repo, build-gate unverified |
 | **Engineering** | claim = a schema/invariant; probe = a dispatch; residue = what a synthesis merge loses | `implementations/` + the ledger + [[engine-constitution]] | Phase-1 read runs; the `enrich` op **has no correspondent** — partial fire ([[faces-instance-frozen-map]]) |
 
 **A6 / self-reference.** Building the repo through dispatches recorded in the *same* ledger is real,
@@ -141,7 +158,7 @@ spine (§5.3) exists. The stance to self-record survives as design posture AX-3.
 The three faces are only "the same loop" if a **provenance spine** ties them: `assertion → the
 dispatch/research that generated it → its trail`. Today that spine is **absent** — four disjoint
 id-spaces (documents, epistemic ledger, operational trace, domain) with no typed cross-link
-([research/meta-ontology/](research/meta-ontology/) SEED). The same gap explains three symptoms at once:
+([research/meta-ontology/](../../../research/meta-ontology/) SEED). The same gap explains three symptoms at once:
 the missing `enrich` step (5.1), the falsified fractality (5.2), and the meta-ontology's non-convergence.
 It has a name in the backlog: **BL-3 — the ledger as a typed, `enrich`/`supersede`-capable knowledge
 graph**. BL-3 is the **pivot unlock**: it lands the enrich step, [[claim-graph]], fractality, and the
@@ -181,7 +198,7 @@ demonstrated** on a second machine (see memory `portability-install-principle`).
 ## 7. Roadmap — one ordered BUILD plan
 
 > **ROADMAP ≠ BACKLOG.** This is the ordered, dependency-aware plan of *what to build and in what
-> order* — not the candidate pool. Parked candidates live in [BACKLOG.md](BACKLOG.md) (BL-1/H-META-1′,
+> order* — not the candidate pool. Parked candidates live in [BACKLOG.md](../../../BACKLOG.md) (BL-1/H-META-1′,
 > BL-2, BL-4, MOGT, de-hardwire portability, OQ-9/OQ-10, README-vs-AX-1) and graduate here only by
 > becoming an `OBL-*`, a `vault/hypothesis/` doc, or a numbered step below — never by silent
 > implementation. **BL-3** has graduated via its step here; its BACKLOG status line (still "IDEA/parked")
@@ -290,10 +307,16 @@ demonstrated** on a second machine (see memory `portability-install-principle`).
   *separation* bar (genuine second instance), **not** the *invariant-factor* prize (count-invisible;
   closed-negative over concrete `Ab` by `tierC_pigeonhole_not_injective`; open only for a non-concrete
   codomain). Named risk: zig-zag/feedback are probably 2-cells, not 1-morphisms → the claim may narrow to
-  the `sequential` fragment. Full statement + collapse-tests: [OBLIGATIONS.md](OBLIGATIONS.md).
+  the `sequential` fragment. Full statement + collapse-tests: [OBLIGATIONS.md](../../../OBLIGATIONS.md).
 - **Enum-drift / EG-1** — the keystone defect (§6). Blocks Phase 2. [[ledger-enum-drift-finding]].
 - **Missing provenance spine / BL-3** — the reason the loop can't `enrich` and fractality is falsified (§5.3).
 - **`TO-ME/` citation path** — the OBL-E3 brief **exists** cross-repo (`../domainspec-lean-formalization/TO-ME/oble3-synthesis-as-second-residue-instance/`); in-repo citations use the bare path and OBLIGATIONS.md still calls it "absent" — reconcile (roadmap TR-1).
 - **P-NOME** — the repo's definitive name + location, still open.
-- **P-CT** — feedback/robot-talks CT type: **advanced** ([FRAMINGS.md §2](../../FRAMINGS.md#2--interpretation-functor): feedback=2-cell,
+- **P-CT** — feedback/robot-talks CT type: **advanced** ([FRAMINGS.md §2](../../../FRAMINGS.md#2--interpretation-functor): feedback=2-cell,
   synthesis=colimit), still needs typing in Lean (that's OBL-E3).
+
+## Open Questions
+
+This Plan is superseded. The obligations and open defects above remain historical question records;
+their current status must be resolved in active owning artifacts rather than by reviving this
+archived route implicitly. The governing authority of this archived Plan remains unknown.

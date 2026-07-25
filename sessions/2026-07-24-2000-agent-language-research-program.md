@@ -72,8 +72,8 @@ freezing premature classifications.
 
 - `BACKLOG.md`
 - `plans/README.md`
-- `plans/agent-language-research-program/PLAN.md`
-- `plans/agent-language-research-program/CANDIDATE-INVARIANTS.md`
+- `plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md`
+- `plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/CANDIDATE-INVARIANTS.md`
 - `research/agent-invocation-and-collaboration-topology/research-initial-definitions.md`
 - `research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md`
 

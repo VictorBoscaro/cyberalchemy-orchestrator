@@ -37,7 +37,8 @@ The harness is the **validation route** that the frontend constitution's `Promot
 ## 2. Business Context
 
 This repo is a knowledge machine whose first concrete piece is an **agent orchestrator**
-([PLAN.md](../../../PLAN.md), [README.md](../../../README.md)). Phase 1 delivered
+([PLAN.md](../../../plans/governed-agent-work-infrastructure/PLAN.md),
+[README.md](../../../README.md)). Phase 1 delivered
 a linear multilevel UI + aggregation endpoints over an append-only ledger
 ([sessions/2026-07-20-1352-linear-multilevel-ui.md](../../../sessions/2026-07-20-1352-linear-multilevel-ui.md)).
 The human rated the UI as **too verbose**; the answer is not to erase information, it's
@@ -49,7 +50,8 @@ the first cut is to **reuse, not reinvent**.
 
 Without measurement, "cleaner" is a guess. The harness converts "I found it verbose" into a
 **delta measurable by constitution rule**, closes the loop with the repo's decision layer
-(MOGT / decision-receipt, [PLAN.md](../../../PLAN.md) §5 E4) and resolves the inherited *next
+(MOGT / decision-receipt,
+[archived roadmap](../../../plans/governed-agent-work-infrastructure/archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) §5 E4) and resolves the inherited *next
 step* of **picking 1 of the 10 variants and deleting the other 9**. It also mitigates the
 concrete risk observed in the prior arts (§5): building the autonomous evolutionary engine
 **before** the loop closes once — all three deferred it or never triggered it.

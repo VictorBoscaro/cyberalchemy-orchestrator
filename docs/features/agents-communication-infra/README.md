@@ -1201,7 +1201,7 @@ A arquitetura deve ser revista se:
   de aplicação derivada desta arquitetura candidata; preserva decisões/OQs como entrada rastreável
   para a futura SPEC DomainSpec.
 - [`README.md`](../../../README.md) — visão geral, schema e control plane atuais.
-- [`PLAN.md`](../../PLAN.md) — roadmap e obrigações do projeto.
+- [`Knowledge Machine and Agent Orchestrator Seed Roadmap`](../../../plans/governed-agent-work-infrastructure/archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) — roadmap e obrigações históricas do projeto.
 - [`engine-constitution.md`](../../../vault/constitution/engine-constitution.md) — invariantes
   atuais do ledger e do leitor.
 - [`orchestration-infra.md`](../../../vault/hypothesis/orchestration-infra.md) — hipótese anterior

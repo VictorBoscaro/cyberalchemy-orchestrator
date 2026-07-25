@@ -1,16 +1,52 @@
-# PLAN — Orchestrating agents as a decision-making problem
+---
+tags: [plans, infrastructure, orchestration, decision-hygiene, category-theory]
+node_type: plan
+plan_type: infrastructure-program
+name: Governed Agent Work Infrastructure
+plan_id: null
+identity_status: named-id-pending
+status: active
+version: 0.2.0
+authority: proposal-only
+authority_resolution:
+  status: resolved
+  authority_kind: repository-owner
+  basis: explicit owner direction that the child work belongs to one infrastructure Plan
+last_updated: 2026-07-25
+---
+
+# Governed Agent Work Infrastructure
+
+## Plan boundary
+
+This is the single root Plan for creating the repository's governed agent infrastructure.
+Decision hygiene explains why the infrastructure exists; the agent-language research program,
+runtime/ACI work, observability, control-center work, and bounded implementation slices are
+children, evidence nodes, or projections of this Plan rather than peer root Plans.
+
+Its current child-Plan registry is:
+
+| Child | Role in the infrastructure Plan | Authority state |
+|---|---|---|
+| [Agent Work Language Research](subplans/agent-work-language-research/PLAN.md) | Research subplan for the common language, kernel, relations, authority, events, agents, plans, and observability | Resolved repository-owner authority; proposal-only |
+| [Brokered Agent Launcher Capability Bootstrap](workstreams/brokered-agent-launcher-capability-bootstrap.md) | Bounded implementation workstream for the launcher capability bootstrap | Governing authority unknown; inert as a binding route |
+
+The archived [Knowledge Machine and Agent Orchestrator Seed Roadmap](archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) is a predecessor
+artifact retained for provenance, not a live sibling Plan.
+
+## Orientation — orchestrating agents as a decision-making problem
 
 > **Status:** orientation / brainstorm, **unreviewed**, local (no push).
 > `Claim ≤ proof`: every statement holds only as far as the linked artifact supports it. Read
 > "is a category" / "reduces noise" as *a claim we hope to show*, not as a result. **Nothing in
 > *this* repo is typed in Lean**; the anchors point to theorems in the sibling repo
-> `domainspec-lean-formalization`, indexed in [`lean-formalization/`](lean-formalization/README.md) —
+> `domainspec-lean-formalization`, indexed in [`lean-formalization/`](../../lean-formalization/README.md) —
 > formalized and sorry-free per source, though we have not re-run their build gate, and a
 > formalized Lean object is not evidence that any orchestrator obeys it.
 >
 > This is a high-level orientation — business → hypothesis → the three fronts → what runs vs.
 > what is still thesis → what we are still gathering. It replaces the old dense root `PLAN.md`
-> (retired to [`docs/archive/`](archive/), which keeps the detailed roadmap and its codes:
+> (retired to this Plan's [`archive/`](archive/), which keeps the detailed roadmap and its codes:
 > OBL-E3, BL-3, EG-1, the FT/B/D phases). The codes live there; the shape lives here.
 
 ---
@@ -56,7 +92,7 @@ Three parts — and the first is the **frame** the other two run inside, not a t
   the whole: a claim can also be discharged by proof (a Lean anchor), by grounded use (a definition),
   or by an owner's gate (a decision). This is the **T0 root** — fixed *as the frame of the
   enterprise*, the one thing not itself under test, so that a collapse-test can *mean* something
-  ([`vault/axioms/axioms.md`](../vault/axioms/axioms.md), AX-2, with AX-4 *independent check* and
+  ([`vault/axioms/axioms.md`](../../vault/axioms/axioms.md), AX-2, with AX-4 *independent check* and
   AX-5 *fallibilism* as the other two method invariants). It is not aspirational: the discipline
   already runs (every construct below carries a collapse-test; every belief carries `veracity` held
   apart from `conviction`). What is **not** built is the *automated* form of this loop — see the coda.
@@ -84,14 +120,14 @@ paired with a collapse-test), not the machine.
    Nothing is typed in Lean *in this repo*. The constructs it leans on (probe→Yoneda,
    residue→`FunctorialResidueStructure`, zig-zag→comma-connected) are formalized — and sorry-free
    per source — in the sibling repo `domainspec-lean-formalization`; the pointers are indexed in
-   [`lean-formalization/`](../lean-formalization/README.md). Two limits stay honest: we have not
+   [`lean-formalization/`](../../lean-formalization/README.md). Two limits stay honest: we have not
    re-run the sibling's full build gate, and a formalized Lean object is not evidence that any
    orchestrator obeys it. In particular, the synthesis-residue instance closest to our OBL-E3
    reaches only a "separation bar" already owned there — not the count-beating prize.
 2. The bias/noise split is **conditional, not free**. It separates cleanly only under a particular
    loss geometry (a Legendre potential `F`); without that assumption the honest form keeps a cross
    term (`bias + noise + interaction`). See
-   [`anti-noise-orchestration`](../vault/hypothesis/anti-noise-orchestration.md).
+   [`anti-noise-orchestration`](../../vault/hypothesis/anti-noise-orchestration.md).
 
 ---
 
@@ -158,7 +194,7 @@ probes) where it can be engineered, zero error-correlation (independent, blind s
 cannot — applied where each is cheaper (tension at the *generate* stage, independence at the
 *judge* stage). We have not demonstrated this on data.
 
-*Home:* [`vault/hypothesis/anti-noise-orchestration.md`](../vault/hypothesis/anti-noise-orchestration.md)
+*Home:* [`vault/hypothesis/anti-noise-orchestration.md`](../../vault/hypothesis/anti-noise-orchestration.md)
 (HYP-ORCH-NOISE) — a red-teamed thesis with registered bets and collapse-tests. **Standing:**
 candidate, low veracity; the anti-bias half runs, the anti-noise half is mostly PENDING.
 
@@ -184,9 +220,9 @@ enriching the codomain `C` toward a (likely unreachable) Yoneda point, driven by
 signal: an anomaly is a separator the current lens cannot see; find it, probe it, enrich `C`,
 shrink the residue.
 
-*Home:* [`FRAMINGS.md`](../FRAMINGS.md) (the merged CT ledger — F1–F7 anatomy + construct ⟷ CT type + join; single source) + `OBL-E3` in
-[`OBLIGATIONS.md`](../OBLIGATIONS.md) — the open obligation: *is the orchestration language
-actually a category?* + [`lean-formalization/`](../lean-formalization/README.md) — the index of
+*Home:* [`FRAMINGS.md`](../../FRAMINGS.md) (the merged CT ledger — F1–F7 anatomy + construct ⟷ CT type + join; single source) + `OBL-E3` in
+[`OBLIGATIONS.md`](../../OBLIGATIONS.md) — the open obligation: *is the orchestration language
+actually a category?* + [`lean-formalization/`](../../lean-formalization/README.md) — the index of
 where each construct is formalized in the sibling repo. **Standing:** OPEN *for the orchestration
 claim*. The underlying CT constructs are formalized and sorry-free per source in the sibling repo
 (not here, and not re-built by us); what is unproven is that the *orchestration language* is one of
@@ -231,12 +267,12 @@ artifact, never re-validated). EG-1 is the binding constraint today — it stand
 `veracity: medium`, blocked by the enum-drift (§4), so the write path is disabled until that is
 traced. The bus-as-projection claim leans on EG-1 and inherits the same unresolved hole.
 
-*Home:* [`docs/features/agents-communication-infra/README.md`](features/agents-communication-infra/README.md)
+*Home:* [`docs/features/agents-communication-infra/README.md`](../../docs/features/agents-communication-infra/README.md)
 (the full proposal: responsibilities, invariants, MVP, open decisions) +
-[`vault/hypothesis/orchestration-infra.md`](../vault/hypothesis/orchestration-infra.md)
+[`vault/hypothesis/orchestration-infra.md`](../../vault/hypothesis/orchestration-infra.md)
 (HYP-ORCH-INFRA: bus-as-projection, id scheme, retention tiers, freeze-witness) +
-[`vault/constitution/engine-constitution.md`](../vault/constitution/engine-constitution.md)
-(CONST-ENG: EG-1…EG-8) + [`research/agent-events-infra-hypothesis/`](../research/agent-events-infra-hypothesis/).
+[`vault/constitution/engine-constitution.md`](../../vault/constitution/engine-constitution.md)
+(CONST-ENG: EG-1…EG-8) + [`research/agent-events-infra-hypothesis/`](../../research/agent-events-infra-hypothesis/).
 **Standing:** proposal. What exists is a starting point — the scheduling edges, a read-only control
 plane, SSE. The kernel, adapters, reveal barrier, durable journal, and store are not built.
 
@@ -264,7 +300,7 @@ out-of-enum `exit_reason: "success"` that could only have bypassed the validated
 the engine constitution's single-writer rule (EG-1) at `veracity: medium`, blocks its promotion,
 and blocks the write path (the UI Dispatch button that writes is present but disabled by contract).
 Front 3's "bus is a projection" claim leans on EG-1 and inherits the hole. See
-[`vault/audit/ledger-enum-drift-finding.md`](../vault/audit/ledger-enum-drift-finding.md).
+[`vault/audit/ledger-enum-drift-finding.md`](../../vault/audit/ledger-enum-drift-finding.md).
 
 **Portability caveat.** "Droppable into any repo" holds for the *architecture*, but the substrate
 today is hardwired to one Windows operator. Asserted and partly engineered — not demonstrated on a
@@ -337,12 +373,21 @@ other things appear to wait on — a suspicion, to be confirmed as we design it.
 
 | For… | Read |
 |---|---|
-| this orientation | `docs/PLAN.md` |
-| the detailed roadmap + codes (OBL/BL/FT/EG, phases) | [`docs/archive/`](archive/) (retired root PLAN) |
-| decision-making thesis | [`vault/hypothesis/anti-noise-orchestration.md`](../vault/hypothesis/anti-noise-orchestration.md) |
-| category-theory mapping | [`FRAMINGS.md`](../FRAMINGS.md) · [`OBLIGATIONS.md`](../OBLIGATIONS.md) |
-| where the CT is actually formalized (sibling repo) | [`lean-formalization/`](../lean-formalization/README.md) |
-| system architecture | [`docs/features/agents-communication-infra/README.md`](features/agents-communication-infra/README.md) · [`vault/hypothesis/orchestration-infra.md`](../vault/hypothesis/orchestration-infra.md) · [`vault/constitution/engine-constitution.md`](../vault/constitution/engine-constitution.md) |
-| what runs today (substrate, control plane) | [`README.md`](../README.md) |
-| the blocking defect | [`vault/audit/ledger-enum-drift-finding.md`](../vault/audit/ledger-enum-drift-finding.md) |
+| this root Plan and orientation | `plans/governed-agent-work-infrastructure/PLAN.md` |
+| the detailed roadmap + codes (OBL/BL/FT/EG, phases) | [`archive/`](archive/) (retired root PLAN) |
+| decision-making thesis | [`vault/hypothesis/anti-noise-orchestration.md`](../../vault/hypothesis/anti-noise-orchestration.md) |
+| category-theory mapping | [`FRAMINGS.md`](../../FRAMINGS.md) · [`OBLIGATIONS.md`](../../OBLIGATIONS.md) |
+| where the CT is actually formalized (sibling repo) | [`lean-formalization/`](../../lean-formalization/README.md) |
+| system architecture | [`docs/features/agents-communication-infra/README.md`](../../docs/features/agents-communication-infra/README.md) · [`vault/hypothesis/orchestration-infra.md`](../../vault/hypothesis/orchestration-infra.md) · [`vault/constitution/engine-constitution.md`](../../vault/constitution/engine-constitution.md) |
+| what runs today (substrate, control plane) | [`README.md`](../../README.md) |
+| the blocking defect | [`vault/audit/ledger-enum-drift-finding.md`](../../vault/audit/ledger-enum-drift-finding.md) |
+
+## Open Questions
+
+- **Resolved:** the repository owner is the governing authority for this root Plan. The Plan remains
+  proposal-only and supplies no execution authority.
+- Which claims in the three fronts remain part of this Plan after the agent-language research
+  program is reconciled with it?
+- Should this orientation be revised, split, or superseded by Plans with separately resolved
+  authorities for decision hygiene, mathematical formalization, and system architecture?
 </content>

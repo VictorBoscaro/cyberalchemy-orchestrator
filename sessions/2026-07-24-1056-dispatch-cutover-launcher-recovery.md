@@ -12,7 +12,7 @@ contradictions_found: false
 specs_updated:
   - docs/features/agents-communication-infra/discovery/dispatch-audit-ledger-cutover-contract.md
   - docs/features/agent-provenance-telemetry/integration/stage-c/operator-recovery-runbook.md
-  - docs/features/agent-provenance-telemetry/integration/stage-d/PLAN.md
+  - plans/governed-agent-work-infrastructure/workstreams/brokered-agent-launcher-capability-bootstrap.md (relocated from feature-local storage)
 promoted_candidates: []
 ---
 
@@ -62,7 +62,7 @@ production cutover remain blocked. No subagent or root action appended to
 - `docs/features/agents-communication-infra/discovery/dispatch-audit-ledger-cutover-contract.md`
 - `docs/features/agent-provenance-telemetry/integration/stage-c/operator-recovery-runbook.md`
 - `docs/features/agent-provenance-telemetry/integration/stage-d/SWU-ACI-APT-LCB-001.json`
-- `docs/features/agent-provenance-telemetry/integration/stage-d/PLAN.md`
+- `plans/governed-agent-work-infrastructure/workstreams/brokered-agent-launcher-capability-bootstrap.md` (relocated from feature-local storage)
 - `docs/features/agent-provenance-telemetry/integration/stage-d/ACCEPTANCE-MATRIX.md`
 - `implementations/server/runtime/operator_recovery.py`
 - `implementations/tests/runtime/test_operator_recovery.py`

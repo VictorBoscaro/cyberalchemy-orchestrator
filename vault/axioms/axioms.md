@@ -161,7 +161,8 @@ the **mechanism half of AX-4** under test.
 
 ### AX-3 — Framework as its own instance
 
-**A design decision, not a method invariant.** Already named in [`PLAN.md §1`](../../PLAN.md) (A6):
+**A design decision, not a method invariant.** Already named in the
+[`archived roadmap §1`](../../plans/governed-agent-work-infrastructure/archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) (A6):
 the work of building this repo is recorded in the same ledger it operates. You could drop
 self-recording and still have an honest method — so this is §3, a *choice* that gives the repo its
 character, not part of the floor. What AX-3 fixes is only the **stance/decision** to self-record. Its
@@ -187,7 +188,9 @@ survive as **collapse conditions, not assumptions**:
 > **Reconciliation in progress (2026-07-21).** [`README.md`](../../README.md) now states the split
 > explicitly — the **value** (debiasing is worth building around) as a commitment, and
 > **agent-transfer + efficacy** as the falsifiable part — matching this axiom's partition; the same
-> split is drawn as the method-vs-content distinction in [`docs/PLAN.md`](../../docs/PLAN.md) §2. The
+> split is drawn as the method-vs-content distinction in
+> [`plans/governed-agent-work-infrastructure/PLAN.md`](../../plans/governed-agent-work-infrastructure/PLAN.md)
+> §2. The
 > distinction is now named on both sides; what remains is the promotion decision itself — neither
 > presupposed as the side that yields — before either moves up a level.
 
@@ -196,7 +199,7 @@ survive as **collapse conditions, not assumptions**:
 | Document | Type | Description |
 |----------|------|-------------|
 | [[anti-noise-orchestration]] | `grounds` | AX-1 hands it the "best way" optimization; the AX-4 *mechanism* (efficacy of independent checking on shared-base-model agents) is the open thesis here. |
-| [`PLAN.md`](../../PLAN.md) | `derives-from` | §1 already names A6; AX-3 records the *stance* in the axiom layer (§3). |
+| [`Knowledge Machine and Agent Orchestrator Seed Roadmap`](../../plans/governed-agent-work-infrastructure/archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) | `derives-from` | §1 already names A6; AX-3 records the *stance* in the axiom layer (§3). |
 | [[claim-graph]] | `grounds` | AX-2 (the method root) is what the claim-graph mechanizes: veracity propagation + `contradicts` as the enrichment engine. |
 | [[framework-self-similarity]] | `grounds` | AX-3's stance grounds it; the reflexive self-similarity claim was demoted here (`HYP-ORCH-FRACTAL`), which `depends-on` P-FACES-INSTANCE. |
 | [[axiom-layer-redteam]] | `derives-from` | The three-kinds partition, AX-2's type-appropriate-warrant fix, and AX-4/AX-5 come from its reconciled landing. |

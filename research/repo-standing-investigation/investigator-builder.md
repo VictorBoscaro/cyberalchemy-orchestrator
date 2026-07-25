@@ -21,7 +21,7 @@ The end-to-end orchestration loop **already executes today**, in-session:
 propose → `check-tension` (anti-bias gate) → human confirm → `register-dispatch`
 appender writes the ledger row → Claude spawns `Agent` subagents → close row →
 SSE pushes it to the 10 UIs. This very investigation is an instance of it.
-Evidence: `README.md` "what runs today", `docs/PLAN.md §4`,
+Evidence: `README.md` "what runs today", `plans/governed-agent-work-infrastructure/PLAN.md §4`,
 `.claude/skills/register-dispatch/append-dispatch.cjs` (~26 KB, validated, wrote
 this repo's ~30 dispatches), the ~49-row live ledger.
 
@@ -93,9 +93,8 @@ closing the loop the substrate already runs by hand. Ship that before any Front-
 | Document | Type | Description |
 |---|---|---|
 | `README.md` | `grounds` | "What runs today" — the in-session dispatch loop this finding says is one verb short of the plane. |
-| `docs/PLAN.md` | `grounds` | §4 runs-vs-thesis; this doc argues the §3.3 rebuild is deferrable behind a Phase-2 slice. |
+| `plans/governed-agent-work-infrastructure/PLAN.md` | `grounds` | §4 runs-vs-thesis; this doc argues the §3.3 rebuild is deferrable behind a Phase-2 slice. |
 | `implementations/server/main.py` | `contextualizes` | The GET-only reader whose missing `POST /api/confirm` is build step #1. |
 | `.claude/skills/register-dispatch/SKILL.md` | `grounds` | The validated appender that already writes the ledger — the loop's working write step. |
 | `vault/audit/ledger-enum-drift-finding.md` | `contradicts` | This doc argues its "keystone before Phase 2" framing is mis-scoped: it blocks EG-1 promotion, not the appender's operation. |
 | `docs/features/agents-communication-infra/README.md` | `contradicts` | The full Front-3 target spec; this doc argues it is deferrable, not the next step. |
-
