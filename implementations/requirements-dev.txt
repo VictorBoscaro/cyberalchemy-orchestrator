@@ -1,0 +1,5 @@
+# Test-only extras. The server itself needs nothing here — install requirements.txt
+# for that. tests/test_ui.py drives the ten UI variants through Playwright, which
+# also needs its browser binary: `playwright install chromium`.
+-r requirements.txt
+playwright==1.61.0

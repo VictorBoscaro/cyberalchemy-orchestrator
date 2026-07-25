@@ -37,20 +37,32 @@ python -m server.runtime show-orchestration-log --dispatch-id ID --database DB -
 ## Run
 
 ```sh
-pip install -r requirements.txt
 cd implementations
+pip install -r requirements.txt
 python -m server.main
 # http://127.0.0.1:8765
 ```
 
-The root serves the selection hub for the ten variants.
+`cd` first: `requirements.txt` lives in `implementations/`, not at the repo root.
+On startup the server prints `observing N repos:` — that line is how you know it
+worked. The root URL serves the selection hub for the ten variants.
+
+For the Playwright suite (`tests/test_ui.py`), also install the dev extras:
+
+```sh
+pip install -r requirements-dev.txt
+playwright install chromium
+```
 
 ## Why it exists
 
-The ledger is only written **after** the human confirm (the `register-dispatch`
-skill is explicit: *"Only after the human's explicit confirm of the sheet"*). So a
-UI that only reads the ledger **always arrives late** — it shows what has
-already been dispatched and can never *be* the gate.
+On the confirm-gated path the ledger is written **after** the human confirm (the
+`register-dispatch` skill is explicit: *"Only after the human's explicit confirm of
+the sheet"*). Either way the row lands at or after dispatch, never before it — the
+mandatory `PreToolUse(Agent)` hook in `.claude/settings.json` also appends openings
+automatically, with no confirm step at all. So a UI that only reads the ledger
+**always arrives late**: it shows what has already been dispatched and can never
+*be* the gate.
 
 The missing piece is a **pre-confirm** artifact. Hence
 `telemetry/agents/pending/<dispatch_id>.json`: the sheet the human reviews
@@ -72,9 +84,17 @@ append-only and untouched.
 
 ## Configuration
 
-Without `config.json`, the server **auto-discovers**: it scans the repo's
-parent directory for any folder with `telemetry/agents/`. To pin the list,
-copy `config.example.json` to `config.json`.
+Without `config.json`, the server **auto-discovers**: it scans the repo's parent
+directory for any sibling folder that holds **either** a
+`telemetry/agents/subagents-dispatch.yaml` file **or** a `telemetry/agents/pending/`
+directory (`server/config.py`, `_scan_repos`). A folder with an empty
+`telemetry/agents/` does not qualify.
+
+To override, copy `config.example.json` to `config.json`. Copied as-is it keeps
+auto-discovery and only overrides the tuning knobs; the `scan_roots` and `repos`
+examples are inert (`_example_` prefixed) precisely because absolute paths from
+another machine would resolve to **zero** repos with no error. Uncomment them by
+renaming to `scan_roots` / `repos` and put in paths that exist on this machine.
 
 ## Two decisions the real data forced
 

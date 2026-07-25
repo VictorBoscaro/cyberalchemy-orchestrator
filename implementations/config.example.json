@@ -1,13 +1,15 @@
 {
-  "_comment": "Copy to config.json to override auto-discovery. Without this file, the server scans the repo's parent directory for folders containing telemetry/agents/.",
+  "_comment": "Copy to config.json. Every key is optional and the server has a working default for each, so copying this file AS-IS is safe and changes nothing.",
 
-  "scan_roots": ["C:/Users/victo"],
+  "_comment_discovery": "Without scan_roots and without repos, the server auto-discovers: it scans the parent directory of this repo for sibling folders holding EITHER a telemetry/agents/subagents-dispatch.yaml file OR a telemetry/agents/pending/ directory. A folder with an empty telemetry/agents/ does not qualify.",
 
-  "repos": [
-    "C:/Users/victo/Arcanum",
-    "C:/Users/victo/domainspec-lean-formalization",
-    "C:/Users/victo/business-philosopher",
-    "C:/Users/victo/cyberalchemy-orchestrator"
+  "_comment_paths": "scan_roots and repos are used as given, so they must be ABSOLUTE paths that exist on THIS machine. The two keys below are deliberately inert (_example_ prefix) because absolute paths from someone else's machine resolve to ZERO repos silently, with no error and no log line. To use them, rename to scan_roots / repos and put in real paths.",
+
+  "_example_scan_roots": ["/absolute/path/to/the/folder/holding/your/repos"],
+
+  "_example_repos": [
+    "/absolute/path/to/one/repo",
+    "/absolute/path/to/another/repo"
   ],
 
   "host": "127.0.0.1",
@@ -15,6 +17,9 @@
   "poll_seconds": 1.0,
   "limit": 40,
   "prompt_limit": 280,
+
+  "_comment_runtime": "runtime_database and runtime_ledger accept relative paths, resolved against the repo root, so these three are already portable.",
+
   "runtime_database": "telemetry/runtime/aci-slice0.sqlite3",
   "runtime_ledger": "telemetry/agents/subagents-dispatch.yaml",
   "runtime_repo_id": "cyberalchemy-orchestrator"

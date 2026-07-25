@@ -5,40 +5,38 @@ is_session: false
 layer: application, architecture, ontology
 nature: reference
 status: draft
-version: 0.3.0
-last_updated: 2026-07-23
+version: 0.4.0
+last_updated: 2026-07-25
 ---
 
 # cyberalchemy-orchestrator *(provisional name)*
 
-> **Local, unreviewed, no remote.** Created 2026-07-18; first working session 2026-07-20.
-> The read side runs and is tested; the write side is built but **disabled by design**
-> (a known ledger defect gates it). `Claim ≤ proof`: any claim here holds only as far as the
-> file it links proves it — read every strong claim as *candidate*, not result.
+> **Private remote, unreviewed.** Created 2026-07-18; first working session 2026-07-20. No `LICENSE`
+> and no `CONTRIBUTING` — treat it as one person's working repo, not a project accepting patches.
+> The read side runs and is tested; the confirm-gated write path is built but **not cut over**.
+> `Claim ≤ proof`: any claim here holds only as far as the file it links proves it — read every
+> strong claim as *candidate*, not result.
 
-This README is a map, not a manifesto. It tells a first-time reader **what this repo is, what
-actually runs today, how to bring it up, and where to go next** — and routes into the deeper
-material without pulling it up front.
+This README is a map, not a manifesto. It tells a first-time reader **what this repo is, why it
+exists, what actually runs today, how to bring it up, and where to go next**.
 
 ## What is this?
 
 **cyberalchemy-orchestrator** is a substrate for **organizing, dispatching, and observing fleets of
 LLM subagents**. In practice: you have Claude Code split a job across several AI agents, every
 hand-off is logged to an append-only ledger, and a small local dashboard lets you watch it live.
-Concretely, three things run today:
 
-1. A **dispatch discipline** — a schema and an append-only **ledger** that records every fan-out of
-   work to agents (who was dispatched, on what angle, how they connect, how it closed), plus a gate
-   that pairs agents on deliberately opposed angles before they run.
-2. A **control plane** — a read-only FastAPI + SSE server with ten UI variants that shows, live,
-   what is pending human confirmation and what has already been dispatched, **across every sibling
-   repo it auto-discovers**.
-3. An **agent pool** — a canonical roster of 414 named personas, served over an MCP server, so
-   `agent_name` is resolved from one shared vocabulary instead of per-repo copies that drift.
+**Why it exists.** Agents on one base model may agree too readily and share blind spots, so N of
+them "could be closer to one look repeated than to N independent looks" — one of three hypothesized
+failure modes (correlated bias, noise, framing) in
+[`PLAN.md`](plans/governed-agent-work-infrastructure/PLAN.md#1-the-business-problem). That is why
+agents are paired on deliberately opposed angles and why the pairing is gated before they run: the
+opposition is the point, not decoration. The repo is trying to *test* that hypothesis, not assuming
+it.
 
-The orchestration itself happens **inside a Claude Code session** through skills — there is no
-standalone daemon. The loop is: propose a dispatch → pass the anti-bias gate → human confirms →
-append the opening row → agents run → append the close row.
+The orchestration happens **inside a Claude Code session** through skills — there is no daemon you
+run to orchestrate. The substrate is also meant to drop into any repo with near-zero integration:
+the control plane observes read-only off the filesystem, with no instrumentation on the target.
 
 *(There is a research thesis underneath — that good orchestration is a decision-hygiene problem with
 category-theoretic types. That is deliberately **not** the entry point; see
@@ -46,40 +44,42 @@ category-theoretic types. That is deliberately **not** the entry point; see
 
 ## What runs today vs. what is still thesis
 
-Worth being honest about the line.
-
 **Runs today — code, with tests, you can run it now:**
 
 - The **control plane** (Phase 1, the reader): FastAPI + SSE in [`implementations/`](implementations/),
   ten UI variants over one API contract, with parser/endpoint/Playwright tests
-  ([`implementations/tests/`](implementations/tests/)).
+  ([`implementations/tests/`](implementations/tests/)). One endpoint is *not* read-only:
+  `POST /api/confirm` ships and writes a `.confirmed` marker into a discovered repo's
+  `telemetry/agents/pending/` directory. It never writes the ledger.
 - The **ledger**: [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml)
-  — append-only, holding this repo's own dispatches (including the ones that built the control plane),
-  with the `register-dispatch` appender as its only sanctioned write path (a known bypass is the
-  gating defect noted below).
+  — append-only, holding this repo's own dispatches (including the ones that built the control
+  plane), with the `register-dispatch` appender as its only sanctioned write path.
 - The **agent-pool MCP**: [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/) — selects `agent_name`
   from [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml) (414 tagged entries);
   `npm run smoke` needs no API key.
 - The **operational skills** in [`.claude/skills/`](.claude/skills/) — `register-dispatch`,
   `check-tension`, `robot-talks`, `domainspec-subagents-strategy` — invokable in Claude Code today.
-- The **ACI/APT local pilot** — a dedicated SQLite journal with Session→Dispatch links, structured
-  Research records, replayable projections, scoped capabilities and a fail-closed
-  `127.0.0.1:8766` composition. The bridge requires a validated YAML opening plus ACI opening
-  receipt before launch. Stage F wires that gate into trusted project-local Claude and Codex
-  Agent-tool hooks. Stage G adds the authoritative small Reference Scout bus lifecycle and
-  Dispatch input-ingestion lineage; see
-  [`Stage E`](docs/features/agent-provenance-telemetry/integration/stage-e/local-orchestration-logging-bridge.md)
-  [`Stage F`](docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md),
-  and
-  [`Stage G`](docs/features/agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md).
+- The **mandatory Agent hooks**: [`.claude/settings.json`](.claude/settings.json) wraps every
+  `Agent` tool call, opening a dispatch through the validated appender and **denying launch** if the
+  YAML or ACI opening receipt fails. See [How a dispatch flows](#how-a-dispatch-flows) — this is a
+  second write path, and it does not pass the confirm gate.
+- The **ACI/APT local pilot** — a SQLite journal with Session→Dispatch links, structured Research
+  records, replayable projections, scoped capabilities and a fail-closed `127.0.0.1:8766`
+  composition. **Opt-in and off by default** (`ACI_LOCAL_PILOT_ENABLED=1`). Stages
+  [E](docs/features/agent-provenance-telemetry/integration/stage-e/local-orchestration-logging-bridge.md),
+  [F](docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md), and
+  [G](docs/features/agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md).
 
 **Still thesis / candidate — not proof:**
 
-- The **runtime-managed materializer and UI cutover**: supported local Claude/Codex hosts load the
-  project wrapper automatically, but administrator-enforced hook loading, the UI button, TASK-020
-  materializer, sole-writer deployment proof, generic provider launch, and production cutover
-  remain disabled. YAML is still the compatibility audit ledger and only the validated appender
-  may write it.
+- The **write-side cutover**: the UI confirm button, the TASK-020 materializer, sole-writer
+  deployment proof, generic provider launch, and production cutover remain disabled. YAML is still
+  the compatibility audit ledger and only the validated appender may write it. What exactly gates
+  the cutover is itself contested — see [Open questions](#open-questions).
+- The **agent-work language**: a proposed language for governed agent work, with a mathematical
+  formalization appendix — [`docs/architecture/agent-language-system-view.md`](docs/architecture/agent-language-system-view.md)
+  (`authority: proposal-only`), its [research subplan](plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md),
+  and [`research/agent-language-mathematical-formalization/`](research/agent-language-mathematical-formalization/).
 - The **decision-science loop** (anti-bias runs; anti-noise mostly on paper) —
   [`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md).
 - The **category-theory typing** of the orchestration language — one open obligation decides it:
@@ -88,23 +88,30 @@ Worth being honest about the line.
 
 ## Quick start
 
-**1 — Control plane (the reader).** Read-only; nothing here writes the ledger.
+Verified on Python 3.12 and Node 22. Steps 2 and 3 assume you ran step 1 first.
+
+**1 — Control plane (the reader).**
 
 ```sh
 cd implementations
-pip install -r requirements.txt
+pip install -r requirements.txt      # there is no requirements.txt at the repo root
 python -m server.main
 # http://127.0.0.1:8765 — the root serves the hub over ten UI variants
 ```
 
-Without a `config.json` it **auto-discovers**: it scans the parent directory for any sibling folder
-that has a `telemetry/agents/subagents-dispatch.yaml` ledger or a `telemetry/agents/pending/` folder.
-To pin the list, copy `implementations/config.example.json` to
-`implementations/config.json`.
+On startup it prints `observing N repos:` — that line is how you know it worked. Without a
+`config.json` it **auto-discovers**, scanning the *parent* directory for any sibling folder holding
+either a `telemetry/agents/subagents-dispatch.yaml` file or a `telemetry/agents/pending/` directory.
+Know that blast radius before you run it.
 
-**2 — Tests.**
+To override the discovered list, copy `implementations/config.example.json` to `config.json`. Copied
+as-is it keeps auto-discovery; its `scan_roots`/`repos` examples are deliberately inert, because
+absolute paths from another machine resolve to **zero** repos silently.
+
+**2 — Tests.** `test_ui.py` drives the variants through Playwright, which is a test-only extra:
 
 ```sh
+pip install -r implementations/requirements-dev.txt && playwright install chromium
 python implementations/tests/test_ledger.py       # parser + smoke over the real ledgers
 python implementations/tests/test_ui.py           # Playwright across the ten variants
 ```
@@ -117,15 +124,20 @@ npm install
 npm run smoke     # deterministic, no API key
 ```
 
-To register cross-repo, add it to `~/.claude.json` (or a repo's `.mcp.json`) — see
-[`tools/agent-pool-mcp/README.md`](tools/agent-pool-mcp/README.md). Without `ANTHROPIC_API_KEY`,
-recommendation degrades to the deterministic pre-filter; search and vocab checks never need a key.
+To register cross-repo, see [`tools/agent-pool-mcp/README.md`](tools/agent-pool-mcp/README.md).
+Without `ANTHROPIC_API_KEY`, recommendation degrades to the deterministic pre-filter; search and
+vocab checks never need a key.
 
 ## How a dispatch flows
 
-The path that runs today. The opening row is appended **after** the human confirms and **before**
-any agent starts; if that append fails, nothing runs. Closing appends a second row — the opening is
-never mutated.
+**Two paths write the ledger.** The confirm-gated path below is the designed one. The mandatory
+`PreToolUse(Agent)` hook is the other: it opens a dispatch automatically on *every* `Agent` tool
+call, through the same validated appender and the same ledger file, with **no separate human confirm
+and no anti-bias gate** — it either authorizes the launch or denies it. Any row you see may have
+come from either path.
+
+In both paths the opening row is appended **before** any agent starts; if the append fails, nothing
+runs. Closing appends a second row — the opening is never mutated.
 
 ```mermaid
 flowchart TD
@@ -134,6 +146,7 @@ flowchart TD
     B -- "both PASS" --> P["Pending sheet<br/>telemetry/agents/pending/&lt;id&gt;.json<br/>(the only editable surface, pre-confirm)"]
     P --> C["3. Human confirm — explicit; silence doesn't count"]
     C --> W["4. Validated appender writes the opening row"]
+    H["Agent tool call<br/>(mandatory hook — no confirm, no gate)"] --> W
     W -- "append fails" --> X["Stop — no agent starts"]
     W -- "append succeeds" --> E["Agents dispatched by dependency,<br/>parallel within each group"]
     E --> F["5. Close — validated appender writes the close row"]
@@ -141,95 +154,77 @@ flowchart TD
     F --> L
     L -. "read live (read-only)" .-> UI["Control plane — FastAPI + SSE"]
     P -. "read live" .-> UI
-    UI -. "Phase 2 button (disabled today)" .-> C
 ```
 
-The two sides have opposite postures by design: the **appender is strict** (refuses any row outside
-schema `v0.6.1`, or any structurally corrupt ledger), while the control plane's **reader is lenient**
-(it still shows old prettified rows the appender would now reject). A hook blocks reading the ledger
-via direct Bash; structured reads go through `server/ledger.py`. Full field-by-field anatomy of a row
-lives in the [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md) skill; the API contract
-lives in [`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md).
+The appender is strict (it refuses any row outside schema `v0.6.1`) while the control plane's reader
+is lenient (it still shows older rows the appender would now reject). A hook blocks reading the
+ledger via direct Bash; structured reads go through `server/ledger.py`. Field-by-field anatomy of a
+row lives in [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md); the API contract in
+[`implementations/UI-CONTRACT.md`](implementations/UI-CONTRACT.md).
 
-## Why it matters
-
-- **Auditable by construction.** Every dispatch leaves an append-only, schema-validated trace — you
-  can reconstruct what ran, on what framing, and how it ended. The repo even builds itself through
-  its own ledger ("framework as its own instance").
-- **Generic by design.** The substrate (schema, skills, ledger, control plane, agent pool) is meant
-  to drop into any repo with near-zero integration — the control plane observes read-only, no
-  instrumentation on the target, just the filesystem. What's portable vs. what's particular to this
-  repo, and the falsifiable hypotheses behind that goal, are tracked in [`BACKLOG.md`](BACKLOG.md).
-- **Honest about its own limits.** A strict `claim ≤ proof` discipline keeps runnable fact and
-  research thesis visibly apart, so nobody mistakes a candidate for a result.
-
-## 📁 Navigation
+## Navigation
 
 **Orientation & method**
 
 | Path | What |
 |---|---|
-| [`docs/PLAN.md`](docs/PLAN.md) | The master orientation: business problem → hypothesis → three fronts → what runs vs. thesis. Start here for the "why." |
-| [`FRAMINGS.md`](FRAMINGS.md) | The category-theory ledger (F1–F7 framings + construct⟷CT-type mapping + open items). |
+| [`plans/governed-agent-work-infrastructure/PLAN.md`](plans/governed-agent-work-infrastructure/PLAN.md) | The root infrastructure Plan: business problem → hypothesis → research and implementation children. Start here for the "why." |
 | [`OBLIGATIONS.md`](OBLIGATIONS.md) | The single falsifiable target, OBL-E3 — does the orchestration language form a category? |
-| [`BACKLOG.md`](BACKLOG.md) | Parking lot of named-but-unplanned candidates and the portability hypotheses. |
-| [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Normative vocabulary (residue, separation, shadow, probe, verb) — single source per term. |
-| [`lean-formalization/`](lean-formalization/README.md) | Index mapping this repo's constructs to theorems in the sibling Lean repo (no Lean here). |
+| [`FRAMINGS.md`](FRAMINGS.md) | The category-theory ledger (F1–F7 framings + construct⟷CT-type mapping). |
+| [`BACKLOG.md`](BACKLOG.md) | Named-but-unplanned candidates and the portability hypotheses. |
+| [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Normative vocabulary — five terms: `residue`, `separation`, `shadow`, `probe`, `verb`. |
 
 **What runs**
 
 | Path | What |
 |---|---|
-| [`implementations/`](implementations/) | The runnable control plane (Phase 1). See its [README](implementations/README.md) and [`UI-CONTRACT.md`](implementations/UI-CONTRACT.md). |
-| [`implementations/static/ui/`](implementations/static/ui/) | The ten UI variants served by the control plane (aurora, blueprint, brutalist, cyberpunk, grimoire, linear, mission-control, radar, swiss, terminal). |
+| [`implementations/`](implementations/) | The runnable control plane (Phase 1), its ten UI variants, and [`UI-CONTRACT.md`](implementations/UI-CONTRACT.md). |
 | [`tools/agent-pool-mcp/`](tools/agent-pool-mcp/) | Cross-repo MCP that selects `agent_name` from the canonical pool. |
-| [`telemetry/agents/subagents-dispatch.yaml`](telemetry/agents/subagents-dispatch.yaml) | THE ledger — append-only; never edited in place, only via `register-dispatch`. |
-| [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml) | The 414-entry canonical pool of `agent_name` personas, with tags and `role_fit`. |
-| [`telemetry/agents/pending/`](telemetry/agents/pending/) | Pre-confirm sheets — the only editable surface before the ledger. |
-| [`.claude/skills/`](.claude/skills/) | ~70 skills invokable in Claude Code — `register-dispatch`, `check-tension`, `robot-talks`, and more. |
+| [`telemetry/agents/`](telemetry/agents/) | THE ledger (append-only, via `register-dispatch` only), the 414-entry agent pool, and `pending/` — the only editable surface pre-confirm. |
+| [`.claude/`](.claude/skills/) | 67 skills invokable in Claude Code, plus the mandatory Agent hooks in `settings.json`. |
 
 **Knowledge & investigations**
 
 | Path | What |
 |---|---|
-| [`vault/`](vault/) | The governed knowledge store — see below. |
-| [`vault/axioms/axioms.md`](vault/axioms/axioms.md) | The assumed axioms (AX-1..5), incl. the T0 method root and "framework as its own instance." |
-| [`vault/constitution/`](vault/constitution/) | Candidate constitutions — [`engine-constitution.md`](vault/constitution/engine-constitution.md) (EG-1..8) and [`frontend-constitution.md`](vault/constitution/frontend-constitution.md); unreviewed, not ratified. |
-| [`vault/hypothesis/`](vault/hypothesis/) | Exploratory hypotheses (anti-noise, infra, claim-graph, self-similarity) — not yet promoted. |
-| [`vault/audit/`](vault/audit/) | Ledger audits — [`ledger-enum-drift-finding.md`](vault/audit/ledger-enum-drift-finding.md) is the live defect that gates the write path. |
-| [`research/`](research/) | Investigations (never auto-promoted): agent-name-selection-arch, agent-events-infra-hypothesis, meta-ontology, permguard-kernel, document-merge-debate, and more. |
-| [`docs/`](docs/) | Feature specs, essays, discovery, signals, and [`docs/archive/`](docs/archive/) (the retired detailed roadmap with the OBL/BL/EG codes). |
-| [`internal-tools/`](internal-tools/) | Auxiliary experiments — the [UI-experimentation](internal-tools/ui-experimentation/) source and a document-information-estimator. |
-| [`tools/`](tools/) | Engineering tooling beyond the MCP: validators, spec constitution, a test-derivation engine, and validation fixtures. |
-| [`sessions/`](sessions/) | 33 dated working-session records (close-session outputs). |
+| [`vault/`](vault/) | Governed knowledge store: [`axioms`](vault/axioms/axioms.md) (AX-1..5), candidate [`constitution/`](vault/constitution/) (unratified), [`hypothesis/`](vault/hypothesis/), and [`audit/`](vault/audit/). |
+| [`docs/`](docs/) | Feature specs, essays, discovery, signals, and [`architecture/`](docs/architecture/) — the agent-work language system view. |
+| [`research/`](research/) | Investigations, never auto-promoted. |
+| [`plans/`](plans/) | Durable plans and the canonical [Plan contract](plans/README.md#canonical-definition). |
+| [`sessions/`](sessions/) | 43 dated working-session records (close-session outputs). |
+| [`internal-tools/`](internal-tools/), [`tools/`](tools/) | Auxiliary experiments; validators, spec constitution, test-derivation engine. |
 
 ## Where to start
 
-If this is your first visit, read these three, in order:
-
 1. **[`implementations/README.md`](implementations/README.md)** — the piece that already runs: what
-   the control plane is, why it exists, and how to bring it up locally.
-2. **[`docs/PLAN.md`](docs/PLAN.md)** — the orientation behind everything: the problem, the
-   hypothesis, the three fronts, what runs vs. what is still being gathered.
-3. **[`OBLIGATIONS.md`](OBLIGATIONS.md)** — only if you want the depth: the one falsifiable test that
-   decides whether the orchestration language is mathematics or metaphor.
+   the control plane is, why it exists, and the two decisions the real data forced.
+2. **[`plans/governed-agent-work-infrastructure/PLAN.md`](plans/governed-agent-work-infrastructure/PLAN.md)**
+   — the problem, the hypothesis, the fronts, what runs vs. what is still being gathered.
+3. **[`OBLIGATIONS.md`](OBLIGATIONS.md)** — only for the depth: the one falsifiable test that decides
+   whether the orchestration language is mathematics or metaphor.
 
-For any term (`probe`, `zig-zag`, `residue`, `dispatch`): [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md).
+## Open questions
+
+- **What actually gates the write-side cutover.**
+  [`vault/audit/ledger-enum-drift-finding.md`](vault/audit/ledger-enum-drift-finding.md) calls itself
+  the keystone next step for Phase 2, but
+  [`sessions/2026-07-22-1315-phase2-confirm-handoff.md`](sessions/2026-07-22-1315-phase2-confirm-handoff.md)
+  re-scoped it — the drift blocks a veracity label, not an operation — and Phase 2's confirm slice
+  shipped without tracing it. Either this README's framing or that audit file is stale. Unresolved.
 
 ## Going deeper — the thesis *(optional)*
 
-Everything above is enough to use the repo. Underneath sits a research bet, in three fronts, none of
-it required reading to run the concrete piece. The first two fronts each have a **funnel essay** that
-opens at the everyday problem and ramps to full technical density:
+Everything above is enough to use the repo. Underneath sits a research bet, in three fronts. The
+first two each have a **funnel essay** that opens at the everyday problem and ramps to full density:
 
-- **Decision-making (the why).** Treat orchestration as *decision hygiene* — countering correlated
-  bias, noise, and framing, à la Kahneman and Thaler. →
-  [`docs/essays/decision-hygiene-hypothesis/`](docs/essays/decision-hygiene-hypothesis/README.md)
-  (the essay), then [`docs/PLAN.md`](docs/PLAN.md) and
-  [`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md).
+- **Decision-making (the why).** Orchestration as *decision hygiene* — countering correlated bias,
+  noise, and framing, à la Kahneman and Thaler. →
+  [`docs/essays/decision-hygiene-hypothesis/`](docs/essays/decision-hygiene-hypothesis/README.md),
+  then [`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md).
 - **Category theory (the formal ground).** Give the orchestration constructs categorical types
-  (probe→Yoneda, synthesis→pushout/residue, connections→composition/2-cells) — a candidate, decided
-  by OBL-E3. → [`docs/essays/categorical-theory-hypothesis/`](docs/essays/categorical-theory-hypothesis/README.md)
-  (the essay), then [`FRAMINGS.md`](FRAMINGS.md) and [`OBLIGATIONS.md`](OBLIGATIONS.md).
+  (probe→Yoneda, synthesis→pushout/residue, connections→composition/2-cells) — decided by OBL-E3. →
+  [`docs/essays/categorical-theory-hypothesis/`](docs/essays/categorical-theory-hypothesis/README.md),
+  then [`FRAMINGS.md`](FRAMINGS.md).
 - **System architecture (the how).** An event/bus/journal runtime that would make those principles
-  enforceable end-to-end — largely a proposal today. → [`docs/features/`](docs/features/).
+  enforceable end-to-end. The local pilot is implemented and opt-in; production remains a proposal.
+  → [`docs/features/`](docs/features/).
