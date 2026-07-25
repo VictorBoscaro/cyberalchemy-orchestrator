@@ -94,8 +94,8 @@ Loading, empty, error, degraded, profile-blocked e live-update devem preservar i
 | C7 | Separar por quê, como e o quê melhora a especificação de tarefas. | `causal-usability` rebaixada a orientação | [Brehmer & Munzner, 2013](https://www.cs.ubc.ca/labs/imager/tr/2013/MultiLevelTaskTypology/) | Média; tipologia, não prova lista > grafo. |
 | C8 | Overview, filtro, seleção, conexão e detalhe são complementares. | `causal-usability` rebaixada a taxonomia | [Heer & Shneiderman, 2012](https://doi.org/10.1145/2133806.2133821) | Média; não estabelece threshold. |
 | C9 | Foco, nome/papel/valor e status determinável são requisitos. | `normative` | [WCAG 2.2](https://www.w3.org/TR/WCAG22/) | Forte; não determina IA. |
-| C10 | Árvore interativa exige semântica e teclado completos. | `normative` | [WAI-ARIA APG Tree View](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/) | Média-alta; APG é prática, não WCAG independente. |
-| C11 | Propósito claro, tarefas encontráveis, busca, prevenção e feedback favorecem task-first. | `normative` | [W3C COGA Design Guide](https://www.w3.org/TR/coga-usable/design_guide.html) | Média; suplementar. |
+| C10 | Árvore interativa exige semântica e teclado completos. | `accessibility-guidance/practice` | [WAI-ARIA APG Tree View](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/) | Média-alta; APG é prática, não WCAG independente. |
+| C11 | Propósito claro, tarefas encontráveis, busca, prevenção e feedback favorecem task-first. | `accessibility-guidance/practice` | [W3C COGA Design Guide](https://www.w3.org/TR/coga-usable/design_guide.html) | Média; suplementar. |
 | C12 | Proveniência e indisponibilidade devem ser explícitas. | `repository-fact` | `maestro-trama/.../dashboard-contracts-constitution.md` | Média; referência adjacente não autoritativa. |
 | C13 | Task-first com grafo contextual é a síntese recomendada. | `inference` | C1, C3–C11 | Média; falsificada por benchmark local favorável ao grafo inicial. |
 
@@ -104,7 +104,7 @@ Loading, empty, error, degraded, profile-blocked e live-update devem preservar i
 | Critério | Checks observáveis | Limiar proposto |
 |---|---|---|
 | Clareza | Identificar pendência, estado, recorte, proveniência/frescor e evidência. | 9/10 respostas corretas em até 30 s; cinco campos no first paint; zero inferência apresentada como fato. |
-| Usabilidade | Buscar, filtrar, abrir detalhe, voltar, expandir ancestry e abrir caminho por teclado. | 100% dos fluxos críticos sem pointer; zero violações WCAG críticas. |
+| Usabilidade | Buscar, filtrar, abrir detalhe, voltar, expandir ancestry e abrir caminho por teclado. | 100% dos fluxos críticos sem pointer; todos os critérios WCAG 2.2 AA aplicáveis e checks manuais definidos devem passar. |
 | Consistência visual | Mesmos estados, semântica, dados, ações e test IDs nas três variantes. | 100% do contrato funcional idêntico; distinção apenas visual. |
 | Eficiência operacional | Localizar pendência/dispatch, filtrar erro, verificar observação e rastrear caminho. | Até 3 ações para pendência/objeto; até 5 para caminho/proveniência; medir fixture de ~700 dispatches. |
 
