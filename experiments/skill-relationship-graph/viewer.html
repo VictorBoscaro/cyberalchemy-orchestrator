@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill Graph — Cyberalchemy</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07110f; --panel: #0d1b18; --line: #263d36; --text: #e6f4ef;
+      --muted: #89a59b; --source: #d97706; --sink: #2563eb;
+      --isolated: #6b7280; --connected: #059669; --accent: #e7c66b;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.45 Inter, ui-sans-serif, system-ui, sans-serif;
+      background: var(--bg); color: var(--text); overflow: hidden; }
+    header { height: 64px; display: flex; align-items: center; gap: 18px; padding: 0 22px;
+      border-bottom: 1px solid var(--line); background: rgba(13,27,24,.96); }
+    h1 { font-size: 17px; margin: 0; letter-spacing: .02em; }
+    .summary { color: var(--muted); }
+    .spacer { flex: 1; }
+    button, select, input, textarea { color: var(--text); background: #10241f;
+      border: 1px solid #315047; border-radius: 8px; font: inherit; }
+    button, select { padding: 8px 11px; cursor: pointer; }
+    button:hover { border-color: var(--accent); }
+    input { padding: 9px 11px; min-width: 230px; }
+    main { display: grid; grid-template-columns: 260px 1fr 340px; height: calc(100vh - 64px); }
+    aside { background: var(--panel); overflow: auto; }
+    #filters { border-right: 1px solid var(--line); padding: 18px; }
+    #detail { border-left: 1px solid var(--line); padding: 20px; }
+    #stage { position: relative; overflow: hidden; background:
+      radial-gradient(circle at 50% 45%, #112821 0, #07110f 62%); }
+    svg { width: 100%; height: 100%; cursor: grab; user-select: none; }
+    svg:active { cursor: grabbing; }
+    .section { margin-bottom: 22px; }
+    .section h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+      color: var(--muted); margin: 0 0 10px; }
+    .legend { display: grid; gap: 8px; }
+    .legend label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .metric { display: flex; justify-content: space-between; padding: 7px 0;
+      border-bottom: 1px solid #183029; color: var(--muted); }
+    .metric strong { color: var(--text); }
+    .node rect { stroke: rgba(255,255,255,.32); stroke-width: 1; rx: 8; }
+    .node text { fill: white; font-size: 11px; pointer-events: none; }
+    .node { cursor: pointer; transition: opacity .15s; }
+    .edge { stroke: #6d8e83; stroke-opacity: .19; fill: none; }
+    .edge.strong { stroke: var(--accent); stroke-opacity: .58; }
+    .dim { opacity: .08 !important; }
+    .selected rect { stroke: #fff; stroke-width: 2.5; filter: drop-shadow(0 0 8px #fff5); }
+    .badge { display: inline-block; border-radius: 999px; padding: 4px 9px;
+      background: #18352d; color: #b8d7cc; margin: 0 5px 5px 0; }
+    #skill-name { font-size: 22px; overflow-wrap: anywhere; margin: 0 0 8px; }
+    #official { color: #c9ddd6; padding: 12px; background: #10241f;
+      border-left: 3px solid var(--accent); border-radius: 4px; }
+    textarea { width: 100%; min-height: 150px; padding: 11px; resize: vertical; }
+    .small { font-size: 12px; color: var(--muted); }
+    .relations { display: grid; gap: 6px; max-height: 180px; overflow: auto; }
+    .relation { padding: 7px 9px; background: #10241f; border-radius: 6px; cursor: pointer; }
+    .relation:hover { color: var(--accent); }
+    #empty { color: var(--muted); margin-top: 35vh; text-align: center; }
+    @media (max-width: 1000px) { main { grid-template-columns: 210px 1fr; }
+      #detail { position: absolute; right: 0; width: 340px; height: calc(100vh - 64px);
+        box-shadow: -8px 0 30px #0008; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Skill relationship graph</h1>
+    <span class="summary" id="header-summary"></span>
+    <div class="spacer"></div>
+    <input id="search" type="search" placeholder="Buscar skill…">
+    <select id="view">
+      <option value="inclusive">Inclusivo: caminhos + menções</option>
+      <option value="strong">Forte: caminhos SKILL.md</option>
+    </select>
+    <button id="fit">Enquadrar</button>
+  </header>
+  <main>
+    <aside id="filters">
+      <div class="section">
+        <h2>Camadas</h2>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="section">
+        <h2>Estrutura visível</h2>
+        <div id="metrics"></div>
+      </div>
+      <div class="section">
+        <h2>Leitura</h2>
+        <p class="small">Linha dourada = referência explícita a outra <code>SKILL.md</code>.
+          Linha cinza = menção nominal. Clique num nó para rastrear suas relações e redigir
+          uma definição.</p>
+      </div>
+      <button id="export">Exportar definições</button>
+    </aside>
+    <section id="stage">
+      <svg id="graph" viewBox="0 0 1400 900" aria-label="Grafo das skills">
+        <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d8e83"></path></marker></defs>
+        <g id="viewport"><g id="edges"></g><g id="nodes"></g></g>
+      </svg>
+    </section>
+    <aside id="detail">
+      <div id="empty">Selecione uma skill no grafo.</div>
+      <div id="content" hidden>
+        <h2 id="skill-name"></h2>
+        <div id="badges"></div>
+        <div class="section">
+          <h2>Definição oficial · evidência</h2>
+          <p id="official"></p>
+        </div>
+        <div class="section">
+          <h2>Definição de trabalho · rascunho</h2>
+          <textarea id="definition" placeholder="Em uma frase: que transformação esta skill possui?"></textarea>
+          <p class="small">Salvo automaticamente neste navegador.</p>
+        </div>
+        <div class="section">
+          <h2>Chama / menciona</h2>
+          <div class="relations" id="outgoing"></div>
+        </div>
+        <div class="section">
+          <h2>É chamada / mencionada por</h2>
+          <div class="relations" id="incoming"></div>
+        </div>
+        <p class="small" id="source-path"></p>
+      </div>
+    </aside>
+  </main>
+  <script src="graph-data.js"></script>
+  <script>
+    (() => {
+      const data = window.SKILL_GRAPH;
+      const colors = {source:"#d97706", sink:"#2563eb", isolated:"#6b7280", connected:"#059669"};
+      const active = new Set(Object.keys(colors));
+      let view = "inclusive", selected = null, zoom = 1, panX = 0, panY = 0;
+      const svg = document.querySelector("#graph"), viewport = document.querySelector("#viewport");
+      const nodeLayer = document.querySelector("#nodes"), edgeLayer = document.querySelector("#edges");
+      const nodeById = Object.fromEntries(data.nodes.map(n => [n.id, n]));
+      const positions = {};
+
+      function categories() { return data.views[view].categories; }
+      function categoryMap() {
+        return Object.fromEntries(Object.entries(categories()).flatMap(([c, ns]) => ns.map(n => [n,c])));
+      }
+      function pairs() {
+        const allowed = new Set(data.views[view].relations);
+        const map = new Map();
+        data.edges.filter(e => allowed.has(e.relation)).forEach(e => {
+          const key = `${e.source}|${e.target}`;
+          const old = map.get(key);
+          if (!old || e.relation === "explicit_path") map.set(key, e);
+        });
+        return [...map.values()];
+      }
+      function layout() {
+        const cm = categoryMap();
+        const groups = {source:[], connected:[], sink:[], isolated:[]};
+        data.nodes.forEach(n => groups[cm[n.id]].push(n.id));
+        const place = (names, x0, x1, y0, y1, cols) => names.sort().forEach((name, i) => {
+          const col = i % cols, row = Math.floor(i / cols);
+          const rows = Math.max(1, Math.ceil(names.length / cols));
+          positions[name] = {x:x0 + (x1-x0)*(col+.5)/cols, y:y0 + (y1-y0)*(row+.5)/rows};
+        });
+        place(groups.source, 45, 300, 60, 650, 2);
+        place(groups.connected, 330, 1040, 35, 690, 6);
+        place(groups.sink, 1080, 1360, 60, 650, 2);
+        place(groups.isolated, 120, 1280, 735, 875, 8);
+      }
+      function visible(id) {
+        const cm = categoryMap(), q = document.querySelector("#search").value.trim().toLowerCase();
+        return active.has(cm[id]) && (!q || id.includes(q));
+      }
+      function render() {
+        layout(); const cm = categoryMap(), es = pairs();
+        nodeLayer.innerHTML = ""; edgeLayer.innerHTML = "";
+        es.forEach((e, i) => {
+          const a=positions[e.source], b=positions[e.target];
+          const line=document.createElementNS("http://www.w3.org/2000/svg","path");
+          line.setAttribute("d",`M${a.x},${a.y} C${(a.x+b.x)/2},${a.y} ${(a.x+b.x)/2},${b.y} ${b.x},${b.y}`);
+          line.setAttribute("class",`edge ${e.relation==="explicit_path"?"strong":""}`);
+          line.dataset.source=e.source; line.dataset.target=e.target; line.setAttribute("marker-end","url(#arrow)");
+          edgeLayer.appendChild(line);
+        });
+        data.nodes.forEach(n => {
+          const p=positions[n.id], g=document.createElementNS("http://www.w3.org/2000/svg","g");
+          g.setAttribute("class","node"); g.dataset.id=n.id; g.setAttribute("transform",`translate(${p.x-62},${p.y-16})`);
+          g.innerHTML=`<rect width="124" height="32" fill="${colors[cm[n.id]]}"></rect>
+            <text x="62" y="20" text-anchor="middle">${n.id.length>20?n.id.slice(0,19)+"…":n.id}</text>`;
+          g.addEventListener("click", () => select(n.id)); nodeLayer.appendChild(g);
+        });
+        applyFocus();
+        document.querySelector("#header-summary").textContent =
+          `${data.nodes.length} skills · ${data.views[view].edge_count} relações`;
+        document.querySelector("#metrics").innerHTML = Object.entries(categories()).map(([c,ns]) =>
+          `<div class="metric"><span>${c}</span><strong>${ns.length}</strong></div>`).join("");
+      }
+      function applyFocus() {
+        document.querySelectorAll(".node").forEach(g => {
+          const related = !selected || g.dataset.id===selected || pairs().some(e =>
+            (e.source===selected&&e.target===g.dataset.id)||(e.target===selected&&e.source===g.dataset.id));
+          g.classList.toggle("dim", !visible(g.dataset.id) || !related);
+          g.classList.toggle("selected", g.dataset.id===selected);
+        });
+        document.querySelectorAll(".edge").forEach(e => {
+          const relevant = !selected || e.dataset.source===selected || e.dataset.target===selected;
+          e.classList.toggle("dim", !relevant || !visible(e.dataset.source) || !visible(e.dataset.target));
+        });
+      }
+      function relationList(id, direction) {
+        const values = pairs().filter(e => direction==="out" ? e.source===id : e.target===id)
+          .map(e => ({id: direction==="out"?e.target:e.source, relation:e.relation}));
+        return values.length ? values.map(v =>
+          `<div class="relation" data-skill="${v.id}">${v.id}<br><span class="small">${v.relation}</span></div>`).join("")
+          : `<span class="small">nenhuma relação nesta camada</span>`;
+      }
+      function select(id) {
+        selected=id; const n=nodeById[id], cm=categoryMap(), d=data.views[view].degrees[id];
+        document.querySelector("#empty").hidden=true; document.querySelector("#content").hidden=false;
+        document.querySelector("#skill-name").textContent=id;
+        document.querySelector("#badges").innerHTML=`<span class="badge">${cm[id]}</span>
+          <span class="badge">in ${d.in}</span><span class="badge">out ${d.out}</span>`;
+        document.querySelector("#official").textContent=n.description || "Sem descrição no frontmatter.";
+        document.querySelector("#source-path").textContent=n.path;
+        const area=document.querySelector("#definition");
+        area.value=localStorage.getItem(`skill-definition:${id}`)||"";
+        area.oninput=()=>localStorage.setItem(`skill-definition:${id}`,area.value);
+        document.querySelector("#outgoing").innerHTML=relationList(id,"out");
+        document.querySelector("#incoming").innerHTML=relationList(id,"in");
+        document.querySelectorAll(".relation").forEach(el=>el.onclick=()=>select(el.dataset.skill));
+        applyFocus();
+      }
+      Object.entries(colors).forEach(([c,color]) => {
+        const label=document.createElement("label");
+        label.innerHTML=`<input type="checkbox" checked data-category="${c}">
+          <span class="dot" style="background:${color}"></span>${c}`;
+        label.querySelector("input").onchange=e => { e.target.checked?active.add(c):active.delete(c); applyFocus(); };
+        document.querySelector("#legend").appendChild(label);
+      });
+      document.querySelector("#view").onchange=e=>{view=e.target.value; selected=null; render();
+        document.querySelector("#content").hidden=true; document.querySelector("#empty").hidden=false;};
+      document.querySelector("#search").oninput=applyFocus;
+      document.querySelector("#fit").onclick=()=>{zoom=1;panX=0;panY=0;viewport.setAttribute("transform","");};
+      document.querySelector("#export").onclick=()=>{
+        const definitions={};
+        data.nodes.forEach(n=>{const v=localStorage.getItem(`skill-definition:${n.id}`);if(v)definitions[n.id]=v;});
+        const blob=new Blob([JSON.stringify({schema_version:"skill-definitions.v0.1",definitions},null,2)],
+          {type:"application/json"});
+        const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="skill-definitions.json";a.click();
+        URL.revokeObjectURL(a.href);
+      };
+      let drag=null;
+      svg.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(.35,Math.min(3,zoom*(e.deltaY<0?1.1:.9)));
+        viewport.setAttribute("transform",`translate(${panX} ${panY}) scale(${zoom})`);},{passive:false});
+      svg.addEventListener("pointerdown",e=>{drag={x:e.clientX-panX,y:e.clientY-panY};svg.setPointerCapture(e.pointerId);});
+      svg.addEventListener("pointermove",e=>{if(!drag)return;panX=e.clientX-drag.x;panY=e.clientY-drag.y;
+        viewport.setAttribute("transform",`translate(${panX} ${panY}) scale(${zoom})`);});
+      svg.addEventListener("pointerup",()=>drag=null);
+      render();
+    })();
+  </script>
+</body>
+</html>
