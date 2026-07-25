@@ -1,0 +1,4767 @@
+{
+  "feature": "agents-communication-infra",
+  "prefix": "ACI",
+  "format_version": 1,
+  "entries": [
+    {
+      "key": "003b35f281e346543a3bbdec9cad041967fb2a4c",
+      "id": "ACI-DOM-001",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationReceipt:field:6"
+    },
+    {
+      "key": "05424ad362fbcb1872d774f455bffe945f795c2f",
+      "id": "ACI-DOM-002",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:3:0"
+    },
+    {
+      "key": "0546abba25f0be48b083bff1655aa675234032d7",
+      "id": "ACI-DOM-003",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:2"
+    },
+    {
+      "key": "05d2593623292c5c3ba9bcf72a3d59400f22d638",
+      "id": "ACI-DOM-004",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RevealManifest:field:0"
+    },
+    {
+      "key": "06ef0df5c93b5486f78ab08d99b682b55f79e1d6",
+      "id": "ACI-DOM-005",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SandboxPolicy:field:1:2"
+    },
+    {
+      "key": "078441c31bed834d02ad2abfae82d9a6d66944ff",
+      "id": "ACI-DOM-006",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#VersionedReference:field:2"
+    },
+    {
+      "key": "0a7ae9f93f339d8e13058052c87fe516f00f15b4",
+      "id": "ACI-DOM-007",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:3"
+    },
+    {
+      "key": "0b7e739a63a85fb3773e766c83855cbd1cd3eeeb",
+      "id": "ACI-DOM-008",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:6"
+    },
+    {
+      "key": "0bab88924e9c39e204ace669172b254767c73fb6",
+      "id": "ACI-DOM-009",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:8"
+    },
+    {
+      "key": "0c079ac787e21d9721051aa4fa92df7adb7b8f7d",
+      "id": "ACI-DOM-010",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:2"
+    },
+    {
+      "key": "0eae5912368e62ccc90b0bb3d6e4805292e7a2ea",
+      "id": "ACI-DOM-011",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:4:0"
+    },
+    {
+      "key": "0f673cbe2850c5c7a7d7fa70fa2b9eb27438c61f",
+      "id": "ACI-DOM-012",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:1"
+    },
+    {
+      "key": "0fd93508b77ba98b6410581331be59a76a7b7045",
+      "id": "ACI-DOM-013",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ConfirmedDispatch:field:2"
+    },
+    {
+      "key": "10f17bca95ee607dfef8d97d946a21b4fd204ea6",
+      "id": "ACI-DOM-014",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ConfirmedDispatch:field:0"
+    },
+    {
+      "key": "1164755403174cea6acd7dea9f5c4ad0321ff9a7",
+      "id": "ACI-DOM-015",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:0"
+    },
+    {
+      "key": "13938ff7c30d02ea2353d9e39498600e1abcc032",
+      "id": "ACI-DOM-016",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:3"
+    },
+    {
+      "key": "15daa71c763ed367d1f17378a2da6efe5306569b",
+      "id": "ACI-DOM-017",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:2"
+    },
+    {
+      "key": "162bcc89f3dde2e094f0ebb8a9edd1133baa6ac2",
+      "id": "ACI-DOM-018",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:9"
+    },
+    {
+      "key": "1aee4c72987d73c8b9bfde1c2e75e09f6a3e3928",
+      "id": "ACI-DOM-019",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:2"
+    },
+    {
+      "key": "1bbbafbd67043d548784e94b684094f8fc893d52",
+      "id": "ACI-DOM-020",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:3"
+    },
+    {
+      "key": "1be1cb13b1be060e8e79db3d84e74049736a2ed0",
+      "id": "ACI-DOM-021",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:7:0"
+    },
+    {
+      "key": "1c3026094f73f193ffb08b5118f196fb7ee1d5dc",
+      "id": "ACI-DOM-022",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:5"
+    },
+    {
+      "key": "1c97147a275475ea259916402d82cb608411dec0",
+      "id": "ACI-DOM-023",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Run:field:5"
+    },
+    {
+      "key": "1edb434f01e27701682bfdab9e4ca6adef8bb5b3",
+      "id": "ACI-DOM-024",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResourceBudget:field:1:1"
+    },
+    {
+      "key": "20feb1dc249dc8edf461b94594629f9098b13505",
+      "id": "ACI-DOM-025",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:2"
+    },
+    {
+      "key": "23600d8ed5dcee68a04cd0802711aa2e981ed876",
+      "id": "ACI-DOM-026",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#BusPublication:field:0"
+    },
+    {
+      "key": "23a89aa7661e81764955b1595d4955415ec4e86c",
+      "id": "ACI-DOM-027",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ConfirmedDispatch:field:6"
+    },
+    {
+      "key": "2438f87a60c701b82fd62c1c608b9136ddf42d6e",
+      "id": "ACI-DOM-028",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SandboxPolicy:field:2"
+    },
+    {
+      "key": "2476fa893e57902bcec2c95da9fed9ef2cf7c31b",
+      "id": "ACI-DOM-029",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:1:0"
+    },
+    {
+      "key": "254a1ba72476bdaa461b5d4b9cbf81a231ee1d55",
+      "id": "ACI-DOM-030",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:5"
+    },
+    {
+      "key": "255688aa3fa8b2816c74cfb147b7bd3ffbd7c34e",
+      "id": "ACI-DOM-031",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:4"
+    },
+    {
+      "key": "26da62bff251e4abc1a982874f2320f535463dc6",
+      "id": "ACI-DOM-032",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectIntent:field:5"
+    },
+    {
+      "key": "270a750fed4c303905aae20f6e0485c925402064",
+      "id": "ACI-DOM-033",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:0:2"
+    },
+    {
+      "key": "28097a43f7105aed897a3341b341821167026925",
+      "id": "ACI-DOM-034",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExecutionAuthorityFence:field:0:1"
+    },
+    {
+      "key": "282677d504e64bf1f99de91b078ebe18bded2c6c",
+      "id": "ACI-DOM-035",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:4:0"
+    },
+    {
+      "key": "28cab90d5c2654632d44941ff0c92835476470e6",
+      "id": "ACI-DOM-036",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:4"
+    },
+    {
+      "key": "2abd78900cd6327f0a20b0a0243379d54504c91c",
+      "id": "ACI-DOM-037",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Run:field:1"
+    },
+    {
+      "key": "2ba582101b446661b70aea6961449146dd731ce4",
+      "id": "ACI-DOM-038",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:0"
+    },
+    {
+      "key": "2e900b97fe3328e37db8d45a68c27e1304aac9a9",
+      "id": "ACI-DOM-039",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentTerminalResult:field:5"
+    },
+    {
+      "key": "2edf6c2365edc4295165e93cbe9edc8443595703",
+      "id": "ACI-DOM-040",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:4"
+    },
+    {
+      "key": "2ffe835a9910a4b472175dbf4c39af86d3e8d69d",
+      "id": "ACI-DOM-041",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:0:0"
+    },
+    {
+      "key": "301db0e0788ecd97d7cf8075612f783df4f82715",
+      "id": "ACI-DOM-042",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#VersionedReference:field:0"
+    },
+    {
+      "key": "30c0a888e091eec8d93ec6847007673fd0032554",
+      "id": "ACI-DOM-043",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:5"
+    },
+    {
+      "key": "3119a3dbfae5ac954eb0b1737a73ebf0bb191376",
+      "id": "ACI-DOM-044",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:3"
+    },
+    {
+      "key": "32037278d1af47b94463516b56391d114cf296d1",
+      "id": "ACI-DOM-045",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:0:0"
+    },
+    {
+      "key": "32fdd12e711800f07ec4ce53eca378d05889be79",
+      "id": "ACI-DOM-046",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:6"
+    },
+    {
+      "key": "34ee8b4bbeb7e121d8a2b271f9a6d04825f1dc43",
+      "id": "ACI-DOM-047",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:3"
+    },
+    {
+      "key": "353250c0ee3dc4bfeec98f8bf2d460cf35f0964d",
+      "id": "ACI-DOM-048",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:3"
+    },
+    {
+      "key": "3694a01ca337d44d1fbc9861080817c8b0fed3f8",
+      "id": "ACI-DOM-049",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RevealManifest:field:5"
+    },
+    {
+      "key": "377cb18e4d0705a8fc10ba747f2892b9effa80cb",
+      "id": "ACI-DOM-050",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:3:1"
+    },
+    {
+      "key": "37af732fd1a5b00a3348ed43e1a547d05946467b",
+      "id": "ACI-DOM-051",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:2:0"
+    },
+    {
+      "key": "380d02954e614c33aadeffda8096b156d5c6a9b3",
+      "id": "ACI-DOM-052",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:0:1"
+    },
+    {
+      "key": "38ea153dcd97486089ae9685000dd768de5de65f",
+      "id": "ACI-DOM-053",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:2:3"
+    },
+    {
+      "key": "39cef3df33011a047423edc35d9fb14c8b622c44",
+      "id": "ACI-DOM-054",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:0"
+    },
+    {
+      "key": "3d2ab336352fd939cbaf40485ce941eedef78f7f",
+      "id": "ACI-DOM-055",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:1:1"
+    },
+    {
+      "key": "3dcecb85df50efd33ca8bd74a408985aac1628f6",
+      "id": "ACI-DOM-056",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:6"
+    },
+    {
+      "key": "3eace821edc6cb2901c20bfc659f52851c12c8d4",
+      "id": "ACI-DOM-057",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:8"
+    },
+    {
+      "key": "3ebb40b56349b893ad606ed2effe7b4d61100d6b",
+      "id": "ACI-DOM-058",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:1"
+    },
+    {
+      "key": "42f816417bc22d4a545b86ff95ffe38d23f8abe2",
+      "id": "ACI-DOM-059",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:0"
+    },
+    {
+      "key": "43e8df89df8fc7c95c45c7e1890194862610e55c",
+      "id": "ACI-DOM-060",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:5"
+    },
+    {
+      "key": "441b19ecf31048b4a1813346b90a7e08913a3225",
+      "id": "ACI-DOM-061",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationReceipt:field:3"
+    },
+    {
+      "key": "4489ca95b3266084010ce0cfd125e84c9caddde8",
+      "id": "ACI-DOM-062",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:0:1"
+    },
+    {
+      "key": "463b1f7cdfe355dec45ddd1ed663de7a0d906581",
+      "id": "ACI-DOM-063",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#BusPublication:field:4"
+    },
+    {
+      "key": "4a34bc94eedf74663eed8a851cbacd378bd80a2a",
+      "id": "ACI-DOM-064",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchSpec:field:0"
+    },
+    {
+      "key": "4b754bbebeb9792f5252cc4009d9fc8e7a860ff1",
+      "id": "ACI-DOM-065",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationReceipt:field:0"
+    },
+    {
+      "key": "4bf62e9592ecc4efc3044c85cc83b5d7eb12ab75",
+      "id": "ACI-DOM-066",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:1:1"
+    },
+    {
+      "key": "4dc42969e9ada85bc3ed4ed2631d7df3e765a764",
+      "id": "ACI-DOM-067",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:4"
+    },
+    {
+      "key": "50430116832635a2474a15d70bdce6b394c1298b",
+      "id": "ACI-DOM-068",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Run:field:2"
+    },
+    {
+      "key": "50d76254bce1c0c4cef207547112e4c7fe44fdc6",
+      "id": "ACI-DOM-069",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:2"
+    },
+    {
+      "key": "5226ef685b1ee4c54e2b52cefd2640a22d278bf9",
+      "id": "ACI-DOM-070",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:1:2"
+    },
+    {
+      "key": "563429344092dfef94a2c934b6e2801c451dac57",
+      "id": "ACI-DOM-071",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#BusPublication:field:2"
+    },
+    {
+      "key": "57968a7ab0f428dbea6fb069dcf03f57f37a8a9b",
+      "id": "ACI-DOM-072",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ConfirmedDispatch:field:5"
+    },
+    {
+      "key": "587dbc7eb419248eaea8d26a7d46509e92a9f319",
+      "id": "ACI-DOM-073",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchSpec:field:2"
+    },
+    {
+      "key": "58df11c1616e8c35dce87fd099d97b483754f5a0",
+      "id": "ACI-DOM-074",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:3"
+    },
+    {
+      "key": "5a45f12b91ae5d3d75a76bc7ec4bee6d1d9be522",
+      "id": "ACI-DOM-075",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:6"
+    },
+    {
+      "key": "5cd82802538034db720b6612128f3f25571148ad",
+      "id": "ACI-DOM-076",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:6"
+    },
+    {
+      "key": "60a7cf13dd5842025ee01d02a8c2f81b0a4b9baa",
+      "id": "ACI-DOM-077",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RevealManifest:field:2"
+    },
+    {
+      "key": "61852087687f2dcc4d02c5ac8d420eb1f3271257",
+      "id": "ACI-DOM-078",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:4:1"
+    },
+    {
+      "key": "629c7732a5786c662a73b55a7894bd06e1fdf79e",
+      "id": "ACI-DOM-079",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:1"
+    },
+    {
+      "key": "63f9a4bce53cb8cd72c7df0c861065c66fb2bcb1",
+      "id": "ACI-DOM-080",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:5"
+    },
+    {
+      "key": "64208193af19320436604a2f66dc68c40e4393fc",
+      "id": "ACI-DOM-081",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:5"
+    },
+    {
+      "key": "64332a29b8a3a3e2652e42de237175164b0fd07e",
+      "id": "ACI-DOM-082",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:1:1"
+    },
+    {
+      "key": "65650415175ed40524d85fbe0a1eb43e12788ca8",
+      "id": "ACI-DOM-083",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentTerminalResult:field:4"
+    },
+    {
+      "key": "65de3e4c28373d25ffc0369303c8d1b9f3fc1866",
+      "id": "ACI-DOM-084",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#MaterializedAgentInvocation:field:3"
+    },
+    {
+      "key": "67c107185a5b8154a283c1c4af201d7c3b5f706f",
+      "id": "ACI-DOM-085",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:2:0"
+    },
+    {
+      "key": "68785af556b0ca08a325fab498245efbcea38aab",
+      "id": "ACI-DOM-086",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:1"
+    },
+    {
+      "key": "69776a2cc6a5017e27199b150385c8b30d4a1bff",
+      "id": "ACI-DOM-087",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExecutionAuthorityFence:field:3"
+    },
+    {
+      "key": "6ad345deb9814a0557d3df219341bc4a7562e9a2",
+      "id": "ACI-DOM-088",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:5"
+    },
+    {
+      "key": "6d2d43cc0d74d23eb6a0bb5719961a3c3c36108a",
+      "id": "ACI-DOM-089",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:3:0"
+    },
+    {
+      "key": "6dfa6d9cf26ff946b028c444106519dccf88965e",
+      "id": "ACI-DOM-090",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExecutionAuthorityFence:field:2"
+    },
+    {
+      "key": "6e685f17bf9afe139668da28ee0244b5082e8ecd",
+      "id": "ACI-DOM-091",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#BusPublication:field:3"
+    },
+    {
+      "key": "6f0476293de17179cbb96c68142536236cc88a86",
+      "id": "ACI-DOM-092",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationReceipt:field:5"
+    },
+    {
+      "key": "70a3cdb7dc105b897c68673f58a7ec016d2142d5",
+      "id": "ACI-DOM-093",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentTerminalResult:field:1:0"
+    },
+    {
+      "key": "71836045633cd50e96fd96eaae60fbc66ce031fe",
+      "id": "ACI-DOM-094",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ConfirmedDispatch:field:1"
+    },
+    {
+      "key": "718a3e275436f3525c52f46b2ba1167218c533a9",
+      "id": "ACI-DOM-095",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:7"
+    },
+    {
+      "key": "71bac184fcdf1e4739a424337e3dc44210408b1e",
+      "id": "ACI-DOM-096",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:2"
+    },
+    {
+      "key": "71e53cfa721bbd9f0c33caafb9f9b039b71338d9",
+      "id": "ACI-DOM-097",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:6"
+    },
+    {
+      "key": "72b195d536feb4c9ecea4c3795d752ffd71d40dd",
+      "id": "ACI-DOM-098",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RevealManifest:field:4"
+    },
+    {
+      "key": "74709eeccc950f35c170c100a56b4f29ebe5ea0c",
+      "id": "ACI-DOM-099",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:4"
+    },
+    {
+      "key": "7470d89a27c0a7f01516f486ba987fe653b80208",
+      "id": "ACI-DOM-100",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationReceipt:field:1"
+    },
+    {
+      "key": "753f979b4c2b48cd056db40d8a800b919a20993f",
+      "id": "ACI-DOM-101",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:4"
+    },
+    {
+      "key": "76ae136e6b81020986669a5ce4e2ca3deb80ef37",
+      "id": "ACI-DOM-102",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ConfirmedDispatch:field:3"
+    },
+    {
+      "key": "76fd1a35e072bbdfcdeb51b017e211c9c2dd4777",
+      "id": "ACI-DOM-103",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:7"
+    },
+    {
+      "key": "770725e2fc4ddf8eeb99c4d9d5a8a1d5c628f5fe",
+      "id": "ACI-DOM-104",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SandboxPolicy:field:1:1"
+    },
+    {
+      "key": "7791046acd674ed6072ce940c93e4733a3b1d4d0",
+      "id": "ACI-DOM-105",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:5"
+    },
+    {
+      "key": "78fc3006933590e022248887bcf3a9a06f224752",
+      "id": "ACI-DOM-106",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:7"
+    },
+    {
+      "key": "7a1a2f63124b21ab6714892d6bff291e6177cbef",
+      "id": "ACI-DOM-107",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:1"
+    },
+    {
+      "key": "7a9c3e306900c8c24b93ae045d7b54c045f72d9c",
+      "id": "ACI-DOM-108",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SandboxPolicy:field:1:0"
+    },
+    {
+      "key": "7ac43f4a4233b8d64e44a7f4c1407f2358ad4103",
+      "id": "ACI-DOM-109",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectIntent:field:2"
+    },
+    {
+      "key": "7b253e3d15fce469b7d1f4c5fd32f5117c5ce9ab",
+      "id": "ACI-DOM-110",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Seat:field:2"
+    },
+    {
+      "key": "7b3e3d907ccfb0dc9c588e96ad2c960d03c5f378",
+      "id": "ACI-DOM-111",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:3"
+    },
+    {
+      "key": "7c7b593bd8ecaa38f29355f8eb38b34561522374",
+      "id": "ACI-DOM-112",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:8:1"
+    },
+    {
+      "key": "7cc234745eb56f7c2bcab2b5a8962debed7cf1f2",
+      "id": "ACI-DOM-113",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Seat:field:1"
+    },
+    {
+      "key": "7d4d5d43cd20eb778ec712c412903515b914a668",
+      "id": "ACI-DOM-114",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:4"
+    },
+    {
+      "key": "7efad2addb14a245db4f52c32b6c1372967a79cb",
+      "id": "ACI-DOM-115",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentTerminalResult:field:3"
+    },
+    {
+      "key": "81d0a6f7e68a8a8c912d130227c5f95ad4c40acf",
+      "id": "ACI-DOM-116",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationReceipt:field:4"
+    },
+    {
+      "key": "82a77edc9452aadf051fc36c2a8ad8d5c149a67c",
+      "id": "ACI-DOM-117",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#BusPublication:field:5"
+    },
+    {
+      "key": "82c6ada1f4ac37be245ba652d3f354c9b6a7e28c",
+      "id": "ACI-DOM-118",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:0:0"
+    },
+    {
+      "key": "8379a8dc2ea84c090a40b7787d4dd42724a083c1",
+      "id": "ACI-DOM-119",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#MaterializedAgentInvocation:field:0"
+    },
+    {
+      "key": "839030ef34d9e91df12f7d5240fbcf258293a6a1",
+      "id": "ACI-DOM-120",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:4"
+    },
+    {
+      "key": "8541e63847ef817d83e62c246e470ae15c02bfd0",
+      "id": "ACI-DOM-121",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ConfirmedDispatch:field:4"
+    },
+    {
+      "key": "86899fca292b5c58407eb6b235cc170cb8e70625",
+      "id": "ACI-DOM-122",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:0:2"
+    },
+    {
+      "key": "86b29e153651a95d04b017c4574dbc5a73bd4663",
+      "id": "ACI-DOM-123",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectIntent:field:4"
+    },
+    {
+      "key": "87db5e3686b78d9c832d69c16ca4a82c870f4aef",
+      "id": "ACI-DOM-124",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Run:field:4"
+    },
+    {
+      "key": "8cfac59622e34509249c8054f22bfd4530864a87",
+      "id": "ACI-DOM-125",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:0:0"
+    },
+    {
+      "key": "8ded6354506376969da58733519eaaa624a0464c",
+      "id": "ACI-DOM-126",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:7"
+    },
+    {
+      "key": "8e17854d8e98a9cb69cf087db2caab5e25367bdd",
+      "id": "ACI-DOM-127",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:5"
+    },
+    {
+      "key": "8e8ea1db1355f7d59a3d35868618751094da53ac",
+      "id": "ACI-DOM-128",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:6"
+    },
+    {
+      "key": "8e98e4fd073652c83170f940a09642ed415d3178",
+      "id": "ACI-DOM-129",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:2:1"
+    },
+    {
+      "key": "908c0e8d757b121e91487f7c3abdd115633e9c1d",
+      "id": "ACI-DOM-130",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ManifestEntry:field:0"
+    },
+    {
+      "key": "91ba84443cdc717a77b039db19fc42c8c1c95e03",
+      "id": "ACI-DOM-131",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Seat:field:3"
+    },
+    {
+      "key": "9210b4fb001e5f89796977438360108361f79677",
+      "id": "ACI-DOM-132",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:8"
+    },
+    {
+      "key": "933b0b1c31cbb175698189f080e04c276e4adcdc",
+      "id": "ACI-DOM-133",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ManifestEntry:field:1"
+    },
+    {
+      "key": "93dafc9fe46391f10eb4b0c86ebcf05bbffd6d06",
+      "id": "ACI-DOM-134",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:9"
+    },
+    {
+      "key": "963a261a63d80fd55dca41508c4ec201b69ca78b",
+      "id": "ACI-DOM-135",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:1:2"
+    },
+    {
+      "key": "9777d16cb6736dffc747664839faea4fef2928b0",
+      "id": "ACI-DOM-136",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:3"
+    },
+    {
+      "key": "97c686a6879d5d9179b7bbd7d9d8c4a22114a0e1",
+      "id": "ACI-DOM-137",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchSpec:field:5"
+    },
+    {
+      "key": "99f4212972e9e1ba54815a83d88915c61da96aa9",
+      "id": "ACI-DOM-138",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:8"
+    },
+    {
+      "key": "9a17663111e438b6daa2e88755038e6f82b863ac",
+      "id": "ACI-DOM-139",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:0:1"
+    },
+    {
+      "key": "9b1709532b1af59114031f7dd4b05ebe7c8293f1",
+      "id": "ACI-DOM-140",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:6"
+    },
+    {
+      "key": "9b6be8a3a753d85e04aaa3ee0194466428723658",
+      "id": "ACI-DOM-141",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:1"
+    },
+    {
+      "key": "9e53a357ac96f80761d4f919abff13622a18c7f9",
+      "id": "ACI-DOM-142",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:1"
+    },
+    {
+      "key": "9f721012bce7784bf4d18cc4ecefb8983c8c8044",
+      "id": "ACI-DOM-143",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:5"
+    },
+    {
+      "key": "9f9d9a52e6aafc7e56b0bcf7bbfa9366208574c6",
+      "id": "ACI-DOM-144",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchSpec:field:4"
+    },
+    {
+      "key": "9ff527ca32d98dcd3ff70589f124ea5236b8a5b3",
+      "id": "ACI-DOM-145",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:3:1"
+    },
+    {
+      "key": "a22717031a6179afd1e8eee5f9d54d7a59f2874e",
+      "id": "ACI-DOM-146",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:2:0"
+    },
+    {
+      "key": "a46870a0e47ee9e433a68a025e2d391f3b9892da",
+      "id": "ACI-DOM-147",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectIntent:field:0"
+    },
+    {
+      "key": "a51ebeb513568bb596ca772be9e4a0af2bde3552",
+      "id": "ACI-DOM-148",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:1:0"
+    },
+    {
+      "key": "a646e0196b9d30664a2a666d0e1fc51af5141c70",
+      "id": "ACI-DOM-149",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:0:1"
+    },
+    {
+      "key": "a6dabf45caae58f369737d3a500f674f7f37f68f",
+      "id": "ACI-DOM-150",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:1"
+    },
+    {
+      "key": "a9a9f3590072780c8f476c497502fa3c6067fd75",
+      "id": "ACI-DOM-151",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Run:field:3"
+    },
+    {
+      "key": "aa01a95e253ea14ea9b13aa7461f0217379b18cf",
+      "id": "ACI-DOM-152",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:7"
+    },
+    {
+      "key": "aabac99d8cd17f8efe40bee5bdbb6bf9a35fa49f",
+      "id": "ACI-DOM-153",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:0"
+    },
+    {
+      "key": "ab9116ec22646cbaee733da748553b7b04bd9d66",
+      "id": "ACI-DOM-154",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:7"
+    },
+    {
+      "key": "abc8f2efeb2bc082b0fa67ce9b1a2c9b67a72006",
+      "id": "ACI-DOM-155",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Group:field:1"
+    },
+    {
+      "key": "ac470bea1fc2084da6628529352a0bfb40b47341",
+      "id": "ACI-DOM-156",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:10"
+    },
+    {
+      "key": "ad50b0e77d8e0a12c4013e44acc6fa6df4a1be0a",
+      "id": "ACI-DOM-157",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:1:0"
+    },
+    {
+      "key": "aea1fe96823036df9e308da59adda68c762c49e6",
+      "id": "ACI-DOM-158",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchSpec:field:3"
+    },
+    {
+      "key": "aed441278c2ec954333eb0ae7aff42774bd6be97",
+      "id": "ACI-DOM-159",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#MaterializedAgentInvocation:field:2"
+    },
+    {
+      "key": "af54bc608915fb7e27fc6aa24c3860f548af2b2c",
+      "id": "ACI-DOM-160",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:2:2"
+    },
+    {
+      "key": "b23c35efd2f174d7c09496c9d196adcefcd4044f",
+      "id": "ACI-DOM-161",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:7"
+    },
+    {
+      "key": "b2534246d05548b39d4a6c8cbc0f0311f8cebe06",
+      "id": "ACI-DOM-162",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:6"
+    },
+    {
+      "key": "b3475e3be878ab0945e21c62c1bbc9bc8fb1b407",
+      "id": "ACI-DOM-163",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:3"
+    },
+    {
+      "key": "b376cbb1bfb9b4fb23468ee80571f22211e259ad",
+      "id": "ACI-DOM-164",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Seat:field:0"
+    },
+    {
+      "key": "b686fcbf3b8278f2ea863387fe3e89f98ca50e68",
+      "id": "ACI-DOM-165",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#VersionedReference:field:1"
+    },
+    {
+      "key": "b9ce32b5da0aafdb81637fd8cbac5bd446482d14",
+      "id": "ACI-DOM-166",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:4"
+    },
+    {
+      "key": "ba0889d41464fdb45415ff2acedf77a5448815cd",
+      "id": "ACI-DOM-167",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExecutionAuthorityFence:field:1"
+    },
+    {
+      "key": "ba9b2dce9a4da6a131bc31f321e1ace8fb52842e",
+      "id": "ACI-DOM-168",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:7"
+    },
+    {
+      "key": "bac069654c384cb9cffb05f548a9565a14068c74",
+      "id": "ACI-DOM-169",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:5"
+    },
+    {
+      "key": "bc0355636018431e797a8c497ff8f10b5911c768",
+      "id": "ACI-DOM-170",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchSpec:field:1"
+    },
+    {
+      "key": "bcb8b37ebc32ff7a64e3c06ca9e2b187c197ca10",
+      "id": "ACI-DOM-171",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:6:1"
+    },
+    {
+      "key": "be293b0cc12f619daaa46f611cf076e82b441e8a",
+      "id": "ACI-DOM-172",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:0"
+    },
+    {
+      "key": "be4bceb28964ef65370264736c260945be5fd496",
+      "id": "ACI-DOM-173",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RevealManifest:field:6"
+    },
+    {
+      "key": "becca7936221ccf04b671d9e786b906abe349a5b",
+      "id": "ACI-DOM-174",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SandboxPolicy:field:0"
+    },
+    {
+      "key": "c0244458b47d038293f6f55d1f48965020aacaf1",
+      "id": "ACI-DOM-175",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectIntent:field:1"
+    },
+    {
+      "key": "c16fdf276b739434f356ccc6c885630a4a8f3f9d",
+      "id": "ACI-DOM-176",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationReceipt:field:2"
+    },
+    {
+      "key": "c63d2ae0ab33ede1e225fed74bd8969b86b6a18e",
+      "id": "ACI-DOM-177",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:9"
+    },
+    {
+      "key": "c86b10d97de0e425f4e57923cd3ef040cfcc17d2",
+      "id": "ACI-DOM-178",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RevealManifest:field:3"
+    },
+    {
+      "key": "c8b4265adc78ce5d4fd42af27298070ffdcddd46",
+      "id": "ACI-DOM-179",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:3:0"
+    },
+    {
+      "key": "c93018e84f988fb9d42836530dfffa31e18bab89",
+      "id": "ACI-DOM-180",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:6"
+    },
+    {
+      "key": "ca637bb91a06161725b9ed383a6ec7a1e0dd8298",
+      "id": "ACI-DOM-181",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResourceBudget:field:2"
+    },
+    {
+      "key": "cab59adf89c8a9ce0578a279a61d8aa6df449f7a",
+      "id": "ACI-DOM-182",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:5"
+    },
+    {
+      "key": "caea72a8f99e68d55b5754fa11b56aa4826a6a77",
+      "id": "ACI-DOM-183",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:0:2"
+    },
+    {
+      "key": "caeffd2ed07f953fcd3bcde4c1362d1ae573fa80",
+      "id": "ACI-DOM-184",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:8"
+    },
+    {
+      "key": "ce9507f06d72ba128b2b895161a49e992d5484eb",
+      "id": "ACI-DOM-185",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:0"
+    },
+    {
+      "key": "cf15da8e5dd52eded46ab5771bf656c914dcc301",
+      "id": "ACI-DOM-186",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Run:field:0"
+    },
+    {
+      "key": "cf5a9ab7b037515084f6dbd3765db649a65960c2",
+      "id": "ACI-DOM-187",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResourceBudget:field:1:2"
+    },
+    {
+      "key": "d11926584023d586b6cc654c8ac4b8c518901d30",
+      "id": "ACI-DOM-188",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:2"
+    },
+    {
+      "key": "d2049b0d19a36b6f0ad660ffb418108a9051ef29",
+      "id": "ACI-DOM-189",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputArtifact:field:2"
+    },
+    {
+      "key": "d2890d41a955533938c264d46b7880b2231874ae",
+      "id": "ACI-DOM-190",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:1"
+    },
+    {
+      "key": "d2b8dd69a11bbfe4035c938b67148712296f7494",
+      "id": "ACI-DOM-191",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:7:1"
+    },
+    {
+      "key": "d387707ed4d17c2f8130f86276c4444e64430479",
+      "id": "ACI-DOM-192",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExecutionAuthorityFence:field:0:0"
+    },
+    {
+      "key": "d4ba25401e6426f9d45ec32b1244afe582891dcd",
+      "id": "ACI-DOM-193",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:3"
+    },
+    {
+      "key": "d5138a3552f33c5a3b08d0f2b9c5bd1ae1728018",
+      "id": "ACI-DOM-194",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:9"
+    },
+    {
+      "key": "d5e420eb0560ef609fddbe04d3520e769758dbb6",
+      "id": "ACI-DOM-195",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:2"
+    },
+    {
+      "key": "d604c92d45f7a3bb655ac9b6a0243980ce936937",
+      "id": "ACI-DOM-196",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:5"
+    },
+    {
+      "key": "d7844a59d8575d8bfb4a0ef087674d711ec65a49",
+      "id": "ACI-DOM-197",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:2"
+    },
+    {
+      "key": "d892d8976e331844b55182bfbf0c60bfbff1132a",
+      "id": "ACI-DOM-198",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeEventEnvelope:field:8:0"
+    },
+    {
+      "key": "d91f1d2e0ba6879b53d022634fa8933b499e1bca",
+      "id": "ACI-DOM-199",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:0"
+    },
+    {
+      "key": "d97cbc20af4787b69c2926b8e53be8471780a7fe",
+      "id": "ACI-DOM-200",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResourceBudget:field:1:0"
+    },
+    {
+      "key": "da17aecb712b6870cd09cd7e3639da8553901eb3",
+      "id": "ACI-DOM-201",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RuntimeCommand:field:6:0"
+    },
+    {
+      "key": "dab320977e3a7e564d8804c6251dc4d908fdf499",
+      "id": "ACI-DOM-202",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchSpec:field:6"
+    },
+    {
+      "key": "e12621876962fa4d2e1f80c53a9806ec9904667a",
+      "id": "ACI-DOM-203",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:4"
+    },
+    {
+      "key": "e189f44d4c14f5e150c72b2cd323148abedf7bf9",
+      "id": "ACI-DOM-204",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResourceBudget:field:0:0"
+    },
+    {
+      "key": "e2c467674c027b7c78a9a8c9a9446b59909e7f4f",
+      "id": "ACI-DOM-205",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResourceBudget:field:0:2"
+    },
+    {
+      "key": "e331df5cfb99171d68303bbe256bf2aaf9cd4e8c",
+      "id": "ACI-DOM-206",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#GroupResult:field:1"
+    },
+    {
+      "key": "e42d2809b710fade79c39581fb4d3e3fb07dd3de",
+      "id": "ACI-DOM-207",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectIntent:field:3"
+    },
+    {
+      "key": "e5271dbe4732d74f49743f3db0bf28cab63b04ad",
+      "id": "ACI-DOM-208",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RevealManifest:field:1"
+    },
+    {
+      "key": "e53a15dd4c213a5200e6111024710f5b0a36c5d9",
+      "id": "ACI-DOM-209",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExecutionAuthorityFence:field:4"
+    },
+    {
+      "key": "e67d9ea77646ff1746d4b79424214594183aa35a",
+      "id": "ACI-DOM-210",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:3:1"
+    },
+    {
+      "key": "eb1fcbfdbdeed4d45158234b9dfb75e7637caf3d",
+      "id": "ACI-DOM-211",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:0"
+    },
+    {
+      "key": "ed8e5fffd0c0c6c2a19461e52f68bc93d91be595",
+      "id": "ACI-DOM-212",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:2:1"
+    },
+    {
+      "key": "edb508d46a3a2bd1ea1800b8a7f4e6d3e58d72cf",
+      "id": "ACI-DOM-213",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:0"
+    },
+    {
+      "key": "ef8f0cf45836f9368a691126e7f9f8bf8d5ed594",
+      "id": "ACI-DOM-214",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:6"
+    },
+    {
+      "key": "f083435e055a96f306e1567c14b841a3460a2a94",
+      "id": "ACI-DOM-215",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Seat:field:4"
+    },
+    {
+      "key": "f1939ee6df419162bd3ce3de8cae92bcc24d4d5c",
+      "id": "ACI-DOM-216",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentTerminalResult:field:1:1"
+    },
+    {
+      "key": "f2e9a3fd209396ec126b36be062f6a4e7e35ff54",
+      "id": "ACI-DOM-217",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#MaterializedAgentInvocation:field:1"
+    },
+    {
+      "key": "f312b4af41e3fb5a3b53432be997ba2d31cd139f",
+      "id": "ACI-DOM-218",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Run:field:6"
+    },
+    {
+      "key": "f4561ea5754ee85cd07829c69efcd6b2d041aad4",
+      "id": "ACI-DOM-219",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:8"
+    },
+    {
+      "key": "f4616f8964786e2cf3f0708b75806ee8ff42239f",
+      "id": "ACI-DOM-220",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentTerminalResult:field:2"
+    },
+    {
+      "key": "f7858a31cc7e49b1576edc9fc99a7d1a2e01ed4f",
+      "id": "ACI-DOM-221",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#MaterializedAgentInvocation:field:4"
+    },
+    {
+      "key": "f7d95581027baa518a60564c86e86ea6f06f65ad",
+      "id": "ACI-DOM-222",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#PublicationCandidate:field:2:1"
+    },
+    {
+      "key": "f8677a28f598c6360dc7004b5770016e0e6a05c1",
+      "id": "ACI-DOM-223",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentTerminalResult:field:0"
+    },
+    {
+      "key": "f95517039a3bf4df33196cef5b1004c0a47c0e78",
+      "id": "ACI-DOM-224",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:7"
+    },
+    {
+      "key": "f9e0d96d9a33c0213c0a737c1506f2c12eb5b63a",
+      "id": "ACI-DOM-225",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResourceBudget:field:0:1"
+    },
+    {
+      "key": "fb9945b94cba9efcb530b2c3e8705337970dc29c",
+      "id": "ACI-DOM-226",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawProviderOutput:field:7"
+    },
+    {
+      "key": "fca4522dbb13fa00e5728c7b465c366c8999b95b",
+      "id": "ACI-DOM-227",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:6"
+    },
+    {
+      "key": "fd02c81b2d8fc9bcb1e8d4f2db2576ef446b8f61",
+      "id": "ACI-DOM-228",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#BusPublication:field:1"
+    },
+    {
+      "key": "fd70c9cc20a9361333a1ce26a6eb042995db4e0a",
+      "id": "ACI-DOM-229",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentExecutionRequest:field:9"
+    },
+    {
+      "key": "fe1deb7d186822f00652c5ccfaa017499d8113e2",
+      "id": "ACI-DOM-230",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Contribution:field:4"
+    },
+    {
+      "key": "fe6d567c2d9a94e840e7a48cd9725853fa3e39ac",
+      "id": "ACI-DOM-231",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:6"
+    },
+    {
+      "key": "fe821ccc29d4eac95c51ce18e8cfd45747fb5285",
+      "id": "ACI-DOM-232",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentInvocationPlan:field:4:1"
+    },
+    {
+      "key": "ff8c625795553aa37e68c31c155b237acb1e0b28",
+      "id": "ACI-DOM-233",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Artifact:field:5"
+    },
+    {
+      "key": "ff9886697c103f653fde4cef34e7c412fb58180b",
+      "id": "ACI-DOM-234",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SoleWriterEvidenceBundle:field:4"
+    },
+    {
+      "key": "1204d7c48339c155acac336a116ee871c226d662",
+      "id": "ACI-ENUM-001",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ReconciliationState:enum"
+    },
+    {
+      "key": "3bb099c43b02d1e8c2f39c993d9ad0a1476570c2",
+      "id": "ACI-ENUM-002",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ExecutionAuthorityMode:enum"
+    },
+    {
+      "key": "90b6d1956cc78ecac83dca8ca7d13c35d6fcaeca",
+      "id": "ACI-ENUM-003",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ArtifactClassification:enum"
+    },
+    {
+      "key": "d962b0231d1c23db894fc8342379580ce8e03287",
+      "id": "ACI-ENUM-004",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#EffectStatus:enum"
+    },
+    {
+      "key": "f6969962a5421cd65a81e3c8741ff40a18124085",
+      "id": "ACI-ENUM-005",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#RetryClass:enum"
+    },
+    {
+      "key": "17dd98bee29281b8d3012ee264f45cef61283581",
+      "id": "ACI-ERR-001",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#PublishBusContribution:errorstate:1"
+    },
+    {
+      "key": "1e3f000a9cba971d374b4b770efffb0fb42d7525",
+      "id": "ACI-ERR-002",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:errorstate:0"
+    },
+    {
+      "key": "249153f5bf67a20987b31ffeb42a08c4ae30f0cb",
+      "id": "ACI-ERR-003",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#VerifyPublicationReceipt:errorstate:5"
+    },
+    {
+      "key": "25e34801701ded5c205aaf7b2494ff4da611cc55",
+      "id": "ACI-ERR-004",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#VerifyPublicationReceipt:errorstate:1"
+    },
+    {
+      "key": "4eeb42850d58e06e6e3c8b958c070cc4e92f88d2",
+      "id": "ACI-ERR-005",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:errorstate:1"
+    },
+    {
+      "key": "590321d33d9e5aa9a519c9a724a1d39a109f58ad",
+      "id": "ACI-ERR-006",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#VerifyPublicationReceipt:errorstate:2"
+    },
+    {
+      "key": "60163b2e7206de13f05676c3471a2b01dd7579c8",
+      "id": "ACI-ERR-007",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#PublishBusContribution:errorstate:5"
+    },
+    {
+      "key": "69c2c499e2da101ee8d00787756405c99d32be76",
+      "id": "ACI-ERR-008",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#PublishBusContribution:errorstate:3"
+    },
+    {
+      "key": "76f6745cf2ca4602871772ac5e53dcfda087248b",
+      "id": "ACI-ERR-009",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:errorstate:2"
+    },
+    {
+      "key": "8172141ec534b2cffe19aedddab255822a26cf7f",
+      "id": "ACI-ERR-010",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#PublishBusContribution:errorstate:2"
+    },
+    {
+      "key": "83a217016a11b88df19b7539e929140349f6982d",
+      "id": "ACI-ERR-011",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#PublishBusContribution:errorstate:4"
+    },
+    {
+      "key": "a27cc4cf9d4ca163a68253b9163246823db301de",
+      "id": "ACI-ERR-012",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#VerifyPublicationReceipt:errorstate:0"
+    },
+    {
+      "key": "a5badb7cf923d9504a252acd9c57ba6a9b7d082f",
+      "id": "ACI-ERR-013",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#VerifyPublicationReceipt:errorstate:4"
+    },
+    {
+      "key": "b8639efe11ea3d365d888d6a600578247b93ec26",
+      "id": "ACI-ERR-014",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#VerifyPublicationReceipt:errorstate:3"
+    },
+    {
+      "key": "ce39cc338c98418afc4398ca92c49911352a1487",
+      "id": "ACI-ERR-015",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#PublishBusContribution:errorstate:0"
+    },
+    {
+      "key": "ecfb157bad7bedfed1f14433d9276e8917ca602f",
+      "id": "ACI-ERR-016",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:errorstate:3"
+    },
+    {
+      "key": "00056527b6ab618b375a1f959c98ac97083c8f27",
+      "id": "ACI-EVT-001",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#usage.observed"
+    },
+    {
+      "key": "066b2f302f7b1933a6d0a9d696a3c5943cd98651",
+      "id": "ACI-EVT-002",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#run.started"
+    },
+    {
+      "key": "0f7e3d4453f245a3667ab84602eb24f49d4a77b4",
+      "id": "ACI-EVT-003",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#reconciliation.retry_requested"
+    },
+    {
+      "key": "12b9fb000e0a6373a82acdd49069c513fc380688",
+      "id": "ACI-EVT-004",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.cancel_requested"
+    },
+    {
+      "key": "130b02497afabf8054c9c6fd33941d548779c229",
+      "id": "ACI-EVT-005",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#publication.rejected"
+    },
+    {
+      "key": "132881fcd2edb2ab41d6c21723189b2c83e12d0e",
+      "id": "ACI-EVT-006",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#audit_close.verified"
+    },
+    {
+      "key": "140bf843154816ecb6888eeec4e128e53f81cc33",
+      "id": "ACI-EVT-007",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#verdict.computed"
+    },
+    {
+      "key": "1b3de7fb8478596ba2b5074b7f441ac2d9e89aca",
+      "id": "ACI-EVT-008",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#handoff.delivered"
+    },
+    {
+      "key": "24caef1628c5c5f431a18c6bb31a33739822a751",
+      "id": "ACI-EVT-009",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#group.cancelled"
+    },
+    {
+      "key": "2f57ec102786035f865cca181d81376892a2a943",
+      "id": "ACI-EVT-010",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#audit_close.requested"
+    },
+    {
+      "key": "3041c42d2a787d08d111a442f52bb30cd8fd286d",
+      "id": "ACI-EVT-011",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#critique.accepted"
+    },
+    {
+      "key": "30a10984ad2fbbd831a0218e14bfdfd1f13270bf",
+      "id": "ACI-EVT-012",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.running"
+    },
+    {
+      "key": "335d8b9d230d20e0b01f45824ef7ee841deac720",
+      "id": "ACI-EVT-013",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#effect.unknown"
+    },
+    {
+      "key": "35c710fbe302a6791794a96251d178e1313dcb2d",
+      "id": "ACI-EVT-014",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#effect.failed"
+    },
+    {
+      "key": "3879c18f2d6c9fa4e3799f5ae8ac6b7a3c7a4539",
+      "id": "ACI-EVT-015",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#position.accepted"
+    },
+    {
+      "key": "3deceaec2c94b3f5746291f77ef8b391e3fadd40",
+      "id": "ACI-EVT-016",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.observation_ignored"
+    },
+    {
+      "key": "40746b6c59b49f5ab824377e151e009541efe651",
+      "id": "ACI-EVT-017",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#run.execution_terminal_elected"
+    },
+    {
+      "key": "4bd8672804302d6ab1d5ce9da12ea972b9f73dcb",
+      "id": "ACI-EVT-018",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#effect.succeeded"
+    },
+    {
+      "key": "64eadaeab682392c9fa1c37907cbd6a512350517",
+      "id": "ACI-EVT-019",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.cancel_acknowledged"
+    },
+    {
+      "key": "7634838e0849b935c4cbf42bbddff7b3a62e80f6",
+      "id": "ACI-EVT-020",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.unknown"
+    },
+    {
+      "key": "849d1e4d6cd57ee9a77dda7e4282a6521d510e89",
+      "id": "ACI-EVT-021",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Run events"
+    },
+    {
+      "key": "86d73be14a616168875a357957442576cfce0b75",
+      "id": "ACI-EVT-022",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#audit_opening.reconciliation_required"
+    },
+    {
+      "key": "871eafc2a10dafa209b1f94fa3a7ff88752a35c3",
+      "id": "ACI-EVT-023",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#collection.closed"
+    },
+    {
+      "key": "8a7bba88afe5db1796b17d5f3b2dfbc2463629ce",
+      "id": "ACI-EVT-024",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#run.created"
+    },
+    {
+      "key": "8b123d74f682b28489f1dac7947173b62226be7e",
+      "id": "ACI-EVT-025",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.requested"
+    },
+    {
+      "key": "94c1814651088ebbf46a5e3d27abd12c8442e587",
+      "id": "ACI-EVT-026",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#audit_opening.requested"
+    },
+    {
+      "key": "96c12cf35977d7ae6e9809f458c4113e88a34710",
+      "id": "ACI-EVT-027",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.completed"
+    },
+    {
+      "key": "99b326f9bc1f31c752dc466a82432241543d733e",
+      "id": "ACI-EVT-028",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#publication.candidate_abandoned"
+    },
+    {
+      "key": "9dfb25f17cb1df2a1aedd9bf70728637301b87c4",
+      "id": "ACI-EVT-029",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Common runtime event envelope"
+    },
+    {
+      "key": "a3fb9cda05a612a163aad350865657084cb80334",
+      "id": "ACI-EVT-030",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.cancelled"
+    },
+    {
+      "key": "ab540f77dd66ea5b306d4c799636d40990f2a770",
+      "id": "ACI-EVT-031",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#group.failed"
+    },
+    {
+      "key": "ad470a0b344935d1d70201fdb4a22915becb3341",
+      "id": "ACI-EVT-032",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#group.committed"
+    },
+    {
+      "key": "ad6214646d0606e377a7471044b1ef3c19ef244c",
+      "id": "ACI-EVT-033",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.result_accepted"
+    },
+    {
+      "key": "b83cabb7e93d21e7f4705f63a05f265f7c677c2b",
+      "id": "ACI-EVT-034",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Deferred event families"
+    },
+    {
+      "key": "bd40c45b2eb9cb7f5d5055ceba0d0e64dbb80cce",
+      "id": "ACI-EVT-035",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#reveal.published"
+    },
+    {
+      "key": "bdd944bbfecd83e10ec4772cc62647dc4acc8e0a",
+      "id": "ACI-EVT-036",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#audit_opening.verified"
+    },
+    {
+      "key": "be76d5eb5d467724ed1a3f934ebeea63b401a015",
+      "id": "ACI-EVT-037",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#audit_close.reconciliation_required"
+    },
+    {
+      "key": "be86eb4319f5ea5390be43b208a88ae9fbcf6373",
+      "id": "ACI-EVT-038",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.failed"
+    },
+    {
+      "key": "c2ea039963dc0d822ffc2d876e3245e24a7b6837",
+      "id": "ACI-EVT-039",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Receipt and reveal guarantees"
+    },
+    {
+      "key": "c8ec2ed1e01fc73af8be8fb7e90590117d3ded43",
+      "id": "ACI-EVT-040",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#handoff.published"
+    },
+    {
+      "key": "d286f3010302c38945ce30c8e70ed9dd251b60ae",
+      "id": "ACI-EVT-041",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Usage and effect events"
+    },
+    {
+      "key": "db51c9fdc9906dc49db496466b8cc3b2cf5b9b1b",
+      "id": "ACI-EVT-042",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#group.started"
+    },
+    {
+      "key": "dcc44d52a487e84f4d579d703c711300cec9bfe3",
+      "id": "ACI-EVT-043",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Group and bus events"
+    },
+    {
+      "key": "dcc93926e919f45a161befc9a1ef1ea915145852",
+      "id": "ACI-EVT-044",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.starting"
+    },
+    {
+      "key": "e5b4c93edd256a685c0b410a9927ef4bd9aae338",
+      "id": "ACI-EVT-045",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#publication.persisted"
+    },
+    {
+      "key": "e64b523d23c59b7faf312ae2dd602ec6daa90656",
+      "id": "ACI-EVT-046",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#attempt.waiting_tool"
+    },
+    {
+      "key": "e90bdf32ff5b8c78e242222c48c9e3c7508c1440",
+      "id": "ACI-EVT-047",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Attempt events"
+    },
+    {
+      "key": "e94eb48b8078cc846b61d5c31e64f1ff3ad3ef38",
+      "id": "ACI-EVT-048",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#vote.accepted"
+    },
+    {
+      "key": "f1a6996f3868afb46931bbb515cc85d8c912b9f3",
+      "id": "ACI-EVT-049",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#deadline.fired"
+    },
+    {
+      "key": "f82532dd90bb969d4165669475d1a8e838b077be",
+      "id": "ACI-EVT-050",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#round.closed"
+    },
+    {
+      "key": "fe999885ea4f2227c076531cf882555ed4bd7ff9",
+      "id": "ACI-EVT-051",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#cancellation.requested"
+    },
+    {
+      "key": "2d24171b68c11ad8740acd30a14e7d0f66a56089",
+      "id": "ACI-IF-001",
+      "rule_type": "contract",
+      "anchor": "interfaces.md#POST /dispatches/{dispatch_id}/confirm:response:1"
+    },
+    {
+      "key": "484d578799a04a5fb4513b74d37814370e3622c1",
+      "id": "ACI-IF-002",
+      "rule_type": "contract",
+      "anchor": "interfaces.md#POST /dispatches/{dispatch_id}/confirm:response:2"
+    },
+    {
+      "key": "5af674263c736e8abb6d0689b5167114d2a2cbbf",
+      "id": "ACI-IF-003",
+      "rule_type": "contract",
+      "anchor": "interfaces.md#POST /dispatches/{dispatch_id}/confirm:response:3"
+    },
+    {
+      "key": "c9a6232b8292eba1db67a97918a0e7b2e1e1f2df",
+      "id": "ACI-IF-004",
+      "rule_type": "contract",
+      "anchor": "interfaces.md#POST /dispatches/{dispatch_id}/confirm:response:0"
+    },
+    {
+      "key": "17acef82e6e886e0c0b1f18349630db9e43400e1",
+      "id": "ACI-INV-001",
+      "rule_type": "invariant",
+      "anchor": "states.md#GroupLifecycle:invariant:3"
+    },
+    {
+      "key": "2c242026d1f42a88f50a5db68bafa8f90968cd84",
+      "id": "ACI-INV-002",
+      "rule_type": "invariant",
+      "anchor": "states.md#AttemptLifecycle:invariant:1"
+    },
+    {
+      "key": "4036bcc44c0233146505a3e6f569bdb0303effa8",
+      "id": "ACI-INV-003",
+      "rule_type": "invariant",
+      "anchor": "states.md#AttemptLifecycle:invariant:4"
+    },
+    {
+      "key": "4f149290a448ed07d71f95cf227833c7cfd705f9",
+      "id": "ACI-INV-004",
+      "rule_type": "invariant",
+      "anchor": "states.md#RunLifecycle:invariant:0"
+    },
+    {
+      "key": "59e284b3e428b3daf0b64c5f95648b44fd2cba4f",
+      "id": "ACI-INV-005",
+      "rule_type": "invariant",
+      "anchor": "states.md#AttemptLifecycle:invariant:3"
+    },
+    {
+      "key": "5d18a13e2f441bbde8b4d6c55e9922127be23487",
+      "id": "ACI-INV-006",
+      "rule_type": "invariant",
+      "anchor": "states.md#AttemptLifecycle:invariant:4"
+    },
+    {
+      "key": "7d84ad1dee9f61a1752eb46b3c1d1187b9b5f674",
+      "id": "ACI-INV-007",
+      "rule_type": "invariant",
+      "anchor": "states.md#RunLifecycle:invariant:0"
+    },
+    {
+      "key": "8e1169a3a5f1eb1913b701ab80f22347720b2fb2",
+      "id": "ACI-INV-008",
+      "rule_type": "invariant",
+      "anchor": "states.md#GroupLifecycle:invariant:3"
+    },
+    {
+      "key": "a1adc1565a99ed8a12bec2e89105d879ef441170",
+      "id": "ACI-INV-009",
+      "rule_type": "invariant",
+      "anchor": "states.md#RunLifecycle:invariant:2"
+    },
+    {
+      "key": "a8433c368732644d48977ab0d0ef7e9bed7bfd65",
+      "id": "ACI-INV-010",
+      "rule_type": "invariant",
+      "anchor": "states.md#AttemptLifecycle:invariant:3"
+    },
+    {
+      "key": "cf16e53d668a571350614e96334cdf43e330ad50",
+      "id": "ACI-INV-011",
+      "rule_type": "invariant",
+      "anchor": "states.md#RunLifecycle:invariant:2"
+    },
+    {
+      "key": "e09aa30ee8d15c54d5b37c93eb4f38d9fdf7d138",
+      "id": "ACI-INV-012",
+      "rule_type": "invariant",
+      "anchor": "states.md#AttemptLifecycle:invariant:1"
+    },
+    {
+      "key": "127ba33db8efc7b794ad31e6aecc9e7de8184d97",
+      "id": "ACI-MAP-001",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#RawProviderOutputToCanonicalObservations"
+    },
+    {
+      "key": "32eaf4f636acb369ebdceaa283154b44afff1846",
+      "id": "ACI-MAP-002",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#UsageObservationToRollups"
+    },
+    {
+      "key": "4f7ecb986f3c9468264475dae5fe27c4e4da95a0",
+      "id": "ACI-MAP-003",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#RuntimeTerminalToExitReason"
+    },
+    {
+      "key": "61bbc90b28b667da2c8b807059a3a789f86f67a6",
+      "id": "ACI-MAP-004",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#RevealManifestToEffectiveInput"
+    },
+    {
+      "key": "7f80544ee536395f5374bfd159a7c3cd5056ee77",
+      "id": "ACI-MAP-005",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#FrozenAuthorityToAuditLedgerRow"
+    },
+    {
+      "key": "f7e4136951e8c033c28db939f2b289ff5ead2c12",
+      "id": "ACI-MAP-006",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#BusPublicationToContribution"
+    },
+    {
+      "key": "fb66707c5bb4a51b422b95bca6bbf374e823957e",
+      "id": "ACI-MAP-007",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#AgentInvocationPlanToMaterializedInvocation"
+    },
+    {
+      "key": "00c343507dc551ce19c451466cd93c1cddcbb351",
+      "id": "ACI-NF-001",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:rule:3"
+    },
+    {
+      "key": "0146c46b27cde394e507daf417ae4bd745966595",
+      "id": "ACI-NF-002",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:6"
+    },
+    {
+      "key": "02bf4044c7fa7502f883cd6409223fddec2b25a4",
+      "id": "ACI-NF-003",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordUsageObservation:rule:1"
+    },
+    {
+      "key": "05b0521f16a4f3857296d81c58a8eed26e964484",
+      "id": "ACI-NF-004",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ComputeFixedProofVerdict:rule:3"
+    },
+    {
+      "key": "06e229e0210404da6adb639f16536cbe94ed083e",
+      "id": "ACI-NF-005",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:4"
+    },
+    {
+      "key": "0ae11f2b5982039abb0d94bec50469febeb3c8fb",
+      "id": "ACI-NF-006",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CancelRun:rule:2"
+    },
+    {
+      "key": "0b7e1fa3a0ecbaded17db9aa926d02ee4025400b",
+      "id": "ACI-NF-007",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyAuditClose:rule:0"
+    },
+    {
+      "key": "0c6cf0b5511fbfc9f297d89764b4e870eb405db6",
+      "id": "ACI-NF-008",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyAuditClose:rule:2"
+    },
+    {
+      "key": "0ccf30f598ed6f91b7c25101957948d14e07ea0b",
+      "id": "ACI-NF-009",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordUsageObservation:rule:4"
+    },
+    {
+      "key": "0cdeebef6ebc963455b772f2894c94dfdbd8319c",
+      "id": "ACI-NF-010",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#RunLifecycle:invariant:6"
+    },
+    {
+      "key": "0f93349907573508075158b783312aa05f5d6e06",
+      "id": "ACI-NF-011",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:5"
+    },
+    {
+      "key": "0fd41550ae57940f47cda98db3c7568c7790d884",
+      "id": "ACI-NF-012",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CancelRun:rule:1"
+    },
+    {
+      "key": "1094b5d9e7cac78b3db5d9fc47967678f0aa6b9c",
+      "id": "ACI-NF-013",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:rule:1"
+    },
+    {
+      "key": "11e29da954aebf854f190ff752fde35a8c74e61a",
+      "id": "ACI-NF-014",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishBusContribution:rule:3"
+    },
+    {
+      "key": "15abca65989092995d528251ac8ea20c6751e614",
+      "id": "ACI-NF-015",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:3"
+    },
+    {
+      "key": "15d3ba382c8003988e6166392e0d6d9e8818d0d5",
+      "id": "ACI-NF-016",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordAttemptObservation:rule:0"
+    },
+    {
+      "key": "16011af7be4aa4fcc2250e69b930479c6bb7c409",
+      "id": "ACI-NF-017",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:6"
+    },
+    {
+      "key": "1e06fd2c217c4b863779d38b12c04044ca8246e0",
+      "id": "ACI-NF-018",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:rule:0"
+    },
+    {
+      "key": "1e3c0ff0497b5a22f0aba27885d8c050fae971cf",
+      "id": "ACI-NF-019",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartGroup:rule:2"
+    },
+    {
+      "key": "206f5c87a8553d980ab0a5cae57b32ebccd30821",
+      "id": "ACI-NF-020",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#AttemptLifecycle:invariant:7"
+    },
+    {
+      "key": "22277f2efc4cb172f6b9753f79ffa58c86919305",
+      "id": "ACI-NF-021",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishBusContribution:rule:6"
+    },
+    {
+      "key": "286dbd6868c47c046e672b61194c06b99137c0eb",
+      "id": "ACI-NF-022",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyAuditOpening:rule:3"
+    },
+    {
+      "key": "2e4ccfa7965e9f6d3519e4b58e68900c3d60da5b",
+      "id": "ACI-NF-023",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ElectRunTerminal:rule:2"
+    },
+    {
+      "key": "367b63929a7063e2b3e55d58ee2620de35f34bff",
+      "id": "ACI-NF-024",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:rule:2"
+    },
+    {
+      "key": "388360d56b701ad8ad97620f15e0174e0399d3e7",
+      "id": "ACI-NF-025",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:2"
+    },
+    {
+      "key": "38a9628700e2809dec08bd69ab14c8a4f347a58c",
+      "id": "ACI-NF-026",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishRevealManifest:rule:0"
+    },
+    {
+      "key": "38cc4d763b7daaf872529e66620f234eb7c8fb85",
+      "id": "ACI-NF-027",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishConnectionHandoff:rule:0"
+    },
+    {
+      "key": "3b025ca1af3731d0b93303228da3014f14cd295e",
+      "id": "ACI-NF-028",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyAuditOpening:rule:1"
+    },
+    {
+      "key": "40243696a66491685c8289e0815394c40abbe48b",
+      "id": "ACI-NF-029",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#AttemptLifecycle:invariant:2"
+    },
+    {
+      "key": "42648cd4410eb6e7ea0b87a3885f1ea021539a47",
+      "id": "ACI-NF-030",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#AttemptLifecycle:invariant:8"
+    },
+    {
+      "key": "4de5e8b064490c754ff5c148f0344f5fa3203797",
+      "id": "ACI-NF-031",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:3"
+    },
+    {
+      "key": "4fdd3641dfa3a396ddc56491f603990f9a8ac26b",
+      "id": "ACI-NF-032",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordAttemptObservation:rule:3"
+    },
+    {
+      "key": "58821502b00ec55605ff835744739b5b0c26f300",
+      "id": "ACI-NF-033",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#AttemptLifecycle:invariant:6"
+    },
+    {
+      "key": "60d78b0fbeb1e5879269f6da043d848af0d9b9e6",
+      "id": "ACI-NF-034",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:5"
+    },
+    {
+      "key": "6317ecd9e0a57098b59ad16636848b800115d1a3",
+      "id": "ACI-NF-035",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartGroup:rule:1"
+    },
+    {
+      "key": "66c9761b023acf44a724199991bf446c1a820cb3",
+      "id": "ACI-NF-036",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordAttemptObservation:rule:4"
+    },
+    {
+      "key": "675e4a01a34bd02466e9c165c71c2ed946804106",
+      "id": "ACI-NF-037",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:7"
+    },
+    {
+      "key": "685b2928ff30cf03944b7a4f063c02fb51057809",
+      "id": "ACI-NF-038",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#AttemptLifecycle:invariant:0"
+    },
+    {
+      "key": "7052fea2e9bd618bea214cfe4a1305ac5ee6a6e0",
+      "id": "ACI-NF-039",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ElectRunTerminal:rule:0"
+    },
+    {
+      "key": "70f267da9eb28d50ba7f030d30dcb7bf4397f667",
+      "id": "ACI-NF-040",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:0"
+    },
+    {
+      "key": "73ca7c5f542267e7912c5e86390715ab21a99282",
+      "id": "ACI-NF-041",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CommitGroupResult:rule:3"
+    },
+    {
+      "key": "757543fffb639da1e14d2a001f507cffd2e25693",
+      "id": "ACI-NF-042",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartRun:rule:0"
+    },
+    {
+      "key": "75ac252e617730603be8445cd3e57a9ff65b2cc4",
+      "id": "ACI-NF-043",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordUsageObservation:rule:0"
+    },
+    {
+      "key": "7e9d66612f0dc20768c503c0bc0fd0c1fd6e80cd",
+      "id": "ACI-NF-044",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:1"
+    },
+    {
+      "key": "85f7a6295005167168bcb3c40aec2d71ab40142b",
+      "id": "ACI-NF-045",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishBusContribution:rule:2"
+    },
+    {
+      "key": "8bc5d749ca9bf4ffbeae55af2fb1ea45717e7256",
+      "id": "ACI-NF-046",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyAuditOpening:rule:2"
+    },
+    {
+      "key": "8d681ad88237c71801f633900420bd579d6f6b31",
+      "id": "ACI-NF-047",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ConfirmRuntimeDispatch:rule:4"
+    },
+    {
+      "key": "8d903ad310ab6566f1bd4ba0c565b80805966d4b",
+      "id": "ACI-NF-048",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ComputeFixedProofVerdict:rule:1"
+    },
+    {
+      "key": "8dd364db61a9c2385eb01877f6169f7613ccd69d",
+      "id": "ACI-NF-049",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:0"
+    },
+    {
+      "key": "93f557ec45468aaf918d22d9cc4fc8cb3f826f98",
+      "id": "ACI-NF-050",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:0"
+    },
+    {
+      "key": "940402d468f5cd052bdb6dd7625b380f6e0c962c",
+      "id": "ACI-NF-051",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ElectRunTerminal:rule:1"
+    },
+    {
+      "key": "9731a09da06b24785e0c85f1843b056bc727285e",
+      "id": "ACI-NF-052",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CloseCollection:rule:0"
+    },
+    {
+      "key": "99621185be6b533c480dc3d6298d804f73b487e6",
+      "id": "ACI-NF-053",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#AttemptLifecycle:invariant:5"
+    },
+    {
+      "key": "9cdfd11cbeb959e6ce1f4df0ebd4c033e1ab3936",
+      "id": "ACI-NF-054",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartRun:rule:1"
+    },
+    {
+      "key": "a028f649157652e674788a882a0c527248dab887",
+      "id": "ACI-NF-055",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CommitGroupResult:rule:1"
+    },
+    {
+      "key": "a3a11a91d627d68e4ea61530f5580986ed5da770",
+      "id": "ACI-NF-056",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyAuditClose:rule:1"
+    },
+    {
+      "key": "a6a02bc0b36bbd02287ee1f1028c0aaf670da72c",
+      "id": "ACI-NF-057",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishBusContribution:rule:4"
+    },
+    {
+      "key": "a9d5c61c831070876972469eb5eb6d303971d628",
+      "id": "ACI-NF-058",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ComputeFixedProofVerdict:rule:0"
+    },
+    {
+      "key": "aa8813a8343048de8589d7f03668f8c5f0a531a3",
+      "id": "ACI-NF-059",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:2"
+    },
+    {
+      "key": "ad5c07c61587e91d3be24e487bd1807021fdcea5",
+      "id": "ACI-NF-060",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#VerifyAuditOpening:rule:0"
+    },
+    {
+      "key": "b0bb75578372c669e45f2a6142fd8fcc3f0ddb32",
+      "id": "ACI-NF-061",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ComputeFixedProofVerdict:rule:2"
+    },
+    {
+      "key": "b29bdd1f53fc3dc07292e8dc828a26f50c9cc24e",
+      "id": "ACI-NF-062",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#RunLifecycle:invariant:3"
+    },
+    {
+      "key": "b2a67fa93b50e329d8d6310569895c1141866a47",
+      "id": "ACI-NF-063",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:5"
+    },
+    {
+      "key": "b5210e708bdfda9d6f7aa7ce33ba0df239048df2",
+      "id": "ACI-NF-064",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordUsageObservation:rule:3"
+    },
+    {
+      "key": "b791464255207ead53c07b83bb17ea80b34e456a",
+      "id": "ACI-NF-065",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishConnectionHandoff:rule:1"
+    },
+    {
+      "key": "b7fa622f503bf3b77a9e575012c3b63e4330e876",
+      "id": "ACI-NF-066",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#AttemptLifecycle:invariant:9"
+    },
+    {
+      "key": "b81da1570ac5df7d85c1d483dafb6dccef0330c5",
+      "id": "ACI-NF-067",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartGroup:rule:0"
+    },
+    {
+      "key": "bae595357de52203cd70f810a94519e1f361f06c",
+      "id": "ACI-NF-068",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#RunLifecycle:invariant:4"
+    },
+    {
+      "key": "bb13a995972957d780b20ba580918bf3797120fa",
+      "id": "ACI-NF-069",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishRevealManifest:rule:2"
+    },
+    {
+      "key": "bc10cb7c70bca2d3a56fc1450fd043c928a6fb4a",
+      "id": "ACI-NF-070",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishConnectionHandoff:rule:2"
+    },
+    {
+      "key": "c36d32fc369169ff051ebea661040d56361b0d15",
+      "id": "ACI-NF-071",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishBusContribution:rule:5"
+    },
+    {
+      "key": "c862cb58d6d140142549ac19220a2edd7b6eefbb",
+      "id": "ACI-NF-072",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishBusContribution:rule:0"
+    },
+    {
+      "key": "cb8cc4c831cea03256db0e77a658d3b3acbe1331",
+      "id": "ACI-NF-073",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CloseCollection:rule:3"
+    },
+    {
+      "key": "d51fa27a5e5549c6f248abb5bcb72ed67f85cc09",
+      "id": "ACI-NF-074",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#RecordAttemptObservation:rule:2"
+    },
+    {
+      "key": "d61dc8a98f5796a0c31a4ba6120bf02e1445b7b0",
+      "id": "ACI-NF-075",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#RunLifecycle:invariant:1"
+    },
+    {
+      "key": "db92c383227ced81fb6da8d74579dfeb92f5868e",
+      "id": "ACI-NF-076",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ComputeFixedProofVerdict:rule:4"
+    },
+    {
+      "key": "dc891226ab8d4493a871833a770a570f2c381cd3",
+      "id": "ACI-NF-077",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:7"
+    },
+    {
+      "key": "dfe2cb876c4c32c1969ac0d894c5d2279c2902a2",
+      "id": "ACI-NF-078",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishBusContribution:rule:1"
+    },
+    {
+      "key": "e112065c5cf3a26fb416ff3ab59957f857f67056",
+      "id": "ACI-NF-079",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#PublishRevealManifest:rule:3"
+    },
+    {
+      "key": "e26bb9db336fed177a8f7b9f97d60d5608941354",
+      "id": "ACI-NF-080",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:2"
+    },
+    {
+      "key": "e68c7aeb3a81d955e25ac4aa2c4c2749e71dcf16",
+      "id": "ACI-NF-081",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CancelRun:rule:0"
+    },
+    {
+      "key": "eebc0bb63cbd8e613da3c5976ae17708c14aba43",
+      "id": "ACI-NF-082",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#RunLifecycle:invariant:5"
+    },
+    {
+      "key": "eef45d7523780a05dcf3508302977ada162a7727",
+      "id": "ACI-NF-083",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:6"
+    },
+    {
+      "key": "f088505524b5ccdf1364d20da6c04b1c34a4e180",
+      "id": "ACI-NF-084",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:4"
+    },
+    {
+      "key": "f30019e83f8a0cddabfea7db579e8b5b8c9e109c",
+      "id": "ACI-NF-085",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:8"
+    },
+    {
+      "key": "f63253447c147edc1f3072abfa5c24c8e2c63581",
+      "id": "ACI-NF-086",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#ElectRunTerminal:rule:3"
+    },
+    {
+      "key": "f834138a78d81493ebd41018987ae3e91d49ab99",
+      "id": "ACI-NF-087",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#GroupLifecycle:invariant:1"
+    },
+    {
+      "key": "ffaa08a531c3f9c37ecc8a1f1bcd9511c3a87fbe",
+      "id": "ACI-NF-088",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#CloseCollection:rule:2"
+    },
+    {
+      "key": "4c78b68028674af517d311bbc05a2cbfa4aa899d",
+      "id": "ACI-QRY-001",
+      "rule_type": "query-behavior",
+      "anchor": "queries.md#GetRunStatus"
+    },
+    {
+      "key": "5eca19106c4de67d86ead181220fee86191e8673",
+      "id": "ACI-QRY-002",
+      "rule_type": "query-behavior",
+      "anchor": "queries.md#GetVisibleGroupMessages"
+    },
+    {
+      "key": "f4bd361fef6ed327ee49574212d807bd50f86307",
+      "id": "ACI-QRY-003",
+      "rule_type": "query-behavior",
+      "anchor": "queries.md#GetRuntimeProjection"
+    },
+    {
+      "key": "1bd69d3dbad7eea8e430b1456dab6211a617b541",
+      "id": "ACI-RULE-001",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#PublishRevealManifest:rule:1"
+    },
+    {
+      "key": "2fa1cb3c8396f9ea56aa886e2bd985590e00acb2",
+      "id": "ACI-RULE-002",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#RecordAttemptObservation:rule:1"
+    },
+    {
+      "key": "2fdcd629a307b765b10cea3f9196afbe5fb74c82",
+      "id": "ACI-RULE-003",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#StartAgentAttempt:rule:1"
+    },
+    {
+      "key": "3b5a812551303902213e9e56b8833662d230ac24",
+      "id": "ACI-RULE-004",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#PublishRevealManifest:rule:1"
+    },
+    {
+      "key": "3e821081bf60a2ae8b50deb7fc237e93b2f960ef",
+      "id": "ACI-RULE-005",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:4"
+    },
+    {
+      "key": "414bd86e19a5ec84e2d8be52401cf1693b292ca6",
+      "id": "ACI-RULE-006",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#VerifyPublicationReceipt:rule:4"
+    },
+    {
+      "key": "44a291508c252703c753f9006afc1570d83d59e8",
+      "id": "ACI-RULE-007",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#CloseCollection:rule:1"
+    },
+    {
+      "key": "44c1690280ed4bcb4fd47b1470bdad1442a5b9bc",
+      "id": "ACI-RULE-008",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#CloseCollection:rule:1"
+    },
+    {
+      "key": "582737211516a0c9f8c6b7b0f0a730675e950706",
+      "id": "ACI-RULE-009",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#RecordAttemptObservation:rule:1"
+    },
+    {
+      "key": "81054d6f7949148c5984f76658c261dc45c227af",
+      "id": "ACI-RULE-010",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#CommitGroupResult:rule:0"
+    },
+    {
+      "key": "c39462a2de195a383cf01dba17b7577620004fc2",
+      "id": "ACI-RULE-011",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#RecordUsageObservation:rule:2"
+    },
+    {
+      "key": "c3ab4217387ed9fc0823ba4ffd0aa527f775d746",
+      "id": "ACI-RULE-012",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#RecordUsageObservation:rule:2"
+    },
+    {
+      "key": "cf4bee7ba0d1fafdf014cfb3801263610d627a1e",
+      "id": "ACI-RULE-013",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#StartAgentAttempt:rule:1"
+    },
+    {
+      "key": "d919660197e4c637cd254eac523056607321f0af",
+      "id": "ACI-RULE-014",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#CommitGroupResult:rule:2"
+    },
+    {
+      "key": "f012b8f11d23777dae0f3d3e19a68fd61cb5f1e6",
+      "id": "ACI-RULE-015",
+      "rule_type": "rule-validation",
+      "anchor": "operations.md#CommitGroupResult:rule:0"
+    },
+    {
+      "key": "002446b4dcde87a5f845cf14e92eef79b1743cf9",
+      "id": "ACI-TR-001",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "010169dd68dffe7c8fe52a845b5006641558d86e",
+      "id": "ACI-TR-002",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`, `running`, `waiting_tool`, or `cancel_requested`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "0208c4b1fb405ab019882646bca6277ce6f0f496",
+      "id": "ACI-TR-003",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "03a3b92e802d82e49ed21df1288250f5830494eb",
+      "id": "ACI-TR-004",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "051cdc425f8e28c74e91e7a30dbb1e7dab512dad",
+      "id": "ACI-TR-005",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:8"
+    },
+    {
+      "key": "0572a3d5b44c5dd58b1528791f23c024683871b4",
+      "id": "ACI-TR-006",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "0639ce4b251e90cb0e8b04f3500beed735738477",
+      "id": "ACI-TR-007",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "066ff124baf1fbedb7e2edaab3a6ea9c31f647fd",
+      "id": "ACI-TR-008",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "080e6adad1404823d573facadefbaa4a30eab265",
+      "id": "ACI-TR-009",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "08761593e07a436f2a0e19c58e24585c4090a927",
+      "id": "ACI-TR-010",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "08aa3bff01b8d99b2d74b6255a185115958d0457",
+      "id": "ACI-TR-011",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "0b5a2f6edbe7d105646e027c82216d5bea4262a8",
+      "id": "ACI-TR-012",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "0bc4194bd5e3cd39668f83ee29cf6c467861ae59",
+      "id": "ACI-TR-013",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:10"
+    },
+    {
+      "key": "0d9541d9d92515410bfbbb5e9ed8e4addcfd46b9",
+      "id": "ACI-TR-014",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "0e1580802d0d213396c349d6df3faaddebda7208",
+      "id": "ACI-TR-015",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "0e7aff3f67dc69ae468a0451edf6b7deda380985",
+      "id": "ACI-TR-016",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:3"
+    },
+    {
+      "key": "0ed9bd793c0c84defb3dee7ae6c3b2113a818225",
+      "id": "ACI-TR-017",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "0f963b7137e94100e84091e3bed45ee7ab83627b",
+      "id": "ACI-TR-018",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "113212a28ae157345c4d4dc6fb31f77228ae1b30",
+      "id": "ACI-TR-019",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "11778efeb02cb02f3e5a7b814fcd3aaf230265e1",
+      "id": "ACI-TR-020",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "11fa1e87682d197355155627bf14f3916e2226df",
+      "id": "ACI-TR-021",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "1232a3f1692f37318e2474cbd2c9af389054886b",
+      "id": "ACI-TR-022",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "13db37a9d7218013e680f47a6a6c64cf24804cee",
+      "id": "ACI-TR-023",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "13e768f499db97755dd4e6d03f7719e8dbcee2e8",
+      "id": "ACI-TR-024",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "14179cc6d6a46f5d64433fe09daa372ceaf3050a",
+      "id": "ACI-TR-025",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "149ec19ce713261e2a5fa8df59744a13ce4706fc",
+      "id": "ACI-TR-026",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "15aff3ff479313155aa054390d85e864824e6764",
+      "id": "ACI-TR-027",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "165f2d958e47bf682a028398e031903c4e32135d",
+      "id": "ACI-TR-028",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "17970d1b0141b763c329e316507db4403e4854d2",
+      "id": "ACI-TR-029",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "17d8c3ad548a648fae2dd3b423c27b93460482bd",
+      "id": "ACI-TR-030",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "18af92cc21c9b5a9f495da63da0df57578121649",
+      "id": "ACI-TR-031",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "194be8bb9a921e3bd2072433535674a190d42741",
+      "id": "ACI-TR-032",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "19c7946baf3af5fe0222300c37e1133423298d78",
+      "id": "ACI-TR-033",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "1ab0a1984cf696236047aa77bf630c370aafb093",
+      "id": "ACI-TR-034",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "1ab907ad99df21129efcaa39de02654cd54f7fe8",
+      "id": "ACI-TR-035",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "1d30540e80589fc6443b6a78b21991b2eae0ee53",
+      "id": "ACI-TR-036",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "1d69516a411ed3c4e16ec345320c461f2ad65f1d",
+      "id": "ACI-TR-037",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "1e0496bdfb1bcbce7a528a3c582552b3fdebd217",
+      "id": "ACI-TR-038",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "1e8bf00126e04c3b048698ea67b8355955ccaaa3",
+      "id": "ACI-TR-039",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "1e960e11176183da4bec26a9ab1ff5cfd02938ea",
+      "id": "ACI-TR-040",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "209dcfb8a47980f2543841693498b771ca597637",
+      "id": "ACI-TR-041",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "22fcc7f9c5c4a8bb4d9f3ef9f518e68c8e341631",
+      "id": "ACI-TR-042",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`, `running`, `waiting_tool`, or `cancel_requested`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "23bf00a4977e48d0db0a28e78611b31c6a38f9ef",
+      "id": "ACI-TR-043",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "24776696f4cf5d33f18d1607a8c9d963d3f42f39",
+      "id": "ACI-TR-044",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "2489312da7afbc5e4a87397fd4ad8c0da8235182",
+      "id": "ACI-TR-045",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "2749cb82380a973f17523b127b7bfcdcf0b6da90",
+      "id": "ACI-TR-046",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "28221ca2dccb33bfcce7687a8dbf0dc354e919da",
+      "id": "ACI-TR-047",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "28fae33f945b6ef40d3dc3f7f4ffa858fac04f57",
+      "id": "ACI-TR-048",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "2a64741d412713ad1937a873c847a548b4f2b450",
+      "id": "ACI-TR-049",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "2a693efaf8c26f81a5d180aa8fef4e3f2b114a2d",
+      "id": "ACI-TR-050",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "2afd3675d64eb13c4b40a2e1e4855bdd47288d1c",
+      "id": "ACI-TR-051",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "2c1a799d211672b03653a04132b2d8e166568c58",
+      "id": "ACI-TR-052",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "2c1e99926841cc55a35cfc2aa465f62aaa3288f7",
+      "id": "ACI-TR-053",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "2d6cfdec7f1eead9bc97adbd4ac3fbcf14c0eed3",
+      "id": "ACI-TR-054",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "2ed71a1dca69d5efebc63198f62e3091320bc849",
+      "id": "ACI-TR-055",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "2efff95e3e3c836440d3b0bdbe2292ba1bdef92e",
+      "id": "ACI-TR-056",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "309fb68c679d5715132c851e9af777aadfae4c5a",
+      "id": "ACI-TR-057",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:9"
+    },
+    {
+      "key": "314b38f73be118225477a8596dcb0b63f541580a",
+      "id": "ACI-TR-058",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "31612bc7fa2947264b6bf2b20a59283a7d5e6bde",
+      "id": "ACI-TR-059",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "31c8ffb57ffe4ca9d1039c9b183f9b7fab928114",
+      "id": "ACI-TR-060",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`, `running`, `waiting_tool`, or `cancel_requested`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "33084112ab81be62d5bdf007eb329911a582103a",
+      "id": "ACI-TR-061",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:9"
+    },
+    {
+      "key": "3428d97f97f429d4faa4a7f41a78c6a28a3c1e49",
+      "id": "ACI-TR-062",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "346bb3441616f2f380bee0607585c3c49469a0a1",
+      "id": "ACI-TR-063",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "34bbb2f853fde86040caae4ae08f3325bf76ecbf",
+      "id": "ACI-TR-064",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "34ef6fc5879d2114d65e16c0a8f086280ddb2067",
+      "id": "ACI-TR-065",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "35c7ff01cda201e9cc88fc1fbba3667e178272a4",
+      "id": "ACI-TR-066",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "35f3a56cc7bd6f3d574acc028263a1b552ba0926",
+      "id": "ACI-TR-067",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "36624718059674efb20a423ed9513cacfb8be17b",
+      "id": "ACI-TR-068",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "37461b049b2a8b2254961b1d8f291ec8c5814455",
+      "id": "ACI-TR-069",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "37a773bc5d57a9a42c9d465e2c882d21092c169b",
+      "id": "ACI-TR-070",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "38209eaa992632b5151254f911d1cd93235eb765",
+      "id": "ACI-TR-071",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "3923d50fe377026c0747695ec27ea22093b32a28",
+      "id": "ACI-TR-072",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "3944ac94fc4752e085fe479d19cb2caf350fa086",
+      "id": "ACI-TR-073",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "39562e0b16684ed9d3d63cc5e3336f30d46d9195",
+      "id": "ACI-TR-074",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "3a8d151abdcda213a4df2ab1660bc2283b75d62f",
+      "id": "ACI-TR-075",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "3b7da99b0d0014e978a26d9072132710dee6662b",
+      "id": "ACI-TR-076",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "3cf18805a4318109ee860bd07505c3f8e389a061",
+      "id": "ACI-TR-077",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "3d5593ef184dbc8b7b54eb91678c5b66d1b93788",
+      "id": "ACI-TR-078",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "3d675132159191902352d8f2951bf0d4723f3a44",
+      "id": "ACI-TR-079",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "3d8b8473d635a4d265af063b5035da4d782ce4ef",
+      "id": "ACI-TR-080",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "3db1ec5cee82b5f027d253e369f70c152f8f30b0",
+      "id": "ACI-TR-081",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "3e427701b0ffbccba1ac73de6835a4093add7040",
+      "id": "ACI-TR-082",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "3f0ad9ea78f385e002c7440ec2352d3ff8ae1164",
+      "id": "ACI-TR-083",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "3fa0e15146933c54ce380611b9287293abc8bb64",
+      "id": "ACI-TR-084",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "3fca8ce74b8dae8d812921b411ca1bf3cec46391",
+      "id": "ACI-TR-085",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:4"
+    },
+    {
+      "key": "3fcc9d404d68d73955efc2809e0fcd835780453d",
+      "id": "ACI-TR-086",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "4225ce8e394d0cda1b7bb5bbc4aa87a24abfa646",
+      "id": "ACI-TR-087",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "449853f77a790cbb4cf07006ce3bfde0ac208d76",
+      "id": "ACI-TR-088",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "44c2d4df27bb5d91cc05e58f3fb92a22b8a1f85c",
+      "id": "ACI-TR-089",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "44f480a07ee0bf586722863760c520b7a4e326ab",
+      "id": "ACI-TR-090",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "4594ec873e1dd244a88afefc4461e0af0e4d5fe9",
+      "id": "ACI-TR-091",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "45ba40518cbd4c87ab0f13a1aa4efc57db25198d",
+      "id": "ACI-TR-092",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "4638b44d52903a70e5b34b70c76d8210dc1ae807",
+      "id": "ACI-TR-093",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "46544a8ffce5105b3332f5bc3bd02979b09c498a",
+      "id": "ACI-TR-094",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "475036cfd127979493baebe87606ea275d0fa883",
+      "id": "ACI-TR-095",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "481e40d9ce7796a713dc18d9c2ea9d3f31f694d2",
+      "id": "ACI-TR-096",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "487aa7147d74fcf015cfeecc2f26870e4965c032",
+      "id": "ACI-TR-097",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:5"
+    },
+    {
+      "key": "48b63cbe2e5043aa4161f57f99513be474d9a4a5",
+      "id": "ACI-TR-098",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:11"
+    },
+    {
+      "key": "4a3a8e083663908f7177c1ee69e56be9b30ad70f",
+      "id": "ACI-TR-099",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "4af55dd2169a08c8c1e99855399f16bf3109c47c",
+      "id": "ACI-TR-100",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "4c3f7e2d26b21a0568839a29a9b735b387ed2179",
+      "id": "ACI-TR-101",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "4c4f32c790122fc770f5e29b08f8d7d801943ba4",
+      "id": "ACI-TR-102",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "4e67deff84db204246e6394258994d787066eb29",
+      "id": "ACI-TR-103",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:5"
+    },
+    {
+      "key": "4edeb2cfcdce72c08424ef2d5c490ce68631480d",
+      "id": "ACI-TR-104",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "4f7f52ecfa68914f731b1573ffc149a82f0848e6",
+      "id": "ACI-TR-105",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "4f87d5ad6249d6c77517e24d5e827af52ac252c7",
+      "id": "ACI-TR-106",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "4fb1ee739e5449615c439418636172786cfff508",
+      "id": "ACI-TR-107",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "50e5da2d9a74403490306f0d803403a995dbc449",
+      "id": "ACI-TR-108",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "517905436948f0fea795e3e3ddbc2305b393544a",
+      "id": "ACI-TR-109",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "5245c567932cad4b45cec6455e614e9adae2b5e5",
+      "id": "ACI-TR-110",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "528eca8e0ac799bd764351f04be5f1e3b958b292",
+      "id": "ACI-TR-111",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "52c8bbdc7588f540309c2d932036c8e72cf71860",
+      "id": "ACI-TR-112",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "55a94fef8e19665a367b1d0a17de10710862bb32",
+      "id": "ACI-TR-113",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "55c0bdeae9a90830ae29c472a4a9c2c30b1b8ed5",
+      "id": "ACI-TR-114",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "55c2f813d03c417b0fd7f2b3a19270b043a085ca",
+      "id": "ACI-TR-115",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "56139b13a10739a2134dc7841ae5ee9274bd89b0",
+      "id": "ACI-TR-116",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "56a946104d282e67b380d69b2815a24baa80f624",
+      "id": "ACI-TR-117",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "57d3ed275763a4161ee1d022c44a907dabbe56ce",
+      "id": "ACI-TR-118",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "580d1db1a43dc64a197649362b5614a3d03ed262",
+      "id": "ACI-TR-119",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "5816be1ea4080dbc6b24593257ed2ebf61ffccd9",
+      "id": "ACI-TR-120",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "591dec1c1aa766f23193c8ad9342af535044afd4",
+      "id": "ACI-TR-121",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:4"
+    },
+    {
+      "key": "598ee0a004caa039c400fd51d4f6c61c34be163b",
+      "id": "ACI-TR-122",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "5a768d410dadcea261f828d1fb3f51fdc28f5a7f",
+      "id": "ACI-TR-123",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:1"
+    },
+    {
+      "key": "5ac0a63656db3f6941dc1c10c9828e58b30b7790",
+      "id": "ACI-TR-124",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "5b033ce3586c08a81a53319a872cfc5c4eef9251",
+      "id": "ACI-TR-125",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "5c460784d11f8c8161f71be5165359e9bc9aed2c",
+      "id": "ACI-TR-126",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "5c66523467cf7bf5ad8039d3f2bdb905959b8599",
+      "id": "ACI-TR-127",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "5d13b002ff710021418e1cfd877d9428d3e270ca",
+      "id": "ACI-TR-128",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:5"
+    },
+    {
+      "key": "5de3bc25da230cc2ca4b980b71964523be4b7731",
+      "id": "ACI-TR-129",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "5e52b7867589a93a4c4cfd53a7c67cc28ec4e9d3",
+      "id": "ACI-TR-130",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "5eebcd57cc8ef580b02c0f0ece4e63bd86657d1e",
+      "id": "ACI-TR-131",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "5ef48ccc9970db2b086347d656d9c1fa42373d11",
+      "id": "ACI-TR-132",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "5f07b20fe5e6ed8a628fbf49d3890de4817223d6",
+      "id": "ACI-TR-133",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:2"
+    },
+    {
+      "key": "5f2cf91d0b280822d06ea96647c017473a476eb1",
+      "id": "ACI-TR-134",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "5f5918c9760ff357a7be5b6855aa55283073aa28",
+      "id": "ACI-TR-135",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:4"
+    },
+    {
+      "key": "5fdf22044d85c73bd35d1a0e8d3870236b36f99a",
+      "id": "ACI-TR-136",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "60c2b00912270349686afa948dfc2026cec49320",
+      "id": "ACI-TR-137",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "6113a9b5cbf25cf7ec13940b9f493441f8c3dcef",
+      "id": "ACI-TR-138",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "61356881e2aafc060f0722d1da0c7a93b8dc77da",
+      "id": "ACI-TR-139",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "61366bd7d916e59eaddc9aacf756c16463056a81",
+      "id": "ACI-TR-140",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:1"
+    },
+    {
+      "key": "61cf04dd00c743e42dd7c142ddf1a2c1d768e0d8",
+      "id": "ACI-TR-141",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "621ce602c130be36f191c4902b2037a067f7f842",
+      "id": "ACI-TR-142",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "630e1ccd819198f079c88526f75ba9ba100ac82d",
+      "id": "ACI-TR-143",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "64d9b225cc350fbce11cab8ef57ff1c45b352ba9",
+      "id": "ACI-TR-144",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "6567a6ee26c8e33940d2d9567ed7ce385fa90c0b",
+      "id": "ACI-TR-145",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "66971256dda5b504eae8cd0904c9d5071d4a1832",
+      "id": "ACI-TR-146",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "67b75bdf9c56d7b8c481e0da54b7cf3ee6c4473a",
+      "id": "ACI-TR-147",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`, `running`, `waiting_tool`, or `cancel_requested`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "681eba7dd7a4fa83c9e2901648fb1719d70bcd2b",
+      "id": "ACI-TR-148",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "69826795e23ea2661e26a3cc9b727636fa9d4f58",
+      "id": "ACI-TR-149",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "6a5a0a78ae255c3d163d61db85a6a7197b0c81eb",
+      "id": "ACI-TR-150",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "6b1852017b83a6cfe9ecb40cc0a21d3b1c88c839",
+      "id": "ACI-TR-151",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "6b4ff2c2d10333fad77897a2e254f9f75a20c089",
+      "id": "ACI-TR-152",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`, `running`, `waiting_tool`, or `cancel_requested`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "6b77dd052fff54fdc40f21e15ecf1adde90c671d",
+      "id": "ACI-TR-153",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "6b826e90e942d41fbf0eb1bee90f825486f42bf1",
+      "id": "ACI-TR-154",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "6b8277714631355a80727426b719b3cb53c96ced",
+      "id": "ACI-TR-155",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "6c2c6c71727681f78ceb25aed19ffbb4897e2175",
+      "id": "ACI-TR-156",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "6ecb11ffe6afd42d644cf2dbecba30cd9dfdbf23",
+      "id": "ACI-TR-157",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "6f03623e8437a055bd52c381596a4d6a5053c678",
+      "id": "ACI-TR-158",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "7015118b136b13ae8eb5bc4895435ba515ffde7c",
+      "id": "ACI-TR-159",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "70bf2b5e5090c82c204f8dff96a8df04c65e2e1b",
+      "id": "ACI-TR-160",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "7129e6902d348f81a2d0634d4d7ba63a9b12937a",
+      "id": "ACI-TR-161",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "7255bd9aa67d5539a24232f20b46218fd390ac5d",
+      "id": "ACI-TR-162",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "732e910a9eac4c0a97e037dbc5a4fa321c9f335a",
+      "id": "ACI-TR-163",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:6"
+    },
+    {
+      "key": "7336e366af05d895a13e2cd52508a90ce0f7098c",
+      "id": "ACI-TR-164",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:6"
+    },
+    {
+      "key": "733c7c822fc8c52d7ec8ac7430d77d4d797dd7c1",
+      "id": "ACI-TR-165",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "734efeb373d0a1d427cd56ad4a380b37d3e3ef28",
+      "id": "ACI-TR-166",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "7451dfc49305591fbc8a04243a5068e505a681c1",
+      "id": "ACI-TR-167",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "7453fde58848dcae07b3846d916fdaf50013633d",
+      "id": "ACI-TR-168",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "74a3b693b5c53c6f31d2ca4c8df1786fca94e5ae",
+      "id": "ACI-TR-169",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "7527031bb42ee7ca642f4d33e147dd4a292791ff",
+      "id": "ACI-TR-170",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "75616a683bb9527d4279dd30e94a7aac4308ab71",
+      "id": "ACI-TR-171",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "7575b0da5fd3b82f7377d1ac80353b062b6a0ab0",
+      "id": "ACI-TR-172",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "759cc227b1053b5d511d7af514dd55c2d136d025",
+      "id": "ACI-TR-173",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "76652357f358bde0bd073b1760ce49c8a19c4c3a",
+      "id": "ACI-TR-174",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "7687fdac9f3f0038cb65320fa32b7c91c7fc116f",
+      "id": "ACI-TR-175",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "76d08606f780cc2e6be7f87d8616df780228d07b",
+      "id": "ACI-TR-176",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "7a1125e0d0ee852e81947cc6d17dae3fc040d2c3",
+      "id": "ACI-TR-177",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "7addb77ad2385172e3fda766b209a9cc0af4895f",
+      "id": "ACI-TR-178",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "7b4a96b756170807825a8653cd80d5a71d668a3b",
+      "id": "ACI-TR-179",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "7ba9d1c6a541196950996eed51759dc6386a4504",
+      "id": "ACI-TR-180",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "7d1d383557198aec16ba196c305dfde15d136b31",
+      "id": "ACI-TR-181",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "7d9984e4e190635e91094a260a2d114923e5e57c",
+      "id": "ACI-TR-182",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`, `running`, `waiting_tool`, or `cancel_requested`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "7f151382d5aacccb13b9d5c5c0397e83a3234c5c",
+      "id": "ACI-TR-183",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "7f2f3957f3b2a609f6733e22c4ed23c41c2348e5",
+      "id": "ACI-TR-184",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "7f7e21a5be208b78bb64f1ee3d5afcdc4798f8d4",
+      "id": "ACI-TR-185",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "81428df1c5c6fadc1c5ea347130985f29c5ff27d",
+      "id": "ACI-TR-186",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "81531126c9f975bfd710aef88a361aa880c62daf",
+      "id": "ACI-TR-187",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "8227795f11f170cd1382aafb9525df230b8407af",
+      "id": "ACI-TR-188",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "83225cb7c6e1810cd54744a1bf66b3d01a507e73",
+      "id": "ACI-TR-189",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "83f1ed1ee74db546fc580db49beaca0a1283bce7",
+      "id": "ACI-TR-190",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:7"
+    },
+    {
+      "key": "84acf89d229b7521fe38c5bbb7a0469b94c0c5a8",
+      "id": "ACI-TR-191",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:9"
+    },
+    {
+      "key": "85b5b34e7e3f8ab0acc8fe7ba89b1a3258e815ae",
+      "id": "ACI-TR-192",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "8689a39296a465ac83c55abfff6227e833de6f5c",
+      "id": "ACI-TR-193",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "871ae06eb74ae2e13914c2d857c520fe4cd6a4aa",
+      "id": "ACI-TR-194",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:10"
+    },
+    {
+      "key": "877f88ee26c097be6ce88915a62fb9ec182f55ca",
+      "id": "ACI-TR-195",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:0"
+    },
+    {
+      "key": "882fa414f896b41e2fbb467109e1c738605e05cd",
+      "id": "ACI-TR-196",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "888dfe56598c474c637033071e5ebaf7eb0ed2e2",
+      "id": "ACI-TR-197",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "88da44e6617220e148dc9b6d9f63c3c504073004",
+      "id": "ACI-TR-198",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:0"
+    },
+    {
+      "key": "894eec19a34d7132185d3cba77a403c53ec8e361",
+      "id": "ACI-TR-199",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "8a93501ee624b0fc0559d1aa20b7388cc1af75b7",
+      "id": "ACI-TR-200",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "8bbd01c502df6f4bf8aba90c2964bede400dc65b",
+      "id": "ACI-TR-201",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "8c33fc4d237cd02e6c9dc4b9e4b28c6e81b46cbf",
+      "id": "ACI-TR-202",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "8c65f69516aa2c511ef2e6a2e08bd81529d31ba0",
+      "id": "ACI-TR-203",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "8cf0febe5cae3575c0b6c0c8355120e4ac02a459",
+      "id": "ACI-TR-204",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "8e7a27f2d74e22685658a76806c98b1f08d22944",
+      "id": "ACI-TR-205",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "8ee165b34bf7aac1168deb6c638c6fcb7a626063",
+      "id": "ACI-TR-206",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "8f2c426df5e28511bf883c484d7898f76b074b4f",
+      "id": "ACI-TR-207",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "8f602172388c9c70d6bc377e070f0ea68ccb4e1d",
+      "id": "ACI-TR-208",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "8f86796c52a44e849646a631d5479368d02e3c48",
+      "id": "ACI-TR-209",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:1"
+    },
+    {
+      "key": "9030f0e7a9136bf26b32e868c0c7bf741af8f619",
+      "id": "ACI-TR-210",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:3"
+    },
+    {
+      "key": "9075beaa87eb16d80cb7bffa8158ffc6e435de27",
+      "id": "ACI-TR-211",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "90b3c35f7e73e9e032ec33ce4cf5f48da29a418c",
+      "id": "ACI-TR-212",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "90c9b7086d11a3234648c1438fda76664340a2f7",
+      "id": "ACI-TR-213",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "9157d5b56f2cac115c6a77da2d3e07f39e0426f4",
+      "id": "ACI-TR-214",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "91770f87ef36a071b470869eeb67ccb42bf441af",
+      "id": "ACI-TR-215",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "920b609ba62f97f0ce01a1fd3d7c9e0f175d7b59",
+      "id": "ACI-TR-216",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "9261c6da1a5ffe9e7e4f1d49161b87163d2655a5",
+      "id": "ACI-TR-217",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "932285fae7abd1f8cbb31b771d5c2f6d9dc22448",
+      "id": "ACI-TR-218",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "943aa67fb924923abb37830b676f781fe7414385",
+      "id": "ACI-TR-219",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "943bddf977311dd9c40b98f1864cf9a870618662",
+      "id": "ACI-TR-220",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "9457c748cf7ef5f6ccc0043412cf7cfe4af2ba0d",
+      "id": "ACI-TR-221",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "94a173b08df7bb83298ceee7c8f91b43887fe55d",
+      "id": "ACI-TR-222",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "94ba7e0216fdad430b5711d9625beb4d1b218c22",
+      "id": "ACI-TR-223",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "950ee964c6730733aa725b2f4f17f0b089a771da",
+      "id": "ACI-TR-224",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:8"
+    },
+    {
+      "key": "955d1a1c1779885cb46c8e73f6b0e7d9297812ed",
+      "id": "ACI-TR-225",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "96169d2e5c1846ef8211cf30b4367b3220f455a0",
+      "id": "ACI-TR-226",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "96faf49ec3aa33d17c2d38ff951de5b63ecccce1",
+      "id": "ACI-TR-227",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "976eebcc6dca61c2b9a2426f5a99ea77e187f984",
+      "id": "ACI-TR-228",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`opening_pending`:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "981ceaf2aace015472aa48ba1aa1919e1f317eff",
+      "id": "ACI-TR-229",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "9a25a9158c4e99d2c7230f0cb846f19b58f6755a",
+      "id": "ACI-TR-230",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "9a48c1f2dd816935402de199a895b75ed4dbcc98",
+      "id": "ACI-TR-231",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "9a78cf802389599e102c9edba751721ee265388f",
+      "id": "ACI-TR-232",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "9b1147b9ac266817387f86ae8f051472a4930c6b",
+      "id": "ACI-TR-233",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "9f08cc34ed480ab61c73047d89cf63822c39c985",
+      "id": "ACI-TR-234",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "9f5b0b31a6090b10534023e6f8137f772fd416dd",
+      "id": "ACI-TR-235",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "9ffbfbaa29f6f7d0cc6bb38f5ba2333b258a21be",
+      "id": "ACI-TR-236",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "a03ccd68e68fe0721859e9541234f26b3c1835ce",
+      "id": "ACI-TR-237",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "a16132d95bf8abb3c0ef4966c1c04c7aa044e9e6",
+      "id": "ACI-TR-238",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "a1d09ed5bcaa0dded8f9b59dcad1f1f1c719e581",
+      "id": "ACI-TR-239",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "a243a00ab747d8eafa8bb3882aee08f1eba26931",
+      "id": "ACI-TR-240",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "a25b3675eb567b01df1bb9e2d0348433530d5860",
+      "id": "ACI-TR-241",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "a616f47bec86267ebcae7591b58ec823d46affab",
+      "id": "ACI-TR-242",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "a6744ace6b5ff5720cfafe2cb8d12a25292f56ec",
+      "id": "ACI-TR-243",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "a7380a7810f35bd7f075a8e28e3c9084c3935fad",
+      "id": "ACI-TR-244",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "a8f3f0e650041516addf20986b1631b3894bbab2",
+      "id": "ACI-TR-245",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:7"
+    },
+    {
+      "key": "a9268d39f9a8eca67cd43bc913fe273ea58b3a4e",
+      "id": "ACI-TR-246",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "a9678daf8660821808b4011d4cfd50280e6f517a",
+      "id": "ACI-TR-247",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "aab0692a806ebc71fc8b8f09e561ea15e3c0b2ac",
+      "id": "ACI-TR-248",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`requested`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "aabc3af24b3421a57e0f2015071304bc6c465bc6",
+      "id": "ACI-TR-249",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "aad6b109118b73cfdc4d26df2b4fd156b58ccdd3",
+      "id": "ACI-TR-250",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`waiting_tool`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "ab85fe3025fdcef243306cee289f0a0320fa5ff2",
+      "id": "ACI-TR-251",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "ac1850027522c0b82014bb8f5e0cc152095944aa",
+      "id": "ACI-TR-252",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.waiting_tool`](events.md#attemptwaiting_tool)"
+    },
+    {
+      "key": "ac599b3456a85d0081df919f6e8586bc3b404be2",
+      "id": "ACI-TR-253",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.cancel_requested`](events.md#attemptcancel_requested)"
+    },
+    {
+      "key": "ac7ff329a8c190e46698409096d1646b0e168c73",
+      "id": "ACI-TR-254",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "ad3a60b2ef58451638cf87b99c1a78288d926b22",
+      "id": "ACI-TR-255",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:7"
+    },
+    {
+      "key": "adaa8b44096e090c42da7efae396bb5dc028940e",
+      "id": "ACI-TR-256",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:none:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "adb30c22e240f06d3b12895a8d51dd356b9c878f",
+      "id": "ACI-TR-257",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "aecdcf45b495e5fff357a53523693bc39bf32a06",
+      "id": "ACI-TR-258",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "afb371689e8b9e6fd2f77cc96030747c82dc90a6",
+      "id": "ACI-TR-259",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`completed`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "b0a52d6be82889980dbbb3969ee84df5158716e1",
+      "id": "ACI-TR-260",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "b1822651d3852521aedcb9ce94595532f0cfab31",
+      "id": "ACI-TR-261",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "b1c1e8d34ca0940ea85117d0fac00c82a52f2938",
+      "id": "ACI-TR-262",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "b31740ae53d7886aa9453fe117cf5c52b24209d0",
+      "id": "ACI-TR-263",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "b568135032637a484fbab2c009479a9e56ad515b",
+      "id": "ACI-TR-264",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "b575d19b676016f7796533b40b4f9c5f0046213c",
+      "id": "ACI-TR-265",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "b65e0be9c32b8df64ed8fd2603b6c6af489c86ca",
+      "id": "ACI-TR-266",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "b75d553d90f863464135b44bd3de9ca7ad6af31a",
+      "id": "ACI-TR-267",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "b8f9c1a33e9abfc9080fd16ec2a056bd41f1ac4d",
+      "id": "ACI-TR-268",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "b8fc29905a97f65c561cc3d80f4ed21a65db80d3",
+      "id": "ACI-TR-269",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "b94f8f53c051d45685726640039171e2932db2e3",
+      "id": "ACI-TR-270",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "b987402c4f9a28415ef80804c28f3f0fc075110e",
+      "id": "ACI-TR-271",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:0"
+    },
+    {
+      "key": "baed2ce32d13f4eb233aad391ce2879a1324d1c1",
+      "id": "ACI-TR-272",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "bce7b30888da11f9004eff7a0b5b3e25a6f2314d",
+      "id": "ACI-TR-273",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "bd746071b3f2eebf2c040bf7d06121663445133f",
+      "id": "ACI-TR-274",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "bd7ca95b7975da1756929586d2725daf070d0121",
+      "id": "ACI-TR-275",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:3"
+    },
+    {
+      "key": "bd9970391340c67fb7a9b93f1adf3b60ac3ebd77",
+      "id": "ACI-TR-276",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`close_pending`:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "bde7d3e90988f4260f8f3cf67f352c99995d2db6",
+      "id": "ACI-TR-277",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "bea49f6629565d91761a943ab3eb34ea4a3a7279",
+      "id": "ACI-TR-278",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "c1a9694a2bbf9d83289aa9df164e224d4b5db934",
+      "id": "ACI-TR-279",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`, `running`, `waiting_tool`, or `cancel_requested`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "c240024242037ba051c3456f82100f834f0d512e",
+      "id": "ACI-TR-280",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "c417eafd82fec2ff54bb1c09ab09bcc9856f860a",
+      "id": "ACI-TR-281",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "c57aadf5d5cb6fbd6dc78e786ddde683f60e7b53",
+      "id": "ACI-TR-282",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "c5e5f062bf2575fe164c06de8ecc7f94cce99e0d",
+      "id": "ACI-TR-283",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:6"
+    },
+    {
+      "key": "c662ccc43cccaf2ed1f0538823832de6b043e21c",
+      "id": "ACI-TR-284",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`committing`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "c6766d172282e7512768bd4c9520e3a1c1ef075c",
+      "id": "ACI-TR-285",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "c6b303078a3619f0192a2fedb0f6c7a9ad2fb350",
+      "id": "ACI-TR-286",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "c7df1078c73a1663809479ac7d7db4eec79a3669",
+      "id": "ACI-TR-287",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "cb96727fdc79cd0a8226015fa5054ada702735d8",
+      "id": "ACI-TR-288",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "cbf63a83867b011be1d21319b02fdb3d70a6855d",
+      "id": "ACI-TR-289",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "cc1734bd3bfd1394e773676ce7b0749c903bd7fd",
+      "id": "ACI-TR-290",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:any applicable nonterminal:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "ce1c1eb1eae0672f58416f76d7ddf095f3063e01",
+      "id": "ACI-TR-291",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:`reconciliation.retry_requested`"
+    },
+    {
+      "key": "d157750ebb58b154fb4c0fb523de67984a01f029",
+      "id": "ACI-TR-292",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:8"
+    },
+    {
+      "key": "d3df985857e91aa4e97d74fdaf56d77e5f135d2a",
+      "id": "ACI-TR-293",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`execution_terminal`:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "d58bcd97a6ad89d9bb8564ef6a035935ade32319",
+      "id": "ACI-TR-294",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`group.failed`](events.md#groupfailed)"
+    },
+    {
+      "key": "d67d676bd2b0a29f9852b931c1db64e6c83e3a2e",
+      "id": "ACI-TR-295",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`collecting`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "d6d5ef05cb8cb38dcec4b61a847d0c0ccf664d09",
+      "id": "ACI-TR-296",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`group.started`](events.md#groupstarted)"
+    },
+    {
+      "key": "d77a608619bbe3986ce3b0b65850e4105be4cbc9",
+      "id": "ACI-TR-297",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "d86a81dc20330dd93217e51feace1148d824e686",
+      "id": "ACI-TR-298",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "d8d8276c8d28dd40705363979e04431e9e589865",
+      "id": "ACI-TR-299",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`group.committed`](events.md#groupcommitted)"
+    },
+    {
+      "key": "d9894db25364936a48efcb97f19073967664ffa8",
+      "id": "ACI-TR-300",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "da3142a0aca94fba9fd00056a42d1554f6284863",
+      "id": "ACI-TR-301",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "db58a4a210672e313a5aa6c404520bb1bee0bcea",
+      "id": "ACI-TR-302",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "db5f76a0556264b760cc1cfc854efa5acaca3793",
+      "id": "ACI-TR-303",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "dcbca3e27f5d3f0abc85b97c9f489c58da6b7a3e",
+      "id": "ACI-TR-304",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "dd7cd52d97f48be68a5aa6aa7bbb6e7e1636f3a2",
+      "id": "ACI-TR-305",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "e0d61ffd40ee2118098bd676aec67327bb73f26e",
+      "id": "ACI-TR-306",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "e147a394856b23dfffde523053279513bf108238",
+      "id": "ACI-TR-307",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "e1c392b853da984a67201fd917394603f54eca9a",
+      "id": "ACI-TR-308",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "e24431d44567e177022657a60ce1da516c65e62c",
+      "id": "ACI-TR-309",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.cancelled`](events.md#attemptcancelled)"
+    },
+    {
+      "key": "e3f2c473b99e2554b65fb8581e9267f613c397d2",
+      "id": "ACI-TR-310",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`pending`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "e4cbc166fa7eb7189e426aa8e439307bd193874d",
+      "id": "ACI-TR-311",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "e566b76a48d2eb0dee55d800eb798b7c14004101",
+      "id": "ACI-TR-312",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "e64b95a0da628202d117bce1f0eca5c068be05de",
+      "id": "ACI-TR-313",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:2"
+    },
+    {
+      "key": "e8301b925aa831d71cc460c5edd0b2a1b6c573c0",
+      "id": "ACI-TR-314",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "e8dea1a21666ac39455bd11cc683647cfb0bbaa3",
+      "id": "ACI-TR-315",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "e8e4d3c817f15e3383291c712517940baa3db963",
+      "id": "ACI-TR-316",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`unknown`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "ea16bfafaf3edb0bc50e784510277c4dd161ce7a",
+      "id": "ACI-TR-317",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "ea687925ec73ef3d6230796514e449c8291b5f84",
+      "id": "ACI-TR-318",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "ea82e71116da58de3bc2ce1f16dcc0384c655390",
+      "id": "ACI-TR-319",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelling`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "eab5f732c286a716282916a153f7e2945d4f8cfa",
+      "id": "ACI-TR-320",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.running`](events.md#attemptrunning)"
+    },
+    {
+      "key": "eaf5eed5984b8ef7bee7aacc0ed09305ac1ed12a",
+      "id": "ACI-TR-321",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#RunLifecycle:transition:10"
+    },
+    {
+      "key": "eb7ae41bc605fcb3d6e5937dd1ee9bdf9aef719a",
+      "id": "ACI-TR-322",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`collection.closed`](events.md#collectionclosed)"
+    },
+    {
+      "key": "eb976e81a827869d88ca7d3b04c0ef3d3acd4926",
+      "id": "ACI-TR-323",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`run.execution_terminal_elected`](events.md#runexecution_terminal_elected)"
+    },
+    {
+      "key": "ebf1a525045f22595739ae016b9c7196ddcc2a98",
+      "id": "ACI-TR-324",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`voting`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "ec40afecb5eddaff1b12930cd1e6b0c9a59d6e04",
+      "id": "ACI-TR-325",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "ec4e3f88f4437ffdbaf841d9989b44aed0aa9aed",
+      "id": "ACI-TR-326",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "ecf3d0060366bb1a9e89f2eed9ba8cc5d43a8c3b",
+      "id": "ACI-TR-327",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:none:[`audit_opening.requested`](events.md#audit_openingrequested)"
+    },
+    {
+      "key": "ed08bae5b47571ca5f74f84562115d3876da66af",
+      "id": "ACI-TR-328",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`audit_close.requested`](events.md#audit_closerequested)"
+    },
+    {
+      "key": "ed5a85c974fdc2a45a548427ab058432a8a98a1a",
+      "id": "ACI-TR-329",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`audit_opening.verified`](events.md#audit_openingverified)"
+    },
+    {
+      "key": "ee570beb22ef870a5c032128d7d3cf5be62676a9",
+      "id": "ACI-TR-330",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "eed74953c537d5f2d446f7d25663e8cfc79bfa5e",
+      "id": "ACI-TR-331",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "ef1faec3465ab0e4ba41eaa7b9881a2f156c325c",
+      "id": "ACI-TR-332",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "efd043718e98569939b21fea2e874143cfef3991",
+      "id": "ACI-TR-333",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`running`:[`attempt.cancel_acknowledged`](events.md#attemptcancel_acknowledged)"
+    },
+    {
+      "key": "f092f65945d29964fb26d929f80454be41660ea4",
+      "id": "ACI-TR-334",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`verdict.computed`](events.md#verdictcomputed)"
+    },
+    {
+      "key": "f0d598df35b317a1ed1cecd913fcfc00a512b1dd",
+      "id": "ACI-TR-335",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`run.created`](events.md#runcreated)"
+    },
+    {
+      "key": "f24c840237c8626aa715177f79f298d390713700",
+      "id": "ACI-TR-336",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`deliberating`:[`position.accepted`](events.md#positionaccepted)"
+    },
+    {
+      "key": "f3aed3d2eedc001d399a6f2c31acf9146cdbf91c",
+      "id": "ACI-TR-337",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`running`:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "f3c91c81d5a42ab2d13a6e1166ffb877cf6a211c",
+      "id": "ACI-TR-338",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.failed`](events.md#attemptfailed)"
+    },
+    {
+      "key": "f5e401b675160e6adf208b489f0e5e21308ca6e5",
+      "id": "ACI-TR-339",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#GroupLifecycle:transition:12"
+    },
+    {
+      "key": "f62f1b546144b80912888a2fd412e481204a32c8",
+      "id": "ACI-TR-340",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`round.closed`](events.md#roundclosed)"
+    },
+    {
+      "key": "f6acf2507f954c98d28f9aaf8be53e731806d111",
+      "id": "ACI-TR-341",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`audit_opening.reconciliation_required`](events.md#audit_openingreconciliation_required)"
+    },
+    {
+      "key": "f6d2829e4d48bc29718312bbe9ec9f745ba213db",
+      "id": "ACI-TR-342",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`failed`:[`attempt.starting`](events.md#attemptstarting)"
+    },
+    {
+      "key": "f732105df28cb2e1cb6d0fb6df4a342e1fdfc799",
+      "id": "ACI-TR-343",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`cancelled`:[`cancellation.requested`](events.md#cancellationrequested)"
+    },
+    {
+      "key": "f85ddeed23aad4dd36388e57bab82308cc6fab0d",
+      "id": "ACI-TR-344",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancel_requested`:[`attempt.unknown`](events.md#attemptunknown)"
+    },
+    {
+      "key": "f8e23851621b616e85ce705319bfba6a973fda63",
+      "id": "ACI-TR-345",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`revealing`:[`critique.accepted`](events.md#critiqueaccepted)"
+    },
+    {
+      "key": "f94affd4135b9fb114d02f5a5bf408dda39906c7",
+      "id": "ACI-TR-346",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`reconciliation_required`:[`run.started`](events.md#runstarted)"
+    },
+    {
+      "key": "fa0e8be16cf47943431aaf64dc95351b09539371",
+      "id": "ACI-TR-347",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`group.cancelled`](events.md#groupcancelled)"
+    },
+    {
+      "key": "fa211e0246edcf3857761fd5b039c7e9d8eae11c",
+      "id": "ACI-TR-348",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`closed`:[`audit_close.reconciliation_required`](events.md#audit_closereconciliation_required)"
+    },
+    {
+      "key": "fa234297d67ba54e18ab6b3a1610aaba3c2bec86",
+      "id": "ACI-TR-349",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#AttemptLifecycle:transition:2"
+    },
+    {
+      "key": "fae3600741dd6488f82bf55514da968f99a46ae3",
+      "id": "ACI-TR-350",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`starting`:[`attempt.requested`](events.md#attemptrequested)"
+    },
+    {
+      "key": "faf9a1d5e6caa9de37100c8bbeb45b78b074e744",
+      "id": "ACI-TR-351",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`failed`:[`vote.accepted`](events.md#voteaccepted)"
+    },
+    {
+      "key": "fba28a2c4f8586f396aa623063b17aa90f39984d",
+      "id": "ACI-TR-352",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#AttemptLifecycle:invalid:`cancelled`:[`attempt.completed`](events.md#attemptcompleted)"
+    },
+    {
+      "key": "fc858f28d1223080cece68900332595020230636",
+      "id": "ACI-TR-353",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:any nonterminal except `cancelling`:[`reveal.published`](events.md#revealpublished)"
+    },
+    {
+      "key": "fce40c7a44a72348376deaa54bc1c4287a35d977",
+      "id": "ACI-TR-354",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`ready`:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "fe72dc2a4e070147dd0756682d2eb540eff71670",
+      "id": "ACI-TR-355",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#RunLifecycle:invalid:`confirmed`:[`audit_close.verified`](events.md#audit_closeverified)"
+    },
+    {
+      "key": "fffe47e5ca2266743bb21fa9f1fd6fdc73ed7cb5",
+      "id": "ACI-TR-356",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#GroupLifecycle:invalid:`completed`:[`group.started`](events.md#groupstarted)"
+    }
+  ],
+  "next": {
+    "EVT": 52,
+    "TR": 357,
+    "DOM": 235,
+    "NF": 89,
+    "ENUM": 6,
+    "MAP": 8,
+    "INV": 13,
+    "ERR": 17,
+    "RULE": 16,
+    "IF": 5,
+    "QRY": 4
+  },
+  "tombstones": []
+}

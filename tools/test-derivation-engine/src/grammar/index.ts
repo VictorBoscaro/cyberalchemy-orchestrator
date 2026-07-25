@@ -129,6 +129,20 @@ function fieldsRecord(
   return rec;
 }
 
+/**
+ * A domain table may group same-typed fields as `` `a`, `b` ``. Preserve the
+ * authored shorthand while emitting one DomainField declaration per identifier.
+ * Only split when the entire cell is code spans separated by commas or slashes;
+ * prose and type expressions remain one honest declaration.
+ */
+function declaredFieldNames(cell: string): string[] {
+  const matches = [...cell.matchAll(/`([^`]+)`/g)];
+  if (matches.length < 2) return [unfence(cell)];
+  const separators = cell.replace(/`[^`]+`/g, "").trim();
+  if (!/^(?:\s*[,/]\s*)+$/.test(separators)) return [unfence(cell)];
+  return matches.map((match) => (match[1] ?? "").trim()).filter(Boolean);
+}
+
 function readDoc(featureDir: string, file: string): string[] | null {
   try {
     return readFileSync(join(featureDir, file), "utf8").split(/\r?\n/);
@@ -276,7 +290,23 @@ function parseOperations(ctx: ParseContext, lines: string[]): void {
       continue;
     }
     if (h3) {
-      const title = cleanHeading(h3[1]).toLowerCase();
+      const heading = cleanHeading(h3[1]);
+      const internalTransition = heading.match(
+        /^internal transition\s+[—–-]\s*(.+)$/i,
+      );
+      if (internalTransition?.[1]) {
+        currentOp = cleanHeading(internalTransition[1]);
+        const anchor = `${ctx.file}#${currentOp}`;
+        ctx.nodes.push({
+          id: anchor,
+          type: "Operation",
+          source_anchor: anchor,
+          fields: fieldsRecord({ name: currentOp }),
+        });
+        section = null;
+        continue;
+      }
+      const title = heading.toLowerCase();
       section = title.startsWith("rule")
         ? "rules"
         : title.startsWith("calculation")
@@ -760,21 +790,25 @@ function parseDomain(ctx: ParseContext, lines: string[]): void {
         constraint: colIndex(table.header, "Constraint"),
       };
       for (const row of table.rows) {
-        const field = unfence(row.cells[ci.field] ?? "");
-        if (field === "") continue;
-        const anchor = `${ctx.file}#${current}:field:${row.rowIndex}`;
-        ctx.nodes.push({
-          id: anchor,
-          type: "DomainField",
-          source_anchor: anchor,
-          fields: fieldsRecord({
-            entity: current,
-            field,
-            ftype: unfence(row.cells[ci.type] ?? ""),
-            constraint:
-              ci.constraint >= 0 ? unfence(row.cells[ci.constraint] ?? "") : "",
-          }),
-        });
+        const fields = declaredFieldNames(row.cells[ci.field] ?? "");
+        for (const [fieldIndex, field] of fields.entries()) {
+          if (field === "") continue;
+          const suffix =
+            fields.length === 1 ? `${row.rowIndex}` : `${row.rowIndex}:${fieldIndex}`;
+          const anchor = `${ctx.file}#${current}:field:${suffix}`;
+          ctx.nodes.push({
+            id: anchor,
+            type: "DomainField",
+            source_anchor: anchor,
+            fields: fieldsRecord({
+              entity: current,
+              field,
+              ftype: unfence(row.cells[ci.type] ?? ""),
+              constraint:
+                ci.constraint >= 0 ? unfence(row.cells[ci.constraint] ?? "") : "",
+            }),
+          });
+        }
       }
     } else if (
       section === "enums" &&

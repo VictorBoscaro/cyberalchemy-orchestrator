@@ -1,7 +1,7 @@
 // CLI surface for the engine. Subcommands: roundtrip, derive, lint.
 // `roundtrip` runs the financial-settlement L0 falsification gate.
 
-import { basename, dirname, join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { execSync } from "node:child_process";
@@ -20,7 +20,6 @@ import {
   renderResidueReceipt,
 } from "./residue/receipt.js";
 import {
-  CANONICAL_DOCS,
   computeProvenance,
   extractEngineRegion,
 } from "./provenance/index.js";
@@ -31,6 +30,11 @@ import {
   writeIdMap,
 } from "./identity/human-id.js";
 import { containmentError } from "./paths/containment.js";
+import {
+  emptyInputViolation,
+  resolveFeatureTarget,
+  type ResolvedFeatureTarget,
+} from "./target.js";
 import {
   deriveDescriptor,
   engineSemanticSet,
@@ -53,19 +57,6 @@ function engineCommit(): string {
   } catch {
     return "unknown";
   }
-}
-
-/** Feature name from a resolved feature dir (its basename). */
-function featureNameOf(featureDir: string): string {
-  return basename(featureDir) || "feature";
-}
-
-/** Canonical docs actually present in a feature dir (for the completeness gate). */
-function presentDocsIn(featureDir: string): string[] {
-  const aspects = CANONICAL_DOCS.filter((d) => existsSync(join(featureDir, d)));
-  return aspects.length === 0 && existsSync(join(featureDir, "SPEC.md"))
-    ? ["SPEC.md"]
-    : aspects;
 }
 
 /** Committed id-map sidecar path (parallels bindings/). */
@@ -177,11 +168,18 @@ function runSelfCheck(feature: string): number {
   return result.ok ? 0 : 5;
 }
 
-/** Resolve a CLI arg to a directory: a path if it points to one, else a feature name. */
-function resolveTarget(arg: string): string {
-  const asPath = resolve(arg);
-  if (existsSync(asPath)) return asPath;
-  return featureDirFor(arg);
+/** Resolve feature identity, canonical-doc directory, and generated-artifact root. */
+function resolveTarget(arg: string): ResolvedFeatureTarget {
+  return resolveFeatureTarget(arg, featureDirFor);
+}
+
+function parseTarget(target: ResolvedFeatureTarget) {
+  const parsed = parse(target.docsDir);
+  const empty = emptyInputViolation(target);
+  return {
+    graph: parsed.graph,
+    violations: empty ? [empty, ...parsed.violations] : parsed.violations,
+  };
 }
 
 function runDerive(
@@ -192,9 +190,9 @@ function runDerive(
     console.error("derive: requires a feature name or directory argument");
     return 1;
   }
-  const featureDir = resolveTarget(arg);
-  const feature = featureNameOf(featureDir);
-  const { graph, violations } = parse(featureDir);
+  const target = resolveTarget(arg);
+  const { featureDir, docsDir, feature, presentDocs } = target;
+  const { graph, violations } = parseTarget(target);
 
   // Fail-closed on the WRITE path (G4, SWU-3): never emit a spec from non-canonical
   // input — only `lint`/`roundtrip` may report-and-continue.
@@ -227,8 +225,7 @@ function runDerive(
   const prevMap = loadIdMap(idMapPath, feature);
   const alloc = allocateIds(obligations, prevMap);
 
-  const provenance = computeProvenance(featureDir, engineCommit());
-  const presentDocs = presentDocsIn(featureDir);
+  const provenance = computeProvenance(docsDir, engineCommit());
   const doc = emitTestSpecDocument({
     feature,
     obligations,
@@ -264,9 +261,9 @@ function runCheck(arg: string | undefined): number {
     console.error("check: requires a feature name or directory argument");
     return 1;
   }
-  const featureDir = resolveTarget(arg);
-  const feature = featureNameOf(featureDir);
-  const { graph, violations } = parse(featureDir);
+  const target = resolveTarget(arg);
+  const { featureDir, feature, presentDocs } = target;
+  const { graph, violations } = parseTarget(target);
 
   console.log(`=== Drift Check: ${feature} ===`);
   let failed = false;
@@ -309,7 +306,7 @@ function runCheck(arg: string | undefined): number {
     const freshRegion = emitEngineRegionBody(
       obligations,
       alloc.idByKey,
-      presentDocsIn(featureDir),
+      presentDocs,
     );
     const fullText = readFileSync(specPath, "utf8");
     const committedRegion = extractEngineRegion(fullText);
@@ -363,14 +360,21 @@ function runEmitTests(arg: string | undefined): number {
     console.error("emit-tests: requires a feature name or directory argument");
     return 1;
   }
-  const { graph, violations } = parse(resolveTarget(arg));
-  for (const v of violations) console.error(`violation: ${v}`);
+  const target = resolveTarget(arg);
+  const { graph, violations } = parseTarget(target);
+  if (violations.length > 0) {
+    console.error(
+      `emit-tests: ${violations.length} parser violation(s) — refusing to emit (fail-closed):`,
+    );
+    for (const v of violations) console.error(`  - ${v}`);
+    return 4;
+  }
   const obligations = derive(graph);
 
   // Hybrid mode iff a binding sidecar exists for this feature; else legacy stubs.
   // Without a sidecar there is no recorded language, so the stub path stays vitest;
   // a Python feature must commit a sidecar (with `language: "python"`) to get pytest.
-  const bindingsPath = bindingsPathFor(arg);
+  const bindingsPath = bindingsPathFor(target.feature);
   if (!bindingsPath) {
     console.log(emitTests(obligations));
     return 0;
@@ -416,9 +420,9 @@ function runReceipt(
     console.error("receipt: requires a feature name or directory argument");
     return 1;
   }
-  const featureDir = resolveTarget(arg);
-  const feature = featureNameOf(featureDir);
-  const { graph, violations } = parse(featureDir);
+  const target = resolveTarget(arg);
+  const { featureDir, feature } = target;
+  const { graph, violations } = parseTarget(target);
   const bindingPath = bindingsPathFor(feature);
   const bindings = bindingPath ? loadBindings(bindingPath) : null;
   const rendered = renderResidueReceipt(
@@ -427,7 +431,7 @@ function runReceipt(
 
   if (!flags.has("--out")) {
     console.log(rendered.trimEnd());
-    return 0;
+    return violations.length === 0 ? 0 : 4;
   }
 
   const outPath = join(featureDir, "RESIDUE-RECEIPT.engine.json");
@@ -455,11 +459,11 @@ function runLint(arg: string | undefined): number {
     return 1;
   }
   const target = resolveTarget(arg);
-  const { graph, violations } = parse(target);
+  const { graph, violations } = parseTarget(target);
   const obligations = derive(graph);
   const needsFormal = obligations.filter((o) => o.rule_type === "needs-formal");
 
-  console.log(`=== Lint: ${target} ===`);
+  console.log(`=== Lint: ${target.featureDir} ===`);
   console.log("");
   console.log(`Non-canonical tables: ${violations.length}`);
   for (const v of violations) console.log(`  - ${v}`);
