@@ -5,8 +5,8 @@ is_session: false
 layer: domain
 nature: [technical, reference]
 status: draft
-version: 0.2.1
-last_updated: 2026-07-23
+version: 0.3.0
+last_updated: 2026-07-25
 ---
 
 # Domain: Agents Communication Infra
@@ -94,6 +94,7 @@ preserving the operation identity.
 | Field | Type | Required | Description |
 |---|---|---:|---|
 | `attempt_id` | string | yes | Physical execution identity. |
+| `dispatch_id` | string | yes | Runtime-derived dispatch scope inherited from the owning run. |
 | `operation_id` | string | yes | Stable logical operation. |
 | `seat_id` | [SeatId](#seatid) | yes | Authorized logical contributor. |
 | `agent_instance_id` | string | yes | Selected instance. |
@@ -103,6 +104,19 @@ preserving the operation identity.
 | `effective_input_artifact_id` | [ArtifactId](#artifactid) | yes | Canonical input manifest actually materialized. |
 | `request_digest` | [ContentDigest](#contentdigest) | yes | Idempotent adapter-start digest. |
 | `worker_epoch` | integer | no | Durable single-host claim fence. |
+
+**Reference-lineage extension status:** `dispatch_id` as a persisted attempt field is specified for
+the next bounded slice and is not implemented by the Stage G pilot.
+
+**Dispatch provenance:**
+
+```text
+Attempt(attempt_id).dispatch_id =
+  Run(Group(Seat(Attempt(attempt_id).seat_id).group_aggregate_id).run_id).dispatch_id
+```
+
+`Attempt.dispatch_id` is derived by the runtime from the authorized seat/group/run ownership path;
+it is never accepted from an agent-authored payload.
 
 **Lifecycle:** See [AttemptLifecycle](states.md#attemptlifecycle).
 
@@ -185,6 +199,122 @@ events refer only to a finalized artifact whose digest, size and classification 
 | `size_bytes` | integer | yes | Validated non-negative byte count. |
 | `storage_ref` | string | yes | Opaque location controlled by the artifact boundary. |
 | `tombstoned_at` | timestamp | no | Payload removal marker; provenance survives. |
+
+### AgentReferenceDelivery
+
+The immutable acceptance record that binds one already-delivered Reference Scout bundle to the
+exact [EffectiveInputArtifact](#effectiveinputartifact) entry materialized for one target
+[Attempt](#attempt). This record is distinct from the existing Scout lifecycle fact
+`reference_scout.bundle_delivered@1`: that earlier fact says the committed bundle reached the
+ScoutRun's terminal delivery state, while this entity proves a later, separately authorized
+delivery into one agent attempt.
+
+**Contract status:** specified for the next bounded slice; not implemented. The source Scout
+lifecycle is evidenced by [Stage G](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle);
+this target-agent binding extends the canonical-input settlement of
+[OQ-ACI8](../discovery/feature-discovery/agents-communication-infra.md#oq-aci8--canonical-effective-input)
+without claiming that Stage G already implements it.
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `agent_reference_delivery_id` | string | yes | Stable delivery identity. |
+| `dispatch_id` | string | yes | Runtime-derived dispatch scope shared by ScoutRun and recipient. |
+| `scout_run_id` | string | yes | Source ScoutRun whose committed bundle is already terminal-delivered. |
+| `source_bundle_delivered_event_id` | string | yes | Existing accepted `reference_scout.bundle_delivered@1` lifecycle fact. |
+| `bundle_artifact_id` | [ArtifactId](#artifactid) | yes | Exact immutable ordered recommendation bundle. |
+| `bundle_digest` | [ContentDigest](#contentdigest) | yes | Verified digest of the source bundle bytes. |
+| `recommendation_ids` | ordered list<string> | yes | Exact accepted recommendation membership and order carried by the bundle. |
+| `target_attempt_id` | string | yes | Recipient attempt derived from authenticated delivery capability. |
+| `target_seat_id` | [SeatId](#seatid) | yes | Recipient seat derived from the same capability and attempt. |
+| `target_agent_instance_id` | string | yes | Recipient agent instance derived from the same capability and attempt. |
+| `effective_input_artifact_id` | [ArtifactId](#artifactid) | yes | Finalized target manifest containing the exact bundle entry. |
+| `effective_input_entry_ordinal` | integer | yes | Zero-based position of the unique bundle entry in the target manifest. |
+| `effective_input_manifest_hash` | [ContentDigest](#contentdigest) | yes | Finalized manifest digest after inserting the bundle entry. |
+| `visibility_policy_ref` | [VersionedReference](#versionedreference) | yes | Delivery policy derived from the authenticated capability and frozen into the input entry. |
+| `idempotency_key` | string | yes | Retry identity scoped to source ScoutRun and capability-derived target attempt. |
+| `accepted_event_id` | string | yes | Committed `reference_scout.bundle_delivered_to_agent@1` fact. |
+| `journal_offset` | [JournalOffset](#journaloffset) | yes | Global append position committed before acknowledgement. |
+
+**Identity and uniqueness:** `agent_reference_delivery_id`; at most one accepted delivery exists per
+`(scout_run_id, target_attempt_id)`. An identical retry returns the original canonical receipt.
+Bundle, artifact, membership, digest, recipient, entry, policy or manifest drift conflicts rather
+than creating another delivery. Reuse of the scoped idempotency key with any such drift is also a
+conflict.
+
+**Relational invariants:**
+
+```text
+committed_event =
+  preceding accepted reference_scout.bundle_committed@1 where
+    committed_event.scout_run_id = scout_run_id
+    and committed_event.bundle_artifact_id = bundle_artifact_id
+    and committed_event.bundle_digest = bundle_digest
+    and committed_event.recommendation_ids = recommendation_ids
+
+source_bundle_delivered_event_id identifies
+  accepted reference_scout.bundle_delivered@1 where
+    delivered_event.scout_run_id = scout_run_id
+    and delivered_event.bundle_artifact_id = bundle_artifact_id
+    and delivered_event.bundle_digest = bundle_digest
+    and committed_event.journal_offset < delivered_event.journal_offset
+
+bundle_digest = hash(Artifact(bundle_artifact_id).bytes)
+ordered_recommendation_ids(Artifact(bundle_artifact_id).bytes) = recommendation_ids
+delivered_event has no recommendation_ids field
+recommendation_ids derives only from committed_event and Artifact(bundle_artifact_id).bytes
+
+ScoutRun(scout_run_id).dispatch_id = dispatch_id
+Attempt(target_attempt_id).dispatch_id = dispatch_id
+Attempt(target_attempt_id).seat_id = target_seat_id
+Attempt(target_attempt_id).agent_instance_id = target_agent_instance_id
+EffectiveInputArtifact(effective_input_artifact_id).attempt_id = target_attempt_id
+EffectiveInputArtifact(effective_input_artifact_id).manifest_hash = effective_input_manifest_hash
+entries[effective_input_entry_ordinal] =
+  unique reference_bundle(
+    artifact_ref = bundle_artifact_id,
+    content_hash = bundle_digest,
+    agent_reference_delivery_id,
+    visibility_policy_ref)
+
+accepted_event_id identifies
+  reference_scout.bundle_delivered_to_agent@1 where
+    accepted_event.agent_reference_delivery_id = agent_reference_delivery_id
+    and accepted_event.dispatch_id = dispatch_id
+    and accepted_event.scout_run_id = scout_run_id
+    and accepted_event.source_bundle_delivered_event_id = source_bundle_delivered_event_id
+    and accepted_event.bundle_artifact_id = bundle_artifact_id
+    and accepted_event.bundle_digest = bundle_digest
+    and accepted_event.recommendation_ids = recommendation_ids
+    and accepted_event.target_attempt_id = target_attempt_id
+    and accepted_event.target_seat_id = target_seat_id
+    and accepted_event.target_agent_instance_id = target_agent_instance_id
+    and accepted_event.effective_input_artifact_id = effective_input_artifact_id
+    and accepted_event.effective_input_entry_ordinal = effective_input_entry_ordinal
+    and accepted_event.effective_input_manifest_hash = effective_input_manifest_hash
+    and accepted_event.visibility_policy_ref = visibility_policy_ref
+    and accepted_event.idempotency_key = idempotency_key
+    and accepted_event.journal_offset = journal_offset
+    and delivered_event.journal_offset < accepted_event.journal_offset
+```
+
+As part of `StartAgentAttempt`, the runtime preallocates `attempt_id`,
+`agent_reference_delivery_id` and `accepted_event_id`, then atomically accepts the Attempt,
+finalized effective-input artifact metadata, this delivery record,
+`reference_scout.bundle_delivered_to_agent@1` and `attempt.requested`. The preallocated delivery ID
+may therefore be embedded in the manifest before any member becomes accepted. No accepted attempt
+or delivery exists if any member of that transaction fails, so the manifest reference is not
+circular acceptance evidence and an immutable manifest is never amended after acceptance.
+
+**Evidence boundary:** This entity proves only that the exact accepted bundle bytes were included
+in the observable input manifest for the named attempt. It does not prove that the provider
+received an unobservable transformation, that the agent opened or consulted a recommended source,
+that the agent declared use of it, or that it supports a claim.
+
+**Operation boundary:** target-agent delivery is an optional, atomic input-settlement step of the
+existing [StartAgentAttempt](operations.md#startagentattempt) operation through the
+capability-derived [ArtifactBoundary](interfaces.md#internal-artifact-boundary). Its dedicated
+event is `reference_scout.bundle_delivered_to_agent@1`; the event aspect and SPEC registry are
+updated later in this same bounded spec-authoring pass.
 
 ### EffectiveInputArtifact
 
@@ -374,15 +504,27 @@ receipts, or a receipt inconsistent with `completion_kind` fail closed.
 
 ### EffectiveInputEntry
 
+**Reference-lineage extension status:** `reference_bundle` and
+`agent_reference_delivery_id` are specified for the next bounded slice and are not implemented by
+the Stage G pilot.
+
 | Field | Type | Constraint |
 |---|---|---|
-| `entry_type` | string | `instruction`, `history`, `context`, `reveal_message`, `tool_contract`, `response_schema`, or `adapter_wrapper`. |
+| `entry_type` | string | `instruction`, `history`, `context`, `reveal_message`, `reference_bundle`, `tool_contract`, `response_schema`, or `adapter_wrapper`. |
 | `artifact_ref` | [ArtifactId](#artifactid) | Exact delivered bytes. |
 | `content_hash` | [ContentDigest](#contentdigest) | Verified artifact digest. |
 | `author_principal_id` | string | Required for authored/revealed messages; otherwise nullable. |
 | `message_id` | string | Required for message/reveal entries; otherwise nullable. |
 | `reveal_manifest_id` | string | Required for `reveal_message`; otherwise nullable. |
+| `agent_reference_delivery_id` | string | Required only for `reference_bundle`; identifies the accepted target-agent delivery. |
 | `visibility_policy_ref` | [VersionedReference](#versionedreference) | Policy authorizing delivery. |
+
+For `entry_type=reference_bundle`, `artifact_ref` and `content_hash` equal the source
+[AgentReferenceDelivery](#agentreferencedelivery)'s bundle artifact and `bundle_digest`, and
+`agent_reference_delivery_id` identifies that delivery. The entry carries the Scout's ordered
+recommendation bundle as context; it is not a generic peer-read grant and creates no authority to
+read any other bus payload or artifact. Its `visibility_policy_ref` equals the source delivery's
+capability-derived `visibility_policy_ref`.
 
 ### ResourceBudget
 

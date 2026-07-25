@@ -5,8 +5,8 @@ is_session: false
 layer: application
 nature: [procedural, technical]
 status: draft
-version: 0.4.0
-last_updated: 2026-07-23
+version: 0.5.0
+last_updated: 2026-07-25
 ---
 
 # Test Spec: Agents Communication Infra
@@ -38,6 +38,7 @@ This document specifies contract tests, not test code. Fixtures derive from [rul
 | [T-ACI-R19](#t-aci-r19--sandbox-authority-and-budget-fence) | Sandbox, authority cutover and finite budgets fail closed | [SandboxLauncher](specs/interfaces.md#internal-sandboxlauncher) |
 | [T-ACI-R20](#t-aci-r20--causal-start-prerequisites) | Start cannot race past close/cancel using stale dependency heads | [RuntimeCommand](specs/domain.md#runtimecommand) |
 | [T-ACI-R21](#t-aci-r21--candidate-abandonment-and-replacement) | Unknown orphan candidates release their key only through authorized audited CAS | [PublicationCandidate](specs/domain.md#publicationcandidate) |
+| [T-ACI-R22](#t-aci-r22--reference-bundle-target-delivery) | Scout bundle delivery to a target attempt is source-bound, unique, ordered and atomic | [ACI-R19](specs/rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic) |
 | [T-ACI-ETA1](#t-aci-eta1--external-tool-authority-classification) | External tools cannot acquire kernel or authoritative-store ownership | [ExternalToolAdoptionPolicy](specs/rules.md#aci-r15--external-tool-adoption-policy) |
 | [T-ACI-ETA2](#t-aci-eta2--canonical-python-contract-vectors) | Boundary validation and runtime-owned canonical sealing remain distinct | [CanonicalContractPolicy](specs/rules.md#aci-r16--canonical-contract-policy) |
 | [T-ACI-ETA3](#t-aci-eta3--derived-node-boundary-parity) | Any derived Node validator stays non-normative and vector-compatible | [BoundaryValidationPolicy](specs/rules.md#aci-r17--derived-boundary-validation-policy) |
@@ -71,6 +72,11 @@ This document specifies contract tests, not test code. Fixtures derive from [rul
 | [T-CVR-AUTH5](#t-cvr-auth5--crash-and-cancellation-matrix) | Recovery is fail-closed and session-bound | [TASK-CVR](work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol) |
 | [T-CVR-AUTH6](#t-cvr-auth6--cvr-002-predecessor-binding) | CVR-002 binds and revalidates CVR-001 evidence | [TASK-CVR](work-pack/tasks/TASK-CVR.md#swu-aci-cvr-002--edge-projection) |
 | [T-ACI-AUTH1](#t-aci-auth1--runtime-only-confirmed-dispatch) | Legacy routing creates no ACI runtime entity; runtime confirmation creates exactly one dispatch/run pair | [ConfirmRuntimeDispatch](specs/operations.md#confirmruntimedispatch) |
+| [T-ACI-ARD1](#t-aci-ard1--exact-reference-bundle-delivery) | One accepted Scout bundle becomes one exact typed target-attempt input entry and target-delivery fact | [AgentReferenceDelivery](specs/domain.md#agentreferencedelivery) |
+| [T-ACI-ARD2](#t-aci-ard2--bundle-authority-and-integrity) | Commit plus immutable bytes, never lifecycle delivery, determine ordered recommendation membership | [ReferenceScoutBundleToEffectiveInput](specs/mappings.md#referencescoutbundletoeffectiveinput) |
+| [T-ACI-ARD3](#t-aci-ard3--recipient-and-dispatch-authority) | Capability-derived recipient and same-dispatch guards reject identity injection or cross-dispatch delivery | [DeliverReferenceScoutBundleToAgent](specs/operations.md#internal-transition--deliverreferencescoutbundletoagent) |
+| [T-ACI-ARD4](#t-aci-ard4--atomic-delivery-and-idempotency) | Preallocated identities, complete acceptance and retries yield one delivery or none | [IF-ACI-14](specs/interfaces.md#interface-invariants) |
+| [T-ACI-ARD5](#t-aci-ard5--delivery-evidence-boundary) | Accepted inclusion is never promoted to access, declared use or claim support | [`reference_scout.bundle_delivered_to_agent@1`](specs/events.md#referencescoutbundledeliveredtoagent) |
 
 ## Test Details
 
@@ -189,6 +195,26 @@ abandoned` and append `publication.candidate_abandoned`. Race that command again
 verification; exactly one wins. If abandonment wins, a later terminal is ignored and a new attempt
 may create one new active candidate. If verification wins, the official `messages` key prevents any
 replacement candidate. Historical candidate rows remain queryable.
+
+### T-ACI-R22 — Reference bundle target delivery
+
+Start with accepted `reference_scout.bundle_committed@1` and
+`reference_scout.bundle_delivered@1` facts plus their immutable ordered bundle, then target an
+authenticated Attempt in the same dispatch. Assert one preallocated delivery/event identity, one
+matching `reference_bundle` entry at the declared ordinal, exact artifact/digest/membership/policy,
+`source_bundle_delivered_event_id` equal to the distinct accepted lifecycle-delivery event,
+`accepted_event_id` equal to the target-delivery event, strict
+source-commit/lifecycle-delivery/target-delivery offset order and atomic acceptance with
+`attempt.requested`. Derive target Attempt, seat and agent instance from the authenticated
+capability, reject cross-dispatch sources, and obtain ordered membership only from the accepted
+commit plus immutable bundle bytes. Crash at every member boundary and require all-or-none.
+
+Mutate, independently, source run, dispatch, artifact, digest, recommendation order, target
+attempt/seat/instance, entry ordinal, manifest hash, visibility policy, event identity and
+idempotency key; each mutation fails closed. An identical retry returns the original receipt, while
+same source/target or scoped key with canonical drift conflicts. A lifecycle event carrying no
+membership remains valid source evidence; attempting to derive membership from it fails. Assert the
+accepted delivery alone creates no observed-access, declared-reference-use or claim-support fact.
 
 ### T-ACI-S1 — Run lifecycle and terminal precedence
 
@@ -467,6 +493,55 @@ path. For `runtime-managed`, assert one accepted confirmation creates exactly on
 `ConfirmedDispatch` and exactly one `Run`; identical replay returns the stable receipt and cannot
 create a second pair.
 
+### T-ACI-ARD1 — Exact reference-bundle delivery
+
+Given one accepted Scout commit, its immutable ordered bundle, its distinct lifecycle-delivery fact
+and an authenticated target capability in the same dispatch, start one Attempt. Assert exactly one
+`reference_bundle` entry at the recorded ordinal of the delivery's `EffectiveInputArtifact`; assert
+that artifact's `attempt_id = target_attempt_id` and
+`manifest_hash = hash(canonical(orderedManifest)) = effective_input_manifest_hash`. Compare the
+entry, delivery and `reference_scout.bundle_delivered_to_agent@1` specifically for artifact,
+digest, delivery ID and visibility policy. Compare the delivery and target event specifically for
+ordered recommendations, capability-derived recipient, manifest identity/hash/ordinal,
+idempotency key, event identity and journal offset.
+
+### T-ACI-ARD2 — Bundle authority and integrity
+
+Mutate independently committed recommendation order/membership, artifact bytes, artifact digest,
+ScoutRun, artifact identity and lifecycle-delivery digest. Each mutation rejects the complete start.
+Supplying or inferring `recommendation_ids` from `reference_scout.bundle_delivered@1` also fails:
+only the accepted commit plus `ordered_recommendation_ids(bundle_bytes)` may establish membership.
+Also test a missing or unaccepted commit, a missing or unaccepted lifecycle-delivery fact, and equal
+or reversed journal order at either boundary. Unless
+`commit.offset < lifecycle_delivery.offset < target_delivery.offset`, reject StartAgentAttempt and
+accept none of its transaction members.
+
+### T-ACI-ARD3 — Recipient and dispatch authority
+
+Try a ScoutRun from another dispatch and inject matching or conflicting target Attempt, seat and
+agent-instance fields outside the authenticated capability. Reject all variants and accept no
+Attempt or delivery fact. The passing fixture derives all recipient identities from the capability
+and proves equality with the accepted target Attempt.
+
+### T-ACI-ARD4 — Atomic delivery and idempotency
+
+Inject failure after each member of the StartAgentAttempt unit: finalized effective-input metadata,
+sealed request binding, Attempt, AgentReferenceDelivery, target-delivery event, `attempt.requested`
+and launch effect intent. Reopen and assert all members or none. Identical retry returns the
+original receipt and IDs; any source, recipient, membership, policy, manifest, digest or scoped-key
+drift conflicts without a second delivery.
+Instrument preparation to assert `agent_reference_delivery_id` and target `accepted_event_id` exist
+before manifest canonicalization and request sealing, and that the manifest embeds that exact
+preallocated delivery ID. Assert acceptance performs no post-acceptance manifest rewrite; a failed
+settlement leaves no accepted dangling manifest or delivery reference.
+
+### T-ACI-ARD5 — Delivery evidence boundary
+
+Project an accepted target-agent delivery without any host source observation or declared reference
+use. Assert the ACI fact says only that exact bytes were included in observable effective input and
+that no ACI projection reports access, reading, declared use or claim support. Those later evidence
+axes remain independently owned downstream.
+
 ## Fixture Corpus
 
 | Fixture | Contents |
@@ -487,18 +562,28 @@ create a second pair.
 | `canonical-python-contracts@1` | Omitted/null, Unicode, numbers, ordering, version and digest vectors |
 | `provider-admission@1` | Common adapter, sandbox, credential, cleanup, recovery, receipt and usage evidence |
 | `sole-writer-bundle@1` | Complete and component-missing host-scoped EG-1 evidence bundles |
+| `reference-bundle-delivery@1` | Accepted commit/lifecycle facts, immutable ordered bundle, capability-derived recipient, manifest, retry drift and atomic failpoints |
 
 ## Known Gaps
 
+- `implementations/tests/runtime/aci-test-traceability.json` records only bounded evidence for
+  T-ACI-R3/R5/R6/R7/R15/R16, T-ACI-C1/C2/C4 and T-ACI-ETA2. Its validator proves that every
+  recorded ID and Python test selector exists; it does not promote those mappings to complete
+  family coverage. Unmapped requirements and the remaining steps inside mapped requirements stay
+  planned until dedicated fixtures close them.
 - Concrete retention, key-management and crypto-erasure timing tests await the OQ-ACI9 ADRs.
 - Real Codex, second-provider and mixed-provider empirical completeness tests remain L2/L3 gates.
 - Host-loss, multi-host and multi-tenant recovery are outside the initial contract.
 - `OQ-SANDBOX` remains an explicit S-003/L2/W3 real-provider blocker until target-host launcher
   isolation tests pass; it does not block fake-adapter Slice 1 work.
-- OQ-ETA1 remains a W0 blocker until the Pydantic pin and canonical serialization vectors are accepted.
+- OQ-ETA1's canonical projection, golden vectors and declared Pydantic pins are accepted. Broader
+  runtime promotion still requires a digest-bound receipt proving resolution and execution of those
+  exact dependency versions, as recorded in `specs/SPEC.md`.
 - OQ-ETA2/B-003 remains open for materializer cutover until a complete target-host
   `SoleWriterEvidenceBundle` passes T-ACI-ETA5. W0 freezes its schema and negative-test
   specification; TASK-020 supplies the physical target-host proof.
+- T-ACI-ARD1 through T-ACI-ARD5 specify the next bounded slice only; no runtime test implementation
+  or implementation-completeness claim is made by this document.
 
 ## Out of Scope
 

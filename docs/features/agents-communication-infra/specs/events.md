@@ -39,7 +39,7 @@ context, not copied from agent payloads.
 
 **Wire name:** `run.created`  
 **Produced by:** [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch)  
-**Transition:** [RunLifecycle](states.md#runlifecycle) `none -> confirmed`
+**Transition:** [RunLifecycle](states.md#runlifecycle) `not_created -> confirmed`
 
 **Payload:** `run_id`, `dispatch_id`, `confirmed_dispatch_digest`, `dispatch_spec_ref/digest`,
 `execution_authority_mode=runtime-managed`, schema/recipe/policy versions, capability-resolution
@@ -367,7 +367,7 @@ maps an audit exit reason.
 
 **Wire name:** `attempt.requested`  
 **Produced by:** [StartAgentAttempt](operations.md#startagentattempt)  
-**Transition:** [AttemptLifecycle](states.md#attemptlifecycle) `none -> requested`
+**Transition:** [AttemptLifecycle](states.md#attemptlifecycle) `not_created -> requested`
 
 **Payload:** operation/attempt/seat/agent identities; provider/adapter/model references;
 `plan_digest`, `materialization_digest`, sealed request digest; effective-input and native-invocation
@@ -376,6 +376,123 @@ execution-authority fence and prerequisite heads. A sandbox-launch/provider-star
 commits in the same transaction.
 
 **Consumers:** Attempt reducer; effect worker; runtime projection.
+
+<a id="referencescoutbundledeliveredtoagent"></a>
+
+## reference_scout.bundle_delivered_to_agent@1
+
+**Wire name:** `reference_scout.bundle_delivered_to_agent@1`
+**Produced by:** Internal
+[DeliverReferenceScoutBundleToAgent](operations.md#internal-transition--deliverreferencescoutbundletoagent)
+within [StartAgentAttempt](operations.md#startagentattempt)
+**Transition:** No independent lifecycle; co-commits with `attempt.requested` when the target
+[Attempt](domain.md#attempt) is accepted.
+
+**Contract status:** specified for the next bounded slice; not implemented. The
+[Stage G lifecycle](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle)
+and [execution receipt](../../agent-provenance-telemetry/integration/stage-g/execution-receipt.md#live-local-pilot-proof)
+evidence commit and terminal lifecycle delivery only. This target-agent delivery fact is distinct
+from that implemented `reference_scout.bundle_delivered@1` fact.
+
+**Payload:**
+
+| Field | Type | Description |
+|---|---|---|
+| `agent_reference_delivery_id` | string | Stable preallocated identity of the accepted [AgentReferenceDelivery](domain.md#agentreferencedelivery). |
+| `dispatch_id` | string | Runtime-derived scope; equals the source [ScoutRun](../../agent-provenance-telemetry/probes/reference-scout-tool.md#naming-boundary) and target [Attempt](domain.md#attempt) dispatches and the envelope `dispatch_id`. |
+| `scout_run_id` | string | Source APT-owned ScoutRun with accepted commit and lifecycle-delivery facts. |
+| `source_bundle_delivered_event_id` | string | Accepted `reference_scout.bundle_delivered@1` identity; never this event's `event_id`. |
+| `bundle_artifact_id` | [ArtifactId](domain.md#artifactid) | Exact immutable ordered bundle. |
+| `bundle_digest` | [ContentDigest](domain.md#contentdigest) | `hash(bundle_bytes)`, equal across source commit and lifecycle delivery. |
+| `recommendation_ids` | ordered list<string> | Membership copied only from the preceding accepted `reference_scout.bundle_committed@1` and verified against bundle bytes; the lifecycle-delivered event has no such field. |
+| `target_attempt_id` | string | Capability-derived recipient [Attempt](domain.md#attempt). |
+| `target_seat_id` | [SeatId](domain.md#seatid) | Capability-derived recipient seat; equals Attempt and envelope seat. |
+| `target_agent_instance_id` | string | Capability-derived recipient instance; equals Attempt and envelope instance. |
+| `effective_input_artifact_id` | [ArtifactId](domain.md#artifactid) | Finalized [EffectiveInputArtifact](domain.md#effectiveinputartifact) accepted in the same transaction. |
+| `effective_input_entry_ordinal` | integer | Zero-based location of the unique matching `reference_bundle` entry. |
+| `effective_input_manifest_hash` | [ContentDigest](domain.md#contentdigest) | Canonical digest of the finalized ordered manifest. |
+| `visibility_policy_ref` | [VersionedReference](domain.md#versionedreference) | Policy derived from the authenticated delivery capability and frozen into the matching input entry. |
+| `idempotency_key` | string | Scoped retry key; equals the common-envelope key. |
+
+**Formal invariants:**
+
+```text
+delivery = AgentReferenceDelivery(payload.agent_reference_delivery_id)
+
+delivery.agent_reference_delivery_id = payload.agent_reference_delivery_id
+delivery.dispatch_id = payload.dispatch_id = envelope.dispatch_id
+delivery.scout_run_id = payload.scout_run_id
+delivery.source_bundle_delivered_event_id = payload.source_bundle_delivered_event_id
+delivery.bundle_artifact_id = payload.bundle_artifact_id
+delivery.bundle_digest = payload.bundle_digest
+delivery.recommendation_ids = payload.recommendation_ids
+delivery.target_attempt_id = payload.target_attempt_id = envelope.attempt_id
+delivery.target_seat_id = payload.target_seat_id = envelope.seat_id
+delivery.target_agent_instance_id =
+  payload.target_agent_instance_id =
+  envelope.agent_instance_id
+delivery.effective_input_artifact_id = payload.effective_input_artifact_id
+delivery.effective_input_entry_ordinal = payload.effective_input_entry_ordinal
+delivery.effective_input_manifest_hash = payload.effective_input_manifest_hash
+delivery.visibility_policy_ref = payload.visibility_policy_ref
+delivery.idempotency_key = payload.idempotency_key = envelope.idempotency_key
+delivery.accepted_event_id = envelope.event_id
+delivery.journal_offset = envelope.journal_offset
+envelope.event_id != payload.source_bundle_delivered_event_id
+
+committed_event =
+  preceding accepted reference_scout.bundle_committed@1 where
+    committed_event.scout_run_id = payload.scout_run_id
+    and committed_event.bundle_artifact_id = payload.bundle_artifact_id
+    and committed_event.bundle_digest = payload.bundle_digest
+
+source_bundle_delivered_event =
+  accepted reference_scout.bundle_delivered@1 where
+    source_bundle_delivered_event.event_id = payload.source_bundle_delivered_event_id
+    and source_bundle_delivered_event.scout_run_id = payload.scout_run_id
+    and source_bundle_delivered_event.bundle_artifact_id = payload.bundle_artifact_id
+    and source_bundle_delivered_event.bundle_digest = payload.bundle_digest
+
+committed_event.journal_offset
+  < source_bundle_delivered_event.journal_offset
+  < envelope.journal_offset
+
+ScoutRun(payload.scout_run_id).dispatch_id = payload.dispatch_id
+Attempt(payload.target_attempt_id).dispatch_id = payload.dispatch_id
+Attempt(payload.target_attempt_id).seat_id = payload.target_seat_id
+Attempt(payload.target_attempt_id).agent_instance_id = payload.target_agent_instance_id
+EffectiveInputArtifact(payload.effective_input_artifact_id).attempt_id = payload.target_attempt_id
+EffectiveInputArtifact(payload.effective_input_artifact_id).manifest_hash =
+  payload.effective_input_manifest_hash
+EffectiveInputArtifact(payload.effective_input_artifact_id)
+  .entries[payload.effective_input_entry_ordinal] =
+  unique reference_bundle(
+    artifact_ref = payload.bundle_artifact_id,
+    content_hash = payload.bundle_digest,
+    agent_reference_delivery_id = payload.agent_reference_delivery_id,
+    visibility_policy_ref = payload.visibility_policy_ref)
+
+payload.bundle_digest = hash(Artifact(payload.bundle_artifact_id).bytes)
+payload.recommendation_ids =
+  committed_event.recommendation_ids =
+  ordered_recommendation_ids(Artifact(payload.bundle_artifact_id).bytes)
+source_bundle_delivered_event hasNo recommendation_ids
+
+atomic(
+  accepted Attempt,
+  finalized EffectiveInputArtifact metadata,
+  sealed AgentExecutionRequest binding,
+  accepted AgentReferenceDelivery,
+  this event,
+  attempt.requested,
+  sandbox-launch effect intent)
+or atomic(none)
+```
+
+**Consumers:** On implementation, the Attempt reducer MUST verify the atomic input settlement and
+runtime projections MUST expose the accepted delivery evidence. APT-owned lineage/query consumers
+may later correlate this fact but cannot reinterpret it as proof of source access, declared use or
+claim support.
 
 ## attempt.starting
 

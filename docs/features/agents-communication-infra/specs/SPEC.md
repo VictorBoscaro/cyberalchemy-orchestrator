@@ -5,29 +5,82 @@ is_session: false
 layer: application
 nature: [technical, reference]
 status: draft
-version: 0.2.2
-last_updated: 2026-07-23
+version: 0.3.0
+last_updated: 2026-07-25
 derived_from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 additional_authority: ../discovery/external-tool-adoption/external-tool-adoptions.md@0.1.0
 specAuthoringGate: pass
 runtimeGate: block
+localPilotGate: pass
 ---
 
 # Agents Communication Infra
 
 ## What This Module Owns
 
-This feature owns the single-host, single-tenant runtime that turns one immutable human-confirmed dispatch into journaled protocol facts, controlled effects and one officially closed outcome. It owns authenticated agent publication, sealed reveal, provider-neutral attempts, replay and projections; the existing validated appender remains the only intended physical writer of official audit-ledger rows.
+This feature owns the single-host, single-tenant runtime that turns one immutable human-confirmed dispatch into journaled protocol facts, controlled effects and one officially closed outcome. It owns authenticated agent publication, sealed reveal, provider-neutral attempts, replay and projections; its bus/journal/receipt authority also owns the Reference Scout lifecycle facts and the specified target-attempt delivery of an accepted bundle into canonical effective input. APT owns downstream research lineage/query and `ResearchReferenceUse`; the host owns `host.SourceObservation`. The existing validated appender remains the only intended physical writer of official audit-ledger rows.
 
 This baseline derives authority and vocabulary from the operator-designated
 [discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md), with the
 runtime-only confirmation clarification in
 [Agent tools and delegated supervision v0.1.1](../discovery/agent-tools-and-delegated-supervision.md)
 refining the earlier generic wording of ACI-D3. `specAuthoringGate=pass` means the decisions are
-specified; `runtimeGate=block` means implementation is not authorized until W0 and EG-1 evidence
-close.
+specified. `runtimeGate=block` now means that the general runtime and cutover are not authorized;
+it does not erase the narrower local-pilot authorization and evidence recorded below.
 
 The external-dependency boundary is additionally ratified from [External Tool Adoptions v0.1.0](../discovery/external-tool-adoption/external-tool-adoptions.md): Python/FastAPI remains the runtime host, Pydantic core validates boundary models, and the runtime retains canonicalization, sealing, digest and persistence authority.
+
+## Implementation Baseline
+
+The specification is no longer only a pre-implementation design. The canonical implementation
+target is [`implementations/server/runtime/`](../../../../implementations/server/runtime/); the
+separate [`implementations/agent-runtime/`](../../../../implementations/agent-runtime/) package is an
+experimental shadow/compatibility probe, not a second authoritative runtime.
+
+| Contract slice | State | Evidence | Limit |
+|---|---|---|---|
+| Canonical commands, journal, immutable artifacts, exact profiles and replayable projections | Implemented and verified in the bounded runtime | [Stage B receipt](../../agent-provenance-telemetry/integration/stage-b/execution-receipt.md) | Production routes remain disabled. |
+| Dedicated loopback composition, preflight, integrity checks and scoped capabilities | Accepted local pilot | [Stage C enablement](../../agent-provenance-telemetry/integration/stage-c/local-pilot-enablement.md) | Explicit opt-in, dedicated database and loopback only. |
+| Validated YAML/ACI opening-and-close bridge, source integrity and operator recovery | Accepted local pilot | [Stage E receipt](../../agent-provenance-telemetry/integration/stage-e/execution-receipt.md) | Operator-mediated pilot; not runtime-managed YAML cutover. |
+| Claude/Codex project hook wrapper | Implemented and verified after host loading | [Stage F receipt](../../agent-provenance-telemetry/integration/stage-f/execution-receipt.md) | No administrator-enforced loading and no proved model-originated spawn; a host that does not load project hooks is outside the claim. |
+| Reference Scout lifecycle and APT input-ingestion lineage | Operational local pilot | [Stage G receipt](../../agent-provenance-telemetry/integration/stage-g/execution-receipt.md) | Reference Scout commit/lifecycle delivery and APT ingestion only; ACI target-attempt delivery is not implemented. |
+| Reference Scout bundle delivery into one target Attempt | Specified; not implemented | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [mapping](mappings.md#referencescoutbundletoeffectiveinput) and [tests](../TEST-SPEC.md#t-aci-r22--reference-bundle-target-delivery) | Next bounded slice; inclusion evidence is not access, declared use or claim support. |
+| General runtime, materializer, provider launch and cutover | Blocked | This SPEC's gate plus TASK-020/EG-1 evidence obligations | No production or portability claim. |
+
+`localPilotGate=pass` applies only to the exact bounded composition and receipts above.
+`runtimeGate=block` continues to apply to production serving, runtime-managed YAML materialization,
+generic provider launch, administrator-enforced hook loading and cutover.
+
+The SPEC remains above the default 300-line capability-splitting threshold because its length is
+dominated by the authoritative Concept Registry and decision tables. The four inline capability
+paragraphs are intentionally retained as short routing summaries to existing aspect documents;
+creating duplicate capability files would not add contract detail.
+
+## Skill-to-Protocol Compilation Status
+
+The repository already contains a concrete discovery direction for creating a governed protocol
+from a skill:
+[Agents Communication Protocols](../discovery/agents-communication-protocols/README.md). It proposes
+`Skill Execution Profile`, stable `skill_id`, transitive skill and protocol manifests, immutable
+protocol revisions, active bindings, a trust-anchored protocol-authoring command and deterministic
+compilation into the existing `DispatchSpec`.
+
+That direction is **not ratified by this SPEC and is not implemented by the runtime**. Two
+independent integration assessments explicitly defer the complete profile/compiler/registry surface
+and recommend first proving the narrower read-only publication bridge:
+[assessment B](../discovery/spec-integration-assessment/avaliacao-independente-b.md) and
+[publication bridge assessment](../discovery/spec-integration-assessment/avaliacao-independente-publication-bridge.md).
+Accordingly:
+
+- [`skill-decomposer`](../../../../.agents/skills/skill-decomposer/SKILL.md) and
+  [`skill-transcriptor`](../../../../.agents/skills/skill-transcriptor/SKILL.md) are authoring tools
+  that extract or convert reusable sigil capabilities; they do not compile an executable skill
+  protocol or bind it to a `DispatchSpec`;
+- the [L4 implementation layer](../IMPLEMENTATION-LAYERING.md) already names a future compiler from
+  immutable built-in recipes to canonical `DispatchSpec`, but no `SkillExecutionProfile` registry,
+  active binding, trust anchor or `ProtocolAuthoringCommand` is present;
+- no new compiler/profile concepts enter the Concept Registry in this synchronization;
+- the discovery remains the proposal authority until its promotion criteria and probes pass.
 
 ## Module Map
 
@@ -35,6 +88,8 @@ The external-dependency boundary is additionally ratified from [External Tool Ad
 flowchart LR
   C[Confirm authority] --> J[Journal acceptance]
   J --> A[Provider-neutral attempts]
+  J --> S[Authorized Scout bundle delivery]
+  S --> A
   A --> B[Receipt-gated bus]
   B --> R[Manifest reveal and result]
   R --> X[Terminal election and audit close]
@@ -43,15 +98,16 @@ flowchart LR
 
 ## Capabilities
 
-| Capability | Outcome | Key contracts |
-|---|---|---|
-| Confirmed runtime authority | Freeze one runtime-managed dispatch and verify official opening before effects | [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch), [RunLifecycle](states.md#runlifecycle), [AuditLedgerMaterializer](workflows.md#auditledgermaterializer) |
-| Deterministic execution | Drive groups and physical attempts from facts without provider branches | [AcceptRuntimeCommand](operations.md#acceptruntimecommand), [StartAgentAttempt](operations.md#startagentattempt), [AgentAdapter](interfaces.md#internal-agentadapter) |
-| Receipt-gated publication | Accept agent content only after append and parent-side persisted-evidence verification | [PublishBusContribution](operations.md#publishbuscontribution), [VerifyPublicationReceipt](operations.md#verifypublicationreceipt), [bus_publish](interfaces.md#bus_publish) |
-| Sealed reveal and commitment | Freeze a collection, publish an authorized manifest, commit one result and hand it off | [GroupDeliberationWorkflow](workflows.md#groupdeliberationworkflow), [GroupLifecycle](states.md#grouplifecycle), [RevealManifest](domain.md#revealmanifest) |
-| Recovery and official closure | Recover local effects, reconcile cross-store rows and elect one audit close | [Persistence and replay](persistence-and-replay.md), [ExternalEffectReconciliationWorkflow](workflows.md#externaleffectreconciliationworkflow), [CancelRun](operations.md#cancelrun) |
-| Read and accountability | Rebuild cursor-addressable state and preserve immutable usage/evidence semantics | [GetRuntimeProjection](queries.md#getruntimeprojection), [RecordUsageObservation](operations.md#recordusageobservation), [Observability](observability.md) |
-| Governed dependency adoption | Admit libraries and real providers only at named seams with authority, sandbox and conformance evidence | [ExternalToolAdoptionPolicy](rules.md#aci-r15--external-tool-adoption-policy), [ProviderAdapterAdmissionGate](rules.md#aci-r18--provider-adapter-admission-gate), [SoleWriterEvidenceBundle](domain.md#solewriterevidencebundle) |
+| Capability | Outcome | Key contracts | Status |
+|---|---|---|---|
+| Confirmed runtime authority | Freeze one runtime-managed dispatch and verify official opening before effects | [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch), [RunLifecycle](states.md#runlifecycle), [AuditLedgerMaterializer](workflows.md#auditledgermaterializer) | Bounded local pilot |
+| Deterministic execution | Drive groups and physical attempts from facts without provider branches | [AcceptRuntimeCommand](operations.md#acceptruntimecommand), [StartAgentAttempt](operations.md#startagentattempt), [AgentAdapter](interfaces.md#internal-agentadapter) | Mixed; bounded pilot only |
+| Authorized reference delivery | Bind one already lifecycle-delivered Scout bundle to one capability-derived target Attempt and its exact effective-input entry | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [DeliverReferenceScoutBundleToAgent](operations.md#internal-transition--deliverreferencescoutbundletoagent), [target-delivery event](events.md#referencescoutbundledeliveredtoagent) | Specified; not implemented |
+| Receipt-gated publication | Accept agent content only after append and parent-side persisted-evidence verification | [PublishBusContribution](operations.md#publishbuscontribution), [VerifyPublicationReceipt](operations.md#verifypublicationreceipt), [bus_publish](interfaces.md#bus_publish) | Bounded local pilot |
+| Sealed reveal and commitment | Freeze a collection, publish an authorized manifest, commit one result and hand it off | [GroupDeliberationWorkflow](workflows.md#groupdeliberationworkflow), [GroupLifecycle](states.md#grouplifecycle), [RevealManifest](domain.md#revealmanifest) | Specified; broader runtime gated |
+| Recovery and official closure | Recover local effects, reconcile cross-store rows and elect one audit close | [Persistence and replay](persistence-and-replay.md), [ExternalEffectReconciliationWorkflow](workflows.md#externaleffectreconciliationworkflow), [CancelRun](operations.md#cancelrun) | Mixed; cutover blocked |
+| Read and accountability | Rebuild cursor-addressable state and preserve immutable usage/evidence semantics | [GetRuntimeProjection](queries.md#getruntimeprojection), [RecordUsageObservation](operations.md#recordusageobservation), [Observability](observability.md) | Bounded local pilot |
+| Governed dependency adoption | Admit libraries and real providers only at named seams with authority, sandbox and conformance evidence | [ExternalToolAdoptionPolicy](rules.md#aci-r15--external-tool-adoption-policy), [ProviderAdapterAdmissionGate](rules.md#aci-r18--provider-adapter-admission-gate), [SoleWriterEvidenceBundle](domain.md#solewriterevidencebundle) | Gates specified; broader promotion blocked |
 
 ### Recoverable Runtime Authority
 
@@ -88,8 +144,28 @@ Provides cursor-addressable, rebuildable run views and immutable provider-attrib
 | ACI-D13 | Effective model input, raw provider output and accepted bus message are separate immutable records. | [ACI-R9](rules.md#aci-r9--input-output-and-accepted-message-are-distinct-evidence) |
 | ACI-D14 | Authenticated runtime context supplies authority identities; agent payloads cannot self-assert them. | [ACI-R2](rules.md#aci-r2--runtime-derived-authority) |
 | ACI-D15 | Provider-reported usage is immutable, nullable and aggregated without claiming billing equivalence. | [Usage and cost accountability](observability.md#usage-and-cost-accountability-oq-aci10) |
+Candidate labels in the discovery are ratified as DomainSpec contracts by this baseline. The
+implementation matrix above identifies the subset with bounded local-pilot evidence; all other
+contracts remain proposed or blocked until their own gates pass.
 
-Candidate labels in the discovery are ratified as DomainSpec contracts by this baseline, but they remain unimplemented claims until their gates pass.
+### Bounded SPEC amendment: target-attempt Reference Scout delivery
+
+This v0.3.0 amendment applies the discovery's
+[OQ-ACI8 canonical-input settlement](../discovery/feature-discovery/agents-communication-infra.md#oq-aci8--canonical-effective-input)
+to accepted Stage G Scout source facts without inventing an `ACI-D16` discovery decision. It
+specifies [AgentReferenceDelivery](domain.md#agentreferencedelivery), its target-delivery event and
+effective-input mapping for the next bounded slice. It is not implemented, and inclusion remains
+strictly weaker than access, declared use or claim support.
+
+| Amendment element | Contract | DomainSpec type | Status |
+|---|---|---|---|
+| Capability | Authorized reference delivery | Capability summary | Specified; not implemented |
+| Entity | [AgentReferenceDelivery](domain.md#agentreferencedelivery) | Entity | Specified; not implemented |
+| Rule | [ACI-R19](rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic) | Rule | Specified; not implemented |
+| Internal transition | [DeliverReferenceScoutBundleToAgent](operations.md#internal-transition--deliverreferencescoutbundletoagent) | Operation | Specified; not implemented |
+| Event | [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) | Event | Specified; not implemented |
+| Mapping | [ReferenceScoutBundleToEffectiveInput](mappings.md#referencescoutbundletoeffectiveinput) | Mapping | Specified; not implemented |
+| Interface capability | [ArtifactBoundary target-reference settlement](interfaces.md#internal-artifact-boundary) | Interface | Specified; not implemented |
 
 ## External-Tool Decisions Ratified From Discovery v0.1.0
 
@@ -117,7 +193,7 @@ Candidate labels in the discovery are ratified as DomainSpec contracts by this b
 | OQ-ACI8 | One ordered, content-addressed effective-input manifest records observable provider input per attempt. |
 | OQ-ACI9 | Sensitive immutable artifact boundary is ratified; concrete retention, encryption and key parameters remain blocking ADR work. |
 | OQ-ACI10 | Usage records stay nullable and provider-attributed; cost requires a versioned price source and is never asserted as billing truth. |
-| OQ-ETA1 | **Deferred blocker:** W0 must pin the Pydantic version and canonical JSON rules and accept golden digest/round-trip vectors before runtime code. The current transitive, unpinned Pydantic dependency is not evidence. |
+| OQ-ETA1 | **Canonical contract accepted; installed dependency proof remains bounded:** ADR-001 and W0 accept the canonical projection and golden vectors, and `implementations/requirements.txt` declares `pydantic==2.13.4` plus `pydantic-core==2.46.4`. Stage A/B do not provide a digest-bound receipt proving resolution/execution of those exact installed versions, so broader dependency or runtime promotion still requires that evidence. |
 | OQ-ETA2 | **Contract ratified, cutover proof open:** W0 freezes the `SoleWriterEvidenceBundle` schema, drift disposition, guard specification and named tests; TASK-020 supplies host/process/ACL/writer-inventory/negative-test evidence before materializer cutover, without blocking TASK-010. |
 | OQ-ETA4 | **Disposed for this slice:** no current Node consumer is authorized to consume ACI canonical contracts, so Zod is not added. A later inventoried consumer must use derived bindings/vectors. |
 | OQ-ETA5 | **Deferred:** no named direct-model API use case exists; PydanticAI remains outside the plan until after the subprocess adapter and a separate comparison gate. |
@@ -138,6 +214,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [PublicationCandidate](domain.md#publicationcandidate) | `agents-communication-infra.PublicationCandidate` | Entity |
 | [EffectIntent](domain.md#effectintent) | `agents-communication-infra.EffectIntent` | Entity |
 | [Artifact](domain.md#artifact) | `agents-communication-infra.Artifact` | Entity |
+| [AgentReferenceDelivery](domain.md#agentreferencedelivery) | `agents-communication-infra.AgentReferenceDelivery` | Entity |
 | [EffectiveInputArtifact](domain.md#effectiveinputartifact) | `agents-communication-infra.EffectiveInputArtifact` | Entity |
 | [RawProviderOutput](domain.md#rawprovideroutput) | `agents-communication-infra.RawProviderOutput` | Entity |
 | [RevealManifest](domain.md#revealmanifest) | `agents-communication-infra.RevealManifest` | Entity |
@@ -171,6 +248,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [AcceptRuntimeCommand](operations.md#acceptruntimecommand) | `agents-communication-infra.AcceptRuntimeCommand` | Operation |
 | [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) | `agents-communication-infra.ConfirmRuntimeDispatch` | Operation |
 | [StartAgentAttempt](operations.md#startagentattempt) | `agents-communication-infra.StartAgentAttempt` | Operation |
+| [DeliverReferenceScoutBundleToAgent](operations.md#internal-transition--deliverreferencescoutbundletoagent) | `agents-communication-infra.DeliverReferenceScoutBundleToAgent` | Operation |
 | [PublishBusContribution](operations.md#publishbuscontribution) | `agents-communication-infra.PublishBusContribution` | Operation |
 | [VerifyPublicationReceipt](operations.md#verifypublicationreceipt) | `agents-communication-infra.VerifyPublicationReceipt` | Operation |
 | [CloseCollection](operations.md#closecollection) | `agents-communication-infra.CloseCollection` | Operation |
@@ -202,10 +280,12 @@ IDs below are unique and authoritative for registry synchronization.
 | [RawProviderOutputToCanonicalObservations](mappings.md#rawprovideroutputtocanonicalobservations) | `agents-communication-infra.RawProviderOutputToCanonicalObservations` | Mapping |
 | [BusPublicationToContribution](mappings.md#buspublicationtocontribution) | `agents-communication-infra.BusPublicationToContribution` | Mapping |
 | [RevealManifestToEffectiveInput](mappings.md#revealmanifesttoeffectiveinput) | `agents-communication-infra.RevealManifestToEffectiveInput` | Mapping |
+| [ReferenceScoutBundleToEffectiveInput](mappings.md#referencescoutbundletoeffectiveinput) | `agents-communication-infra.ReferenceScoutBundleToEffectiveInput` | Mapping |
 | [FrozenAuthorityToAuditLedgerRow](mappings.md#frozenauthoritytoauditledgerrow) | `agents-communication-infra.FrozenAuthorityToAuditLedgerRow` | Mapping |
 | [RuntimeTerminalToExitReason](mappings.md#runtimeterminaltoexitreason) | `agents-communication-infra.RuntimeTerminalToExitReason` | Mapping |
 | [UsageObservationToRollups](mappings.md#usageobservationtorollups) | `agents-communication-infra.UsageObservationToRollups` | Mapping |
 | [UsageObservation](events.md#usageobserved) | `agents-communication-infra.UsageObservation` | Event |
+| [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) | `agents-communication-infra.ReferenceScoutBundleDeliveredToAgent` | Event |
 | [PricingSource](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) | `agents-communication-infra.PricingSource` | Entity |
 | [UsageRollup](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) | `agents-communication-infra.UsageRollup` | Value Object |
 | [CostCalculation](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) | `agents-communication-infra.CostCalculation` | Calculation |
@@ -213,6 +293,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [CanonicalContractPolicy](rules.md#aci-r16--canonical-contract-policy) | `agents-communication-infra.CanonicalContractPolicy` | Policy |
 | [BoundaryValidationPolicy](rules.md#aci-r17--derived-boundary-validation-policy) | `agents-communication-infra.BoundaryValidationPolicy` | Policy |
 | [ProviderAdapterAdmissionGate](rules.md#aci-r18--provider-adapter-admission-gate) | `agents-communication-infra.ProviderAdapterAdmissionGate` | Rule |
+| [ACI-R19 reference bundle delivery](rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic) | `agents-communication-infra.ReferenceBundleDeliveryRule` | Rule |
 | [VaultReadScope](canonical-vault-reads.md#vaultreadscope) | `agents-communication-infra.VaultReadScope` | Value Object |
 | [VaultSourceSelector](canonical-vault-reads.md#vaultsourceselector) | `agents-communication-infra.VaultSourceSelector` | Value Object |
 | [VaultSourceSnapshot](canonical-vault-reads.md#vaultsourcesnapshot) | `agents-communication-infra.VaultSourceSnapshot` | Value Object |
@@ -225,9 +306,10 @@ IDs below are unique and authoritative for registry synchronization.
 | [ListLogicalVaultEdges](canonical-vault-reads.md#listlogicalvaultedges) | `agents-communication-infra.ListLogicalVaultEdges` | Query |
 | [GetLogicalVaultEdge](canonical-vault-reads.md#getlogicalvaultedge) | `agents-communication-infra.GetLogicalVaultEdge` | Query |
 
-`RuntimeEventType` wire values and the explicitly labeled internal transitions in `operations.md`
-are intentionally not registry concepts; they are closed vocabularies/decompositions of registered
-contracts rather than independently owned DomainSpec concepts.
+Other `RuntimeEventType` wire values and explicitly labeled internal transitions in `operations.md`
+remain closed vocabularies/decompositions of registered contracts rather than independently owned
+DomainSpec concepts. The target-reference event and transition are registered above because this
+bounded amendment gives them independently linked contracts and test obligations.
 
 ## Domain Concepts
 
@@ -244,6 +326,13 @@ detail remains authoritative in the linked aspect; this index supplies stable id
   `SandboxLauncher` and `ArtifactBoundary`.
 - Legacy watcher/session execution is a migration dependency fenced by `ExecutionAuthorityMode` and
   `ExecutionAuthorityFence`.
+- ACI owns executable Scout bus/journal/receipt facts, including `ScoutRun`, recommendations and
+  `reference_scout.bundle_committed@1` / `reference_scout.bundle_delivered@1`; it also owns
+  [AgentReferenceDelivery](domain.md#agentreferencedelivery), the distinct
+  [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent)
+  fact and inclusion in the target [EffectiveInputArtifact](domain.md#effectiveinputartifact). APT
+  owns receipt-gated research-lineage mappings and queries; `host.SourceObservation` remains
+  host-owned.
 
 ## Produces For
 
@@ -252,15 +341,22 @@ detail remains authoritative in the linked aspect; this index supplies stable id
 - Immutable effective-input, raw-output, publication, reveal, usage and cost-evidence records for
   testing, audit and later analytics.
 - Provider-neutral invocation and terminal contracts for Codex, Claude and future adapters.
+- A distinct accepted target-attempt delivery fact and exact effective-input binding for downstream
+  APT lineage queries; this output proves inclusion only, never access, declared use or claim
+  support.
 
 ## Stories
 
-Feature stories are **deferred / not created** in this authoring pass. The work-pack tasks remain the
-implementation-planning authority until W0 decisions are accepted and evidenced.
+Feature stories remain **deferred / not created**. Accepted ADRs and execution receipts now evidence
+the bounded pilot, while the work-pack remains the implementation-planning authority for unaccepted
+general-runtime, materializer, provider and cutover slices.
 
 ## References
 
 - [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md)
+- [Agents Communication Protocols discovery](../discovery/agents-communication-protocols/README.md)
+- [Skill/protocol integration assessment B](../discovery/spec-integration-assessment/avaliacao-independente-b.md)
+- [Publication bridge integration assessment](../discovery/spec-integration-assessment/avaliacao-independente-publication-bridge.md)
 - [External Tool Adoptions v0.1.0](../discovery/external-tool-adoption/external-tool-adoptions.md)
 - [External-tool findings v0.1.1](../../../../research/external-tools-verification/findings.md)
 - [Architecture](architecture.md)
@@ -269,11 +365,11 @@ implementation-planning authority until W0 decisions are accepted and evidenced.
 
 ## Decision Precedence
 
-The persistence and transaction contracts are W0-accepted by ADR-001. Terminal, snapshot,
-compatibility and repair contracts have a complete W0 acceptance corpus in ADR-002 but remain
-**independent-review pending** until its digest-bound receipt passes. Discovery decisions ACI-D1
-through ACI-D15 retain their individual identities; accepted W0 ADRs take precedence over proposed
-details where they amend them.
+The persistence and transaction contracts are W0-accepted by ADR-001. ADR-002 is accepted with
+`PASS-cycle-5-of-5` and a digest-bound reviewer receipt for the exact local-pilot mutation; its
+`runtime_gate: pass-for-exact-swu-mutation-only` does not authorize the broader runtime or cutover.
+Discovery decisions ACI-D1 through ACI-D15 retain their individual identities; accepted W0 ADRs
+take precedence over proposed details where they amend them.
 External-tool decisions ETD-1 through ETD-7 are binding adoption constraints. Their unresolved
 version, host-enforcement and evidence parameters remain explicit gates rather than implicit defaults.
 
@@ -291,11 +387,14 @@ version, host-enforcement and evidence parameters remain explicit gates rather t
 | `agents-communication-infra.GetVisibleGroupMessages` | queries | `agents-communication-infra.Contribution` | [query](queries.md#getvisiblegroupmessages) |
 | `agents-communication-infra.BusPublicationToContribution` | maps | `agents-communication-infra.Contribution` | [mapping](mappings.md#buspublicationtocontribution) |
 | `agents-communication-infra.AgentInvocationPlanToMaterializedInvocation` | maps | `agents-communication-infra.EffectiveInputArtifact` | [mapping](mappings.md#agentinvocationplantomaterializedinvocation) |
-| `agents-communication-infra.ExternalToolAdoptionPolicy` | constrains | `agents-communication-infra.AgentAdapter` | [rule](rules.md#aci-r15--external-tool-adoption-policy) |
-| `agents-communication-infra.CanonicalContractPolicy` | seals | `agents-communication-infra.AgentExecutionRequest` | [rule](rules.md#aci-r16--canonical-contract-policy) |
-| `agents-communication-infra.BoundaryValidationPolicy` | constrains | `agents-communication-infra.RuntimeCommandAPI` | [rule](rules.md#aci-r17--derived-boundary-validation-policy) |
-| `agents-communication-infra.ProviderAdapterAdmissionGate` | gates | `agents-communication-infra.SandboxLauncher` | [rule](rules.md#aci-r18--provider-adapter-admission-gate) |
-| `agents-communication-infra.SoleWriterEvidenceBundle` | evidences | `agents-communication-infra.AuditLedgerAppenderPort` | [domain](domain.md#solewriterevidencebundle) |
+| `agents-communication-infra.ReferenceBundleDeliveryRule` | enforces | `agents-communication-infra.DeliverReferenceScoutBundleToAgent` | [rule](rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic) |
+| `agents-communication-infra.DeliverReferenceScoutBundleToAgent` | produces | `agents-communication-infra.ReferenceScoutBundleDeliveredToAgent` | [operation](operations.md#internal-transition--deliverreferencescoutbundletoagent) |
+| `agents-communication-infra.ReferenceScoutBundleToEffectiveInput` | maps | `agents-communication-infra.AgentReferenceDelivery` | [mapping](mappings.md#referencescoutbundletoeffectiveinput) |
+| `agents-communication-infra.ReferenceScoutBundleToEffectiveInput` | maps | `agents-communication-infra.EffectiveInputArtifact` | [mapping](mappings.md#referencescoutbundletoeffectiveinput) |
+| `agents-communication-infra.ExternalToolAdoptionPolicy` | applies | `agents-communication-infra.StartAgentAttempt` | [rule](rules.md#aci-r15--external-tool-adoption-policy) |
+| `agents-communication-infra.CanonicalContractPolicy` | applies | `agents-communication-infra.StartAgentAttempt` | [rule](rules.md#aci-r16--canonical-contract-policy) |
+| `agents-communication-infra.BoundaryValidationPolicy` | applies | `agents-communication-infra.AcceptRuntimeCommand` | [rule](rules.md#aci-r17--derived-boundary-validation-policy) |
+| `agents-communication-infra.ProviderAdapterAdmissionGate` | enforces | `agents-communication-infra.StartAgentAttempt` | [rule](rules.md#aci-r18--provider-adapter-admission-gate) |
 | `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.ListVaultArtifacts` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
 | `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.GetVaultArtifact` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
 | `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.ListLogicalVaultEdges` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
@@ -327,11 +426,20 @@ The feature depends on human confirmation, the current validated audit-ledger ap
 
 ## Gate Result
 
-- Spec authoring: **pass** — ACI-D1–D15, ETD-1–ETD-7 and their OQ dispositions have traceable contracts.
-- Runtime implementation: **block** — W0 persistence/schema/canonicalization/crash evidence and its
-  contract decisions remain required. Once W0 accepts B-001/B-002 and freezes B-003's bundle,
-  drift, guard and test specification, TASK-010 may start; retention/credential ADRs and the complete
-  target-host EG-1 proof continue to gate their later slices and audit materializer cutover.
+- Spec authoring: **pass** — ACI-D1–D15, ETD-1–ETD-7 and their OQ dispositions have traceable contracts; the bounded v0.3.0 target-agent reference-delivery amendment is specified, not implemented.
+- Bounded local ACI/APT pilot: **pass** — Stages B–G provide execution evidence for the exact
+  journal/profile/projection, loopback composition, bridge, project hook wrapper after host loading,
+  Reference Scout, ingestion, replay and recovery slices listed in the implementation matrix. No
+  administrator-enforced hook loading or model-originated spawn has been proved.
+- General runtime and cutover: **block** — production serving, runtime-managed YAML materialization,
+  generic provider launch, administrator-enforced hook loading and the complete target-host EG-1
+  sole-writer proof remain outside the accepted pilot.
+- Skill-to-protocol compiler: **block** — discovery exists, but the profile, registry, trust anchor,
+  authoring lifecycle, binding semantics and compiler probes are not ratified or implemented.
+
+- Target-attempt Reference Scout delivery: **specified / not implemented** — ACI now owns the
+  atomic delivery and effective-input contract, while access, declared use and claim support remain
+  separate downstream evidence.
 
 ## Change History
 

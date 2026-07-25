@@ -205,15 +205,16 @@ never transfer partial runtime state into a legacy success.
 
 The scheduler first creates an [AgentInvocationPlan](domain.md#agentinvocationplan). The selected
 [AgentAdapter](interfaces.md#internal-agentadapter) translates it into a
-[MaterializedAgentInvocation](domain.md#materializedagentinvocation) and finalizes the
-[EffectiveInputArtifact](domain.md#effectiveinputartifact). The kernel validates both digests and
-seals an [AgentExecutionRequest](domain.md#agentexecutionrequest); only then may it commit the start
+[MaterializedAgentInvocation](domain.md#materializedagentinvocation) and prepares the canonical
+bytes and metadata for the [EffectiveInputArtifact](domain.md#effectiveinputartifact). The kernel
+validates both digests and seals an [AgentExecutionRequest](domain.md#agentexecutionrequest); only
+then may it atomically accept the Attempt, finalize the artifact metadata and commit the start
 effect. An adapter can translate and report observations, but cannot accept state or write the
 journal.
 
 | Field | Source | Required contract |
 | --- | --- | --- |
-| `attempt_id`, `operation_id`, `seat_id` | runtime | Authenticated identities; retry keeps `operation_id` and creates a new `attempt_id`. |
+| `attempt_id`, `dispatch_id`, `operation_id`, `seat_id` | runtime | Authenticated identities; dispatch follows seat/group/run ownership, while retry keeps `operation_id` and creates a new `attempt_id`. |
 | `provider_ref`, `adapter_ref`, `model_ref` | confirmed spec + scheduler | Exact selection for this agent instance; heterogeneous groups are valid. |
 | `role_contract_ref`, `task_ref` | compiled profile | Local objective, allowed output and hashed role delta. |
 | `base_snapshot_ref` | runtime | Same for peers unless the confirmed role contract declares `role_delta_ref`. |
@@ -229,13 +230,14 @@ journal.
 | ID | Rule | Formal |
 | --- | --- | --- |
 | O-ATT-1 | Provider-specific CLI flags are not part of the canonical request. | `canonicalRequest hasNo providerFlags` |
-| O-ATT-2 | The exact materialized input is persisted before start becomes authoritative. | `attempt.starting => exists(effectiveInputArtifact(attempt))` |
+| O-ATT-2 | Prepared canonical input bytes/hash exist before request sealing; finalized artifact metadata and request binding commit atomically with attempt acceptance. | `seal(request) => prepared(bytes,hash) and attempt.requested => atomic(finalizedArtifact,requestBinding,attempt.requested)` |
 | O-ATT-3 | The manifest orders and hashes system/developer/user instructions, history, tool schemas, response schema, context and adapter wrappers. | `effective_input_ref = hash(orderedManifest)` |
 | O-ATT-4 | Missing mandatory or semantics-changing capability rejects the combination unless a new spec is reconfirmed. | `missingSemanticsCapability => reject or reconfirm` |
 | O-ATT-5 | Retry never creates a second logical seat contribution. | `retry => same(operation_id, seat_id) and new(attempt_id)` |
 | O-ATT-6 | Plan, materialization and sealed request are distinct and digest-bound. | `sealedRequest = validate(planDigest, materializationDigest)` |
 | O-ATT-7 | Start requires the sandbox launcher and a current execution-authority fence. | `startEffect => sandboxLaunched and fenceCurrent` |
 | O-ATT-8 | Group/run heads used to establish eligibility are command prerequisites. | `start => prerequisiteHeadsUnchanged` |
+| O-ATT-9 | Any Reference Scout bundle in the effective input is accepted only through an accepted [AgentReferenceDelivery](domain.md#agentreferencedelivery). | `reference_bundle in manifest => accepted(agents-communication-infra.AgentReferenceDelivery)` |
 
 ### State transition
 
@@ -285,6 +287,79 @@ See the complete [`AttemptLifecycle`](states.md#attemptlifecycle).
 - The corresponding canonical attempt event is appended.
 - Raw provider output remains distinct from a `BusPublication`, even when
   it contains a schema-valid candidate.
+
+### Internal transition — DeliverReferenceScoutBundleToAgent
+
+**Type:** Internal operation (atomic input-settlement transition owned by
+[StartAgentAttempt](#startagentattempt); it has no standalone command or commit)
+**Actor:** Runtime scheduler under an authenticated delivery capability
+**Triggers:** A StartAgentAttempt plan includes one already lifecycle-delivered Reference Scout
+bundle for the target [Attempt](domain.md#attempt) and its prepared
+[EffectiveInputArtifact](domain.md#effectiveinputartifact)
+
+**Contract status:** specified for the next bounded slice; not implemented. Stage G implements
+Scout bundle commit and lifecycle delivery, but it does not settle a bundle into an agent attempt's
+effective input.
+
+### Input
+
+| Field | Source | Required contract |
+|---|---|---|
+| `agent_reference_delivery_id`, `accepted_event_id` | runtime | Stable [AgentReferenceDelivery](domain.md#agentreferencedelivery) and event identities preallocated before manifest canonicalization. |
+| `dispatch_id`, `target_attempt_id`, `target_seat_id`, `target_agent_instance_id` | authenticated capability + owning seat/group/run | Caller cannot self-assert recipient authority. |
+| `scout_run_id`, `source_bundle_delivered_event_id` | capability-bound source | Existing lifecycle-delivered ScoutRun in the same dispatch. |
+| `bundle_artifact_id`, `bundle_digest`, `recommendation_ids` | verified committed event + immutable artifact | Exact ordered bundle membership; never copied from the delivered event. |
+| `effective_input_artifact_id`, `effective_input_entry_ordinal`, `effective_input_manifest_hash` | input materializer | Exact unique `reference_bundle` entry in the prepared manifest. |
+| `visibility_policy_ref` | authenticated delivery capability | Frozen authorization for this one bundle/recipient pair. |
+| `idempotency_key` | command envelope | Retry identity scoped to ScoutRun and target attempt. |
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-ARD-1 | The preceding committed event owns ordered membership; the lifecycle-delivered event owns no recommendation list. | `recommendation_ids = committed.recommendation_ids = orderedIds(bundle.bytes) and delivered hasNo recommendation_ids` |
+| O-ARD-2 | Source commit, lifecycle delivery and immutable artifact agree on run, artifact and digest. | `same(commit, source_delivered, scout_run_id, bundle_artifact_id, bundle_digest) and bundle_digest = hash(bundle.bytes) and commit.offset < source_delivered.offset` |
+| O-ARD-3 | Source ScoutRun, delivery and recipient Attempt share one runtime-derived dispatch. | `ScoutRun.dispatch_id = delivery.dispatch_id = Attempt.dispatch_id` |
+| O-ARD-4 | Recipient seat and agent instance equal the authenticated target Attempt. | `Attempt(target_attempt_id).(seat_id,agent_instance_id) = (target_seat_id,target_agent_instance_id)` |
+| O-ARD-5 | The prepared manifest contains exactly one matching reference-bundle entry under the authenticated policy. | `entries[effective_input_entry_ordinal] = unique reference_bundle(bundle_artifact_id,bundle_digest,agent_reference_delivery_id,visibility_policy_ref) and effective_input_manifest_hash = hash(canonical(orderedManifest))` |
+| O-ARD-6 | One ScoutRun may be delivered at most once to one target Attempt. | `unique(scout_run_id,target_attempt_id)` |
+| O-ARD-7 | Retry returns the original canonical receipt; any source, membership, recipient, entry, policy or digest drift conflicts. | `scope=(scout_run_id,target_attempt_id); same(scope,key,command_digest) => same(command_receipt); same(scope,key) and different(command_digest) => conflict` |
+| O-ARD-8 | The delivery commits only within the complete StartAgentAttempt acceptance unit. | `sealed(AgentExecutionRequest) and atomic(Attempt,EffectiveInputArtifact,requestBinding,AgentReferenceDelivery,accepted_event_id:reference_scout.bundle_delivered_to_agent@1,attempt.requested,sandboxLaunchEffectIntent) or atomic(none)` |
+| O-ARD-9 | Lifecycle delivery and target-agent delivery are different accepted facts in strict journal order. | `accepted_event_id != source_bundle_delivered_event_id and source_delivered.journal_offset < target_delivered.journal_offset` |
+
+### State transition
+
+This operation has no independent lifecycle. Its accepted fact co-commits with
+[`attempt.requested`](events.md#attemptrequested) when the target [Attempt](domain.md#attempt) is
+accepted.
+
+### Postconditions
+
+- The committed
+  [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent)
+  event matches every identity,
+  source, recipient, manifest, policy, idempotency and offset field of
+  [AgentReferenceDelivery](domain.md#agentreferencedelivery).
+- The accepted target-delivery event follows the accepted lifecycle-delivered event in journal
+  order and remains distinct from it.
+- The immutable effective-input manifest is never amended after acceptance.
+- The accepted fact proves inclusion in observable input only; it does not prove access, reading,
+  declared use or claim support.
+
+### Error states
+
+| Condition | Result |
+|---|---|
+| Source commit or lifecycle-delivery event is missing or not accepted | Reject; accept no attempt or target-delivery fact. |
+| Commit, lifecycle delivery and artifact disagree on ScoutRun, artifact or digest | Integrity failure; reject. |
+| Bundle digest or ordered recommendation membership does not match immutable bytes | Integrity failure; reject. |
+| ScoutRun and recipient Attempt resolve to different dispatches | Authorization failure; reject. |
+| Target seat or agent instance differs from the authenticated Attempt | Authorization failure; reject. |
+| Manifest entry is missing, duplicated, at another ordinal or differs in artifact/digest/delivery/policy | Validation failure; reject. |
+| `(scout_run_id,target_attempt_id)` already has a nonidentical delivery | Uniqueness conflict; return no new receipt. |
+| Same scoped idempotency key carries another `command_digest` | Idempotency conflict; return no new receipt. |
+| Aggregate or prerequisite head is stale | CAS conflict; recompute eligibility before retry. |
+| Any member of the complete StartAgentAttempt transaction fails | Roll back all members; emit neither `attempt.requested` nor target-delivery event. |
 
 ## PublishBusContribution
 
@@ -719,7 +794,8 @@ retried execution; mixed-provider rollups must preserve each provider's semantic
 | --- | --- |
 | [`AcceptRuntimeCommand`](#acceptruntimecommand) | Conditional append for opening/close verification, run/group start, attempt observations, deadlines, effects, handoffs and the unique run terminal |
 | [`ConfirmRuntimeDispatch`](#confirmruntimedispatch) | [`run.created`](events.md#runcreated), [`audit_opening.requested`](events.md#audit_openingrequested) |
-| [`StartAgentAttempt`](#startagentattempt) | [`attempt.requested`](events.md#attemptrequested) |
+| [`StartAgentAttempt`](#startagentattempt) | [`attempt.requested`](events.md#attemptrequested), plus optional atomic target-agent delivery |
+| Internal [`DeliverReferenceScoutBundleToAgent`](#internal-transition--deliverreferencescoutbundletoagent) | [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent), atomically within StartAgentAttempt |
 | [`PublishBusContribution`](#publishbuscontribution) | [`publication.persisted`](events.md#publicationpersisted) candidate only |
 | [`VerifyPublicationReceipt`](#verifypublicationreceipt) | [`attempt.result_accepted`](events.md#attemptresult_accepted) plus the message-type-specific official acceptance event |
 | Internal [`AbandonPublicationCandidate`](#internal-transition--abandonpublicationcandidate) | [`publication.candidate_abandoned`](events.md#publicationcandidate_abandoned) |

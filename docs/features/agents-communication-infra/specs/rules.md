@@ -5,8 +5,8 @@ is_session: false
 layer: application
 nature: [technical, reference]
 status: draft
-version: 0.2.0
-last_updated: 2026-07-21
+version: 0.3.0
+last_updated: 2026-07-25
 ---
 
 # Rules: Agents Communication Infra
@@ -30,7 +30,7 @@ projection(x) => reconstructible(x) AND NOT authoritative(x)
 The current audit ledger remains writable only through its validated appender. Historical rows are
 not rewritten or revalidated.
 
-**Checked by:** [TEST-SPEC T-ACI-R1](TEST-SPEC.md#t-aci-r1--authority-and-writer-boundary).
+**Checked by:** [TEST-SPEC T-ACI-R1](../TEST-SPEC.md#t-aci-r1--authority-and-writer-boundary).
 
 ## ACI-R2 — Runtime-derived authority
 
@@ -45,7 +45,7 @@ accepted(publication) => authority_fields(publication) = authenticated_context(c
 payload_contains_conflicting_authority_field => rejected
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-R2](TEST-SPEC.md#t-aci-r2--runtime-derived-authority).
+**Checked by:** [TEST-SPEC T-ACI-R2](../TEST-SPEC.md#t-aci-r2--runtime-derived-authority).
 
 ## ACI-R3 — Append before receipt and parent verification
 
@@ -64,7 +64,7 @@ provider_terminal AND NOT persisted_match(candidate_receipt) => NOT official_con
 
 Missing, fabricated or mismatched receipts reject the candidate without inventing a contribution.
 
-**Checked by:** [TEST-SPEC T-ACI-R3](TEST-SPEC.md#t-aci-r3--append-before-ack).
+**Checked by:** [TEST-SPEC T-ACI-R3](../TEST-SPEC.md#t-aci-r3--append-before-ack).
 
 ## ACI-R4 — Sealed collection and manifest-only reveal
 
@@ -83,7 +83,7 @@ peer_read_enabled(entry) <=> committed(reveal.published(manifest)) AND entry IN 
 Reveal content is delivered as a content-addressed input to a later attempt/turn and appears in that
 attempt's effective-input artifact; the initial proof exposes no generic peer-read tool.
 
-**Checked by:** [TEST-SPEC T-ACI-R4](TEST-SPEC.md#t-aci-r4--sealed-collection-and-reveal).
+**Checked by:** [TEST-SPEC T-ACI-R4](../TEST-SPEC.md#t-aci-r4--sealed-collection-and-reveal).
 
 ## ACI-R5 — Command idempotency is not conflict tolerance
 
@@ -101,7 +101,7 @@ incoming.expected_version != head.version => VERSION_CONFLICT
 exists(p IN prerequisite_heads, current(p.aggregate_id) != p.expected) => VERSION_CONFLICT
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-R5](TEST-SPEC.md#t-aci-r5--idempotency-and-cas).
+**Checked by:** [TEST-SPEC T-ACI-R5](../TEST-SPEC.md#t-aci-r5--idempotency-and-cas).
 
 ## ACI-R6 — Atomic local acceptance
 
@@ -126,7 +126,7 @@ No independent decision append is conformant: persistence must satisfy the atomi
 their failpoint tests. Authoritative artifact metadata is written only through the artifact-store
 writer interface.
 
-**Checked by:** [TEST-SPEC T-ACI-R6](TEST-SPEC.md#t-aci-r6--atomic-command-acceptance).
+**Checked by:** [TEST-SPEC T-ACI-R6](../TEST-SPEC.md#t-aci-r6--atomic-command-acceptance).
 
 ## ACI-R7 — Pure replay
 
@@ -144,7 +144,7 @@ effects_during_replay = 0
 Provider output, tool results, deadlines, cancellation and human choices affect state only after
 they become accepted events.
 
-**Checked by:** [TEST-SPEC T-ACI-R7](TEST-SPEC.md#t-aci-r7--pure-replay).
+**Checked by:** [TEST-SPEC T-ACI-R7](../TEST-SPEC.md#t-aci-r7--pure-replay).
 
 ## ACI-R8 — Logical uniqueness survives retries
 
@@ -166,7 +166,7 @@ unique(operation_id) WHERE accepted_result = 1
 
 Late and superseded observations remain auditable but cannot overwrite the winner.
 
-**Checked by:** [TEST-SPEC T-ACI-R8](TEST-SPEC.md#t-aci-r8--logical-uniqueness).
+**Checked by:** [TEST-SPEC T-ACI-R8](../TEST-SPEC.md#t-aci-r8--logical-uniqueness).
 
 ## ACI-R9 — Input, output and accepted message are distinct evidence
 
@@ -184,7 +184,7 @@ The effective-input manifest orders and hashes exact system/developer/user instr
 tool names/descriptions/input schemas, response schema, context artifacts and adapter wrappers.
 Unobservable provider-side transformations are limitations, never reconstructed facts.
 
-**Checked by:** [TEST-SPEC T-ACI-R9](TEST-SPEC.md#t-aci-r9--artifact-separation-and-input-manifest).
+**Checked by:** [TEST-SPEC T-ACI-R9](../TEST-SPEC.md#t-aci-r9--artifact-separation-and-input-manifest).
 
 ## ACI-R10 — Provider heterogeneity cannot fork protocol
 
@@ -199,7 +199,7 @@ capability_profile_satisfied(adapter) => same(kernel_protocol, event_schema, bus
 missing(semantics_changing_capability) => reject OR reconfirm(new_spec_digest)
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-R10](TEST-SPEC.md#t-aci-r10--mixed-provider-conformance).
+**Checked by:** [TEST-SPEC T-ACI-R10](../TEST-SPEC.md#t-aci-r10--mixed-provider-conformance).
 
 ## ACI-R11 — Sensitive immutable artifact governance
 
@@ -213,7 +213,7 @@ Concrete retention periods, key custody and legal-hold precedence are deliberate
 Slice-1 retention and credential ADRs; until accepted, deployment beyond local development is
 blocked rather than governed by an implicit default.
 
-**Checked by:** [TEST-SPEC T-ACI-R11](TEST-SPEC.md#t-aci-r11--sensitive-artifact-governance).
+**Checked by:** [TEST-SPEC T-ACI-R11](../TEST-SPEC.md#t-aci-r11--sensitive-artifact-governance).
 
 ## ACI-R12 — Usage observations preserve provider semantics
 
@@ -232,7 +232,7 @@ cost_calculation => immutable(pricing_digest, currency, quantity, unit_price, so
 missing_or_incompatible_pricing => no_cost_calculation
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-R12](TEST-SPEC.md#t-aci-r12--usage-nullability-and-provenance).
+**Checked by:** [TEST-SPEC T-ACI-R12](../TEST-SPEC.md#t-aci-r12--usage-nullability-and-provenance).
 
 ## ACI-R13 — Audit opening gates every provider/tool effect
 
@@ -240,7 +240,7 @@ No provider or tool effect starts until the canonical audit opening row is prese
 to the frozen authority and acknowledged by a committed journal event. Same identity plus divergent
 row content blocks the run in `reconciliation_required`.
 
-**Checked by:** [TEST-SPEC T-ACI-R13](TEST-SPEC.md#t-aci-r13--verified-opening-barrier).
+**Checked by:** [TEST-SPEC T-ACI-R13](../TEST-SPEC.md#t-aci-r13--verified-opening-barrier).
 
 ## ACI-R14 — Durability is a feature-level contract
 
@@ -248,7 +248,7 @@ The proof and pilot journal use SQLite WAL with `synchronous=FULL` for every wri
 relaxation to `NORMAL` or another policy changes the durability claim for the entire atomic command
 acceptance and requires measured fault evidence plus an explicit superseding decision.
 
-**Checked by:** [TEST-SPEC T-ACI-R14](TEST-SPEC.md#t-aci-r14--sqlite-durability-policy).
+**Checked by:** [TEST-SPEC T-ACI-R14](../TEST-SPEC.md#t-aci-r14--sqlite-durability-policy).
 
 ## ACI-R15 — External tool adoption policy
 
@@ -263,7 +263,7 @@ admit(tool, seam) => classified(tool) AND authority(tool, seam) subset_of permit
 overlaps_authoritative_fact(tool) => reject_kernel_dependency(tool)
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-ETA1](TEST-SPEC.md#t-aci-eta1--external-tool-authority-classification).
+**Checked by:** [TEST-SPEC T-ACI-ETA1](../TEST-SPEC.md#t-aci-eta1--external-tool-authority-classification).
 
 ## ACI-R16 — Canonical contract policy
 
@@ -280,7 +280,7 @@ accepted_artifact(x) => pydantic_valid(x)
 pydantic_valid(x) != accepted_artifact(x)
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-ETA2](TEST-SPEC.md#t-aci-eta2--canonical-python-contract-vectors).
+**Checked by:** [TEST-SPEC T-ACI-ETA2](../TEST-SPEC.md#t-aci-eta2--canonical-python-contract-vectors).
 
 ## ACI-R17 — Derived boundary validation policy
 
@@ -296,7 +296,7 @@ node_validator_allowed => inventoried_aci_consumer AND derived_from_python_contr
 hand_authored_second_normative_schema => reject
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-ETA3](TEST-SPEC.md#t-aci-eta3--derived-node-boundary-parity).
+**Checked by:** [TEST-SPEC T-ACI-ETA3](../TEST-SPEC.md#t-aci-eta3--derived-node-boundary-parity).
 
 ## ACI-R18 — Provider adapter admission gate
 
@@ -316,7 +316,84 @@ real_provider_admitted(a, host) => fake_suite_passed
 provider_process_created => launched_by(SandboxLauncher)
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-ETA4](TEST-SPEC.md#t-aci-eta4--subprocess-provider-admission-gate).
+**Checked by:** [TEST-SPEC T-ACI-ETA4](../TEST-SPEC.md#t-aci-eta4--subprocess-provider-admission-gate).
+
+## ACI-R19 — Reference bundle delivery is source-bound and attempt-atomic
+
+**Status:** Specified; not implemented.
+
+An accepted target-agent reference delivery is distinct from the accepted
+`reference_scout.bundle_delivered@1` Scout lifecycle fact. The lifecycle event proves that the
+Scout's committed bundle reached its lifecycle delivery boundary; it does not identify a target
+Attempt and does not carry ordered recommendation membership. Target-attempt inclusion is accepted
+only when the accepted `reference_scout.bundle_committed@1` fact and exact immutable bundle bytes
+agree on artifact identity, digest and ordered recommendation membership, and the accepted
+lifecycle-delivery fact agrees on Scout run, artifact and digest.
+
+The target Attempt, seat and agent-instance identities derive from one authenticated capability.
+The source ScoutRun, [AgentReferenceDelivery](domain.md#agentreferencedelivery) and target Attempt
+must share the same `dispatch_id`. Stable delivery and target-event identities are allocated before
+the effective-input manifest is canonicalized. The matching `reference_bundle` entry, finalized
+manifest metadata, sealed request binding, Attempt, AgentReferenceDelivery,
+`reference_scout.bundle_delivered_to_agent@1`, `attempt.requested` and launch effect intent are then
+accepted in one transaction or not at all.
+
+**Formal:**
+```text
+accepted(target_delivery) =>
+  accepted(bundle_committed)
+  AND accepted(bundle_delivered)
+  AND bundle_committed.scout_run_id = bundle_delivered.scout_run_id
+  AND bundle_committed.bundle_artifact_id = bundle_delivered.bundle_artifact_id
+  AND bundle_committed.bundle_digest = bundle_delivered.bundle_digest
+  AND bundle_committed.bundle_digest = hash(immutable_bundle_bytes)
+  AND bundle_committed.recommendation_ids = ordered_recommendation_ids(immutable_bundle_bytes)
+  AND target_delivery.source_bundle_delivered_event_id = bundle_delivered.event_id
+  AND target_delivery.accepted_event_id = target_event.event_id
+  AND bundle_delivered.event_id != target_event.event_id
+  AND bundle_committed.journal_offset
+      < bundle_delivered.journal_offset
+      < target_event.journal_offset
+  AND ScoutRun.dispatch_id = AgentReferenceDelivery.dispatch_id = Attempt.dispatch_id
+  AND (Attempt.id, Attempt.seat_id, Attempt.agent_instance_id)
+      = authenticated_target(capability)
+  AND preallocated(agent_reference_delivery_id, target_event_id)
+  AND exactly_one(
+        entry = EffectiveInputEntry where
+          entry.ordinal = target_delivery.effective_input_entry_ordinal
+          AND entry.entry_type = reference_bundle
+          AND entry.artifact_ref = target_delivery.bundle_artifact_id
+          AND entry.content_hash = target_delivery.bundle_digest
+          AND entry.visibility_policy_ref = target_delivery.visibility_policy_ref
+          AND entry.agent_reference_delivery_id = target_delivery.agent_reference_delivery_id
+          AND entry IN EffectiveInputArtifact(target_delivery.effective_input_artifact_id)
+      )
+  AND EffectiveInputArtifact(target_delivery.effective_input_artifact_id).attempt_id
+      = target_delivery.target_attempt_id
+  AND EffectiveInputArtifact(target_delivery.effective_input_artifact_id).manifest_hash
+      = target_delivery.effective_input_manifest_hash
+  AND atomic(
+        finalized_effective_input_metadata,
+        sealed_request_binding,
+        Attempt,
+        AgentReferenceDelivery,
+        reference_scout.bundle_delivered_to_agent@1,
+        attempt.requested,
+        launch_effect_intent
+      )
+```
+
+This acceptance proves exact inclusion in observable effective input only. It does not prove that
+the target accessed the source, declared it used, or relied on it for a claim. Those remain separate
+host- and APT-owned evidence.
+
+This bounded amendment formalizes
+[OQ-ACI8](../discovery/feature-discovery/agents-communication-infra.md#oq-aci8--canonical-effective-input)
+against the accepted
+[Stage G lifecycle contract](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle);
+it does not introduce or claim a new discovery decision.
+
+**Checked by:** [TEST-SPEC T-ACI-R22](../TEST-SPEC.md#t-aci-r22--reference-bundle-target-delivery).
 
 ## OQ dispositions
 
@@ -325,13 +402,13 @@ provider_process_created => launched_by(SandboxLauncher)
 | OQ-ACI1 | **Ratified** | ACI-R5–R7 and [persistence contract](persistence-and-replay.md). |
 | OQ-ACI4 | **Ratified** | ACI-R7 and [DispatchSpec](domain.md#dispatchspec). |
 | OQ-ACI7 | **Ratified** | ACI-R14. |
-| OQ-ACI8 | **Ratified** | ACI-R9. |
+| OQ-ACI8 | **Ratified** | ACI-R9 and the bounded specified/not-implemented ACI-R19 amendment. |
 | OQ-ACI9 | **Boundary ratified; concrete retention/key parameters deferred** | ACI-R11; Slice-1 ADR remains blocking. |
 | OQ-ETA1 | **Deferred blocker to W0** | ACI-R16; pin and canonical vectors remain unaccepted. |
 | OQ-ETA2 | **Evidence shape ratified; cutover proof open** | ACI-R1 and [SoleWriterEvidenceBundle](domain.md#solewriterevidencebundle); W0 freezes schema/guard/tests, while TASK-020 supplies physical evidence before cutover without blocking TASK-010. |
 | OQ-ETA4 | **Disposed: no identified ACI Node consumer** | ACI-R17; do not add Zod now. |
 | OQ-ETA5 | **Deferred post-first-provider** | ACI-R18; no PydanticAI dependency now. |
-| OQ-ETA6 | **Disposed as non-blocking provenance maintenance** | [External-tool discovery](../discovery/external-tool-adoptions.md). |
+| OQ-ETA6 | **Disposed as non-blocking provenance maintenance** | [External-tool discovery](../discovery/external-tool-adoption/external-tool-adoptions.md). |
 
 ## Connections
 
@@ -340,4 +417,4 @@ provider_process_created => launched_by(SandboxLauncher)
 | [Domain model](domain.md) | `enforces` | Entities and value objects constrained here. |
 | [Persistence and replay](persistence-and-replay.md) | `implements-contract` | Candidate store constraints that make ACI-R5–R7 and ACI-R14 executable. |
 | [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Authority for decisions ACI-D1–ACI-D15 and OQ settlements. |
-| [External Tool Adoptions v0.1.0](../discovery/external-tool-adoptions.md) | `derives-from` | Authority for ETD-1–ETD-7 and OQ-ETA dispositions. |
+| [External Tool Adoptions v0.1.0](../discovery/external-tool-adoption/external-tool-adoptions.md) | `derives-from` | Authority for ETD-1–ETD-7 and OQ-ETA dispositions. |

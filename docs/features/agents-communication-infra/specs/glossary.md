@@ -1,8 +1,8 @@
 ---
 feature: agents-communication-infra
-version: 0.2.0
+version: 0.3.0
 status: draft
-updatedAt: 2026-07-21
+updatedAt: 2026-07-25
 docType: glossary
 ---
 
@@ -20,6 +20,8 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | Sealed collection | Phase in which agents may publish but cannot read peer contributions. |
 | Official close | Audit-ledger close row independently verified after a run terminal fact. |
 | Replay | Pure reduction of persisted accepted facts, never repetition of effects. |
+| Scout lifecycle delivery | Existing [Stage G source fact](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle) `reference_scout.bundle_delivered@1` that a committed Reference Scout bundle reached the ScoutRun's terminal delivery state; it does not identify a target agent. |
+| Target-agent reference delivery | **Specified / not implemented:** separate [AgentReferenceDelivery](domain.md#agentreferencedelivery) and [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) fact that the exact Scout bundle is included in one named Attempt's effective input; it proves inclusion only, never source access, declared reference use or claim support. |
 
 ## Terms
 
@@ -34,6 +36,7 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | PublicationCandidate | `agents-communication-infra.PublicationCandidate` | Entity | Durable publication evidence awaiting parent receipt verification and official acceptance. | [Domain](domain.md#publicationcandidate) |
 | EffectIntent | `agents-communication-infra.EffectIntent` | Entity | Durable request for work outside the journal transaction. | [Domain](domain.md#effectintent) |
 | Artifact | `agents-communication-infra.Artifact` | Entity | Immutable content-addressed evidence metadata. | [Domain](domain.md#artifact) |
+| AgentReferenceDelivery | `agents-communication-infra.AgentReferenceDelivery` | Entity | **Specified / not implemented:** immutable source-bound acceptance record proving inclusion of one exact Scout bundle entry in one target Attempt's effective input, never access, declared use or claim support. | [Domain](domain.md#agentreferencedelivery) |
 | EffectiveInputArtifact | `agents-communication-infra.EffectiveInputArtifact` | Entity | Ordered manifest of observable input presented to an attempt. | [Domain](domain.md#effectiveinputartifact) |
 | RawProviderOutput | `agents-communication-infra.RawProviderOutput` | Entity | Immutable provider-native output that is evidence, not protocol authority. | [Domain](domain.md#rawprovideroutput) |
 | RevealManifest | `agents-communication-infra.RevealManifest` | Entity | Frozen message/hash set authorized for peer delivery. | [Domain](domain.md#revealmanifest) |
@@ -97,6 +100,7 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | RawProviderOutputToCanonicalObservations | `agents-communication-infra.RawProviderOutputToCanonicalObservations` | Mapping | Converts provider-native evidence into non-authoritative canonical observations. | [Mappings](mappings.md#rawprovideroutputtocanonicalobservations) |
 | BusPublicationToContribution | `agents-communication-infra.BusPublicationToContribution` | Mapping | Combines agent content with runtime authority to create an accepted contribution. | [Mappings](mappings.md#buspublicationtocontribution) |
 | RevealManifestToEffectiveInput | `agents-communication-infra.RevealManifestToEffectiveInput` | Mapping | Delivers authorized peer evidence into a later attempt input. | [Mappings](mappings.md#revealmanifesttoeffectiveinput) |
+| ReferenceScoutBundleToEffectiveInput | `agents-communication-infra.ReferenceScoutBundleToEffectiveInput` | Mapping | Verifies accepted Scout source facts and maps the immutable ordered bundle into one target Attempt input and delivery fact. | [Mappings](mappings.md#referencescoutbundletoeffectiveinput) |
 | FrozenAuthorityToAuditLedgerRow | `agents-communication-infra.FrozenAuthorityToAuditLedgerRow` | Mapping | Derives canonical official rows from frozen run authority. | [Mappings](mappings.md#frozenauthoritytoauditledgerrow) |
 | RuntimeTerminalToExitReason | `agents-communication-infra.RuntimeTerminalToExitReason` | Mapping | Maps the unique run cause to one audit exit reason. | [Mappings](mappings.md#runtimeterminaltoexitreason) |
 | UsageObservationToRollups | `agents-communication-infra.UsageObservationToRollups` | Mapping | Aggregates usage while preserving nulls, counts and provider semantics. | [Mappings](mappings.md#usageobservationtorollups) |

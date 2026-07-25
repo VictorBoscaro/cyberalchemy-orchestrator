@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "feature": "agents-communication-infra",
+  "test_spec": "docs/features/agents-communication-infra/TEST-SPEC.md",
+  "coverage_claim": "bounded",
+  "entries": [
+    {
+      "test_spec_id": "T-ACI-R3",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_fail_before_commit_rolls_back_and_after_commit_retry_converges",
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_receipt_tampering_and_wrong_parent_scope_fail"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-R5",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_publish_retry_is_byte_stable_and_changed_digest_conflicts",
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_logical_publication_race_has_one_winner"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-R6",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_fail_before_commit_rolls_back_and_after_commit_retry_converges",
+        "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_two_event_group_rolls_back_inside_group_read"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-R7",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_apt_projector.py::AptIndependentProjectorTests::test_rebuild_from_zero_is_deterministic"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-R15",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_full_flow_candidate_then_exactly_one_official_and_restart",
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_concurrent_parent_verification_converges_to_one_message"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-R16",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::CanonicalMigrationTests::test_frozen_canonical_golden_vectors",
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_receipt_tampering_and_wrong_parent_scope_fail"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-C1",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_fail_before_commit_rolls_back_and_after_commit_retry_converges",
+        "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_two_event_group_rolls_back_inside_group_read"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-C2",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_orchestration_bridge.py::OrchestrationLoggingBridgeTests::test_open_and_close_retries_are_idempotent",
+        "implementations/tests/runtime/test_orchestration_bridge.py::OrchestrationLoggingBridgeTests::test_yaml_only_open_and_close_crashes_converge_on_retry"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-C4",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_full_flow_candidate_then_exactly_one_official_and_restart",
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_concurrent_parent_verification_converges_to_one_message"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-ETA2",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_stage_b.py::CanonicalMigrationTests::test_canonical_contract",
+        "implementations/tests/runtime/test_stage_b.py::CanonicalMigrationTests::test_frozen_canonical_golden_vectors"
+      ]
+    }
+  ]
+}

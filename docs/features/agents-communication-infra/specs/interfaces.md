@@ -4,7 +4,7 @@ feature: Agents Communication Infra
 type: interfaces
 title: "Agents Communication Infra — Interfaces"
 status: draft
-version: 0.2.1
+version: 0.3.0
 derived-from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 ---
 
@@ -190,7 +190,7 @@ interfaces; they never receive a database connection.
 
 | Method | Input | Output | Required semantics |
 |---|---|---|---|
-| `materialize` | [AgentInvocationPlan](domain.md#agentinvocationplan) | [MaterializedAgentInvocation](domain.md#materializedagentinvocation) | deterministic native translation and finalized effective input; no state acceptance |
+| `materialize` | [AgentInvocationPlan](domain.md#agentinvocationplan) | [MaterializedAgentInvocation](domain.md#materializedagentinvocation) plus prepared effective-input bytes/metadata | deterministic native translation and canonical input preparation; no artifact, delivery or Attempt acceptance |
 | `start` | sealed [AgentExecutionRequest](domain.md#agentexecutionrequest) | provider attempt identity/status observation | invoked only through SandboxLauncher; adapter cannot write state |
 | `events` | [Attempt](domain.md#attempt).attempt_id, provider cursor | canonical incremental observations + next cursor | provider-native payload stays namespaced and content-addressed |
 | `result` | [Attempt](domain.md#attempt).attempt_id | [AgentTerminalResult](domain.md#agentterminalresult) | common version/parsing rules; provider prose alone never becomes a contribution |
@@ -202,24 +202,45 @@ interfaces; they never receive a database connection.
 
 The runtime creates one provider-neutral [AgentInvocationPlan](domain.md#agentinvocationplan) per
 physical attempt. The selected adapter translates it to
-[MaterializedAgentInvocation](domain.md#materializedagentinvocation) and finalizes the exact
-[EffectiveInputArtifact](domain.md#effectiveinputartifact). The kernel validates both digests and
-seals [AgentExecutionRequest](domain.md#agentexecutionrequest); only a later claimed effect may ask
-the launcher to start it.
+[MaterializedAgentInvocation](domain.md#materializedagentinvocation) and prepares the canonical bytes
+and metadata for the exact [EffectiveInputArtifact](domain.md#effectiveinputartifact). The kernel
+validates both digests and, during [StartAgentAttempt](operations.md#startagentattempt), atomically
+finalizes artifact metadata, accepts any [AgentReferenceDelivery](domain.md#agentreferencedelivery),
+binds the sealed [AgentExecutionRequest](domain.md#agentexecutionrequest), accepts the Attempt and
+commits `attempt.requested`; only a later claimed effect may ask the launcher to start it.
+
+When an authorized Reference Scout bundle is included, the kernel preallocates the
+[AgentReferenceDelivery](domain.md#agentreferencedelivery) identity and target-event identity and supplies
+an immutable binding to the materializer. The adapter may place the exact authorized bundle only as
+one typed `reference_bundle` entry; it cannot select the source ScoutRun, target identities,
+recommendation membership/order or visibility policy. After materialization, the kernel verifies
+the binding through
+[ReferenceScoutBundleToEffectiveInput](mappings.md#referencescoutbundletoeffectiveinput) and accepts
+the delivery only in the complete [StartAgentAttempt](operations.md#startagentattempt) transaction.
+This boundary is specified for the next bounded slice and is not implemented.
 
 | Field | Authority | Contract |
 |---|---|---|
-| `attempt_id`, `operation_id`, `seat_id` | runtime | authenticated physical/logical identities |
+| `attempt_id`, `dispatch_id`, `operation_id`, `seat_id`, `agent_instance_id` | runtime | authenticated physical/logical identities |
 | `provider_ref`, `adapter_ref`, `model_ref` | confirmed spec + scheduler | exact resolved destination and immutable version/digest where available |
 | `role_contract_ref`, `task_ref` | compiled recipe/profile | local objective, visible inputs and allowed output type |
 | `base_snapshot_ref` | runtime | content-addressed shared context |
 | `role_delta_ref` | confirmed role contract | optional, content-addressed declared difference from the base snapshot |
+| `agent_reference_delivery_id`, source Scout bundle ref/digest, target-event ID, `visibility_policy_ref` | kernel + authenticated target capability | optional preallocated immutable binding; when present it must yield exactly one matching `reference_bundle` entry and cannot be rewritten by the adapter |
 | `effective_input_ref`, `provider_invocation_ref` | adapter materializer | ordered observable input and exact native invocation artifacts |
 | `response_schema_ref` | confirmed spec | schema required before a raw result can become a publication candidate |
 | `tool_profile_ref` | capability resolver | exact tools and permissions; collection has no peer-read capability |
 | `deadline`, `resource_budget` | confirmed policy | explicit time, token, tool, payload and storage bounds |
 | `sandbox_policy` | confirmed policy | filesystem/network/process/credential allowlists, default-deny elsewhere |
 | `authority_fence` | cutover verifier | current runtime epoch and verified legacy-watcher-disable evidence |
+| optional Reference Scout delivery context | runtime scheduler under authenticated delivery capability | preallocated delivery/event identities plus accepted source commit, lifecycle-delivery fact, immutable bundle and policy; source ScoutRun and target Attempt must share `dispatch_id`, and the adapter cannot author or accept any delivery field |
+
+When the optional delivery context is present, the prepared manifest contains exactly one
+[`reference_bundle`](domain.md#effectiveinputentry) entry produced by
+[ReferenceScoutBundleToEffectiveInput](mappings.md#referencescoutbundletoeffectiveinput). The
+capability-derived recipient, accepted source facts and immutable bytes are revalidated inside the
+atomic StartAgentAttempt acceptance unit. No standalone endpoint or adapter method accepts
+[`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).
 
 ### Heterogeneous-provider conformance
 
@@ -324,6 +345,7 @@ settled before Slice 1 exits.
 | IF-ACI-11 | Candidate is not official | `publication.persisted and not verified -> not quorumEligible` |
 | IF-ACI-12 | Adapter admission is evidence-gated | `real provider runnable -> ProviderAdapterAdmissionGate passed for adapter version and target host` |
 | IF-ACI-13 | Boundary validation is subordinate | language-native boundary schema cannot define canonical bytes, digest or acceptance identity |
+| IF-ACI-14 | Target-agent reference delivery is kernel-authorized and atomic | `reference_bundle in accepted input -> authenticatedDeliveryCapability and preallocated(delivery_id,target_event_id) and exactAcceptedSourceBinding and atomic(AgentReferenceDelivery,finalizedEffectiveInputMetadata,sealedRequestBinding,Attempt,reference_scout.bundle_delivered_to_agent@1,attempt.requested,launchEffectIntent)` |
 
 ## Deferred Interface Decisions
 
