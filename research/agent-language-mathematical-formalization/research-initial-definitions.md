@@ -3,9 +3,10 @@ tags: [agents, architecture, category-theory, lean, formalization, research-brie
 node_type: research-initial-definitions
 is_session: false
 status: proposed
-version: 0.2.0
+version: 0.4.0
 last_updated: 2026-07-24
-related_plan: plans/agent-language-research-program/PLAN.md
+related_plan: plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md
+stream_id: R1
 target_document: docs/architecture/agent-language-system-view.md
 ---
 
@@ -53,6 +54,13 @@ without confusing model soundness, product correspondence, and execution authori
   propositions, counterexamples, proof obligations, and machine-checked results.
 - A mathematical or Lean result does not independently establish product correspondence, runtime
   truth, promotion, or execution authority.
+- The formalization must distinguish a finite bootstrap, meta-well-formedness of kernel/invariant
+  declarations, the checker that evaluates those judgments, global invariant preservation,
+  bounded domain semantics, composition witnesses, and runtime enforcement rather than
+  representing all of them as one `kernel-of-kernels`.
+- The actual Lean prover kernel is an `analogy-only` precedent for a small trusted checker below
+  extensible elaboration. It is distinct from the repository's `permguard` policy decision program,
+  which is also informally called a “Lean kernel”.
 - The formalization must preserve the distinction between structural recursive work and recursive
   orchestration authority. An invoked orchestrator must not invoke another orchestrator.
 - Confirmed constraints, candidate invariants, architectural hypotheses, analogies, and open
@@ -70,7 +78,7 @@ without confusing model soundness, product correspondence, and execution authori
   [system view](../../docs/architecture/agent-language-system-view.md) supplies the explanatory
   target and a planned formalization appendix.
 - The
-  [agent-language research plan](../../plans/agent-language-research-program/PLAN.md) makes kernel
+  [agent-language research plan](../../plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md) makes kernel
   topology, composition, finite bootstrap, authority, and Lean boundaries first-phase questions.
 - The
   [foundational definitions](../foundational-kernel-and-formalization/research-initial-definitions.md)
@@ -100,6 +108,11 @@ without confusing model soundness, product correspondence, and execution authori
   effects is not formalized.
 - A finite bootstrap boundary for kernel or contract conformance has not been expressed
   mathematically.
+- The judgments `WellFormed`, `Preserved`, `JointlySatisfiable`, `Compatible`, `Accepted`, and
+  `AuthorizedToExecute` have not been separated formally.
+- It is not known whether a metakernel should be represented as a theory, signature, validator,
+  institutional satisfaction relation, proof-relevant record family, or another bounded
+  construction; nor whether it should be one object at all.
 - It is unknown which claims are stable enough for Lean, which need executable validators, and
   which remain empirical, governance, or product judgments.
 - The correspondence criteria between mathematical structures, Lean definitions, infrastructure

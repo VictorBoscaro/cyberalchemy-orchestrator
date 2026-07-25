@@ -3,8 +3,10 @@ tags: [agents, orchestration, research-brief, events, obligations, scheduling, t
 node_type: research-initial-definitions
 is_session: false
 status: proposed
-version: 0.4.0
+version: 0.5.0
 last_updated: 2026-07-24
+related_plan: plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md
+stream_id: R2-R4
 target_discovery: docs/features/agents-communication-infra/discovery/event-driven-obligations-and-task-orchestration.md
 related_research:
   - research/agent-invocation-and-collaboration-topology/research-initial-definitions.md

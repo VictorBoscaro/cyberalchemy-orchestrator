@@ -3,8 +3,10 @@ tags: [agents, communication-infra, research-brief, invocation, collaboration-to
 node_type: research-initial-definitions
 is_session: false
 status: proposed
-version: 0.8.0
+version: 0.9.0
 last_updated: 2026-07-24
+related_plan: plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md
+stream_id: R3-R4
 target_discovery: docs/features/agents-communication-infra/discovery/agent-invocation-and-collaboration-topology.md
 related_research:
   - research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md

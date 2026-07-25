@@ -3,9 +3,10 @@ tags: [agents, architecture, kernel, interoperability, formalization, lean, rese
 node_type: research-initial-definitions
 is_session: false
 status: proposed
-version: 0.4.0
+version: 0.7.0
 last_updated: 2026-07-24
-related_plan: plans/agent-language-research-program/PLAN.md
+related_plan: plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md
+stream_id: R1
 ---
 
 # Research Initial Definitions: Foundational Kernel and Formalization
@@ -44,11 +45,18 @@ in defining, checking, evidencing, or explaining those contracts?
 
 - Kernel structure is a subject of the first research phase, not a preselected architectural
   answer.
+- `Metakernel`, conformance checker, global invariant set, domain kernel,
+  kernel-composition protocol, finite bootstrap, and runtime enforcement are distinct candidate
+  responsibilities. Research must not assume that one artifact owns all of them.
 - The research must consider whether the system needs one kernel, several specialized kernels, a
   microkernel with extensions, a kernel-of-kernels, another arrangement, or no artifact properly
   described as a kernel.
 - Lean must be included because it is used extensively in the surrounding work, but its use must
   not silently confer product correspondence, runtime truth, operational authority, or promotion.
+- The actual Lean theorem-prover kernel may be evaluated as an `analogy-only` precedent for a small
+  trusted checker below an extensible elaboration layer. The `permguard` verified policy program
+  informally called a “Lean kernel” is a different artifact and supplies no direct evidence about
+  the prover kernel's fit as an architectural precedent.
 - Objects have identities that are not defined solely by their names, descriptions, physical
   paths, current classifications, or participation in a larger composition.
 - Names, descriptions, properties, classifications, relations, validity claims, and architectural
@@ -76,6 +84,9 @@ in defining, checking, evidencing, or explaining those contracts?
   location.
 - Plans are revisable priors. Later evidence may revise their boundaries, sequence, assumptions,
   gates, or stopping points without erasing prior versions.
+- The canonical [Plan contract](../../plans/README.md#canonical-definition) owns Plan semantics. Every Plan must
+  search for governing authority and preserve a resolved, absent, unknown, or contested result. A
+  Plan without resolved governing authority remains a proposal and cannot authorize execution.
 - Every governed artifact that communicates research, planning, discovery, design, specification,
   formalization, review, or a decision must expose an explicit `Open Questions` section and
   preserve later question dispositions in history.
@@ -87,10 +98,12 @@ in defining, checking, evidencing, or explaining those contracts?
 ## Current Evidence Baseline
 
 - The current
-  [agent-language research plan](../../plans/agent-language-research-program/PLAN.md) separates the
+  [agent-language research plan](../../plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md) separates the
   broader program into language, event, agent, planning, evaluation, definition, observability,
   Git, and integration streams. It records kernel topology and Lean formalization as first-phase
   concerns.
+- The [Plan contract](../../plans/README.md#canonical-definition) is the canonical Plan definition and records
+  the current owner direction for Plan placement and authority resolution.
 - The
   [event-driven obligations definitions](../event-driven-obligations-and-task-orchestration/research-initial-definitions.md)
   already establish low-friction tags, typed relation metadata, derived physical placement, and
@@ -117,6 +130,15 @@ in defining, checking, evidencing, or explaining those contracts?
   translation, composition, conflict, supersession, or conformance without recreating a universal
   kernel implicitly.
 - A finite bootstrap boundary for checking foundational contracts has not been established.
+- It is not settled which responsibilities belong to a meta-contract for well-formed declarations,
+  a conformance checker for explicit judgments, a global invariant set, bounded domain kernels,
+  pairwise composition witnesses, or runtime enforcement, nor whether any share one implementation.
+- The research has not defined the separate judgments for invariant-record well-formedness,
+  mathematical preservation, joint satisfiability, compositional preservation, accepted
+  governance status, and execution authority.
+- It is unclear which parts of Lean's small-kernel and independent-checker pattern correspond to
+  the product, and where the analogy fails because Lean does not own provenance, policy precedence,
+  temporal obligations, runtime authority, or physical effects.
 - The interaction among identity, version, provenance, relative validity, authority, composition,
   history, and revision has not been tested for joint consistency or sufficiency.
 - The system has not settled which aspects of names, descriptions, functions, objectives,
@@ -132,6 +154,8 @@ in defining, checking, evidencing, or explaining those contracts?
   graphs, facets, projections, user-defined schemes, or several coexisting forms.
 - The exact relationship among a program, phase, stream, plan, task, gate, and execution lifecycle
   remains unsettled.
+- It is not settled whether Plan is the only route-bearing or promotion-eligible object allowed to
+  remain durable while governing authority is absent, unknown, or contested.
 - It is not settled which candidate work names denote durable artifact kinds, activity kinds,
   session kinds, contextual roles, stage instances, or overlapping classifications.
 - The typed relation grammar among Plan, Research, Discovery, Design, Spec, Code, and Verification
