@@ -210,6 +210,7 @@ receipt.
 | `FX-DISPATCH-CATALOG-v1` | Exactly 700 rows, including at least one valid root/child chain, unresolved parent, legacy row, orphan close, pending/open/closed row and intra-Dispatch topology. | Catalog, lineage, degradation and scale | [SCD-13](discovery/control-center.md#separate-scale-fixtures-and-performance) |
 | `FX-EVIDENCE-MIXED-v1` | Complete, partial, unavailable, fresh, stale and unknown source partitions plus dedupe/retry/conflict records. | Evidence algebra | [SCD-05/06](discovery/control-center.md#5-evidence-and-observation-contract) |
 | `FX-DRAFT-v1` | Stable target/base, explicit diff, effective values/origins, valid and invalid previews, route unavailable. | Draft-only UI | [Scope decision](../../decisions/skill-control-center-phase-1-scope.md#decision) |
+| `FX-INTERFACE-BOUNDARY-v1` | Complete and missing `host_id`, `auth_contract_id`, and `route_owner_id` bindings with a safe recovery explanation. | IF-I5 publication/unavailability behavior | [IF-I5](interfaces.md#interface-invariants) |
 
 Every fixture has `fixture_id`, `schema_version`, `source_revision`, `generated_at_utc` and
 `sha256`. The implementation must commit a `fixtures/manifest.json` whose non-null expected digest
@@ -248,9 +249,9 @@ Phase 1 is ready for implementation only when:
 
 [Architecture](architecture.md) is the validated architecture companion,
 [Glossary](glossary.md) defines the canonical feature language, and
-[Operations](operations.md) defines the local-only mutations. Query, interface, state, UI and test
-aspects are required next; each link will be added only after its target exists and passes its own
-Document check.
+[Operations](operations.md) defines the local-only mutations.
+[Queries](queries.md), [Interfaces](interfaces.md), [States](states.md),
+[UI](UI-SPEC.md), and [Tests](TEST-SPEC.md) define the remaining Phase 1 contracts.
 
 ## Cross-Feature Dependencies
 

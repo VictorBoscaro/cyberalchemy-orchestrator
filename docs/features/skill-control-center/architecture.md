@@ -221,7 +221,7 @@ Authoritative commands and benchmark promotion are not extension points in Phase
 | AD-004 | One semantic variant adapter | Independent per-shell semantics vs shared contract | Functional equivalence | [SCD-11](discovery/control-center.md#exactly-three-equivalent-variants) |
 | AD-005 | <a id="ad-005"></a>A successful local preference or draft save increments its non-negative integer revision exactly once: `result_revision = expected_revision + 1`. | Opaque revision token; timestamp; monotonic integer | The local store needs a deterministic optimistic-concurrency witness; this choice applies only to Phase 1 local data. | [Local revision input](discovery/control-center.md#7-configuration-authority-and-receipt-boundary), [Phase 1 local scope](../../decisions/skill-control-center-phase-1-scope.md#decision) |
 | AD-006 | <a id="ad-006"></a>Every retryable local error or conflict retains the caller input; terminal invalid/not-found results need not retain it. | Retain every input; retain none; retain retryable only | Preserves safe local recovery without turning invalid data into durable state. | [Phase 1 assumptions](../../decisions/skill-control-center-phase-1-scope.md#assumptions) |
-| AD-007 | <a id="ad-007"></a>Local operation result/status codes form the closed sets declared in `operations.md`; producer conditions use the operation's declared deterministic first-match precedence, success is eligible only after every validation/CAS gate passes, persistence is attempted only after those gates, and an unknown producer code is handled separately by the consumer as `protocol-error`. | Free-form strings; open extension; unordered closed set; ordered closed set | Makes local operation contracts exhaustive and deterministic without implying authoritative states. | [Phase 1 guardrails](BACKLOG.md#phase-1-guardrails) |
+| AD-007 | <a id="ad-007"></a>Local operation result/status codes form the closed sets declared in `operations.md`; producer conditions use deterministic first-match precedence, success follows every gate and persistence, and unknown codes become consumer-side `protocol-error`. VCP order is `not-found > revision-conflict > state-ineligible > invalid-validator > forbidden-validation-effect > validation-started > validator-unavailable > validation-error > persistence > valid/invalid`. | Free-form strings; open extension; unordered closed set; ordered closed set | Makes local operation contracts exhaustive and deterministic, and validates request/authority safety before entering transient `validating`. | [Phase 1 guardrails](BACKLOG.md#phase-1-guardrails) |
 
 ## Risks
 
@@ -240,8 +240,8 @@ Authoritative commands and benchmark promotion are not extension points in Phase
   cross-variant parity require independent suites.
 - Observability implications: source ingest state and safe aggregate diagnostics may be exposed;
   raw prompts/returns/logs remain excluded.
-- Documentation implications: planned aspect docs must be linked from SPEC only after passing their
-  individual checks.
+- Documentation implications: all Phase 1 aspect docs are linked from SPEC; future authority and
+  benchmark contracts remain backlog-owned.
 
 ## Design Transport Notes
 
@@ -255,5 +255,5 @@ owns fixture and gate traceability. None may promote deferred backlog work.
 - Status: **pass**
 - Reason: all six views, source contracts, dependency rules, decision log, risks and transport
   boundaries are defined for read-only/draft-only Phase 1.
-- Required follow-up: materialize and individually validate operation, query, interface, state,
-  UI, glossary and test aspects before implementation.
+- Required follow-up: implementation must materialize the frozen fixture manifest and pass
+  `TEST-SPEC.md`; authoritative apply and benchmark gating remain blocked/deferred in `BACKLOG.md`.

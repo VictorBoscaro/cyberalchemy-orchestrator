@@ -36,6 +36,22 @@ route-unavailable for missing authority bindings.
 
 Done when the prose, state machine, Mermaid diagram and executable tests express the same branch.
 
+### SCC-BL-013 — Codex collaboration hierarchy capture
+
+Bind the current Codex `collaboration.spawn_agent` / `followup_task` lifecycle to the mandatory
+YAML + ACI hook path. The Control Center already projects explicit `parent_dispatch_id` edges, but
+this Phase 1 run proved that launches through the collaboration surface can complete without a
+new local ledger row or hook-state file. Manual repair of hook-managed rows is forbidden.
+
+Done when:
+
+- launch fails closed unless both YAML and ACI return `launch-authorized`;
+- every orchestrator and nested reviewer produces one correlated open/close lifecycle;
+- each child carries the exact parent dispatch identity, without inferred name or timestamp joins;
+- a dispatch-of-dispatches round-trip renders the same hierarchy in API, table and graph views;
+- duplicate, orphan, late-close, retry and interrupted-launch fixtures pass;
+- an end-to-end Codex collaboration probe proves the ledger and hook-state timestamps advance.
+
 ## P1 — benchmark as a decision gate
 
 ### SCC-BL-004 — Valid action-efficiency score
@@ -79,3 +95,62 @@ Done for SCC-BL-004 through SCC-BL-008 when:
 - Draft, diff and validation preview remain local/proposed states.
 - Benchmark results are descriptive only and cannot select or promote a variant.
 - Any UI control for deferred work is disabled or absent and links to the relevant backlog ID.
+
+## P2 — Phase 1 validation and productization residues
+
+These items were exposed by the implemented browser evidence. They do not invalidate the Phase 1
+experiment, but they block selecting a winner or treating any variant as production-ready.
+
+### SCC-BL-009 — Mobile topology legibility
+
+Make the visual graph readable without depending on zoom or tiny labels while preserving the
+semantic table as the complete, primary non-canvas answer.
+
+Done when:
+
+- every node and edge label meets the frozen mobile readability threshold;
+- graph, table and path result still expose identical node and edge identity sets;
+- 320 CSS-px reflow, keyboard traversal and screen-reader reading-order checks pass;
+- the 204-row screenshot matrix is regenerated without overflow or digest drift.
+
+### SCC-BL-010 — Consistent product language and localization
+
+Choose and freeze the operator-facing locale strategy. Remove the current mixed-language
+experience across navigation, states, source data explanations and recovery copy without
+rewriting stable object identities or evidence.
+
+Done when:
+
+- one default locale and fallback policy are documented;
+- every shared label, state explanation, error and safe next action is covered by the locale
+  catalog;
+- A, B and C render byte-equivalent semantic messages for the same fixture;
+- missing translations fail visibly to the declared fallback and never erase evidence detail.
+
+### SCC-BL-011 — Human usability and assistive-technology validation
+
+Run the pre-registered operator study and manual assistive-technology matrix. Browser automation
+does not prove comprehension, workload, trust, preference, real-user task success, complete
+screen-reader behavior or full WCAG conformance.
+
+Done when:
+
+- eligible operators complete CF-01 through CF-06 under the frozen sampling and assistance rules;
+- task success, valid action efficiency, comprehension and subjective workload are reported with
+  uncertainty and withdrawals;
+- keyboard-only, screen-reader, zoom/reflow and reduced-motion sessions have durable evidence;
+- findings are separated into deterministic defects, UX risks and subjective preference.
+
+### SCC-BL-012 — Production integration and promotion decision
+
+Keep all three variants experimental until host, authentication, route ownership, observability,
+operational support and rollout/rollback are explicitly owned. Promotion remains blocked until
+SCC-BL-004 through SCC-BL-011 are satisfied or formally waived by their owners.
+
+Done when:
+
+- the production host and access-control boundary are ratified;
+- logs, metrics, error budgets and support ownership are documented and exercised;
+- a rollout and rollback rehearsal succeeds without changing authoritative data;
+- the promotion decision cites the frozen benchmark and human-study evidence instead of the
+  descriptive Phase 1 scores alone.

@@ -184,24 +184,32 @@ numeric domain value.
 
 **Normative first-match precedence:** evaluate proposal absence (`draft-not-found`), revision
 mismatch (`draft-conflict`), source-state eligibility (`validation-ineligible`), validator
-availability, validator execution, validator identity/version (`invalid-validator`), then forbidden
-validator effects (`forbidden-validation-effect`). After findings are computed, preview persistence
-is attempted; `validation-save-failed` precedes success. Only an atomic preview commit may select
+identity/version (`invalid-validator`), then forbidden validator effects
+(`forbidden-validation-effect`). After these request/authority-safety gates pass, emit
+`validation-started` and enter `validating`; only then check validator availability, execute the
+validator and attempt preview persistence. `validation-unavailable`, `validation-error`, and
+`validation-save-failed` precede success. Only an atomic preview commit may select
 `validation-valid` or `validation-invalid`. `protocol-error` is consumer-side only and never
 competes with producer failures.
 
+Transient boundary (not a `result.code` and therefore not a member of the closed result-code set):
+
+| From | Event | To | Guard | Effect |
+|---|---|---|---|---|
+| `draft-saved` | `validation-started` | `validating` | Absence, revision, state, validator identity and forbidden-effect gates all pass | Bind proposal/revision/validator attempt; then evaluate availability and execution |
+
 | From | Condition | `result.code` | To | Retry class | Input retained | Stored draft revision effect | Safe next action |
 |---|---|---|---|---|---|---|---|
-| `draft-saved` | VCP-R1..4 pass; findings empty | `validation-valid` | `valid` | terminal | no | unchanged | Review preview |
-| `draft-saved` | VCP-R1..4 pass; findings non-empty | `validation-invalid` | `invalid` | terminal | no | unchanged | Edit proposal |
 | any | Proposal absent | `draft-not-found` | unchanged | terminal | no | unchanged | Return to catalog/draft list |
 | any | Revision differs | `draft-conflict` | unchanged | retryable | yes | unchanged | Refresh and validate retained request |
 | any except `draft-saved` | State is ineligible | `validation-ineligible` | unchanged | terminal | no | unchanged | Save proposal first |
-| `draft-saved -> validating` | Validator unavailable | `validation-unavailable` | `draft-saved` | retryable | yes | unchanged | Retry same validation |
-| `draft-saved -> validating` | Validator execution error | `validation-error` | `draft-saved` | retryable | yes | unchanged | Retry after diagnostic |
 | any | VCP-R2 fails | `invalid-validator` | unchanged | terminal | no | unchanged | Select a known validator/version |
 | any | VCP-R3 or VCP-R4 would fail | `forbidden-validation-effect` | unchanged | terminal | no | unchanged | Stop; use preview-only validator |
+| `draft-saved -> validating` | Validator unavailable | `validation-unavailable` | `draft-saved` | retryable | yes | unchanged | Retry same validation |
+| `draft-saved -> validating` | Validator execution error | `validation-error` | `draft-saved` | retryable | yes | unchanged | Retry after diagnostic |
 | `draft-saved -> validating` | Atomic preview persistence fails before commit | `validation-save-failed` | `draft-saved` | retryable | yes | unchanged; no partial write | Retry exact validation request |
+| `draft-saved -> validating` | Findings empty and preview commit succeeds | `validation-valid` | `valid` | terminal | no | unchanged | Review preview |
+| `draft-saved -> validating` | Findings non-empty and preview commit succeeds | `validation-invalid` | `invalid` | terminal | no | unchanged | Edit proposal |
 | any | Store/consumer receives an undeclared code | `protocol-error` | unchanged | terminal | no | unchanged | Stop and report contract mismatch |
 
 All rows have `authoritative_effects=∅`. The closed code set is exactly
