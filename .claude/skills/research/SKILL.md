@@ -96,6 +96,25 @@ approver group (its single agent's role is `auditor`) and the early stop skips t
 approval falls back to `parent` (P12's group-never-runs fallback); if `final_approver` is `parent`, `parent`
 accepts directly. Either way the dispatch closes `resolved` once the negative is accepted.
 
+## Longer sweeps: propose the structure first
+
+Sweep size is the strategist's recommendation for which router `confirmation_mode` (see the router's
+**Confirmation modes**) the user picks — it mints **no new gate**. A **short** research (one explorer
+group, one skeptic gate, a bounded corpus) takes `final_only`: build the structure internally and
+confirm once. A **large** sweep — multiple explorer groups, several stages, or a deep / multi-corpus
+search — is where the strategist recommends `structure_and_final`: show and confirm the
+`StructuralGraphProposal` **first** — the angle set (each angle's tension axis, per Principle 5), the
+groups and their roles, the connections, the expected outputs, and the one question the sweep answers
+— before resolving concrete detail and before any agent spawns. That structural confirmation **is**
+the "research plan" the user accepts or declines: an informal name for the router's structural gate,
+**not** a `dispatch_type: plan` (reserved) and not a second gate stacked on the lifecycle.
+
+Keep the proposal a decisive recommendation, not a survey of options; the user's accept/decline is the
+only branch. On **accept**, resolve the `ConcreteDispatchProposal` and go to the final confirmation as
+normal. On **decline**, drop to `final_only` (one confirmation, no separate structural gate) — decline
+means "run it lean," never "abort" and never "skip the confirm gate." Silence is not acceptance
+(router lifecycle): resolve nothing until an explicit accept or decline.
+
 ## How to run
 
 Spawn each group's agents with the Agent tool — ALL agents of a group in ONE message, so
