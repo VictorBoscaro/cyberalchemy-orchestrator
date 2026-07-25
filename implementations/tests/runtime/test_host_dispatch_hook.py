@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+import base64
 import json
 import shutil
 import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
+from implementations.server.runtime.canonical import canonical_digest
+from implementations.server.runtime.errors import GateBlockedError
 from implementations.server.runtime.host_dispatch_hook import HostDispatchHook, run
 
 REPO = Path(__file__).resolve().parents[3]
@@ -98,6 +101,75 @@ class HostDispatchHookTests(unittest.TestCase):
             host=host,
             now=lambda: datetime(2026, 7, 24, 20, 0, tzinfo=timezone.utc),
         )
+
+    @staticmethod
+    def bound_message(*, prompt: str, turn_ordinal: int = 0) -> str:
+        envelope = {
+            "schema": "aci-host-workflow-binding/v1",
+            "dispatch_id": "2026-07-25-parent-research",
+            "group_id": "kernel",
+            "seat_index": 0,
+            "turn_ordinal": turn_ordinal,
+            "attempt_id": f"attempt-{turn_ordinal}",
+            "prompt_template_path": None,
+            "prompt_template_digest": canonical_digest(prompt),
+            "workflow_manifest_path": "workflow/manifest.json",
+            "workflow_manifest_digest": canonical_digest({"slots": []}),
+        }
+        encoded = base64.urlsafe_b64encode(
+            json.dumps(envelope).encode("utf-8")
+        ).decode("ascii").rstrip("=")
+        return f"ACI-WORKFLOW-BINDING-V1:{encoded}\n{prompt}"
+
+    def test_bound_launch_uses_parent_binding_without_opening_yaml_dispatch(self) -> None:
+        hook = self.hook("claude")
+        prompt = "Investigate the kernel invariants."
+        event = self.event(self.root, host="claude")
+        event["tool_input"]["message"] = self.bound_message(prompt=prompt)
+        runtime = MagicMock()
+        runtime.bind_host_workflow_turn.return_value = {
+            "status": "launch-authorized",
+            "dispatch_id": "2026-07-25-parent-research",
+            "session_id": "session-parent",
+            "binding_id": "hwb-kernel",
+            "group_id": "kernel",
+            "seat_index": 0,
+            "turn_ordinal": 0,
+            "attempt_id": "attempt-0",
+            "bound_event_id": "evt-bound",
+            "workflow_manifest_artifact_id": "art-manifest",
+        }
+        runtime.complete_host_workflow_turn.return_value = {
+            "state": "resolved",
+            "terminal_event_id": "evt-terminal",
+        }
+        completed_event = dict(event)
+        completed_event["hook_event_name"] = "PostToolUse"
+        completed_event["tool_response"] = {"result": "complete"}
+        with patch.object(hook, "_runtime_bridge", return_value=(runtime, object())):
+            opened = hook.pre_tool_use(event)
+            closed = hook.post_tool_use(completed_event)
+        self.assertEqual(opened["binding_id"], "hwb-kernel")
+        self.assertEqual(closed["binding_state"], "resolved")
+        runtime.bind_host_workflow_turn.assert_called_once()
+        runtime.complete_host_workflow_turn.assert_called_once()
+        ledger = (
+            self.root / "telemetry/agents/subagents-dispatch.yaml"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("2026-07-25-parent-research", ledger)
+
+    def test_unbound_followup_is_denied(self) -> None:
+        hook = self.hook("codex")
+        event = self.event(self.root, host="codex")
+        event["tool_name"] = "followup_task"
+        event["tool_input"] = {
+            "target": "agent-1",
+            "message": "Continue without a binding.",
+        }
+        with self.assertRaisesRegex(
+            GateBlockedError, "governed workflow binding envelope"
+        ):
+            hook.pre_tool_use(event)
 
     def test_codex_running_response_closes_on_subagent_stop(self) -> None:
         hook = self.hook("codex")
@@ -244,7 +316,7 @@ class HostDispatchHookTests(unittest.TestCase):
         self.assertIn("Stop", claude["hooks"])
         self.assertEqual(
             codex["hooks"]["PreToolUse"][0]["matcher"],
-            "^(Agent|spawn_agent)$",
+            "^(Agent|spawn_agent|followup_task)$",
         )
         self.assertEqual(
             claude["hooks"]["PreToolUse"][0]["matcher"],

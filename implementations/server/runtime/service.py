@@ -60,6 +60,8 @@ ACI_SCHEMAS = {
         ),
         "reference_scout.terminated@1": "aci.reference-scout-terminated@1",
         "dispatch.ingestion_recorded@1": "aci.dispatch-ingestion-recorded@1",
+        "host_workflow.turn_bound@1": "aci.host-workflow-turn-bound@1",
+        "host_workflow.turn_terminal@1": "aci.host-workflow-turn-terminal@1",
     }.items()
 }
 
@@ -127,6 +129,12 @@ class RuntimeService:
                 ),
                 "dispatch.ingestion_recorded@1": (
                     self._validate_dispatch_ingestion_event
+                ),
+                "host_workflow.turn_bound@1": (
+                    self._validate_host_workflow_turn_bound_event
+                ),
+                "host_workflow.turn_terminal@1": (
+                    self._validate_host_workflow_turn_terminal_event
                 ),
             }
         )
@@ -290,6 +298,73 @@ class RuntimeService:
         )
         if payload["authority_mode"] != "legacy-managed":
             raise IntegrityError("orchestration bridge authority mode must be legacy-managed")
+
+    @classmethod
+    def _validate_host_workflow_turn_bound_event(
+        cls, payload: dict[str, Any]
+    ) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "binding_id",
+                "dispatch_id",
+                "session_id",
+                "parent_row_digest",
+                "group_id",
+                "seat_index",
+                "turn_ordinal",
+                "attempt_id",
+                "host",
+                "operation_kind",
+                "prompt_template_digest",
+                "workflow_manifest_artifact_id",
+                "workflow_manifest_hash",
+                "source_artifact_ids",
+                "tool_input_digest",
+                "host_session_id",
+                "tool_use_id",
+                "bound_at",
+                "actor_ref",
+            },
+            "HostWorkflowTurnBound",
+        )
+        if payload["host"] not in {"claude", "codex"}:
+            raise IntegrityError("host workflow host is invalid")
+        if payload["operation_kind"] not in {"spawn", "followup"}:
+            raise IntegrityError("host workflow operation kind is invalid")
+        if (
+            not isinstance(payload["seat_index"], int)
+            or payload["seat_index"] < 0
+            or not isinstance(payload["turn_ordinal"], int)
+            or payload["turn_ordinal"] < 0
+        ):
+            raise IntegrityError("host workflow seat/turn is invalid")
+        if not isinstance(payload["source_artifact_ids"], list):
+            raise IntegrityError("host workflow source artifacts are invalid")
+
+    @classmethod
+    def _validate_host_workflow_turn_terminal_event(
+        cls, payload: dict[str, Any]
+    ) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "binding_id",
+                "dispatch_id",
+                "group_id",
+                "seat_index",
+                "turn_ordinal",
+                "attempt_id",
+                "host",
+                "state",
+                "agent_id",
+                "terminal_at",
+                "actor_ref",
+            },
+            "HostWorkflowTurnTerminal",
+        )
+        if payload["state"] not in {"resolved", "error", "cancelled"}:
+            raise IntegrityError("host workflow terminal state is invalid")
 
     @classmethod
     def _validate_dispatch_closed_event(cls, payload: dict[str, Any]) -> None:
@@ -1230,12 +1305,28 @@ class RuntimeService:
                 """,
                 (dispatch_id,),
             ).fetchone()
+            running_binding = conn.execute(
+                """
+                SELECT binding_id,group_id,seat_index,turn_ordinal
+                FROM host_workflow_turn_bindings
+                WHERE dispatch_id=? AND state='running'
+                ORDER BY group_id,seat_index,turn_ordinal LIMIT 1
+                """,
+                (dispatch_id,),
+            ).fetchone()
         if not link:
             raise NotFoundError("linked Session and dispatch are required before close")
         if unfinished_scout:
             raise ConflictError(
                 "dispatch cannot close with unfinished Reference Scout "
                 f"{unfinished_scout['scout_run_id']} ({unfinished_scout['state']})"
+            )
+        if running_binding:
+            raise ConflictError(
+                "dispatch cannot close with running host workflow binding "
+                f"{running_binding['binding_id']} "
+                f"({running_binding['group_id']}[{running_binding['seat_index']}] "
+                f"turn {running_binding['turn_ordinal']})"
             )
         aggregate_id = f"aci.orchestration-dispatch:{dispatch_id}"
         head = self.journal.head(aggregate_id)
@@ -3849,6 +3940,583 @@ class RuntimeService:
         ):
             return "sha256:" + value["value"]
         raise ValidationError("invalid ContentDigest")
+
+    def _host_workflow_source(self, relative: str) -> tuple[Path, bytes, str]:
+        if (
+            not isinstance(relative, str)
+            or not relative
+            or Path(relative).is_absolute()
+            or "\\" in relative
+            or ".." in Path(relative).parts
+        ):
+            raise ValidationError("workflow source path must be repository-relative")
+        root = self.settings.repo_root.resolve()
+        candidate = root / relative
+        try:
+            resolved = candidate.resolve(strict=True)
+            resolved.relative_to(root)
+        except (OSError, ValueError) as exc:
+            raise ValidationError(
+                "workflow source is unavailable or escapes repository"
+            ) from exc
+        cursor = candidate
+        while cursor != root:
+            if cursor.is_symlink():
+                raise ValidationError("workflow source symlinks are forbidden")
+            cursor = cursor.parent
+        if not resolved.is_file():
+            raise ValidationError("workflow source must be a regular file")
+        body = resolved.read_bytes()
+        return resolved, body, digest_bytes(body)
+
+    def _validate_workflow_manifest(
+        self,
+        *,
+        raw: bytes,
+        expected_digest: str,
+        dispatch_id: str,
+        group_id: str,
+        seat_index: int,
+        turn_ordinal: int,
+        attempt_id: str,
+    ) -> tuple[dict[str, Any], list[str]]:
+        if digest_bytes(raw) != self._content_digest_string(expected_digest):
+            raise IntegrityError("workflow manifest digest mismatch")
+        manifest = self._require_exact_fields(
+            parse_strict_json(raw),
+            {"schema", "dispatch_id", "target", "slots"},
+            "WorkflowInputManifest",
+        )
+        if (
+            manifest["schema"] != "aci-workflow-input-manifest/v1"
+            or manifest["dispatch_id"] != dispatch_id
+        ):
+            raise IntegrityError("workflow manifest identity mismatch")
+        target = self._require_exact_fields(
+            manifest["target"],
+            {"group_id", "seat_index", "turn_ordinal", "attempt_id"},
+            "WorkflowInputManifest target",
+        )
+        if target != {
+            "group_id": group_id,
+            "seat_index": seat_index,
+            "turn_ordinal": turn_ordinal,
+            "attempt_id": attempt_id,
+        }:
+            raise IntegrityError("workflow manifest target mismatch")
+        slots = manifest["slots"]
+        if not isinstance(slots, list):
+            raise IntegrityError("workflow manifest slots must be ordered")
+        names: set[str] = set()
+        source_artifact_ids: list[str] = []
+        for slot in slots:
+            slot = self._require_exact_fields(
+                slot,
+                {
+                    "name",
+                    "data_schema_ref",
+                    "cardinality",
+                    "max_bytes",
+                    "purpose",
+                    "sources",
+                },
+                "WorkflowInputManifest slot",
+            )
+            name = slot["name"]
+            if not isinstance(name, str) or not name or name in names:
+                raise IntegrityError("workflow manifest slot names must be unique")
+            names.add(name)
+            if (
+                not isinstance(slot["data_schema_ref"], str)
+                or not slot["data_schema_ref"]
+                or not isinstance(slot["purpose"], str)
+                or not slot["purpose"]
+                or not isinstance(slot["max_bytes"], int)
+                or slot["max_bytes"] < 0
+            ):
+                raise IntegrityError("workflow manifest slot contract is invalid")
+            cardinality = self._require_exact_fields(
+                slot["cardinality"], {"min", "max"}, "slot cardinality"
+            )
+            if (
+                not isinstance(cardinality["min"], int)
+                or not isinstance(cardinality["max"], int)
+                or cardinality["min"] < 0
+                or cardinality["max"] < cardinality["min"]
+            ):
+                raise IntegrityError("workflow manifest cardinality is invalid")
+            sources = slot["sources"]
+            if not isinstance(sources, list) or not (
+                cardinality["min"] <= len(sources) <= cardinality["max"]
+            ):
+                raise IntegrityError("workflow manifest source cardinality is invalid")
+            total = 0
+            for source in sources:
+                source = self._require_exact_fields(
+                    source,
+                    {
+                        "source_kind",
+                        "producer_binding_id",
+                        "path",
+                        "sha256",
+                        "size_bytes",
+                    },
+                    "WorkflowInputManifest source",
+                )
+                if source["source_kind"] not in {"repository", "binding-output"}:
+                    raise IntegrityError("workflow manifest source kind is invalid")
+                _, body, actual_digest = self._host_workflow_source(source["path"])
+                if (
+                    source["sha256"] != actual_digest
+                    or source["size_bytes"] != len(body)
+                ):
+                    raise IntegrityError("workflow source bytes differ from manifest")
+                total += len(body)
+                producer_id = source["producer_binding_id"]
+                if source["source_kind"] == "repository":
+                    if producer_id is not None:
+                        raise IntegrityError(
+                            "repository source cannot claim a producer"
+                        )
+                else:
+                    if not isinstance(producer_id, str) or not producer_id:
+                        raise IntegrityError("binding output requires a producer")
+                    with self.database.connect() as conn:
+                        producer = conn.execute(
+                            """
+                            SELECT dispatch_id,state FROM host_workflow_turn_bindings
+                            WHERE binding_id=?
+                            """,
+                            (producer_id,),
+                        ).fetchone()
+                    if (
+                        not producer
+                        or producer["dispatch_id"] != dispatch_id
+                        or producer["state"]
+                        not in {"resolved", "error", "cancelled"}
+                    ):
+                        raise ConflictError(
+                            "workflow source producer is absent or non-terminal"
+                        )
+                with self.database.connect() as conn:
+                    artifact = conn.execute(
+                        "SELECT artifact_id FROM artifacts WHERE content_hash=?",
+                        (actual_digest,),
+                    ).fetchone()
+                if artifact:
+                    source_artifact_ids.append(artifact["artifact_id"])
+            if total > slot["max_bytes"]:
+                raise IntegrityError("workflow manifest slot exceeds byte ceiling")
+        return manifest, source_artifact_ids
+
+    def bind_host_workflow_turn(
+        self,
+        *,
+        host: str,
+        host_session_id: str,
+        tool_use_id: str,
+        tool_input: dict[str, Any],
+        dispatch_id: str,
+        group_id: str,
+        seat_index: int,
+        turn_ordinal: int,
+        attempt_id: str,
+        prompt_body: str,
+        prompt_template_path: str | None,
+        prompt_template_digest: str,
+        workflow_manifest_path: str,
+        workflow_manifest_digest: str,
+        actor_ref: str,
+    ) -> dict[str, Any]:
+        if host not in {"claude", "codex"}:
+            raise ValidationError("host workflow host is invalid")
+        if not all(
+            isinstance(value, str) and value
+            for value in (
+                host_session_id,
+                tool_use_id,
+                dispatch_id,
+                group_id,
+                attempt_id,
+                prompt_body,
+                workflow_manifest_path,
+                actor_ref,
+            )
+        ):
+            raise ValidationError("host workflow binding identity is incomplete")
+        if (
+            not isinstance(seat_index, int)
+            or seat_index < 0
+            or not isinstance(turn_ordinal, int)
+            or turn_ordinal < 0
+        ):
+            raise ValidationError("host workflow seat/turn is invalid")
+        operation_kind = "spawn" if turn_ordinal == 0 else "followup"
+        snapshot = self.legacy.resolve(self.settings.ledger_path, dispatch_id)
+        orchestration_head = self.journal.head(
+            f"aci.orchestration-dispatch:{dispatch_id}"
+        )
+        if orchestration_head["current_version"] != 1:
+            raise ConflictError("parent Dispatch is not open")
+        with self.database.connect() as conn:
+            link = conn.execute(
+                "SELECT * FROM dispatch_links WHERE dispatch_id=?",
+                (dispatch_id,),
+            ).fetchone()
+        if not link or link["row_digest"] != snapshot.row_digest:
+            raise IntegrityError("parent Dispatch link is absent or stale")
+        row = parse_strict_json(link["row_json"])
+        groups = row.get("groups")
+        group = (
+            next(
+                (
+                    candidate
+                    for candidate in groups
+                    if isinstance(candidate, dict)
+                    and candidate.get("group_id") == group_id
+                ),
+                None,
+            )
+            if isinstance(groups, list)
+            else None
+        )
+        agents = group.get("agents") if isinstance(group, dict) else None
+        if (
+            not isinstance(agents, list)
+            or seat_index >= len(agents)
+            or not isinstance(agents[seat_index], dict)
+        ):
+            raise NotFoundError("parent Dispatch group/seat is not declared")
+        confirmed_prompt = agents[seat_index].get("initial_prompt")
+        if not isinstance(confirmed_prompt, str) or not confirmed_prompt:
+            raise IntegrityError("parent Dispatch seat prompt is unavailable")
+        expected_template_digest = self._content_digest_string(
+            prompt_template_digest
+        )
+        if turn_ordinal == 0:
+            if prompt_template_path is not None or prompt_body != confirmed_prompt:
+                raise IntegrityError("spawn prompt differs from confirmed seat prompt")
+            if digest_bytes(prompt_body.encode("utf-8")) != expected_template_digest:
+                raise IntegrityError("spawn prompt template digest mismatch")
+        else:
+            if not isinstance(prompt_template_path, str):
+                raise IntegrityError("followup requires a declared prompt template")
+            _, template_bytes, template_digest = self._host_workflow_source(
+                prompt_template_path
+            )
+            try:
+                template_text = template_bytes.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise IntegrityError(
+                    "followup prompt template must be UTF-8"
+                ) from exc
+            if (
+                template_digest != expected_template_digest
+                or template_text != prompt_body
+                or expected_template_digest not in confirmed_prompt
+            ):
+                raise IntegrityError(
+                    "followup prompt is not bound by the confirmed seat prompt"
+                )
+            with self.database.connect() as conn:
+                prior_turn = conn.execute(
+                    """
+                    SELECT state,agent_id FROM host_workflow_turn_bindings
+                    WHERE dispatch_id=? AND group_id=? AND seat_index=?
+                      AND turn_ordinal=?
+                    """,
+                    (dispatch_id, group_id, seat_index, turn_ordinal - 1),
+                ).fetchone()
+            if (
+                not prior_turn
+                or prior_turn["state"]
+                not in {"resolved", "error", "cancelled"}
+            ):
+                raise ConflictError("previous seat turn is not terminal")
+            target = tool_input.get("target")
+            if (
+                prior_turn["agent_id"] is not None
+                and target != prior_turn["agent_id"]
+            ):
+                raise AuthorizationError(
+                    "followup target differs from bound agent"
+                )
+        _, manifest_bytes, actual_manifest_digest = self._host_workflow_source(
+            workflow_manifest_path
+        )
+        if actual_manifest_digest != workflow_manifest_digest:
+            raise IntegrityError("workflow manifest file digest mismatch")
+        _, source_artifact_ids = self._validate_workflow_manifest(
+            raw=manifest_bytes,
+            expected_digest=workflow_manifest_digest,
+            dispatch_id=dispatch_id,
+            group_id=group_id,
+            seat_index=seat_index,
+            turn_ordinal=turn_ordinal,
+            attempt_id=attempt_id,
+        )
+        prepared_manifest = self.artifacts.prepare(
+            manifest_bytes,
+            media_type="application/json",
+            schema_ref="aci.workflow-input-manifest@1",
+            classification="sensitive-input",
+        )
+        tool_input_digest = canonical_digest(tool_input)
+        binding_id = self._stable_id(
+            "hwb_",
+            [
+                dispatch_id,
+                group_id,
+                str(seat_index),
+                str(turn_ordinal),
+                attempt_id,
+            ],
+        )
+        aggregate_id = f"aci.host-workflow-turn:{binding_id}"
+        with self.database.connect() as conn:
+            existing = conn.execute(
+                """
+                SELECT b.*,r.result_receipt_json
+                FROM host_workflow_turn_bindings b
+                LEFT JOIN command_receipts r
+                  ON r.scope_key=? AND r.idempotency_key='bind'
+                WHERE b.binding_id=?
+                """,
+                (aggregate_id, binding_id),
+            ).fetchone()
+        if existing:
+            accepted = {
+                "dispatch_id": dispatch_id,
+                "session_id": link["session_id"],
+                "parent_row_digest": snapshot.row_digest,
+                "group_id": group_id,
+                "seat_index": seat_index,
+                "turn_ordinal": turn_ordinal,
+                "attempt_id": attempt_id,
+                "host": host,
+                "operation_kind": operation_kind,
+                "prompt_template_digest": expected_template_digest,
+                "workflow_manifest_artifact_id": prepared_manifest.artifact_id,
+                "workflow_manifest_hash": prepared_manifest.content_hash,
+                "source_artifact_ids_json": canonical_text(source_artifact_ids),
+                "tool_input_digest": tool_input_digest,
+                "host_session_id": host_session_id,
+                "tool_use_id": tool_use_id,
+            }
+            if any(existing[key] != value for key, value in accepted.items()):
+                raise IdempotencyConflict(
+                    "host workflow binding retry differs from accepted launch"
+                )
+            if not existing["result_receipt_json"]:
+                raise IntegrityError(
+                    "host workflow binding exists without command receipt"
+                )
+            return json.loads(existing["result_receipt_json"])
+        bound_at = self.now().isoformat()
+        payload = {
+            "binding_id": binding_id,
+            "dispatch_id": dispatch_id,
+            "session_id": link["session_id"],
+            "parent_row_digest": snapshot.row_digest,
+            "group_id": group_id,
+            "seat_index": seat_index,
+            "turn_ordinal": turn_ordinal,
+            "attempt_id": attempt_id,
+            "host": host,
+            "operation_kind": operation_kind,
+            "prompt_template_digest": expected_template_digest,
+            "workflow_manifest_artifact_id": prepared_manifest.artifact_id,
+            "workflow_manifest_hash": prepared_manifest.content_hash,
+            "source_artifact_ids": source_artifact_ids,
+            "tool_input_digest": tool_input_digest,
+            "host_session_id": host_session_id,
+            "tool_use_id": tool_use_id,
+            "bound_at": bound_at,
+            "actor_ref": actor_ref,
+        }
+        command = self._command(
+            command_name="aci.bind-host-workflow-turn@1",
+            scope_key=aggregate_id,
+            idempotency_key="bind",
+            aggregate_type="aci.host-workflow-turn",
+            aggregate_id=aggregate_id,
+            expected_version=0,
+            authority={
+                "principal_id": actor_ref,
+                "action": "host_workflow.bind",
+                "phase": "bootstrap",
+            },
+            intent=payload,
+            prerequisites=(
+                PrerequisiteHead(
+                    aggregate_id=orchestration_head["aggregate_id"],
+                    expected_version=orchestration_head["current_version"],
+                    state_hash=orchestration_head["state_hash"],
+                ),
+            ),
+        )
+        event = self._event("host_workflow.turn_bound@1", payload)
+
+        def mutate(conn, records, _result):
+            conn.execute(
+                """
+                INSERT INTO host_workflow_turn_bindings(
+                  binding_id,dispatch_id,session_id,parent_row_digest,group_id,
+                  seat_index,turn_ordinal,attempt_id,host,operation_kind,
+                  prompt_template_digest,workflow_manifest_artifact_id,
+                  workflow_manifest_hash,source_artifact_ids_json,tool_input_digest,
+                  host_session_id,tool_use_id,state,bound_event_id,bound_at
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'running',?,?)
+                """,
+                (
+                    binding_id,
+                    dispatch_id,
+                    link["session_id"],
+                    snapshot.row_digest,
+                    group_id,
+                    seat_index,
+                    turn_ordinal,
+                    attempt_id,
+                    host,
+                    operation_kind,
+                    expected_template_digest,
+                    prepared_manifest.artifact_id,
+                    prepared_manifest.content_hash,
+                    canonical_text(source_artifact_ids),
+                    tool_input_digest,
+                    host_session_id,
+                    tool_use_id,
+                    records[0].event_id,
+                    bound_at,
+                ),
+            )
+
+        def result(records, base):
+            return {
+                **base,
+                "status": "launch-authorized",
+                "binding_id": binding_id,
+                "dispatch_id": dispatch_id,
+                "session_id": link["session_id"],
+                "group_id": group_id,
+                "seat_index": seat_index,
+                "turn_ordinal": turn_ordinal,
+                "attempt_id": attempt_id,
+                "workflow_manifest_artifact_id": prepared_manifest.artifact_id,
+                "bound_event_id": records[0].event_id,
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state={**payload, "state": "running"},
+            additional_artifacts=(prepared_manifest,),
+            result_builder=result,
+            mutate=mutate,
+        )
+
+    def complete_host_workflow_turn(
+        self,
+        *,
+        binding_id: str,
+        state: str,
+        agent_id: str | None,
+        actor_ref: str,
+    ) -> dict[str, Any]:
+        if state not in {"resolved", "error", "cancelled"}:
+            raise ValidationError("host workflow terminal state is invalid")
+        aggregate_id = f"aci.host-workflow-turn:{binding_id}"
+        with self.database.connect() as conn:
+            binding = conn.execute(
+                "SELECT * FROM host_workflow_turn_bindings WHERE binding_id=?",
+                (binding_id,),
+            ).fetchone()
+            prior = conn.execute(
+                """
+                SELECT result_receipt_json FROM command_receipts
+                WHERE scope_key=? AND idempotency_key='terminal'
+                """,
+                (aggregate_id,),
+            ).fetchone()
+        if not binding:
+            raise NotFoundError("host workflow binding not found")
+        if prior:
+            result = json.loads(prior["result_receipt_json"])
+            if result.get("state") != state or result.get("agent_id") != agent_id:
+                raise IdempotencyConflict(
+                    "host workflow terminal retry differs from accepted result"
+                )
+            return result
+        terminal_at = self.now().isoformat()
+        payload = {
+            "binding_id": binding_id,
+            "dispatch_id": binding["dispatch_id"],
+            "group_id": binding["group_id"],
+            "seat_index": binding["seat_index"],
+            "turn_ordinal": binding["turn_ordinal"],
+            "attempt_id": binding["attempt_id"],
+            "host": binding["host"],
+            "state": state,
+            "agent_id": agent_id,
+            "terminal_at": terminal_at,
+            "actor_ref": actor_ref,
+        }
+        command = self._command(
+            command_name="aci.complete-host-workflow-turn@1",
+            scope_key=aggregate_id,
+            idempotency_key="terminal",
+            aggregate_type="aci.host-workflow-turn",
+            aggregate_id=aggregate_id,
+            expected_version=1,
+            authority={
+                "principal_id": actor_ref,
+                "action": "host_workflow.complete",
+                "phase": "finalize",
+            },
+            intent=payload,
+        )
+        event = self._event("host_workflow.turn_terminal@1", payload)
+
+        def mutate(conn, records, _result):
+            updated = conn.execute(
+                """
+                UPDATE host_workflow_turn_bindings
+                SET state=?,agent_id=COALESCE(?,agent_id),terminal_event_id=?,
+                    terminal_at=?
+                WHERE binding_id=? AND state='running'
+                """,
+                (state, agent_id, records[0].event_id, terminal_at, binding_id),
+            )
+            if updated.rowcount != 1:
+                raise ConflictError("host workflow terminal state CAS lost")
+
+        def result(records, base):
+            return {
+                **base,
+                "binding_id": binding_id,
+                "dispatch_id": binding["dispatch_id"],
+                "state": state,
+                "agent_id": agent_id,
+                "terminal_event_id": records[0].event_id,
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state=payload,
+            result_builder=result,
+            mutate=mutate,
+        )
+
+    def get_host_workflow_binding(self, binding_id: str) -> dict[str, Any]:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                "SELECT * FROM host_workflow_turn_bindings WHERE binding_id=?",
+                (binding_id,),
+            ).fetchone()
+        if not row:
+            raise NotFoundError("host workflow binding not found")
+        return dict(row)
 
     def issue_capability(
         self,

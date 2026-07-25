@@ -20,6 +20,7 @@ MIGRATION_NAMES = (
     "006_apt_projector_state.sql",
     "007_session_origin_heads.sql",
     "008_reference_scout_ingestion.sql",
+    "009_host_workflow_binding.sql",
 )
 
 

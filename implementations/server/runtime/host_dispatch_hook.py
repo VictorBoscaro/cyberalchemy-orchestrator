@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 import re
@@ -36,7 +37,20 @@ POLICY_FIELDS = {
     "default_token_budget",
     "capability_ttl_seconds",
 }
-AGENT_TOOL_NAMES = {"Agent", "spawn_agent"}
+AGENT_TOOL_NAMES = {"Agent", "spawn_agent", "followup_task"}
+WORKFLOW_BINDING_MARKER = "ACI-WORKFLOW-BINDING-V1:"
+WORKFLOW_ENVELOPE_FIELDS = {
+    "schema",
+    "dispatch_id",
+    "group_id",
+    "seat_index",
+    "turn_ordinal",
+    "attempt_id",
+    "prompt_template_path",
+    "prompt_template_digest",
+    "workflow_manifest_path",
+    "workflow_manifest_digest",
+}
 RUNNING_STATUSES = {"running", "pending", "in_progress"}
 ROLE_WORDS = (
     ("auditor", ("review", "audit", "security", "critic", "verify")),
@@ -250,6 +264,37 @@ class HostDispatchHook:
         raise GateBlockedError("Agent tool input requires message or prompt")
 
     @staticmethod
+    def _workflow_envelope(
+        tool_input: dict[str, Any],
+    ) -> tuple[dict[str, Any], str] | None:
+        raw = next(
+            (
+                tool_input[field]
+                for field in ("message", "prompt")
+                if isinstance(tool_input.get(field), str)
+            ),
+            None,
+        )
+        if raw is None or not raw.startswith(WORKFLOW_BINDING_MARKER):
+            return None
+        first, separator, prompt_body = raw.partition("\n")
+        if not separator or not prompt_body:
+            raise GateBlockedError(
+                "workflow binding marker requires a prompt body"
+            )
+        encoded = first[len(WORKFLOW_BINDING_MARKER) :]
+        try:
+            padding = "=" * (-len(encoded) % 4)
+            decoded = base64.urlsafe_b64decode(encoded + padding)
+            envelope = json.loads(decoded.decode("utf-8"))
+        except Exception as exc:
+            raise GateBlockedError("workflow binding envelope is malformed") from exc
+        _strict_object(envelope, WORKFLOW_ENVELOPE_FIELDS, "workflow binding")
+        if envelope["schema"] != "aci-host-workflow-binding/v1":
+            raise GateBlockedError("workflow binding schema is unsupported")
+        return envelope, prompt_body
+
+    @staticmethod
     def _role(text: str) -> str:
         lowered = text.lower()
         for role, words in ROLE_WORDS:
@@ -328,6 +373,94 @@ class HostDispatchHook:
     def pre_tool_use(self, event: dict[str, Any]) -> dict[str, Any]:
         if event.get("tool_name") not in AGENT_TOOL_NAMES:
             raise GateBlockedError("mandatory hook accepts only the Agent tool")
+        tool_input = event.get("tool_input")
+        if not isinstance(tool_input, dict):
+            raise GateBlockedError("Agent tool input must be an object")
+        workflow = self._workflow_envelope(tool_input)
+        if workflow is not None:
+            envelope, prompt_body = workflow
+            state_path = self._state_path(event)
+            input_digest = canonical_digest(tool_input)
+            existing = self._read_state(state_path)
+            if existing:
+                if (
+                    existing.get("host") != self.host
+                    or existing.get("tool_input_digest") != input_digest
+                    or existing.get("binding_id") is None
+                    or existing.get("status") not in {"opened", "closed"}
+                ):
+                    raise GateBlockedError(
+                        "bound host Agent retry differs from recorded launch"
+                    )
+                if existing["status"] == "closed":
+                    raise GateBlockedError("bound host Agent tool id is already closed")
+                return existing
+            tool_name = event["tool_name"]
+            turn_ordinal = envelope["turn_ordinal"]
+            if (
+                tool_name == "followup_task"
+                and (
+                    not isinstance(turn_ordinal, int)
+                    or turn_ordinal <= 0
+                )
+            ):
+                raise GateBlockedError("followup_task requires turn_ordinal > 0")
+            if tool_name != "followup_task" and turn_ordinal != 0:
+                raise GateBlockedError("spawn launch requires turn_ordinal 0")
+            runtime, _bridge = self._runtime_bridge()
+            receipt = runtime.bind_host_workflow_turn(
+                host=self.host,
+                host_session_id=self._required_text(event, "session_id"),
+                tool_use_id=self._required_text(event, "tool_use_id"),
+                tool_input=tool_input,
+                dispatch_id=envelope["dispatch_id"],
+                group_id=envelope["group_id"],
+                seat_index=envelope["seat_index"],
+                turn_ordinal=turn_ordinal,
+                attempt_id=envelope["attempt_id"],
+                prompt_body=prompt_body,
+                prompt_template_path=envelope["prompt_template_path"],
+                prompt_template_digest=envelope["prompt_template_digest"],
+                workflow_manifest_path=envelope["workflow_manifest_path"],
+                workflow_manifest_digest=envelope["workflow_manifest_digest"],
+                actor_ref=self.policy["principal_id"],
+            )
+            if receipt.get("status") != "launch-authorized":
+                raise GateBlockedError(
+                    "runtime did not authorize bound host Agent launch"
+                )
+            state = {
+                "schema": "aci-host-workflow-state/v1",
+                "host": self.host,
+                "host_session_id": self._required_text(event, "session_id"),
+                "tool_use_id": self._required_text(event, "tool_use_id"),
+                "tool_input_digest": input_digest,
+                "dispatch_id": receipt["dispatch_id"],
+                "session_id": receipt["session_id"],
+                "binding_id": receipt["binding_id"],
+                "group_id": receipt["group_id"],
+                "seat_index": receipt["seat_index"],
+                "turn_ordinal": receipt["turn_ordinal"],
+                "attempt_id": receipt["attempt_id"],
+                "role": "bound-seat",
+                "agent_type": tool_input.get("subagent_type"),
+                "agent_id": (
+                    tool_input.get("target")
+                    if tool_name == "followup_task"
+                    else None
+                ),
+                "status": "opened",
+                "bound_event_id": receipt["bound_event_id"],
+                "workflow_manifest_artifact_id": receipt[
+                    "workflow_manifest_artifact_id"
+                ],
+            }
+            self._write_state(state_path, state)
+            return state
+        if event["tool_name"] == "followup_task":
+            raise GateBlockedError(
+                "followup_task requires a governed workflow binding envelope"
+            )
         record, role, host_session_id, tool_use_id = self._opening_record(event)
         state_path = self._state_path(event)
         input_digest = canonical_digest(event["tool_input"])
@@ -400,6 +533,29 @@ class HostDispatchHook:
         exit_reason: str,
     ) -> dict[str, Any]:
         if state.get("status") == "closed":
+            return state
+        binding_id = state.get("binding_id")
+        if isinstance(binding_id, str) and binding_id:
+            terminal_state = {
+                "resolved": "resolved",
+                "error": "error",
+                "user_abort": "cancelled",
+            }[exit_reason]
+            runtime, _bridge = self._runtime_bridge()
+            terminal = runtime.complete_host_workflow_turn(
+                binding_id=binding_id,
+                state=terminal_state,
+                agent_id=state.get("agent_id"),
+                actor_ref=self.policy["principal_id"],
+            )
+            state = {
+                **state,
+                "status": "closed",
+                "exit_reason": exit_reason,
+                "binding_state": terminal["state"],
+                "terminal_event_id": terminal["terminal_event_id"],
+            }
+            self._write_state(path, state)
             return state
         record = {
             "close_of": state["dispatch_id"],
