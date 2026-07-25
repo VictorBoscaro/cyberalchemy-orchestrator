@@ -6,6 +6,7 @@ import json
 import secrets
 import sqlite3
 from dataclasses import dataclass
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
@@ -32,6 +33,24 @@ from .journal import EventDraft, PrerequisiteHead, RuntimeCommand, RuntimeJourna
 from .legacy import StrictLegacySnapshotResolver
 from .profiles import ProfileImporter, VerifiedProfile
 from .projections import ProjectionManager, ProjectionRegistration
+from .reference_delivery import (
+    DELIVERY_EVIDENCE_SCHEMA,
+    TARGET_RESOLUTION_SCHEMA,
+    build_effective_input,
+    decode_reference_bundle,
+    derive_target_identity,
+    verify_wrapper,
+    wrap_delivery_evidence,
+    wrap_target_resolution,
+)
+from .reveal_delivery import (
+    VISIBILITY_POLICY_REF,
+    build_effective_input_manifest as build_peer_effective_input_manifest,
+    build_peer_entries,
+    deterministic_materialize,
+    preallocate_effective_input_id,
+    validate_invocation_plan,
+)
 
 PROFILE_MANIFEST = Path(
     "docs/features/agents-communication-infra/reviews/"
@@ -58,6 +77,13 @@ ACI_SCHEMAS = {
         "reference_scout.bundle_delivered@1": (
             "aci.reference-scout-bundle-delivered@1"
         ),
+        "reference_scout.bundle_delivered_to_agent@1": (
+            "aci.reference-scout-bundle-delivered-to-agent@1"
+        ),
+        "attempt.requested": "aci.attempt-requested@1",
+        "collection.closed": "aci.collection-closed@1",
+        "reveal.published": "aci.reveal-published@1",
+        "peer_input.materialized": "aci.peer-input-materialized@1",
         "reference_scout.terminated@1": "aci.reference-scout-terminated@1",
         "dispatch.ingestion_recorded@1": "aci.dispatch-ingestion-recorded@1",
         "host_workflow.turn_bound@1": "aci.host-workflow-turn-bound@1",
@@ -124,6 +150,10 @@ class RuntimeService:
                 "reference_scout.bundle_delivered@1": (
                     self._validate_scout_delivery_event
                 ),
+                "reference_scout.bundle_delivered_to_agent@1": (
+                    self._validate_scout_target_delivery_event
+                ),
+                "attempt.requested": self._validate_attempt_requested_event,
                 "reference_scout.terminated@1": (
                     self._validate_scout_terminated_event
                 ),
@@ -491,6 +521,53 @@ class RuntimeService:
         )
 
     @classmethod
+    def _validate_scout_target_delivery_event(
+        cls, payload: dict[str, Any]
+    ) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "agent_reference_delivery_id",
+                "dispatch_id",
+                "scout_run_id",
+                "source_bundle_delivered_event_id",
+                "bundle_artifact_id",
+                "bundle_digest",
+                "recommendation_ids",
+                "target_attempt_id",
+                "target_seat_id",
+                "target_agent_instance_id",
+                "effective_input_artifact_id",
+                "effective_input_entry_ordinal",
+                "effective_input_manifest_hash",
+                "visibility_policy_ref",
+                "idempotency_key",
+            },
+            "ReferenceScoutBundleDeliveredToAgent",
+        )
+
+    @classmethod
+    def _validate_attempt_requested_event(cls, payload: dict[str, Any]) -> None:
+        cls._require_exact_fields(
+            payload,
+            {
+                "attempt_id",
+                "dispatch_id",
+                "operation_id",
+                "seat_id",
+                "agent_instance_id",
+                "provider_ref",
+                "adapter_ref",
+                "model_ref",
+                "effective_input_artifact_id",
+                "request_id",
+                "request_digest",
+                "sandbox_launch_effect_id",
+            },
+            "AttemptRequested",
+        )
+
+    @classmethod
     def _validate_scout_terminated_event(cls, payload: dict[str, Any]) -> None:
         cls._require_exact_fields(
             payload,
@@ -629,12 +706,13 @@ class RuntimeService:
         payload: dict[str, Any],
         *,
         classification: str = "runtime-internal",
+        event_id: str | None = None,
     ) -> EventDraft:
         binding = dict(self.journal._schema_bindings).get(event_type)
         if not binding:
             raise IntegrityError(f"event type is not registered: {event_type}")
         schema_ref, schema_digest = binding
-        event_id = self._stable_id(
+        event_id = event_id or self._stable_id(
             "evt_", {"event_type": event_type, "payload": payload, "nonce": secrets.token_hex(8)}
         )
         prepared = self.artifacts.prepare(
@@ -1946,6 +2024,16 @@ class RuntimeService:
             )
         if intent.get("reply_to_message_ids", []) != []:
             raise ValidationError("local probe publication has no visible peer replies")
+        with self.database.connect() as conn:
+            sealed = conn.execute(
+                """
+                SELECT 1 FROM collection_closures
+                WHERE group_aggregate_id=? AND round_id=?
+                """,
+                (bound["group_aggregate_id"], intent["round_id"]),
+            ).fetchone()
+        if sealed:
+            raise ConflictError("collection is sealed")
 
         if "payload" in intent:
             message_artifact = self.artifacts.prepare(
@@ -2595,6 +2683,1165 @@ class RuntimeService:
             result_builder=result,
             mutate=mutate,
         )
+
+    def close_collection(
+        self,
+        *,
+        token: str,
+        group_aggregate_id: str,
+        round_id: str,
+        idempotency_key: str = "close",
+        failpoint: Callable[[str], None] | None = None,
+    ) -> dict[str, Any]:
+        """Freeze only receipt-verified official contributions; visibility stays sealed."""
+        context = self.capabilities.resolve(token, action="bus.close", phase="collect")
+        if context.context != {
+            "group_aggregate_id": group_aggregate_id,
+            "round_id": round_id,
+        }:
+            raise AuthorizationError("collection close capability scope mismatch")
+        scope_key = f"{group_aggregate_id}:{round_id}:close"
+        with self.database.connect() as conn:
+            prior = conn.execute(
+                "SELECT result_receipt_json FROM command_receipts "
+                "WHERE scope_key=? AND idempotency_key=?",
+                (scope_key, idempotency_key),
+            ).fetchone()
+            messages = conn.execute(
+                """
+                SELECT message_id,payload_hash FROM messages
+                WHERE group_aggregate_id=? AND round_id=?
+                ORDER BY accepted_offset,message_id
+                """,
+                (group_aggregate_id, round_id),
+            ).fetchall()
+        if prior:
+            return json.loads(prior["result_receipt_json"])
+        entries = [dict(row) for row in messages]
+        closure_id = self._stable_id("cls_", [group_aggregate_id, round_id])
+        frozen_set_hash = canonical_digest(entries)
+        payload = {
+            "collection_closure_id": closure_id,
+            "group_aggregate_id": group_aggregate_id,
+            "round_id": round_id,
+            "message_entries": entries,
+            "frozen_set_hash": frozen_set_hash,
+            "expected_seat_count": 2,
+            "received_seat_count": len(entries),
+            "quorum_status": "quorum" if len(entries) == 2 else "no_quorum",
+        }
+        head = self.journal.head(group_aggregate_id)
+        command = self._command(
+            command_name="aci.close-collection@1",
+            scope_key=scope_key,
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.group",
+            aggregate_id=group_aggregate_id,
+            expected_version=head["current_version"],
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "bus.close",
+                "phase": "collect",
+            },
+            intent=payload,
+        )
+        event = self._event("collection.closed", payload)
+
+        def mutate(conn, records, _result):
+            conn.execute(
+                """
+                INSERT INTO collection_closures(
+                  collection_closure_id,group_aggregate_id,round_id,
+                  message_entries_json,frozen_set_hash,expected_seat_count,
+                  received_seat_count,quorum_status,closed_event_id,closed_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    closure_id,
+                    group_aggregate_id,
+                    round_id,
+                    canonical_text(entries),
+                    frozen_set_hash,
+                    2,
+                    len(entries),
+                    payload["quorum_status"],
+                    records[0].event_id,
+                    records[0].journal_offset,
+                ),
+            )
+
+        def result(records, base):
+            return {
+                **base,
+                "collection_closure": {
+                    **payload,
+                    "closed_event_id": records[0].event_id,
+                    "closed_offset": records[0].journal_offset,
+                    "peer_visibility": "sealed",
+                },
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state={"phase": "revealing", "closure": payload},
+            result_builder=result,
+            mutate=mutate,
+            failpoint=failpoint,
+        )
+
+    def publish_reveal_manifest(
+        self,
+        *,
+        token: str,
+        group_aggregate_id: str,
+        round_id: str,
+        message_entries: list[dict[str, Any]],
+        manifest_hash: str,
+        idempotency_key: str = "reveal",
+        failpoint: Callable[[str], None] | None = None,
+    ) -> dict[str, Any]:
+        """Publish the one reveal whose ordered bytes equal the sealed close."""
+        context = self.capabilities.resolve(token, action="bus.reveal", phase="reveal")
+        if context.context != {
+            "group_aggregate_id": group_aggregate_id,
+            "round_id": round_id,
+        }:
+            raise AuthorizationError("reveal capability scope mismatch")
+        expected_hash = canonical_digest(
+            {
+                "group_aggregate_id": group_aggregate_id,
+                "round_id": round_id,
+                "message_entries": message_entries,
+            }
+        )
+        if manifest_hash != expected_hash:
+            raise ConflictError("reveal manifest hash differs from canonical content")
+        with self.database.connect() as conn:
+            closure = conn.execute(
+                "SELECT * FROM collection_closures "
+                "WHERE group_aggregate_id=? AND round_id=?",
+                (group_aggregate_id, round_id),
+            ).fetchone()
+            existing = conn.execute(
+                "SELECT * FROM reveal_manifests "
+                "WHERE group_aggregate_id=? AND round_id=?",
+                (group_aggregate_id, round_id),
+            ).fetchone()
+        if not closure:
+            raise ConflictError("collection is not closed")
+        frozen_entries = json.loads(closure["message_entries_json"])
+        if message_entries != frozen_entries:
+            raise ConflictError("reveal membership differs from sealed collection")
+        if existing:
+            if (
+                existing["manifest_hash"] != manifest_hash
+                or json.loads(existing["message_entries_json"]) != message_entries
+            ):
+                raise ConflictError("reveal manifest already exists with different bytes")
+            with self.database.connect() as conn:
+                row = conn.execute(
+                    """
+                    SELECT cr.result_receipt_json FROM events e
+                    JOIN command_receipts cr ON cr.command_id=e.command_id
+                    WHERE e.event_id=?
+                    """,
+                    (existing["reveal_event_id"],),
+                ).fetchone()
+            if row:
+                return json.loads(row["result_receipt_json"])
+            raise IntegrityError("reveal manifest lacks command receipt")
+        reveal_manifest_id = self._stable_id(
+            "rvl_", [group_aggregate_id, round_id]
+        )
+        payload = {
+            "reveal_manifest_id": reveal_manifest_id,
+            "manifest_hash": manifest_hash,
+            "group_aggregate_id": group_aggregate_id,
+            "group_version": self.journal.head(group_aggregate_id)["current_version"],
+            "round_id": round_id,
+            "message_entries": message_entries,
+            "authorized_principals": ["fixed-seat-0", "fixed-seat-1"],
+            "target_next_phase": "voting",
+            "collection_closed_event_id": closure["closed_event_id"],
+        }
+        head = self.journal.head(group_aggregate_id)
+        command = self._command(
+            command_name="aci.publish-reveal-manifest@1",
+            scope_key=f"{group_aggregate_id}:{round_id}:reveal",
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.group",
+            aggregate_id=group_aggregate_id,
+            expected_version=head["current_version"],
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "bus.reveal",
+                "phase": "reveal",
+            },
+            intent=payload,
+        )
+        event = self._event("reveal.published", payload)
+
+        def mutate(conn, records, _result):
+            conn.execute(
+                """
+                INSERT INTO reveal_manifests(
+                  reveal_manifest_id,group_aggregate_id,round_id,
+                  message_entries_json,manifest_hash,collection_closed_event_id,
+                  reveal_event_id,reveal_offset
+                ) VALUES(?,?,?,?,?,?,?,?)
+                """,
+                (
+                    reveal_manifest_id,
+                    group_aggregate_id,
+                    round_id,
+                    canonical_text(message_entries),
+                    manifest_hash,
+                    closure["closed_event_id"],
+                    records[0].event_id,
+                    records[0].journal_offset,
+                ),
+            )
+
+        def result(records, base):
+            return {
+                **base,
+                "reveal_manifest": {
+                    **payload,
+                    "reveal_event_id": records[0].event_id,
+                    "reveal_offset": records[0].journal_offset,
+                },
+            }
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state={"phase": "voting", "reveal": payload},
+            result_builder=result,
+            mutate=mutate,
+            failpoint=failpoint,
+        )
+
+    def preallocate_agent_invocation_plan(
+        self, *, token: str, binding_id: str, plan: dict[str, Any]
+    ) -> dict[str, str]:
+        """Persist a trusted scheduler plan before target-attempt acceptance."""
+        context = self.capabilities.resolve(token, action="bus.plan", phase="plan")
+        validate_invocation_plan(plan)
+        if plan["binding_id"] != binding_id:
+            raise ConflictError("invocation plan binding differs")
+        plan_digest = canonical_digest(plan)
+        plan_ref = "plan_" + plan_digest.removeprefix("sha256:")[:32]
+        with self.database.write() as conn:
+            binding = conn.execute(
+                "SELECT * FROM host_workflow_turn_bindings WHERE binding_id=?",
+                (binding_id,),
+            ).fetchone()
+            if not binding or binding["state"] != "running":
+                raise ConflictError("target binding is not running")
+            target = derive_target_identity(dict(binding))
+            canonical_group = (
+                f"aci.group:{binding['dispatch_id']}:{binding['group_id']}"
+            )
+            canonical_provider = f"aci.host.{binding['host']}@1"
+            canonical_adapter = "aci.fixed-local-peer-input-materializer@1"
+            expected_authority = {
+                "binding_id": binding_id,
+                "group_aggregate_id": canonical_group,
+                "target_attempt_id": target["target_attempt_id"],
+                "target_seat_id": target["target_seat_id"],
+                "provider_ref": canonical_provider,
+                "adapter_ref": canonical_adapter,
+            }
+            if context.context != expected_authority:
+                raise AuthorizationError("invocation plan capability scope is not canonical")
+            if (
+                plan["attempt_id"] != target["target_attempt_id"]
+                or plan["seat_id"] != target["target_seat_id"]
+                or plan["group_aggregate_id"] != canonical_group
+                or plan["provider_ref"] != canonical_provider
+                or plan["adapter_ref"] != canonical_adapter
+            ):
+                raise AuthorizationError("invocation plan authority differs from binding")
+            existing = conn.execute(
+                "SELECT plan_digest FROM agent_invocation_plans WHERE plan_ref=?",
+                (plan_ref,),
+            ).fetchone()
+            if existing and existing["plan_digest"] != plan_digest:
+                raise IdempotencyConflict("invocation plan identity drift")
+            if not existing:
+                conn.execute(
+                    """
+                    INSERT INTO agent_invocation_plans(
+                      plan_ref,plan_digest,binding_id,attempt_id,operation_id,
+                      seat_id,group_aggregate_id,plan_json
+                    ) VALUES(?,?,?,?,?,?,?,?)
+                    """,
+                    (
+                        plan_ref,
+                        plan_digest,
+                        binding_id,
+                        plan["attempt_id"],
+                        plan["operation_id"],
+                        plan["seat_id"],
+                        plan["group_aggregate_id"],
+                        canonical_text(plan),
+                    ),
+                )
+        return {"plan_ref": plan_ref, "plan_digest": plan_digest}
+
+    def materialize_authorized_peer_input(
+        self,
+        *,
+        token: str,
+        reveal_manifest_id: str,
+        visibility_policy_ref: str,
+        idempotency_key: str,
+        failpoint: Callable[[str], None] | None = None,
+    ) -> dict[str, Any]:
+        """Atomically bind authorized reveal entries to a requested Attempt."""
+        context = self.capabilities.resolve(
+            token, action="bus.materialize", phase="reveal"
+        )
+        bound = context.context
+        if set(bound) != {
+            "agent_invocation_plan_ref",
+            "agent_invocation_plan_digest",
+            "target_attempt_id",
+            "target_seat_id",
+        }:
+            raise AuthorizationError("peer materialization capability shape is invalid")
+        if visibility_policy_ref != VISIBILITY_POLICY_REF:
+            raise ValidationError("peer visibility policy is not admitted")
+        with self.database.connect() as conn:
+            plan_row = conn.execute(
+                "SELECT * FROM agent_invocation_plans WHERE plan_ref=?",
+                (bound["agent_invocation_plan_ref"],),
+            ).fetchone()
+            manifest_row = conn.execute(
+                "SELECT * FROM reveal_manifests WHERE reveal_manifest_id=?",
+                (reveal_manifest_id,),
+            ).fetchone()
+        if not plan_row or plan_row["plan_digest"] != bound["agent_invocation_plan_digest"]:
+            raise ConflictError("invocation plan binding differs")
+        plan = parse_strict_json(plan_row["plan_json"])
+        validate_invocation_plan(plan)
+        if (
+            canonical_digest(plan) != plan_row["plan_digest"]
+            or plan["attempt_id"] != bound["target_attempt_id"]
+            or plan["seat_id"] != bound["target_seat_id"]
+        ):
+            raise AuthorizationError("target authority differs from invocation plan")
+        if not manifest_row or plan["group_aggregate_id"] != manifest_row["group_aggregate_id"]:
+            raise AuthorizationError("source and target groups differ")
+        manifest_entries = json.loads(manifest_row["message_entries_json"])
+        with self.database.connect() as conn:
+            official_rows = conn.execute(
+                """
+                SELECT m.*,a.content_hash AS artifact_content_hash
+                FROM messages m JOIN artifacts a ON a.artifact_id=m.payload_ref
+                WHERE m.group_aggregate_id=? AND m.round_id=?
+                ORDER BY m.accepted_offset,m.message_id
+                """,
+                (manifest_row["group_aggregate_id"], manifest_row["round_id"]),
+            ).fetchall()
+            base_rows = []
+            for ref in (plan["base_snapshot_ref"], plan["role_delta_ref"]):
+                if ref is None:
+                    continue
+                row = conn.execute(
+                    "SELECT body,content_hash FROM artifacts WHERE artifact_id=?", (ref,)
+                ).fetchone()
+                if not row or digest_bytes(bytes(row["body"])) != row["content_hash"]:
+                    raise IntegrityError("invocation plan input artifact is missing or corrupt")
+                base_rows.extend(parse_strict_json(bytes(row["body"]))["entries"])
+        peer_entries = build_peer_entries(
+            reveal_manifest_id=reveal_manifest_id,
+            manifest_entries=manifest_entries,
+            official_messages=[dict(row) for row in official_rows],
+            target_seat_id=plan["seat_id"],
+            visibility_policy_ref=visibility_policy_ref,
+        )
+        effective_input_id = preallocate_effective_input_id(
+            plan_digest=plan_row["plan_digest"],
+            reveal_manifest_id=reveal_manifest_id,
+            target_attempt_id=plan["attempt_id"],
+        )
+        prepared_entries = base_rows + peer_entries
+        materialized, wrapper_bytes = deterministic_materialize(
+            plan=plan,
+            plan_digest=plan_row["plan_digest"],
+            effective_input_artifact_id=effective_input_id,
+            prepared_entries=prepared_entries,
+        )
+        wrapper = self.artifacts.prepare(
+            wrapper_bytes,
+            media_type="application/json",
+            schema_ref="aci.fixed-provider-invocation@1",
+            classification="sensitive-input",
+        )
+        if wrapper.artifact_id != materialized["provider_invocation_ref"]:
+            raise IntegrityError("deterministic wrapper identity differs")
+        manifest, manifest_bytes = build_peer_effective_input_manifest(
+            plan=plan,
+            effective_input_artifact_id=effective_input_id,
+            base_entries=base_rows,
+            peer_entries=peer_entries,
+            provider_invocation_ref=wrapper.artifact_id,
+            provider_invocation_hash=wrapper.content_hash,
+        )
+        event_id = self._stable_id(
+            "evt_", ["peer-input", reveal_manifest_id, plan["attempt_id"]]
+        )
+        attempt_event_id = self._stable_id(
+            "evt_", ["attempt-requested", plan["attempt_id"]]
+        )
+        effective_input = replace(
+            self.artifacts.prepare(
+                manifest_bytes,
+                media_type="application/json",
+                schema_ref="aci.effective-input-artifact@1",
+                classification="sensitive-input",
+                created_event_id=event_id,
+            ),
+            artifact_id=effective_input_id,
+        )
+        delivery_id = self._stable_id(
+            "pid_", [reveal_manifest_id, plan["attempt_id"]]
+        )
+        request_id = self._stable_id("req_", plan["attempt_id"])
+        request_binding_id = self._stable_id("rqb_", request_id)
+        materialized_id = self._stable_id("mai_", [plan_row["plan_ref"], delivery_id])
+        effect_id = self._stable_id("eff_", ["sandbox-launch", request_id])
+        request_body = {
+            "attempt_id": plan["attempt_id"],
+            "operation_id": plan["operation_id"],
+            "seat_id": plan["seat_id"],
+            "provider_ref": plan["provider_ref"],
+            "adapter_ref": plan["adapter_ref"],
+            "model_ref": plan["model_ref"],
+            "plan_digest": plan_row["plan_digest"],
+            "materialization_digest": materialized["materialization_digest"],
+            "effective_input_ref": effective_input.artifact_id,
+            "provider_invocation_ref": wrapper.artifact_id,
+            "response_schema_ref": plan["response_schema_ref"],
+            "tool_profile_ref": plan["tool_profile_ref"],
+            "deadline": plan["deadline"],
+            "resource_budget": plan["resource_budget"],
+            "sandbox_policy": plan["sandbox_policy"],
+            "authority_fence": plan["authority_fence"],
+        }
+        request_digest = canonical_digest(request_body)
+        semantic_digest = canonical_digest(
+            {
+                "reveal_manifest_id": reveal_manifest_id,
+                "manifest_hash": manifest_row["manifest_hash"],
+                "target_attempt_id": plan["attempt_id"],
+                "target_seat_id": plan["seat_id"],
+                "peer_message_entries": peer_entries,
+                "effective_input_artifact_id": effective_input.artifact_id,
+                "effective_input_manifest_hash": effective_input.content_hash,
+                "visibility_policy_ref": visibility_policy_ref,
+            }
+        )
+        with self.database.connect() as conn:
+            existing_delivery = conn.execute(
+                """
+                SELECT d.*,e.command_id FROM peer_input_deliveries d
+                JOIN events e ON e.event_id=d.accepted_event_id
+                WHERE d.reveal_manifest_id=? AND d.target_attempt_id=?
+                """,
+                (reveal_manifest_id, plan["attempt_id"]),
+            ).fetchone()
+            existing_result = (
+                conn.execute(
+                    "SELECT result_receipt_json FROM command_receipts WHERE command_id=?",
+                    (existing_delivery["command_id"],),
+                ).fetchone()
+                if existing_delivery
+                else None
+            )
+        if existing_delivery:
+            if (
+                existing_delivery["idempotency_key"] != idempotency_key
+                or existing_delivery["semantic_digest"] != semantic_digest
+            ):
+                raise IdempotencyConflict("peer input delivery semantic identity drift")
+            if not existing_result:
+                raise IntegrityError("peer input delivery lacks stored command receipt")
+            return json.loads(existing_result["result_receipt_json"])
+        delivery_payload = {
+            "peer_input_delivery_id": delivery_id,
+            "reveal_manifest_id": reveal_manifest_id,
+            "reveal_manifest_hash": manifest_row["manifest_hash"],
+            "reveal_event_id": manifest_row["reveal_event_id"],
+            "source_group_aggregate_id": manifest_row["group_aggregate_id"],
+            "source_round_id": manifest_row["round_id"],
+            "target_attempt_id": plan["attempt_id"],
+            "target_seat_id": plan["seat_id"],
+            "peer_message_entries": peer_entries,
+            "effective_input_artifact_id": effective_input.artifact_id,
+            "effective_input_manifest_hash": effective_input.content_hash,
+            "visibility_policy_ref": visibility_policy_ref,
+            "idempotency_key": idempotency_key,
+        }
+        attempt_payload = {
+            "attempt_id": plan["attempt_id"],
+            "dispatch_id": self._binding_dispatch(plan["binding_id"]),
+            "operation_id": plan["operation_id"],
+            "seat_id": plan["seat_id"],
+            "agent_instance_id": self._stable_id("agi_", [plan["binding_id"], plan["seat_id"]]),
+            "provider_ref": plan["provider_ref"],
+            "adapter_ref": plan["adapter_ref"],
+            "model_ref": plan["model_ref"],
+            "effective_input_artifact_id": effective_input.artifact_id,
+            "request_id": request_id,
+            "request_digest": request_digest,
+            "sandbox_launch_effect_id": effect_id,
+        }
+        aggregate_id = f"aci.agent-attempt:{plan['attempt_id']}"
+        reveal_head = self.journal.head(manifest_row["group_aggregate_id"])
+        command = self._command(
+            command_name="aci.materialize-authorized-peer-input@1",
+            scope_key=f"{aggregate_id}:peer-input:{reveal_manifest_id}",
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.agent-attempt",
+            aggregate_id=aggregate_id,
+            expected_version=0,
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "bus.materialize",
+                "phase": "reveal",
+                **bound,
+            },
+            intent={
+                "delivery": delivery_payload,
+                "plan_ref": plan_row["plan_ref"],
+                "plan_digest": plan_row["plan_digest"],
+                "materialized_invocation": materialized,
+                "request_digest": request_digest,
+                "semantic_digest": semantic_digest,
+            },
+            prerequisites=(
+                PrerequisiteHead(
+                    reveal_head["aggregate_id"],
+                    reveal_head["current_version"],
+                    reveal_head["state_hash"],
+                ),
+            ),
+        )
+        delivery_event = self._event(
+            "peer_input.materialized", delivery_payload, event_id=event_id
+        )
+        attempt_event = self._event(
+            "attempt.requested", attempt_payload, event_id=attempt_event_id
+        )
+        accepted_at = self.now().isoformat()
+        fp = failpoint or (lambda _: None)
+
+        def mutate(conn, records, result_receipt):
+            conn.execute(
+                """
+                INSERT INTO agent_attempts(
+                  attempt_id,host_workflow_binding_id,dispatch_id,operation_id,
+                  seat_id,agent_instance_id,provider_ref,adapter_ref,model_ref,
+                  effective_input_artifact_id,request_digest,state,
+                  requested_event_id,requested_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,'requested',?,?)
+                """,
+                (
+                    plan["attempt_id"], plan["binding_id"], attempt_payload["dispatch_id"],
+                    plan["operation_id"], plan["seat_id"],
+                    attempt_payload["agent_instance_id"], plan["provider_ref"],
+                    plan["adapter_ref"], plan["model_ref"], effective_input.artifact_id,
+                    request_digest, records[1].event_id, records[1].journal_offset,
+                ),
+            )
+            fp("after_attempt")
+            conn.execute(
+                """
+                INSERT INTO effective_input_artifacts(
+                  effective_input_artifact_id,attempt_id,manifest_hash,
+                  entries_json,entry_count
+                ) VALUES(?,?,?,?,?)
+                """,
+                (
+                    effective_input.artifact_id, plan["attempt_id"],
+                    effective_input.content_hash, canonical_text(manifest["entries"]),
+                    len(manifest["entries"]),
+                ),
+            )
+            fp("after_effective_input")
+            conn.execute(
+                """
+                INSERT INTO materialized_agent_invocations(
+                  materialized_invocation_id,attempt_id,plan_ref,plan_digest,
+                  effective_input_artifact_id,provider_invocation_ref,
+                  adapter_wrapper_refs_json,materialization_json,materialization_digest
+                ) VALUES(?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    materialized_id, plan["attempt_id"], plan_row["plan_ref"],
+                    plan_row["plan_digest"], effective_input.artifact_id,
+                    wrapper.artifact_id, canonical_text([wrapper.artifact_id]),
+                    canonical_text(materialized), materialized["materialization_digest"],
+                ),
+            )
+            fp("after_materialized_invocation")
+            conn.execute(
+                """
+                INSERT INTO agent_execution_requests(
+                  request_id,attempt_id,effective_input_artifact_id,
+                  request_digest,sealed_at
+                ) VALUES(?,?,?,?,?)
+                """,
+                (
+                    request_id, plan["attempt_id"], effective_input.artifact_id,
+                    request_digest, accepted_at,
+                ),
+            )
+            fp("after_execution_request")
+            conn.execute(
+                """
+                INSERT INTO agent_request_bindings(
+                  request_binding_id,request_id,materialized_invocation_id,
+                  effective_input_artifact_id
+                ) VALUES(?,?,?,?)
+                """,
+                (request_binding_id, request_id, materialized_id, effective_input.artifact_id),
+            )
+            fp("after_request_binding")
+            conn.execute(
+                """
+                INSERT INTO sandbox_launch_effects(
+                  effect_id,attempt_id,request_id,state,created_at
+                ) VALUES(?,?,?,'pending',?)
+                """,
+                (effect_id, plan["attempt_id"], request_id, accepted_at),
+            )
+            fp("after_effect")
+            conn.execute(
+                """
+                INSERT INTO peer_input_deliveries(
+                  peer_input_delivery_id,reveal_manifest_id,source_group_aggregate_id,
+                  source_round_id,target_attempt_id,target_seat_id,
+                  peer_message_entries_json,effective_input_artifact_id,
+                  effective_input_manifest_hash,visibility_policy_ref,idempotency_key,
+                  semantic_digest,accepted_event_id,journal_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    delivery_id, reveal_manifest_id, manifest_row["group_aggregate_id"],
+                    manifest_row["round_id"], plan["attempt_id"], plan["seat_id"],
+                    canonical_text(peer_entries), effective_input.artifact_id,
+                    effective_input.content_hash, visibility_policy_ref, idempotency_key,
+                    semantic_digest, records[0].event_id, records[0].journal_offset,
+                ),
+            )
+            fp("after_peer_delivery")
+            receipt = result_receipt["peer_input_delivery_receipt"]
+            conn.execute(
+                """
+                INSERT INTO peer_input_delivery_receipts(
+                  peer_input_delivery_id,receipt_bytes,receipt_digest
+                ) VALUES(?,?,?)
+                """,
+                (delivery_id, canonical_bytes(receipt), canonical_digest(receipt)),
+            )
+            fp("after_delivery_receipt")
+
+        def result(records, base):
+            receipt = {
+                "receipt_version": "aci.peer-input-delivery-receipt/v1",
+                "status": "materialized",
+                "event_id": records[0].event_id,
+                "peer_input_delivery_id": delivery_id,
+                "reveal_manifest_id": reveal_manifest_id,
+                "target_attempt_id": plan["attempt_id"],
+                "target_seat_id": plan["seat_id"],
+                "effective_input_artifact_id": effective_input.artifact_id,
+                "effective_input_manifest_hash": effective_input.content_hash,
+                "idempotency_key": idempotency_key,
+                "journal_offset": records[0].journal_offset,
+            }
+            return {
+                **base,
+                "peer_input_delivery_receipt": receipt,
+                "attempt_requested_event_id": records[1].event_id,
+                "request_id": request_id,
+                "request_digest": request_digest,
+                "sandbox_launch_effect_id": effect_id,
+                "effect_state": "pending",
+                "provider_start_count": 0,
+            }
+
+        return self.journal.accept(
+            command,
+            [delivery_event, attempt_event],
+            next_state={"state": "requested", "delivery": delivery_payload},
+            additional_artifacts=(wrapper, effective_input),
+            result_builder=result,
+            mutate=mutate,
+            failpoint=failpoint,
+        )
+
+    def _binding_dispatch(self, binding_id: str) -> str:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                "SELECT dispatch_id FROM host_workflow_turn_bindings WHERE binding_id=?",
+                (binding_id,),
+            ).fetchone()
+        if not row:
+            raise ConflictError("target binding does not exist")
+        return str(row["dispatch_id"])
+
+    def settle_agent_reference_delivery(
+        self,
+        *,
+        token: str,
+        binding_id: str,
+        scout_run_id: str,
+        source_bundle_delivered_event_id: str,
+        base_entries: list[dict[str, Any]],
+        entry_ordinal: int,
+        idempotency_key: str = "reference-delivery",
+        failpoint: Callable[[str], None] | None = None,
+    ) -> dict[str, Any]:
+        """Atomically accept one delivered Scout bundle into one host-bound Attempt."""
+        context = self.capabilities.resolve(
+            token, action="reference_delivery.accept", phase="start"
+        )
+        bound = context.context
+        if set(bound) != {
+            "binding_id",
+            "scout_run_id",
+            "source_bundle_delivered_event_id",
+            "visibility_policy_ref",
+        }:
+            raise AuthorizationError("reference delivery capability shape is invalid")
+        if (
+            bound["binding_id"] != binding_id
+            or bound["scout_run_id"] != scout_run_id
+            or bound["source_bundle_delivered_event_id"]
+            != source_bundle_delivered_event_id
+        ):
+            raise AuthorizationError("reference delivery capability scope mismatch")
+        visibility_policy_ref = bound["visibility_policy_ref"]
+        if not isinstance(visibility_policy_ref, str) or not visibility_policy_ref:
+            raise AuthorizationError("reference delivery visibility policy is invalid")
+        if not isinstance(idempotency_key, str) or not idempotency_key:
+            raise ValidationError("reference delivery idempotency key is required")
+
+        with self.database.connect() as conn:
+            binding_row = conn.execute(
+                "SELECT * FROM host_workflow_turn_bindings WHERE binding_id=?",
+                (binding_id,),
+            ).fetchone()
+            run = conn.execute(
+                "SELECT * FROM reference_scout_runs WHERE scout_run_id=?",
+                (scout_run_id,),
+            ).fetchone()
+            delivered_row = conn.execute(
+                """
+                SELECT e.*,a.body FROM events e
+                JOIN artifacts a ON a.artifact_id=e.payload_ref
+                WHERE e.event_id=? AND e.event_type='reference_scout.bundle_delivered@1'
+                """,
+                (source_bundle_delivered_event_id,),
+            ).fetchone()
+            committed_row = conn.execute(
+                """
+                SELECT e.*,a.body FROM events e
+                JOIN artifacts a ON a.artifact_id=e.payload_ref
+                WHERE e.event_type='reference_scout.bundle_committed@1'
+                  AND json_extract(CAST(a.body AS TEXT),'$.scout_run_id')=?
+                ORDER BY e.journal_offset DESC LIMIT 1
+                """,
+                (scout_run_id,),
+            ).fetchone()
+            bundle_row = (
+                conn.execute(
+                    "SELECT * FROM artifacts WHERE artifact_id=?",
+                    (run["bundle_artifact_id"],),
+                ).fetchone()
+                if run and run["bundle_artifact_id"]
+                else None
+            )
+        if not binding_row or binding_row["state"] != "running":
+            raise ConflictError("target host workflow binding is not running")
+        if not run or run["state"] != "delivered":
+            raise ConflictError("source Scout bundle is not lifecycle-delivered")
+        if run["dispatch_id"] != binding_row["dispatch_id"]:
+            raise AuthorizationError("source and target dispatch scopes differ")
+        if not delivered_row or not committed_row or not bundle_row:
+            raise IntegrityError("reference delivery source evidence is incomplete")
+
+        delivered_payload = parse_strict_json(bytes(delivered_row["body"]))
+        committed_payload = parse_strict_json(bytes(committed_row["body"]))
+        if "recommendation_ids" in delivered_payload:
+            raise IntegrityError("lifecycle delivery cannot own recommendation membership")
+        source_tuple = (
+            scout_run_id,
+            run["bundle_artifact_id"],
+            run["bundle_digest"],
+        )
+        if (
+            (
+                delivered_payload.get("scout_run_id"),
+                delivered_payload.get("bundle_artifact_id"),
+                delivered_payload.get("bundle_digest"),
+            )
+            != source_tuple
+            or (
+                committed_payload.get("scout_run_id"),
+                committed_payload.get("bundle_artifact_id"),
+                committed_payload.get("bundle_digest"),
+            )
+            != source_tuple
+            or int(committed_row["journal_offset"])
+            >= int(delivered_row["journal_offset"])
+        ):
+            raise IntegrityError("Scout commit and lifecycle delivery do not agree")
+        bundle, recommendation_ids = decode_reference_bundle(
+            bytes(bundle_row["body"]), expected_digest=run["bundle_digest"]
+        )
+        if bundle["scout_run_id"] != scout_run_id or recommendation_ids != committed_payload.get(
+            "recommendation_ids"
+        ):
+            raise IntegrityError("committed recommendation membership differs from bundle bytes")
+
+        binding = dict(binding_row)
+        target = derive_target_identity(binding)
+        delivery_id = self._stable_id(
+            "ard_", [scout_run_id, target["target_attempt_id"]]
+        )
+        target_event_id = self._stable_id("evt_", ["reference-delivery", delivery_id])
+        attempt_event_id = self._stable_id(
+            "evt_", ["attempt-requested", target["target_attempt_id"]]
+        )
+        manifest, manifest_bytes = build_effective_input(
+            attempt_id=target["target_attempt_id"],
+            base_entries=base_entries,
+            entry_ordinal=entry_ordinal,
+            bundle_artifact_id=run["bundle_artifact_id"],
+            bundle_digest=run["bundle_digest"],
+            agent_reference_delivery_id=delivery_id,
+            visibility_policy_ref=visibility_policy_ref,
+        )
+        effective_input = self.artifacts.prepare(
+            manifest_bytes,
+            media_type="application/json",
+            schema_ref="aci.effective-input-artifact@1",
+            classification="sensitive-input",
+            created_event_id=attempt_event_id,
+        )
+        operation_id = self._stable_id("op_", ["host-attempt", binding_id])
+        request_id = self._stable_id("req_", target["target_attempt_id"])
+        effect_id = self._stable_id("eff_", ["sandbox-launch", request_id])
+        provider_ref = f"aci.host.{binding['host']}@1"
+        adapter_ref = "aci.host-workflow-bridge@1"
+        model_ref = "aci.host-model.unobserved@1"
+        request_digest = canonical_digest(
+            {
+                "request_id": request_id,
+                "attempt_id": target["target_attempt_id"],
+                "effective_input_artifact_id": effective_input.artifact_id,
+                "effective_input_manifest_hash": effective_input.content_hash,
+                "provider_ref": provider_ref,
+                "adapter_ref": adapter_ref,
+                "model_ref": model_ref,
+            }
+        )
+        delivery_payload = {
+            "agent_reference_delivery_id": delivery_id,
+            "dispatch_id": target["dispatch_id"],
+            "scout_run_id": scout_run_id,
+            "source_bundle_delivered_event_id": source_bundle_delivered_event_id,
+            "bundle_artifact_id": run["bundle_artifact_id"],
+            "bundle_digest": run["bundle_digest"],
+            "recommendation_ids": recommendation_ids,
+            "target_attempt_id": target["target_attempt_id"],
+            "target_seat_id": target["target_seat_id"],
+            "target_agent_instance_id": target["target_agent_instance_id"],
+            "effective_input_artifact_id": effective_input.artifact_id,
+            "effective_input_entry_ordinal": entry_ordinal,
+            "effective_input_manifest_hash": effective_input.content_hash,
+            "visibility_policy_ref": visibility_policy_ref,
+            "idempotency_key": idempotency_key,
+        }
+        attempt_payload = {
+            "attempt_id": target["target_attempt_id"],
+            "dispatch_id": target["dispatch_id"],
+            "operation_id": operation_id,
+            "seat_id": target["target_seat_id"],
+            "agent_instance_id": target["target_agent_instance_id"],
+            "provider_ref": provider_ref,
+            "adapter_ref": adapter_ref,
+            "model_ref": model_ref,
+            "effective_input_artifact_id": effective_input.artifact_id,
+            "request_id": request_id,
+            "request_digest": request_digest,
+            "sandbox_launch_effect_id": effect_id,
+        }
+        aggregate_id = f"aci.agent-attempt:{target['target_attempt_id']}"
+        scout_head = self.journal.head(run["group_aggregate_id"])
+        binding_head = self.journal.head(f"aci.host-workflow-turn:{binding_id}")
+        command = self._command(
+            command_name="aci.start-host-attempt-with-reference-bundle@1",
+            scope_key=aggregate_id,
+            idempotency_key=idempotency_key,
+            aggregate_type="aci.agent-attempt",
+            aggregate_id=aggregate_id,
+            expected_version=0,
+            authority={
+                "capability_id": context.capability_id,
+                "principal_id": context.principal_id,
+                "action": "reference_delivery.accept",
+                "phase": "start",
+                **target,
+            },
+            intent={
+                "binding_id": binding_id,
+                "delivery": delivery_payload,
+                "attempt": attempt_payload,
+                "effective_input": manifest,
+            },
+            prerequisites=(
+                PrerequisiteHead(
+                    scout_head["aggregate_id"],
+                    scout_head["current_version"],
+                    scout_head["state_hash"],
+                ),
+                PrerequisiteHead(
+                    binding_head["aggregate_id"],
+                    binding_head["current_version"],
+                    binding_head["state_hash"],
+                ),
+            ),
+        )
+        delivery_event = self._event(
+            "reference_scout.bundle_delivered_to_agent@1",
+            delivery_payload,
+            event_id=target_event_id,
+        )
+        attempt_event = self._event(
+            "attempt.requested", attempt_payload, event_id=attempt_event_id
+        )
+        accepted_at = self.now().isoformat()
+
+        def mutate(conn, records, _result):
+            conn.execute(
+                """
+                INSERT INTO agent_attempts(
+                  attempt_id,host_workflow_binding_id,dispatch_id,operation_id,
+                  seat_id,agent_instance_id,provider_ref,adapter_ref,model_ref,
+                  effective_input_artifact_id,request_digest,state,
+                  requested_event_id,requested_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,'requested',?,?)
+                """,
+                (
+                    target["target_attempt_id"],
+                    binding_id,
+                    target["dispatch_id"],
+                    operation_id,
+                    target["target_seat_id"],
+                    target["target_agent_instance_id"],
+                    provider_ref,
+                    adapter_ref,
+                    model_ref,
+                    effective_input.artifact_id,
+                    request_digest,
+                    records[1].event_id,
+                    records[1].journal_offset,
+                ),
+            )
+            conn.execute(
+                """
+                INSERT INTO effective_input_artifacts(
+                  effective_input_artifact_id,attempt_id,manifest_hash,
+                  entries_json,entry_count
+                ) VALUES(?,?,?,?,?)
+                """,
+                (
+                    effective_input.artifact_id,
+                    target["target_attempt_id"],
+                    effective_input.content_hash,
+                    canonical_text(manifest["entries"]),
+                    len(manifest["entries"]),
+                ),
+            )
+            conn.execute(
+                """
+                INSERT INTO agent_execution_requests(
+                  request_id,attempt_id,effective_input_artifact_id,
+                  request_digest,sealed_at
+                ) VALUES(?,?,?,?,?)
+                """,
+                (
+                    request_id,
+                    target["target_attempt_id"],
+                    effective_input.artifact_id,
+                    request_digest,
+                    accepted_at,
+                ),
+            )
+            conn.execute(
+                """
+                INSERT INTO sandbox_launch_effects(
+                  effect_id,attempt_id,request_id,state,created_at
+                ) VALUES(?,?,?,'pending',?)
+                """,
+                (effect_id, target["target_attempt_id"], request_id, accepted_at),
+            )
+            conn.execute(
+                """
+                INSERT INTO agent_reference_deliveries(
+                  agent_reference_delivery_id,dispatch_id,scout_run_id,
+                  source_bundle_delivered_event_id,bundle_artifact_id,bundle_digest,
+                  recommendation_ids_json,target_attempt_id,target_seat_id,
+                  target_agent_instance_id,effective_input_artifact_id,
+                  effective_input_entry_ordinal,effective_input_manifest_hash,
+                  visibility_policy_ref,idempotency_key,accepted_event_id,journal_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    delivery_id,
+                    target["dispatch_id"],
+                    scout_run_id,
+                    source_bundle_delivered_event_id,
+                    run["bundle_artifact_id"],
+                    run["bundle_digest"],
+                    canonical_text(recommendation_ids),
+                    target["target_attempt_id"],
+                    target["target_seat_id"],
+                    target["target_agent_instance_id"],
+                    effective_input.artifact_id,
+                    entry_ordinal,
+                    effective_input.content_hash,
+                    visibility_policy_ref,
+                    idempotency_key,
+                    records[0].event_id,
+                    records[0].journal_offset,
+                ),
+            )
+
+        def result(records, base):
+            return {
+                **base,
+                "status": "launch-authorized",
+                "agent_reference_delivery_id": delivery_id,
+                "accepted_event_id": records[0].event_id,
+                "attempt_requested_event_id": records[1].event_id,
+                "target": target,
+                "effective_input_artifact_id": effective_input.artifact_id,
+                "effective_input_manifest_hash": effective_input.content_hash,
+                "effective_input_entry_ordinal": entry_ordinal,
+                "request_id": request_id,
+                "request_digest": request_digest,
+                "sandbox_launch_effect_id": effect_id,
+            }
+
+        return self.journal.accept(
+            command,
+            [delivery_event, attempt_event],
+            next_state={
+                "state": "requested",
+                "delivery": delivery_payload,
+                "attempt": attempt_payload,
+            },
+            additional_artifacts=(effective_input,),
+            result_builder=result,
+            mutate=mutate,
+            failpoint=failpoint,
+        )
+
+    def get_agent_reference_target(
+        self, *, attempt_id: str
+    ) -> dict[str, Any]:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT a.*,b.group_id,b.seat_index,b.binding_id
+                FROM agent_attempts a
+                JOIN host_workflow_turn_bindings b
+                  ON b.binding_id=a.host_workflow_binding_id
+                WHERE a.attempt_id=?
+                """,
+                (attempt_id,),
+            ).fetchone()
+        if not row:
+            raise NotFoundError("agent reference target is not found")
+        target = {
+            "dispatch_id": row["dispatch_id"],
+            "target_attempt_id": row["attempt_id"],
+            "target_seat_id": row["seat_id"],
+            "target_agent_instance_id": row["agent_instance_id"],
+        }
+        return wrap_target_resolution(
+            target,
+            binding_id=row["binding_id"],
+            effective_as_of=int(row["requested_offset"]),
+        )
+
+    def get_agent_reference_delivery_evidence(
+        self, *, attempt_id: str
+    ) -> dict[str, Any]:
+        with self.database.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT d.*,a.body,t.requested_offset AS group_through_offset
+                FROM agent_reference_deliveries d
+                JOIN artifacts a
+                  ON a.artifact_id=d.effective_input_artifact_id
+                JOIN agent_attempts t ON t.attempt_id=d.target_attempt_id
+                WHERE d.target_attempt_id=?
+                """,
+                (attempt_id,),
+            ).fetchone()
+        if not row:
+            raise NotFoundError("agent reference delivery is not found")
+        delivery = dict(row)
+        delivery.pop("body")
+        group_through_offset = int(delivery.pop("group_through_offset"))
+        delivery["recommendation_ids"] = json.loads(
+            delivery.pop("recommendation_ids_json")
+        )
+        effective_input = parse_strict_json(bytes(row["body"]))
+        # The delivery event is the first member of a two-event atomic group.
+        prefix = self.journal.read_complete_groups(through=group_through_offset)
+        groups = [
+            group
+            for group in prefix["groups"]
+            if row["accepted_event_id"] in group["ordered_event_ids"]
+        ]
+        if len(groups) != 1:
+            raise IntegrityError("delivery event does not belong to one complete group")
+        group = groups[0]
+        if (
+            group["event_count"] != 2
+            or [event["event_type"] for event in group["events"]]
+            != [
+                "reference_scout.bundle_delivered_to_agent@1",
+                "attempt.requested",
+            ]
+        ):
+            raise IntegrityError("delivery acceptance group is incomplete or divergent")
+        return wrap_delivery_evidence(
+            delivery=delivery,
+            effective_input=effective_input,
+            accepted_group=group,
+        )
+
+    @staticmethod
+    def verify_agent_reference_wrapper(
+        wrapper: dict[str, Any], *, schema: str
+    ) -> dict[str, Any]:
+        if schema not in {TARGET_RESOLUTION_SCHEMA, DELIVERY_EVIDENCE_SCHEMA}:
+            raise ValidationError("unsupported agent reference wrapper schema")
+        return verify_wrapper(wrapper, schema=schema)
 
     def terminate_reference_scout(
         self,

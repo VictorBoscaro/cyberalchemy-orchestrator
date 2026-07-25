@@ -82,6 +82,103 @@
         "implementations/tests/runtime/test_stage_b.py::CanonicalMigrationTests::test_canonical_contract",
         "implementations/tests/runtime/test_stage_b.py::CanonicalMigrationTests::test_frozen_canonical_golden_vectors"
       ]
+    },
+    {
+      "test_spec_id": "T-ACI-R22",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_reference_delivery.py::AgentReferenceDeliveryTests::test_exact_delivery_commits_complete_attempt_unit_and_retry_is_stable",
+        "implementations/tests/runtime/test_agent_reference_delivery.py::AgentReferenceDeliveryTests::test_every_transaction_failpoint_rolls_back_all_members",
+        "implementations/tests/runtime/test_agent_reference_delivery.py::AgentReferenceDeliveryTests::test_after_commit_failure_converges_to_the_original_receipt"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-ARD1",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_reference_delivery.py::AgentReferenceDeliveryTests::test_exact_delivery_commits_complete_attempt_unit_and_retry_is_stable"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-ARD2",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_reference_delivery.py::AgentReferenceDeliveryTests::test_bundle_bytes_and_lifecycle_membership_are_verified"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-ARD3",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_reference_delivery.py::AgentReferenceDeliveryTests::test_drift_and_cross_scope_capability_fail_closed",
+        "implementations/tests/runtime/test_agent_reference_delivery.py::AgentReferenceDeliveryTests::test_every_transaction_failpoint_rolls_back_all_members"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-ARD4",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_reference_evidence_reader.py::AgentReferenceEvidenceReaderTests::test_target_and_delivery_wrappers_are_complete_and_restart_stable",
+        "implementations/tests/runtime/test_agent_reference_evidence_reader.py::AgentReferenceEvidenceReaderTests::test_wrapper_digest_schema_owner_and_extra_fields_fail_closed",
+        "implementations/tests/runtime/test_agent_reference_evidence_reader.py::AgentReferenceEvidenceReaderTests::test_reader_rejects_incomplete_accepted_group"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-ARD5",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_reference_evidence_reader.py::AgentReferenceEvidenceReaderTests::test_reference_entry_omission_duplicate_and_digest_drift_fail_closed",
+        "implementations/tests/runtime/test_agent_reference_evidence_reader.py::AgentReferenceEvidenceReaderTests::test_target_and_delivery_wrappers_are_complete_and_restart_stable"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-PEER1",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer1_close_freezes_only_official_and_keeps_read_surface_absent"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-PEER2",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer2_reveal_is_exact_and_restart_stable"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-PEER3",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer3_recipient_authority_is_derived"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-PEER4",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer4_filter_and_wrapper_complete_artifact_binding"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-PEER5",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer5_atomic_acceptance_rolls_back_each_internal_failpoint"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-PEER6",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer6_retry_receipt_is_stable_and_semantic_drift_conflicts"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-PEER7",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer7_effect_remains_pending_and_no_provider_surface_runs"
+      ]
     }
   ]
 }

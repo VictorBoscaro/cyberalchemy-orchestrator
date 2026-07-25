@@ -15,11 +15,13 @@ manifest is a fail-closed drift detector, not an authentication root.
 
 | Evidence | SHA-256 |
 |---|---|
-| Stage-C verifier `implementations/server/runtime/local_pilot.py` | `sha256:27020fa23e40e55fdf2a560bda94c9df2e3dc112df321e101fe313698e135e3d` |
-| Stage-E source manifest | `sha256:756e0f5b2bf8e2a4b617f133f9321b0ab424a51159f1c99077741139d144979e` |
+| Stage-C verifier `implementations/server/runtime/local_pilot.py` | `sha256:686197c241176276b0a4acfbb6dcdd75bc8f485f803dea05763e60cba6dd8427` |
+| Stage-E source manifest | `sha256:e57d973d13dfc61fec4fbda08b1a9bfd358a54ef9b780a97a825533fc359a7a5` |
 | Stage-C tests `implementations/tests/runtime/test_stage_c.py` | `sha256:ce86cd1eb3354928e988807f5d75948701c247d8c98436a34e43e7b5ca2c16ec` |
-| Bridge tests `implementations/tests/runtime/test_orchestration_bridge.py` | `sha256:d04a74906f4bc33baea8edf127a7e5c047d7dc52f3a15c1ef622abf9d85e0ac8` |
-| Validated YAML appender | `sha256:7f60713ed4f45208ac61ebd7c285efcc5ffb08ea4e8780c5cb1560ac662fff0a` |
+| Bridge tests `implementations/tests/runtime/test_orchestration_bridge.py` | `sha256:07576feffac340a13056e2adab7279ec987a52e3af5dc1d07715d09eebf30de9` |
+| Validated YAML appender | `sha256:ec4ea40efce5a1026b1a1f7e0be95e74d1dc37199804457e23a815cf9403fca5` |
+| Subagent strategy | `sha256:7299f165819748985fbe8e7827721659fbf93731a54d3fe7760e3d6cc009ed54` |
+| DomainSpec code type skill | `sha256:e8cb57ffcb40e0107d209971a8459e45cc7eab909d06a84433fe501673a8f0a9` |
 
 The companion `execution-receipt.sha256` pins this receipt, including the reviewer and dispatch
 evidence below, without introducing a verifier self-hash cycle.
@@ -33,6 +35,16 @@ evidence below, without introducing a verifier self-hash cycle.
 - Python compileall: PASS.
 - Stage-E source-manifest verification: PASS.
 - `git diff --check`: PASS; line-ending conversion warnings only.
+
+### 2026-07-25 code-type hardening
+
+- Orchestration bridge: PASS, 17/17, including pinned DomainSpec `code_contract` acceptance,
+  missing-contract rejection, planner FAIL rejection, path-escape rejection, and exact-topology
+  enforcement, plus brownfield/readiness equality and closed capability-profile enforcement.
+- Stage-C verifier: PASS, 8/8.
+- Ledger reader/classification suite: PASS.
+- Skill package validators: PASS for strategy, DomainSpec implementation, and registration.
+- Appender JavaScript syntax and Stage-E source-manifest integrity: PASS.
 - Total executable tests: 112.
 
 ## Independent review

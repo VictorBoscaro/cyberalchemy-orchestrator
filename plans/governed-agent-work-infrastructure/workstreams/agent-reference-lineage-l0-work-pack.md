@@ -1,12 +1,12 @@
 ---
 tags: [plans, agent-reference-lineage, work-pack, task-session, dry-run, aci]
 node_type: work-pack
-status: draft
-version: 0.1.0
+status: implementation-complete-review-pending
+version: 0.2.0
 last_updated: 2026-07-25
 owning_plan: plans/governed-agent-work-infrastructure/PLAN.md
 selected_layer: L0
-execution_mode: dry-run
+execution_mode: local
 runtime_handoff: none
 ---
 
@@ -30,8 +30,8 @@ artifact; it does not authorize or report runtime implementation.
 | SWU ID | `SWU-ARL-L0-001` |
 | Title | ACI reference-bundle target settlement and evidence reader |
 | Layer | L0 only |
-| Status | `dry-run-complete-with-flag` |
-| Execution status | `not-started` |
+| Status | `implementation-complete-review-pending` |
+| Execution status | `implemented-validation-pass-review-blocked` |
 | Owner | ACI implementation seat |
 | Reviewer 1 | independent ACI contract reviewer |
 | Reviewer 2 | independent contract-test reviewer |
@@ -49,7 +49,7 @@ target/delivery evidence to an APT consumer without implying access, declared us
 
 | ID | Dependency | Required state | Gate behavior |
 |---|---|---|---|
-| `DEP-L0-01` | Accepted Option-A host Dispatch/group/seat/attempt binding | Exact binding can be consumed by an ACI-owned adapter without claiming full provider input. | If not demonstrable, `BLOCK`; do not choose the general pipeline. |
+| `DEP-L0-01` | Accepted Option-A host Dispatch/group/seat/attempt binding | Exact binding can be consumed by an ACI-owned adapter without claiming full provider input. The adapter preallocates a logical ACI `agent_instance_id` from the authenticated Dispatch/group/seat binding; this is not the nullable host/provider `agent_id` learned after launch. | If the logical identity cannot be derived before launch, `BLOCK`; do not substitute the provider ID or choose the general pipeline. |
 | `DEP-L0-02` | Accepted Scout commit and immutable bundle artifact | Exact ScoutRun, artifact, digest and ordered recommendation membership. | Missing or divergent evidence fails closed. |
 | `DEP-L0-03` | Distinct accepted Scout lifecycle-delivery event | Same ScoutRun/artifact/digest; no recommendation-membership claim. | Missing or mismatched event fails closed. |
 | `DEP-L0-04` | Authenticated target delivery capability and target Attempt | Same Dispatch; target Attempt/seat/agent instance derived by ACI. | Caller-authored or cross-Dispatch identity blocks acceptance. |
@@ -93,6 +93,9 @@ implementations/server/runtime/journal.py
 implementations/tests/runtime/test_agent_reference_delivery.py
 implementations/tests/runtime/test_agent_reference_evidence_reader.py
 implementations/tests/runtime/aci-test-traceability.json
+implementations/tests/runtime/test_aci_traceability.py
+docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json
+implementations/server/runtime/local_pilot.py
 ```
 
 Any need to edit another runtime file is a scope-change request and returns `BLOCK` until reviewed.
@@ -158,6 +161,54 @@ the nearest evidence and unblock action.
   runtime handoff.
 - No new telemetry or observability implementation.
 
+## Execution Report — 2026-07-25
+
+### Result
+
+`FLAG`: the L0 implementation and all available validation passed, but the two mandatory
+independent reviews remain blocked because the current Codex task does not apply the repaired
+`spawn_agent` hook and therefore produces no durable launch/close receipts.
+
+### Implemented
+
+- Migration `010_agent_reference_delivery.sql` persists the complete attempt acceptance unit:
+  logical Attempt, finalized effective-input metadata, sealed request, pending sandbox effect and
+  immutable `AgentReferenceDelivery`.
+- `reference_delivery.py` derives pre-launch logical target identity, verifies immutable bundle
+  bytes and membership, builds the unique typed input entry, verifies it and emits complete
+  digest-bound owner wrappers.
+- `RuntimeService.settle_agent_reference_delivery` binds the exact lifecycle-delivery event through
+  the authenticated capability and atomically commits
+  `reference_scout.bundle_delivered_to_agent@1` plus `attempt.requested`.
+- Target and delivery evidence readers reject wrong schema/owner/digest, incomplete or extra wrapper
+  fields, entry omission/duplication/drift and incomplete accepted journal groups.
+- ACI traceability now maps `T-ACI-R22` and `T-ACI-ARD1..5` to executable cases.
+
+The pre-launch ACI `agent_instance_id` is a logical runtime identity derived from the authenticated
+Dispatch/group/seat binding. It is deliberately distinct from the nullable host/provider
+`agent_id`, which remains post-launch correlation evidence.
+
+### Validation evidence
+
+| Check | Result |
+|---|---|
+| Targeted delivery/evidence/traceability suites | PASS, 10 tests |
+| Complete runtime discovery | PASS, 88 tests |
+| Transaction failpoints | PASS for rollback before commit and convergence after commit |
+| Python compileall | PASS |
+| Stage-E source-integrity preflight exercised by runtime suite | PASS |
+| `git diff --check` over the amended L0 scope | PASS; line-ending warnings only |
+| Enum audit | Command PASS; reports the same 9 pre-existing legacy `dispatch_type=others` rows |
+
+### Remaining gate
+
+Do not mark the SWU `complete` until:
+
+1. a fresh Codex task loads the repaired `.codex/hooks.json`;
+2. one smoke launch produces matching durable opening and closing receipts;
+3. the independent ACI contract reviewer and contract-test reviewer both return PASS;
+4. the parent reviews their complete evidence and closes this `FLAG`.
+
 ## Dry-Run Report
 
 ### Task Session Result
@@ -201,7 +252,7 @@ No blocker-level multi-option decision remains.
 | Item | Classification | Dry-run treatment |
 |---|---|---|
 | Bounded bridge versus general pipeline | inherited accepted | Option A controls; never reopen or silently choose the general pipeline. |
-| Option-A binding can feed ACI-owned adapter | assumption | Mandatory execution preflight; insufficiency returns `BLOCK`. |
+| Option-A binding can feed ACI-owned adapter | resolved constraint | Preallocate a logical ACI agent-instance identity from the authenticated Dispatch/group/seat binding. Keep it distinct from the nullable host/provider `agent_id`, which is only correlation evidence learned after launch. |
 | Internal module split | deferrable | Recommend isolating new settlement/reader logic in `reference_delivery.py`; implementer may adjust only inside write scope and reviewer approval. |
 | Persistence path | constrained recommendation | Extend existing journal/artifact transaction and migration path; no second store or projection authority. |
 | Evidence-reader materialization | constrained recommendation | Derive complete wrappers from accepted owner state; no caller-authored member collection or raw bundle response. |
@@ -224,8 +275,10 @@ No blocker-level multi-option decision remains.
 ### Ordered Future Execution Path
 
 1. Re-read the exact work-pack, decision and lean context pack; verify source digests/currentness.
-2. Confirm DEP-L0-01 against the live Option-A binding without modifying code. If it cannot supply
-   a same-Dispatch ACI Attempt binding within the bounded bridge, return `BLOCK`.
+2. Confirm DEP-L0-01 against the live Option-A binding without modifying code. Derive a stable
+   logical ACI seat and agent-instance identity before launch from the authenticated binding; never
+   substitute the nullable host/provider `agent_id`. If this cannot supply a same-Dispatch ACI
+   Attempt binding within the bounded bridge, return `BLOCK`.
 3. Inspect only the declared existing runtime files and confirm migration `010` is still available.
 4. Add failing `T-ACI-R22`/ARD contract tests for the first settlement branch.
 5. Add migration and isolated settlement/reader module; wire only the minimum existing

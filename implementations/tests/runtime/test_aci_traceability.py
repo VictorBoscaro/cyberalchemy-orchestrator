@@ -20,6 +20,19 @@ REQUIRED_BOUNDED_IDS = {
     "T-ACI-C2",
     "T-ACI-C4",
     "T-ACI-ETA2",
+    "T-ACI-R22",
+    "T-ACI-ARD1",
+    "T-ACI-ARD2",
+    "T-ACI-ARD3",
+    "T-ACI-ARD4",
+    "T-ACI-ARD5",
+    "T-ACI-PEER1",
+    "T-ACI-PEER2",
+    "T-ACI-PEER3",
+    "T-ACI-PEER4",
+    "T-ACI-PEER5",
+    "T-ACI-PEER6",
+    "T-ACI-PEER7",
 }
 
 
@@ -45,7 +58,11 @@ class AciTestTraceabilityTests(unittest.TestCase):
 
         spec_path = REPO / manifest["test_spec"]
         spec_ids = set(
-            re.findall(r"^### (T-(?:ACI|CVR)-[A-Z0-9]+)\s", spec_path.read_text(encoding="utf-8"), re.M)
+            re.findall(
+                r"^#{3,4} (T-(?:ACI|CVR)-[A-Z0-9]+)\s",
+                spec_path.read_text(encoding="utf-8"),
+                re.M,
+            )
         )
         entries = manifest["entries"]
         mapped_ids = {entry["test_spec_id"] for entry in entries}

@@ -21,6 +21,8 @@ MIGRATION_NAMES = (
     "007_session_origin_heads.sql",
     "008_reference_scout_ingestion.sql",
     "009_host_workflow_binding.sql",
+    "010_agent_reference_delivery.sql",
+    "011_bus_reveal_delivery.sql",
 )
 
 
