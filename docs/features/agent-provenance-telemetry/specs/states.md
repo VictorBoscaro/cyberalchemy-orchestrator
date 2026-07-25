@@ -174,8 +174,8 @@ remains an immutable historical Entity.
 
 ### Transition Table
 
-| From projection | Accepted input | To projection | Guard | Reducer effect |
-|---|---|---|---|---|
+| From | Event | To | Guard | Effect |
+|------|-------|----|-------|--------|
 | unbound | `EnsureSession` acceptance represented by grouped `SessionStarted` | bound to new Session | New `ensure_key`, new `session_id`, canonical payload, exact context tuple unbound, optional derived key valid. | At `last_offset`, add immutable Session and bind its exact context tuple. |
 | bound to predecessor | authorized `StartNewSession` atomic acceptance | bound to successor | Both events pin the same context tuple; expected current Session matches; successor ID/ensure key are new; one verified atomic command grouping and authorization evidence. | At common `last_offset`, add immutable successor and rebind the tuple exactly once. |
 
@@ -258,8 +258,8 @@ input capture does not rewrite a synthesis pin; `input_now_superseded` is derive
 
 ### Transition Table
 
-| From projection | Accepted input | To projection | Guard | Reducer effect |
-|---|---|---|---|---|
+| From | Event | To | Guard | Effect |
+|------|-------|----|-------|--------|
 | no head for chain | grouped initial `ResearchCaptureAppended` | new capture is head | `supersedes_capture_id=null`; schema/status matrix/digest valid; operation identity unused. | At the verified group's `last_offset`, add immutable capture and set chain head. |
 | current head | grouped replacement `ResearchCaptureAppended` | replacement is head; predecessor is derived superseded | New operation/capture ID; same chain key; `supersedes_capture_id` equals current head; expected-head CAS succeeds. | At the verified group's `last_offset`, add immutable capture and replace only the derived head pointer. |
 

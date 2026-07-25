@@ -5,8 +5,8 @@ is_session: false
 layer: application
 nature: procedural, technical
 status: planned
-version: 0.1.0
-last_updated: 2026-07-23
+version: 0.2.0
+last_updated: 2026-07-25
 feature: agent-provenance-telemetry
 testSpecGate: pending
 executionStatus: not-run
@@ -14,7 +14,7 @@ executionStatus: not-run
 
 # Test Spec: Agent Provenance Telemetry
 
-This planned test contract preserves the stable anchors for all 26 contracts in
+This planned test contract preserves the stable anchors for all 27 contracts in
 [rules.md](specs/rules.md), all 53 reciprocal Operation clause IDs and the remaining approved
 DomainSpec aspects. It defines fixture inputs, expected/negative/property/replay/fault obligations
 but does not claim executable test code, execution, passing evidence or review approval.
@@ -28,7 +28,7 @@ but does not claim executable test code, execution, passing evidence or review a
 | Executable tests | not claimed |
 | Test execution | `not-run` |
 | Passing evidence | none |
-| Reserved coverage | 26 rule contracts, 53 Operation clauses, 6 Events, 3 Workflows, 3 Queries, 3 Mappings, Interfaces, state/replay/persistence, observability and 12 stories |
+| Reserved coverage | 27 rule contracts, 53 Operation clauses, 6 Events, 3 Workflows, 4 Queries, 3 Mappings, Interfaces, state/replay/persistence, observability and 12 stories |
 
 ## Test Matrix
 
@@ -42,6 +42,7 @@ but does not claim executable test code, execution, passing evidence or review a
 | [APT-TEST-R6](#apt-r6--replay-determinism) | Reserve deterministic as-of replay coverage. | [APT-R6](specs/rules.md#apt-r6--replay-determinism) | planned |
 | [APT-TEST-R7](#apt-r7--protocol-profile-binding) | Reserve exact-profile binding coverage. | [APT-R7](specs/rules.md#apt-r7--protocol-profile-binding) | planned |
 | [APT-TEST-R8](#apt-r8--telemetry-non-authority) | Reserve telemetry non-authority coverage. | [APT-R8](specs/rules.md#apt-r8--telemetry-non-authority) | planned |
+| [APT-TEST-R9](#apt-r9--agent-reference-lineage) | Reserve exact owner binding and independent reference-axis coverage. | [APT-R9](specs/rules.md#apt-r9--agent-reference-lineage) | planned |
 | [APT-TEST-C01](#session-context-binding) | Reserve context-binding coverage. | [APT-C01](specs/rules.md#session-context-binding) | planned |
 | [APT-TEST-C02](#rollover-authorization) | Reserve rollover-authorization coverage. | [APT-C02](specs/rules.md#rollover-authorization) | planned |
 | [APT-TEST-C03](#link-session-dispatch-authorization) | Reserve link-authorization coverage. | [APT-C03](specs/rules.md#link-session-dispatch-authorization) | planned |
@@ -121,6 +122,60 @@ runner partitions and expected results are defined in the matrices following the
 
 **Validates:** [APT-R8](specs/rules.md#apt-r8--telemetry-non-authority).  
 **Status:** planned/not-run; exact cases use the shared fixtures and Contract Case Matrix below.
+
+<a id="apt-r9--agent-reference-lineage"></a>
+
+### APT-TEST-R9 — Agent Reference Lineage
+
+**Validates:** [APT-R9](specs/rules.md#apt-r9--agent-reference-lineage).
+**Status:** planned/not-run; `FX-AGENT-REFERENCE` supplies exact target and producer owner-binding,
+immutable-bundle membership, independent evidence-axis, missing-host-binding and forbidden-join
+cases.
+
+The capture's accepted seat `producer_ref.(group_id,seat_id,attempt_id)` and `dispatch_id` must
+equal the delivery tuple, which in turn must equal one complete owner-verified member of the
+existing `target_resolution` wrapper, including `agent_instance_id`. A separately pinned
+`producer_resolution` wrapper must resolve every canonical capture-producer selector bijectively
+through `host.AgentActivationBinding`; the pure reducer permits no owner calls.
+
+Boundary cases assert:
+
+1. Before bundle commit: no target line.
+2. After commit or Scout lifecycle `reference_scout.bundle_delivered@1`, but before target delivery:
+   no target line and no synthesized delivery.
+3. Inside the atomic target-delivery/`attempt.requested` group: the group is invisible.
+4. At the first complete boundary after that group: the exact admitted recommendation/delivery
+   line appears.
+5. Immediately before and after each host-observation or APT fact-head group: only the completed
+   group may add its own access, declared-use, relation or check axis; no future member leaks.
+
+Bundle negatives independently mutate the committed-event payload, bundle artifact ID, digest,
+ordered recommendation membership, immutable bundle bytes/hash/order, lifecycle-delivery
+artifact/digest and target-delivery source event references. Every disagreement fails closed.
+`reference_scout.bundle_delivered@1` never supplies recommendation membership.
+
+`recommended` without target delivery produces no target-scoped row. For an admitted row,
+`access_observed` and `declared_used` are varied independently in both directions. A relation may
+join only an already listed use, and a claim-support check may join only an already listed
+relation; tests preserve those structural prerequisites while proving that declaration does not
+imply relation, relation does not imply a passing check, and a pass does not adjudicate or promote
+the claim. When the versioned host binding is unavailable, only `access_observed=[]` follows.
+
+The exact derived case family is:
+
+| Case | Fixture or mutation | Expected obligation |
+|---|---|---|
+| `R9-01-target-selector` | Resolve one Attempt selector and seat/agent-instance selectors spanning multiple Attempts; then try unknown, cross-Dispatch, mixed and name/persona/model selectors. | The exact Attempt resolves once; historical multi-Attempt owner sets are canonical and valid; unknown, foreign, mixed or forbidden selectors fail closed before reduction. |
+| `R9-02-wrapper-integrity` | Independently omit, add, duplicate, reorder, scope-swap, version-swap or digest-tamper a `target_resolution`, `producer_resolution`, `aci_delivery_snapshot` or `probe_scout_bindings` member; mutate the producer wrapper's five-field upstream scope, owner identity/version, accepted boundary, selector digest or owner-manifest digest; also make `apt_fact_heads` omit/add/duplicate/future/tamper a head relative to the verified complete-group fold. | Canonical reordering alone is stable; every semantic wrapper mutation, producer-selector/member non-bijection or divergence of `apt_fact_heads` from the verified fold is `PINNED_INPUT_INVALID` or `READ_INTEGRITY_FAILURE`, never a successful empty result. |
+| `R9-03-prefix-and-event-ref` | Move each accepted Attempt, commit, lifecycle-delivery, target-delivery, binding or fact event after `effective_as_of`; mutate its group, event ID, offset or payload digest; supply an incomplete atomic group. | Only uniform `{event_id,offset,payload_digest}` refs inside verified complete groups at or before the bound prefix qualify; every future, mismatched or incomplete case fails closed. |
+| `R9-04-delivery-membership-input` | Vary immutable bundle bytes, artifact ID/digest, ordered recommendation membership, lifecycle-delivery event, target-delivery event and finalized `EffectiveInputEntry.reference_bundle`. | A target line exists only when all distinct evidence objects match exactly. Scout lifecycle delivery alone, recommendation text/digest similarity or an unfinalized/mismatched effective-input entry creates no line. |
+| `R9-05-probe-scout-alias` | Exercise unique exact `probe_id`↔Scout commit binding, canonical absence, two aliases for one commit, one alias for conflicting commits and forked recommendation membership. | Exact unique binding joins; absence leaves `probe_id` absent rather than null; ambiguity or fork is `READ_INTEGRITY_FAILURE`. |
+| `R9-06-declared-producer` | Match and mutate capture `dispatch_id`, seat `producer_ref.(group_id,seat_id,attempt_id,activation_id)` and stored producer digest against a complete `producer_resolution` member and the verified target/delivery tuple; omit/add/duplicate/future/cross-Dispatch/cross-target the owner member; replace it with `ExtractionProvenance.actor_ref`, locator or temporal proximity. | Only one accepted capture producer with an exact owner-resolved activation/Attempt tuple joins declared use. Missing, extra, ambiguous or mismatched producer resolution fails closed. Extraction authorship and heuristic matches never substitute; reducer owner-call count remains zero. |
+| `R9-07-host-unavailable` | Bind the complete `status=unavailable` host union and separately feed current raw Stage-G observations lacking owner target/origin links. | Query succeeds with `access_observed=[]`; raw pilot fields cannot upgrade the wrapper to available or imply access. |
+| `R9-08-host-available` | Bind a future owner-authored host manifest with exact Dispatch/upstream-digest scope, target tuple and `(agent_reference_delivery_id,recommendation_id)` origin; then test a well-formed member for another target/origin and separately omit a required binding field, tamper wrapper/manifest/digest or supply coverage outside the enum. | Exact H_HOST/contract-version/manifest/scope evidence is mandatory. A valid member bound to another target/origin stays outside that line; a missing required field, invalid coverage or malformed/tampered wrapper fails closed. Valid `exact`, `metadata_only` and `opaque` coverage is preserved, and locator-only matches do not join. |
+| `R9-09-axis-asymmetry` | Generate global recommendation-only evidence and target-line combinations with access, declared use, claim relation and check independently absent/present where their own prerequisites permit. | Global recommendation does not imply delivery; delivery does not imply access; access and declaration do not imply one another; declaration does not imply relation; relation does not imply a passing check. |
+| `R9-10-claim-check-typing` | Attach relations to exact/foreign uses. In branch A, vary `claim_support` checks over exact/foreign required `relation_id`; in branch B, vary valid `source_identity|access_evidence` checks with `relation_id` absent over exact/foreign use IDs, then try illegally adding a relation ID. | Only the exact current relation and exact `claim_support` check join the claim-support axis. Valid identity/access checks remain outside it; a relation ID on either non-claim-support type is rejected before Query evaluation. A passed claim-support check neither adjudicates/promotes the claim nor produces any aggregate supported/verified boolean. |
+| `R9-11-determinism-and-mapping` | Permute canonical owner members and current APT facts, repeat from empty/checkpoint replay, and round-trip every lineage output field through `ProvenanceFactsToReadModels`. | Canonical values, all seven pinned-input digests and result hash are identical; sets dedupe/sort by declared semantic identity; every output field and uniform event ref has one lossless source; reducer performs zero external calls, writes or publications. |
 
 <a id="session-context-binding"></a>
 
@@ -273,18 +328,19 @@ renumbering these IDs.
 | `FX-CAPTURE` | Current Session/link/snapshot and complete `apt.research-capture@1` slot vector | captured; partial with/without selected evidence; missing; correction; ordered synthesis; every invalid status permutation |
 | `FX-FACTS` | One current non-missing capture and all eight Entity payload variants plus disposition/assessment variants | valid selector-bearing seven Entities; non-extraction ReferenceCheck; locality/type/head/actor/digest mutations |
 | `FX-PROBE` | Committed bundle/recommendation, exact profile receipts, delivery/use heads and unordered item collections | zero-new; mixed; all-new; duplicate key; missing dependency; exact/divergent global fact collision |
+| `FX-AGENT-REFERENCE` | Complete owner-authored target-resolution, host producer-resolution, ACI delivery/effective-input, probe-to-Scout binding and APT fact-head wrappers plus the complete unavailable/available host union | attempt/seat/agent-instance selector; one/many targets; canonical capture-producer selector and bijective activation bindings; exact accepted producer/target match; foreign/missing/extra/duplicate/future/cross-scope/wrong-owner/version/digest member; every independently mutated commit/artifact/digest/order/lifecycle/target-delivery source; pre/inside/post atomic boundaries; admitted-row access/use/relation/check axes independently present/absent; host binding unavailable/available; locator-only near-match |
 | `FX-JOURNAL` | ACI groups with positive offsets, receipt range/count/order/digest, schemas and aggregate versions | single event; rollover pair; probe batch; incomplete/overlap/fork/gap/tamper |
 | `FX-CHECKPOINT` | Artifact-backed decoded state with exact prefix/group/recipe/spec/reducer/profile bindings | eligible historical; future; inside group; corrupt; incompatible; canonical-null checkpoint |
-| `FX-QUERY` | Authorized QueryIntent, requested offset, pinned manifests/snapshots and canonical prefix | SessionRecord; DispatchScopeProjection; ResearchRecord; boundary before/inside/after group |
+| `FX-QUERY` | Authorized QueryIntent, requested offset, pinned manifests/snapshots and canonical prefix | SessionRecord; DispatchScopeProjection; ResearchRecord; AgentReferenceLineage; boundary before/inside/after group |
 | `FX-TELEMETRY` | Closed logs/spans/metrics and exporter failure injector | every append branch; pre/post-boundary replay rejection; pre-source rejection; prohibited content; cardinality overflow |
 
 Every mutation fixture records before/after journal event count, receipt set, semantic-key set,
 aggregate heads and result mapping. Every read fixture records external-call/write/publication
 counts and exact `requested_o/effective_as_of`.
 
-## Contract Case Matrix: 8 Rules and 18 Clauses
+## Contract Case Matrix: 9 Rules and 18 Clauses
 
-The original 26 anchors above identify these parameterized case families.
+The 27 stable anchors above identify these parameterized case families.
 
 | Stable anchor | Level/type | Setup and input | Expected positive / negative / property obligation |
 |---|---|---|---|
@@ -296,6 +352,7 @@ The original 26 anchors above identify these parameterized case families.
 | `apt-r6--replay-determinism` | L1/L4 property/replay | Same verified prefix from empty state and eligible checkpoints | Equal canonical values/hashes; future/incomplete/forked/tampered input fails without effects |
 | `apt-r7--protocol-profile-binding` | L2/L3 contract | Probe, atomic-group and semantic-registry profile IDs/versions/digests/receipts | Exact registered bindings pass; every missing/cross/mismatched field blocks mutation |
 | `apt-r8--telemetry-non-authority` | L3/L5 security/fault | Telemetry/exporter failures and delivery-only probe evidence | No signal changes control/result; delivery does not imply access/support; no telemetry value authorizes replay/write |
+| `apt-r9--agent-reference-lineage` | L1/L2/L4 contract/property/replay | `FX-AGENT-REFERENCE`; mutate the complete target wrapper, every bundle-membership evidence edge, accepted producer tuple, host binding and admitted-row access/use/relation/check axes | Only an exact accepted producer/delivery match against one verified target member plus exact artifact/digest/ordered-recommendation membership admits a line; lifecycle delivery alone never does; any locator or incomplete/cross-owner evidence fails closed; pre/inside/post-group offsets leak no future line/axis; access and declaration vary independently, while use→relation→check containment preserves each stated forward non-implication; unavailable host binding returns `access_observed=[]`; reducer owner-call count is zero |
 | `session-context-binding` | L1/L3 state/integration | Empty/current origin tuple with new keys/names | First ensure binds once; current binding reuses immutable Session/name; wrong-origin ensure key conflicts |
 | `rollover-authorization` | L2/L3 contract | Valid and tampered single-use rollover authorization | Exact action/origin/predecessor/principal/nonce/expiry gives one atomic pair; any mismatch gives none |
 | `link-session-dispatch-authorization` | L2/L3 contract | Current/stale Session plus action-specific authorization | Exact current/authorized link passes; stale, absent, replayed or wrong-action evidence fails |
@@ -400,14 +457,15 @@ Each reciprocal clause ID is defined by its owning [Operation](specs/operations.
 | <a id="apt-query-01"></a>`APT-QUERY-01` | L1/L4 query/property | SessionRecord manifest at boundary generator | Exact binder manifest, current Session/dispatch/research formulas and stable hash ([SessionRecord](specs/queries.md#sessionrecord)) |
 | <a id="apt-query-02"></a>`APT-QUERY-02` | L1/L4 query/property | Both Dispatch snapshot variants and historical offsets | Exact snapshot/hash, dedupe/count formulas, no current external leak ([DispatchScopeProjection](specs/queries.md#dispatchscopeprojection)) |
 | <a id="apt-query-03"></a>`APT-QUERY-03` | L1/L4 query/property | Research capture/fact/check/review histories | Exact manifest, precedence, supersession, counts and hash ([ResearchRecord](specs/queries.md#researchrecord)) |
+| <a id="apt-query-04"></a>`APT-QUERY-04` | L1/L2/L4 query/contract/property | `FX-AGENT-REFERENCE` at complete-group boundaries for attempt, seat and agent-instance selectors | Complete owner-authored target, producer, delivery, Scout and host wrappers plus the exact as-of manifest produce stable per-agent lines; missing/extra/future/cross-scope members or producer-selector non-bijection fail closed; unavailable host binding yields an empty access axis; no locator, text, title, model label or timestamp supplies identity ([AgentReferenceLineage](specs/queries.md#agentreferencelineage), [APT-R9](specs/rules.md#apt-r9--agent-reference-lineage)) |
 | <a id="apt-map-01"></a>`APT-MAP-01` | L1 mapping/property | All six bound commands and owner fields | Lossless exact payload/envelope mapping; no receipt/group recursion ([APTFactToACIEvent](specs/mappings.md#aptfacttoacievent)) |
 | <a id="apt-map-02"></a>`APT-MAP-02` | L1 mapping/property | Probe item permutations/partitions | Stable delivery/use mapping, canonical order and total result mapping ([ProbeBundleToReferenceLineage](specs/mappings.md#probebundletoreferencelineage)) |
-| <a id="apt-map-03"></a>`APT-MAP-03` | L1 mapping/property | Verified prefix/manifests for all three queries | Every output field derives losslessly; forbidden/raw fields absent ([ProvenanceFactsToReadModels](specs/mappings.md#provenancefactstoreadmodels)) |
+| <a id="apt-map-03"></a>`APT-MAP-03` | L1 mapping/property | Verified prefix/manifests for all four queries | Every output field derives losslessly; forbidden/raw fields absent ([ProvenanceFactsToReadModels](specs/mappings.md#provenancefactstoreadmodels)) |
 | <a id="apt-iface-01"></a>`APT-IFACE-01` | L2 contract | Every closed caller intent with unknown/owner fields | Exact allowlists/default nulls; unknown/forged owner fields reject ([caller shapes](specs/interfaces.md#caller-intent-shapes)) |
 | <a id="apt-iface-02"></a>`APT-IFACE-02` | L2 contract | Six append methods and all result branches | Method-specific input/output, auth/evidence and processing order ([ProvenanceAppendPort](specs/interfaces.md#provenanceappendport)) |
 | <a id="apt-iface-03"></a>`APT-IFACE-03` | L2 contract | Single/atomic adapter requests and unknown response | No generic append/store/transaction handle; exact ACI result verification ([ACICommandAdapter](specs/interfaces.md#acicommandadapter)) |
 | <a id="apt-iface-04"></a>`APT-IFACE-04` | L2 contract | Every boundary/operation error code | Closed code, safe detail and derived retryability; APPEND_FAILED only same-command ([InterfaceError](specs/interfaces.md#interfaceerror)) |
-| <a id="apt-iface-05"></a>`APT-IFACE-05` | L2 contract | Three query intents/results/errors | Exact requested/effective/source manifests; closed authorization/integrity errors ([ProvenanceQueryPort](specs/interfaces.md#provenancequeryport)) |
+| <a id="apt-iface-05"></a>`APT-IFACE-05` | L2 contract | Four query intents/results/errors | Exact requested/effective/source manifests, including owner-bound target selector and external wrapper digests for AgentReferenceLineage; closed authorization/integrity errors ([ProvenanceQueryPort](specs/interfaces.md#provenancequeryport)) |
 | <a id="apt-iface-06"></a>`APT-IFACE-06` | L2 static architecture | Dependency/import graph plus write-call scan for domain and application modules | Domain imports no owner/evidence ports; neither domain nor application writes the ACI journal, artifact backend or Dispatch ledger directly; all accepted writes cross the declared adapter/owner boundary ([Boundary Principles](specs/interfaces.md#boundary-principles), [Authority Boundary](specs/persistence-and-replay.md#authority-boundary)) |
 | <a id="apt-pr-01"></a>`APT-PR-01` | L3 architecture contract | Instrument all APT storage/bus calls | ACI journal sole authority; zero APT authoritative store/bus ([Authority Boundary](specs/persistence-and-replay.md#authority-boundary)) |
 | <a id="apt-pr-02"></a>`APT-PR-02` | L4 fault | Failpoint before every atomic member/commit/response | No partial receipt/event/head/key/mapping; post-commit retry stable ([Atomic Commands](specs/persistence-and-replay.md#atomic-commands-results-and-receipts)) |
@@ -440,23 +498,23 @@ Each reciprocal clause ID is defined by its owning [Operation](specs/operations.
 | [US-5](STORIES.md#us-5-capture-an-exact-producer-outcome) | [APT-TEST-R3](#apt-r3--artifact-only-raw-return), [APT-TEST-C05](#capture-digest), [APT-TEST-C08](#evidence-reference-validity), [APT-OP-CAP-1](#apt-op-cap-1), [APT-OP-CAP-2](#apt-op-cap-2), [APT-OP-CAP-3](#apt-op-cap-3), [APT-OP-CAP-4](#apt-op-cap-4), [APT-PR-10](#apt-pr-10) | Exact status/evidence/artifact/digest and orphan rejection |
 | [US-6](STORIES.md#us-6-correct-or-synthesize-captures-by-forward-append) | [APT-TEST-R5](#apt-r5--capture-supersession), [APT-TEST-C06](#research-synthesis-pins), [APT-TEST-C18](#relational-collection-canonicalization), [APT-OP-CAP-5](#apt-op-cap-5), [APT-OP-CAP-6](#apt-op-cap-6), [APT-OP-CAP-7](#apt-op-cap-7), [APT-OP-CAP-8](#apt-op-cap-8), [APT-PR-10](#apt-pr-10) | Correction CAS, ordered synthesis and no synthesis from orphan evidence |
 | [US-7](STORIES.md#us-7-enrich-a-capture-with-attributed-questions-answers-problems-and-claims) | [APT-TEST-R4](#apt-r4--extraction-provenance), [APT-TEST-C07](#raw-selector-validity), [APT-TEST-C09](#question-derivation-validity), [APT-TEST-C10](#research-fact-appended-closed-union), [APT-TEST-C11](#research-fact-locality), [APT-TEST-C12](#research-fact-typing), [APT-TEST-C15](#fact-append-identity), [APT-OP-FACT-1](#apt-op-fact-1), [APT-OP-FACT-2](#apt-op-fact-2), [APT-OP-FACT-3](#apt-op-fact-3), [APT-OP-FACT-4](#apt-op-fact-4), [APT-OP-FACT-7](#apt-op-fact-7), [APT-OP-FACT-8](#apt-op-fact-8), [APT-OP-FACT-9](#apt-op-fact-9), [APT-OP-FACT-10](#apt-op-fact-10), [APT-OP-FACT-11](#apt-op-fact-11), [APT-OP-FACT-12](#apt-op-fact-12) | Extraction, locality, union, typing, identity |
-| [US-8](STORIES.md#us-8-record-reference-use-claim-relation-and-independent-checks) | [APT-TEST-C08](#evidence-reference-validity), [APT-TEST-C11](#research-fact-locality), [APT-TEST-C13](#reference-check-typing), [APT-TEST-C15](#fact-append-identity), [APT-EVT-05](#apt-evt-05) | Use/relation/check semantics and evidence |
+| [US-8](STORIES.md#us-8-record-reference-use-claim-relation-and-independent-checks) | [APT-TEST-R9](#apt-r9--agent-reference-lineage), [APT-TEST-C08](#evidence-reference-validity), [APT-TEST-C11](#research-fact-locality), [APT-TEST-C13](#reference-check-typing), [APT-TEST-C15](#fact-append-identity), [APT-QUERY-04](#apt-query-04), [APT-EVT-05](#apt-evt-05) | Independent recommendation/delivery/access/use/relation/check semantics and exact owner evidence |
 | [US-9](STORIES.md#us-9-preserve-candidate-formalization-and-append-only-review-chains) | [APT-TEST-C12](#research-fact-typing), [APT-TEST-C14](#formalization-locality), [APT-TEST-C16](#disposition-and-assessment-chains), [APT-OP-FACT-5](#apt-op-fact-5), [APT-OP-FACT-6](#apt-op-fact-6), [APT-OP-FACT-10](#apt-op-fact-10) | Candidate completeness and aggregate CAS |
 | [US-10](STORIES.md#us-10-ingest-an-idempotent-mixed-probe-lineage-result) | [APT-TEST-R2](#apt-r2--idempotent-append), [APT-TEST-R7](#apt-r7--protocol-profile-binding), [APT-TEST-C15](#fact-append-identity), [APT-TEST-C17](#probe-lineage-append), [APT-TEST-C18](#relational-collection-canonicalization), [APT-OP-PROBE-1](#apt-op-probe-1), [APT-OP-PROBE-2](#apt-op-probe-2), [APT-OP-PROBE-3](#apt-op-probe-3), [APT-OP-PROBE-4](#apt-op-probe-4), [APT-OP-PROBE-5](#apt-op-probe-5), [APT-OP-PROBE-6](#apt-op-probe-6), [APT-OP-PROBE-7](#apt-op-probe-7), [APT-OP-PROBE-8](#apt-op-probe-8), [APT-OP-PROBE-9](#apt-op-probe-9), [APT-OP-PROBE-10](#apt-op-probe-10), [APT-OP-PROBE-11](#apt-op-probe-11), [APT-OP-PROBE-12](#apt-op-probe-12), [APT-OP-PROBE-13](#apt-op-probe-13), [APT-OP-PROBE-14](#apt-op-probe-14), [APT-OP-PROBE-15](#apt-op-probe-15), [APT-OP-PROBE-16](#apt-op-probe-16), [APT-OP-PROBE-17](#apt-op-probe-17) | Profiles, partition, receipt, idempotency, delivery-only |
-| [US-11](STORIES.md#us-11-rebuild-session-dispatch-and-research-records-at-an-explicit-offset) | [APT-TEST-R6](#apt-r6--replay-determinism), [APT-QUERY-01](#apt-query-01), [APT-QUERY-02](#apt-query-02), [APT-QUERY-03](#apt-query-03), [APT-PR-04](#apt-pr-04), [APT-PR-05](#apt-pr-05), [APT-PR-08](#apt-pr-08), [APT-PR-09](#apt-pr-09) | As-of, manifests/formulas, migration/checkpoint parity and integrity |
+| [US-11](STORIES.md#us-11-rebuild-session-dispatch-and-research-records-at-an-explicit-offset) | [APT-TEST-R6](#apt-r6--replay-determinism), [APT-QUERY-01](#apt-query-01), [APT-QUERY-02](#apt-query-02), [APT-QUERY-03](#apt-query-03), [APT-QUERY-04](#apt-query-04), [APT-PR-04](#apt-pr-04), [APT-PR-05](#apt-pr-05), [APT-PR-08](#apt-pr-08), [APT-PR-09](#apt-pr-09) | As-of, manifests/formulas, owner-wrapper integrity, migration/checkpoint parity |
 | [US-12](STORIES.md#us-12-diagnose-safely-without-making-telemetry-authoritative) | [APT-TEST-R8](#apt-r8--telemetry-non-authority), [APT-OBS-01](#apt-obs-01), [APT-OBS-02](#apt-obs-02), [APT-OBS-03](#apt-obs-03), [APT-OBS-04](#apt-obs-04), [APT-OBS-05](#apt-obs-05), [APT-OBS-06](#apt-obs-06), [APT-OBS-07](#apt-obs-07), [APT-OBS-08](#apt-obs-08), [APT-OBS-09](#apt-obs-09) | Privacy, cardinality, read-only non-authority and retention |
 
 ## Source Coverage and Zero-Orphan Gate
 
 | Source | Required | Covered by | Planned count |
 |---|---:|---|---:|
-| Rules | 8/8 | APT-TEST-R1..R8 | 8 |
+| Rules | 9/9 | APT-TEST-R1..R9 | 9 |
 | Rule clauses | 18/18 | APT-TEST-C01..C18 | 18 |
 | Operations | 6/6 | 53 reciprocal APT-OP IDs plus shared error/crash cases | 53 |
 | State/reducer areas | all registered state sections | APT-STATE-01..06 | 6 |
 | Events | 6/6 | APT-EVT-01..06 | 6 |
 | Workflows | 3/3 | APT-WF-01..03 | 3 |
-| Queries | 3/3 | APT-QUERY-01..03 | 3 |
+| Queries | 4/4 | APT-QUERY-01..04 | 4 |
 | Registered Mappings | 3/3 | APT-MAP-01..03 | 3 |
 | Interfaces/shapes/errors | append/query/adapter/intents/errors/static dependencies | APT-IFACE-01..06 | 6 |
 | Persistence/replay | authority, atomicity, crash/race, checkpoints, replay, artifact, migration compatibility, projection and orphan rejection | APT-PR-01..10 | 10 |
@@ -469,12 +527,12 @@ Gate checks required before review:
 all inbound TEST-SPEC.md#anchors resolve
 all Test Matrix IDs resolve to exactly one stable anchor
 all stable test anchors appear in a matrix/detail row
-rules = 8/8
+rules = 9/9
 clauses = 18/18
 operations = 6/6 and reciprocal_operation_ids = 53/53
 events = 6/6
 workflows = 3/3
-queries = 3/3
+queries = 4/4
 mappings = 3/3
 interfaces = 6 planned cases
 persistence_and_replay = 10 planned cases
@@ -504,12 +562,12 @@ passing_evidence = none
 
 | Document | Type | Description |
 |---|---|---|
-| [rules.md](specs/rules.md) | `verifies-planned` | Source of the 26 reserved coverage obligations. |
+| [rules.md](specs/rules.md) | `verifies-planned` | Source of the 27 reserved coverage obligations. |
 | [operations.md](specs/operations.md) | `verifies-planned` | Supplies six Operations, 53 reciprocal clauses and crash/race obligations. |
 | [states.md](specs/states.md) | `verifies-planned` | Supplies reducer transitions, atomic-group and semantic-registry invariants. |
 | [events.md](specs/events.md) | `verifies-planned` | Supplies six closed Event payload contracts. |
 | [workflows.md](specs/workflows.md) | `verifies-planned` | Supplies three orchestration contracts and step boundaries. |
-| [queries.md](specs/queries.md) | `verifies-planned` | Supplies three deterministic query manifests/formulas/hashes. |
+| [queries.md](specs/queries.md) | `verifies-planned` | Supplies four deterministic query manifests/formulas/hashes. |
 | [mappings.md](specs/mappings.md) | `verifies-planned` | Supplies three registered lossless mappings. |
 | [interfaces.md](specs/interfaces.md) | `verifies-planned` | Supplies closed intents, ports, outcomes and errors. |
 | [persistence-and-replay.md](specs/persistence-and-replay.md) | `verifies-planned` | Supplies authority, crash/race/checkpoint/replay/migration obligations. |

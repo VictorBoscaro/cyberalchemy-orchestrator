@@ -94,18 +94,25 @@ the immutable bundle artifact and the distinct accepted lifecycle fact
 
 **Contract status:** specified for the next bounded slice; not implemented.
 
+**Authority and ownership:** this bounded mapping formalizes
+[OQ-ACI8](../discovery/feature-discovery/agents-communication-infra.md#oq-aci8--canonical-effective-input)
+under [ACI-R19](rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic).
+ACI owns the accepted Scout commit/lifecycle facts, target-agent delivery and effective input. The
+host alone may later produce source-access observations; APT consumes the independent facts for
+declared-use, lineage and claim-support views.
+
 | Source | Target | Transform / rule |
 |---|---|---|
 | authenticated target capability + target [Attempt](domain.md#attempt) | [AgentReferenceDelivery](domain.md#agentreferencedelivery).`dispatch_id/target_attempt_id/target_seat_id/target_agent_instance_id`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).`dispatch_id/target_attempt_id/target_seat_id/target_agent_instance_id` | derive identities; require the same `dispatch_id` on source [ScoutRun](../../agent-provenance-telemetry/probes/reference-scout-tool.md#naming-boundary), delivery and target Attempt |
-| accepted [`reference_scout.bundle_committed@1`](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle) | AgentReferenceDelivery.`scout_run_id/bundle_artifact_id/bundle_digest/recommendation_ids`; target event.`scout_run_id/bundle_artifact_id/bundle_digest/recommendation_ids` | copy source identity and membership/order from this commit fact, then verify all bundle values against the exact immutable bytes |
-| immutable bundle artifact | [EffectiveInputEntry](domain.md#effectiveinputentry).`entry_type=reference_bundle/artifact_ref/content_hash`; AgentReferenceDelivery.`bundle_artifact_id/bundle_digest`; target event.`bundle_artifact_id/bundle_digest` | require `bundle_digest = hash(bundle_bytes)` and preserve artifact identity without rewriting the bundle |
-| accepted lifecycle [`reference_scout.bundle_delivered@1`](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle) | AgentReferenceDelivery.`source_bundle_delivered_event_id`; target event.`source_bundle_delivered_event_id` | copy the lifecycle event identity and require only its `scout_run_id`, artifact and digest to equal the commit/delivery values; this event has no recommendation-membership field |
-| command envelope `idempotency_key` | AgentReferenceDelivery.`idempotency_key`; target event payload and envelope `idempotency_key` | preserve the authenticated scoped retry key exactly |
-| stable preallocated delivery identity | EffectiveInputEntry.`agent_reference_delivery_id`; AgentReferenceDelivery.`agent_reference_delivery_id`; target event.`agent_reference_delivery_id` | use one identity so manifest canonicalization does not depend on a post-commit identifier |
-| stable preallocated target-event identity | AgentReferenceDelivery.`accepted_event_id`; target event envelope `event_id` | assign one identical event identity before canonicalization and commit |
-| accepted target-delivery journal append | AgentReferenceDelivery.`journal_offset`; target event envelope `journal_offset` | record the same authoritative committed offset on both |
-| authenticated visibility policy | EffectiveInputEntry.`visibility_policy_ref`; AgentReferenceDelivery.`visibility_policy_ref`; target event.`visibility_policy_ref` | freeze the same versioned policy reference into all three targets |
-| finalized ordered [EffectiveInputArtifact](domain.md#effectiveinputartifact) manifest | AgentReferenceDelivery.`effective_input_artifact_id/effective_input_entry_ordinal/effective_input_manifest_hash`; target event.`effective_input_artifact_id/effective_input_entry_ordinal/effective_input_manifest_hash`; EffectiveInputEntry at that ordinal | require exactly one matching `entry_type=reference_bundle` entry and preserve its zero-based ordinal |
+| accepted [`reference_scout.bundle_committed@1`](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle) | [AgentReferenceDelivery](domain.md#agentreferencedelivery).`scout_run_id/bundle_artifact_id/bundle_digest/recommendation_ids`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).`scout_run_id/bundle_artifact_id/bundle_digest/recommendation_ids` | copy source identity and membership/order from this commit fact, then verify all bundle values against the exact immutable bytes |
+| immutable bundle artifact | [EffectiveInputEntry](domain.md#effectiveinputentry).`entry_type=reference_bundle/artifact_ref/content_hash`; [AgentReferenceDelivery](domain.md#agentreferencedelivery).`bundle_artifact_id/bundle_digest`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).`bundle_artifact_id/bundle_digest` | require `bundle_digest = hash(bundle_bytes)` and preserve artifact identity without rewriting the bundle |
+| accepted lifecycle [`reference_scout.bundle_delivered@1`](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle) | [AgentReferenceDelivery](domain.md#agentreferencedelivery).`source_bundle_delivered_event_id`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).`source_bundle_delivered_event_id` | copy the lifecycle event identity and require only its `scout_run_id`, artifact and digest to equal the commit/delivery values; this event has no recommendation-membership field |
+| command envelope `idempotency_key` | [AgentReferenceDelivery](domain.md#agentreferencedelivery).`idempotency_key`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) payload and envelope `idempotency_key` | preserve the authenticated scoped retry key exactly |
+| stable preallocated delivery identity | [EffectiveInputEntry](domain.md#effectiveinputentry).`agent_reference_delivery_id`; [AgentReferenceDelivery](domain.md#agentreferencedelivery).`agent_reference_delivery_id`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).`agent_reference_delivery_id` | use one identity so manifest canonicalization does not depend on a post-commit identifier |
+| stable preallocated target-event identity | [AgentReferenceDelivery](domain.md#agentreferencedelivery).`accepted_event_id`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) envelope `event_id` | assign one identical event identity before canonicalization and commit |
+| accepted target-delivery journal append | [AgentReferenceDelivery](domain.md#agentreferencedelivery).`journal_offset`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) envelope `journal_offset` | record the same authoritative committed offset on both |
+| authenticated visibility policy | [EffectiveInputEntry](domain.md#effectiveinputentry).`visibility_policy_ref`; [AgentReferenceDelivery](domain.md#agentreferencedelivery).`visibility_policy_ref`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).`visibility_policy_ref` | freeze the same versioned policy reference into all three targets |
+| finalized ordered [EffectiveInputArtifact](domain.md#effectiveinputartifact) manifest | [AgentReferenceDelivery](domain.md#agentreferencedelivery).`effective_input_artifact_id/effective_input_entry_ordinal/effective_input_manifest_hash`; target [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent).`effective_input_artifact_id/effective_input_entry_ordinal/effective_input_manifest_hash`; [EffectiveInputEntry](domain.md#effectiveinputentry) at that ordinal | require exactly one matching `entry_type=reference_bundle` entry and preserve its zero-based ordinal |
 
 **Defaults:** none. Missing source facts, identities, policy, artifact bytes, manifest fields or
 idempotency evidence fail closed; the mapping never synthesizes a target-agent delivery.
@@ -120,12 +127,15 @@ idempotency evidence fail closed; the mapping never synthesizes a target-agent d
 | Source ScoutRun, delivery and target Attempt dispatches differ, or capability recipient differs from the Attempt | authorization failure; reject |
 | Effective input contains zero, duplicate or mismatched `reference_bundle` entries | validation failure; reject |
 | Stable delivery/event identity, scoped idempotency key or any source/recipient/policy/manifest field drifts on retry | conflict; return no new receipt |
-| Any member of the StartAgentAttempt acceptance unit fails | atomically accept none of the delivery, artifact metadata, request binding, Attempt, events or launch effect intent |
+| Any member of the [StartAgentAttempt](operations.md#startagentattempt) acceptance unit fails | atomically accept none of the delivery, artifact metadata, request binding, Attempt, events or launch effect intent |
 
 The delivery entity, finalized effective-input metadata, sealed request binding,
 `reference_scout.bundle_delivered_to_agent@1`, `attempt.requested` and sandbox-launch effect intent
 commit as one [StartAgentAttempt](operations.md#startagentattempt) acceptance unit or none commits.
 This mapping establishes delivery, not access, declared use or claim support.
+
+**Checked by:** [T-ACI-R22](../TEST-SPEC.md#t-aci-r22--reference-bundle-target-delivery)
+and [T-ACI-ARD1 through T-ACI-ARD5](../TEST-SPEC.md#t-aci-ard1--exact-reference-bundle-delivery).
 
 ## FrozenAuthorityToAuditLedgerRow
 

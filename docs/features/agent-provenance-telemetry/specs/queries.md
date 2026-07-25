@@ -5,20 +5,20 @@ is_session: false
 layer: application
 nature: technical, reference
 status: draft
-version: 0.1.0
-last_updated: 2026-07-23
+version: 0.2.0
+last_updated: 2026-07-25
 feature: agent-provenance-telemetry
 specAuthoringGate: in-review
 runtimeGate: block
-derivedFrom: SPEC.md@0.1.0
+derivedFrom: SPEC.md@0.2.0
 ---
 
 # Queries: Agent Provenance Telemetry
 
-This aspect specifies exactly the three read-only Query concepts registered in the
-[concept registry](SPEC.md#concept-registry) and exposed by
-[ProvenanceQueryPort](interfaces.md#provenancequeryport). It introduces no write operation,
-external API, persisted read-model authority or additional Query concept.
+This aspect defines exactly four read-only Query concepts, all exposed by
+[ProvenanceQueryPort](interfaces.md#provenancequeryport) as specified, not implemented contracts.
+Registration in the [concept registry](SPEC.md#concept-registry) is `4/4`. This aspect introduces
+no write operation, external API, persisted read-model authority or additional Query concept.
 
 ## Common Deterministic Query Contract
 
@@ -589,6 +589,739 @@ No event arrival time supplies precedence across independent keys.
 | [FormalizationCandidate](domain.md#formalizationcandidate) | queries | Current formalizations plus policy/assessor heads. |
 | [ReferenceProbeLineageAppended](events.md#referenceprobelineageappended) | queries | Accepted delivery origins without access inference. |
 
+## AgentReferenceLineage
+
+**Type:** Query (read-only)
+**Contract status:** specified; not implemented.
+**Actor:** Authenticated internal operator/reviewer authorized for the requested Dispatch and target
+agent identity.
+
+This Query projects the evidence path for references delivered to one owner-resolved agent target.
+It reads ACI target-delivery/effective-input authority, host observation evidence and APT attributed
+research facts without copying or re-owning any of them.
+
+### Input
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `schema_ref` | constant `apt.agent-reference-lineage-query@1` | yes | Closed Query discriminator. |
+| `dispatch_id` | opaque owner ID | yes | Exact Dispatch scope; never inferred from the selector. |
+| `target` | closed `attempt \| seat \| agent_instance` selector | yes | Exactly one of `{kind=attempt,attempt_id}`, `{kind=seat,seat_id}`, or `{kind=agent_instance,agent_instance_id}`. |
+| `requested_o` | inclusive ACI journal offset | yes | Requested replay boundary. |
+
+The caller supplies an opaque selector, not its relationships. The ACI owner resolves it to a
+canonical target set of `(dispatch_id, group_id, seat_id, attempt_id, agent_instance_id)` tuples.
+Unknown, foreign or conflicting/unverifiable resolution fails closed. A seat or agent-instance
+selector may legitimately resolve to multiple historical/current Attempt tuples; canonical
+cardinality greater than one is not ambiguity. Persona/display name, locator, path, recommendation
+text, timestamps and model labels are forbidden selectors and join keys.
+
+### Binder Manifest
+
+The owner-created `AgentReferencePinnedInputManifest` is closed:
+
+```text
+closed {
+  kind="agent_reference_lineage",
+  apt_accepted_prefix: {
+    requested_o,
+    effective_as_of,
+    grouping_profile_ref,
+    verified_grouping_manifest_digest,
+    complete_groups
+  },
+  target_resolution: closed {
+    owner_namespace="agents-communication-infra",
+    owner_contract_id="agents-communication-infra.Attempt",
+    owner_contract_version=expected_aci_attempt_contract_version,
+    scope: {dispatch_id,target_selector_digest},
+    accepted_through,
+    owner_manifest_digest,
+    members: canonical set<{
+      dispatch_id,group_id,seat_id,attempt_id,agent_instance_id,
+      accepted_attempt_read_group_id,
+      accepted_attempt_event_ref: {event_id,offset,payload_digest},
+      owner_evidence_digest
+    }>
+  },
+  producer_resolution: closed {
+    owner_namespace="host",
+    owner_contract_id="host.AgentActivationBinding",
+    owner_contract_version=expected_host_agent_activation_binding_contract_version,
+    scope: {
+      dispatch_id,
+      target_resolution_digest,
+      aci_delivery_snapshot_digest,
+      probe_scout_bindings_digest,
+      capture_producer_selector_digest
+    },
+    accepted_through,
+    owner_manifest_digest,
+    members: canonical set<{
+      research_capture_id,
+      producer_ref_digest,
+      dispatch_id,group_id,seat_id,attempt_id,agent_instance_id,activation_id,
+      accepted_attempt_read_group_id,
+      accepted_attempt_event_ref: {event_id,offset,payload_digest},
+      owner_evidence_digest
+    }>
+  },
+  aci_delivery_snapshot: closed {
+    owner_namespace="agents-communication-infra",
+    owner_contract_id="agents-communication-infra.AgentReferenceDelivery",
+    owner_contract_version=expected_aci_agent_reference_delivery_contract_version,
+    scope: {dispatch_id,target_resolution_digest},
+    accepted_through,
+    owner_manifest_digest,
+    members: canonical set<{
+      agent_reference_delivery_id,
+      accepted_read_group_id,
+      accepted_delivery_event_ref: {event_id,offset,payload_digest},
+      dispatch_id,
+      scout_run_id,
+      source_bundle_committed_event_ref: {
+        event_id,offset,payload_digest
+      },
+      source_bundle_delivered_event_ref: {event_id,offset,payload_digest},
+      bundle_artifact_id,
+      bundle_digest,
+      recommendation_ids,
+      target_group_id,
+      target_seat_id,
+      target_attempt_id,
+      target_agent_instance_id,
+      idempotency_key,
+      effective_input_artifact_id,
+      effective_input_manifest_hash,
+      effective_input_entry_ordinal,
+      effective_input_entry: {
+        entry_type="reference_bundle",
+        artifact_ref,
+        content_hash,
+        agent_reference_delivery_id,
+        visibility_policy_ref
+      }
+    }>
+  },
+  probe_scout_bindings: closed {
+    owner_namespace="agent-provenance-telemetry",
+    owner_contract_id="agent-provenance-telemetry.ProbeRecommendationRef",
+    owner_contract_version=expected_apt_probe_recommendation_ref_contract_version,
+    scope: {dispatch_id,aci_delivery_snapshot_digest},
+    accepted_through,
+    owner_manifest_digest,
+    members: canonical set<{
+      probe_id,scout_run_id,bundle_artifact_id,bundle_digest,
+      recommendation_ids,accepted_commit_read_group_id,
+      commit_event_ref: {event_id,offset,payload_digest}
+    }>
+  },
+  apt_fact_heads: canonical set<
+    {
+      fact_type,fact_id,subject_id,research_capture_id,
+      accepted_read_group_id,
+      accepted_event_ref: {event_id,offset,payload_digest},
+      closed_value
+    }
+  >,
+  host_observation_projection:
+    closed {
+      status="unavailable",
+      owner_namespace="host",
+      owner_contract_id="host.SourceObservation",
+      owner_contract_version=expected_host_source_observation_contract_version,
+      scope: {
+        dispatch_id,target_resolution_digest,aci_delivery_snapshot_digest
+      },
+      required_contract_digest
+    }
+    |
+    closed {
+      status="available",
+      owner_namespace="host",
+      owner_contract_id="host.SourceObservation",
+      owner_contract_version=expected_host_source_observation_contract_version,
+      scope: {
+        dispatch_id,target_resolution_digest,aci_delivery_snapshot_digest
+      },
+      accepted_through,
+      owner_manifest_digest,
+      observations: canonical set<{
+        source_observation_id,
+        dispatch_id,
+        target_binding: {
+          group_id,seat_id,attempt_id,agent_instance_id,owner_evidence_digest
+        },
+        reference_origin_ref: {
+          agent_reference_delivery_id,recommendation_id,owner_evidence_digest
+        },
+        tool_name,source_kind,coverage,purpose,accepted_offset,evidence_digest
+      }>
+    }
+}
+```
+
+`target_resolution.members` comes from ACI Attempt/capability ownership. Every
+`aci_delivery_snapshot.members` member
+must resolve to an accepted
+[`AgentReferenceDelivery`](../../agents-communication-infra/specs/domain.md#agentreferencedelivery)
+whose target tuple is in `target_resolution.members`, and to the exact
+[`EffectiveInputEntry.reference_bundle`](../../agents-communication-infra/specs/domain.md#effectiveinputentry)
+accepted in its finalized manifest. Each target-resolution member carries the exact accepted
+Attempt event and its verified atomic group:
+
+```text
+accepted_attempt_event =
+  exact_event(apt_accepted_prefix.complete_groups,
+              target.accepted_attempt_read_group_id,
+              target.accepted_attempt_event_ref.event_id)
+
+accepted_attempt_event.event_type = "attempt.requested"
+accepted_attempt_event.journal_offset = target.accepted_attempt_event_ref.offset
+H_ACI(canonical(accepted_attempt_event.payload)) =
+  target.accepted_attempt_event_ref.payload_digest
+read_group(accepted_attempt_event) = target.accepted_attempt_read_group_id
+accepted_attempt_event.attempt_id = target.attempt_id
+accepted_attempt_event.dispatch_id = target.dispatch_id
+accepted_attempt_event.group_id = target.group_id
+accepted_attempt_event.seat_id = target.seat_id
+accepted_attempt_event.agent_instance_id = target.agent_instance_id
+target.accepted_attempt_event_ref.offset <=
+  target_resolution.accepted_through <= effective_as_of
+```
+
+`producer_resolution` is the separately pinned host-owner resolution of the stored seat producer
+references that may participate in this Query. Its selector is derived before the owner call from
+the verified current APT fact heads, never supplied by the caller:
+
+```text
+capture_producer_selector =
+  canonical set<{
+    research_capture_id,
+    producer_ref_digest=H_ACI(canonical(capture.producer_ref))
+  }> for each accepted current capture that:
+    capture.dispatch_id = intent.dispatch_id
+    and capture.producer_ref.kind = seat
+    and capture.producer_ref.(group_id,seat_id,attempt_id) equals
+        one target_resolution member's (group_id,seat_id,attempt_id)
+    and owns a current ResearchReferenceUse head u in apt_fact_heads
+    and u's exact verified probe/Scout/bundle/recommendation identity is present in
+        probe_scout_bindings and one aci_delivery_snapshot member for that same target
+
+producer_resolution.scope = {
+  dispatch_id=intent.dispatch_id,
+  target_resolution_digest=pinned_input_digests.target_resolution,
+  aci_delivery_snapshot_digest=pinned_input_digests.aci_delivery_snapshot,
+  probe_scout_bindings_digest=pinned_input_digests.probe_scout_bindings,
+  capture_producer_selector_digest=
+    H_ACI(canonical(capture_producer_selector))
+}
+
+for every p in producer_resolution.members:
+  exactly_one selector in capture_producer_selector:
+    selector.research_capture_id = p.research_capture_id
+    and selector.producer_ref_digest = p.producer_ref_digest
+  capture = accepted_current_capture(
+    apt_accepted_prefix.complete_groups,
+    p.research_capture_id)
+  p.producer_ref_digest = H_ACI(canonical(capture.producer_ref))
+  capture.dispatch_id = p.dispatch_id = intent.dispatch_id
+  capture.producer_ref =
+    {kind=seat,group_id=p.group_id,seat_id=p.seat_id,
+     attempt_id=p.attempt_id,activation_id=p.activation_id}
+  p.(dispatch_id,group_id,seat_id,attempt_id,agent_instance_id) in
+    target_resolution.members
+  producer_attempt_event =
+    exact_event(apt_accepted_prefix.complete_groups,
+                p.accepted_attempt_read_group_id,
+                p.accepted_attempt_event_ref.event_id)
+  producer_attempt_event.event_type = "attempt.requested"
+  producer_attempt_event.journal_offset = p.accepted_attempt_event_ref.offset
+  H_ACI(canonical(producer_attempt_event.payload)) =
+    p.accepted_attempt_event_ref.payload_digest
+  read_group(producer_attempt_event) = p.accepted_attempt_read_group_id
+  producer_attempt_event.(dispatch_id,group_id,seat_id,attempt_id,agent_instance_id) =
+    p.(dispatch_id,group_id,seat_id,attempt_id,agent_instance_id)
+  p.accepted_attempt_event_ref.offset <=
+    producer_resolution.accepted_through <= effective_as_of
+```
+
+The `host.AgentActivationBinding` owner contract attests that `activation_id` is a child of the
+same accepted Attempt tuple. The wrapper's complete member set must equal the
+`capture_producer_selector` cardinality exactly: one member per selector and no member outside it.
+Missing, extra, duplicate, future, cross-Dispatch, cross-target, ambiguous or digest-mismatched
+resolution fails closed. This owner wrapper is specified here as a required Query source contract;
+it is not implemented by the current pilot.
+
+Any absent or unequal event/group evidence fails closed; an ID-only or latest-state lookup is not
+authority. Every commit, delivery, binding, fact and observation used in the result has
+`accepted_offset<=effective_as_of`; `complete_groups` carries the exact accepted event values needed
+by the fold, not only event IDs.
+
+The current Stage-G host ingestion pilot records `dispatch_id`, optional `agent_id`, `tool_name`,
+`source_kind`, `coverage`, `purpose` and accepted offset, but does not provide an
+owner-authoritative observation-to-recommendation/delivery plus Attempt/seat binding. Therefore its
+`host_observation_projection.status=unavailable`, and this Query returns empty `access_observed`
+sets under that runtime. The `available` variant is a required future host-owner contract
+extension, specified but not implemented. APT does not mint it. Existing
+`exact | metadata_only | opaque` coverage is preserved, and no `action` field is invented.
+
+The binder pins the complete typed union, including the unavailable variant rather than only its
+digest field:
+
+```text
+host_observation_snapshot_digest =
+  H_ACI(canonical(
+    HostObservationProjection =
+      Unavailable {
+        status="unavailable",
+        owner_namespace="host",
+        owner_contract_id,
+        owner_contract_version,
+        scope,
+        required_contract_digest
+      }
+      | Available {
+          status="available",
+          owner_namespace="host",
+          owner_contract_id,
+          owner_contract_version,
+          scope,
+          accepted_through,
+          owner_manifest_digest,
+          observations
+        }
+  ))
+
+host_observation_projection.status = available
+  => host_observation_projection.accepted_through <= effective_as_of
+
+host_observation_projection.scope = {
+  dispatch_id=intent.dispatch_id,
+  target_resolution_digest=pinned_input_digests.target_resolution,
+  aci_delivery_snapshot_digest=pinned_input_digests.aci_delivery_snapshot
+}
+
+pinned_input_digests = {
+  apt_accepted_prefix: H_ACI(canonical(apt_accepted_prefix)),
+  target_resolution: H_ACI(canonical(target_resolution)),
+  producer_resolution: H_ACI(canonical(producer_resolution)),
+  aci_delivery_snapshot: H_ACI(canonical(aci_delivery_snapshot)),
+  probe_scout_bindings: H_ACI(canonical(probe_scout_bindings)),
+  apt_fact_heads: H_ACI(canonical(apt_fact_heads)),
+  host_observation_projection: host_observation_snapshot_digest
+}
+
+owner_manifest_preimage(w) = canonical({
+  owner_namespace=w.owner_namespace,
+  owner_contract_id=w.owner_contract_id,
+  owner_contract_version=w.owner_contract_version,
+  scope=w.scope,
+  accepted_through=w.accepted_through,
+  members=w.members
+})
+
+binder_verify_owner_manifest(w) =
+  owner_registry.verify(
+    w.owner_namespace,
+    w.owner_contract_id,
+    w.owner_contract_version,
+    w.owner_manifest_digest,
+    owner_manifest_preimage(w))
+
+bound_verified(w) =
+  binder_verify_owner_manifest(w)
+  and pinned_input_digests[field_name(w)] = H_ACI(canonical(w))
+
+apt_fact_heads =
+  current_fact_heads(
+    fold_verified_complete_groups(
+      apt_accepted_prefix.complete_groups,
+      effective_as_of))
+
+for every f in apt_fact_heads:
+  fact_event =
+    exact_event(apt_accepted_prefix.complete_groups,
+                f.accepted_read_group_id,
+                f.accepted_event_ref.event_id)
+  fact_event.journal_offset = f.accepted_event_ref.offset
+  H_ACI(canonical(fact_event.payload)) = f.accepted_event_ref.payload_digest
+  f.accepted_event_ref.offset <= effective_as_of
+
+host_observation_projection.status = available =>
+  host_observation_projection.owner_manifest_digest =
+    H_HOST(canonical({
+      owner_namespace="host",
+      owner_contract_id="host.SourceObservation",
+      owner_contract_version=
+        expected_host_source_observation_contract_version,
+      scope=host_observation_projection.scope,
+      accepted_through=host_observation_projection.accepted_through,
+      observations=host_observation_projection.observations
+    }))
+```
+
+Before reduction, `ACIAgentReferenceEvidenceReader.verify_reference_bundle_entry` verifies each
+delivery member's accepted events/groups, immutable bundle artifact/digest/ordered membership and
+exact finalized effective-input entry/manifest. It returns the same member or a typed failure; the
+reducer receives no bundle bytes, artifact reader or effective-input resolver.
+
+`target_resolution`, `producer_resolution`, `aci_delivery_snapshot` and
+`probe_scout_bindings` are the complete closed
+owner-authored/versioned wrappers shown above, not caller collections. The binder verifies each
+wrapper's serialized `owner_namespace`, `owner_contract_id`, `owner_contract_version`, `scope`,
+`accepted_through` and `owner_manifest_digest`, requires each exact canonical owner namespace and
+contract identity shown in the closed shapes, requires `accepted_through<=effective_as_of`, and
+requires `members` to equal the owner's complete enumeration for the selector/scope. The binder and
+reducer hash the complete wrapper exactly as shown in `pinned_input_digests`, never a bare member
+set.
+`owner_manifest_digest` hashes `owner_manifest_preimage`, which explicitly excludes the digest
+field itself; `pinned_input_digests` then hashes the complete wrapper including the verified owner
+digest. The exact owner namespace/contract/version allowlists are the constants in the closed shape;
+an unexpected value fails before reduction. Only wrappers marked `bound_verified` by the binder and
+echoed byte-for-byte in the bound request reach the pure reducer; the reducer performs no owner
+resolution or registry call.
+`apt_fact_heads` is derived only by folding
+`apt_accepted_prefix.complete_groups`; it is not an independently supplied subset. Any omitted,
+extra, future, duplicate or digest-mismatched member fails closed.
+
+For the available host variant, the binder separately verifies the complete H_HOST manifest,
+contract version, exact upstream-digest scope and pinned complete-union digest through
+`HostSourceObservationEvidencePort.bind_agent_reference_observations`. Its immutable
+`observations` set contains only members the selected versioned owner contract certifies as access
+observations. The reducer receives that already verified wrapper and performs no host-contract
+lookup. The unavailable variant is likewise pinned as its complete closed union value.
+
+For every `(scout_run_id,bundle_artifact_id,bundle_digest,commit_event_ref.event_id)`, the legacy v1
+`probe_id` binding resolves to exactly one owner-verified alias or to canonical absence. The binding
+must match commit identity, offset, digest and complete recommendation membership. Multiple aliases,
+one alias bound to conflicting ScoutRuns/commits, or a forked membership set is
+`READ_INTEGRITY_FAILURE`.
+
+Any missing/extra/ambiguous owner evidence, digest disagreement, future delivery/observation,
+cross-scope producer member, incomplete ACI atomic group or target mismatch is
+`PINNED_INPUT_INVALID` or `READ_INTEGRITY_FAILURE`; the reducer does not repair or infer.
+
+### Filters
+
+The exact `dispatch_id` and owner-resolved `target` are the complete filter. There is no locator,
+title, DOI, persona, free-text, page or cursor filter in this version.
+
+### Output
+
+The value inside `QueryResult<AgentReferenceLineage,...>` has this closed shape:
+
+| Field | Type | Source | Description |
+|---|---|---|---|
+| `dispatch_id` | opaque ID | Query intent + ACI target resolution | Exact authorized scope. |
+| `requested_target` | closed selector | Query intent | Echoed selector, not authority. |
+| `resolved_targets` | canonical set | ACI Attempt/capability owner | Exact target tuples and owner evidence refs. |
+| `reference_lines` | canonical set by `(agent_reference_delivery_id,recommendation_id)` | ACI delivery membership + APT facts + host observations | One evidence-separated row per accepted delivered recommendation. |
+
+Each `reference_line` is:
+
+```text
+closed {
+  source: {
+    scout_run_id,
+    probe_id?,
+    bundle_artifact_id,
+    bundle_digest,
+    recommendation_id,
+    bundle_committed_event_ref: {
+      event_id,offset,payload_digest
+    }
+  },
+  recommended: {
+    recommendation_id,
+    committed_membership_evidence_ref: {
+      commit_event_ref: {event_id,offset,payload_digest},
+      bundle_artifact_id,bundle_digest
+    }
+  },
+  delivered_to_attempt: {
+    agent_reference_delivery_id,
+    target_delivery_event_ref: {event_id,offset,payload_digest},
+    dispatch_id,
+    target_attempt_id,
+    target_seat_id,
+    target_agent_instance_id
+  },
+  in_effective_input: {
+    effective_input_artifact_id,
+    entry_ordinal,
+    manifest_hash,
+    artifact_ref,
+    content_hash
+  },
+  access_observed: canonical set<
+    {
+      source_observation_id,
+      coverage: exact|metadata_only|opaque,
+      tool_name,
+      source_kind,
+      purpose,
+      owner_contract_version,
+      evidence_digest
+    }
+  >,
+  declared_used: canonical set<
+    {
+      research_capture_id,
+      reference_use_id,
+      use_kind: mentioned|cited|claimed_consulted,
+      producer_ref
+    }
+  >,
+  claim_relation: canonical set<
+    {relation_id,reference_use_id,research_claim_id,relation}
+  >,
+  claim_support_check: canonical set<
+    {reference_check_id,relation_id,checked_by,method_ref,result,evidence_ref?}
+  >
+}
+```
+
+Every nested set is duplicate-rejecting and ACI-byte-order sorted by its complete semantic
+identity: observations by `source_observation_id`, uses by
+`(research_capture_id,reference_use_id)`, relations by `relation_id`, and checks by
+`reference_check_id`.
+`reference_lines` is likewise duplicate-rejecting and ACI-byte-order sorted by the complete
+`(agent_reference_delivery_id,recommendation_id)` pair. The source/commit references come from the
+owner-verified accepted `reference_scout.bundle_committed@1` evidence; the target-delivery
+reference comes from the distinct accepted `reference_scout.bundle_delivered_to_agent@1` evidence
+in `aci_delivery_snapshot`. A caller cannot author or omit their identity, offset or digest fields.
+
+`access_observed` contains only exact host observation IDs explicitly bound by owner evidence to the
+resolved target and to this recommendation/delivery lineage. `metadata_only` and `opaque` describe
+what the host exposed; they are retained as such and never upgraded to `exact`. An observation
+without an owner-authored exact recommendation/delivery relation remains outside that
+recommendation line rather than being joined by locator. A `source_observation_id` named by a
+ResearchReferenceUse does not, by itself, prove that relation. Each output member's
+`owner_contract_version` is copied from the enclosing
+`host_observation_projection.owner_contract_version`; observations cannot override it.
+
+`declared_used` contains only current [ResearchReferenceUse](domain.md#researchreferenceuse) heads
+whose exact [ProbeRecommendationRef](domain.md#proberecommendationref) resolves to the line's
+`(probe_id,bundle_digest,recommendation_id)` and whose containing capture has a valid seat
+`producer_ref` accepted with that capture and matching the delivery's Dispatch, Attempt, seat and
+owner-resolved group. The reducer establishes the complete owner identity by matching the delivery
+to an already binder-verified `target_resolution.members` tuple; it performs no owner lookup.
+`ExtractionProvenance.actor_ref` records extraction authorship and cannot replace the capture
+producer or owner-resolved target identity. Its
+`source_observation_id`, when present, may contribute to `access_observed` only after independent
+host verification. Direct reference uses without a probe recommendation do not join by locator.
+
+`claim_relation` contains only current explicit
+[ResearchReferenceClaimRelation](domain.md#researchreferenceclaimrelation) heads for a listed use.
+`claim_support_check` contains only current [ReferenceCheck](domain.md#referencecheck) heads with
+`check_kind=claim_support` and the exact listed `relation_id`. Identity/access checks stay outside
+that axis.
+
+### Formulas and Non-Implication Invariants
+
+```text
+Targets =
+  target_resolution.members
+  where bound_verified(target_resolution)
+    and target_resolution.scope.dispatch_id = intent.dispatch_id
+    and target_resolution.scope.target_selector_digest =
+        H_ACI(canonical(intent.target))
+    and target_resolution.accepted_through <= effective_as_of
+
+Deliveries =
+  {d |
+    bound_verified(aci_delivery_snapshot)
+    and aci_delivery_snapshot.scope.dispatch_id = intent.dispatch_id
+    and aci_delivery_snapshot.scope.target_resolution_digest =
+        pinned_input_digests.target_resolution
+    and aci_delivery_snapshot.accepted_through <= effective_as_of
+    and d in aci_delivery_snapshot.members
+    and exists t in Targets:
+      target_tuple(d) = target_tuple(t)
+      and delivery_event =
+        exact_event(apt_accepted_prefix.complete_groups,
+                    d.accepted_read_group_id,
+                    d.accepted_delivery_event_ref.event_id)
+      and delivery_event.event_type =
+        "reference_scout.bundle_delivered_to_agent@1"
+      and delivery_event.journal_offset =
+        d.accepted_delivery_event_ref.offset
+      and H_ACI(canonical(delivery_event.payload)) =
+        d.accepted_delivery_event_ref.payload_digest
+      and delivery_event.payload = exact_delivery_payload(d)
+      and delivery_event.dispatch_id = d.dispatch_id
+      and delivery_event.group_id = d.target_group_id
+      and delivery_event.attempt_id = d.target_attempt_id
+      and delivery_event.seat_id = d.target_seat_id
+      and delivery_event.agent_instance_id = d.target_agent_instance_id
+      and attempt_event =
+        exact_event(apt_accepted_prefix.complete_groups,
+                    t.accepted_attempt_read_group_id,
+                    t.accepted_attempt_event_ref.event_id)
+      and attempt_event.event_type = "attempt.requested"
+      and attempt_event.journal_offset =
+        t.accepted_attempt_event_ref.offset
+      and H_ACI(canonical(attempt_event.payload)) =
+        t.accepted_attempt_event_ref.payload_digest
+      and d.accepted_read_group_id = t.accepted_attempt_read_group_id
+      and same_atomic_group(delivery_event,attempt_event)
+      and d.accepted_delivery_event_ref.offset <=
+          aci_delivery_snapshot.accepted_through
+      and t.accepted_attempt_event_ref.offset <=
+          target_resolution.accepted_through}
+
+Lines =
+  canonical_sort({
+    line(d,r) |
+      d in aci_delivery_snapshot.members
+      and d in Deliveries
+      and r in d.recommendation_ids
+      and commit_event =
+        exact_event(apt_accepted_prefix.complete_groups,
+                    d.source_bundle_committed_event_ref)
+      and commit_event.event_type = "reference_scout.bundle_committed@1"
+      and commit_event.journal_offset =
+        d.source_bundle_committed_event_ref.offset
+      and H_ACI(canonical(commit_event.payload)) =
+        d.source_bundle_committed_event_ref.payload_digest
+      and commit_event.payload.scout_run_id = d.scout_run_id
+      and commit_event.payload.bundle_artifact_id = d.bundle_artifact_id
+      and commit_event.payload.bundle_digest = d.bundle_digest
+      and commit_event.payload.recommendation_ids = d.recommendation_ids
+      and lifecycle_delivered_event =
+        exact_event(apt_accepted_prefix.complete_groups,
+                    d.source_bundle_delivered_event_ref)
+      and lifecycle_delivered_event.event_type =
+        "reference_scout.bundle_delivered@1"
+      and lifecycle_delivered_event.journal_offset =
+        d.source_bundle_delivered_event_ref.offset
+      and H_ACI(canonical(lifecycle_delivered_event.payload)) =
+        d.source_bundle_delivered_event_ref.payload_digest
+      and lifecycle_delivered_event.payload.scout_run_id = d.scout_run_id
+      and lifecycle_delivered_event.payload.bundle_artifact_id =
+        d.bundle_artifact_id
+      and lifecycle_delivered_event.payload.bundle_digest = d.bundle_digest
+      and d.source_bundle_committed_event_ref.offset <
+          d.source_bundle_delivered_event_ref.offset <
+          d.accepted_delivery_event_ref.offset
+      and d.effective_input_entry.entry_type = "reference_bundle"
+      and d.effective_input_entry.artifact_ref = d.bundle_artifact_id
+      and d.effective_input_entry.content_hash = d.bundle_digest
+      and d.effective_input_entry.agent_reference_delivery_id =
+        d.agent_reference_delivery_id
+      and line.source.bundle_committed_event_ref =
+          d.source_bundle_committed_event_ref
+      and line.delivered_to_attempt.target_delivery_event_ref =
+          d.accepted_delivery_event_ref
+      and line.recommended.committed_membership_evidence_ref =
+          {commit_event_ref=d.source_bundle_committed_event_ref,
+           bundle_artifact_id=d.bundle_artifact_id,
+             bundle_digest=d.bundle_digest}
+  }, (agent_reference_delivery_id,recommendation_id))
+
+VerifiedProbeScoutBindings =
+  {b |
+    bound_verified(probe_scout_bindings)
+    and probe_scout_bindings.scope.dispatch_id = intent.dispatch_id
+    and probe_scout_bindings.scope.aci_delivery_snapshot_digest =
+        pinned_input_digests.aci_delivery_snapshot
+    and probe_scout_bindings.accepted_through <= effective_as_of
+    and b in probe_scout_bindings.members
+    and binding_commit =
+      exact_event(apt_accepted_prefix.complete_groups,
+                  b.accepted_commit_read_group_id,
+                  b.commit_event_ref.event_id)
+    and binding_commit.journal_offset = b.commit_event_ref.offset
+    and H_ACI(canonical(binding_commit.payload)) =
+        b.commit_event_ref.payload_digest
+    and b.commit_event_ref.offset <= probe_scout_bindings.accepted_through
+    and binding_commit.event_type = "reference_scout.bundle_committed@1"
+    and binding_commit.payload.scout_run_id = b.scout_run_id
+    and binding_commit.payload.bundle_artifact_id = b.bundle_artifact_id
+    and binding_commit.payload.bundle_digest = b.bundle_digest
+    and binding_commit.payload.recommendation_ids = b.recommendation_ids
+    and exists d in Deliveries:
+        d.scout_run_id = b.scout_run_id
+        and d.bundle_artifact_id = b.bundle_artifact_id
+        and d.bundle_digest = b.bundle_digest
+        and d.recommendation_ids = b.recommendation_ids}
+
+require unique b in VerifiedProbeScoutBindings per
+  (scout_run_id,bundle_artifact_id,bundle_digest,commit_event_ref)
+require unique probe_id alias per that same commit identity
+
+declared_use_in_line(u,d,r,b) =>
+  exists use_head in apt_fact_heads:
+    use_head.fact_type = "ResearchReferenceUse"
+    and u = use_head.closed_value
+  and capture(u) =
+      resolve_capture_from_verified_complete_groups(
+        apt_accepted_prefix.complete_groups,
+        u.research_capture_id)
+  and b in probe_scout_bindings.members
+  and b in VerifiedProbeScoutBindings
+  and b.probe_id = u.probe_recommendation_ref.probe_id
+  and b.scout_run_id = d.scout_run_id
+  and b.bundle_digest = d.bundle_digest = u.probe_recommendation_ref.bundle_digest
+  and r = u.probe_recommendation_ref.recommendation_id
+  and r in b.recommendation_ids
+  and capture(u).dispatch_id = d.dispatch_id
+  and capture(u).producer_ref.kind = seat
+  and bound_verified(producer_resolution)
+  and exists p in producer_resolution.members:
+      p.research_capture_id = capture(u).research_capture_id
+      and p.producer_ref_digest =
+        H_ACI(canonical(capture(u).producer_ref))
+      and p.activation_id = capture(u).producer_ref.activation_id
+      and p.(dispatch_id,group_id,seat_id,attempt_id,agent_instance_id) =
+        (d.dispatch_id,d.target_group_id,d.target_seat_id,
+         d.target_attempt_id,d.target_agent_instance_id)
+
+access_in_line(o,d,r) =>
+  host_observation_projection.status = available
+  and host_observation_projection in binder_verified_inputs
+  and host_observation_projection.owner_namespace = "host"
+  and host_observation_projection.owner_contract_id =
+      expected_host_source_observation_contract_id
+  and host_observation_projection.accepted_through <= effective_as_of
+  and o in host_observation_projection.observations
+  and o.accepted_offset <= host_observation_projection.accepted_through
+  and o.reference_origin_ref.agent_reference_delivery_id =
+      d.agent_reference_delivery_id
+  and o.reference_origin_ref.recommendation_id = r
+  and o.target_binding.(group_id,seat_id,attempt_id,agent_instance_id) =
+      target_tuple(d)
+
+access_observed != empty does_not_imply declared_used != empty
+declared_used != empty does_not_imply access_observed != empty
+recommended does_not_imply delivered_to_attempt
+delivered_to_attempt does_not_imply access_observed != empty
+access_observed.coverage in {metadata_only,opaque} does_not_imply content_bytes_exposed_or_read
+declared_used != empty does_not_imply claim_relation != empty
+claim_relation != empty does_not_imply claim_support_check contains pass
+claim_support_check contains pass does_not_adjudicate_or_promote claim
+```
+
+The ACI source contract necessarily requires a committed recommendation before target delivery, so
+this target-scoped Query contains only recommendation rows with an accepted delivery. The general
+rule remains `recommended does_not_imply delivered`: undelivered recommendations do not belong to
+any target's result. That causal prerequisite does not collapse the two evidence objects into one
+status. There is no
+aggregate `used`, `read`, `trusted`, `supported` or `verified` boolean.
+
+### Reads From
+
+| Entity/event/projection | Owner | Fields Used |
+|---|---|---|
+| [AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery) and [`reference_scout.bundle_delivered_to_agent@1`](../../agents-communication-infra/specs/events.md#referencescoutbundledeliveredtoagent) | ACI | Source membership, target identities, accepted event/offset and effective-input binding. |
+| [EffectiveInputArtifact](../../agents-communication-infra/specs/domain.md#effectiveinputartifact) | ACI | Exact manifest/entry inclusion evidence. |
+| future host `SourceObservation` target/origin extension | Host | Exact observation identity, target/origin binding, coverage/tool/source/purpose and evidence digest; specified but not implemented. |
+| [ResearchCapture](domain.md#researchcapture) | APT | Dispatch and owner-verified producer tuple. |
+| [ResearchReferenceUse](domain.md#researchreferenceuse) | APT | Declared-use kind and exact probe recommendation reference. |
+| [ResearchReferenceClaimRelation](domain.md#researchreferenceclaimrelation) | APT | Explicit use-to-claim relation. |
+| [ReferenceCheck](domain.md#referencecheck) | APT | Explicit claim-support checks only. |
+
 ## Query Coverage and Required Checks
 
 | Registry Query | Interface method | Aspect anchor | Coverage |
@@ -596,8 +1329,9 @@ No event arrival time supplies precedence across independent keys.
 | `agent-provenance-telemetry.SessionRecord` | `get_session_record(intent)` | [SessionRecord](#sessionrecord) | `1/1` |
 | `agent-provenance-telemetry.DispatchScopeProjection` | `get_dispatch_scope_projection(intent)` | [DispatchScopeProjection](#dispatchscopeprojection) | `1/1` |
 | `agent-provenance-telemetry.ResearchRecord` | `get_research_record(intent)` | [ResearchRecord](#researchrecord) | `1/1` |
+| `agent-provenance-telemetry.AgentReferenceLineage` | `get_agent_reference_lineage(intent)` | [AgentReferenceLineage](#agentreferencelineage) | `1/1` |
 
-- Registry coverage is exactly `3/3`; interface coverage is exactly `3/3`.
+- Query definition and Interface coverage are exactly `4/4`.
 - Every result binds `requested_o`, `effective_as_of`, the exact owner manifest/digests and the
   deterministic projection hash.
 - Replay external-call and side-effect counters are zero.
@@ -613,8 +1347,8 @@ No event arrival time supplies precedence across independent keys.
 
 | Document | Type | Description |
 |---|---|---|
-| [SPEC.md](SPEC.md) | `implements-contract-for` | Registers exactly these three Query concepts and their relationships. |
-| [interfaces.md](interfaces.md) | `exposed-by` | Defines Query intents, bound manifests, results, authorization and errors. |
+| [SPEC.md](SPEC.md) | `implements-contract-for` | Registers these four Query concepts and their relationships after its separate document gate. |
+| [interfaces.md](interfaces.md) | `exposed-by` | Defines all four Query methods and their owner-evidence dependencies as specified, not implemented contracts. |
 | [states.md](states.md) | `reduces` | Defines verified grouping, current capture and independent adjudication heads. |
 | [rules.md](rules.md) | `constrained-by` | Defines replay determinism, no authority and canonical collection rules. |
 | [domain.md](domain.md) | `queries` | Supplies immutable entities, value objects and closed enums. |

@@ -5,12 +5,12 @@ is_session: false
 layer: application
 nature: technical, reference
 status: draft
-version: 0.1.0
-last_updated: 2026-07-23
+version: 0.2.0
+last_updated: 2026-07-25
 feature: agent-provenance-telemetry
 specAuthoringGate: in-review
 runtimeGate: block
-derivedFrom: SPEC.md@0.1.0
+derivedFrom: SPEC.md@0.2.0
 ---
 
 # Mappings: Agent Provenance Telemetry
@@ -351,12 +351,12 @@ No mapping changes `existing_exact` to newly accepted or inserts it into a new a
 
 ## ProvenanceFactsToReadModels
 
-**Mapping scope:** Query intents, owner manifests and accepted ACI prefix to the three deterministic
+**Mapping scope:** Query intents, owner manifests and accepted ACI prefix to the four deterministic
 APT read models.
 
 **From:** closed Query intents and owner manifests from
 [ProvenanceQueryPort](interfaces.md#provenancequeryport), plus accepted ACI prefix  
-**To:** the three [deterministic Query results](queries.md)  
+**To:** the four [deterministic Query results](queries.md)
 **Direction:** Read mapping
 
 ### Query Intent to Bound Request
@@ -365,10 +365,16 @@ APT read models.
 |---|---|---|
 | [QueryIntent](interfaces.md#query-request-and-result).`schema_ref` | [BoundQueryRequest](interfaces.md#query-request-and-result).`schema_ref` | Direct exact constant; unknown schema fails. |
 | [QueryIntent](interfaces.md#query-request-and-result).`session_id/dispatch_id/research_capture_id` | [BoundQueryRequest](interfaces.md#query-request-and-result).`identity` | Direct schema-specific identity mapping. |
+| [AgentReferenceQueryIntent](interfaces.md#query-request-and-result).`dispatch_id/target` | [BoundQueryRequest](interfaces.md#query-request-and-result).`identity` | Exact `{dispatch_id,target}`; target relationships come only from ACI owner evidence, never locator/display fields. |
 | [QueryIntent](interfaces.md#query-request-and-result).`requested_o` | [BoundQueryRequest](interfaces.md#query-request-and-result).`requested_o` | Direct inclusive requested boundary. |
 | [SessionPinnedInputManifest](interfaces.md#query-request-and-result) accepted prefix grouping | [BoundQueryRequest](interfaces.md#query-request-and-result).`pinned_input_manifest/pinned_input_digests` | Owner binds requested/effective offsets, exact grouping profile and verified manifest digest. |
 | existing accepted owner-bound [DispatchAuthoritySnapshotRef](domain.md#dispatchauthoritysnapshotref) | [DispatchSnapshotReader](interfaces.md#dispatchsnapshotreader).`verify_pinned(existing_owner_bound_ref, accepted_prefix_boundary)` → [DispatchPinnedInputManifest](interfaces.md#query-request-and-result) and digest | Owner re-verifies the stored pin at the complete verified APT boundary, then binds exactly that ref and `H_ACI(canonical(ref))`; no caller snapshot or variant selector. |
 | accepted [ResearchCapture](domain.md#researchcapture) + its existing owner-bound snapshot | [DispatchSnapshotReader](interfaces.md#dispatchsnapshotreader).`verify_pinned(existing_owner_bound_ref, accepted_prefix_boundary)` → [ResearchPinnedInputManifest](interfaces.md#query-request-and-result) and two-key digest map | Owner binds capture ID/event/digest and re-verifies its exact stored Dispatch snapshot; no current mutable Dispatch read. |
+
+| Agent-reference owner source | Bound request field | Transform / validation |
+|---|---|---|
+| [ACIAgentReferenceEvidenceReader](interfaces.md#aciagentreferenceevidencereader), [HostAgentActivationBindingEvidencePort](interfaces.md#hostagentactivationbindingevidenceport), accepted-state probe binding reader and host observation owner | [AgentReferencePinnedInputManifest](interfaces.md#query-request-and-result) plus seven-key digest map | Bind complete query-scoped target/producer/delivery/probe wrappers, derived APT fact heads and closed host `unavailable \| available` manifest; verify every owner, digest, scope and selector-complete producer cardinality before pure reduction. |
+| `HostAgentActivationBindingEvidencePort.bind_capture_producers(scope,capture_producer_selector,effective_as_of)` verified result | `AgentReferencePinnedInputManifest.producer_resolution` and `AgentReferencePinnedInputDigests.producer_resolution` | Copy the complete wrapper byte-for-byte and set its digest to `H_ACI(canonical(producer_resolution))`; preserve exact scope `{dispatch_id,target_resolution_digest,aci_delivery_snapshot_digest,probe_scout_bindings_digest,capture_producer_selector_digest}`. Owner resolution occurs only while constructing/verifying the bound manifest. |
 
 Caller-supplied manifests, digests, effective offset, hashes, snapshots or snapshot variant
 selectors are rejected. A caller supplies only `requested_dispatch_id` to the link intent or the
@@ -402,6 +408,60 @@ identity plus `requested_o` in a closed QueryIntent.
 | current [ReferenceCheck](domain.md#referencecheck) heads | [ResearchRecord](queries.md#researchrecord).`reference_checks/reference_check_summary` | Latest only within exact subject chain; independent checker targets coexist. |
 | current [ReferenceProbeLineageAppended](events.md#referenceprobelineageappended) heads referenced by uses | [ResearchRecord](queries.md#researchrecord).`probe_delivery_origins` | Resolve derived recommendation composite key, current lineage head and canonical order. |
 
+| Accepted/bound source | [AgentReferenceLineage](queries.md#agentreferencelineage) field | Transform |
+|---|---|---|
+| [AgentReferenceQueryIntent](interfaces.md#query-request-and-result).`dispatch_id` | `dispatch_id` | Echo exact bound identity; it selects scope but grants no authority. |
+| [AgentReferenceQueryIntent](interfaces.md#query-request-and-result).`target` | `requested_target` | Echo the exact closed selector for transparency; it is non-authoritative and owner-resolved `resolved_targets` remain separate. |
+| verified `target_resolution.members.{dispatch_id,group_id,seat_id,attempt_id,agent_instance_id,owner_evidence_digest}` | `resolved_targets[]` same fields | Direct equality; duplicate-reject and canonical-sort complete owner target tuples. |
+| ACI [AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery).`scout_run_id` | `reference_lines[].source.scout_run_id` | Direct after delivery-member verification. |
+| verified `probe_scout_bindings.members.probe_id` | optional `reference_lines[].source.probe_id` | Unique exact legacy alias for the same Scout/commit; when no alias exists the optional field is canonically absent, never null or text-derived. |
+| ACI [AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery).`bundle_artifact_id/bundle_digest` | `reference_lines[].source.bundle_artifact_id/bundle_digest` | Direct exact immutable bundle identity/digest. |
+| verified committed membership `recommendation_id` | `reference_lines[].source.recommendation_id` and `recommended.recommendation_id` | Expand exactly one row per accepted delivery/recommendation pair. |
+| `aci_delivery_snapshot.members.source_bundle_committed_event_ref.{event_id,offset,payload_digest}` | `source.bundle_committed_event_ref` same closed shape | Direct equality; every field required. |
+| same commit event ref + `bundle_artifact_id/bundle_digest` | `recommended.committed_membership_evidence_ref.{commit_event_ref,bundle_artifact_id,bundle_digest}` | Nest the same closed event ref without renaming/dropping fields; attach verified artifact/digest. |
+| ACI [AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery).`agent_reference_delivery_id` | `delivered_to_attempt.agent_reference_delivery_id` | Direct stable identity. |
+| `aci_delivery_snapshot.members.accepted_delivery_event_ref.{event_id,offset,payload_digest}` | `delivered_to_attempt.target_delivery_event_ref` same closed shape | Direct equality; lifecycle `bundle_delivered@1` cannot substitute. |
+| ACI [AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery).`dispatch_id/target_attempt_id/target_seat_id/target_agent_instance_id` | `delivered_to_attempt` same target fields | Direct owner-derived identities; all must equal the resolved target. |
+| ACI delivery `effective_input_artifact_id/effective_input_entry_ordinal/effective_input_manifest_hash` | `in_effective_input.effective_input_artifact_id/entry_ordinal/manifest_hash` | Direct after exact finalized-manifest verification. |
+| ACI `EffectiveInputEntry.reference_bundle.artifact_ref/content_hash` | `in_effective_input.artifact_ref/content_hash` | Direct; equal delivery bundle artifact/digest. |
+| host `unavailable` variant | every `access_observed` | Canonical empty set; current Stage-G rows cannot be upgraded or locator-joined. |
+| host `available.observations.source_observation_id/coverage/tool_name/source_kind/purpose/evidence_digest` | `access_observed[]` same member fields | Direct after query scope, target tuple and delivery/recommendation owner-ref verification; preserve `exact \| metadata_only \| opaque`. |
+| host `host_observation_projection.owner_contract_version` | every included `access_observed[].owner_contract_version` | Copy the verified wrapper-level version into each projected observation row; member values cannot override it. |
+| current [ResearchReferenceUse](domain.md#researchreferenceuse).`research_capture_id/reference_use_id/use_kind` plus owning [ResearchCapture](domain.md#researchcapture).`producer_ref` and verified `producer_resolution.members` | `declared_used[]` same fields | Direct current-head values only after exact probe/Scout/bundle/recommendation join and one complete owner-resolved producer member matches the stored producer digest, activation and delivery target tuple. |
+| current [ResearchReferenceClaimRelation](domain.md#researchreferenceclaimrelation).`relation_id/reference_use_id/research_claim_id/relation` | `claim_relation[]` same fields | Direct only when `reference_use_id` is included in the row. |
+| current [ReferenceCheck](domain.md#referencecheck).`reference_check_id/relation_id/checked_by/method_ref/result/evidence_ref` | `claim_support_check[]` same fields | Direct only for `check_kind=claim_support` and an exact included relation; no generic verdict. |
+
+The mapping never emits a combined `used`, `read`, `verified` or `supports_claim` field. Empty and
+non-empty axes map independently.
+
+### Defaults
+
+There are no implicit defaults. Optional `source.probe_id` is canonically absent when no exact
+verified alias exists. `access_observed=[]` is emitted only from the verified closed host
+`unavailable` variant; missing, malformed or unverified host evidence is an integrity error, not a
+fallback to empty.
+
+### Validation
+
+- Every intent, bound request, wrapper, member and result must satisfy its exact closed shape.
+- The `AgentReferencePinnedInputDigests` map must contain exactly
+  `apt_accepted_prefix`, `target_resolution`, `producer_resolution`, `aci_delivery_snapshot`,
+  `probe_scout_bindings`, `apt_fact_heads` and `host_observation_projection`; every echoed
+  wrapper/value must hash to its corresponding digest.
+- Every owner wrapper must be complete for its exact scope, have `accepted_through<=effective_as_of`
+  and reject omitted, extra, duplicate, future, cross-scope, wrong-owner/version or
+  digest-mismatched members.
+- `producer_resolution` must contain exactly one host-owner-resolved member per canonical
+  target-and-lineage candidate selector, preserve its stored producer digest and activation, and
+  match the accepted complete Attempt/delivery target tuple; missing, extra or ambiguous members
+  fail closed before projection.
+- Mapping and reduction of `declared_used` consume only that already verified member and perform
+  zero lazy or per-use calls to the host owner.
+- Target, delivery, effective-input, immutable-bundle and recommendation membership must agree
+  exactly; lifecycle delivery cannot substitute for target delivery or recommendation membership.
+- An incomplete accepted group, a future fact, a swapped scope/digest or any locator-derived
+  identity fails closed before projection.
+
 ### Result Wrapper Mapping
 
 | Bound/reduced value | [QueryResult](interfaces.md#query-request-and-result) field | Transform |
@@ -410,7 +470,7 @@ identity plus `requested_o` in a closed QueryIntent.
 | [QueryIntent](interfaces.md#query-request-and-result).`requested_o` | [QueryResult](interfaces.md#query-request-and-result).`requested_o` | Exact equality through binding/result. |
 | [Accepted prefix](queries.md#intent-binding-and-replay-boundary) verified grouping boundary | [QueryResult](interfaces.md#query-request-and-result).`effective_as_of` | Greatest verified group `last_offset≤requested_o`, or genesis. |
 | [BoundQueryRequest](interfaces.md#query-request-and-result).`pinned_input_manifest/pinned_input_digests` | [QueryResult](interfaces.md#query-request-and-result).`pinned_input_manifest/pinned_input_digests` | Echo exact verified closed values. |
-| [BoundQueryRequest](interfaces.md#query-request-and-result) manifest + digests | [QueryResult](interfaces.md#query-request-and-result).`snapshot_digest` | `H_ACI(canonical({manifest,digests}))`. |
+| [BoundQueryRequest](interfaces.md#query-request-and-result) manifest + digests | [QueryResult](interfaces.md#query-request-and-result).`snapshot_digest` | `H_ACI(canonical({pinned_input_manifest,pinned_input_digests}))` using these exact canonical field names. |
 | [BoundQueryRequest](interfaces.md#query-request-and-result) plus reduced value | [QueryResult](interfaces.md#query-request-and-result).`projection_hash` | Exact formula in [queries.md](queries.md#external-snapshot-and-hash-rules). |
 | pure [Query reducer](queries.md#common-deterministic-query-contract) output | [QueryResult](interfaces.md#query-request-and-result).`value` | Closed Query-specific output, canonical collections. |
 
@@ -422,7 +482,7 @@ No projection result is mapped back into a command, event or authority table.
 
 **From:** complete verified accepted ACI command groups carrying the six
 [APT Events](SPEC.md#concept-registry)  
-**To:** pure reducer state in [states.md](states.md) and the three
+**To:** pure reducer state in [states.md](states.md) and the four
 [Query rows](queries.md)  
 **Direction:** Read projection
 
@@ -436,6 +496,15 @@ No projection result is mapped back into a command, event or authority table.
 | disposition [ResearchFactAppended](events.md#researchfactappended) variant | [TargetRef](domain.md#disposition-and-assessment-payload-variants) + `policy_ref` aggregate | Move only that policy disposition head. | Policy-keyed maps/counts |
 | assessment [ResearchFactAppended](events.md#researchfactappended) variant | [TargetRef](domain.md#disposition-and-assessment-payload-variants) + actor/method/policy aggregate | Move only that assessor head; retain independent disagreement. | [ResearchRecord](queries.md#researchrecord) maps |
 | [ReferenceProbeLineageAppended](events.md#referenceprobelineageappended) | [ProbeRecommendationRef](domain.md#proberecommendationref) derived composite key | Move one delivery head; asserts no use/access/support alone. | [ResearchRecord](queries.md#researchrecord) delivery-origin projection |
+
+AgentReferenceLineage additionally consumes query-bound external evidence without adding an APT
+event or reducer head:
+
+| Bound external source | Projection effect | Authority retained by |
+|---|---|---|
+| ACI `reference_scout.bundle_delivered_to_agent@1` + `AgentReferenceDelivery` + `EffectiveInputArtifact` | Recommended/delivered/effective-input row spine. | ACI |
+| host `SourceObservation` manifest | Access-observed axis only when the future `available` contract proves exact scope/target/origin; current `unavailable` maps empty. | Host |
+| APT accepted current fact heads | Declared-use, relation and claim-support-check axes. | APT accepted prefix |
 
 Only a verified complete group applies, exactly once at its `last_offset`. Envelope `journal_offset`
 orders groups; `recorded_at`, `observed_at`, caller order and wall clock never choose semantic
@@ -454,6 +523,13 @@ precedence.
 | command digest | exact canonical command identity/input, expected heads and owner evidence required by the Operation | receipt, offsets and post-commit fields |
 | query snapshot digest | exact pinned input manifest + exact digest map | current mutable external snapshot/display context |
 | query projection hash | schema, identity, `effective_as_of`, manifest, digests and closed value | `requested_o` except through effective/bound manifest as specified; raw bytes, current external state |
+| `apt_accepted_prefix` digest | requested/effective boundary, grouping profile/digest and complete verified groups | incomplete/future group, mutable journal tail |
+| `target_resolution` digest | complete closed wrapper: ACI owner constants, query scope, accepted boundary, non-self-referential verified owner digest and canonical target members | bare member set, caller subset, owner state after boundary |
+| `producer_resolution` digest | `H_ACI(canonical(producer_resolution))` over the complete closed host wrapper: exact owner constants, five-field scope, accepted boundary, non-self-referential verified owner digest and canonical producer members | caller subset, post-boundary state, bare members or self-referential digest material |
+| `aci_delivery_snapshot` digest | complete closed wrapper: ACI delivery owner constants, target-wrapper digest scope, accepted boundary, verified owner digest and canonical delivery members | raw bundle bytes, omitted/future delivery, another target-wrapper scope |
+| `probe_scout_bindings` digest | complete closed wrapper: canonical APT owner constants, delivery-wrapper digest scope, accepted boundary, verified owner digest and canonical binding members | ambiguous alias, forked commit/membership, another delivery scope |
+| `apt_fact_heads` digest | complete canonical current fact-head set derived from `apt_accepted_prefix.complete_groups` | caller-supplied subset, superseded/non-head fact, any `owner_manifest_digest` |
+| `host_observation_projection` digest | entire closed union; `unavailable` includes owner constants, `scope={dispatch_id,target_resolution_digest,aci_delivery_snapshot_digest}` and required contract digest; `available` includes that same scope plus accepted boundary, non-self-referential owner digest and canonical observations | fields of the opposite variant, locator join, mutable/current host state |
 
 Mappings are lossless over every semantic source field: a direct field remains equal, an owner field
 retains its owner evidence, a derived field is reproducible from its stated preimage, and an omitted
@@ -470,7 +546,7 @@ evidence without duplicating content.
 | six Operations → accepted event sets | [APTFactToACIEvent](#aptfacttoacievent) | `6/6` |
 | eight Entity fact variants + disposition + assessment | [Variant Field Mapping](#variant-field-mapping) | `10/10` |
 | probe partition/result branches | [Probe mapping](#probebundletoreferencelineage) | `3/3` |
-| three Query intents/manifests/results | [Query mapping](#provenancefactstoreadmodels) | `3/3` |
+| four Query intents/manifests/results | [Query mapping](#provenancefactstoreadmodels) | `4/4` |
 | six registered APT Events / eight reducer-family rows | [Projection rows](#accepted-aci-events-to-projection-rows) | `6/6 events; 8/8 rows` |
 
 - Schema fixtures reject every unknown, missing and caller-authored owner field.
@@ -482,6 +558,13 @@ evidence without duplicating content.
 - Retry/existing-exact fixtures prove no duplicate event/envelope/receipt membership.
 - Query fixtures prove the same accepted prefix and manifests map to the same rows/hash with zero
   external calls or side effects during replay.
+- Agent-reference fixtures permute canonical members, swap query scopes/wrappers, omit facts or
+  deliveries and exercise every asymmetric evidence-axis combination; invalid or incomplete
+  evidence fails rather than mapping to a false empty.
+- Producer-resolution negative fixtures omit/add a selector member, swap the producer digest, use
+  the wrong activation, omit an Attempt tuple field, mismatch the delivery target, alter any of the
+  five scope fields, and instrument an implicit owner lookup during reduction. Each case fails
+  closed before any `declared_used` member is emitted; reducer owner-call count remains zero.
 
 ## Connections
 
@@ -491,7 +574,7 @@ evidence without duplicating content.
 | [interfaces.md](interfaces.md) | `maps-from` | Closed caller intents, outcomes, manifests and errors. |
 | [operations.md](operations.md) | `maps-to` | Owner-bound command contracts and guards. |
 | [events.md](events.md) | `maps-to` | Exact APT payloads carried by ACI envelopes. |
-| [queries.md](queries.md) | `maps-to` | Three deterministic result shapes and formulas. |
+| [queries.md](queries.md) | `maps-to` | Four deterministic result shapes and formulas. |
 | [states.md](states.md) | `reduces-through` | Current binding/capture/fact/aggregate heads. |
 | [rules.md](rules.md) | `constrained-by` | Authority, idempotency, replay, privacy and canonicalization invariants. |
 | [TEST-SPEC](../TEST-SPEC.md) | `verification-planned` | Planned fixtures only; unchanged by this aspect. |

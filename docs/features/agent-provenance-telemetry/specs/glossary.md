@@ -1,8 +1,8 @@
 ---
 feature: agent-provenance-telemetry
-version: 0.1.0
+version: 0.2.0
 status: draft
-updatedAt: 2026-07-23
+updatedAt: 2026-07-25
 docType: glossary
 specAuthoringGate: in-review
 runtimeGate: block
@@ -39,11 +39,18 @@ rules and lifecycle contracts remain in their linked source aspects.
 | Supersession | The predecessor-linked relationship by which a newer immutable version replaces an older version in current projections without deleting history. | [CaptureSupersessionRule](rules.md#apt-r5--capture-supersession), [FactEnvelope](domain.md#factenvelope) |
 | Source observation | Host-owned evidence about mediated acquisition or access, referenced by APT but not created or reclassified by it. | [ResearchReferenceUse](domain.md#researchreferenceuse), [`host.SourceObservation`](../discovery/session-dispatch-research-records.md#43-reference-uses-and-checks) |
 | Reference use | An attributed mention, citation or claimed consultation inside one research result, distinct from host access and claim support. | [ResearchReferenceUse](domain.md#researchreferenceuse), [ReferenceCheck](domain.md#referencecheck) |
+| Recommended | One accepted Scout bundle says where to look; recommendation alone proves neither target delivery nor access. | [ProbeRecommendationRef](domain.md#proberecommendationref), [ACI AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery) |
+| Delivered | In the specified, not implemented contract, ACI acceptance of the exact bundle into one target Attempt's observable effective input proves presentation, not attention. | [ACI AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery) |
+| Access observed | The host recorded one mediated operation with its exact `exact`, `metadata_only` or `opaque` coverage; it is not a declaration of consultation. | [`host.SourceObservation`](../discovery/session-dispatch-research-records.md#43-reference-uses-and-checks) |
+| Declared use | A ResearchReferenceUse attributes `mentioned`, `cited` or `claimed_consulted` to captured output; it does not manufacture host access. | [ResearchReferenceUse](domain.md#researchreferenceuse) |
+| Claim relation | An explicit epistemic edge such as `supports` or `contradicts` between one declared use and one research-local claim. | [ResearchReferenceClaimRelation](domain.md#researchreferenceclaimrelation) |
+| Claim-support check | One typed check of an exact claim relation; `pass`, `fail` or `indeterminate` is not a global truth verdict. | [ReferenceCheck](domain.md#referencecheck) |
+| Agent reference lineage | The specified, not implemented read-only as-of view grouping the six independent reference-evidence axes for owner-resolved Attempts selected by attempt, seat or agent instance. | [AgentReferenceLineage contract](queries.md#agentreferencelineage) |
 | Formalization | Candidate mathematical or logical notation tied to one extracted research claim and accompanied by its interpretation. | [FormalizationCandidate](domain.md#formalizationcandidate), [FormalizationDisposition](domain.md#formalizationdisposition) |
 
 ## Terms
 
-The 58 rows below correspond one-for-one with the current
+The 60 rows below correspond one-for-one with the current
 [SPEC Concept Registry](SPEC.md#concept-registry). Aspect anchors are canonical locations validated
 through the individual file-review gates; corpus-wide review remains in progress.
 
@@ -85,6 +92,7 @@ through the individual file-review gates; corpus-wide review remains in progress
 | SessionRecord | `agent-provenance-telemetry.SessionRecord` | Query | The as-of read model for one Session and its derived activity summaries. | [queries.md](queries.md#sessionrecord) |
 | DispatchScopeProjection | `agent-provenance-telemetry.DispatchScopeProjection` | Query | The as-of read model combining a pinned Dispatch authority snapshot with derived APT relationships. | [queries.md](queries.md#dispatchscopeprojection) |
 | ResearchRecord | `agent-provenance-telemetry.ResearchRecord` | Query | The as-of read model of one ResearchCapture and its current extracted facts. | [queries.md](queries.md#researchrecord) |
+| AgentReferenceLineage | `agent-provenance-telemetry.AgentReferenceLineage` | Query | The specified, not implemented as-of read model that preserves recommendation, target delivery, host observation, declared use, claim relation and claim-support check as separate evidence axes for owner-resolved Attempts. | [queries.md](queries.md#agentreferencelineage) |
 | ProvenanceAppendPort | `agent-provenance-telemetry.ProvenanceAppendPort` | Interface | The APT application boundary through which validated facts are submitted to subordinate durable acceptance. | [interfaces.md](interfaces.md#provenanceappendport) |
 | ProvenanceQueryPort | `agent-provenance-telemetry.ProvenanceQueryPort` | Interface | The read-only APT application boundary for explicit-offset provenance projections. | [interfaces.md](interfaces.md#provenancequeryport) |
 | APTFactToACIEvent | `agent-provenance-telemetry.APTFactToACIEvent` | Mapping | The shape transformation from one validated APT fact to one ACI event payload. | [mappings.md](mappings.md#aptfacttoacievent) |
@@ -101,6 +109,7 @@ through the individual file-review gates; corpus-wide review remains in progress
 | ReplayDeterminismRule | `agent-provenance-telemetry.ReplayDeterminismRule` | Rule | The constraint that an as-of projection is reproducible from pinned accepted evidence without external effects. | [rules.md](rules.md#apt-r6--replay-determinism) |
 | ProtocolProfileBindingRule | `agent-provenance-telemetry.ProtocolProfileBindingRule` | Rule | The constraint that probe-origin lineage names the exact registered ACI protocol profile. | [rules.md](rules.md#apt-r7--protocol-profile-binding) |
 | TelemetryNonAuthorityRule | `agent-provenance-telemetry.TelemetryNonAuthorityRule` | Rule | The constraint that logs, traces, metrics and projections do not become mutation authority. | [rules.md](rules.md#apt-r8--telemetry-non-authority) |
+| AgentReferenceLineageRule | `agent-provenance-telemetry.AgentReferenceLineageRule` | Rule | The constraint that per-agent reference joins use exact owner identities and never infer one evidence axis from another. | [rules.md](rules.md#apt-r9--agent-reference-lineage) |
 | SessionStarted | `agent-provenance-telemetry.SessionStarted` | Event | The accepted fact announcing creation of one Session identity. | [events.md](events.md#sessionstarted) |
 | SessionContextRebound | `agent-provenance-telemetry.SessionContextRebound` | Event | The accepted fact announcing that an originating context is bound to a successor Session. | [events.md](events.md#sessioncontextrebound) |
 | SessionDispatchLinked | `agent-provenance-telemetry.SessionDispatchLinked` | Event | The accepted fact announcing the authoritative Session membership of a Dispatch. | [events.md](events.md#sessiondispatchlinked) |
@@ -116,6 +125,8 @@ their ownership.
 | Term | Concept ID | Type | Definition | Source |
 |---|---|---|---|---|
 | SourceObservation | `host.SourceObservation` | Event | Host-owned evidence about mediated source acquisition or access that APT may reference optionally. | [Focused discovery](../discovery/session-dispatch-research-records.md#43-reference-uses-and-checks) |
+| AgentReferenceDelivery | `agents-communication-infra.AgentReferenceDelivery` | Entity | The specified, not implemented ACI-owned acceptance binding between a lifecycle-delivered Scout bundle and one target Attempt's exact effective-input entry. | [ACI domain](../../agents-communication-infra/specs/domain.md#agentreferencedelivery) |
+| EffectiveInputArtifact | `agents-communication-infra.EffectiveInputArtifact` | Entity | The ACI-owned immutable manifest of what the adapter observably presented to one Attempt. | [ACI domain](../../agents-communication-infra/specs/domain.md#effectiveinputartifact) |
 | ConfirmedDispatch | `agents-communication-infra.ConfirmedDispatch` | Entity | The ACI-owned frozen dispatch authority whose identity/snapshot APT reads without redefining it. | [ACI domain](../../agents-communication-infra/specs/domain.md#confirmeddispatch) |
 | Artifact | `agents-communication-infra.Artifact` | Entity | The ACI-owned finalized evidence identity referenced by APT ArtifactReference values. | [ACI domain](../../agents-communication-infra/specs/domain.md#artifact) |
 | RuntimeEventEnvelope | `agents-communication-infra.RuntimeEventEnvelope` | Value Object | The ACI-owned canonical envelope carrying an accepted APT event payload. | [ACI domain](../../agents-communication-infra/specs/domain.md#runtimeeventenvelope) |
@@ -125,13 +136,12 @@ their ownership.
 
 ## Validation Status
 
-- Concept Registry coverage: `58/58`.
+- Concept Registry coverage: `60/60`.
 - Concept IDs and DomainSpec meta-types: matched to [SPEC.md](SPEC.md#concept-registry).
 - Duplicate formal terms/IDs: none.
 - Existing external source paths: validated.
-- APT aspect anchors: validated at the individual file gates across `domain.md`, `operations.md`,
-  `queries.md`, `interfaces.md`, `mappings.md`, `workflows.md`, `rules.md` and `events.md`;
-  corpus-wide no-objection receipt remains outstanding.
+- Existing APT aspect anchors, including the accepted AgentReferenceLineage Query and Rule anchors,
+  resolve to their current aspect documents.
 
 ## Maintenance Rules
 

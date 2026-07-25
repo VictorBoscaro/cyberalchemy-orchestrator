@@ -70,12 +70,6 @@
       "anchor": "domain.md#AgentExecutionRequest:field:4:0"
     },
     {
-      "key": "0f673cbe2850c5c7a7d7fa70fa2b9eb27438c61f",
-      "id": "ACI-DOM-012",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:1"
-    },
-    {
       "key": "0fd93508b77ba98b6410581331be59a76a7b7045",
       "id": "ACI-DOM-013",
       "rule_type": "domain-field",
@@ -104,18 +98,6 @@
       "id": "ACI-DOM-017",
       "rule_type": "domain-field",
       "anchor": "domain.md#EffectiveInputEntry:field:2"
-    },
-    {
-      "key": "162bcc89f3dde2e094f0ebb8a9edd1133baa6ac2",
-      "id": "ACI-DOM-018",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:9"
-    },
-    {
-      "key": "1aee4c72987d73c8b9bfde1c2e75e09f6a3e3928",
-      "id": "ACI-DOM-019",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:2"
     },
     {
       "key": "1bbbafbd67043d548784e94b684094f8fc893d52",
@@ -280,12 +262,6 @@
       "anchor": "domain.md#GroupResult:field:6"
     },
     {
-      "key": "34ee8b4bbeb7e121d8a2b271f9a6d04825f1dc43",
-      "id": "ACI-DOM-047",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:3"
-    },
-    {
       "key": "353250c0ee3dc4bfeec98f8bf2d460cf35f0964d",
       "id": "ACI-DOM-048",
       "rule_type": "domain-field",
@@ -352,18 +328,6 @@
       "anchor": "domain.md#Artifact:field:1"
     },
     {
-      "key": "42f816417bc22d4a545b86ff95ffe38d23f8abe2",
-      "id": "ACI-DOM-059",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#EffectiveInputEntry:field:0"
-    },
-    {
-      "key": "43e8df89df8fc7c95c45c7e1890194862610e55c",
-      "id": "ACI-DOM-060",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:5"
-    },
-    {
       "key": "441b19ecf31048b4a1813346b90a7e08913a3225",
       "id": "ACI-DOM-061",
       "rule_type": "domain-field",
@@ -398,12 +362,6 @@
       "id": "ACI-DOM-066",
       "rule_type": "domain-field",
       "anchor": "domain.md#AgentExecutionRequest:field:1:1"
-    },
-    {
-      "key": "4dc42969e9ada85bc3ed4ed2631d7df3e765a764",
-      "id": "ACI-DOM-067",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:4"
     },
     {
       "key": "50430116832635a2474a15d70bdce6b394c1298b",
@@ -566,12 +524,6 @@
       "id": "ACI-DOM-094",
       "rule_type": "domain-field",
       "anchor": "domain.md#ConfirmedDispatch:field:1"
-    },
-    {
-      "key": "718a3e275436f3525c52f46b2ba1167218c533a9",
-      "id": "ACI-DOM-095",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:7"
     },
     {
       "key": "71bac184fcdf1e4739a424337e3dc44210408b1e",
@@ -836,12 +788,6 @@
       "id": "ACI-DOM-139",
       "rule_type": "domain-field",
       "anchor": "domain.md#AgentExecutionRequest:field:0:1"
-    },
-    {
-      "key": "9b1709532b1af59114031f7dd4b05ebe7c8293f1",
-      "id": "ACI-DOM-140",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:6"
     },
     {
       "key": "9b6be8a3a753d85e04aaa3ee0194466428723658",
@@ -1312,12 +1258,6 @@
       "anchor": "domain.md#Run:field:6"
     },
     {
-      "key": "f4561ea5754ee85cd07829c69efcd6b2d041aad4",
-      "id": "ACI-DOM-219",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#Attempt:field:8"
-    },
-    {
       "key": "f4616f8964786e2cf3f0708b75806ee8ff42239f",
       "id": "ACI-DOM-220",
       "rule_type": "domain-field",
@@ -1360,12 +1300,6 @@
       "anchor": "domain.md#RawProviderOutput:field:7"
     },
     {
-      "key": "fca4522dbb13fa00e5728c7b465c366c8999b95b",
-      "id": "ACI-DOM-227",
-      "rule_type": "domain-field",
-      "anchor": "domain.md#EffectiveInputEntry:field:6"
-    },
-    {
       "key": "fd02c81b2d8fc9bcb1e8d4f2db2576ef446b8f61",
       "id": "ACI-DOM-228",
       "rule_type": "domain-field",
@@ -1406,6 +1340,186 @@
       "id": "ACI-DOM-234",
       "rule_type": "domain-field",
       "anchor": "domain.md#SoleWriterEvidenceBundle:field:4"
+    },
+    {
+      "key": "0097b5bfd33d2cab8ec407ef62312be0a0745ebc",
+      "id": "ACI-DOM-235",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:2"
+    },
+    {
+      "key": "025995d33a41f0a721a4d11646deaf75006391b9",
+      "id": "ACI-DOM-236",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:8"
+    },
+    {
+      "key": "033a94ad53d468b6146f6d190240738d32c39c59",
+      "id": "ACI-DOM-237",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:7"
+    },
+    {
+      "key": "21cc9269f3efeec04ea1cde5ad1c19d797b9a96a",
+      "id": "ACI-DOM-238",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:16"
+    },
+    {
+      "key": "33e05c3c5137fcf21ad32d51292878d5ec6c3633",
+      "id": "ACI-DOM-239",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:5"
+    },
+    {
+      "key": "347dbd718e568425e9812295842a099c35c793b1",
+      "id": "ACI-DOM-240",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:3"
+    },
+    {
+      "key": "373d422b42237bcbc149a65fe20f91ee706bb714",
+      "id": "ACI-DOM-241",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:14"
+    },
+    {
+      "key": "37861398788c7aa92dbc4531544fe343037252be",
+      "id": "ACI-DOM-242",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:7"
+    },
+    {
+      "key": "3f3b3f903fe78dd8e87d88aff23c32b2f6cb3b74",
+      "id": "ACI-DOM-243",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:4"
+    },
+    {
+      "key": "4dca0cf731cf5b2ab4d23bf5fc8bbe92df11df1b",
+      "id": "ACI-DOM-244",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:4"
+    },
+    {
+      "key": "4dcfeaaeebda07672af1e7f6c9e55fc7ebcb06da",
+      "id": "ACI-DOM-245",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:9"
+    },
+    {
+      "key": "55bac2dbeb982153d193cba06aed250737e9f7ea",
+      "id": "ACI-DOM-246",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:8"
+    },
+    {
+      "key": "659fc3e6061e28e321e44bc536455d2650b6962d",
+      "id": "ACI-DOM-247",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:6"
+    },
+    {
+      "key": "67202c5874edd571571bd158014269c6e614c92e",
+      "id": "ACI-DOM-248",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:13"
+    },
+    {
+      "key": "674950551d728559762ec70fa292786572b49644",
+      "id": "ACI-DOM-249",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:0"
+    },
+    {
+      "key": "88a15cc195494de66b57a360c063bd5cc248afe1",
+      "id": "ACI-DOM-250",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:1"
+    },
+    {
+      "key": "896ed1d6cd63a15410debac020775f2502da51e1",
+      "id": "ACI-DOM-251",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:12"
+    },
+    {
+      "key": "8b6498084b3c9986d1dcd40feef17ae002d5e9d6",
+      "id": "ACI-DOM-252",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:1"
+    },
+    {
+      "key": "8f35539640ed2d17944019b5ed0e662e61b45db4",
+      "id": "ACI-DOM-253",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:6"
+    },
+    {
+      "key": "a7f5186452656b953f97679d10921297ba8b48a9",
+      "id": "ACI-DOM-254",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:6"
+    },
+    {
+      "key": "ad47d91d63ce0a917a6a2979c840341c536e5ad2",
+      "id": "ACI-DOM-255",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:0"
+    },
+    {
+      "key": "b837ac908cb3d525cd2b20428abac6c7adb81eb8",
+      "id": "ACI-DOM-256",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#EffectiveInputEntry:field:7"
+    },
+    {
+      "key": "bdded285175d08ec7251a87ead1f09bd1008dd55",
+      "id": "ACI-DOM-257",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:3"
+    },
+    {
+      "key": "c81064af267e3b7b5c9fbbb12f3d9d1f446f0641",
+      "id": "ACI-DOM-258",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:10"
+    },
+    {
+      "key": "d1b74c9a121cfa497568ac1586804d2c8684eaf0",
+      "id": "ACI-DOM-259",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:10"
+    },
+    {
+      "key": "e1b89b9997f7bf00ba1759a697fa28c8d7d7cc69",
+      "id": "ACI-DOM-260",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:15"
+    },
+    {
+      "key": "e26af315f065a2fd510932fa71a6fbcd81e87707",
+      "id": "ACI-DOM-261",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:5"
+    },
+    {
+      "key": "e5672b619477d5ff5c6911adac94e010b340c3a1",
+      "id": "ACI-DOM-262",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:9"
+    },
+    {
+      "key": "f2e0596e400c68c1360d801402a2236a1ec42829",
+      "id": "ACI-DOM-263",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Attempt:field:2"
+    },
+    {
+      "key": "f9de72de86569e4718776de1b662ba006cde80d0",
+      "id": "ACI-DOM-264",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#AgentReferenceDelivery:field:11"
     },
     {
       "key": "1204d7c48339c155acac336a116ee871c226d662",
@@ -1532,6 +1646,66 @@
       "id": "ACI-ERR-016",
       "rule_type": "error-obligation",
       "anchor": "operations.md#ConfirmRuntimeDispatch:errorstate:3"
+    },
+    {
+      "key": "10e76feb4cbfb048429241b403e726ff45b0060d",
+      "id": "ACI-ERR-017",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:3"
+    },
+    {
+      "key": "33594d196a45be4bd42d7f1c119db85724bc1a9a",
+      "id": "ACI-ERR-018",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:4"
+    },
+    {
+      "key": "35a5a5238fb834b19b6d9f10ff3e44a5888880ed",
+      "id": "ACI-ERR-019",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:9"
+    },
+    {
+      "key": "4380021d788b5d0ccbb3dc8a8714c7489e74fb83",
+      "id": "ACI-ERR-020",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:6"
+    },
+    {
+      "key": "6308bff7474d4df0ccfbc91914fa7c1f9f7e6e00",
+      "id": "ACI-ERR-021",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:8"
+    },
+    {
+      "key": "7dbedd0b6a6b5840a9bd46246a0e33327abb0eeb",
+      "id": "ACI-ERR-022",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:5"
+    },
+    {
+      "key": "c0d0b2fce0bdd647350726085139085d5b549e78",
+      "id": "ACI-ERR-023",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:2"
+    },
+    {
+      "key": "e0d414eddd6b05df629cf273cd9215dee1836702",
+      "id": "ACI-ERR-024",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:0"
+    },
+    {
+      "key": "e31d4f463f650f231e6253422223d26c88caf424",
+      "id": "ACI-ERR-025",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:7"
+    },
+    {
+      "key": "e69cd1757aed6f373d8e0209e179ac024eae147f",
+      "id": "ACI-ERR-026",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:errorstate:1"
     },
     {
       "key": "00056527b6ab618b375a1f959c98ac97083c8f27",
@@ -1840,6 +2014,12 @@
       "anchor": "events.md#cancellation.requested"
     },
     {
+      "key": "9669531a68a66032d953d000d14ef53a354ce88c",
+      "id": "ACI-EVT-052",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#reference_scout.bundle_delivered_to_agent@1"
+    },
+    {
       "key": "2d24171b68c11ad8740acd30a14e7d0f66a56089",
       "id": "ACI-IF-001",
       "rule_type": "contract",
@@ -1976,6 +2156,12 @@
       "id": "ACI-MAP-007",
       "rule_type": "mapping-row",
       "anchor": "mappings.md#AgentInvocationPlanToMaterializedInvocation"
+    },
+    {
+      "key": "96cd87c3e7ef466d9acd8a20de62de8b17af1491",
+      "id": "ACI-MAP-008",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#ReferenceScoutBundleToEffectiveInput"
     },
     {
       "key": "00c343507dc551ce19c451466cd93c1cddcbb351",
@@ -2506,6 +2692,72 @@
       "anchor": "operations.md#CloseCollection:rule:2"
     },
     {
+      "key": "157fb0d22300156d498b6904cd8118c7d0629291",
+      "id": "ACI-NF-089",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:7"
+    },
+    {
+      "key": "2d4ef61404348262d8e815a683af43c2053c2892",
+      "id": "ACI-NF-090",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:2"
+    },
+    {
+      "key": "3d957d7418bcd85a6c27ee4df23efe9628b8fdd8",
+      "id": "ACI-NF-091",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:1"
+    },
+    {
+      "key": "42f45ca9b0350f2d6a54e45b513c137244c7206e",
+      "id": "ACI-NF-092",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:8"
+    },
+    {
+      "key": "546cf481632e270a380ff4350d4a7075609f5fa2",
+      "id": "ACI-NF-093",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:1"
+    },
+    {
+      "key": "7f6ac55e68095f99fb4e38a6187fbcce2d486e90",
+      "id": "ACI-NF-094",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartAgentAttempt:rule:8"
+    },
+    {
+      "key": "8dfa79aefb093732c89aca5cf5600f998d8a7ec8",
+      "id": "ACI-NF-095",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:4"
+    },
+    {
+      "key": "9333a92129a265aeb8f3d1d1ac4753efb8938b80",
+      "id": "ACI-NF-096",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:3"
+    },
+    {
+      "key": "ba3f5c9b8183760404220eb5f79159fe97e79498",
+      "id": "ACI-NF-097",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:5"
+    },
+    {
+      "key": "d884c957391cb736b51373efe1e268b73e8f1249",
+      "id": "ACI-NF-098",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:0"
+    },
+    {
+      "key": "ee7fa730d4dd32ef8b8aae221f8136c089ffa969",
+      "id": "ACI-NF-099",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#DeliverReferenceScoutBundleToAgent:rule:6"
+    },
+    {
       "key": "4c78b68028674af517d311bbc05a2cbfa4aa899d",
       "id": "ACI-QRY-001",
       "rule_type": "query-behavior",
@@ -2534,12 +2786,6 @@
       "id": "ACI-RULE-002",
       "rule_type": "rule-validation",
       "anchor": "operations.md#RecordAttemptObservation:rule:1"
-    },
-    {
-      "key": "2fdcd629a307b765b10cea3f9196afbe5fb74c82",
-      "id": "ACI-RULE-003",
-      "rule_type": "rule-validation",
-      "anchor": "operations.md#StartAgentAttempt:rule:1"
     },
     {
       "key": "3b5a812551303902213e9e56b8833662d230ac24",
@@ -2594,12 +2840,6 @@
       "id": "ACI-RULE-012",
       "rule_type": "rule-validation",
       "anchor": "operations.md#RecordUsageObservation:rule:2"
-    },
-    {
-      "key": "cf4bee7ba0d1fafdf014cfb3801263610d627a1e",
-      "id": "ACI-RULE-013",
-      "rule_type": "rule-validation",
-      "anchor": "operations.md#StartAgentAttempt:rule:1"
     },
     {
       "key": "d919660197e4c637cd254eac523056607321f0af",
@@ -4751,17 +4991,70 @@
     }
   ],
   "next": {
-    "EVT": 52,
+    "EVT": 53,
     "TR": 357,
-    "DOM": 235,
-    "NF": 89,
+    "DOM": 265,
+    "NF": 100,
     "ENUM": 6,
-    "MAP": 8,
+    "MAP": 9,
     "INV": 13,
-    "ERR": 17,
+    "ERR": 27,
     "RULE": 16,
     "IF": 5,
     "QRY": 4
   },
-  "tombstones": []
+  "tombstones": [
+    {
+      "id": "ACI-DOM-012",
+      "retired_key": "0f673cbe2850c5c7a7d7fa70fa2b9eb27438c61f"
+    },
+    {
+      "id": "ACI-DOM-018",
+      "retired_key": "162bcc89f3dde2e094f0ebb8a9edd1133baa6ac2"
+    },
+    {
+      "id": "ACI-DOM-019",
+      "retired_key": "1aee4c72987d73c8b9bfde1c2e75e09f6a3e3928"
+    },
+    {
+      "id": "ACI-DOM-047",
+      "retired_key": "34ee8b4bbeb7e121d8a2b271f9a6d04825f1dc43"
+    },
+    {
+      "id": "ACI-DOM-059",
+      "retired_key": "42f816417bc22d4a545b86ff95ffe38d23f8abe2"
+    },
+    {
+      "id": "ACI-DOM-060",
+      "retired_key": "43e8df89df8fc7c95c45c7e1890194862610e55c"
+    },
+    {
+      "id": "ACI-DOM-067",
+      "retired_key": "4dc42969e9ada85bc3ed4ed2631d7df3e765a764"
+    },
+    {
+      "id": "ACI-DOM-095",
+      "retired_key": "718a3e275436f3525c52f46b2ba1167218c533a9"
+    },
+    {
+      "id": "ACI-DOM-140",
+      "retired_key": "9b1709532b1af59114031f7dd4b05ebe7c8293f1"
+    },
+    {
+      "id": "ACI-DOM-219",
+      "retired_key": "f4561ea5754ee85cd07829c69efcd6b2d041aad4"
+    },
+    {
+      "id": "ACI-DOM-227",
+      "retired_key": "fca4522dbb13fa00e5728c7b465c366c8999b95b"
+    },
+    {
+      "id": "ACI-RULE-003",
+      "retired_key": "2fdcd629a307b765b10cea3f9196afbe5fb74c82"
+    },
+    {
+      "id": "ACI-RULE-013",
+      "retired_key": "cf4bee7ba0d1fafdf014cfb3801263610d627a1e"
+    }
+  ]
 }

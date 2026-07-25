@@ -5,12 +5,12 @@ is_session: false
 layer: application
 nature: technical, reference
 status: draft
-version: 0.1.0
-last_updated: 2026-07-23
+version: 0.2.0
+last_updated: 2026-07-25
 feature: agent-provenance-telemetry
 specAuthoringGate: in-review
 runtimeGate: block
-derivedFrom: SPEC.md@0.1.0
+derivedFrom: SPEC.md@0.2.0
 ---
 
 # Rules: Agent Provenance Telemetry
@@ -204,13 +204,187 @@ A probe-worker observation does not establish research-agent access, consultatio
 
 **Checked by:** planned [APT-TEST-R8](../TEST-SPEC.md#apt-r8--telemetry-non-authority).
 
+## APT-R9 — Agent Reference Lineage
+
+**Applies To:** [AgentReferenceLineage](queries.md#agentreferencelineage),
+[ProducerRef](domain.md#producerref-embedded-shape), and
+[ProbeRecommendationRef](domain.md#proberecommendationref)
+
+**Contract status:** specified; not implemented.
+
+The per-agent read model joins only complete owner-bound evidence and preserves recommendation,
+target delivery/effective-input inclusion, access observation, declared use, claim relation and
+claim-support check as six independent axes.
+
+```text
+Targets =
+  bound_verified(target_resolution).members
+  where target_resolution.scope =
+    {dispatch_id=intent.dispatch_id,
+     target_selector_digest=H_ACI(canonical(intent.target))}
+
+Deliveries =
+  {d in bound_verified(aci_delivery_snapshot).members |
+    aci_delivery_snapshot.scope =
+      {dispatch_id=intent.dispatch_id,
+       target_resolution_digest=pinned_digest(target_resolution)}
+    and target_tuple(d) in Targets
+    and exact_target_delivery_event(d)
+    and exact_finalized_effective_input_entry(d)}
+
+ProducerBindings =
+  bound_verified(producer_resolution).members
+  where producer_resolution.owner_namespace = "host"
+    and producer_resolution.owner_contract_id = "host.AgentActivationBinding"
+    and producer_resolution.owner_contract_version =
+      expected_host_agent_activation_binding_contract_version
+    and producer_resolution.scope =
+      {dispatch_id=intent.dispatch_id,
+       target_resolution_digest=pinned_digest(target_resolution),
+       aci_delivery_snapshot_digest=pinned_digest(aci_delivery_snapshot),
+       probe_scout_bindings_digest=pinned_digest(probe_scout_bindings),
+       capture_producer_selector_digest=
+         H_ACI(canonical(capture_producer_selector))}
+    and producer_resolution.accepted_through <= effective_as_of
+    and pinned_input_digests.producer_resolution =
+      H_ACI(canonical(producer_resolution))
+    and producer_resolution.owner_manifest_digest =
+      H_HOST(canonical({
+        owner_namespace=producer_resolution.owner_namespace,
+        owner_contract_id=producer_resolution.owner_contract_id,
+        owner_contract_version=producer_resolution.owner_contract_version,
+        scope=producer_resolution.scope,
+        accepted_through=producer_resolution.accepted_through,
+        members=producer_resolution.members
+      }))
+    and bijection(
+      capture_producer_selector,
+      producer_resolution.members,
+      key=(research_capture_id,producer_ref_digest))
+
+recommended_in_delivered_line(r,d) <=>
+  d in Deliveries
+  and commit = exact_complete_group_event(d.source_bundle_committed_event_ref)
+  and commit.event_type = "reference_scout.bundle_committed@1"
+  and commit.event_id = d.source_bundle_committed_event_ref.event_id
+  and commit.journal_offset = d.source_bundle_committed_event_ref.offset
+  and H_ACI(canonical(commit.payload)) =
+      d.source_bundle_committed_event_ref.payload_digest
+  and commit.journal_offset <= effective_as_of
+  and commit.payload.scout_run_id = d.scout_run_id
+  and commit.payload.bundle_artifact_id = d.bundle_artifact_id
+  and commit.payload.bundle_digest = d.bundle_digest
+  and d.bundle_digest = hash(immutable_bundle_bytes(d.bundle_artifact_id))
+  and commit.payload.recommendation_ids =
+      ordered_recommendation_ids(immutable_bundle_bytes(d.bundle_artifact_id))
+  and r in commit.payload.recommendation_ids
+
+declared_used(u,d,r) <=>
+  b in bound_verified(probe_scout_bindings).members
+  and exact_owner_alias(
+    b,
+    u.probe_recommendation_ref.probe_id,
+    d.scout_run_id,
+    d.source_bundle_committed_event_ref)
+  and current_head(u) in apt_fact_heads
+  and capture(u).producer_ref.kind = seat
+  and exists p in ProducerBindings:
+      p.research_capture_id = capture(u).research_capture_id
+      and p.producer_ref_digest =
+        H_ACI(canonical(capture(u).producer_ref))
+      and p.activation_id = capture(u).producer_ref.activation_id
+      and p.(dispatch_id,group_id,seat_id,attempt_id,agent_instance_id) =
+        (d.dispatch_id,d.target_group_id,d.target_seat_id,
+         d.target_attempt_id,d.target_agent_instance_id)
+  and b.bundle_artifact_id = d.bundle_artifact_id
+  and b.bundle_digest =
+      d.bundle_digest =
+      u.probe_recommendation_ref.bundle_digest
+  and r = u.probe_recommendation_ref.recommendation_id
+  and r in b.recommendation_ids
+
+access_observed(o,d,r) <=>
+  host_observation_projection.status = available
+  and host_projection_verified_by_binder(
+        host_observation_projection,
+        pinned_input_digests.host_observation_projection,
+        {dispatch_id=intent.dispatch_id,
+         target_resolution_digest=pinned_digest(target_resolution),
+         aci_delivery_snapshot_digest=pinned_digest(aci_delivery_snapshot)})
+  and o in host_observation_projection.observations
+  and o.reference_origin_ref =
+      (d.agent_reference_delivery_id,r,owner_evidence_digest)
+  and o.target_binding.(group_id,seat_id,attempt_id,agent_instance_id) =
+      target_tuple(d)
+  and enclosing_host_contract.observation_proves_access(o)
+
+reducer_owner_calls = 0
+```
+
+The binder, outside the pure reducer, resolves `attempt | seat | agent_instance` through ACI
+Attempt authority and verifies the complete closed `target_resolution`, `producer_resolution`,
+`aci_delivery_snapshot`, `probe_scout_bindings` and host-observation wrappers. It derives the
+producer selector only from current target-and-lineage candidate captures, and the host activation
+owner must return exactly one complete member per selector. A seat or agent-instance selector may
+resolve to multiple canonical Attempt tuples. Unknown, foreign, missing, extra, future,
+cross-scope, ambiguous or digest-mismatched resolution fails closed.
+
+Every wrapper is pinned by the digest of its complete closed value. Each member-based
+owner-authored wrapper manifest hashes its namespace, contract ID/version, exact upstream-digest
+scope, `accepted_through` and complete member set without self-including its own digest. The
+available host variant instead binds its complete `observations` set through the exact H_HOST
+manifest/digest and scope defined by its owner contract; the unavailable variant is pinned as its
+complete closed union value. APT fact heads are derived only from verified complete APT atomic
+groups. An omitted, extra, duplicate, future, scope-swapped, version-mismatched or digest-mismatched
+member or observation is an integrity failure, never a truthful empty result. All accepted event
+references have the uniform closed shape `{event_id,offset,payload_digest}`.
+
+`ProducerBindings` is the separately pinned `host.AgentActivationBinding` result. Each member
+matches the stored producer digest and `activation_id`, carries accepted Attempt event/group
+evidence and the complete
+`(dispatch_id,group_id,seat_id,attempt_id,agent_instance_id,activation_id)` tuple, and must equal
+the selected delivery target. Append-time checks alone do not supply Query authority. The reducer
+does not repeat owner calls and cannot lazily resolve a missing producer member.
+`ExtractionProvenance.actor_ref` is extraction authorship only and cannot substitute for that
+producer/target identity.
+
+`reference_scout.bundle_delivered@1` proves only Scout lifecycle delivery and carries no
+recommendation membership. Only ACI's distinct accepted target-delivery/effective-input evidence
+proves delivery to an Attempt. A locator, title, digest, text match, timestamp, persona or model
+label never supplies identity. A stored `source_observation_id` proves nothing until the exact
+versioned host contract resolves it.
+
+Within this target-scoped Query, `recommended_in_delivered_line` necessarily includes a target
+delivery. Globally, committed recommendation evidence remains independent: an undelivered
+recommendation is not a target line and does not imply delivery. No other implication is permitted
+between the six axes:
+
+```text
+recommended !=> delivered
+delivered !=> access_observed
+access_observed !=> declared_used
+declared_used !=> claim_relation
+claim_relation !=> claim_support_check(pass)
+claim_support_check(pass) !=> claim_adjudicated_or_promoted
+```
+
+The current Stage-G host contract cannot qualify for the `available` wrapper because it has no
+owner-authoritative observation-to-delivery/recommendation plus Attempt binding. Its bound wrapper
+is therefore `status=unavailable`, and `access_observed=[]`. A future `available` wrapper qualifies
+only with the exact scope and owner bindings above and preserves `exact | metadata_only | opaque`
+coverage without upgrading it. That host extension is specified and not implemented.
+
+No aggregate `used`, `read`, `trusted`, `supported` or `verified` boolean may collapse these axes.
+
+**Checked by:** planned [APT-TEST-R9](../TEST-SPEC.md#apt-r9--agent-reference-lineage).
+
 ## Subordinate Coverage Clauses
 
-APT-C01 through APT-C18 are stable coverage-clause IDs subordinate to APT-R1..APT-R8. They are not
+APT-C01 through APT-C18 are stable coverage-clause IDs subordinate to APT-R1..APT-R9. They are not
 additional DomainSpec Rule concepts and do not extend the [SPEC Concept Registry](SPEC.md#concept-registry).
 Explicit legacy anchors preserve all approved cross-document references.
 
-The referenced-anchor inventory is exactly 26: eight heading-derived anchors for APT-R1..APT-R8
+The referenced-anchor inventory is exactly 27: nine heading-derived anchors for APT-R1..APT-R9
 plus the 18 explicit legacy anchors attached to APT-C01..APT-C18 below.
 
 <a id="session-context-binding"></a>
@@ -548,6 +722,7 @@ synthesizes ⇒ unique(input) ∧ preserve_order(input)
 | APT-R6 | states APT-GROUP-I1..I6 | genesis, between-group, mid-group and checkpoint parity |
 | APT-R7 | profile and probe contracts | absent/mismatched/valid profile ID-version-digest receipts |
 | APT-R8 | architecture boundary | zero-authority signals and no-raw-body assertions |
+| APT-R9 | AgentReferenceLineage query; APT-DOM-19..22; ACI target-delivery authority | owner-selector resolution, commit+bytes membership, exact alias, independent axes, empty-pilot access and forbidden locator joins |
 | APT-C01..APT-C05 | session/authorization/snapshot/capture contracts | binding, authorization, union/hash and closed digest fixtures |
 | APT-C06..APT-C09 | synthesis/selector/evidence/derivation contracts | one positive plus every stated evidence/selection rejection |
 | APT-C10..APT-C14 | fact union/locality/typing/check/formalization contracts | exact variants, local edges, cardinalities and real-field presence |
@@ -566,7 +741,7 @@ fixtures, executable cases and evidence remain pending its dedicated review gate
 
 | Document | Type | Description |
 |---|---|---|
-| [SPEC.md](SPEC.md) | `derives-from` | Registers APT-R1 through APT-R8 as DomainSpec Rule concepts. |
+| [SPEC.md](SPEC.md) | `derives-from` | Registers APT-R1 through APT-R9 as DomainSpec Rule concepts. |
 | [architecture.md](architecture.md) | `constrains` | Supplies authority, dependency and ACI profile boundaries. |
 | [domain.md](domain.md) | `constrains` | Supplies closed shapes, identities and cross-entity invariants. |
 | [states.md](states.md) | `constrains` | Supplies atomic grouping and deterministic reducer invariants. |

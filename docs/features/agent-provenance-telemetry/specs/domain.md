@@ -1,12 +1,12 @@
 ---
 feature: agent-provenance-telemetry
-version: 0.1.0
+version: 0.2.0
 status: draft
-updatedAt: 2026-07-23
+updatedAt: 2026-07-25
 docType: domain
 specAuthoringGate: in-review
 runtimeGate: block
-derivedFrom: SPEC.md@0.1.0
+derivedFrom: SPEC.md@0.2.0
 ---
 
 # Domain: Agent Provenance Telemetry
@@ -356,9 +356,36 @@ concepts. They are not additional DomainSpec concepts or registry IDs.
 | `seat` | `kind=seat`, `group_id`, `seat_id`, `attempt_id`, `activation_id` | `host_actor_id` |
 | `host_actor` | `kind=host_actor`, `host_actor_id`, `activation_id` | `group_id`, `seat_id`, `attempt_id` |
 
-All required IDs are non-empty opaque owner-stamped values. `host_actor_id` names an authenticated
-host/human principal; it cannot be a generic label such as `unknown`, `anonymous` or a persona name.
-Equality compares the discriminator and every field of the selected variant.
+All required IDs are non-empty opaque owner-stamped values. For `seat`, `group_id`, `seat_id` and
+`attempt_id` are copied from one ACI-owner-verified Attempt/capability binding; `activation_id` is
+resolved by the host activation owner as a child of that exact Attempt. APT never derives any of
+them from a persona, agent display name, file path, locator, recommendation text or temporal
+proximity. The v1 shape deliberately does not duplicate `agent_instance_id`: a read model that
+needs that identity must resolve it from an exact owner-bound ACI Attempt or
+[AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery)
+record and must verify the containing capture's `dispatch_id` plus the stored `attempt_id` and
+`seat_id` against that delivery's target tuple.
+
+For `host_actor`, `host_actor_id` and `activation_id` come from the authenticated host context and
+its owner evidence; `host_actor_id` cannot be a generic label such as `unknown`, `anonymous` or a
+persona name. Equality compares the discriminator and every field of the selected variant.
+
+```text
+valid_seat_producer(capture, producer) <=>
+  producer.kind = seat
+  and host_activation_owner(producer.activation_id) =
+      (producer.group_id, producer.seat_id, producer.attempt_id)
+  and ACI_attempt_owner(producer.attempt_id) =
+      (capture.dispatch_id, producer.group_id, producer.seat_id,
+       owner_resolved_agent_instance_id)
+
+locator_or_name_or_time_match => no_producer_authority
+```
+
+Both owner checks must agree on the complete owner-resolved
+`(dispatch_id, group_id, seat_id, attempt_id, agent_instance_id, activation_id)` binding before
+append or query binding succeeds. `agent_instance_id` is resolved from the exact ACI Attempt and
+is not an additional caller-authored `ProducerRef` field.
 
 ### QuestionDerivationRef Embedded Union
 
@@ -403,6 +430,28 @@ The union is closed and equality compares the discriminator and every field of i
 variant, including the complete ACI acceptance evidence for probe and bundle variants. Unknown
 variant/namespace/version, missing digest or acceptance evidence, or opposite-variant fields fail
 closed.
+
+`probe_bundle` identifies only the committed source bundle. It does not identify a recipient
+Attempt, prove inclusion in effective input or stand in for
+[`reference_scout.bundle_delivered_to_agent@1`](../../agents-communication-infra/specs/events.md#referencescoutbundledeliveredtoagent).
+A generic `aci_event` origin may identify that target delivery only after the ACI owner verifies
+the exact event type, payload digest and referenced
+[AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery);
+event timing, a shared locator or matching prose cannot create that meaning. For a containing
+capture with `producer_ref.kind=seat`, the delivery is a valid delivery-to-producer origin only
+when:
+
+```text
+delivery.dispatch_id = capture.dispatch_id
+and delivery.target_attempt_id = capture.producer_ref.attempt_id
+and delivery.target_seat_id = capture.producer_ref.seat_id
+and ACI_attempt_group(delivery.target_attempt_id) = capture.producer_ref.group_id
+and ACI_attempt_agent_instance(delivery.target_attempt_id) =
+    delivery.target_agent_instance_id
+```
+
+A `host_actor` producer cannot treat an agent-target delivery as delivery to itself without a
+separately typed owner-authoritative mapping.
 
 ### FailureEvidenceRef Embedded Union
 
@@ -616,6 +665,19 @@ no implied probe or profile. Append verifies that bundle acceptance resolves to 
 the same profile ID/version/digest as `profile_binding`; cross-bundle, cross-profile, stale,
 uncommitted, unknown-variant or digest-mismatched evidence fails closed.
 
+Under the frozen v1 `reference-probe` compatibility profile, the stored field remains `probe_id`;
+no profile-shape or profile-digest change is implied. Resolution to the product `scout_run_id`
+comes only from an explicit owner-verified alias record bound to the exact accepted
+[`reference_scout.bundle_committed@1`](../integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle)
+event, bundle artifact/digest and ScoutRun. Neither that commit event nor ScoutRun owner evidence
+is treated as carrying `probe_id`. Recommendation membership comes from the accepted commit plus
+the digest-matching immutable bundle bytes. Neither the later Scout lifecycle
+[`reference_scout.bundle_delivered@1`](../integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle)
+fact nor locator equality supplies recommendation membership. `source_observation_ids`, when
+present, are only host-owned reference identities; their presence alone proves nothing. Only
+successful resolution through the exact versioned host-owned contract proves the recorded
+observation/coverage level, and that evidence never proves declared use or claim support.
+
 ---
 
 ### ACIProtocolProfileBinding
@@ -744,6 +806,10 @@ permutations differ. `assumptions` is authored content, not a relational ID/ref 
 | APT-DOM-16 | `OriginRef` separates logical APT probe/bundle schema/profile identity from required committed ACI event/publication evidence. `FailureEvidenceRef` permits only committed event, receipt, artifact or host-observation evidence; bare probe/bundle refs and unknown, dangling or mismatched refs fail closed. | Planned [Evidence reference rule](rules.md#evidence-reference-validity) |
 | APT-DOM-17 | A dispatch-scope derivation uses the exact owning capture snapshot and an RFC 6901 JSON Pointer resolved only against that pinned versioned canonical projection; malformed paths plus cross/wrong/stale snapshots fail closed. | Planned [Question derivation rule](rules.md#question-derivation-validity) |
 | APT-DOM-18 | Every relational ID/ref list is a duplicate-rejecting canonical sorted set with non-semantic input order, except the unique semantic ordered `synthesizes` list. | Planned [Collection canonicalization rule](rules.md#relational-collection-canonicalization) |
+| APT-DOM-19 | A declared reference use is attributable to one target Attempt only when its owning `ResearchCapture.producer_ref` is the `seat` variant and `capture.dispatch_id` plus `producer_ref.{group_id,seat_id,attempt_id}` equal the complete ACI owner-resolved target. `agent_instance_id` is resolved by the owner from that exact Attempt/delivery and is never inferred or stored implicitly in `ProducerRef`. `ExtractionProvenance.actor_ref` identifies the extractor and cannot replace that target identity. | [AgentReferenceLineage](queries.md#agentreferencelineage) |
+| APT-DOM-20 | A recommendation joins an ACI target delivery only when owner evidence verifies an explicit alias from legacy `ProbeRecommendationRef.probe_id` to the delivery's `scout_run_id`, the accepted `reference_scout.bundle_committed@1`, digest-matching immutable bundle bytes, and exact `recommendation_id` membership. The later `reference_scout.bundle_delivered@1` carries no membership, and string or locator equality alone is insufficient. | [AgentReferenceLineage](queries.md#agentreferencelineage) |
+| APT-DOM-21 | `access_observed` requires host-owner evidence that one `SourceObservation` is bound exactly to the target `AgentReferenceDelivery`, recommendation and owner-resolved dispatch/group/seat/Attempt/agent-instance tuple, with an observation kind that the versioned host contract defines as access. A use's `ProbeRecommendationRef.source_observation_ids` may name the same observation but is neither required nor sufficient to activate this independent axis. Search-result visibility, locator/digest/text equality, Scout-worker observation or another Attempt cannot join or activate it. | [AgentReferenceLineage](queries.md#agentreferencelineage) |
+| APT-DOM-22 | `recommended`, `delivered`, `access_observed`, `declared_used`, `claim_relation` and `claim_support_check` are independent derived evidence axes. Presence or absence on one axis never synthesizes another. | [AgentReferenceLineage](queries.md#agentreferencelineage) |
 
 ## Deferred Structural Extensions
 
@@ -758,6 +824,8 @@ explicit missingness. A scalar or unowned confidence field is not a compatible e
 |---|---|---|
 | Dispatch / confirmed dispatch row | Existing dispatch ledger or ACI authority variant | `dispatch_id` plus [DispatchAuthoritySnapshotRef](#dispatchauthoritysnapshotref). |
 | `host.SourceObservation` | Host-mediated acquisition boundary | Nullable foreign ID in [ResearchReferenceUse](#researchreferenceuse) or [ProbeRecommendationRef](#proberecommendationref). |
+| `agents-communication-infra.AgentReferenceDelivery` | ACI target-input settlement authority | Read-only accepted delivery ID/event, source Scout/bundle membership and owner-derived target Attempt/seat/agent-instance. |
+| `agents-communication-infra.EffectiveInputArtifact` | ACI canonical effective-input authority | Read-only proof that the exact `reference_bundle` entry was included for the target Attempt. |
 | ACI artifact and physical bytes | ACI artifact finalization boundary; physical backend remains external | [ArtifactReference](#artifactreference) only. |
 | ACI event/journal/receipt/profile | ACI | IDs, digests and [ACIProtocolProfileBinding](#aciprotocolprofilebinding). |
 | Knowledge/assertion/ontology acceptance | Future external governance | Optional foreign mapping/governance refs; never inferred from APT status. |

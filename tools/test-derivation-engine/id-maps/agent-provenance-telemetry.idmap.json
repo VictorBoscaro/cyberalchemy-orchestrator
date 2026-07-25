@@ -1,0 +1,2294 @@
+{
+  "feature": "agent-provenance-telemetry",
+  "prefix": "APT",
+  "format_version": 1,
+  "entries": [
+    {
+      "key": "272380655a9bba6cf00ac2c549342413c14560fe",
+      "id": "APT-CALC-001",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendResearchCapture:calculation:1"
+    },
+    {
+      "key": "3fd3d9b872bc48be5556d2e8f92545711cde70b9",
+      "id": "APT-CALC-002",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendResearchFact:calculation:3"
+    },
+    {
+      "key": "41b2cf75639b3f59307400127e6b5d310d5c924b",
+      "id": "APT-CALC-003",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:calculation:4"
+    },
+    {
+      "key": "66694a4a2078c847100c5e99f848f9b57b27d90e",
+      "id": "APT-CALC-004",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:calculation:6"
+    },
+    {
+      "key": "68958e15f939263bb4c3ef15df789b116981f7d5",
+      "id": "APT-CALC-005",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:calculation:5"
+    },
+    {
+      "key": "8029db3d4046c84360a675166dca8a6d38c3178b",
+      "id": "APT-CALC-006",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:calculation:3"
+    },
+    {
+      "key": "9ee635ad6044f6feeda0eb37bada6dbddd0eb384",
+      "id": "APT-CALC-007",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:calculation:2"
+    },
+    {
+      "key": "bcfbdf4846da9cf2c480dcc5192d1c89b0ad3985",
+      "id": "APT-CALC-008",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:calculation:1"
+    },
+    {
+      "key": "e26b3097bb5272dc7245ed775c5bc6c666ff2431",
+      "id": "APT-CALC-009",
+      "rule_type": "calculation",
+      "anchor": "operations.md#AppendResearchFact:calculation:4"
+    },
+    {
+      "key": "062ec390e07d5d9a2f980cefc177cd13b04f21f4",
+      "id": "APT-DOM-001",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:2"
+    },
+    {
+      "key": "0a905f614eabbc1ca40fe26e5f28a5c4f9328e98",
+      "id": "APT-DOM-002",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchQuestion:field:2"
+    },
+    {
+      "key": "0b09327e4594be2692127c4094b36590823c2405",
+      "id": "APT-DOM-003",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:5"
+    },
+    {
+      "key": "0c3b482a19fa1b3bb3e781e2d9e08479f7b56c57",
+      "id": "APT-DOM-004",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:2"
+    },
+    {
+      "key": "0fb0a59e1607cc5a0e7585ca4b5bee5f2bedfbc3",
+      "id": "APT-DOM-005",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:4"
+    },
+    {
+      "key": "0febf9fe2e6a92d4df464ced2390db31b8a96ef0",
+      "id": "APT-DOM-006",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:5"
+    },
+    {
+      "key": "119a6780365c634c70a029005984d0305013db0c",
+      "id": "APT-DOM-007",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchClaimExtraction:field:4"
+    },
+    {
+      "key": "11c2d0b725234f7807d68d04b74e95fc65e5258e",
+      "id": "APT-DOM-008",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:7"
+    },
+    {
+      "key": "1207fc672bbf91b818d9d39a0fe442b86bcb3b1c",
+      "id": "APT-DOM-009",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceClaimRelation:field:1"
+    },
+    {
+      "key": "15dacbac50ae953bffcc86f94bcc9a521569d317",
+      "id": "APT-DOM-010",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:2"
+    },
+    {
+      "key": "1d0a2e4ae446560e8bf64637728e1611fe3484b6",
+      "id": "APT-DOM-011",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ProbeRecommendationRef:field:4"
+    },
+    {
+      "key": "1d176bc5609ca8e15df336639fbca734b475d9fb",
+      "id": "APT-DOM-012",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SessionDispatchLink:field:2"
+    },
+    {
+      "key": "20437ecca8741a5139094d0ade252be21b1d3a53",
+      "id": "APT-DOM-013",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:7"
+    },
+    {
+      "key": "206531f4be5205854b814ad216afe1fcdbde7548",
+      "id": "APT-DOM-014",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchQuestion:field:1"
+    },
+    {
+      "key": "22b6c29b80446a419d8ccfa2c9ef95d564ef76a1",
+      "id": "APT-DOM-015",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchQuestion:field:5"
+    },
+    {
+      "key": "2318c84c062628ff4c3c0f41a5a8e31ef5d3b944",
+      "id": "APT-DOM-016",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:1"
+    },
+    {
+      "key": "23da730a309a1c178fae89e1ac232664d9fb1df3",
+      "id": "APT-DOM-017",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:2"
+    },
+    {
+      "key": "249bccb5e65d8457d20c12e1a9359af4ee5bd963",
+      "id": "APT-DOM-018",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ACIProtocolProfileBinding:field:2"
+    },
+    {
+      "key": "257a1570a43c0cca3c830b6628281af36522e392",
+      "id": "APT-DOM-019",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchClaimExtraction:field:5"
+    },
+    {
+      "key": "26a122a376dbbf7cf1f5be35a46604b79593eea8",
+      "id": "APT-DOM-020",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:5"
+    },
+    {
+      "key": "29bc1d528c7649f40be3852eabbe5c4a71f6e79b",
+      "id": "APT-DOM-021",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Session:field:1"
+    },
+    {
+      "key": "2ce6d2b3d9af9e7ab9c8e4b541e4b63a2f7e0908",
+      "id": "APT-DOM-022",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:11"
+    },
+    {
+      "key": "2fb0dfbba0609ca34b8b41cb3f6672a0ead1eac3",
+      "id": "APT-DOM-023",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:4"
+    },
+    {
+      "key": "3038337eeef0592c31eafe1b998506e19591c8dc",
+      "id": "APT-DOM-024",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:4"
+    },
+    {
+      "key": "304f2210daa1133fab9e6dfe91d313da78754c09",
+      "id": "APT-DOM-025",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:1"
+    },
+    {
+      "key": "313c1bcabd57ad7ca4423be69f31647d800dde3d",
+      "id": "APT-DOM-026",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:7"
+    },
+    {
+      "key": "31901f49c38f55dd6eaa50ec6ab60691a3539bde",
+      "id": "APT-DOM-027",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawSelector:field:3"
+    },
+    {
+      "key": "32709474d909a0c49e098777002fec881a98d965",
+      "id": "APT-DOM-028",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:8"
+    },
+    {
+      "key": "32cfbbe92a81cffa58edaa76fd5794a39f823002",
+      "id": "APT-DOM-029",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:0"
+    },
+    {
+      "key": "338b027d588c4532783c845df05bf25025ede574",
+      "id": "APT-DOM-030",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:10"
+    },
+    {
+      "key": "34d6b600bf55a1cddcc538770eb62cd750625e26",
+      "id": "APT-DOM-031",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:16"
+    },
+    {
+      "key": "3737cb9d6bde2f1a3add9f8c8904205ce6c888f5",
+      "id": "APT-DOM-032",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:9"
+    },
+    {
+      "key": "3db19efccbe9b667f36e9001d58855309c450ccd",
+      "id": "APT-DOM-033",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:3"
+    },
+    {
+      "key": "3eea63a4071a0563b42905453d15c168a36540df",
+      "id": "APT-DOM-034",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceClaimRelation:field:4"
+    },
+    {
+      "key": "4085cc7d4bc4cfd38e9503ec036f97d078859092",
+      "id": "APT-DOM-035",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:6"
+    },
+    {
+      "key": "4313ea6df18aeda3a98f62a7ea9fa52ef99823ae",
+      "id": "APT-DOM-036",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawSelector:field:4"
+    },
+    {
+      "key": "43a4c26a90efe2e56cca178bdab1249f8182d0ce",
+      "id": "APT-DOM-037",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Session:field:2"
+    },
+    {
+      "key": "4406b6e27ffa244049e4f01c0e84465496b651db",
+      "id": "APT-DOM-038",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:8"
+    },
+    {
+      "key": "459f315df9f4efd07de304d2b001b3daa26bc823",
+      "id": "APT-DOM-039",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:3"
+    },
+    {
+      "key": "491f76770fc3a614c6bc40afc577b1e4de62a100",
+      "id": "APT-DOM-040",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Session:field:5"
+    },
+    {
+      "key": "4e103c73b31d8d04c0f25e225dd076c765c035e0",
+      "id": "APT-DOM-041",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExtractionProvenance:field:1"
+    },
+    {
+      "key": "4f02975658d3485ac30ba7545f3d683d446c2dff",
+      "id": "APT-DOM-042",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:4"
+    },
+    {
+      "key": "505792c731e92ef998c14aee9e692560567e89e5",
+      "id": "APT-DOM-043",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Session:field:3"
+    },
+    {
+      "key": "509381bb8e29f9d5b7c51f9050c2dfd89b18ffa6",
+      "id": "APT-DOM-044",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExtractionProvenance:field:3"
+    },
+    {
+      "key": "52cbeb9d5d955a2fbf4de731874fad815b0fcf60",
+      "id": "APT-DOM-045",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ACIProtocolProfileBinding:field:0"
+    },
+    {
+      "key": "52cc19b95f1de2e0024e47ee5930c5f38bb704e8",
+      "id": "APT-DOM-046",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Session:field:4"
+    },
+    {
+      "key": "54e62d1470b47848a0ebc2e11fc59a4a4a79e721",
+      "id": "APT-DOM-047",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:4"
+    },
+    {
+      "key": "57093b33a273e880f588aaab814384e2ff6e2d09",
+      "id": "APT-DOM-048",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ProbeRecommendationRef:field:3"
+    },
+    {
+      "key": "575c42bfa3cabdcd070eda0d218423abc10da73e",
+      "id": "APT-DOM-049",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SessionDispatchLink:field:3"
+    },
+    {
+      "key": "5927e826f4dae750d4d65f564427d7e0280bf722",
+      "id": "APT-DOM-050",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:1"
+    },
+    {
+      "key": "599da2acda5e1fa26297020fea503db73ac15e0c",
+      "id": "APT-DOM-051",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchAnswer:field:1"
+    },
+    {
+      "key": "5caf043b52e2ba3b25e46bf8f984605197f6e385",
+      "id": "APT-DOM-052",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:5"
+    },
+    {
+      "key": "5cb37d6109d835ce6bf842b1373585875b0e0508",
+      "id": "APT-DOM-053",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchClaimExtraction:field:0"
+    },
+    {
+      "key": "60c0abcf07e6954be99f917469369295b17d22c2",
+      "id": "APT-DOM-054",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawSelector:field:2"
+    },
+    {
+      "key": "60c4f62a6959927e0ab1f865eb4d826e06c3a954",
+      "id": "APT-DOM-055",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:8"
+    },
+    {
+      "key": "6b4ba93a22f2f9a1b0bbcfd3f06d1aed1ee29112",
+      "id": "APT-DOM-056",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:14"
+    },
+    {
+      "key": "6cbf816437ef4877cd04c4ae6f1f4ca22a026660",
+      "id": "APT-DOM-057",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:13"
+    },
+    {
+      "key": "6f819766f22e9afc925b9d1a2f079b81d58af87b",
+      "id": "APT-DOM-058",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:9"
+    },
+    {
+      "key": "71419658977f421666cbe66db139365f9535d383",
+      "id": "APT-DOM-059",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:10"
+    },
+    {
+      "key": "71b95153865a5abe6c9659fb6beb9833bad207f5",
+      "id": "APT-DOM-060",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:6"
+    },
+    {
+      "key": "725c04c321e463e5b6149954f996640de3b0b3ca",
+      "id": "APT-DOM-061",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchClaimExtraction:field:3"
+    },
+    {
+      "key": "77b6d3f57225c0b3b72afb9c3e451473de608bdb",
+      "id": "APT-DOM-062",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:0"
+    },
+    {
+      "key": "796e483c8d56726cb6b1fe6eeba60fca2368344e",
+      "id": "APT-DOM-063",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:1"
+    },
+    {
+      "key": "7bfdc0dc8eef6222ff994d61f6b826d08b70d4fb",
+      "id": "APT-DOM-064",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:1"
+    },
+    {
+      "key": "7e9fce0bbdb91c2e901d55277dc2c4ee81073601",
+      "id": "APT-DOM-065",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchQuestion:field:3"
+    },
+    {
+      "key": "7ffa6c123f4e1489318d43af1bbeea1ddbfe488d",
+      "id": "APT-DOM-066",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExtractionProvenance:field:2"
+    },
+    {
+      "key": "82f0b499aefb51d9ccb388627515bc2a6d348ef6",
+      "id": "APT-DOM-067",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:12"
+    },
+    {
+      "key": "8300fe8e25c68162de5a99ca65ece446b3ec5405",
+      "id": "APT-DOM-068",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceClaimRelation:field:5"
+    },
+    {
+      "key": "839f7ab37ef058a62dd8e16d498e1dcc1916b7d0",
+      "id": "APT-DOM-069",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FactEnvelope:field:0"
+    },
+    {
+      "key": "85ed2e3822bb80dc7c3d2869c983d85a966a5def",
+      "id": "APT-DOM-070",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:12"
+    },
+    {
+      "key": "894379d4f420a123a2624edd604be76c5ff48fff",
+      "id": "APT-DOM-071",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ACIProtocolProfileBinding:field:1"
+    },
+    {
+      "key": "8dab5688b54eb3cd94c0ce93d61fff533b91fcc6",
+      "id": "APT-DOM-072",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:6"
+    },
+    {
+      "key": "8e8e73f8f9aca2433407ba311159670d5068204b",
+      "id": "APT-DOM-073",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:3"
+    },
+    {
+      "key": "8f67541c40093224c2d039dbd642424328e318ea",
+      "id": "APT-DOM-074",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FactEnvelope:field:4"
+    },
+    {
+      "key": "8f8ccaa91395f20944e281161e4f293f75c0f5f4",
+      "id": "APT-DOM-075",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ProbeRecommendationRef:field:5"
+    },
+    {
+      "key": "8fbdcd5844ef90d55c8cc32ec823e5a06a86db5f",
+      "id": "APT-DOM-076",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:15"
+    },
+    {
+      "key": "904a8f94ca76cdb1885c8e4b8157856b1da17c91",
+      "id": "APT-DOM-077",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:7"
+    },
+    {
+      "key": "95c4a41e6a7d6ffceff456651add51379b64a098",
+      "id": "APT-DOM-078",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FactEnvelope:field:2"
+    },
+    {
+      "key": "96f72926227dbfd87d227fd3c729af9cc3218080",
+      "id": "APT-DOM-079",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ContentDigest:field:0"
+    },
+    {
+      "key": "9a96bd2d307abad40d5bddaba8741885cd81aed4",
+      "id": "APT-DOM-080",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ProbeRecommendationRef:field:2"
+    },
+    {
+      "key": "9c194903cfffdfb875c37fd7e833cb04ca8c2b7f",
+      "id": "APT-DOM-081",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:8"
+    },
+    {
+      "key": "9ce40bd561869cecf7850629aad9948ab439f05e",
+      "id": "APT-DOM-082",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:3"
+    },
+    {
+      "key": "9ce8731d3c3a79f84d82dcccdfaaf220fe873eb7",
+      "id": "APT-DOM-083",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExtractionProvenance:field:6"
+    },
+    {
+      "key": "9dc63e722969c708c48814bcf32cd267bd90ca98",
+      "id": "APT-DOM-084",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchAnswer:field:2"
+    },
+    {
+      "key": "9dd20e2921f5a8f95076ce6aead23bf69d9bf24d",
+      "id": "APT-DOM-085",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchClaimExtraction:field:1"
+    },
+    {
+      "key": "9ea19d5e864a9274409ab9b1b50156e828ce15af",
+      "id": "APT-DOM-086",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawSelector:field:1"
+    },
+    {
+      "key": "9f496a65cc97ae8e1178ed209a17b58f3e63ca94",
+      "id": "APT-DOM-087",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:0"
+    },
+    {
+      "key": "a7a3c7412cdb9e17989c88129a575b51cd615ba3",
+      "id": "APT-DOM-088",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ContentDigest:field:1"
+    },
+    {
+      "key": "a7d84f874c8d97374a6a35a4749a1933f0cfa952",
+      "id": "APT-DOM-089",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExtractionProvenance:field:5"
+    },
+    {
+      "key": "a9a211da4ec8427e9d556dc984d7d605afb4fc4d",
+      "id": "APT-DOM-090",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:8"
+    },
+    {
+      "key": "ad2a0119dbdbcdee68d7ca3bb82fc348bf3ba17e",
+      "id": "APT-DOM-091",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceClaimRelation:field:6"
+    },
+    {
+      "key": "b05958f985e3b8bb85d1cf60e0a24e82db2abe9d",
+      "id": "APT-DOM-092",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:9"
+    },
+    {
+      "key": "b1c4e43f8ec80762e68389699d7f8a80364a18a5",
+      "id": "APT-DOM-093",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:7"
+    },
+    {
+      "key": "b2c34499932d2603c042d4a1e3cf33ac96bc12a3",
+      "id": "APT-DOM-094",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:9"
+    },
+    {
+      "key": "b36a1d996491c0f333fbd8ff9ef085bf8f33b334",
+      "id": "APT-DOM-095",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Session:field:6"
+    },
+    {
+      "key": "b3c9ca2e23206a1d12e3e26003de23cc6fbfd7f0",
+      "id": "APT-DOM-096",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:7"
+    },
+    {
+      "key": "b3fc57f411ec8d170a00dd89b0d1e0483da81a3f",
+      "id": "APT-DOM-097",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:8"
+    },
+    {
+      "key": "b46a17f5f512923ce7a44aa821190b562b0f478c",
+      "id": "APT-DOM-098",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SessionDispatchLink:field:0"
+    },
+    {
+      "key": "b588b3a242887debc7d4970a29599eacd094a59d",
+      "id": "APT-DOM-099",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExtractionProvenance:field:0"
+    },
+    {
+      "key": "b61fd4d930f89bf60ac3c7b541c54a7172a75f53",
+      "id": "APT-DOM-100",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchAnswer:field:4"
+    },
+    {
+      "key": "b73fa85dd4fdb1651614888456adeb93fa941564",
+      "id": "APT-DOM-101",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:5"
+    },
+    {
+      "key": "b76e45329da92d87d31654c671ff2a05b2b48ff8",
+      "id": "APT-DOM-102",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:1"
+    },
+    {
+      "key": "b89c4ac1d5160912d1e9deac5d6dadc11b8a10cf",
+      "id": "APT-DOM-103",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:3"
+    },
+    {
+      "key": "bd672d7f1c49180466921b78340738ce9bf104d7",
+      "id": "APT-DOM-104",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchQuestion:field:0"
+    },
+    {
+      "key": "bddd56bb9e9cd4421f17ec2c20763180e39cffbe",
+      "id": "APT-DOM-105",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FactEnvelope:field:1"
+    },
+    {
+      "key": "be0d2d26291a43f38cfbaf144768b72fc5c655ad",
+      "id": "APT-DOM-106",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:4"
+    },
+    {
+      "key": "c0e08ba81a4d156a57e6da132e4d8e51ee32760e",
+      "id": "APT-DOM-107",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:2"
+    },
+    {
+      "key": "c1a9f60fbc5b9fae2d86646409cd4947ba16bb2d",
+      "id": "APT-DOM-108",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:6"
+    },
+    {
+      "key": "c22406b9a4d290df903b0860b8607dea2878f44a",
+      "id": "APT-DOM-109",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#Session:field:0"
+    },
+    {
+      "key": "c2dee3012b86cae4f6dc8392ddbe5e024c1a3ec9",
+      "id": "APT-DOM-110",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:4"
+    },
+    {
+      "key": "c80a3cd27e377cfe7b5381aec3053edda90ff9f0",
+      "id": "APT-DOM-111",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FactEnvelope:field:3"
+    },
+    {
+      "key": "c89963874d1bc3e766f45614d94eac3c8f61ce5f",
+      "id": "APT-DOM-112",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ExtractionProvenance:field:4"
+    },
+    {
+      "key": "cb2db928038b100c979abe329505e3b36937ce1e",
+      "id": "APT-DOM-113",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:13"
+    },
+    {
+      "key": "cbafdc2c8d8d72246dbd1cffb79fa7e62b631e5b",
+      "id": "APT-DOM-114",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceClaimRelation:field:3"
+    },
+    {
+      "key": "cc1892d9468c890164e8cdbb659a3ee35d30118b",
+      "id": "APT-DOM-115",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SessionDispatchLink:field:4"
+    },
+    {
+      "key": "cd4fae52a4fec12d576d8c5c51cb427174631659",
+      "id": "APT-DOM-116",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:14"
+    },
+    {
+      "key": "cd64bd3e29b9ad422dfccdce92bbd00da19ccbc6",
+      "id": "APT-DOM-117",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:5"
+    },
+    {
+      "key": "cf230fbc82cf9a95942fa50edc93fdb527faaa8b",
+      "id": "APT-DOM-118",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchClaimExtraction:field:2"
+    },
+    {
+      "key": "d1ef89bc015255affe2edc4882be46fdc374c754",
+      "id": "APT-DOM-119",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:1"
+    },
+    {
+      "key": "d2f32f59e06c15d1dd0dd975a0a6317c211f5f03",
+      "id": "APT-DOM-120",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceClaimRelation:field:2"
+    },
+    {
+      "key": "d36c12bfdb112b03b97f6dcdecc07703f95771ca",
+      "id": "APT-DOM-121",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ProbeRecommendationRef:field:6"
+    },
+    {
+      "key": "d47d9611c50e9cd351439b62c177dd3a6cb8aa5b",
+      "id": "APT-DOM-122",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:6"
+    },
+    {
+      "key": "d9be3df8b435cf3432b21db0eeb32c7619700dfe",
+      "id": "APT-DOM-123",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:5"
+    },
+    {
+      "key": "dbd449322a60416c282151229fc1e6544d178a58",
+      "id": "APT-DOM-124",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:0"
+    },
+    {
+      "key": "e07b70df426596cea776ea981c41de6efb9fa29d",
+      "id": "APT-DOM-125",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchProblem:field:0"
+    },
+    {
+      "key": "e23a50174ffe8ec8764ccb4fabd10339c3cc5559",
+      "id": "APT-DOM-126",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:2"
+    },
+    {
+      "key": "e4abfa4a86f2f4a5e0ef6a4ba0c8b867a0b0c810",
+      "id": "APT-DOM-127",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceClaimRelation:field:0"
+    },
+    {
+      "key": "e51637ed70e2af7be1da70634d3f2d5bc9ae4969",
+      "id": "APT-DOM-128",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ArtifactReference:field:6"
+    },
+    {
+      "key": "e7658367e25f5e369474cfbf98307b238a7bde1a",
+      "id": "APT-DOM-129",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchQuestion:field:4"
+    },
+    {
+      "key": "e8acd0833d258f8c01ea34f26db81381ef76ed1c",
+      "id": "APT-DOM-130",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:6"
+    },
+    {
+      "key": "e8de768fb6d68631a4a6bfb9033db3474a206cb9",
+      "id": "APT-DOM-131",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:7"
+    },
+    {
+      "key": "e91e59fe0909bfebae0a1a8004791aeb68e102d8",
+      "id": "APT-DOM-132",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#SessionDispatchLink:field:1"
+    },
+    {
+      "key": "ea10828deba1cbf60ee61feb0ce3d5a49fb37567",
+      "id": "APT-DOM-133",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ReferenceCheck:field:0"
+    },
+    {
+      "key": "ed72fd1dd93802f78d86ba678e891264133ff2b5",
+      "id": "APT-DOM-134",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchCapture:field:11"
+    },
+    {
+      "key": "ede0884e0e74d04dbf6cc39615c6d37e77bce7c8",
+      "id": "APT-DOM-135",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ProbeRecommendationRef:field:1"
+    },
+    {
+      "key": "efe7645b9a00054bf6a57389df4dd9177c9b91ed",
+      "id": "APT-DOM-136",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ProbeRecommendationRef:field:0"
+    },
+    {
+      "key": "f1f6850dc1bd7eab6cae3e6c6cb7801140a2ccf1",
+      "id": "APT-DOM-137",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:3"
+    },
+    {
+      "key": "f6834d2c95ddfb968ba0452cc484d1350300a354",
+      "id": "APT-DOM-138",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:10"
+    },
+    {
+      "key": "f6c9250b3ca16ec7b0979a28855e0eeb46f90c0c",
+      "id": "APT-DOM-139",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchReferenceUse:field:3"
+    },
+    {
+      "key": "f830ae7cd32faf53358d039f3c7d6f634dbababb",
+      "id": "APT-DOM-140",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#RawSelector:field:0"
+    },
+    {
+      "key": "fa33c8b72b5336389dc206f953f9638aad111422",
+      "id": "APT-DOM-141",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#FormalizationCandidate:field:2"
+    },
+    {
+      "key": "fc0053e379826edfa6ccc5caebe4bd8064d091cc",
+      "id": "APT-DOM-142",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchAnswer:field:0"
+    },
+    {
+      "key": "fe04509c942bfa14e0829f8e5606eed2733338a7",
+      "id": "APT-DOM-143",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#ResearchAnswer:field:3"
+    },
+    {
+      "key": "fe5b4b6ab0baa56bc42ab459c98d90999df01976",
+      "id": "APT-DOM-144",
+      "rule_type": "domain-field",
+      "anchor": "domain.md#DispatchAuthoritySnapshotRef:field:0"
+    },
+    {
+      "key": "213d70d8db36f73db494f1d34352a2836b15e29c",
+      "id": "APT-ENUM-001",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ReferenceCheckKind:enum"
+    },
+    {
+      "key": "30d04849187efbc753a6b410a372ae242e1a1908",
+      "id": "APT-ENUM-002",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#CaptureStatus:enum"
+    },
+    {
+      "key": "70f2966a3f594f48514b02c1a59676851f888a0b",
+      "id": "APT-ENUM-003",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ReferenceUseKind:enum"
+    },
+    {
+      "key": "7c3760faa6e3265b51f2eb7503e223dc94470a0c",
+      "id": "APT-ENUM-004",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ProblemDisposition:enum"
+    },
+    {
+      "key": "8067b39975cbe2c7ae952afca42e2afab11eff76",
+      "id": "APT-ENUM-005",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#FormalizationDisposition:enum"
+    },
+    {
+      "key": "888a223279ef3228e4f11766fa94c9b3ebeb133c",
+      "id": "APT-ENUM-006",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ClaimDisposition:enum"
+    },
+    {
+      "key": "a9289a3cde74a42d50c8573f217326cda1985bd6",
+      "id": "APT-ENUM-007",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ReferenceCheckResult:enum"
+    },
+    {
+      "key": "d2d7bc4e8821c0a2cd64da4d902b30a72cc7d7c6",
+      "id": "APT-ENUM-008",
+      "rule_type": "domain-enum",
+      "anchor": "domain.md#ExtractionMode:enum"
+    },
+    {
+      "key": "04b66ac2587877f68b5fc77af7eac3582a7d4633",
+      "id": "APT-ERR-001",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:6"
+    },
+    {
+      "key": "0ae8689eda20c4fe96e13e9ee9bb0bfcef5babf9",
+      "id": "APT-ERR-002",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:2"
+    },
+    {
+      "key": "0cdfd6da7fc1ba213a2d1aa267cab73ca1351bbc",
+      "id": "APT-ERR-003",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:7"
+    },
+    {
+      "key": "166ff06d2999a1af5a66681a6c6282dcf7c4f921",
+      "id": "APT-ERR-004",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:4"
+    },
+    {
+      "key": "171dceb41589d8f490ba440768e22b64eb4d6dcd",
+      "id": "APT-ERR-005",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:12"
+    },
+    {
+      "key": "183a0d6050487da232c9ba10bf0a2776a04d71ed",
+      "id": "APT-ERR-006",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#StartNewSession:errorstate:5"
+    },
+    {
+      "key": "1b642b2487a8ec6335b4df46715329c68af60922",
+      "id": "APT-ERR-007",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:3"
+    },
+    {
+      "key": "1c2cfe189c0ea395a313c2c85e1685fd54a31b65",
+      "id": "APT-ERR-008",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:1"
+    },
+    {
+      "key": "26a0e74a3219b0c4d691e3ca140d52dd74355e78",
+      "id": "APT-ERR-009",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:1"
+    },
+    {
+      "key": "2a25cdb0f0b8a5cce41f0aa64ee51a64a77681d5",
+      "id": "APT-ERR-010",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:8"
+    },
+    {
+      "key": "3230286218b5b3ef6483561cc8d335da9519343e",
+      "id": "APT-ERR-011",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:3"
+    },
+    {
+      "key": "3cbde3738413a8c76b625beaf970271932fab9c0",
+      "id": "APT-ERR-012",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:4"
+    },
+    {
+      "key": "3e5eed5ce260a1082faa52c38d7d1f629304c9d5",
+      "id": "APT-ERR-013",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:6"
+    },
+    {
+      "key": "3eea00e214ee1c68a075e4b8026e504356a85e71",
+      "id": "APT-ERR-014",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:14"
+    },
+    {
+      "key": "42201a21b7d22be5418ef74f4b46881fd809aab0",
+      "id": "APT-ERR-015",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#EnsureSession:errorstate:3"
+    },
+    {
+      "key": "467639c580a069b153c6c7f9ad74aa0a18227ae1",
+      "id": "APT-ERR-016",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:5"
+    },
+    {
+      "key": "4701ea92f2ce1ced651b038b4acd7a1b78deb1b8",
+      "id": "APT-ERR-017",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#StartNewSession:errorstate:1"
+    },
+    {
+      "key": "4f9690809d05c2005c1224bb1596b1fa6f814e32",
+      "id": "APT-ERR-018",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:8"
+    },
+    {
+      "key": "5092e6b0de458fd7c7a1cda2940a6f778e235172",
+      "id": "APT-ERR-019",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:9"
+    },
+    {
+      "key": "50d7e45eb408be713561cee7a1bcd12afb60a779",
+      "id": "APT-ERR-020",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#EnsureSession:errorstate:5"
+    },
+    {
+      "key": "5904e764d70d5056dfdd7666bc848da07e0ea89f",
+      "id": "APT-ERR-021",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#StartNewSession:errorstate:4"
+    },
+    {
+      "key": "5a3c1a7aef9a3b1162f5e65691e4de0df5a712da",
+      "id": "APT-ERR-022",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#StartNewSession:errorstate:0"
+    },
+    {
+      "key": "662a969623437e3cdf9d4fb1061de5bb6b207ca2",
+      "id": "APT-ERR-023",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:9"
+    },
+    {
+      "key": "692d14f8ff0d3e0a10714bdb2bc735c83ccb3a5d",
+      "id": "APT-ERR-024",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:7"
+    },
+    {
+      "key": "69de554d102adf51644fe1134cf97cac904fc7b9",
+      "id": "APT-ERR-025",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:3"
+    },
+    {
+      "key": "6a58a363c210e60a8ba14a8a5fe7243ce4d90eeb",
+      "id": "APT-ERR-026",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#StartNewSession:errorstate:3"
+    },
+    {
+      "key": "6e2b33b153d4d16aea197b9d828f728ff1a580fd",
+      "id": "APT-ERR-027",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:13"
+    },
+    {
+      "key": "75f5bd435bbb8b9b69b99803c5d76956be760d6e",
+      "id": "APT-ERR-028",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:7"
+    },
+    {
+      "key": "785844335baeb08b045c53a28ed0967cc9756c3c",
+      "id": "APT-ERR-029",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:2"
+    },
+    {
+      "key": "791d6a5fcf056d85a3b7d42be261fddb81075833",
+      "id": "APT-ERR-030",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:2"
+    },
+    {
+      "key": "7955ab22a9399231e31d66fb35828bca2668b601",
+      "id": "APT-ERR-031",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#EnsureSession:errorstate:2"
+    },
+    {
+      "key": "7c85a3f13d42ea9a5ae2e20903a5ebb59d9d2edd",
+      "id": "APT-ERR-032",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:5"
+    },
+    {
+      "key": "81bcc1b7e903fbdf8a7579f4c3d59f5e0285ae99",
+      "id": "APT-ERR-033",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:1"
+    },
+    {
+      "key": "83122c78092f9be31b9776049382c4fea4dd2e68",
+      "id": "APT-ERR-034",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#StartNewSession:errorstate:2"
+    },
+    {
+      "key": "8c112f2c77d09f8cabe3e79bb11dc0efa606d8e8",
+      "id": "APT-ERR-035",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:5"
+    },
+    {
+      "key": "942c96e965be4d222c69791827a0bd2995eaaf5c",
+      "id": "APT-ERR-036",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#EnsureSession:errorstate:4"
+    },
+    {
+      "key": "9de30f3e63f933ae740661f2105dbd23abc2823e",
+      "id": "APT-ERR-037",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:0"
+    },
+    {
+      "key": "9f74e0cc8fcf09300431432f97b3d01c8a141756",
+      "id": "APT-ERR-038",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:0"
+    },
+    {
+      "key": "a22e7c1fd47d35322c7dde257682e57a0acaca6c",
+      "id": "APT-ERR-039",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:3"
+    },
+    {
+      "key": "a326ae2c57b8aae71b82dc5baae1d59dfcf5e7da",
+      "id": "APT-ERR-040",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:10"
+    },
+    {
+      "key": "a6eaeb938fe33cb347cbf8e9bd5b894cc14fa7a8",
+      "id": "APT-ERR-041",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#EnsureSession:errorstate:1"
+    },
+    {
+      "key": "aa545f2fe6cfa92213cf9bdb4ae440e6ac196506",
+      "id": "APT-ERR-042",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:15"
+    },
+    {
+      "key": "af029ca2b080dba5d3e7bead32e2b19140d65d96",
+      "id": "APT-ERR-043",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:2"
+    },
+    {
+      "key": "b172693de628ace24aa0e80d53cba121ffd4277e",
+      "id": "APT-ERR-044",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:7"
+    },
+    {
+      "key": "c4b4ccb2abf0631ffefe6f831d806ffc145c7225",
+      "id": "APT-ERR-045",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:11"
+    },
+    {
+      "key": "c7a4f3ed0d8285d08423ab1ac15676fc15615f2d",
+      "id": "APT-ERR-046",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:6"
+    },
+    {
+      "key": "c8f8708ed1fcd523c176e5a228ca8415c260ab73",
+      "id": "APT-ERR-047",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#LinkSessionDispatch:errorstate:0"
+    },
+    {
+      "key": "cb360dd9b45ecb21f0e4c39cc935361da4fa37b3",
+      "id": "APT-ERR-048",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:8"
+    },
+    {
+      "key": "cde238688e393a1922a69e28d906bd4fae0aad2b",
+      "id": "APT-ERR-049",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:4"
+    },
+    {
+      "key": "ce82f4a0b70fee762e41f778f1da896dc2106e0d",
+      "id": "APT-ERR-050",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:0"
+    },
+    {
+      "key": "cf69cbabd763348f4f6125e49977d182ac8b3def",
+      "id": "APT-ERR-051",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#EnsureSession:errorstate:0"
+    },
+    {
+      "key": "d1f65cc650a57755a27b93cbc9535579f2448d42",
+      "id": "APT-ERR-052",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:4"
+    },
+    {
+      "key": "d75d7311320a88732185e569e2aec5ded70b4808",
+      "id": "APT-ERR-053",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:6"
+    },
+    {
+      "key": "dfe9c077c9ab87442f9f7b2df7a9acedc5293e14",
+      "id": "APT-ERR-054",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendReferenceProbeLineage:errorstate:5"
+    },
+    {
+      "key": "edfd7acaf7d3d02989c8e4ed38babe3bd4dfd860",
+      "id": "APT-ERR-055",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchCapture:errorstate:1"
+    },
+    {
+      "key": "fb1045206cf1844383cc856c0f55f4d3928beb1e",
+      "id": "APT-ERR-056",
+      "rule_type": "error-obligation",
+      "anchor": "operations.md#AppendResearchFact:errorstate:10"
+    },
+    {
+      "key": "0257f1a8743362b7208cffc67e407a2ead304bb0",
+      "id": "APT-EVT-001",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchCaptureAppended:consumer:1"
+    },
+    {
+      "key": "02db870d07616950f99daec2864cafa4fa956549",
+      "id": "APT-EVT-002",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchFactAppended"
+    },
+    {
+      "key": "0f1fbad0c34d5b59e9517abf56e37d25855d6272",
+      "id": "APT-EVT-003",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchFactAppended:consumer:1"
+    },
+    {
+      "key": "14d2a0c726636b990919aa0c0d774cdb00d7aa1c",
+      "id": "APT-EVT-004",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchCaptureAppended"
+    },
+    {
+      "key": "1cb5cffe2c5b85333464c3866ee43dd4b3de6c12",
+      "id": "APT-EVT-005",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ReferenceProbeLineageAppended:consumer:0"
+    },
+    {
+      "key": "23979e402b2a61c41d60780a598ddbace53bdba0",
+      "id": "APT-EVT-006",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ReferenceProbeLineageAppended"
+    },
+    {
+      "key": "29377114a107637a110cdd77d70290893ad01687",
+      "id": "APT-EVT-007",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionDispatchLinked:consumer:2"
+    },
+    {
+      "key": "2d6b67a6182153310ae046f154dde4d01805590b",
+      "id": "APT-EVT-008",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionStarted"
+    },
+    {
+      "key": "2e46a233aedd0c06a2dc8289a180779d314622eb",
+      "id": "APT-EVT-009",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchFactAppended:consumer:3"
+    },
+    {
+      "key": "40328d0101a21d89f41239b79f2ad1a7e37974d2",
+      "id": "APT-EVT-010",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionStarted:consumer:0"
+    },
+    {
+      "key": "5a56d456d2e27a5819f800ac8397aa5a835a8d8e",
+      "id": "APT-EVT-011",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ReferenceProbeLineageAppended:consumer:1"
+    },
+    {
+      "key": "5acc0219454b3729d6bbd4a96922fa2c58fe491b",
+      "id": "APT-EVT-012",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchCaptureAppended:consumer:0"
+    },
+    {
+      "key": "5fcd78caff4175a7b97abf7b5f5132f197486f2f",
+      "id": "APT-EVT-013",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionContextRebound:consumer:0"
+    },
+    {
+      "key": "842c8ea198ab5274d6887019c5bb6b2a50b5a95f",
+      "id": "APT-EVT-014",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionDispatchLinked"
+    },
+    {
+      "key": "928507963541e88d165342c554f708041807bdae",
+      "id": "APT-EVT-015",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionStarted:consumer:2"
+    },
+    {
+      "key": "a66374aa46f256871a5d6b19bb2a1303c1c84144",
+      "id": "APT-EVT-016",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchFactAppended:consumer:0"
+    },
+    {
+      "key": "ac579871f02130e519a2a2f5a6424fc4e5eff4b5",
+      "id": "APT-EVT-017",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionStarted:consumer:1"
+    },
+    {
+      "key": "b49e991998454eb3a9f2b2ac7e33eaba57a23cf4",
+      "id": "APT-EVT-018",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ReferenceProbeLineageAppended:consumer:3"
+    },
+    {
+      "key": "cf29ebff1b69e21f96423c7a5fb197c137c38af1",
+      "id": "APT-EVT-019",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionContextRebound"
+    },
+    {
+      "key": "d153adc093f6d31fc504cb401007acb6f139a0cb",
+      "id": "APT-EVT-020",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionDispatchLinked:consumer:1"
+    },
+    {
+      "key": "d6ed299bd8f60084464d14c4eac57c44cd0f3c6f",
+      "id": "APT-EVT-021",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Event Coverage and Test Derivation"
+    },
+    {
+      "key": "dc2a823d911e3630b8c23223e7a1923d8855d98d",
+      "id": "APT-EVT-022",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchCaptureAppended:consumer:2"
+    },
+    {
+      "key": "de878226b49382714c582f08b4decd2882d2a36c",
+      "id": "APT-EVT-023",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionContextRebound:consumer:1"
+    },
+    {
+      "key": "e3d1a7e02adfdf5baf152414ff7b79851ec9245e",
+      "id": "APT-EVT-024",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionContextRebound:consumer:2"
+    },
+    {
+      "key": "e7a6877a46679d67cfad87f7ba0b312d5365a02d",
+      "id": "APT-EVT-025",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ReferenceProbeLineageAppended:consumer:2"
+    },
+    {
+      "key": "eadb7fecd4859bcfe1de1ec0ce4154c76c0c7c7d",
+      "id": "APT-EVT-026",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#SessionDispatchLinked:consumer:0"
+    },
+    {
+      "key": "ee70586fa5c30be5f0841f963081903fa9eddcb3",
+      "id": "APT-EVT-027",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Connections"
+    },
+    {
+      "key": "fe7b9c90b9f97f6bd69e97bb47145a4687edd5dc",
+      "id": "APT-EVT-028",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#ResearchFactAppended:consumer:2"
+    },
+    {
+      "key": "ffbe88f917e7560f6f5523f6f17dbeff0c825489",
+      "id": "APT-EVT-029",
+      "rule_type": "event-obligation",
+      "anchor": "events.md#Common Event Boundary"
+    },
+    {
+      "key": "09e98f24072f9b52ffa16db6046052b585bf8acc",
+      "id": "APT-MAP-001",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#ProvenanceFactsToReadModels"
+    },
+    {
+      "key": "245149dc43fe925e06b4848a2ebbfadd60749fb9",
+      "id": "APT-MAP-002",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#APTFactToACIEvent"
+    },
+    {
+      "key": "2c2db8e4cbdbb28e3efbf458013b489ab934044f",
+      "id": "APT-MAP-003",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#Fact Intent to Exact Payload and FactEnvelope"
+    },
+    {
+      "key": "50a5955a8429a28474d68577be08ecc7b83ed42f",
+      "id": "APT-MAP-004",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#Accepted ACI Events to Projection Rows"
+    },
+    {
+      "key": "71ff9d21614d58235d3d84d2a69f937e22aaa7d0",
+      "id": "APT-MAP-005",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#ProbeBundleToReferenceLineage"
+    },
+    {
+      "key": "8174fc2330e36bdba6a77bd8d504e3a73f7eac3b",
+      "id": "APT-MAP-006",
+      "rule_type": "mapping-row",
+      "anchor": "mappings.md#Caller Intents to Bound Commands"
+    },
+    {
+      "key": "038829fe3110dda361a13a130c3ddc535489f737",
+      "id": "APT-NF-001",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:0"
+    },
+    {
+      "key": "07191df175eb4c80b2cb7d37d6f73f782a413f87",
+      "id": "APT-NF-002",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#LinkSessionDispatch:calculation:0"
+    },
+    {
+      "key": "07a164607e84a285adfc60f14441c51a7eecec37",
+      "id": "APT-NF-003",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:rule:4"
+    },
+    {
+      "key": "094d9b2a86ff9084b7f072cb9a1b1fef38e325cd",
+      "id": "APT-NF-004",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:4"
+    },
+    {
+      "key": "0d2b4c63bab8d69692f57a222832978dc2a2834a",
+      "id": "APT-NF-005",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:7"
+    },
+    {
+      "key": "14cdac4a721001a58c1398abd29b5c339216ebac",
+      "id": "APT-NF-006",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartNewSession:rule:4"
+    },
+    {
+      "key": "202430ca1a780435ba1f4fd72baa8308a619e81b",
+      "id": "APT-NF-007",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:10"
+    },
+    {
+      "key": "2a79744b42031f469a59350d686c9444e5bc1685",
+      "id": "APT-NF-008",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#LinkSessionDispatch:rule:0"
+    },
+    {
+      "key": "2dbca5fa09f8b026ea6ebb89ec94597005ce2e4c",
+      "id": "APT-NF-009",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:8"
+    },
+    {
+      "key": "311f9d06b186015c14297cf5d73b84b30464f79e",
+      "id": "APT-NF-010",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:1"
+    },
+    {
+      "key": "3551bca70f8bed3f56839e09f9f21bed4eb6b1ce",
+      "id": "APT-NF-011",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#LinkSessionDispatch:rule:2"
+    },
+    {
+      "key": "35893edaec8d40326c0fa8ed2faaf3f2b854f0f1",
+      "id": "APT-NF-012",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:14"
+    },
+    {
+      "key": "36132ab07907829b9594bcef7b13677a413e4bb0",
+      "id": "APT-NF-013",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:7"
+    },
+    {
+      "key": "3ed9d9feff4ceb67d62dffd7ee8e6f57982ef1fd",
+      "id": "APT-NF-014",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:4"
+    },
+    {
+      "key": "3f5024325a408a0bd40b4d746bcac9a894e0da10",
+      "id": "APT-NF-015",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartNewSession:rule:0"
+    },
+    {
+      "key": "4195d1f186fdb1d7f2177242ff61aa446c62ec22",
+      "id": "APT-NF-016",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:2"
+    },
+    {
+      "key": "4240c64681c2b43479fbae63302dd416afcae8d4",
+      "id": "APT-NF-017",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:calculation:1"
+    },
+    {
+      "key": "4335732a92380def280bb7a99674a07f65e40de6",
+      "id": "APT-NF-018",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#LinkSessionDispatch:rule:3"
+    },
+    {
+      "key": "45385c00e36b075e5cf1677bf8cb16906dcf7748",
+      "id": "APT-NF-019",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Research Capture Currentness:invariant:5"
+    },
+    {
+      "key": "470d246e19fc42a72cf183bd1a27551597e4866e",
+      "id": "APT-NF-020",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:5"
+    },
+    {
+      "key": "4894d5482e72bc005e75e42e0b177d69bb9cc536",
+      "id": "APT-NF-021",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Research Capture Currentness:invariant:0"
+    },
+    {
+      "key": "4935f75c324259bd1fc672b86004519d0722d872",
+      "id": "APT-NF-022",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:rule:1"
+    },
+    {
+      "key": "5099a118261ef7b6c2ac09b342110bfa50e0e84f",
+      "id": "APT-NF-023",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:6"
+    },
+    {
+      "key": "54be30cdd056168a1d665deedc956c77da77e075",
+      "id": "APT-NF-024",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:1"
+    },
+    {
+      "key": "55df1893d6d28405ed1e85afbec35c84961f0716",
+      "id": "APT-NF-025",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:1"
+    },
+    {
+      "key": "5a14ecf0d3932cbdc307569d2c4903e842b29259",
+      "id": "APT-NF-026",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:3"
+    },
+    {
+      "key": "5cb5581de71ea60b40368e6c7294aa27bf43dd8b",
+      "id": "APT-NF-027",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:7"
+    },
+    {
+      "key": "5e22e8aa98298058f434b1614ee815f1a477547f",
+      "id": "APT-NF-028",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:9"
+    },
+    {
+      "key": "64fca2ee66eb7ef1853be0b38a2262643f9d20c6",
+      "id": "APT-NF-029",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:10"
+    },
+    {
+      "key": "65a4fabd1f0371d515e9adbf860115e17a3021a8",
+      "id": "APT-NF-030",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:5"
+    },
+    {
+      "key": "691aedd4b016e58be94fa8435abf1bf1ee1b06dc",
+      "id": "APT-NF-031",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:calculation:0"
+    },
+    {
+      "key": "6ecf1673401b027a9d50252dd75e89b70eb954fe",
+      "id": "APT-NF-032",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:6"
+    },
+    {
+      "key": "719f03ffddf3f5c03d46a17bc9717f359cbc232f",
+      "id": "APT-NF-033",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:3"
+    },
+    {
+      "key": "73275b98403745bae2473230be94875ab238495c",
+      "id": "APT-NF-034",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:8"
+    },
+    {
+      "key": "74702927404f2176c0a4602c14c4f30b1277fc5a",
+      "id": "APT-NF-035",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:4"
+    },
+    {
+      "key": "74e287efa5c1307e334108f301d55a4e06c3b8cd",
+      "id": "APT-NF-036",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:0"
+    },
+    {
+      "key": "791f7bced189da619db17dbeab47bef359aff6e2",
+      "id": "APT-NF-037",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:2"
+    },
+    {
+      "key": "79a8ba1de4349be5c7fcb2b6f36a881fe0e5b31c",
+      "id": "APT-NF-038",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Research Capture Currentness:invariant:4"
+    },
+    {
+      "key": "7d6c53ac2621c1a9120fae74cf93be91ca49e731",
+      "id": "APT-NF-039",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:11"
+    },
+    {
+      "key": "825dce5cdadbc52bed1f5c47a05339b4845d3016",
+      "id": "APT-NF-040",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:11"
+    },
+    {
+      "key": "82de877a85b627236715ba914df089e2e91a97ca",
+      "id": "APT-NF-041",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:6"
+    },
+    {
+      "key": "8616acb6885acdd815a8638ed3cef190d862b2b3",
+      "id": "APT-NF-042",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:rule:3"
+    },
+    {
+      "key": "86b7523748e181d456f8cce3d803bff9c55a1e9c",
+      "id": "APT-NF-043",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#LinkSessionDispatch:rule:4"
+    },
+    {
+      "key": "8aa691b7aa9ed9e24c4d6a6ec6ace98053f396a4",
+      "id": "APT-NF-044",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:calculation:0"
+    },
+    {
+      "key": "95896be25a2146b6b76f8aff384ae0699884c861",
+      "id": "APT-NF-045",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:13"
+    },
+    {
+      "key": "96f1cc1487e2b8f06415da67081b6d1b981ae3b1",
+      "id": "APT-NF-046",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartNewSession:calculation:1"
+    },
+    {
+      "key": "99b54fb113cd9537c2c4a7f47d14e54876a660e7",
+      "id": "APT-NF-047",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:calculation:2"
+    },
+    {
+      "key": "9a0e2c309d0cd3e9e0c01f74d933df2ad3abd27a",
+      "id": "APT-NF-048",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:calculation:0"
+    },
+    {
+      "key": "9b742bc159df4e7929c96c5c5b0b9fca4cf0e936",
+      "id": "APT-NF-049",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:7"
+    },
+    {
+      "key": "9c0e3e7b3ac0b9d8abebe603b7af8a01eee92dc6",
+      "id": "APT-NF-050",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:16"
+    },
+    {
+      "key": "a298b53efcf0a3e991f768e448146b09d320a175",
+      "id": "APT-NF-051",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Research Capture Currentness:invariant:2"
+    },
+    {
+      "key": "a93710897e78e141aa8b9fc536efce212a97a98f",
+      "id": "APT-NF-052",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartNewSession:rule:2"
+    },
+    {
+      "key": "aa36b89d42327007087e6f6eb9bb9feee376ce5c",
+      "id": "APT-NF-053",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Research Capture Currentness:invariant:3"
+    },
+    {
+      "key": "abc20b0c7e3ad3934db29740c8165c63183e62af",
+      "id": "APT-NF-054",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:4"
+    },
+    {
+      "key": "b23e9c941909a058e1dcc8bd6b072c3bdbb3da99",
+      "id": "APT-NF-055",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:2"
+    },
+    {
+      "key": "b2f6fa96eb3d13ac895d37006d2c9331a3a2e60d",
+      "id": "APT-NF-056",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartNewSession:rule:3"
+    },
+    {
+      "key": "b3eb9fa3075f7d11962d93d72ea1414354d2cb5c",
+      "id": "APT-NF-057",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:3"
+    },
+    {
+      "key": "ba05d7df9e6d1fec7d9039e3f3a36014a4cc9cb4",
+      "id": "APT-NF-058",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#LinkSessionDispatch:rule:1"
+    },
+    {
+      "key": "bd6822b7ee79a9c7e25f2c7c75a59525d1a12ba4",
+      "id": "APT-NF-059",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Research Capture Currentness:invariant:1"
+    },
+    {
+      "key": "c2c3dd761dcc6b23a70822a49a78f4c2a9703535",
+      "id": "APT-NF-060",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:3"
+    },
+    {
+      "key": "c6ebac3672302ad002304d06c3a5bef3dbea1c3c",
+      "id": "APT-NF-061",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:8"
+    },
+    {
+      "key": "c7debd40870e19b9e31154472cf91e8383653df2",
+      "id": "APT-NF-062",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartNewSession:rule:1"
+    },
+    {
+      "key": "ca89d4a40de59672dddc495d1e1e263d6a4db009",
+      "id": "APT-NF-063",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:rule:5"
+    },
+    {
+      "key": "cbd19e5e3a1f69b3d50688d8b5b0da150d595bac",
+      "id": "APT-NF-064",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:0"
+    },
+    {
+      "key": "d139239bddec05cc566e677e0606e98eabc6f2d7",
+      "id": "APT-NF-065",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:6"
+    },
+    {
+      "key": "d6f847a5a5bf9eba3386d6ec142c3a75c5d755b8",
+      "id": "APT-NF-066",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:9"
+    },
+    {
+      "key": "d872803cc90a14bd3503e3a903a1110da4a1cb53",
+      "id": "APT-NF-067",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:5"
+    },
+    {
+      "key": "dcd4c6d9941c3c1a7e6d2f5f10bb552efb0d2548",
+      "id": "APT-NF-068",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:5"
+    },
+    {
+      "key": "dd4312eff3caed9c635726bb1c5a1ced712f5c76",
+      "id": "APT-NF-069",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:calculation:1"
+    },
+    {
+      "key": "e1c40d73f97abd678b94767b70703c4a4ebadd8b",
+      "id": "APT-NF-070",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:calculation:0"
+    },
+    {
+      "key": "e498d8eea55ee54dc29210aa6e2b583a9fb5ac9f",
+      "id": "APT-NF-071",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:rule:0"
+    },
+    {
+      "key": "e50e9e2895f5e86a72be828080b2d0054ee41de3",
+      "id": "APT-NF-072",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:12"
+    },
+    {
+      "key": "e5a0c188153aeba78a548f081af78d5b3240ad7a",
+      "id": "APT-NF-073",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#EnsureSession:rule:2"
+    },
+    {
+      "key": "eaee41ab8358d1cb7398560dd240ac27278ddbf9",
+      "id": "APT-NF-074",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#StartNewSession:calculation:0"
+    },
+    {
+      "key": "f025f8cbc6e2169847b6fdf1cae36e69f4a3585b",
+      "id": "APT-NF-075",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:calculation:2"
+    },
+    {
+      "key": "f08103607de39b8f9332ef29e188e401970ffd07",
+      "id": "APT-NF-076",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchFact:rule:0"
+    },
+    {
+      "key": "f0d08995030e612b7e42114533692883168b4fc0",
+      "id": "APT-NF-077",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendResearchCapture:rule:1"
+    },
+    {
+      "key": "f8daa72e229ad968ce05c7799b80418bd7dd28c8",
+      "id": "APT-NF-078",
+      "rule_type": "needs-formal",
+      "anchor": "states.md#Session Context Binding:invariant:2"
+    },
+    {
+      "key": "fe0a7350e8304205b9c94fd625114583f9b83f48",
+      "id": "APT-NF-079",
+      "rule_type": "needs-formal",
+      "anchor": "operations.md#AppendReferenceProbeLineage:rule:15"
+    },
+    {
+      "key": "209af3e241d5ec5d838672e3f591516400d81940",
+      "id": "APT-QRY-001",
+      "rule_type": "query-behavior",
+      "anchor": "queries.md#ResearchRecord"
+    },
+    {
+      "key": "499139d5e3a010bd34bb2ccafbd839ed5d054cc4",
+      "id": "APT-QRY-002",
+      "rule_type": "query-behavior",
+      "anchor": "queries.md#AgentReferenceLineage"
+    },
+    {
+      "key": "56779fac269426bb8e7cfc4ea683520133a7e6ca",
+      "id": "APT-QRY-003",
+      "rule_type": "query-behavior",
+      "anchor": "queries.md#SessionRecord"
+    },
+    {
+      "key": "f00f06bcd95b81ab885940f4d52b7bd5fcebb7f3",
+      "id": "APT-QRY-004",
+      "rule_type": "query-behavior",
+      "anchor": "queries.md#DispatchScopeProjection"
+    },
+    {
+      "key": "0b26f9ed6c268ac4d0ba377ebae01d2613ccc57b",
+      "id": "APT-TR-001",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#Research Capture Currentness:transition:0"
+    },
+    {
+      "key": "0f6925626a8e75152dada040743967b4a700a41b",
+      "id": "APT-TR-002",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Research Capture Currentness:invalid:replacement is head; predecessor is derived superseded:grouped initial `ResearchCaptureAppended`"
+    },
+    {
+      "key": "1602249fb6ff7261f5e459855199ffc1e179b685",
+      "id": "APT-TR-003",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Session Context Binding:invalid:bound to new Session:authorized `StartNewSession` atomic acceptance"
+    },
+    {
+      "key": "1c2442e73aed3067ee74d2145a4f208abb18be75",
+      "id": "APT-TR-004",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#Research Capture Currentness:transition:1"
+    },
+    {
+      "key": "2bcacc4ae271b26b6624c33953735ab701bd7699",
+      "id": "APT-TR-005",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#Session Context Binding:transition:1"
+    },
+    {
+      "key": "317f08f0235a2951f20b5f7126db2c30d6745045",
+      "id": "APT-TR-006",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Session Context Binding:invalid:unbound:authorized `StartNewSession` atomic acceptance"
+    },
+    {
+      "key": "42b70519f6b6391553a475cbd5ea00e305738896",
+      "id": "APT-TR-007",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Session Context Binding:invalid:bound to new Session:`EnsureSession` acceptance represented by grouped `SessionStarted`"
+    },
+    {
+      "key": "5927516b6b040e3166ddb3a561ca86bdf61c2f9a",
+      "id": "APT-TR-008",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Research Capture Currentness:invalid:replacement is head; predecessor is derived superseded:grouped replacement `ResearchCaptureAppended`"
+    },
+    {
+      "key": "62cd09f256f6eaad1da77309cf66e4e99a13726f",
+      "id": "APT-TR-009",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Session Context Binding:invalid:bound to successor:authorized `StartNewSession` atomic acceptance"
+    },
+    {
+      "key": "69fd7f63a797ccfed2e20dadb61b9a63388e1931",
+      "id": "APT-TR-010",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Research Capture Currentness:invalid:new capture is head:grouped replacement `ResearchCaptureAppended`"
+    },
+    {
+      "key": "77eedcbe4a6624a5e34fdf475339052ed7078464",
+      "id": "APT-TR-011",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Research Capture Currentness:invalid:new capture is head:grouped initial `ResearchCaptureAppended`"
+    },
+    {
+      "key": "be0e3c4bca2dcb267da566ccc77f5c163ea8a58e",
+      "id": "APT-TR-012",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Research Capture Currentness:invalid:current head:grouped initial `ResearchCaptureAppended`"
+    },
+    {
+      "key": "c24e2711f630ed03e701eca077994a88892292c0",
+      "id": "APT-TR-013",
+      "rule_type": "valid-transition",
+      "anchor": "states.md#Session Context Binding:transition:0"
+    },
+    {
+      "key": "cdca16662fd886783bee1d4d049166574dd62d63",
+      "id": "APT-TR-014",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Session Context Binding:invalid:bound to successor:`EnsureSession` acceptance represented by grouped `SessionStarted`"
+    },
+    {
+      "key": "ec85688c69524447e582b4883c71fbd6c56082f5",
+      "id": "APT-TR-015",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Research Capture Currentness:invalid:no head for chain:grouped replacement `ResearchCaptureAppended`"
+    },
+    {
+      "key": "f787b8a3369eb98b8593d9b24ad2b28bae184d2a",
+      "id": "APT-TR-016",
+      "rule_type": "invalid-transition",
+      "anchor": "states.md#Session Context Binding:invalid:bound to predecessor:`EnsureSession` acceptance represented by grouped `SessionStarted`"
+    },
+    {
+      "key": "04b73811f5858bd1adf162f631fa2f24e3110c54",
+      "id": "APT-WF-001",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:5"
+    },
+    {
+      "key": "1d6b9e2b4b3cb9b6a78ddf83b13177db01d992a7",
+      "id": "APT-WF-002",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:2"
+    },
+    {
+      "key": "204c22ec40bacf799c0aa7d154bdac28f7efacea",
+      "id": "APT-WF-003",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:0"
+    },
+    {
+      "key": "2564e51435c7f007e5c076b3705a148b9b9dce01",
+      "id": "APT-WF-004",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#IngestReferenceProbeLineage:step:5"
+    },
+    {
+      "key": "2e7c0413b4a9ea540458dc99ee71e78c5c8d4f00",
+      "id": "APT-WF-005",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:2"
+    },
+    {
+      "key": "31c1c629a345eec9d8c0b7180f9a6564e256d9fc",
+      "id": "APT-WF-006",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#IngestReferenceProbeLineage:step:3"
+    },
+    {
+      "key": "4ee2dee3a50253756a728882bca5647175a6b42c",
+      "id": "APT-WF-007",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:7"
+    },
+    {
+      "key": "5593708ec3bb3dced0a05aa92dc1ad31f5b65929",
+      "id": "APT-WF-008",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:5"
+    },
+    {
+      "key": "592497bd2d5ee7311641770d9f7eb6371770ae64",
+      "id": "APT-WF-009",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:6"
+    },
+    {
+      "key": "6b5702420b64f8a31b31f384aa6447c6abcf68b1",
+      "id": "APT-WF-010",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:1"
+    },
+    {
+      "key": "833580f3055d62eef0694a948b7f6cf5541faf31",
+      "id": "APT-WF-011",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:9"
+    },
+    {
+      "key": "87328aba13ca86e54ad2d6d4b928c936a3cdf991",
+      "id": "APT-WF-012",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#IngestReferenceProbeLineage:step:1"
+    },
+    {
+      "key": "93a333e556330ea591c95f696cf01cd5c7b511f7",
+      "id": "APT-WF-013",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:10"
+    },
+    {
+      "key": "9ce8a821f435c84856a1d5cdfb4cd094123291a2",
+      "id": "APT-WF-014",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#IngestReferenceProbeLineage:step:0"
+    },
+    {
+      "key": "9f9f36aae1fa146320e229ce79c547c0df2b53f3",
+      "id": "APT-WF-015",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:8"
+    },
+    {
+      "key": "9fee2008b24125783ba581e069f49039771583c0",
+      "id": "APT-WF-016",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#IngestReferenceProbeLineage:step:2"
+    },
+    {
+      "key": "9fef3984bb763d8b29725f6b1c37514e6f7e897f",
+      "id": "APT-WF-017",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:6"
+    },
+    {
+      "key": "a6b1a5a91bef2b9d1fa2c5e2ace5d9d4fce20aa1",
+      "id": "APT-WF-018",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#IngestReferenceProbeLineage:step:4"
+    },
+    {
+      "key": "ace41473eedcf028a1f82a6967e7df0c415a84d0",
+      "id": "APT-WF-019",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:3"
+    },
+    {
+      "key": "b525903d06d18d3f0327490aef12a305dc8675f7",
+      "id": "APT-WF-020",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#IngestReferenceProbeLineage:step:0"
+    },
+    {
+      "key": "b5a4fb50cab656414136b4bbf7dc927d2f409bf2",
+      "id": "APT-WF-021",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:0"
+    },
+    {
+      "key": "b74adac4a2fa8e345b8a99485cc7934abf587ac8",
+      "id": "APT-WF-022",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:8"
+    },
+    {
+      "key": "be12b78beed955a4549b4b22a23b6cf0acb94863",
+      "id": "APT-WF-023",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:3"
+    },
+    {
+      "key": "c0baf55be9366273f41866cf18e7c7103be39e59",
+      "id": "APT-WF-024",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:0"
+    },
+    {
+      "key": "c8f7c577ad6f7798d0e94efe66e419c55b37318e",
+      "id": "APT-WF-025",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:4"
+    },
+    {
+      "key": "d278dc406f4d5a80e00b583fbcb9ee7910bc5731",
+      "id": "APT-WF-026",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:4"
+    },
+    {
+      "key": "d5d8871c427a05c7aef180508f45e9331142fa15",
+      "id": "APT-WF-027",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#CaptureAndEnrichResearch:step:7"
+    },
+    {
+      "key": "ef3b6f289da7254fb86bd2a9c25d52168b0cfd8b",
+      "id": "APT-WF-028",
+      "rule_type": "workflow-step",
+      "anchor": "workflows.md#StartOrReuseSession:step:1"
+    }
+  ],
+  "next": {
+    "EVT": 30,
+    "NF": 80,
+    "ERR": 57,
+    "WF": 29,
+    "DOM": 145,
+    "MAP": 7,
+    "TR": 17,
+    "QRY": 5,
+    "ENUM": 9,
+    "CALC": 10
+  },
+  "tombstones": []
+}

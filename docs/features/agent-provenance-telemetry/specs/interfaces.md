@@ -5,12 +5,12 @@ is_session: false
 layer: application
 nature: technical, reference
 status: draft
-version: 0.1.0
-last_updated: 2026-07-23
+version: 0.2.0
+last_updated: 2026-07-25
 feature: agent-provenance-telemetry
 specAuthoringGate: in-review
 runtimeGate: block
-derivedFrom: SPEC.md@0.1.0
+derivedFrom: SPEC.md@0.2.0
 ---
 
 # Interfaces: Agent Provenance Telemetry
@@ -527,9 +527,35 @@ it never reruns current policy.
 | Method | Input | Output | Used By |
 |---|---|---|---|
 | `resolve(source_observation_id)` | opaque host-owned ID | committed owner/version/digest evidence or `not_found` | reference use, probe ingress and failure evidence |
+| `bind_agent_reference_observations(dispatch_id, target_resolution, delivery_snapshot, effective_as_of)` | exact owner-verified target/delivery wrappers | closed `unavailable` or complete owner-authored `available` observation manifest from [AgentReferenceLineage](queries.md#agentreferencelineage) | agent-reference query binder |
 
 Absence stays null. Locator similarity cannot synthesize a source observation. The result proves
-only the meaning defined by the host observation contract.
+only the meaning defined by the host observation contract. The current Stage-G contract returns the
+closed `unavailable` variant because it lacks authoritative observation-to-delivery plus Attempt
+binding; APT cannot upgrade current ingestion rows into `available`.
+Both variants serialize the same closed
+`scope {dispatch_id,target_resolution_digest,aci_delivery_snapshot_digest}`. The binder requires
+that scope to equal the Query intent and pinned complete-wrapper digests before reduction; the
+`available.owner_manifest_digest` includes the scope in its non-self-referential preimage.
+
+### HostAgentActivationBindingEvidencePort
+
+**Contract status:** specified for the next bounded slice; not implemented by the current pilot.
+
+| Method | Input | Output | Used By |
+|---|---|---|---|
+| `bind_capture_producers(scope, capture_producer_selector, effective_as_of)` | closed exact `scope {dispatch_id,target_resolution_digest,aci_delivery_snapshot_digest,probe_scout_bindings_digest,capture_producer_selector_digest}`, canonical binder-derived selector and verified effective boundary | complete owner-authored `producer_resolution` wrapper from [AgentReferenceLineage](queries.md#agentreferencelineage), or typed integrity failure | agent-reference query binder before pure reduction |
+
+The binder derives `capture_producer_selector` from verified current APT facts and the already
+verified target/delivery/probe wrappers. A caller cannot supply relationships, members or owner
+evidence. The port requires exactly
+`owner_namespace="host"`, `owner_contract_id="host.AgentActivationBinding"` and the expected
+contract version; verifies exact scope, `accepted_through<=effective_as_of`, non-self-referential
+owner manifest digest, complete one-member-per-selector cardinality, accepted Attempt event/group
+evidence and the `activation_id` child binding to that same complete Attempt tuple. Missing, extra,
+duplicate, future, cross-scope, ambiguous or digest-mismatched members fail closed. Locator,
+persona, model label, timestamp and text equality are forbidden joins. Only the verified wrapper
+enters the bound request; the reducer performs zero owner or external calls.
 
 ### ArtifactFinalizationVerifier
 
@@ -573,6 +599,22 @@ pin; it does not add an offset field to the legacy variant. The caller supplies 
 `requested_o/effective_as_of` remains the separate APT query-prefix boundary. Current mutable
 Dispatch reads never enter deterministic query results or hashes.
 
+### ACIAgentReferenceEvidenceReader
+
+**Contract status:** specified for the next bounded slice; not implemented.
+
+| Method | Input | Output | Boundary rule |
+|---|---|---|---|
+| `resolve_targets(dispatch_id, target_selector, effective_as_of)` | exact Dispatch plus closed `attempt \| seat \| agent_instance` selector | complete closed `target_resolution` wrapper from [AgentReferenceLineage](queries.md#agentreferencelineage) | ACI owner resolves Attempt/seat/agent-instance; caller names no relationships. |
+| `read_target_deliveries(dispatch_id, target_resolution_digest, effective_as_of)` | exact query scope plus verified complete target-wrapper digest | complete closed `aci_delivery_snapshot` wrapper | Accepted `AgentReferenceDelivery` and effective-input facts only; locators are forbidden. |
+| `verify_reference_bundle_entry(delivery_member)` | one delivery member and its event/effective-input refs | same member after event/group/digest/artifact/entry verification or typed failure | Cannot synthesize delivery, amend the manifest or return raw bundle bytes. |
+
+Both wrapper methods return owner namespace/contract/version, serialized query scope,
+`accepted_through`, non-self-referential owner manifest digest and the complete duplicate-rejecting
+canonical member set. Unexpected owner identity/version, omitted member, future member, scope/digest
+swap or incomplete atomic group fails closed. This reader exposes no lookup by locator, title, DOI,
+persona or model label.
+
 ### ACIProfileReceiptVerifier
 
 | Method | Input | Output | Used By |
@@ -593,6 +635,7 @@ Verification does not register a profile, repair a receipt or accept an event.
 | `read_fact_head(subject_id, as_of)` | stable fact subject | current fact/event ref or null | fact CAS evidence |
 | `read_aggregate_head(aggregate_id, as_of)` | explicit disposition/assessment aggregate | head event/version or null | aggregate CAS evidence |
 | `read_delivery_head(delivery_subject_key, as_of)` | stable probe recommendation composite | delivery event ref or null | probe dependency/CAS evidence |
+| `read_probe_scout_binding_manifest(dispatch_id, aci_delivery_snapshot_digest, as_of)` | exact Dispatch and verified delivery-wrapper digest | complete closed `probe_scout_bindings` wrapper | Legacy v1 alias is unique per exact commit/bundle or canonically absent; forks fail closed. |
 
 This reader exposes accepted state; it cannot append, reserve IDs, lock future heads or provide
 mutable store access.
@@ -616,9 +659,9 @@ delivery as source access/use/support. It uses ACI profile/receipt verification 
 **Consumers:** existing orchestration read surfaces and authorized internal reviewers.  
 **Mutation:** none.
 
-The three methods below are the complete planned L0 query surface from the
-[SPEC Concept Registry](SPEC.md#concept-registry). The dedicated queries aspect is not yet authored;
-these signatures reserve its boundary without claiming query implementation.
+The four methods below are the complete specified query surface from the
+[SPEC Concept Registry](SPEC.md#concept-registry). They define contracts without claiming query
+implementation.
 
 ### Query Request and Result
 
@@ -638,6 +681,16 @@ DispatchQueryIntent = closed {
 ResearchQueryIntent = closed {
   schema_ref="apt.research-record-query@1",
   research_capture_id,
+  requested_o
+}
+
+AgentReferenceQueryIntent = closed {
+  schema_ref="apt.agent-reference-lineage-query@1",
+  dispatch_id,
+  target: closed
+    {kind="attempt",attempt_id}
+    | {kind="seat",seat_id}
+    | {kind="agent_instance",agent_instance_id},
   requested_o
 }
 
@@ -683,9 +736,13 @@ ResearchPinnedInputManifest = closed {
   research_capture: closed {research_capture_id, capture_event_ref, capture_digest},
   dispatch_snapshot_ref
 }
+
+AgentReferencePinnedInputManifest =
+  exact closed owner-bound shape in
+  queries.md#agentreferencelineage
 ```
 
-The three `*QueryIntent` shapes are caller-owned exhaustive allowlists. A caller-authored
+The four `*QueryIntent` shapes are caller-owned exhaustive allowlists. A caller-authored
 `pinned_input_manifest`, `pinned_input_digests`, `effective_as_of`, `projection_hash`,
 `snapshot_digest` or display snapshot is forbidden. The query binder maps the one schema-specific
 identity field to `identity` and creates `BoundQueryRequest`; its manifest variant is fixed by the
@@ -697,6 +754,7 @@ method and owner-bound after verification. Callers cannot add, remove or replace
 | `get_session_record` | `accepted_prefix_grouping = H_ACI(canonical(accepted_prefix))` |
 | `get_dispatch_scope_projection` | `dispatch_snapshot = H_ACI(canonical(dispatch_snapshot_ref))` |
 | `get_research_record` | `research_capture = H_ACI(canonical(research_capture))`; `dispatch_snapshot = H_ACI(canonical(dispatch_snapshot_ref))` |
+| `get_agent_reference_lineage` | `apt_accepted_prefix`, `target_resolution`, `producer_resolution`, `aci_delivery_snapshot`, `probe_scout_bindings`, `apt_fact_heads`, `host_observation_projection`: each equals the exact complete-wrapper/derived-set digest defined by [AgentReferenceLineage](queries.md#agentreferencelineage) |
 
 The following equalities are mandatory:
 
@@ -713,6 +771,17 @@ result.effective_as_of ≤ result.requested_o
 for SessionPinnedInputManifest:
   manifest.accepted_prefix.requested_o = bound.requested_o
   manifest.accepted_prefix.effective_as_of = result.effective_as_of
+
+for AgentReferencePinnedInputManifest:
+  bound.identity = {intent.dispatch_id,intent.target}
+  manifest.kind = "agent_reference_lineage"
+  manifest.apt_accepted_prefix.requested_o = bound.requested_o
+  manifest.apt_accepted_prefix.effective_as_of = result.effective_as_of
+  every owner wrapper = binder-verified complete query-bound wrapper
+  reducer_input =
+    bound_verified(target_resolution,producer_resolution,aci_delivery_snapshot,
+                   probe_scout_bindings,host_observation_projection)
+    + derived apt_fact_heads
 ```
 
 The result echoes the exact verified bound-request manifest and digest map.
@@ -729,6 +798,7 @@ groups, make zero external calls and perform no repair.
 | `get_session_record(intent)` | `SessionQueryIntent` | `BoundQueryRequest<SessionPinnedInputManifest, SessionPinnedInputDigests>` | `QueryResult<SessionRecord, SessionPinnedInputManifest, SessionPinnedInputDigests>` | planned `SessionRecord` Query in [SPEC](SPEC.md#concept-registry) |
 | `get_dispatch_scope_projection(intent)` | `DispatchQueryIntent` | `BoundQueryRequest<DispatchPinnedInputManifest, DispatchPinnedInputDigests>` | `QueryResult<DispatchScopeProjection, DispatchPinnedInputManifest, DispatchPinnedInputDigests>` | planned `DispatchScopeProjection` Query in [SPEC](SPEC.md#concept-registry) |
 | `get_research_record(intent)` | `ResearchQueryIntent` | `BoundQueryRequest<ResearchPinnedInputManifest, ResearchPinnedInputDigests>` | `QueryResult<ResearchRecord, ResearchPinnedInputManifest, ResearchPinnedInputDigests>` | planned `ResearchRecord` Query in [SPEC](SPEC.md#concept-registry) |
+| `get_agent_reference_lineage(intent)` | `AgentReferenceQueryIntent` | `BoundQueryRequest<AgentReferencePinnedInputManifest, AgentReferencePinnedInputDigests>` | `QueryResult<AgentReferenceLineage, AgentReferencePinnedInputManifest, AgentReferencePinnedInputDigests>` | specified [AgentReferenceLineage](queries.md#agentreferencelineage); not implemented |
 
 ### Query Authorization and Errors
 
@@ -767,7 +837,7 @@ interface.
 | Registered interface | Methods | Contract coverage |
 |---|---:|---|
 | `ProvenanceAppendPort` | 6 | exactly [EnsureSession](operations.md#ensuresession), [StartNewSession](operations.md#startnewsession), [LinkSessionDispatch](operations.md#linksessiondispatch), [AppendResearchCapture](operations.md#appendresearchcapture), [AppendResearchFact](operations.md#appendresearchfact), [AppendReferenceProbeLineage](operations.md#appendreferenceprobelineage) |
-| `ProvenanceQueryPort` | 3 | exactly the three planned Query concepts in [SPEC.md](SPEC.md#concept-registry) |
+| `ProvenanceQueryPort` | 4 | exactly the four Query concepts in [SPEC.md](SPEC.md#concept-registry) |
 
 Supporting adapters/owner ports expose evidence and infrastructure functions only; they do not add
 business Operations or Queries. `ProbeLineageIngress` delegates to the existing sixth append method.
@@ -775,7 +845,7 @@ business Operations or Queries. `ProbeLineageIngress` delegates to the existing 
 ### Required Contract Checks
 
 - Method-to-operation coverage is `6/6` with no generic mutation escape hatch.
-- Method-to-planned-query coverage is `3/3` with no write side effect.
+- Method-to-query coverage is `4/4` with no write side effect.
 - Every mutation caller intent matches one exhaustive allowlist and rejects every forbidden
   owner-bound field/unknown slot; fact/probe-use binders alone create exact payload variants and
   `FactEnvelope`.
@@ -791,6 +861,14 @@ business Operations or Queries. `ProbeLineageIngress` delegates to the existing 
 - Every query accepts only its exhaustive caller `QueryIntent`; its binder creates the owner-bound
   method-specific manifest/digest map, and projection hashes bind that manifest plus
   `effective_as_of`.
+- Agent-reference queries obtain target and delivery wrappers only through
+  `ACIAgentReferenceEvidenceReader`, producer bindings only through
+  `HostAgentActivationBindingEvidencePort`, legacy bindings through the accepted-state reader and
+  host observations through the host owner. Producer binding verifies the exact derived selector,
+  target/delivery/probe digest scope, complete cardinality, Attempt evidence and activation child
+  relationship before reduction. The current observation contract binds `unavailable`; the current
+  pilot does not implement producer binding; locators and caller collections cannot replace any
+  wrapper, and the reducer performs zero owner calls.
 - Append/query errors belong to their finite unions with derived retryability; owner-arbitrary codes
   are rejected.
 - Global fact collision uses `fact_id` and the exact semantic tuple; no application cache/store owns

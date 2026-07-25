@@ -5,8 +5,8 @@ is_session: false
 layer: [domain, application, infrastructure]
 nature: [technical, reference]
 status: draft
-version: 0.1.1
-last_updated: 2026-07-23
+version: 0.2.0
+last_updated: 2026-07-25
 derived_from: ../discovery/session-dispatch-research-records.md@0.2.0
 specAuthoringGate: in-review
 runtimeGate: block
@@ -24,7 +24,13 @@ Communication Infra (ACI) for journal, bus, artifact, canonicalization and recei
 
 This specification ratifies information ownership and behavior, not a deployed runtime. No APT
 runtime, store, ACI profile registration or UI wiring exists merely because this corpus is accepted;
-the [work-pack mutation gate](../WORK-PACK.md#mutation-gate-authority-and-evidence) remains blocked.
+the [work-pack construction and integration gates](../WORK-PACK.md#construction-integration-and-enablement-gates)
+remain blocked for this unimplemented slice.
+
+This SPEC remains above the default 300-line capability-splitting threshold because its length is
+dominated by the authoritative Concept Registry, graph and cross-feature decision tables. Capability
+rows remain short routing summaries to aspect documents; separate capability files would duplicate
+rather than refine authority.
 
 The cross-document taxonomy is
 `ReferenceScoutTool -> ScoutRun -> recommendations[]` and, separately,
@@ -53,8 +59,8 @@ graph TD
 | Session Registry | Ensures one coarse session per execution context and supports explicit authorized rollover. | `EnsureSession`, `StartNewSession`, `LinkSessionDispatch`, `SessionRecord` | ID, start instant, immutable initial name and sole Session-to-Dispatch link only; rename is outside L0. |
 | Dispatch Scope Projection | Reads a pinned dispatch authority snapshot and projects session/research joins without mutating the strict ledger. | `DispatchScopeProjection`, `DispatchAuthoritySnapshotRef`, `ProvenanceFactsToReadModels` | No new dispatch keys, reverse joins or lifecycle owner. |
 | Research Capture & Facts | Seals one producer outcome and appends attributed questions, answers, uses, checks, problems, claim extractions and formalizations. | `AppendResearchCapture`, `AppendResearchFact`, `ResearchCapture` | `captured`/`partial` require exactly one artifact raw return; `missing` forbids it and requires expectation/failure evidence. |
-| Reference Scout Lineage | Maps an ACI-committed, profile-bound Scout recommendation into typed research lineage while referencing host-owned source observations. | Legacy v1 IDs `AppendReferenceProbeLineage`, `ProbeBundleToReferenceLineage`, `ACIProtocolProfileBinding` | Small profile only; frozen v1 wire IDs retain `reference-probe`; no second bus, source-observation owner or claim adjudication. |
-| Deterministic Read Models | Rebuilds Session, Dispatch and Research projections at an explicit event offset. | `SessionRecord`, `DispatchScopeProjection`, `ResearchRecord` | As-of, dedupe and supersession formulas are replay-tested; granular views remain derived. |
+| Reference Scout Lineage | Maps an ACI-committed, profile-bound Scout recommendation into typed research lineage and projects its target-attempt path without re-owning ACI delivery or host observations. | Legacy v1 IDs `AppendReferenceProbeLineage`, `ProbeBundleToReferenceLineage`, `ACIProtocolProfileBinding`; `AgentReferenceLineage` | Small profile only; frozen v1 wire IDs retain `reference-probe`; `recommended`, `delivered`, `access_observed`, `declared_used`, `claim_relation` and `claim_support_check` remain independent axes. |
+| Deterministic Read Models | Rebuilds Session, Dispatch, Research and per-agent reference-lineage projections at an explicit event offset. | `SessionRecord`, `DispatchScopeProjection`, `ResearchRecord`, `AgentReferenceLineage` | As-of, dedupe and supersession formulas are replay-tested; target identities are owner-resolved and no locator join is permitted. |
 
 ### Capability Boundaries
 
@@ -63,8 +69,8 @@ graph TD
 | Session Registry | Ensure is idempotent by context key; rollover atomically emits successor start and context rebound; the initial name is immutable in L0 and future `RenameSession` is not authorized. |
 | Dispatch Scope Projection | The deterministic hash uses one variant-specific `DispatchAuthoritySnapshotRef`: `aci_managed` pins Dispatch ID, artifact ref/digest and accepted event/offset, while `legacy_ledger` pins canonical ledger-row identity plus row digest and excludes only its optional non-authoritative row-index locator. Current mutable external Dispatch state is neither an input nor display context for the deterministic result. |
 | Research Capture & Facts | Capture is immutable: `captured`/`partial` contain exactly one `ArtifactReference`; `missing` contains none and records expected contribution plus failure evidence. Extracted fact revisions append predecessor-linked Entities. |
-| Reference Scout Lineage | Exact ACI profile/bundle receipts gate `host.SourceObservation <- optional ProbeRecommendationRef <- ResearchReferenceUse -> ResearchReferenceClaimRelation -> ResearchClaimExtraction`; the product name is Scout while frozen v1 concept/wire IDs remain compatibility aliases. APT references but never owns the host event. |
-| Deterministic Read Models | `SessionRecord`, `DispatchScopeProjection` and `ResearchRecord` accept inclusive `requested_o`, derive `effective_as_of` as the last complete verified group boundary not after it, preserve explicit supersession/dedupe and have zero replay effects. |
+| Reference Scout Lineage | Exact ACI profile/bundle receipts gate `host.SourceObservation <- optional ProbeRecommendationRef <- ResearchReferenceUse -> ResearchReferenceClaimRelation -> ResearchClaimExtraction`; accepted ACI `AgentReferenceDelivery` supplies the separate target-delivery/effective-input axis. APT references but never owns either external fact. |
+| Deterministic Read Models | All four Queries accept inclusive `requested_o`, derive `effective_as_of` as the last complete verified group boundary not after it, preserve explicit supersession/dedupe and have zero replay effects. `AgentReferenceLineage` resolves `attempt | seat | agent_instance` through owner-bound identities and never through locators. |
 
 ## Domain Concepts
 
@@ -132,6 +138,7 @@ for this feature and remain non-runtime until registry synchronization passes.
 | [SessionRecord](queries.md#sessionrecord) | `agent-provenance-telemetry.SessionRecord` | Query |
 | [DispatchScopeProjection](queries.md#dispatchscopeprojection) | `agent-provenance-telemetry.DispatchScopeProjection` | Query |
 | [ResearchRecord](queries.md#researchrecord) | `agent-provenance-telemetry.ResearchRecord` | Query |
+| [AgentReferenceLineage](queries.md#agentreferencelineage) | `agent-provenance-telemetry.AgentReferenceLineage` | Query |
 | [ProvenanceAppendPort](interfaces.md#provenanceappendport) | `agent-provenance-telemetry.ProvenanceAppendPort` | Interface |
 | [ProvenanceQueryPort](interfaces.md#provenancequeryport) | `agent-provenance-telemetry.ProvenanceQueryPort` | Interface |
 | [APTFactToACIEvent](mappings.md#aptfacttoacievent) | `agent-provenance-telemetry.APTFactToACIEvent` | Mapping |
@@ -148,6 +155,7 @@ for this feature and remain non-runtime until registry synchronization passes.
 | [ReplayDeterminismRule](rules.md#apt-r6--replay-determinism) | `agent-provenance-telemetry.ReplayDeterminismRule` | Rule |
 | [ProtocolProfileBindingRule](rules.md#apt-r7--protocol-profile-binding) | `agent-provenance-telemetry.ProtocolProfileBindingRule` | Rule |
 | [TelemetryNonAuthorityRule](rules.md#apt-r8--telemetry-non-authority) | `agent-provenance-telemetry.TelemetryNonAuthorityRule` | Rule |
+| [AgentReferenceLineageRule](rules.md#apt-r9--agent-reference-lineage) | `agent-provenance-telemetry.AgentReferenceLineageRule` | Rule |
 | [SessionStarted](events.md#sessionstarted) | `agent-provenance-telemetry.SessionStarted` | Event |
 | [SessionContextRebound](events.md#sessioncontextrebound) | `agent-provenance-telemetry.SessionContextRebound` | Event |
 | [SessionDispatchLinked](events.md#sessiondispatchlinked) | `agent-provenance-telemetry.SessionDispatchLinked` | Event |
@@ -170,6 +178,7 @@ Only canonical DomainSpec relationships are used.
 | `agent-provenance-telemetry.ProvenanceQueryPort` | exposes | `agent-provenance-telemetry.SessionRecord` | `interfaces.md#provenancequeryport` | Read-only projection. |
 | `agent-provenance-telemetry.ProvenanceQueryPort` | exposes | `agent-provenance-telemetry.DispatchScopeProjection` | `interfaces.md#provenancequeryport` | Read-only projection. |
 | `agent-provenance-telemetry.ProvenanceQueryPort` | exposes | `agent-provenance-telemetry.ResearchRecord` | `interfaces.md#provenancequeryport` | Read-only projection. |
+| `agent-provenance-telemetry.ProvenanceQueryPort` | exposes | `agent-provenance-telemetry.AgentReferenceLineage` | `interfaces.md#provenancequeryport` | Specified read-only projection; not implemented. |
 | `agent-provenance-telemetry.SingleJoinAuthorityRule` | enforces | `agent-provenance-telemetry.LinkSessionDispatch` | `rules.md#apt-r1--single-join-authority` | Rejects duplicate/contradictory joins. |
 | `agent-provenance-telemetry.IdempotentAppendRule` | enforces | `agent-provenance-telemetry.AppendResearchCapture` | `rules.md#apt-r2--idempotent-append` | Same key/digest reuses receipt. |
 | `agent-provenance-telemetry.ArtifactOnlyRawReturnRule` | enforces | `agent-provenance-telemetry.AppendResearchCapture` | `rules.md#apt-r3--artifact-only-raw-return` | If raw is present it is exactly one artifact: `captured ∨ partial ⇒ |raw_return|=1`; `missing ⇒ |raw_return|=0 ∧ expected_contribution ∧ failure_evidence`. |
@@ -191,6 +200,9 @@ Only canonical DomainSpec relationships are used.
 | `agent-provenance-telemetry.SessionRecord` | queries | `agent-provenance-telemetry.Session` | `queries.md#sessionrecord` | Explicit as-of offset. |
 | `agent-provenance-telemetry.DispatchScopeProjection` | queries | `agent-provenance-telemetry.SessionDispatchLink` | `queries.md#dispatchscopeprojection` | Never persists reverse join. |
 | `agent-provenance-telemetry.ResearchRecord` | queries | `agent-provenance-telemetry.ResearchCapture` | `queries.md#researchrecord` | Query/read model only. |
+| `agent-provenance-telemetry.AgentReferenceLineage` | queries | `agent-provenance-telemetry.ResearchReferenceUse` | `queries.md#agentreferencelineage` | Keeps delivery, access, declared use and claim evidence separate. |
+| `agent-provenance-telemetry.AgentReferenceLineage` | queries | `agents-communication-infra.AgentReferenceDelivery` | `../../agents-communication-infra/specs/domain.md#agentreferencedelivery` | Reads accepted target-attempt delivery without re-owning it. |
+| `agent-provenance-telemetry.AgentReferenceLineage` | queries | `agents-communication-infra.EffectiveInputArtifact` | `../../agents-communication-infra/specs/domain.md#effectiveinputartifact` | Reads the exact accepted `reference_bundle` entry. |
 | `agent-provenance-telemetry.APTFactToACIEvent` | maps | `agent-provenance-telemetry.ProvenanceAppendPort` | `mappings.md#aptfacttoacievent` | One APT fact to one ACI event boundary. |
 | `agent-provenance-telemetry.ProbeBundleToReferenceLineage` | maps | `agent-provenance-telemetry.ResearchReferenceUse` | `mappings.md#probebundletoreferencelineage` | Does not infer source access. |
 | `agent-provenance-telemetry.StartOrReuseSession` | orchestrates | `agent-provenance-telemetry.EnsureSession` | `workflows.md#startorreusesession` | Idempotent normal path. |
@@ -234,9 +246,9 @@ no historical backfill.
 
 ## Aspect Docs
 
-These W1 aspect documents now exist and have completed their individual file-review gates. Their
-cross-document authority remains subject to the corpus-wide gate currently in review; this does
-not imply implementation readiness or runtime approval.
+These W1 aspect documents exist. Existing content completed earlier file-review gates; the
+AgentReferenceLineage amendment remains in a new per-document review pass and therefore keeps the
+cross-document gate in review. This does not imply implementation readiness or runtime approval.
 
 | Aspect | Contains | Key Concepts |
 |---|---|---|
@@ -248,9 +260,9 @@ not imply implementation readiness or runtime approval.
 | [Interfaces](interfaces.md) | Internal module and ACI profile contracts | append/query ports, profile binding |
 | [Events](events.md) | Immutable accepted fact envelopes | session, capture, fact, probe lineage events |
 | [Workflows](workflows.md) | Bounded multi-step coordination | session reuse, capture/enrich, probe ingest |
-| [Queries](queries.md) | Deterministic read models | SessionRecord, DispatchScopeProjection, ResearchRecord |
+| [Queries](queries.md) | Deterministic read models | SessionRecord, DispatchScopeProjection, ResearchRecord, AgentReferenceLineage |
 | [Mappings](mappings.md) | ACI/event, probe and projection transforms | fact-to-event, bundle lineage, read models |
-| [Rules](rules.md) | Testable authority and integrity invariants | APT-R1 through APT-R8 |
+| [Rules](rules.md) | Testable authority and integrity invariants | APT-R1 through APT-R9 |
 | [Persistence and Replay](persistence-and-replay.md) | Local adapter, atomicity, receipts and replay proofs | idempotency, CAS, offsets, crash recovery |
 | [Observability](observability.md) | Non-authoritative logs, traces and metrics | correlation, redaction, signal boundaries |
 | [Experimental Runtime L0](experimental-runtime-l0.md) | Isolated SQLite journal/receipt proof and rebuildable Session/Scout projections | shadow-only operations, replay, compatibility boundaries |
@@ -262,6 +274,7 @@ not imply implementation readiness or runtime approval.
 | Session Registry | [ACI Confirmed runtime authority](../../agents-communication-infra/specs/SPEC.md#capabilities) | ACI event/journal append contract | Reuses one writer, canonical event and receipt authority. |
 | Research Capture & Facts | [ACI Recovery and official closure contracts](../../agents-communication-infra/specs/persistence-and-replay.md#4-atomic-command-acceptance) | append-before-ack event and artifact references | Makes capture durable without a second store authority. |
 | Reference Scout Lineage | [ACI Receipt-gated publication](../../agents-communication-infra/specs/SPEC.md#receipt-gated-deliberation) | exact protocol profile, publication and receipt evidence | Accepts only committed Scout lineage; frozen v1 wire identifiers retain `probe`. |
+| Agent Reference Lineage | [ACI AgentReferenceDelivery](../../agents-communication-infra/specs/domain.md#agentreferencedelivery) | accepted `reference_scout.bundle_delivered_to_agent@1` plus exact `EffectiveInputEntry.reference_bundle` | Reads target delivery and effective-input evidence without copying or re-owning it; this contract is specified but not implemented. |
 | Deterministic Read Models | [ACI Read and accountability](../../agents-communication-infra/specs/SPEC.md#operator-projection-and-usage-accountability) | verified group-boundary and replay contract | Preserves explicit `requested_o`/`effective_as_of`, staleness and deterministic reconstruction. |
 
 ### Host-Owned External Concept
@@ -269,6 +282,8 @@ not imply implementation readiness or runtime approval.
 | Concept ID | Type | Owner | Source Contract | APT Use |
 |---|---|---|---|---|
 | `host.SourceObservation` | Event | Host-mediated acquisition boundary | [Focused discovery reference lineage](../discovery/session-dispatch-research-records.md#43-reference-uses-and-checks) | Optional referenced evidence for `ResearchReferenceUse`; APT never mints, re-emits or changes it. |
+| `agents-communication-infra.AgentReferenceDelivery` | Entity | ACI | [ACI delivery contract](../../agents-communication-infra/specs/domain.md#agentreferencedelivery) | Read-only target-attempt delivery evidence; APT never mints or mirrors it. |
+| `agents-communication-infra.EffectiveInputArtifact` | Entity | ACI | [ACI effective input](../../agents-communication-infra/specs/domain.md#effectiveinputartifact) | Confirms the exact `reference_bundle` entry accepted for the target Attempt. |
 
 ## Produces For
 
