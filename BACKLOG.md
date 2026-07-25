@@ -5,8 +5,8 @@ is_session: false
 layer: ontology, architecture
 nature: reference
 status: draft
-version: 0.1.0
-last_updated: 2026-07-20
+version: 0.2.0
+last_updated: 2026-07-24
 ---
 
 # BACKLOG — parked candidates (not committed work)
@@ -215,3 +215,57 @@ agent-provenance source observations; future information-system work deliberatel
 
 **Status.** IDEA / parked. The first Scout bus slice may use and record the coarse path snapshot;
 catalogue design comes later.
+
+---
+
+## BL-6 — Multi-level, self-explaining system dashboard
+
+**The idea.** Provide a family of connected dashboard views that makes the agent system legible at
+different altitudes: system overview, architectural layer, pipeline, agent, task, session, event,
+artifact and individual execution. The views should use progressive disclosure rather than one
+screen containing everything, while preserving stable identity and drill-down paths across levels.
+
+The dashboard should expose enough context to explain what is being shown, which concrete
+instance or time window is selected, how fresh and complete the evidence is, and what cannot be
+concluded from it. Provenance, partial data, conflicts, errors and unavailable layers must remain
+visible. Aggregate health metrics should use bounded dimensions; occurrence-level identity belongs
+in correlated events and traces.
+
+**Reference only.** `../maestro-trama/vault/constitution/dashboard-contracts-constitution.md` and
+the sibling dashboard observability material contain useful precedents for progressive detail,
+self-explainability, honest degradation and provenance. They are inputs to later research, not
+adopted authority or an implementation decision.
+
+**Falsifiable core.** A user can begin at the system overview, reach the evidence for one concrete
+execution without losing its layer and relationship context, and distinguish authoritative facts
+from projections and explanations. *Collapse:* if the views require heuristic identity matching,
+silently omit missing evidence, or cannot preserve context across drill-down, the dashboard is not
+an adequate observability surface.
+
+**Status.** TODO / reference for future discovery. No dashboard implementation is scheduled.
+
+---
+
+## BL-7 — Declarative typed-set rules and open-questions sessions
+
+**The idea.** Allow a user to state a governed rule such as: “for every document of type X, create
+or attach an open-questions session.” The rule targets a typed set instead of enumerating documents.
+Each resulting session is an independently identifiable object with properties and lifecycle, bound
+to its document through a typed, observable and provenance-carrying relationship.
+
+This is a concrete acceptance case for the broader event/action language: applying the rule may be
+requested manually or reconciled when membership changes, but the semantic requirement must not be
+coupled to one trigger mechanism. The system must be able to represent the desired relationship
+even when no event-driven automation is enabled.
+
+**Falsifiable core.** Given a declared document type and a scope, the system can determine which
+documents are covered, establish exactly one intended open-questions relationship per covered
+document, explain why each relationship exists, and detect missing or excess instances.
+*Collapse:* ambiguous type membership, duplicate sessions, silent retroactive expansion or
+unexplainable exceptions make the rule unsafe.
+
+**Open decisions.** Define snapshot versus continuous selection, existing versus future documents,
+idempotency, exceptions and overrides, deletion/retirement behavior, session ownership, question
+identity, resolution/reopening, and what happens when a document changes type.
+
+**Status.** TODO / required acceptance case for future rule, ontology and session design.
