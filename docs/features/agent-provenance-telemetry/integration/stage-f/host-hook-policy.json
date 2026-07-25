@@ -1,0 +1,16 @@
+{
+  "schema": "aci-host-dispatch-hook-policy/v1",
+  "enabled": true,
+  "hosts": [
+    "claude",
+    "codex"
+  ],
+  "principal_id": "victorboscaro@outlook.com",
+  "authorization_evidence_ref": "codex-thread:2026-07-24:user-mandatory-claude-codex-wrapper",
+  "authorization_evidence_digest": "sha256:50ae3d75a0e9213e87a8fdf3276bc0267b4fc1139c2bd01e4fdc654390f4210e",
+  "database": "telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3",
+  "ledger": "telemetry/agents/subagents-dispatch.yaml",
+  "compatibility_dispatch_type": "review",
+  "default_token_budget": 4000,
+  "capability_ttl_seconds": 120
+}

@@ -62,12 +62,24 @@ Worth being honest about the line.
   `npm run smoke` needs no API key.
 - The **operational skills** in [`.claude/skills/`](.claude/skills/) — `register-dispatch`,
   `check-tension`, `robot-talks`, `domainspec-subagents-strategy` — invokable in Claude Code today.
+- The **ACI/APT local pilot** — a dedicated SQLite journal with Session→Dispatch links, structured
+  Research records, replayable projections, scoped capabilities and a fail-closed
+  `127.0.0.1:8766` composition. The bridge requires a validated YAML opening plus ACI opening
+  receipt before launch. Stage F wires that gate into trusted project-local Claude and Codex
+  Agent-tool hooks. Stage G adds the authoritative small Reference Scout bus lifecycle and
+  Dispatch input-ingestion lineage; see
+  [`Stage E`](docs/features/agent-provenance-telemetry/integration/stage-e/local-orchestration-logging-bridge.md)
+  [`Stage F`](docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md),
+  and
+  [`Stage G`](docs/features/agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md).
 
 **Still thesis / candidate — not proof:**
 
-- The **write path** (Phase 2, the "Dispatch" button): present in every UI but `disabled`. A ledger
-  defect ([`vault/audit/ledger-enum-drift-finding.md`](vault/audit/ledger-enum-drift-finding.md))
-  holds the engine's single-writer rule at `veracity: medium` and gates it.
+- The **runtime-managed materializer and UI cutover**: supported local Claude/Codex hosts load the
+  project wrapper automatically, but administrator-enforced hook loading, the UI button, TASK-020
+  materializer, sole-writer deployment proof, generic provider launch, and production cutover
+  remain disabled. YAML is still the compatibility audit ledger and only the validated appender
+  may write it.
 - The **decision-science loop** (anti-bias runs; anti-noise mostly on paper) —
   [`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md).
 - The **category-theory typing** of the orchestration language — one open obligation decides it:

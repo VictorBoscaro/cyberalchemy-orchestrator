@@ -306,6 +306,33 @@ const header =
   '# `agents_spawned`/`feedback_prompts` (close rows) are JSON columns.\n' +
   'dispatches:\n';
 fs.mkdirSync(path.dirname(file), { recursive: true });
+const lockFile = file + '.append.lock';
+let lockFd = null;
+function releaseLock() {
+  if (lockFd === null) return;
+  try { fs.closeSync(lockFd); } catch (_) { /* best effort */ }
+  lockFd = null;
+  try { fs.unlinkSync(lockFile); } catch (_) { /* best effort */ }
+}
+try {
+  lockFd = fs.openSync(lockFile, 'wx', 0o600);
+  fs.writeFileSync(lockFd, JSON.stringify({
+    schema: 'register-dispatch-lock/v1',
+    pid: process.pid,
+    created: new Date().toISOString(),
+    ledger: file,
+  }) + '\n', 'utf8');
+  fs.fsyncSync(lockFd);
+} catch (error) {
+  if (error && error.code === 'EEXIST') {
+    console.error('refusing concurrent append: exclusive ledger lock already exists:', lockFile);
+    process.exit(1);
+  }
+  throw error;
+}
+process.on('exit', releaseLock);
+process.on('SIGINT', () => process.exit(130));
+process.on('SIGTERM', () => process.exit(143));
 try { fs.writeFileSync(file, header, { flag: 'wx' }); } catch (_) { /* exists */ }
 
 const existing = fs.readFileSync(file, 'utf8');
@@ -399,6 +426,7 @@ if (rec.meta === true)                lines.push('    meta: ' + J(true));
 if (rec.parent_dispatch_id != null)   lines.push('    parent_dispatch_id: ' + J(rec.parent_dispatch_id));
 if (rec.anti_bias_global != null)     lines.push('    anti_bias_global: ' + J(rec.anti_bias_global));
 if (rec.working_folder != null)       lines.push('    working_folder: ' + J(rec.working_folder));
+if (rec.output_mode != null)          lines.push('    output_mode: ' + J(rec.output_mode));
 lines.push('    groups: ' + J(rec.groups));
 if (rec.connections !== undefined)    lines.push('    connections: ' + J(rec.connections));
 

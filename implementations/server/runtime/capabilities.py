@@ -38,6 +38,7 @@ class CapabilityContext:
     action: str
     phase: str
     context: dict[str, Any]
+    expires_at: str | None
 
 
 class CapabilityManager:
@@ -123,6 +124,7 @@ class CapabilityManager:
             action=row["action"],
             phase=row["phase"],
             context=json.loads(row["context_json"]),
+            expires_at=row["expires_at"],
         )
 
     @staticmethod
@@ -144,3 +146,22 @@ class CapabilityManager:
             )
             if updated.rowcount != 1:
                 raise AuthorizationError("capability not active")
+
+    def consume(self, capability_id: str) -> None:
+        """Idempotently retire one exact-operation capability after acceptance."""
+        with self.database.write() as conn:
+            updated = conn.execute(
+                """
+                UPDATE capabilities SET revoked_at=?
+                WHERE capability_id=? AND revoked_at IS NULL
+                """,
+                (self._now().isoformat(), capability_id),
+            )
+            if updated.rowcount == 1:
+                return
+            existing = conn.execute(
+                "SELECT revoked_at FROM capabilities WHERE capability_id=?",
+                (capability_id,),
+            ).fetchone()
+            if not existing or existing["revoked_at"] is None:
+                raise AuthorizationError("capability cannot be consumed")

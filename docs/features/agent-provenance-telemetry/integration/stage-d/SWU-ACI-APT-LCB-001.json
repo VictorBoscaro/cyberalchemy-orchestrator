@@ -1,0 +1,136 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-APT-LCB-001",
+  "title": "Brokered launcher capability bootstrap",
+  "scope": "single-host-loopback-launch-bootstrap-with-fake-child-only",
+  "status": "proposed-contract-only",
+  "objective": "Add a restart-reconcilable launch lease and brokered capability handoff in which one physical launch has one principal, one attempt and one closed operation context, while no raw ACI bearer capability enters child argv, environment, stdin, prompt, output, durable storage or logs.",
+  "entry_predicate": [
+    "SWU-ACI-APT-VS-001 implementation and local-pilot receipts verify by digest",
+    "dispatch ledger path resolves to the configured strict read-only ledger and its bytes are pinned before and after every test",
+    "new Stage-D descriptor, plan and acceptance matrix receive independent security and runtime review",
+    "mutation authorization names this exact descriptor digest and exact write scope",
+    "target-host IPC identity, process-tree containment and credential-redaction probes pass for the fake child harness"
+  ],
+  "future_mutation_write_scope": [
+    "implementations/server/runtime/launch_bootstrap.py",
+    "implementations/server/runtime/capabilities.py",
+    "implementations/server/runtime/service.py",
+    "implementations/server/runtime/cli.py",
+    "implementations/server/runtime/migrations/008_launch_bootstrap.sql",
+    "implementations/tests/runtime/test_launch_bootstrap.py",
+    "implementations/tests/runtime/fixtures/launch_child/**",
+    "docs/features/agent-provenance-telemetry/integration/stage-d/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-d/execution-receipt.sha256"
+  ],
+  "new_commands": [
+    "aci.request-agent-launch-bootstrap@1",
+    "aci.claim-agent-launch-bootstrap@1",
+    "aci.revoke-agent-launch@1",
+    "aci.reconcile-agent-launch@1"
+  ],
+  "new_events": [
+    {
+      "event_type": "aci.agent_launch_bootstrap_requested@1",
+      "schema_ref": "aci.agent-launch-bootstrap-requested@1"
+    },
+    {
+      "event_type": "aci.agent_launch_bootstrap_claimed@1",
+      "schema_ref": "aci.agent-launch-bootstrap-claimed@1"
+    },
+    {
+      "event_type": "aci.agent_launch_revoked@1",
+      "schema_ref": "aci.agent-launch-revoked@1"
+    },
+    {
+      "event_type": "aci.agent_launch_reconciled@1",
+      "schema_ref": "aci.agent-launch-reconciled@1"
+    },
+    {
+      "event_type": "aci.agent_launch_security_observed@1",
+      "schema_ref": "aci.agent-launch-security-observed@1"
+    }
+  ],
+  "aggregate_pattern": "aci.agent-launch:<launch_id>",
+  "identity_binding": {
+    "launch_id": "one physical process-tree launch",
+    "principal_id": "agent-launch:<launch_id>",
+    "attempt_id": "one physical attempt; a retry creates a new attempt and launch",
+    "operation_id": "one logical operation; retained across eligible retries",
+    "required_context": [
+      "repo_id",
+      "session_id",
+      "dispatch_id",
+      "operation_id",
+      "attempt_id",
+      "launch_id",
+      "principal_id",
+      "action",
+      "phase",
+      "audience",
+      "expires_at"
+    ]
+  },
+  "bootstrap_transport": {
+    "kind": "inherited-os-ipc-handle",
+    "claim": "single-use and channel-bound",
+    "child_receives_raw_aci_bearer": false,
+    "broker_resolves_capability_server_side": true,
+    "forbidden_carriers": [
+      "argv",
+      "environment",
+      "stdin",
+      "prompt-or-effective-input",
+      "filesystem",
+      "sqlite",
+      "journal-event",
+      "receipt",
+      "stdout-or-stderr",
+      "http-access-log",
+      "exception-or-traceback"
+    ]
+  },
+  "capability_lifecycle": {
+    "maximum_ttl_seconds": 900,
+    "claim_deadline_seconds": 30,
+    "terminal_revoke": true,
+    "cancel_revoke": true,
+    "expiry_fail_closed": true,
+    "retry_reuses_capability": false,
+    "restart_behavior": "unclaimed and live claims become reconciliation-required; no launch is repeated automatically"
+  },
+  "allowed_execution": [
+    "deterministic fake child subprocess under the target-host containment harness",
+    "loopback broker calls to already-reviewed local-pilot operations",
+    "failure injection, restart reconciliation, expiry and revocation probes"
+  ],
+  "explicitly_excluded": [
+    "real provider or model execution",
+    "automatic agent orchestration",
+    "production or non-loopback networking",
+    "audit-ledger writes or materialization",
+    "dispatch-ledger writes",
+    "legacy/runtime cutover",
+    "general ProbeTool or ReferenceScoutTool launch",
+    "credential injection for external providers",
+    "capability issuance through a general HTTP endpoint",
+    "raw bearer output from CLI or API"
+  ],
+  "required_test_families": [
+    "T-LCB-IDENTITY",
+    "T-LCB-HANDOFF",
+    "T-LCB-LEAK",
+    "T-LCB-SCOPE",
+    "T-LCB-EXPIRY",
+    "T-LCB-REVOKE",
+    "T-LCB-RETRY",
+    "T-LCB-CRASH",
+    "T-LCB-LOG",
+    "T-LCB-CONTAINMENT",
+    "T-LCB-LEDGER",
+    "T-LCB-GATE"
+  ],
+  "mutation_test_authorization": "blocked-pending-digest-bound-review",
+  "provider_launch_enablement": "blocked-separate-post-implementation-gate",
+  "production_enablement": "blocked"
+}

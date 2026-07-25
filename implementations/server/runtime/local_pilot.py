@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from fastapi import FastAPI
 
@@ -34,7 +35,7 @@ STAGE_E_SOURCE_MANIFEST = Path(
     "source-manifest.json"
 )
 STAGE_E_SOURCE_MANIFEST_SHA256 = (
-    "6a7613087619dfe6ab7dd0b319a016c2004fa65328b1a745c18c21aaff08cc07"
+    "bc77a10db4bb18aed91fb17cbf54b7cceb20981dd11c59aa36c2735ccde39283"
 )
 
 
@@ -143,6 +144,7 @@ def preflight_local_pilot(
     host: str,
     opted_in: bool,
     repo_id: str = "cyberalchemy-orchestrator",
+    now: Callable[[], datetime] | None = None,
 ) -> tuple[RuntimeService, dict[str, Any]]:
     """Complete every authorized check before a caller may open a socket."""
     root = repo_root.resolve()
@@ -177,7 +179,8 @@ def preflight_local_pilot(
             ledger_path=ledger,
             local_pilot_serve_enabled=True,
             repo_id=repo_id,
-        )
+        ),
+        now=now,
     )
     opened = runtime.open()
     profiles = runtime.register_profiles()

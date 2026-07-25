@@ -1,0 +1,71 @@
+{
+  "description": "Mandatory YAML plus ACI lifecycle wrapper for every Codex subagent.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(Agent|spawn_agent)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$(git rev-parse --show-toplevel)/.claude/hooks/host-dispatch-hook.py\" --host codex",
+            "commandWindows": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$payload=[Console]::In.ReadToEnd(); $root=(git rev-parse --show-toplevel); $payload | python (Join-Path $root '.claude/hooks/host-dispatch-hook.py') --host codex; exit $LASTEXITCODE\"",
+            "timeout": 30,
+            "statusMessage": "Recording mandatory Codex dispatch opening"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(Agent|spawn_agent)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$(git rev-parse --show-toplevel)/.claude/hooks/host-dispatch-hook.py\" --host codex",
+            "commandWindows": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$payload=[Console]::In.ReadToEnd(); $root=(git rev-parse --show-toplevel); $payload | python (Join-Path $root '.claude/hooks/host-dispatch-hook.py') --host codex; exit $LASTEXITCODE\"",
+            "timeout": 30,
+            "statusMessage": "Correlating Codex subagent lifecycle"
+          }
+        ]
+      },
+      {
+        "matcher": "^(Read|read_file|view_image|Glob|Grep|search_files|rg|WebFetch|WebSearch|web\\.run|read_mcp_resource|Bash|shell_command|exec)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$(git rev-parse --show-toplevel)/.claude/hooks/host-ingestion-hook.py\" --host codex",
+            "commandWindows": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$payload=[Console]::In.ReadToEnd(); $root=(git rev-parse --show-toplevel); $payload | python (Join-Path $root '.claude/hooks/host-ingestion-hook.py') --host codex; exit $LASTEXITCODE\"",
+            "timeout": 30,
+            "statusMessage": "Recording Codex dispatch input lineage"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$(git rev-parse --show-toplevel)/.claude/hooks/host-dispatch-hook.py\" --host codex",
+            "commandWindows": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$payload=[Console]::In.ReadToEnd(); $root=(git rev-parse --show-toplevel); $payload | python (Join-Path $root '.claude/hooks/host-dispatch-hook.py') --host codex; exit $LASTEXITCODE\"",
+            "timeout": 30,
+            "statusMessage": "Recording mandatory Codex dispatch close"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$(git rev-parse --show-toplevel)/.claude/hooks/host-dispatch-hook.py\" --host codex",
+            "commandWindows": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$payload=[Console]::In.ReadToEnd(); $root=(git rev-parse --show-toplevel); $payload | python (Join-Path $root '.claude/hooks/host-dispatch-hook.py') --host codex; exit $LASTEXITCODE\"",
+            "timeout": 30,
+            "statusMessage": "Reconciling Codex dispatch lifecycle"
+          }
+        ]
+      }
+    ]
+  }
+}

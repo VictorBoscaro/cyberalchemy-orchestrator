@@ -1,12 +1,78 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/host-dispatch-hook.py\" --host claude",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/host-dispatch-hook.py\" --host claude",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "^(Read|read_file|view_image|Glob|Grep|search_files|rg|WebFetch|WebSearch|web\\.run|read_mcp_resource|Bash|shell_command|exec)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/host-ingestion-hook.py\" --host claude",
+            "timeout": 30
+          }
+        ]
+      },
       {
         "matcher": "Write",
         "hooks": [
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/doc-frontmatter-nudge.cjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/host-dispatch-hook.py\" --host claude",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/host-dispatch-hook.py\" --host claude",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/host-dispatch-hook.py\" --host claude",
+            "timeout": 30
           }
         ]
       }

@@ -1,4 +1,4 @@
-"""Strict, read-only resolver for one validated-appender dispatch opening."""
+"""Strict, read-only resolver for validated-appender dispatch rows."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ class LegacyDispatchSnapshot:
 
 
 class StrictLegacySnapshotResolver:
-    def resolve(self, path: Path, dispatch_id: str) -> LegacyDispatchSnapshot:
+    def _rows(self, path: Path) -> tuple[Path, bytes, list[tuple[dict[str, Any], bytes]]]:
         path = Path(path).resolve()
         raw = path.read_bytes()
         if raw.startswith(b"\xef\xbb\xbf"):
@@ -76,17 +76,23 @@ class StrictLegacySnapshotResolver:
             rows.append((current, b"".join(current_lines)))
         if root_seen != 1:
             raise IntegrityError("legacy ledger must contain one dispatches root")
+        return path, raw, rows
+
+    def _resolve(
+        self, path: Path, dispatch_id: str, *, identity_field: str, row_kind: str
+    ) -> LegacyDispatchSnapshot:
+        path, raw, rows = self._rows(path)
         matches = [
             (row, row_bytes)
             for row, row_bytes in rows
-            if row.get("dispatch_id") == dispatch_id
+            if row.get(identity_field) == dispatch_id
         ]
         if len(matches) != 1:
             if not matches:
-                raise NotFoundError("dispatch opening not found")
-            raise IntegrityError("ambiguous duplicate dispatch opening")
+                raise NotFoundError(f"dispatch {row_kind} not found")
+            raise IntegrityError(f"ambiguous duplicate dispatch {row_kind}")
         row, row_bytes = matches[0]
-        if row.get("schema_version") != "0.6.1":
+        if row_kind == "opening" and row.get("schema_version") != "0.6.1":
             raise IntegrityError("dispatch opening is not the frozen 0.6.1 contract")
         return LegacyDispatchSnapshot(
             dispatch_id=dispatch_id,
@@ -95,6 +101,23 @@ class StrictLegacySnapshotResolver:
             row_bytes_digest=digest_bytes(row_bytes),
             row_digest=canonical_digest(row),
             row=row,
+            row_kind=row_kind,
+        )
+
+    def resolve(self, path: Path, dispatch_id: str) -> LegacyDispatchSnapshot:
+        return self._resolve(
+            path,
+            dispatch_id,
+            identity_field="dispatch_id",
+            row_kind="opening",
+        )
+
+    def resolve_close(self, path: Path, dispatch_id: str) -> LegacyDispatchSnapshot:
+        return self._resolve(
+            path,
+            dispatch_id,
+            identity_field="close_of",
+            row_kind="close",
         )
 
     def verify_unchanged(self, snapshot: LegacyDispatchSnapshot) -> None:

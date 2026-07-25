@@ -15,15 +15,15 @@ across the repos. Ten UI variants over the same API.
 artifacts, exact profile imports, opaque capabilities, strict legacy snapshots,
 session/dispatch linking and the candidate-to-official reference-probe path.
 
-Here `reference-probe` names a frozen v1 lineage/profile compatibility surface.
-It is neither the `ReferenceScoutTool`/`ScoutRun` workflow nor the future
-general `ProbeTool`/`ProbeRun` observational capability. The Stage-B identifiers
-remain unchanged so registered schemas, digests and receipts keep their meaning.
+Here `reference-probe` names the frozen v1 lineage/profile compatibility surface. Stage G adds a
+distinct authoritative `ReferenceScoutTool`/`ScoutRun` lifecycle that reuses that registered
+profile and the existing bus without renaming the Stage-B identifiers. The general
+`ProbeTool`/`ProbeRun` observational capability and generic provider launcher remain deferred.
 
-It is not enabled for serving. The production reader mounts the intent routes
-behind a closed gate, and `python -m server.runtime serve --local-pilot`
-fails before opening a database or socket. Only a separate accepted
-local-pilot receipt may change that.
+Production serving remains disabled. A loopback-only Stage-C local pilot is
+available when the explicit opt-in, dedicated database, exact ledger, pinned
+receipts/source manifest, profiles, journal, and projection gates all pass.
+The production reader still mounts the intent routes behind a closed gate.
 
 Trusted, non-serving commands use:
 
@@ -31,6 +31,7 @@ Trusted, non-serving commands use:
 python -m server.runtime migrate
 python -m server.runtime register-profiles
 python -m server.runtime verify-store
+python -m server.runtime show-orchestration-log --dispatch-id ID --database DB --repo-root ROOT --ledger LEDGER
 ```
 
 ## Run
