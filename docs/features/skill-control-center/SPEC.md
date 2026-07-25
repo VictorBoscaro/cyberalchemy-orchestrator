@@ -79,7 +79,7 @@ completeness and freshness are independent and source facts remain inspectable.
 |---|---|---|
 | Query | `GetUsageEvidence` | Returns accepted logical invocations, attempts and source coverage separately. |
 | Rule | `EvidenceRules` | Prevents unknown or partial evidence from becoming zero or exhaustive usage. |
-| Interface | `EvidenceResponse` | Carries window, counts, source facts and qualifiers. |
+| Value Object | `EvidenceResponse` | Carries window, counts, source facts and qualifiers. |
 
 ### Safe Preparation
 
