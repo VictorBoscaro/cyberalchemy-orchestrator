@@ -76,6 +76,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 
 const src = process.argv[2];
@@ -96,9 +97,9 @@ const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 // ---------------------------------------------------------------- schema
 const SCHEMA_VERSION = '0.6.1';   // row schema: group `role` removed at v0.6.0 (§11); `output_mode` added at v0.6.1 (§14)
 const DISPATCH_TYPES = ['research', 'code', 'review', 'plan', 'suggestion', 'experiment'];
-// LIVE per constitution §5 (review 2026-06-12; experiment 2026-06-14, owner decisions); others
-// RESERVED (code, plan, suggestion) — recorded but not yet dispatchable.
-const LIVE_TYPES = new Set(['research', 'review', 'experiment']);
+// LIVE per constitution §5. `code` routes through domainspec-implement; plan and suggestion
+// remain RESERVED and are recorded only so an upstream routing violation is observable.
+const LIVE_TYPES = new Set(['research', 'code', 'review', 'experiment']);
 // working_folder is REQUIRED only for the artifact-producing LIVE types. `review`
 // went inline 2026-06-16 (owner decision): its findings are delivered in chat by
 // default, so it requires no working_folder. A review MAY still set one (optional)
@@ -116,6 +117,7 @@ const DISPATCH_KEYS = new Set([
   'max_loops', 'final_approver', 'groups',                       // required
   'meta', 'parent_dispatch_id', 'anti_bias_global', 'working_folder',
   'output_mode',                                                 // optional (review-only, §14)
+  'code_contract',                                               // required for code
   'invoked_by', 'connections',                                   // optional
   'project_dir',                                                 // control key, not emitted
 ]);
@@ -137,6 +139,73 @@ const LEGACY_LEDGER_KEYS = new Set([
 const GROUP_KEYS = new Set(['group_id', 'agents', 'n', 'robot_talks', 'layers', 'anti_bias']);
 const AGENT_KEYS = new Set(['role', 'model', 'token_budget', 'initial_prompt', 'agent_name', 'angle']);
 const CONN_KEYS = new Set(['from', 'to', 'type', 'loop_cap']);
+const CODE_CONTRACT_KEYS = new Set([
+  'type_skill_ref', 'type_skill_digest', 'work_pack_ref', 'work_pack_digest',
+  'test_spec_ref', 'test_spec_digest', 'readiness_ref', 'readiness_digest',
+  'brownfield', 'write_scope',
+  'validation_commands', 'alignment_group_id', 'implementation_group_id',
+  'verification_group_id',
+]);
+const SHA256_RE = /^sha256:[0-9a-f]{64}$/;
+
+function verifyPinnedRepoFile(projectDir, ref, digest, label, errs) {
+  if (!isNonEmptyStr(ref)) {
+    errs.push(`${label}_ref is required and must be a non-empty repo-relative path`);
+    return;
+  }
+  if (!SHA256_RE.test(digest || '')) {
+    errs.push(`${label}_digest must be a lowercase sha256:<64-hex> digest`);
+    return;
+  }
+  const root = path.resolve(projectDir);
+  const target = path.resolve(root, ref);
+  if (target !== root && !target.startsWith(root + path.sep)) {
+    errs.push(`${label}_ref must stay inside project_dir`);
+    return;
+  }
+  try {
+    const actual = 'sha256:' + crypto.createHash('sha256').update(fs.readFileSync(target)).digest('hex');
+    if (actual !== digest) errs.push(`${label}_digest does not match ${ref}`);
+  } catch (_) {
+    errs.push(`${label}_ref is unavailable: ${ref}`);
+  }
+}
+
+function readRepoJson(projectDir, ref, label, errs) {
+  try {
+    return JSON.parse(fs.readFileSync(path.resolve(projectDir, ref), 'utf8'));
+  } catch (_) {
+    errs.push(`${label} must be readable JSON`);
+    return null;
+  }
+}
+
+function validateRepoRelativeScope(projectDir, ref, label, errs) {
+  if (!isNonEmptyStr(ref) || path.isAbsolute(ref) || /[*?[\]]/.test(ref)) {
+    errs.push(`${label} must be one concrete repo-relative path without globs`);
+    return;
+  }
+  const root = fs.realpathSync(projectDir);
+  const target = path.resolve(root, ref);
+  if (target === root || !target.startsWith(root + path.sep)) {
+    errs.push(`${label} must stay below project_dir`);
+    return;
+  }
+  let existing = target;
+  while (!fs.existsSync(existing)) {
+    const parent = path.dirname(existing);
+    if (parent === existing) break;
+    existing = parent;
+  }
+  try {
+    const realExisting = fs.realpathSync(existing);
+    if (realExisting !== root && !realExisting.startsWith(root + path.sep)) {
+      errs.push(`${label} resolves through a symlink or junction outside project_dir`);
+    }
+  } catch (_) {
+    errs.push(`${label} cannot resolve an existing repository ancestor`);
+  }
+}
 
 function validateDispatch(rec) {
   const errs = [];
@@ -182,6 +251,77 @@ function validateDispatch(rec) {
     else if (rec.output_mode === 'inline' && rec.working_folder !== undefined) errs.push('output_mode "inline" must not carry a working_folder (§14: an inline review writes no file)');
   } else if (rec.dispatch_type === 'review') {
     errs.push('output_mode is required when dispatch_type is "review" (inline | persisted) — confirmed at the gate, recorded on the row (§14)');
+  }
+
+  if (rec.dispatch_type === 'code') {
+    const cc = rec.code_contract;
+    if (!isObj(cc)) {
+      errs.push('code_contract is required when dispatch_type is "code"');
+    } else {
+      for (const k of Object.keys(cc)) if (!CODE_CONTRACT_KEYS.has(k)) errs.push(`code_contract: unknown key "${k}"`);
+      if (cc.type_skill_ref !== '.claude/skills/domainspec-implement/SKILL.md') {
+        errs.push('code_contract.type_skill_ref must be ".claude/skills/domainspec-implement/SKILL.md"');
+      }
+      const projectDir = process.env.CLAUDE_PROJECT_DIR || rec.project_dir || process.cwd();
+      verifyPinnedRepoFile(projectDir, cc.type_skill_ref, cc.type_skill_digest, 'code_contract.type_skill', errs);
+      verifyPinnedRepoFile(projectDir, cc.work_pack_ref, cc.work_pack_digest, 'code_contract.work_pack', errs);
+      verifyPinnedRepoFile(projectDir, cc.test_spec_ref, cc.test_spec_digest, 'code_contract.test_spec', errs);
+      verifyPinnedRepoFile(projectDir, cc.readiness_ref, cc.readiness_digest, 'code_contract.readiness', errs);
+      if (typeof cc.brownfield !== 'boolean') errs.push('code_contract.brownfield is required and must be boolean');
+      if (!Array.isArray(cc.write_scope) || cc.write_scope.length === 0 || cc.write_scope.some((v) => !isNonEmptyStr(v))) {
+        errs.push('code_contract.write_scope is required and must be a non-empty array of path strings');
+      } else {
+        cc.write_scope.forEach((v, i) => validateRepoRelativeScope(projectDir, v, `code_contract.write_scope[${i}]`, errs));
+      }
+      if (!Array.isArray(cc.validation_commands) || cc.validation_commands.length === 0 || cc.validation_commands.some((v) => !isNonEmptyStr(v))) {
+        errs.push('code_contract.validation_commands is required and must be a non-empty array of command strings');
+      }
+      const readiness = readRepoJson(projectDir, cc.readiness_ref, 'code_contract.readiness_ref', errs);
+      if (readiness) {
+        const readinessKeys = [
+          'schema', 'status', 'task_id', 'work_pack_ref', 'work_pack_digest',
+          'test_spec_ref', 'test_spec_digest', 'brownfield', 'write_scope', 'validation_commands',
+          'capability_profile',
+        ];
+        if (Object.keys(readiness).sort().join('|') !== readinessKeys.sort().join('|')) {
+          errs.push('code readiness receipt has unknown or missing keys');
+        }
+        if (readiness.schema !== 'domainspec-code-readiness@1') errs.push('code readiness schema must be "domainspec-code-readiness@1"');
+        if (readiness.status !== 'PASS') errs.push('code readiness status must be "PASS"');
+        if (!isNonEmptyStr(readiness.task_id)) errs.push('code readiness task_id must be a non-empty string');
+        if (readiness.brownfield !== cc.brownfield) errs.push('code readiness brownfield must equal code_contract.brownfield');
+        for (const field of ['work_pack_ref', 'work_pack_digest', 'test_spec_ref', 'test_spec_digest']) {
+          if (readiness[field] !== cc[field]) errs.push(`code readiness ${field} must equal code_contract.${field}`);
+        }
+        if (J(readiness.write_scope) !== J(cc.write_scope)) errs.push('code readiness write_scope must exactly equal code_contract.write_scope');
+        if (J(readiness.validation_commands) !== J(cc.validation_commands)) errs.push('code readiness validation_commands must exactly equal code_contract.validation_commands');
+        const profile = readiness.capability_profile;
+        const profileKeys = ['credentials', 'destructive', 'filesystem', 'network', 'production'];
+        if (!isObj(profile) ||
+            Object.keys(profile).sort().join('|') !== profileKeys.sort().join('|') ||
+            profile.filesystem !== 'task-scoped-write' ||
+            !['none', 'public-read'].includes(profile.network) ||
+            profile.credentials !== false ||
+            profile.production !== false ||
+            profile.destructive !== false) {
+          errs.push('code readiness capability_profile must deny credentials, production and destructive actions and use task-scoped-write with network none|public-read');
+        }
+      }
+      if (cc.brownfield && cc.alignment_group_id !== 'alignment-audits') {
+        errs.push('brownfield code_contract.alignment_group_id must be "alignment-audits"');
+      }
+      if (!cc.brownfield && cc.alignment_group_id !== undefined) {
+        errs.push('greenfield code_contract must omit alignment_group_id');
+      }
+      if (cc.implementation_group_id !== 'implementation') {
+        errs.push('code_contract.implementation_group_id must be "implementation"');
+      }
+      if (cc.verification_group_id !== 'verification') {
+        errs.push('code_contract.verification_group_id must be "verification"');
+      }
+    }
+  } else if (rec.code_contract !== undefined) {
+    errs.push('code_contract is only valid when dispatch_type is "code"');
   }
 
   const groupIds = new Set();
@@ -241,6 +381,42 @@ function validateDispatch(rec) {
         else if (!Number.isInteger(c.loop_cap) || c.loop_cap <= 0) errs.push(`${cw}.loop_cap must be a positive integer (got ${J(c.loop_cap)})`);
       }
     });
+  }
+  if (rec.dispatch_type === 'code' && isObj(rec.code_contract) && Array.isArray(rec.groups)) {
+    const cc = rec.code_contract;
+    const byId = new Map(rec.groups.filter(isObj).map((g) => [g.group_id, g]));
+    const implementation = byId.get('implementation');
+    const verification = byId.get('verification');
+    if (!implementation || implementation.agents?.length !== 1 || implementation.agents[0].role !== 'coder') {
+      errs.push('code dispatch requires group "implementation" with exactly one coder');
+    }
+    if (!verification || verification.agents?.length !== 1 || !['skeptic', 'auditor'].includes(verification.agents[0].role)) {
+      errs.push('code dispatch requires group "verification" with exactly one skeptic or auditor');
+    }
+    if (cc.brownfield) {
+      const alignment = byId.get('alignment-audits');
+      if (!alignment || alignment.agents?.length !== 2 || alignment.agents.some((a) => a.role !== 'auditor')) {
+        errs.push('brownfield code dispatch requires group "alignment-audits" with exactly two auditors');
+      }
+    }
+    const expectedGroupIds = cc.brownfield
+      ? ['alignment-audits', 'implementation', 'verification']
+      : ['implementation', 'verification'];
+    const actualGroupIds = rec.groups.map((g) => g.group_id).sort();
+    if (J(actualGroupIds) !== J([...expectedGroupIds].sort())) {
+      errs.push(`code dispatch groups must be exactly ${expectedGroupIds.join(', ')}`);
+    }
+    const requiredEdges = cc.brownfield
+      ? [['alignment-audits', 'implementation'], ['implementation', 'verification']]
+      : [['implementation', 'verification']];
+    if (!Array.isArray(rec.connections) || rec.connections.length !== requiredEdges.length) {
+      errs.push(`code dispatch requires exactly ${requiredEdges.length} canonical sequential connection(s)`);
+    }
+    for (const [from, to] of requiredEdges) {
+      if (!Array.isArray(rec.connections) || !rec.connections.some((c) => c.from === from && c.to === to && c.type === 'sequential')) {
+        errs.push(`code dispatch requires sequential connection ${from} -> ${to}`);
+      }
+    }
   }
   return errs;
 }
@@ -427,6 +603,7 @@ if (rec.parent_dispatch_id != null)   lines.push('    parent_dispatch_id: ' + J(
 if (rec.anti_bias_global != null)     lines.push('    anti_bias_global: ' + J(rec.anti_bias_global));
 if (rec.working_folder != null)       lines.push('    working_folder: ' + J(rec.working_folder));
 if (rec.output_mode != null)          lines.push('    output_mode: ' + J(rec.output_mode));
+if (rec.code_contract != null)        lines.push('    code_contract: ' + J(rec.code_contract));
 lines.push('    groups: ' + J(rec.groups));
 if (rec.connections !== undefined)    lines.push('    connections: ' + J(rec.connections));
 

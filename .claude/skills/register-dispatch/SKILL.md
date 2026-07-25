@@ -1,6 +1,6 @@
 ---
 name: register-dispatch
-description: Record a subagent dispatch in <repo-root>/telemetry/agents/subagents-dispatch.yaml — two appends per dispatch (dispatch row + close row), with each agent's angle and the anti_bias axis. Use whenever you dispatch one or more subagents (a research-skill run OR an ad-hoc Agent call); only `research`, `review`, and `experiment` are LIVE — the other three dispatch_types are reserved names until populated. Trivial single lookups that spawn no subagent do not need registration. Single owner of the record/sheet fill mechanics — the form layer of the router → type-skill → form chain (field tables, enums, appender, close row).
+description: Record a subagent dispatch in the repository telemetry ledger using two appends per dispatch, with each agent's angle and anti-bias axis. Use whenever you dispatch one or more subagents; research, code, review, and experiment are LIVE, while plan and suggestion remain reserved. Trivial work that spawns no subagent does not need registration. Single owner of the record and sheet mechanics in the router to type-skill to form chain.
 ---
 
 # register-dispatch
@@ -48,7 +48,7 @@ appender-enforced** since the 2026-06-12 in-place amendment (constitution §9).
 |-------|----------|----------------------|
 | `dispatch_id` | ✅ | Unique id, `YYYY-MM-DD-<slug>` (§5). Dedup key — re-registering the same id is a no-op. |
 | `schema_version` | ✅ | Must be **exactly** `"0.6.1"`. |
-| `dispatch_type` | ✅ | `research \| code \| review \| plan \| suggestion \| experiment`. `research`, `review`, and `experiment` are LIVE (review 2026-06-12; experiment 2026-06-14, narrow recipe — owner decisions); the other three (`code`, `plan`, `suggestion`) are reserved (RESERVED) — the appender notes this but records anyway (its runtime note reads "is a RESERVED type ... LIVE under v0.6.1"); registering one signals an upstream constitution violation (§5: reserved types must not be dispatched until populated). `experiment` runs the falsification strategy (role-set designer/runner/adjudicator/skeptic; grader = falsification against a pre-registered criterion + internal validity + reproducibility; verdict SURVIVED/FALSIFIED/INVALID; the criterion is a `working_folder` artifact, never a column). |
+| `dispatch_type` | ✅ | `research \| code \| review \| plan \| suggestion \| experiment`. `research`, `code`, `review`, and `experiment` are LIVE. `code` routes through `.claude/skills/domainspec-implement/SKILL.md`; it requires DomainSpec planner/work-pack readiness and does not require a `working_folder`. `plan` and `suggestion` remain RESERVED — the appender notes this but records anyway; registering one signals an upstream constitution violation (§5: reserved types must not be dispatched until populated). `experiment` runs the falsification strategy (role-set designer/runner/adjudicator/skeptic; grader = falsification against a pre-registered criterion + internal validity + reproducibility; verdict SURVIVED/FALSIFIED/INVALID; the criterion is a `working_folder` artifact, never a column). |
 | `goal` | ✅ | Non-empty string — the human's objective, one or two sentences. |
 | `context` | ✅ | Non-empty string — 2–4 sentences of framing; the only channel subagents get (§5). |
 | `max_loops` | ✅ | Integer 1..5 — whole-sequence re-run ceiling. |
@@ -59,6 +59,7 @@ appender-enforced** since the 2026-06-12 in-place amendment (constitution §9).
 | `anti_bias_global` | ≥ 2 fan-out groups: ✅ | String — dispatch-wide tension theme. **Required when ≥ 2 groups have ≥ 2 agents — appender-enforced (exit 2)** since the 2026-06-12 in-place amendment (constitution §9). |
 | `working_folder` | research/experiment: ✅ | Repo-relative path where outputs land. **Required when `dispatch_type` is `research` or `experiment`; must never start with `vault/`.** **Optional for `review`** — review is inline by default (findings delivered in chat, since 2026-06-16); set it only when the user confirms persistence at the gate. Whenever a `working_folder` is set, the gate confirms the path with the user (router lifecycle step 2). |
 | `output_mode` | review: ✅ | **Review-only** row field (§14, added at v0.6.1): `inline \| persisted` — where the single `review.md` artifact lands. **Required when `dispatch_type` is `review`**, declared at the confirm gate and recorded on the row (never inferred from an absent `working_folder`). `inline` (default) → rendered in chat, `working_folder` must be **absent**; `persisted` → written to `<working_folder>/review.md`, `working_folder` **required**. Rejected (exit 2) on any non-`review` type. |
+| `code_contract` | code: ✅ | **Code-only** JSON object. Pins `type_skill_ref`/digest, `work_pack_ref`/digest, `test_spec_ref`/digest, and a closed `domainspec-code-readiness@1` `readiness_ref`/digest; declares `brownfield`, concrete repo-contained `write_scope`, exact `validation_commands`, and canonical group IDs. The appender verifies every file, planner PASS/capability receipt, scope and exact DomainSpec topology before registration. Rejected on non-`code` types. |
 | `invoked_by` | – | Email of the invoking human. If omitted, the appender resolves it from `git config user.email` (fail-soft: warning + `null`). Tooling-level extension, not in constitution §5 (owner-directed 2026-06-12), pending a one-line constitutional amendment. |
 | `connections` | – | **JSON column** — array of `{from, to, type, loop_cap?}` objects (below). |
 | `project_dir` | – | Control key: repo-root fallback when `CLAUDE_PROJECT_DIR` is unset. Never emitted to the ledger. |
@@ -137,7 +138,7 @@ Bash access to the file, even read-only commands.
   "max_loops": 1,
   "final_approver": "parent",
   "anti_bias_global": "novelty optimism vs precedent skepticism",
-  "working_folder": "research/residue-precedent-sweep/",
+  "working_folder": "docs/features/example-feature/research/residue-precedent-sweep/",
   "invoked_by": "victorboscaro@gmail.com",
   "groups": [
     {
@@ -181,7 +182,7 @@ resulting ledger row looks like:
     max_loops: 1
     final_approver: "parent"
     anti_bias_global: "novelty optimism vs precedent skepticism"
-    working_folder: "research/residue-precedent-sweep/"
+    working_folder: "docs/features/example-feature/research/residue-precedent-sweep/"
     groups: [{"group_id":"explorers","n":2,"anti_bias":"source corpus (formal-methods literature vs practitioner blogs)","agents":[…]}, …]
     connections: [{"from":"explorers","to":"synthesizer","type":"sequential"}]
 ```

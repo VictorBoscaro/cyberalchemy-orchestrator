@@ -333,7 +333,7 @@ var SIGILS = {
 };
 function sigilOf(role){ return SIGILS[role] || SIGILS._unknown; }
 
-var LIVE_TYPES = {research:1, review:1, experiment:1};
+var LIVE_TYPES = {research:1, code:1, review:1, experiment:1};
 
 var EXIT_PT = {
   resolved:"resolved",
@@ -768,8 +768,8 @@ function render(){
     leg2.appendChild(el("span","edge "+p[0], p[1]));
   });
   leg2.appendChild(el("span","cap","Nature"));
-  leg2.appendChild(mark("live","LIVE — research · review · experiment"));
-  leg2.appendChild(mark("reserved","RESERVED — code · plan · suggestion"));
+  leg2.appendChild(mark("live","LIVE — research · code · review · experiment"));
+  leg2.appendChild(mark("reserved","RESERVED — plan · suggestion"));
   root.appendChild(leg2);
 
   /* ── III. History ── */

@@ -276,7 +276,7 @@
 (function(){
 
 /* ============ util ============ */
-var LIVE_TYPES = {research:1, review:1, experiment:1};
+var LIVE_TYPES = {research:1, code:1, review:1, experiment:1};
 
 function esc(s){
   if(s===null||s===undefined) return "";
@@ -322,7 +322,7 @@ function redrawFrames(){
   el("legend").textContent =
     "├" + rep("─", Math.max(2,w-2)) + "┤\n" +
     "  LEGEND  ── sequential   ╲╱ zig-zag   ◀══ feedback (loop_cap)   " +
-    "[LIVE] research|review|experiment   [RESERVED] code|plan|suggestion\n" +
+    "[LIVE] research|code|review|experiment   [RESERVED] plan|suggestion\n" +
     "  ▊ read-only — this screen never writes to the ledger.";
 }
 

@@ -51,8 +51,8 @@ PENDING_RELPATH = Path("telemetry") / "agents" / "pending"
 # NOT ending in `.json`, so `read_pending`'s `*.json` glob never picks it up.
 CONFIRM_MARKER_SUFFIX = ".confirmed"
 
-# Only these three are dispatchable under v0.6.1; the rest are reserved names.
-LIVE_TYPES = {"research", "review", "experiment"}
+# These four are dispatchable under v0.6.1; plan and suggestion remain reserved.
+LIVE_TYPES = {"research", "code", "review", "experiment"}
 
 # Bucket for dispatches without a `dispatch_type` (pre-v0.5.2 rows lack the field).
 # An explicit label rather than `None` because the key becomes a chart column and a

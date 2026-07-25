@@ -617,7 +617,7 @@
     for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
     return "hsl(" + (h % 360) + ", 42%, 46%)";
   }
-  var LIVE_TYPES = { research: 1, review: 1, experiment: 1 };
+  var LIVE_TYPES = { research: 1, code: 1, review: 1, experiment: 1 };
   var EXIT_TONE = {
     resolved: "ok", success: "ok",
     loop_ceiling_reached: "warn", user_abort: "warn",
@@ -2014,7 +2014,7 @@
 
     if (!live && d.dispatch_type) {
       wrap.appendChild(el("div", "banner reserved",
-        "RESERVED type (" + d.dispatch_type + "): only research, review and experiment are LIVE under v0.6.1. This dispatch does not execute."));
+        "RESERVED type (" + d.dispatch_type + "): only research, code, review and experiment are LIVE under v0.6.1. This dispatch does not execute."));
     }
 
     /* anti-bias */

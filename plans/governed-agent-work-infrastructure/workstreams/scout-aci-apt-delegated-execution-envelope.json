@@ -1,0 +1,162 @@
+{
+  "schema": "delegated-execution-envelope@1",
+  "envelope_id": "scout-aci-apt-20260725",
+  "version": 1,
+  "objective": "Reconcile Reference Scout ownership across ACI and APT, establish bibliography and reference logging semantics, update accepted feature specifications and plans, and implement and validate the resulting bounded local-pilot tasks.",
+  "issuing_user_evidence": {
+    "confirmation": "vamos fazer isso então",
+    "context": "The user explicitly authorized the primary orchestrator to use research, review, experiment, and code dispatches without asking for confirmation before each task, provided the governed subagent strategy and DomainSpec implementation route are used.",
+    "confirmed_at": "2026-07-25T19:12:23.2301775Z",
+    "evidence_ref": "codex-conversation:current:2026-07-25:bounded-scout-aci-apt"
+  },
+  "allowed_repositories": [
+    "C:/Users/victo/cyberalchemy-orchestrator"
+  ],
+  "allowed_dispatch_types": [
+    "research",
+    "review",
+    "experiment",
+    "code"
+  ],
+  "allowed_paths": [
+    ".claude/skills/domainspec-subagents-strategy/**",
+    ".claude/skills/domainspec-implement/**",
+    ".claude/skills/register-dispatch/**",
+    ".agents/skills/domainspec-subagents-strategy/**",
+    ".agents/skills/domainspec-implement/**",
+    ".agents/skills/register-dispatch/**",
+    "docs/features/agent-provenance-telemetry/**",
+    "docs/features/agents-communication-infra/**",
+    "plans/governed-agent-work-infrastructure/**",
+    "research/reference-scout-*/**",
+    "implementations/UI-CONTRACT.md",
+    "implementations/server/ledger.py",
+    "implementations/server/runtime/**",
+    "implementations/static/ui/**",
+    "implementations/tests/**",
+    "telemetry/agents/**"
+  ],
+  "denied_paths": [
+    "plans/governed-agent-work-infrastructure/workstreams/scout-aci-apt-delegated-execution-envelope.json",
+    ".codex/delegation-receipts/scout-aci-apt-20260725-v1.json",
+    ".codex/hooks.json",
+    "AGENTS.md"
+  ],
+  "path_constraints": [
+    "Denied paths override every allowed path and may not be changed by a delegated dispatch.",
+    "Preserve unrelated and pre-existing worktree changes.",
+    "Before mutating a dirty file, identify the task-owned hunk and stop if safe isolation is not possible.",
+    "Telemetry paths may be mutated only by the repository lifecycle hooks or their existing governed appender.",
+    "The linked C:/Users/victo/domainspec repository is read-only under this envelope."
+  ],
+  "allowed_tools": [
+    "functions.shell_command",
+    "functions.apply_patch",
+    "functions.view_image",
+    "web.run",
+    "collaboration.spawn_agent",
+    "collaboration.followup_task",
+    "collaboration.send_message",
+    "collaboration.list_agents",
+    "collaboration.wait_agent"
+  ],
+  "tool_constraints": [
+    "functions.shell_command is limited to read-only inspection, builds, tests, linters, validators, and non-destructive temporary-file cleanup inside a task-specific temporary directory.",
+    "functions.apply_patch is limited to task-owned hunks inside allowed paths.",
+    "web.run is limited to public read-only bibliographic research.",
+    "collaboration tools are limited to proposals proven contained by this envelope and authorized by repository lifecycle hooks."
+  ],
+  "sandbox_policy": {
+    "allowed_classes": [
+      "workspace-read",
+      "workspace-write-allowed-paths",
+      "public-network-read"
+    ],
+    "host_filesystem_outside_repository": "read-only only when required to load an explicitly named installed skill",
+    "privilege_escalation": false
+  },
+  "capability_policy": {
+    "allowed_classes": [
+      "repository-read",
+      "task-scoped-repository-write",
+      "test-execution",
+      "public-source-retrieval",
+      "governed-subagent-launch"
+    ],
+    "required_launch_receipt": "ACI launch-authorized",
+    "credentials": "denied",
+    "production": "denied"
+  },
+  "network_policy": {
+    "public_read": true,
+    "authenticated_read": false,
+    "external_write": false,
+    "paid_provider_execution": false
+  },
+  "allowed_mutations": [
+    "feature specifications and generated traceability artifacts",
+    "workstream plans and research artifacts",
+    "local runtime implementation and tests",
+    "local skill routing and validation assets"
+  ],
+  "output_policy": {
+    "allowed_classes": [
+      "inline review report",
+      "repository-local research artifacts",
+      "repository-local specification and plan updates",
+      "repository-local implementation and tests",
+      "hook-managed telemetry receipts"
+    ],
+    "destinations_must_match_allowed_paths": true,
+    "external_outputs": false
+  },
+  "budgets": {
+    "per_dispatch": {
+      "max_agents": 6,
+      "max_total_agent_token_budget": 60000,
+      "max_loops": 3,
+      "max_agent_turns": 12
+    },
+    "aggregate": {
+      "max_dispatches": 12,
+      "max_agents": 36,
+      "max_total_agent_token_budget": 300000,
+      "max_loops": 24,
+      "max_agent_turns": 96
+    }
+  },
+  "required_controls": [
+    "Exact proposal and envelope digests are bound before each delegated dispatch.",
+    "Capability review and two independent check-tension PASS verdicts remain required.",
+    "Two independent read-only envelope auditors must PASS total containment.",
+    "All repository Agent/spawn_agent lifecycle hooks remain enabled and must return launch-authorized.",
+    "Each dispatch uses its LIVE type skill and receives independent final approval.",
+    "DomainSpec code dispatches require planner and WORK-PACK PASS, source-linked tests, and alignment and layering review for brownfield changes."
+  ],
+  "forbidden_effects": [
+    "production or deployment changes",
+    "git commit, push, branch rewrite, reset, or destructive cleanup",
+    "credential, secret, permission, billing, or account changes",
+    "external messages, publications, uploads, or writes",
+    "destructive filesystem or database operations",
+    "disabling, bypassing, or weakening .codex/hooks.json or lifecycle enforcement",
+    "silent resolution of blocker-level product, architecture, persistence, or authority decisions"
+  ],
+  "expires_at": "2026-08-01T23:59:59Z",
+  "stop_conditions": [
+    "The objective is complete.",
+    "Any required control fails or cannot produce durable evidence.",
+    "A spec conflict or new blocker-level decision is discovered.",
+    "Safe isolation from concurrent worktree changes is impossible.",
+    "Any aggregate budget is exhausted.",
+    "The user revokes or replaces this envelope."
+  ],
+  "human_reconfirmation_required_when": [
+    "Any repository, path, dispatch type, tool, network class, mutation class, output, or effect is outside this envelope.",
+    "A credential, authenticated service, paid execution, deployment, destructive action, git publication, or external write becomes necessary.",
+    "The objective or authority ownership changes materially.",
+    "An auditor reports ambiguity, mismatch, or incomplete containment.",
+    "This envelope expires or a budget must be increased."
+  ],
+  "final_approver_policy": "The primary orchestrator may synthesize results but may not approve its own code or specification changes without an independent review dispatch and passing repository validation."
+}

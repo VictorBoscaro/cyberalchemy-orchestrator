@@ -122,7 +122,7 @@ def _asym_repo() -> str:
     # 10 open review
     for i in range(10):
         rows.append(_dispatch(f"2026-06-02-review-open-{i:02d}", "review", f"{_day(i)}T11:00:00.000Z"))
-    # 5 open code (RESERVED)
+    # 5 open code (LIVE)
     for i in range(5):
         rows.append(_dispatch(f"2026-06-03-code-open-{i:02d}", "code", f"{_day(i)}T12:00:00.000Z"))
     # 15 closed research (dispatch + close)

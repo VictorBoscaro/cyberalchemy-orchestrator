@@ -370,7 +370,7 @@ var E = function(s){
     .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
 };
 var pad = function(n){ return (n < 10 ? "0" : "") + n; };
-var LIVE_TYPES = {research:1, review:1, experiment:1};
+var LIVE_TYPES = {research:1, code:1, review:1, experiment:1};
 
 function isLive(d){
   if (d && typeof d._live === "boolean") return d._live;

@@ -94,9 +94,46 @@ The user selects one mode before the first confirmation:
   both topology and all resolved details for confirmation.
 - `structure_only` — confirm only that planning may continue. It never authorizes execution; the
   resolved proposal must return for a final confirmation.
+- `delegated_bounded` — the user confirms one versioned `DelegatedExecutionEnvelope` for a named
+  objective. Later concrete proposals may execute without another human confirmation only when
+  every field is proven to remain inside that envelope. Capability review, two independent
+  check-tension PASS results, registration, hook authorization, final approval and close remain
+  mandatory.
 
-Do not implement delegated execution from structure-only approval. That requires a future
-`DelegatedResolutionEnvelope` and SPEC decision.
+`structure_only` never implies delegated execution. Delegation exists only through
+`delegated_bounded` and its explicit envelope.
+
+### Bounded delegation
+
+A `DelegatedExecutionEnvelope` is workflow authority for one finite objective, not global
+permission or ACI runtime authority. It records:
+
+- envelope ID, version, objective, issuing-user evidence and confirmation timestamp;
+- allowed repositories, path scopes and dispatch types;
+- allowed network, tool, sandbox and mutation classes;
+- per-dispatch and aggregate agent, token and round budgets;
+- required reviewers, final-approver policy and validation obligations;
+- forbidden effects, secrets, production/deployment targets and destructive actions;
+- expiry, stop conditions and the exact conditions requiring renewed human confirmation.
+
+Canonicalize and digest-bind the envelope in a versioned authorization receipt that records the
+user-evidence reference/digest and is outside every delegated write scope. The envelope must deny
+mutation of itself and that receipt; deny rules override allow rules. A replacement requires a new
+user confirmation and a new receipt version, never an in-place edit. Each structural and concrete
+proposal records its envelope and authorization-receipt references and digests as workflow
+evidence. Before registration, perform a total
+containment check over dispatch type, objective, sources, paths, tools, capabilities, network,
+mutation, agents, tokens, rounds, outputs and effects. An omitted dimension is denied.
+
+In addition to capability review and check-tension, two independent read-only envelope auditors
+must PASS the exact concrete-proposal/envelope digest pair. Any auditor mismatch, ambiguity, expired
+budget, new credential, production/deployment action, destructive action, external side effect or
+field outside the envelope returns to explicit human confirmation. The user may revoke the
+envelope at any time.
+
+Envelope confirmation never weakens `.codex/hooks.json`, append-only ledger mechanics, ACI launch
+authorization, receipt reconciliation, P8 verification or the routed type skill. It only replaces
+repetitive human confirmation for fully contained proposals.
 
 ### Invalidation
 
@@ -104,6 +141,8 @@ Do not implement delegated execution from structure-only approval. That requires
   and final confirmation derived from it.
 - A concrete-only change creates a new concrete revision and invalidates final confirmation while
   preserving a still-matching structural confirmation.
+- Under `delegated_bounded`, either change requires a fresh containment proof and two fresh
+  envelope-auditor PASS results. A change outside the envelope invalidates delegation.
 - A physical or protocol retry changes attempt identity, not either proposal.
 - Confirmation binds revision ID plus digest. A chat acknowledgement is not a durable runtime
   receipt; until ACI materializes these entities, report the gate as workflow evidence only.
@@ -134,12 +173,13 @@ evidence only and never claim durable binding.
    same concrete revision. Only two PASS results on its exact digest may reach concrete
    confirmation. Any failure returns the sheet for revision, recanonicalization, and two fresh
    checks; never average or waive the results.
-2. **Confirm.** Each required gate needs an explicit affirmative; silence or a question is not
-   confirmation. Nothing registers, persists as a dispatch row, or executes before all gates required
-   by the selected mode pass. Structure confirmation freezes only the structural revision. Final
-   confirmation freezes the concrete proposal and artifact destination. Any later change applies the
-   invalidation rules above and re-enters only the affected gate(s). The final confirmed concrete
-   sheet remains the input to `register-dispatch`; the current wire row is unchanged.
+2. **Confirm or prove delegation containment.** Each ordinary gate needs an explicit affirmative;
+   silence or a question is not confirmation. Under `delegated_bounded`, the already-confirmed
+   envelope plus a total containment proof and two envelope-auditor PASS results replace the
+   per-dispatch human affirmative. Nothing registers or executes before the applicable route passes.
+   Final confirmation or containment proof freezes the concrete proposal and artifact destination.
+   Any later change applies the invalidation rules above. The final concrete sheet remains the input
+   to `register-dispatch`; the current wire row is unchanged.
 3. **Register + run.** Append the dispatch row, then schedule groups **by dependency** (P4, amended 2026-06-12): a group is READY when every group with a `sequential`/`zig-zag` edge into it has produced what it must respond to (zig-zag counts only in its `from`→`to` direction — the `from` endpoint opens the exchange); launch all READY groups concurrently; `feedback` edges never count as dependencies; a sheet with no connections declares its groups independent; declared order is narration tiebreak only. Agents inside a group run in parallel. An agent error degrades to a **partial group result** that downstream groups and the `final_approver` must be told about.
 4. **Close.** Report `exit_reason` + `agents_spawned` in chat — and in the persisted deliverable when there is one (`findings.md` for research; `review.md` for a `persisted` review; an `inline` review reports in chat only) — and append the close row. Two appends, one ledger, append-only (P3).
 
@@ -178,7 +218,7 @@ is not yet populated.
 | dispatch_type | status | skill |
 |---|---|---|
 | `research` | LIVE | `.claude/skills/research/SKILL.md` — research-type judgment: canonical shape, roles, gates, outputs |
-| `code` | RESERVED — must not be dispatched until populated | none |
+| `code` | LIVE | `.claude/skills/domainspec-implement/SKILL.md` — DomainSpec-driven implementation from accepted specs and generated tests; requires planner/work-pack PASS, implementation axioms, context scaffold, independent alignment/layering review, tests, tagging and verification |
 | `review` | LIVE (populated 2026-06-12, owner decision) | `.claude/skills/review/SKILL.md` — red-team judgment: attack lenses, severity taxonomy, verification discipline, the change-request report. **One artifact: `review.md`** (the synthesis — no `attacks.md`, no `findings.md`); `output_mode` picks chat vs `<working_folder>/review.md` |
 | `plan` | RESERVED — must not be dispatched until populated | none |
 | `suggestion` | RESERVED — must not be dispatched until populated | none |

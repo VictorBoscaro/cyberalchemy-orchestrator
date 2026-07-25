@@ -132,7 +132,7 @@ without creating a self-hash cycle.
   enforcement requires administrator-managed requirements.
 - The dispatch remains `legacy-managed` during this compatibility stage. The bridge is not the
   TASK-020 audit materializer and does not make SQLite the sole dispatch execution authority.
-- Only the live `research`, `review`, and `experiment` dispatch types are accepted.
+- Only the live `research`, `code`, `review`, and `experiment` dispatch types are accepted.
 - Real provider launch, non-loopback serving, historical import, YAML retirement, and production
   cutover remain blocked.
 

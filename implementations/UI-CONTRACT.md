@@ -106,7 +106,7 @@ compatible with historical `0.6.0` rows and does not rewrite ledger data.
 
   // computed by the reader:
   "_state": "open",        // "open" | "closed"
-  "_live": true,           // dispatch_type is LIVE (research/review/experiment)
+  "_live": true,           // dispatch_type is LIVE (research/code/review/experiment)
   "_legacy": false,        // pre-v0.5.2 row, no `groups`
   "_agent_count": 3,
   "_orphan_close": true,   // present only on a close row without a dispatch row
@@ -172,7 +172,7 @@ Each object in `repos` (and the `summary` from `/api/repo`) — a repo's aggrega
   "open": 5, "closed": 176,
   "legacy": 12,                   // pre-v0.5.2 rows (no `groups`)
   "by_type": { "research": 150, "review": 20, "(no type)": 11 },
-  "live": 170,                    // dispatch_type LIVE (research/review/experiment)
+  "live": 170,                    // dispatch_type LIVE (research/code/review/experiment)
   "reserved": 4,                  // non-LIVE and non-legacy type
   "pending_count": 0,
   "today": { "created": 0, "closed": 0 },
@@ -262,8 +262,8 @@ In order of importance — the UI exists for the **human gate**:
    content, not decoration.
 5. **`connections` as typed edges**: `sequential`, `zig-zag`, `feedback`
    need to be visually distinct; show `loop_cap` when present.
-6. **LIVE vs RESERVED.** Only `research`, `review`, and `experiment` are LIVE.
-   `code`, `plan`, `suggestion` are reserved — mark them visibly.
+6. **LIVE vs RESERVED.** `research`, `code`, `review`, and `experiment` are LIVE.
+   `plan` and `suggestion` are reserved — mark them visibly.
 7. **Legacy rows** (`_legacy: true`, no `groups`) and **`_orphan_close`** must
    appear as what they are, not disappear.
 8. **Warnings and errors per repo** accessible (can be collapsed).

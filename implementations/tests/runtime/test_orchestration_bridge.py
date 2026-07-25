@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import shutil
 import tempfile
@@ -319,8 +320,125 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
             self.close(opened["session_id"], divergent_close)
         self.assertEqual(closed["status"], "closed")
 
-    def test_reserved_dispatch_type_fails_before_yaml_or_dispatch_acceptance(self) -> None:
+    def code_record(self, *, readiness_status: str = "PASS") -> dict:
         record = {**self.opening, "dispatch_type": "code"}
+        record.pop("output_mode")
+        pinned = [
+            ".claude/skills/domainspec-implement/SKILL.md",
+            "docs/features/agents-communication-infra/WORK-PACK.md",
+            "docs/features/agents-communication-infra/TEST-SPEC.md",
+        ]
+        for relative in pinned:
+            target = self.project / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(REPO / relative, target)
+        digest = lambda relative: "sha256:" + hashlib.sha256(
+            (REPO / relative).read_bytes()
+        ).hexdigest()
+        readiness_ref = "plans/test-code-readiness.json"
+        write_scope = ["implementations/server/runtime/example.py"]
+        validation_commands = ["python -m unittest example"]
+        readiness = {
+            "schema": "domainspec-code-readiness@1",
+            "status": readiness_status,
+            "task_id": "TEST-CODE-001",
+            "work_pack_ref": "docs/features/agents-communication-infra/WORK-PACK.md",
+            "work_pack_digest": digest(
+                "docs/features/agents-communication-infra/WORK-PACK.md"
+            ),
+            "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+            "test_spec_digest": digest(
+                "docs/features/agents-communication-infra/TEST-SPEC.md"
+            ),
+            "brownfield": False,
+            "write_scope": write_scope,
+            "validation_commands": validation_commands,
+            "capability_profile": {
+                "filesystem": "task-scoped-write",
+                "network": "none",
+                "credentials": False,
+                "production": False,
+                "destructive": False,
+            },
+        }
+        readiness_path = self.project / readiness_ref
+        readiness_path.parent.mkdir(parents=True, exist_ok=True)
+        readiness_path.write_text(
+            json.dumps(readiness, sort_keys=True), encoding="utf-8"
+        )
+        record["code_contract"] = {
+            "type_skill_ref": ".claude/skills/domainspec-implement/SKILL.md",
+            "type_skill_digest": digest(
+                ".claude/skills/domainspec-implement/SKILL.md"
+            ),
+            "work_pack_ref": "docs/features/agents-communication-infra/WORK-PACK.md",
+            "work_pack_digest": digest(
+                "docs/features/agents-communication-infra/WORK-PACK.md"
+            ),
+            "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+            "test_spec_digest": digest(
+                "docs/features/agents-communication-infra/TEST-SPEC.md"
+            ),
+            "readiness_ref": readiness_ref,
+            "readiness_digest": "sha256:" + hashlib.sha256(
+                readiness_path.read_bytes()
+            ).hexdigest(),
+            "brownfield": False,
+            "write_scope": write_scope,
+            "validation_commands": validation_commands,
+            "implementation_group_id": "implementation",
+            "verification_group_id": "verification",
+        }
+        record["groups"] = [
+            {
+                "group_id": "implementation",
+                "agents": [
+                    {
+                        "agent_name": None,
+                        "role": "coder",
+                        "model": "gpt-5.6",
+                        "token_budget": 1200,
+                        "initial_prompt": "Implement the pinned DomainSpec task.",
+                    }
+                ],
+            },
+            {
+                "group_id": "verification",
+                "agents": [
+                    {
+                        "agent_name": None,
+                        "role": "skeptic",
+                        "model": "gpt-5.6",
+                        "token_budget": 1200,
+                        "initial_prompt": "Verify the bounded implementation and evidence.",
+                    }
+                ],
+            },
+        ]
+        record["connections"] = [
+            {"from": "implementation", "to": "verification", "type": "sequential"}
+        ]
+        return record
+
+    def test_code_dispatch_type_is_live(self) -> None:
+        record = self.code_record()
+        opened = self.bridge.open_dispatch(
+            authority=self.authority(
+                "open",
+                record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
+            ),
+            record=record,
+            session_name="bridge-test",
+            origin_ref="codex:test-thread",
+        )
+        self.assertEqual(opened["status"], "launch-authorized")
+        self.assertEqual(opened["dispatch_id"], record["dispatch_id"])
+        self.assertTrue(self.ledger.exists())
+
+    def test_reserved_dispatch_type_fails_before_yaml_or_dispatch_acceptance(self) -> None:
+        record = {**self.opening, "dispatch_type": "plan"}
         with self.assertRaisesRegex(GateBlockedError, "live research"):
             self.bridge.open_dispatch(
                 authority=self.authority(
@@ -338,6 +456,132 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
             self.assertEqual(
                 conn.execute("SELECT count(*) FROM dispatch_links").fetchone()[0],
                 0,
+            )
+
+    def test_code_without_pinned_domainspec_contract_is_rejected(self) -> None:
+        record = {**self.opening, "dispatch_type": "code"}
+        record.pop("output_mode")
+        with self.assertRaisesRegex(GateBlockedError, "code_contract is required"):
+            self.bridge.open_dispatch(
+                authority=self.authority(
+                    "open",
+                    record,
+                    session_name="bridge-test",
+                    origin_ref="codex:test-thread",
+                ),
+                record=record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
+            )
+        self.assertFalse(self.ledger.exists())
+
+    def test_code_readiness_fail_is_rejected(self) -> None:
+        record = self.code_record(readiness_status="FAIL")
+        with self.assertRaisesRegex(GateBlockedError, 'readiness status must be "PASS"'):
+            self.bridge.open_dispatch(
+                authority=self.authority(
+                    "open",
+                    record,
+                    session_name="bridge-test",
+                    origin_ref="codex:test-thread",
+                ),
+                record=record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
+            )
+
+    def test_code_write_scope_escape_is_rejected(self) -> None:
+        record = self.code_record()
+        record["code_contract"]["write_scope"] = ["../outside.py"]
+        with self.assertRaisesRegex(GateBlockedError, "must stay below project_dir"):
+            self.bridge.open_dispatch(
+                authority=self.authority(
+                    "open",
+                    record,
+                    session_name="bridge-test",
+                    origin_ref="codex:test-thread",
+                ),
+                record=record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
+            )
+
+    def test_code_topology_inflation_is_rejected(self) -> None:
+        record = self.code_record()
+        record["groups"].append(
+            {
+                "group_id": "extra-coder",
+                "agents": [
+                    {
+                        "role": "coder",
+                        "model": "gpt-5.6",
+                        "token_budget": 100,
+                        "initial_prompt": "Undeclared extra implementation lane.",
+                    }
+                ],
+            }
+        )
+        record["connections"].append(
+            {"from": "extra-coder", "to": "verification", "type": "sequential"}
+        )
+        with self.assertRaisesRegex(
+            GateBlockedError, "groups must be exactly|exactly 1 canonical"
+        ):
+            self.bridge.open_dispatch(
+                authority=self.authority(
+                    "open",
+                    record,
+                    session_name="bridge-test",
+                    origin_ref="codex:test-thread",
+                ),
+                record=record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
+            )
+
+    def test_code_brownfield_mismatch_is_rejected(self) -> None:
+        record = self.code_record()
+        record["code_contract"]["brownfield"] = True
+        record["code_contract"]["alignment_group_id"] = "alignment-audits"
+        with self.assertRaisesRegex(
+            GateBlockedError, "readiness brownfield must equal"
+        ):
+            self.bridge.open_dispatch(
+                authority=self.authority(
+                    "open",
+                    record,
+                    session_name="bridge-test",
+                    origin_ref="codex:test-thread",
+                ),
+                record=record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
+            )
+
+    def test_code_unknown_capability_permission_is_rejected(self) -> None:
+        record = self.code_record()
+        readiness_path = self.project / record["code_contract"]["readiness_ref"]
+        readiness = json.loads(readiness_path.read_text(encoding="utf-8"))
+        readiness["capability_profile"]["external_write"] = True
+        readiness_path.write_text(
+            json.dumps(readiness, sort_keys=True), encoding="utf-8"
+        )
+        record["code_contract"]["readiness_digest"] = (
+            "sha256:" + hashlib.sha256(readiness_path.read_bytes()).hexdigest()
+        )
+        with self.assertRaisesRegex(
+            GateBlockedError, "capability_profile must deny"
+        ):
+            self.bridge.open_dispatch(
+                authority=self.authority(
+                    "open",
+                    record,
+                    session_name="bridge-test",
+                    origin_ref="codex:test-thread",
+                ),
+                record=record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
             )
 
     def test_close_preflight_prevents_yaml_side_effect_without_opening(self) -> None:

@@ -203,8 +203,8 @@
   .alarm .c-id{color:var(--red)}
   .c-goal{color:#7fae9c;font-weight:400;text-transform:none;font-size:10px;display:block}
   .c-type{font-size:10px}
-  .t-research,.t-review,.t-experiment{color:var(--green)}
-  .t-code,.t-plan,.t-suggestion{color:#4d7f9c}
+  .t-research,.t-code,.t-review,.t-experiment{color:var(--green)}
+  .t-plan,.t-suggestion{color:#4d7f9c}
   .t-none{color:var(--ink-dim)}
   .badge{display:inline-block;border:1px solid currentColor;padding:0 3px;font-size:9px;line-height:1.3}
   .b-live{color:var(--green)}
@@ -302,7 +302,7 @@
   "use strict";
 
   var API = (location.protocol === "file:" || !location.port) ? "http://127.0.0.1:8765" : "";
-  var LIVE_TYPES = {research:1, review:1, experiment:1};
+  var LIVE_TYPES = {research:1, code:1, review:1, experiment:1};
   var ALARM_EXITS = {error:1, dissent_irreconcilable:1};
 
   var state = {

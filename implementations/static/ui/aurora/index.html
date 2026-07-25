@@ -631,7 +631,7 @@ var PAGE = 12;
 
 var filters = { repo: "*", state: "all", q: "" };
 
-var LIVE_TYPES = { research: 1, review: 1, experiment: 1 };
+var LIVE_TYPES = { research: 1, code: 1, review: 1, experiment: 1 };
 
 /* ==========================================================
    utilities
@@ -767,7 +767,7 @@ function typeBadges(d) {
     ? '<span class="badge plain">' + esc(t) + "</span>"
     : '<span class="badge plain" style="opacity:.6">type missing</span>';
   out += isLive(d)
-    ? '<span class="badge live" title="research, review and experiment actually execute">live</span>'
+    ? '<span class="badge live" title="research, code, review and experiment actually execute">live</span>'
     : '<span class="badge reserved" title="reserved type — does not execute in this phase">reserved</span>';
   return out;
 }

@@ -279,7 +279,7 @@ details.warnbox ol{margin:0;padding:4px 10px 10px 30px;max-height:230px;overflow
 (function(){
 
 /* ============ util ============ */
-var LIVE_TYPES = {research:1, review:1, experiment:1};
+var LIVE_TYPES = {research:1, code:1, review:1, experiment:1};
 function esc(s){
   if(s===null||s===undefined) return "";
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
@@ -721,7 +721,7 @@ function render(){
       '<label class="chk"><input type="checkbox" id="f-live"'+(UI.liveOnly?" checked":"")+'><span class="lbl">LIVE only</span></label>'+
       '<label><span class="lbl">Search</span><input type="search" id="f-q" placeholder="id, goal, type&hellip;" value="'+esc(UI.q)+'" size="26"></label>'+
       '<span class="fill" style="flex:1"></span>'+
-      '<span class="note">LIVE = research · review · experiment. The other types are reserved.</span>'+
+      '<span class="note">LIVE = research · code · review · experiment. Plan and suggestion are reserved.</span>'+
     '</div>');
 
   var visibleRepos = repos.filter(function(r){ return UI.repo==="__all__" || r.name===UI.repo; });
