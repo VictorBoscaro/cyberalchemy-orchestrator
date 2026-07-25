@@ -1,5 +1,5 @@
 ---
-status: awaiting-owner-decision
+status: accepted
 date: 2026-07-25
 scope: host-agent-dispatch-input-binding
 related_plan: plans/governed-agent-work-infrastructure/PLAN.md
@@ -74,10 +74,22 @@ strictly below a complete ACI/provider effective-input guarantee.
 
 ## Decision
 
-Pending repository-owner selection.
+Option A accepted from the repository owner's direction to repair the binding so the requested
+single-Dispatch research topology can run. The bridge is intentionally bounded to host-observable,
+repository-local inputs and outputs.
 
-## Remaining blockers
+## Implemented boundary
 
-- Select A, B, or C.
-- If A is selected, freeze the compatibility schema, write scope, non-goals, and validation matrix
-  before implementation.
+- One already-confirmed parent Dispatch may declare multiple groups and seats.
+- Each spawn/follow-up is persisted as a `host_workflow_turn_bindings` row and journal aggregate.
+- A strict manifest binds each turn to exact repository-relative source bytes and SHA-256 digests.
+- Follow-ups require a frozen prompt-template digest in the confirmed seat prompt and target the
+  previously bound host agent.
+- The parent Dispatch cannot close while any bound turn remains running.
+- Bound turns do not append independent YAML Dispatch openings or closings.
+
+## Explicit non-goals
+
+- This bridge does not claim to capture hidden provider/system inputs.
+- It is not the general `EffectiveInputArtifact` or `AgentExecutionRequest` pipeline.
+- It does not replace the later TASK-030/040/050 implementation cone.

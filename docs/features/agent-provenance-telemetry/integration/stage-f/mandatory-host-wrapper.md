@@ -4,21 +4,31 @@ Status: implemented for trusted project-local Claude Code and Codex sessions.
 
 ## Contract
 
-Every host Agent-tool call is one independently recoverable dispatch lifecycle:
+Every host Agent-tool call is independently recoverable. Two launch modes are supported:
 
-1. `PreToolUse(Agent)` derives a deterministic dispatch identity from host, Session, and tool-use
+1. Compatibility mode derives a deterministic Dispatch identity from host, Session, and tool-use
    identity.
+2. Bound-workflow mode receives a digest-bound envelope for one group/seat/turn under an already
+   confirmed parent Dispatch. It persists the internal binding without appending another YAML
+   Dispatch row.
+
+Both modes then follow the common fail-closed lifecycle:
+
+1. `PreToolUse(Agent|spawn_agent|followup_task)` validates the launch mode and exact tool input.
 2. The hook writes a preparing state under the ignored local runtime directory.
 3. Stage-C preflight verifies the dedicated database, exact ledger, pinned source set, profiles,
    journal, and projection.
 4. The hook issues an expiring operation-specific capability bound to the exact generated record.
-5. The bridge appends the validated YAML opening, creates/uses the ACI Session, links the opening,
-   and accepts `orchestration.dispatch_opened@1`.
+5. Compatibility mode opens the validated YAML/ACI Dispatch. Bound mode verifies that its parent
+   is still open, validates the declared seat, prompt/template, input manifest and source hashes,
+   then accepts `host_workflow.turn_bound@1`.
 6. Only `status=launch-authorized` allows the host tool call. Any exception returns a structured
    `deny`.
-7. Completion/failure hooks append the exact YAML close and accept
-   `orchestration.dispatch_closed@1`. Codex correlates asynchronous launches using the agent ID
-   returned by `PostToolUse` and closes on `SubagentStop`.
+7. Compatibility completion appends the exact YAML close and accepts
+   `orchestration.dispatch_closed@1`. Bound completion accepts
+   `host_workflow.turn_terminal@1`; the parent closes only after no bound turn remains running.
+   Codex correlates asynchronous launches using the agent ID returned by `PostToolUse` and closes
+   on `SubagentStop`.
 8. `SessionEnd` reconciles remaining open states as `user_abort`.
 
 The state file is written before the bridge opening so a process failure after a YAML or ACI side
@@ -46,6 +56,22 @@ Both hosts also run the Stage-G ingestion adapter after supported read, search, 
 tools. Exact repository reads become immutable input artifacts. Search/web/MCP operations record
 metadata-only lineage, while shell execution is explicitly recorded as opaque rather than
 misrepresented as complete file provenance.
+
+## Bound workflow envelope
+
+The first prompt line is `ACI-WORKFLOW-BINDING-V1:` followed by URL-safe base64 JSON. The envelope
+strictly declares the parent `dispatch_id`, `group_id`, zero-based `seat_index`, `turn_ordinal`,
+`attempt_id`, prompt-template path/digest, and workflow-manifest path/digest. The remaining prompt
+body must equal the confirmed initial prompt for turn zero or the frozen UTF-8 template for a
+follow-up.
+
+The `aci-workflow-input-manifest/v1` file targets the same seat/turn and contains ordered,
+cardinality-bounded, size-bounded data slots. Every source is repository-relative and carries its
+exact SHA-256 and byte size. A `binding-output` source additionally names a terminal producer
+binding from the same parent Dispatch. Unbound `followup_task` calls are denied.
+
+This is a host-observable compatibility binding. It does not claim to capture hidden provider or
+system inputs and is not a complete `EffectiveInputArtifact`.
 
 ## Compatibility classification
 

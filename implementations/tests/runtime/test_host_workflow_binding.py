@@ -408,6 +408,15 @@ class HostWorkflowBindingTests(unittest.TestCase):
             slots=[slot],
         )
         self.assertEqual(bound["status"], "launch-authorized")
+        persisted = self.runtime.get_host_workflow_binding(bound["binding_id"])
+        source_ids = json.loads(persisted["source_artifact_ids_json"])
+        self.assertEqual(len(source_ids), 1)
+        with self.runtime.database.connect() as conn:
+            artifact = conn.execute(
+                "SELECT content_hash FROM artifacts WHERE artifact_id=?",
+                (source_ids[0],),
+            ).fetchone()
+        self.assertEqual(artifact["content_hash"], digest_bytes(output_body))
         slot["sources"][0]["sha256"] = digest_bytes(b"tampered")
         with self.assertRaises(IntegrityError):
             self._bind(

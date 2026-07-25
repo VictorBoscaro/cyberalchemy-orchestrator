@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-from .artifacts import ArtifactStore
+from .artifacts import ArtifactStore, PreparedArtifact
 from .canonical import (
     canonical_bytes,
     canonical_digest,
@@ -3979,7 +3979,7 @@ class RuntimeService:
         seat_index: int,
         turn_ordinal: int,
         attempt_id: str,
-    ) -> tuple[dict[str, Any], list[str]]:
+    ) -> tuple[dict[str, Any], list[PreparedArtifact]]:
         if digest_bytes(raw) != self._content_digest_string(expected_digest):
             raise IntegrityError("workflow manifest digest mismatch")
         manifest = self._require_exact_fields(
@@ -4008,7 +4008,7 @@ class RuntimeService:
         if not isinstance(slots, list):
             raise IntegrityError("workflow manifest slots must be ordered")
         names: set[str] = set()
-        source_artifact_ids: list[str] = []
+        source_artifacts: list[PreparedArtifact] = []
         for slot in slots:
             slot = self._require_exact_fields(
                 slot,
@@ -4098,16 +4098,17 @@ class RuntimeService:
                         raise ConflictError(
                             "workflow source producer is absent or non-terminal"
                         )
-                with self.database.connect() as conn:
-                    artifact = conn.execute(
-                        "SELECT artifact_id FROM artifacts WHERE content_hash=?",
-                        (actual_digest,),
-                    ).fetchone()
-                if artifact:
-                    source_artifact_ids.append(artifact["artifact_id"])
+                source_artifacts.append(
+                    self.artifacts.prepare(
+                        body,
+                        media_type="application/octet-stream",
+                        schema_ref=slot["data_schema_ref"],
+                        classification="sensitive-input",
+                    )
+                )
             if total > slot["max_bytes"]:
                 raise IntegrityError("workflow manifest slot exceeds byte ceiling")
-        return manifest, source_artifact_ids
+        return manifest, source_artifacts
 
     def bind_host_workflow_turn(
         self,
@@ -4246,7 +4247,7 @@ class RuntimeService:
         )
         if actual_manifest_digest != workflow_manifest_digest:
             raise IntegrityError("workflow manifest file digest mismatch")
-        _, source_artifact_ids = self._validate_workflow_manifest(
+        _, source_artifacts = self._validate_workflow_manifest(
             raw=manifest_bytes,
             expected_digest=workflow_manifest_digest,
             dispatch_id=dispatch_id,
@@ -4255,6 +4256,9 @@ class RuntimeService:
             turn_ordinal=turn_ordinal,
             attempt_id=attempt_id,
         )
+        source_artifact_ids = [
+            artifact.artifact_id for artifact in source_artifacts
+        ]
         prepared_manifest = self.artifacts.prepare(
             manifest_bytes,
             media_type="application/json",
@@ -4410,7 +4414,7 @@ class RuntimeService:
             command,
             [event],
             next_state={**payload, "state": "running"},
-            additional_artifacts=(prepared_manifest,),
+            additional_artifacts=(prepared_manifest, *source_artifacts),
             result_builder=result,
             mutate=mutate,
         )

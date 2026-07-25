@@ -33,11 +33,11 @@
     "implementations/server/runtime/operator_recovery.py": "sha256:7a25ad2354a56078bfacca4e75fee2f7f80e180ecbcc3589667fb05bfc140620",
     "implementations/server/runtime/profiles.py": "sha256:1ce328ef0e23879df3bee52097ef80e084d0e37cc7187a89cf7a299b4e46c664",
     "implementations/server/runtime/projections.py": "sha256:e1bac214144cc56a8234e581886dd93d82b9318ccd08bb73a0a813d58d1d2a0e",
-    "implementations/server/runtime/service.py": "sha256:e423595390c7f503dbd45e0febac807c770faa54143f1bb56419c5e95475928d",
+    "implementations/server/runtime/service.py": "sha256:9575fbef223bb6a923a030a99003fc7b8c10ce4cfb7dea3337db275451f2c2ea",
     "implementations/server/runtime/cli.py": "sha256:3ee10c80c575398ce303089bdd6057fe7c2082818e07b22093d43f3bf708d7b4",
     "implementations/tests/runtime/test_orchestration_bridge.py": "sha256:d04a74906f4bc33baea8edf127a7e5c047d7dc52f3a15c1ef622abf9d85e0ac8",
     "implementations/tests/runtime/test_host_dispatch_hook.py": "sha256:d5b3e8f06cccf9e5ffea0d7e7a62a36ff611db8f5d11f63b43bef978777ae17f",
-    "implementations/tests/runtime/test_host_workflow_binding.py": "sha256:17b3304ed9a1d8d0f60db10efe2b8a4ce62c477e08e541ebd44107102b8a1ee0",
+    "implementations/tests/runtime/test_host_workflow_binding.py": "sha256:8cfba2013f37f39c7963069b25c87b842e43293c0628b81f2c3b7ed7d564d0ca",
     "implementations/tests/runtime/test_host_ingestion_hook.py": "sha256:a5fdf444c48cac087891f2eb0f8113287653dd6aabf705e8c097c9113b71c248",
     "implementations/tests/runtime/test_operator_recovery.py": "sha256:128e566a5ccd3f192fcfb922a02c03131da6bce291c5a5e62cc087faac21b3cf",
     "implementations/tests/runtime/test_reference_scout_ingestion.py": "sha256:567416de0fdfcfb257bb5326dc4d1787e62e07295c3ef56c21e08e2e5d491024"
