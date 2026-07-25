@@ -30,3 +30,7 @@ node_modules/
 
 # FOODSToGo JBP render output — reproduced deterministically by render.sh.
 /experimentations/foodstogo-jbp-2025/out/
+
+# Playwright / ux-evidence-validator run artifacts (traces, screenshots,
+# measurements). Regenerable by re-running the suite that wrote them.
+/output/
