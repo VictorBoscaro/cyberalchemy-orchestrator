@@ -1,0 +1,172 @@
+{
+  "projection_schema_version": "aci.concrete-dispatch-proposal/v1",
+  "proposal_id": "phase-a-authoring-review-v1",
+  "confirmation_mode": "owner-explicit-no-repeat-confirmation",
+  "confirmation_evidence": "User instruction dated 2026-07-26: run a review of everything done using three independent subagents; no further confirmation required.",
+  "structural_graph": {
+    "objective": "Red-team every artifact authored or modified while preparing the Phase-A F4/F5/F6 code dispatch.",
+    "groups": [
+      {
+        "group_id": "attackers",
+        "shape": "three independent read-only full-corpus reviewers"
+      }
+    ],
+    "final_approver": "parent",
+    "coverage_owner": "parent",
+    "report_owner": "parent",
+    "report_write_scope": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-authoring-review/review.md",
+    "max_loops": 1,
+    "output_mode": "persisted",
+    "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-authoring-review"
+  },
+  "source_bindings": [
+    {
+      "path": "docs/decisions/worker-b-execution-sequence.md",
+      "sha256": "7ae19ba0c5e8ec55bc92918f7cedcfe450d6e0cd229ef70e50d6ef0d3d126137"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/WORK-PACK.md",
+      "sha256": "7d52c317212e80e9271cefaeeb9fbf4413f6bb1f06b6b8ab15512bd178643cc6"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/TEST-SPEC.md",
+      "sha256": "84182cc5a6118edf94ca1e99d371abfb795fba3914f91f2d7fe4fbefd34f9b00"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/work-pack/tasks/TASK-030.md",
+      "sha256": "9eb8c460642b1cd515de89929b398da058c2bfeb38fb7b7043bbe9fffc2934c1"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/work-pack/shared/swu-manifest.md",
+      "sha256": "377d724e75c3f7fd6ede82dda8b4c05b8a9f5598bc94cb1e283368186304c487"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
+      "sha256": "34f58f112aa752968cf18f6ca6747d58a16348150f150220e6041cd3216b07ac"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-HOST-BUS-INTEGRITY-001-code-readiness.json",
+      "sha256": "8086cb749e0641be820e4cef4e63f97ff7e6ca3a9c13f08c970a2165997368c2"
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-code-proposal-v1.json",
+      "sha256": "7f63eec3174a1530d000f4b45088c6db4759d43eef2eb6143b66f93b2cd700c1"
+    }
+  ],
+  "authority_bindings": [
+    {
+      "path": "sessions/2026-07-26-0244-bus-smoke-and-worker-b-direction.md",
+      "sha256": "12e93aae5d449d84019d7adabfdee8b003b23a8e0df484e36dfba1ea2a3133ec"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md",
+      "sha256": "f72cd536091e88a4ec38f5592422712d364a159bca2491ea336a9df918091dc6"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/operations.md",
+      "sha256": "2ffb870c01e145310cc61c335093ea48c0e88407a7bd2a60e213761381a77002"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/interfaces.md",
+      "sha256": "76f7d6486a16321715cdaa5d89ffc5e6822d7ac66edd1d28f7b8a1761d1c02e0"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/states.md",
+      "sha256": "290311e3819f2390b7c6ec75b3a56322f51d88081aba88fbb82b93ec38b4172d"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/persistence-and-replay.md",
+      "sha256": "24d9466359478d61d7fb8119d4ad271a75a2cba960e7496eef1c9cf49c12cf18"
+    },
+    {
+      "path": ".claude/skills/domainspec-implement/SKILL.md",
+      "sha256": "e8cb57ffcb40e0107d209971a8459e45cc7eab909d06a84433fe501673a8f0a9"
+    },
+    {
+      "path": ".claude/skills/register-dispatch/SKILL.md",
+      "sha256": "a62ba26a6c48b63c73935d8da4c120f02359c2d01d82365f7d355f0acfe7e23a"
+    },
+    {
+      "path": ".claude/skills/review/SKILL.md",
+      "sha256": "361d89755843241b98b324b88c13b2fea41e4ce55cc7ac92130475bd7befc8b5"
+    },
+    {
+      "path": ".agents/skills/domainspec-subagents-strategy/SKILL.md",
+      "sha256": "bd60579a8844d5ad6e09ead79c51ba0c933ee944ceaf0944efa88acb7c7796d6"
+    },
+    {
+      "path": ".claude/skills/register-dispatch/append-dispatch.cjs",
+      "sha256": "ae9837d8d2ba1f069ceb25c2cd7c45d22920e9e3c4de58f5006fab0b0d4b594c"
+    }
+  ],
+  "capability_review_request": {
+    "attackers": {
+      "filesystem": "read-only over exactly the eight source_bindings and eleven authority_bindings",
+      "network": "none",
+      "credentials": false,
+      "production": false,
+      "commands": "read-only hashing and parsing limited to the nineteen bound files",
+      "output": "inline return to parent only; no attacker file writes"
+    },
+    "parent": {
+      "filesystem": "sole write authority for docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-authoring-review/review.md",
+      "network": "none",
+      "credentials": false,
+      "production": false
+    },
+    "effective_enforcement": "non_observable"
+  },
+  "anti_bias_evidence": {
+    "axis": "attack-vector",
+    "pairs": [
+      "Hoare runs executable consistency and hash/schema checks while Liskov runs authority and claim-fidelity checks on the attack-vector axis; a mechanics-only bias in Hoare is exposed by Liskov, while a prose-authority bias in Liskov is exposed by Hoare.",
+      "Hoare runs executable consistency and hash/schema checks while Parnas runs ownership, path and handoff-boundary checks on the attack-vector axis; a local-correctness bias in Hoare is exposed by Parnas, while a structural-purity bias in Parnas is exposed by Hoare.",
+      "Liskov runs authority and claim-fidelity checks while Parnas runs ownership, path and handoff-boundary checks on the attack-vector axis; a contract-only bias in Liskov is exposed by Parnas, while a document-topology bias in Parnas is exposed by Liskov."
+    ]
+  },
+  "dispatch_record": {
+    "dispatch_id": "2026-07-26-phase-a-authoring-review",
+    "schema_version": "0.6.1",
+    "dispatch_type": "review",
+    "goal": "Attack all Phase-A F4/F5/F6 preparation artifacts and return verified change requests before code execution.",
+    "context": "The parent authored a decision sequence, amended the Agents Communication Infra work-pack and test obligations, created an exact repair descriptor and code-readiness receipt, and prepared a brownfield code-dispatch proposal. Three independent reviewers must read the entire frozen corpus, challenge whether the readiness claim is deserved, and identify contradictions, stale hashes, unsupported authority or inoperable handoffs. They are read-only and must quote exact target evidence for every finding.",
+    "max_loops": 1,
+    "final_approver": "parent",
+    "output_mode": "persisted",
+    "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-authoring-review",
+    "groups": [
+      {
+        "group_id": "attackers",
+        "n": 3,
+        "robot_talks": false,
+        "anti_bias": "attack-vector: mechanics/correctness versus fidelity/governance versus ownership/reference integrity",
+        "agents": [
+          {
+            "agent_name": "Hoare, C. A. R.",
+            "role": "explorer",
+            "model": "gpt-5.6-sol",
+            "token_budget": 2200,
+            "angle": "mechanics and correctness of hashes, schemas, gates and executable validation",
+            "initial_prompt": "Read exactly the eight source_bindings and eleven authority_bindings. Attack mechanics/correctness only: stale digests, malformed schema, impossible gates, validation commands that cannot prove the obligation, and proposal/appender incompatibility. Do not edit or search outside the bound corpus. Return candidate findings with exact file quotations, severity and one-line fix; defend zero findings per target."
+          },
+          {
+            "agent_name": "Liskov, Barbara",
+            "role": "explorer",
+            "model": "gpt-5.6-sol",
+            "token_budget": 2200,
+            "angle": "fidelity and governance of claims, authority, selection and readiness",
+            "initial_prompt": "Read exactly the eight source_bindings and eleven authority_bindings. Attack fidelity/governance only: unsupported PASS or selection claims, owner authority inflation, contradictions with DomainSpec/WORK-PACK/review findings, and hidden scope expansion. Do not edit or search outside the bound corpus. Return candidate findings with exact file quotations, severity and one-line fix; defend zero findings per target."
+          },
+          {
+            "agent_name": "Parnas, David",
+            "role": "explorer",
+            "model": "gpt-5.6-sol",
+            "token_budget": 2200,
+            "angle": "ownership and reference integrity across paths, artifacts and lifecycle handoffs",
+            "initial_prompt": "Read exactly the eight source_bindings and eleven authority_bindings. Attack ownership/reference integrity only: dangling or double-owned artifacts, missing synchronization, write-scope leaks, wrong lifecycle owner, and handoffs that cannot be consumed. Do not edit or search outside the bound corpus. Return candidate findings with exact file quotations, severity and one-line fix; defend zero findings per target."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-HOST-BUS-INTEGRITY-001",
+  "scope": "phase-a-bounded-runtime-integrity-f4-f5-f6",
+  "planner_preflight": "authoring_complete_readiness_pending",
+  "parent_review": "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md",
+  "findings": [
+    "F4-follow-up-null-identity",
+    "F5-peer-payload-byte-rehash",
+    "F6-stage-e-source-integrity-coverage"
+  ],
+  "entry_predicate": [
+    "phase-a-review-verdict-fix",
+    "accepted-host-workflow-binding-contract",
+    "accepted-bus-peer-input-contract",
+    "t-aci-phasea-i1-through-i3-defined",
+    "brownfield-alignment-and-layering-groups-required-before-code",
+    "domainspec-code-readiness-pass"
+  ],
+  "write_scope": [
+    "implementations/server/runtime/service.py",
+    "implementations/tests/runtime/test_host_workflow_binding.py",
+    "implementations/tests/runtime/test_bus_reveal_delivery.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/tests/runtime/test_orchestration_bridge.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py"
+  ],
+  "required_changes": {
+    "F4": "A follow-up requires a non-empty persisted prior agent_id and exact target equality before any new binding row or event can commit.",
+    "F5": "Materialization loads every official peer artifact body and recomputes its digest before trusting stored contribution or reveal hashes.",
+    "F6": "The Stage-E source manifest binds reveal_delivery.py and migration 011, and tamper tests fail closed for both active sources."
+  },
+  "explicit_non_goals": [
+    "invocation-plan-authority-repair-f1",
+    "producer-output-evidence-repair-f2",
+    "completion-receipt-and-status-restoration-f3",
+    "effect-claim",
+    "provider-or-tool-execution",
+    "aci-005-opening-materializer",
+    "runtime-cutover",
+    "external-network",
+    "production"
+  ],
+  "test_ids": [
+    "T-ACI-PHASEA-I1",
+    "T-ACI-PHASEA-I2",
+    "T-ACI-PHASEA-I3"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+    "python -B -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v",
+    "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+    "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v"
+  ],
+  "capability_profile": {
+    "filesystem": "descriptor-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  },
+  "implementation_status": "specified-readiness-pending"
+}

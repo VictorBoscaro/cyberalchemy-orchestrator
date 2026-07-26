@@ -1,0 +1,32 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-HOST-BUS-INTEGRITY-001",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
+  "work_pack_digest": "sha256:34f58f112aa752968cf18f6ca6747d58a16348150f150220e6041cd3216b07ac",
+  "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+  "test_spec_digest": "sha256:84182cc5a6118edf94ca1e99d371abfb795fba3914f91f2d7fe4fbefd34f9b00",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/server/runtime/service.py",
+    "implementations/tests/runtime/test_host_workflow_binding.py",
+    "implementations/tests/runtime/test_bus_reveal_delivery.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/tests/runtime/test_orchestration_bridge.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+    "python -B -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v",
+    "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+    "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v"
+  ],
+  "capability_profile": {
+    "filesystem": "task-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

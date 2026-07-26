@@ -269,6 +269,31 @@ Inspect the agent capability surface before and after reveal: it contains public
 non-peer tools only, never list/search/read/export/debug over peer content. Accepted materialization
 leaves the effect pending and a provider-start spy at zero.
 
+### Phase-A bounded runtime-integrity repairs
+
+#### T-ACI-PHASEA-I1 — Follow-up identity is mandatory
+
+Create a terminal prior host-workflow turn with `agent_id = null`, then attempt a follow-up naming
+an arbitrary target. Require an authorization failure and zero new binding rows, events, artifacts
+or receipts. Repeat with a persisted non-empty identity and prove that only exact target equality
+is accepted; mismatch fails with the same zero-write guarantee.
+
+#### T-ACI-PHASEA-I2 — Peer bytes are rehashed at materialization
+
+After official publication and reveal, alter only the stored body bytes of one peer artifact while
+leaving its stored content hash, contribution hash and reveal hash unchanged. Materialization must
+recompute the digest from the body, raise `IntegrityError` and commit no effective-input artifact,
+materialized invocation, request, Attempt, delivery, event, receipt or effect. The unchanged
+fixture must still materialize successfully and retry byte-identically.
+
+#### T-ACI-PHASEA-I3 — Active BUS sources are startup-bound
+
+Require the Stage-E source manifest to bind
+`implementations/server/runtime/reveal_delivery.py` and
+`implementations/server/runtime/migrations/011_bus_reveal_delivery.sql` by exact SHA-256.
+Independently mutate each loaded source in an isolated fixture and require startup/source-integrity
+verification to fail closed before the orchestration bridge or BUS path becomes usable.
+
 ### T-ACI-S1 — Run lifecycle and terminal precedence
 
 Generate every listed transition plus every invalid source/event pair. Confirm explicit human cancellation, technical failure and protocol ceiling map to their distinct audit reasons; later terminal observations cannot replace the first CAS winner; `execution_terminal` is not `closed`.

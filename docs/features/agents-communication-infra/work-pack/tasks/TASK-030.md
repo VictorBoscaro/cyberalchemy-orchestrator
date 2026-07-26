@@ -15,6 +15,10 @@ depends only on the accepted/implemented journal, artifact, capability and recei
 publication base. It neither claims an effect nor launches a provider/tool, so it does not consume
 or weaken TASK-020's opening barrier. Every other TASK-030 unit retains the dependencies above.
 
+The Phase-A integrity repair `SWU-ACI-HOST-BUS-INTEGRITY-001` is a prerequisite maintenance unit,
+not a protocol promotion. It closes the already-reviewed F4/F5/F6 violations while preserving zero
+provider/tool starts. F1/F2 contract authoring and the F3 completion receipt remain separate gates.
+
 ## Protocol
 
 ```text
@@ -57,10 +61,20 @@ effect intent and `opening.verified`. A repeated start/result creates no second 
 
 ### SWU-ACI-008 — Fake adapter and durable worker loop
 
-- Define `start/events/result/cancel/status` port, implementing only the subset needed by L0.
-- Worker startup scans pending intents, claims by operation/attempt/epoch, executes and records an
-  observation command; replay itself never scans or executes.
-- Test same attempt+digest reconciliation and different digest conflict.
+- **Selection state:** not selected; blocked by Phase-A closure and ACI-005
+  `opening.verified`.
+- **Scope:** define `start/events/result/cancel/status` port, implementing only the deterministic
+  fake-adapter subset needed by L0.
+- **Worker rule:** startup scans eligible pending intents, claims by operation/attempt/epoch,
+  executes only after the verified opening barrier and records observations through the command
+  boundary; replay itself never scans or executes.
+- **Required proof:** same attempt+request digest reconciles idempotently, a different digest
+  conflicts, stale epochs cannot commit observations, restart converges, and one logical fake
+  result becomes terminal without provider-specific kernel branches.
+- **Still deferred:** real provider subprocess, external network, credentials, production sandbox,
+  mutating tools and TASK-050 provider admission.
+- **Descriptor/readiness:** must be authored after Phase-A and ACI-005 completion evidence; this
+  task text alone is not mutation authority.
 
 ### SWU-ACI-009 — Fixed group kernel
 

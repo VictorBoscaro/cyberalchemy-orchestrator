@@ -18,8 +18,8 @@ decision state live under [`work-pack/`](work-pack/).
 
 | Field | Value | Notes |
 |---|---|---|
-| `workPackGateStatus` | **pass-for-exact-swu** | Existing `SWU-ACI-APT-VS-001` remains accepted; the 2026-07-25 bounded amendment additionally selects only `SWU-ACI-BUS-DELIVERY-001` for its descriptor-bound no-provider-effect proof. Every other runtime SWU remains blocked. |
-| `mutationTestAuthorization` | **pass_for_exact_swu** | Owner-delegated authorization covers descriptor-bound source, migration, tests and repository-local temporary DB work for `SWU-ACI-BUS-DELIVERY-001`; it grants no effect claim/provider execution, materializer or cutover authority. |
+| `workPackGateStatus` | **pass-for-exact-swu** | Existing `SWU-ACI-APT-VS-001` and `SWU-ACI-BUS-DELIVERY-001` remain accepted. The 2026-07-26 owner-approved continuation additionally selects only `SWU-ACI-HOST-BUS-INTEGRITY-001` to close Phase-A F4/F5/F6. Every other runtime SWU remains blocked. |
+| `mutationTestAuthorization` | **pass_for_exact_swu** | Owner-delegated authorization covers only the descriptor-bound F4/F5/F6 source, tests, Stage-E manifest and repository-local temporary DB work for `SWU-ACI-HOST-BUS-INTEGRITY-001`; it grants no F1/F2 policy invention, effect claim/provider execution, ACI-005 materializer or cutover authority. |
 | `localPilotServeEnablement` | **pass-local-pilot-only; operative** | Independent Stage-C review accepted only explicit `127.0.0.1` serving of `SWU-ACI-APT-VS-001` with its dedicated SQLite DB and verified Stage-B receipt. |
 | `productionEnablement` | **block** | External network, provider execution, materializer and audit-ledger cutover are excluded. |
 | `cvrImplementationGateStatus` | **approval_packet_prepared — NON-PASS** | Prepared for named owner review; no owner acceptance, active exception or implementation authorization exists. |
@@ -106,11 +106,14 @@ scope. No other runtime SWU is selected:
 |---|---|---|---|---|---|---|---|---|
 | `SWU-ACI-APT-VS-001` | bounded TASK-010/APT integration | Implement the exact local vertical slice. | [cross-workpack predicate](work-pack/tasks/TASK-APT-VS-001.md#entry-predicate) | descriptor-bound runtime/test paths only | Complete test matrix and execution receipt; no broadened claims. | mutation receipt, state/artifact hashes, independent implementation PASS | independent review plus root approval | selected |
 | `SWU-ACI-BUS-DELIVERY-001` | bounded TASK-030 reveal-delivery proof | Prove publish→verify→sealed close→reveal→authorized peer input without external execution. | accepted journal/artifact/capability/publication base plus canonical amendment and T-ACI-PEER1–7 | exact descriptor paths only | Atomic wrapper-complete input delivery, stable retry/restart, no peer-read, zero provider/tool starts. | focused tests, regression suites, alignment/layering/verifier PASS | delegated bounded owner authority plus independent review | implemented-verified |
+| `SWU-ACI-HOST-BUS-INTEGRITY-001` | Phase-A prerequisite maintenance | Close reviewed F4/F5/F6 without changing the accepted Host Binding or BUS behavior. | Phase-A FIX review plus T-ACI-PHASEA-I1–I3 | exact descriptor paths only | Null/mismatched follow-up identity, corrupted peer bytes and active-source tamper all fail closed; provider/tool starts remain zero. | focused Host Binding/BUS/source-integrity tests plus brownfield alignment/layering and verifier | owner-approved bounded continuation | selected-for-readiness |
 
-All runtime SWUs except the accepted `SWU-ACI-APT-VS-001` and exact
-`SWU-ACI-BUS-DELIVERY-001` remain unselected. Local-pilot serving is operative only on
+All runtime SWUs except the accepted `SWU-ACI-APT-VS-001`, exact
+`SWU-ACI-BUS-DELIVERY-001` and exact Phase-A repair
+`SWU-ACI-HOST-BUS-INTEGRITY-001` remain unselected. Local-pilot serving is operative only on
 `127.0.0.1`; provider/tool execution, TASK-020 materialization, external networking and production
-cutover remain blocked.
+cutover remain blocked. `SWU-ACI-008` cannot be selected before Phase-A completion and
+`ACI-005`/`opening.verified`.
 
 ## Blockers
 
