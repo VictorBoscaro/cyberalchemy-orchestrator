@@ -72,11 +72,13 @@ lens registry; the host supplies observations produced under a pinned lens.
 - [Experimental Session + Reference Scout runtime E0](specs/experimental-runtime-l0.md)
 - [Candidate Observation Probe lenses](probes/lenses/README.md)
 - [Current-state inventory](research/current-state-inventory.md)
+- [Reference Scout bibliography research](research/reference-scout-bibliography/findings.md)
 - [Independent review of the previous registry design](reviews/2026-07-22-system-tags-and-lens-review.md)
 
 The executable registry/resolution fixtures and registry-curation notes under `contracts/` and
-`research/` are retained only as a discarded design exploration. They are not part of the active
-contract.
+`research/` are retained only as a discarded design exploration. That statement does not apply to
+the Reference Scout bibliography research linked above. Research evidence is not itself part of the
+active contract until promoted through discovery and specification.
 
 ## Current decision
 

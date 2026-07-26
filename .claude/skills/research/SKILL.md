@@ -163,7 +163,9 @@ to the four axes above or a declared composite):
   `<working_folder>/findings.md` (cited synthesis — every load-bearing claim cites the
   collected return it rests on; the `final_approver` checks this).
 - **n = 1:** `<working_folder>/findings.md` only.
-- `working_folder`: a docs path (§5 `working_folder`).
+- `working_folder`: when one feature clearly owns the research question, use
+  `docs/features/<feature>/research/<dispatch-slug>/`. Use
+  `research/<dispatch-slug>/` only for repository-wide research with no clear feature owner.
 - The constitutional requirement is the FILES, not who writes them — the strategist may
   write `findings.md` itself or delegate (no mandatory writer-agent machinery).
 

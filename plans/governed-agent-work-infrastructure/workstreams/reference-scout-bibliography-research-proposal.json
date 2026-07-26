@@ -1,0 +1,182 @@
+{
+  "schema": "concrete-dispatch-proposal@1",
+  "proposal_id": "2026-07-25-reference-scout-bibliography-research-r1",
+  "dispatch_id": "2026-07-25-reference-scout-bibliography-research",
+  "dispatch_type": "research",
+  "post_dispatch_relocation": {
+    "reason": "The accepted research is feature-owned evidence for Agent Provenance Telemetry and belongs under that feature's research folder.",
+    "launch_time_proposal_digest": "sha256:c73b22af31d276e97d09dd54ac77b72407b94763a17043c04868a0f0360ed9c8",
+    "relocated_at": "2026-07-25",
+    "canonical_folder": "docs/features/agent-provenance-telemetry/research/reference-scout-bibliography/"
+  },
+  "goal": "Identify the citable bibliographic and systems references needed for Reference Scout, and settle the minimum acquisition and logging evidence that lets ACI operate the run while APT owns downstream research use and claim lineage.",
+  "context": "The repository already has a Reference Scout local-pilot lifecycle and Agent Reference Delivery work. This research must distinguish bibliographic semantics from runtime delivery mechanics, verify what source metadata the Scout can actually collect, and produce a source-backed recommendation for the ACI/APT specs. The three subagents return independently; the parent synthesizes and writes the two declared research files. It must not implement provider acquisition or mutate feature specifications.",
+  "source_policy": {
+    "policy_id": "reference-scout-public-bibliography@1",
+    "allowed_classes": [
+      "peer-reviewed papers with DOI or publisher landing page",
+      "official standards and specifications",
+      "official Crossref, DataCite, ORCID, OpenAlex, Semantic Scholar, or publisher metadata documentation",
+      "official documentation and primary papers for research-agent or retrieval systems",
+      "exact repository-local ACI/APT/Reference-Scout artifacts cited by repo-relative path and SHA-256"
+    ],
+    "public_read_only": true,
+    "authenticated_sources": false,
+    "paywall_bypass": false,
+    "source_logging": "Record title, authors or owning organization, publication date, stable identifier, public locator, access date, supported claim, and source class for every retained reference.",
+    "rejection_rule": "Reject uncitable search snippets, unattributed summaries, unverifiable generated claims, and sources outside the allowed classes."
+  },
+  "execution_profile": {
+    "requested_provider": "openai",
+    "requested_adapter": "codex-collaboration-subagent",
+    "type_skill_ref": ".claude/skills/research/SKILL.md",
+    "type_skill_digest": "sha256:4cc3935917a303434be5a817ffc8ea3ad12f405059cfaafcbc381344ea80fd1b",
+    "strategy_ref": ".claude/skills/domainspec-subagents-strategy/SKILL.md",
+    "strategy_digest": "sha256:7299f165819748985fbe8e7827721659fbf93731a54d3fe7760e3d6cc009ed54",
+    "sandbox_classes": [
+      "workspace-read",
+      "workspace-write-allowed-paths",
+      "public-network-read"
+    ],
+    "network": {
+      "public_read": true,
+      "authenticated_read": false,
+      "external_write": false,
+      "paid_provider_execution": false
+    },
+    "effective_enforcement": "non_observable",
+    "enforcement_mechanisms": [
+      ".codex/hooks.json launch lifecycle",
+      "ACI launch-authorized receipt",
+      "proposal and envelope digest checks",
+      "parent-enforced per-seat tool and write scopes"
+    ],
+    "enforcement_gap": "Provider/model/tool semantics beyond the observable hook receipt remain proposed rather than claimed effective; any observed mismatch stops the dispatch."
+  },
+  "seat_profiles": {
+    "Hewitt, Carl": {
+      "allowed_tools": ["web.run", "functions.shell_command"],
+      "command_classes": ["read-only repository inspection"],
+      "write_paths": [],
+      "network": "public-read",
+      "max_turns": 1,
+      "mutations": "none",
+      "effects": "inline return only"
+    },
+    "Liskov, Barbara": {
+      "allowed_tools": ["web.run", "functions.shell_command"],
+      "command_classes": ["read-only repository inspection"],
+      "write_paths": [],
+      "network": "public-read",
+      "max_turns": 1,
+      "mutations": "none",
+      "effects": "inline return only"
+    },
+    "Parnas, David": {
+      "allowed_tools": ["functions.shell_command"],
+      "command_classes": ["read-only repository inspection"],
+      "write_paths": [],
+      "network": "none",
+      "max_turns": 1,
+      "mutations": "none",
+      "effects": "inline verification return only"
+    }
+  },
+  "mutation_effect_policy": {
+    "allowed_writes": [
+      "docs/features/agent-provenance-telemetry/research/reference-scout-bibliography/research.md",
+      "docs/features/agent-provenance-telemetry/research/reference-scout-bibliography/findings.md"
+    ],
+    "other_authorial_repository_mutation": false,
+    "parent_output_materialization": "functions.apply_patch may create or update only the two declared output files after collecting all independent returns.",
+    "hook_managed_telemetry": "allowed only through the mandatory existing lifecycle hooks and append-only appender",
+    "external_effects": false,
+    "messages_uploads_publications_deployments": false
+  },
+  "budget_binding": {
+    "infrastructure_helpers_before_dispatch": {
+      "unique_agents": 3,
+      "reserved_agent_turns_until_launch": 32,
+      "conservative_token_charge": 128000,
+      "dispatches": 0,
+      "loops": 0,
+      "reservation_rule": "This fixed reservation includes every capability, tension and envelope-audit helper turn through launch, including rechecks caused by proposal revisions; actual use need not mutate the proposal while it remains within 32 turns."
+    },
+    "planned_dispatch": {
+      "dispatches": 1,
+      "agents": 3,
+      "agent_token_budget": 13500,
+      "loops": 1,
+      "max_agent_turns": 3
+    },
+    "aggregate_after_planned_dispatch": {
+      "dispatches": 1,
+      "agents_including_helpers": 6,
+      "charged_tokens": 141500,
+      "loops": 1,
+      "agent_turns": 35
+    },
+    "envelope_limits": {
+      "dispatches": 12,
+      "agents": 36,
+      "charged_tokens": 300000,
+      "loops": 24,
+      "agent_turns": 96
+    }
+  },
+  "working_folder": "docs/features/agent-provenance-telemetry/research/reference-scout-bibliography/",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "delegation_binding": {
+    "envelope_ref": "plans/governed-agent-work-infrastructure/workstreams/scout-aci-apt-delegated-execution-envelope.json",
+    "envelope_digest": "sha256:b7eeec912cd4ccbdab1d17a0e10473cfff8ca3e3fbbca7f4f1076868b2fcddfc",
+    "authorization_receipt_ref": ".codex/delegation-receipts/scout-aci-apt-20260725-v1.json",
+    "authorization_receipt_digest": "sha256:9b8d8df6684fed5f70dbc50a561c7b57fb025227df9659cd30706a01a45aa35d"
+  },
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 2,
+      "robot_talks": false,
+      "anti_bias": "source-corpus",
+      "agents": [
+        {
+          "agent_name": "Hewitt, Carl",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "primary scholarly corpus: provenance, citation metadata, systematic search and evidence-lineage standards",
+          "initial_prompt": "Search primary scholarly and standards sources for provenance, bibliographic metadata, systematic search and evidence-lineage practices that directly constrain Reference Scout. Prefer DOI-bearing papers, standards and official specifications. Return candidate references, exact supported claims, stable identifiers, access locators, and logging fields."
+        },
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "operational systems corpus: agent research tools, retrieval pipelines, source logging and reproducible acquisition",
+          "initial_prompt": "Search official systems documentation and primary systems papers for agent research tools, retrieval pipelines, source logging and reproducible acquisition. Determine what Reference Scout can collect automatically, what requires a provider adapter, and what receipt/log evidence exists in comparable systems."
+        }
+      ],
+      "predicted_disagreement": "Hewitt runs scholarly/standards evidence while Liskov runs operational systems evidence on the source-corpus axis; a standards-only design bias in Hewitt would be exposed by Liskov's executable constraints, and an implementation-folklore bias in Liskov would be exposed by Hewitt's citable provenance requirements."
+    },
+    {
+      "group_id": "reviewer",
+      "agents": [
+        {
+          "agent_name": "Parnas, David",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "Independently apply the definitional-soundness gate to the existing ACI/APT/Reference-Scout artifacts and the stated research question. Identify copied ownership, uncited folklore, metadata fields with no operational owner, and claims that confuse ACI runtime authority with APT research semantics. Return constraints the parent must apply during synthesis; do not depend on another agent's return."
+        }
+      ]
+    }
+  ],
+  "connections": [],
+  "expected_outputs": [
+    "docs/features/agent-provenance-telemetry/research/reference-scout-bibliography/research.md",
+    "docs/features/agent-provenance-telemetry/research/reference-scout-bibliography/findings.md"
+  ],
+  "containment_status": "pending-independent-audits",
+  "tension_status": "pending-two-checks"
+}
