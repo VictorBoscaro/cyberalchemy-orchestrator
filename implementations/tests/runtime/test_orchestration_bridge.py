@@ -437,6 +437,28 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         self.assertEqual(opened["dispatch_id"], record["dispatch_id"])
         self.assertTrue(self.ledger.exists())
 
+    def test_others_dispatch_type_is_live(self) -> None:
+        record = {
+            **self.opening,
+            "dispatch_id": "2026-07-25-bridge-document-authoring",
+            "dispatch_type": "others",
+        }
+        record.pop("output_mode")
+        opened = self.bridge.open_dispatch(
+            authority=self.authority(
+                "open",
+                record,
+                session_name="bridge-test",
+                origin_ref="codex:test-thread",
+            ),
+            record=record,
+            session_name="bridge-test",
+            origin_ref="codex:test-thread",
+        )
+        self.assertEqual(opened["status"], "launch-authorized")
+        self.assertEqual(opened["dispatch_id"], record["dispatch_id"])
+        self.assertTrue(self.ledger.exists())
+
     def test_reserved_dispatch_type_fails_before_yaml_or_dispatch_acceptance(self) -> None:
         record = {**self.opening, "dispatch_type": "plan"}
         with self.assertRaisesRegex(GateBlockedError, "live research"):

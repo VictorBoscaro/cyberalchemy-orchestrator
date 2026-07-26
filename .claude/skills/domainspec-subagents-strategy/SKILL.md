@@ -9,7 +9,9 @@ skill does not self-promote to runtime or governing authority. `register-dispatc
 row mechanics. The historical
 `internal_tools/subagents-dispatch-hooks/constitution/subagents-strategy-constitution-proposal.md`
 is absent; that absence grants no authority, and its former section citations are non-resolvable
-provenance. The current wire `schema_version` remains `"0.6.1"` until the row owner changes it.
+provenance. The current wire `schema_version` remains `"0.6.1"`. By repository-owner direction on
+2026-07-25, the LIVE generic `others` route is an in-place enum amendment; a future coordinated
+schema migration may give it a new wire version.
 
 ## When to dispatch (P1) — and what is not a dispatch (P11)
 
@@ -220,6 +222,7 @@ is not yet populated.
 | `research` | LIVE | `.claude/skills/research/SKILL.md` — research-type judgment: canonical shape, roles, gates, outputs |
 | `code` | LIVE | `.claude/skills/domainspec-implement/SKILL.md` — DomainSpec-driven implementation from accepted specs and generated tests; requires planner/work-pack PASS, implementation axioms, context scaffold, independent alignment/layering review, tests, tagging and verification |
 | `review` | LIVE (populated 2026-06-12, owner decision) | `.claude/skills/review/SKILL.md` — red-team judgment: attack lenses, severity taxonomy, verification discipline, the change-request report. **One artifact: `review.md`** (the synthesis — no `attacks.md`, no `findings.md`); `output_mode` picks chat vs `<working_folder>/review.md` |
+| `others` | LIVE (added 2026-07-25, owner decision) | This strategy skill — bounded work for which no LIVE specialized dispatch type exists, including document and Plan-artifact authoring. The concrete proposal must name the work kind and output contract. `others` supplies only the universal lifecycle and invariants; it must not claim the stronger semantics of a future specialized type. |
 | `plan` | RESERVED — must not be dispatched until populated | none |
 | `suggestion` | RESERVED — must not be dispatched until populated | none |
 | `experiment` | LIVE (populated 2026-06-14, owner decision) | `.claude/skills/experiment/SKILL.md` — falsification judgment: pre-registered criterion freeze, validity gates, SURVIVED/FALSIFIED/INVALID verdict (propose phase only — INVALID may be rendered here; SURVIVED/FALSIFIED rendered at the separate downstream run) |

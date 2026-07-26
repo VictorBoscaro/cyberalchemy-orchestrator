@@ -17,7 +17,7 @@ from .errors import GateBlockedError, ValidationError
 from .local_pilot import preflight_local_pilot
 from .service import RuntimeService
 
-LIVE_DISPATCH_TYPES = {"research", "code", "review", "experiment"}
+LIVE_DISPATCH_TYPES = {"research", "code", "review", "others", "experiment"}
 APPENDER = Path(".claude/skills/register-dispatch/append-dispatch.cjs")
 LEDGER = Path("telemetry/agents/subagents-dispatch.yaml")
 POLICY_REF = "policy:local-orchestration-logging-bridge@1"
@@ -150,7 +150,7 @@ class LocalOrchestrationLoggingBridge:
             raise ValidationError(f"{identity_field} is required")
         if not is_close and record.get("dispatch_type") not in LIVE_DISPATCH_TYPES:
             raise GateBlockedError(
-                "local bridge permits only live research, code, review, or experiment dispatches"
+                "local bridge permits only live research, code, review, others, or experiment dispatches"
             )
         submitted = dict(record)
         submitted["project_dir"] = str(self.project_dir)

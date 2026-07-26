@@ -35,7 +35,7 @@ STAGE_E_SOURCE_MANIFEST = Path(
     "source-manifest.json"
 )
 STAGE_E_SOURCE_MANIFEST_SHA256 = (
-    "b82a525ddc5dd66a0edb2f92ab687f2b159d1b18dd420e4633d1a8551eb2dd6c"
+    "7d9a72f082f6699158799ccc61df2dab583b0e853545b09562544a859dcf81e1"
 )
 
 

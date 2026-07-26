@@ -9,13 +9,14 @@
  * — e.g. PowerShell's UTF-16 pipes — can't corrupt the payload).
  *
  * SCHEMA — subagents-strategy constitution v0.6.1 (row schema; group `role`
- * removed at v0.6.0 — §11; `output_mode` added at v0.6.1 — §14). Two row kinds,
+ * removed at v0.6.0 — §11; `output_mode` added at v0.6.1 — §14;
+ * LIVE `others` added by an in-place owner amendment on 2026-07-25). Two row kinds,
  * both appended by this script
  * (Principle 3: two appends, one place):
  *
  *   DISPATCH ROW — keyed by `dispatch_id`. Required: dispatch_id,
  *     schema_version ("0.6.1" exactly), dispatch_type
- *     (research|code|review|plan|suggestion|experiment), goal, context, max_loops (1..5),
+ *     (research|code|review|others|plan|suggestion|experiment), goal, context, max_loops (1..5),
  *     final_approver, groups[] (each group: group_id, agents[] — NO group
  *     `role` field; each agent: role explorer|synthesizer|skeptic|writer|auditor|planner|coder, model,
  *     token_budget, initial_prompt). Optional: meta (true), parent_dispatch_id,
@@ -95,11 +96,12 @@ const isNonEmptyStr = (v) => isStr(v) && v.trim() !== '';
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 
 // ---------------------------------------------------------------- schema
-const SCHEMA_VERSION = '0.6.1';   // row schema: group `role` removed at v0.6.0 (§11); `output_mode` added at v0.6.1 (§14)
-const DISPATCH_TYPES = ['research', 'code', 'review', 'plan', 'suggestion', 'experiment'];
-// LIVE per constitution §5. `code` routes through domainspec-implement; plan and suggestion
-// remain RESERVED and are recorded only so an upstream routing violation is observable.
-const LIVE_TYPES = new Set(['research', 'code', 'review', 'experiment']);
+const SCHEMA_VERSION = '0.6.1';   // `others` added by in-place owner amendment on 2026-07-25
+const DISPATCH_TYPES = ['research', 'code', 'review', 'others', 'plan', 'suggestion', 'experiment'];
+// LIVE per the routing contract. `others` routes through the universal strategy only;
+// `code` routes through domainspec-implement; plan and suggestion remain RESERVED and
+// are recorded only so an upstream routing violation is observable.
+const LIVE_TYPES = new Set(['research', 'code', 'review', 'others', 'experiment']);
 // working_folder is REQUIRED only for the artifact-producing LIVE types. `review`
 // went inline 2026-06-16 (owner decision): its findings are delivered in chat by
 // default, so it requires no working_folder. A review MAY still set one (optional)

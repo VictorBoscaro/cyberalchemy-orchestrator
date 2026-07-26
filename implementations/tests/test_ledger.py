@@ -130,6 +130,18 @@ def test_legacy_and_orphan() -> None:
     check("orphan close is exposed", len(orphan) == 1 and orphan[0]["_orphan_close"] is True)
 
 
+def test_code_is_live() -> None:
+    print("\ncode LIVE classification")
+    text = """dispatches:
+  - dispatch_id: "2026-07-25-code-live"
+    schema_version: "0.6.1"
+    dispatch_type: "code"
+    groups: [{"group_id":"implementation","agents":[{"role":"coder","model":"m","token_budget":10,"initial_prompt":"p"}]}]
+"""
+    row = ledger.join_rows(ledger.parse_ledger(text).rows)[0]
+    check("code is classified LIVE", row["_live"] is True)
+
+
 def test_prettified_legacy() -> None:
     """Real shape found in the domainspec ledger: multi-line JSON + trailing comma."""
     print("\nprettified old rows (real domainspec data)")
@@ -508,6 +520,7 @@ def main() -> int:
     test_parse_and_join()
     test_truncation()
     test_legacy_and_orphan()
+    test_code_is_live()
     test_prettified_legacy()
     test_lenient_vs_strict()
     test_corruption()

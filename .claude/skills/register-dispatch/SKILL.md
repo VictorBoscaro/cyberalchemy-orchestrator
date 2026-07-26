@@ -1,6 +1,6 @@
 ---
 name: register-dispatch
-description: Record a subagent dispatch in the repository telemetry ledger using two appends per dispatch, with each agent's angle and anti-bias axis. Use whenever you dispatch one or more subagents; research, code, review, and experiment are LIVE, while plan and suggestion remain reserved. Trivial work that spawns no subagent does not need registration. Single owner of the record and sheet mechanics in the router to type-skill to form chain.
+description: Record a subagent dispatch in the repository telemetry ledger using two appends per dispatch, with each agent's angle and anti-bias axis. Use whenever you dispatch one or more subagents; research, code, review, others, and experiment are LIVE, while plan and suggestion remain reserved. Trivial work that spawns no subagent does not need registration. Single owner of the record and sheet mechanics in the router to type-skill to form chain.
 ---
 
 # register-dispatch
@@ -47,8 +47,8 @@ appender-enforced** since the 2026-06-12 in-place amendment (constitution §9).
 | Field | Required | Meaning / constraint |
 |-------|----------|----------------------|
 | `dispatch_id` | ✅ | Unique id, `YYYY-MM-DD-<slug>` (§5). Dedup key — re-registering the same id is a no-op. |
-| `schema_version` | ✅ | Must be **exactly** `"0.6.1"`. |
-| `dispatch_type` | ✅ | `research \| code \| review \| plan \| suggestion \| experiment`. `research`, `code`, `review`, and `experiment` are LIVE. `code` routes through `.claude/skills/domainspec-implement/SKILL.md`; it requires DomainSpec planner/work-pack readiness and does not require a `working_folder`. `plan` and `suggestion` remain RESERVED — the appender notes this but records anyway; registering one signals an upstream constitution violation (§5: reserved types must not be dispatched until populated). `experiment` runs the falsification strategy (role-set designer/runner/adjudicator/skeptic; grader = falsification against a pre-registered criterion + internal validity + reproducibility; verdict SURVIVED/FALSIFIED/INVALID; the criterion is a `working_folder` artifact, never a column). |
+| `schema_version` | ✅ | Must be **exactly** `"0.6.1"`. `others` was admitted by an in-place owner amendment on 2026-07-25. |
+| `dispatch_type` | ✅ | `research \| code \| review \| others \| plan \| suggestion \| experiment`. `research`, `code`, `review`, `others`, and `experiment` are LIVE. `others` is the generic route for bounded work without a LIVE specialized type, including document and Plan-artifact authoring; it carries only the universal workflow guarantees, and its concrete proposal must name the work kind and output contract. `code` routes through `.claude/skills/domainspec-implement/SKILL.md`; it requires DomainSpec planner/work-pack readiness and does not require a `working_folder`. `plan` and `suggestion` remain RESERVED — the appender notes this but records anyway; registering one signals an upstream constitution violation (§5: reserved types must not be dispatched until populated). `experiment` runs the falsification strategy (role-set designer/runner/adjudicator/skeptic; grader = falsification against a pre-registered criterion + internal validity + reproducibility; verdict SURVIVED/FALSIFIED/INVALID; the criterion is a `working_folder` artifact, never a column). |
 | `goal` | ✅ | Non-empty string — the human's objective, one or two sentences. |
 | `context` | ✅ | Non-empty string — 2–4 sentences of framing; the only channel subagents get (§5). |
 | `max_loops` | ✅ | Integer 1..5 — whole-sequence re-run ceiling. |
