@@ -172,7 +172,7 @@ row lives in [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md); t
 | [`OBLIGATIONS.md`](OBLIGATIONS.md) | The single falsifiable target, OBL-E3 — does the orchestration language form a category? |
 | [`FRAMINGS.md`](FRAMINGS.md) | The category-theory ledger (F1–F7 framings + construct⟷CT-type mapping). |
 | [`BACKLOG.md`](BACKLOG.md) | Named-but-unplanned candidates and the portability hypotheses. |
-| [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Normative vocabulary — five terms: `residue`, `separation`, `shadow`, `probe`, `verb`. |
+| [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) | Normative definition map — system primitives and category-theory parallels, with one canonical home per term. |
 
 **What runs**
 
