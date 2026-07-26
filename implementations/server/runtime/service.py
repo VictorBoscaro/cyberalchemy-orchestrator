@@ -2924,7 +2924,7 @@ class RuntimeService:
             failpoint=failpoint,
         )
 
-    def preallocate_agent_invocation_plan(
+    def authorize_agent_invocation_plan(
         self, *, token: str, binding_id: str, plan: dict[str, Any]
     ) -> dict[str, str]:
         """Persist a trusted scheduler plan before target-attempt acceptance."""
@@ -3089,6 +3089,7 @@ class RuntimeService:
             effective_input_artifact_id=effective_input_id,
             base_entries=base_rows,
             peer_entries=peer_entries,
+            reveal_manifest_entries=manifest_entries,
             provider_invocation_ref=wrapper.artifact_id,
             provider_invocation_hash=wrapper.content_hash,
         )

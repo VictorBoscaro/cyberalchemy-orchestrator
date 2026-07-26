@@ -1,0 +1,32 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-BUS-DELIVERY-001",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-BUS-DELIVERY-001.json",
+  "work_pack_digest": "sha256:30956f028040dbbd52f2a3dd8b4771419c6cfbee63e20d6a9893cecdf4623207",
+  "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+  "test_spec_digest": "sha256:e54f39f3196eba42c80f5671ce2a18041845e7fcd252905d29daea44021baf05",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/server/runtime/service.py",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/reveal_delivery.py",
+    "implementations/server/runtime/migrations/011_bus_reveal_delivery.sql",
+    "implementations/tests/runtime/test_bus_reveal_delivery.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py"
+  ],
+  "validation_commands": [
+    "python -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v",
+    "python -m unittest implementations.tests.runtime.test_stage_b implementations.tests.runtime.test_agent_reference_delivery -v",
+    "python -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "node --test docs/features/agents-communication-infra/experiments/bus-publication-probe/test/*.test.mjs"
+  ],
+  "capability_profile": {
+    "filesystem": "task-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

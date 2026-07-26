@@ -10,6 +10,11 @@ two deterministic seats, commit one result and close officially.
 - **Proposed write scope:** `implementations/server/runtime/application/`,
   `implementations/server/runtime/adapters/fake.py`, runtime API/query modules and E2E tests.
 
+The exact `SWU-ACI-BUS-DELIVERY-001` exception below is a narrower no-provider-effect proof. It
+depends only on the accepted/implemented journal, artifact, capability and receipt-gated
+publication base. It neither claims an effect nor launches a provider/tool, so it does not consume
+or weaken TASK-020's opening barrier. Every other TASK-030 unit retains the dependencies above.
+
 ## Protocol
 
 ```text
@@ -22,6 +27,33 @@ The fixed fake returns fixture-defined structured positions/votes. Start require
 effect intent and `opening.verified`. A repeated start/result creates no second logical contribution.
 
 ## Smallest Working Units
+
+### SWU-ACI-BUS-DELIVERY-001 — Authorized local reveal delivery
+
+- **Planner preflight:** PASS for this exact SWU only.
+- **Scope:** two fixed seats publish and verify; close freezes only official messages; restart
+  preserves sealing; one canonical reveal is published; a preallocated local attempt receives the
+  authorized peer entry through a wrapper-complete `EffectiveInputArtifact`.
+- **Write scope:** `implementations/server/runtime/service.py`,
+  `implementations/server/runtime/database.py`,
+  `implementations/server/runtime/reveal_delivery.py`,
+  `implementations/server/runtime/migrations/011_bus_reveal_delivery.sql`,
+  `implementations/tests/runtime/test_bus_reveal_delivery.py`,
+  `implementations/tests/runtime/aci-test-traceability.json`, and
+  `implementations/tests/runtime/test_aci_traceability.py`.
+- **Pinned prerequisite:** the current migration-010 target-attempt/input/request/effect base and
+  its pure reference-delivery helper/tests, bound by SHA-256 in the descriptor. The new migration
+  reuses those tables and may not duplicate or reinterpret them.
+- **Implementation shape:** `service.py` orchestrates capabilities/artifacts/journal/database;
+  `reveal_delivery.py` owns pure derivation, validation and the fixed deterministic translation
+  that produces wrapper refs plus `MaterializedAgentInvocation`; migration 011 owns only
+  collection/reveal/plan/materialization/peer-delivery persistence.
+- **Done when:** T-ACI-PEER1–7 pass; identical retry returns byte-identical evidence; crash/restart
+  yields all-or-none acceptance; no agent peer-read exists; the accepted effect remains pending and
+  unclaimed; provider/tool start count is zero.
+- **Explicitly deferred:** effect claim, provider/tool execution, voting/commit, dynamic routing,
+  generic inbox, audit-ledger materialization, sole-writer proof and cutover.
+- **Descriptor:** [`SWU-ACI-BUS-DELIVERY-001.json`](../descriptors/SWU-ACI-BUS-DELIVERY-001.json).
 
 ### SWU-ACI-008 — Fake adapter and durable worker loop
 

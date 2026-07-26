@@ -1,0 +1,158 @@
+{
+  "schema": "concrete-dispatch-proposal@1",
+  "projection_schema_version": "1",
+  "proposal_id": "2026-07-25-host-bus-phase-a-close-r1",
+  "dispatch_id": "2026-07-25-host-bus-phase-a-close",
+  "dispatch_type": "review",
+  "confirmation_mode": "delegated_bounded",
+  "output_mode": "persisted",
+  "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/",
+  "goal": "Determine whether the current Host Workflow Binding to ACI BUS reveal/materialized-input Phase-A seam is mechanically correct, governance-faithful, and ready to close, or produce exact verified change requests.",
+  "context": "The current focused Host Workflow Binding suite passes 5/5 and the BUS Reveal Delivery suite passes 7/7. The corpus includes concurrent modified and untracked files, so the review evaluates the exact frozen bytes without mutation. Two attackers read the entire corpus through opposed mechanics/correctness and fidelity/governance lenses; the parent verifies findings, audits coverage, writes review.md, reruns tests, and approves or rejects closure.",
+  "structural_graph": {
+    "objective": "Attack the full frozen Phase-A corpus and return verified change requests or KEEP.",
+    "boundaries": [
+      "Read-only target inspection.",
+      "No network or target mutation.",
+      "No downstream dynamic-input group; attackers return independently and the parent performs verification and synthesis.",
+      "One persisted output: review.md."
+    ],
+    "groups": [
+      {
+        "group_id": "attackers",
+        "n": 2,
+        "anti_bias": "attack-vector",
+        "robot_talks": false,
+        "output_join": "parent verification, coverage audit, and synthesis"
+      }
+    ],
+    "connections": [],
+    "max_loops": 1,
+    "budget_envelope": {
+      "agents": 2,
+      "total_agent_token_budget": 14000,
+      "agent_turns": 2
+    }
+  },
+  "execution_profile": {
+    "requested_provider": "openai",
+    "requested_adapter": "codex-collaboration-subagent",
+    "type_skill_ref": ".agents/skills/review/SKILL.md",
+    "type_skill_digest": "sha256:361d89755843241b98b324b88c13b2fea41e4ce55cc7ac92130475bd7befc8b5",
+    "strategy_ref": ".agents/skills/domainspec-subagents-strategy/SKILL.md",
+    "strategy_digest": "sha256:bd60579a8844d5ad6e09ead79c51ba0c933ee944ceaf0944efa88acb7c7796d6",
+    "allowed_tools": [
+      "functions.shell_command"
+    ],
+    "command_classes": [
+      "read-only repository inspection",
+      "hash calculation",
+      "git status and diff inspection",
+      "non-mutating focused test execution"
+    ],
+    "write_paths": [],
+    "network": "none",
+    "exact_test_commands": [
+      "python -B -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+      "python -B -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v"
+    ],
+    "effective_enforcement": "non_observable",
+    "enforcement_gap": "Hooks enforce lifecycle authorization and recording; shell read-only, network denial, exposed tools, and token ceilings remain policy/prompt constraints verified after the fact."
+  },
+  "capability_review": {
+    "status": "PASS_WITH_AMENDMENTS_APPLIED",
+    "reviewer": "Meyer, Bertrand",
+    "reviewed_draft_sha256": "a99a5c73ae6687f9628f09ce7cbffc4016bd0e2cd3bad24de19d81966c8a16e8",
+    "result": "Seat shell capabilities are sufficient for read-only attack and focused tests; parent-only authorship is coherent after adding a parent write profile and narrow temporary-test allowance.",
+    "amendments_applied": [
+      "Separated seat and parent tool profiles.",
+      "Limited parent apply_patch to review.md.",
+      "Allowed automatically cleaned OS-temporary test fixtures.",
+      "Bound the exact focused unittest commands.",
+      "Replaced all pending skill and receipt bindings."
+    ]
+  },
+  "parent_capability_profile": {
+    "allowed_tools": [
+      "functions.shell_command",
+      "functions.apply_patch",
+      "collaboration.spawn_agent",
+      "collaboration.list_agents",
+      "collaboration.wait_agent"
+    ],
+    "write_paths": [
+      "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md"
+    ],
+    "network": "none",
+    "test_commands": [
+      "python -B -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+      "python -B -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v"
+    ]
+  },
+  "target_bindings": [
+    {"path": ".claude/skills/register-dispatch/append-dispatch.cjs", "sha256": "ae9837d8d2ba1f069ceb25c2cd7c45d22920e9e3c4de58f5006fab0b0d4b594c"},
+    {"path": ".claude/skills/register-dispatch/SKILL.md", "sha256": "a62ba26a6c48b63c73935d8da4c120f02359c2d01d82365f7d355f0acfe7e23a"},
+    {"path": ".agents/skills/domainspec-subagents-strategy/SKILL.md", "sha256": "bd60579a8844d5ad6e09ead79c51ba0c933ee944ceaf0944efa88acb7c7796d6"},
+    {"path": "docs/decisions/host-agent-dispatch-input-binding.md", "sha256": "eb9a0cc693dc19b15876276a2dbd3e15ec7faa07c86272f0644612f7d415ef34"},
+    {"path": "implementations/server/runtime/host_dispatch_hook.py", "sha256": "1a6a7488ac714aa866463b29c80da55bd46fab49ee528b4f4a588955aba60254"},
+    {"path": "implementations/server/runtime/service.py", "sha256": "8b46efc168d1eb8a17ba8b44aa460feb6a89ddfd01a05f07c06067450aac9731"},
+    {"path": "implementations/server/runtime/reveal_delivery.py", "sha256": "0b9b43a376883739271b7574626cb3f80d660f74508aaeeedfd7140c856046dc"},
+    {"path": "implementations/server/runtime/migrations/009_host_workflow_binding.sql", "sha256": "7693b1dca232240482179c0ee2dccee80b13e443a3db7aebded25607b3423d40"},
+    {"path": "implementations/server/runtime/migrations/011_bus_reveal_delivery.sql", "sha256": "2d798ab2ab8c6962e0a6f67ad17665ad4d8b441a9b26fe72d9e2c08df44877e1"},
+    {"path": "implementations/tests/runtime/test_host_workflow_binding.py", "sha256": "8cfba2013f37f39c7963069b25c87b842e43293c0628b81f2c3b7ed7d564d0ca"},
+    {"path": "implementations/tests/runtime/test_bus_reveal_delivery.py", "sha256": "69eebe09eebf904a93a6ba6e8d7cac517735a0cf2000c3e9aacf31a785e76c32"},
+    {"path": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-BUS-DELIVERY-001.json", "sha256": "30956f028040dbbd52f2a3dd8b4771419c6cfbee63e20d6a9893cecdf4623207"},
+    {"path": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-BUS-DELIVERY-001-code-readiness.json", "sha256": "76ae71c582d8542df6e5e2e3a66c3892340dfe2e26a8de7540722f02e641c35a"},
+    {"path": "docs/features/agents-communication-infra/WORK-PACK.md", "sha256": "9758b008d6fb47d639c6b7b935a62de5fdf1c651789f4513eab62c25e5dc55c8"},
+    {"path": "docs/features/agents-communication-infra/TEST-SPEC.md", "sha256": "e54f39f3196eba42c80f5671ce2a18041845e7fcd252905d29daea44021baf05"},
+    {"path": "docs/features/agents-communication-infra/specs/mappings.md", "sha256": "5ced0b93e8bf5b2defe8eefe13ac5bfb9fef506a8ca40faef94e90bc16b2d989"},
+    {"path": "docs/features/agents-communication-infra/specs/interfaces.md", "sha256": "76f7d6486a16321715cdaa5d89ffc5e6822d7ac66edd1d28f7b8a1761d1c02e0"},
+    {"path": "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json", "sha256": "9920a8b82f6e4f1ec976478e4142ecb9b108118739b87a1841b508ad9ddf055b"}
+  ],
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "anti_bias": "attack-vector",
+      "agents": [
+        {
+          "seat_id": "mechanics-attacker",
+          "agent_name": "Lamport, Leslie",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 7000,
+          "angle": "mechanics/correctness attack: executable identity, hashing, restart, atomicity, failure boundaries, test adequacy, and actual descriptor coverage",
+          "initial_prompt": "Read every path in target_bindings from docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/proposal-v1.json and verify its SHA-256 before analysis. Attack the entire corpus through mechanics/correctness only: executable identity continuity from parent dispatch through host binding, reveal and materialized input; exact bytes and hashes; restart/idempotency; atomic rollback; migration/service wiring; focused-test adequacy; descriptor/readiness write-scope and prerequisite coverage; source-manifest correspondence. You may run non-mutating focused tests. Return candidate findings only when you can quote the exact artifact, assign CRITICAL/MAJOR/MINOR, name a one-line fix, and state the check that verifies it. Also state what you attacked when no finding survives. Do not mutate files or use network."
+        },
+        {
+          "seat_id": "governance-attacker",
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 7000,
+          "angle": "fidelity/governance attack: authority ownership, schema compatibility, claim-proof alignment, source integrity, forbidden effects, and spec-to-runtime correspondence",
+          "initial_prompt": "Read every path in target_bindings from docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/proposal-v1.json and verify its SHA-256 before analysis. Attack the entire corpus through fidelity/governance only: whether implementation and tests exceed accepted authority; current versus historical schema semantics; ledger/appender ownership; distinction between input inclusion, access, declared use and claim support; provider/effect prohibition; descriptor/readiness/source-manifest claims; and spec-to-runtime correspondence. Return candidate findings only when you can quote the exact artifact, assign CRITICAL/MAJOR/MINOR, name a one-line fix, and state the check that verifies it. Also state what you attacked when no finding survives. Do not mutate files or use network."
+        }
+      ],
+      "predicted_disagreement": "Lamport runs the mechanics/correctness attack and Liskov runs the fidelity/governance attack on the attack-vector axis. Lamport may accept a governance description that follows working mechanics, while Liskov may reject a passing implementation whose receipts or semantics overclaim; a mechanics-only bias internal to Lamport is exposed by Liskov's governance contradictions, while a document-fidelity bias internal to Liskov is exposed by Lamport's executable counterexamples."
+    }
+  ],
+  "connections": [],
+  "parent_responsibilities": [
+    "Verify or refute every candidate finding against exact frozen artifacts and actual checks.",
+    "Drop refuted findings rather than soften them.",
+    "Perform coverage and zero-findings audit.",
+    "Rerun the 5-test Host Binding and 7-test BUS suites.",
+    "Write the only persisted artifact, review.md.",
+    "Act as final approver."
+  ],
+  "delegation_binding": {
+    "envelope_ref": "plans/governed-agent-work-infrastructure/workstreams/host-bus-phase-a-review-envelope.json",
+    "envelope_digest": "sha256:356809d5e9a096ca04c448263d92f73e1e8586da94cb978f99d3ae85a7d8445e",
+    "authorization_receipt_ref": ".codex/delegation-receipts/host-bus-phase-a-review-20260725-v1.json",
+    "authorization_receipt_digest": "sha256:78dfca1a1da7e151819ccfa916829ba9cecab5df7c7f1a908bb361f7fd0fce16"
+  },
+  "containment_status": "pending",
+  "tension_status": "pending"
+}

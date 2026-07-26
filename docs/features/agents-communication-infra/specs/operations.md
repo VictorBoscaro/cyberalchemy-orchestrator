@@ -9,7 +9,8 @@ durable effect intents and is never repeated by replay.
 The canonical operation registry for this feature is limited to
 `ConfirmRuntimeDispatch`, `AcceptRuntimeCommand`, `StartAgentAttempt`,
 `PublishBusContribution`, `VerifyPublicationReceipt`, `CloseCollection`, `PublishRevealManifest`,
-`CommitGroupResult`, `CancelRun`, and `RecordUsageObservation`. Named “internal transition” sections below decompose
+`MaterializeAuthorizedPeerInput`, `CommitGroupResult`, `CancelRun`, and
+`RecordUsageObservation`. Named “internal transition” sections below decompose
 those operations for testability; they are not additional registry operations.
 
 ## AcceptRuntimeCommand
@@ -564,6 +565,145 @@ different abandonment digest produces the corresponding CAS/outcome conflict.
 - Any authorized delivery is a content-addressed input to a new attempt/turn and is recorded in that
   turn's `EffectiveInputArtifact`.
 
+## AuthorizeAgentInvocationPlan
+
+**Type:** Operation (local authorization mutation)
+**Actor:** Protocol-kernel scheduler through capability action `bus.plan`, phase `plan`
+**Triggers:** One accepted running host-workflow binding selected for the next fixed-seat turn
+
+This operation is the only admitted plan-registration boundary for
+`SWU-ACI-BUS-DELIVERY-001`. The request carries `binding_id` and one complete
+[AgentInvocationPlan](domain.md#agentinvocationplan). The capability context must equal the
+binding-derived `binding_id`, `group_aggregate_id`, `target_attempt_id`, `target_seat_id`,
+`provider_ref` and `adapter_ref`; the request cannot override any of them. The kernel recomputes
+those six values from the immutable running binding before its first write, validates the complete
+plan, derives `plan_digest`/`plan_ref`, and persists the byte-stable plan. Any attempt, seat, group,
+provider or adapter substitution fails with no plan row.
+
+This operation creates no Attempt, effective input, request, effect or provider/tool execution. It
+exists only to provide the authenticated, digest-addressed plan prerequisite consumed by
+[MaterializeAuthorizedPeerInput](#materializeauthorizedpeerinput).
+
+## MaterializeAuthorizedPeerInput
+
+**Type:** Operation (mutation)
+**Actor:** Protocol kernel through a capability bound to the preallocated target identity
+**Triggers:** An accepted [`reveal.published`](events.md#revealpublished) fact and one authorized
+[StartAgentAttempt](#startagentattempt) plan whose target identity has not been accepted or started
+
+This bounded operation proves reveal delivery without claiming or running a provider effect. It
+does not expose a generic inbox or peer-read method.
+
+**Authority:** the bounded promotion in
+[SPEC.md](SPEC.md#bounded-spec-amendment-authorized-local-peer-input-materialization)
+specializes discovery decision
+[ACI-D8](../discovery/feature-discovery/agents-communication-infra.md#51-agent-input-bus-publication-and-reveal-delivery)
+for `SWU-ACI-BUS-DELIVERY-001`; it does not promote dynamic Work Bus routing.
+
+**Checked by:** [T-ACI-PEER1 through T-ACI-PEER7](../TEST-SPEC.md#bounded-authorized-peer-input-delivery).
+
+### Input
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `reveal_manifest_id` | string | yes | Exact accepted source manifest. |
+| `visibility_policy_ref` | [VersionedReference](domain.md#versionedreference) | yes | Frozen policy controlling the peer filter. |
+| `idempotency_key` | string | yes | Retry identity scoped to manifest plus target attempt. |
+
+The authenticated runtime context, outside the request payload, supplies the exact
+`agent_invocation_plan_ref`, `agent_invocation_plan_digest` and capability-bound
+`target_attempt_id`/`target_seat_id`. The kernel resolves the plan by its reference, verifies its
+digest, and requires its preallocated attempt/seat identities to equal the capability-bound
+identities. The caller supplies no attempt ID, seat ID, message ID, artifact ID, hash, source seat
+ID or ordering. The kernel derives those values from the authenticated plan/capability, accepted
+manifest, official contributions and policy.
+
+The kernel resolves the plan's authorized `base_snapshot_ref` and optional `role_delta_ref` into
+ordered base entries, appends the derived reveal entries and preallocates the effective-input
+artifact identity without finalizing it. It then invokes only the deterministic translation
+surface of the plan-selected [AgentAdapter](interfaces.md#internal-agentadapter), passing that
+preallocated identity and the prepared ordered entries. The translation returns observable wrapper
+references plus a [MaterializedAgentInvocation](domain.md#materializedagentinvocation). The kernel
+incorporates those wrapper references, hashes and finalizes the complete
+[EffectiveInputArtifact](domain.md#effectiveinputartifact), verifies that the materialized
+invocation binds its `effective_input_ref` to that artifact and its `plan_digest` to
+`agent_invocation_plan_digest`, then seals the
+[AgentExecutionRequest](domain.md#agentexecutionrequest). Adapter translation here is not an
+external provider/tool effect.
+
+For this exact SWU, `visibility_policy_ref` MUST equal
+`aci.fixed-two-seat-peer-reveal@1`. Its closed predicate is:
+
+```text
+authorized(entry, target_seat_id) :=
+  accepted(reveal.published(entry.reveal_manifest_id))
+  AND entry.message_id IN RevealManifest(entry.reveal_manifest_id).message_entries
+  AND official(Contribution(entry.message_id))
+  AND Contribution(entry.message_id).group_aggregate_id =
+      Seat(target_seat_id).group_aggregate_id
+  AND Contribution(entry.message_id).seat_id != target_seat_id
+```
+
+No configurable principal list, dynamic route, inbox membership or policy extension is admitted by
+this version.
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-PEER-1 | Source and target share one group; recipient identity comes from the digest-verified [AgentInvocationPlan](domain.md#agentinvocationplan) and capability, not an existing Attempt row or agent payload. | `plan = resolve(agent_invocation_plan_ref) and hashCanonical(plan) = agent_invocation_plan_digest and plan.attempt_id/seat_id = capability.target_attempt_id/seat_id and Seat(plan.seat_id).group_aggregate_id = RevealManifest(reveal_manifest_id).group_aggregate_id` |
+| O-PEER-2 | Only the unique accepted reveal for the exact manifest hash, group, round and ordered entries opens delivery. | `existsUnique accepted reveal.published where event.reveal_manifest_id = manifest.reveal_manifest_id = reveal_manifest_id and event.manifest_hash = manifest.manifest_hash = hashCanonical(manifest.group_aggregate_id,manifest.round_id,manifest.message_entries)` |
+| O-PEER-3 | Entries preserve manifest order, pass policy and exclude the target seat's own contribution. | `entries = ordered(manifest.entries where authorized(entry,target_seat_id) and Contribution(entry.message_id).seat_id != target_seat_id)` |
+| O-PEER-4 | Every entry binds one official contribution, immutable artifact and the exact payload hash recorded by its manifest entry. | `forall e in entries: official(e.message_id) and e.content_hash = manifest[e.message_id].payload_hash = Artifact(e.artifact_ref).content_hash` |
+| O-PEER-5 | Acceptance uses the complete StartAgentAttempt unit after adapter wrappers are included in the finalized input, and is atomic with the requested attempt and unclaimed effect intent. | `preparedInput.artifact_id = MaterializedAgentInvocation.effective_input_ref = EffectiveInputArtifact.artifact_id and adapterWrapperRefs(MaterializedAgentInvocation) = EffectiveInputArtifact.adapter_wrapper_refs and MaterializedAgentInvocation.plan_digest = agent_invocation_plan_digest and sealed(AgentExecutionRequest) and atomic(Attempt,finalizedArtifactMetadata,MaterializedAgentInvocation,requestBinding,AgentExecutionRequest,PeerInputDelivery,peer_input.materialized,attempt.requested,unclaimedEffectIntent) or atomic(none)` |
+| O-PEER-6 | Identical retry is byte-stable; any semantic drift conflicts. | `same(scope,key,digest) => same receipt and no append; same(scope,key) and different(digest) => conflict` |
+| O-PEER-7 | At this operation's commit and receipt return, the effect remains unclaimed and this bounded SWU has performed no external execution. | `atReceiptReturn(accepted(peer_input.materialized)) => effect.status = pending and effect.claim_id = null and provider_start_count_by_this_operation = 0` |
+
+### Calculations
+
+| ID | Calculation | Formula |
+|---|---|---|
+| O-PEER-C1 | Authorized ordered peer entries | `peerEntries = preserveManifestOrder(manifest.message_entries where authorized(message_id,target_seat_id) and Contribution(message_id).seat_id != target_seat_id)` |
+| O-PEER-C2 | Canonical effective input | `baseInputEntries = resolveAuthorizedInputEntries(plan.base_snapshot_ref,plan.role_delta_ref); preparedEntries = baseInputEntries ++ mapRevealEntries(peerEntries,manifest,policy); wrapperRefs = deterministicAdapterMaterialize(preallocatedArtifactId,preparedEntries).adapter_wrapper_refs; inputBytes = canonicalize(preparedEntries,wrapperRefs,plan.tool_profile_ref,plan.response_schema_ref); inputHash = sha256(inputBytes)` |
+| O-PEER-C3 | Delivery semantic identity | `deliveryDigest = sha256(canonicalize(reveal_manifest_id,manifest.manifest_hash,target_attempt_id,target_seat_id,peerEntries,inputArtifactId,inputHash,visibility_policy_ref))` |
+| O-PEER-C4 | Stable acknowledgement | `receiptBytes = canonicalize(PeerInputDeliveryReceipt(receipt_version="aci.peer-input-delivery-receipt/v1",status="materialized",event_id,peer_input_delivery_id,reveal_manifest_id,target_attempt_id,target_seat_id,effective_input_artifact_id,effective_input_manifest_hash,idempotency_key,journal_offset))` |
+
+### State Transition
+
+No independent [GroupLifecycle](states.md#grouplifecycle) transition occurs. The same complete
+[StartAgentAttempt](#startagentattempt) acceptance transaction seals the
+[AgentExecutionRequest](domain.md#agentexecutionrequest), finalizes artifact metadata and request
+binding, creates the target [Attempt](domain.md#attempt), and co-commits
+[`AttemptLifecycle`](states.md#attemptlifecycle) `not_created -> requested` through
+[`attempt.requested`](events.md#attemptrequested).
+
+### Postconditions
+
+- One [PeerInputDelivery](domain.md#peerinputdelivery) and one
+  [`peer_input.materialized`](events.md#peer_inputmaterialized) fact bind the exact target input.
+- The operation returns one byte-stable
+  [PeerInputDeliveryReceipt](domain.md#peerinputdeliveryreceipt).
+- At operation commit and receipt return, its effect intent remains `pending` and unclaimed; this
+  operation/SWU has performed no effect claim or provider/tool execution. Deterministic adapter
+  translation is allowed only to produce the bound `MaterializedAgentInvocation`. A separately
+  authorized later operation is not forbidden by this bounded proof.
+- No agent-callable list, search, export, debug or generic peer-read capability is granted.
+- This amendment neither satisfies nor relaxes the audit-ledger materializer, sole-writer/EG-1,
+  runtime-authority cutover, administrator-hook or real-provider gates.
+
+### Error States
+
+| Condition | Result |
+|---|---|
+| Reveal event/manifest is missing or differs in hash, group, round or ordered entries | `REVEAL_MISMATCH`; atomically write nothing |
+| `agent_invocation_plan_ref` is absent/unresolvable or its canonical digest differs from `agent_invocation_plan_digest` | `INVOCATION_PLAN_MISMATCH`; atomically write nothing |
+| Capability-derived target identity or group differs | `TARGET_AUTHORITY_MISMATCH`; atomically write nothing |
+| Finalized derived output contains an absent, self-authored, policy-denied, unaccepted or out-of-order entry that should have been filtered | `PEER_ENTRY_FORBIDDEN`; atomically write nothing |
+| Contribution artifact or content hash differs from the manifest/finalized artifact | `PEER_ARTIFACT_MISMATCH`; atomically write nothing |
+| Target attempt was already accepted, started or has a nonidentical delivery | `TARGET_ATTEMPT_CONFLICT`; atomically write nothing |
+| Same scoped idempotency key or semantic identity has different canonical bytes/digest | `IDEMPOTENCY_CONFLICT`; atomically write nothing |
+| Any caller requests claim/start/adapter/provider execution in this operation | `EFFECT_NOT_AUTHORIZED`; atomically write nothing |
+
 ### Internal transition — ComputeFixedProofVerdict
 
 **Type:** Operation (mutation)  
@@ -801,6 +941,7 @@ retried execution; mixed-provider rollups must preserve each provider's semantic
 | Internal [`AbandonPublicationCandidate`](#internal-transition--abandonpublicationcandidate) | [`publication.candidate_abandoned`](events.md#publicationcandidate_abandoned) |
 | [`CloseCollection`](#closecollection) | [`collection.closed`](events.md#collectionclosed) |
 | [`PublishRevealManifest`](#publishrevealmanifest) | [`reveal.published`](events.md#revealpublished) |
+| [`MaterializeAuthorizedPeerInput`](#materializeauthorizedpeerinput) | [`peer_input.materialized`](events.md#peer_inputmaterialized) plus co-committed [`attempt.requested`](events.md#attemptrequested) |
 | [`CommitGroupResult`](#commitgroupresult) | [`verdict.computed`](events.md#verdictcomputed), [`group.committed`](events.md#groupcommitted), and optional handoff facts |
 | [`CancelRun`](#cancelrun) | [`cancellation.requested`](events.md#cancellationrequested), `attempt.cancel_requested`, and eventual [`group.cancelled`](events.md#groupcancelled) |
 | [`RecordUsageObservation`](#recordusageobservation) | [`usage.observed`](events.md#usageobserved) |

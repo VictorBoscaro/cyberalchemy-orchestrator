@@ -1,0 +1,128 @@
+{
+  "schema": "delegated-execution-envelope@1",
+  "envelope_id": "host-bus-phase-a-review-20260725",
+  "version": 1,
+  "objective": "Run a persisted read-only closing review of the current Host Workflow Binding and ACI BUS reveal/materialized-input Phase-A seam, producing verified change requests or a KEEP verdict.",
+  "issuing_user_evidence": {
+    "confirmation": "va em frente",
+    "context": "The user approved the already-described next action and previously delegated contained readiness classification and dispatch organization without repeated consultation.",
+    "confirmed_at": "2026-07-26T02:57:32.9226492Z",
+    "evidence_ref": "codex-conversation:current:2026-07-25:host-bus-phase-a-review"
+  },
+  "allowed_repositories": [
+    "C:/Users/victo/cyberalchemy-orchestrator"
+  ],
+  "allowed_dispatch_types": [
+    "review"
+  ],
+  "allowed_paths": [
+    "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/**",
+    "telemetry/agents/**"
+  ],
+  "denied_paths": [
+    "plans/governed-agent-work-infrastructure/workstreams/host-bus-phase-a-review-envelope.json",
+    ".codex/delegation-receipts/host-bus-phase-a-review-20260725-v1.json",
+    ".codex/hooks.json",
+    "AGENTS.md"
+  ],
+  "path_constraints": [
+    "Review agents are read-only over the entire target corpus.",
+    "Only the parent may use functions.apply_patch, exclusively to materialize the single review.md output.",
+    "Denied paths override allowed paths.",
+    "Preserve all concurrent and pre-existing worktree changes.",
+    "Telemetry mutation is hook/appender-owned."
+  ],
+  "allowed_tools": [
+    "functions.shell_command",
+    "functions.apply_patch",
+    "collaboration.spawn_agent",
+    "collaboration.list_agents",
+    "collaboration.wait_agent"
+  ],
+  "tool_constraints": [
+    "Seat shell use is policy-limited to read-only inspection, hashing, git diff/status inspection, and the two exact unittest commands declared by the proposal.",
+    "Parent functions.apply_patch is limited to docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md.",
+    "Subagent output is inline only; agents may not mutate repository files."
+  ],
+  "sandbox_policy": {
+    "allowed_classes": [
+      "workspace-read"
+    ],
+    "host_filesystem_outside_repository": "denied except for automatically cleaned OS-temporary directories created by the exact focused unittest commands",
+    "privilege_escalation": false
+  },
+  "capability_policy": {
+    "allowed_classes": [
+      "repository-read",
+      "test-execution",
+      "governed-subagent-launch"
+    ],
+    "required_launch_receipt": "ACI launch-authorized",
+    "credentials": "denied",
+    "production": "denied"
+  },
+  "network_policy": {
+    "public_read": false,
+    "authenticated_read": false,
+    "external_write": false,
+    "paid_provider_execution": false
+  },
+  "allowed_mutations": [
+    "parent-authored review.md",
+    "ephemeral automatically cleaned test fixtures and SQLite databases created by the exact focused unittest commands",
+    "hook-managed telemetry receipts"
+  ],
+  "output_policy": {
+    "allowed_classes": [
+      "inline attacker returns",
+      "persisted parent-authored review.md",
+      "hook-managed telemetry receipts"
+    ],
+    "destinations_must_match_allowed_paths": true,
+    "external_outputs": false
+  },
+  "budgets": {
+    "per_dispatch": {
+      "max_agents": 2,
+      "max_total_agent_token_budget": 14000,
+      "max_loops": 1,
+      "max_agent_turns": 2
+    },
+    "aggregate": {
+      "max_dispatches": 1,
+      "max_agents": 7,
+      "max_total_agent_token_budget": 60000,
+      "max_loops": 1,
+      "max_agent_turns": 7
+    }
+  },
+  "required_controls": [
+    "One capability review, two check-tension PASS verdicts, and two containment-auditor PASS verdicts bind the exact concrete proposal.",
+    "All lifecycle hooks remain enabled and launch must return ACI launch-authorized.",
+    "Every surviving finding quotes an exact target artifact and is independently rechecked by the parent.",
+    "The parent performs coverage audit, synthesis, verification, final approval, and persisted review.md authorship.",
+    "Focused Host Binding and BUS suites are rerun against the frozen corpus before final approval."
+  ],
+  "forbidden_effects": [
+    "target-corpus mutation",
+    "source-integrity refresh",
+    "descriptor or readiness mutation",
+    "provider or tool execution outside non-mutating tests",
+    "production, deployment, credentials, external writes, publication, destructive actions, git mutation, or permission changes",
+    "weakening or bypassing lifecycle hooks"
+  ],
+  "expires_at": "2026-07-28T03:00:00Z",
+  "stop_conditions": [
+    "The persisted review is accepted and the dispatch is closed.",
+    "Any target binding changes before launch.",
+    "A required gate fails.",
+    "Safe isolation from concurrent worktree changes is impossible.",
+    "The user revokes the authorization."
+  ],
+  "human_reconfirmation_required_when": [
+    "The target corpus, objective, dispatch type, write scope, network, tools, budget, or effects expand.",
+    "The review requires resolving a blocker-level product or authority choice.",
+    "Any external, destructive, deployment, credential, publication, or production action becomes necessary."
+  ],
+  "final_approver_policy": "The parent may approve because it did not author the target implementation; it must independently verify every surviving finding and rerun the declared tests."
+}

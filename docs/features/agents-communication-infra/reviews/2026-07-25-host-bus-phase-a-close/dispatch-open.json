@@ -1,0 +1,39 @@
+{
+  "dispatch_id": "2026-07-25-host-bus-phase-a-close",
+  "schema_version": "0.6.1",
+  "dispatch_type": "review",
+  "goal": "Determine whether the current Host Workflow Binding to ACI BUS reveal/materialized-input Phase-A seam is mechanically correct, governance-faithful, and ready to close, or produce exact verified change requests.",
+  "context": "The focused Host Workflow Binding suite passes 5/5 and the BUS Reveal Delivery suite passes 7/7. Two independent read-only attackers inspect the same frozen 18-file corpus through mechanics/correctness and fidelity/governance lenses. The parent verifies findings, audits coverage, writes the persisted review.md, reruns tests, and acts as final approver.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "output_mode": "persisted",
+  "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/",
+  "invoked_by": "victorboscaro@outlook.com",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "anti_bias": "attack-vector",
+      "agents": [
+        {
+          "agent_name": "Lamport, Leslie",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 7000,
+          "angle": "mechanics/correctness attack: executable identity, hashing, restart, atomicity, failure boundaries, test adequacy, and actual descriptor coverage",
+          "initial_prompt": "Read every path in target_bindings from docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/proposal-v1.json and verify its SHA-256 before analysis. Attack the entire corpus through mechanics/correctness only: executable identity continuity from parent dispatch through host binding, reveal and materialized input; exact bytes and hashes; restart/idempotency; atomic rollback; migration/service wiring; focused-test adequacy; descriptor/readiness write-scope and prerequisite coverage; source-manifest correspondence. You may run non-mutating focused tests. Return candidate findings only when you can quote the exact artifact, assign CRITICAL/MAJOR/MINOR, name a one-line fix, and state the check that verifies it. Also state what you attacked when no finding survives. Do not mutate files or use network."
+        },
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 7000,
+          "angle": "fidelity/governance attack: authority ownership, schema compatibility, claim-proof alignment, source integrity, forbidden effects, and spec-to-runtime correspondence",
+          "initial_prompt": "Read every path in target_bindings from docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/proposal-v1.json and verify its SHA-256 before analysis. Attack the entire corpus through fidelity/governance only: whether implementation and tests exceed accepted authority; current versus historical schema semantics; ledger/appender ownership; distinction between input inclusion, access, declared use and claim support; provider/effect prohibition; descriptor/readiness/source-manifest claims; and spec-to-runtime correspondence. Return candidate findings only when you can quote the exact artifact, assign CRITICAL/MAJOR/MINOR, name a one-line fix, and state the check that verifies it. Also state what you attacked when no finding survives. Do not mutate files or use network."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

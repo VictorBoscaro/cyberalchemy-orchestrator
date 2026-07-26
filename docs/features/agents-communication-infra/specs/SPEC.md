@@ -5,7 +5,7 @@ is_session: false
 layer: application
 nature: [technical, reference]
 status: draft
-version: 0.3.0
+version: 0.3.1
 last_updated: 2026-07-25
 derived_from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 additional_authority: ../discovery/external-tool-adoption/external-tool-adoptions.md@0.1.0
@@ -104,6 +104,7 @@ flowchart LR
 | Deterministic execution | Drive groups and physical attempts from facts without provider branches | [AcceptRuntimeCommand](operations.md#acceptruntimecommand), [StartAgentAttempt](operations.md#startagentattempt), [AgentAdapter](interfaces.md#internal-agentadapter) | Mixed; bounded pilot only |
 | Authorized reference delivery | Bind one already lifecycle-delivered Scout bundle to one capability-derived target Attempt and its exact effective-input entry | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [DeliverReferenceScoutBundleToAgent](operations.md#internal-transition--deliverreferencescoutbundletoagent), [target-delivery event](events.md#referencescoutbundledeliveredtoagent) | Specified; not implemented |
 | Receipt-gated publication | Accept agent content only after append and parent-side persisted-evidence verification | [PublishBusContribution](operations.md#publishbuscontribution), [VerifyPublicationReceipt](operations.md#verifypublicationreceipt), [bus_publish](interfaces.md#bus_publish) | Bounded local pilot |
+| Authorized peer-input materialization | Bind one accepted reveal to one preallocated local target attempt and immutable effective input without claiming a provider effect | [PeerInputDelivery](domain.md#peerinputdelivery), [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput), [`peer_input.materialized`](events.md#peer_inputmaterialized) | Implemented for exact bounded SWU |
 | Sealed reveal and commitment | Freeze a collection, publish an authorized manifest, commit one result and hand it off | [GroupDeliberationWorkflow](workflows.md#groupdeliberationworkflow), [GroupLifecycle](states.md#grouplifecycle), [RevealManifest](domain.md#revealmanifest) | Specified; broader runtime gated |
 | Recovery and official closure | Recover local effects, reconcile cross-store rows and elect one audit close | [Persistence and replay](persistence-and-replay.md), [ExternalEffectReconciliationWorkflow](workflows.md#externaleffectreconciliationworkflow), [CancelRun](operations.md#cancelrun) | Mixed; cutover blocked |
 | Read and accountability | Rebuild cursor-addressable state and preserve immutable usage/evidence semantics | [GetRuntimeProjection](queries.md#getruntimeprojection), [RecordUsageObservation](operations.md#recordusageobservation), [Observability](observability.md) | Bounded local pilot |
@@ -167,6 +168,25 @@ strictly weaker than access, declared use or claim support.
 | Mapping | [ReferenceScoutBundleToEffectiveInput](mappings.md#referencescoutbundletoeffectiveinput) | Mapping | Specified; not implemented |
 | Interface capability | [ArtifactBoundary target-reference settlement](interfaces.md#internal-artifact-boundary) | Interface | Specified; not implemented |
 
+### Bounded SPEC amendment: authorized local peer-input materialization
+
+This v0.3.1 amendment promotes only the discovery's manifest-bound delivery rule in
+[section 5.1](../discovery/feature-discovery/agents-communication-infra.md#51-agent-input-bus-publication-and-reveal-delivery)
+into one exact no-provider-effect proof, `SWU-ACI-BUS-DELIVERY-001`. It specifies how an already
+accepted `reveal.published` fact becomes immutable observable input for one preallocated local
+attempt. It does not promote dynamic `RoutingPlan`/`RoutingState`, inboxes, generic peer reads,
+provider launch, voting/commit, audit-ledger materialization, sole-writer evidence or cutover.
+
+| Amendment element | Contract | DomainSpec type | Status |
+|---|---|---|---|
+| Capability | Authorized peer-input materialization | Capability summary | Implemented for exact bounded SWU |
+| Entity | [PeerInputDelivery](domain.md#peerinputdelivery) | Entity | Implemented for exact bounded SWU |
+| Value object | [PeerInputDeliveryReceipt](domain.md#peerinputdeliveryreceipt) | Value Object | Implemented for exact bounded SWU |
+| Operation | [AuthorizeAgentInvocationPlan](operations.md#authorizeagentinvocationplan) | Operation | Implemented for exact bounded SWU |
+| Operation | [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput) | Operation | Implemented for exact bounded SWU |
+| Event | [`peer_input.materialized`](events.md#peer_inputmaterialized) | Event | Implemented for exact bounded SWU |
+| Interface method | [DeliberationBus.materializeRevealInput](interfaces.md#internal-deliberationbus) | Interface method | Implemented for exact bounded SWU |
+
 ## External-Tool Decisions Ratified From Discovery v0.1.0
 
 | Decision | Ratified contract | Where |
@@ -218,6 +238,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [EffectiveInputArtifact](domain.md#effectiveinputartifact) | `agents-communication-infra.EffectiveInputArtifact` | Entity |
 | [RawProviderOutput](domain.md#rawprovideroutput) | `agents-communication-infra.RawProviderOutput` | Entity |
 | [RevealManifest](domain.md#revealmanifest) | `agents-communication-infra.RevealManifest` | Entity |
+| [PeerInputDelivery](domain.md#peerinputdelivery) | `agents-communication-infra.PeerInputDelivery` | Entity |
 | [GroupResult](domain.md#groupresult) | `agents-communication-infra.GroupResult` | Entity |
 | [DispatchSpec](domain.md#dispatchspec) | `agents-communication-infra.DispatchSpec` | Value Object |
 | [AgentInvocationPlan](domain.md#agentinvocationplan) | `agents-communication-infra.AgentInvocationPlan` | Value Object |
@@ -225,6 +246,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [AgentExecutionRequest](domain.md#agentexecutionrequest) | `agents-communication-infra.AgentExecutionRequest` | Value Object |
 | [BusPublication](domain.md#buspublication) | `agents-communication-infra.BusPublication` | Value Object |
 | [PublicationReceipt](domain.md#publicationreceipt) | `agents-communication-infra.PublicationReceipt` | Value Object |
+| [PeerInputDeliveryReceipt](domain.md#peerinputdeliveryreceipt) | `agents-communication-infra.PeerInputDeliveryReceipt` | Value Object |
 | [AgentTerminalResult](domain.md#agentterminalresult) | `agents-communication-infra.AgentTerminalResult` | Value Object |
 | [EffectiveInputEntry](domain.md#effectiveinputentry) | `agents-communication-infra.EffectiveInputEntry` | Value Object |
 | [ResourceBudget](domain.md#resourcebudget) | `agents-communication-infra.ResourceBudget` | Value Object |
@@ -253,6 +275,8 @@ IDs below are unique and authoritative for registry synchronization.
 | [VerifyPublicationReceipt](operations.md#verifypublicationreceipt) | `agents-communication-infra.VerifyPublicationReceipt` | Operation |
 | [CloseCollection](operations.md#closecollection) | `agents-communication-infra.CloseCollection` | Operation |
 | [PublishRevealManifest](operations.md#publishrevealmanifest) | `agents-communication-infra.PublishRevealManifest` | Operation |
+| [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput) | `agents-communication-infra.MaterializeAuthorizedPeerInput` | Operation |
+| [AuthorizeAgentInvocationPlan](operations.md#authorizeagentinvocationplan) | `agents-communication-infra.AuthorizeAgentInvocationPlan` | Operation |
 | [CommitGroupResult](operations.md#commitgroupresult) | `agents-communication-infra.CommitGroupResult` | Operation |
 | [CancelRun](operations.md#cancelrun) | `agents-communication-infra.CancelRun` | Operation |
 | [RecordUsageObservation](operations.md#recordusageobservation) | `agents-communication-infra.RecordUsageObservation` | Operation |
@@ -286,6 +310,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [UsageObservationToRollups](mappings.md#usageobservationtorollups) | `agents-communication-infra.UsageObservationToRollups` | Mapping |
 | [UsageObservation](events.md#usageobserved) | `agents-communication-infra.UsageObservation` | Event |
 | [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) | `agents-communication-infra.ReferenceScoutBundleDeliveredToAgent` | Event |
+| [`peer_input.materialized`](events.md#peer_inputmaterialized) | `agents-communication-infra.PeerInputMaterialized` | Event |
 | [PricingSource](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) | `agents-communication-infra.PricingSource` | Entity |
 | [UsageRollup](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) | `agents-communication-infra.UsageRollup` | Value Object |
 | [CostCalculation](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) | `agents-communication-infra.CostCalculation` | Calculation |
@@ -440,6 +465,11 @@ The feature depends on human confirmation, the current validated audit-ledger ap
 - Target-attempt Reference Scout delivery: **specified / not implemented** — ACI now owns the
   atomic delivery and effective-input contract, while access, declared use and claim support remain
   separate downstream evidence.
+- `SWU-ACI-BUS-DELIVERY-001` specification/planner gate: **pass for local no-provider-effect
+  mutation only** — deterministic adapter translation is limited to wrapper/materialized-invocation
+  construction; provider adapters and effect claim/start, voting/commit, audit-ledger
+  materialization, sole-writer proof, administrator hook enforcement and runtime cutover remain
+  blocked.
 
 ## Change History
 

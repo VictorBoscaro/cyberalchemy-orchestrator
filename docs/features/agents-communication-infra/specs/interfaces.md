@@ -281,6 +281,7 @@ basis.
 | `publish` | agent-authored [BusPublication](domain.md#buspublication) + authenticated capability context | [PublicationReceipt](domain.md#publicationreceipt) | derives all authority fields and appends before acknowledgement |
 | `closeCollection` | authorized command + expected aggregate version/prerequisite heads | accepted `collection.closed` event | counts only receipt-verified official acceptances; does not grant peer-read |
 | `publishReveal` | frozen [RevealManifest](domain.md#revealmanifest) + expected version | accepted `reveal.published` event | manifest IDs/hashes exactly match the frozen eligible set |
+| `authorizeInvocationPlan` | capability action `bus.plan`, phase `plan`, plus binding and complete [AgentInvocationPlan](domain.md#agentinvocationplan) | immutable `plan_ref` and `plan_digest` | derives target/group/provider/adapter from the running binding and rejects every caller substitution before write |
 | `materializeRevealInput` | authorized attempt/turn + reveal manifest | content-addressed input artifact | delivered messages appear in that turn's [EffectiveInputArtifact](domain.md#effectiveinputartifact) |
 
 The initial proof deliberately has no generic peer-read method. [GetVisibleGroupMessages](queries.md#getvisiblegroupmessages)

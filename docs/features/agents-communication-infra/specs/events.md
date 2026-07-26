@@ -272,6 +272,90 @@ authorized principals and target next phase. This is the only event that opens p
 **Consumers:** Group reducer; ACL projection; adapter input materializer. Delivered reveal content
 must appear in the receiving turn's effective-input manifest.
 
+## peer_input.materialized
+
+**Wire name:** `peer_input.materialized`
+**Produced by:** [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput)
+**Transition:** No independent transition; it co-commits with
+[`attempt.requested`](#attemptrequested), which performs
+[AttemptLifecycle](states.md#attemptlifecycle) `not_created -> requested`. No provider effect is claimed or
+run by the bounded SWU.
+
+**Payload:**
+
+| Field | Type | Contract |
+|---|---|---|
+| `peer_input_delivery_id` | string | Exact [PeerInputDelivery](domain.md#peerinputdelivery) identity. |
+| `reveal_manifest_id` | string | Existing accepted [RevealManifest](domain.md#revealmanifest). |
+| `reveal_manifest_hash` | [ContentDigest](domain.md#contentdigest) | Exact canonical digest of the accepted manifest. |
+| `reveal_event_id` | string | Existing accepted `reveal.published` fact for the manifest. |
+| `source_group_aggregate_id` | string | Equals `PeerInputDelivery.source_group_aggregate_id`. |
+| `source_round_id` | string | Equals `PeerInputDelivery.source_round_id`. |
+| `target_attempt_id` | string | Equals `PeerInputDelivery.target_attempt_id`; derived from trusted scheduler context. |
+| `target_seat_id` | [SeatId](domain.md#seatid) | Equals `PeerInputDelivery.target_seat_id`; derived from the target attempt. |
+| `peer_message_entries` | ordered list<[EffectiveInputEntry](domain.md#effectiveinputentry)> | Equals `PeerInputDelivery.peer_message_entries` in authorized manifest order. |
+| `effective_input_artifact_id` | [ArtifactId](domain.md#artifactid) | Equals `PeerInputDelivery.effective_input_artifact_id`. |
+| `effective_input_manifest_hash` | [ContentDigest](domain.md#contentdigest) | Equals `PeerInputDelivery.effective_input_manifest_hash`. |
+| `visibility_policy_ref` | [VersionedReference](domain.md#versionedreference) | Equals `PeerInputDelivery.visibility_policy_ref`. |
+| `idempotency_key` | string | Equals `PeerInputDelivery.idempotency_key`; scoped to manifest plus target attempt. |
+
+The event is accepted only with finalized artifact metadata, the bound
+[MaterializedAgentInvocation](domain.md#materializedagentinvocation), request binding, sealed
+[AgentExecutionRequest](domain.md#agentexecutionrequest), target [Attempt](domain.md#attempt),
+authoritative [PeerInputDelivery](domain.md#peerinputdelivery),
+[`attempt.requested`](#attemptrequested) and an unclaimed effect intent.
+The ordered entries preserve reveal-manifest order, exclude the target seat's own contribution and
+contain no message absent from the manifest. A same-key/same-semantic-digest retry returns the
+stored receipt and emits nothing; drift conflicts.
+
+```text
+payload.peer_input_delivery_id = PeerInputDelivery.peer_input_delivery_id
+payload.reveal_manifest_id = RevealManifest.reveal_manifest_id
+payload.reveal_manifest_hash = RevealManifest.manifest_hash
+payload.reveal_event_id = RevealManifest.reveal_event_id
+accepted(payload.reveal_event_id, reveal.published)
+reveal.published.reveal_manifest_id/hash =
+  payload.reveal_manifest_id/reveal_manifest_hash
+payload.source_group_aggregate_id = PeerInputDelivery.source_group_aggregate_id
+payload.source_round_id = PeerInputDelivery.source_round_id
+payload.target_attempt_id/seat_id = PeerInputDelivery.target_attempt_id/seat_id
+Attempt(payload.target_attempt_id).seat_id = payload.target_seat_id
+Seat(payload.target_seat_id).group_aggregate_id = payload.source_group_aggregate_id
+payload.peer_message_entries = PeerInputDelivery.peer_message_entries
+payload.effective_input_artifact_id/hash =
+  PeerInputDelivery.effective_input_artifact_id/effective_input_manifest_hash
+EffectiveInputArtifact(payload.effective_input_artifact_id).artifact_id =
+  payload.effective_input_artifact_id
+EffectiveInputArtifact(payload.effective_input_artifact_id).attempt_id =
+  payload.target_attempt_id
+EffectiveInputArtifact(payload.effective_input_artifact_id).manifest_hash =
+  payload.effective_input_manifest_hash
+payload.visibility_policy_ref = PeerInputDelivery.visibility_policy_ref
+payload.idempotency_key = PeerInputDelivery.idempotency_key
+envelope.event_id = PeerInputDelivery.accepted_event_id
+envelope.journal_offset = PeerInputDelivery.journal_offset
+PeerInputDeliveryReceipt.event_id/journal_offset =
+  envelope.event_id/journal_offset
+PeerInputDeliveryReceipt.peer_input_delivery_id/reveal_manifest_id =
+  payload.peer_input_delivery_id/reveal_manifest_id
+PeerInputDeliveryReceipt.target_attempt_id/target_seat_id =
+  payload.target_attempt_id/target_seat_id
+PeerInputDeliveryReceipt.effective_input_artifact_id/effective_input_manifest_hash =
+  payload.effective_input_artifact_id/effective_input_manifest_hash
+PeerInputDeliveryReceipt.idempotency_key = payload.idempotency_key
+same(scoped_key, canonical_semantic_bytes, digest) => same receipt and no append
+same(scoped_key) and changed(canonical_semantic_bytes or digest) => conflict
+```
+
+| Consumer | Action |
+|---|---|
+| Attempt reducer | Observe the co-committed requested attempt. |
+| Internal input materializer | Return/verify the exact artifact binding. |
+| Recovery verifier | Return byte-identical receipt or reject drift. |
+| Audit projection | Expose delivery evidence without payload-wide read authority. |
+
+This event grants no agent-callable query or generic peer-read capability.
+
 ## round.closed
 
 **Wire name:** `round.closed`  

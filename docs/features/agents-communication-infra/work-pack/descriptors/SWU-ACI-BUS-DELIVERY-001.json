@@ -1,0 +1,109 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-BUS-DELIVERY-001",
+  "scope": "local-two-seat-authorized-peer-input-no-provider-effect",
+  "planner_preflight": "pass_for_exact_swu",
+  "entry_predicate": [
+    "aci-swu-001-accepted",
+    "aci-swu-002-accepted",
+    "journal-artifact-capability-publication-base-implemented",
+    "migration-010-target-attempt-base-pinned-and-24-tests-pass",
+    "canonical-peer-input-amendment-present",
+    "t-aci-peer1-through-peer7-defined",
+    "delegated-bounded-owner-authorization"
+  ],
+  "write_scope": [
+    "implementations/server/runtime/service.py",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/reveal_delivery.py",
+    "implementations/server/runtime/migrations/011_bus_reveal_delivery.sql",
+    "implementations/tests/runtime/test_bus_reveal_delivery.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py"
+  ],
+  "prerequisite_files": [
+    {
+      "path": "implementations/server/runtime/migrations/010_agent_reference_delivery.sql",
+      "sha256": "330f0a63b5d1160311b72fb6f77abbbadd9c119d071e0587069a804820e929ba"
+    },
+    {
+      "path": "implementations/server/runtime/reference_delivery.py",
+      "sha256": "84e69cb1ec8054ff0661588a2d4afc8893007d6d2e3fb4fa699c4832221166ba"
+    },
+    {
+      "path": "implementations/tests/runtime/test_agent_reference_delivery.py",
+      "sha256": "48e2a15419ae3627866537edad06633f6e231a2985c11ce13a1ea25328b1e058"
+    }
+  ],
+  "implementation_shape": {
+    "application_owner": "implementations/server/runtime/service.py",
+    "pure_contract_owner": "implementations/server/runtime/reveal_delivery.py",
+    "migration_registry_owner": "implementations/server/runtime/database.py",
+    "deterministic_translation": "fixed local translator in reveal_delivery.py; may produce wrappers and MaterializedAgentInvocation but may not claim an effect or start a provider"
+  },
+  "commands": [
+    "aci.close-collection@1",
+    "aci.publish-reveal-manifest@1",
+    "aci.materialize-authorized-peer-input@1"
+  ],
+  "capabilities": [
+    {
+      "action": "bus.plan",
+      "phase": "plan",
+      "contract": "AuthorizeAgentInvocationPlan"
+    },
+    {
+      "action": "bus.materialize",
+      "phase": "reveal",
+      "contract": "MaterializeAuthorizedPeerInput"
+    }
+  ],
+  "events": [
+    {
+      "event_type": "collection.closed",
+      "schema_ref": "aci.collection-closed@1"
+    },
+    {
+      "event_type": "reveal.published",
+      "schema_ref": "aci.reveal-published@1"
+    },
+    {
+      "event_type": "peer_input.materialized",
+      "schema_ref": "aci.peer-input-materialized@1"
+    },
+    {
+      "event_type": "attempt.requested",
+      "schema_ref": "aci.attempt-requested@1"
+    }
+  ],
+  "test_ids": [
+    "T-ACI-PEER1",
+    "T-ACI-PEER2",
+    "T-ACI-PEER3",
+    "T-ACI-PEER4",
+    "T-ACI-PEER5",
+    "T-ACI-PEER6",
+    "T-ACI-PEER7"
+  ],
+  "validation_commands": [
+    "python -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v",
+    "python -m unittest implementations.tests.runtime.test_stage_b implementations.tests.runtime.test_agent_reference_delivery -v",
+    "python -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "node --test docs/features/agents-communication-infra/experiments/bus-publication-probe/test/*.test.mjs"
+  ],
+  "mutation_test_authorization": "pass_for_exact_swu",
+  "code_readiness_receipt": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-BUS-DELIVERY-001-code-readiness.json",
+  "implementation_status": "implemented-verified",
+  "permanently_out_of_scope_for_this_authorization": [
+    "effect-claim",
+    "provider-or-tool-execution",
+    "voting-or-group-commit",
+    "dynamic-routing",
+    "generic-inbox-or-peer-read",
+    "audit-ledger-materializer",
+    "sole-writer-proof",
+    "runtime-cutover",
+    "external-network",
+    "production"
+  ]
+}

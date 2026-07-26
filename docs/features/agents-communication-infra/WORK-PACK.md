@@ -18,8 +18,8 @@ decision state live under [`work-pack/`](work-pack/).
 
 | Field | Value | Notes |
 |---|---|---|
-| `workPackGateStatus` | **pass-for-exact-swu** | Stage-A/TASK-000/W0 passed independent review cycle 5/5. This pass selects only `SWU-ACI-APT-VS-001`; every other runtime SWU remains blocked. |
-| `mutationTestAuthorization` | **pass_for_exact_swu** | Owner-authorized on 2026-07-23 for descriptor-bound source, migrations, tests and temporary/repository-local pilot DB work in `SWU-ACI-APT-VS-001`. |
+| `workPackGateStatus` | **pass-for-exact-swu** | Existing `SWU-ACI-APT-VS-001` remains accepted; the 2026-07-25 bounded amendment additionally selects only `SWU-ACI-BUS-DELIVERY-001` for its descriptor-bound no-provider-effect proof. Every other runtime SWU remains blocked. |
+| `mutationTestAuthorization` | **pass_for_exact_swu** | Owner-delegated authorization covers descriptor-bound source, migration, tests and repository-local temporary DB work for `SWU-ACI-BUS-DELIVERY-001`; it grants no effect claim/provider execution, materializer or cutover authority. |
 | `localPilotServeEnablement` | **pass-local-pilot-only; operative** | Independent Stage-C review accepted only explicit `127.0.0.1` serving of `SWU-ACI-APT-VS-001` with its dedicated SQLite DB and verified Stage-B receipt. |
 | `productionEnablement` | **block** | External network, provider execution, materializer and audit-ledger cutover are excluded. |
 | `cvrImplementationGateStatus` | **approval_packet_prepared — NON-PASS** | Prepared for named owner review; no owner acceptance, active exception or implementation authorization exists. |
@@ -87,7 +87,7 @@ Excluded until later phases:
 | [TASK-CVR](work-pack/tasks/TASK-CVR.md) | Prepare and, only after exact authorization, deliver canonical vault reads in artifact then edge slices. | L0 adjunct | high | W0 adjunct | global block + nominal gate | documentation-prepared; implementation-blocked |
 | [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | exact `SWU-ACI-APT-VS-001` selected | bounded vertical slice implemented; broader Slice-1 work remains |
 | [TASK-020](work-pack/tasks/TASK-020.md) | Implement audit-ledger opening/close materializers and reconciliation. | L0/L1 | high | W1-W2 | blocked by TASK-000/010 | not-started |
-| [TASK-030](work-pack/tasks/TASK-030.md) | Execute the fixed protocol with deterministic fake adapters. | L0 | high | W1 | blocked by TASK-010/020 | not-started |
+| [TASK-030](work-pack/tasks/TASK-030.md) | Execute the fixed protocol with deterministic fake adapters. | L0 | high | W1 | exact no-provider-effect SWU selected; remaining task blocked by TASK-010/020 | `SWU-ACI-BUS-DELIVERY-001` ready; broader task not-started |
 | [TASK-040](work-pack/tasks/TASK-040.md) | Add durable outbox, recovery, sealing, races and runtime SSE. | L1 | high | W2 | blocked by S-001 | not-started |
 | [TASK-050](work-pack/tasks/TASK-050.md) | Integrate one real provider through `AgentAdapter`. | L2 | high | W3 | blocked by S-002 ADRs | not-started |
 | [TASK-060](work-pack/tasks/TASK-060.md) | Run the preregistered product-value gate. | L2/L3 | high | W4 | blocked by TASK-050 | not-started |
@@ -105,10 +105,12 @@ scope. No other runtime SWU is selected:
 | SWU | Parent | Goal | Dependencies | Write scope | Done criteria | Evidence | Verification | Owner |
 |---|---|---|---|---|---|---|---|---|
 | `SWU-ACI-APT-VS-001` | bounded TASK-010/APT integration | Implement the exact local vertical slice. | [cross-workpack predicate](work-pack/tasks/TASK-APT-VS-001.md#entry-predicate) | descriptor-bound runtime/test paths only | Complete test matrix and execution receipt; no broadened claims. | mutation receipt, state/artifact hashes, independent implementation PASS | independent review plus root approval | selected |
+| `SWU-ACI-BUS-DELIVERY-001` | bounded TASK-030 reveal-delivery proof | Prove publish→verify→sealed close→reveal→authorized peer input without external execution. | accepted journal/artifact/capability/publication base plus canonical amendment and T-ACI-PEER1–7 | exact descriptor paths only | Atomic wrapper-complete input delivery, stable retry/restart, no peer-read, zero provider/tool starts. | focused tests, regression suites, alignment/layering/verifier PASS | delegated bounded owner authority plus independent review | implemented-verified |
 
-All runtime SWUs except the exact `SWU-ACI-APT-VS-001` remain unselected. Local-pilot serving is
-operative only on `127.0.0.1`; providers, TASK-020 materialization, external networking and
-production cutover remain blocked.
+All runtime SWUs except the accepted `SWU-ACI-APT-VS-001` and exact
+`SWU-ACI-BUS-DELIVERY-001` remain unselected. Local-pilot serving is operative only on
+`127.0.0.1`; provider/tool execution, TASK-020 materialization, external networking and production
+cutover remain blocked.
 
 ## Blockers
 

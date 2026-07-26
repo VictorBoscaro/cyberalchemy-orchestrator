@@ -5,7 +5,7 @@ is_session: false
 layer: domain
 nature: [technical, reference]
 status: draft
-version: 0.3.0
+version: 0.4.0
 last_updated: 2026-07-25
 ---
 
@@ -368,6 +368,70 @@ The frozen set of contributions authorized for reveal after the collection barri
 **Invariant:** `collection.closed` freezes membership but does not grant peer-read. Only the
 persisted `reveal.published` event does.
 
+### PeerInputDelivery
+
+The authoritative binding of one published reveal to one preallocated local target attempt.
+It proves only that exact permitted peer entries were materialized into immutable observable input;
+it neither launches a provider nor creates a generic inbox/read grant.
+
+**Contract status:** specified for `SWU-ACI-BUS-DELIVERY-001`; not implemented. It specializes
+[discovery section 5.1](../discovery/feature-discovery/agents-communication-infra.md#51-agent-input-bus-publication-and-reveal-delivery)
+without promoting routing, inbox or provider-launch proposals.
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `peer_input_delivery_id` | string | yes | Stable delivery identity. |
+| `reveal_manifest_id` | string | yes | Persisted source manifest with an accepted `reveal.published` fact. |
+| `source_group_aggregate_id` | string | yes | Exact group version shared by manifest and target seat. |
+| `source_round_id` | string | yes | Exact revealed round. |
+| `target_attempt_id` | string | yes | Preallocated local attempt selected by trusted scheduler context; no provider start is implied. |
+| `target_seat_id` | [SeatId](#seatid) | yes | Seat derived from the target attempt, never from agent-authored input. |
+| `peer_message_entries` | ordered list<[EffectiveInputEntry](#effectiveinputentry)> | yes | Exactly authorized manifest entries whose source seat differs from `target_seat_id`. |
+| `effective_input_artifact_id` | [ArtifactId](#artifactid) | yes | Finalized immutable [EffectiveInputArtifact](#effectiveinputartifact). |
+| `effective_input_manifest_hash` | [ContentDigest](#contentdigest) | yes | Canonical digest of the complete target input. |
+| `visibility_policy_ref` | [VersionedReference](#versionedreference) | yes | Exact fixed-proof delivery policy. |
+| `idempotency_key` | string | yes | Retry identity scoped to manifest plus target attempt. |
+| `accepted_event_id` | string | yes | Committed [`peer_input.materialized`](events.md#peer_inputmaterialized) fact. |
+| `journal_offset` | [JournalOffset](#journaloffset) | yes | Position committed before acknowledgement. |
+
+**Identity and uniqueness:** `peer_input_delivery_id`; at most one accepted delivery exists per
+`(reveal_manifest_id, target_attempt_id)`. The semantic identity is the canonical digest of source
+manifest, target attempt/seat, ordered peer entries, effective-input artifact/hash and policy.
+Reusing either the scoped idempotency key or semantic uniqueness key with different bytes is a
+permanent conflict.
+
+```text
+Seat(Attempt(target_attempt_id).seat_id).group_aggregate_id = source_group_aggregate_id
+RevealManifest(reveal_manifest_id).group_aggregate_id = source_group_aggregate_id
+RevealManifest(reveal_manifest_id).round_id = source_round_id
+exists accepted reveal.published(reveal_manifest_id)
+
+peer_message_entries =
+  preserveManifestOrder(
+    RevealManifest(reveal_manifest_id).message_entries
+    where authorized(message_id, target_seat_id)
+    and Contribution(message_id).seat_id != target_seat_id)
+
+forall entry in peer_message_entries:
+  entry.entry_type = reveal_message
+  and entry.reveal_manifest_id = reveal_manifest_id
+  and entry.artifact_ref = Contribution(entry.message_id).payload_artifact_id
+  and entry.content_hash = ManifestEntry(entry.message_id).payload_hash
+  and Artifact(entry.artifact_ref).content_hash = entry.content_hash
+
+no entry in peer_message_entries:
+  Contribution(entry.message_id).seat_id = target_seat_id
+```
+
+Acceptance is one journal transaction over the preallocated target identity: finalized artifact
+metadata, `Attempt`, this delivery, `peer_input.materialized`, `attempt.requested` and an unclaimed
+effect intent are all accepted or none are. `SWU-ACI-BUS-DELIVERY-001` stops before effect claim or
+provider start. The fixed two-seat fixture asserts the symmetric A-to-B/B-to-A policy; the domain
+rule itself is the policy-authorized peer filter above. Nothing here authorizes an agent-callable
+read query.
+
+**Created by:** [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput).
+
 ### GroupResult
 
 The unique protocol commitment for one group version, separate from any narrative synthesis.
@@ -409,6 +473,7 @@ The provider-neutral scheduler decision before adapter materialization.
 | Field | Type | Constraint |
 |---|---|---|
 | `attempt_id`, `operation_id`, `seat_id` | string | Runtime-authenticated identities. |
+| `binding_id`, `group_aggregate_id` | string | Canonical host-workflow binding and group derived by the scheduler authority. |
 | `provider_ref`, `adapter_ref`, `model_ref` | [VersionedReference](#versionedreference) | Frozen selection. |
 | `role_contract_ref`, `task_ref` | [VersionedReference](#versionedreference) | Compiled local contract. |
 | `base_snapshot_ref`, `role_delta_ref` | [ArtifactId](#artifactid) | Shared base and optional declared delta. |
@@ -484,6 +549,30 @@ and `idempotency_key` must all match. The canonical serialized receipt is persis
 byte-identically for an identical retry. Replay metadata is transport metadata outside this value
 object. Verification requires a supported version, `status=persisted_candidate`, exact field
 equality against one committed event, and authenticated attempt/operation/logical-key scope.
+
+### PeerInputDeliveryReceipt
+
+The byte-stable acknowledgement returned only after [PeerInputDelivery](#peerinputdelivery), its
+event and authoritative constrained records commit.
+
+| Field | Type | Constraint |
+|---|---|---|
+| `receipt_version` | string | Exactly `aci.peer-input-delivery-receipt/v1`. |
+| `status` | string | Exactly `materialized`. |
+| `event_id` | string | Existing committed `peer_input.materialized` event. |
+| `peer_input_delivery_id` | string | Existing authoritative delivery. |
+| `reveal_manifest_id` | string | Exact accepted source manifest. |
+| `target_attempt_id` | string | Exact authorized recipient attempt. |
+| `target_seat_id` | [SeatId](#seatid) | Must equal the target attempt's seat. |
+| `effective_input_artifact_id` | [ArtifactId](#artifactid) | Finalized target artifact. |
+| `effective_input_manifest_hash` | [ContentDigest](#contentdigest) | Exact canonical target-input digest. |
+| `idempotency_key` | string | Exact scoped retry key. |
+| `journal_offset` | [JournalOffset](#journaloffset) | Committed event position. |
+
+**Equality:** every field compares by canonical value. An identical retry returns persisted
+canonical bytes without appending an event or creating another artifact. Verification resolves all
+fields against one committed event and the authoritative delivery row; transport replay metadata
+is outside this value object.
 
 ### AgentTerminalResult
 

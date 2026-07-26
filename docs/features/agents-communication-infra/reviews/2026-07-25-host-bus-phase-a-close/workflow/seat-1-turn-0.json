@@ -1,0 +1,11 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-25-host-bus-phase-a-close",
+  "target": {
+    "group_id": "attackers",
+    "seat_index": 1,
+    "turn_ordinal": 0,
+    "attempt_id": "host-bus-phase-a-close-seat-1-attempt-1"
+  },
+  "slots": []
+}

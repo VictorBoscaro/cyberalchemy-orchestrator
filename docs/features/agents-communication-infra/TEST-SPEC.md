@@ -39,6 +39,13 @@ This document specifies contract tests, not test code. Fixtures derive from [rul
 | [T-ACI-R20](#t-aci-r20--causal-start-prerequisites) | Start cannot race past close/cancel using stale dependency heads | [RuntimeCommand](specs/domain.md#runtimecommand) |
 | [T-ACI-R21](#t-aci-r21--candidate-abandonment-and-replacement) | Unknown orphan candidates release their key only through authorized audited CAS | [PublicationCandidate](specs/domain.md#publicationcandidate) |
 | [T-ACI-R22](#t-aci-r22--reference-bundle-target-delivery) | Scout bundle delivery to a target attempt is source-bound, unique, ordered and atomic | [ACI-R19](specs/rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic) |
+| [T-ACI-PEER1](#bounded-authorized-peer-input-delivery) | Close freezes only official messages and grants no peer visibility | [CloseCollection](specs/operations.md#closecollection) |
+| [T-ACI-PEER2](#bounded-authorized-peer-input-delivery) | One reveal binds the frozen ordered message set and survives restart | [PublishRevealManifest](specs/operations.md#publishrevealmanifest) |
+| [T-ACI-PEER3](#bounded-authorized-peer-input-delivery) | Target identity and group are derived from the authenticated invocation plan | [MaterializeAuthorizedPeerInput](specs/operations.md#materializeauthorizedpeerinput) |
+| [T-ACI-PEER4](#bounded-authorized-peer-input-delivery) | Derived peer entries preserve order, policy and self-exclusion | [PeerInputDelivery](specs/domain.md#peerinputdelivery) |
+| [T-ACI-PEER5](#bounded-authorized-peer-input-delivery) | Attempt, input, delivery, events and pending effect are atomic | [`peer_input.materialized`](specs/events.md#peer_inputmaterialized) |
+| [T-ACI-PEER6](#bounded-authorized-peer-input-delivery) | Retry is byte-stable and semantic drift conflicts | [PeerInputDeliveryReceipt](specs/domain.md#peerinputdeliveryreceipt) |
+| [T-ACI-PEER7](#bounded-authorized-peer-input-delivery) | The bounded proof exposes no peer-read and starts no provider effect | [Agent Tool Gateway](specs/interfaces.md#external-agent-tool-gateway-mcp-or-equivalent) |
 | [T-ACI-ETA1](#t-aci-eta1--external-tool-authority-classification) | External tools cannot acquire kernel or authoritative-store ownership | [ExternalToolAdoptionPolicy](specs/rules.md#aci-r15--external-tool-adoption-policy) |
 | [T-ACI-ETA2](#t-aci-eta2--canonical-python-contract-vectors) | Boundary validation and runtime-owned canonical sealing remain distinct | [CanonicalContractPolicy](specs/rules.md#aci-r16--canonical-contract-policy) |
 | [T-ACI-ETA3](#t-aci-eta3--derived-node-boundary-parity) | Any derived Node validator stays non-normative and vector-compatible | [BoundaryValidationPolicy](specs/rules.md#aci-r17--derived-boundary-validation-policy) |
@@ -215,6 +222,52 @@ idempotency key; each mutation fails closed. An identical retry returns the orig
 same source/target or scoped key with canonical drift conflicts. A lifecycle event carrying no
 membership remains valid source evidence; attempting to derive membership from it fails. Assert the
 accepted delivery alone creates no observed-access, declared-reference-use or claim-support fact.
+
+### Bounded authorized peer-input delivery
+
+#### T-ACI-PEER1 — Close remains sealed
+
+Publish two candidates but verify only one receipt. Close the collection and assert that the frozen
+set contains only the official message, while every controlled peer-read surface remains denied.
+
+#### T-ACI-PEER2 — Reveal is exact and restart-stable
+
+Restart after `collection.closed`; assert the set remains sealed. Publish one manifest whose ordered
+IDs and payload hashes equal the frozen set. Identical retry returns the original receipt; any
+membership, order, hash, group or round drift conflicts.
+
+#### T-ACI-PEER3 — Recipient authority is derived
+
+Preallocate the target identity in an authenticated
+[AgentInvocationPlan](specs/domain.md#agentinvocationplan). Reject caller-supplied attempt, seat or
+cross-group substitutions before any attempt, artifact, delivery, event or effect intent commits.
+
+#### T-ACI-PEER4 — Peer filter and artifact binding
+
+For each fixed seat, derive entries in manifest order, exclude its own contribution, apply
+`aci.fixed-two-seat-peer-reveal@1`, and verify every remaining entry against the official
+contribution, immutable artifact and manifest-entry payload hash. Reject a finalized derived set
+containing a self, denied, absent, unaccepted or out-of-order entry.
+
+#### T-ACI-PEER5 — Atomic acceptance
+
+Inject a failure after each write in the complete acceptance unit:
+finalized `EffectiveInputArtifact` metadata, `MaterializedAgentInvocation`, request binding, sealed
+`AgentExecutionRequest`, `Attempt`, `PeerInputDelivery`, `peer_input.materialized`,
+`attempt.requested` and the unclaimed effect intent. A fresh connection observes all members or
+none, never a partial binding.
+
+#### T-ACI-PEER6 — Stable receipt and conflict
+
+Retry the same `(reveal_manifest_id,target_attempt_id,idempotency_key)` and semantic digest; require
+the byte-identical stored `PeerInputDeliveryReceipt` and no new artifact/event. Change any source,
+recipient, entry, policy, artifact, hash or key-bound byte and require a permanent conflict.
+
+#### T-ACI-PEER7 — No direct peer-read or provider execution
+
+Inspect the agent capability surface before and after reveal: it contains publication and declared
+non-peer tools only, never list/search/read/export/debug over peer content. Accepted materialization
+leaves the effect pending and a provider-start spy at zero.
 
 ### T-ACI-S1 — Run lifecycle and terminal precedence
 
