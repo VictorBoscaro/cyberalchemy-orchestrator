@@ -1,0 +1,8 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-26-artifact-placement-adjudication",
+  "target": {"group_id": "reviewer-lineage", "seat_index": 0, "turn_ordinal": 0, "attempt_id": "reviewer-lineage-seat-0-attempt-1"},
+  "slots": [
+    {"name": "SUBJECT_RETURN", "authorized_producer": "subject-lineage/S-B", "data_type": "markdown", "cardinality": 1, "purpose": "the verdict table and reasoning under review", "binding": {"path": "research/artifact-placement-adjudication/returns/subject-lineage-r1.md", "sha256": "0d26de5ae3f64733c3492c52fab0efcb3d0ed7089665642ef5acb0d0ca5a09a6"}}
+  ]
+}

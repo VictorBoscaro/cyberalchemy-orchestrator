@@ -1,0 +1,8 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-26-artifact-placement-adjudication",
+  "target": {"group_id": "reviewer-cost", "seat_index": 0, "turn_ordinal": 0, "attempt_id": "reviewer-cost-seat-0-attempt-1"},
+  "slots": [
+    {"name": "SUBJECT_RETURN", "authorized_producer": "subject-cost/S-C", "data_type": "markdown", "cardinality": 1, "purpose": "the verdict table and cost ledger under review", "binding": {"path": "research/artifact-placement-adjudication/returns/subject-cost-r1.md", "sha256": "c897ae3e2d6b15fec82e7d76d9324fe65990e5c9c7a1f43a5decfbd6af5a53a6"}}
+  ]
+}

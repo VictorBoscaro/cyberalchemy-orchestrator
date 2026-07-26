@@ -1,0 +1,11 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-26-artifact-placement-adjudication",
+  "target": {"group_id": "crosstalk", "seat_index": "all", "turn_ordinal": 0, "attempt_id": "crosstalk-turn-0-attempt-1"},
+  "anti_collapse_baseline": "these three bindings ARE the pre-crosstalk baseline the parent diffs the reconciled table against, per proposal-v4 crosstalk.anti_collapse_protocol clauses 1, 4 and 5",
+  "slots": [
+    {"name": "FINAL_TABLE_S_A", "authorized_producer": "subject-normative/S-A", "data_type": "markdown", "cardinality": 1, "purpose": "S-A final pre-crosstalk verdict table (reviewer returned PASS at round 1; r1 is final)", "binding": {"path": "research/artifact-placement-adjudication/returns/subject-normative-r1.md", "sha256": "f733ce9e5eb97624f1aeacd307a5827064158ab06ccc36c250621f060f9849bc"}},
+    {"name": "FINAL_TABLE_S_B", "authorized_producer": "subject-lineage/S-B", "data_type": "markdown", "cardinality": 1, "purpose": "S-B final pre-crosstalk verdict table after 2 zig-zag rounds", "binding": {"path": "research/artifact-placement-adjudication/returns/subject-lineage-r2-final.md", "sha256": "2b781ddf3ba45c5c570e0925eef441815968ce573b8a6532d0ea32de9d2218c1"}},
+    {"name": "FINAL_TABLE_S_C", "authorized_producer": "subject-cost/S-C", "data_type": "markdown", "cardinality": 1, "purpose": "S-C final pre-crosstalk verdict table after 2 zig-zag rounds", "binding": {"path": "research/artifact-placement-adjudication/returns/subject-cost-r2-final.md", "sha256": "d296565cfea41078405faa606b1b2dd5488bfd351a059e1de6348afe568ae4b0"}}
+  ]
+}

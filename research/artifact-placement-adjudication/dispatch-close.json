@@ -1,0 +1,10 @@
+{
+  "close_of": "2026-07-26-artifact-placement-adjudication",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 17,
+    "tree": {"explorer": 3, "skeptic": 5, "helpers": 9},
+    "loops_used": 2
+  },
+  "invoked_by": "victorboscaro@gmail.com"
+}
