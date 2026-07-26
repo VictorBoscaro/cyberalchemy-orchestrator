@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><base href="file:///C:/Users/victo/cyberalchemy-orchestrator/plans/governed-agent-work-infrastructure/essays/work-context-system-view/"/><title>A High-Level View of Work Context Infrastructure - design sample: center-signals</title><style>
+@page {
+  size: A4;
+  margin: 18mm 22mm 15mm;
+  background: #f4eadc;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: #f4eadc;
+  color: #120d0b;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  margin: 0;
+  background: #f4eadc;
+  color: #120d0b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 10.55pt;
+  line-height: 1.58;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -30mm;
+  z-index: -10;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(181,64,39,.09), transparent 27%),
+    linear-gradient(145deg, #f8f0e4 0%, #f0e2d0 100%);
+}
+
+main { width: 100%; }
+
+h1 {
+  max-width: 158mm;
+  margin: 0 0 10mm;
+  color: #100b09;
+  font: 700 30pt/1.04 Georgia, serif;
+  letter-spacing: -0.6pt;
+}
+
+h1::before {
+  content: "";
+  display: block;
+  width: 36mm;
+  height: 3.2mm;
+  margin: 3mm 0 10mm;
+  border-radius: 2mm;
+  background: #b43f27;
+}
+
+h2 {
+  margin: 11mm 0 4.5mm;
+  padding-top: 3mm;
+  border-top: 0.75pt solid rgba(133,39,23,.46);
+  color: #7b2114;
+  font: 700 18.5pt/1.16 Georgia, serif;
+  letter-spacing: -0.18pt;
+  break-after: avoid-page;
+}
+
+h3 {
+  margin: 7mm 0 3mm;
+  color: #130e0b;
+  font: 700 12.4pt/1.25 Arial, sans-serif;
+  letter-spacing: .25pt;
+  break-after: avoid-page;
+}
+
+p {
+  margin: 0 0 4.8mm;
+  color: #17100c;
+  orphans: 3;
+  widows: 3;
+}
+
+p + p { margin-top: 1.2mm; }
+
+strong { font-weight: 700; color: #1b1410; }
+
+a {
+  color: #7d281a;
+  text-decoration-color: #b43f27;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 1.5px;
+}
+
+blockquote {
+  margin: 0 0 8mm;
+  padding: 4mm 5mm 3.8mm 6.5mm;
+  border-left: 3.2px solid #b43f27;
+  background: rgba(255,250,241,.53);
+  color: #2a211b;
+  break-inside: avoid-page;
+}
+
+blockquote p:last-child { margin-bottom: 0; }
+
+ul, ol { margin: 2mm 0 5.5mm; padding-left: 7mm; }
+li { margin: 0 0 2.2mm; padding-left: 1.2mm; }
+li::marker { color: #9c321f; font-weight: 700; }
+
+code {
+  color: #742616;
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(142,46,28,.20);
+  border-radius: 2px;
+  padding: .15em .34em;
+  font: .86em Consolas, "Courier New", monospace;
+}
+
+pre {
+  margin: 3mm 0 5mm;
+  padding: 4.8mm 5mm 4.5mm;
+  border-left: 3.4px solid #c44b31;
+  border-radius: 0 2.2mm 2.2mm 0;
+  background: #211b17;
+  color: #fff6e8;
+  box-shadow: 0 2mm 5mm rgba(42,26,18,.10);
+  font: 8.6pt/1.42 Consolas, "Courier New", monospace;
+  white-space: pre-wrap;
+  break-inside: avoid-page;
+}
+
+pre code {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+table {
+  width: 100%;
+  margin: 2.5mm 0 5mm;
+  border-collapse: collapse;
+  border: .65pt solid #a88f79;
+  background: rgba(255,251,244,.62);
+  color: #181310;
+  font: 8.15pt/1.34 Arial, sans-serif;
+}
+
+thead { display: table-header-group; }
+tr { break-inside: avoid-page; }
+th {
+  padding: 2.5mm 2.7mm;
+  border: .5pt solid #66594f;
+  background: #201a16;
+  color: #fffaf0;
+  font-weight: 700;
+  text-align: left;
+}
+td {
+  padding: 2.3mm 2.7mm;
+  border: .5pt solid #baa48f;
+  vertical-align: top;
+}
+tbody tr:nth-child(even) td { background: rgba(186,154,125,.10); }
+
+.hero-map {
+  margin: -2mm 0 4mm;
+  padding: 0;
+  break-inside: avoid;
+}
+.hero-map svg { display: block; width: 100%; height: 31mm; }
+.hero-map .orbit { fill: none; stroke: #9b321f; stroke-width: 2.1; opacity: .55; }
+.hero-map .orbit-b { stroke: #1f1915; opacity: .25; }
+.hero-map .orbit-c { stroke-dasharray: 5 5; opacity: .35; }
+.hero-map .node { fill: #f4eadc; stroke: #7b2114; stroke-width: 3; }
+.hero-map .node-main { fill: #b43f27; stroke: #b43f27; }
+.hero-map .node-core { fill: #211b17; stroke: #211b17; }
+
+.concept-figure {
+  margin: 5mm 0 7mm;
+  padding: 5mm;
+  border: .8pt solid #a9846b;
+  border-radius: 2.2mm;
+  background: rgba(255,250,241,.68);
+  box-shadow: 0 2mm 7mm rgba(48,29,20,.08);
+  break-inside: avoid-page;
+  font-family: Arial, sans-serif;
+}
+
+.figure-kicker {
+  margin-bottom: 3.5mm;
+  color: #792719;
+  font: 700 8.7pt/1 Arial, sans-serif;
+  letter-spacing: 1.1pt;
+  text-transform: uppercase;
+}
+
+.path-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2mm; }
+.path-card {
+  min-height: 25mm;
+  padding: 3mm 2.6mm;
+  border-top: 2.3px solid #b43f27;
+  background: #f5ecdf;
+}
+.path-card span { display: block; color: #a23a25; font-size: 7.5pt; font-weight: 700; }
+.path-card b { display: block; margin: 1.4mm 0 .8mm; color: #1c1511; font: 700 9.3pt Arial, sans-serif; }
+.path-card small { display: block; color: #4b4038; font: 7.4pt/1.25 Arial, sans-serif; }
+.convergence { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3mm; align-items: center; margin-top: 3.6mm; }
+.convergence i { height: 1px; background: #a9846b; }
+.convergence strong { color: #792719; font: 700 8.5pt Arial, sans-serif; text-transform: uppercase; letter-spacing: .7pt; }
+
+.flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr; gap: 1.2mm; align-items: stretch; }
+.flow-row > div { padding: 2.6mm 1.8mm; border: .6pt solid #b49982; background: #f5ecdf; text-align: center; }
+.flow-row b { display: block; font: 700 7.4pt Arial, sans-serif; }
+.flow-row small { display: block; margin-top: 1mm; color: #5a4c42; font: 6.5pt/1.2 Arial, sans-serif; }
+.flow-row em { align-self: center; color: #a23a25; font: 700 10pt Arial, sans-serif; }
+
+.graph-family { text-align: center; }
+.graph-source, .acceptance, .history, .projection {
+  width: 72%;
+  margin: 0 auto;
+  padding: 2.6mm 3mm;
+  border: .7pt solid #a9846b;
+  background: #f5ecdf;
+  color: #211914;
+  font: 700 8.4pt Arial, sans-serif;
+}
+.acceptance { width: 60%; border-color: #b43f27; color: #792719; }
+.history { width: 38%; background: #211b17; color: #fff7ea; border-color: #211b17; }
+.projection { width: 45%; }
+.vertical-link { width: 1px; height: 4mm; margin: 0 auto; background: #9f6f56; }
+.branch-line { width: 68%; height: 4mm; margin: 0 auto -1px; border-top: 1px solid #9f6f56; border-left: 1px solid #9f6f56; border-right: 1px solid #9f6f56; }
+.views { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.views div { padding: 2.5mm; border: .7pt solid #a9846b; background: #f5ecdf; font: 700 8pt Arial, sans-serif; }
+
+.evidence-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3mm; align-items: stretch; }
+.evidence-pair > div:not(.plus) { padding: 4mm; border: .7pt solid #a9846b; background: #f5ecdf; }
+.evidence-pair span { display: inline-grid; width: 6mm; height: 6mm; place-items: center; border-radius: 50%; background: #b43f27; color: white; font: 700 7pt Arial; }
+.evidence-pair b { display: block; margin: 2mm 0 1mm; font: 700 10pt Arial; }
+.evidence-pair small { display: block; color: #4d4037; font: 8pt/1.3 Arial; }
+.plus { align-self: center; color: #8e2e1c; font: 700 18pt Georgia; }
+.evidence-result { margin-top: 3mm; padding: 2.2mm; background: #211b17; color: #fff7ea; text-align: center; font: 700 8.4pt Arial; letter-spacing: .2pt; }
+.evidence-result em { color: #e56f51; font-style: normal; }
+
+.result-heading + ul {
+  columns: 2;
+  column-gap: 7mm;
+  column-rule: .6pt solid rgba(155,53,31,.26);
+  padding-left: 5mm;
+  font-size: 8.85pt;
+  line-height: 1.30;
+}
+.result-heading {
+  break-before: page;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.result-heading + ul li {
+  break-inside: avoid;
+  margin-bottom: 2mm;
+}
+
+hr { border: 0; border-top: .6pt solid #b79d86; margin: 6mm 0; }
+
+@media print {
+  .concept-figure, pre, blockquote { break-inside: avoid-page; }
+  h1, h2, h3 { break-after: avoid-page; }
+}
+</style><style>
+.sample-note {
+  margin: 0 0 7mm;
+  color: #6f2519;
+  font: 700 7.4pt/1 Arial, sans-serif;
+  letter-spacing: 1.15pt;
+  text-transform: uppercase;
+}
+.sample-panel {
+  break-before: page;
+}
+.sample-panel:first-of-type {
+  break-before: auto;
+}
+.sample-panel > :first-child {
+  margin-top: 0;
+}
+.sample-panel .result-heading {
+  break-before: auto;
+}
+.sample-panel:last-child {
+  min-height: 120mm;
+}
+
+@page {
+  size: A4;
+  margin: 19mm 22mm 16mm;
+  background: #f6ecdf;
+  @top-center {
+    content: "";
+    background:
+      radial-gradient(circle, #a83a26 0 1.1px, transparent 1.3px)
+      center 8mm / 4mm 4mm no-repeat,
+      linear-gradient(rgba(23,16,12,.55), rgba(23,16,12,.55))
+      center 10mm / 13mm .28pt no-repeat;
+  }
+  @bottom-center {
+    content: "";
+    background:
+      radial-gradient(circle, #a83a26 0 1.1px, transparent 1.3px)
+      center bottom 8mm / 4mm 4mm no-repeat,
+      linear-gradient(rgba(23,16,12,.55), rgba(23,16,12,.55))
+      center bottom 10mm / 13mm .28pt no-repeat;
+  }
+}
+html, body { background: #f6ecdf; }
+body::before {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(181,64,39,.055), transparent 24%),
+    linear-gradient(145deg, #f9f1e6 0%, #f3e7d8 100%);
+}
+h1::before {
+  width: 23mm;
+  height: 1.5mm;
+  border-radius: 0;
+}
+h2 {
+  border-top: .35pt solid rgba(106,56,38,.48);
+  color: #772416;
+}
+h2::after {
+  content: "";
+  display: block;
+  width: 2.2mm;
+  height: 2.2mm;
+  margin-top: 2mm;
+  border: .45pt solid #9e3421;
+  border-radius: 50%;
+}
+pre {
+  box-shadow: none;
+  border-left-width: 1.8px;
+  border-radius: 0;
+  background: #27201c;
+}
+.concept-figure {
+  padding-left: 0;
+  padding-right: 0;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: rgba(255,250,241,.32);
+}
+table {
+  border-left: 0;
+  border-right: 0;
+}
+td {
+  border-left: 0;
+  border-right: 0;
+}
+</style></head><body><main><section class="sample-panel sample-panel-1"><div class="sample-note">Design study / excerpt, not a complete edition / center-signals</div><h1>A High-Level View of Work Context Infrastructure</h1><figure aria-label="Local work connected to larger contexts" class="hero-map">
+<svg role="img" viewbox="0 0 760 180">
+<path class="orbit orbit-a" d="M60 92 C150 8 286 8 375 92 C464 176 610 176 700 92"></path>
+<path class="orbit orbit-b" d="M60 92 C150 176 286 176 375 92 C464 8 610 8 700 92"></path>
+<path class="orbit orbit-c" d="M125 92 C210 38 290 38 375 92 C460 146 540 146 635 92"></path>
+<circle class="node node-main" cx="60" cy="92" r="11"></circle>
+<circle class="node" cx="205" cy="42" r="7"></circle>
+<circle class="node" cx="205" cy="142" r="7"></circle>
+<circle class="node node-core" cx="375" cy="92" r="14"></circle>
+<circle class="node" cx="545" cy="42" r="7"></circle>
+<circle class="node" cx="545" cy="142" r="7"></circle>
+<circle class="node node-main" cx="700" cy="92" r="11"></circle>
+</svg>
+</figure><h2 id="section-1">1. From perception to intention</h2><p>All work begins, at least in some form, with an idea about something that could be different.
+Someone observes something in their life or in the reality around them and perceives a possibility,
+a need, a problem, or a condition worth preserving. From that perception, an objective begins to
+take shape.</p><p>The objective does not appear in isolation. Perception is situated. People encounter reality
+through lenses influenced by their experience, knowledge, biological constitution, social
+position, and cultural context. These factors do not mechanically determine one conclusion, but
+they influence what becomes visible, which distinctions seem important, and which possibilities
+can be imagined.</p><p>The system does not need to model human perception itself. It needs to preserve the attributable
+transition from a situated perception to a declared and revisable objective.</p><p>At first, the objective often appears as a single monolithic intention: one large, still formless
+whole with little internal detail or clarity. A person may sense a direction before they can
+describe the destination precisely. They may know that something should change without yet
+knowing the work, constraints, or sequence required to change it. The intention carries a
+purpose, but its parts, relationships, and much of its meaning remain implicit.</p></section><section class="sample-panel sample-panel-2"><h2>3. The problem the system must solve</h2><p>The central purpose of the proposed system is to preserve the relationship between local work and
+the larger contexts that explain it.</p><p>A local piece of work should remain connected to:</p><ul>
+<li>the objective from which it ultimately emerged;</li>
+<li>the interpretations, assumptions, and evidence that shaped that objective;</li>
+<li>the Plans, discoveries, specifications, and decisions that refined it;</li>
+<li>the authority that permitted a person, agent, or tool to act;</li>
+<li>the attempts, effects, and artifacts through which the work became concrete; and</li>
+<li>the evidence used to judge whether the result advanced anything larger.</li>
+</ul><p>This is not only a task-management problem. A task manager can record assignments while losing
+their justification. It is not only a document-management problem. Documents can preserve text
+while leaving their semantic and operational relationships implicit. It is not only a workflow or
+multi-agent problem. A workflow can execute the wrong route correctly.</p><p>The deeper problem is the loss of context between levels of work.</p><blockquote>
+<p>Every piece of work should remain connected to the larger contexts that give it purpose,
+meaning, and legitimate authority.</p>
+</blockquote><p>The system must preserve five independently inspectable paths: <strong>purpose</strong>, <strong>authority</strong>,
+<strong>assignment</strong>, <strong>causation</strong>, and <strong>realization</strong>. They may converge on the same outcome, but none
+can be inferred from another. An execution can, for example, be authorized without having been
+assigned to the purpose-bearing task. The remainder of this essay explains the properties,
+responsibilities, and validation strategy required to preserve these paths.</p><p>When inspected, a path may be witnessed, missing, conflicted, or superseded. These are explanatory
+distinctions rather than a fixed response vocabulary.</p><h3>Reading map</h3><ul>
+<li><a href="#section-1">Sections 1–16</a> establish the problem and the properties the system may need.</li>
+<li><a href="#section-17">Sections 17–30</a> describe the candidate shape and its responsibilities.</li>
+<li><a href="#section-31">Sections 31–34</a> name preservation and formalization questions.</li>
+<li><a href="#section-35">Sections 35–36</a> define the first discriminating test.</li>
+<li><a href="#section-37">Sections 37–38</a> preserve open questions, ownership gaps, and limits.</li>
+</ul><h3>Proposal: why familiar framings may be partial</h3><p><strong>Proposal status.</strong> The following table presents a scope hypothesis introduced by this essay,
+not a finding inherited from an authoritative source. It proposes that work-context infrastructure
+should not be identified exclusively with any one of these familiar system categories. Each
+category may still contribute part of the implementation; the proposed limitation is that, on its
+own, it does not guarantee preservation of purpose, authority, assignment, causation, and
+realization across the path from intention to effect. Accepting this table would accept that scope
+hypothesis, not select an architecture or reject these systems as components.</p><table>
+<thead>
+<tr>
+<th>Framing</th>
+<th>What it contributes</th>
+<th>Proposed limitation if used alone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task-management system</td>
+<td>Assignment, scheduling, status, and coordination.</td>
+<td>Does not by itself guarantee preservation of justification, authority, or outcome evidence.</td>
+</tr>
+<tr>
+<td>Document repository</td>
+<td>Durable artifacts, versions, and retrieval.</td>
+<td>Does not by itself make semantic relationships or operational consequences explicit.</td>
+</tr>
+<tr>
+<td>Workflow engine</td>
+<td>Repeatable transitions and execution coordination.</td>
+<td>Usually operates after meaning, authority, and acceptance boundaries have been defined.</td>
+</tr>
+<tr>
+<td>Multi-agent orchestrator</td>
+<td>Dispatch, coordination, and agent execution.</td>
+<td>Covers an execution mechanism, not necessarily the full lineage from intention to accepted effect.</td>
+</tr>
+</tbody>
+</table></section><section class="sample-panel sample-panel-3"><figure aria-label="Five independently inspectable paths" class="concept-figure five-paths">
+<div class="figure-kicker">Five independently inspectable paths</div>
+<div class="path-grid">
+<div class="path-card"><span>01</span><b>Purpose</b><small>why the work exists</small></div>
+<div class="path-card"><span>02</span><b>Authority</b><small>what permits action</small></div>
+<div class="path-card"><span>03</span><b>Assignment</b><small>who carries responsibility</small></div>
+<div class="path-card"><span>04</span><b>Causation</b><small>what produced change</small></div>
+<div class="path-card"><span>05</span><b>Realization</b><small>what supports the outcome</small></div>
+</div>
+<div class="convergence"><i></i><strong>candidate outcome</strong><i></i></div>
+</figure><h2>4. Moving from the part to the whole</h2><p>From any task, attempt, artifact, or effect, a person should be able to move upward through its
+context:</p><pre><code class="language-text">Why does this exist?
+Which work asked for it?
+Which Plan or route produced that work?
+Which objective does the route serve?
+Which decision authorized this action?
+Which assumptions and evidence shaped those choices?
+</code></pre><p>This upward path checks purpose and authority. It makes orphan work visible. A task with no
+defensible upward path may still be technically clear, but the system cannot explain why it should
+be performed.</p><p>The path need not be one fixed chain. A task may acquire its purpose through one set of relations
+and its authority through another. What matters is that the relevant paths remain inspectable and
+that the system does not invent missing links.</p><h2>5. Moving from the whole to its parts</h2><p>From an objective, a person should also be able to move downward:</p><pre><code class="language-text">Which Plans attempt to realize this objective?
+Which work is active, blocked, abandoned, or complete?
+Which decisions changed the route?
+Which tasks and attempts are operating now?
+Which effects and artifacts were produced?
+What evidence indicates that the objective is being advanced?
+</code></pre></section><section class="sample-panel sample-panel-4"><h2 id="section-17">17. A recursive grammar of work</h2><p>A familiar progression offers a useful first reading:</p><pre><code class="language-text">Intent
+-&gt; Plan
+-&gt; Research
+-&gt; Discovery / Design
+-&gt; Specification
+-&gt; Implementation
+-&gt; Verification
+</code></pre><p>It is not one irreversible pipeline. Research may challenge a Plan. Verification may reopen a
+Specification. A local implementation question may require another Plan. Work kinds can recur at
+different scopes and participate in several contexts.</p><p>The property to preserve is not one universal order. It is that the applicable route,
+dependencies, bypasses, evidence, authority, and reopenings remain explicit and historically
+reconstructable.</p><h2>18. Decomposition without loss of lineage</h2><p>Complex work must be decomposed into bounded assignments. Each assignment should receive an
+immediate objective, selected context, constraints, an expected result, applicable gates, and an
+authority boundary.</p><p>The assignment should not need to carry the whole project in its prompt or working memory. It
+should retain a resolvable path to the larger purpose while receiving only the context relevant to
+its responsibility.</p><pre><code class="language-text">context available through lineage
+!= context materialized for one execution
+</code></pre><p>This distinction allows the broader context to remain preserved without making every local worker
+interpret everything.</p></section><section class="sample-panel sample-panel-5"><h2 id="section-31">31. Candidate invariants</h2><p>Before choosing a kernel, the system can name properties it may need to preserve:</p><ul>
+<li>names, paths, classifications, and projections do not silently redefine identity;</li>
+<li>accepted history remains reconstructable;</li>
+<li>relationships preserve type, direction, provenance, scope, and applicable version;</li>
+<li>derived paths retain their direct witnesses and composition rules;</li>
+<li>projections cannot manufacture facts or authority;</li>
+<li>lineage does not automatically delegate tools, evidence, budget, or effect permission;</li>
+<li>cheap descriptions do not silently become types, truths, or permissions;</li>
+<li>revocation and supersession remain visible;</li>
+<li>checker acceptance does not imply physical enforcement; and</li>
+<li>local validity does not automatically imply global compatibility.</li>
+</ul><p>These are candidate invariants. Naming them does not prove that they are necessary, sufficient, or
+enforced.</p></section><section class="sample-panel sample-panel-6"><h2 id="section-35">35. The smallest useful vertical slice</h2><p>The first system should test one end-to-end question:</p><blockquote>
+<p>Given one candidate outcome, observed artifact, or observed effect, can the system first
+determine whether accepted terminal evidence exists and then reconstruct defensible purpose,
+authority, assignment, and causal execution paths without treating adjacency as proof?</p>
+</blockquote><p>The purpose and authority paths converge but do not collapse:</p><pre><code class="language-text">purpose:     objective -&gt; chosen route -&gt; local work
+authority:   accepted permission -&gt; authorized execution -&gt; attempt
+assignment:  local work -&gt; bounded responsibility -&gt; attempt
+causation:   attempt -&gt; observed contribution -&gt; candidate outcome
+realization: local work -&gt; supported outcome claim -&gt; candidate outcome
+</code></pre><p>The first slice should test whether an explicit assignment bridge is required. Convergence on the
+same outcome supplies a counterexample candidate when an authorized attempt was carrying a
+different responsibility: the test should determine whether the execution basis must connect that
+attempt to the purpose-bearing local work rather than relying on a shared outcome alone. The
+necessity and sufficiency of that bridge remain open under <code>OD-06</code>.</p><p>Terminal evidence separates two obligations. A <strong>terminal-state witness</strong> shows that an attempt or
+effect route reached an applicable terminal condition. An <strong>outcome-binding witness</strong> connects that
+terminal activity to the candidate outcome. The first without the second is activity evidence, not
+causal or realization evidence. Likewise, finalized content without an accepted producer binding
+is durable content rather than realization evidence, and an intended effect without an accepted
+outcome observation remains a request.</p><p>For any accepted causal binding, the slice should expose its attributable source, the acceptance
+occurrence or process, the scope and version in which it applies, and resolvable supporting
+evidence. Which process may accept such a binding and what evidence is sufficient remain open.</p><p>The slice should support traversal in both directions, expose missing links instead of filling
+them, and preserve historical changes to each path. It should not require a universal ontology, a
+final trusted-boundary design, or formalization of every relation before testing the core value.</p><h3>Current repository correspondence for the first slice</h3><p>The present repository specifies two non-canonical correspondence variants. For runtime-managed
+flows, ACI specifies ownership of confirmed Dispatch authority, and APT specifies the corresponding
+<code>aci_managed</code> authority-snapshot reference. For legacy-managed flows, ACI specifies that authority
+remains with the legacy ledger, while APT specifies a <code>legacy_ledger</code> external-owner reference
+rather than duplicated authority. These names describe current repository contracts; they do not
+select the general architecture, establish a future contract, or prove that a runtime exists.</p><figure aria-label="Terminal evidence has two obligations" class="concept-figure terminal-evidence">
+<div class="figure-kicker">Terminal evidence has two obligations</div>
+<div class="evidence-pair">
+<div><span>A</span><b>Terminal-state witness</b><small>an applicable terminal condition was reached</small></div>
+<div class="plus">+</div>
+<div><span>B</span><b>Outcome-binding witness</b><small>the terminal activity supports the candidate outcome</small></div>
+</div>
+<div class="evidence-result">activity evidence <em>≠</em> realization evidence without the binding</div>
+</figure></section><section class="sample-panel sample-panel-7"><h2 id="section-37">37. Open questions</h2><ul>
+<li>Which things deserve stable identities, and at what point?</li>
+<li>Which relationships are direct facts, and which may be derived?</li>
+<li>What makes an upward path sufficient to justify local work?</li>
+<li>What evidence shows that micro work advanced a macro objective?</li>
+<li>When does changed context invalidate earlier authority?</li>
+<li>How much context should a leaf worker receive?</li>
+<li>Can an object participate in several Plans or projects without ambiguous authority?</li>
+<li>Which candidate invariants are global, domain-local, or configurable?</li>
+<li>What must be checked by validators, formal methods, empirical tests, or human judgment?</li>
+<li>How should independently governed contexts compose?</li>
+<li>How can maintenance cost and recovered value be measured?</li>
+</ul></section><section class="sample-panel sample-panel-8"><h2 class="result-heading">System-view result</h2><ul>
+<li><strong>Status:</strong> flag — complete as a companion essay, but its open decisions and ontology terms do
+not yet have instantiated downstream owners.</li>
+<li><strong>Target boundary:</strong> macro-to-micro work context from human objective through local effect,
+including purpose, authority, evidence, change, candidate architecture, and a first vertical
+slice.</li>
+<li><strong>Stakeholder altitude:</strong> begins with a general reader and increases toward product and
+architecture stakeholders; schema and runtime implementation are deferred.</li>
+<li><strong>Shape:</strong> perception -&gt; intention -&gt; decomposition -&gt; context preservation -&gt; authority and
+evidence -&gt; architecture responsibilities -&gt; invariants and formalization -&gt; first slice.</li>
+<li><strong>Layering:</strong> human situation and current work are given; context selection, decomposition,
+governance, and projections are optimized; accepted history accumulates.</li>
+<li><strong>Open decisions named:</strong> six, all explicitly unassigned.</li>
+<li><strong>Decided-nothing check:</strong> pass — the named stances remain open.</li>
+<li><strong>Term-deferral check:</strong> pass with dependency — provisional navigation terms are explicitly
+deferred to unassigned future ontology work.</li>
+<li><strong>Evidence boundary:</strong> repository-backed problem and current mechanisms; proposed synthesis for
+the full architecture and validation route.</li>
+</ul></section></main></body></html>

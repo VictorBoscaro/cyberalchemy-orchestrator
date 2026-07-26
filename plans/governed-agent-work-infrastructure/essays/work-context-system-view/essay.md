@@ -132,20 +132,28 @@ distinctions rather than a fixed response vocabulary.
 
 ### Reading map
 
-- Sections 1–16 establish the problem and the properties the system may need.
-- Sections 17–30 describe the candidate shape and its responsibilities.
-- Sections 31–34 name preservation and formalization questions.
-- Sections 35–36 define the first discriminating test.
-- Sections 37–38 preserve open questions, ownership gaps, and limits.
+- [Sections 1–16](#1-from-perception-to-intention) establish the problem and the properties the system may need.
+- [Sections 17–30](#17-a-recursive-grammar-of-work) describe the candidate shape and its responsibilities.
+- [Sections 31–34](#31-candidate-invariants) name preservation and formalization questions.
+- [Sections 35–36](#35-the-smallest-useful-vertical-slice) define the first discriminating test.
+- [Sections 37–38](#37-open-questions) preserve open questions, ownership gaps, and limits.
 
-### Alternative framings considered
+### Proposal: why familiar framings may be partial
 
-| Framing | Why it is insufficient on its own |
-|---|---|
-| Task-management system | Tracks assignments and status but may not preserve purpose, evidence, or authority. |
-| Document repository | Preserves artifacts but may leave their relationships and operational consequences implicit. |
-| Workflow engine | Coordinates execution after meaning and legitimacy have already been assumed. |
-| Multi-agent orchestrator | Explains one important execution mechanism, not the full path from intention to effect. |
+**Proposal status.** The following table presents a scope hypothesis introduced by this essay,
+not a finding inherited from an authoritative source. It proposes that work-context infrastructure
+should not be identified exclusively with any one of these familiar system categories. Each
+category may still contribute part of the implementation; the proposed limitation is that, on its
+own, it does not guarantee preservation of purpose, authority, assignment, causation, and
+realization across the path from intention to effect. Accepting this table would accept that scope
+hypothesis, not select an architecture or reject these systems as components.
+
+| Framing | What it contributes | Proposed limitation if used alone |
+|---|---|---|
+| Task-management system | Assignment, scheduling, status, and coordination. | Does not by itself guarantee preservation of justification, authority, or outcome evidence. |
+| Document repository | Durable artifacts, versions, and retrieval. | Does not by itself make semantic relationships or operational consequences explicit. |
+| Workflow engine | Repeatable transitions and execution coordination. | Usually operates after meaning, authority, and acceptance boundaries have been defined. |
+| Multi-agent orchestrator | Dispatch, coordination, and agent execution. | Covers an execution mechanism, not necessarily the full lineage from intention to accepted effect. |
 
 ## 4. Moving from the part to the whole
 

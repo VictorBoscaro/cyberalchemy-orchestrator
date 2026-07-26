@@ -453,7 +453,7 @@ tbody tr:nth-child(even) td { background: rgba(180,63,39,.055); }
 }
 
 .result-heading {
-  break-before: auto;
+  break-before: page;
   color: #701f14;
   padding-top: 4mm;
   border-top: 1pt solid rgba(112,31,20,.62);
@@ -484,7 +484,7 @@ tbody tr:nth-child(even) td { background: rgba(180,63,39,.055); }
   </svg>
 </figure>
 
-<h2>1. From perception to intention</h2>
+<h2 id="section-1">1. From perception to intention</h2>
 <p>All work begins, at least in some form, with an idea about something that could be different.
 Someone observes something in their life or in the reality around them and perceives a possibility,
 a need, a problem, or a condition worth preserving. From that perception, an objective begins to
@@ -566,36 +566,48 @@ responsibilities, and validation strategy required to preserve these paths.</p>
 distinctions rather than a fixed response vocabulary.</p>
 <h3>Reading map</h3>
 <ul>
-<li>Sections 1–16 establish the problem and the properties the system may need.</li>
-<li>Sections 17–30 describe the candidate shape and its responsibilities.</li>
-<li>Sections 31–34 name preservation and formalization questions.</li>
-<li>Sections 35–36 define the first discriminating test.</li>
-<li>Sections 37–38 preserve open questions, ownership gaps, and limits.</li>
+<li><a href="#section-1">Sections 1–16</a> establish the problem and the properties the system may need.</li>
+<li><a href="#section-17">Sections 17–30</a> describe the candidate shape and its responsibilities.</li>
+<li><a href="#section-31">Sections 31–34</a> name preservation and formalization questions.</li>
+<li><a href="#section-35">Sections 35–36</a> define the first discriminating test.</li>
+<li><a href="#section-37">Sections 37–38</a> preserve open questions, ownership gaps, and limits.</li>
 </ul>
-<h3>Alternative framings considered</h3>
+<h3>Proposal: why familiar framings may be partial</h3>
+<p><strong>Proposal status.</strong> The following table presents a scope hypothesis introduced by this essay,
+not a finding inherited from an authoritative source. It proposes that work-context infrastructure
+should not be identified exclusively with any one of these familiar system categories. Each
+category may still contribute part of the implementation; the proposed limitation is that, on its
+own, it does not guarantee preservation of purpose, authority, assignment, causation, and
+realization across the path from intention to effect. Accepting this table would accept that scope
+hypothesis, not select an architecture or reject these systems as components.</p>
 <table>
 <thead>
 <tr>
   <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+  <th>What it contributes</th>
+  <th>Proposed limitation if used alone</th>
 </tr>
 </thead>
 <tbody>
 <tr>
   <td>Task-management system</td>
-  <td>Tracks assignments and status but may not preserve purpose, evidence, or authority.</td>
+  <td>Assignment, scheduling, status, and coordination.</td>
+  <td>Does not by itself guarantee preservation of justification, authority, or outcome evidence.</td>
 </tr>
 <tr>
   <td>Document repository</td>
-  <td>Preserves artifacts but may leave their relationships and operational consequences implicit.</td>
+  <td>Durable artifacts, versions, and retrieval.</td>
+  <td>Does not by itself make semantic relationships or operational consequences explicit.</td>
 </tr>
 <tr>
   <td>Workflow engine</td>
-  <td>Coordinates execution after meaning and legitimacy have already been assumed.</td>
+  <td>Repeatable transitions and execution coordination.</td>
+  <td>Usually operates after meaning, authority, and acceptance boundaries have been defined.</td>
 </tr>
 <tr>
   <td>Multi-agent orchestrator</td>
-  <td>Explains one important execution mechanism, not the full path from intention to effect.</td>
+  <td>Dispatch, coordination, and agent execution.</td>
+  <td>Covers an execution mechanism, not necessarily the full lineage from intention to accepted effect.</td>
 </tr>
 </tbody>
 </table>
@@ -930,7 +942,7 @@ represented and checked remains a load-bearing design choice: <code>OD-01</code>
 </tr>
 </tbody>
 </table>
-<h2>17. A recursive grammar of work</h2>
+<h2 id="section-17">17. A recursive grammar of work</h2>
 <p>A familiar progression offers a useful first reading:</p>
 <pre><code class="language-text">Intent
 -&gt; Plan
@@ -1299,7 +1311,7 @@ its direct sources. The design of these witnesses and rules remains open under <
 </tr>
 </tbody>
 </table>
-<h2>31. Candidate invariants</h2>
+<h2 id="section-31">31. Candidate invariants</h2>
 <p>Before choosing a kernel, the system can name properties it may need to preserve:</p>
 <ul>
 <li>names, paths, classifications, and projections do not silently redefine identity;</li>
@@ -1392,7 +1404,7 @@ not show that a running orchestrator obeys the model.</p>
 </tr>
 </tbody>
 </table>
-<h2>35. The smallest useful vertical slice</h2>
+<h2 id="section-35">35. The smallest useful vertical slice</h2>
 <p>The first system should test one end-to-end question:</p>
 <blockquote>
 <p>Given one candidate outcome, observed artifact, or observed effect, can the system first
@@ -1465,7 +1477,7 @@ adoption decision even when answer quality improves. The slice fails if it:</p>
 </ul>
 <p>Exact thresholds and workload accounting remain experiment decisions, but they must be frozen
 before the slice is evaluated.</p>
-<h2>37. Open questions</h2>
+<h2 id="section-37">37. Open questions</h2>
 <ul>
 <li>Which things deserve stable identities, and at what point?</li>
 <li>Which relationships are direct facts, and which may be derived?</li>

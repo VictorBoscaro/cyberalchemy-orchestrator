@@ -1,11 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base href="file:///C:/Users/victo/cyberalchemy-orchestrator/plans/governed-agent-work-infrastructure/essays/work-context-system-view/">
-  <title>A High-Level View of Work Context Infrastructure</title>
-  <style>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><base href="file:///C:/Users/victo/cyberalchemy-orchestrator/plans/governed-agent-work-infrastructure/essays/work-context-system-view/"/><title>A High-Level View of Work Context Infrastructure - complete design edition: quiet-corners</title><style>
 @page {
   size: A4;
   margin: 18mm 22mm 15mm;
@@ -274,25 +268,72 @@ hr { border: 0; border-top: .6pt solid #b79d86; margin: 6mm 0; }
   .concept-figure, pre, blockquote { break-inside: avoid-page; }
   h1, h2, h3 { break-after: avoid-page; }
 }
-</style>
-</head>
-<body><main><h1>A High-Level View of Work Context Infrastructure</h1>
+</style><style>
+.edition-note {
+  margin: 0 0 7mm;
+  color: #6f2519;
+  font: 700 7.4pt/1 Arial, sans-serif;
+  letter-spacing: 1.15pt;
+  text-transform: uppercase;
+}
 
-<figure class="hero-map" aria-label="Local work connected to larger contexts">
-  <svg viewBox="0 0 760 180" role="img">
-    <path class="orbit orbit-a" d="M60 92 C150 8 286 8 375 92 C464 176 610 176 700 92"/>
-    <path class="orbit orbit-b" d="M60 92 C150 176 286 176 375 92 C464 8 610 8 700 92"/>
-    <path class="orbit orbit-c" d="M125 92 C210 38 290 38 375 92 C460 146 540 146 635 92"/>
-    <circle class="node node-main" cx="60" cy="92" r="11"/>
-    <circle class="node" cx="205" cy="42" r="7"/>
-    <circle class="node" cx="205" cy="142" r="7"/>
-    <circle class="node node-core" cx="375" cy="92" r="14"/>
-    <circle class="node" cx="545" cy="42" r="7"/>
-    <circle class="node" cx="545" cy="142" r="7"/>
-    <circle class="node node-main" cx="700" cy="92" r="11"/>
-  </svg>
+@page {
+  size: A4;
+  margin: 19mm 22mm 16mm;
+  background: #f4eadc;
+  @top-left-corner {
+    content: "";
+    background:
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      left 8mm top 8mm / 6mm .28pt no-repeat,
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      left 8mm top 8mm / .28pt 5mm no-repeat;
+  }
+  @top-right-corner {
+    content: "";
+    background:
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      right 8mm top 8mm / 6mm .28pt no-repeat,
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      right 8mm top 8mm / .28pt 5mm no-repeat;
+  }
+  @bottom-left-corner {
+    content: "";
+    background:
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      left 8mm bottom 8mm / 6mm .28pt no-repeat,
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      left 8mm bottom 8mm / .28pt 5mm no-repeat;
+  }
+  @bottom-right-corner {
+    content: "";
+    background:
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      right 8mm bottom 8mm / 6mm .28pt no-repeat,
+      linear-gradient(rgba(23,16,12,.72), rgba(23,16,12,.72))
+      right 8mm bottom 8mm / .28pt 5mm no-repeat;
+  }
+}
+body::before { opacity: .58; }
+h2 { border-top-width: .45pt; }
+pre { box-shadow: none; border-radius: 0 .7mm .7mm 0; }
+.concept-figure { box-shadow: none; border-width: .55pt; }
+table { border-width: .5pt; }
+</style></head><body><main><div class="edition-note">Design study / complete edition / quiet-corners</div><h1>A High-Level View of Work Context Infrastructure</h1>
+<figure aria-label="Local work connected to larger contexts" class="hero-map">
+<svg role="img" viewbox="0 0 760 180">
+<path class="orbit orbit-a" d="M60 92 C150 8 286 8 375 92 C464 176 610 176 700 92"></path>
+<path class="orbit orbit-b" d="M60 92 C150 176 286 176 375 92 C464 8 610 8 700 92"></path>
+<path class="orbit orbit-c" d="M125 92 C210 38 290 38 375 92 C460 146 540 146 635 92"></path>
+<circle class="node node-main" cx="60" cy="92" r="11"></circle>
+<circle class="node" cx="205" cy="42" r="7"></circle>
+<circle class="node" cx="205" cy="142" r="7"></circle>
+<circle class="node node-core" cx="375" cy="92" r="14"></circle>
+<circle class="node" cx="545" cy="42" r="7"></circle>
+<circle class="node" cx="545" cy="142" r="7"></circle>
+<circle class="node node-main" cx="700" cy="92" r="11"></circle>
+</svg>
 </figure>
-
 <h2 id="section-1">1. From perception to intention</h2>
 <p>All work begins, at least in some form, with an idea about something that could be different.
 Someone observes something in their life or in the reality around them and perceives a possibility,
@@ -392,45 +433,44 @@ hypothesis, not select an architecture or reject these systems as components.</p
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>What it contributes</th>
-  <th>Proposed limitation if used alone</th>
+<th>Framing</th>
+<th>What it contributes</th>
+<th>Proposed limitation if used alone</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Task-management system</td>
-  <td>Assignment, scheduling, status, and coordination.</td>
-  <td>Does not by itself guarantee preservation of justification, authority, or outcome evidence.</td>
+<td>Task-management system</td>
+<td>Assignment, scheduling, status, and coordination.</td>
+<td>Does not by itself guarantee preservation of justification, authority, or outcome evidence.</td>
 </tr>
 <tr>
-  <td>Document repository</td>
-  <td>Durable artifacts, versions, and retrieval.</td>
-  <td>Does not by itself make semantic relationships or operational consequences explicit.</td>
+<td>Document repository</td>
+<td>Durable artifacts, versions, and retrieval.</td>
+<td>Does not by itself make semantic relationships or operational consequences explicit.</td>
 </tr>
 <tr>
-  <td>Workflow engine</td>
-  <td>Repeatable transitions and execution coordination.</td>
-  <td>Usually operates after meaning, authority, and acceptance boundaries have been defined.</td>
+<td>Workflow engine</td>
+<td>Repeatable transitions and execution coordination.</td>
+<td>Usually operates after meaning, authority, and acceptance boundaries have been defined.</td>
 </tr>
 <tr>
-  <td>Multi-agent orchestrator</td>
-  <td>Dispatch, coordination, and agent execution.</td>
-  <td>Covers an execution mechanism, not necessarily the full lineage from intention to accepted effect.</td>
+<td>Multi-agent orchestrator</td>
+<td>Dispatch, coordination, and agent execution.</td>
+<td>Covers an execution mechanism, not necessarily the full lineage from intention to accepted effect.</td>
 </tr>
 </tbody>
 </table>
-
-<figure class="concept-figure five-paths" aria-label="Five independently inspectable paths">
-  <div class="figure-kicker">Five independently inspectable paths</div>
-  <div class="path-grid">
-    <div class="path-card"><span>01</span><b>Purpose</b><small>why the work exists</small></div>
-    <div class="path-card"><span>02</span><b>Authority</b><small>what permits action</small></div>
-    <div class="path-card"><span>03</span><b>Assignment</b><small>who carries responsibility</small></div>
-    <div class="path-card"><span>04</span><b>Causation</b><small>what produced change</small></div>
-    <div class="path-card"><span>05</span><b>Realization</b><small>what supports the outcome</small></div>
-  </div>
-  <div class="convergence"><i></i><strong>candidate outcome</strong><i></i></div>
+<figure aria-label="Five independently inspectable paths" class="concept-figure five-paths">
+<div class="figure-kicker">Five independently inspectable paths</div>
+<div class="path-grid">
+<div class="path-card"><span>01</span><b>Purpose</b><small>why the work exists</small></div>
+<div class="path-card"><span>02</span><b>Authority</b><small>what permits action</small></div>
+<div class="path-card"><span>03</span><b>Assignment</b><small>who carries responsibility</small></div>
+<div class="path-card"><span>04</span><b>Causation</b><small>what produced change</small></div>
+<div class="path-card"><span>05</span><b>Realization</b><small>what supports the outcome</small></div>
+</div>
+<div class="convergence"><i></i><strong>candidate outcome</strong><i></i></div>
 </figure>
 <h2>4. Moving from the part to the whole</h2>
 <p>From any task, attempt, artifact, or effect, a person should be able to move upward through its
@@ -503,26 +543,26 @@ pretending that every path licenses the same conclusion.</p>
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>One organizational tree</td>
-  <td>A piece of work may participate in several non-hierarchical contexts.</td>
+<td>One organizational tree</td>
+<td>A piece of work may participate in several non-hierarchical contexts.</td>
 </tr>
 <tr>
-  <td>Folder structure as context</td>
-  <td>Physical placement is one projection and cannot safely encode every semantic relation.</td>
+<td>Folder structure as context</td>
+<td>Physical placement is one projection and cannot safely encode every semantic relation.</td>
 </tr>
 <tr>
-  <td>Put all context in the task description</td>
-  <td>Repeats and freezes information that belongs to independently changing objects.</td>
+<td>Put all context in the task description</td>
+<td>Repeats and freezes information that belongs to independently changing objects.</td>
 </tr>
 <tr>
-  <td>Infer relationships from proximity</td>
-  <td>Nearby files or events are not necessarily semantically or authoritatively connected.</td>
+<td>Infer relationships from proximity</td>
+<td>Nearby files or events are not necessarily semantically or authoritatively connected.</td>
 </tr>
 </tbody>
 </table>
@@ -604,26 +644,26 @@ of its meaning.</p>
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Mutable current-state records only</td>
-  <td>They erase why earlier work existed and how the current representation emerged.</td>
+<td>Mutable current-state records only</td>
+<td>They erase why earlier work existed and how the current representation emerged.</td>
 </tr>
 <tr>
-  <td>Append every observation as truth</td>
-  <td>An event was recorded does not mean its interpretation was correct or accepted.</td>
+<td>Append every observation as truth</td>
+<td>An event was recorded does not mean its interpretation was correct or accepted.</td>
 </tr>
 <tr>
-  <td>Require settled types before identity</td>
-  <td>Early work remains outside the system precisely when context is most likely to be lost.</td>
+<td>Require settled types before identity</td>
+<td>Early work remains outside the system precisely when context is most likely to be lost.</td>
 </tr>
 <tr>
-  <td>Treat provenance as validity</td>
-  <td>Knowing who asserted something does not establish that the assertion is true or authorized.</td>
+<td>Treat provenance as validity</td>
+<td>Knowing who asserted something does not establish that the assertion is true or authorized.</td>
 </tr>
 </tbody>
 </table>
@@ -648,17 +688,16 @@ result may be accepted as evidence without authorizing a file change. A detailed
 lack the authority, capability, or resources required to run.</p>
 <p>The system should make these boundaries visible because later interfaces cannot recover
 distinctions that the underlying records never preserved.</p>
-
-<figure class="concept-figure governance-flow" aria-label="Acceptance is distinct from authority and execution">
-  <div class="figure-kicker">Distinct governance transitions</div>
-  <div class="flow-row">
-    <div><b>Description</b><small>what is asserted</small></div><em>→</em>
-    <div><b>Proposal</b><small>what is requested</small></div><em>→</em>
-    <div><b>Acceptance</b><small>what is recognized</small></div><em>→</em>
-    <div><b>Authority</b><small>what may execute</small></div><em>→</em>
-    <div><b>Execution</b><small>what occurred</small></div><em>→</em>
-    <div><b>Verification</b><small>what evidence establishes</small></div>
-  </div>
+<figure aria-label="Acceptance is distinct from authority and execution" class="concept-figure governance-flow">
+<div class="figure-kicker">Distinct governance transitions</div>
+<div class="flow-row">
+<div><b>Description</b><small>what is asserted</small></div><em>→</em>
+<div><b>Proposal</b><small>what is requested</small></div><em>→</em>
+<div><b>Acceptance</b><small>what is recognized</small></div><em>→</em>
+<div><b>Authority</b><small>what may execute</small></div><em>→</em>
+<div><b>Execution</b><small>what occurred</small></div><em>→</em>
+<div><b>Verification</b><small>what evidence establishes</small></div>
+</div>
 </figure>
 <h2>15. Authority across levels</h2>
 <p>A user may authorize one Dispatch. The user may also authorize a bounded workflow:</p>
@@ -695,26 +734,26 @@ represented and checked remains a load-bearing design choice: <code>OD-01</code>
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Approval as a boolean</td>
-  <td>Loses scope, conditions, duration, and the object of the decision.</td>
+<td>Approval as a boolean</td>
+<td>Loses scope, conditions, duration, and the object of the decision.</td>
 </tr>
 <tr>
-  <td>Plan acceptance implies execution</td>
-  <td>Confuses agreement about a route with permission to produce effects.</td>
+<td>Plan acceptance implies execution</td>
+<td>Confuses agreement about a route with permission to produce effects.</td>
 </tr>
 <tr>
-  <td>Authority automatically inherits through ancestry</td>
-  <td>A parent relation does not necessarily delegate tools, budget, or effect permission.</td>
+<td>Authority automatically inherits through ancestry</td>
+<td>A parent relation does not necessarily delegate tools, budget, or effect permission.</td>
 </tr>
 <tr>
-  <td>Ask before every action</td>
-  <td>Preserves control but can make bounded, repeated work unnecessarily expensive.</td>
+<td>Ask before every action</td>
+<td>Preserves control but can make bounded, repeated work unnecessarily expensive.</td>
 </tr>
 </tbody>
 </table>
@@ -774,26 +813,26 @@ runtime activity to redefine the work retroactively.</p>
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>One global lifecycle</td>
-  <td>Cannot naturally represent recursive Research, local Plans, and reopenings.</td>
+<td>One global lifecycle</td>
+<td>Cannot naturally represent recursive Research, local Plans, and reopenings.</td>
 </tr>
 <tr>
-  <td>Give every worker the whole context</td>
-  <td>Expensive, distracting, and likely to blur responsibility and authority.</td>
+<td>Give every worker the whole context</td>
+<td>Expensive, distracting, and likely to blur responsibility and authority.</td>
 </tr>
 <tr>
-  <td>Treat retries as new tasks</td>
-  <td>Loses the distinction between logical work and physical execution.</td>
+<td>Treat retries as new tasks</td>
+<td>Loses the distinction between logical work and physical execution.</td>
 </tr>
 <tr>
-  <td>Treat a produced artifact as completion</td>
-  <td>Confuses activity with acceptance and objective realization.</td>
+<td>Treat a produced artifact as completion</td>
+<td>Confuses activity with acceptance and objective realization.</td>
 </tr>
 </tbody>
 </table>
@@ -838,26 +877,26 @@ fills the gaps through inference or displays them as if they were complete.</p>
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Passing tests means the objective advanced</td>
-  <td>Tests usually establish a bounded technical claim, not strategic realization.</td>
+<td>Passing tests means the objective advanced</td>
+<td>Tests usually establish a bounded technical claim, not strategic realization.</td>
 </tr>
 <tr>
-  <td>Every relation needs the same evidence</td>
-  <td>Different work and relation types require different warrants.</td>
+<td>Every relation needs the same evidence</td>
+<td>Different work and relation types require different warrants.</td>
 </tr>
 <tr>
-  <td>Hide incomplete objects until resolved</td>
-  <td>Removes the exact gaps the system should help users see.</td>
+<td>Hide incomplete objects until resolved</td>
+<td>Removes the exact gaps the system should help users see.</td>
 </tr>
 <tr>
-  <td>Agent summary as grounding</td>
-  <td>A summary is another attributable assertion, not a substitute for source evidence.</td>
+<td>Agent summary as grounding</td>
+<td>A summary is another attributable assertion, not a substitute for source evidence.</td>
 </tr>
 </tbody>
 </table>
@@ -907,26 +946,26 @@ does not establish causation, and placement in a folder does not authorize actio
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Periodic manual cleanup</td>
-  <td>Repairs visible drift but does not provide continuous or attributable detection.</td>
+<td>Periodic manual cleanup</td>
+<td>Repairs visible drift but does not provide continuous or attributable detection.</td>
 </tr>
 <tr>
-  <td>Hooks own the context</td>
-  <td>Confuses a reaction mechanism with the relationships and history it observes.</td>
+<td>Hooks own the context</td>
+<td>Confuses a reaction mechanism with the relationships and history it observes.</td>
 </tr>
 <tr>
-  <td>One canonical dashboard</td>
-  <td>Different questions require different projections over the same identities.</td>
+<td>One canonical dashboard</td>
+<td>Different questions require different projections over the same identities.</td>
 </tr>
 <tr>
-  <td>Projection becomes source of truth</td>
-  <td>Allows a derived view to manufacture or overwrite authority.</td>
+<td>Projection becomes source of truth</td>
+<td>Allows a derived view to manufacture or overwrite authority.</td>
 </tr>
 </tbody>
 </table>
@@ -992,20 +1031,19 @@ current graph or projection to rewrite the history from which its claims are jus
 <p>No one representation is automatically complete. A graph may preserve relationships while an
 artifact preserves content that should not be reduced to nodes and edges. The architecture should
 connect representations without pretending they are interchangeable.</p>
-
-<figure class="concept-figure graph-family" aria-label="Accepted history feeding overlapping graph views and projections">
-  <div class="figure-kicker">Candidate graph-family shape</div>
-  <div class="graph-source">Attributable assertions, decisions, and observed events</div>
-  <div class="vertical-link"></div>
-  <div class="acceptance">contextual review and acceptance boundary</div>
-  <div class="vertical-link"></div>
-  <div class="history">durable history</div>
-  <div class="branch-line"></div>
-  <div class="views">
-    <div>purpose view</div><div>authority view</div><div>evidence view</div>
-  </div>
-  <div class="vertical-link"></div>
-  <div class="projection">task-specific projections</div>
+<figure aria-label="Accepted history feeding overlapping graph views and projections" class="concept-figure graph-family">
+<div class="figure-kicker">Candidate graph-family shape</div>
+<div class="graph-source">Attributable assertions, decisions, and observed events</div>
+<div class="vertical-link"></div>
+<div class="acceptance">contextual review and acceptance boundary</div>
+<div class="vertical-link"></div>
+<div class="history">durable history</div>
+<div class="branch-line"></div>
+<div class="views">
+<div>purpose view</div><div>authority view</div><div>evidence view</div>
+</div>
+<div class="vertical-link"></div>
+<div class="projection">task-specific projections</div>
 </figure>
 <h2>30. Composition and derived meaning</h2>
 <p>Some relation paths may license derived conclusions:</p>
@@ -1030,26 +1068,26 @@ its direct sources. The design of these witnesses and rules remains open under <
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Permanent architecture layers</td>
-  <td>The responsibility boundaries are candidates, not yet deployment decisions.</td>
+<td>Permanent architecture layers</td>
+<td>The responsibility boundaries are candidates, not yet deployment decisions.</td>
 </tr>
 <tr>
-  <td>Reduce every artifact to a graph</td>
-  <td>Graphs represent selected structure, not all content or behavior.</td>
+<td>Reduce every artifact to a graph</td>
+<td>Graphs represent selected structure, not all content or behavior.</td>
 </tr>
 <tr>
-  <td>Make every relation transitive</td>
-  <td>Produces invalid purpose and authority conclusions.</td>
+<td>Make every relation transitive</td>
+<td>Produces invalid purpose and authority conclusions.</td>
 </tr>
 <tr>
-  <td>One central service owns all meaning</td>
-  <td>Risks turning an interoperability substrate into a semantic and operational monolith.</td>
+<td>One central service owns all meaning</td>
+<td>Risks turning an interoperability substrate into a semantic and operational monolith.</td>
 </tr>
 </tbody>
 </table>
@@ -1123,26 +1161,26 @@ not show that a running orchestrator obeys the model.</p>
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Start with the kernel</td>
-  <td>Chooses a mechanism before establishing the property it must preserve.</td>
+<td>Start with the kernel</td>
+<td>Chooses a mechanism before establishing the property it must preserve.</td>
 </tr>
 <tr>
-  <td>Treat every candidate invariant as universal</td>
-  <td>Converts open design questions into hidden governing law.</td>
+<td>Treat every candidate invariant as universal</td>
+<td>Converts open design questions into hidden governing law.</td>
 </tr>
 <tr>
-  <td>Formal proof as total product evidence</td>
-  <td>A proof establishes its formal statement under assumptions, not empirical fit or runtime enforcement.</td>
+<td>Formal proof as total product evidence</td>
+<td>A proof establishes its formal statement under assumptions, not empirical fit or runtime enforcement.</td>
 </tr>
 <tr>
-  <td>Category theory as metaphor only</td>
-  <td>Risks adding vocabulary without changing a design decision or enabling a check.</td>
+<td>Category theory as metaphor only</td>
+<td>Risks adding vocabulary without changing a design decision or enabling a check.</td>
 </tr>
 </tbody>
 </table>
@@ -1184,15 +1222,14 @@ flows, ACI specifies ownership of confirmed Dispatch authority, and APT specifie
 remains with the legacy ledger, while APT specifies a <code>legacy_ledger</code> external-owner reference
 rather than duplicated authority. These names describe current repository contracts; they do not
 select the general architecture, establish a future contract, or prove that a runtime exists.</p>
-
-<figure class="concept-figure terminal-evidence" aria-label="Terminal evidence has two obligations">
-  <div class="figure-kicker">Terminal evidence has two obligations</div>
-  <div class="evidence-pair">
-    <div><span>A</span><b>Terminal-state witness</b><small>an applicable terminal condition was reached</small></div>
-    <div class="plus">+</div>
-    <div><span>B</span><b>Outcome-binding witness</b><small>the terminal activity supports the candidate outcome</small></div>
-  </div>
-  <div class="evidence-result">activity evidence <em>≠</em> realization evidence without the binding</div>
+<figure aria-label="Terminal evidence has two obligations" class="concept-figure terminal-evidence">
+<div class="figure-kicker">Terminal evidence has two obligations</div>
+<div class="evidence-pair">
+<div><span>A</span><b>Terminal-state witness</b><small>an applicable terminal condition was reached</small></div>
+<div class="plus">+</div>
+<div><span>B</span><b>Outcome-binding witness</b><small>the terminal activity supports the candidate outcome</small></div>
+</div>
+<div class="evidence-result">activity evidence <em>≠</em> realization evidence without the binding</div>
 </figure>
 <h2>36. What the first slice should test</h2>
 <p>The slice should begin with one fully witnessed golden case. Negative cases should be derived by
@@ -1238,41 +1275,41 @@ before the slice is evaluated.</p>
 <table>
 <thead>
 <tr>
-  <th>Open decision</th>
-  <th>Tension</th>
-  <th>Downstream owner state</th>
+<th>Open decision</th>
+<th>Tension</th>
+<th>Downstream owner state</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td><code>OD-01</code> authority containment</td>
-  <td>useful bounded delegation vs accidental authority expansion</td>
-  <td>unassigned; future engineer-view work</td>
+<td><code>OD-01</code> authority containment</td>
+<td>useful bounded delegation vs accidental authority expansion</td>
+<td>unassigned; future engineer-view work</td>
 </tr>
 <tr>
-  <td><code>OD-02</code> context selection</td>
-  <td>minimal local context vs sufficient purpose and constraint</td>
-  <td>unassigned; future engineer-view work</td>
+<td><code>OD-02</code> context selection</td>
+<td>minimal local context vs sufficient purpose and constraint</td>
+<td>unassigned; future engineer-view work</td>
 </tr>
 <tr>
-  <td><code>OD-03</code> objective-realization evidence</td>
-  <td>inspectable contribution vs unprovable strategic causality</td>
-  <td>unassigned; future engineer-view work</td>
+<td><code>OD-03</code> objective-realization evidence</td>
+<td>inspectable contribution vs unprovable strategic causality</td>
+<td>unassigned; future engineer-view work</td>
 </tr>
 <tr>
-  <td><code>OD-04</code> relation composition</td>
-  <td>useful derived paths vs manufactured conclusions</td>
-  <td>unassigned; future engineer-view work</td>
+<td><code>OD-04</code> relation composition</td>
+<td>useful derived paths vs manufactured conclusions</td>
+<td>unassigned; future engineer-view work</td>
 </tr>
 <tr>
-  <td><code>OD-05</code> trusted-boundary shape</td>
-  <td>shared trusted core vs independently governed domains</td>
-  <td>unassigned; future engineer-view work</td>
+<td><code>OD-05</code> trusted-boundary shape</td>
+<td>shared trusted core vs independently governed domains</td>
+<td>unassigned; future engineer-view work</td>
 </tr>
 <tr>
-  <td><code>OD-06</code> assignment binding</td>
-  <td>explicit responsibility continuity vs unnecessary mandatory linkage</td>
-  <td>unassigned; future engineer-view work</td>
+<td><code>OD-06</code> assignment binding</td>
+<td>explicit responsibility continuity vs unnecessary mandatory linkage</td>
+<td>unassigned; future engineer-view work</td>
 </tr>
 </tbody>
 </table>
@@ -1283,22 +1320,22 @@ remain outside this essay.</p>
 <table>
 <thead>
 <tr>
-  <th>Provisional navigation term</th>
-  <th>Definition owner state</th>
+<th>Provisional navigation term</th>
+<th>Definition owner state</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>identity, context, relationship, assertion</td>
-  <td>unassigned future ontology-view work</td>
+<td>identity, context, relationship, assertion</td>
+<td>unassigned future ontology-view work</td>
 </tr>
 <tr>
-  <td>decision, authority, event</td>
-  <td>unassigned future ontology-view work</td>
+<td>decision, authority, event</td>
+<td>unassigned future ontology-view work</td>
 </tr>
 <tr>
-  <td>artifact, projection, invariant, kernel</td>
-  <td>unassigned future ontology-view work</td>
+<td>artifact, projection, invariant, kernel</td>
+<td>unassigned future ontology-view work</td>
 </tr>
 </tbody>
 </table>
@@ -1306,38 +1343,38 @@ remain outside this essay.</p>
 <table>
 <thead>
 <tr>
-  <th>Claim family used by this essay</th>
-  <th>Repository owner or evidence</th>
+<th>Claim family used by this essay</th>
+<th>Repository owner or evidence</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Plan identity, nesting, and authority boundary</td>
-  <td><a href="../../../README.md">Plan contract</a></td>
+<td>Plan identity, nesting, and authority boundary</td>
+<td><a href="../../../README.md">Plan contract</a></td>
 </tr>
 <tr>
-  <td>Root infrastructure objective and proposal-only authority</td>
-  <td><a href="../../PLAN.md">Governed Agent Work Infrastructure Plan</a></td>
+<td>Root infrastructure objective and proposal-only authority</td>
+<td><a href="../../PLAN.md">Governed Agent Work Infrastructure Plan</a></td>
 </tr>
 <tr>
-  <td>Proposal-only peer for broader language, context, relation, authority, and architecture shape</td>
-  <td><a href="../agent-language-system-view/essay.md">Agent-language system view</a></td>
+<td>Proposal-only peer for broader language, context, relation, authority, and architecture shape</td>
+<td><a href="../agent-language-system-view/essay.md">Agent-language system view</a></td>
 </tr>
 <tr>
-  <td>Macro-to-micro problem statement and changing-context questions</td>
-  <td><a href="../../../../docs/essays/macro-to-micro-context.md">Linking the Macro to the Micro</a></td>
+<td>Macro-to-micro problem statement and changing-context questions</td>
+<td><a href="../../../../docs/essays/macro-to-micro-context.md">Linking the Macro to the Micro</a></td>
 </tr>
 <tr>
-  <td>Candidate primitives, graphs, services, and invariants</td>
-  <td><a href="../../../../docs/essays/from-context-to-governed-primitives.md">From Macro-to-Micro Context to Governed Primitives</a></td>
+<td>Candidate primitives, graphs, services, and invariants</td>
+<td><a href="../../../../docs/essays/from-context-to-governed-primitives.md">From Macro-to-Micro Context to Governed Primitives</a></td>
 </tr>
 <tr>
-  <td>Current Dispatch authority and Attempt/effect/artifact distinctions</td>
-  <td><a href="../../../../docs/features/agents-communication-infra/specs/domain.md">ACI domain specification</a></td>
+<td>Current Dispatch authority and Attempt/effect/artifact distinctions</td>
+<td><a href="../../../../docs/features/agents-communication-infra/specs/domain.md">ACI domain specification</a></td>
 </tr>
 <tr>
-  <td>Session, Dispatch, research, and authority-snapshot provenance</td>
-  <td><a href="../../../../docs/features/agent-provenance-telemetry/specs/domain.md">APT domain specification</a></td>
+<td>Session, Dispatch, research, and authority-snapshot provenance</td>
+<td><a href="../../../../docs/features/agent-provenance-telemetry/specs/domain.md">APT domain specification</a></td>
 </tr>
 </tbody>
 </table>
@@ -1347,26 +1384,26 @@ falsification-oriented first slice are new synthesis and remain proposal-only.</
 <table>
 <thead>
 <tr>
-  <th>Framing</th>
-  <th>Why it is insufficient on its own</th>
+<th>Framing</th>
+<th>Why it is insufficient on its own</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>Build the general ontology first</td>
-  <td>Delays testing whether the macro-to-micro path produces practical value.</td>
+<td>Build the general ontology first</td>
+<td>Delays testing whether the macro-to-micro path produces practical value.</td>
 </tr>
 <tr>
-  <td>Implement only the current Dispatch lineage</td>
-  <td>Proves execution ancestry but may leave purpose and decision ancestry disconnected.</td>
+<td>Implement only the current Dispatch lineage</td>
+<td>Proves execution ancestry but may leave purpose and decision ancestry disconnected.</td>
 </tr>
 <tr>
-  <td>Judge success by graph completeness</td>
-  <td>Rewards recording more structure rather than improving explanation, control, or decisions.</td>
+<td>Judge success by graph completeness</td>
+<td>Rewards recording more structure rather than improving explanation, control, or decisions.</td>
 </tr>
 <tr>
-  <td>Treat this view as an accepted architecture</td>
-  <td>Converts a shape-and-stakes proposal into an unauthorized implementation route.</td>
+<td>Treat this view as an accepted architecture</td>
+<td>Converts a shape-and-stakes proposal into an unauthorized implementation route.</td>
 </tr>
 </tbody>
 </table>
@@ -1390,5 +1427,4 @@ deferred to unassigned future ontology work.</li>
 <li><strong>Evidence boundary:</strong> repository-backed problem and current mechanisms; proposed synthesis for
 the full architecture and validation route.</li>
 </ul>
-</main></body>
-</html>
+</main></body></html>
