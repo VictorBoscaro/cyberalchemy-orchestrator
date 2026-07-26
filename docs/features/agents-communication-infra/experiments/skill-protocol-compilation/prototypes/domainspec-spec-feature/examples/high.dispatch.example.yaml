@@ -1,0 +1,108 @@
+schema: dispatch-spec/example-v0
+example_only: true
+confirmable: false
+
+dispatch:
+  feature: sample-feature
+  protocol: domainspec-spec-feature:high
+  work_granularity: high
+  note: Illustrative compiled shape; agents, prompts, source digests, tools and budgets are omitted.
+
+resolved_artifacts:
+  - docs/features/sample-feature/SPEC.md
+  - docs/features/sample-feature/architecture.md
+  - docs/features/sample-feature/glossary.md
+  - docs/features/sample-feature/rules.md
+  - docs/features/sample-feature/operations.md
+
+system_nodes:
+  - id: discovery_gate
+    outcomes: [found, waived, waiting_user]
+  - id: resolve_downstream_set
+    resolves: [architecture.md, glossary.md, rules.md, operations.md]
+  - id: contract_validation
+    validates: complete_domainspec_contract
+  - id: summary
+    emits: [ready, undefined, review_evidence, residual_dissent]
+
+groups:
+  - id: spec_writer
+    seats: 1
+    owns: [docs/features/sample-feature/SPEC.md]
+
+  - id: spec_review
+    seats: 2
+    reviews: [docs/features/sample-feature/SPEC.md]
+    robot_talks_rounds: 1
+    zig_zag_with: spec_writer
+    zig_zag_loops: 1
+
+  - id: architecture_cell
+    seats: 2
+    producer_seats: 1
+    reviewer_seats: 1
+    owns: [docs/features/sample-feature/architecture.md]
+    robot_talks_rounds: 0
+    zig_zag_loops: 1
+
+  - id: glossary_cell
+    seats: 2
+    producer_seats: 1
+    reviewer_seats: 1
+    owns: [docs/features/sample-feature/glossary.md]
+    robot_talks_rounds: 0
+    zig_zag_loops: 1
+
+  - id: rules_cell
+    seats: 2
+    producer_seats: 1
+    reviewer_seats: 1
+    owns: [docs/features/sample-feature/rules.md]
+    robot_talks_rounds: 0
+    zig_zag_loops: 1
+
+  - id: operations_cell
+    seats: 2
+    producer_seats: 1
+    reviewer_seats: 1
+    owns: [docs/features/sample-feature/operations.md]
+    robot_talks_rounds: 0
+    zig_zag_loops: 1
+
+  - id: integration_writer
+    seats: 1
+    owns: affected_product_artifacts
+    invalidation_rule: changed_artifacts_return_to_own_inline_review
+
+  - id: corpus_review
+    seats: 2
+    identity: fresh
+    reviews: all_product_artifacts
+    robot_talks_rounds: 1
+    zig_zag_loops: 1
+
+  - id: final_review
+    seats: 1
+    identity: fresh
+    reviews: complete_evidence
+
+connections:
+  - [discovery_gate, spec_writer]
+  - [spec_writer, spec_review]
+  - [spec_review, resolve_downstream_set]
+  - [resolve_downstream_set, architecture_cell]
+  - [resolve_downstream_set, glossary_cell]
+  - [resolve_downstream_set, rules_cell]
+  - [resolve_downstream_set, operations_cell]
+  - [architecture_cell, integration_writer]
+  - [glossary_cell, integration_writer]
+  - [rules_cell, integration_writer]
+  - [operations_cell, integration_writer]
+  - [integration_writer, contract_validation]
+  - [contract_validation, corpus_review]
+  - [corpus_review, final_review]
+  - [final_review, summary]
+
+terminal_rules:
+  approved: final_review == approve
+  unresolved: any_bounded_review_exhausted or final_review == reject
