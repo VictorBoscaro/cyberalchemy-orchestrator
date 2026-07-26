@@ -15,7 +15,7 @@ structural variants over one semantic core.
 - `docs/features/skill-control-center/queries.md`
 - `docs/features/skill-control-center/operations.md`
 - `docs/features/skill-control-center/BACKLOG.md`
-- `experiments/skill-control-center/implementation/backend-task-session.md`
+- `docs/features/skill-control-center/implementation/backend-task-session.md`
 
 ## Hard constraints
 

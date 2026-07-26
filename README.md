@@ -192,6 +192,7 @@ row lives in [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md); t
 | [`research/`](research/) | Investigations, never auto-promoted. |
 | [`plans/`](plans/) | Durable plans and the canonical [Plan contract](plans/README.md#canonical-definition). |
 | [`sessions/`](sessions/) | 43 dated working-session records (close-session outputs). |
+| [`experiments/`](experiments/) | Two entries, and they are not the same kind of thing. [`skill-relationship-graph/`](experiments/skill-relationship-graph/) is a governed experiment — frozen `criterion.md`, then `experiment.md` + `findings.md` — and its `graph.json` is read at runtime by the control plane, so it is a live dependency, not an archive. [`foodstogo-jbp-2025/`](experiments/foodstogo-jbp-2025/) is a client business case with no criterion and no falsifiable claim; it sits here for want of a better home, and the directory name overstates it. Feature-scoped probes live with their feature instead — see [`docs/features/agents-communication-infra/experiments/`](docs/features/agents-communication-infra/experiments/). Which of the two homes a new probe belongs in is not yet a written rule. |
 | [`internal-tools/`](internal-tools/), [`tools/`](tools/) | Auxiliary experiments; validators, spec constitution, test-derivation engine. |
 
 ## Where to start

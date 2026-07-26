@@ -42,7 +42,7 @@ named source evidence; it never reports zero.
   fixtures (70/262/15/247 skill graph and 700-row Dispatch scale corpus included).
 - `implementations/tests/control_center/` — 14 API, path, local-operation, source-lineage and
   fixture-integrity tests.
-- `experiments/skill-control-center/implementation/backend-context-pack.md` — lean execution
+- `docs/features/skill-control-center/implementation/backend-context-pack.md` — lean execution
   evidence.
 
 ## Validation

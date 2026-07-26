@@ -54,7 +54,10 @@ what each package actually is and how far along it is.
   bounded to read-only/draft-only by
   [`../decisions/skill-control-center-phase-1-scope.md`](../decisions/skill-control-center-phase-1-scope.md).
   Holds `SPEC.md`, `UI-SPEC.md`, `TEST-SPEC.md`, `architecture.md`, `glossary.md`,
-  `interfaces.md`, `operations.md`, `queries.md`, `states.md`, `BACKLOG.md` and `discovery/`.
+  `interfaces.md`, `operations.md`, `queries.md`, `states.md`, `BACKLOG.md` and `discovery/`,
+  plus the Phase 1 build record moved in from `experiments/` on 2026-07-26: `research/`
+  (returns, findings and the `research/review/review.md` that corrected the research contract),
+  `meta-orchestration/`, `implementation/` and `agent-runtime/`.
   No README of its own — start from `SPEC.md`.
 - **`ui-studio/`**: Control plane plus UI-fitness harness. `status: draft`,
   `authority: candidate`, `verification: paired-audit-passed`. Three files:

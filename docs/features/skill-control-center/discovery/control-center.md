@@ -26,7 +26,7 @@ This work advances the repository goal of organizing, dispatching, and observing
 
 **Why now**
 
-The current control plane can show pending sheets and dispatch history, and a separate experiment can display extracted skill relationships, but the repository has no single operator contract that connects task attention, skill discovery, dispatch lineage, topology questions, evidence quality, and authority-safe change review. The corrected research converges on a task-led landing surface with topology opened only for an explicit relational question, while its red-team review requires the interaction, evidence, path, configuration, benchmark, fixture, accessibility, and originality contracts to be frozen before API or UI implementation ([research findings](../../../../experiments/skill-control-center/research/findings.md#information-architecture-decision); [review findings](../../../../experiments/skill-control-center/research-review/review.md#findings)).
+The current control plane can show pending sheets and dispatch history, and a separate experiment can display extracted skill relationships, but the repository has no single operator contract that connects task attention, skill discovery, dispatch lineage, topology questions, evidence quality, and authority-safe change review. The corrected research converges on a task-led landing surface with topology opened only for an explicit relational question, while its red-team review requires the interaction, evidence, path, configuration, benchmark, fixture, accessibility, and originality contracts to be frozen before API or UI implementation ([research findings](../research/findings.md#information-architecture-decision); [review findings](../research/review/review.md#findings)).
 
 **What's broken (as of 2026-07-24)**
 
@@ -37,15 +37,15 @@ The current control plane can show pending sheets and dispatch history, and a se
 5. `experiments/skill-relationship-graph/graph.json:367` contains only skill nodes and extracted skill relations; it cannot prove Dispatch parent lineage, intra-Dispatch group topology, runtime usage, recency, outcomes, or coverage.
 6. `docs/features/agent-provenance-telemetry/UI-SPEC.md` §Applicability Decision explicitly registers no APT route, page, component, action, transport, or deployed runtime. A Control Center therefore cannot claim APT query bindings or mutation authority through that sibling feature.
 7. [Event-driven initial definitions](../../../../research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md) §Known-Gaps leaves dashboard audiences, layer vocabulary, navigation, freshness, and authority-safe read models unsettled, and also leaves candidate reminders and terminal dispositions unresolved.
-8. [Research findings](../../../../experiments/skill-control-center/research/findings.md) §Acceptance-rubric identifies thresholds, but the exact versioned reference environment and authoritative owners of telemetry-source coverage, freshness SLA, and change approval are not established by the available corpus.
-9. [Meta-orchestration findings](../../../../experiments/skill-control-center/meta-orchestration/findings.md) §Lineage-limitation records that shared task-name prefixes are not authoritative lineage; a UI that groups them as parent/child would invent identity instead of using `parent_dispatch_id`.
+8. [Research findings](../research/findings.md) §Acceptance-rubric identifies thresholds, but the exact versioned reference environment and authoritative owners of telemetry-source coverage, freshness SLA, and change approval are not established by the available corpus.
+9. [Meta-orchestration findings](../meta-orchestration/findings.md) §Lineage-limitation records that shared task-name prefixes are not authoritative lineage; a UI that groups them as parent/child would invent identity instead of using `parent_dispatch_id`.
 10. `implementations/UI-CONTRACT.md` §UI Contract — Phase 1 still requires ten aesthetics-only variants. The confirmed target requires exactly three structurally distinct variants and therefore needs a new versioned contract before frontend implementation.
 
 **What stays the same**
 
 - The append-only Dispatch ledger, pending-sheet gate, validated appender, hook lifecycle, and append-before-ack rule remain authoritative; this discovery does not replace, repair, or write those stores.
 - Existing Dispatch row identity, historical `0.6.0`/`0.6.1` compatibility, LIVE/RESERVED semantics, legacy rows, orphan closes, UTC day semantics, warnings, and partial reader behavior remain visible through the seam defined by the [current UI contract](../../../../implementations/UI-CONTRACT.md) §API.
-- `Dispatch` ancestry remains owned by the Dispatch record and is joined only through `parent_dispatch_id`. “Mini-onda” may be a derived presentation label, but no `MiniWave`, `MiniWaveId`, or parallel lineage identity is introduced, consistent with the [meta-orchestration finding](../../../../experiments/skill-control-center/meta-orchestration/findings.md#decision).
+- `Dispatch` ancestry remains owned by the Dispatch record and is joined only through `parent_dispatch_id`. “Mini-onda” may be a derived presentation label, but no `MiniWave`, `MiniWaveId`, or parallel lineage identity is introduced, consistent with the [meta-orchestration finding](../meta-orchestration/findings.md#decision).
 - APT `SessionRecord`, `DispatchScopeProjection`, and `ResearchRecord` query definitions remain owned by the [APT query specification](../../agent-provenance-telemetry/specs/queries.md) §Query-Coverage-and-Required-Checks, bound for this amendment at `sha256:510277e262371cdae551d94313f5ad6acc56c30660be3a420d6bb910bbebcf1e`. The [APT UI applicability specification](../../agent-provenance-telemetry/UI-SPEC.md) owns only the deferred presentation applicability, privacy, and non-authority boundary; this feature may show an explicitly unavailable integration seam, but it does not redefine those queries, expose their raw evidence, or create APT routes or operations.
 - Obligation, scheduler, candidate, reminder, task-recipe, tag, and general relation semantics remain owned by the future work framed in the [event-driven initial definitions](../../../../research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md) §Known Gaps. This feature does not settle those concepts through presentation.
 - The existing skill graph artifact remains a fixture and source witness, not a visual reference, runtime authority, usage ledger, or editable relation store. Derived edges are never edited directly.
@@ -191,7 +191,7 @@ Every variant must support the same answer contract:
 7. Which source is degraded, excluded, stale, or incomplete?
 8. What can this actor change locally, what can only be drafted, and what authority and receipt would an authoritative change require?
 
-The research source owns the evidence comparison that led to this synthesis and remains limited to precedent plus falsifiable local inference ([collected task-first and topology-first returns](../../../../experiments/skill-control-center/research/research.md)).
+The research source owns the evidence comparison that led to this synthesis and remains limited to precedent plus falsifiable local inference ([collected task-first and topology-first returns](../research/research.md)).
 
 ## 4. Separate Topology Read Models
 
@@ -555,10 +555,10 @@ Final validation binds every result to source, backend, and frontend digests. It
 | Document | Type | Description |
 |---|---|---|
 | [Project README](../../../../README.md) | derives-from | Supplies the runnable-vs-thesis boundary and repository goal. |
-| [Control-center research findings](../../../../experiments/skill-control-center/research/findings.md) | derives-from | Durable basis for task-led IA, evidence, path, configuration, benchmark, fixture, accessibility, and variant contracts. |
-| [Research review](../../../../experiments/skill-control-center/research-review/review.md) | derives-from | Durable basis for corrected limitations and required contract hardening. |
-| [Meta-orchestration findings](../../../../experiments/skill-control-center/meta-orchestration/findings.md) | derives-from | Durable basis for lineage ownership, stage boundary, and validation evidence. |
-| [Collected research returns](../../../../experiments/skill-control-center/research/research.md) | cites | Preserves competing task-first/topology-first evidence and source-quality limitations. |
+| [Control-center research findings](../research/findings.md) | derives-from | Durable basis for task-led IA, evidence, path, configuration, benchmark, fixture, accessibility, and variant contracts. |
+| [Research review](../research/review/review.md) | derives-from | Durable basis for corrected limitations and required contract hardening. |
+| [Meta-orchestration findings](../meta-orchestration/findings.md) | derives-from | Durable basis for lineage ownership, stage boundary, and validation evidence. |
+| [Collected research returns](../research/research.md) | cites | Preserves competing task-first/topology-first evidence and source-quality limitations. |
 | [Skill graph fixture](../../../../experiments/skill-relationship-graph/graph.json) | cites | Supplies the checked 70-node/262-edge extraction witness and relation split. |
 | [Skill graph viewer](../../../../experiments/skill-relationship-graph/viewer.html) | cites | Supplies current interaction and labeling limitations; explicitly not a visual reference. |
 | [Current UI contract](../../../../implementations/UI-CONTRACT.md) | requires-revision-of | SCD-11 requires a future versioned replacement with three structurally distinct equivalent variants; the current contract remains in force until that replacement is approved. |
@@ -614,4 +614,4 @@ The flow keeps the distinct `AttentionQueue` ahead of explicit detail and topolo
 | 0.2.0 | 2026-07-25 | Amended the pre-lock discovery while preserving SCD-01–15 meanings and OQ-SCC1–7 identities, adding OQ-SCC8 for benchmark sampling, and completing evidence partiality, invocation/attempt identity, interval normalization, canonical edge evidence, CF-06 receipt, clustered benchmark, static screenshot manifest, zero-limit path, checked APT query authority, and diagram authority guard contracts. |
 | 0.1.0 | 2026-07-24 | Created the basis-backed discovery with task-led interaction, separate topology models, evidence/observation/path/authority contracts, exactly three equivalent variants, backend-first boundary, reproducible validation, and explicit authority gaps; no prior decisions were locked. |
 
-**Source basis:** [control-center research findings](../../../../experiments/skill-control-center/research/findings.md); [research review](../../../../experiments/skill-control-center/research-review/review.md); [meta-orchestration findings](../../../../experiments/skill-control-center/meta-orchestration/findings.md)
+**Source basis:** [control-center research findings](../research/findings.md); [research review](../research/review/review.md); [meta-orchestration findings](../meta-orchestration/findings.md)
