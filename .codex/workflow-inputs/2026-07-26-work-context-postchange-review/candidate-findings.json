@@ -1,0 +1,50 @@
+[
+  {
+    "id": "P-01",
+    "severity": "minor",
+    "source_reviewer": "forrester",
+    "claim": "The final failure list carries the conjunction on both of its last two items.",
+    "evidence": {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md",
+      "lines": "887-888",
+      "quote": "- cannot localize a one-binding mutation without disturbing unrelated paths; or\n- produces no measurable explanatory or decision benefit at an acceptable capture and repair cost."
+    },
+    "minimal_fix": "Remove `or` from line 887 so only the final list item closes the conjunction."
+  },
+  {
+    "id": "P-02",
+    "severity": "major",
+    "source_reviewer": "nonaka",
+    "claim": "The central diagram sends attributable assertions, decisions, and events directly into durable history without depicting the contextual acceptance boundary required by the surrounding essay.",
+    "evidence": {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md",
+      "lines": "667-678",
+      "quote": "Attributable assertions, decisions, and events\n                         |\n                  durable history\n                         |\n          +--------------+--------------+\n          |              |              |\n     purpose view   authority view   evidence view\n          +--------------+--------------+\n                         |\n              task-specific projections"
+    },
+    "minimal_fix": "Insert a proposal-qualified contextual acceptance boundary between attributable material and durable history, while preserving rejection and epistemic status and selecting no mechanism."
+  },
+  {
+    "id": "P-03",
+    "severity": "major",
+    "source_reviewer": "liskov",
+    "claim": "The first-slice prose decides that an assignment bridge is required even though necessity and sufficiency remain downstream engineer-view questions.",
+    "evidence": {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md",
+      "lines": "837-839",
+      "quote": "The assignment bridge is required. Convergence on the same outcome is insufficient when the\nauthorized attempt was carrying a different responsibility. The execution basis must connect that\nattempt to the purpose-bearing local work rather than relying on a shared outcome alone."
+    },
+    "minimal_fix": "Recast the statement as a falsifiable first-slice candidate requirement and route the necessity verdict to a new open decision owned by future engineer-view work."
+  },
+  {
+    "id": "P-04",
+    "severity": "major",
+    "source_reviewer": "liskov",
+    "claim": "The legacy correspondence says that the runtime records an external-owner reference, overstating specifications whose runtime gate does not establish an implementation.",
+    "evidence": {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md",
+      "lines": "858-862",
+      "quote": "The present repository offers two non-canonical correspondence variants. In runtime-managed flows,\nACI owns the confirmed Dispatch authority and APT refers to the corresponding authority snapshot.\nIn legacy-managed flows, the accepted authority remains with the legacy ledger and the runtime\nrecords an external-owner reference rather than duplicating it. These names describe current\nrepository mechanisms; they do not select the general architecture or establish a future contract."
+    },
+    "minimal_fix": "Use specification language: ACI specifies legacy-ledger authority and APT specifies a legacy_ledger external-owner reference; do not claim that a runtime records it."
+  }
+]

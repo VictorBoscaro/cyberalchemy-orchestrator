@@ -1,0 +1,19 @@
+{
+  "schema": "delegated-execution-authorization-receipt@1",
+  "receipt_id": "scout-aci-apt-20260725-v1",
+  "authority_class": "workflow-authorization-evidence",
+  "envelope_ref": "plans/governed-agent-work-infrastructure/workstreams/scout-aci-apt-delegated-execution-envelope.json",
+  "envelope_digest": "sha256:b7eeec912cd4ccbdab1d17a0e10473cfff8ca3e3fbbca7f4f1076868b2fcddfc",
+  "user_evidence": {
+    "evidence_ref": "codex-conversation:current:2026-07-25:bounded-scout-aci-apt",
+    "confirmation": "vamos fazer isso então",
+    "confirmed_at": "2026-07-25T19:12:23.2301775Z",
+    "canonical_evidence_digest": "sha256:9e91f561ac700ffbf43f25959a9813ee6d093d203235f7c632d8d619e8eb8f0f"
+  },
+  "write_policy": {
+    "delegated_dispatch_mutation": "denied",
+    "replacement": "A new user confirmation creates a new versioned receipt; this receipt is never edited in place.",
+    "auditor_rule": "Compare the current envelope bytes to envelope_digest and reject any mismatch."
+  },
+  "limitations": "This receipt is durable workflow evidence protected by the envelope's denied paths. It is not an ACI runtime authority receipt and cannot authorize launch without the existing hook-issued ACI launch-authorized receipt."
+}

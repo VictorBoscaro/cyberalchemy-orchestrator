@@ -1,0 +1,121 @@
+[
+  {
+    "id": "F-01",
+    "severity": "major",
+    "classification": "reference-integrity",
+    "support": ["nonaka", "liskov"],
+    "claim": "The declared canonical companion path is not resolvable, so the essay's delegation of ownership cannot be inspected.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "14", "quote": "companion_to: docs/architecture/agent-language-system-view.md"},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "24-27", "quote": "This is a proposal-only, macro-to-micro lens over the broader agent-language system view. It does not supersede that document or create a second canonical system-view owner."}
+    ],
+    "proposed_fix": "Resolve ownership explicitly: either create the declared canonical artifact or point all references to the existing companion and state whether it is canonical, a predecessor, or a proposal-only peer."
+  },
+  {
+    "id": "F-02",
+    "severity": "major",
+    "classification": "navigation-and-thesis",
+    "support": ["forrester", "nonaka", "liskov"],
+    "claim": "The five independent inspection paths arrive only in the first test slice, too late to organize the preceding argument.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "88-98", "quote": "The central purpose of the proposed system is to preserve the relationship between local work and the larger contexts that explain it."},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "788-805", "quote": "The first vertical slice should exercise five paths."}
+    ],
+    "proposed_fix": "After section 3, add a proposal-qualified five-path thesis and an optional reading map for sections 1-16, 17-30, 31-34, 35-36, and 37-38."
+  },
+  {
+    "id": "F-03",
+    "severity": "minor",
+    "classification": "scope-boundary",
+    "support": ["forrester", "liskov"],
+    "claim": "The philosophical opening temporarily implies that the infrastructure may model the causes of human perception, a responsibility not carried by the rest of the essay.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "40-44", "quote": "Perception is situated. People encounter reality through lenses influenced by their experience, knowledge, biological constitution, social position, and cultural context."}
+    ],
+    "proposed_fix": "Add a boundary sentence saying the system need not model perception itself, only the attributable transition from situated perception to a declared and revisable objective."
+  },
+  {
+    "id": "F-04",
+    "severity": "minor",
+    "classification": "redundancy",
+    "support": ["forrester"],
+    "opposition": ["nonaka", "liskov"],
+    "claim": "Section 17 repeats the earlier decomposition diagram before adding its distinct recursive and historical contribution.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "409-427", "quote": "A familiar progression offers a useful first reading: Intent -> Plan -> Research -> Discovery / Design -> Specification -> Implementation -> Verification"}
+    ],
+    "proposed_fix": "Compress only the repeated arrow diagram to one sentence; retain recurrence, reopening, bypass, and historical reconstruction."
+  },
+  {
+    "id": "F-05",
+    "severity": "major",
+    "classification": "source-derived-boundary",
+    "support": ["forrester", "nonaka", "liskov"],
+    "claim": "Section 29's singular Context Graph -> accepted facts -> Event History -> Projections diagram reverses or prematurely settles the relationship among attributable assertions, acceptance, durable history, graph views, and projections.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "637-647", "quote": "Context Graph ... accepted facts ... Event History ... Projections"},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "650-652", "quote": "Accepted events preserve structural change. Projections derive views for a particular use."}
+    ],
+    "proposed_fix": "Redraw a proposal-qualified lineage from attributable assertions, decisions, and events through acceptance occurrences and durable history into a candidate context graph family and task-specific projections; keep authoritative-versus-derived graph ownership open."
+  },
+  {
+    "id": "F-06",
+    "severity": "major",
+    "classification": "acceptance-witness",
+    "support": ["nonaka"],
+    "claim": "The first slice requires accepted causal bindings but does not require an inspectable witness for who or what accepted the binding.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "470-473", "quote": "Only an accepted causal binding can attribute that change to a particular Attempt or EffectIntent."},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "817-822", "quote": "there must be an accepted producer or causation fact binding it to the Attempt"}
+    ],
+    "proposed_fix": "Require test fixtures for accepted terminal or causal bindings to expose assertion source, acceptance occurrence or process, scope/version, and evidence reference while leaving acceptance policy open."
+  },
+  {
+    "id": "F-07",
+    "severity": "minor",
+    "classification": "durable-lineage",
+    "support": ["nonaka"],
+    "claim": "The essay says history preserves accepted change and that rejection is durable, but does not identify the durable home of rejection, correction, and supersession occurrences.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "315-317", "quote": "History should preserve accepted change, not every untrusted observation as if it had equal authority."},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "330-334", "quote": "A rejection is also durable information."}
+    ],
+    "proposed_fix": "Clarify that durable history records attributable governance occurrences while projections expose facts applicable under a declared acceptance policy; do not select storage."
+  },
+  {
+    "id": "F-08",
+    "severity": "major",
+    "classification": "system-view-altitude",
+    "support": ["liskov"],
+    "claim": "Sections 31 and 33-36 sometimes cross from desired shape into engineer-view verdicts, exact relation vocabulary, runtime entities, failure-result contracts, fixtures, and thresholds.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "698-709", "quote": "projections cannot manufacture facts or authority"},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "797-805", "quote": "Task -> compiled-or-assigned-as -> Dispatch operation or Seat role contract"},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "817-822", "quote": "must return an explicit missing-terminal-binding result"}
+    ],
+    "proposed_fix": "Keep desired properties and the conceptual five-path slice; mark exact names as non-canonical repository correspondence and defer accepted verdicts, schemas, failure vocabulary, fixtures, and thresholds to engineer/specification/experiment owners."
+  },
+  {
+    "id": "F-09",
+    "severity": "minor",
+    "classification": "runtime-correspondence",
+    "support": ["forrester", "nonaka", "liskov"],
+    "claim": "The ACI/APT correspondence is useful but abrupt and incomplete because it describes the runtime-managed authority variant without naming the supported legacy-ledger variant.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "812-815", "quote": "In the current runtime proposal, this means ACI-owned ConfirmedDispatch authority and the corresponding DispatchAuthoritySnapshotRef used by APT."}
+    ],
+    "proposed_fix": "Place the material under a Current repository correspondence for the first slice subsection and qualify runtime-managed versus legacy-ledger external authority variants."
+  },
+  {
+    "id": "F-10",
+    "severity": "minor",
+    "classification": "completion-status",
+    "support": ["liskov"],
+    "claim": "Calling the essay complete overstates its downstream contract status while all ontology and engineer-view owners remain uninstantiated.",
+    "evidence": [
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "876-880", "quote": "unassigned; future engineer-view work"},
+      {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md", "lines": "920-921", "quote": "complete as a companion essay, but its open decisions and ontology terms do not yet have instantiated downstream owners"}
+    ],
+    "proposed_fix": "Use structurally complete draft, contract-incomplete pending ontology and engineer-view owners, or instantiate downstream handles before claiming completion."
+  }
+]

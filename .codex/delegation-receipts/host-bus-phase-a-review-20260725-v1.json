@@ -1,0 +1,19 @@
+{
+  "schema": "delegated-execution-authorization-receipt@1",
+  "receipt_id": "host-bus-phase-a-review-20260725-v1",
+  "authority_class": "workflow-authorization-evidence",
+  "envelope_ref": "plans/governed-agent-work-infrastructure/workstreams/host-bus-phase-a-review-envelope.json",
+  "envelope_digest": "sha256:356809d5e9a096ca04c448263d92f73e1e8586da94cb978f99d3ae85a7d8445e",
+  "user_evidence": {
+    "evidence_ref": "codex-conversation:current:2026-07-25:host-bus-phase-a-review",
+    "confirmation": "va em frente",
+    "confirmed_at": "2026-07-26T02:57:32.9226492Z",
+    "canonical_evidence_digest": "sha256:73960550f1fda72745f4240f4f56f0bc5e2b229ffcb39fbfcf46ce9c6df0cc69"
+  },
+  "write_policy": {
+    "delegated_dispatch_mutation": "denied",
+    "replacement": "A changed objective or envelope requires new user evidence and a new versioned receipt.",
+    "auditor_rule": "Reject any envelope byte mismatch."
+  },
+  "limitations": "Workflow authorization evidence only; launch still requires the existing ACI lifecycle receipt."
+}

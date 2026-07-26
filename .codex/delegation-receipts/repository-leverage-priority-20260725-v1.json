@@ -1,0 +1,19 @@
+{
+  "schema": "delegated-execution-authorization-receipt@1",
+  "receipt_id": "repository-leverage-priority-20260725-v1",
+  "authority_class": "workflow-authorization-evidence",
+  "envelope_ref": "plans/governed-agent-work-infrastructure/workstreams/repository-leverage-priority-delegated-execution-envelope.json",
+  "envelope_digest": "sha256:29416695be73ff2784e411071c6f979b09d63b4007640b988c80ff40b0bdd89b",
+  "user_evidence": {
+    "evidence_ref": "codex-conversation:current:2026-07-25:repository-leverage-priority",
+    "confirmation": "Pode invocar subagentes para te ajudar a decidir isso, scouts, um fan-out pelo repo, o que voce achar necessário. Nao precisa confirmar comigo",
+    "confirmed_at": "2026-07-26T01:35:09.1371143Z",
+    "canonical_evidence_digest": "sha256:55c6a0bd0762d1d69aa45a06c7bc21f1567800344fdea0a9a103ed7e623cacda"
+  },
+  "write_policy": {
+    "delegated_dispatch_mutation": "denied",
+    "replacement": "A new user confirmation creates a new versioned receipt; this receipt is never edited in place.",
+    "auditor_rule": "Compare the current envelope bytes to envelope_digest and reject any mismatch."
+  },
+  "limitations": "This receipt is durable workflow evidence. It is not an ACI runtime authority receipt and cannot authorize launch without the existing hook-issued ACI launch-authorized receipt."
+}
