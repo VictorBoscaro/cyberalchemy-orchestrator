@@ -199,3 +199,26 @@ For each candidate invariant, research should ask:
 
 The target is not the smallest count at any cost. It is the smallest independent set of global laws
 whose preservation lets modules vary safely.
+
+## Review inputs received
+
+Recorded here so this set does not drift from the evidence written against it. **No candidate
+invariant above has been changed, removed, or ratified in response** — these are inputs to research
+that must still run, not verdicts.
+
+- [Lean mechanization probe](../../../../research/agent-language-mathematical-formalization/lean-mechanization-probe.md)
+  (2026-07-25, `authority: research-input-only`). Out-of-sequence: authored ahead of the subplan's
+  staged review at step 8. Two findings survived an adversarial pass:
+  - **against K7** — if the registration mechanism treats kernel entries and user entries as the
+    same kind of entry, the user's *scoping* and *disabling* verbs reach kernel entries and K7
+    fails: the kernel law stays registered and is never evaluated. Of the five verbs this document
+    grants the user, *adding* and *composing* are safe; *scoping* and *disabling* are not;
+    *retiring* is unmodelled. Repair proved sufficient, not necessary. Opens `ALF-OQ-016`,
+    `ALF-OQ-017`, `ALF-OQ-021`.
+  - **against K1 and K2** — *as formalised*, both admit rootless cycles: a closed delegation cycle
+    with no rooted grant, and correction chains with no original. Whether the prose laws share the
+    hole is unproved. Opens `ALF-OQ-018`.
+  - **limitation governing both** — the probe contains no transition system, so its results concern
+    *satisfaction*, not *preservation*. Nothing in it establishes that any candidate law is an
+    invariant in the sense defined above, and minimality test 2 (Independence) is **not** answered
+    by it. Opens `ALF-OQ-019`, `ALF-OQ-020`.

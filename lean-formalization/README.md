@@ -159,6 +159,62 @@ The honest upper bound on what OBL-E3 may claim.
 > near it, but it is a **refuted probe** with live `sorry` tactics (`:159`, `:178`, `:187`); its own
 > header records the route as dead. The real zig-zag anchor is the `CommaConnected` entry above.
 
+### F. Kernel invariants — governed extension that cannot weaken the kernel
+
+Added 2026-07-25. These anchor `CANDIDATE-INVARIANTS.md`'s two-level design (a fixed kernel
+invariant set plus user-defined invariants), not the category-theory constructs above.
+
+> **Read the status caveats differently for this group.** These files live in the sibling's
+> **`lean-engineer/`** package, not `lean-formalization/` — engineering on owned foundations, not
+> typed residue, so **no novelty is claimed for any of them.** Unlike every other pointer on this
+> page, they are **build-verified, not merely sorry-free-per-source**: `lake build` of all five
+> targets returned 469 jobs, exit 0, zero `sorry`, axioms `propext`/`Classical.choice`/`Quot.sound`
+> (2026-07-25). **But** they are *uncommitted working-tree state* — there is no rev to pin, so
+> these anchors can drift without a commit to blame. Re-verify before citing. Full evidence and
+> the demotions applied:
+> [`research/agent-language-mathematical-formalization/lean-mechanization-probe.md`](../research/agent-language-mathematical-formalization/lean-mechanization-probe.md).
+
+**`lean-engineer/cyberalchemy-orchestrator/agent-language/AgentLanguageComposition.lean`** — the registration mechanism.
+`:211` `uniform_scoping_breaks_K7` · `:248` `uniform_exceptK4_admits_kernel_violation` · `:257`
+`uniform_exceptK4_still_rejects` · `:278` `kernelAlwaysInScope_implies_K7Scoped` · `:296`
+`stratifiedScoped_satisfies_K7` · `:303` `describeOnly_safe_under_stratification` · `:382`
+`disabling_breaks_kernel_general`. *(build-verified.)*
+- **Says:** if the mechanism that registers invariants treats kernel entries and user entries as
+  the same kind of thing, then a user scope assignment reaches kernel entries — and an ordinary
+  policy ("evaluate only while describing") switches off the kernel law about effect boundaries
+  exactly where it bites. The kernel law stays registered and is never evaluated. Pinning kernel
+  entries to universal scope while leaving user laws scopable repairs it, for *every* user scope
+  assignment. Deactivation is the same failure reached through a different field.
+- **Matters:** this is the one result here that bears on a decision we can still make cheaply. It
+  says "let users define their own invariants" is safe under *append* and unsafe under *scope* and
+  *disable* — two of the five verbs `CANDIDATE-INVARIANTS.md` grants the user. The design
+  consequence is that kernel entries need a **different type at the registration API**, not a
+  documented convention. Honest limits: the repair is proved sufficient, **not necessary**; the
+  `retiring` verb is unmodelled; and the underlying "mandatory layer a discretionary layer cannot
+  weaken" shape is **owned** — XACML/Cedar policy layering, and in-package by
+  `AgentPermissionKernelComposition.append_restricts_left`/`_right`. The contribution is the
+  application to invariant registration, nothing more.
+
+**`lean-engineer/cyberalchemy-orchestrator/agent-language/AgentLanguageIndependence.lean`** — minimality probing.
+`:241` `baseState_kernelLaws` · `:490` `kernelLaws_independent` · `:523`
+`kernel_admits_rootless_delegation`. *(build-verified.)*
+- **Says:** `kernel_admits_rootless_delegation` exhibits a state satisfying all six formalised
+  kernel laws in which every authority grant derives from another grant in a closed cycle (no
+  rooted grant) and every fact corrects another (no original). The laws' lookups are local
+  existence checks and do not force well-foundedness.
+- **Matters:** it is the prose failure K1 and K2 exist to prevent — "content cannot assert its own
+  authority", "correction adds rather than rewrites". **Cite `kernel_admits_rootless_delegation`;
+  do not cite `kernelLaws_independent` as a minimality result.** Adversarial review found the
+  independence proof is *field privacy* — each law reads a field no other law reads, so any
+  predicate on that field comes out "independent". As an answer to the source's minimality test 2
+  its value is close to nil.
+
+> **The limitation that governs this whole group.** These files define the source's own criterion
+> — a predicate *preserved by every valid transition* — and then never instantiate it. There is no
+> transition system. Every K1–K6 result is a **satisfiability** fact, not a **preservation** fact,
+> so **nothing here establishes that any candidate law is an invariant** in the source's sense.
+> Do not cite this group as a formalization of the kernel invariant set. Tracked as `ALF-OQ-020`.
+
 ---
 
 ## 2. OBL-E3 — the direct bridge (synthesis-residue)
