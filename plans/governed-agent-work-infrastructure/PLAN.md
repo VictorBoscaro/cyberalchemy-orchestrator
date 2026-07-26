@@ -6,13 +6,13 @@ name: Governed Agent Work Infrastructure
 plan_id: null
 identity_status: named-id-pending
 status: active
-version: 0.2.0
+version: 0.2.1
 authority: proposal-only
 authority_resolution:
   status: resolved
   authority_kind: repository-owner
   basis: explicit owner direction that the child work belongs to one infrastructure Plan
-last_updated: 2026-07-25
+last_updated: 2026-07-26
 ---
 
 # Governed Agent Work Infrastructure
@@ -33,6 +33,18 @@ Its current child-Plan registry is:
 
 The archived [Knowledge Machine and Agent Orchestrator Seed Roadmap](archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) is a predecessor
 artifact retained for provenance, not a live sibling Plan.
+
+The registry above lists only the child Plan and workstream this root Plan indexes directly.
+Three sibling directories carry their own indexes without adding rows here:
+[`essays/README.md`](essays/README.md) indexes the two proposal-only system-view essays that argue
+for the language this Plan proposes before it is specified; [`subplans/README.md`](subplans/README.md)
+indexes the subplan already named above and states what "subplan" means in this Plan's storage
+shape; and [`workstreams/README.md`](workstreams/README.md) indexes all ten files under
+`workstreams/`, of which the registry above names only
+`brokered-agent-launcher-capability-bootstrap.md` — the other nine, including three
+`delegated-execution-envelope@1` documents, one `concrete-dispatch-proposal@1` document, the
+`agent-reference-lineage` decision-gate/layering/context-pack/work-pack chain, and the
+`host-bus-aci005-dispatch-route.md` operating rule, are reachable only through that index.
 
 ## Orientation — orchestrating agents as a decision-making problem
 

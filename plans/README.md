@@ -3,7 +3,7 @@ tags: [plans, naming, identity, authority, governance]
 node_type: plans-index-and-contract
 is_session: false
 status: active
-version: 0.5.1
+version: 0.6.0
 last_updated: 2026-07-25
 authority_basis: repository-owner-direction
 schema_status: proposed
@@ -16,7 +16,7 @@ definition, naming rule, authority boundary, storage convention, index, and open
 Plans. Every other direct child of `/plans` is a directory named after a Plan's descriptive
 function or objective.
 
-Current structure:
+Current repository structure:
 
 ```text
 plans/
@@ -24,7 +24,7 @@ plans/
 └── governed-agent-work-infrastructure/
     ├── README.md
     ├── PLAN.md
-    ├── subplans/
+    ├── subplans/  # legacy/transitional; awaiting migration to plans/
     │   └── agent-work-language-research/
     │       ├── PLAN.md
     │       └── CANDIDATE-INVARIANTS.md
@@ -33,6 +33,25 @@ plans/
     └── archive/
         └── knowledge-machine-and-agent-orchestrator-seed-roadmap.md
 ```
+
+The current `subplans/` path is a legacy storage shape retained temporarily so existing links
+remain valid. It is not the active convention. The canonical recursive shape for a child Plan is:
+
+```text
+plans/
+└── <root-plan>/
+    ├── PLAN.md
+    └── plans/
+        └── <child-plan>/
+            ├── PLAN.md
+            └── plans/
+                └── <grandchild-plan>/
+                    └── PLAN.md
+```
+
+Every directory represented by `<root-plan>`, `<child-plan>`, or `<grandchild-plan>` contains a
+Plan of the same kind. Being a child is a declared relationship to another Plan, not a lesser
+object type. The repeated `plans/` directory expresses that relationship recursively in storage.
 
 ## Canonical definition
 
@@ -111,9 +130,11 @@ approval.
 
 The current root Plan is
 [Governed Agent Work Infrastructure](governed-agent-work-infrastructure/PLAN.md). Its agent-language
-research is a nested subplan because it has its own question, gates, evidence, and review lifecycle.
-The brokered-launcher bootstrap remains a workstream because it has not yet earned an independent
-Plan identity and its governing authority is unresolved.
+research is a child Plan because it has its own question, gates, evidence, and review lifecycle.
+That child still occupies the legacy `subplans/` path pending migration; its relationship and
+Plan status do not depend on that path. The brokered-launcher bootstrap remains a workstream
+because it has not yet earned an independent Plan identity and its governing authority is
+unresolved.
 
 ## Naming before identity
 
@@ -151,14 +172,15 @@ supplies the object's namespace. Other artifact filenames must describe their fu
 generic historical filenames should be renamed while their former paths remain recoverable from
 version history.
 
-## One Plan, nested work
+## One root Plan, recursively nested Plans and work
 
 A coherent objective should have one root Plan. Research programs, implementation slices,
 migrations, experiments, and local routes belong inside that Plan as sections, workstreams,
-evidence nodes, or subplans.
+evidence nodes, or child Plans. A new peer root still requires an independently accepted objective
+and lifecycle boundary.
 
 Work begins as a section or workstream. The following are signals that the infrastructure should
-*suggest* extracting it as a subplan:
+*suggest* extracting it as a child Plan:
 
 - its own objective and completion criteria;
 - its own authority search or sponsor;
@@ -171,11 +193,13 @@ The user may deliberately keep the work inline. The infrastructure should explai
 cost—such as readability, independent lifecycle, or authority ambiguity—record the choice, and
 continue unless a true kernel invariant would be violated.
 
-Physical separation into another file does not create a Plan. When extraction is accepted, the
-infrastructure creates the subplan, declares its parent and role, proposes its descriptive name,
-derives machine fields, migrates the relevant material, and checks links and structural
-invariants. A new peer root still requires an independently accepted objective and lifecycle
-boundary; governing authority may remain explicitly unresolved.
+Physical separation into another file does not create a Plan, and placement under `plans/` does
+not by itself establish parentage. When extraction is accepted, the infrastructure creates a Plan
+under the parent's recursive `plans/` directory, declares its parent and role, proposes its
+descriptive name, derives machine fields, migrates the relevant material, and checks links and
+structural invariants. The child remains a full Plan with its own lifecycle; "child" names its
+relationship to the parent, not a separate or inferior object type. Governing authority may
+remain explicitly unresolved.
 
 ## Minimum user burden
 
@@ -190,7 +214,7 @@ The infrastructure is responsible for:
   materially change the Plan;
 - searching for authority and recording `resolved`, `absent`, `unknown`, or `contested` without
   inventing an authority;
-- recommending inline work, a workstream, or a subplan and honoring the user's explicit structural
+- recommending inline work, a workstream, or a child Plan and honoring the user's explicit structural
   preference when kernel invariants permit it;
 - deriving locators and, at the identity gate, a stable `plan_id`;
 - maintaining parent, child, version, provenance, gate, and supersession relations; and
@@ -251,7 +275,7 @@ unresolved.
 | Name | Path | Role | ID state | Authority state |
 |---|---|---|---|---|
 | Governed Agent Work Infrastructure | [PLAN.md](governed-agent-work-infrastructure/PLAN.md) | Root Plan | Named; ID pending | Resolved repository owner; proposal-only |
-| Agent Work Language Research | [PLAN.md](governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md) | Research subplan | Named; ID pending | Resolved repository owner; proposal-only |
+| Agent Work Language Research | [PLAN.md](governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md) | Child research Plan; legacy path pending migration to `plans/` | Named; ID pending | Resolved repository owner; proposal-only |
 | Brokered Agent Launcher Capability Bootstrap | [workstream](governed-agent-work-infrastructure/workstreams/brokered-agent-launcher-capability-bootstrap.md) | Workstream, not a Plan | No Plan ID | Unknown |
 | Knowledge Machine and Agent Orchestrator Seed Roadmap | [archive](governed-agent-work-infrastructure/archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) | Archived predecessor | Historical name only | Unknown |
 
@@ -263,9 +287,11 @@ The model fails if:
 - an ID is invented before the Plan's function or objective is understood;
 - renaming silently changes an already assigned durable ID;
 - a workstream becomes a Plan merely because it has its own file;
-- subplan heuristics are enforced as a compulsory split against the user's preference;
+- child-Plan heuristics are enforced as a compulsory split against the user's preference;
 - the user is required to hand-author IDs, metadata, authority states, or structural bookkeeping;
-- a subplan appears as a peer root because physical nesting was omitted;
+- a child Plan appears as a peer root because its parent relation or recursive `plans/` nesting was omitted;
+- a Plan under `plans/` is treated as a lesser object type merely because it has a parent;
+- the legacy `subplans/` path is used for newly created child Plans;
 - an agent-authored or complete-looking Plan is treated as authorized;
 - unresolved authority is normalized to the author or parent;
 - Plan acceptance launches work without distinct execution authority; or
@@ -274,7 +300,7 @@ The model fails if:
 ## Intended `dispatch_type: plan` convention
 
 `dispatch_type: plan` remains RESERVED. A future Plan workflow should first establish the
-descriptive name and boundary, then decide whether the result is a section, workstream, subplan, or
+descriptive name and boundary, then decide whether the result is a section, workstream, child Plan, or
 root Plan. Only a later identity gate derives and freezes `plan_id`.
 
 ## Open Questions
@@ -282,6 +308,6 @@ root Plan. Only a later identity gate derives and freezes `plan_id`.
 - What exact admission event assigns `plan_id`?
 - What normalization and collision algorithm derives the ID from the accepted name?
 - When does renaming justify a new Plan rather than a new description version?
-- Which postconditions of workstream-to-subplan promotion must be machine-checkable?
+- Which postconditions of workstream-to-child-Plan promotion must be machine-checkable?
 - Who may conclude `authority: absent` rather than `unknown`?
 - Is Plan the only route-bearing object allowed to remain durable with unresolved authority?
