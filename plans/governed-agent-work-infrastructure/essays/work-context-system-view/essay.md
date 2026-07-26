@@ -47,23 +47,33 @@ can be imagined.
 The system does not need to model human perception itself. It needs to preserve the attributable
 transition from a situated perception to a declared and revisable objective.
 
-At first, the objective is usually an incomplete intention. A person may sense a direction before
-they can describe the destination precisely. They may know that something should change without
-yet knowing the work, constraints, or sequence required to change it. The intention contains a
-purpose, but much of that purpose remains implicit.
+At first, the objective often appears as a single monolithic intention: one large, still formless
+whole with little internal detail or clarity. A person may sense a direction before they can
+describe the destination precisely. They may know that something should change without yet
+knowing the work, constraints, or sequence required to change it. The intention carries a
+purpose, but its parts, relationships, and much of its meaning remain implicit.
 
-## 2. From one intention to many pieces of work
+## 2. From a monolithic intention to a composition of intentions
 
-As time and effort are invested, the intention gains detail. A broad direction may become a
-possible route. When that route needs its own proposal identity, authority search, and lifecycle,
-it may become a Plan. It may instead remain a section, workstream, task, or another bounded form of
-work. In either case, the route can be developed into steps, each described more closely in terms
-of what needs to be done and, sometimes, how it might be done.
+As time and effort are invested, the monolithic intention begins to acquire contour. Distinctions
+appear inside it: outcomes, constraints, questions, and possible routes that were previously
+fused. Some of these distinctions become separate intentions, each with its own objective, scope,
+and possible work. Together, they compose the initial objective rather than merely sitting
+beneath it. The relationship is also recursive: what is learned while pursuing one of these
+intentions may clarify, challenge, or change the objective from which it emerged.
+
+A more specific intention may become a possible route. When that route needs its own proposal
+identity, authority search, and lifecycle, it may become a Plan. It may instead remain a section,
+workstream, task, or another bounded form of work. In either case, the route can be developed into
+steps, each described more closely in terms of what needs to be done and, sometimes, how it might
+be done.
 
 ```text
 perception
 -> objective
--> intention
+-> monolithic intention
+-> differentiated intentions
+<-> composed and revisable objective
 -> possible route
 -> Plan, workstream, or another decomposable form
 -> steps

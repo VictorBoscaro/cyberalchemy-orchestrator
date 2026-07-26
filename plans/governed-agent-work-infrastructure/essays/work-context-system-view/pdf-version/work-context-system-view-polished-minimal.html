@@ -10,6 +10,30 @@
   size: A4;
   margin: 18mm 22mm 15mm;
   background: #f4eadc;
+  @top-left-corner {
+    content: "";
+    background:
+      linear-gradient(#17100c, #17100c) left 7mm top 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#17100c, #17100c) left 7mm top 7mm / .5pt 11mm no-repeat;
+  }
+  @top-right-corner {
+    content: "";
+    background:
+      linear-gradient(#17100c, #17100c) right 7mm top 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#17100c, #17100c) right 7mm top 7mm / .5pt 11mm no-repeat;
+  }
+  @bottom-left-corner {
+    content: "";
+    background:
+      linear-gradient(#17100c, #17100c) left 7mm bottom 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#17100c, #17100c) left 7mm bottom 7mm / .5pt 8mm no-repeat;
+  }
+  @bottom-right-corner {
+    content: "";
+    background:
+      linear-gradient(#17100c, #17100c) right 7mm bottom 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#17100c, #17100c) right 7mm bottom 7mm / .5pt 8mm no-repeat;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -269,6 +293,58 @@ tbody tr:nth-child(even) td { background: rgba(186,154,125,.10); }
 }
 
 hr { border: 0; border-top: .6pt solid #b79d86; margin: 6mm 0; }
+
+/* Minimal print polish: retain the existing editorial language and structure. */
+h2 { border-top-color: rgba(123,33,20,.62); }
+
+blockquote {
+  background: rgba(255,250,241,.72);
+  color: #211914;
+}
+
+pre {
+  border-left-color: #b43f27;
+  background: #1d1815;
+  box-shadow: 0 1.2mm 3.5mm rgba(42,26,18,.08);
+}
+
+table {
+  border-color: #8f7968;
+  background: rgba(255,251,244,.82);
+}
+th { border-color: #4a4038; }
+td { border-color: #ab9380; }
+tbody tr:nth-child(even) td { background: rgba(186,154,125,.14); }
+
+.concept-figure {
+  border-color: #936f57;
+  background: rgba(255,250,241,.84);
+  box-shadow: 0 1.2mm 4.5mm rgba(48,29,20,.06);
+}
+.path-card,
+.flow-row > div,
+.graph-source,
+.acceptance,
+.projection,
+.views div,
+.evidence-pair > div:not(.plus) {
+  background: #f8eee1;
+}
+
+hr { border-top-color: #a98b74; }
+
+main::after {
+  content: "";
+  display: block;
+  width: 25mm;
+  height: .8mm;
+  margin-top: 7mm;
+  background:
+    linear-gradient(90deg,
+      #17100c 0 72%,
+      transparent 72% 78%,
+      #b43f27 78% 100%);
+}
 
 @media print {
   .concept-figure, pre, blockquote { break-inside: avoid-page; }

@@ -10,6 +10,30 @@
   size: A4;
   margin: 18mm 22mm 15mm;
   background: #f4eadc;
+  @top-left-corner {
+    content: "";
+    background:
+      linear-gradient(#181310, #181310) left 7mm top 7mm / 12mm .45pt no-repeat,
+      linear-gradient(#181310, #181310) left 7mm top 7mm / .45pt 11mm no-repeat;
+  }
+  @top-right-corner {
+    content: "";
+    background:
+      linear-gradient(#181310, #181310) right 7mm top 7mm / 12mm .45pt no-repeat,
+      linear-gradient(#181310, #181310) right 7mm top 7mm / .45pt 11mm no-repeat;
+  }
+  @bottom-left-corner {
+    content: "";
+    background:
+      linear-gradient(#181310, #181310) left 7mm bottom 7mm / 12mm .45pt no-repeat,
+      linear-gradient(#181310, #181310) left 7mm bottom 7mm / .45pt 8mm no-repeat;
+  }
+  @bottom-right-corner {
+    content: "";
+    background:
+      linear-gradient(#181310, #181310) right 7mm bottom 7mm / 12mm .45pt no-repeat,
+      linear-gradient(#181310, #181310) right 7mm bottom 7mm / .45pt 8mm no-repeat;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -268,7 +292,117 @@ tbody tr:nth-child(even) td { background: rgba(186,154,125,.10); }
   margin-bottom: 2mm;
 }
 
-hr { border: 0; border-top: .6pt solid #b79d86; margin: 6mm 0; }
+hr { border: 0; border-top: .6pt solid #a98c75; margin: 6mm 0; }
+
+/*
+ * Marginal-details edition
+ * A deliberately additive finish: the original editorial identity, structure,
+ * typography, palette, and opening diagram remain unchanged.
+ */
+p { color: #120d0b; }
+h2 {
+  border-top-color: rgba(111,30,19,.58);
+  color: #6f1e13;
+}
+a {
+  color: #712316;
+  text-decoration-color: #a93622;
+}
+li::marker { color: #8f2b1b; }
+
+blockquote {
+  border-left-color: #a93622;
+  background: rgba(255,250,241,.62);
+}
+
+code {
+  color: #692012;
+  border-color: rgba(111,30,19,.29);
+}
+
+pre {
+  border-left-color: #b83f29;
+  border-radius: 0 .8mm .8mm 0;
+  box-shadow: 0 1mm 2.5mm rgba(42,26,18,.075);
+}
+
+table {
+  border-color: #8f7662;
+  background: rgba(255,251,244,.68);
+}
+th {
+  padding-top: 2.7mm;
+  padding-bottom: 2.7mm;
+  border-color: #4d423a;
+  background: #1d1815;
+}
+td {
+  padding-top: 2.45mm;
+  padding-bottom: 2.45mm;
+  border-color: #a58d78;
+}
+tbody tr:nth-child(even) td { background: rgba(174,139,109,.12); }
+
+.concept-figure {
+  border-color: #96725b;
+  border-radius: 1.4mm;
+  box-shadow: 0 1mm 3.5mm rgba(48,29,20,.065);
+}
+.flow-row > div,
+.graph-source,
+.acceptance,
+.projection,
+.views div,
+.evidence-pair > div:not(.plus) {
+  border-color: #9b7b65;
+}
+.vertical-link,
+.branch-line,
+.convergence i { color: #8c604c; }
+
+/* Three rare relation marks, attached only where the essay discusses a
+   many-context relation, contextual drift, and converging paths. */
+h2.marginal-link {
+  position: relative;
+}
+h2.marginal-link::before {
+  content: "";
+  position: absolute;
+  top: -.45mm;
+  right: 1.8mm;
+  width: 5.5mm;
+  border-top: .45pt dashed rgba(111,30,19,.72);
+}
+h2.marginal-link::after {
+  content: "";
+  position: absolute;
+  top: -1.3mm;
+  right: 0;
+  width: 1.7mm;
+  height: 1.7mm;
+  border: .45pt solid rgba(24,19,16,.82);
+  border-radius: 50%;
+  box-shadow:
+    -9.1mm 0 0 -.45pt #f4eadc,
+    -9.1mm 0 0 0 rgba(111,30,19,.82);
+}
+
+.result-heading {
+  margin-top: 7mm;
+}
+.result-heading + ul {
+  column-gap: 8mm;
+  column-rule-color: rgba(111,30,19,.38);
+}
+main::after {
+  content: "";
+  display: block;
+  width: 36mm;
+  height: 1.2mm;
+  margin: 15mm 0 0 auto;
+  border-radius: 1mm;
+  background: #a93622;
+}
 
 @media print {
   .concept-figure, pre, blockquote { break-inside: avoid-page; }
@@ -451,7 +585,7 @@ specification with no implementation and an implementation with no verification 
 inspectable gaps.</p>
 <p>Upward and downward traversal are complementary. The upward path asks whether local work remains
 justified. The downward path asks whether high-level intent has become real.</p>
-<h2>6. More than one context</h2>
+<h2 class="marginal-link">6. More than one context</h2>
 <p>Work does not belong to one universal hierarchy.</p>
 <p>A task can simultaneously:</p>
 <ul>
@@ -849,7 +983,7 @@ fills the gaps through inference or displays them as if they were complete.</p>
 </tr>
 </tbody>
 </table>
-<h2>24. When represented context diverges from work</h2>
+<h2 class="marginal-link">24. When represented context diverges from work</h2>
 <p>The represented context can become stale:</p>
 <ul>
 <li>a task continues after its objective changes;</li>
@@ -1134,7 +1268,7 @@ not show that a running orchestrator obeys the model.</p>
 </tr>
 </tbody>
 </table>
-<h2>35. The smallest useful vertical slice</h2>
+<h2 class="marginal-link">35. The smallest useful vertical slice</h2>
 <p>The first system should test one end-to-end question:</p>
 <blockquote>
 <p>Given one candidate outcome, observed artifact, or observed effect, can the system first

@@ -10,6 +10,47 @@
   size: A4;
   margin: 18mm 22mm 15mm;
   background: #f4eadc;
+
+  @top-left-corner {
+    content: "";
+    background:
+      linear-gradient(#1b1714, #1b1714) left 7mm top 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#1b1714, #1b1714) left 7mm top 7mm / .5pt 11mm no-repeat;
+  }
+  @top-right-corner {
+    content: "";
+    background:
+      linear-gradient(#1b1714, #1b1714) right 7mm top 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#1b1714, #1b1714) right 7mm top 7mm / .5pt 11mm no-repeat;
+  }
+  @bottom-left-corner {
+    content: "";
+    background:
+      linear-gradient(#1b1714, #1b1714) left 7mm bottom 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#1b1714, #1b1714) left 7mm bottom 7mm / .5pt 8mm no-repeat;
+  }
+  @bottom-right-corner {
+    content: "";
+    background:
+      linear-gradient(#1b1714, #1b1714) right 7mm bottom 7mm / 12mm .5pt no-repeat,
+      linear-gradient(#1b1714, #1b1714) right 7mm bottom 7mm / .5pt 8mm no-repeat;
+  }
+  @top-center {
+    content: "";
+    background: linear-gradient(#1b1714, #1b1714) center top 7mm / 5mm .5pt no-repeat;
+  }
+  @bottom-center {
+    content: "";
+    background: linear-gradient(#1b1714, #1b1714) center bottom 7mm / 5mm .5pt no-repeat;
+  }
+  @left-middle {
+    content: "";
+    background: linear-gradient(#1b1714, #1b1714) left 7mm center / .5pt 5mm no-repeat;
+  }
+  @right-middle {
+    content: "";
+    background: linear-gradient(#1b1714, #1b1714) right 7mm center / .5pt 5mm no-repeat;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -271,8 +312,158 @@ tbody tr:nth-child(even) td { background: rgba(186,154,125,.10); }
 hr { border: 0; border-top: .6pt solid #b79d86; margin: 6mm 0; }
 
 @media print {
-  .concept-figure, pre, blockquote { break-inside: avoid-page; }
+  .concept-figure, .micro-diagram, pre, blockquote { break-inside: avoid-page; }
   h1, h2, h3 { break-after: avoid-page; }
+}
+
+/* Polished-diagrams variation: preserve the editorial identity while
+   strengthening contrast, page containment, and explanatory figures. */
+body::after {
+  content: none;
+}
+
+body { color: #120d0b; }
+p { color: #150f0c; }
+h2 {
+  color: #701f14;
+  border-top-color: rgba(112,31,20,.58);
+}
+h3 { color: #100c0a; }
+strong { color: #120d0b; }
+li::marker { color: #8f2b1b; }
+
+blockquote {
+  border-left-color: #ad3823;
+  background: rgba(255,249,240,.76);
+}
+
+pre {
+  border-left-color: #b43f27;
+  background: #1b1714;
+  color: #fff8ed;
+  box-shadow: 0 1.2mm 3mm rgba(42,26,18,.07);
+}
+
+table {
+  border-color: #92735f;
+  background: rgba(255,251,244,.78);
+}
+th {
+  border-color: #443a34;
+  background: #1b1714;
+}
+td { border-color: #a98e7b; }
+tbody tr:nth-child(even) td { background: rgba(180,63,39,.055); }
+
+.hero-map .orbit { opacity: .68; }
+.hero-map .orbit-b { opacity: .36; }
+.hero-map .orbit-c { opacity: .48; }
+.hero-map .node { fill: #f4eadc; stroke: #701f14; }
+.hero-map .node-core { fill: #1b1714; stroke: #1b1714; }
+
+.concept-figure {
+  border-color: #98755f;
+  background: rgba(255,250,241,.79);
+  box-shadow: 0 1.2mm 3.4mm rgba(48,29,20,.055);
+}
+.figure-kicker { color: #701f14; }
+
+.micro-diagram {
+  margin: 5mm 0 7mm;
+  padding: 4.5mm 5mm 4mm;
+  border: .75pt solid #98755f;
+  border-radius: 1.6mm;
+  background: rgba(255,250,241,.82);
+  break-inside: avoid-page;
+  font-family: Arial, sans-serif;
+}
+.micro-diagram figcaption {
+  margin: 0 0 3mm;
+  color: #701f14;
+  font: 700 8.4pt/1 Arial, sans-serif;
+  letter-spacing: .9pt;
+  text-transform: uppercase;
+}
+.micro-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.micro-diagram .node-box {
+  fill: #f7ede1;
+  stroke: #9b7965;
+  stroke-width: 1.2;
+}
+.micro-diagram .node-dark {
+  fill: #1b1714;
+  stroke: #1b1714;
+}
+.micro-diagram .gate-box {
+  fill: #fff8ee;
+  stroke: #b43f27;
+  stroke-width: 1.6;
+}
+.micro-diagram .path-main {
+  fill: none;
+  stroke: #1b1714;
+  stroke-width: 1.6;
+}
+.micro-diagram .path-accent {
+  fill: none;
+  stroke: #b43f27;
+  stroke-width: 1.8;
+}
+.micro-diagram .path-open {
+  fill: none;
+  stroke: #9b7965;
+  stroke-width: 1.35;
+  stroke-dasharray: 4 4;
+}
+.micro-diagram .svg-label {
+  fill: #1b1714;
+  font: 700 10px Arial, sans-serif;
+  text-anchor: middle;
+}
+.micro-diagram .svg-label-light {
+  fill: #fff8ed;
+  font: 700 10px Arial, sans-serif;
+  text-anchor: middle;
+}
+.micro-diagram .svg-note {
+  fill: #51433b;
+  font: 9px Arial, sans-serif;
+  text-anchor: middle;
+}
+.micro-diagram .svg-note-light {
+  fill: #fff8ed;
+  font: 9px Arial, sans-serif;
+  text-anchor: middle;
+}
+.micro-diagram .svg-kicker {
+  fill: #872918;
+  font: 700 8px Arial, sans-serif;
+  letter-spacing: .7px;
+  text-anchor: middle;
+}
+.micro-diagram .diagram-note {
+  margin: 2.5mm 0 0;
+  color: #51433b;
+  font: 8pt/1.35 Arial, sans-serif;
+  text-align: center;
+}
+
+.result-heading {
+  break-before: auto;
+  color: #701f14;
+  padding-top: 4mm;
+  border-top: 1pt solid rgba(112,31,20,.62);
+}
+.result-heading + ul {
+  margin-top: 1mm;
+  padding: 5mm 6mm 4mm 10mm;
+  border-top: .7pt solid #a98e7b;
+  border-bottom: .7pt solid #a98e7b;
+  background: rgba(255,249,240,.64);
 }
 </style>
 </head>
@@ -451,6 +642,39 @@ specification with no implementation and an implementation with no verification 
 inspectable gaps.</p>
 <p>Upward and downward traversal are complementary. The upward path asks whether local work remains
 justified. The downward path asks whether high-level intent has become real.</p>
+<figure class="micro-diagram traversal-map" aria-label="Complementary upward and downward traversal">
+  <figcaption>Complementary traversal</figcaption>
+  <svg viewBox="0 0 720 170" role="img" aria-labelledby="traversal-title traversal-desc">
+    <title id="traversal-title">Moving from local work to its context and from an objective to realization</title>
+    <desc id="traversal-desc">An upward path connects local work to purpose and authority, while a separate downward path connects an objective to plans, tasks, effects, and evidence.</desc>
+    <defs>
+      <marker id="arrow-up" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#b43f27"/>
+      </marker>
+      <marker id="arrow-down" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#1b1714"/>
+      </marker>
+    </defs>
+    <text class="svg-kicker" x="180" y="14">UPWARD / REMAINS JUSTIFIED</text>
+    <rect class="node-box" x="85" y="27" width="190" height="34" rx="3"/>
+    <text class="svg-label" x="180" y="48">PURPOSE + AUTHORITY PATHS</text>
+    <path class="path-accent" d="M180 124 L180 67" marker-end="url(#arrow-up)"/>
+    <rect class="node-dark" x="115" y="124" width="130" height="32" rx="3"/>
+    <text class="svg-label-light" x="180" y="144">LOCAL WORK</text>
+
+    <line x1="360" y1="21" x2="360" y2="156" stroke="#c5a995" stroke-width="1"/>
+    <text class="svg-kicker" x="540" y="14">DOWNWARD / BECOMES REAL</text>
+    <rect class="node-dark" x="475" y="27" width="130" height="32" rx="3"/>
+    <text class="svg-label-light" x="540" y="47">OBJECTIVE</text>
+    <path class="path-main" d="M540 59 L540 80" marker-end="url(#arrow-down)"/>
+    <rect class="node-box" x="450" y="84" width="180" height="30" rx="3"/>
+    <text class="svg-label" x="540" y="103">PLANS / TASKS / ATTEMPTS</text>
+    <path class="path-main" d="M540 114 L540 132" marker-end="url(#arrow-down)"/>
+    <rect class="node-box" x="450" y="136" width="180" height="28" rx="3"/>
+    <text class="svg-label" x="540" y="154">EFFECTS + EVIDENCE</text>
+  </svg>
+  <p class="diagram-note">The paths are complementary and independently inspectable; missing links remain visible.</p>
+</figure>
 <h2>6. More than one context</h2>
 <p>Work does not belong to one universal hierarchy.</p>
 <p>A task can simultaneously:</p>
@@ -808,6 +1032,40 @@ that local work contributes to larger outcomes.</p>
 <p>The required evidence will differ by level and kind of work. Some relationships may be supported
 by tests, others by review, observation, formal proof, or accountable human judgment. What counts
 as sufficient realization evidence remains open under <code>OD-03</code>.</p>
+<figure class="micro-diagram evidence-bridge" aria-label="Activity claims do not automatically establish realization">
+  <figcaption>From activity to realization</figcaption>
+  <svg viewBox="0 0 720 130" role="img" aria-labelledby="evidence-title evidence-desc">
+    <title id="evidence-title">Distinct claims between activity and objective realization</title>
+    <desc id="evidence-desc">Activity claims require an accepted composition rule and sufficient realization evidence before they can support a claim that a larger objective advanced.</desc>
+    <defs>
+      <marker id="arrow-evidence" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#9b7965"/>
+      </marker>
+    </defs>
+    <rect class="node-dark" x="14" y="34" width="138" height="48" rx="3"/>
+    <text class="svg-label-light" x="83" y="54">ACTIVITY CLAIMS</text>
+    <text class="svg-note-light" x="83" y="70">attempt / artifact / check</text>
+
+    <path class="path-open" d="M152 58 L202 58" marker-end="url(#arrow-evidence)"/>
+    <rect class="gate-box" x="207" y="26" width="142" height="64" rx="3"/>
+    <text class="svg-kicker" x="278" y="48">ACCEPTED</text>
+    <text class="svg-label" x="278" y="65">COMPOSITION RULE</text>
+    <text class="svg-note" x="278" y="80">transition is witnessed</text>
+
+    <path class="path-open" d="M349 58 L399 58" marker-end="url(#arrow-evidence)"/>
+    <rect class="node-box" x="404" y="34" width="138" height="48" rx="3"/>
+    <text class="svg-label" x="473" y="54">CONTRIBUTION CLAIM</text>
+    <text class="svg-note" x="473" y="70">local work serves outcome</text>
+
+    <path class="path-open" d="M542 58 L592 58" marker-end="url(#arrow-evidence)"/>
+    <rect class="node-dark" x="597" y="34" width="109" height="48" rx="3"/>
+    <text class="svg-label-light" x="651.5" y="54">REALIZATION</text>
+    <text class="svg-note-light" x="651.5" y="70">objective advanced</text>
+
+    <text class="svg-kicker" x="374" y="116">EACH MOVEMENT NEEDS ITS OWN EVIDENCE</text>
+  </svg>
+  <p class="diagram-note">Activity, acceptance, contribution, and realization remain distinct claims; no implication is automatic.</p>
+</figure>
 <h2>23. Missing and partial grounding</h2>
 <p>The system must represent incompleteness honestly:</p>
 <ul>
