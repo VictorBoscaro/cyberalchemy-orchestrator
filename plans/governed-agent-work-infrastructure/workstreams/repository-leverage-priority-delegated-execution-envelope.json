@@ -1,0 +1,127 @@
+{
+  "schema": "delegated-execution-envelope@1",
+  "envelope_id": "repository-leverage-priority-20260725",
+  "version": 1,
+  "objective": "Assess the cyberalchemy-orchestrator repository and recommend the single next bounded capability that creates the greatest reusable construction leverage.",
+  "issuing_user_evidence": {
+    "confirmation": "Pode invocar subagentes para te ajudar a decidir isso, scouts, um fan-out pelo repo, o que voce achar necessário. Nao precisa confirmar comigo",
+    "context": "The user explicitly delegated selection and launch of a bounded repository fan-out for this prioritization assessment without another conversational confirmation.",
+    "confirmed_at": "2026-07-26T01:35:09.1371143Z",
+    "evidence_ref": "codex-conversation:current:2026-07-25:repository-leverage-priority"
+  },
+  "allowed_repositories": [
+    "C:/Users/victo/cyberalchemy-orchestrator"
+  ],
+  "allowed_dispatch_types": [
+    "research"
+  ],
+  "allowed_paths": [
+    "research/repository-leverage-priority/**",
+    "docs/decisions/repository-leverage-priority.md",
+    "telemetry/agents/**"
+  ],
+  "denied_paths": [
+    "plans/governed-agent-work-infrastructure/workstreams/repository-leverage-priority-delegated-execution-envelope.json",
+    ".codex/delegation-receipts/repository-leverage-priority-20260725-v1.json",
+    ".codex/hooks.json",
+    "AGENTS.md"
+  ],
+  "path_constraints": [
+    "Denied paths override every allowed path and may not be changed by a delegated dispatch.",
+    "All source-tree inspection is read-only.",
+    "Preserve unrelated and pre-existing worktree changes.",
+    "Telemetry paths may be mutated only by repository lifecycle hooks or the existing governed appender."
+  ],
+  "allowed_tools": [
+    "functions.shell_command",
+    "collaboration.spawn_agent",
+    "collaboration.list_agents",
+    "collaboration.wait_agent"
+  ],
+  "tool_constraints": [
+    "functions.shell_command is limited to read-only repository inspection and non-mutating validation.",
+    "collaboration tools are limited to the exact read-only proposal contained by this envelope."
+  ],
+  "sandbox_policy": {
+    "allowed_classes": [
+      "workspace-read"
+    ],
+    "host_filesystem_outside_repository": "denied",
+    "privilege_escalation": false
+  },
+  "capability_policy": {
+    "allowed_classes": [
+      "repository-read",
+      "governed-subagent-launch"
+    ],
+    "required_launch_receipt": "ACI launch-authorized",
+    "credentials": "denied",
+    "production": "denied"
+  },
+  "network_policy": {
+    "public_read": false,
+    "authenticated_read": false,
+    "external_write": false,
+    "paid_provider_execution": false
+  },
+  "allowed_mutations": [
+    "hook-managed telemetry receipts"
+  ],
+  "output_policy": {
+    "allowed_classes": [
+      "inline independent scout returns",
+      "parent-authored repository-local research synthesis",
+      "parent-authored decision record",
+      "hook-managed telemetry receipts"
+    ],
+    "destinations_must_match_allowed_paths": true,
+    "external_outputs": false
+  },
+  "budgets": {
+    "per_dispatch": {
+      "max_agents": 3,
+      "max_total_agent_token_budget": 18000,
+      "max_loops": 1,
+      "max_agent_turns": 3
+    },
+    "aggregate": {
+      "max_dispatches": 1,
+      "max_agents": 8,
+      "max_total_agent_token_budget": 60000,
+      "max_loops": 1,
+      "max_agent_turns": 8
+    }
+  },
+  "required_controls": [
+    "Exact proposal and envelope digests are bound before launch.",
+    "One capability review and two independent check-tension PASS verdicts are required.",
+    "Two independent read-only envelope auditors must PASS total containment.",
+    "All Agent/spawn_agent lifecycle hooks remain enabled and must return launch-authorized.",
+    "The research dispatch uses the LIVE research skill and receives parent final approval.",
+    "Every recommendation names evidence, dependency unlocks, time-to-value, risk, and a falsifiable first slice."
+  ],
+  "forbidden_effects": [
+    "source-tree mutation by subagents",
+    "production or deployment changes",
+    "git commit, push, branch rewrite, reset, or destructive cleanup",
+    "credential, secret, permission, billing, or account changes",
+    "external messages, publications, uploads, or writes",
+    "disabling, bypassing, or weakening lifecycle enforcement",
+    "silently resolving a product or authority decision beyond producing a recommendation"
+  ],
+  "expires_at": "2026-07-27T02:00:00Z",
+  "stop_conditions": [
+    "The recommendation and evidence comparison are complete.",
+    "Any required control fails or cannot produce durable evidence.",
+    "Safe read-only isolation from concurrent worktree changes is impossible.",
+    "Any budget is exhausted.",
+    "The user revokes or replaces this envelope."
+  ],
+  "human_reconfirmation_required_when": [
+    "Any repository, dispatch type, tool, network class, mutation, output, or effect is outside this envelope.",
+    "Implementation, authenticated access, deployment, destructive action, git publication, or external write becomes necessary.",
+    "The assessment objective changes materially.",
+    "An auditor reports ambiguity, mismatch, or incomplete containment."
+  ],
+  "final_approver_policy": "The primary orchestrator synthesizes and approves the read-only recommendation; implementation remains a separate decision."
+}

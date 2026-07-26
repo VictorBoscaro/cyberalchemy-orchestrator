@@ -1,0 +1,46 @@
+{
+  "dispatch_id": "2026-07-25-repository-leverage-priority",
+  "schema_version": "0.6.1",
+  "dispatch_type": "research",
+  "goal": "Recommend the single next bounded repository capability that creates the greatest reusable construction leverage across Cyberalchemy workstreams.",
+  "context": "Recent sessions expose several plausible leverage points: governed execution, prompt and graph control, context selection and macro-to-micro validation, skill execution profiles, and formalization. Three read-only scouts compare actual repository evidence through empirical runtime, formal dependency, and adversarial portfolio methodologies. Their returns are inline; the parent authors and verifies the persisted synthesis.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "working_folder": "research/repository-leverage-priority/",
+  "invoked_by": "victorboscaro@outlook.com",
+  "groups": [
+    {
+      "group_id": "leverage-scouts",
+      "n": 3,
+      "robot_talks": false,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Simon, Herbert",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "empirical and computational inspection of runtime, tests, migrations, developer tools, and repeated execution friction",
+          "initial_prompt": "Read research/repository-leverage-priority/research-initial-definitions.md completely. Inspect the repository read-only, concentrating on runtime code, tests, migrations, scripts, skills, validation commands, and current git diff/status. Identify the one bounded capability that would most improve the executable build-test-observe loop across later work. Compare at least three candidates. For each, report consumers, dependencies unlocked, repeated manual work removed, time to first usable slice, risks, and a falsifiable first slice. Cite every load-bearing repository fact with repo-relative path and current SHA-256. Do not mutate files or use the network."
+        },
+        {
+          "agent_name": "Deming, W. Edwards",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "formal dependency and value-stream inspection of plans, specs, work-packs, sessions, discoveries, and cross-feature handoffs",
+          "initial_prompt": "Read research/repository-leverage-priority/research-initial-definitions.md completely. Inspect the repository read-only, concentrating on plans, specs, work-packs, discoveries, sessions, open questions, and handoff dependencies. Build a compact dependency/value-stream view of the leading candidate capabilities and identify which single bounded advance unlocks the most downstream work without prematurely fixing ontology. Compare at least three candidates and report centrality, consumers, prerequisites, time-to-value, risks, and a falsifiable first slice. Cite every load-bearing repository fact with repo-relative path and current SHA-256. Do not mutate files or use the network."
+        },
+        {
+          "agent_name": "March, James G.",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "adversarial portfolio and opportunity-cost inspection emphasizing reversibility, dirty-worktree reality, exploration-exploitation balance, and smallest useful vertical slices",
+          "initial_prompt": "Read research/repository-leverage-priority/research-initial-definitions.md completely. Inspect the repository read-only as an adversarial portfolio reviewer. Challenge the assumption that another framework layer is the best leverage. Compare at least three candidates using opportunity cost, reversibility, dependency risk, maintenance burden, ability to generate real feedback, and fit with the current dirty-worktree state. Recommend one bounded next move and name what should explicitly not be built yet. Include a falsifiable first slice. Cite every load-bearing repository fact with repo-relative path and current SHA-256. Do not mutate files or use the network."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

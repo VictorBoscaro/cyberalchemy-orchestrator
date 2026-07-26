@@ -1,0 +1,184 @@
+{
+  "schema": "concrete-dispatch-proposal@1",
+  "proposal_id": "2026-07-25-repository-leverage-priority-r1",
+  "dispatch_id": "2026-07-25-repository-leverage-priority",
+  "dispatch_type": "research",
+  "confirmation_mode": "delegated_bounded",
+  "goal": "Recommend the single next bounded repository capability that creates the greatest reusable construction leverage across Cyberalchemy workstreams.",
+  "context": "Recent sessions expose several plausible leverage points: governed execution, prompt and graph control, context selection and macro-to-micro validation, skill execution profiles, and formalization. The repository also contains concurrent in-progress runtime and specification changes. Three read-only scouts must compare actual repository evidence, not argue from session summaries alone, and return independently so the parent can synthesize a recommendation.",
+  "structural_graph": {
+    "objective": "Compare candidate leverage points by cross-workstream reuse, dependency unlocks, removal of recurring manual work, validation strength, time to usable value, reversibility, and implementation risk.",
+    "boundaries": [
+      "Read-only inspection of C:/Users/victo/cyberalchemy-orchestrator.",
+      "No source-tree mutation, network access, external effects, implementation, or product decision.",
+      "Every cited repository fact carries a repo-relative path and current SHA-256.",
+      "Pre-existing dirty-worktree changes are evidence of current state but remain untouched."
+    ],
+    "groups": [
+      {
+        "group_id": "leverage-scouts",
+        "n": 3,
+        "anti_bias": "methodology",
+        "output_join": "parent comparative synthesis"
+      }
+    ],
+    "connections": [],
+    "robot_talks": false,
+    "max_loops": 1,
+    "budget_envelope": {
+      "agents": 3,
+      "total_agent_token_budget": 18000,
+      "agent_turns": 3
+    }
+  },
+  "execution_profile": {
+    "requested_provider": "openai",
+    "requested_adapter": "codex-collaboration-subagent",
+    "type_skill_ref": ".agents/skills/research/SKILL.md",
+    "strategy_ref": ".agents/skills/domainspec-subagents-strategy/SKILL.md",
+    "allowed_tools": [
+      "functions.shell_command"
+    ],
+    "command_classes": [
+      "read-only repository listing, search, file reads, git status/diff inspection, and hash calculation"
+    ],
+    "write_paths": [],
+    "network": "none",
+    "effective_enforcement": "policy-bound-partially-observable",
+    "enforcement_mechanisms": [
+      ".codex/hooks.json lifecycle",
+      "ACI launch-authorized receipt",
+      "frozen parent Dispatch prompts and workflow manifests",
+      "parent verification of cited paths and hashes"
+    ],
+    "enforcement_limits": [
+      "Lifecycle hooks enforce launch authorization and record lifecycle and ingestion events.",
+      "The host does not prevent every shell mutation, filesystem write, non-repository read, network action, or tool use exposed to a seat.",
+      "The declared read-only command class, network denial, and token budgets are workflow policy plus prompt constraints, not a capability-restricted runner claim.",
+      "Parent verification is after-the-fact and any observed breach invalidates the return."
+    ]
+  },
+  "capability_review": {
+    "status": "PASS_WITH_AMENDMENTS_APPLIED",
+    "reviewer": "Brooks, Frederick P.",
+    "reviewed_proposal_sha256": "da3241340189e624db1a103d8271bc9e1aefa3a72c74a0a05dcc48f6717369c5",
+    "result": "All seats can complete their prompts with repository-local shell inspection, but restrictions beyond hook-observable lifecycle controls are policy-bound rather than preventively enforced.",
+    "amendments_applied": [
+      "Freeze and digest-bind the final proposal before launch.",
+      "Use immutable parent Dispatch prompts and per-seat ACI workflow manifests.",
+      "Reclassify enforcement as policy-bound and partially observable.",
+      "State shell, filesystem, network, tool, and token enforcement gaps explicitly.",
+      "Keep scout outputs inline; parent alone authors persisted synthesis and decision artifacts."
+    ]
+  },
+  "source_policy": {
+    "boundary": "Repository-local sources only. The listed seed corpus is frozen; additional discovered evidence is permitted only when the return records its exact repo-relative path and SHA-256.",
+    "seed_bindings": [
+      {
+        "path": "research/repository-leverage-priority/research-initial-definitions.md",
+        "sha256": "27c463b80862f2dbd8cf3e4bf8d4c44cef2ade7eb2f7f448a494b44225b39209"
+      },
+      {
+        "path": "sessions/2026-07-25-2218-prompt-control-dispatch-invalidation.md",
+        "sha256": "7781d369b58dfec2e4cef707bbcb36e9087f7bf7a7794be1453260f0ac47f6be"
+      },
+      {
+        "path": "sessions/2026-07-25-2206-work-context-system-view.md",
+        "sha256": "674dd79facbe46cb6738dc36eb37263312c82e538fdfe59f9868982426db10a3"
+      },
+      {
+        "path": "sessions/2026-07-25-2159-prompt-tags-and-graph-research-scope.md",
+        "sha256": "bd8547d8f9cd9010b31539d870af7382060aedb24318fd02e0fb04fae19da89b"
+      },
+      {
+        "path": "sessions/2026-07-25-2000-skill-execution-protocol-foundations.md",
+        "sha256": "f246a1bd7da204e7d66ca937b807dc7f03a36b2db0353b04dcf7cf3c7bee4072"
+      },
+      {
+        "path": "sessions/2026-07-25-1800-scout-research-dispatch-governance.md",
+        "sha256": "7baf0ddc1eb4690eadf39681b852a383be18136f2751d7a5c3a1609c3b85c006"
+      },
+      {
+        "path": "sessions/2026-07-25-1544-parent-dispatch-workflow-binding.md",
+        "sha256": "d4cd8f386d95be8cb82a302dec49c6b11cf5c3293e9ffca3531eba2eaf5d90a3"
+      },
+      {
+        "path": "plans/governed-agent-work-infrastructure/README.md",
+        "sha256": "f7a6b8b7527c126cbe9d139758be65182822d31583d241875f5d64fca2f11123"
+      },
+      {
+        "path": "docs/features/agents-communication-infra/WORK-PACK.md",
+        "sha256": "9758b008d6fb47d639c6b7b935a62de5fdf1c651789f4513eab62c25e5dc55c8"
+      },
+      {
+        "path": "docs/features/agents-communication-infra/specs/SPEC.md",
+        "sha256": "69cfb57e353e6da8d1e85c971cc315e8d92577f81f403e19b10071d6c2381e85"
+      },
+      {
+        "path": "implementations/server/runtime/service.py",
+        "sha256": "8b46efc168d1eb8a17ba8b44aa460feb6a89ddfd01a05f07c06067450aac9731"
+      },
+      {
+        "path": "implementations/server/runtime/local_pilot.py",
+        "sha256": "9736a7efda65fce96d9a23e9b4f38a81a3a6829c85d1474a5c2c1950d9696318"
+      }
+    ]
+  },
+  "working_folder": "research/repository-leverage-priority/",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "leverage-scouts",
+      "n": 3,
+      "robot_talks": false,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Simon, Herbert",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "empirical and computational inspection of runtime, tests, migrations, developer tools, and repeated execution friction",
+          "initial_prompt": "Read research/repository-leverage-priority/research-initial-definitions.md completely. Inspect the repository read-only, concentrating on runtime code, tests, migrations, scripts, skills, validation commands, and current git diff/status. Identify the one bounded capability that would most improve the executable build-test-observe loop across later work. Compare at least three candidates. For each, report consumers, dependencies unlocked, repeated manual work removed, time to first usable slice, risks, and a falsifiable first slice. Cite every load-bearing repository fact with repo-relative path and current SHA-256. Do not mutate files or use the network."
+        },
+        {
+          "agent_name": "Deming, W. Edwards",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "formal dependency and value-stream inspection of plans, specs, work-packs, sessions, discoveries, and cross-feature handoffs",
+          "initial_prompt": "Read research/repository-leverage-priority/research-initial-definitions.md completely. Inspect the repository read-only, concentrating on plans, specs, work-packs, discoveries, sessions, open questions, and handoff dependencies. Build a compact dependency/value-stream view of the leading candidate capabilities and identify which single bounded advance unlocks the most downstream work without prematurely fixing ontology. Compare at least three candidates and report centrality, consumers, prerequisites, time-to-value, risks, and a falsifiable first slice. Cite every load-bearing repository fact with repo-relative path and current SHA-256. Do not mutate files or use the network."
+        },
+        {
+          "agent_name": "March, James G.",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "adversarial portfolio and opportunity-cost inspection emphasizing reversibility, dirty-worktree reality, exploration-exploitation balance, and smallest useful vertical slices",
+          "initial_prompt": "Read research/repository-leverage-priority/research-initial-definitions.md completely. Inspect the repository read-only as an adversarial portfolio reviewer. Challenge the assumption that another framework layer is the best leverage. Compare at least three candidates using opportunity cost, reversibility, dependency risk, maintenance burden, ability to generate real feedback, and fit with the current dirty-worktree state. Recommend one bounded next move and name what should explicitly not be built yet. Include a falsifiable first slice. Cite every load-bearing repository fact with repo-relative path and current SHA-256. Do not mutate files or use the network."
+        }
+      ],
+      "predicted_disagreements": [
+        "Simon runs empirical/computational runtime analysis while Deming runs formal dependency/value-stream analysis on the methodology axis; a bias in Simon toward already implemented machinery would be exposed by Deming's cross-workstream dependency map, while a roadmap-centrality bias in Deming would be exposed by Simon's executable gaps.",
+        "Simon runs empirical/computational build-test-loop analysis while March runs adversarial opportunity-cost analysis on the methodology axis; an infrastructure-expansion bias in Simon would be exposed by March's reversibility and maintenance test, while an underbuilding bias in March would be exposed by Simon's evidence of recurring execution friction.",
+        "Deming runs formal dependency analysis while March runs adversarial portfolio analysis on the methodology axis; a strategic-overreach bias in Deming would be exposed by March's time-to-feedback test, while a local-optimization bias in March would be exposed by Deming's downstream consumer graph."
+      ]
+    }
+  ],
+  "connections": [],
+  "expected_outputs": [
+    "scouts: inline independent returns only",
+    "parent: research/repository-leverage-priority/research.md",
+    "parent: research/repository-leverage-priority/findings.md",
+    "parent: docs/decisions/repository-leverage-priority.md"
+  ],
+  "delegation_binding": {
+    "envelope_ref": "plans/governed-agent-work-infrastructure/workstreams/repository-leverage-priority-delegated-execution-envelope.json",
+    "envelope_digest": "sha256:29416695be73ff2784e411071c6f979b09d63b4007640b988c80ff40b0bdd89b",
+    "authorization_receipt_ref": ".codex/delegation-receipts/repository-leverage-priority-20260725-v1.json",
+    "authorization_receipt_digest": "sha256:2b5fd15b8b2107035407c6e5bb345a3a50a0ea4b6a41c2ab81536e5c1bce4d79"
+  },
+  "containment_status": "pending-independent-audits",
+  "tension_status": "pending-two-checks"
+}
