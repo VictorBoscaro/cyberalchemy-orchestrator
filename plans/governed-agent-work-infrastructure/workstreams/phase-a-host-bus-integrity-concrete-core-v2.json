@@ -1,0 +1,249 @@
+{
+  "projection_schema_version": "aci.concrete-dispatch-proposal-core/v1",
+  "canonicalization": {
+    "scheme": "RFC 8785 JSON Canonicalization Scheme",
+    "digest_algorithm": "SHA-256",
+    "duplicate_object_keys": "rejected before canonicalization"
+  },
+  "concrete_revision": "phase-a-host-bus-integrity-concrete-core-v2",
+  "structural_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-structural-v2.json",
+  "structural_digest": "sha256:46df36dce43923bba6401cf71bc62f78106e49fb38cfc2aa9511bb155885b028",
+  "structural_digest_scheme": "RFC 8785 JCS",
+  "registration_input_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-dispatch-row-v2.json",
+  "registration_input_digest": "sha256:d4adc4d500197be901b8afa46c53ad8d3c8fe4dc6bc4ade453acffe12d65c69c",
+  "task_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
+  "task_digest": "sha256:f8fcf56ea7fe32986dd01ba79fad8ba1cef5a4b3c723d87a32ae920a804768d3",
+  "capability_profile_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-capability-profile-v2.json",
+  "capability_profile_digest": "sha256:ae019899fa045ef86bbf6875a873b51f767291515ec98ae7cb313899bfe5a8da",
+  "capability_profile_digest_scheme": "RFC 8785 JCS",
+  "confirmation_mode": "final_only",
+  "confirmation_evidence": "Repository owner instruction dated 2026-07-26 explicitly authorizes proceeding after the requested three-agent review without another confirmation. This workflow evidence is limited to SWU-ACI-HOST-BUS-INTEGRITY-001, its exact seven-path write scope, its four validation commands, and the mandatory review corrections; it is not durable ACI confirmation evidence.",
+  "seats": [
+    {
+      "seat_id": "alignment-audits/alignment",
+      "agent_name": "Liskov, Barbara",
+      "role": "auditor",
+      "lens": "DomainSpec behavioral alignment",
+      "requested_provider": "openai",
+      "requested_model": "gpt-5.6-sol",
+      "requested_adapter": "codex-subagent",
+      "skill_ref": "domainspec/.agents/skills/domainspec-audit-alignment/SKILL.md",
+      "skill_digest": "sha256:d64088b43605006b025ee8c7851063648cf768e4e93fbf5df0e0414c9c28eefb",
+      "prompt_template_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-dispatch-row-v2.json#/groups/0/agents/0/initial_prompt",
+      "prompt_template_digest": "sha256:7868b9c03bb1f957a265e2c8522307377e7a6de1255a7dc25c13c668ce8c0876",
+      "response_contract": "PASS or BLOCK; exact source selectors; no edits"
+    },
+    {
+      "seat_id": "alignment-audits/layering",
+      "agent_name": "Parnas, David",
+      "role": "auditor",
+      "lens": "DomainSpec layering and ownership alignment",
+      "requested_provider": "openai",
+      "requested_model": "gpt-5.6-sol",
+      "requested_adapter": "codex-subagent",
+      "skill_ref": "domainspec/.agents/skills/domainspec-audit-layering/SKILL.md",
+      "skill_digest": "sha256:a9dfb095a27ef80d0d63d7a199bfe5409861f913f8db25f6bc7f50f5a76a979f",
+      "prompt_template_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-dispatch-row-v2.json#/groups/0/agents/1/initial_prompt",
+      "prompt_template_digest": "sha256:7fdf56252bf51ebf9b798a64393829e14ba7e3b9737d273a2175564c908db638",
+      "response_contract": "PASS or BLOCK; exact source selectors; no edits"
+    },
+    {
+      "seat_id": "implementation/coder",
+      "agent_name": "Wirth, Niklaus",
+      "role": "coder",
+      "lens": "bounded DomainSpec implementation",
+      "requested_provider": "openai",
+      "requested_model": "gpt-5.6-sol",
+      "requested_adapter": "codex-subagent",
+      "skill_ref": ".claude/skills/domainspec-implement/SKILL.md",
+      "skill_digest": "sha256:e8cb57ffcb40e0107d209971a8459e45cc7eab909d06a84433fe501673a8f0a9",
+      "required_linked_skills": [
+        {
+          "path": "domainspec/.agents/skills/domainspec-implement/SKILL.md",
+          "sha256": "071b48e653771178d9e9068002d1e8c95fc10ce52aaa544c2913b0f02886e09c"
+        },
+        {
+          "path": "domainspec/.claude/skills/domainspec-implementation-axioms/SKILL.md",
+          "sha256": "4245bdd7615e3a8cfcb9fd776bea4b1c3fbd31211611841835d4e5bc8fadec79"
+        },
+        {
+          "path": "domainspec/.agents/skills/domainspec-tag-code/SKILL.md",
+          "sha256": "de057da876adb1540283dc8e4448015c21b41de14fb47ae83b30e9c7215a42d9"
+        }
+      ],
+      "prompt_template_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-dispatch-row-v2.json#/groups/1/agents/0/initial_prompt",
+      "prompt_template_digest": "sha256:6da9237f80018ad6227c7cdce940175a77e435b0a51b1da140d9b5da9de485e6",
+      "response_contract": "task-owned diff and changed-symbol inventory; exact validation results; strict-tagging result; residual risks; no scope escape"
+    },
+    {
+      "seat_id": "verification/skeptic",
+      "agent_name": "Dijkstra, Edsger W.",
+      "role": "skeptic",
+      "lens": "independent evidence verification",
+      "requested_provider": "openai",
+      "requested_model": "gpt-5.6-sol",
+      "requested_adapter": "codex-subagent",
+      "skill_ref": ".claude/skills/domainspec-implement/SKILL.md",
+      "skill_digest": "sha256:e8cb57ffcb40e0107d209971a8459e45cc7eab909d06a84433fe501673a8f0a9",
+      "prompt_template_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-dispatch-row-v2.json#/groups/2/agents/0/initial_prompt",
+      "prompt_template_digest": "sha256:4561e964f6ac40a2444bc464df6fb7a7ae80cf4ab9bccbada22a00eb75fb445f",
+      "response_contract": "PASS or FIX/BLOCK; reproduced command results and negative cases; scope/traceability verdict; no edits"
+    }
+  ],
+  "anti_bias": {
+    "group_id": "alignment-audits",
+    "axis": "attack-vector",
+    "predicted_disagreement": "Liskov runs behavioral substitutability and zero-write contract checks while Parnas runs ownership and minimal-layer checks on the attack-vector axis; a behavior-only bias in Liskov is exposed by Parnas, while a structural-minimalism bias in Parnas is exposed by Liskov."
+  },
+  "workflow_input_contracts": {
+    "evidence_root": ".codex/workflow-inputs/2026-07-26-phase-a-host-bus-integrity",
+    "owner": "parent",
+    "authority": "workflow evidence only; not ACI EffectiveInputArtifact and not task product code",
+    "alignment-audits/alignment": [
+      {
+        "name": "task_corpus",
+        "authorized_producer": "repository frozen bindings",
+        "data_schema_ref": "application/octet-stream",
+        "cardinality": {
+          "min": 27,
+          "max": 27
+        },
+        "max_bytes": 1200000,
+        "purpose": "Audit behavioral contract fidelity, zero-write failures and source-linked tests without registration or hook internals.",
+        "allowed_paths": [
+          "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
+          "docs/features/agents-communication-infra/TEST-SPEC.md",
+          "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-HOST-BUS-INTEGRITY-001-code-readiness.json",
+          "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.md",
+          "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.index.json",
+          "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-SCAFFOLD.md",
+          "docs/features/agents-communication-infra/WORK-PACK.md",
+          "docs/PROJECT-DECISIONS.md",
+          "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md",
+          "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-authoring-review/review.md",
+          "docs/features/agents-communication-infra/specs/SPEC.md",
+          "docs/features/agents-communication-infra/discovery/feature-discovery/agents-communication-infra.md",
+          "docs/features/agents-communication-infra/specs/operations.md",
+          "docs/features/agents-communication-infra/specs/interfaces.md",
+          "docs/features/agents-communication-infra/specs/states.md",
+          "docs/features/agents-communication-infra/specs/persistence-and-replay.md",
+          "domainspec/CHANGELOG.md",
+          "domainspec/.agents/skills/domainspec-audit-alignment/SKILL.md",
+          "implementations/server/runtime/service.py",
+          "implementations/server/runtime/reveal_delivery.py",
+          "implementations/server/runtime/migrations/011_bus_reveal_delivery.sql",
+          "implementations/tests/runtime/test_host_workflow_binding.py",
+          "implementations/tests/runtime/test_bus_reveal_delivery.py",
+          "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+          "implementations/tests/runtime/test_orchestration_bridge.py",
+          "implementations/tests/runtime/aci-test-traceability.json",
+          "implementations/tests/runtime/test_aci_traceability.py"
+        ]
+      }
+    ],
+    "alignment-audits/layering": [
+      {
+        "name": "task_corpus",
+        "authorized_producer": "repository frozen bindings",
+        "data_schema_ref": "application/octet-stream",
+        "cardinality": {
+          "min": 22,
+          "max": 22
+        },
+        "max_bytes": 1200000,
+        "purpose": "Audit ownership, layering and the seven-path repair boundary without unrelated registration or review mechanics.",
+        "allowed_paths": [
+          "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
+          "docs/features/agents-communication-infra/TEST-SPEC.md",
+          "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.md",
+          "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-SCAFFOLD.md",
+          "docs/PROJECT-DECISIONS.md",
+          "docs/features/agents-communication-infra/specs/SPEC.md",
+          "docs/features/agents-communication-infra/discovery/feature-discovery/agents-communication-infra.md",
+          "docs/features/agents-communication-infra/specs/operations.md",
+          "docs/features/agents-communication-infra/specs/interfaces.md",
+          "docs/features/agents-communication-infra/specs/states.md",
+          "docs/features/agents-communication-infra/specs/persistence-and-replay.md",
+          "docs/features/agents-communication-infra/specs/architecture.md",
+          "domainspec/CHANGELOG.md",
+          "domainspec/.agents/skills/domainspec-audit-layering/SKILL.md",
+          "domainspec/.claude/skills/domainspec-implementation-axioms/SKILL.md",
+          "implementations/server/runtime/service.py",
+          "implementations/server/runtime/reveal_delivery.py",
+          "implementations/server/runtime/migrations/011_bus_reveal_delivery.sql",
+          "implementations/tests/runtime/test_host_workflow_binding.py",
+          "implementations/tests/runtime/test_bus_reveal_delivery.py",
+          "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+          "implementations/tests/runtime/test_orchestration_bridge.py"
+        ]
+      }
+    ],
+    "implementation/coder": [
+      {
+        "name": "alignment_gate",
+        "authorized_producer": "parent from two terminal auditor returns and hook receipts",
+        "data_schema_ref": "application/json",
+        "cardinality": {
+          "min": 1,
+          "max": 1
+        },
+        "max_bytes": 24000,
+        "purpose": "Supply data-only PASS/BLOCK audit results and source selectors before implementation."
+      }
+    ],
+    "verification/skeptic": [
+      {
+        "name": "implementation_evidence",
+        "authorized_producer": "parent from inspected task-owned diff, coder return and exact command outputs",
+        "data_schema_ref": "application/json",
+        "cardinality": {
+          "min": 1,
+          "max": 1
+        },
+        "max_bytes": 80000,
+        "purpose": "Supply data-only changed symbols, diff digest, validation results, tagging result and residual risks for independent verification."
+      }
+    ]
+  },
+  "bound_inputs": [
+    {"path": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json", "sha256": "f8fcf56ea7fe32986dd01ba79fad8ba1cef5a4b3c723d87a32ae920a804768d3"},
+    {"path": "docs/features/agents-communication-infra/TEST-SPEC.md", "sha256": "84182cc5a6118edf94ca1e99d371abfb795fba3914f91f2d7fe4fbefd34f9b00"},
+    {"path": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-HOST-BUS-INTEGRITY-001-code-readiness.json", "sha256": "86e2ab9288014d5a7aa8119a265bc5526b1e74d77bac573deb534d5d85c299da"},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.md", "sha256": "3387a8a8df01e87535b2f7c4e14d350de52f9df19b7f7b00de0538eee6b45da2"},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.index.json", "sha256": "dfbd1f430184ddaea5d1175d55b9385d79d345f9c3bff18b41352188c0850099"},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-SCAFFOLD.md", "sha256": "ce62d79f225489c234328c90e8c85a4a91cdbaed9af34f0cbbd3536d2927fa67"},
+    {"path": "docs/features/agents-communication-infra/WORK-PACK.md", "sha256": "73f404bcc0a9a2f0f9a1140a0716c6c31eab3ab47e2f82e155b07c8bf3f4bcf5"},
+    {"path": "docs/PROJECT-DECISIONS.md", "sha256": "37e49b1386e1955b80e6ab61370b705669a55aac0226f99ebccf173f6fb69af7"},
+    {"path": "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md", "sha256": "f72cd536091e88a4ec38f5592422712d364a159bca2491ea336a9df918091dc6"},
+    {"path": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-authoring-review/review.md", "sha256": "ee9017fb2f288b66387caff29bf03a75aa7b4b2d1afae384f5072c7e86861c34"},
+    {"path": "docs/features/agents-communication-infra/specs/SPEC.md", "sha256": "69cfb57e353e6da8d1e85c971cc315e8d92577f81f403e19b10071d6c2381e85"},
+    {"path": "docs/features/agents-communication-infra/discovery/feature-discovery/agents-communication-infra.md", "sha256": "c8797612787d4e81f4a085c3b14ca18d538f63c0add415805727679a1ee2362e"},
+    {"path": "docs/features/agents-communication-infra/specs/operations.md", "sha256": "2ffb870c01e145310cc61c335093ea48c0e88407a7bd2a60e213761381a77002"},
+    {"path": "docs/features/agents-communication-infra/specs/interfaces.md", "sha256": "76f7d6486a16321715cdaa5d89ffc5e6822d7ac66edd1d28f7b8a1761d1c02e0"},
+    {"path": "docs/features/agents-communication-infra/specs/states.md", "sha256": "290311e3819f2390b7c6ec75b3a56322f51d88081aba88fbb82b93ec38b4172d"},
+    {"path": "docs/features/agents-communication-infra/specs/persistence-and-replay.md", "sha256": "24d9466359478d61d7fb8119d4ad271a75a2cba960e7496eef1c9cf49c12cf18"},
+    {"path": "docs/features/agents-communication-infra/specs/architecture.md", "sha256": "bfb82fc4d79490ec6784cf1acfc8a813e2042b5f04c5c7a6c1d57948031c32fa"},
+    {"path": "domainspec/CHANGELOG.md", "sha256": "512d50927d37f025931b091300a3263c1691df230c64fbe9009c33824c8b8df7"},
+    {"path": "domainspec/.agents/skills/domainspec-implement/SKILL.md", "sha256": "071b48e653771178d9e9068002d1e8c95fc10ce52aaa544c2913b0f02886e09c"},
+    {"path": "domainspec/.claude/skills/domainspec-implementation-axioms/SKILL.md", "sha256": "4245bdd7615e3a8cfcb9fd776bea4b1c3fbd31211611841835d4e5bc8fadec79"},
+    {"path": "domainspec/.agents/skills/domainspec-audit-alignment/SKILL.md", "sha256": "d64088b43605006b025ee8c7851063648cf768e4e93fbf5df0e0414c9c28eefb"},
+    {"path": "domainspec/.agents/skills/domainspec-audit-layering/SKILL.md", "sha256": "a9dfb095a27ef80d0d63d7a199bfe5409861f913f8db25f6bc7f50f5a76a979f"},
+    {"path": "domainspec/.agents/skills/domainspec-tag-code/SKILL.md", "sha256": "de057da876adb1540283dc8e4448015c21b41de14fb47ae83b30e9c7215a42d9"},
+    {"path": ".claude/skills/domainspec-implement/SKILL.md", "sha256": "e8cb57ffcb40e0107d209971a8459e45cc7eab909d06a84433fe501673a8f0a9"},
+    {"path": ".agents/skills/domainspec-subagents-strategy/SKILL.md", "sha256": "bd60579a8844d5ad6e09ead79c51ba0c933ee944ceaf0944efa88acb7c7796d6"},
+    {"path": ".claude/skills/register-dispatch/SKILL.md", "sha256": "a62ba26a6c48b63c73935d8da4c120f02359c2d01d82365f7d355f0acfe7e23a"},
+    {"path": ".claude/skills/register-dispatch/append-dispatch.cjs", "sha256": "ae9837d8d2ba1f069ceb25c2cd7c45d22920e9e3c4de58f5006fab0b0d4b594c"},
+    {"path": ".claude/skills/check-tension/SKILL.md", "sha256": "70628402068c54e8395d0ca07797b54421ce50004a582145d97fe459e99d9428"},
+    {"path": ".codex/hooks.json", "sha256": "f68f52cb6774336a70963920047d52bf36445eab0a7a13084a8004b7b1125d90"},
+    {"path": "AGENTS.md", "sha256": "222ce3522853b9c3306351b0050bddfe371575bc0b8d0499625a98577ac1bc42"},
+    {"path": "implementations/server/runtime/service.py", "sha256": "8b46efc168d1eb8a17ba8b44aa460feb6a89ddfd01a05f07c06067450aac9731"},
+    {"path": "implementations/server/runtime/reveal_delivery.py", "sha256": "0b9b43a376883739271b7574626cb3f80d660f74508aaeeedfd7140c856046dc"},
+    {"path": "implementations/server/runtime/migrations/011_bus_reveal_delivery.sql", "sha256": "2d798ab2ab8c6962e0a6f67ad17665ad4d8b441a9b26fe72d9e2c08df44877e1"},
+    {"path": "implementations/tests/runtime/test_host_workflow_binding.py", "sha256": "8cfba2013f37f39c7963069b25c87b842e43293c0628b81f2c3b7ed7d564d0ca"},
+    {"path": "implementations/tests/runtime/test_bus_reveal_delivery.py", "sha256": "69eebe09eebf904a93a6ba6e8d7cac517735a0cf2000c3e9aacf31a785e76c32"},
+    {"path": "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json", "sha256": "7d9a72f082f6699158799ccc61df2dab583b0e853545b09562544a859dcf81e1"},
+    {"path": "implementations/tests/runtime/test_orchestration_bridge.py", "sha256": "86e6c422037bbf07e208a228c1de7298a1c17dfe0ae6dde88cd6dbf8474a42bc"},
+    {"path": "implementations/tests/runtime/aci-test-traceability.json", "sha256": "e8c87dbc13ba936c77a92e5ed59f8de1443d23d559b98a053bb8cfe4a1c56be6"},
+    {"path": "implementations/tests/runtime/test_aci_traceability.py", "sha256": "c4869de8a580efc2e87fbff87dd568369a98bba539cbd4972657e7927388a07c"}
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "dispatch_id": "2026-07-26-phase-a-host-bus-integrity",
+  "schema_version": "0.6.1",
+  "dispatch_type": "code",
+  "goal": "Close Phase-A findings F4, F5 and F6 with source-linked adversarial tests while preserving zero provider/tool starts.",
+  "context": "The accepted BUS proof materializes a sealed request but the Phase-A review found three bounded runtime-integrity defects: null prior agent identity can weaken follow-up continuity, peer artifact bytes are not rehashed at materialization, and Stage-E startup integrity omits two active BUS sources. The exact SWU and PASS readiness receipt authorize only these repairs; F1/F2/F3, effect claim, provider execution, ACI-005 and cutover remain out of scope.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "code_contract": {
+    "type_skill_ref": ".claude/skills/domainspec-implement/SKILL.md",
+    "type_skill_digest": "sha256:e8cb57ffcb40e0107d209971a8459e45cc7eab909d06a84433fe501673a8f0a9",
+    "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
+    "work_pack_digest": "sha256:f8fcf56ea7fe32986dd01ba79fad8ba1cef5a4b3c723d87a32ae920a804768d3",
+    "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+    "test_spec_digest": "sha256:84182cc5a6118edf94ca1e99d371abfb795fba3914f91f2d7fe4fbefd34f9b00",
+    "readiness_ref": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-HOST-BUS-INTEGRITY-001-code-readiness.json",
+    "readiness_digest": "sha256:86e2ab9288014d5a7aa8119a265bc5526b1e74d77bac573deb534d5d85c299da",
+    "brownfield": true,
+    "write_scope": [
+      "implementations/server/runtime/service.py",
+      "implementations/tests/runtime/test_host_workflow_binding.py",
+      "implementations/tests/runtime/test_bus_reveal_delivery.py",
+      "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+      "implementations/tests/runtime/test_orchestration_bridge.py",
+      "implementations/tests/runtime/aci-test-traceability.json",
+      "implementations/tests/runtime/test_aci_traceability.py"
+    ],
+    "validation_commands": [
+      "python -B -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+      "python -B -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v",
+      "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+      "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v"
+    ],
+    "alignment_group_id": "alignment-audits",
+    "implementation_group_id": "implementation",
+    "verification_group_id": "verification"
+  },
+  "groups": [
+    {
+      "group_id": "alignment-audits",
+      "n": 2,
+      "anti_bias": "attack-vector: behavioral contract fidelity versus module/layer boundary fidelity",
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "angle": "contract-substitutability and zero-write behavioral attack",
+          "initial_prompt": "Audit SWU-ACI-HOST-BUS-INTEGRITY-001 for DomainSpec alignment. Verify F4/F5/F6 behavior, exact write scope, zero-write failures and zero provider/tool starts against the pinned context pack. Read-only. Return PASS or BLOCK with exact selectors."
+        },
+        {
+          "agent_name": "Parnas, David",
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "angle": "information-hiding, write-scope and minimal-layering attack",
+          "initial_prompt": "Audit SWU-ACI-HOST-BUS-INTEGRITY-001 for layering alignment. Verify the repair stays in existing owners, adds no orphan behavior or hidden abstraction, and fits the seven-path scope. Read-only. Return PASS or BLOCK with exact selectors."
+        }
+      ]
+    },
+    {
+      "group_id": "implementation",
+      "agents": [
+        {
+          "agent_name": "Wirth, Niklaus",
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "After both auditors PASS, implement only SWU-ACI-HOST-BUS-INTEGRITY-001 from its pinned scaffold. Add T-ACI-PHASEA-I1-I3, repair F4/F5/F6, update traceability, and run all four validations. Strict tagging is unavailable inside the seven-path SWU scope: report the explicit unavailable/blocking result and do not run the tagger or write its governance artifacts. Inspect the diff and return changed symbols/results/residual risks. Do not touch F1/F2/F3 or start provider/tool effects."
+        }
+      ]
+    },
+    {
+      "group_id": "verification",
+      "agents": [
+        {
+          "agent_name": "Dijkstra, Edsger W.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "initial_prompt": "Independently verify the task-owned diff against the pinned SWU, context/scaffold, TEST-SPEC and audit verdicts. Re-run exactly the four validation commands, inspect scope and traceability, reproduce the three negative cases, and return PASS or FIX/BLOCK. Read-only; no prose-only acceptance."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "alignment-audits",
+      "to": "implementation",
+      "type": "sequential"
+    },
+    {
+      "from": "implementation",
+      "to": "verification",
+      "type": "sequential"
+    }
+  ]
+}

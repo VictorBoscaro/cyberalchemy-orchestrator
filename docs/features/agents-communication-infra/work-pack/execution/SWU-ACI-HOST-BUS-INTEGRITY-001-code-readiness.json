@@ -3,7 +3,7 @@
   "status": "PASS",
   "task_id": "SWU-ACI-HOST-BUS-INTEGRITY-001",
   "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
-  "work_pack_digest": "sha256:34f58f112aa752968cf18f6ca6747d58a16348150f150220e6041cd3216b07ac",
+  "work_pack_digest": "sha256:f8fcf56ea7fe32986dd01ba79fad8ba1cef5a4b3c723d87a32ae920a804768d3",
   "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
   "test_spec_digest": "sha256:84182cc5a6118edf94ca1e99d371abfb795fba3914f91f2d7fe4fbefd34f9b00",
   "brownfield": true,

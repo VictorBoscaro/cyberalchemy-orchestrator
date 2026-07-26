@@ -1,0 +1,45 @@
+{
+  "dispatch_id": "2026-07-26-phase-a-post-gate-review",
+  "schema_version": "0.6.1",
+  "dispatch_type": "review",
+  "goal": "Red-team the complete Phase-A post-review authoring and failed launch attempt with three independent attack lenses.",
+  "context": "The first review found seven defects and the parent applied corrective authoring, passed proposal gates, registered a code dispatch and generated workflow manifests. Two implementation auditors returned PASS, but no ACI host_workflow_turn_binding or launch-authorized receipt was materialized, so the code dispatch was closed with error before coder launch. This review verifies both the corrected artifacts and the bridge-blocker diagnosis; reviewers are read-only and the parent owns the single persisted review.md.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "output_mode": "persisted",
+  "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-post-gate-review",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 3,
+      "anti_bias": "attack-vector",
+      "agents": [
+        {
+          "agent_name": "Hoare, C. A. R.",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "angle": "mechanics and correctness: hashes, JCS, manifests, appender lifecycle and bridge evidence",
+          "initial_prompt": "Read all 18 frozen targets in the bound review corpus. Attack mechanics/correctness only: recompute raw and JCS digests, validate JSON shapes and cross-file hashes, verify manifests and generator reproducibility, inspect the exact open/close ledger selectors, and query the ACI database read-only for workflow bindings. Do not edit or spawn. Return candidate findings only when the target itself supplies quoted evidence; each finding needs target path, exact quote/selector, CRITICAL/MAJOR/MINOR, and one-line fix. Also state what survived."
+        },
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "angle": "fidelity and governance: skill compliance, claim-proof boundaries and confirmation/receipt semantics",
+          "initial_prompt": "Read all 18 frozen targets in the bound review corpus. Attack fidelity/governance only: compare the artifacts with review, subagent-strategy, register-dispatch, check-tension, DomainSpec implementation and repository AGENTS policies; test whether workflow authorization, review output ownership, readiness and status claims exceed proof. Do not edit or spawn. Return candidate findings only when the target itself supplies quoted evidence; each finding needs target path, exact quote/selector, CRITICAL/MAJOR/MINOR, and one-line fix. Also state what survived."
+        },
+        {
+          "agent_name": "Parnas, David",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "angle": "ownership and reference integrity: single owners, stale pointers, retryability and operational handoff",
+          "initial_prompt": "Read all 18 frozen targets in the bound review corpus. Attack ownership/reference integrity and operability: verify one owner per status/digest/receipt, locate stale or dangling references, test whether the error close and preserved manifests support a clean fresh retry, and check that no target or workflow evidence was silently promoted to authority. Do not edit or spawn. Return candidate findings only when the target itself supplies quoted evidence; each finding needs target path, exact quote/selector, CRITICAL/MAJOR/MINOR, and one-line fix. Also state what survived."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

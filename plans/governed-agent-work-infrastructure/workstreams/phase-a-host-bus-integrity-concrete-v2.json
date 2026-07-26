@@ -1,0 +1,45 @@
+{
+  "schema_version": "aci.concrete-dispatch-approval/v1",
+  "approval_id": "phase-a-host-bus-integrity-concrete-v2",
+  "proposal_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-concrete-core-v2.json",
+  "proposal_revision": "phase-a-host-bus-integrity-concrete-core-v2",
+  "proposal_digest": "sha256:669c1420254e413cea230fd0124e6d0e0f2e8d4af76609db97eee4bdd8f8b2ff",
+  "proposal_digest_scheme": "RFC 8785 JCS",
+  "capability_review": {
+    "reviewer": "capability_gate_v2",
+    "verdict": "PASS",
+    "reviewed_digest": "sha256:669c1420254e413cea230fd0124e6d0e0f2e8d4af76609db97eee4bdd8f8b2ff",
+    "verified": [
+      "seat-specific least-capability profiles",
+      "spawn_or_delegation denied for every seat",
+      "exact validation commands and seven-path write scope",
+      "strict tagging explicitly unavailable within the SWU",
+      "27-path alignment corpus and 22-path layering corpus",
+      "raw byte-bound registration row"
+    ]
+  },
+  "check_tension": [
+    {
+      "checker": "review_hoare",
+      "verdict": "PASS",
+      "reviewed_digest": "sha256:669c1420254e413cea230fd0124e6d0e0f2e8d4af76609db97eee4bdd8f8b2ff",
+      "result": "Behavioral and zero-write alignment versus ownership and minimal-layering are independent, asymmetric attack vectors; canonical sequencing is preserved."
+    },
+    {
+      "checker": "review_parnas",
+      "verdict": "PASS",
+      "reviewed_digest": "sha256:669c1420254e413cea230fd0124e6d0e0f2e8d4af76609db97eee4bdd8f8b2ff",
+      "result": "The pair is non-cosmetic, has reciprocal predicted disagreement, consumes distinct frozen corpora, and preserves auditors-to-coder-to-verifier gates."
+    }
+  ],
+  "confirmation": {
+    "mode": "final_only",
+    "verdict": "PASS_WORKFLOW_EVIDENCE_ONLY",
+    "evidence": "The repository owner explicitly instructed on 2026-07-26 to run the independent review and then proceed with the required work without another confirmation.",
+    "containment": "SWU-ACI-HOST-BUS-INTEGRITY-001 only; exact seven-path write scope; exact four validation commands; no provider/tool effects; no F1/F2/F3, ACI-005 or cutover.",
+    "claim_limit": "This is session-local workflow evidence, not durable ACI confirmation evidence."
+  },
+  "registration_input_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-dispatch-row-v2.json",
+  "registration_input_raw_sha256": "d4adc4d500197be901b8afa46c53ad8d3c8fe4dc6bc4ade453acffe12d65c69c",
+  "status": "approved-for-registration"
+}

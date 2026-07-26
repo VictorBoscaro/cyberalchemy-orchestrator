@@ -1,0 +1,33 @@
+{
+  "schema_version": "aci.concrete-dispatch-approval/v1",
+  "approval_id": "phase-a-post-gate-review-approval-v1",
+  "proposal_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-post-gate-review-concrete-core-v1.json",
+  "proposal_digest": "sha256:aedb677f4a8f803e9258a0b3f824a455555f82dd4cc963904d3a57756cb96f01",
+  "proposal_digest_scheme": "RFC 8785 JCS",
+  "capability_review": {
+    "reviewer": "capability_gate_v2",
+    "verdict": "PASS",
+    "reviewed_digest": "sha256:aedb677f4a8f803e9258a0b3f824a455555f82dd4cc963904d3a57756cb96f01"
+  },
+  "check_tension": [
+    {
+      "checker": "alignment_impl_audit",
+      "verdict": "PASS",
+      "reviewed_digest": "sha256:aedb677f4a8f803e9258a0b3f824a455555f82dd4cc963904d3a57756cb96f01"
+    },
+    {
+      "checker": "layering_impl_audit",
+      "verdict": "PASS",
+      "reviewed_digest": "sha256:aedb677f4a8f803e9258a0b3f824a455555f82dd4cc963904d3a57756cb96f01"
+    }
+  ],
+  "confirmation": {
+    "mode": "final_only",
+    "verdict": "PASS_WORKFLOW_EVIDENCE_ONLY",
+    "evidence": "The repository owner explicitly requested three independent reviewers and stated that neither this dispatch nor subsequent orchestration requires another confirmation.",
+    "claim_limit": "Session-local workflow evidence only; hook authorization, registration, final approval and close remain mandatory."
+  },
+  "registration_input_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-post-gate-review-row-v1.json",
+  "registration_input_raw_sha256": "abbdfeb0da9f17dbea49d64f4a97901eeb33d06c2a766d8f475db150a653333f",
+  "status": "approved-for-registration"
+}

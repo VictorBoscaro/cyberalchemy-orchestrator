@@ -1,0 +1,15 @@
+{
+  "close_of": "2026-07-26-phase-a-host-bus-integrity",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 2,
+    "tree": {
+      "auditor": 2,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": [
+    "Bridge diagnostic: return objects exposed only task_name, and telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3 contained no host_workflow_turn_bindings for the registered dispatch; do not launch the coder until a fresh launch-authorized receipt is materialized."
+  ]
+}

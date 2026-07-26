@@ -1,0 +1,71 @@
+{
+  "projection_schema_version": "aci.structural-graph-proposal/v1",
+  "structural_revision": "phase-a-host-bus-integrity-structural-v2",
+  "objective": "Close Phase-A findings F4, F5 and F6 with source-linked adversarial tests while preserving all existing Host Binding and BUS guarantees and zero provider/tool starts.",
+  "boundaries": {
+    "included": [
+      "follow-up prior-agent identity enforcement",
+      "peer artifact body rehash before materialization",
+      "Stage-E binding and tamper checks for the two active BUS sources",
+      "test traceability and four-command validation"
+    ],
+    "excluded": [
+      "F1 invocation-plan authority",
+      "F2 producer terminal-output evidence",
+      "F3 completed BUS execution receipt",
+      "ACI-005",
+      "effect claim",
+      "provider or tool execution",
+      "cutover",
+      "network",
+      "production"
+    ]
+  },
+  "groups": [
+    {
+      "group_id": "alignment-audits",
+      "seat_count": 2,
+      "roles": [
+        "alignment auditor",
+        "layering auditor"
+      ],
+      "execution": "parallel"
+    },
+    {
+      "group_id": "implementation",
+      "seat_count": 1,
+      "roles": [
+        "coder"
+      ],
+      "execution": "after both audits PASS"
+    },
+    {
+      "group_id": "verification",
+      "seat_count": 1,
+      "roles": [
+        "skeptic"
+      ],
+      "execution": "after implementation evidence returns"
+    }
+  ],
+  "connections": [
+    {
+      "from": "alignment-audits",
+      "to": "implementation",
+      "type": "sequential"
+    },
+    {
+      "from": "implementation",
+      "to": "verification",
+      "type": "sequential"
+    }
+  ],
+  "output_join": "Both audits must independently PASS; implementation returns one task-owned diff/evidence bundle; verification returns one PASS or blocking change request; parent is final approver.",
+  "budget": {
+    "agents": 4,
+    "tokens": 9300,
+    "max_loops": 1
+  },
+  "confirmation_mode": "final_only",
+  "final_approver": "parent"
+}

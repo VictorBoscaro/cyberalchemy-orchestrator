@@ -1,0 +1,15 @@
+{
+  "close_of": "2026-07-26-phase-a-post-gate-review",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 2,
+    "tree": {
+      "explorer": 2,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": [
+    "Bridge diagnostic: both spawn_agent calls returned task names, but the policy-selected ACI database still contained zero host_workflow_turn_bindings for 2026-07-26-phase-a-post-gate-review immediately after launch; both agents were interrupted and the third seat was not launched."
+  ]
+}

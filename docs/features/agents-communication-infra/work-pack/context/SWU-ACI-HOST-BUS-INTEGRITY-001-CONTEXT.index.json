@@ -1,0 +1,28 @@
+{
+  "schema": "context-builder-index/v1",
+  "task_id": "SWU-ACI-HOST-BUS-INTEGRITY-001",
+  "mode": "standard",
+  "strict": true,
+  "files_selected": 13,
+  "obligations_total": 8,
+  "obligations_covered": 8,
+  "strict_coverage": "pass",
+  "markdown_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.md",
+  "sources": [
+    "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json",
+    "docs/features/agents-communication-infra/WORK-PACK.md",
+    "docs/features/agents-communication-infra/TEST-SPEC.md",
+    "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md",
+    "docs/features/agents-communication-infra/specs/operations.md",
+    "docs/features/agents-communication-infra/specs/interfaces.md",
+    "docs/PROJECT-DECISIONS.md",
+    "implementations/server/runtime/service.py",
+    "implementations/tests/runtime/test_host_workflow_binding.py",
+    "implementations/tests/runtime/test_bus_reveal_delivery.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/tests/runtime/test_orchestration_bridge.py",
+    "implementations/tests/runtime/aci-test-traceability.json"
+  ],
+  "blockers": []
+}
+

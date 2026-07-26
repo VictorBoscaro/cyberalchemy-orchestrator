@@ -93,7 +93,7 @@
   ],
   "mutation_test_authorization": "pass_for_exact_swu",
   "code_readiness_receipt": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-BUS-DELIVERY-001-code-readiness.json",
-  "implementation_status": "implemented-verified",
+  "implementation_status": "fix-required-completion-receipt-absent",
   "permanently_out_of_scope_for_this_authorization": [
     "effect-claim",
     "provider-or-tool-execution",

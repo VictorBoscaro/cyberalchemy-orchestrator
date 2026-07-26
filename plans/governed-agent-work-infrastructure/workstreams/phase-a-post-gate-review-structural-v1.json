@@ -1,0 +1,29 @@
+{
+  "projection_schema_version": "aci.structural-graph-proposal/v1",
+  "structural_revision": "phase-a-post-gate-review-structural-v1",
+  "objective": "Independently red-team every Phase-A authoring, dispatch and bridge-diagnostic artifact produced after the first review, then issue one verified change-request report.",
+  "boundaries": {
+    "read": "18 frozen target artifacts plus governing skills, hook configuration, exact ledger selectors and read-only ACI database queries",
+    "write": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-post-gate-review/review.md only",
+    "forbidden": ["target mutation", "code implementation", "ledger mutation by reviewers", "network", "credentials", "production", "destructive actions", "nested delegation"]
+  },
+  "confirmation_mode": "final_only",
+  "owner_authorization": "The repository owner explicitly requested three independent reviewers and authorized subsequent orchestration without another confirmation.",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "seats": 3,
+      "roles": ["explorer", "explorer", "explorer"],
+      "anti_bias": "attack-vector"
+    }
+  ],
+  "connections": [],
+  "parent_responsibilities": ["verify every candidate finding against frozen artifacts", "drop refuted findings", "author coverage and the single review.md", "final approval", "append close row"],
+  "max_loops": 1,
+  "output_mode": "persisted",
+  "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-post-gate-review",
+  "budget_envelope": {
+    "agents": 3,
+    "tokens_per_agent": 2600
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "projection_schema_version": "aci.concrete-dispatch-proposal-core/v1",
+  "canonicalization": {
+    "scheme": "RFC 8785 JSON Canonicalization Scheme",
+    "digest_algorithm": "SHA-256",
+    "duplicate_object_keys": "rejected"
+  },
+  "concrete_revision": "phase-a-post-gate-review-concrete-core-v1",
+  "structural_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-post-gate-review-structural-v1.json",
+  "structural_digest": "sha256:50c5798aa8b3bb83c531b2dace908508f5c05c76d1bb413be7d4a9df43380a05",
+  "structural_digest_scheme": "RFC 8785 JCS",
+  "registration_input_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-post-gate-review-row-v1.json",
+  "registration_input_raw_sha256": "abbdfeb0da9f17dbea49d64f4a97901eeb33d06c2a766d8f475db150a653333f",
+  "confirmation_mode": "final_only",
+  "confirmation_evidence": "The repository owner explicitly requested this three-subagent independent review and authorized its dispatch and subsequent orchestration without another confirmation.",
+  "output": {
+    "mode": "persisted",
+    "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-post-gate-review",
+    "only_artifact": "review.md",
+    "owner": "parent"
+  },
+  "parent_review_duties": [
+    "perform the full coverage audit over all 18 targets and all three declared lenses",
+    "author the Coverage section of review.md",
+    "run and record the zero-findings red-flag check",
+    "verify every candidate finding against the frozen target bytes and drop refuted findings",
+    "act as final approver outside the attacker group"
+  ],
+  "seats": [
+    {
+      "seat_id": "attackers/mechanics",
+      "agent_name": "Hoare, C. A. R.",
+      "role": "explorer",
+      "lens": "mechanics and correctness",
+      "requested_provider": "openai",
+      "requested_model": "gpt-5.6-sol",
+      "requested_adapter": "codex-subagent",
+      "prompt_template_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-post-gate-review-row-v1.json#/groups/0/agents/0/initial_prompt",
+      "prompt_template_digest": "sha256:6807871d7f18e5e4f4548bc6d8fcc05e85f3242841b9f7e2af691b6dd2829585",
+      "response_contract": "candidate findings with target quote, severity and one-line fix; survived attacks; no edits"
+    },
+    {
+      "seat_id": "attackers/fidelity",
+      "agent_name": "Liskov, Barbara",
+      "role": "explorer",
+      "lens": "fidelity and governance",
+      "requested_provider": "openai",
+      "requested_model": "gpt-5.6-sol",
+      "requested_adapter": "codex-subagent",
+      "prompt_template_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-post-gate-review-row-v1.json#/groups/0/agents/1/initial_prompt",
+      "prompt_template_digest": "sha256:4bd695270f4945d2d74104c7eb10a849c3d3e57eebd0d9dbabfd8abbef15cb66",
+      "response_contract": "candidate findings with target quote, severity and one-line fix; survived attacks; no edits"
+    },
+    {
+      "seat_id": "attackers/ownership",
+      "agent_name": "Parnas, David",
+      "role": "explorer",
+      "lens": "ownership, reference integrity and operability",
+      "requested_provider": "openai",
+      "requested_model": "gpt-5.6-sol",
+      "requested_adapter": "codex-subagent",
+      "prompt_template_ref": "plans/governed-agent-work-infrastructure/workstreams/phase-a-post-gate-review-row-v1.json#/groups/0/agents/2/initial_prompt",
+      "prompt_template_digest": "sha256:dbe2218413114e7492d593f57651f408d4a588217bf717ecc2e786e295c027f5",
+      "response_contract": "candidate findings with target quote, severity and one-line fix; survived attacks; no edits"
+    }
+  ],
+  "proposed_capability_profile": {
+    "effective_enforcement": "non_observable",
+    "all_seats": {
+      "filesystem": "read-only over frozen target and authority bindings",
+      "logical_tools": ["read", "search", "hash", "read-only sqlite query"],
+      "commands": ["Get-FileHash over declared paths", "read-only sqlite query against the policy-selected ACI database", "rg exact dispatch selectors in the append-only ledger"],
+      "requested_sandbox": "read-only",
+      "network": "none",
+      "credentials": false,
+      "production": false,
+      "destructive": false,
+      "spawn_or_delegation": "denied"
+    },
+    "claim_limit": "Requested capabilities are workflow evidence; effective grants are not observable and must not be claimed."
+  },
+  "anti_bias": {
+    "group_id": "attackers",
+    "axis": "attack-vector",
+    "pairs": [
+      "Hoare runs executable mechanics and digest checks while Liskov runs governing-contract checks; a mechanically valid but unauthorized artifact in Hoare is exposed by Liskov, while a faithful but non-executable rule reading in Liskov is exposed by Hoare.",
+      "Hoare runs byte-level and lifecycle checks while Parnas runs owner/reference and retryability checks; a locally correct but dangling mechanism in Hoare is exposed by Parnas, while a clean ownership story without executable evidence in Parnas is exposed by Hoare.",
+      "Liskov runs authority and claim-proof checks while Parnas runs single-owner and operational-handoff checks; a formally permitted but double-owned result in Liskov is exposed by Parnas, while an operable handoff that silently exceeds authority in Parnas is exposed by Liskov."
+    ]
+  },
+  "target_bindings": [
+    {"path": "docs/features/agents-communication-infra/reviews/2026-07-26-phase-a-authoring-review/review.md", "sha256": "ee9017fb2f288b66387caff29bf03a75aa7b4b2d1afae384f5072c7e86861c34"},
+    {"path": "docs/features/agents-communication-infra/WORK-PACK.md", "sha256": "73f404bcc0a9a2f0f9a1140a0716c6c31eab3ab47e2f82e155b07c8bf3f4bcf5"},
+    {"path": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-BUS-DELIVERY-001.json", "sha256": "00317cb0170f45eb9164e75dee0633f466ae00ab631c0306bc92195a59fad69e"},
+    {"path": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-HOST-BUS-INTEGRITY-001.json", "sha256": "f8fcf56ea7fe32986dd01ba79fad8ba1cef5a4b3c723d87a32ae920a804768d3"},
+    {"path": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-HOST-BUS-INTEGRITY-001-code-readiness.json", "sha256": "86e2ab9288014d5a7aa8119a265bc5526b1e74d77bac573deb534d5d85c299da"},
+    {"path": "docs/features/agents-communication-infra/work-pack/shared/swu-manifest.md", "sha256": "c742ef9a84db260542f43a55126559ad41335cbd30e56c29300e749b023655d3"},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.md", "sha256": "3387a8a8df01e87535b2f7c4e14d350de52f9df19b7f7b00de0538eee6b45da2"},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.index.json", "sha256": "dfbd1f430184ddaea5d1175d55b9385d79d345f9c3bff18b41352188c0850099"},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-SCAFFOLD.md", "sha256": "ce62d79f225489c234328c90e8c85a4a91cdbaed9af34f0cbbd3536d2927fa67"},
+    {"path": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-structural-v2.json", "sha256": "c8249c2d08c1babe8a7523dffe2399a94c26f74f53f07334514881f77c927520"},
+    {"path": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-capability-profile-v2.json", "sha256": "e6151d83921a14c603f5b6ebe775ef74085e6dbce42235a0aac9779cbc3887be"},
+    {"path": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-concrete-core-v2.json", "sha256": "185877b10bd9b46866a247753887bfd0438a7ee09a8a66d2345106ae7010c52b"},
+    {"path": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-concrete-v2.json", "sha256": "ec13436bbb7f3f9cb744beb9b90aed00a4c7597c592ad74b78b0cfabdaaa54b7"},
+    {"path": "plans/governed-agent-work-infrastructure/workstreams/phase-a-host-bus-integrity-dispatch-row-v2.json", "sha256": "d4adc4d500197be901b8afa46c53ad8d3c8fe4dc6bc4ade453acffe12d65c69c"},
+    {"path": ".codex/workflow-inputs/2026-07-26-phase-a-host-bus-integrity/alignment-manifest.json", "sha256": "3f3c2d2b6279e2967255bddba5d72b90b9adfaa532f70a9727bdcac737995f7d"},
+    {"path": ".codex/workflow-inputs/2026-07-26-phase-a-host-bus-integrity/layering-manifest.json", "sha256": "07aa12e3b5cfa74bc7c1a5198a35f29f86c4a0d4ed8e4351d13aeeee58fe7b5d"},
+    {"path": ".codex/workflow-inputs/2026-07-26-phase-a-host-bus-integrity/generate-auditor-manifests.mjs", "sha256": "d8277614f79d3ec4393f2a258b064b7186dfcec5bfeb2b34fe2e57b9cecfd844"},
+    {"path": ".codex/workflow-inputs/2026-07-26-phase-a-host-bus-integrity/close-error.json", "sha256": "bbfffe84e3534d64b58e572b706db93cb59608ff41ec4bfd542e6cff3fc14003"}
+  ],
+  "authority_bindings": [
+    {"path": ".agents/skills/review/SKILL.md", "sha256": "361d89755843241b98b324b88c13b2fea41e4ce55cc7ac92130475bd7befc8b5"},
+    {"path": ".agents/skills/domainspec-subagents-strategy/SKILL.md", "sha256": "bd60579a8844d5ad6e09ead79c51ba0c933ee944ceaf0944efa88acb7c7796d6"},
+    {"path": ".agents/skills/register-dispatch/SKILL.md", "sha256": "a62ba26a6c48b63c73935d8da4c120f02359c2d01d82365f7d355f0acfe7e23a"},
+    {"path": ".agents/skills/check-tension/SKILL.md", "sha256": "70628402068c54e8395d0ca07797b54421ce50004a582145d97fe459e99d9428"},
+    {"path": ".claude/skills/domainspec-implement/SKILL.md", "sha256": "e8cb57ffcb40e0107d209971a8459e45cc7eab909d06a84433fe501673a8f0a9"},
+    {"path": ".codex/hooks.json", "sha256": "f68f52cb6774336a70963920047d52bf36445eab0a7a13084a8004b7b1125d90"},
+    {"path": "AGENTS.md", "sha256": "222ce3522853b9c3306351b0050bddfe371575bc0b8d0499625a98577ac1bc42"},
+    {"path": "docs/features/agent-provenance-telemetry/integration/stage-f/host-hook-policy.json", "sha256": "1c7c3349222ddec734e989c99b2505cf72dc17a0651805c98cdbc33cfd47810b"},
+    {"path": ".claude/skills/register-dispatch/append-dispatch.cjs", "sha256": "ae9837d8d2ba1f069ceb25c2cd7c45d22920e9e3c4de58f5006fab0b0d4b594c"}
+  ],
+  "runtime_evidence_selectors": {
+    "ledger": "telemetry/agents/subagents-dispatch.yaml: dispatch_id and close_of 2026-07-26-phase-a-host-bus-integrity only",
+    "database": "telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3: read-only rows in host_workflow_turn_bindings and dispatch_links for 2026-07-26-phase-a-host-bus-integrity"
+  }
+}

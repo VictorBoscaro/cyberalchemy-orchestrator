@@ -21,6 +21,7 @@ decision state live under [`work-pack/`](work-pack/).
 | `workPackGateStatus` | **pass-for-exact-swu** | Existing `SWU-ACI-APT-VS-001` and `SWU-ACI-BUS-DELIVERY-001` remain accepted. The 2026-07-26 owner-approved continuation additionally selects only `SWU-ACI-HOST-BUS-INTEGRITY-001` to close Phase-A F4/F5/F6. Every other runtime SWU remains blocked. |
 | `mutationTestAuthorization` | **pass_for_exact_swu** | Owner-delegated authorization covers only the descriptor-bound F4/F5/F6 source, tests, Stage-E manifest and repository-local temporary DB work for `SWU-ACI-HOST-BUS-INTEGRITY-001`; it grants no F1/F2 policy invention, effect claim/provider execution, ACI-005 materializer or cutover authority. |
 | `localPilotServeEnablement` | **pass-local-pilot-only; operative** | Independent Stage-C review accepted only explicit `127.0.0.1` serving of `SWU-ACI-APT-VS-001` with its dedicated SQLite DB and verified Stage-B receipt. |
+| `hostHookRuntimeStatus` | **local-pass; live-host-reload-required** | Namespaced Codex matcher repair and all 48 focused infrastructure tests pass, but the current client session did not hot-reload `.codex/hooks.json`; no code/review dispatch may resume until a fresh-session smoke materializes hook state and ACI/YAML receipts. |
 | `productionEnablement` | **block** | External network, provider execution, materializer and audit-ledger cutover are excluded. |
 | `cvrImplementationGateStatus` | **approval_packet_prepared — NON-PASS** | Prepared for named owner review; no owner acceptance, active exception or implementation authorization exists. |
 | `cvrAuthorizationPredicate` | Global gates, or proposed exact descriptor-bound authorization for one enumerated CVR SWU | Proposed branch is non-operative until the coordinated five-entry packet is accepted; currently false. |
@@ -32,7 +33,7 @@ decision state live under [`work-pack/`](work-pack/).
 | `dispatchTechniqueTrace` | [section below](#dispatch-technique-trace) | Selected techniques affect gates and receipts. |
 | `distillValidationStatus` | **pass** | W0 artifacts and the exact named-SWU descriptor passed independent digest review cycle 5/5. |
 | `activeLayerWindow` | L0 | W0 decisions, then Slice 0 only. |
-| `lastUpdatedAt` | 2026-07-23 | Stage-A W0 closure corpus authored. |
+| `lastUpdatedAt` | 2026-07-26 | Phase-A repair readiness plus Stage-F namespaced matcher repair and live-host residue synchronized. |
 | `readinessProfile` | pilot | Single-host, single-tenant runtime. |
 
 ## Objective summary
@@ -87,7 +88,7 @@ Excluded until later phases:
 | [TASK-CVR](work-pack/tasks/TASK-CVR.md) | Prepare and, only after exact authorization, deliver canonical vault reads in artifact then edge slices. | L0 adjunct | high | W0 adjunct | global block + nominal gate | documentation-prepared; implementation-blocked |
 | [TASK-010](work-pack/tasks/TASK-010.md) | Implement journal, reducer, command dedupe and state hashing. | L0 | high | W1 | exact `SWU-ACI-APT-VS-001` selected | bounded vertical slice implemented; broader Slice-1 work remains |
 | [TASK-020](work-pack/tasks/TASK-020.md) | Implement audit-ledger opening/close materializers and reconciliation. | L0/L1 | high | W1-W2 | blocked by TASK-000/010 | not-started |
-| [TASK-030](work-pack/tasks/TASK-030.md) | Execute the fixed protocol with deterministic fake adapters. | L0 | high | W1 | exact no-provider-effect SWU selected; remaining task blocked by TASK-010/020 | `SWU-ACI-BUS-DELIVERY-001` ready; broader task not-started |
+| [TASK-030](work-pack/tasks/TASK-030.md) | Execute the fixed protocol with deterministic fake adapters. | L0 | high | W1 | exact no-provider-effect SWU implemented but Phase-A FIX remains; remaining task blocked by TASK-010/020 | `SWU-ACI-BUS-DELIVERY-001` repair-required (F1-F6 and completion receipt); broader task not-started |
 | [TASK-040](work-pack/tasks/TASK-040.md) | Add durable outbox, recovery, sealing, races and runtime SSE. | L1 | high | W2 | blocked by S-001 | not-started |
 | [TASK-050](work-pack/tasks/TASK-050.md) | Integrate one real provider through `AgentAdapter`. | L2 | high | W3 | blocked by S-002 ADRs | not-started |
 | [TASK-060](work-pack/tasks/TASK-060.md) | Run the preregistered product-value gate. | L2/L3 | high | W4 | blocked by TASK-050 | not-started |
@@ -105,8 +106,8 @@ scope. No other runtime SWU is selected:
 | SWU | Parent | Goal | Dependencies | Write scope | Done criteria | Evidence | Verification | Owner |
 |---|---|---|---|---|---|---|---|---|
 | `SWU-ACI-APT-VS-001` | bounded TASK-010/APT integration | Implement the exact local vertical slice. | [cross-workpack predicate](work-pack/tasks/TASK-APT-VS-001.md#entry-predicate) | descriptor-bound runtime/test paths only | Complete test matrix and execution receipt; no broadened claims. | mutation receipt, state/artifact hashes, independent implementation PASS | independent review plus root approval | selected |
-| `SWU-ACI-BUS-DELIVERY-001` | bounded TASK-030 reveal-delivery proof | Prove publish→verify→sealed close→reveal→authorized peer input without external execution. | accepted journal/artifact/capability/publication base plus canonical amendment and T-ACI-PEER1–7 | exact descriptor paths only | Atomic wrapper-complete input delivery, stable retry/restart, no peer-read, zero provider/tool starts. | focused tests, regression suites, alignment/layering/verifier PASS | delegated bounded owner authority plus independent review | implemented-verified |
-| `SWU-ACI-HOST-BUS-INTEGRITY-001` | Phase-A prerequisite maintenance | Close reviewed F4/F5/F6 without changing the accepted Host Binding or BUS behavior. | Phase-A FIX review plus T-ACI-PHASEA-I1–I3 | exact descriptor paths only | Null/mismatched follow-up identity, corrupted peer bytes and active-source tamper all fail closed; provider/tool starts remain zero. | focused Host Binding/BUS/source-integrity tests plus brownfield alignment/layering and verifier | owner-approved bounded continuation | selected-for-readiness |
+| `SWU-ACI-BUS-DELIVERY-001` | bounded TASK-030 reveal-delivery proof | Prove publish→verify→sealed close→reveal→authorized peer input without external execution. | accepted journal/artifact/capability/publication base plus canonical amendment and T-ACI-PEER1–7 | exact descriptor paths only | Atomic wrapper-complete input delivery, stable retry/restart, no peer-read, zero provider/tool starts. | focused tests passed, but Phase-A review found F1-F6 and no completed execution receipt | delegated bounded owner authority plus independent review | fix-required; completion claim downgraded |
+| `SWU-ACI-HOST-BUS-INTEGRITY-001` | Phase-A prerequisite maintenance | Close reviewed F4/F5/F6 without changing the accepted Host Binding or BUS behavior. | Phase-A FIX review plus T-ACI-PHASEA-I1–I3 | exact descriptor paths only | Null/mismatched follow-up identity, corrupted peer bytes and active-source tamper all fail closed; provider/tool starts remain zero. | focused Host Binding/BUS/source-integrity tests plus brownfield alignment/layering and verifier | owner-approved bounded continuation | planner/readiness PASS; prior proposal invalidated by source drift; refresh after live-host smoke |
 
 All runtime SWUs except the accepted `SWU-ACI-APT-VS-001`, exact
 `SWU-ACI-BUS-DELIVERY-001` and exact Phase-A repair

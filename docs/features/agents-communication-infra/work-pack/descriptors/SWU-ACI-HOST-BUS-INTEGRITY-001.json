@@ -2,7 +2,7 @@
   "descriptor_schema": "aci.named-swu-descriptor/v1",
   "swu_id": "SWU-ACI-HOST-BUS-INTEGRITY-001",
   "scope": "phase-a-bounded-runtime-integrity-f4-f5-f6",
-  "planner_preflight": "authoring_complete_readiness_pending",
+  "planner_preflight": "pass_for_exact_swu",
   "parent_review": "docs/features/agents-communication-infra/reviews/2026-07-25-host-bus-phase-a-close/review.md",
   "findings": [
     "F4-follow-up-null-identity",
@@ -14,9 +14,14 @@
     "accepted-host-workflow-binding-contract",
     "accepted-bus-peer-input-contract",
     "t-aci-phasea-i1-through-i3-defined",
+    "implementation-baseline-decisions-recorded",
+    "strict-context-pack-and-scaffold-pass",
     "brownfield-alignment-and-layering-groups-required-before-code",
     "domainspec-code-readiness-pass"
   ],
+  "context_pack_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.md",
+  "context_index_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-CONTEXT.index.json",
+  "implementation_scaffold_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-HOST-BUS-INTEGRITY-001-SCAFFOLD.md",
   "write_scope": [
     "implementations/server/runtime/service.py",
     "implementations/tests/runtime/test_host_workflow_binding.py",
@@ -60,5 +65,5 @@
     "production": false,
     "destructive": false
   },
-  "implementation_status": "specified-readiness-pending"
+  "implementation_status": "ready-for-code-dispatch-proposal"
 }

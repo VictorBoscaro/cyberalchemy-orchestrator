@@ -1,0 +1,63 @@
+{
+  "profile_schema": "aci.proposed-capability-profile/v1",
+  "profile_id": "phase-a-host-bus-integrity-v2",
+  "effective_enforcement": "non_observable",
+  "seats": {
+    "alignment-audits/alignment": {
+      "filesystem": "read-only over the alignment corpus declared in the concrete proposal",
+      "logical_tools": ["read", "search", "hash"],
+      "commands": ["Get-FileHash over declared corpus paths only"],
+      "requested_sandbox": "read-only",
+      "network": "none",
+      "credentials": false,
+      "production": false,
+      "destructive": false,
+      "spawn_or_delegation": "denied"
+    },
+    "alignment-audits/layering": {
+      "filesystem": "read-only over the layering corpus declared in the concrete proposal",
+      "logical_tools": ["read", "search", "hash"],
+      "commands": ["Get-FileHash over declared corpus paths only"],
+      "requested_sandbox": "read-only",
+      "network": "none",
+      "credentials": false,
+      "production": false,
+      "destructive": false,
+      "spawn_or_delegation": "denied"
+    },
+    "implementation/coder": {
+      "filesystem": "task-scoped write over the exact seven descriptor paths; read-only over declared inputs",
+      "logical_tools": ["read", "search", "apply_patch", "shell_exact_validation"],
+      "commands": [
+        "python -B -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+        "python -B -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v",
+        "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+        "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v"
+      ],
+      "strict_tagging": "unavailable within this SWU because the tagger writes governance artifacts outside the seven-path write scope; return explicit unavailable/blocking result and do not run it",
+      "requested_sandbox": "workspace-write limited to declared paths",
+      "network": "none",
+      "credentials": false,
+      "production": false,
+      "destructive": false,
+      "spawn_or_delegation": "denied"
+    },
+    "verification/skeptic": {
+      "filesystem": "read-only over declared inputs, task-owned diff and parent-authored implementation evidence",
+      "logical_tools": ["read", "search", "shell_exact_validation"],
+      "commands": [
+        "python -B -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+        "python -B -m unittest implementations.tests.runtime.test_bus_reveal_delivery -v",
+        "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+        "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v"
+      ],
+      "requested_sandbox": "read-only",
+      "network": "none",
+      "credentials": false,
+      "production": false,
+      "destructive": false,
+      "spawn_or_delegation": "denied"
+    }
+  },
+  "claim_limit": "The proposal records requested capabilities. Completion reports observed file changes and command results only; it does not claim OS-level sandbox enforcement."
+}
