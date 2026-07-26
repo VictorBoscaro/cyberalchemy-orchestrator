@@ -8,26 +8,26 @@
   <style>
 @page {
   size: A4;
-  margin: 16mm 18mm 12mm;
-  background: #f0e5d5;
+  margin: 18mm 22mm 15mm;
+  background: #f4eadc;
 }
 
 * { box-sizing: border-box; }
 
 html {
-  background: #f0e5d5;
-  color: #17110e;
+  background: #f4eadc;
+  color: #120d0b;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
 body {
   margin: 0;
-  background: #f0e5d5;
-  color: #17110e;
+  background: #f4eadc;
+  color: #120d0b;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 10.65pt;
-  line-height: 1.52;
+  font-size: 10.55pt;
+  line-height: 1.58;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -38,16 +38,16 @@ body::before {
   inset: -30mm;
   z-index: -10;
   background:
-    radial-gradient(circle at 88% 8%, rgba(181,64,39,.08), transparent 27%),
-    linear-gradient(145deg, #f4ecdf 0%, #eee1cf 100%);
+    radial-gradient(circle at 88% 8%, rgba(181,64,39,.09), transparent 27%),
+    linear-gradient(145deg, #f8f0e4 0%, #f0e2d0 100%);
 }
 
 main { width: 100%; }
 
 h1 {
-  max-width: 170mm;
-  margin: 0 0 8mm;
-  color: #17110e;
+  max-width: 158mm;
+  margin: 0 0 10mm;
+  color: #100b09;
   font: 700 30pt/1.04 Georgia, serif;
   letter-spacing: -0.6pt;
 }
@@ -63,24 +63,31 @@ h1::before {
 }
 
 h2 {
-  margin: 8.5mm 0 3.5mm;
-  padding-top: 2.4mm;
-  border-top: 0.6pt solid rgba(155,53,31,.34);
-  color: #8e2e1c;
+  margin: 11mm 0 4.5mm;
+  padding-top: 3mm;
+  border-top: 0.75pt solid rgba(133,39,23,.46);
+  color: #7b2114;
   font: 700 18.5pt/1.16 Georgia, serif;
   letter-spacing: -0.18pt;
   break-after: avoid-page;
 }
 
 h3 {
-  margin: 5.5mm 0 2.2mm;
-  color: #1d1713;
+  margin: 7mm 0 3mm;
+  color: #130e0b;
   font: 700 12.4pt/1.25 Arial, sans-serif;
   letter-spacing: .25pt;
   break-after: avoid-page;
 }
 
-p { margin: 0 0 3.6mm; orphans: 3; widows: 3; }
+p {
+  margin: 0 0 4.8mm;
+  color: #17100c;
+  orphans: 3;
+  widows: 3;
+}
+
+p + p { margin-top: 1.2mm; }
 
 strong { font-weight: 700; color: #1b1410; }
 
@@ -102,8 +109,8 @@ blockquote {
 
 blockquote p:last-child { margin-bottom: 0; }
 
-ul, ol { margin: 1mm 0 4mm; padding-left: 7mm; }
-li { margin: 0 0 1.6mm; padding-left: 1mm; }
+ul, ol { margin: 2mm 0 5.5mm; padding-left: 7mm; }
+li { margin: 0 0 2.2mm; padding-left: 1.2mm; }
 li::marker { color: #9c321f; font-weight: 700; }
 
 code {
@@ -172,7 +179,7 @@ tbody tr:nth-child(even) td { background: rgba(186,154,125,.10); }
 .hero-map .orbit { fill: none; stroke: #9b321f; stroke-width: 2.1; opacity: .55; }
 .hero-map .orbit-b { stroke: #1f1915; opacity: .25; }
 .hero-map .orbit-c { stroke-dasharray: 5 5; opacity: .35; }
-.hero-map .node { fill: #f0e5d5; stroke: #8e2e1c; stroke-width: 3; }
+.hero-map .node { fill: #f4eadc; stroke: #7b2114; stroke-width: 3; }
 .hero-map .node-main { fill: #b43f27; stroke: #b43f27; }
 .hero-map .node-core { fill: #211b17; stroke: #211b17; }
 
@@ -298,19 +305,28 @@ they influence what becomes visible, which distinctions seem important, and whic
 can be imagined.</p>
 <p>The system does not need to model human perception itself. It needs to preserve the attributable
 transition from a situated perception to a declared and revisable objective.</p>
-<p>At first, the objective is usually an incomplete intention. A person may sense a direction before
-they can describe the destination precisely. They may know that something should change without
-yet knowing the work, constraints, or sequence required to change it. The intention contains a
-purpose, but much of that purpose remains implicit.</p>
+<p>At first, the objective often appears as a single monolithic intention: one large, still formless
+whole with little internal detail or clarity. A person may sense a direction before they can
+describe the destination precisely. They may know that something should change without yet
+knowing the work, constraints, or sequence required to change it. The intention carries a
+purpose, but its parts, relationships, and much of its meaning remain implicit.</p>
 <h2>2. From one intention to many pieces of work</h2>
-<p>As time and effort are invested, the intention gains detail. A broad direction may become a
-possible route. When that route needs its own proposal identity, authority search, and lifecycle,
-it may become a Plan. It may instead remain a section, workstream, task, or another bounded form of
-work. In either case, the route can be developed into steps, each described more closely in terms
-of what needs to be done and, sometimes, how it might be done.</p>
+<p>As time and effort are invested, the monolithic intention begins to acquire contour. Distinctions
+appear inside it: outcomes, constraints, questions, and possible routes that were previously
+fused. Some of these distinctions become separate intentions, each with its own objective, scope,
+and possible work. Together, they compose the initial objective rather than merely sitting
+beneath it. The relationship is also recursive: what is learned while pursuing one of these
+intentions may clarify, challenge, or change the objective from which it emerged.</p>
+<p>A more specific intention may become a possible route. When that route needs its own proposal
+identity, authority search, and lifecycle, it may become a Plan. It may instead remain a section,
+workstream, task, or another bounded form of work. In either case, the route can be developed into
+steps, each described more closely in terms of what needs to be done and, sometimes, how it might
+be done.</p>
 <pre><code class="language-text">perception
 -&gt; objective
--&gt; intention
+-&gt; monolithic intention
+-&gt; differentiated intentions
+-&gt; composed and revisable objective
 -&gt; possible route
 -&gt; Plan, workstream, or another decomposable form
 -&gt; steps
