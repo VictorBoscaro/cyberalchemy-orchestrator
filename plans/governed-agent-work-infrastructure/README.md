@@ -30,6 +30,7 @@ does not redefine that contract.
 | Governed Agent Work Infrastructure | [PLAN.md](PLAN.md) | Root Plan; named, with ID pending |
 | Agent Work Language Research | [subplans/agent-work-language-research/PLAN.md](subplans/agent-work-language-research/PLAN.md) | Research subplan recorded by the root Plan |
 | Candidate System Invariants | [subplans/agent-work-language-research/CANDIDATE-INVARIANTS.md](subplans/agent-work-language-research/CANDIDATE-INVARIANTS.md) | Candidate invariant set belonging to the research subplan |
+| A High-Level View of Work Context Infrastructure | [essays/work-context-system-view/README.md](essays/work-context-system-view/README.md) | Proposal-only companion essay linking objectives, context, work, authority, evidence, and execution without superseding the broader agent-language system view |
 | Brokered Agent Launcher Capability Bootstrap | [workstreams/brokered-agent-launcher-capability-bootstrap.md](workstreams/brokered-agent-launcher-capability-bootstrap.md) | Workstream recorded by the root Plan; not an independent Plan |
 | Knowledge Machine and Agent Orchestrator Seed Roadmap | [archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md](archive/knowledge-machine-and-agent-orchestrator-seed-roadmap.md) | Archived predecessor retained for provenance |
 

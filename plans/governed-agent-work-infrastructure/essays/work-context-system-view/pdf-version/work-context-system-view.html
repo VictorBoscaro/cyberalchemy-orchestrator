@@ -1,0 +1,1366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="file:///C:/Users/victo/cyberalchemy-orchestrator/plans/governed-agent-work-infrastructure/essays/work-context-system-view/">
+  <title>A High-Level View of Work Context Infrastructure</title>
+  <style>
+@page {
+  size: A4;
+  margin: 16mm 18mm 12mm;
+  background: #f0e5d5;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: #f0e5d5;
+  color: #17110e;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  margin: 0;
+  background: #f0e5d5;
+  color: #17110e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 10.65pt;
+  line-height: 1.52;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -30mm;
+  z-index: -10;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(181,64,39,.08), transparent 27%),
+    linear-gradient(145deg, #f4ecdf 0%, #eee1cf 100%);
+}
+
+main { width: 100%; }
+
+h1 {
+  max-width: 170mm;
+  margin: 0 0 8mm;
+  color: #17110e;
+  font: 700 30pt/1.04 Georgia, serif;
+  letter-spacing: -0.6pt;
+}
+
+h1::before {
+  content: "";
+  display: block;
+  width: 36mm;
+  height: 3.2mm;
+  margin: 3mm 0 10mm;
+  border-radius: 2mm;
+  background: #b43f27;
+}
+
+h2 {
+  margin: 8.5mm 0 3.5mm;
+  padding-top: 2.4mm;
+  border-top: 0.6pt solid rgba(155,53,31,.34);
+  color: #8e2e1c;
+  font: 700 18.5pt/1.16 Georgia, serif;
+  letter-spacing: -0.18pt;
+  break-after: avoid-page;
+}
+
+h3 {
+  margin: 5.5mm 0 2.2mm;
+  color: #1d1713;
+  font: 700 12.4pt/1.25 Arial, sans-serif;
+  letter-spacing: .25pt;
+  break-after: avoid-page;
+}
+
+p { margin: 0 0 3.6mm; orphans: 3; widows: 3; }
+
+strong { font-weight: 700; color: #1b1410; }
+
+a {
+  color: #7d281a;
+  text-decoration-color: #b43f27;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 1.5px;
+}
+
+blockquote {
+  margin: 0 0 8mm;
+  padding: 4mm 5mm 3.8mm 6.5mm;
+  border-left: 3.2px solid #b43f27;
+  background: rgba(255,250,241,.53);
+  color: #2a211b;
+  break-inside: avoid-page;
+}
+
+blockquote p:last-child { margin-bottom: 0; }
+
+ul, ol { margin: 1mm 0 4mm; padding-left: 7mm; }
+li { margin: 0 0 1.6mm; padding-left: 1mm; }
+li::marker { color: #9c321f; font-weight: 700; }
+
+code {
+  color: #742616;
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(142,46,28,.20);
+  border-radius: 2px;
+  padding: .15em .34em;
+  font: .86em Consolas, "Courier New", monospace;
+}
+
+pre {
+  margin: 3mm 0 5mm;
+  padding: 4.8mm 5mm 4.5mm;
+  border-left: 3.4px solid #c44b31;
+  border-radius: 0 2.2mm 2.2mm 0;
+  background: #211b17;
+  color: #fff6e8;
+  box-shadow: 0 2mm 5mm rgba(42,26,18,.10);
+  font: 8.6pt/1.42 Consolas, "Courier New", monospace;
+  white-space: pre-wrap;
+  break-inside: avoid-page;
+}
+
+pre code {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+table {
+  width: 100%;
+  margin: 2.5mm 0 5mm;
+  border-collapse: collapse;
+  border: .65pt solid #a88f79;
+  background: rgba(255,251,244,.62);
+  color: #181310;
+  font: 8.15pt/1.34 Arial, sans-serif;
+}
+
+thead { display: table-header-group; }
+tr { break-inside: avoid-page; }
+th {
+  padding: 2.5mm 2.7mm;
+  border: .5pt solid #66594f;
+  background: #201a16;
+  color: #fffaf0;
+  font-weight: 700;
+  text-align: left;
+}
+td {
+  padding: 2.3mm 2.7mm;
+  border: .5pt solid #baa48f;
+  vertical-align: top;
+}
+tbody tr:nth-child(even) td { background: rgba(186,154,125,.10); }
+
+.hero-map {
+  margin: -2mm 0 4mm;
+  padding: 0;
+  break-inside: avoid;
+}
+.hero-map svg { display: block; width: 100%; height: 31mm; }
+.hero-map .orbit { fill: none; stroke: #9b321f; stroke-width: 2.1; opacity: .55; }
+.hero-map .orbit-b { stroke: #1f1915; opacity: .25; }
+.hero-map .orbit-c { stroke-dasharray: 5 5; opacity: .35; }
+.hero-map .node { fill: #f0e5d5; stroke: #8e2e1c; stroke-width: 3; }
+.hero-map .node-main { fill: #b43f27; stroke: #b43f27; }
+.hero-map .node-core { fill: #211b17; stroke: #211b17; }
+
+.concept-figure {
+  margin: 5mm 0 7mm;
+  padding: 5mm;
+  border: .8pt solid #a9846b;
+  border-radius: 2.2mm;
+  background: rgba(255,250,241,.68);
+  box-shadow: 0 2mm 7mm rgba(48,29,20,.08);
+  break-inside: avoid-page;
+  font-family: Arial, sans-serif;
+}
+
+.figure-kicker {
+  margin-bottom: 3.5mm;
+  color: #792719;
+  font: 700 8.7pt/1 Arial, sans-serif;
+  letter-spacing: 1.1pt;
+  text-transform: uppercase;
+}
+
+.path-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2mm; }
+.path-card {
+  min-height: 25mm;
+  padding: 3mm 2.6mm;
+  border-top: 2.3px solid #b43f27;
+  background: #f5ecdf;
+}
+.path-card span { display: block; color: #a23a25; font-size: 7.5pt; font-weight: 700; }
+.path-card b { display: block; margin: 1.4mm 0 .8mm; color: #1c1511; font: 700 9.3pt Arial, sans-serif; }
+.path-card small { display: block; color: #4b4038; font: 7.4pt/1.25 Arial, sans-serif; }
+.convergence { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3mm; align-items: center; margin-top: 3.6mm; }
+.convergence i { height: 1px; background: #a9846b; }
+.convergence strong { color: #792719; font: 700 8.5pt Arial, sans-serif; text-transform: uppercase; letter-spacing: .7pt; }
+
+.flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr; gap: 1.2mm; align-items: stretch; }
+.flow-row > div { padding: 2.6mm 1.8mm; border: .6pt solid #b49982; background: #f5ecdf; text-align: center; }
+.flow-row b { display: block; font: 700 7.4pt Arial, sans-serif; }
+.flow-row small { display: block; margin-top: 1mm; color: #5a4c42; font: 6.5pt/1.2 Arial, sans-serif; }
+.flow-row em { align-self: center; color: #a23a25; font: 700 10pt Arial, sans-serif; }
+
+.graph-family { text-align: center; }
+.graph-source, .acceptance, .history, .projection {
+  width: 72%;
+  margin: 0 auto;
+  padding: 2.6mm 3mm;
+  border: .7pt solid #a9846b;
+  background: #f5ecdf;
+  color: #211914;
+  font: 700 8.4pt Arial, sans-serif;
+}
+.acceptance { width: 60%; border-color: #b43f27; color: #792719; }
+.history { width: 38%; background: #211b17; color: #fff7ea; border-color: #211b17; }
+.projection { width: 45%; }
+.vertical-link { width: 1px; height: 4mm; margin: 0 auto; background: #9f6f56; }
+.branch-line { width: 68%; height: 4mm; margin: 0 auto -1px; border-top: 1px solid #9f6f56; border-left: 1px solid #9f6f56; border-right: 1px solid #9f6f56; }
+.views { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.views div { padding: 2.5mm; border: .7pt solid #a9846b; background: #f5ecdf; font: 700 8pt Arial, sans-serif; }
+
+.evidence-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3mm; align-items: stretch; }
+.evidence-pair > div:not(.plus) { padding: 4mm; border: .7pt solid #a9846b; background: #f5ecdf; }
+.evidence-pair span { display: inline-grid; width: 6mm; height: 6mm; place-items: center; border-radius: 50%; background: #b43f27; color: white; font: 700 7pt Arial; }
+.evidence-pair b { display: block; margin: 2mm 0 1mm; font: 700 10pt Arial; }
+.evidence-pair small { display: block; color: #4d4037; font: 8pt/1.3 Arial; }
+.plus { align-self: center; color: #8e2e1c; font: 700 18pt Georgia; }
+.evidence-result { margin-top: 3mm; padding: 2.2mm; background: #211b17; color: #fff7ea; text-align: center; font: 700 8.4pt Arial; letter-spacing: .2pt; }
+.evidence-result em { color: #e56f51; font-style: normal; }
+
+.result-heading + ul {
+  columns: 2;
+  column-gap: 7mm;
+  column-rule: .6pt solid rgba(155,53,31,.26);
+  padding-left: 5mm;
+  font-size: 8.85pt;
+  line-height: 1.30;
+}
+.result-heading {
+  break-before: page;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.result-heading + ul li {
+  break-inside: avoid;
+  margin-bottom: 2mm;
+}
+
+hr { border: 0; border-top: .6pt solid #b79d86; margin: 6mm 0; }
+
+@media print {
+  .concept-figure, pre, blockquote { break-inside: avoid-page; }
+  h1, h2, h3 { break-after: avoid-page; }
+}
+</style>
+</head>
+<body><main><h1>A High-Level View of Work Context Infrastructure</h1>
+
+<figure class="hero-map" aria-label="Local work connected to larger contexts">
+  <svg viewBox="0 0 760 180" role="img">
+    <path class="orbit orbit-a" d="M60 92 C150 8 286 8 375 92 C464 176 610 176 700 92"/>
+    <path class="orbit orbit-b" d="M60 92 C150 176 286 176 375 92 C464 8 610 8 700 92"/>
+    <path class="orbit orbit-c" d="M125 92 C210 38 290 38 375 92 C460 146 540 146 635 92"/>
+    <circle class="node node-main" cx="60" cy="92" r="11"/>
+    <circle class="node" cx="205" cy="42" r="7"/>
+    <circle class="node" cx="205" cy="142" r="7"/>
+    <circle class="node node-core" cx="375" cy="92" r="14"/>
+    <circle class="node" cx="545" cy="42" r="7"/>
+    <circle class="node" cx="545" cy="142" r="7"/>
+    <circle class="node node-main" cx="700" cy="92" r="11"/>
+  </svg>
+</figure>
+
+<h2>1. From perception to intention</h2>
+<p>All work begins, at least in some form, with an idea about something that could be different.
+Someone observes something in their life or in the reality around them and perceives a possibility,
+a need, a problem, or a condition worth preserving. From that perception, an objective begins to
+take shape.</p>
+<p>The objective does not appear in isolation. Perception is situated. People encounter reality
+through lenses influenced by their experience, knowledge, biological constitution, social
+position, and cultural context. These factors do not mechanically determine one conclusion, but
+they influence what becomes visible, which distinctions seem important, and which possibilities
+can be imagined.</p>
+<p>The system does not need to model human perception itself. It needs to preserve the attributable
+transition from a situated perception to a declared and revisable objective.</p>
+<p>At first, the objective is usually an incomplete intention. A person may sense a direction before
+they can describe the destination precisely. They may know that something should change without
+yet knowing the work, constraints, or sequence required to change it. The intention contains a
+purpose, but much of that purpose remains implicit.</p>
+<h2>2. From one intention to many pieces of work</h2>
+<p>As time and effort are invested, the intention gains detail. A broad direction may become a
+possible route. When that route needs its own proposal identity, authority search, and lifecycle,
+it may become a Plan. It may instead remain a section, workstream, task, or another bounded form of
+work. In either case, the route can be developed into steps, each described more closely in terms
+of what needs to be done and, sometimes, how it might be done.</p>
+<pre><code class="language-text">perception
+-&gt; objective
+-&gt; intention
+-&gt; possible route
+-&gt; Plan, workstream, or another decomposable form
+-&gt; steps
+-&gt; detailed work
+-&gt; tasks
+-&gt; attempts
+-&gt; effects and artifacts
+</code></pre>
+<p>A possible route may instead become one directly bounded task; the sequence above is an
+illustrative decomposition, not a required lifecycle.</p>
+<p>The intention does not merely become longer. It becomes composed of more parts. What was once held
+together as one idea begins to appear across conversations, Plans, research, decisions,
+specifications, assignments, tasks, attempts, and changed files.</p>
+<p>This makes focused work possible, but it changes what is visible. Attention moves closer to the
+individual parts. A task may remain understandable by itself while the objective that made it
+worth doing becomes difficult to see. Several tasks may be completed correctly even after the
+assumption, feature, or larger purpose they were meant to serve has changed.</p>
+<p>The work becomes more precise locally while its purpose becomes less visible globally.</p>
+<h2>3. The problem the system must solve</h2>
+<p>The central purpose of the proposed system is to preserve the relationship between local work and
+the larger contexts that explain it.</p>
+<p>A local piece of work should remain connected to:</p>
+<ul>
+<li>the objective from which it ultimately emerged;</li>
+<li>the interpretations, assumptions, and evidence that shaped that objective;</li>
+<li>the Plans, discoveries, specifications, and decisions that refined it;</li>
+<li>the authority that permitted a person, agent, or tool to act;</li>
+<li>the attempts, effects, and artifacts through which the work became concrete; and</li>
+<li>the evidence used to judge whether the result advanced anything larger.</li>
+</ul>
+<p>This is not only a task-management problem. A task manager can record assignments while losing
+their justification. It is not only a document-management problem. Documents can preserve text
+while leaving their semantic and operational relationships implicit. It is not only a workflow or
+multi-agent problem. A workflow can execute the wrong route correctly.</p>
+<p>The deeper problem is the loss of context between levels of work.</p>
+<blockquote>
+<p>Every piece of work should remain connected to the larger contexts that give it purpose,
+meaning, and legitimate authority.</p>
+</blockquote>
+<p>The system must preserve five independently inspectable paths: <strong>purpose</strong>, <strong>authority</strong>,
+<strong>assignment</strong>, <strong>causation</strong>, and <strong>realization</strong>. They may converge on the same outcome, but none
+can be inferred from another. An execution can, for example, be authorized without having been
+assigned to the purpose-bearing task. The remainder of this essay explains the properties,
+responsibilities, and validation strategy required to preserve these paths.</p>
+<p>When inspected, a path may be witnessed, missing, conflicted, or superseded. These are explanatory
+distinctions rather than a fixed response vocabulary.</p>
+<h3>Reading map</h3>
+<ul>
+<li>Sections 1–16 establish the problem and the properties the system may need.</li>
+<li>Sections 17–30 describe the candidate shape and its responsibilities.</li>
+<li>Sections 31–34 name preservation and formalization questions.</li>
+<li>Sections 35–36 define the first discriminating test.</li>
+<li>Sections 37–38 preserve open questions, ownership gaps, and limits.</li>
+</ul>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Task-management system</td>
+  <td>Tracks assignments and status but may not preserve purpose, evidence, or authority.</td>
+</tr>
+<tr>
+  <td>Document repository</td>
+  <td>Preserves artifacts but may leave their relationships and operational consequences implicit.</td>
+</tr>
+<tr>
+  <td>Workflow engine</td>
+  <td>Coordinates execution after meaning and legitimacy have already been assumed.</td>
+</tr>
+<tr>
+  <td>Multi-agent orchestrator</td>
+  <td>Explains one important execution mechanism, not the full path from intention to effect.</td>
+</tr>
+</tbody>
+</table>
+
+<figure class="concept-figure five-paths" aria-label="Five independently inspectable paths">
+  <div class="figure-kicker">Five independently inspectable paths</div>
+  <div class="path-grid">
+    <div class="path-card"><span>01</span><b>Purpose</b><small>why the work exists</small></div>
+    <div class="path-card"><span>02</span><b>Authority</b><small>what permits action</small></div>
+    <div class="path-card"><span>03</span><b>Assignment</b><small>who carries responsibility</small></div>
+    <div class="path-card"><span>04</span><b>Causation</b><small>what produced change</small></div>
+    <div class="path-card"><span>05</span><b>Realization</b><small>what supports the outcome</small></div>
+  </div>
+  <div class="convergence"><i></i><strong>candidate outcome</strong><i></i></div>
+</figure>
+<h2>4. Moving from the part to the whole</h2>
+<p>From any task, attempt, artifact, or effect, a person should be able to move upward through its
+context:</p>
+<pre><code class="language-text">Why does this exist?
+Which work asked for it?
+Which Plan or route produced that work?
+Which objective does the route serve?
+Which decision authorized this action?
+Which assumptions and evidence shaped those choices?
+</code></pre>
+<p>This upward path checks purpose and authority. It makes orphan work visible. A task with no
+defensible upward path may still be technically clear, but the system cannot explain why it should
+be performed.</p>
+<p>The path need not be one fixed chain. A task may acquire its purpose through one set of relations
+and its authority through another. What matters is that the relevant paths remain inspectable and
+that the system does not invent missing links.</p>
+<h2>5. Moving from the whole to its parts</h2>
+<p>From an objective, a person should also be able to move downward:</p>
+<pre><code class="language-text">Which Plans attempt to realize this objective?
+Which work is active, blocked, abandoned, or complete?
+Which decisions changed the route?
+Which tasks and attempts are operating now?
+Which effects and artifacts were produced?
+What evidence indicates that the objective is being advanced?
+</code></pre>
+<p>This downward path checks realization. An objective with no path toward concrete work may be an
+aspiration with nothing attempting to implement it. A Plan with no tasks may be incomplete. A
+specification with no implementation and an implementation with no verification are different,
+inspectable gaps.</p>
+<p>Upward and downward traversal are complementary. The upward path asks whether local work remains
+justified. The downward path asks whether high-level intent has become real.</p>
+<h2>6. More than one context</h2>
+<p>Work does not belong to one universal hierarchy.</p>
+<p>A task can simultaneously:</p>
+<ul>
+<li>belong to a sprint;</li>
+<li>implement a specification;</li>
+<li>change a feature;</li>
+<li>answer a discovery;</li>
+<li>consume a research result;</li>
+<li>satisfy part of a Plan;</li>
+<li>be executed by an agent; and</li>
+<li>be authorized by a user decision.</li>
+</ul>
+<p>These connections mean different things. They should not be reduced to one <code>parent</code> relation, and
+they should not be inferred from one folder path. A file has one physical location, but the work it
+represents can participate in several contexts at the same time.</p>
+<p>The system must therefore support multiple simultaneous organizations of the same underlying work.
+A project may be viewed by feature, Plan, objective, sprint, agent, artifact type, authority scope,
+or unresolved question without creating a different identity for each view.</p>
+<h2>7. Context as composition</h2>
+<p>At this explanatory altitude, it is not enough to treat context only as a container around a piece
+of work. The future ontology must determine whether and how context is constituted by the relevant
+relationships through which that work participates in a larger system.</p>
+<p>A task is not fully explained by its internal description. Its meaning also depends on:</p>
+<ul>
+<li>what produced it;</li>
+<li>what it contributes to;</li>
+<li>what constrains it;</li>
+<li>what it depends on;</li>
+<li>what authorized it;</li>
+<li>what evidence it uses; and</li>
+<li>what later work depends on it.</li>
+</ul>
+<p>No single relation necessarily provides enough context. The explanation may depend on a path
+across several relations, each with a distinct meaning. The system must preserve the path without
+pretending that every path licenses the same conclusion.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>One organizational tree</td>
+  <td>A piece of work may participate in several non-hierarchical contexts.</td>
+</tr>
+<tr>
+  <td>Folder structure as context</td>
+  <td>Physical placement is one projection and cannot safely encode every semantic relation.</td>
+</tr>
+<tr>
+  <td>Put all context in the task description</td>
+  <td>Repeats and freezes information that belongs to independently changing objects.</td>
+</tr>
+<tr>
+  <td>Infer relationships from proximity</td>
+  <td>Nearby files or events are not necessarily semantically or authoritatively connected.</td>
+</tr>
+</tbody>
+</table>
+<h2>8. Stable identity under changing descriptions</h2>
+<p>The system must distinguish a thing from its current description.</p>
+<p>Names, paths, classifications, and relationships can change while the thing remains addressable.
+A feature can move to another project. A Plan can be renamed. An early artifact can be classified
+as Research only after it has existed for some time. The same object can appear in several views
+without becoming several objects.</p>
+<p>Stable identity makes it possible to preserve history through these changes. It does not require
+every object to receive a permanent universal identifier immediately. It requires the system to
+make identity decisions explicit and to avoid treating mutable descriptions as if they were the
+identity itself.</p>
+<h2>9. Relationships with distinct meanings</h2>
+<p>Once multiple contexts are allowed, relationships need semantics.</p>
+<p>Connections such as these are not interchangeable:</p>
+<pre><code class="language-text">part-of
+implements
+uses
+answers
+depends-on
+authorized-by
+produced-by
+supports
+contradicts
+supersedes
+</code></pre>
+<p><code>Produced-by</code> does not imply <code>accepted-as</code>. <code>Part-of</code> does not imply <code>authorized-by</code>. <code>Uses</code> does
+not imply <code>supports</code>. A system that collapses these distinctions may create convenient paths while
+manufacturing conclusions that no accepted relation warrants.</p>
+<p>The exact meaning of relation and the relation vocabulary remain deferred. The property required
+at this altitude is that
+relations preserve enough meaning to constrain traversal, derivation, authority, and change.</p>
+<h2>10. Progressive definition</h2>
+<p>The system cannot require complete knowledge at the moment something is first noticed.</p>
+<p>An idea may deserve preservation before anyone knows whether it is Research, Discovery, a Plan, a
+requirement, a task, a hypothesis, or another kind of object. Requiring a complete schema at
+creation makes early capture expensive and encourages important context to remain in private
+memory or transient conversation.</p>
+<p>A possible progression is:</p>
+<pre><code class="language-text">partially understood object
+-&gt; observations and candidate descriptions
+-&gt; stronger classifications and relations
+-&gt; reviewed or accepted contracts
+-&gt; operational use under explicit authority
+</code></pre>
+<p>This is not one mandatory maturity ladder. It expresses increasing commitment. Cheap descriptions
+should remain distinguishable from structural conformance, accepted truth, and permission to act.</p>
+<h2>11. Provenance and responsibility</h2>
+<p>Important descriptions, relationships, and decisions should retain their origin.</p>
+<p>The system should be able to distinguish:</p>
+<pre><code class="language-text">a relation is asserted
+a relation is supported by evidence
+a relation is accepted in one context
+a relation is authorized for operational use
+</code></pre>
+<p>It should preserve who or what made the assertion, when it was made, which evidence was available,
+and which process accepted or rejected it. An agent-generated statement remains attributable to
+the agent. A validator result remains evidence from that validator. A user decision remains a
+decision by that user.</p>
+<p>Provenance does not by itself make a claim true or an effect authorized. It makes the basis for
+later judgments inspectable.</p>
+<h2>12. History rather than silent replacement</h2>
+<p>Context cannot be preserved by freezing it. It must be preserved by recording how it changes.</p>
+<pre><code class="language-text">Feature-F was part of Project-A
+Feature-F is now part of Project-B
+Decision-D1 authorized the original route
+Decision-D2 replaced that route
+Task-T began under D1
+Task-U began under D2
+</code></pre>
+<p>The current representation can be derived without erasing the earlier one. This makes it possible
+to distinguish work that violated the current route from work that was valid under an earlier
+route, and to understand why later decisions replaced earlier ones.</p>
+<p>History should preserve accepted change, not every untrusted observation as if it had equal
+authority. The source, acceptance boundary, and epistemic status of a historical fact remain part
+of its meaning.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Mutable current-state records only</td>
+  <td>They erase why earlier work existed and how the current representation emerged.</td>
+</tr>
+<tr>
+  <td>Append every observation as truth</td>
+  <td>An event was recorded does not mean its interpretation was correct or accepted.</td>
+</tr>
+<tr>
+  <td>Require settled types before identity</td>
+  <td>Early work remains outside the system precisely when context is most likely to be lost.</td>
+</tr>
+<tr>
+  <td>Treat provenance as validity</td>
+  <td>Knowing who asserted something does not establish that the assertion is true or authorized.</td>
+</tr>
+</tbody>
+</table>
+<h2>13. Decisions as part of context</h2>
+<p>Approvals, rejections, corrections, and selections should not disappear inside conversations.</p>
+<p>A decision should remain connected to what was decided, who decided it, the context in which it
+applied, and the later work that relied on it. A rejection is also durable information. It can
+explain why work did not happen and reveal a boundary that should constrain later proposals.</p>
+<p>The system should not collapse a decision into the state of its target. “Accepted” is not only a
+label on a Plan; it is also an attributable occurrence with a scope, basis, and time.</p>
+<h2>14. Acceptance is not authority to execute</h2>
+<p>Several states that look similar in ordinary conversation must remain separate:</p>
+<pre><code class="language-text">described
+!= proposed
+!= accepted
+!= authorized to execute
+!= executed
+!= verified
+</code></pre>
+<p>A Plan may be accepted as the best current route without authorizing any Dispatch. A research
+result may be accepted as evidence without authorizing a file change. A detailed task may still
+lack the authority, capability, or resources required to run.</p>
+<p>The system should make these boundaries visible because later interfaces cannot recover
+distinctions that the underlying records never preserved.</p>
+
+<figure class="concept-figure governance-flow" aria-label="Acceptance is distinct from authority and execution">
+  <div class="figure-kicker">Distinct governance transitions</div>
+  <div class="flow-row">
+    <div><b>Description</b><small>what is asserted</small></div><em>→</em>
+    <div><b>Proposal</b><small>what is requested</small></div><em>→</em>
+    <div><b>Acceptance</b><small>what is recognized</small></div><em>→</em>
+    <div><b>Authority</b><small>what may execute</small></div><em>→</em>
+    <div><b>Execution</b><small>what occurred</small></div><em>→</em>
+    <div><b>Verification</b><small>what evidence establishes</small></div>
+  </div>
+</figure>
+<h2>15. Authority across levels</h2>
+<p>A user may authorize one Dispatch. The user may also authorize a bounded workflow:</p>
+<blockquote>
+<p>Continue this research, review, and implementation workflow without asking before every task.</p>
+</blockquote>
+<p>These decisions operate at different levels.</p>
+<pre><code class="language-text">User Decision
+-&gt; Authorized Workflow
+-&gt; Dispatch
+-&gt; Attempt
+-&gt; Effect
+</code></pre>
+<p>The broader decision is not unlimited. It applies to the objective, scope, kinds of work, limits,
+conditions, and duration the user accepted. Later Dispatches should remain connected to it, and the
+system should be able to explain why each local effect is still covered.</p>
+<h2>16. Authority as a containment question</h2>
+<p>For local work to proceed under broader authority, the system must determine whether the work
+remains inside the approved boundary.</p>
+<p>Relevant dimensions may include:</p>
+<ul>
+<li>objective and intended outcome;</li>
+<li>repositories and path scopes;</li>
+<li>kinds of work and effects;</li>
+<li>tools and capabilities;</li>
+<li>network and mutation boundaries;</li>
+<li>agent, time, token, and round limits;</li>
+<li>prohibited actions;</li>
+<li>expiration and stop conditions.</li>
+</ul>
+<p>An omitted or ambiguous dimension should not silently become permission. How containment is
+represented and checked remains a load-bearing design choice: <code>OD-01</code>.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Approval as a boolean</td>
+  <td>Loses scope, conditions, duration, and the object of the decision.</td>
+</tr>
+<tr>
+  <td>Plan acceptance implies execution</td>
+  <td>Confuses agreement about a route with permission to produce effects.</td>
+</tr>
+<tr>
+  <td>Authority automatically inherits through ancestry</td>
+  <td>A parent relation does not necessarily delegate tools, budget, or effect permission.</td>
+</tr>
+<tr>
+  <td>Ask before every action</td>
+  <td>Preserves control but can make bounded, repeated work unnecessarily expensive.</td>
+</tr>
+</tbody>
+</table>
+<h2>17. A recursive grammar of work</h2>
+<p>A familiar progression offers a useful first reading:</p>
+<pre><code class="language-text">Intent
+-&gt; Plan
+-&gt; Research
+-&gt; Discovery / Design
+-&gt; Specification
+-&gt; Implementation
+-&gt; Verification
+</code></pre>
+<p>It is not one irreversible pipeline. Research may challenge a Plan. Verification may reopen a
+Specification. A local implementation question may require another Plan. Work kinds can recur at
+different scopes and participate in several contexts.</p>
+<p>The property to preserve is not one universal order. It is that the applicable route,
+dependencies, bypasses, evidence, authority, and reopenings remain explicit and historically
+reconstructable.</p>
+<h2>18. Decomposition without loss of lineage</h2>
+<p>Complex work must be decomposed into bounded assignments. Each assignment should receive an
+immediate objective, selected context, constraints, an expected result, applicable gates, and an
+authority boundary.</p>
+<p>The assignment should not need to carry the whole project in its prompt or working memory. It
+should retain a resolvable path to the larger purpose while receiving only the context relevant to
+its responsibility.</p>
+<pre><code class="language-text">context available through lineage
+!= context materialized for one execution
+</code></pre>
+<p>This distinction allows the broader context to remain preserved without making every local worker
+interpret everything.</p>
+<h2>19. Selecting context for local work</h2>
+<p>Too little context produces work that may be locally correct but globally harmful. Too much
+context creates cost, distraction, conflicting instructions, and unclear authority.</p>
+<p>The system therefore needs a way to select bounded context for a task while preserving the path
+back to excluded context. Relevance does not automatically confer authority, and ancestry does
+not automatically grant access.</p>
+<p>Which information must be materialized, which may remain available through lineage, and how a
+selection can be checked are open questions under <code>OD-02</code>.</p>
+<h2>20. Logical work, physical attempts, and effects</h2>
+<p>The system should distinguish:</p>
+<ul>
+<li>a logical task or operation;</li>
+<li>the person or agent assigned to it;</li>
+<li>a particular physical attempt;</li>
+<li>the result returned;</li>
+<li>the effect produced; and</li>
+<li>the artifact that records or embodies that effect.</li>
+</ul>
+<p>A retry creates another attempt, not another purpose. A completed attempt does not automatically
+mean that its result was accepted. A mediated observation that a file changed is evidence of a
+state change. Only an accepted causal binding can attribute that change to a particular Attempt or
+intended effect; neither fact alone proves authorization, correctness, or usefulness.</p>
+<p>These distinctions connect the conceptual work graph to observable execution without allowing
+runtime activity to redefine the work retroactively.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>One global lifecycle</td>
+  <td>Cannot naturally represent recursive Research, local Plans, and reopenings.</td>
+</tr>
+<tr>
+  <td>Give every worker the whole context</td>
+  <td>Expensive, distracting, and likely to blur responsibility and authority.</td>
+</tr>
+<tr>
+  <td>Treat retries as new tasks</td>
+  <td>Loses the distinction between logical work and physical execution.</td>
+</tr>
+<tr>
+  <td>Treat a produced artifact as completion</td>
+  <td>Confuses activity with acceptance and objective realization.</td>
+</tr>
+</tbody>
+</table>
+<h2>21. From activity to evidence</h2>
+<p>The system should not equate activity with progress.</p>
+<pre><code class="language-text">work was requested
+work started
+an attempt returned
+an artifact was produced
+the artifact passed a local check
+the result was accepted
+the larger objective advanced
+</code></pre>
+<p>These are distinct claims. A workflow profile may require some as prerequisites for others, but no
+universal sequence or implication is assumed. Each claim needs its own evidence and any movement
+between them needs an accepted composition rule. Tests may show that code satisfies a local
+contract. They do not necessarily show that the contract still serves the feature, that the
+feature serves the Plan, or that the objective still matters.</p>
+<h2>22. Evidence that local work serves an objective</h2>
+<p>The downward realization path needs more than a chain of containment.</p>
+<p>A task may be part of a feature without advancing it. A feature may belong to a project without
+serving the current objective. The system needs a way to represent and inspect the basis for claims
+that local work contributes to larger outcomes.</p>
+<p>The required evidence will differ by level and kind of work. Some relationships may be supported
+by tests, others by review, observation, formal proof, or accountable human judgment. What counts
+as sufficient realization evidence remains open under <code>OD-03</code>.</p>
+<h2>23. Missing and partial grounding</h2>
+<p>The system must represent incompleteness honestly:</p>
+<ul>
+<li>an objective without any proposed realization route;</li>
+<li>a Plan without governing authority;</li>
+<li>a specification without implementation;</li>
+<li>implementation without verification;</li>
+<li>a task without an upward purpose path;</li>
+<li>an objective without downward realization;</li>
+<li>a claim without sufficient evidence; or</li>
+<li>a decision based on incomplete information.</li>
+</ul>
+<p>These are legitimate states when they remain visible. They become misleading when the system
+fills the gaps through inference or displays them as if they were complete.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Passing tests means the objective advanced</td>
+  <td>Tests usually establish a bounded technical claim, not strategic realization.</td>
+</tr>
+<tr>
+  <td>Every relation needs the same evidence</td>
+  <td>Different work and relation types require different warrants.</td>
+</tr>
+<tr>
+  <td>Hide incomplete objects until resolved</td>
+  <td>Removes the exact gaps the system should help users see.</td>
+</tr>
+<tr>
+  <td>Agent summary as grounding</td>
+  <td>A summary is another attributable assertion, not a substitute for source evidence.</td>
+</tr>
+</tbody>
+</table>
+<h2>24. When represented context diverges from work</h2>
+<p>The represented context can become stale:</p>
+<ul>
+<li>a task continues after its objective changes;</li>
+<li>a feature moves but its research remains attached to the old project;</li>
+<li>implementation follows a superseded specification;</li>
+<li>a Dispatch no longer fits the decision that was supposed to authorize it;</li>
+<li>an artifact changes without revisiting claims that depend on it.</li>
+</ul>
+<p>This contextual drift is the gap between the relationships the system represents and the work that
+is actually occurring. Preserving history is not enough; the system also needs ways to detect when
+the current representation no longer fits.</p>
+<p>A useful drift diagnosis localizes the break. It identifies the changed source, the dependent
+claim, the assumption that no longer holds, and the affected purpose, authority, assignment,
+causation, or realization path. The path may then be understood as current, missing, conflicted,
+or superseded without silently repairing its lineage.</p>
+<h2>25. Hooks, validators, and observers</h2>
+<p>Hooks can react when context changes. Validators can check explicit invariants. Observers can
+record what occurred.</p>
+<p>These mechanisms may detect orphan work, broken lineage, stale authority, incompatible changes,
+missing evidence, or effects outside an accepted boundary. They should not manufacture semantic
+relationships merely because two files changed together or two events occurred nearby.</p>
+<p>The hook is not the context. The validator is not the invariant. The observer is not the event it
+reports. Each is a mechanism participating in the preservation and inspection of context.
+When one accepted dependency changes, these mechanisms should help explain which dependent path
+changed and why, while leaving semantic repair to an attributable decision.</p>
+<h2>26. Current views from historical facts</h2>
+<p>The same accepted history can support several current views:</p>
+<ul>
+<li>work by objective;</li>
+<li>work by Plan or feature;</li>
+<li>active, blocked, abandoned, and complete work;</li>
+<li>tasks by agent or artifact type;</li>
+<li>decisions by scope;</li>
+<li>work with missing authority or evidence;</li>
+<li>physical folder and repository views.</li>
+</ul>
+<p>These views should remain projections. A convenient dashboard, generated folder tree, or cached
+graph should not acquire authority merely because it is easier to inspect than its sources.
+A projection may legitimately omit information for its task, but it must not manufacture identity,
+fact, authority, causation, or currentness unsupported by accepted sources. Proximity in a view
+does not establish causation, and placement in a folder does not authorize action.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Periodic manual cleanup</td>
+  <td>Repairs visible drift but does not provide continuous or attributable detection.</td>
+</tr>
+<tr>
+  <td>Hooks own the context</td>
+  <td>Confuses a reaction mechanism with the relationships and history it observes.</td>
+</tr>
+<tr>
+  <td>One canonical dashboard</td>
+  <td>Different questions require different projections over the same identities.</td>
+</tr>
+<tr>
+  <td>Projection becomes source of truth</td>
+  <td>Allows a derived view to manufacture or overwrite authority.</td>
+</tr>
+</tbody>
+</table>
+<h2>27. Candidate responsibilities</h2>
+<p>The system can first be understood as a collaboration among responsibilities rather than as a
+fixed collection of services:</p>
+<ol>
+<li><strong>Intent capture</strong> preserves incomplete objectives and their origin.</li>
+<li><strong>Identity and relationship management</strong> preserves addressable things and their typed
+connections.</li>
+<li><strong>Decision and authority management</strong> records acceptance, rejection, delegation, and effect
+permission.</li>
+<li><strong>Planning and decomposition</strong> turns intentions into bounded work.</li>
+<li><strong>Context selection</strong> materializes the relevant subset for each execution.</li>
+<li><strong>Execution</strong> performs work through people, agents, and tools.</li>
+<li><strong>Evidence and verification</strong> evaluates results and claims.</li>
+<li><strong>History and projection</strong> preserves accepted change and derives current views.</li>
+<li><strong>Drift detection</strong> checks whether represented context still matches ongoing work.</li>
+</ol>
+<p>These responsibilities may share one implementation or be deployed separately. Their semantic
+boundaries matter before their deployment topology.</p>
+<h2>28. Distinctions a future ontology must own</h2>
+<p>A candidate substrate appears to need several distinctions without this essay settling their
+definitions. A future ontology must determine the boundaries among:</p>
+<ul>
+<li>addressable things that persist across descriptions and views;</li>
+<li>properties attributed to those things;</li>
+<li>connections carrying declared meaning;</li>
+<li>attributable claims about properties or connections;</li>
+<li>contextual acceptance, rejection, constraint, and authorization;</li>
+<li>accepted observations of change;</li>
+<li>durable content produced or consumed; and</li>
+<li>derived organizations of accepted facts.</li>
+</ul>
+<p>These distinctions do not imply one database table or service per concept. This essay uses the
+provisional words object, description, relationship, assertion, decision, event, artifact, and
+projection only as navigation labels. Their meanings and boundaries remain deferred.</p>
+<h2>29. A graph family, a history, and several projections</h2>
+<p>The emerging shape combines three different concerns:</p>
+<pre><code class="language-text">Attributable assertions, decisions, and observed events
+                         |
+       contextual review and acceptance boundary
+                         |
+  durable history of accepted change and attributable rejection
+                         |
+          +--------------+--------------+
+          |              |              |
+     purpose view   authority view   evidence view
+          +--------------+--------------+
+                         |
+              task-specific projections
+</code></pre>
+<p>This is a candidate graph-family shape, not a declaration that these three views form a mandatory
+taxonomy. Identity-bearing objects and attributable direct relations provide source material.
+Contextual review separates accepted change from rejected or unresolved claims without erasing the
+attributable occurrences. Overlapping graph views and task-specific projections can expose facts
+applicable under their declared acceptance stance without becoming their source.
+Authority constrains which changes and effects are allowed. Evidence supports or challenges
+assertions within the structure.</p>
+<p>Whether history is persisted first, graph state is persisted first, or each is maintained through
+a witnessed hybrid remains open. The required property is reconstructability without allowing a
+current graph or projection to rewrite the history from which its claims are justified.</p>
+<p>No one representation is automatically complete. A graph may preserve relationships while an
+artifact preserves content that should not be reduced to nodes and edges. The architecture should
+connect representations without pretending they are interchangeable.</p>
+
+<figure class="concept-figure graph-family" aria-label="Accepted history feeding overlapping graph views and projections">
+  <div class="figure-kicker">Candidate graph-family shape</div>
+  <div class="graph-source">Attributable assertions, decisions, and observed events</div>
+  <div class="vertical-link"></div>
+  <div class="acceptance">contextual review and acceptance boundary</div>
+  <div class="vertical-link"></div>
+  <div class="history">durable history</div>
+  <div class="branch-line"></div>
+  <div class="views">
+    <div>purpose view</div><div>authority view</div><div>evidence view</div>
+  </div>
+  <div class="vertical-link"></div>
+  <div class="projection">task-specific projections</div>
+</figure>
+<h2>30. Composition and derived meaning</h2>
+<p>Some relation paths may license derived conclusions:</p>
+<pre><code class="language-text">Task implements Specification
+Specification defines Feature
+Feature serves Objective
+</code></pre>
+<p>Even here, the conclusion that the Task serves the Objective depends on accepted composition
+rules, applicable versions, and direct witnesses.</p>
+<p>Other paths must not compose:</p>
+<pre><code class="language-text">Task authorized-by Decision
+Decision part-of Plan
+</code></pre>
+<p>This does not automatically mean that the Plan authorized the Task. Relation meaning, direction,
+scope, transitivity, and composition policy determine what can be derived.</p>
+<p>Direct relations remain attributable historical source material. A derived conclusion additionally
+needs a replayable witness that can answer which direct sources were used, which composition stance
+made the path admissible, which scope and version applied, and why the conclusion held at that
+time. If a rule or acceptance changes, the derived conclusion may cease to apply without rewriting
+its direct sources. The design of these witnesses and rules remains open under <code>OD-04</code>.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Permanent architecture layers</td>
+  <td>The responsibility boundaries are candidates, not yet deployment decisions.</td>
+</tr>
+<tr>
+  <td>Reduce every artifact to a graph</td>
+  <td>Graphs represent selected structure, not all content or behavior.</td>
+</tr>
+<tr>
+  <td>Make every relation transitive</td>
+  <td>Produces invalid purpose and authority conclusions.</td>
+</tr>
+<tr>
+  <td>One central service owns all meaning</td>
+  <td>Risks turning an interoperability substrate into a semantic and operational monolith.</td>
+</tr>
+</tbody>
+</table>
+<h2>31. Candidate invariants</h2>
+<p>Before choosing a kernel, the system can name properties it may need to preserve:</p>
+<ul>
+<li>names, paths, classifications, and projections do not silently redefine identity;</li>
+<li>accepted history remains reconstructable;</li>
+<li>relationships preserve type, direction, provenance, scope, and applicable version;</li>
+<li>derived paths retain their direct witnesses and composition rules;</li>
+<li>projections cannot manufacture facts or authority;</li>
+<li>lineage does not automatically delegate tools, evidence, budget, or effect permission;</li>
+<li>cheap descriptions do not silently become types, truths, or permissions;</li>
+<li>revocation and supersession remain visible;</li>
+<li>checker acceptance does not imply physical enforcement; and</li>
+<li>local validity does not automatically imply global compatibility.</li>
+</ul>
+<p>These are candidate invariants. Naming them does not prove that they are necessary, sufficient, or
+enforced.</p>
+<h2>32. One trusted boundary, several, or protocols</h2>
+<p>One open question is whether bounded acceptance and checking responsibilities should be organized
+through something called a kernel at all. Candidate system shapes include:</p>
+<ul>
+<li>one universal kernel;</li>
+<li>several specialized kernels;</li>
+<li>a microkernel with extensions;</li>
+<li>a kernel-of-kernels governing compatibility;</li>
+<li>protocols connecting independently governed domains; or</li>
+<li>an architecture in which kernel is not a useful organizing concept.</li>
+</ul>
+<p>The choice depends on which invariants are genuinely global, which remain domain-specific, and
+what must be witnessed when independently valid domains compose. This remains open decision
+<code>OD-05</code>.</p>
+<h2>33. Formalization</h2>
+<p>Formal methods may help with properties that can be stated precisely:</p>
+<ul>
+<li>identity preservation;</li>
+<li>relation signatures and permitted composition;</li>
+<li>acyclicity or controlled cycles;</li>
+<li>authority containment;</li>
+<li>historical consistency;</li>
+<li>projection preservation;</li>
+<li>compatibility among independently governed rule sets.</li>
+</ul>
+<p>Different tools establish different warrants. Deterministic validators can check concrete data
+against explicit rules. SMT solvers can search bounded constraint spaces. Lean can express and
+check selected mathematical claims. Tests can establish behavior for exercised cases. Reviews and
+human decisions can address judgments that are not reduced to those mechanisms.</p>
+<p>No one tool establishes that the overall product objective is worthwhile, that a formal model
+faithfully represents reality, or that an accepted rule is physically enforced in every runtime.</p>
+<h2>34. A gate for category-theoretic interpretation</h2>
+<p>The candidate substrate described so far is no more than a typed multigraph with selected
+relations and possible composition rules. It has not established the identities, closure,
+associativity, or coherence required to treat any relation family as a category.</p>
+<p>Category theory may become useful for a bounded relation family only after that family names:</p>
+<ul>
+<li>its carriers and directed transformations;</li>
+<li>identity transformations;</li>
+<li>a closed and associative composition law;</li>
+<li>the structure a proposed projection must preserve; and</li>
+<li>a counterexample or collapse test that would reject the interpretation.</li>
+</ul>
+<p>For example, the path from Task to Specification to Feature to Objective could become a candidate
+only after the relevant relation family states which arrows compose and what conclusion that
+composition warrants. Until then it remains a witnessed path in a typed graph.</p>
+<p>More elaborate candidates—including functors between contexts, natural transformations,
+limits, colimits, and residue—remain outside this architecture vocabulary until a named obligation
+requires them and supplies the corresponding laws and falsifier. Mathematical elegance alone does
+not show that a running orchestrator obeys the model.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Start with the kernel</td>
+  <td>Chooses a mechanism before establishing the property it must preserve.</td>
+</tr>
+<tr>
+  <td>Treat every candidate invariant as universal</td>
+  <td>Converts open design questions into hidden governing law.</td>
+</tr>
+<tr>
+  <td>Formal proof as total product evidence</td>
+  <td>A proof establishes its formal statement under assumptions, not empirical fit or runtime enforcement.</td>
+</tr>
+<tr>
+  <td>Category theory as metaphor only</td>
+  <td>Risks adding vocabulary without changing a design decision or enabling a check.</td>
+</tr>
+</tbody>
+</table>
+<h2>35. The smallest useful vertical slice</h2>
+<p>The first system should test one end-to-end question:</p>
+<blockquote>
+<p>Given one candidate outcome, observed artifact, or observed effect, can the system first
+determine whether accepted terminal evidence exists and then reconstruct defensible purpose,
+authority, assignment, and causal execution paths without treating adjacency as proof?</p>
+</blockquote>
+<p>The purpose and authority paths converge but do not collapse:</p>
+<pre><code class="language-text">purpose:     objective -&gt; chosen route -&gt; local work
+authority:   accepted permission -&gt; authorized execution -&gt; attempt
+assignment:  local work -&gt; bounded responsibility -&gt; attempt
+causation:   attempt -&gt; observed contribution -&gt; candidate outcome
+realization: local work -&gt; supported outcome claim -&gt; candidate outcome
+</code></pre>
+<p>The first slice should test whether an explicit assignment bridge is required. Convergence on the
+same outcome supplies a counterexample candidate when an authorized attempt was carrying a
+different responsibility: the test should determine whether the execution basis must connect that
+attempt to the purpose-bearing local work rather than relying on a shared outcome alone. The
+necessity and sufficiency of that bridge remain open under <code>OD-06</code>.</p>
+<p>Terminal evidence separates two obligations. A <strong>terminal-state witness</strong> shows that an attempt or
+effect route reached an applicable terminal condition. An <strong>outcome-binding witness</strong> connects that
+terminal activity to the candidate outcome. The first without the second is activity evidence, not
+causal or realization evidence. Likewise, finalized content without an accepted producer binding
+is durable content rather than realization evidence, and an intended effect without an accepted
+outcome observation remains a request.</p>
+<p>For any accepted causal binding, the slice should expose its attributable source, the acceptance
+occurrence or process, the scope and version in which it applies, and resolvable supporting
+evidence. Which process may accept such a binding and what evidence is sufficient remain open.</p>
+<p>The slice should support traversal in both directions, expose missing links instead of filling
+them, and preserve historical changes to each path. It should not require a universal ontology, a
+final trusted-boundary design, or formalization of every relation before testing the core value.</p>
+<h3>Current repository correspondence for the first slice</h3>
+<p>The present repository specifies two non-canonical correspondence variants. For runtime-managed
+flows, ACI specifies ownership of confirmed Dispatch authority, and APT specifies the corresponding
+<code>aci_managed</code> authority-snapshot reference. For legacy-managed flows, ACI specifies that authority
+remains with the legacy ledger, while APT specifies a <code>legacy_ledger</code> external-owner reference
+rather than duplicated authority. These names describe current repository contracts; they do not
+select the general architecture, establish a future contract, or prove that a runtime exists.</p>
+
+<figure class="concept-figure terminal-evidence" aria-label="Terminal evidence has two obligations">
+  <div class="figure-kicker">Terminal evidence has two obligations</div>
+  <div class="evidence-pair">
+    <div><span>A</span><b>Terminal-state witness</b><small>an applicable terminal condition was reached</small></div>
+    <div class="plus">+</div>
+    <div><span>B</span><b>Outcome-binding witness</b><small>the terminal activity supports the candidate outcome</small></div>
+  </div>
+  <div class="evidence-result">activity evidence <em>≠</em> realization evidence without the binding</div>
+</figure>
+<h2>36. What the first slice should test</h2>
+<p>The slice should begin with one fully witnessed golden case. Negative cases should be derived by
+changing one binding at a time: remove assignment, supersede purpose or authority, break accepted
+causation, omit terminal or outcome evidence, or introduce an ambiguous nearby relation that must
+not be inferred. One case should combine independently valid domain judgments that do not license
+their composition.</p>
+<p>For each mutation, the test should traverse upward and downward, identify the first broken binding,
+explain why that path changed, and show that unrelated paths did not change. Expected answers and
+the evidence needed to reach them should be frozen before evaluation. The same questions should
+then be reconstructed from ordinary repository artifacts without the lineage representation.</p>
+<p>The evaluation should measure answer classification and first-break localization; investigation
+time and evidence sources inspected; capture and repair burden; false confidence; and the
+comparison with ordinary repository reconstruction. Capture and repair cost may reverse an
+adoption decision even when answer quality improves. The slice fails if it:</p>
+<ul>
+<li>confuses purpose with authority;</li>
+<li>mistakes adjacency for causation;</li>
+<li>accepts an authorized Attempt as realizing a Task it was not assigned to execute;</li>
+<li>hides a missing or superseded link;</li>
+<li>cannot distinguish requested effects from completed outcomes; or</li>
+<li>cannot localize a one-binding mutation without disturbing unrelated paths;</li>
+<li>produces no measurable explanatory or decision benefit at an acceptable capture and repair cost.</li>
+</ul>
+<p>Exact thresholds and workload accounting remain experiment decisions, but they must be frozen
+before the slice is evaluated.</p>
+<h2>37. Open questions</h2>
+<ul>
+<li>Which things deserve stable identities, and at what point?</li>
+<li>Which relationships are direct facts, and which may be derived?</li>
+<li>What makes an upward path sufficient to justify local work?</li>
+<li>What evidence shows that micro work advanced a macro objective?</li>
+<li>When does changed context invalidate earlier authority?</li>
+<li>How much context should a leaf worker receive?</li>
+<li>Can an object participate in several Plans or projects without ambiguous authority?</li>
+<li>Which candidate invariants are global, domain-local, or configurable?</li>
+<li>What must be checked by validators, formal methods, empirical tests, or human judgment?</li>
+<li>How should independently governed contexts compose?</li>
+<li>How can maintenance cost and recovered value be measured?</li>
+</ul>
+<h2>38. What this view does not decide</h2>
+<p>This view names the system shape and its load-bearing questions. It does not decide their verdicts.</p>
+<table>
+<thead>
+<tr>
+  <th>Open decision</th>
+  <th>Tension</th>
+  <th>Downstream owner state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>OD-01</code> authority containment</td>
+  <td>useful bounded delegation vs accidental authority expansion</td>
+  <td>unassigned; future engineer-view work</td>
+</tr>
+<tr>
+  <td><code>OD-02</code> context selection</td>
+  <td>minimal local context vs sufficient purpose and constraint</td>
+  <td>unassigned; future engineer-view work</td>
+</tr>
+<tr>
+  <td><code>OD-03</code> objective-realization evidence</td>
+  <td>inspectable contribution vs unprovable strategic causality</td>
+  <td>unassigned; future engineer-view work</td>
+</tr>
+<tr>
+  <td><code>OD-04</code> relation composition</td>
+  <td>useful derived paths vs manufactured conclusions</td>
+  <td>unassigned; future engineer-view work</td>
+</tr>
+<tr>
+  <td><code>OD-05</code> trusted-boundary shape</td>
+  <td>shared trusted core vs independently governed domains</td>
+  <td>unassigned; future engineer-view work</td>
+</tr>
+<tr>
+  <td><code>OD-06</code> assignment binding</td>
+  <td>explicit responsibility continuity vs unnecessary mandatory linkage</td>
+  <td>unassigned; future engineer-view work</td>
+</tr>
+</tbody>
+</table>
+<p>The table records missing ownership rather than pretending that downstream rows already exist.
+Record shapes, failure vocabularies, storage, runtime mechanics, and verdicts on these decisions
+remain outside this essay.</p>
+<p>The following term meanings are also deferred rather than owned here:</p>
+<table>
+<thead>
+<tr>
+  <th>Provisional navigation term</th>
+  <th>Definition owner state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>identity, context, relationship, assertion</td>
+  <td>unassigned future ontology-view work</td>
+</tr>
+<tr>
+  <td>decision, authority, event</td>
+  <td>unassigned future ontology-view work</td>
+</tr>
+<tr>
+  <td>artifact, projection, invariant, kernel</td>
+  <td>unassigned future ontology-view work</td>
+</tr>
+</tbody>
+</table>
+<h3>Evidence boundary</h3>
+<table>
+<thead>
+<tr>
+  <th>Claim family used by this essay</th>
+  <th>Repository owner or evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Plan identity, nesting, and authority boundary</td>
+  <td><a href="../../../README.md">Plan contract</a></td>
+</tr>
+<tr>
+  <td>Root infrastructure objective and proposal-only authority</td>
+  <td><a href="../../PLAN.md">Governed Agent Work Infrastructure Plan</a></td>
+</tr>
+<tr>
+  <td>Proposal-only peer for broader language, context, relation, authority, and architecture shape</td>
+  <td><a href="../agent-language-system-view/essay.md">Agent-language system view</a></td>
+</tr>
+<tr>
+  <td>Macro-to-micro problem statement and changing-context questions</td>
+  <td><a href="../../../../docs/essays/macro-to-micro-context.md">Linking the Macro to the Micro</a></td>
+</tr>
+<tr>
+  <td>Candidate primitives, graphs, services, and invariants</td>
+  <td><a href="../../../../docs/essays/from-context-to-governed-primitives.md">From Macro-to-Micro Context to Governed Primitives</a></td>
+</tr>
+<tr>
+  <td>Current Dispatch authority and Attempt/effect/artifact distinctions</td>
+  <td><a href="../../../../docs/features/agents-communication-infra/specs/domain.md">ACI domain specification</a></td>
+</tr>
+<tr>
+  <td>Session, Dispatch, research, and authority-snapshot provenance</td>
+  <td><a href="../../../../docs/features/agent-provenance-telemetry/specs/domain.md">APT domain specification</a></td>
+</tr>
+</tbody>
+</table>
+<p>The ordering, responsibility model, candidate invariants, open-decision inventory, and
+falsification-oriented first slice are new synthesis and remain proposal-only.</p>
+<h3>Alternative framings considered</h3>
+<table>
+<thead>
+<tr>
+  <th>Framing</th>
+  <th>Why it is insufficient on its own</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Build the general ontology first</td>
+  <td>Delays testing whether the macro-to-micro path produces practical value.</td>
+</tr>
+<tr>
+  <td>Implement only the current Dispatch lineage</td>
+  <td>Proves execution ancestry but may leave purpose and decision ancestry disconnected.</td>
+</tr>
+<tr>
+  <td>Judge success by graph completeness</td>
+  <td>Rewards recording more structure rather than improving explanation, control, or decisions.</td>
+</tr>
+<tr>
+  <td>Treat this view as an accepted architecture</td>
+  <td>Converts a shape-and-stakes proposal into an unauthorized implementation route.</td>
+</tr>
+</tbody>
+</table>
+<h2 class="result-heading">System-view result</h2>
+<ul>
+<li><strong>Status:</strong> flag — complete as a companion essay, but its open decisions and ontology terms do
+not yet have instantiated downstream owners.</li>
+<li><strong>Target boundary:</strong> macro-to-micro work context from human objective through local effect,
+including purpose, authority, evidence, change, candidate architecture, and a first vertical
+slice.</li>
+<li><strong>Stakeholder altitude:</strong> begins with a general reader and increases toward product and
+architecture stakeholders; schema and runtime implementation are deferred.</li>
+<li><strong>Shape:</strong> perception -&gt; intention -&gt; decomposition -&gt; context preservation -&gt; authority and
+evidence -&gt; architecture responsibilities -&gt; invariants and formalization -&gt; first slice.</li>
+<li><strong>Layering:</strong> human situation and current work are given; context selection, decomposition,
+governance, and projections are optimized; accepted history accumulates.</li>
+<li><strong>Open decisions named:</strong> six, all explicitly unassigned.</li>
+<li><strong>Decided-nothing check:</strong> pass — the named stances remain open.</li>
+<li><strong>Term-deferral check:</strong> pass with dependency — provisional navigation terms are explicitly
+deferred to unassigned future ontology work.</li>
+<li><strong>Evidence boundary:</strong> repository-backed problem and current mechanisms; proposed synthesis for
+the full architecture and validation route.</li>
+</ul>
+</main></body>
+</html>
