@@ -1,6 +1,7 @@
 # Stage F - Mandatory Claude and Codex host wrapper
 
-Status: implemented for trusted project-local Claude Code and Codex sessions.
+Status: implemented for trusted project-local Claude Code and Codex sessions; a client session that
+was already running when hook configuration changed must reload before live enforcement is claimed.
 
 ## Contract
 
@@ -52,6 +53,13 @@ when their parent stops if the host does not provide exact completion correlatio
 Codex uses `PreToolUse`, `PostToolUse`, `SubagentStop`, and `SessionEnd`. A running result must
 contain an `agent_id`; otherwise the lifecycle fails visibly.
 
+The Codex matcher is a closed full-match expression that admits the bare, namespaced and flattened
+spellings emitted by supported hosts: `Agent`, `spawn_agent`, `followup_task`,
+`collaboration.spawn_agent`, `collaborationspawn_agent`, `collaboration.followup_task`, and
+`collaborationfollowup_task`. Near-miss names remain outside the hook. The matcher repair and the
+current live-reload residue are recorded in
+[`codex-namespaced-hook-matcher-repair-receipt.md`](codex-namespaced-hook-matcher-repair-receipt.md).
+
 Both hosts also run the Stage-G ingestion adapter after supported read, search, web, MCP, and shell
 tools. Exact repository reads become immutable input artifacts. Search/web/MCP operations record
 metadata-only lineage, while shell execution is explicitly recorded as opaque rather than
@@ -94,6 +102,9 @@ Repository code cannot force a client to load repository hooks:
 - Claude Code must load the checked-in project settings. A user who removes or ignores project
   settings is outside this repository enforcement boundary.
 - Hosted agent surfaces that do not execute local lifecycle hooks are not covered.
+- An already-running client may retain its startup-time hook configuration. After `.codex/hooks.json`
+  changes, a fresh session must pass a real helper smoke and produce hook state plus ACI/YAML
+  receipts before any subagent result is accepted.
 
 The checked-in wrapper is therefore mandatory for supported trusted local Claude/Codex execution,
 not an assertion of control over clients that refuse project configuration.

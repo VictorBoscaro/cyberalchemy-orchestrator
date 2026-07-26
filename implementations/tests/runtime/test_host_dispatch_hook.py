@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import json
+import re
 import shutil
 import tempfile
 import unittest
@@ -334,14 +335,25 @@ class HostDispatchHookTests(unittest.TestCase):
         )
         self.assertNotIn("SubagentStop", claude["hooks"])
         self.assertIn("Stop", claude["hooks"])
-        self.assertEqual(
-            codex["hooks"]["PreToolUse"][0]["matcher"],
-            "(^Agent$|spawn_agent$|followup_task$)",
+        matcher = (
+            "^(?:Agent|spawn_agent|followup_task|"
+            "collaboration(?:[._])?spawn_agent|"
+            "collaboration(?:[._])?followup_task)$"
         )
-        self.assertEqual(
-            codex["hooks"]["PostToolUse"][0]["matcher"],
-            "(^Agent$|spawn_agent$|followup_task$)",
-        )
+        self.assertEqual(codex["hooks"]["PreToolUse"][0]["matcher"], matcher)
+        self.assertEqual(codex["hooks"]["PostToolUse"][0]["matcher"], matcher)
+        for tool_name in (
+            "Agent",
+            "spawn_agent",
+            "followup_task",
+            "collaboration.spawn_agent",
+            "collaborationspawn_agent",
+            "collaboration.followup_task",
+            "collaborationfollowup_task",
+        ):
+            self.assertIsNotNone(re.fullmatch(matcher, tool_name), tool_name)
+        for tool_name in ("not_spawn_agent", "spawn_agent_extra", "other.Agent"):
+            self.assertIsNone(re.fullmatch(matcher, tool_name), tool_name)
         self.assertEqual(
             claude["hooks"]["PreToolUse"][0]["matcher"],
             "Agent",
