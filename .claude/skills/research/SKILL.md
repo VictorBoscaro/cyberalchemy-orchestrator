@@ -32,6 +32,19 @@ populated 2026-06-12). Division of law:
   is upstream authority only, not a routine read. This skill defines no field; it says which
   **values** a good research dispatch puts in them.
 
+## Initial-definition precondition
+
+Before designing a `StructuralGraphProposal`, selecting research roles, or proposing a governed
+research dispatch, require `<research-folder>/research-initial-definitions.md`. If it is missing,
+stop research design and route to `.claude/skills/research-initial-definitions/SKILL.md`; resume only
+after that informational context exists.
+
+Read the complete initial-definitions document before proposing the research. It supplies business
+context, purpose, the refinable research question, confirmed product constraints, the current
+evidence baseline, and known gaps. It does not define research methods, sources, roles, topology,
+budgets, gates, or expected findings; those remain owned by this skill and the router after the
+precondition is satisfied.
+
 ## Roles as epistemic functions
 
 Each role guards a distinct failure mode; no agent guards two.

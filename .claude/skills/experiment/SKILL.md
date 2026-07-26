@@ -22,6 +22,19 @@ experiment proposal. **Running the probe and adjudicating survived-vs-falsified 
 downstream step**, not part of this dispatch (the run phase, below). The deliverable here is a
 proposal good enough to run later and re-adjudicate deterministically — not a result.
 
+## Initial-definition precondition
+
+Before designing a `StructuralGraphProposal`, selecting roles, or drafting `criterion.md`, require
+`<working_folder>/experiment-initial-definitions.md`. If it is missing, stop experiment design and
+route to `.claude/skills/experiment-initial-definitions/SKILL.md`; resume only after that
+informational context exists.
+
+Read the complete initial-definitions document before proposing the experiment. It supplies business
+context, purpose, the refinable question, confirmed product constraints, the current evidence
+baseline, and known gaps. It does not authorize or define a hypothesis, criterion, method, agent
+topology, budget, or runtime behavior; those remain owned by this skill's later pre-registration
+lifecycle.
+
 ## The grader is the differentiator (peer, not re-skin)
 
 Experiment is a peer of its siblings because its **grader** differs, not because its roles are
@@ -152,9 +165,10 @@ The **run is a separate downstream dispatch** (not authored here): it consumes t
 
 - The **run phase is downstream** — this skill stops at the frozen proposal. How the run is
   dispatched (a follow-up run step, manual, or a future runner) is out of scope here.
-- The **code-execution runner is RESERVED** — gated on the `code` type landing with an execution
-  substrate. A run needing to execute code waits for `code` LIVE; the narrow run is
-  reasoning/investigation over artifacts, not code execution.
+- The experiment skill's **code-execution runner remains unimplemented** even though the separate
+  `code` dispatch type is LIVE. A criterion that needs an executable probe must route a distinct
+  downstream `code` dispatch through `domainspec-implement`; this experiment dispatch remains
+  reasoning/investigation over artifacts and never executes the probe itself.
 - **Reproducibility = deterministic RE-ADJUDICATION** — another agent, same frozen criterion +
   result, reaches the same verdict — NOT re-execution. The criterion artifact is authored *here*
   to make that possible later.
