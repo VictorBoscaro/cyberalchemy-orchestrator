@@ -26,6 +26,11 @@ Normative candidate definitions for concrete primitives exposed by the system.
 - **Domain:** A label admits the tags that may describe an object under its lens.
 - **Formal:** `admits(L,t) ↔ t ∈ Values(L)`.
 
+### Examples
+
+- **Enumerated:** `purpose` admits `create`, `improve`, and `other`.
+- **Open:** `research` uses `R_research` to select subjects materially treated by a research.
+
 ### Open questions
 
 - Which parts of a label and its prompt constitute one versioned definition?
@@ -50,6 +55,11 @@ Normative candidate definitions for concrete primitives exposed by the system.
 - **Domain:** A tag describes an object under the lens of its label. How the tag was obtained is
   evidence about its use, not part of the tag value.
 - **Formal:** `describes(o,L,t) → tag_under(t,L)`.
+
+### Examples
+
+- `improve` is a tag under the enumerated label `purpose`.
+- `system-design` may be a tag under the open label `research`.
 
 ### Open questions
 
