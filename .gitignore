@@ -24,6 +24,13 @@ node_modules/
 
 # Scratch dispatch proposals written next to the repo root by review runs.
 *.tmp.json
+/.dispatch-proposal.json
+/.dispatch-proposal.canonical.json
+/.dispatch-concrete-proposal.md
+
+# Scratch working directory: PDF page rasters and one-off probe scripts written
+# by render and inspection runs. Regenerable from the tracked sources.
+/tmp/
 
 # Runtime SQLite databases — regenerable runtime state, not source.
 /telemetry/runtime/
@@ -34,3 +41,20 @@ node_modules/
 # Playwright / ux-evidence-validator run artifacts (traces, screenshots,
 # measurements). Regenerable by re-running the suite that wrote them.
 /output/
+
+# Arcanum install surfaces. Runtime adapter config is per-machine — regenerate
+# it with `tools/arcanum` (which writes the default config), or re-run the
+# upstream bootstrap from an Arcanum checkout. Observability holds run evidence.
+/.arcanum/runtime/
+/.arcanum/observability/envelopes/*
+/.arcanum/observability/runs/*
+/.arcanum/observability/reflections/*
+/.arcanum/observability/by-sigil/*.jsonl
+/.arcanum/observability/by-capability/**/*.jsonl
+/.arcanum/observability/hooks/*.jsonl
+/.arcanum/observability/signals/*.jsonl
+/.arcanum/observability/reflection-state.json
+!/.arcanum/observability/runs/.gitkeep
+!/.arcanum/observability/reflections/.gitkeep
+!/.arcanum/observability/signals/.gitkeep
+!/.arcanum/observability/hooks/reflections/.gitkeep
