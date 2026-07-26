@@ -1,0 +1,116 @@
+{
+  "dispatch_id": "2026-07-26-artifact-placement-adjudication",
+  "schema_version": "0.6.1",
+  "dispatch_type": "others",
+  "work_kind": "placement adjudication — decide the correct filesystem home for a named inventory of repository artifacts, and produce a migration plan the parent can execute",
+  "output_contract": "each subject returns a verdict table (STAY | MOVE | SPLIT | RENAME + destination path) with cited evidence; the crosstalk group returns one reconciled table plus a residue list of unreconciled dissent; the second-review group returns verified change requests against that reconciled table. The parent is final_approver and is the only writer.",
+  "confirmation_mode": "final_only",
+  "human_affirmative": "given in advance by the repository owner on 2026-07-26: topology specified by the owner (3 independent subjects, each with its own reviewer, zig-zag up to 3 rounds, then robot-talks crosstalk, then a second reviewer pass, then parent adjudication and application), with explicit instruction not to re-confirm.",
+  "digest_note": "no conforming RFC 8785 JCS implementation is used here; the recorded digest is a locally sorted/compact JSON digest and is workflow evidence only — not portable or durable.",
+  "effective_enforcement": "non_observable",
+  "target_bindings": [
+    {"path": "README.md", "sha256": "08a4942d3128bd561aa63a54fcdda682bdc6808e97b79b9ac968a55f8052633c"},
+    {"path": "CLAUDE.md", "sha256": "04eb5326c3223d4cda75facc3bc1b9f910b9cf4669ec02abd28546e801b752cb"},
+    {"path": "AGENTS.md", "sha256": "222ce3522853b9c3306351b0050bddfe371575bc0b8d0499625a98577ac1bc42"},
+    {"path": "docs/README.md", "sha256": "904b8f69109f9d27b66ea42cddd3a7d3267078c1febb4abe8ff066eb48c0cdd7"},
+    {"path": "docs/features/README.md", "sha256": "2af498f17de05b8d2d44a0bf72e8f8b014825dfe34d04e9ae66b95e811d6ae7c"},
+    {"path": "docs/decisions/README.md", "sha256": "2a22569f5c25ce07b835d0f4e5a7af63056521202fa6f47828e643ba8ab762b7"},
+    {"path": ".claude/skills/review/SKILL.md", "sha256": "361d89755843241b98b324b88c13b2fea41e4ce55cc7ac92130475bd7befc8b5"},
+    {"path": ".claude/skills/experiment/SKILL.md", "sha256": "d7acb3c1381d32c4150d3f3b57baf5cb7cd6df6a38b3af65aef812ec82fd4257"},
+    {"path": ".claude/skills/research/SKILL.md", "sha256": "6fa40ece5c546f08d6653684e5e9943433ca7a77a3e27c87ee4fc8a3079824a1"},
+    {"path": "experiments/skill-relationship-graph/README.md", "sha256": "dd30c9c30cf0744a24710e4ecf41b17bb470736dbdeca76e0ee7b9f278ca4990"},
+    {"path": "experiments/skill-relationship-graph/criterion.md", "sha256": "9152eed8587daf13a01e939d8bec29a02c8e0983b67d63f64f132189dea13bb5"},
+    {"path": "experiments/skill-relationship-graph/experiment.md", "sha256": "5fcb9ed4eee74d1beee8d45cf8535597f2b754f34952265ce595805c7374ce77"},
+    {"path": "experiments/skill-relationship-graph/findings.md", "sha256": "25b2f532ae3cfcfd3758b79d5e5caa0e270e2583ecc5630bddc9c692fb175f4e"},
+    {"path": "experiments/skill-control-center/research/review/review.md", "sha256": "2897297e00d2b261bbc79c5e3491e4e1c209491e9cdbdea38a0e866582759219"},
+    {"path": "experiments/skill-control-center/research/research.md", "sha256": "0a62d13a0b0a5d74250d6d71b37cde839b5394cd8156d3aedc518767695a8428"},
+    {"path": "experiments/skill-control-center/research/findings.md", "sha256": "18b2fdcfa19a8c36f5d14740561b29285a6c7edc216b38d6862ac1c6ccae2dc6"},
+    {"path": "experiments/skill-control-center/implementation/final-review.md", "sha256": "4ab71cea3c4770ee313190d147c09d24114fd70b0125096ceb00a2d2325a51f5"},
+    {"path": "experiments/skill-control-center/meta-orchestration/findings.md", "sha256": "121a677206a783fc7a4ca027ed16ff375eea3d28d06079e3c9d0bcc58ed40eb7"},
+    {"path": "experiments/foodstogo-jbp-2025/designs/DESIGN-BRIEF.md", "sha256": "bdc5ab3b99bd7a7d12984302fc558e18a3b16a136e91594531b10a61413dcf4d"},
+    {"path": "docs/features/skill-control-center/SPEC.md", "sha256": "823e15a11d2d1dc901e8d2d390dcc849c5aeb825a3fd4aac2c5041a0268ca129"},
+    {"path": "docs/features/agents-communication-infra/README.md", "sha256": "c3e5cd4d7e948dc4194fb60c46638b61eb1b3270def68db8ddb6df430a523e71"},
+    {"path": "implementations/README.md", "sha256": "1ff1f87ef2ee460646fcde5ad7ed07e911c2787de4f7e9fb324bf981f62c2ef2"},
+    {"path": "plans/README.md", "sha256": "ec16cb6a3f21de9ecef3a8d453cc82cd1e7e6d8df18fba8bfd76e7631cafe614"}
+  ],
+  "inventory": [
+    {"id": "I1", "object": "experiments/skill-relationship-graph/", "note": "carries criterion.md + experiment.md + findings.md plus build_graph.py, graph.json, graph.dot, viewer.html, README.md"},
+    {"id": "I2", "object": "experiments/skill-control-center/", "note": "research/, meta-orchestration/, implementation/, agent-runtime/; no criterion.md; a feature package for the same name already exists at docs/features/skill-control-center/ and a runtime at implementations/"},
+    {"id": "I3", "object": "experiments/skill-control-center/research/review/review.md", "note": "a review dispatch artifact, verdict FIX, attacking research/research.md and research/findings.md"},
+    {"id": "I4", "object": "experiments/skill-control-center/implementation/final-review.md", "note": "a review artifact, verdict PASS, whose target is the runtime under implementations/; not named review.md"},
+    {"id": "I5", "object": "experiments/foodstogo-jbp-2025/", "note": "model/motor.py + model.json, content/, designs/, out/, render.sh — a client business case with no criterion and no falsifiable claim"},
+    {"id": "I6", "object": "the six dated review rounds under docs/features/agents-communication-infra/reviews/ and docs/features/agent-provenance-telemetry/reviews/", "note": "targets are SPECs, an ADR-bound implementation unit, a discovery, and a frozen code seam"},
+    {"id": "I7", "object": "docs/features/agents-communication-infra/experiments/", "note": "a second, feature-owned experiments home (bus-publication-probe/, skill-protocol-compilation/) coexisting with top-level experiments/ under no written rule of which to use"},
+    {"id": "I8", "object": "the absence of experiments/ from the root README.md directory tables", "note": "README.md lists implementations/, tools/, telemetry/, .claude/, vault/, docs/, research/, plans/, sessions/, internal-tools/ — experiments/ appears in none of them"},
+    {"id": "I9", "object": "research/artifact-placement-adjudication/ — this dispatch's own working_folder", "note": "the placement of this dispatch's own output is itself a placement claim and is in scope"}
+  ],
+  "groups": [
+    {"group_id": "subject-normative", "seats": [{"seat_id": "S-A", "agent_name": "Meyer, Bertrand", "role": "explorer", "angle": "the declared contract binds", "model": "claude-opus-5", "token_budget": 4000}]},
+    {"group_id": "reviewer-normative", "seats": [{"seat_id": "R-A", "agent_name": "Parnas, David", "role": "skeptic", "angle": "authority fidelity — does each cited rule exist, say that, and bind here", "model": "claude-haiku-4-5-20251001", "token_budget": 2500}]},
+    {"group_id": "subject-lineage", "seats": [{"seat_id": "S-B", "agent_name": "Torvalds, Linus", "role": "explorer", "angle": "lineage binds", "model": "claude-opus-5", "token_budget": 4000}]},
+    {"group_id": "reviewer-lineage", "seats": [{"seat_id": "R-B", "agent_name": "Randell, Brian", "role": "skeptic", "angle": "evidence sufficiency — lineage claims that the record cannot actually support", "model": "claude-opus-5", "token_budget": 2500}]},
+    {"group_id": "subject-cost", "seats": [{"seat_id": "S-C", "agent_name": "Boehm, Barry", "role": "explorer", "angle": "the cost of the move binds", "model": "claude-opus-5", "token_budget": 4000}]},
+    {"group_id": "reviewer-cost", "seats": [{"seat_id": "R-C", "agent_name": "Cunningham, Ward", "role": "skeptic", "angle": "cost falsification — status-quo bias dressed as cost analysis; the debt of not moving", "model": "claude-sonnet-5", "token_budget": 2500}]},
+    {"group_id": "crosstalk", "robot_talks": true, "anti_bias": "what has authority over where an artifact lives: the declared written rule, the causal lineage of the artifact, or the cost of moving it", "seats": [{"seat_id": "S-A", "agent_name": "Meyer, Bertrand", "role": "explorer", "angle": "the declared contract binds", "model": "claude-opus-5", "token_budget": 3000}, {"seat_id": "S-B", "agent_name": "Torvalds, Linus", "role": "explorer", "angle": "lineage binds", "model": "claude-opus-5", "token_budget": 3000}, {"seat_id": "S-C", "agent_name": "Boehm, Barry", "role": "explorer", "angle": "the cost of the move binds", "model": "claude-opus-5", "token_budget": 3000}], "note": "the same three subjects, post-zig-zag, now exchanging; angles carried forward unchanged from their zig-zag groups", "anti_collapse_protocol": "MANDATORY and legible. (1) Each seat's post-zig-zag verdict table is persisted by the parent to research/artifact-placement-adjudication/returns/ and bound {path, sha256} before crosstalk opens. (2) Each seat MUST open its crosstalk contribution by restating its own final zig-zag verdict table VERBATIM, before reading or responding to any other seat. (3) Any post-exchange change to its own row is marked DRIFT with the seat that moved it and the argument that moved it; an unmarked change is a defect. (4) The reconciled table must carry, per row, which seats held which position pre-crosstalk, so a row of unanimity that was NOT unanimous before the exchange is visible as convergence rather than as independent agreement. (5) The residue list of unreconciled dissent may not be empty unless every seat's pre-crosstalk table already agreed on every row."},
+    {"group_id": "second-review", "anti_bias": "plan-failure mode: operational executability versus epistemic authority and residue", "seats": [{"seat_id": "R-D", "agent_name": "Beck, Kent", "role": "skeptic", "angle": "executability — is the reconciled plan a runnable, reversible migration", "model": "claude-opus-5", "token_budget": 3500}, {"seat_id": "R-E", "agent_name": "Brooks, Frederick P.", "role": "skeptic", "angle": "authority and residue — does the plan claim authority it lacks or leave two homes for one thing", "model": "claude-opus-5", "token_budget": 3500}]}
+  ],
+  "connections": [
+    {"from": "subject-normative", "to": "reviewer-normative", "type": "zig-zag", "loop_cap": 3},
+    {"from": "subject-lineage", "to": "reviewer-lineage", "type": "zig-zag", "loop_cap": 3},
+    {"from": "subject-cost", "to": "reviewer-cost", "type": "zig-zag", "loop_cap": 3},
+    {"from": "reviewer-normative", "to": "crosstalk", "type": "sequential"},
+    {"from": "reviewer-lineage", "to": "crosstalk", "type": "sequential"},
+    {"from": "reviewer-cost", "to": "crosstalk", "type": "sequential"},
+    {"from": "crosstalk", "to": "second-review", "type": "sequential"}
+  ],
+  "anti_bias_global": "what has authority over where an artifact lives: the declared written rule, the causal lineage of the artifact, or the cost of moving it",
+  "pairwise_tension": [
+    {"pair": "S-A vs S-C", "question": "does experiments/skill-control-center/ move into docs/features/skill-control-center/?", "S-A": "yes — docs/features/README.md states every package keeps its own discovery, specs, reviews and work-pack together; the split is a defect", "S-C": "no — the tree carries ../../../ relative links and git-blame continuity, and no named reader is currently failing to find it; add an index pointer instead", "evidence": "docs/features/README.md §1; experiments/skill-control-center/meta-orchestration/research.md uses ../../../docs/features/... relative links"},
+    {"pair": "S-A vs S-B", "question": "where does implementation/final-review.md go?", "S-A": "rename to review.md under the feature's reviews/ — the review skill mandates one artifact named review.md", "S-B": "it follows its target; the target is the runtime under implementations/, not the docs feature package, so the feature reviews/ folder is the wrong home regardless of the filename", "evidence": ".claude/skills/review/SKILL.md lines 11-21 and the §14 exception box; final-review.md body verifies routes and tests in implementations/"},
+    {"pair": "S-B vs S-C", "question": "does experiments/foodstogo-jbp-2025/ leave experiments/?", "S-B": "yes — it has no criterion, no dispatch row and no experimental lineage; the directory name asserts a provenance it does not have", "S-C": "no — it is self-contained, nothing links into it, and the move buys no reader anything", "evidence": "commit 4e69b2f moved it under experiments/; the tree contains no criterion.md"},
+    {"pair": "R-D vs R-E", "question": "is a PARTIAL migration of experiments/skill-control-center/ — moving only research/ (I3 included) into docs/features/skill-control-center/research/ and leaving meta-orchestration/, implementation/ and agent-runtime/ behind — an acceptable reconciled outcome? (scenario deliberately excludes I4, whose destination the subject trio is itself split on, so the pair's disagreement does not presuppose that split's resolution)", "R-D": "acceptable and preferred — it is the smallest runnable, reversible step: every src->dst pair is exact, the inbound relative links are enumerable and mechanically fixable, and the whole move is verifiable by re-resolving every link afterwards and by git mv preserving history", "R-E": "not acceptable as written — the plan would cite docs/features/README.md's rule that everything governing a feature travels with the feature, while leaving most of the build record in experiments/; that is two homes for one artifact set (residue) plus a claimed compliance the plan did not earn (authority it lacks)", "evidence": "docs/features/README.md section 1 states each package keeps its own discovery, specs, reviews and work-pack together; experiments/skill-control-center/meta-orchestration/research.md carries ../../../docs/features/agent-provenance-telemetry/... relative links that a partial move would strand on one side of the split. Secondary predicted disagreement on inventory item I9: R-D would leave this dispatch's own working_folder in place as out-of-band tooling output, R-E would flag that a placement adjudication exempting its own output claims an exemption no rule grants it."}
+  ],
+  "proposed_capability_profile": {
+    "all_seats": {"read": "repo-wide", "write": "none", "network": "none", "sandbox": "read-only", "command_classes": ["read-only inspection: git log/show/status, sha256sum, ls, find"], "spawn": "forbidden"},
+    "seat_overrides": {
+      "S-B": {"command_classes": ["git blame", "git log --follow --stat", "git log -p", "git log --diff-filter=R --find-renames"]},
+      "R-B": {"command_classes": ["git blame", "git log --follow --stat", "git log -p", "git log --diff-filter=R --find-renames"]},
+      "crosstalk": {"command_classes": ["git blame", "git log --follow --stat"]}
+    },
+    "enforcement_note": "effective_enforcement is non_observable: the write/spawn restrictions are a declared trust boundary on seat behaviour, not a runtime-checked gate. parent-only-writer is not independently verifiable from this profile alone, and no seat's compliance may be reported as enforced. The parent applies P8 (inspect the actual diff) before treating any seat claim as done.",
+    "rationale": "every seat is an adjudicator, not a writer. The parent is the only writer and the final_approver; no seat may execute a move. The lineage seats additionally need blame/follow history, because plain git log over a path does not surface history across a rename and those seats' whole job is to test whether the record supports a lineage claim about moved artifacts."
+  },
+  "capability_review": {
+    "reviewer": "read-only capability reviewer, proposal-gate helper exception (unregistered)",
+    "reviewed_digest": "bbfe160ba5872605a1125778e6b9ef00106de8fa75abe36537191f6571825408",
+    "verdict": "AMEND",
+    "findings": [
+      "under-grant on S-B / R-B / crosstalk: lineage seats were given git log/show/status but not git blame or git log --follow, so they could not test a lineage claim across a rename without either failing or silently exceeding the profile",
+      "enforceability gap: effective_enforcement is non_observable while the profile reads as if parent-only-writer were enforced",
+      "minor non-blocking over-grant: S-A/R-A/S-C/R-C receive git and hashing classes their angles never need"
+    ],
+    "amendments_applied": ["seat_overrides added", "enforcement_note added", "per-seat scoping recorded as accepted-but-not-blocking"]
+  },
+  "final_approver_obligations": [
+    "P8: inspect the actual diff of every applied move before reporting it done; no seat claim is accepted as executed.",
+    "convergence check: before accepting the reconciled table, diff it against a mechanical merge of the three persisted post-zig-zag verdict tables. Any row that became unanimous only after crosstalk, and is not marked DRIFT with a named argument, is treated as suspected false consensus and is re-opened rather than applied.",
+    "cost-axis guardianship: neither R-D (executability) nor R-E (authority and residue) guards the COST pole of anti_bias_global downstream of crosstalk. The parent explicitly re-checks the reconciled table against S-C's final cost objections and records any that the table dropped without answering. This gap was named by check-tension round 2 helper 2 and is closed at the approver, not inside second-review, so that the second-review axis stays clean.",
+    "no seat may execute a move; the parent is the only writer."
+  ],
+  "check_tension_round_2": {
+    "reviewed_digest": "525d3a5ee2c0d712bdb26ea066e4fec9333dc18dfc44d600e2c377a7d712812c",
+    "helper_1": "PASS — judged the v2 second-review fix real rather than cosmetic; noted that the illustrative scenario presupposed moving I4, which contradicts S-B's own recorded position",
+    "helper_2": "FAIL — crosstalk reconvenes the same three seats with frozen angles after up to 3 private zig-zag rounds against three untensioned same-model reviewers; a converged trio would read as three independent voices agreeing, and the residue list cannot detect its own collapse. Secondary: the cost pole has no downstream guardian in second-review.",
+    "resolution": "split verdict is not two PASSes, so v2 did not clear and was NOT waived or averaged. v3 adds the crosstalk anti_collapse_protocol, decorrelates the three paired-reviewer models (haiku / opus / sonnet), tightens the R-D vs R-E scenario off I4 per helper 1, and assigns cost-axis guardianship to the final_approver. A third fresh pair of independent helpers must PASS the v3 digest."
+  },
+  "check_tension_round_1": {
+    "reviewed_digest": "bbfe160ba5872605a1125778e6b9ef00106de8fa75abe36537191f6571825408",
+    "helper_1": "FAIL",
+    "helper_2": "FAIL",
+    "converged_defect": "the second-review group carried no anti_bias axis and no pairwise_tension entry for R-D vs R-E — an n=2 group whose single pair was entirely unevidenced. Both helpers passed the subject trio on all four tests and both explicitly rejected the collapse risk, finding the rule/lineage/cost vectors structurally opposed rather than merely non-overlapping.",
+    "resolution": "sheet revised to v2 (not waived, not averaged); a fresh pair of independent check-tension helpers must PASS the v2 digest before registration"
+  },
+  "budget_envelope": {"agents": 11, "max_agent_invocations": 20, "loop_cap_per_zigzag_edge": 3, "max_loops": 1},
+  "final_approver": "parent",
+  "working_folder": "research/artifact-placement-adjudication/"
+}

@@ -1,0 +1,162 @@
+{
+  "dispatch_id": "2026-07-26-artifact-placement-adjudication",
+  "schema_version": "0.6.1",
+  "dispatch_type": "others",
+  "goal": "Decide where each of nine named repository artifacts should live — the three top-level experiments/ subtrees, the two review artifacts inside them, the six dated review rounds under docs/features/, the second feature-owned experiments home, the root README's omission of experiments/, and this dispatch's own working folder — and produce a migration plan the parent can execute.",
+  "context": "The owner asked what each top-level experiment is and whether the repo's review artifacts belong inside one of them. A parent inspection found the opposite vector: the six dated review rounds under docs/features/ are correctly placed next to the targets they attacked, while experiments/skill-control-center/ is not an experiment at all (no frozen criterion) and holds the research and review lineage that docs/features/README.md says must travel with its feature package. Work kind is placement adjudication, not research or review; no LIVE specialized type fits, so this runs as `others` under the universal lifecycle. Every seat is read-only: the parent is the only writer and the final approver. The confirmed sheet is research/artifact-placement-adjudication/proposal-v4.json, sorted-compact digest ba801c6bc8944bf48a66a2e151caa30cb172b6f8a0388fc3dc48a7681f6d851f, which carries the frozen 23-file corpus, the capability review, four check-tension rounds and the accepted residual risks.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_global": "what has authority over where an artifact lives: the declared written rule, the causal lineage of the artifact, or the cost of moving it — a declared domain-native composite of source-corpus (rule text / git history / inbound-reference cost) and attack-vector (compliance / provenance / inertia)",
+  "working_folder": "research/artifact-placement-adjudication/",
+  "invoked_by": "victorboscaro@gmail.com",
+  "groups": [
+    {
+      "group_id": "subject-normative",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Meyer, Bertrand",
+          "role": "explorer",
+          "model": "claude-opus-5",
+          "token_budget": 4000,
+          "angle": "the declared contract binds — a path is correct iff it satisfies the repository's own written rules; where practice diverges from the written rule, the practice is the defect",
+          "initial_prompt": "You are adjudicating filesystem placement in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. READ-ONLY: create, edit, move or delete nothing; run no git mv; spawn no subagents. Your deliverable is a written verdict returned to the orchestrator, who is the only writer.\n\nRead research/artifact-placement-adjudication/proposal-v4.json. Verify the SHA-256 of every path in target_bindings before you rely on that file; report any mismatch and stop. The nine objects under adjudication are in its `inventory` array (I1-I9).\n\nYOUR ANGLE — THE DECLARED CONTRACT BINDS. A path is correct if and only if it satisfies the repository's own written rules: docs/features/README.md on what travels with a feature package, .claude/skills/review/SKILL.md on review's single artifact and where it lands, .claude/skills/experiment/SKILL.md on what makes something an experiment (a frozen pre-registered criterion), the root README.md's directory tables, CLAUDE.md and AGENTS.md. Where lived practice diverges from the written rule, the practice is the defect, not the rule. You are structurally biased toward migration and your reviewer will attack exactly that: do not let symmetry or tidiness stand in for a citation.\n\nEvery load-bearing claim must quote the rule and cite path plus line. A rule you cannot quote does not exist for your purposes.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict table\n| item | verdict (STAY/MOVE/SPLIT/RENAME) | destination path or em-dash | one-line reason |\nOne row per inventory item I1-I9, no omissions.\n## Reasoning\nPer item: the rule quoted verbatim, its path and line, and why it binds this object.\n## What my angle cannot see\nThe strongest objection from the lineage angle or the cost angle, stated in its best form, and whether you concede or hold.\n## Claim <= proof\nEvery verdict you cannot support with a quoted rule, listed explicitly as low-confidence.\nBudget ~4000 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "reviewer-normative",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Parnas, David",
+          "role": "skeptic",
+          "model": "claude-haiku-4-5-20251001",
+          "token_budget": 2500,
+          "angle": "authority fidelity — does each cited rule exist, actually say that, and actually bind this object",
+          "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing.\n\nYou attack ONE subject's placement verdict: the normative adjudicator, whose angle is 'the declared contract binds'. Their return is supplied to you as a bound {path, sha256} input by the orchestrator; verify the hash before reading.\n\nYOUR LENS — AUTHORITY FIDELITY, and nothing else. For every rule the subject cites: (a) does the file and line exist? (b) does it actually say what the subject claims? (c) does it actually BIND the object in question, or is it being stretched by analogy from a different scope? (d) is the rule current, or superseded elsewhere in the repo? Hunt specifically for: invented conventions presented as repository rules; moves justified only by symmetry or tidiness with no rule behind them; a rule about feature packages applied to something that is not a feature; a skill contract read as governing file location when it governs something narrower.\n\nOpen every cited file yourself. Do not accept a quotation without checking it.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: inventory item, the subject's exact quoted claim, what the cited source actually says (with path and line), severity CRITICAL/MAJOR/MINOR, and the one-line correction.\n## Rules that checked out\nWhich citations you verified as sound — so the subject knows what not to relitigate.\n## What I could not check\nAnything you could not verify and why.\nBudget ~2500 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "subject-lineage",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Torvalds, Linus",
+          "role": "explorer",
+          "model": "claude-sonnet-5",
+          "token_budget": 4000,
+          "angle": "lineage binds — an artifact belongs where its target and its producer live; written conventions are downstream summaries of that",
+          "initial_prompt": "You are adjudicating filesystem placement in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. READ-ONLY: create, edit, move or delete nothing; run no git mv; spawn no subagents. Your deliverable is a written verdict returned to the orchestrator, who is the only writer.\n\nRead research/artifact-placement-adjudication/proposal-v4.json. Verify the SHA-256 of every path in target_bindings before relying on it; report mismatches and stop. The nine objects are in its `inventory` array (I1-I9).\n\nYOUR ANGLE — LINEAGE BINDS. An artifact belongs where its TARGET and its PRODUCER live. A review belongs with what it attacked. A research return belongs with the question that commissioned it. An experiment belongs with the corpus it probed. Written conventions are downstream summaries of this deeper fact, and where a convention contradicts the actual causal record, the record wins. Your instruments are git history and the artifacts' own internal references: use git log --follow, git blame, git log --diff-filter=R --find-renames, and git show to establish what each artifact actually derives from and how it arrived where it is. Read the artifacts' own front-matter, digest bindings and relative links as provenance evidence.\n\nYou are structurally biased toward splitting things by target and toward treating history as authoritative; your reviewer will attack exactly whether the record can bear the weight you put on it. Every lineage claim must be backed by a command you actually ran and whose output you quote, or by a quoted internal reference. 'It came from here' is not the same as 'it belongs here' — you must argue the second, not just show the first.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict table\n| item | verdict (STAY/MOVE/SPLIT/RENAME) | destination path or em-dash | one-line reason |\nOne row per inventory item I1-I9, no omissions.\n## Reasoning\nPer item: the lineage evidence (command run plus quoted output, or quoted internal reference), and the step from 'derives from X' to 'belongs at Y'.\n## What my angle cannot see\nThe strongest objection from the declared-rule angle or the cost angle, in its best form, and whether you concede or hold.\n## Claim <= proof\nEvery verdict where the record is silent or ambiguous, listed explicitly as low-confidence.\nBudget ~4000 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "reviewer-lineage",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Randell, Brian",
+          "role": "skeptic",
+          "model": "claude-opus-5",
+          "token_budget": 2500,
+          "angle": "evidence sufficiency — lineage claims the record cannot actually support, and the leap from origin to destination",
+          "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing.\n\nYou attack ONE subject's placement verdict: the lineage adjudicator, whose angle is 'lineage binds'. Their return is supplied as a bound {path, sha256} input by the orchestrator; verify the hash before reading.\n\nYOUR LENS — EVIDENCE SUFFICIENCY, and nothing else. Two distinct attacks, both required:\n(1) Can the record actually support the claim? Re-run the subject's git commands yourself (git log --follow, git blame, git log --diff-filter=R --find-renames). A history that does not survive a rename, a squashed commit, a file added in a bulk commit with no individual history, or a claim resting on a commit message rather than a diff — all are insufficient evidence dressed as provenance. Say so.\n(2) The origin-to-destination leap. Even where the lineage is proven, 'this artifact derives from X' does not entail 'this artifact belongs with X'. Attack every place the subject slid from the first to the second without an argument. This is the characteristic failure of a lineage angle and it is your primary target.\n\nOpen the artifacts and run the commands yourself. Do not accept quoted output you did not reproduce.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: inventory item, the subject's exact claim, what the record actually shows (with the command you ran and its output), which of the two attacks it falls to, severity CRITICAL/MAJOR/MINOR, and the one-line correction.\n## Lineage that held\nWhich provenance claims you reproduced and accept.\n## What I could not check\nAnything unverifiable and why.\nBudget ~2500 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "subject-cost",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Boehm, Barry",
+          "role": "explorer",
+          "model": "claude-fable-5",
+          "token_budget": 4000,
+          "angle": "the cost of the move binds — a path is an interface; the default is STAY and a move must be paid for by a named reader who is currently failing",
+          "initial_prompt": "You are adjudicating filesystem placement in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. READ-ONLY: create, edit, move or delete nothing; run no git mv; spawn no subagents. Your deliverable is a written verdict returned to the orchestrator, who is the only writer.\n\nRead research/artifact-placement-adjudication/proposal-v4.json. Verify the SHA-256 of every path in target_bindings before relying on it; report mismatches and stop. The nine objects are in its `inventory` array (I1-I9).\n\nYOUR ANGLE — THE COST OF THE MOVE BINDS. A path is an interface. Moving it breaks inbound relative links, README pointers, git-blame continuity for readers who use it, muscle memory, and any external bookmark. Your default verdict is STAY, and a MOVE must be PAID FOR: name the specific reader who is currently failing to find something, say what they were looking for, and show that the move fixes it. Where a cheaper instrument would serve — an index line, a README pointer, a cross-link, a rename in place — prefer it to a move and say so explicitly.\n\nQuantify, do not assert. For each proposed move, actually count the inbound references: grep the repo for the path and report the real number of files that would need editing. A cost claim with no count is exactly the failure your reviewer is briefed to hunt, and they will attack any status-quo preference you dress up as analysis. Be equally honest about the cost of NOT moving: if leaving something where it is imposes a recurring cost on readers, name it.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict table\n| item | verdict (STAY/MOVE/SPLIT/RENAME) | destination path or em-dash | one-line reason |\nOne row per inventory item I1-I9, no omissions.\n## Cost ledger\nPer item: counted inbound references (with the search you ran), what breaks, the cheaper instrument if one exists, and the named reader who pays either way.\n## What my angle cannot see\nThe strongest objection from the declared-rule angle or the lineage angle, in its best form, and whether you concede or hold.\n## Claim <= proof\nEvery cost or benefit you asserted without counting, listed explicitly as low-confidence.\nBudget ~4000 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "reviewer-cost",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Cunningham, Ward",
+          "role": "skeptic",
+          "model": "claude-sonnet-5",
+          "token_budget": 2500,
+          "angle": "cost falsification — status-quo bias dressed as cost analysis, uncounted breakage claims, and the unnamed debt of not moving",
+          "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing.\n\nYou attack ONE subject's placement verdict: the cost adjudicator, whose angle is 'the cost of the move binds' and whose default is STAY. Their return is supplied as a bound {path, sha256} input by the orchestrator; verify the hash before reading.\n\nYOUR LENS — COST FALSIFICATION, and nothing else. Three required attacks:\n(1) Falsify the counts. Re-run their searches yourself. A claimed breakage of N files that is really 2 files, or a claimed relative-link cost on a tree nothing links into, is inertia wearing the costume of analysis. Report the real number.\n(2) Name the debt of NOT moving. This is your primary target and the subject's characteristic blind spot. Every artifact left in a misleading location charges interest: a reader who trusts the directory name and is wrong, a convention that erodes because nobody enforces it, a second home that will attract more misfiled material, a future contributor who copies the wrong precedent. Where the subject priced only the move, price the staying.\n(3) Attack the substitution. Where they offered an index line or a cross-link as a cheaper instrument, ask whether it actually solves the reader's problem or merely documents the problem and leaves it in place.\n\nRun the searches yourself. Do not accept an uncounted number.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: inventory item, the subject's exact claim, the real count or the unpriced debt (with the search you ran), which of the three attacks it falls to, severity CRITICAL/MAJOR/MINOR, and the one-line correction.\n## Costs that held\nWhich cost claims you reproduced and accept.\n## What I could not check\nAnything unverifiable and why.\nBudget ~2500 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "crosstalk",
+      "n": 3,
+      "robot_talks": true,
+      "anti_bias": "what has authority over where an artifact lives: the declared written rule, the causal lineage of the artifact, or the cost of moving it",
+      "agents": [
+        {
+          "agent_name": "Meyer, Bertrand",
+          "role": "explorer",
+          "model": "claude-opus-5",
+          "token_budget": 3000,
+          "angle": "the declared contract binds",
+          "initial_prompt": "CROSSTALK ROUND. You previously returned a placement verdict table from the angle 'the declared contract binds', then revised it against your reviewer. The other two adjudicators — one arguing that lineage binds, one arguing that the cost of the move binds — did the same, and their final tables are supplied to you as bound {path, sha256} inputs by the orchestrator alongside your own. Verify every hash before reading.\n\nANTI-COLLAPSE PROTOCOL — mandatory, and the orchestrator checks it mechanically against the persisted pre-crosstalk tables:\n1. Open by restating your own final pre-crosstalk verdict table VERBATIM, before responding to anything the others wrote.\n2. Then engage. For every row where you now differ from another seat, argue it on cited evidence, not on authority of angle.\n3. Any change to your OWN row must be marked DRIFT, naming which seat moved you and the specific argument that did it. An unmarked change is a defect.\n4. The joint reconciled table must record, per row, which seats held which position BEFORE this exchange — so a row that became unanimous only here is visible as convergence, not as independent agreement.\n5. The residue list of unreconciled dissent may not be empty unless every seat's pre-crosstalk table already agreed on every row. Genuine disagreement is a valid output; manufactured consensus is not.\n\nHold your angle. You are not here to be agreeable — you are here to make the rule-based case as strongly as it can be made and to concede only where the evidence actually beats it.\n\nOUTPUT: your verbatim prior table, then your engagement, then your contribution to the joint reconciled table and the residue list. Budget ~3000 tokens."
+        },
+        {
+          "agent_name": "Torvalds, Linus",
+          "role": "explorer",
+          "model": "claude-sonnet-5",
+          "token_budget": 3000,
+          "angle": "lineage binds",
+          "initial_prompt": "CROSSTALK ROUND. You previously returned a placement verdict table from the angle 'lineage binds', then revised it against your reviewer. The other two adjudicators — one arguing that the declared written rule binds, one arguing that the cost of the move binds — did the same, and their final tables are supplied to you as bound {path, sha256} inputs by the orchestrator alongside your own. Verify every hash before reading.\n\nANTI-COLLAPSE PROTOCOL — mandatory, and the orchestrator checks it mechanically against the persisted pre-crosstalk tables:\n1. Open by restating your own final pre-crosstalk verdict table VERBATIM, before responding to anything the others wrote.\n2. Then engage. For every row where you now differ from another seat, argue it on cited evidence, not on authority of angle.\n3. Any change to your OWN row must be marked DRIFT, naming which seat moved you and the specific argument that did it. An unmarked change is a defect.\n4. The joint reconciled table must record, per row, which seats held which position BEFORE this exchange — so a row that became unanimous only here is visible as convergence, not as independent agreement.\n5. The residue list of unreconciled dissent may not be empty unless every seat's pre-crosstalk table already agreed on every row. Genuine disagreement is a valid output; manufactured consensus is not.\n\nHold your angle. You are not here to be agreeable — you are here to make the provenance case as strongly as it can be made and to concede only where the evidence actually beats it.\n\nOUTPUT: your verbatim prior table, then your engagement, then your contribution to the joint reconciled table and the residue list. Budget ~3000 tokens."
+        },
+        {
+          "agent_name": "Boehm, Barry",
+          "role": "explorer",
+          "model": "claude-fable-5",
+          "token_budget": 3000,
+          "angle": "the cost of the move binds",
+          "initial_prompt": "CROSSTALK ROUND. You previously returned a placement verdict table from the angle 'the cost of the move binds', then revised it against your reviewer. The other two adjudicators — one arguing that the declared written rule binds, one arguing that lineage binds — did the same, and their final tables are supplied to you as bound {path, sha256} inputs by the orchestrator alongside your own. Verify every hash before reading.\n\nANTI-COLLAPSE PROTOCOL — mandatory, and the orchestrator checks it mechanically against the persisted pre-crosstalk tables:\n1. Open by restating your own final pre-crosstalk verdict table VERBATIM, before responding to anything the others wrote.\n2. Then engage. For every row where you now differ from another seat, argue it on cited evidence, not on authority of angle.\n3. Any change to your OWN row must be marked DRIFT, naming which seat moved you and the specific argument that did it. An unmarked change is a defect.\n4. The joint reconciled table must record, per row, which seats held which position BEFORE this exchange — so a row that became unanimous only here is visible as convergence, not as independent agreement.\n5. The residue list of unreconciled dissent may not be empty unless every seat's pre-crosstalk table already agreed on every row. Genuine disagreement is a valid output; manufactured consensus is not.\n\nHold your angle. You are the only seat pricing the move, and the two other angles both bias toward action — if you fold, nobody prices it. Concede only where the evidence actually beats you.\n\nOUTPUT: your verbatim prior table, then your engagement, then your contribution to the joint reconciled table and the residue list. Budget ~3000 tokens."
+        }
+      ]
+    },
+    {
+      "group_id": "second-review",
+      "n": 2,
+      "anti_bias": "plan-failure mode: operational executability versus epistemic authority and residue",
+      "agents": [
+        {
+          "agent_name": "Beck, Kent",
+          "role": "skeptic",
+          "model": "claude-opus-5",
+          "token_budget": 3500,
+          "angle": "executability — is the reconciled plan a runnable, reversible migration with exact src to dst pairs and every inbound reference enumerated",
+          "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing, execute no move.\n\nYou review the RECONCILED placement table produced by three adjudicators after crosstalk, plus their residue list of unreconciled dissent. Both are supplied as bound {path, sha256} inputs; verify hashes before reading. A second reviewer attacks the same table from a different lens — you will not see their work and should not try to.\n\nYOUR LENS — EXECUTABILITY, and nothing else. The question is not whether the plan is right; it is whether it can actually be RUN and UNDONE. Attack:\n- Is every move an exact src to dst pair, or is a destination vague, ambiguous, or a directory that does not exist?\n- Is every inbound reference enumerated? Grep the repo yourself for each moved path and report references the plan missed — relative links in markdown, README pointers, code imports, .gitignore entries, scripts, hardcoded paths in JSON or YAML.\n- Does anything in the plan collide with an existing path, or orphan a file the plan does not mention?\n- Is each step reversible, and does it preserve git history (git mv rather than delete-and-add)?\n- Are there ordering dependencies the plan does not state — a move that must precede another to avoid a dangling link?\n- Is there a check that would VERIFY each step succeeded? Name it. A step with no verification is not done, it is hoped.\n\nRun the searches yourself.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: the plan row, the exact defect, the search or check that exposed it, severity CRITICAL/MAJOR/MINOR, and the one-line fix.\n## Executable step list\nYour corrected ordered list of concrete commands the parent should run, with the verification for each.\n## What I attacked and found sound\nSo the parent knows the coverage.\nBudget ~3500 tokens."
+        },
+        {
+          "agent_name": "Brooks, Frederick P.",
+          "role": "skeptic",
+          "model": "claude-opus-5",
+          "token_budget": 3500,
+          "angle": "authority and residue — does the plan claim authority it lacks, or leave two homes for one thing",
+          "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing, execute no move.\n\nYou review the RECONCILED placement table produced by three adjudicators after crosstalk, plus their residue list of unreconciled dissent. Both are supplied as bound {path, sha256} inputs; verify hashes before reading. A second reviewer attacks the same table from a different lens — you will not see their work and should not try to.\n\nYOUR LENS — AUTHORITY AND RESIDUE, and nothing else. Attack:\n- CLAIMED AUTHORITY. Does the plan cite a rule as licensing a move when the rule does not reach that far? Does it invent a convention and then obey it? Does it propose writing into a location whose ownership belongs to something else — vault/, the append-only ledger, a hook-governed file, a skill package? Does it self-promote a workflow preference into a repository rule?\n- RESIDUE. Does any step leave TWO homes for one thing — half a build record moved and half left, a directory emptied but not removed, a README that still points at the old location, an index entry describing a structure that no longer exists? A partial migration that cites a rule about keeping things together, while splitting them, is the specific failure you exist to catch.\n- CONCEPTUAL INTEGRITY. Does the plan leave the repo with a coherent, statable rule for where things go — one a future contributor could follow without reading this dispatch — or with a set of case-by-case exceptions that will erode?\n- THE RESIDUE LIST ITSELF. Is the recorded dissent genuine, or was disagreement smoothed away? A reconciled table with suspiciously total agreement is itself a finding.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: the plan row, the exact overreach or residue, the evidence with path and line, severity CRITICAL/MAJOR/MINOR, and the one-line fix.\n## The rule this plan leaves behind\nState, in two sentences, the placement rule a future contributor would infer from the executed plan — and say whether it is one they could actually follow.\n## What I attacked and found sound\nSo the parent knows the coverage.\nBudget ~3500 tokens."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "subject-normative", "to": "reviewer-normative", "type": "zig-zag", "loop_cap": 3},
+    {"from": "subject-lineage", "to": "reviewer-lineage", "type": "zig-zag", "loop_cap": 3},
+    {"from": "subject-cost", "to": "reviewer-cost", "type": "zig-zag", "loop_cap": 3},
+    {"from": "reviewer-normative", "to": "crosstalk", "type": "sequential"},
+    {"from": "reviewer-lineage", "to": "crosstalk", "type": "sequential"},
+    {"from": "reviewer-cost", "to": "crosstalk", "type": "sequential"},
+    {"from": "crosstalk", "to": "second-review", "type": "sequential"}
+  ]
+}
