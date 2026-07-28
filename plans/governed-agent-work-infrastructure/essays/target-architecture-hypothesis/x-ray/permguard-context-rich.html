@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PermGuard — contexto, arquitetura, capabilities e formalização</title>
+  <style>
+    :root {
+      --bg:#090f16; --panel:#101a25; --panel2:#152231; --line:#304356;
+      --ink:#edf4fa; --muted:#9eb1c2; --control:#68a9ff; --content:#f2b45d;
+      --verified:#62d39d; --reference:#b59cff; --risk:#ff7f78; --open:#f4cf70;
+      --shadow:0 18px 55px rgba(0,0,0,.3);
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; color:var(--ink); background:
+        radial-gradient(circle at 84% 0,rgba(104,169,255,.12),transparent 31rem),
+        radial-gradient(circle at 8% 46%,rgba(98,211,157,.055),transparent 27rem),
+        linear-gradient(180deg,#090f16,#0c151e 54%,#090f16);
+      font:15px/1.62 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    a { color:#9dc9ff; }
+    h1,h2,h3,h4,p { margin-top:0; }
+    h1 { max-width:17ch; margin-bottom:19px; font-size:clamp(2.65rem,6vw,5.7rem); line-height:.96; letter-spacing:-.055em; }
+    h2 { margin-bottom:10px; font-size:clamp(1.6rem,3vw,2.5rem); line-height:1.09; letter-spacing:-.025em; }
+    h3 { margin-bottom:7px; font-size:1.02rem; }
+    h4 { margin-bottom:6px; color:#cfe3f5; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; }
+    code,pre,.formula { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    code { color:#b9d8ff; }
+    .shell { width:min(1360px,calc(100% - 36px)); margin:auto; }
+    header { padding:64px 0 30px; }
+    .eyebrow { color:var(--control); font-size:.72rem; font-weight:850; letter-spacing:.14em; text-transform:uppercase; }
+    .lead { max-width:82ch; color:#c7d4df; font-size:clamp(1.04rem,1.7vw,1.25rem); }
+    .badges,.nav,.tags { display:flex; flex-wrap:wrap; gap:8px; }
+    .badges { margin-top:22px; }
+    .badge {
+      display:inline-flex; align-items:center; min-height:26px; padding:3px 9px;
+      border:1px solid var(--line); border-radius:999px; background:#101923;
+      font-size:.7rem; font-weight:850; white-space:nowrap;
+    }
+    .badge.verified { color:var(--verified); border-color:#3d8f6d; }
+    .badge.source { color:#9dc9ff; border-color:#466f9d; }
+    .badge.open { color:var(--open); border-color:#806b31; }
+    .badge.risk,.badge.proposal { color:var(--risk); border-color:#8f4746; }
+    .badge.interpretation { color:var(--content); border-color:#956f38; }
+    .badge.no-evidence { color:#d7b7ff; border-color:#695a9a; }
+    .standing { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:12px; margin-top:28px; }
+    .standing article,.card,.cap-card,.risk-card,.service,.test-card,.object {
+      padding:17px; border:1px solid var(--line); border-radius:13px; background:rgba(16,26,37,.9);
+    }
+    .standing span { color:var(--muted); font-size:.8rem; }
+    .standing strong { display:block; margin-top:5px; }
+    .nav { margin-top:20px; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .nav a { padding:4px 9px; border-radius:8px; background:#111d29; text-decoration:none; }
+    main { padding-bottom:60px; }
+    .section {
+      margin-top:26px; padding:clamp(22px,4vw,42px); border:1px solid var(--line);
+      border-radius:20px; background:rgba(16,26,37,.94); box-shadow:var(--shadow);
+    }
+    .section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:28px; margin-bottom:24px; }
+    .section-head > p { max-width:58ch; color:var(--muted); }
+    .grid2,.grid3,.grid4,.caps,.risks,.tests { display:grid; gap:13px; }
+    .grid2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .grid3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .grid4 { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .caps { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .risks { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .tests { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .card p,.cap-card p,.risk-card p,.service p,.test-card p,.object p { margin-bottom:0; color:var(--muted); }
+    .object { border-top:3px solid var(--control); }
+    .cap-card { border-top:3px solid var(--verified); }
+    .cap-card.wired { border-color:var(--content); }
+    .cap-card.planned { border-color:var(--open); }
+    .risk-card { border-top:3px solid var(--risk); }
+    .service { border-top:3px solid var(--reference); }
+    .test-card { border-top:3px solid var(--verified); }
+    .test-card.negative { border-color:var(--risk); }
+    .callout {
+      margin-top:18px; padding:15px 18px; border-left:4px solid var(--control);
+      border-radius:0 10px 10px 0; background:#101c29; color:#cad8e4;
+    }
+    .callout.risk { border-color:var(--risk); background:#251719; }
+    .callout.verified { border-color:var(--verified); background:#11241d; }
+    .formula {
+      margin:12px 0; padding:14px 16px; overflow:auto; border:1px solid #40586e;
+      border-radius:10px; background:#08111a; color:#d5e8f7; font-size:.84rem; line-height:1.68;
+    }
+    .plain { margin-top:-5px; color:#afbfcd; font-size:.84rem; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.83rem; }
+    th,td { padding:10px 9px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:.69rem; letter-spacing:.08em; text-transform:uppercase; }
+    .pipeline { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; margin:18px 0; }
+    .pipeline div { position:relative; padding:13px 10px; border:1px solid #466f9d; border-radius:10px; background:#132132; }
+    .pipeline div:not(:last-child)::after { content:"→"; position:absolute; right:-11px; top:35%; z-index:2; color:var(--control); font-weight:900; }
+    .pipeline b { display:block; color:#a9d0ff; margin-bottom:4px; font-size:.79rem; }
+    .pipeline small { color:var(--muted); }
+    .trust-stack { display:grid; grid-template-columns:1fr 1.1fr 1fr; gap:14px; margin:18px 0; }
+    .trust { padding:18px; border:1px solid var(--line); border-radius:14px; background:#101923; }
+    .trust.proved { border-top:4px solid var(--verified); }
+    .trust.border { border-top:4px solid var(--content); }
+    .trust.runtime { border-top:4px solid var(--risk); }
+    .trust ul { margin:10px 0 0; padding-left:19px; color:var(--muted); }
+    .arch-flow { display:grid; grid-template-columns:1fr 70px 1fr 70px 1fr; gap:8px; align-items:center; margin:20px 0; }
+    .arch-node { min-height:148px; padding:17px; border:1px solid var(--line); border-radius:14px; background:#111d29; }
+    .arch-node.control { border-top:4px solid var(--control); }
+    .arch-node.guard { border-top:4px solid var(--verified); }
+    .arch-node.effect { border-top:4px solid var(--content); }
+    .arch-node p { color:var(--muted); margin-bottom:0; }
+    .arch-arrow { color:var(--control); font-size:2rem; font-weight:900; text-align:center; }
+    .boundary { margin:20px 0; padding:18px; border:1px dashed var(--reference); border-radius:14px; background:#171423; }
+    .boundary p { color:#d1c5e8; }
+    .definition-list { display:grid; grid-template-columns:180px 1fr; gap:8px 14px; margin:12px 0 0; }
+    .definition-list dt { color:#9dc9ff; font:700 .78rem ui-monospace,SFMono-Regular,Consolas,monospace; }
+    .definition-list dd { margin:0; color:#becbd7; font-size:.88rem; }
+    details { margin-top:14px; border:1px solid var(--line); border-radius:12px; background:#0f1822; }
+    summary { padding:14px 17px; cursor:pointer; font-weight:800; }
+    .details-body { padding:0 17px 17px; color:#becbd7; }
+    .details-body ul { padding-left:20px; }
+    .compact { columns:2; column-gap:30px; }
+    .compact li { break-inside:avoid; margin-bottom:6px; }
+    footer { padding:24px 0 46px; color:var(--muted); font-size:.8rem; }
+    @media (max-width:1000px) {
+      .standing,.grid3,.grid4,.caps,.risks,.tests { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .pipeline { grid-template-columns:repeat(4,minmax(0,1fr)); }
+      .pipeline div::after { display:none; }
+    }
+    @media (max-width:720px) {
+      .standing,.grid2,.grid3,.grid4,.caps,.risks,.tests,.pipeline,.trust-stack,.arch-flow { grid-template-columns:1fr; }
+      .section-head { display:block; }
+      .arch-arrow { transform:rotate(90deg); }
+      .definition-list { grid-template-columns:1fr; }
+      .compact { columns:1; }
+    }
+    @media print {
+      body { color:#111; background:white; }
+      .section,.standing article { box-shadow:none; break-inside:avoid; }
+      details > * { display:block; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <p class="eyebrow">Contextual architecture x-ray · claim ≤ proof</p>
+    <h1>PermGuard decide o que pode atravessar a fronteira.</h1>
+    <p class="lead">
+      PermGuard é uma vertical de engenharia que conecta uma decisão de permissão formalizada em Lean
+      a uma futura fronteira de execução. Ele ajuda a arquitetura geral a tornar autoridade operacional
+      verificável e restritiva — mas não cria a autoridade, não prova segurança do agente e ainda não
+      garante mediação inevitável no runtime.
+    </p>
+    <div class="badges">
+      <span class="badge verified">KERNEL LEAN · BUILD PASS</span>
+      <span class="badge interpretation">CLI · TRUST BORDER EXPLÍCITO</span>
+      <span class="badge open">RUNTIME / PEP · PLANEJADO</span>
+      <span class="badge risk">D9 CONTINUA ABERTO</span>
+      <span class="badge no-evidence">NÃO É “VERIFIED AGENT SECURITY”</span>
+    </div>
+    <div class="standing">
+      <article><span>Função comprovada</span><strong>Decidir uma política estratificada sobre um request já estruturado, com soundness, deny precedence e composição restritiva.</strong></article>
+      <article><span>Fronteira não comprovada</span><strong>Parsing, canonicalização ambiental, integridade do histórico e mediação física.</strong></article>
+      <article><span>Valor arquitetural</span><strong>Separar origem de autoridade, decisão de política, enforcement e evidência de execução.</strong></article>
+    </div>
+    <nav class="nav" aria-label="Seções">
+      <a href="#contexto">Contexto</a>
+      <a href="#dois">Dois PermGuards</a>
+      <a href="#problema">Problema</a>
+      <a href="#arquitetura">Arquitetura interna</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#encaixe">Encaixe sistêmico</a>
+      <a href="#ajuda">Como ajuda</a>
+      <a href="#limites">Limites</a>
+      <a href="#testes">Testes</a>
+      <a href="#matematica">Formalização</a>
+      <a href="#evidencia">Evidência</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section" id="contexto" aria-labelledby="contexto-title">
+      <div class="section-head">
+        <div><p class="eyebrow">1 · contexto e objetivo</p><h2 id="contexto-title">O sistema precisa conectar intenção governada a efeitos sem confundir explicação com permissão.</h2></div>
+        <p>O objetivo geral do ecossistema é manter trabalho ligado aos objetivos, decisões, suposições, ações e evidências que lhe dão sentido. O repositório de formalização fornece uma espinha Lean, um invariante por vez.</p>
+      </div>
+      <div class="grid4">
+        <article class="object"><h3>Objetivo</h3><p>Qual resultado maior o trabalho deve servir?</p></article>
+        <article class="object"><h3>Autoridade</h3><p>Quem pode permitir qual efeito, sob qual escopo?</p></article>
+        <article class="object"><h3>Execução</h3><p>Qual tool call concreta está prestes a ocorrer?</p></article>
+        <article class="object"><h3>Evidência</h3><p>Qual decisão, policy, request e receipt permitem reconstrução?</p></article>
+      </div>
+      <div class="callout">
+        <strong>PermGuard ocupa somente uma parte dessa cadeia.</strong>
+        Ele responde se um request satisfaz políticas já fornecidas. Não decide se o objetivo é desejável,
+        se quem forneceu a política tinha legitimidade, ou se a policy representa corretamente uma decisão humana.
+      </div>
+      <div class="arch-flow" aria-label="Relação entre objetivo, autoridade e efeito">
+        <article class="arch-node control"><h3>Intenção governada</h3><p>Objetivo, decisões, Task DAG, Dispatch, contexto e owners.</p></article>
+        <div class="arch-arrow">→</div>
+        <article class="arch-node guard"><h3>Permissão operacional</h3><p>Policy estratificada + request estruturado + histórico opcional → allow/deny.</p></article>
+        <div class="arch-arrow">→</div>
+        <article class="arch-node effect"><h3>Efeito e receipt</h3><p>Tool invocation somente após allow; resultado e decisão registrados.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="dois" aria-labelledby="dois-title">
+      <div class="section-head">
+        <div><p class="eyebrow">2 · distinção obrigatória</p><h2 id="dois-title">Há dois artefatos chamados PermGuard, com standings diferentes.</h2></div>
+        <p>O nome compartilhado não licencia transferência de garantias. O kernel prova propriedades sobre estruturas Lean; o runtime precisa entregar estruturas fiéis e tornar a decisão inevitável.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Objeto</th><th>Local</th><th>Responsabilidade</th><th>Standing</th><th>Não prova</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>PermGuard kernel + CLI</strong></td>
+              <td><code>lean-engineer/</code></td>
+              <td><code>decidePolicy</code>, teoremas, matchers estruturados, trace guard e executável Lean.</td>
+              <td><span class="badge verified">LEAN BUILD PASS</span></td>
+              <td>Mediação completa, fidelidade ambiental ou legitimidade da authority source.</td>
+            </tr>
+            <tr>
+              <td><strong>PermGuard runtime</strong></td>
+              <td><code>internal_tools/permguard/</code></td>
+              <td>Mediation hook, canonicalização de borda, histórico tamper-evident e regression harness.</td>
+              <td><span class="badge open">DRAFT / PLANEJADO</span></td>
+              <td>Qualquer security proof adicional; hoje não possui implementação nem testes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout risk"><strong>Subset rule.</strong> “Kernel comprovado” não pode virar “sistema seguro”. As garantias transferem somente quando o request e a policy reais correspondem fielmente às estruturas verificadas e toda tool call passa pelo monitor.</div>
+    </section>
+
+    <section class="section" id="problema" aria-labelledby="problema-title">
+      <div class="section-head">
+        <div><p class="eyebrow">3 · o gap que ele tenta fechar</p><h2 id="problema-title">Um reference monitor é tão forte quanto seu núcleo, sua inevitabilidade e sua fidelidade de entrada.</h2></div>
+        <p>O kernel cobre o fator decisório. Os outros fatores pertencem ao trust border e à topologia real de execução.</p>
+      </div>
+      <div class="formula">força operacional ≈ núcleo verificado × sempre invocado × fidelidade de entrada</div>
+      <p class="plain">A expressão é um modelo explicativo do README, não uma métrica calibrada. Se qualquer fator efetivo for zero, a garantia não alcança o runtime.</p>
+      <div class="trust-stack">
+        <article class="trust proved">
+          <span class="badge verified">PROVADO / COMPILADO</span>
+          <h3 style="margin-top:10px">Policy Decision Point</h3>
+          <ul>
+            <li>semântica allow/deny;</li>
+            <li>deny-overrides;</li>
+            <li>interseção entre layers;</li>
+            <li>confinement e refinamentos;</li>
+            <li>teoremas e executável Lean.</li>
+          </ul>
+        </article>
+        <article class="trust border">
+          <span class="badge interpretation">TRUST BORDER</span>
+          <h3 style="margin-top:10px">Representação fiel</h3>
+          <ul>
+            <li>JSON → tipos Lean;</li>
+            <li>path/host segmentados;</li>
+            <li>URL e realpath reais;</li>
+            <li>ordem e integridade do histórico;</li>
+            <li>labels de segredo fornecidas por policy.</li>
+          </ul>
+        </article>
+        <article class="trust runtime">
+          <span class="badge open">PLANEJADO</span>
+          <h3 style="margin-top:10px">Policy Enforcement Point</h3>
+          <ul>
+            <li>interposição pré-tool-call;</li>
+            <li>nenhuma rota de bypass;</li>
+            <li>fail-closed consistente;</li>
+            <li>receipt atribuível;</li>
+            <li>tamper evidence.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="arquitetura" aria-labelledby="arquitetura-title">
+      <div class="section-head">
+        <div><p class="eyebrow">4 · arquitetura interna</p><h2 id="arquitetura-title">A decisão provada fica no centro; parsing e enforcement permanecem visíveis ao redor.</h2></div>
+        <p>A CLI não reimplementa a lógica decisória. Ela constrói regras verificadas, chama o kernel e mapeia erros para exit code 2.</p>
+      </div>
+      <div class="pipeline" aria-label="Fluxo interno do PermGuard">
+        <div><b>policy.json</b><small>layers + rules</small></div>
+        <div><b>request.json</b><small>tool + args</small></div>
+        <div><b>parser</b><small>trust border</small></div>
+        <div><b>LayeredPolicy</b><small>StructuredArgs</small></div>
+        <div><b>decidePolicy</b><small>proved PDP</small></div>
+        <div><b>allow / deny</b><small>ou error</small></div>
+        <div><b>PEP / Record</b><small>planejado</small></div>
+      </div>
+      <div class="grid3">
+        <article class="card">
+          <h3>Policy parser</h3>
+          <p>Converte efeitos e kinds declarativos em <code>mkCanonRule</code>, <code>mkBashRule</code> ou <code>mkFetchRule</code>. Rejeita policy vazia, campos ausentes e segmentos malformados.</p>
+        </article>
+        <article class="card">
+          <h3>Request parser</h3>
+          <p>Produz <code>StructuredArgs</code> tipados: tool, path segmentado, command opcional, scheme e host labels. Erros nunca viram allow.</p>
+        </article>
+        <article class="card">
+          <h3>Decision core</h3>
+          <p>Uma layer que proíbe vence. Sem proibição, toda layer precisa fornecer um permit correspondente. Abstention de qualquer layer resulta em deny.</p>
+        </article>
+        <article class="card">
+          <h3>Trace mode</h3>
+          <p>Com <code>secretSources</code> e history, <code>egressGuard</code> nega um <code>webFetch</code> após read permitido de path marcado secret.</p>
+        </article>
+        <article class="card">
+          <h3>Explanation</h3>
+          <p>Relata a primeira layer que proíbe, a primeira que não permite, ou o caso em que todas permitem. É explicação operacional, não proof object.</p>
+        </article>
+        <article class="card">
+          <h3>Exit contract</h3>
+          <p><code>0 = allow</code>, <code>1 = deny</code>, <code>2 = parse/trust-border error</code>. O runtime planejado não pode enfraquecer esse fail-closed.</p>
+        </article>
+      </div>
+      <div class="boundary">
+        <h3>Trust border isolado em <code>PermGuard.lean</code></h3>
+        <p>A decisão é verificada para as estruturas produzidas. A correspondência entre filesystem/URL/histórico reais e essas estruturas continua sendo uma obrigação externa. O parser foi hardened contra policy vazia, slash embutido, host label com ponto e inputs desconhecidos, mas não é um parser formalmente verificado.</p>
+      </div>
+    </section>
+
+    <section class="section" id="capabilities" aria-labelledby="capabilities-title">
+      <div class="section-head">
+        <div><p class="eyebrow">5 · capabilities</p><h2 id="capabilities-title">O que existe, o que está ligado e o que ainda é somente roadmap.</h2></div>
+        <p>Capability aqui significa comportamento ou propriedade delimitada. Não significa uma grant de runtime.</p>
+      </div>
+      <h3><span class="badge verified">CERTIFIED CORE</span></h3>
+      <div class="caps">
+        <article class="cap-card"><h3>Soundness + completeness</h3><p><code>decidePolicy P r = allow ↔ Satisfies P r</code>.</p></article>
+        <article class="cap-card"><h3>Deny precedence</h3><p>Qualquer forbid aplicável em qualquer layer força deny.</p></article>
+        <article class="cap-card"><h3>Intersection of authority</h3><p>Todo layer precisa permitir; composição reduz autoridade.</p></article>
+        <article class="cap-card"><h3>Meet algebra</h3><p>Concatenação de policies mapeia para meet de decisões.</p></article>
+        <article class="cap-card"><h3>Non-flattenability witness</h3><p>Exibe caso em que layers diferem de uma policy Cedar-like achatada.</p></article>
+        <article class="cap-card"><h3>Path normalization</h3><p>Cleanliness, idempotência, defesa contra prefix confusion e <code>..</code>.</p></article>
+        <article class="cap-card"><h3>Read/write/edit confinement</h3><p>Allow por regra canônica implica path normalizado sob prefixo concedido.</p></article>
+        <article class="cap-card"><h3>Egress matching</h3><p>Scheme exato e host suffix por labels, incluindo lookalike e downgrade negatives.</p></article>
+        <article class="cap-card"><h3>Taint refinement</h3><p>Taint monotônico; egress negado após secret read; nunca amplia allow.</p></article>
+        <article class="cap-card"><h3>Session veto composition</h3><p>Vetoes compõem por OR e refinam a decisão base.</p></article>
+        <article class="cap-card"><h3>Negative witness</h3><p><code>bash_egress_bypass</code> prova que bash não é coberto pelo sink atual.</p></article>
+        <article class="cap-card"><h3>Refinement fibre</h3><p>Capabilities mais largas adicionam cláusulas assumidas no fibre Melliès–Zeilberger.</p></article>
+      </div>
+
+      <h3 style="margin-top:26px"><span class="badge interpretation">WIRED, BORDER UNVERIFIED</span></h3>
+      <div class="caps">
+        <article class="cap-card wired"><h3>Lean executable</h3><p>Policy e request JSON entram no binário compilado; decisão vem do kernel provado.</p></article>
+        <article class="cap-card wired"><h3>Structured parsing</h3><p>Paths e hosts exigem segmentação explícita; kinds desconhecidos falham.</p></article>
+        <article class="cap-card wired"><h3>Optional trace mode</h3><p>Um terceiro arquivo de history ativa o guard quando existem <code>secretSources</code>.</p></article>
+      </div>
+
+      <h3 style="margin-top:26px"><span class="badge open">PLANNED RUNTIME</span></h3>
+      <div class="caps">
+        <article class="cap-card planned"><h3>Mediation hook</h3><p>Forçar cada tool call a atravessar a decisão antes da execução.</p></article>
+        <article class="cap-card planned"><h3>Border canonicalizer</h3><p>Realpath, symlinks, URL parse, NFC/case-fold, bounds e duplicate-key rejection.</p></article>
+        <article class="cap-card planned"><h3>Tamper-evident history</h3><p>Hash chain ou assinatura para tornar alterações detectáveis.</p></article>
+        <article class="cap-card planned"><h3>Regression harness</h3><p>Executar fixtures pelo binário e verificar decisão, erro e exit code. É o primeiro item indicado.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="encaixe" aria-labelledby="encaixe-title">
+      <div class="section-head">
+        <div><p class="eyebrow">6 · encaixe com a arquitetura geral</p><h2 id="encaixe-title">PermGuard é um kernel de domínio para permissão operacional, não o kernel global nem a authority source.</h2></div>
+        <p>Ele pode ocupar uma parte concreta da fronteira entre Dispatch confirmado e efeito físico, desde que policies e capabilities cheguem de owners atribuíveis.</p>
+      </div>
+      <div class="pipeline" aria-label="Fluxo de integração com a arquitetura">
+        <div><b>Strategy</b><small>estrutura do trabalho</small></div>
+        <div><b>Protocol / DAG</b><small>topologia versionada</small></div>
+        <div><b>Compiler</b><small>Dispatch + digest</small></div>
+        <div><b>Authority source</b><small>D9 ainda aberto</small></div>
+        <div><b>PermGuard</b><small>PDP / PEP futuro</small></div>
+        <div><b>Tool runtime</b><small>efeito físico</small></div>
+        <div><b>Record</b><small>decision + receipt</small></div>
+      </div>
+      <div class="grid3">
+        <article class="service"><h3>Strategy / Protocol</h3><p>Definem trabalho e topologia. Não devem emitir grants apenas porque uma tarefa existe.</p></article>
+        <article class="service"><h3>Compiler</h3><p>Materializa o Dispatch e bindings efetivos. Pode preparar o request que será guardado, mas não inventa authority.</p></article>
+        <article class="service"><h3>Identity</h3><p>Pode fornecer IDs e signatures estáveis para tools, recursos, owners e policies. A semântica de permissão continua no domínio PermGuard.</p></article>
+        <article class="service"><h3>Execution / Fabric</h3><p>É o candidato natural para interposição: antes da chamada, apresenta policy, request e history ao PEP.</p></article>
+        <article class="service"><h3>Record</h3><p>Persiste policy/digest, request canônico, decisão, explanation, invocation e receipt. Não fabrica verdade nem autoridade.</p></article>
+        <article class="service"><h3>ContextManifest</h3><p>O agente pode ler uma authority claim sem receber uma capability. Context possession e effect permission permanecem separados.</p></article>
+      </div>
+      <div class="callout risk">
+        <strong>D9 não desaparece.</strong>
+        PermGuard avalia uma policy. Alguém ainda precisa ser owner da decisão que produz essa policy,
+        estabelecer precedência entre layers e assinar a binding efetiva para o Dispatch. Um checker de
+        autoridade não se torna a fonte da autoridade.
+      </div>
+      <div class="table-wrap" style="margin-top:20px">
+        <table>
+          <thead><tr><th>Hipótese da arquitetura</th><th>O que PermGuard oferece</th><th>O que permanece aberto</th></tr></thead>
+          <tbody>
+            <tr><td>Kernel-of-kernels</td><td>Um <code>K_permission</code> delimitado, com objetos, regras e julgamentos próprios.</td><td>Meta-contract comum, composition witnesses e conjunto G.</td></tr>
+            <tr><td>Checker Q</td><td>Decision procedure executável com correspondência provada à spec.</td><td>Q global não deve absorver a semântica de PermGuard.</td></tr>
+            <tr><td>Authority ≠ compatibility</td><td>Separa policy evaluation de execução.</td><td>Origem legítima e owner de policy.</td></tr>
+            <tr><td>Checker ≠ enforcement</td><td>CLI concreta e contrato fail-closed.</td><td>Mediação inevitável e broker físico.</td></tr>
+            <tr><td>Record reconstructable</td><td>Decision e explanation determinísticos para inputs estruturados.</td><td>Histórico íntegro, ordering e durable receipts.</td></tr>
+            <tr><td>Context ≠ capability</td><td>Request tipado exige dados operacionais separados do prompt.</td><td>Binding entre Dispatch, ContextManifest e capability grant.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="ajuda" aria-labelledby="ajuda-title">
+      <div class="section-head">
+        <div><p class="eyebrow">7 · como ele ajuda</p><h2 id="ajuda-title">PermGuard transforma parte da autoridade runtime em uma fronteira pequena, negativa e testável.</h2></div>
+        <p>“Negativa” significa que seu poder seguro é principalmente restringir, vetar e falhar fechado — não descobrir intenção, classificar segredos ou conceder legitimidade.</p>
+      </div>
+      <div class="grid4">
+        <article class="object"><h3>Menos autoridade implícita</h3><p>Uma task ou tool disponível não implica allow. Cada layer precisa permitir explicitamente.</p></article>
+        <article class="object"><h3>Defesa em profundidade</h3><p>User, project e org podem compor como interseção, sem uma layer ampliar as demais.</p></article>
+        <article class="object"><h3>Fail-closed verificável</h3><p>Input malformado sai como erro, não como decisão permissiva.</p></article>
+        <article class="object"><h3>Residue visível</h3><p>Matcher, parser, realpath, DNS, history e sink coverage aparecem como cláusulas assumidas.</p></article>
+        <article class="object"><h3>Explicação atribuível</h3><p>A layer que proibiu ou não permitiu pode ser ligada ao request e à policy version.</p></article>
+        <article class="object"><h3>Confinement comprovado</h3><p>Read/write/edit e fetch possuem propriedades específicas, não apenas uma decisão booleana genérica.</p></article>
+        <article class="object"><h3>Counterexamples preservados</h3><p>O bash bypass é mantido como prova de limite, em vez de ser escondido pelo roadmap.</p></article>
+        <article class="object"><h3>Extração futura</h3><p>O diretório está em staging para um repositório standalone planejado, sem alterar o standing atual.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="limites" aria-labelledby="limites-title">
+      <div class="section-head">
+        <div><p class="eyebrow">8 · trust border e não-claims</p><h2 id="limites-title">A borda cresce conforme capabilities são ligadas.</h2></div>
+        <p>O refinement fibre formaliza essa assimetria: mais rungs úteis implicam mais precondições ambientais que o kernel não prova.</p>
+      </div>
+      <div class="risks">
+        <article class="risk-card"><h3>Matcher paramétrico</h3><p>Os teoremas centrais funcionam para qualquer <code>Rule.applies</code>. Isso prova o combinador, não a fidelidade de todo matcher.</p></article>
+        <article class="risk-card"><h3>Filesystem real</h3><p>Realpath, symlink, TOCTOU e case-fold permanecem fora do modelo de listas segmentadas.</p></article>
+        <article class="risk-card"><h3>URL e DNS</h3><p>Scheme/host labels são estruturados, mas parsing real, redirects e DNS rebinding permanecem externos.</p></article>
+        <article class="risk-card"><h3>Histórico confiável</h3><p>Trace taint assume gravação fiel, ordenada e não bypassável.</p></article>
+        <article class="risk-card"><h3>Secret labels</h3><p>Segredo é input de policy por path prefix. Classificação por conteúdo é explicitamente não coberta.</p></article>
+        <article class="risk-card"><h3>Bash egress</h3><p><code>isEgress</code> cobre <code>webFetch</code>; <code>curl</code> via bash é um hole provado.</p></article>
+        <article class="risk-card"><h3>Covert flows</h3><p>Canais implícitos, timing e laundering por recursos não marcados não são certificados.</p></article>
+        <article class="risk-card"><h3>Complete mediation</h3><p>Mesmo um hook implantado evidenciaria uma topologia; não provaria universalmente ausência de bypass.</p></article>
+        <article class="risk-card"><h3>Policy legitimacy</h3><p>Uma policy bem formada pode ter owner inválido, precedência errada ou escopo não autorizado.</p></article>
+      </div>
+      <div class="callout risk"><strong>Collapse-test do programa.</strong> Se a integração apenas chamar o CLI fora do tool path, ou se requests reais puderem divergir das estruturas parseadas, as provas permanecem verdadeiras no Lean enquanto a contribuição operacional cai para zero.</div>
+    </section>
+
+    <section class="section" id="testes" aria-labelledby="testes-title">
+      <div class="section-head">
+        <div><p class="eyebrow">9 · validação operacional</p><h2 id="testes-title">As provas precisam encontrar fixtures, mutations e receipts reais.</h2></div>
+        <p>O build Lean atual passa; o regression harness do runtime continua sendo o primeiro componente planejado.</p>
+      </div>
+      <div class="tests">
+        <article class="test-card"><h3>Golden allow</h3><p>Todas as layers permitem o request, nenhuma proíbe, parser aceita e exit code é 0.</p></article>
+        <article class="test-card negative"><h3>Forbid mutation</h3><p>Adicionar um forbid aplicável em qualquer layer muda o resultado para deny.</p></article>
+        <article class="test-card negative"><h3>Abstaining layer</h3><p>Adicionar layer sem permit correspondente restringe o allow — diferença essencial do flattening.</p></article>
+        <article class="test-card negative"><h3>Empty policy</h3><p>O kernel tem identidade algébrica permissiva; a CLI rejeita policy vazia no border.</p></article>
+        <article class="test-card negative"><h3>Traversal</h3><p>Path com <code>..</code> é normalizado e não deve escapar do prefixo concedido.</p></article>
+        <article class="test-card negative"><h3>Malformed segmentation</h3><p>Slash dentro de segmento ou ponto dentro de host label produz error/2.</p></article>
+        <article class="test-card negative"><h3>Tainted web fetch</h3><p>Read permitido de secret prefix seguido de <code>webFetch</code> resulta em deny.</p></article>
+        <article class="test-card negative"><h3>Bash bypass witness</h3><p>O mesmo trace seguido de bash/curl continua allowed pelo guard atual; o teste deve preservar esse limite.</p></article>
+      </div>
+      <div class="callout verified"><strong>Evidência executada nesta edição.</strong> <code>lake build</code> completou 941 jobs com sucesso em 2026-07-28. Os gates <code>#print axioms</code> expõem dependências como <code>propext</code>, <code>Quot.sound</code> e, em alguns teoremas, <code>Classical.choice</code>; isso não deve ser resumido como “axiom-free”.</div>
+    </section>
+
+    <section class="section" id="matematica" aria-labelledby="matematica-title">
+      <div class="section-head">
+        <div><p class="eyebrow">10 · formalização matemática</p><h2 id="matematica-title">A semântica é uma interseção de autoridade com refinamentos monotônicos.</h2></div>
+        <p>As fórmulas abaixo descrevem o núcleo efetivamente modelado. Elas não formalizam a legitimidade da policy nem o enforcement físico.</p>
+      </div>
+
+      <h3>10.1 Objetos fundamentais</h3>
+      <div class="formula">Decision = { allow, deny }<br>
+Effect   = { permit, forbid }<br><br>
+Rule(Req)   = Effect × (Req → Bool)<br>
+Layer(Req)  = List Rule(Req)<br>
+Policy(Req) = List Layer(Req)</div>
+      <dl class="definition-list">
+        <dt>Req</dt><dd>Tipo abstrato de request no kernel; a CLI instancia como <code>StructuredArgs</code>.</dd>
+        <dt>Rule.applies</dt><dd>Matcher executável. A semântica central é paramétrica nesse matcher.</dd>
+        <dt>Layer</dt><dd>Um conjunto de policy com permits e forbids.</dd>
+        <dt>Policy</dt><dd>Sequência de layers independentes, por exemplo user/project/org.</dd>
+      </dl>
+
+      <h3 style="margin-top:24px">10.2 Semântica relacional</h3>
+      <div class="formula">Forbids(L,r) ≜ ∃ q ∈ L, q.effect = forbid ∧ q.applies(r) = true<br><br>
+Permits(L,r) ≜ ∃ q ∈ L, q.effect = permit ∧ q.applies(r) = true<br><br>
+Satisfies(P,r) ≜<br>
+  (∀ L ∈ P, ¬Forbids(L,r)) ∧<br>
+  (∀ L ∈ P, Permits(L,r))</div>
+      <p class="plain">Duas condições independentes: nenhuma layer veta e toda layer concede. Ausência de veto não basta.</p>
+
+      <h3 style="margin-top:24px">10.3 Correspondência executável</h3>
+      <div class="formula">decidePolicy(P,r) = allow ↔ Satisfies(P,r)</div>
+      <p>Esse bicondicional é o centro da soundness/completeness: o boolean decision procedure concorda com a spec relacional.</p>
+      <div class="formula">Forbids(L,r) ∧ L ∈ P ⇒ decidePolicy(P,r) = deny</div>
+      <p class="plain">Deny precedence é não-bypassabilidade do combinador. Não prova que um matcher não pode ser evadido por uma representação malformada.</p>
+
+      <h3 style="margin-top:24px">10.4 Álgebra de composição</h3>
+      <div class="formula">allow ⊓ allow = allow<br>
+x ⊓ deny = deny = deny ⊓ x<br><br>
+decidePolicy(P ++ Q, r)<br>
+  = decidePolicy(P,r) ⊓ decidePolicy(Q,r)<br><br>
+Allow(P ++ Q) = Allow(P) ∩ Allow(Q)</div>
+      <p><code>(Decision, ⊓, allow)</code> é um monoide comutativo idempotente. Para request fixo, <code>decidePolicy(-,r)</code> preserva concatenação como meet.</p>
+      <div class="formula">decidePolicy([],r) = allow</div>
+      <p class="plain">A policy vazia é a identidade/top algébrica. Operacionalmente isso é fail-open; por isso o parser da CLI a rejeita sem alterar o teorema do kernel.</p>
+
+      <h3 style="margin-top:24px">10.5 Restrição e confinement</h3>
+      <div class="formula">decidePolicy(extra :: P, r) = allow<br>
+  ⇒ decidePolicy(P,r) = allow<br><br>
+decidePolicy(P ++ Q, r) = allow<br>
+  ⇒ decidePolicy(P,r) = allow ∧ decidePolicy(Q,r) = allow</div>
+      <p>Adicionar policy não pode ampliar o conjunto de requests permitidos.</p>
+      <div class="formula">canonRule(permit, tool, prefix/**).applies(req) = true<br>
+  ⇒ prefix ≤prefix normalize(req.path)</div>
+      <p class="plain">Os teoremas especializados instanciam essa forma para read, write e edit.</p>
+
+      <h3 style="margin-top:24px">10.6 Taint e trace refinement</h3>
+      <div class="formula">Taint = { clean ≤ secret }<br><br>
+traceTaint(S, []) = clean<br>
+traceTaint(S, e :: es) = traceTaint(S,es) ⊔ eventTaint(S,e)<br><br>
+egressGuard(S,P,h,r) =<br>
+  deny,               if traceTaint(S,h)=secret ∧ isEgress(r)<br>
+  decidePolicy(P,r),  otherwise</div>
+      <div class="formula">egressGuard(S,P,h,r) = allow<br>
+  ⇒ decidePolicy(P,r) = allow</div>
+      <p class="plain">O trace guard é um refinement: ele só remove allows. O resultado de exfiltration depende da lista assumida de sinks; atualmente bash não entra em <code>isEgress</code>.</p>
+
+      <h3 style="margin-top:24px">10.7 Refinement fibre do trust border</h3>
+      <div class="formula">Capability = Bool<sub>path</sub> × Bool<sub>egress</sub> × Bool<sub>taint</sub><br><br>
+c ≤ c′ ⇔ cada rung ativo em c também está ativo em c′<br><br>
+Assumed(c) = { a | clauseActive(c,a) }<br><br>
+c ≤ c′ ⇒ Assumed(c) ⊆ Assumed(c′)</div>
+      <p>Ao ligar mais capabilities, entram novas precondições: realpath/TOCTOU/case-fold; URL fidelity/DNS rebinding; trace fidelity/bash sink. Isso é um refinement-system fibre conhecido, não typed residue nem nova matemática.</p>
+
+      <h3 style="margin-top:24px">10.8 Julgamentos de integração com a arquitetura</h3>
+      <div class="formula">Γ<sub>ctx</sub> ; Γ<sub>cap</sub> ⊢ request r : ToolEffect<br><br>
+PolicyOwned(owner,P) ∧ Bound(P,dispatchDigest)<br>
+∧ Canonicalizes(rawRequest,r)<br>
+∧ decidePolicy(P,r)=allow<br>
+∧ MediationInstalled(toolPath)<br>
+────────────────────────────────────────────<br>
+PermittedInvocation(dispatchDigest,r)</div>
+      <p class="plain">Este é um julgamento arquitetural proposto, não um teorema existente no repositório. Ele explicita que <code>decidePolicy=allow</code> é necessário, mas não suficiente.</p>
+      <div class="formula">AuthorityClaim ∈ Γ<sub>ctx</sub> ⇏ Capability ∈ Γ<sub>cap</sub><br><br>
+WellFormedPolicy(P) ⇏ LegitimateOwner(P)<br><br>
+decidePolicy(P,r)=allow ⇏ PhysicallyExecutedThroughGuard(r)</div>
+      <p class="plain">As três não-implicações preservam D9, a diferença entre contexto e capability, e a diferença entre checker acceptance e enforcement.</p>
+    </section>
+
+    <section class="section" id="evidencia" aria-labelledby="evidencia-title">
+      <div class="section-head">
+        <div><p class="eyebrow">11 · fronteira de evidência</p><h2 id="evidencia-title">O que é código, o que é roadmap e o que esta página interpreta.</h2></div>
+        <p>Detalhe matemático e visual não aumenta o standing de implementação.</p>
+      </div>
+      <div class="grid3">
+        <article class="card">
+          <h3><span class="badge verified">SOURCE-BACKED / BUILD-CHECKED</span></h3>
+          <ul>
+            <li>Kernel, matchers, confinement, taint, session vetoes e negative witness em Lean.</li>
+            <li>CLI compilada que chama o kernel e falha fechado em parse errors.</li>
+            <li>Build default concluído com sucesso nesta edição.</li>
+            <li>Standing sem novidade e limites declarados nos próprios módulos.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3><span class="badge open">PLANNED / UNVERIFIED</span></h3>
+          <ul>
+            <li>Mediation hook.</li>
+            <li>Canonicalizador ambiental completo.</li>
+            <li>Histórico tamper-evident.</li>
+            <li>Regression harness do runtime.</li>
+            <li>Repositório standalone <code>agentguard</code>.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3><span class="badge interpretation">ARCHITECTURAL INTERPRETATION</span></h3>
+          <ul>
+            <li>PermGuard como <code>K_permission</code> delimitado.</li>
+            <li>Mapeamento para Strategy/Compiler/Execution/Fabric/Record.</li>
+            <li>Julgamento integrado de ownership + binding + canonicalização + decisão + mediação.</li>
+            <li>Uso como mecanismo parcial para D9 sem promovê-lo a authority source.</li>
+          </ul>
+        </article>
+      </div>
+      <details>
+        <summary>Claims explicitamente proibidos</summary>
+        <div class="details-body">
+          <ul class="compact">
+            <li>“PermGuard torna agentes seguros.”</li>
+            <li>“A mediação completa está provada.”</li>
+            <li>“Segredos são classificados por conteúdo.”</li>
+            <li>“Bash egress está coberto.”</li>
+            <li>“O parser/runtime é verificado.”</li>
+            <li>“PermGuard resolve D9.”</li>
+            <li>“O trust border é typed residue.”</li>
+            <li>“A formalização é nova matemática.”</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    X-ray contextual de <code>../domainspec-lean-formalization/lean-engineer/PermGuard.lean</code>
+    e <code>internal_tools/permguard/README.md</code>. Modo: mixed architecture/codebase ·
+    renderer: L0 HTML/CSS · sem dependências remotas.
+  </footer>
+</div>
+</body>
+</html>
