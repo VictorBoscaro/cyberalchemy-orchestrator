@@ -1,0 +1,273 @@
+{
+  "projection_schema_version": "1.0",
+  "projection_kind": "ConcreteDispatchProposal",
+  "revision_id": "short-pdf-v3-v7-concrete-r1",
+  "structural_revision_id": "short-pdf-v3-v7-r3",
+  "structural_digest": "22ed268bba6d6098c7100e4c8f6977572d9aa03432af0f06790132e69db7d08f",
+  "dispatch_type": "others",
+  "work_kind": "document-and-pdf-authoring",
+  "meta": false,
+  "confirmation_mode": "structure_and_final",
+  "objective": "Produce five independent short work-context system-view variants, each refined through three inline reviews by one independent read-only helper, for parent verification alongside existing versions 01 and 02.",
+  "final_approver": "parent",
+  "effective_enforcement": "non_observable",
+  "effective_enforcement_note": "The collaboration runtime does not expose per-seat enforcement receipts. Provider, model, adapter, tools, and scopes below remain requested rather than effective claims.",
+  "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version",
+  "output_mode": "persisted",
+  "source_bindings": [
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/work-context-system-view-polished-diagrams.pdf",
+      "sha256": "951c6e6d6e2933bce8b1018985bfe9e70410ef867df9bd97f16c58312a76d008"
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/work-context-system-view-polished-diagrams.html",
+      "sha256": "a0c873d48be0a455b9e7ad6439c1bcec189c0e8b41e8726d75c1e29b6249a159"
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/target-architecture-hypothesis/x-ray/infrastructure-context-rich.html",
+      "sha256": "a0fa38f62e10ce59502316e8f3d6bcbb6b8ff98a6b8c578f1cff7a579b67bb29"
+    },
+    {
+      "path": "C:/Users/victo/.codex/plugins/cache/openai-primary-runtime/pdf/26.727.11326/skills/pdf/SKILL.md",
+      "sha256": "8a9eb6f1fb2e7f5a4fc5f157f1d3e1319890e988abab294dc316644cf997f1b6"
+    }
+  ],
+  "shared_creator_contract": {
+    "requested_provider": "openai",
+    "requested_model": "inherit-parent",
+    "requested_adapter": "codex-collaboration-subagent",
+    "skills": [
+      "pdf"
+    ],
+    "proposed_capability_profile": {
+      "read": [
+        "source_bindings",
+        "own working_folder"
+      ],
+      "write": [
+        "own working_folder only"
+      ],
+      "command_classes": [
+        "read-only repository inspection",
+        "HTML-to-PDF rendering",
+        "PDF reopening and text checks",
+        "PNG rendering and contact-sheet generation"
+      ],
+      "network": "denied",
+      "destructive_actions": "denied",
+      "external_side_effects": "denied"
+    },
+    "budgets": {
+      "creator_token_ceiling": 35000,
+      "reviewer_helper_token_ceiling_per_pass": 8000,
+      "review_passes": 3,
+      "page_minimum": 7,
+      "page_maximum": 10
+    },
+    "response_contract": {
+      "creator_chat_result": [
+        "artifact paths",
+        "page count",
+        "render-validation result",
+        "review-pass verdicts",
+        "agents_spawned",
+        "remaining residuals",
+        "exit_reason"
+      ],
+      "persisted_files": [
+        "HTML source",
+        "PDF",
+        "individual PNG renders",
+        "contact sheet",
+        "creator-owned review-log.md"
+      ]
+    },
+    "universal_obligations": [
+      "Keep chapters 1 and 2 compact and faithful.",
+      "Replace chapter 2's linear sequence list with an explanatory visualization.",
+      "Clarify section 3 while preserving purpose, authority, assignment, causation, and realization as independently inspectable paths.",
+      "Give level 4 a detailed infrastructure view grounded in infrastructure-context-rich.html.",
+      "Distinguish essay-backed properties, candidate services, and unresolved ownership.",
+      "Use ASCII hyphens only.",
+      "Reopen the final PDF, render every page, inspect the contact sheet and detailed pages, and fix all clipping, overlap, blank-page, glyph, and print-legibility defects.",
+      "Claim no more than the inspected evidence supports."
+    ]
+  },
+  "groups": [
+    {
+      "group_id": "creator-03",
+      "seat_count": 1,
+      "seat": {
+        "seat_id": "creator-03-a",
+        "agent_name": "Alexander, Christopher",
+        "role": "writer",
+        "type": "document author",
+        "angle": "Evolve the exact visual grammar of the polished-diagrams source while increasing explanatory density through necessary figures and spatially quiet artistic marks.",
+        "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-03-polished-diagrams-plus",
+        "prompt_template": "Create Version 03, Polished Diagrams Plus, only in the assigned working folder. Read every bound source and the PDF skill. Preserve the source PDF's cream paper, black editorial serif, rust accents, fine rules, corner marks, and calm pacing. Keep chapters 1 and 2 compact. Replace the chapter 2 list with one integrated recursive composition figure. Clarify section 3 around the context-loss problem and five independent paths. Build level 4 as a detailed infrastructure x-ray grounded in the bound architecture HTML, clearly marking proposed services and unresolved authority ownership. Add figures only when they replace prose, reveal relations, or increase information density. Artistic arcs, traces, intersections, and marginal signals must consume no meaningful content space. Produce 7-10 A4 pages, HTML, PDF, page renders, contact sheet, and creator-owned review-log.md. Spawn exactly one independent reviewer helper named Rumelt, Richard. Use the frozen reviewer prompt and a data-only artifact manifest containing exact path/hash pairs. Complete three review-revision passes with the same helper. Record each review, response, and resulting change in review-log.md. Finish with full PDF visual verification and the response contract.",
+        "reviewer_helper": {
+          "agent_name": "Rumelt, Richard",
+          "role": "skeptic",
+          "mode": "read-only inline helper",
+          "passes": 3,
+          "angle": "Attack source-design fidelity, figure necessity, information gain, ornamental restraint, and any unsupported architectural certainty.",
+          "prompt_template": "Independently review Version 03 using the bound source corpus and the supplied data-only artifact manifest. Do not write files. Inspect the current HTML, PDF, page renders, and contact sheet. Return at most five prioritized findings with page references, evidence, an actionable correction, and verdict ACCEPT, ACCEPT_WITH_RESIDUALS, or REVISE. Test fidelity to the polished-diagrams source; whether every figure earns its space; whether artistic marks remain spatially quiet; whether five-path semantics and architecture hypothesis boundaries remain correct; and whether every page is printable and unclipped.",
+          "workflow_input_manifest_schema": {
+            "slot": "artifact_manifest",
+            "authorized_producer": "creator-03-a",
+            "type": "array<{path:string,sha256:string}>",
+            "cardinality": "4..14",
+            "byte_ceiling": 8192,
+            "purpose": "Identify the exact current artifacts for one review pass.",
+            "instructions_forbidden": true
+          }
+        }
+      }
+    },
+    {
+      "group_id": "creator-04",
+      "seat_count": 1,
+      "seat": {
+        "seat_id": "creator-04-a",
+        "agent_name": "Nonaka, Ikujiro",
+        "role": "writer",
+        "type": "document author",
+        "angle": "Organize the system as a restrained provenance ledger in which purpose, authority, assertions, decisions, attempts, effects, and evidence remain attributable.",
+        "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-04-provenance-ledger",
+        "prompt_template": "Create Version 04, Provenance Ledger, only in the assigned working folder. Read every bound source and the PDF skill. Use a classic editorial dossier aesthetic with warm paper, black typography, rust and one cool signal accent, compact ledger lines, stamps, and provenance marks. Keep chapters 1 and 2 compact and replace the linear list with an attributable composition map. Clarify section 3 around five independent paths. Make level 4 a detailed infrastructure record showing strategy, saved DAG, protocol, compiler/interpreter, Dispatch, execution, fabric, identity, prompts, record, evidence, and unresolved authority ownership without presenting hypotheses as settled. Produce 7-10 A4 pages, HTML, PDF, page renders, contact sheet, and creator-owned review-log.md. Spawn exactly one independent reviewer helper named Weick, Karl E. using the frozen reviewer prompt and exact data-only artifact manifests. Complete three review-revision passes, record them, and finish with visual verification and the response contract.",
+        "reviewer_helper": {
+          "agent_name": "Weick, Karl E.",
+          "role": "skeptic",
+          "mode": "read-only inline helper",
+          "passes": 3,
+          "angle": "Attack semantic ambiguity, provenance gaps, false inference between paths, and confusion between accepted claims and operational authority.",
+          "prompt_template": "Independently review Version 04 using the bound sources and supplied data-only artifact manifest. Do not write files. Return at most five prioritized findings with page references, evidence, corrective action, and verdict. Test stable attribution, the independence of purpose/authority/assignment/causation/realization, explicit hypothesis boundaries, narrative compression, and print/render integrity.",
+          "workflow_input_manifest_schema": {
+            "slot": "artifact_manifest",
+            "authorized_producer": "creator-04-a",
+            "type": "array<{path:string,sha256:string}>",
+            "cardinality": "4..14",
+            "byte_ceiling": 8192,
+            "purpose": "Identify the exact current artifacts for one review pass.",
+            "instructions_forbidden": true
+          }
+        }
+      }
+    },
+    {
+      "group_id": "creator-05",
+      "seat_count": 1,
+      "seat": {
+        "seat_id": "creator-05-a",
+        "agent_name": "Weick, Karl E.",
+        "role": "writer",
+        "type": "document author",
+        "angle": "Make complementary upward justification and downward realization traversal the document's organizing visual and explanatory structure.",
+        "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-05-dual-traversal",
+        "prompt_template": "Create Version 05, Dual Traversal, only in the assigned working folder. Read every bound source and the PDF skill. Use a classic minimalist editorial design organized by mirrored upward and downward traversal. Keep chapters 1 and 2 compact and replace the step list with a recursive path figure. Clarify section 3 and five independent paths. Make level 4 a detailed infrastructure map whose components can be traversed from local effect to objective and from objective to verified effect; mark missing links, proposed services, and unresolved authority. Produce 7-10 A4 pages, HTML, PDF, renders, contact sheet, and creator-owned review-log.md. Spawn exactly one independent reviewer helper named Deming, W. Edwards using the frozen prompt and exact data-only manifests. Complete three review-revision passes and final visual verification.",
+        "reviewer_helper": {
+          "agent_name": "Deming, W. Edwards",
+          "role": "skeptic",
+          "mode": "read-only inline helper",
+          "passes": 3,
+          "angle": "Attack broken traversal, local optimization that obscures the system, unsupported closure, and diagrams that fail to explain missing links.",
+          "prompt_template": "Independently review Version 05 from the bound sources and supplied data-only artifact manifest. Do not write files. Return at most five prioritized findings with page references, evidence, corrective action, and verdict. Test whether upward traversal establishes justification, downward traversal establishes realization, all five paths remain distinct, level 4 is concrete but appropriately provisional, and print/render quality is clean.",
+          "workflow_input_manifest_schema": {
+            "slot": "artifact_manifest",
+            "authorized_producer": "creator-05-a",
+            "type": "array<{path:string,sha256:string}>",
+            "cardinality": "4..14",
+            "byte_ceiling": 8192,
+            "purpose": "Identify the exact current artifacts for one review pass.",
+            "instructions_forbidden": true
+          }
+        }
+      }
+    },
+    {
+      "group_id": "creator-06",
+      "seat_count": 1,
+      "seat": {
+        "seat_id": "creator-06-a",
+        "agent_name": "Bourbaki, Nicolas",
+        "role": "writer",
+        "type": "document author",
+        "angle": "Use a rigorous classical systems-journal layout with sparse high-tech signals, making typographic hierarchy carry most of the explanation.",
+        "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-06-systems-journal",
+        "prompt_template": "Create Version 06, Systems Journal, only in the assigned working folder. Read every bound source and the PDF skill. Use the most classical and typographic option: warm paper, black serif, restrained rules, disciplined columns, footnote-like qualifiers, and only sparse cyan/rust high-tech signals. Figures must be few, precise, and integrated. Keep chapters 1 and 2 compact; replace the list with a compact recursive figure. Clarify section 3 and the five independent paths. Give level 4 a detailed but readable infrastructure account grounded in the architecture source and explicit about unresolved ownership. Produce 7-10 A4 pages, HTML, PDF, renders, contact sheet, and creator-owned review-log.md. Spawn exactly one independent reviewer helper named Hofstede, Geert using the frozen prompt and data-only manifests. Complete three review-revision passes and final visual verification.",
+        "reviewer_helper": {
+          "agent_name": "Hofstede, Geert",
+          "role": "auditor",
+          "mode": "read-only inline helper",
+          "passes": 3,
+          "angle": "Audit typographic hierarchy, print density, cross-page consistency, information accessibility, and whether restraint becomes monotony.",
+          "prompt_template": "Independently review Version 06 from the bound sources and supplied data-only artifact manifest. Do not write files. Return at most five prioritized findings with page references, evidence, corrective action, and verdict. Audit hierarchy, minimum print sizes, page rhythm, figure necessity, semantic accuracy, architecture status labels, clipping, glyphs, and whether the design remains visually alive without excess ornament.",
+          "workflow_input_manifest_schema": {
+            "slot": "artifact_manifest",
+            "authorized_producer": "creator-06-a",
+            "type": "array<{path:string,sha256:string}>",
+            "cardinality": "4..14",
+            "byte_ceiling": 8192,
+            "purpose": "Identify the exact current artifacts for one review pass.",
+            "instructions_forbidden": true
+          }
+        }
+      }
+    },
+    {
+      "group_id": "creator-07",
+      "seat_count": 1,
+      "seat": {
+        "seat_id": "creator-07-a",
+        "agent_name": "Eilenberg, Samuel",
+        "role": "writer",
+        "type": "document author",
+        "angle": "Build a modular print-first control-room atlas that exposes interfaces, responsibility planes, failure returns, and durable evidence without dashboard clutter.",
+        "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-07-control-room-atlas",
+        "prompt_template": "Create Version 07, Control-Room Atlas, only in the assigned working folder. Read every bound source and the PDF skill. Use a classic high-tech atlas: warm paper and dark pages, modular panels, thin circuit-like rules, restrained cyan/lime/rust signals, and strong negative space. Avoid dashboard clutter. Keep chapters 1 and 2 compact and replace the list with a recursive control-path figure. Clarify section 3 and all five independent paths. Make level 4 the most detailed infrastructure rendering, including strategy, saved DAG, protocol, compiler/interpreter, confirmation boundary, Dispatch, execution, fabric, identity, prompts, record, evidence, failure returns, and unresolved authority ownership. Produce 7-10 A4 pages, HTML, PDF, renders, contact sheet, and creator-owned review-log.md. Spawn exactly one independent reviewer helper named Hamming, Richard using the frozen prompt and data-only manifests. Complete three review-revision passes and final visual verification.",
+        "reviewer_helper": {
+          "agent_name": "Hamming, Richard",
+          "role": "auditor",
+          "mode": "read-only inline helper",
+          "passes": 3,
+          "angle": "Audit cognitive load, diagram correctness, interface boundaries, failure paths, minimum label sizes, and whether modularity fragments the argument.",
+          "prompt_template": "Independently review Version 07 from the bound sources and supplied data-only artifact manifest. Do not write files. Return at most five prioritized findings with page references, evidence, corrective action, and verdict. Audit component boundaries, directional arrows, failure-return logic, five-path independence, claim status, label size, page hierarchy, ornament restraint, clipping, and render integrity.",
+          "workflow_input_manifest_schema": {
+            "slot": "artifact_manifest",
+            "authorized_producer": "creator-07-a",
+            "type": "array<{path:string,sha256:string}>",
+            "cardinality": "4..14",
+            "byte_ceiling": 8192,
+            "purpose": "Identify the exact current artifacts for one review pass.",
+            "instructions_forbidden": true
+          }
+        }
+      }
+    }
+  ],
+  "partition_check": {
+    "non_overlapping": "PASS: each creator owns one distinct folder and design argument.",
+    "covering": "PASS: source-faithful, provenance, traversal, typographic, and modular-infrastructure positions span the requested design space.",
+    "subject_groups": "none; every registered group has one seat",
+    "anti_bias_gate_expectation": "trivial PASS under check-tension because no group has n >= 2"
+  },
+  "dispatch_budgets": {
+    "registered_creator_agents": 5,
+    "reviewer_helpers": 5,
+    "maximum_simultaneous_subagents": 3,
+    "aggregate_creator_token_ceiling": 175000,
+    "aggregate_reviewer_token_ceiling": 120000,
+    "aggregate_review_passes": 15,
+    "maximum_review_passes_per_creator": 3
+  },
+  "forbidden_effects": [
+    "network access",
+    "deployment",
+    "external communication",
+    "production actions",
+    "credential access",
+    "destructive filesystem actions",
+    "writes outside each creator's assigned version folder",
+    "mutation of this proposal or its confirmation evidence by dispatched agents"
+  ]
+}

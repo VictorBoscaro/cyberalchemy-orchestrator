@@ -1,0 +1,194 @@
+{
+  "projection_schema_version": "1.0",
+  "projection_kind": "ConcreteDispatchProposalBundle",
+  "revision_id": "short-pdf-v3-v7-concrete-r3",
+  "confirmation_mode": "structure_and_final",
+  "objective": "Run five separately registered, independently consumable document-authoring dispatches over one required source corpus, each with one P11 inline reviewer helper and three review-revision passes.",
+  "final_approver": "parent",
+  "frozen_template_binding": {
+    "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/_dispatch/concrete-proposal-r2.json",
+    "raw_file_sha256": "037652ff168cc95acbd0720256659c8e2002d35f6300bd931f4a5464f5ca390e",
+    "resolved_fields": [
+      "source_bindings",
+      "approved_local_toolchain",
+      "shared_creator_profile",
+      "shared_reviewer_profile",
+      "effective_enforcement_dimensions",
+      "forbidden_effects",
+      "groups[*].seats[*].prompt_template",
+      "groups[*].seats[*].reviewer_prompt_template"
+    ],
+    "resolution_rule": "Resolve the declared JSON pointers from the exact hash-bound template before confirmation or execution; mismatch fails closed."
+  },
+  "shared_amendments": {
+    "registered_topology": "Each child is one separate dispatch with one registered creator seat. The five children are not groups in one dispatch.",
+    "p11_helper_classification": "Each creator may spawn exactly one named read-only helper within its own scope. The helper does not persist or independently publish a deliverable, does not fan out, and is reported post-hoc in agents_spawned.",
+    "helper_input_evidence": "Before each of three helper passes, the creator produces a locally sorted compact workflow-only manifest of normalized relative regular-file paths and SHA-256 values beneath its exact version folder. No instructions are permitted in the manifest. The creator verifies no traversal, absolute paths, symlinks, or duplicates. The manifest and helper verdict are recorded in the creator-owned review-log.md. This is workflow evidence for an unregistered P11 helper, not ACI-bound durable input.",
+    "review_passes": 3,
+    "page_range": "5-10 pages with the per-child target below",
+    "content_density": "Compact essay, materially more prose than the eight-page drafts, readable typography, figures used only when explanatory.",
+    "requested_provider": "openai",
+    "requested_model": "gpt-5.6-sol",
+    "requested_adapter": "codex-collaboration-subagent",
+    "effective_enforcement": "non_observable",
+    "scheduling": "Run at most two independent creator dispatches concurrently, reserving one subagent slot for one inline reviewer helper. A creator keeps one helper identity for all three passes."
+  },
+  "dispatches": [
+    {
+      "dispatch_id": "short-pdf-version-03",
+      "dispatch_type": "others",
+      "work_kind": "document-and-pdf-authoring",
+      "group": {
+        "group_id": "version-03-singleton",
+        "seat_count": 1,
+        "seat_pointer": "/groups/0/seats/0",
+        "agent_name": "Alexander, Christopher",
+        "angle": "Historical reconstruction of polished-diagrams with necessary figures and spatially quiet art."
+      },
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-03-polished-diagrams-plus",
+      "page_target": "9-10",
+      "reviewer_helper": "Rumelt, Richard",
+      "subject_groups": "none",
+      "anti_bias_gate": "trivial PASS"
+    },
+    {
+      "dispatch_id": "short-pdf-version-04",
+      "dispatch_type": "others",
+      "work_kind": "document-and-pdf-authoring",
+      "group": {
+        "group_id": "version-04-singleton",
+        "seat_count": 1,
+        "seat_pointer": "/groups/0/seats/1",
+        "agent_name": "Nonaka, Ikujiro",
+        "angle": "Adversarial provenance audit as an editorial ledger."
+      },
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-04-provenance-ledger",
+      "page_target": "8-9",
+      "reviewer_helper": "Weick, Karl E.",
+      "subject_groups": "none",
+      "anti_bias_gate": "trivial PASS"
+    },
+    {
+      "dispatch_id": "short-pdf-version-05",
+      "dispatch_type": "others",
+      "work_kind": "document-and-pdf-authoring",
+      "group": {
+        "group_id": "version-05-singleton",
+        "seat_count": 1,
+        "seat_pointer": "/groups/1/seats/0",
+        "agent_name": "Fong, Brendan",
+        "angle": "Formal graph traversal through mirrored upward justification and downward realization."
+      },
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-05-dual-traversal",
+      "page_target": "7-8",
+      "reviewer_helper": "Deming, W. Edwards",
+      "subject_groups": "none",
+      "anti_bias_gate": "trivial PASS"
+    },
+    {
+      "dispatch_id": "short-pdf-version-06",
+      "dispatch_type": "others",
+      "work_kind": "document-and-pdf-authoring",
+      "group": {
+        "group_id": "version-06-singleton",
+        "seat_count": 1,
+        "seat_pointer": "/groups/1/seats/1",
+        "agent_name": "Bourbaki, Nicolas",
+        "angle": "Computational spatial-density optimization through rigorous classical typography."
+      },
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-06-systems-journal",
+      "page_target": "5-7",
+      "reviewer_helper": "Hofstede, Geert",
+      "subject_groups": "none",
+      "anti_bias_gate": "trivial PASS"
+    },
+    {
+      "dispatch_id": "short-pdf-version-07",
+      "dispatch_type": "others",
+      "work_kind": "document-and-pdf-authoring",
+      "group": {
+        "group_id": "version-07-singleton",
+        "seat_count": 1,
+        "seat_pointer": "/groups/2/seats/0",
+        "agent_name": "Eilenberg, Samuel",
+        "angle": "Adversarial operational failure-path simulation as a print-first control-room atlas."
+      },
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-07-control-room-atlas",
+      "page_target": "8-10",
+      "reviewer_helper": "Hamming, Richard",
+      "subject_groups": "none",
+      "anti_bias_gate": "trivial PASS"
+    }
+  ],
+  "partition_rationale": "These are five separately consumable PDF/HTML artifacts with independent folders, page targets, design arguments, completion conditions, and close results. They share one required authoritative corpus for comparability; therefore they are separate singleton dispatches rather than a falsely tensioned shared-corpus investigation group.",
+  "digest_evidence": {
+    "canonicalization": "Recursively sort every object key lexicographically, preserve array order, serialize compact UTF-8 JSON, then SHA-256. This is locally reproducible workflow evidence and is not claimed as a portable RFC 8785 implementation.",
+    "template_resolution": "Read and parse the exact file bound by frozen_template_binding.raw_file_sha256. A pointer below means the JSON value at that RFC 6901 pointer in those frozen bytes.",
+    "complete_profile_digest_basis_schema": {
+      "object_keys_exactly": [
+        "toolchain",
+        "creator",
+        "reviewer",
+        "enforcement",
+        "forbidden",
+        "amendments"
+      ],
+      "toolchain": "/approved_local_toolchain",
+      "creator": "/shared_creator_profile",
+      "reviewer": "/shared_reviewer_profile",
+      "enforcement": "/effective_enforcement_dimensions",
+      "forbidden": "/forbidden_effects",
+      "amendments": "/shared_amendments in this bundle"
+    },
+    "complete_profile_digest": "83b9a319be440a80ae28b539d0fcda9a6076b971e94d4359ce6956d6baa635da",
+    "child_resolution_schema": {
+      "object_keys_exactly": [
+        "bundle_revision",
+        "template_hash",
+        "shared_amendments",
+        "source_bindings",
+        "toolchain",
+        "creator_profile",
+        "reviewer_profile",
+        "enforcement",
+        "forbidden",
+        "dispatch",
+        "final_approver"
+      ],
+      "bundle_revision": "/revision_id in this bundle",
+      "template_hash": "/frozen_template_binding/raw_file_sha256 in this bundle",
+      "shared_amendments": "/shared_amendments in this bundle",
+      "source_bindings": "/source_bindings in the frozen template",
+      "toolchain": "/approved_local_toolchain in the frozen template",
+      "creator_profile": "/shared_creator_profile in the frozen template",
+      "reviewer_profile": "/shared_reviewer_profile in the frozen template",
+      "enforcement": "/effective_enforcement_dimensions in the frozen template",
+      "forbidden": "/forbidden_effects in the frozen template",
+      "dispatch": "the exact matching object in /dispatches in this bundle",
+      "final_approver": "/final_approver in this bundle"
+    },
+    "resolved_child_digests": [
+      {
+        "dispatch_id": "short-pdf-version-03",
+        "sha256": "932a59c7925878f5f014b043dd03abf58b8dfd4048f6387832601ef3a7e35bce"
+      },
+      {
+        "dispatch_id": "short-pdf-version-04",
+        "sha256": "7376662896e036917bbae8046bae97ee74f24b4b45bfe23ccd8069753a3d9e5b"
+      },
+      {
+        "dispatch_id": "short-pdf-version-05",
+        "sha256": "7733db509284a556864ea126fe8642f1589b68c6f794df25b5598cdbf508f88e"
+      },
+      {
+        "dispatch_id": "short-pdf-version-06",
+        "sha256": "757643585d6de49724139cef049fb8a04cb65066d7ebd5006e5e705173114820"
+      },
+      {
+        "dispatch_id": "short-pdf-version-07",
+        "sha256": "d3efad5f8e671994aed78f813c8524c9d17cae60e6a948466002fc125102986e"
+      }
+    ]
+  },
+  "bundle_confirmation_semantics": "One affirmative may confirm all five exact child proposals and their shared hash-bound template. Each child registers and closes separately. A failure or revision in one child does not mutate another child."
+}

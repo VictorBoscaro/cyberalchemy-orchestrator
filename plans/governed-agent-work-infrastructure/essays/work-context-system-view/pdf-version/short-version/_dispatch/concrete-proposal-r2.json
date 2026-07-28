@@ -1,0 +1,268 @@
+{
+  "projection_schema_version": "1.0",
+  "projection_kind": "ConcreteDispatchProposal",
+  "revision_id": "short-pdf-v3-v7-concrete-r2",
+  "structural_basis": "User-confirmed corrected batching with variable 5-10 page editions",
+  "dispatch_type": "others",
+  "work_kind": "document-and-pdf-authoring",
+  "meta": false,
+  "confirmation_mode": "structure_and_final",
+  "objective": "Produce five independent, text-rich but short work-context system-view variants, each refined through three inline passes by one independent read-only reviewer helper, for parent verification alongside versions 01 and 02.",
+  "final_approver": "parent",
+  "effective_enforcement": "non_observable",
+  "effective_enforcement_dimensions": {
+    "provider": "requested, not observable",
+    "model": "requested, not observable",
+    "adapter": "requested, not observable",
+    "tools": "requested, not observable",
+    "read_write_isolation": "requested and parent-audited after execution, not runtime-proven",
+    "network": "requested denied, not runtime-proven",
+    "destructive_effects": "requested denied, not runtime-proven",
+    "budgets": "requested ceilings, not runtime-proven",
+    "helper_inputs": "fixed-folder reads inside the creator scope; no ACI-bound dynamic manifest is claimed"
+  },
+  "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version",
+  "output_mode": "persisted",
+  "task_digest_basis": {
+    "objective": "five variable-length short PDF variants with independent inline review",
+    "source_scope": "four exact bound local files",
+    "output_scope": "five exact version folders",
+    "review_ceiling": "three passes per creator"
+  },
+  "source_bindings": [
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/work-context-system-view-polished-diagrams.pdf",
+      "sha256": "951c6e6d6e2933bce8b1018985bfe9e70410ef867df9bd97f16c58312a76d008"
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/work-context-system-view-polished-diagrams.html",
+      "sha256": "a0c873d48be0a455b9e7ad6439c1bcec189c0e8b41e8726d75c1e29b6249a159"
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/_dispatch/source-snapshots/infrastructure-context-rich.snapshot.html",
+      "sha256": "4f12ed0194a4d211c05f945cce822092743cdf434644058ebc59795ec9fcad2e"
+    },
+    {
+      "path": "C:/Users/victo/.codex/plugins/cache/openai-primary-runtime/pdf/26.727.11326/skills/pdf/SKILL.md",
+      "sha256": "8a9eb6f1fb2e7f5a4fc5f157f1d3e1319890e988abab294dc316644cf997f1b6"
+    }
+  ],
+  "approved_local_toolchain": {
+    "hashing": "PowerShell Get-FileHash SHA256",
+    "html_to_pdf": "Python Playwright using installed local Chromium and file URLs only",
+    "pdf_reopen_and_text_checks": "PyMuPDF and pdfplumber",
+    "page_rendering": "PyMuPDF",
+    "visual_inspection": "view_image over rendered PNGs and contact sheet",
+    "network_preflight": "No remote URLs or network tools. Fail closed if a required asset is not local.",
+    "path_rule": "All temporary, final, render, and contact-sheet files remain under the seat's exact version folder."
+  },
+  "shared_creator_profile": {
+    "requested_provider": "openai",
+    "requested_model": "gpt-5.6-sol",
+    "requested_adapter": "codex-collaboration-subagent",
+    "skills": [
+      "pdf"
+    ],
+    "proposed_capabilities": {
+      "read": "only the four bound sources and own version folder",
+      "write": "only own version folder",
+      "commands": [
+        "exact bound-source reads",
+        "local SHA-256 hashing",
+        "own-folder editing",
+        "local file-URL HTML-to-PDF rendering",
+        "PDF reopening and text checks",
+        "PNG and contact-sheet generation",
+        "image inspection"
+      ],
+      "helper_authority": "spawn exactly one named reviewer helper and call that same helper for exactly three review passes",
+      "network": "denied",
+      "destructive_actions": "denied",
+      "external_effects": "denied"
+    },
+    "budgets": {
+      "creator_token_ceiling": 35000,
+      "reviewer_token_ceiling_per_pass": 8000,
+      "review_passes": 3,
+      "minimum_pages": 5,
+      "maximum_pages": 10
+    },
+    "shared_content_contract": [
+      "The result is a compact essay, not a slide deck.",
+      "Use readable body text and materially more explanatory prose than the existing eight-page drafts.",
+      "Keep chapters 1 and 2 substantially intact but edited for compression.",
+      "Replace only the chapter 2 sequence list with an explanatory recursive visualization.",
+      "Give section 3 enough prose to explain context loss, partial familiar framings, five independent paths, and upward/downward traversal.",
+      "Give level 4 enough prose and figures to explain responsibility planes, the strategy-to-Dispatch control spine, execution and durable record, one governed-run example, and unresolved boundaries.",
+      "Figures support or compress the prose; they do not replace necessary explanation.",
+      "Clearly distinguish essay-backed properties, proposed services, and unresolved ownership.",
+      "Use ASCII hyphens only and claim no more than evidence supports.",
+      "Reopen the PDF, render every page, inspect full-size pages plus contact sheet, and fix clipping, overlap, blank pages, glyph defects, and unreadable labels."
+    ],
+    "creator_response_contract": {
+      "chat_fields": [
+        "artifact paths",
+        "page count",
+        "render validation",
+        "three review verdicts",
+        "agents_spawned",
+        "residuals",
+        "exit_reason"
+      ],
+      "exit_reason_enum": [
+        "resolved",
+        "loop_ceiling_reached",
+        "dissent_irreconcilable",
+        "user_abort",
+        "error"
+      ],
+      "persisted_files": [
+        "HTML",
+        "PDF",
+        "page PNGs",
+        "contact sheet",
+        "review-log.md with pass-by-pass verdict/change lineage"
+      ]
+    }
+  },
+  "shared_reviewer_profile": {
+    "requested_provider": "openai",
+    "requested_model": "gpt-5.6-sol",
+    "requested_adapter": "codex-collaboration-subagent",
+    "skills": [
+      "pdf"
+    ],
+    "mode": "single P11 read-only inline helper within creator scope",
+    "proposed_capabilities": {
+      "read": "the four frozen sources and fixed files beneath the creator's exact version folder",
+      "write": "denied",
+      "commands": [
+        "local SHA-256 verification",
+        "HTML and PDF reopening/text checks",
+        "PNG/contact-sheet inspection"
+      ],
+      "network": "denied",
+      "destructive_actions": "denied",
+      "external_effects": "denied"
+    },
+    "response_contract": {
+      "maximum_findings": 5,
+      "finding_fields": [
+        "page",
+        "evidence",
+        "correction"
+      ],
+      "verdict_enum": [
+        "ACCEPT",
+        "ACCEPT_WITH_RESIDUALS",
+        "REVISE"
+      ]
+    }
+  },
+  "anti_bias_global": "Across capacity-bounded waves, oppose source-faithful continuity, forensic traceability, formal navigability, spatial efficiency, and operational failure visibility.",
+  "groups": [
+    {
+      "group_id": "wave-a-source-and-trace",
+      "seat_count": 2,
+      "anti_bias": "methodology",
+      "pairwise_prediction": "creator-03-a runs historical reconstruction while creator-04-a runs adversarial provenance audit on the methodology axis; a bias in creator-03-a toward visual resemblance without accountable semantics would be exposed by creator-04-a, while a bias in creator-04-a toward exhaustive ledger structure without natural reading flow would be exposed by creator-03-a.",
+      "seats": [
+        {
+          "seat_id": "creator-03-a",
+          "agent_name": "Alexander, Christopher",
+          "role": "writer",
+          "angle": "Historical reconstruction of the polished-diagrams visual grammar, extended through necessary information-bearing figures and spatially quiet artistic marks.",
+          "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-03-polished-diagrams-plus",
+          "page_target": "9-10 pages",
+          "reviewer_helper": "Rumelt, Richard",
+          "prompt_template": "Create Version 03, Polished Diagrams Plus, in the exact assigned folder. Use only bound local sources and approved local tools. Preserve the polished source's cream paper, black editorial serif, rust accents, fine rules, corner marks, and calm pacing. Produce a text-rich 9-10 page compact essay. Keep chapters 1 and 2 substantially intact; replace the sequence list with one recursive composition figure. Expand section 3 with clear prose around context loss, familiar partial framings, five paths, and complementary traversal. Make level 4 a detailed prose-and-diagram infrastructure x-ray with status boundaries and one governed run. Add figures only when they improve explanation; artistic traces must consume no meaningful content space. Spawn exactly one helper, Rumelt, Richard, using model gpt-5.6-sol with no inherited turns. The helper reads only fixed files in this folder and bound sources, writes nothing, and returns the frozen review response. Complete exactly three review-revision passes, record them in review-log.md, then visually verify all outputs.",
+          "reviewer_prompt_template": "Review the current fixed Version 03 folder and four bound sources. Do not write. Return no more than five findings using page, evidence, correction, plus one allowed verdict. Attack source-design fidelity, whether every figure earns its space, ornamental restraint, prose sufficiency, five-path semantics, hypothesis boundaries, print readability, and render integrity."
+        },
+        {
+          "seat_id": "creator-04-a",
+          "agent_name": "Nonaka, Ikujiro",
+          "role": "writer",
+          "angle": "Adversarial provenance audit expressed as an editorial ledger of intentions, decisions, attempts, effects, and evidence.",
+          "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-04-provenance-ledger",
+          "page_target": "8-9 pages",
+          "reviewer_helper": "Weick, Karl E.",
+          "prompt_template": "Create Version 04, Provenance Ledger, in the exact assigned folder. Use only bound local sources and approved tools. Produce a text-rich 8-9 page compact essay with warm-paper editorial dossier design, strong prose, restrained ledger lines, stamps, and provenance marks. Keep chapters 1 and 2 substantially intact and visualize recursive decomposition. Expand section 3 around context loss, five paths, and traversal. Explain level 4 through strategy, saved DAG, protocol, compiler/interpreter, Dispatch, execution, fabric, identity, prompts, record, evidence, and unresolved authority without treating hypotheses as settled. Spawn exactly one helper, Weick, Karl E., with gpt-5.6-sol and no inherited turns. The helper is read-only over fixed folder files and bound sources. Complete exactly three review-revision passes, record them, and verify the final PDF and renders.",
+          "reviewer_prompt_template": "Review the current fixed Version 04 folder and bound sources. Do not write. Return at most five page/evidence/correction findings and one allowed verdict. Attack semantic ambiguity, provenance gaps, false inference between the five paths, acceptance-authority confusion, prose sufficiency, hypothesis boundaries, and print/render defects."
+        }
+      ]
+    },
+    {
+      "group_id": "wave-b-navigation-and-density",
+      "seat_count": 2,
+      "anti_bias": "methodology",
+      "depends_on": "wave-a-source-and-trace",
+      "dependency_kind": "sequential",
+      "pairwise_prediction": "creator-05-a runs formal graph traversal while creator-06-a runs computational spatial-density optimization on the methodology axis; a bias in creator-05-a toward formally correct but visually opaque structure would be exposed by creator-06-a, while a bias in creator-06-a toward efficient typography that erases semantic paths would be exposed by creator-05-a.",
+      "seats": [
+        {
+          "seat_id": "creator-05-a",
+          "agent_name": "Fong, Brendan",
+          "role": "writer",
+          "angle": "Formal graph traversal using mirrored upward justification and downward realization as the explanatory spine.",
+          "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-05-dual-traversal",
+          "page_target": "7-8 pages",
+          "reviewer_helper": "Deming, W. Edwards",
+          "prompt_template": "Create Version 05, Dual Traversal, in the exact assigned folder using only bound sources and approved tools. Produce a text-rich 7-8 page compact essay organized by mirrored upward justification and downward realization. Keep chapters 1 and 2 substantially intact and replace the list with a recursive path figure. Expand section 3 enough to explain the five independent paths and missing-link states. Make level 4 a detailed traversable infrastructure map with explanatory prose, status boundaries, and one governed-run example. Spawn exactly one helper, Deming, W. Edwards, using gpt-5.6-sol and no inherited turns. The helper is read-only over the fixed folder and bound sources. Complete three review-revision passes, record them, and verify all final renders.",
+          "reviewer_prompt_template": "Review the fixed Version 05 folder and bound sources. Do not write. Return at most five page/evidence/correction findings and one allowed verdict. Attack broken traversal, local optimization, unsupported closure, path conflation, insufficient prose, diagram opacity, and print/render defects."
+        },
+        {
+          "seat_id": "creator-06-a",
+          "agent_name": "Bourbaki, Nicolas",
+          "role": "writer",
+          "angle": "Computational spatial-density optimization through rigorous classical typography and sparse high-tech signals.",
+          "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-06-systems-journal",
+          "page_target": "5-7 pages",
+          "reviewer_helper": "Hofstede, Geert",
+          "prompt_template": "Create Version 06, Systems Journal, in the exact assigned folder using only bound sources and approved tools. Produce the shortest text-rich option at 5-7 pages: classical typography, disciplined columns, warm paper, restrained rules, footnote-like qualifiers, and sparse cyan/rust signals. Use readable sizes and dense but calm prose. Keep chapters 1 and 2 substantially intact; visualize the recursive list. Explain section 3 and level 4 without turning the result into a poster or shrinking type. Spawn exactly one helper, Hofstede, Geert, using gpt-5.6-sol and no inherited turns. The helper is read-only over fixed files and sources. Complete three review-revision passes, record them, and verify every final page.",
+          "reviewer_prompt_template": "Review the fixed Version 06 folder and bound sources. Do not write. Return at most five page/evidence/correction findings and one allowed verdict. Audit typography, body and label sizes, density, hierarchy, prose sufficiency, semantic accuracy, monotony, clipping, and render integrity."
+        }
+      ]
+    },
+    {
+      "group_id": "wave-c-operational-stress",
+      "seat_count": 1,
+      "depends_on": "wave-b-navigation-and-density",
+      "dependency_kind": "sequential",
+      "seats": [
+        {
+          "seat_id": "creator-07-a",
+          "agent_name": "Eilenberg, Samuel",
+          "role": "writer",
+          "angle": "Adversarial operational failure-path simulation expressed as a modular, print-first control-room atlas.",
+          "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/version-07-control-room-atlas",
+          "page_target": "8-10 pages",
+          "reviewer_helper": "Hamming, Richard",
+          "prompt_template": "Create Version 07, Control-Room Atlas, in the exact assigned folder using only bound sources and approved tools. Produce a text-rich 8-10 page classic high-tech atlas with warm and dark pages, modular panels, thin circuit-like rules, restrained signals, and strong negative space without dashboard clutter. Keep chapters 1 and 2 substantially intact and visualize recursive decomposition. Expand section 3. Make level 4 the most operationally detailed version, with explanatory prose and figures for strategy, saved DAG, compiler/interpreter, confirmation, Dispatch, execution, fabric, identity, prompts, record, evidence, failure returns, and unresolved authority. Spawn exactly one helper, Hamming, Richard, using gpt-5.6-sol and no inherited turns. The helper is read-only over fixed files and sources. Complete three review-revision passes, record them, and verify all outputs.",
+          "reviewer_prompt_template": "Review the fixed Version 07 folder and bound sources. Do not write. Return at most five page/evidence/correction findings and one allowed verdict. Audit cognitive load, component and authority boundaries, failure-return logic, five-path independence, prose sufficiency, label sizes, ornament restraint, clipping, and render integrity."
+        }
+      ]
+    }
+  ],
+  "scheduling": {
+    "maximum_active_subagents": 3,
+    "wave_rule": "Only one two-seat creator wave runs at a time. Its two creators run concurrently, leaving one slot for one reviewer helper at a time. Wave C runs after Wave B.",
+    "helper_rule": "Each creator spawns exactly one reviewer and reuses it for three passes; reviewers never fan out and never persist an independent deliverable."
+  },
+  "partition_check": {
+    "non_overlapping": "Each seat owns one exact folder and one distinct explanatory methodology.",
+    "covering": "The five positions cover source continuity, traceability, navigability, spatial efficiency, and operational failure visibility - the five design tensions requested for comparison.",
+    "subject_groups": [
+      "wave-a-source-and-trace",
+      "wave-b-navigation-and-density"
+    ]
+  },
+  "forbidden_effects": [
+    "network access",
+    "deployment",
+    "external communication",
+    "credential access",
+    "destructive actions",
+    "writes outside each seat's exact folder",
+    "mutation of dispatch proposal or confirmation evidence"
+  ]
+}

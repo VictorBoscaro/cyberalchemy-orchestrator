@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work Context Infrastructure - Short System View</title>
+  <style>
+    :root {
+      --ink: #0b1020;
+      --ink-soft: #303747;
+      --paper: #f4f0e7;
+      --paper-strong: #fffdf7;
+      --line: rgba(11,16,32,.18);
+      --line-strong: rgba(11,16,32,.46);
+      --lime: #c7ff4a;
+      --cyan: #68dcff;
+      --coral: #ff765f;
+      --violet: #a98cff;
+      --yellow: #ffd84d;
+      --sans: Inter, "Segoe UI", Arial, sans-serif;
+      --serif: "Iowan Old Style", Baskerville, Georgia, "Times New Roman", serif;
+    }
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #c9c5bb;
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .page {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto 8mm;
+      padding: 16mm 18mm 15mm 24mm;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(11,16,32,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,16,32,.028) 1px, transparent 1px),
+        var(--paper);
+      background-size: 12mm 12mm;
+      break-after: page;
+      page-break-after: always;
+    }
+    .page:last-child { break-after: auto; page-break-after: auto; }
+    .page::before {
+      content: "";
+      position: absolute;
+      left: 8mm;
+      top: 16mm;
+      bottom: 15mm;
+      width: 1.5mm;
+      background:
+        linear-gradient(to bottom,
+          var(--ink) 0 8%,
+          var(--coral) 8% 26%,
+          var(--cyan) 26% 51%,
+          var(--violet) 51% 76%,
+          var(--lime) 76% 100%);
+    }
+    .page::after {
+      content: "";
+      position: absolute;
+      left: 6.6mm;
+      top: 36mm;
+      width: 4.2mm;
+      height: 4.2mm;
+      border: 1.4pt solid var(--ink);
+      border-radius: 50%;
+      background: var(--paper);
+    }
+    .folio {
+      position: absolute;
+      right: 18mm;
+      bottom: 7mm;
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      color: var(--ink-soft);
+      font-size: 7pt;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .folio::before { content: ""; width: 14mm; border-top: .8pt solid var(--ink); }
+    .eyebrow {
+      margin: 0 0 4mm;
+      font-size: 7.2pt;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 2.2mm;
+      height: 2.2mm;
+      margin-right: 2mm;
+      border: 1.2pt solid currentColor;
+      vertical-align: -.25mm;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 {
+      font-family: var(--serif);
+      letter-spacing: -.025em;
+    }
+    h1 { max-width: 158mm; margin-bottom: 5mm; font-size: 31pt; line-height: .98; }
+    h2 { max-width: 156mm; margin-bottom: 5mm; font-size: 24pt; line-height: 1.02; }
+    h3 { margin-bottom: 2mm; font-size: 10pt; line-height: 1.2; }
+    p { margin-bottom: 3.2mm; font-size: 9.6pt; line-height: 1.48; color: var(--ink-soft); }
+    .lede { max-width: 151mm; font-family: var(--serif); font-size: 15pt; line-height: 1.35; color: var(--ink); }
+    .micro { font-size: 7.4pt; line-height: 1.4; }
+    .rule { width: 100%; margin: 5mm 0; border-top: 1pt solid var(--ink); }
+    .accent-rule { width: 37mm; height: 2mm; margin: 0 0 7mm; background: var(--coral); }
+    .label {
+      display: inline-block;
+      padding: 1.1mm 2mm .9mm;
+      border: .8pt solid var(--ink);
+      border-radius: 99mm;
+      background: var(--paper-strong);
+      font-size: 6.8pt;
+      font-weight: 850;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; }
+    .card {
+      padding: 4mm;
+      border: 1pt solid var(--ink);
+      border-radius: 3mm;
+      background: rgba(255,253,247,.82);
+      box-shadow: 1.5mm 1.5mm 0 rgba(11,16,32,.12);
+      break-inside: avoid;
+    }
+    .card p:last-child { margin-bottom: 0; }
+    .card.coral { box-shadow: 1.5mm 1.5mm 0 var(--coral); }
+    .card.cyan { box-shadow: 1.5mm 1.5mm 0 var(--cyan); }
+    .card.violet { box-shadow: 1.5mm 1.5mm 0 var(--violet); }
+    .card.lime { box-shadow: 1.5mm 1.5mm 0 var(--lime); }
+    .number {
+      display: block;
+      margin-bottom: 1mm;
+      font-family: var(--serif);
+      font-size: 22pt;
+      line-height: 1;
+    }
+    .statement {
+      margin: 5mm 0;
+      padding: 5mm;
+      border-left: 2.5mm solid var(--coral);
+      background: var(--ink);
+      color: var(--paper-strong);
+      font-family: var(--serif);
+      font-size: 15pt;
+      line-height: 1.28;
+    }
+    svg { display: block; width: 100%; height: auto; }
+    svg text { font-family: var(--sans); fill: var(--ink); }
+    .svg-label { font-size: 11px; font-weight: 900; letter-spacing: 1.5px; }
+    .svg-title { font-size: 18px; font-weight: 800; }
+    .svg-copy { font-size: 11px; fill: var(--ink-soft); }
+    .svg-on-dark { fill: rgba(255,255,255,.84) !important; font-size: 14px; }
+    .caption { margin-top: 2.5mm; font-size: 7pt; line-height: 1.4; }
+    .signal-line { fill: none; stroke: var(--ink); stroke-width: 2; }
+    .signal-dash { fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-dasharray: 5 5; }
+    .cover {
+      background:
+        radial-gradient(circle at 82% 16%, rgba(104,220,255,.32), transparent 24%),
+        radial-gradient(circle at 18% 84%, rgba(169,140,255,.19), transparent 25%),
+        linear-gradient(rgba(11,16,32,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,16,32,.028) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, auto, 12mm 12mm, 12mm 12mm, auto;
+    }
+    .cover h1 { margin-top: 25mm; font-size: 45pt; max-width: 150mm; }
+    .cover .deck { width: 115mm; font-size: 12pt; line-height: 1.45; }
+    .cover-mark { position: absolute; right: 18mm; bottom: 30mm; width: 87mm; }
+    .cover-note {
+      position: absolute;
+      left: 24mm;
+      bottom: 24mm;
+      width: 52mm;
+      padding-top: 3mm;
+      border-top: 1pt solid var(--ink);
+      font-size: 7.5pt;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .lens-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2.5mm; margin-top: 5mm; }
+    .lens {
+      min-height: 29mm;
+      padding: 3mm 2.5mm;
+      border-top: 2mm solid var(--coral);
+      background: var(--paper-strong);
+    }
+    .lens:nth-child(2) { border-color: var(--yellow); }
+    .lens:nth-child(3) { border-color: var(--cyan); }
+    .lens:nth-child(4) { border-color: var(--violet); }
+    .lens:nth-child(5) { border-color: var(--lime); }
+    .lens b { display: block; margin-bottom: 2mm; font-size: 8pt; }
+    .lens small { font-size: 6.8pt; line-height: 1.35; color: var(--ink-soft); }
+    .matrix { width: 100%; border-collapse: collapse; background: rgba(255,253,247,.75); }
+    .matrix th, .matrix td { padding: 2.4mm; border-bottom: .7pt solid var(--line); vertical-align: top; }
+    .matrix th { background: var(--ink); color: white; font-size: 7pt; text-align: left; letter-spacing: .06em; text-transform: uppercase; }
+    .matrix td { font-size: 7.25pt; line-height: 1.35; }
+    .matrix td:first-child { width: 29mm; font-weight: 850; }
+    .plane {
+      position: relative;
+      padding: 3.5mm;
+      border: 1pt solid var(--ink);
+      border-radius: 3mm;
+      background: rgba(255,253,247,.86);
+    }
+    .plane + .plane { margin-top: 3mm; }
+    .chips { display: flex; flex-wrap: wrap; gap: 2mm; margin-top: 2.5mm; }
+    .chip {
+      padding: 1.4mm 2.3mm;
+      border: .8pt solid var(--ink);
+      border-radius: 2mm;
+      font-size: 7pt;
+      font-weight: 800;
+      background: var(--paper-strong);
+    }
+    .chip.strategy { background: color-mix(in srgb, var(--violet) 30%, white); }
+    .chip.decide { background: color-mix(in srgb, var(--cyan) 28%, white); }
+    .chip.run { background: color-mix(in srgb, var(--yellow) 30%, white); }
+    .chip.know { background: color-mix(in srgb, var(--lime) 30%, white); }
+    .callout {
+      padding: 3.5mm;
+      border: 1pt dashed var(--line-strong);
+      background: rgba(255,253,247,.6);
+      font-size: 7.5pt;
+      line-height: 1.4;
+    }
+    .status-band {
+      padding: 3.4mm 4mm;
+      border: 1pt solid var(--ink);
+      border-left: 3mm solid var(--coral);
+      background: var(--paper-strong);
+      font-size: 8pt;
+      line-height: 1.42;
+      box-shadow: 1mm 1mm 0 rgba(11,16,32,.12);
+    }
+    .service-legend {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3mm;
+      align-items: center;
+      margin-top: 3mm;
+      padding: 2.5mm 3mm;
+      border: .8pt solid rgba(255,255,255,.42);
+      border-left: 2mm solid var(--cyan);
+      color: rgba(255,255,255,.82);
+      font-size: 7.8pt;
+      line-height: 1.35;
+    }
+    .service-legend b { color: white; font-size: 7pt; letter-spacing: .09em; text-transform: uppercase; }
+    .dark {
+      background: var(--ink);
+      color: white;
+    }
+    .dark p, .dark .micro { color: rgba(255,255,255,.76); }
+    .dark h2, .dark h3 { color: white; }
+    .dark::before { background: linear-gradient(to bottom, var(--lime), var(--cyan), var(--violet), var(--coral)); }
+    .dark::after { border-color: white; background: var(--ink); }
+    .dark .folio { color: rgba(255,255,255,.72); }
+    .dark .folio::before { border-color: white; }
+    .dark .eyebrow { color: var(--cyan); }
+    .dark .label { color: var(--ink); }
+    .dark .card { color: var(--ink); }
+    .dark svg text { fill: white; }
+    .dark .svg-copy { fill: rgba(255,255,255,.72); }
+    .dark svg .svg-copy { font-size: 13px; }
+    .dark svg .svg-label { font-size: 12px; }
+    .dark svg .svg-ink { fill: var(--ink) !important; }
+    .dark .signal-line { stroke: white; }
+    .checklist { list-style: none; padding: 0; margin: 4mm 0 0; }
+    .checklist li {
+      position: relative;
+      margin-bottom: 3mm;
+      padding: 3mm 3mm 3mm 10mm;
+      border-bottom: .7pt solid var(--line);
+      font-size: 8.5pt;
+      line-height: 1.4;
+      background: rgba(255,253,247,.46);
+    }
+    .checklist li::before {
+      content: "";
+      position: absolute;
+      left: 3mm; top: 3.4mm;
+      width: 3mm; height: 3mm;
+      border: 1pt solid var(--ink);
+      background: var(--lime);
+    }
+    .scope-page .matrix td { font-size: 7.65pt; }
+    .scope-page .micro { font-size: 7.75pt; }
+    .scope-page .caption { font-size: 7.55pt; }
+    @media print {
+      html, body { background: transparent; }
+      .page { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <div class="eyebrow">Short system view / 01</div>
+    <h1>Work should never lose the reason it exists.</h1>
+    <div class="accent-rule"></div>
+    <p class="deck">A compact view of infrastructure that keeps local action connected to purpose, authority, responsibility, effects, and evidence.</p>
+    <svg class="cover-mark" viewBox="0 0 430 310" role="img" aria-label="Local work connected through a signal spine to objective and evidence">
+      <defs>
+        <marker id="a-cover" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b1020"/></marker>
+      </defs>
+      <path d="M35 155 C95 45 175 45 215 155 C255 265 335 265 395 155" fill="none" stroke="#ff765f" stroke-width="5"/>
+      <path d="M35 155 C95 265 175 265 215 155 C255 45 335 45 395 155" fill="none" stroke="#68dcff" stroke-width="5"/>
+      <path d="M35 155H395" class="signal-dash" marker-end="url(#a-cover)"/>
+      <circle cx="35" cy="155" r="16" fill="#0b1020"/>
+      <circle cx="215" cy="155" r="22" fill="#c7ff4a" stroke="#0b1020" stroke-width="4"/>
+      <circle cx="395" cy="155" r="16" fill="#0b1020"/>
+      <text x="10" y="200" class="svg-label">OBJECTIVE</text>
+      <text x="183" y="200" class="svg-label">WORK</text>
+      <text x="350" y="200" class="svg-label">EVIDENCE</text>
+    </svg>
+    <p class="cover-note">Classic editorial structure.<br>High-tech signal logic.<br>One inspectable line from intention to consequence.</p>
+    <div class="folio">CyberAlchemy / 2026</div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">01 / From perception to intention</div>
+    <h2>An objective begins as a situated possibility.</h2>
+    <p class="lede">Someone notices that reality could be different: a need, a problem, an opportunity, or a condition worth preserving.</p>
+    <div class="grid-2" style="margin-top:7mm; align-items:start">
+      <div>
+        <p>Perception is never neutral or complete. Experience, knowledge, biology, social position, and culture influence what becomes visible and which distinctions seem important. These conditions do not mechanically determine the objective, but they shape the field from which it emerges.</p>
+        <p>The infrastructure does not need to model human perception. It needs to preserve the attributable transition from a situated perception to a declared objective - and allow that objective to be revised without losing its history.</p>
+        <div class="statement">The system begins where possibility becomes an explicit, revisable intention.</div>
+      </div>
+      <div>
+        <svg viewBox="0 0 360 510" role="img" aria-label="Perception becomes a declared and revisable objective">
+          <path d="M180 40V450" stroke="#0b1020" stroke-width="2"/>
+          <circle cx="180" cy="65" r="33" fill="#fffdf7" stroke="#0b1020" stroke-width="3"/>
+          <circle cx="102" cy="145" r="22" fill="#ff765f" stroke="#0b1020" stroke-width="2"/>
+          <circle cx="258" cy="145" r="22" fill="#68dcff" stroke="#0b1020" stroke-width="2"/>
+          <circle cx="102" cy="245" r="22" fill="#a98cff" stroke="#0b1020" stroke-width="2"/>
+          <circle cx="258" cy="245" r="22" fill="#ffd84d" stroke="#0b1020" stroke-width="2"/>
+          <path d="M180 98L102 123M180 98L258 123M102 167L160 300M258 167L200 300M102 267L160 300M258 267L200 300" fill="none" stroke="#0b1020" stroke-width="2"/>
+          <rect x="95" y="302" width="170" height="82" rx="15" fill="#c7ff4a" stroke="#0b1020" stroke-width="3"/>
+          <path d="M265 343C320 343 323 420 265 430" fill="none" stroke="#0b1020" stroke-width="2" stroke-dasharray="6 5"/>
+          <path d="M265 430l14-8M265 430l13 9" stroke="#0b1020" stroke-width="2"/>
+          <text x="139" y="70" class="svg-label">PERCEPTION</text>
+          <text x="59" y="150" class="svg-label">EXPERIENCE</text>
+          <text x="230" y="150" class="svg-label">KNOWLEDGE</text>
+          <text x="69" y="250" class="svg-label">POSITION</text>
+          <text x="231" y="250" class="svg-label">CULTURE</text>
+          <text x="125" y="337" class="svg-title">OBJECTIVE</text>
+          <text x="124" y="360" class="svg-copy">declared + attributable</text>
+          <text x="282" y="389" class="svg-label">REVISE</text>
+        </svg>
+      </div>
+    </div>
+    <div class="folio">02 / Origin</div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">02 / From one intention to many</div>
+    <h2>Definition is recursive, not merely sequential.</h2>
+    <p class="lede">A monolithic intention gains contour as outcomes, constraints, questions, and routes become distinguishable. The parts compose the whole - and can change it.</p>
+    <svg viewBox="0 0 820 640" role="img" aria-label="Recursive decomposition from objective to attempts and evidence with feedback">
+      <defs>
+        <marker id="a-rec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b1020"/></marker>
+        <filter id="shadow"><feDropShadow dx="5" dy="5" stdDeviation="0" flood-color="#0b1020" flood-opacity=".16"/></filter>
+      </defs>
+      <path d="M410 93V150M410 250V312M410 412V478" class="signal-line" marker-end="url(#a-rec)"/>
+      <path d="M248 202H132V356H290M572 202H688V356H530" class="signal-dash"/>
+      <path d="M264 535C105 535 80 82 350 54" fill="none" stroke="#ff765f" stroke-width="4" marker-end="url(#a-rec)"/>
+      <rect x="283" y="34" width="254" height="60" rx="22" fill="#0b1020"/>
+      <text x="326" y="61" class="svg-label" fill="#fff">MONOLITHIC INTENTION</text>
+      <text x="410" y="80" text-anchor="middle" class="svg-copy svg-on-dark">purpose explicit; structure implicit</text>
+      <rect x="248" y="150" width="324" height="100" rx="18" fill="#fffdf7" stroke="#0b1020" stroke-width="3" filter="url(#shadow)"/>
+      <circle cx="302" cy="200" r="23" fill="#ff765f" stroke="#0b1020" stroke-width="2"/>
+      <circle cx="374" cy="200" r="23" fill="#68dcff" stroke="#0b1020" stroke-width="2"/>
+      <circle cx="446" cy="200" r="23" fill="#a98cff" stroke="#0b1020" stroke-width="2"/>
+      <circle cx="518" cy="200" r="23" fill="#ffd84d" stroke="#0b1020" stroke-width="2"/>
+      <text x="300" y="179" text-anchor="middle" class="svg-label">DIFFERENTIATED INTENTIONS</text>
+      <text x="410" y="237" text-anchor="middle" class="svg-copy">outcomes / constraints / questions / routes</text>
+      <rect x="290" y="312" width="240" height="100" rx="18" fill="#c7ff4a" stroke="#0b1020" stroke-width="3" filter="url(#shadow)"/>
+      <text x="410" y="350" text-anchor="middle" class="svg-title">BOUNDED WORK</text>
+      <text x="410" y="375" text-anchor="middle" class="svg-copy">plan / workstream / task / skill</text>
+      <text x="410" y="394" text-anchor="middle" class="svg-copy">one route can become another whole</text>
+      <rect x="128" y="478" width="560" height="112" rx="18" fill="#fffdf7" stroke="#0b1020" stroke-width="3" filter="url(#shadow)"/>
+      <text x="204" y="520" class="svg-title">TASKS</text>
+      <path d="M290 535H360M460 535H530" class="signal-line" marker-end="url(#a-rec)"/>
+      <text x="367" y="520" class="svg-title">ATTEMPTS</text>
+      <text x="544" y="520" class="svg-title">EFFECTS</text>
+      <text x="410" y="566" text-anchor="middle" class="svg-copy">activity becomes meaningful only when linked back to purpose and evidence</text>
+      <text x="81" y="425" transform="rotate(-90 81 425)" class="svg-label" fill="#ff765f">LEARNING CHANGES THE WHOLE</text>
+    </svg>
+    <div class="grid-2" style="margin-top:2mm">
+      <p class="micro"><b>Not a mandatory lifecycle.</b> A possible route may become one directly bounded task. The visualization shows decomposition possibilities, not required bureaucracy.</p>
+      <p class="micro"><b>The visibility trade.</b> Definition creates local precision. It also distributes meaning across conversations, plans, decisions, tasks, attempts, files, and effects.</p>
+    </div>
+    <div class="folio">03 / Recursion</div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">03 / The problem the system must solve</div>
+    <h2>Local correctness is not enough.</h2>
+    <p class="lede">A task can be clear, assigned, and completed while the objective, assumption, or authority that once justified it has already changed.</p>
+    <div class="statement">The failure is not missing activity. It is loss of context between levels of work.</div>
+    <p>Work-context infrastructure preserves the relationship between a local act and the larger contexts that explain it. It must let a person inspect different kinds of connection without treating one as proof of another.</p>
+    <div class="lens-row">
+      <div class="lens"><b>01 Purpose</b><small>Why does this work exist? Which objective does it serve?</small></div>
+      <div class="lens"><b>02 Authority</b><small>What permits this actor or system to act?</small></div>
+      <div class="lens"><b>03 Assignment</b><small>Who carries responsibility for this bounded work?</small></div>
+      <div class="lens"><b>04 Causation</b><small>Which attempt produced which concrete change?</small></div>
+      <div class="lens"><b>05 Realization</b><small>What evidence supports a claimed outcome?</small></div>
+    </div>
+    <svg viewBox="0 0 820 250" style="margin-top:7mm" role="img" aria-label="Five independent paths converge on a candidate outcome">
+      <defs><marker id="a-path" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b1020"/></marker></defs>
+      <circle cx="70" cy="30" r="13" fill="#ff765f" stroke="#0b1020" stroke-width="2"/>
+      <circle cx="70" cy="77" r="13" fill="#ffd84d" stroke="#0b1020" stroke-width="2"/>
+      <circle cx="70" cy="124" r="13" fill="#68dcff" stroke="#0b1020" stroke-width="2"/>
+      <circle cx="70" cy="171" r="13" fill="#a98cff" stroke="#0b1020" stroke-width="2"/>
+      <circle cx="70" cy="218" r="13" fill="#c7ff4a" stroke="#0b1020" stroke-width="2"/>
+      <path d="M84 30C300 30 360 124 590 124M84 77C300 77 360 124 590 124M84 124H590M84 171C300 171 360 124 590 124M84 218C300 218 360 124 590 124" fill="none" stroke="#0b1020" stroke-width="2" marker-end="url(#a-path)"/>
+      <rect x="600" y="79" width="175" height="90" rx="18" fill="#0b1020"/>
+      <text x="687" y="116" text-anchor="middle" class="svg-label" fill="#fff">CANDIDATE OUTCOME</text>
+      <text x="687" y="140" text-anchor="middle" class="svg-copy svg-on-dark">judged across five paths</text>
+    </svg>
+    <p class="caption"><b>Independence matters.</b> Assignment does not prove authority. Temporal order does not prove causation. An artifact does not prove realization. Successful execution does not prove purpose. A path may be witnessed, missing, conflicted, or superseded; the system must not invent a missing link.</p>
+    <div class="folio">04 / Five paths</div>
+  </section>
+
+  <section class="page scope-page">
+    <div class="eyebrow">03 / Scope and clarity</div>
+    <h2>Familiar systems contribute pieces, not the whole guarantee.</h2>
+    <p class="lede">The claim is about preservation across the route from intention to effect - not the rejection of task tools, repositories, workflows, or orchestrators.</p>
+    <table class="matrix" aria-label="Contributions and limitations of familiar system framings">
+      <thead><tr><th>Framing</th><th>What it contributes</th><th>What remains unproven if used alone</th></tr></thead>
+      <tbody>
+        <tr><td>Task management</td><td>Assignment, schedule, status.</td><td>Justification, authority, outcome evidence.</td></tr>
+        <tr><td>Document repository</td><td>Artifacts, versions, retrieval.</td><td>Typed relations and operational consequence.</td></tr>
+        <tr><td>Workflow engine</td><td>Repeatable transitions and execution.</td><td>Validity of meaning, authority, acceptance.</td></tr>
+        <tr><td>Multi-agent orchestrator</td><td>Dispatch, interaction, execution.</td><td>Lineage from intention to accepted effect.</td></tr>
+      </tbody>
+    </table>
+    <div class="grid-2" style="margin-top:7mm">
+      <div class="card coral">
+        <span class="label">Move upward</span>
+        <h3 style="margin-top:3mm">From the part to the whole</h3>
+        <p>From a task, attempt, artifact, or effect: recover the work that asked for it, the objective it serves, the decision that authorized it, and the evidence behind those choices.</p>
+        <p class="micro"><b>Detects:</b> orphan work, missing purpose, ambiguous authority.</p>
+      </div>
+      <div class="card cyan">
+        <span class="label">Move downward</span>
+        <h3 style="margin-top:3mm">From the whole to its parts</h3>
+        <p>From an objective: inspect active routes, changed decisions, current attempts, produced effects, and evidence that the objective is advancing.</p>
+        <p class="micro"><b>Detects:</b> unrealized aspiration, incomplete routes, unverified implementation.</p>
+      </div>
+    </div>
+    <div class="rule"></div>
+    <div class="grid-3">
+      <div><span class="number">A</span><h3>Keep links typed</h3><p class="micro">A relationship says what it means. Proximity and chronology are not semantics.</p></div>
+      <div><span class="number">B</span><h3>Keep facts attributable</h3><p class="micro">Every declaration, decision, attempt, correction, and effect has an accountable source.</p></div>
+      <div><span class="number">C</span><h3>Keep history appendable</h3><p class="micro">Revision changes the current view without silently replacing the route that produced it.</p></div>
+    </div>
+    <p class="caption" style="margin-top:7mm"><span class="label">Proposal status</span> The scope comparison above is a hypothesis advanced by the source essay. Accepting it would define a problem boundary; it would not select an architecture or reject these systems as components.</p>
+    <div class="folio">05 / Scope</div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">04 / Detailed infrastructure</div>
+    <h2>Trust is composed across responsibility planes.</h2>
+    <p class="lede">No service earns trust alone. Each boundary is justified by a failure it prevents and by the neighboring services required to complete a guarantee.</p>
+    <div class="plane" style="border-left:3mm solid var(--violet)">
+      <h3>Entrance and decision plane</h3>
+      <p class="micro">Turns bounded intent into an explicit epistemic strategy, a classified work kind, and a saved task graph that can be interpreted without silent mutation.</p>
+      <div class="chips"><span class="chip strategy">Subagents Strategy</span><span class="chip decide">Classifier</span><span class="chip decide">Protocol</span><span class="chip decide">Compiler</span></div>
+    </div>
+    <div class="plane" style="border-left:3mm solid var(--yellow)">
+      <h3>Execution and mediation plane</h3>
+      <p class="micro">Runs only the confirmed Dispatch. Fabric transports sealed exchanges without authoring, ranking, or summarizing their content.</p>
+      <div class="chips"><span class="chip run">Execution</span><span class="chip run">Fabric</span><span class="label">confirmation gate</span></div>
+    </div>
+    <div class="plane" style="border-left:3mm solid var(--lime)">
+      <h3>Knowledge plane</h3>
+      <p class="micro">Supplies stable identities, typed relations, version-bound instructions, and the append-only record that makes every act recoverable.</p>
+      <div class="chips"><span class="chip know">Identity</span><span class="chip know">Prompts</span><span class="chip know">Record</span></div>
+    </div>
+    <svg viewBox="0 0 820 270" style="margin-top:5mm" role="img" aria-label="Responsibility planes connected by execution and evidence signals">
+      <defs><marker id="a-plane" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b1020"/></marker></defs>
+      <rect x="20" y="20" width="230" height="80" rx="15" fill="#e8dcff" stroke="#0b1020" stroke-width="2"/>
+      <rect x="295" y="20" width="230" height="80" rx="15" fill="#d7f6ff" stroke="#0b1020" stroke-width="2"/>
+      <rect x="570" y="20" width="230" height="80" rx="15" fill="#fff0ae" stroke="#0b1020" stroke-width="2"/>
+      <text x="135" y="52" text-anchor="middle" class="svg-label">STRATEGY</text><text x="135" y="76" text-anchor="middle" class="svg-copy">why this collaboration shape?</text>
+      <text x="410" y="52" text-anchor="middle" class="svg-label">SAVED DAG + DISPATCH</text><text x="410" y="76" text-anchor="middle" class="svg-copy">what shape was confirmed?</text>
+      <text x="685" y="52" text-anchor="middle" class="svg-label">CONTROLLED EXECUTION</text><text x="685" y="76" text-anchor="middle" class="svg-copy">what actually ran?</text>
+      <path d="M250 60H289M525 60H564" class="signal-line" marker-end="url(#a-plane)"/>
+      <rect x="145" y="165" width="530" height="80" rx="15" fill="#eaffba" stroke="#0b1020" stroke-width="2"/>
+      <text x="410" y="198" text-anchor="middle" class="svg-label">IDENTITY + PROMPTS + RECORD</text>
+      <text x="410" y="222" text-anchor="middle" class="svg-copy">stable references / versioned instructions / single durable fact ingress</text>
+      <path d="M135 100V158M410 100V158M685 100V158" class="signal-dash" marker-end="url(#a-plane)"/>
+    </svg>
+    <div class="status-band"><span class="label">Proposed - not implemented</span> <b>Architecture status.</b> The source baseline names eight services. This hypothesis adds Subagents Strategy as a ninth entrance service and refines Protocol into versioned per-task DAGs.</div>
+    <div class="folio">06 / Boundaries</div>
+  </section>
+
+  <section class="page dark">
+    <div class="eyebrow">04 / Intent becomes dispatchable</div>
+    <h2>Separate the strategy, the saved graph, and the executable Dispatch.</h2>
+    <p class="lede">The architecture preserves interpretation as evidence. Runtime must not smuggle semantic choices into execution.</p>
+    <svg viewBox="0 0 820 640" role="img" aria-label="Detailed path from bounded intent through strategy and protocol to executable dispatch">
+      <defs>
+        <marker id="a-flow-white" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker>
+        <marker id="a-flow-coral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff765f"/></marker>
+      </defs>
+      <rect x="25" y="35" width="200" height="95" rx="16" fill="#182239" stroke="#68dcff" stroke-width="3"/>
+      <text x="45" y="64" class="svg-label" fill="#68dcff">BOUNDED WORK</text>
+      <text x="45" y="91" class="svg-title">Intent ready to route</text>
+      <text x="45" y="113" class="svg-copy">objective / context / limits / gate</text>
+      <rect x="310" y="20" width="245" height="125" rx="16" fill="#2a2040" stroke="#a98cff" stroke-width="3"/>
+      <text x="330" y="49" class="svg-label" fill="#a98cff">ENTRANCE SERVICE</text>
+      <text x="330" y="77" class="svg-title">Subagents Strategy</text>
+      <text x="330" y="101" class="svg-copy">kind / roles / topology / lenses</text>
+      <text x="330" y="121" class="svg-copy">join / convergence / receipts</text>
+      <rect x="640" y="35" width="155" height="95" rx="16" fill="#182d35" stroke="#c7ff4a" stroke-width="3"/>
+      <text x="660" y="64" class="svg-label" fill="#c7ff4a">PROTOCOL</text>
+      <text x="660" y="91" class="svg-title">Task DAG@v</text>
+      <text x="660" y="113" class="svg-copy">saved / derived_from</text>
+      <path d="M225 82H303M555 82H633" class="signal-line" marker-end="url(#a-flow-white)"/>
+      <rect x="160" y="220" width="500" height="165" rx="20" fill="#17202f" stroke="#68768d" stroke-width="2"/>
+      <text x="185" y="250" class="svg-label">INTERPRETATION BOUNDARY</text>
+      <rect x="190" y="275" width="150" height="75" rx="12" fill="#2a2040" stroke="#a98cff" stroke-width="2"/>
+      <text x="210" y="303" class="svg-title">Agent</text><text x="210" y="327" class="svg-copy">semantics + ambiguity</text>
+      <rect x="480" y="275" width="150" height="75" rx="12" fill="#182239" stroke="#68dcff" stroke-width="2"/>
+      <text x="500" y="303" class="svg-title">System</text><text x="500" y="327" class="svg-copy">schema + capability</text>
+      <rect x="350" y="285" width="120" height="55" rx="12" fill="#45351d" stroke="#ffd84d" stroke-width="2"/>
+      <text x="410" y="309" text-anchor="middle" class="svg-label" fill="#ffd84d">COMPILER</text><text x="410" y="329" text-anchor="middle" class="svg-copy">joint checks</text>
+      <path d="M340 313H344M470 313H474" class="signal-line" marker-end="url(#a-flow-white)"/>
+      <path d="M718 130V184H410V213" class="signal-line" marker-end="url(#a-flow-white)"/>
+      <rect x="285" y="430" width="250" height="82" rx="18" fill="#45351d" stroke="#ffd84d" stroke-width="3"/>
+      <text x="410" y="461" text-anchor="middle" class="svg-label" fill="#ffd84d">EXECUTABLE ARTIFACT</text>
+      <text x="410" y="491" text-anchor="middle" class="svg-title">CONFIRMABLE DISPATCH</text>
+      <path d="M410 385V423" class="signal-line" marker-end="url(#a-flow-white)"/>
+      <path d="M660 312C785 312 787 170 718 138" fill="none" stroke="#ff765f" stroke-width="2.5" stroke-dasharray="7 6" marker-end="url(#a-flow-coral)"/>
+      <text x="635" y="247" class="svg-label" fill="#ff765f">OBJECTION</text>
+      <text x="635" y="266" class="svg-copy" fill="#ff765f">new DAG@v + reconfirm</text>
+      <rect x="295" y="529" width="230" height="49" rx="10" fill="#fffdf7" stroke="#68dcff" stroke-width="2"/>
+      <text x="410" y="548" text-anchor="middle" class="svg-label svg-ink">HUMAN CONFIRMATION</text>
+      <text x="410" y="567" text-anchor="middle" class="svg-copy svg-ink">accept shape / authority claim*</text>
+      <path d="M410 512V523" class="signal-line" marker-end="url(#a-flow-white)"/>
+      <rect x="125" y="596" width="570" height="36" rx="12" fill="#17362c" stroke="#c7ff4a" stroke-width="2"/>
+      <text x="410" y="619" text-anchor="middle" class="svg-label" fill="#c7ff4a">RECORD LINKS EACH DECISION AND ARTIFACT</text>
+      <path d="M410 578V590" stroke="#c7ff4a" stroke-width="2" marker-end="url(#a-flow-white)"/>
+    </svg>
+    <p class="caption"><span class="label">Key distinction</span> A DAG describes intended work. A Dispatch is its validated, bound, executable interpretation. A rejected interpretation appends a typed objection, produces a new DAG version, and reopens confirmation.</p>
+    <div class="service-legend"><b>Service map</b><span>Strategy + Classifier -> Protocol DAG -> Compiler -> human confirmation -> Execution + Fabric. Identity and Prompts support the route; Record links its durable facts.</span></div>
+    <div class="folio">07 / Compilation</div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">04 / Runtime, record, and limits</div>
+    <h2>Execution should leave an explanation, not just an output.</h2>
+    <p class="lede">The operational loop is complete only when the system can recover what was intended, what was confirmed, what ran, what changed, and what evidence supports the result.</p>
+    <div class="grid-2" style="margin-top:5mm; align-items:start">
+      <div>
+        <svg viewBox="0 0 390 570" role="img" aria-label="Confirmed dispatch runs through execution and fabric while every stage appends to record">
+          <defs><marker id="a-run" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b1020"/></marker></defs>
+          <rect x="75" y="20" width="240" height="62" rx="14" fill="#fff0ae" stroke="#0b1020" stroke-width="2"/>
+          <text x="195" y="47" text-anchor="middle" class="svg-label">CONFIRMED DISPATCH</text>
+          <text x="195" y="68" text-anchor="middle" class="svg-copy">digest / bindings / gates / joins</text>
+          <rect x="75" y="130" width="240" height="62" rx="14" fill="#d7f6ff" stroke="#0b1020" stroke-width="2"/>
+          <text x="195" y="157" text-anchor="middle" class="svg-label">EXECUTION</text>
+          <text x="195" y="178" text-anchor="middle" class="svg-copy">schedule / enforce / collect / close</text>
+          <rect x="75" y="240" width="240" height="62" rx="14" fill="#e8dcff" stroke="#0b1020" stroke-width="2"/>
+          <text x="195" y="267" text-anchor="middle" class="svg-label">FABRIC</text>
+          <text x="195" y="288" text-anchor="middle" class="svg-copy">address / seal / hold / deliver unchanged</text>
+          <rect x="75" y="350" width="240" height="62" rx="14" fill="#fffdf7" stroke="#0b1020" stroke-width="2"/>
+          <text x="195" y="377" text-anchor="middle" class="svg-label">AGENTS + TOOLS</text>
+          <text x="195" y="398" text-anchor="middle" class="svg-copy">attempts / emissions / artifacts / effects</text>
+          <rect x="45" y="480" width="300" height="70" rx="14" fill="#eaffba" stroke="#0b1020" stroke-width="3"/>
+          <text x="195" y="508" text-anchor="middle" class="svg-label">APPEND-ONLY RECORD</text>
+          <text x="195" y="530" text-anchor="middle" class="svg-copy">events / receipts / evidence / corrections</text>
+          <path d="M195 82V123M195 192V233M195 302V343M195 412V473" class="signal-line" marker-end="url(#a-run)"/>
+          <path d="M315 161H362V515H352M315 271H362M315 381H362" class="signal-dash" marker-end="url(#a-run)"/>
+        </svg>
+      </div>
+      <div>
+        <h3>A trustworthy run preserves:</h3>
+        <ul class="checklist">
+          <li><b>Stable identity.</b> Names and locations may change without breaking lineage.</li>
+          <li><b>Comparable shape.</b> Runs of one kind retain a basis for comparison.</li>
+          <li><b>Shape fidelity.</b> The confirmed topology is the topology executed.</li>
+          <li><b>Independent judgment.</b> Sealed work stays hidden until its release condition.</li>
+          <li><b>Unchanged delivery.</b> The recipient reads what the sender authored.</li>
+          <li><b>Recoverable acts.</b> Even empty-payload actions remain part of history.</li>
+          <li><b>Typed relations.</b> Every connection carries an explicit meaning.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:5mm">
+      <div class="callout"><b>Single-writer rule.</b> Every service may emit facts; only Record writes the durable account. Corrections append instead of rewriting history.</div>
+      <div class="callout"><b>Open boundary.</b> The hypothesis records authority claims, but the source still leaves the authority provider and its verifiable proof contract unresolved.</div>
+    </div>
+    <div class="statement" style="margin-top:6mm">The test is simple: can a local effect explain the objective it served - and can the objective show how it became real?</div>
+    <div class="folio">08 / Evidence</div>
+  </section>
+</body>
+</html>

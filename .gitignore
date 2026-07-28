@@ -32,6 +32,10 @@ node_modules/
 # by render and inspection runs. Regenerable from the tracked sources.
 /tmp/
 
+# Short-edition page rasters and contact sheets kept next to their sources for
+# review. Same rule as /tmp/: re-render them from the tracked HTML and PDF.
+/plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/**/*.png
+
 # Runtime SQLite databases — regenerable runtime state, not source.
 /telemetry/runtime/
 

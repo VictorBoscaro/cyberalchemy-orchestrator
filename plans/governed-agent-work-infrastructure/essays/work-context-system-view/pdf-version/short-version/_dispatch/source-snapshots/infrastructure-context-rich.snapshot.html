@@ -1,0 +1,1337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Target architecture hypothesis — contextual infrastructure x-ray</title>
+  <style>
+    :root {
+      --bg:#0b1118; --panel:#111a24; --panel-2:#162231; --line:#304153;
+      --ink:#eaf1f7; --muted:#9cafc0; --control:#68a9ff; --content:#f2b45d;
+      --evidence:#62d39d; --reference:#b59cff; --risk:#ff7f78; --given:#7ec8ff;
+      --optimized:#e0adff; --accumulated:#7be0b0; --shadow:0 18px 50px rgba(0,0,0,.28);
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; color:var(--ink); background:
+        radial-gradient(circle at 82% 0,rgba(104,169,255,.12),transparent 30rem),
+        linear-gradient(180deg,#0b1118,#0d151e 55%,#0b1118);
+      font:15px/1.58 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    a { color:#9dc9ff; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:17ch; margin-bottom:18px; font-size:clamp(2.6rem,6vw,5.7rem); line-height:.96; letter-spacing:-.055em; }
+    h2 { margin-bottom:10px; font-size:clamp(1.6rem,3vw,2.55rem); line-height:1.08; letter-spacing:-.025em; }
+    h3 { margin-bottom:7px; font-size:1rem; }
+    code,pre { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    code { color:#b9d8ff; }
+    .shell { width:min(1320px,calc(100% - 36px)); margin:auto; }
+    header { padding:62px 0 32px; }
+    .eyebrow { color:var(--control); font-size:.73rem; font-weight:850; letter-spacing:.14em; text-transform:uppercase; }
+    .lead { max-width:78ch; color:#c6d3de; font-size:clamp(1.04rem,1.7vw,1.27rem); }
+    .badges,.legend,.jump { display:flex; flex-wrap:wrap; gap:9px; }
+    .badges { margin-top:22px; }
+    .badge {
+      display:inline-flex; align-items:center; min-height:26px; padding:3px 9px;
+      border:1px solid var(--line); border-radius:999px; background:#101923;
+      font-size:.72rem; font-weight:800; white-space:nowrap;
+    }
+    .badge.source { color:var(--evidence); border-color:#3d8f6d; }
+    .badge.interpretation { color:var(--content); border-color:#956f38; }
+    .badge.open { color:#f4cf70; border-color:#806b31; }
+    .badge.resolved { color:#c7b6ff; border-color:#695a9a; }
+    .badge.critical,.badge.proposal { color:var(--risk); border-color:#8f4746; }
+    .badge.formal { color:#7ec8ff; border-color:#466f9d; }
+    .badge.counterexample { color:#ff9b94; border-color:#8f4746; }
+    .badge.no-evidence { color:#d7b7ff; border-color:#695a9a; }
+    .standing {
+      display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:12px; margin-top:30px;
+    }
+    .standing article,.context-card,.service-card,.service-detail,.path-card,.mode-card,.axis-card,.stratum,.contract,.failure {
+      padding:17px; border:1px solid var(--line); border-radius:13px; background:rgba(17,26,36,.84);
+    }
+    .standing strong { display:block; margin-top:5px; }
+    .standing span { color:var(--muted); font-size:.82rem; }
+    .jump { margin-top:20px; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .jump a { padding:4px 9px; border-radius:8px; text-decoration:none; background:#111c28; }
+    main { padding-bottom:58px; }
+    .section {
+      margin-top:26px; padding:clamp(22px,4vw,42px); border:1px solid var(--line);
+      border-radius:20px; background:rgba(17,26,36,.92); box-shadow:var(--shadow);
+    }
+    .section-head {
+      display:flex; align-items:flex-start; justify-content:space-between; gap:25px; margin-bottom:24px;
+    }
+    .section-head > p { max-width:58ch; color:var(--muted); }
+    .callout {
+      margin-top:18px; padding:15px 18px; border-left:4px solid var(--control);
+      border-radius:0 10px 10px 0; background:#101c29; color:#cad8e4;
+    }
+    .callout.risk { border-left-color:var(--risk); background:#251719; }
+    .context-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:13px; }
+    .context-card b { display:block; color:var(--control); margin-bottom:7px; }
+    .context-card p { margin:0; color:var(--muted); font-size:.9rem; }
+    .intent-flow,.path-grid,.mode-grid,.axis-grid { display:grid; gap:12px; }
+    .intent-flow { grid-template-columns:repeat(5,minmax(0,1fr)); margin-top:18px; }
+    .intent-step { position:relative; padding:15px; border:1px solid #466f9d; border-radius:12px; background:#132132; }
+    .intent-step:not(:last-child)::after { content:"→"; position:absolute; right:-14px; top:42%; z-index:2; color:var(--control); font-weight:900; }
+    .intent-step b,.path-card b { display:block; margin-bottom:6px; color:#a9d0ff; }
+    .intent-step p,.path-card p { margin:0; color:var(--muted); font-size:.84rem; }
+    .path-grid { grid-template-columns:repeat(5,minmax(0,1fr)); margin-top:18px; }
+    .path-card { border-top:3px solid var(--reference); }
+    .arrow-label { color:var(--muted); text-align:center; font-size:.8rem; }
+    .diagram-wrap { overflow-x:auto; padding-bottom:5px; }
+    svg { display:block; width:100%; min-width:980px; height:auto; }
+    svg text { fill:var(--ink); font-family:Inter,ui-sans-serif,system-ui,sans-serif; }
+    svg .muted { fill:var(--muted); }
+    svg .cap { fill:var(--muted); font-size:12px; font-weight:800; letter-spacing:1.2px; }
+    svg .title { font-size:17px; font-weight:800; }
+    svg .copy { fill:var(--muted); font-size:11px; }
+    svg .tag { font-size:10px; font-weight:850; }
+    .legend { margin-top:16px; color:var(--muted); font-size:.83rem; }
+    .legend span { display:inline-flex; align-items:center; gap:7px; }
+    .legend i { width:30px; border-top:3px solid; }
+    .legend .control { border-color:var(--control); }
+    .legend .content { border-color:var(--content); }
+    .legend .evidence { border-color:var(--evidence); }
+    .legend .reference { border-color:var(--reference); border-top-style:dashed; }
+    .caption { margin-top:14px; color:var(--muted); font-size:.85rem; }
+    .derivation { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .requirement-group { padding:18px; border:1px solid var(--line); border-radius:14px; background:#101923; }
+    .requirement-group.exist { border-color:#367d60; }
+    .requirement-group.trust { border-color:#466f9d; }
+    .requirement-list { display:grid; gap:9px; margin:14px 0 0; padding:0; list-style:none; }
+    .requirement-list li { padding:11px 12px; border-radius:9px; background:#152230; }
+    .requirement-list b { display:inline-block; width:34px; color:#a9d0ff; }
+    .requirement-list small { display:block; margin:4px 0 0 38px; color:var(--muted); }
+    .mapping { width:100%; margin-top:20px; border-collapse:collapse; font-size:.86rem; }
+    th,td { padding:10px 9px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; }
+    .service-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:20px; }
+    .service-card small { display:block; margin-bottom:5px; color:var(--muted); }
+    .service-card p { margin:0; color:#becbd7; font-size:.88rem; }
+    .service-card.decide { border-top:3px solid var(--control); }
+    .service-card.run { border-top:3px solid var(--content); }
+    .service-card.remember { border-top:3px solid var(--evidence); }
+    .service-card.fabric { border-top:3px solid #f2b45d; grid-column:span 2; }
+    .service-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:20px; }
+    .service-detail { border-top:3px solid var(--control); }
+    .service-detail.strategy { grid-column:span 2; border-color:var(--optimized); background:#1b1728; }
+    .service-detail.run { border-color:var(--content); }
+    .service-detail.knowledge { border-color:var(--evidence); }
+    .service-detail h3 { font-size:1.08rem; }
+    .service-detail dl { display:grid; grid-template-columns:132px 1fr; gap:8px 12px; margin:13px 0 0; }
+    .service-detail dt { color:var(--muted); font-size:.76rem; font-weight:850; text-transform:uppercase; letter-spacing:.06em; }
+    .service-detail dd { margin:0; color:#c7d4df; font-size:.88rem; }
+    .property-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .property-tags span { padding:2px 7px; border:1px solid #4b6074; border-radius:999px; color:#bcd3e7; font-size:.72rem; }
+    .boundary-note { padding:15px; border:1px dashed var(--optimized); border-radius:12px; background:#171423; color:#d1c5e8; }
+    .axis-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .axis-card { border-top:3px solid var(--optimized); }
+    .axis-card p,.mode-card p { margin:0; color:var(--muted); font-size:.86rem; }
+    .mode-grid { grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:18px; }
+    .mode-card { border-top:3px solid var(--content); }
+    .mode-card code { display:block; margin-top:9px; color:#e8c88e; font-size:.76rem; }
+    .sequence-notes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:18px; }
+    .sequence-notes article { padding:15px; border-radius:12px; background:#111d29; border:1px solid var(--line); }
+    .sequence-notes p { margin:0; color:var(--muted); font-size:.87rem; }
+    .strata { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .stratum.given { border-top:4px solid var(--given); }
+    .stratum.optimized { border-top:4px solid var(--optimized); }
+    .stratum.accumulated { border-top:4px solid var(--accumulated); }
+    .stratum p { margin:0; color:var(--muted); }
+    .contracts { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:14px; }
+    .contract pre {
+      margin:10px 0 0; padding:12px; overflow:auto; border-radius:9px;
+      background:#0a121a; color:#cfe3f5; font-size:.79rem; line-height:1.5;
+    }
+    .contract p { margin:0; color:var(--muted); font-size:.88rem; }
+    .critical-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; }
+    .critical-card { padding:18px; border:1px solid #8f4746; border-radius:14px; background:#251719; }
+    .critical-card p { margin:7px 0 0; color:#e1b8b5; }
+    .decision-table { width:100%; border-collapse:collapse; font-size:.83rem; }
+    .decision-table td:first-child { width:46px; font-weight:850; }
+    .failures { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .failure strong { display:block; color:var(--risk); margin-bottom:6px; }
+    .failure p { margin:0; color:var(--muted); font-size:.87rem; }
+    .object-grid,.review-grid,.formal-grid,.context-model-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .object-card,.review-card,.formal-card,.context-model-card {
+      padding:18px; border:1px solid var(--line); border-radius:14px; background:#101923;
+    }
+    .object-card { border-top:3px solid var(--control); }
+    .review-card { border-top:3px solid var(--risk); }
+    .formal-card { border-top:3px solid var(--reference); }
+    .context-model-card { border-top:3px solid var(--content); }
+    .object-card p,.review-card p,.formal-card p,.context-model-card p { color:var(--muted); }
+    .object-card ul,.review-card ul,.formal-card ul,.context-model-card ul { padding-left:19px; color:#becbd7; }
+    .formula {
+      margin:12px 0; padding:13px 15px; overflow:auto; border:1px solid #40576d;
+      border-radius:10px; background:#09121b; color:#cfe3f5;
+      font:600 .84rem/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;
+    }
+    .plain-language { margin-top:-4px; color:#aebdca; font-size:.84rem; }
+    .level { margin-top:18px; padding-top:18px; border-top:1px solid var(--line); }
+    .level:first-of-type { margin-top:0; padding-top:0; border-top:0; }
+    .progression {
+      display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:8px; margin:18px 0;
+    }
+    .progression div { padding:12px 9px; border:1px solid #466f9d; border-radius:10px; background:#132132; font-size:.8rem; }
+    .progression b { display:block; color:#a9d0ff; margin-bottom:4px; }
+    .warning {
+      margin-top:18px; padding:18px; border:1px solid #8f4746; border-radius:14px;
+      background:#251719; color:#e4c0bd;
+    }
+    .compact-list { columns:2; column-gap:34px; }
+    .compact-list li { break-inside:avoid; margin-bottom:6px; }
+    .evidence-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .evidence-grid article { padding:18px; border:1px solid var(--line); border-radius:14px; background:#101923; }
+    .evidence-grid ul { margin:10px 0 0; padding-left:19px; color:#becbd7; }
+    .evidence-grid li + li { margin-top:6px; }
+    details { margin-top:14px; border:1px solid var(--line); border-radius:12px; background:#0f1822; }
+    summary { padding:14px 17px; cursor:pointer; font-weight:800; }
+    .details-body { padding:0 17px 17px; color:#becbd7; }
+    footer { padding:24px 0 46px; color:var(--muted); font-size:.8rem; }
+    @media (max-width:900px) {
+      .standing,.context-grid,.intent-flow,.path-grid,.service-grid,.service-detail-grid,.axis-grid,.mode-grid,.sequence-notes,.strata,.contracts,.failures,.evidence-grid,.object-grid,.review-grid,.formal-grid,.context-model-grid { grid-template-columns:1fr 1fr; }
+      .service-card.fabric,.service-detail.strategy { grid-column:span 2; }
+      .progression { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    }
+    @media (max-width:640px) {
+      .standing,.context-grid,.intent-flow,.path-grid,.derivation,.service-grid,.service-detail-grid,.axis-grid,.mode-grid,.sequence-notes,.strata,.contracts,.critical-grid,.failures,.evidence-grid,.object-grid,.review-grid,.formal-grid,.context-model-grid,.progression { grid-template-columns:1fr; }
+      .service-card.fabric,.service-detail.strategy { grid-column:auto; }
+      .intent-step:not(:last-child)::after { content:"↓"; right:50%; top:auto; bottom:-18px; }
+      .section-head { display:block; }
+      .compact-list { columns:1; }
+    }
+    @media print {
+      body { background:white; color:#111; }
+      .section,.standing article { box-shadow:none; break-inside:avoid; }
+      details > * { display:block; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <p class="eyebrow">Contextual architecture x-ray · proposal only</p>
+    <h1>Governed work that can explain itself.</h1>
+    <p class="lead">
+      The target is not “an orchestration engine with better logs.” It is infrastructure that keeps
+      objectives, decisions, authority, agent work, messages, evidence, and outcomes connected while
+      the work happens—so governance claims can later be checked rather than merely asserted.
+    </p>
+    <div class="badges">
+      <span class="badge proposal">authority: proposal-only</span>
+      <span class="badge source">8 essay services + 1 live workflow capability</span>
+      <span class="badge source">7 record guarantees</span>
+      <span class="badge critical">2 load-bearing gaps</span>
+      <span class="badge open">terms remain provisional</span>
+    </div>
+    <div class="standing">
+      <article>
+        <span>Architectural claim</span>
+        <strong>The service boundary is derived from what a trustworthy connected record must guarantee.</strong>
+      </article>
+      <article>
+        <span>Target boundary</span>
+        <strong>Finished-state runtime is not assessed; current repository workflow contracts are.</strong>
+      </article>
+      <article>
+        <span>Reader</span>
+        <strong>The person deciding whether this shape deserves refinement or construction.</strong>
+      </article>
+    </div>
+    <nav class="jump" aria-label="Page sections">
+      <a href="#context">Bounded intention</a>
+      <a href="#problem">Problem and stakes</a>
+      <a href="#properties">Required properties</a>
+      <a href="#services">Services</a>
+      <a href="#topology">Technical infrastructure</a>
+      <a href="#run">Run trace</a>
+      <a href="#modes">Dispatch modes</a>
+      <a href="#state">State and contracts</a>
+      <a href="#kernel">Kernel hypothesis</a>
+      <a href="#domains">User-defined domains</a>
+      <a href="#context-injection">Context injection</a>
+      <a href="#decisions">Decisions and failure</a>
+      <a href="#formalization">Formalization</a>
+      <a href="#evidence">Evidence boundary</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section" id="context" aria-labelledby="context-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">1 · context and bounded intention</p>
+          <h2 id="context-title">Work begins as an intention, then becomes bounded enough to act on.</h2>
+        </div>
+        <p>
+          A situated concern becomes an objective, then differentiated work. Each assignment receives
+          only the context and authority needed for its part while remaining connected to the whole.
+        </p>
+      </div>
+
+      <div class="intent-flow" aria-label="Intention becoming bounded work">
+        <article class="intent-step"><b>Situated perception</b><p>A condition, opportunity, or concern becomes visible.</p></article>
+        <article class="intent-step"><b>Declared objective</b><p>The desired change is made explicit and remains revisable.</p></article>
+        <article class="intent-step"><b>Differentiated intention</b><p>Plans, questions, routes, and workstreams expose different needs.</p></article>
+        <article class="intent-step"><b>Bounded assignment</b><p>Immediate objective, selected context, constraints, gates, and authority travel together.</p></article>
+        <article class="intent-step"><b>Attempt and effect</b><p>Work changes the world and returns evidence to the larger objective.</p></article>
+      </div>
+
+      <div class="context-grid">
+        <article class="context-card">
+          <b>Objective and authority</b>
+          <p>Why the work exists, what boundary applies, and who may authorize it.</p>
+        </article>
+        <article class="context-card">
+          <b>Materialized context</b>
+          <p>Lineage may expose broad context; one execution receives the smallest coherent slice.</p>
+        </article>
+        <article class="context-card">
+          <b>Bounded authority</b>
+          <p>Allowed work, effects, tools, budgets, stop conditions, and prohibitions narrow toward action.</p>
+        </article>
+        <article class="context-card">
+          <b>Connected history</b>
+          <p>Later readers can traverse from conclusion back to question—and forward to dependants.</p>
+        </article>
+      </div>
+
+      <div class="diagram-wrap" style="margin-top:22px">
+        <svg viewBox="0 0 1180 250" role="img" aria-labelledby="context-diagram-title context-diagram-desc">
+          <title id="context-diagram-title">System context from objective to connected history</title>
+          <desc id="context-diagram-desc">A human objective and authority enter governed agent-work infrastructure. Agents exchange work through the system. The output is a connected record that supports audit, replay, comparison, and impact tracing.</desc>
+          <defs>
+            <marker id="cx-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#68a9ff"/></marker>
+            <marker id="cx-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#62d39d"/></marker>
+          </defs>
+          <rect x="20" y="54" width="205" height="130" rx="14" fill="#152231" stroke="#68a9ff" stroke-width="2"/>
+          <text x="42" y="84" class="cap">EXTERNAL HUMAN CONTEXT</text>
+          <text x="42" y="116" class="title">Question + objective</text>
+          <text x="42" y="140" class="copy">boundary · confirmation</text>
+          <text x="42" y="158" class="copy">authority required, owner unresolved</text>
+
+          <rect x="315" y="30" width="500" height="178" rx="18" fill="#101a24" stroke="#5f7386" stroke-width="2"/>
+          <text x="340" y="60" class="cap">PROPOSED GOVERNED AGENT-WORK INFRASTRUCTURE</text>
+          <rect x="345" y="82" width="132" height="72" rx="10" fill="#172739" stroke="#68a9ff"/>
+          <text x="363" y="111" class="title">Decide</text><text x="363" y="133" class="copy">kind · protocol · shape</text>
+          <rect x="500" y="82" width="132" height="72" rx="10" fill="#292115" stroke="#f2b45d"/>
+          <text x="518" y="111" class="title">Run</text><text x="518" y="133" class="copy">execute · mediate</text>
+          <rect x="655" y="82" width="132" height="72" rx="10" fill="#12261d" stroke="#62d39d"/>
+          <text x="673" y="111" class="title">Remember</text><text x="673" y="133" class="copy">identity · facts · prompts</text>
+          <text x="345" y="184" class="copy">The system boundary is conceptual: it does not yet specify deployment units or APIs.</text>
+
+          <rect x="905" y="54" width="250" height="130" rx="14" fill="#12261d" stroke="#62d39d" stroke-width="2"/>
+          <text x="927" y="84" class="cap">EXTERNAL INSPECTION SURFACE</text>
+          <text x="927" y="116" class="title">Query and traverse</text>
+          <text x="927" y="140" class="copy">audit · replay · compare</text>
+          <text x="927" y="158" class="copy">find dependants of a failed conclusion</text>
+
+          <path d="M225 119H309" fill="none" stroke="#68a9ff" stroke-width="3" marker-end="url(#cx-a)"/>
+          <path d="M815 119H899" fill="none" stroke="#62d39d" stroke-width="3" marker-end="url(#cx-e)"/>
+          <text x="245" y="106" class="tag" fill="#68a9ff">GOVERNED INTENT</text>
+          <text x="860" y="106" text-anchor="middle" class="tag" fill="#62d39d">ATTRIBUTED FACTS</text>
+        </svg>
+      </div>
+
+      <div class="callout">
+        <strong>Context available through lineage is not context materialized for one execution.</strong>
+        Too little context permits locally correct but globally harmful work. Too much creates distraction,
+        conflicting instructions, excess cost, and unclear authority. The assignment boundary is therefore
+        part of governance, not just prompt construction.
+      </div>
+    </section>
+
+    <section class="section" id="problem" aria-labelledby="problem-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">2 · problem and stakes</p>
+          <h2 id="problem-title">Decomposition increases local precision while hiding global purpose.</h2>
+        </div>
+        <p>
+          A workflow can execute the wrong route correctly. The failure is not missing activity; it is
+          the loss of inspectable connections between what was wanted, what was allowed, what was assigned,
+          what happened, and what changed.
+        </p>
+      </div>
+
+      <div class="context-grid">
+        <article class="context-card"><b>Locally right, globally wrong</b><p>A task passes its own checks while no longer advancing the source objective.</p></article>
+        <article class="context-card"><b>Authority drift</b><p>A delegated step silently acts beyond the decision that authorized it.</p></article>
+        <article class="context-card"><b>Epistemic collapse</b><p>Independent judgments contaminate one another or disappear inside an unexplained synthesis.</p></article>
+        <article class="context-card"><b>Unprovable outcome</b><p>An artifact survives, but its assumptions, causes, dissent, and downstream effects cannot be reconstructed.</p></article>
+      </div>
+
+      <h3 style="margin-top:24px">Five paths must remain independently inspectable</h3>
+      <div class="path-grid">
+        <article class="path-card"><b>Purpose</b><p>Why this local work exists and which larger objective it serves.</p></article>
+        <article class="path-card"><b>Authority</b><p>Which decision allowed which work and effects, within what limits.</p></article>
+        <article class="path-card"><b>Assignment</b><p>Why this actor received this bounded part, context, role, and gate.</p></article>
+        <article class="path-card"><b>Causation</b><p>Which attempt, message, judgment, and tool act produced a result.</p></article>
+        <article class="path-card"><b>Realization</b><p>How outputs became effects and whether those effects advanced the objective.</p></article>
+      </div>
+
+      <div class="callout">
+        <strong>None of these paths may be inferred from another.</strong>
+        A task relationship does not prove authority; temporal order does not prove causation; an artifact
+        does not prove realization; and successful execution does not prove purpose.
+      </div>
+    </section>
+
+    <section class="section" id="properties" aria-labelledby="properties-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">3 · required system properties</p>
+          <h2 id="properties-title">The five paths establish meaning; seven guarantees make the record trustworthy.</h2>
+        </div>
+        <p>
+          The essay’s main testable claim is the correspondence below: every service is demanded by at
+          least one guarantee, and every guarantee has a service capable of making it hold.
+        </p>
+      </div>
+
+      <div class="derivation">
+        <article class="requirement-group exist">
+          <h3>Make the record exist</h3>
+          <ul class="requirement-list">
+            <li><b>R1</b> Identity survives description and placement changes.<small>Requires Identity.</small></li>
+            <li><b>R6</b> Every act is recoverable later, including empty-payload acts.<small>Requires Record.</small></li>
+            <li><b>R7</b> Every connection carries a specific meaning.<small>Requires typed relations in Identity.</small></li>
+          </ul>
+        </article>
+        <article class="requirement-group trust">
+          <h3>Make the record trustworthy</h3>
+          <ul class="requirement-list">
+            <li><b>R2</b> Runs of one kind are comparable.<small>Source mapping: Classifier and Protocol.</small></li>
+            <li><b>R3</b> The confirmed shape is the executed shape.<small>Source mapping: Compiler, Prompts, and Execution.</small></li>
+            <li><b>R4</b> Independent judgment stays hidden until fixed.<small>Requires Fabric sealing and release.</small></li>
+            <li><b>R5</b> The recipient reads exactly what the sender said.<small>Requires Fabric non-authorship.</small></li>
+          </ul>
+        </article>
+      </div>
+
+      <table class="mapping">
+        <thead><tr><th>Service</th><th>Responsibility derived from the guarantees</th><th>If absent or collapsed</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Identity</strong></td><td>Mint stable identities and own typed relations.</td><td>Renames break history; proximity is mistaken for meaning.</td></tr>
+          <tr><td><strong>Record</strong></td><td>Own append-only durable events as the single writer.</td><td>Facts become partial or contradictory across writers.</td></tr>
+          <tr><td><strong>Prompts</strong></td><td>Hold typed, versioned instructions addressable by binding.</td><td>Confirmation cannot name the instruction that will run.</td></tr>
+          <tr><td><strong>Classifier</strong></td><td>Determine the kind of work requested.</td><td>There is no stable basis for selecting or comparing protocols.</td></tr>
+          <tr><td><strong>Protocol</strong></td><td>Own the canonical, immutable sequence for a work kind and version.</td><td>Each run invents its own shape and R2 comparability collapses.</td></tr>
+          <tr><td><strong>Compiler</strong></td><td>Apply a Protocol to a question and produce the confirmable shape plus machine plan.</td><td>The human, agent, and runtime may act on different topologies.</td></tr>
+          <tr><td><strong>Execution</strong></td><td>Resolve prompt bindings at run time and collect returns.</td><td>The confirmed plan has no controlled runtime realization.</td></tr>
+          <tr><td><strong>Fabric</strong></td><td>Address, seal, deliver unchanged, validate shape, and record without authoring.</td><td>Peer contamination and ambiguous authorship become invisible.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:26px">Draft property extensions for the existing Strategy capability</h3>
+      <p class="caption"><span class="badge open">DRAFT EXTENSION · DOES NOT ALTER R1–R7</span>
+        These properties explain why the current workflow capability may deserve a target boundary.
+        They do not prove that an independently deployed service is the correct owner.</p>
+      <div class="context-grid">
+        <article class="context-card"><b>G1 · Explicit topology</b><p>Collaboration structure, roles, handoffs, joins, and limits are inspectable before execution.</p></article>
+        <article class="context-card"><b>G2 · Testable anti-bias</b><p>Independence, lens distinction, pairwise tension, and contamination claims are evaluated outside Strategy.</p></article>
+        <article class="context-card"><b>G3 · Attributable convergence</b><p>Selection, dissent, convergence, and unresolved residue remain reconstructable.</p></article>
+        <article class="context-card"><b>G4 · Terminal lifecycle</b><p>Every attempted delegated actor reaches terminal join/close or leaves named residue and reroute.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">4 · services and their contribution</p>
+          <h2 id="services-title">Properties are built across services; no component earns trust alone.</h2>
+        </div>
+        <p>
+          A service boundary is useful only when it names an obligation. These descriptions connect each
+          service to the failure it prevents, the property it helps produce, and the neighboring services
+          required to complete that property.
+        </p>
+      </div>
+
+      <div class="boundary-note">
+        <strong>Existing workflow capability, projected into the target architecture.</strong>
+        The target essay names eight finished-state services, but the repository already has a current,
+        owner-directed <code>domainspec-subagents-strategy</code> workflow contract. It routes LIVE dispatch
+        types; builds structural and concrete proposals; governs confirmation, pairwise tension, zig-zag,
+        robot-talks, registration, and closure; and delegates persisted row mechanics to
+        <code>register-dispatch</code>. What remains architectural is promoting that existing workflow
+        capability into a standalone runtime service boundary and connecting it to Protocol’s versioned
+        task-DAG instances. The skill explicitly does not self-promote to ACI/runtime authority.
+      </div>
+
+      <table class="mapping" aria-label="Standing and artifact identity map">
+        <thead><tr><th>Surface</th><th>Standing</th><th>Artifact and authority</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Subagents Strategy workflow</strong></td><td><span class="badge source">CURRENT WORKFLOW CONTRACT</span></td><td><code>StructuralGraphProposal</code> + <code>ConcreteDispatchProposal</code>; session-local workflow evidence, not runtime authority.</td></tr>
+          <tr><td><strong>Register Dispatch</strong></td><td><span class="badge source">IMPLEMENTED ROW MECHANICS</span></td><td>v0.6.1 append-only open row plus distinct close row; schema-validates and persists telemetry rows.</td></tr>
+          <tr><td><strong>Formulae Dispatch Spec</strong></td><td><span class="badge open">DRAFT VALIDATOR</span></td><td>Route JSON with <code>subagent_strategy</code>, joins, gates, observability, and lifecycle shape; it does not execute.</td></tr>
+          <tr><td><strong>Candidate target</strong></td><td><span class="badge interpretation">TARGET PROJECTION</span></td><td><code>StrategyDecision → TaskDAGVersion → DispatchInterpretation → TargetDispatch</code>; runtime authority and effective bindings remain ACI-owned.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="service-detail-grid">
+        <article class="service-detail strategy">
+          <p class="eyebrow">Current workflow control surface · target service status OD-1 open</p>
+          <h3>Subagents Strategy</h3>
+          <p>Receives bounded work before registration and execution. Today it is an owner-directed workflow
+            router. The target may project it as an entrance service, but that promotion is not yet decided.</p>
+          <dl>
+            <dt>Problem addressed</dt><dd>Unstructured parallelism creates correlated errors, hidden influence, arbitrary synthesis, and agents that remain open or unaccounted for.</dd>
+            <dt>Declares</dt><dd>Roles, topology, interaction, lenses and tensions, evidence obligations, joins, convergence, budgets, stop conditions, and required receipts.</dd>
+            <dt>Requests</dt><dd>Capabilities, provider/model/adapter, scopes, classification where needed, and authorization. Requested state is not effective state.</dd>
+            <dt>Coordinates</dt><dd>Capability review, two independent tension checks, confirmation or containment proof, routing, and lifecycle accounting.</dd>
+            <dt>Persists</dt><dd>Nothing directly. <code>register-dispatch</code> owns current ledger-row mechanics; proposed Record receives emitted facts.</dd>
+            <dt>Enforces</dt><dd>Workflow gates only: no register/run before the applicable workflow gate passes. It does not enforce grants, sandbox, sealing, effective identity, durable authorization, or its own epistemic quality.</dd>
+            <dt>Supports</dt><dd><span class="property-tags"><span>G1 topology</span><span>G2 anti-bias</span><span>G3 convergence</span><span>G4 closure</span></span></dd>
+          </dl>
+        </article>
+
+        <article class="service-detail">
+          <h3>Classifier</h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>Without a stable work kind, strategy and protocol choice become ad hoc and runs cannot be compared.</dd>
+            <dt>Responsibility</dt><dd>Interpret the bounded question into a work kind plus confidence and ambiguity signals; route uncertain cases to an explicit decision.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>purpose</span><span>R2 comparability</span></span></dd>
+            <dt>Works with</dt><dd>Classifier remains a distinct source-essay service. A future Strategy integration may request classification, but the current workflow contract does not mandate that call.</dd>
+          </dl>
+        </article>
+
+        <article class="service-detail">
+          <h3>Protocol <span class="badge open">OD-2 OPEN</span></h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>A strategy described only in prose cannot be confirmed, replayed, compared, or reliably interpreted.</dd>
+            <dt>Source responsibility</dt><dd>Own immutable <code>protocol-kind@version</code> sequences. The essay assigns question-specific confirmed-shape production to Compiler.</dd>
+            <dt>Candidate revision</dt><dd>Protocol materializes and versions <code>TaskDAGVersion</code> semantics derived from a kind protocol. Exact-byte persistence remains unowned: Protocol storage, a DAG Registry port, or another artifact store are still options.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>assignment</span><span>R2 comparability</span><span>R3 shape fidelity</span></span></dd>
+            <dt>Works with</dt><dd>Strategy supplies the design; Identity names every node and relation; Prompts supplies bindings; Compiler consumes a frozen graph or returns a typed objection. Record stores version/digest/lineage events, not necessarily DAG bytes.</dd>
+          </dl>
+        </article>
+
+        <article class="service-detail">
+          <h3>Compiler / DAG Interpreter</h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>A declarative DAG still contains semantic choices and runtime constraints; executing it directly would hide how those were resolved.</dd>
+            <dt>Responsibility</dt><dd>Join agent interpretation of task meaning with deterministic system resolution of capabilities, dependencies, gates, joins, budgets, and bindings; emit one confirmable, schema-valid Dispatch.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>assignment</span><span>authority</span><span>R3 shape fidelity</span></span></dd>
+            <dt>Works with</dt><dd>The agent explains semantic choices; the system rejects impossible edges and requires externally verifiable authority provenance once D9 has an owner. A separate epistemic gate tests lens distinction, independence, contamination, tension, and coverage. Record links objections, DAG versions, gate results, interpretation decisions, and Dispatch digest.</dd>
+          </dl>
+        </article>
+
+        <article class="service-detail run">
+          <h3>Execution</h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>A confirmed Dispatch has no effect unless a runtime can execute it without silently changing its topology.</dd>
+            <dt>Responsibility</dt><dd>Validate the digest, schedule ready nodes, resolve version bindings, enforce gates, joins, budgets, stop conditions, and lifecycle closure, then collect typed returns.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>causation</span><span>realization</span><span>R3 shape fidelity</span></span></dd>
+            <dt>Works with</dt><dd>Fabric mediates participant exchanges; Record receives lifecycle events. Supported workflow execution can occur today, but it cannot claim the target architecture’s durable ACI-backed authorization guarantee. D9 remains unresolved.</dd>
+          </dl>
+        </article>
+
+        <article class="service-detail run">
+          <h3>Fabric</h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>Direct agent-to-agent exchange permits invisible contamination, rewriting, uncertain recipients, and lost acts.</dd>
+            <dt>Responsibility</dt><dd>Address, seal, hold, release, deliver unchanged, validate envelope shape, and emit records. It transports but never authors, selects, summarizes, or ranks content.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>causation</span><span>R4 independence</span><span>R5 unchanged delivery</span></span></dd>
+            <dt>Works with</dt><dd>Execution controls when exchanges occur; Strategy supplies independence/release intent; Record durably captures emissions and receipts.</dd>
+          </dl>
+        </article>
+
+        <article class="service-detail knowledge">
+          <h3>Identity</h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>Names, paths, and positions change; proximity cannot safely imply meaning.</dd>
+            <dt>Responsibility</dt><dd>Mint stable identities and own typed relations among objectives, tasks, DAGs, dispatches, agents, messages, evidence, artifacts, and effects.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>all five paths</span><span>R1 identity</span><span>R7 relation meaning</span></span></dd>
+            <dt>Works with</dt><dd>Every service references identities; Record stores events about them without redefining their relation semantics.</dd>
+          </dl>
+        </article>
+
+        <article class="service-detail knowledge">
+          <h3>Prompts</h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>A task cannot prove what instructions ran when prompt text is copied, mutated, or resolved outside the confirmed plan.</dd>
+            <dt>Responsibility</dt><dd>Own typed, versioned instructions and return formats; bind versions during DAG/Dispatch construction and render content only at run time.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>assignment</span><span>causation</span><span>R3 shape fidelity</span></span></dd>
+            <dt>Works with</dt><dd>Protocol references bindings, Compiler closes them into the digest, and Execution resolves them.</dd>
+          </dl>
+        </article>
+
+        <article class="service-detail knowledge">
+          <h3>Record</h3>
+          <dl>
+            <dt>Problem addressed</dt><dd>Distributed writers create partial, contradictory histories; overwrites erase correction and dissent.</dd>
+            <dt>Responsibility</dt><dd>Be the single durable-fact ingress for append-only events, including empty-payload acts, strategy decisions, DAG versions, interpretations, Dispatch digests, emissions, joins, receipts, effects, and corrections.</dd>
+            <dt>Builds</dt><dd><span class="property-tags"><span>all five paths</span><span>R6 recoverability</span><span>auditability</span></span></dd>
+            <dt>Works with</dt><dd>All services emit facts; only Record writes the durable account. It records authority claims but does not resolve the source essay’s missing authority owner.</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="topology" aria-labelledby="topology-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">5 · technical infrastructure</p>
+          <h2 id="topology-title">Today’s workflow and the candidate target are related—but not identical.</h2>
+        </div>
+        <p>
+          The current workflow produces session-local proposal evidence and append-only telemetry rows.
+          The target hypothesis introduces durable task-DAG and executable Dispatch artifacts. Their
+          migration relationship, persistence, and authority must remain explicit open decisions.
+        </p>
+      </div>
+
+      <h3>Current workflow path</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1420 350" role="img" aria-labelledby="current-flow-title current-flow-desc">
+          <title id="current-flow-title">Current Subagents Strategy workflow path</title>
+          <desc id="current-flow-desc">Bounded work enters the current owner-directed Subagents Strategy workflow contract. It produces a StructuralGraphProposal and ConcreteDispatchProposal, then confirmation or containment proof permits register-dispatch to append an open telemetry row. A supported runtime attempts work and register-dispatch appends a close row. The Formulae Dispatch Spec is a separate draft validator, not an execution step.</desc>
+          <defs><marker id="cw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#68a9ff"/></marker></defs>
+          <rect x="18" y="40" width="1384" height="215" rx="16" fill="#101c29" stroke="#446f9b" stroke-width="2"/>
+          <text x="42" y="70" class="cap">CURRENT WORKFLOW CONTRACT · WORKFLOW EVIDENCE IS NOT ACI/RUNTIME AUTHORITY</text>
+          <rect x="42" y="98" width="155" height="92" rx="10" fill="#152231" stroke="#68a9ff"/><text x="58" y="126" class="title">Bounded work</text><text x="58" y="149" class="copy">objective · context · limits</text><text x="58" y="170" class="tag" fill="#68a9ff">CURRENT INPUT</text>
+          <rect x="225" y="88" width="190" height="112" rx="10" fill="#201a2e" stroke="#b59cff" stroke-width="2"/><text x="242" y="116" class="title">Strategy workflow</text><text x="242" y="139" class="copy">owner-directed router</text><text x="242" y="159" class="copy">gates · routes · closes</text><text x="242" y="181" class="tag" fill="#b59cff">CURRENT CONTRACT</text>
+          <rect x="443" y="88" width="215" height="112" rx="10" fill="#172b40" stroke="#68a9ff"/><text x="460" y="116" class="title">Workflow Proposal Pair</text><text x="460" y="139" class="copy">StructuralGraphProposal</text><text x="460" y="159" class="copy">ConcreteDispatchProposal</text><text x="460" y="181" class="tag" fill="#68a9ff">SESSION-LOCAL EVIDENCE</text>
+          <rect x="686" y="98" width="155" height="92" rx="10" fill="#261d32" stroke="#b59cff"/><text x="703" y="126" class="title">Workflow gate</text><text x="703" y="149" class="copy">confirm or contain</text><text x="703" y="170" class="tag" fill="#b59cff">NOT RUNTIME AUTHORITY</text>
+          <rect x="869" y="88" width="165" height="112" rx="10" fill="#142b21" stroke="#62d39d"/><text x="886" y="116" class="title">Open row</text><text x="886" y="139" class="copy">register-dispatch</text><text x="886" y="159" class="copy">schema v0.6.1</text><text x="886" y="181" class="tag" fill="#62d39d">IMPLEMENTED MECHANICS</text>
+          <rect x="1062" y="98" width="145" height="92" rx="10" fill="#292115" stroke="#f2b45d"/><text x="1079" y="126" class="title">Runtime attempt</text><text x="1079" y="149" class="copy">where supported</text><text x="1079" y="170" class="tag" fill="#f2b45d">EFFECTIVE ≠ REQUESTED</text>
+          <rect x="1235" y="88" width="140" height="112" rx="10" fill="#142b21" stroke="#62d39d"/><text x="1252" y="116" class="title">Close row</text><text x="1252" y="139" class="copy">exit · agents · loops</text><text x="1252" y="159" class="copy">residue · feedback</text><text x="1252" y="181" class="tag" fill="#62d39d">APPEND-ONLY</text>
+          <path d="M197 144H219M415 144H437M658 144H680M841 144H863M1034 144H1056M1207 144H1229" stroke="#68a9ff" stroke-width="3" marker-end="url(#cw-a)"/>
+          <rect x="443" y="278" width="398" height="54" rx="9" fill="#251f15" stroke="#f2b45d" stroke-dasharray="7 5"/>
+          <text x="462" y="301" class="title">Formulae Dispatch Spec · DRAFT VALIDATOR</text>
+          <text x="462" y="320" class="copy">validates route shape and subagent_strategy fields · does not execute or own the current row</text>
+        </svg>
+      </div>
+
+      <h3 style="margin-top:28px">Candidate target transition</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1420 650" role="img" aria-labelledby="entry-title entry-desc">
+          <title id="entry-title">From bounded work through Subagents Strategy and Protocol DAG to Dispatch</title>
+          <desc id="entry-desc">A bounded work envelope enters the Subagents Strategy service. Its strategy decision goes to Protocol, which saves a versioned DAG for the task. Agent semantic interpretation and system constraint interpretation jointly transform the DAG through a compiler into a validated Dispatch. Execution schedules the Dispatch through Fabric and agents, while Record links every artifact and decision.</desc>
+          <defs>
+            <marker id="en-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#68a9ff"/></marker>
+            <marker id="en-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b59cff"/></marker>
+            <marker id="en-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#62d39d"/></marker>
+            <marker id="en-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7f78"/></marker>
+          </defs>
+
+          <rect x="18" y="70" width="185" height="160" rx="14" fill="#152231" stroke="#68a9ff" stroke-width="2"/>
+          <text x="38" y="99" class="cap">BOUNDED WORK ENVELOPE</text>
+          <text x="38" y="130" class="title">Intent ready to route</text>
+          <text x="38" y="154" class="copy">objective · selected context</text>
+          <text x="38" y="174" class="copy">constraints · gates · authority</text>
+          <text x="38" y="194" class="copy">expected result · stop conditions</text>
+
+          <rect x="250" y="42" width="265" height="216" rx="15" fill="#201a2e" stroke="#b59cff" stroke-width="3"/>
+          <text x="272" y="72" class="cap" fill="#b59cff">CURRENT CONTROL SURFACE · SERVICE OD-1 OPEN</text>
+          <text x="272" y="105" class="title">Subagents Strategy</text>
+          <text x="272" y="131" class="copy">Classifier → kind + ambiguity</text>
+          <text x="272" y="151" class="copy">Which roles, topology, interaction?</text>
+          <text x="272" y="171" class="copy">Which lenses, tensions, scouts?</text>
+          <text x="272" y="191" class="copy">Which join and convergence rule?</text>
+          <text x="272" y="211" class="copy">Which evidence + lifecycle receipts?</text>
+          <text x="272" y="238" class="tag" fill="#b59cff">OUTPUT: STRATEGY DECISION</text>
+
+          <rect x="565" y="42" width="250" height="216" rx="15" fill="#172b40" stroke="#68a9ff" stroke-width="2"/>
+          <text x="587" y="72" class="cap">TARGET CANDIDATE · DAG OWNERSHIP OD-2</text>
+          <text x="587" y="105" class="title">Build task DAG</text>
+          <text x="587" y="131" class="copy">kind protocol@version + strategy</text>
+          <text x="587" y="151" class="copy">capabilities + dependencies</text>
+          <text x="587" y="171" class="copy">gates + evidence obligations</text>
+          <text x="587" y="191" class="copy">joins + convergence + budgets</text>
+          <rect x="600" y="211" width="178" height="31" rx="7" fill="#0f1a26" stroke="#62d39d"/>
+          <text x="603" y="232" class="tag" fill="#62d39d">MATERIALIZE DAG@V · BYTE STORE UNOWNED</text>
+
+          <rect x="865" y="24" width="315" height="252" rx="16" fill="#151f2a" stroke="#5f7386" stroke-width="2"/>
+          <text x="887" y="54" class="cap">INTERPRETATION BOUNDARY</text>
+          <rect x="890" y="76" width="125" height="86" rx="10" fill="#201a2e" stroke="#b59cff"/>
+          <text x="907" y="103" class="title">Agent</text>
+          <text x="907" y="125" class="copy">task semantics</text>
+          <text x="907" y="144" class="copy">role intent · ambiguity</text>
+          <rect x="1030" y="76" width="125" height="86" rx="10" fill="#172b40" stroke="#68a9ff"/>
+          <text x="1047" y="103" class="title">System</text>
+          <text x="1047" y="125" class="copy">schema · capability</text>
+          <text x="1047" y="144" class="copy">authority proof? · D9</text>
+          <rect x="930" y="186" width="185" height="62" rx="10" fill="#292115" stroke="#f2b45d" stroke-width="2"/>
+          <text x="950" y="212" class="title">Dispatch Compiler</text>
+          <text x="950" y="233" class="copy">system + epistemic gates</text>
+
+          <rect x="1230" y="70" width="170" height="160" rx="14" fill="#292115" stroke="#f2b45d" stroke-width="3"/>
+          <text x="1250" y="99" class="cap">TARGET ARTIFACT · ACI REQUIRED</text>
+          <text x="1250" y="130" class="title">TargetDispatch</text>
+          <text x="1250" y="154" class="copy">closed nodes + edges</text>
+          <text x="1250" y="174" class="copy">bindings · gates · joins</text>
+          <text x="1250" y="194" class="copy">observability · stop rules</text>
+          <text x="1250" y="216" class="tag" fill="#f2b45d">READY FOR CONFIRMATION</text>
+
+          <path d="M203 150H244" stroke="#68a9ff" stroke-width="3" marker-end="url(#en-c)"/>
+          <path d="M515 150H559" stroke="#b59cff" stroke-width="3" marker-end="url(#en-p)"/>
+          <path d="M815 150H859" stroke="#68a9ff" stroke-width="3" marker-end="url(#en-c)"/>
+          <path d="M1180 150H1224" stroke="#f2b45d" stroke-width="3" marker-end="url(#en-c)"/>
+          <path d="M1022 248V302H690V264" fill="none" stroke="#ff7f78" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#en-r)"/>
+          <text x="746" y="293" class="tag" fill="#ff7f78">TYPED OBJECTION → NEW DAG VERSION → RENEW CONFIRMATION</text>
+
+          <rect x="250" y="332" width="950" height="228" rx="16" fill="#10251c" stroke="#397b5f" stroke-width="2"/>
+          <text x="274" y="363" class="cap">DURABLE LINEAGE · RECORD IS THE ONLY FACT INGRESS</text>
+          <rect x="280" y="391" width="170" height="70" rx="9" fill="#142b21" stroke="#62d39d"/><text x="297" y="418" class="title">Strategy decision</text><text x="297" y="441" class="copy">reason · alternatives · properties</text>
+          <rect x="475" y="391" width="170" height="70" rx="9" fill="#142b21" stroke="#62d39d"/><text x="492" y="418" class="title">Task DAG@version</text><text x="492" y="441" class="copy">derived_from · shape signature</text>
+          <rect x="670" y="391" width="170" height="70" rx="9" fill="#142b21" stroke="#62d39d"/><text x="687" y="418" class="title">Interpretation</text><text x="687" y="441" class="copy">agent choices · system checks</text>
+          <rect x="865" y="391" width="170" height="70" rx="9" fill="#142b21" stroke="#62d39d"/><text x="882" y="418" class="title">Dispatch digest</text><text x="882" y="441" class="copy">confirmed executable shape</text>
+          <rect x="1060" y="391" width="110" height="70" rx="9" fill="#142b21" stroke="#62d39d"/><text x="1077" y="418" class="title">Receipts</text><text x="1077" y="441" class="copy">spawn · join · close</text>
+          <path d="M450 426H469M645 426H664M840 426H859M1035 426H1054" stroke="#62d39d" stroke-width="2" marker-end="url(#en-e)"/>
+          <text x="280" y="506" class="copy">Identity supplies stable ids and typed relations. Prompts supplies versioned instruction bindings.</text>
+          <text x="280" y="531" class="copy">Execution interprets only the confirmed Dispatch; Fabric mediates agent traffic; every act appends evidence.</text>
+        </svg>
+      </div>
+      <p class="caption">
+        <span class="badge interpretation">Proposed synthesis</span>
+        “Strategy decision,” “saved DAG,” and “Dispatch” are deliberately separate. A DAG describes intended
+        work; a Dispatch is its validated, bound, executable interpretation. The system must record any
+        interpretation decision rather than smuggling it into runtime behavior. A rejected interpretation
+        returns a typed objection to Protocol, creates a new DAG version, and reopens confirmation. Authority
+        validation remains unavailable until D9 supplies a verifiable provider contract.
+      </p>
+
+      <div class="critical-grid" aria-label="Open target-boundary decisions">
+        <article class="critical-card"><span class="badge open">OD-1 · OPEN DESIGN</span><h3 style="margin-top:10px">Strategy promotion</h3><p>Should the current workflow control surface become an independently deployed target service, or remain a logical orchestration boundary?</p></article>
+        <article class="critical-card"><span class="badge open">OD-2 · OPEN DESIGN</span><h3 style="margin-top:10px">Task-DAG ownership</h3><p>Protocol may own DAG semantics and version identity. Exact-byte persistence—Protocol storage, a DAG Registry port, or another store—remains unowned.</p></article>
+        <article class="critical-card"><span class="badge open">OD-3 · OPEN DESIGN</span><h3 style="margin-top:10px">Current-to-target mapping</h3><p><code>ConcreteDispatchProposal</code> is not <code>TargetDispatch</code>. Any future adapter is a candidate migration mapping with no identity or receipt reuse.</p></article>
+        <article class="critical-card"><span class="badge critical">D9 · CRITICAL</span><h3 style="margin-top:10px">Authority ownership</h3><p>Strategy records workflow evidence but cannot issue target runtime authority. The authority provider or Record-property decision remains unresolved.</p></article>
+      </div>
+
+      <h3 style="margin-top:26px">Source-essay baseline: supporting responsibility planes</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1380 760" role="img" aria-labelledby="topology-svg-title topology-svg-desc">
+          <title id="topology-svg-title">Eight-service baseline from the target architecture essay</title>
+          <desc id="topology-svg-desc">The source essay baseline has a decision plane containing Classifier, Protocol, and Compiler. The proposed Subagents Strategy entrance and per-task DAG refinement are shown in the preceding diagram. A human confirmation gate precedes Execution. Fabric mediates agent workers. Identity and Prompts support all relevant services. Events flow into Record, the only durable-fact ingress. Authority ownership remains unresolved.</desc>
+          <defs>
+            <marker id="tp-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#68a9ff"/></marker>
+            <marker id="tp-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#f2b45d"/></marker>
+            <marker id="tp-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#62d39d"/></marker>
+            <marker id="tp-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b59cff"/></marker>
+          </defs>
+
+          <rect x="215" y="30" width="950" height="690" rx="20" fill="#0f1822" stroke="#506274" stroke-width="2"/>
+          <text x="240" y="60" class="cap">PROPOSED SYSTEM BOUNDARY · CONCEPTUAL, NOT A DEPLOYMENT DIAGRAM</text>
+
+          <rect x="20" y="86" width="165" height="140" rx="13" fill="#162535" stroke="#68a9ff" stroke-width="2"/>
+          <text x="40" y="116" class="cap">HUMAN</text>
+          <text x="40" y="147" class="title">Question</text>
+          <text x="40" y="170" class="copy">objective · boundary</text>
+          <text x="40" y="189" class="copy">approve shape · authorize run</text>
+
+          <rect x="1195" y="220" width="165" height="238" rx="13" fill="#251f15" stroke="#f2b45d" stroke-width="2"/>
+          <text x="1215" y="250" class="cap">AGENT WORKERS</text>
+          <rect x="1215" y="274" width="125" height="44" rx="8" fill="#17212c" stroke="#f2b45d"/><text x="1233" y="301" class="copy">independent A</text>
+          <rect x="1215" y="332" width="125" height="44" rx="8" fill="#17212c" stroke="#f2b45d"/><text x="1233" y="359" class="copy">independent B</text>
+          <rect x="1215" y="390" width="125" height="44" rx="8" fill="#17212c" stroke="#f2b45d"/><text x="1233" y="417" class="copy">aggregation point</text>
+
+          <rect x="245" y="88" width="540" height="178" rx="14" fill="#142235" stroke="#446f9b"/>
+          <text x="265" y="115" class="cap">DECISION PLANE · WHAT MAY RUN</text>
+          <rect x="268" y="139" width="145" height="88" rx="10" fill="#172b40" stroke="#68a9ff"/>
+          <text x="285" y="167" class="title">S1 Classifier</text><text x="285" y="188" class="copy">question → kind</text><text x="285" y="210" class="tag" fill="#68a9ff">R2</text>
+          <rect x="442" y="139" width="145" height="88" rx="10" fill="#172b40" stroke="#68a9ff"/>
+          <text x="459" y="167" class="title">S2 Protocol</text><text x="459" y="188" class="copy">versioned sequence</text><text x="459" y="210" class="tag" fill="#68a9ff">R2</text>
+          <rect x="616" y="139" width="145" height="88" rx="10" fill="#172b40" stroke="#68a9ff"/>
+          <text x="633" y="167" class="title">S3 Compiler</text><text x="633" y="188" class="copy">shape + machine plan</text><text x="633" y="210" class="tag" fill="#68a9ff">R3</text>
+
+          <rect x="813" y="115" width="148" height="126" rx="12" fill="#261d32" stroke="#b59cff" stroke-width="2"/>
+          <text x="831" y="142" class="cap" fill="#b59cff">HUMAN GATE</text>
+          <text x="831" y="171" class="title">Confirm twice</text>
+          <text x="831" y="193" class="copy">approve shape</text>
+          <text x="831" y="211" class="copy">authorize same digest</text>
+          <text x="831" y="229" class="tag" fill="#ff7f78">D3 CRITICAL</text>
+
+          <rect x="990" y="88" width="145" height="178" rx="14" fill="#2a2115" stroke="#a8773d"/>
+          <text x="1010" y="115" class="cap">EXECUTION PLANE</text>
+          <rect x="1010" y="139" width="105" height="88" rx="10" fill="#2c251b" stroke="#f2b45d"/>
+          <text x="1025" y="167" class="title">S4 Execution</text>
+          <text x="1025" y="188" class="copy">resolve bindings</text>
+          <text x="1025" y="207" class="copy">collect returns · R3</text>
+
+          <rect x="245" y="302" width="890" height="150" rx="14" fill="#292116" stroke="#a8773d"/>
+          <text x="265" y="330" class="cap">MEDIATION PLANE · PRESENT DURING AGENT WORK, NOT A PIPELINE STEP</text>
+          <rect x="270" y="350" width="835" height="72" rx="11" fill="#2d261d" stroke="#f2b45d" stroke-width="2"/>
+          <text x="292" y="378" class="title">S5 Fabric</text>
+          <text x="405" y="378" class="copy">address · seal · hold · release · deliver unchanged · validate shape · record</text>
+          <text x="292" y="402" class="tag" fill="#f2b45d">R4 R5 · transports, never authors, selects, rewrites, summarizes, or ranks</text>
+
+          <rect x="245" y="488" width="890" height="190" rx="14" fill="#10251c" stroke="#397b5f"/>
+          <text x="265" y="517" class="cap">KNOWLEDGE PLANE · STABLE REFERENCES, VERSIONED INSTRUCTIONS, DURABLE FACTS</text>
+          <rect x="270" y="546" width="230" height="86" rx="10" fill="#142b21" stroke="#62d39d"/>
+          <text x="290" y="576" class="title">S6 Identity</text><text x="290" y="598" class="copy">minted identity · typed relations</text><text x="290" y="618" class="tag" fill="#62d39d">R1 R7 · referenced by every service</text>
+          <rect x="530" y="546" width="230" height="86" rx="10" fill="#142b21" stroke="#62d39d"/>
+          <text x="550" y="576" class="title">S8 Prompts</text><text x="550" y="598" class="copy">typed instructions by version</text><text x="550" y="618" class="tag" fill="#62d39d">R3 · bound at compile, resolved at run</text>
+          <rect x="790" y="532" width="315" height="114" rx="10" fill="#142b21" stroke="#62d39d" stroke-width="3"/>
+          <text x="812" y="564" class="title">S7 Record</text><text x="812" y="587" class="copy">append-only events · emissions · digest lineage</text>
+          <text x="812" y="608" class="copy">corrections append; empty-payload acts remain visible</text>
+          <text x="812" y="632" class="tag" fill="#62d39d">R6 · ONLY DURABLE-FACT INGRESS</text>
+
+          <rect x="20" y="525" width="165" height="130" rx="13" fill="#2a1719" stroke="#ff7f78" stroke-width="2" stroke-dasharray="7 5"/>
+          <text x="40" y="555" class="cap" fill="#ff7f78">UNOWNED OBLIGATION</text>
+          <text x="40" y="586" class="title">Authority</text>
+          <text x="40" y="608" class="copy">possible added service?</text>
+          <text x="40" y="627" class="copy">property of Record?</text>
+          <text x="40" y="647" class="tag" fill="#ff7f78">D9 CRITICAL</text>
+
+          <path d="M185 155H264" fill="none" stroke="#68a9ff" stroke-width="3" marker-end="url(#tp-c)"/>
+          <path d="M413 183H438M587 183H612M761 183H809M961 183H1006" fill="none" stroke="#68a9ff" stroke-width="3" marker-end="url(#tp-c)"/>
+          <path d="M1062 227V298" fill="none" stroke="#68a9ff" stroke-width="3" marker-end="url(#tp-c)"/>
+          <path d="M1105 386H1189" fill="none" stroke="#f2b45d" stroke-width="3" marker-start="url(#tp-m)" marker-end="url(#tp-m)"/>
+          <path d="M1062 422V518H947V528" fill="none" stroke="#62d39d" stroke-width="3" marker-end="url(#tp-e)"/>
+          <path d="M687 422V470H947V528" fill="none" stroke="#62d39d" stroke-width="2" marker-end="url(#tp-e)"/>
+          <path d="M385 546V270H340V231" fill="none" stroke="#b59cff" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#tp-r)"/>
+          <path d="M645 546V270H1062V231" fill="none" stroke="#b59cff" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#tp-r)"/>
+          <path d="M185 590H266" fill="none" stroke="#ff7f78" stroke-width="2" stroke-dasharray="7 5"/>
+        </svg>
+      </div>
+
+      <div class="legend" aria-label="Flow types">
+        <span><i class="control"></i>control: choose, bind, confirm, authorize</span>
+        <span><i class="content"></i>content: messages and judgments through Fabric</span>
+        <span><i class="evidence"></i>evidence: events into Record</span>
+        <span><i class="reference"></i>reference: identities and version bindings</span>
+      </div>
+      <p class="caption">
+        <span class="badge interpretation">Diagram interpretation</span>
+        This is the eight-service source baseline, retained so the unnumbered Strategy control surface can be
+        compared with its origin. The four planes, routing geometry, external actor placement, and S1–S8
+        labels explain the essay; they do not specify processes, network calls, databases, or deployment boundaries.
+      </p>
+
+      <div class="service-grid" aria-label="Service responsibility summary">
+        <article class="service-card decide"><small>Entrance · workflow-live, runtime boundary proposed</small><h3>Subagents Strategy</h3><p>Existing workflow capability that chooses and governs the epistemic/collaboration structure before Protocol materializes a task DAG.</p></article>
+        <article class="service-card decide"><small>Decision plane</small><h3>Classifier</h3><p>Names the work kind that selects the comparison basis.</p></article>
+        <article class="service-card decide"><small>Decision plane</small><h3>Protocol</h3><p>Retains the kind-level invariant; materializes and saves each constrained task-DAG instance.</p></article>
+        <article class="service-card decide"><small>Interpretation boundary</small><h3>Compiler</h3><p>Turns agent meaning plus system constraints into a validated Dispatch.</p></article>
+        <article class="service-card run"><small>Execution plane</small><h3>Execution</h3><p>Checks, resolves, runs, and collects without changing the confirmed topology.</p></article>
+        <article class="service-card fabric"><small>Mediation plane</small><h3>Fabric</h3><p>Controls delivery and release while preserving authorship. It is infrastructure around the steps, not a step among them.</p></article>
+        <article class="service-card remember"><small>Knowledge plane</small><h3>Identity</h3><p>Provides stable identity and typed relation semantics.</p></article>
+        <article class="service-card remember"><small>Knowledge plane</small><h3>Prompts</h3><p>Keeps instructions addressable and version-bound.</p></article>
+        <article class="service-card remember"><small>Knowledge plane</small><h3>Record</h3><p>Owns the durable account; all corrections and later facts append.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="run" aria-labelledby="run-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">6 · candidate target run trace</p>
+          <h2 id="run-title">If OD-1–3 and D9 resolve, bounded intention can become attributable execution.</h2>
+        </div>
+        <p>
+          This is a target scenario, not the current workflow trace above. It abbreviates Strategy and
+          Protocol into one temporal work-design phase; the technical infrastructure view remains canonical
+          for their distinct ownership.
+        </p>
+      </div>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1260 790" role="img" aria-labelledby="sequence-title sequence-desc">
+          <title id="sequence-title">Governed run sequence</title>
+          <desc id="sequence-desc">A bounded work envelope enters the strategy and protocol services. They choose a strategy, save a task DAG, interpret it into a Dispatch, and obtain two confirmations over one digest. Execution resolves prompts and invokes agents through Fabric. Fabric records events through Record throughout the run.</desc>
+          <defs>
+            <marker id="sq-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#68a9ff"/></marker>
+            <marker id="sq-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f2b45d"/></marker>
+            <marker id="sq-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#62d39d"/></marker>
+          </defs>
+          <g>
+            <text x="90" y="35" class="cap">HUMAN</text><text x="280" y="35" class="cap">WORK DESIGN · ABBREVIATED</text>
+            <text x="560" y="35" class="cap">EXECUTION</text><text x="750" y="35" class="cap">FABRIC</text>
+            <text x="940" y="35" class="cap">AGENTS</text><text x="1120" y="35" class="cap">RECORD</text>
+            <path d="M105 54V750M350 54V750M600 54V750M790 54V750M975 54V750M1155 54V750" stroke="#34485b" stroke-width="2" stroke-dasharray="5 6"/>
+          </g>
+          <path d="M105 92H346" stroke="#68a9ff" stroke-width="3" marker-end="url(#sq-c)"/><text x="145" y="82" class="copy">1 · bounded work envelope</text>
+          <rect x="286" y="108" width="128" height="72" rx="10" fill="#172b40" stroke="#68a9ff"/>
+          <text x="304" y="134" class="title">2 · strategize</text><text x="304" y="156" class="copy">select epistemic structure</text>
+          <rect x="286" y="198" width="128" height="80" rx="10" fill="#172b40" stroke="#68a9ff"/>
+          <text x="304" y="224" class="title">3 · save DAG</text><text x="304" y="246" class="copy">task graph + obligations</text><text x="304" y="264" class="copy">bind versions</text>
+          <path d="M350 282H109" stroke="#68a9ff" stroke-width="3" marker-end="url(#sq-c)"/><text x="145" y="272" class="copy">4 · inspect strategy + DAG + interpretation</text>
+          <path d="M105 324H346" stroke="#b59cff" stroke-width="3" marker-end="url(#sq-c)"/><text x="145" y="314" class="copy">5a · approve proposed work shape</text>
+          <path d="M105 366H596" stroke="#b59cff" stroke-width="3" marker-end="url(#sq-c)"/><text x="145" y="356" class="copy">5b · authorize the compiled Dispatch digest</text>
+          <rect x="538" y="382" width="124" height="66" rx="10" fill="#2c251b" stroke="#f2b45d"/>
+          <text x="554" y="408" class="title">6 · verify</text><text x="554" y="430" class="copy">Dispatch matches DAG</text>
+          <path d="M600 466H786" stroke="#68a9ff" stroke-width="3" marker-end="url(#sq-c)"/><text x="638" y="456" class="copy">7 · bound invocation</text>
+          <path d="M790 506H971" stroke="#f2b45d" stroke-width="3" marker-end="url(#sq-m)"/><text x="823" y="496" class="copy">8 · addressed emission</text>
+          <path d="M975 548H794" stroke="#f2b45d" stroke-width="3" marker-end="url(#sq-m)"/><text x="828" y="538" class="copy">9 · reply / sealed judgment</text>
+          <path d="M790 590H1151" stroke="#62d39d" stroke-width="3" marker-end="url(#sq-e)"/><text x="850" y="580" class="copy">10 · event + binding + digest lineage</text>
+          <path d="M790 632H596" stroke="#f2b45d" stroke-width="3" marker-end="url(#sq-m)"/><text x="625" y="622" class="copy">11 · release when recipient condition holds</text>
+          <rect x="522" y="650" width="156" height="70" rx="10" fill="#2c251b" stroke="#f2b45d"/>
+          <text x="540" y="676" class="title">12 · closeout gate</text>
+          <text x="540" y="697" class="copy">converge · join · receipts</text>
+          <text x="540" y="713" class="copy">close or record residue + reroute</text>
+          <path d="M600 744H109" stroke="#68a9ff" stroke-width="3" marker-end="url(#sq-c)"/><text x="230" y="734" class="copy">13 · attributable result only after terminal closure</text>
+          <rect x="1082" y="72" width="146" height="668" rx="12" fill="none" stroke="#62d39d" stroke-width="2"/>
+          <text x="1098" y="98" class="tag" fill="#62d39d">APPEND THROUGHOUT</text>
+        </svg>
+      </div>
+
+      <div class="sequence-notes">
+        <article><h3>Digest scope</h3><p>Strategy, kind protocol, task DAG, skill profiles/fragments, interpretation manifest, capability resolution, Dispatch schema, and prompt/format bindings—not rendered prompt text.</p></article>
+        <article><h3>Release rule</h3><p>A sealed judgment already has a recipient; its release condition is not yet met. Failure behavior remains unspecified.</p></article>
+        <article><h3>Closure rule</h3><p>No successful result while an attempted agent is pending. Join, convergence, receipts, terminal close, residue, and reroute remain recoverable.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="modes" aria-labelledby="modes-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">7 · dispatch modes</p>
+          <h2 id="modes-title">A mode is a bounded composition of choices, not one overloaded enum.</h2>
+        </div>
+        <p>
+          The saved task DAG makes modes concrete. Strategy selects dimensions; Protocol closes them into
+          nodes, edges, gates, joins, and convergence predicates; Dispatch binds that graph for execution.
+        </p>
+      </div>
+
+      <div class="axis-grid" aria-label="Orthogonal strategy dimensions">
+        <article class="axis-card"><h3>1 · Work topology</h3><p>Sequence, fan-out, lens fan-out, staged DAG, tournament bracket, or bounded loop.</p></article>
+        <article class="axis-card"><h3>2 · Interaction</h3><p>Sealed-independent, robot-talks deliberation, zig-zag alternation, or producer–reviewer exchange.</p></article>
+        <article class="axis-card"><h3>3 · Bias control</h3><p>None, diverse lenses, replication, paired tension, or full pairwise tension.</p></article>
+        <article class="axis-card"><h3>4 · Evidence acquisition</h3><p>Direct work, scouts that locate evidence, or probes that inspect through a pinned lens.</p></article>
+        <article class="axis-card"><h3>5 · Join policy</h3><p>Collect all, parent synthesis, ranked selection, Pareto set, adjudication, or explicit disagreement.</p></article>
+        <article class="axis-card"><h3>6 · Convergence</h3><p>Typed predicate, iteration bound, evidence threshold, unresolved-residue rule, and stop condition.</p></article>
+      </div>
+
+      <div class="mode-grid" aria-label="Example dispatch modes">
+        <article class="mode-card"><h3>Task fan-out</h3><p>Independent sibling tasks run concurrently, then join. Best when the work is separable and outputs have explicit ownership.</p><code>root → {task A | task B | task C} → join</code></article>
+        <article class="mode-card"><h3>Lens fan-out</h3><p>The same target is inspected through structurally different lenses. Preserves distinct observations before synthesis.</p><code>target → {security | UX | operations} → synthesis</code></article>
+        <article class="mode-card"><h3>Tensioned views</h3><p>Paired roles are intentionally given opposing pressures. Their disagreement is an evidence-bearing result, not noise to erase.</p><code>proposal → {maximize X ↔ protect Y} → tension map</code></article>
+        <article class="mode-card"><h3>Robot-talks</h3><p><span class="badge source">WORKFLOW CONTRACT</span> Standalone, it is an audit workflow. As <code>robot_talks:true</code>, it is an intra-group confrontation overlay governed by Strategy.</p><code>round 1 → challenge → response → convergence check</code></article>
+        <article class="mode-card"><h3>Zig-zag</h3><p><span class="badge source">WORKFLOW CONTRACT</span> Work alternates between stages or roles: producer, critic, revision, verification. Each return edge has a reason and limit.</p><code>produce → critique → revise → verify ↺ bounded</code></article>
+        <article class="mode-card"><h3>Tournament</h3><p>Multiple proposals are evaluated against declared criteria; ranking, bracket, or Pareto selection preserves comparison evidence.</p><code>{P1 | P2 | P3 | P4} → evaluate → select</code></article>
+        <article class="mode-card"><h3>Scouts and probes</h3><p>Scouts find promising evidence or locations; probes inspect through a pinned lens. Neither adjudicates truth or promotes facts.</p><code>question → scout → evidence set → bounded worker</code></article>
+        <article class="mode-card"><h3>Per-skill DAG</h3><p>A skill execution profile contributes its own internal graph and obligations. Protocol composes it without copying skill internals.</p><code>skill@revision + profile + task → DAG fragment</code></article>
+      </div>
+
+      <div class="callout risk">
+        <strong>Availability boundary.</strong>
+        Supported workflow dispatches can run through the available runtime surface. A registered robot-talks,
+        zig-zag, or other topology that needs post-confirmation downstream dynamic input is
+        <span class="badge critical">UNAVAILABLE</span> until ACI/runtime persists and binds an effective input
+        artifact. WorkflowInputManifest evidence is not equivalent to effective runtime binding.
+      </div>
+
+      <div class="callout">
+        <strong>Example composition.</strong>
+        “Three sealed scouts, followed by two tensioned lens groups, then a two-round robot-talks
+        deliberation, joined as a Pareto set” is one strategy. Protocol must save that exact topology and
+        every join/convergence condition in the task DAG; Dispatch may bind it, but may not simplify it away.
+      </div>
+
+      <h3 style="margin-top:28px">Subagents Strategy as the configuration and accountability surface</h3>
+      <table class="mapping">
+        <thead><tr><th>Decision surface</th><th>What the strategy must make explicit</th><th>What is recorded and later evaluated</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fit</strong></td><td>Why subagents fit this problem shape; why a single agent or simpler route is insufficient.</td><td>Trigger, alternatives considered, expected benefit, and chosen status: none, recommended, required, or blocked.</td></tr>
+          <tr><td><strong>Epistemic design</strong></td><td>Independence, lenses, paired tensions, replication, evidence standards, dissent treatment, and contamination boundaries.</td><td>Coverage achieved, influence violations, preserved disagreement, unsupported consensus, and evidence quality.</td></tr>
+          <tr><td><strong>Independent epistemic gate</strong></td><td>Testable predicates for lens distinction, pairwise tension, independence, contamination, coverage, and dissent preservation. Strategy declares them but cannot grade itself.</td><td>A system policy or separately assigned evaluator returns pass, typed objection, or unresolved residue; failure creates a new DAG version or blocks Dispatch.</td></tr>
+          <tr><td><strong>Work design</strong></td><td>Roles, ownership, topology, dependencies, handoffs, per-skill DAG fragments, and context materialization.</td><td>Which agent received which bounded assignment and why; input/output handles and lineage.</td></tr>
+          <tr><td><strong>Decision design</strong></td><td>Join policy, adjudicator if any, convergence predicates, iteration limit, unresolved-residue policy, and stop conditions.</td><td>How a result was selected, what remained contested, which predicate ended the route, and who held authority.</td></tr>
+          <tr><td><strong>Operational bounds</strong></td><td>Parallelism, token/time/tool budgets, mutation and network boundaries, failure reroutes, and human gates.</td><td>Budget use, gate results, violations, timeouts, residue, and reroutes.</td></tr>
+          <tr><td><strong>Lifecycle closure</strong></td><td>Receipt requirements for spawn, join, close, artifact return, and abandoned or blocked work.</td><td>Every attempted agent reaches a terminal join and close state; hidden open work blocks success.</td></tr>
+        </tbody>
+      </table>
+
+      <p class="caption">
+        <span class="badge interpretation">Draft capability boundary</span>
+        The repository’s current Dispatch Spec already names much of this surface, including roles, parallelism,
+        join policy, authorization, receipt requirements, and lifecycle closure. The broader epistemic metrics
+        and its treatment as a standalone service are proposed here for refinement.
+      </p>
+    </section>
+
+    <section class="section" id="state" aria-labelledby="state-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">8 · state and contracts</p>
+          <h2 id="state-title">The architecture separates invariants, tuning, and history.</h2>
+        </div>
+        <p>
+          The design fails quietly when something migrates between these strata without an explicit
+          decision—for example, when a tunable release policy becomes an unchangeable law.
+        </p>
+      </div>
+
+      <div class="strata">
+        <article class="stratum given"><h3>Given</h3><p>Seven guarantees and the single-writer rule. Changing these changes what the system is.</p></article>
+        <article class="stratum optimized"><h3>Optimized</h3><p>Strategies, modes, protocols, lenses, tensions, templates, budgets, join/convergence rules, and release policy. These are compared and tuned.</p></article>
+        <article class="stratum accumulated"><h3>Accumulated</h3><p>Strategy decisions, task DAG versions, interpretation records, Dispatch digests, events, emissions, rendered prompts, and receipts. These grow; corrections append.</p></article>
+      </div>
+
+      <div class="contracts" style="margin-top:18px">
+        <article class="contract">
+          <h3>Emission contract</h3>
+          <pre>emission:
+  recipients : who receives it + release condition
+  payload    : judgment | content | empty
+  return     : none | ack | reply
+  binding    : prompt@version + format@version</pre>
+        </article>
+        <article class="contract">
+          <h3>Digest contract</h3>
+          <p>Closes over hashes/versions for the strategy decision, kind-level protocol, task DAG, every skill profile and DAG fragment, interpretation manifest, capability resolution, Dispatch schema, prompts, and formats. Any change creates a new digest and requires renewed confirmation.</p>
+        </article>
+        <article class="contract">
+          <h3>Protocol-instance contract</h3>
+          <p>Every task DAG names the immutable <code>protocol-kind@version</code> it derives from, its permitted variations, and a comparable-shape signature. A unique task graph preserves history only; this contract preserves R2 comparability.</p>
+        </article>
+        <article class="contract">
+          <h3>Durability contract</h3>
+          <p>Record is the sole ingress for durable facts. Every act produces an event; corrections never overwrite history.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="kernel" aria-labelledby="kernel-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">9 &middot; kernel hypothesis</p>
+          <h2 id="kernel-title">A kernel does not own every meaning; it defines what must be witnessed before independently governed meanings may compose.</h2>
+        </div>
+        <p><span class="badge formal">FORMAL HYPOTHESIS</span> As intention is decomposed, operational precision rises while global purpose recedes. The proposed kernel is a small acceptance and composition boundary, not a selected service or deployment unit.</p>
+      </div>
+
+      <div class="object-grid">
+        <article class="object-card"><h3>B<sub>0</sub> &mdash; Bootstrap boundary</h3><p>A finite, inspectable root of trust: candidate roots, versions, owners, validators, and assumptions. It does not justify itself.</p></article>
+        <article class="object-card"><h3>M &mdash; Meta-contract</h3><p>Defines what makes a domain-kernel declaration governable: stable identity, version, owned scope, applicability, authority basis, evaluation semantics, dependencies, provenance, lifecycle, violation posture, supersession, and accepted assumptions.</p><p>M does not derive domain semantics or prove truth, consistency, usefulness, authorization, or enforcement.</p></article>
+        <article class="object-card"><h3>G &mdash; Candidate global invariants</h3><p>Only laws every accepted composition must preserve. Candidates include non-manufacture of authority by projections, non-transmission by lineage, witnessed derivations, reconstructable history, local validity not implying compatibility, and checker acceptance not implying enforcement.</p></article>
+        <article class="object-card"><h3>K<sub>i</sub> &mdash; Bounded domain kernel</h3><p>Owns local objects, relations, permitted compositions, invariants, evidence standards, authority boundaries, lifecycle, failure vocabulary, and verification procedures for domains such as planning, evidence, execution, research, identity, or a user-defined business domain.</p></article>
+        <article class="object-card"><h3>Q &mdash; Conformance checker</h3><p>Evaluates a small family of versioned judgments over declarations and witnesses. It checks declared obligations; it does not create authority, establish empirical truth, enforce physical effects, or prove that the product objective is worthwhile.</p></article>
+        <article class="object-card"><h3>C<sub>ij</sub> &mdash; Composition witness</h3><p>A scoped, versioned record of translations, versions, preserved invariants, acceptance, assumptions, conflicts, residue, rejected alternatives, evidence, checker results, and invalidation conditions. Logical compatibility is not execution permission.</p></article>
+      </div>
+
+      <div class="formal-grid" style="margin-top:16px">
+        <article class="formal-card">
+          <h3>Declaration judgment</h3>
+          <div class="formula">B<sub>0</sub> ; &Gamma; &vdash;<sub>Q</sub> WellFormed<sub>M</sub>(K<sub>i</sub>)</div>
+          <p class="plain-language"><strong>Plain language:</strong> under the bootstrap facts B<sub>0</sub> and environment &Gamma;, checker Q judges that K<sub>i</sub> satisfies meta-contract M. This is structural acceptance, not endorsement of the domain's truth.</p>
+        </article>
+        <article class="formal-card">
+          <h3>Compatibility judgment</h3>
+          <div class="formula">B<sub>0</sub> ; &Gamma; &vdash;<sub>Q</sub> C<sub>ij</sub> : Compatible<sub>G</sub>(K<sub>i</sub>, K<sub>j</sub>)</div>
+          <p class="plain-language"><strong>Plain language:</strong> Q judges that witness C<sub>ij</sub> supports compatibility between two versioned domain kernels against candidate global set G, within the witness's scope.</p>
+        </article>
+      </div>
+
+      <div class="diagram-wrap" style="margin-top:22px">
+        <svg viewBox="0 0 1180 430" role="img" aria-labelledby="kernel-diagram-title kernel-diagram-desc">
+          <title id="kernel-diagram-title">Kernel responsibility separation</title>
+          <desc id="kernel-diagram-desc">Two independently governed domain kernels contribute to a composition witness. A checker evaluates the witness against global invariants and bootstrap and meta-contract boundaries. Runtime authority remains separate, and Record stores the attributable result without manufacturing truth.</desc>
+          <defs><marker id="ka" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#68a9ff"/></marker></defs>
+          <rect x="38" y="70" width="210" height="88" rx="12" fill="#132132" stroke="#68a9ff"/><text x="58" y="102" class="title">Domain K<tspan baseline-shift="sub">i</tspan></text><text x="58" y="128" class="copy">independent owner + semantics</text>
+          <rect x="38" y="232" width="210" height="88" rx="12" fill="#132132" stroke="#68a9ff"/><text x="58" y="264" class="title">Domain K<tspan baseline-shift="sub">j</tspan></text><text x="58" y="290" class="copy">independent owner + semantics</text>
+          <rect x="344" y="146" width="220" height="102" rx="12" fill="#1b1728" stroke="#b59cff"/><text x="366" y="181" class="title">Witness C<tspan baseline-shift="sub">ij</tspan></text><text x="366" y="207" class="copy">scope · versions · residue</text><text x="366" y="225" class="copy">acceptance · evidence</text>
+          <rect x="654" y="146" width="170" height="102" rx="12" fill="#101c29" stroke="#7ec8ff"/><text x="718" y="181" class="title">Q</text><text x="676" y="207" class="copy">checks declared</text><text x="676" y="225" class="copy">obligations</text>
+          <rect x="914" y="72" width="220" height="70" rx="12" fill="#13241d" stroke="#62d39d"/><text x="935" y="104" class="title">accepted / rejected /</text><text x="935" y="126" class="title">unresolved</text>
+          <rect x="914" y="180" width="220" height="68" rx="12" fill="#251719" stroke="#ff7f78"/><text x="936" y="210" class="title">runtime authority</text><text x="936" y="232" class="copy">separate decision boundary</text>
+          <rect x="914" y="286" width="220" height="68" rx="12" fill="#13241d" stroke="#62d39d"/><text x="936" y="316" class="title">Record</text><text x="936" y="338" class="copy">stores result; creates no truth</text>
+          <rect x="322" y="334" width="520" height="60" rx="12" fill="#0d1721" stroke="#304153" stroke-dasharray="7 5"/><text x="344" y="360" class="title">B<tspan baseline-shift="sub">0</tspan> + M checking boundary</text><text x="344" y="380" class="copy">bootstrap trust + governable declaration form</text>
+          <rect x="654" y="48" width="170" height="54" rx="12" fill="#1b1728" stroke="#b59cff"/><text x="676" y="80" class="title">candidate G</text>
+          <path d="M248 114 L344 174 M248 276 L344 220 M564 197 L654 197 M824 177 L914 114 M824 215 L914 215 M1024 248 L1024 286 M739 146 L739 102 M582 334 L582 248" fill="none" stroke="#68a9ff" stroke-width="2" marker-end="url(#ka)"/>
+        </svg>
+      </div>
+      <p class="caption"><span class="badge proposal">PROPOSAL</span> Authority, precedence, compatibility, and enforcement remain different relations. A positive Q result may inform an authority decision but cannot substitute for it.</p>
+
+      <h3 style="margin-top:26px">The seven guarantees are not automatically one global law</h3>
+      <div style="overflow-x:auto">
+        <table class="mapping">
+          <thead><tr><th>Guarantee</th><th>Provisional classification</th><th>Review consequence</th></tr></thead>
+          <tbody>
+            <tr><td>R1 stable identity</td><td>Global candidate for attributable records</td><td>Its scope and identity basis remain D1 OPEN.</td></tr>
+            <tr><td>R2 comparable runs</td><td>Workflow-profile invariant</td><td>Need not constrain unrelated domain relations.</td></tr>
+            <tr><td>R3 confirmed shape = executed shape</td><td>High-risk execution policy / global candidate at an authorization boundary</td><td>D3 remains CRITICAL; universality is unproved.</td></tr>
+            <tr><td>R4 sealed independent judgment</td><td>Workflow-specific bias-control invariant</td><td>Applies only where independence is claimed.</td></tr>
+            <tr><td>R5 unchanged delivery</td><td>Global candidate for attributed messages</td><td>Does not imply receiver interpretation fidelity.</td></tr>
+            <tr><td>R6 recoverable acts</td><td>Global candidate with configurable retention</td><td>Totality, privacy, and retention remain design constraints.</td></tr>
+            <tr><td>R7 typed connection meaning</td><td>Global candidate for attributable relations</td><td>Relation semantics remain domain-local; Identity must not own all meaning.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:26px">Critical architectural review</h3>
+      <div class="review-grid">
+        <article class="review-card"><h3>Kernel is not automatically a service</h3><p>It may be a logical contract, validators, protocol, type system, small checker, distributed boundary, or combination. Deployment topology is OPEN.</p></article>
+        <article class="review-card"><h3>Identity must not become the semantic monolith</h3><p>Identity may own stable identifiers and relation signatures; each K<sub>i</sub> owns local meaning and valid composition.</p></article>
+        <article class="review-card"><h3>Record single-writer needs qualification</h3><p>“Single writer” may mean one logical ingress, one transactional authority, or one process. Durable factual coherence is the invariant; a physical bottleneck is not selected.</p></article>
+        <article class="review-card"><h3>Authority remains unresolved</h3><p>Q can validate the structure of an authority claim without becoming its source. D9 remains CRITICAL.</p></article>
+        <article class="review-card"><h3>Confirmation may be profile-specific</h3><p>Two confirmations over one digest is preserved as the D3 proposal, not silently promoted to a universal invariant.</p></article>
+        <article class="review-card"><h3>Formal vocabulary earns its place through checks</h3><p>Category, functor, kernel, invariant, and equivalence remain provisional unless they add a check, decision, counterexample, or explanatory distinction.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="domains" aria-labelledby="domains-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">10 &middot; user-defined domain structures</p>
+          <h2 id="domains-title">Users should express their own domain structure without forcing every domain into one universal ontology.</h2>
+        </div>
+        <p><span class="badge formal">FORMAL HYPOTHESIS</span> Begin with the user's vocabulary and strengthen the mathematical structure only when concrete composition obligations are admitted.</p>
+      </div>
+      <p>A bounded domain schema may declare object/entity kinds, operations and events, states, rules, evidence types, authority roles, primitive relations, allowed signatures, selected composition rules, local invariants, and probes. It need not begin as a category.</p>
+      <div class="progression" aria-label="Progression from informal vocabulary to witnessed translations">
+        <div><b>1 Vocabulary</b>domain words and questions</div>
+        <div><b>2 Typed multigraph</b>objects + direct edges</div>
+        <div><b>3 Relation families</b>explicit signatures</div>
+        <div><b>4 Admitted laws</b>selected compositions</div>
+        <div><b>5 Category-like</b>only where gate passes</div>
+        <div><b>6 Translation</b>witnessed interoperability</div>
+      </div>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1180 270" role="img" aria-labelledby="domain-diagram-title domain-diagram-desc">
+          <title id="domain-diagram-title">Progressive domain formalization</title>
+          <desc id="domain-diagram-desc">A user vocabulary becomes a typed graph, relation signatures, selected composition, optionally a category, and finally witnessed translations. A gate permits categorical admission only when identities, closed composition, associativity, typing, and coherence hold.</desc>
+          <defs><marker id="da" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#68a9ff"/></marker></defs>
+          <g fill="#132132" stroke="#466f9d">
+            <rect x="26" y="54" width="154" height="72" rx="11"/><rect x="218" y="54" width="154" height="72" rx="11"/><rect x="410" y="54" width="154" height="72" rx="11"/><rect x="602" y="54" width="154" height="72" rx="11"/><rect x="794" y="54" width="154" height="72" rx="11"/><rect x="986" y="54" width="168" height="72" rx="11"/>
+          </g>
+          <g class="title"><text x="48" y="88">Vocabulary</text><text x="240" y="88">Typed graph</text><text x="430" y="88">Signatures</text><text x="621" y="88">Composition</text><text x="817" y="88">Category?</text><text x="1006" y="88">Translations</text></g>
+          <g class="copy"><text x="48" y="108">user-owned terms</text><text x="240" y="108">direct witnesses</text><text x="430" y="108">source → target</text><text x="621" y="108">selected rules</text><text x="817" y="108">admission gate</text><text x="1006" y="108">Cij + residue</text></g>
+          <path d="M180 90 L218 90 M372 90 L410 90 M564 90 L602 90 M756 90 L794 90 M948 90 L986 90" stroke="#68a9ff" stroke-width="2" marker-end="url(#da)"/>
+          <rect x="724" y="170" width="300" height="68" rx="11" fill="#251719" stroke="#ff7f78"/><text x="744" y="195" class="title">Category admission gate</text><text x="744" y="216" class="copy">identity · closure · associativity · typing · coherence</text>
+          <path d="M871 126 L871 170" stroke="#ff7f78" stroke-width="2" marker-end="url(#da)"/>
+        </svg>
+      </div>
+      <p>A typed multigraph becomes a category only after the relevant relation family has objects/carriers, identity arrows, closed composition, associativity, explicit source/target typing, and required coherence. Different families may instead form a tree, forest, DAG, controlled cyclic graph, preorder, enriched category, indexed family, state-transition system, or no useful categorical structure.</p>
+      <div class="formal-grid">
+        <article class="formal-card">
+          <h3>Potentially admissible derivation</h3>
+          <div class="formula">Task --implements--&gt; Specification<br>Specification --defines--&gt; Feature<br>Feature --serves--&gt; Objective</div>
+          <p>A derived task-to-objective claim exists only under an accepted, versioned composition rule with replayable direct edges.</p>
+        </article>
+        <article class="formal-card">
+          <h3>Forbidden implicit derivation</h3>
+          <div class="formula">Task --authorized-by--&gt; Decision<br>Decision --part-of--&gt; Plan<br>&nRightarrow; Plan --authorized--&gt; Task</div>
+          <p>Direction reversal and relation-family change do not follow. A separate authority rule and accountable acceptance would be required.</p>
+        </article>
+      </div>
+      <p class="caption"><span class="badge no-evidence">NOT IMPLEMENTATION EVIDENCE</span> The schema progression is a design hypothesis. No universal domain editor, admission checker, or translation runtime is claimed to exist.</p>
+    </section>
+
+    <section class="section" id="context-injection" aria-labelledby="context-injection-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">11 &middot; context-window injection</p>
+          <h2 id="context-injection-title">Context injection should be modeled as an attributable, budgeted projection&mdash;not as copying everything reachable into a prompt.</h2>
+        </div>
+        <p><span class="badge formal">FORMAL HYPOTHESIS</span> Lineage determines what may be relevant; a context manifest determines what this execution actually receives.</p>
+      </div>
+      <div class="context-model-grid">
+        <article class="context-model-card"><h3>Eligible context E(a)</h3><p>Items reachable for agent assignment <code>a</code> through admitted purpose, authority, assignment, dependency, and evidence relations. Eligibility is not inclusion.</p></article>
+        <article class="context-model-card"><h3>Selector S</h3><p>A versioned policy that ranks or filters eligible items against the task, role, risk profile, token budget, freshness, authority, and dependency closure.</p></article>
+        <article class="context-model-card"><h3>Context manifest M<sub>a</sub></h3><p>The ordered, hashed, attributable set actually selected, including item versions, provenance paths, transformations, omissions, budget charges, and conflict stance.</p></article>
+        <article class="context-model-card"><h3>Renderer &rho;</h3><p>Materializes the manifest into messages/tool state for a specific model and window. Rendering may compress or reorder only as declared; rendered bytes are evidence, not the manifest's identity.</p></article>
+      </div>
+      <div class="formula">E(a) = Reach<sub>&Pi;</sub>(objective(a), authority(a), dependencies(a), evidence(a))</div>
+      <p class="plain-language"><strong>Plain language:</strong> admitted path policy &Pi; computes the context eligible for assignment a. Reachability alone cannot authorize an effect.</p>
+      <div class="formula">M<sub>a</sub> = S<sub>v</sub>(E(a), role(a), risk(a), budget(a), freshness(a))</div>
+      <p class="plain-language"><strong>Plain language:</strong> selector version v chooses a bounded manifest for this role and risk under an explicit budget.</p>
+      <div class="formula">&Gamma;<sub>a</sub> = &rho;<sub>model,window</sub>(M<sub>a</sub>) &nbsp;&nbsp; with &nbsp;&nbsp; cost(&Gamma;<sub>a</sub>) &le; budget(a)</div>
+      <p class="plain-language"><strong>Plain language:</strong> the model-specific renderer produces the actual injected context &Gamma;<sub>a</sub>; the budget is checked over the materialized result.</p>
+      <div class="formula">B<sub>0</sub> ; &Gamma; &vdash;<sub>Q</sub> M<sub>a</sub> : ContextAdequate(a, O<sub>required</sub>, O<sub>forbidden</sub>)</div>
+      <p class="plain-language"><strong>Plain language:</strong> Q can check declared required and forbidden obligations, provenance, versions, and budget. It cannot prove that no unknown useful context was omitted or that the agent will understand what it receives.</p>
+
+      <div class="diagram-wrap" style="margin-top:22px">
+        <svg viewBox="0 0 1180 330" role="img" aria-labelledby="context-diagram-title context-diagram-desc">
+          <title id="context-diagram-title">Context selection and injection boundary</title>
+          <desc id="context-diagram-desc">Source records and domain kernels produce eligible context. A versioned selector creates a manifest, a checker evaluates declared obligations, and a renderer injects a bounded context window. Authority and execution remain separate.</desc>
+          <defs><marker id="ca" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#f2b45d"/></marker></defs>
+          <rect x="28" y="56" width="188" height="72" rx="11" fill="#13241d" stroke="#62d39d"/><text x="50" y="87" class="title">Record + K<tspan baseline-shift="sub">i</tspan></text><text x="50" y="108" class="copy">versioned source material</text>
+          <rect x="272" y="56" width="174" height="72" rx="11" fill="#132132" stroke="#68a9ff"/><text x="294" y="87" class="title">Eligible E(a)</text><text x="294" y="108" class="copy">reachable, not injected</text>
+          <rect x="502" y="56" width="154" height="72" rx="11" fill="#1b1728" stroke="#b59cff"/><text x="524" y="87" class="title">Selector S<tspan baseline-shift="sub">v</tspan></text><text x="524" y="108" class="copy">policy + budget</text>
+          <rect x="712" y="56" width="182" height="72" rx="11" fill="#101c29" stroke="#7ec8ff"/><text x="734" y="87" class="title">Manifest M<tspan baseline-shift="sub">a</tspan></text><text x="734" y="108" class="copy">ordered + attributable</text>
+          <rect x="950" y="56" width="190" height="72" rx="11" fill="#211b12" stroke="#f2b45d"/><text x="972" y="87" class="title">Renderer &rho;</text><text x="972" y="108" class="copy">model-specific bytes</text>
+          <rect x="950" y="202" width="190" height="72" rx="11" fill="#251719" stroke="#ff7f78"/><text x="972" y="233" class="title">Agent window &Gamma;<tspan baseline-shift="sub">a</tspan></text><text x="972" y="254" class="copy">bounded observation</text>
+          <rect x="712" y="202" width="182" height="72" rx="11" fill="#101c29" stroke="#7ec8ff"/><text x="776" y="233" class="title">Q</text><text x="734" y="254" class="copy">declared obligations</text>
+          <rect x="28" y="202" width="418" height="72" rx="11" fill="#251719" stroke="#ff7f78"/><text x="50" y="233" class="title">Runtime authority remains separate</text><text x="50" y="254" class="copy">context possession does not grant effect permission</text>
+          <path d="M216 92 L272 92 M446 92 L502 92 M656 92 L712 92 M894 92 L950 92 M1045 128 L1045 202 M803 128 L803 202 M712 238 L446 238" fill="none" stroke="#f2b45d" stroke-width="2" marker-end="url(#ca)"/>
+        </svg>
+      </div>
+      <h3 style="margin-top:24px">Required distinctions and typed residue</h3>
+      <div class="formal-grid">
+        <article class="formal-card"><h3>Adequacy is obligation-relative</h3><p>Required items, forbidden items, conflict sets, minimum provenance paths, and freshness constraints must be named. “Enough context” is not a scalar property.</p></article>
+        <article class="formal-card"><h3>Order is semantic</h3><p>The manifest records precedence and adjacency constraints. Later instructions must not silently override higher-authority material merely because of render order.</p></article>
+        <article class="formal-card"><h3>Compression creates residue</h3><p><code>ContextResidue</code> records omitted distinctions, lossy summaries, unresolved conflicts, stale dependencies, and items excluded by budget or policy.</p></article>
+        <article class="formal-card"><h3>Possession is not authority</h3><p>Reading an authority claim, credential description, or ancestor decision does not delegate its powers. Capability binding remains an independently checked runtime relation.</p></article>
+      </div>
+      <p class="caption"><span class="badge open">OPEN</span> Selection ownership, precedence semantics, minimum context obligations, redaction policy, freshness, summarizer trust, model-specific rendering, and manifest-to-Dispatch binding are not yet owned.</p>
+    </section>
+
+    <section class="section" id="decisions" aria-labelledby="decisions-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">12 · decision standing and refutation</p>
+          <h2 id="decisions-title">A detailed picture is not a settled architecture.</h2>
+        </div>
+        <p>
+          The source baseline remains a proposal: D1–D9 keep their original standing. The kernel,
+          domain, context, and formalization extensions add questions; naming them does not resolve ownership.
+        </p>
+      </div>
+
+      <div class="critical-grid">
+        <article class="critical-card">
+          <span class="badge critical">D3 · CRITICAL</span>
+          <h3 style="margin-top:10px">Confirmation topology</h3>
+          <p>If the machine plan can contain anything absent from the confirmed shape, confirmation is theatre. The proposal requires two confirmations over one digest and a fail-closed plan check.</p>
+        </article>
+        <article class="critical-card">
+          <span class="badge critical">D9 · CRITICAL</span>
+          <h3 style="margin-top:10px">Authority ownership</h3>
+          <p>The source system must preserve authority, yet none of its eight baseline services owns it. The existing Subagents Strategy workflow tracks confirmation and bounded delegation evidence but explicitly does not become ACI/runtime authority. A distinct authority service or a Record property may still be required; the essay does not decide.</p>
+        </article>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table class="decision-table">
+          <thead><tr><th>ID</th><th>Stance</th><th>Current verdict</th><th>Status</th><th>Standing</th></tr></thead>
+          <tbody>
+            <tr><td>D1</td><td>Identity basis</td><td>Minted identity independent of placement.</td><td><span class="badge open">OPEN</span></td><td>Companion essay; no repository gate.</td></tr>
+            <tr><td>D2</td><td>Protocol mutability</td><td>Immutable per version.</td><td><span class="badge open">OPEN</span></td><td>This document’s proposal; no gate.</td></tr>
+            <tr><td>D3</td><td>Confirmation topology</td><td>Two confirmations, one digest; plan is a pure function of shape.</td><td><span class="badge critical">CRITICAL</span></td><td>This document’s proposal; no gate.</td></tr>
+            <tr><td>D4</td><td>Prompt binding time</td><td>Freeze binding/version, render at run time.</td><td><span class="badge open">OPEN</span></td><td>Owner direction cited.</td></tr>
+            <tr><td>D5</td><td>Release condition</td><td>Release lives on the recipient.</td><td><span class="badge open">OPEN</span></td><td>Adversarial review cited.</td></tr>
+            <tr><td>D6</td><td>Fabric authority</td><td>Transport and enforce; never author.</td><td><span class="badge resolved">RESOLVED</span></td><td>Owner direction cited.</td></tr>
+            <tr><td>D7</td><td>Record totality</td><td>Every act produces an event.</td><td><span class="badge open">OPEN</span></td><td>This document’s proposal; no gate.</td></tr>
+            <tr><td>D8</td><td>Relation composition</td><td>Only direct relations are attributable until derivation rules exist.</td><td><span class="badge open">OPEN</span></td><td>Undecided; companion essay; no gate.</td></tr>
+            <tr><td>D9</td><td>Authority ownership</td><td>Ninth service or Record property.</td><td><span class="badge critical">CRITICAL</span></td><td>Undecided; no authority and no gate.</td></tr>
+            <tr><td>OD-K1</td><td>Global versus local invariants</td><td>Minimal common law versus accidental semantic centralization.</td><td><span class="badge open">OPEN</span></td><td>No owner; proposed extension.</td></tr>
+            <tr><td>OD-K2</td><td>Category admission gate</td><td>Useful composition versus forcing non-categorical relations into a category.</td><td><span class="badge open">OPEN</span></td><td>No owner; proposed extension.</td></tr>
+            <tr><td>OD-K3</td><td>Translation fidelity target</td><td>Fully faithful bounded translations versus intentionally lossy operational projections.</td><td><span class="badge open">OPEN</span></td><td>No owner; proposed extension.</td></tr>
+            <tr><td>OD-K4</td><td>Probe adequacy</td><td>Small efficient probes versus sufficient discrimination.</td><td><span class="badge open">OPEN</span></td><td>No owner; proposed extension.</td></tr>
+            <tr><td>OD-K5</td><td>Composition-witness authority</td><td>Mechanical compatibility versus accountable acceptance of assumptions and residue.</td><td><span class="badge open">OPEN</span></td><td>Intersects D9; no owner.</td></tr>
+            <tr><td>OD-K6</td><td>Representation category</td><td>One common R versus several interoperable representation structures.</td><td><span class="badge open">OPEN</span></td><td>No owner; proposed extension.</td></tr>
+            <tr><td>OD-K7</td><td>Formal trusted core</td><td>Small independent checker versus accumulated product semantics.</td><td><span class="badge open">OPEN</span></td><td>No owner; deployment shape open.</td></tr>
+            <tr><td>OD-C1</td><td>Context selection ownership</td><td>Domain-owned relevance versus infrastructure-owned reproducibility and budgets.</td><td><span class="badge open">OPEN</span></td><td>No selector owner or acceptance gate.</td></tr>
+            <tr><td>OD-C2</td><td>Context precedence</td><td>Stable authority ordering versus model-specific message ordering.</td><td><span class="badge open">OPEN</span></td><td>Intersects D4 and D9.</td></tr>
+            <tr><td>OD-C3</td><td>Compression and redaction trust</td><td>Bounded windows and privacy versus preservation of operational distinctions.</td><td><span class="badge open">OPEN</span></td><td>No summarizer/redactor trust contract.</td></tr>
+            <tr><td>OD-C4</td><td>Manifest binding</td><td>Reproducible context identity versus runtime adaptation to model and window.</td><td><span class="badge open">OPEN</span></td><td>No ContextManifest-to-Dispatch binding owner.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:24px">Golden case and one-mutation collapse tests</h3>
+      <div class="failures">
+        <article class="failure"><strong style="color:var(--evidence)">GOLDEN &middot; witnessed composition</strong><p>Two versioned kernels, a scoped C<sub>ij</sub>, replayable paths, explicit residue, accountable acceptance, a passing Q result, separate authority, and a Record receipt produce one bounded execution.</p></article>
+        <article class="failure"><strong>Mutation &middot; authority removed</strong><p>The same case must not execute when the runtime grant is absent, even if Q accepts compatibility.</p></article>
+        <article class="failure"><strong>Mutation &middot; rule version changed</strong><p>The derivation becomes unresolved until the witness is checked against the new rule.</p></article>
+        <article class="failure"><strong>Mutation &middot; direct edge removed</strong><p>A derived conclusion that cannot replay its source path must be rejected.</p></article>
+        <article class="failure"><strong>Mutation &middot; morphisms collapsed</strong><p>A translation advertised as faithful fails when two operationally distinct arrows map to one.</p></article>
+        <article class="failure"><strong>Mutation &middot; unexplained arrow added</strong><p>A translation advertised as full fails when R contains an arrow with no domain preimage.</p></article>
+        <article class="failure"><strong>Mutation &middot; weak probes</strong><p>Objects judged equivalent must separate when a known domain operation distinguishes them.</p></article>
+        <article class="failure"><strong>Mutation &middot; context omitted</strong><p>A manifest fails adequacy when a declared required item is removed, even if it fits the budget.</p></article>
+      </div>
+      <details>
+        <summary><span class="badge counterexample">COUNTEREXAMPLE</span> Complete falsifier inventory</summary>
+        <div class="details-body">
+          <ul class="compact-list">
+            <li>Two locally valid domain kernels compose into a globally invalid execution.</li>
+            <li>The meta-contract accepts complete metadata as proof of preservation.</li>
+            <li>Checker acceptance is treated as execution permission.</li>
+            <li>Authority precedence weakens a global invariant.</li>
+            <li>One domain's local vocabulary silently becomes universal.</li>
+            <li>A projection launches work without accepted source authority.</li>
+            <li>A supposedly faithful translation collapses operationally important morphisms.</li>
+            <li>A supposedly full translation contains arrows with no domain explanation.</li>
+            <li>Restricted probes declare equivalence while a known operation distinguishes the objects.</li>
+            <li>A derived conclusion cannot replay its direct witnesses and composition rule.</li>
+            <li>Categorical vocabulary adds no check, decision, counterexample, or explanation.</li>
+            <li>Capture and maintenance cost exceeds explanatory or governance value.</li>
+            <li>A context manifest passes after a declared required item is removed.</li>
+            <li>A forbidden or higher-authority-conflicting item is injected without a visible conflict.</li>
+            <li>Compression collapses a distinction required by the assigned operation without residue.</li>
+            <li>Rendered context differs from its manifest without an attributable transformation.</li>
+            <li>Possession of contextual authority evidence is interpreted as delegated runtime authority.</li>
+            <li>A stale dependency is selected while the selector claims freshness compliance.</li>
+          </ul>
+        </div>
+      </details>
+      <div class="callout risk">
+        <strong>Source inconsistency.</strong>
+        Section 9 and its prose count six rows with no repository gate, while the closing engineer-view
+        result says four. The closing result also names only D3 and D9 under “Open / Critical” despite six
+        OPEN rows in the inventory. This page follows the decision table and leaves the contradiction visible.
+      </div>
+    </section>
+
+    <section class="section" id="evidence" aria-labelledby="evidence-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">10 · evidence boundary</p>
+          <h2 id="evidence-title">What the essay says, and what this page adds.</h2>
+        </div>
+        <p>
+          The diagrams are explanatory projections over a proposal. They are not implementation evidence,
+          a specification, or approval to build.
+        </p>
+      </div>
+      <div class="evidence-grid">
+        <article>
+          <h3><span class="badge source">Essay-backed</span></h3>
+          <ul>
+            <li>The objective: a durable connected record that supports provenance and governance checks.</li>
+            <li>R1–R7 and the exist/trustworthy distinction.</li>
+            <li>Eight service names, purposes, and requirement mappings.</li>
+            <li>Classifier → Protocol → Compiler before Execution.</li>
+            <li>Two confirmations over one digest and fail-closed plan checking.</li>
+            <li>Fabric mediation, sealing, unchanged delivery, and non-authorship.</li>
+            <li>Record single-writer and append-only mechanics.</li>
+            <li>D1–D9 verdicts and their stated status.</li>
+          </ul>
+        </article>
+        <article>
+          <h3><span class="badge interpretation">Diagram interpretation</span></h3>
+          <ul>
+            <li>System-context, four-plane, and sequence views.</li>
+            <li>S1–S8 service identifiers.</li>
+            <li>External actor placement and routing geometry.</li>
+            <li>Control/content/evidence/reference flow colors.</li>
+            <li>The example run numbering and compact failure cards.</li>
+            <li>“Decision plane,” “mediation plane,” and “knowledge plane” labels.</li>
+          </ul>
+        </article>
+        <article>
+          <h3><span class="badge open">Proposed extension</span></h3>
+          <ul>
+            <li>The bounded-intention and five-path framing comes from the sibling <code>work-context-system-view</code> essay.</li>
+            <li><code>domainspec-subagents-strategy</code> is an existing owner-directed current workflow contract and LIVE dispatch router; <code>register-dispatch</code> owns its append-only row mechanics.</li>
+            <li>Its two-level proposals, pairwise-tension gate, zig-zag connections, robot-talks binding, confirmation modes, dispatch routing, registration, and close lifecycle are repository-backed workflow-contract obligations. Only verified appender behavior is labeled implemented row mechanics.</li>
+            <li>Its promotion from workflow capability to an additional standalone runtime service boundary is OD-1, an open target decision; the skill explicitly disclaims ACI/runtime authority.</li>
+            <li>Protocol retaining an immutable kind-level template while saving one constrained, versioned DAG instance per task is proposed here; it refines the source essay’s canonical versioned sequence without surrendering R2 comparability.</li>
+            <li>The agent/system interpretation boundary and explicit DAG → Dispatch transformation are proposed here.</li>
+            <li>The six-axis mode model and broader epistemic tracking surface synthesize repository techniques; they are not implementation evidence.</li>
+          </ul>
+        </article>
+      </div>
+      <details>
+        <summary>Provisional vocabulary and omitted specification detail</summary>
+        <div class="details-body">
+          <p>
+            No ontology-view exists. <code>record</code>, <code>event</code>, <code>emission</code>,
+            <code>judgment</code>, <code>authority</code>, <code>protocol</code>, <code>strategy</code>,
+            <code>task DAG</code>, <code>Dispatch</code>, <code>identity</code>, and <code>context</code>
+            remain provisional and unowned.
+          </p>
+          <p>
+            Record schemas, enums, failure-code families, storage, APIs, deployment, security controls,
+            identifier formats, and current repository implementation are outside the source essay and
+            therefore outside these diagrams.
+          </p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    Context-rich x-ray of
+    <code>plans/governed-agent-work-infrastructure/essays/target-architecture-hypothesis/essay.md</code>
+    v0.2.0. Mode: architecture · renderer: L0 static HTML/CSS/inline SVG · no remote dependencies.
+  </footer>
+</div>
+</body>
+</html>
