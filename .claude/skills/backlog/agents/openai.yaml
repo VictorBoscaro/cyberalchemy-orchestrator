@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backlog"
+  short_description: "Create and maintain governed backlog files"
+  default_prompt: "Use $backlog to create or update a BACKLOG.md in the requested folder."

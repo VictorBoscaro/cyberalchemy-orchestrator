@@ -1,0 +1,83 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-27-backlog-skill-work",
+  "target": {
+    "group_id": "skill-author",
+    "seat_id": "skill-author-1",
+    "turn_ordinal": 0,
+    "attempt_id": "attempt-fowler-0"
+  },
+  "slots": [
+    {
+      "name": "feature_backlog_artifact",
+      "data_schema_ref": "text/markdown",
+      "cardinality": {
+        "min": 1,
+        "max": 1
+      },
+      "max_bytes": 20000,
+      "purpose": "Provide the authored real backlog example as bounded design evidence and a forward-test target.",
+      "sources": [
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "feature-backlog-writer-1",
+          "path": "docs/features/agents-communication-infra/BACKLOG.md",
+          "sha256": "sha256:7eba9c899d9da483e7f6abcbb37413d9af09fd1df38369696a5cdbcde9db6a05",
+          "size_bytes": 3499
+        }
+      ]
+    },
+    {
+      "name": "skill_authoring_contract",
+      "data_schema_ref": "mixed text/python",
+      "cardinality": {
+        "min": 8,
+        "max": 8
+      },
+      "max_bytes": 100000,
+      "purpose": "Bind the author to current skill creation, UI metadata, and governed backlog conventions.",
+      "sources": [
+        {
+          "source_kind": "repository",
+          "path": ".agents/skills/custom/frontmatter.md",
+          "sha256": "sha256:9662f68ac856ecc1d2d363dd5907f0a28ea47ec4c5a63e9c9f2c9fa5063c32df"
+        },
+        {
+          "source_kind": "repository",
+          "path": "vault/ontology-conventions.md",
+          "sha256": "sha256:04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef"
+        },
+        {
+          "source_kind": "system",
+          "path": "C:/Users/victo/.codex/skills/.system/skill-creator/SKILL.md",
+          "sha256": "sha256:2940e08d49e5197453e58a4387d14cb07101b97911c992ef75c8289e0a1734c0"
+        },
+        {
+          "source_kind": "system",
+          "path": "C:/Users/victo/.codex/skills/.system/skill-creator/references/openai_yaml.md",
+          "sha256": "sha256:7039d465b05342cbacf861f08d20192ab1eeee112bc5d8ff0fb66234756887a9"
+        },
+        {
+          "source_kind": "system",
+          "path": "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/init_skill.py",
+          "sha256": "sha256:50281d4b53c73f6ffa1e98adf1ee9fcd55d4854970f24513e33da65f073f74be"
+        },
+        {
+          "source_kind": "system",
+          "path": "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/generate_openai_yaml.py",
+          "sha256": "sha256:9ea002c57657e169b1bddcae227e55a5d87c43735da6d87cf682b3e216abb84b"
+        },
+        {
+          "source_kind": "system",
+          "path": "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+          "sha256": "sha256:5347a0a09cfb546bba1c0d1a30dae0a233d9a05f57bd4e7877155c588bcdabf7"
+        },
+        {
+          "source_kind": "workflow",
+          "path": ".codex/workflow-inputs/2026-07-27-backlog-skill-work/structural-proposal-v1.json",
+          "sha256": "sha256:47aca78251ab931b22a4db98eb8b1bac114fc09d99d76fdb83f0384ebddb3189"
+        }
+      ]
+    }
+  ]
+}

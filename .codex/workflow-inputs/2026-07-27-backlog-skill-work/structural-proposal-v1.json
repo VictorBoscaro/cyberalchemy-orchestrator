@@ -1,0 +1,70 @@
+{
+  "projection_schema_version": "aci-structural-graph-proposal/1",
+  "revision_id": "structural-v1",
+  "dispatch_id": "2026-07-27-backlog-skill-work",
+  "dispatch_type": "others",
+  "work_kind": "governed backlog artifact authoring followed by reusable Codex skill authoring and independent review",
+  "objective": "Record the promotion-gated cross-dispatch work-graph gap in the agents-communication-infra feature backlog, then create a reusable backlog skill that can create or extend BACKLOG.md in any requested directory.",
+  "boundaries": {
+    "in_scope": [
+      "docs/features/agents-communication-infra/BACKLOG.md",
+      ".agents/skills/backlog/",
+      "validation of the backlog artifact and skill package"
+    ],
+    "out_of_scope": [
+      "runtime or BUS implementation",
+      "DomainSpec feature/spec changes",
+      "new dispatch_type implementation",
+      ".claude/skills mirroring",
+      "deployment, network access, destructive actions"
+    ]
+  },
+  "groups": [
+    {
+      "group_id": "feature-backlog-writer",
+      "seats": 1,
+      "abstract_role": "writer",
+      "output": "Create docs/features/agents-communication-infra/BACKLOG.md with governed frontmatter and one bounded open-work entry."
+    },
+    {
+      "group_id": "skill-author",
+      "seats": 1,
+      "abstract_role": "writer",
+      "output": "Create .agents/skills/backlog as a valid Codex skill package using the skill-creator workflow."
+    },
+    {
+      "group_id": "skill-reviewers",
+      "seats": 2,
+      "abstract_role": "auditor/skeptic",
+      "anti_bias": "attack-vector",
+      "output": "Two independent review verdicts with concrete findings and PASS or FIX."
+    }
+  ],
+  "connections": [
+    {
+      "from": "feature-backlog-writer",
+      "to": "skill-author",
+      "type": "sequential"
+    },
+    {
+      "from": "skill-author",
+      "to": "skill-reviewers",
+      "type": "zig-zag",
+      "loop_cap": 3
+    }
+  ],
+  "max_loops": 3,
+  "final_approver": "parent",
+  "output_join": "The parent inspects the final diff, reruns validation, and approves only if both independent reviewers return PASS on the same final revision.",
+  "budget_envelope": {
+    "feature_backlog_writer_output_tokens": 1800,
+    "skill_author_output_tokens_per_turn": 3000,
+    "reviewer_output_tokens_per_turn_each": 1600,
+    "maximum_zig_zag_rounds": 3
+  },
+  "confirmation_mode": "single concrete confirmation",
+  "user_evidence": {
+    "reference": "conversation:user:2026-07-27-backlog-skill-request",
+    "sha256": "239102ff3af6ca16581ee70edf4432e64240101aa7bd97a4685a298ddf7d862a"
+  }
+}

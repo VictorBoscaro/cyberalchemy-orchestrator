@@ -1,0 +1,84 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-27-backlog-skill-work",
+  "target": {
+    "group_id": "skill-reviewers",
+    "seat_id": "skill-reviewer-usability-1",
+    "turn_ordinal": 0,
+    "attempt_id": "attempt-dijkstra-r1"
+  },
+  "slots": [
+    {
+      "name": "candidate_artifact_set",
+      "data_schema_ref": "ordered path-to-sha256 manifest plus files",
+      "cardinality": {
+        "min": 4,
+        "max": 20
+      },
+      "max_bytes": 80000,
+      "purpose": "Bind this independent review to one complete skill/backlog revision.",
+      "sources": [
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "feature-backlog-writer-1",
+          "path": "docs/features/agents-communication-infra/BACKLOG.md",
+          "sha256": "sha256:7eba9c899d9da483e7f6abcbb37413d9af09fd1df38369696a5cdbcde9db6a05",
+          "size_bytes": 3499
+        },
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "skill-author-1",
+          "path": ".agents/skills/backlog/SKILL.md",
+          "sha256": "sha256:7c98de8c0950e798b221bdc84a793868f1f4d8df31087cc747b2e06fc4f38ca4",
+          "size_bytes": 4609
+        },
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "skill-author-1",
+          "path": ".agents/skills/backlog/agents/openai.yaml",
+          "sha256": "sha256:d34db893a97c85e8e0fdfc8a8f5dc326293f64e747f3fdaf4e28a60d2cbf6380",
+          "size_bytes": 198
+        },
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "skill-author-1",
+          "path": ".agents/skills/backlog/assets/backlog-template.md",
+          "sha256": "sha256:73912826cd4d455319bdb3655de120caa7dbd60a379c7498a4274df09f509b5b",
+          "size_bytes": 556
+        }
+      ]
+    },
+    {
+      "name": "review_corpus",
+      "data_schema_ref": "text/markdown",
+      "cardinality": {
+        "min": 4,
+        "max": 4
+      },
+      "max_bytes": 60000,
+      "purpose": "Supply the current creator contract, frontmatter rules, and heterogeneous backlog examples.",
+      "sources": [
+        {
+          "source_kind": "repository",
+          "path": ".agents/skills/custom/frontmatter.md",
+          "sha256": "sha256:9662f68ac856ecc1d2d363dd5907f0a28ea47ec4c5a63e9c9f2c9fa5063c32df"
+        },
+        {
+          "source_kind": "repository",
+          "path": "BACKLOG.md",
+          "sha256": "sha256:6ab8826a4eae115034123eab4f85bc8f675d50b2bb87d422f46d6f2379fbd30b"
+        },
+        {
+          "source_kind": "repository",
+          "path": "docs/features/skill-control-center/BACKLOG.md",
+          "sha256": "sha256:9cbe0f991821c0c4850f6b931fb2fc852ee6cfbecad04ea3d2993c7fee3e8faa"
+        },
+        {
+          "source_kind": "system",
+          "path": "C:/Users/victo/.codex/skills/.system/skill-creator/SKILL.md",
+          "sha256": "sha256:2940e08d49e5197453e58a4387d14cb07101b97911c992ef75c8289e0a1734c0"
+        }
+      ]
+    }
+  ]
+}

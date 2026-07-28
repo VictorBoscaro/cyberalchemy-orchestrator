@@ -1,0 +1,129 @@
+{
+  "projection_schema_version": "aci-capability-review-brief/1",
+  "structural_proposal_ref": ".codex/workflow-inputs/2026-07-27-backlog-skill-work/structural-proposal-v1.json",
+  "seats": [
+    {
+      "seat_id": "feature-backlog-writer",
+      "logical_profile": {
+        "read": [
+          ".codex/workflow-inputs/2026-07-27-backlog-skill-work/structural-proposal-v1.json",
+          "vault/ontology-conventions.md",
+          ".agents/skills/custom/frontmatter.md",
+          "BACKLOG.md",
+          "docs/features/skill-control-center/BACKLOG.md",
+          "docs/features/agents-communication-infra/README.md",
+          "docs/features/agents-communication-infra/WORK-PACK.md",
+          "docs/features/agents-communication-infra/discovery/agent-tools-and-delegated-supervision.md",
+          "docs/features/agents-communication-infra/discovery/bus-contracts/README.md",
+          ".claude/hooks/doc-frontmatter-nudge.cjs"
+        ],
+        "write": [
+          "docs/features/agents-communication-infra/BACKLOG.md"
+        ],
+        "commands": [
+          "read-only file inspection",
+          "'{\"tool_input\":{\"file_path\":\"docs/features/agents-communication-infra/BACKLOG.md\"}}' | node .claude/hooks/doc-frontmatter-nudge.cjs",
+          "Get-FileHash -Algorithm SHA256 docs/features/agents-communication-infra/BACKLOG.md"
+        ],
+        "network": false,
+        "destructive": false
+      }
+    },
+    {
+      "seat_id": "skill-author",
+      "logical_profile": {
+        "read": [
+          ".codex/workflow-inputs/2026-07-27-backlog-skill-work/structural-proposal-v1.json",
+          "docs/features/agents-communication-infra/BACKLOG.md",
+          "vault/ontology-conventions.md",
+          ".agents/skills/custom/frontmatter.md",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/SKILL.md",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/references/openai_yaml.md",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/init_skill.py",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/generate_openai_yaml.py",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py"
+        ],
+        "write": [
+          ".agents/skills/backlog/**"
+        ],
+        "commands": [
+          "if (Test-Path -LiteralPath '.agents/skills/backlog') { throw 'Target already exists' }",
+          "python C:/Users/victo/.codex/skills/.system/skill-creator/scripts/init_skill.py backlog --path .agents/skills --resources assets --interface 'display_name=Backlog' --interface 'short_description=Create and maintain governed backlog files' --interface 'default_prompt=Use $backlog to create or update a BACKLOG.md in the requested folder.'",
+          "python C:/Users/victo/.codex/skills/.system/skill-creator/scripts/generate_openai_yaml.py .agents/skills/backlog --interface 'display_name=Backlog' --interface 'short_description=Create and maintain governed backlog files' --interface 'default_prompt=Use $backlog to create or update a BACKLOG.md in the requested folder.'",
+          "python C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/backlog",
+          "$artifactPaths = @((Get-Item -LiteralPath 'docs/features/agents-communication-infra/BACKLOG.md')) + @(Get-ChildItem -LiteralPath '.agents/skills/backlog' -Recurse -File); $artifactPaths | Sort-Object FullName | Get-FileHash -Algorithm SHA256",
+          "git diff -- docs/features/agents-communication-infra/BACKLOG.md .agents/skills/backlog",
+          "read-only file inspection"
+        ],
+        "network": false,
+        "destructive": false
+      }
+    },
+    {
+      "seat_id": "skill-reviewer-usability",
+      "logical_profile": {
+        "read": [
+          ".codex/workflow-inputs/2026-07-27-backlog-skill-work/structural-proposal-v1.json",
+          "docs/features/agents-communication-infra/BACKLOG.md",
+          ".agents/skills/backlog/**",
+          ".agents/skills/custom/frontmatter.md",
+          "BACKLOG.md",
+          "docs/features/skill-control-center/BACKLOG.md",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/SKILL.md",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/references/openai_yaml.md",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py"
+        ],
+        "write": [],
+        "commands": [
+          "python C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/backlog",
+          "$artifactPaths = @((Get-Item -LiteralPath 'docs/features/agents-communication-infra/BACKLOG.md')) + @(Get-ChildItem -LiteralPath '.agents/skills/backlog' -Recurse -File); $artifactPaths | Sort-Object FullName | Get-FileHash -Algorithm SHA256",
+          "git diff -- docs/features/agents-communication-infra/BACKLOG.md .agents/skills/backlog",
+          "read-only file inspection"
+        ],
+        "network": false,
+        "destructive": false
+      }
+    },
+    {
+      "seat_id": "skill-reviewer-governance",
+      "logical_profile": {
+        "read": [
+          ".codex/workflow-inputs/2026-07-27-backlog-skill-work/structural-proposal-v1.json",
+          "docs/features/agents-communication-infra/BACKLOG.md",
+          ".agents/skills/backlog/**",
+          "vault/ontology-conventions.md",
+          ".agents/skills/custom/frontmatter.md",
+          ".claude/hooks/doc-frontmatter-nudge.cjs",
+          "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py"
+        ],
+        "write": [],
+        "commands": [
+          "'{\"tool_input\":{\"file_path\":\"docs/features/agents-communication-infra/BACKLOG.md\"}}' | node .claude/hooks/doc-frontmatter-nudge.cjs",
+          "python C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/backlog",
+          "$artifactPaths = @((Get-Item -LiteralPath 'docs/features/agents-communication-infra/BACKLOG.md')) + @(Get-ChildItem -LiteralPath '.agents/skills/backlog' -Recurse -File); $artifactPaths | Sort-Object FullName | Get-FileHash -Algorithm SHA256",
+          "git diff -- docs/features/agents-communication-infra/BACKLOG.md .agents/skills/backlog",
+          "read-only file inspection"
+        ],
+        "network": false,
+        "destructive": false
+      }
+    }
+  ],
+  "questions": [
+    "Is every requested capability necessary and sufficient for the seat output?",
+    "Does any read or write scope exceed the confirmed task?",
+    "Are validation commands safe and reproducible?",
+    "Should any denied capability be added explicitly?"
+  ],
+  "response_contract": {
+    "verdict": "PASS or REVISE",
+    "join_rule": "Each reviewer must return the same ordered normalized repo-relative path-to-SHA-256 manifest for docs/features/agents-communication-infra/BACKLOG.md and every regular file recursively under .agents/skills/backlog; any mismatch reruns both reviewers.",
+    "required_fields": [
+      "seat_findings",
+      "scope_leaks",
+      "missing_capabilities",
+      "amendments",
+      "artifact_set_digest_requirement"
+    ]
+  }
+}

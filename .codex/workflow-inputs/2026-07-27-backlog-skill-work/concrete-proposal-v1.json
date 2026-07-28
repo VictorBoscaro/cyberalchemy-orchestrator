@@ -1,0 +1,265 @@
+{
+  "projection_schema_version": "aci-concrete-dispatch-proposal/1",
+  "revision_id": "concrete-v1",
+  "structural_revision_id": "structural-v1",
+  "structural_proposal_ref": ".codex/workflow-inputs/2026-07-27-backlog-skill-work/structural-proposal-v1.json",
+  "structural_proposal_sha256": "47aca78251ab931b22a4db98eb8b1bac114fc09d99d76fdb83f0384ebddb3189",
+  "dispatch": {
+    "dispatch_id": "2026-07-27-backlog-skill-work",
+    "schema_version": "0.6.1",
+    "dispatch_type": "others",
+    "work_kind": "governed backlog artifact authoring plus reusable skill authoring",
+    "goal": "Record the promotion-gated cross-dispatch work-graph gap in the agents-communication-infra backlog, then create a reusable backlog skill that creates or extends BACKLOG.md in any requested directory.",
+    "context": "The repository already has a mediated BUS and proposal/review workflows, but lacks a generic durable work graph whose successor tasks unlock only after independent approval. The user wants that gap recorded in the owning feature backlog and then wants a minimal reusable skill for governed backlog files. The work must not implement runtime behavior or alter any feature specification.",
+    "max_loops": 3,
+    "final_approver": "parent",
+    "groups": [
+      {
+        "group_id": "feature-backlog-writer",
+        "n": 1,
+        "agents": [
+          {
+            "seat_id": "feature-backlog-writer-1",
+            "agent_name": "Alexander, Christopher",
+            "role": "writer",
+            "requested_provider": "openai",
+            "requested_model": "gpt-5.6-terra",
+            "requested_adapter": "codex-collaboration",
+            "token_budget": 1800,
+            "angle": "express the unresolved workflow capability as one bounded, falsifiable backlog candidate without silently turning it into a specification",
+            "skills": [
+              {
+                "name": "frontmatter",
+                "path": ".agents/skills/custom/frontmatter.md",
+                "sha256": "9662f68ac856ecc1d2d363dd5907f0a28ea47ec4c5a63e9c9f2c9fa5063c32df"
+              }
+            ],
+            "prompt_template": "You are Alexander, Christopher, the feature backlog writer for dispatch 2026-07-27-backlog-skill-work. Work only in C:/Users/victo/cyberalchemy-orchestrator. Read the frozen sources listed in your source manifest. Create only `docs/features/agents-communication-infra/BACKLOG.md` using apply_patch. Do not edit specs, runtime code, work-pack files, the root backlog, or any other file. The document must use governed frontmatter with `artifact_kind: backlog`, topical free-form tags, `layer: feature`, version, and last_updated; do not use `node_type`. Add `## Connections` with real typed links to the feature sources. Add exactly one entry, `ACI-BL-001 — Promotion-gated cross-dispatch work graph`. The entry must contain explicit `Tags`, `Objective`, and `Description`. Describe the open capability: a confirmed task graph with parallel and sequential dependencies; typed child dispatches; durable task state; digest-bound BUS handoffs; independent review; FIX loops; PASS-only successor unlock; crash/replay/idempotency; and parent final approval. Preserve the boundary that BUS messages do not self-authorize execution. Include a collapse condition: if current DispatchSpec groups/connections/BUS plus a versioned recipe can represent and recover this without new cross-dispatch identity, do not add a `work` dispatch type. Keep this a backlog candidate, not a normative spec or implementation claim. Run the fixed frontmatter hook check and hash the resulting file. Return the path, hash, and a concise summary. Do not spawn subagents."
+          }
+        ]
+      },
+      {
+        "group_id": "skill-author",
+        "n": 1,
+        "agents": [
+          {
+            "seat_id": "skill-author-1",
+            "agent_name": "Fowler, Martin",
+            "role": "writer",
+            "requested_provider": "openai",
+            "requested_model": "gpt-5.6-terra",
+            "requested_adapter": "codex-collaboration",
+            "token_budget": 3000,
+            "angle": "turn the minimal user contract into a reusable, discoverable, idempotent skill without inventing a backlog management system",
+            "skills": [
+              {
+                "name": "skill-creator",
+                "path": "C:/Users/victo/.codex/skills/.system/skill-creator/SKILL.md",
+                "sha256": "2940e08d49e5197453e58a4387d14cb07101b97911c992ef75c8289e0a1734c0"
+              },
+              {
+                "name": "frontmatter",
+                "path": ".agents/skills/custom/frontmatter.md",
+                "sha256": "9662f68ac856ecc1d2d363dd5907f0a28ea47ec4c5a63e9c9f2c9fa5063c32df"
+              }
+            ],
+            "dynamic_slots": [
+              {
+                "name": "feature_backlog_artifact",
+                "authorized_producer": "feature-backlog-writer-1",
+                "schema": "text/markdown",
+                "cardinality": {
+                  "min": 1,
+                  "max": 1
+                },
+                "max_bytes": 20000,
+                "purpose": "Provide the just-authored real backlog example as bounded design evidence and a forward-test target."
+              }
+            ],
+            "prompt_template": "You are Fowler, Martin, the skill author for dispatch 2026-07-27-backlog-skill-work. Work only in C:/Users/victo/cyberalchemy-orchestrator. Before acting, read the complete system `skill-creator` SKILL.md and its `references/openai_yaml.md`, plus the frozen repository conventions and the manifest-bound feature backlog artifact. Create only `.agents/skills/backlog/**`; do not edit the feature backlog or any other path. First execute the exact nonexistence guard. Then initialize the skill with the authorized `init_skill.py` command and an `assets` resource. Replace generated placeholders using apply_patch. The final package must contain `SKILL.md`, `agents/openai.yaml`, and `assets/backlog-template.md`, with no README or unrelated files. The skill must trigger when a user asks to create, add to, organize, or maintain a backlog in any directory. Its workflow must: resolve the requested directory; create `BACKLOG.md` if absent or preserve and extend it if present; inspect local conventions; use governed frontmatter with `artifact_kind: backlog` and topical free-form tags; never add `node_type` outside a legacy vault-specific contract; ensure `## Connections`; and make every entry contain a stable local ID/title, `Tags`, `Objective`, and `Description`. Keep status, priority, acceptance criteria, owner, and scheduling optional unless the user or local file requires them. Avoid duplicates, never overwrite unrelated entries, and ask only when target directory or intended item is materially ambiguous. Use the feature backlog artifact as a forward-test example. Regenerate `agents/openai.yaml` with the authorized script, run `quick_validate.py`, inspect the scoped diff, and emit the ordered artifact manifest. Return files, validation results, and manifest. Do not spawn subagents."
+          }
+        ]
+      },
+      {
+        "group_id": "skill-reviewers",
+        "n": 2,
+        "anti_bias": "attack-vector",
+        "agents": [
+          {
+            "seat_id": "skill-reviewer-usability-1",
+            "agent_name": "Dijkstra, Edsger W.",
+            "role": "skeptic",
+            "requested_provider": "openai",
+            "requested_model": "gpt-5.6-terra",
+            "requested_adapter": "codex-collaboration",
+            "token_budget": 1600,
+            "angle": "minimality/usability attack: expose ambiguity, accidental ceremony, overwrite risk, weak triggering, and failure on existing heterogeneous backlogs",
+            "dynamic_slots": [
+              {
+                "name": "candidate_artifact_set",
+                "authorized_producer": "skill-author-1",
+                "schema": "ordered path-to-sha256 manifest plus files",
+                "cardinality": {
+                  "min": 4,
+                  "max": 20
+                },
+                "max_bytes": 80000,
+                "purpose": "Bind the review to one complete skill/backlog revision."
+              }
+            ],
+            "prompt_template": "You are Dijkstra, Edsger W., independent usability/minimality reviewer in dispatch 2026-07-27-backlog-skill-work. Work read-only in C:/Users/victo/cyberalchemy-orchestrator. Do not edit files and do not spawn subagents. Inspect the manifest-bound candidate, both exemplar backlogs, the feature backlog, the system skill-creator contract, and current frontmatter guidance. Attack whether `$backlog` is discoverable and operational for both creating and extending BACKLOG.md; whether it preserves existing content and conventions; whether its required entry contract is exactly stable ID/title + Tags + Objective + Description; and whether it avoids unnecessary workflow bureaucracy. Run quick_validate, inspect the scoped diff including untracked files, and compute the ordered normalized repo-relative path-to-SHA-256 manifest for the feature backlog plus every regular file under `.agents/skills/backlog`. Return `VERDICT: PASS` or `VERDICT: FIX`, severity-ranked findings with exact file references, the manifest, and a compact repair request if FIX. Do not read the other reviewer's output."
+          },
+          {
+            "seat_id": "skill-reviewer-governance-1",
+            "agent_name": "Bourbaki, Nicolas",
+            "role": "auditor",
+            "requested_provider": "openai",
+            "requested_model": "gpt-5.6-terra",
+            "requested_adapter": "codex-collaboration",
+            "token_budget": 1600,
+            "angle": "governance/ontology attack: expose schema drift, artifact-kind confusion, fabricated connections, invalid package metadata, and claims stronger than evidence",
+            "dynamic_slots": [
+              {
+                "name": "candidate_artifact_set",
+                "authorized_producer": "skill-author-1",
+                "schema": "ordered path-to-sha256 manifest plus files",
+                "cardinality": {
+                  "min": 4,
+                  "max": 20
+                },
+                "max_bytes": 80000,
+                "purpose": "Bind the review to one complete skill/backlog revision."
+              }
+            ],
+            "prompt_template": "You are Bourbaki, Nicolas, independent governance/ontology reviewer in dispatch 2026-07-27-backlog-skill-work. Work read-only in C:/Users/victo/cyberalchemy-orchestrator. Do not edit files and do not spawn subagents. Inspect the manifest-bound candidate against `vault/ontology-conventions.md`, the current `.agents/skills/custom/frontmatter.md`, and the system skill-creator validation contract. Attack frontmatter correctness (`artifact_kind: backlog`, no conflicting `node_type`), topical tags, real Connections, backlog-vs-spec modality, stable local IDs, package frontmatter, `agents/openai.yaml`, and claim≤proof. Confirm that the skill can operate in any requested directory without treating path shape as authority. Run the fixed hook check and quick_validate, inspect the scoped diff including untracked files, and compute the ordered normalized repo-relative path-to-SHA-256 manifest for the feature backlog plus every regular file under `.agents/skills/backlog`. Return `VERDICT: PASS` or `VERDICT: FIX`, severity-ranked findings with exact file references, the manifest, and a compact repair request if FIX. Do not read the other reviewer's output."
+          }
+        ],
+        "pairwise_tension": [
+          {
+            "pair": [
+              "skill-reviewer-usability-1",
+              "skill-reviewer-governance-1"
+            ],
+            "predicted_disagreement_question": "How much structure is the smallest safe backlog contract?",
+            "position_a": "The usability reviewer is expected to reject ceremony or optional fields that make simple capture harder and to favor compatibility with heterogeneous existing backlogs.",
+            "position_b": "The governance reviewer is expected to reject underspecified metadata or relationships that make governed artifacts ambiguous and to favor explicit invariants.",
+            "evidence": "The user requested only free tags, objective, and description, while repository frontmatter guidance additionally requires artifact_kind and Connections; each lens exposes the other's likely overreach.",
+            "predicted_disagreement_sentence": "skill-reviewer-usability-1 runs a minimality/usability attack, skill-reviewer-governance-1 runs a governance/ontology attack on the attack-vector axis; a bias internal to skill-reviewer-usability-1 toward under-specification would be exposed by skill-reviewer-governance-1, while a bias internal to skill-reviewer-governance-1 toward over-ceremony would be exposed by skill-reviewer-usability-1."
+          }
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "feature-backlog-writer",
+        "to": "skill-author",
+        "type": "sequential"
+      },
+      {
+        "from": "skill-author",
+        "to": "skill-reviewers",
+        "type": "zig-zag",
+        "loop_cap": 3
+      }
+    ]
+  },
+  "sources": [
+    {
+      "path": "vault/ontology-conventions.md",
+      "sha256": "04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef"
+    },
+    {
+      "path": ".agents/skills/custom/frontmatter.md",
+      "sha256": "9662f68ac856ecc1d2d363dd5907f0a28ea47ec4c5a63e9c9f2c9fa5063c32df"
+    },
+    {
+      "path": "BACKLOG.md",
+      "sha256": "6ab8826a4eae115034123eab4f85bc8f675d50b2bb87d422f46d6f2379fbd30b"
+    },
+    {
+      "path": "docs/features/skill-control-center/BACKLOG.md",
+      "sha256": "9cbe0f991821c0c4850f6b931fb2fc852ee6cfbecad04ea3d2993c7fee3e8faa"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/README.md",
+      "sha256": "c3e5cd4d7e948dc4194fb60c46638b61eb1b3270def68db8ddb6df430a523e71"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/WORK-PACK.md",
+      "sha256": "845a190037a2e3c2929e877d6d52a89af1936eceefbcc5acf7d00dc355ffe1fe"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/discovery/agent-tools-and-delegated-supervision.md",
+      "sha256": "38b6c734ddaa716a3ed97c8ce870a07cfa55548965e27229aa761d794d728630"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/discovery/bus-contracts/README.md",
+      "sha256": "70d587a0f5252d44dabe42cfc030e0e41730bf3c9d6e920908be2b2625c517d6"
+    },
+    {
+      "path": "C:/Users/victo/.codex/skills/.system/skill-creator/SKILL.md",
+      "sha256": "2940e08d49e5197453e58a4387d14cb07101b97911c992ef75c8289e0a1734c0"
+    },
+    {
+      "path": "C:/Users/victo/.codex/skills/.system/skill-creator/references/openai_yaml.md",
+      "sha256": "7039d465b05342cbacf861f08d20192ab1eeee112bc5d8ff0fb66234756887a9"
+    },
+    {
+      "path": "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/init_skill.py",
+      "sha256": "50281d4b53c73f6ffa1e98adf1ee9fcd55d4854970f24513e33da65f073f74be"
+    },
+    {
+      "path": "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/generate_openai_yaml.py",
+      "sha256": "9ea002c57657e169b1bddcae227e55a5d87c43735da6d87cf682b3e216abb84b"
+    },
+    {
+      "path": "C:/Users/victo/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+      "sha256": "5347a0a09cfb546bba1c0d1a30dae0a233d9a05f57bd4e7877155c588bcdabf7"
+    },
+    {
+      "path": ".claude/hooks/doc-frontmatter-nudge.cjs",
+      "sha256": "c52b26c7b7aba4ba6040e218ae3cf6856543c9c21ac0d0f0503818917d5f7919"
+    }
+  ],
+  "capability_review": {
+    "reviewer": "Parnas, David",
+    "brief_ref": ".codex/workflow-inputs/2026-07-27-backlog-skill-work/capability-review-brief-v1.json",
+    "brief_sha256": "a57c1f5d346860850b37259c3071a494e7950dc4e30d3e419db6f28f93cc9ba3",
+    "verdict": "PASS",
+    "amendments_embedded": [
+      "narrowed wildcard source reads to named files",
+      "fixed executable command lines and PowerShell quoting",
+      "added exact script and hook read scopes",
+      "required a complete recursively hashed artifact manifest shared by both reviewers"
+    ],
+    "scope_leaks": [],
+    "missing_capabilities": []
+  },
+  "proposed_capability_profile": {
+    "write_allow": [
+      "docs/features/agents-communication-infra/BACKLOG.md",
+      ".agents/skills/backlog/**"
+    ],
+    "write_deny": [
+      ".codex/workflow-inputs/2026-07-27-backlog-skill-work/**",
+      "telemetry/agents/subagents-dispatch.yaml",
+      "all other paths"
+    ],
+    "network": "deny",
+    "destructive": "deny",
+    "external_effects": "deny",
+    "command_classes": [
+      "named skill-creator Python scripts with frozen arguments",
+      "fixed frontmatter hook invocation",
+      "scoped read-only hashes and git diff"
+    ]
+  },
+  "review_join": {
+    "rule": "Both reviewers must independently PASS the identical ordered repo-relative path-to-SHA-256 manifest. Any FIX or manifest mismatch returns feedback to the skill author and reruns both reviewers, up to three rounds.",
+    "final_approval": "Parent inspects the actual diff and reruns all validators after the joined PASS."
+  },
+  "user_evidence": {
+    "reference": "conversation:user:2026-07-27-backlog-skill-request",
+    "sha256": "239102ff3af6ca16581ee70edf4432e64240101aa7bd97a4685a298ddf7d862a"
+  }
+}

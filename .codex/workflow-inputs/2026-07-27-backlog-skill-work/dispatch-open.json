@@ -1,0 +1,73 @@
+{
+  "dispatch_id": "2026-07-27-backlog-skill-work",
+  "schema_version": "0.6.1",
+  "dispatch_type": "others",
+  "goal": "Record the promotion-gated cross-dispatch work-graph gap in the agents-communication-infra backlog, then create a reusable backlog skill that creates or extends BACKLOG.md in any requested directory.",
+  "context": "The repository already has a mediated BUS and proposal/review workflows, but lacks a generic durable work graph whose successor tasks unlock only after independent approval. The user wants that gap recorded in the owning feature backlog and then wants a minimal reusable skill for governed backlog files. The work must not implement runtime behavior or alter any feature specification.",
+  "max_loops": 3,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "feature-backlog-writer",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Alexander, Christopher",
+          "role": "writer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "initial_prompt": "You are Alexander, Christopher, the feature backlog writer for dispatch 2026-07-27-backlog-skill-work. Work only in C:/Users/victo/cyberalchemy-orchestrator. Read the frozen sources listed in your source manifest. Create only `docs/features/agents-communication-infra/BACKLOG.md` using apply_patch. Do not edit specs, runtime code, work-pack files, the root backlog, or any other file. The document must use governed frontmatter with `artifact_kind: backlog`, topical free-form tags, `layer: feature`, version, and last_updated; do not use `node_type`. Add `## Connections` with real typed links to the feature sources. Add exactly one entry, `ACI-BL-001 — Promotion-gated cross-dispatch work graph`. The entry must contain explicit `Tags`, `Objective`, and `Description`. Describe the open capability: a confirmed task graph with parallel and sequential dependencies; typed child dispatches; durable task state; digest-bound BUS handoffs; independent review; FIX loops; PASS-only successor unlock; crash/replay/idempotency; and parent final approval. Preserve the boundary that BUS messages do not self-authorize execution. Include a collapse condition: if current DispatchSpec groups/connections/BUS plus a versioned recipe can represent and recover this without new cross-dispatch identity, do not add a `work` dispatch type. Keep this a backlog candidate, not a normative spec or implementation claim. Run the fixed frontmatter hook check and hash the resulting file. Return the path, hash, and a concise summary. Do not spawn subagents."
+        }
+      ]
+    },
+    {
+      "group_id": "skill-author",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Fowler, Martin",
+          "role": "writer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 3000,
+          "initial_prompt": "You are Fowler, Martin, the skill author for dispatch 2026-07-27-backlog-skill-work. Work only in C:/Users/victo/cyberalchemy-orchestrator. Before acting, read the complete system `skill-creator` SKILL.md and its `references/openai_yaml.md`, plus the frozen repository conventions and the manifest-bound feature backlog artifact. Create only `.agents/skills/backlog/**`; do not edit the feature backlog or any other path. First execute the exact nonexistence guard. Then initialize the skill with the authorized `init_skill.py` command and an `assets` resource. Replace generated placeholders using apply_patch. The final package must contain `SKILL.md`, `agents/openai.yaml`, and `assets/backlog-template.md`, with no README or unrelated files. The skill must trigger when a user asks to create, add to, organize, or maintain a backlog in any directory. Its workflow must: resolve the requested directory; create `BACKLOG.md` if absent or preserve and extend it if present; inspect local conventions; use governed frontmatter with `artifact_kind: backlog` and topical free-form tags; never add `node_type` outside a legacy vault-specific contract; ensure `## Connections`; and make every entry contain a stable local ID/title, `Tags`, `Objective`, and `Description`. Keep status, priority, acceptance criteria, owner, and scheduling optional unless the user or local file requires them. Avoid duplicates, never overwrite unrelated entries, and ask only when target directory or intended item is materially ambiguous. Use the feature backlog artifact as a forward-test example. Regenerate `agents/openai.yaml` with the authorized script, run `quick_validate.py`, inspect the scoped diff, and emit the ordered artifact manifest. Return files, validation results, and manifest. Do not spawn subagents."
+        }
+      ]
+    },
+    {
+      "group_id": "skill-reviewers",
+      "n": 2,
+      "anti_bias": "attack-vector",
+      "agents": [
+        {
+          "agent_name": "Dijkstra, Edsger W.",
+          "role": "skeptic",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "angle": "minimality/usability attack: expose ambiguity, accidental ceremony, overwrite risk, weak triggering, and failure on existing heterogeneous backlogs",
+          "initial_prompt": "You are Dijkstra, Edsger W., independent usability/minimality reviewer in dispatch 2026-07-27-backlog-skill-work. Work read-only in C:/Users/victo/cyberalchemy-orchestrator. Do not edit files and do not spawn subagents. Inspect the manifest-bound candidate, both exemplar backlogs, the feature backlog, the system skill-creator contract, and current frontmatter guidance. Attack whether `$backlog` is discoverable and operational for both creating and extending BACKLOG.md; whether it preserves existing content and conventions; whether its required entry contract is exactly stable ID/title + Tags + Objective + Description; and whether it avoids unnecessary workflow bureaucracy. Run quick_validate, inspect the scoped diff including untracked files, and compute the ordered normalized repo-relative path-to-SHA-256 manifest for the feature backlog plus every regular file under `.agents/skills/backlog`. Return `VERDICT: PASS` or `VERDICT: FIX`, severity-ranked findings with exact file references, the manifest, and a compact repair request if FIX. Do not read the other reviewer's output."
+        },
+        {
+          "agent_name": "Bourbaki, Nicolas",
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "angle": "governance/ontology attack: expose schema drift, artifact-kind confusion, fabricated connections, invalid package metadata, and claims stronger than evidence",
+          "initial_prompt": "You are Bourbaki, Nicolas, independent governance/ontology reviewer in dispatch 2026-07-27-backlog-skill-work. Work read-only in C:/Users/victo/cyberalchemy-orchestrator. Do not edit files and do not spawn subagents. Inspect the manifest-bound candidate against `vault/ontology-conventions.md`, the current `.agents/skills/custom/frontmatter.md`, and the system skill-creator validation contract. Attack frontmatter correctness (`artifact_kind: backlog`, no conflicting `node_type`), topical tags, real Connections, backlog-vs-spec modality, stable local IDs, package frontmatter, `agents/openai.yaml`, and claim≤proof. Confirm that the skill can operate in any requested directory without treating path shape as authority. Run the fixed hook check and quick_validate, inspect the scoped diff including untracked files, and compute the ordered normalized repo-relative path-to-SHA-256 manifest for the feature backlog plus every regular file under `.agents/skills/backlog`. Return `VERDICT: PASS` or `VERDICT: FIX`, severity-ranked findings with exact file references, the manifest, and a compact repair request if FIX. Do not read the other reviewer's output."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "feature-backlog-writer",
+      "to": "skill-author",
+      "type": "sequential"
+    },
+    {
+      "from": "skill-author",
+      "to": "skill-reviewers",
+      "type": "zig-zag",
+      "loop_cap": 3
+    }
+  ]
+}

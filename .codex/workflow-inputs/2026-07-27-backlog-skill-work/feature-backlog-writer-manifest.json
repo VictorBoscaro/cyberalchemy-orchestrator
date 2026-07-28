@@ -1,0 +1,64 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-27-backlog-skill-work",
+  "target": {
+    "group_id": "feature-backlog-writer",
+    "seat_id": "feature-backlog-writer-1",
+    "turn_ordinal": 0,
+    "attempt_id": "attempt-alexander-0"
+  },
+  "slots": [
+    {
+      "name": "authoring_corpus",
+      "data_schema_ref": "text/markdown",
+      "cardinality": {
+        "min": 8,
+        "max": 8
+      },
+      "max_bytes": 220000,
+      "purpose": "Ground the feature backlog entry in current frontmatter rules, existing backlog forms, and the mediated BUS/runtime boundary.",
+      "sources": [
+        {
+          "source_kind": "repository",
+          "path": ".agents/skills/custom/frontmatter.md",
+          "sha256": "sha256:9662f68ac856ecc1d2d363dd5907f0a28ea47ec4c5a63e9c9f2c9fa5063c32df"
+        },
+        {
+          "source_kind": "repository",
+          "path": "vault/ontology-conventions.md",
+          "sha256": "sha256:04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef"
+        },
+        {
+          "source_kind": "repository",
+          "path": "BACKLOG.md",
+          "sha256": "sha256:6ab8826a4eae115034123eab4f85bc8f675d50b2bb87d422f46d6f2379fbd30b"
+        },
+        {
+          "source_kind": "repository",
+          "path": "docs/features/skill-control-center/BACKLOG.md",
+          "sha256": "sha256:9cbe0f991821c0c4850f6b931fb2fc852ee6cfbecad04ea3d2993c7fee3e8faa"
+        },
+        {
+          "source_kind": "repository",
+          "path": "docs/features/agents-communication-infra/README.md",
+          "sha256": "sha256:c3e5cd4d7e948dc4194fb60c46638b61eb1b3270def68db8ddb6df430a523e71"
+        },
+        {
+          "source_kind": "repository",
+          "path": "docs/features/agents-communication-infra/WORK-PACK.md",
+          "sha256": "sha256:845a190037a2e3c2929e877d6d52a89af1936eceefbcc5acf7d00dc355ffe1fe"
+        },
+        {
+          "source_kind": "repository",
+          "path": "docs/features/agents-communication-infra/discovery/agent-tools-and-delegated-supervision.md",
+          "sha256": "sha256:38b6c734ddaa716a3ed97c8ce870a07cfa55548965e27229aa761d794d728630"
+        },
+        {
+          "source_kind": "repository",
+          "path": "docs/features/agents-communication-infra/discovery/bus-contracts/README.md",
+          "sha256": "sha256:70d587a0f5252d44dabe42cfc030e0e41730bf3c9d6e920908be2b2625c517d6"
+        }
+      ]
+    }
+  ]
+}

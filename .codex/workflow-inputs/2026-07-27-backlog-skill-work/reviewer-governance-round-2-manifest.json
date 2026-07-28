@@ -1,0 +1,79 @@
+{
+  "schema": "aci-workflow-input-manifest/v1",
+  "dispatch_id": "2026-07-27-backlog-skill-work",
+  "target": {
+    "group_id": "skill-reviewers",
+    "seat_id": "skill-reviewer-governance-1",
+    "turn_ordinal": 1,
+    "attempt_id": "attempt-bourbaki-r2"
+  },
+  "slots": [
+    {
+      "name": "candidate_artifact_set",
+      "data_schema_ref": "ordered path-to-sha256 manifest plus files",
+      "cardinality": {
+        "min": 4,
+        "max": 20
+      },
+      "max_bytes": 80000,
+      "purpose": "Bind the second independent review to the repaired complete skill/backlog revision.",
+      "sources": [
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "feature-backlog-writer-1",
+          "path": "docs/features/agents-communication-infra/BACKLOG.md",
+          "sha256": "sha256:7eba9c899d9da483e7f6abcbb37413d9af09fd1df38369696a5cdbcde9db6a05",
+          "size_bytes": 3499
+        },
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "skill-author-1",
+          "path": ".agents/skills/backlog/SKILL.md",
+          "sha256": "sha256:361db96e1be7599f1945e0d79b5938a1219833dd5b9eeceb00ddd1f4be7275b4",
+          "size_bytes": 5214
+        },
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "skill-author-1",
+          "path": ".agents/skills/backlog/agents/openai.yaml",
+          "sha256": "sha256:d34db893a97c85e8e0fdfc8a8f5dc326293f64e747f3fdaf4e28a60d2cbf6380",
+          "size_bytes": 198
+        },
+        {
+          "source_kind": "producer",
+          "producer_binding_id": "skill-author-1",
+          "path": ".agents/skills/backlog/assets/backlog-template.md",
+          "sha256": "sha256:54e305790f24bc76524ed05ed4a8e6c5e96a911a96514c22d71f95ec9ce4cdbe",
+          "size_bytes": 503
+        }
+      ]
+    },
+    {
+      "name": "review_corpus",
+      "data_schema_ref": "text/markdown",
+      "cardinality": {
+        "min": 3,
+        "max": 3
+      },
+      "max_bytes": 50000,
+      "purpose": "Supply the unchanged governed frontmatter, legacy vault convention, and package validation contract.",
+      "sources": [
+        {
+          "source_kind": "repository",
+          "path": ".agents/skills/custom/frontmatter.md",
+          "sha256": "sha256:9662f68ac856ecc1d2d363dd5907f0a28ea47ec4c5a63e9c9f2c9fa5063c32df"
+        },
+        {
+          "source_kind": "repository",
+          "path": "vault/ontology-conventions.md",
+          "sha256": "sha256:04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef"
+        },
+        {
+          "source_kind": "system",
+          "path": "C:/Users/victo/.codex/skills/.system/skill-creator/SKILL.md",
+          "sha256": "sha256:2940e08d49e5197453e58a4387d14cb07101b97911c992ef75c8289e0a1734c0"
+        }
+      ]
+    }
+  ]
+}
