@@ -1,129 +1,169 @@
 ---
-description: Minimal, self-contained cheatsheet for the frontmatter + Connections of any governed .md doc in this repo. Consume this instead of the full ontology-conventions.md when you just need to fill metadata correctly.
+description: Minimal, self-contained guide for authoring the frontmatter and typed Connections of governed Markdown documents in this repository.
 ---
 
-# Frontmatter & Connections Cheatsheet
+# Frontmatter & Connections
 
-> **This is the cheatsheet (schema + pickers).** The authority — with rationale, the
-> orthogonality math, status entry/exit criteria, and per-node_type nuance — is
-> [`vault/ontology-conventions.md`](../../../vault/ontology-conventions.md). Read that only
-> when the pickers below don't settle a case. This file is derived and non-authoritative:
-> if the two ever disagree, the conventions doc wins.
+This provisional guide is the compact authoring reference for governed Markdown. It keeps the
+schema intentionally soft: use the starting vocabularies when they fit, and use the documented
+fallback only after they do not. The creating agent chooses and writes the metadata and
+connections; hooks must not invent values or targets.
 
-## Two hard gates (the PostToolUse nudge checks these)
+The governed-Markdown `PostToolUse` hook only reminds the creating agent to apply this guide. It
+does not populate frontmatter or select tags. Activation telemetry produced by `emit-topic-tags`
+is a separate observational record and must not be copied into document frontmatter automatically.
 
-Every governed `.md` (under `vault/`, `sessions/`, `research/`, `docs/`, or root) must carry:
+## Structural obligations
 
-1. a **YAML frontmatter** block (`---` … `---`), and
-2. a **`## Connections`** section (a typed-edge table — may be empty with a one-line reason).
+Every `.md` must carry:
 
-Excluded from the gate: `.claude/`, `node_modules/`, any `templates/` dir.
+1. a YAML frontmatter block (`---` ... `---`); and
+2. a `## Connections` section containing meaningful typed edges, or a one-line explanation
+   when no real connection is known.
 
-## The lists here are open, not closed enums
+Excluded from this gate: `.claude/`, `node_modules/`, and any `templates/` directory.
 
-Every `|`-separated list below — in the frontmatter schema **and** the 14 edge types — is a
-**starting vocabulary, not a closed enum**. On any field an agent may supply a new ("other")
-value, and it may coin a new edge type, when nothing listed fits. The gate is the
-**orthogonality admission test** ([ontology-conventions.md](../../../vault/ontology-conventions.md),
-Orthogonality Principle): a new value or edge earns its place only if it adds information you
-**cannot predict from the values that already exist** — otherwise it is redundant and just
-grows the vocabulary without growing knowledge. So: prefer an existing value when one fits;
-extend deliberately when none does.
+## Starting vocabularies and fallbacks
+
+The vocabularies below are starting sets, not closed enums. Prefer a listed value whenever it
+fits. A new specific value may be proposed when it adds a distinction that existing values
+cannot express.
+
+Fallbacks are valid values, not automatic defaults:
+
+- use `artifact_kind: others` only after no listed artifact kind fits;
+- use the edge type `other` only when a real source-target relationship exists and no listed
+  edge type fits.
+
+Never fabricate a connection target merely to satisfy the structural obligation.
 
 ## Frontmatter schema
 
+Use fields only where they apply. `artifact_kind` is the single document-kind discriminator;
+do not use `node_type`, and do not repurpose a subsystem-specific `artifact_type`.
+
 ```yaml
 ---
-tags: [topical labels only]              # domain/topic — never role, never maturity
-node_type: axiom | premise | constitution | discovery | implementation-plan | spec | audit | conceptual | essay | test | backlog | readme
-is_session: true | false                 # is this a conversation/session record?
-session_ref: <session-id> | null         # optional — the session that produced this doc
-layer: ontology | architecture | domain | application | external   # multi-value OK
-nature: explanatory | procedural | reference | technical            # multi-value OK
-status: draft | exploratory | active | consolidated | evergreen
-veracity: high | medium | low            # belief nodes only (see applicability)
-conviction: high | medium | low          # belief nodes only (see applicability)
+tags: [topical labels only]
+artifact_kind: axiom | premise | constitution | discovery | research-initial-definitions | plan | research | findings | research-evidence | implementation-plan | spec | audit | conceptual | essay | backlog | readme | session | others
+layer: project | domain | capability | feature | task | others
 version: 0.x.x
-last_updated: YYYY-MM-DD
-private: true                            # optional — do-not-publish flag; omit = publishable
+created_at: YYYY-MM-DDTHH:MM:SS±HH:MM
+updated_at: YYYY-MM-DDTHH:MM:SS±HH:MM
 ---
 ```
 
-## `node_type` picker — "if challenged, the right answer is…"
+### `artifact_kind` picker
 
-| node_type | Challenge response |
+Choose the kind by asking what contract the document presents to its reader.
+
+| `artifact_kind` | Reader contract |
 |---|---|
-| `axiom` | "Foundational — revisiting it breaks everything built on it" |
-| `premise` | "Show me evidence and we'll update it" |
-| `constitution` | "Change it through governance, not informally" |
-| `discovery` | "Exploration — enrich it or supersede it with a decision" |
-| `implementation-plan` | "Follow it, update it if scope changed, or supersede it" |
-| `spec` | "Update it if the code changed" |
-| `audit` | "Run the audit again and see if the findings still hold" |
-| `conceptual` | "Context — enrich or correct it" |
-| `essay` | "Committed argument from experience — engage the reasoning or counter it" |
-| `test` | "Run the tests and see if they pass" |
-| `backlog` | "Prioritize it, schedule it, or close it" |
-| `readme` | "Update it to reflect what's actually in the directory" |
+| `axiom` | Foundational commitment; revisiting it affects everything built on it. |
+| `premise` | Revisable belief that should change when evidence changes. |
+| `constitution` | Governed rules changed through an explicit governance process. |
+| `discovery` | Exploration of a problem space, constraints, and candidate directions. |
+| `research-initial-definitions` | Scope, questions, terms, and evidence rules established before research begins. |
+| `plan` | A plan for a feature, a project, research, or any other bounded undertaking. Plans can be contained inside other plans. |
+| `research` | Investigation and synthesis performed against research questions. |
+| `findings` | Distilled claims, conclusions, and implications produced by research or review. |
+| `research-evidence` | Source-grounded observation retained as evidence for later synthesis. |
+| `implementation-plan` | Ordered implementation intent that can be executed or revised. |
+| `spec` | Normative behavioral or structural contract an implementation must satisfy. |
+| `audit` | Time-bound assessment whose conclusions can be checked again. |
+| `conceptual` | Explanatory model or context that can be enriched or corrected. |
+| `essay` | Committed argument whose reasoning should be engaged or countered. |
+| `backlog` | Candidate work to prioritize, schedule, or close. |
+| `readme` | Orientation to the contents and use of a directory or package. |
+| `session` | Durable record of one bounded work or conversation session. |
+| `others` | Valid fallback after none of the listed document contracts fits. Explain the intended contract in the document. |
 
-## The other labels, in one line each
+### `layer`: primary contextual altitude
 
-- **`layer`** (system scope): `ontology` = the vault's own rules · `architecture` = cross-cutting technical structure · `domain` = business logic in a bounded context · `application` = end-user/product surface · `external` = outside context (prior art, upstream repos).
-- **`nature`** (reading instruction): `explanatory` = prose, read linearly · `procedural` = steps, follow in order · `reference` = table/catalog, look up an item · `technical` = schema/code/diagram, inspect structure.
-- **`status`** (maturity): `draft` → `exploratory` → `active` → `consolidated` → `evergreen`. Start at `draft`. **Hard boundary:** a higher-level doc never derives authority from a lower-level one.
-- **`tags`** (topic only): domain `#orchestration #agents #dispatch #anti-bias #anti-noise #residue #category-theory` · technical `#architecture #ui #ledger #skills #ontology` · `#vault`.
+`layer` answers one question:
 
-## `veracity` (evidence) × `conviction` (bet)
+> At which contextual altitude does this artifact primarily operate?
 
-Two orthogonal confidence axes, both `high | medium | low`:
+Choose exactly one primary layer:
 
-- **veracity** = how much reality confirms it (changes through data/tests).
-- **conviction** = how hard we're betting on it (changes through decisions).
+| `layer` | Meaning |
+|---|---|
+| `project` | Shapes the project as a whole: its mission, system-wide policy, or overall direction. |
+| `domain` | Shapes one bounded problem or knowledge domain within the project. |
+| `capability` | Shapes a reusable ability the system or team must provide across one or more features. |
+| `feature` | Shapes a user- or system-visible outcome delivered through related work. |
+| `task` | Shapes one bounded unit of execution or its immediate result. |
+| `others` | Valid fallback after none of the listed contextual altitudes fits; explain the altitude in the document. |
 
-|  | conviction: high | conviction: low |
-|---|---|---|
-| **veracity: high** | Consolidated Law (proven, driving design) | Ignored Fact (true, not acted on) |
-| **veracity: low** | Strategic Bet (betting before proof) | Loose Thread (untested, parked) |
+Use the highest level whose decisions the document directly shapes, not every level it may
+eventually affect. The field is singular so it remains useful for navigating macro-to-micro
+context. Broader or narrower relationships belong in `## Connections`.
 
-**Applicability:** carry both for `axiom`, `premise`, `discovery`, `audit` (and `essay`).
-**Omit** for `implementation-plan`, `spec`, `conceptual`, `test`, `backlog`, `readme`, and the
-document-level `constitution`. *This repo's extension:* while a `constitution` is
-`candidate`, **each rule inside it carries `veracity`/`conviction` inline** (a candidate rule
-is a hypothesis before it is law); the fields drop away when the rule is promoted to a premise.
+Topic, concern, and origin are different dimensions. Values such as `ontology` and
+`architecture` describe subject matter or concern and belong in tags; `external` describes
+origin and is not a layer.
 
-## `## Connections` — the typed-edge table
+### Other fields
+
+- `tags` describe subject matter only, never document role or maturity. Use concrete topical
+  labels.
+- `version`, `created_at`, `updated_at`, and `private` provide lifecycle and publication metadata
+  where the owning workflow needs them.
+
+### Lifecycle timestamps
+
+For a newly created governed Markdown document, include both `created_at` and `updated_at`. Produce
+them as RFC 3339 timestamps in the `America/Sao_Paulo` civil timezone, with the UTC offset effective
+at that instant written explicitly, for example `2026-07-27T15:26:46-03:00`.
+
+- Set `created_at` when the artifact is first durably created and never change it.
+- Set `updated_at` to the time of the latest durable content or applicable metadata revision.
+  Reading, indexing, validating, or copying an unchanged artifact must not advance it.
+- On a substantive update to a legacy document, replace `last_updated` with `updated_at`. Add
+  `created_at` only from trustworthy repository or runtime evidence of the original creation; do
+  not infer it from a filename or fabricate it. If no trustworthy evidence exists, leave the
+  missing creation timestamp explicit for later migration rather than recording a false instant.
+
+## `## Connections`: typed edges
 
 ```markdown
 ## Connections
 
 | Document | Type | Description |
 |----------|------|-------------|
-| [[other-doc]] | `derives-from` | one-line reason for the edge |
+| [[other-doc]] | `derives-from` | One-line explanation of the actual relationship. |
 ```
 
-Edges are **bidirectional**: when you declare an edge here, add the inverse row to the other
-doc (`derives-from` ↔ `grounds`), with a patch-level version bump there. A view/query layer
-dedups the pair. Link by `[[slug]]` (vault node) or a markdown path.
+Every row needs a real target, a type, and a description explaining why the edge exists. Link
+with `[[slug]]` for a vault node or with a Markdown path. When the target is governed and the
+relationship has a meaningful inverse, add the inverse row there as part of the same change.
 
-### The 14 edge types
-
-These are the starting set, not a closed list — coin a new edge type (same orthogonality
-test) when none of the 14 captures the relationship.
+The following edge types are the starting vocabulary:
 
 | Type (A → B) | Meaning |
 |---|---|
-| `resolves` | A solves the problem B states |
-| `derives-from` | A was built upon / generated by B — the canonical parent→child chain |
-| `grounds` | A is the foundation B rests on — inverse of `derives-from` |
-| `implements` | A is the concrete implementation of spec/constitution B |
-| `validates` | A provides evidence/tests that raise B's `veracity` |
-| `promotes-from` | A ratifies the thesis stated in B (constitution ← hypothesis) |
-| `exemplifies` | A is a concrete instance of abstract B |
-| `refines` | A is a more detailed version of B, same topic |
-| `contextualizes` | A is informational background for B, no functional dependency |
-| `depends-on` | A does not function without B (runtime dependency, stronger than `derives-from`) |
-| `alternative-to` | A is a competing/discarded alternative to B |
-| `contradicts` ⚠️ | A is in tension with / refutes B — **resolve before promotion** (most valuable edge) |
-| `supersedes` | A is the direct successor of B, making B obsolete |
-| `deprecates` | A informally/partially replaces B (soft retirement) |
-| `other` | When none of the above fits
+| `resolves` | A solves the problem B states. |
+| `derives-from` | A was built upon or generated from B. |
+| `grounds` | A is the foundation B rests on; inverse of `derives-from`. |
+| `implements` | A concretely realizes specification or constitution B. |
+| `validates` | A provides evidence that supports B. |
+| `promotes-from` | A ratifies or formalizes the thesis stated in B. |
+| `exemplifies` | A is a concrete instance of abstract B. |
+| `refines` | A adds detail or precision to B while retaining its subject. |
+| `contextualizes` | A supplies useful background for B without creating a functional dependency. |
+| `depends-on` | A cannot function or remain valid without B. |
+| `is-part-of` | A belongs structurally to the real context represented by B. |
+| `contains` | A structurally contains B; inverse of `is-part-of`. |
+| `alternative-to` | A is a competing or discarded alternative to B. |
+| `contradicts` | A is materially in tension with or refutes B. |
+| `supersedes` | A directly succeeds B and makes it obsolete. |
+| `deprecates` | A partially or informally replaces B. |
+| `other` | A real relationship exists, but none of the listed edge types fits; the description must name the missing semantics. |
+
+`is-part-of` and `contains` require real context targets. Do not infer either edge only from
+directory structure or from files read, mentioned, or touched. Their inverse relationship is
+documented for authoring, but transitivity, composition, and acyclicity are not yet enforced.
+
+If no real connection is known, keep the section and state that explicitly instead of creating
+a placeholder edge. A future review may validate metadata and reciprocal edges; no automatic
+review is required at this stage.

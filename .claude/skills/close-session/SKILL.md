@@ -7,45 +7,42 @@ description: Close a session and create a session node under sessions/
 
 ## Step 0 — Triage
 
-**Create a node if any is true:** repo doc changed/created/deleted, domain code changed, architectural decision made, tests added/modified, contradiction found/resolved.
+**Create a node if any is true:** repository documentation changed, domain code changed,
+an architectural decision was made, verification artifacts changed, or a contradiction was
+found or resolved.
 
-**Skip if:** no doc/code changes AND purely Q&A with no decisions. Say *"Q&A-only session. No session node created."* and stop.
-
----
-
-## Step 1 — Write Summary (do this yourself)
-
-Write up to **10 sentences**: what the session set out to do, what was decided (and why), what was done. No sub-headings, no per-file detail. A reader should grasp the arc without access to the conversation. Also draft the **Forward** lines yourself (Step 3). The discriminating test is a judgment — never delegated to Sonnet.
+**Skip if:** no documentation or code changed and the exchange was purely Q&A with no
+decisions. Say *"Q&A-only session. No session node created."* and stop.
 
 ---
 
-## Step 2 — Delegate classification to Sonnet
+## Step 1 — Write the summary and forward registers
 
-Spawn an Agent (model: sonnet) with your summary + list of files touched. It returns:
+The closing agent authors the node itself. First read
+`.claude/skills/custom/frontmatter.md`, then choose concrete topical tags, exactly one primary
+`layer`, and meaningful typed Connections. Do not delegate these judgments.
 
-1. **node_type** (first match wins): constitution → premise → conceptual → test → discovery → implementation-plan → audit → spec (fallback).
-2. **tags, layer, nature** per `vault/ontology-conventions.md`.
-3. **expected_importance** (0–10) + **importance_rationale** (one sentence).
-4. **Contradictions** — only if a vault node was validated, contradicted, or questioned. One bullet per edge. Omit section if none.
-5. **Files touched** — flat list of paths, no descriptions. Git has the detail.
+Write up to **10 sentences** covering what the session set out to do, what was decided and why,
+and what was done. Use no subheadings or per-file detail in the summary. A reader should grasp
+the arc without access to the conversation. Draft the forward registers in Step 2 yourself.
 
 ---
 
-## Step 3 — Assemble the node
+## Step 2 — Assemble the node
 
 File: `sessions/YYYY-MM-DD-HHMM-{short-slug}.md`
+
+Every new node emitted by this workflow has `artifact_kind: session`.
 
 ```markdown
 ---
 tags: [{tag1}, {tag2}]
-node_type: {type}
-is_session: true
-layer: {layer}
-nature: {nature}
-status: active
-created: YYYY-MM-DD
-timestamp: YYYY-MM-DDTHH:MM:SS±HH:MM
-expires: {created + 60 days}
+artifact_kind: session
+layer: {project | domain | capability | feature | task | others}
+version: 0.1.0
+created_at: YYYY-MM-DDTHH:MM:SS±HH:MM
+updated_at: YYYY-MM-DDTHH:MM:SS±HH:MM
+expires: {calendar date of created_at + 60 days}
 decisions_made: true | false
 contradictions_found: true | false
 specs_updated: [paths or []]
@@ -58,50 +55,88 @@ importance_rationale: "{sentence}"
 
 ## Summary
 
-{max 10 sentences from Step 1}
+{Maximum 10 sentences from Step 1.}
 
-## Contradictions
+## Connections
 
-{Omit if none. One bullet per edge: "validates/contradicts/questions {node} — reason."}
+| Document | Type | Description |
+|----------|------|-------------|
+| [real context or artifact](path) | `is-part-of` | Why this session belongs structurally to that context. |
 
 ## Open questions
 
-{Node-less undecided claim or conjecture — see § Forward registers. Omit if none.}
+{Undecided claim or conjecture. Omit if none.}
 
 ## Next steps
 
-{Decided action, method known — imperative, priority-ordered. See § Forward registers. Omit if the arc is closed.}
+{Decided action, method known — imperative and priority-ordered. Omit if the arc is closed.}
 
 ## Recommendation
 
-{The keystone among the items above and how to attack it — see § Forward registers. Omit on routine sessions; never a placeholder.}
+{The keystone among the items above and how to attack it. Omit on routine sessions; never use a placeholder.}
 
 ## Files touched
 
-{Flat bullet list of paths. No table, no descriptions.}
+{Flat bullet list of paths. No table and no descriptions.}
 
 ## Extra section
 
-{This must contain something specific that the user say to register from this session.}
+{Include only when the user asked to register something specific from this session.}
 ```
+
+`## Connections` is mandatory. Use the three-column table only for supported relationships
+with real targets. If no real relationship is known, replace the table with:
+
+```text
+No real connection was identified in this session.
+```
+
+A session may use `is-part-of` toward its actual enclosing project, domain, capability,
+feature, or task context. It may use `validates`, `contradicts`, `contextualizes`,
+`derives-from`, or `other` only when evidence supports that relationship. `contains` is the
+inverse of `is-part-of`; add the inverse to a governed target only when that target is in scope
+for the same change. Do not infer Connections from directory placement or from files merely
+read, mentioned, or touched.
+
+Contradictions belong in `## Connections` when a typed target relationship exists. Add
+separate contradiction prose only when it contributes useful narrative that is not duplicated
+by the edge row.
+
+`## Files touched` is an operational record only and never generates Connections.
 
 ### Forward registers
 
-- Three distinct registers, written by you. **Open questions** are undecided (resolved, never "done"); **Next steps** are decided labor; **Recommendation** ranks across them and asserts nothing new. If a line fits two, apply the discriminating test — can it be done? does it claim a truth? — and move it.
-- **Open questions** name an epistemic gap the session opened but did not close — a genuine question or conjecture whose answer would steer future work. It is *resolved*, never *done*: if the method is already known and only labor remains, it is a **Next step**, not an Open question. It is also **node-less only** — a question naming a vault/spec node is a `questions {node}` edge → `## Contradictions`, not Open questions (else the two double-record). Mechanical test: if the target can be written as an existing file path, it is a Contradictions edge; otherwise an Open question. *One topic, three forks:* "Does the enum drift reach beyond the two 2026-07-18 rows?" is an Open question; "audit the appender for enum drift" is a Next step; "questions `ledger-enum-drift-finding` — those rows bypassed the validated appender" is a Contradictions edge.
-- **Next steps defer to the backlog.** This repo has no `backlog/` yet (P-BACKLOG) — keep it body-only with `promoted_candidates: []` until one exists.
-- **Recommendation obeys the subset rule.** Recommend a direction, never assert the outcome; name the licensing fact (validated node, landed test, resolved contradiction) or self-label a hunch. It references only items in the sections above.
-- Omit, don't pad. No open business → omit the empty sections entirely. Absence is the signal.
+- The three registers are distinct. **Open questions** are undecided and become resolved, not
+  "done"; **Next steps** are decided labor; **Recommendation** ranks across them and asserts
+  nothing new. If a line seems to fit two, ask whether it can be done or claims a truth, then
+  move it to the matching register.
+- **Open questions** name an epistemic gap the session opened but did not close. If the method
+  is already known and only labor remains, use **Next steps**. A question may remain here even
+  when it mentions an existing artifact. File-path existence does not establish an edge; add a
+  Connection only when a real typed relationship can be asserted.
+- **Next steps defer to the backlog.** This repository has no `backlog/` yet (P-BACKLOG), so
+  keep them body-only with `promoted_candidates: []` until one exists.
+- **Recommendation obeys the subset rule.** Recommend a direction, never assert the outcome;
+  name the licensing fact or self-label a hunch. Reference only items in the sections above.
+- Omit, do not pad. No open business means omitting the empty forward sections. Absence is the
+  signal.
 
-> **Hard cap:** The body (below frontmatter) must not exceed **200 lines**. If it does, you are writing too much — cut. The three forward sections count inside the 200 and are the lowest-priority — if over cap, trim them first, then omit them.
+> **Hard cap:** The body below frontmatter must not exceed **200 lines**. The forward sections
+> count toward the cap and have the lowest priority: trim them first, then omit them.
 
 ---
 
-## Step 4 — Review (one Sonnet agent)
+## Step 3 — Final checks
 
-Before the node is final, spawn **one Agent (model: sonnet)**, given the assembled node + the list of files touched. It reviews on two axes:
+Before finishing, the creating agent checks directly that:
 
-1. **Classification & frontmatter** — node_type, tags, layer, nature, importance, and any edges match `vault/ontology-conventions.md`; frontmatter is well-formed; the body is within the 200-line cap.
-2. **Body discipline** — the three forward registers obey the Forward-registers rules (§ above); no narration; body within the 200-line cap.
+1. the frontmatter is valid and follows `.claude/skills/custom/frontmatter.md`;
+2. `artifact_kind` is `session`, tags are topical, and exactly one layer is selected;
+3. `## Connections` has supported typed edges with real targets or the explicit no-connection
+   statement;
+4. files touched have not been converted mechanically into edges;
+5. the forward registers obey their distinct roles; and
+6. the body stays within the 200-line cap.
 
-It returns **PASS** or a list of concrete problems. **If it returns problems, send the node back to the writing agent (the one that wrote it, Steps 1/3) to fix, then re-review.** Only a clean PASS finalizes the node.
+There is no automatic review in this workflow for now. Any future review must use the
+repository's governed subagent workflow.

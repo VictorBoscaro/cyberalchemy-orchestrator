@@ -1,6 +1,6 @@
 ---
 tags: [agents, architecture, system-view, orchestration, recursive-work, ontology]
-node_type: system-view
+node_type: essay
 status: draft
 version: 0.8.1
 last_updated: 2026-07-25

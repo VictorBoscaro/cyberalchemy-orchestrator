@@ -39,6 +39,18 @@
             "statusMessage": "Recording Codex dispatch input lineage"
           }
         ]
+      },
+      {
+        "matcher": "^(?:Write|write_file|apply_patch|functions(?:[._])?apply_patch)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.claude/hooks/doc-frontmatter-nudge.cjs\"",
+            "commandWindows": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$payload=[Console]::In.ReadToEnd(); $root=(git rev-parse --show-toplevel); $payload | node (Join-Path $root '.claude/hooks/doc-frontmatter-nudge.cjs'); exit $LASTEXITCODE\"",
+            "timeout": 15,
+            "statusMessage": "Checking governed Markdown authoring obligations"
+          }
+        ]
       }
     ],
     "SubagentStop": [
