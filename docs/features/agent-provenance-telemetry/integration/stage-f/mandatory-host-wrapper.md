@@ -1,7 +1,8 @@
 # Stage F - Mandatory Claude and Codex host wrapper
 
-Status: implemented for trusted project-local Claude Code and Codex sessions; a client session that
-was already running when hook configuration changed must reload before live enforcement is claimed.
+Status: implemented for trusted project-local Claude Code and hook-capable Codex sessions. Codex
+hosts must prove that their multi-agent function handler enters `PreToolUse`; matcher, trust, and an
+enabled hooks feature are insufficient without that live proof.
 
 ## Contract
 
@@ -102,6 +103,10 @@ Repository code cannot force a client to load repository hooks:
 - Claude Code must load the checked-in project settings. A user who removes or ignores project
   settings is outside this repository enforcement boundary.
 - Hosted agent surfaces that do not execute local lifecycle hooks are not covered.
+- Codex builds whose multi-agent handler bypasses the generic function-tool hook payload path are
+  not covered. The observed VS Code embedded build `0.146.0-alpha.3.1` has this defect: it can start
+  `collaboration.spawn_agent` without `PreToolUse`. A replacement host must pass the live smoke
+  before use.
 - An already-running client may retain its startup-time hook configuration. After `.codex/hooks.json`
   changes, a fresh session must pass a real helper smoke and produce hook state plus ACI/YAML
   receipts before any subagent result is accepted.
