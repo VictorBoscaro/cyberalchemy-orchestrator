@@ -16,21 +16,6 @@ companion_to: plans/governed-agent-work-infrastructure/essays/agent-language-sys
 
 # A High-Level View of Work Context Infrastructure
 
-> This companion essay explains the shape and stakes of a possible system for keeping local work connected
-> to the larger contexts that give it meaning. It begins with the human origin of an objective,
-> turns quickly to the properties the system would need, and then increases in technical density
-> toward architecture, invariants, formalization, and a first testable slice.
->
-> This is a proposal-only, macro-to-micro lens over the broader
-> [agent-language system view](../agent-language-system-view/essay.md), which is itself
-> proposal-only. This essay is a narrower peer, not a canonical replacement or a second
-> system-view owner. A later
-> synthesis may incorporate this lens into the broader view after its open decisions have owners.
-> It does not define canonical terms, select an implementation
-> architecture, authorize execution, or establish that the proposed properties are necessary or
-> sufficient. Definitions belong in a future ontology view. Load-bearing design verdicts remain
-> unassigned open decisions and are named, not decided, near the end of this document.
-
 ## 1. From perception to intention
 
 All work begins, at least in some form, with an idea about something that could be different.

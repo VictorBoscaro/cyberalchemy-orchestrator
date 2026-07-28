@@ -1,0 +1,125 @@
+{
+  "xray_version": "0.2.0-seed",
+  "example_id": "target-architecture-hypothesis-infrastructure",
+  "mode": "architecture",
+  "target_boundary": "The eight services proposed by the target-architecture-hypothesis essay, the five-step governed execution spine, the infrastructure that persists across that spine, and the unresolved authority obligation. Storage, APIs, deployment units, identifier schemes, and current implementation are not assessed.",
+  "renderer_level": "L0",
+  "layer_interaction": [
+    "stacked",
+    "progressive-disclosure",
+    "trace"
+  ],
+  "reader_contract": {
+    "audience": "A repository owner or reviewer deciding whether the proposed infrastructure is coherent enough to refine or build.",
+    "opening_model": "One question in. One connected record out.",
+    "reading_order": [
+      "purpose",
+      "system map",
+      "example trace",
+      "requirement derivation",
+      "critical gaps",
+      "evidence boundary"
+    ],
+    "non_goal": "This page does not specify runtime wiring, deployment, APIs, storage, or a current implementation."
+  },
+  "lane_handles": {
+    "surface": {
+      "handle": "surface.summary",
+      "rendered_as": "opening mental model and proposal-status badges",
+      "source": "essay sections 1-3"
+    },
+    "properties": {
+      "handle": "properties.catalog",
+      "rendered_as": "seven guarantees split into record existence and record trustworthiness",
+      "source": "essay section 4"
+    },
+    "components": {
+      "handle": "components.map",
+      "rendered_as": "S1-S8 service identifiers in deciding, running, mediating, and remembering zones",
+      "source": "essay section 5"
+    },
+    "internal_dependencies": {
+      "handle": "dependencies.internal",
+      "rendered_as": "control spine, persistent infrastructure rails, Fabric-to-Record evidence edge, and digest guard",
+      "source": "essay sections 5, 10, and 11"
+    },
+    "external_dependencies": {
+      "handle": "dependencies.external",
+      "rendered_as": "human confirmation and illustrative agent participants",
+      "source": "essay sections 5, 9, and 11",
+      "interpretation_boundary": "Agent circles and their specific route are explanatory, not specified topology."
+    },
+    "flow": {
+      "handle": "flow.graph",
+      "rendered_as": "five-step spine: Classifier to Protocol to Compiler plus Prompts to Human gate to Execution",
+      "persistent_rails": [
+        "Fabric throughout agent work",
+        "Identity throughout the system",
+        "Record throughout the run",
+        "Prompts at compile and run time"
+      ],
+      "source": "essay sections 5, 10, and 11"
+    },
+    "lifecycle": {
+      "handle": "lifecycle.timeline",
+      "rendered_as": "question, governed shape, two human confirmation acts over one digest, execution, and append-only event history",
+      "source": "essay sections 9-11"
+    },
+    "risk_questions": {
+      "handle": "risk.questions",
+      "rendered_as": "visible D3 and D9 critical gaps plus a collapsed D1-D9 inventory",
+      "source": "essay sections 9 and 13"
+    },
+    "visual_composition": {
+      "handle": "visual.model",
+      "renderer": "static semantic HTML, CSS, and inline SVG",
+      "remote_dependencies": false,
+      "custom_patterns": [
+        "clarity-first execution spine",
+        "persistent infrastructure rails",
+        "source-versus-interpretation legend",
+        "progressive disclosure for decision and evidence detail"
+      ]
+    }
+  },
+  "evidence_boundary": {
+    "essay_backed": [
+      "seven requirements",
+      "eight service names and responsibilities",
+      "human confirmation mechanics",
+      "Fabric mediation and non-authorship",
+      "Record single-writer rule",
+      "decision statuses"
+    ],
+    "diagram_interpretation": [
+      "horizontal bands",
+      "S1-S8 identifiers",
+      "example question",
+      "five-step presentation",
+      "persistent-rail layout",
+      "agent circles and illustrative agent route"
+    ],
+    "source_inconsistencies_preserved": [
+      "essay section 9 and its prose count six decision rows with no repository gate, while the closing engineer-view result says four",
+      "the closing engineer-view result lists only D3 and D9 as open/critical even though D1, D2, D4, D5, D7, and D8 are OPEN in the decision inventory"
+    ]
+  },
+  "validation": {
+    "html": {
+      "balanced_tags": true,
+      "duplicate_ids": 0,
+      "unresolved_aria_references": 0,
+      "remote_references": 0,
+      "script_elements": 0
+    },
+    "coverage": {
+      "services": 8,
+      "requirements": 7,
+      "critical_gaps_visible": [
+        "D3",
+        "D9"
+      ]
+    },
+    "browser_rendering": "not verified because no browser runtime was available"
+  }
+}

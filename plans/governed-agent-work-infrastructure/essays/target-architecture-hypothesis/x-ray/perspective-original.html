@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>x-ray · Target Architecture Hypothesis — infrastructure</title>
+    <style>
+      :root {
+        --bg: #0d1117; --panel: #161b22; --edge: #30363d; --ink: #e6edf3; --dim: #8b949e;
+        --remember: #7ee787; --decide: #79c0ff; --run: #ffa657; --risk: #ff7b72; --gate: #d2a8ff;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+        font: 15px/1.55 ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif; }
+      header { padding: 22px 28px 16px; border-bottom: 1px solid var(--edge); }
+      h1 { margin: 0 0 8px; font-size: 20px; }
+      h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); margin: 0 0 10px; }
+      h3 { font-size: 14px; margin: 0 0 8px; }
+      .meta { margin: 0 0 8px; color: var(--dim); font-size: 13px; max-width: 92ch; }
+      .claim { margin: 10px 0 0; padding: 10px 14px; border-left: 3px solid var(--decide);
+        background: #11161d; max-width: 92ch; font-size: 14px; color: var(--ink); }
+      .standing { margin: 10px 0 0; padding: 9px 14px; border-left: 3px solid var(--risk);
+        background: #1a1214; max-width: 92ch; font-size: 13px; color: var(--ink); }
+      .layout { display: flex; align-items: flex-start; }
+      .controls { width: 246px; flex: 0 0 246px; padding: 20px; border-right: 1px solid var(--edge);
+        position: sticky; top: 0; }
+      .controls label { display: block; padding: 6px 0; font-size: 14px; cursor: pointer; }
+      .controls .hint { color: var(--dim); font-size: 12px; margin-top: 14px; }
+      .legend { margin-top: 18px; border-top: 1px solid var(--edge); padding-top: 14px; }
+      .legend div { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; font-size: 12px; color: var(--dim); }
+      .swatch { width: 26px; height: 0; border-top: 2px solid var(--dim); flex: 0 0 26px; }
+      .swatch.dash { border-top-style: dashed; }
+      .swatch.gate { border-top-color: var(--gate); }
+      .chip { width: 13px; height: 13px; border-radius: 3px; border: 1.5px solid; flex: 0 0 13px; }
+      .stage { flex: 1; padding: 20px 28px 60px; min-width: 0; }
+      .layer { background: var(--panel); border: 1px solid var(--edge); border-radius: 10px;
+        padding: 16px 18px 18px; margin-bottom: 18px; }
+      .layer-title { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--dim); margin-bottom: 12px; }
+      svg { width: 100%; height: auto; display: block; }
+      .node { fill: #1f2630; stroke: var(--edge); stroke-width: 1.5; }
+      .node.remember { stroke: var(--remember); }
+      .node.decide { stroke: var(--decide); }
+      .node.run { stroke: var(--run); }
+      .node.gate { stroke: var(--gate); stroke-dasharray: 5 3; }
+      .node.external { stroke: var(--dim); stroke-dasharray: 4 3; }
+      .node.risk { stroke: var(--risk); stroke-dasharray: 6 4; }
+      text { fill: var(--ink); font: 13px ui-sans-serif, system-ui, sans-serif; }
+      text.small { fill: var(--dim); font-size: 11px; }
+      text.tag { fill: var(--dim); font-family: ui-monospace, Consolas, monospace; font-size: 10px; }
+      text.head { font-size: 12px; fill: var(--dim); letter-spacing: 1px; }
+      .arrow { stroke: var(--dim); stroke-width: 1.6; fill: none; marker-end: url(#a); }
+      .arrow.proposal { stroke-dasharray: 5 4; }
+      .arrow.gate { stroke: var(--gate); stroke-width: 2; }
+      .bus { stroke: var(--dim); stroke-width: 1.6; fill: none; }
+      table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 4px; }
+      th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--edge); vertical-align: top; }
+      th { color: var(--dim); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; }
+      code { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--decide); }
+      .badge { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 11px;
+        border: 1px solid var(--edge); color: var(--dim); white-space: nowrap; }
+      .badge.crit { color: var(--risk); border-color: var(--risk); }
+      .badge.ev { color: var(--remember); border-color: var(--remember); }
+      .badge.inf { color: var(--run); border-color: var(--run); }
+      .rlist { columns: 2; column-gap: 26px; margin: 0 0 12px; padding: 0; list-style: none; font-size: 13px; }
+      .rlist li { break-inside: avoid; margin-bottom: 6px; color: var(--ink); }
+      .rlist b { color: var(--decide); font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+      footer { padding: 20px 28px 40px; color: var(--dim); font-size: 12px; border-top: 1px solid var(--edge); }
+      body:has(#toggle-surface:not(:checked)) [data-lane~="surface"],
+      body:has(#toggle-flow:not(:checked)) [data-lane~="flow"],
+      body:has(#toggle-deps:not(:checked)) [data-lane~="internal_dependencies"],
+      body:has(#toggle-risk:not(:checked)) [data-lane~="risk_questions"] { display: none; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>x-ray · Target Architecture Hypothesis — the infrastructure</h1>
+      <p class="meta">
+        Mode <code>architecture</code> · renderer L0 static HTML/SVG · no remote references. The target
+        is the eight services proposed by the hypothesis essay, their wiring, and the path one question
+        takes through them. Storage design, identifier schemes and any current repository implementation
+        are out of scope.
+      </p>
+      <p class="claim">
+        <b>The claim being depicted.</b> The system is a small set of services whose joint output is one
+        durable, connected record of everything that was done — and those services can be
+        <b>derived</b> from what that record must do, rather than chosen first and justified afterwards.
+        The derivation is the claim. The requirement tags <code>R1</code>–<code>R7</code> on every box
+        are what make it checkable.
+      </p>
+      <p class="standing">
+        <b>Standing of everything below.</b> Nothing here is running. The source essay is
+        <code>authority: proposal-only</code>; six of its nine decision rows cite no repository gate, and
+        its term meanings are <b>unowned</b> — no ontology-view exists. Each layer carries its own
+        source-backed / inference note.
+      </p>
+    </header>
+
+    <div class="layout">
+      <aside class="controls" aria-label="Layer controls">
+        <h2>Layers</h2>
+        <label><input id="toggle-surface" type="checkbox" checked /> Requirements &amp; services</label>
+        <label><input id="toggle-flow" type="checkbox" checked /> Flow &amp; lifecycle</label>
+        <label><input id="toggle-deps" type="checkbox" checked /> Dependencies</label>
+        <label><input id="toggle-risk" type="checkbox" checked /> Risk &amp; open questions</label>
+        <p class="hint">Layers stack by default. Uncheck to isolate one or compare two.</p>
+        <div class="legend" aria-label="Key">
+          <h2>Key</h2>
+          <div><span class="chip" style="border-color:#7ee787"></span> remembering</div>
+          <div><span class="chip" style="border-color:#79c0ff"></span> deciding what to run</div>
+          <div><span class="chip" style="border-color:#ffa657"></span> running it</div>
+          <div><span class="chip" style="border-color:#ff7b72"></span> unowned obligation — not a service</div>
+          <div><span class="swatch"></span> edge stated in the essay</div>
+          <div><span class="swatch dash"></span> edge inferred by this x-ray, not drawn in the essay</div>
+          <div><span class="swatch gate"></span> passes the human confirmation gate</div>
+          <h2 style="margin-top:14px">Badges</h2>
+          <div><span class="badge ev">source-backed</span> stated in the essay</div>
+          <div><span class="badge inf">inference</span> this x-ray's reading</div>
+          <div><span class="badge">OPEN</span> <span class="badge crit">CRITICAL</span> decision status</div>
+        </div>
+      </aside>
+
+      <section class="stage" aria-label="x-ray layer stack">
+        <svg width="0" height="0" aria-hidden="true">
+          <defs>
+            <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#8b949e" />
+            </marker>
+          </defs>
+        </svg>
+
+        <!-- ============ REQUIREMENTS + COMPONENTS ============ -->
+        <section class="layer" data-lane="surface properties components">
+          <div class="layer-title">properties.catalog · surface.summary · components.map</div>
+          <h3>What the record must do</h3>
+          <ul class="rlist">
+            <li><b>R1</b> a thing stays addressable when its description changes</li>
+            <li><b>R2</b> two runs of the same kind are comparable</li>
+            <li><b>R3</b> the confirmed thing and the executed thing are the same thing</li>
+            <li><b>R4</b> an independent judgment is not visible to peers before it is fixed</li>
+            <li><b>R5</b> what was said is what is read</li>
+            <li><b>R6</b> what happened is recoverable later</li>
+            <li><b>R7</b> a connection means something specific</li>
+          </ul>
+          <p class="meta">
+            R1, R6 and R7 make the record <em>exist</em>; R2–R5 make it <em>trustworthy</em>. Each is a
+            property of the record, not of any one service.
+          </p>
+
+          <h3>Eight services in three groups — and one unowned obligation</h3>
+          <svg viewBox="0 0 980 250" role="img" aria-label="Eight proposed services grouped as Remembering, Deciding and Running, each tagged with the requirements it serves">
+            <text x="14" y="18" class="head">REMEMBERING</text>
+            <rect x="10" y="28" width="290" height="212" rx="10" fill="none" stroke="#30363d" stroke-dasharray="3 4" />
+            <rect x="30" y="46" width="250" height="52" rx="8" class="node remember" />
+            <text x="46" y="68">Identity</text><text x="46" y="86" class="small">mints identities · typed relations</text>
+            <text x="248" y="64" class="tag">R1 R7</text>
+            <rect x="30" y="112" width="250" height="52" rx="8" class="node remember" />
+            <text x="46" y="134">Record</text><text x="46" y="152" class="small">append-only account of what occurred</text>
+            <text x="256" y="130" class="tag">R6</text>
+            <rect x="30" y="178" width="250" height="52" rx="8" class="node remember" />
+            <text x="46" y="200">Prompts</text><text x="46" y="218" class="small">versioned instructions, addressable</text>
+            <text x="256" y="196" class="tag">R3</text>
+
+            <text x="344" y="18" class="head">DECIDING WHAT TO RUN</text>
+            <rect x="340" y="28" width="290" height="212" rx="10" fill="none" stroke="#30363d" stroke-dasharray="3 4" />
+            <rect x="360" y="46" width="250" height="52" rx="8" class="node decide" />
+            <text x="376" y="68">Classifier</text><text x="376" y="86" class="small">question → kind of work</text>
+            <text x="586" y="64" class="tag">R2</text>
+            <rect x="360" y="112" width="250" height="52" rx="8" class="node decide" />
+            <text x="376" y="134">Protocol</text><text x="376" y="152" class="small">canonical sequence per kind</text>
+            <text x="586" y="130" class="tag">R2</text>
+            <rect x="360" y="178" width="250" height="52" rx="8" class="node decide" />
+            <text x="376" y="200">Compiler</text><text x="376" y="218" class="small">protocol + question → shape + plan</text>
+            <text x="586" y="196" class="tag">R3</text>
+
+            <text x="674" y="18" class="head">RUNNING IT</text>
+            <rect x="670" y="28" width="300" height="146" rx="10" fill="none" stroke="#30363d" stroke-dasharray="3 4" />
+            <rect x="690" y="46" width="260" height="52" rx="8" class="node run" />
+            <text x="706" y="68">Execution</text><text x="706" y="86" class="small">resolves prompts · collects returns</text>
+            <text x="926" y="64" class="tag">R3</text>
+            <rect x="690" y="112" width="260" height="52" rx="8" class="node run" />
+            <text x="706" y="134">Fabric</text><text x="706" y="152" class="small">addresses · seals · delivers · records</text>
+            <text x="912" y="130" class="tag">R4 R5</text>
+
+            <rect x="670" y="188" width="300" height="52" rx="8" class="node risk" />
+            <text x="686" y="210" class="small">§1 requires work to run under authority.</text>
+            <text x="686" y="228" class="small">No service provides it. Outside all three groups.</text>
+          </svg>
+          <table>
+            <tr><th>Requirement</th><th>Provided by</th></tr>
+            <tr><td><code>R1</code> addressable across description change</td><td>Identity</td></tr>
+            <tr><td><code>R2</code> comparable runs of a kind</td><td>Classifier, Protocol</td></tr>
+            <tr><td><code>R3</code> confirmed is executed</td><td>Compiler, Prompts, Execution</td></tr>
+            <tr><td><code>R4</code> judgment sealed until released</td><td>Fabric</td></tr>
+            <tr><td><code>R5</code> message unchanged in transit</td><td>Fabric</td></tr>
+            <tr><td><code>R6</code> what happened is recoverable</td><td>Record</td></tr>
+            <tr><td><code>R7</code> connections carry meaning</td><td>Identity</td></tr>
+          </table>
+          <p class="meta">
+            Read this table as <em>"what would have to exist for R<sub>n</sub> to hold"</em>, not as
+            ownership. A requirement is a property of the <b>record</b>, never of a component — no service
+            owns one, and the right-hand column is the derivation's output, not an assignment of
+            responsibility.
+          </p>
+          <p class="meta">
+            <span class="badge ev">source-backed</span> the seven requirements, the eight services, the
+            tags and this table are essay §4 and §5.
+            <span class="badge inf">inference</span> the authority panel is drawn outside every group
+            because the essay leaves its home undecided — D9 says <em>either</em> a ninth service exists
+            <em>or</em> authority is a property of the record. It is the hypothesis's own refutation
+            condition made visible, not a proposed component.
+          </p>
+        </section>
+
+        <!-- ============ GLOSSARY ============ -->
+        <section class="layer">
+          <div class="layer-title">reader terms — provisional · always shown, whichever layers are on</div>
+          <h3>Words used in these diagrams</h3>
+          <table>
+            <tr><th>Term</th><th>Plain meaning</th><th>Read it wrong and…</th></tr>
+            <tr><td><code>shape</code></td><td>The concrete set of steps and their connections for one question — the thing a human reads and confirms.</td><td>…you conflate it with the machine plan derived from it, which is the distinction R3 rests on.</td></tr>
+            <tr><td><code>digest</code></td><td>A fingerprint of exactly what was confirmed, which the machine's plan must match before anything runs.</td><td>…you assume it covers the rendered instruction text. It covers only the version binding.</td></tr>
+            <tr><td><code>sealed</code></td><td>A judgment already sent that cannot be read yet, because its release condition is unmet.</td><td>…you read it as "no recipient". It is addressed to its aggregation point under an unmet condition.</td></tr>
+            <tr><td><code>single writer</code></td><td>Durable facts enter through the Record and nowhere else.</td><td>…you let another service persist facts too, and you get two sources of truth discovered later by contradiction.</td></tr>
+            <tr><td><code>decision row D1–D9</code></td><td>One of nine numbered stances the essay names and then decides exactly once.</td><td>…you read a row as settled fact. Six of nine cite no repository gate.</td></tr>
+            <tr><td><code>CRITICAL</code></td><td>An unresolved question the proposal does not survive being wrong about.</td><td>…you read it as a bug severity. Nothing is broken; nothing has run.</td></tr>
+          </table>
+          <p class="meta">
+            <span class="badge inf">inference</span> These glosses are this x-ray's own plain-language
+            explanations, written to make the diagrams readable. They are <b>not</b> definitions from the
+            source: the essay states its terms are provisional and unowned, and no ontology-view exists to
+            own them.
+          </p>
+        </section>
+
+        <!-- ============ FLOW ============ -->
+        <section class="layer" data-lane="flow lifecycle">
+          <div class="layer-title">flow.graph · lifecycle.timeline</div>
+          <h3>One question, end to end</h3>
+          <svg viewBox="0 0 980 300" role="img" aria-label="Flow of one question through classification, protocol, compilation, human confirmation, execution, agents, fabric and record">
+            <rect x="8" y="60" width="104" height="46" rx="8" class="node" />
+            <text x="24" y="82">question</text><text x="24" y="98" class="small">from a human</text>
+            <rect x="140" y="60" width="104" height="46" rx="8" class="node decide" />
+            <text x="156" y="88">Classifier</text>
+            <rect x="272" y="60" width="104" height="46" rx="8" class="node decide" />
+            <text x="292" y="88">Protocol</text>
+            <rect x="404" y="60" width="104" height="46" rx="8" class="node decide" />
+            <text x="422" y="88">Compiler</text>
+            <rect x="536" y="48" width="132" height="70" rx="8" class="node gate" />
+            <text x="552" y="70">confirm ×2</text>
+            <text x="552" y="88" class="small">one digest</text>
+            <text x="552" y="104" class="small">irreversible once fired</text>
+            <rect x="700" y="60" width="112" height="46" rx="8" class="node run" />
+            <text x="716" y="88">Execution</text>
+            <rect x="844" y="60" width="124" height="46" rx="8" class="node" />
+            <text x="860" y="82">agents</text><text x="860" y="98" class="small">external actors</text>
+
+            <path d="M112 83 L136 83" class="arrow" />
+            <path d="M244 83 L268 83" class="arrow" />
+            <path d="M376 83 L400 83" class="arrow" />
+            <path d="M508 83 L532 83" class="arrow gate" />
+            <path d="M668 83 L696 83" class="arrow gate" />
+            <path d="M812 83 L840 83" class="arrow" />
+
+            <rect x="404" y="176" width="408" height="52" rx="8" class="node run" />
+            <text x="424" y="198">Fabric</text>
+            <text x="424" y="216" class="small">present during every step · a step in none · seals until the release condition is met</text>
+            <path d="M906 106 L906 152 L790 152 L790 174" class="arrow" />
+            <text x="800" y="145" class="small">emissions</text>
+            <path d="M430 106 L430 174" class="arrow" />
+            <text x="440" y="145" class="small">every step</text>
+
+            <rect x="404" y="252" width="408" height="42" rx="8" class="node remember" />
+            <text x="424" y="278">Record — append-only, written throughout</text>
+            <path d="M608 228 L608 250" class="arrow" />
+
+            <rect x="8" y="176" width="330" height="118" rx="8" class="node" />
+            <text x="26" y="200">lifecycle of one dispatch</text>
+            <text x="26" y="222" class="small">classified → compiled → confirmed → fired →</text>
+            <text x="26" y="240" class="small">executing → sealed → released → aggregated →</text>
+            <text x="26" y="258" class="small">recorded</text>
+            <text x="26" y="282" class="small">only confirmed→fired is digest-guarded</text>
+          </svg>
+          <p class="meta">
+            <span class="badge ev">source-backed</span> the ordering, the single digest, release-on-the-recipient
+            and "written throughout" are essay §5, §10 and §11.
+            <span class="badge inf">inference</span> the lifecycle state names, the observation that exactly one
+            transition is digest-guarded, the reading that confirmation is the only human intervention, and the
+            label "irreversible once fired" are all read off the essay rather than stated in it.
+          </p>
+        </section>
+
+        <!-- ============ DEPENDENCIES ============ -->
+        <section class="layer" data-lane="internal_dependencies external_dependencies">
+          <div class="layer-title">dependencies.internal · dependencies.external</div>
+          <h3>What depends on what</h3>
+          <svg viewBox="0 0 980 330" role="img" aria-label="Internal dependency chain and the reference bus feeding Identity, Record and Prompts">
+            <text x="14" y="18" class="head">INTERNAL — the chain, and what everything references</text>
+            <rect x="20" y="34" width="170" height="46" rx="8" class="node decide" />
+            <text x="36" y="62">Classifier</text>
+            <rect x="222" y="34" width="170" height="46" rx="8" class="node decide" />
+            <text x="238" y="62">Protocol</text>
+            <rect x="424" y="34" width="170" height="46" rx="8" class="node decide" />
+            <text x="440" y="62">Compiler</text>
+            <rect x="626" y="34" width="150" height="46" rx="8" class="node run" />
+            <text x="642" y="62">Execution</text>
+            <rect x="808" y="34" width="150" height="46" rx="8" class="node run" />
+            <text x="824" y="62">Fabric</text>
+            <path d="M190 57 L218 57" class="arrow" />
+            <path d="M392 57 L420 57" class="arrow" />
+            <path d="M594 57 L622 57" class="arrow gate" />
+            <text x="600" y="26" class="small">digest check guards this edge</text>
+            <path d="M776 57 L804 57" class="arrow" />
+
+            <path d="M105 80 L105 128" class="arrow" />
+            <path d="M307 80 L307 128" class="arrow" />
+            <path d="M509 80 L509 128" class="arrow" />
+            <path d="M680 80 L680 128" class="arrow" />
+            <path d="M883 80 L883 128" class="arrow" />
+            <path d="M105 130 L883 130" class="bus" />
+            <text x="20" y="150" class="small">reference bus</text>
+
+            <path d="M180 132 L180 194" class="arrow" />
+            <path d="M500 132 L500 194" class="arrow" />
+            <path d="M730 80 L730 100 L910 100 L910 190" class="arrow proposal" />
+
+            <rect x="60" y="196" width="240" height="52" rx="8" class="node remember" />
+            <text x="76" y="218">Identity</text>
+            <text x="76" y="236" class="small">every other service names things through it</text>
+            <rect x="380" y="196" width="240" height="52" rx="8" class="node remember" />
+            <text x="396" y="218">Record</text>
+            <text x="396" y="236" class="small">durable facts enter here · single writer</text>
+            <rect x="690" y="196" width="240" height="52" rx="8" class="node remember" />
+            <text x="706" y="218">Prompts</text>
+            <text x="706" y="236" class="small">resolved by Execution at run time</text>
+
+            <text x="14" y="278" class="head">EXTERNAL — what the system touches but does not own</text>
+            <rect x="20" y="288" width="210" height="38" rx="8" class="node external" />
+            <text x="36" y="306" class="small">human confirmation gate</text>
+            <text x="36" y="320" class="small">guards Compiler → Execution</text>
+            <rect x="252" y="288" width="150" height="38" rx="8" class="node external" />
+            <text x="268" y="306" class="small">agents</text>
+            <text x="268" y="320" class="small">emit through Fabric</text>
+            <rect x="424" y="288" width="230" height="38" rx="8" class="node external" />
+            <text x="440" y="306" class="small">owner direction · 2026-07-27</text>
+            <text x="440" y="320" class="small">the authority behind D4 and D6</text>
+            <rect x="676" y="288" width="282" height="38" rx="8" class="node risk" />
+            <text x="692" y="306" class="small">ontology-view — does not exist</text>
+            <text x="692" y="320" class="small">would own every term used here</text>
+          </svg>
+          <p class="meta">
+            The <b>reference bus</b> is not a component. It is drawn to show that
+            <em>every other service</em> names things through Identity and writes durable facts only to
+            Record (essay §5, §10) — those edges are collapsed into one line so the diagram stays
+            readable. The Prompts edge is dashed because the essay states only that Execution resolves
+            instructions at run time; the digest also closes over every prompt binding (§10), which
+            implies the Compiler touches Prompts too, but the essay never draws that edge.
+          </p>
+          <table>
+            <tr><th>Edge</th><th>Why it exists</th><th>Status</th><th>Authority</th></tr>
+            <tr><td><code>Compiler → Execution</code></td><td>The plan must be a pure function of the confirmed shape; the digest check guards this edge.</td><td><span class="badge crit">CRITICAL</span></td><td>D3 · no gate in repo</td></tr>
+            <tr><td><code>Execution → Prompts</code></td><td>Instructions resolve at run time against the version the digest froze.</td><td><span class="badge">OPEN</span></td><td>D4 · owner direction 2026-07-27</td></tr>
+            <tr><td><code>Fabric → Record</code></td><td>Every act produces an event, including acts carrying no content.</td><td><span class="badge">OPEN</span></td><td>D7 · no gate in repo</td></tr>
+            <tr><td><code>Fabric</code> transports, never authors</td><td>The bytes one agent emitted are the bytes another reads.</td><td><span class="badge">RESOLVED</span></td><td>D6 · owner direction 2026-07-27</td></tr>
+            <tr><td><code>all → Identity</code></td><td>Every service names things by identity, never by path.</td><td><span class="badge">OPEN</span></td><td>D1 · work-context essay §8, §26</td></tr>
+            <tr><td><code>all → Record</code></td><td>Single writer: durable facts enter here and nowhere else.</td><td><span class="badge">given</span></td><td>essay §10</td></tr>
+          </table>
+          <p class="meta">
+            <span class="badge ev">source-backed</span> every edge and every Status/Authority pair above is
+            taken from essay §5, §9, §10 and §11, with Status and Authority kept in the separate columns the
+            essay uses. <span class="badge inf">inference</span> the consequence that a defect in Identity
+            or Record is systemic rather than local is read off the edge list; the essay does not say it.
+          </p>
+        </section>
+
+        <!-- ============ RISK ============ -->
+        <section class="layer" data-lane="risk_questions">
+          <div class="layer-title">risk.questions</div>
+          <h3>All nine decision rows</h3>
+          <table>
+            <tr><th>#</th><th>The stance</th><th>Status</th><th>Gate in repo?</th><th>Authority cited</th></tr>
+            <tr><td><code>D1</code></td><td>identity-basis — minted identity vs derived from placement</td><td><span class="badge">OPEN</span></td><td>no</td><td>companion essay §8, §26</td></tr>
+            <tr><td><code>D2</code></td><td>protocol-mutability — immutable per version vs adapted per run</td><td><span class="badge">OPEN</span></td><td>no</td><td>this document only</td></tr>
+            <tr><td><code>D3</code></td><td>confirmation-topology — can the executed shape differ from the confirmed one?</td><td><span class="badge crit">CRITICAL</span></td><td>no</td><td>this document only</td></tr>
+            <tr><td><code>D4</code></td><td>prompt-binding-time — freeze rendered text vs version binding</td><td><span class="badge">OPEN</span></td><td>—</td><td>owner direction 2026-07-27</td></tr>
+            <tr><td><code>D5</code></td><td>release-condition — seal on the message vs on the recipient</td><td><span class="badge">OPEN</span></td><td>—</td><td>review of companion essay</td></tr>
+            <tr><td><code>D6</code></td><td>fabric-authority — may the transport normalise?</td><td><span class="badge">RESOLVED</span></td><td>—</td><td>owner direction 2026-07-27</td></tr>
+            <tr><td><code>D7</code></td><td>record-totality — record acts that carry nothing?</td><td><span class="badge">OPEN</span></td><td>no</td><td>this document only</td></tr>
+            <tr><td><code>D8</code></td><td>relation-composition — which paths license a derived conclusion?</td><td><span class="badge">OPEN</span></td><td>no</td><td>companion essay <code>OD-04</code></td></tr>
+            <tr><td><code>D9</code></td><td>authority-ownership — a ninth service, or a property of the record?</td><td><span class="badge crit">CRITICAL</span></td><td>no</td><td>none</td></tr>
+          </table>
+          <p class="meta">
+            <span class="badge ev">source-backed</span> Six rows — D1, D2, D3, D7, D8, D9 — end with
+            <em>no gate in repo</em> in the essay's own inventory, which is why the header says six of nine.
+            Citing the companion essay is an <em>authority</em>, not a gate: the two columns are kept
+            separate here because collapsing them is what makes a proposal look settled.
+          </p>
+          <h3>How the hypothesis could be wrong</h3>
+          <table>
+            <tr><th>Failure</th><th>What it would mean</th></tr>
+            <tr><td>A requirement with no service</td><td>Live instance: <code>D9</code>. §1 requires work to run under authority and §5 provides nothing that does.</td></tr>
+            <tr><td>A service no requirement demands</td><td>It was chosen for a reason the document does not admit — the eight-box picture would be furniture.</td></tr>
+            <tr><td>A connection the shape cannot carry</td><td>An assertion to the activity that produced it, across contexts.</td></tr>
+            <tr><td>Decorative confirmation (<code>D3</code> wrong)</td><td>Every confirmation is theatre; all downstream guarantees inherit an unaudited topology.</td></tr>
+            <tr><td>Silent leakage (<code>D5</code>/<code>D6</code> wrong)</td><td>A peer reads a sealed judgment before release and nothing in the record shows it.</td></tr>
+          </table>
+          <p class="meta">
+            <span class="badge inf">inference</span> Both CRITICAL rows fail silently — nothing in the output
+            looks wrong, and the damage is visible only to someone looking for a record that was never
+            written. Failure modes that announce themselves are cheaper by a wide margin.
+          </p>
+          <h3>What the essay argues against itself</h3>
+          <table>
+            <tr><th>Framing set aside</th><th>Why</th></tr>
+            <tr><td><b>Better logging</b></td><td>Logs record that things happened, not what connects them; the questions here are relational.</td></tr>
+            <tr><td><b>A document repository with good search</b></td><td>Retrieval finds text; it does not establish that this artifact came from that activation.</td></tr>
+            <tr><td><b>A task tracker with rich metadata</b></td><td>Preserves assignment and status while losing justification, authority and outcome evidence.</td></tr>
+            <tr><td><b>Reconstruct provenance on demand from artifacts</b></td><td>Reconstruction infers; the ideal requires facts recorded at the time they were true.</td></tr>
+            <tr><td>One orchestration engine doing all of it</td><td>Collapses different lifetimes into one release cadence; an instruction fix would invalidate a confirmed shape.</td></tr>
+            <tr><td>A pipeline executed top to bottom</td><td>Cannot express the fabric, which is present during every step and is a step in none.</td></tr>
+            <tr><td>Let an orchestrator agent improvise the sequence</td><td>The sequence is then not inspectable before it runs, so there is nothing to confirm.</td></tr>
+            <tr><td>Fold the record into whichever service produces it</td><td>Multiple writers of durable facts; contradiction discovered later.</td></tr>
+            <tr><td>Folder structure as the record</td><td>Placement is one projection of a thing's properties, not its identity.</td></tr>
+          </table>
+          <p class="meta">
+            <span class="badge ev">source-backed</span> essay §2, §4 and §5 alternative-framing tables,
+            reproduced so the derivation is shown together with the options it beat. The first four are
+            §2's — the <em>build less</em> alternatives, which matter most to a reader deciding whether to
+            build anything at all; the rest are §4 and §5's, which only decide what shape to build.
+          </p>
+        </section>
+      </section>
+    </div>
+
+    <footer>
+      x-ray of
+      <code>plans/governed-agent-work-infrastructure/essays/target-architecture-hypothesis/essay.md</code>
+      v0.2.0 · lane model in <code>infrastructure.lanes.json</code> · renderer L0 static HTML/SVG,
+      validated offline · authority: proposal-only. The skill's YAML visual library
+      (<code>arcana/x-ray/library/</code>) is not present in this repository, so no library component was
+      selected; the visual treatments used are declared in the lane model instead.
+    </footer>
+  </body>
+</html>

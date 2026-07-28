@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Infrastructure architecture perspective on the proposal-only target architecture hypothesis.">
+  <title>Infrastructure perspective | Target Architecture Hypothesis</title>
+  <style>
+    :root {
+      --bg:#071019; --panel:#0d1823; --panel2:#112331; --line:#294252; --strong:#486579;
+      --ink:#edf7f7; --muted:#9bb0b9; --control:#65a9ff; --content:#f6b44a;
+      --evidence:#69d5a2; --human:#d39bff; --risk:#ff7f78; --resolved:#68d6d2;
+      --proposal:#f0cf69; --shadow:0 18px 48px rgb(0 0 0 / 28%);
+    }
+    * { box-sizing:border-box; }
+    html { color-scheme:dark; }
+    body {
+      margin:0; color:var(--ink); font:15px/1.55 Inter,ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 80% 0%,rgb(37 82 98 / 18%),transparent 34rem),
+        radial-gradient(circle at 0 35%,rgb(77 62 111 / 12%),transparent 28rem),var(--bg);
+    }
+    code,.mono { font-family:"Cascadia Code","SFMono-Regular",Consolas,monospace; }
+    .shell { width:min(1480px,100%); margin:auto; padding:28px clamp(16px,3vw,46px) 64px; }
+    .eyebrow {
+      margin:0 0 10px; color:var(--control); font:700 11px/1.2 "Cascadia Code",Consolas,monospace;
+      letter-spacing:.15em; text-transform:uppercase;
+    }
+    h1 { max-width:20ch; margin:0; font-size:clamp(2rem,5vw,4.6rem); line-height:.98; letter-spacing:-.045em; }
+    h2,h3,p { margin-top:0; }
+    h2 { margin-bottom:8px; font-size:clamp(1.35rem,2.4vw,2rem); letter-spacing:-.025em; }
+    h3 { margin-bottom:6px; font-size:1rem; }
+    .lede { max-width:78ch; margin:18px 0 0; color:var(--muted); font-size:clamp(1rem,1.5vw,1.16rem); }
+    .status {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:1px; overflow:hidden; margin:26px 0 22px;
+      border:1px solid var(--line); border-radius:12px; background:var(--line); box-shadow:var(--shadow);
+    }
+    .status div { min-height:84px; padding:15px 17px; background:var(--panel); }
+    .status small {
+      display:block; margin-bottom:5px; color:var(--muted); font:650 10px/1.2 "Cascadia Code",Consolas,monospace;
+      letter-spacing:.12em; text-transform:uppercase;
+    }
+    .status strong { display:block; font-size:.95rem; line-height:1.35; }
+    .proposal { color:var(--proposal); } .critical { color:var(--risk); } .resolved { color:var(--resolved); }
+    .panel {
+      margin-top:22px; border:1px solid var(--line); border-radius:16px;
+      background:linear-gradient(145deg,rgb(16 31 44 / 96%),rgb(9 20 29 / 96%)); box-shadow:var(--shadow);
+    }
+    .panel-head {
+      display:flex; align-items:end; justify-content:space-between; gap:20px; padding:22px 24px 16px;
+      border-bottom:1px solid var(--line);
+    }
+    .panel-head p { max-width:76ch; margin-bottom:0; color:var(--muted); }
+    .at-glance { padding:16px; overflow-x:auto; }
+    .diagram { width:100%; min-width:1040px; height:auto; display:block; border-radius:12px; background:#08131d; }
+    .system { fill:#0b1924; stroke:var(--strong); stroke-width:2; }
+    .zone { fill:#0d1d29; stroke:var(--line); stroke-width:1.4; stroke-dasharray:7 6; }
+    .service { fill:#142735; stroke:#496478; stroke-width:1.5; }
+    .record { fill:#102b25; stroke:var(--evidence); stroke-width:2.2; }
+    .fabric { fill:#2a2115; stroke:var(--content); stroke-width:2.2; }
+    .external { fill:#111b25; stroke:#6c7d87; stroke-width:1.5; stroke-dasharray:6 5; }
+    .gate { fill:#21152a; stroke:var(--human); stroke-width:2; }
+    .risk { fill:#271719; stroke:var(--risk); stroke-width:1.8; stroke-dasharray:7 5; }
+    .ingress { fill:var(--evidence); stroke:#b9ffe0; stroke-width:1.2; }
+    .label { fill:var(--ink); font:650 14px Inter,ui-sans-serif,system-ui,sans-serif; }
+    .label.small { font-size:12px; }
+    .copy { fill:var(--muted); font:11px Inter,ui-sans-serif,system-ui,sans-serif; }
+    .kicker { fill:#76909f; font:700 10px "Cascadia Code",Consolas,monospace; letter-spacing:.13em; }
+    .tag { fill:#9fb5bf; font:700 9px "Cascadia Code",Consolas,monospace; }
+    .control,.content,.evidence,.unresolved {
+      fill:none; stroke-linecap:round; stroke-linejoin:round;
+    }
+    .control { stroke:var(--control); stroke-width:2.5; marker-end:url("#ac"); }
+    .content { stroke:var(--content); stroke-width:2.8; marker-end:url("#am"); }
+    .evidence { stroke:var(--evidence); stroke-width:2.4; marker-end:url("#ae"); }
+    .unresolved { stroke:var(--risk); stroke-width:1.8; stroke-dasharray:6 6; marker-end:url("#ar"); }
+    .both { marker-start:url("#am"); }
+    .notes { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 16px 16px; }
+    .truth {
+      margin:0; padding:13px 15px; border:1px solid var(--line); border-radius:10px;
+      background:rgb(6 16 24 / 58%); color:var(--muted); font-size:.86rem;
+    }
+    .truth b { color:var(--ink); }
+    .badge {
+      display:inline-block; margin-right:7px; padding:2px 8px; border:1px solid currentColor;
+      border-radius:99px; font:700 9px/1.4 "Cascadia Code",Consolas,monospace;
+      letter-spacing:.09em; text-transform:uppercase; vertical-align:1px;
+    }
+    .source { color:var(--evidence); } .interpretation { color:var(--content); }
+    .legend { display:flex; flex-wrap:wrap; gap:9px 18px; padding:13px 18px; border-top:1px solid var(--line); }
+    .legend span { display:inline-flex; align-items:center; gap:8px; color:var(--muted); font-size:.78rem; }
+    .line { width:30px; border-top:3px solid; }
+    .line.c { border-color:var(--control); } .line.m { border-color:var(--content); }
+    .line.e { border-color:var(--evidence); } .line.r { border-top:2px dashed var(--risk); }
+    .rules { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line); }
+    .rule { padding:16px 18px; border-right:1px solid var(--line); }
+    .rule:last-child { border:0; }
+    .rule strong { display:block; margin-bottom:3px; font-size:.9rem; }
+    .rule span { color:var(--muted); font-size:.82rem; }
+    .ct { color:var(--control); } .mt { color:var(--content); } .et { color:var(--evidence); }
+    .disclosures { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px; }
+    details { overflow:hidden; border:1px solid var(--line); border-radius:13px; background:rgb(13 24 35 / 92%); }
+    details[open] { grid-column:1/-1; }
+    summary { position:relative; padding:17px 48px 17px 18px; cursor:pointer; font-weight:700; list-style:none; }
+    summary::-webkit-details-marker { display:none; }
+    summary::after { position:absolute; right:18px; content:"+"; color:var(--control); font-size:1.3rem; font-weight:400; }
+    details[open] summary::after { content:"\2212"; }
+    .body { padding:0 18px 18px; border-top:1px solid var(--line); }
+    table { width:100%; margin-top:16px; border-collapse:collapse; font-size:.86rem; }
+    th,td { padding:10px 11px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th {
+      color:var(--muted); font:700 10px/1.2 "Cascadia Code",Consolas,monospace;
+      letter-spacing:.09em; text-transform:uppercase;
+    }
+    td:first-child { white-space:nowrap; }
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; padding-top:16px; }
+    .card { padding:15px; border:1px solid var(--line); border-radius:10px; background:var(--panel2); }
+    .card p { margin:6px 0 0; color:var(--muted); font-size:.84rem; }
+    .callout { margin:16px 0 0; padding:13px 15px; border-left:3px solid var(--risk); background:rgb(50 21 23 / 46%); color:var(--muted); }
+    .callout strong { color:var(--ink); }
+    footer { margin-top:26px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:.78rem; }
+    @media (max-width:850px) {
+      .status,.notes,.disclosures,.cards { grid-template-columns:1fr; }
+      .panel-head { display:block; } .rules { display:block; }
+      .rule { border-right:0; border-bottom:1px solid var(--line); }
+      details[open] { grid-column:auto; }
+    }
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header>
+    <p class="eyebrow">Architecture x-ray / infrastructure truth</p>
+    <h1>One governed path from intent to durable fact.</h1>
+    <p class="lede">
+      The hypothesis proposes eight services, separated by responsibility but joined by one invariant:
+      agent work is not trustworthy unless control, content, and evidence remain attributable.
+      This is a proposed finished shape, not a current deployment.
+    </p>
+    <section class="status" aria-label="Architecture standing">
+      <div><small>Document standing</small><strong class="proposal">Proposal only</strong></div>
+      <div><small>Target boundary</small><strong>Finished-state infrastructure; no current implementation</strong></div>
+      <div><small>Settled stance</small><strong class="resolved">D6: Fabric transports; it never authors</strong></div>
+      <div><small>Structural holes</small><strong class="critical">D3 confirmation and D9 authority remain CRITICAL</strong></div>
+    </section>
+  </header>
+
+  <section class="panel" aria-labelledby="architecture-heading">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Main architecture</p>
+        <h2 id="architecture-heading">System boundary and load-bearing flows</h2>
+      </div>
+      <p>
+        Read left to right for control, across the Fabric for agent content, and downward for
+        durable evidence. Record is the only ingress for facts that must survive.
+      </p>
+    </div>
+
+    <div class="at-glance">
+      <svg class="diagram" viewBox="0 0 1380 690" role="img" aria-labelledby="dt dd">
+        <title id="dt">Proposed governed agent-work infrastructure</title>
+        <desc id="dd">
+          A human and agent workers sit outside a boundary containing eight services. Blue control
+          flow passes through classification, protocol, compilation, confirmation, and execution.
+          Amber content is mediated by Fabric. Green evidence enters durable history through Record.
+        </desc>
+        <defs>
+          <marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0L10 5L0 10z" fill="#65a9ff"/>
+          </marker>
+          <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#f6b44a"/>
+          </marker>
+          <marker id="ae" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0L10 5L0 10z" fill="#69d5a2"/>
+          </marker>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0L10 5L0 10z" fill="#ff7f78"/>
+          </marker>
+        </defs>
+
+        <!-- External actors -->
+        <text x="18" y="34" class="kicker">EXTERNAL / HUMAN AUTHORITY</text>
+        <rect x="18" y="50" width="168" height="90" rx="12" class="external"/>
+        <text x="36" y="79" class="label">Human</text>
+        <text x="36" y="101" class="copy">supplies question</text>
+        <text x="36" y="119" class="copy">confirms before firing</text>
+
+        <text x="1194" y="34" class="kicker">EXTERNAL / EXECUTORS</text>
+        <rect x="1194" y="50" width="168" height="242" rx="12" class="external"/>
+        <text x="1212" y="78" class="label">Agent workers</text>
+        <rect x="1212" y="96" width="132" height="42" rx="8" class="service"/>
+        <text x="1228" y="122" class="label small">independent A</text>
+        <rect x="1212" y="151" width="132" height="42" rx="8" class="service"/>
+        <text x="1228" y="177" class="label small">independent B</text>
+        <rect x="1212" y="206" width="132" height="42" rx="8" class="service"/>
+        <text x="1228" y="232" class="label small">aggregation</text>
+        <text x="1212" y="274" class="copy">no direct peer channel</text>
+
+        <!-- Proposed system -->
+        <rect x="214" y="28" width="944" height="632" rx="18" class="system"/>
+        <text x="238" y="56" class="kicker">PROPOSED GOVERNED AGENT-WORK SYSTEM</text>
+        <text x="1118" y="56" text-anchor="end" class="tag">8 SERVICES</text>
+
+        <!-- Decide -->
+        <rect x="238" y="76" width="564" height="178" rx="14" class="zone"/>
+        <text x="258" y="99" class="kicker">DECIDE WHAT TO RUN</text>
+        <rect x="258" y="121" width="152" height="84" rx="10" class="service"/>
+        <text x="275" y="148" class="label">Classifier</text>
+        <text x="275" y="168" class="copy">question to kind</text>
+        <text x="275" y="188" class="tag">R2</text>
+        <rect x="444" y="121" width="152" height="84" rx="10" class="service"/>
+        <text x="461" y="148" class="label">Protocol</text>
+        <text x="461" y="168" class="copy">versioned sequence</text>
+        <text x="461" y="188" class="tag">R2</text>
+        <rect x="630" y="121" width="152" height="84" rx="10" class="service"/>
+        <text x="647" y="148" class="label">Compiler</text>
+        <text x="647" y="168" class="copy">shape plus machine plan</text>
+        <text x="647" y="188" class="tag">R3</text>
+
+        <!-- Human gate -->
+        <rect x="819" y="103" width="144" height="120" rx="12" class="gate"/>
+        <text x="837" y="130" class="kicker" fill="#d39bff">HUMAN GATE</text>
+        <text x="837" y="154" class="label">confirm twice</text>
+        <text x="837" y="175" class="copy">content, then firing</text>
+        <text x="837" y="194" class="copy">same digest</text>
+        <text x="837" y="212" class="tag" fill="#ff7f78">D3 CRITICAL</text>
+
+        <!-- Run -->
+        <rect x="982" y="76" width="152" height="300" rx="14" class="zone"/>
+        <text x="1002" y="99" class="kicker">RUN</text>
+        <rect x="1002" y="121" width="112" height="84" rx="10" class="service"/>
+        <text x="1017" y="148" class="label">Execution</text>
+        <text x="1017" y="168" class="copy">resolves prompts</text>
+        <text x="1017" y="187" class="copy">collects returns</text>
+        <text x="1088" y="195" text-anchor="end" class="tag">R3</text>
+        <rect x="1002" y="250" width="112" height="102" rx="10" class="service fabric"/>
+        <text x="1017" y="277" class="label">Fabric</text>
+        <text x="1017" y="297" class="copy">address / seal</text>
+        <text x="1017" y="315" class="copy">deliver / validate</text>
+        <text x="1017" y="333" class="copy">never authors</text>
+        <text x="1088" y="344" text-anchor="end" class="tag">R4 R5</text>
+
+        <!-- Remember -->
+        <rect x="238" y="292" width="724" height="336" rx="14" class="zone"/>
+        <text x="258" y="316" class="kicker">REMEMBER / SUPPORT EVERY RUN</text>
+        <rect x="258" y="342" width="196" height="92" rx="10" class="service"/>
+        <text x="276" y="371" class="label">Identity</text>
+        <text x="276" y="392" class="copy">minted identities</text>
+        <text x="276" y="410" class="copy">typed relations</text>
+        <text x="424" y="421" text-anchor="end" class="tag">R1 R7</text>
+        <rect x="492" y="342" width="196" height="92" rx="10" class="service"/>
+        <text x="510" y="371" class="label">Prompts</text>
+        <text x="510" y="392" class="copy">typed instructions</text>
+        <text x="510" y="410" class="copy">addressable by version</text>
+        <text x="658" y="421" text-anchor="end" class="tag">R3</text>
+        <rect x="726" y="342" width="216" height="92" rx="10" class="service record"/>
+        <text x="744" y="371" class="label">Record</text>
+        <text x="744" y="392" class="copy">append-only account</text>
+        <text x="744" y="410" class="copy">corrections append</text>
+        <text x="912" y="421" text-anchor="end" class="tag">R6</text>
+        <rect x="726" y="474" width="216" height="94" rx="10" class="service record"/>
+        <rect x="747" y="458" width="174" height="30" rx="15" class="ingress"/>
+        <text x="834" y="478" text-anchor="middle" fill="#071019" class="tag">ONLY DURABLE-FACT INGRESS</text>
+        <text x="744" y="514" class="label">Connected history</text>
+        <text x="744" y="535" class="copy">events + emissions + digests</text>
+        <text x="744" y="553" class="copy">relations preserve meaning</text>
+
+        <!-- Unresolved authority -->
+        <rect x="258" y="482" width="396" height="110" rx="10" class="risk"/>
+        <text x="278" y="510" class="kicker" fill="#ff7f78">UNOWNED OBLIGATION / NOT A NINTH SERVICE</text>
+        <text x="278" y="536" class="label">Who owns authority?</text>
+        <text x="278" y="558" class="copy">Own service, or a property of Record?</text>
+        <text x="278" y="578" class="tag" fill="#ff7f78">D9 CRITICAL / UNDECIDED</text>
+
+        <!-- Control flow -->
+        <path d="M186 92H232V163H254" class="control"/>
+        <text x="202" y="83" class="tag" fill="#65a9ff">QUESTION</text>
+        <path d="M410 163H440" class="control"/>
+        <path d="M596 163H626" class="control"/>
+        <path d="M782 163H815" class="control"/>
+        <path d="M963 163H998" class="control"/>
+        <path d="M1058 205V246" class="control"/>
+        <path d="M186 119H200V242H891V227" class="control" stroke="#d39bff"/>
+        <text x="213" y="236" class="tag" fill="#d39bff">CONFIRMATION</text>
+        <path d="M590 342V274H1028V209" class="control"/>
+        <text x="610" y="267" class="tag" fill="#65a9ff">BINDING / RUNTIME RESOLUTION</text>
+
+        <!-- Content through Fabric -->
+        <path d="M1118 301H1188" class="content both"/>
+        <text x="1124" y="291" class="tag" fill="#f6b44a">UNCHANGED CONTENT</text>
+        <path d="M1058 246V209" class="content both"/>
+
+        <!-- Evidence into Record -->
+        <path d="M334 205V278H834V338" class="evidence"/>
+        <path d="M520 205V278" class="evidence"/>
+        <path d="M706 205V278" class="evidence"/>
+        <path d="M1058 352V452H938V473" class="evidence"/>
+        <path d="M834 434V454" class="evidence"/>
+        <text x="846" y="452" class="tag" fill="#69d5a2">EVENTS / EMISSIONS / LINEAGE</text>
+
+        <!-- Reference and unresolved relation -->
+        <path d="M454 388H482" class="control" stroke-dasharray="5 5"/>
+        <path d="M688 388H716" class="control" stroke-dasharray="5 5"/>
+        <text x="258" y="614" class="copy">Identity is a reference dependency: every service names things through it.</text>
+        <path d="M654 538H716" class="unresolved"/>
+      </svg>
+    </div>
+
+    <div class="notes">
+      <p class="truth">
+        <span class="badge source">Essay-backed</span>
+        <b>Boxes, responsibilities, constraints, and standing.</b> The services, confirmation
+        mechanics, Fabric's non-authoring rule, and Record's single-writer contract come from
+        essay sections 5, 9, 10, and 11.
+      </p>
+      <p class="truth">
+        <span class="badge interpretation">Diagram interpretation</span>
+        <b>Placement and routing geometry.</b> Colored paths, capability zones, convergence rails,
+        and actor placement are explanatory. They do not specify APIs, network links, deployment
+        units, or ownership.
+      </p>
+    </div>
+    <div class="legend" aria-label="Flow legend">
+      <span><i class="line c"></i>control / instruction</span>
+      <span><i class="line m"></i>content / judgment</span>
+      <span><i class="line e"></i>evidence / durable fact</span>
+      <span><i class="line r"></i>unresolved proposed relation</span>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <strong class="ct">Control chooses and authorizes work.</strong>
+        <span>Question &rarr; kind &rarr; protocol &rarr; shape &rarr; confirmed execution.</span>
+      </div>
+      <div class="rule">
+        <strong class="mt">Content crosses only through Fabric.</strong>
+        <span>Fabric addresses, seals, validates, and delivers; it does not rewrite or rank.</span>
+      </div>
+      <div class="rule">
+        <strong class="et">Evidence becomes durable only through Record.</strong>
+        <span>Every act yields an event; an empty-payload act still leaves an attributable fact.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="disclosures" aria-label="Progressive architecture detail">
+    <details>
+      <summary>Eight services: responsibility and derivation</summary>
+      <div class="body">
+        <table>
+          <thead><tr><th>Group</th><th>Service</th><th>Responsibility</th><th>Demand</th></tr></thead>
+          <tbody>
+            <tr><td>Remember</td><td>Identity</td><td>Mint identities; own typed relations.</td><td>R1, R7</td></tr>
+            <tr><td>Remember</td><td>Record</td><td>Own the append-only account of what occurred.</td><td>R6</td></tr>
+            <tr><td>Remember</td><td>Prompts</td><td>Hold versioned, typed instructions.</td><td>R3</td></tr>
+            <tr><td>Decide</td><td>Classifier</td><td>Determine the kind of work.</td><td>R2</td></tr>
+            <tr><td>Decide</td><td>Protocol</td><td>Hold the canonical versioned sequence per kind.</td><td>R2</td></tr>
+            <tr><td>Decide</td><td>Compiler</td><td>Produce confirmable shape and machine plan.</td><td>R3</td></tr>
+            <tr><td>Run</td><td>Execution</td><td>Resolve prompts at runtime; collect returns.</td><td>R3</td></tr>
+            <tr><td>Run</td><td>Fabric</td><td>Address, seal, deliver, validate, budget, record; never author.</td><td>R4, R5</td></tr>
+          </tbody>
+        </table>
+        <p class="truth">
+          <span class="badge source">Essay-backed</span>
+          The eight-to-seven correspondence is the hypothesis's main testable claim. A requirement
+          with no service, or a service demanded by none, counts against it.
+        </p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Flow contracts: control, content, and evidence</summary>
+      <div class="body">
+        <div class="cards">
+          <article class="card">
+            <h3 class="ct">Control</h3>
+            <p>The plan is checked against the human-confirmed digest before firing. Extra steps fail closed.</p>
+          </article>
+          <article class="card">
+            <h3 class="mt">Content</h3>
+            <p>Fabric may hold a sealed judgment; it may not rewrite, summarize, choose recipients, or rank.</p>
+          </article>
+          <article class="card">
+            <h3 class="et">Evidence</h3>
+            <p>Every act yields an event with axes, binding, and lineage. Durable facts enter only through Record.</p>
+          </article>
+        </div>
+        <table>
+          <thead><tr><th>Invariant</th><th>Enforcement</th><th>Standing</th></tr></thead>
+          <tbody>
+            <tr><td>Confirmed equals executed</td><td>Digest check before Execution</td><td class="critical">D3 CRITICAL</td></tr>
+            <tr><td>Judgment unreadable before release</td><td>Fabric holds under recipient condition</td><td>D5 OPEN</td></tr>
+            <tr><td>What was said is what is read</td><td>Fabric transports, never authors</td><td class="resolved">D6 RESOLVED</td></tr>
+            <tr><td>Durable facts have one writer</td><td>Record ingress; corrections append</td><td>Given contract</td></tr>
+          </tbody>
+        </table>
+        <p class="truth">
+          <span class="badge interpretation">Diagram interpretation</span>
+          “Control / content / evidence” is this perspective's analytical split. The mechanics are
+          essay-backed; the three-flow model is not a source term.
+        </p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Boundaries and unresolved authority</summary>
+      <div class="body">
+        <div class="cards">
+          <article class="card">
+            <h3>Inside</h3>
+            <p>Eight responsibility boundaries; digest enforcement; sealed delivery; append-only recording.</p>
+          </article>
+          <article class="card">
+            <h3>Outside</h3>
+            <p>Human and agent workers; current implementation; storage, schemas, APIs, scaling, and deployment.</p>
+          </article>
+          <article class="card">
+            <h3>Unowned</h3>
+            <p>Term definitions (no ontology-view) and authority ownership (D9).</p>
+          </article>
+        </div>
+        <p class="callout">
+          <strong>Boundary warning.</strong> Authority is not drawn as a ninth service. D9 permits
+          either a service or a Record property and chooses neither. Settling it visually would erase
+          the hypothesis's most visible hole.
+        </p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Decision standing: resolved, open, and critical</summary>
+      <div class="body">
+        <table>
+          <thead><tr><th>ID</th><th>Stance</th><th>Status</th><th>Architecture consequence</th></tr></thead>
+          <tbody>
+            <tr><td>D1</td><td>Identity basis</td><td>OPEN</td><td>Minted identity independent of placement proposed.</td></tr>
+            <tr><td>D2</td><td>Protocol mutability</td><td>OPEN</td><td>Immutable per version proposed.</td></tr>
+            <tr><td>D3</td><td>Confirmation topology</td><td class="critical">CRITICAL</td><td>Wrong means confirmation is decorative.</td></tr>
+            <tr><td>D4</td><td>Prompt binding time</td><td>OPEN</td><td>Freeze binding/version, not rendered text.</td></tr>
+            <tr><td>D5</td><td>Release condition</td><td>OPEN</td><td>Recipient condition proposed; failure unspecified.</td></tr>
+            <tr><td>D6</td><td>Fabric authority</td><td class="resolved">RESOLVED</td><td>Transport never authors.</td></tr>
+            <tr><td>D7</td><td>Record totality</td><td>OPEN</td><td>Every act yields an event.</td></tr>
+            <tr><td>D8</td><td>Relation composition</td><td>OPEN</td><td>Only direct relations attributable for now.</td></tr>
+            <tr><td>D9</td><td>Authority ownership</td><td class="critical">CRITICAL</td><td>No owning service or settled Record contract.</td></tr>
+          </tbody>
+        </table>
+        <p class="callout">
+          <strong>Do not read this as accepted architecture.</strong> The source is
+          <code>authority: proposal-only</code>; six decision rows record no repository gate, and
+          the vocabulary has no owning ontology-view.
+        </p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Evidence boundary: fact versus visual interpretation</summary>
+      <div class="body">
+        <table>
+          <thead><tr><th>Visual claim</th><th>Boundary</th><th>Basis</th></tr></thead>
+          <tbody>
+            <tr><td>Eight services in three groups</td><td class="source">Essay-backed</td><td>Section 5</td></tr>
+            <tr><td>Fabric mediates but is not a pipeline step</td><td class="source">Essay-backed</td><td>Section 5; D6</td></tr>
+            <tr><td>Record is the sole durable-fact ingress</td><td class="source">Essay-backed</td><td>Section 10</td></tr>
+            <tr><td>Two confirmations, one digest</td><td class="source">Essay-backed proposal</td><td>D3; section 11</td></tr>
+            <tr><td>Actors outside the service boundary</td><td class="interpretation">Interpretation</td><td>Responsibility reading</td></tr>
+            <tr><td>Three colored flows and exact routes</td><td class="interpretation">Interpretation</td><td>Visual composition</td></tr>
+            <tr><td>Authority outside the service count</td><td class="interpretation">Interpretation</td><td>D9 remains undecided</td></tr>
+          </tbody>
+        </table>
+        <p class="truth">
+          Omitted because the source does not own them: storage technology, network topology, APIs,
+          schemas, enums, failure codes, runtime wiring, scaling, trust zones, and deployment units.
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <strong>Mode:</strong> architecture &middot; <strong>Renderer:</strong> L0 static HTML/CSS/inline SVG
+    &middot; <strong>Interaction:</strong> overview with progressive disclosure &middot;
+    <strong>Source:</strong> <code>essay.md</code> v0.2.0 and the existing infrastructure x-ray precedent
+    &middot; no remote dependencies. The x-ray skill's referenced YAML visual library is absent, so
+    this page uses a custom boundary-and-flow pattern and labels its interpretive choices.
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,234 @@
+{
+  "xray_version": "0.2.0-seed",
+  "example_id": "target-architecture-hypothesis-infrastructure",
+  "mode": "architecture",
+  "target_boundary": "The eight services proposed by the target-architecture-hypothesis essay (Identity, Record, Prompts, Classifier, Protocol, Compiler, Execution, Fabric), their internal wiring, the path one question takes through them, and the requirement each service exists to satisfy. Excludes storage design, identifier schemes, and any current repository implementation.",
+  "renderer_level": "L0",
+  "layer_interaction": ["stacked", "isolate", "compare"],
+  "reader_contract": {
+    "reader_baseline": "working-reader",
+    "target_public": "The repository owner deciding whether to build this infrastructure, and any reviewer attacking the proposal.",
+    "assumed_knowledge": "That agents are dispatched in fan-outs and that the results are recorded. No knowledge of this repository's current implementation, ledger, hooks or telemetry is assumed or required.",
+    "reader_reward": "Sees the eight proposed services, which requirement each one exists to satisfy, the single human gate, and the two places the proposal is load-bearing and unfinished — without reading the six-page essay.",
+    "opening_contract": {
+      "must_start_with": "What the eight services are and how they group.",
+      "must_not_start_with": "Contracts, digest mechanics, decision-row identifiers, or any description of what the repository currently has.",
+      "failure_message": "This x-ray opened on mechanics or on current-state inventory instead of on the proposed shape; re-order so the component map is the first thing the reader meets."
+    }
+  },
+  "reader_terms": [
+    {
+      "term": "shape",
+      "plain_meaning": "The concrete set of steps and their connections for one question — the thing a human reads and confirms.",
+      "why_it_matters": "Requirement R3 is entirely about the confirmed shape and the executed plan being the same thing; the word carries that whole claim.",
+      "source_or_lane": "components",
+      "authority": "explanatory",
+      "misuse_warning": "Do not conflate it with the machine plan derived from it. R3 exists precisely because those are two objects that must agree."
+    },
+    {
+      "term": "digest",
+      "plain_meaning": "A fingerprint of exactly what a human confirmed, which the machine's plan must match before anything runs.",
+      "why_it_matters": "It is the only mechanism named that makes confirmation enforceable rather than ceremonial.",
+      "source_or_lane": "internal_dependencies",
+      "authority": "explanatory",
+      "misuse_warning": "It does not cover the rendered instruction text — only the version binding. Assuming otherwise misreads decision D4."
+    },
+    {
+      "term": "sealed",
+      "plain_meaning": "A judgment that has been sent but cannot be read yet, because the condition for releasing it has not been met.",
+      "why_it_matters": "It is how independence between agents is made structural instead of merely requested.",
+      "source_or_lane": "flow",
+      "authority": "explanatory",
+      "misuse_warning": "Sealed does not mean unaddressed. It is addressed to its aggregation point under an unmet condition — reading it as 'no recipient' is the error decision D5 corrects."
+    },
+    {
+      "term": "single writer",
+      "plain_meaning": "Durable facts enter through the Record and nowhere else.",
+      "why_it_matters": "Identity and Record are referenced by everything, which is why a defect in either is systemic rather than local.",
+      "source_or_lane": "internal_dependencies",
+      "authority": "explanatory",
+      "misuse_warning": "Let another service persist facts too and you get two sources of truth, discovered later by contradiction."
+    },
+    {
+      "term": "decision row (D1-D9)",
+      "plain_meaning": "One of nine numbered stances the essay names and then decides exactly once.",
+      "why_it_matters": "The status and the authority of a row are separate facts, and conflating them makes a proposal look settled.",
+      "source_or_lane": "risk_questions",
+      "authority": "explanatory",
+      "misuse_warning": "A row is not settled fact. Six of the nine cite no repository gate at all."
+    },
+    {
+      "term": "CRITICAL",
+      "plain_meaning": "An unresolved question the proposal does not survive being wrong about.",
+      "why_it_matters": "Separates the two rows a decision-maker must weigh now from the seven that can wait.",
+      "source_or_lane": "risk_questions",
+      "authority": "explanatory",
+      "misuse_warning": "Not a severity rating for a bug. Nothing is broken; these are gaps in a proposal that has never run."
+    }
+  ],
+  "term_authority_note": "No reader term is marked source-backed. The essay states in §8 and §12 that its terms are provisional and unowned, and that no ontology-view exists to own them; these glosses are therefore this x-ray's own explanations, rendered as such in the HTML.",
+  "layer_reader_outcomes": [
+    {
+      "layer": "surface",
+      "as_a_reader": "I see eight boxes in three groups, each tagged with the requirements it serves.",
+      "should_understand": "What the proposed system is made of, and that a ninth box — authority — is drawn in red because nothing provides it.",
+      "because_it_matters_for": "Judging whether the service list is complete before looking at any wiring."
+    },
+    {
+      "layer": "flow",
+      "as_a_reader": "I follow one question from a human through classification, compilation, a single confirmation gate, execution, agents, and into the record.",
+      "should_understand": "That there is exactly one human gate and exactly one irreversible moment, and that the record is written throughout rather than at the end.",
+      "because_it_matters_for": "Seeing where a person actually intervenes, and where replay data comes from."
+    },
+    {
+      "layer": "internal_dependencies",
+      "as_a_reader": "I see which service depends on which, and which edge the digest guards.",
+      "should_understand": "That every other service references Identity and writes only to Record, so a defect in either is systemic rather than local.",
+      "because_it_matters_for": "Knowing which two components to get right first if this is built."
+    },
+    {
+      "layer": "risk_questions",
+      "as_a_reader": "I read all nine decision rows with their status and whether each has a repository gate, then five ways the hypothesis could be wrong.",
+      "should_understand": "That two rows are CRITICAL, that both fail silently, and that six of the nine have no repository gate behind them.",
+      "because_it_matters_for": "Deciding whether to build, refine, or attack the proposal next."
+    }
+  ],
+  "readability_dynamics": {
+    "max_words_per_paragraph": 70,
+    "max_consecutive_dense_blocks": 2,
+    "require_scan_anchor_every_n_blocks": 2,
+    "allowed_visual_treatments": [
+      "inline-svg-diagram",
+      "evidence-inference-badge",
+      "comparison-table",
+      "layer-toggle",
+      "requirement-tag"
+    ]
+  },
+  "lanes": {
+    "surface": {
+      "handle": "surface.summary",
+      "evidence": [
+        "The essay proposes a small set of services whose joint output is one durable, connected record of everything that was done.",
+        "Services are grouped as Remembering, Deciding what to run, and Running it.",
+        "authority: proposal-only — nothing here describes a running system."
+      ],
+      "inference": [
+        "The inspection goal is to see the proposal's wiring at a level the essay's prose leaves implicit."
+      ]
+    },
+    "properties": {
+      "handle": "properties.catalog",
+      "evidence": [
+        "R1 a thing stays addressable when its description changes",
+        "R2 two runs of the same kind are comparable",
+        "R3 the confirmed thing and the executed thing are the same thing",
+        "R4 an independent judgment is not visible to peers before it is fixed",
+        "R5 what was said is what is read",
+        "R6 what happened is recoverable later",
+        "R7 a connection means something specific",
+        "Given/Optimised/Accumulated layering: requirements and single-writer are given; protocol sequences, templates, angles, budgets and release policy are optimised; events, emissions and digests only accumulate."
+      ],
+      "inference": [
+        "R1, R6 and R7 are existence properties of the record; R2 through R5 are trust properties.",
+        "Every requirement is a property of the record rather than of any one service."
+      ]
+    },
+    "components": {
+      "handle": "components.map",
+      "evidence": [
+        "Identity — mints identities and owns typed relations (R1, R7)",
+        "Record — append-only account of what occurred (R6)",
+        "Prompts — versioned typed instructions addressable by version (R3)",
+        "Classifier — determines the kind of work (R2)",
+        "Protocol — canonical versioned sequence per kind (R2)",
+        "Compiler — protocol plus question produces confirmed shape and machine plan (R3)",
+        "Execution — resolves instructions at run time, collects returns (R3)",
+        "Fabric — addresses, delivers, seals, checks shape, records (R4, R5)"
+      ],
+      "inference": [
+        "The Fabric is orthogonal rather than sequential: it is present during every step and is a step in none.",
+        "No service in the essay owns authority; decision row D9 records this as an open hole."
+      ]
+    },
+    "internal_dependencies": {
+      "handle": "dependencies.internal",
+      "evidence": [
+        "Classifier feeds Protocol; Protocol plus question feeds Compiler; Compiler feeds Execution.",
+        "The machine-consumed plan is a pure function of the confirmed shape (D3).",
+        "The digest closes over the confirmed shape, the protocol version, and every (prompt@version, format@version) binding.",
+        "Execution resolves instructions against Prompts at run time; the digest freezes the binding, not the rendered text (D4).",
+        "Every service names things through Identity.",
+        "Durable facts enter through the Record and nowhere else — single writer."
+      ],
+      "inference": [
+        "Identity and Record are referenced by every other service, which is why a defect in either is systemic rather than local.",
+        "The Compiler-to-Execution edge is the one the digest check guards; it is where D3 either holds or fails."
+      ]
+    },
+    "external_dependencies": {
+      "handle": "dependencies.external",
+      "evidence": [
+        "A human confirmation gate sits between the Compiler and Execution — two confirmations, one digest (D3).",
+        "Agents are external actors that emit through the Fabric.",
+        "Owner direction from session 2026-07-27 is the cited authority for D4 and D6.",
+        "The work-context system-view essay is the cited authority for D1 and D8.",
+        "Term meanings are unowned: no ontology-view exists."
+      ],
+      "inference": [
+        "The missing ontology-view is an external dependency that is currently unsatisfied rather than merely deferred.",
+        "Authority (D9) would, if it becomes a service, add a ninth component and change this diagram."
+      ]
+    },
+    "flow": {
+      "handle": "flow.graph",
+      "evidence": [
+        "A question is classified, a protocol version is selected, a work shape is compiled, a human confirms it, the digest is fired, execution resolves prompts and dispatches agents, agents emit through the fabric, sealed judgments are held until their release condition is met, and events land in the record.",
+        "Release lives on the recipient: a sealed judgment is addressed to its aggregation point under a condition not yet met (D5).",
+        "Every act produces an event; not every act carries content (D7)."
+      ],
+      "inference": [
+        "The flow has exactly one human gate and exactly one irreversible point — firing the digest.",
+        "The record is written throughout rather than at the end, which is what makes replay possible."
+      ]
+    },
+    "lifecycle": {
+      "handle": "lifecycle.timeline",
+      "evidence": [
+        "A protocol is immutable per version; adapting means choosing another version or authoring a new one (D2).",
+        "Confirmation happens before execution and covers a digest that execution must match.",
+        "The record is append-only; corrections append rather than rewrite.",
+        "Accumulated state only grows and is sufficient to replay."
+      ],
+      "inference": [
+        "A dispatch passes through: classified, compiled, confirmed, fired, executing, sealed, released, aggregated, recorded.",
+        "Only the confirmed-to-fired transition is guarded by a digest check; the others are guarded by nothing named in the essay."
+      ]
+    },
+    "risk_questions": {
+      "handle": "risk.questions",
+      "evidence": [
+        "D3 confirmation-topology is CRITICAL: if the executed shape can differ from the confirmed one, every confirmation is theatre.",
+        "D9 authority-ownership is CRITICAL: the surface requires work to run under authority and no service provides it.",
+        "Six of nine decision rows cite no repository gate.",
+        "Term meanings are unowned; no ontology-view exists.",
+        "D8 relation-composition is undecided: which relation paths license a derived conclusion is not settled."
+      ],
+      "inference": [
+        "The two CRITICAL rows fail silently rather than loudly, which makes them more expensive than the open rows.",
+        "A requirement with no service is the hypothesis's own stated refutation condition, and D9 is a live instance of it."
+      ]
+    },
+    "visual_composition": {
+      "handle": "visual.model",
+      "evidence": [
+        "L0 static HTML with inline SVG and no remote references.",
+        "Layer toggles for surface, flow, dependencies and risk; layers stack by default and can be isolated or compared."
+      ],
+      "inference": [
+        "Colour separates the three service groups; dashed strokes mark edges that are proposals rather than owner-confirmed.",
+        "Requirement tags are rendered on each component so the derivation claim stays visible in the picture."
+      ]
+    }
+  }
+}
