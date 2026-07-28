@@ -1,0 +1,36 @@
+{
+  "dispatch_id": "2026-07-27-research-lifecycle-canonical-kinds",
+  "schema_version": "0.6.1",
+  "dispatch_type": "research",
+  "goal": "Extract the reusable discovery/research node, generation, field, and edge semantics from domainspec-core CANONICAL-KINDS, while distinguishing declared contracts from demonstrated use and drift.",
+  "context": "Cyberalchemy needs a minimal schema in which every registered node has an identifiable generation process and supported relations. The owner fixes artifact_kind as the single kind field and hypothesizes that users may evolve their own kinds and edges from soft schemas toward categorical composition; the universal invariant candidate is the existence of frontmatter and edges. The first bounded case is the lifecycle from research initial definitions through collected research to findings, before a later research connects micro tasks to macro context. The scouts must bring only source-grounded evidence from the frozen domainspec-core canonical-kind corpus and must not declare a local canonical schema.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "working_folder": "research/research-lifecycle-definitions/",
+  "groups": [
+    {
+      "group_id": "canonical-kinds-scouts",
+      "n": 2,
+      "anti_bias": "composite: methodology and source-corpus - formal/schema reconstruction of normative declarations versus historical/empirical reconstruction of instances, sessions, reviews, and drift",
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 3500,
+          "angle": "formal/schema reconstruction over CANONICAL-KINDS.md, ALLOWED-EDGES.yaml, EDGES.yaml, the instance-contract session, and the authority review; prioritize declared types, invariants, generators, validators, allowed values, and endpoint constraints",
+          "initial_prompt": "Read the frozen task context and the specified domainspec-core canonical-kind corpus. Examine BOTH discovery and research. The owner has fixed one local naming constraint: node_type and artifact_kind are the same concept, and the single field is artifact_kind. Treat as a hypothesis, not a conclusion, that users may choose and evolve their own artifact kinds and edges, while the universal invariant is only that registered artifacts have frontmatter and edges; progressively stronger schemas may eventually support categorical types, morphisms, and composition without becoming immutable. Reconstruct the normative contract: what counts as a registered node, what process creates it, which fields exist and who generates them, which values are closed or open, which edges are allowed, which source/target constraints apply, and where authority or validation lives. Separate direct source facts from your interpretation. Identify what is portable to cyberalchemy-orchestrator, what is domainspec-core-specific, and any contradiction with local ontology-conventions.md. Write only research/research-lifecycle-definitions/evidence/canonical-kinds-normative-scout.md. Every load-bearing statement must cite an exact source path and selector or line. Do not edit sources and do not declare a canonical local schema. Return a concise handoff naming the file, strongest reusable elements, and blockers."
+        },
+        {
+          "agent_name": "Nonaka, Ikujiro",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 3500,
+          "angle": "historical/empirical reconstruction over canonical-kind instances, evidence-edge sessions, attacks, findings, and declared EDGES; prioritize what was actually generated, related, accepted, contested, or found to drift",
+          "initial_prompt": "Read the frozen task context and the specified domainspec-core canonical-kind corpus. Examine BOTH discovery and research. The owner has fixed one local naming constraint: node_type and artifact_kind are the same concept, and the single field is artifact_kind. Treat as a hypothesis, not a conclusion, that users may choose and evolve their own artifact kinds and edges, while the universal invariant is only that registered artifacts have frontmatter and edges; progressively stronger schemas may eventually support categorical types, morphisms, and composition without becoming immutable. Trace demonstrated use rather than assuming declarations are effective: find actual generation flows, instance contracts, evidence edges, authority disputes, drift, missing witnesses, and lifecycle transitions. Test whether the declared kind and edge vocabulary is sufficient for the observed cases. Separate direct source facts from interpretation. Identify what can be reused in cyberalchemy-orchestrator and what would import hidden assumptions. Write only research/research-lifecycle-definitions/evidence/canonical-kinds-usage-scout.md. Every load-bearing statement must cite an exact source path and selector or line. Do not edit sources and do not declare a canonical local schema. Return a concise handoff naming the file, strongest demonstrated lessons, and blockers."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

@@ -1,0 +1,7 @@
+User authorization, 2026-07-27:
+
+"nao precisa mudar nada agora, tranquilo, depois vemos isso, só invoque os subagentes.
+
+O que é importante entender aqui: uma das hipóteses é que devemos deixar o usuário escolher seus tipos e conexões (eles vao poder usar o nosso, mas nao é isso que vai ser invariante, o que vai ser invariante é existir o frontmatter e as edges). A hipótese é que o usuário vai começar com uma definição branda e pouco estruturada, e construir esse schema até ele chegar numa categoria, que vai ser o nível máximo de definição (ainda vai ter a liberdade de atualizar o schema, mas já vai ter regras de composição, tipos e morfismos).
+
+Estou falando só para dar mais contexto do que estamos pensando. Pode disparar os scouts."

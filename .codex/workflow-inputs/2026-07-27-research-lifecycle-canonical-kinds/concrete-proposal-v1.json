@@ -1,0 +1,209 @@
+{
+  "projection_schema_version": "concrete-dispatch-proposal/v1",
+  "proposal_id": "2026-07-27-research-lifecycle-canonical-kinds-concrete-v1",
+  "structural_ref": ".codex/workflow-inputs/2026-07-27-research-lifecycle-canonical-kinds/structural-proposal-v1.json",
+  "dispatch_record": {
+    "dispatch_id": "2026-07-27-research-lifecycle-canonical-kinds",
+    "schema_version": "0.6.1",
+    "dispatch_type": "research",
+    "goal": "Extract the reusable discovery/research node, generation, field, and edge semantics from domainspec-core CANONICAL-KINDS, while distinguishing declared contracts from demonstrated use and drift.",
+    "context": "Cyberalchemy needs a minimal schema in which every registered node has an identifiable generation process and supported relations. The owner has decided that node_type and artifact_kind are the same concept and that the single direct field name is artifact_kind; this initial node is artifact_kind: research-initial-definitions. The working hypothesis is that users may choose and evolve their own artifact kinds and edge vocabularies: the invariant candidate is the existence of frontmatter and edges, while schemas may begin soft and become progressively constrained until they support categorical composition, types, and morphisms without losing the ability to evolve. The first bounded case is the lifecycle from research initial definitions through collected research to findings; a later research will connect micro tasks to macro context. ontology-conventions.md is the local baseline, but current research artifacts use inconsistent frontmatter and connections. The scouts must bring only source-grounded evidence from the frozen domainspec-core canonical-kind corpus and must not declare a local canonical schema.",
+    "max_loops": 1,
+    "final_approver": "parent",
+    "working_folder": "research/research-lifecycle-definitions/",
+    "groups": [
+      {
+        "group_id": "canonical-kinds-scouts",
+        "n": 2,
+        "anti_bias": "composite: methodology and source-corpus - formal/schema reconstruction of normative declarations versus historical/empirical reconstruction of instances, sessions, reviews, and drift",
+        "agents": [
+          {
+            "seat_id": "normative-scout",
+            "agent_name": "Liskov, Barbara",
+            "role": "explorer",
+            "model": "gpt-5.6-terra",
+            "token_budget": 3500,
+            "angle": "formal/schema reconstruction over CANONICAL-KINDS.md, ALLOWED-EDGES.yaml, EDGES.yaml, the instance-contract session, and the authority review; prioritize declared types, invariants, generators, validators, allowed values, and endpoint constraints",
+            "prompt_template": "Read the frozen task context and the specified domainspec-core canonical-kind corpus. Examine BOTH discovery and research. The owner has fixed one local naming constraint: node_type and artifact_kind are the same concept, and the single field is artifact_kind. Treat as a hypothesis, not a conclusion, that users may choose and evolve their own artifact kinds and edges, while the universal invariant is only that registered artifacts have frontmatter and edges; progressively stronger schemas may eventually support categorical types, morphisms, and composition without becoming immutable. Reconstruct the normative contract: what counts as a registered node, what process creates it, which fields exist and who generates them, which values are closed or open, which edges are allowed, which source/target constraints apply, and where authority or validation lives. Separate direct source facts from your interpretation. Identify what is portable to cyberalchemy-orchestrator, what is domainspec-core-specific, and any contradiction with local ontology-conventions.md. Write only research/research-lifecycle-definitions/evidence/canonical-kinds-normative-scout.md. Every load-bearing statement must cite an exact source path and selector or line. Do not edit sources and do not declare a canonical local schema. Return a concise handoff naming the file, strongest reusable elements, and blockers.",
+            "response_contract": {
+              "persisted_path": "research/research-lifecycle-definitions/evidence/canonical-kinds-normative-scout.md",
+              "required_sections": [
+                "Sources inspected",
+                "Direct contract evidence",
+                "Discovery and research generation processes",
+                "Fields and valid values",
+                "Edge and endpoint rules",
+                "Reusable versus local-only",
+                "Contradictions and gaps"
+              ]
+            },
+            "capability_profile": {
+              "requested_provider": "openai",
+              "requested_model": "gpt-5.6-terra",
+              "requested_adapter": "collaboration.spawn_agent",
+              "token_budget": 3500,
+              "read_scope": [
+                {"path": "research/research-lifecycle-definitions/research-initial-definitions.md", "sha256": "sha256:7918e47e131cf88e77295db7141b02b4979f517eaefa6e81e4c09e7ec33238bd", "size_bytes": 6575},
+                {"path": "vault/ontology-conventions.md", "sha256": "sha256:04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef", "size_bytes": 25720},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/CANONICAL-KINDS.md", "sha256": "sha256:707e0cfe72c9baa32b2c1690682d13ee482abeaddbe6a6e5ebb40f6257ea016f", "size_bytes": 46693},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/ALLOWED-EDGES.yaml", "sha256": "sha256:500851b158e5c286a45ce50a99a7010e58ede6d7702cbf148c0f9db24a0224b8", "size_bytes": 2202},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/EDGES.yaml", "sha256": "sha256:f3ed1ed8a6452b5b8c200eadf184b2bf937b919440c26dcfa726fa334752e0d1", "size_bytes": 9673},
+                {"path": "../domainspec-core/sessions/2026-07-13-1624-canonical-kinds-instance-contract.md", "sha256": "sha256:625630f7237f6b7de49b162ed73e5ad0daeb55dda1bdec3a148438ab9cb8bcdf", "size_bytes": 8411},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/reviews/2026-07-13-authority-vs-canonical-kinds/findings.md", "sha256": "sha256:74e3e0080e0a579aee24a4d2c20d1bb08dc1f88f3238ff9f144e4fbd7b811b38", "size_bytes": 18671}
+              ],
+              "sibling_repo_read": {
+                "root": "../domainspec-core",
+                "mode": "exact-files-only",
+                "write": "denied"
+              },
+              "write_scope": [
+                "research/research-lifecycle-definitions/evidence/canonical-kinds-normative-scout.md"
+              ],
+              "command_classes": [
+                "read enumerated paths",
+                "search text only within enumerated paths",
+                "create or edit only the assigned output"
+              ],
+              "forbidden": [
+                "execute sibling-repo scripts",
+                "mutate Git",
+                "call network or external tools",
+                "write any non-assigned path"
+              ]
+            }
+          },
+          {
+            "seat_id": "usage-scout",
+            "agent_name": "Nonaka, Ikujiro",
+            "role": "explorer",
+            "model": "gpt-5.6-terra",
+            "token_budget": 3500,
+            "angle": "historical/empirical reconstruction over canonical-kind instances, evidence-edge sessions, attacks, findings, and declared EDGES; prioritize what was actually generated, related, accepted, contested, or found to drift",
+            "prompt_template": "Read the frozen task context and the specified domainspec-core canonical-kind corpus. Examine BOTH discovery and research. The owner has fixed one local naming constraint: node_type and artifact_kind are the same concept, and the single field is artifact_kind. Treat as a hypothesis, not a conclusion, that users may choose and evolve their own artifact kinds and edges, while the universal invariant is only that registered artifacts have frontmatter and edges; progressively stronger schemas may eventually support categorical types, morphisms, and composition without becoming immutable. Trace demonstrated use rather than assuming declarations are effective: find actual generation flows, instance contracts, evidence edges, authority disputes, drift, missing witnesses, and lifecycle transitions. Test whether the declared kind and edge vocabulary is sufficient for the observed cases. Separate direct source facts from interpretation. Identify what can be reused in cyberalchemy-orchestrator and what would import hidden assumptions. Write only research/research-lifecycle-definitions/evidence/canonical-kinds-usage-scout.md. Every load-bearing statement must cite an exact source path and selector or line. Do not edit sources and do not declare a canonical local schema. Return a concise handoff naming the file, strongest demonstrated lessons, and blockers.",
+            "response_contract": {
+              "persisted_path": "research/research-lifecycle-definitions/evidence/canonical-kinds-usage-scout.md",
+              "required_sections": [
+                "Sources inspected",
+                "Observed generation and lifecycle",
+                "Observed discovery/research nodes",
+                "Observed edges and evidence",
+                "Declared-versus-used gaps",
+                "Reusable versus hidden assumptions",
+                "Contradictions and gaps"
+              ]
+            },
+            "capability_profile": {
+              "requested_provider": "openai",
+              "requested_model": "gpt-5.6-terra",
+              "requested_adapter": "collaboration.spawn_agent",
+              "token_budget": 3500,
+              "read_scope": [
+                {"path": "research/research-lifecycle-definitions/research-initial-definitions.md", "sha256": "sha256:7918e47e131cf88e77295db7141b02b4979f517eaefa6e81e4c09e7ec33238bd", "size_bytes": 6575},
+                {"path": "vault/ontology-conventions.md", "sha256": "sha256:04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef", "size_bytes": 25720},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/CANONICAL-KINDS.md", "sha256": "sha256:707e0cfe72c9baa32b2c1690682d13ee482abeaddbe6a6e5ebb40f6257ea016f", "size_bytes": 46693},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/EDGES.yaml", "sha256": "sha256:f3ed1ed8a6452b5b8c200eadf184b2bf937b919440c26dcfa726fa334752e0d1", "size_bytes": 9673},
+                {"path": "../domainspec-core/sessions/2026-07-13-2225-canonical-kinds-evidence-edges.md", "sha256": "sha256:29ff33045c20e21327727a0c06ce231e57800751ad1e2a2bf3de769703940609", "size_bytes": 6823},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/reviews/2026-07-13-authority-vs-canonical-kinds/findings.md", "sha256": "sha256:74e3e0080e0a579aee24a4d2c20d1bb08dc1f88f3238ff9f144e4fbd7b811b38", "size_bytes": 18671},
+                {"path": "../domainspec-core/cyberAlchemy-v2/ontology/reviews/2026-07-13-authority-vs-canonical-kinds/attacks.md", "sha256": "sha256:0c5a251bec91a5e5caaa05731f259c16510ff2452f4b23f424648dce2d5d2b0b", "size_bytes": 52858}
+              ],
+              "sibling_repo_read": {
+                "root": "../domainspec-core",
+                "mode": "exact-files-only",
+                "write": "denied"
+              },
+              "write_scope": [
+                "research/research-lifecycle-definitions/evidence/canonical-kinds-usage-scout.md"
+              ],
+              "command_classes": [
+                "read enumerated paths",
+                "search text only within enumerated paths",
+                "create or edit only the assigned output"
+              ],
+              "forbidden": [
+                "execute sibling-repo scripts",
+                "mutate Git",
+                "call network or external tools",
+                "write any non-assigned path"
+              ]
+            }
+          }
+        ],
+        "pairwise_evidence": [
+          "Liskov runs formal/schema reconstruction over canonical declarations, while Nonaka runs historical/empirical reconstruction over instances, sessions, reviews, and drift on a methodology-plus-source-corpus composite axis; a bias internal to Liskov toward treating declarations as effective would be exposed by Nonaka's usage evidence, while a bias internal to Nonaka toward treating observed accidents as intended semantics would be exposed by Liskov's normative constraints."
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "path": "research/research-lifecycle-definitions/research-initial-definitions.md",
+      "sha256": "sha256:7918e47e131cf88e77295db7141b02b4979f517eaefa6e81e4c09e7ec33238bd",
+      "size_bytes": 6575
+    },
+    {
+      "path": "vault/ontology-conventions.md",
+      "sha256": "sha256:04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef",
+      "size_bytes": 25720
+    },
+    {
+      "path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/CANONICAL-KINDS.md",
+      "sha256": "sha256:707e0cfe72c9baa32b2c1690682d13ee482abeaddbe6a6e5ebb40f6257ea016f",
+      "size_bytes": 46693
+    },
+    {
+      "path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/ALLOWED-EDGES.yaml",
+      "sha256": "sha256:500851b158e5c286a45ce50a99a7010e58ede6d7702cbf148c0f9db24a0224b8",
+      "size_bytes": 2202
+    },
+    {
+      "path": "../domainspec-core/cyberAlchemy-v2/ontology/canonical-kinds/EDGES.yaml",
+      "sha256": "sha256:f3ed1ed8a6452b5b8c200eadf184b2bf937b919440c26dcfa726fa334752e0d1",
+      "size_bytes": 9673
+    },
+    {
+      "path": "../domainspec-core/sessions/2026-07-13-1624-canonical-kinds-instance-contract.md",
+      "sha256": "sha256:625630f7237f6b7de49b162ed73e5ad0daeb55dda1bdec3a148438ab9cb8bcdf",
+      "size_bytes": 8411
+    },
+    {
+      "path": "../domainspec-core/sessions/2026-07-13-2225-canonical-kinds-evidence-edges.md",
+      "sha256": "sha256:29ff33045c20e21327727a0c06ce231e57800751ad1e2a2bf3de769703940609",
+      "size_bytes": 6823
+    },
+    {
+      "path": "../domainspec-core/cyberAlchemy-v2/ontology/reviews/2026-07-13-authority-vs-canonical-kinds/findings.md",
+      "sha256": "sha256:74e3e0080e0a579aee24a4d2c20d1bb08dc1f88f3238ff9f144e4fbd7b811b38",
+      "size_bytes": 18671
+    },
+    {
+      "path": "../domainspec-core/cyberAlchemy-v2/ontology/reviews/2026-07-13-authority-vs-canonical-kinds/attacks.md",
+      "sha256": "sha256:0c5a251bec91a5e5caaa05731f259c16510ff2452f4b23f424648dce2d5d2b0b",
+      "size_bytes": 52858
+    }
+  ],
+  "capability_review": {
+    "reviewer": "Parnas, David",
+    "initial_verdict": "REVISE",
+    "final_verdict": "PASS",
+    "reviewed_proposal_digest": "sha256:088b0deed8fd781dc16dd7e3d62ebafa7ca9422bdf77546d54f71362b7734e15",
+    "amendments_applied": [
+      "seat-specific write scopes",
+      "enumerated path, digest, and size bindings per seat",
+      "explicit exact-files-only sibling repository scope",
+      "per-seat token budget increased to 3500",
+      "forbidden script, Git, network, external-tool, and cross-seat writes",
+      "dimension-specific enforcement disclosure"
+    ]
+  },
+  "effective_enforcement": {
+    "provider": "requested_not_verified_prelaunch",
+    "model": "requested_not_verified_prelaunch",
+    "adapter": "hook_gated_at_launch",
+    "read_scope": "prompt_constrained_not_sandbox_enforced",
+    "write_scope": "prompt_constrained_not_sandbox_enforced",
+    "network": "requested_denied_not_sandbox_enforced",
+    "external_effects": "requested_denied_not_sandbox_enforced",
+    "git_mutation": "requested_denied_not_sandbox_enforced"
+  },
+  "task_digest": "sha256:7918e47e131cf88e77295db7141b02b4979f517eaefa6e81e4c09e7ec33238bd"
+}

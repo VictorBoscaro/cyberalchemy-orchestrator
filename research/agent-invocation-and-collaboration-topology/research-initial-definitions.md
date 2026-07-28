@@ -3,8 +3,8 @@ tags: [agents, communication-infra, research-brief, invocation, collaboration-to
 node_type: research-initial-definitions
 is_session: false
 status: proposed
-version: 0.9.0
-last_updated: 2026-07-24
+version: 0.10.0
+last_updated: 2026-07-27
 related_plan: plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md
 stream_id: R3-R4
 target_discovery: docs/features/agents-communication-infra/discovery/agent-invocation-and-collaboration-topology.md
@@ -46,6 +46,10 @@ How should one generated Dispatch, composed of groups, named reasoning agents, t
 responsibilities, and communication connections, compile into each agent's actual invocation,
 effective tool access, scheduling dependencies, message permissions, and later mediated inputs
 without creating a second authority beside the human-confirmed runtime Dispatch?
+
+Within that compilation boundary, where should dispatch-type-specific collaboration structure be
+authored, and how can it contribute to a generic graph representation without becoming a separate
+source of execution authority?
 
 ## Confirmed Product Constraints
 
@@ -162,6 +166,17 @@ Existing communication and routing work is also prior art for this research:
   own the upstream questions of time/event/condition triggers, reusable task definitions, and
   mandatory behavior around actions; their eventual authority boundary constrains which Dispatch
   this invocation research may compile.
+- the current
+  [`domainspec-subagents-strategy`](../../.claude/skills/domainspec-subagents-strategy/SKILL.md)
+  workflow contract describes generic groups, seats, connections, and structural and concrete
+  proposal projections, while dispatch-type skills such as
+  [`research`](../../.claude/skills/research/SKILL.md) and
+  [`review`](../../.claude/skills/review/SKILL.md) each describe their own canonical collaboration
+  shape and type-specific judgments; and
+- those workflow documents establish a practical separation between universal routing and
+  type-specific semantics, but they do not yet establish one explicit compilation protocol by
+  which a skill-local canonical shape contributes reusable graph structure to a confirmed runtime
+  Dispatch.
 
 These sources constrain and narrow the research question; they must be cited and tested rather than
 rediscovered. They remain evidence at their declared maturity levels and do not supersede the
@@ -194,6 +209,15 @@ human-confirmed runtime Dispatch as execution authority.
 - The canonical compilation from declared groups and connections into immutable routing edges,
   release gates, responsibility mappings, visibility policies, and per-attempt inputs is not yet
   settled.
+- The ownership boundary for producing a dispatch-type-specific graph is not settled: it is unclear
+  which parts belong to the type skill, the orchestrator's generic graph composition, the generated
+  Dispatch proposal, and the runtime compiler.
+- It is not settled whether canonical shapes should begin as skill-local conventions, reusable
+  topology components, examples of a generic protocol, or some combination, nor what evidence
+  would justify promoting a local shape into shared infrastructure.
+- The minimum generic representation capable of composing type-specific topology constraints,
+  concrete examples, reusable graph components, and runtime compilation without making a skill an
+  independent execution authority is not yet defined.
 - The runtime semantics for fan-out, fan-in, reviewer pairs, discussions, and bounded
   feedback/zig-zag generations are not yet settled consistently across the candidate discoveries
   and the current executable slice.

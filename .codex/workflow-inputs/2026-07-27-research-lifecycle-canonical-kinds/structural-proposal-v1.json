@@ -1,0 +1,42 @@
+{
+  "projection_schema_version": "structural-graph-proposal/v1",
+  "proposal_id": "2026-07-27-research-lifecycle-canonical-kinds-structural-v1",
+  "objective": "Determine what the discovery and research canonical-kind contracts in domainspec-core can contribute to a minimal node, field-generation, and edge model for this repository's research lifecycle.",
+  "boundaries": {
+    "in_scope": [
+      "The discovery and research kinds in the frozen domainspec-core canonical-kind corpus",
+      "Node registration and generation-process implications",
+      "Field provenance, allowed values, validation, authority, and mutability",
+      "Document-to-document edges among initial definitions, research, findings, and surrounding context",
+      "Reusable versus domainspec-core-specific semantics"
+    ],
+    "out_of_scope": [
+      "Declaring a canonical schema for cyberalchemy-orchestrator",
+      "Editing domainspec-core",
+      "Designing the later micro-task to macro-context model",
+      "Broad repository or internet research",
+      "Implementation or runtime mutation"
+    ]
+  },
+  "confirmation_mode": "final_only",
+  "dispatch_type": "research",
+  "working_folder": "research/research-lifecycle-definitions/",
+  "groups": [
+    {
+      "group_id": "canonical-kinds-scouts",
+      "n": 2,
+      "roles": ["explorer", "explorer"],
+      "anti_bias": "composite: methodology and source-corpus",
+      "robot_talks": false,
+      "output_join": "The parent preserves both evidence records, then synthesizes research.md and findings.md with explicit agreements, disagreements, and applicability limits."
+    }
+  ],
+  "connections": [],
+  "max_loops": 1,
+  "final_approver": "parent",
+  "budget_envelope": {
+    "agents": 2,
+    "tokens_per_agent": 3500,
+    "aggregate_tokens": 7000
+  }
+}
