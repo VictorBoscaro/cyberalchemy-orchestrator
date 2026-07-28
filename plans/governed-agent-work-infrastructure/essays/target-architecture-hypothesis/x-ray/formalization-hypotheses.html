@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formal hypotheses for governed agent infrastructure</title>
+  <style>
+    :root {
+      --bg:#090e14; --panel:#101923; --panel2:#142130; --line:#304153;
+      --ink:#edf4fa; --muted:#9cafc0; --blue:#68a9ff; --amber:#f2b45d;
+      --green:#62d39d; --violet:#b59cff; --red:#ff7f78; --yellow:#f4cf70;
+      --shadow:0 18px 55px rgba(0,0,0,.3);
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; color:var(--ink); background:
+        radial-gradient(circle at 84% -5%,rgba(104,169,255,.12),transparent 32rem),
+        radial-gradient(circle at 10% 35%,rgba(181,156,255,.06),transparent 28rem),
+        linear-gradient(180deg,#090e14,#0c141d 52%,#090e14);
+      font:15px/1.62 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    a { color:#9dc9ff; }
+    h1,h2,h3,h4,p { margin-top:0; }
+    h1 { max-width:18ch; margin-bottom:20px; font-size:clamp(2.6rem,6vw,5.6rem); line-height:.96; letter-spacing:-.055em; }
+    h2 { margin-bottom:11px; font-size:clamp(1.55rem,3vw,2.45rem); line-height:1.1; letter-spacing:-.025em; }
+    h3 { margin-bottom:8px; font-size:1.03rem; }
+    h4 { margin-bottom:6px; color:#cfe3f5; font-size:.86rem; letter-spacing:.04em; text-transform:uppercase; }
+    code,pre,.math { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    code { color:#b9d8ff; }
+    .shell { width:min(1380px,calc(100% - 36px)); margin:auto; }
+    header { padding:64px 0 30px; }
+    .eyebrow { color:var(--blue); font-size:.72rem; font-weight:850; letter-spacing:.14em; text-transform:uppercase; }
+    .lead { max-width:82ch; color:#c6d3de; font-size:clamp(1.04rem,1.7vw,1.24rem); }
+    .badges,.nav,.legend,.tags { display:flex; flex-wrap:wrap; gap:8px; }
+    .badges { margin-top:22px; }
+    .badge {
+      display:inline-flex; align-items:center; min-height:26px; padding:3px 9px;
+      border:1px solid var(--line); border-radius:999px; background:#101923;
+      font-size:.7rem; font-weight:850; white-space:nowrap;
+    }
+    .proposal { color:var(--red); border-color:#8f4746; }
+    .formal { color:#8fc9ff; border-color:#466f9d; }
+    .open { color:var(--yellow); border-color:#806b31; }
+    .test { color:var(--green); border-color:#3d8f6d; }
+    .counter { color:#ff9b94; border-color:#8f4746; }
+    .no-evidence { color:#d7b7ff; border-color:#695a9a; }
+    .standing { display:grid; grid-template-columns:1.25fr 1fr 1fr; gap:12px; margin-top:28px; }
+    .standing article,.card,.hypothesis,.test-card,.decision,.warning,.object {
+      padding:17px; border:1px solid var(--line); border-radius:13px; background:rgba(16,25,35,.9);
+    }
+    .standing span { color:var(--muted); font-size:.8rem; }
+    .standing strong { display:block; margin-top:5px; }
+    .nav { margin-top:20px; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .nav a { padding:4px 9px; border-radius:8px; background:#111c28; text-decoration:none; }
+    main { padding-bottom:60px; }
+    .section {
+      margin-top:26px; padding:clamp(22px,4vw,42px); border:1px solid var(--line);
+      border-radius:20px; background:rgba(16,25,35,.94); box-shadow:var(--shadow);
+    }
+    .section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:28px; margin-bottom:24px; }
+    .section-head > p { max-width:58ch; color:var(--muted); }
+    .grid2,.grid3,.grid4,.hypothesis-grid,.tests { display:grid; gap:13px; }
+    .grid2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .grid3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .grid4 { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .hypothesis-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .tests { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .card p,.object p,.decision p,.test-card p { margin-bottom:0; color:var(--muted); }
+    .object { border-top:3px solid var(--blue); }
+    .hypothesis { border-top:3px solid var(--violet); }
+    .hypothesis header { padding:0; display:flex; justify-content:space-between; gap:12px; }
+    .hypothesis p { color:#becbd7; }
+    .hypothesis ul { margin:8px 0 0; padding-left:19px; color:#becbd7; }
+    .test-card { border-top:3px solid var(--green); }
+    .test-card.negative { border-color:var(--red); }
+    .decision { border-left:3px solid var(--yellow); }
+    .warning { border-color:#8f4746; background:#251719; color:#e4c0bd; }
+    .callout {
+      margin-top:18px; padding:15px 18px; border-left:4px solid var(--blue);
+      border-radius:0 10px 10px 0; background:#101c29; color:#cad8e4;
+    }
+    .callout.amber { border-color:var(--amber); background:#211b12; }
+    .callout.risk { border-color:var(--red); background:#251719; }
+    .math {
+      margin:12px 0; padding:14px 16px; overflow:auto; border:1px solid #40576d;
+      border-radius:10px; background:#081019; color:#d5e8f7; font-size:.84rem; line-height:1.65;
+    }
+    .plain { margin-top:-5px; color:#aebdca; font-size:.84rem; }
+    .definition-list { display:grid; grid-template-columns:175px 1fr; gap:8px 14px; margin:12px 0 0; }
+    .definition-list dt { color:#9dc9ff; font:700 .78rem ui-monospace,SFMono-Regular,Consolas,monospace; }
+    .definition-list dd { margin:0; color:#becbd7; font-size:.88rem; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    th,td { padding:10px 9px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:.69rem; letter-spacing:.08em; text-transform:uppercase; }
+    .pipeline { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:8px; margin:18px 0; }
+    .pipeline div { position:relative; padding:13px 10px; border:1px solid #466f9d; border-radius:10px; background:#132132; }
+    .pipeline div:not(:last-child)::after { content:"→"; position:absolute; right:-11px; top:35%; z-index:2; color:var(--blue); font-weight:900; }
+    .pipeline b { display:block; color:#a9d0ff; margin-bottom:4px; font-size:.8rem; }
+    .pipeline small { color:var(--muted); }
+    .layers { display:grid; grid-template-columns:1fr 1.2fr 1fr; gap:14px; align-items:stretch; margin:20px 0; }
+    .layer { padding:17px; border:1px solid var(--line); border-radius:13px; background:#101923; }
+    .layer.domain { border-top:4px solid var(--blue); }
+    .layer.bridge { border-top:4px solid var(--violet); }
+    .layer.runtime { border-top:4px solid var(--red); }
+    .layer ol { margin:10px 0 0; padding-left:20px; color:var(--muted); }
+    .matrix td:first-child { width:70px; font-weight:850; color:#9dc9ff; }
+    .status-open { color:var(--yellow); }
+    .status-reject { color:var(--red); }
+    .status-candidate { color:var(--green); }
+    details { margin-top:14px; border:1px solid var(--line); border-radius:12px; background:#0f1822; }
+    summary { padding:14px 17px; cursor:pointer; font-weight:800; }
+    .details-body { padding:0 17px 17px; color:#becbd7; }
+    .details-body ul { padding-left:20px; }
+    .compact { columns:2; column-gap:30px; }
+    .compact li { break-inside:avoid; margin-bottom:6px; }
+    footer { padding:24px 0 46px; color:var(--muted); font-size:.8rem; }
+    @media (max-width:950px) {
+      .standing,.grid3,.grid4,.tests { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .pipeline { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .pipeline div::after { display:none; }
+    }
+    @media (max-width:680px) {
+      .standing,.grid2,.grid3,.grid4,.hypothesis-grid,.tests,.pipeline,.layers { grid-template-columns:1fr; }
+      .section-head { display:block; }
+      .definition-list { grid-template-columns:1fr; }
+      .compact { columns:1; }
+    }
+    @media print {
+      body { color:#111; background:white; }
+      .section,.standing article { box-shadow:none; break-inside:avoid; }
+      details > * { display:block; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <p class="eyebrow">Formal architecture laboratory · proposal only</p>
+    <h1>What can the mathematics actually check?</h1>
+    <p class="lead">
+      This document develops competing formal hypotheses for governed agent infrastructure and context-window
+      injection. A formalism survives only if it adds a decidable judgment, a discriminating experiment, a useful
+      countermodel, or a sharper ownership boundary. Mathematical elegance alone is not acceptance evidence.
+    </p>
+    <div class="badges">
+      <span class="badge proposal">PROPOSAL</span>
+      <span class="badge formal">18 FORMAL HYPOTHESES</span>
+      <span class="badge test">VALIDATION-ORIENTED</span>
+      <span class="badge open">NO CANONICAL MODEL SELECTED</span>
+      <span class="badge no-evidence">NOT IMPLEMENTATION EVIDENCE</span>
+    </div>
+    <div class="standing">
+      <article><span>Primary question</span><strong>Which structures preserve the distinctions needed for governed composition and bounded agent observation?</strong></article>
+      <article><span>Acceptance standard</span><strong>Named assumptions, checkable obligations, golden cases, mutations, and falsifiers.</strong></article>
+      <article><span>Non-claim</span><strong>No theorem here proves empirical truth, legitimate authority, or successful execution.</strong></article>
+    </div>
+    <nav class="nav" aria-label="Page sections">
+      <a href="#method">Method</a>
+      <a href="#substrate">Typed substrate</a>
+      <a href="#kernel">Kernel judgments</a>
+      <a href="#admission">Category gate</a>
+      <a href="#institutions">Institutions</a>
+      <a href="#indexed">Indexed semantics</a>
+      <a href="#sheaves">Local-to-global</a>
+      <a href="#translations">Translations</a>
+      <a href="#probes">Probes</a>
+      <a href="#context">Context injection</a>
+      <a href="#authority">Types and authority</a>
+      <a href="#events">Events</a>
+      <a href="#experiments">Experiment matrix</a>
+      <a href="#standing">Decision standing</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section" id="method" aria-labelledby="method-title">
+      <div class="section-head">
+        <div><p class="eyebrow">0 · proof discipline</p><h2 id="method-title">A hypothesis ladder, not one universal ontology.</h2></div>
+        <p>Each level introduces additional laws and therefore additional proof obligations. A stronger structure is rejected when a weaker one explains and checks the same behavior with fewer assumptions.</p>
+      </div>
+      <div class="grid4">
+        <article class="object"><h3>Object language</h3><p>What entities, relations, transformations, contexts, effects, and observations exist in the bounded model?</p></article>
+        <article class="object"><h3>Judgment language</h3><p>Which claims can Q decide or semi-decide, and what evidence must accompany each judgment?</p></article>
+        <article class="object"><h3>Countermodel</h3><p>What smallest structure satisfies local premises while falsifying the proposed global conclusion?</p></article>
+        <article class="object"><h3>Operational witness</h3><p>Which persisted bytes, versions, paths, receipts, and acceptance records permit replay?</p></article>
+      </div>
+      <div class="layers" aria-label="Three formal responsibility layers">
+        <article class="layer domain"><h3>Domain semantics</h3><ol><li>Objects and local vocabulary</li><li>Primitive relations</li><li>Domain equations</li><li>Evidence interpretation</li></ol></article>
+        <article class="layer bridge"><h3>Composition and representation</h3><ol><li>Mappings and witnesses</li><li>Preservation obligations</li><li>Probe adequacy</li><li>Typed residue</li></ol></article>
+        <article class="layer runtime"><h3>Authority and effects</h3><ol><li>Capability grants</li><li>Context materialization</li><li>Physical enforcement</li><li>Execution receipts</li></ol></article>
+      </div>
+      <div class="callout"><strong>Separation invariant.</strong> A theorem in one layer cannot silently discharge an obligation in another. Semantic compatibility is not authority; type correctness is not truth; replayability is not causation; observational equivalence is not identity.</div>
+    </section>
+
+    <section class="section" id="substrate" aria-labelledby="substrate-title">
+      <div class="section-head">
+        <div><p class="eyebrow">1 · weakest substrate</p><h2 id="substrate-title">Start with attributed typed multigraphs and explicit derivations.</h2></div>
+        <p>This level is intentionally non-categorical. It preserves parallel edges, relation identity, provenance, and relations that should never compose.</p>
+      </div>
+      <div class="math">Σ<sub>d</sub> = (T<sub>V</sub>, T<sub>E</sub>, dom, cod)<br>
+G<sub>d</sub> = (V<sub>d</sub>, E<sub>d</sub>, src, tgt, type<sub>V</sub>, type<sub>E</sub>, attr)<br><br>
+type<sub>V</sub> : V<sub>d</sub> → T<sub>V</sub><br>
+type<sub>E</sub> : E<sub>d</sub> → T<sub>E</sub><br>
+type<sub>V</sub>(src(e)) = dom(type<sub>E</sub>(e))<br>
+type<sub>V</sub>(tgt(e)) = cod(type<sub>E</sub>(e))</div>
+      <dl class="definition-list">
+        <dt>Σd</dt><dd>A domain signature declaring object types, edge types, and allowed endpoint types.</dd>
+        <dt>attr(e)</dt><dd>Identity, version, owner, scope, provenance, authority basis, validity interval, and evidence references for a direct edge.</dd>
+        <dt>Path(Gd)</dt><dd>Typed finite paths. Membership does not imply that the path has a semantic composite.</dd>
+        <dt>Rule r</dt><dd>A versioned partial operator over a named family of typed paths.</dd>
+      </dl>
+      <div class="math">r : Path<sub>r</sub>(G<sub>d</sub>) ⇀ DerivedEdge<br><br>
+D = ⟨path, r@v, scope, assumptions, provenance, acceptance⟩<br>
+B<sub>0</sub> ; Γ ⊢<sub>Q</sub> D : Derives(e<sub>out</sub>)</div>
+      <p class="plain"><strong>Checking value:</strong> Q can verify endpoint typing, rule applicability, rule version, witness continuity, and declared assumptions. It cannot establish that the rule is empirically sound.</p>
+      <div class="hypothesis-grid">
+        <article class="hypothesis"><header><h3>H-G1 · Direct-edge primacy</h3><span class="badge formal">HYPOTHESIS</span></header><p>Historical attribution should treat derived edges as replayable views over immutable direct witnesses, never as replacements.</p><ul><li>Golden: replay yields the same derived signature.</li><li>Mutation: remove one direct edge; derivation becomes unresolved.</li><li>Falsifier: required storage/replay cost dominates governance value.</li></ul></article>
+        <article class="hypothesis"><header><h3>H-G2 · Relation-family isolation</h3><span class="badge formal">HYPOTHESIS</span></header><p>Composition is indexed by relation family; no ambient graph reachability rule may derive authority, causation, or purpose.</p><ul><li>Golden: implements ∘ defines is admitted by an explicit rule.</li><li>Mutation: authorized-by ∘ part-of is rejected.</li><li>Falsifier: all operationally needed relations share one lawful composition.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="section" id="kernel" aria-labelledby="kernel-title">
+      <div class="section-head">
+        <div><p class="eyebrow">2 · kernel-of-kernels</p><h2 id="kernel-title">The trusted core checks declarations and witnesses, not every domain meaning.</h2></div>
+        <p>B₀, M, G, Kᵢ, Cᵢⱼ, and Q are logical roles. Nothing in this formalization selects a deployment topology or “Kernel Service.”</p>
+      </div>
+      <div class="pipeline" aria-label="Kernel conformance flow">
+        <div><b>B₀</b><small>bootstrap facts</small></div>
+        <div><b>M</b><small>meta-contract</small></div>
+        <div><b>Kᵢ + Kⱼ</b><small>local semantics</small></div>
+        <div><b>Cᵢⱼ</b><small>composition witness</small></div>
+        <div><b>Q against G</b><small>bounded judgments</small></div>
+        <div><b>Result</b><small>accept/reject/unresolved</small></div>
+      </div>
+      <div class="math">B<sub>0</sub> ; Γ ⊢<sub>Q</sub> WellFormed<sub>M</sub>(K<sub>i</sub>)<br><br>
+B<sub>0</sub> ; Γ ⊢<sub>Q</sub> C<sub>ij</sub> : Compatible<sub>G</sub>(K<sub>i</sub>, K<sub>j</sub>)<br><br>
+B<sub>0</sub> ; Γ ; A ⊢<sub>runtime</sub> permitted(dispatch) &nbsp;&nbsp; // separate judgment</div>
+      <div class="grid3">
+        <article class="card"><h3>Syntactic acceptance</h3><p>Required fields, versions, ownership declarations, signatures, and witness shapes are well formed.</p></article>
+        <article class="card"><h3>Semantic preservation</h3><p>Named equations or invariants commute under the proposed translation within scope.</p></article>
+        <article class="card"><h3>Runtime permission</h3><p>An authority source binds capabilities to a concrete Dispatch. Neither prior judgment creates this grant.</p></article>
+      </div>
+      <article class="hypothesis" style="margin-top:14px"><header><h3>H-K1 · Small trusted-core hypothesis</h3><span class="badge formal">HYPOTHESIS</span></header><p>Q remains independently inspectable only if domain rules are data or separately owned modules, while Q owns a fixed judgment interpreter and verification envelope.</p><ul><li>Measure trusted-code size, rule churn entering Q, and cross-domain release coupling.</li><li>Reject if adding a domain requires modifying Q's semantic core.</li><li>Reject if declarative rules cannot express a required safety property without embedding arbitrary code.</li></ul></article>
+    </section>
+
+    <section class="section" id="admission" aria-labelledby="admission-title">
+      <div class="section-head">
+        <div><p class="eyebrow">3 · categorical admission</p><h2 id="admission-title">A relation family earns categorical structure by satisfying laws.</h2></div>
+        <p>“Category” is not a synonym for graph. Admission is per bounded relation family and version.</p>
+      </div>
+      <div class="math">C = (Ob, Hom, id, ∘)<br><br>
+f : X → Y, g : Y → Z ⇒ g ∘ f : X → Z<br>
+id<sub>Y</sub> ∘ f = f = f ∘ id<sub>X</sub><br>
+h ∘ (g ∘ f) = (h ∘ g) ∘ f</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Gate</th><th>Executable check</th><th>Counterexample</th><th>Disposition</th></tr></thead>
+          <tbody>
+            <tr><td>Typed closure</td><td>Generate composable arrows and verify a declared result in the same family.</td><td>A valid chain has no admissible composite.</td><td>Partial category, semicategory, or graph.</td></tr>
+            <tr><td>Identity</td><td>Check left/right unit equations for every admitted object type.</td><td>“No-op” changes provenance or authority.</td><td>Use a structure with explicit effects.</td></tr>
+            <tr><td>Associativity</td><td>Property-test all bounded triples or prove from rule normalization.</td><td>Grouping changes conflict resolution.</td><td>Use bicategorical/coherent structure or reject.</td></tr>
+            <tr><td>Coherence</td><td>Check named commuting diagrams.</td><td>Two translation paths disagree without residue.</td><td>Record non-commutation explicitly.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <article class="hypothesis" style="margin-top:14px"><header><h3>H-CAT1 · Bounded categorical islands</h3><span class="badge formal">HYPOTHESIS</span></header><p>Several small categories, preorders, transition systems, and raw graphs will coexist more honestly than one category of all governed work.</p><ul><li>Validate by classifying every current relation family and counting forced/undefined composites.</li><li>Accept when categorical islands reduce duplicate composition rules.</li><li>Reject when admission adds terminology but no normalization, equivalence, or preservation check.</li></ul></article>
+    </section>
+
+    <section class="section" id="institutions" aria-labelledby="institutions-title">
+      <div class="section-head">
+        <div><p class="eyebrow">4 · heterogeneous logics</p><h2 id="institutions-title">Institution theory may separate domain syntax, models, and satisfaction.</h2></div>
+        <p>This hypothesis is stronger than a meta-contract and useful only if domains genuinely use different logics while translations must preserve truth.</p>
+      </div>
+      <div class="math">I = (Sign, Sen, Mod, ⊨)<br><br>
+Sign : category of signatures<br>
+Sen : Sign → Set<br>
+Mod : Sign<sup>op</sup> → Cat<br>
+⊨<sub>Σ</sub> ⊆ |Mod(Σ)| × Sen(Σ)<br><br>
+M′ ⊨<sub>Σ′</sub> Sen(σ)(φ)  ⇔  Mod(σ)(M′) ⊨<sub>Σ</sub> φ</div>
+      <p class="plain"><strong>Satisfaction condition:</strong> translating a sentence forward and reducing a model backward must agree on whether the sentence holds. This gives a concrete commuting obligation for cross-domain logic translations.</p>
+      <div class="hypothesis-grid">
+        <article class="hypothesis"><header><h3>H-I1 · Domain logic modularity</h3><span class="badge formal">HYPOTHESIS</span></header><p>Authority, evidence, planning, and execution may each define signatures, sentences, models, and satisfaction without one universal ontology.</p><ul><li>Golden: translation preserves satisfaction on a fixture corpus.</li><li>Mutation: reverse one relation or weaken one quantifier; condition fails.</li><li>Risk: model construction may be undecidable.</li></ul></article>
+        <article class="hypothesis"><header><h3>H-I2 · Meta-contract as institution interface</h3><span class="badge open">ALTERNATIVE</span></header><p>M may require only enough structure to expose Sign/Sen/Mod/⊨ adapters, leaving each domain logic opaque.</p><ul><li>Accept if heterogeneous validators interoperate without Q learning domain semantics.</li><li>Reject if most domains cannot supply a meaningful model class or satisfaction relation.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="section" id="indexed" aria-labelledby="indexed-title">
+      <div class="section-head">
+        <div><p class="eyebrow">5 · context dependence</p><h2 id="indexed-title">Indexed categories or fibrations can model semantics varying by scope.</h2></div>
+        <p>Versions, authority scopes, objectives, assignments, and runtime environments change which objects and arrows are valid. Flattening them may manufacture illegal cross-scope composition.</p>
+      </div>
+      <div class="math">F : B<sup>op</sup> → Cat<br><br>
+scope b ∈ B ↦ fiber F(b)<br>
+u : b′ → b ↦ reindexing u* : F(b) → F(b′)<br><br>
+Grothendieck construction: ∫F → B</div>
+      <p class="plain"><strong>Interpretation:</strong> B contains scopes or contexts. Each fiber contains the domain structure valid at one scope. Reindexing transports declarations into a narrower or changed scope, with explicit preservation obligations.</p>
+      <article class="hypothesis"><header><h3>H-FIB1 · Scope-safe reindexing</h3><span class="badge formal">HYPOTHESIS</span></header><p>Delegation and context narrowing are better represented by reindexing than by copying unscoped edges.</p><ul><li>Check identity and composition of reindexing: id* ≅ Id and (u ∘ v)* ≅ v* ∘ u*.</li><li>Golden: narrowing preserves permitted facts but drops non-transferable capabilities.</li><li>Mutation: lineage transports a budget or authority grant not declared reindexable.</li><li>Reject if scope transport is trivial and a typed graph captures all needed behavior.</li></ul></article>
+    </section>
+
+    <section class="section" id="sheaves" aria-labelledby="sheaves-title">
+      <div class="section-head">
+        <div><p class="eyebrow">6 · local-to-global context</p><h2 id="sheaves-title">Sheaf-style gluing is a testable hypothesis for assembling distributed context.</h2></div>
+        <p>The sheaf condition is deliberately not assumed. Conflicting, incomplete, or perspectival agent context may require presheaves, conflict lattices, stacks, or explicit residue instead.</p>
+      </div>
+      <div class="math">C : O(S)<sup>op</sup> → Set &nbsp;&nbsp; // context presheaf over scopes<br><br>
+cover {U<sub>i</sub> → U}<br>
+s<sub>i</sub> ∈ C(U<sub>i</sub>)<br>
+s<sub>i</sub>|<sub>Uij</sub> = s<sub>j</sub>|<sub>Uij</sub> &nbsp; for all overlaps<br><br>
+Sheaf condition: ∃! s ∈ C(U) such that s|<sub>Ui</sub> = s<sub>i</sub></div>
+      <div class="grid3">
+        <article class="card"><h3>Existence failure</h3><p>Local contexts conflict on an overlap; no global context satisfies all restrictions.</p></article>
+        <article class="card"><h3>Uniqueness failure</h3><p>Several global syntheses fit the same local views; choice requires an authority or optimization rule.</p></article>
+        <article class="card"><h3>Coverage failure</h3><p>The selected scopes do not cover an obligation needed by the assignment.</p></article>
+      </div>
+      <article class="hypothesis" style="margin-top:14px"><header><h3>H-SH1 · Context gluing criterion</h3><span class="badge formal">HYPOTHESIS</span></header><p>A ContextManifest is globally coherent only when its local source fragments agree on declared overlaps or expose a typed conflict/residue object.</p><ul><li>Golden: compatible fragments glue to one manifest with replayable restrictions.</li><li>Mutations: conflicting authority versions; incompatible task assumptions; omitted overlap witness.</li><li>Reject strict sheaf semantics if legitimate synthesis is nonunique; test a stack/groupoid or join-semilattice alternative.</li></ul></article>
+    </section>
+
+    <section class="section" id="translations" aria-labelledby="translations-title">
+      <div class="section-head">
+        <div><p class="eyebrow">7 · cross-domain mappings</p><h2 id="translations-title">Functor, profunctor, span, lens, and simulation are competing hypotheses.</h2></div>
+        <p>The mapping vocabulary must follow the structure actually preserved. “Functor” is rejected when identity and composition preservation are unavailable or dishonest.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Candidate</th><th>Shape</th><th>Use when</th><th>Core obligation</th><th>Typical residue</th></tr></thead>
+          <tbody>
+            <tr><td>Functor</td><td>F : C → D</td><td>Both domains are categories.</td><td>F(id)=id; F(g∘f)=F(g)∘F(f).</td><td>Non-fullness, non-faithfulness, non-essential-surjectivity.</td></tr>
+            <tr><td>Profunctor</td><td>P : C<sup>op</sup>×D → Set</td><td>Many-to-many correspondences or admissible interactions.</td><td>Functorial action on both sides.</td><td>Ambiguity and unchosen correspondences.</td></tr>
+            <tr><td>Span</td><td>C ← W → D</td><td>A witness object mediates two schemas.</td><td>Leg validity; pullback behavior if composed.</td><td>Witness incompleteness.</td></tr>
+            <tr><td>Lens</td><td>get/put</td><td>Bidirectional view/update behavior.</td><td>Chosen lens laws such as GetPut and PutGet.</td><td>Unrepresentable updates.</td></tr>
+            <tr><td>Simulation</td><td>R ⊆ S×T</td><td>One transition system mimics another.</td><td>Each source step has a matching target behavior.</td><td>Unmatched or stuttering steps.</td></tr>
+            <tr><td>Interpretation</td><td>syntax → semantics</td><td>Only meaning assignment is claimed.</td><td>Named satisfaction/preservation clauses.</td><td>Uninterpreted syntax.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <article class="hypothesis" style="margin-top:14px"><header><h3>H-X1 · Witnessed mapping selection</h3><span class="badge formal">HYPOTHESIS</span></header><p>Cᵢⱼ should declare the weakest mapping structure that supports its required queries and effects, plus machine-checkable laws and explicit residue.</p><ul><li>Compare candidate mappings on the same fixture corpus.</li><li>Penalize stronger structures with unsupported laws.</li><li>Accept the least structure that detects all operationally material mutations.</li></ul></article>
+    </section>
+
+    <section class="section" id="probes" aria-labelledby="probes-title">
+      <div class="section-head">
+        <div><p class="eyebrow">8 · observational semantics</p><h2 id="probes-title">Restricted Yoneda turns probe adequacy into a measurable question.</h2></div>
+        <p>Full Yoneda is an internal theorem for a well-defined category. Infrastructure normally observes through a restricted family, so density and discrimination must be tested.</p>
+      </div>
+      <div class="math">P ↪ C<br><br>
+N<sub>P</sub> : C → Set<sup>P<sup>op</sup></sup><br>
+N<sub>P</sub>(X) = Hom<sub>C</sub>(-,X)|<sub>P</sub><br><br>
+X ≡<sub>P</sub> Y ⇔ N<sub>P</sub>(X) ≅ N<sub>P</sub>(Y)</div>
+      <div class="math">Collision(P,D) = { (X,Y) ∈ D² | X ≠<sub>op</sub> Y ∧ N<sub>P</sub>(X) ≅ N<sub>P</sub>(Y) }<br><br>
+Coverage(P,Q) = |{q ∈ Q : P can decide q}| / |Q|</div>
+      <p class="plain">Operational inequality ≠<sub>op</sub> is supplied by domain tests, not category theory. A collision is material only when a required operation, decision, or invariant distinguishes the objects.</p>
+      <article class="hypothesis"><header><h3>H-P1 · Adaptive probe adequacy</h3><span class="badge formal">HYPOTHESIS</span></header><p>Domains should evolve P by counterexample-guided refinement: each material collision introduces a probe candidate, subject to cost and contamination constraints.</p><ul><li>Track collision rate, query coverage, probe cost, and stability across versions.</li><li>Golden: P distinguishes every object pair relevant to the objective.</li><li>Mutation: a known operation distinguishes X/Y while P declares equivalence.</li><li>Stop condition: no material collisions in the bounded validation corpus, not “complete understanding.”</li></ul></article>
+    </section>
+
+    <section class="section" id="context" aria-labelledby="context-title">
+      <div class="section-head">
+        <div><p class="eyebrow">9 · context-window injection</p><h2 id="context-title">Injection is a typed, lossy, constrained observation channel.</h2></div>
+        <p>The central artifact is a versioned ContextManifest. Reachability, selection, rendering, possession, comprehension, and authority are modeled as different relations.</p>
+      </div>
+      <div class="pipeline" aria-label="Formal context injection pipeline">
+        <div><b>Source graph</b><small>direct witnesses</small></div>
+        <div><b>Eligible E(a)</b><small>admitted reachability</small></div>
+        <div><b>Selector Sᵥ</b><small>constraints + utility</small></div>
+        <div><b>Manifest Mₐ</b><small>ordered provenance</small></div>
+        <div><b>Renderer ρ</b><small>model/window adapter</small></div>
+        <div><b>Γₐ</b><small>actual observation</small></div>
+      </div>
+      <div class="math">E(a) = Reach<sub>Π</sub>(objective(a), authorityEvidence(a), dependencies(a), evidence(a))<br><br>
+M<sub>a</sub> = S<sub>v</sub>(E(a), role(a), risk(a), budget(a), freshness(a), policy(a))<br><br>
+Γ<sub>a</sub> = ρ<sub>model,window,v</sub>(M<sub>a</sub>)<br><br>
+y ∼ P<sub>model</sub>(· | Γ<sub>a</sub>, tools(a), state(a))</div>
+      <p class="plain">The final line makes the epistemic limit explicit: identical injected bytes do not imply deterministic understanding or output unless the model/runtime contract says so.</p>
+
+      <h3 style="margin-top:24px">9.1 Hard-constrained selection</h3>
+      <div class="math">maximize &nbsp; U(I; a) − λ·Cost(I) − μ·Risk(I)<br>
+over I ⊆ E(a)<br><br>
+subject to:<br>
+Required(a) ⊆ Closure(I)<br>
+Forbidden(a) ∩ I = ∅<br>
+DependencyClosed(I)<br>
+FreshEnough(I)<br>
+ConflictVisible(I)<br>
+tokens(ρ(I)) ≤ budget(a)</div>
+      <p>Selection is a constrained set problem, plausibly a knapsack/set-cover hybrid. A greedy selector has an approximation guarantee only under additional properties such as monotone submodular utility and compatible constraints. Those properties must be tested; they are not assumed.</p>
+
+      <h3 style="margin-top:24px">9.2 Information channel and operational sufficiency</h3>
+      <div class="math">X<sub>source</sub> → M<sub>a</sub> → Γ<sub>a</sub> → Z<sub>agent</sub> → Y<sub>action</sub><br><br>
+I(X<sub>source</sub>; Γ<sub>a</sub>) ≤ I(X<sub>source</sub>; M<sub>a</sub>) &nbsp; // under a stochastic-channel model</div>
+      <p>Data processing bounds information but does not identify which semantic distinctions matter. Operational sufficiency must be relative to a decision family D:</p>
+      <div class="math">Γ ≈<sub>D</sub> Γ′ ⇔ ∀d ∈ D, &nbsp; outcomeDistribution(d | Γ) ≈ outcomeDistribution(d | Γ′)</div>
+      <p class="plain">This is an empirical equivalence claim with a chosen tolerance and experiment protocol, not logical identity.</p>
+
+      <h3 style="margin-top:24px">9.3 Context hypotheses</h3>
+      <div class="hypothesis-grid">
+        <article class="hypothesis"><header><h3>H-CTX1 · Manifest determinism</h3><span class="badge formal">HYPOTHESIS</span></header><p>Fixed source versions, selector version, policy, renderer version, model adapter, and budget produce identical manifest identity and rendered bytes.</p><ul><li>Test property-based permutations of source enumeration.</li><li>Reject if hidden time, locale, tokenizer, or nondeterministic ranking changes output.</li></ul></article>
+        <article class="hypothesis"><header><h3>H-CTX2 · Non-monotonic usefulness</h3><span class="badge counter">ANTI-HYPOTHESIS</span></header><p>Adding eligible context is not assumed to improve outcomes. Extra context may increase conflict, recency error, instruction dilution, or cost.</p><ul><li>Run controlled additions and measure objective-relative performance.</li><li>Reject any selector objective that assumes monotonicity without evidence.</li></ul></article>
+        <article class="hypothesis"><header><h3>H-CTX3 · Compression preservation</h3><span class="badge formal">HYPOTHESIS</span></header><p>A compressor is acceptable only for an obligation family O when it preserves every O-relevant distinction and emits typed residue for the rest.</p><ul><li>Metamorphic test: original versus compressed contexts across O.</li><li>Mutation: delete a negation, version, exception, dissent, or authority limit.</li></ul></article>
+        <article class="hypothesis"><header><h3>H-CTX4 · Precedence independence</h3><span class="badge open">COMPETING MODELS</span></header><p>Semantic precedence should be a declared partial order, but current models may remain sensitive to byte order. Test canonical ordering, duplication, and adversarial lower-authority placement.</p><ul><li>Logical check: precedence graph is acyclic or has declared conflict semantics.</li><li>Empirical check: equivalent linear extensions produce bounded-equivalent outcomes.</li></ul></article>
+        <article class="hypothesis"><header><h3>H-CTX5 · Coverage adequacy</h3><span class="badge formal">HYPOTHESIS</span></header><p>Declared obligations can be checked by witness coverage, while unknown omissions remain outside the theorem.</p><ul><li>Golden: every required obligation has a provenance path.</li><li>Mutation: remove one required item; Q rejects.</li></ul></article>
+        <article class="hypothesis"><header><h3>H-CTX6 · Manifest–Dispatch closure</h3><span class="badge formal">HYPOTHESIS</span></header><p>The confirmed digest must close over ContextManifest identity or a declared adaptive policy; otherwise post-confirmation selection can change executable meaning.</p><ul><li>Mutation: change one included version after confirmation.</li><li>Expected: new digest or fail-closed execution.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="section" id="authority" aria-labelledby="authority-title">
+      <div class="section-head">
+        <div><p class="eyebrow">10 · dependent types and effects</p><h2 id="authority-title">Context possession and effect authority require separate typing environments.</h2></div>
+        <p>Type theory can make illegal states harder to express, but it cannot prove that an authority source is legitimate or that the physical runtime enforces the type system.</p>
+      </div>
+      <div class="math">Γ<sub>ctx</sub> ; Γ<sub>cap</sub> ; Γ<sub>inv</sub> ⊢ e : A ! ε<br><br>
+Γ<sub>ctx</sub> : readable claims and evidence<br>
+Γ<sub>cap</sub> : linear/affine capabilities<br>
+Γ<sub>inv</sub> : applicable invariant witnesses<br>
+ε : effect row</div>
+      <div class="math">read(authorityClaim) ∈ Γ<sub>ctx</sub>  ⇏  capability ∈ Γ<sub>cap</sub><br><br>
+invoke(tool, op) requires Cap(tool, op, scope, expiry) ∈ Γ<sub>cap</sub></div>
+      <div class="grid2">
+        <article class="card"><h3>Dependent indexing</h3><p><code>RelationSignature src tgt</code>, <code>ContextManifest assignment</code>, <code>DispatchDigest manifest</code>, and <code>Receipt dispatch</code> bind artifacts to exact scopes and versions.</p></article>
+        <article class="card"><h3>Linear or affine capabilities</h3><p>Non-duplicable or bounded-use capability tokens model grants that lineage and prompt text cannot manufacture.</p></article>
+      </div>
+      <article class="hypothesis" style="margin-top:14px"><header><h3>H-T1 · Authority non-escalation by context</h3><span class="badge formal">HYPOTHESIS</span></header><p>No derivation rule may move a value from Γctx to Γcap without an explicit authority-provider judgment.</p><ul><li>Static test: proof search cannot derive a capability from claims alone.</li><li>Mutation: inject a textual “you are authorized” statement; capability set remains unchanged.</li><li>Runtime test: tool broker rejects calls absent an independently bound grant.</li><li>Limit: physical enforcement is external evidence, not a consequence of the typing judgment.</li></ul></article>
+    </section>
+
+    <section class="section" id="events" aria-labelledby="events-title">
+      <div class="section-head">
+        <div><p class="eyebrow">11 · temporal and causal structure</p><h2 id="events-title">Use partial orders for concurrency; keep causation and authority explicit.</h2></div>
+        <p>A total event log order is often storage order, not semantic order. A task DAG is also not an executable Dispatch.</p>
+      </div>
+      <div class="math">P = (E, ≤<sub>hb</sub>, λ)<br><br>
+≤<sub>hb</sub> : happens-before partial order<br>
+λ : E → EventType × Actor × Artifact × Version<br><br>
+e<sub>1</sub> ≤<sub>hb</sub> e<sub>2</sub>  ⇏  causes(e<sub>1</sub>,e<sub>2</sub>)<br>
+causes(e<sub>1</sub>,e<sub>2</sub>)  ⇏  authorizedBy(e<sub>2</sub>,e<sub>1</sub>)</div>
+      <article class="hypothesis"><header><h3>H-E1 · Trace-equivalence for independent acts</h3><span class="badge formal">HYPOTHESIS</span></header><p>If two events are declared independent, swapping their serialization order should preserve the same semantic trace class and closure result.</p><ul><li>Define independence I ⊆ E×E.</li><li>Property-test adjacent swaps of I-related events.</li><li>Mutation: mark events independent when they race on one invariant; closure diverges.</li><li>Reject if total-order semantics is intentionally required for all acts.</li></ul></article>
+    </section>
+
+    <section class="section" id="experiments" aria-labelledby="experiments-title">
+      <div class="section-head">
+        <div><p class="eyebrow">12 · validation harness</p><h2 id="experiments-title">Every hypothesis needs a fixture grammar and mutation algebra.</h2></div>
+        <p>The harness should distinguish proof obligations, finite model checks, property tests, metamorphic tests, and empirical agent experiments.</p>
+      </div>
+      <div class="math">Experiment := ⟨hypothesis, scope, fixtures, generator, oracle, mutations, metrics, threshold, stopRule⟩<br><br>
+Result := pass | fail(counterexample) | unresolved(reason) | inapplicable(structure)</div>
+      <div class="tests">
+        <article class="test-card"><h3>Golden fixture</h3><p>Smallest accepted structure containing direct witnesses, versions, explicit assumptions, authority separation, and replayable result.</p></article>
+        <article class="test-card negative"><h3>One-mutation negatives</h3><p>Change exactly one endpoint, version, scope, law, witness, capability, context item, ordering edge, or renderer input.</p></article>
+        <article class="test-card"><h3>Countermodel search</h3><p>Bounded enumeration or SMT/model finding searches for locally valid structures that violate the target global property.</p></article>
+        <article class="test-card"><h3>Property testing</h3><p>Generate typed paths, mapping compositions, reindexings, event swaps, and selector permutations.</p></article>
+        <article class="test-card"><h3>Metamorphic testing</h3><p>Apply semantics-preserving transformations and test invariant output; apply targeted loss and expect rejection or residue.</p></article>
+        <article class="test-card"><h3>Agent experiment</h3><p>Pre-register model, prompts, seeds, context variants, objective metric, uncertainty, and stopping rule. Logical checks do not replace this layer.</p></article>
+      </div>
+
+      <h3 style="margin-top:24px">Hypothesis-to-validation matrix</h3>
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead><tr><th>ID</th><th>Primary structure</th><th>Validation mode</th><th>Golden signal</th><th>Decisive falsifier</th><th>Standing</th></tr></thead>
+          <tbody>
+            <tr><td>H-G1</td><td>Typed graph + derivations</td><td>Replay/property test</td><td>Stable derived signature</td><td>Unreplayable accepted edge</td><td class="status-candidate">candidate</td></tr>
+            <tr><td>H-G2</td><td>Indexed rule families</td><td>Negative fixtures</td><td>No cross-family inference</td><td>Implicit authority derivation</td><td class="status-candidate">candidate</td></tr>
+            <tr><td>H-K1</td><td>Judgment kernel</td><td>Change-coupling audit</td><td>New domain without Q mutation</td><td>Q absorbs domain semantics</td><td class="status-open">open</td></tr>
+            <tr><td>H-CAT1</td><td>Multiple categories</td><td>Law/property tests</td><td>Fewer duplicate rules</td><td>Forced/undefined composition</td><td class="status-open">open</td></tr>
+            <tr><td>H-I1/I2</td><td>Institutions</td><td>Satisfaction fixtures</td><td>Translation invariance</td><td>Satisfaction-condition failure</td><td class="status-open">open</td></tr>
+            <tr><td>H-FIB1</td><td>Indexed categories</td><td>Reindexing laws</td><td>Scope-safe narrowing</td><td>Unauthorized transport</td><td class="status-open">open</td></tr>
+            <tr><td>H-SH1</td><td>Presheaf/sheaf</td><td>Gluing fixtures</td><td>Unique coherent manifest</td><td>Hidden overlap conflict</td><td class="status-open">open</td></tr>
+            <tr><td>H-X1</td><td>Mapping alternatives</td><td>Comparative corpus</td><td>Weakest adequate structure</td><td>Unsupported law</td><td class="status-open">open</td></tr>
+            <tr><td>H-P1</td><td>Restricted nerve</td><td>Collision search</td><td>No material collisions</td><td>Known operation separates X/Y</td><td class="status-open">open</td></tr>
+            <tr><td>H-CTX1–6</td><td>Selection/channel</td><td>Property + empirical</td><td>Coverage, stability, residue</td><td>Silent drift or material loss</td><td class="status-open">open</td></tr>
+            <tr><td>H-T1</td><td>Dependent/effect types</td><td>Proof search + broker test</td><td>No context escalation</td><td>Claim yields capability</td><td class="status-candidate">candidate</td></tr>
+            <tr><td>H-E1</td><td>Pomset/trace</td><td>Swap metamorphism</td><td>Independent-order invariance</td><td>Hidden race</td><td class="status-open">open</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout amber"><strong>Validation order.</strong> Start with typed graph fixtures, authority non-escalation, manifest determinism, and one-mutation tests. Introduce institutions, fibrations, sheaves, or categorical machinery only when simpler models produce a concrete counterexample they cannot classify.</div>
+    </section>
+
+    <section class="section" id="standing" aria-labelledby="standing-title">
+      <div class="section-head">
+        <div><p class="eyebrow">13 · decision and evidence standing</p><h2 id="standing-title">Deep formalism increases obligations, not architectural certainty.</h2></div>
+        <p>These hypotheses refine the proposal surface. They do not resolve D9 authority ownership, OD-1 Strategy promotion, OD-2 task-DAG ownership, or OD-3 current-to-target mapping.</p>
+      </div>
+      <div class="grid2">
+        <article>
+          <h3>Formal questions still OPEN</h3>
+          <div class="grid2">
+            <article class="decision"><h3>F-1 · Logic family</h3><p>One meta-logic, institutions, or separately validated domain logics?</p></article>
+            <article class="decision"><h3>F-2 · Scope semantics</h3><p>Plain indexing, fibrations, or explicit records?</p></article>
+            <article class="decision"><h3>F-3 · Local-to-global</h3><p>Sheaf, stack, conflict lattice, or no gluing abstraction?</p></article>
+            <article class="decision"><h3>F-4 · Mapping algebra</h3><p>Functor, profunctor, span, lens, simulation, or per-witness choice?</p></article>
+            <article class="decision"><h3>F-5 · Selector objective</h3><p>Submodular proxy, constraint solver, learned ranking, or hybrid?</p></article>
+            <article class="decision"><h3>F-6 · Empirical equivalence</h3><p>Which decision family and tolerance define context sufficiency?</p></article>
+            <article class="decision"><h3>F-7 · Proof boundary</h3><p>Which judgments are decidable, SMT-checkable, proof-assistant-backed, or empirical?</p></article>
+            <article class="decision"><h3>F-8 · Trusted core</h3><p>Which parser, evaluator, rule loader, and proof checker enter B₀?</p></article>
+          </div>
+        </article>
+        <article>
+          <h3>Evidence boundary</h3>
+          <div class="warning">
+            <span class="badge no-evidence">NOT IMPLEMENTATION EVIDENCE</span>
+            <p style="margin-top:12px">No category admission checker, institution adapter, fibration, sheaf engine, probe optimizer, context solver, effect-typed runtime, formal proof, or model-checking harness is claimed to exist.</p>
+            <p>The formulas specify candidate obligations and experiment shapes. Passing finite fixtures would support only the bounded claim tested.</p>
+            <p style="margin-bottom:0">Even a fully verified formal core would not establish empirical truth, model completeness, objective desirability, authority legitimacy, physical enforcement, model comprehension, or strategic realization.</p>
+          </div>
+          <details>
+            <summary>Collapse conditions for the entire formalization program</summary>
+            <div class="details-body">
+              <ul class="compact">
+                <li>No formalism detects a failure missed by simpler typed records.</li>
+                <li>Operational concepts cannot be stabilized enough to define signatures.</li>
+                <li>Rule and witness maintenance exceeds governance value.</li>
+                <li>Key judgments are undecidable with no useful bounded approximation.</li>
+                <li>Formal adapters centralize domain semantics inside Q.</li>
+                <li>Proof artifacts cannot be connected to executed versions and receipts.</li>
+                <li>Context experiments show no stable effect across supported models.</li>
+                <li>Authority enforcement remains disconnected from capability judgments.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Formalization-only companion to <code>infrastructure-context-rich.html</code>.
+    Standing: proposal · mode: architecture · renderer: L0 static HTML/CSS · no remote dependencies.
+  </footer>
+</div>
+</body>
+</html>

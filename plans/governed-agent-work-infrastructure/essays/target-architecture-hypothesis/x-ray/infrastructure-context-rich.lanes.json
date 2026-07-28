@@ -1,0 +1,110 @@
+{
+  "xray_version": "0.2.0-seed",
+  "example_id": "target-architecture-hypothesis-context-rich",
+  "mode": "architecture",
+  "target_boundary": "The infrastructure context for turning bounded intention into governed subagent work and a durable connected record. Includes the literal eight-service source-essay core, the existing owner-directed Subagents Strategy workflow capability, implemented register-dispatch row mechanics, the draft Formulae Dispatch Spec, and a separately labeled candidate target pipeline. Strategy service promotion, task-DAG ownership/persistence, current-to-target mapping, and runtime authority remain open. Excludes deployment, APIs, storage, identifier formats, and detailed schemas.",
+  "renderer_level": "L0",
+  "layer_interaction": [
+    "stacked",
+    "trace",
+    "progressive-disclosure"
+  ],
+  "lane_handles": {
+    "surface": {
+      "handle": "surface.summary",
+      "rendered_as": "bounded intention from situated perception through objective, differentiated work, assignment, attempt, effect, and connected history"
+    },
+    "properties": {
+      "handle": "properties.catalog",
+      "rendered_as": "five inspectable paths, literal R1-R7 source guarantees, separate draft G1-G4 workflow-governance extensions, and Given/Optimized/Accumulated strata"
+    },
+    "components": {
+      "handle": "components.map",
+      "rendered_as": "eight-service source core plus an unnumbered current Strategy control surface whose target service promotion is OD-1"
+    },
+    "internal_dependencies": {
+      "handle": "dependencies.internal",
+      "rendered_as": "separate current workflow and candidate target paths; the candidate path runs from StrategyDecision through open-design TaskDAGVersion ownership, interpretation, TargetDispatch, authority, execution, closeout, and record lineage"
+    },
+    "external_dependencies": {
+      "handle": "dependencies.external",
+      "rendered_as": "human objective and confirmation, skill profiles, current workflow router, implemented telemetry appender, draft Dispatch Spec, external workers, ACI/runtime binding, and unresolved authority/DAG-store ownership"
+    },
+    "flow": {
+      "handle": "flow.graph",
+      "rendered_as": "current proposal/register/run/close path plus a thirteen-step candidate target sequence from bounded work through Strategy, task DAG, TargetDispatch confirmation, mediated work, recording, closure, and result"
+    },
+    "lifecycle": {
+      "handle": "lifecycle.timeline",
+      "rendered_as": "current workflow proposal, confirmation, registration, runtime attempt, and close; candidate target strategy, task-DAG materialization, interpretation or typed objection, TargetDispatch, authority gate, execution, convergence, receipts, closure, and return"
+    },
+    "risk_questions": {
+      "handle": "risk.questions",
+      "rendered_as": "D1-D9 inventory, D3 and D9 critical cards, four refutation modes, source inconsistencies, and proposal-vs-source boundaries"
+    },
+    "visual_composition": {
+      "handle": "visual.model",
+      "rendered_as": "five inline SVG views plus semantic HTML standing tables, service cards, strategy axes, open-design cards, and dispatch mode DAG sketches",
+      "remote_dependencies": false
+    }
+  },
+  "evidence_boundary": {
+    "target_essay_source": [
+      "problem framing and target outcome",
+      "R1-R7",
+      "eight service names and responsibilities",
+      "requirement-to-service mapping",
+      "confirmation, emission, digest, release, and recording mechanics",
+      "Given, Optimized, and Accumulated strata",
+      "D1-D9 verdicts and statuses",
+      "four refutation conditions"
+    ],
+    "sibling_essay_source": [
+      "bounded-intention and five-path framing from the sibling work-context-system-view essay"
+    ],
+    "current_workflow_contract": [
+      "owner-directed domainspec-subagents-strategy workflow contract",
+      "two-level session-local proposals, LIVE dispatch routing, pairwise-tension gate, zig-zag and robot-talks topology, confirmation, registration, and closure obligations",
+      "register-dispatch v0.6.1 append-only row and close-row mechanics"
+    ],
+    "draft_formulae_package": [
+      "Dispatch Spec fields for strategy, join, authorization, receipts, lifecycle shape, and validation"
+    ],
+    "diagram_interpretation": [
+      "system-context projection",
+      "four responsibility planes",
+      "S1-S8 identifiers",
+      "external actor placement",
+      "flow colors and routing geometry",
+      "thirteen-step target example sequence",
+      "compact service and failure cards"
+    ],
+    "proposed_extension": [
+      "OD-1 promotion of the existing Strategy workflow capability into an additional target service boundary",
+      "G1-G4 workflow-governance property extensions",
+      "OD-2 Protocol task-DAG semantic ownership and unowned exact-byte persistence",
+      "OD-3 non-identity mapping between ConcreteDispatchProposal and TargetDispatch",
+      "agent/system interpretation boundary and DAG-to-Dispatch transformation",
+      "six-axis dispatch mode model and example compositions",
+      "kind-level protocol to constrained task-DAG instance contract",
+      "independent epistemic gate and typed objection repair loop",
+      "expanded digest closure and lifecycle-closeout gate"
+    ]
+  },
+  "validation": {
+    "html_parse_errors": 0,
+    "duplicate_ids": 0,
+    "unresolved_aria_references": 0,
+    "unresolved_internal_links": 0,
+    "unresolved_svg_markers": 0,
+    "remote_references": 0,
+    "script_elements": 0,
+    "source_core_service_coverage": 8,
+    "current_strategy_capability_coverage": 1,
+    "requirement_coverage": 7,
+    "draft_governance_property_coverage": 4,
+    "open_design_decision_coverage": 3,
+    "decision_coverage": 9,
+    "browser_rendering": "verified in local headless Microsoft Edge at 1600px; primary page and infrastructure/service regions inspected"
+  }
+}
