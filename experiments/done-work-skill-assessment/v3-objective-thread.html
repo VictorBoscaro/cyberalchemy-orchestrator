@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Objective Thread — 2026-07-27</title>
+<style>
+  :root{
+    --bg:#0e1116; --bg2:#141920; --bg3:#1a212b;
+    --ink:#dbe2ea; --ink2:#9aa7b6; --ink3:#6c7a8b;
+    --rule:#242e3a; --rule2:#2f3b49;
+    --acc:#7fb2ff; --warn:#e0a34a; --bad:#e0705f; --ok:#5fc48a; --vio:#b48ce8;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
+    font-size:17px; line-height:1.68; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:47rem; margin:0 auto; padding:4rem 1.6rem 6rem}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,"Cascadia Mono",Menlo,Consolas,monospace}
+  code{font-size:.86em; background:var(--bg3); color:#c6d4e4; padding:.08em .34em; border-radius:3px}
+
+  header.masthead{border-bottom:1px solid var(--rule2); padding-bottom:2rem; margin-bottom:3rem}
+  .kicker{font:600 .72rem/1 ui-monospace,monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--ink3); margin-bottom:1.1rem}
+  h1{font-size:2.5rem; line-height:1.14; margin:0 0 1rem; font-weight:600; letter-spacing:-.015em}
+  .standfirst{font-size:1.08rem; color:var(--ink2); margin:0 0 1.4rem}
+  .blockline{font:.8rem/1.6 ui-monospace,monospace; color:var(--ink3); border-left:2px solid var(--rule2); padding-left:.9rem}
+  .blockline b{color:var(--ink2); font-weight:600}
+
+  section{margin:0 0 3.6rem}
+  .eyebrow{display:flex; align-items:baseline; gap:.8rem; margin-bottom:.7rem}
+  .num{font:700 .72rem/1 ui-monospace,monospace; color:var(--acc); letter-spacing:.14em; border:1px solid var(--rule2); border-radius:2px; padding:.32rem .44rem; flex:0 0 auto}
+  .eyebrow .lbl{font:600 .7rem/1 ui-monospace,monospace; letter-spacing:.19em; text-transform:uppercase; color:var(--ink3)}
+  h2{font-size:1.55rem; line-height:1.28; margin:0 0 1.2rem; font-weight:600; letter-spacing:-.01em; color:#eef3f9}
+  h3{font-size:1.12rem; margin:2.2rem 0 .5rem; font-weight:600; color:#eef3f9; letter-spacing:-.005em}
+  h4{font-size:.98rem; margin:1.8rem 0 .4rem; font-weight:600; color:var(--ink)}
+  p{margin:0 0 1.05rem}
+  .lede{color:var(--ink2)}
+
+  .pill{display:inline-block; font:600 .63rem/1 ui-monospace,monospace; letter-spacing:.1em; text-transform:uppercase;
+        padding:.3em .5em; border-radius:2.5px; vertical-align:.14em; white-space:nowrap; margin:0 .12em}
+  .p-nodes{background:rgba(127,178,255,.13); color:#9ec4ff; border:1px solid rgba(127,178,255,.3)}
+  .p-git{background:rgba(95,196,138,.12); color:#79d3a1; border:1px solid rgba(95,196,138,.3)}
+  .p-ledger{background:rgba(180,140,232,.13); color:#c3a3f0; border:1px solid rgba(180,140,232,.3)}
+  .p-fs{background:rgba(224,163,74,.12); color:#e6b673; border:1px solid rgba(224,163,74,.3)}
+  .p-unlinked{background:rgba(224,112,95,.14); color:#f08a79; border:1px solid rgba(224,112,95,.38)}
+  .p-rung{background:var(--bg3); color:var(--ink2); border:1px solid var(--rule2)}
+
+  .obj{border-left:3px solid var(--rule2); padding-left:1.4rem; margin:2.4rem 0 0}
+  .obj.stalled{border-left-color:var(--bad)}
+  .obj.thin{border-left-color:var(--warn)}
+  .obj-anchor{font:.76rem/1.5 ui-monospace,monospace; color:var(--ink3); word-break:break-all; margin:.1rem 0 .9rem}
+  .why{background:var(--bg2); border:1px solid var(--rule); border-radius:4px; padding:1rem 1.15rem; margin:0 0 1.2rem}
+  .why .t{font:600 .66rem/1 ui-monospace,monospace; letter-spacing:.17em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:.5rem}
+  .why p{margin:0; font-size:.97rem}
+
+  ul.items{list-style:none; margin:0 0 1.2rem; padding:0}
+  ul.items li{border-top:1px solid var(--rule); padding:.7rem 0}
+  ul.items li:last-child{border-bottom:1px solid var(--rule)}
+  .it-h{display:flex; flex-wrap:wrap; align-items:baseline; gap:.55rem}
+  .it-t{font:600 .78rem/1 ui-monospace,monospace; color:var(--ink3)}
+  .it-n{font-weight:600}
+  .it-s{display:block; color:var(--ink2); font-size:.94rem; margin-top:.25rem}
+
+  details{border:1px solid var(--rule); border-radius:4px; background:var(--bg2); margin:1.2rem 0 0}
+  summary{cursor:pointer; padding:.75rem 1.1rem; font:600 .74rem/1.4 ui-monospace,monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--ink2); list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"▸ "; color:var(--acc)}
+  details[open] summary::before{content:"▾ "}
+  details[open] summary{border-bottom:1px solid var(--rule)}
+  .dbody{padding:1.2rem 1.35rem .4rem}
+  .dbody h4:first-child{margin-top:0}
+
+  .kv{margin:.5rem 0 1.2rem; font-size:.93rem}
+  .kv div{display:flex; gap:.7rem; padding:.28rem 0; border-bottom:1px dotted var(--rule)}
+  .kv dt,.kv .k{flex:0 0 6.4rem; color:var(--ink3); font:600 .68rem/1.7 ui-monospace,monospace; letter-spacing:.09em; text-transform:uppercase}
+  .kv .v{flex:1 1 auto; color:var(--ink2)}
+  ol.next{margin:.3rem 0 1.2rem 1.1rem; padding:0; color:var(--ink2); font-size:.95rem}
+  ol.next li{margin:.25rem 0}
+
+  .flag{border:1px solid rgba(224,112,95,.4); background:rgba(224,112,95,.07); border-radius:4px; padding:.9rem 1.1rem; margin:1.2rem 0; font-size:.96rem; color:var(--ink2)}
+  .flag b{color:#f08a79}
+  .note{border-left:2px solid var(--rule2); padding-left:.95rem; color:var(--ink3); font-size:.93rem; margin:1.1rem 0}
+
+  /* thread map */
+  .map{border:1px solid var(--rule); border-radius:5px; background:var(--bg2); padding:1.3rem 1.1rem; margin:1.4rem 0}
+  .maprow{display:flex; gap:.55rem; flex-wrap:wrap}
+  .col{flex:1 1 9.5rem; min-width:9.5rem; border:1px solid var(--rule2); border-radius:4px; background:var(--bg3); padding:.7rem .65rem}
+  .col.stalled{border-color:rgba(224,112,95,.45)}
+  .col.none{border-color:rgba(224,112,95,.45); border-style:dashed; background:rgba(224,112,95,.05)}
+  .col .ct{font:600 .64rem/1.35 ui-monospace,monospace; letter-spacing:.06em; color:var(--ink2); word-break:break-word; min-height:3.4em}
+  .col .cn{font:.6rem/1 ui-monospace,monospace; color:var(--ink3); letter-spacing:.1em; text-transform:uppercase; margin:.5rem 0 .45rem; border-top:1px solid var(--rule); padding-top:.45rem}
+  .leaf{font:.66rem/1.5 ui-monospace,monospace; color:#9ec4ff; padding:.1rem 0}
+  .col.none .leaf{color:#f08a79}
+  .maplegend{font:.68rem/1.6 ui-monospace,monospace; color:var(--ink3); margin-top:.9rem; border-top:1px solid var(--rule); padding-top:.6rem}
+
+  .bound{border:1px solid var(--rule2); border-radius:5px; background:var(--bg2); padding:1.4rem 1.5rem}
+  .bound h3{margin-top:1.5rem}
+  .bound h3:first-child{margin-top:0}
+  footer{margin-top:4rem; border-top:1px solid var(--rule); padding-top:1.3rem; font:.72rem/1.7 ui-monospace,monospace; color:var(--ink3)}
+  a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="kicker">Variant V3 · The Objective Thread</div>
+  <h1>What yesterday was for</h1>
+  <p class="standfirst">Nine records, three objectives, thirteen commits, thirty-seven dispatches — organised by the purpose each piece of work threads to, so the purpose is paid for once instead of nine times.</p>
+  <div class="blockline">
+    <b>BLOCK</b> 2026-07-27 09:25 → 2026-07-28 04:55 (−03:00) · 19h30m<br>
+    <b>OPENS</b> first ledger row <code>created: 2026-07-27T12:25:23.463Z</code> = 09:25:23 local <span class="pill p-ledger">ledger</span><br>
+    <b>CLOSES</b> last in-window filesystem write, 2026-07-28 04:55:29 <span class="pill p-fs">fs</span><br>
+    <b>RULE</b> state from the machine, meaning from the prose, divergences never merged silently
+  </div>
+</header>
+
+<section>
+  <div class="eyebrow"><span class="num">01</span><span class="lbl">The three threads</span></div>
+  <h2>Yesterday&#8217;s nine records thread to three objectives, and the only one with a machine-checkable gate is the one that did not move.</h2>
+
+  <p class="lede">Nine session nodes were written between 12:53 and 17:04 local, carrying 27 typed edges between them <span class="pill p-nodes">nodes</span>. To find what each piece of work was <em>for</em>, I walked the containment edges — <code>is-part-of</code> and <code>derives-from</code> — upward from each node, at most three hops, stopping at the first target that is not itself a session record. Six of the nine resolve to a real objective document. Three do not, and they get their own section below rather than a footnote.</p>
+
+  <p>Every one of the six anchored records resolved at <strong>rung 1</strong>: a single hop, straight to a non-session document. Not one needed a second. I chose anchor depth as the ranking key and it turned out to have almost no resolving power on this day&#8217;s graph, because the graph is shallow — the objective is either declared directly or not declared at all. I print the rung on every item anyway, because that is the promise, and I order within each objective by clock time, because the key could not order them.</p>
+
+  <p>Anchor depth is the only ranking key available here. The obvious alternative is refused on evidence: <code>expected_importance</code> across the nine reads <span class="mono">[8, 8, 8, 8, 7, 9, 8, 8, 7]</span> <span class="pill p-nodes">nodes</span> — six identical values. A key with six ties in nine items cannot rank anything.</p>
+
+  <!-- ═══════════ OBJECTIVE A ═══════════ -->
+  <h3>Objective A &mdash; Governed Agent Work Infrastructure</h3>
+  <div class="obj">
+    <div class="obj-anchor">plans/governed-agent-work-infrastructure/PLAN.md &nbsp;·&nbsp; 4 of 9 records anchor here</div>
+    <div class="why"><span class="t">Why this work exists — read once, inherited by all four items</span>
+      <p>The root Plan&#8217;s §5 names an <em>absent provenance spine</em> as the pivot that several other things are waiting on: agent work is tracked in disjoint identifier spaces, so what an agent did cannot be linked to what it was for. Every item below is an attempt to close that — to make work trackable and linkable within one context and across different ones, rather than merely locally correct. Mid-block the owner restated this objective explicitly, and it did not match the objective the existing essay had been built on. That mismatch is the thread&#8217;s central open question and it reorders everything downstream of it.</p>
+    </div>
+
+    <ul class="items">
+      <li>
+        <div class="it-h"><span class="it-t">15:14</span><span class="it-n">Emission contract and tracking-spine primitives</span>
+          <span class="pill p-rung">rung 1 · is-part-of</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span></div>
+        <span class="it-s">First written contract for agent emission — then structurally refuted by an independent reviewer, and the objective it was built on turned out to be the wrong one.</span>
+      </li>
+      <li>
+        <div class="it-h"><span class="it-t">16:16</span><span class="it-n">Dispatch strategy essential contract</span>
+          <span class="pill p-rung">rung 1 · is-part-of</span><span class="pill p-nodes">nodes</span></div>
+        <span class="it-s">Work recentred on <code>domainspec-subagents-strategy</code>; a smaller responsibility boundary proposed. No skill was changed &mdash; and the machine confirms it.</span>
+      </li>
+      <li>
+        <div class="it-h"><span class="it-t">16:22</span><span class="it-n">Frontmatter timestamps and governed review</span>
+          <span class="pill p-rung">rung 1 · is-part-of</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span><span class="pill p-ledger">ledger</span></div>
+        <span class="it-s">Lifecycle metadata made timezone-aware and immutable-at-creation; three integration defects found by a tensioned review pair and repaired. Its effect is visible inside this very report.</span>
+      </li>
+      <li>
+        <div class="it-h"><span class="it-t">17:04</span><span class="it-n">Target architecture hypothesis and its x-ray</span>
+          <span class="pill p-rung">rung 1 · is-part-of</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span><span class="pill p-ledger">ledger</span></div>
+        <span class="it-s">The prior essay replaced with a hypothesis authored under contract, plus a validated visual x-ray; both survived three adversarial rounds. It carries a hole that its own refutation condition names.</span>
+      </li>
+    </ul>
+
+    <details>
+      <summary>Objective A — the four item bodies</summary>
+      <div class="dbody">
+
+        <h4>15:14 &mdash; Emission contract and tracking-spine primitives <span class="pill p-rung">rung 1</span></h4>
+        <p>The session opened on the existing x-ray of <code>implementations/</code> and turned to designing its target-state counterpart: the infrastructure running from dispatch classification through agent emission. A hybrid system-view and engineer-view essay was authored in one file, naming nine stances and deciding each exactly once alongside contracts, mechanics and nine failure modes.</p>
+        <p>One independent reviewer attacked it across three zig-zag exchanges and returned a structural verdict: the three-axis emission contract is the <em>wrong decomposition</em>, because its address field fuses a boolean to an identifier and does three jobs at once, and because a sealed emission is not unaddressed but addressed to the aggregator under a delivery condition. The replacement moves release onto the recipient and lets the recipient set carry cardinality. It dissolves five findings, leaves fifteen surviving unchanged, and opens six new ones. The reviewer further established that the essay&#8217;s flat claim of aggregator determinism is incoherent, because the aggregator was modelled as an agent with a prompt binding — and that repairing it costs the essay two of its three externally-authorised verdicts.</p>
+        <p>Against a recorded recommendation that hypothesis work was premature, the owner directed an experiment anyway. An initial-definitions document and a criterion were authored and attacked by three parallel reviewers on structurally opposed angles. All three returned <em>do-not-freeze</em>, converging independently on five defects; the orthogonal reviewer concluded the criterion&#8217;s boundedness was manufactured by deleting the unsettled architecture and pre-registering the countable residue.</p>
+        <div class="kv">
+          <div><span class="k">Machine</span><span class="v"><span class="pill p-git">git</span> <code>93de0e3</code> two paired system-and-engineer-view essays (9 files) · <code>1e31c07</code> three research and experiment baselines (17 files) · <code>7014cdf</code> subplans moved to plans, essays given their own directories (5 files)</span></div>
+          <div><span class="k">Friction</span><span class="v">Agent launches were blocked by a Stage-E source-manifest digest mismatch, repaired mid-session.</span></div>
+        </div>
+        <p><strong>Still open.</strong> Twenty-one outstanding findings. Which objective governs — making a fan-out inspectable, or tracking and linking artifacts across contexts? One surviving finding (angle collapse) is fatal under the first reading and out of scope under the second. Whether a working context is a classification an artifact belongs to or a composition it participates in; two essays lean opposite ways and neither decides. Whether links hold between files or between identity-bearing objects that files merely locate. Two recorded factual errors left unrepaired by choice. Two live dangling references to <code>subplans/</code>.</p>
+        <ol class="next">
+          <li>Decide which objective governs, <em>then</em> rewrite the essay&#8217;s surface and layering sections — the ordering matters because the finding list reorders under the second objective.</li>
+          <li>Supply fresh owner direction for the fabric&#8217;s new powers, which the aggregator repair moved out from under the direction that resolved the original row.</li>
+          <li>Repair the two recorded factual errors, or discard the documents that carry them.</li>
+          <li>Repair the two dangling <code>subplans/</code> references in the root Plan&#8217;s child registry and the essays index.</li>
+          <li>Reconcile <code>node_type</code> against <code>artifact_kind</code> across <code>plans/</code>, or record the drift explicitly.</li>
+        </ol>
+        <p class="note">The record&#8217;s own recommendation: settle the objective first. It is upstream of everything else — it decides whether angle collapse blocks, whether the record is the core service or a side effect, and whether the work is about a fan-out contract or about a provenance spine. Choosing the tracking-and-linking objective would not widen scope; it would point the work at what the Plan already calls its pivot.</p>
+
+        <h4>16:16 &mdash; Dispatch strategy essential contract <span class="pill p-rung">rung 1</span></h4>
+        <p>The session began by exploring how research artifacts, work context, hierarchy and lineage might compose, and the owner identified that this had drifted from the immediate objective. The work was explicitly recentred on improving <code>domainspec-subagents-strategy</code>, with <code>research</code> deferred to a later consumer and validation case. Context hierarchy, the tracking spine, ontology and a generic skill compiler were parked unless a dispatch-strategy decision directly requires them.</p>
+        <p>The proposed purpose: transform a work objective into an understandable, authorized, coherent multi-agent execution while preserving the objective through result recomposition. Its essential ownership is six things and no more — deciding whether dispatch is warranted, organizing the division of work, exposing the strategy for authorization, governing material changes, coordinating the authorized topology, and closing with a verified joined result. Type-specific epistemology, persisted record mechanics, runtime enforcement and broader work-context modeling are routed elsewhere.</p>
+        <div class="kv">
+          <div><span class="k">Machine</span><span class="v"><span class="pill p-git">git</span> No path containing <code>domainspec-subagents-strategy</code> appears among the 96 files changed in the range. The record says &#8220;no existing skill was changed&#8221; and the machine agrees. This is a proposal, not an edit.</span></div>
+        </div>
+        <p><strong>Still open.</strong> Which responsibilities in the current strategy are genuinely universal dispatch policy, and which belong to type skills, proposal tooling, persisted records or runtime infrastructure. Whether coordination of the authorized topology is part of the skill or a contract delegated to the runtime.</p>
+        <ol class="next">
+          <li>Inspect the current skill by responsibility rather than by section.</li>
+          <li>Classify each responsibility as keep, route or remove against the proposed boundary.</li>
+          <li>Propose the smallest revised skill structure before editing any contents.</li>
+          <li>Use <code>research</code> only after that structure is stable, as the first type-specific validation case.</li>
+        </ol>
+
+        <h4>16:22 &mdash; Frontmatter timestamps and governed review <span class="pill p-rung">rung 1</span></h4>
+        <p>Document tagging was inspected and the boundary settled: the governed-Markdown hook only reminds the authoring agent, the agent selects document tags, and activation telemetry tags remain a separate observational record. The frontmatter guide was then updated to require immutable <code>created_at</code> and revision-sensitive <code>updated_at</code> as RFC 3339 timestamps in the <code>America/Sao_Paulo</code> civil timezone, and to forbid fabricated legacy creation times.</p>
+        <p>A confirmed inline review dispatch used two independently tensioned attackers and found three integration defects: a legacy session timestamp template, consumers pointing at the ignored <code>.agents</code> mirror, and an unsupported generic topical-tag fallback. The parent verified all three findings directly, updated the affected integrations and removed the fallback.</p>
+        <div class="kv">
+          <div><span class="k">Machine</span><span class="v"><span class="pill p-git">git</span> <code>cb6780e</code> agent authoring policy and governed-Markdown schema rewritten (9 files) · <span class="pill p-ledger">ledger</span> <code>2026-07-27-frontmatter-timestamp-review</code> opened 16:17:27 local, closed 16:20:18, <code>exit_reason: resolved</code></span></div>
+          <div><span class="k">Effect</span><span class="v">Visible in this report&#8217;s own substrate: six of the nine session nodes carry the old <code>timestamp</code>/<code>created</code>/<code>last_updated</code> triple, and the three written after this decision — 16:16, 16:22, 17:04 — carry <code>created_at</code>/<code>updated_at</code>. Two frontmatter generations coexist inside a single day.</span></div>
+        </div>
+        <p><strong>Still open.</strong> Which durable evidence sources may authorize <code>created_at</code> for pre-existing artifacts that have no trustworthy creation receipt. The corpus was not migrated, so the split above will widen with every new document until a rule exists.</p>
+        <ol class="next">
+          <li>Audit remaining authoring skills and templates for legacy lifecycle fields and <code>.agents</code> frontmatter-guide pointers.</li>
+          <li>Define a provenance-aware migration rule <em>before</em> bulk-backfilling <code>created_at</code>/<code>updated_at</code> across existing documents — the governed review showed consumer drift is the immediate failure mode.</li>
+        </ol>
+
+        <h4>17:04 &mdash; Target architecture hypothesis and its x-ray <span class="pill p-rung">rung 1 direct; a second, corroborating path resolves at rung 2</span></h4>
+        <p>The existing infrastructure essay was judged against the owner&#8217;s actual intent — a hypothesis for the final state of the architecture, presented as problem, then properties, then services — and found to be missing its middle step. It moved from problem straight to services, so the services arrived asserted rather than derived, and its verdict vocabulary made a proposal read as a decision record.</p>
+        <p>A new essay was authored in its place, first freehand and then rewritten under the <code>system-view</code> and <code>engineer-view</code> contracts, which forced three things the freehand draft lacked: nine named stances each routed to exactly one verdict, an alternative-framings table per major section, and an authority citation on every decision row <em>including the four that have none</em>. The opening was rewritten a second time after the owner rejected reasoning from the current inventory, so the ideal is worked out on its own terms and existing components are compared to it only afterwards. A visual x-ray of the eight proposed services was then authored as a lane model plus a local L0 HTML page, passing the Arcanum schema validator.</p>
+        <p>Two reviewers on structurally opposed poles of one fidelity axis — <em>the artifact flatters its subject</em> versus <em>the artifact fails its reader</em> — attacked it across three zig-zag rounds and both reached ACCEPT. They converged in round one on six defects, and the sharpest findings were over-claims all leaning the same way: a status the essay does not contain, a gate column answering &#8220;no&#8221; for four rows while the header said six, and a citation to the section holding the build-something-cheaper alternatives while reproducing none of them.</p>
+        <div class="kv">
+          <div><span class="k">Machine</span><span class="v"><span class="pill p-git">git</span> <code>fe28f51</code> context-rich and formalization x-rays (3 files) · <code>ae0864e</code> context-rich x-ray for PermGuard (1 file) · <span class="pill p-ledger">ledger</span> <code>2026-07-27-xray-infrastructure-review</code> 16:35:14→16:50:43 resolved, 2 skeptics, <code>loops_used: 3</code>; <code>target-architecture-xray-perspectives</code> 17:09:29 and <code>target-architecture-xray-review</code> 17:23:07, both resolved 17:34</span></div>
+          <div><span class="k">Friction</span><span class="v">Agent launches blocked three times by the Stage-E source-integrity gate. The first block was a scaffolder wiping the Codex lifecycle policy from <code>AGENTS.md</code>, which was restored; the next two were real authored policy landing in both <code>AGENTS.md</code> and <code>CLAUDE.md</code>, re-digested across both levels of the integrity chain.</span></div>
+        </div>
+        <p><strong>Still open.</strong> The hypothesis carries a hole that its own refutation condition names: §1 requires work to run under authority, and none of the eight services provides it. A requirement with no service, occurring inside the hypothesis. Also unresolved: whether two opposed reviewers both reaching ACCEPT is evidence of fidelity or of a shared base model&#8217;s blind spot — nothing measured separates the two, and the same question was left open by the 15:14 record about a three-reviewer convergence. And whether <code>AGENTS.md</code> and <code>CLAUDE.md</code> should remain inside the Stage-E manifest&#8217;s scope at all, given that every edit to them blocks agent launches until both levels of the chain are re-digested.</p>
+        <ol class="next">
+          <li>Attack the authority hole first. It is the one place the hypothesis refutes itself by its own criterion, and it settles whether the service count is eight or nine — which the x-ray would then need to redraw, so doing it first avoids repainting the picture twice.</li>
+          <li>Re-digest the Stage-E manifest and the <code>local_pilot.py</code> pin whenever <code>AGENTS.md</code> or <code>CLAUDE.md</code> changes, until their manifest scope is decided.</li>
+          <li>Give the x-ray&#8217;s five SVGs real accessible names via <code>&lt;title&gt;</code>/<code>&lt;desc&gt;</code> rather than one <code>aria-label</code> each; both reviewers recorded this below the ACCEPT line as a degradation.</li>
+        </ol>
+
+      </div>
+    </details>
+  </div>
+
+  <!-- ═══════════ OBJECTIVE B ═══════════ -->
+  <h3>Objective B &mdash; Host-bus integrity, the Phase A prerequisite</h3>
+  <div class="obj stalled">
+    <div class="obj-anchor">docs/features/agents-communication-infra/WORK-PACK.md &nbsp;·&nbsp; 1 of 9 records anchors here &nbsp;·&nbsp; <strong style="color:#f08a79">this thread did not advance</strong></div>
+    <div class="why"><span class="t">Why this work exists</span>
+      <p>Phase A of the agents-communication-infra work pack cannot proceed until the host <em>proves</em> that multi-agent tool calls traverse the fail-closed hook boundary. Until then, no subagent&#8217;s provenance can be trusted, because a launch that bypasses the hook leaves no evidence that it ever happened. This is the gate every governed dispatch in the repository sits behind.</p>
+    </div>
+
+    <ul class="items">
+      <li>
+        <div class="it-h"><span class="it-t">12:55</span><span class="it-n">Codex hook host-binary remediation</span>
+          <span class="pill p-rung">rung 1 · is-part-of</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span></div>
+        <span class="it-s">The blocker was correctly re-diagnosed and a replacement binary installed and selected &mdash; and the gate still did not fire. The thread ends the block in the state it entered it.</span>
+      </li>
+    </ul>
+
+    <div class="flag"><b>Why this counts as unfinished.</b> The thread&#8217;s unblocking action is a manual host step — <em>Developer: Reload Window</em> in VS Code — and no substrate records it as executed. Three hours after the diagnosis, an independent record reproduced the identical failure: launches succeeded, the policy-selected database still held zero <code>host_workflow_turn_bindings</code>, and process inspection proved the extension was still running the embedded defective binary. The blocking condition at the end of the block is the blocking condition at the start of it.</div>
+
+    <details>
+      <summary>Objective B — the item body</summary>
+      <div class="dbody">
+
+        <h4>12:55 &mdash; Codex hook host-binary remediation <span class="pill p-rung">rung 1</span></h4>
+        <p>The session began by running the required read-only Codex hook smoke before resuming Phase A. The helper returned its marker — but no new hook state, no ledger open/close pair, no <code>dispatch_links</code> row and no workflow binding appeared, and the ledger hash and counts remained unchanged. Trust configuration, hook feature enablement, matcher normalization and the pilot process were each checked and none explained the missing event.</p>
+        <p>Host logs instead showed the embedded Codex <code>0.146.0-alpha.3.1</code> executing <code>collaborationspawn_agent</code> without entering the generic <code>PreToolUse</code> hook path. This <em>contradicts</em> the previous day&#8217;s handoff, which assumed a fresh trusted session was the only remaining condition — and the record types that edge as <code>contradicts</code> rather than quietly superseding it. Official later source and the upstream function-tool hook-default correction support treating the embedded host binary as the defective boundary. Codex <code>0.146.0-alpha.10.1</code> was installed at user scope, selected through VS Code&#8217;s <code>chatgpt.cliExecutable</code>, and passed strict configuration diagnostics.</p>
+        <div class="kv">
+          <div><span class="k">Machine</span><span class="v"><span class="pill p-git">git</span> <code>51a5e8a</code> &#8220;correct the Codex hook failure diagnosis to a host binary defect&#8221; — 3 files. The thread&#8217;s entire durable output for the day is a record of a <em>changed belief</em>, not a changed state.</span></div>
+          <div><span class="k">Confirmed</span><span class="v">The 15:49 record (unplaceable — see §02) independently reproduced the boundary at 15:49 local: <em>&#8220;No repository bridge code was changed because the defective binary bypasses <code>PreToolUse</code> before repository hooks can execute.&#8221;</em> The configuration correctly points at <code>0.146.0-alpha.10.1</code>; the running process is still <code>0.146.0-alpha.3.1</code>.</span></div>
+        </div>
+        <div class="flag"><b>Do not read the ledger&#8217;s health as progress here.</b> 37 dispatches opened and 35 closed inside this block <span class="pill p-ledger">ledger</span>, most of them resolved, and every one of them was registered by the <em>Claude</em> host hook — their context field reads &#8220;Mandatory claude host hook captured this Agent tool call before launch.&#8221; The broken boundary is Codex-side. A busy, healthy-looking ledger is fully compatible with this objective being completely stalled, and mistaking one for the other is the specific error this thread exists to prevent.</div>
+        <p><strong>Still open.</strong> After the VS Code window reloads, does <code>0.146.0-alpha.10.1</code> actually emit <code>PreToolUse</code> for <code>collaboration.spawn_agent</code> and complete the matching close lifecycle? Nothing in the block answers this. Downstream of it, the lineage designer and two independent reviewers stay paused, and generic execution/artifact lineage stays undesigned.</p>
+        <ol class="next">
+          <li>Run <em>Developer: Reload Window</em> so the extension starts the configured executable.</li>
+          <li>Confirm the active <code>codex.exe</code> path and version before launching any subagent.</li>
+          <li>Run exactly one read-only <code>collaboration.spawn_agent</code> smoke with the required workflow-binding envelope.</li>
+          <li>Verify new Codex hook state, matching YAML/ACI open and close evidence, and one terminal <code>host_workflow_turn_bindings</code> row; require a workflow binding only when the smoke is workflow-bound.</li>
+          <li>If it passes, update host-runtime status and resume Phase A. If it fails, keep Phase A stopped and treat multi-agent hook coverage as an upstream host blocker — not a repository defect.</li>
+        </ol>
+
+      </div>
+    </details>
+  </div>
+
+  <!-- ═══════════ OBJECTIVE C ═══════════ -->
+  <h3>Objective C &mdash; A minimal node-and-relation contract</h3>
+  <div class="obj thin">
+    <div class="obj-anchor">research/research-lifecycle-definitions/research-initial-definitions.md &nbsp;·&nbsp; 1 of 9 records anchors here</div>
+    <div class="why"><span class="t">Why this work exists</span>
+      <p>A bounded research inquiry into the smallest contract under which every registered artifact has an identifiable generation process and supported relations. Research lifecycle artifacts were chosen as the first bounded case deliberately — before extending the model from micro tasks to macro project context. This is the substrate that all the other threads&#8217; documents are written on, including the nine records this report reads.</p>
+    </div>
+
+    <ul class="items">
+      <li>
+        <div class="it-h"><span class="it-t">12:53</span><span class="it-n">Artifact schema and context edges</span>
+          <span class="pill p-rung">rung 1 · is-part-of</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span><span class="pill p-ledger">ledger</span></div>
+        <span class="it-s">The provisional boundary between authoring guidance, deterministic validation and future graph-schema governance. Its proposed deliverable does not exist, and its scout dispatch never closed.</span>
+      </li>
+    </ul>
+
+    <details>
+      <summary>Objective C — the item body</summary>
+      <div class="dbody">
+
+        <h4>12:53 &mdash; Artifact schema and context edges <span class="pill p-rung">rung 1</span></h4>
+        <p>The session investigated how dispatches, tasks, research artifacts and documents can retain links to context at multiple altitudes. The document-kind discriminator was consolidated under <code>artifact_kind</code>, while topical tags, contextual <code>layer</code> and typed Connections remained separate dimensions. <code>others</code> and <code>other</code> were retained as deliberate fallbacks rather than values a hook may invent automatically. The frontmatter guide and close-session workflow were aligned around creator-authored metadata, real connection targets, and the <code>is-part-of</code> edge.</p>
+        <p>The preferred interim validation flow is deterministic: remain silent when required structure and registered values are present, and inform the creating agent when fields are missing or values are unknown. A repository-local YAML file under <code>schemas/</code> was proposed as the single machine-readable source of truth for fields, artifact kinds, layers and edge types — skills explain semantic selection, hooks only validate. Composition, inverses, cardinality, source-target compatibility, user extensions and promotion of recurring fallback types were all deferred as later governance concerns rather than first-version enforcement.</p>
+        <div class="kv">
+          <div><span class="k">Machine</span><span class="v"><span class="pill p-git">git</span> <code>cb6780e</code> carries the guide and close-session changes (shared with the 16:22 item). No path beginning <code>schemas/</code> appears among the 96 changed files, and no <code>schemas/</code> directory exists in the working tree — <strong>next step 1 has not landed.</strong></span></div>
+          <div><span class="k">Machine</span><span class="v"><span class="pill p-ledger">ledger</span> <code>2026-07-27-research-lifecycle-canonical-kinds</code>, <code>dispatch_type: research</code>, opened 11:19:58 local with two explorer scouts on a composite methodology/source-corpus anti-bias axis, working folder <code>research/research-lifecycle-definitions/</code>. <strong>It has no close row anywhere in the file</strong> — one of exactly two in-window dispatches that never closed.</span></div>
+          <div><span class="k">Broken</span><span class="v"><span class="pill p-nodes">nodes</span> This thread carries the day&#8217;s only broken link. The record declares <code>refines</code> → <code>research/research-lifecycle-definitions/findings.md</code>; that file does not exist. The directory holds only <code>research-initial-definitions.md</code> and <code>evidence/</code>. The thread points forward at a findings document that was never written — and its unclosed scout dispatch is the work that would have produced the evidence for it.</span></div>
+        </div>
+        <p><strong>Still open.</strong> Should the first schema treat registered values as closed enums, or distinguish warnings from hard conformance failures so user-defined vocabularies can incubate? How should a recurring <code>others</code>/<code>other</code> usage be proposed, reviewed, named, versioned and promoted into the registered vocabulary? Which composition, inverse, cardinality and source-kind-to-target-kind rules should eventually be represented, and which should remain authoring guidance?</p>
+        <ol class="next">
+          <li>Define the minimal structure and authority boundary of <code>schemas/artifact-metadata.yaml</code>.</li>
+          <li>Make the frontmatter hook read that schema without writing metadata or duplicating its values.</li>
+          <li>Add deterministic fixtures for missing, valid, fallback and unknown field and edge values.</li>
+          <li>Reconcile existing research lifecycle documents with the accepted schema after its first version is approved.</li>
+          <li>Close or reopen the 11:19 scout dispatch, and either write <code>findings.md</code> or remove the edge that promises it.</li>
+        </ol>
+        <p class="note">The record&#8217;s own recommendation: start with the first two steps — one small schema containing only field requirements and vocabularies, then prove the hook can validate it silently and non-mutatively before adding graph composition rules.</p>
+
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════ UNPLACEABLE ═══════════ -->
+<section>
+  <div class="eyebrow"><span class="num">02</span><span class="lbl">What this report cannot place</span></div>
+  <h2>Three of the nine records thread to no objective at all, and one of them is the day&#8217;s single most important item.</h2>
+
+  <p class="lede">A report organised by objective has to confess when it cannot find one. Three records — 14:57, 15:22 and 15:49 — declare no containment edge that terminates at a non-session document, so the walk returns nothing. I will not invent a purpose for them from topical resemblance. They are marked <span class="pill p-unlinked">unlinked</span> and they sit here, in the body of the report, at full size.</p>
+
+  <p>This is the cost of the design, and it is not a small one. The 15:49 record carries <code>expected_importance: 9</code> — the highest value in the day and the only 9 <span class="pill p-nodes">nodes</span>. The single largest commit in the range by file count, <code>e0a7d17</code> at 19 files, belongs to these three records and to no anchored one <span class="pill p-git">git</span>. By the objective spine, the day&#8217;s most important record and its largest commit are both unplaceable.</p>
+
+  <h4>14:57 &mdash; Agent lineage, dispatch binding, and backlog handoff <span class="pill p-unlinked">unlinked</span> <span class="pill p-rung">rung 0 · no containment edge</span></h4>
+  <p>Four edges, all of them <code>contextualizes</code> or <code>validates</code>. Nothing declares what this work is part of. <strong>What was done:</strong> the repository&#8217;s existing model of delivered references — ACI attempts, <code>EffectiveInputArtifact</code>, <code>AgentReferenceDelivery</code>, runtime tables, APT lineage projections — was inspected and found narrower than universal provenance for every task, work-pack, read, write and produced artifact. Direct agent messaging was examined and the bus established as mediated through persistence, verification, reveal and later input materialization rather than an unrestricted peer inbox. A backlog skill was produced and passed one independent FIX round followed by joined PASS verdicts, but final approval found it living only in the ignored <code>.agents</code> mirror. The aggregate dispatch opened and closed in the ledger, yet none of its subagent launches produced an ACI <code>host_workflow_turn_bindings</code> row or a persisted <code>WorkflowInputManifest</code>. The owner decided universal lineage should first be modeled as a bounded step inside the <code>research</code> decomposition, and generalized only after that use proves its shape.</p>
+  <p><span class="pill p-ledger">ledger</span> <code>2026-07-27-backlog-skill-work</code>, <code>dispatch_type: others</code>, opened 13:26:00 local, closed 13:44:30 with <code>exit_reason: error</code> — and, like every error row in this block, carrying no error text at all. <strong>Still open:</strong> whether <code>AgentReferenceLineage</code> stays reference-specific or its specification boundary expands; which artifact canonically owns the backlog skill; why the live Codex surface bypassed both compatibility registration and governed binding; which responsibilities in <code>research</code> are deterministic validators and which must remain agent judgment. <strong>Next:</strong> promote the reviewed skill to <code>.claude/skills/backlog</code>, regenerate and validate the mirror; make per-launch ACI binding fail-closed before trusting another multi-agent workflow; inventory every responsibility owned by <code>research</code>; define the chain <code>Task → Attempt → observed-read/produced → ArtifactRevision</code> without equating &#8220;read before write&#8221; with <code>derives-from</code>.</p>
+
+  <h4>15:22 &mdash; Agent-event prompted-request baseline <span class="pill p-unlinked">unlinked</span> <span class="pill p-rung">rung 0 · sole edge is validates</span></h4>
+  <p>This record has exactly one edge, and it is <code>validates</code> — it points at a real research document, <code>research/agent-event-prompted-requests/research-initial-definitions.md</code>, but under a containment-only rule a validation edge does not establish what the work is <em>for</em>. Had the rule admitted <code>validates</code>, this item would have anchored at rung 1. That is a rule choice, stated so it can be argued with, not a fact about the work.</p>
+  <p><strong>What was done:</strong> the research baseline for user-configurable requests presented to selected agents at lifecycle moments was refined, with open tag emission as the first bounded case. It preserved the confirmed need for configurable prompts, audiences, moments, validated response shapes and producer attribution while leaving the exact meaning of before, after and receipt open. Eight earlier review objections were incorporated, removing premature commitments to bus delivery, runtime ownership, aggregation behavior and durable acceptance. Three independent reviewers attacked it across three zig-zag rounds with the parent verifying and applying supported corrections between rounds; the second round caught regressions that reopened a rejected tagging skill and confused a dispatch smoke gate with production enablement. In the final round, fidelity and evidence returned no findings, while architecture identified the remaining need to distinguish host-observable prompt delivery states from provider- or model-side states the current boundary cannot prove. <strong>Still open:</strong> which runtime occurrence semantics and observable evidence establish that a configured prompt reached an intended agent; which boundary owns request, target identity, validation, persistence and routing without creating a competing authority; how correlated open-tag emissions contribute evidence without being mistaken for independent agreement. <strong>Next:</strong> scope research around lifecycle semantics and receipt evidence; investigate request and target identity together with the ownership boundaries; define evidence requirements for interpreting repeated open tags before proposing any schema process.</p>
+
+  <h4>15:49 &mdash; Backlog, lineage fan-out, and Codex hook handoff <span class="pill p-unlinked">unlinked</span> <span class="pill p-rung">rung 0 · chain dead-ends at a session</span></h4>
+  <p>This is the day&#8217;s highest-rated record and the walk fails on it in the most instructive way. It <em>does</em> declare a containment edge: <code>derives-from</code> → the 14:57 record. But 14:57 is itself a session, and 14:57 declares no containment edge of its own, so the chain dies at hop 1 without ever reaching an objective. Two hops of the three available were never usable. The purpose is one link away from being expressible and is not expressed.</p>
+  <p><strong>What was done:</strong> a governed zig-zag review of the backlog skill completed with two independent reviewers and one separate writer — first round found seven governance and usability defects, the writer corrected them, both reviewers returned PASS on the second frozen revision. The approved package was promoted to <code>.claude/skills/backlog</code> as canonical source and <code>.codex/skills/backlog</code> as verified mirror. A structured read-only fan-out then mapped <code>AgentReferenceLineage</code> across specifications, runtime persistence, hooks and tests without using the research workflow, establishing that it is a reference-specific APT query, that <code>AgentReferenceDelivery</code> bounded L0 is already implemented despite stale implementation-status prose, that declared input is bound by attempt while observed reads are only dispatch-scoped, and that no authoritative attempt-to-output relation exists. The same live run reproduced the host-control contradiction described under Objective B.</p>
+  <p><span class="pill p-git">git</span> <code>e0a7d17</code> &#8220;add the backlog skill and its first governed backlog&#8221; — 19 files, +1,362 lines: the canonical and Codex skill copies, the first governed <code>BACKLOG.md</code>, and twelve workflow-input manifests. This is the largest single commit of the block. <strong>Still open:</strong> whether <code>0.146.0-alpha.10.1</code> will route <code>collaboration.spawn_agent</code> through <code>PreToolUse</code> after a reload; whether generic execution/artifact lineage should become a separate capability; what exact evidence should authorize promotion from <code>observed_read</code> to semantic <code>used_input</code>. <strong>Next:</strong> the five-step smoke sequence listed under Objective B, then resume the lineage designer and two independent reviewers, then design the minimum attempt-centered relations for observed reads and produced output revisions without inferring semantic use.</p>
+
+  <div class="note">The cheapest repair available: give 14:57 one <code>is-part-of</code> edge. That single edge would anchor 14:57 at rung 1 and 15:49 at rung 2 in the same stroke, and two thirds of this section would disappear into the objectives above.</div>
+</section>
+
+<!-- ═══════════ MAP ═══════════ -->
+<section>
+  <div class="eyebrow"><span class="num">03</span><span class="lbl">Recap</span></div>
+  <h2>Seen whole, the day&#8217;s thread map is three narrow columns and one wide gap.</h2>
+  <p class="lede">A recap of what §01 and §02 already said, not a new claim. Every leaf is a session record; the rung label is where its purpose resolved.</p>
+
+  <div class="map">
+    <div class="maprow">
+      <div class="col">
+        <div class="ct">PLAN.md<br>Governed Agent Work Infrastructure</div>
+        <div class="cn">4 records · all rung 1</div>
+        <div class="leaf">15:14 emission contract</div>
+        <div class="leaf">16:16 dispatch strategy</div>
+        <div class="leaf">16:22 frontmatter timestamps</div>
+        <div class="leaf">17:04 target architecture</div>
+      </div>
+      <div class="col stalled">
+        <div class="ct">WORK-PACK.md<br>Host-bus integrity (Phase A)</div>
+        <div class="cn">1 record · rung 1 · stalled</div>
+        <div class="leaf">12:55 codex hook remediation</div>
+      </div>
+      <div class="col">
+        <div class="ct">research-initial-definitions.md<br>Node-and-relation contract</div>
+        <div class="cn">1 record · rung 1</div>
+        <div class="leaf">12:53 artifact schema</div>
+      </div>
+      <div class="col none">
+        <div class="ct">— no objective —<br>walk returns nothing</div>
+        <div class="cn">3 records · rung 0</div>
+        <div class="leaf">14:57 lineage &amp; backlog handoff</div>
+        <div class="leaf">15:22 agent-event baseline</div>
+        <div class="leaf">15:49 backlog &amp; hook handoff <em>(imp. 9)</em></div>
+      </div>
+    </div>
+    <div class="maplegend">
+      27 typed edges across 9 records — is-part-of 6 · contextualizes 6 · validates 6 · derives-from 4 · contradicts 3 · refines 2.<br>
+      Only the 10 containment edges (is-part-of, derives-from) can anchor. 6 of 9 records reach an objective; all 6 at rung 1.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EVIDENCE BOUNDARY ═══════════ -->
+<section>
+  <div class="eyebrow"><span class="num">04</span><span class="lbl">Evidence boundary</span></div>
+  <h2>This report accounts for half the day&#8217;s changed files and for none of the fourteen dispatches that did not resolve.</h2>
+
+  <div class="bound">
+
+    <h3>What the objective spine structurally cannot see</h3>
+    <p>Organising by objective means organising by what the session records declare. Anything the records do not name is invisible to this report by construction — not by oversight.</p>
+    <p><strong>48 of the day&#8217;s 96 changed files are named by no record</strong> <span class="pill p-git">git</span><span class="pill p-nodes">nodes</span>. The nine records collectively name 54 paths; matching those against the 96 files in <code>7b98bf8^..8cfd754</code> — exact path equality, plus directory-prefix expansion for the one record that named a directory rather than files — leaves 48 unaccounted. This report says nothing about them. They include the entire short print edition of the work-context system view (17 files), the perspective and context-rich x-rays, two <code>docs/essays/</code> pieces, the <code>epistemic-repository-bootstrap</code> research topic, a rewritten <code>implementations/README.md</code>, and <code>CLAUDE.md</code> and <code>.gitignore</code>.</p>
+    <p><strong>14 of the 37 in-window dispatches did not resolve, and this report explains none of them</strong> <span class="pill p-ledger">ledger</span>: 6 closed <code>error</code>, 6 closed <code>user_abort</code>, and 2 never closed at all. Only two of the fourteen are reachable from any objective above — the 11:19 scout dispatch under Objective C and the 13:26 backlog dispatch, which anchors only to an unplaceable record. The remaining twelve, including all five <code>work-context-short</code> failures and their five aborted retries, belong to work that no record describes. Worse, no in-window <code>exit_reason: error</code> row carries any error text, so even with a record the failures would not be diagnosable from the ledger alone.</p>
+
+    <h3>Why so much is unclaimed: the recording stops 11h51m before the work does</h3>
+    <p>The nine records span 12:53 to 17:04 local. The block runs to 04:55 the next morning. <strong>In the 11 hours 51 minutes after the last record was written, 16 further dispatches opened — 10 of which never resolved — and no session record describes any of them</strong> <span class="pill p-nodes">nodes</span><span class="pill p-ledger">ledger</span>. This is visible at close range: the 17:04 record was written, and the <code>target-architecture-xray-perspectives</code> dispatch opened five minutes later at 17:09 — a record cannot cover work that has not happened yet. The four commits made between 04:48 and 04:50 contain 22 files, and <strong>all 22 are unclaimed</strong> <span class="pill p-git">git</span> — just under half the unclaimed total, from the block&#8217;s last seven minutes alone. The gap is not a defect in the records; it is a defect in when they were written.</p>
+    <p class="note">A caveat on reading commits as a clock: every one of the range&#8217;s 13 commits is commit-dated after 17:04:25, the earliest at 19:45:10 and eight of them in a single batch at 02:03. Commits here are a recording act, not a work timestamp, so they mark when work was <em>captured</em>, not when it was done. That is also why the range must be filtered by commit date rather than author date — <code>7b98bf8</code> is author-dated 07-23.</p>
+
+    <h3>Edge identity is not canonical</h3>
+    <p>The 27 edges resolve to 19 distinct link targets, and two of those targets are the same guide reached by two paths: the 12:53 and 15:14 records cite <code>.agents/skills/custom/frontmatter.md</code>, while the 16:22 and 17:04 records cite <code>.claude/skills/custom/frontmatter.md</code> <span class="pill p-nodes">nodes</span>. These are not interchangeable — the two files measure 8,884 and 9,053 bytes and are not byte-identical <span class="pill p-fs">fs</span>, and the <code>.agents</code> copy is the ignored mirror that the 16:22 review flagged consumers for pointing at. Any count of &#8220;distinct documents referenced&#8221; therefore depends on a path-identity rule the repository has not settled. I report link occurrences and distinct paths; I do not report distinct documents.</p>
+
+    <h3>Where the block boundary comes from</h3>
+    <p>Two substrates were measured independently and agree <span class="pill p-ledger">ledger</span><span class="pill p-git">git</span>. Before the block: 29h01m of ledger silence (last event 2026-07-26T07:23:49Z → first event 2026-07-27T12:25:23Z) and 28h08m of commit silence (<code>341874e</code> 07-26 15:36:51 → <code>7b98bf8</code> commit-dated 07-27 19:45:10). After it: 9h43m of ledger silence (07-28 07:32:51Z → 17:16:00Z) and 9h26m of commit silence (<code>8cfd754</code> 04:50:16 → <code>4b2c864</code> 14:16:03). The largest gap <em>inside</em> the block, taking both substrates together, is 6h18m (07-27 19:45:10 → 07-28 02:03:56). Every boundary gap exceeds every interior gap, so the boundary holds — but the interior gap is only 33% smaller than the trailing one, which is thinner evidence than I would like. The twelve commits stamped 02:03–04:50 on 07-28 are the tail of this block, not a new day.</p>
+
+    <h3>Working-tree residue: exactly one file</h3>
+    <p>Eight paths are currently dirty or untracked. Seven were modified between 14:15 and 15:20 <em>today</em>, 2026-07-28, and belong to a later block <span class="pill p-fs">fs</span>. Exactly one is in-window: <code>plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/cyberalchemy-mark.svg</code>, untracked, 1,125 bytes, written 04:55:29 — the last event of the block and the reason its end is stamped there. It threads to none of the three objectives, and no record mentions it.</p>
+
+    <h3>Divergences from the supplied briefing &mdash; 3 figures did not reproduce</h3>
+    <p>Every number printed above was re-derived from the substrates directly. Three briefed figures failed to reproduce and were replaced by measured ones; the detail is folded because it changes confidence in this report, not the next hour&#8217;s work.</p>
+    <details>
+      <summary>3 divergences — measured vs briefed</summary>
+      <div class="dbody">
+        <p><strong>1. Relative links: briefed 22, measured 27 occurrences / 19 distinct.</strong> All 27 Connections rows across the nine records carry exactly one relative markdown link, and the nine files contain 27 markdown links in total, all inside Connections tables. Deduplicating targets by path gives 19. Neither counting rule yields 22. The broken count <em>does</em> reproduce: exactly one target, <code>research/research-lifecycle-definitions/findings.md</code>, does not resolve.</p>
+        <p><strong>2. Unclaimed files: briefed 65, measured 48.</strong> Extracting every path from the nine &#8220;Files touched&#8221; sections gives 54 unique entries, one of which is a directory (<code>research/research-lifecycle-definitions/</code>). Matching against the 96-file range by exact equality leaves 52 unclaimed; adding directory-prefix expansion leaves 48. I print 48 and name the rule. Under no rule I could construct did the figure reach 65.</p>
+        <p><strong>3. <code>feedback_prompts</code>: briefed empty file-wide, measured 18 non-empty rows.</strong> The ledger holds 168 <code>feedback_prompts</code> entries; 18 are non-empty, and 2 of those 18 fall inside this block — the close of <code>2026-07-27-xray-infrastructure-review</code>, which preserves four verbatim round-2 and round-3 reviewer prompts, and the close of <code>2026-07-28-context-rich-strategy-review</code>, which preserves four cross-confrontation prompts plus a robot-talks prompt. That material is real evidence about how the 17:04 item was reviewed and it would have been lost under the briefed assumption. The narrower claim <em>does</em> hold: none of the 6 <code>exit_reason: error</code> rows in this block carries any text.</p>
+        <p><strong>Everything else reproduced exactly:</strong> 27 typed edges and their full type breakdown (is-part-of 6, contextualizes 6, validates 6, derives-from 4, contradicts 3, refines 2); 6 of 9 records anchored, 3 unlinked, and the same three node identities; the anchor distribution 4/1/1; the <code>expected_importance</code> vector; the two coexisting frontmatter generations and which three records use the newer one; 13 commits, 96 files, +17,721/−294; 37 opened, 35 closed, 2 never closed; 23 resolved, 6 error, 6 user_abort; and the single in-window residue at 1,125 bytes and 04:55:29.</p>
+      </div>
+    </details>
+
+    <h3>Reading limits</h3>
+    <p>The ledger was read with narrow offset reads and pattern anchors only, never in full and never through a shell — the append-only hook aborts any shell command naming the file, which it did once during this work, confirming the constraint rather than merely asserting it. Rows created after 2026-07-28 06:00 local were excluded as belonging to a later block. Dispatch-to-record attribution is asserted only where a dispatch id, working folder or goal names the same artifact a record names; the 11 auto-supervised host-agent rows opened between 14:35:43 and 15:14:57 local sit inside the window three records cover, but their <code>connections</code> fields are empty and nothing binds a given row to a given record, so no such claim is made.</p>
+
+  </div>
+</section>
+
+<footer>
+  V3 &mdash; The Objective Thread &nbsp;·&nbsp; block 2026-07-27 09:25 → 2026-07-28 04:55 (−03:00)<br>
+  Substrates: 9 session records · git 7b98bf8^..8cfd754 · telemetry/agents/subagents-dispatch.yaml · working-tree state<br>
+  Spine: objective. Ranking key: anchor depth (degenerate on this data — all anchored items resolved at rung 1).<br>
+  State from the machine, meaning from the prose, divergences never merged silently.
+</footer>
+
+</div>
+</body>
+</html>

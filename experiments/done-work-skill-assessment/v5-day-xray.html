@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Day X-Ray — 2026-07-27 work block</title>
+<style>
+  :root{
+    --bg:#0d1015; --panel:#12151b; --band:#1b2029; --line:#262c36;
+    --ink:#dfe5ee; --ink2:#a8b1c0; --ink3:#7b8492;
+    --ok:#4fa87a; --err:#d4674f; --abort:#9b7ad1; --node:#5aa9e6;
+    --vol:#d9a441; --rule:#e05f7a; --orphan:#b0637f;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:56px 28px 96px}
+  header.mast{border-bottom:1px solid var(--line); padding-bottom:26px; margin-bottom:34px}
+  .kicker{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink3); margin:0 0 12px
+  }
+  h1{font-size:38px; line-height:1.16; margin:0 0 14px; font-weight:600; letter-spacing:-.01em}
+  .sub{color:var(--ink2); font-size:18px; margin:0 0 18px; max-width:74ch}
+  .bet{
+    border-left:2px solid var(--vol); padding:2px 0 2px 16px; margin:22px 0 0;
+    color:var(--ink2); font-size:16px; max-width:78ch
+  }
+  .bet strong{color:var(--ink); font-weight:600}
+  nav.toc{
+    margin:30px 0 0; padding:14px 0 0; border-top:1px solid var(--line);
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:12px;
+  }
+  nav.toc a{color:var(--ink3); text-decoration:none; margin-right:20px; white-space:nowrap; line-height:2.1}
+  nav.toc a:hover{color:var(--node); text-decoration:underline}
+
+  section{margin:0 0 54px; scroll-margin-top:18px}
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11px; letter-spacing:.2em; color:var(--ink3);
+    text-transform:uppercase; margin:0 0 8px
+  }
+  h2{
+    font-size:25px; line-height:1.3; margin:0 0 20px; font-weight:600;
+    letter-spacing:-.005em; max-width:34ch; color:#eef2f8
+  }
+  h3{font-size:18px; margin:30px 0 8px; font-weight:600; color:#eef2f8}
+  p{margin:0 0 15px; max-width:78ch}
+  ul,ol{max-width:78ch; padding-left:22px; margin:0 0 16px}
+  li{margin:0 0 11px}
+  code,.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:13.5px}
+  code{background:#171b23; border:1px solid var(--line); border-radius:3px; padding:1px 5px; color:#c9d3e2}
+  .num{font-variant-numeric:tabular-nums; color:#f0f4fa}
+
+  .pill{
+    display:inline-block; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:9.5px; letter-spacing:.13em; text-transform:uppercase;
+    padding:2px 7px; border-radius:9px; border:1px solid; vertical-align:2px;
+    margin:0 3px 0 0; white-space:nowrap; font-weight:600;
+  }
+  .p-git{color:#e8bd63; border-color:#6b5423; background:#241d0e}
+  .p-node{color:#7cc0ef; border-color:#245066; background:#0e1c26}
+  .p-ledger{color:#8fd9b3; border-color:#255140; background:#0d1f18}
+  .p-tree{color:#c7a7e8; border-color:#463164; background:#191128}
+  .unlinked{
+    display:inline-block; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:9.5px; letter-spacing:.13em; text-transform:uppercase; font-weight:600;
+    padding:2px 7px; border-radius:2px; color:#f0b8c6; border:1px dashed #7a3b4c;
+    background:#26121a; vertical-align:2px; margin:0 3px;
+  }
+
+  .item{border-top:1px solid var(--line); padding:20px 0 4px}
+  .item:first-of-type{border-top:none}
+  .item h3{margin-top:0}
+  .meta{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:12px;
+    color:var(--ink3); margin:0 0 10px
+  }
+  .meta b{color:var(--ink2); font-weight:600}
+  .lab{color:var(--ink3); font-weight:600; font-size:14px; letter-spacing:.02em}
+
+  figure{margin:26px 0 30px; padding:18px 18px 14px; background:var(--panel);
+         border:1px solid var(--line); border-radius:5px}
+  figure svg{display:block; width:100%; height:auto}
+  figcaption{margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+             color:var(--ink2); font-size:14.5px; line-height:1.55; max-width:none}
+  figcaption b{color:var(--ink)}
+
+  table{border-collapse:collapse; width:100%; font-size:13.5px;
+        font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; margin:6px 0 18px}
+  th,td{text-align:left; padding:6px 10px 6px 0; border-bottom:1px solid var(--line); vertical-align:top}
+  th{color:var(--ink3); font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase}
+  td.n{text-align:right; font-variant-numeric:tabular-nums; padding-right:18px}
+
+  details{margin:16px 0; background:var(--panel); border:1px solid var(--line); border-radius:5px}
+  summary{cursor:pointer; padding:12px 16px; color:var(--ink2); font-size:15px; list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"▸ "; color:var(--ink3)}
+  details[open] summary::before{content:"▾ "}
+  details[open] summary{border-bottom:1px solid var(--line)}
+  .dbody{padding:14px 16px 4px}
+
+  .boundary{border:1px solid #4a3a1c; background:#14110a; border-radius:5px; padding:22px 24px 8px}
+  .boundary h2{color:#f0d79a}
+  a.anchor{color:var(--ink3); text-decoration:none; font-size:14px; margin-left:8px}
+  a.anchor:hover{color:var(--node)}
+  footer{border-top:1px solid var(--line); margin-top:50px; padding-top:20px;
+         color:var(--ink3); font-size:13px; font-family:ui-monospace,Menlo,Consolas,monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <p class="kicker">Variant V5 · The Day X-Ray · block 2026-07-27 09:25 → 2026-07-28 04:55 local</p>
+  <h1>What the day changed, in the order it changed it</h1>
+  <p class="sub">Thirteen commits, ninety-six files, <span class="num">+17,721</span>/<span class="num">−294</span>. Nine session records. Thirty-seven dispatches. One untracked file left on the floor at 04:55:29.</p>
+  <p class="bet"><strong>The bet this report makes:</strong> the day's real headline is not any single piece of work — it is the gap between what got written down and what got changed. That gap has a shape, and the shape is easier to see than to read. Two figures carry it; the prose carries everything else.</p>
+  <nav class="toc">
+    <a href="#s1">01 · the shape of the day</a>
+    <a href="#s2">02 · the narrated stretch</a>
+    <a href="#s3">03 · the 02:03 batch</a>
+    <a href="#s4">04 · the overnight stretch</a>
+    <a href="#s5">05 · the divergence</a>
+    <a href="#s6">06 · what stops mid-stride</a>
+    <a href="#s7">07 · evidence boundary</a>
+  </nav>
+</header>
+
+<!-- ═══════════════ 01 ═══════════════ -->
+<section id="s1">
+  <p class="eyebrow">01 · the shape of the day</p>
+  <h2>The block ran nineteen and a half hours and left recorded activity in only five of them.</h2>
+
+  <p>The block is bounded by two substrates agreeing. The ledger's last in-window close lands at <span class="num">04:42:16</span> and the next ledger row is <span class="num">9 h 34 min</span> later; the last commit lands at <span class="num">04:50:16</span> and the next git event is <span class="num">9 h 26 min</span> later. Between those two agreeing silences sits <span class="num">19 h 30 min</span> of wall clock.</p>
+
+  <p>Inside it, recorded events cluster into five stretches separated by four gaps. Adding up each stretch from its first to its last recorded event gives roughly <span class="num">8 h 23 min</span> of traced time. That number is a floor, not a measurement of effort: <span class="pill p-git">git</span> one commit lands at <span class="num">19:45:10</span> in the middle of the longest gap, which proves someone was working when nothing else was recording. Silence in these substrates means <em>no event was emitted</em>, never <em>nothing happened</em>.</p>
+
+  <figure>
+    <svg viewBox="0 0 1000 340" role="img" aria-labelledby="stripT stripD">
+      <title id="stripT">The 2026-07-27 work block as a time strip</title>
+      <desc id="stripD">A twenty-hour horizontal time axis running from 09:00 on 27 July to 05:00 on 28 July, local time. Three stacked lanes share the axis. The top lane shows thirty-seven dispatch-ledger openings as small ticks, coloured by how each dispatch closed; ticks opened in the same minute are stacked vertically. The middle lane shows the nine session-node timestamps as blue circles, all falling between 12:53 and 17:04. The bottom lane shows committed insertion volume as gold bars at the three moments commits landed. Five shaded vertical bands mark the working stretches, labelled B1 through B5. A dashed pink rule at 17:04 marks where the written record stops; a solid pink rule at 04:55 marks the end of the block. The tallest volume bar by far sits at the far right, inside the last two minutes of the block, in the stretch that has no session records at all.</desc>
+
+      <!-- boundary rule labels -->
+      <text x="414" y="15" text-anchor="end" fill="#e05f7a" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10.5">records stop · 17:04 ▸</text>
+      <text x="942" y="15" text-anchor="end" fill="#e05f7a" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10.5">block ends · 04:55 ▸</text>
+
+      <!-- working-block bands -->
+      <rect x="78.8" y="38" width="7.6" height="212" fill="#1b2029"/>
+      <rect x="163.8" y="38" width="278.1" height="212" fill="#1b2029"/>
+      <rect x="536.5" y="38" width="4" height="212" fill="#1b2029"/>
+      <rect x="815" y="38" width="8" height="212" fill="#1b2029"/>
+      <rect x="862.1" y="38" width="84.8" height="212" fill="#1b2029"/>
+      <!-- band labels -->
+      <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10" fill="#7b8492" text-anchor="middle">
+        <text x="82.6" y="33">B1</text>
+        <text x="302.8" y="33">B2</text>
+        <text x="538.5" y="33">B3</text>
+        <text x="819" y="33">B4</text>
+        <text x="904.5" y="33">B5</text>
+      </g>
+
+      <!-- lane labels -->
+      <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10.5" fill="#7b8492" text-anchor="end">
+        <text x="55" y="88">ledger</text>
+        <text x="55" y="116">nodes</text>
+        <text x="55" y="200">commits</text>
+      </g>
+
+      <!-- ledger lane: ticks grow upward from y=88; stacked when opened in the same minute -->
+      <g>
+        <!-- B1: 09:25 x2, 09:31 -->
+        <rect x="77.3" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="77.3" y="75" width="3" height="6" fill="#4fa87a"/>
+        <rect x="81.5" y="82" width="3" height="6" fill="#4fa87a"/>
+        <!-- B2 -->
+        <rect x="162.3" y="82" width="3" height="6" fill="none" stroke="#8b93a1" stroke-width="1"/>
+        <circle cx="163.8" cy="70" r="2" fill="#8b93a1"/>
+        <rect x="255.8" y="82" width="3" height="6" fill="#d4674f"/>
+        <rect x="307.5" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="318.9" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="318.9" y="75" width="3" height="6" fill="#4fa87a"/>
+        <rect x="318.9" y="68" width="3" height="6" fill="#4fa87a"/>
+        <rect x="328.9" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="328.9" y="75" width="3" height="6" fill="#4fa87a"/>
+        <rect x="328.9" y="68" width="3" height="6" fill="none" stroke="#8b93a1" stroke-width="1"/>
+        <circle cx="330.4" cy="58" r="2" fill="#8b93a1"/>
+        <rect x="336.3" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="336.3" y="75" width="3" height="6" fill="#4fa87a"/>
+        <rect x="336.3" y="68" width="3" height="6" fill="#4fa87a"/>
+        <rect x="336.3" y="61" width="3" height="6" fill="#4fa87a"/>
+        <rect x="364.5" y="82" width="3" height="6" fill="#9b7ad1"/>
+        <rect x="382.9" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="396.7" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="396.7" y="75" width="3" height="6" fill="#4fa87a"/>
+        <rect x="396.7" y="68" width="3" height="6" fill="#4fa87a"/>
+        <rect x="421.5" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="431.6" y="82" width="3" height="6" fill="#4fa87a"/>
+        <!-- B5 -->
+        <rect x="860.6" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="888.7" y="82" width="3" height="6" fill="#d4674f"/>
+        <rect x="888.7" y="75" width="3" height="6" fill="#d4674f"/>
+        <rect x="888.7" y="68" width="3" height="6" fill="#d4674f"/>
+        <rect x="888.7" y="61" width="3" height="6" fill="#d4674f"/>
+        <rect x="888.7" y="54" width="3" height="6" fill="#d4674f"/>
+        <rect x="891.5" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="898.8" y="82" width="3" height="6" fill="#9b7ad1"/>
+        <rect x="898.8" y="75" width="3" height="6" fill="#9b7ad1"/>
+        <rect x="898.8" y="68" width="3" height="6" fill="#9b7ad1"/>
+        <rect x="898.8" y="61" width="3" height="6" fill="#9b7ad1"/>
+        <rect x="898.8" y="54" width="3" height="6" fill="#9b7ad1"/>
+        <rect x="915.3" y="82" width="3" height="6" fill="#4fa87a"/>
+        <rect x="928.4" y="82" width="3" height="6" fill="#4fa87a"/>
+      </g>
+      <!-- overnight annotations -->
+      <text x="884" y="48" text-anchor="end" fill="#d4674f" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5">5 builds → error</text>
+      <text x="906" y="46" fill="#9b7ad1" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5">5 relaunches → abort</text>
+
+      <!-- node lane -->
+      <g fill="#5aa9e6" fill-opacity="0.72">
+        <circle cx="233.3" cy="112" r="4"/>
+        <circle cx="234.5" cy="112" r="4"/>
+        <circle cx="325.2" cy="112" r="4"/>
+        <circle cx="338.0" cy="112" r="4"/>
+        <circle cx="343.4" cy="112" r="4"/>
+        <circle cx="363.3" cy="112" r="4"/>
+        <circle cx="383.4" cy="112" r="4"/>
+        <circle cx="388.0" cy="112" r="4"/>
+        <circle cx="419.3" cy="112" r="4"/>
+      </g>
+      <text x="233" y="134" fill="#7b8492" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5">9 session nodes · 12:53 → 17:04 · nothing after</text>
+
+      <!-- commit volume bars, baseline y=250, 120 px = 10,461 insertions -->
+      <rect x="529.5" y="244.2" width="18" height="5.8" fill="#d9a441" fill-opacity="0.35" stroke="#d9a441" stroke-dasharray="3 2"/>
+      <rect x="810" y="172.6" width="18" height="77.4" fill="#d9a441"/>
+      <rect x="933" y="217.8" width="18" height="32.2" fill="#d9a441"/>
+      <rect x="933" y="130" width="18" height="87.8" fill="#d9a441"/>
+      <line x1="933" y1="217.8" x2="951" y2="217.8" stroke="#12151b" stroke-width="1.5"/>
+      <!-- bar labels -->
+      <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5" fill="#a8b1c0">
+        <text x="538.5" y="238" text-anchor="middle">508</text>
+        <text x="819" y="166" text-anchor="middle">6,752 · 8 commits in 2 s</text>
+        <text x="942" y="124" text-anchor="middle">10,461 · 4 commits in 112 s</text>
+        <text x="928" y="176" text-anchor="end" fill="#d9a441">one commit = 7,657 ▸</text>
+      </g>
+
+      <!-- boundary rules -->
+      <line x1="419.3" y1="20" x2="419.3" y2="250" stroke="#e05f7a" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <line x1="946.9" y1="20" x2="946.9" y2="250" stroke="#e05f7a" stroke-width="1.4"/>
+
+      <!-- axis -->
+      <line x1="60" y1="250" x2="950" y2="250" stroke="#565c6b" stroke-width="1"/>
+      <g stroke="#565c6b" stroke-width="1">
+        <line x1="60" y1="250" x2="60" y2="255"/><line x1="149" y1="250" x2="149" y2="255"/>
+        <line x1="238" y1="250" x2="238" y2="255"/><line x1="327" y1="250" x2="327" y2="255"/>
+        <line x1="416" y1="250" x2="416" y2="255"/><line x1="505" y1="250" x2="505" y2="255"/>
+        <line x1="594" y1="250" x2="594" y2="255"/><line x1="683" y1="250" x2="683" y2="255"/>
+        <line x1="772" y1="250" x2="772" y2="255"/><line x1="861" y1="250" x2="861" y2="255"/>
+        <line x1="950" y1="250" x2="950" y2="255"/>
+      </g>
+      <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10" fill="#7b8492" text-anchor="middle">
+        <text x="60" y="267">09:00</text><text x="149" y="267">11:00</text><text x="238" y="267">13:00</text>
+        <text x="327" y="267">15:00</text><text x="416" y="267">17:00</text><text x="505" y="267">19:00</text>
+        <text x="594" y="267">21:00</text><text x="683" y="267">23:00</text><text x="772" y="267">01:00</text>
+        <text x="861" y="267">03:00</text><text x="944" y="267">05:00</text>
+      </g>
+      <text x="500" y="281" text-anchor="middle" fill="#565c6b" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5">local time (UTC−03:00) · 27 July → 28 July</text>
+
+      <!-- legend -->
+      <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10" fill="#a8b1c0">
+        <rect x="60" y="296" width="9" height="9" fill="#4fa87a"/><text x="74" y="304">closed resolved (23)</text>
+        <rect x="212" y="296" width="9" height="9" fill="#d4674f"/><text x="226" y="304">closed error (6)</text>
+        <rect x="342" y="296" width="9" height="9" fill="#9b7ad1"/><text x="356" y="304">closed user_abort (6)</text>
+        <rect x="500" y="296" width="9" height="9" fill="none" stroke="#8b93a1"/><text x="514" y="304">opened, never closed (2)</text>
+        <circle cx="678" cy="300.5" r="4.5" fill="#5aa9e6" fill-opacity="0.72"/><text x="690" y="304">session node (9)</text>
+
+        <rect x="60" y="316" width="9" height="9" fill="#d9a441"/><text x="74" y="324">committed insertions · 120 px = 10,461</text>
+        <rect x="330" y="316" width="9" height="9" fill="#d9a441" fill-opacity="0.35" stroke="#d9a441" stroke-dasharray="3 2"/><text x="344" y="324">content author-dated four days earlier</text>
+        <line x1="610" y1="316" x2="610" y2="325" stroke="#e05f7a" stroke-dasharray="4 3"/><text x="620" y="324">record / block boundary</text>
+        <rect x="790" y="316" width="3" height="9" fill="#4fa87a"/><rect x="790" y="309" width="3" height="6" fill="#4fa87a"/>
+        <text x="802" y="324">stacked = opened in the same minute</text>
+      </g>
+    </svg>
+    <figcaption><b>The day strip.</b> Every mark is placed at its true clock position on one linear axis, which is why the figure looks lopsided: it is. The widest band, <b>B2</b> (11:20→17:35, <span class="num">6 h 15 min</span>), carries every session record and <b>zero</b> commits. The narrowest recorded moment, the <span class="num">112</span> seconds from 04:48:24 to 04:50:16, carries <span class="num">59.0 %</span> of the day's insertions and no record at all. The dashed rule is where the prose stops, and every one of the block's <span class="num">17,721</span> insertions is committed to the right of it — no commit landed while the records were being written. Ledger ticks are stacked when several dispatches open in the same minute, so tick height reads as fan-out width. Bar heights are linear in insertions; the three moments where commits landed are so tightly clustered that each is drawn as one bar with its commit count stated.</figcaption>
+  </figure>
+
+  <p>Read left to right, the day is: a short read-only probe, a long narrated working stretch, a lone commit in the evening, a two-second burst that writes the whole day down, and a final overnight stretch that produces more change than everything before it combined and narrates none of it.</p>
+</section>
+
+<!-- ═══════════════ 02 ═══════════════ -->
+<section id="s2">
+  <p class="eyebrow">02 · B1 and B2 · 09:25 → 17:35</p>
+  <h2>The only stretch where prose and machine agree produced six hours of work and not one commit.</h2>
+
+  <p>B1 and B2 are where the nine session records live. Ranked by change volume — this report's ranking key throughout — they rank <em>last</em>, because they committed nothing while they ran. Their output was committed later, in B4. What follows is ordered by when the work started.</p>
+
+  <div class="item">
+    <h3>B1 · Three read-only assessments of what the project is for</h3>
+    <p class="meta"><span class="pill p-ledger">ledger</span> 3 dispatches opened 09:25:23–09:31:03, all closed <b>resolved</b> by 09:35:36 · <span class="pill p-git">git</span> 0 files · <span class="unlinked">unlinked</span></p>
+    <p>Three sibling dispatches — <code>Rank project objectives (A)</code>, <code>(B)</code> and <code>(C)</code> — each launched one writer under a strictly read-only prompt: produce a ranked list of the repository's top five objectives, each with cited evidence, a confidence level, and what would change the agent's mind. Three independent agents, same question, no cross-talk.</p>
+    <p><b>Why:</b> the ledger records the prompt but no substrate records the motive, and no session node covers 09:25. The purpose is <span class="unlinked">unlinked</span> — three parallel read-only answers to "what is this project trying to achieve?" is a shape consistent with several intentions, and the day's records do not name one.</p>
+    <p><b>Open:</b> nothing in the block records what the three answers were, whether they agreed, or what was done with them. <b>Next:</b> if the comparison mattered, the three outputs exist only in host transcript, not in this repository.</p>
+  </div>
+
+  <div class="item">
+    <h3>B2 · The Codex host-binary defect, and Phase A stopped behind it</h3>
+    <p class="meta"><span class="pill p-node">nodes</span> 12:55 and 15:49 · <span class="pill p-git">git</span> 3 files, +29/−9 in <code>51a5e8a</code> (the day's smallest non-empty commit)</p>
+    <p>The morning began by re-running the mandatory Codex hook smoke before resuming Phase A. The helper returned its marker but produced <em>no</em> new hook state, no ledger open/close pair, no <code>dispatch_links</code> row, no workflow binding. Trust configuration, hook enablement, matcher normalisation and the pilot process were all checked and none explained it. Host logs showed the embedded Codex <code>0.146.0-alpha.3.1</code> executing <code>collaboration.spawn_agent</code> without entering the generic <code>PreToolUse</code> path at all.</p>
+    <p><b>Why:</b> the previous day's handoff had assumed a fresh trusted session was the last remaining condition. The 12:55 node records that assumption as <em>contradicted</em>. Trustworthy subagent provenance is the precondition the whole Phase A work pack sits on, so a host that bypasses the fail-closed hook boundary invalidates every launch receipt taken through it.</p>
+    <p>By 15:49 the same contradiction had been reproduced live: collaboration launches succeeded while the policy-selected database held zero <code>host_workflow_turn_bindings</code>. Process inspection proved the active VS Code extension still runs <code>0.146.0-alpha.3.1</code> even though <code>chatgpt.cliExecutable</code> correctly points at the installed <code>0.146.0-alpha.10.1</code>. <span class="pill p-node">nodes</span> No repository bridge code was changed, deliberately: the defective binary bypasses <code>PreToolUse</code> before repository hooks can run, so a repository-side fix would be a fix in the wrong place.</p>
+    <p><b>Open:</b> Phase A is paused. <b>Next steps</b>, recorded identically by both nodes: run <code>Developer: Reload Window</code>; confirm the active <code>codex.exe</code> path and version; run exactly one read-only <code>collaboration.spawn_agent</code> smoke with the workflow-binding envelope; verify new hook state, matching YAML/ACI open and close, and one terminal <code>host_workflow_turn_bindings</code> row; resume the lineage designer and its two reviewers only if the smoke passes. <b>No substrate in this block records that reload happening or that smoke being run.</b></p>
+  </div>
+
+  <div class="item">
+    <h3>B2 · The backlog skill, promoted after a two-round governed review</h3>
+    <p class="meta"><span class="pill p-ledger">ledger</span> <code>2026-07-27-backlog-skill-work</code> opened 13:26:00, closed <b>error</b> 13:44:30, no error text · <span class="pill p-node">nodes</span> 14:57 and 15:49 · <span class="pill p-git">git</span> 19 files, +1,362 in <code>e0a7d17</code></p>
+    <p>Two independent reviewers and one separate writer ran a zig-zag review of a new reusable backlog skill. Round one produced seven governance and usability defects; the writer corrected them; both reviewers returned PASS on the frozen second revision. The approved package was then promoted to <code>.claude/skills/backlog</code> as canonical source with <code>.codex/skills/backlog</code> as a verified mirror.</p>
+    <p><b>Why:</b> the skill was created to capture a cross-dispatch work-graph candidate that surfaced during the lineage discussion. Final approval initially failed for a governance reason worth keeping: the reviewed artifact lived only in the gitignored <code>.agents</code> mirror, while <code>.claude/skills</code> is the repository's source of truth. <span class="pill p-tree">tree</span> <code>.gitignore</code> line 16 ignores <code>/.agents/</code>, so the reviewed copy was invisible to version control.</p>
+    <p><b>Open:</b> the aggregate dispatch is recorded <code>error</code> and carries <span class="num">no</span> error text — the ledger's <code>feedback_prompts</code> for that close is empty. The 14:57 node supplies what the ledger omits: none of the child launches produced an ACI <code>host_workflow_turn_bindings</code> row or a persisted <code>WorkflowInputManifest</code>, and several of the session-local proposal JSONs did not match the strict runtime schema. <b>Next:</b> audit and remove the <code>.codex/workflow-inputs</code> scratch files — <span class="pill p-git">git</span> twelve of them, <span class="num">1,076</span> lines, were committed anyway at 02:01:44.</p>
+  </div>
+
+  <div class="item">
+    <h3>B2 · The emission contract, structurally refuted the same afternoon</h3>
+    <p class="meta"><span class="pill p-node">nodes</span> 15:14 · <span class="pill p-git">git</span> essay + review = 579 lines inside <code>93de0e3</code></p>
+    <p>A hybrid system-view/engineer-view essay was authored in one file, naming nine stances and deciding each exactly once alongside contracts, mechanics and nine failure modes. One independent reviewer attacked it across three zig-zag exchanges and returned a structural verdict: the three-axis emission contract is the <em>wrong decomposition</em>, because its address field fuses a boolean to an identifier and does three jobs at once, and because a sealed emission is not unaddressed but addressed to the aggregator under a delivery condition. The replacement moves release onto the recipient and lets the recipient set carry cardinality. It dissolved five findings, left fifteen standing, and opened six new ones.</p>
+    <p>The same review established that the essay's flat claim of aggregator determinism is incoherent, because the aggregator was modelled as an agent with a prompt binding — and that repairing it costs the essay two of its three externally-authorised verdicts, since amending a prohibition inside the document that benefits from the amendment is exactly the move candidate invariant K1 forbids.</p>
+    <p><b>Why it mattered more than the findings:</b> mid-session the owner corrected the objective. Execution is a service of its own that resolves prompts at run time, and the shared objective of the composed services is <em>tracking everything done and linking artifacts within one context and across different ones</em> — materially different from the objective the essay had been built on, and matching the absent provenance spine the root Plan already names as its pivot. The 15:14 node's recommendation is explicit: settle the objective first, because the finding list reorders under the second reading.</p>
+    <p><b>Open:</b> twenty-one outstanding findings, plus a parallel experiment (<code>experiments/tracking-spine-primitives</code>) whose initial-definitions and criterion were attacked by three reviewers on structurally opposed angles, all three returning <em>do-not-freeze</em> and converging independently on five defects. The orthogonal reviewer concluded that the criterion's boundedness was manufactured by deleting the unsettled architecture and pre-registering the countable residue. Two factual errors were located by inspection and deliberately <em>recorded rather than repaired</em>, because the standing verdict recommends replacing the design rather than refining it.</p>
+  </div>
+
+  <div class="item">
+    <h3>B2 · Frontmatter timestamps, and the review that caught three consumers drifting</h3>
+    <p class="meta"><span class="pill p-ledger">ledger</span> <code>2026-07-27-frontmatter-timestamp-review</code> opened 16:17:27, closed <b>resolved</b> 16:20:18 · <span class="pill p-node">nodes</span> 16:22 · <span class="pill p-git">git</span> 9 files, +379/−216 in <code>cb6780e</code></p>
+    <p>The frontmatter guide was rewritten to require an immutable <code>created_at</code> and a revision-sensitive <code>updated_at</code>, both RFC 3339 in the <code>America/Sao_Paulo</code> civil timezone, and to forbid fabricated legacy creation times. A confirmed inline dispatch with two independently tensioned attackers found three integration defects: a legacy session timestamp template, consumers pointing at the ignored mirror, and an unsupported generic topical-tag fallback. The parent verified all three directly and applied them.</p>
+    <p><b>Evidence this landed:</b> <span class="pill p-node">nodes</span> the nine session records split into two frontmatter generations at exactly this point. The six nodes stamped 12:53 through 15:49 carry <code>created</code>/<code>last_updated</code>/<code>timestamp</code>; the three stamped 16:16, 16:22 and 17:04 carry <code>created_at</code>/<code>updated_at</code>. The schema change is visible in the artifacts it governs, in the same day.</p>
+    <p><b>Open:</b> one question — which durable evidence may authorise <code>created_at</code> for pre-existing artifacts with no trustworthy creation receipt. <b>Next:</b> audit remaining authoring skills and templates for legacy lifecycle fields and <code>.agents</code> pointers, and define a provenance-aware migration rule <em>before</em> any bulk backfill.</p>
+  </div>
+
+  <div class="item">
+    <h3>B2 · The target-architecture hypothesis and its x-ray — the last thing narrated</h3>
+    <p class="meta"><span class="pill p-ledger">ledger</span> <code>xray-infrastructure-review</code> 16:35→16:50 <b>resolved</b>, loops_used 3, two skeptics · <span class="pill p-node">nodes</span> 17:04 · <span class="pill p-git">git</span> 9 files, +2,834/−15 in <code>93de0e3</code></p>
+    <p>The 17:04 node executes the 15:14 node's keystone recommendation directly: rather than repairing the old essay, it authors a new one under the settled tracking-and-linking objective. The existing essay was found to be missing its middle step — it moved from problem straight to services, so the services arrived <em>asserted rather than derived</em>, and its verdict vocabulary made a proposal read as a decision record. The replacement was written freehand, then rewritten under the <code>system-view</code> and <code>engineer-view</code> contracts, which forced three things the freehand draft lacked: nine named stances each routed to exactly one verdict, an alternative-framings table per major section, and an authority citation on every decision row <em>including the four that have none</em>.</p>
+    <p>A visual x-ray of the eight proposed services followed, as a lane model plus a local HTML page, passing the Arcanum schema validator. Two reviewers on structurally opposed poles of one fidelity axis — <em>the artifact flatters its subject</em> versus <em>the artifact fails its reader</em> — attacked it across three zig-zag rounds and both reached ACCEPT. <span class="pill p-ledger">ledger</span> The ledger preserves the actual round-two and round-three prompts, which is one of only <span class="num">2</span> in-window closes with non-empty <code>feedback_prompts</code>: <em>"Do not re-list what is fixed. Answer only: which of your findings are NOT actually resolved, and why? What did the revision BREAK or newly over-claim?"</em></p>
+    <p><b>Friction worth carrying forward:</b> agent launches were blocked three times by the Stage-E source-integrity gate. The first block was a scaffolder wiping the Codex lifecycle policy from <code>AGENTS.md</code>, which was restored; the next two were real authored policy landing in both <code>AGENTS.md</code> and <code>CLAUDE.md</code>, each requiring a re-digest across both levels of the integrity chain.</p>
+    <p><b>Open — the sharpest single item in the day:</b> the hypothesis carries a hole its own refutation condition names. Its §1 requires work to run under authority, and none of its eight services provides it. A requirement with no service is precisely what the document declares would refute it. <b>Next:</b> attack that hole first, because it also settles whether the service count is eight or nine, which the x-ray would then have to be redrawn to match.</p>
+  </div>
+
+  <p><span class="pill p-node">nodes</span> Across the nine records the day left <span class="num">64</span> forward registers — <span class="num">29</span> open questions and <span class="num">35</span> next steps. That is the standing queue this block handed to the next one, and it is the one inventory in the day that is genuinely complete, because it is the one the nodes were built to carry.</p>
+</section>
+
+<!-- ═══════════════ 03 ═══════════════ -->
+<section id="s3">
+  <p class="eyebrow">03 · B3 and B4 · 19:45 → 02:04</p>
+  <h2>The eight commits that landed in two seconds at 02:03:56 are the narrated day being written down, nine hours late.</h2>
+
+  <p><span class="pill p-git">git</span> B3 is a single commit at 19:45:10 — <code>7b98bf8</code>, 2 files, <span class="num">+508</span>, opening a research record for the agent reasoning engine contract. It is the reason this report filters by <em>commit</em> date: its author date is <span class="num">2026-07-23 03:09:47</span>, four days earlier. Filtering the range by author date silently drops it and the range becomes twelve commits. The content was written on the 23rd; only the act of committing belongs to this day.</p>
+
+  <p>B4 is eight commits whose author dates spread from 02:01:14 to 02:03:17 and whose commit dates all land at 02:03:56–57 — a two-second batch. Together: <span class="num">72</span> files, <span class="num">+6,752</span>/<span class="num">−294</span>. Every one of the day's <span class="num">294</span> deletions is in this batch; the other five commits in the block delete nothing at all.</p>
+
+  <p>What the batch contains maps almost cleanly onto B2's narrative, in reverse order of when the work happened:</p>
+
+  <table>
+    <thead><tr><th>commit</th><th class="n">files</th><th class="n">+</th><th class="n">−</th><th>what it lands</th></tr></thead>
+    <tbody>
+      <tr><td>51a5e8a</td><td class="n">3</td><td class="n">29</td><td class="n">9</td><td>re-diagnoses the Codex hook failure as a host binary defect</td></tr>
+      <tr><td>cb6780e</td><td class="n">9</td><td class="n">379</td><td class="n">216</td><td>agent authoring policy + governed-Markdown schema (the timestamp rewrite)</td></tr>
+      <tr><td>e0a7d17</td><td class="n">19</td><td class="n">1,362</td><td class="n">0</td><td>the backlog skill, its mirror, its first governed backlog, and 12 scratch JSONs</td></tr>
+      <tr><td>7014cdf</td><td class="n">5</td><td class="n">0</td><td class="n">0</td><td>pure renames: <code>subplans/</code> → <code>plans/</code>, two essays into their own directories</td></tr>
+      <tr><td>93de0e3</td><td class="n">9</td><td class="n">2,834</td><td class="n">15</td><td>two paired system-and-engineer-view essays plus three x-ray pages</td></tr>
+      <tr><td>1e31c07</td><td class="n">17</td><td class="n">1,252</td><td class="n">2</td><td>three research/experiment baselines and the canonical-kinds scout evidence</td></tr>
+      <tr><td>9650458</td><td class="n">1</td><td class="n">221</td><td class="n">52</td><td>the implementations README rewritten around four zones</td></tr>
+      <tr><td>65e5673</td><td class="n">9</td><td class="n">675</td><td class="n">0</td><td>the nine session nodes themselves</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="pill p-git">git</span> <code>7014cdf</code> is a zero-line commit and therefore ranks dead last on this report's key — yet the 15:14 node had flagged the uncommitted <code>subplans/</code>→<code>plans/</code> migration as leaving two live dangling references, in the root Plan's child registry and in the essays index, and listed "commit or revert" as a next step. A ranking by change volume puts a commit that discharged a recorded obligation below a commit that added scratch JSON. That is the ranking key failing, in this block, on this data.</p>
+
+  <p><span class="pill p-node">nodes</span><span class="pill p-git">git</span> Note also what <code>65e5673</code> means for the strip: the nine session nodes carry timestamps from 12:53 to 17:04, but they were committed at 02:03:57. Their frontmatter times are session <em>starts</em>, not write times. The prose lane in the strip marks when the work happened; the volume lane marks when it was recorded. They are nine hours apart and there is nothing wrong with that — but it means the two lanes must never be read as one clock.</p>
+</section>
+
+<!-- ═══════════════ 04 ═══════════════ -->
+<section id="s4">
+  <p class="eyebrow">04 · B5 · 03:01 → 04:55</p>
+  <h2>The overnight stretch produced fifty-nine percent of the day's insertions and not one line of prose about it.</h2>
+
+  <p>B5 runs <span class="num">1 h 54 min</span>. It contains <span class="num">14</span> dispatch openings, <span class="num">14</span> closes — of which only <span class="num">4</span> resolved, <span class="num">5</span> errored and <span class="num">5</span> were user-aborted — and four commits carrying <span class="num">+10,461</span> insertions across <span class="num">22</span> files. It is the highest-volume stretch of the block by a wide margin and the session records ended <span class="num">10</span> hours before it started. Everything below is reconstructed from the ledger and the tree; no node describes any of it.</p>
+
+  <div class="item">
+    <h3>Correcting the context-rich x-ray after it over-claimed a capability that already exists</h3>
+    <p class="meta"><span class="pill p-ledger">ledger</span> <code>2026-07-28-context-rich-strategy-review</code> 03:01:25 → 03:15:02 <b>resolved</b>, 3 explorers + 2 helpers, loops_used 2 · <span class="pill p-git">git</span> 3 files, +2,136 in <code>fe28f51</code> at 04:48:24</p>
+    <p><b>Why:</b> the ledger states it plainly — the page wrongly framed <em>Subagents Strategy</em> as newly introduced when an owner-directed workflow contract already exists, and the runtime-service projection must stay distinguished from the existing workflow capability. Three reviewers attacked the corrected HTML and lane metadata from tensioned fidelity, ownership and operability lenses, then went through parent-mediated zig-zag revision and a robot-talks confrontation.</p>
+    <p><span class="pill p-ledger">ledger</span> This is the second and last in-window close with non-empty <code>feedback_prompts</code>, and it preserves the confrontation structure verbatim — each reviewer forced to answer the other two: <em>"Fidelity reviewer: confront the ownership review's ninth-service collision and the diagram review's Today-to-Target bridge"</em>; <em>"Robot-talks: confront whether Strategy is a service or control surface, who authors and persists task DAGs."</em></p>
+    <p><b>Open:</b> the ninth-service collision is the same authority hole the 17:04 node named as the hypothesis's self-refutation. It is now referenced from two substrates ten hours apart and is still not closed.</p>
+  </div>
+
+  <div class="item">
+    <h3>Five print editions launched in seventeen seconds; all five dead, twice, with no explanation</h3>
+    <p class="meta"><span class="pill p-ledger">ledger</span> 10 dispatches · opens 03:39:17–03:39:34 and 03:52:47–03:53:24 · closes <b>error</b> ×5 at 03:44:05–03:44:11, then <b>user_abort</b> ×5 at 03:54:06–04:12:10 · <span class="pill p-tree">tree</span> 0 bytes produced</p>
+    <p>Five named short editions of the work-context system view were dispatched in parallel, one writer each, each owning exactly one folder and one page budget:</p>
+    <ul>
+      <li><b>v03 · Polished Diagrams Plus</b> — Alexander, Christopher · 9–10 pages · reviewer Rumelt</li>
+      <li><b>v04 · Provenance Ledger</b> — Nonaka, Ikujiro · 8–9 pages · reviewer Weick</li>
+      <li><b>v05 · Dual Traversal</b> — Fong, Brendan · 7–8 pages · reviewer Deming</li>
+      <li><b>v06 · Systems Journal</b> — Bourbaki, Nicolas · 5–7 pages · reviewer Hofstede</li>
+      <li><b>v07 · Control-Room Atlas</b> — Eilenberg, Samuel · 8–10 pages · reviewer Hamming</li>
+    </ul>
+    <p><b>Why:</b> each dispatch resolves against a confirmed bundle digest and a frozen creator prompt whose raw SHA-256 the writer must verify before executing. The design is deliberate: five structurally different framings of the same source, produced independently, each self-reviewed by one read-only helper over three inline passes, so the owner can choose between finished alternatives rather than sketches.</p>
+    <p><b>What happened:</b> all five closed <code>error</code> within six seconds of one another at 03:44. All five <code>exit_reason: error</code> rows carry an empty <code>feedback_prompts</code> — <span class="pill p-ledger">ledger</span> the ledger records the failure and nothing about it. They were relaunched as <code>-r2</code> nine minutes later, and all five of those were closed <code>user_abort</code> between 03:54:06 and 04:12:10.</p>
+    <p><b>What survived:</b> <span class="pill p-git">git</span> nothing. <code>git ls-tree</code> on the final commit shows the short-version directory containing <code>_dispatch</code>, <code>version-01-signal-spine</code> and <code>version-02-recursive-orbit</code> — and no <code>version-03</code> through <code>version-07</code> folder anywhere. Ten dispatches, five named editions, two rounds, zero files. This is the largest single piece of unfinished work in the block.</p>
+    <p><b>One observation, offered without a causal claim:</b> the v06 writer's recorded prompt carries the frozen prompt digest in mixed case (<code>…8035651E4796CF9B7CBB4877FE…</code>) where the other four carry the same digest entirely in lower case. Whether that mattered is not something any substrate here can settle, and it cannot explain five simultaneous failures on its own.</p>
+  </div>
+
+  <div class="item">
+    <h3>The short print edition that did land, and the render loop behind it</h3>
+    <p class="meta"><span class="pill p-git">git</span> 17 files, <span class="num">+7,657</span> in <code>187b8b1</code> at 04:49:44 — the largest commit of the block · <span class="pill p-tree">tree</span> four render directories timestamped 04:11:25 → 04:30:33</p>
+    <p>While the five parallel editions were failing, the polished-diagrams edition was being built and re-rendered by hand. <span class="pill p-tree">tree</span> Four raster output directories (<code>short-polished-rendered</code>, <code>-v2</code>, <code>-v3</code>, <code>-v5</code>) carry modification times at 04:11, 04:18, 04:20 and 04:30 — four render-and-inspect cycles in nineteen minutes. They do not appear in the commit because the same commit adds a <code>.gitignore</code> rule for <code>short-version/**/*.png</code>, on the stated grounds that page rasters are regenerable from the tracked HTML and PDF.</p>
+    <p>The commit lands a 1,005-line PowerShell build script, the three <code>_dispatch</code> proposal bundles that governed the five failed builds, review logs for versions 01 and 02, three review rounds for version 02, and the polished-diagrams HTML and PDF.</p>
+    <p><b>Open:</b> <span class="pill p-tree">tree</span> the build script and the polished-diagrams HTML and PDF are all dirty in the working tree today — meaning the edition committed at 04:49 was not the last word on it.</p>
+  </div>
+
+  <div class="item">
+    <h3>Two dispatches that wrote into a different repository entirely</h3>
+    <p class="meta"><span class="pill p-ledger">ledger</span> <code>schema-of-inquiry-first-essays</code> 03:43:06 → 04:07:25 <b>resolved</b>; <code>schema-inquiry-redesign-candidates</code> 04:15:11 → 04:32:07 <b>resolved</b>; <code>schema-inquiry-redesign-review</code> 04:32:51 → 04:42:16 <b>resolved</b> · <span class="pill p-git">git</span> 0 files in this repository</p>
+    <p>Three of B5's fourteen dispatches produced their entire output under <code>C:/Users/victo/schema-of-inquiry</code>: first governed views, a layered x-ray and ten short essay contributions in deliberately different explanatory styles; then, after the owner rejected the result as hard to read and poorly formatted, three independent fully-rendered redesign candidates (editorial-book, visual-atlas, quiet-monograph); then a red-team pass across all three to identify which, if any, is fit to promote. The last of these is the final ledger event of the block.</p>
+    <p><b>This is where a git-shaped report goes blind.</b> Roughly an hour of the overnight stretch, three dispatches and a full reject-redesign-review cycle produced <em>zero</em> insertions in the delta this report is built on. Ranked by change volume they score zero and would not appear at all. Only the ledger knows they happened.</p>
+  </div>
+
+  <div class="item">
+    <h3>A new research topic opened as the last commit, and nothing under it</h3>
+    <p class="meta"><span class="pill p-git">git</span> 1 file, <span class="num">+62</span> in <code>8cfd754</code> at 04:50:16 · <span class="pill p-tree">tree</span> directory contains exactly one file</p>
+    <p><code>research/epistemic-repository-bootstrap/research-initial-definitions.md</code> opens a bounded reconnaissance across three repositories — this one, <code>domainspec-lean-formalization</code> and <code>business-philosopher</code> — to decide what should constrain the first plan of a new repository devoted to an emerging line of inquiry. It records six known gaps, the first being that <em>the new repository's name and exact ownership boundary are undecided</em>, and one confirmed constraint: create the new repository <em>after the scout proposal is confirmed</em>.</p>
+    <p><b>Open:</b> <span class="pill p-tree">tree</span> the directory holds that one file and nothing else — no evidence folder, no findings, no research document. <span class="pill p-ledger">ledger</span> No dispatch anywhere in the ledger names this topic, so the scouts it describes were never launched.</p>
+    <p><b>A divergence, stated and not resolved:</b> this document was committed at 04:50:16 saying repository creation awaits a confirmed scout proposal, sixty-seven minutes after a dispatch began writing ten essays into a repository at <code>C:/Users/victo/schema-of-inquiry</code>. Both facts are in the machine. Whether they concern the same repository is not something the ledger, the tree or the nodes state, and this report will not assume it.</p>
+  </div>
+
+  <div class="item">
+    <h3>A 1,125-byte mark, written 5 minutes 13 seconds after the last commit, referenced by nothing</h3>
+    <p class="meta"><span class="pill p-tree">tree</span> <code>…/short-version/cyberalchemy-mark.svg</code> · untracked · 1,125 B · 04:55:29 · the only in-window uncommitted path</p>
+    <p>This is the block's last event and its terminal edge. <span class="pill p-git">git</span> No committed file in the range references <code>cyberalchemy-mark</code>. Every other dirty path in the working tree carries a modification time from today (14:15 onward), including <code>stamp-cyberalchemy.py</code> in the same directory at 15:42 — which is to say the obvious consumer for this mark did not exist when the mark was written, and the day ended with an orphan asset and an intention nobody recorded. <span class="unlinked">unlinked</span></p>
+  </div>
+</section>
+
+<!-- ═══════════════ 05 ═══════════════ -->
+<section id="s5">
+  <p class="eyebrow">05 · the divergence</p>
+  <h2>Forty-eight of the ninety-six changed files are claimed by no session node, and nine claims point at files the delta does not contain.</h2>
+
+  <p>The nine session nodes each end with a <em>Files touched</em> list. Across all nine there are <span class="num">66</span> claim lines resolving to <span class="num">54</span> unique path strings. Matching those against the <span class="num">96</span> paths in the commit range gives the day's central number, and it depends on the matching rule, so the rule is printed here rather than assumed.</p>
+
+  <p><b>Rule used:</b> a changed path counts as <em>claimed</em> if it equals a claim string exactly, <em>or</em> if it sits beneath a claim string treated as a directory prefix. Backslashes normalised to forward slashes; backticks stripped. Under that containment rule, <b><span class="num">48</span> claimed / <span class="num">48</span> unclaimed</b>. Under exact-path matching only, <span class="num">44</span> claimed / <span class="num">52</span> unclaimed. The containment rule is the more generous of the two toward the records, so <b><span class="num">48</span> unclaimed is the conservative floor</b> and it is the figure this report stands behind. Exactly <span class="num">4</span> paths separate the two rules, and all four sit under one claim: <code>research/research-lifecycle-definitions/</code>, written with a trailing slash.</p>
+
+  <figure>
+    <svg viewBox="0 0 1000 300" role="img" aria-labelledby="divT divD">
+      <title id="divT">Claimed and unclaimed files in the 2026-07-27 commit delta</title>
+      <desc id="divD">A grid of ninety-six squares, one per changed file, laid out in six rows of sixteen in the order git reports them. Forty-four solid blue squares are files a session node names by exact path. Four outlined blue squares are files claimed only because a node named their parent directory. Forty-eight dark grey squares are files no session node claims under either rule; they form one large unbroken run of twenty-four in the middle of the sequence, corresponding to the print-edition and x-ray files committed overnight. Below the grid, a separate row of nine rose squares represents claim strings that match no path in the delta at all.</desc>
+
+      <text x="70" y="46" fill="#a8b1c0" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="11">96 changed files, in git's file order</text>
+
+      <!-- row 0: all exact -->
+      <g fill="#5aa9e6">
+        <rect x="70" y="64" width="22" height="22"/><rect x="96" y="64" width="22" height="22"/><rect x="122" y="64" width="22" height="22"/><rect x="148" y="64" width="22" height="22"/>
+        <rect x="174" y="64" width="22" height="22"/><rect x="200" y="64" width="22" height="22"/><rect x="226" y="64" width="22" height="22"/><rect x="252" y="64" width="22" height="22"/>
+        <rect x="278" y="64" width="22" height="22"/><rect x="304" y="64" width="22" height="22"/><rect x="330" y="64" width="22" height="22"/><rect x="356" y="64" width="22" height="22"/>
+        <rect x="382" y="64" width="22" height="22"/><rect x="408" y="64" width="22" height="22"/><rect x="434" y="64" width="22" height="22"/><rect x="460" y="64" width="22" height="22"/>
+      </g>
+      <!-- row 1: 6 exact, 9 unclaimed, 1 exact -->
+      <g fill="#5aa9e6">
+        <rect x="70" y="90" width="22" height="22"/><rect x="96" y="90" width="22" height="22"/><rect x="122" y="90" width="22" height="22"/>
+        <rect x="148" y="90" width="22" height="22"/><rect x="174" y="90" width="22" height="22"/><rect x="200" y="90" width="22" height="22"/>
+        <rect x="460" y="90" width="22" height="22"/>
+      </g>
+      <g fill="#33383f" stroke="#4d535e">
+        <rect x="226" y="90" width="22" height="22"/><rect x="252" y="90" width="22" height="22"/><rect x="278" y="90" width="22" height="22"/>
+        <rect x="304" y="90" width="22" height="22"/><rect x="330" y="90" width="22" height="22"/><rect x="356" y="90" width="22" height="22"/>
+        <rect x="382" y="90" width="22" height="22"/><rect x="408" y="90" width="22" height="22"/><rect x="434" y="90" width="22" height="22"/>
+      </g>
+      <!-- row 2: U U U E E E E E U U E E U U E U -->
+      <g fill="#33383f" stroke="#4d535e">
+        <rect x="70" y="116" width="22" height="22"/><rect x="96" y="116" width="22" height="22"/><rect x="122" y="116" width="22" height="22"/>
+        <rect x="278" y="116" width="22" height="22"/><rect x="304" y="116" width="22" height="22"/>
+        <rect x="382" y="116" width="22" height="22"/><rect x="408" y="116" width="22" height="22"/>
+        <rect x="460" y="116" width="22" height="22"/>
+      </g>
+      <g fill="#5aa9e6">
+        <rect x="148" y="116" width="22" height="22"/><rect x="174" y="116" width="22" height="22"/><rect x="200" y="116" width="22" height="22"/>
+        <rect x="226" y="116" width="22" height="22"/><rect x="252" y="116" width="22" height="22"/>
+        <rect x="330" y="116" width="22" height="22"/><rect x="356" y="116" width="22" height="22"/>
+        <rect x="434" y="116" width="22" height="22"/>
+      </g>
+      <!-- row 3: E E E U U U E E U U U U U U U U -->
+      <g fill="#5aa9e6">
+        <rect x="70" y="142" width="22" height="22"/><rect x="96" y="142" width="22" height="22"/><rect x="122" y="142" width="22" height="22"/>
+        <rect x="226" y="142" width="22" height="22"/><rect x="252" y="142" width="22" height="22"/>
+      </g>
+      <g fill="#33383f" stroke="#4d535e">
+        <rect x="148" y="142" width="22" height="22"/><rect x="174" y="142" width="22" height="22"/><rect x="200" y="142" width="22" height="22"/>
+        <rect x="278" y="142" width="22" height="22"/><rect x="304" y="142" width="22" height="22"/><rect x="330" y="142" width="22" height="22"/>
+        <rect x="356" y="142" width="22" height="22"/><rect x="382" y="142" width="22" height="22"/><rect x="408" y="142" width="22" height="22"/>
+        <rect x="434" y="142" width="22" height="22"/><rect x="460" y="142" width="22" height="22"/>
+      </g>
+      <!-- row 4: all unclaimed -->
+      <g fill="#33383f" stroke="#4d535e">
+        <rect x="70" y="168" width="22" height="22"/><rect x="96" y="168" width="22" height="22"/><rect x="122" y="168" width="22" height="22"/><rect x="148" y="168" width="22" height="22"/>
+        <rect x="174" y="168" width="22" height="22"/><rect x="200" y="168" width="22" height="22"/><rect x="226" y="168" width="22" height="22"/><rect x="252" y="168" width="22" height="22"/>
+        <rect x="278" y="168" width="22" height="22"/><rect x="304" y="168" width="22" height="22"/><rect x="330" y="168" width="22" height="22"/><rect x="356" y="168" width="22" height="22"/>
+        <rect x="382" y="168" width="22" height="22"/><rect x="408" y="168" width="22" height="22"/><rect x="434" y="168" width="22" height="22"/><rect x="460" y="168" width="22" height="22"/>
+      </g>
+      <!-- row 5: E E U C C C C E E E U U E E E U -->
+      <g fill="#5aa9e6">
+        <rect x="70" y="194" width="22" height="22"/><rect x="96" y="194" width="22" height="22"/>
+        <rect x="252" y="194" width="22" height="22"/><rect x="278" y="194" width="22" height="22"/><rect x="304" y="194" width="22" height="22"/>
+        <rect x="382" y="194" width="22" height="22"/><rect x="408" y="194" width="22" height="22"/><rect x="434" y="194" width="22" height="22"/>
+      </g>
+      <g fill="#1a3b52" stroke="#5aa9e6" stroke-dasharray="3 2">
+        <rect x="148" y="194" width="22" height="22"/><rect x="174" y="194" width="22" height="22"/><rect x="200" y="194" width="22" height="22"/><rect x="226" y="194" width="22" height="22"/>
+      </g>
+      <g fill="#33383f" stroke="#4d535e">
+        <rect x="122" y="194" width="22" height="22"/>
+        <rect x="330" y="194" width="22" height="22"/><rect x="356" y="194" width="22" height="22"/>
+        <rect x="460" y="194" width="22" height="22"/>
+      </g>
+
+      <!-- callout on the 24-run -->
+      <line x1="486" y1="179" x2="504" y2="179" stroke="#7b8492"/>
+      <text x="508" y="183" fill="#7b8492" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10">◂ one unbroken run of 24 unclaimed:</text>
+      <text x="508" y="197" fill="#7b8492" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10">the overnight print edition and x-rays</text>
+
+      <!-- orphan claims row -->
+      <text x="70" y="242" fill="#a8b1c0" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="11">the other direction — 9 claim strings matching no path in the delta</text>
+      <g fill="#3a1f28" stroke="#b0637f">
+        <rect x="70" y="252" width="22" height="22"/><rect x="96" y="252" width="22" height="22"/><rect x="122" y="252" width="22" height="22"/>
+        <rect x="148" y="252" width="22" height="22"/><rect x="174" y="252" width="22" height="22"/><rect x="200" y="252" width="22" height="22"/>
+        <rect x="226" y="252" width="22" height="22"/><rect x="252" y="252" width="22" height="22"/><rect x="278" y="252" width="22" height="22"/>
+      </g>
+      <text x="312" y="267" fill="#7b8492" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10">5 gitignored mirror · 1 outside the repo · 1 gitignored tmp · 1 wrong path · 1 never committed</text>
+
+      <!-- legend -->
+      <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10.5" fill="#a8b1c0">
+        <rect x="620" y="62" width="13" height="13" fill="#5aa9e6"/><text x="640" y="73">claimed by exact path — 44</text>
+        <rect x="620" y="86" width="13" height="13" fill="#1a3b52" stroke="#5aa9e6" stroke-dasharray="3 2"/><text x="640" y="97">claimed via parent directory — 4</text>
+        <rect x="620" y="110" width="13" height="13" fill="#33383f" stroke="#4d535e"/><text x="640" y="121">claimed by no node — 48</text>
+        <rect x="620" y="134" width="13" height="13" fill="#3a1f28" stroke="#b0637f"/><text x="640" y="145">claim with no matching file — 9</text>
+      </g>
+      <text x="620" y="166" fill="#565c6b" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10">conservative floor: 48 of 96 unclaimed (50.0%)</text>
+    </svg>
+    <figcaption><b>The divergence.</b> One square per changed file, in the order git reports them, so the pattern is structural rather than sorted. The blue block at the top is the narrated day: policy, hooks, skills and session records, claimed file by file. The grey run through the middle and lower rows is what the records never mention — twenty-four consecutive unclaimed files at the centre are the x-ray pages, the sixteen-file overnight print edition and three renamed plan files, the highest-volume work of the block. <b>The gap is not random; it is a time cut.</b> The bottom row runs the other way: nine claims that name files the delta does not contain.</figcaption>
+  </figure>
+
+  <p>Two of the nine orphan claims are worth naming inline rather than folding, because each is a live gap and not a typo. <span class="pill p-node">nodes</span><span class="pill p-git">git</span> The 15:14 node claims <code>experiments/tracking-spine-primitives/review.md</code>; the file actually committed is <code>experiments/tracking-spine-primitives/review/experiment-initial-definitions-review/review.md</code>. And two nodes claim <code>telemetry/agents/subagents-dispatch.yaml</code>, which is tracked, was modified all day, and was never committed in this block — it is still dirty. Its append-only write hook aborts any command that stages it, so this one is a structural fact about the repository, not an oversight of the day.</p>
+
+  <p>The remaining orphans are benign and countable: five paths under the gitignored <code>.agents/</code> mirror, one gitignored path under <code>tmp/</code>, and one absolute path to a VS Code settings file outside the repository entirely. The full list is folded at the end of this report.</p>
+
+  <p><b>What the divergence does and does not license.</b> It shows that the written record covers the first two thirds of the day and stops before the highest-volume third. It does not show that the unclaimed work is undocumented in every sense — the ledger documents most of the overnight stretch in detail, including its goals, its reviewer angles and its failures. What has no prose is the <em>connective tissue</em>: why the five editions were worth five parallel writers, what the redesign review concluded, and what the mark at 04:55 was for.</p>
+</section>
+
+<!-- ═══════════════ 06 ═══════════════ -->
+<section id="s6">
+  <p class="eyebrow">06 · change discontinuity</p>
+  <h2>Nine threads stop mid-stride, and the five that stop hardest left no bytes at all.</h2>
+
+  <p>"Unfinished" here means the delta stops where the intent kept going: a dispatch opened and never closed, an artifact designed and never produced, a next step recorded and never taken. Ordered by how much of the intended change is missing.</p>
+
+  <ol>
+    <li><b>The five short print editions.</b> <span class="pill p-ledger">ledger</span><span class="pill p-tree">tree</span> Ten dispatches, five named editions, two rounds, <span class="num">0</span> files produced. Five <code>error</code> closes at 03:44 carrying no error text, five <code>user_abort</code> closes between 03:54 and 04:12. <b>Next:</b> the ledger cannot tell you why they failed; the first thing to recover is whatever the host returned at 03:44:05, because five simultaneous failures on five independent writers points at the launch path, not at the writers.</li>
+
+    <li><b>The Codex host reload and its one read-only smoke.</b> <span class="pill p-node">nodes</span> Named as the keystone next action by two separate nodes (12:55 and 15:49) and by both of their recommendations. Phase A and the lineage designer are both stopped behind it. No substrate in this block records the reload happening or the smoke being run.</li>
+
+    <li><b>The authority hole, D9.</b> <span class="pill p-node">nodes</span><span class="pill p-ledger">ledger</span> The target-architecture hypothesis requires work to run under authority and provides no service that does — a requirement with no service, which the document itself names as its refutation condition. Raised at 17:04, hit again from a different angle in the 03:01 review's ninth-service collision, still open. <b>Next:</b> deciding it settles whether the service count is eight or nine, and the x-ray has to be redrawn either way — so it comes before any further visual work.</li>
+
+    <li><b>Twenty-one findings on the emission-contract essay.</b> <span class="pill p-node">nodes</span> Fifteen surviving, six new, plus two factual errors located and deliberately left unrepaired pending a decision to replace rather than refine. The 15:14 recommendation orders the work: settle the objective, rewrite surface and layering, <em>then</em> repair — because the finding list reorders under the settled objective.</li>
+
+    <li><b>The <code>epistemic-repository-bootstrap</code> research topic.</b> <span class="pill p-git">git</span><span class="pill p-tree">tree</span> Opened as the final commit at 04:50:16 with one file, six known gaps, and no scouts dispatched. <b>Next:</b> its own stated gate is a confirmed scout proposal before any repository is created.</li>
+
+    <li><b>Two dispatches opened and never closed.</b> <span class="pill p-ledger">ledger</span> <code>2026-07-27-research-lifecycle-canonical-kinds</code> (opened 11:19:58) and <code>2026-07-27-auto-claude-agent-b1a254eeb5b784c8</code> ("Review: relevance and route", auditor, opened 15:04:59). Neither has a close row anywhere in the file. The first is a bookkeeping gap rather than a work gap — <span class="pill p-git">git</span> both its scouts' evidence files were committed at 02:02:50, so the work landed and only the close is missing. The second is different: its two sibling auto-dispatches, opened 47 and 26 seconds before it, both closed normally at 15:11 and 15:12. What that third seat was reviewing, and whether it returned anything, is <span class="unlinked">unlinked</span>.</li>
+
+    <li><b>The <code>cyberalchemy-mark.svg</code>.</b> <span class="pill p-tree">tree</span> 1,125 bytes, untracked, written 04:55:29, referenced by no committed file. The last act of the block and its only loose end on disk.</li>
+
+    <li><b><code>node_type</code> against <code>artifact_kind</code>.</b> <span class="pill p-node">nodes</span> Two nodes (15:14 and 17:04) record the same contradiction: the frontmatter guide states <code>artifact_kind</code> is the single document-kind discriminator and <code>node_type</code> must not be used, while every governed artifact under <code>plans/</code> still carries <code>node_type</code> — so artifacts authored this day had to choose between the guide and their siblings, and chose their siblings. <b>Next:</b> reconcile or record the drift explicitly, so the choice stops being made silently.</li>
+
+    <li><b>The <code>.codex/workflow-inputs</code> scratch.</b> <span class="pill p-node">nodes</span><span class="pill p-git">git</span> The 14:57 node records these as non-authoritative scratch that several of which do not match the strict runtime schema, and lists removal after audit as a next step. Twenty of them, <span class="num">1,374</span> lines across two directories, were committed at 02:01:44 and 02:02:50 regardless.</li>
+  </ol>
+</section>
+
+<!-- ═══════════════ 07 ═══════════════ -->
+<section id="s7">
+  <div class="boundary">
+  <p class="eyebrow">07 · evidence boundary</p>
+  <h2>Where this report is weakest, stated plainly.</h2>
+
+  <p><b>The strip costs more vertical space than any other element in this report, and it answers <em>when</em> — the question a reader needs least.</b> Nobody picking up a day report is primarily asking what time things happened; they are asking what was done and what is still open. The strip earns its space here only because <em>when</em> happens to be the carrier of this particular day's defect: the record cutoff at 17:04 and the volume spike at 04:49 are the same fact seen from two lanes, and no table makes that adjacency as fast. On a day whose record and change were aligned, the same figure would be pure cost. Read it once, then read the prose.</p>
+
+  <p><b>Ranking by change volume cannot tell a build artifact from a judgement.</b> The clearest proof is inside the day's largest commit. <code>187b8b1</code> carries <span class="num">7,657</span> insertions, of which <span class="num">2,098</span> are lines of a PDF that git chose to diff as text, and <span class="num">1,337</span> are a frozen source snapshot of a file committed <span class="num">80</span> seconds earlier in the previous commit. That is <span class="num">3,435</span> insertions — <span class="num">44.9 %</span> of the largest commit in the block — that are machine output or duplicated content. Meanwhile <code>51a5e8a</code> ranks second-to-last at <span class="num">29</span> insertions and contains the correction that re-diagnosed a whole class of failure from a configuration problem to a host binary defect, and <code>7014cdf</code> ranks last at zero and discharged a recorded obligation. <b>The ranking in this report orders by size, and size is not importance.</b> Where the two conflict, the prose says so; the ordering does not.</p>
+
+  <p><b>The spine is blind to work outside this repository.</b> Three of the overnight dispatches — roughly an hour of the block, including a full author-reject-redesign-review cycle — wrote entirely into <code>C:/Users/victo/schema-of-inquiry</code> and score zero on this report's key. They appear here only because the ledger names them. Any conclusion of the form "the overnight stretch was about the print edition" is wrong by at least three dispatches.</p>
+
+  <p><b>Other limits.</b> The block boundaries are inferred from two agreeing silences, not declared by anyone; work that emitted no event is invisible by construction, and the 19:45 commit proves that happened at least once. All <span class="num">6</span> <code>error</code> closes carry empty <code>feedback_prompts</code>, so every "why did it fail" in this report is either quoted from prose or absent. <span class="num">2</span> of the <span class="num">35</span> in-window closes carry non-empty <code>feedback_prompts</code>; the other <span class="num">33</span> record an outcome and no reasoning. Node <code>expected_importance</code> was measured across the nine records as <span class="mono">[8, 8, 8, 8, 7, 9, 8, 8, 7]</span> — a range of two on a self-assessed scale — and was not used to rank anything here. Ledger times are UTC and were converted at UTC−03:00; the conversion is corroborated independently by the 16:17:27Z <code>frontmatter-timestamp-review</code> dispatch appearing as the review described in the node stamped 16:22:18−03:00.</p>
+
+  <details>
+    <summary>The <b>9</b> claim strings that match no path in the commit delta, with why each misses</summary>
+    <div class="dbody">
+      <table>
+        <thead><tr><th>claim string</th><th>reason it has no matching file</th></tr></thead>
+        <tbody>
+          <tr><td>.agents/skills/backlog/SKILL.md</td><td rowspan="5"><code>/.agents/</code> is gitignored at <code>.gitignore</code> line 16 — the mirror is real on disk and invisible to git</td></tr>
+          <tr><td>.agents/skills/backlog/agents/openai.yaml</td></tr>
+          <tr><td>.agents/skills/backlog/assets/backlog-template.md</td></tr>
+          <tr><td>.agents/skills/close-session/SKILL.md</td></tr>
+          <tr><td>.agents/skills/custom/frontmatter.md</td></tr>
+          <tr><td>C:\Users\victo\AppData\Roaming\Code\User\settings.json</td><td>outside the repository — the VS Code <code>chatgpt.cliExecutable</code> change</td></tr>
+          <tr><td>tmp/frontmatter-timestamp-review-proposal-v1.json</td><td><code>/tmp/</code> is gitignored at <code>.gitignore</code> line 33</td></tr>
+          <tr><td>experiments/tracking-spine-primitives/review.md</td><td>wrong path — the file landed at <code>…/review/experiment-initial-definitions-review/review.md</code></td></tr>
+          <tr><td>telemetry/agents/subagents-dispatch.yaml</td><td>tracked and modified but never committed in the block; the append-only hook aborts commands that stage it</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details>
+    <summary>All <b>13</b> commits in commit-date order, with the volumes every figure above is derived from</summary>
+    <div class="dbody">
+      <table>
+        <thead><tr><th>commit date (local)</th><th>sha</th><th class="n">files</th><th class="n">+</th><th class="n">−</th><th>subject</th></tr></thead>
+        <tbody>
+          <tr><td>07-27 19:45:10</td><td>7b98bf8</td><td class="n">2</td><td class="n">508</td><td class="n">0</td><td>research: define agent reasoning engine contract <span style="color:#7b8492">(author-dated 07-23 03:09:47)</span></td></tr>
+          <tr><td>07-28 02:03:56</td><td>51a5e8a</td><td class="n">3</td><td class="n">29</td><td class="n">9</td><td>fix: correct the Codex hook failure diagnosis to a host binary defect</td></tr>
+          <tr><td>07-28 02:03:56</td><td>cb6780e</td><td class="n">9</td><td class="n">379</td><td class="n">216</td><td>refactor: rewrite agent authoring policy and governed-Markdown schema</td></tr>
+          <tr><td>07-28 02:03:56</td><td>e0a7d17</td><td class="n">19</td><td class="n">1,362</td><td class="n">0</td><td>feat: add the backlog skill and its first governed backlog</td></tr>
+          <tr><td>07-28 02:03:56</td><td>7014cdf</td><td class="n">5</td><td class="n">0</td><td class="n">0</td><td>refactor: move subplans to plans and give essays their own directories</td></tr>
+          <tr><td>07-28 02:03:56</td><td>93de0e3</td><td class="n">9</td><td class="n">2,834</td><td class="n">15</td><td>feat: add two paired system-and-engineer-view architecture essays</td></tr>
+          <tr><td>07-28 02:03:56</td><td>1e31c07</td><td class="n">17</td><td class="n">1,252</td><td class="n">2</td><td>feat: open three research and experiment baselines</td></tr>
+          <tr><td>07-28 02:03:57</td><td>9650458</td><td class="n">1</td><td class="n">221</td><td class="n">52</td><td>refactor: rewrite the implementations README around four zones</td></tr>
+          <tr><td>07-28 02:03:57</td><td>65e5673</td><td class="n">9</td><td class="n">675</td><td class="n">0</td><td>feat: record nine session nodes for 2026-07-27</td></tr>
+          <tr><td>07-28 04:48:24</td><td>fe28f51</td><td class="n">3</td><td class="n">2,136</td><td class="n">0</td><td>feat: add context-rich and formalization x-rays to the essay</td></tr>
+          <tr><td>07-28 04:48:41</td><td>ae0864e</td><td class="n">1</td><td class="n">606</td><td class="n">0</td><td>feat: add a context-rich x-ray for PermGuard</td></tr>
+          <tr><td>07-28 04:49:44</td><td>187b8b1</td><td class="n">17</td><td class="n">7,657</td><td class="n">0</td><td>feat: add the short print edition of the work-context system view</td></tr>
+          <tr><td>07-28 04:50:16</td><td>8cfd754</td><td class="n">1</td><td class="n">62</td><td class="n">0</td><td>feat: open the epistemic-repository-bootstrap research topic</td></tr>
+          <tr><td colspan="2"><b>range 7b98bf8^..8cfd754</b></td><td class="n"><b>96</b></td><td class="n"><b>17,721</b></td><td class="n"><b>294</b></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+  </div>
+</section>
+
+<footer>
+  V5 · the day x-ray · spine: git commit delta · ranking key: change volume · substrates: git range 7b98bf8^..8cfd754 · sessions/2026-07-27-*.md (9) · telemetry/agents/subagents-dispatch.yaml (37 opened / 35 closed in window) · working tree at 2026-07-28
+</footer>
+
+</div>
+</body>
+</html>

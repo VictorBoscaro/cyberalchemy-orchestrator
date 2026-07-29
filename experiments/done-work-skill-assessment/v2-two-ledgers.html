@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Two Ledgers — work block of 2026-07-27</title>
+<style>
+  :root{
+    --bg:#0d1014; --bg2:#12171d; --bg3:#171e26;
+    --ink:#dfe6ee; --ink2:#a7b4c2; --ink3:#7c8b9c;
+    --rule:#232c37; --rule2:#2e3944;
+    --open:#ff8a5c; --fail:#e05c5c; --ok:#5fa87a; --warn:#d8b45a; --link:#79b8ff;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:17px; line-height:1.62;
+  }
+  .wrap{max-width:820px; margin:0 auto; padding:56px 26px 96px}
+  header.top{border-bottom:1px solid var(--rule); padding-bottom:30px; margin-bottom:44px}
+  h1{font-size:33px; line-height:1.2; margin:0 0 16px; letter-spacing:-.02em; font-weight:650}
+  .sub{color:var(--ink2); font-size:16.5px; margin:0 0 18px}
+  .block{
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+    font-size:13px; color:var(--ink3); letter-spacing:.02em;
+  }
+  .lede{color:var(--ink2); font-size:17px; margin:22px 0 0}
+  .lede strong{color:var(--ink)}
+
+  .eyebrow{
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:11.5px; letter-spacing:.19em; text-transform:uppercase;
+    color:var(--ink3); margin:0 0 10px;
+  }
+  section.band{margin:0 0 12px; padding:44px 0 0; border-top:1px solid var(--rule)}
+  section.band:first-of-type{border-top:none; padding-top:0}
+  h2{font-size:25px; line-height:1.3; margin:0 0 8px; font-weight:620; letter-spacing:-.012em}
+  .bandnote{color:var(--ink3); font-size:14.5px; margin:0 0 30px; font-style:italic}
+
+  h3{font-size:18.5px; margin:34px 0 4px; font-weight:600; line-height:1.34}
+  h3 .rank{color:var(--ink3); font-weight:400; font-family:ui-monospace,monospace; font-size:14px; margin-right:8px}
+  .meta{
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:12.5px; color:var(--ink3); margin:0 0 12px; line-height:1.75;
+  }
+  p{margin:0 0 14px}
+  .why{border-left:2px solid var(--rule2); padding-left:16px; margin:0 0 14px; color:var(--ink2)}
+  .why b{color:var(--ink); font-weight:600}
+  .next{margin:0 0 6px; color:var(--ink2)}
+  .next b{color:var(--ink); font-weight:600}
+  ul{margin:0 0 14px; padding-left:20px; color:var(--ink2)}
+  li{margin:0 0 6px}
+  code{
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.865em;
+    background:var(--bg3); border:1px solid var(--rule); border-radius:4px; padding:1px 5px; color:#c8d6e5;
+  }
+
+  .pill{
+    display:inline-block; font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+    padding:2px 8px; border-radius:11px; border:1px solid var(--rule2);
+    background:var(--bg2); color:var(--ink3); vertical-align:2px; margin-right:5px; white-space:nowrap;
+  }
+  .p-ledger{color:#8fb8d8; border-color:#2d4053}
+  .p-nodes{color:#b6a2d8; border-color:#3b3350}
+  .p-git{color:#8fc9a2; border-color:#2c4636}
+  .p-tree{color:#d8c08f; border-color:#4a3f28}
+  .p-open{color:var(--open); border-color:#5a3524; background:#1d1512}
+  .p-fail{color:var(--fail); border-color:#54282a; background:#1d1214}
+  .p-abort{color:var(--warn); border-color:#4a3f24; background:#1c1810}
+  .p-ok{color:var(--ok); border-color:#2a4634; background:#101a14}
+  .p-unlinked{color:#c98f8f; border-color:#4d3030; background:#1c1414}
+  .p-goalonly{color:#9aa6b3; border-color:#39424d}
+
+  .cluster{background:var(--bg2); border:1px solid var(--rule); border-radius:7px; padding:20px 22px; margin:18px 0 6px}
+  .cluster h4{margin:0 0 8px; font-size:16px; font-weight:600}
+  .cluster p:last-child{margin-bottom:0}
+  .tight{font-size:15.5px; color:var(--ink2)}
+  .tight b{color:var(--ink)}
+
+  .compact{border-top:1px solid var(--rule); padding-top:14px; margin-top:10px}
+  .compact h4{font-size:16px; margin:20px 0 3px; font-weight:600; color:var(--ink)}
+  .compact .meta{margin-bottom:7px}
+  .compact p{font-size:15.5px; color:var(--ink2); margin-bottom:10px}
+
+  details{background:var(--bg2); border:1px solid var(--rule); border-radius:7px; margin:14px 0; padding:0}
+  summary{cursor:pointer; padding:12px 16px; font-size:15px; color:var(--ink2); list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"▸ "; color:var(--ink3)}
+  details[open] summary::before{content:"▾ "}
+  details[open] summary{border-bottom:1px solid var(--rule)}
+  .dbody{padding:14px 18px 6px}
+  .dbody p, .dbody li{font-size:15px}
+  summary b{color:var(--ink)}
+
+  .divitem{border-left:3px solid #4a3a2a; padding-left:18px; margin:30px 0 0}
+  .divitem.hot{border-left-color:var(--fail)}
+  .divitem h3{margin-top:0}
+  .from{
+    font-family:ui-monospace,monospace; font-size:11.5px; color:var(--ink3);
+    letter-spacing:.05em; text-transform:uppercase; margin:0 0 6px;
+  }
+  .boundary{background:var(--bg2); border:1px solid var(--rule2); border-radius:8px; padding:26px 26px 14px; margin-top:26px}
+  .boundary p{color:var(--ink2)}
+  .boundary strong{color:var(--ink)}
+  footer{margin-top:54px; padding-top:22px; border-top:1px solid var(--rule); color:var(--ink3); font-size:13.5px}
+  a{color:var(--link)}
+  .legend{font-size:14px; color:var(--ink3); margin:24px 0 0; padding-top:18px; border-top:1px dashed var(--rule)}
+  .legend div{margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Report — variant V2 — the two ledgers</p>
+  <h1>The day closed thirty-five of thirty-seven commitments, and still ended with fourteen unfinished.</h1>
+  <p class="sub">Work block <strong>2026-07-27 09:25 → 2026-07-28 04:55</strong>, local time (UTC−3). All clock times below are local.</p>
+  <p class="block">block bounded by two independent gaps · ledger silent 9 h 34 min after the 04:42:16 close · git silent 9 h 26 min after the 04:50:16 commit · both substrates resume at 14:16</p>
+  <p class="lede">This report is partitioned by <strong>state</strong>, not by topic and not by importance. Everything still open comes first. Everything finished is demoted below it. Anything whose substrates disagree leaves both of those bands and is stated separately, so that nothing is quietly reconciled. The bet is that on a day like this one, state is the more useful axis: <strong>every dispatch but two carried a close row, and the two most consequential lines of work still failed.</strong></p>
+</header>
+
+<!-- ============================ BAND 1 ============================ -->
+<section class="band">
+  <p class="eyebrow">01 — Open</p>
+  <h2>Fourteen commitments are open or failed, and two of them were never closed at all.</h2>
+  <p class="bandnote">Unfinished = a dispatch with no close row, or a close row whose <code>exit_reason</code> is not <code>resolved</code>. Measured in the ledger: 2 never closed + 12 closed non-<code>resolved</code> = 14. Ten of the fourteen are below; four left this band for §3 because their substrates contradict each other, and are counted there.</p>
+
+  <h3><span class="rank">01</span>The canonical-kinds extraction was opened and never closed.</h3>
+  <p class="meta">
+    <span class="pill p-ledger">ledger</span><span class="pill p-git">git</span><span class="pill p-nodes">nodes</span><span class="pill p-open">never closed</span><br>
+    <code>2026-07-27-research-lifecycle-canonical-kinds</code> · opened 11:19:58 · no close row exists · declared <code>n:2</code> in group <code>canonical-kinds-scouts</code> with a composite anti-bias over methodology and source corpus
+  </p>
+  <p>This is the only commitment of the day that is still structurally open. The ledger is append-only, so the row does not age out: it will read as in-flight until someone appends a close. Its two declared scouts are the only agents of the day whose outcome the machine records nothing about — not a result, not a failure, nothing.</p>
+  <p class="why"><b>Why it was being done.</b> The session node at 12:53 set the objective: research-lifecycle artifacts were chosen as the <em>first bounded case</em> for a minimal node-and-relation contract, with a repository-local <code>schemas/artifact-metadata.yaml</code> proposed as the single machine-readable source of truth for fields, artifact kinds, layers and edge types — skills explaining semantic selection, hooks only validating. This dispatch was to supply that schema's raw material: extract the reusable node, generation, field and edge semantics from domainspec-core <code>CANONICAL-KINDS</code>, and separate declared contracts from demonstrated use and drift. Without it the schema would be written from assumption rather than from the existing vocabulary.</p>
+  <p class="next"><b>What is still open.</b> Git corroborates the abandonment precisely. The commit range carries eight files under <code>.codex/workflow-inputs/2026-07-27-research-lifecycle-canonical-kinds/</code> — including <code>dispatch-open.json</code>, two manifests, a normative prompt, a usage prompt and two proposal JSONs — and <strong>no <code>dispatch-close.json</code></strong>. The comparable directory for the other named dispatch of that afternoon contains twelve files and does include its <code>dispatch-close.json</code>. The scouts were provisioned; the closing half of the protocol never ran.</p>
+  <p class="next"><b>Next steps.</b> Append a close row with a truthful <code>exit_reason</code> before anything else touches the ledger, because every count derived from it is wrong until then. Then decide the substantive question: whether the two scouts produced anything worth keeping — the committed proposal JSONs are the only candidate — or whether the extraction has to be re-run before the schema can be drafted. The four next steps the 12:53 node recorded all sit downstream of this, starting with defining the minimal structure and authority boundary of <code>schemas/artifact-metadata.yaml</code>.</p>
+
+  <h3><span class="rank">02</span>Five named short editions were dispatched twice each, and not one of the ten runs resolved.</h3>
+  <p class="meta">
+    <span class="pill p-ledger">ledger</span><span class="pill p-goalonly">goal-only</span><span class="pill p-fail">6 × error</span><span class="pill p-abort">4 × user_abort</span><br>
+    first wave 03:39:17–03:39:34, all five closed <code>error</code> 03:44:05–03:44:11 · retry wave 03:52:47–03:53:24, all closed <code>user_abort</code>
+  </p>
+  <p>This is the largest failure cluster of the block and, by dispatch count, most of the day's unfinished work. Five parallel singleton dispatches were opened within seventeen seconds of each other, each declaring <code>n:1</code> in a group named <code>version-0X-singleton</code>, each to produce one named short edition of the work-context system view as an independently consumable HTML/PDF artifact: <strong>Polished Diagrams Plus</strong> (v03), <strong>Provenance Ledger</strong> (v04), <strong>Dual Traversal</strong> (v05), <strong>Systems Journal</strong> (v06), <strong>Control-Room Atlas</strong> (v07). All five closed <code>error</code> between 4 min 37 s and 4 min 48 s later. A retry wave went out thirteen minutes after that, under near-identical goals, and all five of those closed <code>user_abort</code>.</p>
+  <p class="why"><b>Why it was being done.</b> Stated by the dispatch rows themselves and by nothing else: each edition is a short, independently consumable print rendering of the work-context system view. <span class="pill p-goalonly">goal-only</span> No session node names the short-edition work anywhere — the nine nodes stop at 17:04 and this work began at 03:39. The larger objective the five editions serve is therefore not established by any substrate this report can read, and is not invented here.</p>
+  <p class="next"><b>What is still open — and it is not uniform.</b> The close rows separate the five editions sharply, and the distinction decides what to do next:</p>
+  <ul>
+    <li><strong>Dual Traversal, Systems Journal, Control-Room Atlas</strong> — six dispatches between them, <code>agents_spawned.total: 0</code> on every single one. Each declared one agent; none ever started. There is no partial artifact to salvage, because no agent ran.</li>
+    <li><strong>Provenance Ledger</strong> — first run spawned 1 writer with <code>loops_used: 0</code> then closed <code>error</code>; the retry spawned 0 and was aborted after 1 min 07 s. One writer started and completed no loop.</li>
+    <li><strong>Polished Diagrams Plus</strong> — behaves differently from all four others and has therefore left this band for §3.</li>
+  </ul>
+  <p class="next"><b>Next steps.</b> Three of these five editions were never attempted by any agent, so re-dispatching them unchanged is a coin flip on the same launch path that produced ten non-resolutions. Diagnose the launch failure first — see the constraint under §3 on what <code>exit_reason: error</code> does and does not record — then re-dispatch the three zero-agent editions. Treat Provenance Ledger separately: one writer did start, so check whether anything was produced before deciding to restart it.</p>
+
+  <h3><span class="rank">03</span>A digest of the work-context system view was aborted eighteen minutes in.</h3>
+  <p class="meta">
+    <span class="pill p-ledger">ledger</span><span class="pill p-goalonly">goal-only</span><span class="pill p-abort">user_abort</span><br>
+    <code>2026-07-27-auto-claude-agent-74b3c94eed4daff9</code> · 15:52:34 → 16:11:00 · 18 min 26 s · 1 planner spawned, <code>loops_used: 1</code>
+  </p>
+  <p>The longest-running host-captured dispatch of the day, and the only one of its kind that was aborted rather than resolved. Its stated goal is <em>Digest work-context system-view</em>. A planner was spawned and ran for over eighteen minutes before the abort.</p>
+  <p class="why"><b>Why it was being done.</b> The goal field states the task and nothing states the objective. <span class="pill p-goalonly">goal-only</span> The name is adjacent to the short-edition work that appears later in the block, but adjacency across a seven-hour gap is not provenance, and no node, commit message or connection edge links them. That inference is deliberately not made here.</p>
+  <p class="next"><b>What is still open.</b> Eighteen minutes of planner output with no recorded disposition. <code>user_abort</code> carries no more explanatory text than <code>error</code> does, so the ledger establishes that a human stopped it and establishes nothing about why.</p>
+  <p class="next"><b>Next steps.</b> Decide whether the digest is still wanted at all. If it is, it needs an objective attached before re-dispatch, because as recorded it is a task with no stated purpose — the same condition that makes it impossible to judge here whether the abort was a loss or a correction.</p>
+
+  <div class="legend">
+    <div><span class="pill p-ledger">ledger</span> <span class="pill p-nodes">nodes</span> <span class="pill p-git">git</span> <span class="pill p-tree">worktree</span> — substrates an item's facts were read from.</div>
+    <div><span class="pill p-unlinked">unlinked</span> — no substrate establishes a purpose; none is invented.</div>
+    <div><span class="pill p-goalonly">goal-only</span> — purpose is stated by the dispatch's own <code>goal</code> field, and no session node connects it to a larger objective.</div>
+  </div>
+</section>
+
+<!-- ============================ BAND 2 ============================ -->
+<section class="band">
+  <p class="eyebrow">02 — Finished</p>
+  <h2>Twenty-three dispatches resolved, fifty-eight agents ran, and the day's largest artifact was not produced by any of them.</h2>
+  <p class="bandnote">Demoted deliberately, and compressed. Eighteen of the twenty-three are below; five left this band for §3 on declared-versus-spawned grounds and are counted there. A reader who stopped at the end of §1 has lost nothing they need to act on this hour.</p>
+
+  <div class="cluster">
+    <h4>The block opened by asking the repository what it is for.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-goalonly">goal-only</span><span class="pill p-ok">3 × resolved</span> 09:25:23 · 09:25:23 · 09:31:03 → closed 09:29:53 · 09:30:42 · 09:35:36</p>
+    <p class="tight">Three read-only agents launched in parallel under identical prompts — <em>Rank project objectives (A)</em>, <em>(B)</em> and <em>(C)</em> — each asked to rank the project's top five objectives from the repository's own artifacts, with evidence paths, confidence, and what would change its mind. One writer each, 4 min 30 s to 5 min 19 s. This is the first recorded event of the block and it precedes the first session node by three hours eighteen minutes; <b>nothing in the prose substrate records what the three rankings said or what was decided from them.</b></p>
+  </div>
+
+  <div class="compact">
+
+    <h4>Three gate and capability reviews ran mid-afternoon under names that do not identify their subject.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-unlinked">unlinked</span><span class="pill p-ok">3 × resolved</span> 14:50:54, 14:51:04, 14:51:18 · 1 min 41 s – 3 min 41 s · 1 auditor each</p>
+    <p><em>check-tension checker</em>, <em>check-tension reviewer</em> and <em>capability reviewer</em>. The goals name the gate and the role; they do not name what was being gated. No node names them. Their purpose is not established and is not guessed at here.</p>
+
+    <h4>An independent review of an unnamed essay resolved in six minutes.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-unlinked">unlinked</span><span class="pill p-ok">resolved</span> 14:35:43 → 14:42:03 · 6 min 21 s · 1 auditor, <code>loops_used: 1</code></p>
+    <p>Goal: <em>Independent review of the essay</em>. Which essay is not recorded. The 15:14 node describes an independent reviewer attacking the emission-contract essay across <em>three</em> zig-zag exchanges, but this row records one loop, so the identification does not hold and is not asserted.</p>
+
+    <h4>Four design seats were dispatched in forty-eight seconds and all four resolved.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-unlinked">unlinked</span><span class="pill p-ok">4 × resolved</span> 15:14:09 – 15:14:57 · 3 min 08 s – 6 min 48 s · 1 auditor each</p>
+    <p><em>Seat A mechanical trace design</em>, <em>Seat B commitment ledger design</em>, <em>Seat C narrative continuity design</em>, <em>Seat D skeptic parsimony design</em>. Four structurally opposed design perspectives, delivered. The artifact they were designing is named in no substrate this report reads, so what was decided from four resolved seats cannot be stated.</p>
+
+    <h4>Two of three criterion attackers came back; the experiment they attacked was told not to freeze.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-nodes">nodes</span><span class="pill p-ok">2 × resolved</span> 15:04:12 and 15:04:33 · 7 min 48 s and 6 min 38 s · 1 auditor each</p>
+    <p><em>Review: criterion too loose</em> and <em>Review: criterion too tight</em> — two poles of one axis, both resolved. <b>Why:</b> the 15:14 node records that an experiment's initial-definitions document and criterion were authored under the experiment skills against a standing recommendation that hypothesis work was premature, then attacked by three parallel reviewers on structurally opposed angles; all returned do-not-freeze and converged on five defects, and the orthogonal reviewer judged the criterion's boundedness manufactured by deleting the unsettled architecture and pre-registering the countable residue. The third attacker of that trio is in §3.</p>
+
+    <h4>The frontmatter guide was reviewed by two tensioned attackers, and all three findings were verified and applied.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span><span class="pill p-ok">resolved</span> <code>2026-07-27-frontmatter-timestamp-review</code> · 16:17:27 → 16:20:18 · 2 min 51 s · declared <code>n:2</code>, spawned 2 explorers</p>
+    <p><b>Why:</b> the 16:22 node records the objective — timezone-aware document lifecycle metadata, with document tags separated from activation telemetry. The guide was changed to require immutable <code>created_at</code> and revision-sensitive <code>updated_at</code> as RFC 3339 timestamps in the <code>America/Sao_Paulo</code> civil timezone, forbidding fabricated legacy creation times. The two attackers found a legacy session timestamp template, consumers pointing at the ignored <code>.agents</code> mirror, and an unsupported generic topical-tag fallback; the parent verified all three directly and repaired them. Declared and spawned agree exactly. <b>Left over:</b> one open question (what durable evidence may authorize <code>created_at</code> for artifacts with no creation receipt) and two next steps — audit remaining authoring skills for legacy fields, and define a provenance-aware migration rule before any corpus-wide backfill.</p>
+
+    <h4>The target-architecture x-ray was attacked from two opposed poles and both reviewers accepted it.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span><span class="pill p-ok">3 × resolved</span> <code>2026-07-27-xray-infrastructure-review</code> 16:35:14 → 16:50:43, 15 min 28 s, 2 skeptics, <code>loops_used: 3</code> · plus <em>Review x-ray: over-claiming angle</em> and <em>Review x-ray: reader-failure angle</em>, 16:36, ~3 min each</p>
+    <p><b>Why:</b> the 17:04 node records the objective and matches this trio exactly — two reviewers on structurally opposed poles of one fidelity axis, <em>the artifact flatters its subject</em> versus <em>the artifact fails its reader</em>, across three zig-zag rounds, both reaching ACCEPT. The <code>loops_used: 3</code> in the ledger and the three rounds in the prose agree. They converged in round one on six defects; the sharpest were over-claims all leaning the same way — a status the essay does not contain, a gate column answering "no" for four rows under a header saying six, and a citation to alternatives that reproduced none of them. Nine files of x-ray output are in the commit range. <b>Left over:</b> the essay's own refutation condition is met inside it — §1 requires work to run under authority and none of the eight proposed services provides it — and the node's recommendation is to attack that hole first, since settling it decides whether the service count is eight or nine and therefore whether the x-ray must be redrawn.</p>
+
+    <h4>Three late-night dispatches delivered into a different repository.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-git">git</span><span class="pill p-goalonly">goal-only</span><span class="pill p-ok">2 × resolved here</span> <code>schema-of-inquiry-first-essays</code> 03:43:06 → 04:07:25 (24 min 19 s) · <code>schema-inquiry-redesign-candidates</code> 04:15:11 → 04:32:07 (16 min 56 s, declared 3, spawned 3 writers)</p>
+    <p>The first authored the first governed views, a layered x-ray and ten short essay contributions in deliberately different explanatory styles; the second produced three fully rendered redesign candidates correcting readability, hierarchy, spacing and formatting failures. Both name their destination as <em>the new private schema-of-inquiry repository</em>. <b>The output is not in this repository.</b> What the range does contain is one commit at 04:50 adding a single 62-line <code>research-initial-definitions.md</code> under <code>research/epistemic-repository-bootstrap/</code>. Roughly forty-one minutes of dispatched authoring, plus its review, is represented here by one file.</p>
+
+    <h4>A context-rich infrastructure page was corrected and closed at 03:15.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-goalonly">goal-only</span><span class="pill p-ok">resolved</span> <code>2026-07-28-context-rich-strategy-review</code> · 03:01:25 → 03:15:02 · 13 min 37 s · declared <code>n:3</code> with <code>robot_talks: true</code></p>
+    <p>Goal: improve the context-rich infrastructure HTML after correcting its treatment of the existing <code>domainspec-subagents-strategy</code> workflow capability. Two commits at 04:48 add context-rich and formalization x-rays to the essay (3 files, +2,136) and a context-rich x-ray for PermGuard (1 file, +606). Its close row's internal arithmetic does not add up; that discrepancy is in §3.</p>
+
+    <h4>The block's last dispatch red-teamed the three redesign candidates and closed at 04:42.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-goalonly">goal-only</span><span class="pill p-ok">resolved</span> <code>2026-07-28-schema-inquiry-redesign-review</code> · 04:32:51 → 04:42:15 · 9 min 24 s</p>
+    <p>A verified comparative change-request report identifying which of the three candidates, if any, is fit to promote. Its close is the final ledger event of the block, and the 9 h 34 min silence that follows it is one of the two measurements that bound this report. Its declared/spawned mismatch is in §3.</p>
+
+    <h4>Three counting facts that qualify everything above.</h4>
+    <p class="meta"><span class="pill p-ledger">ledger</span><span class="pill p-nodes">nodes</span></p>
+    <p>Of the <b>58 agents</b> recorded as spawned across the 35 closed dispatches, <b>11 ran under a dispatch that did not resolve</b> — 7 of those under the single errored dispatch in §3. The 2 never-closed rows declared 3 further agents whose spawn is recorded nowhere, so 58 is a floor rather than a total. Host-captured rows (<code>…-auto-claude-agent-&lt;hex&gt;</code>) are <b>17 of the 37 opens</b>; they carry real goals, real prompts and real spawn counts, and are not noise. The 15 of them that closed ran between <b>1 min 41 s and 18 min 26 s</b> — excluding the aborted one, between 1 min 41 s and 7 min 48 s. Separately, the nine nodes carry <b>64 forward registers</b>, 29 open questions and 35 next steps: more open threads recorded in prose than the ledger holds dispatches for the entire block. None of them is a ledger row, so none is counted in §1.</p>
+
+  </div>
+</section>
+
+<!-- ============================ BAND 3 ============================ -->
+<section class="band">
+  <p class="eyebrow">03 — Divergences</p>
+  <h2>Nine items left the bands above because their substrates disagree, and two structural gaps sit underneath all of them.</h2>
+  <p class="bandnote">Four items left §1 and five left §2. They are counted in their home band's totals — §1 says fourteen and lists ten, §2 says twenty-three and lists eighteen — and they are stated here rather than reconciled there. State comes from the machine; meaning comes from the prose; where the two disagree, both readings are printed.</p>
+
+  <div class="divitem hot">
+    <p class="from">left §1 — machine says failed, git says shipped</p>
+    <h3>The backlog skill's dispatch closed <code>error</code>, and the backlog skill is in the repository.</h3>
+    <p class="meta">
+      <span class="pill p-ledger">ledger</span><span class="pill p-nodes">nodes</span><span class="pill p-git">git</span><span class="pill p-fail">error</span><br>
+      <code>2026-07-27-backlog-skill-work</code> · 13:26:00 → 13:44:30 · 18 min 30 s · declared 4 agents across 3 groups · spawned <b>7</b> (2 writers, 1 skeptic, 1 auditor, 3 helpers), <code>loops_used: 2</code>
+    </p>
+    <p><b>Machine.</b> The close row says <code>error</code>. It says nothing else: <code>exit_reason: error</code> carries no message field anywhere in this ledger, so this report can prove that something broke and <strong>cannot say what broke</strong>. That limit applies identically to the six errored closes of the block.</p>
+    <p><b>Prose.</b> The 14:57 node describes the work reaching a governed conclusion — the skill passed one independent FIX round then joined PASS verdicts — but records that final approval found it living only in the ignored <code>.agents</code> mirror while <code>.claude/skills</code> is the source of truth. The 15:49 node then records the completion: two independent reviewers found seven governance and usability defects in round one, the writer corrected them, both returned PASS on the frozen second revision, and the package was promoted to <code>.claude/skills/backlog</code> as canonical with <code>.codex/skills/backlog</code> as a verified mirror.</p>
+    <p><b>Git.</b> A commit in the range adds the backlog skill and its first governed backlog: 19 files, +1,362.</p>
+    <p class="why"><b>Why it was being done.</b> The 14:57 node states the objective plainly: record the promotion-gated cross-dispatch work-graph gap in the agents-communication-infra backlog, and build a reusable skill that can create or extend a <code>BACKLOG.md</code> in any requested directory. The gap surfaced from a larger question about what <code>AgentReferenceLineage</code> covers — it is reference-specific, and universal provenance for every task, read, write and produced artifact is not implemented.</p>
+    <p class="next"><b>What is genuinely still open, and it is not the skill.</b> Both nodes record that although the aggregate dispatch was opened and closed in the ledger, <strong>none of its subagent launches produced an ACI <code>host_workflow_turn_bindings</code> row or a persisted <code>WorkflowInputManifest</code></strong>, and several session-local proposal JSONs did not match the strict runtime schema. The 15:49 node reproduced the cause live: the active VS Code extension still runs embedded <code>codex-cli 0.146.0-alpha.3.1</code>, which executes <code>collaboration.spawn_agent</code> without entering the generic <code>PreToolUse</code> path, even though <code>chatgpt.cliExecutable</code> correctly points at the installed <code>0.146.0-alpha.10.1</code>. No repository bridge code was changed, because the defective binary bypasses the hook before repository code can run.</p>
+    <p class="next"><b>Next steps.</b> The nodes are unambiguous and their ordering is the recommendation: reload the VS Code window so the configured binary becomes the extension host; confirm the active <code>codex.exe</code> path and version; run exactly one read-only <code>collaboration.spawn_agent</code> smoke; verify new hook state, matching YAML and ACI open/close evidence, and one terminal <code>host_workflow_turn_bindings</code> row. Governed subagent work is recorded as paused until that smoke passes. Also outstanding: decide which <code>.codex/workflow-inputs</code> scratch files survive an audit — twelve of them are now committed.</p>
+  </div>
+
+  <div class="divitem hot">
+    <p class="from">left §1 — prose says three returned, machine records two</p>
+    <h3>The third criterion attacker has no close row, and the node says all three reported.</h3>
+    <p class="meta">
+      <span class="pill p-ledger">ledger</span><span class="pill p-nodes">nodes</span><span class="pill p-open">never closed</span><br>
+      <code>2026-07-27-auto-claude-agent-b1a254eeb5b784c8</code> · <em>Review: relevance and route</em> · opened 15:04:59 · no close row · declared <code>n:1</code>
+    </p>
+    <p><b>Machine.</b> Its two siblings opened at 15:04:12 and 15:04:33 and both closed <code>resolved</code>. This one opened forty-seven seconds after the first and never closed. It is the second of the block's two never-closed rows.</p>
+    <p><b>Prose.</b> The 15:14 node states that the criterion was <em>"attacked by three parallel reviewers on structurally opposed angles"</em> and that <em>"all three returned do-not-freeze, converging independently on five defects"</em>, with the orthogonal reviewer supplying a single-countermodel replacement.</p>
+    <p><b>Not merged.</b> Either a third verdict was received and never recorded, or the node describes three where the machine can account for two. The report does not choose. What follows either way: the node's own open question already asks whether that convergence is evidence of real defects or of a shared base model's blind spot — and if one of the three never actually closed, the convergence is over two independent angles, not three, which weakens the finding it was raised to support.</p>
+    <p class="next"><b>Next steps.</b> Recover the third reviewer's verdict if it exists and append the close row; if it does not exist, the recorded convergence needs restating at n=2 before the five defects are relied on.</p>
+  </div>
+
+  <div class="divitem hot">
+    <p class="from">left §1 — dispatched twice, failed twice, artifact committed anyway</p>
+    <h3>Polished Diagrams Plus failed as a dispatch and landed as a file thirty-seven minutes later.</h3>
+    <p class="meta">
+      <span class="pill p-ledger">ledger</span><span class="pill p-git">git</span><span class="pill p-fail">error</span><span class="pill p-abort">user_abort</span><br>
+      <code>work-context-short-v03</code> 03:39:17 → 03:44:05 <code>error</code>, 1 writer, <code>loops_used: 0</code> · <code>work-context-short-v03-r2</code> 03:52:47 → <b>04:12:10</b> <code>user_abort</code>, 1 writer, <code>loops_used: 0</code>
+    </p>
+    <p><b>Machine.</b> Two dispatches, neither resolved, neither completing a loop. On the ledger's own account, the Polished Diagrams Plus edition was not produced.</p>
+    <p><b>Git.</b> At <b>04:49:44</b> — thirty-seven minutes and thirty-four seconds after the retry was aborted — a commit adds the short print edition of the work-context system view: 17 files, +7,657, the largest commit of the block by a wide margin. Among them, <code>work-context-system-view-short-polished-diagrams.html</code> and its 2,098-line PDF.</p>
+    <p><b>Not merged.</b> The artifact exists and the dispatches that were supposed to produce it did not resolve. This report can prove the ordering and can prove the file's arrival; it <strong>cannot prove who authored it.</strong> The most parsimonious reading is that the parent produced it inline after delegation failed twice, but the substrates contain no authorship record for a file, so that reading is stated as inference and not as fact.</p>
+    <p class="next"><b>Next steps.</b> Confirm whether the committed polished-diagrams artifact is the intended deliverable or a fallback, since the answer decides whether v03 should be re-dispatched at all. Note that the same two files are dirty in the working tree today, so the committed state is already superseded.</p>
+  </div>
+
+  <details>
+    <summary><b>5 divergences that left §2</b>, folded because each changes confidence in the ledger's arithmetic rather than the next hour's work.</summary>
+    <div class="dbody">
+      <p><span class="pill p-ledger">ledger</span> <b>Declared 6, spawned 10.</b> <code>2026-07-28-schema-of-inquiry-first-essays</code> declares two groups — <code>essays_formal_history</code> and <code>essays_adversarial_systems</code> — at <code>n:3</code> each, six agents. Its close records <code>total: 10</code>, all writers. Its goal asks for ten essay contributions, so the close matches the goal and the group declaration does not.</p>
+      <p><span class="pill p-ledger">ledger</span> <b>Declared 2, spawned 6.</b> <code>2026-07-27-target-architecture-xray-review</code> declares one <code>attackers</code> group at <code>n:2</code>; its close records <code>total: 6</code> — 2 explorers, 1 skeptic, 3 helpers. Three principals against two declared.</p>
+      <p><span class="pill p-ledger">ledger</span> <b>Declared 2, spawned 3.</b> <code>2026-07-28-schema-inquiry-redesign-review</code> declares <code>n:2</code>; its close records <code>total: 3</code> — 2 explorers, 1 skeptic.</p>
+      <p><span class="pill p-ledger">ledger</span> <b>No <code>n</code> at all.</b> <code>2026-07-27-target-architecture-xray-perspectives</code> declares a group <code>infrastructure-perspective</code> with an <code>agents</code> array and <strong>no <code>n</code> key</strong> — the only in-window row missing it. Its declared fan-out is therefore unstated; it closed <code>resolved</code> after 25 min 16 s with <code>total: 3</code> (2 writers, 1 helper). It is also the longest-running named dispatch of the 27th.</p>
+      <p><span class="pill p-ledger">ledger</span> <b>A close row that contradicts itself.</b> <code>2026-07-28-context-rich-strategy-review</code> closes with <code>{"total":3,"tree":{"explorer":3,"helpers":2}}</code>. Three explorers plus two helpers is five, not three. Every other close row in the block sums correctly — the errored backlog row records <code>total: 7</code> against 2+1+1+3, which does add up — so this is a single-row defect, not a convention where helpers sit outside the total.</p>
+    </div>
+  </details>
+
+  <div class="divitem">
+    <p class="from">structural — belongs to no single item</p>
+    <h3>Forty-five of the ninety-six changed files are named nowhere in any session node.</h3>
+    <p class="meta"><span class="pill p-git">git</span><span class="pill p-nodes">nodes</span> 13 commits · 96 files · +17,721 / −294 · range <code>7b98bf8^..8cfd754</code>, filtered by commit date</p>
+    <p>Under the most generous measure available — a file counts as named if any path token anywhere in any of the nine nodes matches it or a directory containing it — <b>45 of 96 files are unnamed</b>. Under a stricter reading that requires the exact path to appear somewhere in a node, 48 are unnamed; requiring it to appear in a node's <em>Files touched</em> list, 52. The lowest of the three is printed as the headline because it is the one this report can defend as a floor.</p>
+    <p>The unnamed files are not scattered evenly. Fifteen of the seventeen files in the short print edition commit are unnamed, as are seven of the nine target-architecture x-ray files. The prose substrate stops at 17:04; the two largest commits landed at 04:49 and 04:48.</p>
+    <p><b>The same asymmetry runs the other way.</b> Of the 37 in-window dispatches, <b>26 are named by no session node</b> — 8 whose purpose no substrate establishes at all, and 18 whose purpose is stated only by their own <code>goal</code> field with no node connecting them to a larger objective. Eleven dispatches can be tied to a node with a matching angle, role count or loop count.</p>
+  </div>
+
+  <div class="divitem">
+    <p class="from">structural — belongs to no single item</p>
+    <h3>The nine nodes were written under two different frontmatter contracts, on the day the contract changed.</h3>
+    <p class="meta"><span class="pill p-nodes">nodes</span> six nodes carry <code>timestamp</code> · three carry <code>created_at</code>/<code>updated_at</code> · boundary falls between 16:16 and 15:49</p>
+    <p>The six nodes stamped 12:53 through 15:49 use a single <code>timestamp</code> field. The three stamped 16:16, 16:22 and 17:04 use the immutable <code>created_at</code> plus revision-sensitive <code>updated_at</code> pair. This is not drift — it is the frontmatter-timestamp change from §2 taking effect mid-block, and the boundary lands exactly where that dispatch ran. It is recorded here because any tool that reads these nine files as one generation will silently mis-handle six of them, and because the migration rule for pre-existing artifacts is one of the day's open next steps.</p>
+  </div>
+</section>
+
+<!-- ============================ BOUNDARY ============================ -->
+<section class="band">
+  <p class="eyebrow">04 — Evidence boundary</p>
+  <h2>What this report could not see, stated plainly.</h2>
+
+  <div class="boundary">
+    <p><strong>Work that leaves no ledger row is invisible to this report's spine.</strong> The partition in §1 and §2 is built on 37 dispatch rows. Inline authoring by the parent — no dispatch, no close, no spawn count — produces no row at all, and so cannot appear in either band regardless of how much of the day it consumed or how important its output was.</p>
+    <p><strong>The day's largest deliverable is an instance of exactly that.</strong> The 17-file, +7,657-insertion short print edition includes two complete editions named <em>Signal Spine</em> (version-01) and <em>Recursive Orbit</em> (version-02), each with HTML, PDF and a review log — version-02 with three separate review-round files. Searching the entire ledger for <code>work-context-short-v01</code>, <code>work-context-short-v02</code>, <code>signal-spine</code>, <code>recursive-orbit</code>, <code>Signal Spine</code> or <code>Recursive Orbit</code> returns <b>zero matches, file-wide</b> — not merely in-window. The two editions that shipped have no dispatch row, while the five that failed have ten between them. A state-partitioned report reads the ledger and concludes the short-edition work was a total failure; git shows two finished editions and a reviewed third. Both are true. Only the union is honest.</p>
+    <p><strong>This report's own structure has a cost, and it is not hidden.</strong> Partitioning by state scatters a single objective across two or three bands. The short-edition effort appears in §1 (four editions unfinished), in §3 (Polished Diagrams Plus), and again in this boundary (the two that shipped without rows) — and the <em>why</em> is restated at each appearance instead of being composed once. The backlog skill splits the same way: its dispatch is in §3, its surviving blocker is a host-binary defect described in two different nodes, and its committed output is counted in §2's file totals. A reader wanting the arc of one objective will have to assemble it. That is the price of the ranking key, and it was paid deliberately so that nothing open could ever sort below something finished.</p>
+    <p><strong>Failure has no text.</strong> <code>exit_reason: error</code> carries no message anywhere in this ledger, and <code>user_abort</code> carries no reason. Twelve of the fourteen unfinished items are non-<code>resolved</code> closes, so for twelve of fourteen this report proves that something ended badly and can say nothing at all about what. Every diagnosis in §1 and §3 is therefore drawn from git or from the nodes, never from the failure record itself. The <code>feedback_prompts</code> field is empty for every row in the file and was not used.</p>
+    <p><strong>Time and scope limits.</strong> The block is bounded by two independently measured silences that agree: the ledger goes quiet for 9 h 34 min after the 04:42:16 close and resumes at 14:16:00; git goes quiet for 9 h 26 min after the 04:50:16 commit and resumes at 14:16:03. Commits stamped 02:03 through 04:50 are the tail of the 27th, not a new day — twelve of the thirteen commits landed after 02:00, so the entire git record of a nineteen-hour block was written in its final three hours. Only one uncommitted path falls inside the block: <code>plans/…/work-context-system-view/pdf-version/short-version/cyberalchemy-mark.svg</code>, untracked, 1,125 bytes, written 04:55:29 — the last recorded act of the block, an unfinished mark for the print edition. Every other dirty path in the working tree is dated today and is excluded. Two of the three late-night dispatches delivered into a private sibling repository this report cannot read; roughly forty-one minutes of dispatched authoring and its review are represented here by a single 62-line file.</p>
+  </div>
+
+  <footer>
+    <p>Substrates: <code>telemetry/agents/subagents-dispatch.yaml</code> (37 opens, 35 closes in window) · <code>sessions/2026-07-27-*.md</code> (9 nodes, 64 forward registers) · <code>git 7b98bf8^..8cfd754</code> (13 commits, 96 files) · working tree (1 in-window path). Ledger timestamps are UTC and were converted to UTC−3 throughout; the window is <code>2026-07-27T12:25:23Z</code> to <code>2026-07-28T07:42:15Z</code>. Rows created after <code>2026-07-28T09:00Z</code> are today's traffic and are excluded.</p>
+  </footer>
+</section>
+
+</div>
+</body>
+</html>
