@@ -1,12 +1,12 @@
 ---
-tags: [orchestrator, cyberalchemy, dispatch-control-plane, ledger, agent-pool, portability, navigation]
+tags: [orchestrator, cyberalchemy, dispatch-control-plane, ledger, agent-pool, portability, navigation, warrant, work-context]
 node_type: readme
 is_session: false
 layer: application, architecture, ontology
 nature: reference
 status: draft
-version: 0.4.0
-last_updated: 2026-07-25
+version: 0.5.0
+last_updated: 2026-07-27
 ---
 
 # cyberalchemy-orchestrator *(provisional name)*
@@ -22,17 +22,42 @@ exists, what actually runs today, how to bring it up, and where to go next**.
 
 ## What is this?
 
-**cyberalchemy-orchestrator** is a substrate for **organizing, dispatching, and observing fleets of
-LLM subagents**. In practice: you have Claude Code split a job across several AI agents, every
-hand-off is logged to an append-only ledger, and a small local dashboard lets you watch it live.
+**The objective.** Work happens at the bottom — a file change, an agent's answer, a task — while the
+reason it may be relied on usually lives above it: the objective it serves, the decision that
+authorized it, the evidence that discharges it. This repo is building **infrastructure in which that
+reason is recorded rather than reconstructed, carries the type of reason it is, and can be followed
+across a path only where that composition has been licensed.** When the link breaks, an agent
+executes a task perfectly and still does the wrong work.
 
-**Why it exists.** Agents on one base model may agree too readily and share blind spots, so N of
-them "could be closer to one look repeated than to N independent looks" — one of three hypothesized
-failure modes (correlated bias, noise, framing) in
+**What is built so far** is one stratum of that. **cyberalchemy-orchestrator** is a substrate for
+**organizing, dispatching, and observing fleets of LLM subagents**: you have Claude Code split a job
+across several AI agents, every hand-off is logged to an append-only ledger, and a small local
+dashboard lets you watch it live. It is the stratum where a warrant condition is *machine-refused*
+rather than requested — though see [How a dispatch flows](#how-a-dispatch-flows) for how much the
+refusal actually covers: schema validity is refused on both write paths, the anti-bias gate only for
+`n ≥ 2` fan-out groups on the confirm-gated one.
+
+**Why the dispatch layer looks the way it does.** Agents on one base model may agree too readily and
+share blind spots, so N of them "could be closer to one look repeated than to N independent looks" —
+one of three hypothesized failure modes (correlated bias, noise, framing) in
 [`PLAN.md`](plans/governed-agent-work-infrastructure/PLAN.md#1-the-business-problem). That is why
 agents are paired on deliberately opposed angles and why the pairing is gated before they run: the
 opposition is the point, not decoration. The repo is trying to *test* that hypothesis, not assuming
 it.
+
+**The objectives this composes.** They are not competing goals; they attach to the one above by
+different edges, and the edges are not a tree. Each carries its own standing — the full argument,
+with its collapse-test and its known weaknesses, is in
+[`docs/essays/what-this-is-for/`](docs/essays/what-this-is-for/essay.md).
+
+| Objective | Edge | Standing today |
+|---|---|---|
+| Governed dispatch — ledger, strict appender, `check-tension`, mandatory Agent hook | **enforces** | **built**, with a hole: `EG-1` at `veracity: medium` after the enum drift; what exactly that blocks is contested (see [Open questions](#open-questions)) |
+| Decision hygiene (`HYP-ORCH-NOISE`) | **substantiates** | **partly built** — the anti-bias gate runs; independence, aggregation, frame-dispersion and fork-guard are PENDING |
+| Category-theoretic typing (`OBL-E3`) | **types** | **open**, and narrow: nothing typed in Lean here; the claim may survive only on the sequential fragment |
+| Definitions, ontology, meta-ontology (`BL-1`, `BL-3`) | **grounds** | **proposal-only / parked** — the ledger's own type system is `OQ-5`, undecided |
+| Macro-to-micro work context and authority | **scopes** | **proposal-only** — and `D9` (who owns authority) is CRITICAL with no gate in the repo |
+| The knowledge machine / T0 loop | **instantiates** | **discipline runs, machine unbuilt** |
 
 The orchestration happens **inside a Claude Code session** through skills — there is no daemon you
 run to orchestrate. The substrate is also meant to drop into any repo with near-zero integration:
@@ -77,9 +102,14 @@ category-theoretic types. That is deliberately **not** the entry point; see
   the compatibility audit ledger and only the validated appender may write it. What exactly gates
   the cutover is itself contested — see [Open questions](#open-questions).
 - The **agent-work language**: a proposed language for governed agent work, with a mathematical
-  formalization appendix — [`docs/architecture/agent-language-system-view.md`](docs/architecture/agent-language-system-view.md)
+  formalization appendix — [`essays/agent-language-system-view/`](plans/governed-agent-work-infrastructure/essays/agent-language-system-view/essay.md)
   (`authority: proposal-only`), its [research subplan](plans/governed-agent-work-infrastructure/subplans/agent-work-language-research/PLAN.md),
   and [`research/agent-language-mathematical-formalization/`](research/agent-language-mathematical-formalization/).
+- The **work-context and target-architecture proposals**: the macro-to-micro argument
+  ([`essays/work-context-system-view/`](plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md))
+  and the architecture derived from what the record must do
+  ([`essays/target-architecture-hypothesis/`](plans/governed-agent-work-infrastructure/essays/target-architecture-hypothesis/essay.md)).
+  Both `proposal-only`; their load-bearing decisions are named, not decided.
 - The **decision-science loop** (anti-bias runs; anti-noise mostly on paper) —
   [`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md).
 - The **category-theory typing** of the orchestration language — one open obligation decides it:
@@ -168,7 +198,9 @@ row lives in [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md); t
 
 | Path | What |
 |---|---|
-| [`plans/governed-agent-work-infrastructure/PLAN.md`](plans/governed-agent-work-infrastructure/PLAN.md) | The root infrastructure Plan: business problem → hypothesis → research and implementation children. Start here for the "why." |
+| [`docs/essays/what-this-is-for/`](docs/essays/what-this-is-for/essay.md) | What the project is for and how its objectives compose — the argument behind [What is this?](#what-is-this), with its own collapse-test. Start here for the "what for." |
+| [`plans/governed-agent-work-infrastructure/PLAN.md`](plans/governed-agent-work-infrastructure/PLAN.md) | The root infrastructure Plan: business problem → hypothesis → research and implementation children. Start here for the "why." Note: its §1 states the problem as bias/noise/framing only, and does not yet carry the composed objective above. |
+| [`plans/governed-agent-work-infrastructure/essays/`](plans/governed-agent-work-infrastructure/essays/README.md) | The system views: the agent-work language, the macro-to-micro work context, and the target-architecture hypothesis. All `proposal-only`. |
 | [`OBLIGATIONS.md`](OBLIGATIONS.md) | The single falsifiable target, OBL-E3 — does the orchestration language form a category? |
 | [`FRAMINGS.md`](FRAMINGS.md) | The category-theory ledger (F1–F7 framings + construct⟷CT-type mapping). |
 | [`BACKLOG.md`](BACKLOG.md) | Named-but-unplanned candidates and the portability hypotheses. |
