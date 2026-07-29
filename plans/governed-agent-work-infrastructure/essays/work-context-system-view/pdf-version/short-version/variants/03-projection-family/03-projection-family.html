@@ -8,7 +8,7 @@
   <style>
 @page {
   size: A4;
-  margin: 18mm 22mm 15mm;
+  margin: 19mm 24mm 16mm;
   background: #f4eadc;
 
   @top-left-corner {
@@ -492,6 +492,14 @@ tbody tr:nth-child(even) td { background: rgba(180,63,39,.055); }
   @bottom-center { background: none; }
   @left-middle { background: none; }
   @right-middle { background: none; }
+}
+
+body {
+  background: #f4eadc;
+}
+
+body::before {
+  content: none;
 }
 
 .flow-explanation {
@@ -1018,7 +1026,11 @@ tbody tr:nth-child(even) td { background: rgba(180,63,39,.055); }
   padding-top: 3mm;
 }
 
-.part3-lede,
+.part3-lede {
+  color: #17100c;
+  font: 10.55pt/1.58 Georgia, "Times New Roman", serif;
+}
+
 .part4-lede {
   color: #45362e;
   font-size: 9.4pt;
@@ -1085,6 +1097,100 @@ tbody tr:nth-child(even) td { background: rgba(180,63,39,.055); }
   text-transform: uppercase;
 }
 
+.projection-invariant,
+.graph-view-family,
+.plane-alignment {
+  display: block;
+  break-inside: avoid-page;
+  mix-blend-mode: multiply;
+}
+
+.projection-invariant {
+  width: 84mm;
+  height: 24mm;
+  margin: 7mm auto 0 12mm;
+}
+
+.graph-view-family {
+  width: 137mm;
+  height: 42mm;
+  margin: 12mm 0 0 auto;
+}
+
+.plane-alignment {
+  width: 112mm;
+  height: 16mm;
+  margin: 6mm auto 0 0;
+}
+
+.projection-invariant svg,
+.graph-view-family svg,
+.plane-alignment svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.projection-invariant .projection-plane,
+.graph-view-family .view-field,
+.plane-alignment .alignment-plane {
+  fill: none;
+  stroke: #9b7965;
+  stroke-width: 1;
+  opacity: .18;
+}
+
+.projection-invariant .projection-plane--accent,
+.graph-view-family .view-field--accent,
+.plane-alignment .alignment-plane--accent {
+  stroke: #9b321f;
+  opacity: .21;
+}
+
+.projection-invariant .projection-axis,
+.graph-view-family .history-axis,
+.plane-alignment .record-axis {
+  fill: none;
+  stroke: #1b1714;
+  stroke-width: 1;
+  opacity: .24;
+}
+
+.projection-invariant .projection-trace,
+.graph-view-family .view-trace {
+  fill: none;
+  stroke: #9b7965;
+  stroke-width: .85;
+  opacity: .16;
+}
+
+.graph-view-family .history-segment {
+  fill: none;
+  stroke: #1b1714;
+  stroke-width: 1.05;
+  opacity: .24;
+}
+
+.projection-invariant .projection-node,
+.graph-view-family .history-node,
+.graph-view-family .view-node,
+.plane-alignment .alignment-node {
+  fill: #f4eadc;
+  stroke: #9b321f;
+  stroke-width: 1.05;
+  opacity: .38;
+}
+
+.projection-invariant .projection-anchor {
+  fill: #1b1714;
+  opacity: .48;
+}
+
+.graph-view-family .history-mark {
+  fill: #9b321f;
+  opacity: .24;
+}
+
 .part4-short + .part4-lede {
   margin-bottom: 3mm;
 }
@@ -1121,6 +1227,7 @@ tbody tr:nth-child(even) td { background: rgba(180,63,39,.055); }
   letter-spacing: .4pt;
   text-transform: uppercase;
 }
+
 </style>
 </head>
 <body><main><h1>A High-Level View of Work Context Infrastructure</h1>
@@ -1217,8 +1324,10 @@ be done.</p>
     <text class="context-kicker" x="512" y="248">REALIZATION</text>
     <text class="context-copy" x="512" y="261">effects and artifacts</text>
 
-    <path class="context-return" d="M650 251C724 238 726 50 506 26" marker-end="url(#context-return-arrow)"/>
-    <text class="context-copy" x="655" y="150" transform="rotate(-90 655 150)">evidence and learning revise higher contexts</text>
+    <path class="context-return" d="M650 251C730 238 734 52 506 26" marker-end="url(#context-return-arrow)"/>
+    <text class="context-kicker" x="654" y="148" text-anchor="middle">FEEDBACK LOOP</text>
+    <text class="context-copy" x="654" y="162" text-anchor="middle">evidence and learning</text>
+    <text class="context-copy" x="654" y="174" text-anchor="middle">revise higher contexts</text>
   </svg>
   <figcaption>Context narrows downward: purpose and constraints remain inherited as work becomes executable. Evidence travels upward: attempts and effects can clarify, challenge, or revise any context above them.</figcaption>
 </figure>
@@ -1232,6 +1341,18 @@ individual parts. A task may remain understandable by itself while the objective
 worth doing becomes difficult to see. Several tasks may be completed correctly even after the
 assumption, feature, or larger purpose they were meant to serve has changed.</p>
 <p>The work becomes more precise locally while its purpose becomes less visible globally.</p>
+<figure class="projection-invariant" aria-hidden="true">
+  <svg viewBox="0 0 380 118">
+    <path class="projection-axis" d="M190 7V111"/>
+    <path class="projection-plane" d="M58 30L137 14H307L324 30 M324 30L244 46H74"/>
+    <path class="projection-plane projection-plane--accent" d="M48 59L126 43H297 M320 59L241 75H70L48 59"/>
+    <path class="projection-plane" d="M61 88L139 72H309L326 88 M326 88L247 104H78"/>
+    <path class="projection-trace" d="M190 22L137 14M190 59L320 59M190 96L247 104"/>
+    <circle class="projection-node" cx="190" cy="22" r="3.1"/>
+    <circle class="projection-anchor" cx="190" cy="59" r="4.4"/>
+    <circle class="projection-node" cx="190" cy="96" r="3.1"/>
+  </svg>
+</figure>
 <h2 class="part3-short">3. What continuity would make possible</h2>
 <p class="part3-lede">As work becomes divided, its meaning is distributed across many places. A project contains tasks; a specification carries traces of research and discussion; a decision rests on assumptions that may no longer be visible. The practical promise of work-context infrastructure is modest: to let a person recover those relationships when they matter.</p>
 <p class="part3-lede">Instead of treating each document, task, or artifact as an isolated object, the system would help it remain part of a larger and revisable story.</p>
@@ -1252,6 +1373,29 @@ assumption, feature, or larger purpose they were meant to serve has changed.</p>
   <div><b>Revisable</b>Later learning can change earlier understanding without erasing its history.</div>
   <div><b>Honest about gaps</b>Missing or conflicting context remains visible rather than being guessed.</div>
 </div>
+
+<figure class="graph-view-family" aria-hidden="true">
+  <svg viewBox="0 0 580 172">
+    <path class="history-axis" d="M290 18V154"/>
+    <path class="history-segment" d="M278 37L290 27L302 37M278 82L290 72L302 82M278 127L290 117L302 127"/>
+    <circle class="history-node" cx="290" cy="27" r="4"/>
+    <circle class="history-node" cx="290" cy="72" r="4"/>
+    <circle class="history-node" cx="290" cy="117" r="4"/>
+    <circle class="history-mark" cx="290" cy="151" r="2.2"/>
+
+    <path class="view-trace" d="M286 27C231 27 211 32 173 43"/>
+    <path class="view-trace" d="M294 72C353 72 380 77 418 86"/>
+    <path class="view-trace" d="M286 117C230 117 207 123 169 136"/>
+
+    <path class="view-field view-field--accent" d="M40 24L172 13L221 35 M221 35L89 54L40 24"/>
+    <path class="view-field" d="M365 68L499 55L540 86 M540 86L406 103L365 68"/>
+    <path class="view-field" d="M39 119L169 105L220 135 M220 135L88 156L39 119"/>
+
+    <circle class="view-node" cx="173" cy="43" r="3.2"/>
+    <circle class="view-node" cx="418" cy="86" r="3.2"/>
+    <circle class="view-node" cx="169" cy="136" r="3.2"/>
+  </svg>
+</figure>
 
 <h2 class="part4-short">4. One possible shape for the infrastructure</h2>
 <p class="part4-lede">The diagram offers one possible arrangement, not a finished architecture. Its purpose is to show a few useful separations: deciding what work should happen, carrying it out, mediating contributions, and preserving what can later be known about the run.</p>
@@ -1348,4 +1492,18 @@ assumption, feature, or larger purpose they were meant to serve has changed.</p>
   <div><b>Shape before action</b>The work can be inspected before people or agents begin carrying it out.</div>
   <div><b>Preserve the voice</b>Mediation helps contributions move without quietly rewriting who said what.</div>
   <div><b>Remember change</b>The record keeps later revision connected to the path that made revision possible.</div>
-</div></main></body></html>
+</div>
+
+<figure class="plane-alignment" aria-hidden="true">
+  <svg viewBox="0 0 500 68">
+    <path class="record-axis" d="M23 34H477"/>
+    <path class="alignment-plane alignment-plane--accent" d="M47 22L91 13L116 28 M116 28L72 47L47 22"/>
+    <path class="alignment-plane" d="M158 26L201 11L228 31 M228 31L184 49L158 26"/>
+    <path class="alignment-plane" d="M273 29L316 14L343 34 M343 34L299 52L273 29"/>
+    <path class="alignment-plane alignment-plane--accent" d="M386 33L429 17L455 37 M455 37L411 55L386 33"/>
+    <circle class="alignment-node" cx="81" cy="34" r="3"/>
+    <circle class="alignment-node" cx="193" cy="34" r="3"/>
+    <circle class="alignment-node" cx="307" cy="34" r="3"/>
+    <circle class="alignment-node" cx="420" cy="34" r="3"/>
+  </svg>
+</figure></main></body></html>

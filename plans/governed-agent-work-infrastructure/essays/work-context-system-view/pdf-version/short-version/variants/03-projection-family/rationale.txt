@@ -1,0 +1,54 @@
+03 - Projection Family
+
+Design rationale
+
+Page 2 - invariant identity under projection
+The single vertical spine is the stable referent. Three offset, incomplete plane contours intersect it at different levels, expressing partial projections without turning the planes into orbiting frames. Two hollow nodes and one dark anchor keep the invariant legible while the planes remain almost absorbed into the paper.
+
+Page 3 - a graph family with several views
+A durable central history is drawn as one vertical sequence of hollow nodes and small branch marks. Three separate traces project from that history into three spatially distinct, incomplete fields. The fields stand for purpose, authority, and evidence without labels, hierarchy, arrows, or visual collapse into one universal view.
+
+Page 4 - plane alignment
+Four abstract plane marks meet one shared horizontal record axis. Their differing silhouettes remain distinguishable while the common axis implies participation in the same run. The four marks suggest decision, execution, mediation, and knowledge without naming or ordering them.
+
+Small visual adjustments
+
+Only the page 2 and page 3 ornamental figures and their local CSS were replaced. One new normal-flow figure was added immediately after .part4-reading on page 4. The original fixed dimensions were retained for pages 2 and 3 (84 x 24 mm and 137 x 42 mm). The page 4 figure is 112 x 16 mm. All three use the existing paper, ink, muted brown, and red colors; hairline strokes; sparse hollow nodes; no labels; no arrows; no external assets; aria-hidden="true"; centered normal-flow placement; and break-inside avoidance.
+
+Output files
+
+- 03-projection-family.html
+- 03-projection-family.pdf
+- rationale.txt
+
+Generation commands
+
+& 'C:\Program Files\Google\Chrome\Application\chrome.exe' --headless --disable-gpu --no-pdf-header-footer --print-to-pdf='C:\Users\victo\cyberalchemy-orchestrator\tmp\pdfs\work-context-variants\03-projection-family\03-projection-family-unstamped.pdf' 'file:///C:/Users/victo/cyberalchemy-orchestrator/plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/variants/03-projection-family/03-projection-family.html'
+
+python 'C:\Users\victo\cyberalchemy-orchestrator\plans\governed-agent-work-infrastructure\essays\work-context-system-view\pdf-version\short-version\stamp-cyberalchemy.py' 'C:\Users\victo\cyberalchemy-orchestrator\tmp\pdfs\work-context-variants\03-projection-family\03-projection-family-unstamped.pdf' 'C:\Users\victo\cyberalchemy-orchestrator\plans\governed-agent-work-infrastructure\essays\work-context-system-view\pdf-version\short-version\variants\03-projection-family\03-projection-family.pdf' --mark 'C:\Users\victo\cyberalchemy-orchestrator\plans\governed-agent-work-infrastructure\essays\work-context-system-view\pdf-version\short-version\cyberalchemy-mark.svg'
+
+Validation command
+
+python 'C:\Users\victo\cyberalchemy-orchestrator\tmp\pdfs\work-context-variants\03-projection-family\validate_projection_family.py'
+
+QA
+
+- Frozen binding hashes: all six matched the confirmed concrete proposal.
+- Page count and size: 4 pages, each 594.96 x 841.92 points (A4).
+- Text: PyMuPDF extracted text is exactly equal to the frozen source revision on every page.
+- Layout: PyMuPDF word lists, including every word bounding box, are exactly equal to the frozen source revision on every page.
+- Render comparison at 2x: page 1 has zero changed pixels above threshold; page 2 changes are confined to (432, 1300)-(754, 1437) px; page 3 to (238, 1220)-(956, 1414) px; page 4 to (308, 1286)-(885, 1343) px.
+- Visual inspection: all four PyMuPDF page renders were inspected individually. No clipping, overlap, unintended wrapping, footer defect, corner-mark defect, or watermark defect was found.
+- Content scope: source files, sibling variants, and the variants root index were not modified. Final writes are limited to this variant folder; temporary renders and the unstamped PDF are limited to tmp/pdfs/work-context-variants/03-projection-family/.
+
+Limitation
+
+Poppler/pdftoppm was not installed. Rendering and visual QA used PyMuPDF, which was explicitly required and available. Effective write-scope enforcement is non-observable; scope compliance is supported by path-targeted commands and repository status evidence.
+
+Organic placement revision
+
+The projection spine now sits in the left field, the graph-family figure settles against the right reading edge, and the final plane sequence begins from the left measure. The resulting alternation follows the page's existing diagram axes and negative space; multiply blending keeps the symbols embedded in the paper rather than presenting them as centered inserts.
+
+Organic revision verification
+
+The regenerated PDF remains four A4 pages. Extracted text matches the spacious source revision exactly, with word geometry matching within 0.0001 pt. All four current page renders were inspected in the final twelve-page family audit; no clipping, overlap, unintended reflow, footer defect, corner defect, or watermark defect was found.
