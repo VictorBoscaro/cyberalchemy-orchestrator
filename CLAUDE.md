@@ -19,3 +19,11 @@ It does this by governing how agent work is decomposed, handed off, observed, ev
 The goal is not to maximize the number of agents, but to improve collective judgment through structurally different perspectives, independent checks, and explicit preservation of what each result supports. Work from objective to action and back to evidence; treat every model and conclusion as revisable.
 
 Before consequential changes, identify the objective served, the assumption or decision involved, and the evidence that would demonstrate success.
+
+## Host wrapper binding
+
+A seat prompt under a governed dispatch must open with `ACI-WORKFLOW-BINDING-V1:<base64>` as its first line, or the launch becomes an orphaned dispatch instead of a seat of the parent.
+
+Never persist orchestration-bridge stdout (open/close/binding receipts) in a dispatch's working_folder — the journal already holds them; a file copy is redundant.
+
+If the host hook fails to fire, call the bridge directly and record the missed-hook gap in the close record instead of leaving files behind.

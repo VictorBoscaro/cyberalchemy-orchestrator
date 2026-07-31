@@ -1549,6 +1549,23 @@ class RuntimeService:
                 """,
                 (dispatch_id,),
             ).fetchone()
+            bindings = conn.execute(
+                """
+                SELECT b.binding_id,b.dispatch_id,b.session_id,b.group_id,
+                       b.seat_index,b.turn_ordinal,b.attempt_id,b.host,
+                       b.operation_kind,b.workflow_manifest_artifact_id,
+                       b.workflow_manifest_hash,b.source_artifact_ids_json,
+                       b.state,b.bound_event_id,b.terminal_event_id,
+                       b.bound_at,b.terminal_at,r.result_receipt_json
+                FROM host_workflow_turn_bindings b
+                LEFT JOIN command_receipts r
+                  ON r.scope_key='aci.host-workflow-turn:'||b.binding_id
+                 AND r.idempotency_key='bind'
+                WHERE b.dispatch_id=?
+                ORDER BY b.bound_at
+                """,
+                (dispatch_id,),
+            ).fetchall()
         if not rows or not link:
             raise NotFoundError("orchestration dispatch log not found")
         events: list[dict[str, Any]] = []
@@ -1581,6 +1598,31 @@ class RuntimeService:
             closing = self.legacy.resolve_close(self.settings.ledger_path, dispatch_id)
         except NotFoundError:
             closing = None
+        host_workflow_turn_bindings = [
+            {
+                "binding_id": binding["binding_id"],
+                "dispatch_id": binding["dispatch_id"],
+                "session_id": binding["session_id"],
+                "group_id": binding["group_id"],
+                "seat_index": binding["seat_index"],
+                "turn_ordinal": binding["turn_ordinal"],
+                "attempt_id": binding["attempt_id"],
+                "host": binding["host"],
+                "operation_kind": binding["operation_kind"],
+                "workflow_manifest_artifact_id": binding["workflow_manifest_artifact_id"],
+                "workflow_manifest_hash": binding["workflow_manifest_hash"],
+                "source_artifact_ids_json": binding["source_artifact_ids_json"],
+                "state": binding["state"],
+                "bound_event_id": binding["bound_event_id"],
+                "terminal_event_id": binding["terminal_event_id"],
+                "bound_at": binding["bound_at"],
+                "terminal_at": binding["terminal_at"],
+                "command_receipt": json.loads(binding["result_receipt_json"])
+                if binding["result_receipt_json"]
+                else None,
+            }
+            for binding in bindings
+        ]
         return {
             "dispatch_id": dispatch_id,
             "status": "closed"
@@ -1607,6 +1649,7 @@ class RuntimeService:
                 ),
             },
             "events": events,
+            "host_workflow_turn_bindings": host_workflow_turn_bindings,
         }
 
     def activate_local_probe(
