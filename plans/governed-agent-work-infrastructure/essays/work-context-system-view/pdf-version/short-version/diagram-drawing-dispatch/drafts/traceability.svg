@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <marker id="arrow-rust" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 1 L 8 5 L 0 9" fill="none" stroke="#a53b28" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-ink" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 1 L 8 5 L 0 9" fill="none" stroke="#282522" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 1 L 8 5 L 0 9" fill="none" stroke="#8d867d" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="1000" fill="#f5eadb"/>
+
+  <text x="120" y="76" fill="#777068" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="2.2">SECTION 4 / TRACEABILITY</text>
+  <text x="120" y="142" fill="#201d1a" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="700" letter-spacing="0">Recoverable Paths of Inquiry</text>
+  <line x1="120" y1="178" x2="1480" y2="178" stroke="#a53b28" stroke-width="2"/>
+
+  <!-- Forward inquiry: objective to task to possible artifact. -->
+  <path d="M 290 345 C 455 268, 620 314, 733 442" fill="none" stroke="#a53b28" stroke-width="3" marker-end="url(#arrow-rust)"/>
+  <path d="M 866 442 C 1004 322, 1169 286, 1310 340" fill="none" stroke="#a53b28" stroke-width="3" marker-end="url(#arrow-rust)"/>
+  <path d="M 714 445 L 733 442 L 720 427" fill="none" stroke="#a53b28" stroke-width="3"/>
+  <path d="M 1290 348 L 1310 340 L 1293 329" fill="none" stroke="#a53b28" stroke-width="3"/>
+  <text x="515" y="267" fill="#8c3021" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-weight="700" letter-spacing="1.6">FOLLOW CONTRIBUTING WORK</text>
+
+  <!-- Reverse inquiry: task back to the context that gives it meaning. -->
+  <path d="M 734 518 C 570 597, 403 535, 291 376" fill="none" stroke="#282522" stroke-width="2.4" marker-end="url(#arrow-ink)"/>
+  <path d="M 770 556 C 754 646, 727 711, 700 758" fill="none" stroke="#282522" stroke-width="2.4" marker-end="url(#arrow-ink)"/>
+  <path d="M 832 555 C 872 648, 945 718, 1015 765" fill="none" stroke="#282522" stroke-width="2.4" marker-end="url(#arrow-ink)"/>
+  <path d="M 310 380 L 291 376 L 298 396" fill="none" stroke="#282522" stroke-width="2.4"/>
+  <path d="M 700 738 L 700 758 L 714 747" fill="none" stroke="#282522" stroke-width="2.4"/>
+  <path d="M 995 755 L 1015 765 L 1004 744" fill="none" stroke="#282522" stroke-width="2.4"/>
+  <rect x="587" y="606" width="443" height="40" fill="#f5eadb"/>
+  <text x="608" y="634" fill="#5f5952" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-weight="700" letter-spacing="1.25">RETURN TO WHAT GIVES THE TASK MEANING</text>
+
+  <!-- A second purpose: the task need not sit under a single objective. -->
+  <path d="M 328 693 C 466 662, 610 588, 730 517" fill="none" stroke="#8d867d" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <path d="M 710 516 L 730 517 L 720 535" fill="none" stroke="#8d867d" stroke-width="2"/>
+
+  <!-- A dependency may be known while the exact relation remains incomplete. -->
+  <path d="M 870 520 C 974 542, 1053 581, 1117 625" fill="none" stroke="#8d867d" stroke-width="2"/>
+  <path d="M 1185 651 C 1237 672, 1277 683, 1310 688" fill="none" stroke="#8d867d" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <path d="M 1292 678 L 1310 688 L 1293 696" fill="none" stroke="#8d867d" stroke-width="2"/>
+  <line x1="1135" y1="623" x2="1148" y2="642" stroke="#a53b28" stroke-width="2"/>
+  <line x1="1155" y1="635" x2="1168" y2="654" stroke="#a53b28" stroke-width="2"/>
+  <text x="1060" y="598" fill="#777068" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-style="italic" letter-spacing="0">uncertain, disputed, or missing</text>
+
+  <!-- The evidence relationship is a recoverable question, not a required record. -->
+  <path d="M 456 836 C 534 812, 601 795, 664 788" fill="none" stroke="#8d867d" stroke-width="2" stroke-dasharray="4 8"/>
+  <text x="457" y="753" fill="#777068" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" letter-spacing="0">What evidence informed this?</text>
+
+  <!-- Nodes. -->
+  <circle cx="260" cy="360" r="28" fill="#f5eadb" stroke="#a53b28" stroke-width="3"/>
+  <circle cx="260" cy="360" r="6" fill="#a53b28"/>
+  <text x="260" y="416" text-anchor="middle" fill="#282522" font-family="Georgia, 'Times New Roman', serif" font-size="27" font-weight="700" letter-spacing="0">Objective</text>
+
+  <circle cx="300" cy="700" r="26" fill="#f5eadb" stroke="#8d867d" stroke-width="2.4"/>
+  <circle cx="300" cy="700" r="5" fill="#8d867d"/>
+  <text x="300" y="750" text-anchor="middle" fill="#282522" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="700" letter-spacing="0">A second objective</text>
+  <text x="300" y="779" text-anchor="middle" fill="#777068" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-style="italic" letter-spacing="0">another purpose this task may serve</text>
+
+  <circle cx="800" cy="490" r="72" fill="#f5eadb" stroke="#a53b28" stroke-width="3.2"/>
+  <circle cx="800" cy="490" r="62" fill="none" stroke="#c99482" stroke-width="1.4"/>
+  <text x="800" y="500" text-anchor="middle" fill="#201d1a" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700" letter-spacing="0">Task</text>
+  <text x="800" y="531" text-anchor="middle" fill="#777068" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-style="italic" letter-spacing="0">bounded work</text>
+
+  <circle cx="1340" cy="350" r="28" fill="#f5eadb" stroke="#a53b28" stroke-width="3"/>
+  <circle cx="1340" cy="350" r="6" fill="#a53b28"/>
+  <text x="1340" y="407" text-anchor="middle" fill="#282522" font-family="Georgia, 'Times New Roman', serif" font-size="27" font-weight="700" letter-spacing="0">Artifact</text>
+  <text x="1340" y="437" text-anchor="middle" fill="#777068" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-style="italic" letter-spacing="0">a possible result</text>
+
+  <circle cx="690" cy="790" r="26" fill="#f5eadb" stroke="#282522" stroke-width="2.4"/>
+  <circle cx="690" cy="790" r="5" fill="#282522"/>
+  <text x="690" y="847" text-anchor="middle" fill="#282522" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="700" letter-spacing="0">Decision</text>
+
+  <circle cx="1040" cy="790" r="26" fill="#f5eadb" stroke="#282522" stroke-width="2.4"/>
+  <circle cx="1040" cy="790" r="5" fill="#282522"/>
+  <text x="1040" y="847" text-anchor="middle" fill="#282522" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="700" letter-spacing="0">Condition</text>
+
+  <circle cx="425" cy="845" r="24" fill="#f5eadb" stroke="#8d867d" stroke-width="2.2"/>
+  <circle cx="425" cy="845" r="5" fill="#8d867d"/>
+  <text x="425" y="897" text-anchor="middle" fill="#282522" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="700" letter-spacing="0">Evidence</text>
+
+  <circle cx="1340" cy="690" r="26" fill="#f5eadb" stroke="#8d867d" stroke-width="2.4"/>
+  <circle cx="1340" cy="690" r="5" fill="#8d867d"/>
+  <text x="1340" y="746" text-anchor="middle" fill="#282522" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="700" letter-spacing="0">Dependent work</text>
+  <text x="1340" y="776" text-anchor="middle" fill="#777068" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-style="italic" letter-spacing="0">work elsewhere</text>
+
+  <line x1="120" y1="924" x2="1480" y2="924" stroke="#b9ada0" stroke-width="1"/>
+  <text x="120" y="961" fill="#5f5952" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" letter-spacing="0">An example of recoverable inquiry paths, not a canonical model of work.</text>
+</svg>

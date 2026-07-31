@@ -1,0 +1,48 @@
+Objective
+
+Create one polished vector diagram from the finalized recommendation assigned by your canonical task name. Write exactly one SVG draft; do not create a PDF.
+
+Identity and sources
+
+Your canonical task name is `<lane>_designer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.
+
+Read:
+- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`
+- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`
+- the three page renders under `diagram-proposal-dispatch/sources/`
+
+Write only:
+`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`
+and its validation render:
+`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-draft.png`
+
+Visual system
+
+- Canvas: `1600 x 1000`, landscape, with a `viewBox="0 0 1600 1000"`.
+- Background: `#f4eadb`.
+- Primary text and strokes: `#1d1915`.
+- Section/title accent: `#9f3f28`.
+- Secondary lines/text: `#766f66`.
+- Quiet structural lines: `#c9b9a4`.
+- Uncertainty/dashed marks: `#bd6a50`.
+- Use Georgia for titles and labels; Arial only for compact annotations if necessary.
+- Border radius must not exceed 8 px. Do not use gradients, shadows, decorative blobs, illustrations, or icons.
+- Use thin strokes, open circles, restrained arrows, and generous whitespace consistent with the essay.
+- Include the diagram title and a small section-placement line. Do not include explanatory prose paragraphs.
+- All visible text must remain inside the canvas and be legible when the page is fit to a normal desktop window.
+
+Conceptual requirements
+
+- Implement the assigned recommendation, including its qualifications and uncertainty markers.
+- Do not invent entities, mandatory records, causal relations, fixed hierarchy, or guaranteed completeness.
+- Arrowheads may express only the meaning authorized by the recommendation.
+- Prefer a clear visual argument over exhaustive labeling.
+
+Validation
+
+- Produce valid standalone SVG XML without scripts, external assets, embedded raster images, or network references.
+- Render the SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.
+- Correct clipping, overlaps, unreadable text, weak hierarchy, or ambiguous connections before returning.
+- Do not spawn another agent or use network access.
+
+Return a concise completion note naming the file, what the diagram emphasizes, and any remaining visual risk.

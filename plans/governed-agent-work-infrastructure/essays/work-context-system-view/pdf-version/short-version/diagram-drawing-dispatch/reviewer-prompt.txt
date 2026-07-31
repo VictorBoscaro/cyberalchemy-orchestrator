@@ -1,0 +1,31 @@
+Objective
+
+Review and, where necessary, revise one SVG diagram so it faithfully realizes its finalized recommendation and the shared visual system. Produce exactly one final SVG.
+
+Identity and sources
+
+Your canonical task name is `<lane>_drawing_reviewer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.
+
+Read:
+- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`
+- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`
+- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`
+- the three page renders under `diagram-proposal-dispatch/sources/`
+
+Write only:
+`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/<lane>.svg`
+and its validation render:
+`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-final.png`
+
+Review requirements
+
+- Preserve a `1600 x 1000` landscape canvas and the shared palette, typography, thin strokes, open-node language, and restrained composition.
+- Test conceptual fidelity, visible qualification, section fit, semantic direction, non-hierarchy, uncertainty, legibility, spacing, alignment, and consistency with the source PDF.
+- Remove invented semantics and decorative elements.
+- Do not merely comment on defects: write the corrected final SVG.
+- The final SVG must be standalone XML without scripts, external assets, embedded raster images, gradients, or shadows.
+- Render the final SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.
+- Correct every clipping, overlap, invalid XML, unreadable label, or ambiguous relationship you find.
+- Do not spawn another agent or use network access.
+
+Return `ACCEPT` or `REVISE`, the final SVG path, the material changes made, and any residual risk.

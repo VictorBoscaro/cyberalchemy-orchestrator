@@ -1,0 +1,130 @@
+{
+  "projection_schema_version": "concrete-dispatch-proposal/v1",
+  "revision": 3,
+  "structural_revision": 1,
+  "structural_digest": "sha256:8a77cba95980ca6134d04946e4973bee1212a03e09033fa00f09670d3ca89aa5",
+  "dispatch_id": "2026-07-31-work-context-diagram-drawings",
+  "dispatch_type": "others",
+  "work_kind": "vector diagram and PDF authoring",
+  "goal": "Create five reviewed vector diagrams from the accepted recommendations and assemble them into one verified five-page PDF.",
+  "confirmation_mode": "final_only",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "source_bindings": [
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf", "sha256": "8a8e87f53e4535e8ec49e779c037f5763a3584dfa4c2bd7a0abb1096b64b6593", "size_bytes": 260080},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/transformation-reviewer.md", "sha256": "ecbbe2ca782502e36ea25f1ed490dae1e31b40c11ead5870c7073b89a549c57e", "size_bytes": 3797},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/divergence-reviewer.md", "sha256": "676212411cfaaa0b1f33fe7d668ca1aea7bbad54292f0a5783ef0b26d8bf06fc", "size_bytes": 3455},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/topology-reviewer.md", "sha256": "0d906c611fda3555aa9e829b4ef3dd4ca5527c78554944e6586315acc95422c7", "size_bytes": 3663},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/continuity-reviewer.md", "sha256": "9668dc879a9a64141e836fa40a89822a007d2843c9f425006b6114012b98a241", "size_bytes": 3610},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/traceability-reviewer.md", "sha256": "9d5c5e7642bb80fad4696115bda5fd9381b3af5646a4bf42581774639464ab84", "size_bytes": 3616},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png", "sha256": "db33d99604bafca680d59d37f407e1e7b59f89ef14b1877f09baefeaf7a8f5ab", "size_bytes": 198795},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png", "sha256": "d8b8b1357fe9b23cf1d7c8e3ff656b4c68055efcc243587146d4b094bb03ac7e", "size_bytes": 169373},
+    {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png", "sha256": "dfe8767ae7d3d54b97cacad8ba8f4c3a3d8457fd1982cd055aef268dd6baad8c", "size_bytes": 159501}
+  ],
+  "prompt_templates": {
+    "designer": {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/designer-prompt.txt", "sha256": "4c504dd50851dc8ad620bb093b0a45a5447801c8e451c178eab0a23acea31054", "size_bytes": 2774},
+    "reviewer": {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/reviewer-prompt.txt", "sha256": "6f4f7311d969db8b6d2df7af68bb5a608a44b5a71822055dc3d33774a4a99134", "size_bytes": 2201},
+    "assembler": {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/assembler-prompt.txt", "sha256": "fc6f0d7163b055e163353b4089ad40333cabeeec79a6058712bdf0b0dec633be", "size_bytes": 1393},
+    "auditor": {"path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/auditor-prompt.txt", "sha256": "d0b195862ceda7d49ad46e943d54bbca4c164d1b6d76534b8f8e522f2c0e8b3b", "size_bytes": 1446}
+  },
+  "runtime": {
+    "requested_provider": "openai",
+    "requested_model": "gpt-5.6-sol",
+    "requested_adapter": "codex-collaboration",
+    "host": "codex",
+    "capacity": 3,
+    "scheduling": "capacity-bounded batching of READY groups",
+    "binding_mode": "direct ACI pre-launch binding because the collaboration API does not execute repository host hooks"
+  },
+  "capability_profile": {
+    "effective_enforcement": "non_observable",
+    "network": "denied by frozen prompts",
+    "agent_spawn": "denied by frozen prompts",
+    "designer_write": "only diagram-drawing-dispatch/drafts/<lane>.svg and validation/<lane>-draft.png",
+    "reviewer_write": "only diagram-drawing-dispatch/final/<lane>.svg and validation/<lane>-final.png",
+    "assembler_write": "only work-context-system-view-diagram-concepts.pdf and diagram-drawing-dispatch/pdf-renders/*.png",
+    "auditor_write": "only diagram-drawing-dispatch/audit-renders/page-01.png through page-05.png",
+    "tools": ["read-file", "apply-patch", "shell", "view-image", "PyMuPDF"]
+  },
+  "visual_contract": {
+    "canvas": "1600 x 1000 SVG",
+    "background": "#f4eadb",
+    "primary": "#1d1915",
+    "accent": "#9f3f28",
+    "secondary": "#766f66",
+    "quiet": "#c9b9a4",
+    "uncertainty": "#bd6a50",
+    "fonts": ["Georgia", "Arial"],
+    "forbidden": ["gradients", "shadows", "decorative blobs", "external assets", "scripts", "embedded raster images"]
+  },
+  "lanes": [
+    {
+      "lane": "transformation",
+      "recommendation": "One Objective, Changing Structure",
+      "designer": {"group_id": "transformation-designer", "seat_id": "transformation-designer-0", "canonical_task_name": "transformation_designer", "agent_name": "Alexander, Christopher", "role": "writer", "token_budget": 2500, "prompt": "designer"},
+      "reviewer": {"group_id": "transformation-drawing-reviewer", "seat_id": "transformation-drawing-reviewer-0", "canonical_task_name": "transformation_drawing_reviewer", "agent_name": "Marr, David", "role": "auditor", "token_budget": 2200, "prompt": "reviewer"}
+    },
+    {
+      "lane": "divergence",
+      "recommendation": "Locally Clear, Composition Uncertain",
+      "designer": {"group_id": "divergence-designer", "seat_id": "divergence-designer-0", "canonical_task_name": "divergence_designer", "agent_name": "Miller, George", "role": "writer", "token_budget": 2500, "prompt": "designer"},
+      "reviewer": {"group_id": "divergence-drawing-reviewer", "seat_id": "divergence-drawing-reviewer-0", "canonical_task_name": "divergence_drawing_reviewer", "agent_name": "Gigerenzer, Gerd", "role": "auditor", "token_budget": 2200, "prompt": "reviewer"}
+    },
+    {
+      "lane": "topology",
+      "recommendation": "Relationships Without a Fixed Hierarchy",
+      "designer": {"group_id": "topology-designer", "seat_id": "topology-designer-0", "canonical_task_name": "topology_designer", "agent_name": "Fong, Brendan", "role": "writer", "token_budget": 2500, "prompt": "designer"},
+      "reviewer": {"group_id": "topology-drawing-reviewer", "seat_id": "topology-drawing-reviewer-0", "canonical_task_name": "topology_drawing_reviewer", "agent_name": "Kripke, Saul", "role": "auditor", "token_budget": 2200, "prompt": "reviewer"}
+    },
+    {
+      "lane": "continuity",
+      "recommendation": "Revision Without Erasure",
+      "designer": {"group_id": "continuity-designer", "seat_id": "continuity-designer-0", "canonical_task_name": "continuity_designer", "agent_name": "Schacter, Daniel", "role": "writer", "token_budget": 2500, "prompt": "designer"},
+      "reviewer": {"group_id": "continuity-drawing-reviewer", "seat_id": "continuity-drawing-reviewer-0", "canonical_task_name": "continuity_drawing_reviewer", "agent_name": "Rittel, Horst", "role": "auditor", "token_budget": 2200, "prompt": "reviewer"}
+    },
+    {
+      "lane": "traceability",
+      "recommendation": "Recoverable Paths of Inquiry",
+      "designer": {"group_id": "traceability-designer", "seat_id": "traceability-designer-0", "canonical_task_name": "traceability_designer", "agent_name": "Forrester, Jay", "role": "writer", "token_budget": 2500, "prompt": "designer"},
+      "reviewer": {"group_id": "traceability-drawing-reviewer", "seat_id": "traceability-drawing-reviewer-0", "canonical_task_name": "traceability_drawing_reviewer", "agent_name": "Meadows, Donella H.", "role": "auditor", "token_budget": 2200, "prompt": "reviewer"}
+    }
+  ],
+  "assembler": {"group_id": "pdf-assembler", "seat_id": "pdf-assembler-0", "canonical_task_name": "pdf_assembler", "agent_name": "Baez, John", "role": "writer", "token_budget": 1600, "prompt": "assembler"},
+  "auditor": {"group_id": "pdf-auditor", "seat_id": "pdf-auditor-0", "canonical_task_name": "pdf_auditor", "agent_name": "Dijkstra, Edsger W.", "role": "auditor", "token_budget": 1200, "prompt": "auditor"},
+  "connections": [
+    {"from": "transformation-designer", "to": "transformation-drawing-reviewer", "type": "sequential"},
+    {"from": "divergence-designer", "to": "divergence-drawing-reviewer", "type": "sequential"},
+    {"from": "topology-designer", "to": "topology-drawing-reviewer", "type": "sequential"},
+    {"from": "continuity-designer", "to": "continuity-drawing-reviewer", "type": "sequential"},
+    {"from": "traceability-designer", "to": "traceability-drawing-reviewer", "type": "sequential"},
+    {"from": "transformation-drawing-reviewer", "to": "pdf-assembler", "type": "sequential"},
+    {"from": "divergence-drawing-reviewer", "to": "pdf-assembler", "type": "sequential"},
+    {"from": "topology-drawing-reviewer", "to": "pdf-assembler", "type": "sequential"},
+    {"from": "continuity-drawing-reviewer", "to": "pdf-assembler", "type": "sequential"},
+    {"from": "traceability-drawing-reviewer", "to": "pdf-assembler", "type": "sequential"},
+    {"from": "pdf-assembler", "to": "pdf-auditor", "type": "sequential"}
+  ],
+  "workflow_input_manifest_contracts": {
+    "designer_to_reviewer": [
+      {"lane": "transformation", "target": {"group_id": "transformation-drawing-reviewer", "seat_index": 0, "turn_ordinal": 0}, "authorized_upstream": {"group_id": "transformation-designer", "seat_id": "transformation-designer-0", "turn_ordinal": 0}, "slot": {"name": "draft-svg", "data_schema_ref": "image/svg+xml", "cardinality": {"min": 1, "max": 1}, "max_bytes": 300000, "purpose": "Supply the exact transformation draft SVG for same-lane visual review.", "sources_ordered": true, "source_template": {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/transformation.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}}},
+      {"lane": "divergence", "target": {"group_id": "divergence-drawing-reviewer", "seat_index": 0, "turn_ordinal": 0}, "authorized_upstream": {"group_id": "divergence-designer", "seat_id": "divergence-designer-0", "turn_ordinal": 0}, "slot": {"name": "draft-svg", "data_schema_ref": "image/svg+xml", "cardinality": {"min": 1, "max": 1}, "max_bytes": 300000, "purpose": "Supply the exact divergence draft SVG for same-lane visual review.", "sources_ordered": true, "source_template": {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/divergence.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}}},
+      {"lane": "topology", "target": {"group_id": "topology-drawing-reviewer", "seat_index": 0, "turn_ordinal": 0}, "authorized_upstream": {"group_id": "topology-designer", "seat_id": "topology-designer-0", "turn_ordinal": 0}, "slot": {"name": "draft-svg", "data_schema_ref": "image/svg+xml", "cardinality": {"min": 1, "max": 1}, "max_bytes": 300000, "purpose": "Supply the exact topology draft SVG for same-lane visual review.", "sources_ordered": true, "source_template": {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/topology.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}}},
+      {"lane": "continuity", "target": {"group_id": "continuity-drawing-reviewer", "seat_index": 0, "turn_ordinal": 0}, "authorized_upstream": {"group_id": "continuity-designer", "seat_id": "continuity-designer-0", "turn_ordinal": 0}, "slot": {"name": "draft-svg", "data_schema_ref": "image/svg+xml", "cardinality": {"min": 1, "max": 1}, "max_bytes": 300000, "purpose": "Supply the exact continuity draft SVG for same-lane visual review.", "sources_ordered": true, "source_template": {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/continuity.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}}},
+      {"lane": "traceability", "target": {"group_id": "traceability-drawing-reviewer", "seat_index": 0, "turn_ordinal": 0}, "authorized_upstream": {"group_id": "traceability-designer", "seat_id": "traceability-designer-0", "turn_ordinal": 0}, "slot": {"name": "draft-svg", "data_schema_ref": "image/svg+xml", "cardinality": {"min": 1, "max": 1}, "max_bytes": 300000, "purpose": "Supply the exact traceability draft SVG for same-lane visual review.", "sources_ordered": true, "source_template": {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/traceability.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}}}
+    ],
+    "reviewers_to_assembler": {"target": {"group_id": "pdf-assembler", "seat_index": 0, "turn_ordinal": 0}, "authorized_upstream_groups": ["transformation-drawing-reviewer", "divergence-drawing-reviewer", "topology-drawing-reviewer", "continuity-drawing-reviewer", "traceability-drawing-reviewer"], "slot": {"name": "reviewed-svgs", "data_schema_ref": "image/svg+xml", "cardinality": {"min": 5, "max": 5}, "max_bytes": 1500000, "purpose": "Supply the five reviewed SVGs in final PDF page order.", "sources_ordered": true, "source_templates": [{"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/transformation.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}, {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/divergence.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}, {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/topology.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}, {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/continuity.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}, {"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/traceability.svg", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}]}},
+    "assembler_to_auditor": {"target": {"group_id": "pdf-auditor", "seat_index": 0, "turn_ordinal": 0}, "authorized_upstream": {"group_id": "pdf-assembler", "seat_id": "pdf-assembler-0", "turn_ordinal": 0}, "slots": [{"name": "final-pdf", "data_schema_ref": "application/pdf", "cardinality": {"min": 1, "max": 1}, "max_bytes": 10000000, "purpose": "Supply the assembled five-page diagram PDF for independent validation.", "sources_ordered": true, "source_templates": [{"source_kind": "repository", "producer_binding_id": null, "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-diagram-concepts.pdf", "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}]}, {"name": "assembler-renders", "data_schema_ref": "image/png", "cardinality": {"min": 5, "max": 5}, "max_bytes": 25000000, "purpose": "Supply assembler-produced page renders for comparison with independent audit renders.", "sources_ordered": true, "source_path_pattern": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/pdf-renders/page-<NN>.png", "source_template_fields": {"source_kind": "repository", "producer_binding_id": null, "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}}, {"name": "reviewed-svgs", "data_schema_ref": "image/svg+xml", "cardinality": {"min": 5, "max": 5}, "max_bytes": 1500000, "purpose": "Supply the five reviewed SVG sources for semantic and security inspection.", "sources_ordered": true, "source_path_pattern": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/<lane>.svg", "source_template_fields": {"source_kind": "repository", "producer_binding_id": null, "sha256": "<launch-sha256>", "size_bytes": "<launch-size-bytes>"}}]},
+    "materialization_rule": "Each launch-time manifest must replace every source template with an ordered sources array whose objects contain exactly source_kind, producer_binding_id, path, sha256, and size_bytes.",
+    "lineage_limit": "Parent verifies repository artifacts; runtime repository-source binding proves exact bytes but not provider authorship."
+  },
+  "output_contract": {
+    "drafts": "diagram-drawing-dispatch/drafts/<lane>.svg",
+    "reviewed": "diagram-drawing-dispatch/final/<lane>.svg",
+    "validation": "diagram-drawing-dispatch/validation/<lane>-draft.png and <lane>-final.png",
+    "pdf_renders": "diagram-drawing-dispatch/pdf-renders/page-01.png through page-05.png",
+    "audit_renders": "diagram-drawing-dispatch/audit-renders/page-01.png through page-05.png",
+    "final_pdf": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-diagram-concepts.pdf",
+    "page_order": ["transformation", "divergence", "topology", "continuity", "traceability"]
+  },
+  "check_tension_scope": "All groups are singleton groups, so P5 does not apply and check-tension is expected to pass vacuously."
+}

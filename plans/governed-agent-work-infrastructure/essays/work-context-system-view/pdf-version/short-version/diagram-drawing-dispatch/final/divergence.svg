@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Locally Clear, Composition Uncertain</title>
+  <desc id="desc">Two views of the same task contrast sufficient local evidence with only partly recoverable relationships across divided work.</desc>
+
+  <rect width="1600" height="1000" fill="#f4eadb"/>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#1d1915">
+    <text x="100" y="78" font-size="20" fill="#766f66">SECTION 3 / WHEN THE WHOLE BECOMES DIFFICULT TO RECOVER</text>
+    <text x="100" y="145" font-size="52" font-weight="700">Locally Clear, <tspan fill="#9f3f28">Composition Uncertain</tspan></text>
+  </g>
+  <line x1="100" y1="178" x2="1500" y2="178" stroke="#9f3f28" stroke-width="2"/>
+
+  <g fill="none" stroke="#c9b9a4" stroke-width="2">
+    <rect x="100" y="230" width="650" height="560" rx="8"/>
+    <rect x="850" y="230" width="650" height="560" rx="8"/>
+  </g>
+
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="27" font-weight="700" fill="#9f3f28">
+    <text x="135" y="280">Inside the task boundary</text>
+    <text x="885" y="280">Across divided work</text>
+  </g>
+
+  <!-- Matching open markers indicate identity, not flow or causation. -->
+  <g transform="translate(800 271)" font-family="Arial, Helvetica, sans-serif" fill="#766f66">
+    <circle cx="-18" cy="0" r="8" fill="#f4eadb" stroke="#9f3f28" stroke-width="2"/>
+    <text x="0" y="5" text-anchor="middle" font-size="18">=</text>
+    <circle cx="18" cy="0" r="8" fill="#f4eadb" stroke="#9f3f28" stroke-width="2"/>
+    <text x="0" y="31" text-anchor="middle" font-size="18">same task</text>
+  </g>
+
+  <!-- Solid, directionless lines represent evidence available within the task boundary. -->
+  <g fill="none" stroke="#766f66" stroke-width="2.5" stroke-linecap="round">
+    <line x1="388" y1="445" x2="304" y2="391"/>
+    <line x1="462" y1="445" x2="546" y2="391"/>
+    <line x1="395" y1="482" x2="316" y2="574"/>
+    <line x1="455" y1="482" x2="534" y2="574"/>
+    <line x1="390" y1="621" x2="460" y2="621"/>
+  </g>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#1d1915">
+    <rect x="190" y="332" width="228" height="68" rx="8" fill="#f4eadb" stroke="#766f66" stroke-width="2"/>
+    <text x="304" y="375" text-anchor="middle" font-size="22">decisions</text>
+
+    <rect x="432" y="332" width="228" height="68" rx="8" fill="#f4eadb" stroke="#766f66" stroke-width="2"/>
+    <text x="546" y="375" text-anchor="middle" font-size="22">artifacts</text>
+
+    <circle cx="425" cy="463" r="42" fill="#f4eadb" stroke="#9f3f28" stroke-width="3"/>
+    <circle cx="425" cy="463" r="8" fill="#f4eadb" stroke="#9f3f28" stroke-width="2"/>
+    <text x="425" y="531" text-anchor="middle" font-size="25" font-weight="700">task</text>
+
+    <rect x="180" y="574" width="210" height="92" rx="8" fill="#f4eadb" stroke="#766f66" stroke-width="2"/>
+    <text x="285" y="612" text-anchor="middle" font-size="21">local success</text>
+    <text x="285" y="639" text-anchor="middle" font-size="21">criteria</text>
+
+    <rect x="460" y="574" width="210" height="92" rx="8" fill="#f4eadb" stroke="#9f3f28" stroke-width="2.5"/>
+    <text x="565" y="628" text-anchor="middle" font-size="23" font-weight="700">visible result</text>
+  </g>
+  <text x="565" y="699" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#766f66">appears sufficient by local criteria</text>
+
+  <!-- Solid links are recoverable. Dotted links stop openly where the available view ends. -->
+  <g fill="none" stroke-linecap="round">
+    <line x1="1144" y1="435" x2="1055" y2="407" stroke="#766f66" stroke-width="2.5"/>
+    <line x1="1208" y1="474" x2="1310" y2="562" stroke="#766f66" stroke-width="2.5"/>
+    <path d="M 1163 486 C 1154 498, 1145 508, 1135 519" stroke="#bd6a50" stroke-width="2.5"/>
+    <path d="M 1125 530 C 1115 541, 1105 551, 1094 560" stroke="#bd6a50" stroke-width="2.5"/>
+    <path d="M 1083 569 C 1071 579, 1059 587, 1047 594" stroke="#bd6a50" stroke-width="2.5"/>
+    <circle cx="1029" cy="601" r="8" fill="#f4eadb" stroke="#bd6a50" stroke-width="2.5"/>
+  </g>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#1d1915">
+    <rect x="900" y="332" width="220" height="76" rx="8" fill="#f4eadb" stroke="#766f66" stroke-width="2"/>
+    <text x="1010" y="378" text-anchor="middle" font-size="22">broader objective</text>
+
+    <circle cx="1175" cy="463" r="42" fill="#f4eadb" stroke="#9f3f28" stroke-width="3"/>
+    <circle cx="1175" cy="463" r="8" fill="#f4eadb" stroke="#9f3f28" stroke-width="2"/>
+    <text x="1175" y="531" text-anchor="middle" font-size="25" font-weight="700">task</text>
+
+    <rect x="1270" y="562" width="190" height="82" rx="8" fill="#f4eadb" stroke="#766f66" stroke-width="2"/>
+    <text x="1365" y="595" text-anchor="middle" font-size="20">other work</text>
+    <text x="1365" y="621" text-anchor="middle" font-size="20">piece</text>
+
+    <rect x="900" y="620" width="190" height="82" rx="8" fill="#f4eadb" stroke="#766f66" stroke-width="2"/>
+    <text x="995" y="653" text-anchor="middle" font-size="20">other work</text>
+    <text x="995" y="679" text-anchor="middle" font-size="20">piece</text>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="18">
+    <text x="1083" y="427" fill="#766f66">recoverable</text>
+    <text x="1263" y="510" fill="#766f66">recoverable</text>
+    <text x="1110" y="587" fill="#bd6a50">relationship uncertain or</text>
+    <text x="1110" y="610" fill="#bd6a50">difficult to recover</text>
+  </g>
+
+  <line x1="100" y1="850" x2="1500" y2="850" stroke="#c9b9a4" stroke-width="2"/>
+  <text x="800" y="911" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="27" fill="#1d1915">Local evidence can be sufficient for action without being sufficient to judge composition.</text>
+</svg>

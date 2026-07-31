@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="1000" fill="#F4E9DB"/>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#201B18">
+    <text x="104" y="70" font-size="18" letter-spacing="2.4" fill="#746B64">CONTINUITY THROUGH REVISION</text>
+    <text x="104" y="130" font-size="50" font-weight="700">Revision Without Erasure</text>
+    <line x1="104" y1="164" x2="1496" y2="164" stroke="#A63D26" stroke-width="2"/>
+
+    <text x="410" y="207" font-size="19" text-anchor="middle" fill="#746B64">Earlier understanding</text>
+    <text x="804" y="207" font-size="19" text-anchor="middle" fill="#A63D26">Revision record</text>
+    <text x="1208" y="207" font-size="19" text-anchor="middle" fill="#746B64">Later understanding</text>
+    <text x="1496" y="235" font-size="15" text-anchor="end" font-style="italic" fill="#746B64">Possible revisions; not necessarily concurrent</text>
+
+    <!-- Objective: one independent possible revision. -->
+    <g>
+      <text x="104" y="279" font-size="26" font-weight="700">Objective</text>
+      <line x1="104" y1="292" x2="255" y2="292" stroke="#A63D26" stroke-width="1.5"/>
+
+      <path d="M310 260 H488 M310 260 V350 M310 350 H488" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+      <circle cx="410" cy="305" r="15" fill="#F4E9DB" stroke="#8E2E20" stroke-width="2.5"/>
+      <text x="410" y="339" font-size="17" text-anchor="middle" fill="#514943">objective as understood</text>
+
+      <line x1="425" y1="305" x2="662" y2="305" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M646 296 L662 305 L646 314" fill="none" stroke="#80766F" stroke-width="1.5"/>
+
+      <path d="M664 270 H944 M664 270 V340 M664 340 H944" fill="none" stroke="#BD6C57" stroke-width="1.5"/>
+      <circle cx="738" cy="305" r="12" fill="#F4E9DB" stroke="#A63D26" stroke-width="2"/>
+      <line x1="750" y1="305" x2="836" y2="305" stroke="#A63D26" stroke-width="1.5"/>
+      <circle cx="848" cy="305" r="12" fill="#F4E9DB" stroke="#A63D26" stroke-width="2"/>
+      <text x="738" y="335" font-size="16" text-anchor="middle">What changed</text>
+      <text x="848" y="335" font-size="16" text-anchor="middle">Why</text>
+
+      <line x1="860" y1="305" x2="1110" y2="305" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M1094 296 L1110 305 L1094 314" fill="none" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M1112 260 H1368 M1112 260 V350 M1112 350 H1368" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+      <circle cx="1208" cy="305" r="15" fill="#F4E9DB" stroke="#8E2E20" stroke-width="2.5"/>
+      <text x="1208" y="339" font-size="18" text-anchor="middle">may be revised</text>
+      <line x1="1223" y1="305" x2="1390" y2="305" stroke="#A89F97" stroke-width="1.5" stroke-dasharray="5 8"/>
+      <path d="M1380 297 L1394 305 L1380 313" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+
+      <path d="M1208 358 C1208 398 410 398 410 358" fill="none" stroke="#8E857E" stroke-width="1.35"/>
+      <path d="M402 371 L410 357 L418 371" fill="#F4E9DB" stroke="#8E857E" stroke-width="1.35"/>
+      <rect x="671" y="374" width="276" height="25" fill="#F4E9DB"/>
+      <text x="809" y="391" font-size="16" text-anchor="middle" font-style="italic" fill="#625A54">Earlier state remains recoverable</text>
+    </g>
+
+    <!-- Decision: the dashed segment is an example of an unresolved relationship. -->
+    <g>
+      <text x="104" y="484" font-size="26" font-weight="700">Decision</text>
+      <line x1="104" y1="497" x2="255" y2="497" stroke="#A63D26" stroke-width="1.5"/>
+
+      <path d="M310 465 H488 M310 465 V555 M310 555 H488" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+      <circle cx="410" cy="510" r="15" fill="#F4E9DB" stroke="#8E2E20" stroke-width="2.5"/>
+      <text x="410" y="544" font-size="17" text-anchor="middle" fill="#514943">decision as understood</text>
+
+      <line x1="425" y1="510" x2="662" y2="510" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M646 501 L662 510 L646 519" fill="none" stroke="#80766F" stroke-width="1.5"/>
+
+      <path d="M664 475 H944 M664 475 V545 M664 545 H944" fill="none" stroke="#BD6C57" stroke-width="1.5"/>
+      <circle cx="738" cy="510" r="12" fill="#F4E9DB" stroke="#A63D26" stroke-width="2"/>
+      <line x1="750" y1="510" x2="836" y2="510" stroke="#A63D26" stroke-width="1.5" stroke-dasharray="5 6"/>
+      <circle cx="848" cy="510" r="12" fill="#F4E9DB" stroke="#A63D26" stroke-width="2"/>
+      <text x="738" y="540" font-size="16" text-anchor="middle">What changed</text>
+      <text x="848" y="540" font-size="16" text-anchor="middle">Why</text>
+
+      <line x1="860" y1="510" x2="1110" y2="510" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M1094 501 L1110 510 L1094 519" fill="none" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M1112 465 H1368 M1112 465 V555 M1112 555 H1368" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+      <circle cx="1208" cy="510" r="15" fill="#F4E9DB" stroke="#8E2E20" stroke-width="2.5"/>
+      <text x="1208" y="544" font-size="18" text-anchor="middle">may be overturned</text>
+      <line x1="1223" y1="510" x2="1390" y2="510" stroke="#A89F97" stroke-width="1.5" stroke-dasharray="5 8"/>
+      <path d="M1380 502 L1394 510 L1380 518" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+
+      <path d="M1208 563 C1208 603 410 603 410 563" fill="none" stroke="#8E857E" stroke-width="1.35"/>
+      <path d="M402 576 L410 562 L418 576" fill="#F4E9DB" stroke="#8E857E" stroke-width="1.35"/>
+      <rect x="671" y="579" width="276" height="25" fill="#F4E9DB"/>
+      <text x="809" y="596" font-size="16" text-anchor="middle" font-style="italic" fill="#625A54">Earlier state remains recoverable</text>
+    </g>
+
+    <!-- Work contribution: another independent possible revision. -->
+    <g>
+      <text x="104" y="689" font-size="24" font-weight="700">Work contribution</text>
+      <line x1="104" y1="702" x2="255" y2="702" stroke="#A63D26" stroke-width="1.5"/>
+
+      <path d="M310 670 H488 M310 670 V760 M310 760 H488" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+      <circle cx="410" cy="715" r="15" fill="#F4E9DB" stroke="#8E2E20" stroke-width="2.5"/>
+      <text x="410" y="749" font-size="17" text-anchor="middle" fill="#514943">contribution as understood</text>
+
+      <line x1="425" y1="715" x2="662" y2="715" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M646 706 L662 715 L646 724" fill="none" stroke="#80766F" stroke-width="1.5"/>
+
+      <path d="M664 680 H944 M664 680 V750 M664 750 H944" fill="none" stroke="#BD6C57" stroke-width="1.5"/>
+      <circle cx="738" cy="715" r="12" fill="#F4E9DB" stroke="#A63D26" stroke-width="2"/>
+      <line x1="750" y1="715" x2="836" y2="715" stroke="#A63D26" stroke-width="1.5"/>
+      <circle cx="848" cy="715" r="12" fill="#F4E9DB" stroke="#A63D26" stroke-width="2"/>
+      <text x="738" y="745" font-size="16" text-anchor="middle">What changed</text>
+      <text x="848" y="745" font-size="16" text-anchor="middle">Why</text>
+
+      <line x1="860" y1="715" x2="1110" y2="715" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M1094 706 L1110 715 L1094 724" fill="none" stroke="#80766F" stroke-width="1.5"/>
+      <path d="M1112 670 H1368 M1112 670 V760 M1112 760 H1368" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+      <circle cx="1208" cy="715" r="15" fill="#F4E9DB" stroke="#8E2E20" stroke-width="2.5"/>
+      <text x="1208" y="749" font-size="18" text-anchor="middle">may no longer contribute</text>
+      <line x1="1223" y1="715" x2="1390" y2="715" stroke="#A89F97" stroke-width="1.5" stroke-dasharray="5 8"/>
+      <path d="M1380 707 L1394 715 L1380 723" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+
+      <path d="M1208 768 C1208 808 410 808 410 768" fill="none" stroke="#8E857E" stroke-width="1.35"/>
+      <path d="M402 781 L410 767 L418 781" fill="#F4E9DB" stroke="#8E857E" stroke-width="1.35"/>
+      <rect x="671" y="784" width="276" height="25" fill="#F4E9DB"/>
+      <text x="809" y="801" font-size="16" text-anchor="middle" font-style="italic" fill="#625A54">Earlier state remains recoverable</text>
+    </g>
+
+    <g>
+      <line x1="104" y1="870" x2="134" y2="870" stroke="#A63D26" stroke-width="1.5" stroke-dasharray="5 6"/>
+      <text x="148" y="876" font-size="16" fill="#625A54">uncertain, disputed, or missing relationship</text>
+
+      <line x1="1168" y1="870" x2="1390" y2="870" stroke="#A89F97" stroke-width="1.5" stroke-dasharray="5 8"/>
+      <path d="M1380 862 L1394 870 L1380 878" fill="none" stroke="#A89F97" stroke-width="1.5"/>
+      <text x="1496" y="846" font-size="16" text-anchor="end" fill="#625A54">Further revision remains possible</text>
+    </g>
+  </g>
+</svg>

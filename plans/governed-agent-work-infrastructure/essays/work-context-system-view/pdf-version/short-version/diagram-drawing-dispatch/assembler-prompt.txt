@@ -1,0 +1,27 @@
+Objective
+
+Assemble five reviewed standalone SVG diagrams into one polished five-page PDF. Do not redesign the diagrams except for a mechanical correction required for successful rendering.
+
+Input order
+
+1. `final/transformation.svg`
+2. `final/divergence.svg`
+3. `final/topology.svg`
+4. `final/continuity.svg`
+5. `final/traceability.svg`
+
+All paths are relative to:
+`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/`
+
+Output
+
+Write exactly the final PDF:
+`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-diagram-concepts.pdf`
+plus these five verification renders and no other files:
+`diagram-drawing-dispatch/pdf-renders/page-01.png` through `page-05.png`.
+
+Use PyMuPDF to convert each `1600 x 1000` SVG into a vector PDF page and join the pages in the declared order. Preserve the SVG aspect ratio and page dimensions. Set PDF metadata title to `Work Context System View - Diagram Concepts`.
+
+After assembly, reopen the PDF, require exactly five pages, render every page at matrix 1.0 to the declared PNG paths, and inspect all five images with `view_image`. Fail rather than silently omitting a page. Do not spawn another agent or use network access.
+
+Return the PDF path, page count, source SVG order, and any mechanical correction made.

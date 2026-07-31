@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Relationships Without a Fixed Hierarchy</title>
+  <desc id="desc">A representative, non-tiered network of eight open nodes joined by directed and labeled relationships. One contribution is uncertain or disputed, and a separate open gap marks a known missing relationship.</desc>
+
+  <rect width="1600" height="1000" fill="#f4eadb"/>
+
+  <g id="heading">
+    <line x1="112" y1="78" x2="174" y2="78" stroke="#9f3f28" stroke-width="7" stroke-linecap="round"/>
+    <text x="112" y="145" font-family="Georgia, 'Times New Roman', serif" font-size="48" font-weight="700" fill="#1d1915">Relationships Without a Fixed Hierarchy</text>
+    <line x1="112" y1="190" x2="1488" y2="190" stroke="#c9b9a4" stroke-width="1.4"/>
+  </g>
+
+  <g id="relationships">
+    <path d="M 741 465 C 628 366, 469 311, 290 306" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="307,297 290,306 307,315" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="450" y="344" width="151" height="31" fill="#f4eadb"/>
+    <text x="459" y="367" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#766f66">contributes to</text>
+
+    <path d="M 781 465 C 898 364, 1064 323, 1259 329" fill="none" stroke="#9f3f28" stroke-width="2" stroke-dasharray="9 9" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="1242,320 1259,329 1242,338" fill="none" stroke="#9f3f28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="917" y="343" width="151" height="31" fill="#f4eadb"/>
+    <text x="926" y="366" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#9f3f28">contributes to</text>
+    <rect x="930" y="376" width="180" height="25" fill="#f4eadb"/>
+    <text x="938" y="394" font-family="Arial, sans-serif" font-size="17" fill="#9f3f28">uncertain or disputed</text>
+
+    <path d="M 782 489 C 918 492, 1060 526, 1239 571" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="1223,558 1239,571 1219,576" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="956" y="494" width="116" height="31" fill="#f4eadb"/>
+    <text x="964" y="517" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#766f66">depends on</text>
+
+    <path d="M 448 640 C 550 588, 643 531, 740 480" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="723,471 740,480 723,489" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="487" y="566" width="240" height="31" fill="#f4eadb"/>
+    <text x="496" y="589" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#766f66">shapes / gives meaning to</text>
+
+    <path d="M 370 802 C 468 711, 585 607, 746 496" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="726,496 746,496 738,513" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="455" y="696" width="157" height="31" fill="#f4eadb"/>
+    <text x="464" y="719" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#766f66">gives meaning to</text>
+
+    <path d="M 198 511 C 272 551, 338 597, 412 642" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="398,628 412,642 393,644" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="256" y="558" width="119" height="31" fill="#f4eadb"/>
+    <text x="264" y="581" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#766f66">evidence for</text>
+
+    <path d="M 775 499 C 832 606, 900 704, 958 782" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="941,772 958,782 954,763" fill="none" stroke="#1d1915" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="835" y="643" width="115" height="31" fill="#f4eadb"/>
+    <text x="843" y="666" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#766f66">accumulates</text>
+  </g>
+
+  <g id="nodes" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="700" fill="#1d1915">
+    <g transform="translate(271 305)">
+      <circle r="17" fill="#f4eadb" stroke="#1d1915" stroke-width="2.2"/>
+      <text x="0" y="-34" text-anchor="middle">Objective A</text>
+    </g>
+    <g transform="translate(1278 330)">
+      <circle r="17" fill="#f4eadb" stroke="#1d1915" stroke-width="2.2"/>
+      <text x="0" y="-34" text-anchor="middle">Objective B</text>
+    </g>
+    <g transform="translate(761 480)">
+      <circle r="21" fill="#f4eadb" stroke="#9f3f28" stroke-width="2.8"/>
+      <text x="0" y="-42" text-anchor="middle" fill="#9f3f28">Task X</text>
+    </g>
+    <g transform="translate(1258 576)">
+      <circle r="17" fill="#f4eadb" stroke="#1d1915" stroke-width="2.2"/>
+      <text x="34" y="8">Task Y</text>
+    </g>
+    <g transform="translate(430 651)">
+      <circle r="17" fill="#f4eadb" stroke="#1d1915" stroke-width="2.2"/>
+      <text x="-33" y="8" text-anchor="end">Decision</text>
+    </g>
+    <g transform="translate(354 817)">
+      <circle r="17" fill="#f4eadb" stroke="#1d1915" stroke-width="2.2"/>
+      <text x="-33" y="8" text-anchor="end">Condition</text>
+    </g>
+    <g transform="translate(181 502)">
+      <circle r="17" fill="#f4eadb" stroke="#1d1915" stroke-width="2.2"/>
+      <text x="0" y="-34" text-anchor="middle">Evidence</text>
+    </g>
+    <g transform="translate(970 798)">
+      <circle r="17" fill="#f4eadb" stroke="#1d1915" stroke-width="2.2"/>
+      <text x="34" y="8">Artifact</text>
+    </g>
+  </g>
+
+  <g id="known-gap" transform="translate(1328 798)">
+    <line x1="-80" y1="0" x2="-26" y2="0" stroke="#9f3f28" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="-18" cy="0" r="7" fill="#f4eadb" stroke="#9f3f28" stroke-width="2"/>
+    <circle cx="18" cy="0" r="7" fill="#f4eadb" stroke="#9f3f28" stroke-width="2"/>
+    <line x1="26" y1="0" x2="80" y2="0" stroke="#9f3f28" stroke-width="2" stroke-linecap="round"/>
+    <text x="0" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#9f3f28">known relationship missing</text>
+  </g>
+
+  <g id="notes">
+    <line x1="112" y1="898" x2="1488" y2="898" stroke="#c9b9a4" stroke-width="1.4"/>
+    <text x="112" y="938" font-family="Arial, sans-serif" font-size="18" fill="#766f66">Each recorded relation can be inspected from either endpoint.</text>
+    <text x="1488" y="938" text-anchor="end" font-family="Arial, sans-serif" font-size="18" fill="#766f66">Representative, not complete.</text>
+  </g>
+</svg>

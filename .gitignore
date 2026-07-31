@@ -40,6 +40,14 @@ node_modules/
 # review. Same rule as /tmp/: re-render them from the tracked HTML and PDF.
 /plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/**/*.png
 
+# Verification-render directories inside dispatch folders under plans/**
+# (draft/final crops, PDF page rasters, audit renders). Reproducible from the
+# tracked SVGs and already hash-attested in the journal; scoped to dispatch
+# folders only, not a blanket plans/-wide PNG rule.
+plans/**/*-dispatch/validation/
+plans/**/*-dispatch/pdf-renders/
+plans/**/*-dispatch/audit-renders/
+
 # Runtime SQLite databases — regenerable runtime state, not source.
 /telemetry/runtime/
 

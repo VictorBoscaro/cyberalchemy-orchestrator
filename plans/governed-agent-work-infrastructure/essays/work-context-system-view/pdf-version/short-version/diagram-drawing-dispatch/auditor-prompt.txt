@@ -1,0 +1,13 @@
+Objective
+
+Audit the assembled diagram PDF and its five source SVGs. Write only five independent audit renders at `diagram-drawing-dispatch/audit-renders/page-01.png` through `page-05.png`.
+
+Inspect:
+- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-diagram-concepts.pdf`
+- every SVG under `diagram-drawing-dispatch/final/`
+- every PNG under `diagram-drawing-dispatch/pdf-renders/`
+- the five finalized recommendations under `diagram-proposal-dispatch/outputs/*-reviewer.md`
+
+Open the PDF independently with PyMuPDF. Verify parseability, exactly five pages in this order (transformation, divergence, topology, continuity, traceability), identical `1600 x 1000` page dimensions, and metadata title `Work Context System View - Diagram Concepts`. Render every page freshly at matrix 1.0 to the declared audit-render path. Compare each audit render with the corresponding bound assembler-produced PNG by dimensions and pixel hash; a mismatch is a defect. Inspect the fresh audit renders with `view_image`. Check nonblank rendering, clipping, overlaps, text legibility, semantic fidelity, uncertainty qualifiers, visual consistency, page order, and absence of external SVG references or scripts.
+
+Return `PASS` only if no material defect remains. Otherwise return `REVISE` with page, defect, evidence, and exact correction. Do not spawn another agent or use network access.

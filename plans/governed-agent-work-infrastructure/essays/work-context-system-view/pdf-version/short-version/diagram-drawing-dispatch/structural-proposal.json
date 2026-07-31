@@ -1,0 +1,25 @@
+{
+  "projection_schema_version": "structural-graph-proposal/v1",
+  "revision": 1,
+  "confirmation_mode": "final_only",
+  "objective": "Create five reviewed vector diagrams from the accepted recommendations and assemble them into one verified five-page PDF.",
+  "dispatch_type": "others",
+  "work_kind": "vector diagram and PDF authoring",
+  "boundaries": {
+    "source_pdf_mutation": false,
+    "external_research": false,
+    "network": false,
+    "final_artifact": "A standalone five-page diagram PDF"
+  },
+  "topology": {
+    "lanes": 5,
+    "groups": 12,
+    "seats": 12,
+    "pattern": "Five independent designer -> reviewer lanes; all reviewers -> assembler -> auditor.",
+    "robot_talks": false,
+    "max_loops": 1,
+    "final_approver": "parent",
+    "capacity_note": "The host permits three concurrent subagents, so READY groups are capacity-batched."
+  },
+  "output": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-diagram-concepts.pdf"
+}
