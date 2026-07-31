@@ -15,6 +15,10 @@ node_modules/
 # hosts. Generated locally (copy or symlink); .claude/ stays the only source.
 /.agents/
 
+# Locally scaffolded web mounts. Each entry under sites/ is its own git
+# repository with its own history and remote; this repo does not vendor them.
+/sites/
+
 # Append-only dispatch ledger — managed locally via the official appender
 # (register-dispatch / append-dispatch.cjs), not through ordinary git edits.
 /telemetry/agents/subagents-dispatch.yaml
