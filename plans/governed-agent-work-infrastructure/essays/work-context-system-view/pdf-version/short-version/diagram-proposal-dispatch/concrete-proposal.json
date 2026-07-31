@@ -1,0 +1,261 @@
+{
+  "projection_schema_version": "concrete-dispatch-proposal/v1",
+  "revision": 2,
+  "structural_revision": 1,
+  "structural_digest": "sha256:72612227d3082be9e8f1aa921d092e6d794342f80e3596811fa5b99a81049023",
+  "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+  "dispatch_type": "others",
+  "work_kind": "document diagram proposal",
+  "goal": "Produce five independently developed and reviewed proposals, each recommending exactly one diagram and selecting the essay section where it should be added.",
+  "confirmation_mode": "final_only",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "prompt_template": {
+    "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/prompt-template.txt",
+    "sha256": "e166d4db4e722578a0237b3922f0cbfe7d1c7d825d7e70004f128cf885964fc9",
+    "size_bytes": 6403,
+    "bytes_identical_for_all_seats": true
+  },
+  "source_bindings": [
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf",
+      "sha256": "8a8e87f53e4535e8ec49e779c037f5763a3584dfa4c2bd7a0abb1096b64b6593",
+      "size_bytes": 260080
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png",
+      "sha256": "db33d99604bafca680d59d37f407e1e7b59f89ef14b1877f09baefeaf7a8f5ab",
+      "size_bytes": 198795,
+      "derived_from": "the frozen PDF, page 1"
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png",
+      "sha256": "d8b8b1357fe9b23cf1d7c8e3ff656b4c68055efcc243587146d4b094bb03ac7e",
+      "size_bytes": 169373,
+      "derived_from": "the frozen PDF, page 2"
+    },
+    {
+      "path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png",
+      "sha256": "dfe8767ae7d3d54b97cacad8ba8f4c3a3d8457fd1982cd055aef268dd6baad8c",
+      "size_bytes": 159501,
+      "derived_from": "the frozen PDF, page 3"
+    }
+  ],
+  "governing_bindings": [
+    {"path": ".agents/skills/domainspec-subagents-strategy/SKILL.md", "sha256": "bd60579a8844d5ad6e09ead79c51ba0c933ee944ceaf0944efa88acb7c7796d6"},
+    {"path": ".agents/skills/check-tension/SKILL.md", "sha256": "70628402068c54e8395d0ca07797b54421ce50004a582145d97fe459e99d9428"},
+    {"path": ".agents/skills/anti-bias-vector-composition/SKILL.md", "sha256": "8fb6fbcef34c15f8eac273bc4ae14a4f0101978e6150433ed66f607c2fddf6bc"},
+    {"path": "telemetry/agents/agent-pool.yaml", "sha256": "5c7b9745a336670ecb55df1276912166954a0d7960443f0df787405564099eba"}
+  ],
+  "output_contract": {
+    "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs",
+    "worker_artifact_pattern": "<lane>-worker.md",
+    "reviewer_artifact_pattern": "<lane>-reviewer.md",
+    "final_result": "Five reviewer-finalized proposals returned to the user; no PDF mutation and no diagram generation."
+  },
+  "capability_profile": {
+    "proposed": {
+      "read": [
+        "the frozen PDF and its three frozen page renders",
+        "the shared prompt",
+        "for reviewers only, the exact worker output for the same lane"
+      ],
+      "write": "none for agents; the parent materializes exact inline returns into the confirmed output folder",
+      "network": "denied",
+      "agent_spawn": "denied",
+      "shell": "read-only text extraction and hashing commands only; rendering is not required because page renders are pre-bound",
+      "image_view": "allowed for the three pre-rendered PDF pages"
+    },
+    "effective_enforcement": "non_observable",
+    "enforcement_note": "The ACI bridge observes and digest-binds repository inputs and outputs, but it does not prove the provider-side tool sandbox or hidden system inputs. Agents are constrained by the frozen prompt and host tool availability."
+  },
+  "runtime": {
+    "requested_provider": "openai",
+    "requested_model": "gpt-5.6-sol",
+    "requested_adapter": "codex-collaboration",
+    "host": "codex",
+    "capacity": 3,
+    "scheduling": "capacity-bounded batching of READY groups; lanes remain independent"
+  },
+  "check_tension_scope": "All groups are singleton groups. P5 does not apply; sequential review challenges below are workflow design and are not claimed as formally validated pairwise tension.",
+  "lanes": [
+    {
+      "lane": "transformation",
+      "review_method": "generative structure-mapping followed by adversarial levels-of-explanation review",
+      "expected_review_challenge": "Gentner will favor a legible whole-essay transformation sequence; Marr will reject any sequence that makes emergence look linear, irreversible, or mechanically determined.",
+      "worker": {
+        "group_id": "transformation-worker",
+        "seat_id": "transformation-worker-0",
+        "canonical_task_name": "transformation_worker",
+        "agent_name": "Gentner, Dedre",
+        "role": "writer",
+        "angle": "structure-mapping methodology: compress the essay's transformations into one relational sequence",
+        "token_budget": 1200
+      },
+      "reviewer": {
+        "group_id": "transformation-reviewer",
+        "seat_id": "transformation-reviewer-0",
+        "canonical_task_name": "transformation_reviewer",
+        "agent_name": "Marr, David",
+        "role": "auditor",
+        "angle": "adversarial levels-of-explanation methodology: test whether the sequence preserves the essay's non-mechanical qualifications",
+        "token_budget": 1200
+      }
+    },
+    {
+      "lane": "topology",
+      "review_method": "formal network modeling followed by adversarial semantic review",
+      "expected_review_challenge": "Fong will favor a many-to-many network that exposes composition; Kripke will reject nodes or edge meanings that the prose does not define or that imply a fixed ontology.",
+      "worker": {
+        "group_id": "topology-worker",
+        "seat_id": "topology-worker-0",
+        "canonical_task_name": "topology_worker",
+        "agent_name": "Fong, Brendan",
+        "role": "writer",
+        "angle": "formal network methodology: model recoverable relationships without forcing a hierarchy",
+        "token_budget": 1200
+      },
+      "reviewer": {
+        "group_id": "topology-reviewer",
+        "seat_id": "topology-reviewer-0",
+        "canonical_task_name": "topology_reviewer",
+        "agent_name": "Kripke, Saul",
+        "role": "auditor",
+        "angle": "adversarial semantic methodology: test whether every visual entity and relation is textually warranted",
+        "token_budget": 1200
+      }
+    },
+    {
+      "lane": "divergence",
+      "review_method": "cognitive compression followed by adversarial bounded-rationality review",
+      "expected_review_challenge": "Miller will foreground the cognitively useful contrast between local success and global failure; Gigerenzer will reject an over-clean binary that hides partial knowledge and uncertain context.",
+      "worker": {
+        "group_id": "divergence-worker",
+        "seat_id": "divergence-worker-0",
+        "canonical_task_name": "divergence_worker",
+        "agent_name": "Miller, George",
+        "role": "writer",
+        "angle": "cognitive compression methodology: make the local-coherence/global-divergence risk immediately inspectable",
+        "token_budget": 1200
+      },
+      "reviewer": {
+        "group_id": "divergence-reviewer",
+        "seat_id": "divergence-reviewer-0",
+        "canonical_task_name": "divergence_reviewer",
+        "agent_name": "Gigerenzer, Gerd",
+        "role": "auditor",
+        "angle": "adversarial bounded-rationality methodology: test whether the contrast suppresses ambiguity or implies omniscient global judgment",
+        "token_budget": 1200
+      }
+    },
+    {
+      "lane": "continuity",
+      "review_method": "reconstructive-history modeling followed by adversarial wicked-problem review",
+      "expected_review_challenge": "Schacter will favor a visible before/change/after continuity model; Rittel will reject any diagram that presents revision as a closed or cleanly resolved history.",
+      "worker": {
+        "group_id": "continuity-worker",
+        "seat_id": "continuity-worker-0",
+        "canonical_task_name": "continuity_worker",
+        "agent_name": "Schacter, Daniel",
+        "role": "writer",
+        "angle": "reconstructive-history methodology: show earlier state, revision, reason, and current state as recoverable continuity",
+        "token_budget": 1200
+      },
+      "reviewer": {
+        "group_id": "continuity-reviewer",
+        "seat_id": "continuity-reviewer-0",
+        "canonical_task_name": "continuity_reviewer",
+        "agent_name": "Rittel, Horst",
+        "role": "auditor",
+        "angle": "adversarial wicked-problem methodology: test whether change is falsely shown as complete, settled, or unambiguous",
+        "token_budget": 1200
+      }
+    },
+    {
+      "lane": "traceability",
+      "review_method": "system-dynamics modeling followed by adversarial scope review",
+      "expected_review_challenge": "Forrester will favor operational paths from ordinary questions through relationships to evidence; Meadows will reject a map that expands the essay into an over-specified product architecture.",
+      "worker": {
+        "group_id": "traceability-worker",
+        "seat_id": "traceability-worker-0",
+        "canonical_task_name": "traceability_worker",
+        "agent_name": "Forrester, Jay",
+        "role": "writer",
+        "angle": "system-dynamics methodology: expose traversable paths between objective, work, decisions, conditions, and evidence",
+        "token_budget": 1200
+      },
+      "reviewer": {
+        "group_id": "traceability-reviewer",
+        "seat_id": "traceability-reviewer-0",
+        "canonical_task_name": "traceability_reviewer",
+        "agent_name": "Meadows, Donella H.",
+        "role": "auditor",
+        "angle": "adversarial scope methodology: test whether the proposal remains an essay explanation rather than an invented system specification",
+        "token_budget": 1200
+      }
+    }
+  ],
+  "connections": [
+    {"from": "transformation-worker", "to": "transformation-reviewer", "type": "sequential", "rounds": 1},
+    {"from": "topology-worker", "to": "topology-reviewer", "type": "sequential", "rounds": 1},
+    {"from": "divergence-worker", "to": "divergence-reviewer", "type": "sequential", "rounds": 1},
+    {"from": "continuity-worker", "to": "continuity-reviewer", "type": "sequential", "rounds": 1},
+    {"from": "traceability-worker", "to": "traceability-reviewer", "type": "sequential", "rounds": 1}
+  ],
+  "reviewer_input_manifest_contracts": [
+    {
+      "lane": "transformation",
+      "authorized_worker": {"group_id": "transformation-worker", "seat_id": "transformation-worker-0", "turn_ordinal": 0},
+      "worker_response_schema": "diagram-proposal-markdown/v1",
+      "source_schema": "text/markdown",
+      "artifact_path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/transformation-worker.md",
+      "slot": {"name": "worker-proposal", "cardinality": {"min": 1, "max": 1}, "max_bytes": 20000, "purpose": "Supply the exact parent-materialized terminal worker proposal for same-lane review."},
+      "source_kind": "repository",
+      "producer_binding_id": null
+    },
+    {
+      "lane": "topology",
+      "authorized_worker": {"group_id": "topology-worker", "seat_id": "topology-worker-0", "turn_ordinal": 0},
+      "worker_response_schema": "diagram-proposal-markdown/v1",
+      "source_schema": "text/markdown",
+      "artifact_path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/topology-worker.md",
+      "slot": {"name": "worker-proposal", "cardinality": {"min": 1, "max": 1}, "max_bytes": 20000, "purpose": "Supply the exact parent-materialized terminal worker proposal for same-lane review."},
+      "source_kind": "repository",
+      "producer_binding_id": null
+    },
+    {
+      "lane": "divergence",
+      "authorized_worker": {"group_id": "divergence-worker", "seat_id": "divergence-worker-0", "turn_ordinal": 0},
+      "worker_response_schema": "diagram-proposal-markdown/v1",
+      "source_schema": "text/markdown",
+      "artifact_path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/divergence-worker.md",
+      "slot": {"name": "worker-proposal", "cardinality": {"min": 1, "max": 1}, "max_bytes": 20000, "purpose": "Supply the exact parent-materialized terminal worker proposal for same-lane review."},
+      "source_kind": "repository",
+      "producer_binding_id": null
+    },
+    {
+      "lane": "continuity",
+      "authorized_worker": {"group_id": "continuity-worker", "seat_id": "continuity-worker-0", "turn_ordinal": 0},
+      "worker_response_schema": "diagram-proposal-markdown/v1",
+      "source_schema": "text/markdown",
+      "artifact_path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/continuity-worker.md",
+      "slot": {"name": "worker-proposal", "cardinality": {"min": 1, "max": 1}, "max_bytes": 20000, "purpose": "Supply the exact parent-materialized terminal worker proposal for same-lane review."},
+      "source_kind": "repository",
+      "producer_binding_id": null
+    },
+    {
+      "lane": "traceability",
+      "authorized_worker": {"group_id": "traceability-worker", "seat_id": "traceability-worker-0", "turn_ordinal": 0},
+      "worker_response_schema": "diagram-proposal-markdown/v1",
+      "source_schema": "text/markdown",
+      "artifact_path": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/traceability-worker.md",
+      "slot": {"name": "worker-proposal", "cardinality": {"min": 1, "max": 1}, "max_bytes": 20000, "purpose": "Supply the exact parent-materialized terminal worker proposal for same-lane review."},
+      "source_kind": "repository",
+      "producer_binding_id": null
+    }
+  ],
+  "handoff_lineage_limit": "The parent will materialize each exact worker return and verify its bytes against the observed return before reviewer launch. The current runtime cannot prove that a repository file was emitted by the named worker, so reviewer manifests classify it as a repository source and do not claim enforced producer attribution.",
+  "skills": [],
+  "command_classes": ["read-file", "hash-file", "extract-pdf-text", "view-image"],
+  "forbidden_effects": ["network access", "source PDF mutation", "diagram generation", "agent spawning", "writes by work seats"]
+}

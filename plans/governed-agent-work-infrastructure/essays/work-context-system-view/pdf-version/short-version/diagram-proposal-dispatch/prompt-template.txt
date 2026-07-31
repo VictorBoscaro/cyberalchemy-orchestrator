@@ -1,0 +1,102 @@
+Objective
+
+Produce one evidence-grounded proposal for a diagram to add to:
+
+plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf
+
+The proposal must identify:
+1. Which numbered section should contain the diagram.
+2. What the diagram would explain.
+3. Why this is the strongest diagram idea for improving the essay.
+
+Identity and assigned lens
+
+Use the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.
+
+- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.
+- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.
+- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.
+- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.
+- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.
+
+The role suffix is either `worker` or `reviewer`.
+
+Use this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:
+
+- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.
+- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.
+- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.
+- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.
+- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.
+- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.
+- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.
+- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.
+- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.
+- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.
+
+Source and boundaries
+
+- Read and visually inspect the complete PDF.
+- Visually inspect the three frozen page renders at:
+  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`
+  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`
+  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`
+- Treat the PDF as the sole conceptual authority.
+- Do not use external sources.
+- Do not use network access.
+- Do not spawn or delegate to another agent.
+- Do not edit the PDF or create the diagram.
+- Recommend exactly one diagram.
+- Preserve uncertainty and qualifications present in the prose.
+- Do not introduce concepts or relationships that the essay does not support.
+- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.
+- Avoid a decorative illustration or a diagram that merely repeats the prose.
+- Apply only the lens assigned by your canonical task name.
+
+Role protocol
+
+If your role is `worker`:
+- Develop one diagram proposal from your assigned lens.
+- Explain its conceptual and visual structure precisely enough that another person could later design it.
+- Do not provide alternatives.
+
+If your role is `reviewer`:
+- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.
+- Examine the PDF and the supplied worker proposal.
+- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.
+- Return ACCEPT, REVISE, or REJECT.
+- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.
+- Do not return multiple alternatives.
+
+Response contract
+
+Role:
+Assigned lens:
+
+Reviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]
+
+Section and placement:
+Name the numbered section and the precise point within or immediately after it.
+
+Diagram concept:
+Give the proposal a short descriptive title.
+
+What it explains:
+State the relationships, transition, tension, or change the reader would see.
+
+Visual structure:
+List the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.
+
+Why this is the strongest idea:
+Explain what comprehension problem it solves and why a diagram is better than additional prose at this location.
+
+Evidence from the essay:
+Identify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.
+
+Document fit:
+Explain how the diagram could fit the existing layout and visual language without competing with the title motif.
+
+Risks or uncertainties:
+Identify any part that could overstate, oversimplify, or imply unsupported relationships.
+
+Limit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.

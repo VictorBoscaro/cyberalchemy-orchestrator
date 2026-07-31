@@ -1,0 +1,39 @@
+{
+  "projection_schema_version": "structural-graph-proposal/v1",
+  "revision": 1,
+  "confirmation_mode": "final_only",
+  "objective": "Produce five independently developed and reviewed proposals, each recommending exactly one diagram and selecting the essay section where it should be added.",
+  "boundaries": {
+    "source": "One frozen repository-local PDF",
+    "external_research": false,
+    "pdf_mutation": false,
+    "diagram_creation": false,
+    "output": "Five reviewer-finalized diagram proposals"
+  },
+  "dispatch_type": "others",
+  "work_kind": "document diagram proposal",
+  "topology": {
+    "lanes": 5,
+    "groups": 10,
+    "seats": 10,
+    "pattern": "Each lane is worker -> reviewer; lanes have no dependencies on one another.",
+    "capacity_note": "The host permits three concurrent subagents, so READY groups are scheduled in capacity-bounded batches.",
+    "robot_talks": false,
+    "max_loops": 1,
+    "final_approver": "parent"
+  },
+  "lanes": [
+    {"lane": "transformation", "worker_group": "transformation-worker", "reviewer_group": "transformation-reviewer"},
+    {"lane": "topology", "worker_group": "topology-worker", "reviewer_group": "topology-reviewer"},
+    {"lane": "divergence", "worker_group": "divergence-worker", "reviewer_group": "divergence-reviewer"},
+    {"lane": "continuity", "worker_group": "continuity-worker", "reviewer_group": "continuity-reviewer"},
+    {"lane": "traceability", "worker_group": "traceability-worker", "reviewer_group": "traceability-reviewer"}
+  ],
+  "budget_envelope": {
+    "worker_tokens_each": 1200,
+    "reviewer_tokens_each": 1200,
+    "total_tokens": 12000,
+    "review_rounds_per_lane": 1
+  },
+  "artifact_destination": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/"
+}
