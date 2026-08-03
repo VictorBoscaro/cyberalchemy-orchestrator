@@ -1,0 +1,29 @@
+{
+  "schema": "cyberalchemy.as-built-source-drift/v1",
+  "observed_at_utc": "2026-07-31T18:53:16.5034672Z",
+  "original_manifest": {
+    "path": "implementations/as-built/source-manifest.json",
+    "sha256": "af35da963497918340ca7c74fa1a9e7a27d1a7027420e6edb517e55fd903cd11"
+  },
+  "current_manifest": {
+    "path": "implementations/as-built/source-manifest-current.json",
+    "sha256": "82447f792685d81a6a2481c9b70b42dba2bf27a1326066a145407629ab9c330b"
+  },
+  "changes": [
+    {
+      "path": "implementations/server/runtime/service.py",
+      "classification": "unattributed_source_change",
+      "before_sha256": "8b46efc168d1eb8a17ba8b44aa460feb6a89ddfd01a05f07c06067450aac9731",
+      "after_sha256": "4e1ad9379196ebc4315ea3b8b08f44e9b33cdb7309b22ae887ccbc6cea4d033d",
+      "diff_summary": "43 inserted lines expose host_workflow_turn_bindings and their bind receipts through the dispatch snapshot.",
+      "authorship": "unknown",
+      "investigation_treatment": "Current code is authoritative. Earlier findings remain valid unless this added read surface changes their verdict; affected pairs and synthesis must cite the drift."
+    },
+    {
+      "path": "telemetry/agents/subagents-dispatch.yaml",
+      "classification": "expected_dispatch_registration",
+      "before_sha256": "796474d2cd440bf3982ddc7a2a2f9f0a3f5e7cd54bec6927a31f9ccab17a5084",
+      "after_sha256": "25b9c0c68a7c584b9380838d010b04d0ddbdc96543c63a8285f7c3991d92368c"
+    }
+  ]
+}

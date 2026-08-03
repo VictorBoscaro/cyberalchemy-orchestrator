@@ -1,0 +1,44 @@
+{
+  "projection_schema_version": "cyberalchemy.structural-graph-proposal/v1",
+  "revision": "1",
+  "objective": "Produce a code-first AS-BUILT of the current agent-work harness, separating what exists, what is proven, what runs in real hosts, what is authorized, what is official, and what can be reconstructed.",
+  "boundary": "Read-only investigation of implementation and evidence; writes limited to implementations/as-built/** and implementations/AS-BUILT.md.",
+  "group_count": 8,
+  "seat_count": 15,
+  "topology": "seven sequential batches; each batch runs one worker and one reviewer concurrently with parent-mediated robot-talks; synthesizer runs after all seven validated packets",
+  "scheduler": {
+    "concurrency_limit": 4,
+    "parent_slots": 1,
+    "batch_order": [
+      "pair-01-system-of-record",
+      "pair-02-host-adoption",
+      "pair-03-authority",
+      "pair-04-memory-recovery",
+      "pair-05-handoff-integrity",
+      "pair-06-reconstruction",
+      "pair-07-human-control"
+    ],
+    "batch_shape": "worker + reviewer concurrently",
+    "pair_protocol": "both return independent positions; parent injects canonical peer task names and exchanges only contested claims; worker finalizes after reviewer disposition",
+    "packet_validation": "parent validates schema and hashes after every batch"
+  },
+  "robot_talks": {
+    "groups": [
+      "pair-01-system-of-record",
+      "pair-02-host-adoption",
+      "pair-03-authority",
+      "pair-04-memory-recovery",
+      "pair-05-handoff-integrity",
+      "pair-06-reconstruction",
+      "pair-07-human-control"
+    ],
+    "max_exchanges_per_pair": 3
+  },
+  "output_join": "synthesizer consumes only finalized pair packets and preserves unresolved dissent",
+  "confirmation_mode": "final_only-explicitly-authorized-by-user-message",
+  "budget_envelope": {
+    "pair_seats": 14,
+    "pair_tokens_each": 5000,
+    "synthesizer_tokens": 9000
+  }
+}

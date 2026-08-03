@@ -1,0 +1,16 @@
+{
+  "schema": "cyberalchemy.capability-review-receipt/v1",
+  "payload_ref": "implementations/as-built/dispatch-payload.json",
+  "payload_sha256": "4823f74b8c1ae0506a56587b6151c335033ee7ede2d8b84e3d4817c56621dd33",
+  "reviewer_task": "/root/document_design",
+  "status": "PASS",
+  "verified": [
+    "exact structural and schema bindings",
+    "minimal per-seat capability profiles",
+    "single-writer pair ownership",
+    "seven-batch schedule compatible with four slots",
+    "parent-mediated robot-talk protocol",
+    "complete and blocked synthesis contracts",
+    "no subagent live smoke, real-store corruption, browser mutation, or network access"
+  ]
+}

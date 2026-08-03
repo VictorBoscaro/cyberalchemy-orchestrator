@@ -1,0 +1,244 @@
+{
+  "question_id": "pair-01-system-of-record",
+  "scope": "Implementation composition roots, CLIs, readers, the governed runtime, Control Center, local pilot, experimental agent-runtime, and their readers and writers.",
+  "excluded_scope": "Fresh host smoke tests, network access, browser execution, product or documentation fixes, real-store mutation, provider portability, and claims about universal host adoption.",
+  "worker": "Parnas, David",
+  "reviewer": "Brooks, Frederick P.",
+  "finalizer": "Parnas, David",
+  "executive_answer": "The repository contains a federation rather than one runtime or one physical store. The reader process serves YAML and pending-sheet views plus a read-only Control Center; its runtime HTTP routes are present but closed. A separate governed runtime CLI remains directly reachable for trusted mutations, while loopback HTTP serving requires local-pilot preflight. Existing receipts and a changing live SQLite journal establish local operation, not production promotion. Authority is intentionally partitioned: the frozen corpus declares YAML authoritative for official dispatch opening and closing and declares the validated appender the intended sole physical writer, while the governed journal owns accepted runtime facts. The writer implementation itself is outside the frozen source manifest, so exclusivity is only partially proven. The independent agent-runtime package is implemented and tested but has no evidenced operational, authorized, or official cutover status.",
+  "property_served": "One intelligible system boundary and one source of record per fact class, without collapsing implementation, proof, operation, authority, adoption, or reconstructibility.",
+  "claims": [
+    {
+      "claim_id": "P01-C01",
+      "statement": "implementations.server.main is the reader HTTP composition root: it reads ledgers and pending sheets, writes only confirmation markers, and publishes six Control Center query routes when interface bindings are complete. The reachable backend Control Center is read-only; LocalControlCenterStore is constructed but never called by the service or API, while reachable mutable UI preferences and drafts use browser localStorage.",
+      "dimensions": {
+        "implementation": "yes",
+        "proof": "yes",
+        "operation": "unknown",
+        "authority": "partial",
+        "official_adoption": "partial",
+        "reconstructibility": "partial"
+      },
+      "evidence_for": [
+        "implementations/server/main.py:32-39,81-119,139-153,311-352,388-408 composes the reader, confirmation-marker writer, static UI, and conditional Control Center binding.",
+        "implementations/server/control_center/api.py:75-230 defines exactly six attention, catalog, detail, topology, path-query, and evidence routes.",
+        "implementations/server/control_center/service.py:85-104 composes skill and dispatch read sources and constructs LocalControlCenterStore.",
+        "implementations/static/control-center/app.js:24-25,170,273,290 reads and writes browser localStorage.",
+        "Bounded isolated reader, Control Center, and Stage-C test selection passed 18 tests."
+      ],
+      "evidence_against": [
+        "Bounded search found no self.store call after implementations/server/control_center/service.py:98; LocalControlCenterStore is exercised only directly by its unit tests.",
+        "No live browser or reader-process receipt was executed or inspected for this pair."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "A reachability test proving whether backend LocalControlCenterStore is intentionally dormant or accidentally disconnected.",
+        "Current operational receipt for the reader and Control Center process."
+      ],
+      "implication_for_harness": "Treat Control Center as a read-oriented auxiliary view and browser-local workspace, not as an authoritative or durable backend store; do not count the disconnected backend store as reachable capability."
+    },
+    {
+      "claim_id": "P01-C02",
+      "statement": "The governed runtime has a separate executable composition. Reader-mounted runtime, provenance, and health HTTP routes are closed, and loopback serving requires explicit local-pilot preflight; however, trusted non-serving CLI mutations remain directly reachable and open the configured runtime database without the serve opt-in.",
+      "dimensions": {
+        "implementation": "yes",
+        "proof": "yes",
+        "operation": "yes",
+        "authority": "partial",
+        "official_adoption": "partial",
+        "reconstructibility": "partial"
+      },
+      "evidence_for": [
+        "implementations/server/main.py:41-76 mounts runtime, provenance, and health routers with enabled=lambda: False.",
+        "implementations/server/runtime/api.py:41-57,384-402,616-632 returns LOCAL_PILOT_SERVE_BLOCKED when those routes are disabled.",
+        "implementations/server/runtime/cli.py:68-117 gates serve through preflight_local_pilot, while :148-172 opens RuntimeService and exposes migrate, register-profiles, issue-capability, and activate-local-probe without ACI_LOCAL_PILOT_ENABLED.",
+        "implementations/server/runtime/local_pilot.py:139-220 requires explicit opt-in, loopback, a dedicated database, the exact ledger, pinned receipts and source manifest, registered profiles, journal integrity, and current projections before serving.",
+        "telemetry/runtime/local-pilot/last-wrapper-log.json:2-23,79-136 records a closed dispatch, verified journal state, YAML linkage, and runtime opening and closing events.",
+        "A read-only query at 2026-07-31T18:21:45.6941655Z observed 1029 events with max journal_offset 1029; the count had changed across investigators, establishing a live moving store rather than a frozen snapshot."
+      ],
+      "evidence_against": [
+        "implementations/server/runtime/service.py:6223 reports production_serve_enabled false.",
+        "The CLI mutation paths are not uniformly protected by the local-pilot serve gate, so 'the runtime is gated' would be materially overbroad.",
+        "Moving live counts cannot serve as snapshot-stable inventory facts."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "An accepted command-by-command authority matrix for non-serving CLI mutations.",
+        "An immutable, digest-bound operational snapshot if exact live-store totals are needed.",
+        "Production promotion and administrator-enforced deployment evidence."
+      ],
+      "implication_for_harness": "Distinguish closed production HTTP, gated pilot serving, and reachable trusted CLI mutation. Local operation is proven, but production adoption and uniform mutation authorization are not."
+    },
+    {
+      "claim_id": "P01-C03",
+      "statement": "The authorized source-of-record model is fact-class partitioning, not one physical store: the frozen corpus declares YAML authoritative for official dispatch opening and closing and declares the validated appender the intended sole physical YAML writer, while the governed SQLite journal owns accepted runtime facts and projections are derived. Writer implementation and deployed exclusivity are only partially proven because append-dispatch.cjs is outside the frozen source manifest.",
+      "dimensions": {
+        "implementation": "partial",
+        "proof": "partial",
+        "operation": "partial",
+        "authority": "yes",
+        "official_adoption": "yes",
+        "reconstructibility": "partial"
+      },
+      "evidence_for": [
+        "docs/features/agents-communication-infra/work-pack/shared/context.md:13-19,52-55 assigns official opening and closing to the YAML audit ledger, accepted workflow facts to the journal, and sole-writer responsibility to the validated appender.",
+        "docs/features/agents-communication-infra/specs/SPEC.md:21,137 declares the validated appender the intended sole physical writer of official audit-ledger rows and keeps cutover evidence open.",
+        "implementations/server/runtime/service.py:104-126 composes the database, artifact store, journal, capabilities, projections, and strict legacy snapshot resolver.",
+        "implementations/server/runtime/migrations/001_aci_slice0.sql:1-121 defines durable command receipts, events, aggregate heads, projections, publications, receipts, and messages.",
+        "telemetry/runtime/local-pilot/last-wrapper-log.json:16-23,79-136 links journal events to exact YAML opening and closing row digests."
+      ],
+      "evidence_against": [
+        ".claude/skills/register-dispatch/append-dispatch.cjs is absent from implementations/as-built/source-manifest.json, so this pair cannot use its source to prove the frozen-corpus writer implementation claim.",
+        "docs/features/agents-communication-infra/discovery/dispatch-audit-ledger-cutover-contract.md:59-61 keeps materialization, production, provider execution, and authority cutover blocked.",
+        "No deployed writer inventory or negative bypass proof was run by this pair."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "Frozen-manifest inclusion and digest verification of the validated appender implementation.",
+        "Complete deployed writer inventory, ACL evidence, and negative direct-write tests.",
+        "Implemented and accepted materializer or an explicit store-retirement decision."
+      ],
+      "implication_for_harness": "State authority per fact class. Do not promote the intended sole-writer declaration into proven exclusivity, and do not describe SQLite as replacing official YAML opening and closing."
+    },
+    {
+      "claim_id": "P01-C04",
+      "statement": "implementations/agent-runtime is an independently packaged SQLite shadow runtime with its own CLI, journal, receipts, projections, replay, and read/compare-only YAML reconciler. It is implemented and tested, but no frozen-corpus evidence establishes current operation, authority, official adoption, or cutover into server/runtime.",
+      "dimensions": {
+        "implementation": "yes",
+        "proof": "yes",
+        "operation": "unknown",
+        "authority": "no",
+        "official_adoption": "no",
+        "reconstructibility": "yes"
+      },
+      "evidence_for": [
+        "implementations/agent-runtime/pyproject.toml:5-13 declares an experimental package and agent-runtime CLI entrypoint.",
+        "implementations/agent-runtime/agent_runtime/cli.py:13-81 exposes initialization, commands, receipt verification, replay, projections, and ledger reconciliation against an explicit database.",
+        "implementations/agent-runtime/agent_runtime/runtime.py:145-204,261-378 composes the SQLite runtime, schema initialization, transactional journal append, projections, and receipts.",
+        "implementations/agent-runtime/agent_runtime/ledger_shadow.py:14-86 has no writer or appender dependency and only classifies a read snapshot.",
+        "The isolated agent-runtime test suite passed 31 tests, including replay, receipt, rollback, and no-ledger-mutation coverage."
+      ],
+      "evidence_against": [
+        "Bounded repository search found no production implementation importing agent_runtime.",
+        "implementations/agent-runtime/README.md:13-14,110-129 explicitly denies replacement, launch, production cutover, authorization, materialization, backup, and recovery roles."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "An accepted lifecycle disposition for the package.",
+        "Operational receipt tying a current host workflow to this package.",
+        "An authorized convergence or retirement decision."
+      ],
+      "implication_for_harness": "Keep agent-runtime outside the official system boundary unless a decision explicitly assigns it a test-oracle, convergence, or retirement role."
+    }
+  ],
+  "gaps": [
+    {
+      "gap_id": "P01-G01",
+      "statement": "The frozen corpus declares a sole YAML writer but excludes the writer implementation and contains no deployed-writer exclusivity proof.",
+      "property_lost": "Provable one-writer authority for official audit rows.",
+      "smallest_next_action": "Add the exact appender source and digest to a refreshed frozen manifest, then run a bounded writer-import/inventory check and negative direct-write test.",
+      "what_it_buys": "Separates an accepted authority declaration from executable and deployment-level exclusivity proof.",
+      "completion_evidence": "Manifest-bound appender digest, complete writer inventory, and passing negative bypass test with unchanged ledger bytes."
+    },
+    {
+      "gap_id": "P01-G02",
+      "statement": "LocalControlCenterStore is constructed and unit-tested but unreachable from ControlCenterService and its six API routes.",
+      "property_lost": "An intelligible auxiliary-state boundary and confidence that composed code is reachable.",
+      "smallest_next_action": "Make an explicit retain/remove decision; if retained, add one bounded API/service call path and reachability test, otherwise remove it from the composition.",
+      "what_it_buys": "Eliminates dead backend state or makes its non-authoritative role observable and testable.",
+      "completion_evidence": "A decision plus either a passing route-level reachability test or a source change proving the unused composition is gone."
+    },
+    {
+      "gap_id": "P01-G03",
+      "statement": "Trusted non-serving runtime CLI mutations remain reachable outside the local-pilot serve gate, but their command-specific authorization boundary is not explicit in the inspected accepted evidence.",
+      "property_lost": "Clear distinction between reachable implementation and authorized mutation.",
+      "smallest_next_action": "Publish and test a command-by-command CLI authority matrix covering target store, required operator evidence, and denied defaults.",
+      "what_it_buys": "Prevents the closed HTTP gate from being mistaken for a closed runtime and makes mutation authority auditable.",
+      "completion_evidence": "Accepted authority matrix and positive/negative CLI tests for every mutating subcommand."
+    },
+    {
+      "gap_id": "P01-G04",
+      "statement": "The live pilot database changed during the investigation, so raw counts are not a reproducible AS-BUILT snapshot.",
+      "property_lost": "Snapshot-stable operational evidence.",
+      "smallest_next_action": "Capture a read-only verified backup or journal-head receipt with UTC time, file digest, journal offset, and verification result.",
+      "what_it_buys": "A repeatable operational baseline without stopping or mutating the live pilot.",
+      "completion_evidence": "Digest-bound snapshot receipt whose event count and maximum offset reproduce from the preserved artifact."
+    },
+    {
+      "gap_id": "P01-G05",
+      "statement": "The experimental agent-runtime package has no accepted lifecycle disposition relative to server/runtime.",
+      "property_lost": "One intelligible runtime boundary and protection against competing durable models.",
+      "smallest_next_action": "Decide whether agent-runtime is a retained test oracle, a source to mine before retirement, or a governed convergence input.",
+      "what_it_buys": "A named owner and end state for the second runtime model.",
+      "completion_evidence": "Accepted decision naming owner, permitted uses, prohibited official claims, migration or retirement steps, and terminal verification."
+    }
+  ],
+  "document_drift": [
+    "implementations/README.md:62-65 calls server/main.py 'the process composition root'; this is accurate only for the reader HTTP process because the runtime CLI/local pilot and host hooks are separate executable compositions.",
+    "implementations/README.md:59 describes preview-only Control Center local state without exposing that the composed backend LocalControlCenterStore is unreachable and the actual UI mutations use browser localStorage.",
+    "Any unqualified statement that the governed runtime is 'gated' is overbroad: production HTTP and pilot serving are gated, while trusted non-serving CLI mutations remain reachable.",
+    "Any claim that the validated appender is the proven sole writer exceeds this frozen corpus; the corpus establishes intended authority, not implementation or deployed exclusivity."
+  ],
+  "open_disagreements": [],
+  "robot_talk_history": [
+    {
+      "round": 1,
+      "contested_claims": [
+        "P01-C03: sole-writer implementation proof exceeded the frozen source manifest",
+        "P01-C01: backend Control Center draft state was composed but unreachable",
+        "P01-C02: closed production HTTP did not close trusted CLI mutation paths",
+        "P01-C02: live event totals were moving and not snapshot-stable"
+      ],
+      "outcome": "Worker conceded or narrowed all four claims. Reviewer accepted the corrections: sole-writer status is an authority declaration with partial implementation proof; reachable Control Center backend routes are read-only and LocalControlCenterStore is dead from the composition; only HTTP serving is closed while CLI mutation remains reachable; operational counts are omitted unless time-qualified. No material disagreement remains."
+    }
+  ],
+  "commands_executed": [
+    {
+      "command": "$testRoot = 'C:\\tmp\\cyberalchemy-as-built\\pair-01-system-of-record'; New-Item -ItemType Directory -Force -Path $testRoot | Out-Null; $env:TEMP=$testRoot; $env:TMP=$testRoot; python -m unittest implementations.tests.test_ledger implementations.tests.test_main implementations.tests.control_center.test_binding implementations.tests.control_center.test_local_store implementations.tests.control_center.test_sources implementations.tests.runtime.test_stage_c -q",
+      "exit_code": 0,
+      "result": "The first invocation reported access denied while creating the requested isolated directory, then ran 18 tests successfully. This run was excluded as proof because the isolation precondition was not established.",
+      "write_effects": "Requested C:/tmp directory creation failed; Python test temporary-write location was not established and this run is not relied upon."
+    },
+    {
+      "command": "$testRoot = 'C:\\tmp\\cyberalchemy-as-built\\pair-01-system-of-record'; New-Item -ItemType Directory -Force -Path $testRoot | Out-Null; Get-Item $testRoot | Select-Object FullName,Attributes",
+      "exit_code": 0,
+      "result": "Created and verified C:\\tmp\\cyberalchemy-as-built\\pair-01-system-of-record after sandbox escalation.",
+      "write_effects": "Created only the dispatch-authorized isolated test directory under C:/tmp."
+    },
+    {
+      "command": "$testRoot = 'C:\\tmp\\cyberalchemy-as-built\\pair-01-system-of-record'; $env:TEMP=$testRoot; $env:TMP=$testRoot; python -m unittest implementations.tests.test_ledger implementations.tests.test_main implementations.tests.control_center.test_binding implementations.tests.control_center.test_local_store implementations.tests.control_center.test_sources implementations.tests.runtime.test_stage_c -q",
+      "exit_code": 0,
+      "result": "Ran 18 tests in 3.504s: OK. A Starlette deprecation warning and expected argparse usage output were emitted.",
+      "write_effects": "Test state was confined to C:/tmp/cyberalchemy-as-built/pair-01-system-of-record."
+    },
+    {
+      "command": "$testRoot = 'C:\\tmp\\cyberalchemy-as-built\\pair-01-system-of-record'; $env:TEMP=$testRoot; $env:TMP=$testRoot; python -m unittest discover -s tests -v",
+      "exit_code": 0,
+      "result": "Ran 31 agent-runtime tests in 6.335s: OK, including replay, receipts, rollback, and read-only ledger reconciliation.",
+      "write_effects": "Test state was confined to C:/tmp/cyberalchemy-as-built/pair-01-system-of-record."
+    },
+    {
+      "command": "python -c \"import sqlite3,json,pathlib; p=pathlib.Path(r'telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3').resolve(); c=sqlite3.connect(p.as_uri()+'?mode=ro',uri=True); print(c.execute('select count(1) from events').fetchone()[0]); print(c.execute('select max(journal_offset) from events').fetchone()[0]); c.close()\"",
+      "exit_code": 0,
+      "result": "At 2026-07-31T18:21:45.6941655Z, count(events)=1029 and max(journal_offset)=1029. Earlier investigators observed lower totals, so the count is treated as time-qualified only.",
+      "write_effects": "None; SQLite was opened with URI mode=ro."
+    },
+    {
+      "command": "$m=Get-Content -Raw 'implementations/as-built/source-manifest.json' | ConvertFrom-Json; @('docs/features/agents-communication-infra/specs/SPEC.md','docs/features/agents-communication-infra/work-pack/shared/context.md','docs/features/agents-communication-infra/discovery/dispatch-audit-ledger-cutover-contract.md','.claude/skills/register-dispatch/append-dispatch.cjs') | ForEach-Object { '{0}={1}' -f $_,[bool]$m.files.$_ }",
+      "exit_code": 0,
+      "result": "The three authority/specification documents are present in the frozen manifest; .claude/skills/register-dispatch/append-dispatch.cjs is absent.",
+      "write_effects": "None."
+    },
+    {
+      "command": "python -c \"import json,pathlib,jsonschema; root=pathlib.Path(r'implementations/as-built'); schema=json.loads((root/'pair-output-schema.json').read_text(encoding='utf-8')); data=json.loads((root/'pairs/pair-01-system-of-record.json').read_text(encoding='utf-8')); jsonschema.Draft202012Validator.check_schema(schema); jsonschema.validate(data,schema); print('VALID: pair-01-system-of-record.json')\"",
+      "exit_code": 0,
+      "result": "jsonschema Draft 2020-12 schema check and instance validation passed.",
+      "write_effects": "None."
+    }
+  ],
+  "snapshot": {
+    "commit": "63777abd838995c8512bcea806546c3f2ab6add6",
+    "dirty_state": "Dirty before pair work: tracked changes included .codex/hooks.json, AGENTS.md, CLAUDE.md, and telemetry/agents/subagents-dispatch.yaml; implementations/as-built/ and unrelated PDF/diagram artifacts were untracked. This pair changed only its two authorized output files.",
+    "source_manifest_sha256": "af35da963497918340ca7c74fa1a9e7a27d1a7027420e6edb517e55fd903cd11"
+  }
+}

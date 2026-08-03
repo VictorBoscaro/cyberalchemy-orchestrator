@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS-BUILT pair output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "question_id",
+    "scope",
+    "excluded_scope",
+    "worker",
+    "reviewer",
+    "finalizer",
+    "executive_answer",
+    "property_served",
+    "claims",
+    "gaps",
+    "document_drift",
+    "open_disagreements",
+    "robot_talk_history",
+    "commands_executed",
+    "snapshot"
+  ],
+  "properties": {
+    "question_id": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "excluded_scope": {
+      "type": "string"
+    },
+    "worker": {
+      "type": "string"
+    },
+    "reviewer": {
+      "type": "string"
+    },
+    "finalizer": {
+      "type": "string"
+    },
+    "executive_answer": {
+      "type": "string"
+    },
+    "property_served": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim_id",
+          "statement",
+          "dimensions",
+          "evidence_for",
+          "evidence_against",
+          "confidence",
+          "missing_evidence",
+          "implication_for_harness"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "dimensions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "implementation",
+              "proof",
+              "operation",
+              "authority",
+              "official_adoption",
+              "reconstructibility"
+            ],
+            "properties": {
+              "implementation": {
+                "enum": [
+                  "yes",
+                  "partial",
+                  "no",
+                  "unknown",
+                  "disputed"
+                ]
+              },
+              "proof": {
+                "enum": [
+                  "yes",
+                  "partial",
+                  "no",
+                  "unknown",
+                  "disputed"
+                ]
+              },
+              "operation": {
+                "enum": [
+                  "yes",
+                  "partial",
+                  "no",
+                  "unknown",
+                  "disputed"
+                ]
+              },
+              "authority": {
+                "enum": [
+                  "yes",
+                  "partial",
+                  "no",
+                  "unknown",
+                  "disputed"
+                ]
+              },
+              "official_adoption": {
+                "enum": [
+                  "yes",
+                  "partial",
+                  "no",
+                  "unknown",
+                  "disputed"
+                ]
+              },
+              "reconstructibility": {
+                "enum": [
+                  "yes",
+                  "partial",
+                  "no",
+                  "unknown",
+                  "disputed"
+                ]
+              }
+            }
+          },
+          "evidence_for": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_against": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "missing_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "implication_for_harness": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gap_id",
+          "statement",
+          "property_lost",
+          "smallest_next_action",
+          "what_it_buys",
+          "completion_evidence"
+        ],
+        "properties": {
+          "gap_id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "property_lost": {
+            "type": "string"
+          },
+          "smallest_next_action": {
+            "type": "string"
+          },
+          "what_it_buys": {
+            "type": "string"
+          },
+          "completion_evidence": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "document_drift": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "open_disagreements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim_id",
+          "worker_position",
+          "reviewer_position",
+          "worker_evidence",
+          "reviewer_evidence"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "worker_position": {
+            "type": "string"
+          },
+          "reviewer_position": {
+            "type": "string"
+          },
+          "worker_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewer_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "robot_talk_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "round",
+          "contested_claims",
+          "outcome"
+        ],
+        "properties": {
+          "round": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "contested_claims": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "outcome": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "commands_executed": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command",
+          "exit_code",
+          "result",
+          "write_effects"
+        ],
+        "properties": {
+          "command": {
+            "type": "string"
+          },
+          "exit_code": {
+            "type": "integer"
+          },
+          "result": {
+            "type": "string"
+          },
+          "write_effects": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "dirty_state",
+        "source_manifest_sha256"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string"
+        },
+        "dirty_state": {
+          "type": "string"
+        },
+        "source_manifest_sha256": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

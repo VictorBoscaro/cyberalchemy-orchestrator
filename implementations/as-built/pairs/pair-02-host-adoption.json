@@ -1,0 +1,264 @@
+{
+  "question_id": "pair-02-host-adoption",
+  "scope": "Repository-local Claude and Codex hook configuration, the shared dispatch and ingestion hook implementations, the orchestration bridge, workflow-turn bindings, existing execution receipts, and focused isolated lifecycle tests.",
+  "excluded_scope": "Fresh live-host smoke, child-agent launch, network access, administrator policy installation, provider-internal inputs, browser behavior, and product-code or documentation fixes.",
+  "worker": "Lamport, Leslie",
+  "reviewer": "Liskov, Barbara",
+  "finalizer": "Lamport, Leslie",
+  "executive_answer": "No. The governed route is implemented and tested when trusted project hooks load and the host emits a recognized PreToolUse event, but that condition is not obligatory. A fresh trusted Codex session using embedded codex-cli 0.146.0-alpha.3.1 created a child without any hook event or durable lifecycle receipt, so adoption is operationally failed for that observed binary. Adoption under the installed replacement binary is unknown pending reload and smoke. Claude has no model-originated live adoption evidence. Prelaunch is fail-closed only inside the loaded and invoked hook boundary; closure and post-tool ingestion are not globally fail-closed.",
+  "property_served": "No meaningful work outside reconstructible memory.",
+  "claims": [
+    {
+      "claim_id": "HA-01",
+      "statement": "Codex operational adoption failed on observed embedded codex-cli 0.146.0-alpha.3.1: a real child was created without PreToolUse, hook state, YAML lifecycle rows, dispatch_links, a workflow binding, or a launch-authorized receipt. Adoption under the installed replacement binary is unknown, not disproven.",
+      "dimensions": {
+        "implementation": "yes",
+        "proof": "yes",
+        "operation": "no",
+        "authority": "partial",
+        "official_adoption": "no",
+        "reconstructibility": "no"
+      },
+      "evidence_for": [
+        "docs/features/agent-provenance-telemetry/integration/stage-f/codex-namespaced-hook-matcher-repair-receipt.md:53-57 records the fresh trusted session, child creation, and complete absence of hook/runtime receipts.",
+        "docs/features/agent-provenance-telemetry/integration/stage-f/codex-namespaced-hook-matcher-repair-receipt.md:59-67 identifies embedded codex-cli 0.146.0-alpha.3.1 and states that the replacement requires extension reload.",
+        "docs/features/agent-provenance-telemetry/integration/stage-f/codex-namespaced-hook-matcher-repair-receipt.md:69-78 defines the still-missing replacement-binary smoke evidence."
+      ],
+      "evidence_against": [
+        "The checked-in matcher covers bare, namespaced, and flattened spellings, but the observed host emitted no PreToolUse event, so matcher correctness did not govern that launch."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "A fresh replacement-binary launch showing hook state, YAML open/close, dispatch_links, and a terminal workflow binding with launch-authorized receipt."
+      ],
+      "implication_for_harness": "The universal host-adoption claim is false for the observed Codex binary and cannot be restored by code/configuration evidence alone."
+    },
+    {
+      "claim_id": "HA-02",
+      "statement": "When trusted project hooks load and emit a recognized PreToolUse event, the shared adapter denies launch unless policy, preflight, capability scope, and the applicable workflow-binding or YAML/ACI opening receipt succeed.",
+      "dimensions": {
+        "implementation": "yes",
+        "proof": "yes",
+        "operation": "partial",
+        "authority": "partial",
+        "official_adoption": "partial",
+        "reconstructibility": "yes"
+      },
+      "evidence_for": [
+        "implementations/server/runtime/host_dispatch_hook.py:125-150 strictly loads the enabled host policy; lines 195-256 perform local-pilot preflight and issue an operation-specific expiring capability.",
+        "implementations/server/runtime/host_dispatch_hook.py:373-459 binds governed turns and requires status launch-authorized before returning.",
+        "implementations/server/runtime/host_dispatch_hook.py:464-526 opens compatibility YAML/ACI state and requires launch-authorized before returning.",
+        "implementations/server/runtime/host_dispatch_hook.py:743-775 converts PreToolUse exceptions into a structured denial.",
+        "Focused lifecycle, workflow-binding, and orchestration-bridge suite passed 33/33."
+      ],
+      "evidence_against": [
+        "Repository configuration cannot force either host to load or invoke project hooks.",
+        "The frozen corpus pins an authorization-evidence reference and digest but does not contain the underlying human authorization content."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "Underlying human authorization content corresponding to the policy digest.",
+        "Host-level enforcement proving hooks cannot be disabled or bypassed."
+      ],
+      "implication_for_harness": "The adapter is a conditional enforcement point, not proof that every real launch reaches that point."
+    },
+    {
+      "claim_id": "HA-03",
+      "statement": "Invoked lifecycle hooks can durably resolve, error, or cancel a workflow binding and append compatibility close receipts, but closure and input reconstruction are not globally fail-closed.",
+      "dimensions": {
+        "implementation": "partial",
+        "proof": "partial",
+        "operation": "partial",
+        "authority": "partial",
+        "official_adoption": "partial",
+        "reconstructibility": "partial"
+      },
+      "evidence_for": [
+        "implementations/server/runtime/host_dispatch_hook.py:528-594 persists terminal workflow-binding state or an orchestration close receipt.",
+        "implementations/server/runtime/migrations/009_host_workflow_binding.sql:20-30 constrains running/resolved/error/cancelled state and terminal-event consistency.",
+        "docs/features/agent-provenance-telemetry/integration/stage-f/execution-receipt.md:37-66 records a controlled Codex hook-wire open and close with durable journal offsets."
+      ],
+      "evidence_against": [
+        "implementations/server/runtime/host_dispatch_hook.py:767-781 returns exit 0 plus systemMessage for SessionEnd errors; only SubagentStop and Stop enter the blocking close-error branch.",
+        "PostToolUse ingestion occurs after tool execution, so an ingestion failure cannot prevent already-performed work.",
+        "docs/features/agent-provenance-telemetry/integration/stage-f/execution-receipt.md:69-73 explicitly says the controlled wire receipt is not a model-originated spawn."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "Real-host failure and interruption receipts for each host.",
+        "A proven recovery or blocking contract for SessionEnd and post-tool ingestion failures."
+      ],
+      "implication_for_harness": "Opening authorization may fail closed inside the hook boundary, while terminal history or input lineage can still be missing after work executes."
+    },
+    {
+      "claim_id": "HA-04",
+      "statement": "Governed follow-up binding is implemented and tested: unbound followup_task is denied, and a bound follow-up requires a positive turn ordinal, a frozen template, and the prior terminal agent identity. No real-host follow-up receipt was found.",
+      "dimensions": {
+        "implementation": "yes",
+        "proof": "yes",
+        "operation": "unknown",
+        "authority": "partial",
+        "official_adoption": "unknown",
+        "reconstructibility": "yes"
+      },
+      "evidence_for": [
+        "implementations/server/runtime/host_dispatch_hook.py:398-463 enforces turn ordering and denies an unbound followup_task.",
+        "implementations/tests/runtime/test_host_workflow_binding.py:331-364 verifies the prior-agent and frozen-template requirements.",
+        "implementations/tests/runtime/test_host_dispatch_hook.py:162-173 verifies unbound follow-up denial."
+      ],
+      "evidence_against": [],
+      "confidence": "high",
+      "missing_evidence": [
+        "A real Codex follow-up receipt.",
+        "A real Claude follow-up receipt and exact host tool-name/event mapping."
+      ],
+      "implication_for_harness": "Tests establish runtime semantics but do not establish that either production host adopts the route."
+    },
+    {
+      "claim_id": "HA-05",
+      "statement": "Host terminal-event wiring is asymmetric: Codex config lacks PostToolUseFailure, while Claude config includes it but has no live-host adoption evidence.",
+      "dimensions": {
+        "implementation": "partial",
+        "proof": "yes",
+        "operation": "unknown",
+        "authority": "partial",
+        "official_adoption": "unknown",
+        "reconstructibility": "partial"
+      },
+      "evidence_for": [
+        ".codex/hooks.json:3-81 registers PreToolUse, PostToolUse, SubagentStop, and SessionEnd, but not PostToolUseFailure.",
+        ".claude/settings.json:2-79 registers PreToolUse, PostToolUse, PostToolUseFailure, SessionEnd, and Stop, but not SubagentStop.",
+        "implementations/tests/runtime/test_host_dispatch_hook.py:195-269 tests Codex SubagentStop and Claude failure/session-end paths with simulated events."
+      ],
+      "evidence_against": [
+        "No model-originated Claude Agent lifecycle was observed; the Stage-F receipt says Claude CLI was not installed on the evidence machine."
+      ],
+      "confidence": "high",
+      "missing_evidence": [
+        "The current Codex host's emitted failure event and terminal reconciliation behavior.",
+        "Any live Claude launch, success, failure, or interruption receipt."
+      ],
+      "implication_for_harness": "A shared handler does not imply equivalent lifecycle completeness across host configurations."
+    },
+    {
+      "claim_id": "HA-06",
+      "statement": "Project hooks are not administrator-enforced and remain disableable; checked-in configuration proves route availability, not obligatory official adoption.",
+      "dimensions": {
+        "implementation": "yes",
+        "proof": "yes",
+        "operation": "partial",
+        "authority": "partial",
+        "official_adoption": "no",
+        "reconstructibility": "partial"
+      },
+      "evidence_for": [
+        "docs/features/agent-provenance-telemetry/integration/stage-f/execution-receipt.md:78-84 states repository configuration alone cannot force hook loading and that no administrator-level host policy was installed.",
+        "docs/features/agent-provenance-telemetry/integration/stage-g/execution-receipt.md:72-77 records an already-running Codex environment that did not automatically invoke the new project hook."
+      ],
+      "evidence_against": [],
+      "confidence": "high",
+      "missing_evidence": [
+        "Machine- or organization-enforced hook configuration for both hosts."
+      ],
+      "implication_for_harness": "Meaningful work can occur outside reconstructible memory whenever a host does not load or route through project hooks."
+    }
+  ],
+  "gaps": [
+    {
+      "gap_id": "G-02-01",
+      "statement": "The replacement Codex binary has not been shown to route multi-agent calls through project hooks.",
+      "property_lost": "Obligatory Codex launch governance and reconstructible lifecycle memory.",
+      "smallest_next_action": "After extension reload, run the prescribed single read-only helper smoke against the replacement binary.",
+      "what_it_buys": "A version-specific operational adoption verdict instead of extrapolating from code or the failed embedded binary.",
+      "completion_evidence": "One launch with new hook state, matching YAML open/close, matching dispatch_links row, and a terminal host_workflow_turn_bindings row with launch-authorized receipt."
+    },
+    {
+      "gap_id": "G-02-02",
+      "statement": "Claude has no model-originated lifecycle receipt.",
+      "property_lost": "Evidence that Claude launch, success, failure, and interruption paths are operational rather than simulated.",
+      "smallest_next_action": "Run one fresh Claude launch and exercise one terminal path after host loading is independently confirmed.",
+      "what_it_buys": "A real-host Claude adoption and event-shape verdict.",
+      "completion_evidence": "Host-emitted PreToolUse plus durable opening and terminal receipts correlated to the same tool use."
+    },
+    {
+      "gap_id": "G-02-03",
+      "statement": "Neither host has administrator-enforced hook loading.",
+      "property_lost": "Non-bypassable official adoption.",
+      "smallest_next_action": "Install and verify supported machine- or organization-level hook enforcement, or formally classify adoption as voluntary.",
+      "what_it_buys": "A defensible mandatory-adoption claim independent of per-project trust or user settings.",
+      "completion_evidence": "A managed-policy inspection plus a negative test showing project users cannot disable or bypass the governed hook."
+    },
+    {
+      "gap_id": "G-02-04",
+      "statement": "Codex has no configured PostToolUseFailure route.",
+      "property_lost": "Prompt and accurate durable classification of failed Codex launches or tool calls.",
+      "smallest_next_action": "Identify the current Codex failure event contract and wire it if supported; otherwise document and test the mandatory reconciliation event.",
+      "what_it_buys": "An evidence-backed failure transition rather than assuming SessionEnd eventually repairs it.",
+      "completion_evidence": "A focused host-shape test and one real failure receipt ending in error, without leaving an open binding."
+    },
+    {
+      "gap_id": "G-02-05",
+      "statement": "SessionEnd and post-tool ingestion failures do not globally block or guarantee reconstruction.",
+      "property_lost": "Complete terminal history and input lineage after execution or interruption.",
+      "smallest_next_action": "Define and test an explicit retry/recovery contract for SessionEnd closure and ingestion failures.",
+      "what_it_buys": "Deterministic convergence after post-execution telemetry failure without overstating fail-closed behavior.",
+      "completion_evidence": "A bounded failure test proving retry or recovery produces one terminal lifecycle and the intended ingestion receipt, or an accepted decision explicitly bounding the loss."
+    }
+  ],
+  "document_drift": [
+    "docs/decisions/host-agent-dispatch-input-binding.md:17-18 says every Agent or spawn_agent call is currently wrapped; the later observed Codex 0.146.0-alpha.3.1 bypass falsifies that operational universal.",
+    "docs/features/agent-provenance-telemetry/integration/stage-f/execution-receipt.md:8 describes a mandatory wrapper, but lines 78-84 narrow this to hosts that load project hooks and state that administrator enforcement is absent.",
+    "docs/features/agent-provenance-telemetry/integration/stage-f/host-workflow-binding-receipt.md accurately describes implemented/tested binding semantics but should not be read as live-host adoption evidence."
+  ],
+  "open_disagreements": [],
+  "robot_talk_history": [
+    {
+      "round": 1,
+      "contested_claims": [
+        "HA-01",
+        "HA-02",
+        "HA-03",
+        "HA-05",
+        "HA-06"
+      ],
+      "outcome": "Worker accepted all reviewer corrections: observed Codex 0.146.0-alpha.3.1 adoption is failed while replacement adoption is unknown; prelaunch is fail-closed only when trusted hooks load and emit recognized PreToolUse; SessionEnd closure and post-tool ingestion are not globally fail-closed; project hooks are not administrator-enforced; Codex lacks PostToolUseFailure wiring and Claude live behavior is unknown. No material dissent remains."
+    }
+  ],
+  "commands_executed": [
+    {
+      "command": "Get-Content/ConvertFrom-Json of dispatch-payload.json, source-manifest.json, pair-output-schema.json, exact seat prompt and capability profile",
+      "exit_code": 0,
+      "result": "Loaded the frozen dispatch contract, worker profile, output schema, and source corpus boundary.",
+      "write_effects": "None."
+    },
+    {
+      "command": "rg and bounded PowerShell reads over manifest-listed host configuration, hooks, bridge, workflow migration, tests, decisions, and execution receipts",
+      "exit_code": 0,
+      "result": "Traced configuration through hook invocation, conditional authorization, terminal handling, and existing operational receipts.",
+      "write_effects": "None."
+    },
+    {
+      "command": "python -B -m unittest implementations.tests.runtime.test_host_dispatch_hook implementations.tests.runtime.test_host_workflow_binding implementations.tests.runtime.test_orchestration_bridge -v",
+      "exit_code": 0,
+      "result": "PASS, 33/33. These tests prove adapter/runtime semantics, not live-host adoption. The preceding attempt to create C:/tmp/cyberalchemy-as-built/pair-02-host-adoption was denied, so the suite used and cleaned its own TemporaryDirectory fixtures; exact requested temp-root conformance is not claimed.",
+      "write_effects": "Ephemeral test fixtures only; no retained repository writes."
+    },
+    {
+      "command": "git rev-parse HEAD; git status --short",
+      "exit_code": 128,
+      "result": "Sandbox Git refused the repository as dubious ownership; commit was taken from the frozen manifest and dirty state remains unknown.",
+      "write_effects": "None."
+    },
+    {
+      "command": "Get-FileHash -Algorithm SHA256 implementations/as-built/source-manifest.json",
+      "exit_code": 0,
+      "result": "af35da963497918340ca7c74fa1a9e7a27d1a7027420e6edb517e55fd903cd11",
+      "write_effects": "None."
+    }
+  ],
+  "snapshot": {
+    "commit": "63777abd838995c8512bcea806546c3f2ab6add6",
+    "dirty_state": "unknown: sandbox Git refused repository ownership; no clean-worktree claim is made",
+    "source_manifest_sha256": "af35da963497918340ca7c74fa1a9e7a27d1a7027420e6edb517e55fd903cd11"
+  }
+}

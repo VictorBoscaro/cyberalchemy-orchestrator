@@ -1,0 +1,215 @@
+{
+  "question_id": "pair-07-human-control",
+  "scope": "Dispatch reader, confirmation UI, Control Center APIs/frontends, evidence overlays, preview store, local pilot, backup/retirement, accessibility and existing browser evidence.",
+  "excluded_scope": "Fresh host smoke, fresh browser launch, network access, new subagents beyond the declared pair, mutation of a real runtime store, product-code changes, documentation repair, and attribution of recorded source drift.",
+  "worker": "pair07_worker (Alexander, Christopher)",
+  "reviewer": "pair07_reviewer (Rumelt, Richard)",
+  "finalizer": "pair07_worker (Alexander, Christopher)",
+  "executive_answer": "Human control is meaningful but fragmented and mostly observational. A human can inspect pending and recorded dispatches, navigate goals, topology and evidence, confirm one readable pending sheet in the Linear reader, keep a browser-local draft, and operate pilot verification, backup and retirement through the CLI. But confirmation is only a loopback marker with no authenticated human identity and no runtime execution authority; no implementation automatically consumes it. The Control Center exposes six read routes only, while its visible draft validation is a browser-local length heuristic disconnected from the unexposed in-process proposal store. Authoritative apply, retry and reconcile are deliberately absent. Database retirement preserves verified copies and bytes, but there is no supported restore or reinstate command. The current investigation itself was presented as governed while this seat had no required host binding, demonstrating the exact false reassurance the harness still needs to prevent.",
+  "property_served": "Meaningful and authority-safe human control: a person can see limitations, make decisions whose authority is explicit, act through real enforcement points, and recover without mistaking markers, previews, configured labels or preserved bytes for stronger guarantees.",
+  "claims": [
+    {
+      "claim_id": "HC-01",
+      "statement": "The implementation gives a human broad read access to pending and recorded dispatches, attention, catalog, detail, topology, paths and evidence, but current completeness is partial and real-user comprehension is unproven.",
+      "dimensions": {"implementation":"yes","proof":"partial","operation":"partial","authority":"no","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/main.py:186-230,279-301 composes overview and repository views from pending sheets and Dispatch history.",
+        "implementations/server/control_center/api.py:39-164 publishes exactly six attention/catalog/detail/topology/path/evidence routes.",
+        "output/playwright/ux-validator/skill-control-center-phase1/run-metadata.json records a 2026-07-26 automated matrix of 3 variants and 204 screenshots; console-network.json records no console or request failures for that run."
+      ],
+      "evidence_against": [
+        "The current bounded Control Center suite ran 28 tests with 26 passing and two failures: catalog completeness is now partial and topology query_state is truncated because the live skill source reports an unresolved explicit path.",
+        "output/playwright/ux-validator/skill-control-center-phase1/findings.json leaves screenshot review and human study pending; residue-ledger.yml leaves comprehension, real-user success and screen-reader experience open."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["A current revision-bound browser run, independent screenshot review, assistive-technology evaluation and real-user comprehension/task-success study."],
+      "implication_for_harness": "The harness may claim useful, limitation-aware read surfaces, not that a human currently sees a complete system or reliably understands it."
+    },
+    {
+      "claim_id": "HC-02",
+      "statement": "Linear confirmation is an implemented and tested acknowledgement marker, not an authenticated human decision or runtime-authoritative dispatch acceptance.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"unknown","authority":"no","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/static/ui/linear/index.html:1468-1491 enables only readable, unconfirmed sheets, disables during submission, and presents success or retry feedback.",
+        "implementations/server/main.py:311-353 validates repository and filename boundaries and writes only a sibling marker containing sheet name and timestamp.",
+        "implementations/tests/test_main.py:265-308 proves marker creation, reader reflection, repeat confirmation, path guards and no ledger mutation."
+      ],
+      "evidence_against": [
+        "The confirmation endpoint has no authenticated actor, authorization check, decision rationale or immutable confirmed-dispatch digest; loopback constrains reachability but proves no human identity.",
+        "Repository-wide search found CONFIRM_MARKER_SUFFIX consumed only by the reader/tests, not by an automatic orchestrator; docs/features/agents-communication-infra/specs/operations.md:76-77 explicitly denies execution authority to the compatibility marker.",
+        "There is no undo/unconfirm endpoint; repeat confirmation refreshes the marker timestamp."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["An authenticated principal, immutable accepted authority record, runtime acceptance receipt and supported reversal/cancellation semantics."],
+      "implication_for_harness": "The UI must not say or imply that confirmation itself started governed work; it records intent for a later manual seam."
+    },
+    {
+      "claim_id": "HC-03",
+      "statement": "The Control Center honestly withholds authoritative mutation, but its visible draft and validation flow is simpler and less recoverable than the in-process proposal machinery suggests.",
+      "dimensions": {"implementation":"partial","proof":"partial","operation":"partial","authority":"yes","official_adoption":"unknown","reconstructibility":"no"},
+      "evidence_for": [
+        "implementations/server/control_center/api.py exposes no apply, approve, retry, reconcile, receipt or promotion route.",
+        "implementations/static/control-center/app.js:307-337 renders unknown usage, provider warnings and an explicit 'Fim seguro da Fase 1' authority boundary.",
+        "implementations/server/control_center/local_store.py:28-173 implements in-process revision conflicts, retained retry input and preview-only validation with no authoritative effects."
+      ],
+      "evidence_against": [
+        "implementations/static/control-center/app.js:270-301 saves the shipping draft directly in localStorage and declares validity from text length >= 8 after a timer.",
+        "The exact six API routes do not expose LocalControlCenterStore and the frontend does not call it; its CAS, conflict and validator semantics are therefore disconnected from the visible journey.",
+        "implementations/server/config.py:44-48 configures nonempty auth-contract and owner strings, while implementations/server/main.py:91-114 checks only their presence; these labels do not authenticate or authorize a human."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["A versioned local draft port used by the frontend, with explicit persistence, validation version, conflict and recovery evidence, or an accepted decision to remove the unexposed store."],
+      "implication_for_harness": "The absence of authoritative controls is a real safety fence; the visible preview must not be mistaken for the richer proposal contract or for approval."
+    },
+    {
+      "claim_id": "HC-04",
+      "statement": "Pilot verification, online backup and byte-preserving retirement are implemented and tested, but recovery remains a manual CLI procedure and restoration is not a supported operation.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"unknown","authority":"partial","official_adoption":"unknown","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/runtime/local_pilot.py:149-197 requires explicit opt-in, exact loopback, a dedicated database, strict ledger and verified receipts before serving.",
+        "implementations/server/runtime/operator_recovery.py:51-137 verifies migrations, foreign keys, journal, projections, profiles and database identity; lines 141-177 make a verified online backup without overwrite.",
+        "implementations/server/runtime/operator_recovery.py:180-245 requires explicit stopped confirmation, no active sidecars and a matching verified backup before moving the source without deleting bytes; the bounded recovery/main selection passed 9 of 9 tests."
+      ],
+      "evidence_against": [
+        "implementations/server/runtime/cli.py:40-92,118-135 exposes verify, backup and retire but no restore or reinstate command.",
+        "No Control Center/operator UI integrates these operations, and no current operational restore rehearsal was run."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["A supported, receipt-backed restore/reinstate workflow and a rehearsal proving a cold operator can execute it from documented state."],
+      "implication_for_harness": "Verified copies make recovery possible, but the system cannot yet promise operational restoration without expert, undocumented intervention."
+    },
+    {
+      "claim_id": "HC-05",
+      "statement": "Existing browser and accessibility evidence proves bounded automated behavior at a historical revision, not current human comprehension, trust, complete WCAG conformance or screen-reader usability.",
+      "dimensions": {"implementation":"yes","proof":"partial","operation":"partial","authority":"no","official_adoption":"unknown","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/tests/control_center/test_frontend.py:100-275 exercises explicit selection, focus, unknown-not-zero, evidence, local draft, semantic table/graph, keyboard interaction, responsive overflow and console/network errors.",
+        "output/playwright/ux-validator/skill-control-center-phase1/screenshot-manifest.json preserves per-row fixture, source, backend, frontend and screenshot digests for 204 historical states."
+      ],
+      "evidence_against": [
+        "implementations/tests/control_center/test_frontend.py:267-275 explicitly limits its accessibility result to automated checks and leaves screen-reader comprehension as human residue.",
+        "output/playwright/ux-validator/skill-control-center-phase1/findings.json marks screenshot review pending and lists real-user task success, workload, trust and preference as missing.",
+        "Neither agent launched a browser successfully in this investigation; the reviewer attempt failed during temporary-path setup before browser launch and was rerun without browser."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["Independent review and current human/assistive-technology validation bound to the present source and data state."],
+      "implication_for_harness": "Automated rendering evidence supports interface mechanics; it cannot certify that the operator understands the system or its authority boundaries."
+    },
+    {
+      "claim_id": "HC-06",
+      "statement": "This AS-BUILT dispatch demonstrates a false-reassurance failure: the repository records a governed topology, but this active seat is not host-bound to it.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"no","authority":"no","official_adoption":"no","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/as-built/dispatch-record.json and telemetry/agents/subagents-dispatch.yaml record the parent Dispatch and pair-07 seat topology.",
+        "The received seat prompt did not begin with the mandatory ACI-WORKFLOW-BINDING-V1 line required by repository AGENTS.md.",
+        "A read-only SQLite URI query against telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3 returned zero host_workflow_turn_bindings for dispatch 2026-07-31-implementation-as-built-reconciliation."
+      ],
+      "evidence_against": [
+        "The Dispatch payload and pair artifact can still make the activity look governed to a human reader even though the runtime has no binding receipt for the seat."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["A launch-time fail-closed binding receipt and denominator reconciliation proving every declared seat and turn is bound exactly once."],
+      "implication_for_harness": "Presentation of governance must be conditioned on runtime binding evidence; a declared topology alone is not proof that work occurred inside governed memory."
+    }
+  ],
+  "gaps": [
+    {
+      "gap_id": "HC-G1",
+      "statement": "Human confirmation is not bound to an authenticated principal, immutable authority or runtime acceptance.",
+      "property_lost": "The harness cannot prove who authorized exactly what or that accepted work began from that decision.",
+      "smallest_next_action": "Replace marker-only acknowledgement with an authenticated, digest-bound confirmation accepted by the runtime and returned as a durable receipt; preserve compatibility marker status separately.",
+      "what_it_buys": "A trustworthy chain from human decision to exact authorized work and its enforcement point.",
+      "completion_evidence": "A positive fixture reconstructs principal, exact confirmed bytes, limits and runtime acceptance; negative fixtures reject anonymous, altered and replayed decisions."
+    },
+    {
+      "gap_id": "HC-G2",
+      "statement": "Declared seats can run without required host bindings while still appearing governed in repository artifacts.",
+      "property_lost": "The operator receives false reassurance and cannot detect orphaned work.",
+      "smallest_next_action": "Fail closed before launch without a binding receipt and expose a reconciliation view of declared versus bound versus terminal seats/turns.",
+      "what_it_buys": "Immediate detection of work outside reconstructible memory and an honest operational denominator.",
+      "completion_evidence": "A real dispatch shows every declared seat/turn bound exactly once, and an unbound launch is blocked and surfaced to the operator."
+    },
+    {
+      "gap_id": "HC-G3",
+      "statement": "The shipping draft and preview bypass the stronger local proposal store and use unversioned browser-local heuristics.",
+      "property_lost": "Safe preparation, conflict recovery and validation provenance are weaker than the interface wording and backend code imply.",
+      "smallest_next_action": "Connect the frontend to one versioned local draft/validation port or retire the unused in-process store and narrow the UI claim to plain notes.",
+      "what_it_buys": "Honest, recoverable preparation without confusing a length check with governed validation.",
+      "completion_evidence": "Browser and contract tests prove persistence, validator identity/version, conflicts, retained input and zero authoritative effects through the same implementation path."
+    },
+    {
+      "gap_id": "HC-G4",
+      "statement": "Backup and retirement preserve recoverable bytes, but no supported restore/reinstate journey exists.",
+      "property_lost": "A human cannot reliably recover service from preserved state without expert improvisation.",
+      "smallest_next_action": "Add a receipt-backed restore/reinstate command and a short operator flow that verifies identity, destination safety and post-restore readiness.",
+      "what_it_buys": "Operational recovery rather than merely recoverable storage.",
+      "completion_evidence": "A cold rehearsal restores a retired database to a new destination, verifies identity and projections, starts safely, and preserves the retired and backup copies."
+    },
+    {
+      "gap_id": "HC-G5",
+      "statement": "Current source partiality and historical-only UX evidence prevent a current claim that humans see and understand the whole system.",
+      "property_lost": "Usability and trust claims are stale or narrower than the present repository state.",
+      "smallest_next_action": "Repair or explicitly accept the unresolved skill relationship, update brittle complete-state expectations, then rerun revision-bound browser/accessibility evidence and the planned independent/human reviews.",
+      "what_it_buys": "Current confidence in what the operator sees, what remains unknown and whether the authority boundary is understood.",
+      "completion_evidence": "All current contract tests have explained outcomes, new screenshot/browser receipts bind current revisions, and independent plus human residue records are closed or explicitly deferred."
+    }
+  ],
+  "document_drift": [
+    "implementations/UI-CONTRACT.md:249-255 describes the human gate as Phase-2-disabled, while implementations/static/ui/linear/index.html:1468-1491 implements an enabled marker-confirmation exception; implementations/README.md:193 acknowledges the shared contract clause is stale.",
+    "Linear copy at implementations/static/ui/linear/index.html:1462,1478 says the orchestrator picks up or watches the marker, but repository-wide code search found no automatic marker consumer; docs/features/agents-communication-infra/discovery/feature-discovery/agents-communication-infra.md:30 more honestly describes an active session manually noticing the marker.",
+    "Skill Control Center architecture/operations describe a versioned LocalDraftStore with CAS and validation semantics, but the shipping frontend uses localStorage and a text-length heuristic at implementations/static/control-center/app.js:270-301; the in-process LocalControlCenterStore is unexposed.",
+    "implementations/tests/control_center/test_api.py:55-105 still expects complete skill ingestion and successful topology, while current source parsing honestly returns partial/truncated because `.agents/skills/domainspec-implement/SKILL.md:8` names an unresolved explicit path.",
+    "implementations/as-built/source-drift-record.json records the current runtime/service.py read-surface addition. This pair used the current source manifest and makes no attribution."
+  ],
+  "open_disagreements": [],
+  "robot_talk_history": [
+    {
+      "round": 1,
+      "contested_claims": ["HC-01","HC-02","HC-03","HC-04","HC-05","HC-06"],
+      "outcome": "Worker accepted every reviewer qualification: configured auth/owner labels are not authentication; confirmation has no undo and repeat confirmation refreshes its timestamp; recoverable retirement preserves verified bytes but has no supported restore; browser draft/validation bypasses the local store; historical automation does not prove comprehension or WCAG; the failed-before-browser attempt is a caveat; and this seat's missing binding is direct false-reassurance evidence. No dissent remained."
+    }
+  ],
+  "commands_executed": [
+    {
+      "command": "Read-only rg and line inspection across implementations/server/main.py, ledger.py, server/control_center, static/control-center, static/ui/linear, runtime/local_pilot.py, runtime/operator_recovery.py, runtime/cli.py, bounded tests and relevant accepted decisions.",
+      "exit_code": 0,
+      "result": "Mapped the operator journeys, authority boundaries, implemented actions, missing marker consumer, draft-store disconnect, recovery commands and evidence limits.",
+      "write_effects": "None."
+    },
+    {
+      "command": "$env:TMP='C:/tmp/cyberalchemy-as-built/pair-07-human-control'; $env:TEMP=$env:TMP; python -m unittest tests.control_center.test_api tests.control_center.test_binding tests.control_center.test_evidence_provider tests.control_center.test_local_store (from implementations/)",
+      "exit_code": 1,
+      "result": "Ran 28 tests: 26 passed; two current-state failures expected complete/success but received partial/truncated because the live skill relationship source reports one unresolved explicit path.",
+      "write_effects": "Only isolated temporary test state under C:/tmp/cyberalchemy-as-built/pair-07-human-control."
+    },
+    {
+      "command": "$env:TMP='C:/tmp/cyberalchemy-as-built/pair-07-human-control'; $env:TEMP=$env:TMP; python -m unittest implementations.tests.runtime.test_operator_recovery implementations.tests.test_main",
+      "exit_code": 0,
+      "result": "Ran 9 tests in 4.410s; OK; one non-failing StarletteDeprecationWarning.",
+      "write_effects": "Only isolated temporary test stores and pending markers under C:/tmp/cyberalchemy-as-built/pair-07-human-control."
+    },
+    {
+      "command": "Python sqlite3 URI mode=ro query of host_workflow_turn_bindings in telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3 for dispatch 2026-07-31-implementation-as-built-reconciliation",
+      "exit_code": 0,
+      "result": "Returned zero binding rows for the current Dispatch.",
+      "write_effects": "None; database opened read-only."
+    },
+    {
+      "command": "Initial combined worker unittest attempt from repository root before correcting import root and obtaining permission for the required isolated temporary directory",
+      "exit_code": 1,
+      "result": "Four Control Center modules failed to import as `server` and sandbox denied initial temp-directory creation; unrelated selected tests ran. Superseded by the two explicit receipts above and not counted as proof.",
+      "write_effects": "No product or real-store writes."
+    },
+    {
+      "command": "Reviewer browser-test attempt followed by a no-browser rerun",
+      "exit_code": 1,
+      "result": "The attempt failed during temporary-path setup before browser launch; no fresh browser behavior was observed by either agent. Existing 204-screenshot evidence was inspected read-only instead.",
+      "write_effects": "No browser evidence or product-state writes."
+    }
+  ],
+  "snapshot": {
+    "commit": "63777abd838995c8512bcea806546c3f2ab6add6",
+    "dirty_state": "Current code boundary includes the unattributed service.py addition recorded in source-drift-record.json and expected investigation artifacts/dispatch registration. This pair changed only its JSON and Markdown outputs.",
+    "source_manifest_sha256": "82447f792685d81a6a2481c9b70b42dba2bf27a1326066a145407629ab9c330b"
+  }
+}

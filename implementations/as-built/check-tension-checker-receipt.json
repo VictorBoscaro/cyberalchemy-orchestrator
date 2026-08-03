@@ -1,0 +1,15 @@
+{
+  "schema": "cyberalchemy.check-tension-receipt/v1",
+  "payload_ref": "implementations/as-built/dispatch-payload.json",
+  "payload_sha256": "4823f74b8c1ae0506a56587b6151c335033ee7ede2d8b84e3d4817c56621dd33",
+  "reviewer_task": "/root/decomposition",
+  "role": "checker",
+  "status": "PASS",
+  "tests": {
+    "axis": "PASS",
+    "clone": "PASS",
+    "spread": "PASS",
+    "evidence": "PASS"
+  },
+  "groups_checked": 7
+}

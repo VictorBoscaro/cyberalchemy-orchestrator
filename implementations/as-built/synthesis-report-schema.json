@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS-BUILT synthesis report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "source_manifest_sha256",
+    "packets",
+    "missing_or_invalid_packets",
+    "preserved_conflicts",
+    "claim_index"
+  ],
+  "properties": {
+    "status": {
+      "enum": [
+        "complete",
+        "blocked"
+      ]
+    },
+    "source_manifest_sha256": {
+      "type": "string"
+    },
+    "packets": {
+      "type": "array",
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "question_id",
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "question_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "missing_or_invalid_packets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "preserved_conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "claim_index": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim_id",
+          "as_built_section",
+          "evidence"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "as_built_section": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "complete"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "packets": {
+            "minItems": 7,
+            "maxItems": 7,
+            "prefixItems": [
+              {
+                "properties": {
+                  "question_id": {
+                    "const": "pair-01-system-of-record"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "question_id": {
+                    "const": "pair-02-host-adoption"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "question_id": {
+                    "const": "pair-03-authority"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "question_id": {
+                    "const": "pair-04-memory-recovery"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "question_id": {
+                    "const": "pair-05-handoff-integrity"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "question_id": {
+                    "const": "pair-06-reconstruction"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "question_id": {
+                    "const": "pair-07-human-control"
+                  }
+                }
+              }
+            ],
+            "items": false
+          },
+          "claim_index": {
+            "minItems": 1
+          },
+          "missing_or_invalid_packets": {
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "packets": {
+            "minItems": 0,
+            "maxItems": 7
+          },
+          "claim_index": {
+            "minItems": 0
+          },
+          "missing_or_invalid_packets": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

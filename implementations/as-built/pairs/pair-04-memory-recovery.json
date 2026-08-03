@@ -1,0 +1,97 @@
+{
+  "question_id": "pair-04-memory-recovery",
+  "scope": "Journal, immutable runtime artifacts, canonicalization, transactions, projections, replay, idempotency, failpoints, local-pilot verification, backup, retirement, bridge coordination, and Control Center process-local state.",
+  "excluded_scope": "Production disaster recovery, external identity or authority recovery, networked or off-machine backup, fresh host smoke, real runtime-store mutation, product-code changes, and browser execution.",
+  "worker": "pair04_worker",
+  "reviewer": "pair04_reviewer",
+  "finalizer": "pair04_worker",
+  "executive_answer": "The runtime database has credible, tested local convergence and conservative recovery: one transaction accepts a command, exact retries recover committed results, corrupt or partial groups fail closed, projections can be rebuilt, and verified backups remain recoverable. The harness as a whole does not yet have one recoverable history. Official YAML, SQLite, repository or external artifacts and source state, plus process-local Control Center drafts, are joined by retry conventions and operator procedure rather than one durable recovery boundary. A YAML-first bridge interruption can therefore remain unmatched indefinitely unless an operator repeats the exact operation.",
+  "property_served": "Durable continuity and unambiguous recovery of governed work after interruption, retry, corruption, or restart.",
+  "claims": [
+    {
+      "claim_id": "MEM-01",
+      "statement": "Within one runtime SQLite database, an accepted command converges to one durable result: artifacts, events, aggregate head, domain mutation, and command receipt commit or roll back together; an exact retry returns the persisted result and a divergent retry conflicts.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"unknown","authority":"partial","official_adoption":"partial","reconstructibility":"yes"},
+      "evidence_for": ["implementations/server/runtime/journal.py:145-353 performs idempotency lookup and all accepted-command writes inside one RuntimeDatabase.write transaction.", "implementations/server/runtime/database.py:137-146 uses BEGIN IMMEDIATE with commit on success and rollback on exception.", "implementations/server/runtime/migrations/001_aci_slice0.sql:1-18 makes (scope_key,idempotency_key) unique.", "Focused unittest `JournalArtifactApiTests.test_fail_before_commit_rolls_back_and_after_commit_retry_converges` passed in the isolated test root."],
+      "evidence_against": ["Operational use by the active host was not proven by this pair."],
+      "confidence": "high",
+      "missing_evidence": ["A same-store operational receipt from an actual interrupted host command."],
+      "implication_for_harness": "Inside the runtime store, callers can safely retry uncertain commands without creating a second official result."
+    },
+    {
+      "claim_id": "MEM-02",
+      "statement": "The journal detects incomplete, overlapping, duplicate, orphaned, payload-corrupt, schema-divergent, or head-mismatched accepted groups, and APT read models can catch up or rebuild deterministically from verified complete groups.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"unknown","authority":"partial","official_adoption":"partial","reconstructibility":"yes"},
+      "evidence_for": ["implementations/server/runtime/journal.py:431-580 verifies group continuity, event identity, payload artifacts, schema bindings, orphan events, and head endpoints.", "implementations/server/runtime/projections.py:395-520 rechecks source events and applies one verified group plus checkpoint in one transaction.", "implementations/server/runtime/projections.py:523-554 clears and rebuilds APT projections from offset zero.", "Focused group rollback/tamper and both AptIndependentProjectorTests passed under the isolated test root."],
+      "evidence_against": ["An interruption between projection clearing and catch-up creates a temporary availability window until startup preflight or an explicit rerun catches up."],
+      "confidence": "high",
+      "missing_evidence": ["Injected process termination between rebuild reset and catch-up, followed by startup-preflight recovery."],
+      "implication_for_harness": "Derived views do not need to become a second authority; they can be withheld when stale and reconstructed from the journal."
+    },
+    {
+      "claim_id": "MEM-03",
+      "statement": "Local-pilot recovery is conservative but operator-driven: verification rejects invalid candidates, online backup publishes only a verified new copy, and retirement moves a stopped database only after independently verifying it and a structurally matching backup.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"unknown","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": ["implementations/server/runtime/operator_recovery.py:51-138 verifies migrations, SQLite and foreign-key integrity, journal structure, exact profiles, and projection currency.", "implementations/server/runtime/operator_recovery.py:141-177 uses SQLite online backup, verifies a temporary copy, and atomically publishes it without overwrite.", "implementations/server/runtime/operator_recovery.py:180-245 requires stopped confirmation, WAL checkpoint/no sidecars, independent verification and a matching structural identity before recoverable move.", "All nine OperatorRecoveryTests passed under the isolated test root."],
+      "evidence_against": ["implementations/server/runtime/operator_recovery.py:33-48 defines matching identity by migration version, counts, and final event rather than content-complete equality.", "No schedule, rotation, off-machine copy, encryption/key recovery, or recovery-point objective is implemented."],
+      "confidence": "high",
+      "missing_evidence": ["Crash injection around the final retirement move.", "A practiced restore exercise with measured recovery point and recovery time."],
+      "implication_for_harness": "The runtime can preserve and reject recovery candidates safely, but continuity still depends on an operator having created and retained a suitable backup."
+    },
+    {
+      "claim_id": "MEM-04",
+      "statement": "The YAML-first orchestration bridge can converge after a known interruption only when an external actor repeats the exact operation; it has no durable pending intent, startup scanner, or automatic cross-store reconciliation.",
+      "dimensions": {"implementation":"partial","proof":"partial","operation":"unknown","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": ["implementations/server/runtime/orchestration_bridge.py:273-328 appends the opening YAML before the runtime link and open receipt; lines 351-389 preflight and append closing YAML before the runtime close receipt.", "implementations/tests/runtime/test_orchestration_bridge.py:637-657 proves an exact retry after `after_yaml_open` or `after_yaml_close` does not duplicate YAML and completes the call.", "Selected bridge retry, divergent-retry, YAML-only crash, and lock-contention tests passed."],
+      "evidence_against": ["No inspected code records reconciliation_required or scans YAML and SQLite on startup to finish an interrupted bridge operation.", "Failpoints after the session link, open acceptance, and close acceptance exist in code but are not exercised by the bridge test suite."],
+      "confidence": "high",
+      "missing_evidence": ["Tests for every later bridge failpoint.", "A durable cross-store recovery intent and a deterministic startup reconciliation proof."],
+      "implication_for_harness": "A process can stop after making YAML official and leave no matching runtime history until someone knows and performs the exact retry."
+    },
+    {
+      "claim_id": "MEM-05",
+      "statement": "Store verification is structurally strong but not content-complete: generic command result JSON has no independent integrity digest, and aggregate-head state_hash is not recomputed by replaying the reducer.",
+      "dimensions": {"implementation":"partial","proof":"partial","operation":"unknown","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": ["implementations/server/runtime/migrations/001_aci_slice0.sql:1-18 stores result_receipt_json without a result digest.", "implementations/server/runtime/journal.py:165-176 parses and returns persisted result_receipt_json on retry.", "implementations/server/runtime/journal.py:467-580 verifies receipt/event grouping and head endpoints but does not recompute result JSON integrity or aggregate state_hash from a reducer."],
+      "evidence_against": ["No observed corruption was established; the missing checks are code-established boundaries only."],
+      "confidence": "high",
+      "missing_evidence": ["A bounded negative test demonstrating that altered generic result JSON passes verification.", "A deterministic aggregate-state replay verifier and tamper test."],
+      "implication_for_harness": "The store can prove that event groups are intact without yet proving that every retry result and reduced state still means exactly what the accepted events prescribed."
+    },
+    {
+      "claim_id": "MEM-06",
+      "statement": "Control Center preferences and proposal drafts are intentionally process-local preview state and disappear when the service is recreated; they are not official work, but their loss breaks continuity of unfinished human intent.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"unknown","authority":"no","official_adoption":"no","reconstructibility":"no"},
+      "evidence_for": ["implementations/server/control_center/local_store.py:1 and 35-38 describe and implement an in-process store backed only by dictionaries.", "implementations/server/control_center/service.py:96-99 creates a fresh LocalControlCenterStore when none is injected.", "implementations/tests/control_center/test_local_store.py:26-124 tests in-process CAS and preview behavior, not restart persistence."],
+      "evidence_against": ["The drafts are explicitly preview-only and therefore should not be described as orphaned or duplicated official work."],
+      "confidence": "high",
+      "missing_evidence": ["A durable, authority-scoped draft store with restart tests and an explicit promotion boundary to official work."],
+      "implication_for_harness": "A user can lose the reasoning and proposed change that preceded an authoritative action, weakening work reconstruction even when the official runtime remains intact."
+    }
+  ],
+  "gaps": [
+    {"gap_id":"G-04-01","statement":"There is no durable cross-store reconciliation state for YAML-first bridge operations.","property_lost":"Automatic convergence and orphan detection across official YAML and runtime receipts.","smallest_next_action":"Persist a bridge intent/state machine and add a startup scanner that classifies and completes or escalates every YAML/SQLite mismatch.","what_it_buys":"Interrupted dispatch open/close operations become discoverable and recoverable without relying on human memory of the exact retry.","completion_evidence":"Every injected bridge failpoint restarts into exactly one matched YAML row and runtime receipt, or one durable reason-coded reconciliation incident."},
+    {"gap_id":"G-04-02","statement":"Backup and restore cover one SQLite file, not a versioned whole-harness recovery set.","property_lost":"A single known recovery point for YAML, SQLite, repository/external artifacts, and source state.","smallest_next_action":"Define and emit a signed recovery manifest that binds independently backed-up components to one logical checkpoint.","what_it_buys":"An operator can restore mutually corresponding authorities rather than assembling versions by judgment.","completion_evidence":"A disaster-recovery exercise restores the manifest-bound set and verifies all cross-store links without unexplained orphan or duplicate official work."},
+    {"gap_id":"G-04-03","statement":"Generic command result JSON and aggregate state hashes are not content-completely reverified.","property_lost":"Detection of semantic corruption in replay results and reduced state.","smallest_next_action":"Add a digest for canonical result receipts and a deterministic reducer replay check for aggregate state_hash.","what_it_buys":"Retries and reconstructed heads can be proven to preserve the meaning of accepted events, not only their structural grouping.","completion_evidence":"Tampered result JSON and state_hash are rejected by verification while untampered stores reproduce identical values."},
+    {"gap_id":"G-04-04","statement":"Recovery remains a manual procedure without scheduled, off-machine, encrypted, retention-managed backups or measured objectives.","property_lost":"Reliable survivability beyond a single machine and predictable recovery time/data loss.","smallest_next_action":"Choose recovery-point and recovery-time targets, automate verified backup creation/rotation, and rehearse restore from a separately controlled location.","what_it_buys":"Continuity becomes an operated system property rather than a helper that works only when manually invoked in time.","completion_evidence":"Periodic receipts show successful verified backups and a timed restore drill meets the declared objectives."},
+    {"gap_id":"G-04-05","statement":"Control Center drafts and preferences are lost on process restart.","property_lost":"Reconstruction of unfinished human intent and local decision context.","smallest_next_action":"Persist preview state locally with explicit ownership, revision, retention, and promotion semantics.","what_it_buys":"Users can resume deliberation without confusing drafts with authoritative changes.","completion_evidence":"Restart tests recover the exact draft/preference revisions while proving that no preview state becomes official without an explicit promotion action."},
+    {"gap_id":"G-04-06","statement":"The executable YAML appender is absent from the current source manifest.","property_lost":"Reproducibility of the bridge continuity proof from a sealed executable corpus.","smallest_next_action":"Include the appender and its executable dependencies in the next source manifest.","what_it_buys":"Bridge retry and lock behavior can be tied to the exact writer bytes that produced the official ledger.","completion_evidence":"Manifest validation covers the appender and the focused bridge suite passes from the sealed corpus."}
+  ],
+  "document_drift": [
+    "docs/features/agent-provenance-telemetry/integration/stage-c/operator-recovery-runbook.md:91 names receipt-digest failure generically, while generic command result_receipt_json has no independently checked digest in the journal verifier.",
+    "plans/governed-agent-work-infrastructure/PLAN.md:288-289 still says the durable journal and store are not built; current runtime code and focused tests demonstrate that a bounded local journal/store is built, although whole-harness recovery remains open.",
+    "The recovery runbook accurately limits backup and retirement to the runtime database and explicitly excludes artifact tombstoning, production cutover, and external authority recovery; these are scope boundaries, not implemented whole-harness recovery."
+  ],
+  "open_disagreements": [],
+  "robot_talk_history": [
+    {"round":1,"contested_claims":["MEM-03","MEM-04","MEM-05","MEM-06"],"outcome":"Worker accepted all reviewer boundary attacks. Both agents distinguished operator-triggered retry from automatic convergence, structural verification from content-complete verification, coarse retirement identity from byte equality, and process-local preview loss from loss of official work. No dissent remained."}
+  ],
+  "commands_executed": [
+    {"command":"python -m pytest -q <focused recovery selections>","exit_code":1,"result":"Tests did not start because the default Python environment has no pytest module.","write_effects":"Created only the declared isolated test directory under C:/tmp/cyberalchemy-as-built/pair-04-memory-recovery."},
+    {"command":"python -m unittest -q <journal, operator recovery, bridge and projector selections>","exit_code":1,"result":"Sixteen tests passed; two selections failed to load because the worker used the wrong projector test class name.","write_effects":"Ephemeral test databases and fixtures only under the declared isolated temporary root."},
+    {"command":"python -m unittest -q implementations.tests.runtime.test_apt_projector","exit_code":0,"result":"Both projector recovery and deterministic rebuild tests passed. Together with the prior successful selections, 18 unique relevant tests passed.","write_effects":"Ephemeral test databases and fixtures only under the declared isolated temporary root."},
+    {"command":"Inline isolated negative probe for generic result_receipt_json tampering","exit_code":124,"result":"Timed out before producing a verdict; no corruption claim is based on this probe.","write_effects":"Ephemeral temporary database only under the declared isolated test root; no real runtime store was touched."},
+    {"command":"Read-only rg and bounded line inspections across runtime, tests, recovery runbook, plan, and current source manifest","exit_code":0,"result":"Established code paths, test coverage, recovery boundaries, and document drift cited in the claims.","write_effects":"None."}
+  ],
+  "snapshot": {"commit":"63777abd838995c8512bcea806546c3f2ab6add6","dirty_state":"Current code boundary includes the unattributed service.py addition recorded in source-drift-record.json and the expected dispatch YAML registration; this pair made no product-code or documentation changes.","source_manifest_sha256":"82447f792685d81a6a2481c9b70b42dba2bf27a1326066a145407629ab9c330b"}
+}

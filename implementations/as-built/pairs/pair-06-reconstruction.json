@@ -1,0 +1,234 @@
+{
+  "question_id": "pair-06-reconstruction",
+  "scope": "APT Sessions and projections, Session-to-Dispatch links, research capture, Reference Scout and compatibility Probe records, reference delivery evidence, claims, checks, queries, and read-only persisted examples.",
+  "excluded_scope": "Fresh host smoke, new subagent launches beyond the declared pair, network access, browser execution, mutation of the real runtime store, product-code changes, documentation repair, and attribution of the recorded source drift.",
+  "worker": "pair06_worker (Nonaka, Ikujiro)",
+  "reviewer": "pair06_reviewer (Bourbaki, Nicolas)",
+  "finalizer": "pair06_worker (Nonaka, Ikujiro)",
+  "executive_answer": "The implementation provides a declared, integrity-linked skeleton for reconstruction, not a complete record of reasoning or work. When records are admitted, it can pin a Session to an immutable Dispatch snapshot, retain actor and attempt identities, seal selected inputs and raw research output, preserve typed facts and Scout evidence, and rebuild projections after restart. It does not yet guarantee that every real host turn enters that graph, persist every turn's exact terminal output, require a disposition for every expected contribution, or connect references to claims through independent checks. The live store demonstrates 180 Dispatch links, 22 resolved bindings and 415 ingestions, but only one Scout and one APT capture with six facts; no agent Attempt or reference-delivery record exists. This AS-BUILT investigation itself has a registered Dispatch but zero runtime links, bindings, ingestions, Scouts or captures. A cold third party can recover pieces of declared intent and accepted evidence, but cannot yet reconstruct why all work was legitimately authorized, exactly what each agent received and produced, or why the result should be believed.",
+  "property_served": "Honest reconstruction of work and reasoning: a third party can follow objective, declared authority, context, actor, action, result and evidence without inventing missing links or collapsing delivery, observation, use and support.",
+  "claims": [
+    {
+      "claim_id": "RECON-01",
+      "statement": "The runtime implements a durable, integrity-linked skeleton for facts explicitly admitted through it; it does not automatically capture the complete work or reasoning that occurred.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"partial","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/runtime/service.py:825-915 journals Session identity with origin digest, actor and authentication references/digests.",
+        "implementations/server/runtime/service.py:1130-1260 pins the current Session to an exact Dispatch ledger-row identity and digest with declared authorization evidence.",
+        "implementations/server/runtime/provenance.py:435-584 binds submitted research structure to a content-addressed raw artifact, producer and Session-to-Dispatch link.",
+        "implementations/server/runtime/projections.py:523-554 rebuilds APT projections from accepted journal history; both workers' separate targeted suites passed restart/rebuild tests."
+      ],
+      "evidence_against": [
+        "implementations/server/runtime/provenance.py:300-310 accepts only an explicit bounded research intent, and lines 469-490 mark content as declared or inferred rather than automatically observed.",
+        "The current AS-BUILT Dispatch has no accepted runtime link or binding despite active work and pair artifacts."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["End-to-end automatic admission and coverage reconciliation for every real host turn and expected result."],
+      "implication_for_harness": "The harness may claim preservation of admitted records, not completeness of memory or reasoning."
+    },
+    {
+      "claim_id": "RECON-02",
+      "statement": "A linked Dispatch preserves its declared goal, context, topology and exact prompts, but the runtime does not model a verified objective-to-decision-to-authority chain.",
+      "dimensions": {"implementation":"partial","proof":"yes","operation":"partial","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/as-built/dispatch-record.json records the current Dispatch goal, context, topology, named roles and exact prompts.",
+        "implementations/server/runtime/service.py:1179-1224 pins a Dispatch snapshot and declared authorization references/digests into the accepted command.",
+        "A read-only live-store query showed that linked Dispatch rows can retain the full goal/context/topology/prompt snapshot in dispatch_links.row_json."
+      ],
+      "evidence_against": [
+        "No implemented typed Objective or Decision entity/link was found in the APT runtime.",
+        "Declared actor, decider and authorization strings/digests do not establish external entitlement or authenticated human authority.",
+        "The current Dispatch has no dispatch_links row."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["Separate durable fields for declared decider, authorization evidence and verification status, tied to an upstream objective/decision without implying external entitlement."],
+      "implication_for_harness": "A cold reader may recover the declared reason for linked work, but cannot prove that it was the legitimate reason or authority."
+    },
+    {
+      "claim_id": "RECON-03",
+      "statement": "Host bindings can identify who was assigned to a turn and whether it terminated, but no binding-to-terminal-output edge proves what that agent produced or changed.",
+      "dimensions": {"implementation":"partial","proof":"yes","operation":"partial","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/runtime/service.py:1601-1652 exposes binding, Session, group, seat, turn, Attempt, host, operation, agent resolution, state, event and time fields through the Dispatch snapshot.",
+        "The reviewer read-only live query found 22/22 bindings resolved to a non-null agent identity."
+      ],
+      "evidence_against": [
+        "A terminal binding contains lifecycle state but no exact output artifact or effect commitment.",
+        "There is no aggregate read joining a host binding to a terminal output and its APT contribution.",
+        "The current Dispatch has zero bindings, so its repository pair artifacts are not runtime-authenticated seat outputs."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["The first missing link is binding/Attempt to an exact, content-addressed terminal output/effect artifact accepted atomically with terminal state."],
+      "implication_for_harness": "Identity and terminality are scaffolding; the system still cannot answer 'what did this agent do?' from durable runtime records alone."
+    },
+    {
+      "claim_id": "RECON-04",
+      "statement": "Exact reference-bundle delivery and effective-input reconstruction are implemented and tested on a specialized path, but input sealing is not universal and has no live operational example.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"no","authority":"partial","official_adoption":"unknown","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/runtime/service.py:3445-3558 verifies target binding, Scout lifecycle, committed membership and exact bundle bytes.",
+        "implementations/server/runtime/service.py:3560-3584 builds a content-addressed effective-input artifact for the derived target Attempt.",
+        "implementations/server/runtime/service.py:3833-3880 reconstructs delivery evidence with its exact two-event atomic group.",
+        "The worker's 5-test suite and reviewer's independent 23-test suite both passed relevant restart, delivery and evidence-reader cases."
+      ],
+      "evidence_against": [
+        "Effective-input sealing is implemented for explicit reference-delivery settlement, not every host launch.",
+        "The read-only live store had agent_attempts=0, agent_execution_requests=0 and agent_reference_deliveries=0."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["A real bound host turn with a universally sealed effective input and accepted target-delivery/Attempt records."],
+      "implication_for_harness": "The mechanism proves a bounded capability, not that real agents consistently receive reconstructible inputs."
+    },
+    {
+      "claim_id": "RECON-05",
+      "statement": "Ingestion and reference-use records preserve different kinds of source evidence, but neither exact ingestion nor claimed consultation proves that a source reached, was read by, or supported an agent's conclusion.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"yes","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/runtime/service.py:6210-6243 verifies ingestion event payloads and, for exact coverage, retained input bytes, digest and size.",
+        "implementations/server/runtime/provenance.py:336-360 preserves reference kind, observed locator and use_kind.",
+        "The reviewer read-only live query found 415 ingestions: 130 exact, 36 metadata_only and 249 opaque."
+      ],
+      "evidence_against": [
+        "implementations/server/runtime/provenance.py:640-659 creates direct submitted references with source_observation_id null, probe_recommendation_ref null and anchor_quality locator.",
+        "docs/features/agent-provenance-telemetry/specs/domain.md:719-725 states that claimed_consulted is a producer claim, not host access evidence.",
+        "Exact ingestion proves retained bytes, not prompt inclusion, delivery, access, reading, use or epistemic support."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["Separately attributable records for delivered, observed, claimed_consulted and supports, never collapsed into one verified flag."],
+      "implication_for_harness": "The system can say which source evidence was retained or declared, but must keep the epistemic meaning explicitly unknown."
+    },
+    {
+      "claim_id": "RECON-06",
+      "statement": "Research capture preserves a digest-bound raw witness and six implemented typed fact kinds, but accepted claim-support relations, ReferenceChecks and dispositions remain absent from runtime code.",
+      "dimensions": {"implementation":"partial","proof":"yes","operation":"partial","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/runtime/provenance.py:586-720 builds question, answer, reference use, problem, claim and formalization records with actor/method and exact raw selectors.",
+        "implementations/server/runtime/projections.py:564-620 returns those six current fact buckets.",
+        "The read-only live store contains one capture with exactly six facts, one in each implemented bucket."
+      ],
+      "evidence_against": [
+        "A runtime/test search for reference_check, ResearchReference, disposition and assessment returned no matches.",
+        "implementations/server/runtime/projections.py:596-603 omits reference checks, claim-reference relations, dispositions and assessments.",
+        "The live claim is inferred from the submitted formalization and its source locator has no durable support edge."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["A typed check that separately records delivered/observed/claimed_consulted/supports with checker, method/version, outcome and exact digest-bound selector."],
+      "implication_for_harness": "The runtime can reconstruct what an answer declared, not why its claim should be believed."
+    },
+    {
+      "claim_id": "RECON-07",
+      "statement": "Restart/rebuild queries are implemented and proven, but no single cold-reader surface joins declared reason, authority, input, binding, output, contribution and evidence while exposing missing edges.",
+      "dimensions": {"implementation":"partial","proof":"yes","operation":"partial","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": [
+        "implementations/server/runtime/api.py:73-85,252-319 and 527-611 expose capability-scoped Session, Scout, ingestion, lineage, Dispatch, Research and answer reads.",
+        "implementations/server/runtime/projections.py:523-554 implements deterministic rebuild and lines 639-680 expose the Dispatch research projection.",
+        "Both independent test receipts passed restart/rebuild and evidence-reader cases."
+      ],
+      "evidence_against": [
+        "implementations/server/runtime/service.py:6269-6302 returns Session links, Scouts and ingestions but not binding-to-output-to-contribution joins.",
+        "implementations/server/runtime/service.py:6166-6250 returns operational lineage summaries without answers, claims or checks.",
+        "The current Dispatch has zero runtime links, bindings, ingestions, Scouts and captures even though repository outputs exist."
+      ],
+      "confidence": "high",
+      "missing_evidence": ["A joined reconstruction read model, built only after host adoption, terminal-output capture and contribution dispositions are complete."],
+      "implication_for_harness": "The pieces are queryable by an expert; the reconstructible work story is not yet a first-class system product."
+    }
+  ],
+  "gaps": [
+    {
+      "gap_id": "RECON-G1",
+      "statement": "Real host work can occur without a Session/Dispatch link and bound seat receipt; the current investigation is such an orphan.",
+      "property_lost": "Coverage and attribution: the harness cannot know whether its durable memory contains all expected work.",
+      "smallest_next_action": "Enforce host adoption and reconcile every expected seat, turn, follow-up and terminal transition from the pinned Dispatch against accepted runtime bindings. First missing link: this Dispatch's Session-to-Dispatch link, followed by per-turn bindings.",
+      "what_it_buys": "Detects work outside memory and establishes the denominator for reconstructibility before richer semantics are added.",
+      "completion_evidence": "A report for a real dispatch shows every expected turn mapped exactly once to accepted link/binding/terminal receipts, with explicit missing, orphaned and extra categories."
+    },
+    {
+      "gap_id": "RECON-G2",
+      "statement": "Terminal bindings do not commit the exact output or effects produced by the bound turn.",
+      "property_lost": "The system knows who terminated but not what they durably produced or changed.",
+      "smallest_next_action": "Persist one content-addressed terminal output/effect artifact atomically with each binding's terminal transition. First missing link: binding/Attempt to exact durable output.",
+      "what_it_buys": "Makes 'who did what' answerable and prevents later files from being falsely attributed to a terminal producer.",
+      "completion_evidence": "A cold reader verifies the terminal artifact digest and effects for every bound turn, and rejects substituted or absent output."
+    },
+    {
+      "gap_id": "RECON-G3",
+      "statement": "Expected contributions are not required to reach a captured, partial, missing or checked disposition.",
+      "property_lost": "Silence is indistinguishable from omitted capture, failed work or an intentionally absent contribution.",
+      "smallest_next_action": "Derive expected contributions from the pinned Dispatch and require an explicit capture/check disposition for each. First missing link: expected contribution to accepted outcome record.",
+      "what_it_buys": "Turns sparse success examples into measurable completion and preserves failures and absences without guessing.",
+      "completion_evidence": "Every expected contribution reconciles to exactly one current captured/partial/missing disposition after restart and replay."
+    },
+    {
+      "gap_id": "RECON-G4",
+      "statement": "Declared rationale, authority evidence and epistemic support remain prose or unimplemented specification rather than independently checkable runtime relations.",
+      "property_lost": "A reader cannot separate declared decision-maker from verified entitlement, or source delivery/use from support for a claim.",
+      "smallest_next_action": "After coverage/output/disposition are closed, persist declared decider, authorization evidence and verification status separately, then implement typed reference/claim checks with checker, method/version, outcome and exact selector. First missing links: Dispatch to declared decision evidence, and claim to independently checked reference evidence.",
+      "what_it_buys": "Explains why work was allowed and why a conclusion is supported without turning declarations or digests into authority or truth.",
+      "completion_evidence": "Cold fixtures distinguish unverified decider evidence from externally verified status and distinguish delivered, observed, claimed_consulted, supports and contradicts across independent check chains."
+    },
+    {
+      "gap_id": "RECON-G5",
+      "statement": "Reconstruction requires expert joins across the YAML ledger, runtime journal/database, protected artifacts and repository outputs.",
+      "property_lost": "A third party cannot obtain one bounded, explicit account of work and its unknowns.",
+      "smallest_next_action": "Only after G1-G4, add a non-authoritative joined reconstruction read model that traverses existing owners and labels every missing edge. First missing link: binding/output/contribution join in the read surface.",
+      "what_it_buys": "Makes durable memory usable for review, recovery and continuation without inventing joins or copying write authority.",
+      "completion_evidence": "One cold fixture produces the same graph and narrative after restart/rebuild, includes exact evidence selectors and explicitly reports unavailable edges as unknown."
+    }
+  ],
+  "document_drift": [
+    "The accepted DomainSpec describes ResearchReferenceClaim, ReferenceCheck, independent check chains, disposition/assessment and rich query summaries at docs/features/agent-provenance-telemetry/specs/domain.md:223-256,484-485,801 and specs/queries.md:112-159,353-359,481-484,560-568; current runtime code has no corresponding records, tables or query buckets.",
+    "docs/features/agent-provenance-telemetry/WORK-PACK.md:90 calls TASK-140 backend complete while lines 92-94 leave verification and alignment audits blocked. Code supports a bounded projection slice, not the whole richer query contract.",
+    "The current source boundary includes the recorded service.py drift that exposes host bindings in a Dispatch snapshot at implementations/server/runtime/service.py:1601-1652. This improves visibility but creates no missing binding and does not change the current-run verdict; see implementations/as-built/source-drift-record.json."
+  ],
+  "open_disagreements": [],
+  "robot_talk_history": [
+    {
+      "round": 1,
+      "contested_claims": ["RECON-01","RECON-03","RECON-04","RECON-05","RECON-07"],
+      "outcome": "Worker accepted the reviewer's narrowing: call the graph a declared/integrity-linked skeleton; time-qualify and partition live counts; identify binding-to-terminal-output as the first missing work edge; deny universal effective-input sealing; forbid exact-ingestion-to-consultation inference; state the missing aggregate join; and preserve the 5-test and 23-test receipts separately. No dissent remained on substance."
+    },
+    {
+      "round": 2,
+      "contested_claims": ["RECON-G1","RECON-G2","RECON-G3","RECON-G4","RECON-G5"],
+      "outcome": "Worker accepted the reviewer's priority order exactly: (a) enforce/reconcile host adoption, (b) persist exact terminal output per turn, (c) require contribution capture/check disposition, (d) then decision/authority semantics and claim-support checks, and (e) finally the joined reconstruction read model. 'Verified authorizer' was replaced by separate declared decider, evidence and verification status. Checks now preserve delivered, observed, claimed_consulted and supports with method/checker/outcome/exact selector/version. No dissent remained."
+    }
+  ],
+  "commands_executed": [
+    {
+      "command": "rg/read-only symbol and line inspection across implementations/server/runtime, implementations/tests/runtime and the bounded APT decision/spec files",
+      "exit_code": 0,
+      "result": "Mapped Session/Dispatch/research/Scout/reference-delivery/projection/query paths and found no runtime ReferenceCheck/disposition/assessment implementation.",
+      "write_effects": "None."
+    },
+    {
+      "command": "Python sqlite3 read-only URI queries against telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3",
+      "exit_code": 0,
+      "result": "Time-qualified live snapshot: sessions=40, dispatch_links=180, captures=1, facts=6, reference_lineage=0, scouts=1, recommendations=1, ingestions=415 (130 exact/36 metadata_only/249 opaque), bindings=22 (22 resolved/0 missing agent identity), agent_reference_deliveries=0, agent_execution_requests=0; current Dispatch returned zero links, bindings, ingestions, Scouts and captures.",
+      "write_effects": "None; database opened read-only."
+    },
+    {
+      "command": "$env:TEMP='C:\\tmp\\cyberalchemy-as-built\\pair-06-reconstruction'; $env:TMP=$env:TEMP; python -m unittest implementations.tests.runtime.test_apt_stage_b.AptResearchEndToEndTests.test_capture_query_protected_answer_and_restart implementations.tests.runtime.test_apt_projector.AptIndependentProjectorTests.test_rebuild_from_zero_is_deterministic implementations.tests.runtime.test_reference_scout_ingestion.ReferenceScoutIngestionTests.test_scout_bus_commit_delivery_and_restart_query implementations.tests.runtime.test_reference_scout_ingestion.ReferenceScoutIngestionTests.test_exact_and_opaque_ingestion_are_dispatch_queryable implementations.tests.runtime.test_agent_reference_evidence_reader.AgentReferenceEvidenceReaderTests.test_target_and_delivery_wrappers_are_complete_and_restart_stable",
+      "exit_code": 0,
+      "result": "Worker receipt: Ran 5 tests in 6.402s; OK; one non-failing StarletteDeprecationWarning.",
+      "write_effects": "Only isolated temporary test stores under C:/tmp/cyberalchemy-as-built/pair-06-reconstruction."
+    },
+    {
+      "command": "$taskTmp='C:\\tmp\\cyberalchemy-as-built\\pair-06-reconstruction'; New-Item -ItemType Directory -Force -Path $taskTmp | Out-Null; $env:TEMP=$taskTmp; $env:TMP=$taskTmp; python -m unittest implementations.tests.runtime.test_apt_projector implementations.tests.runtime.test_host_workflow_binding implementations.tests.runtime.test_agent_reference_delivery implementations.tests.runtime.test_agent_reference_evidence_reader implementations.tests.runtime.test_reference_scout_ingestion",
+      "exit_code": 0,
+      "result": "Reviewer receipt: Ran 23 tests in 34.938s; OK; tool wall time 37.6s; one non-failing StarletteDeprecationWarning.",
+      "write_effects": "Only isolated temporary test stores under C:/tmp/cyberalchemy-as-built/pair-06-reconstruction."
+    },
+    {
+      "command": "Initial worker test attempt before correcting two unittest class names and obtaining permission for the isolated C:/tmp directory",
+      "exit_code": 1,
+      "result": "Two named tests failed to load and sandbox denied directory creation; three correctly named tests ran. Superseded by the successful 5-test receipt and not counted as proof.",
+      "write_effects": "No product or real-store writes."
+    }
+  ],
+  "snapshot": {
+    "commit": "63777abd838995c8512bcea806546c3f2ab6add6",
+    "dirty_state": "Current code boundary includes the unattributed service.py addition recorded in source-drift-record.json and expected investigation artifacts/dispatch registration. This pair changed only its JSON and Markdown outputs.",
+    "source_manifest_sha256": "82447f792685d81a6a2481c9b70b42dba2bf27a1326066a145407629ab9c330b"
+  }
+}

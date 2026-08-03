@@ -1,0 +1,82 @@
+{
+  "question_id": "pair-03-authority",
+  "scope": "Capability issuance and consumption, orchestration bridge checks, host workflow-turn binding, accepted and rejected follow-up actions, current local-pilot observations, and the source drift observed during the investigation.",
+  "excluded_scope": "External identity provider, administrator host policy, operating-system sandbox enforcement, network access, fresh host smoke, product-code changes, and claims about stores other than the inspected local-pilot SQLite store.",
+  "worker": "Hoare, C. A. R.",
+  "reviewer": "Dijkstra, Edsger W.",
+  "finalizer": "parent after worker finalizer stalled",
+  "executive_answer": "The runtime enforces several local integrity and continuity constraints, but it does not establish an independently authenticated chain of authority. Capabilities are minted from caller-supplied or repository-declared identity and evidence fields; logical action scope is enforced, while human legitimacy and filesystem, tool, model, network, and delegation limits are not. Exact follow-up recipient continuity is proven only when the prior terminal binding has a non-null agent identity. The inspected local-pilot store contained zero binding rows for this dispatch at the observation time.",
+  "property_served": "Know who authorized an action, what limits actually constrained it, and whether accepted and rejected actions can be reconstructed.",
+  "claims": [
+    {
+      "claim_id": "AUTH-01",
+      "statement": "Capability possession, exact action and phase, expiry, record/context digest, one-shot consumption, and semantic identity of duplicate bridge records are mechanically enforced; these checks establish local integrity, not legitimacy of the authorizer.",
+      "dimensions": {"implementation":"yes","proof":"partial","operation":"unknown","authority":"partial","official_adoption":"partial","reconstructibility":"yes"},
+      "evidence_for": ["implementations/server/runtime/capabilities.py:60-128 and 150-167 implement issuance, validation, expiry, digest checks, revocation, and consumption.", "implementations/server/runtime/orchestration_bridge.py:86-141 and 218-230 check scoped authority values and reject divergent idempotent retries.", "Focused orchestration-bridge accepted-open/close and divergent-retry tests passed in an isolated temporary store."],
+      "evidence_against": ["The bridge test setup invokes .claude/skills/register-dispatch/append-dispatch.cjs, which is absent from both investigation source manifests; corpus-bounded proof is therefore partial."],
+      "confidence": "high",
+      "missing_evidence": ["A pinned copy or digest of the executable appender used by the tests.", "Independent authentication of the issuing principal and authorization evidence."],
+      "implication_for_harness": "A valid token proves that the local protocol accepted a scoped assertion; it does not yet prove who had the right to make that assertion."
+    },
+    {
+      "claim_id": "AUTH-02",
+      "statement": "Capability issuance and host policy identity are self-asserted inside the governed path: callers choose the principal and scope, and the host hook checks evidence shape and pinned digest syntax without authenticating a signer or resolving authoritative evidence bytes.",
+      "dimensions": {"implementation":"yes","proof":"yes","operation":"unknown","authority":"no","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": ["implementations/server/runtime/capabilities.py:60-97 accepts caller-selected principal, action, phase, context, and expiry.", "implementations/server/runtime/host_dispatch_hook.py:125-150 loads syntactically valid policy fields and lines 210-255 self-mint the grant.", "implementations/server/runtime/service.py:5202-5221 validates non-empty evidence fields and SHA-256 shape, not signer identity or referenced bytes."],
+      "evidence_against": [],
+      "confidence": "high",
+      "missing_evidence": ["An independently authenticated principal, immutable authorization artifact, and verified signature or equivalent trust root."],
+      "implication_for_harness": "The system can reconstruct what authority was claimed, but cannot yet prove that the claimant possessed that authority."
+    },
+    {
+      "claim_id": "AUTH-03",
+      "statement": "For a terminal prior turn with a non-null bound agent, the service accepts a follow-up to that exact agent and rejects a different target with AuthorizationError; the rejected path has no durable denial receipt.",
+      "dimensions": {"implementation":"yes","proof":"partial","operation":"unknown","authority":"partial","official_adoption":"partial","reconstructibility":"partial"},
+      "evidence_for": ["implementations/server/runtime/service.py:5488-5535 binds prompt/template/manifest and checks prior terminal agent continuity.", "implementations/tests/runtime/test_host_workflow_binding.py:337-364 passes the exact-agent action and rejects the different-agent action for a non-null fixture."],
+      "evidence_against": ["The test setup depends on the unmanifested appender, and the AuthorizationError path does not persist a denial receipt."],
+      "confidence": "high",
+      "missing_evidence": ["A durable reason-coded denial receipt and a corpus-complete isolated proof."],
+      "implication_for_harness": "Positive continuity can be reconstructed for the tested state, but rejected intent disappears and therefore cannot support later audit or recovery."
+    },
+    {
+      "claim_id": "AUTH-04",
+      "statement": "The declared per-seat filesystem, tool, model, network, and no-spawn limits are requested constraints, not observed runtime fences.",
+      "dimensions": {"implementation":"no","proof":"yes","operation":"unknown","authority":"partial","official_adoption":"unknown","reconstructibility":"partial"},
+      "evidence_for": ["implementations/as-built/dispatch-payload.json: effective_enforcement records non-observable provider/tool enforcement and observable artifacts rather than OS-level confinement.", "The inspected runtime capabilities constrain logical operations; no inspected enforcement point applies the full seat sandbox to subsequent tool execution."],
+      "evidence_against": [],
+      "confidence": "high",
+      "missing_evidence": ["Host- or OS-level enforcement receipts for each requested limit."],
+      "implication_for_harness": "The dispatch records intended limits but cannot claim that the worker was technically unable to exceed them."
+    },
+    {
+      "claim_id": "AUTH-05",
+      "statement": "At 2026-07-31T18:54:56.1708639Z, a read-only query of the inspected local-pilot SQLite store returned zero host_workflow_turn_bindings rows for this dispatch. This is point-in-time evidence only and does not prove that no binding ever existed or that another store was not used.",
+      "dimensions": {"implementation":"yes","proof":"partial","operation":"unknown","authority":"unknown","official_adoption":"unknown","reconstructibility":"no"},
+      "evidence_for": ["Read-only query SELECT COUNT(*) FROM host_workflow_turn_bindings WHERE dispatch_id=? against telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3 with parameter 2026-07-31-implementation-as-built-reconciliation returned 0."],
+      "evidence_against": ["The receipt did not establish by immutable store hash and same-store dispatch link that this was the unique store used by the active host."],
+      "confidence": "medium",
+      "missing_evidence": ["A store hash plus same-store dispatch_links and orchestration-open correlation, or an actual binding receipt for this dispatch."],
+      "implication_for_harness": "The investigation itself is registered in YAML but is not presently reconstructible through the runtime binding path from the inspected store."
+    }
+  ],
+  "gaps": [
+    {"gap_id":"G-03-01","statement":"No independent trust root authenticates the principal or human authorization evidence.","property_lost":"Provable legitimate authority.","smallest_next_action":"Bind issuance to an authenticated principal and immutable signed authorization artifact outside the constrained actor's control.","what_it_buys":"A defensible answer to who authorized the work and why that actor had the right to do so.","completion_evidence":"A negative test rejects self-asserted identity and a positive receipt links issuer, signed evidence digest, scope, and consumed capability."},
+    {"gap_id":"G-03-02","statement":"Seat-level filesystem, tool, model, network, and delegation limits are not enforced by the runtime.","property_lost":"Ability to prove that agents could not exceed declared authority.","smallest_next_action":"Choose an enforceable host or OS sandbox boundary and bind its policy/receipt to each seat.","what_it_buys":"Technical confinement rather than a prompt-level promise.","completion_evidence":"Adversarial tests are blocked for every prohibited operation and emit durable reason-coded receipts."},
+    {"gap_id":"G-03-03","statement":"A terminal prior turn may have agent_id=NULL, in which case follow-up recipient equality is skipped.","property_lost":"Exact recipient authorization and continuity.","smallest_next_action":"Require non-null agent identity for resolved spawn turns or reject follow-up when it is null; add null/missing/arbitrary-target tests.","what_it_buys":"No follow-up can escape the identity established by the prior turn.","completion_evidence":"A null-agent follow-up fails closed before launch and records a durable denial reason."},
+    {"gap_id":"G-03-04","statement":"Rejected follow-up authorization is not durably recorded.","property_lost":"Reconstruction of attempted unauthorized work and the reason it was stopped.","smallest_next_action":"Append a reason-coded denial event before returning AuthorizationError.","what_it_buys":"Auditable negative decisions and evidence for policy improvement.","completion_evidence":"Rejected target test leaves one immutable denial receipt correlated to dispatch, seat, turn, actor, and rule."},
+    {"gap_id":"G-03-05","statement":"The executable dispatch appender used by the bridge and tests is outside both source manifests.","property_lost":"Complete reproducibility of the authority proof corpus.","smallest_next_action":"Include and hash the appender and its transitive executable dependencies in the source manifest.","what_it_buys":"A test result whose full executable path is frozen and reviewable.","completion_evidence":"Manifest verification covers the appender bytes and the focused suite passes from that sealed corpus."}
+  ],
+  "document_drift": ["The dispatch capability profile accurately labels provider/tool enforcement non-observable, but any nearby prose describing seat limits as enforced would overstate current code.", "The original source manifest became stale during the investigation when service.py gained a 43-line read projection; source-drift-record.json preserves the change and authorship remains unknown."],
+  "open_disagreements": [],
+  "robot_talk_history": [
+    {"round":1,"contested_claims":["AUTH-01","AUTH-02","AUTH-03","AUTH-04","AUTH-05"],"outcome":"Both agents separated integrity rejection from legitimate authorization, downgraded unmanifested test proof, classified seat limits as requested, and bounded the zero-row observation. Reviewer preserved dissent on nullable agent identity."},
+    {"round":2,"contested_claims":["AUTH-03","AUTH-05"],"outcome":"Worker accepted that exact-target enforcement is conditional on non-null prior agent identity and that zero bindings is a timestamped inspected-store observation only. No dissent remains."}
+  ],
+  "commands_executed": [
+    {"command":"Focused unittest for exact-agent follow-up and different-agent rejection under C:/tmp/cyberalchemy-as-built/pair-03-authority","exit_code":0,"result":"Passed for the non-null bound-agent fixture.","write_effects":"Ephemeral temporary fixtures only."},
+    {"command":"Focused orchestration-bridge accepted open/close and divergent retry tests under the isolated temporary root","exit_code":0,"result":"Two tests passed; the full path depends on an appender absent from the manifests.","write_effects":"Ephemeral temporary fixtures only."},
+    {"command":"SQLite URI mode=ro SELECT COUNT(*) FROM host_workflow_turn_bindings WHERE dispatch_id=?","exit_code":0,"result":"Zero rows at 2026-07-31T18:54:56.1708639Z in the inspected local-pilot store.","write_effects":"None."},
+    {"command":"Get-FileHash and git diff/status inspection of implementations/server/runtime/service.py","exit_code":0,"result":"Observed 43 inserted lines; before digest 8b46ef..., current digest 4e1ad9...; authorship unknown.","write_effects":"None."}
+  ],
+  "snapshot": {"commit":"63777abd838995c8512bcea806546c3f2ab6add6","dirty_state":"service.py contains an unattributed 43-line addition recorded in source-drift-record.json; dispatch YAML contains the expected registration","source_manifest_sha256":"82447f792685d81a6a2481c9b70b42dba2bf27a1326066a145407629ab9c330b"}
+}
