@@ -28,6 +28,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
+        self._stage_dispatch_type_registry(self.project)
         self.ledger = self.project / "telemetry/agents/subagents-dispatch.yaml"
         self.database = self.project / "telemetry/runtime/bridge.sqlite3"
         self.runtime = RuntimeService(
@@ -45,7 +46,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         )
         self.opening = {
             "dispatch_id": "2026-07-24-bridge-review",
-            "schema_version": "0.6.1",
+            "schema_version": "0.6.2",
             "dispatch_type": "review",
             "goal": "Review the local orchestration logging bridge.",
             "context": (
@@ -55,6 +56,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
             ),
             "max_loops": 1,
             "final_approver": "parent",
+            "anti_bias_mode": "disabled",
             "output_mode": "inline",
             "groups": [
                 {
@@ -80,6 +82,21 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
                 "loops_used": 1,
             },
         }
+
+    @staticmethod
+    def _stage_dispatch_type_registry(root: Path) -> None:
+        registry_relative = "implementations/contracts/dispatch-type-registry.v1.json"
+        registry = json.loads((REPO / registry_relative).read_text(encoding="utf-8"))
+        paths = [registry_relative]
+        paths.extend(
+            entry["capability_path"]
+            for entry in registry["types"]
+            if entry["capability_path"] is not None
+        )
+        for relative in paths:
+            destination = root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(REPO / relative, destination)
 
     def tearDown(self) -> None:
         self.temp.cleanup()
@@ -461,7 +478,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
 
     def test_reserved_dispatch_type_fails_before_yaml_or_dispatch_acceptance(self) -> None:
         record = {**self.opening, "dispatch_type": "plan"}
-        with self.assertRaisesRegex(GateBlockedError, "live research"):
+        with self.assertRaisesRegex(GateBlockedError, "canonical dispatch-type registry"):
             self.bridge.open_dispatch(
                 authority=self.authority(
                     "open",

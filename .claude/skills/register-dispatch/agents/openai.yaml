@@ -1,0 +1,4 @@
+interface:
+  display_name: "Register Dispatch"
+  short_description: "Validate and append dispatch telemetry records"
+  default_prompt: "Use $register-dispatch through the governed lifecycle to validate this dispatch record."

@@ -6,7 +6,7 @@ the append-only ledgers of several repos.
 This server is **read-only against the ledger**. Its one write verb — Phase 2's
 `POST /api/confirm` — drops a confirm marker in the pending dir ("the only
 editable surface"), never the append-only ledger. Whoever runs the chain that
-follows (check-tension → register-dispatch → agents) is still Claude in the
+follows (entry validation → register-dispatch → agents) is still Claude in the
 session, watching for the marker; the validated appender remains the sole ledger
 writer (EG-1).
 """

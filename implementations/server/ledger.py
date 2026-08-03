@@ -51,7 +51,7 @@ PENDING_RELPATH = Path("telemetry") / "agents" / "pending"
 # NOT ending in `.json`, so `read_pending`'s `*.json` glob never picks it up.
 CONFIRM_MARKER_SUFFIX = ".confirmed"
 
-# These four are dispatchable under v0.6.1; plan and suggestion remain reserved.
+# These types are dispatchable under the current registry; reserved types remain non-live.
 LIVE_TYPES = {"research", "code", "review", "experiment"}
 
 # Bucket for dispatches without a `dispatch_type` (pre-v0.5.2 rows lack the field).
@@ -592,7 +592,7 @@ def summarize_repo(
         "legacy": legacy_count,
         "by_type": dict(sorted(by_type.items())),
         "live": live_count,
-        # RESERVED = a type not dispatchable under v0.6.1. Legacy rows stay out of
+        # RESERVED = a type not dispatchable under the current registry. Legacy rows stay out of
         # both sides: they predate the distinction existing.
         # CAVEAT (not a partition): `total == live + reserved + legacy` is NOT
         # guaranteed. A research row whose `groups` failed the lenient parse ends up
@@ -681,6 +681,7 @@ def slim(row: dict[str, Any], *, goal_limit: int = 240) -> dict[str, Any]:
         "working_folder": row.get("working_folder"),
         "max_loops": row.get("max_loops"),
         "final_approver": row.get("final_approver"),
+        "anti_bias_mode": row.get("anti_bias_mode"),
         "anti_bias_global": row.get("anti_bias_global"),
         "_state": row.get("_state"),
         "_live": row.get("_live"),

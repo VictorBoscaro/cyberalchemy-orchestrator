@@ -1,54 +1,51 @@
 ---
 name: register-dispatch
-description: Record a subagent dispatch in the repository telemetry ledger using two appends per dispatch, with each agent's angle and anti-bias axis. Use whenever you dispatch one or more subagents; research, code, review, others, and experiment are LIVE, while plan and suggestion remain reserved. Trivial work that spawns no subagent does not need registration. Single owner of the record and sheet mechanics in the router to type-skill to form chain.
+description: Own and validate the append-only telemetry row mechanics for a subagent dispatch. Use through subagents-dispatch-lifecycle for parent-bound work, or directly only for an explicitly authorized standalone compatibility record. Dispatch types and availability come exclusively from the canonical infrastructure registry.
 ---
 
 # register-dispatch
 
 Record **one row per dispatch** in the repo ledger `telemetry/agents/subagents-dispatch.yaml`,
-under the subagents-strategy constitution **schema v0.6.1**. A dispatch contributes exactly
+under the ledger schema declared by the canonical dispatch-type registry. A dispatch contributes exactly
 **two appends** (constitution Principle 3): the **dispatch row** (the spec, at dispatch) and
 the **close row** (`close_of` + outcome, at termination). The ledger is append-only — rows
 are never edited in place.
 
 ## When to use
 
-- After (or as) you dispatch subagents for any non-trivial task.
+- Through `dispatch_workflow open` and `close` for every parent-bound dispatch. Those commands call
+  this skill's appender; do not invoke it a second time.
 - **Principle-2 gate:** append only after the human's explicit confirm of the sheet —
-  the gate is owned by the router (`domainspec-subagents-strategy`) / constitution P2;
+  the gate is coordinated by `subagents-dispatch-lifecycle` / constitution P2;
   never append before it.
 - Register **once per dispatch**, not once per agent or per group. A dispatch with three
   groups and six agents is **one** row; `groups` is a JSON column.
 - At termination, append the **close row** (see below). Both appends use the same appender.
-- Skip only for trivial inline work that spawns no subagent. A single helper invocation
-  is not a dispatch (P11, owned by the router) — do not register it; it is reported in
-  the parent's `agents_spawned`.
+- Skip when `domainspec-subagents-strategy` keeps the work inline or the selected capability owns a
+  bounded, unregistered helper workflow. Do not infer that classification from agent count alone.
 
-## The dispatch row (schema v0.6.1)
+## The dispatch row
 
 The appender **validates the incoming record strictly** and rejects (exit 2) on any
 schema violation, listing every error. Unknown keys are rejected — keys in constitution
 §7's removed table (`success_metric`, `constraints`, `created`) get an explicit
 **removed by schema v0.5.2** error (historical: those keys were removed at v0.5.2); old
-ledger-row-only keys (`status`, `anti_bias` top level, `agents` top level, `corpus`,
-`topic_slug`, `session`) get a **pre-v0.5.2 ledger-row key, not in the v0.6.1 schema**
+ledger-row-only keys (`status`, `agents` top level, `corpus`,
+`topic_slug`, `session`) get a **legacy ledger-row key, not in the current schema**
 error.
 
-**Not enforced by the appender** (sheet-design rules owned by the strategist and the
-human confirm gate): `final_approver` working-group membership (P12 no-self-approval),
-the `dispatch_id` `YYYY-MM-DD-<slug>` format, the `layers > 1`
-not-on-a-zig-zag/feedback-endpoint corollary, and the semantic four-test anti-bias
-decision rule (constitution P5: axis vocabulary / clone / spread / evidence — gate-checked
-on the sheet). The `anti_bias_global` required-when-≥ 2-groups-fan-out conditional **is
-appender-enforced** since the 2026-06-12 in-place amendment (constitution §9).
+**Not enforced by the appender** (sheet-design rules owned by the selected capability and
+the dispatch lifecycle): `final_approver` working-group membership (P12 no-self-approval),
+the `dispatch_id` `YYYY-MM-DD-<slug>` format, and the `layers > 1`
+not-on-a-zig-zag/feedback-endpoint corollary.
 
 ### Top level
 
 | Field | Required | Meaning / constraint |
 |-------|----------|----------------------|
 | `dispatch_id` | ✅ | Unique id, `YYYY-MM-DD-<slug>` (§5). Dedup key — re-registering the same id is a no-op. |
-| `schema_version` | ✅ | Must be **exactly** `"0.6.1"`. `others` was admitted by an in-place owner amendment on 2026-07-25. |
-| `dispatch_type` | ✅ | `research \| code \| review \| others \| plan \| suggestion \| experiment`. `research`, `code`, `review`, `others`, and `experiment` are LIVE. `others` is the generic route for bounded work without a LIVE specialized type, including document and Plan-artifact authoring; it carries only the universal workflow guarantees, and its concrete proposal must name the work kind and output contract. `code` routes through `.claude/skills/domainspec-implement/SKILL.md`; it requires DomainSpec planner/work-pack readiness and does not require a `working_folder`. `plan` and `suggestion` remain RESERVED — the appender notes this but records anyway; registering one signals an upstream constitution violation (§5: reserved types must not be dispatched until populated). `experiment` runs the falsification strategy (role-set designer/runner/adjudicator/skeptic; grader = falsification against a pre-registered criterion + internal validity + reproducibility; verdict SURVIVED/FALSIFIED/INVALID; the criterion is a `working_folder` artifact, never a column). |
+| `schema_version` | ✅ | Must equal `ledger_schema_version` from `implementations/contracts/dispatch-type-registry.v1.json`. |
+| `dispatch_type` | ✅ | Must equal the resolved `ledger_dispatch_type` from the canonical registry. The appender rejects unknown and RESERVED values. This skill does not enumerate or route types. |
 | `goal` | ✅ | Non-empty string — the human's objective, one or two sentences. |
 | `context` | ✅ | Non-empty string — 2–4 sentences of framing; the only channel subagents get (§5). |
 | `max_loops` | ✅ | Integer 1..5 — whole-sequence re-run ceiling. |
@@ -56,9 +53,8 @@ appender-enforced** since the 2026-06-12 in-place amendment (constitution §9).
 | `groups` | ✅ | **JSON column** — non-empty array of group objects (below). |
 | `meta` | – | If present, must be boolean `true` (planning/framework dispatches only). |
 | `parent_dispatch_id` | – | String (or null/omitted) — only on a dispatch planned by a meta dispatch. |
-| `anti_bias_global` | ≥ 2 fan-out groups: ✅ | String — dispatch-wide tension theme. **Required when ≥ 2 groups have ≥ 2 agents — appender-enforced (exit 2)** since the 2026-06-12 in-place amendment (constitution §9). |
-| `working_folder` | research/experiment: ✅ | Repo-relative path where outputs land. **Required when `dispatch_type` is `research` or `experiment`; must never start with `vault/`.** **Optional for `review`** — review is inline by default (findings delivered in chat, since 2026-06-16); set it only when the user confirms persistence at the gate. Whenever a `working_folder` is set, the gate confirms the path with the user (router lifecycle step 2). |
-| `output_mode` | review: ✅ | **Review-only** row field (§14, added at v0.6.1): `inline \| persisted` — where the single `review.md` artifact lands. **Required when `dispatch_type` is `review`**, declared at the confirm gate and recorded on the row (never inferred from an absent `working_folder`). `inline` (default) → rendered in chat, `working_folder` must be **absent**; `persisted` → written to `<working_folder>/review.md`, `working_folder` **required**. Rejected (exit 2) on any non-`review` type. |
+| `working_folder` | research/experiment: ✅ | Repo-relative path where outputs land. **Required when `dispatch_type` is `research` or `experiment`; must never start with `vault/`.** **Optional for `review`** — review is inline by default (findings delivered in chat, since 2026-06-16); set it only when the user confirms persistence at the gate. Whenever a `working_folder` is set, the lifecycle confirms the path with the user. |
+| `output_mode` | review: ✅ | **Review-only** row field: `inline \| persisted` — where the single `review.md` artifact lands. **Required when `dispatch_type` is `review`**, declared at the confirm gate and recorded on the row (never inferred from an absent `working_folder`). `inline` (default) → rendered in chat, `working_folder` must be **absent**; `persisted` → written to `<working_folder>/review.md`, `working_folder` **required**. Rejected (exit 2) on any non-`review` type. |
 | `code_contract` | code: ✅ | **Code-only** JSON object. Pins `type_skill_ref`/digest, `work_pack_ref`/digest, `test_spec_ref`/digest, and a closed `domainspec-code-readiness@1` `readiness_ref`/digest; declares `brownfield`, concrete repo-contained `write_scope`, exact `validation_commands`, and canonical group IDs. The appender verifies every file, planner PASS/capability receipt, scope and exact DomainSpec topology before registration. Rejected on non-`code` types. |
 | `invoked_by` | – | Email of the invoking human. If omitted, the appender resolves it from `git config user.email` (fail-soft: warning + `null`). Tooling-level extension, not in constitution §5 (owner-directed 2026-06-12), pending a one-line constitutional amendment. |
 | `connections` | – | **JSON column** — array of `{from, to, type, loop_cap?}` objects (below). |
@@ -74,7 +70,6 @@ appender-enforced** since the 2026-06-12 in-place amendment (constitution §9).
 | `n` | – | Integer ≥ 1; if present must equal `agents.length`. |
 | `robot_talks` | – | Boolean — agents discuss after their parallel runs (n ≥ 2 only meaningful). |
 | `layers` | – | Integer ≥ 1 — sequential invocations of this group. Unenforced: a group with `layers > 1` may not sit on a zig-zag/feedback endpoint (§5 layers corollary). |
-| `anti_bias` | n ≥ 2: ✅ | The group's named tension axis. **Required when the group has ≥ 2 agents** (Principle 5). |
 
 ### Each object in `groups[].agents`
 
@@ -85,7 +80,6 @@ appender-enforced** since the 2026-06-12 in-place amendment (constitution §9).
 | `token_budget` | ✅ | Positive integer — declared output-length target; **no unlimited default** (§5). |
 | `initial_prompt` | ✅ | Non-empty string — the full briefing the agent receives at launch. Newlines are fine: JSON.stringify escapes them into the single-line JSON column. |
 | `agent_name` | – | String from the agent pool, or `null`. |
-| `angle` | n ≥ 2: ✅ | This agent's position on the group's `anti_bias` axis. **Required when the group has ≥ 2 agents.** |
 
 ### Each object in `connections`
 
@@ -103,9 +97,8 @@ The skill ships a deterministic appender; do **not** hand-edit the YAML. To chec
 ledger (e.g. `dispatch_id` uniqueness), use the Read tool — the append-only hook blocks
 Bash access to the file, even read-only commands.
 
-1. Assemble the dispatch record as JSON (the fields above) — normally read straight off
-   the confirmed dispatch sheet (goal, context, groups, connections, per-agent
-   angle/model/token_budget/initial_prompt).
+1. Consume the complete dispatch record produced by `domainspec-subagents-strategy`; do not
+   reconstruct, omit, or reinterpret upstream-owned fields. Serialize that record as JSON.
 2. Write that JSON to a temp file (use the Write tool, so it is UTF-8 — do **not**
    pipe JSON through PowerShell, which mangles it to UTF-16):
    `<repo-root>/.register-dispatch.tmp.json`
@@ -115,7 +108,7 @@ Bash access to the file, even read-only commands.
         "$CLAUDE_PROJECT_DIR/.register-dispatch.tmp.json"
    ```
    It creates `telemetry/agents/subagents-dispatch.yaml` (and its directories) with
-   a header if absent, validates the record against schema v0.6.1 (exit 2 with the
+   a header if absent, validates the record against the registry-declared schema (exit 2 with the
    full error list on violation), appends one row, and is idempotent on
    `dispatch_id`. Before appending it structurally self-checks the existing ledger
    (line shapes, JSON values, unique ids) and refuses with exit 1 if the ledger is
@@ -125,67 +118,6 @@ Bash access to the file, even read-only commands.
    if the env var is unset, run the appender from the repo root (or set
    `project_dir` in the JSON) and pass the temp file as a relative path.
 4. Delete the temp file.
-
-## Example record
-
-```json
-{
-  "dispatch_id": "2026-06-12-residue-precedent-sweep",
-  "schema_version": "0.6.1",
-  "dispatch_type": "research",
-  "goal": "Determine whether the residue-ledger pattern has prior art that constrains our naming.",
-  "context": "The discovery names a residue ledger as novel. Before publishing we need to know if the pattern is already owned in the literature and under what name. Outputs feed the discovery's open-question section.",
-  "max_loops": 1,
-  "final_approver": "parent",
-  "anti_bias_global": "novelty optimism vs precedent skepticism",
-  "working_folder": "docs/features/example-feature/research/residue-precedent-sweep/",
-  "invoked_by": "victorboscaro@gmail.com",
-  "groups": [
-    {
-      "group_id": "explorers",
-      "n": 2,
-      "anti_bias": "source corpus (formal-methods literature vs practitioner blogs)",
-      "agents": [
-        {"agent_name": "Abramsky, Samson", "role": "explorer", "model": "claude-sonnet-4-6", "token_budget": 800,
-         "angle": "owns the formal-methods literature side",
-         "initial_prompt": "Search the formal-methods literature for prior art on residue/remainder ledgers in spec governance. Return: candidate precedents with citations, or a defended no-precedent claim. Budget ~800 tokens."},
-        {"agent_name": "Baez, John", "role": "explorer", "model": "claude-sonnet-4-6", "token_budget": 800,
-         "angle": "owns the practitioner/industry side",
-         "initial_prompt": "Search practitioner sources (ADRs, RFC processes, engineering blogs) for residue-ledger-like patterns. Return: candidate precedents with links, or a defended no-precedent claim. Budget ~800 tokens."}
-      ]
-    },
-    {
-      "group_id": "synthesizer",
-      "agents": [
-        {"agent_name": null, "role": "writer", "model": "claude-opus-4-8", "token_budget": 3000,
-         "initial_prompt": "Draft findings.md from the explorers' returns: every load-bearing claim cites the collected return it rests on. Budget ~3000 tokens."}
-      ]
-    }
-  ],
-  "connections": [
-    {"from": "explorers", "to": "synthesizer", "type": "sequential"}
-  ]
-}
-```
-
-This appends exactly one row, with `groups` and `connections` as JSON columns. The
-resulting ledger row looks like:
-
-```yaml
-  - dispatch_id: "2026-06-12-residue-precedent-sweep"
-    schema_version: "0.6.1"
-    created: "2026-06-12T18:00:00.000Z"
-    invoked_by: "victorboscaro@gmail.com"
-    dispatch_type: "research"
-    goal: "Determine whether the residue-ledger pattern has prior art that constrains our naming."
-    context: "The discovery names a residue ledger as novel. …"
-    max_loops: 1
-    final_approver: "parent"
-    anti_bias_global: "novelty optimism vs precedent skepticism"
-    working_folder: "docs/features/example-feature/research/residue-precedent-sweep/"
-    groups: [{"group_id":"explorers","n":2,"anti_bias":"source corpus (formal-methods literature vs practitioner blogs)","agents":[…]}, …]
-    connections: [{"from":"explorers","to":"synthesizer","type":"sequential"}]
-```
 
 ## Closing a dispatch (the close row)
 
@@ -224,6 +156,6 @@ Rows written under pre-v0.5.2 schemas (recognizable by the absence of
 are **valid historical artifacts and are never re-validated** against the new
 schema. The appender's pre-append self-check over the existing ledger is
 **structure-only** (line shapes, JSON values, unique ids) so old rows keep
-passing forever. Strict v0.6.1 validation applies **only to the incoming
+passing forever. Strict validation against the current registry schema applies **only to the incoming
 record**, before append. The ledger file's own header comment is likewise
 historical — written once at creation, never edited; it may lag the current schema.

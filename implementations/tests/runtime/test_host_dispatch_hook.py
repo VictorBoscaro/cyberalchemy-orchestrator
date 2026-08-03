@@ -12,6 +12,7 @@ from unittest.mock import MagicMock, patch
 
 from implementations.server.runtime.canonical import canonical_digest
 from implementations.server.runtime.errors import GateBlockedError
+from implementations.server.runtime.dispatch_workflow import compile_bound_launch_plan
 from implementations.server.runtime.host_dispatch_hook import HostDispatchHook, run
 
 REPO = Path(__file__).resolve().parents[3]
@@ -158,6 +159,94 @@ class HostDispatchHookTests(unittest.TestCase):
             self.root / "telemetry/agents/subagents-dispatch.yaml"
         ).read_text(encoding="utf-8")
         self.assertNotIn("2026-07-25-parent-research", ledger)
+
+    def test_compiled_bound_launch_opens_and_closes_one_parent_dispatch(self) -> None:
+        hook = self.hook("codex")
+        dispatch_id = "2026-08-03-integrated-bound-review"
+        prompt = "Review the integrated governed dispatch path."
+        opening = {
+            "dispatch_id": dispatch_id,
+            "schema_version": "0.6.2",
+            "dispatch_type": "review",
+            "goal": "Prove one parent-bound host dispatch.",
+            "context": "The compiled launch must bind one reviewer to one parent row.",
+            "max_loops": 1,
+            "final_approver": "parent",
+            "anti_bias_mode": "disabled",
+            "output_mode": "inline",
+            "groups": [
+                {
+                    "group_id": "reviewers",
+                    "agents": [
+                        {
+                            "role": "auditor",
+                            "model": "gpt-test",
+                            "token_budget": 1000,
+                            "initial_prompt": prompt,
+                        }
+                    ],
+                }
+            ],
+        }
+        opened = hook.open_parent_dispatch(
+            record=opening,
+            session_name="integrated-bound-review",
+            origin_ref="codex:test",
+            nonce="integrated-open",
+        )
+        compiled = compile_bound_launch_plan(
+            repo_root=self.root,
+            record=opening,
+            capability_ref="review",
+            output_dir=Path(".codex/workflow-inputs/integrated-bound-review"),
+        )
+        event = self.event(self.root, host="codex")
+        event["tool_name"] = "collaboration.spawn_agent"
+        event["tool_input"] = compiled["launches"][0]["spawn_arguments"]
+        bound = hook.handle(event)
+        self.assertEqual(bound["dispatch_id"], dispatch_id)
+        self.assertEqual(bound["role"], "bound-seat")
+        hook.handle(
+            self.event(
+                self.root,
+                host="codex",
+                name="PostToolUse",
+                response={"agent_id": "agent-integrated", "status": "running"},
+            )
+            | {
+                "tool_name": "collaboration.spawn_agent",
+                "tool_input": compiled["launches"][0]["spawn_arguments"],
+            }
+        )
+        hook.subagent_stop(
+            {
+                "session_id": "codex-session-1",
+                "cwd": str(self.root),
+                "hook_event_name": "SubagentStop",
+                "agent_id": "agent-integrated",
+                "agent_type": "reviewer",
+            }
+        )
+        closing = {
+            "close_of": dispatch_id,
+            "exit_reason": "resolved",
+            "agents_spawned": {
+                "total": 1,
+                "tree": {"auditor": 1, "helpers": 0},
+                "loops_used": 1,
+            },
+        }
+        closed = hook.close_parent_dispatch(
+            record=closing,
+            session_id=opened["session_id"],
+            nonce="integrated-close",
+        )
+        self.assertEqual(closed["status"], "closed")
+        ledger = (
+            self.root / "telemetry/agents/subagents-dispatch.yaml"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(ledger.count(f'  - dispatch_id: "{dispatch_id}"'), 1)
+        self.assertEqual(ledger.count(f'  - close_of: "{dispatch_id}"'), 1)
 
     def test_unbound_followup_is_denied(self) -> None:
         hook = self.hook("codex")

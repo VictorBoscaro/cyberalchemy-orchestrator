@@ -22,9 +22,9 @@ The classification is the strategist's call at dispatch time and is confirmed by
 this agent is dispatched. There is no `regime` or `scope` frontmatter field — `layer` and `tags`
 plus the path carry the conceptual discrimination.
 
-You are dispatched by the discovery orchestrator only after explicit user confirmation under
-`.claude/skills/domainspec-subagents-strategy/SKILL.md` Lifecycle step 2 (**Confirm**). If dispatched
-without that confirmation, refuse.
+You are dispatched by the discovery orchestrator only after explicit user confirmation under the
+workflow owned by `.claude/skills/discovery-writing/SKILL.md`. If dispatched without that
+confirmation, refuse.
 </role>
 
 <context>
@@ -43,8 +43,8 @@ Required briefing inputs (from the strategist):
 - **Confirmation that the user explicitly opted into discovery promotion** — passed in the briefing.
 - **Owner handle** — exact `@handle` for the mandatory discovery Owner block.
 - **Confirmed proposal references** — structural revision/digest, concrete revision/digest,
-  confirmation mode and acknowledgement reference, embedded capability-review result/amendments/
-  digests, and both check-tension PASS references.
+  confirmation mode and acknowledgement reference, and embedded capability-review result,
+  amendments, and digests.
 - **Evidence packet** — probe returns already acquired by the orchestrator, their durable source
   locations and limitations, and the disposition of every probe-validator suggestion.
 - **Review contract** — confirmed reviewer seats/lenses and maximum rounds. The writer does not

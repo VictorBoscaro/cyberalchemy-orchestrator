@@ -30,6 +30,22 @@ class ReferenceDeliveryFixture:
     def build_fixture(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
+        dispatch_registry_relative = (
+            "implementations/contracts/dispatch-type-registry.v1.json"
+        )
+        dispatch_registry = json.loads(
+            (REPO / dispatch_registry_relative).read_text(encoding="utf-8")
+        )
+        dispatch_paths = [dispatch_registry_relative]
+        dispatch_paths.extend(
+            entry["capability_path"]
+            for entry in dispatch_registry["types"]
+            if entry["capability_path"] is not None
+        )
+        for relative in dispatch_paths:
+            destination = self.project / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(REPO / relative, destination)
         registry_relative = (
             "docs/features/agents-communication-infra/reviews/"
             "2026-07-23-stage-a-freeze/profile-registry-manifest.json"
@@ -64,12 +80,13 @@ class ReferenceDeliveryFixture:
         self.prompt = "Consume the governed reference bundle."
         self.opening = {
             "dispatch_id": self.dispatch_id,
-            "schema_version": "0.6.1",
+            "schema_version": "0.6.2",
             "dispatch_type": "review",
             "goal": "Exercise target-agent reference delivery.",
             "context": "Bounded local contract fixture.",
             "max_loops": 1,
             "final_approver": "parent",
+            "anti_bias_mode": "disabled",
             "output_mode": "inline",
             "groups": [
                 {

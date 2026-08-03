@@ -1,0 +1,177 @@
+{
+  "transformation": {
+    "command_id": "cmd_8b43bbde9f2c552e3e9da92882b04bf3",
+    "command_digest": "sha256:0e257aacb32f26666f98fdd032822436c8b81b46e311a60c229160ff05c0abbd",
+    "status": "launch-authorized",
+    "first_offset": 915,
+    "last_offset": 915,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_b37095b5f7d796b924ee8b33cfe6043a"
+    ],
+    "ordered_payload_digest": "sha256:1642955013e8afec42ae6ce296fe30fa6aacb363f2cdcc0f498000f42553534f",
+    "artifact_ids": [
+      "art_8da4bef92566f37dbe0436715ce907ea",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_85dd849601ba151919f012e19dbb07f0"
+    ],
+    "recorded_at": "2026-07-31T16:45:18.518453+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_55589945415b90fac04d033000d06cf7",
+      "version": 1,
+      "state_hash": "sha256:cae93f29659ad45c074544f4283b82a22befd4d5c6dd7107251456f3ebf3a19d"
+    },
+    "binding_id": "hwb_55589945415b90fac04d033000d06cf7",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "transformation-worker",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "transformation-worker-attempt-1",
+    "workflow_manifest_artifact_id": "art_8da4bef92566f37dbe0436715ce907ea",
+    "bound_event_id": "evt_b37095b5f7d796b924ee8b33cfe6043a"
+  },
+  "topology": {
+    "command_id": "cmd_c7ea14bb3814cd25c6906588afcede84",
+    "command_digest": "sha256:cc560268967ed53cbacb5dd1854616cc854b93027e11852ad017b4ef68605aef",
+    "status": "launch-authorized",
+    "first_offset": 916,
+    "last_offset": 916,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_593f052a48390aece5a2a66904466717"
+    ],
+    "ordered_payload_digest": "sha256:fa2ec6eaf227fe0a875c98e5de115458000d75155eb13ac738575ea47eaa9016",
+    "artifact_ids": [
+      "art_2cb9cf2067d02ec9d9ed147fd8dd7bf0",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_e7f32c43d940b14d02c4e8343b15180f"
+    ],
+    "recorded_at": "2026-07-31T16:45:18.750668+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_330a4e7a5294419285031f8439be546a",
+      "version": 1,
+      "state_hash": "sha256:5831b65105a00584ce5400400ae39c924f25629508fe5a0649674398a9a91ed9"
+    },
+    "binding_id": "hwb_330a4e7a5294419285031f8439be546a",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "topology-worker",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "topology-worker-attempt-1",
+    "workflow_manifest_artifact_id": "art_2cb9cf2067d02ec9d9ed147fd8dd7bf0",
+    "bound_event_id": "evt_593f052a48390aece5a2a66904466717"
+  },
+  "divergence": {
+    "command_id": "cmd_7399e82f4e7a276613810b92622c4975",
+    "command_digest": "sha256:e804808c87722dc6a1be36f7a4ac6b30d8cfcab7ec372e5388410b8c0b088fc9",
+    "status": "launch-authorized",
+    "first_offset": 917,
+    "last_offset": 917,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_f72b0561952ef170ce3fbd74f68433b6"
+    ],
+    "ordered_payload_digest": "sha256:0bd544ac43ab78a3b19aa7168abf28b47c0ced09d2452ec7809f86a10fe44328",
+    "artifact_ids": [
+      "art_d815a22d8dd7f9f676bdb2d5f7ef1260",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_41d698ab5b65ce65ae548209921b36b1"
+    ],
+    "recorded_at": "2026-07-31T16:45:19.085309+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_74c171069c85a1e8141310c564ba74a5",
+      "version": 1,
+      "state_hash": "sha256:0ac921a450bcbd288908fc79e037f8e9634469ee9270eb3cbc12513836c7590f"
+    },
+    "binding_id": "hwb_74c171069c85a1e8141310c564ba74a5",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "divergence-worker",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "divergence-worker-attempt-1",
+    "workflow_manifest_artifact_id": "art_d815a22d8dd7f9f676bdb2d5f7ef1260",
+    "bound_event_id": "evt_f72b0561952ef170ce3fbd74f68433b6"
+  },
+  "continuity": {
+    "command_id": "cmd_f92b090a66732c5d02702b1c0d45a53b",
+    "command_digest": "sha256:3f14ea19939da6fa9fc646cecfcdae2789a71bd71565ddbae589c0e88157ab9d",
+    "status": "launch-authorized",
+    "first_offset": 918,
+    "last_offset": 918,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_3bc1e05fc9657c85af450f0f89477dd0"
+    ],
+    "ordered_payload_digest": "sha256:eb683b9c14a0ddb7826279bdafbd63a146b36028eba8d7e286279184a3b43cdd",
+    "artifact_ids": [
+      "art_f4fc84abbeec388f13b66ed397839885",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_8d1c355a7406bb50223817bf9413395a"
+    ],
+    "recorded_at": "2026-07-31T16:45:19.277241+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_255faada14bfece208418489acf77384",
+      "version": 1,
+      "state_hash": "sha256:3009f79d795c7402aecf75f8a1d5bf21886e0ccdb38ef50e67c46bd1937fa0a1"
+    },
+    "binding_id": "hwb_255faada14bfece208418489acf77384",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "continuity-worker",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "continuity-worker-attempt-1",
+    "workflow_manifest_artifact_id": "art_f4fc84abbeec388f13b66ed397839885",
+    "bound_event_id": "evt_3bc1e05fc9657c85af450f0f89477dd0"
+  },
+  "traceability": {
+    "command_id": "cmd_a7ffcb1c1af7cca55659f4d4adeb477a",
+    "command_digest": "sha256:08ba202f46d9338baf4db0f2232ec45d56a1e4b79dc692f089bbc4659aed95c1",
+    "status": "launch-authorized",
+    "first_offset": 919,
+    "last_offset": 919,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_ca73e2b334f2951de0b7f896ddb545db"
+    ],
+    "ordered_payload_digest": "sha256:107c1f75c0bf1631541189ae1b5373d7f03cadc3be7a9cda7882d9d9773d9886",
+    "artifact_ids": [
+      "art_a7a0d5312b89166a7706a00827cf4eb9",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_6910a257b13544bfcbf39e1c169e6650"
+    ],
+    "recorded_at": "2026-07-31T16:45:19.495806+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_a11224bf91c62246a7763e24c23e3fec",
+      "version": 1,
+      "state_hash": "sha256:ba12d832dc4b0ec25b9e084ac4779cb5f6ea680d201b64fab97d62756bb8bc19"
+    },
+    "binding_id": "hwb_a11224bf91c62246a7763e24c23e3fec",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "traceability-worker",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "traceability-worker-attempt-1",
+    "workflow_manifest_artifact_id": "art_a7a0d5312b89166a7706a00827cf4eb9",
+    "bound_event_id": "evt_ca73e2b334f2951de0b7f896ddb545db"
+  }
+}

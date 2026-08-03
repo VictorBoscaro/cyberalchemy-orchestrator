@@ -11,6 +11,7 @@ from .canonical import canonical_digest, digest_bytes, parse_strict_json
 from .errors import IntegrityError, NotFoundError
 
 ROW_RE = re.compile(rb"^(  - |    )([A-Za-z_][A-Za-z0-9_]*): (.*)$")
+SUPPORTED_OPENING_CONTRACTS = {"0.6.1", "0.6.2"}
 
 
 @dataclass(frozen=True)
@@ -92,8 +93,7 @@ class StrictLegacySnapshotResolver:
                 raise NotFoundError(f"dispatch {row_kind} not found")
             raise IntegrityError(f"ambiguous duplicate dispatch {row_kind}")
         row, row_bytes = matches[0]
-        if row_kind == "opening" and row.get("schema_version") != "0.6.1":
-            raise IntegrityError("dispatch opening is not the frozen 0.6.1 contract")
+        contract_version = self._opening_contract_version(row, row_kind=row_kind)
         return LegacyDispatchSnapshot(
             dispatch_id=dispatch_id,
             ledger_path=str(path),
@@ -101,8 +101,20 @@ class StrictLegacySnapshotResolver:
             row_bytes_digest=digest_bytes(row_bytes),
             row_digest=canonical_digest(row),
             row=row,
+            contract_version=contract_version,
             row_kind=row_kind,
         )
+
+    @staticmethod
+    def _opening_contract_version(row: dict[str, Any], *, row_kind: str) -> str:
+        if row_kind != "opening":
+            return "0.6.1"
+        contract_version = row.get("schema_version")
+        if contract_version not in SUPPORTED_OPENING_CONTRACTS:
+            raise IntegrityError(
+                "dispatch opening is not a supported 0.6.1 or 0.6.2 contract"
+            )
+        return contract_version
 
     def resolve(self, path: Path, dispatch_id: str) -> LegacyDispatchSnapshot:
         return self._resolve(

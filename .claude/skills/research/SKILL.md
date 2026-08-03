@@ -2,9 +2,9 @@
 name: research
 description: >
   Subagent dispatch for synthesis, adversarial check, multi-perspective audit, or
-  precedent sweep — routed here from domainspec-subagents-strategy as the LIVE type
+  precedent sweep — routed here from domainspec-subagents-strategy as the work-type
   skill for `dispatch_type: research`. Defines research-type judgment only: roles as
-  epistemic functions, skeptic gates, the canonical shape, tension design, and the
+  epistemic functions, skeptic gates, the canonical shape, and the
   findings verdict matrix. Trivial single lookups stay inline and never reach this skill.
 ---
 
@@ -17,24 +17,22 @@ exists and can be used** — owned, citable results deployable as building mater
 value, not a measured frequency.) Finding an owner is a *win*: owned kills a novelty *claim*,
 never a *use*. The only failures are `no-witness` and `tautological`.
 
-This is the **LIVE type skill** for `dispatch_type: research` — one of the LIVE types under
-constitution v0.6.0 (another is `dispatch_type: review` — `.claude/skills/review/SKILL.md`,
-populated 2026-06-12). Division of law:
+This skill owns research dispatch judgment. `register-dispatch` owns whether and how the current
+compatibility record represents that route. Division of responsibility:
 
-- **When/whether + universal law** (triggers, human gate, anti-bias principle, lifecycle,
-  `final_approver`, `exit_reason` vocabulary) — the router,
-  `.claude/skills/domainspec-subagents-strategy/SKILL.md`. Route back there; nothing here
-  overrides it.
+- **When/whether to delegate and semantic routing** —
+  `.claude/skills/domainspec-subagents-strategy/SKILL.md`.
+- **Session-owned confirmation/register/run/close sequencing** —
+  `.claude/skills/subagents-dispatch-lifecycle/SKILL.md`.
+- **Research judgment, topology, evidence, outputs, and verdicts** — this skill.
 - **Record/sheet mechanics** (the two appends, the appender, validation) —
   `register-dispatch` (`.claude/skills/register-dispatch/SKILL.md`).
-- **Field definitions** — inline in `register-dispatch` (read there); constitution §5
-  (`internal_tools/subagents-dispatch-hooks/constitution/subagents-strategy-constitution-proposal.md`)
-  is upstream authority only, not a routine read. This skill defines no field; it says which
-  **values** a good research dispatch puts in them.
+- **Field definitions** — inline in `register-dispatch` (read there). This skill defines no persisted
+  field; it says which **values** a good research dispatch puts in them.
 
 ## Initial-definition precondition
 
-Before designing a `StructuralGraphProposal`, selecting research roles, or proposing a governed
+Before selecting research roles or proposing a governed
 research dispatch, require `<research-folder>/research-initial-definitions.md`. If it is missing,
 stop research design and route to `.claude/skills/research-initial-definitions/SKILL.md`; resume only
 after that informational context exists.
@@ -42,7 +40,7 @@ after that informational context exists.
 Read the complete initial-definitions document before proposing the research. It supplies business
 context, purpose, the refinable research question, confirmed product constraints, the current
 evidence baseline, and known gaps. It does not define research methods, sources, roles, topology,
-budgets, gates, or expected findings; those remain owned by this skill and the router after the
+budgets, gates, or expected findings; those remain owned by this skill and the dispatch lifecycle after the
 precondition is satisfied.
 
 ## Roles as epistemic functions
@@ -51,7 +49,7 @@ Each role guards a distinct failure mode; no agent guards two.
 
 | agent `role` | guards against | model guidance |
 |---|---|---|
-| `explorer` | monoculture — generation under **one tensioned angle** each | lighter — sweeps are mechanical |
+| `explorer` | monoculture — investigates one declared research perspective | lighter — sweeps are mechanical |
 | `skeptic` | folklore / vacuity — attacks **one named gate** each | heavier — adversarial work is hard |
 | `writer` | "great research, no record" — the synthesizer, **conventionally a single writer (the §6 skeleton's `n: 1`)** | heavier for heavy synthesis |
 | `auditor` | "passed because nothing was checked" — meta-evaluates, **placed by its incoming edge, downstream of the reviewers**, owns the verdict matrix | mid — checking, not generating |
@@ -59,7 +57,7 @@ Each role guards a distinct failure mode; no agent guards two.
 A group's function is read off its agents' roles, its workflow position off its `connections`.
 
 The model column is **guidance, not law**: `model` is chosen per agent by task difficulty
-(constitution §5) and the human validates it at the confirm gate.
+using the field contract in `register-dispatch`, and the human validates it at the confirm gate.
 
 There is no `evaluator` role — criteria-scoring is a `skeptic` with a stated gate.
 
@@ -76,14 +74,13 @@ One gate per skeptic, never two:
 - **non-vacuity** — build the smallest concrete witness by hand, or force a closed negative.
 - **definitional-soundness** — does it collapse to something already named, re-skinned?
 
-A skeptic group is tensioned by construction when its gates differ; explorers need
-explicit axis spread (below). The terminal KILLs come only from `non-vacuity` (no-witness) and
+Use distinct skeptic gates when several skeptics run. The terminal KILLs come only from `non-vacuity` (no-witness) and
 `definitional-soundness` (tautological) — never from `precedent`.
 
-## Canonical shape on the v0.6.0 chassis
+## Canonical research shape
 
 ```
-explorers (a group of `explorer`s, n 2–4, pairwise tensioned)
+explorers (a group of `explorer`s, n 2–4, with distinct research perspectives)
    │ sequential
 synthesizer (1 `writer`) ◀──zig-zag──▶ reviewers (`skeptic`s;
    ▲                          │         robot_talks when the question
@@ -104,60 +101,30 @@ resolved` (a confirmed-kill early-stop is a successful close, not an error). **B
 NOT a confirmed kill and does not early-stop** — a found owner relabels the candidate
 `build-from-owned` and the dispatch continues; the lone exception is owned **and already
 deployed**, recorded as `already-deployed` provenance (still not a negative).
-Approval follows P12, it does not mint new semantics: if the dispatch declared a dedicated
-approver group (its single agent's role is `auditor`) and the early stop skips that group,
-approval falls back to `parent` (P12's group-never-runs fallback); if `final_approver` is `parent`, `parent`
-accepts directly. Either way the dispatch closes `resolved` once the negative is accepted.
+If the dispatch declared a dedicated approver and an early stop prevents that approver from acting,
+stop for a new explicit approval decision. Never substitute `parent` silently. The dispatch closes
+only after the confirmed approver accepts the typed negative.
 
 ## Longer sweeps: propose the structure first
 
-Sweep size is the strategist's recommendation for which router `confirmation_mode` (see the router's
-**Confirmation modes**) the user picks — it mints **no new gate**. A **short** research (one explorer
-group, one skeptic gate, a bounded corpus) takes `final_only`: build the structure internally and
-confirm once. A **large** sweep — multiple explorer groups, several stages, or a deep / multi-corpus
-search — is where the strategist recommends `structure_and_final`: show and confirm the
-`StructuralGraphProposal` **first** — the angle set (each angle's tension axis, per Principle 5), the
-groups and their roles, the connections, the expected outputs, and the one question the sweep answers
-— before resolving concrete detail and before any agent spawns. That structural confirmation **is**
-the "research plan" the user accepts or declines: an informal name for the router's structural gate,
-**not** a `dispatch_type: plan` (reserved) and not a second gate stacked on the lifecycle.
+For a short research — one explorer group, one skeptic gate, and a bounded corpus — prepare the
+complete dispatch directly for lifecycle confirmation. For a large sweep — multiple explorer
+groups, several stages, or a deep or multi-corpus search — first show the proposed research shape:
+the research perspectives, groups, connections, expected outputs, and the one question the sweep answers. This is
+a research-specific planning checkpoint, not a generic router mode or a separate work type.
 
 Keep the proposal a decisive recommendation, not a survey of options; the user's accept/decline is the
-only branch. On **accept**, resolve the `ConcreteDispatchProposal` and go to the final confirmation as
-normal. On **decline**, drop to `final_only` (one confirmation, no separate structural gate) — decline
-means "run it lean," never "abort" and never "skip the confirm gate." Silence is not acceptance
-(router lifecycle): resolve nothing until an explicit accept or decline.
+only branch. On **accept**, resolve the complete dispatch and hand it to the lifecycle for final
+confirmation. On **decline**, simplify the sweep and return one complete dispatch for confirmation;
+decline means "run it lean," never "abort" or "skip confirmation." Silence is not acceptance.
 
 ## How to run
 
-Spawn each group's agents with the Agent tool — ALL agents of a group in ONE message, so
-they run in parallel. Each agent's `initial_prompt` is its launch prompt. Groups are
-scheduled **by dependency** (constitution P4, amended 2026-06-12): a group is READY when
-every group with a `sequential`/`zig-zag` edge into it has produced what it must respond
-to (zig-zag counts only in its `from`→`to` direction — the `from` endpoint opens the
-exchange); launch all READY groups concurrently (independent chains run side by side);
-`feedback` edges never count as dependencies; a sheet with no connections declares its
-groups independent. Declared order is narration tiebreak only.
+Hand the confirmed research shape to `subagents-dispatch-lifecycle`. The host/runtime owns launch,
+dependency scheduling, retries, and effective inputs; this skill only supplies the research graph
+and the semantic conditions on its handoffs.
 
-## Tension design (Principle 5, research-specific)
-
-Classify every angle along the four axes — **methodology** (empirical / formal /
-adversarial / historical / computational), **source-corpus**, **attack-vector** (the
-skeptic gate), **temporal-prior** (modern-only / historical-lineage / mixed).
-
-Rules from `vault/discovery/anti-bias-vector-composition/validator-check.md` — codified
-since 2026-06-12 as the binding four-test PASS/REJECT decision rule in constitution
-Principle 5 (axis vocabulary / clone / spread / evidence; the axis vocabulary is closed
-to the four axes above or a declared composite):
-
-- **Reject before proposing:** all angles in a group share the same core noun phrase; all
-  explorers share one methodology or one source corpus; all skeptics share one gate →
-  fix the sheet before it reaches the human gate.
-- **Green-light:** for every explorer pair you can write the sentence "a_i runs [X], a_j
-  runs [Y] on the [axis] axis; a bias in a_i would be exposed by a_j" — and at least two
-  distinct axes appear across the group.
-
-## Outputs (Principle 9 applied)
+## Research outputs
 
 - **n ≥ 2:** `<working_folder>/research.md` (collected returns, verbatim) +
   `<working_folder>/findings.md` (cited synthesis — every load-bearing claim cites the
@@ -166,7 +133,7 @@ to the four axes above or a declared composite):
 - `working_folder`: when one feature clearly owns the research question, use
   `docs/features/<feature>/research/<dispatch-slug>/`. Use
   `research/<dispatch-slug>/` only for repository-wide research with no clear feature owner.
-- The constitutional requirement is the FILES, not who writes them — the strategist may
+- The research requirement is the FILES, not who writes them — the strategist may
   write `findings.md` itself or delegate (no mandatory writer-agent machinery).
 
 **Findings shape** — per candidate, a row in the verdict matrix. **Ownership is a label, not a
@@ -185,12 +152,12 @@ never puts KILL in the verdict column:
   a **typed negative**: what it would have contributed + the exact fact that zeroed it. **Owned is
   not a KILL.** A clean KILL is a successful run.
 
-Close with the one-line answer to the dispatch `goal`. Per §5, `resolved` = the
-`final_approver` accepted; for research, acceptance includes the P9 citation check.
+Close with the one-line answer to the dispatch `goal`. Research acceptance includes the citation
+check above; `register-dispatch` owns the persisted close vocabulary.
 
 ## Standing rules
 
-1. **Claim ≤ proof** (P10, universal — see the router): for research, demote, never inflate.
+1. **Claim ≤ proof:** for research, demote, never inflate.
 2. **Keystone claims carry their collapse-test inline** — the one fact that would zero them, same line.
 3. **Precedent-first** — no "novel" verdict ships before a `precedent` skeptic ran. But a found
    owner is **not** a kill: research exists to find what already exists and can be used. A found

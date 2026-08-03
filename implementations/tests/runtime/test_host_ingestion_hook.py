@@ -36,6 +36,22 @@ class HostIngestionHookTests(unittest.TestCase):
         )
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(POLICY, destination)
+        dispatch_registry_relative = (
+            "implementations/contracts/dispatch-type-registry.v1.json"
+        )
+        dispatch_registry = json.loads(
+            (REPO / dispatch_registry_relative).read_text(encoding="utf-8")
+        )
+        dispatch_paths = [dispatch_registry_relative]
+        dispatch_paths.extend(
+            entry["capability_path"]
+            for entry in dispatch_registry["types"]
+            if entry["capability_path"] is not None
+        )
+        for relative in dispatch_paths:
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(REPO / relative, target)
         policy = json.loads(destination.read_text(encoding="utf-8"))
         self.database = self.root / policy["database"]
         self.ledger = self.root / policy["ledger"]

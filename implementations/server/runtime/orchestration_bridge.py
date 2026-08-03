@@ -13,11 +13,11 @@ from typing import Any, Callable, Sequence
 
 from .canonical import canonical_digest, digest_bytes
 from .capabilities import CapabilityContext
+from .dispatch_types import live_dispatch_type_values
 from .errors import GateBlockedError, ValidationError
 from .local_pilot import preflight_local_pilot
 from .service import RuntimeService
 
-LIVE_DISPATCH_TYPES = {"research", "code", "review", "others", "experiment"}
 APPENDER = Path(".claude/skills/register-dispatch/append-dispatch.cjs")
 LEDGER = Path("telemetry/agents/subagents-dispatch.yaml")
 POLICY_REF = "policy:local-orchestration-logging-bridge@1"
@@ -148,9 +148,10 @@ class LocalOrchestrationLoggingBridge:
         dispatch_id = record.get(identity_field)
         if not isinstance(dispatch_id, str) or not dispatch_id:
             raise ValidationError(f"{identity_field} is required")
-        if not is_close and record.get("dispatch_type") not in LIVE_DISPATCH_TYPES:
+        live_types = live_dispatch_type_values(self.project_dir)
+        if not is_close and record.get("dispatch_type") not in live_types:
             raise GateBlockedError(
-                "local bridge permits only live research, code, review, others, or experiment dispatches"
+                "local bridge permits only LIVE types from the canonical dispatch-type registry"
             )
         submitted = dict(record)
         submitted["project_dir"] = str(self.project_dir)

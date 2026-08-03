@@ -188,8 +188,7 @@ represent the body.
 
 ## Orchestration and Confirmation
 
-Discovery authoring uses the two-level planning model in
-`.claude/skills/domainspec-subagents-strategy/SKILL.md`. The discovery orchestrator owns both
+Discovery authoring owns its bootstrap planning model. The discovery orchestrator owns both
 proposals and the human gates; the discovery writer never changes the confirmed topology.
 
 This is an owner-directed bootstrap workflow because no LIVE `discovery` dispatch type exists.
@@ -203,16 +202,15 @@ boundaries, exactly one writer, probe-slot budget, two or three isolated reviewe
 bootstrap concrete schema contains every helper/writer/reviewer name, role/lens, immutable prompt
 template and typed data slots, exact source path/hash bindings, requested provider/model/adapter,
 budgets, output contracts, proposed capability profiles, reviewer instantiation/retry rules,
-provenance mode, capability-review evidence, tension matrix, and resolution provenance.
+provenance mode, capability-review evidence, and resolution provenance.
 
 The `DiscoveryBootstrapStructuralProposal` resolves the number of probe slots and review seats, their
 connections, whether any group uses `robot-talks`, the interaction mode, the maximum review rounds,
 and the confirmation mode. The `DiscoveryBootstrapConcreteProposal` then resolves every agent name,
 role/lens, immutable `prompt_template`, source boundary and exact path-to-SHA-256 bindings,
 `requested_provider`, `requested_model`, `requested_adapter`, budget, output contract,
-`proposed_capability_profile`, reviewer instantiation rule, and retry limit. It includes the group
-anti-bias axis, each seat's angle/position, and for each pair the predicted disagreement question,
-positions, and evidence. All potential seats are declared before execution. An unused optional probe slot is
+`proposed_capability_profile`, reviewer instantiation rule, and retry limit. All potential seats are
+declared before execution. An unused optional probe slot is
 not spawned; changing a seat, lens, or prompt template later requires a new proposal revision and
 the applicable gate.
 
@@ -223,11 +221,6 @@ a conforming JCS implementation is absent, the local digest is workflow evidence
 portable or durable. ACI `ConfirmedDispatch` / `DispatchSpec` own durable approval bytes and
 receipts when available.
 
-For every review group with two or three seats, the concrete proposal includes a P5 tension matrix:
-one row per reviewer pair, a named disagreement axis, the question likely to split them, and each
-seat's predicted position. Complementary labels alone are not tension. The matrix must make overlap
-visible and explain why one reviewer cannot subsume another.
-
 Before fine confirmation, a read-only capability reviewer checks each task against its
 `proposed_capability_profile`. Embed its result, amendments, task digest, and profile digest in the
 `DiscoveryBootstrapConcreteProposal`. Tool names in agent frontmatter are proposal-level adapter requests;
@@ -235,11 +228,6 @@ the proposal also states logical capabilities and restricted command classes. Ef
 model, and sandbox remain ACI/runtime-owned. Record `effective_enforcement` as `observable` or
 `non_observable`. An observable semantic mismatch fails closed; when non-observable, report the
 gap and never call requested values effective. `Bash` never means unrestricted shell by implication.
-
-After capability review, run two independent check-tension helpers against the same canonical
-concrete digest. Concrete confirmation requires PASS from both. If either fails, revise the
-bootstrap proposal, regenerate and re-digest the affected projections, and run two fresh
-independent checks.
 
 Every resolved concrete field records `ResolutionProvenance`: `user_set`, `recipe_default`,
 `skill_constraint`, `orchestrator_inferred`, or `capability_reviewer_amendment`, plus a source
@@ -267,8 +255,8 @@ Supported confirmation modes:
   promotion, or any other execution.
 
 Until durable gate receipts exist, the orchestrator preserves proposal revision IDs, SHA-256
-digests, explicit user acknowledgements, the embedded capability-review result, and the two
-check-tension results in its final completion report. Do not describe a chat acknowledgement as a
+digests, explicit user acknowledgements, and the embedded capability-review result in its final
+completion report. Do not describe a chat acknowledgement as a
 bus receipt.
 
 ---
@@ -336,9 +324,9 @@ complete draft and Flow Diagram exist, launch the confirmed two or three fresh r
 independently. Reviewers in a round receive the same frozen digest and never receive another
 reviewer's return.
 
-This bounded helper topology is authorized by the scoped discovery-authoring exception in
-`.claude/skills/domainspec-subagents-strategy/SKILL.md` P11. Any wider fan-out, persisted review
-artifact, or work beyond the discovery returns to the normal confirmation/register/close lifecycle.
+This skill owns the bounded helper topology above. Any wider fan-out, persisted review artifact, or
+work beyond the discovery returns through `domainspec-subagents-strategy` to the selected
+capability and dispatch lifecycle.
 The scoped independent reviewer group must declare `robot_talks: false`. Robot-talks requires a
 formal registered review topology, not this isolated helper loop.
 

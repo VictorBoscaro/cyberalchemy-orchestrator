@@ -1,756 +1,515 @@
 ---
-tags: [agents-communication-infra, protocols, skills, dispatch, anti-bias]
+tags: [agents-communication-infra, protocols, skills, dispatch, orchestration]
 node_type: discovery
 is_session: false
-layer: [architecture, domain]
-nature: [explanatory, technical]
+layer: [architecture, domain, application]
+nature: [explanatory, reference, technical]
 status: draft
-veracity: low
+veracity: medium
 conviction: high
-version: 0.3.0
-last_updated: 2026-07-22
+version: 0.4.2
+last_updated: 2026-08-03
 ---
 
 # Agents Communication Protocols — Discovery
 
-## Objetivo
+## Objective
 
-Este discovery deve definir como agentes pesquisam, discutem, sintetizam, executam tarefas,
-revisam artefatos, solicitam correções e aprovam um resultado usando a infraestrutura de
-comunicação entre agentes.
+Definir, para a futura lane `runtime-managed`, como uma skill contribui semântica reutilizável para
+uma estrutura concreta que o usuário inspeciona e confirma, e como essa mesma autoridade canônica
+persistida origina todas as projeções, configurações de agentes e ações da infraestrutura sem
+depender do agente do chat durante a run. A lane live `legacy-managed` permanece fora desse boundary
+e conserva a autoridade de workflow/session definida pelo contrato de cutover.
 
-O problema não é apenas transportar mensagens. Precisamos preservar a independência das avaliações,
-registrar versões e discussões sem sobrescrever evidência, limitar ciclos de correção e garantir que
-cada aprovação se refira à versão exata que foi analisada.
+**Status:** v0.4.2 — hipótese draft para a futura lane `runtime-managed`, revisada em torno de uma autoridade canônica única e de fronteiras explícitas com runtime, capabilities, bus e audit ledger
 
-O ownership da mecânica runtime já está ratificado: `agents-communication-infra` possui o protocolo
-que transforma um dispatch confirmado em fatos, efeitos controlados e um resultado oficial. Este
-discovery deve decidir onde vivem a **semântica de trabalho** e os protocolos compilados que decompõem
-skills em tarefas, workers, reviewers e gates, sem criar um runtime paralelo.
+**Owner:** @victorboscaro
 
-## Contexto
+**Owner email:** `victorboscaro@outlook.com`
 
-O repositório já possui skills para pesquisa, revisão, estratégia de subagentes, registro de
-dispatches, criação de SPEC e implementação. Também possui uma proposta de barramento, journal,
-artefatos imutáveis, receipts e geração determinística de testes. Essas superfícies ainda não formam
-um protocolo único e explícito para o ciclo completo de trabalho.
+**Companion:** [Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) owns capability resolution and per-attempt tool materialization; [Bus Contracts](../bus-contracts/README.md) owns routing, visibility and work-message delivery; [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md) owns YAML materialization and migration boundaries.
 
-As conversas que motivaram este discovery indicam, entre outras, as seguintes necessidades:
+## 1. Business Context
 
-- relatórios individuais de pesquisa são imutáveis;
-- discussões geram novos relatórios, também registrados;
-- uma síntese possui um escritor responsável e outro agente que a revisa;
-- workers podem receber uma ou mais tarefas coerentes;
-- a tarefa aponta para trechos autoritativos da SPEC, em vez de copiar critérios inventados pelo pai;
-- o escopo de escrita é declarado por caminhos e permite criação de arquivos;
-- cada worker possui revisão local com ciclos limitados;
-- feedback de revisão é publicado pelo barramento e persistido pelo journal;
-- a revisão final pode reabrir um worker, um grupo ou toda a integração;
-- nenhuma aprovação é produzida automaticamente quando o limite de ciclos é atingido.
+O [objetivo do repositório](../../../../../README.md) é manter o trabalho dos agentes conectado à
+intenção, às decisões e às evidências que o tornam significativo; isso exige que a estrutura
+confirmada pelo usuário seja a mesma autoridade transportada até a execução.
 
-## Hipótese de superfície única para skills
+**Why now**
 
-Este discovery deve testar uma superfície única: o usuário invoca uma skill existente,
-e o orquestrador transforma essa intenção em um dispatch governado por um protocolo previamente
-compilado, confirmado e persistido. O usuário não deveria precisar operar separadamente a skill, o
-registro de protocolos e o runtime.
+O fluxo atual permite descrever grupos, connections, agentes e prompts, mas ainda depende do agente
+do chat para interpretar retornos, decidir follow-ups e coordenar transições. Ao mesmo tempo, a
+discovery v0.3.0 distribuía autoridade entre `SkillExecutionProfile`, `recipe_ref` e `DispatchSpec`,
+impedindo uma resposta inequívoca à pergunta: “qual objeto exato o usuário confirmou e a
+infraestrutura executou?”.
 
-A hipótese de integração é um **Skill Execution Profile** versionado: o protocolo de tarefas
-compilado para uma revisão exata de uma skill. Toda skill deve possuir um perfil confirmado antes de
-ser executada; não existe caminho "one-time" sem protocolo persistido. O perfil liga a identidade e
-o digest transitivo da skill ao vocabulário existente de `recipe_ref` e `DispatchSpec`, preserva a
-decomposição semântica em tarefas, dependências, critérios de decisão, separação entre workers e
-reviewers e parâmetros permitidos. O orquestrador, e não a skill original, consome esse perfil para produzir o
-`DispatchSpec` concreto; o `DispatchSpec` confirmado continua sendo a autoridade executável da run.
+**What's broken (as of 2026-08-03)**
 
-Esta é uma hipótese de discovery, não um schema ratificado. Recipes arbitrárias e workflows que
-alteram arquivos continuam fora do escopo da SPEC atual de `agents-communication-infra`; sua
-promoção exige evidência, mudança de governança e atualização das autoridades aplicáveis.
+- A v0.3.0 chamava `recipe_ref` de autoridade única sobre grafo, mensagens, ferramentas e resultados,
+  mas depois atribuía a execução aos bytes confirmados do `DispatchSpec`
+  (`agents-communication-protocols/README.md` v0.3.0, §§ “Ownership e precedência propostos” e
+  “Onboarding quando o perfil não existe ou é incompatível”).
+- O compilador atual materializa apenas launches iniciais com prompts e `turn_ordinal: 0`; ele não
+  percorre um grafo autônomo (`implementations/server/runtime/dispatch_workflow.py:57`).
+- A compilação, o registry e o lifecycle do `SkillExecutionProfile` continuam sem owner assentado
+  ([Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) §OQ-ATD3).
+- O contrato de routing já coloca um `RoutingPlan` imutável dentro do `DispatchSpec`, mas a v0.3.0
+  repetia partes dessa semântica como se pertencessem ao protocolo da skill
+  ([Bus Contracts](../bus-contracts/README.md) §H5).
+- O audit ledger possui regras próprias de autoridade e cutover; tratá-lo apenas como uma view ou
+  como a fonte da execução apagaria a separação vigente entre fatos runtime e registro oficial
+  (`dispatch-audit-ledger-cutover-contract.md:14`; [Dispatch Audit-Ledger
+  Cutover](../dispatch-audit-ledger-cutover-contract.md) §§Decision–Authority matrix).
+- A interface draft atual recebe bytes de uma pending sheet e compila/finaliza um `DispatchSpec` na
+  confirmação; ela ainda não prova que a estrutura visualizada antes do aceite e a estrutura
+  persistida/executada são literalmente a mesma projeção canônica
+  (`specs/interfaces.md:51`; [ACI interfaces](../../specs/interfaces.md) §POST /dispatches/{dispatch_id}/confirm).
 
-### Ownership e precedência propostos
+**What stays the same**
 
-A skill permanece dona da intenção de domínio, dos entregáveis, das fontes autoritativas e do que
-significa trabalho de qualidade. Ela é fonte para a compilação, mas não controla a execução. O
-perfil confirmado possui a decomposição semântica reutilizável dessas instruções, incluindo:
+- `ConfirmedDispatch`, `DispatchSpec`, `Run`, `AgentInvocationPlan` e a mecânica de confirmação,
+  journal, scheduling e execução continuam pertencendo à
+  [ACI SPEC](../../specs/domain.md); esta discovery não os redefine.
+- Capabilities, providers, tools, permissões, sandbox e sua materialização por attempt continuam
+  pertencendo a [Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md)
+  e às interfaces ACI citadas por ela.
+- Routing, visibility, publicação, reveal e entrega de mensagens continuam pertencendo a
+  [Bus Contracts](../bus-contracts/README.md).
+- A escrita e a reconciliação de `telemetry/agents/subagents-dispatch.yaml` continuam pertencendo a
+  [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md); esta discovery
+  declara somente o requisito de derivação a partir da autoridade confirmada.
+- APT continua observando provenance e lineage sem decidir topologia ou próxima transição.
+- Esta alteração não ratifica schemas, não implementa runtime, não habilita recipes arbitrárias ou
+  mutantes e não altera skills existentes.
 
-- tarefas obrigatórias, dependências de domínio, critérios de conclusão e decisões que precisam de gate;
-- regras para formar bundles coerentes e separar workers de reviewers;
-- requisitos de role para cada classe de tarefa;
-- contratos de entrada e saída e capabilities necessárias;
-- invariantes, constraints e regras para inferir parâmetros em cada disparo.
+## 2. Core Concepts
 
-O perfil não congela a quantidade nem a atribuição concreta de agentes. Em cada disparo, esses
-valores são fornecidos pelo usuário ou inferidos pelo orquestrador a partir da complexidade da
-invocação, dentro das constraints confirmadas. A proposta de `DispatchSpec` deve mostrar a origem de
-cada valor (`user` ou `inferred`) e, para inferências, a justificativa usada.
+### SkillExecutionProfile
 
-A `recipe_ref` selecionada e digest-pinned é a única autoridade sobre o grafo executável: estágios,
-transições, dependências runtime, roles executáveis, visibilidade, mensagens, ferramentas,
-permissões, gates, review/rework e resultados terminais. O perfil fornece requisitos, tarefas de
-domínio, constraints e bindings skill-specific permitidos pela recipe. Uma compilação determinística
-deve provar que a recipe realiza todos os requisitos `preserved` ou `compiled`; conflito ou
-capacidade ausente vira `unsupported` e bloqueia o dispatch. O perfil nunca sobrescreve a recipe.
+Value Object candidato, imutável e ligado a uma revisão exata da skill. Preserva obrigações de
+domínio, entregáveis, critérios, espaço válido de decomposição, parâmetros permitidos e requisitos
+lógicos de capability; restringe a compilação, mas não autoriza uma run.
 
-Cada mapeamento do perfil deve apontar para sua origem na skill ou em outra autoridade exata. O
-discovery deve testar um vocabulário candidato de disposições — `preserved`, `compiled`, `superseded`
-e `unsupported` — em vez de tratá-lo como schema final. Na hipótese, uma instrução material marcada
-como `unsupported` bloqueia o dispatch, enquanto `superseded` exige autoridade explícita e não pode
-ser inferido pelo orquestrador. Depois da confirmação, os bytes e digests do `DispatchSpec`, e não o
-perfil reutilizável, governam aquela execução.
+### SkillProtocolBinding
 
-Cada skill deve possuir um `skill_id` opaco, lógico e estável, separado de nome, path e revisão. Uma
-forma candidata é `skill:<authority-id>:<uuid>`, atribuída por um registry dentro de um namespace de
-sistema, plugin, organização ou workspace. Nome e `source` são aliases mutáveis: rename ou move
-preserva o ID; fork/import recebe novo ID, salvo continuidade explicitamente autorizada pelo owner.
+Entity candidata append-only que seleciona exatamente uma revisão ativa de
+`SkillExecutionProfile` para `(skill_id, skill_revision_digest)`. Ela permite resolver compatibilidade
+e histórico sem tornar o perfil uma segunda autoridade executável.
 
-O `skill_revision_digest` é o hash dos bytes canônicos de um `skill_source_manifest`: entrypoint
-(`SKILL.md`) e closure transitiva das dependências **intrínsecas e alcançáveis a partir da definição
-da skill**, como agentes, templates, skills auxiliares e contratos referenciados. Escolhas feitas
-durante a compilação — recipe selecionada, versão do compilador, taxonomias e schemas de protocolo —
-pertencem a um `protocol_dependency_manifest`, nunca à identidade da revisão de entrada da skill.
+### DispatchCandidate
 
-O perfil confirmado referencia exatamente `(skill_id, skill_revision_digest)` e possui seu próprio
-`protocol_revision_digest`, calculado sobre uma projeção canônica do protocolo, o digest da skill e o
-`protocol_dependency_manifest`. Essa projeção exclui o próprio `protocol_revision_digest`, receipts,
-o binding mutável e metadados de armazenamento; o digest é anexado ao envelope somente depois do
-hash. Metadados de confirmação ficam em um receipt/evento separado e não participam do digest que o
-usuário aprova.
+Value Object candidato e ainda não autorizativo que materializa uma invocação concreta: grafo,
+seats, prompts, policies, capabilities solicitadas, budgets, fontes, outputs e resultados terminais.
+É o objeto legível que o usuário inspeciona antes da confirmação.
 
-Pode haver mais de uma revisão imutável de protocolo para a mesma revisão da skill, mas um binding
-append-only deve selecionar **exatamente uma** como `active`. Ativar outra revisão exige confirmação,
-compare-and-swap contra o binding anterior e registra `supersedes`; revisões anteriores tornam-se
-`superseded` ou `revoked`. Revisões superseded permanecem disponíveis por referência histórica;
-revisões revoked permanecem auditáveis, mas seu uso depende da política de revogação. Todo
-`DispatchSpec` carrega o `protocol_revision_digest` ativo exato.
+### ConfirmationProjection
 
-Quando o digest observado da skill não possui binding compatível, o resolver retorna
-`compatibility: stale`; isso não altera o estado histórico do binding, que continua ativo para a
-revisão antiga. A skill de compilação pode usar o protocolo anterior como entrada de migração para
-propor uma revisão ligada ao novo `skill_revision_digest`, mas ela precisa de confirmação humana e
-nova ativação antes de ser usada. Mudanças de recipe, compilador, taxonomia ou schema não tornam a
-skill stale: elas produzem outra revisão do protocolo ou uma revogação administrativa explícita.
+Projeção de confirmação produzida pelo servidor depois de resolver capabilities e compilar o
+`DispatchCandidate`. Ela contém os bytes canônicos completos do `DispatchSpec`, seu digest e uma
+visualização derivada desses mesmos bytes. O usuário confirma esse digest exato; a visualização e o
+`DispatchCandidate` que a originou não são autoridades substitutas.
 
-Forma candidata do vínculo persistido:
+### CanonicalDispatchAuthority
 
-```yaml
-skill_ref:
-  skill_id: "skill:workspace-7f3a:<uuid>"
-  source: ".claude/skills/domainspec-spec-feature/SKILL.md"
-  skill_revision_digest: "sha256:<skill-source-manifest-digest>"
-  intrinsic_dependencies:
-    - kind: agent
-      source: ".claude/agents/domainspec-spec-writer.agent.md"
-      digest: "sha256:<content-digest>"
-    - kind: template
-      source: "domainspec/templates/spec.md"
-      digest: "sha256:<content-digest>"
-protocol_ref:
-  protocol_id: "skill-protocol:<uuid>"
-  protocol_revision_digest: "sha256:<canonical-protocol-digest>"
-  skill_revision_digest: "sha256:<skill-source-manifest-digest>"
-  recipe_ref: "recipe:<id>@sha256:<digest>"
-  compiler_ref: "skill-protocol-compiler@sha256:<digest>"
-binding:
-  state: active
-  active_protocol_revision_digest: "sha256:<canonical-protocol-digest>"
-  supersedes: "sha256:<previous-protocol-digest>"
-confirmation_receipt:
-  confirmed_by: "user:<principal-id>"
-  confirmed_at: "<timestamp>"
-```
+Rule que exige que a confirmação congele uma única representação canônica e seu digest no
+`ConfirmedDispatch`. No vocabulário runtime já existente, essa representação é o `DispatchSpec`;
+“Dispatch Image” pode ser usado apenas como nome de produto para esses mesmos bytes, nunca como uma
+entidade paralela.
 
-Nome, versão declarada, commit Git, mtime ou digest isolado de `SKILL.md` não bastam: nenhum deles
-captura sozinho uma mudança local ou transitiva capaz de alterar o protocolo executado.
+### DispatchDerivation
 
-### Onboarding quando o perfil não existe ou é incompatível
+Mapping determinístico que produz tabelas normalizadas, linhas do audit ledger, visualizações,
+`AgentInvocationPlan`s e effective inputs a partir da autoridade confirmada e de fatos runtime
+posteriores. Receipt/fact families não são um agregado indistinto: confirmação e publication
+receipts, delivery facts, materializer acknowledgements e appender outcomes retêm os owners e
+efeitos de aceitação definidos nos respectivos companions. Uma derivação pode acrescentar
+identidade e observações runtime, mas não pode alterar a semântica executável congelada.
 
-Na ausência de perfil compatível, a execução da skill fica bloqueada. Uma **skill de sistema para
-compilação de protocolos** inicia um lifecycle de autoria separado do lifecycle do dispatch. Para
-encerrar a regressão de bootstrap, ela é instalada com um protocolo raiz digest-pinned, assinado e
-admitido pelo trust store da instalação. Atualizar a compiladora ou seu protocolo raiz exige uma
-cerimônia administrativa/humana que confirma o novo digest antes de ativá-lo; a compiladora nunca
-autoriza a própria raiz.
+### RuntimeInterpretation
 
-A autoria começa por um `ProtocolAuthoringCommand` humano que fixa a skill-alvo, a revisão do
-compilador, budget e policy read-only. O runtime precisa registrar e abrir esse comando antes de
-qualquer efeito de provider/tool; isso requer uma extensão explícita da autoridade de abertura atual,
-não uma exceção implícita. O compilador é read-only sobre a skill e o workspace, não executa a
-skill-alvo, não amplia permissões e não registra sua proposta como protocolo confirmado. Antes de
-persistir ou usar o protocolo, o usuário vê:
+Workflow pertencente ao runtime que reduz estado persistido, libera nós prontos, materializa
+invocações e inputs, aplica routing/gates e produz um resultado terminal. Ele interpreta a
+autoridade confirmada; não pede ao agente do chat que redesenhe o trabalho durante a run.
 
-1. as interpretações e os pontos não suportados;
-2. o manifesto de identidade e dependências da skill;
-3. o perfil reutilizável proposto, com tarefas, roles, reviewers e gates;
-4. os parâmetros que o usuário pode fornecer e os que o orquestrador pode inferir;
-5. o digest exato que será congelado.
+## 3. One Canonical Authority
 
-Decompor automaticamente qualquer skill continua sendo uma hipótese não provada. A proposta do
-compilador é material para confirmação humana, não prova de compatibilidade. Se o usuário rejeitar
-ou se houver instrução material `unsupported`, nenhum perfil é registrado e a skill não executa.
+ACPD-1 propõe a invariável central para uma dispatch `runtime-managed`:
 
-Antes de confirmar o protocolo, o runtime re-resolve o `skill_source_manifest`, recalcula seu digest
-e faz `compare-and-bind` contra os bytes analisados pelo compilador. Divergência invalida a proposta.
-O protocolo confirmado referencia um snapshot imutável/content-addressed da skill e de suas
-dependências, é persistido de forma imutável e passa a ser obrigatório para toda execução daquela
-revisão. O fluxo possui duas confirmações sobre objetos diferentes:
+> Em uma dispatch `runtime-managed`, uma autoridade canônica persistida; todas as visualizações,
+> registros, configurações e ações runtime dessa lane são derivações verificáveis dela.
 
-Em toda **nova invocação**, antes de selecionar o perfil, o resolver recalcula o
-`skill_source_manifest`, procura o binding `active` do digest observado e materializa o snapshot
-imutável que será usado. A confirmação do dispatch faz compare-and-swap sobre o binding ativo e
-congela no `DispatchSpec` os digests e artifact refs; troca concorrente do binding ou drift dos bytes
-suspende a proposta em vez de reutilizar silenciosamente o protocolo.
-
-Replay não é uma nova invocação: ele referencia o `DispatchSpec`, os digests, receipts e snapshots do
-dispatch histórico, sem selecionar o protocolo ativo atual. A política de revogação ainda deve
-decidir separadamente se o replay é apenas reconstrução auditável, simulação sem efeitos ou nova
-execução autorizada.
+A autoridade não é o grafo isolado nem a recipe isolada. É o `DispatchSpec` concreto completo,
+incluído no `ConfirmedDispatch`, porque execução também depende de prompts, snapshots, policies,
+capabilities resolvidas, schemas e budgets. O `group_graph` e o `RoutingPlan` são o núcleo
+estrutural dessa autoridade, não um documento independente que possa divergir dela.
 
 ```text
-skill sem perfil ou com digest novo
-  -> ProtocolAuthoringCommand aberto com compiladora raiz confiável
-  -> autoria read-only do protocolo sobre snapshot identificado
-  -> re-hash + compare-and-bind
-  -> confirmação, persistência e ativação do Skill Execution Profile
-  -> resolução dos parâmetros da invocação
-  -> confirmação do DispatchSpec com digests e snapshot exatos
-  -> launch fence
-  -> execução do DispatchSpec confirmado
+SkillExecutionProfile + invocation + user values
+                         |
+                         v
+                 DispatchCandidate
+                         |
+             server compile + resolve
+                         |
+                         v
+             ConfirmationProjection
+     { canonical DispatchSpec bytes, digest, derived view }
+                         |
+               human confirms digest
+                         |
+                         v
+       ConfirmedDispatch { canonical DispatchSpec, digest }
+                         |
+       +-----------------+------------------+
+       |                 |                  |
+       v                 v                  v
+ normalized state   audit effect intent user projections
+       |
+       v
+ audit_opening.verified -> scheduling -> invocations -> messages
+                                                    |
+                                                    v
+                                           unique terminal fact
+                                                    |
+                                                    v
+                                           audit_close.verified -> closed
 ```
 
-A primeira confirmação pertence ao lifecycle de autoria do protocolo; a segunda continua sendo o
-gate único do dispatch. Elas não são dois gates dentro da mesma execução. Na abertura da run, a
-launch fence verifica que os digests de skill, protocolo, recipe e snapshot coincidem com o
-`DispatchSpec`. O snapshot é evidência e fonte congelada para materializar instruções compiladas; não
-é uma segunda autoridade de controle. O runtime executa somente o `DispatchSpec`. Se o adapter
-precisar ler bytes do workspace vivo para materializar uma entrada, ele revalida o manifesto
-imediatamente antes do primeiro efeito e suspende em caso de drift.
-
-### Identidade e contrato de cada agente
-
-O perfil e sua compilação devem preservar, sem colapsar, as camadas de identidade já existentes ou
-planejadas:
-
-- um campo candidato, provisoriamente chamado `agent_ref`: referência e digest da definição
-  executável e versionada do agente; o nome definitivo ainda precisa ser resolvido;
-- `agent_name`: persona opcional, nullable e não única; nunca identidade de execução;
-- `role`: vocabulário fechado hoje em `explorer`, `synthesizer`, `skeptic`, `writer`, `auditor`,
-  `planner` e `coder`; extensibilidade futura deve ser testada antes de ser promovida;
-- `angle`: posição no eixo de anti-bias, preservando seu significado atual e obrigatoriedade em
-  grupos com `n >= 2`;
-- IDs distintos de seat, instância e attempt, sem deduzi-los de role ou persona;
-- modelo, budget de tokens e outros recursos, prompt inicial, ferramentas/capabilities e
-  permissões efetivas.
-
-O perfil não pode predefinir valores concretos dos parâmetros declarados variáveis por invocação,
-nem assignments ou identidades runtime de seats. Referências estruturais congeladas, como recipe,
-tarefas obrigatórias, critérios e constraints, pertencem ao perfil. O dispatch concreto resolve os
-valores exatos dos parâmetros variáveis e de cada seat antes da confirmação. Um perfil não pode
-apagar diferenças relevantes entre o agente
-executável, a persona escolhida e a identidade autenticada da tentativa. A proveniência do nome da
-definição executável, suas ferramentas e seu allowlist de child agents deve sobreviver à compilação,
-separada dos IDs runtime-authenticated de seat, instância e attempt.
-
-O protocolo também precisa derivar o **role de trabalho** da semântica da skill. Uma skill de pesquisa
-pode exigir `researcher`/`explorer`, uma skill de implementação exige `coder`, e uma skill de autoria
-documental exige `writer`; reviewers e aprovadores permanecem separados desses workers. Como
-`researcher` ainda não pertence ao enum vigente, o discovery deve decidir se ele é apenas um alias
-de domínio para `explorer` ou uma extensão formal do vocabulário. O compilador não pode atribuir um
-role genérico que apague capabilities, formato de retorno ou critérios específicos da skill.
-
-### Decomposição e distribuição de trabalho
-
-O protocolo identifica os pontos em que a skill pode ser quebrada: tarefas obrigatórias, unidades
-de ownership, dependências de domínio, decisões que exigem gate, critérios de decisão e quais
-resultados precisam de review. Ele declara o espaço válido de decomposição, mas não fixa uma
-atribuição universal nem define a mecânica executável desses gates; a recipe realiza essa semântica.
-
-Para o MVP existe **um único protocolo ativo e exatamente uma `recipe_ref` digest-pinned por revisão
-da skill**. Não há modos ou variantes de execução. `distribution_strategy` é apenas um parâmetro do
-disparo, fornecido pelo usuário ou inferido pelo orquestrador dentro das constraints do protocolo;
-se uma estratégia exigir outro grafo ou outros gates, ela exige nova revisão do protocolo. Suporte a
-múltiplos modos ou recipes fica fora do MVP e deve ser introduzido por uma decisão de schema própria.
-
-`worker_count` declara capacidade, mas não define sozinho o significado da distribuição. Em cada
-disparo, o usuário pode fornecer a quantidade e a divisão; campos ausentes podem ser inferidos pelo
-orquestrador conforme complexidade, coesão, dependências, isolamento e custo. A precedência é:
-
-1. invariantes e constraints não sobrescrevíveis do protocolo delimitam o espaço válido;
-2. valores explícitos do usuário são usados quando válidos;
-3. todo campo concreto ausente é inferido e justificado pelo orquestrador segundo complexidade.
-
-Uma `distribution_strategy` candidata pode ser `partitioned` ou `independent_replicas`. Quando for
-`partitioned`, o orquestrador analisa a invocação antes da confirmação, forma bundles coerentes com
-uma ou mais tarefas e, quando houver escrita, com um ou mais arquivos, declara dependências e atribui
-ownership exclusivo. Um agente pode cuidar de várias tarefas relacionadas; uma tarefa pode ter um
-worker dedicado quando sua complexidade ou independência justificar. Nenhum caminho pode ter dois
-escritores concorrentes.
-
-A proposta deve mostrar a atribuição exata, a origem de cada parâmetro e a justificativa de cada
-inferência. O orquestrador pode usar menos workers que o limite pedido somente quando o parâmetro
-for um máximo, nunca quando o usuário tiver exigido uma cardinalidade exata. Ele não pode fragmentar
-trabalho artificialmente apenas para ocupar seats. Sob o P5 atual, workers particionados sem tensão
-entre si devem compilar como grupos singleton conectados por dependências, e não como um único grupo
-com `n > 1`.
-
-O runtime deve impedir que um agente filho criado durante a execução escape do grafo confirmado.
-Spawn aninhado deve ser desabilitado ou interceptado e transformado em solicitação ao orquestrador;
-a helper rule atual não pode funcionar como bypass de ownership, permissão ou confirmação.
-
-Transferência de ownership deve ser explícita. Arquivos compartilhados ou mudanças de integração
-precisam de uma única autoridade de materialização/integração. Toda edição de integração deve
-produzir uma nova versão e invalidar os pareceres cujo subject foi alterado.
-
-### Descritor tipado de atividade
-
-As características que orientam a decomposição não devem ser `tags` livres. No frontmatter do repo,
-`tags` continuam reservadas a tópicos; no protocolo, localização, ação, objetivo, pergunta e função
-epistêmica são dimensões independentes e precisam de campos tipados. Cada unidade de trabalho deve
-compilar de uma forma candidata como:
-
-```yaml
-activity_id: "task:<stable-local-id>"
-subject_ref: "<artifact/path/section/entity + exact version>"
-layer: [ontology | architecture | domain | application | external]
-operation: produce | transform | investigate | evaluate | decide | approve
-objective: "<resultado verificável>"
-question: "<pergunta exata ou null>"
-input_refs: ["<digest-pinned-ref>"]
-output_contract_ref: "<schema-id>@sha256:<digest>"
-epistemic_kind: evidence | proposal | judgment | decision
-properties: {}
-```
-
-`subject_ref` identifica **onde e sobre o quê** se trabalha; `layer` identifica a camada conceitual;
-`operation` identifica a ação; `objective` define o resultado verificável; `question` fixa o frame
-quando houver uma pergunta; `epistemic_kind` determina como o resultado participa de uma decisão.
-`properties` não é um saco livre de labels: aceita somente extensões schema-validadas que tenham
-passado pelo teste de ortogonalidade. O descritor deve compilar para `task_ref`, `policy_ref`,
-`decision_policies`, Contributions, Artifacts e GroupResults existentes, sem criar outro runtime.
-
-### Rodadas de julgamento e higiene de decisão
-
-Qualquer atividade que peça avaliação de claims, escolha entre propostas, definição de arquitetura,
-review de documento ou código, classificação de severidade, aprovação/reprovação, ranking, seleção
-de estratégia, votação, consenso ou outro julgamento deve declarar `epistemic_kind: judgment` e um
-contrato adicional:
-
-```yaml
-judgment:
-  kind: claim_evaluation | proposal_selection | architecture_decision | artifact_review |
-        severity_classification | approval | ranking | strategy_selection | vote | consensus
-  response_shape: binary | single_choice | multi_choice | ordinal | ranking
-  criteria_ref: "<digest-pinned>"
-  independence_policy_ref: "<digest-pinned>"
-  aggregation_rule_ref: "<digest-pinned>"
-```
-
-`kind` diz o que está sendo julgado; `response_shape` define a forma discreta da posição. Toda posição
-também carrega rationale e referências de evidência, mas texto livre não participa da agregação como
-se fosse um voto. Se a decisão agregar duas ou mais posições, a recipe **deve** compilar uma
-`JudgmentRound` com o seguinte lifecycle não desabilitável:
-
-1. congelar subject e versão, pergunta, critérios, schema de resposta, regra de agregação e seats
-   elegíveis;
-2. coletar posições independentes e seladas, sem revelar conteúdo, contagem parcial ou tendência;
-3. fechar a rodada atomicamente e somente então revelar as posições;
-4. agregar deterministicamente e preservar rationale, evidência, abstenções e dissenso;
-5. permitir discussão somente após o registro imutável das posições iniciais;
-6. quando houver reconsideração, abrir uma **nova** rodada selada e preservar posições inicial e final;
-7. produzir um `GroupResult` que não apague dissenso e não se confunda com a decisão do
-   `final_approver`.
-
-Uma única posição pode ser um julgamento, mas não é agregado, votação nem consenso. A separação de
-seats sozinha também não prova independência: eligibility precisa considerar autoria do subject,
-principal, definição/persona do agente, capabilities e conflito de interesse. ACI possui a mecânica
-de submit selado, close, reveal, persistência e agregação; uma policy universal de higiene possui a
-semântica de independência, critérios, quorum, forma discreta e regra de agregação. O perfil marca as
-atividades de julgamento e referencia a policy; a recipe a realiza e não pode desabilitá-la.
-
-### Input contracts, submissões e review
-
-O `input_contract` proposto não valida se o artefato de domínio está correto. Ele verifica, antes de
-invocar um agente, se estão presentes as entradas exatas que a skill exige: objetivo, referências e
-versões autoritativas, outputs upstream, caminhos-alvo, permissões e formato esperado de retorno.
-Esses requisitos são derivados da skill e rastreados pelo perfil; a infraestrutura apenas valida o
-contrato compilado.
-
-O retorno de um worker deve compilar para a `Contribution` tipada existente cujo payload referencia
-um `Artifact` imutável. O discovery deve testar um schema candidato de submission manifest para esse
-Artifact, capaz de representar caminhos, hashes e base snapshot submetidos; esses itens não são
-campos hoje ratificados na entidade `Artifact`. Imutabilidade aqui significa que a submissão
-histórica não é sobrescrita; o arquivo de trabalho pode ser corrigido, mas a correção cria outro
-manifesto. Reviewers avaliam uma submissão exata, e seus pareceres ficam vinculados ao respectivo
-manifesto e versão.
-
-`reviewer_count` é independente de `worker_count`. Uma implementação com três writers pode ter um,
-três ou outro número confirmado de reviewers. Review é apenas uma espécie de julgamento e herda a
-`JudgmentRound` transversal quando agrega duas ou mais posições. Três separações diferentes devem
-ser preservadas:
-
-1. **producer↔reviewer:** quem revisa uma submissão ou versão do pacote não pode compartilhar com
-   seu produtor o seat, a instância/attempt do agente nem autoridade de autoria sobre o subject;
-2. **reviewer↔reviewer:** reviewers em um grupo com `n >= 2` submetem posições iniciais seladas e
-   precisam ser tensionados conforme P5; suas diferenças não podem ser
-   justificadas apenas pela partição dos arquivos;
-3. **grupos de trabalho/review↔aprovação final:** o `GroupResult` de review é evidência para a
-   decisão e, sob P12, o `final_approver` continua separado dos grupos de trabalho e review.
-
-Atingir o limite de rework encerra como não resolvido; nunca aprova automaticamente.
-
-### Um protocolo confirmado por skill, recipes reutilizáveis
-
-O alvo é um conjunto pequeno de patterns reutilizáveis entre skills, por exemplo autoria
-particionada seguida de review independente, ou pesquisa independente seguida de síntese. Cada skill
-recebe obrigatoriamente seu próprio perfil confirmado, mas esse perfil deve selecionar e parametrizar
-uma recipe reutilizável sempre que a álgebra existente expressar seu protocolo. "Um perfil por skill"
-não significa "uma recipe ou um branch de kernel por skill". Se a skill exigir uma interação que a
-álgebra atual não expressa, isso é evidência para avaliar uma nova recipe ou primitive, não autoriza
-um branch ad hoc no kernel.
-
-Todo planejamento contextual deve acontecer antes da confirmação. Descobrir depois um novo
-artefato, ampliar caminhos, trocar uma autoridade ou alterar materialmente bundles, agents,
-permissões ou policies suspende a execução e exige uma proposta emendada e nova confirmação.
-
-### Exemplo candidato: `domainspec-spec-feature`
-
-Uma invocação poderia pedir três agentes de implementação que produzam coletivamente o pacote:
-
-- writer 1: `SPEC.md`, `domain.md` e `rules.md`;
-- writer 2: `events.md`, `states.md` e `workflows.md`;
-- writer 3: `architecture.md`, `interfaces.md` e os demais aspectos coerentes identificados;
-- uma autoridade explícita integra `glossary.md`, links e ajustes transversais quando esses arquivos
-  dependerem do pacote completo;
-- reviewers independentes avaliam os manifests exatos e o pacote integrado; o `final_approver`
-  toma a decisão final conforme P12.
-
-Cada caminho tem um writer por vez, embora cada writer possua vários arquivos. O orquestrador
-decide a divisão concreta por coerência, dependências, isolamento de escrita e carga; o usuário vê
-essa divisão antes de confirmar.
-
-A skill atual, porém, manda escrever um documento por vez, revisá-lo imediatamente e reutilizar o
-mesmo helper no re-check. Portanto, o exemplo acima não é uma execução fiel da skill atual sem
-mudanças: usando o vocabulário candidato, o perfil teria de marcar a orquestração embutida como
-explicitamente `superseded`, ao
-mesmo tempo que preserva sua semântica de domínio e seus critérios de qualidade. Isso requer
-alteração da skill/governança e promoção do workflow mutante antes de se tornar comportamento live.
-
-## Perguntas principais
-
-1. Qual feature é dona da compilação e do registro dos protocolos de trabalho, preservando em
-   `agents-communication-infra` a mecânica runtime já ratificada?
-2. Qual é o conteúdo mínimo de uma atribuição de trabalho?
-3. Como uma tarefa referencia partes da SPEC sem reinterpretar seus critérios?
-4. Como caminhos autorizam criação e alteração sem permitir escrita fora do escopo?
-5. Exclusão e movimentação exigem uma autorização separada?
-6. Quando um worker pode receber várias tarefas e quando elas precisam ser separadas?
-7. Como dividir a criação de uma SPEC entre agentes sem gerar divergência entre seus arquivos?
-8. Como relatórios individuais, discussões, sínteses e revisões são versionados e relacionados?
-9. Qual informação deve ser fornecida por um agente e qual deve ser registrada automaticamente?
-10. Qual é o parecer mínimo que um revisor precisa publicar?
-11. Como funcionam os ciclos escritor–revisor, worker–revisor e integração–revisores finais?
-12. Como alterações invalidam aprovações anteriores e determinam o alcance da nova revisão?
-13. Como revisores finais solicitam trabalho a grupos específicos sem se tornarem orquestradores?
-14. Quais mensagens são apenas transporte e quais fatos precisam ser persistidos no journal?
-15. O que acontece quando um ciclo não converge dentro do limite?
-16. Qual é a forma mínima do `Skill Execution Profile` e como cada mapeamento preserva sua origem?
-17. Como distinguir `compatibility: stale` por mudança da skill, nova revisão disponível de uma
-    dependência do protocolo e revogação administrativa?
-18. Quais recipes atendem várias skills sem criar branches por skill no kernel?
-19. Como o orquestrador propõe bundles e assignments reproduzíveis sem inventar requisitos?
-20. Quais mudanças tardias são materiais e obrigam uma nova confirmação?
-21. Como `skill_id`, `skill_revision_digest` e `protocol_revision_digest` são gerados e resolvidos
-    para skills locais, de sistema e de plugins?
-22. Quais parâmetros devem vir do usuário e quais o orquestrador deve inferir conforme a complexidade
-    da invocação?
-23. Como o protocolo deriva roles específicos de workers sem misturá-los com reviewers e aprovadores?
-24. Como instalar, atualizar e auditar o trust anchor da skill compiladora sem autorização circular?
-25. Como o registry garante exatamente um protocolo ativo por revisão da skill e registra
-    supersessão/revogação sem reescrever história?
-26. Em quais fronteiras o runtime recalcula ou compara digests para impedir TOCTOU entre autoria,
-    confirmação e primeiro efeito?
-27. Qual algoritmo fecha dependências intrínsecas da skill diante de globs, symlinks, ciclos,
-    includes dinâmicos e dependências externas não snapshotáveis?
-28. Quem pode registrar skills, administrar aliases e bindings, resolver colisões e recuperar o
-    registry após falha parcial ou concorrência?
-29. Como persistência, receipt e ativação tornam-se idempotentes e transacionais?
-30. Qual a semântica de `superseded` e `revoked` para dispatch proposto, confirmado, não iniciado,
-    in-flight, retry e replay?
-31. Quais tipos, normalizações, conflitos e evidências tornam parâmetros inferidos validáveis e
-    reproduzíveis?
-32. Quais critérios provam independência, qualificação e ausência de conflito de interesse de
-    avaliadores e do `final_approver` além da separação de seats?
-33. Qual schema mínimo do descritor de atividade preserva localização, ação, objetivo, pergunta e
-    função epistêmica sem duplicar o frontmatter documental?
-34. Em que nível vive a policy universal de higiene de decisão e como a recipe prova que toda
-    agregação de julgamentos foi compilada para uma `JudgmentRound` selada?
-
-## Pesquisas necessárias
-
-### 1. Inventário do funcionamento atual
-
-Levantar o comportamento real das skills e dos registros existentes:
-
-- [research](../../../../../.claude/skills/research/SKILL.md);
-- [review](../../../../../.claude/skills/review/SKILL.md);
-- [domainspec-subagents-strategy](../../../../../.claude/skills/domainspec-subagents-strategy/SKILL.md);
-- [register-dispatch](../../../../../.claude/skills/register-dispatch/SKILL.md);
-- skills e agentes de discovery, SPEC e implementação;
-- registros reais em `telemetry/agents/`;
-- [test-derivation-engine](../../../../../tools/test-derivation-engine/README.md);
-- [arquitetura de agents-communication-infra](../../README.md);
-- [feature discovery vigente](../feature-discovery/agents-communication-infra.md);
-- [SPEC e seus aspects](../../specs/SPEC.md);
-- [implementation layering](../../IMPLEMENTATION-LAYERING.md);
-- [work pack e gates vigentes](../../WORK-PACK.md).
-
-A pesquisa deve distinguir regras efetivamente aplicadas, regras apenas documentadas e convenções
-que hoje dependem do agente pai. Toda conclusão sobre ownership, entidades ou gates deve registrar
-uma matriz `claim -> autoridade -> status/versão -> evidência`.
-
-### 2. Independência, discussão e decisão coletiva
-
-Pesquisar evidência sobre:
-
-- julgamento independente antes da interação;
-- feedback controlado e métodos semelhantes ao Delphi;
-- risco de conformidade, cascata informacional e groupthink;
-- discussão depois do registro das posições iniciais;
-- nova decisão privada depois da discussão;
-- formas discretas de resposta, rationale e evidência sem transformar texto livre em voto;
-- detecção explícita de julgamento em pesquisa de claims, comparação de propostas, arquitetura,
-  review, severidade, aprovação, ranking e seleção de estratégia;
-- unanimidade, objeção bloqueante e tratamento de dissenso;
-- limites de ciclos como controle de custo, não como aprovação automática.
-
-O resultado deve recomendar quando agentes podem conversar, quais posições precisam permanecer
-registradas antes e depois da conversa e como impedir que uma recipe contorne a higiene apenas
-renomeando um julgamento como pesquisa, review ou planejamento.
-
-### 3. Protocolo de pesquisa e síntese
-
-Comparar pelo menos estas configurações experimentais de recipes distintas:
-
-1. pesquisadores independentes sem discussão, seguidos por um sintetizador;
-2. pesquisadores registram seus relatórios, discutem e publicam um relatório complementar;
-3. dois sintetizadores produzem versões independentes antes de um deles integrar;
-4. um sintetizador escreve e outro executa um ciclo de revisão da síntese.
-
-A pesquisa deve avaliar qualidade, preservação de dissenso, custo, número de ciclos, facilidade de
-auditoria e risco de o sintetizador omitir evidências.
-
-### 4. Granularidade das atribuições de trabalho
-
-Investigar como decompor trabalho sem usar nem tarefas pequenas demais nem pedidos abertos como
-“implemente todo o `architecture.md`”. Devem ser avaliados:
-
-- uma tarefa por worker;
-- várias tarefas relacionadas por worker;
-- uma capability ou fatia vertical por worker;
-- um arquivo por agente na criação de SPEC;
-- conjuntos de arquivos relacionados com um responsável único;
-- planejamento obrigatório antes de executar uma arquitetura ampla.
-
-O objetivo é propor critérios de coesão e revisabilidade, sem fazer o agente pai inventar requisitos
-que deveriam vir da SPEC.
-
-### 5. Escopo de escrita por caminhos
-
-Pesquisar e testar um contrato de escrita baseado em caminhos, incluindo:
-
-- criação e alteração dentro de raízes autorizadas;
-- autorização separada para excluir ou mover;
-- contenção por caminho absoluto resolvido;
-- traversal e symlinks;
-- caminhos sobrepostos entre workers;
-- ownership de arquivos compartilhados;
-- comportamento quando uma implementação precisa sair do escopo inicialmente concedido.
-
-### 6. Contrato mínimo de revisão
-
-Determinar o menor payload de revisão que continue auditável. A hipótese inicial é que o revisor
-forneça:
-
-- referência e hash do artefato analisado;
-- parecer `aprovado` ou `precisa de correção`;
-- arquivo ou subject exato e citação literal da evidência;
-- problema, severidade e correção proposta;
-- indicação de que o problema impede ou não a aprovação;
-- dados suficientes para projetar o verdict e a lista de change requests exigidos pela recipe.
-
-Identidade, modelo/provider, tarefa, ciclo, horário, prompt, arquivos alterados, testes executados e
-estado do finding devem ser avaliados como metadados capturados automaticamente, não campos que o
-revisor precisa preencher manualmente. Se arquivo, severidade, correção proposta ou verdict forem
-derivados em vez de fornecidos, o protocolo precisa declarar a transformação determinística e
-preservar a exigência original da skill.
-
-### 7. Versionamento, discussão e invalidação
-
-Definir como representar:
-
-- relatório original e relatório complementar da discussão;
-- posição inicial e posição final de cada participante;
-- versões sucessivas da síntese ou implementação;
-- parecer aplicável a uma versão exata;
-- correção que fecha, refuta ou mantém um problema;
-- mudança local que invalida apenas um parecer;
-- mudança transversal que reabre vários grupos;
-- risco aceito somente por autoridade autorizada.
-
-### 8. Barramento, journal e roteamento
-
-Pesquisar o contrato entre transporte e autoridade:
-
-- o barramento entrega atribuições, findings e solicitações de correção;
-- o journal persiste submissões, versões, discussões, pareceres, reaberturas e aprovações;
-- agentes não escrevem diretamente o estado oficial da tarefa;
-- mensagens repetidas são idempotentes;
-- visibilidade é limitada ao worker, revisores, sintetizador e agente pai apropriados;
-- o revisor final emite uma solicitação estruturada, enquanto o orquestrador valida e agenda o
-  trabalho.
-
-### 9. Ciclos locais e revisão final
-
-Comparar limites separados para:
-
-- escritor e revisor da síntese;
-- worker e revisor local;
-- integração e revisores finais.
-
-A pesquisa deve definir convergência, escalonamento, troca de reviewer, reaproveitamento do mesmo
-reviewer e efeito de atingir o limite. A hipótese inicial é que o limite encerre o fluxo como não
-resolvido e nunca reduza o critério de aprovação.
-
-### 10. Experimentos de validação
-
-Os probes devem ser classificados pelo gate em que podem ser executados. Probes documentais ou em
-harness read-only autorizado podem ocorrer durante o discovery; probes que dependem do kernel,
-escrita isolada, replay ou invalidação runtime tornam-se gates de uma futura emenda à SPEC ou da
-implementação correspondente. O discovery não pode exigir como pré-condição atual um mecanismo que
-o work pack ainda bloqueia.
-
-Probes de discovery/harness:
-
-- pesquisa com e sem discussão posterior;
-- um versus dois sintetizadores;
-- simulação read-only, sobre fixtures, de uma SPEC com ownership por arquivo ou conjunto coerente;
-- compilação da mesma skill sob diferentes complexidades e parâmetros fornecidos pelo usuário;
-- comparação entre um worker por tarefa e um worker com várias tarefas coerentes;
-- derivação de roles de workers para skills de pesquisa, escrita e código, mantendo reviewers
-  independentes;
-- geração determinística de `skill_id`, `skill_source_manifest`, `protocol_dependency_manifest` e
-  digests de revisão sem circularidade;
-- compilação da mesma skill para uma recipe compatível e uma incompatível, verificando que o perfil
-  não sobrescreve o grafo ou os gates da recipe;
-- compilar duas skills diferentes para a mesma recipe reutilizável, sem branch por skill no kernel;
-- gerar uma proposta não persistida para uma skill não registrada, medindo correções humanas,
-  omissões materiais e falsos `preserved`/`compiled`;
-- alterar `SKILL.md` e cada dependência intrínseca separadamente, verificando novo
-  `skill_revision_digest` e `compatibility: stale`, sem mudar o binding histórico;
-- alterar recipe, compilador ou schema, verificando novo `protocol_revision_digest` sem mudar a
-  identidade da revisão da skill;
-- comparar uma autoria DomainSpec sequencial fiel à skill atual com uma simulação particionada,
-  medindo consistência transversal, rework, custo e tempo;
-- classificar atividades representativas e provar que avaliação de claims, seleção, arquitetura,
-  review, severidade, aprovação, ranking, estratégia, voto e consenso acionam `JudgmentRound`;
-- testar que `kind` e `response_shape` permanecem dimensões separadas e que uma única posição não é
-  apresentada como consenso.
-
-Gates pós-implementação ou de harness explicitamente autorizado:
-
-- dois workers tentando escrever em caminhos sobrepostos;
-- reviewer avaliando uma versão que muda depois do parecer;
-- revisão final reabrindo somente um grupo e depois vários grupos;
-- repetição de mensagens e recuperação após interrupção;
-- término do limite de ciclos com objeção ainda aberta;
-- gerar, confirmar e persistir um perfil obrigatório para uma skill não registrada;
-- confirmar duas revisões de protocolo para o mesmo `skill_revision_digest` e demonstrar ativação
-  unívoca, CAS e supersessão;
-- reconstruir um dispatch histórico usando seus próprios digests e snapshots, sem consultar o
-  binding ativo como autoridade de seleção;
-- alterar uma dependência entre autoria, confirmação e launch, verificando rejeição pelo
-  `compare-and-bind` ou pela launch fence;
-- injetar falhas entre persistência, receipt e ativação, verificando retry idempotente e ausência de
-  binding parcial;
-- revogar um protocolo antes do launch, durante a execução, antes de retry e antes de replay,
-  verificando a matriz de política aplicável;
-- instalar e atualizar a skill compiladora, demonstrando que seu protocolo raiz vem do trust anchor
-  e nunca de autoaprovação;
-- confirmar que writers particionados viram grupos singleton sob P5 e que reviewers tensionados
-  participam de uma `JudgmentRound` selada;
-- tentar revelar posição ou contagem parcial antes do close atômico, discutir antes da submissão e
-  editar julgamento inicial, verificando bloqueio; após discussão, exigir nova rodada selada;
-- tentar ocupar seats de avaliação com o produtor, o mesmo principal/persona ou agente sem
-  capability de domínio, verificando a policy de eligibility;
-- tentar spawn de child agent, escrita sobreposta, transferência implícita de ownership e ampliação
-  tardia de paths, verificando bloqueio ou retorno ao gate;
-- modificar um arquivo durante integração e demonstrar invalidação somente dos reviews aplicáveis;
-- atingir o loop ceiling com finding aberto e demonstrar que `GroupResult` não vira aprovação.
-
-## Resultados esperados do discovery
-
-O discovery deve produzir recomendações, não código. Seu resultado precisa incluir:
-
-- decisão de ownership da compilação e do registro do protocolo de trabalho, preservando o
-  ownership runtime já ratificado em `agents-communication-infra`;
-- vocabulário mínimo;
-- contratos mínimos de atribuição, submissão, discussão, revisão e rework;
-- diagramas dos fluxos de pesquisa e workers;
-- regras de versionamento e invalidação;
-- política de caminhos autorizados;
-- política de ciclos e escalonamento;
-- fronteira entre barramento e journal;
-- experimentos executáveis no discovery e gates que dependem de emenda à SPEC ou implementação;
-- mapa dos documentos, skills e componentes que precisariam mudar;
-- proposta do `Skill Execution Profile` obrigatório e imutável, incluindo `skill_id`, manifests
-  separados de fonte e protocolo, digests, binding ativo, supersessão/revogação, resolução de
-  compatibilidade e avaliação do vocabulário candidato
-  `preserved | compiled | superseded | unsupported`;
-- catálogo mínimo de recipes reutilizáveis e lacunas da álgebra atual;
-- contrato da skill de compilação, do protocolo raiz/trust anchor e do lifecycle autorizado para
-  skills sem perfil compatível, com confirmação e persistência obrigatórias;
-- contrato de snapshot, `compare-and-bind` e launch fence contra mudanças concorrentes;
-- schema candidato para parâmetros fornecidos pelo usuário e inferências de complexidade, incluindo
-  precedência, provenance e justificativa;
-- regras para derivar roles de workers por semântica da skill e separá-los de reviewers e aprovadores;
-- schema candidato do descritor tipado de atividade e sua compilação para as entidades runtime
-  existentes;
-- policy transversal de `JudgmentRound`, incluindo freeze, eligibility, sealing, close, reveal,
-  agregação discreta, dissenso e reavaliação em nova rodada;
-- semântica transacional e de autorização do registry, bindings, receipts, revogação e replay;
-- regras propostas para bundles, ownership, integração, spawn aninhado e mudanças tardias;
-- resultado do piloto exemplificativo `domainspec-spec-feature`, sem tratá-lo como protocolo
-  universal para as demais skills.
-
-## Fora de escopo neste momento
-
-- alterar a SPEC existente;
-- implementar o runtime ou o barramento;
-- mudar as skills atuais;
-- escolher valores definitivos para todos os limites de ciclo;
-- criar schemas finais de eventos ou banco de dados;
-- suportar múltiplos modos ou múltiplas recipes no mesmo protocolo do MVP;
-- assumir que consenso implica correção;
-- assumir que modelos ou providers diferentes garantem independência.
-
-## Critério para avançar
-
-O discovery poderá ser promovido somente depois de revisão independente que confirme:
-
-- cobertura dos fluxos de pesquisa e execução;
-- separação clara entre transporte e autoridade;
-- ausência de campos sem necessidade demonstrada;
-- ausência de decisões inventadas pelo agente pai;
-- tratamento explícito de versão, rework, invalidação e não convergência;
-- recomendação clara sobre a feature responsável pela compilação e pelo registro do protocolo;
-- bloqueio de execução quando não existir perfil confirmado para o `skill_revision_digest` atual;
-- separação verificável entre workers, reviewers, gates de decisão e aprovação final;
-- resolução rastreável dos parâmetros concretos entre valores do usuário e inferências;
-- classificação tipada de toda atividade e acionamento obrigatório da higiene para qualquer agregado
-  de julgamentos, independentemente do nome da tarefa ou role do agente;
-- exatamente uma recipe por protocolo no MVP, sem modos implícitos;
-- autoridade executável única no `DispatchSpec`, com snapshot tratado como evidência congelada.
+As seguintes regras são requisitos candidatos obrigatórios para promover a futura lane
+`runtime-managed`; elas não descrevem a autoridade live `legacy-managed`:
+
+1. Persistência conserva os bytes canônicos confirmados e o digest; tabelas normalizadas são índices
+   operacionais, não uma reconstrução livre da autoridade.
+2. Toda derivação identifica o `dispatch_id`, o `ExecutionAuthorityMode` e o digest de origem ou uma
+   cadeia verificável até eles.
+3. Nenhuma projeção pode acrescentar nodes, edges, recipients, tools, permissões, gates ou terminal
+   behavior que não estejam autorizados pelo `DispatchSpec`.
+4. Qualquer mudança material gera outro `DispatchCandidate`, outra confirmação e outro
+   `ConfirmedDispatch`; atualização in-place é proibida.
+5. Observações não determinísticas de provider, tool, clock e filesystem entram como fatos da
+   `Run`; não reescrevem o plano confirmado.
+
+## 4. Skill-to-Dispatch Compilation
+
+A skill permanece dona da intenção de domínio, dos entregáveis, das fontes autoritativas e do que
+significa trabalho de qualidade. A camada de protocol governance de ACI deve possuir a compilação,
+o registry e o lifecycle do `SkillExecutionProfile`; capability resolution permanece um serviço
+separado e autoritativo somente dentro da confirmação runtime. Esta é a proposta de settlement de
+OQ-ATD3 e precisa de sincronização posterior no documento companion e na SPEC.
+
+O fluxo candidato é:
+
+1. Selecionar exatamente um `ExecutionAuthorityMode` imutável antes da confirmação. `legacy-managed`
+   segue o workflow/session live e não cria ACI `ConfirmedDispatch` ou `Run`; os passos seguintes
+   pertencem exclusivamente a `runtime-managed`.
+2. Resolver `skill_id`, `skill_source_manifest` e `skill_revision_digest` sobre a closure transitiva
+   de dependências intrínsecas alcançáveis.
+3. Resolver um `SkillProtocolBinding` ativo e compatível e registrar no candidato a revisão do
+   perfil, a revisão do binding e seu token compare-and-swap; ausência, stale ou revogação bloqueiam
+   a execução e abrem autoria de protocolo.
+4. Combinar perfil, invocação e valores explícitos do usuário; inferências são permitidas somente
+   dentro das constraints do perfil e carregam `ResolutionProvenance`.
+5. Compilar um `DispatchCandidate` fechado, incluindo uma `recipe_ref` digest-pinned e uma disposição
+   para cada obrigação material: `preserved`, `compiled`, `superseded` ou `unsupported`.
+6. Resolver capabilities efetivas no boundary ACI; falha de capability obrigatória rejeita a
+   confirmação, sem criar `ConfirmedDispatch` ou `Run`.
+7. Compilar no servidor o `DispatchSpec` final, canonicalizar seus bytes e emitir a
+   `ConfirmationProjection`; mostrar ao usuário o digest, os bytes completos e a visualização
+   derivada antes do aceite.
+8. Confirmar por compare-and-swap o digest exibido, o mode e as revisões de profile/binding. Qualquer
+   mudança ou revogação concorrente invalida a projeção e exige nova compilação e novo aceite.
+9. Em uma única transação idempotente, keyed por `(dispatch_id, dispatch_spec_digest)`, criar ou
+   retornar o mesmo `ConfirmedDispatch`, exatamente uma `Run`, `run.created`,
+   `audit_opening.requested`, seu effect intent e receipt estável. Recovery nunca cria outra run.
+10. Liberar scheduling e execução somente depois de `audit_opening.verified`; a infraestrutura passa
+    então a ser a única coordenadora da execução.
+
+`preserved` mantém a obrigação; `compiled` a traduz para estrutura executável; `superseded` exige
+autoridade explícita superior; `unsupported` bloqueia. O compilador nunca corrige silenciosamente
+uma ambiguidade da skill, inventa critérios ou trata uma interpretação do modelo como decisão do
+usuário.
+
+## 5. Graph and Agent Provisioning
+
+O grafo confirmado precisa conter ou referenciar tudo que altera a execução:
+
+- nodes de trabalho, validação, decisão, integração, projeção e terminal;
+- edges de dependência, fan-out, fan-in, reveal, review, feedback e rework;
+- ownership de artifacts e paths, incluindo um único writer por path em cada geração;
+- role, seat, prompt snapshot, input/output contract, source responsibility e budget;
+- requirements de capabilities que serão resolvidos na confirmação;
+- visibility e allowed communication paths;
+- release conditions, convergence predicates, loop ceilings e invalidation rules;
+- outputs oficiais e estados terminais, incluindo não resolvido e aguardando usuário.
+
+O agente do chat pode interpretar a intenção, propor bundles, explicar inferências e apresentar a
+visualização antes da confirmação. Depois dela, não escolhe destinatários, não decide qual node
+executar, não sintetiza retornos informalmente e não aprova em nome do grafo. O scheduler reduz o
+estado da `Run`, encontra nodes prontos e deriva `AgentInvocationPlan`s; cada adapter materializa a
+invocação exata e o bus entrega apenas conteúdo autorizado.
+
+O runtime pode criar IDs de attempt, timestamps, receipts e observações que não existiam na
+proposta. Esses valores são fatos posteriores, não liberdade para alterar a configuração semântica.
+
+## 6. Derived Surfaces and Ownership
+
+| Surface | Owner | Derivation rule | Maturity |
+|---|---|---|---|
+| `SkillExecutionProfile` and binding | ACI protocol governance, proposed by this discovery | derived from exact skill revision and confirmed protocol-authoring lifecycle | candidate |
+| `ConfirmationProjection` | ACI confirmation workflow | server-resolved canonical `DispatchSpec` bytes/digest plus a disposable view; user accepts that exact digest | candidate; mapping/schema pending promotion |
+| `ConfirmedDispatch` and canonical `DispatchSpec` | ACI runtime contracts | frozen from the exact accepted `ConfirmationProjection` digest | draft-specified; not generic-runtime implemented |
+| Normalized graph/state tables | ACI persistence/runtime | equality-preserving indexes over confirmed authority plus journal facts | partly specified; incomplete implementation |
+| Agent/tool configuration | ACI capability resolution | deterministic per-attempt materialization of frozen capability resolution | candidate/draft-specified by companion |
+| Routing and work-message delivery | Work Bus contracts | immutable plan from `DispatchSpec`; mutable state from journal commands | discovery/draft-specified |
+| Accepted workflow facts and YAML effect intents | ACI journal/runtime | append-only `run.created`, terminal facts, requested effects and stable identities | draft-specified runtime lane |
+| Canonical YAML row derivation and reconciliation | `AuditLedgerMaterializer` | derive exact row bytes from frozen authority/facts; classify `absent`, `identical` or `divergent` | cutover blocked |
+| Physical YAML mutation | validated appender | sole writer invoked only for an `absent` exact derived row; independent re-read required | legacy live port; future materializer adapter |
+| Live/historical `subagents-dispatch.yaml` rows | legacy workflow/session and audit-ledger contract | current rows retain their assigned legacy authority; they are not reconstructed as ACI `ConfirmedDispatch` or `Run` | live compatibility/audit surface |
+| UI/Mermaid/control-center graph | read projection | disposable view over canonical spec and runtime state | partial/read-only |
+| Provenance and lineage | APT | observation and projection of accepted facts | bounded local pilot |
+
+Essa matriz é uma proposta de ownership desta discovery, não um settlement normativo: referências podem atravessar boundaries,
+mas definições não são copiadas. Em particular, o YAML não provisiona agentes e a UI não autoriza
+transições; ambos mostram fatos cuja autoridade vive em outro lugar. A proposta de protocol
+governance permanece condicionada ao settlement de OQ-ATD3, amendment do companion e promoção na
+SPEC.
+
+## 7. Profile Identity, Versioning, and Compatibility
+
+Cada skill possui um `skill_id` lógico e estável, separado de nome, path e revisão. O
+`skill_revision_digest` cobre bytes canônicos do entrypoint e dependências intrínsecas alcançáveis;
+recipe, compiler, taxonomias e schemas pertencem ao `protocol_dependency_manifest`.
+
+Uma revisão do perfil referencia exatamente `(skill_id, skill_revision_digest)` e possui um
+`protocol_revision_digest` sobre sua projeção canônica, o digest da skill e suas dependências de
+protocolo. Receipts e o binding mutável ficam fora desse digest. Mais de uma revisão imutável pode
+existir, mas o `SkillProtocolBinding` seleciona exatamente uma como ativa por revisão da skill.
+
+Mudança na skill ou em dependência intrínseca produz `compatibility: stale`. Mudança em recipe,
+compiler ou schema produz nova revisão de protocolo sem alterar a identidade da revisão da skill.
+Ativação, supersessão e revogação são append-only, idempotentes e compare-and-swap; histórico nunca
+é reescrito.
+
+O lifecycle candidato fecha a corrida de autorização assim:
+
+| Estado | Efeito de supersessão/revogação |
+|---|---|
+| proposto ou aguardando confirmação | invalida a `ConfirmationProjection`; nova resolução e novo aceite são obrigatórios |
+| confirmação concorrente | o compare-and-swap falha sem criar `ConfirmedDispatch` ou `Run` |
+| confirmado, ainda não iniciado | a autoridade congelada não é reinterpretada; qualquer cancelamento exige um comando/policy runtime explícito e atribuível |
+| in-flight | continua sob a autoridade congelada ou termina por um controle de segurança explícito; nunca migra silenciosamente de profile |
+| retry da mesma `Run` | usa exatamente a semântica congelada e os limites de retry confirmados |
+| nova execução | requer binding ativo e nova confirmação |
+| replay auditável | reduz somente fatos e autoridade congelados, sem consultar binding ativo nem emitir efeitos externos |
+
+Para o MVP, uma revisão ativa seleciona exatamente uma `recipe_ref`. Parâmetros podem variar dentro
+dos bounds confirmados; uma variação que exige outro grafo, outro gate ou outra semântica terminal
+exige nova revisão de protocolo.
+
+## 8. Work, Review, and Convergence
+
+O perfil identifica tarefas obrigatórias, unidades de ownership, dependências, decisões e outputs
+que exigem review. A invocação concreta resolve quantidade de workers, bundles e assignments antes
+da confirmação, preservando:
+
+- um writer por path e por geração;
+- separação entre producer, reviewer e final approver;
+- submissões e reviews ligados a versões e digests exatos;
+- julgamento independente antes de reveal ou discussão quando houver agregação;
+- dissenso e rationale como evidência preservada;
+- rework como nova geração, nunca edição de história aceita.
+
+Toda agregação de julgamentos deve referenciar critérios, response schema, independence policy e
+aggregation rule versionados. Discussão pode ocorrer somente depois do registro imutável das
+posições iniciais; reconsideração abre nova rodada. Uma posição única não é consenso.
+
+Atingir um loop ceiling nunca implica aprovação. A `Run` produz exatamente um fato terminal conforme
+os estados confirmados: aprovada, rejeitada, não resolvida, bloqueada ou aguardando uma decisão
+humana explicitamente declarada no grafo. Esse fato não é sinônimo de `closed`: o close effect pode
+permanecer `pending`, `unknown` ou `reconciliation_required`, e o status oficial só passa a `closed`
+depois de `audit_close.verified` por exact re-read.
+
+## 9. Validation Direction
+
+A promoção desta discovery exige provas separadas, porque fidelidade de compilação, execução e
+qualidade multiagente são claims diferentes:
+
+1. **Fidelidade:** compilar skills distintas e demonstrar uma matriz completa
+   `obrigação -> origem -> disposição -> elemento do DispatchSpec`, rejeitando omissões materiais.
+2. **Identidade:** alterar entrypoint e dependências intrínsecas e verificar stale/binding sem
+   reescrever histórico; alterar recipe/compiler/schema e verificar nova revisão de protocolo.
+3. **Derivação:** produzir tabela normalizada, linha de audit ledger, visualização e
+   `AgentInvocationPlan`s a partir dos mesmos bytes e provar igualdade/digest lineage.
+4. **Execução:** executar uma recipe read-only pequena sem decisão do agente do chat depois da
+   confirmação, incluindo restart, retry e terminal não resolvido.
+5. **Boundary:** tentar introduzir recipient, tool, permission, path, gate ou follow-up não
+   confirmado e verificar fail-closed ou retorno a nova confirmação.
+6. **Valor:** comparar a recipe multiagente a um baseline single-agent com critérios
+   preregistrados de qualidade, dissent preservation, custo e latência.
+
+Probes documentais e harnesses read-only podem anteceder implementação. Provider real, filesystem
+mutante, runtime-managed cutover e recipes arbitrárias dependem dos respectivos work-pack gates e
+não podem ser apresentados como disponíveis por esta discovery.
+
+## Open Questions
+
+### OQ-ACP1 — Registry settlement synchronization
+
+**Question:** Como sincronizar a proposta de ownership de protocol governance com OQ-ATD3, Concept
+Registry, interfaces e operações ACI sem criar uma segunda autoridade?
+
+**Recommendation:** promover uma decisão única por referência: protocol governance compila e mantém
+profiles/bindings; `ConfirmRuntimeDispatch` continua sendo a única autoridade de execução.
+
+**Settlement stage:** independent review → companion amendment → SPEC.
+
+### OQ-ACP2 — Transitive skill closure
+
+**Question:** Qual algoritmo fecha dependências diante de globs, symlinks, ciclos, includes
+dinâmicos e dependências externas não snapshotáveis?
+
+**Recommendation:** começar por referências estáticas alcançáveis e bloquear dependências dinâmicas
+não congeláveis, em vez de fingir completude.
+
+**Settlement stage:** preregistered compiler experiment.
+
+### OQ-ACP3 — Candidate-to-confirmation schema
+
+**Question:** Qual schema versionado e qual mapping total convertem o `DispatchCandidate` na
+`ConfirmationProjection` que carrega os bytes canônicos completos do `DispatchSpec`, seu digest e a
+visualização derivada, sem criar uma segunda autoridade?
+
+**Recommendation:** tratar `DispatchCandidate` apenas como input não autoritativo; a confirmação
+aceita o digest dos bytes de `DispatchSpec` já resolvidos e canonicalizados pelo servidor, com uma
+matriz explícita de campos preservados, resolvidos e runtime-added.
+
+**Settlement stage:** discovery experiment → SPEC.
+
+### OQ-ACP4 — Mutating workflows
+
+**Question:** Quais regras adicionais permitem code/document writes, path ownership, integração,
+invalidation e rework sem ampliar autoridade depois da confirmação?
+
+**Recommendation:** provar primeiro uma recipe read-only e promover mutação somente com sandbox,
+single-writer, invalidation e reconciliation testados.
+
+**Settlement stage:** post-read-only runtime amendment.
+
+### OQ-ACP5 — Convergence and human gates
+
+**Question:** Quais predicates o kernel avalia mecanicamente e quais exigem contribuição de um
+adjudicador ou decisão humana?
+
+**Recommendation:** usar vocabulário fechado de predicates e representar qualquer decisão humana
+como node/gate explícito; loop ceiling permanece terminal não aprovado.
+
+**Settlement stage:** recipe and judgment-policy experiments.
+
+### OQ-ACP6 — Cancellation and safety after confirmation
+
+**Question:** Quais comandos e policies runtime podem cancelar uma dispatch já confirmada ou
+interromper uma run por segurança sem reinterpretar sua autoridade congelada?
+
+**Recommendation:** preservar a matriz de §7, separar reconstrução auditável de nova execução
+autorizada e representar cancelamento/interrupção como fatos explícitos, atribuíveis e sem mutação
+do `DispatchSpec`.
+
+**Settlement stage:** persistence/replay SPEC amendment.
+
+### OQ-ACP7 — Assurance variants
+
+**Question:** Light, Medium e High são parâmetros dentro de uma recipe ou revisões de protocolo
+distintas?
+
+**Recommendation:** no MVP, qualquer variante que altere grafo ou gates é outra revisão; presets só
+podem ser promovidos depois de provar equivalência dentro de bounds.
+
+**Settlement stage:** skill-protocol compilation experiment.
+
+### OQ-ACP8 — Agent interaction execution model
+
+**Question:** A colaboração runtime entre seats será implementada exclusivamente como uma sequência
+de attempts finitos, em que cada mensagem aceita é materializada no input de uma invocação posterior,
+ou algum protocolo exigirá sessões de provider persistentes ou múltiplos exchanges dentro do mesmo
+attempt? Como `seat_id`, `agent_instance_id`, `attempt_id`, histórico observável, budgets, timeout,
+cancelamento, restart e replay se comportam em cada modelo sem criar um canal de comunicação fora do
+Work Bus ou uma autoridade paralela ao `DispatchSpec`?
+
+**Recommendation:** adotar no MVP o modelo já favorecido pelos contratos draft: attempts finitos e
+inputs content-addressed materializados pelo scheduler, com toda comunicação oficial passando por
+publicação, verificação, reveal/delivery autorizada e nova invocação. Tratar sessão persistente ou
+multi-exchange como extensão posterior, permitida somente após definir identidade, captura exata de
+histórico, contabilização de budget, fencing, recuperação e equivalência de replay.
+
+**Settlement stage:** runtime/bus protocol experiment → SPEC amendment.
+
+## Candidate Decisions Proposed by This Discovery
+
+| ID | Decision | Where |
+|---|---|---|
+| ACPD-1 | In the future `runtime-managed` lane, one persisted canonical authority governs a run; every runtime-managed view, ledger effect/row, configuration and runtime action is a verifiable derivation. Legacy-managed and historical rows retain the authorities assigned by the cutover contract. | §3 |
+| ACPD-2 | The confirmed authority is the complete canonical `DispatchSpec` inside `ConfirmedDispatch`; the graph is its structural nucleus, not a parallel authority. | §3 |
+| ACPD-3 | The skill profile restricts compilation but never authorizes execution; `DispatchCandidate` remains non-authoritative until confirmation. | §§2–4 |
+| ACPD-4 | ACI protocol governance is the proposed, unsettled owner of profile compilation, registry and binding lifecycle; capability resolution and runtime confirmation retain their existing owners. OQ-ATD3 companion amendment and SPEC promotion are required before settlement. | §4 |
+| ACPD-5 | After confirmation, infrastructure interprets the graph and coordinates agents; the chat parent does not choose transitions, recipients or follow-ups. | §5 |
+| ACPD-6 | Capability, bus, audit-ledger and provenance semantics remain in separate ownership-linked documents and are imported by reference. | §6 |
+| ACPD-7 | The MVP binds one active profile revision to exactly one digest-pinned recipe; graph-changing variants require another protocol revision. | §7 |
+| ACPD-8 | Loop exhaustion never implies approval, and rework always creates new attributable state. | §8 |
+
+## Decisions Baked In
+
+| ID | Decision | Where |
+|---|---|---|
+| — | No decisions ratified. | — |
 
 ## Connections
 
-Nenhuma edge adicional é declarada neste estágio de discovery; as relações candidatas com a
-arquitetura, a SPEC e o work pack permanecem referências de pesquisa até a decisão de ownership.
+| Document | Type | Description |
+|---|---|---|
+| [Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) | `depends-on` | Owns capability resolution and per-attempt tool materialization; OQ-ATD3 must be synchronized with ACP-4. |
+| [Bus Contracts](../bus-contracts/README.md) | `depends-on` | Owns immutable routing-plan semantics, visibility, publication, reveal and delivery. |
+| [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md) | `depends-on` | Owns YAML materialization, sole-writer rules and legacy/runtime cutover. |
+| [ACI Domain](../../specs/domain.md) | `depends-on` | Owns `ConfirmedDispatch`, `DispatchSpec`, `Run`, invocation and execution entities. |
+| [ACI Workflows](../../specs/workflows.md) | `depends-on` | Owns confirmation, materialization, reconciliation and runtime workflows. |
+| [Skill Protocol Compilation Experiment](../../experiments/skill-protocol-compilation/README.md) | `created-by` | Supplies the current non-ratified graph prototype and candidate compiler boundary. |
+| [Agent Dispatch Protocol notebook](../../../../temps/agent-dispatch-protocol/README.md) | `contextualizes` | Records provisional profile/recipe/DispatchSpec composition notes pending promotion. |
+
+## Flow Diagram
+
+```mermaid
+flowchart TD
+    S[Skill revision] --> P[SkillExecutionProfile]
+    P --> C[DispatchCandidate]
+    U[User invocation and explicit values] --> C
+    C --> P[Server resolves and emits canonical DispatchSpec bytes plus digest]
+    P --> H{Human confirms exact digest?}
+    H -->|no| X[Declined or revised candidate]
+    H -->|yes| D[ConfirmedDispatch plus canonical DispatchSpec]
+    D --> R[Exactly one Run plus opening effect intent]
+    R --> O{audit_opening.verified?}
+    O -->|yes| I[AgentInvocationPlans]
+    O -->|no| Q[Pending unknown or reconciliation_required]
+    D --> Y[Audit-ledger materialization]
+    D --> V[UI and graph projections]
+    I --> A[Materialized agent attempts]
+    R --> B[Authorized routing and message delivery]
+    A --> T[Unique terminal fact]
+    B --> T
+    T --> Z{audit_close.verified?}
+    Z -->|yes| E[Closed]
+    Z -->|no| Q
+```
+
+Na futura lane `runtime-managed`, o usuário confirma o digest de uma única estrutura canônica já
+resolvida pelo servidor. Persistência, audit ledger, visualizações, provisionamento e comunicação
+derivam dela; apenas fatos da run evoluem depois da confirmação. A lane `legacy-managed` não
+atravessa esse fluxo.
+
+## Appendix — Changelog
+
+| Version | Date | Changes |
+|---|---|---|
+| 0.4.2 | 2026-08-03 | Added OQ-ACP8 to make the agent interaction execution model explicit: finite scheduler-materialized attempts for the MVP versus any future persistent or multi-exchange provider session, including identity, history, budget, fencing, recovery and replay constraints. |
+| 0.4.1 | 2026-08-03 | Scoped the invariant to `runtime-managed`; made confirmation digest-bound over server-resolved `DispatchSpec` bytes; added idempotent confirmation, audit opening/close barriers and revocation-state rules; split YAML ownership; relabeled ownership and ACPD entries as candidate proposals after independent review. No decisions are ratified or locked by this draft. |
+| 0.4.0 | 2026-08-03 | Reframed the discovery around one canonical persisted authority; separated profile, candidate, confirmed runtime authority and derived surfaces; proposed settlement of profile compiler/registry ownership; replaced duplicated bus/tool/ledger definitions with owned seams; added candidate decisions, open questions, connections and flow diagram. |
+| 0.3.0 | 2026-07-22 | Proposed `SkillExecutionProfile`, skill/protocol digests, one active binding, recipe compilation, review/rework semantics and validation directions. |

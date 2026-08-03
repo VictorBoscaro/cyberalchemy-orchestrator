@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from .canonical import canonical_digest, canonical_text
+from .dispatch_types import live_dispatch_type_values
 from .errors import GateBlockedError, ValidationError
 from .local_pilot import preflight_local_pilot
 from .orchestration_bridge import (
@@ -140,7 +141,8 @@ class HostDispatchHook:
             or not policy["authorization_evidence_ref"]
             or not isinstance(digest, str)
             or not re.fullmatch(r"sha256:[0-9a-f]{64}", digest)
-            or policy["compatibility_dispatch_type"] != "review"
+            or policy["compatibility_dispatch_type"]
+            not in live_dispatch_type_values(self.root)
             or not isinstance(policy["default_token_budget"], int)
             or policy["default_token_budget"] <= 0
             or not isinstance(policy["capability_ttl_seconds"], int)
@@ -255,6 +257,53 @@ class HostDispatchHook:
             issued["token"], action=action, phase=phase
         )
 
+    def open_parent_dispatch(
+        self,
+        *,
+        record: dict[str, Any],
+        session_name: str,
+        origin_ref: str,
+        nonce: str,
+    ) -> dict[str, Any]:
+        """Open one confirmed parent through the same fail-closed bridge as hooks."""
+        runtime, bridge = self._runtime_bridge()
+        authority = self._authority(
+            runtime,
+            operation="open",
+            record=record,
+            session_name=session_name,
+            origin_ref=origin_ref,
+            nonce=nonce,
+        )
+        return bridge.open_dispatch(
+            authority=authority,
+            record=record,
+            session_name=session_name,
+            origin_ref=origin_ref,
+        )
+
+    def close_parent_dispatch(
+        self,
+        *,
+        record: dict[str, Any],
+        session_id: str,
+        nonce: str,
+    ) -> dict[str, Any]:
+        """Close one parent after every bound seat has reached a terminal state."""
+        runtime, bridge = self._runtime_bridge()
+        authority = self._authority(
+            runtime,
+            operation="close",
+            record=record,
+            session_id=session_id,
+            nonce=nonce,
+        )
+        return bridge.close_dispatch(
+            authority=authority,
+            record=record,
+            session_id=session_id,
+        )
+
     @staticmethod
     def _prompt(tool_input: dict[str, Any]) -> str:
         for field in ("message", "prompt"):
@@ -337,7 +386,7 @@ class HostDispatchHook:
         agent_name = _safe_part(label)
         record = {
             "dispatch_id": dispatch_id,
-            "schema_version": "0.6.1",
+            "schema_version": "0.6.2",
             "dispatch_type": self.policy["compatibility_dispatch_type"],
             "goal": f"Automatically supervise host agent call: {label[:240]}",
             "context": (
@@ -349,6 +398,7 @@ class HostDispatchHook:
             ),
             "max_loops": 1,
             "final_approver": "parent",
+            "anti_bias_mode": "disabled",
             "output_mode": "inline",
             "invoked_by": self.policy["principal_id"],
             "groups": [

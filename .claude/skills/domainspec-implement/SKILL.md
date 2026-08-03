@@ -46,7 +46,7 @@ Canonical topology:
 - Greenfield: `implementation` (exactly one `coder`) `sequential` to `verification` (exactly one
   `skeptic` or `auditor`).
 - Brownfield: `alignment-audits` (exactly two independent `auditor`s, one alignment and one
-  layering, pairwise tensioned) `sequential` to `implementation`, then `sequential` to
+  layering) `sequential` to `implementation`, then `sequential` to
   `verification`.
 
 The coder may start only after every incoming group has returned PASS. The verifier receives the

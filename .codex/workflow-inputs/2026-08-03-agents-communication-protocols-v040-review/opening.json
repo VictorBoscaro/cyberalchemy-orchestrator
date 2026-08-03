@@ -1,0 +1,47 @@
+{
+  "dispatch_id": "2026-08-03-agents-communication-protocols-v040-review",
+  "schema_version": "0.6.1",
+  "dispatch_type": "review",
+  "goal": "Red-team the rewritten agents-communication-protocols discovery until three independent reviewers agree in the same round that no evidenced objection remains, with no more than five rounds.",
+  "context": "The target discovery proposes one persisted ConfirmedDispatch as canonical authority, with DispatchSpec as its structural nucleus and ledger, relational, provisioning, routing, scheduling, and runtime effects as derived projections. The three reviewers must independently inspect the identical frozen target and may use the listed companion documents only to test ownership, consistency, and operability. They communicate only with the parent; they never see one another's returns. The parent verifies objections against literal evidence, edits only the target discovery when warranted, then supplies each reviewer a newly bound turn over the new digest.",
+  "max_loops": 5,
+  "final_approver": "victorboscaro@outlook.com",
+  "output_mode": "persisted",
+  "working_folder": "docs/features/agents-communication-infra/discovery/agents-communication-protocols/review/canonical-authority-v0.4.0/",
+  "invoked_by": "victorboscaro@outlook.com",
+  "groups": [
+    {
+      "group_id": "independent_reviewers",
+      "n": 3,
+      "robot_talks": false,
+      "anti_bias": "attack-vector",
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "angle": "fidelity-governance-attack via textual authority trace",
+          "initial_prompt": "Read-only independent review, round 1. Target: docs/features/agents-communication-infra/discovery/agents-communication-protocols/README.md, frozen SHA-256 B071046DD8B31A77E33C53A9AF020331EC55E8D73C7E351A98DFF45113B0BDC5. Read the entire target. Attack fidelity and governance by tracing every authority claim to its textual basis and checking whether proposals, decisions, ownership, and ratified behavior are distinguished without silent promotion. Use these companions only as governing evidence: docs/features/agents-communication-infra/discovery/agent-tools-and-delegated-supervision.md; docs/features/agents-communication-infra/discovery/agents-communication-protocols/bus-contracts/README.md; docs/features/agents-communication-infra/discovery/agents-communication-protocols/dispatch-audit-ledger-cutover-contract.md. Do not modify files, contact other reviewers, or rely on their outputs. Return only to the parent in this exact shape: Verdict: NO_OBJECTION or OBJECTION; Coverage: what you attacked and, if no findings, why it survived; Findings: for each finding provide ID, literal quote, file:line, CRITICAL|MAJOR|MINOR, why, and minimal fix; Residual questions. Findings without literal target evidence are invalid. Keep under 2500 tokens."
+        },
+        {
+          "agent_name": "Booch, Grady",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "angle": "ownership-reference-integrity-attack via architectural boundary graph audit",
+          "initial_prompt": "Read-only independent review, round 1. Target: docs/features/agents-communication-infra/discovery/agents-communication-protocols/README.md, frozen SHA-256 B071046DD8B31A77E33C53A9AF020331EC55E8D73C7E351A98DFF45113B0BDC5. Read the entire target. Attack ownership and reference integrity by building an architectural boundary graph: find double ownership, dangling references, unclear canonical-versus-derived boundaries, and claims whose owner or downstream projection contract is absent. Use these companions only as governing evidence: docs/features/agents-communication-infra/discovery/agent-tools-and-delegated-supervision.md; docs/features/agents-communication-infra/discovery/agents-communication-protocols/bus-contracts/README.md; docs/features/agents-communication-infra/discovery/agents-communication-protocols/dispatch-audit-ledger-cutover-contract.md. Do not modify files, contact other reviewers, or rely on their outputs. Return only to the parent in this exact shape: Verdict: NO_OBJECTION or OBJECTION; Coverage: what you attacked and, if no findings, why it survived; Findings: for each finding provide ID, literal quote, file:line, CRITICAL|MAJOR|MINOR, why, and minimal fix; Residual questions. Findings without literal target evidence are invalid. Keep under 2500 tokens."
+        },
+        {
+          "agent_name": "Lamport, Leslie",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "angle": "operability-state-consistency-attack via formal state-transition counterexample",
+          "initial_prompt": "Read-only independent review, round 1. Target: docs/features/agents-communication-infra/discovery/agents-communication-protocols/README.md, frozen SHA-256 B071046DD8B31A77E33C53A9AF020331EC55E8D73C7E351A98DFF45113B0BDC5. Read the entire target. Attack operability and state consistency by modeling candidate, confirmation, persistence, provisioning, execution, message exchange, convergence, close, replay, and failure transitions; construct counterexamples where two authorities diverge or an operator must invent a step. Use these companions only as governing evidence: docs/features/agents-communication-infra/discovery/agent-tools-and-delegated-supervision.md; docs/features/agents-communication-infra/discovery/agents-communication-protocols/bus-contracts/README.md; docs/features/agents-communication-infra/discovery/agents-communication-protocols/dispatch-audit-ledger-cutover-contract.md. Do not modify files, contact other reviewers, or rely on their outputs. Return only to the parent in this exact shape: Verdict: NO_OBJECTION or OBJECTION; Coverage: what you attacked and, if no findings, why it survived; Findings: for each finding provide ID, literal quote, file:line, CRITICAL|MAJOR|MINOR, why, and minimal fix; Residual questions. Findings without literal target evidence are invalid. Keep under 2500 tokens."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

@@ -37,8 +37,7 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
    `{path, sha256}` pairs and exclusions, output contract,
    `proposed_capability_profile`, adapter-level tools/skills, command restrictions, substantive
    round ceiling, technical-attempt limit, and `ResolutionProvenance`. Store only immutable
-   `prompt_template` text. For every group include its anti-bias axis; for every seat its
-   angle/position; for every pair its predicted disagreement question, positions, and evidence.
+   `prompt_template` text.
    Dynamic slots are data-only and declare name, authorized producer, type/schema, cardinality,
    byte/token ceiling, purpose, and source/response schema. Canonicalize/digest by the same rule.
    Both bootstrap proposals are session-local workflow evidence, not dispatch proposals or durable authorities; ACI
@@ -48,11 +47,9 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
    digests in the concrete proposal; apply or explicitly reject each amendment, then freeze a new
    concrete digest when needed. Effective grants/model/sandbox are ACI/runtime-owned; report each
    in `effective_enforcement: observable | non_observable`. Fail closed on any observable semantic
-   mismatch; when non-observable, never call requested values effective. Then run two independent check-tension
-   helpers against that same concrete digest. Require PASS from both. Any failure requires
-   revision, recanonicalization, and two fresh checks before confirmation.
+   mismatch; when non-observable, never call requested values effective.
 4. Obtain every confirmation required by the selected mode. Preserve revision IDs, SHA-256 digests,
-   acknowledgement evidence, embedded capability review, and both tension PASS references. Do not
+   acknowledgement evidence, and embedded capability review. Do not
    call a chat acknowledgement a durable receipt. Do not execute after `structure_only`.
 5. For each evidence gap selected within the confirmed probe budget, instantiate its read-only
    proposal validator. Record `RUN`, `IMPROVE`, or `SKIP`, disposition the suggestion, and only then
@@ -89,7 +86,7 @@ sources, desired confirmation mode, and any user-set topology or budget constrai
    accepted/partial items become residue and rejected items retain reasons. Report
    `REVIEW_LOOP_CEILING`.
 9. Solely own and return the final completion report: proposal and confirmation references,
-   capability/tension evidence, effective-runtime observability, probe ledger, review and technical-
+   capability evidence, effective-runtime observability, probe ledger, review and technical-
    retry ledgers, validation evidence, artifact digest, pending inverse-edge writes, and the honest
    workflow terminal status. Do not mutate a ledger or write workflow-close metadata into the
    reviewed discovery. Record the future legal mapping without claiming a close:

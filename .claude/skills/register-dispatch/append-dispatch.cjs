@@ -8,15 +8,16 @@
  * <record.json> is a UTF-8 JSON file (a file arg, not stdin, so shell encoding
  * — e.g. PowerShell's UTF-16 pipes — can't corrupt the payload).
  *
- * SCHEMA — subagents-strategy constitution v0.6.1 (row schema; group `role`
+ * SCHEMA — subagents-strategy constitution v0.6.2 (row schema; group `role`
  * removed at v0.6.0 — §11; `output_mode` added at v0.6.1 — §14;
  * LIVE `others` added by an in-place owner amendment on 2026-07-25). Two row kinds,
  * both appended by this script
  * (Principle 3: two appends, one place):
  *
  *   DISPATCH ROW — keyed by `dispatch_id`. Required: dispatch_id,
- *     schema_version ("0.6.1" exactly), dispatch_type
- *     (research|code|review|others|plan|suggestion|experiment), goal, context, max_loops (1..5),
+ *     schema_version (the canonical registry's ledger version), registry-defined
+ *     dispatch_type, goal, context, max_loops (1..5), anti_bias_mode
+ *     (enabled|disabled),
  *     final_approver, groups[] (each group: group_id, agents[] — NO group
  *     `role` field; each agent: role explorer|synthesizer|skeptic|writer|auditor|planner|coder, model,
  *     token_budget, initial_prompt). Optional: meta (true), parent_dispatch_id,
@@ -45,10 +46,11 @@
  * `project_dir` is a control key (repo-root fallback), never emitted.
  *
  * VALIDATION SPLIT (grandfathering — constitution §2):
- *   - The INCOMING record is validated STRICTLY against the v0.6.1 schema
+ *   - The INCOMING record is validated STRICTLY against the current schema
  *     before append: required fields, closed enums, conditional fields
- *     (working_folder on research/experiment; anti_bias/angle at n >= 2;
- *     anti_bias_global when >= 2 groups have >= 2 agents; n ==
+ *     (working_folder on research/experiment; when anti_bias_mode=enabled,
+ *     anti_bias/angle at n >= 2 and anti_bias_global when >= 2 groups have
+ *     >= 2 agents; when disabled those tension fields are forbidden; n ==
  *     agents.length; loop_cap only on zig-zag/feedback; connection endpoints
  *     declared), and unknown-key rejection — keys in constitution §7's removed
  *     table (success_metric, constraints, created) get a removed-by-v0.5.2
@@ -81,7 +83,8 @@ const crypto = require('crypto');
 const { execSync } = require('child_process');
 
 const src = process.argv[2];
-if (!src) { console.error('usage: node append-dispatch.cjs <record.json>'); process.exit(2); }
+const validateOnly = process.argv[3] === '--validate-only';
+if (!src || (process.argv[3] !== undefined && !validateOnly)) { console.error('usage: node append-dispatch.cjs <record.json> [--validate-only]'); process.exit(2); }
 
 let rec;
 try { rec = JSON.parse(fs.readFileSync(src, 'utf8').replace(/^\uFEFF/, '')); } // strip UTF-8 BOM
@@ -95,13 +98,38 @@ const isStr = (v) => typeof v === 'string';
 const isNonEmptyStr = (v) => isStr(v) && v.trim() !== '';
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 
+const projectDir = path.resolve(process.env.CLAUDE_PROJECT_DIR || rec.project_dir || process.cwd());
+
+function loadDispatchTypeRegistry(root) {
+  const registryPath = path.join(root, 'implementations', 'contracts', 'dispatch-type-registry.v1.json');
+  let registry;
+  try { registry = JSON.parse(fs.readFileSync(registryPath, 'utf8')); }
+  catch (e) { console.error('canonical dispatch-type registry is unavailable:', e.message); process.exit(2); }
+  if (!isObj(registry) || registry.schema !== 'aci-dispatch-type-registry/v1' ||
+      !isNonEmptyStr(registry.ledger_schema_version) || !Array.isArray(registry.types) || !registry.types.length) {
+    console.error('canonical dispatch-type registry shape is invalid'); process.exit(2);
+  }
+  const ids = new Set();
+  const ledgerValues = new Set();
+  for (const entry of registry.types) {
+    if (!isObj(entry) || !isNonEmptyStr(entry.id) || !isNonEmptyStr(entry.ledger_value) ||
+        !['live', 'reserved'].includes(entry.status) || typeof entry.routable !== 'boolean' ||
+        ids.has(entry.id) || ledgerValues.has(entry.ledger_value)) {
+      console.error('canonical dispatch-type registry entry is invalid'); process.exit(2);
+    }
+    ids.add(entry.id);
+    ledgerValues.add(entry.ledger_value);
+  }
+  return registry;
+}
+
 // ---------------------------------------------------------------- schema
-const SCHEMA_VERSION = '0.6.1';   // `others` added by in-place owner amendment on 2026-07-25
-const DISPATCH_TYPES = ['research', 'code', 'review', 'others', 'plan', 'suggestion', 'experiment'];
-// LIVE per the routing contract. `others` routes through the universal strategy only;
-// `code` routes through domainspec-implement; plan and suggestion remain RESERVED and
-// are recorded only so an upstream routing violation is observable.
-const LIVE_TYPES = new Set(['research', 'code', 'review', 'others', 'experiment']);
+const DISPATCH_TYPE_REGISTRY = loadDispatchTypeRegistry(projectDir);
+const SCHEMA_VERSION = DISPATCH_TYPE_REGISTRY.ledger_schema_version;
+const DISPATCH_TYPES = DISPATCH_TYPE_REGISTRY.types.map((entry) => entry.ledger_value);
+const LIVE_TYPES = new Set(DISPATCH_TYPE_REGISTRY.types
+  .filter((entry) => entry.status === 'live')
+  .map((entry) => entry.ledger_value));
 // working_folder is REQUIRED only for the artifact-producing LIVE types. `review`
 // went inline 2026-06-16 (owner decision): its findings are delivered in chat by
 // default, so it requires no working_folder. A review MAY still set one (optional)
@@ -113,10 +141,13 @@ const AGENT_ROLES = ['explorer', 'synthesizer', 'skeptic', 'writer', 'auditor', 
 const CONNECTION_TYPES = ['sequential', 'zig-zag', 'feedback'];
 const EXIT_REASONS = ['resolved', 'loop_ceiling_reached', 'dissent_irreconcilable', 'user_abort', 'error'];
 const OUTPUT_MODES = ['inline', 'persisted'];   // review-only row field (§14): where review.md lands
+const ANTI_BIAS_MODES = ['enabled', 'disabled'];
+const ENTRY_VALIDATION_SCHEMA = 'entry-validation-receipt/v1';
 
 const DISPATCH_KEYS = new Set([
   'dispatch_id', 'schema_version', 'dispatch_type', 'goal', 'context',
-  'max_loops', 'final_approver', 'groups',                       // required
+  'max_loops', 'final_approver', 'anti_bias_mode', 'groups',     // required
+  'entry_validation_receipt',                                   // required iff anti-bias enabled
   'meta', 'parent_dispatch_id', 'anti_bias_global', 'working_folder',
   'output_mode',                                                 // optional (review-only, §14)
   'code_contract',                                               // required for code
@@ -140,6 +171,8 @@ const LEGACY_LEDGER_KEYS = new Set([
 ]);
 const GROUP_KEYS = new Set(['group_id', 'agents', 'n', 'robot_talks', 'layers', 'anti_bias']);
 const AGENT_KEYS = new Set(['role', 'model', 'token_budget', 'initial_prompt', 'agent_name', 'angle']);
+const ENTRY_RECEIPT_KEYS = new Set(['schema', 'subject_digest', 'checks']);
+const ENTRY_CHECK_KEYS = new Set(['checker_id', 'verdict']);
 const CONN_KEYS = new Set(['from', 'to', 'type', 'loop_cap']);
 const CODE_CONTRACT_KEYS = new Set([
   'type_skill_ref', 'type_skill_digest', 'work_pack_ref', 'work_pack_digest',
@@ -209,6 +242,72 @@ function validateRepoRelativeScope(projectDir, ref, label, errs) {
   }
 }
 
+function canonicalProjection(value) {
+  if (value === null || typeof value === 'boolean') return value;
+  if (typeof value === 'number') {
+    if (!Number.isSafeInteger(value)) throw new Error('receipt subject contains a non-safe integer');
+    return value;
+  }
+  if (typeof value === 'string') return value.normalize('NFC');
+  if (Array.isArray(value)) return value.map(canonicalProjection);
+  if (isObj(value)) {
+    const normalized = {};
+    for (const [key, member] of Object.entries(value)) {
+      const normalizedKey = key.normalize('NFC');
+      if (Object.prototype.hasOwnProperty.call(normalized, normalizedKey)) throw new Error('receipt subject keys collide after NFC normalization');
+      normalized[normalizedKey] = canonicalProjection(member);
+    }
+    const ordered = {};
+    for (const key of Object.keys(normalized).sort()) ordered[key] = normalized[key];
+    return ordered;
+  }
+  throw new Error('receipt subject contains an unsupported value');
+}
+
+function entryValidationSubjectDigest(rec) {
+  const subject = { ...rec };
+  delete subject.entry_validation_receipt;
+  delete subject.project_dir;
+  const canonical = JSON.stringify(canonicalProjection(subject));
+  return 'sha256:' + crypto.createHash('sha256').update(Buffer.from(canonical, 'utf8')).digest('hex');
+}
+
+function validateEntryValidationReceipt(rec, errs) {
+  const receipt = rec.entry_validation_receipt;
+  if (rec.anti_bias_mode === 'disabled') {
+    if (receipt !== undefined) errs.push('entry_validation_receipt is forbidden when anti_bias_mode is "disabled"');
+    return;
+  }
+  if (rec.anti_bias_mode !== 'enabled') return;
+  if (!isObj(receipt)) {
+    errs.push('entry_validation_receipt is required when anti_bias_mode is "enabled"');
+    return;
+  }
+  for (const key of Object.keys(receipt)) if (!ENTRY_RECEIPT_KEYS.has(key)) errs.push(`entry_validation_receipt: unknown key "${key}"`);
+  if (receipt.schema !== ENTRY_VALIDATION_SCHEMA) errs.push(`entry_validation_receipt.schema must be exactly "${ENTRY_VALIDATION_SCHEMA}"`);
+  if (!isStr(receipt.subject_digest) || !/^sha256:[0-9a-f]{64}$/.test(receipt.subject_digest)) {
+    errs.push('entry_validation_receipt.subject_digest must be a lowercase sha256 digest');
+  } else {
+    try {
+      if (receipt.subject_digest !== entryValidationSubjectDigest(rec)) errs.push('entry_validation_receipt.subject_digest does not match the dispatch record');
+    } catch (e) { errs.push(`entry_validation_receipt subject cannot be canonicalized: ${e.message}`); }
+  }
+  if (!Array.isArray(receipt.checks) || receipt.checks.length !== 2) {
+    errs.push('entry_validation_receipt.checks must contain exactly 2 checks');
+    return;
+  }
+  const checkerIds = new Set();
+  receipt.checks.forEach((check, index) => {
+    const where = `entry_validation_receipt.checks[${index}]`;
+    if (!isObj(check)) { errs.push(`${where} must be an object`); return; }
+    for (const key of Object.keys(check)) if (!ENTRY_CHECK_KEYS.has(key)) errs.push(`${where}: unknown key "${key}"`);
+    if (!isNonEmptyStr(check.checker_id)) errs.push(`${where}.checker_id must be a non-empty string`);
+    else if (checkerIds.has(check.checker_id)) errs.push('entry_validation_receipt checker_id values must be distinct');
+    else checkerIds.add(check.checker_id);
+    if (check.verdict !== 'PASS') errs.push(`${where}.verdict must be exactly "PASS"`);
+  });
+}
+
 function validateDispatch(rec) {
   const errs = [];
   for (const k of Object.keys(rec)) {
@@ -220,10 +319,13 @@ function validateDispatch(rec) {
   if (!isNonEmptyStr(rec.dispatch_id)) errs.push('dispatch_id is required and must be a non-empty string');
   if (rec.schema_version !== SCHEMA_VERSION) errs.push(`schema_version must be exactly "${SCHEMA_VERSION}" (got ${J(rec.schema_version)})`);
   if (!DISPATCH_TYPES.includes(rec.dispatch_type)) errs.push(`dispatch_type must be one of ${DISPATCH_TYPES.join(' | ')} (got ${J(rec.dispatch_type)})`);
+  else if (!LIVE_TYPES.has(rec.dispatch_type)) errs.push(`dispatch_type ${J(rec.dispatch_type)} is RESERVED in the canonical registry`);
   if (!isNonEmptyStr(rec.goal)) errs.push('goal is required and must be a non-empty string');
   if (!isNonEmptyStr(rec.context)) errs.push('context is required and must be a non-empty string (subagents never see the parent conversation — §5)');
   if (!Number.isInteger(rec.max_loops) || rec.max_loops < 1 || rec.max_loops > 5) errs.push(`max_loops must be an integer in 1..5 (got ${J(rec.max_loops)})`);
   if (!isNonEmptyStr(rec.final_approver)) errs.push('final_approver is required and must be a non-empty string');
+  if (!ANTI_BIAS_MODES.includes(rec.anti_bias_mode)) errs.push(`anti_bias_mode is required and must be one of ${ANTI_BIAS_MODES.join(' | ')} (got ${J(rec.anti_bias_mode)})`);
+  validateEntryValidationReceipt(rec, errs);
   if (rec.meta !== undefined && rec.meta !== true) errs.push('meta, when present, must be boolean true (omit it otherwise — §5)');
   if (rec.parent_dispatch_id !== undefined && rec.parent_dispatch_id !== null && !isNonEmptyStr(rec.parent_dispatch_id)) errs.push('parent_dispatch_id must be a non-empty string (or null / omitted)');
   if (rec.anti_bias_global !== undefined && !isNonEmptyStr(rec.anti_bias_global)) errs.push('anti_bias_global, when present, must be a non-empty string');
@@ -346,8 +448,9 @@ function validateDispatch(rec) {
       if (g.robot_talks !== undefined && typeof g.robot_talks !== 'boolean') errs.push(`${gw}.robot_talks must be a boolean`);
       if (g.layers !== undefined && (!Number.isInteger(g.layers) || g.layers < 1)) errs.push(`${gw}.layers must be an integer >= 1 (got ${J(g.layers)})`);
       const fanout = agents !== null && agents.length >= 2;
-      if (fanout && !isNonEmptyStr(g.anti_bias)) errs.push(`${gw}.anti_bias is required when the group has >= 2 agents (Principle 5)`);
-      if (!fanout && g.anti_bias !== undefined && !isNonEmptyStr(g.anti_bias)) errs.push(`${gw}.anti_bias, when present, must be a non-empty string`);
+      if (rec.anti_bias_mode === 'disabled' && g.anti_bias !== undefined) errs.push(`${gw}.anti_bias is forbidden when anti_bias_mode is "disabled"`);
+      if (rec.anti_bias_mode === 'enabled' && fanout && !isNonEmptyStr(g.anti_bias)) errs.push(`${gw}.anti_bias is required when anti_bias_mode is "enabled" and the group has >= 2 agents`);
+      if (rec.anti_bias_mode === 'enabled' && !fanout && g.anti_bias !== undefined && !isNonEmptyStr(g.anti_bias)) errs.push(`${gw}.anti_bias, when present, must be a non-empty string`);
       if (agents) agents.forEach((a, ai) => {
         const aw = `${gw}.agents[${ai}]`;
         if (!isObj(a)) { errs.push(`${aw} must be an object`); return; }
@@ -357,13 +460,17 @@ function validateDispatch(rec) {
         if (!Number.isInteger(a.token_budget) || a.token_budget <= 0) errs.push(`${aw}.token_budget is required and must be a positive integer — no unlimited default (§5)`);
         if (!isNonEmptyStr(a.initial_prompt)) errs.push(`${aw}.initial_prompt is required and must be a non-empty string`);
         if (a.agent_name !== undefined && a.agent_name !== null && !isNonEmptyStr(a.agent_name)) errs.push(`${aw}.agent_name must be a string or null`);
-        if (fanout && !isNonEmptyStr(a.angle)) errs.push(`${aw}.angle is required when the group has >= 2 agents (Principle 5)`);
-        if (!fanout && a.angle !== undefined && !isNonEmptyStr(a.angle)) errs.push(`${aw}.angle, when present, must be a non-empty string`);
+        if (rec.anti_bias_mode === 'disabled' && a.angle !== undefined) errs.push(`${aw}.angle is forbidden when anti_bias_mode is "disabled"`);
+        if (rec.anti_bias_mode === 'enabled' && fanout && !isNonEmptyStr(a.angle)) errs.push(`${aw}.angle is required when anti_bias_mode is "enabled" and the group has >= 2 agents`);
+        if (rec.anti_bias_mode === 'enabled' && !fanout && a.angle !== undefined && !isNonEmptyStr(a.angle)) errs.push(`${aw}.angle, when present, must be a non-empty string`);
       });
     });
     const fanoutGroups = rec.groups.filter((g) => isObj(g) && Array.isArray(g.agents) && g.agents.length >= 2).length;
-    if (fanoutGroups >= 2 && !isNonEmptyStr(rec.anti_bias_global)) {
-      errs.push(`anti_bias_global is required when >= 2 groups have >= 2 agents (${fanoutGroups} fan-out groups declared — §5 conditional, Principle 5)`);
+    if (rec.anti_bias_mode === 'disabled' && rec.anti_bias_global !== undefined) {
+      errs.push('anti_bias_global is forbidden when anti_bias_mode is "disabled"');
+    }
+    if (rec.anti_bias_mode === 'enabled' && fanoutGroups >= 2 && !isNonEmptyStr(rec.anti_bias_global)) {
+      errs.push(`anti_bias_global is required when anti_bias_mode is "enabled" and >= 2 groups have >= 2 agents (${fanoutGroups} fan-out groups declared)`);
     }
   }
 
@@ -461,8 +568,11 @@ if (errs.length > 0) {
   for (const e of errs) console.error('  - ' + e);
   process.exit(2);
 }
+if (validateOnly) {
+  console.log(`valid ${isClose ? 'close' : 'dispatch'} record (schema v${SCHEMA_VERSION})`);
+  process.exit(0);
+}
 
-const projectDir = process.env.CLAUDE_PROJECT_DIR || rec.project_dir || process.cwd();
 const file = path.join(projectDir, 'telemetry', 'agents', 'subagents-dispatch.yaml');
 
 // invoked_by: record value wins; otherwise resolve from git; fail-soft to null.
@@ -585,9 +695,6 @@ if (dispatchIds.has(rec.dispatch_id)) {
   process.exit(0);
 }
 
-if (!LIVE_TYPES.has(rec.dispatch_type)) {
-  console.log(`note: dispatch_type "${rec.dispatch_type}" is a RESERVED type — only ${[...LIVE_TYPES].map(J).join(' and ')} are LIVE under v${SCHEMA_VERSION}; recording anyway.`);
-}
 
 const lines = [
   '  - dispatch_id: ' + J(rec.dispatch_id),
@@ -599,7 +706,9 @@ const lines = [
   '    context: ' + J(rec.context),
   '    max_loops: ' + J(rec.max_loops),
   '    final_approver: ' + J(rec.final_approver),
+  '    anti_bias_mode: ' + J(rec.anti_bias_mode),
 ];
+if (rec.entry_validation_receipt != null) lines.push('    entry_validation_receipt: ' + J(rec.entry_validation_receipt));
 if (rec.meta === true)                lines.push('    meta: ' + J(true));
 if (rec.parent_dispatch_id != null)   lines.push('    parent_dispatch_id: ' + J(rec.parent_dispatch_id));
 if (rec.anti_bias_global != null)     lines.push('    anti_bias_global: ' + J(rec.anti_bias_global));

@@ -1,0 +1,261 @@
+{
+  "dispatch_id": "2026-07-31-implementation-as-built-reconciliation",
+  "schema_version": "0.6.1",
+  "dispatch_type": "others",
+  "goal": "Produce a code-first AS-BUILT of the current agent-work harness, separating what exists, what is proven, what runs in real hosts, what is authorized, what is official, and what can be reconstructed.",
+  "context": "The repository contains a dispatch reader, governed runtime, provenance runtime, Control Center, host hooks, and an experimental shadow runtime whose documentation and implementation status have drifted. Seven tensioned worker/reviewer pairs investigate end-to-end trust properties, then one synthesizer writes implementations/AS-BUILT.md from their evidence. The user explicitly authorized dispatch without another confirmation on 2026-07-31.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "meta": true,
+  "anti_bias_global": "constructive capability reconstruction versus adversarial claim-boundary falsification across end-to-end harness concerns",
+  "working_folder": "implementations/as-built",
+  "groups": [
+    {
+      "group_id": "pair-01-system-of-record",
+      "n": 2,
+      "robot_talks": true,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Parnas, David",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "reconstruct the composition and ownership map from executable entrypoints and writers",
+          "initial_prompt": "You are the worker and designated pair finalizer for pair-01-system-of-record. Central question: What system actually exists, which entrypoints are reachable, and which runtime or store is official, auxiliary, closed, or experimental? Property served: one intelligible system boundary and one source of record. Scope: implementations composition roots, CLIs, readers, governed runtime, Control Center, local pilot, agent-runtime, and their writers/readers. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-01-system-of-record. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-01-system-of-record.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Map entrypoint -> component -> writes/reads -> reachable state -> authority, plus an explicit disposition question for agent-runtime."
+        },
+        {
+          "agent_name": "Brooks, Frederick P.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "attack reachability, dead code, closed routes, alternate entrypoints, and competing sources of truth",
+          "initial_prompt": "You are the independent read-only reviewer for pair-01-system-of-record. Central question: What system actually exists, which entrypoints are reachable, and which runtime or store is official, auxiliary, closed, or experimental? Property served: one intelligible system boundary and one source of record. Scope: implementations composition roots, CLIs, readers, governed runtime, Control Center, local pilot, agent-runtime, and their writers/readers. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-01-system-of-record. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Map entrypoint -> component -> writes/reads -> reachable state -> authority, plus an explicit disposition question for agent-runtime."
+        }
+      ]
+    },
+    {
+      "group_id": "pair-02-host-adoption",
+      "n": 2,
+      "robot_talks": true,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Lamport, Leslie",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "trace configuration, hook invocation, authorization, lifecycle ordering, and durable receipts",
+          "initial_prompt": "You are the worker and designated pair finalizer for pair-02-host-adoption. Central question: Does every real Codex and Claude subagent launch, follow-up, failure, and close obligatorily pass through the governed runtime? Property served: no meaningful work outside reconstructible memory. Scope: .codex/.claude hook configuration, host dispatch and ingestion hooks, orchestration bridge, existing ledger/runtime receipts, and bounded isolated tests; no fresh live smoke. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-02-host-adoption. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-02-host-adoption.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Observed transition matrix for launch, follow-up, success, failure, and interruption, marking observed/tested/code-only/failed/unknown."
+        },
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "attack host-version behavior, tool-name mismatches, bypasses, missing events, and simulation-to-production substitution",
+          "initial_prompt": "You are the independent read-only reviewer for pair-02-host-adoption. Central question: Does every real Codex and Claude subagent launch, follow-up, failure, and close obligatorily pass through the governed runtime? Property served: no meaningful work outside reconstructible memory. Scope: .codex/.claude hook configuration, host dispatch and ingestion hooks, orchestration bridge, existing ledger/runtime receipts, and bounded isolated tests; no fresh live smoke. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-02-host-adoption. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Observed transition matrix for launch, follow-up, success, failure, and interruption, marking observed/tested/code-only/failed/unknown."
+        }
+      ]
+    },
+    {
+      "group_id": "pair-03-authority",
+      "n": 2,
+      "robot_talks": true,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Hoare, C. A. R.",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "construct preconditions, capabilities, decisions, and receipts for one accepted and one rejected action",
+          "initial_prompt": "You are the worker and designated pair finalizer for pair-03-authority. Central question: Can each accepted or rejected action be traced to a legitimate authorizer, exact limits, and an actual enforcement point? Property served: authority that constrains action rather than merely describing it. Scope: human confirmation, dispatch authority, capabilities, profiles, policies, parent bindings, launch authorization, receipts, and rejection paths. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-03-authority. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-03-authority.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Authority chain for at least one accepted and one rejected action, with every limit mapped to an enforcement point or explicit gap."
+        },
+        {
+          "agent_name": "Dijkstra, Edsger W.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "attack self-asserted identity, requested-versus-effective authority, mutable evidence, and unenforced fields",
+          "initial_prompt": "You are the independent read-only reviewer for pair-03-authority. Central question: Can each accepted or rejected action be traced to a legitimate authorizer, exact limits, and an actual enforcement point? Property served: authority that constrains action rather than merely describing it. Scope: human confirmation, dispatch authority, capabilities, profiles, policies, parent bindings, launch authorization, receipts, and rejection paths. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-03-authority. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Authority chain for at least one accepted and one rejected action, with every limit mapped to an enforcement point or explicit gap."
+        }
+      ]
+    },
+    {
+      "group_id": "pair-04-memory-recovery",
+      "n": 2,
+      "robot_talks": true,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Deming, W. Edwards",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "establish durability, idempotency, replay, projection, backup, and recovery guarantees",
+          "initial_prompt": "You are the worker and designated pair finalizer for pair-04-memory-recovery. Central question: After interruption, retry, corruption, or restart, does the harness converge to one recoverable history without orphan or duplicate official work? Property served: durable continuity and unambiguous recovery. Scope: journal, artifacts, canonicalization, transactions, projections, replay, idempotency, failpoints, local pilot verification, backup, retirement, and cross-store recovery. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-04-memory-recovery. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-04-memory-recovery.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Failure matrix by lifecycle phase with durable state, recovery action, convergence proof, and uncovered scenarios."
+        },
+        {
+          "agent_name": "Weick, Karl E.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "construct crash points and ambiguous histories across host, ledger, journal, projections, and operator recovery",
+          "initial_prompt": "You are the independent read-only reviewer for pair-04-memory-recovery. Central question: After interruption, retry, corruption, or restart, does the harness converge to one recoverable history without orphan or duplicate official work? Property served: durable continuity and unambiguous recovery. Scope: journal, artifacts, canonicalization, transactions, projections, replay, idempotency, failpoints, local pilot verification, backup, retirement, and cross-store recovery. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-04-memory-recovery. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Failure matrix by lifecycle phase with durable state, recovery action, convergence proof, and uncovered scenarios."
+        }
+      ]
+    },
+    {
+      "group_id": "pair-05-handoff-integrity",
+      "n": 2,
+      "robot_talks": true,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Wirth, Niklaus",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "trace manifests, bytes, digests, bindings, reference delivery, reveal delivery, and effective inputs",
+          "initial_prompt": "You are the worker and designated pair finalizer for pair-05-handoff-integrity. Central question: Do agent handoffs preserve exact content, producer, recipient, order, context, and authority through consumption? Property served: trustworthy transfer of meaning and attribution. Scope: workflow bindings, outputs, BUS/reveal, AgentReferenceDelivery, effective inputs, artifacts, migrations 009-011, and adversarial tests. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-05-handoff-integrity. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-05-handoff-integrity.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Handoff matrix for exact content, producer, recipient, authority, integrity, retry behavior, and remaining gap."
+        },
+        {
+          "agent_name": "Fowler, Martin",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "attack substitution, stale identity, false producer attribution, replay, order drift, and protection of the wrong hash",
+          "initial_prompt": "You are the independent read-only reviewer for pair-05-handoff-integrity. Central question: Do agent handoffs preserve exact content, producer, recipient, order, context, and authority through consumption? Property served: trustworthy transfer of meaning and attribution. Scope: workflow bindings, outputs, BUS/reveal, AgentReferenceDelivery, effective inputs, artifacts, migrations 009-011, and adversarial tests. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-05-handoff-integrity. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Handoff matrix for exact content, producer, recipient, authority, integrity, retry behavior, and remaining gap."
+        }
+      ]
+    },
+    {
+      "group_id": "pair-06-reconstruction",
+      "n": 2,
+      "robot_talks": true,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Nonaka, Ikujiro",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "perform a cold reconstruction across session, dispatch, research, references, observations, claims, and results",
+          "initial_prompt": "You are the worker and designated pair finalizer for pair-06-reconstruction. Central question: Can a third party reconstruct why work existed, who did what, what context and references were received, and what evidence supports the result using only durable records? Property served: honest reconstruction of work and reasoning. Scope: APT sessions and projections, Session-to-Dispatch links, research capture, Scout/Probe records, reference evidence, claims/checks, queries, and real persisted examples. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-06-reconstruction. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-06-reconstruction.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: One cold reconstruction graph, unanswered questions, impermissible inferences, and the first missing link for each gap."
+        },
+        {
+          "agent_name": "Bourbaki, Nicolas",
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "remove narrative knowledge and reject inferred joins or collapsed evidence axes such as delivered, accessed, used, and supporting",
+          "initial_prompt": "You are the independent read-only reviewer for pair-06-reconstruction. Central question: Can a third party reconstruct why work existed, who did what, what context and references were received, and what evidence supports the result using only durable records? Property served: honest reconstruction of work and reasoning. Scope: APT sessions and projections, Session-to-Dispatch links, research capture, Scout/Probe records, reference evidence, claims/checks, queries, and real persisted examples. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-06-reconstruction. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: One cold reconstruction graph, unanswered questions, impermissible inferences, and the first missing link for each gap."
+        }
+      ]
+    },
+    {
+      "group_id": "pair-07-human-control",
+      "n": 2,
+      "robot_talks": true,
+      "anti_bias": "methodology",
+      "agents": [
+        {
+          "agent_name": "Alexander, Christopher",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "map operator journeys and useful affordances across reader, confirmation, Control Center, pilot, and recovery",
+          "initial_prompt": "You are the worker and designated pair finalizer for pair-07-human-control. Central question: What can a human actually see, understand, decide, change, undo, and recover without false authority or false reassurance? Property served: meaningful and authority-safe human control. Scope: dispatch reader, confirmation UI, Control Center APIs/frontends, evidence overlays, preview store, local pilot, backup/retirement, accessibility and browser evidence. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-07-human-control. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-07-human-control.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Operator matrix for see, understand, decide, act, undo/recover, including authority and practical limits."
+        },
+        {
+          "agent_name": "Rumelt, Richard",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "angle": "attack symbolic buttons, preview-as-apply confusion, unavailable evidence shown as zero, and recovery dependent on undocumented knowledge",
+          "initial_prompt": "You are the independent read-only reviewer for pair-07-human-control. Central question: What can a human actually see, understand, decide, change, undo, and recover without false authority or false reassurance? Property served: meaningful and authority-safe human control. Scope: dispatch reader, confirmation UI, Control Center APIs/frontends, evidence overlays, preview store, local pilot, backup/retirement, accessibility and browser evidence. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-07-human-control. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Operator matrix for see, understand, decide, act, undo/recover, including authority and practical limits."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "agents": [
+        {
+          "agent_name": "Meadows, Donella H.",
+          "role": "synthesizer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 9000,
+          "initial_prompt": "You are the synthesizer for 2026-07-31-implementation-as-built-reconciliation. Read the seven final pair JSON/Markdown packets under implementations/as-built/pairs/ and the frozen source manifest. Before synthesis, validate every pair JSON against implementations/as-built/pair-output-schema.json. If any packet is missing or invalid, write a blocked synthesis-report.json validated against implementations/as-built/synthesis-report-schema.json and do not write AS-BUILT.md. If all seven are valid, draft synthesis-report.json with exactly seven packet digests and a non-empty claim index, validate it against the synthesis schema, and only then write implementations/AS-BUILT.md. Do not redo investigations or silently resolve dissent. Write AS-BUILT.md as a code-first, evidence-bounded snapshot. Sections 1-3 must be self-contained for a non-technical reader: (1) the harness objective—preserve the chain from objective, decision, authority, work, context and evidence to reconstructible continuity; (2) what can actually be trusted today, organized by properties rather than modules; (3) the current frontier and next gains, stating what each task buys. Then provide: real work journey; actual system and official/experimental boundaries; authority and identity; memory, handoffs and recovery; provenance and reconstruction; human control; document drift; next program of work; method and claim index. Keep implementation, proof, operation, authority, official adoption and reconstructibility separate. Every material claim must carry or link a claim_id and evidence. Preserve unknown and disputed findings. Do not edit product code or any document other than implementations/AS-BUILT.md and implementations/as-built/synthesis-report.json."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "pair-01-system-of-record",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-02-host-adoption",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-03-authority",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-04-memory-recovery",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-05-handoff-integrity",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-06-reconstruction",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-07-human-control",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-01-system-of-record",
+      "to": "pair-02-host-adoption",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-02-host-adoption",
+      "to": "pair-03-authority",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-03-authority",
+      "to": "pair-04-memory-recovery",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-04-memory-recovery",
+      "to": "pair-05-handoff-integrity",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-05-handoff-integrity",
+      "to": "pair-06-reconstruction",
+      "type": "sequential"
+    },
+    {
+      "from": "pair-06-reconstruction",
+      "to": "pair-07-human-control",
+      "type": "sequential"
+    }
+  ]
+}

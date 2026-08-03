@@ -1,0 +1,110 @@
+{
+  "transformation": {
+    "command_id": "cmd_59c853f034c58d9c0f4193a93fcb89df",
+    "command_digest": "sha256:1e01f69c2f350a87b8d10e0a2ec3af10eea0a9e87f52fd3bdc90e7fcedc363b7",
+    "status": "launch-authorized",
+    "first_offset": 923,
+    "last_offset": 923,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_0d7914b3035131fb57bf71ecfc631165"
+    ],
+    "ordered_payload_digest": "sha256:7f5192da27a10b4b166424650a6d4f57d776a1aeee9b4b8f4e776eece6983376",
+    "artifact_ids": [
+      "art_5a7752aac7b791cc4b8ffe85d2bfcd65",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_3de270272a2fda7541a1d4d18b07e836",
+      "art_c845b1426818f5dae3c41556e0383861"
+    ],
+    "recorded_at": "2026-07-31T16:49:31.247872+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_059e38207c56613314bb4394d13f6361",
+      "version": 1,
+      "state_hash": "sha256:fc584dfa987d229e432d081114e99364233d8ac9bccb87c63f4a0ebd83b298cd"
+    },
+    "binding_id": "hwb_059e38207c56613314bb4394d13f6361",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "transformation-reviewer",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "transformation-reviewer-attempt-1",
+    "workflow_manifest_artifact_id": "art_5a7752aac7b791cc4b8ffe85d2bfcd65",
+    "bound_event_id": "evt_0d7914b3035131fb57bf71ecfc631165"
+  },
+  "topology": {
+    "command_id": "cmd_dec5ffd72502f84fdff78358fbd17b12",
+    "command_digest": "sha256:ee3c25d64f71862e78c503b97e52f73ca6d7b51438282dde1b8988d643913ccd",
+    "status": "launch-authorized",
+    "first_offset": 924,
+    "last_offset": 924,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_6a338f6abad0eac627270754c28cdbbd"
+    ],
+    "ordered_payload_digest": "sha256:a021d228c43ca7bff30adf7b74bd0b5903b1821c663b181bf1efae3a5c80fbb4",
+    "artifact_ids": [
+      "art_39b528dc6bf414b5e5f4e764b5781ce5",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_3a3e6175eb4ae37710044bc68dc52311",
+      "art_ef4b24cfbe768b168541a625e8cd8656"
+    ],
+    "recorded_at": "2026-07-31T16:49:32.005762+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_0e62188cad870e1c45a03022c0a3059f",
+      "version": 1,
+      "state_hash": "sha256:7b63f397fc43f6b7a49ec1224aa68b13c540fa0b2640f291bbe75acf1c5c35e0"
+    },
+    "binding_id": "hwb_0e62188cad870e1c45a03022c0a3059f",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "topology-reviewer",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "topology-reviewer-attempt-1",
+    "workflow_manifest_artifact_id": "art_39b528dc6bf414b5e5f4e764b5781ce5",
+    "bound_event_id": "evt_6a338f6abad0eac627270754c28cdbbd"
+  },
+  "divergence": {
+    "command_id": "cmd_8b578aa30f2eab8f3a9c8b9880d131a1",
+    "command_digest": "sha256:a0a5064b0f59c33f867a5826b13b9f2861886f1295e591c519a4101ab5af2deb",
+    "status": "launch-authorized",
+    "first_offset": 925,
+    "last_offset": 925,
+    "event_count": 1,
+    "ordered_event_ids": [
+      "evt_684eefa3632cbb431dfa333aa348b63e"
+    ],
+    "ordered_payload_digest": "sha256:4b282cdfc5b883b6c3a8324f9321265d045c376a412a8c4eb9f7052bde5ab159",
+    "artifact_ids": [
+      "art_7fd6513c74ecbd419688fd9f6deba9f0",
+      "art_8a8e87f53e4535e8ec49e779c037f576",
+      "art_db33d99604bafca680d59d37f407e1e7",
+      "art_d8b8b1357fe9b23cf1d7c8e3ff656b4c",
+      "art_dfe8767ae7d3d54b97cacad8ba8f4c3a",
+      "art_ff58bafe7241d1128d4ee2b6b87979e0",
+      "art_7a5619c4a00f32d6f6767b77a3955d53"
+    ],
+    "recorded_at": "2026-07-31T16:49:32.521203+00:00",
+    "head": {
+      "aggregate_id": "aci.host-workflow-turn:hwb_9af91f6d1568580a02305664c8b5aed9",
+      "version": 1,
+      "state_hash": "sha256:35b1e6974249bd85753ff949a31378b3c3475e85da5c90702bfd85e51a6a6c56"
+    },
+    "binding_id": "hwb_9af91f6d1568580a02305664c8b5aed9",
+    "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+    "session_id": "ses_cd9b400f02c07cf918b77d0eea904f70",
+    "group_id": "divergence-reviewer",
+    "seat_index": 0,
+    "turn_ordinal": 0,
+    "attempt_id": "divergence-reviewer-attempt-1",
+    "workflow_manifest_artifact_id": "art_7fd6513c74ecbd419688fd9f6deba9f0",
+    "bound_event_id": "evt_684eefa3632cbb431dfa333aa348b63e"
+  }
+}

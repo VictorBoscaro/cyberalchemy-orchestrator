@@ -1,18 +1,16 @@
 ---
 name: experiment
-description: Subagent dispatch that PROPOSES and pre-registers a falsifiable experiment — the designer authors a success/failure criterion fixed BEFORE any run and the skeptic validity-checks it, producing a frozen criterion.md. Running the probe and adjudicating survived-vs-falsified is a SEPARATE downstream step, not part of this dispatch. Routed here from domainspec-subagents-strategy as the LIVE type skill for `dispatch_type: experiment`. Defines experiment-type judgment only — the pre-registered criterion, the design-time validity gates, and the SURVIVED/FALSIFIED/INVALID verdict vocabulary (SURVIVED/FALSIFIED rendered later, at run). Use research when the question is whether a NEW claim survives by coverage; use review to attack an EXISTING artifact; use experiment when you are pre-registering a probe against a criterion fixed BEFORE running.
+description: Subagent dispatch that PROPOSES and pre-registers a falsifiable experiment — the designer authors a success/failure criterion fixed BEFORE any run and the skeptic validity-checks it, producing a frozen criterion.md. Running the probe and adjudicating survived-vs-falsified is a SEPARATE downstream step, not part of this dispatch. Routed here from domainspec-subagents-strategy as the experiment work-type skill. Defines experiment-type judgment only — the pre-registered criterion, the design-time validity gates, and the SURVIVED/FALSIFIED/INVALID verdict vocabulary (SURVIVED/FALSIFIED rendered later, at run). Use research when the question is whether a NEW claim survives by coverage; use review to attack an EXISTING artifact; use experiment when you are pre-registering a probe against a criterion fixed BEFORE running.
 ---
 
 # experiment — pre-registration (proposal) type skill
 
-The LIVE type skill for `dispatch_type: experiment`. **When/whether to dispatch** and all
-universal law — triggers, the human gate, lifecycle, `final_approver`, `exit_reason`, the
-invariants — live in the **router** (`.claude/skills/domainspec-subagents-strategy/SKILL.md`);
-nothing here overrides it. **Record/sheet mechanics** — the two appends, the appender,
+The work-type skill for an experiment dispatch. **When/whether to dispatch** is routed by
+`domainspec-subagents-strategy`; the session-owned confirmation/register/run/close sequence is
+coordinated by `subagents-dispatch-lifecycle`. This skill owns experiment judgment and every
+experiment-specific topology or evidence rule. **Record/sheet mechanics** — the two appends, the appender,
 validation — and the inline **field definitions** you actually read live in
-**register-dispatch** (`.claude/skills/register-dispatch/SKILL.md`). Constitution §5
-(`internal_tools/subagents-dispatch-hooks/constitution/subagents-strategy-constitution-proposal.md`)
-is the upstream authority for those fields only — not a routine read. This skill defines no
+**register-dispatch** (`.claude/skills/register-dispatch/SKILL.md`). This skill defines no persisted
 field; it says what a good **experiment** dispatch contains.
 
 **What this dispatch is — propose, don't run.** An experiment dispatch **pre-registers** a
@@ -24,7 +22,7 @@ proposal good enough to run later and re-adjudicate deterministically — not a 
 
 ## Initial-definition precondition
 
-Before designing a `StructuralGraphProposal`, selecting roles, or drafting `criterion.md`, require
+Before selecting roles or drafting `criterion.md`, require
 `<working_folder>/experiment-initial-definitions.md`. If it is missing, stop experiment design and
 route to `.claude/skills/experiment-initial-definitions/SKILL.md`; resume only after that
 informational context exists.
@@ -73,16 +71,16 @@ Pre-registration is enforced by **topology + the human-gate freeze + immutabilit
 schema field:
 
 - The `designer` authors the criterion and the `skeptic` attacks it; the criterion lands in
-  `working_folder` as a durable artifact and is **frozen at the P2 human gate** — before any run
+  `working_folder` as a durable artifact and is **frozen at lifecycle confirmation** — before any run
   exists. That is what "pre-registered" means here.
 - The frozen criterion is **read-only downstream**: any edit after freeze is a *new* criterion
-  (re-enters the P2 gate as a fresh proposal), never an in-place mutation. That immutability is
+  (re-enters lifecycle confirmation as a fresh proposal), never an in-place mutation. That immutability is
   what makes "pre-registered" verifiable against an artifact: the criterion file exists and
   predates any result.
 - The criterion lives as the designer's output artifact in `working_folder` — **never a ledger
   column**. The appender rejects `success_metric` as an unknown key; a criterion column would
   repeat the vacuity error v0.5.2 killed.
-- experiment is a LIVE type, so `working_folder` is **REQUIRED** (appender).
+- `register-dispatch` currently requires `working_folder` for an experiment record.
 
 ## The criterion artifact — what `criterion.md` must contain
 
@@ -141,16 +139,16 @@ belong to the later run and never close this dispatch. Contrast: research = GO/�
 UPHELD/REFUTED/DOWNGRADED. The verdict vocabulary does **not** map onto execution-status
 (`pass/flag/block`) — that cross-project unification is deferred (Arcanum F1).
 
-## Canonical shape (v0.6.0 chassis)
+## Canonical experiment shape
 
-This dispatch (propose) — designer authors, skeptic attacks, criterion frozen at the P2 gate:
+This dispatch (propose) — designer authors, skeptic attacks, criterion frozen at lifecycle confirmation:
 
 ```
 designer ◀──zig-zag──▶ skeptic   ⇒  frozen criterion.md
 ```
 
 The skeptic checks validity in `zig-zag` (or parallel) with the designer; **zig-zag/feedback carry
-`loop_cap`**. A `feedback` back-edge is conditional (P6) — here, when the skeptic's validity attack
+`loop_cap`**. A `feedback` back-edge is conditional — here, when the skeptic's validity attack
 means the criterion must be re-designed before freeze. A bare n = 1 designer (no skeptic) is
 allowed for a trivial pre-registration but forgoes the design-time validity check.
 
@@ -166,21 +164,21 @@ The **run is a separate downstream dispatch** (not authored here): it consumes t
 - The **run phase is downstream** — this skill stops at the frozen proposal. How the run is
   dispatched (a follow-up run step, manual, or a future runner) is out of scope here.
 - The experiment skill's **code-execution runner remains unimplemented** even though the separate
-  `code` dispatch type is LIVE. A criterion that needs an executable probe must route a distinct
+  `code` route exists in the current compatibility catalog. A criterion that needs an executable probe must route a distinct
   downstream `code` dispatch through `domainspec-implement`; this experiment dispatch remains
   reasoning/investigation over artifacts and never executes the probe itself.
 - **Reproducibility = deterministic RE-ADJUDICATION** — another agent, same frozen criterion +
   result, reaches the same verdict — NOT re-execution. The criterion artifact is authored *here*
   to make that possible later.
 
-## Inherited rule (cited, not invented)
+## Independent approval
 
-`final_approver` may never sit in a working group (constitution P12 / §5). In the propose dispatch
+`final_approver` may never sit in a working group. In the propose dispatch
 the designer and skeptic are working-group members, so neither may double as `final_approver` —
 use `parent` or a dedicated approver group (its single agent's role is `auditor`). The same rule
 binds the run's adjudicator later.
 
-## Outputs (P9 pattern, experiment flavor)
+## Experiment outputs
 
 This dispatch (propose) produces **one artifact** in `working_folder`:
 
@@ -204,4 +202,4 @@ the philosophy-of-science figures: **Popper, Lakatos, Hume, Feyerabend, Kuhn**
 (`role_fit: [skeptic, writer]`) for this dispatch's skeptic/designer; primary-`role_fit` explorers
 for the run's runner; an `auditor` fit (**Vlachopulos, Loregian, Brandenburg**) for the run's
 adjudicator. Never reuse a name within one dispatch; never invent one — and the skeptic that
-attacks validity is never the designer whose criterion it attacks (P12's spirit at agent scale).
+attacks validity is never the designer whose criterion it attacks.

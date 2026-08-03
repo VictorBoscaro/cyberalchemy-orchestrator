@@ -60,8 +60,8 @@ it has a dedicated runtime.
   over the profile sources inside the current agent session.
 - `--runtime agents`: use a governed subagent strategy as an execution backend
   only when the profile permits it and the repository has a local strategy
-  owner. The subagent strategy must handle trigger checks, tension design,
-  explicit human confirmation, registration, closeout, and ledger evidence.
+  owner. The subagent strategy must handle its own preparation, explicit human
+  confirmation, registration, closeout, and ledger evidence.
 
 Profile outputs are evidence artifacts, validation reports, confidence action
 reports, drift reports, and optional read-model projections. They are not
@@ -173,7 +173,7 @@ When `--profile` is provided:
 24. For `--runtime agents`, verify the profile permits an agent backend and
     route through the repository-local governed subagent strategy. Do not spawn
     agents directly from Ontology Vault when the local strategy requires its
-    own trigger check, tension gate, human confirmation, registry append, and
+    own preparation, human confirmation, registry append, and
     closeout.
 25. Treat agent returns, dispatch findings, close rows, and ledger evidence as
     delegated evidence records. They may support synthesis or confidence

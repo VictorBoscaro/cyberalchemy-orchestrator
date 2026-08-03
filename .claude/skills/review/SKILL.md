@@ -1,6 +1,6 @@
 ---
 name: review
-description: "Red-team dispatch over EXISTING artifacts (skills, constitutions, code, docs) — attack what exists and hunt flaws to improve it. Routed here from domainspec-subagents-strategy as the LIVE type skill for `dispatch_type: review`. Defines review-type judgment only — attack lenses, severity taxonomy, verification discipline, and the change-request report shape. A review produces ONE artifact, `review.md` (the cited change-request report), and the human chooses at the confirm gate whether it is delivered inline (chat) or persisted to a `working_folder`. Use research (not review) when the question is whether a NEW claim/candidate survives; use review when the target already exists and the deliverable is verified change requests."
+description: "Red-team dispatch over EXISTING artifacts (skills, constitutions, code, docs) — attack what exists and hunt flaws to improve it. Routed here from domainspec-subagents-strategy as the work-type skill for review. Defines review-type judgment only — attack lenses, severity taxonomy, verification discipline, and the change-request report shape. A review produces ONE artifact, `review.md` (the cited change-request report), and the human chooses at the confirm gate whether it is delivered inline (chat) or persisted to a `working_folder`. Use research (not review) when the question is whether a NEW claim/candidate survives; use review when the target already exists and the deliverable is verified change requests."
 ---
 
 # review — operating guide for `dispatch_type: review`
@@ -35,9 +35,9 @@ request is a follow-up act outside the dispatch, or a re-run after fixes within 
 > `review.md` itself. Persisting the returns bought traceability of process, not of truth.
 >
 > **This was contested and the owner overruled the objection** (2026-07-13, §14/§14.1 — recorded, not
-> erased). The objection: without the transcript, the durable record of P14 collapse detection is one
-> line in the Coverage section, written by the very synthesizer whose collapse it is meant to detect,
-> so no later reader can re-derive whether the attackers actually diverged. **Owner ruling: accepted
+> erased). The objection: without the transcript, a later reader cannot re-derive the attackers'
+> independence or reconstruct every rejected candidate finding from the final Coverage section.
+> **Owner ruling: accepted
 > as a known cost.** A review is audited on its conclusions and the artifact quotations that carry
 > them — not on its attack process. Do not re-litigate this in a skill edit; amend §14 if you want it
 > changed.
@@ -57,16 +57,14 @@ mode, and no agent guards two:
 | `explorer` | **attacker** — attacks the full target corpus from ONE declared attack lens | blind spots — one lens sees what another cannot | heavier for subtle lenses |
 | `skeptic` | **verifier** — refutes findings against the literal artifact; runs the actual check | false positives — plausible-but-wrong findings surviving | heavy |
 | `writer` | **synthesizer** — dedupes, severity-ranks, writes `review.md`; conventionally a single writer | "great attack, no record" | heavy |
-| `auditor` | **coverage auditor** — placed downstream of the verifiers; checks every target was attacked from every declared lens and no refuted finding survived; authors the **Coverage** section of `review.md`. **Does work, therefore cannot be the dedicated `final_approver`** (P12) | "passed because nothing was attacked" | light |
+| `auditor` | **coverage auditor** — placed downstream of the verifiers; checks every target was attacked from every declared lens and no refuted finding survived; authors the **Coverage** section of `review.md`. **Does work, therefore cannot be the dedicated `final_approver`** | "passed because nothing was attacked" | light |
 
 A group has no role of its own: its function is read off its agents' roles, and its place in the
 workflow off its `connections`. Model is guidance chosen per agent by task difficulty, validated
 by the human at the confirm gate.
 
-**Attack lenses** — the tension axes for review. Each attacker takes ONE lens; a group of
-n ≥ 2 attackers must spread **≥ 2 distinct lenses, pairwise tensioned** — for every pair a
-competent observer could name in advance a question on which the two disagree. The `check-tension`
-skill runs this anti-bias check on the sheet at the confirm gate. Established lenses:
+**Attack lenses.** Each attacker takes ONE lens. A group of n ≥ 2 attackers must use at least two
+distinct lenses so the review covers materially different failure classes. Established lenses:
 
 - **fidelity / governance** — does the artifact contradict or silently extend its governing law?
 - **mechanics / correctness** — does it actually run? doc-vs-code mismatches, broken validation.
@@ -75,9 +73,10 @@ skill runs this anti-bias check on the sheet at the confirm gate. Established le
 - **abuse / gaming** — can the rules be satisfied in letter while defeated in spirit?
 
 Attackers each read the **whole corpus** (full reading), differing by lens — never by partitioning
-the targets between them. `robot_talks: true` on the attacker group is recommended: after the
-parallel attacks, each attacker confronts the others' findings along the lens tension before the
-group returns one argued result.
+the targets between them. Keep the attacker group `robot_talks: false`: attackers return
+independently, and the downstream synthesizer/verifiers perform comparison and challenge. The
+standalone `robot-talks` workflow has incompatible persistence and human-gate contracts and is not
+embedded in review.
 
 **Topology** — the canonical shape:
 
@@ -87,19 +86,10 @@ attackers ──sequential──▶ synthesizer ◀──zig-zag──▶ verifi
     └┄┄┄┄┄┄┄┄feedback┄┄┄┄┄┄┄┄┄┘   (conditional)
 ```
 
-- **Attackers** — a group of `explorer`s, n 2–4, `robot_talks` recommended.
-- **Synthesizer** — 1 `writer`, exchanging with the verifiers via **zig-zag**. Because the
-  attacker group runs `robot_talks`, the synthesizer MUST receive each attacker's **initial AND
-  final** positions (P14, collapse detection). The confirmed synthesizer `prompt_template`
-  predeclares slots for both sets. After the attackers finish, the host materializes their
-  positions as a separately canonicalized and digested workflow-only `WorkflowInputManifest`, with
-  each file reference bound as an explicit `{path, sha256}` pair, and invokes the unchanged
-  template with that data manifest. ACI alone owns a true `EffectiveInputArtifact`; every
-  registered topology needing post-confirmation downstream input is `UNAVAILABLE` unless
-  ACI/runtime persists and binds its manifest. An unregistered helper loop treats the manifest as
-  workflow evidence only. Later attacker material never changes the confirmed template. Since review
-  persists no transcript, the durable review record of collapse remains the one-line collapse
-  note in `review.md`'s Coverage section, not a file of returns.
+- **Attackers** — a group of `explorer`s, n 2–4, `robot_talks: false`.
+- **Synthesizer** — 1 `writer`, exchanging with the verifiers via **zig-zag**. It receives every
+  independent attacker return through the host/runtime-owned input contract. Review persists no
+  transcript; the Coverage section records lens and target coverage, not the working returns.
 - **Verifiers** — `skeptic`s in a zig-zag exchange with the synthesizer.
 - The **feedback** back-edge exists only when there is a verifier/auditor group AND material may be
   missing — never by default (shown dashed).
@@ -107,7 +97,7 @@ attackers ──sequential──▶ synthesizer ◀──zig-zag──▶ verifi
   incoming edge, downstream of the verifiers.
 
 **The coverage auditor is NOT the `final_approver`** (corrected 2026-07-13 — the prior text called it
-"the natural dedicated `final_approver`", which contradicted P12 two paragraphs later). P12's dedicated
+"the natural dedicated `final_approver`"). A dedicated
 approver **does no other work in the dispatch**; the coverage auditor audits coverage, which is work.
 So the approver is **`parent`**, or a *separate* agent that does nothing but approve. Both can coexist:
 the auditor fires the zero-findings flag, and the approver checks that it fired.
@@ -116,28 +106,18 @@ The final approver receives the complete evidence bundle. For persisted mode tha
 `working_folder`; for inline mode it is the complete inline `review.md` payload plus the frozen
 target corpus as exact path/hash pairs.
 
-**Author-approval warning (open gap, P12).** P12 forbids the approver from sitting in a working group —
-it does **not** forbid `parent` from being the author of the artifact under review. When the strategist
-reviews its own change set, `final_approver: parent` puts the author in the approval seat, and
-"we already acknowledged that, and kept it anyway" becomes a sentence the approver can say. In that
-case, **a surviving finding that recommends reverting the author's own work escalates to the human** —
-the parent may not resolve it. This is a stated gap in P12, not a rule it currently enforces.
+**Author-approval rule.** When the parent authored the artifact under review, do not use that parent
+as the effective approver. Use the human or a separate dedicated approver. A surviving finding that
+recommends reverting the parent's work always escalates to the human.
 
 **Declare the output mode.** The sheet states `output_mode` (and, when `persisted`, the
-`working_folder` path). The human confirms both at the gate — see the router's lifecycle step 2.
+`working_folder` path). The human confirms both through `subagents-dispatch-lifecycle`.
 
 ## 2. Run it
 
-Invoke subagents through the runtime's adapter-neutral subagent surface — **ALL agents of a group
-in one parallel launch when supported**. `Task` is the adapter mapping in runtimes that expose that
-name; it is not a universal protocol primitive. Each agent's confirmed `prompt_template` is its
-launch template; only declared data slots may be supplied separately.
-
-Schedule groups **by dependency**: a group is READY when every group with a `sequential`/`zig-zag`
-edge into it has produced what it must respond to (a zig-zag edge counts only in its `from`→`to`
-direction — the `from` endpoint opens the exchange). Launch all READY groups concurrently;
-`feedback` edges never count as dependencies; a sheet with no connections declares its groups
-independent. Declared order is a narration tiebreak only.
+Hand the confirmed review graph to `subagents-dispatch-lifecycle`. The host/runtime owns launch,
+dependency scheduling, retries, and effective inputs; this skill only supplies the review graph and
+the semantic conditions on its handoffs.
 
 The zig-zag between synthesizer and verifiers converges the moment a verifier turn raises no
 objection — the loop cap is a ceiling for non-convergence, not a quota to burn.
@@ -184,7 +164,6 @@ with the mode** — inline is a delivery channel, not a lighter deliverable.
 
 ## Coverage            (the auditor's section; the audit trail that replaces the transcript)
 | attacker | lens | findings raised | zero-findings defence (if any) |
-- collapse note: did the robot_talks attackers converge prematurely? (P14)
 - lens coverage: was every target attacked from every declared lens?
 
 ## <artifact 1>
@@ -229,13 +208,9 @@ and never let an attacker verify its own attack.
 
 ## See also
 
-- **Router** — the `domainspec-subagents-strategy` skill: triggers, the human gate, lifecycle,
-  the anti-bias principle, `final_approver`, and the `exit_reason` vocabulary. Nothing here
-  overrides it.
+- **Entry point** — `domainspec-subagents-strategy` decides inline versus delegation and routes the
+  work; it owns no review or lifecycle semantics.
+- **Session-owned lifecycle** — `subagents-dispatch-lifecycle` coordinates confirmation,
+  registration, host-bound execution, verification, approval, and close.
 - **Record/sheet mechanics + field definitions** — the `register-dispatch` skill: the two appends,
   the appender, validation, and enums (including `output_mode`).
-- **Discussion rules for a `robot_talks` group** — the `robot-talks` skill governs the intra-group
-  confrontation. The selected lifecycle may use one or two pre-run planning gates, but robot-talks
-  adds no human gate after execution begins.
-- **Anti-bias gate** — the `check-tension` skill runs the pairwise-tension rubric on the sheet at
-  the confirm gate.

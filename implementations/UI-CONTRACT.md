@@ -62,13 +62,13 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
 
 ### A dispatch
 
-The current writer emits schema `0.6.1`. The reader remains deliberately
-compatible with historical `0.6.0` rows and does not rewrite ledger data.
+The current writer emits schema `0.6.2`. The reader remains deliberately
+compatible with historical `0.6.0` and `0.6.1` rows and does not rewrite ledger data.
 
 ```jsonc
 {
   "dispatch_id": "2026-06-12-residue-precedent-sweep",
-  "schema_version": "0.6.1",
+  "schema_version": "0.6.2",
   "created": "2026-06-12T18:00:00.000Z",
   "invoked_by": "victorboscaro@gmail.com",
   "dispatch_type": "review",          // research|code|review|plan|suggestion|experiment
@@ -76,6 +76,7 @@ compatible with historical `0.6.0` rows and does not rewrite ledger data.
   "context": "…",
   "max_loops": 1,
   "final_approver": "parent",
+  "anti_bias_mode": "enabled",       // enabled|disabled; required since 0.6.2
   "anti_bias_global": "novelty optimism vs precedent skepticism",
   "working_folder": "research/…/",
   "output_mode": "persisted",         // review only: inline|persisted
@@ -215,7 +216,7 @@ A `slim` row:
   "dispatch_id": "…", "created": "…Z", "_day": "2026-06-12",  // _day is UTC
   "dispatch_type": "research", "goal": "… (cut to ~240 chars)",
   "invoked_by": "…", "working_folder": "…", "max_loops": 1,
-  "final_approver": "parent", "anti_bias_global": "…",
+  "final_approver": "parent", "anti_bias_mode": "enabled", "anti_bias_global": "…",
   "_state": "open", "_live": true, "_legacy": false, "_agent_count": 3,
   "_close": { "closed": "…Z", "exit_reason": "resolved" },  // null while open
   "_goal_truncated": true,        // only if the goal was cut
@@ -257,9 +258,9 @@ In order of importance — the UI exists for the **human gate**:
 3. **Open vs closed.** A dispatch with no close row is alive. When closing,
    show the `exit_reason` (`resolved` is good; `error` and
    `dissent_irreconcilable` deserve an alert color).
-4. **Groups and agents**: role, model, token budget, `agent_name`, and each agent's
-   **`angle`** against the group's **`anti_bias`**. The tension axis is first-class
-   content, not decoration.
+4. **Anti-bias mode, groups and agents**: show `anti_bias_mode` explicitly. When
+   enabled, show each agent's **`angle`** against the group's **`anti_bias`**;
+   when disabled, do not report missing tension fields as an error.
 5. **`connections` as typed edges**: `sequential`, `zig-zag`, `feedback`
    need to be visually distinct; show `loop_cap` when present.
 6. **LIVE vs RESERVED.** `research`, `code`, `review`, and `experiment` are LIVE.

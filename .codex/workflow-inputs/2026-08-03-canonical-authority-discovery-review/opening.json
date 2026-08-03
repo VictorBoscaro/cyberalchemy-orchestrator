@@ -1,0 +1,44 @@
+{
+  "dispatch_id": "2026-08-03-canonical-authority-discovery-review",
+  "schema_version": "0.6.1",
+  "dispatch_type": "research",
+  "goal": "Identify which existing discovery most directly defines one persisted canonical dispatch authority from which ledger projections, agent provisioning, communication topology, scheduling, and runtime effects derive, so the user knows which discovery should later be rewritten.",
+  "context": "The user has clarified the intended invariant: the same human-confirmed structure is transported forward, persisted, projected into subagents-dispatch.yaml, and interpreted by infrastructure to provision and run agents without chat-parent orchestration. Candidate material exists across agents-communication-infra discoveries and its current SPEC. This dispatch is read-only and must recommend one primary discovery, while naming any companion documents that contain split authority.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "working_folder": "research/agent-invocation-and-collaboration-topology/",
+  "groups": [
+    {
+      "group_id": "discovery_assessors",
+      "n": 3,
+      "anti_bias": "method and source corpus: historical discovery inventory vs formal authority-chain tracing vs adversarial contradiction audit",
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1500,
+          "angle": "historical inventory across candidate ACI discoveries; identify the document that owns the idea most directly",
+          "initial_prompt": "Read-only. Find the existing discovery that most directly defines this invariant: one human-confirmed canonical dispatch structure is transported forward, persisted, used to derive the subagents-dispatch.yaml record, and interpreted to provision agents, prompts, communication permissions, scheduling, loops, and terminal behavior without the chat parent. Inventory plausible discovery files under docs/features/agents-communication-infra/discovery and the related research target. Return: (1) primary discovery; (2) exact supporting file:line evidence; (3) secondary/companion discoveries and what each owns; (4) whether the primary should be rewritten or a new discovery is needed. Do not modify files. Keep the answer under 1500 tokens."
+        },
+        {
+          "agent_name": "Booch, Grady",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1500,
+          "angle": "formal architecture trace from skill-generated candidate through DispatchSpec and ConfirmedDispatch into Run and ledger projection",
+          "initial_prompt": "Read-only. Trace the formal authority chain for the user's invariant across ACI discovery and SPEC documents: skill/generated proposal -> confirmed canonical structure -> persistence -> agent invocation plans -> message/routing/scheduling -> subagents-dispatch.yaml projection. Focus on ownership and exact terminology. Return: (1) which discovery is the correct rewrite target; (2) exact file:line citations; (3) which claims are already ratified in SPEC versus only proposed; (4) any naming or boundary correction needed. Do not modify files. Keep the answer under 1500 tokens."
+        },
+        {
+          "agent_name": "Lamport, Leslie",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1500,
+          "angle": "adversarial consistency audit; search for split or conflicting authority and test whether one discovery truly owns the invariant",
+          "initial_prompt": "Read-only, adversarial audit. Assume the claim that one existing discovery already defines the whole invariant may be overstated. Compare the candidate skill-protocol, invocation/collaboration, bus/routing, and dispatch-ledger/cutover discoveries. Find contradictions, maturity mismatches, or split ownership. Return: (1) strongest primary rewrite target, if any; (2) exact file:line evidence; (3) what must be imported from companion discoveries; (4) whether rewriting one discovery would create duplicate authority. Do not modify files. Keep the answer under 1500 tokens."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

@@ -33,6 +33,22 @@ class HostWorkflowBindingTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
+        dispatch_registry_relative = (
+            "implementations/contracts/dispatch-type-registry.v1.json"
+        )
+        dispatch_registry = json.loads(
+            (REPO / dispatch_registry_relative).read_text(encoding="utf-8")
+        )
+        dispatch_paths = [dispatch_registry_relative]
+        dispatch_paths.extend(
+            entry["capability_path"]
+            for entry in dispatch_registry["types"]
+            if entry["capability_path"] is not None
+        )
+        for relative in dispatch_paths:
+            destination = self.project / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(REPO / relative, destination)
         registry_relative = (
             "docs/features/agents-communication-infra/reviews/"
             "2026-07-23-stage-a-freeze/profile-registry-manifest.json"
@@ -88,7 +104,7 @@ class HostWorkflowBindingTests(unittest.TestCase):
         }
         self.opening = {
             "dispatch_id": "2026-07-25-foundational-research",
-            "schema_version": "0.6.1",
+            "schema_version": "0.6.2",
             "dispatch_type": "research",
             "goal": "Research a deterministic foundational kernel.",
             "context": (
@@ -97,6 +113,7 @@ class HostWorkflowBindingTests(unittest.TestCase):
             ),
             "max_loops": 3,
             "final_approver": "parent",
+            "anti_bias_mode": "disabled",
             "working_folder": "research/foundational-kernel-and-formalization",
             "groups": [
                 {
