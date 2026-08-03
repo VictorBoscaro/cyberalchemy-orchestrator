@@ -1,0 +1,12 @@
+{
+  "close_of": "2026-08-03-runtime-v2-as-built-exploration",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 0,
+    "tree": {
+      "explorer": 0,
+      "helpers": 0
+    },
+    "loops_used": 0
+  }
+}

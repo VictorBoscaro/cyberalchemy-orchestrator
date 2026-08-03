@@ -1,0 +1,107 @@
+{
+  "dispatch_id": "2026-08-03-runtime-v2-inventory-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Red-team the frozen runtime-v2 migration inventory, verify every surviving change request against the target artifacts, and produce one persisted review.md before target-architecture work begins.",
+  "context": "The target corpus is the frozen initial definitions, collected research and findings under the runtime-v2 migration inventory folder. Three attackers inspect the complete corpus through distinct lenses; one writer synthesizes a persisted review.md and owns its Coverage section; two verifiers exchange at most two zig-zag rounds with that writer. Because the live legacy runtime does not materialize downstream slots, the user explicitly authorized the parent to relay frozen batches between already-bound seats; this transport is a named workflow limitation, not Work Bus evidence.",
+  "max_loops": 2,
+  "final_approver": "Randell, Brian",
+  "anti_bias_mode": "disabled",
+  "output_mode": "persisted",
+  "working_folder": "docs/features/agents-communication-infra/research/runtime-v2-migration-inventory/review",
+  "groups": [
+    {
+      "group_id": "inventory_attackers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Evans, Eric",
+          "initial_prompt": "Review attacker; lens: ownership/reference integrity only. Read the complete frozen corpus and fail if any SHA-256 differs: research-initial-definitions.md=35c6a90e5d7d6083d6235b6591ba5286c3515243226752dfc906d1bf69461d49, research.md=004dd3ddcebaa1a94498393abfd76a8173f85412e9acf399da5b4fc1e890dfef, findings.md=7fff28019eb7d399138d02dd334e817e57458561257a21ab3eb0944c83988b6a, all under docs/features/agents-communication-infra/research/runtime-v2-migration-inventory/. Attack every target, not a partition. Find dangling references, duplicate owners, claims imported from non-owning docs, and reuse/adapt/rewrite labels that contradict the actual owner. Do not edit files. Return candidate findings only when they quote the target artifact, cite the contradicting owner evidence, assign CRITICAL/MAJOR/MINOR, and propose a one-line fix. If zero findings, state every attack attempted and why it failed. Return only to parent."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Beck, Kent",
+          "initial_prompt": "Review attacker; lens: mechanics/correctness only. Read the complete frozen corpus and fail if any SHA-256 differs: research-initial-definitions.md=35c6a90e5d7d6083d6235b6591ba5286c3515243226752dfc906d1bf69461d49, research.md=004dd3ddcebaa1a94498393abfd76a8173f85412e9acf399da5b4fc1e890dfef, findings.md=7fff28019eb7d399138d02dd334e817e57458561257a21ab3eb0944c83988b6a. Attack every target. Verify commands, test counts, implementation symbols, schema claims, runtime reachability and whether migration labels have a concrete witness. Run only bounded read-only checks that can refute a claim. Do not edit files. Return candidate findings only when they quote the target artifact, cite executable counterevidence, assign severity, and propose a one-line fix. If zero findings, state attacks and defenses. Return only to parent."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Lamport, Leslie",
+          "initial_prompt": "Review attacker; lens: fidelity/governance only. Read the complete frozen corpus and fail if any SHA-256 differs: research-initial-definitions.md=35c6a90e5d7d6083d6235b6591ba5286c3515243226752dfc906d1bf69461d49, research.md=004dd3ddcebaa1a94498393abfd76a8173f85412e9acf399da5b4fc1e890dfef, findings.md=7fff28019eb7d399138d02dd334e817e57458561257a21ab3eb0944c83988b6a. Attack every target for claim-greater-than-proof, binding-versus-scheduling collapse, YAML/SQLite authority ambiguity, shadow/main runtime conflation, draft-as-live promotion, and violations of repository or selected-skill governance. Do not edit files. Return candidate findings only with a target quotation, governing counterevidence, severity and one-line fix. If zero findings, document each failed attack. Return only to parent."
+        }
+      ]
+    },
+    {
+      "group_id": "review_synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "agent_name": "Fowler, Martin",
+          "initial_prompt": "You are the sole review synthesizer and Coverage-section owner. The target corpus is frozen at the three paths/digests declared in this dispatch. Do not begin synthesis until parent sends one ATTACK_BATCH containing all three independent attacker returns; do not request or reveal one return early. Deduplicate candidates, verify quotations against target bytes, and write only docs/features/agents-communication-infra/research/runtime-v2-migration-inventory/review/review.md using the canonical review shape: Coverage, one section per target artifact with quoted evidence/severity/fix and KEEP/FIX verdict, then ordered Change requests. Persist no attacker transcript. Send parent the draft path/digest and a compact candidate-finding index, then wait for one complete VERIFIER_BATCH. On objections, revise the same review.md, drop refuted findings rather than soften them, send the new digest and wait for REVERIFY_BATCH; at verifier PASS or round ceiling, report final digest and finish. Use apply_patch for the document and edit no other file."
+        }
+      ]
+    },
+    {
+      "group_id": "review_verifiers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "You are verifier 1; verify mechanics, quotations and ownership. Wait until parent sends REVIEW_DRAFT with one exact review.md path/digest and the same frozen target digests. Refute every false positive against literal target bytes and executable owner evidence; never invent new attack findings. Return a finding-by-finding PASS or REFUTE plus material objections, then wait for REVISED_REVIEW if objections existed. Reverify only the revised digest, return terminal PASS or REMEDIATE, and finish. Do not edit or persist any file and do not read the other verifier's return."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Meadows, Donella H.",
+          "initial_prompt": "You are verifier 2; verify governance, severity and definition soundness. Wait until parent sends REVIEW_DRAFT with one exact review.md path/digest and the same frozen target digests. Refute findings that lack a literal target quotation, overstate governing evidence, duplicate another finding, misuse severity, or collapse binding/scheduling, audit/runtime, profile/DAG or recovery/replay. Return a finding-by-finding PASS or REFUTE plus material objections, then wait for REVISED_REVIEW if objections existed. Reverify only the revised digest, return terminal PASS or REMEDIATE, and finish. Do not edit or persist any file and do not read the other verifier's return."
+        }
+      ]
+    },
+    {
+      "group_id": "dedicated_approval",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "agent_name": "Randell, Brian",
+          "initial_prompt": "You are the dedicated final approver and perform no attack, synthesis, remediation or coverage work. Wait for parent to send APPROVAL_BUNDLE containing final review.md path/digest, frozen target digests, both terminal verifier verdicts, loop count and coverage statement. Check only that the artifact matches its digest, every surviving finding quotes a target and has severity/fix, refuted findings are absent, Coverage accounts for all three lenses and targets, zero-findings handling ran, and verifier residue is honestly represented. Return APPROVE or REJECT with the smallest concrete reason. Do not edit files."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "inventory_attackers",
+      "to": "review_synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "review_synthesizer",
+      "to": "review_verifiers",
+      "type": "zig-zag",
+      "loop_cap": 2
+    },
+    {
+      "from": "review_verifiers",
+      "to": "dedicated_approval",
+      "type": "sequential"
+    }
+  ]
+}

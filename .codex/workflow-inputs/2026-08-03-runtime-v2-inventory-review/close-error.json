@@ -1,0 +1,15 @@
+{
+  "close_of": "2026-08-03-runtime-v2-inventory-review",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 6,
+    "tree": {
+      "explorer": 3,
+      "writer": 1,
+      "skeptic": 2,
+      "auditor": 0,
+      "helpers": 0
+    },
+    "loops_used": 1
+  }
+}
