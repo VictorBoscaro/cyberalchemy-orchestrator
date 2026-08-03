@@ -1,81 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 595 690" width="595" height="690" role="img" aria-labelledby="diagram-title diagram-desc">
   <title id="diagram-title">Objective decomposition</title>
-  <desc id="diagram-desc">A restrained vertical path runs from a global objective through local objectives, a possible route, detailed work, a task, an output or effect, and evidence. Dotted lines indicate feedback and related context.</desc>
+  <desc id="diagram-desc">A global objective branches into three local objectives. The selected local objective leads through a possible route and detailed work to a task. The task branches independently to an output or effect and to evidence of task completion. The output or effect may inform other related contexts, while evidence may inform review of the objective.</desc>
 
   <defs>
     <marker id="arrow" viewBox="0 0 6 6" refX="5.4" refY="3" markerWidth="5" markerHeight="5" orient="auto">
       <path d="M0 0L6 3L0 6Z" fill="#8d796c"/>
     </marker>
-    <marker id="dot-arrow" viewBox="0 0 6 6" refX="5.4" refY="3" markerWidth="5" markerHeight="5" markerUnits="userSpaceOnUse" orient="auto">
+    <marker id="accent-arrow" viewBox="0 0 6 6" refX="5.4" refY="3" markerWidth="5" markerHeight="5" orient="auto">
       <path d="M0 0L6 3L0 6Z" fill="#a63c25"/>
-    </marker>
-    <marker id="feedback-dot" viewBox="0 0 4 4" refX="2" refY="2" markerWidth="4" markerHeight="4" markerUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.15" fill="#a63c25"/>
     </marker>
   </defs>
 
   <rect width="595" height="690" fill="#f4e9db"/>
 
-  <!-- A quiet orientation axis preserves the broader-to-local reading. -->
-  <g fill="#8d796c" opacity="0.26">
-    <path d="M38 636V58" fill="none" stroke="#8d796c" stroke-width="1"/>
-    <path d="M38 52L34.5 59H41.5Z"/>
-    <circle cx="38" cy="636" r="1.8"/>
-    <text x="48" y="58" font-family="Arial, sans-serif" font-size="7.5" font-weight="700">BROADER CONTEXT</text>
-    <text x="48" y="639" font-family="Arial, sans-serif" font-size="7.5" font-weight="700">LOCAL WORK AND EVIDENCE</text>
+  <!-- The orientation axis preserves the broader-to-local reading. -->
+  <g fill="#8d796c" opacity="0.32">
+    <path d="M32 632V54" fill="none" stroke="#8d796c" stroke-width="1"/>
+    <path d="M32 48L28.5 55H35.5Z"/>
+    <circle cx="32" cy="632" r="1.8"/>
+    <text x="42" y="53" font-family="Arial, sans-serif" font-size="7.5" font-weight="700">BROADER CONTEXT</text>
+    <text x="42" y="635" font-family="Arial, sans-serif" font-size="7.5" font-weight="700">LOCAL WORK AND EVIDENCE</text>
   </g>
 
-  <!-- Load-bearing decomposition path. -->
-  <g fill="none" stroke="#8d796c" stroke-width="1.1" marker-end="url(#arrow)">
-    <path d="M280 88V114"/>
-    <path d="M280 158V184"/>
-    <path d="M280 228V254"/>
-    <path d="M280 298V324"/>
-    <path d="M280 368V394"/>
-    <path d="M280 438V464"/>
-  </g>
+  <!-- Global objective and its local composition. -->
+  <rect x="183" y="34" width="229" height="52" rx="26" fill="#f2dccb" stroke="#a63c25" stroke-width="1.4"/>
+  <text x="297.5" y="66" text-anchor="middle" fill="#211b17" font-family="Georgia, serif" font-size="15" font-weight="700">GLOBAL OBJECTIVE</text>
 
-  <g font-family="Arial, sans-serif" fill="#211b17">
-    <rect x="202" y="48" width="156" height="40" rx="4" fill="#f2dccb" stroke="#a63c25" stroke-width="1.2"/>
-    <text x="280" y="72" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="700">GLOBAL OBJECTIVE</text>
+  <path d="M297.5 86V108M123 108H472M123 108V132M297.5 108V132M472 108V132" fill="none" stroke="#8d796c" stroke-width="1.1"/>
 
-    <rect x="200" y="114" width="160" height="44" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="1"/>
-    <text x="280" y="140" text-anchor="middle" font-family="Georgia, serif" font-size="11.5" font-weight="700">LOCAL OBJECTIVES</text>
+  <rect x="48" y="132" width="150" height="60" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="1"/>
+  <text x="123" y="157" text-anchor="middle" fill="#211b17" font-family="Georgia, serif" font-size="10.5" font-weight="700">LOCAL OBJECTIVE A</text>
+  <text x="123" y="178" text-anchor="middle" fill="#786d66" font-family="Arial, sans-serif" font-size="8.5">one part of the whole</text>
 
-    <rect x="205" y="184" width="150" height="44" rx="4" fill="#fbf3e7" stroke="#a63c25" stroke-width="1.1"/>
-    <text x="280" y="210" text-anchor="middle" font-family="Georgia, serif" font-size="11.5" font-weight="700">POSSIBLE ROUTE</text>
+  <rect x="222.5" y="132" width="150" height="60" rx="4" fill="#28201b" stroke="#28201b" stroke-width="1.2"/>
+  <text x="297.5" y="157" text-anchor="middle" fill="#fff8ed" font-family="Georgia, serif" font-size="10.5" font-weight="700">LOCAL OBJECTIVE B</text>
+  <text x="297.5" y="178" text-anchor="middle" fill="#eadfd5" font-family="Arial, sans-serif" font-size="8.5">the part being developed</text>
 
-    <rect x="210" y="254" width="140" height="44" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="1"/>
-    <text x="280" y="280" text-anchor="middle" font-family="Georgia, serif" font-size="11.5" font-weight="700">DETAILED WORK</text>
+  <rect x="397" y="132" width="150" height="60" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="1"/>
+  <text x="472" y="157" text-anchor="middle" fill="#211b17" font-family="Georgia, serif" font-size="10.5" font-weight="700">LOCAL OBJECTIVE C</text>
+  <text x="472" y="178" text-anchor="middle" fill="#786d66" font-family="Arial, sans-serif" font-size="8.5">another part of the whole</text>
 
-    <rect x="225" y="324" width="110" height="44" rx="4" fill="#28201b" stroke="#28201b" stroke-width="1"/>
-    <text x="280" y="351" text-anchor="middle" font-family="Georgia, serif" font-size="11.5" font-weight="700" fill="#fff8ed">TASK</text>
+  <!-- The selected local objective remains one possible route, not a mandatory lifecycle. -->
+  <path d="M297.5 192V220" fill="none" stroke="#a63c25" stroke-width="1.4" marker-end="url(#accent-arrow)"/>
+  <rect x="212.5" y="220" width="170" height="48" rx="4" fill="#f2dccb" stroke="#a63c25" stroke-width="1.3"/>
+  <text x="297.5" y="249" text-anchor="middle" fill="#211b17" font-family="Georgia, serif" font-size="11.5" font-weight="700">POSSIBLE ROUTE</text>
 
-    <rect x="200" y="394" width="160" height="44" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="1"/>
-    <text x="280" y="420" text-anchor="middle" font-family="Georgia, serif" font-size="11.5" font-weight="700">OUTPUT OR EFFECT</text>
+  <path d="M297.5 268V296" fill="none" stroke="#8d796c" stroke-width="1.1" marker-end="url(#arrow)"/>
+  <rect x="217.5" y="296" width="160" height="48" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="1"/>
+  <text x="297.5" y="325" text-anchor="middle" fill="#211b17" font-family="Georgia, serif" font-size="11.5" font-weight="700">DETAILED WORK</text>
 
-    <rect x="220" y="464" width="120" height="44" rx="4" fill="#f2dccb" stroke="#a63c25" stroke-width="1.1"/>
-    <text x="280" y="491" text-anchor="middle" font-family="Georgia, serif" font-size="11.5" font-weight="700">EVIDENCE</text>
-  </g>
+  <path d="M297.5 344V372" fill="none" stroke="#8d796c" stroke-width="1.1" marker-end="url(#arrow)"/>
+  <rect x="237.5" y="372" width="120" height="48" rx="4" fill="#28201b" stroke="#28201b" stroke-width="1.1"/>
+  <text x="297.5" y="401" text-anchor="middle" fill="#fff8ed" font-family="Georgia, serif" font-size="12" font-weight="700">TASK</text>
 
-  <!-- Evidence may revise the objective. -->
-  <g fill="#a63c25" opacity="0.48">
-    <circle cx="340" cy="486" r="1.2"/><circle cx="365" cy="484" r="1.2"/><circle cx="389" cy="475" r="1.2"/>
-    <circle cx="410" cy="459" r="1.2"/><circle cx="428" cy="437" r="1.2"/><circle cx="443" cy="411" r="1.2"/>
-    <circle cx="455" cy="381" r="1.2"/><circle cx="463" cy="348" r="1.2"/><circle cx="468" cy="314" r="1.2"/>
-    <circle cx="469" cy="280" r="1.2"/><circle cx="466" cy="246" r="1.2"/><circle cx="460" cy="213" r="1.2"/>
-    <circle cx="450" cy="181" r="1.2"/><circle cx="437" cy="151" r="1.2"/><circle cx="421" cy="124" r="1.2"/>
-    <circle cx="402" cy="101" r="1.2"/><circle cx="382" cy="82" r="1.2"/>
-    <path d="M370 68L377 66L375 73Z"/>
-  </g>
+  <!-- A task can have a result and completion evidence independently. -->
+  <path d="M297.5 420V448M176 448H419M176 448V476M419 448V476" fill="none" stroke="#8d796c" stroke-width="1.1"/>
+  <path d="M176 468V476M419 468V476" fill="none" stroke="#8d796c" stroke-width="1.1" marker-end="url(#arrow)"/>
 
-  <!-- An output can participate in adjacent contexts without joining the main spine. -->
-  <g fill="#a63c25" opacity="0.4">
-    <circle cx="362" cy="416" r="1.2"/><circle cx="377" cy="416" r="1.2"/><circle cx="392" cy="416" r="1.2"/><circle cx="407" cy="416" r="1.2"/>
-    <path d="M420 416L414 413L414 419Z"/>
-  </g>
-  <rect x="420" y="400" width="122" height="32" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="0.8" opacity="0.62"/>
-  <text x="481" y="414" text-anchor="middle" fill="#786d66" opacity="0.78" font-family="Arial, sans-serif" font-size="7.5" font-weight="700">OTHER RELATED</text>
-  <text x="481" y="425" text-anchor="middle" fill="#786d66" opacity="0.78" font-family="Arial, sans-serif" font-size="7.5" font-weight="700">CONTEXTS</text>
+  <rect x="83" y="476" width="186" height="68" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="1"/>
+  <text x="176" y="504" text-anchor="middle" fill="#211b17" font-family="Georgia, serif" font-size="11.5" font-weight="700">OUTPUT OR EFFECT</text>
+  <text x="176" y="528" text-anchor="middle" fill="#786d66" font-family="Arial, sans-serif" font-size="8.5">what was produced or changed</text>
+
+  <rect x="326" y="476" width="186" height="68" rx="4" fill="#f2dccb" stroke="#a63c25" stroke-width="1.2"/>
+  <text x="419" y="504" text-anchor="middle" fill="#211b17" font-family="Georgia, serif" font-size="11.5" font-weight="700">EVIDENCE</text>
+  <text x="419" y="528" text-anchor="middle" fill="#786d66" font-family="Arial, sans-serif" font-size="8.5">task completion</text>
+
+  <!-- The result may become useful context for later work. -->
+  <path d="M176 544V574" fill="none" stroke="#bd6a50" stroke-width="1.2" stroke-dasharray="2 6" marker-end="url(#accent-arrow)"/>
+  <rect x="83" y="574" width="186" height="50" rx="4" fill="#fbf3e7" stroke="#8d796c" stroke-width="0.9"/>
+  <text x="176" y="595" text-anchor="middle" fill="#a63c25" font-family="Arial, sans-serif" font-size="8.5" font-weight="700">OTHER RELATED CONTEXTS</text>
+  <text x="176" y="613" text-anchor="middle" fill="#786d66" font-family="Arial, sans-serif" font-size="8">may use the result later</text>
+
+  <!-- Completion evidence may inform review without proving objective achievement. -->
+  <path d="M512 510C600 360 610 120 414 60" fill="none" stroke="#bd6a50" stroke-width="1.2" marker-end="url(#accent-arrow)"/>
+  <text x="542" y="313" text-anchor="end" fill="#a63c25" font-family="Arial, sans-serif" font-size="8.5" font-weight="700">MAY INFORM REVIEW</text>
 </svg>
