@@ -19,6 +19,52 @@ Canonical definition: [Label — DEF-SYS-001](system-primitives/DEFINITIONS.md#d
 
 Canonical definition: [Tag — DEF-SYS-002](system-primitives/DEFINITIONS.md#def-sys-002).
 
+## Subagent Work Infrastructure
+
+Concepts that define the topology, authority, confirmation, and execution boundaries of governed
+subagent work.
+
+<a id="def-swi-001"></a>
+
+### Workflow Graph
+
+Canonical definition:
+[Workflow Graph — DEF-SWI-001](subagent-work-infrastructure/DEFINITIONS.md#def-swi-001).
+
+<a id="def-swi-002"></a>
+
+### Agent Node
+
+Canonical definition:
+[Agent Node — DEF-SWI-002](subagent-work-infrastructure/DEFINITIONS.md#def-swi-002).
+
+<a id="def-swi-003"></a>
+
+### Typed Relation
+
+Canonical definition:
+[Typed Relation — DEF-SWI-003](subagent-work-infrastructure/DEFINITIONS.md#def-swi-003).
+
+<a id="def-swi-004"></a>
+
+### Dispatch
+
+Canonical definition:
+[Dispatch — DEF-SWI-004](subagent-work-infrastructure/DEFINITIONS.md#def-swi-004).
+
+<a id="def-swi-005"></a>
+
+### Confirmation View
+
+Canonical definition:
+[Confirmation View — DEF-SWI-005](subagent-work-infrastructure/DEFINITIONS.md#def-swi-005).
+
+<a id="def-swi-006"></a>
+
+### Run
+
+Canonical definition: [Run — DEF-SWI-006](subagent-work-infrastructure/DEFINITIONS.md#def-swi-006).
+
 ## Category Theory Parallels
 
 Category-theoretic parallels used to reason about the orchestrator.
