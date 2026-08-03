@@ -34,8 +34,8 @@ executes a task perfectly and still does the wrong work.
 across several AI agents, every hand-off is logged to an append-only ledger, and a small local
 dashboard lets you watch it live. It is the stratum where a warrant condition is *machine-refused*
 rather than requested — though see [How a dispatch flows](#how-a-dispatch-flows) for how much the
-refusal actually covers: schema validity is refused on both write paths, the anti-bias gate only for
-`n ≥ 2` fan-out groups on the confirm-gated one.
+refusal actually covers: schema validity is refused on both write paths; the optional anti-bias
+overlay is enforced only when the user enables it on the confirm-gated path.
 
 **Why the dispatch layer looks the way it does.** Agents on one base model may agree too readily and
 share blind spots, so N of them "could be closer to one look repeated than to N independent looks" —
@@ -52,8 +52,8 @@ with its collapse-test and its known weaknesses, is in
 
 | Objective | Edge | Standing today |
 |---|---|---|
-| Governed dispatch — ledger, strict appender, `check-tension`, mandatory Agent hook | **enforces** | **built**, with a hole: `EG-1` at `veracity: medium` after the enum drift; what exactly that blocks is contested (see [Open questions](#open-questions)) |
-| Decision hygiene (`HYP-ORCH-NOISE`) | **substantiates** | **partly built** — the anti-bias gate runs; independence, aggregation, frame-dispersion and fork-guard are PENDING |
+| Governed dispatch — ledger, strict appender, optional entry anti-bias, mandatory Agent hook | **enforces** | **built**, with a hole: `EG-1` at `veracity: medium` after the enum drift; what exactly that blocks is contested (see [Open questions](#open-questions)) |
+| Decision hygiene (`HYP-ORCH-NOISE`) | **substantiates** | **partly built** — the entry can opt into pairwise anti-bias evidence; independence, aggregation, frame-dispersion and fork-guard remain PENDING |
 | Category-theoretic typing (`OBL-E3`) | **types** | **open**, and narrow: nothing typed in Lean here; the claim may survive only on the sequential fragment |
 | Definitions, ontology, meta-ontology (`BL-1`, `BL-3`) | **grounds** | **proposal-only / parked** — the ledger's own type system is `OQ-5`, undecided |
 | Macro-to-micro work context and authority | **scopes** | **proposal-only** — and `D9` (who owns authority) is CRITICAL with no gate in the repo |
@@ -83,7 +83,9 @@ category-theoretic types. That is deliberately **not** the entry point; see
   from [`telemetry/agents/agent-pool.yaml`](telemetry/agents/agent-pool.yaml) (414 tagged entries);
   `npm run smoke` needs no API key.
 - The **operational skills** in [`.claude/skills/`](.claude/skills/) — `register-dispatch`,
-  `check-tension`, `robot-talks`, `domainspec-subagents-strategy` — invokable in Claude Code today.
+  `robot-talks`, and the `domainspec-subagents-strategy` entry — invokable in Claude Code today.
+  The entry defaults `anti_bias_mode` to `disabled`; it enables and collects pairwise evidence only
+  when the user explicitly opts in.
 - The **mandatory Agent hooks**: [`.claude/settings.json`](.claude/settings.json) wraps every
   `Agent` tool call, opening a dispatch through the validated appender and **denying launch** if the
   YAML or ACI opening receipt fails. See [How a dispatch flows](#how-a-dispatch-flows) — this is a
@@ -110,7 +112,7 @@ category-theoretic types. That is deliberately **not** the entry point; see
   and the architecture derived from what the record must do
   ([`essays/target-architecture-hypothesis/`](plans/governed-agent-work-infrastructure/essays/target-architecture-hypothesis/essay.md)).
   Both `proposal-only`; their load-bearing decisions are named, not decided.
-- The **decision-science loop** (anti-bias runs; anti-noise mostly on paper) —
+- The **decision-science loop** (anti-bias is available as an entry opt-in; anti-noise is mostly on paper) —
   [`vault/hypothesis/anti-noise-orchestration.md`](vault/hypothesis/anti-noise-orchestration.md).
 - The **category-theory typing** of the orchestration language — one open obligation decides it:
   [`OBLIGATIONS.md`](OBLIGATIONS.md) (OBL-E3). **Nothing in this repo is typed in Lean**; the anchors
@@ -162,8 +164,8 @@ vocab checks never need a key.
 
 **Two paths write the ledger.** The confirm-gated path below is the designed one. The mandatory
 `PreToolUse(Agent)` hook is the other: it opens a dispatch automatically on *every* `Agent` tool
-call, through the same validated appender and the same ledger file, with **no separate human confirm
-and no anti-bias gate** — it either authorizes the launch or denies it. Any row you see may have
+call, through the same validated appender and the same ledger file, with **no separate human confirm**
+— it either authorizes the launch or denies it. Any row you see may have
 come from either path.
 
 In both paths the opening row is appended **before** any agent starts; if the append fails, nothing
@@ -171,9 +173,9 @@ runs. Closing appends a second row — the opening is never mutated.
 
 ```mermaid
 flowchart TD
-    A["1. Propose — strategist fills the sheet<br/>goal · context · groups · typed connections"] --> B{"2. check-tension<br/>anti-bias gate (only for fan-out groups, n≥2)"}
-    B -- "fails / evaluators disagree" --> A
-    B -- "both PASS" --> P["Pending sheet<br/>telemetry/agents/pending/&lt;id&gt;.json<br/>(the only editable surface, pre-confirm)"]
+    A["1. Propose — entry fills the sheet<br/>goal · context · groups · typed connections"] --> B{"2. User opted into anti-bias?"}
+    B -- "no (default)" --> P["Pending sheet<br/>telemetry/agents/pending/&lt;id&gt;.json<br/>(the only editable surface, pre-confirm)"]
+    B -- "yes: entry records complete pairwise evidence" --> P
     P --> C["3. Human confirm — explicit; silence doesn't count"]
     C --> W["4. Validated appender writes the opening row"]
     H["Agent tool call<br/>(mandatory hook — no confirm, no gate)"] --> W
@@ -186,7 +188,7 @@ flowchart TD
     P -. "read live" .-> UI
 ```
 
-The appender is strict (it refuses any row outside schema `v0.6.1`) while the control plane's reader
+The appender is strict (the current contract is schema `v0.6.3`) while the control plane's reader
 is lenient (it still shows older rows the appender would now reject). A hook blocks reading the
 ledger via direct Bash; structured reads go through `server/ledger.py`. Field-by-field anatomy of a
 row lives in [`register-dispatch`](.claude/skills/register-dispatch/SKILL.md); the API contract in

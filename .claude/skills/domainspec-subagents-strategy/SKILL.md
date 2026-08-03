@@ -61,7 +61,7 @@ opening record materializes exactly one of:
 
 The mode is opt-in. Never enable it from agent count, work type, topology, a capability default, or
 an earlier dispatch. The user may change the mode until the concrete opening record is frozen; a
-later change creates a new record revision and invalidates any prior validation receipt.
+later change creates a new record revision that must be validated again as a whole.
 
 With `disabled`, add no anti-bias fields or checks. Continue with the selected capability's ordinary
 roles, topology, lenses, and evidence contract.
@@ -71,38 +71,23 @@ With `enabled`, apply this overlay to every group containing at least two agents
 - set the group's `anti_bias` to one declared axis: `methodology`, `source-corpus`,
   `attack-vector`, `temporal-prior`, or an explicitly named composite;
 - set every agent's `angle` to its concrete position on that axis;
-- record, for every unordered pair, the predicted disagreement question, both predicted positions,
-  and the evidence supporting the prediction;
+- add `anti_bias_pairs` with exactly one item for every unordered agent pair, using zero-based agent
+  indices and the closed shape shown below;
 - set `anti_bias_global` when at least two groups contain at least two agents.
 
-Then run two independent, read-only checkers in parallel against the same canonical record revision
-and digest. Each checker applies all four tests to every affected group:
-
-1. **Axis:** the declared axis is in the closed vocabulary above or is an explicit composite.
-2. **Clone:** no pair shares the same core angle.
-3. **Spread:** the group does not collapse onto one methodology, corpus, or attack gate.
-4. **Evidence:** every pair has a concrete predicted disagreement and supporting evidence.
-
-Both checkers must independently return `PASS`. Any failure, disagreement, missing field, or record
-change returns the record to this skill for revision, recanonicalization, and two fresh checks. The
-checkers are gate infrastructure: they are not ledger dispatches, write no deliverable, and are not
-recursively checked. Store their result in `entry_validation_receipt` with exactly this closed
-shape:
+Each pair item is exactly:
 
 ```json
-{
-  "schema": "entry-validation-receipt/v1",
-  "subject_digest": "sha256:<64 lowercase hex>",
-  "checks": [
-    {"checker_id": "<non-empty id>", "verdict": "PASS"},
-    {"checker_id": "<different non-empty id>", "verdict": "PASS"}
-  ]
-}
+{"left_index": 0, "right_index": 1, "question": "<non-empty>", "left_position": "<exact left angle>", "right_position": "<exact right angle>", "evidence": "<non-empty>"}
 ```
 
-Compute `subject_digest` as SHA-256 over the canonical JSON bytes of the complete opening record
-after removing `entry_validation_receipt` and `project_dir`. Do not add receipt fields, accept a
-non-`PASS` verdict, reuse a checker ID, or hash a different projection.
+The appender validates the structure of the complete opening record deterministically: every fan-out group must have
+distinct non-empty angles and exactly `n*(n-1)/2` unique pairs covering every `left_index <
+right_index`; positions must equal the referenced agent angles; question and evidence must be
+non-empty; singleton groups carry no overlay fields. With `disabled`, `anti_bias`, `angle`,
+`anti_bias_pairs`, and `anti_bias_global` are forbidden. Do not add a validation receipt: the record
+itself carries the declared pairwise basis. This is structural validation only: it does not prove
+that the declared evidence is true, sufficient, or semantically independent.
 
 Build the base concrete opening record by applying the selected capability exactly as written; do
 not reinterpret its type-specific semantics here. Materialize the mode, apply the overlay when
@@ -117,7 +102,7 @@ Pass to `subagents-dispatch-lifecycle`:
 - selected capability;
 - the complete route receipt returned by the resolver;
 - the concrete opening record with explicit `anti_bias_mode`;
-- when enabled, the entry-owned validation receipt bound to that record's digest.
+- when enabled, the complete pairwise matrix embedded in each fan-out group.
 
 Then stop acting as lifecycle or type owner. If the lifecycle needs to change the concrete record,
 it must return the revised record here before confirmation so the entry-owned overlay can be applied

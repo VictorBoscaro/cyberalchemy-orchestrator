@@ -8,8 +8,8 @@ description: Implement one bounded code task from accepted DomainSpec feature do
 Use the linked DomainSpec implementation package rather than inventing a local workflow:
 
 1. Read `domainspec/.agents/skills/domainspec-implement/SKILL.md` completely.
-2. Read `domainspec/.claude/skills/domainspec-implementation-axioms/SKILL.md` completely and enforce
-   AX-DS-1 through AX-DS-4.
+2. When the attached DomainSpec package provides its implementation-axioms capability, read it
+   completely and enforce AX-DS-1 through AX-DS-4; otherwise stop on the missing dependency.
 3. Require planner preflight and `WORK-PACK.md` PASS before feature or implementation mutation.
 4. Build the task context/scaffold from accepted feature specs and `TEST-SPEC.md`.
 5. For brownfield code, obtain independent alignment and layering verdicts before edits. The

@@ -80,7 +80,7 @@ class ReferenceDeliveryFixture:
         self.prompt = "Consume the governed reference bundle."
         self.opening = {
             "dispatch_id": self.dispatch_id,
-            "schema_version": "0.6.2",
+            "schema_version": "0.6.3",
             "dispatch_type": "review",
             "goal": "Exercise target-agent reference delivery.",
             "context": "Bounded local contract fixture.",

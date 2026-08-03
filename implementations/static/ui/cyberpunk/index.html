@@ -570,7 +570,9 @@ function renderAgent(a){
     + '</div>';
 }
 
-function renderGroups(groups){
+function renderGroups(groups, opts){
+  opts = opts || {};
+  var antiBiasMode = opts.anti_bias_mode === "enabled" || opts.anti_bias_mode === "disabled" ? opts.anti_bias_mode : "historical";
   if(!groups || !groups.length){
     return '<div class="prose" style="box-shadow:inset 2px 0 0 var(--mag)">'
       + 'No <b>groups</b> in this row &mdash; format prior to v0.5.2. The agent topology was not recorded.'
@@ -591,8 +593,9 @@ function renderGroups(groups){
         + '<span class="grp-n">'+esc(meta.join("  ·  "))+'</span>'
       + '</div>'
       + '<div class="grp-bias"><span class="label">group anti-bias</span>'
-        + (has(g.anti_bias) ? esc(g.anti_bias) : '<span style="color:var(--ink-faint)">not declared — no tension axis in this group</span>')
+        + (has(g.anti_bias) ? esc(g.anti_bias) : '<span style="color:var(--ink-faint)">'+(antiBiasMode === "disabled" ? "anti-bias disabled" : "not recorded for this historical group")+'</span>')
       + '</div>'
+      + (antiBiasMode === "enabled" ? '<div class="grp-bias" data-pairwise-status="'+((g.anti_bias_pairs||[]).length === (ags.length < 2 ? 0 : ags.length*(ags.length-1)/2) ? "complete" : "incomplete")+'"><span class="label">pairwise evidence</span>'+(g.anti_bias_pairs||[]).length+'/'+(ags.length < 2 ? 0 : ags.length*(ags.length-1)/2)+' pairs</div>' : '')
       + '<div class="agents">' + (ags.length ? ags.map(renderAgent).join("") :
           '<div class="agent"><div class="agent-noangle">no agents listed</div></div>') + '</div>'
       + '</div>';
@@ -626,6 +629,7 @@ function renderBody(d){
   function cell(l,v){ cells.push('<div class="cell"><span class="label">'+l+'</span><span class="v">'+esc(txt(v))+'</span></div>'); }
   cell("type", d.dispatch_type);
   cell("schema", d.schema_version);
+  cell("anti-bias mode", d.anti_bias_mode || "historical");
   cell("created", has(d.created)?fmtDate(d.created):null);
   cell("invoked by", d.invoked_by);
   cell("max loops", (d.max_loops===null||d.max_loops===undefined)?null:d.max_loops);
@@ -638,10 +642,10 @@ function renderBody(d){
     html += '<div class="block"><span class="label">Context</span><div class="prose">'+esc(d.context)+'</div></div>';
   }
   html += '<div class="block"><div class="axis"><span class="label">Global tension axis (anti_bias_global)</span>'
-    + (has(d.anti_bias_global) ? esc(d.anti_bias_global) : '<span style="color:var(--ink-dim)">not declared in this row</span>')
+    + (has(d.anti_bias_global) ? esc(d.anti_bias_global) : '<span style="color:var(--ink-dim)">'+(d.anti_bias_mode==="enabled"?'required field missing':(d.anti_bias_mode==="disabled"?'disabled':'historical row'))+'</span>')
     + '</div></div>';
 
-  html += '<div class="block"><span class="label">Groups &amp; agents &mdash; angle against anti-bias</span>'+renderGroups(d.groups)+'</div>';
+  html += '<div class="block"><span class="label">Groups &amp; agents &mdash; angle against anti-bias</span>'+renderGroups(d.groups, {anti_bias_mode:d.anti_bias_mode})+'</div>';
   html += '<div class="block"><span class="label">Connections</span>'+renderConns(d.connections)+'</div>';
 
   if(d._prompts_truncated){
@@ -699,6 +703,7 @@ function renderPending(){
   host.innerHTML = items.map(function(it, i){
     var p = it.p || {};
     var s = p.sheet || {};
+    var antiBiasMode = s.anti_bias_mode === "enabled" || s.anti_bias_mode === "disabled" ? s.anti_bias_mode : "historical";
     var key = "P:"+it.repo+":"+(p._file||i);
     var open = openCards[key] !== false; /* pending start open */
     var errBox = has(p._error)
@@ -710,7 +715,7 @@ function renderPending(){
         + (s._example ? 'Sheet note — marked as example' : 'Sheet note') + '</span>'
         + esc(s._note) + '</div>' : "";
 
-    return '<article class="pcard" data-testid="pending-card" data-sheet-file="'+esc(p._file)+'">'
+    return '<article class="pcard" data-testid="pending-card" data-sheet-file="'+esc(p._file)+'" data-anti-bias-mode="'+esc(antiBiasMode)+'">'
       + '<div class="in">'
       + '<div class="hazard thin"></div>'
       + '<div class="pcard-body">'
@@ -743,7 +748,7 @@ function renderPending(){
               dispatch_type:s.dispatch_type, schema_version:s.schema_version, created:s.created,
               invoked_by:s.invoked_by, max_loops:s.max_loops, final_approver:s.final_approver,
               working_folder:s.working_folder, _agent_count:p._agent_count,
-              anti_bias_global:s.anti_bias_global, groups:s.groups, connections:s.connections
+              anti_bias_mode:antiBiasMode, anti_bias_global:s.anti_bias_global, groups:s.groups, connections:s.connections
             })
         + '</details>'
       + '</div></div></article>';

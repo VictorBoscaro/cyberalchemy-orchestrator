@@ -1,0 +1,30 @@
+{
+  "dispatch_id": "2026-08-03-anti-bias-enabled-fixture",
+  "schema_version": "0.6.2",
+  "dispatch_type": "review",
+  "goal": "Prove enabled anti-bias receipt enforcement.",
+  "context": "Golden v0.6.2 enabled fixture.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "enabled",
+  "output_mode": "inline",
+  "invoked_by": "fixture@example.invalid",
+  "groups": [
+    {
+      "group_id": "reviewers",
+      "anti_bias": "constructive versus adversarial",
+      "agents": [
+        {"role": "auditor", "model": "fixture-model", "token_budget": 1000, "initial_prompt": "Review constructively.", "angle": "constructive"},
+        {"role": "skeptic", "model": "fixture-model", "token_budget": 1000, "initial_prompt": "Review adversarially.", "angle": "adversarial"}
+      ]
+    }
+  ],
+  "entry_validation_receipt": {
+    "schema": "entry-validation-receipt/v1",
+    "subject_digest": "sha256:3d6db0b57a15c92a15fe069b4e6452f2206ae7d445957fe106fbc0283f277c23",
+    "checks": [
+      {"checker_id": "entry-check-a", "verdict": "PASS"},
+      {"checker_id": "entry-check-b", "verdict": "PASS"}
+    ]
+  }
+}

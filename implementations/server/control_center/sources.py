@@ -33,11 +33,11 @@ class SkillGraphSource:
         data = json.loads(raw.decode("utf-8-sig"))
         nodes = list(data.get("nodes") or [])
         edges = list(data.get("edges") or [])
-        if len(nodes) != 70 or len(edges) != 262:
-            raise ValueError("skill graph fixture violates the frozen 70/262 contract")
+        if len(nodes) != 72 or len(edges) != 261:
+            raise ValueError("skill graph fixture violates the frozen 72/261 contract")
         explicit = sum(edge.get("relation") == "explicit_path" for edge in edges)
         named = sum(edge.get("relation") == "named_reference" for edge in edges)
-        if (explicit, named) != (15, 247):
+        if (explicit, named) != (7, 254):
             raise ValueError("skill graph relation counts violate the frozen contract")
         fixture_digest = hashlib.sha256(raw).hexdigest()
         warnings: list[str] = []

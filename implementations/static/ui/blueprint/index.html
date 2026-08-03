@@ -443,7 +443,9 @@ function connChips(connections){
 }
 
 /* ============ groups and agents ============ */
-function renderGroups(groups){
+function renderGroups(groups, opts){
+  opts = opts || {};
+  var antiBiasMode = opts.anti_bias_mode === "enabled" || opts.anti_bias_mode === "disabled" ? opts.anti_bias_mode : "historical";
   var gs = arr(groups);
   if(!gs.length) return '<div class="note" style="padding:6px 0">No group declared in this row.</div>';
   return '<div class="groups">' + gs.map(function(g){
@@ -456,7 +458,11 @@ function renderGroups(groups){
       '</div>';
     var anti = '<div class="tension" style="margin:9px 11px 0">'+
       '<div class="lbl">Group anti-bias &mdash; tension axis</div>'+
-      '<div class="ax">'+(has(g.anti_bias)? esc(g.anti_bias) : '<span style="color:var(--cy-dim)">not declared for this group</span>')+'</div></div>';
+      '<div class="ax">'+(has(g.anti_bias)? esc(g.anti_bias) : '<span style="color:var(--cy-dim)">'+(antiBiasMode === "disabled" ? "anti-bias disabled" : "not recorded for this historical group")+'</span>')+'</div></div>';
+    if(antiBiasMode === "enabled"){
+      var expectedPairs = agents.length < 2 ? 0 : agents.length * (agents.length - 1) / 2;
+      anti += '<div class="note" data-pairwise-status="'+(arr(g.anti_bias_pairs).length === expectedPairs ? "complete" : "incomplete")+'">pairwise evidence '+arr(g.anti_bias_pairs).length+'/'+expectedPairs+' pairs</div>';
+    }
     var body = agents.length ? '<div class="agents">'+agents.map(renderAgent).join("")+'</div>'
                              : '<div class="note" style="padding:8px 11px">Group with no agents listed.</div>';
     return '<div class="group">'+head+anti+body+'</div>';
@@ -487,6 +493,7 @@ function renderAgent(a){
 function renderPending(p, repoName){
   p = p || {};
   var sh = p.sheet || {};
+  var antiBiasMode = sh.anti_bias_mode === "enabled" || sh.anti_bias_mode === "disabled" ? sh.anti_bias_mode : "historical";
   var live = (p._live !== undefined) ? !!p._live : !!LIVE_TYPES[sh.dispatch_type];
   var agentCount = has(p._agent_count) ? p._agent_count
       : arr(sh.groups).reduce(function(t,g){ return t + arr(g.agents).length; }, 0);
@@ -509,7 +516,7 @@ function renderPending(p, repoName){
   var noteHtml = has(sh._note)
     ? '<div class="note" style="border-left:1px solid rgba(255,225,168,.5);padding-left:10px;color:#ffe1a8">Handwritten note: '+esc(sh._note)+'</div>' : "";
 
-  return '<article class="pending-card" data-testid="pending-card" data-dispatch-id="'+esc(sh.dispatch_id||p._file||"")+'">'+
+  return '<article class="pending-card" data-testid="pending-card" data-dispatch-id="'+esc(sh.dispatch_id||p._file||"")+'" data-anti-bias-mode="'+esc(antiBiasMode)+'">'+
     '<div class="pc-top">'+
       '<span class="lbl">Part</span>'+
       '<span class="pc-id">'+esc(has(sh.dispatch_id)? sh.dispatch_id : (p._file||"(no id)"))+'</span>'+
@@ -530,7 +537,7 @@ function renderPending(p, repoName){
           buildDiagram(sh.groups, sh.connections, "p")+'</div>'+
       '</div>'+
       '<div><div class="lbl" style="margin-bottom:6px">Groups &amp; agents &mdash; role · model · budget · angle</div>'+
-        renderGroups(sh.groups)+'</div>'+
+        '<div class="tag">anti-bias: '+esc(antiBiasMode)+'</div>'+renderGroups(sh.groups, {anti_bias_mode:antiBiasMode})+'</div>'+
     '</div>'+
     '<div class="pc-actions">'+
       '<button type="button" data-testid="dispatch-button" disabled title="confirm dispatch in Phase 2">Dispatch &mdash; Phase 2</button>'+
@@ -591,6 +598,7 @@ function renderDispatch(d, repoName){
       field("created", fmtDate(d.created))+
       field("invoked by", d.invoked_by)+
       field("schema", d.schema_version)+
+      field("anti-bias mode", d.anti_bias_mode || "historical")+
       field("max_loops", d.max_loops)+
       field("final approver", d.final_approver)+
       field("repo", repoName)+
@@ -600,9 +608,9 @@ function renderDispatch(d, repoName){
     parts.push(block("Objective", d.goal));
     parts.push(block("Context", d.context));
     parts.push('<div class="tension"><div class="lbl">Global anti-bias &mdash; tension axis</div><div class="ax">'+
-      (has(d.anti_bias_global)? esc(d.anti_bias_global) : '<span style="color:var(--cy-dim)">not declared</span>')+'</div></div>');
+      (has(d.anti_bias_global)? esc(d.anti_bias_global) : '<span style="color:var(--cy-dim)">'+(d.anti_bias_mode==="enabled"?'required field missing':(d.anti_bias_mode==="disabled"?'disabled':'historical row'))+'</span>')+'</div></div>');
     parts.push('<div><div class="lbl" style="margin-bottom:6px">Connection diagram</div>'+buildDiagram(d.groups, d.connections, key)+'</div>');
-    parts.push('<div><div class="lbl" style="margin-bottom:6px">Groups &amp; agents</div>'+renderGroups(d.groups)+'</div>');
+    parts.push('<div><div class="lbl" style="margin-bottom:6px">Groups &amp; agents</div>'+renderGroups(d.groups, {anti_bias_mode:d.anti_bias_mode})+'</div>');
 
     if(close){
       var tree = (close.agents_spawned && close.agents_spawned.tree) || {};

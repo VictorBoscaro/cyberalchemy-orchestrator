@@ -1408,10 +1408,12 @@
 
   function pendingCard(p) {
     var sheet = obj(p.sheet);
+    var antiBiasMode = sheet.anti_bias_mode === "enabled" || sheet.anti_bias_mode === "disabled" ? sheet.anti_bias_mode : "historical";
     var repoName = p._repo || "(repo?)";
     var card = el("article", "pending-card");
     card.setAttribute("data-testid", "pending-card");
     card.setAttribute("data-confirmed", p._confirmed ? "1" : "0");
+    card.setAttribute("data-anti-bias-mode", antiBiasMode);
 
     var top = el("div", "pending-top");
     var left = el("div");
@@ -1433,6 +1435,7 @@
     tags.appendChild(pill(liveP ? "LIVE" : "RESERVED", liveP ? "ok" : "reserved"));
     var ac = p._agent_count != null ? p._agent_count : countAgentsOf(sheet);
     tags.appendChild(pill(ac + (ac === 1 ? " agent" : " agents"), "ghost"));
+    tags.appendChild(pill("anti-bias: " + antiBiasMode, "ghost"));
     var gs = arr(sheet.groups);
     if (gs.length) tags.appendChild(pill(gs.length + (gs.length === 1 ? " group" : " groups"), "ghost"));
     if (sheet._example) tags.appendChild(pill("demo fixture", "warn"));
@@ -1541,7 +1544,7 @@
     det.appendChild(sm);
     var body = el("div");
     body.style.marginTop = "10px";
-    arr(sheet.groups).forEach(function (g) { body.appendChild(groupBlock(obj(g))); });
+    arr(sheet.groups).forEach(function (g) { body.appendChild(groupBlock(obj(g), antiBiasMode)); });
     var conns = arr(sheet.connections);
     if (conns.length) {
       body.appendChild(el("div", "block-label", "Connections (" + conns.length + ")"));
@@ -2007,6 +2010,7 @@
     pair("Max loops", d.max_loops);
     pair("Final approver", d.final_approver);
     pair("Schema", d.schema_version);
+    pair("Anti-bias mode", d.anti_bias_mode || "historical");
     pair("Output mode", d.output_mode);
     pair("Parent dispatch", d.parent_dispatch_id);
     if (kv.childNodes.length) hero.appendChild(kv);
@@ -2020,8 +2024,9 @@
     /* anti-bias */
     var ax = el("section", "axis-hero" + (d.anti_bias_global ? "" : " none"));
     ax.appendChild(el("div", "lbl", "global anti-bias — the axis on which the agents are opposed"));
-    ax.appendChild(el("div", "txt", d.anti_bias_global ||
-      "This row does not declare anti_bias_global. Without a registered global axis, tension only exists (if at all) within each group."));
+    ax.appendChild(el("div", "txt", d.anti_bias_global || (d.anti_bias_mode === "enabled"
+      ? "Required anti_bias_global is missing."
+      : (d.anti_bias_mode === "disabled" ? "Anti-bias is disabled for this dispatch." : "Historical row: anti-bias mode was not recorded."))));
     wrap.appendChild(ax);
 
     /* topology */
@@ -2512,7 +2517,8 @@
   }
 
   /* ---------- detailed groups ---------- */
-  function groupBlock(g) {
+  function groupBlock(g, mode) {
+    var antiBiasMode = mode === "enabled" || mode === "disabled" ? mode : "historical";
     var wrap = el("div", "group");
     var head = el("div", "group-head");
     head.appendChild(el("span", "gid", g.group_id || "(group without id)"));
@@ -2529,9 +2535,15 @@
       bias.appendChild(document.createTextNode(g.anti_bias));
     } else {
       bias.style.color = "var(--text-3)";
-      bias.textContent = "no anti_bias declared in this group";
+      bias.textContent = antiBiasMode === "disabled" ? "anti-bias disabled" : "no anti_bias recorded for this historical group";
     }
     wrap.appendChild(bias);
+    if (antiBiasMode === "enabled") {
+      var expectedPairs = agents.length < 2 ? 0 : agents.length * (agents.length - 1) / 2;
+      var pairwise = el("div", "group-bias", "pairwise evidence " + arr(g.anti_bias_pairs).length + "/" + expectedPairs + " pairs");
+      pairwise.setAttribute("data-pairwise-status", arr(g.anti_bias_pairs).length === expectedPairs ? "complete" : "incomplete");
+      wrap.appendChild(pairwise);
+    }
 
     agents.forEach(function (a, i) { wrap.appendChild(agentRow(obj(a), i)); });
     if (!agents.length) {

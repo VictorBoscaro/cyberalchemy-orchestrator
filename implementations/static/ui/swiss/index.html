@@ -452,7 +452,8 @@ function agentHtml(a, fullPrompt){
     angle+pr+'</div>';
 }
 
-function groupsHtml(groups, fullGroups){
+function groupsHtml(groups, fullGroups, mode){
+  var antiBiasMode = mode === "enabled" || mode === "disabled" ? mode : "historical";
   groups = arr(groups);
   if(!groups.length) return '';
   return groups.map(function(g,gi){
@@ -470,8 +471,9 @@ function groupsHtml(groups, fullGroups){
       '<div class="g-bias">'+
         (has(g.anti_bias)
           ? '<span class="lbl red">tension axis</span> '+esc(g.anti_bias)
-          : '<span class="lbl">no tension axis declared</span>')+
+          : '<span class="lbl">'+(antiBiasMode === "disabled" ? "anti-bias disabled" : "no tension axis recorded for this historical group")+'</span>')+
       '</div>'+
+      (antiBiasMode === "enabled" ? '<div class="g-bias" data-pairwise-status="'+(arr(g.anti_bias_pairs).length === (ag.length < 2 ? 0 : ag.length*(ag.length-1)/2) ? "complete" : "incomplete")+'"><span class="lbl red">pairwise evidence</span> '+arr(g.anti_bias_pairs).length+'/'+(ag.length < 2 ? 0 : ag.length*(ag.length-1)/2)+' pairs</div>' : '')+
       '<div class="agents">'+ag.map(function(a,ai){
         var fp = fg && arr(fg.agents)[ai] ? arr(fg.agents)[ai].initial_prompt : null;
         return agentHtml(a, fp);
@@ -506,16 +508,18 @@ function pendingHtml(){
   } else {
     body = '<div class="sec-body">'+items.map(function(it){
       var p = it.p, sh = p.sheet || {};
+      var antiBiasMode = sh.anti_bias_mode === "enabled" || sh.anti_bias_mode === "disabled" ? sh.anti_bias_mode : "historical";
       var live = has(sh.dispatch_type) ? !!LIVE_TYPES[sh.dispatch_type] : !!p._live;
       var mt = p._mtime ? new Date(Number(p._mtime)*1000) : null;
       var mtS = mt ? (("0"+mt.getDate()).slice(-2)+"."+("0"+(mt.getMonth()+1)).slice(-2)+"."+String(mt.getFullYear()).slice(2)+" "+("0"+mt.getHours()).slice(-2)+":"+("0"+mt.getMinutes()).slice(-2)) : "—";
       var ac = has(p._agent_count) ? p._agent_count : arr(sh.groups).reduce(function(s,g){return s+arr(g.agents).length;},0);
 
-      return '<div class="pend" data-testid="pending-card">'+
+      return '<div class="pend" data-testid="pending-card" data-anti-bias-mode="'+esc(antiBiasMode)+'">'+
         '<div class="grid pend-head">'+
           '<div class="kicker">'+
             '<span class="lbl red">proposal · '+esc(it.repo)+'</span>'+
             '<span class="lbl">'+(live?'live':'reserved')+' · '+esc(txt(sh.dispatch_type))+'</span>'+
+            '<span class="lbl">anti-bias · '+esc(antiBiasMode)+'</span>'+
             '<span class="lbl">'+esc(txt(sh.dispatch_id))+'</span>'+
             (p._error ? '<span class="lbl red">failed to read: '+esc(p._error)+'</span>' : '')+
             (sh._example ? '<span class="lbl">demo fixture</span>' : '')+
@@ -551,7 +555,7 @@ function pendingHtml(){
           '</div>'+
           '<div class="pend-groups">'+
             '<span class="lbl">groups, agents and tension axes</span>'+
-            '<div style="margin-top:16px">'+groupsHtml(sh.groups)+'</div>'+
+            '<div style="margin-top:16px">'+groupsHtml(sh.groups, null, antiBiasMode)+'</div>'+
             '<div style="margin-top:26px;max-width:58em"><span class="lbl">connections</span>'+connsHtml(sh.connections)+'</div>'+
           '</div>'+
         '</div>'+
@@ -667,14 +671,14 @@ function detailHtml(repoName, d, k){
 
   var mid = '<div class="d-mid">'+
     '<div class="field"><span class="lbl red">global anti-bias</span>'+
-      '<p'+(has(d.anti_bias_global)?'':' class="dim"')+'>'+esc(txt(d.anti_bias_global,'not declared'))+'</p></div>'+
+      '<p'+(has(d.anti_bias_global)?'':' class="dim"')+'>'+esc(txt(d.anti_bias_global,d.anti_bias_mode==="enabled"?'required field missing':(d.anti_bias_mode==="disabled"?'disabled':'historical row')))+'</p></div>'+
     '<div class="field"><span class="lbl">connections</span>'+connsHtml(d.connections)+'</div>'+
   '</div>';
 
   var right = '<div class="d-right">'+
     '<div class="field"><span class="lbl">record</span>'+
       '<p class="dim tnum" style="line-height:1.75;font-size:12px">'+
-        'schema '+esc(txt(d.schema_version))+'<br>'+
+        'schema '+esc(txt(d.schema_version))+'<br>anti-bias mode '+esc(d.anti_bias_mode||'historical')+'<br>'+
         'max_loops '+esc(txt(d.max_loops))+' · approver '+esc(txt(d.final_approver))+'<br>'+
         esc(txt(d.working_folder))+'<br>'+
         esc(txt(d.invoked_by))+'<br>'+

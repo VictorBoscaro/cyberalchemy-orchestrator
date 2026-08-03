@@ -1,0 +1,33 @@
+{
+  "dispatch_id": "2026-08-03-anti-bias-v063-enabled-fixture",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Prove enabled anti-bias pairwise evidence enforcement in v0.6.3.",
+  "context": "Golden v0.6.3 enabled fixture.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "enabled",
+  "anti_bias_global": "constructive versus adversarial review",
+  "output_mode": "inline",
+  "invoked_by": "fixture@example.invalid",
+  "groups": [
+    {
+      "group_id": "reviewers",
+      "anti_bias": "constructive versus adversarial",
+      "anti_bias_pairs": [
+        {
+          "left_index": 0,
+          "right_index": 1,
+          "question": "Which review posture best exposes material defects?",
+          "left_position": "constructive",
+          "right_position": "adversarial",
+          "evidence": "Each reviewer must cite the inspected artifact and observed behavior."
+        }
+      ],
+      "agents": [
+        {"role": "auditor", "model": "fixture-model", "token_budget": 1000, "initial_prompt": "Review constructively.", "angle": "constructive"},
+        {"role": "skeptic", "model": "fixture-model", "token_budget": 1000, "initial_prompt": "Review adversarially.", "angle": "adversarial"}
+      ]
+    }
+  ]
+}

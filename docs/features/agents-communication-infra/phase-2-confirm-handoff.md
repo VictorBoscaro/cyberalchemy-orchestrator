@@ -4,7 +4,7 @@ title: "Phase 2 — the confirm handoff (control plane → orchestrator)"
 status: draft
 authority: candidate
 created: 2026-07-21
-last_updated: 2026-07-21
+last_updated: 2026-08-03
 ---
 
 # Phase 2 — the confirm handoff (control plane → orchestrator)
@@ -44,9 +44,10 @@ When a Claude session is acting as orchestrator, the confirm marker is its trigg
 seeing a new `<sheet>.json.confirmed`:
 
 1. Read the sheet it names (`pending/<sheet>.json`).
-2. Run the existing chain — **check-tension** gate → **register-dispatch** (the validated
-   appender writes the dispatch row) → spawn the agent groups → **close** (append the
-   close row).
+2. Run the existing chain — the `domainspec-subagents-strategy` entry preserves the user's
+   explicit `anti_bias_mode` choice, then **register-dispatch** validates and writes the dispatch
+   row, the orchestrator spawns the agent groups, and **close** appends the close row. The default
+   is `disabled`; `enabled` is accepted only with complete pairwise evidence produced at entry.
 3. **Consume the queue entry:** once the dispatch is registered (it now lives in the
    ledger, the durable record), delete the pending sheet **and** its `.confirmed` marker
    so the pending dir stays a queue of *not-yet-dispatched* work. Registration in the

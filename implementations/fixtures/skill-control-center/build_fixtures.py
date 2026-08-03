@@ -67,10 +67,10 @@ def skill_fixture() -> dict[str, Any]:
         nodes=source["nodes"],
         edges=source["edges"],
         expected_counts={
-            "nodes": 70,
-            "edges": 262,
-            "explicit_path": 15,
-            "named_reference": 247,
+            "nodes": 72,
+            "edges": 261,
+            "explicit_path": 7,
+            "named_reference": 254,
         },
         owner="@VictorBoscaro",
         state_cases=[

@@ -436,7 +436,7 @@
            '</div>';
   }
 
-  function groupBlock(g){
+  function groupBlock(g, antiBiasMode){
     var agents = arr(g.agents);
     var flags = "";
     if(g.robot_talks) flags += '<span class="tag red">robot talks</span>';
@@ -449,7 +449,8 @@
       '</div>' +
       (g.anti_bias
         ? '<div class="antibias"><span class="lbl">Tension axis · group anti-bias</span>' + esc(g.anti_bias) + '</div>'
-        : '<div class="antibias mut"><span class="lbl">Tension axis · group anti-bias</span>not declared</div>') +
+        : '<div class="antibias mut"><span class="lbl">Tension axis · group anti-bias</span>' + (antiBiasMode === "disabled" ? "anti-bias disabled" : "not recorded for this historical group") + '</div>') +
+      (antiBiasMode === "enabled" ? '<div class="antibias mut" data-pairwise-status="' + (arr(g.anti_bias_pairs).length === (agents.length < 2 ? 0 : agents.length*(agents.length-1)/2) ? "complete" : "incomplete") + '">pairwise evidence ' + arr(g.anti_bias_pairs).length + '/' + (agents.length < 2 ? 0 : agents.length*(agents.length-1)/2) + ' pairs</div>' : '') +
       '<div class="agents">' + (agents.length ? agents.map(agentBlock).join("") : '<div class="agent mut">no agents</div>') + '</div>' +
     '</div>';
   }
@@ -475,6 +476,7 @@
 
   function sheetBody(sheet, agentCount, live){
     var groups = arr(sheet.groups);
+    var antiBiasMode = sheet.anti_bias_mode === "enabled" || sheet.anti_bias_mode === "disabled" ? sheet.anti_bias_mode : "historical";
     return '<div class="pc-body">' +
       '<div class="pc-col">' +
         '<span class="lbl">Goal</span>' +
@@ -485,6 +487,7 @@
       '</div>' +
       '<div class="pc-col">' +
         '<div class="field"><span class="lbl">Type</span>' + esc(txt(sheet.dispatch_type)) + ' · ' + (live ? "LIVE" : "RESERVED") + '</div>' +
+        '<div class="field"><span class="lbl">Anti-bias mode</span>' + esc(antiBiasMode) + '</div>' +
         '<div class="field"><span class="lbl">Agents</span><span class="num" style="font-size:38px">' + esc(txt(agentCount, groups.length)) + '</span></div>' +
         '<div class="field"><span class="lbl">Max loops</span>' + esc(txt(sheet.max_loops)) + '</div>' +
         '<div class="field"><span class="lbl">Final approver</span>' + esc(txt(sheet.final_approver)) + '</div>' +
@@ -493,7 +496,7 @@
       '</div>' +
     '</div>' +
     '<div style="padding:0 20px 18px">' +
-      (groups.length ? groups.map(groupBlock).join("") : '<div class="group"><div class="antibias mut">sheet with no declared groups</div></div>') +
+      (groups.length ? groups.map(function(g){ return groupBlock(g, antiBiasMode); }).join("") : '<div class="group"><div class="antibias mut">sheet with no declared groups</div></div>') +
       connBlock(sheet.connections) +
     '</div>';
   }
@@ -516,11 +519,12 @@
     host.innerHTML = items.map(function(it, i){
       var p = it.p;
       var sheet = p.sheet || {};
+      var antiBiasMode = sheet.anti_bias_mode === "enabled" || sheet.anti_bias_mode === "disabled" ? sheet.anti_bias_mode : "historical";
       var live = (typeof p._live === "boolean") ? p._live : !!LIVE_TYPES[sheet.dispatch_type];
       var err = p._error
         ? '<div class="repo-err">Error reading sheet: ' + esc(p._error) + '</div>'
         : "";
-      return '<div class="pending-card" data-testid="pending-card">' +
+      return '<div class="pending-card" data-testid="pending-card" data-anti-bias-mode="' + esc(antiBiasMode) + '">' +
         err +
         '<div class="pc-top">' +
           '<span class="tag red tilt">pending</span>' +
@@ -617,6 +621,7 @@
     out += '<div class="kv">' +
       '<span><b>type</b> ' + esc(txt(d.dispatch_type)) + '</span>' +
       '<span><b>schema</b> ' + esc(txt(d.schema_version)) + '</span>' +
+      '<span><b>anti-bias mode</b> ' + esc(d.anti_bias_mode || "historical") + '</span>' +
       '<span><b>created</b> ' + esc(shortDate(d.created)) + '</span>' +
       '<span><b>by</b> ' + esc(txt(d.invoked_by)) + '</span>' +
       '<span><b>max loops</b> ' + esc(txt(d.max_loops)) + '</span>' +
@@ -627,7 +632,7 @@
     out += '<div class="field"><span class="lbl">Goal</span>' + esc(txt(d.goal)) + '</div>';
     if(d.context) out += '<div class="field"><span class="lbl">Context</span>' + esc(d.context) + '</div>';
     out += '<div class="field"><span class="lbl">Global anti-bias</span>' +
-      (d.anti_bias_global ? esc(d.anti_bias_global) : '<span class="mut">not declared</span>') + '</div>';
+      (d.anti_bias_global ? esc(d.anti_bias_global) : '<span class="mut">' + (d.anti_bias_mode === "enabled" ? "required field missing" : (d.anti_bias_mode === "disabled" ? "disabled" : "historical row")) + '</span>') + '</div>';
 
     if(d._orphan_close){
       out += '<div class="field"><span class="lbl" style="color:#ff2200">Orphan close</span>' +

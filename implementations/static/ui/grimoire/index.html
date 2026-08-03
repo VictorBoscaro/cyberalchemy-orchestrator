@@ -412,7 +412,7 @@ function connectionsBlock(conns){
 }
 
 /* ═══ Group + agents ═══ */
-function groupBlock(g, withPrompts){
+function groupBlock(g, withPrompts, antiBiasMode){
   if(!g) return null;
   var box = el("div","group");
   var h = el("h4");
@@ -429,7 +429,13 @@ function groupBlock(g, withPrompts){
 
   var t = tensionBlock("Group tension axis — anti_bias", g.anti_bias, false);
   if(t) box.appendChild(t);
-  else box.appendChild(el("div","meta","no anti_bias declared in this group"));
+  else box.appendChild(el("div","meta",antiBiasMode === "disabled" ? "anti-bias disabled" : "no anti_bias recorded for this historical group"));
+  if(antiBiasMode === "enabled"){
+    var expectedPairs = agents.length < 2 ? 0 : agents.length * (agents.length - 1) / 2;
+    var ps = el("div","meta","pairwise evidence " + (g.anti_bias_pairs || []).length + "/" + expectedPairs + " pairs");
+    ps.setAttribute("data-pairwise-status", (g.anti_bias_pairs || []).length === expectedPairs ? "complete" : "incomplete");
+    box.appendChild(ps);
+  }
 
   if(agents.length){
     var tab = el("table","agents");
@@ -484,8 +490,10 @@ function groupBlock(g, withPrompts){
 /* ═══ Pending seal ═══ */
 function pendingCard(p, repoName){
   var sheet = (p && p.sheet) || {};
+  var antiBiasMode = sheet.anti_bias_mode === "enabled" || sheet.anti_bias_mode === "disabled" ? sheet.anti_bias_mode : "historical";
   var card = el("article","pending-card");
   card.setAttribute("data-testid","pending-card");
+  card.setAttribute("data-anti-bias-mode",antiBiasMode);
 
   var seal = el("div","seal");
   add(seal, el("div","s-glyph","⚗"), el("div","s-text","awaits seal"));
@@ -506,7 +514,8 @@ function pendingCard(p, repoName){
     mark("", "type: " + txt(sheet.dispatch_type,"not declared")),
     mark("", (p._agent_count !== undefined && p._agent_count !== null ? p._agent_count : countAgents(sheet)) + " agents"),
     mark("", "max loops: " + txt(sheet.max_loops)),
-    mark("", "approver: " + txt(sheet.final_approver))
+    mark("", "approver: " + txt(sheet.final_approver)),
+    mark("", "anti-bias: " + antiBiasMode)
   );
   if(sheet._example) add(marks, mark("legacy","demonstration fixture"));
   card.appendChild(marks);
@@ -528,7 +537,7 @@ function pendingCard(p, repoName){
   add(gate, btn, el("span","note","Phase 1 is read-only — confirm dispatches in Phase 2. The seal cannot yet be sealed."));
   card.appendChild(gate);
 
-  (sheet.groups || []).forEach(function(g){ card.appendChild(groupBlock(g, "open")); });
+  (sheet.groups || []).forEach(function(g){ card.appendChild(groupBlock(g, "open", antiBiasMode)); });
   var cb = connectionsBlock(sheet.connections);
   if(cb) card.appendChild(cb);
 
@@ -597,7 +606,7 @@ function dispatchCard(d){
       var kv = el("div","kv");
       [["Invoked by", d.invoked_by],["Schema", d.schema_version],["Max loops", d.max_loops],
        ["Final approver", d.final_approver],["Folder", d.working_folder],["Parent dispatch", d.parent_dispatch_id],
-       ["Output mode", d.output_mode]].forEach(function(pair){
+       ["Output mode", d.output_mode],["Anti-bias mode", d.anti_bias_mode || "historical"]].forEach(function(pair){
         if(pair[1] === undefined || pair[1] === null || pair[1] === "") return;
         var s = el("span"); s.appendChild(el("b",null,pair[0]+": ")); s.appendChild(document.createTextNode(String(pair[1])));
         kv.appendChild(s);

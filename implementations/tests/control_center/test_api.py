@@ -85,7 +85,7 @@ class ControlCenterAPITest(unittest.TestCase):
         response = self.client.get(
             "/v1/control-center/topology/skill-relations",
             params=self.params(
-                focus_id="anti-bias-vector-composition",
+                focus_id="research",
                 direction="outbound",
                 depth=1,
                 edge_kinds="explicit_path",
@@ -107,8 +107,8 @@ class ControlCenterAPITest(unittest.TestCase):
     def test_path_query_is_read_only_and_deterministic(self):
         payload = self.params(
             model="skill-relations",
-            source_id="anti-bias-vector-composition",
-            target_id="check-tension",
+            source_id="research",
+            target_id="subagents-dispatch-lifecycle",
             direction="outbound",
             allowed_edge_kinds=["explicit_path"],
             max_depth=2,
@@ -208,7 +208,7 @@ class ControlCenterAPITest(unittest.TestCase):
         body = self.client.get(
             "/v1/control-center/topology/skill-relations",
             params=self.params(
-                focus_id="anti-bias-vector-composition",
+                focus_id="research",
                 direction="both",
                 depth=1,
                 node_limit=1,
@@ -217,7 +217,7 @@ class ControlCenterAPITest(unittest.TestCase):
         ).json()
         self.assertEqual(
             [node["id"] for node in body["data"]["nodes"]],
-            ["anti-bias-vector-composition"],
+            ["research"],
         )
         self.assertEqual(body["data"]["query_state"], "truncated")
 

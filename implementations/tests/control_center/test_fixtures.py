@@ -23,13 +23,13 @@ class FixtureContractTest(unittest.TestCase):
             self.assertEqual(fixture["fixture_id"], row["fixture_id"])
             loaded[row["fixture_id"]] = fixture
         skill = loaded["FX-SKILL-TOPOLOGY-v1"]
-        self.assertEqual(len(skill["nodes"]), 70)
-        self.assertEqual(len(skill["edges"]), 262)
+        self.assertEqual(len(skill["nodes"]), 72)
+        self.assertEqual(len(skill["edges"]), 261)
         self.assertEqual(
-            sum(edge["relation"] == "explicit_path" for edge in skill["edges"]), 15
+            sum(edge["relation"] == "explicit_path" for edge in skill["edges"]), 7
         )
         self.assertEqual(
-            sum(edge["relation"] == "named_reference" for edge in skill["edges"]), 247
+            sum(edge["relation"] == "named_reference" for edge in skill["edges"]), 254
         )
         self.assertEqual(len(loaded["FX-DISPATCH-CATALOG-v1"]["rows"]), 700)
         expected_states = {

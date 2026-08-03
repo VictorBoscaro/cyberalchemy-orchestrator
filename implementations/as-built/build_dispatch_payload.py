@@ -205,13 +205,12 @@ connections.extend(
 
 dispatch_record = {
     "dispatch_id": DISPATCH_ID,
-    "schema_version": "0.6.2",
+    "schema_version": "0.6.1",
     "dispatch_type": "others",
     "goal": "Produce a code-first AS-BUILT of the current agent-work harness, separating what exists, what is proven, what runs in real hosts, what is authorized, what is official, and what can be reconstructed.",
     "context": "The repository contains a dispatch reader, governed runtime, provenance runtime, Control Center, host hooks, and an experimental shadow runtime whose documentation and implementation status have drifted. Seven tensioned worker/reviewer pairs investigate end-to-end trust properties, then one synthesizer writes implementations/AS-BUILT.md from their evidence. The user explicitly authorized dispatch without another confirmation on 2026-07-31.",
     "max_loops": 1,
     "final_approver": "parent",
-    "anti_bias_mode": "enabled",
     "meta": True,
     "anti_bias_global": "constructive capability reconstruction versus adversarial claim-boundary falsification across end-to-end harness concerns",
     "working_folder": "implementations/as-built",

@@ -1,0 +1,78 @@
+{
+  "schema": "aci.swu-002-golden-manifest/v2",
+  "current_contract_version": "0.6.3",
+  "frozen_baseline": {
+    "path": "SWU-ACI-002-GOLDEN-MANIFEST.json",
+    "size_bytes": 1516,
+    "sha256": "sha256:1d7707d66c5183b76dddbf711cb54e6c9150d1ff47a4e06b1b929008e27dff8e",
+    "frozen_by": "../../reviews/2026-07-23-stage-a-freeze/artifact-manifest.json"
+  },
+  "fixtures": [
+    {
+      "kind": "historical-opening-appender-input",
+      "path": "golden-opening-input-v0.6.2-disabled.json",
+      "size_bytes": 682,
+      "sha256": "sha256:670ebea12b527f713f3517faad3a057eaf139ae2ad13596bcf4d9f0639d9cad2",
+      "appender_contract_version": "0.6.2",
+      "anti_bias_mode": "disabled"
+    },
+    {
+      "kind": "historical-opening-appender-input",
+      "path": "golden-opening-input-v0.6.2-enabled.json",
+      "size_bytes": 1119,
+      "sha256": "sha256:f73d9e3578236867f44f7e8b5a205b58591d34dd3945ef35863955a5f3221cab",
+      "appender_contract_version": "0.6.2",
+      "anti_bias_mode": "enabled"
+    },
+    {
+      "kind": "historical-opening-ledger-bytes",
+      "path": "golden-opening-v0.6.2-disabled.yaml",
+      "size_bytes": 652,
+      "sha256": "sha256:e48794db8cc100c6f15c75c310c12d6c9b5e52e50a9e772e3b9f928267c41fcb",
+      "dispatch_id": "2026-08-03-anti-bias-disabled-fixture",
+      "appender_contract_version": "0.6.2"
+    },
+    {
+      "kind": "historical-opening-ledger-bytes",
+      "path": "golden-opening-v0.6.2-enabled.yaml",
+      "size_bytes": 1030,
+      "sha256": "sha256:69ab15d4a8eabb47bb5ed61006a5d606099b8c9718ca60b44c58fef9f39de1fd",
+      "dispatch_id": "2026-08-03-anti-bias-enabled-fixture",
+      "appender_contract_version": "0.6.2"
+    },
+    {
+      "kind": "accepted-opening-appender-input",
+      "path": "golden-opening-input-v0.6.3-disabled.json",
+      "size_bytes": 697,
+      "sha256": "sha256:dbde83cc1d4a1e5ead200a0f016e3831b3af9f36371acf65ccba4e82b89ba40f",
+      "appender_contract_version": "0.6.3",
+      "anti_bias_mode": "disabled",
+      "appender_exit_code": 0
+    },
+    {
+      "kind": "accepted-opening-appender-input",
+      "path": "golden-opening-input-v0.6.3-enabled.json",
+      "size_bytes": 1260,
+      "sha256": "sha256:8a27b966dc32a62876f31adb7b496d1f074c8f7cda0fbe87b9a62ce181d51b14",
+      "appender_contract_version": "0.6.3",
+      "anti_bias_mode": "enabled",
+      "appender_exit_code": 0
+    },
+    {
+      "kind": "exact-opening-ledger-bytes",
+      "path": "golden-opening-v0.6.3-disabled.yaml",
+      "size_bytes": 667,
+      "sha256": "sha256:6633fed99d9d3f55e8e7c1e3aec378b7a3ea853bad7dfe2087899bae0b3a92d9",
+      "dispatch_id": "2026-08-03-anti-bias-v063-disabled-fixture",
+      "appender_contract_version": "0.6.3"
+    },
+    {
+      "kind": "exact-opening-ledger-bytes",
+      "path": "golden-opening-v0.6.3-enabled.yaml",
+      "size_bytes": 1112,
+      "sha256": "sha256:3f919572bd1e12ec0ed8e8eb94a05876326cf9b156efdda83eec9c443a5dd999",
+      "dispatch_id": "2026-08-03-anti-bias-v063-enabled-fixture",
+      "appender_contract_version": "0.6.3"
+    }
+  ]
+}

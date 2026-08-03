@@ -62,13 +62,16 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
 
 ### A dispatch
 
-The current writer emits schema `0.6.2`. The reader remains deliberately
-compatible with historical `0.6.0` and `0.6.1` rows and does not rewrite ledger data.
+The current writer emits schema `0.6.3`. The reader remains deliberately
+compatible with historical `0.6.0`, `0.6.1`, and `0.6.2` rows and does not rewrite ledger data.
+The current golden coverage is bound by
+[`SWU-ACI-002-GOLDEN-MANIFEST-v0.6.3.json`](../docs/features/agents-communication-infra/adrs/fixtures/SWU-ACI-002-GOLDEN-MANIFEST-v0.6.3.json);
+the unversioned manifest remains the immutable Stage-A baseline.
 
 ```jsonc
 {
   "dispatch_id": "2026-06-12-residue-precedent-sweep",
-  "schema_version": "0.6.2",
+  "schema_version": "0.6.3",
   "created": "2026-06-12T18:00:00.000Z",
   "invoked_by": "victorboscaro@gmail.com",
   "dispatch_type": "review",          // research|code|review|plan|suggestion|experiment
@@ -76,7 +79,7 @@ compatible with historical `0.6.0` and `0.6.1` rows and does not rewrite ledger 
   "context": "…",
   "max_loops": 1,
   "final_approver": "parent",
-  "anti_bias_mode": "enabled",       // enabled|disabled; required since 0.6.2
+  "anti_bias_mode": "enabled",       // enabled|disabled; required since 0.6.2, opt-in at entry
   "anti_bias_global": "novelty optimism vs precedent skepticism",
   "working_folder": "research/…/",
   "output_mode": "persisted",         // review only: inline|persisted
@@ -85,6 +88,9 @@ compatible with historical `0.6.0` and `0.6.1` rows and does not rewrite ledger 
       "group_id": "explorers",
       "n": 2,
       "anti_bias": "source corpus (formal literature vs practice blogs)",
+      "anti_bias_pairs": [
+        {"left_index": 0, "right_index": 1, "question": "Which corpus should carry decision weight?", "left_position": "formal literature", "right_position": "practice evidence", "evidence": "Both positions must cite inspected sources."}
+      ],                                // required and complete only when enabled (schema 0.6.3)
       "robot_talks": false,            // optional
       "layers": 1,                     // optional
       "agents": [
@@ -252,15 +258,16 @@ In order of importance — the UI exists for the **human gate**:
 1. **Pending sheets first, with strong emphasis.** This is the proposal
    awaiting confirmation: the most important object on the screen. If there are zero,
    say so explicitly instead of leaving it empty.
-2. **"Dispatch" button on each pending sheet — `disabled`**, with the label
-   making clear it's Phase 2 (e.g., title "confirmar dispara na Fase 2").
-   It marks the gate's place; it doesn't work yet.
+2. **"Dispatch" button on each pending sheet.** The `linear` UI wires confirmation;
+   other variants keep it disabled and label that limitation explicitly.
 3. **Open vs closed.** A dispatch with no close row is alive. When closing,
    show the `exit_reason` (`resolved` is good; `error` and
    `dissent_irreconcilable` deserve an alert color).
 4. **Anti-bias mode, groups and agents**: show `anti_bias_mode` explicitly. When
-   enabled, show each agent's **`angle`** against the group's **`anti_bias`**;
-   when disabled, do not report missing tension fields as an error.
+   enabled, show each agent's **`angle`** against the group's **`anti_bias`** and the
+   completeness of **`anti_bias_pairs`**; when disabled, do not report missing tension
+   fields as an error. A missing mode is displayed only as `historical`, never as an
+   alias for an explicit `disabled` value.
 5. **`connections` as typed edges**: `sequential`, `zig-zag`, `feedback`
    need to be visually distinct; show `loop_cap` when present.
 6. **LIVE vs RESERVED.** `research`, `code`, `review`, and `experiment` are LIVE.

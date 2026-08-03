@@ -1,0 +1,21 @@
+{
+  "dispatch_id": "2026-08-03-anti-bias-disabled-fixture",
+  "schema_version": "0.6.2",
+  "dispatch_type": "review",
+  "goal": "Prove disabled anti-bias fan-out acceptance.",
+  "context": "Golden v0.6.2 disabled fixture.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "output_mode": "inline",
+  "invoked_by": "fixture@example.invalid",
+  "groups": [
+    {
+      "group_id": "reviewers",
+      "agents": [
+        {"role": "auditor", "model": "fixture-model", "token_budget": 1000, "initial_prompt": "Review one."},
+        {"role": "skeptic", "model": "fixture-model", "token_budget": 1000, "initial_prompt": "Review two."}
+      ]
+    }
+  ]
+}

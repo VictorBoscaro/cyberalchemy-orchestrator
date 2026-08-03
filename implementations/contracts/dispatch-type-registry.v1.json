@@ -1,6 +1,6 @@
 {
   "schema": "aci-dispatch-type-registry/v1",
-  "ledger_schema_version": "0.6.2",
+  "ledger_schema_version": "0.6.3",
   "types": [
     {
       "id": "research",

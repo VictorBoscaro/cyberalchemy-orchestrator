@@ -710,7 +710,7 @@ function agentHtml(a) {
          name + meta + angle + prompt + "</div>";
 }
 
-function groupHtml(g) {
+function groupHtml(g, antiBiasMode) {
   g = g || {};
   var agents = arr(g.agents);
   var badges = [];
@@ -723,7 +723,13 @@ function groupHtml(g) {
   var tension = has(g.anti_bias)
     ? '<div class="tension" style="margin-bottom:11px"><span class="lbl">group anti-bias · tension axis</span>' +
       '<div class="txt">' + esc(g.anti_bias) + "</div></div>"
-    : '<div class="muted" style="margin-bottom:11px">no anti-bias declared for the group</div>';
+    : '<div class="muted" style="margin-bottom:11px">' +
+      (antiBiasMode === "disabled" ? "anti-bias disabled" : "no anti-bias recorded for this historical group") + "</div>";
+  if (antiBiasMode === "enabled") {
+    var expectedPairs = agents.length < 2 ? 0 : agents.length * (agents.length - 1) / 2;
+    tension += '<div class="muted" data-pairwise-status="' + (arr(g.anti_bias_pairs).length === expectedPairs ? "complete" : "incomplete") +
+      '">pairwise evidence ' + arr(g.anti_bias_pairs).length + '/' + expectedPairs + ' pairs</div>';
+  }
 
   var body = agents.length
     ? '<div class="agents">' + agents.map(agentHtml).join("") + "</div>"
@@ -778,6 +784,7 @@ function typeBadges(d) {
 
 function pendingCardHtml(p, repoName) {
   var s = (p && p.sheet) ? p.sheet : {};
+  var antiBiasMode = s.anti_bias_mode === "enabled" || s.anti_bias_mode === "disabled" ? s.anti_bias_mode : "historical";
   var agentCount = has(p._agent_count) ? p._agent_count
     : arr(s.groups).reduce(function (a, g) { return a + arr(g.agents).length; }, 0);
   var liveFlag = (typeof p._live === "boolean") ? p._live : !!LIVE_TYPES[s.dispatch_type];
@@ -789,6 +796,7 @@ function pendingCardHtml(p, repoName) {
     : '<span class="badge plain" style="opacity:.6">type missing</span>';
   head += liveFlag ? '<span class="badge live">live</span>' : '<span class="badge reserved">reserved</span>';
   head += '<span class="badge">' + agentCount + (agentCount === 1 ? " agent" : " agents") + "</span>";
+  head += '<span class="badge plain">anti-bias: ' + esc(antiBiasMode) + "</span>";
   if (s._example) head += '<span class="badge warn">example fixture</span>';
 
   var err = has(p._error)
@@ -813,11 +821,11 @@ function pendingCardHtml(p, repoName) {
 
   var groups = arr(s.groups);
   var groupsHtml = groups.length
-    ? groups.map(groupHtml).join("")
+    ? groups.map(function (g) { return groupHtml(g, antiBiasMode); }).join("")
     : '<div class="muted">sheet with no groups declared</div>';
 
   return '' +
-  '<article class="pending-card" data-testid="pending-card">' +
+  '<article class="pending-card" data-testid="pending-card" data-anti-bias-mode="' + esc(antiBiasMode) + '">' +
     '<div class="pending-top">' +
       '<div class="idwrap">' +
         '<div class="pending-id">' + esc(has(s.dispatch_id) ? s.dispatch_id : (p._file || "(no id)")) + "</div>" +
@@ -908,6 +916,7 @@ function cardBodyHtml(d, loading) {
     ["created", fmtDate(d.created)],
     ["invoked by", d.invoked_by],
     ["schema", d.schema_version],
+    ["anti-bias mode", d.anti_bias_mode || "historical"],
     ["max loops", d.max_loops],
     ["final approver", d.final_approver],
     ["output mode", d.output_mode],

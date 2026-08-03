@@ -166,7 +166,7 @@ class HostDispatchHookTests(unittest.TestCase):
         prompt = "Review the integrated governed dispatch path."
         opening = {
             "dispatch_id": dispatch_id,
-            "schema_version": "0.6.2",
+            "schema_version": "0.6.3",
             "dispatch_type": "review",
             "goal": "Prove one parent-bound host dispatch.",
             "context": "The compiled launch must bind one reviewer to one parent row.",

@@ -7,7 +7,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from implementations.server.runtime.canonical import canonical_digest
 from implementations.server.runtime.legacy import StrictLegacySnapshotResolver
 
 
@@ -30,7 +29,7 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
     def _record(self, *, mode: str | None) -> dict:
         record = {
             "dispatch_id": "2026-08-03-anti-bias-mode-test",
-            "schema_version": "0.6.2",
+            "schema_version": "0.6.3",
             "dispatch_type": "review",
             "goal": "Verify explicit anti-bias mode enforcement.",
             "context": "Two reviewers exercise the appender boundary.",
@@ -75,25 +74,24 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
         )
 
     @staticmethod
-    def _with_receipt(record: dict) -> dict:
-        subject = {
-            key: value
-            for key, value in record.items()
-            if key not in {"entry_validation_receipt", "project_dir"}
-        }
-        return {
-            **record,
-            "entry_validation_receipt": {
-                "schema": "entry-validation-receipt/v1",
-                "subject_digest": canonical_digest(subject),
-                "checks": [
-                    {"checker_id": "entry-check-a", "verdict": "PASS"},
-                    {"checker_id": "entry-check-b", "verdict": "PASS"},
-                ],
-            },
-        }
+    def _enabled(record: dict) -> dict:
+        group = record["groups"][0]
+        group["anti_bias"] = "constructive vs adversarial"
+        group["agents"][0]["angle"] = "constructive"
+        group["agents"][1]["angle"] = "adversarial"
+        group["anti_bias_pairs"] = [
+            {
+                "left_index": 0,
+                "right_index": 1,
+                "question": "Does the implementation satisfy the contract under attack?",
+                "left_position": "constructive",
+                "right_position": "adversarial",
+                "evidence": "The prompts assign opposing review stances.",
+            }
+        ]
+        return record
 
-    def test_mode_is_required_in_v062(self) -> None:
+    def test_mode_is_required_in_v063(self) -> None:
         result = self._append(self._record(mode=None))
         self.assertEqual(result.returncode, 2)
         self.assertIn("anti_bias_mode is required", result.stderr)
@@ -113,67 +111,70 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
         record = self._record(mode="disabled")
         record["anti_bias_global"] = "global axis"
         record["groups"][0]["anti_bias"] = "group axis"
+        record["groups"][0]["anti_bias_pairs"] = []
         record["groups"][0]["agents"][0]["angle"] = "first side"
         result = self._append(record)
         self.assertEqual(result.returncode, 2)
         self.assertIn('anti_bias_global is forbidden', result.stderr)
         self.assertIn('.anti_bias is forbidden', result.stderr)
+        self.assertIn('.anti_bias_pairs is forbidden', result.stderr)
         self.assertIn('.angle is forbidden', result.stderr)
 
-    def test_disabled_rejects_entry_validation_receipt(self) -> None:
-        record = self._record(mode="disabled")
-        record["entry_validation_receipt"] = {
-            "schema": "entry-validation-receipt/v1",
-            "subject_digest": "sha256:" + "0" * 64,
-            "checks": [],
-        }
-        result = self._append(record)
-        self.assertEqual(result.returncode, 2)
-        self.assertIn("entry_validation_receipt is forbidden", result.stderr)
-
-    def test_enabled_preserves_fanout_requirements(self) -> None:
+    def test_enabled_requires_complete_pairwise_matrix(self) -> None:
         missing = self._append(self._record(mode="enabled"))
         self.assertEqual(missing.returncode, 2)
         self.assertIn('.anti_bias is required', missing.stderr)
         self.assertIn('.angle is required', missing.stderr)
+        self.assertIn('.anti_bias_pairs must contain exactly 1 pair', missing.stderr)
 
-        record = self._record(mode="enabled")
-        record["groups"][0]["anti_bias"] = "constructive vs adversarial"
-        record["groups"][0]["agents"][0]["angle"] = "constructive"
-        record["groups"][0]["agents"][1]["angle"] = "adversarial"
-        record = self._with_receipt(record)
+        record = self._enabled(self._record(mode="enabled"))
         accepted = self._append(record)
         self.assertEqual(accepted.returncode, 0, accepted.stderr)
 
-    def test_enabled_requires_valid_entry_validation_receipt(self) -> None:
-        record = self._record(mode="enabled")
-        record["groups"][0]["anti_bias"] = "constructive vs adversarial"
-        record["groups"][0]["agents"][0]["angle"] = "constructive"
-        record["groups"][0]["agents"][1]["angle"] = "adversarial"
-
-        missing = self._append(record)
-        self.assertEqual(missing.returncode, 2)
-        self.assertIn("entry_validation_receipt is required", missing.stderr)
-
-        mismatched = self._with_receipt(record)
-        mismatched["entry_validation_receipt"]["subject_digest"] = "sha256:" + "0" * 64
-        result = self._append(mismatched)
+    def test_enabled_rejects_invalid_pairwise_evidence(self) -> None:
+        duplicate_angles = self._enabled(self._record(mode="enabled"))
+        duplicate_angles["groups"][0]["agents"][1]["angle"] = "constructive"
+        result = self._append(duplicate_angles)
         self.assertEqual(result.returncode, 2)
-        self.assertIn("subject_digest does not match", result.stderr)
+        self.assertIn("angle values must be distinct", result.stderr)
 
-        duplicate = self._with_receipt(record)
-        duplicate["entry_validation_receipt"]["checks"][1]["checker_id"] = "entry-check-a"
-        result = self._append(duplicate)
+        wrong_position = self._enabled(self._record(mode="enabled"))
+        wrong_position["groups"][0]["anti_bias_pairs"][0]["left_position"] = "wrong"
+        result = self._append(wrong_position)
         self.assertEqual(result.returncode, 2)
-        self.assertIn("checker_id values must be distinct", result.stderr)
+        self.assertIn("left_position must equal", result.stderr)
 
-        failed = self._with_receipt(record)
-        failed["entry_validation_receipt"]["checks"][1]["verdict"] = "FAIL"
-        result = self._append(failed)
+        empty_evidence = self._enabled(self._record(mode="enabled"))
+        empty_evidence["groups"][0]["anti_bias_pairs"][0]["evidence"] = " "
+        result = self._append(empty_evidence)
         self.assertEqual(result.returncode, 2)
-        self.assertIn('verdict must be exactly "PASS"', result.stderr)
+        self.assertIn("evidence must be a non-empty string", result.stderr)
 
-    def test_reader_preserves_v061_and_accepts_v062(self) -> None:
+    def test_enabled_rejects_missing_duplicate_and_noncanonical_pairs(self) -> None:
+        record = self._enabled(self._record(mode="enabled"))
+        third = {
+            "role": "explorer",
+            "model": "test-model",
+            "token_budget": 100,
+            "initial_prompt": "Review from a third perspective.",
+            "angle": "empirical",
+        }
+        record["groups"][0]["agents"].append(third)
+        base_pair = record["groups"][0]["anti_bias_pairs"][0]
+        record["groups"][0]["anti_bias_pairs"] = [base_pair, dict(base_pair), dict(base_pair)]
+        result = self._append(record)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("duplicates pair", result.stderr)
+        self.assertIn("missing pair", result.stderr)
+
+        reversed_pair = self._enabled(self._record(mode="enabled"))
+        pair = reversed_pair["groups"][0]["anti_bias_pairs"][0]
+        pair["left_index"], pair["right_index"] = 1, 0
+        result = self._append(reversed_pair)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("left_index < right_index", result.stderr)
+
+    def test_reader_preserves_v061_v062_and_accepts_v063(self) -> None:
         historical = (
             REPO
             / "docs/features/agents-communication-infra/adrs/fixtures/"
@@ -190,7 +191,24 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
             self.root / "telemetry/agents/subagents-dispatch.yaml",
             "2026-08-03-anti-bias-mode-test",
         )
-        self.assertEqual(current.contract_version, "0.6.2")
+        self.assertEqual(current.contract_version, "0.6.3")
+
+        historical_062 = (
+            REPO
+            / "docs/features/agents-communication-infra/adrs/fixtures/"
+            "golden-opening-v0.6.2-disabled.yaml"
+        )
+        old_062 = StrictLegacySnapshotResolver().resolve(
+            historical_062, "2026-08-03-anti-bias-disabled-fixture"
+        )
+        self.assertEqual(old_062.contract_version, "0.6.2")
+
+    def test_removed_receipt_is_rejected(self) -> None:
+        record = self._enabled(self._record(mode="enabled"))
+        record["entry_validation_receipt"] = {"checks": []}
+        result = self._append(record)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn('unknown key "entry_validation_receipt"', result.stderr)
 
 
 if __name__ == "__main__":

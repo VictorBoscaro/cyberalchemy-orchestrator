@@ -11,7 +11,7 @@ from .canonical import canonical_digest, digest_bytes, parse_strict_json
 from .errors import IntegrityError, NotFoundError
 
 ROW_RE = re.compile(rb"^(  - |    )([A-Za-z_][A-Za-z0-9_]*): (.*)$")
-SUPPORTED_OPENING_CONTRACTS = {"0.6.1", "0.6.2"}
+SUPPORTED_OPENING_CONTRACTS = {"0.6.1", "0.6.2", "0.6.3"}
 
 
 @dataclass(frozen=True)
@@ -112,7 +112,7 @@ class StrictLegacySnapshotResolver:
         contract_version = row.get("schema_version")
         if contract_version not in SUPPORTED_OPENING_CONTRACTS:
             raise IntegrityError(
-                "dispatch opening is not a supported 0.6.1 or 0.6.2 contract"
+                "dispatch opening is not a supported 0.6.1, 0.6.2, or 0.6.3 contract"
             )
         return contract_version
 

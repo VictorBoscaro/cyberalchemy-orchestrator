@@ -460,6 +460,7 @@
   /* ---------------- render: pending sheets ---------------- */
   function pendingCard(item){
     var s = item.p.sheet || {};
+    var antiBiasMode = s.anti_bias_mode === "enabled" || s.anti_bias_mode === "disabled" ? s.anti_bias_mode : "historical";
     var live = (typeof item.p._live === "boolean") ? item.p._live : !!LIVE_TYPES[s.dispatch_type];
     var groups = s.groups || [];
     var conns = s.connections || [];
@@ -473,23 +474,26 @@
     var grpStr = "";
     for (var g=0; g<groups.length; g++){
       var gr = groups[g] || {};
+      var pairExpected = (gr.agents||[]).length < 2 ? 0 : (gr.agents||[]).length * ((gr.agents||[]).length - 1) / 2;
       grpStr += '<div class="field"><div class="k">group ' + esc(gr.group_id) + ' · n=' + num(gr.n !== undefined ? gr.n : (gr.agents||[]).length) + '</div>' +
                 '<div class="v lower">' + ((gr.agents||[]).map(function(a){
                   return esc(a && a.role || "?") + (a && a.agent_name ? " · " + esc(a.agent_name) : " · anonymous");
-                }).join(" | ")) + '</div></div>';
+                }).join(" | ")) + '</div>' +
+                (antiBiasMode === "enabled" ? '<div class="v lower" data-pairwise-status="'+((gr.anti_bias_pairs||[]).length === pairExpected ? "complete" : "incomplete")+'">pairwise evidence '+(gr.anti_bias_pairs||[]).length+'/'+pairExpected+' pairs</div>' : '') + '</div>';
     }
     if (item.p._error){
       grpStr += '<div class="field"><div class="k">sheet read error</div><div class="v lower" style="color:var(--red)">' + esc(item.p._error) + '</div></div>';
     }
 
     return '' +
-    '<article data-testid="pending-card" data-pending-file="' + esc(item.p._file) + '">' +
+    '<article data-testid="pending-card" data-pending-file="' + esc(item.p._file) + '" data-anti-bias-mode="' + esc(antiBiasMode) + '">' +
       '<div class="pend-top">' +
         '<span class="pend-id">▲ ' + esc(txt(s.dispatch_id, item.p._file)) + '</span>' +
         '<span class="badge ' + (live ? "b-live" : "b-rsv") + '">' + (live ? "live" : "reserved") + '</span>' +
         '<span class="badge b-trunc">' + esc(txt(s.dispatch_type,"no type")) + '</span>' +
         '<span class="badge b-trunc">' + ac + ' agents · ' + groups.length + ' groups</span>' +
         '<span class="badge b-trunc">repo ' + esc(item.repo) + '</span>' +
+        '<span class="badge b-trunc">anti-bias ' + esc(antiBiasMode) + '</span>' +
         '<span class="spacer" style="flex:1"></span>' +
         '<button data-testid="dispatch-button" disabled title="confirm dispatch in Phase 2">▶ dispatch (phase 2)</button>' +
       '</div>' +
@@ -733,6 +737,7 @@
   }
 
   function detailHtml(repoName, d){
+    var antiBiasMode = d.anti_bias_mode === "enabled" || d.anti_bias_mode === "disabled" ? d.anti_bias_mode : "historical";
     var groups = d.groups || [];
     var conns = d.connections || [];
     var c = d._close || null;
@@ -742,6 +747,10 @@
     var gh = groups.length ? groups.map(function(g){
       g = g || {};
       var ags = g.agents || [];
+      if (antiBiasMode !== "enabled") {
+        g = Object.assign({}, g, {anti_bias: g.anti_bias || (antiBiasMode === "disabled" ? "anti-bias disabled" : "historical row — not recorded")});
+        ags = ags.map(function(a){ return a && a.angle ? a : Object.assign({}, a || {}, {angle: antiBiasMode === "disabled" ? "anti-bias disabled" : "historical row — angle not recorded"}); });
+      }
       return '<div class="grp">' +
         '<div class="gh"><span class="gid">' + esc(txt(g.group_id,"group without id")) + '</span>' +
           '<span style="color:var(--ink-dim)">n=' + num(g.n !== undefined ? g.n : ags.length) + '</span>' +
@@ -798,6 +807,7 @@
         '<div class="k">created</div><div class="v">' + esc(txt(d.created)) + '</div>' +
         '<div class="k">invoked by</div><div class="v">' + esc(txt(d.invoked_by)) + '</div>' +
         '<div class="k">schema</div><div class="v">' + esc(txt(d.schema_version)) + '</div>' +
+        '<div class="k">anti-bias mode</div><div class="v">' + esc(antiBiasMode) + '</div>' +
         '<div class="k">max_loops</div><div class="v">' + num(d.max_loops) + '</div>' +
         '<div class="k">final approver</div><div class="v">' + esc(txt(d.final_approver)) + '</div>' +
         '<div class="k">folder</div><div class="v">' + esc(txt(d.working_folder)) + '</div>' +

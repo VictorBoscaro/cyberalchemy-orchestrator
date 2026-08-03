@@ -3,15 +3,15 @@
 ## Input
 
 - Skill root: `.agents/skills`
-- Files discovered: 70
-- Files parsed: 70
+- Files discovered: 72
+- Files parsed: 72
 
 ## Raw result
 
-- Distinct inclusive pairs: 256
-- Distinct strong pairs: 15
-- `explicit_path` evidence rows: 15
-- `named_reference` evidence rows: 247
+- Distinct inclusive pairs: 258
+- Distinct strong pairs: 7
+- `explicit_path` evidence rows: 7
+- `named_reference` evidence rows: 254
 - Unresolved explicit paths: 0
 - Parse errors: 0
 

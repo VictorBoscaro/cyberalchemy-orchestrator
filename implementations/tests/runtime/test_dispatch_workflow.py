@@ -40,7 +40,7 @@ class DispatchWorkflowTests(unittest.TestCase):
             shutil.copyfile(REPO / relative, destination)
         self.record = {
             "dispatch_id": "2026-08-03-workflow-review",
-            "schema_version": "0.6.2",
+            "schema_version": "0.6.3",
             "dispatch_type": "review",
             "goal": "Review the dispatch workflow.",
             "context": "One bound reviewer checks the compiled workflow.",
@@ -111,10 +111,15 @@ class DispatchWorkflowTests(unittest.TestCase):
         self.assertEqual(manifest["slots"], [])
 
     def test_compile_rejects_capability_type_mismatch(self) -> None:
+        mismatched = {
+            key: value
+            for key, value in {**self.record, "dispatch_type": "others"}.items()
+            if key != "output_mode"
+        }
         with self.assertRaisesRegex(ValidationError, "type differs"):
             compile_bound_launch_plan(
                 repo_root=self.project,
-                record={**self.record, "dispatch_type": "research"},
+                record=mismatched,
                 capability_ref="review",
                 output_dir=Path("workflow"),
             )
@@ -135,6 +140,18 @@ class DispatchWorkflowTests(unittest.TestCase):
             {
                 **self.record,
                 "anti_bias_mode": "enabled",
+                "groups": [
+                    {
+                        **self.record["groups"][0],
+                        "agents": [
+                            self.record["groups"][0]["agents"][0],
+                            {
+                                **self.record["groups"][0]["agents"][0],
+                                "agent_name": "second-reviewer",
+                            },
+                        ],
+                    }
+                ],
             },
         ]
         for index, record in enumerate(invalid_records):

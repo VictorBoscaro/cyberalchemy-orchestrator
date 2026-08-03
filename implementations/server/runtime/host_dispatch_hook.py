@@ -386,7 +386,7 @@ class HostDispatchHook:
         agent_name = _safe_part(label)
         record = {
             "dispatch_id": dispatch_id,
-            "schema_version": "0.6.2",
+            "schema_version": "0.6.3",
             "dispatch_type": self.policy["compatibility_dispatch_type"],
             "goal": f"Automatically supervise host agent call: {label[:240]}",
             "context": (

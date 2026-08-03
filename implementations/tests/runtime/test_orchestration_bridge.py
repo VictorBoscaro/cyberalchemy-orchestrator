@@ -46,7 +46,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         )
         self.opening = {
             "dispatch_id": "2026-07-24-bridge-review",
-            "schema_version": "0.6.2",
+            "schema_version": "0.6.3",
             "dispatch_type": "review",
             "goal": "Review the local orchestration logging bridge.",
             "context": (

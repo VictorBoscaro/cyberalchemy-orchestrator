@@ -608,10 +608,11 @@ function renderPending(items){
 
 function pendingCard(repo, pen){
   var s = pen.sheet || {};
+  var antiBiasMode = s.anti_bias_mode === "enabled" || s.anti_bias_mode === "disabled" ? s.anti_bias_mode : "historical";
   var live = (typeof pen._live === "boolean") ? pen._live : isLive(s);
   var ac = (pen._agent_count != null) ? pen._agent_count : agentCount(s);
   var h = [];
-  h.push('<article class="pcard" data-testid="pending-card">');
+  h.push('<article class="pcard" data-testid="pending-card" data-anti-bias-mode="' + E(antiBiasMode) + '">');
 
   h.push('<div class="pcard-hd">');
   h.push('<span class="badge b-warn">◈ Pending</span>');
@@ -631,6 +632,7 @@ function pendingCard(repo, pen){
   h.push('<div class="pcard-meta">');
   h.push(mcell("Agents", ac));
   h.push(mcell("Groups", (s.groups||[]).length));
+  h.push(mcell("Anti-bias mode", antiBiasMode));
   h.push(mcell("Max loops", s.max_loops != null ? s.max_loops : "—"));
   h.push(mcell("Final approver", s.final_approver || "—"));
   h.push(mcell("Schema", s.schema_version || "—"));
@@ -645,7 +647,7 @@ function pendingCard(repo, pen){
   }
 
   h.push('<div style="padding:10px 14px;border-bottom:1px solid var(--line-soft)">');
-  h.push(groupsBlock(s.groups));
+  h.push(groupsBlock(s.groups, antiBiasMode));
   h.push(connectionsBlock(s.connections));
   if (s.working_folder){
     h.push('<div class="kv" style="margin-top:8px"><div><span class="k">Working folder</span>' +
@@ -798,6 +800,7 @@ function detailBlock(d){
   h.push(kv("Created", d.created ? fmtStamp(d.created) : "—"));
   h.push(kv("Invoked by", d.invoked_by));
   h.push(kv("Schema", d.schema_version));
+  h.push(kv("Anti-bias mode", d.anti_bias_mode || "historical"));
   h.push(kv("Max loops", d.max_loops));
   h.push(kv("Final approver", d.final_approver));
   h.push(kv("Working folder", d.working_folder));
@@ -807,8 +810,12 @@ function detailBlock(d){
     h.push('<div class="dsec"><span class="lbl">Global anti-bias axis</span>' +
            '<div class="axis">' + E(d.anti_bias_global) + '</div></div>');
   }
+  else {
+    h.push('<div class="dsec"><span class="lbl">Global anti-bias axis</span><div class="axis">' +
+      E(d.anti_bias_mode === "enabled" ? "required field missing" : (d.anti_bias_mode === "disabled" ? "disabled" : "historical row")) + '</div></div>');
+  }
 
-  h.push(groupsBlock(d.groups));
+  h.push(groupsBlock(d.groups, d.anti_bias_mode));
   h.push(connectionsBlock(d.connections));
 
   if (cl){
@@ -851,7 +858,8 @@ function kv(k, v){
 }
 
 /* ---------------------------------------------------------------- GROUPS */
-function groupsBlock(groups){
+function groupsBlock(groups, mode){
+  var antiBiasMode = mode === "enabled" || mode === "disabled" ? mode : "historical";
   var g = groups || [];
   if (!g.length){
     return '<div class="dsec"><span class="lbl">Groups and agents</span>' +
@@ -874,6 +882,12 @@ function groupsBlock(groups){
       h.push('<div style="padding:7px 10px;border-bottom:1px solid var(--line-soft)">' +
              '<span class="lbl">Group anti-bias</span>' +
              '<div class="axis">' + E(grp.anti_bias) + '</div></div>');
+    }
+    if (antiBiasMode === "enabled"){
+      var expectedPairs = ags.length < 2 ? 0 : ags.length * (ags.length - 1) / 2;
+      h.push('<div class="prose" data-pairwise-status="' + ((grp.anti_bias_pairs || []).length === expectedPairs ? "complete" : "incomplete") + '">pairwise evidence ' + (grp.anti_bias_pairs || []).length + '/' + expectedPairs + ' pairs</div>');
+    } else if (!grp.anti_bias) {
+      h.push('<div class="prose" style="color:var(--txt-mute)">' + (antiBiasMode === "disabled" ? "anti-bias disabled" : "no anti-bias recorded for this historical group") + '</div>');
     }
     if (!ags.length){
       h.push('<div class="empty">Group with no declared agents</div>');

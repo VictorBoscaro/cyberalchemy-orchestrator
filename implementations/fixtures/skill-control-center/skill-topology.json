@@ -2,22 +2,6 @@
   "edges": [
     {
       "evidence": [
-        ".agents/skills/anti-bias-vector-composition/SKILL.md:7"
-      ],
-      "relation": "explicit_path",
-      "source": "anti-bias-vector-composition",
-      "target": "check-tension"
-    },
-    {
-      "evidence": [
-        ".agents/skills/anti-bias-vector-composition/SKILL.md:48"
-      ],
-      "relation": "named_reference",
-      "source": "anti-bias-vector-composition",
-      "target": "domainspec-subagents-strategy"
-    },
-    {
-      "evidence": [
         ".agents/skills/arcanum-bootstrap/SKILL.md:43"
       ],
       "relation": "named_reference",
@@ -84,14 +68,6 @@
       "relation": "named_reference",
       "source": "arcanum-bootstrap",
       "target": "spellcraft"
-    },
-    {
-      "evidence": [
-        ".agents/skills/check-tension/SKILL.md:23"
-      ],
-      "relation": "named_reference",
-      "source": "check-tension",
-      "target": "register-dispatch"
     },
     {
       "evidence": [
@@ -240,16 +216,15 @@
     },
     {
       "evidence": [
-        ".agents/skills/discovery-writing/SKILL.md:189",
-        ".agents/skills/discovery-writing/SKILL.md:337"
+        ".agents/skills/discovery-writing/SKILL.md:325"
       ],
-      "relation": "explicit_path",
+      "relation": "named_reference",
       "source": "discovery-writing",
       "target": "domainspec-subagents-strategy"
     },
     {
       "evidence": [
-        ".agents/skills/discovery-writing/SKILL.md:331"
+        ".agents/skills/discovery-writing/SKILL.md:319"
       ],
       "relation": "explicit_path",
       "source": "discovery-writing",
@@ -257,7 +232,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/discovery-writing/SKILL.md:206"
+        ".agents/skills/discovery-writing/SKILL.md:205"
       ],
       "relation": "named_reference",
       "source": "discovery-writing",
@@ -281,6 +256,14 @@
     },
     {
       "evidence": [
+        ".agents/skills/domainspec-emit-signals/SKILL.md:14"
+      ],
+      "relation": "named_reference",
+      "source": "domainspec-emit-signals",
+      "target": "domainspec-implement"
+    },
+    {
+      "evidence": [
         ".agents/skills/domainspec-spec-feature/SKILL.md:34"
       ],
       "relation": "named_reference",
@@ -289,33 +272,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:189"
-      ],
-      "relation": "explicit_path",
-      "source": "domainspec-subagents-strategy",
-      "target": "anti-bias-vector-composition"
-    },
-    {
-      "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:190"
-      ],
-      "relation": "explicit_path",
-      "source": "domainspec-subagents-strategy",
-      "target": "check-tension"
-    },
-    {
-      "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:189",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:190"
-      ],
-      "relation": "named_reference",
-      "source": "domainspec-subagents-strategy",
-      "target": "check-tension"
-    },
-    {
-      "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:18",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:47"
+        ".agents/skills/domainspec-subagents-strategy/SKILL.md:23"
       ],
       "relation": "named_reference",
       "source": "domainspec-subagents-strategy",
@@ -323,16 +280,15 @@
     },
     {
       "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:182"
+        ".agents/skills/domainspec-subagents-strategy/SKILL.md:27"
       ],
-      "relation": "explicit_path",
+      "relation": "named_reference",
       "source": "domainspec-subagents-strategy",
-      "target": "experiment"
+      "target": "domainspec-implement"
     },
     {
       "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:182",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:30"
+        ".agents/skills/domainspec-subagents-strategy/SKILL.md:26"
       ],
       "relation": "named_reference",
       "source": "domainspec-subagents-strategy",
@@ -340,35 +296,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:186"
-      ],
-      "relation": "explicit_path",
-      "source": "domainspec-subagents-strategy",
-      "target": "register-dispatch"
-    },
-    {
-      "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:139",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:186",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:187",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:5"
-      ],
-      "relation": "named_reference",
-      "source": "domainspec-subagents-strategy",
-      "target": "register-dispatch"
-    },
-    {
-      "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:177"
-      ],
-      "relation": "explicit_path",
-      "source": "domainspec-subagents-strategy",
-      "target": "research"
-    },
-    {
-      "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:177",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:30"
+        ".agents/skills/domainspec-subagents-strategy/SKILL.md:24"
       ],
       "relation": "named_reference",
       "source": "domainspec-subagents-strategy",
@@ -376,16 +304,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:179"
-      ],
-      "relation": "explicit_path",
-      "source": "domainspec-subagents-strategy",
-      "target": "review"
-    },
-    {
-      "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:179",
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:30"
+        ".agents/skills/domainspec-subagents-strategy/SKILL.md:25"
       ],
       "relation": "named_reference",
       "source": "domainspec-subagents-strategy",
@@ -393,11 +312,11 @@
     },
     {
       "evidence": [
-        ".agents/skills/domainspec-subagents-strategy/SKILL.md:161"
+        ".agents/skills/domainspec-subagents-strategy/SKILL.md:110"
       ],
-      "relation": "explicit_path",
+      "relation": "named_reference",
       "source": "domainspec-subagents-strategy",
-      "target": "robot-talks"
+      "target": "subagents-dispatch-lifecycle"
     },
     {
       "evidence": [
@@ -431,11 +350,27 @@
     },
     {
       "evidence": [
-        ".agents/skills/experiment/SKILL.md:7"
+        ".agents/skills/experiment/SKILL.md:165"
+      ],
+      "relation": "named_reference",
+      "source": "experiment",
+      "target": "domainspec-implement"
+    },
+    {
+      "evidence": [
+        ".agents/skills/experiment/SKILL.md:6"
+      ],
+      "relation": "named_reference",
+      "source": "experiment",
+      "target": "domainspec-subagents-strategy"
+    },
+    {
+      "evidence": [
+        ".agents/skills/experiment/SKILL.md:24"
       ],
       "relation": "explicit_path",
       "source": "experiment",
-      "target": "domainspec-subagents-strategy"
+      "target": "experiment-initial-definitions"
     },
     {
       "evidence": [
@@ -444,6 +379,22 @@
       "relation": "explicit_path",
       "source": "experiment",
       "target": "register-dispatch"
+    },
+    {
+      "evidence": [
+        ".agents/skills/experiment/SKILL.md:80"
+      ],
+      "relation": "named_reference",
+      "source": "experiment",
+      "target": "register-dispatch"
+    },
+    {
+      "evidence": [
+        ".agents/skills/experiment/SKILL.md:7"
+      ],
+      "relation": "named_reference",
+      "source": "experiment",
+      "target": "subagents-dispatch-lifecycle"
     },
     {
       "evidence": [
@@ -1878,7 +1829,8 @@
     },
     {
       "evidence": [
-        ".agents/skills/register-dispatch/SKILL.md:15"
+        ".agents/skills/register-dispatch/SKILL.md:21",
+        ".agents/skills/register-dispatch/SKILL.md:97"
       ],
       "relation": "named_reference",
       "source": "register-dispatch",
@@ -1886,8 +1838,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/register-dispatch/SKILL.md:48",
-        ".agents/skills/register-dispatch/SKILL.md:57"
+        ".agents/skills/register-dispatch/SKILL.md:53"
       ],
       "relation": "named_reference",
       "source": "register-dispatch",
@@ -1895,8 +1846,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/register-dispatch/SKILL.md:48",
-        ".agents/skills/register-dispatch/SKILL.md:57"
+        ".agents/skills/register-dispatch/SKILL.md:53"
       ],
       "relation": "named_reference",
       "source": "register-dispatch",
@@ -1904,13 +1854,20 @@
     },
     {
       "evidence": [
-        ".agents/skills/register-dispatch/SKILL.md:48",
-        ".agents/skills/register-dispatch/SKILL.md:57",
-        ".agents/skills/register-dispatch/SKILL.md:58"
+        ".agents/skills/register-dispatch/SKILL.md:53",
+        ".agents/skills/register-dispatch/SKILL.md:54"
       ],
       "relation": "named_reference",
       "source": "register-dispatch",
       "target": "review"
+    },
+    {
+      "evidence": [
+        ".agents/skills/register-dispatch/SKILL.md:16"
+      ],
+      "relation": "named_reference",
+      "source": "register-dispatch",
+      "target": "subagents-dispatch-lifecycle"
     },
     {
       "evidence": [
@@ -1974,7 +1931,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/research/SKILL.md:18"
+        ".agents/skills/research/SKILL.md:16"
       ],
       "relation": "explicit_path",
       "source": "research",
@@ -1990,8 +1947,11 @@
     },
     {
       "evidence": [
+        ".agents/skills/research/SKILL.md:12",
+        ".agents/skills/research/SKILL.md:148",
         ".agents/skills/research/SKILL.md:21",
-        ".agents/skills/research/SKILL.md:22"
+        ".agents/skills/research/SKILL.md:22",
+        ".agents/skills/research/SKILL.md:52"
       ],
       "relation": "named_reference",
       "source": "research",
@@ -1999,11 +1959,27 @@
     },
     {
       "evidence": [
-        ".agents/skills/research/SKILL.md:13"
+        ".agents/skills/research/SKILL.md:29"
       ],
       "relation": "explicit_path",
       "source": "research",
-      "target": "review"
+      "target": "research-initial-definitions"
+    },
+    {
+      "evidence": [
+        ".agents/skills/research/SKILL.md:18"
+      ],
+      "relation": "explicit_path",
+      "source": "research",
+      "target": "subagents-dispatch-lifecycle"
+    },
+    {
+      "evidence": [
+        ".agents/skills/research/SKILL.md:115"
+      ],
+      "relation": "named_reference",
+      "source": "research",
+      "target": "subagents-dispatch-lifecycle"
     },
     {
       "evidence": [
@@ -2057,16 +2033,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/review/SKILL.md:237",
-        ".agents/skills/review/SKILL.md:65"
-      ],
-      "relation": "named_reference",
-      "source": "review",
-      "target": "check-tension"
-    },
-    {
-      "evidence": [
-        ".agents/skills/review/SKILL.md:229"
+        ".agents/skills/review/SKILL.md:208"
       ],
       "relation": "named_reference",
       "source": "review",
@@ -2082,7 +2049,7 @@
     },
     {
       "evidence": [
-        ".agents/skills/review/SKILL.md:232"
+        ".agents/skills/review/SKILL.md:212"
       ],
       "relation": "named_reference",
       "source": "review",
@@ -2099,11 +2066,21 @@
     },
     {
       "evidence": [
-        ".agents/skills/review/SKILL.md:234"
+        ".agents/skills/review/SKILL.md:75"
       ],
       "relation": "named_reference",
       "source": "review",
       "target": "robot-talks"
+    },
+    {
+      "evidence": [
+        ".agents/skills/review/SKILL.md:111",
+        ".agents/skills/review/SKILL.md:115",
+        ".agents/skills/review/SKILL.md:210"
+      ],
+      "relation": "named_reference",
+      "source": "review",
+      "target": "subagents-dispatch-lifecycle"
     },
     {
       "evidence": [
@@ -2296,6 +2273,15 @@
     },
     {
       "evidence": [
+        ".agents/skills/subagents-dispatch-lifecycle/SKILL.md:48",
+        ".agents/skills/subagents-dispatch-lifecycle/SKILL.md:59"
+      ],
+      "relation": "named_reference",
+      "source": "subagents-dispatch-lifecycle",
+      "target": "register-dispatch"
+    },
+    {
+      "evidence": [
         ".agents/skills/system-view/SKILL.md:23",
         ".agents/skills/system-view/SKILL.md:24",
         ".agents/skills/system-view/SKILL.md:25",
@@ -2413,19 +2399,14 @@
     }
   ],
   "expected_counts": {
-    "edges": 262,
-    "explicit_path": 15,
-    "named_reference": 247,
-    "nodes": 70
+    "edges": 261,
+    "explicit_path": 7,
+    "named_reference": 254,
+    "nodes": 72
   },
   "fixture_id": "FX-SKILL-TOPOLOGY-v1",
   "generated_at_utc": "2026-07-25T00:00:00Z",
   "nodes": [
-    {
-      "description": "The design principle behind Principle 5 (pairwise tension) of the subagents-strategy constitution. Use when designing the angle set for an n≥2 subject group (role investigate or evaluate) so the agents' micro-vectors are structurally opposed and their correlated bias cancels under composition — not merely non-overlapping. This is the design/theory layer; check-tension is the executable gate that enforces it before the human confirm.",
-      "id": "anti-bias-vector-composition",
-      "path": ".agents/skills/anti-bias-vector-composition/SKILL.md"
-    },
     {
       "description": "Arcanum Bootstrap installs Arcanum into a consuming repository. It creates generated native runtime skill packages for selected host runtimes, `.arcanum/observability/`, and optional `.arcanum/necronomicon/` harness state. Codex slash commands under `.codex/commands/` are legacy compatibility and are not generated by default.",
       "id": "arcanum-bootstrap",
@@ -2437,9 +2418,9 @@
       "path": ".agents/skills/architecture-pattern-inventory/SKILL.md"
     },
     {
-      "description": "Init-time anti-bias gate. Before the human confirm, two independent agents verify a proposed dispatch sheet is genuinely tensioned (validator-check Tests 1–4); the sheet reaches the human only if BOTH pass — any reproval or disagreement returns it to the strategist. Gate infrastructure: not itself a dispatch, not subject to its own gate.",
-      "id": "check-tension",
-      "path": ".agents/skills/check-tension/SKILL.md"
+      "description": "Create, add to, organize, and maintain BACKLOG.md files in any requested directory while preserving local conventions and existing entries. Use when a user asks to create a backlog, capture or add backlog items, reorganize backlog content, or maintain an existing backlog.",
+      "id": "backlog",
+      "path": ".agents/skills/backlog/SKILL.md"
     },
     {
       "description": "Close a session and create a session node under sessions/",
@@ -2522,12 +2503,17 @@
       "path": ".agents/skills/domainspec-feature-glossary/SKILL.md"
     },
     {
+      "description": "Implement one bounded code task from accepted DomainSpec feature docs and generated test obligations. Use as the LIVE type skill for dispatch_type code after planner/work-pack readiness passes.",
+      "id": "domainspec-implement",
+      "path": ".agents/skills/domainspec-implement/SKILL.md"
+    },
+    {
       "description": "Create or evolve a feature specification using DomainSpec templates and taxonomy.",
       "id": "domainspec-spec-feature",
       "path": ".agents/skills/domainspec-spec-feature/SKILL.md"
     },
     {
-      "description": "Owner-directed current workflow contract for routing subagent dispatches, proposal and confirmation gates, universal workflow invariants, and dispatch-type routing. Use for workflow-level dispatch planning; register-dispatch owns persisted row mechanics, and ratified discovery/SPEC/ACI artifacts own runtime authority.",
+      "description": "Entry point for subagent work. Use it to decide whether delegation is warranted, select the installed capability that owns the requested work, resolve its canonical dispatch type, apply the user-selected anti-bias overlay, and hand one typed route to the operational dispatch lifecycle. It owns routing and that optional overlay, not persisted-record mechanics, runtime behavior, or type-specific judgment.",
       "id": "domainspec-subagents-strategy",
       "path": ".agents/skills/domainspec-subagents-strategy/SKILL.md"
     },
@@ -2542,7 +2528,7 @@
       "path": ".agents/skills/engineer-view/SKILL.md"
     },
     {
-      "description": "Subagent dispatch that PROPOSES and pre-registers a falsifiable experiment — the designer authors a success/failure criterion fixed BEFORE any run and the skeptic validity-checks it, producing a frozen criterion.md. Running the probe and adjudicating survived-vs-falsified is a SEPARATE downstream step, not part of this dispatch. Routed here from domainspec-subagents-strategy as the LIVE type skill for `dispatch_type: experiment`. Defines experiment-type judgment only — the pre-registered criterion, the design-time validity gates, and the SURVIVED/FALSIFIED/INVALID verdict vocabulary (SURVIVED/FALSIFIED rendered later, at run). Use research when the question is whether a NEW claim survives by coverage; use review to attack an EXISTING artifact; use experiment when you are pre-registering a probe against a criterion fixed BEFORE running.",
+      "description": "Subagent dispatch that PROPOSES and pre-registers a falsifiable experiment — the designer authors a success/failure criterion fixed BEFORE any run and the skeptic validity-checks it, producing a frozen criterion.md. Running the probe and adjudicating survived-vs-falsified is a SEPARATE downstream step, not part of this dispatch. Routed here from domainspec-subagents-strategy as the experiment work-type skill. Defines experiment-type judgment only — the pre-registered criterion, the design-time validity gates, and the SURVIVED/FALSIFIED/INVALID verdict vocabulary (SURVIVED/FALSIFIED rendered later, at run). Use research when the question is whether a NEW claim survives by coverage; use review to attack an EXISTING artifact; use experiment when you are pre-registering a probe against a criterion fixed BEFORE running.",
       "id": "experiment",
       "path": ".agents/skills/experiment/SKILL.md"
     },
@@ -2550,6 +2536,11 @@
       "description": "Use when initializing, running, looping, validating, reporting, or observing repeatable profile-aware development experiments for Arcanum spells and sigils through native skill/subagent execution or explicit legacy runtime adapters.",
       "id": "experiment-harness",
       "path": ".agents/skills/experiment-harness/SKILL.md"
+    },
+    {
+      "description": "Creates or revises the informational experiment-initial-definitions.md required before a governed experiment is designed or proposed. Use when opening an experiment topic or documenting its business context, purpose, refinable question, confirmed constraints, current evidence, and known gaps without choosing a hypothesis, criterion, method, or dispatch topology.",
+      "id": "experiment-initial-definitions",
+      "path": ".agents/skills/experiment-initial-definitions/SKILL.md"
     },
     {
       "description": "Use when: creating or updating a concise glossary for a feature, workflow, product area, or bounded project scope from source evidence.",
@@ -2652,7 +2643,7 @@
       "path": ".agents/skills/refine/SKILL.md"
     },
     {
-      "description": "Record a subagent dispatch in <repo-root>/telemetry/agents/subagents-dispatch.yaml — two appends per dispatch (dispatch row + close row), with each agent's angle and the anti_bias axis. Use whenever you dispatch one or more subagents (a research-skill run OR an ad-hoc Agent call); only `research`, `review`, and `experiment` are LIVE — the other three dispatch_types are reserved names until populated. Trivial single lookups that spawn no subagent do not need registration. Single owner of the record/sheet fill mechanics — the form layer of the router → type-skill → form chain (field tables, enums, appender, close row).",
+      "description": "Own and validate the append-only telemetry row mechanics for a subagent dispatch. Use through subagents-dispatch-lifecycle for parent-bound work, or directly only for an explicitly authorized standalone compatibility record. Dispatch types and availability come exclusively from the canonical infrastructure registry.",
       "id": "register-dispatch",
       "path": ".agents/skills/register-dispatch/SKILL.md"
     },
@@ -2687,7 +2678,7 @@
       "path": ".agents/skills/residuality-spec/SKILL.md"
     },
     {
-      "description": "Red-team dispatch over EXISTING artifacts (skills, constitutions, code, docs) — attack what exists and hunt flaws to improve it. Routed here from domainspec-subagents-strategy as the LIVE type skill for `dispatch_type: review`. Defines review-type judgment only — attack lenses, severity taxonomy, verification discipline, and the change-request report shape. A review produces ONE artifact, `review.md` (the cited change-request report), and the human chooses at the confirm gate whether it is delivered inline (chat) or persisted to a `working_folder`. Use research (not review) when the question is whether a NEW claim/candidate survives; use review when the target already exists and the deliverable is verified change requests.",
+      "description": "Red-team dispatch over EXISTING artifacts (skills, constitutions, code, docs) — attack what exists and hunt flaws to improve it. Routed here from domainspec-subagents-strategy as the work-type skill for review. Defines review-type judgment only — attack lenses, severity taxonomy, verification discipline, and the change-request report shape. A review produces ONE artifact, `review.md` (the cited change-request report), and the human chooses at the confirm gate whether it is delivered inline (chat) or persisted to a `working_folder`. Use research (not review) when the question is whether a NEW claim/candidate survives; use review when the target already exists and the deliverable is verified change requests.",
       "id": "review",
       "path": ".agents/skills/review/SKILL.md"
     },
@@ -2742,6 +2733,11 @@
       "path": ".agents/skills/structured-interview-kits/SKILL.md"
     },
     {
+      "description": "Execute an already-routed legacy-managed subagent dispatch through confirmation, canonical registration, parent-bound host launches, receipt verification, and close. Use only after domainspec-subagents-strategy returns a route receipt for an installed work-type capability.",
+      "id": "subagents-dispatch-lifecycle",
+      "path": ".agents/skills/subagents-dispatch-lifecycle/SKILL.md"
+    },
+    {
       "description": "Use when: authoring the shape-and-stakes view of a target — the narrative explained one conceptual layer at a time, the given-vs-optimized layering, and the load-bearing stances named but not decided — as the upper half of a system-view / engineer-view pair.",
       "id": "system-view",
       "path": ".agents/skills/system-view/SKILL.md"
@@ -2774,7 +2770,7 @@
   ],
   "owner": "@VictorBoscaro",
   "schema_version": "1",
-  "sha256": "81865d2d7678558a8df3b3a84e90a9c500d50d80b498711bc94bb8708ead50f7",
+  "sha256": "345184605a04bb49d499e10571c36230d016b2044e833269d665fb9cd195544b",
   "source_revision": "skill-relationship-graph.v0.1",
   "state_cases": [
     {

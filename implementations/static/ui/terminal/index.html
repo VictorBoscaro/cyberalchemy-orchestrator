@@ -365,11 +365,17 @@ function exitClass(r){
 
 /* ============ render: agents / groups / connections ============ */
 function renderGroups(groups, opts){
+  opts = opts || {};
+  var antiBiasMode = opts.anti_bias_mode === "enabled" || opts.anti_bias_mode === "disabled" ? opts.anti_bias_mode : "historical";
   if(!groups || !groups.length){
     return '<div class="sectionlbl">GROUPS</div><div class="dim">— no `groups` block (row prior to v0.5.2) —</div>';
   }
   var out = '<div class="sectionlbl">GROUPS &amp; AGENTS · ' + groups.length + '</div>';
   groups.forEach(function(g){
+    if(antiBiasMode !== "enabled"){
+      g = Object.assign({}, g, {anti_bias:g.anti_bias || (antiBiasMode === "disabled" ? "anti-bias disabled" : "historical row — not recorded")});
+      g.agents = (g.agents || []).map(function(a){ return a && a.angle ? a : Object.assign({}, a || {}, {angle:antiBiasMode === "disabled" ? "anti-bias disabled" : "historical row — angle not recorded"}); });
+    }
     var agents = g.agents || [];
     out += '<div class="group">';
     out += '<div class="group-head">';
@@ -391,6 +397,10 @@ function renderGroups(groups, opts){
       out += '<div class="antibias"><span class="lbl">◆ GROUP ANTI-BIAS ▸</span>' +
              '<span class="noangle">▲ NOT DECLARED — group of ' + agents.length +
              ' agents with no tension axis</span></div>';
+    }
+    if(antiBiasMode === "enabled"){
+      var expectedPairs = agents.length < 2 ? 0 : agents.length * (agents.length - 1) / 2;
+      out += '<div class="dim" data-pairwise-status="' + ((g.anti_bias_pairs || []).length === expectedPairs ? "complete" : "incomplete") + '">PAIRWISE EVIDENCE ▸ ' + (g.anti_bias_pairs || []).length + '/' + expectedPairs + ' pairs</div>';
     }
 
     if(!agents.length){
@@ -524,8 +534,9 @@ function renderPending(){
   var out = "";
   items.forEach(function(it){
     var p = it.p, s = p.sheet || {};
+    var antiBiasMode = s.anti_bias_mode === "enabled" || s.anti_bias_mode === "disabled" ? s.anti_bias_mode : "historical";
     var live = (p._live !== undefined && p._live !== null) ? !!p._live : !!LIVE_TYPES[s.dispatch_type];
-    out += '<div class="pending-card" data-testid="pending-card">';
+    out += '<div class="pending-card" data-testid="pending-card" data-anti-bias-mode="' + esc(antiBiasMode) + '">';
     out += '<div class="pending-head">';
     out += '<span>▲ PENDING SHEET</span>';
     out += '<span class="pid">' + esc(nz(s.dispatch_id, p._file)) + '</span>';
@@ -543,7 +554,8 @@ function renderPending(){
     }
     out += '<div class="dim faint">FILE ' + esc(nz(p._path, p._file)) + '</div>';
     out += renderHead(s, p._agent_count, p._mtime);
-    out += renderGroups(s.groups);
+    out += '<div class="sectionlbl">ANTI-BIAS MODE · ' + esc(antiBiasMode) + '</div>';
+    out += renderGroups(s.groups, {anti_bias_mode:antiBiasMode});
     out += renderConns(s.connections);
     out += '<button class="dispatch-btn" data-testid="dispatch-button" disabled ' +
            'title="confirm dispatch in Phase 2" aria-disabled="true">' +
@@ -657,7 +669,8 @@ function renderHistory(){
           }
           out += renderHead(d);
           out += renderClose(d);
-          out += renderGroups(d.groups);
+          out += '<div class="sectionlbl">ANTI-BIAS MODE Â· ' + esc(d.anti_bias_mode || "historical") + '</div>';
+          out += renderGroups(d.groups, {anti_bias_mode:d.anti_bias_mode});
           out += renderConns(d.connections);
           out += '</div>';
         }

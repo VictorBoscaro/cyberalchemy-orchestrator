@@ -104,7 +104,7 @@ class HostWorkflowBindingTests(unittest.TestCase):
         }
         self.opening = {
             "dispatch_id": "2026-07-25-foundational-research",
-            "schema_version": "0.6.2",
+            "schema_version": "0.6.3",
             "dispatch_type": "research",
             "goal": "Research a deterministic foundational kernel.",
             "context": (
