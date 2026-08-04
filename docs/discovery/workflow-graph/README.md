@@ -36,10 +36,15 @@ What is the smallest explicit and executable model that represents work, depende
 coordination, communication and completion without collapsing distinct authorities or creating a
 second source of truth?
 
-“Smallest” must be evaluated rather than asserted. A candidate is smaller only when it minimizes
-canonical authorities and duplicated state while still providing total deterministic mappings,
-representing every required counterexample, preventing implicit grants, reconstructing runtime
-state from authoritative facts and preserving the meaning of prior versions.
+“Smallest” must be evaluated rather than asserted. Candidates must first pass eliminatory gates:
+total deterministic mappings, representation of every required counterexample, no implicit grant,
+zero overlapping canonical authorities for the same fact and lifecycle stage, no unsupported
+collapse of distinct authority boundaries, reconstructible runtime state and preserved meaning of
+prior versions. Any proposed authority consolidation must prove compatible lifecycle, mutability,
+grant power, accountability and compliance with ratified ownership boundaries. Surviving candidates
+are then compared, in order, by fewer authority handoffs or representations, less duplicated
+non-authoritative state and lower representational complexity. The discovery must show this
+comparison in a table and return no recommendation when the evidence does not justify an ordering.
 
 One hypothesis to test is that “the workflow graph” is not one universal graph, but a composition:
 
@@ -75,8 +80,11 @@ projection may be the smaller representation for a dimension.
 
 Relevant semantics currently exist in several places:
 
+- [`SkillExecutionProfile`](../../features/agents-communication-infra/specs/protocol-compilation.md#skillexecutionprofile)
+  declares one skill revision's obligations, parameters, capability requirements and outputs; it
+  carries no topology.
 - [`ProtocolRecipe`](../../features/agents-communication-infra/specs/protocol-compilation.md#protocolrecipe)
-  defines a bounded reusable DAG with typed nodes and edges.
+  defines a bounded reusable DAG with typed nodes and edges, pinned to a profile by digest.
 - [`DispatchCandidate`](../../features/agents-communication-infra/specs/protocol-compilation.md#dispatchcandidate)
   preserves the concrete candidate nodes, edges and terminal-node IDs without granting execution
   authority or assigning executors.
@@ -84,8 +92,10 @@ Relevant semantics currently exist in several places:
   `group_graph` typed only as `object`; it does not yet close the executable graph schema.
 - [`AgentInvocationPlan`](../../features/agents-communication-infra/specs/domain.md#agentinvocationplan)
   binds runtime execution to a `seat_id`, role/task references, budget, sandbox and authority fence.
-- [Bus Contracts](../../features/agents-communication-infra/discovery/bus-contracts/README.md) owns
-  routing, visibility, reveal and delivery semantics.
+- [Bus Contracts](../../features/agents-communication-infra/discovery/bus-contracts/README.md)
+  investigates candidate contracts within the existing Work Bus routing/message boundary; as a
+  draft discovery, it does not itself own or promote routing, visibility, reveal or delivery
+  semantics.
 - [Agents Communication Protocols](../../features/agents-communication-infra/discovery/agents-communication-protocols/README.md)
   now records candidate questions about participant identity, workflow nodes, communication and
   completion, but should consume rather than incidentally define the resulting graph model.
@@ -161,8 +171,16 @@ one agent.
 ### WGQ-4 — Which node and edge kinds are required?
 
 Evaluate the existing protocol-compilation taxonomies and determine whether they are sufficient for
-execution. For every admitted kind, define identity, required fields, valid endpoints, readiness,
-input/output contracts, executor requirements, failure/retry behavior, ordering and equality.
+execution. For every admitted node kind, define identity, required fields, readiness, input/output
+contracts, executor requirements, failure/retry behavior, ordering and equality. For every admitted
+edge kind, define identity, required fields, valid endpoint kinds, dependency/release semantics,
+ordering and equality. Any non-applicable property requires an explicit disposition, justification
+and substitute invariant rather than an unexplained `N/A`.
+
+Trace release authority explicitly from output definition through node output reference, accepted
+output fact, gate/release predicate and any completion use. The trace must name the sole owner of
+each decision and reject duplicated predicates that could disagree about whether downstream work is
+ready.
 
 ### WGQ-5 — What belongs to workflow versus communication?
 
@@ -209,10 +227,14 @@ Every source and destination path must have an explicit disposition and rule ref
 requirements must not become grants implicitly, and runtime facts must not be inserted into frozen
 authority retroactively.
 
-For this discovery, a **total mapping** means that every admitted source path has exactly one
-declared disposition such as copied, transformed, resolved, rejected, intentionally omitted or
-retained only as lineage. Total does not imply reversible or lossless. Every transformation must
-identify its authority, preconditions and destination owner.
+For this discovery, a **total mapping** is bidirectional coverage: every admitted source path has
+exactly one declared disposition such as copied, transformed, resolved, rejected, intentionally
+omitted or retained only as lineage; and every destination path declares a complete provenance
+expression containing one or more typed contributions such as source-derived, policy-added,
+user-confirmed or runtime-derived, the role and `rule_ref` of each contribution, the composition
+rule and exactly one canonical owner of the resolved destination value. Total does not imply
+reversible or lossless. Every transformation or addition must identify its authority, preconditions
+and destination owner.
 
 The discovery must close what confirmation may do to candidate topology. At minimum, decide whether
 confirmation may assign executors, resolve capabilities, specialize parameters, insert system
@@ -224,6 +246,20 @@ The result must include an authority matrix with, for every lifecycle stage, the
 immutability boundary, ability to grant execution, permitted derivations and successor. It should
 test at least `ProtocolRecipe`, `DispatchCandidate`, confirmation input/projection, `DispatchSpec`,
 `Run` facts and audit closure.
+
+The discovery must also determine whether compiled topology is fully determined by recipe identity
+or may additionally vary with invocation values, and therefore what a recipe digest indexes.
+Promoted protocol compilation v1 already answers this for itself: a recipe pins `profile_digest`,
+and invocation values reach only `prompt_template` placeholders, never nodes or edges. The question
+is asked of the successor model and does not reopen the promoted contract.
+
+Declared variation in rigor is one live instance. An earlier `domainspec-spec-feature` prototype
+expresses `medium` and `high` as two distinct `protocol-graph` blocks chosen by a suffix on the
+protocol identifier, and selects one *before* compilation — a selection step absent from the
+pipeline above, which leaves the set of admitted source paths ill-defined until it resolves. That
+gap is a defect in the totality requirement already stated here. Where the level itself belongs
+depends on the upstream authoring boundary this brief leaves open, so it is recorded as a residual
+question rather than a further obligation of WGQ-9.
 
 ### WGQ-10 — Which views may simplify the canonical model?
 
@@ -247,14 +283,26 @@ A candidate model is incomplete unless it can represent and distinguish at least
 10. Rework creates a new attributable generation and loop exhaustion does not imply approval.
 11. The workflow reaches an unresolved or awaiting-human terminal outcome.
 12. The run reaches a terminal fact while audit close remains pending or requires reconciliation.
-13. Cancellation occurs while nodes are ready or attempts are active, and late results cannot
-    regain authority.
+13. Cancellation occurs while nodes are ready, preventing new attempts from acquiring authority.
 14. A conditional branch is not selected without its nodes being misclassified as failed.
-15. Fan-in receives a partial failure, timeout or escalation to a human.
-16. One logical operation requires multiple executors, or one reusable subworkflow is invoked from
-    multiple nodes, without identity collision.
-17. A policy or topology change requires new confirmation while the prior run remains interpretable
-    under its frozen version.
+15. Fan-in receives a partial failure and does not silently treat missing inputs as success.
+16. One logical operation requires multiple executors without collapsing logical and participation
+    identity.
+17. One reusable subworkflow is invoked from multiple nodes without identity collision.
+18. A timeout triggers its declared bounded outcome rather than being confused with executor
+    failure or semantic rejection.
+19. Escalation transfers a blocked decision to a human without granting the agent human authority.
+20. A policy change requires new confirmation while the prior run remains interpretable under its
+    frozen policy version.
+21. A topology change requires new confirmation while the prior run remains interpretable under
+    its frozen topology version.
+22. An attempt ends without a required output, or with schema-invalid output; the consumer or gate
+    is not released and no successful terminal outcome is produced. Each failure variant requires
+    an independent verdict.
+23. Cancellation occurs while an attempt is active; its late result cannot regain authority or
+    release downstream work.
+24. Two reviewers are assigned opposing positions on the same artifact, where independence and
+    opposition are declared obligations rather than emergent properties of parallel layout.
 
 ## 7. Scope Boundaries
 
@@ -268,6 +316,8 @@ A candidate model is incomplete unless it can represent and distinguish at least
 
 ### Out of scope for the initial discovery
 
+- Authoring recipes, and the upstream step that turns a skill revision into a
+  `SkillExecutionProfile` and a `ProtocolRecipe`. This frame starts at an already-authored recipe.
 - Implementing a scheduler or provider adapter.
 - Changing the promoted protocol-compilation v1 contract.
 - Promoting a new `DispatchSpec` schema.
@@ -284,12 +334,15 @@ Those may become downstream work only after the conceptual model survives review
 | Existing model | Field- and invariant-level inventory of protocol, domain, workflow, bus and runtime contracts. |
 | Semantic dimensions | Explicit disposition of structure, authority, allocation, coordination/communication and state as graph, relation, policy, state machine or projection. |
 | Identity | Explicit cardinality table for node, agent, seat, instance and attempt across retries and reuse. |
-| Node/edge taxonomy | Closed candidate schemas exercised against every required counterexample. |
+| Node/edge taxonomy | Closed candidate schemas exercised against every required counterexample, plus one illustrative recipe hand-written for a real repository skill — non-conformant to the v1 fixture manifest and produced only as an instrument — to test whether the admitted node and edge kinds represent an obligation set that was not designed alongside them. |
+| Release authority | Trace matrix from output definition through accepted fact and release predicate to completion use, with one owner per decision. |
 | Communication | At least one case where dependency and permission differ in each direction. |
 | Coordination | Independent-review/quorum case proving that parallel layout alone is insufficient. |
 | Completion | State-transition examples distinguishing attempt end, workflow outcome, run terminal fact and audit close. |
 | Mapping | Total source-path-to-destination-path matrix with negative tests for omissions and implicit grants. |
 | Authority | Lifecycle matrix naming the sole canonical owner of each fact, admitted transformations and lineage evidence. |
+| Alternatives | Candidate-by-criterion and candidate-by-counterexample matrices, including eliminations, trade-offs and the evidence for any ordering. |
+| Decision coverage | Matrix from every proposed schema decision and field to the WGQs and evidence that establish its semantics, cardinality, authority, validation and lifecycle. |
 | Projection | Two views with different visual simplification that remain derivably equal to the same authority. |
 
 ## 9. Expected Outputs
@@ -305,6 +358,25 @@ docs/discovery/workflow-graph/
 The discovery may recommend later decision records, experiments, SPEC amendments or work-pack
 tasks. This brief authorizes none of them.
 
+`workflow-graph.md` must contain: a provisional glossary; evidence inventory; alternatives
+considered; an `answered`, `proven-not-applicable` or `blocked` disposition for WGQ-1 through WGQ-10;
+candidate-by-criterion and candidate-by-counterexample matrices; authority, bidirectional mapping
+and schema-decision-to-WGQ/evidence matrices; the recommended model and rejected alternatives with
+trade-offs; impacts and conflicts across existing contracts; and residual questions and blockers.
+A `proven-not-applicable` disposition requires evidence that no recommended field, invariant,
+mapping, authority or lifecycle decision depends on that WGQ.
+
+A schema recommendation is permitted only when every WGQ is `answered` or
+`proven-not-applicable`, every counterexample has a supported verdict, mapping coverage has no
+unexplained source or destination path, no capability grant is implicit, every normative conflict
+is resolved in conformity with current authority or remains recommendation-blocking, and no
+critical review objection remains. Every blocker must be classified and justified as
+`recommendation-blocking` or `non-blocking`. A blocker affecting the semantics, cardinality,
+authority, validation or lifecycle of any proposed schema decision or field is automatically
+recommendation-blocking; `non-blocking` requires evidence of no impact in the
+schema-decision-to-WGQ matrix. Any recommendation-blocking item forces the discovery outcome to
+`inconclusive` or `blocked` and forbids a `DispatchSpec` schema recommendation.
+
 ## 10. Non-Decisions Preserved by This Brief
 
 - “Workflow graph” is a working name, not a ratified canonical concept.
@@ -314,6 +386,11 @@ tasks. This brief authorizes none of them.
 - Groups are not removed; their irreducible semantics remain under investigation.
 - No `DispatchSpec` field, schema version or migration is selected.
 - No current runtime capability is claimed.
+- The upstream boundary is left open: recipe authorship, and the step from a skill revision to a
+  `SkillExecutionProfile` and a `ProtocolRecipe`, are neither assigned an owner nor declared
+  ownerless by this brief. Promoted protocol compilation v1 specifies those artifacts as closed
+  inputs while explicitly deferring their lifecycle operations. They are recorded here as an
+  unresolved gap so that neither WGQ-4 nor WGQ-9 is read as having settled them.
 
 ## Connections
 
@@ -322,6 +399,6 @@ tasks. This brief authorizes none of them.
 | [Agents Communication Protocols](../../features/agents-communication-infra/discovery/agents-communication-protocols/README.md) | `refines-question-from` | Supplies OQ-ACP3.B and OQ-ACP3.G and the candidate `DispatchSpec` decomposition that exposed the missing graph model. |
 | [Protocol Compilation](../../features/agents-communication-infra/specs/protocol-compilation.md) | `starts-from` | Owns the promoted reusable recipe DAG and non-authoritative candidate projection. |
 | [ACI Domain](../../features/agents-communication-infra/specs/domain.md) | `must-align-with` | Owns `DispatchSpec`, `Group`, `Seat`, `Attempt`, invocation plans and run terminal facts. |
-| [Bus Contracts](../../features/agents-communication-infra/discovery/bus-contracts/README.md) | `boundary-with` | Owns communication authorization, visibility, reveal and delivery. |
+| [Bus Contracts](../../features/agents-communication-infra/discovery/bus-contracts/README.md) | `boundary-with` | Investigates candidate contracts for communication authorization, visibility, reveal and delivery within the existing Work Bus routing/message boundary; promotion and normative ownership remain external to that draft. |
 | [ACI-PG-001](../../decisions/aci-protocol-governance-ownership.md) | `governed-by` | Fixes the authority boundary at non-authoritative `DispatchCandidate`; confirmation and runtime retain downstream ownership. |
 | [Dispatch telemetry](../../../telemetry/agents/subagents-dispatch.yaml) | `compares-with` | Provides a legacy structural precedent without becoming a normative source. |
