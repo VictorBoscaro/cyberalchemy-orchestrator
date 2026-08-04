@@ -7,8 +7,8 @@ nature: [explanatory, reference, technical]
 status: draft
 veracity: medium
 conviction: high
-version: 0.5.0
-last_updated: 2026-08-03
+version: 0.6.0
+last_updated: 2026-08-04
 ---
 
 # Agents Communication Protocols — Discovery
@@ -21,7 +21,7 @@ persistida origina todas as projeções, configurações de agentes e ações da
 depender do agente do chat durante a run. A lane live `legacy-managed` permanece fora desse boundary
 e conserva a autoridade de workflow/session definida pelo contrato de cutover.
 
-**Status:** v0.5.0 — discovery draft para a futura lane `runtime-managed`; a decisão de ownership de protocol compilation está ratificada, enquanto schemas, lifecycle persistente e runtime permanecem sujeitos à promoção e aos gates indicados abaixo
+**Status:** v0.6.0 — discovery draft para a futura lane `runtime-managed`; a decisão de ownership de protocol compilation está ratificada, enquanto a decomposição candidata de `DispatchSpec`, schemas, lifecycle persistente e runtime permanecem sujeitos à promoção e aos gates indicados abaixo
 
 **Owner:** @victorboscaro
 
@@ -43,7 +43,7 @@ discovery v0.3.0 distribuía autoridade entre `SkillExecutionProfile`, `recipe_r
 impedindo uma resposta inequívoca à pergunta: “qual objeto exato o usuário confirmou e a
 infraestrutura executou?”.
 
-**What's broken (as of 2026-08-03)**
+**What's broken (as of 2026-08-04)**
 
 - A v0.3.0 chamava `recipe_ref` de autoridade única sobre grafo, mensagens, ferramentas e resultados,
   mas depois atribuía a execução aos bytes confirmados do `DispatchSpec`
@@ -54,9 +54,10 @@ infraestrutura executou?”.
 - Antes da decisão humana de 2026-08-03, a compilação, o registry e o lifecycle do
   `SkillExecutionProfile` permaneciam sem owner assentado
   ([Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) §OQ-ATD3).
-- O contrato de routing já coloca um `RoutingPlan` imutável dentro do `DispatchSpec`, mas a v0.3.0
-  repetia partes dessa semântica como se pertencessem ao protocolo da skill
-  ([Bus Contracts](../bus-contracts/README.md) §H5).
+- O contrato de routing exige um plano imutável derivado da autoridade confirmada, mas a tabela
+  normativa atual de `DispatchSpec` ainda não declara um campo fechado para essa estrutura; a
+  v0.3.0 também repetia partes da semântica como se pertencessem ao protocolo da skill
+  ([Bus Contracts](../bus-contracts/README.md) §H5; [ACI Domain](../../specs/domain.md) §DispatchSpec).
 - O audit ledger possui regras próprias de autoridade e cutover; tratá-lo apenas como uma view ou
   como a fonte da execução apagaria a separação vigente entre fatos runtime e registro oficial
   (`dispatch-audit-ledger-cutover-contract.md:14`; [Dispatch Audit-Ledger
@@ -65,6 +66,19 @@ infraestrutura executou?”.
   confirmação; ela ainda não prova que a estrutura visualizada antes do aceite e a estrutura
   persistida/executada são literalmente a mesma projeção canônica
   (`specs/interfaces.md:51`; [ACI interfaces](../../specs/interfaces.md) §POST /dispatches/{dispatch_id}/confirm).
+- O `DispatchSpec` vigente tipa `group_graph`, `decision_policies`, `capability_resolution` e
+  `budgets` apenas como `object`; não existe schema fechado que diga como nodes e edges do
+  `DispatchCandidate` viram participantes, grants, routing ou estados executáveis
+  (`docs/features/agents-communication-infra/specs/domain.md:452`; [ACI Domain](../../specs/domain.md) §DispatchSpec).
+- O fixture v1 de `DispatchCandidate` contém os nodes `work` e `done`, a edge `work_to_done` e
+  `terminal_node_ids: ["done"]`, mas não atribui executor a nenhum node. Portanto, ele prova a
+  topologia candidata, não prova que todo node seja um agente nem que o terminal seja sem executor
+  (`docs/features/agents-communication-infra/specs/fixtures/protocol-compilation-v1/candidate.json:1`;
+  [candidate fixture](../../specs/fixtures/protocol-compilation-v1/candidate.json)).
+- O YAML de telemetria oferece um precedente útil para envelope, grupos, agentes e connections,
+  mas é uma superfície legacy de auditoria. Sua estrutura não pode ser adotada como autoridade
+  executável sem mapping, schemas e ownership explícitos
+  (`telemetry/agents/subagents-dispatch.yaml:6`; [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md)).
 
 **What stays the same**
 
@@ -100,9 +114,12 @@ e histórico sem tornar o perfil uma segunda autoridade executável.
 
 ### DispatchCandidate
 
-Value Object candidato e ainda não autorizativo que materializa uma invocação concreta: grafo,
-seats, prompts, policies, capabilities solicitadas, budgets, fontes, outputs e resultados terminais.
-É o objeto legível que o usuário inspeciona antes da confirmação.
+Value Object candidato e ainda não autorizativo cujo schema v1 contém apenas `schema`,
+`source_binding`, `invocation_values`, `nodes`, `edges`, `terminal_node_ids`, `obligation_dispositions`,
+`capability_requirements` e `outputs`. Seats/agentes, policies efetivas, budgets, sandbox, routing e
+grants não existem nesse objeto; precisam ser resolvidos ou adicionados por regra versionada durante
+a futura projeção para `DispatchSpec`. É evidência legível anterior à confirmação, nunca autoridade
+executável.
 
 ### ConfirmationProjection
 
@@ -213,10 +230,10 @@ O fluxo candidato é:
 3. Resolver um `SkillProtocolBinding` ativo e compatível e registrar no candidato a revisão do
    perfil, a revisão do binding e seu token compare-and-swap; ausência, stale ou revogação bloqueiam
    a execução e abrem autoria de protocolo.
-4. Combinar perfil, invocação e valores explícitos do usuário; inferências são permitidas somente
-   dentro das constraints do perfil e carregam `ResolutionProvenance`.
-5. Compilar um `DispatchCandidate` fechado, incluindo uma `recipe_ref` digest-pinned e uma disposição
-   para cada obrigação material: `preserved`, `compiled`, `superseded` ou `unsupported`.
+4. Combinar perfil, invocação e valores explícitos do usuário sem inferência; no v1, qualquer valor
+   obrigatório ausente é rejeitado.
+5. Compilar um `DispatchCandidate` fechado, incluindo `source_binding.recipe_digest` e uma
+   disposição para cada obrigação material conforme as regras fechadas da recipe.
 6. Resolver capabilities efetivas no boundary ACI; falha de capability obrigatória rejeita a
    confirmação, sem criar `ConfirmedDispatch` ou `Run`.
 7. Compilar no servidor o `DispatchSpec` final, canonicalizar seus bytes e emitir a
@@ -256,6 +273,73 @@ invocação exata e o bus entrega apenas conteúdo autorizado.
 
 O runtime pode criar IDs de attempt, timestamps, receipts e observações que não existiam na
 proposta. Esses valores são fatos posteriores, não liberdade para alterar a configuração semântica.
+
+### Candidate `DispatchSpec` decomposition
+
+Esta subseção registra uma resposta de trabalho para OQ-ACP3; ela não altera o `DispatchSpec`
+normativo e não reutiliza `aci.dispatch-spec@1` para um shape incompatível. A promoção precisa
+escolher uma nova versão ou amendment compatível e provar um mapping total.
+
+A recomendação atual é separar cinco preocupações dentro de um único envelope canônico:
+
+| Concern | Candidate contents | Constraint before promotion |
+|---|---|---|
+| `dispatch` | goal, context, working folder, assurance/review policy, loop ceiling and approver policy | No duplicate `final_approver`; one canonical owner and one field. |
+| `agents` | logical participant identity, display name, role contract, prompt body snapshot, resolved execution references, budget and sandbox/resource grants | An agent is not universally equal to a workflow node. The exact relation to existing `Seat` remains open. |
+| `workflow` | typed nodes, typed dependency edges, executor reference where applicable, inputs, outputs, gates and terminal nodes that reference `completion.outcome_id` | Agent work, deterministic operations and human gates remain representable; workflow owns terminal topology, not outcome definitions. |
+| `communication` | default-deny typed routes with sender, recipient, message schema, phase, reveal and delivery policy references | Dependency never implies permission to communicate. Work Bus owns delivery semantics. |
+| `completion` | canonical typed outcome definitions, convergence predicates, required outputs, loop exhaustion and human-wait states | Completion is the single owner of outcome definitions; agent process completion is evidence, not semantic success by itself. |
+
+Collective semantics are orthogonal to layout. `groups` should not be required merely to express
+parallelism; absence of dependency edges already permits parallel scheduling. When quorum,
+independent reveal, eligible membership, group budgets or aggregation rules matter, the spec needs
+an optional typed `coordination_scopes` collection (or an equivalent owner-approved construct).
+That construct must map explicitly to existing `Group`, `Seat`, `GroupResult` and the versioned
+`Group` identity carried by `group_aggregate_id`, rather than silently deleting their semantics.
+
+The candidate per-agent configuration is:
+
+| Field | Meaning | Current recommendation |
+|---|---|---|
+| `agent_id` | Stable opaque logical participant ID within the dispatch | Keep separate from `agent_name` and `role`; settle whether it aliases or references `seat_id`. |
+| `agent_name` | Nominal identity used in the semantic prompt and human-facing views | Required; never use a role such as `synthesizer` as the ID. |
+| `role_contract_ref` | Digest-pinned functional contract | Prefer a reference over an unconstrained role string; a display `role` may be derived. |
+| `prompt_body_ref` | Content-addressed semantic prompt body | The body begins with `Voce e <agent_name> e seu objetivo e...`; the host materializer prepends the mandatory `ACI-WORKFLOW-BINDING-V1:<base64>` transport line, so that binding remains the first line of the launched prompt. |
+| `execution_resolution` | Frozen provider, adapter and model references | Use immutable `VersionedReference`s produced by confirmation, not free-form names. |
+| `tool_profile_ref` | Frozen effective tool contract | Keep tool authorization distinct from launcher isolation and derive the reference from the confirmed capability resolution. |
+| `resource_budget` | Typed finite execution limits | Reuse the full `ResourceBudget`; any requested unlimited value requires a separate policy decision and cannot be encoded as an omitted limit. |
+| `sandbox_policy` | Filesystem, process, network and credential isolation/grants | Reuse `SandboxPolicy` or a digest-pinned extension; absence means deny. Mutating grants remain gated by OQ-ACP4. |
+
+Filesystem policy should distinguish readable paths, writable paths and creation roots, use
+repository-relative canonical paths where possible, and bind external inputs by immutable artifact
+reference. Concurrent mutation additionally requires path ownership, generation, invalidation and
+reconciliation rules; a permissive glob alone is not enough.
+
+Workflow nodes should therefore carry `node_id`, `node_kind`, contracts and an optional
+`executor_ref`, rather than deriving `node_id == agent_id`. A work or review node may reference an
+agent; a deterministic operation may reference a service; a human gate may reference an approval
+policy; a terminal node can carry no executor and references one canonical outcome definition in
+`completion`. The current v1 candidate fixture does not decide which executor semantics apply to
+`done` and does not define that outcome reference.
+
+Before totality can be tested, promotion must close both the source and destination schemas,
+including canonical locations for communication and effective grants. The mapping must then carry
+one verifiable row per source and destination path:
+`source_path -> disposition -> rule_ref -> destination_path`, where disposition is exactly one of
+`preserved`, `resolved`, `policy_added`, `derived` or `rejected`. It retains source digests and fails
+closed on any uncovered path. In particular:
+
+| Candidate input | Candidate disposition into `DispatchSpec` |
+|---|---|
+| `nodes`, `edges`, `terminal_node_ids` | Preserve their protocol meaning, then resolve executor, gate and outcome semantics without changing the source graph silently. |
+| `capability_requirements` | Resolve into effective grants during confirmation; never copy requirements as if they were grants. |
+| `outputs` and obligation dispositions | Bind to executable schemas, required outputs and completion predicates. |
+| `source_binding` | Preserve as lineage evidence; it never becomes execution authority. |
+| agent, routing, budget and sandbox fields absent from the candidate | Add only through an explicit versioned policy or user-supplied confirmed value; otherwise reject the projection as incomplete. |
+
+This makes the YAML precedent useful without copying its authority model: the top-level dispatch
+envelope and nested agent records remain recognizable, while workflow dependencies, communication
+authorization and collective coordination become separate typed structures.
 
 ## 6. Derived Surfaces and Ownership
 
@@ -329,11 +413,13 @@ Toda agregação de julgamentos deve referenciar critérios, response schema, in
 aggregation rule versionados. Discussão pode ocorrer somente depois do registro imutável das
 posições iniciais; reconsideração abre nova rodada. Uma posição única não é consenso.
 
-Atingir um loop ceiling nunca implica aprovação. A `Run` produz exatamente um fato terminal conforme
-os estados confirmados: aprovada, rejeitada, não resolvida, bloqueada ou aguardando uma decisão
-humana explicitamente declarada no grafo. Esse fato não é sinônimo de `closed`: o close effect pode
-permanecer `pending`, `unknown` ou `reconciliation_required`, e o status oficial só passa a `closed`
-depois de `audit_close.verified` por exact re-read.
+Atingir um loop ceiling nunca implica aprovação. O contrato atual sustenta apenas que a `Run`
+produz exatamente um fato terminal vencedor. A taxonomia candidata — aprovada, rejeitada, não
+resolvida, bloqueada ou aguardando decisão humana — e suas transições precisam ser fechadas pelo
+schema/state machine de OQ-ACP3.G e não são apresentadas como ratificadas. O fato terminal não é
+sinônimo de `closed`: o close effect pode permanecer `pending`, `unknown` ou
+`reconciliation_required`, e o status oficial só passa a `closed` depois de
+`audit_close.verified` por exact re-read.
 
 ## 9. Validation Direction
 
@@ -363,6 +449,13 @@ não podem ser apresentados como disponíveis por esta discovery.
 
 **Status:** settled by human decision on 2026-08-03.
 
+**Question:** Quem possui profiles, bindings, recipe/DAG e a compilação determinística, e em qual
+artefato termina essa autoridade antes da confirmação executável?
+
+**Recommendation:** atribuir a ACI Protocol Governance o lifecycle e a compilação somente até o
+`DispatchCandidate` não autoritativo, preservando capability resolution e `DispatchSpec` final no
+owner de confirmação existente.
+
 **Decision:** ACI Protocol Governance compila e mantém profiles, bindings e recipe/DAG até um
 `DispatchCandidate` não autoritativo. A confirmação ACI continua responsável por capability
 resolution, bytes/digest finais de `DispatchSpec`, aceite humano e criação de autoridade executável.
@@ -373,6 +466,8 @@ The companion amendment and bounded SPEC promotion are complete through
 [Protocol Compilation Candidate v1](../../specs/protocol-compilation.md). The bounded contract has
 accepted normative review; implementation still requires work-pack readiness and executable
 conformance evidence.
+
+**Settlement stage:** settled → decision record and bounded SPEC promotion complete.
 
 ### OQ-ACP2 — Transitive skill closure
 
@@ -393,6 +488,23 @@ visualização derivada, sem criar uma segunda autoridade?
 **Recommendation:** tratar `DispatchCandidate` apenas como input não autoritativo; a confirmação
 aceita o digest dos bytes de `DispatchSpec` já resolvidos e canonicalizados pelo servidor, com uma
 matriz explícita de campos preservados, resolvidos e runtime-added.
+
+Para responder esta pergunta uma decisão por vez, o settlement deve fechar:
+
+| Subquestion | Question | Current recommendation |
+|---|---|---|
+| OQ-ACP3.A — participant identity | `agent_id` é um alias de `seat_id`, uma referência a `Seat` ou uma identidade lógica anterior ao seat? | Não igualar a node; preservar `agent_id`, `agent_name` e `role_contract_ref` como conceitos distintos e escolher uma única relação explícita com `Seat`. |
+| OQ-ACP3.B — workflow graph | Quais node kinds e edge kinds são fechados, e como cada node encontra agente, serviço ou gate executor? | Manter nodes e edges tipados; usar `executor_ref` opcional e validar cada combinação por `node_kind`. |
+| OQ-ACP3.C — collective coordination | Como representar quorum, elegibilidade, reveal independente, agregação e budget coletivo sem usar groups apenas como layout? | Paralelismo não cria group; acrescentar `coordination_scopes` somente quando houver semântica coletiva e mapear aos agregados ACI existentes. |
+| OQ-ACP3.D — communication grants | Quais pares podem trocar quais mensagens, em que fase e sob quais políticas de reveal/delivery? | Topologia separada, default deny, endpoints por identidade estável e referências versionadas aos schemas e policies do Work Bus. |
+| OQ-ACP3.E — prompt materialization | Quais bytes pertencem ao prompt semântico e quais são adicionados pelo host? | Snapshot do corpo começa com a identidade e o objetivo; materialização adiciona a linha `ACI-WORKFLOW-BINDING-V1` antes dele e registra ambos sem ambiguidade. |
+| OQ-ACP3.F — execution grants | Como budgets, tools, filesystem, network, process e credentials são representados? | Reusar `ResourceBudget` e `SandboxPolicy`, com `tool_profile_ref` separado e referências resolvidas; ausência nega, e mutação continua bloqueada por OQ-ACP4. |
+| OQ-ACP3.G — completion | Terminal nodes permanecem ou são substituídos por outro state machine? | Manter terminal nodes e outcomes tipados no primeiro schema; substituir somente mediante prova de equivalência para gates, unresolved, loop exhaustion e awaiting-human. |
+| OQ-ACP3.H — total mapping and versioning | Como provar que nenhuma obrigação ou autoridade surgiu, sumiu ou mudou silenciosamente? | Matriz total de dispositions, regra/digest de cada resolução, canonicalização determinística, nova versão/amendment e testes negativos fail-closed. |
+
+Essas recomendações são respostas candidatas, não decisões ratificadas. OQ-ACP3 só pode ser
+promovida quando todas as oito subquestões tiverem contrato fechado, exemplos canônicos e testes de
+mapping; resolver apenas o shape JSON não resolve a fronteira de autoridade.
 
 **Settlement stage:** discovery experiment → SPEC.
 
@@ -492,20 +604,24 @@ flowchart TD
     S[Skill revision] --> P[SkillExecutionProfile]
     P --> C[DispatchCandidate]
     U[User invocation and explicit values] --> C
-    C --> CP[Server confirmation workflow resolves capabilities and emits canonical DispatchSpec bytes plus digest]
-    CP --> H{Human confirms exact digest?}
+    C --> M[Versioned total mapping]
+    M --> CP[Server resolves agents capabilities graph routing budgets sandbox and completion]
+    CP --> DS[Canonical DispatchSpec bytes plus digest]
+    DS --> H{Human confirms exact digest?}
     H -->|no| X[Declined or revised candidate]
     H -->|yes| D[ConfirmedDispatch plus canonical DispatchSpec]
     D --> R[Exactly one Run plus opening effect intent]
     R --> O{audit_opening.verified?}
-    O -->|yes| I[AgentInvocationPlans]
+    O -->|yes| K[Authorized execution and workflow reduction]
     O -->|no| Q[Pending unknown or reconciliation_required]
     D --> Y[Audit-ledger materialization]
     D --> V[UI and graph projections]
+    K --> I[AgentInvocationPlans]
+    K --> B[Authorized routing and message delivery]
     I --> A[Materialized agent attempts]
-    R --> B[Authorized routing and message delivery]
-    A --> T[Unique terminal fact]
-    B --> T
+    A --> W[Workflow state reduction gates and completion predicates]
+    B --> W
+    W --> T[Unique terminal fact]
     T --> Z{audit_close.verified?}
     Z -->|yes| E[Closed]
     Z -->|no| Q
@@ -520,6 +636,7 @@ atravessa esse fluxo.
 
 | Version | Date | Changes |
 |---|---|---|
+| 0.6.0 | 2026-08-04 | Added the non-ratified candidate `DispatchSpec` decomposition and split OQ-ACP3 into eight settlement questions covering participant identity, workflow, collective coordination, communication, prompt materialization, grants, completion and total mapping/versioning. Two independent review rounds corrected the exact v1 candidate inventory and no-inference rule, separated tool authorization from sandbox, removed an unsupported aggregate type, made completion the sole owner of outcome definitions, marked the outcome taxonomy as candidate, and placed routing behind the audit-opening barrier. The prompt rule now preserves the mandatory host-binding first line; agents and workflow nodes remain distinct. No new decision was ratified; ACPD-4 is unchanged. |
 | 0.5.0 | 2026-08-03 | Ratified ACPD-4 by explicit human decision: ACI Protocol Governance owns profile, binding, recipe/DAG and deterministic compilation through non-authoritative `DispatchCandidate`; capability resolution, final `DispatchSpec`, confirmation and execution remain outside that owner. Settled OQ-ACP1, synchronized the ownership matrix and corrected the flow-node collision. |
 | 0.4.2 | 2026-08-03 | Added OQ-ACP8 to make the agent interaction execution model explicit: finite scheduler-materialized attempts for the MVP versus any future persistent or multi-exchange provider session, including identity, history, budget, fencing, recovery and replay constraints. |
 | 0.4.1 | 2026-08-03 | Scoped the invariant to `runtime-managed`; made confirmation digest-bound over server-resolved `DispatchSpec` bytes; added idempotent confirmation, audit opening/close barriers and revocation-state rules; split YAML ownership; relabeled ownership and ACPD entries as candidate proposals after independent review. No decisions are ratified or locked by this draft. |
