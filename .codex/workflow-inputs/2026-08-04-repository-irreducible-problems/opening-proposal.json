@@ -1,0 +1,95 @@
+{
+  "dispatch_id": "2026-08-04-repository-irreducible-problems",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Determine which problem formulations across cyberalchemy-orchestrator and domainspec-core, if any, remain distinct under a defensible irreducibility criterion, and establish the standing of loss of objective linkage among them.",
+  "context": "The two repositories contain overlapping formulations involving objective linkage, judgment, authority, provenance, semantic composition, execution fidelity, observability, revisability, typed intent, and intent-to-reality correspondence. The research must distinguish problems from symptoms, required properties, architectural responses, and implementation mechanisms without presupposing a single foundational problem or a reconciled umbrella objective. Every load-bearing conclusion must remain bounded by cited repository evidence and preserve the authority standing of proposal-only material.",
+  "max_loops": 2,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/repository-irreducible-problem-inventory",
+  "groups": [
+    {
+      "group_id": "problem-perspective-explorers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Simon, Herbert",
+          "initial_prompt": "Investigate the objective, meaning, and collective-judgment perspective across both repositories. Read every common source: research/repository-irreducible-problem-inventory/research-initial-definitions.md; AGENTS.md; README.md; plans/governed-agent-work-infrastructure/PLAN.md; ../domainspec-core/AGENTS.md; and ../domainspec-core/README.md. Also read every specialized source: docs/essays/what-this-is-for/essay.md; ../domainspec-core/cyberAlchemy/agentic-system-deep-dive.md; ../domainspec-core/projects/framework-unification/CONCEPT-MAP.md; and ../domainspec-core/cyberAlchemy/agentic-system/slices/00-system-frame/README.md. Identify explicit problem formulations, their authoritative objective anchors, their claimed failure mechanism, and whether each is a problem, symptom, required property, architectural response, or implementation mechanism. Do not assume that irreducible problems exist or that the repositories share one reconciled objective. You may search and read additional documents inside cyberalchemy-orchestrator and ../domainspec-core when necessary, but for each added source record its path, authority or standing, why it was necessary, and the exact evidence used. Do not use network sources, execute sibling-repository scripts, mutate Git, edit any source artifact, or write outside research/repository-irreducible-problem-inventory. Return a source-grounded report to the parent with: sources inspected; added-source justification; extracted formulations; dependency or derivation claims; unresolved ambiguities; and candidate collapse-tests. Every load-bearing statement must cite a path and selector or line. Do not write findings.md."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Barnard, Chester",
+          "initial_prompt": "Investigate the authority, provenance, claim-standing, and licensed-composition perspective across both repositories. Read every common source: research/repository-irreducible-problem-inventory/research-initial-definitions.md; AGENTS.md; README.md; plans/governed-agent-work-infrastructure/PLAN.md; ../domainspec-core/AGENTS.md; and ../domainspec-core/README.md. Also read every specialized source: plans/governed-agent-work-infrastructure/essays/target-architecture-hypothesis/essay.md; plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md; definitions/DEFINITIONS.md; ../domainspec-core/cyberAlchemy-v2/SOURCE-MAP.md; ../domainspec-core/cyberAlchemy-v2/ontology/AUTHORITY-KINDS.md; ../domainspec-core/cyberAlchemy-v2/authority/definitions/DEFINITIONS.md; and ../domainspec-core/validation/poker-team/domainspec/GOVERNANCE-ATTENUATION.md. Identify explicit failure formulations and test whether provenance loss, authority drift, semantic incompatibility, and unlicensed composition are independent problems, consequences of one another, or properties required by a response. Preserve private/public and proposal/accepted boundaries. You may search and read additional documents inside cyberalchemy-orchestrator and ../domainspec-core when necessary, but for each added source record its path, authority or standing, why it was necessary, and the exact evidence used. Do not use network sources, execute sibling-repository scripts, mutate Git, edit any source artifact, or write outside research/repository-irreducible-problem-inventory. Return a source-grounded report to the parent with: sources inspected; added-source justification; extracted formulations; ownership and authority map; dependency or derivation claims; unresolved ambiguities; and candidate collapse-tests. Every load-bearing statement must cite a path and selector or line. Do not write findings.md."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Ashby, W. Ross",
+          "initial_prompt": "Investigate the execution, observation, evaluation, and intent-to-reality perspective across both repositories. Read every common source: research/repository-irreducible-problem-inventory/research-initial-definitions.md; AGENTS.md; README.md; plans/governed-agent-work-infrastructure/PLAN.md; ../domainspec-core/AGENTS.md; and ../domainspec-core/README.md. Also read every specialized source: research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md; research/agent-invocation-and-collaboration-topology/research-initial-definitions.md; framework/observability/README.md; ../domainspec-core/ops/development/2026-06-21-paper-saturn-explainer/SATURN-LAYER-MAP.md; ../domainspec-core/cyberAlchemy/agentic-system/slices/06-execution-feedback/README.md; and ../domainspec-core/cyberAlchemy/agentic-system/slices/07-first-working-loop/README.md. Identify explicit failure formulations and test whether execution divergence, observation gaps, evaluation failure, memory loss, and failure of realization are independent problems or downstream manifestations. Distinguish documented intent, implemented mechanism, observed evidence, and proposed architecture. You may search and read additional documents inside cyberalchemy-orchestrator and ../domainspec-core when necessary, but for each added source record its path, authority or standing, why it was necessary, and the exact evidence used. Do not use network sources, execute sibling-repository scripts, mutate Git, edit any source artifact, or write outside research/repository-irreducible-problem-inventory. Return a source-grounded report to the parent with: sources inspected; added-source justification; extracted formulations; execution/evidence chain; dependency or derivation claims; unresolved ambiguities; and candidate collapse-tests. Every load-bearing statement must cite a path and selector or line. Do not write findings.md."
+        }
+      ]
+    },
+    {
+      "group_id": "problem-synthesis",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 8500,
+          "agent_name": "Weick, Karl E.",
+          "initial_prompt": "Synthesize the three complete explorer returns without performing a new broad repository sweep. Read research/repository-irreducible-problem-inventory/research-initial-definitions.md and consume the exact upstream returns and cited source excerpts supplied by the workflow manifests. Preserve each explorer return verbatim under a labeled section in research/repository-irreducible-problem-inventory/research.md. In a draft research/repository-irreducible-problem-inventory/findings.md, reconcile objective formulations and build a candidate problem inventory that distinguishes problem, symptom, required property, architectural response, and implementation mechanism. State and justify a refinable irreducibility criterion; show proposed derivation relations; keep disagreements visible; and attach an inline collapse-test to every keystone candidate. Create the required verdict matrix with columns candidate | owner (precedent) | witnessed? (non-vacuity) | sound? (definitional) | verdict | use-mode, leaving cells explicitly pending when they require a skeptic gate. Every load-bearing synthesis claim must cite both the explorer return in research.md and the underlying repository source. Do not invent consensus or promote proposal-only claims. After receiving skeptic results through the zig-zag, revise findings.md by accepting supported corrections, preserving unresolved dissent, filling the matrix, and ending with a one-line answer to the dispatch goal. Write only research.md and findings.md in the working folder; do not edit sources or use network material."
+        }
+      ]
+    },
+    {
+      "group_id": "problem-skeptic-gates",
+      "n": 3,
+      "robot_talks": true,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Kuhn, Thomas",
+          "initial_prompt": "Apply only the precedent gate to every candidate in the synthesized inventory. Read the initial definitions, exact explorer returns, draft findings, and cited sources supplied through the workflow manifests. Search both cyberalchemy-orchestrator and ../domainspec-core for the authoritative owner of each formulation; additional documents are allowed when necessary, but record path, standing, reason for inclusion, and exact evidence. Determine whether each candidate is already deployed, owned but not deployed, or precedent-clean. Finding an owner is a positive result and must never produce KILL. Challenge unsupported novelty and ownership claims, but do not assess non-vacuity or definitional soundness. Return per-candidate owner citations, use-mode implications, refutations, and unresolved ownership disputes to the synthesizer. Do not use network sources, execute sibling scripts, mutate Git, edit sources, or write findings.md."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Popper, Karl",
+          "initial_prompt": "Apply only the non-vacuity gate to every candidate in the synthesized inventory. Read the initial definitions, exact explorer returns, draft findings, and cited execution or evidence sources supplied through the workflow manifests. For each candidate, construct the smallest concrete repository-grounded witness that would fail if the problem were absent, or return a closed no-witness negative. Additional documents in either repository are allowed when necessary, but record path, standing, reason for inclusion, and exact evidence. Do not judge precedent or whether one definition collapses into another. A KILL is permitted only when no witness survives, and the typed negative must name what the candidate would have contributed and the exact fact that zeroed it. Return per-candidate witnessed status, minimal witness, counterexample attempts, refutations, and unresolved cases to the synthesizer. Do not use network sources, execute sibling scripts, mutate Git, edit sources, or write findings.md."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Wittgenstein, Ludwig",
+          "initial_prompt": "Apply only the definitional-soundness gate to every candidate in the synthesized inventory. Read the initial definitions, exact explorer returns, draft findings, and canonical definition sources supplied through the workflow manifests, including definitions/DEFINITIONS.md, ../domainspec-core/arcanum/definitions/DEFINITIONS.md, and ../domainspec-core/cyberAlchemy-v2/authority/definitions/DEFINITIONS.md. Test whether each candidate is materially distinct under the proposed irreducibility criterion or merely renames, bundles, specializes, or re-skins another formulation. Additional documents in either repository are allowed when necessary, but record path, standing, reason for inclusion, and exact evidence. Do not judge precedent or construct non-vacuity witnesses. A KILL is permitted only for a demonstrated tautological or definitional collapse, recorded as a typed negative with the exact equivalence or derivation. Return per-candidate soundness, collapse attempts, surviving distinctions, refutations, and unresolved ambiguities to the synthesizer. Do not use network sources, execute sibling scripts, mutate Git, edit sources, or write findings.md."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "problem-perspective-explorers",
+      "to": "problem-synthesis",
+      "type": "sequential"
+    },
+    {
+      "from": "problem-synthesis",
+      "to": "problem-skeptic-gates",
+      "type": "zig-zag",
+      "loop_cap": 2
+    }
+  ]
+}

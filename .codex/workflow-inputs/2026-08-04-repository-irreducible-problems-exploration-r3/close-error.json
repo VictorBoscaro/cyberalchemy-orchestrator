@@ -1,0 +1,17 @@
+{
+  "close_of": "2026-08-04-repository-irreducible-problems-exploration-r3",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 0,
+    "tree": {
+      "explorer": 0,
+      "helpers": 0
+    },
+    "loops_used": 0
+  },
+  "feedback_prompts": [
+    "The automatic host hook gap was successfully contained: the direct bridge created and verified all three bound seats before launch.",
+    "The host refused the first launch because task_name problem_perspective_explorers_0 remained reserved by an interrupted agent from the prior attempt. The remaining two launches were not attempted.",
+    "All three pre-bound seats were terminalized as error. No research agent ran and no research return or artifact was accepted. A successor must use a new group_id so the compiler emits unique task names."
+  ]
+}

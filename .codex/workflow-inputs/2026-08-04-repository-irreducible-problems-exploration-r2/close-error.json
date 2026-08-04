@@ -1,0 +1,17 @@
+{
+  "close_of": "2026-08-04-repository-irreducible-problems-exploration-r2",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 3,
+    "tree": {
+      "explorer": 3,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": [
+    "MISSED-HOOK GAP: the dispatch opened launch-authorized in session ses_f0a2e5b5ab8597b111ab90926d7418f8, but host_workflow_turn_bindings contained zero rows after all three host launches. No bound-seat authorization was returned for the same parent.",
+    "LAUNCH INTEGRITY FAILURE: seat 0 received the exact compiled spawn_arguments, but seats 1 and 2 did not preserve the compiled binding envelope exactly on their initial spawn calls. Follow-up attempts were made after interrupting those two agents, but governed lifecycle forbids using unbound followup_task as a substitute for a failed launch.",
+    "CONTAINMENT: all three agents were interrupted, no agent return was accepted, and no research artifact from this dispatch was written or used. A successor dispatch must be newly compiled, opened, and launched from the exact generated spawn_arguments with binding receipts verified before accepting work."
+  ]
+}

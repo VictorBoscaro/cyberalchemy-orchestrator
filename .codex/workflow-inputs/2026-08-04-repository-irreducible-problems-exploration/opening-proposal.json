@@ -1,0 +1,41 @@
+{
+  "dispatch_id": "2026-08-04-repository-irreducible-problems-exploration",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Collect source-grounded problem formulations across cyberalchemy-orchestrator and domainspec-core through three independent perspectives, preserving their objective anchors, standing, dependencies, ambiguities, and candidate collapse-tests for later synthesis.",
+  "context": "This is the exploration stage of the repository irreducible-problem investigation. It gathers evidence across objective and judgment, authority and composition, and execution and realization without deciding the final irreducible set. Every load-bearing statement must remain bounded by cited repository evidence and preserve the authority standing of proposal-only material.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/repository-irreducible-problem-inventory/stages/exploration",
+  "groups": [
+    {
+      "group_id": "problem-perspective-explorers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Simon, Herbert",
+          "initial_prompt": "Investigate the objective, meaning, and collective-judgment perspective across both repositories. Read every common source: research/repository-irreducible-problem-inventory/research-initial-definitions.md; AGENTS.md; README.md; plans/governed-agent-work-infrastructure/PLAN.md; ../domainspec-core/AGENTS.md; and ../domainspec-core/README.md. Also read every specialized source: docs/essays/what-this-is-for/essay.md; ../domainspec-core/cyberAlchemy/agentic-system-deep-dive.md; ../domainspec-core/projects/framework-unification/CONCEPT-MAP.md; and ../domainspec-core/cyberAlchemy/agentic-system/slices/00-system-frame/README.md. Identify explicit problem formulations, their authoritative objective anchors, their claimed failure mechanism, and whether each is a problem, symptom, required property, architectural response, or implementation mechanism. Do not assume that irreducible problems exist or that the repositories share one reconciled objective. You may search and read additional documents inside cyberalchemy-orchestrator and ../domainspec-core when necessary, but for each added source record its path, authority or standing, why it was necessary, and the exact evidence used. Do not use network sources, execute sibling-repository scripts, mutate Git, edit any source artifact, or write outside research/repository-irreducible-problem-inventory. Return a source-grounded report to the parent with: sources inspected; added-source justification; extracted formulations; dependency or derivation claims; unresolved ambiguities; and candidate collapse-tests. Every load-bearing statement must cite a path and selector or line. Do not write findings.md."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Barnard, Chester",
+          "initial_prompt": "Investigate the authority, provenance, claim-standing, and licensed-composition perspective across both repositories. Read every common source: research/repository-irreducible-problem-inventory/research-initial-definitions.md; AGENTS.md; README.md; plans/governed-agent-work-infrastructure/PLAN.md; ../domainspec-core/AGENTS.md; and ../domainspec-core/README.md. Also read every specialized source: plans/governed-agent-work-infrastructure/essays/target-architecture-hypothesis/essay.md; plans/governed-agent-work-infrastructure/essays/work-context-system-view/essay.md; definitions/DEFINITIONS.md; ../domainspec-core/cyberAlchemy-v2/SOURCE-MAP.md; ../domainspec-core/cyberAlchemy-v2/ontology/AUTHORITY-KINDS.md; ../domainspec-core/cyberAlchemy-v2/authority/definitions/DEFINITIONS.md; and ../domainspec-core/validation/poker-team/domainspec/GOVERNANCE-ATTENUATION.md. Identify explicit failure formulations and test whether provenance loss, authority drift, semantic incompatibility, and unlicensed composition are independent problems, consequences of one another, or properties required by a response. Preserve private/public and proposal/accepted boundaries. You may search and read additional documents inside cyberalchemy-orchestrator and ../domainspec-core when necessary, but for each added source record its path, authority or standing, why it was necessary, and the exact evidence used. Do not use network sources, execute sibling-repository scripts, mutate Git, edit any source artifact, or write outside research/repository-irreducible-problem-inventory. Return a source-grounded report to the parent with: sources inspected; added-source justification; extracted formulations; ownership and authority map; dependency or derivation claims; unresolved ambiguities; and candidate collapse-tests. Every load-bearing statement must cite a path and selector or line. Do not write findings.md."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Ashby, W. Ross",
+          "initial_prompt": "Investigate the execution, observation, evaluation, and intent-to-reality perspective across both repositories. Read every common source: research/repository-irreducible-problem-inventory/research-initial-definitions.md; AGENTS.md; README.md; plans/governed-agent-work-infrastructure/PLAN.md; ../domainspec-core/AGENTS.md; and ../domainspec-core/README.md. Also read every specialized source: research/event-driven-obligations-and-task-orchestration/research-initial-definitions.md; research/agent-invocation-and-collaboration-topology/research-initial-definitions.md; framework/observability/README.md; ../domainspec-core/ops/development/2026-06-21-paper-saturn-explainer/SATURN-LAYER-MAP.md; ../domainspec-core/cyberAlchemy/agentic-system/slices/06-execution-feedback/README.md; and ../domainspec-core/cyberAlchemy/agentic-system/slices/07-first-working-loop/README.md. Identify explicit failure formulations and test whether execution divergence, observation gaps, evaluation failure, memory loss, and failure of realization are independent problems or downstream manifestations. Distinguish documented intent, implemented mechanism, observed evidence, and proposed architecture. You may search and read additional documents inside cyberalchemy-orchestrator and ../domainspec-core when necessary, but for each added source record its path, authority or standing, why it was necessary, and the exact evidence used. Do not use network sources, execute sibling-repository scripts, mutate Git, edit any source artifact, or write outside research/repository-irreducible-problem-inventory. Return a source-grounded report to the parent with: sources inspected; added-source justification; extracted formulations; execution/evidence chain; dependency or derivation claims; unresolved ambiguities; and candidate collapse-tests. Every load-bearing statement must cite a path and selector or line. Do not write findings.md."
+        }
+      ]
+    }
+  ]
+}
