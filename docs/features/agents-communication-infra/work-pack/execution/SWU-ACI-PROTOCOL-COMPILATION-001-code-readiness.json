@@ -1,0 +1,33 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-PROTOCOL-COMPILATION-001",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-PROTOCOL-COMPILATION-001.json",
+  "work_pack_digest": "sha256:42eb9b38bcba1a297f41a89e0c78438b1a709da6d6f0ab05c5fc13d98395ac86",
+  "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+  "test_spec_digest": "sha256:3b80f1c9187e910f197a820c07c2d3b851887a2913760e1f4d944fcb1186e68b",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/server/runtime/protocol_compilation.py",
+    "implementations/server/runtime/service.py",
+    "implementations/tests/runtime/test_protocol_compilation.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/server/runtime/local_pilot.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256"
+  ],
+  "validation_commands": [
+    "python -m unittest implementations.tests.runtime.test_protocol_compilation -v",
+    "python -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "python -m unittest discover -s implementations/tests/runtime -t ."
+  ],
+  "capability_profile": {
+    "filesystem": "task-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

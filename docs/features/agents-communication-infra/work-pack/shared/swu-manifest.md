@@ -14,6 +14,7 @@ may be selected for mutation unless the wave explicitly proves disjoint write sc
 | SWU-ACI-APT-VS-001 | bounded TASK-010/APT integration | 001,002 + APT-105 + four profile/storage/root receipts | exact descriptor runtime/tests | local session -> strict link -> publish -> parent official -> APT lineage -> restart | full descriptor matrix + independent review | exact authorization only |
 | SWU-ACI-BUS-DELIVERY-001 | bounded TASK-030 local proof | accepted journal/artifact/capability/publication base; no TASK-020 effect barrier consumed | exact descriptor service/reveal/migration/test paths | publish -> verify -> close sealed -> reveal -> authorized peer input; zero provider starts | T-ACI-PEER1–7 + regression suites | exact authorization only |
 | SWU-ACI-HOST-BUS-INTEGRITY-001 | Phase-A prerequisite maintenance | accepted Host Binding/BUS contracts + Phase-A FIX review | exact descriptor service/test/source-manifest paths | F4/F5/F6 fail closed with zero provider/tool starts | T-ACI-PHASEA-I1–I3 + focused regressions | planner/readiness PASS; proposal refresh waits on fresh-session host-hook smoke |
+| SWU-ACI-PROTOCOL-COMPILATION-001 | TASK-PROTOCOL-COMPILATION | ACI-PG-001 + normative review PASS + refreshed readiness pins | five functional/test paths plus source manifest, local-pilot pin and externally pinned receipt pair, exactly as listed by the descriptor | exact compiled and required-unsupported bytes; PC1–PC12; no runtime authority/effect | 13 focused tests + 131 runtime tests + independent verifier PASS | complete for bounded adjunct; no W6/L3/L4 promotion |
 | ACI-003 | TASK-010 | 001 | runtime persistence/tests | atomic journal/head/outbox and dedupe/CAS receipts | persistence tests | local-fallback |
 | ACI-004 | TASK-010 | 001 | runtime domain/tests | pure replay with stable state hash | reducer tests | local-fallback |
 | ACI-005 | TASK-020 | 002-004 | opening materializer/tests | verified opening or explicit reconciliation | crash/fault tests | local-fallback |
@@ -41,7 +42,7 @@ may be selected for mutation unless the wave explicitly proves disjoint write sc
 | ACI-027 | TASK-070 | 026 | audit report | no-kernel-fork finding | trace/path review | manual |
 | ACI-028 | TASK-080 | L3 pass | handoff modules | one restart-safe logical handoff | duplication/fault tests | local-fallback |
 | ACI-029 | TASK-080 | recipe ADRs | built-in packages | two immutable recipe digests | package validation | local-fallback |
-| ACI-030 | TASK-080 | 029 | recipe compiler | canonical specs and rejection fixtures | compiler tests | local-fallback |
+| ACI-030 | TASK-080 | 029 | historical W6/L4 recipe-compiler placeholder; obsolete for Protocol Governance and not reused by `SWU-ACI-PROTOCOL-COMPILATION-001` | no evidence for the Protocol Governance adjunct | do not use for PC1–PC12 traceability | deferred with TASK-080 |
 | ACI-031 | TASK-080 | 028-030 | skill/UI/API clients | cutover/rollback and no dual owner | compatibility E2E | local-fallback |
 | ACI-032 | TASK-080 | 031 | audit/check | zero business/provider kernel branches | static scan/review | manual |
 

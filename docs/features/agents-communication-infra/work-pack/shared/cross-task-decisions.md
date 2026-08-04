@@ -16,6 +16,9 @@
 | D-010 | Octopus Runtime and Eve are reference-only; PydanticAI is deferred; Zod is derived-boundary-only. | No external tool receives kernel or authoritative-store ownership. |
 | D-011 | Single-import lint is auxiliary EG-1 evidence. | Only a complete `SoleWriterEvidenceBundle` can close the sole-writer proof. |
 | D-012 | W0 freezes the sole-writer evidence schema, drift disposition, guard specification and tests; TASK-020 proves them physically on the target host. | TASK-010 journal work is not circularly blocked by materializer/cutover evidence; the materializer and cutover remain blocked until the proof passes. |
+| D-PG-001 | ACI-PG-001 assigns profile/binding/recipe-DAG and deterministic compilation through non-authoritative candidate/result to ACI Protocol Governance. | `SWU-ACI-PROTOCOL-COMPILATION-001` is an independent L0 adjunct; capability resolution, `DispatchSpec`, confirmation and execution retain their owners. |
+| D-PG-002 | Select the new exact SWU identity rather than reuse historical `ACI-030`. | PC1–PC12 and the nine-path scope (five functional/test plus four Stage-E integrity paths) do not enter W6 or promote L3/L4; TASK-080 remains independently gated. |
+| D-PG-003 | The planning gate may pass while code readiness is stale. | Refresh pinned hashes and reissue `domainspec-code-readiness@1` before coder entry; prose cannot substitute for the receipt. |
 | D-102 | One monotonic journal offset per SQLite database and one contiguous aggregate version per aggregate. | Accepted by ADR-001 for the W0 decision scope; TASK-010 must prove executable conformance. |
 | D-103 | `same idempotency_key + same command digest` returns the original receipt; a different digest is a permanent conflict. | Accepted by ADR-001 with canonical vectors; TASK-010 must prove receipt and crash behavior. |
 

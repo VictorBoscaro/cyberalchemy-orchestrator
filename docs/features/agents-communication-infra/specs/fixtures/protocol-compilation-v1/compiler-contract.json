@@ -1,0 +1,1 @@
+{"canonicalization_ref":"aci-cjson-1","compiler_contract_ref":"aci.protocol-compiler@1","input_schema_refs":["aci.compile-dispatch-candidate-request@1","aci.protocol-recipe@1","aci.skill-execution-profile@1","aci.skill-protocol-binding@1","aci.skill-protocol-invocation@1"],"output_schema_refs":["aci.compiled-dispatch-candidate-result@1","aci.dispatch-candidate@1"]}

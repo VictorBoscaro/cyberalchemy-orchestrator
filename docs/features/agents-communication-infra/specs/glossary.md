@@ -1,8 +1,8 @@
 ---
 feature: agents-communication-infra
-version: 0.3.0
+version: 0.4.0
 status: draft
-updatedAt: 2026-07-25
+updatedAt: 2026-08-03
 docType: glossary
 ---
 
@@ -12,23 +12,27 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 
 ## Feature Language
 
-| Term | Meaning |
-|---|---|
-| Authority | The authenticated right to accept a command, publish content, reveal data or write an authoritative store. |
-| Logical operation | Stable unit of work that survives physical retries. |
-| Physical attempt | One provider execution of a logical operation. |
-| Sealed collection | Phase in which agents may publish but cannot read peer contributions. |
-| Official close | Audit-ledger close row independently verified after a run terminal fact. |
-| Replay | Pure reduction of persisted accepted facts, never repetition of effects. |
-| Scout lifecycle delivery | Existing ACI-owned [Stage G source fact](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle) `reference_scout.bundle_delivered@1` that a committed Reference Scout bundle reached the ScoutRun's terminal delivery state; it does not identify a target agent or carry ordered recommendation membership. |
-| Target-agent reference delivery | **Specified / not implemented:** separate [AgentReferenceDelivery](domain.md#agentreferencedelivery) and [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent) fact that the exact Scout bundle is included in one named Attempt's effective input; it proves inclusion only, never source access, declared reference use or claim support. |
+| Term | Meaning | Related Concepts |
+|---|---|---|
+| Authority | The authenticated right to accept a command, publish content, reveal data or write an authoritative store. | [ConfirmedDispatch](domain.md#confirmeddispatch), [ExecutionAuthorityFence](domain.md#executionauthorityfence) |
+| ACI Protocol Governance | The ACI ownership boundary that governs exact skill profiles, binding snapshots, reusable recipe/DAG revisions and deterministic compilation only through a non-authoritative [DispatchCandidate](protocol-compilation.md#dispatchcandidate). | [SkillExecutionProfile](protocol-compilation.md#skillexecutionprofile), [SkillProtocolBinding](protocol-compilation.md#skillprotocolbinding), [ProtocolRecipe](protocol-compilation.md#protocolrecipe), [DispatchCandidate](protocol-compilation.md#dispatchcandidate) |
+| Protocol compilation | Pure deterministic validation and projection of exact profile, binding, recipe and invocation inputs that returns either a compiled candidate document/digest or the closed unsupported result; typed failures return neither. It performs no capability resolution, confirmation or execution. | [CompileDispatchCandidate](protocol-compilation.md#compiledispatchcandidate), [ProtocolInputsToDispatchCandidate](protocol-compilation.md#protocolinputstodispatchcandidate) |
+| Compile failure | Typed rejection that returns no compiled result, candidate, artifact descriptor or mutation; it is distinct from the successful closed `unsupported` outcome. | [CompileDispatchCandidate](protocol-compilation.md#compiledispatchcandidate) |
+| Capability resolution | The downstream confirmation-owned step that turns logical capability requirements into effective grants while constructing the final `DispatchSpec`; protocol compilation does not perform or simulate it. | [DispatchCandidate](protocol-compilation.md#dispatchcandidate), [DispatchSpec](domain.md#dispatchspec) |
+| Logical operation | Stable unit of work that survives physical retries. | [Seat](domain.md#seat), [Attempt](domain.md#attempt) |
+| Physical attempt | One provider execution of a logical operation. | [Attempt](domain.md#attempt), [AttemptLifecycle](states.md#attemptlifecycle) |
+| Sealed collection | Phase in which agents may publish but cannot read peer contributions. | [GroupLifecycle](states.md#grouplifecycle), [RevealManifest](domain.md#revealmanifest) |
+| Official close | Audit-ledger close row independently verified after a run terminal fact. | [RunLifecycle](states.md#runlifecycle), [AuditLedgerMaterializer](workflows.md#auditledgermaterializer) |
+| Replay | Pure reduction of persisted accepted facts, never repetition of effects. | [EventJournal](interfaces.md#internal-eventjournal), [ExternalEffectReconciliationWorkflow](workflows.md#externaleffectreconciliationworkflow) |
+| Scout lifecycle delivery | Existing ACI-owned [Stage G source fact](../../agent-provenance-telemetry/integration/stage-g/reference-scout-and-ingestion.md#reference-scout-lifecycle) `reference_scout.bundle_delivered@1` that a committed Reference Scout bundle reached the ScoutRun's terminal delivery state; it does not identify a target agent or carry ordered recommendation membership. | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [ReferenceScoutBundleToEffectiveInput](mappings.md#referencescoutbundletoeffectiveinput) |
+| Target-agent reference delivery | **Specified / not implemented:** separate [AgentReferenceDelivery](domain.md#agentreferencedelivery) and [`reference_scout.bundle_delivered_to_agent@1`](events.md#reference_scoutbundle_delivered_to_agent1) fact that the exact Scout bundle is included in one named Attempt's effective input; it proves inclusion only, never source access, declared reference use or claim support. | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [ReferenceScoutBundleDeliveredToAgent](events.md#reference_scoutbundle_delivered_to_agent1) |
 
 ## Terms
 
 | Term | Concept ID | Type | Definition | Source |
 |---|---|---|---|---|
-| ConfirmedDispatch | `agents-communication-infra.ConfirmedDispatch` | Entity | Immutable human-approved dispatch authority. | [Domain](domain.md#confirmeddispatch) |
-| Run | `agents-communication-infra.Run` | Entity | Lifecycle aggregate for one confirmed dispatch. | [Domain](domain.md#run) |
+| ConfirmedDispatch | `agents-communication-infra.ConfirmedDispatch` | Entity | Immutable human-approved authority over one exact downstream `DispatchSpec`, never over a protocol recipe or candidate digest. | [Domain](domain.md#confirmeddispatch) |
+| Run | `agents-communication-infra.Run` | Entity | Lifecycle aggregate created from a `ConfirmedDispatch`; protocol compilation cannot create it. | [Domain](domain.md#run) |
 | Group | `agents-communication-infra.Group` | Entity | Versioned bounded protocol stage within a run. | [Domain](domain.md#group) |
 | Seat | `agents-communication-infra.Seat` | Entity | Logical quorum slot independent of retries or model instances. | [Domain](domain.md#seat) |
 | Attempt | `agents-communication-infra.Attempt` | Entity | One physical provider execution of a logical operation. | [Domain](domain.md#attempt) |
@@ -37,16 +41,25 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | EffectIntent | `agents-communication-infra.EffectIntent` | Entity | Durable request for work outside the journal transaction. | [Domain](domain.md#effectintent) |
 | Artifact | `agents-communication-infra.Artifact` | Entity | Immutable content-addressed evidence metadata. | [Domain](domain.md#artifact) |
 | AgentReferenceDelivery | `agents-communication-infra.AgentReferenceDelivery` | Entity | **Specified / not implemented:** immutable source-bound acceptance record proving inclusion of one exact Scout bundle entry in one target Attempt's effective input, never access, declared use or claim support. | [Domain](domain.md#agentreferencedelivery) |
+| PeerInputDelivery | `agents-communication-infra.PeerInputDelivery` | Entity | Immutable delivery record binding one authorized reveal to one preallocated local target attempt and its effective input. | [Domain](domain.md#peerinputdelivery) |
 | EffectiveInputArtifact | `agents-communication-infra.EffectiveInputArtifact` | Entity | Ordered manifest of observable input presented to an attempt. | [Domain](domain.md#effectiveinputartifact) |
 | RawProviderOutput | `agents-communication-infra.RawProviderOutput` | Entity | Immutable provider-native output that is evidence, not protocol authority. | [Domain](domain.md#rawprovideroutput) |
 | RevealManifest | `agents-communication-infra.RevealManifest` | Entity | Frozen message/hash set authorized for peer delivery. | [Domain](domain.md#revealmanifest) |
 | GroupResult | `agents-communication-infra.GroupResult` | Entity | Unique typed protocol commitment for one group version. | [Domain](domain.md#groupresult) |
-| DispatchSpec | `agents-communication-infra.DispatchSpec` | Value Object | Frozen executable graph, policies, schemas, capabilities and budgets. | [Domain](domain.md#dispatchspec) |
+| DispatchSpec | `agents-communication-infra.DispatchSpec` | Value Object | Frozen executable graph, policies, schemas, resolved capabilities and budgets produced only by the downstream confirmation boundary, not by protocol compilation. | [Domain](domain.md#dispatchspec) |
+| SkillExecutionProfile | `agents-communication-infra.SkillExecutionProfile` | Value Object | Canonical statement of one exact skill revision's obligations, inputs, logical capability needs and outputs for protocol compilation. | [Protocol compilation](protocol-compilation.md#skillexecutionprofile) |
+| SkillProtocolBinding | `agents-communication-infra.SkillProtocolBinding` | Entity | Immutable snapshot that binds one exact skill revision and profile to one exact protocol recipe revision without granting execution authority. | [Protocol compilation](protocol-compilation.md#skillprotocolbinding) |
+| ProtocolRecipe | `agents-communication-infra.ProtocolRecipe` | Entity | Reusable, immutable compilation DAG that projects declared skill semantics into candidate structure but is not an executable plan or authority. | [Protocol compilation](protocol-compilation.md#protocolrecipe) |
+| SkillProtocolInvocation | `agents-communication-infra.SkillProtocolInvocation` | Value Object | Canonical invocation values bound by digest to the exact skill, profile, binding and recipe inputs being compiled. | [Protocol compilation](protocol-compilation.md#skillprotocolinvocation) |
+| DispatchCandidate | `agents-communication-infra.DispatchCandidate` | Value Object | Canonical proposal compiled from exact protocol inputs whose bytes and digest carry lineage but cannot substitute for `DispatchSpec`, confirmation or run authority. | [Protocol compilation](protocol-compilation.md#dispatchcandidate) |
+| CompiledDispatchCandidate | `agents-communication-infra.CompiledDispatchCandidate` | Value Object | Closed compilation result containing either the canonical candidate document and digest or the sorted IDs of required obligations that the bounded compiler cannot support. | [Protocol compilation](protocol-compilation.md#compile-result) |
+| ObligationDisposition | `agents-communication-infra.ObligationDisposition` | Enum / Type | Closed classification recording whether each skill obligation is preserved, compiled, superseded by explicit authority or unsupported. | [Protocol compilation](protocol-compilation.md#obligationdisposition) |
 | AgentInvocationPlan | `agents-communication-infra.AgentInvocationPlan` | Value Object | Provider-neutral scheduler decision before adapter materialization. | [Domain](domain.md#agentinvocationplan) |
 | MaterializedAgentInvocation | `agents-communication-infra.MaterializedAgentInvocation` | Value Object | Deterministic adapter translation with exact observable and native input references. | [Domain](domain.md#materializedagentinvocation) |
 | AgentExecutionRequest | `agents-communication-infra.AgentExecutionRequest` | Value Object | Provider-neutral task and capability contract for one attempt. | [Domain](domain.md#agentexecutionrequest) |
 | BusPublication | `agents-communication-infra.BusPublication` | Value Object | Agent-authored content request with no self-asserted authority fields. | [Domain](domain.md#buspublication) |
 | PublicationReceipt | `agents-communication-infra.PublicationReceipt` | Value Object | Persisted event/message/hash/key/offset proof of accepted publication. | [Domain](domain.md#publicationreceipt) |
+| PeerInputDeliveryReceipt | `agents-communication-infra.PeerInputDeliveryReceipt` | Value Object | Closed receipt for one accepted peer-input materialization, without claiming a provider start or effect. | [Domain](domain.md#peerinputdeliveryreceipt) |
 | AgentTerminalResult | `agents-communication-infra.AgentTerminalResult` | Value Object | Versioned provider-neutral terminal envelope with optional publication receipt. | [Domain](domain.md#agentterminalresult) |
 | EffectiveInputEntry | `agents-communication-infra.EffectiveInputEntry` | Value Object | One typed, ordered and provenance-bound element of effective model input. | [Domain](domain.md#effectiveinputentry) |
 | ResourceBudget | `agents-communication-infra.ResourceBudget` | Value Object | Finite time, token, tool, payload and artifact limits. | [Domain](domain.md#resourcebudget) |
@@ -77,6 +90,9 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | CommitGroupResult | `agents-communication-infra.CommitGroupResult` | Operation | Commits one typed verdict/result for a group version. | [Operations](operations.md#commitgroupresult) |
 | CancelRun | `agents-communication-infra.CancelRun` | Operation | Requests bounded cancellation without pretending acknowledgement is terminal. | [Operations](operations.md#cancelrun) |
 | RecordUsageObservation | `agents-communication-infra.RecordUsageObservation` | Operation | Accepts nullable provider-reported usage with provenance. | [Operations](operations.md#recordusageobservation) |
+| CompileDispatchCandidate | `agents-communication-infra.CompileDispatchCandidate` | Calculation | Pure deterministic calculation that maps exact immutable skill-protocol inputs to a non-authoritative candidate result and performs no persistence or runtime action. | [Protocol compilation](protocol-compilation.md#compiledispatchcandidate) |
+| AuthorizeAgentInvocationPlan | `agents-communication-infra.AuthorizeAgentInvocationPlan` | Operation | Validates and freezes the authorized invocation plan before local materialization. | [Operations](operations.md#authorizeagentinvocationplan) |
+| MaterializeAuthorizedPeerInput | `agents-communication-infra.MaterializeAuthorizedPeerInput` | Operation | Materializes one authorized reveal into immutable effective input for the preallocated local target attempt. | [Operations](operations.md#materializeauthorizedpeerinput) |
 | GetRuntimeProjection | `agents-communication-infra.GetRuntimeProjection` | Query | Rebuilds a snapshot plus ordered cursor deltas. | [Queries](queries.md#getruntimeprojection) |
 | GetRunStatus | `agents-communication-infra.GetRunStatus` | Query | Reads latest committed run projection and source lag. | [Queries](queries.md#getrunstatus) |
 | GetVisibleGroupMessages | `agents-communication-infra.GetVisibleGroupMessages` | Query | Returns only messages authorized by persisted phase/manifest policy. | [Queries](queries.md#getvisiblegroupmessages) |
@@ -91,6 +107,7 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | ArtifactBoundary | `agents-communication-infra.ArtifactBoundary` | Interface | Finalizes, hashes, classifies and retrieves immutable evidence. | [Interfaces](interfaces.md#internal-artifact-boundary) |
 | SandboxLauncher | `agents-communication-infra.SandboxLauncher` | Interface | Enforces sandbox policy and authority fence before process creation. | [Interfaces](interfaces.md#internal-sandboxlauncher) |
 | AuditLedgerAppenderPort | `agents-communication-infra.AuditLedgerAppenderPort` | Interface | Sole runtime-facing port to the existing validated audit-ledger appender. | [Interfaces](interfaces.md#internal-audit-ledger-appender-port) |
+| ProtocolCompiler | `agents-communication-infra.ProtocolCompiler` | Interface | Internal effect-free boundary that validates exact protocol inputs and returns canonical compilation results without resolving capabilities, confirming, scheduling or launching. | [Protocol compilation](protocol-compilation.md#protocolcompiler) |
 | RunExecutionWorkflow | `agents-communication-infra.RunExecutionWorkflow` | Workflow | Orchestrates confirmation through verified official closure. | [Workflows](workflows.md#runexecutionworkflow) |
 | GroupDeliberationWorkflow | `agents-communication-infra.GroupDeliberationWorkflow` | Workflow | Orchestrates sealed collection, reveal, vote and commitment. | [Workflows](workflows.md#groupdeliberationworkflow) |
 | ReceiptGatedPublicationWorkflow | `agents-communication-infra.ReceiptGatedPublicationWorkflow` | Workflow | Makes persisted receipt verification mandatory for official results. | [Workflows](workflows.md#receiptgatedpublicationworkflow) |
@@ -104,9 +121,11 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | ReferenceScoutBundleToEffectiveInput | `agents-communication-infra.ReferenceScoutBundleToEffectiveInput` | Mapping | Verifies accepted Scout source facts and maps the immutable ordered bundle into one target Attempt input and delivery fact. | [Mappings](mappings.md#referencescoutbundletoeffectiveinput) |
 | FrozenAuthorityToAuditLedgerRow | `agents-communication-infra.FrozenAuthorityToAuditLedgerRow` | Mapping | Derives canonical official rows from frozen run authority. | [Mappings](mappings.md#frozenauthoritytoauditledgerrow) |
 | RuntimeTerminalToExitReason | `agents-communication-infra.RuntimeTerminalToExitReason` | Mapping | Maps the unique run cause to one audit exit reason. | [Mappings](mappings.md#runtimeterminaltoexitreason) |
+| ProtocolInputsToDispatchCandidate | `agents-communication-infra.ProtocolInputsToDispatchCandidate` | Mapping | Maps the exact profile, binding, recipe, invocation and compiler-contract inputs to canonical candidate fields without inference, authority creation or side effects. | [Protocol compilation](protocol-compilation.md#protocolinputstodispatchcandidate) |
 | UsageObservationToRollups | `agents-communication-infra.UsageObservationToRollups` | Mapping | Aggregates usage while preserving nulls, counts and provider semantics. | [Mappings](mappings.md#usageobservationtorollups) |
 | UsageObservation | `agents-communication-infra.UsageObservation` | Event | Immutable provider-attributed usage fact with nullable dimensions. | [Events](events.md#usageobserved) |
-| ReferenceScoutBundleDeliveredToAgent | `agents-communication-infra.ReferenceScoutBundleDeliveredToAgent` | Event | **Specified / not implemented:** accepted target-attempt inclusion fact distinct from Scout lifecycle delivery and weaker than access, declared use or claim support. | [Events](events.md#referencescoutbundledeliveredtoagent) |
+| ReferenceScoutBundleDeliveredToAgent | `agents-communication-infra.ReferenceScoutBundleDeliveredToAgent` | Event | **Specified / not implemented:** accepted target-attempt inclusion fact distinct from Scout lifecycle delivery and weaker than access, declared use or claim support. | [Events](events.md#reference_scoutbundle_delivered_to_agent1) |
+| PeerInputMaterialized | `agents-communication-infra.PeerInputMaterialized` | Event | Accepted fact that authorized peer evidence was materialized into one immutable local target input. | [Events](events.md#peer_inputmaterialized) |
 | PricingSource | `agents-communication-infra.PricingSource` | Entity | Immutable versioned pricing applicability and unit-semantics evidence. | [Persistence](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) |
 | UsageRollup | `agents-communication-infra.UsageRollup` | Value Object | Rebuildable nullable usage aggregation through an explicit journal offset. | [Persistence](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) |
 | CostCalculation | `agents-communication-infra.CostCalculation` | Calculation | Immutable calculation tied to compatible usage, pricing digest, currency and source offset. | [Persistence](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) |

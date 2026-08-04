@@ -32,6 +32,7 @@ from .errors import (
 from .journal import EventDraft, PrerequisiteHead, RuntimeCommand, RuntimeJournal
 from .legacy import StrictLegacySnapshotResolver
 from .profiles import ProfileImporter, VerifiedProfile
+from .protocol_compilation import ProtocolCompileFailure, ProtocolCompiler
 from .projections import ProjectionManager, ProjectionRegistration
 from .reference_delivery import (
     DELIVERY_EVIDENCE_SCHEMA,
@@ -169,6 +170,28 @@ class RuntimeService:
             }
         )
         return {"applied_migrations": applied, "policy": self.database.verify_policy()}
+
+    def compile_and_store_dispatch_candidate(self, request_bytes: bytes) -> dict[str, Any]:
+        """Compile proposal bytes and optionally persist only an admitted candidate."""
+
+        compiled = ProtocolCompiler().compile_candidate(request_bytes)
+        result = parse_strict_json(compiled)
+        if result["outcome"] != "compiled":
+            return {"compiled_result": result, "artifact_ref": None}
+        body = result["candidate_document"].encode("utf-8")
+        prepared = self.artifacts.prepare(
+            body,
+            media_type="application/json",
+            schema_ref="aci.dispatch-candidate@1",
+            classification="runtime-internal",
+        )
+        if prepared.content_hash != result["candidate_digest"]:
+            raise ProtocolCompileFailure("artifact_content_conflict")
+        try:
+            artifact_ref = self.artifacts.commit(prepared)
+        except ConflictError as exc:
+            raise ProtocolCompileFailure("artifact_content_conflict") from exc
+        return {"compiled_result": result, "artifact_ref": artifact_ref}
 
     @staticmethod
     def _require_exact_fields(

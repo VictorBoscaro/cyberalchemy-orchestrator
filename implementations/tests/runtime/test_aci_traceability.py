@@ -33,6 +33,18 @@ REQUIRED_BOUNDED_IDS = {
     "T-ACI-PEER5",
     "T-ACI-PEER6",
     "T-ACI-PEER7",
+    "T-ACI-PC1",
+    "T-ACI-PC2",
+    "T-ACI-PC3",
+    "T-ACI-PC4",
+    "T-ACI-PC5",
+    "T-ACI-PC6",
+    "T-ACI-PC7",
+    "T-ACI-PC8",
+    "T-ACI-PC9",
+    "T-ACI-PC10",
+    "T-ACI-PC11",
+    "T-ACI-PC12",
 }
 
 

@@ -5,8 +5,8 @@ is_session: false
 layer: application
 nature: [procedural, technical]
 status: draft
-version: 0.5.0
-last_updated: 2026-07-25
+version: 0.6.0
+last_updated: 2026-08-03
 ---
 
 # Test Spec: Agents Communication Infra
@@ -83,7 +83,19 @@ This document specifies contract tests, not test code. Fixtures derive from [rul
 | [T-ACI-ARD2](#t-aci-ard2--bundle-authority-and-integrity) | Commit plus immutable bytes, never lifecycle delivery, determine ordered recommendation membership | [ReferenceScoutBundleToEffectiveInput](specs/mappings.md#referencescoutbundletoeffectiveinput) |
 | [T-ACI-ARD3](#t-aci-ard3--recipient-and-dispatch-authority) | Capability-derived recipient and same-dispatch guards reject identity injection or cross-dispatch delivery | [DeliverReferenceScoutBundleToAgent](specs/operations.md#internal-transition--deliverreferencescoutbundletoagent) |
 | [T-ACI-ARD4](#t-aci-ard4--atomic-delivery-and-idempotency) | Preallocated identities, complete acceptance and retries yield one delivery or none | [IF-ACI-14](specs/interfaces.md#interface-invariants) |
-| [T-ACI-ARD5](#t-aci-ard5--delivery-evidence-boundary) | Accepted inclusion is never promoted to access, declared use or claim support | [`reference_scout.bundle_delivered_to_agent@1`](specs/events.md#referencescoutbundledeliveredtoagent) |
+| [T-ACI-ARD5](#t-aci-ard5--delivery-evidence-boundary) | Accepted inclusion is never promoted to access, declared use or claim support | [`reference_scout.bundle_delivered_to_agent@1`](specs/events.md#reference_scoutbundledelivered_to_agent1) |
+| [T-ACI-PC1](#t-aci-pc1--closed-schema-validation) | Every protocol document and result is recursively closed and strict | [Protocol compilation](specs/protocol-compilation.md#canonical-contract-common-to-every-schema) |
+| [T-ACI-PC2](#t-aci-pc2--canonical-golden-vectors) | Exact canonical bytes and qualified digests are stable | [PC-R1](specs/protocol-compilation.md#rules-and-invariants) |
+| [T-ACI-PC3](#t-aci-pc3--digest-lineage-and-invalidation) | Every supplied digest verifies exact bytes and invalidates stale lineage | [PC-R2/R3/R11](specs/protocol-compilation.md#rules-and-invariants) |
+| [T-ACI-PC4](#t-aci-pc4--explicit-parameters-only) | Parameters admit no default, coercion, inference or undeclared placeholder | [SkillProtocolInvocation](specs/protocol-compilation.md#skillprotocolinvocation) |
+| [T-ACI-PC5](#t-aci-pc5--total-obligation-disposition) | Obligation mapping is total, unique and fail-closed | [ObligationDisposition](specs/protocol-compilation.md#obligationdisposition) |
+| [T-ACI-PC6](#t-aci-pc6--closed-dag) | The built-in recipe DAG is bounded, closed, acyclic and terminal-reachable | [DAG validity](specs/protocol-compilation.md#dag-validity) |
+| [T-ACI-PC7](#t-aci-pc7--logical-capability-ceiling) | Candidate carries logical needs and no effective grant | [PC-R8](specs/protocol-compilation.md#rules-and-invariants) |
+| [T-ACI-PC8](#t-aci-pc8--restart-determinism) | Equal requests produce byte-identical candidates/results across restarts | [PC-R9](specs/protocol-compilation.md#rules-and-invariants) |
+| [T-ACI-PC9](#t-aci-pc9--pure-compilation) | Compilation has zero clock, registry, runtime or external effects | [PC-R10](specs/protocol-compilation.md#rules-and-invariants) |
+| [T-ACI-PC10](#t-aci-pc10--artifact-only-persistence) | Optional storage is idempotent and creates no runtime authority | [Artifact seam](specs/protocol-compilation.md#artifact-persistence-seam) |
+| [T-ACI-PC11](#t-aci-pc11--built-in-fixture-traceability) | Every golden candidate field traces to explicit fixture input | [Mapping](specs/protocol-compilation.md#protocolinputstodispatchcandidate) |
+| [T-ACI-PC12](#t-aci-pc12--candidate-authority-isolation) | Candidate cannot substitute for DispatchSpec or create runtime entities | [Ownership boundary](specs/protocol-compilation.md#ownership-and-authority-boundary) |
 
 ## Test Details
 
@@ -620,6 +632,151 @@ use. Assert the ACI fact says only that exact bytes were included in observable 
 that no ACI projection reports access, reading, declared use or claim support. Those later evidence
 axes remain independently owned downstream.
 
+### T-ACI-PC1 — Closed schema validation
+
+For the outer request, every embedded document, every nested item, candidate and result, mutate one
+case per missing field, unknown field, duplicate JSON key, forbidden null, wrong primitive, bool as
+integer, float, BOM, invalid UTF-8 and normative safety-bound overflow. Strict parsing and closed
+schema validation of all embedded documents precede canonical-byte comparison and digest
+acceptance. Each mutation returns the specified closed failure before any digest trust or
+persistence.
+Whitespace, alternate key order and trailing-newline variants of an otherwise valid outer request
+must return `invalid_request_schema`; analogous embedded-document variants return
+`noncanonical_bytes` in the specified document order.
+
+### T-ACI-PC2 — Canonical golden vectors
+
+Freeze exact UTF-8 document, candidate and result bytes plus qualified SHA-256 digests.
+Cover NFC-equivalent strings, normalization collisions, object-key order, required sorted arrays,
+integer boundaries, whitespace normalization and rejected noncanonical embedded documents.
+
+The compile request is assembled deterministically in the test from the four canonical document
+strings and their literal digests listed below plus the literal `compiler_contract_digest`. Tests
+assert that repeated assembly produces byte-identical canonical request bytes and digest; this
+version does not claim a separate checked-in request-byte oracle.
+
+The checked-in fixture files are newline-terminated transport containers. Tests MUST distinguish
+their raw file hashes from the canonical-document digests produced after strict JSON parsing and
+`aci-cjson-1` serialization. The following canonical digests are literal test oracles; a mutable
+manifest is not trusted as their sole source:
+
+| Document | Canonical digest |
+|---|---|
+| `skill-source.json` | `sha256:13ea3dea6640fd553a56662c7efd4bc63480f82b07c49f6e3614b72f4201bc36` |
+| `profile.json` | `sha256:43229944b101d12c6d14008d1db17f40c41277b7b441417c7ca5cd38006d7d17` |
+| `recipe.json` | `sha256:92fbf20eebbe5ba490bcd1969eed86e3ae91e4e643d7f448a1a089d3be2b50e3` |
+| `binding.json` | `sha256:26d7a8a3fb4955a9442d5807b7c27c1c1f204b394e3862437c49a4aae5b14c7b` |
+| `invocation.json` | `sha256:469dff24fc67a048a0f5f7040704c3601861beb386b9713dc3eb4e3b233de77b` |
+| `compiler-contract.json` | `sha256:9fd10473647a5ea5a7f03df6370773fab2af911cca9d37ffc1e2b7912a009543` |
+| `candidate.json` | `sha256:9b829ca70a4717a133a8e42b18e7d95210d1bbfcd5c1e785b56b38778f6df795` |
+| `result.json` | `sha256:1a38bb57cddfc8940c1ff19011f543b18e8844a2e2d68b12a340ded527aecb84` |
+| `unsupported-profile.json` | `sha256:43ec4c29eca01a6786ec9fff2723c2623828af286e80c67f2b320672d002fa1e` |
+| `unsupported-recipe.json` | `sha256:16ce0d514a5b1b42d1c2170d0c4eb8b04a72d150adb4f7bb7b0ef91796c8aaa1` |
+| `unsupported-binding.json` | `sha256:10bc707b787041d8b3327a1f3096b5635fae56d75975b0ffbf81f82fa2b00f8a` |
+| `unsupported-invocation.json` | `sha256:0fdbd75e214f91a0ad53cec35849d43208af1d51dfa1f1c0300cfa0be3a11c17` |
+| `unsupported-result.json` | `sha256:9544a32ccf39309dc778d78623948675c9f80e73ecae52a0108458db35ae0578` |
+| `manifest.json` | `sha256:e5cc329254ab8f748888f198ee004cba45f186b5ca21702612932f2c66ef0420` |
+
+### T-ACI-PC3 — Digest lineage and invalidation
+
+Independently mismatch the supplied profile, binding, recipe and invocation document digests.
+A request whose supplied `compiler_contract_digest` differs from the implementation's fixed admitted
+digest returns `compiler_identity_mismatch`. Separately, fixture-integrity validation canonicalizes
+`compiler-contract.json` and requires its digest to equal the literal oracle above; that file is
+test evidence for compiler identity, not a document supplied to `CompileDispatchCandidate`.
+Changing any supplied canonical input document changes its digest and prevents reuse of the old
+candidate lineage. This test does not claim to discover unreported skill-source changes.
+
+Every closed failure is exercised with its exact code and with assertions that no partial result,
+artifact descriptor or mutation exists. Composite vectors prove the total first-failure order from
+the normative calculation, including the named document order within categories:
+
+1. `invalid_request_schema`;
+2. `invalid_document_schema` in profile, binding, recipe, invocation order;
+3. `noncanonical_bytes` in profile, binding, recipe, invocation order;
+4. `digest_mismatch` in profile, binding, recipe, invocation order;
+5. `compiler_identity_mismatch`;
+6. `inactive_binding`;
+7. `binding_mismatch`;
+8. `invocation_mismatch`;
+9. `invalid_parameter_value`;
+10. `invalid_obligation_mapping`;
+11. `invalid_graph`;
+12. `fixture_not_admitted`.
+
+At minimum, one composite vector covers every adjacent category pair, and pairwise vectors cover
+profile before binding, binding before recipe and recipe before invocation inside each of the three
+document categories. The `artifact_content_conflict` outcome is tested separately after a compiled
+result because it belongs only to the optional persistence seam, not this calculation precedence.
+
+### T-ACI-PC4 — Explicit parameters only
+
+Exercise required/optional parameters, declared enum/string/integer/boolean values and explicit
+scalar substitution. Reject missing required, duplicate, unsorted, undeclared, coerced, defaulted,
+or out-of-bounds values. Invocation strings containing `{{` or `}}` are rejected as
+`invalid_parameter_value` before admission, making recursive or second-pass template evaluation
+impossible in V1.
+
+### T-ACI-PC5 — Total obligation disposition
+
+Require the recipe obligation IDs to equal the profile obligation IDs exactly once. Validate every
+closed disposition shape and target reference. The admitted `required-unsupported` case returns
+the exact sorted `unsupported-result.json`, contains no candidate bytes or artifact descriptor and
+never reaches ArtifactStore. A recipe-obligation mutation to `superseded` supplies the required
+authority reference and recomputes the recipe, binding and invocation digests; after all semantic
+checks it is rejected as a schema-valid third tuple with `fixture_not_admitted`. No failure creates
+a partial result.
+
+### T-ACI-PC6 — Closed DAG
+
+Mutate the fixture with unknown endpoints, duplicate node/edge IDs, self-edge, unsorted input,
+cycle, unresolved profile reference, nonterminal without terminal path, terminal with outgoing edge
+and each array limit overflow. The valid graph has deterministic topological order.
+
+### T-ACI-PC7 — Logical capability ceiling
+
+Assert byte-for-byte equality between profile logical requirements and candidate requirements.
+Reject or prove absent every provider, credential, permission, availability, capability token,
+resolution or effective-grant field.
+
+### T-ACI-PC8 — Restart determinism
+
+Compile identical request bytes in independent compiler instances and after database/service
+restart. Candidate document, candidate digest and compiled result bytes remain identical; optional
+artifact storage resolves the same content-derived artifact identity.
+
+### T-ACI-PC9 — Pure compilation
+
+Use dependency spies and before/after store snapshots to prove the pure compiler reads no clock,
+randomness, environment, filesystem discovery, registry, network, provider, tool, scheduler, bus,
+journal, confirmation, YAML or legacy dispatch surface and performs no mutation.
+
+### T-ACI-PC10 — Artifact-only persistence
+
+The application wrapper writes only an `application/json`, `aci.dispatch-candidate@1`,
+`runtime-internal` artifact through the existing ArtifactStore. Equal content/policy is idempotent;
+unequal bytes presented at the same content identity return `artifact_content_conflict` with no
+artifact descriptor and no mutation. The operational `finalization_receipt_ref` is outside both
+candidate and compiled-result bytes. Metadata/policy conflict also fails closed. Existing runtime
+events, pending sheets, YAML, `ConfirmedDispatch`, `Run`, attempts and effects remain unchanged.
+ArtifactStore-owned finalization metadata is allowed and remains operational metadata rather than
+candidate authority. No runtime command, publication receipt or dispatch receipt is created.
+
+### T-ACI-PC11 — Built-in fixture traceability
+
+Compile the package's admitted read-only `compiled` case and enumerate the exact input JSON pointer
+for every candidate field. Assert every `source_binding` digest equals its literal input oracle,
+every graph/capability/output field retains its source link and order, and prompt text differs from
+its recipe source only through the documented single scalar substitution. The admitted
+`required-unsupported` case links its obligation disposition to the exact profile obligation and
+recipe rule but produces no candidate.
+
+### T-ACI-PC12 — Candidate authority isolation
+
+Attempt to pass candidate bytes/digest to existing confirmation, dispatch-spec, legacy compiler and
+runtime entrypoints. Schema/type boundaries reject them; no public route is added and no runtime
+entity or external action is created.
+
 ## Fixture Corpus
 
 | Fixture | Contents |
@@ -641,6 +798,7 @@ axes remain independently owned downstream.
 | `provider-admission@1` | Common adapter, sandbox, credential, cleanup, recovery, receipt and usage evidence |
 | `sole-writer-bundle@1` | Complete and component-missing host-scoped EG-1 evidence bundles |
 | `reference-bundle-delivery@1` | Accepted commit/lifecycle facts, immutable ordered bundle, capability-derived recipient, manifest, retry drift and atomic failpoints |
+| [`protocol-compilation-v1@1`](specs/fixtures/protocol-compilation-v1/manifest.json) | Golden closed package with exact admitted `compiled` and `required-unsupported` read-only cases, compiler/schema identity and exact outputs; PC1-PC12 mutations are generated deterministically in tests from these golden documents and are not additional admitted fixtures |
 
 ## Known Gaps
 
@@ -662,6 +820,8 @@ axes remain independently owned downstream.
   specification; TASK-020 supplies the physical target-host proof.
 - T-ACI-ARD1 through T-ACI-ARD5 specify the next bounded slice only; no runtime test implementation
   or implementation-completeness claim is made by this document.
+- T-ACI-PC1 through T-ACI-PC12 specify the governed candidate compiler slice. They authorize no
+  profile registry, confirmation, runtime-managed route, scheduler or provider implementation.
 
 ## Out of Scope
 

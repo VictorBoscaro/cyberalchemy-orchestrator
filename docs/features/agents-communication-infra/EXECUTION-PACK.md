@@ -14,6 +14,8 @@ docType: execution-pack
 |---|---|
 | `planningGateStatus` | **W0 PASS — independent review cycle 5/5** |
 | `mutationTestAuthorization` | **pass_for_exact_swu** — only `SWU-ACI-APT-VS-001` |
+| `protocolCompilationPlanningGate` | **pass_for_exact_swu** — only `SWU-ACI-PROTOCOL-COMPILATION-001`; independent L0 adjunct, not W6/L3 promotion |
+| `protocolCompilationReadiness` | **pass_for_exact_swu** — refreshed descriptor/context/test pins and bounded implementation verification |
 | `localPilotServeEnablement` | **block** — separate post-implementation gate |
 | `productionEnablement` | **block** |
 | `specAuthoringGateStatus` | **pass** — W0 DomainSpec contracts only; runtime remains blocked |
@@ -38,6 +40,7 @@ docType: execution-pack
 | [W5](work-pack/waves/W5.md) | Prove provider portability. | W4 continue. | mixed-provider conformance passes. | blocked | capability matrix and mixed trace |
 | [W6](work-pack/waves/W6.md) | Prove composition and migrate clients. | W5 pass and recipe ADRs. | S-006 passes without kernel specialization. | blocked | recipe/handoff/cutover receipts |
 | [W7](work-pack/waves/W7.md) | Close and audit pilot. | W6 pass. | verification and audits pass or remediation is created. | blocked | closure reports |
+| PG adjunct | Implement the bounded non-authoritative candidate compiler. | ACI-PG-001 and normative review PASS; refreshed exact-SWU readiness receipt. | T-ACI-PC1–PC12 plus independent verification pass. | complete for bounded SWU; 131 runtime tests and two re-reviews PASS | nine-path diff, exact fixture bytes, Stage-E addendum and verifier verdict |
 
 ## Delivery-stage coverage
 
@@ -49,6 +52,7 @@ docType: execution-pack
 | scenarios | yes | W1-W6 | not-started | Golden traces and failure scenarios. |
 | tests | yes | W1-W7 | not-started | Tests precede or accompany each implementation SWU. |
 | implementation | yes | W1-W6 | ready for exact named SWU only | `SWU-ACI-APT-VS-001` may mutate only its descriptor-bound scope; all other implementation remains blocked. |
+| protocol-governance adjunct | yes | independent L0 adjunct | complete for bounded SWU | `SWU-ACI-PROTOCOL-COMPILATION-001` remains independent of W6 and historical `ACI-030`; Stage-E repinning adds no runtime authority. |
 | interface-experience | yes | W2/W6 | blocked | Runtime SSE first; command UI/client cutover last. |
 | telemetry-spec | yes | W1-W3 | not-started | Correlation IDs, state hashes and resource observations. |
 | telemetry-instrument | yes | W1-W3 | not-started | Journal/projection/adapter instrumentation. |
@@ -69,6 +73,10 @@ docType: execution-pack
 5. W4 is a decision wave: `simplify` or `stop` supersedes W5/W6 rather than marking them failed.
 6. Task and SWU status is updated in `WORK-PACK.md` and the relevant task file in the same planning
    change that records an execution receipt.
+7. The Protocol Governance adjunct runs `alignment-audits` (two independent auditors), then one
+   coder, then one verifier. The coder cannot start while its readiness receipt is stale.
+8. This adjunct cannot satisfy a W6 entry/exit gate, promote L3/L4, or authorize confirmation,
+   runtime commands/events, providers, tools, scheduling, routes or production use.
 
 ## Decision lock summary
 
@@ -86,6 +94,7 @@ docType: execution-pack
 | D-010 | locked | W0 specifies the sole-writer evidence contract; TASK-020 supplies complete target-host proof before materializer cutover, without blocking TASK-010 journal work. | B-003 / D-012 |
 | D-011 | locked | Candidate publication becomes official only through atomic parent verification and a unique `messages` fact. | ADR-002 |
 | D-012 | locked | Mutation-test, local-pilot serving and production/cutover are three distinct gates. | W0 closure packet |
+| D-PG-001 | locked | ACI Protocol Governance owns deterministic compilation only through a non-authoritative candidate/result; the exact SWU is an independent L0 adjunct. | ACI-PG-001 and protocol-compilation normative review |
 
 ## Closure obligations
 

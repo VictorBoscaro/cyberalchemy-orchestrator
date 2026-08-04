@@ -26,6 +26,33 @@ manifest is a fail-closed drift detector, not an authentication root.
 The companion `execution-receipt.sha256` pins this receipt, including the reviewer and dispatch
 evidence below, without introducing a verifier self-hash cycle.
 
+## 2026-08-03 protocol-compilation integrity addendum
+
+`SWU-ACI-PROTOCOL-COMPILATION-001` added one pure, non-authoritative compiler module, one internal
+ArtifactStore application seam, and its bounded tests. Because `service.py`, traceability files and
+the new compiler/test are inside the fail-closed local-pilot source boundary, the Stage-E manifest
+and its verifier pin were refreshed after the final bytes stabilized. This addendum records
+integrity closure only; it grants no API, confirmation, `DispatchSpec`, Run, provider/tool,
+production or cutover authority.
+
+| Evidence | SHA-256 |
+|---|---|
+| `implementations/server/runtime/protocol_compilation.py` | `sha256:cb52746c2619de1dcece68c431745c06297ab94b28ce35b3898782abe8005262` |
+| `implementations/server/runtime/service.py` | `sha256:a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f` |
+| `implementations/tests/runtime/test_protocol_compilation.py` | `sha256:7211ff29dd48cbd3af778138a7c5927f9a16cd441cad00d2a847070008a76181` |
+| `implementations/tests/runtime/aci-test-traceability.json` | `sha256:74cb27f8ba542ffefce931c5f9f3afa880d5b27458de75270a44d492016672aa` |
+| `implementations/tests/runtime/test_aci_traceability.py` | `sha256:ec714aabd52e7aa6a88a7276e207eb388198d2542784b7901bc31d517469fab0` |
+| Stage-E source manifest | `sha256:0641c92d35a0bbaa9ab6a31f1383127d375d462b82b1dbfb5f1bf8c591bfa5eb` |
+| Stage-C verifier `implementations/server/runtime/local_pilot.py` | `sha256:6b34d99e9efbaf00eb0a447c80be1967909763042bfc4f25cf22a7d56a47a392` |
+
+Verification results:
+
+- focused protocol-compilation plus traceability: 13 tests, PASS;
+- complete runtime discovery: 131 tests, PASS in 86.617 seconds (root re-run after final repin);
+- independent authority-boundary re-review: PASS;
+- independent spec/test re-review: PASS for bounded PC1–PC12 evidence; residual risks are structural
+  PC12 coverage and generated rather than separately versioned negative vectors.
+
 ## Verification
 
 - Integrated Python runtime: PASS, 54/54.

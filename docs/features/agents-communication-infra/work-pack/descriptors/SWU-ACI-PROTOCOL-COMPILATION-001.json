@@ -1,0 +1,84 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-PROTOCOL-COMPILATION-001",
+  "scope": "pure-non-authoritative-protocol-candidate-v1",
+  "planner_preflight": "pass_for_exact_swu",
+  "entry_predicate": [
+    "aci-pg-001-accepted",
+    "protocol-compilation-v1-specified",
+    "normative-two-lens-review-pass",
+    "t-aci-pc1-through-pc12-defined",
+    "one-production-fixture-package-with-two-exact-case-tuples-frozen",
+    "general-runtime-remains-blocked"
+  ],
+  "context_pack_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-PROTOCOL-COMPILATION-001-CONTEXT.md",
+  "context_index_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-PROTOCOL-COMPILATION-001-CONTEXT.index.json",
+  "implementation_scaffold_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-PROTOCOL-COMPILATION-001-SCAFFOLD.md",
+  "readiness_authority_caveat": "The repository has a strict consumer/validator but no independent producer for domainspec-code-readiness@1. This receipt proves descriptor/test/scope self-consistency; independent normative review and the two required brownfield audits provide the separate judgment. The owner authorized proceeding without another confirmation on 2026-08-03.",
+  "write_scope": [
+    "implementations/server/runtime/protocol_compilation.py",
+    "implementations/server/runtime/service.py",
+    "implementations/tests/runtime/test_protocol_compilation.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/server/runtime/local_pilot.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256"
+  ],
+  "prerequisite_files": [
+    "docs/decisions/aci-protocol-governance-ownership.md",
+    "docs/features/agents-communication-infra/specs/protocol-compilation.md",
+    "docs/features/agents-communication-infra/specs/TEST-SPEC.md",
+    "docs/features/agents-communication-infra/TEST-SPEC.md",
+    "docs/features/agents-communication-infra/specs/fixtures/protocol-compilation-v1/manifest.json",
+    "docs/features/agents-communication-infra/reviews/2026-08-03-protocol-compilation-spec-review/review.md"
+  ],
+  "implementation_shape": {
+    "pure_contract_owner": "implementations/server/runtime/protocol_compilation.py",
+    "application_owner": "implementations/server/runtime/service.py",
+    "persistence_owner": "implementations/server/runtime/artifacts.py",
+    "fixture_owner": "docs/features/agents-communication-infra/specs/fixtures/protocol-compilation-v1",
+    "authority_ceiling": "candidate/result proposal bytes only"
+  },
+  "required_changes": [
+    "implement strict pure CompileDispatchCandidate with the exact total precedence",
+    "admit only the two exact case tuples in the frozen package before constructing either result",
+    "implement optional post-compiled candidate ArtifactStore persistence",
+    "prove T-ACI-PC1 through T-ACI-PC12 with source-linked tests and traceability"
+  ],
+  "test_ids": [
+    "T-ACI-PC1",
+    "T-ACI-PC2",
+    "T-ACI-PC3",
+    "T-ACI-PC4",
+    "T-ACI-PC5",
+    "T-ACI-PC6",
+    "T-ACI-PC7",
+    "T-ACI-PC8",
+    "T-ACI-PC9",
+    "T-ACI-PC10",
+    "T-ACI-PC11",
+    "T-ACI-PC12"
+  ],
+  "validation_commands": [
+    "python -m unittest implementations.tests.runtime.test_protocol_compilation -v",
+    "python -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "python -m unittest discover -s implementations/tests/runtime -t ."
+  ],
+  "mutation_test_authorization": "pass_for_exact_swu",
+  "code_readiness_receipt": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-PROTOCOL-COMPILATION-001-code-readiness.json",
+  "implementation_status": "implemented-verified-bounded",
+  "permanently_out_of_scope_for_this_authorization": [
+    "persistent-profile-binding-or-recipe-registry",
+    "arbitrary-production-recipe-admission",
+    "candidate-to-dispatchspec-mapping",
+    "capability-resolution-or-effective-grants",
+    "confirmation-or-confirmeddispatch",
+    "run-scheduling-attempt-provider-or-tool-execution",
+    "journal-command-event-or-runtime-receipt",
+    "pending-sheet-yaml-or-legacy-dispatch-mutation",
+    "api-route-or-network",
+    "production-or-cutover"
+  ]
+}

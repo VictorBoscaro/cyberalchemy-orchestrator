@@ -179,6 +179,54 @@
       "selectors": [
         "implementations/tests/runtime/test_bus_reveal_delivery.py::BusRevealDeliveryTests::test_peer7_effect_remains_pending_and_no_provider_surface_runs"
       ]
+    },
+    {
+      "test_spec_id": "T-ACI-PC1", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc1_closed_schema_and_total_category_precedence"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC2", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc2_frozen_canonical_golden_vectors"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC3", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc3_digest_and_compiler_identity_fail_closed"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC4", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc4_parameters_are_explicit_and_not_coerced"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC5", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc5_required_unsupported_is_exact_and_never_candidate"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC6", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc6_invalid_dag_precedes_fixture_admission"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC7", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc7_candidate_has_logical_requirements_only"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC8", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc8_equal_requests_are_restart_independent"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC9", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc9_pure_compiler_has_no_effect_dependencies"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC10", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc10_storage_is_separate_idempotent_and_compiled_only"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC11", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc11_both_admitted_cases_match_exact_outputs"]
+    },
+    {
+      "test_spec_id": "T-ACI-PC12", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc12_candidate_is_not_runtime_authority"]
     }
   ]
 }

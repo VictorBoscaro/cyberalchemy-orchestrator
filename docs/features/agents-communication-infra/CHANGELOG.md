@@ -13,6 +13,21 @@ last_updated: 2026-07-23
 
 All notable domain/specification changes to **agents-communication-infra** are recorded here.
 
+## 2026-08-03
+
+### Bounded Protocol Governance implementation adjunct
+
+- Added `TASK-PROTOCOL-COMPILATION` and selected only
+  `SWU-ACI-PROTOCOL-COMPILATION-001` as an independent L0 adjunct under ACI-PG-001.
+- Pinned the descriptor's nine-path code/test/integrity scope, T-ACI-PC1–PC12, and the required
+  two-auditor -> coder -> verifier topology.
+- Kept capability resolution, `DispatchSpec`, confirmation, runtime/provider effects, API routes,
+  production and cutover outside the authorization; no W6 or L3/L4 promotion is claimed.
+- Completed the bounded compiler and ArtifactStore seam. Four non-functional paths close the
+  pre-existing Stage-E integrity chain after changing a sealed runtime source; focused and full
+  runtime suites plus two independent re-reviews pass.
+- Recorded that historical `ACI-030` is not the identity or authority of this compiler slice.
+
 ## 2026-07-23
 
 ### CVR external authority boundary (0.2.4)

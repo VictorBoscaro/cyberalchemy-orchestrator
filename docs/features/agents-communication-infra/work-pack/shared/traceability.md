@@ -14,7 +14,34 @@
 | Adapter is provider-independent | TASK-050, TASK-070 | shared conformance suite |
 | Product value justifies complexity | TASK-060 | preregistration and blinded evaluation decision |
 | Recipes do not specialize kernel | TASK-080, TASK-AUDIT-ALIGNMENT | kernel branch audit and two-recipe fixture |
+| Protocol Governance terminates at a non-authoritative candidate/result | TASK-PROTOCOL-COMPILATION | ACI-PG-001, protocol-compilation contract, T-ACI-PC7/T-ACI-PC12 and verifier verdict |
+| Exact frozen protocol compilation is deterministic and closed | TASK-PROTOCOL-COMPILATION | T-ACI-PC1–PC11, exact fixture bytes/digests and focused/full test results |
 | Layer promotion follows evidence | TASK-AUDIT-LAYERING | promotion audit |
+
+## Protocol-compilation SWU coverage
+
+This mapping belongs only to `SWU-ACI-PROTOCOL-COMPILATION-001`, an independent L0 Protocol
+Governance adjunct. It does not map to or satisfy historical `ACI-030`, W6, L3 or L4.
+
+| Test obligation | Task evidence required | Current state |
+|---|---|---|
+| T-ACI-PC1 | recursively closed request/document/candidate/result schema rejection | bounded PASS; source-linked selector and verifier accepted |
+| T-ACI-PC2 | literal canonical-byte and qualified-digest golden vectors | bounded PASS; literal raw/canonical hash oracles verified |
+| T-ACI-PC3 | digest verification, compiler identity and lineage invalidation | bounded PASS; four-input lineage and seven source fields verified |
+| T-ACI-PC4 | explicit scalar parameters and one-pass literal substitution only | bounded PASS; optional/enum/bounds/type/order/placeholder mutations verified |
+| T-ACI-PC5 | total unique obligation disposition and exact unsupported result | bounded PASS; admitted unsupported and rejected superseded third tuple verified |
+| T-ACI-PC6 | closed, bounded, acyclic, terminal-reachable DAG | bounded PASS; graph mutation matrix verified |
+| T-ACI-PC7 | byte-equal logical requirements with no effective grant fields | bounded PASS; logical-only projection verified |
+| T-ACI-PC8 | byte-identical compile/storage identity across fresh processes | bounded PASS; fresh-process and storage identity verified |
+| T-ACI-PC9 | dependency-spied pure compiler with zero forbidden effects | bounded PASS; AST/dependency spies and snapshots verified |
+| T-ACI-PC10 | compiled-only, idempotent ArtifactStore seam and closed conflict | bounded PASS; exact metadata/no-store/conflict behavior verified |
+| T-ACI-PC11 | both exact admitted tuples, fixture hashes and full candidate-field provenance | bounded PASS; exact outputs and leaf provenance verified |
+| T-ACI-PC12 | schema/API authority firewall; no confirm/run/provider/runtime path | bounded PASS; structural firewall verified; real DispatchSpec parser remains future integration |
+
+Completion evidence must include the two independent brownfield audit verdicts, the task-owned
+nine-path diff, exact focused/traceability/full-suite command results and independent verifier PASS.
+This matrix records bounded executable evidence only; it is not a general recipe-registry,
+confirmation, execution or arbitrary-input conformance claim.
 
 ## DomainSpec registry coverage
 

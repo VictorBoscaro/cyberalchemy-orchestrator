@@ -78,6 +78,23 @@ The immutable claim is the only lease; the launch context is external/ephemeral 
 enters the receipt. Workspace hashes prove integrity, not authenticated identity. The unrestricted
 host boundary is advisory, not a sandbox.
 
+## Protocol Governance adjunct boundary
+
+**Decision sentence:** after this adjunct, we know whether one frozen, digest-bound
+skill/profile/binding/recipe/invocation package can compile deterministically to a
+non-authoritative candidate/result without acquiring confirmation or runtime authority.
+
+| Unit | Value gained | Main cost | Promotion evidence | Current state |
+|---|---|---|---|---|
+| `SWU-ACI-PROTOCOL-COMPILATION-001` | Pure closed compilation, exact two-case admission and a separate idempotent ArtifactStore seam become executable. | Strict canonical/schema/digest/graph validation, PC1–PC12 harness and independent audit/verification. | Refreshed exact-SWU readiness receipt; resolved brownfield findings; exact nine-path diff including mandatory Stage-E integrity closure; T-ACI-PC1–PC12 and full runtime suite PASS; verifier PASS. | Complete for the bounded SWU; no L3/L4, confirmation or execution promotion. |
+
+This is an independent **L0 Protocol Governance adjunct**. It neither proves the L0 runtime slice
+nor enters/promotes W6, L3 or L4. It does not reuse the historical `ACI-030` recipe-compiler
+placeholder. Its authority ceiling is canonical `DispatchCandidate`/compile-result bytes plus
+optional artifact metadata; capability resolution, final `DispatchSpec`, confirmation,
+`ConfirmedDispatch`, `Run`, scheduler, provider/tool effects, routes, production and cutover remain
+outside the unit.
+
 ## Recommended next layer
 
 - **Next layer:** L0.

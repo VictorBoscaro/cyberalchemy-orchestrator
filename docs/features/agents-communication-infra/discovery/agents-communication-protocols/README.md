@@ -7,7 +7,7 @@ nature: [explanatory, reference, technical]
 status: draft
 veracity: medium
 conviction: high
-version: 0.4.2
+version: 0.5.0
 last_updated: 2026-08-03
 ---
 
@@ -21,13 +21,13 @@ persistida origina todas as projeções, configurações de agentes e ações da
 depender do agente do chat durante a run. A lane live `legacy-managed` permanece fora desse boundary
 e conserva a autoridade de workflow/session definida pelo contrato de cutover.
 
-**Status:** v0.4.2 — hipótese draft para a futura lane `runtime-managed`, revisada em torno de uma autoridade canônica única e de fronteiras explícitas com runtime, capabilities, bus e audit ledger
+**Status:** v0.5.0 — discovery draft para a futura lane `runtime-managed`; a decisão de ownership de protocol compilation está ratificada, enquanto schemas, lifecycle persistente e runtime permanecem sujeitos à promoção e aos gates indicados abaixo
 
 **Owner:** @victorboscaro
 
 **Owner email:** `victorboscaro@outlook.com`
 
-**Companion:** [Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) owns capability resolution and per-attempt tool materialization; [Bus Contracts](../bus-contracts/README.md) owns routing, visibility and work-message delivery; [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md) owns YAML materialization and migration boundaries.
+**Companion:** ACI confirmation owns effective capability resolution; [Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) documents the candidate per-attempt tool-profile materialization seam without owning grants or resolution. [Bus Contracts](../bus-contracts/README.md) owns routing, visibility and work-message delivery; [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md) owns YAML materialization and migration boundaries.
 
 ## 1. Business Context
 
@@ -51,7 +51,8 @@ infraestrutura executou?”.
   “Onboarding quando o perfil não existe ou é incompatível”).
 - O compilador atual materializa apenas launches iniciais com prompts e `turn_ordinal: 0`; ele não
   percorre um grafo autônomo (`implementations/server/runtime/dispatch_workflow.py:57`).
-- A compilação, o registry e o lifecycle do `SkillExecutionProfile` continuam sem owner assentado
+- Antes da decisão humana de 2026-08-03, a compilação, o registry e o lifecycle do
+  `SkillExecutionProfile` permaneciam sem owner assentado
   ([Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) §OQ-ATD3).
 - O contrato de routing já coloca um `RoutingPlan` imutável dentro do `DispatchSpec`, mas a v0.3.0
   repetia partes dessa semântica como se pertencessem ao protocolo da skill
@@ -79,8 +80,9 @@ infraestrutura executou?”.
   [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md); esta discovery
   declara somente o requisito de derivação a partir da autoridade confirmada.
 - APT continua observando provenance e lineage sem decidir topologia ou próxima transição.
-- Esta alteração não ratifica schemas, não implementa runtime, não habilita recipes arbitrárias ou
-  mutantes e não altera skills existentes.
+- Esta alteração ratifica somente o owner da compilação até `DispatchCandidate`; não ratifica
+  schemas por si só, não implementa runtime, não habilita recipes arbitrárias ou mutantes e não
+  altera skills existentes.
 
 ## 2. Core Concepts
 
@@ -192,10 +194,14 @@ As seguintes regras são requisitos candidatos obrigatórios para promover a fut
 ## 4. Skill-to-Dispatch Compilation
 
 A skill permanece dona da intenção de domínio, dos entregáveis, das fontes autoritativas e do que
-significa trabalho de qualidade. A camada de protocol governance de ACI deve possuir a compilação,
-o registry e o lifecycle do `SkillExecutionProfile`; capability resolution permanece um serviço
-separado e autoritativo somente dentro da confirmação runtime. Esta é a proposta de settlement de
-OQ-ATD3 e precisa de sincronização posterior no documento companion e na SPEC.
+significa trabalho de qualidade. Por decisão humana de 2026-08-03, ACI Protocol Governance possui
+o schema e lifecycle de `SkillExecutionProfile` e `SkillProtocolBinding`, o `ProtocolRecipe`/DAG
+reutilizável e a compilação determinística até um `DispatchCandidate` não autoritativo. Capability resolution,
+a finalização dos bytes canônicos de `DispatchSpec`, a confirmação humana, `ConfirmedDispatch`,
+`Run`, scheduling e execução permanecem com seus owners existentes. A decisão resolve a premissa
+de ownership registrada por OQ-ATD3, cuja sincronização pertence ao companion. Os schemas, a
+calculation e o mapping da bounded v1 já foram promovidos em `specs/protocol-compilation.md`;
+registry lifecycle, candidate-to-`DispatchSpec` e operações de runtime continuam pendentes.
 
 O fluxo candidato é:
 
@@ -255,7 +261,7 @@ proposta. Esses valores são fatos posteriores, não liberdade para alterar a co
 
 | Surface | Owner | Derivation rule | Maturity |
 |---|---|---|---|
-| `SkillExecutionProfile` and binding | ACI protocol governance, proposed by this discovery | derived from exact skill revision and confirmed protocol-authoring lifecycle | candidate |
+| `SkillExecutionProfile`, `SkillProtocolBinding` and `ProtocolRecipe`/DAG | ACI Protocol Governance, ratified by human decision on 2026-08-03 | derived from exact skill revision and governed protocol-authoring lifecycle; compilation terminates at non-authoritative `DispatchCandidate` | bounded v1 schemas/calculation promoted; registry lifecycle deferred |
 | `ConfirmationProjection` | ACI confirmation workflow | server-resolved canonical `DispatchSpec` bytes/digest plus a disposable view; user accepts that exact digest | candidate; mapping/schema pending promotion |
 | `ConfirmedDispatch` and canonical `DispatchSpec` | ACI runtime contracts | frozen from the exact accepted `ConfirmationProjection` digest | draft-specified; not generic-runtime implemented |
 | Normalized graph/state tables | ACI persistence/runtime | equality-preserving indexes over confirmed authority plus journal facts | partly specified; incomplete implementation |
@@ -268,11 +274,11 @@ proposta. Esses valores são fatos posteriores, não liberdade para alterar a co
 | UI/Mermaid/control-center graph | read projection | disposable view over canonical spec and runtime state | partial/read-only |
 | Provenance and lineage | APT | observation and projection of accepted facts | bounded local pilot |
 
-Essa matriz é uma proposta de ownership desta discovery, não um settlement normativo: referências podem atravessar boundaries,
-mas definições não são copiadas. Em particular, o YAML não provisiona agentes e a UI não autoriza
-transições; ambos mostram fatos cuja autoridade vive em outro lugar. A proposta de protocol
-governance permanece condicionada ao settlement de OQ-ATD3, amendment do companion e promoção na
-SPEC.
+Essa matriz contém uma única decisão de ownership ratificada: ACI Protocol Governance possui
+profiles, bindings, recipe/DAG e compilação até `DispatchCandidate`. As demais linhas continuam
+explicando boundaries existentes ou propostas ainda sujeitas aos respectivos owners. Referências
+podem atravessar boundaries, mas definições não são copiadas. Em particular, o YAML não provisiona
+agentes, a UI não autoriza transições e o `DispatchCandidate` não autoriza execução.
 
 ## 7. Profile Identity, Versioning, and Compatibility
 
@@ -355,13 +361,18 @@ não podem ser apresentados como disponíveis por esta discovery.
 
 ### OQ-ACP1 — Registry settlement synchronization
 
-**Question:** Como sincronizar a proposta de ownership de protocol governance com OQ-ATD3, Concept
-Registry, interfaces e operações ACI sem criar uma segunda autoridade?
+**Status:** settled by human decision on 2026-08-03.
 
-**Recommendation:** promover uma decisão única por referência: protocol governance compila e mantém
-profiles/bindings; `ConfirmRuntimeDispatch` continua sendo a única autoridade de execução.
+**Decision:** ACI Protocol Governance compila e mantém profiles, bindings e recipe/DAG até um
+`DispatchCandidate` não autoritativo. A confirmação ACI continua responsável por capability
+resolution, bytes/digest finais de `DispatchSpec`, aceite humano e criação de autoridade executável.
+O contrato é promovido por referência para evitar uma segunda definição de `DispatchSpec`.
 
-**Settlement stage:** independent review → companion amendment → SPEC.
+**Settlement evidence:** [ACI-PG-001 — ACI Protocol Governance ownership](../../../../decisions/aci-protocol-governance-ownership.md).
+The companion amendment and bounded SPEC promotion are complete through
+[Protocol Compilation Candidate v1](../../specs/protocol-compilation.md). The bounded contract has
+accepted normative review; implementation still requires work-pack readiness and executable
+conformance evidence.
 
 ### OQ-ACP2 — Transitive skill closure
 
@@ -450,7 +461,6 @@ histórico, contabilização de budget, fencing, recuperação e equivalência d
 | ACPD-1 | In the future `runtime-managed` lane, one persisted canonical authority governs a run; every runtime-managed view, ledger effect/row, configuration and runtime action is a verifiable derivation. Legacy-managed and historical rows retain the authorities assigned by the cutover contract. | §3 |
 | ACPD-2 | The confirmed authority is the complete canonical `DispatchSpec` inside `ConfirmedDispatch`; the graph is its structural nucleus, not a parallel authority. | §3 |
 | ACPD-3 | The skill profile restricts compilation but never authorizes execution; `DispatchCandidate` remains non-authoritative until confirmation. | §§2–4 |
-| ACPD-4 | ACI protocol governance is the proposed, unsettled owner of profile compilation, registry and binding lifecycle; capability resolution and runtime confirmation retain their existing owners. OQ-ATD3 companion amendment and SPEC promotion are required before settlement. | §4 |
 | ACPD-5 | After confirmation, infrastructure interprets the graph and coordinates agents; the chat parent does not choose transitions, recipients or follow-ups. | §5 |
 | ACPD-6 | Capability, bus, audit-ledger and provenance semantics remain in separate ownership-linked documents and are imported by reference. | §6 |
 | ACPD-7 | The MVP binds one active profile revision to exactly one digest-pinned recipe; graph-changing variants require another protocol revision. | §7 |
@@ -460,13 +470,14 @@ histórico, contabilização de budget, fencing, recuperação e equivalência d
 
 | ID | Decision | Where |
 |---|---|---|
-| — | No decisions ratified. | — |
+| ACPD-4 | ACI Protocol Governance owns `SkillExecutionProfile`, `SkillProtocolBinding`, `ProtocolRecipe`/DAG and deterministic compilation through non-authoritative `DispatchCandidate`; capability resolution, final `DispatchSpec`, confirmation and execution retain their existing owners. | §§4, 6 and OQ-ACP1 |
 
 ## Connections
 
 | Document | Type | Description |
 |---|---|---|
-| [Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) | `depends-on` | Owns capability resolution and per-attempt tool materialization; OQ-ATD3 must be synchronized with ACP-4. |
+| [ACI-PG-001 ownership decision](../../../../decisions/aci-protocol-governance-ownership.md) | `derives-from` | Ratifies ACI Protocol Governance as owner through non-authoritative `DispatchCandidate` while preserving confirmation and runtime ownership. |
+| [Agent Tools and Delegated Supervision](../agent-tools-and-delegated-supervision.md) | `depends-on` | Records the candidate per-attempt tool-profile materialization seam and the same ratified ownership boundary; ACI confirmation retains effective capability resolution and grants. |
 | [Bus Contracts](../bus-contracts/README.md) | `depends-on` | Owns immutable routing-plan semantics, visibility, publication, reveal and delivery. |
 | [Dispatch Audit-Ledger Cutover](../dispatch-audit-ledger-cutover-contract.md) | `depends-on` | Owns YAML materialization, sole-writer rules and legacy/runtime cutover. |
 | [ACI Domain](../../specs/domain.md) | `depends-on` | Owns `ConfirmedDispatch`, `DispatchSpec`, `Run`, invocation and execution entities. |
@@ -481,8 +492,8 @@ flowchart TD
     S[Skill revision] --> P[SkillExecutionProfile]
     P --> C[DispatchCandidate]
     U[User invocation and explicit values] --> C
-    C --> P[Server resolves and emits canonical DispatchSpec bytes plus digest]
-    P --> H{Human confirms exact digest?}
+    C --> CP[Server confirmation workflow resolves capabilities and emits canonical DispatchSpec bytes plus digest]
+    CP --> H{Human confirms exact digest?}
     H -->|no| X[Declined or revised candidate]
     H -->|yes| D[ConfirmedDispatch plus canonical DispatchSpec]
     D --> R[Exactly one Run plus opening effect intent]
@@ -509,6 +520,7 @@ atravessa esse fluxo.
 
 | Version | Date | Changes |
 |---|---|---|
+| 0.5.0 | 2026-08-03 | Ratified ACPD-4 by explicit human decision: ACI Protocol Governance owns profile, binding, recipe/DAG and deterministic compilation through non-authoritative `DispatchCandidate`; capability resolution, final `DispatchSpec`, confirmation and execution remain outside that owner. Settled OQ-ACP1, synchronized the ownership matrix and corrected the flow-node collision. |
 | 0.4.2 | 2026-08-03 | Added OQ-ACP8 to make the agent interaction execution model explicit: finite scheduler-materialized attempts for the MVP versus any future persistent or multi-exchange provider session, including identity, history, budget, fencing, recovery and replay constraints. |
 | 0.4.1 | 2026-08-03 | Scoped the invariant to `runtime-managed`; made confirmation digest-bound over server-resolved `DispatchSpec` bytes; added idempotent confirmation, audit opening/close barriers and revocation-state rules; split YAML ownership; relabeled ownership and ACPD entries as candidate proposals after independent review. No decisions are ratified or locked by this draft. |
 | 0.4.0 | 2026-08-03 | Reframed the discovery around one canonical persisted authority; separated profile, candidate, confirmed runtime authority and derived surfaces; proposed settlement of profile compiler/registry ownership; replaced duplicated bus/tool/ledger definitions with owned seams; added candidate decisions, open questions, connections and flow diagram. |

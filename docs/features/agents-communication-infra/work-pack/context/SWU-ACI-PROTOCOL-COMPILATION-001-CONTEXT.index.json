@@ -1,0 +1,12 @@
+{
+  "schema": "domainspec-context-index@1",
+  "task_id": "SWU-ACI-PROTOCOL-COMPILATION-001",
+  "sources": [
+    {"path": "docs/features/agents-communication-infra/specs/protocol-compilation.md", "sha256": "sha256:18c0924a424f21beccab7bc724be7fc86332c269904885be478dfad3eb4850ff", "size_bytes": 42057},
+    {"path": "docs/features/agents-communication-infra/TEST-SPEC.md", "sha256": "sha256:3b80f1c9187e910f197a820c07c2d3b851887a2913760e1f4d944fcb1186e68b", "size_bytes": 62826},
+    {"path": "docs/features/agents-communication-infra/specs/TEST-SPEC.md", "sha256": "sha256:fbcecd2927c5ed467101f85d60f09c718ce34a8885389e5389b80b339dfb03b7", "size_bytes": 24195},
+    {"path": "docs/features/agents-communication-infra/reviews/2026-08-03-protocol-compilation-spec-review/review.md", "sha256": "sha256:fb10cea5ca2c53d862e734f88329f6544687872698de322f8b0a697fdcf3ae73", "size_bytes": 1926},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-PROTOCOL-COMPILATION-001-CONTEXT.md", "sha256": "sha256:50106640b65db5b14ee83faef427943342a7510f223eea30fb265871bc961d82", "size_bytes": 1680},
+    {"path": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-PROTOCOL-COMPILATION-001-SCAFFOLD.md", "sha256": "sha256:24c47c3331a53f58f080dc3e4afe15f9b03c05cd3b190d70c9f6cfcc905b77a4", "size_bytes": 2306}
+  ]
+}
