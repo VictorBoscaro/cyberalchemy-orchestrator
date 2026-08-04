@@ -1,0 +1,16 @@
+{
+  "close_of": "2026-08-04-dispatchspec-agent-graph-review",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 0,
+    "tree": {
+      "explorer": 0,
+      "helpers": 0
+    },
+    "loops_used": 0
+  },
+  "feedback_prompts": [
+    "Zero seats launched. The compiled task_name dispatchspec-independent-reviewers_0 contains hyphens, but the Codex spawn API accepts only lowercase letters, digits, and underscores. The host rejected the call before the binding hook or agent launch."
+  ],
+  "invoked_by": "victorboscaro@gmail.com"
+}
