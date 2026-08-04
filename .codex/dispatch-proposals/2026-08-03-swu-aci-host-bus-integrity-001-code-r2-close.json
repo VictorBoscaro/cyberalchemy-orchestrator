@@ -1,0 +1,18 @@
+{
+  "close_of": "2026-08-03-swu-aci-host-bus-integrity-001-code-r2",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 0,
+    "tree": {},
+    "loops_used": 0
+  },
+  "feedback_prompts": [
+    "Zero seats launched. The dispatch opened launch-authorized (session ses_4f0397c5540f925d4d64cae40332a8bf) and compiled four bound seats, but the mandatory host hook refused both alignment-audit launches with 'spawn prompt differs from confirmed seat prompt'. The hook was correct to refuse; the defect is in the record.",
+    "ROOT CAUSE: service.py:5489 compares the spawned prompt body to the ledger row's initial_prompt by exact string equality. Each of the four confirmed prompts contains exactly one non-ASCII character, U+2014 EM DASH, inside the CONTAINMENT clause added at the owner's request. Because the runtime does not launch seats itself, the parent must reproduce each prompt verbatim in its own text output, and that channel did not round-trip U+2014 byte-identically. The previous attempt (2026-08-03-swu-aci-host-bus-integrity-001-code) launched successfully with pure-ASCII prompts, which isolates the em dash as the only delta.",
+    "STRUCTURAL FINDING, not incidental: this is a direct consequence of the turn_ordinal-0 / empty-slots limitation. Since compile_bound_launch_plan produces envelopes but nothing in the runtime spawns them, every prompt must survive a copy through the parent's message before reaching the host tool. That relay channel is not byte-safe for non-ASCII, while the hook's equality check is byte-exact. The two requirements are incompatible, so today every governed seat prompt must be pure ASCII. Nothing in the appender, the compiler, or the record schema enforces or documents that constraint.",
+    "PROPOSED REMEDIATION, carried into the successor dispatch: restrict all seat prompts to ASCII. Beyond this dispatch, either the appender should reject non-ASCII in initial_prompt with an explicit message, or the launch path should stop depending on the parent to retype prompts. The second is the real fix and belongs with the missing follow-up-turn emitter.",
+    "NOTHING WAS LEFT BEHIND: the hook blocked before any subagent started, so no agent ran, no artifact was produced, and no file outside the compiled workflow inputs was touched. No missed-hook gap occurred; the hook fired correctly on both attempts.",
+    "CARRIED FORWARD UNCHANGED to the successor: the revised eight-path write_scope including local_pilot.py narrowed to STAGE_E_SOURCE_MANIFEST_SHA256; the self-consistency caveat on the readiness receipt, which still has a validator and no producer; the two prior audits' determinacy findings for F4, F5 and F6; and the containment notice that capability_profile filesystem task-scoped-write is not technically enforced under tool_profile_ref host/inherited@1.",
+    "CONCURRENCY NOTE: 2026-08-03-cyberalchemy-orchestrator-capability-assessment-r2 was registered and open in this same append-only ledger from another session throughout this attempt. The owner authorized proceeding anyway. It did not cause this failure: the open succeeded and returned launch-authorized, and the refusal came from prompt equality, not ledger drift."
+  ]
+}
