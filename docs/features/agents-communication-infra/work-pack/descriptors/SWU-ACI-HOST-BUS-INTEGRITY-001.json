@@ -29,8 +29,25 @@
     "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
     "implementations/tests/runtime/test_orchestration_bridge.py",
     "implementations/tests/runtime/aci-test-traceability.json",
-    "implementations/tests/runtime/test_aci_traceability.py"
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "implementations/server/runtime/local_pilot.py"
   ],
+  "write_scope_revision": {
+    "revised": "2026-08-03",
+    "added": "implementations/server/runtime/local_pilot.py",
+    "narrowed_to": "the STAGE_E_SOURCE_MANIFEST_SHA256 constant at local_pilot.py:37-39 and nothing else in that module",
+    "why": "_verify_source_manifest checks the manifest's OWN bytes against that hardcoded constant before checking any per-file entry. F6 adds two manifest entries and F4/F5 change service.py's pinned hash inside the manifest; either edit changes the manifest's bytes and therefore its own digest, invalidating the constant. orchestration_bridge.run() calls preflight_local_pilot on every CLI open/close, so validation command 3 (test_orchestration_bridge) fails with 'Stage-E source manifest digest mismatch' unless the constant moves in the same change.",
+    "why_not_relocate": "local_pilot.py IS the correct owner of manifest verification. Moving the check into service.py would create the cycle service -> local_pilot -> service, since local_pilot imports service and never the reverse. The declared scope was wrong; the logic placement was not.",
+    "editing_constraint": "The manifest must be updated by surgical substitution of the digest token in the raw text, never by json.dumps re-serialization: the file is CRLF on disk and a round-trip is not byte-identical. The constant update must land in the same commit as the manifest content change.",
+    "evidence": "Independently reached by both alignment auditors of dispatch 2026-08-03-swu-aci-host-bus-integrity-001-code (alignment lens and layering lens), each returning NOT PASS before any code was written. That dispatch closed user_abort with the full blocking list in its close record.",
+    "authority_caveat": "This revision and the matching domainspec-code-readiness@1 receipt were authored by the same agent that authored the code contract they are checked against. Nothing in this repository or in the linked DomainSpec package produces a domainspec-code-readiness@1 receipt: the schema has a strict validator (append-dispatch.cjs), two consumers, and two instances, but no producer. The appender's readiness check is therefore SELF-CONSISTENCY, not independent planner evidence. Owner accepted this explicitly on 2026-08-03 rather than treating it as satisfied planner authority."
+  },
+  "secondary_in_scope_finding": {
+    "file": "implementations/tests/runtime/test_aci_traceability.py",
+    "problem": "The spec-ID regex T-(?:ACI|CVR)-[A-Z0-9]+ does not match the hyphenated T-ACI-PHASEA-I1/I2/I3 headings in TEST-SPEC.md (zero matches against the current file).",
+    "consequence": "test_bounded_manifest_references_real_spec_ids_and_test_selectors fails once the three new entries are added.",
+    "disposition": "In scope; widen the regex."
+  },
   "required_changes": {
     "F4": "A follow-up requires a non-empty persisted prior agent_id and exact target equality before any new binding row or event can commit.",
     "F5": "Materialization loads every official peer artifact body and recomputes its digest before trusting stored contribution or reveal hashes.",
@@ -65,5 +82,5 @@
     "production": false,
     "destructive": false
   },
-  "implementation_status": "ready-for-code-dispatch-proposal"
+  "implementation_status": "ready-for-code-dispatch-proposal-after-write-scope-revision"
 }
