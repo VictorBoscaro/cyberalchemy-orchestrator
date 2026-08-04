@@ -32,6 +32,11 @@ node_modules/
 /.dispatch-proposal.canonical.json
 /.dispatch-concrete-proposal.md
 
+# Confirmation markers written next to a pending dispatch sheet at runtime.
+# They record when a sheet was confirmed on this machine; the sheet itself is
+# the tracked artifact.
+/telemetry/agents/pending/*.confirmed
+
 # Scratch working directory: PDF page rasters and one-off probe scripts written
 # by render and inspection runs. Regenerable from the tracked sources.
 /tmp/
