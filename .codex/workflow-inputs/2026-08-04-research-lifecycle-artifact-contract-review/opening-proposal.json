@@ -1,0 +1,34 @@
+{
+  "dispatch_id": "2026-08-04-research-lifecycle-artifact-contract-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Independently review the updated research-lifecycle initial definitions and its new current-authoring/ACI-seams evidence for factual fidelity, research-boundary discipline, reference integrity, and conformance with governed Markdown conventions.",
+  "context": "The parent authored the current changes after the owner asked to record the proposed artifact-contract direction as evidence and, where appropriate, refine the existing research initial definitions. Exactly two read-only independent reviewers must each attack the complete target corpus and return inline findings. They must not read or rely on the other reviewer's output. This owner-requested two-seat shape intentionally assigns synthesis to the parent and final acceptance to the user instead of instantiating the review skill's larger writer/verifier topology.",
+  "max_loops": 1,
+  "final_approver": "user",
+  "anti_bias_mode": "disabled",
+  "output_mode": "inline",
+  "groups": [
+    {
+      "group_id": "independent_document_reviewers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Liskov, Barbara",
+          "initial_prompt": "You are an independent read-only review attacker using the fidelity/governance lens. Review the complete target corpus and do not inspect or infer any other reviewer's return: research/research-lifecycle-definitions/research-initial-definitions.md at SHA-256 6c5f9b077559bf79e33d6de450887fc3e9d5cfa43eda2d182a693077a2881677; research/research-lifecycle-definitions/evidence/README.md at SHA-256 efe36f15125c28764e4337004a373c32077aa4dcff5235b9c711d310d1d73c5f; and research/research-lifecycle-definitions/evidence/current-authoring-and-aci-seams.md at SHA-256 0211856e632840ee68879cc802a66b3e126b97f2074a73b2097a2ce97999216b. Fail closed if a digest differs. Check that the revision obeys .agents/skills/research-initial-definitions/SKILL.md and .claude/skills/custom/frontmatter.md; keeps owner proposals distinct from direct evidence; does not promote a candidate architecture, method, output contract, or runtime seam as settled; and preserves the original bounded research purpose. Verify every load-bearing statement against its cited local source. Do not modify or create files. Return only: coverage and attempted attacks; surviving findings with target quotation, source counterevidence, CRITICAL/MAJOR/MINOR severity and one-line fix; then KEEP or FIX per target. If zero findings, defend that result by naming the attacks that failed."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Evans, Eric",
+          "initial_prompt": "You are an independent read-only review attacker using the mechanics/reference-integrity lens. Review the complete target corpus and do not inspect or infer any other reviewer's return: research/research-lifecycle-definitions/research-initial-definitions.md at SHA-256 6c5f9b077559bf79e33d6de450887fc3e9d5cfa43eda2d182a693077a2881677; research/research-lifecycle-definitions/evidence/README.md at SHA-256 efe36f15125c28764e4337004a373c32077aa4dcff5235b9c711d310d1d73c5f; and research/research-lifecycle-definitions/evidence/current-authoring-and-aci-seams.md at SHA-256 0211856e632840ee68879cc802a66b3e126b97f2074a73b2097a2ce97999216b. Fail closed if a digest differs. Resolve every local Markdown target, check the observed hook and skill behavior against literal code, verify protocol-compilation and Canonical Vault Reads claims against their current specifications/implementation, check frontmatter fields/timestamps/versioning and reciprocal Connections, and identify stale or ambiguous ownership claims. Do not judge the candidate architecture on preference and do not modify or create files. Return only: coverage and commands/checks performed; surviving findings with target quotation, executable or source counterevidence, CRITICAL/MAJOR/MINOR severity and one-line fix; then KEEP or FIX per target. If zero findings, defend that result by naming the checks that passed."
+        }
+      ]
+    }
+  ]
+}

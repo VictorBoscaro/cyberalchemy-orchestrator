@@ -1,12 +1,11 @@
 ---
 tags: [research, evidence, ontology, nodes, edges]
 artifact_kind: readme
-is_session: false
-layer: ontology, architecture
-nature: reference
+layer: project
 status: draft
-version: 0.1.0
-last_updated: 2026-07-27
+version: 0.2.0
+created_at: 2026-07-28T02:02:50-03:00
+updated_at: 2026-08-04T17:42:02-03:00
 ---
 
 # Research Lifecycle Definitions — Evidence Workspace
@@ -27,7 +26,9 @@ Evidence stored here is temporary research material:
 The first proposed evidence records are:
 
 - `canonical-kinds-normative-scout.md` — schema, kind, edge, and validation contracts;
-- `canonical-kinds-usage-scout.md` — instance, lifecycle, authority, and drift evidence.
+- `canonical-kinds-usage-scout.md` — instance, lifecycle, authority, and drift evidence; and
+- `current-authoring-and-aci-seams.md` — current local authoring contracts, enforcement gaps,
+  runtime integration seams, and the owner-proposed direction kept separate from findings.
 
 No scout evidence has been accepted yet.
 
