@@ -1,0 +1,18 @@
+{
+  "close_of": "2026-08-03-swu-aci-host-bus-integrity-001-code",
+  "exit_reason": "user_abort",
+  "agents_spawned": {
+    "total": 2,
+    "tree": { "auditor": 2 },
+    "loops_used": 1
+  },
+  "feedback_prompts": [
+    "Both alignment auditors independently returned NOT PASS on the same root cause, so the coder was never launched (the code contract forbids starting implementation before every incoming group returns PASS). Owner aborted to correct the planner artifacts rather than proceed under an insufficient contract.",
+    "BLOCKING (write_scope insufficient): implementations/server/runtime/local_pilot.py is absent from write_scope but must change. _verify_source_manifest checks the manifest's OWN bytes against the hardcoded STAGE_E_SOURCE_MANIFEST_SHA256 (local_pilot.py:37-39) before checking any per-file entry. F6 adds two manifest entries and F4/F5 change service.py's pinned hash inside the manifest; either edit changes the manifest's bytes and therefore its own digest, invalidating that constant. orchestration_bridge.run() calls preflight_local_pilot on every CLI open/close, so validation command 3 (test_orchestration_bridge) fails with 'Stage-E source manifest digest mismatch' unless the constant moves in the same change.",
+    "BLOCKING (layering, same root cause reached independently): local_pilot.py IS the correct owner of manifest verification. Moving the check into service.py would create the cycle service -> local_pilot -> service, since local_pilot already imports service and never the reverse. So the defect cannot be resolved inside the declared write_scope by relocating logic; the scope itself is wrong.",
+    "NON-BLOCKING (in scope): test_aci_traceability.py's spec-ID regex T-(?:ACI|CVR)-[A-Z0-9]+ does not match the hyphenated T-ACI-PHASEA-I1/I2/I3 headings in TEST-SPEC.md (zero matches against the current file). Must be widened before the traceability mapping can pass.",
+    "DETERMINACY CONFIRMED (not a blocker): F4, F5 and F6 each have a determinate meaning against the accepted Host Binding and BUS contracts, with no explicit-non-goal contamination. F4 = drop the 'is not None' guard at service.py:5529-5535 so a null persisted agent_id itself refuses the follow-up while exact target equality is kept. F5 = official_rows at service.py:3083-3092 selects only a.content_hash and never a.body, and build_peer_entries (reveal_delivery.py:52-90) only compares stored hashes; the fix selects a.body and rehashes, mirroring the pattern already present for base_rows at service.py:3093-3102. F6 = the manifest currently omits reveal_delivery.py and migrations/011_bus_reveal_delivery.sql, both live sources (imported at service.py:46-53, registered at database.py:24-25).",
+    "RECORDED WORKFLOW LIMITATION, not Work Bus evidence: compile_bound_launch_plan binds every seat at turn_ordinal 0 with slots [] and never reads the confirmed connections graph, so no authorized input was delivered automatically between waves. The parent relayed nothing in this dispatch because it terminated at the first wave, but the same limitation would have required manual relay of both audit verdicts to the coder. The host hook fired and authorized both bound seats; no missed-hook gap occurred.",
+    "The descriptor and the readiness receipt share the same defective write_scope, and the appender forces them to be JSON-equal. The receipt's status is PASS, so the planner PASS was wrong on this point. Correcting it requires revising both artifacts before this SWU can be dispatched again."
+  ]
+}
