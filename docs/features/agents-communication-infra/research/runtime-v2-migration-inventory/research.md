@@ -33,8 +33,8 @@ O repositório contém duas implementações distintas:
 | Host workflow binding | `bind_host_workflow_turn`, `complete_host_workflow_turn`; migration `009` | implemented and tested in isolation | adapt | authorizes host calls but does not discover transitions |
 | Legacy launch compiler | `dispatch_workflow.py:94` `compile_bound_launch_plan` | implemented; five focused tests pass | adapt/rewrite boundary | only turn zero, `slots: []`, no readiness or dynamic handoffs |
 | YAML↔ACI bridge | `orchestration_bridge.py`: `LocalOrchestrationLoggingBridge` | implemented; isolated logic passes | legacy adapter | Node subprocess, YAML dependency, legacy-only authority mode |
-| Host hooks | `host_dispatch_hook.py`, `host_ingestion_hook.py` | present and partly tested | legacy adapter | host/source-manifest coupling; current integration is drifted |
-| API/local pilot | `api.py`; `local_pilot.py:139` | loopback pilot implemented | adapt | production serve disabled; preflight currently fails on source-manifest drift |
+| Host hooks | `host_dispatch_hook.py`, `host_ingestion_hook.py` | present and partly tested | legacy adapter | host/source-manifest coupling; current runtime-suite coverage passes, without proving live-host operability |
+| API/local pilot | `api.py`; `local_pilot.py:139` | loopback pilot implemented | adapt | production serve disabled; the current runtime suite passes, but serving still requires its explicit operator preflight |
 | Recovery utilities | `operator_recovery.py` | nine tests pass | reuse | database recovery, not interrupted-`Run` recovery |
 | Shadow `agent-runtime` | `agent_runtime/runtime.py`; `ledger_shadow.py` | experimental; 31 tests pass | mine or archive | parallel store/journal/receipts with no launcher, authorization or cutover |
 
@@ -69,9 +69,28 @@ The seat executed 149 focused tests:
 - APT, Reference Scout, bridge, hooks, local pilot, appender and traceability: 46 passed and 18
   failed.
 
-The 18 failures exposed working-tree drift: the appender/schema moved while fixtures and the Stage-E
-source manifest remained pinned to earlier bytes. This blocks bridge/hook/local-pilot integration
-preflight, so live operability cannot be inferred from component presence.
+### Historical test observation and current recheck
+
+The exploration reported 46 passing and 18 failing tests and attributed the failures to drift among
+the appender/schema, fixtures and the Stage-E source manifest. That run did not preserve the exact
+command, tree identity, manifest digests or output, so it is a historical, non-reproducible
+observation rather than evidence about the current workspace. It does not support a concurrency
+claim or a present-tense preflight verdict.
+
+A reproducible recheck at `2026-08-03T20:11:56-03:00` ran:
+
+```powershell
+python -m unittest discover -s implementations/tests/runtime -t .
+```
+
+against `HEAD b2ad44b5ed6fbd761e7a9a33fdcc67088185f7a6`, with Stage-E manifest SHA-256
+`62d660097272dc072c3c25a6ebadb443b81d5a567069c8888b044dd7f686c633`. The exact pre-command
+`git status --short`, combined command output and exit code are frozen in the
+[recheck receipt](runtime-suite-recheck-2026-08-03.txt), SHA-256
+`336af234af257e98cc74541e9950056e76000652ff7e4ef0197947e6f9ed4381`. The receipt shows two
+unrelated untracked dispatch proposal/input paths, so this was not a clean-tree test, and records
+`119` tests in `109.872s` with `OK` and exit code `0`. This supports the current runtime-suite result
+only; it does not prove production serving or recover the missing evidence from the historical run.
 
 ### Limiting facts
 
@@ -85,7 +104,8 @@ preflight, so live operability cannot be inferred from component presence.
    effects.
 6. Replay does not reduce a generic DAG `Run` into next commands.
 7. Concrete execution authority remains legacy-managed.
-8. The working tree did not satisfy its own preflight during the run.
+8. The exploration recorded a failing historical integration run without enough frozen evidence to
+   reproduce it; the current runtime suite passes under the tree identity recorded above.
 9. The shadow runtime must not be counted as an already-integrated second half of the main runtime.
 
 Migration verdict: reuse canonicalization, journal, artifacts, capabilities, migration discipline,
@@ -201,9 +221,10 @@ component computes readiness.
 ### Migration disposition
 
 Preserve registry resolution, canonicalization/digests, strict opening/close validation,
-append-only discipline, one-use capabilities, receipts/idempotency, exact parent-seat-turn binding,
-the open-seat close barrier, lineage capture, lenient historical reads and strict live authority
-resolution.
+append-only discipline, scoped and revocable capabilities, receipts/idempotency, exact
+parent-seat-turn binding, the open-seat close barrier, lineage capture, lenient historical reads and
+strict live authority resolution. Claim capability consumption after acceptance only where the
+governing exact-operation contract explicitly requires it.
 
 Encapsulate YAML/appender, Claude/Codex hooks, `.claude` skills, pending sheets/markers, hook
 correlation files, `host/inherited@1` and the current Control Center as compatibility adapters.
@@ -225,10 +246,11 @@ file-based hook state where the journal can own it.
 9. Partial lineage for shell/search/web inputs.
 10. Unsafe big-bang cutover instead of compatible projection and shadow mode.
 
-Focused test evidence: `implementations/tests/test_ledger.py` passed. The focused runtime integration
-suite was not green because Stage-E source pins and appender/schema fixtures drifted during the run;
-the Control Center suite exceeded 120 seconds without a result. These outcomes do not support a
-claim that the full legacy integration is currently green.
+Focused historical evidence: `implementations/tests/test_ledger.py` passed, while the exploration's
+runtime integration command and Control Center run were not preserved completely enough to support
+a current-state conclusion. The reproducible current runtime-suite result is recorded above as
+119/119 passing. The Control Center result remains unknown because its historical run exceeded 120
+seconds and no current rerun was performed here.
 
 Conclusion: do not port the legacy lane wholesale into the new core. Reuse identity, binding,
 journal, capability and receipt primitives; keep YAML/appender/hooks at a compatibility boundary;
