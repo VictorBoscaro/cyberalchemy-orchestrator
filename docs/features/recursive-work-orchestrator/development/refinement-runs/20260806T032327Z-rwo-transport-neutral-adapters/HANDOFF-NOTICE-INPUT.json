@@ -1,0 +1,104 @@
+{
+  "schema_version": "0.1.0",
+  "notice_type": "session-handoff",
+  "to": {
+    "kind": "owner-route",
+    "label": "RWO adapter contract validation and ontology owners"
+  },
+  "from": {
+    "kind": "agent",
+    "label": "Codex RWO refinement and X-Ray session"
+  },
+  "subject": "Transport-neutral RWO adapter Candidate-2 and X-Ray handoff",
+  "project_scope": "docs/features/recursive-work-orchestrator",
+  "status": "open",
+  "why_now": "The adapter refinement and explanatory X-Ray are complete enough for owner review, while implementation admission, cross-owner schemas, runtime conformance, and ontology promotion remain explicitly unproved.",
+  "key_points": [
+    "TransportNeutralWorkProtocolAdapterContract@candidate-2 separates CommandDeliveryPort, EventIngressPort, TransportDeliveryAttempt, and JournalAcceptancePort while preserving canonical message identity.",
+    "Transport reconnect, redelivery, known pre-accept same-message retry, unknown delivery reconciliation, new Work Attempt, replay, and uncertain external-effect reconciliation are distinct treatments with distinct owners.",
+    "Capability manifests are claims; adapter admission requires current evidence bound to the exact implementation, configuration, manifest, requirements, owner, and validity epoch tuple.",
+    "The RWO X-Ray now exposes the adapter truth boundary as a removable candidate layer without changing the current ontology graph.",
+    "The 30 scenarios are design cases with zero runtime executions; delegated reviewers inspected the frozen source and seed rather than the later Candidate-2 artifact."
+  ],
+  "open_calls": [
+    {
+      "owner": "Journal and domain truth owners",
+      "question": "Which exact acceptance and reconciliation schemas close owner gate G1?",
+      "status": "open"
+    },
+    {
+      "owner": "Exact-effect owner",
+      "question": "Which permit, outcome, reconciliation, and compensation schemas close owner gate G2?",
+      "status": "open"
+    },
+    {
+      "owner": "ARE and ACI owners",
+      "question": "Which executable cross-repository conformance receipts close owner gate G3?",
+      "status": "open"
+    },
+    {
+      "owner": "Ontology owner",
+      "question": "Should a validated adapter contract be adopted into the canonical ontology and projections under owner gate G4?",
+      "status": "open"
+    },
+    {
+      "owner": "Adapter admission owner",
+      "question": "Which exact implementation and configuration conformance evidence closes adapter gate G5?",
+      "status": "open"
+    }
+  ],
+  "boundaries": [
+    "This notice grants no implementation, execution, authority, effect, ontology-promotion, deployment, or production authority.",
+    "A transport acknowledgement is not journal acceptance, accepted Work history, or proof of a business effect.",
+    "Authority references and adapter-admission verdicts remain non-authorizing evidence with authority_effect:none.",
+    "An unknown external-effect outcome requires reconciliation and must never trigger automatic Work or effect retry.",
+    "The X-Ray is an explanatory candidate projection and does not mutate ONTOLOGY.md, ontology.json, nodes, relations, or promotion status."
+  ],
+  "next_actions": [
+    {
+      "owner": "RWO validation owner",
+      "action": "Separately authorize and execute SWU-01 to materialize the closed candidate schemas and negative controls from the Work Pack."
+    },
+    {
+      "owner": "G1 through G3 owner routes",
+      "action": "Resolve journal/domain truth, exact-effect, and ARE/ACI conformance contracts before any design-validator-pass claim."
+    },
+    {
+      "owner": "Ontology owner",
+      "action": "Review an evidence-backed candidate delta only after contract validation; do not promote from prose or X-Ray evidence alone."
+    },
+    {
+      "owner": "Adapter admission owner",
+      "action": "Require exact-tuple conformance evidence before admitting any gRPC, socket, Redis, managed-bus, in-memory, or future custom adapter."
+    }
+  ],
+  "source_refs": [
+    {
+      "ref": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/RESULT.md",
+      "label": "Refinement result, claim ceiling, and recommended contract"
+    },
+    {
+      "ref": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/stages/08-distill-repair.md",
+      "label": "Exact Candidate-2 adapter, admission, and retry model"
+    },
+    {
+      "ref": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/stages/08-scenario-matrix.json",
+      "label": "Thirty design-only retry and failure scenarios"
+    },
+    {
+      "ref": "docs/features/recursive-work-orchestrator/development/x-rays/rwo-recovery-ontology-integration.html",
+      "label": "Interactive recovery and adapter boundary X-Ray"
+    },
+    {
+      "ref": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/FINAL-RECEIPT.json",
+      "label": "Terminal refinement receipt"
+    }
+  ],
+  "next_route": {
+    "capability": "task-session",
+    "mode": "execute",
+    "target": "SWU-01 closed candidate schemas in plan/WORK-PACK.md",
+    "authorization": "not-granted"
+  },
+  "terminal_receipt_ref": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/FINAL-RECEIPT.json"
+}

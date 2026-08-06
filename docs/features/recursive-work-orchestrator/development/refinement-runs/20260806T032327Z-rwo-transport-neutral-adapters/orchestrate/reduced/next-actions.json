@@ -1,0 +1,10 @@
+{
+  "actions": [],
+  "decision": "gate_pass",
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "next_wave_id": null,
+  "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+  "schema_version": "arcanum.native-dispatch-runner.action-set.v0.1",
+  "source_gate_id": "g03-review-receipts",
+  "source_wave_id": "w01-independent-adapter-review"
+}

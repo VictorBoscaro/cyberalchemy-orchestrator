@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "stage_id": "s07",
+  "stage": "interrogation-refine-design-review",
+  "status": "block",
+  "started_at": "2026-08-05T19:49:58Z",
+  "completed_at": "2026-08-05T19:55:19Z",
+  "inputs": [
+    "stages/06-invoke-design.md",
+    "stages/subagents/recovery-model-adversary.md",
+    "stages/subagents/recovery-model-adversary.receipt.json"
+  ],
+  "outputs": [
+    "stages/07-interrogation-design-review.md"
+  ],
+  "independent_finding_counts": {
+    "block": 11,
+    "flag": 4,
+    "note": 0
+  },
+  "parent_finding_counts": {
+    "block": 0,
+    "flag": 1,
+    "note": 0
+  },
+  "accepted_repairs": 12,
+  "rejected_findings": 0,
+  "next_stage": "s08-distill-repair",
+  "claim_ceiling": "Stage 6 design review only; block requires repair before planning"
+}

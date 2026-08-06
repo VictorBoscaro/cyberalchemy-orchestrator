@@ -1,0 +1,16 @@
+{
+  "relation_id": "rwo:relation:fixture-authority-effect",
+  "predicate": "promotes",
+  "relation_kind": "governance",
+  "source_node": "rwo:source:e1",
+  "target_node": "rwo:WorkProtocol",
+  "direction": "directed",
+  "owner_route": "fixture-only",
+  "evidence_refs": ["rwo:source:e1"],
+  "authority_effect": "owner-decision",
+  "cycle_policy": "acyclic",
+  "runtime_posture": "not-applicable",
+  "properties": {},
+  "description": "Negative fixture: ontology relation attempts to create authority.",
+  "forbidden_inferences": ["This fixture must never validate."]
+}

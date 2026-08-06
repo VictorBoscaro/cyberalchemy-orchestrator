@@ -1,0 +1,40 @@
+{
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "step_id": "s06",
+  "capability_ref": "invoke",
+  "mode": "design",
+  "capability_handle": ".agents/skills/invoke/SKILL.md#design",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "parent-native",
+  "status": "pass",
+  "verdict": "pass",
+  "artifacts": [
+    "stages/06-invoke-design.md",
+    "stages/06-glossary-consistency.md",
+    "stages/06-implementation-layering-seed.md",
+    "stages/06-design-transport.md",
+    "design-selection/design-scope-manifest.json",
+    "design-selection/design-denominator-receipt.json",
+    "design-selection/design-selection-result.json",
+    "design-selection/authored-concerns.json",
+    "design-selection/planned-witnesses.json"
+  ],
+  "validation": [
+    "Design scope extractor pass: 18 signals, 25 denominator IDs, no missing or unbound signals",
+    "Design selection validator pass: 8 concerns, fixed point true, pass-one equals pass-two",
+    "six required views present",
+    "all selected architecture extensions present",
+    "planned witnesses remain non-executed Design evidence",
+    "glossary consistency pass with candidate-term boundary",
+    "no upstream, ontology, runtime, private-source, or promotion mutation"
+  ],
+  "observer_status": "not_configured",
+  "blockers": [],
+  "residue": [
+    "journal/domain reconciliation owner unselected",
+    "RecoveryPolicy publication owners unselected",
+    "reconciliation and effect retry-safety owners/contracts unaccepted",
+    "ARE/ACI cross-repository conformance unexecuted"
+  ],
+  "handoff_note": "Spawn the approved recovery-model-adversary against stages/06-invoke-design.md, collect its terminal receipt, then run s07."
+}

@@ -1,0 +1,19 @@
+{
+  "entries": [
+    {
+      "code": "HN-0FE86DEF1982",
+      "created_at": "2026-08-06T12:48:58.749291Z",
+      "digest": "0fe86def1982c037f0d38bf56487f514aada7203dbff6fe4bdbe8f25097ad98c",
+      "json_path": ".arcanum/handoff-notices/notices/HN-0FE86DEF1982.json",
+      "markdown_path": ".arcanum/handoff-notices/notices/HN-0FE86DEF1982.md",
+      "notice_id": "hn:0fe86def1982c037f0d38bf56487f514aada7203dbff6fe4bdbe8f25097ad98c",
+      "notice_type": "session-handoff",
+      "project_scope": "docs/features/recursive-work-orchestrator",
+      "status": "open",
+      "subject": "Transport-neutral RWO adapter Candidate-2 and X-Ray handoff",
+      "supersedes": null
+    }
+  ],
+  "repository_fingerprint": "2f181be338ae18e539cdffee04b706d243f3006d1884b06e2f01bc0a38a200e1",
+  "schema_version": "0.1.0"
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0",
+  "route_policy": "automatic-in-scope",
+  "scope_source": "WORK-PACK.md and selected SWU only",
+  "allowed_routes_digest": "sha256:7370bedb4e73630fbfcfb576297a303073c01e67fef5eaae5ac921a73f74ede6",
+  "routes": [
+    {
+      "route_id": "rrd-l0-canonical",
+      "frontier_swu": "SWU-RRD-001",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Recovery canonical ID wrapper and golden vectors",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/server/runtime/recovery_canonical.py",
+        "implementations/tests/runtime/test_recovery_canonical.py",
+        "implementations/fixtures/recovery-model/canonical-vectors.json"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-001.json"
+    },
+    {
+      "route_id": "rrd-l0-case-contract",
+      "frontier_swu": "SWU-RRD-002",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Closed RecoveryCase admission contract",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/contracts/recovery/recovery-trigger.candidate-2.schema.json",
+        "implementations/contracts/recovery/recovery-case.candidate-2.schema.json",
+        "implementations/server/runtime/recovery_contract.py",
+        "implementations/tests/runtime/test_recovery_contract.py",
+        "implementations/fixtures/recovery-model/case-fixtures.json"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-002.json"
+    },
+    {
+      "route_id": "rrd-l0-classifier",
+      "frontier_swu": "SWU-RRD-003",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Pure recovery classifier",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/contracts/recovery/recovery-decision.candidate-2.schema.json",
+        "implementations/server/runtime/recovery_classifier.py",
+        "implementations/tests/runtime/test_recovery_classifier.py",
+        "implementations/fixtures/recovery-model/classifier-fixtures.json"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-003.json"
+    },
+    {
+      "route_id": "rrd-l0-identity",
+      "frontier_swu": "SWU-RRD-004",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Recovery identity transitions and stable intents",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/server/runtime/recovery_identity.py",
+        "implementations/tests/runtime/test_recovery_identity.py",
+        "implementations/fixtures/recovery-model/identity-fixtures.json"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-004.json"
+    },
+    {
+      "route_id": "rrd-l1-frontier",
+      "frontier_swu": "SWU-RRD-005",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "RecoveryFrontier reducer and inhibition",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/contracts/recovery/recovery-frontier.candidate-2.schema.json",
+        "implementations/server/runtime/recovery_frontier.py",
+        "implementations/tests/runtime/test_recovery_frontier.py",
+        "implementations/fixtures/recovery-model/frontier-fixtures.json"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-005.json"
+    },
+    {
+      "route_id": "rrd-l1-acceptance",
+      "frontier_swu": "SWU-RRD-006",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Atomic recovery decision acceptance",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/server/runtime/recovery_acceptance.py",
+        "implementations/server/runtime/journal.py",
+        "implementations/server/runtime/database.py",
+        "implementations/server/runtime/schema.sql",
+        "implementations/tests/runtime/test_recovery_acceptance.py"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-006.json"
+    },
+    {
+      "route_id": "rrd-l2-domain",
+      "frontier_swu": "SWU-RRD-007",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Domain signal and recovery policy admission",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/contracts/recovery/domain-recovery-signal.candidate-2.schema.json",
+        "implementations/contracts/recovery/recovery-policy.candidate-2.schema.json",
+        "implementations/server/runtime/recovery_domain.py",
+        "implementations/tests/runtime/test_recovery_domain.py"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-007.json"
+    },
+    {
+      "route_id": "rrd-l2-effect",
+      "frontier_swu": "SWU-RRD-008",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Exact-effect retry and reconciliation admission",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/contracts/recovery/effect-retry-permit.candidate-2.schema.json",
+        "implementations/contracts/recovery/reconciliation-result.candidate-2.schema.json",
+        "implementations/server/runtime/recovery_effect.py",
+        "implementations/tests/runtime/test_recovery_effect.py"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-008.json"
+    },
+    {
+      "route_id": "rrd-l2-are-aci",
+      "frontier_swu": "SWU-RRD-009",
+      "capability": "task-session",
+      "mode": "execute",
+      "target": "Optional ARE semantic receipt binding",
+      "effect_class": "repository-local-reversible",
+      "write_scope": [
+        "implementations/contracts/recovery/semantic-receipt-binding.candidate-2.schema.json",
+        "implementations/server/runtime/recovery_semantic_evidence.py",
+        "implementations/tests/runtime/test_recovery_semantic_evidence.py"
+      ],
+      "expected_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-009.json"
+    }
+  ],
+  "stop_decisions": [
+    "product-or-semantic-choice",
+    "scope-expansion",
+    "destructive-or-irreversible-effect",
+    "credentials-or-secret-access",
+    "external-message-or-network-effect",
+    "cost-policy-or-risk-acceptance",
+    "authority-promotion-publication-deployment",
+    "failed-acceptance-critical-validation"
+  ]
+}

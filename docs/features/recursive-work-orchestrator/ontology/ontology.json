@@ -1,0 +1,1713 @@
+{
+  "$schema": "./schemas/ontology.schema.json",
+  "schema_version": "rwo-architecture-property-ontology/v1",
+  "ontology": {
+    "id": "rwo-architecture@0.1.0",
+    "version": "0.1.0",
+    "ontology_type": "architecture-property",
+    "selection_source": "inferred",
+    "selection_confidence": "high",
+    "project_local_alias": "recursive-work-orchestrator",
+    "branch": "system",
+    "status": "candidate",
+    "authority": "proposal-only",
+    "authority_effect": "none",
+    "runtime_conformance": "unsupported",
+    "promotion_status": "not-granted",
+    "namespace": "rwo:",
+    "claim_ceiling": "Machine-addressable projection of a candidate design; package integrity may be validated, but implementation, runtime conformance, authority, and promotion are not established."
+  },
+  "source_precedence": [
+    "source:design",
+    "source:candidate-ontology",
+    "source:view-findings"
+  ],
+  "sources": [
+    {
+      "id": "source:design",
+      "path": "../DESIGN.md",
+      "sha256": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "kind": "candidate-architecture-design",
+      "posture": "proposal-only",
+      "role": "primary-semantic-source",
+      "allowed_use": ["element meaning", "architecture constraints", "source selectors", "open questions"],
+      "blocked_use": ["runtime claim", "authority grant", "promotion verdict", "implementation claim"]
+    },
+    {
+      "id": "source:candidate-ontology",
+      "path": "ONTOLOGY.md",
+      "sha256": "1c6d417c4f0cdfc73c7c42f016c05fd6f8fbccd738a35bf7454472d3cee3b920",
+      "kind": "candidate-structured-mapping",
+      "posture": "proposal-only",
+      "role": "human-readable-ontology-source",
+      "allowed_use": ["local IDs", "typed properties", "relations", "shields", "profiles", "projections", "residue"],
+      "blocked_use": ["override design", "canonical vocabulary", "runtime conformance", "promotion"]
+    },
+    {
+      "id": "source:view-research-raw",
+      "path": "../research/2026-08-04-best-understanding-view/research.md",
+      "sha256": "3b1de2f21406e2a265012bc3ca0dd540817aa0f6a3fa66d04217cd0d6ac4b568",
+      "kind": "delegated-research",
+      "posture": "evidence-not-authority",
+      "role": "raw-view-evidence",
+      "allowed_use": ["compare explanatory grammars", "preserve explorer distinctions", "trace synthesis inputs"],
+      "blocked_use": ["semantic override", "promotion", "runtime claim", "view implementation claim"]
+    },
+    {
+      "id": "source:view-findings",
+      "path": "../research/2026-08-04-best-understanding-view/findings.md",
+      "sha256": "6b6a2b0d6cd04c8b6d54fc946ac260d3acea42d315b48fb5a00304a794fda5db",
+      "kind": "synthesis-findings",
+      "posture": "research-recommendation-only",
+      "role": "view-projection-source",
+      "allowed_use": ["Atlas lens contract", "learner projection", "negative controls", "validation lanes"],
+      "blocked_use": ["semantic override", "built-view claim", "accessibility claim", "comprehension claim", "runtime claim"]
+    },
+    {
+      "id": "source:vault-conventions",
+      "path": "../../../../vault/ontology-conventions.md",
+      "sha256": "04124df6842c367437bf43c9321320f420a0712f5b17b910602c4335dd39d0ef",
+      "kind": "local-ontology-constitution",
+      "posture": "active-local-governance",
+      "role": "knowledge-governance-source",
+      "allowed_use": ["source posture", "confidence axes", "edge documentation", "orthogonality test"],
+      "blocked_use": ["runtime architecture meaning", "automatic promotion"]
+    },
+    {
+      "id": "source:definitions-index",
+      "path": "../../../../definitions/DEFINITIONS.md",
+      "sha256": "2122cf342f388367e0e22e8b1dffb155779c6bdf5f2a361c28f8874d89ddefbd",
+      "kind": "canonical-definition-index",
+      "posture": "owner-navigation",
+      "role": "canonical-boundary-reference",
+      "allowed_use": ["avoid local redefinition", "route definition ownership"],
+      "blocked_use": ["infer missing RWO definitions", "promote local terms by proximity"]
+    }
+  ],
+  "owner_routes": [
+    {
+      "id": "rwo:owner.definition",
+      "label": "Work-definition owner review",
+      "scope": "Definition identity, contracts, composition declarations, mappings, and limits.",
+      "status": "candidate",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.root-runtime",
+      "label": "Root runtime owner",
+      "scope": "Graph expansion, routing cursor, edge evaluation, and command issuance.",
+      "status": "candidate",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.work-runtime",
+      "label": "Work unit or work adapter",
+      "scope": "Domain status, confirmation, outcomes, and work-owned event meaning.",
+      "status": "external",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.protocol",
+      "label": "Work protocol boundary",
+      "scope": "Addressed delivery semantics and message-envelope integrity.",
+      "status": "candidate",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.journal",
+      "label": "Accepted-history boundary",
+      "scope": "Journal acceptance disposition, append-only history, and per-run ordering evidence.",
+      "status": "candidate",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.adapter",
+      "label": "Executor or authority adapter",
+      "scope": "Executor translation, admission, idempotent external effects, and trusted evidence injection.",
+      "status": "external",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.architecture-review",
+      "label": "Candidate architecture review",
+      "scope": "Property definitions, relation constraints, profiles, findings, and source correspondence.",
+      "status": "candidate",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.view-projection",
+      "label": "Learner projection builder",
+      "scope": "Removable Atlas projections and their validation contracts.",
+      "status": "candidate",
+      "authority_effect": "none"
+    },
+    {
+      "id": "rwo:owner.ontology-promotion",
+      "label": "Ontology promotion owner",
+      "scope": "Any movement beyond proposal-only candidate status.",
+      "status": "unresolved",
+      "authority_effect": "none",
+      "residue_ref": "rwo:residue.010"
+    }
+  ],
+  "element_types": [
+    {
+      "id": "rwo:ArchitectureElement",
+      "label": "Architecture Element",
+      "definition": "Any typed element in this local architecture-property model.",
+      "abstract": true,
+      "source_refs": ["source:candidate-ontology#3-element-type-catalog"]
+    },
+    {
+      "id": "rwo:WorkDefinition",
+      "label": "Work Definition",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Immutable, versioned outer contract that can describe a leaf or composite.",
+      "abstract": true,
+      "source_refs": ["source:design#41-workdefinition", "source:candidate-ontology#3-element-type-catalog"]
+    },
+    {
+      "id": "rwo:LeafWorkDefinition",
+      "label": "Leaf Work Definition",
+      "parent": "rwo:WorkDefinition",
+      "definition": "Work definition whose body binds to an executor adapter.",
+      "abstract": false,
+      "source_refs": ["source:design#43-leaf-work", "source:candidate-ontology#3-element-type-catalog"]
+    },
+    {
+      "id": "rwo:CompositeWorkDefinition",
+      "label": "Composite Work Definition",
+      "parent": "rwo:WorkDefinition",
+      "definition": "Work definition whose body is a WorkGraph and whose boundary remains substitutable for a leaf definition.",
+      "abstract": false,
+      "source_refs": ["source:design#44-composite-work", "source:candidate-ontology#3-element-type-catalog"]
+    },
+    {
+      "id": "rwo:LeafBinding",
+      "label": "Leaf Binding",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Declared binding from a leaf definition to an executor adapter without provider-specific behavior in the kernel.",
+      "abstract": false,
+      "formalization_note": "Made explicit so the target of has-body is a resolved ontology type.",
+      "source_refs": ["source:design#43-leaf-work", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:WorkRun",
+      "label": "Work Run",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "One invocation of one immutable WorkDefinition.",
+      "abstract": false,
+      "source_refs": ["source:design#42-workrun", "source:candidate-ontology#3-element-type-catalog"]
+    },
+    {
+      "id": "rwo:Attempt",
+      "label": "Attempt",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "One execution attempt belonging to a WorkRun without changing its definition, graph, or authority basis.",
+      "abstract": false,
+      "source_refs": ["source:design#42-workrun", "source:candidate-ontology#3-element-type-catalog"]
+    },
+    {
+      "id": "rwo:WorkGraph",
+      "label": "Work Graph",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Typed graph composing addressed WorkNodes through EventTriggeredEdges.",
+      "abstract": false,
+      "source_refs": ["source:design#44-composite-work", "source:design#57-escape-hatch-explicit-graph-composition"]
+    },
+    {
+      "id": "rwo:WorkNode",
+      "label": "Work Node",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Structural position in a WorkGraph that references one WorkDefinition.",
+      "abstract": false,
+      "source_refs": ["source:design#42-workrun", "source:design#5-the-composition-algebra"]
+    },
+    {
+      "id": "rwo:EventTriggeredEdge",
+      "label": "Event-Triggered Edge",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Routing rule from one source event selector to one target invocation and input mapping.",
+      "abstract": false,
+      "source_refs": ["source:design#5-the-composition-algebra"]
+    },
+    {
+      "id": "rwo:EventSelector",
+      "label": "Event Selector",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Versioned matcher over an event type and structural classification.",
+      "abstract": false,
+      "source_refs": ["source:design#5-the-composition-algebra", "source:design#63-event-classifications"]
+    },
+    {
+      "id": "rwo:InputMapping",
+      "label": "Input Mapping",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Declared transformation from selected source data to a target input contract.",
+      "abstract": false,
+      "source_refs": ["source:design#44-composite-work", "source:design#8-runtime-flow"]
+    },
+    {
+      "id": "rwo:OutputProjection",
+      "label": "Output Projection",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Declared mapping from selected child outputs into a composite boundary output.",
+      "abstract": false,
+      "source_refs": ["source:design#44-composite-work"]
+    },
+    {
+      "id": "rwo:WorkContract",
+      "label": "Work Contract",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Input, output, command, event, authority, and limit declarations for a WorkDefinition.",
+      "abstract": false,
+      "source_refs": ["source:design#4-the-uniform-work-contract", "source:design#41-workdefinition"]
+    },
+    {
+      "id": "rwo:EventContract",
+      "label": "Event Contract",
+      "parent": "rwo:WorkContract",
+      "definition": "Declares event types, schemas, and structural classifications a work may emit.",
+      "abstract": false,
+      "source_refs": ["source:design#41-workdefinition", "source:design#63-event-classifications"]
+    },
+    {
+      "id": "rwo:CommandContract",
+      "label": "Command Contract",
+      "parent": "rwo:WorkContract",
+      "definition": "Declares addressed commands a work may receive.",
+      "abstract": false,
+      "source_refs": ["source:design#41-workdefinition", "source:design#6-work-protocol-commands-events-and-the-bus"]
+    },
+    {
+      "id": "rwo:CompositionForm",
+      "label": "Composition Form",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Declarative graph pattern compiled into EventTriggeredEdges.",
+      "abstract": true,
+      "source_refs": ["source:design#5-the-composition-algebra"]
+    },
+    {
+      "id": "rwo:Sequence",
+      "label": "Sequence",
+      "parent": "rwo:CompositionForm",
+      "definition": "Releases a successor from a declared predecessor event.",
+      "abstract": false,
+      "source_refs": ["source:design#51-sequence"]
+    },
+    {
+      "id": "rwo:FanOut",
+      "label": "Fan-Out",
+      "parent": "rwo:CompositionForm",
+      "definition": "Releases multiple explicitly mapped branches from one declared event.",
+      "abstract": false,
+      "source_refs": ["source:design#52-fan-out"]
+    },
+    {
+      "id": "rwo:FanIn",
+      "label": "Fan-In",
+      "parent": "rwo:CompositionForm",
+      "definition": "Waits for a structural release condition and invokes a join work.",
+      "abstract": false,
+      "source_refs": ["source:design#53-fan-in"]
+    },
+    {
+      "id": "rwo:Gate",
+      "label": "Gate",
+      "parent": "rwo:CompositionForm",
+      "definition": "Routes one decision-work label to exactly one declared outgoing edge.",
+      "abstract": false,
+      "source_refs": ["source:design#54-gate"]
+    },
+    {
+      "id": "rwo:Sidecar",
+      "label": "Sidecar",
+      "parent": "rwo:CompositionForm",
+      "definition": "Attaches ordinary work to a primary under a declared lifecycle policy.",
+      "abstract": false,
+      "source_refs": ["source:design#55-sidecar"]
+    },
+    {
+      "id": "rwo:BoundedRepeat",
+      "label": "Bounded Repeat",
+      "parent": "rwo:CompositionForm",
+      "definition": "Repeats a graph under a decision work, positive bound, and exhaustion route.",
+      "abstract": false,
+      "source_refs": ["source:design#56-bounded-repetition"]
+    },
+    {
+      "id": "rwo:ExplicitComposition",
+      "label": "Explicit Composition",
+      "parent": "rwo:CompositionForm",
+      "definition": "Direct typed WorkGraph form underlying all convenience operators.",
+      "abstract": false,
+      "source_refs": ["source:design#57-escape-hatch-explicit-graph-composition"]
+    },
+    {
+      "id": "rwo:ReleasePolicy",
+      "label": "Release Policy",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Structural readiness rule such as all, any, or bounded quorum.",
+      "abstract": false,
+      "source_refs": ["source:design#53-fan-in"]
+    },
+    {
+      "id": "rwo:SidecarLifecyclePolicy",
+      "label": "Sidecar Lifecycle Policy",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Declares start, observation, termination, and output contribution behavior for a sidecar.",
+      "abstract": false,
+      "source_refs": ["source:design#55-sidecar"]
+    },
+    {
+      "id": "rwo:WorkMessage",
+      "label": "Work Message",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Versioned message in the common work-protocol envelope.",
+      "abstract": true,
+      "source_refs": ["source:design#61-common-envelope"]
+    },
+    {
+      "id": "rwo:Command",
+      "label": "Command",
+      "parent": "rwo:WorkMessage",
+      "definition": "Addressed request that a target or authority adapter may reject.",
+      "abstract": false,
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus"]
+    },
+    {
+      "id": "rwo:Event",
+      "label": "Event",
+      "parent": "rwo:WorkMessage",
+      "definition": "Accepted record emitted by a work unit or trusted runtime adapter; acceptance does not imply confirmation, approval, or authority.",
+      "abstract": false,
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus"]
+    },
+    {
+      "id": "rwo:EventClassification",
+      "label": "Event Classification",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Structural event role: progress, release, terminal, or diagnostic.",
+      "abstract": false,
+      "source_refs": ["source:design#63-event-classifications"]
+    },
+    {
+      "id": "rwo:WorkProtocol",
+      "label": "Work Protocol",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Logical command/event delivery boundary that neither decides nor executes work.",
+      "abstract": false,
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus"]
+    },
+    {
+      "id": "rwo:Journal",
+      "label": "Journal",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Append-only accepted message history used for replay and audit.",
+      "abstract": false,
+      "source_refs": ["source:design#62-delivery-contract", "source:design#7-state-and-ownership"]
+    },
+    {
+      "id": "rwo:OrchestratorKernel",
+      "label": "Orchestrator Kernel",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Single root graph interpreter that validates, expands, observes, and issues declared commands.",
+      "abstract": false,
+      "source_refs": ["source:design#2-thesis", "source:design#8-runtime-flow"]
+    },
+    {
+      "id": "rwo:OrchestrationCursor",
+      "label": "Orchestration Cursor",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Rebuildable control projection of deliveries, satisfied edges, and enabled nodes.",
+      "abstract": false,
+      "source_refs": ["source:design#7-state-and-ownership"]
+    },
+    {
+      "id": "rwo:StatusProjection",
+      "label": "Status Projection",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Rebuildable user or operator view over accepted child events without domain-state ownership.",
+      "abstract": false,
+      "source_refs": ["source:design#7-state-and-ownership"]
+    },
+    {
+      "id": "rwo:ExecutorAdapter",
+      "label": "Executor Adapter",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Boundary translating the work protocol to an external executor and reporting events.",
+      "abstract": false,
+      "source_refs": ["source:design#43-leaf-work", "source:design#8-runtime-flow"]
+    },
+    {
+      "id": "rwo:AuthorityReference",
+      "label": "Authority Reference",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Reference to accepted authority evidence required before command delivery or an external effect.",
+      "abstract": false,
+      "source_refs": ["source:design#41-workdefinition", "source:design#10-validation-invariants"]
+    },
+    {
+      "id": "rwo:DomainState",
+      "label": "Domain State",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Work-owned meaning and lifecycle state opaque to the orchestrator.",
+      "abstract": false,
+      "source_refs": ["source:design#3-non-goals", "source:design#7-state-and-ownership"]
+    },
+    {
+      "id": "rwo:ConfirmationState",
+      "label": "Confirmation State",
+      "parent": "rwo:DomainState",
+      "definition": "Confirmation meaning and state owned by an individual gate or work unit.",
+      "abstract": false,
+      "source_refs": ["source:design#3-non-goals", "source:design#54-gate"]
+    },
+    {
+      "id": "rwo:ArchitectureProfile",
+      "label": "Architecture Profile",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Named set of portable constraints evaluated over the local ontology.",
+      "abstract": false,
+      "source_refs": ["source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:Constraint",
+      "label": "Constraint",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Portable expectation evaluated by an ArchitectureProfile.",
+      "abstract": true,
+      "formalization_note": "Made explicit so profile relation endpoints resolve independently of prose.",
+      "source_refs": ["source:design#10-validation-invariants", "source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:PropertyConstraint",
+      "label": "Property Constraint",
+      "parent": "rwo:Constraint",
+      "definition": "Constraint over one or more typed property observations.",
+      "abstract": false,
+      "formalization_note": "Machine projection endpoint type implied by the candidate profile catalog.",
+      "source_refs": ["source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:RelationConstraint",
+      "label": "Relation Constraint",
+      "parent": "rwo:Constraint",
+      "definition": "Constraint over relation presence, cardinality, direction, endpoints, cycles, or evidence.",
+      "abstract": false,
+      "formalization_note": "Machine projection endpoint type implied by the candidate profile catalog.",
+      "source_refs": ["source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:ObservationProjection",
+      "label": "Observation Projection",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Typed transformation of source, graph, journal, runtime, test, or audit evidence into observed facts.",
+      "abstract": false,
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:PropertyFinding",
+      "label": "Property Finding",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Explainable result retaining subject, expectation, observation, profile, evidence, forbidden inference, and owner route.",
+      "abstract": false,
+      "source_refs": ["source:candidate-ontology#9-explainable-finding-shape"]
+    },
+    {
+      "id": "rwo:EvidenceReference",
+      "label": "Evidence Reference",
+      "parent": "rwo:ArchitectureElement",
+      "definition": "Typed reference to direct evidence supporting or failing to support an observation.",
+      "abstract": false,
+      "formalization_note": "Made explicit so supported-by has a resolved endpoint and evidence remains separate from findings.",
+      "source_refs": ["source:candidate-ontology#9-explainable-finding-shape", "source:candidate-ontology#10-evidence-and-confidence-ledger"]
+    }
+  ],
+  "properties": [
+    {
+      "id": "rwo:p.work-ref",
+      "label": "Work reference",
+      "subjects": ["rwo:WorkDefinition"],
+      "applies_to_descendants": true,
+      "value_domain": { "kind": "string" },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.definition",
+      "forbidden_inference": "The same label or path means the same definition identity.",
+      "source_refs": ["source:design#41-workdefinition", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.body-kind",
+      "label": "Body kind",
+      "subjects": ["rwo:WorkDefinition"],
+      "applies_to_descendants": true,
+      "value_domain": { "kind": "enum", "values": ["leaf", "composite"] },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.definition",
+      "forbidden_inference": "A composite body grants nested orchestration authority.",
+      "source_refs": ["source:design#4-the-uniform-work-contract", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.input-schema",
+      "label": "Input schema",
+      "subjects": ["rwo:WorkDefinition"],
+      "applies_to_descendants": true,
+      "value_domain": { "kind": "schema-reference" },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.definition",
+      "forbidden_inference": "Schema validity proves semantic fitness.",
+      "source_refs": ["source:design#41-workdefinition", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.output-schema",
+      "label": "Output schema",
+      "subjects": ["rwo:WorkDefinition"],
+      "applies_to_descendants": true,
+      "value_domain": { "kind": "schema-reference" },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.definition",
+      "forbidden_inference": "Schema validity proves result correctness.",
+      "source_refs": ["source:design#41-workdefinition", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.event-class",
+      "label": "Event class",
+      "subjects": ["rwo:EventContract", "rwo:Event"],
+      "value_domain": { "kind": "enum", "values": ["progress", "release", "terminal", "diagnostic"] },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.work-runtime",
+      "forbidden_inference": "Terminal means approved, successful, or permission for an external effect.",
+      "source_refs": ["source:design#63-event-classifications", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.release-mode",
+      "label": "Release mode",
+      "subjects": ["rwo:ReleasePolicy"],
+      "value_domain": { "kind": "string" },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.definition",
+      "forbidden_inference": "Structural quorum proves quality, correctness, consensus, or independent judgment.",
+      "source_refs": ["source:design#53-fan-in", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.max-rounds",
+      "label": "Maximum rounds",
+      "subjects": ["rwo:BoundedRepeat"],
+      "value_domain": { "kind": "integer", "minimum": 1 },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.definition",
+      "forbidden_inference": "A finite round bound proves an agent terminates within any round.",
+      "source_refs": ["source:design#56-bounded-repetition", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.sidecar-finish",
+      "label": "Sidecar finish behavior",
+      "subjects": ["rwo:SidecarLifecyclePolicy"],
+      "value_domain": { "kind": "enum", "values": ["detach", "await", "cancel-requested"] },
+      "required_stage": "definition",
+      "owner_route": "rwo:owner.definition",
+      "forbidden_inference": "A sidecar may control the primary without an explicit edge.",
+      "source_refs": ["source:design#55-sidecar", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.message-kind",
+      "label": "Message kind",
+      "subjects": ["rwo:WorkMessage"],
+      "applies_to_descendants": true,
+      "value_domain": { "kind": "enum", "values": ["command", "event"] },
+      "required_stage": "message",
+      "owner_route": "rwo:owner.protocol",
+      "forbidden_inference": "A command is an accepted event record or an event is permission for an effect.",
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.delivery-semantics",
+      "label": "Delivery semantics",
+      "subjects": ["rwo:WorkProtocol"],
+      "value_domain": { "kind": "enum", "values": ["at-least-once"] },
+      "required_stage": "architecture",
+      "owner_route": "rwo:owner.protocol",
+      "forbidden_inference": "At-least-once plus message idempotency establishes exactly-once business effects.",
+      "source_refs": ["source:design#62-delivery-contract", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.ordering-scope",
+      "label": "Ordering scope",
+      "subjects": ["rwo:WorkProtocol", "rwo:Journal"],
+      "value_domain": { "kind": "enum", "values": ["per-work-run"] },
+      "required_stage": "architecture",
+      "owner_route": "rwo:owner.journal",
+      "forbidden_inference": "Per-run ordering establishes global ordering across runs.",
+      "source_refs": ["source:design#62-delivery-contract", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.idempotency-key",
+      "label": "Idempotency key",
+      "subjects": ["rwo:Command", "rwo:Event"],
+      "value_domain": { "kind": "string" },
+      "required_stage": "message",
+      "owner_route": "rwo:owner.protocol",
+      "forbidden_inference": "Duplicate delivery is harmless without adapter or acceptance evidence.",
+      "source_refs": ["source:design#61-common-envelope", "source:design#62-delivery-contract"]
+    },
+    {
+      "id": "rwo:p.reducer-version",
+      "label": "Reducer version",
+      "subjects": ["rwo:OrchestrationCursor", "rwo:StatusProjection"],
+      "value_domain": { "kind": "reference", "target_types": ["rwo:ObservationProjection"] },
+      "required_stage": "projection",
+      "owner_route": "rwo:owner.root-runtime",
+      "forbidden_inference": "A view without a reducer version is replayable or comparable.",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.freshness",
+      "label": "Projection freshness",
+      "subjects": ["rwo:StatusProjection"],
+      "value_domain": { "kind": "watermark" },
+      "required_stage": "projection",
+      "owner_route": "rwo:owner.view-projection",
+      "forbidden_inference": "A displayed state is current when freshness lineage is absent.",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.authority-effect",
+      "label": "Authority effect",
+      "subjects": ["rwo:ArchitectureElement"],
+      "applies_to_descendants": true,
+      "value_domain": { "kind": "constant", "value": "none" },
+      "required_stage": "ontology",
+      "owner_route": "rwo:owner.ontology-promotion",
+      "forbidden_inference": "Ontology membership grants authority or approval.",
+      "source_refs": ["source:candidate-ontology#1-ontology-identity-and-boundary", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.authoritative-for",
+      "label": "Authoritative state class",
+      "subjects": ["rwo:DomainState", "rwo:Journal", "rwo:OrchestrationCursor"],
+      "value_domain": { "kind": "owned-state-class" },
+      "required_stage": "architecture",
+      "owner_route": "rwo:owner.architecture-review",
+      "forbidden_inference": "One owner class silently owns or reinterprets another state class.",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#4-typed-property-catalog"]
+    },
+    {
+      "id": "rwo:p.evidence-stage",
+      "label": "Evidence stage",
+      "subjects": ["rwo:PropertyFinding", "rwo:EvidenceReference"],
+      "value_domain": { "kind": "enum", "values": ["definition", "source", "graph", "runtime", "test", "telemetry"] },
+      "required_stage": "finding",
+      "owner_route": "rwo:owner.architecture-review",
+      "forbidden_inference": "Earlier-stage evidence proves a later-stage architecture property.",
+      "source_refs": ["source:candidate-ontology#9-explainable-finding-shape"]
+    },
+    {
+      "id": "rwo:p.finding-status",
+      "label": "Finding status",
+      "subjects": ["rwo:PropertyFinding"],
+      "value_domain": { "kind": "enum", "values": ["pass", "fail", "unsupported", "indeterminate"] },
+      "required_stage": "finding",
+      "owner_route": "rwo:owner.architecture-review",
+      "forbidden_inference": "Missing evidence means pass.",
+      "source_refs": ["source:candidate-ontology#9-explainable-finding-shape"]
+    }
+  ],
+  "relations": [
+    {
+      "id": "rwo:r.specializes",
+      "label": "Specializes",
+      "endpoint_kind": "type-definition",
+      "source_types": ["rwo:ArchitectureElement"],
+      "target_types": ["rwo:ArchitectureElement"],
+      "cardinality": "many-to-one",
+      "direction": "directed",
+      "transitive": true,
+      "cycle_policy": "acyclic type hierarchy",
+      "evidence_requirement": "element type declaration",
+      "owner_route": "rwo:owner.architecture-review",
+      "meaning": "Local subtype relation; transitive only within this type hierarchy.",
+      "source_refs": ["source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.has-contract",
+      "label": "Has contract",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkDefinition"],
+      "target_types": ["rwo:WorkContract"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Makes the uniform outer Work contract explicit for both leaf and composite definitions.",
+      "source_refs": ["source:design#4-the-uniform-work-contract", "source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:r.has-body",
+      "label": "Has body",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkDefinition"],
+      "target_types": ["rwo:WorkGraph", "rwo:LeafBinding"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic definition containment",
+      "evidence_requirement": "definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Selects exactly one composite graph or leaf binding.",
+      "source_refs": ["source:design#4-the-uniform-work-contract", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.instantiates",
+      "label": "Instantiates",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkRun"],
+      "target_types": ["rwo:WorkDefinition"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "accepted invocation",
+      "owner_route": "rwo:owner.root-runtime",
+      "meaning": "Binds a run to one immutable definition.",
+      "source_refs": ["source:design#42-workrun", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.has-attempt",
+      "label": "Has attempt",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkRun"],
+      "target_types": ["rwo:Attempt"],
+      "cardinality": "one-to-many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "accepted attempt record",
+      "owner_route": "rwo:owner.work-runtime",
+      "meaning": "Associates attempts without changing WorkRun identity.",
+      "source_refs": ["source:design#42-workrun", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.contains-node",
+      "label": "Contains node",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkGraph"],
+      "target_types": ["rwo:WorkNode"],
+      "cardinality": "one-to-many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic containment",
+      "evidence_requirement": "graph definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Gives a WorkNode structural membership in one graph.",
+      "source_refs": ["source:design#44-composite-work", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.contains-edge",
+      "label": "Contains edge",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkGraph"],
+      "target_types": ["rwo:EventTriggeredEdge"],
+      "cardinality": "one-to-many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic containment",
+      "evidence_requirement": "graph definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Gives an EventTriggeredEdge structural membership in one graph.",
+      "source_refs": ["source:design#44-composite-work", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.references-work",
+      "label": "References work",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkNode"],
+      "target_types": ["rwo:WorkDefinition"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "graph cycles governed by bounded-cycle constraints",
+      "evidence_requirement": "graph definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Selects the reusable WorkDefinition at a structural graph position.",
+      "source_refs": ["source:design#44-composite-work", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.from-node",
+      "label": "From node",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:EventTriggeredEdge"],
+      "target_types": ["rwo:WorkNode"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "bounded graph cycles only",
+      "evidence_requirement": "graph definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Declares the edge source node.",
+      "source_refs": ["source:design#5-the-composition-algebra", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.to-node",
+      "label": "To node",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:EventTriggeredEdge"],
+      "target_types": ["rwo:WorkNode"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "bounded graph cycles only",
+      "evidence_requirement": "graph definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Declares the edge target node.",
+      "source_refs": ["source:design#5-the-composition-algebra", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.selects-event",
+      "label": "Selects event",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:EventTriggeredEdge"],
+      "target_types": ["rwo:EventSelector"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "follows edge",
+      "evidence_requirement": "graph definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Names the declared event trigger for an edge.",
+      "source_refs": ["source:design#5-the-composition-algebra", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.maps-input-with",
+      "label": "Maps input with",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:EventTriggeredEdge"],
+      "target_types": ["rwo:InputMapping"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "follows edge",
+      "evidence_requirement": "graph definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Names the target-input mapping for an edge.",
+      "source_refs": ["source:design#5-the-composition-algebra", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.projects-output-with",
+      "label": "Projects output with",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:CompositeWorkDefinition"],
+      "target_types": ["rwo:OutputProjection"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Declares the composite boundary-output projection.",
+      "source_refs": ["source:design#44-composite-work", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.compiles-to",
+      "label": "Compiles to",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:CompositionForm"],
+      "target_types": ["rwo:WorkGraph"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic compilation",
+      "evidence_requirement": "deterministic compiler receipt",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Desugars convenience syntax into the primitive WorkGraph without proving execution.",
+      "source_refs": ["source:design#5-the-composition-algebra", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.uses-release-policy",
+      "label": "Uses release policy",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:FanIn"],
+      "target_types": ["rwo:ReleasePolicy"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Declares fan-in structural readiness.",
+      "source_refs": ["source:design#53-fan-in", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.uses-lifecycle-policy",
+      "label": "Uses lifecycle policy",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:Sidecar"],
+      "target_types": ["rwo:SidecarLifecyclePolicy"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "definition",
+      "owner_route": "rwo:owner.definition",
+      "meaning": "Declares sidecar lifecycle coupling.",
+      "source_refs": ["source:design#55-sidecar", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.bound-to",
+      "label": "Bound to",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:LeafBinding"],
+      "target_types": ["rwo:ExecutorAdapter"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "definition",
+      "owner_route": "rwo:owner.adapter",
+      "meaning": "Selects the external executor boundary for a leaf binding.",
+      "source_refs": ["source:design#43-leaf-work", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.receives",
+      "label": "Receives",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkRun"],
+      "target_types": ["rwo:Command"],
+      "cardinality": "many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "temporal",
+      "evidence_requirement": "accepted delivery receipt",
+      "owner_route": "rwo:owner.protocol",
+      "meaning": "Records an addressed request received by a WorkRun.",
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.emits",
+      "label": "Emits",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkRun", "rwo:ExecutorAdapter"],
+      "target_types": ["rwo:Event"],
+      "cardinality": "many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "temporal",
+      "evidence_requirement": "accepted event",
+      "owner_route": "rwo:owner.work-runtime",
+      "meaning": "Attributes an Event to its producing run or trusted adapter.",
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.delivered-by",
+      "label": "Delivered by",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkMessage"],
+      "target_types": ["rwo:WorkProtocol"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic lineage",
+      "evidence_requirement": "delivery receipt",
+      "owner_route": "rwo:owner.protocol",
+      "meaning": "Identifies the logical protocol boundary used for delivery.",
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.recorded-by",
+      "label": "Recorded by",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:Event"],
+      "target_types": ["rwo:Journal"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "append-only lineage",
+      "evidence_requirement": "journal acceptance receipt",
+      "owner_route": "rwo:owner.journal",
+      "meaning": "Records event persistence without creating confirmation or domain state.",
+      "source_refs": ["source:design#62-delivery-contract", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.expands",
+      "label": "Expands",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:OrchestratorKernel"],
+      "target_types": ["rwo:WorkGraph"],
+      "cardinality": "many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "structural recursion; one root runtime",
+      "evidence_requirement": "validated execution plan",
+      "owner_route": "rwo:owner.root-runtime",
+      "meaning": "Expands nested definitions into one addressed root plan.",
+      "source_refs": ["source:design#2-thesis", "source:design#44-composite-work"]
+    },
+    {
+      "id": "rwo:r.issues",
+      "label": "Issues",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:OrchestratorKernel"],
+      "target_types": ["rwo:Command"],
+      "cardinality": "many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "temporal",
+      "evidence_requirement": "outbox receipt",
+      "owner_route": "rwo:owner.root-runtime",
+      "meaning": "Issues a declared addressed command without deciding the work's domain outcome.",
+      "source_refs": ["source:design#8-runtime-flow", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.derived-from",
+      "label": "Derived from",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:OrchestrationCursor", "rwo:StatusProjection"],
+      "target_types": ["rwo:Journal"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic lineage",
+      "evidence_requirement": "reducer version and cursor",
+      "owner_route": "rwo:owner.root-runtime",
+      "meaning": "Makes projection lineage explicit and rebuildable.",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.observes",
+      "label": "Observes",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:StatusProjection"],
+      "target_types": ["rwo:Event"],
+      "cardinality": "many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic evidence link",
+      "evidence_requirement": "event reference",
+      "owner_route": "rwo:owner.view-projection",
+      "meaning": "Exposes an accepted event record without owning its domain meaning.",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.requires-authority",
+      "label": "Requires authority",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:WorkDefinition", "rwo:Command"],
+      "target_types": ["rwo:AuthorityReference"],
+      "cardinality": "zero-to-many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic reference",
+      "evidence_requirement": "accepted authority reference",
+      "owner_route": "rwo:owner.adapter",
+      "meaning": "Names required authority evidence without deciding or granting it.",
+      "source_refs": ["source:design#41-workdefinition", "source:design#10-validation-invariants"]
+    },
+    {
+      "id": "rwo:r.owned-by",
+      "label": "Owned by",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:DomainState"],
+      "target_types": ["rwo:WorkRun", "rwo:ExecutorAdapter"],
+      "cardinality": "exactly-one",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic ownership",
+      "evidence_requirement": "owner declaration",
+      "owner_route": "rwo:owner.work-runtime",
+      "meaning": "Places domain-state semantics outside the OrchestratorKernel.",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#5-allowed-relation-catalog"]
+    },
+    {
+      "id": "rwo:r.evaluates",
+      "label": "Evaluates",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:ArchitectureProfile"],
+      "target_types": ["rwo:PropertyConstraint", "rwo:RelationConstraint"],
+      "cardinality": "one-to-many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic",
+      "evidence_requirement": "profile definition",
+      "owner_route": "rwo:owner.architecture-review",
+      "meaning": "Selects explicit constraints for an ArchitectureProfile.",
+      "source_refs": ["source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:r.supported-by",
+      "label": "Supported by",
+      "endpoint_kind": "instance",
+      "source_types": ["rwo:PropertyFinding"],
+      "target_types": ["rwo:EvidenceReference"],
+      "cardinality": "one-to-many",
+      "direction": "directed",
+      "transitive": false,
+      "cycle_policy": "acyclic evidence lineage",
+      "evidence_requirement": "direct evidence reference",
+      "owner_route": "rwo:owner.architecture-review",
+      "meaning": "Grounds an observed finding in evidence that remains a separate record.",
+      "source_refs": ["source:candidate-ontology#9-explainable-finding-shape"]
+    }
+  ],
+  "shields": [
+    {
+      "id": "rwo:f.no-nested-orchestrator-invocation",
+      "forbidden_inference": "Composite definition or graph containment implies an orchestrator-to-orchestrator invocation edge.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#status-and-claim-ceiling", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-parent-authority-inheritance",
+      "forbidden_inference": "Parentage, containment, or node path transmits tools, context, budget, evidence, confirmation, or authority.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#status-and-claim-ceiling", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-kernel-domain-state",
+      "forbidden_inference": "Observing an event or maintaining a cursor makes the OrchestratorKernel owner of DomainState or ConfirmationState.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-bus-authority",
+      "forbidden_inference": "Delivering or recording a message means the WorkProtocol or Journal authorized, decided, confirmed, or executed it.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#6-work-protocol-commands-events-and-the-bus", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-terminal-success-collapse",
+      "forbidden_inference": "A terminal classification means success, approval, acceptance, truth, or permission for an effect.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#63-event-classifications", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-projection-authority",
+      "forbidden_inference": "A StatusProjection manufactures confirmation, authority, freshness, or child domain facts.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#7-state-and-ownership", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-structural-quorum-quality",
+      "forbidden_inference": "quorum(n) means independent evidence, correctness, quality, or consensus.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#53-fan-in", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-schema-correctness",
+      "forbidden_inference": "Schema-valid input, output, command, or event is semantically correct or fit for purpose.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#41-workdefinition", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-idempotency-effect-proof",
+      "forbidden_inference": "A stable message key proves the external effect is idempotent or occurred exactly once.",
+      "failure_posture": "reject",
+      "source_refs": ["source:design#62-delivery-contract", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    },
+    {
+      "id": "rwo:f.no-ontology-promotion",
+      "forbidden_inference": "Inclusion in this package promotes a term, constraint, source, architecture claim, or owner decision.",
+      "failure_posture": "block",
+      "source_refs": ["source:design#14-ontology-handoff", "source:candidate-ontology#6-forbidden-relations-and-inference-shields"]
+    }
+  ],
+  "constraint_operators": [
+    {
+      "id": "rwo:op.all-subjects",
+      "label": "All subjects",
+      "portable_semantics": "Every instance of the selected subject types must satisfy the nested requirement."
+    },
+    {
+      "id": "rwo:op.exactly-one",
+      "label": "Exactly one",
+      "portable_semantics": "Exactly one matching property or relation value must exist."
+    },
+    {
+      "id": "rwo:op.complete-edge",
+      "label": "Complete edge",
+      "portable_semantics": "Every selected edge must have one source, target, selector, and input mapping."
+    },
+    {
+      "id": "rwo:op.unique-match",
+      "label": "Unique match",
+      "portable_semantics": "A routing label or selector resolves to exactly one admitted target."
+    },
+    {
+      "id": "rwo:op.positive-bound",
+      "label": "Positive bound",
+      "portable_semantics": "Every selected cycle has a positive finite bound and an exhaustion route."
+    },
+    {
+      "id": "rwo:op.requires-evidence",
+      "label": "Requires evidence",
+      "portable_semantics": "A claim is supportable only when evidence at or above the named stage exists."
+    },
+    {
+      "id": "rwo:op.deterministic-equivalence",
+      "label": "Deterministic equivalence",
+      "portable_semantics": "Equal canonical inputs under the same version produce byte-identical canonical outputs."
+    },
+    {
+      "id": "rwo:op.reject-unknown",
+      "label": "Reject unknown",
+      "portable_semantics": "Unknown kinds, versions, operators, schemas, or capabilities are rejected rather than defaulted."
+    }
+  ],
+  "constraints": [
+    {
+      "id": "RWO-I01",
+      "label": "Uniform outer contract",
+      "operator_ref": "rwo:op.exactly-one",
+      "subjects": ["rwo:LeafWorkDefinition", "rwo:CompositeWorkDefinition"],
+      "relation_refs": ["rwo:r.has-contract", "rwo:r.has-body"],
+      "property_refs": ["rwo:p.work-ref", "rwo:p.body-kind", "rwo:p.input-schema", "rwo:p.output-schema"],
+      "expectation": "Every leaf and composite definition has one versioned outer WorkContract and exactly one body matching body-kind.",
+      "minimum_evidence_stage": "definition",
+      "failure_posture": "reject graph",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I02",
+      "label": "Shallow runtime authority",
+      "operator_ref": "rwo:op.all-subjects",
+      "subjects": ["rwo:CompositeWorkDefinition", "rwo:OrchestratorKernel"],
+      "relation_refs": ["rwo:r.expands"],
+      "shield_refs": ["rwo:f.no-nested-orchestrator-invocation", "rwo:f.no-parent-authority-inheritance"],
+      "expectation": "Nested composites expand into one root plan and no graph node invokes another OrchestratorKernel.",
+      "minimum_evidence_stage": "graph",
+      "failure_posture": "reject graph",
+      "owner_route": "rwo:owner.root-runtime",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I03",
+      "label": "Complete routing edge",
+      "operator_ref": "rwo:op.complete-edge",
+      "subjects": ["rwo:EventTriggeredEdge"],
+      "relation_refs": ["rwo:r.from-node", "rwo:r.to-node", "rwo:r.selects-event", "rwo:r.maps-input-with"],
+      "expectation": "Every routing edge names one source, target, event selector, and input mapping.",
+      "minimum_evidence_stage": "graph",
+      "failure_posture": "reject graph",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I04",
+      "label": "Single-valued gate route",
+      "operator_ref": "rwo:op.unique-match",
+      "subjects": ["rwo:Gate", "rwo:EventTriggeredEdge"],
+      "shield_refs": ["rwo:f.no-terminal-success-collapse"],
+      "expectation": "Every admitted gate route label resolves to exactly one explicit outgoing edge; zero or multiple matches fail closed.",
+      "minimum_evidence_stage": "graph",
+      "failure_posture": "block route",
+      "owner_route": "rwo:owner.work-runtime",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I05",
+      "label": "Explicit fan-in policy",
+      "operator_ref": "rwo:op.exactly-one",
+      "subjects": ["rwo:FanIn"],
+      "relation_refs": ["rwo:r.uses-release-policy"],
+      "property_refs": ["rwo:p.release-mode"],
+      "shield_refs": ["rwo:f.no-structural-quorum-quality"],
+      "expectation": "Every FanIn declares one release policy and a canonical input ordering.",
+      "minimum_evidence_stage": "definition",
+      "failure_posture": "reject graph",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I06",
+      "label": "Bounded cycles",
+      "operator_ref": "rwo:op.positive-bound",
+      "subjects": ["rwo:BoundedRepeat", "rwo:WorkGraph"],
+      "property_refs": ["rwo:p.max-rounds"],
+      "expectation": "Every cyclic component names a decision work, positive bound, exhaustion edge, and no-next-attempt result.",
+      "minimum_evidence_stage": "graph",
+      "failure_posture": "reject graph",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I07",
+      "label": "Idempotent acceptance",
+      "operator_ref": "rwo:op.requires-evidence",
+      "subjects": ["rwo:Command", "rwo:Event", "rwo:Journal"],
+      "property_refs": ["rwo:p.idempotency-key"],
+      "shield_refs": ["rwo:f.no-idempotency-effect-proof"],
+      "expectation": "Commands and accepted events use stable keys; identical duplicates converge and divergent same-key bytes quarantine.",
+      "minimum_evidence_stage": "runtime",
+      "failure_posture": "quarantine conflict",
+      "owner_route": "rwo:owner.journal",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I08",
+      "label": "Non-authoritative projection",
+      "operator_ref": "rwo:op.requires-evidence",
+      "subjects": ["rwo:StatusProjection"],
+      "property_refs": ["rwo:p.reducer-version", "rwo:p.freshness", "rwo:p.authority-effect"],
+      "relation_refs": ["rwo:r.derived-from", "rwo:r.observes"],
+      "shield_refs": ["rwo:f.no-projection-authority", "rwo:f.no-kernel-domain-state"],
+      "expectation": "Every projection retains reducer, freshness, and event lineage and cannot emit authority or child domain facts.",
+      "minimum_evidence_stage": "test",
+      "failure_posture": "reject effect",
+      "owner_route": "rwo:owner.view-projection",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I09",
+      "label": "No parent inheritance",
+      "operator_ref": "rwo:op.requires-evidence",
+      "subjects": ["rwo:WorkNode", "rwo:WorkRun"],
+      "shield_refs": ["rwo:f.no-parent-authority-inheritance"],
+      "expectation": "Every child materialization names its tools, context, budget, evidence, and authority explicitly.",
+      "minimum_evidence_stage": "runtime",
+      "failure_posture": "reject materialization",
+      "owner_route": "rwo:owner.root-runtime",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I10",
+      "label": "Effect authority boundary",
+      "operator_ref": "rwo:op.requires-evidence",
+      "subjects": ["rwo:Command", "rwo:ExecutorAdapter", "rwo:AuthorityReference"],
+      "relation_refs": ["rwo:r.requires-authority"],
+      "expectation": "Every external-effect command crosses an adapter with an accepted authority reference; reference presence, adapter admission, and effect occurrence remain separate.",
+      "minimum_evidence_stage": "runtime",
+      "failure_posture": "reject command",
+      "owner_route": "rwo:owner.adapter",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I11",
+      "label": "Deterministic cursor replay",
+      "operator_ref": "rwo:op.deterministic-equivalence",
+      "subjects": ["rwo:OrchestrationCursor", "rwo:Journal"],
+      "property_refs": ["rwo:p.reducer-version", "rwo:p.ordering-scope"],
+      "relation_refs": ["rwo:r.derived-from"],
+      "expectation": "Identical canonical ordered history and reducer version rebuild byte-identical cursor state.",
+      "minimum_evidence_stage": "test",
+      "failure_posture": "block resume",
+      "owner_route": "rwo:owner.root-runtime",
+      "source_refs": ["source:design#10-validation-invariants"]
+    },
+    {
+      "id": "RWO-I12",
+      "label": "Fail-closed extensibility",
+      "operator_ref": "rwo:op.reject-unknown",
+      "subjects": ["rwo:CompositionForm", "rwo:WorkMessage", "rwo:WorkContract"],
+      "expectation": "Unknown operator, command, event, schema version, or capability is rejected rather than guessed or defaulted.",
+      "minimum_evidence_stage": "test",
+      "failure_posture": "reject message or graph",
+      "owner_route": "rwo:owner.protocol",
+      "source_refs": ["source:design#10-validation-invariants"]
+    }
+  ],
+  "profiles": [
+    {
+      "id": "rwo:profile.core-v0",
+      "label": "Core candidate profile",
+      "constraint_refs": ["RWO-I01", "RWO-I02", "RWO-I03", "RWO-I04", "RWO-I05", "RWO-I06", "RWO-I07", "RWO-I08", "RWO-I09", "RWO-I10", "RWO-I11", "RWO-I12"],
+      "allowed_evidence_stages": ["definition", "source", "graph", "runtime", "test", "telemetry"],
+      "claim_ceiling": "May report per-constraint findings only at the stage actually observed; no aggregate conformance pass follows from missing later-stage evidence.",
+      "current_evidence_status": "unsupported",
+      "source_refs": ["source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:profile.definition-only",
+      "label": "Definition and graph profile",
+      "constraint_refs": ["RWO-I01", "RWO-I02", "RWO-I03", "RWO-I04", "RWO-I05", "RWO-I06", "RWO-I12"],
+      "allowed_evidence_stages": ["definition", "source", "graph"],
+      "claim_ceiling": "May establish candidate definition and graph consistency for observed fixtures; cannot establish delivery, replay, adapter, authority, or runtime conformance.",
+      "current_evidence_status": "partially-supported",
+      "source_refs": ["source:candidate-ontology#7-architecture-profiles"]
+    },
+    {
+      "id": "rwo:profile.runtime-evidence",
+      "label": "Runtime evidence profile",
+      "constraint_refs": ["RWO-I07", "RWO-I08", "RWO-I09", "RWO-I10", "RWO-I11", "RWO-I12"],
+      "allowed_evidence_stages": ["runtime", "test", "telemetry"],
+      "claim_ceiling": "Requires implementation, runtime traces, tests, and telemetry that are absent from this package.",
+      "current_evidence_status": "unsupported",
+      "source_refs": ["source:candidate-ontology#7-architecture-profiles"]
+    }
+  ],
+  "observation_projections": [
+    {
+      "id": "rwo:obs.definition-map",
+      "label": "Definition map",
+      "input": ["versioned work definitions"],
+      "may_observe": ["identity", "body kind", "schema references", "declared contracts", "declared limits"],
+      "cannot_establish_alone": ["runtime behavior", "semantic correctness"],
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:obs.graph-map",
+      "label": "Graph map",
+      "input": ["expanded graph"],
+      "may_observe": ["nodes", "edges", "selectors", "mappings", "cycles", "structural bounds"],
+      "cannot_establish_alone": ["delivered commands", "completed work"],
+      "owner_route": "rwo:owner.root-runtime",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:obs.composition-compiler",
+      "label": "Composition compiler projection",
+      "input": ["operator expression", "compiler receipt"],
+      "may_observe": ["deterministic desugaring into a WorkGraph"],
+      "cannot_establish_alone": ["graph execution"],
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:obs.journal-replay",
+      "label": "Journal replay projection",
+      "input": ["accepted journal", "reducer version"],
+      "may_observe": ["reconstructed cursor", "deterministic digest"],
+      "cannot_establish_alone": ["truth of unobserved work", "completeness of external facts"],
+      "owner_route": "rwo:owner.root-runtime",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:obs.delivery-trace",
+      "label": "Delivery trace projection",
+      "input": ["outbox records", "inbox records", "adapter receipts"],
+      "may_observe": ["delivery attempts", "deduplication", "ordering within declared scope"],
+      "cannot_establish_alone": ["exactly-once external effects"],
+      "owner_route": "rwo:owner.protocol",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:obs.authority-audit",
+      "label": "Authority boundary audit",
+      "input": ["effect command", "accepted authority reference", "adapter trace"],
+      "may_observe": ["declared boundary use", "reference presence", "adapter admission", "effect occurrence when directly evidenced"],
+      "cannot_establish_alone": ["correctness of the authority decision"],
+      "owner_route": "rwo:owner.adapter",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:obs.status-view",
+      "label": "Status view projection",
+      "input": ["journal", "projection reducer"],
+      "may_observe": ["derived display", "provenance", "freshness"],
+      "cannot_establish_alone": ["ownership of child domain state", "confirmation", "authority"],
+      "owner_route": "rwo:owner.view-projection",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    },
+    {
+      "id": "rwo:obs.counterexample-suite",
+      "label": "Counterexample suite",
+      "input": ["bounded pipeline fixtures"],
+      "may_observe": ["unsupported operators", "ambiguous routes", "unbounded cycles", "non-collapse violations"],
+      "cannot_establish_alone": ["universal any-pipeline expressiveness"],
+      "owner_route": "rwo:owner.architecture-review",
+      "source_refs": ["source:candidate-ontology#8-observation-projections"]
+    }
+  ],
+  "finding_contract": {
+    "type_ref": "rwo:PropertyFinding",
+    "required_fields": ["finding_id", "subject_ref", "profile_ref", "constraint_ref", "expected", "observed", "status", "evidence_stage", "evidence_refs", "owner_route", "forbidden_inferences"],
+    "status_values": ["pass", "fail", "unsupported", "indeterminate"],
+    "absence_rule": "Absent evidence yields unsupported or indeterminate, never pass.",
+    "owner_route": "rwo:owner.architecture-review"
+  },
+  "premises": [
+    {
+      "id": "rwo:premise.uniform-work-boundary",
+      "claim": "Leaf and composite definitions share one outer Work contract.",
+      "evidence_confidence": "low",
+      "commitment_confidence": "high",
+      "current_action": "keep",
+      "falsification": "A required composition cannot expose the same input, output, command, and event boundary without leaking scheduler semantics.",
+      "source_refs": ["source:design#4-the-uniform-work-contract", "source:candidate-ontology#10-evidence-and-confidence-ledger"]
+    },
+    {
+      "id": "rwo:premise.single-root-expansion",
+      "claim": "One root OrchestratorKernel can expand every nested composite in a bounded run.",
+      "evidence_confidence": "low",
+      "commitment_confidence": "high",
+      "current_action": "test",
+      "falsification": "A supported bounded graph requires independently authoritative nested schedulers to preserve correctness or ownership.",
+      "source_refs": ["source:design#status-and-claim-ceiling", "source:candidate-ontology#10-evidence-and-confidence-ledger"]
+    },
+    {
+      "id": "rwo:premise.command-event-sufficiency",
+      "claim": "Declared commands and events are sufficient for the thin orchestration kernel.",
+      "evidence_confidence": "low",
+      "commitment_confidence": "high",
+      "current_action": "test",
+      "falsification": "A bounded workflow requires the kernel to own domain judgment not expressible as work, policy, adapter, or declared event-triggered relation.",
+      "source_refs": ["source:design#2-thesis", "source:design#6-work-protocol-commands-events-and-the-bus"]
+    },
+    {
+      "id": "rwo:premise.work-owned-state",
+      "claim": "Individual work units or adapters own confirmation and domain status.",
+      "evidence_confidence": "low",
+      "commitment_confidence": "high",
+      "current_action": "keep",
+      "falsification": "A required routing guarantee cannot be implemented unless the kernel becomes authoritative for the work's domain state.",
+      "source_refs": ["source:design#3-non-goals", "source:design#7-state-and-ownership"]
+    },
+    {
+      "id": "rwo:premise.delivery-baseline",
+      "claim": "At-least-once delivery plus mandatory idempotent acceptance is the appropriate baseline.",
+      "evidence_confidence": "low",
+      "commitment_confidence": "medium",
+      "current_action": "test",
+      "falsification": "Concrete process and host boundaries require stronger or different guarantees that cannot remain adapter-owned.",
+      "source_refs": ["source:design#62-delivery-contract", "source:candidate-ontology#10-evidence-and-confidence-ledger"]
+    },
+    {
+      "id": "rwo:premise.bounded-pipeline-coverage",
+      "claim": "Finite or explicitly bounded event-triggered WorkGraphs cover almost any bounded pipeline in the stated scope.",
+      "evidence_confidence": "low",
+      "commitment_confidence": "medium",
+      "current_action": "test",
+      "falsification": "A bounded counterexample needs a primitive outside typed work nodes, declared command/event triggers, explicit mappings, and bounded cycles.",
+      "source_refs": ["source:design#13-what-any-pipeline-can-honestly-mean", "source:candidate-ontology#10-evidence-and-confidence-ledger"]
+    }
+  ],
+  "residue": [
+    {
+      "id": "rwo:residue.001",
+      "question": "Is the Journal the authoritative record of emitted work state, or durable evidence copied from another work-owned store?",
+      "status": "open",
+      "ontology_impact": "Ownership and reconciliation relations remain unsettled.",
+      "owner_route": "rwo:owner.architecture-review",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.002",
+      "question": "May a WorkDefinition extend its graph dynamically, and what confirmation binds the changed topology?",
+      "status": "open",
+      "ontology_impact": "Graph version and authority relations remain incomplete.",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.003",
+      "question": "Which command and event delivery guarantees are required across processes and hosts?",
+      "status": "open",
+      "ontology_impact": "Protocol properties remain candidate.",
+      "owner_route": "rwo:owner.protocol",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.004",
+      "question": "Which cancellation and compensation patterns deserve standard combinators?",
+      "status": "open",
+      "ontology_impact": "The composition-form catalog may need extension.",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.005",
+      "question": "Should quorum(n) remain structural, or must every quorum be decided by a gate work unit?",
+      "status": "open",
+      "ontology_impact": "The release-policy semantic boundary remains open.",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.006",
+      "question": "How are schema and reducer migrations replayed without reinterpreting history?",
+      "status": "open",
+      "ontology_impact": "Version and replay relations remain incomplete.",
+      "owner_route": "rwo:owner.root-runtime",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.007",
+      "question": "What is the minimal AuthorityReference the kernel may verify without owning authorization policy?",
+      "status": "open",
+      "ontology_impact": "The effect-boundary property remains incomplete.",
+      "owner_route": "rwo:owner.adapter",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.008",
+      "question": "Which counterexample suite is sufficient for the bounded any-pipeline claim?",
+      "status": "open",
+      "ontology_impact": "Bounded expressiveness remains unsupported beyond included examples.",
+      "owner_route": "rwo:owner.architecture-review",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.009",
+      "question": "Does long-lived streaming work fit the Work boundary or require a distinct subscription construct?",
+      "status": "open",
+      "ontology_impact": "Closure of the uniform Work contract remains unproven.",
+      "owner_route": "rwo:owner.architecture-review",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.010",
+      "question": "Which owner may promote the design and ontology beyond proposal-only?",
+      "status": "open",
+      "ontology_impact": "The ontology remains proposal-only and the promotion route is blocked.",
+      "owner_route": "rwo:owner.ontology-promotion",
+      "source_refs": ["source:design#15-open-questions", "source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.011",
+      "question": "Is EventClassification metadata on an EventContract, an independent controlled vocabulary, or both?",
+      "status": "open",
+      "ontology_impact": "The representation remains an independent local type with property use; no canonical form is selected.",
+      "owner_route": "rwo:owner.architecture-review",
+      "source_refs": ["source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.012",
+      "question": "Must InputMapping be pure and deterministic, or may it invoke a mapping WorkDefinition?",
+      "status": "open",
+      "ontology_impact": "Mapping execution and evidence rules remain incomplete.",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.013",
+      "question": "Is an ExecutorAdapter work-owned or an independently governed runtime boundary?",
+      "status": "open",
+      "ontology_impact": "Adapter ownership remains external and unresolved by this ontology.",
+      "owner_route": "rwo:owner.adapter",
+      "source_refs": ["source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.014",
+      "question": "Which relations, if any, may compose transitively beyond local type specialization?",
+      "status": "open",
+      "ontology_impact": "Only rwo:r.specializes is transitive; every other relation remains non-transitive pending review.",
+      "owner_route": "rwo:owner.architecture-review",
+      "source_refs": ["source:candidate-ontology#12-residue"]
+    },
+    {
+      "id": "rwo:residue.015",
+      "question": "Should the frozen conceptual ONTOLOGY.md retain document-level veracity and conviction fields even though local conventions omit them for conceptual nodes?",
+      "status": "open",
+      "ontology_impact": "The source remains byte-pinned for accepted research; a later owner-reviewed source refresh must resolve the frontmatter convention mismatch without rewriting history.",
+      "owner_route": "rwo:owner.ontology-promotion",
+      "source_refs": ["source:candidate-ontology#1-ontology-identity-and-boundary", "source:vault-conventions#veracity-and-conviction-the-two-dimensions-of-confidence"]
+    },
+    {
+      "id": "rwo:residue.016",
+      "question": "When should DESIGN.md stop saying the candidate recursive-work ontology is not yet created?",
+      "status": "open",
+      "ontology_impact": "The frozen primary proposal contains a now-stale handoff label; the machine projection records the drift but does not edit its source.",
+      "owner_route": "rwo:owner.definition",
+      "source_refs": ["source:design#16-connections", "source:candidate-ontology#1-ontology-identity-and-boundary"]
+    },
+    {
+      "id": "rwo:residue.017",
+      "question": "How should the accepted view research be refreshed now that a candidate machine graph and hand-authored HTML canvas exist but no projection compiler, accessibility evaluation, or comprehension study exists?",
+      "status": "open",
+      "ontology_impact": "The research remains correct as a frozen snapshot; current state must distinguish a locally browser-tested removable HTML candidate from a generated projection, accessible interface, comprehended explanation, or runtime view.",
+      "owner_route": "rwo:owner.view-projection",
+      "source_refs": ["source:view-findings#synchronized-view-contract", "source:candidate-ontology#13-validation-status"]
+    }
+  ]
+}

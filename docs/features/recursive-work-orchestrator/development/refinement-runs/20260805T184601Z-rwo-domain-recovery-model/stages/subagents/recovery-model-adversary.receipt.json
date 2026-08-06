@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "role_id": "recovery-model-adversary",
+  "capability_ref": "interrogation",
+  "mode": "refine-design-review",
+  "agent_id": "/root/recovery_model_adversary",
+  "status": "block",
+  "started_at": "2026-08-05T19:49:58Z",
+  "completed_at": "2026-08-05T19:54:03Z",
+  "inputs": [
+    "/home/vrondelli/projects/domainspec-core/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/06-invoke-design.md",
+    "/home/vrondelli/projects/domainspec-core/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+    "/home/vrondelli/projects/domainspec-core/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/03-interrogation-refine-review.md",
+    "/home/vrondelli/projects/domainspec-core/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/context-builder/context-pack.md"
+  ],
+  "outputs": [
+    "/home/vrondelli/projects/domainspec-core/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/subagents/recovery-model-adversary.md",
+    "/home/vrondelli/projects/domainspec-core/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/subagents/recovery-model-adversary.receipt.json"
+  ],
+  "finding_counts": {
+    "block": 11,
+    "flag": 4,
+    "note": 0,
+    "total": 15
+  },
+  "required_repairs": [
+    "Add a stable recovery trigger key and atomically consume it with decision acceptance.",
+    "Define subject-scoped RecoveryFrontier arbitration and cross-case inhibition.",
+    "Make admission and conflict transitions single-valued and represent owner-gap inputs.",
+    "Order terminal outcomes before sameness-constrained continuation.",
+    "Separate effect-attempt retry from Work-Attempt retry or require an exact one-to-one binding receipt.",
+    "Bound reconciliation with atomic counters, deadline, exhaustion route, and closed reason.",
+    "Require admitted owner-bound DomainRecoverySignal and RecoveryPolicy handles.",
+    "Atomically validate deadline and mutable policy, mapping, authority, route, and permit epochs.",
+    "Close fence comparison and make runtime resume route-free reconstruction.",
+    "Bind compensation to one stable intent and entry idempotency identity.",
+    "Close exhaustion escalation reasons and define canonical digest serialization and identity transitions."
+  ],
+  "forbidden_scope_touched": false,
+  "external_research": false,
+  "claim_ceiling": "artifact-only adversarial review; no authority, implementation, or promotion effect"
+}

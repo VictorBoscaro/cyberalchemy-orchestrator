@@ -1,0 +1,280 @@
+{
+  "schema_version": "1.0.0",
+  "manifest_id": "rwo-recovery-design-scope-20260805",
+  "target_id": "rwo-recovery-decision-contract",
+  "target_footprint": {
+    "roots": [
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+        "digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+      }
+    ],
+    "inclusions": [
+      {
+        "selector": "RWO ontology shields, profiles, residue, and validation posture",
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/ONTOLOGY.md",
+        "digest": "b0b83ea540c0f805208b93e068816c45cb928d4f08eea50eca8ba4178843d9e1"
+      },
+      {
+        "selector": "accepted RWO current-state and ARE integration findings",
+        "path": "ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md",
+        "digest": "734a3122359f8cefd0c13fee36b6b2caabf5d158693b588a3678f138bd1941c1"
+      },
+      {
+        "selector": "private candidate RWO-to-ARE owner boundary",
+        "path": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+        "digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97"
+      },
+      {
+        "selector": "Invoke Define candidate recovery vocabulary and invariants",
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+        "digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52"
+      },
+      {
+        "selector": "Interrogation definition repairs",
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/03-interrogation-refine-review.md",
+        "digest": "ef39625af4c130454a2b4eac4580b88d4acaf81082aea99d783f61eb3ab5e0a3"
+      },
+      {
+        "selector": "Distill selected RecoveryDecisionContract",
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md",
+        "digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262"
+      }
+    ],
+    "exclusions": [
+      {
+        "selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology",
+        "reason": "Current ontology is evidence input; mutation and promotion are outside Refine.",
+        "evidence_ref": "REFINE-SEED-PROPOSAL.md#forbidden-scope"
+      },
+      {
+        "selector": "cyberAlchemy-v2/development/agent-reasoning-engine",
+        "reason": "Private ARE sources are protected context and cannot be mutated or copied as canonical RWO prose.",
+        "evidence_ref": "REFINE-DISPATCH.json#promotion_guardrails"
+      },
+      {
+        "selector": "projects/cyberalchemy-orchestrator/runtime",
+        "reason": "Runtime implementation is outside this design-only Refine run.",
+        "evidence_ref": "REFINE-SEED-PROPOSAL.md#forbidden-scope"
+      }
+    ]
+  },
+  "source_contracts": [
+    {
+      "source_id": "rwo-design",
+      "selector": "Work identity, delivery, state ownership, invariants, and failure/recovery semantics",
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    },
+    {
+      "source_id": "rwo-ontology",
+      "selector": "Inference shields, profiles, observation ceilings, residue, validation",
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/ONTOLOGY.md",
+      "digest": "b0b83ea540c0f805208b93e068816c45cb928d4f08eea50eca8ba4178843d9e1"
+    },
+    {
+      "source_id": "accepted-current-state-findings",
+      "selector": "Exact matrices, topology verdicts, negative controls, residue",
+      "path": "ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md",
+      "digest": "734a3122359f8cefd0c13fee36b6b2caabf5d158693b588a3678f138bd1941c1"
+    },
+    {
+      "source_id": "private-rwo-are-bridge",
+      "selector": "Conditional stages, non-collapse constraints, witnesses, owner gaps",
+      "path": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97"
+    },
+    {
+      "source_id": "refine-define",
+      "selector": "candidate concepts, identities, dispositions, case, invariants",
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+      "digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52"
+    },
+    {
+      "source_id": "refine-review",
+      "selector": "required definition repairs and stable owner gaps",
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/03-interrogation-refine-review.md",
+      "digest": "ef39625af4c130454a2b4eac4580b88d4acaf81082aea99d783f61eb3ab5e0a3"
+    },
+    {
+      "source_id": "refine-distill",
+      "selector": "selected RecoveryDecisionContract and recomposition proof",
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md",
+      "digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262"
+    }
+  ],
+  "human_actors": [],
+  "rendered_surfaces": [],
+  "interfaces": [
+    {
+      "interface_id": "domain-recovery-signal",
+      "kind": "versioned-domain-mapping-contract",
+      "peer": "domain-work-owner",
+      "direction": "inbound",
+      "contract_ref": "rwo-recovery.DomainRecoverySignal@candidate-1",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52"
+    },
+    {
+      "interface_id": "accepted-history-slice",
+      "kind": "verified-history-cut-contract",
+      "peer": "journal-owner",
+      "direction": "inbound",
+      "contract_ref": "rwo-recovery.AcceptedHistorySlice@candidate-1",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    },
+    {
+      "interface_id": "admitted-semantic-receipt",
+      "kind": "protected-semantic-reference-contract",
+      "peer": "agent-reasoning-engine",
+      "direction": "inbound",
+      "contract_ref": "admitted-semantic-receipt-ref@candidate",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97"
+    },
+    {
+      "interface_id": "recovery-decision-receipt",
+      "kind": "non-authorizing-routing-decision-contract",
+      "peer": "rwo-route-evaluator",
+      "direction": "outbound",
+      "contract_ref": "rwo-recovery.RecoveryDecision@candidate-1",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md",
+      "source_digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262"
+    },
+    {
+      "interface_id": "effect-reconciliation-route",
+      "kind": "protected-owner-route-contract",
+      "peer": "exact-effect-and-reconciliation-owner",
+      "direction": "outbound",
+      "contract_ref": "rwo-recovery.ReconciliationWork@candidate-1",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97"
+    }
+  ],
+  "stores": [
+    {
+      "store_id": "accepted-history",
+      "authority": "journal-owner for accepted lifecycle history; domain truth remains separately owned",
+      "data_classes": ["accepted-events", "command-receipts", "recovery-decision-receipts", "cursor-version"],
+      "writers": ["journal-acceptance-owner"],
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    }
+  ],
+  "queues": [
+    {
+      "queue_id": "work-protocol",
+      "producers": ["rwo-route-evaluator", "work-adapters", "aci-boundary"],
+      "consumers": ["addressed-work", "journal-acceptance-owner"],
+      "ordering": "ordered accepted events per work_run_id; no global ordering",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    }
+  ],
+  "writers": [
+    {
+      "writer_id": "journal-acceptance-owner",
+      "targets": ["accepted-history"],
+      "concurrency": "one accepted-history owner with idempotency conflict detection; classifier returns a receipt but does not self-accept it",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    }
+  ],
+  "normative_rules": [
+    {
+      "rule_id": "one-case-one-decision",
+      "verb": "deterministically-selects",
+      "subject": "RecoveryClassifier",
+      "object": "exactly-one-RecoveryDecision",
+      "enforcement_hint": "canonical case/policy digests and total ordered decision tables",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52"
+    },
+    {
+      "rule_id": "unknown-never-retries",
+      "verb": "blocks",
+      "subject": "unknown-or-contradictory-required-facts",
+      "object": "permissive-recovery-dispositions",
+      "enforcement_hint": "schema admission and escalation/quarantine guards precede case tables",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/03-interrogation-refine-review.md",
+      "source_digest": "ef39625af4c130454a2b4eac4580b88d4acaf81082aea99d783f61eb3ab5e0a3"
+    },
+    {
+      "rule_id": "recovery-decision-non-authorizing",
+      "verb": "does-not-authorize",
+      "subject": "RecoveryDecision",
+      "object": "command-acceptance-or-external-effect",
+      "enforcement_hint": "ordinary entry, ACI, authority, exact-effect, and adapter gates remain mandatory",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md",
+      "source_digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262"
+    },
+    {
+      "rule_id": "unknown-effect-reconciles-before-retry",
+      "verb": "requires",
+      "subject": "effect-outcome-unknown",
+      "object": "reconciliation-owner-route-before-another-effect-attempt",
+      "enforcement_hint": "EffectCase decision table and zero-effect-call negative fixture",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97"
+    }
+  ],
+  "effects": [
+    {
+      "effect_id": "external-business-effect",
+      "reversible": false,
+      "external": true,
+      "privileged": true,
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    },
+    {
+      "effect_id": "compensation-work",
+      "reversible": false,
+      "external": true,
+      "privileged": true,
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    }
+  ],
+  "data_and_log_sinks": [],
+  "deployment_targets": [],
+  "compatibility_boundaries": [
+    {
+      "boundary_id": "rwo-design-to-recovery-contract",
+      "old_contract": "DESIGN.md partial failure and recovery semantics",
+      "new_contract": "RecoveryDecisionContract@candidate-1",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md",
+      "source_digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262"
+    },
+    {
+      "boundary_id": "rwo-to-are-aci-effect-seams",
+      "old_contract": "documentation-only conditional bridge",
+      "new_contract": "candidate admitted-semantic-reference and reconciliation interfaces",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97"
+    }
+  ],
+  "quality_claims": [
+    {
+      "claim_id": "deterministic-decision",
+      "source_kind": "candidate-design-invariant",
+      "threshold_or_tradeoff": "same canonical case, policy, mapping, history, reducer, and fence versions produce byte-identical decision",
+      "required": true,
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52"
+    }
+  ],
+  "acceptance_and_readiness_claims": [
+    {
+      "claim_id": "definition-authored",
+      "selector": "stages/02-invoke-define.md#candidate-concept-registry",
+      "evidence_state": "authored-complete",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52"
+    }
+  ],
+  "unknowns": [],
+  "input_digest": "f74a625bd16b7c49964a1815fb6a0643d6e07dc9742a839a4b8a239ae38cc06c",
+  "authored_by": "invoke-design-author-rwo-recovery"
+}

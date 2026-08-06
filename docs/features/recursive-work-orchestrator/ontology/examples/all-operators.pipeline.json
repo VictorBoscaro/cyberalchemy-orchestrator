@@ -1,0 +1,286 @@
+{
+  "$schema": "../schemas/pipeline-instance.schema.json",
+  "schema_version": "rwo-illustrative-pipeline/v1",
+  "example": {
+    "id": "rwo:example.all-operators-review-delivery@1",
+    "ontology_ref": "rwo-architecture@0.1.0",
+    "status": "illustrative",
+    "authority_effect": "none",
+    "evidence_stage": "definition",
+    "claim_ceiling": "Finite proposal fixture demonstrating recursive composition and definition-level validation only; it has not executed and provides no delivery, replay, effect, or runtime evidence.",
+    "source_refs": [
+      "source:design#9-minimal-api-example",
+      "source:view-findings#three-finite-illustrative-paper-traces"
+    ]
+  },
+  "root_orchestrator": {
+    "id": "example:root-kernel",
+    "type": "rwo:OrchestratorKernel",
+    "invokes_work_ref": "work:pipeline@1"
+  },
+  "work_definitions": [
+    {
+      "work_ref": "work:research@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:research-input@1",
+      "output_schema": "schema:research-output@1",
+      "command_contract": ["command:invoke@1", "command:cancel-requested@1"],
+      "event_contract": ["event:research-release@1", "event:research-terminal@1"],
+      "authority_requirements": [],
+      "limits": { "deadline_required": true },
+      "body_ref": "binding:research-adapter@1"
+    },
+    {
+      "work_ref": "work:review-a@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:review-input@1",
+      "output_schema": "schema:review-output@1",
+      "command_contract": ["command:invoke@1"],
+      "event_contract": ["event:review-release@1", "event:review-terminal@1"],
+      "authority_requirements": [],
+      "limits": { "deadline_required": true },
+      "body_ref": "binding:review-a-adapter@1"
+    },
+    {
+      "work_ref": "work:review-b@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:review-input@1",
+      "output_schema": "schema:review-output@1",
+      "command_contract": ["command:invoke@1"],
+      "event_contract": ["event:review-release@1", "event:review-terminal@1"],
+      "authority_requirements": [],
+      "limits": { "deadline_required": true },
+      "body_ref": "binding:review-b-adapter@1"
+    },
+    {
+      "work_ref": "work:synthesize@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:ordered-review-manifest@1",
+      "output_schema": "schema:synthesis-output@1",
+      "command_contract": ["command:invoke@1"],
+      "event_contract": ["event:synthesis-release@1", "event:synthesis-terminal@1"],
+      "authority_requirements": [],
+      "limits": { "deadline_required": true },
+      "body_ref": "binding:synthesis-adapter@1"
+    },
+    {
+      "work_ref": "work:reviewed-research@1",
+      "type": "rwo:CompositeWorkDefinition",
+      "body_kind": "composite",
+      "input_schema": "schema:research-input@1",
+      "output_schema": "schema:synthesis-output@1",
+      "command_contract": ["command:invoke@1", "command:cancel-requested@1"],
+      "event_contract": ["event:reviewed-research-release@1", "event:reviewed-research-terminal@1"],
+      "authority_requirements": [],
+      "limits": { "deadline_required": true },
+      "body_ref": "graph:reviewed-research"
+    },
+    {
+      "work_ref": "work:approval@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:approval-input@1",
+      "output_schema": "schema:route-label@1",
+      "command_contract": ["command:invoke@1", "command:confirmation-provided@1"],
+      "event_contract": ["event:route-approved@1", "event:route-revise@1", "event:route-rejected@1", "event:route-exhausted@1"],
+      "authority_requirements": ["authority:approval-policy@1"],
+      "limits": { "deadline_required": true },
+      "body_ref": "binding:human-approval-adapter@1"
+    },
+    {
+      "work_ref": "work:implement@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:implementation-input@1",
+      "output_schema": "schema:implementation-output@1",
+      "command_contract": ["command:invoke@1", "command:cancel-requested@1"],
+      "event_contract": ["event:implementation-terminal@1"],
+      "authority_requirements": ["authority:effect-admission@1"],
+      "limits": { "deadline_required": true },
+      "body_ref": "binding:implementation-adapter@1"
+    },
+    {
+      "work_ref": "work:close-without-effect@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:closure-input@1",
+      "output_schema": "schema:closure-output@1",
+      "command_contract": ["command:invoke@1"],
+      "event_contract": ["event:closure-terminal@1"],
+      "authority_requirements": [],
+      "limits": {},
+      "body_ref": "binding:closure-adapter@1"
+    },
+    {
+      "work_ref": "work:telemetry-sidecar@1",
+      "type": "rwo:LeafWorkDefinition",
+      "body_kind": "leaf",
+      "input_schema": "schema:telemetry-input@1",
+      "output_schema": "schema:telemetry-output@1",
+      "command_contract": ["command:invoke@1", "command:cancel-requested@1"],
+      "event_contract": ["event:telemetry-terminal@1"],
+      "authority_requirements": [],
+      "limits": { "deadline_required": true },
+      "body_ref": "binding:telemetry-adapter@1"
+    },
+    {
+      "work_ref": "work:pipeline@1",
+      "type": "rwo:CompositeWorkDefinition",
+      "body_kind": "composite",
+      "input_schema": "schema:pipeline-input@1",
+      "output_schema": "schema:pipeline-output@1",
+      "command_contract": ["command:invoke@1", "command:cancel-requested@1"],
+      "event_contract": ["event:pipeline-terminal@1"],
+      "authority_requirements": [],
+      "limits": { "max_rounds": 3, "deadline_required": true },
+      "body_ref": "graph:pipeline"
+    }
+  ],
+  "graphs": [
+    {
+      "id": "graph:reviewed-research",
+      "owner_work_ref": "work:reviewed-research@1",
+      "nodes": [
+        { "id": "node:research", "work_ref": "work:research@1" },
+        { "id": "node:review-a", "work_ref": "work:review-a@1" },
+        { "id": "node:review-b", "work_ref": "work:review-b@1" },
+        { "id": "node:synthesize", "work_ref": "work:synthesize@1" }
+      ],
+      "edges": [
+        {
+          "id": "edge:research-to-review-a",
+          "from": "node:research",
+          "to": "node:review-a",
+          "event_selector": "event:research-release@1",
+          "input_mapping": "mapping:research-to-review-a@1",
+          "composition_form": "rwo:FanOut"
+        },
+        {
+          "id": "edge:research-to-review-b",
+          "from": "node:research",
+          "to": "node:review-b",
+          "event_selector": "event:research-release@1",
+          "input_mapping": "mapping:research-to-review-b@1",
+          "composition_form": "rwo:FanOut"
+        },
+        {
+          "id": "edge:review-a-to-synthesize",
+          "from": "node:review-a",
+          "to": "node:synthesize",
+          "event_selector": "event:review-release@1",
+          "input_mapping": "mapping:review-output-to-ordered-manifest@1",
+          "composition_form": "rwo:FanIn",
+          "join_group": "join:reviews"
+        },
+        {
+          "id": "edge:review-b-to-synthesize",
+          "from": "node:review-b",
+          "to": "node:synthesize",
+          "event_selector": "event:review-release@1",
+          "input_mapping": "mapping:review-output-to-ordered-manifest@1",
+          "composition_form": "rwo:FanIn",
+          "join_group": "join:reviews"
+        }
+      ],
+      "composition_forms": ["rwo:Sequence", "rwo:FanOut", "rwo:FanIn", "rwo:ExplicitComposition"],
+      "fan_in_policies": [
+        {
+          "id": "join:reviews",
+          "target_node": "node:synthesize",
+          "release_mode": "all",
+          "source_nodes": ["node:review-a", "node:review-b"],
+          "canonical_input_order": ["node:review-a", "node:review-b"]
+        }
+      ],
+      "sidecars": [],
+      "bounded_cycles": [],
+      "output_projection": "projection:synthesis-output-to-reviewed-research@1"
+    },
+    {
+      "id": "graph:pipeline",
+      "owner_work_ref": "work:pipeline@1",
+      "nodes": [
+        { "id": "node:reviewed-research", "work_ref": "work:reviewed-research@1" },
+        { "id": "node:approval", "work_ref": "work:approval@1" },
+        { "id": "node:implement", "work_ref": "work:implement@1" },
+        { "id": "node:close", "work_ref": "work:close-without-effect@1" },
+        { "id": "node:observe", "work_ref": "work:telemetry-sidecar@1" }
+      ],
+      "edges": [
+        {
+          "id": "edge:reviewed-to-approval",
+          "from": "node:reviewed-research",
+          "to": "node:approval",
+          "event_selector": "event:reviewed-research-release@1",
+          "input_mapping": "mapping:reviewed-research-to-approval@1",
+          "composition_form": "rwo:Sequence"
+        },
+        {
+          "id": "edge:approval-approved",
+          "from": "node:approval",
+          "to": "node:implement",
+          "event_selector": "event:route-approved@1",
+          "input_mapping": "mapping:approval-to-implementation@1",
+          "composition_form": "rwo:Gate",
+          "route_label": "approved"
+        },
+        {
+          "id": "edge:approval-rejected",
+          "from": "node:approval",
+          "to": "node:close",
+          "event_selector": "event:route-rejected@1",
+          "input_mapping": "mapping:approval-to-closure@1",
+          "composition_form": "rwo:Gate",
+          "route_label": "rejected"
+        },
+        {
+          "id": "edge:approval-revise",
+          "from": "node:approval",
+          "to": "node:reviewed-research",
+          "event_selector": "event:route-revise@1",
+          "input_mapping": "mapping:approval-revision-to-research@1",
+          "composition_form": "rwo:BoundedRepeat",
+          "route_label": "revise"
+        },
+        {
+          "id": "edge:approval-exhausted",
+          "from": "node:approval",
+          "to": "node:close",
+          "event_selector": "event:route-exhausted@1",
+          "input_mapping": "mapping:exhaustion-to-closure@1",
+          "composition_form": "rwo:BoundedRepeat",
+          "route_label": "exhausted",
+          "exhaustion": true
+        }
+      ],
+      "composition_forms": ["rwo:Sequence", "rwo:Gate", "rwo:Sidecar", "rwo:BoundedRepeat", "rwo:ExplicitComposition"],
+      "fan_in_policies": [],
+      "sidecars": [
+        {
+          "node_ref": "node:observe",
+          "primary_node_ref": "node:reviewed-research",
+          "start": "with-primary",
+          "finish": "await",
+          "contributes_output": false,
+          "control_edges": []
+        }
+      ],
+      "bounded_cycles": [
+        {
+          "id": "cycle:review-revision",
+          "node_refs": ["node:reviewed-research", "node:approval"],
+          "decision_node": "node:approval",
+          "max_rounds": 3,
+          "repeat_edge": "edge:approval-revise",
+          "exhaustion_edge": "edge:approval-exhausted",
+          "no_next_attempt_after_exhaustion": true
+        }
+      ],
+      "output_projection": "projection:implementation-or-closure-to-pipeline@1"
+    }
+  ]
+}

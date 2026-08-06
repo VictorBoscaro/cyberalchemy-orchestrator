@@ -1,0 +1,22 @@
+{
+  "schema_version": "context-builder.runtime-handoff.v1",
+  "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+  "task": "Define an exact transport-neutral RWO adapter model",
+  "mode": "standard",
+  "strict": true,
+  "handoff": "runtime",
+  "obligation_count": 12,
+  "covered": 12,
+  "blocked": 0,
+  "claim_ceiling": "candidate design and non-executed plan",
+  "selected_sources": [
+    {"path": "../../../DESIGN.md", "selectors": ["4.3", "6", "6.1", "6.2", "7", "8", "10", "11", "14", "15"], "obligations": ["O1", "O2", "O3", "O4", "O6", "O7", "O11"]},
+    {"path": "../20260805T184601Z-rwo-domain-recovery-model/RESULT.md", "selectors": ["treatment", "identity", "owner-gates"], "obligations": ["O3", "O5", "O7"]},
+    {"path": "../20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md", "selectors": ["2-10", "13"], "obligations": ["O2", "O3", "O5", "O7", "O10"]},
+    {"path": "../../../ontology/ONTOLOGY.md", "selectors": ["nodes", "relations", "shields", "profiles"], "obligations": ["O2", "O7", "O11"]},
+    {"path": "../REFINE-SEED-PROPOSAL.md", "selectors": ["questions", "deliverables", "invariants"], "obligations": ["O1-O12"]}
+  ],
+  "owner_gaps": ["journal-domain-truth", "exact-effect-contract", "ARE-ACI-executable-conformance"],
+  "write_scope": ["this refinement run folder"],
+  "strict_coverage": "pass"
+}

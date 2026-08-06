@@ -1,0 +1,31 @@
+{
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "step_id": "s07",
+  "capability_ref": "interrogation",
+  "capability_handle": "interrogation@refine-design-review",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "orchestrate-native-subagents-plus-parent-synthesis",
+  "mode": "refine-design-review",
+  "status": "pass",
+  "verdict": "target-block",
+  "artifact": "stages/07-interrogation-design-review.md",
+  "artifacts": [
+    "delegated-review/returns/adapter-contract-architect.json",
+    "delegated-review/returns/transport-semantics-adversary.json",
+    "delegated-review/returns/recovery-authority-auditor.json",
+    "orchestrate/reduced/gate-decision.json"
+  ],
+  "validation": [
+    "three role receipts joined and closed",
+    "action reducer gate_pass",
+    "FIX, FIX, BLOCK target verdicts preserved",
+    "every accepted finding assigned a repair or external owner gate"
+  ],
+  "observer_status": "orchestrate evidence validation pass",
+  "blockers": [
+    "runtime admission remains blocked pending candidate repair and external owner gates"
+  ],
+  "residue": [
+    "review completion is not target approval"
+  ]
+}

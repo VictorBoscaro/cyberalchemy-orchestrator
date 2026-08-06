@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.0",
+  "model_ref": "RecoveryDecisionContract@candidate-2",
+  "validation_mode": "deterministic-design-game",
+  "scenario_count": 20,
+  "status": "pass",
+  "scenarios": [
+    {
+      "id": "RWF2-001",
+      "group": "trigger-concurrency",
+      "given": "two classifiers propose from the same head, frontier, and unconsumed trigger",
+      "expected_result": "one_proposed_one_stale",
+      "disposition": "RETRY_NEW_ATTEMPT",
+      "identity_effect": "exactly one new Work Attempt",
+      "forbidden": "second debit or identity allocation",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-002",
+      "group": "trigger-concurrency",
+      "given": "the losing classifier rebuilds after the original trigger was consumed",
+      "expected_result": "previously_accepted",
+      "disposition": null,
+      "identity_effect": "none",
+      "forbidden": "new decision append or retry",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-003",
+      "group": "trigger-concurrency",
+      "given": "policy applicability epoch changes after classification",
+      "expected_result": "acceptance_reject_and_rebuild",
+      "disposition": null,
+      "identity_effect": "none",
+      "forbidden": "accept stale policy decision",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-004",
+      "group": "trigger-concurrency",
+      "given": "deadline becomes elapsed before atomic acceptance",
+      "expected_result": "acceptance_reject_and_rebuild",
+      "disposition": null,
+      "identity_effect": "none",
+      "forbidden": "late budget debit or identity allocation",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-005",
+      "group": "terminal-cross-case",
+      "given": "same attempt has transient execution terminal and unresolved effect outcome",
+      "expected_result": "proposed",
+      "disposition": "RECONCILE_UNKNOWN_EFFECT",
+      "identity_effect": "stable reconciliation intent only",
+      "forbidden": "new Work Attempt",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-006",
+      "group": "terminal-cross-case",
+      "given": "effect outcome is succeeded while normalized input now differs",
+      "expected_result": "proposed",
+      "disposition": "STOP_TERMINAL",
+      "identity_effect": "none",
+      "forbidden": "new-run proposal caused by sameness after success",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-007",
+      "group": "terminal-cross-case",
+      "given": "run-scoped cancellation terminal is accepted before an Attempt exists",
+      "expected_result": "proposed",
+      "disposition": "STOP_TERMINAL",
+      "identity_effect": "none",
+      "forbidden": "fabricated Work Attempt",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-008",
+      "group": "terminal-cross-case",
+      "given": "trusted contradictory bytes overlap an otherwise retryable execution scope",
+      "expected_result": "proposed",
+      "disposition": "QUARANTINE_CONFLICT",
+      "identity_effect": "quarantine record only",
+      "forbidden": "continuation route",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-009",
+      "group": "delivery-identity",
+      "given": "logical command is known unaccepted and recipient idempotency contract is valid",
+      "expected_result": "proposed",
+      "disposition": "REDELIVER_SAME_MESSAGE",
+      "identity_effect": "same message and Work Attempt; optional new delivery attempt",
+      "forbidden": "new Work Attempt or changed payload/key",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-010",
+      "group": "delivery-identity",
+      "given": "command acceptance is unknown and recipient idempotency contract is absent",
+      "expected_result": "proposed",
+      "disposition": "ESCALATE_OWNER",
+      "identity_effect": "none",
+      "forbidden": "redelivery",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-011",
+      "group": "effect-reconciliation",
+      "given": "exact effect failed-known and active exact-effect retry permit is admitted",
+      "expected_result": "proposed",
+      "disposition": "RETRY_NEW_EFFECT_ATTEMPT",
+      "identity_effect": "same Work Attempt and effect intent; one new effect attempt",
+      "forbidden": "new Work Attempt",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-012",
+      "group": "effect-reconciliation",
+      "given": "effect attempt started and outcome remains unknown",
+      "expected_result": "proposed",
+      "disposition": "RECONCILE_UNKNOWN_EFFECT",
+      "identity_effect": "stable reconciliation intent",
+      "forbidden": "effect or Work retry",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-013",
+      "group": "effect-reconciliation",
+      "given": "admitted reconciliation says still-unknown with one budget unit remaining",
+      "expected_result": "proposed",
+      "disposition": "RECONCILE_UNKNOWN_EFFECT",
+      "identity_effect": "next stable reconciliation intent and one debit",
+      "forbidden": "reset reconciliation budget",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-014",
+      "group": "effect-reconciliation",
+      "given": "reconciliation remains unknown and its declared escalation budget is exhausted",
+      "expected_result": "proposed",
+      "disposition": "ESCALATE_OWNER",
+      "identity_effect": "none",
+      "forbidden": "further reconciliation or effect retry",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-015",
+      "group": "exhaustion-cancellation",
+      "given": "Work attempt budget is authoritatively exhausted and route is escalate",
+      "expected_result": "proposed",
+      "disposition": "ESCALATE_OWNER",
+      "identity_effect": "none",
+      "forbidden": "BUDGET_STATE_UNKNOWN reason or retry",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-016",
+      "group": "exhaustion-cancellation",
+      "given": "round budget is authoritatively exhausted and route is stop",
+      "expected_result": "proposed",
+      "disposition": "STOP_TERMINAL",
+      "identity_effect": "none",
+      "forbidden": "new round",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-017",
+      "group": "provenance-replay",
+      "given": "caller supplies a digest-correct but unadmitted DomainRecoverySignal",
+      "expected_result": "reject",
+      "disposition": null,
+      "identity_effect": "none",
+      "forbidden": "classification",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-018",
+      "group": "provenance-replay",
+      "given": "applicable policy is absent but an admitted escalation owner exists",
+      "expected_result": "proposed",
+      "disposition": "ESCALATE_OWNER",
+      "identity_effect": "none",
+      "forbidden": "permissive default policy",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-019",
+      "group": "provenance-replay",
+      "given": "runtime restart reconstructs a pending effect with unknown outcome",
+      "expected_result": "two_phase",
+      "disposition": "RESUME_FROM_JOURNAL then RECONCILE_UNKNOWN_EFFECT",
+      "identity_effect": "cursor reconstruction then stable reconciliation intent",
+      "forbidden": "redelivery during resume",
+      "status": "pass"
+    },
+    {
+      "id": "RWF2-020",
+      "group": "provenance-replay",
+      "given": "historical case, versions, and canonical bytes are pinned",
+      "expected_result": "byte_identical_reconstruction",
+      "disposition": "original disposition",
+      "identity_effect": "none",
+      "forbidden": "clock, ARE, owner, journal mutation, route, or adapter call",
+      "status": "pass"
+    }
+  ]
+}
+

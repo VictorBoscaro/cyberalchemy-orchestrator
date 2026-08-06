@@ -1,0 +1,116 @@
+{
+  "concerns": [
+    {
+      "concern_id": "authored:authority-boundaries",
+      "primary_class": "authority",
+      "required_predicate": true,
+      "disposition": "required",
+      "ownership": {
+        "accountable_owner": "exact-effect-authority-owner",
+        "contributing_owners": ["domain-policy-owner", "rwo-workflow-owner", "aci-lifecycle-owner"],
+        "artifact_owner": "invoke-design-author",
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "selected": true,
+      "rationale": "Recovery decisions cross authority and effect seams but grant no authority.",
+      "revisit_condition": null,
+      "evidence_selectors": ["stages/02-invoke-define.md#are-and-aci-boundary", "ONTOLOGY-BRIDGE.md#non-collapse-constraints"]
+    },
+    {
+      "concern_id": "authored:state-event-lifecycle",
+      "primary_class": "state-event",
+      "required_predicate": true,
+      "disposition": "required",
+      "ownership": {
+        "accountable_owner": "rwo-workflow-owner",
+        "contributing_owners": ["domain-work-owner", "journal-owner"],
+        "artifact_owner": "invoke-design-author",
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "selected": true,
+      "rationale": "The exact model changes message, run, attempt, round, replay, and effect lifecycle state.",
+      "revisit_condition": null,
+      "evidence_selectors": ["DESIGN.md#failure-and-recovery-semantics", "stages/03-interrogation-refine-review.md#required-repairs-for-distill-and-design"]
+    },
+    {
+      "concern_id": "authored:persistence-concurrency",
+      "primary_class": "persistence",
+      "required_predicate": true,
+      "disposition": "required",
+      "ownership": {
+        "accountable_owner": "journal-owner",
+        "contributing_owners": ["rwo-workflow-owner", "domain-work-owner"],
+        "artifact_owner": "invoke-design-author",
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "selected": true,
+      "rationale": "Accepted history, idempotency conflicts, attempt fences, and concurrent late observations determine safe routing.",
+      "revisit_condition": null,
+      "evidence_selectors": ["DESIGN.md#delivery-contract", "DESIGN.md#state-and-ownership"]
+    },
+    {
+      "concern_id": "authored:failure-compensation",
+      "primary_class": "failure",
+      "required_predicate": true,
+      "disposition": "required",
+      "ownership": {
+        "accountable_owner": "domain-recovery-policy-owner",
+        "contributing_owners": ["rwo-workflow-owner", "exact-effect-authority-owner", "adapter-owner"],
+        "artifact_owner": "invoke-design-author",
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "selected": true,
+      "rationale": "Retry, reconciliation, explicit compensation, and exhaustion are the target behavior.",
+      "revisit_condition": null,
+      "evidence_selectors": ["DESIGN.md#failure-and-recovery-semantics", "stages/05-distill.md#current-smallest-coherent-unit"]
+    },
+    {
+      "concern_id": "authored:integration-versioning",
+      "primary_class": "integration",
+      "required_predicate": true,
+      "disposition": "required",
+      "ownership": {
+        "accountable_owner": "interface-contract-owner",
+        "contributing_owners": ["domain-work-owner", "rwo-workflow-owner", "journal-owner", "are-owner", "aci-lifecycle-owner", "effect-owner"],
+        "artifact_owner": "invoke-design-author",
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "selected": true,
+      "rationale": "Mapping, history, semantic receipt, recovery decision, and reconciliation interfaces evolve independently.",
+      "revisit_condition": null,
+      "evidence_selectors": ["ONTOLOGY-BRIDGE.md#conditional-stage-map", "stages/02-invoke-define.md#domain-interaction-contract"]
+    },
+    {
+      "concern_id": "authored:security-abuse",
+      "primary_class": "security",
+      "required_predicate": true,
+      "disposition": "required",
+      "ownership": {
+        "accountable_owner": "security-risk-owner",
+        "contributing_owners": ["journal-owner", "rwo-workflow-owner", "exact-effect-authority-owner"],
+        "artifact_owner": "invoke-design-author",
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "selected": true,
+      "rationale": "Forged freshness, substituted receipts, budget resets, and divergent identity bytes are adversarial inputs.",
+      "revisit_condition": null,
+      "evidence_selectors": ["ONTOLOGY.md#forbidden-relations-and-inference-shields", "findings.md#negative-controls-and-validation-still-required"]
+    },
+    {
+      "concern_id": "authored:validation-contract",
+      "primary_class": "validation",
+      "required_predicate": true,
+      "disposition": "required",
+      "ownership": {
+        "accountable_owner": "recovery-model-validation-owner",
+        "contributing_owners": ["rwo-workflow-owner", "domain-work-owner", "effect-owner"],
+        "artifact_owner": "plan-work-pack-owner",
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "selected": true,
+      "rationale": "Single-valued decisions, illegal combinations, identity transitions, and zero-effect-call negatives require planned validators.",
+      "revisit_condition": null,
+      "evidence_selectors": ["REFINE-SEED-PROPOSAL.md#validation-surface", "stages/03-interrogation-refine-review.md#verdict-basis"]
+    }
+  ]
+}

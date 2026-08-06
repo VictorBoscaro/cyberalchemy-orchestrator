@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "lookup_readiness": "ready",
+  "inventory_root": ".arcanum/inventory/index.json",
+  "inventory_role": "discovery_only",
+  "selected_entries": [
+    "cyberalchemy-orchestrator-rwo-are-current-state-research-strategy-result-synthesis",
+    "cyberalchemy-orchestrator-rwo-are-current-state-research-result-synthesis"
+  ],
+  "selected_consequence": "Preserve the distinction among transport delivery identity, RWO Work Attempt identity, journal acceptance, ARE evidence, and effect authority.",
+  "authority_note": "Direct current owner sources remain decisive; Inventory does not select or approve the adapter model."
+}
+

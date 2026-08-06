@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cyberalchemy-orchestrator:rwo:architecture-property-ontology-schema:1",
+  "title": "Recursive Work Orchestrator architecture-property ontology",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "ontology",
+    "source_precedence",
+    "sources",
+    "owner_routes",
+    "element_types",
+    "properties",
+    "relations",
+    "shields",
+    "constraint_operators",
+    "constraints",
+    "profiles",
+    "observation_projections",
+    "finding_contract",
+    "premises",
+    "residue"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": "rwo-architecture-property-ontology/v1" },
+    "ontology": { "$ref": "#/$defs/ontologyIdentity" },
+    "source_precedence": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^source:[a-z0-9._-]+$" }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "owner_routes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/ownerRoute" }
+    },
+    "element_types": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/elementType" }
+    },
+    "properties": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/typedProperty" }
+    },
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/relation" }
+    },
+    "shields": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/shield" }
+    },
+    "constraint_operators": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/constraintOperator" }
+    },
+    "constraints": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/constraint" }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/profile" }
+    },
+    "observation_projections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/projection" }
+    },
+    "finding_contract": { "$ref": "#/$defs/findingContract" },
+    "premises": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/premise" }
+    },
+    "residue": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/residue" }
+    }
+  },
+  "$defs": {
+    "localId": { "type": "string", "pattern": "^rwo:[A-Za-z0-9._-]+$" },
+    "sourceId": { "type": "string", "pattern": "^source:[a-z0-9._-]+$" },
+    "sourceRef": { "type": "string", "pattern": "^source:[a-z0-9._-]+#[a-z0-9._-]+$" },
+    "ontologyIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "ontology_type", "selection_source", "selection_confidence", "project_local_alias", "branch", "status", "authority", "authority_effect", "runtime_conformance", "promotion_status", "namespace", "claim_ceiling"],
+      "properties": {
+        "id": { "const": "rwo-architecture@0.1.0" },
+        "version": { "const": "0.1.0" },
+        "ontology_type": { "const": "architecture-property" },
+        "selection_source": { "const": "inferred" },
+        "selection_confidence": { "const": "high" },
+        "project_local_alias": { "const": "recursive-work-orchestrator" },
+        "branch": { "const": "system" },
+        "status": { "const": "candidate" },
+        "authority": { "const": "proposal-only" },
+        "authority_effect": { "const": "none" },
+        "runtime_conformance": { "enum": ["unsupported", "indeterminate"] },
+        "promotion_status": { "const": "not-granted" },
+        "namespace": { "const": "rwo:" },
+        "claim_ceiling": { "type": "string", "minLength": 1 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "sha256", "kind", "posture", "role", "allowed_use", "blocked_use"],
+      "properties": {
+        "id": { "$ref": "#/$defs/sourceId" },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "kind": { "type": "string", "minLength": 1 },
+        "posture": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "allowed_use": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "blocked_use": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "ownerRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "scope", "status", "authority_effect"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "label": { "type": "string", "minLength": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["candidate", "external", "unresolved"] },
+        "authority_effect": { "const": "none" },
+        "residue_ref": { "$ref": "#/$defs/localId" }
+      }
+    },
+    "elementType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "definition", "abstract", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "label": { "type": "string", "minLength": 1 },
+        "parent": { "$ref": "#/$defs/localId" },
+        "definition": { "type": "string", "minLength": 1 },
+        "abstract": { "type": "boolean" },
+        "formalization_note": { "type": "string" },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "valueDomain": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["enum", "integer", "string", "reference", "schema-reference", "watermark", "owned-state-class", "constant"] },
+        "values": { "type": "array", "items": {} },
+        "minimum": { "type": "integer" },
+        "target_types": { "type": "array", "items": { "$ref": "#/$defs/localId" } },
+        "value": {}
+      }
+    },
+    "typedProperty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "subjects", "value_domain", "required_stage", "owner_route", "forbidden_inference", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "label": { "type": "string", "minLength": 1 },
+        "subjects": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/localId" } },
+        "applies_to_descendants": { "type": "boolean" },
+        "value_domain": { "$ref": "#/$defs/valueDomain" },
+        "required_stage": { "enum": ["ontology", "definition", "architecture", "message", "source", "graph", "projection", "runtime", "test", "telemetry", "finding"] },
+        "owner_route": { "$ref": "#/$defs/localId" },
+        "forbidden_inference": { "type": "string", "minLength": 1 },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "endpoint_kind", "source_types", "target_types", "cardinality", "direction", "transitive", "cycle_policy", "evidence_requirement", "owner_route", "meaning", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "label": { "type": "string", "minLength": 1 },
+        "endpoint_kind": { "enum": ["instance", "type-definition"] },
+        "source_types": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/localId" } },
+        "target_types": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/localId" } },
+        "cardinality": { "enum": ["exactly-one", "zero-to-one", "one-to-many", "zero-to-many", "many-to-one", "many"] },
+        "direction": { "const": "directed" },
+        "transitive": { "type": "boolean" },
+        "cycle_policy": { "type": "string", "minLength": 1 },
+        "evidence_requirement": { "type": "string", "minLength": 1 },
+        "owner_route": { "$ref": "#/$defs/localId" },
+        "meaning": { "type": "string", "minLength": 1 },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "shield": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "forbidden_inference", "failure_posture", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "forbidden_inference": { "type": "string", "minLength": 1 },
+        "failure_posture": { "enum": ["reject", "block", "quarantine", "unsupported"] },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "constraintOperator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "portable_semantics"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "label": { "type": "string" },
+        "portable_semantics": { "type": "string" }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "operator_ref", "subjects", "expectation", "minimum_evidence_stage", "failure_posture", "owner_route", "source_refs"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^RWO-I(0[1-9]|1[0-2])$" },
+        "label": { "type": "string", "minLength": 1 },
+        "operator_ref": { "$ref": "#/$defs/localId" },
+        "subjects": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/localId" } },
+        "relation_refs": { "type": "array", "items": { "$ref": "#/$defs/localId" } },
+        "property_refs": { "type": "array", "items": { "$ref": "#/$defs/localId" } },
+        "shield_refs": { "type": "array", "items": { "$ref": "#/$defs/localId" } },
+        "expectation": { "type": "string", "minLength": 1 },
+        "minimum_evidence_stage": { "enum": ["definition", "source", "graph", "runtime", "test", "telemetry"] },
+        "failure_posture": { "type": "string", "minLength": 1 },
+        "owner_route": { "$ref": "#/$defs/localId" },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "constraint_refs", "allowed_evidence_stages", "claim_ceiling", "current_evidence_status", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "label": { "type": "string" },
+        "constraint_refs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^RWO-I(0[1-9]|1[0-2])$" } },
+        "allowed_evidence_stages": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["definition", "source", "graph", "runtime", "test", "telemetry"] } },
+        "claim_ceiling": { "type": "string", "minLength": 1 },
+        "current_evidence_status": { "enum": ["unsupported", "indeterminate", "partially-supported"] },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "input", "may_observe", "cannot_establish_alone", "owner_route", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "label": { "type": "string" },
+        "input": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "may_observe": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "cannot_establish_alone": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "owner_route": { "$ref": "#/$defs/localId" },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "findingContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type_ref", "required_fields", "status_values", "absence_rule", "owner_route"],
+      "properties": {
+        "type_ref": { "$ref": "#/$defs/localId" },
+        "required_fields": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "status_values": { "type": "array", "minItems": 4, "uniqueItems": true, "items": { "enum": ["pass", "fail", "unsupported", "indeterminate"] } },
+        "absence_rule": { "type": "string", "minLength": 1 },
+        "owner_route": { "$ref": "#/$defs/localId" }
+      }
+    },
+    "premise": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "claim", "evidence_confidence", "commitment_confidence", "current_action", "falsification", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "claim": { "type": "string", "minLength": 1 },
+        "evidence_confidence": { "enum": ["low", "medium", "high"] },
+        "commitment_confidence": { "enum": ["low", "medium", "high"] },
+        "current_action": { "enum": ["keep", "test", "revise", "split", "demote", "retire", "escalate"] },
+        "falsification": { "type": "string", "minLength": 1 },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "residue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "status", "ontology_impact", "owner_route", "source_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/localId" },
+        "question": { "type": "string", "minLength": 1 },
+        "status": { "const": "open" },
+        "ontology_impact": { "type": "string", "minLength": 1 },
+        "owner_route": { "$ref": "#/$defs/localId" },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    }
+  }
+}
+

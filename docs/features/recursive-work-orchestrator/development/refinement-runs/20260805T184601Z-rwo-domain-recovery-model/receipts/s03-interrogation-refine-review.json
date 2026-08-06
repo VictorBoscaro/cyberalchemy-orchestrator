@@ -1,0 +1,23 @@
+{
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "step_id": "s03",
+  "capability_ref": "interrogation",
+  "mode": "refine-review",
+  "capability_handle": ".agents/skills/interrogation/SKILL.md",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "parent-native",
+  "status": "flag",
+  "verdict": "flag",
+  "artifacts": ["stages/03-interrogation-refine-review.md"],
+  "validation": [
+    "10 evidence-backed review questions evaluated",
+    "3 named dialectic roles preserved",
+    "8 concrete design repairs recorded",
+    "2 stable owner gaps retained with fail-closed posture"
+  ],
+  "observer_status": "not_configured",
+  "blockers": [],
+  "residue": ["G1-JOURNAL-OWNERSHIP", "G2-EFFECT-OWNER"],
+  "handoff_note": "Continue through s04. Distill must select a discriminated RecoveryCase plus deterministic staged classifier as the smallest coherent unit."
+}
+

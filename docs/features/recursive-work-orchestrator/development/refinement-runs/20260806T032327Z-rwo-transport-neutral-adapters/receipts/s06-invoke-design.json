@@ -1,0 +1,23 @@
+{
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "step_id": "s06",
+  "capability_ref": "invoke",
+  "capability_handle": "invoke@design",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "parent-native-skill",
+  "mode": "design",
+  "status": "pass",
+  "verdict": "authored-complete",
+  "artifact": "stages/06-invoke-design.md",
+  "validation": [
+    "four candidates compared",
+    "six design views present",
+    "owner matrix, capability vocabulary, and planned witnesses present"
+  ],
+  "observer_status": "not-configured",
+  "blockers": [],
+  "residue": [
+    "schemas, fixtures, validators, and adapters are unexecuted",
+    "runtime admission remains blocked on five owner gates"
+  ]
+}

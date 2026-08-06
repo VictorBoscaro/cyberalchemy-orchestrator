@@ -1,0 +1,28 @@
+{
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "validated_at": "2026-08-05T20:29:55Z",
+  "command": "python3 arcanum/formulae/dispatch-spec/scripts/validate-dispatch.py projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/REFINE-DISPATCH.json --json",
+  "validation": "pass",
+  "blocks": [],
+  "flags": [],
+  "inputs": {
+    "dispatch": {
+      "path": "REFINE-DISPATCH.json",
+      "sha256": "eaf3772e648b99c1e2eb76551abd5d12b491d64517098470abb0aa6ec803fe0b"
+    },
+    "schema": {
+      "path": "arcanum/formulae/dispatch-spec/dispatch.schema.yml",
+      "sha256": "2875e8051838d6b498353129397af612c8f2829be3a71b36c53e465add245f67"
+    },
+    "technique_catalog": {
+      "path": "arcanum/formulae/dispatch-spec/TECHNIQUE-CATALOG.md",
+      "sha256": "f6618fca206caa1d525f8823f566d4f82a5045f7d4837ffe6b5f6260583ce3ce"
+    },
+    "validator": {
+      "path": "arcanum/formulae/dispatch-spec/scripts/validate-dispatch.py",
+      "sha256": "67bdb31067dfdad9f2dd065de9af9b632f45c10845e0d78bf60b6cfc57b3893f"
+    }
+  },
+  "authority_effect": "none",
+  "execution_effect": "none"
+}

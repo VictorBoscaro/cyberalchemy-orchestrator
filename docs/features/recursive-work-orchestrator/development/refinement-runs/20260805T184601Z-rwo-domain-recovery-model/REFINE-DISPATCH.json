@@ -1,0 +1,518 @@
+{
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "parent_dispatch_id": null,
+  "intent": {
+    "raw": "refine the retry and domain interaction ideas until we have an exact RWO recovery model",
+    "objective": "Produce an exact, evidence-bounded, non-executed recovery model that distinguishes delivery, run, attempt, repeat, replay, reconciliation, compensation, and escalation while preserving domain, RWO, ARE, ACI, and exact-effect owner boundaries.",
+    "target_artifact": "RESULT.md",
+    "arcanum_vocabulary": [
+      "refine",
+      "dispatch-spec",
+      "context-builder",
+      "invoke",
+      "interrogation",
+      "distill"
+    ],
+    "operator_sentence": "Refine these ideas and get to an exact model."
+  },
+  "mode": "sequence",
+  "route_menu": {
+    "context_hint": "The target already has accepted current-state research and a materialized explanatory ontology, but lacks an exact recovery classifier and domain mapping contract.",
+    "items": [
+      {
+        "id": "full-exact-recovery-model",
+        "label": "Full exact recovery model",
+        "description": "Model identity, state, precedence, ownership, ARE boundaries, counterexamples, and a non-executed implementation plan.",
+        "capability_ref": "refine",
+        "pattern": "sequence with dialectic, tournament, x-ray, and toy-game overlays"
+      },
+      {
+        "id": "kernel-only-retry-model",
+        "label": "Kernel-only retry model",
+        "description": "Limit the result to RWO attempt scheduling and omit domain mapping and effect reconciliation.",
+        "capability_ref": "refine",
+        "pattern": "narrow sequence"
+      },
+      {
+        "id": "ontology-only-extension",
+        "label": "Ontology-only extension",
+        "description": "Add candidate concepts without first proving the exact operational model.",
+        "capability_ref": "ontology-vault",
+        "pattern": "deferred because design ownership must precede ontology promotion"
+      }
+    ],
+    "selected_item_id": "full-exact-recovery-model"
+  },
+  "techniques": [
+    "sequence",
+    "frame_handoff",
+    "handle_handoff",
+    "validation_loop",
+    "owner_boundary_check",
+    "observability_grouping",
+    "minimum_component_catalog",
+    "conditional_component",
+    "data_quality_completeness",
+    "route_menu",
+    "approval_checkpoint",
+    "residue_ledger"
+  ],
+  "technique_overlays": [
+    {
+      "overlay_id": "baseline_sequence",
+      "trigger": "The fixed ten-stage Refine loop must preserve ordered evidence and owner-held artifacts.",
+      "techniques": [
+        "sequence",
+        "frame_handoff",
+        "handle_handoff",
+        "validation_loop",
+        "owner_boundary_check",
+        "observability_grouping",
+        "minimum_component_catalog",
+        "conditional_component",
+        "data_quality_completeness"
+      ],
+      "applies_to_steps": ["s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10"],
+      "validation_expectation": "Every stage consumes prior evidence, emits an owned artifact or receipt, preserves owner boundaries, and records missing evidence as residue or a block."
+    },
+    {
+      "overlay_id": "dialectic_for_tension",
+      "trigger": "Domain meaning, RWO lifecycle scheduling, semantic reasoning, and effect authority are competing concerns that must remain separate through critique.",
+      "techniques": ["dialectic", "zig_zag", "residue_ledger"],
+      "applies_to_steps": ["s03", "s07", "s10"],
+      "validation_expectation": "Named roles challenge one another and converge only when the model preserves identity and owner boundaries; unresolved disagreement remains explicit residue."
+    },
+    {
+      "overlay_id": "tournament_for_alternatives",
+      "trigger": "Several plausible classifier placements, state machines, and policy boundaries must be compared before selecting the smallest coherent model.",
+      "techniques": ["tournament", "pareto_gate", "recomposition_proof"],
+      "applies_to_steps": ["s05", "s06", "s08"],
+      "validation_expectation": "Alternatives are compared on determinism, ownership, safety, implementability, and compatibility; rejected candidates and recomposition proof are recorded."
+    },
+    {
+      "overlay_id": "xray_for_hidden_structure",
+      "trigger": "The main uncertainty is the hidden relationship among delivery, WorkRun, Attempt, repeat round, replay, and effect identities.",
+      "techniques": ["x_ray", "component_descriptor", "entity_component_reference"],
+      "applies_to_steps": ["s01", "s06"],
+      "validation_expectation": "The context and design artifacts expose each identity, component, relationship, transition, and owner as a consumable handle."
+    },
+    {
+      "overlay_id": "toy_game_for_low_cost_falsification",
+      "trigger": "Unsafe retry rules can be rejected cheaply with bounded scenarios before any design, ontology, or runtime mutation.",
+      "techniques": ["toy_game", "validation_loop", "assessment_failure_reference"],
+      "applies_to_steps": ["s08"],
+      "validation_expectation": "Every named scenario selects one safe disposition or an explicit fail-closed owner; payment outcome unknown must never automatically retry."
+    },
+    {
+      "overlay_id": "protected_context_for_external_or_sensitive_evidence",
+      "trigger": "The source set includes private ARE and ACI candidate material that may inform boundaries but cannot become public or canonical by copying.",
+      "techniques": ["protected_context_flag", "system_agnostic_standard", "local_nuance_coordination"],
+      "applies_to_steps": ["s01", "s04", "s06"],
+      "validation_expectation": "Private evidence remains referenced and bounded; the RWO model stays system-agnostic and grants no ARE, ACI, effect, or promotion authority."
+    }
+  ],
+  "subagent_strategy": {
+    "status": "recommended",
+    "trigger": "One isolated adversarial review can falsify retry-safety and authority assumptions without creating a multi-agent governed dispatch.",
+    "explanation": "The parent Refine run owns state-model and domain-boundary synthesis. One bounded helper independently attacks the design after Invoke Design and returns only an artifact and lifecycle receipt. Helper failure becomes residue and cannot be upgraded to a pass.",
+    "context": [
+      "REFINE-SEED-PROPOSAL.md",
+      "stages/06-invoke-design.md",
+      "DESIGN.md",
+      "ontology/ONTOLOGY.md"
+    ],
+    "binding_mode": "descriptive",
+    "execution_owner": "refine",
+    "roles": [
+      {
+        "role_id": "recovery-model-adversary",
+        "purpose": "Falsify unsafe equivalences, ambiguous identity transitions, authority collapse, and unknown-effect retry behavior in the candidate exact model.",
+        "owns": "An independent adversarial report and no architecture, ontology, runtime, or authority decision.",
+        "capability_ref": "interrogation",
+        "capability_target": "stages/06-invoke-design.md",
+        "capability_mode": "refine-design-review",
+        "agent_count": 1,
+        "mutation_policy": "artifact-only",
+        "write_scope": [
+          "development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/subagents/recovery-model-adversary.md",
+          "development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/subagents/recovery-model-adversary.receipt.json"
+        ],
+        "forbidden_write_scopes": [
+          "DESIGN.md",
+          "ontology/",
+          "../../../../cyberAlchemy-v2/",
+          "runtime/",
+          "telemetry/"
+        ],
+        "input_refs": ["stages/06-invoke-design.md"],
+        "output_refs": ["stages/subagents/recovery-model-adversary.md"],
+        "applies_to_steps": ["s07"]
+      }
+    ],
+    "parallelism": "dialectic",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Confirm the Refine run and the single bounded adversarial helper?",
+    "receipt_requirements": [
+      "agent_id",
+      "role_id",
+      "spawn_status",
+      "join_status",
+      "close_status",
+      "reroute",
+      "dispatch_id",
+      "step_id",
+      "capability_ref",
+      "status",
+      "artifacts",
+      "validation",
+      "observer_status",
+      "blockers",
+      "residue",
+      "handoff_note"
+    ]
+  },
+  "subagent_lifecycle": {
+    "status": "pass",
+    "agents": [
+      {
+        "agent_id": "/root/recovery_model_adversary",
+        "role_id": "recovery-model-adversary",
+        "capability_ref": "interrogation",
+        "capability_target": "stages/06-invoke-design.md",
+        "capability_mode": "refine-design-review",
+        "write_scope": [
+          "stages/subagents/recovery-model-adversary.md",
+          "stages/subagents/recovery-model-adversary.receipt.json"
+        ],
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "stages/subagents/recovery-model-adversary.receipt.json",
+        "close_status": "closed",
+        "review_verdict": "block",
+        "residue": "15 findings and 11 repairs were consumed by s07 and s08",
+        "reroute": "none"
+      }
+    ]
+  },
+  "steps": [
+    {
+      "step_id": "s01",
+      "name": "Context Builder evidence baseline",
+      "capability_ref": "context-builder",
+      "mode": "standard",
+      "pattern": "xray",
+      "techniques": ["x_ray", "frame_handoff", "handle_handoff", "component_descriptor", "entity_component_reference", "protected_context_flag", "minimum_component_catalog", "data_quality_completeness"],
+      "inputs": [
+        {"kind": "intent", "ref": "intent.raw"},
+        {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}
+      ],
+      "outputs": [
+        {"kind": "frame", "ref": "context-builder/context-pack.json"},
+        {"kind": "handle", "ref": "rwo-recovery-source-frame"},
+        {"kind": "artifact", "ref": "stages/01-context-builder.md"}
+      ],
+      "evidence_artifact": "stages/01-context-builder.md",
+      "stop_conditions": ["Block if current RWO, ontology, accepted findings, or private bridge boundaries cannot be represented without crossing ownership or privacy boundaries."]
+    },
+    {
+      "step_id": "s02",
+      "name": "Invoke Define",
+      "capability_ref": "invoke",
+      "mode": "define",
+      "pattern": "sequential",
+      "depends_on_steps": ["s01"],
+      "techniques": ["sequence", "frame_handoff", "sentence_grammar", "mandatory_component"],
+      "inputs": [
+        {"kind": "frame", "ref": "context-builder/context-pack.json"},
+        {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "stages/02-invoke-define.md"},
+        {"kind": "handle", "ref": "recovery-problem-definition"}
+      ],
+      "stop_conditions": ["Block if retry, redelivery, repeat, replay, revalidation, reconciliation, or compensation are treated as synonyms."]
+    },
+    {
+      "step_id": "s03",
+      "name": "Interrogation refine-review",
+      "capability_ref": "interrogation",
+      "mode": "refine-review",
+      "pattern": "dialectic",
+      "depends_on_steps": ["s02"],
+      "techniques": ["dialectic", "zig_zag", "residue_ledger", "validation_loop", "owner_boundary_check"],
+      "roles": ["kernel-semantics", "domain-semantics", "effect-authority"],
+      "inputs": [
+        {"kind": "artifact", "ref": "stages/02-invoke-define.md"},
+        {"kind": "frame", "ref": "context-builder/context-pack.json"}
+      ],
+      "outputs": [
+        {"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"},
+        {"kind": "decision", "ref": "definition-review-verdict"}
+      ],
+      "convergence_criteria": [
+        "Every identity boundary has one owner and no overloaded state transition.",
+        "Domain meaning, RWO scheduling, ARE reasoning, and exact-effect authority remain distinct.",
+        "Unresolved contradictions are recorded with an owner instead of synthesized away."
+      ],
+      "evidence_artifact": "stages/03-interrogation-refine-review.md",
+      "stop_conditions": ["Block if the definition cannot state what remains the same and what changes for each recovery treatment."]
+    },
+    {
+      "step_id": "s04",
+      "name": "Research decision",
+      "capability_ref": "refine",
+      "mode": "research-if-gap-appears",
+      "pattern": "decision",
+      "depends_on_steps": ["s03"],
+      "techniques": ["approval_checkpoint", "protected_context_flag", "data_quality_completeness"],
+      "inputs": [
+        {"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"},
+        {"kind": "decision", "ref": "definition-review-verdict"}
+      ],
+      "outputs": [
+        {"kind": "decision", "ref": "research-decision"},
+        {"kind": "artifact", "ref": "stages/04-research-decision.md"}
+      ],
+      "evidence_artifact": "stages/04-research-decision.md",
+      "stop_conditions": ["Do not perform external research unless a named gap exists and the operator separately confirms a bounded pass."]
+    },
+    {
+      "step_id": "s05",
+      "name": "Distill coherent recovery unit",
+      "capability_ref": "distill",
+      "mode": "standard",
+      "pattern": "distill",
+      "depends_on_steps": ["s04"],
+      "techniques": ["scu_swu_reduction", "pareto_gate", "recomposition_proof", "residue_ledger"],
+      "inputs": [
+        {"kind": "artifact", "ref": "stages/02-invoke-define.md"},
+        {"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"},
+        {"kind": "decision", "ref": "research-decision"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "stages/05-distill.md"},
+        {"kind": "handle", "ref": "selected-recovery-model-unit"}
+      ],
+      "evidence_artifact": "stages/05-distill.md",
+      "stop_conditions": ["Block if the selected unit cannot recompose into domain mapping, RWO lifecycle, journal history, ARE reasoning, and effect handling without owner collapse."]
+    },
+    {
+      "step_id": "s06",
+      "name": "Invoke Redefine and Design exact model",
+      "capability_ref": "invoke",
+      "mode": "design",
+      "pattern": "tournament",
+      "depends_on_steps": ["s05"],
+      "techniques": ["tournament", "pareto_gate", "recomposition_proof", "x_ray", "component_descriptor", "entity_component_reference", "system_agnostic_standard", "local_nuance_coordination", "protected_context_flag"],
+      "roles": ["kernel-centered-model", "domain-contract-model", "owner-separated-composed-model"],
+      "inputs": [
+        {"kind": "artifact", "ref": "stages/05-distill.md"},
+        {"kind": "handle", "ref": "selected-recovery-model-unit"},
+        {"kind": "frame", "ref": "context-builder/context-pack.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "stages/06-invoke-design.md"},
+        {"kind": "handle", "ref": "candidate-exact-recovery-model"},
+        {"kind": "ledger", "ref": "rejected-model-alternatives"}
+      ],
+      "convergence_criteria": [
+        "The selected model is deterministic from typed facts, declared policy, and accepted history.",
+        "The model has a closed disposition vocabulary and exact identity-transition semantics.",
+        "The model preserves owner boundaries and explains why rejected alternatives fail.",
+        "The model recomposes into the existing RWO architecture without claiming implementation."
+      ],
+      "evidence_artifact": "stages/06-invoke-design.md",
+      "stop_conditions": ["Block if no candidate survives determinism, unknown-effect safety, owner separation, and recomposition criteria."]
+    },
+    {
+      "step_id": "s07",
+      "name": "Interrogation refine-design-review",
+      "capability_ref": "interrogation",
+      "mode": "refine-design-review",
+      "pattern": "dialectic",
+      "depends_on_steps": ["s06"],
+      "techniques": ["dialectic", "zig_zag", "validation_loop", "owner_boundary_check", "residue_ledger", "assessment_failure_reference"],
+      "roles": ["identity-auditor", "domain-owner", "recovery-policy-auditor", "effect-safety-adversary"],
+      "inputs": [
+        {"kind": "artifact", "ref": "stages/06-invoke-design.md"},
+        {"kind": "ledger", "ref": "rejected-model-alternatives"},
+        {"kind": "receipt", "ref": "stages/subagents/recovery-model-adversary.receipt.json"}
+      ],
+      "outputs": [
+        {"kind": "ledger", "ref": "stages/07-interrogation-design-review.md"},
+        {"kind": "decision", "ref": "design-review-verdict"}
+      ],
+      "convergence_criteria": [
+        "Each scenario produces one disposition or a typed fail-closed escalation.",
+        "Unknown external effect, stale observations, replay, and changed authority cannot cross unsafe transitions.",
+        "All challenged claims are linked to a source, invariant, fixture, or explicit open owner decision."
+      ],
+      "evidence_artifact": "stages/07-interrogation-design-review.md",
+      "stop_conditions": ["Block if the adversarial receipt is absent without an explicit helper lifecycle block, or if any critical counterexample remains unsafe."]
+    },
+    {
+      "step_id": "s08",
+      "name": "Distill Repair with recovery toy games",
+      "capability_ref": "distill",
+      "mode": "validate",
+      "pattern": "toy_game",
+      "depends_on_steps": ["s07"],
+      "techniques": ["toy_game", "validation_loop", "assessment_failure_reference", "recomposition_proof", "residue_ledger"],
+      "inputs": [
+        {"kind": "artifact", "ref": "stages/06-invoke-design.md"},
+        {"kind": "ledger", "ref": "stages/07-interrogation-design-review.md"},
+        {"kind": "decision", "ref": "design-review-verdict"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "stages/08-distill-repair.md"},
+        {"kind": "decision", "ref": "repaired-model-verdict"},
+        {"kind": "handle", "ref": "repaired-exact-recovery-model"}
+      ],
+      "evidence_artifact": "stages/08-distill-repair.md",
+      "stop_conditions": ["Block if payment.outcome-unknown routes to automatic retry, replay calls mutable/external systems, or two dispositions remain valid for the same precedence-complete facts."]
+    },
+    {
+      "step_id": "s09",
+      "name": "Invoke Plan",
+      "capability_ref": "invoke",
+      "mode": "plan",
+      "pattern": "sequential",
+      "depends_on_steps": ["s08"],
+      "techniques": ["sequence", "frame_handoff", "owner_boundary_check", "minimum_component_catalog", "conditional_component"],
+      "inputs": [
+        {"kind": "artifact", "ref": "stages/08-distill-repair.md"},
+        {"kind": "decision", "ref": "repaired-model-verdict"},
+        {"kind": "handle", "ref": "repaired-exact-recovery-model"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "stages/09-invoke-plan.md"},
+        {"kind": "handle", "ref": "non-executed-recovery-work-plan"}
+      ],
+      "evidence_artifact": "stages/09-invoke-plan.md",
+      "stop_conditions": ["Block if the plan crosses the run-folder write scope, promotes candidate semantics, or omits fixtures and validation commands."]
+    },
+    {
+      "step_id": "s10",
+      "name": "Final Interrogation and Refine synthesis",
+      "capability_ref": "interrogation",
+      "mode": "refine-final",
+      "pattern": "synthesis",
+      "depends_on_steps": ["s09"],
+      "techniques": ["validation_loop", "owner_boundary_check", "data_quality_completeness", "residue_ledger", "observability_grouping"],
+      "roles": ["final-readiness-auditor", "refine-synthesis-owner"],
+      "inputs": [
+        {"kind": "artifact", "ref": "stages/09-invoke-plan.md"},
+        {"kind": "artifact", "ref": "stages/08-distill-repair.md"},
+        {"kind": "ledger", "ref": "stages/07-interrogation-design-review.md"},
+        {"kind": "receipt", "ref": "stages/subagents/recovery-model-adversary.receipt.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "stages/10-final-interrogation.md"},
+        {"kind": "artifact", "ref": "RESULT.md"},
+        {"kind": "receipt", "ref": "final-refine-receipt"}
+      ],
+      "convergence_criteria": [
+        "All required model deliverables exist or name an exact blocking owner and reason.",
+        "Critical negative controls pass and no claim exceeds its evidence level.",
+        "The next plan is non-executed and preserves design, ontology, runtime, and promotion gates."
+      ],
+      "evidence_artifact": "stages/10-final-interrogation.md",
+      "stop_conditions": ["Do not mark pass when a critical identity, disposition, precedence, authority, or unknown-effect question remains unresolved."]
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "g01-dispatch-validation",
+      "kind": "validation",
+      "owner": "dispatch-spec",
+      "condition": "The persisted REFINE-DISPATCH.json must pass the canonical schema and semantic validator before any stage executes.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g02-runtime-and-helper-approval",
+      "kind": "human_approval",
+      "owner": "operator",
+      "condition": "The operator explicitly confirms the displayed Refine strategy, ten native stages, and one bounded adversarial helper.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g03-native-capability-receipts",
+      "kind": "validation",
+      "owner": "refine",
+      "condition": "Every canonical stage returns a native stage receipt with its artifact or an exact blocked reason; freeform fallback prose is not a pass.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g04-external-research-approval",
+      "kind": "human_approval",
+      "owner": "operator",
+      "condition": "External research runs only after a stage names a concrete missing context and the operator separately approves one bounded pass.",
+      "on_fail": "defer"
+    },
+    {
+      "gate_id": "g05-exact-model-completeness",
+      "kind": "quality",
+      "owner": "refine",
+      "condition": "The final model includes identities, state transitions, closed dispositions, precedence, typed contracts, owner matrix, invariants, forbidden topologies, counterexamples, ontology/design delta, and a non-executed plan.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g06-helper-receipt",
+      "kind": "validation",
+      "owner": "refine",
+      "condition": "The recommended helper returns its adversarial artifact and terminal lifecycle receipt, or the missing helper is recorded as explicit residue and the final result cannot claim independent falsification.",
+      "requires_role_receipts": ["stages/subagents/recovery-model-adversary.md"],
+      "on_fail": "flag"
+    },
+    {
+      "gate_id": "g07-owner-and-promotion-boundary",
+      "kind": "promotion_guardrail",
+      "owner": "refine",
+      "condition": "The run grants no lifecycle, ontology, canonical-definition, runtime, ARE, ACI, effect, publication, or promotion authority and writes only its refinement evidence folder.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g08-final-synthesis-readiness",
+      "kind": "quality",
+      "owner": "interrogation",
+      "condition": "Final synthesis starts only after stages s01 through s09 and the helper lifecycle have terminal receipts, including explicit block or residue where applicable.",
+      "on_fail": "block"
+    }
+  ],
+  "native_stage_receipts": [
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s01", "capability_ref": "context-builder", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/01-context-builder.md", "context-builder/context-pack.md", "context-builder/context-pack.json"], "validation": ["receipts/s01-context-builder.json"], "observer_status": "recorded", "blockers": [], "residue": "none", "handoff_note": "strict source frame consumed by s02"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s02", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/02-invoke-define.md"], "validation": ["receipts/s02-invoke-define.json"], "observer_status": "recorded", "blockers": [], "residue": "none", "handoff_note": "definition consumed by s03"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s03", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "stage_verdict": "flag", "stage_receipt_status": "flag", "artifacts": ["stages/03-interrogation-refine-review.md"], "validation": ["receipts/s03-interrogation-refine-review.json"], "observer_status": "recorded", "blockers": [], "residue": "eight accepted repairs and two stable owner gaps", "handoff_note": "invocation completed; flagged repairs consumed by s05 and s06"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s04", "capability_ref": "refine", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/04-research-decision.md"], "validation": ["receipts/s04-research-decision.json"], "observer_status": "recorded", "blockers": [], "residue": "external research not authorized and not required", "handoff_note": "local evidence sufficiency consumed by s05"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s05", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/05-distill.md"], "validation": ["receipts/s05-distill.json"], "observer_status": "recorded", "blockers": [], "residue": "owner gaps retained", "handoff_note": "RecoveryDecisionContract selected for s06"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s06", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/06-invoke-design.md", "stages/06-glossary-consistency.md", "stages/06-implementation-layering-seed.md", "stages/06-design-transport.md"], "validation": ["receipts/s06-invoke-design.json", "design-selection/design-selection-result.json"], "observer_status": "recorded", "blockers": [], "residue": "Stage 6 later blocked by adversarial review", "handoff_note": "design supplied to helper and s07"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s07", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "stage_verdict": "block", "stage_receipt_status": "block", "repair_status": "consumed-by-s08", "artifacts": ["stages/07-interrogation-design-review.md", "stages/subagents/recovery-model-adversary.md"], "validation": ["receipts/s07-interrogation-design-review.json", "stages/subagents/recovery-model-adversary.receipt.json"], "observer_status": "recorded", "blockers": [], "residue": "Stage 6 was unsafe until 12 accepted repairs; all were consumed by s08", "handoff_note": "invocation completed; semantic block preserved in its receipt and repaired rather than relabeled"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s08", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/08-distill-repair.md", "stages/08-scenario-matrix.json"], "validation": ["receipts/s08-distill-repair.json", "20/20 deterministic design games"], "observer_status": "recorded", "blockers": [], "residue": "G1-G3 owner gaps retained fail-closed", "handoff_note": "candidate-2 consumed by s09"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s09", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/09-invoke-plan.md", "plan/WORK-PACK.md", "plan/EXECUTION-PACK.md", "plan/IMPLEMENTATION-LAYERING.md", "plan/swu-manifest.json"], "validation": ["receipts/s09-invoke-plan.json", "plan/DISTILL-VALIDATION.md", "canonical allowed-routes digest"], "observer_status": "recorded", "blockers": [], "residue": "G1-G4 block later SWUs but not L0 selection", "handoff_note": "non-executed plan supplied to s10"},
+    {"dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model", "step_id": "s10", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/10-final-interrogation.md", "RESULT.md"], "validation": ["receipts/s10-final-interrogation.json", "12/12 final audit questions"], "observer_status": "recorded", "blockers": [], "residue": "owner integration and promotion remain separate", "handoff_note": "Refine objective complete at candidate-design claim ceiling"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": null,
+    "trace_events": [
+      "dispatch_validated",
+      "strategy_presented",
+      "operator_authorization_recorded",
+      "native_stage_started",
+      "native_stage_receipt_recorded",
+      "helper_spawned",
+      "helper_joined",
+      "helper_closed",
+      "research_decision_recorded",
+      "gate_decided",
+      "final_synthesis_recorded"
+    ],
+    "signal_grouping": "dispatch_id and run_id"
+  },
+  "promotion_guardrails": [
+    "This route produces candidate refinement evidence only.",
+    "Design, ontology, runtime, definitions, publication, and promotion remain separately authorized owner routes.",
+    "Private ARE and ACI context remains protected context and cannot silently become public or canonical source material."
+  ]
+}

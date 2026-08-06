@@ -1,0 +1,23 @@
+{
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "step_id": "s05",
+  "capability_ref": "distill",
+  "mode": "standard",
+  "capability_handle": ".agents/skills/distill/SKILL.md",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "parent-native-role-simulation",
+  "status": "pass",
+  "verdict": "pass",
+  "artifacts": ["stages/05-distill.md"],
+  "validation": [
+    "2 of 2 recursive rounds completed",
+    "Proposer/Balancer trace preserved",
+    "RecoveryDecisionContract selected with responsibility, inputs, outputs, abstraction level, and closure",
+    "recomposition proof and rejected alternatives recorded",
+    "cycle guards not triggered"
+  ],
+  "observer_status": "prepared_not_appended",
+  "blockers": [],
+  "residue": ["G1-JOURNAL-OWNERSHIP", "G2-EFFECT-OWNER", "G3-ARE-CONFORMANCE"],
+  "handoff_note": "Invoke Design should materialize the RecoveryDecisionContract as a six-view candidate architecture and retain explicit owner blocks."
+}

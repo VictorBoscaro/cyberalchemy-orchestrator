@@ -1,0 +1,27 @@
+{
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "step_id": "s09",
+  "capability_ref": "invoke",
+  "capability_handle": "invoke@plan",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "parent-native-skill",
+  "mode": "plan",
+  "status": "pass",
+  "verdict": "non-executed-validation-first-plan",
+  "artifact": "stages/09-invoke-plan.md",
+  "artifacts": [
+    "stages/09-invoke-plan.md",
+    "plan/IMPLEMENTATION-LAYERING.md",
+    "plan/WORK-PACK.md"
+  ],
+  "validation": [
+    "plan respects authored-complete evidence ceiling",
+    "layer dependencies and prohibited skips explicit",
+    "six bounded future SWUs have acceptance and stop conditions"
+  ],
+  "observer_status": "not-configured",
+  "blockers": [],
+  "residue": [
+    "no SWU selected, admitted, or executed"
+  ]
+}

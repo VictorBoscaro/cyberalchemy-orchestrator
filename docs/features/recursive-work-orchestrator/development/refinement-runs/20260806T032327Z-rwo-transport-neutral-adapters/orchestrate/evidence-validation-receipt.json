@@ -1,0 +1,9 @@
+{
+  "errors": [],
+  "event_count": 20,
+  "schema_version": "arcanum.native-dispatch-runner.evidence-validation.v0.1",
+  "source": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/orchestrate/events.jsonl",
+  "status": "pass",
+  "valid": true,
+  "validator": "validate_run_evidence.py"
+}

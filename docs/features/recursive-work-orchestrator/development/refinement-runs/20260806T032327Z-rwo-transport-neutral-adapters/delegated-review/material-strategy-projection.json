@@ -1,0 +1,68 @@
+{
+  "projection_schema": "domainspec.material-strategy.v1",
+  "material_sha256": "8899a00a44b4d01c14380f2585ff3161e306f83b999337bd8f64b60a87651f70",
+  "material": {
+    "dispatch_type": "review",
+    "goal": "Falsify the current RWO work-protocol boundary and return evidence-bounded requirements for a transport-neutral command/event adapter model that can map gRPC, sockets, Redis-backed queues, managed event buses, and memory without collapsing delivery behavior into lifecycle policy, journal truth, domain meaning, ARE reasoning, or effect authority.",
+    "context": "This is one read-only review stage inside the parent-owned full Refine run. Inspect only the exact local sources named in each prompt. The parent has already frozen bounded official transport evidence in REFINE-SEED-PROPOSAL.md; agents must not browse. Returns are advisory attack receipts captured by the parent under the working folder. No product, ontology, runtime, definitions, telemetry, ledger, Git, external system, publication, promotion, deployment, authority, or production mutation is allowed. The review does not select an implementation; it tests abstractions, transport semantics, recovery identity, admission evidence, and owner boundaries before parent synthesis.",
+    "max_loops": 1,
+    "final_approver": "parent",
+    "working_folder": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/delegated-review/",
+    "groups": [
+      {
+        "group_id": "adapter-boundary-critics",
+        "anti_bias": "methodology plus attack-vector: minimum protocol abstraction, heterogeneous transport failure semantics, and recovery-authority non-collapse",
+        "predicted_disagreements": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "statement": "Agent 0 will prefer the smallest coherent port and profile structure, while agent 1 will reject any structure whose operations cannot truthfully represent incompatible acknowledgement, ordering, flow-control, reconnect, retry, and durability behavior across the five transport families; their disagreement tests abstraction economy versus semantic fidelity."
+          },
+          {
+            "pair": [
+              0,
+              2
+            ],
+            "statement": "Agent 0 may place identity and admission fields in the shared adapter contract for coherence, while agent 2 will reject fields or operations that let an adapter substitute for journal acceptance, select a new Work Attempt, classify an unknown effect, inherit ARE evidence, or acquire authority; their disagreement tests interface completeness versus owner non-collapse."
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "statement": "Agent 1 may demand transport-specific observations and recovery hooks to preserve failure truth, while agent 2 will reject hooks that turn reconnect, redelivery, dead-letter, timeout, or duplicate signals into RWO recovery decisions or effect authorization; their disagreement tests operational observability versus decision authority."
+          }
+        ],
+        "agents": [
+          {
+            "agent_name": "Shannon, Claude",
+            "role": "explorer",
+            "model": "gpt-5.6-sol",
+            "token_budget": 5000,
+            "angle": "adapter contract architect attacking over-generalization, lowest-common-denominator leakage, port coupling, envelope ambiguity, capability-profile incompleteness, and non-testable admission claims",
+            "initial_prompt": "You are the read-only adapter-contract architect for dispatch 2026-08-06-rwo-adapter-boundary-review. Route: review. Inspect only: (1) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md, (2) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/REFINE-SEED-PROPOSAL.md, (3) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/RESULT.md, and (4) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md. Do not browse, write files, modify Git, inspect unrelated paths, or claim runtime evidence. Compare four candidates: universal lowest-common-denominator interface; protocol core plus capability profiles; split command-delivery/event-ingress/journal ports; and a hybrid. Attack whether each candidate preserves command/event separation, canonical identity versus transport metadata, capability absence, inbox/outbox/journal ownership, admission evidence, and a valid limited in-memory profile. Propose the smallest candidate contract only as an advisory result, including exact ports, operations, envelope fields, profiles, invariants, rejected alternatives, and falsification fixtures. Return one concise JSON-compatible receipt with role_id=adapter-contract-architect; scope_reviewed; verdict=PASS|FIX|BLOCK; candidate_comparison[]; proposed_contract; findings[] with severity, code, source selector, counterexample, and repair; conformance_questions[]; blockers; residue; reroute; handoff_note; and mutation_statement confirming read-only work."
+          },
+          {
+            "agent_name": "Hewitt, Carl",
+            "role": "explorer",
+            "model": "gpt-5.6-sol",
+            "token_budget": 5000,
+            "angle": "transport semantics adversary constructing cross-family counterexamples for delivery, acknowledgement, ordering, flow control, reconnect, retry, buffering, durability, fan-out, replay, dead-lettering, and unknown outcomes",
+            "initial_prompt": "You are the read-only transport-semantics adversary for dispatch 2026-08-06-rwo-adapter-boundary-review. Route: review. Inspect only: (1) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md, (2) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/REFINE-SEED-PROPOSAL.md, and (3) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md. Do not browse; the seed's official-source observations are the complete external evidence boundary. Do not write files, modify Git, inspect unrelated paths, or claim runtime evidence. Construct finite failure scenarios for gRPC unary and streaming calls, reconnecting sockets, Redis Streams consumer groups, a managed event bus, and an in-memory adapter. Cover send accepted but outcome unknown, response headers committing retry, buffered stream writes, disconnect before/after remote acceptance, duplicate redelivery, reordered delivery, consumer acknowledgement loss, pending-entry recovery, dead-letter exhaustion, backpressure, process crash, durability absence, and fan-out mismatch. For every scenario state what the adapter can observe, what it cannot know, the required capability declaration, and what RWO must not infer. Return one concise JSON-compatible receipt with role_id=transport-semantics-adversary; scope_reviewed; verdict=PASS|FIX|BLOCK; transport_matrix[]; failure_scenarios[]; unsupported_claims[]; findings[] with severity, code, source selector, counterexample, and repair; blockers; residue; reroute; handoff_note; and mutation_statement confirming read-only work."
+          },
+          {
+            "agent_name": "Capucci, Matteo",
+            "role": "explorer",
+            "model": "gpt-5.6-sol",
+            "token_budget": 5000,
+            "angle": "recovery and authority auditor attacking identity collapse, unsafe retry classification, journal substitution, duplicate divergence, replay effects, ARE/ACI leakage, and adapter admission without negative proof",
+            "initial_prompt": "You are the read-only recovery-and-authority auditor for dispatch 2026-08-06-rwo-adapter-boundary-review. Route: review. Inspect only: (1) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md, (2) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/REFINE-SEED-PROPOSAL.md, (3) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/RESULT.md, and (4) projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md. Do not browse, write files, modify Git, inspect unrelated paths, or claim runtime evidence. Attack every place an adapter contract could confuse logical message identity, transport delivery attempt, RWO WorkRun, RWO Attempt, repeat round, replay, effect intent, effect attempt, journal acceptance, ARE evidence, ACI admission, or exact-effect authorization. Require fail-closed behavior for unknown outcome, divergent duplicate, stale observation, unsupported capability, unknown schema, lost acknowledgement, replay, and changed authority. Test whether inbox, outbox, broker offset, acknowledgement, or adapter receipt can silently replace the journal. Define the minimum admission evidence and negative fixtures needed before a profile may be used. Return one concise JSON-compatible receipt with role_id=recovery-authority-auditor; scope_reviewed; verdict=PASS|FIX|BLOCK; identity_audit[]; owner_boundary_audit[]; unsafe_topologies[]; admission_requirements[]; negative_fixtures[]; findings[] with severity, code, source selector, counterexample, and repair; blockers; residue; reroute; handoff_note; and mutation_statement confirming read-only work."
+          }
+        ]
+      }
+    ],
+    "connections": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "target": "docs/features/recursive-work-orchestrator/",
+  "status": "complete",
+  "verdict": "candidate-pass-runtime-blocked",
+  "claim_level": "candidate design and non-executed validation-first plan",
+  "authorization": {
+    "refine_strategy": "approved",
+    "bounded_external_research": "approved_and_selected",
+    "delegated_review": "confirmed_registered_and_closed"
+  },
+  "sources": [
+    {"path": "../../../DESIGN.md", "claim_level": "current candidate design"},
+    {"path": "../20260805T184601Z-rwo-domain-recovery-model/RESULT.md", "claim_level": "prior candidate refinement synthesis"},
+    {"path": "../20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md", "claim_level": "prior exact candidate recovery model"},
+    {"url": "https://grpc.io/docs/guides/retry/", "claim_level": "official transport behavior"},
+    {"url": "https://grpc.io/docs/guides/flow-control/", "claim_level": "official transport behavior"},
+    {"url": "https://grpc.io/docs/guides/status-codes/", "claim_level": "official transport behavior"},
+    {"url": "https://redis.io/docs/latest/develop/data-types/streams/", "claim_level": "official transport behavior"},
+    {"url": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md", "claim_level": "official event envelope specification"},
+    {"url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-retry-policy.html", "claim_level": "official managed event bus behavior"},
+    {"url": "https://docs.aws.amazon.com/pdfs/decision-guides/latest/sns-or-sqs-or-eventbridge/sns-or-sqs-or-eventbridge.pdf", "claim_level": "official managed messaging comparison"}
+  ],
+  "dispatch": {
+    "refine_spec": "REFINE-DISPATCH.json",
+    "review_sheet": "delegated-review/dispatch-sheet.json",
+    "material_projection": "delegated-review/material-strategy-projection.json",
+    "tension_receipt": "delegated-review/CHECK-TENSION.md:pass-pass",
+    "registration": "opening-row-appended; close-row-appended",
+    "orchestrate_gate": "orchestrate/reduced/gate-decision.json:gate_pass",
+    "role_target_verdicts": ["FIX", "FIX", "BLOCK"]
+  },
+  "artifacts": [
+    "context-builder/context-pack.json",
+    "stages/01-context-builder.md",
+    "stages/02-invoke-define.md",
+    "stages/03-interrogation-refine-review.md",
+    "stages/04-research-decision.md",
+    "stages/05-distill.md",
+    "stages/06-invoke-design.md",
+    "stages/07-interrogation-design-review.md",
+    "stages/08-distill-repair.md",
+    "stages/08-scenario-matrix.json",
+    "stages/09-invoke-plan.md",
+    "plan/IMPLEMENTATION-LAYERING.md",
+    "plan/WORK-PACK.md",
+    "stages/10-final-interrogation.md",
+    "RESULT.md",
+    "FINAL-RECEIPT.json",
+    "FINAL-VALIDATION.md"
+  ],
+  "claims": [
+    {
+      "claim": "Candidate-2 is internally exact across identity, observations, capability admission, and recovery distinctions.",
+      "level": "candidate-design",
+      "evidence": ["stages/08-distill-repair.md", "stages/08-scenario-matrix.json"]
+    },
+    {
+      "claim": "The three-role review lifecycle closed while FIX, FIX, BLOCK target verdicts remained visible.",
+      "level": "governed-review-evidence",
+      "evidence": ["orchestrate/reduced/gate-decision.json", "stages/07-interrogation-design-review.md"]
+    },
+    {
+      "claim": "No transport adapter, executable validator, ontology change, or runtime admission was produced.",
+      "level": "scope-boundary",
+      "evidence": ["FINAL-RECEIPT.json", "plan/WORK-PACK.md"]
+    }
+  ],
+  "implementation_effect": "none",
+  "authority_effect": "none"
+}

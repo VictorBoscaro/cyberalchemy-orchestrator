@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "signal_kind": "refine-run-summary",
+  "status": "prepared-not-appended",
+  "run_id": "20260805T184601Z-rwo-domain-recovery-model",
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "verdict": "pass",
+  "stage_statuses": ["pass", "pass", "flag", "pass", "pass", "pass", "block", "pass", "pass", "pass"],
+  "helper": {"lifecycle": "pass", "review_verdict": "block", "findings": 15},
+  "repairs": {"stage_07": 12, "final": 2},
+  "model_ref": "RecoveryDecisionContract@candidate-2",
+  "scenario_games": {"pass": 20, "total": 20},
+  "plan": {"swus": 10, "automatic_routes": 9, "selected_swu": null},
+  "owner_gaps": ["G1-JOURNAL-DOMAIN-TRUTH", "G2-EXACT-EFFECT-OWNER", "G3-ARE-ACI-CONFORMANCE", "G4-ONTOLOGY-PROMOTION"],
+  "authority_effect": "none",
+  "implementation_effect": "none",
+  "append_target": null,
+  "note": "Prepared inside the approved run folder; no external observability sink was authorized."
+}

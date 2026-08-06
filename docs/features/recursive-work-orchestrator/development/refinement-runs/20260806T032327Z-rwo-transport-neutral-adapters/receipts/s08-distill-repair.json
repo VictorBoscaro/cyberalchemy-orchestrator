@@ -1,0 +1,32 @@
+{
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "step_id": "s08",
+  "capability_ref": "distill",
+  "capability_handle": "distill@repair",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "parent-native-skill",
+  "mode": "repair",
+  "status": "pass",
+  "verdict": "candidate-exact-runtime-blocked",
+  "artifact": "stages/08-distill-repair.md",
+  "artifacts": [
+    "stages/08-distill-repair.md",
+    "stages/08-scenario-matrix.json"
+  ],
+  "validation": [
+    "all accepted review findings repaired or retained as external owner gates",
+    "identity, observations, capabilities, admission, recovery distinctions, and ontology delta are explicit",
+    "scenario matrix has one expected decision per case"
+  ],
+  "observer_status": "not-configured",
+  "blockers": [
+    "G1 journal/domain ownership",
+    "G2 exact-effect contracts",
+    "G3 ARE/ACI executable conformance",
+    "G4 ontology promotion",
+    "G5 adapter implementation/configuration evidence"
+  ],
+  "residue": [
+    "candidate artifacts have not been materialized as executable schemas or fixtures"
+  ]
+}

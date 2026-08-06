@@ -1,0 +1,14 @@
+{
+  "authorization_status": "approved",
+  "blockers": [],
+  "completed_wave_ids": [
+    "w01-independent-adapter-review"
+  ],
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "eligible_action_ids": [],
+  "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+  "schema_version": "arcanum.native-dispatch-runner.state.v0.1",
+  "selected_wave_id": null,
+  "state": "complete",
+  "validation_status": "pass"
+}

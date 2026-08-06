@@ -1,0 +1,30 @@
+{
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "step_id": "s01",
+  "capability_ref": "context-builder",
+  "mode": "standard",
+  "capability_handle": ".agents/skills/context-builder/SKILL.md",
+  "receipt_kind": "native-stage",
+  "runtime_surface": "parent-native",
+  "status": "pass",
+  "verdict": "pass",
+  "artifacts": [
+    "stages/01-context-builder.md",
+    "context-builder/context-pack.md",
+    "context-builder/context-pack.json"
+  ],
+  "validation": [
+    "9 of 9 obligations covered or explicitly resolved",
+    "8 selected sources, each mapped to obligations",
+    "strict runtime handoff coverage passed"
+  ],
+  "observer_status": "not_configured",
+  "blockers": [],
+  "residue": [
+    "G1-JOURNAL-OWNERSHIP",
+    "G2-EFFECT-OWNER",
+    "G3-ARE-CONFORMANCE",
+    "G4-DESIGN-SELECTION-VALIDATOR"
+  ],
+  "handoff_note": "Invoke Define may proceed using context-builder/context-pack.md and context-builder/context-pack.json."
+}

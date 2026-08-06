@@ -1,0 +1,47 @@
+{
+  "role_id": "adapter-contract-architect",
+  "agent_id": "/root/adapter_contract_architect_spawn_0001",
+  "action_id": "spawn-0001",
+  "scope_reviewed": [
+    "DESIGN.md",
+    "REFINE-SEED-PROPOSAL.md",
+    "../20260805T184601Z-rwo-domain-recovery-model/RESULT.md",
+    "../20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md"
+  ],
+  "target_verdict": "FIX",
+  "candidate_comparison": [
+    {"candidate": "universal-lowest-common-denominator", "decision": "reject", "reason": "cannot express capability absence, journal acceptance, redelivery identity, or truthful admission"},
+    {"candidate": "protocol-core-plus-profiles", "decision": "retain-component", "reason": "makes absence explicit but can still collapse lanes without split ports"},
+    {"candidate": "split-command-event-journal-ports", "decision": "retain-component", "reason": "preserves ownership but still needs a shared envelope and profiles"},
+    {"candidate": "hybrid", "decision": "select", "reason": "split ports plus canonical envelope and admitted profiles is the smallest coherent model"}
+  ],
+  "proposed_contract": {
+    "name": "RwoAdapterContract@candidate-1",
+    "ports": ["CommandDeliveryPort", "EventIngressPort", "JournalAcceptancePort", "CapabilityDeclarationPort"],
+    "mandatory_core": ["command-event separation", "canonical-byte preservation", "stable logical identity", "explicit unknown outcome", "closed capability manifest", "divergent-duplicate rejection"],
+    "profile_families": ["volatile-in-memory", "durable-delivery", "ordered-scope", "replayable-ingress", "flow-controlled"],
+    "invariants": [
+      "Transport success is not journal acceptance, Work completion, domain truth, or effect authorization.",
+      "Redelivery changes transport attempt metadata only; a new Work Attempt is an RWO decision.",
+      "Acknowledgement, offset, inbox, outbox, and dead-letter state cannot substitute for the journal.",
+      "Capability absence is explicit and no profile claims exactly-once business effects."
+    ]
+  },
+  "findings": [
+    {"severity": "critical", "code": "RWO-ADP-001", "counterexample": "broker acknowledgement succeeds while journal append fails", "repair": "separate command, event, and journal acceptance ports; route only from accepted record refs"},
+    {"severity": "critical", "code": "RWO-ADP-002", "counterexample": "universal at-least-once excludes or causes false claims from memory and RPC adapters", "repair": "move durability, ordering, replay, and flow control to admitted profiles"},
+    {"severity": "critical", "code": "RWO-ADP-003", "counterexample": "transport message ID replaces logical identity on redelivery", "repair": "separate immutable canonical identity from mutable transport metadata"},
+    {"severity": "high", "code": "RWO-ADP-004", "counterexample": "consumer offset becomes replay authority", "repair": "journal alone owns accepted sequence and replay cursor"},
+    {"severity": "high", "code": "RWO-ADP-005", "counterexample": "timeout or dead-letter state selects Work retry", "repair": "adapters emit observations only"}
+  ],
+  "blockers": [
+    "Journal structural acceptance versus work-owned domain truth remains an owner gate.",
+    "Exact-effect permit and reconciliation remain owner gates.",
+    "No adapter/profile pair has executable conformance evidence."
+  ],
+  "residue": ["Decide the command-outbox boundary.", "Close the canonical field-owner table.", "Define profile dependencies and incompatibilities."],
+  "reroute": "refine-parent-repair",
+  "handoff_note": "Select the hybrid while keeping journal acceptance independent from transport.",
+  "mutation_statement": "Read-only; no files or external systems were modified.",
+  "capture_kind": "parent-normalized from terminal host return"
+}

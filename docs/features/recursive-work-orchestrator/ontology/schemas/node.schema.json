@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rwo.ontology.node@0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "node_id",
+    "label",
+    "node_kind",
+    "branch",
+    "description",
+    "source_refs",
+    "owner_route",
+    "candidate_status",
+    "runtime_posture",
+    "confidence",
+    "properties",
+    "residue_refs",
+    "forbidden_inferences",
+    "authority_effect"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "pattern": "^rwo:[A-Za-z0-9._:-]+$"
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_kind": {
+      "enum": [
+        "architecture-element",
+        "implementation-precedent",
+        "evidence-source",
+        "property-finding",
+        "hypothesis",
+        "residue",
+        "integration-stage",
+        "owner-gate",
+        "validation-witness",
+        "forbidden-topology"
+      ]
+    },
+    "branch": {
+      "enum": ["system", "bridge"]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^rwo:source:[a-z0-9-]+$"
+      }
+    },
+    "owner_route": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_status": {
+      "enum": [
+        "proposal",
+        "accepted-evidence",
+        "observed",
+        "projected",
+        "hypothesis",
+        "deferred",
+        "blocked",
+        "killed"
+      ]
+    },
+    "runtime_posture": {
+      "enum": [
+        "freshly-executed",
+        "observed",
+        "execution-unverified",
+        "designed",
+        "absent",
+        "blocked",
+        "deferred",
+        "not-applicable"
+      ]
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_confidence", "commitment_confidence"],
+      "properties": {
+        "evidence_confidence": {
+          "enum": ["high", "medium", "low", "none"]
+        },
+        "commitment_confidence": {
+          "enum": ["accepted-research", "candidate", "deferred", "blocked", "killed"]
+        }
+      }
+    },
+    "properties": {
+      "type": "object"
+    },
+    "residue_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^rwo:residue\\.[0-9]{3}$"
+      }
+    },
+    "forbidden_inferences": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authority_effect": {
+      "const": "none"
+    }
+  }
+}

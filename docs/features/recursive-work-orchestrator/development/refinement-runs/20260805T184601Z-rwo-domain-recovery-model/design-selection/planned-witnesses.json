@@ -1,0 +1,18 @@
+{
+  "witnesses": [
+    {"witness_id": "RWF-001", "claim_id": "same-message-redelivery", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-002", "claim_id": "identical-duplicate-dedup", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-003", "claim_id": "divergent-duplicate-quarantine", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-004", "claim_id": "transient-failure-new-attempt", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-005", "claim_id": "domain-rework-new-round", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-006", "claim_id": "changed-authority-new-run-proposal", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-007", "claim_id": "restart-resume-before-case-classification", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-008", "claim_id": "stale-observation-zero-routing", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-009", "claim_id": "unknown-payment-effect-no-retry", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-010", "claim_id": "explicit-compensation-work", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-011", "claim_id": "exhaustion-terminal-stop", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-012", "claim_id": "insufficient-evidence-owner-escalation", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-013", "claim_id": "semantic-receipt-non-authorizing", "evidence_state": "authored-complete"},
+    {"witness_id": "RWF-014", "claim_id": "historical-replay-zero-external-calls", "evidence_state": "authored-complete"}
+  ]
+}

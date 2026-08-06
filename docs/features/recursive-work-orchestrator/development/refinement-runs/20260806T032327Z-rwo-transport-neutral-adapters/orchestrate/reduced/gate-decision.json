@@ -1,0 +1,21 @@
+{
+  "admitted_receipt_action_ids": [
+    "spawn-0001",
+    "spawn-0002",
+    "spawn-0003"
+  ],
+  "blockers": [],
+  "decision": "gate_pass",
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "gate_id": "g03-review-receipts",
+  "next_action_ids": [],
+  "next_wave_id": null,
+  "required_action_ids": [
+    "spawn-0001",
+    "spawn-0002",
+    "spawn-0003"
+  ],
+  "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+  "schema_version": "arcanum.native-dispatch-runner.gate-decision.v0.1",
+  "wave_id": "w01-independent-adapter-review"
+}

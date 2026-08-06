@@ -1,0 +1,16 @@
+{
+  "relation_id": "rwo:relation:fixture-missing-endpoint",
+  "predicate": "supports",
+  "relation_kind": "evidence",
+  "source_node": "rwo:source:e1",
+  "target_node": "rwo:missing:unregistered-node",
+  "direction": "directed",
+  "owner_route": "fixture-only",
+  "evidence_refs": ["rwo:source:e1"],
+  "authority_effect": "none",
+  "cycle_policy": "acyclic",
+  "runtime_posture": "not-applicable",
+  "properties": {},
+  "description": "Negative fixture: relation targets a node not registered in the package.",
+  "forbidden_inferences": ["This fixture must never validate."]
+}

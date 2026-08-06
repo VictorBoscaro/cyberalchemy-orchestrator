@@ -1,0 +1,53 @@
+{
+  "role_id": "recovery-authority-auditor",
+  "agent_id": "/root/recovery_authority_auditor_spawn_0003",
+  "action_id": "spawn-0003",
+  "scope_reviewed": ["DESIGN.md", "REFINE-SEED-PROPOSAL.md", "../20260805T184601Z-rwo-domain-recovery-model/RESULT.md", "../20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md"],
+  "target_verdict": "BLOCK",
+  "identity_audit": [
+    "Distinguish WorkRun, round, Work Attempt, logical message, transport delivery attempt, effect intent, effect attempt, recovery trigger, and journal record.",
+    "Redelivery preserves every canonical identity and byte; only the transport delivery attempt changes.",
+    "Work retry, repeat, revalidation, and effect retry allocate different identities under different owners.",
+    "Replay and resume allocate no identity and perform no external call."
+  ],
+  "owner_boundary_audit": [
+    "Journal owner alone accepts structural history and recovery decision records.",
+    "Adapters own mechanics and truthful observations only.",
+    "Inbox, outbox, offset, acknowledgement, dead-letter state, and receipts are evidence, not accepted-history authority.",
+    "ARE evidence and ACI admission cannot become recovery or effect authority.",
+    "Every external effect requires a current exact-effect-owner permit; authority_ref is only an evidence locator."
+  ],
+  "admission_requirements": [
+    "implementation/version/build/configuration digests and transport family",
+    "closed capability manifest with supported, unsupported, and prohibited features",
+    "canonical envelope schema plus immutable-identity fixtures",
+    "separate command, event, journal, inbox, outbox, and observation contracts",
+    "proof that only journal acceptance advances cursor and routing",
+    "recipient convergence evidence for unknown command acceptance",
+    "profile-specific atomicity, crash, ordering, replay, retention, backpressure, and acknowledgement evidence",
+    "current authority validation and exact-effect-owner binding",
+    "positive and negative conformance results with immutable runner/fixture digests"
+  ],
+  "negative_fixture_count": 18,
+  "findings": [
+    {"severity": "critical", "code": "RAA-001-JOURNAL-AUTHORITY-UNRESOLVED", "repair": "bind one accepted-history owner before admission; no transport state may advance cursor or routing"},
+    {"severity": "critical", "code": "RAA-002-ENVELOPE-IDENTITY-UNDERSPECIFIED", "repair": "publish a closed identity and transition table"},
+    {"severity": "critical", "code": "RAA-003-UNKNOWN-ACK-UNSAFE-REDELIVERY", "repair": "redeliver only with recipient convergence and current authority evidence; unknown effects reconcile"},
+    {"severity": "critical", "code": "RAA-004-AUTHORITY-REF-CAN-BECOME-BEARER-TOKEN", "repair": "make authority_ref non-authorizing and revalidate current basis at acceptance/effect boundaries"},
+    {"severity": "high", "code": "RAA-005-ADAPTER-TRUST-BOOTSTRAP-MISSING", "repair": "require immutable admission record binding implementation, configuration, profile, owner, evidence, prohibitions, and validity epoch"},
+    {"severity": "high", "code": "RAA-006-REPLAY-SEMANTICS-NOT-NORMATIVE", "repair": "replay is route-free reducer reconstruction with zero effects and allocations"},
+    {"severity": "high", "code": "RAA-007-ACI-AND-ARE-SUBSTITUTION-RISK", "repair": "keep independently admitted semantic evidence optional and authority_effect none"},
+    {"severity": "high", "code": "RAA-008-PROFILE-FALLBACK-CAN-LIE", "repair": "capability absence is fatal at admission; no silent fallback"}
+  ],
+  "blockers": [
+    "No adapter/profile pair may be admitted until accepted-history and journal/domain-truth ownership is selected.",
+    "No effectful adapter may be admitted until exact-effect permit/outcome/reconciliation contracts are selected.",
+    "No profile may be used until identity, capability schema, admission record, and negative fixtures exist and pass.",
+    "Reviewed documentation proves no runtime conformance."
+  ],
+  "residue": ["Journal structural truth versus work-owned domain truth remains open.", "ARE/ACI executable schemas remain unselected.", "Transport atomicity/crash behavior remains untested."],
+  "reroute": "refine-parent-owner-gated-repair",
+  "handoff_note": "Recovery semantics constrain the adapter design but do not admit a transport.",
+  "mutation_statement": "Read-only; no files or external systems were modified.",
+  "capture_kind": "parent-normalized from terminal host return"
+}

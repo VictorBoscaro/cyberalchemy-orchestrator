@@ -1,0 +1,63 @@
+{
+  "identity": {
+    "task_or_swu": "refine-20260805T184601Z-rwo-domain-recovery-model:s01",
+    "source_reference": "REFINE-SEED-PROPOSAL.md and REFINE-DISPATCH.json",
+    "session_or_run_id": "20260805T184601Z-rwo-domain-recovery-model",
+    "session_evidence_path": "context-builder/",
+    "runtime_handoff": "runtime",
+    "repository_revision": "b42228fcf4a5a6dadefbbfb53dfaa3c3edb28108",
+    "umbrella_revision": "ab46061bf14db23a01054c2fd3fafec60fb5eb2f",
+    "evidence_date": "2026-08-05"
+  },
+  "strict_coverage": "pass",
+  "fallback_exploration": {
+    "status": "named-gaps-only",
+    "allowed_gap_ids": ["G1-JOURNAL-OWNERSHIP", "G2-EFFECT-OWNER", "G3-ARE-CONFORMANCE", "G4-DESIGN-SELECTION-VALIDATOR"]
+  },
+  "obligations": [
+    {"id": "O1-IDENTITY", "status": "covered", "summary": "Distinguish definition, run, node, attempt, round, message, and effect identities.", "selected_evidence": [{"path": "../../../DESIGN.md", "selector": "§4.1-4.2 and §6.1", "excerpt_summary": "Immutable WorkDefinition, stable WorkRun, addressed Attempt and message envelope identities."}], "resolution": "none"},
+    {"id": "O2-RECOVERY-TAXONOMY", "status": "covered", "summary": "Separate redelivery, retry, repeat, replay, revalidation, reconciliation, compensation, deduplication, quarantine, and exhaustion.", "selected_evidence": [{"path": "../../../DESIGN.md", "selector": "§5.6 and §11", "excerpt_summary": "Bounded repetition and partial failure/recovery semantics."}, {"path": "../../../../../../../../ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md", "selector": "implementation matrix and negative controls", "excerpt_summary": "Redelivery is distinct from new Attempt and revalidation."}], "resolution": "The closed taxonomy is the refinement target."},
+    {"id": "O3-DOMAIN-BOUNDARY", "status": "covered", "summary": "Preserve domain ownership of meaning and state.", "selected_evidence": [{"path": "../../../DESIGN.md", "selector": "§6.3 and §7-8", "excerpt_summary": "Domain event names/state are work-owned; kernel classifications and cursor are structural."}], "resolution": "none"},
+    {"id": "O4-CLASSIFIER-AND-POLICY", "status": "resolved", "summary": "Define a deterministic recovery classifier without claiming current implementation.", "selected_evidence": [{"path": "REFINE-SEED-PROPOSAL.md", "selector": "Exact-Model Questions and Candidate Classification Priority", "excerpt_summary": "Candidate classifier inputs, priorities, and output requirements."}], "resolution": "Design as candidate-local; defer owner selection and implementation."},
+    {"id": "O5-REPLAY-RESUME-REVALIDATE", "status": "covered", "summary": "Keep historical replay, restart resume, and current revalidation distinct.", "selected_evidence": [{"path": "../../../DESIGN.md", "selector": "RWO-I11 and §11", "excerpt_summary": "Cursor replay from accepted history and restart reconciliation."}, {"path": "../../../../../../../../cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md", "selector": "replay and revalidation rows", "excerpt_summary": "Replay is immutable and side-effect-free; revalidation creates a new run."}], "resolution": "none"},
+    {"id": "O6-EFFECT-UNCERTAINTY", "status": "covered", "summary": "Prevent automatic retry after an unknown external effect.", "selected_evidence": [{"path": "../../../ontology/ONTOLOGY.md", "selector": "rwo:f.no-idempotency-effect-proof", "excerpt_summary": "Stable message key does not prove effect idempotency."}, {"path": "../../../../../../../../cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md", "selector": "exact effect and effect lifecycle", "excerpt_summary": "Separate effect verdict, ACI acceptance, adapter evidence, and honest unknown."}], "resolution": "Missing exact-effect owner is represented as a fail-closed block."},
+    {"id": "O7-RWO-ARE-ACI", "status": "covered", "summary": "Preserve coordination, semantic, lifecycle, artifact, and effect owners.", "selected_evidence": [{"path": "../../../../../../../../ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md", "selector": "Exact RWO/orchestrator to ARE matrix and topology verdicts", "excerpt_summary": "RWO coordination, ARE evaluation, ACI acceptance, and effect authority do not collapse."}], "resolution": "none"},
+    {"id": "O8-ONTOLOGY-DELTA", "status": "covered", "summary": "Describe the candidate delta from the current validated ontology.", "selected_evidence": [{"path": "../../../ontology/ONTOLOGY.md", "selector": "§12-13", "excerpt_summary": "Retry/rework/completion and cross-owner residue remain open."}, {"path": "../../../ontology/nodes/nodes.json", "selector": "id/label query recover|retry|reconcil", "excerpt_summary": "Zero matching nodes."}], "resolution": "Later ontology owner route; no mutation in Refine."},
+    {"id": "O9-OUTPUT-AND-SCOPE", "status": "covered", "summary": "Produce exact design and non-executed plan only in the run folder.", "selected_evidence": [{"path": "REFINE-DISPATCH.json", "selector": "steps s01-s10 and gates g05/g07", "excerpt_summary": "Canonical loop, completeness contract, and write/promotion guardrails."}], "resolution": "none"}
+  ],
+  "selected_sources": [
+    {"path": "REFINE-SEED-PROPOSAL.md", "selectors": ["Current Evidence Boundary", "Problem To Refine", "Exact-Model Questions", "Done Criteria"], "obligations": ["O1-IDENTITY", "O2-RECOVERY-TAXONOMY", "O4-CLASSIFIER-AND-POLICY", "O9-OUTPUT-AND-SCOPE"], "evidence_kind": "decision"},
+    {"path": "REFINE-DISPATCH.json", "selectors": ["steps", "gates", "technique_overlays", "subagent_strategy"], "obligations": ["O1-IDENTITY", "O2-RECOVERY-TAXONOMY", "O3-DOMAIN-BOUNDARY", "O4-CLASSIFIER-AND-POLICY", "O5-REPLAY-RESUME-REVALIDATE", "O6-EFFECT-UNCERTAINTY", "O7-RWO-ARE-ACI", "O8-ONTOLOGY-DELTA", "O9-OUTPUT-AND-SCOPE"], "evidence_kind": "contract"},
+    {"path": "../../../DESIGN.md", "selectors": ["§4.1-4.2", "§5.6", "§6.1-6.3", "§7-8", "§10-11", "§14-15"], "obligations": ["O1-IDENTITY", "O2-RECOVERY-TAXONOMY", "O3-DOMAIN-BOUNDARY", "O5-REPLAY-RESUME-REVALIDATE", "O6-EFFECT-UNCERTAINTY", "O8-ONTOLOGY-DELTA"], "evidence_kind": "architecture"},
+    {"path": "../../../ontology/ONTOLOGY.md", "selectors": ["§6-8", "§12-13"], "obligations": ["O3-DOMAIN-BOUNDARY", "O5-REPLAY-RESUME-REVALIDATE", "O6-EFFECT-UNCERTAINTY", "O8-ONTOLOGY-DELTA"], "evidence_kind": "architecture"},
+    {"path": "../../../ontology/nodes/nodes.json", "selectors": ["recover|retry|reconcil query"], "obligations": ["O8-ONTOLOGY-DELTA"], "evidence_kind": "contract"},
+    {"path": "../../../../../../../../ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md", "selectors": ["implementation matrix", "RWO/ARE matrix", "topology verdicts", "negative controls", "residue"], "obligations": ["O1-IDENTITY", "O2-RECOVERY-TAXONOMY", "O5-REPLAY-RESUME-REVALIDATE", "O6-EFFECT-UNCERTAINTY", "O7-RWO-ARE-ACI", "O8-ONTOLOGY-DELTA"], "evidence_kind": "decision"},
+    {"path": "../../../../../../../../cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md", "selectors": ["Boundary", "Conditional stage map", "Required sequence", "Non-collapse constraints", "F1-F8", "Open Questions"], "obligations": ["O5-REPLAY-RESUME-REVALIDATE", "O6-EFFECT-UNCERTAINTY", "O7-RWO-ARE-ACI"], "evidence_kind": "architecture"},
+    {"path": "../../../ontology/receipts/CURRENT-STATE-2026-08-05-VALIDATION.json", "selectors": ["validation results", "authority effect"], "obligations": ["O8-ONTOLOGY-DELTA"], "evidence_kind": "test"}
+  ],
+  "write_scope": ["docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/"],
+  "validation_surface": [
+    "Dispatch Spec validation",
+    "JSON parse and cross-reference validation",
+    "recovery decision-table scenario coverage",
+    "critical negative controls",
+    "final Interrogation verdict"
+  ],
+  "gaps_and_blockers": [
+    {"id": "G1-JOURNAL-OWNERSHIP", "status": "deferred", "summary": "Journal versus domain source-of-truth affects reconciliation ownership.", "runtime_fallback_allowed": false},
+    {"id": "G2-EFFECT-OWNER", "status": "deferred", "summary": "Exact-effect and reconciliation owners are not selected.", "runtime_fallback_allowed": false},
+    {"id": "G3-ARE-CONFORMANCE", "status": "deferred", "summary": "No executable RWO-to-ARE seam or compatibility receipt exists.", "runtime_fallback_allowed": false},
+    {"id": "G4-DESIGN-SELECTION-VALIDATOR", "status": "deferred", "summary": "Target-local Design denominator/selection runtime evidence is absent; mutation-capable Plan handoff must remain blocked.", "runtime_fallback_allowed": false}
+  ],
+  "authority_precedence": [
+    "direct owner sources and accepted evidence receipts",
+    "current RWO design proposal",
+    "current non-authoritative RWO ontology",
+    "refine-run candidate artifacts",
+    "projections and helper criticism"
+  ],
+  "output_paths": {
+    "markdown": "context-builder/context-pack.md",
+    "json_index": "context-builder/context-pack.json"
+  }
+}

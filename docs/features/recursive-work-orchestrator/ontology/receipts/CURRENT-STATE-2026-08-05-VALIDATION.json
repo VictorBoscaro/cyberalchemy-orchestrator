@@ -1,0 +1,209 @@
+{
+  "schema_version": "domainspec.ontology-vault.validation.v1",
+  "invocation_id": "ontology-vault-rwo-current-state-graph-2026-08-05",
+  "validated_at": "2026-08-05T16:06:02Z",
+  "mode": "convention-update-map-validate",
+  "repository": "projects/cyberalchemy-orchestrator",
+  "ontology_type": "architecture-property",
+  "ontology_type_selection": {
+    "source": "existing ontology frontmatter and architecture-property finding contract",
+    "confidence": "high"
+  },
+  "branch": "system",
+  "runtime": "inline",
+  "authority_effect": "none",
+  "promotion_status": "not-requested-not-granted",
+  "source_identities": {
+    "target_git_head": "b42228fcf4a5a6dadefbbfb53dfaa3c3edb28108",
+    "private_spine_git_head": "ab46061bf14db23a01054c2fd3fafec60fb5eb2f",
+    "rwo_design_sha256": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+    "prior_rwo_ontology_sha256": "1c6d417c4f0cdfc73c7c42f016c05fd6f8fbccd738a35bf7454472d3cee3b920",
+    "are_architecture_sha256": "1958758a104c19af9966fd1460097c18fbf919e480da45e5c8dcc0b5f4ffe0de",
+    "aci_binding_sha256": "02eaede41676bcf19e45cb8cf9b7130bddf297d6ae786d81fdb67ee456bb2c8c",
+    "accepted_findings_sha256": "734a3122359f8cefd0c13fee36b6b2caabf5d158693b588a3678f138bd1941c1",
+    "evidence_closure_sha256": "cfe590f7bf0e3cbde75a38e15fcc93f9954ae23a0dce7ca5b45913dfac07c73f",
+    "final_audit_sha256": "bcf7b4d97eea7e126454bc84e1946dac7518dca7bfa51ac8b6652e7b347a1050"
+  },
+  "outputs": [
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/ONTOLOGY.md",
+      "sha256": "b0b83ea540c0f805208b93e068816c45cb928d4f08eea50eca8ba4178843d9e1",
+      "role": "candidate ontology v0.2.0"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/evidence/CURRENT-STATE-2026-08-05.json",
+      "sha256": "5be1846bab71eb41a609d452a52e745f8fc3aa21ff8e08470290df67b0ec03e9",
+      "role": "machine-readable current-state evidence projection"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/nodes/nodes.json",
+      "sha256": "ef78619eb5626cfca41fdfcdcf7dfc9a03ebd93f5d98f5e880c71e2807d74195",
+      "role": "generated typed node graph"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/relations/relations.json",
+      "sha256": "e76ae8f34162585f1da73b2632ff237be0df162038045428238996364798840d",
+      "role": "generated typed zero-authority relation graph"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/views/current-state.json",
+      "sha256": "afd040068afdfbcade9e84d7e3507212587ace06f96f45141019c3c533d6b213",
+      "role": "generated complete current-state graph view"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/schemas/node.schema.json",
+      "sha256": "d0361894ed148a3b991715562e7a7044bd021acea49a29b6430cf3ebb3d48beb",
+      "role": "closed node contract"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/schemas/relation.schema.json",
+      "sha256": "46d8ef6ee9c154d4ffd89ca1aa4c502eab692495ccdb8523afe681bd44a86baa",
+      "role": "closed relation contract"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/schemas/view.schema.json",
+      "sha256": "3d6c1ba66d8fa1d1a7971675391680d88daf69ae40bc819cc1a185abd09bc606",
+      "role": "closed view contract"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/scripts/build-graph.mjs",
+      "sha256": "0599bee98272c892e4457b5d1b22d46ff7430654e8ab824bbe5fdbdecda3507c",
+      "role": "deterministic graph materializer"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/scripts/validate-graph.mjs",
+      "sha256": "76b315b898ca36f2c8cb31e4b329ff2fc35566cb0ca0e190e622852afd7c37b4",
+      "role": "closed-schema and graph-integrity validator"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/fixtures/invalid-authority-effect.json",
+      "sha256": "b6e38d60cc81719375c1cbebd74e57b3fdb6887fff3f2c78a37721d2a2d4ee53",
+      "role": "negative authority fixture"
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/ontology/fixtures/invalid-endpoint.json",
+      "sha256": "b8a2eebf1168faa8dbc1bfb6541e91d3b8e16a57328f1364c508f14c9d5bb80f",
+      "role": "negative endpoint fixture"
+    },
+    {
+      "path": "cyberAlchemy-v2:development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "sha256": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97",
+      "role": "private documentation-only RWO-to-ARE boundary profile"
+    }
+  ],
+  "counts": {
+    "element_types": 41,
+    "typed_properties": 22,
+    "allowed_relations": 28,
+    "inference_shields": 13,
+    "profiles": 4,
+    "observation_projections": 10,
+    "evidence_sources": 6,
+    "property_findings": 16,
+    "direct_realization_findings": 0,
+    "residue_items": 29,
+    "planned_witnesses": 8,
+    "graph_nodes": 137,
+    "graph_node_kinds": 10,
+    "graph_relations": 220,
+    "graph_relation_kinds": 8,
+    "graph_views": 1,
+    "graph_groups": 10,
+    "graph_sequences": 3,
+    "negative_fixtures": 2,
+    "direct_realization_relations": 0
+  },
+  "checks": [
+    {
+      "id": "json-parse",
+      "result": "pass",
+      "evidence": "jq parsed CURRENT-STATE-2026-08-05.json"
+    },
+    {
+      "id": "finding-contract",
+      "result": "pass",
+      "evidence": "unique IDs; allowed enums; known ontology subjects; non-empty evidence and forbidden-inference sets"
+    },
+    {
+      "id": "claim-ceiling",
+      "result": "pass",
+      "evidence": "zero direct-realization findings; authority, promotion, and runtime conformance effects are none"
+    },
+    {
+      "id": "source-identity",
+      "result": "pass",
+      "evidence": "RWO design, ARE, ACI binding, accepted findings, evidence closure, and audit hashes match the frozen research identities"
+    },
+    {
+      "id": "local-links",
+      "result": "pass",
+      "evidence": "16 local Markdown links resolved"
+    },
+    {
+      "id": "residue-preservation",
+      "result": "pass",
+      "evidence": "RWO 001-014, WGQ 015-024, and cross-owner 025-029 remain explicit"
+    },
+    {
+      "id": "bridge-boundaries",
+      "result": "pass",
+      "evidence": "entry, command, journal, observation, L0, artifact, exact-effect, effect-lifecycle, replay, and revalidation boundaries remain distinct"
+    },
+    {
+      "id": "planned-witnesses",
+      "result": "pass",
+      "evidence": "F1-F8 are present and all remain marked unexecuted"
+    },
+    {
+      "id": "deterministic-graph-generation",
+      "result": "pass",
+      "evidence": "build-graph.mjs reproduced nodes, relations, and view byte-for-byte from the ontology, evidence projection, and private bridge"
+    },
+    {
+      "id": "node-materialization",
+      "result": "pass",
+      "evidence": "137 unique nodes cover all 41 elements, 13 precedents, 6 sources, 16 findings, one hypothesis, 29 residues, 10 stages, 7 gates, 8 witnesses, and 6 killed topologies"
+    },
+    {
+      "id": "relation-integrity",
+      "result": "pass",
+      "evidence": "220 unique directed relations resolve endpoints and evidence refs; all retain authority_effect none; zero claim direct realization"
+    },
+    {
+      "id": "view-coverage",
+      "result": "pass",
+      "evidence": "current-state view contains every node and relation exactly once across 10 groups and 3 trace sequences"
+    },
+    {
+      "id": "negative-graph-fixtures",
+      "result": "pass",
+      "evidence": "authority-producing relation and missing-endpoint fixtures both reject"
+    },
+    {
+      "id": "whitespace",
+      "result": "pass",
+      "evidence": "no trailing whitespace in the material Markdown, JSON, schema, fixture, and script outputs"
+    },
+    {
+      "id": "rwo-runtime-conformance",
+      "result": "unsupported",
+      "evidence": "no RWO runtime, recursive compiler, reducer, full fixtures, or conformance receipt"
+    },
+    {
+      "id": "rwo-are-executable-integration",
+      "result": "unsupported",
+      "evidence": "owners, schemas, compatibility, artifact admission, exact-effect evidence, and F1-F8 execution remain absent"
+    }
+  ],
+  "promoted_candidates": [],
+  "blockers": [
+    "RWO implementation/runtime conformance is unsupported",
+    "Reasoning-entry, artifact-admission, and exact-effect owners are unresolved",
+    "GAP-ARE-ART-001 remains blocked",
+    "Cross-repository schemas and compatibility receipts are absent",
+    "F1-F8 remain unexecuted",
+    "Ontology promotion is not requested and not granted"
+  ],
+  "result": "flag",
+  "next_action": "Route one owner decision for the ReasoningEntryVerdict boundary before drafting any executable RWO-to-ARE Work Pack."
+}

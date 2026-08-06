@@ -1,0 +1,126 @@
+{
+  "action_artifacts": [
+    "actions/spawn-0001.json",
+    "actions/spawn-0002.json",
+    "actions/spawn-0003.json"
+  ],
+  "actions": [
+    {
+      "action": "spawn",
+      "action_id": "spawn-0001",
+      "agent_count": 1,
+      "agent_ordinal": 0,
+      "applies_to_steps": [
+        "s07"
+      ],
+      "capability_ref": "interrogation",
+      "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+      "forbidden_write_scopes": [
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/",
+        "projects/cyberalchemy-orchestrator/implementations/",
+        "cyberAlchemy-v2/",
+        "implementation/domainspec/telemetry/agents/"
+      ],
+      "input_refs": [
+        "delegated-review/dispatch-sheet.json"
+      ],
+      "mode": "refine-design-review",
+      "mutation_policy": "read-only",
+      "output_refs": [
+        "delegated-review/returns/adapter-contract-architect.json"
+      ],
+      "role": "adapter-contract-architect",
+      "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+      "schema_version": "arcanum.native-dispatch-runner.action.v0.1",
+      "step_id": "s07",
+      "target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "wave_id": "w01-independent-adapter-review",
+      "write_scope": []
+    },
+    {
+      "action": "spawn",
+      "action_id": "spawn-0002",
+      "agent_count": 1,
+      "agent_ordinal": 0,
+      "applies_to_steps": [
+        "s07"
+      ],
+      "capability_ref": "interrogation",
+      "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+      "forbidden_write_scopes": [
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/",
+        "projects/cyberalchemy-orchestrator/implementations/",
+        "cyberAlchemy-v2/",
+        "implementation/domainspec/telemetry/agents/"
+      ],
+      "input_refs": [
+        "delegated-review/dispatch-sheet.json"
+      ],
+      "mode": "refine-design-review",
+      "mutation_policy": "read-only",
+      "output_refs": [
+        "delegated-review/returns/transport-semantics-adversary.json"
+      ],
+      "role": "transport-semantics-adversary",
+      "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+      "schema_version": "arcanum.native-dispatch-runner.action.v0.1",
+      "step_id": "s07",
+      "target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/REFINE-SEED-PROPOSAL.md",
+      "wave_id": "w01-independent-adapter-review",
+      "write_scope": []
+    },
+    {
+      "action": "spawn",
+      "action_id": "spawn-0003",
+      "agent_count": 1,
+      "agent_ordinal": 0,
+      "applies_to_steps": [
+        "s07"
+      ],
+      "capability_ref": "interrogation",
+      "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+      "forbidden_write_scopes": [
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/",
+        "projects/cyberalchemy-orchestrator/implementations/",
+        "cyberAlchemy-v2/",
+        "implementation/domainspec/telemetry/agents/"
+      ],
+      "input_refs": [
+        "delegated-review/dispatch-sheet.json"
+      ],
+      "mode": "refine-design-review",
+      "mutation_policy": "read-only",
+      "output_refs": [
+        "delegated-review/returns/recovery-authority-auditor.json"
+      ],
+      "role": "recovery-authority-auditor",
+      "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+      "schema_version": "arcanum.native-dispatch-runner.action.v0.1",
+      "step_id": "s07",
+      "target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md",
+      "wave_id": "w01-independent-adapter-review",
+      "write_scope": []
+    }
+  ],
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+  "schema_version": "arcanum.native-dispatch-runner.run-plan.v0.1",
+  "selected_wave": {
+    "depends_on_waves": [],
+    "gate_after": "g03-review-receipts",
+    "join_policy": "all",
+    "on_incomplete": "block",
+    "parallel": true,
+    "role_ids": [
+      "adapter-contract-architect",
+      "transport-semantics-adversary",
+      "recovery-authority-auditor"
+    ],
+    "wave_id": "w01-independent-adapter-review"
+  },
+  "state": "wave_ready",
+  "validation_status": "pass"
+}

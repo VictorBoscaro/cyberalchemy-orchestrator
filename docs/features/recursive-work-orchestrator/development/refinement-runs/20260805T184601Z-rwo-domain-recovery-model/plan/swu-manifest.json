@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "work_pack_ref": "WORK-PACK.md",
+  "active_layer": "L0",
+  "selected_swu": null,
+  "allowed_routes_digest": "sha256:7370bedb4e73630fbfcfb576297a303073c01e67fef5eaae5ac921a73f74ede6",
+  "swus": [
+    {
+      "id": "SWU-RRD-001",
+      "task": "TASK-CONTRACT",
+      "layer": "L0",
+      "primary_behavior": "domain-separated canonical recovery IDs",
+      "dependencies": ["W0"],
+      "route_id": "rrd-l0-canonical",
+      "status": "selection-ready",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-001.json"
+    },
+    {
+      "id": "SWU-RRD-002",
+      "task": "TASK-CONTRACT",
+      "layer": "L0",
+      "primary_behavior": "closed RecoveryCase admission",
+      "dependencies": ["SWU-RRD-001"],
+      "route_id": "rrd-l0-case-contract",
+      "status": "dependency-blocked",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-002.json"
+    },
+    {
+      "id": "SWU-RRD-003",
+      "task": "TASK-CONTRACT",
+      "layer": "L0",
+      "primary_behavior": "single-valued pure recovery classification",
+      "dependencies": ["SWU-RRD-002"],
+      "route_id": "rrd-l0-classifier",
+      "status": "dependency-blocked",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-003.json"
+    },
+    {
+      "id": "SWU-RRD-004",
+      "task": "TASK-CONTRACT",
+      "layer": "L0",
+      "primary_behavior": "exact identity transitions and stable intents",
+      "dependencies": ["SWU-RRD-003"],
+      "route_id": "rrd-l0-identity",
+      "status": "dependency-blocked",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-004.json"
+    },
+    {
+      "id": "SWU-RRD-005",
+      "task": "TASK-FRONTIER",
+      "layer": "L1",
+      "primary_behavior": "subject-scoped RecoveryFrontier inhibition",
+      "dependencies": ["SWU-RRD-004"],
+      "route_id": "rrd-l1-frontier",
+      "status": "dependency-blocked",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-005.json"
+    },
+    {
+      "id": "SWU-RRD-006",
+      "task": "TASK-FRONTIER",
+      "layer": "L1",
+      "primary_behavior": "atomic DecisionValidationVector acceptance",
+      "dependencies": ["SWU-RRD-005", "G1-JOURNAL-DOMAIN-TRUTH"],
+      "route_id": "rrd-l1-acceptance",
+      "status": "owner-prerequisite",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-006.json"
+    },
+    {
+      "id": "SWU-RRD-007",
+      "task": "TASK-INTEGRATIONS",
+      "layer": "L2",
+      "primary_behavior": "domain signal and policy admission",
+      "dependencies": ["SWU-RRD-005", "G1-JOURNAL-DOMAIN-TRUTH"],
+      "route_id": "rrd-l2-domain",
+      "status": "owner-prerequisite",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-007.json"
+    },
+    {
+      "id": "SWU-RRD-008",
+      "task": "TASK-INTEGRATIONS",
+      "layer": "L2",
+      "primary_behavior": "exact-effect retry and bounded reconciliation admission",
+      "dependencies": ["SWU-RRD-006", "G2-EXACT-EFFECT-OWNER"],
+      "route_id": "rrd-l2-effect",
+      "status": "owner-prerequisite",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-008.json"
+    },
+    {
+      "id": "SWU-RRD-009",
+      "task": "TASK-INTEGRATIONS",
+      "layer": "L2",
+      "primary_behavior": "optional admitted ARE semantic evidence",
+      "dependencies": ["SWU-RRD-007", "G3-ARE-ACI-CONFORMANCE"],
+      "route_id": "rrd-l2-are-aci",
+      "status": "owner-prerequisite",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-009.json"
+    },
+    {
+      "id": "SWU-RRD-010",
+      "task": "TASK-GOVERNANCE",
+      "layer": "L3",
+      "primary_behavior": "evidence-backed candidate ontology delta",
+      "dependencies": ["SWU-RRD-006", "SWU-RRD-007", "SWU-RRD-008", "SWU-RRD-009", "G4-ONTOLOGY-PROMOTION"],
+      "route_id": null,
+      "status": "promotion-blocked",
+      "closeout_receipt": "docs/features/recursive-work-orchestrator/development/execution-receipts/SWU-RRD-010.json"
+    }
+  ]
+}
+

@@ -1,0 +1,370 @@
+{
+  "$schema": "../schemas/view.schema.json",
+  "schema_version": "rwo-view-projection/v1",
+  "view": {
+    "id": "rwo:view.typed-coordinated-work-atlas",
+    "label": "Typed Coordinated Work Atlas",
+    "ontology_ref": "rwo-architecture@0.1.0",
+    "status": "candidate-projection",
+    "authority_effect": "none",
+    "runtime_effect": "none",
+    "removable": true,
+    "implementation_ref": "../typed-coordinated-work-atlas.html",
+    "implementation_sha256": "ac5bc3e344334fc4291dd0747a65467ddd6c4494d01cf4e96b9113798044a770",
+    "claim_ceiling": "Removable learner projection with one hand-authored standalone HTML candidate tested locally in Chromium; no projection compiler, accessibility result, comprehension result, runtime observation, authority, or promotion is established.",
+    "source_refs": [
+      "source:view-research-raw#research-body",
+      "source:view-findings#recommendation-and-claim-ceiling",
+      "source:view-findings#synchronized-view-contract"
+    ]
+  },
+  "source_precedence": [
+    "source:design",
+    "source:candidate-ontology",
+    "ontology.json",
+    "this removable projection"
+  ],
+  "persistent_work_card": {
+    "question": "What is Work?",
+    "answer": [
+      "Work is the uniform typed executable boundary.",
+      "A WorkDefinition is immutable and versioned and has exactly one body: a LeafBinding or a WorkGraph.",
+      "A WorkRun is one invocation of one WorkDefinition; Attempts belong to that run without changing its definition or authority basis.",
+      "Every composition form returns the same outer Work contract, so a pipeline is also Work and can be nested where a leaf can be used.",
+      "One root OrchestratorKernel expands every nested composite into one addressed plan."
+    ],
+    "noncollapse": [
+      "Same outer contract does not mean same body.",
+      "Structural recursion does not create recursive orchestration authority.",
+      "A WorkDefinition is not a WorkRun, and a WorkRun is not an Attempt."
+    ]
+  },
+  "legend": {
+    "entities": [
+      "KIND: WorkDefinition",
+      "KIND: WorkRun",
+      "KIND: Attempt",
+      "KIND: Command",
+      "KIND: Event",
+      "KIND: derived projection",
+      "KIND: evidence finding",
+      "KIND: residue"
+    ],
+    "relations": [
+      "RELATION: STRUCTURAL TRIGGER",
+      "RELATION: TEMPORAL CAUSATION",
+      "RELATION: TRANSPORT/DELIVERY",
+      "RELATION: JOURNAL ACCEPTANCE",
+      "RELATION: PROJECTION DERIVATION",
+      "RELATION: OWNED BY",
+      "RELATION: REQUIRES AUTHORITY"
+    ],
+    "lanes": [
+      "OWNER: ROOT/CURSOR",
+      "COMMAND PROTOCOL",
+      "WORK/ADAPTER",
+      "EVENT PROTOCOL",
+      "JOURNAL",
+      "GATE",
+      "EXTERNAL EFFECT",
+      "SIDECAR"
+    ],
+    "states": [
+      "JOURNAL ACCEPTANCE DISPOSITION",
+      "DOMAIN STATUS",
+      "CONFIRMATION",
+      "CURSOR STATE",
+      "ADAPTER ADMISSION",
+      "ATTEMPT FRESHNESS",
+      "FINDING STATUS"
+    ],
+    "journal_dispositions": [
+      "journal-accepted/new event record",
+      "journal-accepted/duplicate event record—no new cursor transition",
+      "quarantined/divergent",
+      "rejected/not recorded"
+    ],
+    "effect_boundary": [
+      "AUTHORITY REFERENCE: present/absent/unsupported",
+      "ADAPTER ADMISSION: admitted/rejected/not observed",
+      "EXTERNAL EFFECT OCCURRENCE: observed/not observed/unsupported"
+    ],
+    "claim_ceiling": [
+      "PROPOSAL ONLY",
+      "SOURCE LAYER",
+      "EVIDENCE STAGE",
+      "CANNOT ESTABLISH"
+    ],
+    "forbidden_inferences": [
+      "containment is not authority inheritance",
+      "command is not event",
+      "journal acceptance is not confirmation",
+      "terminal is not success or approval",
+      "protocol and journal do not decide or execute",
+      "authority-reference presence is not adapter admission or effect occurrence",
+      "projection is not domain state or authority"
+    ]
+  },
+  "lenses": [
+    {
+      "id": "rwo:lens.structure",
+      "label": "Structure",
+      "question": "What is composed, and how does recursion remain one-root?",
+      "landing": true,
+      "responsibilities": [
+        "Show the one-root overview.",
+        "Show reusable WorkDefinition topology and selected composite bodies.",
+        "Separate definition nesting from a flattened run-plan projection.",
+        "Expose every composition form as syntax over EventTriggeredEdges."
+      ],
+      "semantic_refs": [
+        "rwo:WorkDefinition",
+        "rwo:LeafWorkDefinition",
+        "rwo:CompositeWorkDefinition",
+        "rwo:WorkGraph",
+        "rwo:WorkNode",
+        "rwo:EventTriggeredEdge",
+        "rwo:CompositionForm",
+        "rwo:Sequence",
+        "rwo:FanOut",
+        "rwo:FanIn",
+        "rwo:Gate",
+        "rwo:Sidecar",
+        "rwo:BoundedRepeat",
+        "rwo:ExplicitComposition",
+        "rwo:OrchestratorKernel"
+      ],
+      "relation_refs": [
+        "rwo:r.has-body",
+        "rwo:r.contains-node",
+        "rwo:r.contains-edge",
+        "rwo:r.references-work",
+        "rwo:r.compiles-to",
+        "rwo:r.expands"
+      ],
+      "cannot_establish": [
+        "that a graph executed",
+        "nested orchestration authority",
+        "runtime conformance",
+        "domain status"
+      ]
+    },
+    {
+      "id": "rwo:lens.flow",
+      "label": "Flow",
+      "question": "What causally occurs when declared events release commands?",
+      "landing": false,
+      "responsibilities": [
+        "Show immutable text-labelled Command and Event occurrence cards.",
+        "Keep causation, delivery, per-run sequence, journal acceptance, wall time, and cursor fold distinct.",
+        "Show declared release edges and stale-attempt handling.",
+        "Use user-paced paper traces, never autoplay as evidence."
+      ],
+      "semantic_refs": [
+        "rwo:WorkRun",
+        "rwo:Attempt",
+        "rwo:Command",
+        "rwo:Event",
+        "rwo:EventSelector",
+        "rwo:WorkProtocol",
+        "rwo:Journal",
+        "rwo:OrchestrationCursor"
+      ],
+      "relation_refs": [
+        "rwo:r.receives",
+        "rwo:r.emits",
+        "rwo:r.delivered-by",
+        "rwo:r.recorded-by",
+        "rwo:r.issues",
+        "rwo:r.derived-from"
+      ],
+      "cannot_establish": [
+        "delivery without receipts",
+        "exactly-once external effects",
+        "global ordering",
+        "domain success or approval"
+      ]
+    },
+    {
+      "id": "rwo:lens.ownership-proof",
+      "label": "Ownership/Proof",
+      "question": "Who owns each state, and what evidence may establish it?",
+      "landing": false,
+      "responsibilities": [
+        "Show named owners for domain status, confirmation, journal acceptance, and cursor state.",
+        "Separate authority-reference presence, adapter admission, and external-effect occurrence.",
+        "Expose evidence stage, profile, finding status, forbidden inference, and residue.",
+        "Preserve unsupported and indeterminate evidence instead of showing pass."
+      ],
+      "semantic_refs": [
+        "rwo:DomainState",
+        "rwo:ConfirmationState",
+        "rwo:Journal",
+        "rwo:OrchestrationCursor",
+        "rwo:AuthorityReference",
+        "rwo:ExecutorAdapter",
+        "rwo:ArchitectureProfile",
+        "rwo:PropertyFinding",
+        "rwo:EvidenceReference"
+      ],
+      "relation_refs": [
+        "rwo:r.owned-by",
+        "rwo:r.requires-authority",
+        "rwo:r.supported-by",
+        "rwo:r.derived-from",
+        "rwo:r.observes"
+      ],
+      "cannot_establish": [
+        "authority from reference presence",
+        "confirmation from journal acceptance",
+        "effect occurrence from adapter admission",
+        "promotion from ontology inclusion"
+      ]
+    }
+  ],
+  "shared_selection": {
+    "identity_rule": "Graph node, outline row, relation row, occurrence card, and ownership row carry the same full semantic or occurrence identity.",
+    "focus_rule": "Keyboard focus and semantic selection are separate state; changing a lens preserves selection.",
+    "projection_rule": "Deleting every view record leaves design bytes, narrative ontology bytes, ontology.json bytes, semantic IDs, relations, sources, and residue unchanged."
+  },
+  "inspector": {
+    "required_fields": [
+      "full identity",
+      "KIND",
+      "OWNER",
+      "source layer",
+      "exact selector",
+      "source digest",
+      "typed properties",
+      "relations",
+      "forbidden inferences",
+      "journal disposition when applicable",
+      "reducer version and freshness when applicable",
+      "evidence stage",
+      "finding status",
+      "claim ceiling",
+      "cannot establish"
+    ],
+    "semantic_refs": [
+      "rwo:ArchitectureElement",
+      "rwo:PropertyFinding",
+      "rwo:EvidenceReference",
+      "rwo:ArchitectureProfile"
+    ],
+    "shield_refs": [
+      "rwo:f.no-nested-orchestrator-invocation",
+      "rwo:f.no-parent-authority-inheritance",
+      "rwo:f.no-kernel-domain-state",
+      "rwo:f.no-bus-authority",
+      "rwo:f.no-terminal-success-collapse",
+      "rwo:f.no-projection-authority",
+      "rwo:f.no-structural-quorum-quality",
+      "rwo:f.no-schema-correctness",
+      "rwo:f.no-idempotency-effect-proof",
+      "rwo:f.no-ontology-promotion"
+    ]
+  },
+  "negative_controls": [
+    {
+      "id": "rwo:nc.ownerless-status",
+      "mutant": "Remove Ownership/Proof or display ownerless status.",
+      "required_result": "KILL",
+      "reason": "Collapses separately owned domain, confirmation, journal, and cursor state.",
+      "shield_refs": ["rwo:f.no-kernel-domain-state", "rwo:f.no-projection-authority"]
+    },
+    {
+      "id": "rwo:nc.nested-kernel",
+      "mutant": "Draw or instantiate an OrchestratorKernel inside a composite.",
+      "required_result": "KILL",
+      "reason": "Turns structural recursion into recursive orchestration authority.",
+      "shield_refs": ["rwo:f.no-nested-orchestrator-invocation", "rwo:f.no-parent-authority-inheritance"]
+    },
+    {
+      "id": "rwo:nc.command-event-merge",
+      "mutant": "Merge command and event rails or omit textual message kinds.",
+      "required_result": "KILL",
+      "reason": "Collapses request and accepted-record semantics.",
+      "shield_refs": ["rwo:f.no-bus-authority"]
+    },
+    {
+      "id": "rwo:nc.journal-confirmation-merge",
+      "mutant": "Render journal acceptance as confirmation or call it an accepted decision.",
+      "required_result": "KILL",
+      "reason": "Persistence disposition does not create work-owned confirmation.",
+      "shield_refs": ["rwo:f.no-bus-authority", "rwo:f.no-kernel-domain-state"]
+    },
+    {
+      "id": "rwo:nc.effect-boundary-merge",
+      "mutant": "Merge authority-reference presence, adapter admission, and effect occurrence.",
+      "required_result": "KILL",
+      "reason": "Each requires separate evidence and none entails another.",
+      "shield_refs": ["rwo:f.no-idempotency-effect-proof", "rwo:f.no-bus-authority"]
+    },
+    {
+      "id": "rwo:nc.timeline-spectacle",
+      "mutant": "Autoplay causality, move structural nodes, or order semantics by wall or arrival time.",
+      "required_result": "KILL",
+      "reason": "A projection cannot manufacture causation, ordering, or current state through motion or layout.",
+      "shield_refs": ["rwo:f.no-projection-authority"]
+    },
+    {
+      "id": "rwo:nc.universal-graph-landing",
+      "mutant": "Use one universal graph as the landing view.",
+      "required_result": "KILL",
+      "reason": "Definition, occurrence, ownership, evidence, and layout become accidental merged meaning.",
+      "shield_refs": ["rwo:f.no-projection-authority", "rwo:f.no-kernel-domain-state"]
+    },
+    {
+      "id": "rwo:nc.green-terminal",
+      "mutant": "Use a universal green terminal/success state or projection-authored status.",
+      "required_result": "KILL",
+      "reason": "Terminal is structural and a projection does not own domain status.",
+      "shield_refs": ["rwo:f.no-terminal-success-collapse", "rwo:f.no-projection-authority"]
+    },
+    {
+      "id": "rwo:nc.unbounded-cycle",
+      "mutant": "Draw a cycle without a decision owner, positive bound, exhaustion edge, and no-next-attempt result.",
+      "required_result": "KILL",
+      "reason": "The graph loses its explicit finite bound.",
+      "shield_refs": ["rwo:f.no-parent-authority-inheritance"]
+    },
+    {
+      "id": "rwo:nc.projection-writeback",
+      "mutant": "Let the machine ontology or learner projection override DESIGN.md or write back a resolved conflict.",
+      "required_result": "KILL",
+      "reason": "A projection is not semantic authority and inclusion is not promotion.",
+      "shield_refs": ["rwo:f.no-projection-authority", "rwo:f.no-ontology-promotion"]
+    }
+  ],
+  "validation_lanes": [
+    {
+      "id": "rwo:validation.structural",
+      "checks": ["source digests", "source anchors", "stable ID references", "typed endpoints", "profile coverage", "projection removability", "bounded illustrative cycles", "negative-control completeness"],
+      "may_establish": ["package integrity", "source and selector coverage", "internal contract consistency", "included fixture consistency"],
+      "must_not_claim": ["runtime behavior", "learner understanding", "accessibility conformance", "authority", "promotion"],
+      "current_status": "tested-local",
+      "evidence": "Chromium 1217 through Playwright 1.59.1 at 1440x900 and 390x844: fixed canvas, three lenses, synchronized inspector, keyboard close/switch/recenter, wheel zoom, zero links, zero external requests, and no console or page errors."
+    },
+    {
+      "id": "rwo:validation.browser",
+      "checks": ["rendering", "direct links", "synchronized selection", "persistent legend and Work card", "transcript parity", "reduced motion", "no-JavaScript behavior"],
+      "may_establish": ["behavior of one built browser artifact in tested configurations"],
+      "must_not_claim": ["accessibility conformance", "human comprehension", "runtime conformance"],
+      "current_status": "not-run"
+    },
+    {
+      "id": "rwo:validation.accessibility",
+      "checks": ["keyboard", "focus", "names", "contrast", "zoom and reflow", "motion", "reading order", "assistive technology"],
+      "may_establish": ["results for the tested artifact and configuration"],
+      "must_not_claim": ["universal accessibility", "human comprehension", "runtime conformance"],
+      "current_status": "not-run"
+    },
+    {
+      "id": "rwo:validation.human-comprehension",
+      "checks": ["novice locate", "expert trace", "distinction tasks", "retell", "boundary recognition"],
+      "may_establish": ["results for tested people, tasks, and stimulus"],
+      "must_not_claim": ["universal usability", "runtime conformance", "authority", "promotion"],
+      "current_status": "not-run"
+    }
+  ]
+}

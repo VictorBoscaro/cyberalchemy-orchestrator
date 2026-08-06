@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cyberalchemy-orchestrator:rwo:illustrative-pipeline-schema:1",
+  "title": "Recursive Work Orchestrator illustrative pipeline instance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "example", "root_orchestrator", "work_definitions", "graphs"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": "rwo-illustrative-pipeline/v1" },
+    "example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ontology_ref", "status", "authority_effect", "evidence_stage", "claim_ceiling", "source_refs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "ontology_ref": { "const": "rwo-architecture@0.1.0" },
+        "status": { "const": "illustrative" },
+        "authority_effect": { "const": "none" },
+        "evidence_stage": { "const": "definition" },
+        "claim_ceiling": { "type": "string", "minLength": 1 },
+        "source_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^source:[a-z0-9._-]+#[a-z0-9._-]+$" } }
+      }
+    },
+    "root_orchestrator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "invokes_work_ref"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "rwo:OrchestratorKernel" },
+        "invokes_work_ref": { "type": "string" }
+      }
+    },
+    "work_definitions": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/workDefinition" } },
+    "graphs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/graph" } }
+  },
+  "$defs": {
+    "workDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["work_ref", "type", "body_kind", "input_schema", "output_schema", "command_contract", "event_contract", "authority_requirements", "limits", "body_ref"],
+      "properties": {
+        "work_ref": { "type": "string", "pattern": "^work:[a-z0-9._-]+@[0-9]+$" },
+        "type": { "enum": ["rwo:LeafWorkDefinition", "rwo:CompositeWorkDefinition"] },
+        "body_kind": { "enum": ["leaf", "composite"] },
+        "input_schema": { "type": "string" },
+        "output_schema": { "type": "string" },
+        "command_contract": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "event_contract": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "authority_requirements": { "type": "array", "items": { "type": "string" } },
+        "limits": { "type": "object" },
+        "body_ref": { "type": "string" }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "work_ref"],
+      "properties": {
+        "id": { "type": "string" },
+        "work_ref": { "type": "string" }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "from", "to", "event_selector", "input_mapping", "composition_form"],
+      "properties": {
+        "id": { "type": "string" },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "event_selector": { "type": "string", "minLength": 1 },
+        "input_mapping": { "type": "string", "minLength": 1 },
+        "composition_form": { "type": "string", "pattern": "^rwo:" },
+        "route_label": { "type": "string" },
+        "join_group": { "type": "string" },
+        "exhaustion": { "type": "boolean" }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_work_ref", "nodes", "edges", "composition_forms", "fan_in_policies", "sidecars", "bounded_cycles", "output_projection"],
+      "properties": {
+        "id": { "type": "string" },
+        "owner_work_ref": { "type": "string" },
+        "nodes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/node" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } },
+        "composition_forms": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^rwo:" } },
+        "fan_in_policies": { "type": "array", "items": { "$ref": "#/$defs/fanIn" } },
+        "sidecars": { "type": "array", "items": { "$ref": "#/$defs/sidecar" } },
+        "bounded_cycles": { "type": "array", "items": { "$ref": "#/$defs/boundedCycle" } },
+        "output_projection": { "type": "string" }
+      }
+    },
+    "fanIn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "target_node", "release_mode", "source_nodes", "canonical_input_order"],
+      "properties": {
+        "id": { "type": "string" },
+        "target_node": { "type": "string" },
+        "release_mode": { "type": "string", "pattern": "^(all|any|quorum\\([1-9][0-9]*\\))$" },
+        "source_nodes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "canonical_input_order": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "sidecar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_ref", "primary_node_ref", "start", "finish", "contributes_output", "control_edges"],
+      "properties": {
+        "node_ref": { "type": "string" },
+        "primary_node_ref": { "type": "string" },
+        "start": { "enum": ["before-primary", "with-primary", "after-primary"] },
+        "finish": { "enum": ["detach", "await", "cancel-requested"] },
+        "contributes_output": { "type": "boolean" },
+        "control_edges": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "boundedCycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "node_refs", "decision_node", "max_rounds", "repeat_edge", "exhaustion_edge", "no_next_attempt_after_exhaustion"],
+      "properties": {
+        "id": { "type": "string" },
+        "node_refs": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string" } },
+        "decision_node": { "type": "string" },
+        "max_rounds": { "type": "integer", "minimum": 1 },
+        "repeat_edge": { "type": "string" },
+        "exhaustion_edge": { "type": "string" },
+        "no_next_attempt_after_exhaustion": { "const": true }
+      }
+    }
+  }
+}

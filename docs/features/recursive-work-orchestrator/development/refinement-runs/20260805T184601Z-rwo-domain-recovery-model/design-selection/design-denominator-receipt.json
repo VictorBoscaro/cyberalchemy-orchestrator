@@ -1,0 +1,309 @@
+{
+  "authored_concern_ids": [
+    "authored:authority-boundaries",
+    "authored:failure-compensation",
+    "authored:integration-versioning",
+    "authored:persistence-concurrency",
+    "authored:security-abuse",
+    "authored:state-event-lifecycle",
+    "authored:validation-contract"
+  ],
+  "denominator_signal_ids": [
+    "authored:authority-boundaries",
+    "authored:failure-compensation",
+    "authored:integration-versioning",
+    "authored:persistence-concurrency",
+    "authored:security-abuse",
+    "authored:state-event-lifecycle",
+    "authored:validation-contract",
+    "signal:acceptance-readiness-claim:definition-authored",
+    "signal:compatibility:rwo-design-to-recovery-contract",
+    "signal:compatibility:rwo-to-are-aci-effect-seams",
+    "signal:effect:compensation-work",
+    "signal:effect:external-business-effect",
+    "signal:interface:accepted-history-slice",
+    "signal:interface:admitted-semantic-receipt",
+    "signal:interface:domain-recovery-signal",
+    "signal:interface:effect-reconciliation-route",
+    "signal:interface:recovery-decision-receipt",
+    "signal:normative-rule:one-case-one-decision",
+    "signal:normative-rule:recovery-decision-non-authorizing",
+    "signal:normative-rule:unknown-effect-reconciles-before-retry",
+    "signal:normative-rule:unknown-never-retries",
+    "signal:quality-claim:deterministic-decision",
+    "signal:queue:work-protocol",
+    "signal:store:accepted-history",
+    "signal:writer:journal-acceptance-owner"
+  ],
+  "detector_id": "invoke-design-scope-extractor",
+  "detector_owner": "spellcraft",
+  "detector_version": "1.0.0",
+  "diagnostics": [],
+  "extracted_signals": [
+    {
+      "attributes": {
+        "evidence_state": "authored-complete",
+        "selector": "stages/02-invoke-define.md#candidate-concept-registry"
+      },
+      "signal_class": "acceptance-readiness-claim",
+      "signal_id": "signal:acceptance-readiness-claim:definition-authored",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md"
+    },
+    {
+      "attributes": {
+        "new_contract": "RecoveryDecisionContract@candidate-1",
+        "old_contract": "DESIGN.md partial failure and recovery semantics"
+      },
+      "signal_class": "compatibility",
+      "signal_id": "signal:compatibility:rwo-design-to-recovery-contract",
+      "source_digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md"
+    },
+    {
+      "attributes": {
+        "new_contract": "candidate admitted-semantic-reference and reconciliation interfaces",
+        "old_contract": "documentation-only conditional bridge"
+      },
+      "signal_class": "compatibility",
+      "signal_id": "signal:compatibility:rwo-to-are-aci-effect-seams",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"
+    },
+    {
+      "attributes": {
+        "external": true,
+        "privileged": true,
+        "reversible": false
+      },
+      "signal_class": "effect",
+      "signal_id": "signal:effect:compensation-work",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md"
+    },
+    {
+      "attributes": {
+        "external": true,
+        "privileged": true,
+        "reversible": false
+      },
+      "signal_class": "effect",
+      "signal_id": "signal:effect:external-business-effect",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md"
+    },
+    {
+      "attributes": {
+        "contract_ref": "rwo-recovery.AcceptedHistorySlice@candidate-1",
+        "direction": "inbound",
+        "kind": "verified-history-cut-contract",
+        "peer": "journal-owner"
+      },
+      "signal_class": "interface",
+      "signal_id": "signal:interface:accepted-history-slice",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md"
+    },
+    {
+      "attributes": {
+        "contract_ref": "admitted-semantic-receipt-ref@candidate",
+        "direction": "inbound",
+        "kind": "protected-semantic-reference-contract",
+        "peer": "agent-reasoning-engine"
+      },
+      "signal_class": "interface",
+      "signal_id": "signal:interface:admitted-semantic-receipt",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"
+    },
+    {
+      "attributes": {
+        "contract_ref": "rwo-recovery.DomainRecoverySignal@candidate-1",
+        "direction": "inbound",
+        "kind": "versioned-domain-mapping-contract",
+        "peer": "domain-work-owner"
+      },
+      "signal_class": "interface",
+      "signal_id": "signal:interface:domain-recovery-signal",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md"
+    },
+    {
+      "attributes": {
+        "contract_ref": "rwo-recovery.ReconciliationWork@candidate-1",
+        "direction": "outbound",
+        "kind": "protected-owner-route-contract",
+        "peer": "exact-effect-and-reconciliation-owner"
+      },
+      "signal_class": "interface",
+      "signal_id": "signal:interface:effect-reconciliation-route",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"
+    },
+    {
+      "attributes": {
+        "contract_ref": "rwo-recovery.RecoveryDecision@candidate-1",
+        "direction": "outbound",
+        "kind": "non-authorizing-routing-decision-contract",
+        "peer": "rwo-route-evaluator"
+      },
+      "signal_class": "interface",
+      "signal_id": "signal:interface:recovery-decision-receipt",
+      "source_digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md"
+    },
+    {
+      "attributes": {
+        "enforcement_hint": "canonical case/policy digests and total ordered decision tables",
+        "object": "exactly-one-RecoveryDecision",
+        "subject": "RecoveryClassifier",
+        "verb": "deterministically-selects"
+      },
+      "signal_class": "normative-rule",
+      "signal_id": "signal:normative-rule:one-case-one-decision",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md"
+    },
+    {
+      "attributes": {
+        "enforcement_hint": "ordinary entry, ACI, authority, exact-effect, and adapter gates remain mandatory",
+        "object": "command-acceptance-or-external-effect",
+        "subject": "RecoveryDecision",
+        "verb": "does-not-authorize"
+      },
+      "signal_class": "normative-rule",
+      "signal_id": "signal:normative-rule:recovery-decision-non-authorizing",
+      "source_digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md"
+    },
+    {
+      "attributes": {
+        "enforcement_hint": "EffectCase decision table and zero-effect-call negative fixture",
+        "object": "reconciliation-owner-route-before-another-effect-attempt",
+        "subject": "effect-outcome-unknown",
+        "verb": "requires"
+      },
+      "signal_class": "normative-rule",
+      "signal_id": "signal:normative-rule:unknown-effect-reconciles-before-retry",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97",
+      "source_selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"
+    },
+    {
+      "attributes": {
+        "enforcement_hint": "schema admission and escalation/quarantine guards precede case tables",
+        "object": "permissive-recovery-dispositions",
+        "subject": "unknown-or-contradictory-required-facts",
+        "verb": "blocks"
+      },
+      "signal_class": "normative-rule",
+      "signal_id": "signal:normative-rule:unknown-never-retries",
+      "source_digest": "ef39625af4c130454a2b4eac4580b88d4acaf81082aea99d783f61eb3ab5e0a3",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/03-interrogation-refine-review.md"
+    },
+    {
+      "attributes": {
+        "required": true,
+        "source_kind": "candidate-design-invariant",
+        "threshold_or_tradeoff": "same canonical case, policy, mapping, history, reducer, and fence versions produce byte-identical decision"
+      },
+      "signal_class": "quality-claim",
+      "signal_id": "signal:quality-claim:deterministic-decision",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md"
+    },
+    {
+      "attributes": {
+        "consumers": [
+          "addressed-work",
+          "journal-acceptance-owner"
+        ],
+        "ordering": "ordered accepted events per work_run_id; no global ordering",
+        "producers": [
+          "rwo-route-evaluator",
+          "work-adapters",
+          "aci-boundary"
+        ]
+      },
+      "signal_class": "queue",
+      "signal_id": "signal:queue:work-protocol",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md"
+    },
+    {
+      "attributes": {
+        "authority": "journal-owner for accepted lifecycle history; domain truth remains separately owned",
+        "data_classes": [
+          "accepted-events",
+          "command-receipts",
+          "recovery-decision-receipts",
+          "cursor-version"
+        ],
+        "writers": [
+          "journal-acceptance-owner"
+        ]
+      },
+      "signal_class": "store",
+      "signal_id": "signal:store:accepted-history",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md"
+    },
+    {
+      "attributes": {
+        "concurrency": "one accepted-history owner with idempotency conflict detection; classifier returns a receipt but does not self-accept it",
+        "targets": [
+          "accepted-history"
+        ]
+      },
+      "signal_class": "writer",
+      "signal_id": "signal:writer:journal-acceptance-owner",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "source_selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md"
+    }
+  ],
+  "inspected_selectors": [
+    {
+      "path": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "selector": "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md",
+      "source_digest": "fa85aeccd36069531f57674204b3da51aa1fbd0433e9f69579035ec574424e97"
+    },
+    {
+      "path": "ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md",
+      "selector": "ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md",
+      "source_digest": "734a3122359f8cefd0c13fee36b6b2caabf5d158693b588a3678f138bd1941c1"
+    },
+    {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+      "source_digest": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+    },
+    {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+      "selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/02-invoke-define.md",
+      "source_digest": "0b05d7d1be759b5dc2e3f266b92af4e2f8531fcbe62dfb55be71fdc77493fe52"
+    },
+    {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/03-interrogation-refine-review.md",
+      "selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/03-interrogation-refine-review.md",
+      "source_digest": "ef39625af4c130454a2b4eac4580b88d4acaf81082aea99d783f61eb3ab5e0a3"
+    },
+    {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md",
+      "selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/05-distill.md",
+      "source_digest": "80585844a02ab470a674276a76a58267066c3f650ab0045c69def78f2733a262"
+    },
+    {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/ONTOLOGY.md",
+      "selector": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/ONTOLOGY.md",
+      "source_digest": "b0b83ea540c0f805208b93e068816c45cb928d4f08eea50eca8ba4178843d9e1"
+    }
+  ],
+  "manifest_authored_by": "invoke-design-author-rwo-recovery",
+  "manifest_id": "rwo-recovery-design-scope-20260805",
+  "manifest_input_digest": "f74a625bd16b7c49964a1815fb6a0643d6e07dc9742a839a4b8a239ae38cc06c",
+  "missing_detector_inputs": [],
+  "receipt_digest": "d7524ea6d0075f100f509010389c171eba67b456a31f7398e4dad299dfd8b6c4",
+  "schema_version": "1.0.0",
+  "unbound_signal_ids": [],
+  "validator_owner": "invoke-design-selection-validator",
+  "verdict": "pass"
+}

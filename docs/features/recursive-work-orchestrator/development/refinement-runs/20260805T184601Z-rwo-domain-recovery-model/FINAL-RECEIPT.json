@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "receipt_kind": "refine-terminal",
+  "run_id": "20260805T184601Z-rwo-domain-recovery-model",
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "status": "pass",
+  "completed_at": "2026-08-05T20:30:56Z",
+  "objective": "Produce an exact, evidence-bounded, non-executed RWO recovery model with domain, ARE, ACI, journal, and exact-effect owner boundaries preserved.",
+  "model_ref": "RecoveryDecisionContract@candidate-2",
+  "stage_semantic_statuses": {
+    "s01": "pass",
+    "s02": "pass",
+    "s03": "flag",
+    "s04": "pass",
+    "s05": "pass",
+    "s06": "pass-authoring-later-falsified",
+    "s07": "block-consumed-by-s08",
+    "s08": "pass",
+    "s09": "pass",
+    "s10": "pass"
+  },
+  "helper": {
+    "agent_id": "/root/recovery_model_adversary",
+    "role_id": "recovery-model-adversary",
+    "lifecycle_status": "pass",
+    "review_verdict": "block",
+    "finding_counts": {"block": 11, "flag": 4, "total": 15},
+    "required_repairs": 11,
+    "joined": true,
+    "closed": true,
+    "forbidden_scope_touched": false
+  },
+  "repair_summary": {
+    "stage_07_accepted_repairs": 12,
+    "stage_10_final_repairs": 2,
+    "scenario_games": {"pass": 20, "total": 20},
+    "final_audit": {"pass": 12, "total": 12},
+    "case_variant_count": 8,
+    "disposition_count": 13
+  },
+  "plan": {
+    "complexity": "high",
+    "output_mode": "split",
+    "work_pack_gate_status": "pass",
+    "distill_validation_status": "pass",
+    "swu_count": 10,
+    "automatic_route_count": 9,
+    "allowed_routes_digest": "sha256:7370bedb4e73630fbfcfb576297a303073c01e67fef5eaae5ac921a73f74ede6",
+    "execution_entry_state": "selection-ready",
+    "selected_swu": null,
+    "recommended_first_swu": "SWU-RRD-001"
+  },
+  "key_artifacts": [
+    {"path": "stages/08-distill-repair.md", "sha256": "ed564ecb12eeb0b5628fa417d43f2496766d1e07f6cfd7c5f075cee29852defb"},
+    {"path": "stages/08-scenario-matrix.json", "sha256": "46833bafa412965dd4bdafa2cd4d03c3445d983531218c17c39e765e138b9a7f"},
+    {"path": "stages/10-final-interrogation.md", "sha256": "93f38b3e440b4d37e95e099d73b323d306e227fa106c465fa87d265259e2a229"},
+    {"path": "plan/WORK-PACK.md", "sha256": "1b3383612c99535e95edc9a847b97a2a06fcb70de9bedaf650850d71b0bb9cc3"},
+    {"path": "plan/allowed-routes.json", "sha256": "0b8665f92f5fe3296889b0788015d2eece836df6505e58671c24b27a38f37354"},
+    {"path": "RESULT.md", "sha256": "da3681173089cab72b1382c79f021a0926815a4ff995173b851e7e130b836e4b"},
+    {"path": "stages/subagents/recovery-model-adversary.md", "sha256": "2814ec2534bb555189d59834992a948c67d1042c147a25c3b8c50ea38a86d607"},
+    {"path": "stages/subagents/recovery-model-adversary.receipt.json", "sha256": "fd8160292af973359693f9c00189f381bdf32de510e8e3acc66b3c8830c632ff"},
+    {"path": "REFINE-DISPATCH.json", "sha256": "eaf3772e648b99c1e2eb76551abd5d12b491d64517098470abb0aa6ec803fe0b"},
+    {"path": "dispatch-validation.json", "sha256": "1d3d5842cf23f8037fda7692ee6ddfe24c9cd0500e2c28d6803c7e089733fcb9"},
+    {"path": "receipts/s10-final-interrogation.json", "sha256": "87d5c74a23392e6da6d42da2f9580d4c0b1d3fb95a9937b9ce8c85c5b6245ce0"}
+  ],
+  "validation": [
+    "all run JSON parsed: pass",
+    "evidence source selectors and 10 stage artifact/receipt pairs exist: pass",
+    "20 scenario IDs unique and all status pass: pass",
+    "allowed route canonical digest recomputed and matched: pass",
+    "9 automatic route scopes are disjoint: pass",
+    "dispatch-spec canonical validator: pass with zero blocks and zero flags",
+    "target tracked diff file count: 0"
+  ],
+  "boundaries": {
+    "write_scope": "this refinement-run folder only",
+    "outside_scope_writes": false,
+    "tracked_target_diff_files": 0,
+    "external_research": false,
+    "git_operations": false,
+    "implementation_effect": "none",
+    "authority_effect": "none",
+    "ontology_effect": "none",
+    "publication_effect": "none"
+  },
+  "owner_gaps": [
+    "G1-JOURNAL-DOMAIN-TRUTH",
+    "G2-EXACT-EFFECT-OWNER",
+    "G3-ARE-ACI-CONFORMANCE",
+    "G4-ONTOLOGY-PROMOTION"
+  ],
+  "claim_ceiling": "exact candidate design and selection-ready non-executed plan; no implementation, owner adoption, ontology promotion, deployment, pilot, release, or production proof"
+}

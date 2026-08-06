@@ -1,0 +1,178 @@
+{
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "parent_dispatch_id": null,
+  "intent": {
+    "raw": "refine the RWO event and command adapters so different transports can be used safely",
+    "objective": "Produce an exact, evidence-bounded candidate model for transport-neutral RWO command/event adapters, capability profiles, delivery observations, admission evidence, and owner boundaries across gRPC, sockets, Redis-backed queues, managed event buses, and memory.",
+    "target_artifact": "RESULT.md",
+    "arcanum_vocabulary": ["refine", "dispatch-spec", "context-builder", "invoke", "interrogation", "review", "distill", "orchestrate"],
+    "operator_sentence": "Refine this into an exact adapter model."
+  },
+  "mode": "sequence",
+  "route_menu": {
+    "context_hint": "The current RWO design defines a logical command/event bus and delivery invariants but does not yet close the concrete adapter ports, capability profiles, or conformance contract.",
+    "items": [
+      {"id": "full-transport-neutral-model", "label": "Full adapter model", "description": "Refine ports, envelopes, profiles, failure observations, admission, ownership, mappings, fixtures, and a non-executed plan.", "capability_ref": "refine", "pattern": "ten-stage sequence with a three-role review wave"},
+      {"id": "minimal-port-only", "label": "Minimal ports only", "description": "Define send/receive ports without closing profiles, recovery, or conformance.", "capability_ref": "refine", "pattern": "narrow sequence"},
+      {"id": "implementation-first", "label": "Implementation first", "description": "Build concrete adapters before the owner contract is exact.", "capability_ref": "task-session", "pattern": "rejected because design ownership and admission evidence are unresolved"}
+    ],
+    "selected_item_id": "full-transport-neutral-model"
+  },
+  "techniques": ["sequence", "frame_handoff", "handle_handoff", "validation_loop", "owner_boundary_check", "minimum_component_catalog", "data_quality_completeness", "dialectic", "tournament", "x_ray", "toy_game", "approval_checkpoint", "residue_ledger", "recomposition_proof"],
+  "technique_overlays": [
+    {
+      "overlay_id": "baseline_sequence",
+      "trigger": "The canonical Refine stages must preserve evidence and owner-held artifacts.",
+      "techniques": ["sequence", "frame_handoff", "handle_handoff", "validation_loop", "owner_boundary_check", "data_quality_completeness"],
+      "applies_to_steps": ["s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10"],
+      "validation_expectation": "Every stage consumes prior evidence, emits one owned artifact or receipt, and preserves unsupported claims as residue or a block."
+    },
+    {
+      "overlay_id": "dialectic_transport_review",
+      "trigger": "Abstraction economy, heterogeneous transport mechanics, and recovery authority are competing concerns.",
+      "techniques": ["dialectic", "owner_boundary_check", "residue_ledger"],
+      "applies_to_steps": ["s03", "s07", "s10"],
+      "validation_expectation": "The three independent roles disagree on named axes and the parent preserves rather than averages unresolved contradictions."
+    },
+    {
+      "overlay_id": "tournament_candidates",
+      "trigger": "Four plausible adapter structures must be compared before selecting the smallest coherent one.",
+      "techniques": ["tournament", "pareto_gate", "recomposition_proof"],
+      "applies_to_steps": ["s05", "s06", "s08"],
+      "validation_expectation": "The result records rejected candidates and proves recomposition into command delivery, event ingress, journal history, recovery, and authority boundaries."
+    },
+    {
+      "overlay_id": "xray_identity_and_capability",
+      "trigger": "Transport neutrality depends on hidden identity, state, capability, and owner boundaries.",
+      "techniques": ["x_ray", "component_descriptor", "entity_component_reference"],
+      "applies_to_steps": ["s01", "s06"],
+      "validation_expectation": "The design exposes every port, envelope identity, capability, observation, state owner, and forbidden inference."
+    },
+    {
+      "overlay_id": "toy_game_transport_failures",
+      "trigger": "Unsafe adapter claims can be rejected with finite transport and recovery scenarios before implementation.",
+      "techniques": ["toy_game", "validation_loop", "assessment_failure_reference"],
+      "applies_to_steps": ["s07", "s08"],
+      "validation_expectation": "Each transport scenario yields bounded observations and one RWO-safe next owner or fails closed."
+    }
+  ],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "Three independent perspectives are needed to test abstraction, transport semantics, and recovery-authority boundaries without letting parent synthesis hide their conflicts.",
+    "explanation": "A single read-only review wave attacks the current design and seed. The parent Refine run captures returns, owns design selection and repair, and cannot turn a role verdict into implementation or authority evidence.",
+    "context": ["REFINE-SEED-PROPOSAL.md", "../../../DESIGN.md", "../20260805T184601Z-rwo-domain-recovery-model/RESULT.md", "../20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md", "delegated-review/dispatch-sheet.json"],
+    "binding_mode": "capability-bound",
+    "execution_owner": "orchestrate",
+    "roles": [
+      {
+        "role_id": "adapter-contract-architect",
+        "purpose": "Compare adapter structures and attack port, envelope, profile, and admission completeness.",
+        "owns": "One advisory read-only review receipt; no design selection or mutation.",
+        "capability_ref": "interrogation",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md",
+        "capability_mode": "refine-design-review",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "write_scope": [],
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/", "projects/cyberalchemy-orchestrator/implementations/", "cyberAlchemy-v2/", "implementation/domainspec/telemetry/agents/"],
+        "input_refs": ["delegated-review/dispatch-sheet.json"],
+        "output_refs": ["delegated-review/returns/adapter-contract-architect.json"],
+        "applies_to_steps": ["s07"]
+      },
+      {
+        "role_id": "transport-semantics-adversary",
+        "purpose": "Construct cross-transport failure scenarios and falsify dishonest capability claims.",
+        "owns": "One advisory read-only review receipt; no transport or policy decision.",
+        "capability_ref": "interrogation",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/REFINE-SEED-PROPOSAL.md",
+        "capability_mode": "refine-design-review",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "write_scope": [],
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/", "projects/cyberalchemy-orchestrator/implementations/", "cyberAlchemy-v2/", "implementation/domainspec/telemetry/agents/"],
+        "input_refs": ["delegated-review/dispatch-sheet.json"],
+        "output_refs": ["delegated-review/returns/transport-semantics-adversary.json"],
+        "applies_to_steps": ["s07"]
+      },
+      {
+        "role_id": "recovery-authority-auditor",
+        "purpose": "Attack delivery, Work Attempt, journal, replay, ARE, ACI, and effect-authority collapse and require negative admission proof.",
+        "owns": "One advisory read-only review receipt; no recovery or authority decision.",
+        "capability_ref": "interrogation",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md",
+        "capability_mode": "refine-design-review",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "write_scope": [],
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/", "projects/cyberalchemy-orchestrator/implementations/", "cyberAlchemy-v2/", "implementation/domainspec/telemetry/agents/"],
+        "input_refs": ["delegated-review/dispatch-sheet.json"],
+        "output_refs": ["delegated-review/returns/recovery-authority-auditor.json"],
+        "applies_to_steps": ["s07"]
+      }
+    ],
+    "execution_waves": [
+      {"wave_id": "w01-independent-adapter-review", "role_ids": ["adapter-contract-architect", "transport-semantics-adversary", "recovery-authority-auditor"], "parallel": true, "join_policy": "all", "gate_after": "g03-review-receipts", "on_incomplete": "block"}
+    ],
+    "parallelism": "dialectic",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Confirm dispatch of the exact persisted three-role read-only RWO adapter review strategy?",
+    "receipt_requirements": ["agent_id", "role_id", "spawn_status", "join_status", "close_status", "reroute", "dispatch_id", "step_id", "capability_ref", "capability_target", "capability_mode", "wave_id", "write_scope", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"]
+  },
+  "subagent_lifecycle": {
+    "status": "pass",
+    "agents": [
+      {"agent_id": "/root/adapter_contract_architect_spawn_0001", "role_id": "adapter-contract-architect", "capability_ref": "interrogation", "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md", "capability_mode": "refine-design-review", "wave_id": "w01-independent-adapter-review", "write_scope": [], "spawn_status": "spawned", "join_status": "completed", "receipt_artifact": "delegated-review/returns/adapter-contract-architect.json", "close_status": "closed", "residue": "target verdict FIX preserved in delegated return", "reroute": "s08-distill-repair"},
+      {"agent_id": "/root/transport_semantics_adversary_spawn_0002", "role_id": "transport-semantics-adversary", "capability_ref": "interrogation", "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/REFINE-SEED-PROPOSAL.md", "capability_mode": "refine-design-review", "wave_id": "w01-independent-adapter-review", "write_scope": [], "spawn_status": "spawned", "join_status": "completed", "receipt_artifact": "delegated-review/returns/transport-semantics-adversary.json", "close_status": "closed", "residue": "target verdict FIX preserved in delegated return", "reroute": "s08-distill-repair"},
+      {"agent_id": "/root/recovery_authority_auditor_spawn_0003", "role_id": "recovery-authority-auditor", "capability_ref": "interrogation", "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md", "capability_mode": "refine-design-review", "wave_id": "w01-independent-adapter-review", "write_scope": [], "spawn_status": "spawned", "join_status": "completed", "receipt_artifact": "delegated-review/returns/recovery-authority-auditor.json", "close_status": "closed", "residue": "target verdict BLOCK preserved in delegated return", "reroute": "s08-distill-repair"}
+    ]
+  },
+  "native_stage_receipts": [
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s01", "capability_ref": "context-builder", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s01-context-builder.json", "stages/01-context-builder.md", "context-builder/context-pack.json"], "validation": ["12/12 obligations covered"], "observer_status": "not-configured", "blockers": [], "residue": "three owner gaps retained", "handoff_note": "consume compact evidence pack"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s02", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s02-invoke-define.json", "stages/02-invoke-define.md"], "validation": ["problem and candidate vocabulary defined"], "observer_status": "not-configured", "blockers": [], "residue": "definition flags routed to s03", "handoff_note": "interrogate ambiguous owner and transport claims"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s03", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s03-interrogation-refine-review.json", "stages/03-interrogation-refine-review.md"], "validation": ["eight discriminating questions evaluated"], "observer_status": "not-configured", "blockers": [], "residue": "flagged journal owner, evidence, and effectful redelivery", "handoff_note": "research only frozen decision gaps"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s04", "capability_ref": "refine", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s04-research-decision.json", "stages/04-research-decision.md"], "validation": ["bounded official-source set sufficient"], "observer_status": "not-configured", "blockers": [], "residue": "runtime behavior remains implementation-specific", "handoff_note": "distill without universalizing transport behavior"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s05", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s05-distill.json", "stages/05-distill.md"], "validation": ["hybrid smallest coherent unit selected"], "observer_status": "not-configured", "blockers": [], "residue": "admission evidence remains design-only", "handoff_note": "author six exact design views"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s06", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s06-invoke-design.json", "stages/06-invoke-design.md"], "validation": ["six design views authored"], "observer_status": "not-configured", "blockers": [], "residue": "authored-complete, not design-validator-pass", "handoff_note": "attack candidate through exact review seats"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s07", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s07-interrogation-design-review.json", "delegated-review/returns/adapter-contract-architect.json", "delegated-review/returns/transport-semantics-adversary.json", "delegated-review/returns/recovery-authority-auditor.json", "orchestrate/reduced/gate-decision.json"], "validation": ["three action receipts schema-valid", "deterministic reducer gate_pass", "FIX FIX BLOCK preserved"], "observer_status": "orchestrate evidence validation pass", "blockers": ["target blocked pending s08 and external gates"], "residue": "target design verdicts FIX, FIX, BLOCK", "handoff_note": "consume every accepted finding without relabeling target verdicts"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s08", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s08-distill-repair.json", "stages/08-distill-repair.md", "stages/08-scenario-matrix.json"], "validation": ["30 single-valued design scenarios pass", "all accepted findings repaired or gated"], "observer_status": "not-configured", "blockers": ["G1 through G5 block runtime admission"], "residue": "candidate exactness only", "handoff_note": "plan validation evidence before implementation"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s09", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s09-invoke-plan.json", "stages/09-invoke-plan.md", "plan/WORK-PACK.md", "plan/IMPLEMENTATION-LAYERING.md"], "validation": ["validation-first non-executed work pack complete"], "observer_status": "not-configured", "blockers": [], "residue": "no SWU selected or executed", "handoff_note": "next safe unit is separately authorized SWU-01"},
+    {"dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters", "step_id": "s10", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s10-final-interrogation.json", "stages/10-final-interrogation.md", "RESULT.md", "FINAL-RECEIPT.json"], "validation": ["candidate exactness and claim audit pass"], "observer_status": "not-configured", "blockers": ["runtime admission blocked on G1 through G5"], "residue": "candidate design and non-executed plan only", "handoff_note": "do not use this run as implementation or promotion authority"}
+  ],
+  "steps": [
+    {"step_id": "s01", "name": "Context Builder adapter evidence baseline", "capability_ref": "context-builder", "mode": "standard", "pattern": "xray", "techniques": ["x_ray", "frame_handoff", "handle_handoff", "owner_boundary_check", "data_quality_completeness"], "inputs": [{"kind": "intent", "ref": "intent.raw"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}], "outputs": [{"kind": "frame", "ref": "context-builder/context-pack.json"}, {"kind": "artifact", "ref": "stages/01-context-builder.md"}], "evidence_artifact": "stages/01-context-builder.md", "stop_conditions": ["Block if local sources, bounded external evidence, or owner boundaries cannot be represented without claim inflation."]},
+    {"step_id": "s02", "name": "Invoke Define", "capability_ref": "invoke", "mode": "define", "pattern": "sequential", "depends_on_steps": ["s01"], "techniques": ["sequence", "frame_handoff", "mandatory_component", "owner_boundary_check"], "inputs": [{"kind": "frame", "ref": "context-builder/context-pack.json"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}], "outputs": [{"kind": "artifact", "ref": "stages/02-invoke-define.md"}, {"kind": "handle", "ref": "adapter-problem-definition"}], "evidence_artifact": "stages/02-invoke-define.md", "stop_conditions": ["Block if transport, delivery, RWO lifecycle, journal acceptance, domain meaning, reasoning, or effect authority are treated as one concern."]},
+    {"step_id": "s03", "name": "Interrogation refine-review", "capability_ref": "interrogation", "mode": "refine-review", "pattern": "dialectic", "depends_on_steps": ["s02"], "techniques": ["dialectic", "zig_zag", "residue_ledger", "owner_boundary_check"], "roles": ["abstraction", "transport-semantics", "recovery-authority"], "inputs": [{"kind": "artifact", "ref": "stages/02-invoke-define.md"}], "outputs": [{"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"}, {"kind": "decision", "ref": "definition-review-verdict"}], "convergence_criteria": ["The definition names the protocol core, optional profiles, observations, owners, and forbidden inferences.", "Every ambiguity has a named owner or becomes residue."], "evidence_artifact": "stages/03-interrogation-refine-review.md", "stop_conditions": ["Block if the model cannot distinguish reconnect, redelivery, new Work Attempt, replay, and effect reconciliation."]},
+    {"step_id": "s04", "name": "Bounded research decision", "capability_ref": "refine", "mode": "bounded-research", "pattern": "decision", "depends_on_steps": ["s03"], "techniques": ["approval_checkpoint", "data_quality_completeness", "protected_context_flag"], "inputs": [{"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}], "outputs": [{"kind": "decision", "ref": "research-decision"}, {"kind": "artifact", "ref": "stages/04-research-decision.md"}], "evidence_artifact": "stages/04-research-decision.md", "stop_conditions": ["Do not expand beyond the frozen official primary-source set without a new named gap and authorization."]},
+    {"step_id": "s05", "name": "Distill coherent adapter unit", "capability_ref": "distill", "mode": "standard", "pattern": "distill", "depends_on_steps": ["s04"], "techniques": ["scu_swu_reduction", "pareto_gate", "recomposition_proof", "residue_ledger"], "inputs": [{"kind": "artifact", "ref": "stages/02-invoke-define.md"}, {"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"}, {"kind": "decision", "ref": "research-decision"}], "outputs": [{"kind": "artifact", "ref": "stages/05-distill.md"}, {"kind": "handle", "ref": "selected-adapter-model-unit"}], "evidence_artifact": "stages/05-distill.md", "stop_conditions": ["Block if the selected unit is only a transport SDK facade or cannot recompose into command, event, journal, recovery, and authority boundaries."]},
+    {"step_id": "s06", "name": "Invoke Design", "capability_ref": "invoke", "mode": "design", "pattern": "tournament", "depends_on_steps": ["s05"], "techniques": ["tournament", "x_ray", "component_descriptor", "entity_component_reference", "owner_boundary_check", "recomposition_proof"], "roles": ["universal-interface-candidate", "core-plus-profiles-candidate", "split-ports-candidate", "hybrid-candidate"], "inputs": [{"kind": "artifact", "ref": "stages/05-distill.md"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}], "outputs": [{"kind": "artifact", "ref": "stages/06-invoke-design.md"}, {"kind": "handle", "ref": "transport-neutral-adapter-candidate"}], "convergence_criteria": ["One candidate wins on semantic fidelity, owner integrity, portability, conformance-testability, and minimality.", "Rejected candidates and residual tradeoffs remain explicit."], "evidence_artifact": "stages/06-invoke-design.md", "stop_conditions": ["Block if six design views, exact owner matrix, capability vocabulary, or planned conformance witnesses are absent."]},
+    {"step_id": "s07", "name": "Independent delegated adapter design review", "capability_ref": "interrogation", "mode": "refine-design-review", "pattern": "dialectic", "parallel": true, "depends_on_steps": ["s06"], "techniques": ["dialectic", "toy_game", "validation_loop", "owner_boundary_check", "residue_ledger"], "roles": ["adapter-contract-architect", "transport-semantics-adversary", "recovery-authority-auditor"], "inputs": [{"kind": "artifact", "ref": "delegated-review/dispatch-sheet.json"}, {"kind": "artifact", "ref": "stages/06-invoke-design.md"}], "outputs": [{"kind": "receipt", "ref": "delegated-review/returns/adapter-contract-architect.json"}, {"kind": "receipt", "ref": "delegated-review/returns/transport-semantics-adversary.json"}, {"kind": "receipt", "ref": "delegated-review/returns/recovery-authority-auditor.json"}, {"kind": "ledger", "ref": "stages/07-interrogation-design-review.md"}], "join_policy": "all", "convergence_criteria": ["All three exact role receipts are joined and their disagreements remain visible.", "Every accepted finding has a repair owner; any missing receipt blocks."], "evidence_artifact": "stages/07-interrogation-design-review.md", "stop_conditions": ["Block on missing role receipt, write-boundary violation, unbound host launch, or unresolved safety-critical finding."]},
+    {"step_id": "s08", "name": "Distill Repair", "capability_ref": "distill", "mode": "repair", "pattern": "toy_game", "depends_on_steps": ["s07"], "techniques": ["toy_game", "validation_loop", "pareto_gate", "recomposition_proof", "residue_ledger"], "inputs": [{"kind": "artifact", "ref": "stages/06-invoke-design.md"}, {"kind": "ledger", "ref": "stages/07-interrogation-design-review.md"}], "outputs": [{"kind": "artifact", "ref": "stages/08-distill-repair.md"}, {"kind": "artifact", "ref": "stages/08-scenario-matrix.json"}, {"kind": "handle", "ref": "repaired-adapter-model"}], "evidence_artifact": "stages/08-distill-repair.md", "stop_conditions": ["Block if any accepted safety finding is omitted, any scenario yields multiple decisions, or unsupported capability is silently degraded."]},
+    {"step_id": "s09", "name": "Invoke Plan", "capability_ref": "invoke", "mode": "plan", "pattern": "sequential", "depends_on_steps": ["s08"], "techniques": ["sequence", "scu_swu_reduction", "recomposition_proof", "validation_loop", "execution_receipt_handoff", "residue_ledger"], "inputs": [{"kind": "artifact", "ref": "stages/08-distill-repair.md"}, {"kind": "artifact", "ref": "stages/08-scenario-matrix.json"}], "outputs": [{"kind": "artifact", "ref": "stages/09-invoke-plan.md"}, {"kind": "artifact", "ref": "plan/WORK-PACK.md"}, {"kind": "artifact", "ref": "plan/IMPLEMENTATION-LAYERING.md"}], "evidence_artifact": "stages/09-invoke-plan.md", "stop_conditions": ["Do not execute product, ontology, runtime, validation fixtures, or transport integration work."]},
+    {"step_id": "s10", "name": "Final Interrogation and synthesis", "capability_ref": "interrogation", "mode": "refine-final-audit", "pattern": "synthesis", "depends_on_steps": ["s09"], "techniques": ["dialectic", "validation_loop", "owner_boundary_check", "recomposition_proof", "residue_ledger"], "roles": ["model-defender", "transport-falsifier", "authority-auditor"], "inputs": [{"kind": "artifact", "ref": "stages/08-distill-repair.md"}, {"kind": "artifact", "ref": "stages/09-invoke-plan.md"}], "outputs": [{"kind": "artifact", "ref": "stages/10-final-interrogation.md"}, {"kind": "artifact", "ref": "RESULT.md"}, {"kind": "receipt", "ref": "FINAL-RECEIPT.json"}], "convergence_criteria": ["The model is exact at candidate-design level, the plan is non-executed, and all owner gates and unsupported claims are explicit."], "evidence_artifact": "RESULT.md", "stop_conditions": ["Block final pass if any claim implies implemented portability, runtime conformance, exactly-once effects, authority selection, or production readiness."]}
+  ],
+  "gates": [
+    {"gate_id": "g01-exact-dispatch-confirmation", "kind": "human_approval", "owner": "operator", "condition": "The persisted schema-0.8.0 review sheet passes live validation and independent tension PASS/PASS, then the operator confirms its material projection.", "on_fail": "ask"},
+    {"gate_id": "g02-owner-boundary", "kind": "policy", "owner": "refine", "condition": "Transport observations never become journal truth, RWO lifecycle decisions, domain meaning, ARE/ACI authority, or exact-effect authorization.", "on_fail": "block"},
+    {"gate_id": "g03-review-receipts", "kind": "validation", "owner": "orchestrate", "condition": "All three read-only review roles are host-bound, joined, closed, and return the required receipt fields without write-boundary violations.", "applies_after_wave": "w01-independent-adapter-review", "requires_role_receipts": ["delegated-review/returns/adapter-contract-architect.json", "delegated-review/returns/transport-semantics-adversary.json", "delegated-review/returns/recovery-authority-auditor.json"], "on_fail": "block"},
+    {"gate_id": "g04-design-completeness", "kind": "quality", "owner": "refine", "condition": "The repaired candidate includes ports, envelopes, profiles, observations, identities, ownership, mappings, admission evidence, negative fixtures, and explicit unsupported behavior.", "on_fail": "block"},
+    {"gate_id": "g05-claim-ceiling", "kind": "promotion_guardrail", "owner": "parent", "condition": "The result remains candidate design plus non-executed plan and grants no implementation, ontology, authority, promotion, deployment, or production claim.", "on_fail": "block"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": null,
+    "trace_events": ["refine.preflight.validated", "refine.tension.checked", "refine.confirmed", "refine.review.registered", "refine.review.spawned", "refine.review.joined", "refine.review.closed", "refine.stage.completed", "refine.finalized"],
+    "signal_grouping": "run_id, dispatch_id, step_id, wave_id, role_id, capability_ref, status, artifact, validation, blocker, residue"
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {"boundary_id": "b01-review-return", "kind": "evidence_return", "from_owner": "review roles", "to_owner": "refine", "applies_to_steps": ["s07", "s08"], "contract": "Roles return advisory read-only attack receipts; Refine owns acceptance, repair, and synthesis.", "on_violation": "block"},
+      {"boundary_id": "b02-transport-observation", "kind": "capability_handoff", "from_owner": "adapter", "to_owner": "RWO", "applies_to_steps": ["s06", "s08", "s10"], "contract": "An adapter reports bounded transport observations and capability evidence but cannot decide Work lifecycle or authority.", "on_violation": "block"}
+    ],
+    "authority": {"lifecycle": "RWO kernel under domain-approved policy", "execution": "future implementation owner; none in this run", "validation": "Refine design audit only", "evidence": "source owners and joined receipts", "promotion": "ontology/definition/product owners outside this run"},
+    "receipts": [
+      {"receipt_id": "review-wave-receipts", "producer": "orchestrate", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "on_missing": "block"}
+    ]
+  },
+  "promotion_guardrails": ["No runtime adapter is selected or implemented.", "No ontology or definition is updated.", "No delivery guarantee implies exactly-once business effects.", "No review or Refine receipt grants domain, ARE, ACI, effect, release, or production authority."]
+}

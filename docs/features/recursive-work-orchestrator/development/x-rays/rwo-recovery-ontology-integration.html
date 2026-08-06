@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>x-ray: RWO recovery and adapter boundaries</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #071018;
+      --bg-soft: #0b1823;
+      --panel: #102330;
+      --panel-2: #142c3a;
+      --ink: #eef7fa;
+      --muted: #a8bbc4;
+      --line: #31505e;
+      --current: #58b9e7;
+      --candidate: #c89cff;
+      --evidence: #76d7a3;
+      --gate: #ffc866;
+      --risk: #ff8585;
+      --blocked: #ffb38a;
+      --shadow: rgba(0, 0, 0, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 0%, rgba(88,185,231,.13), transparent 32rem),
+        radial-gradient(circle at 88% 10%, rgba(200,156,255,.12), transparent 34rem),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    a { color: #9edcff; }
+    a:hover { color: #d2f0ff; }
+    button, input { font: inherit; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 12px; font-size: clamp(2rem, 5vw, 4.5rem); line-height: .98; letter-spacing: -.055em; max-width: 980px; }
+    h2 { font-size: clamp(1.35rem, 2.4vw, 2rem); letter-spacing: -.025em; }
+    h3 { font-size: 1rem; }
+    code { color: #d9c2ff; }
+
+    .shell { min-width: 0; max-width: 1440px; margin: 0 auto; padding: 32px; }
+    .eyebrow { color: var(--candidate); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: .75rem; }
+    .lede { max-width: 880px; color: var(--muted); font-size: 1.08rem; }
+    .plain-answer { max-width: 940px; padding: 18px 20px; border-left: 4px solid var(--candidate); background: rgba(200,156,255,.08); border-radius: 0 12px 12px 0; }
+    .plain-answer strong { color: #e7d6ff; }
+
+    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+    .metric { padding: 16px; background: rgba(16,35,48,.88); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 14px 35px var(--shadow); }
+    .metric strong { display: block; font-size: 1.7rem; line-height: 1.1; }
+    .metric span { display: block; margin-top: 6px; color: var(--muted); font-size: .82rem; }
+    .metric.current strong { color: var(--current); }
+    .metric.candidate strong { color: var(--candidate); }
+    .metric.pass strong { color: var(--evidence); }
+    .metric.flag strong { color: var(--risk); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+    .badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .78rem; }
+    .badge::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--line); }
+    .badge.source::before { background: var(--current); }
+    .badge.proposed { border-style: dashed; }
+    .badge.proposed::before { background: var(--candidate); }
+    .badge.owner::before { background: var(--gate); }
+    .badge.forbidden::before { background: var(--risk); }
+
+    .controls { position: sticky; z-index: 20; top: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 26px 0 16px; padding: 12px; background: rgba(7,16,24,.9); border: 1px solid var(--line); border-radius: 14px; backdrop-filter: blur(12px); }
+    .controls h2 { margin: 0 8px 0 0; font-size: .92rem; }
+    .controls label { display: inline-flex; align-items: center; gap: 7px; padding: 8px 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; cursor: pointer; font-size: .83rem; }
+    .controls input { accent-color: var(--candidate); }
+    .control-action { border: 1px solid var(--line); color: var(--ink); background: transparent; padding: 8px 10px; border-radius: 9px; cursor: pointer; font-size: .8rem; }
+    .control-action:hover, .control-action:focus-visible { border-color: var(--candidate); outline: none; }
+
+    .layer-stack { min-width: 0; display: grid; gap: 16px; }
+    .layer { display: none; min-width: 0; padding: 22px; overflow-wrap: anywhere; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(150deg, rgba(16,35,48,.97), rgba(9,25,35,.94)); box-shadow: 0 20px 44px var(--shadow); }
+    .layer-head { display: flex; gap: 12px; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+    .layer-handle { color: var(--muted); font-size: .74rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .layer-tag { color: var(--candidate); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 800; }
+
+    .xray-layout:has(#toggle-surface:checked) .layer.surface,
+    .xray-layout:has(#toggle-flow:checked) .layer.flow,
+    .xray-layout:has(#toggle-adapter:checked) .layer.adapters,
+    .xray-layout:has(#toggle-deps:checked) .layer.dependencies,
+    .xray-layout:has(#toggle-risk:checked) .layer.risk { display: block; }
+
+    .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .triple { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .card { min-width: 0; padding: 16px; background: rgba(20,44,58,.72); border: 1px solid var(--line); border-radius: 12px; }
+    .card.current { border-top: 3px solid var(--current); }
+    .card.proposed { border: 1px dashed var(--candidate); border-top-width: 3px; }
+    .card.owner { border-top: 3px solid var(--gate); }
+    .card.risk { border-top: 3px solid var(--risk); }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .card ul { padding-left: 19px; }
+    .card li + li { margin-top: 7px; }
+    .micro { color: var(--muted); font-size: .83rem; }
+    .callout { padding: 13px 15px; border-radius: 11px; background: rgba(118,215,163,.08); border-left: 4px solid var(--evidence); }
+    .callout.warning { background: rgba(255,133,133,.08); border-left-color: var(--risk); }
+
+    .architecture-canvas { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: #08141d; }
+    svg { display: block; min-width: 1060px; width: 100%; height: auto; }
+    svg text { fill: var(--ink); font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    svg .small { fill: var(--muted); font-size: 12px; }
+    svg .tiny { fill: var(--muted); font-size: 10px; }
+    svg .title { font-weight: 800; font-size: 14px; }
+    svg .node-current { fill: #102c3b; stroke: var(--current); stroke-width: 2; }
+    svg .node-proposed { fill: #251c36; stroke: var(--candidate); stroke-width: 2; stroke-dasharray: 7 5; }
+    svg .node-owner { fill: #332a16; stroke: var(--gate); stroke-width: 2; }
+    svg .node-evidence { fill: #142e28; stroke: var(--evidence); stroke-width: 2; }
+    svg .node-risk { fill: #321e24; stroke: var(--risk); stroke-width: 2; }
+    svg .boundary { fill: rgba(200,156,255,.025); stroke: #624b7e; stroke-width: 1.5; stroke-dasharray: 10 7; }
+    svg .arrow { fill: none; stroke: #91a9b5; stroke-width: 2; marker-end: url(#arrow); }
+    svg .arrow-proposed { fill: none; stroke: var(--candidate); stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#arrowCandidate); }
+    svg .arrow-owner { fill: none; stroke: var(--gate); stroke-width: 2; marker-end: url(#arrowOwner); }
+    svg .arrow-evidence { fill: none; stroke: var(--evidence); stroke-width: 2; marker-end: url(#arrowEvidence); }
+    svg .forbidden { fill: none; stroke: var(--risk); stroke-width: 3; stroke-dasharray: 5 4; }
+    svg [data-inspect] { cursor: help; }
+    svg [data-inspect]:focus { outline: none; filter: drop-shadow(0 0 7px rgba(200,156,255,.65)); }
+
+    .frontier { margin-top: 14px; padding: 17px; background: #091822; border: 1px solid var(--line); border-radius: 14px; }
+    .rail { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; min-height: 74px; margin: 14px 0; }
+    .rail::before { content: ""; position: absolute; left: 7%; right: 7%; top: 36px; height: 3px; background: var(--line); }
+    .trigger { position: relative; z-index: 1; justify-self: center; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--line); background: var(--bg-soft); font-size: .72rem; font-weight: 800; }
+    .trigger.inhibited { color: var(--muted); }
+    .trigger.actionable { width: 62px; height: 62px; border-color: var(--candidate); color: var(--candidate); box-shadow: 0 0 0 7px rgba(200,156,255,.09); }
+    .trigger.consumed { border-color: var(--evidence); color: var(--evidence); }
+
+    .case-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+    .case { padding: 10px; border: 1px dashed var(--candidate); border-radius: 9px; color: #dec9f7; font-size: .8rem; text-align: center; }
+    .dispositions { display: flex; flex-wrap: wrap; gap: 7px; }
+    .disposition { padding: 6px 8px; border: 1px solid #70578e; border-radius: 7px; color: #dcc6f4; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; }
+
+    .sequence { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 16px 0; padding: 0; list-style: none; counter-reset: step; }
+    .sequence li { position: relative; padding: 35px 12px 12px; min-height: 118px; border: 1px solid var(--line); background: rgba(20,44,58,.65); border-radius: 11px; font-size: .8rem; }
+    .sequence li::before { counter-increment: step; content: counter(step); position: absolute; top: 10px; left: 11px; color: var(--candidate); font-weight: 900; }
+
+    .boundary-map { display: grid; grid-template-columns: 1.25fr .75fr; gap: 14px; }
+    .inside { padding: 16px; border: 2px solid var(--current); border-radius: 14px; }
+    .outside { padding: 16px; border: 2px dashed var(--gate); border-radius: 14px; }
+    .owner-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .owner-chip { padding: 10px; border: 1px solid #745f2f; border-radius: 9px; font-size: .78rem; }
+    .owner-chip strong { color: var(--gate); display: block; }
+
+    .inspector { display: grid; grid-template-columns: .8fr 1.2fr; gap: 12px; margin-top: 14px; padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: #091721; }
+    .inspector blockquote { margin: 6px 0 0; color: #c9dae2; }
+    .inspector .inference { border-left: 1px dashed var(--candidate); padding-left: 14px; }
+    .inspector-label { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 800; }
+
+    .timeline { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; padding: 0; margin: 18px 0; list-style: none; }
+    .timeline li { position: relative; padding: 44px 12px 12px; border-top: 3px solid var(--line); color: var(--muted); font-size: .78rem; }
+    .timeline li::before { content: ""; position: absolute; top: -8px; left: 12px; width: 13px; height: 13px; border-radius: 50%; background: var(--bg); border: 3px solid var(--line); }
+    .timeline li.current-step { border-color: var(--risk); color: var(--ink); }
+    .timeline li.current-step::before { border-color: var(--risk); }
+    .timeline li.proposed-step { border-top-style: dashed; border-color: var(--candidate); }
+    .timeline li.proposed-step::before { border-color: var(--candidate); }
+
+    table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: .83rem; }
+    th, td { padding: 11px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; }
+    .impact-high { color: var(--risk); font-weight: 800; }
+    .impact-medium { color: var(--gate); font-weight: 800; }
+
+    .reader-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .term { padding: 13px; border: 1px solid var(--line); border-radius: 10px; background: rgba(20,44,58,.55); }
+    .term dt { font-weight: 800; color: #d9c2ff; }
+    .term dd { margin: 4px 0 0; color: var(--muted); font-size: .8rem; }
+
+    footer { margin-top: 24px; padding: 20px 0 10px; color: var(--muted); font-size: .78rem; }
+
+    @media (max-width: 980px) {
+      .shell { padding: 20px; }
+      .metrics, .triple { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sequence { grid-template-columns: 1fr 1fr; }
+      .boundary-map, .split, .inspector { grid-template-columns: 1fr; }
+      .case-grid { grid-template-columns: 1fr 1fr; }
+      .reader-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .shell { padding: 16px; }
+      .metrics, .triple, .owner-grid, .sequence { grid-template-columns: 1fr; }
+      .timeline { grid-template-columns: 1fr; }
+      .timeline li { border-top: 0; border-left: 3px solid var(--line); padding: 10px 12px 18px 34px; }
+      .timeline li::before { top: 10px; left: -8px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <main class="shell xray-layout">
+    <header data-lane="surface visual_composition">
+      <div class="eyebrow">Architecture mode · standard depth · candidate-local explanation</div>
+      <h1>Where recovery and transport adapters fit in RWO</h1>
+      <p class="lede">RWO is the Recursive Work Orchestrator. ARE is the optional Agent Reasoning Engine. Recovery classifies one admitted situation before ordinary RWO routing. Transport adapters move canonical commands and event candidates, but they report scoped observations rather than choosing acceptance, retry, authority, or effects.</p>
+      <p class="plain-answer"><strong>Current reality:</strong> the graph contains no recovery nodes, and the transport-neutral adapter contract remains Candidate-2 design evidence. <strong>Proposed integration:</strong> attach the recovery overlay to current RWO anchors and keep command delivery, event ingress, journal acceptance, adapter admission, Work recovery, and effect reconciliation as separate boundaries.</p>
+
+      <div class="metrics" aria-label="Current and proposed graph metrics">
+        <div class="metric current"><strong>137 / 220</strong><span>current nodes / relations</span></div>
+        <div class="metric current"><strong>0</strong><span>current recovery matches</span></div>
+        <div class="metric candidate"><strong>+34</strong><span>proposed candidate nodes, not written</span></div>
+        <div class="metric flag"><strong>FLAG</strong><span>core validator: source digest drift</span></div>
+      </div>
+
+      <div class="legend" aria-label="Evidence legend">
+        <span class="badge source">Current, source-backed</span>
+        <span class="badge proposed">Proposed inference</span>
+        <span class="badge owner">Independent owner or gate</span>
+        <span class="badge forbidden">Forbidden topology</span>
+      </div>
+    </header>
+
+    <section class="controls" aria-label="Layer controls">
+      <h2>Inspect layers</h2>
+      <label><input id="toggle-surface" type="checkbox" checked> Current vs proposed</label>
+      <label><input id="toggle-flow" type="checkbox" checked> Recovery flow</label>
+      <label><input id="toggle-adapter" type="checkbox" checked> Adapter boundary</label>
+      <label><input id="toggle-deps" type="checkbox" checked> Dependencies</label>
+      <label><input id="toggle-risk" type="checkbox" checked> Lifecycle + risk</label>
+      <button class="control-action" type="button" data-preset="all">Stack all</button>
+      <button class="control-action" type="button" data-preset="trace">Trace recovery</button>
+      <button class="control-action" type="button" data-preset="boundary">Review boundaries</button>
+    </section>
+
+    <div class="layer-stack">
+      <section class="layer surface" data-lane="surface properties components visual_composition">
+        <div class="layer-head">
+          <div><div class="layer-tag">Layer 1 · orientation</div><h2>Current graph, proposed overlay</h2></div>
+          <div class="layer-handle">surface.current-vs-proposed</div>
+        </div>
+
+        <div class="split">
+          <article class="card current" data-inspect data-source="ONTOLOGY.md and current nodes/relations projections define 137 nodes and 220 relations; the projections have zero recovery identifier or label matches." data-inference="Recovery must attach to current anchors rather than being described as already present.">
+            <h3>Current ontology — source-backed</h3>
+            <p>Proposal-only RWO architecture with current anchors, evidence findings, residues, owner gates, and forbidden topology. Graph integrity passes.</p>
+            <ul class="micro">
+              <li><code>rwo:Event</code> and <code>rwo:DomainState</code> carry facts and work-owned meaning.</li>
+              <li><code>rwo:Journal</code> and <code>rwo:OrchestrationCursor</code> own accepted history and rebuildable control state.</li>
+              <li><code>rwo:Attempt</code> and <code>rwo:BoundedRepeat</code> already distinguish attempts from rounds.</li>
+              <li><code>rwo:AuthorityReference</code> and owner gates keep effects outside routing.</li>
+            </ul>
+          </article>
+          <article class="card proposed" data-inspect data-source="The Refine result names RecoveryDecisionContract@candidate-2, eight case variants, thirteen dispositions, atomic acceptance, and four remaining owner gates." data-inference="Represent the model as a proposed +34-node overlay. Keep dispositions as a typed vocabulary rather than architecture nodes.">
+            <h3>Recovery delta — proposed inference</h3>
+            <p>A reviewable candidate subgraph: 27 architecture concepts, one exact-model evidence source, one validation witness, one domain recovery owner gate, and four forbidden-topology controls.</p>
+            <ul class="micro">
+              <li>Eight case variants are nodes because each has different required fields and admissible relations.</li>
+              <li>Thirteen dispositions remain values of a closed type; they are not thirteen components.</li>
+              <li>Every decision keeps <code>authority_effect: none</code>.</li>
+              <li>ARE evidence is optional and has a valid zero-call path.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="triple" style="margin-top:14px">
+          <article class="card"><h3>27 architecture concepts</h3><p class="micro">Contract, handles, frontier, assembler, case union and subtypes, classifier, disposition vocabulary, decision, acceptance, validation, identity, reconciliation, and compensation intents.</p></article>
+          <article class="card"><h3>3 proof / owner controls</h3><p class="micro">Exact-model evidence source, design-game validation witness, and a domain-recovery owner gate.</p></article>
+          <article class="card"><h3>4 forbidden controls</h3><p class="micro">Domain-chooses-route, ARE-chooses-disposition, classifier-grants-authority, and unknown-effect-retries.</p></article>
+        </div>
+
+        <div class="callout warning" style="margin-top:14px"><strong>Claim ceiling:</strong> this x-ray explains an integration design. It does not update <code>ONTOLOGY.md</code>, <code>ontology.json</code>, graph projections, runtime code, promotion status, or owner decisions.</div>
+      </section>
+
+      <section class="layer flow" data-lane="flow components properties">
+        <div class="layer-head">
+          <div><div class="layer-tag">Layer 2 · execution-neutral trace</div><h2>One recovery decision from evidence to guarded route</h2></div>
+          <div class="layer-handle">flow.recovery-decision-trace</div>
+        </div>
+
+        <div class="architecture-canvas">
+          <svg viewBox="0 0 1280 690" role="img" aria-labelledby="flow-title flow-desc">
+            <title id="flow-title">Proposed RWO recovery ontology integration</title>
+            <desc id="flow-desc">Current RWO anchors feed a proposed recovery contract. Domain and optional admitted ARE evidence enter without choosing a treatment. A journal-owned frontier admits one trigger, a case is assembled and classified, atomic acceptance checks the validation vector, and independent gates control any ordinary RWO route.</desc>
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#91a9b5"/></marker>
+              <marker id="arrowCandidate" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#c89cff"/></marker>
+              <marker id="arrowOwner" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ffc866"/></marker>
+              <marker id="arrowEvidence" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#76d7a3"/></marker>
+            </defs>
+
+            <rect x="20" y="24" width="260" height="640" rx="16" class="boundary"/>
+            <text x="40" y="55" class="title">CURRENT RWO ANCHORS</text>
+            <text x="40" y="75" class="small">source-backed · proposal-only</text>
+
+            <g tabindex="0" data-inspect data-source="The current ontology defines Event and DomainState; domain meaning remains opaque to the orchestrator." data-inference="RecoveryMapping should refine this existing domain seam.">
+              <rect x="48" y="112" width="204" height="64" rx="10" class="node-current"/>
+              <text x="70" y="140" class="title">Event + DomainState</text>
+              <text x="70" y="159" class="small">facts + domain meaning</text>
+            </g>
+            <g tabindex="0" data-inspect data-source="Journal is append-only accepted message history used for replay and audit." data-inference="RecoveryFrontier belongs beside the accepted-history owner, not inside the domain.">
+              <rect x="48" y="236" width="204" height="64" rx="10" class="node-current"/>
+              <text x="70" y="264" class="title">Journal + Cursor</text>
+              <text x="70" y="283" class="small">history + rebuildable control</text>
+            </g>
+            <rect x="48" y="360" width="204" height="64" rx="10" class="node-current"/>
+            <text x="70" y="388" class="title">Attempt + Repeat</text>
+            <text x="70" y="407" class="small">attempt identity ≠ round</text>
+            <rect x="48" y="536" width="204" height="64" rx="10" class="node-current"/>
+            <text x="70" y="564" class="title">AuthorityReference</text>
+            <text x="70" y="583" class="small">accepted authority evidence</text>
+
+            <rect x="310" y="24" width="620" height="640" rx="16" class="boundary"/>
+            <text x="330" y="55" class="title">PROPOSED RECOVERY DECISION CONTRACT</text>
+            <text x="330" y="75" class="small">inference from candidate-2 · not written to graph</text>
+
+            <g tabindex="0" data-inspect data-source="DomainEvent maps through a domain-owned pure RecoveryMapping to an owner-admitted DomainRecoverySignalHandle." data-inference="Model mapping and signal handle as separate nodes so purity and admission are inspectable.">
+              <rect x="344" y="108" width="220" height="76" rx="10" class="node-proposed"/>
+              <text x="366" y="136" class="title">RecoveryMapping</text>
+              <text x="366" y="156" class="small">pure · versioned · domain-owned</text>
+              <text x="366" y="174" class="tiny">→ admitted signal handle</text>
+            </g>
+
+            <g tabindex="0" data-inspect data-source="RecoveryFrontier selects at most one actionable trigger for overlapping subject scope." data-inference="The frontier is visualized as a rail below; the ontology node links journal history to case assembly.">
+              <rect x="344" y="232" width="220" height="76" rx="10" class="node-proposed"/>
+              <text x="366" y="260" class="title">RecoveryFrontier</text>
+              <text x="366" y="280" class="small">journal-owned arbitration</text>
+              <text x="366" y="298" class="tiny">≤ 1 actionable trigger / overlap</text>
+            </g>
+
+            <path d="M252 144 L344 144" class="arrow-proposed"/>
+            <path d="M252 268 L344 268" class="arrow-proposed"/>
+
+            <rect x="606" y="166" width="278" height="92" rx="10" class="node-proposed"/>
+            <text x="630" y="195" class="title">RecoveryCaseAssembler</text>
+            <text x="630" y="215" class="small">signal + trigger + policy + deadline</text>
+            <text x="630" y="235" class="small">+ authority + fence + effect handles</text>
+            <path d="M564 146 C588 146 585 190 606 190" class="arrow-proposed"/>
+            <path d="M564 270 C588 270 585 232 606 232" class="arrow-proposed"/>
+
+            <rect x="606" y="292" width="278" height="126" rx="10" class="node-proposed"/>
+            <text x="630" y="319" class="title">RecoveryCase union</text>
+            <text x="630" y="341" class="tiny">Conflict · OwnerGap · RuntimeResume · Delivery</text>
+            <text x="630" y="361" class="tiny">Execution · Repeat · Cancellation · Effect</text>
+            <text x="630" y="391" class="small">closed admission or protocol reject</text>
+            <path d="M745 258 L745 292" class="arrow-proposed"/>
+
+            <rect x="606" y="452" width="278" height="84" rx="10" class="node-proposed"/>
+            <text x="630" y="481" class="title">RecoveryClassifier</text>
+            <text x="630" y="501" class="small">pure: case → one disposition</text>
+            <text x="630" y="520" class="tiny">cannot call ARE, route, or authorize</text>
+            <path d="M745 418 L745 452" class="arrow-proposed"/>
+
+            <rect x="606" y="568" width="278" height="68" rx="10" class="node-proposed"/>
+            <text x="630" y="596" class="title">RecoveryDecision</text>
+            <text x="630" y="617" class="small">authority_effect: none</text>
+            <path d="M745 536 L745 568" class="arrow-proposed"/>
+
+            <rect x="958" y="24" width="302" height="640" rx="16" class="boundary"/>
+            <text x="978" y="55" class="title">ACCEPTANCE + OWNER GATES</text>
+            <text x="978" y="75" class="small">independent from classification</text>
+
+            <g tabindex="0" data-inspect data-source="An ARE result must pass entry, ACI, semantic and artifact admission before domain mapping may reference it." data-inference="ARE receipt is an external evidence input, not a recovery component with a routing edge.">
+              <rect x="984" y="104" width="248" height="78" rx="10" class="node-evidence"/>
+              <text x="1006" y="132" class="title">Optional ARE evidence</text>
+              <text x="1006" y="152" class="small">after entry + ACI + semantic</text>
+              <text x="1006" y="170" class="tiny">valid zero-call path</text>
+            </g>
+            <path d="M984 143 C930 143 930 126 564 126" class="arrow-evidence"/>
+
+            <g tabindex="0" data-inspect data-source="Accepted-history owner atomically checks the complete DecisionValidationVector; if any member changed, the transaction makes no mutation." data-inference="Use a distinct acceptance node so a classifier output cannot be mistaken for an accepted decision.">
+              <rect x="984" y="238" width="248" height="106" rx="10" class="node-owner"/>
+              <text x="1006" y="266" class="title">Atomic acceptance</text>
+              <text x="1006" y="287" class="small">full validation vector</text>
+              <text x="1006" y="307" class="tiny">consume trigger · debit · allocate</text>
+              <text x="1006" y="324" class="tiny">append decision · advance frontier</text>
+            </g>
+            <path d="M884 602 C944 602 942 291 984 291" class="arrow-owner"/>
+
+            <rect x="984" y="390" width="248" height="82" rx="10" class="node-current"/>
+            <text x="1006" y="419" class="title">OrchestratorKernel</text>
+            <text x="1006" y="439" class="small">ordinary declared route only</text>
+            <text x="1006" y="457" class="tiny">after accepted decision</text>
+            <path d="M1108 344 L1108 390" class="arrow"/>
+
+            <rect x="984" y="516" width="248" height="88" rx="10" class="node-owner"/>
+            <text x="1006" y="545" class="title">Independent gates</text>
+            <text x="1006" y="565" class="small">entry · authority · ACI · effect</text>
+            <text x="1006" y="585" class="tiny">reconciliation / compensation owners</text>
+            <path d="M1108 472 L1108 516" class="arrow-owner"/>
+
+            <path d="M278 92 L1260 648" class="forbidden" opacity="0"/>
+            <text x="344" y="642" class="tiny">Dashed violet = proposed relation. No edge means no current graph claim.</text>
+          </svg>
+        </div>
+
+        <div class="frontier" data-inspect data-source="The journal-owned RecoveryFrontier selects at most one actionable trigger for an overlapping subject scope." data-inference="Custom frontier rail: several observed triggers can coexist as evidence, but only one overlapping trigger is actionable; acceptance consumes it.">
+          <div class="layer-tag">Custom shape · frontier rail</div>
+          <h3>Many observations do not mean many concurrent recovery actions</h3>
+          <div class="rail" aria-label="Recovery frontier rail with inhibited, actionable, and consumed trigger states">
+            <span class="trigger inhibited" title="Observed, inhibited">T-17<br>held</span>
+            <span class="trigger inhibited" title="Observed, inhibited">T-18<br>held</span>
+            <span class="trigger actionable" title="One actionable trigger">T-19<br>ONE</span>
+            <span class="trigger inhibited" title="Overlapping trigger inhibited">T-20<br>held</span>
+            <span class="trigger consumed" title="Previously consumed trigger">T-16<br>used</span>
+          </div>
+          <p class="micro">The frontier selects; it does not authorize. Atomic acceptance consumes the selected trigger only after the entire validation vector still matches.</p>
+        </div>
+
+        <div class="split" style="margin-top:14px">
+          <article class="card proposed">
+            <h3>Eight typed cases</h3>
+            <div class="case-grid">
+              <span class="case">Conflict</span><span class="case">OwnerGap</span><span class="case">RuntimeResume</span><span class="case">Delivery</span>
+              <span class="case">Execution</span><span class="case">Repeat</span><span class="case">Cancellation</span><span class="case">Effect</span>
+            </div>
+          </article>
+          <article class="card proposed">
+            <h3>Thirteen typed dispositions — values, not nodes</h3>
+            <div class="dispositions">
+              <span class="disposition">DEDUPLICATE</span><span class="disposition">REDELIVER</span><span class="disposition">RETRY_NEW_ATTEMPT</span>
+              <span class="disposition">RETRY_NEW_EFFECT_ATTEMPT</span><span class="disposition">REPEAT_NEW_ROUND</span><span class="disposition">REVALIDATE_NEW_RUN</span>
+              <span class="disposition">RESUME_FROM_JOURNAL</span><span class="disposition">IGNORE_STALE</span><span class="disposition">RECONCILE_UNKNOWN_EFFECT</span>
+              <span class="disposition">COMPENSATE</span><span class="disposition">QUARANTINE_CONFLICT</span><span class="disposition">STOP</span><span class="disposition">ESCALATE_OWNER</span>
+            </div>
+          </article>
+        </div>
+
+        <ol class="sequence" aria-label="Recovery decision flow">
+          <li><strong>Observe.</strong><br>Journal accepts structural records; domain maps meaning through a pure mapping.</li>
+          <li><strong>Admit one.</strong><br>Frontier chooses at most one actionable overlapping trigger.</li>
+          <li><strong>Assemble.</strong><br>Closed case admission either returns one typed case or rejects.</li>
+          <li><strong>Classify.</strong><br>Pure classifier returns one disposition and exact identity transition.</li>
+          <li><strong>Accept, then gate.</strong><br>Atomic history acceptance precedes ordinary routing and independent authority/effect gates.</li>
+        </ol>
+
+        <aside class="inspector" aria-live="polite" aria-label="Source and inference inspector">
+          <section><div class="inspector-label">Source-backed</div><blockquote id="inspector-source">Focus or hover a diagram element to inspect its source basis.</blockquote></section>
+          <section class="inference"><div class="inspector-label">Inference</div><p id="inspector-inference">The explanatory mapping stays visibly separate from source claims.</p></section>
+        </aside>
+      </section>
+
+      <section class="layer adapters" data-lane="components internal_dependencies external_dependencies flow risk_questions visual_composition">
+        <div class="layer-head">
+          <div><div class="layer-tag">Layer 3 · transport truth boundary</div><h2>Adapters move messages; owners decide what they mean</h2></div>
+          <div class="layer-handle">components.transport-neutral-adapter + flow.delivery-to-recovery</div>
+        </div>
+
+        <div class="callout"><strong>Plain model:</strong> every transport implements the same separation, not the same guarantees. Canonical identity and closed observation names are shared. Durability, redelivery, acknowledgement, ordering, replay, flow control, fan-out, and settlement are exact capabilities admitted per implementation and configuration.</div>
+
+        <div class="split" style="margin-top:14px">
+          <article class="card proposed" data-inspect data-source="TransportNeutralWorkProtocolAdapterContract@candidate-2 defines separate CommandDeliveryPort and EventIngressPort sharing canonical message identity." data-inference="Show the two ports inside one dashed adapter boundary so one broker may back both without merging their semantics.">
+            <span class="badge proposed">View-local Candidate-2</span>
+            <h3 style="margin-top:12px">Inside the transport adapter</h3>
+            <ul class="micro">
+              <li><strong>CommandDeliveryPort</strong> sends an already admitted canonical command and returns a scoped delivery observation.</li>
+              <li><strong>EventIngressPort</strong> converts transport input into a canonical event candidate plus transport evidence.</li>
+              <li><strong>TransportDeliveryAttempt</strong> changes on redelivery; logical message identity and canonical digest do not.</li>
+              <li>The adapter cannot mint a Work Attempt, choose retry, accept history, or authorize an effect.</li>
+            </ul>
+          </article>
+          <article class="card owner" data-inspect data-source="Candidate-2 keeps JournalAcceptancePort and admission ownership independent from transport; transport acknowledgement, offsets, settlement, and provider receipts are evidence only." data-inference="Place acceptance and admission outside the adapter boundary to make owner non-collapse visible.">
+            <span class="badge owner">Independent boundaries</span>
+            <h3 style="margin-top:12px">Outside the transport adapter</h3>
+            <ul class="micro">
+              <li><strong>JournalAcceptancePort</strong> returns accepted record, identical duplicate, conflict, or rejection.</li>
+              <li><strong>Admission owner</strong> binds exact implementation and configuration digests, manifest, requirements, current conformance evidence, owner, and validity epoch.</li>
+              <li><strong>RWO recovery</strong> alone may choose same-message retry or create a new Work Attempt from accepted history.</li>
+              <li><strong>Exact-effect owner</strong> reconciles an unknown external-effect outcome.</li>
+            </ul>
+          </article>
+        </div>
+
+        <ol class="sequence" aria-label="Transport observation to recovery decision flow">
+          <li><strong>Preserve identity.</strong><br>Canonical bytes, logical message ID, Work Run, and Work Attempt remain stable across delivery attempts.</li>
+          <li><strong>Move or receive.</strong><br>Command delivery and event ingress stay distinct even when one transport carries both.</li>
+          <li><strong>Report.</strong><br>The adapter emits one closed, scoped observation such as <code>accepted_by_transport</code>, <code>outcome_unknown</code>, <code>redelivered</code>, or <code>flow_controlled</code>.</li>
+          <li><strong>Accept history.</strong><br>The journal independently accepts, deduplicates, conflicts, or rejects the candidate.</li>
+          <li><strong>Decide treatment.</strong><br>Only accepted evidence reaches RWO recovery or effect-owner reconciliation.</li>
+        </ol>
+
+        <div class="triple">
+          <article class="card proposed">
+            <h3>Manifest = claim</h3>
+            <p class="micro">Closed capability atoms with exact scopes, limitations, prohibitions, and implementation/configuration digests.</p>
+          </article>
+          <article class="card current">
+            <h3>Requirements = need</h3>
+            <p class="micro">The route and message class state which durability, ordering, acknowledgement, replay, fan-out, pressure, and settlement behavior they require.</p>
+          </article>
+          <article class="card owner">
+            <h3>Admission = evidence-bound fit</h3>
+            <p class="micro">A current owner-issued conformance receipt must bind the exact manifest/requirements tuple. Profile names and self-declaration are insufficient.</p>
+          </article>
+        </div>
+
+        <div class="split" style="margin-top:14px">
+          <article class="card">
+            <h3>“Retry” spans seven distinct situations</h3>
+            <table>
+              <thead><tr><th>Situation</th><th>Owner and treatment</th></tr></thead>
+              <tbody>
+                <tr><td>Reconnect</td><td>Adapter creates a connection epoch; no Work state changes.</td></tr>
+                <tr><td>Redelivery</td><td>Delivery policy keeps logical identity and creates a delivery-attempt ID; journal deduplicates.</td></tr>
+                <tr><td>Known pre-accept delivery failure</td><td>RWO recovery may choose same-message retry only with admitted capability, stable bytes and identity, convergence evidence, current fence, and remaining budget.</td></tr>
+                <tr><td>Unknown delivery outcome</td><td>RWO plus the recipient/effect owner reconciles or waits; no blind effect retry.</td></tr>
+                <tr><td>New Work Attempt</td><td>RWO recovery allocates it only from accepted history and current policy.</td></tr>
+                <tr><td>Replay</td><td>Journal/reducer rebuilds state with zero transport, model, route, allocation, or effect calls.</td></tr>
+                <tr><td>Uncertain external effect</td><td>Exact-effect owner reconciles against the effect contract and current permit; automatic retry is forbidden.</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="card">
+            <h3>Honest transport profiles</h3>
+            <table>
+              <thead><tr><th>Arrangement</th><th>What it may honestly establish</th></tr></thead>
+              <tbody>
+                <tr><td>gRPC</td><td>RPC/stream status, flow control, correlation, optional explicit peer receipt.</td></tr>
+                <tr><td>Socket</td><td>Connection/frame/send/disconnect, optional application acknowledgement.</td></tr>
+                <tr><td>Redis Streams</td><td>Entry/group/pending/claim/redelivery/XACK transport evidence.</td></tr>
+                <tr><td>Managed bus</td><td>Provider acceptance and configured retry, DLQ, fan-out, target, and ordering scope.</td></tr>
+                <tr><td>In-memory</td><td>Process-local buffering/delivery; no crash or restart durability claim.</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+
+        <div class="callout warning" style="margin-top:14px"><strong>Evidence ceiling:</strong> the refinement gives 30 internally single-valued design scenarios and zero runtime executions. Its reviewers inspected the frozen source and seed, not the later Candidate-2 document. This layer is not independent Candidate-2 validation, adapter conformance, ontology promotion, or implementation evidence.</div>
+
+        <p class="micro" style="margin:14px 0 0">Sources: <a href="../refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/RESULT.md">transport-neutral adapter result</a> · <a href="../refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/stages/08-distill-repair.md">exact Candidate-2 repair</a> · <a href="../refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/stages/08-scenario-matrix.json">30-scenario matrix</a></p>
+      </section>
+
+      <section class="layer dependencies" data-lane="internal_dependencies external_dependencies components">
+        <div class="layer-head">
+          <div><div class="layer-tag">Layer 4 · dependency boundary</div><h2>Who owns meaning, evidence, acceptance, and effects?</h2></div>
+          <div class="layer-handle">dependencies.current-rwo-anchors + dependencies.owner-seams</div>
+        </div>
+
+        <div class="boundary-map">
+          <article class="inside">
+            <h3>Inside the proposed recovery-decision boundary</h3>
+            <div class="triple">
+              <div class="card"><strong>Case assembly</strong><p class="micro">Normalizes admitted facts into exactly one case kind or rejects.</p></div>
+              <div class="card"><strong>Classification</strong><p class="micro">Selects a closed structural disposition using current inputs.</p></div>
+              <div class="card"><strong>Identity transition</strong><p class="micro">States what is preserved, allocated, consumed, or debited.</p></div>
+            </div>
+            <div class="callout" style="margin-top:12px"><strong>Invariant:</strong> all outputs remain proposals with <code>authority_effect: none</code>. They cannot execute Work, call ARE, reconcile an effect, or perform compensation.</div>
+          </article>
+          <article class="outside">
+            <h3>Outside: explicit owners and gates</h3>
+            <div class="owner-grid">
+              <div class="owner-chip"><strong>Domain owner</strong>semantic mapping and recovery signals</div>
+              <div class="owner-chip"><strong>Journal / ACI owner</strong>frontier and atomic acceptance</div>
+              <div class="owner-chip"><strong>ARE admission owner</strong>optional semantic evidence receipt</div>
+              <div class="owner-chip"><strong>Entry owner</strong>new run / compensation admission</div>
+              <div class="owner-chip"><strong>Authority owner</strong>effectful command permission</div>
+              <div class="owner-chip"><strong>Effect owner</strong>permit, outcome, reconciliation</div>
+              <div class="owner-chip"><strong>Ontology owner</strong>source adoption and promotion</div>
+              <div class="owner-chip"><strong>Runtime owner</strong>executable conformance witness</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="split" style="margin-top:14px">
+          <article class="card current">
+            <h3>Reuse these current ontology seams</h3>
+            <table>
+              <thead><tr><th>Current anchor</th><th>Recovery relation</th></tr></thead>
+              <tbody>
+                <tr><td><code>rwo:Event</code></td><td>input fact for a domain-owned RecoveryMapping</td></tr>
+                <tr><td><code>rwo:DomainState</code></td><td>semantic state remains opaque to classifier</td></tr>
+                <tr><td><code>rwo:Journal</code></td><td>owns trigger/frontier and accepted decision history</td></tr>
+                <tr><td><code>rwo:Attempt</code></td><td>new Work attempt only for ExecutionCase retry</td></tr>
+                <tr><td><code>rwo:BoundedRepeat</code></td><td>new round is distinct from a Work retry</td></tr>
+                <tr><td><code>rwo:OrchestrationCursor</code></td><td>runtime resume reconstructs projection only</td></tr>
+                <tr><td><code>rwo:AuthorityReference</code></td><td>independent accepted authority evidence</td></tr>
+                <tr><td><code>rwo:OrchestratorKernel</code></td><td>ordinary route after accepted decision</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="card risk">
+            <h3>Forbidden topology</h3>
+            <table>
+              <thead><tr><th>Forbidden edge</th><th>Why</th></tr></thead>
+              <tbody>
+                <tr><td>Domain signal → route/disposition</td><td>domain owns meaning, not structural treatment</td></tr>
+                <tr><td>Raw ARE output → RecoveryCase</td><td>unadmitted reasoning is not an accepted fact</td></tr>
+                <tr><td>Classifier → authority/effect</td><td>a non-authorizing decision cannot grant permission</td></tr>
+                <tr><td>Unknown effect → retry</td><td>uncertain outcome requires reconciliation, never duplication</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+      </section>
+
+      <section class="layer risk" data-lane="lifecycle risk_questions properties visual_composition">
+        <div class="layer-head">
+          <div><div class="layer-tag">Layer 5 · adoption and proof</div><h2>How the overlay can safely become ontology</h2></div>
+          <div class="layer-handle">lifecycle.safe-adoption + risk.integration-gaps</div>
+        </div>
+
+        <ol class="timeline" aria-label="Safe ontology adoption lifecycle">
+          <li class="current-step"><strong>1. Reconcile sources</strong><br>Resolve current ONTOLOGY.md digest drift and decide whether DESIGN.md adopts candidate-2.</li>
+          <li class="proposed-step"><strong>2. Materialize candidate</strong><br>Add evidence, proposed nodes, relations, properties, and forbidden controls.</li>
+          <li class="proposed-step"><strong>3. Add witnesses</strong><br>Encode positive cases and negative fixtures, especially unknown effect and authority boundaries.</li>
+          <li class="proposed-step"><strong>4. Validate projections</strong><br>Run core, graph, schema, source-hash, endpoint, and view checks.</li>
+          <li class="proposed-step"><strong>5. Owner decision</strong><br>Review source adoption and promotion separately from implementation/runtime conformance.</li>
+        </ol>
+
+        <div class="callout warning"><strong>Why step 1 blocks honest integration:</strong> the ontology declares <code>DESIGN.md</code> as the primary semantic source. Candidate-2 currently lives in a refinement artifact, and the core validator already sees digest drift in the existing source set. Writing lower projections first would invert source precedence.</div>
+
+        <div class="split" style="margin-top:14px">
+          <article class="card risk">
+            <h3>Risk questions</h3>
+            <table>
+              <thead><tr><th>Risk</th><th>Impact</th><th>Evidence confidence</th><th>Required treatment</th></tr></thead>
+              <tbody>
+                <tr><td>Pinned ONTOLOGY.md digest differs from live bytes</td><td class="impact-high">High</td><td>Direct validator result</td><td>Reconcile, do not repin silently</td></tr>
+                <tr><td>Candidate-2 is not a primary ontology source</td><td class="impact-high">High</td><td>Direct precedence + result claim ceiling</td><td>Design owner adoption or explicit source change</td></tr>
+                <tr><td>ARE/ACI conformance schemas unselected</td><td class="impact-high">High</td><td>Open owner gate G3</td><td>Executable cross-repository receipts</td></tr>
+                <tr><td>Exact-effect permit/reconciliation schemas open</td><td class="impact-high">High</td><td>Open owner gate G2</td><td>Owner-defined schema and negative fixtures</td></tr>
+                <tr><td>No adapter implementation/configuration tuple has conformance evidence</td><td class="impact-high">High</td><td>Adapter gate G5</td><td>Materialize schemas and offline fixtures before any runtime admission</td></tr>
+                <tr><td>+34 mapping may change during ontology review</td><td class="impact-medium">Medium</td><td>Analyst inference</td><td>Review node-versus-property choices</td></tr>
+                <tr><td>No RWO runtime witness exists</td><td class="impact-high">High</td><td>Current ontology claim ceiling</td><td>Keep runtime posture unsupported</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="card">
+            <h3>Evidence / inference split</h3>
+            <p><strong class="badge source">Source-backed</strong></p>
+            <ul class="micro">
+              <li>137 current nodes, 220 current relations, zero recovery matches.</li>
+              <li>Eight cases, thirteen dispositions, non-authorizing decision, atomic acceptance.</li>
+              <li>20/20 deterministic design games and 12/12 final audit questions.</li>
+              <li>Graph validation passes; core validation reports source digest drift.</li>
+            </ul>
+            <p><strong class="badge proposed">Inference</strong></p>
+            <ul class="micro">
+              <li>The proposed +34-node decomposition and relation placement.</li>
+              <li>Case variants as nodes; dispositions as typed property values.</li>
+              <li>The exact adoption sequence after source-owner resolution.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="split" style="margin-top:14px">
+          <article class="card current">
+            <h3>Source artifacts</h3>
+            <ul class="micro">
+              <li><a href="../../ontology/README.md">Ontology package boundaries and precedence</a></li>
+              <li><a href="../../ontology/ONTOLOGY.md">Current human-readable ontology</a></li>
+              <li><a href="../../ontology/nodes/nodes.json">Current node projection</a></li>
+              <li><a href="../../ontology/relations/relations.json">Current relation projection</a></li>
+              <li><a href="../refinement-runs/20260805T184601Z-rwo-domain-recovery-model/RESULT.md">Recovery refinement result</a></li>
+              <li><a href="../refinement-runs/20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md">Exact candidate-2 model</a></li>
+              <li><a href="../refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/RESULT.md">Transport-neutral adapter refinement result</a></li>
+              <li><a href="../refinement-runs/20260806T032327Z-rwo-transport-neutral-adapters/stages/08-scenario-matrix.json">Adapter retry/failure scenario matrix</a></li>
+            </ul>
+          </article>
+          <article class="card proposed">
+            <h3>Files a later ontology task would affect</h3>
+            <ul class="micro">
+              <li><code>ONTOLOGY.md</code> — source-bound narrative mapping.</li>
+              <li><code>ontology.json</code> — core machine projection.</li>
+              <li><code>nodes/nodes.json</code> — proposed candidate nodes and evidence controls.</li>
+              <li><code>relations/relations.json</code> — endpoint-resolved proposed relations.</li>
+              <li>Atlas view JSON — removable learner projection.</li>
+              <li>Evidence receipt and negative fixtures — proof boundary.</li>
+            </ul>
+            <p class="micro"><strong>None of these files was changed by this x-ray.</strong></p>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section data-lane="visual_composition" style="margin-top:18px">
+      <div class="layer-tag">Reader terms</div>
+      <h2>Reader terms and why it matters</h2>
+      <dl class="reader-grid">
+        <div class="term"><dt>RWO</dt><dd>Structural coordinator for typed work graphs and accepted history. It does not own domain meaning.</dd></div>
+        <div class="term"><dt>Recovery case</dt><dd>One admitted, typed situation. It carries facts; it does not itself perform treatment.</dd></div>
+        <div class="term"><dt>Recovery frontier</dt><dd>Journal-owned selection of at most one actionable overlapping trigger.</dd></div>
+        <div class="term"><dt>ARE</dt><dd>Optional reasoning evidence after admission. Never a route, disposition, or authority owner.</dd></div>
+        <div class="term"><dt>Atomic acceptance</dt><dd>All-or-nothing recheck and append. Any changed input means no mutation and case rebuild.</dd></div>
+        <div class="term"><dt>Candidate delta</dt><dd>A proposed ontology mapping. It is not the current graph and carries no promotion effect.</dd></div>
+        <div class="term"><dt>Delivery observation</dt><dd>A scoped transport statement such as provider accepted, outcome unknown, or redelivered. It is not accepted Work history.</dd></div>
+        <div class="term"><dt>Adapter admission</dt><dd>A pass or block for one exact implementation/configuration and current conformance evidence. It grants no authority.</dd></div>
+        <div class="term"><dt>Redelivery</dt><dd>The same canonical message in a new transport attempt. It is not a new Work Attempt, replay, or effect retry.</dd></div>
+      </dl>
+
+      <div class="layer-tag" style="margin-top:18px">Reader outcomes</div>
+      <p class="micro">After the surface layer, distinguish current graph from overlay. After recovery flow, trace one decision without confusing it with authority. After the adapter layer, separate delivery evidence from journal acceptance and retry ownership. After dependencies, name each owner seam. After lifecycle and risk, explain what must be resolved before ontology adoption.</p>
+      <p class="micro">Renderer: <strong>L0 static HTML/SVG</strong>. Interaction uses local HTML, CSS, and a small inline script only; there are no remote dependencies.</p>
+    </section>
+
+    <footer>
+      x-ray artifact only · architecture mode · standard depth · updated 2026-08-06 · source-backed facts and inference remain visibly separated
+    </footer>
+  </main>
+
+  <script>
+    const controls = {
+      surface: document.getElementById('toggle-surface'),
+      flow: document.getElementById('toggle-flow'),
+      adapter: document.getElementById('toggle-adapter'),
+      deps: document.getElementById('toggle-deps'),
+      risk: document.getElementById('toggle-risk')
+    };
+
+    const presets = {
+      all: ['surface', 'flow', 'adapter', 'deps', 'risk'],
+      trace: ['flow', 'adapter'],
+      boundary: ['adapter', 'deps', 'risk']
+    };
+
+    document.querySelectorAll('[data-preset]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const enabled = new Set(presets[button.dataset.preset] || []);
+        Object.entries(controls).forEach(([name, input]) => { input.checked = enabled.has(name); });
+      });
+    });
+
+    const sourceBox = document.getElementById('inspector-source');
+    const inferenceBox = document.getElementById('inspector-inference');
+    document.querySelectorAll('[data-inspect]').forEach((element) => {
+      const inspect = () => {
+        sourceBox.textContent = element.dataset.source || 'No source note attached.';
+        inferenceBox.textContent = element.dataset.inference || 'No explanatory inference attached.';
+      };
+      element.addEventListener('mouseenter', inspect);
+      element.addEventListener('focus', inspect);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+{
+  "xray_version": "0.2.0-seed",
+  "example_id": "rwo-recovery-ontology-integration",
+  "mode": "architecture",
+  "target_boundary": "The proposed integration boundary between the current Recursive Work Orchestrator ontology, RecoveryDecisionContract@candidate-2, and TransportNeutralWorkProtocolAdapterContract@candidate-2, including transport, domain, journal, ARE, ACI, entry, authority, and exact-effect owner seams.",
+  "renderer_level": "L0",
+  "layer_interaction": ["stacked", "isolate", "trace"],
+  "reader_contract": {
+    "reader_baseline": "working-reader",
+    "target_public": "A reader who knows the RWO vocabulary at a high level and needs to distinguish current ontology facts from the proposed recovery and transport-adapter deltas.",
+    "assumed_knowledge": [
+      "A journal stores accepted facts used to rebuild orchestration state.",
+      "A transport acknowledgement reports one bounded delivery boundary and is not journal acceptance.",
+      "A domain owns business meaning while the orchestrator owns structural coordination.",
+      "A candidate model is not automatically an implemented or promoted ontology model."
+    ],
+    "reader_reward": "The reader can explain where recovery classification sits, how domain and ARE evidence enter without choosing a treatment, what atomic acceptance checks, how transport observations remain separate from journal and recovery decisions, and why neither proposed delta can yet be called integrated.",
+    "opening_contract": {
+      "must_start_with": [
+        "the current graph state",
+        "the proposed recovery overlay",
+        "the proposed transport-adapter boundary",
+        "the owner boundary that prevents classification from becoming authority"
+      ],
+      "must_not_start_with": [
+        "an implication that recovery nodes already exist in the current graph",
+        "a claim of runtime conformance",
+        "an unexplained acronym"
+      ],
+      "failure_message": "Start with current-versus-proposed status, the plain-language recovery path, and the adapter truth boundary before exposing detailed ontology identifiers."
+    }
+  },
+  "reader_terms": [
+    {
+      "term": "RWO",
+      "plain_meaning": "Recursive Work Orchestrator: the structural coordinator that interprets typed work graphs and accepted history.",
+      "why_it_matters": "It owns structural routing and identity transitions, but not domain meaning or effect authority.",
+      "source_or_lane": "surface",
+      "authority": "source-backed",
+      "misuse_warning": "The ontology is proposal-only and does not prove an RWO runtime exists."
+    },
+    {
+      "term": "Recovery case",
+      "plain_meaning": "A closed, typed description of one admitted situation that may need treatment.",
+      "why_it_matters": "A case separates facts about what happened from the later choice of structural disposition.",
+      "source_or_lane": "components",
+      "authority": "source-backed",
+      "misuse_warning": "A domain signal or raw ARE output cannot choose or forge the case kind."
+    },
+    {
+      "term": "Recovery frontier",
+      "plain_meaning": "The journal-owned point that chooses at most one actionable trigger for overlapping subject scope.",
+      "why_it_matters": "It prevents concurrent observations from producing conflicting recovery decisions.",
+      "source_or_lane": "flow",
+      "authority": "source-backed",
+      "misuse_warning": "Selecting a trigger does not authorize a route or perform work."
+    },
+    {
+      "term": "ARE",
+      "plain_meaning": "Agent Reasoning Engine: an optional producer of evidence that must be admitted before the domain mapping can reference it.",
+      "why_it_matters": "Reasoning may enrich evidence without becoming the owner of routing, disposition, or authority.",
+      "source_or_lane": "external_dependencies",
+      "authority": "source-backed",
+      "misuse_warning": "Raw ARE output is never an accepted recovery signal or authority verdict."
+    },
+    {
+      "term": "Atomic acceptance",
+      "plain_meaning": "One all-or-nothing journal operation that rechecks the full validation vector, consumes the trigger, updates counters and identities, and appends the accepted decision.",
+      "why_it_matters": "If any relevant input changed, no partial mutation is allowed and the case must be rebuilt.",
+      "source_or_lane": "flow",
+      "authority": "source-backed",
+      "misuse_warning": "Rebuilding classification is not a Work retry."
+    },
+    {
+      "term": "Candidate delta",
+      "plain_meaning": "A proposed set of ontology nodes and relations that has not been written into the current graph.",
+      "why_it_matters": "It lets reviewers inspect the model without inflating it into implementation or promotion evidence.",
+      "source_or_lane": "risk_questions",
+      "authority": "inferred",
+      "misuse_warning": "The +34 count is a proposed mapping choice, not a current graph count."
+    },
+    {
+      "term": "Delivery observation",
+      "plain_meaning": "One closed, scoped statement about a transport delivery attempt: submitted_local, accepted_by_transport, accepted_by_peer_application, rejected_known, failed_known, outcome_unknown, flow_controlled, redelivered, dead_lettered, or disconnected.",
+      "why_it_matters": "It preserves what a transport can honestly observe without pretending that delivery proves journal acceptance or business effects.",
+      "source_or_lane": "properties",
+      "authority": "source-backed",
+      "misuse_warning": "A delivery observation is evidence input, not durable history, a recovery case, or treatment authority."
+    },
+    {
+      "term": "Adapter admission",
+      "plain_meaning": "Evidence-bound approval that one adapter implementation and configuration conform to an exact protocol tuple.",
+      "why_it_matters": "A declared capability manifest is only a claim until conformance evidence is accepted by an independent owner.",
+      "source_or_lane": "external_dependencies",
+      "authority": "source-backed",
+      "misuse_warning": "Admission has authority_effect:none and cannot authorize domain work, retries, or effects."
+    },
+    {
+      "term": "Redelivery",
+      "plain_meaning": "Another transport delivery attempt for the same canonical message identity.",
+      "why_it_matters": "It distinguishes transport behavior from a new Work Attempt, a journal replay, or an exact-effect retry.",
+      "source_or_lane": "flow",
+      "authority": "source-backed",
+      "misuse_warning": "Redelivery must not mint a new command or event identity."
+    }
+  ],
+  "layer_reader_outcomes": [
+    {
+      "layer": "surface",
+      "as_a_reader": "As a working reader, I want the current and proposed states separated immediately.",
+      "should_understand": "The current graph has 137 nodes and 220 relations with zero recovery matches; the recovery model is a candidate overlay.",
+      "because_it_matters_for": "preventing design evidence from being mistaken for ontology integration."
+    },
+    {
+      "layer": "flow",
+      "as_a_reader": "As an implementer, I want one end-to-end recovery trace.",
+      "should_understand": "Accepted facts become one admitted case, one non-authorizing decision, and only then an ordinary RWO route guarded by independent owners.",
+      "because_it_matters_for": "placing classification, acceptance, and execution at the correct seams."
+    },
+    {
+      "layer": "components",
+      "as_a_reader": "As an adapter implementer, I want the transport truth boundary and retry categories separated.",
+      "should_understand": "Command delivery and event ingress preserve canonical identity and emit scoped observations; journal acceptance, adapter admission, Work Attempt creation, recovery treatment, and exact-effect decisions remain outside adapters.",
+      "because_it_matters_for": "supporting gRPC, sockets, Redis Streams, managed buses, and in-memory transports without granting them orchestration authority."
+    },
+    {
+      "layer": "internal_dependencies",
+      "as_a_reader": "As an ontology maintainer, I want to see how proposed recovery concepts reuse current RWO anchors.",
+      "should_understand": "Event, DomainState, Journal, Attempt, BoundedRepeat, OrchestrationCursor, AuthorityReference, and OrchestratorKernel remain the current anchors.",
+      "because_it_matters_for": "avoiding a parallel recovery ontology detached from existing types."
+    },
+    {
+      "layer": "external_dependencies",
+      "as_a_reader": "As an owner, I want to see which decisions remain outside the recovery classifier.",
+      "should_understand": "Domain, journal, ARE/ACI admission, entry, authority, exact-effect, reconciliation, and ontology-promotion ownership remain explicit boundaries.",
+      "because_it_matters_for": "ensuring a recovery decision cannot silently acquire authority."
+    },
+    {
+      "layer": "risk_questions",
+      "as_a_reader": "As a reviewer, I want unresolved proof and ownership gaps visible beside the clean architecture.",
+      "should_understand": "Source digest drift, source precedence, runtime absence, owner-gate selection, and promotion remain unresolved.",
+      "because_it_matters_for": "choosing safe next work without overstating readiness."
+    }
+  ],
+  "readability_dynamics": {
+    "max_words_per_paragraph": 110,
+    "max_consecutive_dense_blocks": 1,
+    "require_scan_anchor_every_n_blocks": 3,
+    "allowed_visual_treatments": ["micro_heading", "metric_card", "trace_step", "question_line", "evidence_badge", "transition_line"]
+  },
+  "custom_visuals": [
+    {
+      "name": "Recovery frontier rail",
+      "target_domain": "RWO recovery concurrency",
+      "target_mode": "architecture",
+      "lane_served": "flow",
+      "source_evidence_represented": "RecoveryFrontier selects at most one actionable trigger for an overlapping subject scope.",
+      "inference_added": "A horizontal rail with overlapping trigger markers and one admitted marker makes inhibition visible.",
+      "visual_sketch": "observed trigger markers -> one highlighted actionable slot -> consumed marker after acceptance",
+      "inputs_needed": "trigger identity, subject scope, overlap relation, selected trigger, consumption state",
+      "accessibility_notes": "The selected and inhibited states use text labels and symbols in addition to color.",
+      "validation_notes": "The visual must never imply that frontier selection authorizes a disposition.",
+      "anti_pattern_warning": "Do not draw several simultaneous actionable triggers for overlapping scope."
+    }
+  ],
+  "lanes": {
+    "surface": {
+      "handle": "surface.current-vs-proposed",
+      "evidence": [
+        "The current nodes projection contains 137 nodes and no Recovery/recovery identifier or label matches.",
+        "The current relations projection contains 220 relations and no Recovery/recovery endpoint or identifier matches.",
+        "RecoveryDecisionContract@candidate-2 is an exact candidate design plus a non-executed implementation plan.",
+        "TransportNeutralWorkProtocolAdapterContract@candidate-2 is a design refinement with 30 scenario records and no runtime execution evidence."
+      ],
+      "inference": [
+        "The clearest integration view is a proposed overlay attached to current RWO anchors."
+      ]
+    },
+    "properties": {
+      "handle": "properties.recovery-invariants",
+      "evidence": [
+        "Every RecoveryDecision has authority_effect:none.",
+        "The union has eight case variants and thirteen dispositions.",
+        "Work retry and effect-attempt retry are distinct operations.",
+        "An unknown effect outcome never permits Work or effect retry.",
+        "Canonical message identity is distinct from TransportDeliveryAttempt identity, and redelivery preserves the canonical identity.",
+        "Adapters report a closed delivery-observation vocabulary; acknowledgement is not journal acceptance."
+      ],
+      "inference": [
+        "Dispositions should be represented as a closed typed vocabulary rather than thirteen free-standing architecture nodes."
+      ]
+    },
+    "components": {
+      "handle": "components.candidate-delta",
+      "evidence": [
+        "The exact model names RecoveryMapping, DomainRecoverySignalHandle, RecoveryFrontier, CaseAssembler, RecoveryCase, RecoveryClassifier, RecoveryDecision, DecisionValidationVector, and identity/effect intents.",
+        "The exact model names eight case variants.",
+        "The adapter model separates CommandDeliveryPort, EventIngressPort, TransportDeliveryAttempt, and JournalAcceptancePort and places capability admission outside adapter authority."
+      ],
+      "inference": [
+        "A reviewable ontology overlay can be represented as 27 architecture nodes plus seven evidence, gate, and forbidden-topology nodes: a proposed +34-node delta."
+      ]
+    },
+    "internal_dependencies": {
+      "handle": "dependencies.current-rwo-anchors",
+      "evidence": [
+        "The current ontology defines Event, Journal, Attempt, BoundedRepeat, OrchestrationCursor, DomainState, AuthorityReference, and OrchestratorKernel.",
+        "The current ontology already includes observation-admission, history, exact-effect, and replay stages plus owner gates and forbidden topology nodes.",
+        "The proposed adapter path carries a canonical command or event through a transport delivery attempt into a scoped observation, then crosses JournalAcceptancePort before recovery or execution owners act."
+      ],
+      "inference": [
+        "Recovery nodes should refine and relate to these anchors instead of introducing duplicate concepts."
+      ]
+    },
+    "external_dependencies": {
+      "handle": "dependencies.owner-seams",
+      "evidence": [
+        "The domain owns deterministic RecoveryMapping meaning.",
+        "ARE is optional admitted evidence only.",
+        "Journal/ACI acceptance and entry, authority, and effect gates remain independent of classification.",
+        "Five owner gates remain open for truth reconciliation, effect schemas, ARE/ACI conformance, ontology promotion, and exact adapter implementation/configuration conformance."
+      ],
+      "inference": [
+        "The ontology should model these seams as explicit owner/gate relations rather than burying them in descriptive prose."
+      ]
+    },
+    "flow": {
+      "handle": "flow.recovery-decision-trace",
+      "evidence": [
+        "Command and event lanes preserve canonical identity while each send or receive creates a distinct TransportDeliveryAttempt.",
+        "A transport observation is proposed to the journal; only accepted journal history can feed recovery classification.",
+        "DomainEvent maps through a domain-owned pure RecoveryMapping to an admitted signal.",
+        "Accepted structural records feed a journal-owned RecoveryFrontier.",
+        "CaseAssembler returns a RecoveryCase or rejection; classifier returns a non-authorizing decision.",
+        "Atomic acceptance checks the complete validation vector before an ordinary RWO route proceeds through independent gates."
+      ],
+      "inference": [
+        "The diagram groups eight case variants inside one case-union boundary and thirteen dispositions inside one closed-vocabulary boundary."
+      ]
+    },
+    "lifecycle": {
+      "handle": "lifecycle.safe-adoption",
+      "evidence": [
+        "The refined run recommends L0 canonical IDs and pure classification, L1 frontier/atomic acceptance, L2 owner conformance, and L3 ontology proposal through a separate owner decision.",
+        "The transport-adapter refinement defines a validation-first Work Pack, but no SWU has been authorized or executed.",
+        "The current ontology README gives DESIGN.md primary semantic precedence and does not grant ontology promotion."
+      ],
+      "inference": [
+        "Safe ontology adoption starts by reconciling source digest drift and design-source precedence, then materializes candidate nodes and fixtures, validates, and seeks owner promotion."
+      ]
+    },
+    "risk_questions": {
+      "handle": "risk.integration-gaps",
+      "evidence": [
+        "The core ontology validator currently reports a pinned source digest mismatch for ONTOLOGY.md.",
+        "The graph validator passes independently.",
+        "The transport scenario matrix contains 30 design cases, not executed tests.",
+        "The adapter reviewers inspected the frozen source and refinement seed, not the later Candidate-2 artifact; their reviews are not independent Candidate-2 validation.",
+        "Runtime conformance, cross-repository ARE/ACI conformance, adapter implementation/configuration conformance, and ontology promotion remain unsupported."
+      ],
+      "inference": [
+        "The exact refinement artifact cannot become a semantic source for the ontology until the design owner adopts it or source precedence is explicitly changed."
+      ]
+    },
+    "visual_composition": {
+      "handle": "visual.layered-architecture",
+      "evidence": [
+        "L0 static HTML/SVG can express the architecture without remote rendering.",
+        "The x-ray library provides node, boundary, arrow, branch, timeline, risk, dependency-boundary, lifecycle-stack, and evidence-inference patterns."
+      ],
+      "inference": [
+        "Use five selectable layers, solid source-backed elements, dashed proposed/inference elements, a dependency-boundary split for adapter truth, a node-and-arrow delivery sequence, risk markers, and a custom frontier rail."
+      ]
+    }
+  }
+}

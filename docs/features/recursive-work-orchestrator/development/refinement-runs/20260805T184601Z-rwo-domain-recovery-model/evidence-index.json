@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20260805T184601Z-rwo-domain-recovery-model",
+  "dispatch_id": "refine-20260805T184601Z-rwo-domain-recovery-model",
+  "target": "docs/features/recursive-work-orchestrator/",
+  "status": "complete",
+  "verdict": "pass",
+  "claim_level": "exact candidate design and non-executed plan",
+  "authorization": {
+    "runtime_stages": "approved",
+    "single_helper": "approved_and_closed",
+    "external_research": "not_authorized_not_required"
+  },
+  "sources": [
+    {"path": "../../../DESIGN.md", "claim_level": "proposal"},
+    {"path": "../../../ontology/ONTOLOGY.md", "claim_level": "accepted explanatory view; non-authority"},
+    {"path": "../../../ontology/receipts/CURRENT-STATE-2026-08-05-VALIDATION.json", "claim_level": "graph validation receipt"},
+    {"path": "../../../../../../../../ops/development/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research/findings.md", "claim_level": "accepted research findings"},
+    {"path": "../../../../../../../../cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md", "claim_level": "private documentation candidate; protected context"},
+    {"path": "../../../../../../implementations/server/runtime/canonical.py", "claim_level": "current executable canonical profile source"},
+    {"path": "../../../../../../implementations/server/runtime/journal.py", "claim_level": "current executable atomic journal source"}
+  ],
+  "stages": [
+    {"step_id": "s01", "status": "pass", "artifact": "stages/01-context-builder.md", "receipt": "receipts/s01-context-builder.json"},
+    {"step_id": "s02", "status": "pass", "artifact": "stages/02-invoke-define.md", "receipt": "receipts/s02-invoke-define.json"},
+    {"step_id": "s03", "status": "flag", "artifact": "stages/03-interrogation-refine-review.md", "receipt": "receipts/s03-interrogation-refine-review.json"},
+    {"step_id": "s04", "status": "pass", "artifact": "stages/04-research-decision.md", "receipt": "receipts/s04-research-decision.json"},
+    {"step_id": "s05", "status": "pass", "artifact": "stages/05-distill.md", "receipt": "receipts/s05-distill.json"},
+    {"step_id": "s06", "status": "pass", "artifact": "stages/06-invoke-design.md", "receipt": "receipts/s06-invoke-design.json", "later_review": "block"},
+    {"step_id": "s07", "status": "block", "artifact": "stages/07-interrogation-design-review.md", "receipt": "receipts/s07-interrogation-design-review.json", "consumed_by": "s08"},
+    {"step_id": "s08", "status": "pass", "artifact": "stages/08-distill-repair.md", "receipt": "receipts/s08-distill-repair.json", "scenario_matrix": "stages/08-scenario-matrix.json"},
+    {"step_id": "s09", "status": "pass", "artifact": "stages/09-invoke-plan.md", "receipt": "receipts/s09-invoke-plan.json"},
+    {"step_id": "s10", "status": "pass", "artifact": "stages/10-final-interrogation.md", "receipt": "receipts/s10-final-interrogation.json"}
+  ],
+  "helper": {
+    "role": "recovery-model-adversary",
+    "agent_id": "/root/recovery_model_adversary",
+    "lifecycle": "spawned_joined_closed",
+    "boundary_status": "pass",
+    "review_verdict": "block",
+    "artifact": "stages/subagents/recovery-model-adversary.md",
+    "receipt": "stages/subagents/recovery-model-adversary.receipt.json",
+    "finding_counts": {"block": 11, "flag": 4, "total": 15}
+  },
+  "final_evidence": {
+    "result": "RESULT.md",
+    "final_receipt": "FINAL-RECEIPT.json",
+    "model": "stages/08-distill-repair.md",
+    "model_ref": "RecoveryDecisionContract@candidate-2",
+    "case_variants": 8,
+    "dispositions": 13,
+    "scenario_pass": 20,
+    "scenario_total": 20,
+    "final_audit_pass": 12,
+    "final_audit_total": 12,
+    "plan": "plan/WORK-PACK.md",
+    "swu_count": 10,
+    "selected_swu": null,
+    "implementation_effect": "none",
+    "authority_effect": "none"
+  },
+  "owner_gaps": [
+    "G1-JOURNAL-DOMAIN-TRUTH",
+    "G2-EXACT-EFFECT-OWNER",
+    "G3-ARE-ACI-CONFORMANCE",
+    "G4-ONTOLOGY-PROMOTION"
+  ]
+}

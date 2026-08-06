@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:,">
+  <title>Recursive Work Orchestrator — Typed Work Atlas</title>
+  <style>
+    :root {
+      --canvas: #091015;
+      --canvas-deep: #060b0f;
+      --surface: #101920;
+      --surface-raised: #16222b;
+      --line: #263640;
+      --line-strong: #3c515d;
+      --text: #edf5f2;
+      --muted: #91a4a8;
+      --faint: #617479;
+      --mint: #70d7c8;
+      --mint-soft: #173c3a;
+      --amber: #edbd71;
+      --amber-soft: #3e301b;
+      --rose: #e88b9c;
+      --rose-soft: #40232c;
+      --blue: #8cb8ef;
+      --blue-soft: #1c3049;
+      --shadow: 0 22px 64px rgba(0, 0, 0, .34);
+      --radius: 16px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--canvas-deep);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100svh;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    button,
+    [role="button"] { font: inherit; }
+
+    button:focus-visible,
+    [role="button"]:focus-visible {
+      outline: 2px solid var(--mint);
+      outline-offset: 3px;
+    }
+
+    .atlas {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      grid-template-rows: 72px minmax(0, 1fr);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 24% -10%, rgba(112, 215, 200, .09), transparent 34%),
+        radial-gradient(circle at 90% 15%, rgba(140, 184, 239, .06), transparent 26%),
+        var(--canvas);
+      isolation: isolate;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: minmax(270px, 1fr) auto minmax(270px, 1fr);
+      align-items: center;
+      gap: 24px;
+      min-width: 0;
+      padding: 0 22px;
+      border-bottom: 1px solid rgba(145, 164, 168, .16);
+      background: rgba(9, 16, 21, .87);
+      backdrop-filter: blur(18px);
+    }
+
+    .identity {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .identity-mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 1px solid rgba(112, 215, 200, .38);
+      border-radius: 9px;
+      color: var(--mint);
+      background: rgba(112, 215, 200, .08);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .identity-copy { min-width: 0; }
+
+    .identity-title {
+      margin: 0;
+      overflow: hidden;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 720;
+      letter-spacing: -.01em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .identity-subtitle {
+      margin-top: 3px;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+    }
+
+    .lens-switcher {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid rgba(145, 164, 168, .19);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, .025);
+    }
+
+    .lens-button {
+      min-height: 34px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 9px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 680;
+      letter-spacing: .01em;
+      transition: color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+    }
+
+    .lens-button:hover { color: var(--text); }
+
+    .lens-button[aria-selected="true"] {
+      color: #07100f;
+      background: var(--mint);
+      box-shadow: 0 4px 18px rgba(112, 215, 200, .14);
+    }
+
+    .ceiling {
+      justify-self: end;
+      display: grid;
+      grid-template-columns: auto auto;
+      align-items: center;
+      gap: 8px 10px;
+      min-width: 0;
+      text-align: right;
+    }
+
+    .ceiling-dot {
+      grid-row: 1 / 3;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 0 5px rgba(237, 189, 113, .1);
+    }
+
+    .ceiling strong {
+      color: var(--amber);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .ceiling span {
+      color: var(--faint);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .canvas-shell {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    #scene {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: var(--text);
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    @media (min-width: 841px) {
+      .canvas-shell.inspector-open #scene { width: calc(100% - 400px); }
+    }
+
+    #scene.is-panning { cursor: grabbing; }
+
+    .world-bg { fill: url(#minor-grid); }
+
+    .scene-kicker {
+      fill: var(--mint);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .scene-title {
+      fill: var(--text);
+      font-size: 28px;
+      font-weight: 760;
+      letter-spacing: -.035em;
+    }
+
+    .scene-copy {
+      fill: var(--muted);
+      font-size: 12px;
+    }
+
+    .group-frame {
+      fill: rgba(16, 25, 32, .62);
+      stroke: rgba(145, 164, 168, .2);
+      stroke-width: 1;
+      stroke-dasharray: 5 7;
+    }
+
+    .group-title {
+      fill: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .11em;
+    }
+
+    .lane-frame {
+      fill: rgba(16, 25, 32, .38);
+      stroke: rgba(145, 164, 168, .13);
+    }
+
+    .lane-label {
+      fill: var(--faint);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      font-weight: 720;
+      letter-spacing: .08em;
+    }
+
+    .node {
+      cursor: pointer;
+      outline: none;
+    }
+
+    .node .node-frame {
+      fill: rgba(16, 25, 32, .96);
+      stroke: var(--line-strong);
+      stroke-width: 1;
+      filter: url(#node-shadow);
+      transition: stroke 140ms ease, fill 140ms ease;
+    }
+
+    .node:hover .node-frame,
+    .node:focus-visible .node-frame {
+      fill: var(--surface-raised);
+      stroke: var(--mint);
+    }
+
+    .node.is-selected .node-frame {
+      fill: #15262a;
+      stroke: var(--mint);
+      stroke-width: 2;
+    }
+
+    .node[data-tone="amber"] .node-frame { stroke: rgba(237, 189, 113, .65); }
+    .node[data-tone="rose"] .node-frame { stroke: rgba(232, 139, 156, .62); }
+    .node[data-tone="blue"] .node-frame { stroke: rgba(140, 184, 239, .62); }
+    .node[data-tone="muted"] .node-frame { stroke: rgba(145, 164, 168, .35); }
+    .node[data-tone="amber"].is-selected .node-frame,
+    .node[data-tone="amber"]:hover .node-frame { stroke: var(--amber); }
+    .node[data-tone="rose"].is-selected .node-frame,
+    .node[data-tone="rose"]:hover .node-frame { stroke: var(--rose); }
+    .node[data-tone="blue"].is-selected .node-frame,
+    .node[data-tone="blue"]:hover .node-frame { stroke: var(--blue); }
+
+    .node-accent { fill: var(--mint); }
+    .node[data-tone="amber"] .node-accent { fill: var(--amber); }
+    .node[data-tone="rose"] .node-accent { fill: var(--rose); }
+    .node[data-tone="blue"] .node-accent { fill: var(--blue); }
+    .node[data-tone="muted"] .node-accent { fill: var(--muted); }
+
+    .node-kicker {
+      fill: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .09em;
+    }
+
+    .node-title {
+      fill: var(--text);
+      font-size: 14px;
+      font-weight: 720;
+      letter-spacing: -.015em;
+    }
+
+    .node-subtitle {
+      fill: var(--muted);
+      font-size: 10px;
+    }
+
+    .node-micro {
+      fill: var(--faint);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 8px;
+    }
+
+    .edge {
+      fill: none;
+      stroke: var(--line-strong);
+      stroke-width: 1.4;
+      marker-end: url(#arrow-default);
+    }
+
+    .edge.command {
+      stroke: var(--amber);
+      marker-end: url(#arrow-amber);
+    }
+
+    .edge.event {
+      stroke: var(--mint);
+      marker-end: url(#arrow-mint);
+    }
+
+    .edge.proof {
+      stroke: var(--blue);
+      marker-end: url(#arrow-blue);
+    }
+
+    .edge.repeat {
+      stroke: var(--rose);
+      stroke-dasharray: 5 5;
+      marker-end: url(#arrow-rose);
+    }
+
+    .edge.sidecar {
+      stroke: var(--muted);
+      stroke-dasharray: 3 6;
+      marker-end: none;
+    }
+
+    .edge-label-bg {
+      fill: var(--canvas);
+      opacity: .94;
+    }
+
+    .edge-label {
+      fill: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 8px;
+      font-weight: 650;
+      letter-spacing: .04em;
+    }
+
+    .not-equals {
+      fill: var(--rose);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .work-primer {
+      position: absolute;
+      z-index: 6;
+      top: 16px;
+      left: 18px;
+      width: min(320px, calc(100vw - 36px));
+      pointer-events: none;
+      padding: 12px 14px;
+      border: 1px solid rgba(112, 215, 200, .2);
+      border-radius: 13px;
+      background: rgba(9, 16, 21, .78);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, .2);
+      backdrop-filter: blur(12px);
+    }
+
+    .work-primer strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--mint);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9px;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .work-primer p {
+      margin: 0;
+      color: #cbd8d6;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .work-primer b { color: var(--text); }
+
+    .inspector {
+      position: absolute;
+      z-index: 12;
+      top: 14px;
+      right: 14px;
+      bottom: 54px;
+      width: min(372px, calc(100vw - 28px));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+      border: 1px solid rgba(145, 164, 168, .22);
+      border-radius: var(--radius);
+      background: rgba(13, 21, 27, .95);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+      transform: translateX(calc(100% + 28px));
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 190ms ease, opacity 150ms ease, visibility 190ms;
+    }
+
+    .inspector.is-open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .inspector-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 18px 15px;
+      border-bottom: 1px solid rgba(145, 164, 168, .14);
+    }
+
+    .inspector-kicker {
+      margin-bottom: 6px;
+      color: var(--mint);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9px;
+      font-weight: 720;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .inspector-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 20px;
+      line-height: 1.12;
+      letter-spacing: -.035em;
+    }
+
+    .close-inspector {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      border: 1px solid rgba(145, 164, 168, .2);
+      border-radius: 9px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .close-inspector:hover {
+      color: var(--text);
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, .04);
+    }
+
+    .inspector-body {
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding: 16px 18px 22px;
+      scrollbar-color: var(--line-strong) transparent;
+    }
+
+    .summary {
+      margin: 0 0 16px;
+      color: #cbd8d6;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .meta-card {
+      min-width: 0;
+      padding: 10px 11px;
+      border: 1px solid rgba(145, 164, 168, .13);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .022);
+    }
+
+    .meta-card span,
+    .detail-section h3 {
+      display: block;
+      margin: 0 0 5px;
+      color: var(--faint);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 8px;
+      font-weight: 720;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .meta-card strong {
+      display: block;
+      overflow: hidden;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 650;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .detail-section {
+      padding: 14px 0;
+      border-top: 1px solid rgba(145, 164, 168, .12);
+    }
+
+    .detail-section p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .token-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .token-list li {
+      max-width: 100%;
+      padding: 5px 7px;
+      overflow: hidden;
+      border: 1px solid rgba(145, 164, 168, .17);
+      border-radius: 7px;
+      color: #b8c7c7;
+      background: rgba(255, 255, 255, .025);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9px;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+    }
+
+    .warning {
+      padding: 11px 12px;
+      border: 1px solid rgba(232, 139, 156, .22);
+      border-radius: 10px;
+      color: #e9bdc5;
+      background: rgba(232, 139, 156, .065);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .source-ref {
+      overflow-wrap: anywhere;
+      color: #b7c4c6;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9px !important;
+    }
+
+    .legend {
+      position: absolute;
+      z-index: 8;
+      right: 14px;
+      bottom: 12px;
+      left: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      min-height: 30px;
+      padding: 5px 12px;
+      overflow: hidden;
+      border: 1px solid rgba(145, 164, 168, .14);
+      border-radius: 10px;
+      color: var(--faint);
+      background: rgba(9, 16, 21, .8);
+      backdrop-filter: blur(12px);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 8px;
+      letter-spacing: .035em;
+      white-space: nowrap;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch {
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+      background: var(--mint);
+    }
+
+    .legend-swatch.relation {
+      width: 16px;
+      height: 1px;
+      border-radius: 0;
+      background: var(--amber);
+    }
+
+    .legend-swatch.owner { background: var(--blue); }
+    .legend-swatch.forbidden { background: var(--rose); }
+
+    .canvas-hint {
+      position: absolute;
+      z-index: 7;
+      bottom: 53px;
+      left: 18px;
+      color: rgba(145, 164, 168, .66);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 8px;
+      letter-spacing: .04em;
+      pointer-events: none;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 840px) {
+      .atlas { grid-template-rows: 106px minmax(0, 1fr); }
+
+      .topbar {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 48px 46px;
+        gap: 0 12px;
+        padding: 6px 12px;
+      }
+
+      .identity { grid-column: 1; grid-row: 1; }
+      .ceiling { grid-column: 2; grid-row: 1; }
+
+      .ceiling span,
+      .identity-subtitle { display: none; }
+
+      .lens-switcher {
+        grid-column: 1 / 3;
+        grid-row: 2;
+        justify-self: stretch;
+      }
+
+      .lens-button {
+        flex: 1;
+        padding: 0 8px;
+      }
+
+      .inspector {
+        top: auto;
+        right: 8px;
+        bottom: 46px;
+        left: 8px;
+        width: auto;
+        max-height: 52%;
+        transform: translateY(calc(100% + 58px));
+      }
+
+      .inspector.is-open { transform: translateY(0); }
+
+      .work-primer {
+        top: 10px;
+        left: 10px;
+        width: min(286px, calc(100vw - 20px));
+      }
+
+      .work-primer p { font-size: 10px; }
+
+      .canvas-hint { display: none; }
+
+      .legend {
+        right: 8px;
+        bottom: 8px;
+        left: 8px;
+        justify-content: flex-start;
+        gap: 12px;
+        overflow: hidden;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .identity-title { font-size: 12px; }
+      .identity-mark { width: 25px; height: 25px; }
+      .ceiling strong { font-size: 8px; }
+      .lens-button { font-size: 11px; }
+      .legend-item:nth-child(3) { display: none; }
+      .work-primer { max-width: 235px; }
+      .work-primer p { line-height: 1.35; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="atlas" id="atlas">
+    <header class="topbar">
+      <div class="identity">
+        <div class="identity-mark" aria-hidden="true">W</div>
+        <div class="identity-copy">
+          <h1 class="identity-title">Recursive Work Orchestrator</h1>
+          <div class="identity-subtitle">rwo-architecture@0.1.0 · typed work atlas</div>
+        </div>
+      </div>
+
+      <nav class="lens-switcher" role="tablist" aria-label="Ontology lenses">
+        <button class="lens-button" role="tab" id="tab-structure" aria-controls="scene" aria-selected="true" data-lens="structure">Structure</button>
+        <button class="lens-button" role="tab" id="tab-flow" aria-controls="scene" aria-selected="false" data-lens="flow">Flow</button>
+        <button class="lens-button" role="tab" id="tab-ownership" aria-controls="scene" aria-selected="false" data-lens="ownership">Ownership / Proof</button>
+      </nav>
+
+      <div class="ceiling" aria-label="Claim ceiling">
+        <i class="ceiling-dot" aria-hidden="true"></i>
+        <strong>Proposal only</strong>
+        <span>definition evidence · no runtime claim</span>
+      </div>
+    </header>
+
+    <section class="canvas-shell" aria-label="Typed Coordinated Work Atlas canvas">
+      <div class="work-primer" aria-label="What is Work?">
+        <strong>What is Work?</strong>
+        <p><b>One typed executable boundary.</b> A leaf binds an executor; a composite contains a graph. Both remain Work. Only one root schedules.</p>
+      </div>
+
+      <svg id="scene" role="tabpanel" aria-labelledby="tab-structure scene-title" aria-describedby="scene-description" viewBox="0 0 1200 720" tabindex="0">
+        <title id="scene-title">Structure lens</title>
+        <desc id="scene-description">One root orchestrator expands a recursively composed pipeline without transferring authority to nested composites.</desc>
+        <defs>
+          <pattern id="minor-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(145,164,168,.055)" stroke-width="1"/>
+          </pattern>
+          <filter id="node-shadow" x="-30%" y="-40%" width="160%" height="190%">
+            <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".24"/>
+          </filter>
+          <marker id="arrow-default" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3c515d"/>
+          </marker>
+          <marker id="arrow-mint" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#70d7c8"/>
+          </marker>
+          <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#edbd71"/>
+          </marker>
+          <marker id="arrow-rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#e88b9c"/>
+          </marker>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8cb8ef"/>
+          </marker>
+        </defs>
+        <g id="scene-content"></g>
+      </svg>
+
+      <aside class="inspector" id="inspector" aria-labelledby="inspector-title" aria-hidden="true">
+        <div class="inspector-head">
+          <div>
+            <div class="inspector-kicker" id="inspector-kicker">KIND · WorkDefinition</div>
+            <h2 class="inspector-title" id="inspector-title">Pipeline</h2>
+          </div>
+          <button class="close-inspector" id="close-inspector" type="button" aria-label="Close inspector">×</button>
+        </div>
+        <div class="inspector-body" id="inspector-body"></div>
+      </aside>
+
+      <div class="canvas-hint" aria-hidden="true">drag to pan · wheel to zoom · 1/2/3 lenses · 0 recenter · esc close</div>
+
+      <div class="legend" aria-label="Persistent semantic legend">
+        <span class="legend-item"><i class="legend-swatch"></i>ENTITY · typed and selectable</span>
+        <span class="legend-item"><i class="legend-swatch relation"></i>RELATION · declared, directed</span>
+        <span class="legend-item"><i class="legend-swatch owner"></i>OWNER · meaning stays local</span>
+        <span class="legend-item"><i class="legend-swatch forbidden"></i>FORBIDDEN · no inferred authority</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const sourceDigest = "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419";
+
+      const records = {
+        "rwo:OrchestratorKernel": {
+          kind: "OrchestratorKernel",
+          title: "One root kernel",
+          owner: "ROOT RUNTIME",
+          evidence: "definition",
+          summary: "Validates and expands nested WorkGraphs, folds accepted events into one routing cursor, and issues declared commands. It does not decide whether domain work is correct, approved, or complete.",
+          source: "DESIGN.md §2, §8 · " + sourceDigest.slice(0, 12),
+          relations: ["expands → WorkGraph", "issues → Command", "derives → OrchestrationCursor"],
+          cannot: "Graph containment cannot create a second orchestrator or transmit parent authority.",
+          shield: "rwo:f.no-nested-orchestrator-invocation"
+        },
+        "work:pipeline@1": {
+          kind: "CompositeWorkDefinition",
+          title: "Pipeline",
+          owner: "DEFINITION OWNER",
+          evidence: "definition",
+          summary: "The outer pipeline is itself Work. Its body is a WorkGraph containing a nested reviewed-research composite, a gate, two terminal routes, and a non-controlling sidecar.",
+          source: "DESIGN.md §4.4, §9 · " + sourceDigest.slice(0, 12),
+          relations: ["has-contract → WorkContract", "has-body → graph:pipeline", "projects-output-with → OutputProjection"],
+          cannot: "A composite body does not grant nested orchestration authority.",
+          shield: "rwo:f.no-parent-authority-inheritance"
+        },
+        "work:reviewed-research@1": {
+          kind: "CompositeWorkDefinition",
+          title: "Reviewed research",
+          owner: "DEFINITION OWNER",
+          evidence: "definition",
+          summary: "A recursively reusable WorkDefinition. Research releases two independent review branches; an explicit all-policy joins their canonically ordered outputs into synthesis.",
+          source: "DESIGN.md §5.1–§5.3, §9 · " + sourceDigest.slice(0, 12),
+          relations: ["FanOut → review A + review B", "FanIn(all) → synthesize", "compiles-to → WorkGraph"],
+          cannot: "Fan-out does not prove independent judgment; fan-in does not reconcile meaning.",
+          shield: "rwo:f.no-structural-quorum-quality"
+        },
+        "work:approval@1": {
+          kind: "Gate WorkDefinition",
+          title: "Approval gate",
+          owner: "GATE WORK",
+          evidence: "definition",
+          summary: "The gate owns the decision and its evidence. The root kernel only matches one emitted route label to one explicit edge. Zero or multiple matches block.",
+          source: "DESIGN.md §5.4 · " + sourceDigest.slice(0, 12),
+          relations: ["approved → implement", "revise → reviewed research", "rejected → close"],
+          cannot: "Journal acceptance of a gate event does not create confirmation.",
+          shield: "rwo:f.no-terminal-success-collapse"
+        },
+        "work:implement@1": {
+          kind: "LeafWorkDefinition",
+          title: "Implementation work",
+          owner: "WORK / ADAPTER",
+          evidence: "definition",
+          summary: "A leaf WorkDefinition bound to an executor adapter. Every effectful command must carry accepted authority evidence across the adapter boundary.",
+          source: "DESIGN.md §4.3, RWO-I10 · " + sourceDigest.slice(0, 12),
+          relations: ["has-body → LeafBinding", "requires-authority → AuthorityReference"],
+          cannot: "Authority-reference presence does not prove adapter admission or effect occurrence.",
+          shield: "rwo:f.no-idempotency-effect-proof"
+        },
+        "work:close-without-effect@1": {
+          kind: "LeafWorkDefinition",
+          title: "Close without effect",
+          owner: "WORK / ADAPTER",
+          evidence: "definition",
+          summary: "An explicit terminal route that closes the composite without the implementation effect. Its terminal event still carries work-owned meaning.",
+          source: "DESIGN.md §5.4, §9 · " + sourceDigest.slice(0, 12),
+          relations: ["rejected route → invoke", "exhaustion route → invoke"],
+          cannot: "Terminal does not universally mean success, approval, or failure.",
+          shield: "rwo:f.no-terminal-success-collapse"
+        },
+        "work:telemetry-sidecar@1": {
+          kind: "Sidecar WorkDefinition",
+          title: "Telemetry sidecar",
+          owner: "SIDECAR WORK",
+          evidence: "definition",
+          summary: "Ordinary Work attached through a lifecycle policy. It may observe selected primary events and be awaited, but it has no control over the primary without an explicit edge.",
+          source: "DESIGN.md §5.5 · " + sourceDigest.slice(0, 12),
+          relations: ["uses-lifecycle-policy → await", "observes → selected events"],
+          cannot: "Attachment does not imply control or inherited authority.",
+          shield: "rwo:f.no-parent-authority-inheritance"
+        },
+        "occ:command": {
+          kind: "Command occurrence",
+          title: "Invoke command",
+          owner: "ROOT / ISSUER",
+          evidence: "illustrative",
+          summary: "An addressed request created after a declared edge becomes eligible. The target or its authority adapter may still reject it.",
+          source: "DESIGN.md §6, §8 · paper trace only",
+          relations: ["issued-by → OrchestratorKernel", "delivered-by → WorkProtocol", "caused-by → accepted event"],
+          cannot: "A Command is not an accepted Event and does not prove execution.",
+          shield: "rwo:f.no-bus-authority"
+        },
+        "occ:delivery": {
+          kind: "Protocol delivery",
+          title: "Addressed delivery",
+          owner: "WORK PROTOCOL",
+          evidence: "illustrative",
+          summary: "The logical protocol transports the command with at-least-once semantics and stable identity. It does not decide, authorize, or execute the work.",
+          source: "DESIGN.md §6.1–§6.2 · paper trace only",
+          relations: ["delivers → Command", "ordering-scope → per-work-run"],
+          cannot: "Delivery does not prove exactly-once effect or semantic acceptance.",
+          shield: "rwo:f.no-bus-authority"
+        },
+        "occ:work": {
+          kind: "WorkRun occurrence",
+          title: "Addressed work run",
+          owner: "WORK / ADAPTER",
+          evidence: "illustrative",
+          summary: "The addressed WorkRun receives the command, performs domain-specific work through its adapter, and owns the meaning of its emitted event.",
+          source: "DESIGN.md §4.2–§4.3, §7 · paper trace only",
+          relations: ["receives → Command", "emits → Event", "owns → DomainState"],
+          cannot: "The root cursor cannot reinterpret the work's domain outcome.",
+          shield: "rwo:f.no-kernel-domain-state"
+        },
+        "occ:event": {
+          kind: "Event occurrence",
+          title: "Release event",
+          owner: "WORK / PRODUCER",
+          evidence: "illustrative",
+          summary: "A work-owned event with a structural release classification. Its domain name and payload remain owned by the producing work.",
+          source: "DESIGN.md §6.3 · paper trace only",
+          relations: ["emitted-by → WorkRun", "recorded-by → Journal", "selected-by → EventTriggeredEdge"],
+          cannot: "Release or terminal classification does not mean approved, true, or successful.",
+          shield: "rwo:f.no-terminal-success-collapse"
+        },
+        "occ:journal": {
+          kind: "Journal acceptance",
+          title: "Accepted event record",
+          owner: "JOURNAL",
+          evidence: "illustrative",
+          summary: "The journal records an append-only acceptance disposition. Identical duplicates add no cursor transition; divergent same-key bytes quarantine.",
+          source: "DESIGN.md §6.2, §11 · paper trace only",
+          relations: ["records → Event", "supports → replay", "ordering-scope → per-work-run"],
+          cannot: "Journal acceptance is persistence evidence, not confirmation or authorization.",
+          shield: "rwo:f.no-bus-authority"
+        },
+        "occ:cursor": {
+          kind: "OrchestrationCursor projection",
+          title: "Cursor fold",
+          owner: "ROOT RUNTIME",
+          evidence: "illustrative",
+          summary: "A versioned reducer folds the accepted event history into rebuildable routing state: delivered commands, satisfied edges, and enabled nodes.",
+          source: "DESIGN.md §7–§8 · paper trace only",
+          relations: ["derived-from → Journal", "enables → declared edge"],
+          cannot: "The routing cursor is not the child's domain state and cannot manufacture freshness.",
+          shield: "rwo:f.no-projection-authority"
+        },
+        "state:domain": {
+          kind: "DomainState",
+          title: "Domain status",
+          owner: "WORK / ADAPTER",
+          evidence: "runtime required",
+          summary: "The meaning and lifecycle state of an individual unit of work. The orchestrator may observe declared events but never becomes its owner.",
+          source: "DESIGN.md §3, §7",
+          relations: ["owned-by → WorkRun or ExecutorAdapter", "observed-through → Event"],
+          cannot: "A global projection cannot overwrite or reinterpret this state.",
+          shield: "rwo:f.no-kernel-domain-state"
+        },
+        "state:confirmation": {
+          kind: "ConfirmationState",
+          title: "Confirmation",
+          owner: "GATE / WORK",
+          evidence: "runtime required",
+          summary: "Confirmation meaning and evidence remain inside a gate or work unit. A confirmation event may be recorded, but recording is not the confirming act.",
+          source: "DESIGN.md §3, §5.4, §7",
+          relations: ["specializes → DomainState", "owned-by → Gate WorkRun"],
+          cannot: "Journal acceptance or projection display cannot create confirmation.",
+          shield: "rwo:f.no-bus-authority"
+        },
+        "state:journal": {
+          kind: "Journal disposition",
+          title: "Journal acceptance",
+          owner: "JOURNAL",
+          evidence: "runtime required",
+          summary: "A distinct persistence disposition: new record, duplicate without transition, quarantined divergent record, or rejected record.",
+          source: "DESIGN.md §6.2, §7",
+          relations: ["recorded-by → Journal", "supports → EvidenceReference"],
+          cannot: "Persistence is not domain status, confirmation, or authority.",
+          shield: "rwo:f.no-bus-authority"
+        },
+        "state:cursor": {
+          kind: "OrchestrationCursor",
+          title: "Routing cursor",
+          owner: "ROOT RUNTIME",
+          evidence: "runtime required",
+          summary: "Rebuildable control state used to avoid duplicate invocation and evaluate fan-in. It is derived from accepted history under a named reducer version.",
+          source: "DESIGN.md §7, RWO-I11",
+          relations: ["derived-from → Journal", "has → reducer version"],
+          cannot: "Cursor state cannot stand in for work-owned status.",
+          shield: "rwo:f.no-projection-authority"
+        },
+        "proof:authority": {
+          kind: "AuthorityReference",
+          title: "Authority reference",
+          owner: "EXTERNAL OWNER ROUTE",
+          evidence: "runtime required",
+          summary: "A reference to accepted authority evidence required before an effectful command may cross the adapter boundary.",
+          source: "DESIGN.md §4.1, RWO-I10",
+          relations: ["required-by → Command", "checked-at → adapter boundary"],
+          cannot: "Presence alone does not prove the decision is correct or the command was admitted.",
+          shield: "rwo:f.no-ontology-promotion"
+        },
+        "proof:admission": {
+          kind: "Adapter admission observation",
+          title: "Adapter admission",
+          owner: "AUTHORITY / EXECUTOR ADAPTER",
+          evidence: "runtime required",
+          summary: "A separately observed adapter decision to admit or reject an addressed effectful command after examining its declared authority reference.",
+          source: "DESIGN.md RWO-I10 · runtime trace required",
+          relations: ["evaluates → AuthorityReference", "guards → external effect"],
+          cannot: "Admission does not prove that an external effect occurred.",
+          shield: "rwo:f.no-idempotency-effect-proof"
+        },
+        "proof:effect": {
+          kind: "External effect observation",
+          title: "Effect occurrence",
+          owner: "EXTERNAL SYSTEM / ADAPTER",
+          evidence: "runtime or telemetry required",
+          summary: "Direct evidence that an external effect occurred. It remains separate from reference presence, admission, delivery, and domain success.",
+          source: "DESIGN.md RWO-I10 · direct evidence required",
+          relations: ["observed-by → authority audit", "supported-by → EvidenceReference"],
+          cannot: "Message idempotency cannot establish exactly-once business effects.",
+          shield: "rwo:f.no-idempotency-effect-proof"
+        }
+      };
+
+      const node = (id, x, y, width, height, kicker, title, subtitle, tone = "mint", extra = "") => `
+        <g class="node" data-id="${id}" data-tone="${tone}" role="button" tabindex="0" aria-label="${kicker}: ${title}" transform="translate(${x} ${y})">
+          <rect class="node-frame" width="${width}" height="${height}" rx="13"/>
+          <rect class="node-accent" x="0" y="0" width="4" height="${height}" rx="2"/>
+          <text class="node-kicker" x="18" y="22">${kicker}</text>
+          <text class="node-title" x="18" y="46">${title}</text>
+          <text class="node-subtitle" x="18" y="66">${subtitle}</text>
+          ${extra}
+        </g>`;
+
+      const label = (x, y, width, text) => `
+        <g aria-hidden="true">
+          <rect class="edge-label-bg" x="${x - width / 2}" y="${y - 10}" width="${width}" height="16" rx="6"/>
+          <text class="edge-label" x="${x}" y="${y + 1}" text-anchor="middle">${text}</text>
+        </g>`;
+
+      const scenes = {
+        structure: {
+          title: "Structure lens",
+          description: "One root orchestrator expands a recursively composed pipeline without transferring authority to nested composites.",
+          defaultSelection: "work:pipeline@1",
+          mobileViewBox: { x: 310, y: 40, width: 580, height: 1098 },
+          markup: () => `
+            <rect class="world-bg" x="-1800" y="-1400" width="4800" height="3600"/>
+            <text class="scene-kicker" x="58" y="126">STRUCTURE · WHAT IS COMPOSED?</text>
+            <text class="scene-title" x="58" y="160">Recursive Work, shallow authority.</text>
+            <text class="scene-copy" x="58" y="184">Every composition remains Work. Exactly one root expands the run plan.</text>
+
+            ${node("rwo:OrchestratorKernel", 790, 104, 248, 82, "KIND · ORCHESTRATOR KERNEL", "One root", "validates · expands · schedules", "amber")}
+            <path class="edge command" d="M914 186 C858 214 770 218 762 242"/>
+            ${label(838, 207, 92, "EXPANDS")}
+            ${node("work:pipeline@1", 438, 222, 324, 92, "KIND · COMPOSITE WORK DEFINITION", "Pipeline", "same outer contract · body: WorkGraph", "mint")}
+
+            <rect class="group-frame" x="86" y="352" width="1028" height="282" rx="22"/>
+            <text class="group-title" x="110" y="378">BODY · GRAPH:PIPELINE · FLATTENED BY THE ROOT</text>
+
+            ${node(
+              "work:reviewed-research@1", 126, 420, 276, 128,
+              "KIND · COMPOSITE WORK DEFINITION", "Reviewed research", "nested graph · still Work", "blue",
+              `<line x1="22" y1="88" x2="252" y2="88" stroke="rgba(140,184,239,.24)"/>
+               <text class="node-micro" x="22" y="108">research → [review A · review B] → synthesize</text>`
+            )}
+            ${node("work:approval@1", 474, 430, 206, 92, "KIND · GATE WORK", "Approval", "one route label · one edge", "amber")}
+            ${node("work:implement@1", 790, 392, 228, 88, "KIND · LEAF WORK DEFINITION", "Implement", "adapter + authority boundary", "mint")}
+            ${node("work:close-without-effect@1", 790, 516, 228, 88, "KIND · LEAF WORK DEFINITION", "Close", "explicit no-effect route", "muted")}
+            ${node("work:telemetry-sidecar@1", 150, 574, 224, 76, "KIND · SIDECAR WORK", "Observe", "await · no control edge", "rose")}
+
+            <path class="edge event" d="M402 472 C430 472 442 472 474 472"/>
+            ${label(438, 456, 80, "RELEASE")}
+            <path class="edge event" d="M680 452 C730 452 742 436 790 436"/>
+            ${label(735, 420, 78, "APPROVED")}
+            <path class="edge" d="M680 490 C736 490 744 560 790 560"/>
+            ${label(741, 546, 76, "REJECTED")}
+            <path class="edge repeat" d="M510 522 C458 596 366 590 325 548"/>
+            ${label(430, 584, 110, "REVISE · MAX 3")}
+            <path class="edge sidecar" d="M262 548 L262 574"/>
+            ${label(316, 565, 86, "LIFECYCLE")}
+
+            <text class="scene-copy" x="875" y="660" text-anchor="middle">Containment ≠ authority inheritance</text>
+          `
+        },
+        flow: {
+          title: "Flow lens",
+          description: "An illustrative accepted-event loop keeps command, event, journal acceptance, and routing cursor distinct.",
+          defaultSelection: "occ:command",
+          mobileViewBox: { x: 64, y: 184, width: 600, height: 1136 },
+          markup: () => `
+            <rect class="world-bg" x="-1800" y="-1400" width="4800" height="3600"/>
+            <text class="scene-kicker" x="58" y="126">FLOW · WHAT CAUSALLY OCCURS?</text>
+            <text class="scene-title" x="58" y="160">One accepted-event routing loop.</text>
+            <text class="scene-copy" x="58" y="184">Illustrative occurrence cards—not runtime observations. Command and event never collapse.</text>
+
+            <rect class="lane-frame" x="86" y="232" width="1028" height="124" rx="18"/>
+            <text class="lane-label" x="108" y="256">COMMAND PATH</text>
+            <rect class="lane-frame" x="86" y="418" width="1028" height="124" rx="18"/>
+            <text class="lane-label" x="108" y="442">EVENT / ACCEPTANCE PATH</text>
+
+            ${node("occ:command", 126, 270, 210, 74, "KIND · COMMAND", "Invoke work", "owner: root / issuer", "amber")}
+            ${node("occ:delivery", 396, 270, 210, 74, "LANE · WORK PROTOCOL", "Addressed delivery", "at-least-once · per run", "amber")}
+            ${node("occ:work", 676, 270, 210, 74, "KIND · WORK RUN", "Work / adapter", "owns domain meaning", "blue")}
+            ${node("occ:event", 676, 456, 210, 74, "KIND · EVENT", "Release event", "producer-owned meaning", "mint")}
+            ${node("occ:journal", 396, 456, 210, 74, "STATE · JOURNAL", "Accepted record", "new · duplicate · quarantine", "mint")}
+            ${node("occ:cursor", 126, 456, 210, 74, "STATE · CURSOR", "Reducer fold", "satisfied edge · enabled node", "blue")}
+
+            <path class="edge command" d="M336 307 L396 307"/>
+            ${label(366, 292, 68, "DELIVER")}
+            <path class="edge command" d="M606 307 L676 307"/>
+            ${label(641, 292, 62, "RECEIVE")}
+            <path class="edge event" d="M781 344 L781 456"/>
+            ${label(823, 403, 72, "EMITS")}
+            <path class="edge event" d="M676 493 L606 493"/>
+            ${label(641, 478, 66, "RECORD")}
+            <path class="edge proof" d="M396 493 L336 493"/>
+            ${label(366, 478, 52, "FOLD")}
+            <path class="edge proof" d="M231 456 C231 404 231 394 231 344"/>
+            ${label(278, 403, 88, "EDGE FIRES")}
+
+            <text class="scene-copy" x="600" y="604" text-anchor="middle">causation ≠ delivery ≠ journal acceptance ≠ domain status</text>
+            <text class="scene-kicker" x="600" y="632" text-anchor="middle">NO AUTOPLAY · NO GLOBAL ORDER · NO EXACTLY-ONCE EFFECT CLAIM</text>
+          `
+        },
+        ownership: {
+          title: "Ownership and proof lens",
+          description: "Separate owners and evidence requirements prevent domain state, confirmation, journal acceptance, routing state, and external effects from collapsing.",
+          defaultSelection: "state:domain",
+          mobileViewBox: { x: 66, y: 204, width: 570, height: 1079 },
+          markup: () => `
+            <rect class="world-bg" x="-1800" y="-1400" width="4800" height="3600"/>
+            <text class="scene-kicker" x="58" y="126">OWNERSHIP / PROOF · WHO MAY ESTABLISH WHAT?</text>
+            <text class="scene-title" x="58" y="160">State stays with its owner.</text>
+            <text class="scene-copy" x="58" y="184">Evidence crosses boundaries by reference. Meaning and authority do not.</text>
+
+            <rect class="group-frame" x="82" y="226" width="528" height="382" rx="22"/>
+            <text class="group-title" x="108" y="252">SEPARATE STATE OWNERS</text>
+            ${node("state:domain", 112, 280, 216, 88, "OWNER · WORK / ADAPTER", "Domain status", "opaque to root", "blue")}
+            ${node("state:confirmation", 364, 280, 216, 88, "OWNER · GATE / WORK", "Confirmation", "evidence stays local", "amber")}
+            ${node("state:journal", 112, 428, 216, 88, "OWNER · JOURNAL", "Acceptance", "persistence disposition", "mint")}
+            ${node("state:cursor", 364, 428, 216, 88, "OWNER · ROOT", "Routing cursor", "rebuildable projection", "blue")}
+            <text class="not-equals" x="346" y="338" text-anchor="middle">≠</text>
+            <text class="not-equals" x="346" y="486" text-anchor="middle">≠</text>
+            <text class="not-equals" x="220" y="410" text-anchor="middle">≠</text>
+            <text class="not-equals" x="472" y="410" text-anchor="middle">≠</text>
+
+            <rect class="group-frame" x="650" y="226" width="464" height="382" rx="22"/>
+            <text class="group-title" x="676" y="252">EXTERNAL EFFECT PROOF CHAIN</text>
+            ${node("proof:authority", 688, 280, 388, 74, "EVIDENCE · REFERENCE", "Authority reference", "present · absent · unsupported", "amber")}
+            ${node("proof:admission", 688, 404, 388, 74, "OBSERVATION · ADAPTER", "Admission", "admitted · rejected · not observed", "blue")}
+            ${node("proof:effect", 688, 528, 388, 74, "OBSERVATION · EXTERNAL", "Effect occurrence", "observed · not observed · unsupported", "rose")}
+            <path class="edge proof" d="M882 354 L882 404"/>
+            ${label(940, 385, 110, "DOES NOT IMPLY")}
+            <path class="edge repeat" d="M882 478 L882 528"/>
+            ${label(940, 509, 110, "DOES NOT IMPLY")}
+
+            <text class="scene-copy" x="346" y="574" text-anchor="middle">projection may display · never own</text>
+          `
+        }
+      };
+
+      const state = {
+        lens: "structure",
+        selected: null,
+        inspectorOpen: false,
+        viewBox: { x: 0, y: 0, width: 1200, height: 720 },
+        drag: null
+      };
+
+      const svg = document.getElementById("scene");
+      const canvasShell = document.querySelector(".canvas-shell");
+      const sceneContent = document.getElementById("scene-content");
+      const sceneTitle = document.getElementById("scene-title");
+      const sceneDescription = document.getElementById("scene-description");
+      const inspector = document.getElementById("inspector");
+      const inspectorKicker = document.getElementById("inspector-kicker");
+      const inspectorTitle = document.getElementById("inspector-title");
+      const inspectorBody = document.getElementById("inspector-body");
+      const closeInspector = document.getElementById("close-inspector");
+      const lensButtons = [...document.querySelectorAll(".lens-button")];
+
+      const list = (items) => `<ul class="token-list">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+
+      function applyViewBox() {
+        const box = state.viewBox;
+        svg.setAttribute("viewBox", `${box.x} ${box.y} ${box.width} ${box.height}`);
+      }
+
+      function resetView() {
+        const compact = window.matchMedia("(max-width: 840px)").matches;
+        state.viewBox = compact
+          ? { ...scenes[state.lens].mobileViewBox }
+          : { x: 0, y: 0, width: 1200, height: 720 };
+        applyViewBox();
+      }
+
+      function updateSelectionStyle() {
+        sceneContent.querySelectorAll(".node").forEach((element) => {
+          element.classList.toggle("is-selected", element.dataset.id === state.selected);
+          element.setAttribute("aria-pressed", element.dataset.id === state.selected ? "true" : "false");
+        });
+      }
+
+      function showInspector(id, moveFocus = false) {
+        const record = records[id];
+        if (!record) return;
+        state.selected = id;
+        state.inspectorOpen = true;
+        inspectorKicker.textContent = `KIND · ${record.kind}`;
+        inspectorTitle.textContent = record.title;
+        inspectorBody.innerHTML = `
+          <p class="summary">${record.summary}</p>
+          <div class="meta-grid">
+            <div class="meta-card"><span>Owner</span><strong>${record.owner}</strong></div>
+            <div class="meta-card"><span>Evidence stage</span><strong>${record.evidence}</strong></div>
+            <div class="meta-card"><span>Identity</span><strong title="${id}">${id}</strong></div>
+            <div class="meta-card"><span>Authority effect</span><strong>none</strong></div>
+          </div>
+          <section class="detail-section">
+            <h3>Declared relations</h3>
+            ${list(record.relations)}
+          </section>
+          <section class="detail-section">
+            <h3>Source selector</h3>
+            <p class="source-ref">${record.source}</p>
+          </section>
+          <section class="detail-section">
+            <h3>Cannot establish</h3>
+            <div class="warning">${record.cannot}</div>
+          </section>
+          <section class="detail-section">
+            <h3>Inference shield</h3>
+            ${list([record.shield, "proposal-only", "no runtime conformance"])}
+          </section>`;
+        inspector.classList.add("is-open");
+        canvasShell.classList.add("inspector-open");
+        inspector.setAttribute("aria-hidden", "false");
+        updateSelectionStyle();
+        if (moveFocus) closeInspector.focus({ preventScroll: true });
+      }
+
+      function hideInspector({ restoreFocus = false } = {}) {
+        const selectedNode = sceneContent.querySelector(`.node[data-id="${CSS.escape(state.selected || "")}"]`);
+        state.inspectorOpen = false;
+        inspector.classList.remove("is-open");
+        canvasShell.classList.remove("inspector-open");
+        inspector.setAttribute("aria-hidden", "true");
+        if (restoreFocus && selectedNode) selectedNode.focus({ preventScroll: true });
+      }
+
+      function bindSceneInteractions() {
+        const nodes = [...sceneContent.querySelectorAll(".node")];
+        nodes.forEach((element, index) => {
+          element.addEventListener("click", (event) => {
+            event.stopPropagation();
+            showInspector(element.dataset.id);
+          });
+          element.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              showInspector(element.dataset.id, true);
+            }
+            if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"].includes(event.key)) {
+              event.preventDefault();
+              const delta = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : -1;
+              nodes[(index + delta + nodes.length) % nodes.length].focus();
+            }
+          });
+        });
+      }
+
+      function renderLens(lens, { preserveInspector = false } = {}) {
+        const scene = scenes[lens];
+        if (!scene) return;
+        state.lens = lens;
+        sceneContent.innerHTML = scene.markup();
+        sceneTitle.textContent = scene.title;
+        sceneDescription.textContent = scene.description;
+        svg.setAttribute("aria-labelledby", `tab-${lens} scene-title`);
+        lensButtons.forEach((button) => {
+          const active = button.dataset.lens === lens;
+          button.setAttribute("aria-selected", active ? "true" : "false");
+          button.tabIndex = active ? 0 : -1;
+        });
+        bindSceneInteractions();
+        resetView();
+        if (!preserveInspector || !sceneContent.querySelector(`.node[data-id="${CSS.escape(state.selected || "")}"]`)) {
+          if (window.matchMedia("(max-width: 840px)").matches) {
+            state.selected = scene.defaultSelection;
+            hideInspector();
+            updateSelectionStyle();
+          } else {
+            showInspector(scene.defaultSelection);
+          }
+        } else {
+          updateSelectionStyle();
+        }
+      }
+
+      lensButtons.forEach((button, index) => {
+        button.addEventListener("click", () => renderLens(button.dataset.lens));
+        button.addEventListener("keydown", (event) => {
+          if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+          event.preventDefault();
+          const delta = event.key === "ArrowRight" ? 1 : -1;
+          const target = lensButtons[(index + delta + lensButtons.length) % lensButtons.length];
+          target.focus();
+          renderLens(target.dataset.lens);
+        });
+      });
+
+      closeInspector.addEventListener("click", () => hideInspector({ restoreFocus: true }));
+
+      svg.addEventListener("click", (event) => {
+        if (!event.target.closest(".node")) hideInspector();
+      });
+
+      svg.addEventListener("dblclick", (event) => {
+        if (!event.target.closest(".node")) resetView();
+      });
+
+      svg.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        const rect = svg.getBoundingClientRect();
+        const box = state.viewBox;
+        const pointerX = box.x + ((event.clientX - rect.left) / rect.width) * box.width;
+        const pointerY = box.y + ((event.clientY - rect.top) / rect.height) * box.height;
+        const scale = event.deltaY > 0 ? 1.12 : .89;
+        const nextWidth = Math.min(1900, Math.max(650, box.width * scale));
+        const nextHeight = nextWidth * .6;
+        const ratioX = (pointerX - box.x) / box.width;
+        const ratioY = (pointerY - box.y) / box.height;
+        state.viewBox = {
+          x: pointerX - ratioX * nextWidth,
+          y: pointerY - ratioY * nextHeight,
+          width: nextWidth,
+          height: nextHeight
+        };
+        applyViewBox();
+      }, { passive: false });
+
+      svg.addEventListener("pointerdown", (event) => {
+        if (event.target.closest(".node") || event.button !== 0) return;
+        const rect = svg.getBoundingClientRect();
+        state.drag = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          originX: state.viewBox.x,
+          originY: state.viewBox.y,
+          scaleX: state.viewBox.width / rect.width,
+          scaleY: state.viewBox.height / rect.height
+        };
+        svg.setPointerCapture(event.pointerId);
+        svg.classList.add("is-panning");
+      });
+
+      svg.addEventListener("pointermove", (event) => {
+        if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+        state.viewBox.x = state.drag.originX - (event.clientX - state.drag.startX) * state.drag.scaleX;
+        state.viewBox.y = state.drag.originY - (event.clientY - state.drag.startY) * state.drag.scaleY;
+        applyViewBox();
+      });
+
+      function endPan(event) {
+        if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+        state.drag = null;
+        svg.classList.remove("is-panning");
+      }
+
+      svg.addEventListener("pointerup", endPan);
+      svg.addEventListener("pointercancel", endPan);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.key === "Escape") hideInspector({ restoreFocus: true });
+        if (event.key === "0") resetView();
+        if (event.key === "1") renderLens("structure");
+        if (event.key === "2") renderLens("flow");
+        if (event.key === "3") renderLens("ownership");
+      });
+
+      renderLens("structure");
+    })();
+  </script>
+</body>
+</html>

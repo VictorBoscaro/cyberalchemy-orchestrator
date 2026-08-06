@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rwo.ontology.view@0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "view_id",
+    "view_role",
+    "title",
+    "description",
+    "owner_route",
+    "source_refs",
+    "node_refs",
+    "relation_refs",
+    "groups",
+    "sequences",
+    "allowed_readings",
+    "forbidden_authority_moves",
+    "residue_refs",
+    "authority_effect"
+  ],
+  "properties": {
+    "view_id": {
+      "type": "string",
+      "pattern": "^rwo:view:[a-z0-9.-]+$"
+    },
+    "view_role": {
+      "enum": ["system", "evidence", "bridge"]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_route": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^rwo:source:[a-z0-9-]+$"
+      }
+    },
+    "node_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "relation_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["group_id", "label", "node_refs"],
+        "properties": {
+          "group_id": {"type": "string", "minLength": 1},
+          "label": {"type": "string", "minLength": 1},
+          "node_refs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "sequences": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sequence_id", "label", "steps"],
+        "properties": {
+          "sequence_id": {"type": "string", "minLength": 1},
+          "label": {"type": "string", "minLength": 1},
+          "steps": {
+            "type": "array",
+            "minItems": 2,
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "allowed_readings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "forbidden_authority_moves": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "residue_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^rwo:residue\\.[0-9]{3}$"
+      }
+    },
+    "authority_effect": {
+      "const": "none"
+    }
+  }
+}

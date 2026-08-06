@@ -1,0 +1,4807 @@
+{
+  "schema": "../schemas/relation.schema.json",
+  "package_id": "rwo.current-state-graph@0.1.0",
+  "ontology_ref": "rwo-architecture@0.2.0",
+  "authority_effect": "none",
+  "relations": [
+    {
+      "relation_id": "rwo:relation:001-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:WorkDefinition",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:WorkDefinition is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:002-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:LeafWorkDefinition",
+      "target_node": "rwo:WorkDefinition",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:LeafWorkDefinition is a project-local subtype of rwo:WorkDefinition.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:003-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:CompositeWorkDefinition",
+      "target_node": "rwo:WorkDefinition",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:CompositeWorkDefinition is a project-local subtype of rwo:WorkDefinition.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:004-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:WorkRun",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:WorkRun is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:005-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:Attempt",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:Attempt is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:006-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:WorkGraph",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:WorkGraph is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:007-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:WorkNode",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:WorkNode is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:008-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:EventTriggeredEdge",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:EventTriggeredEdge is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:009-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:EventSelector",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:EventSelector is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:010-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:InputMapping",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:InputMapping is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:011-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:OutputProjection",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:OutputProjection is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:012-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:WorkContract",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:WorkContract is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:013-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:EventContract",
+      "target_node": "rwo:WorkContract",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:EventContract is a project-local subtype of rwo:WorkContract.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:014-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:CommandContract",
+      "target_node": "rwo:WorkContract",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:CommandContract is a project-local subtype of rwo:WorkContract.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:015-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:CompositionForm",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:CompositionForm is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:016-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:Sequence",
+      "target_node": "rwo:CompositionForm",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:Sequence is a project-local subtype of rwo:CompositionForm.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:017-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:FanOut",
+      "target_node": "rwo:CompositionForm",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:FanOut is a project-local subtype of rwo:CompositionForm.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:018-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:FanIn",
+      "target_node": "rwo:CompositionForm",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:FanIn is a project-local subtype of rwo:CompositionForm.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:019-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:Gate",
+      "target_node": "rwo:CompositionForm",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:Gate is a project-local subtype of rwo:CompositionForm.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:020-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:Sidecar",
+      "target_node": "rwo:CompositionForm",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:Sidecar is a project-local subtype of rwo:CompositionForm.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:021-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:BoundedRepeat",
+      "target_node": "rwo:CompositionForm",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:BoundedRepeat is a project-local subtype of rwo:CompositionForm.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:022-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:ExplicitComposition",
+      "target_node": "rwo:CompositionForm",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:ExplicitComposition is a project-local subtype of rwo:CompositionForm.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:023-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:ReleasePolicy",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:ReleasePolicy is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:024-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:SidecarLifecyclePolicy",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:SidecarLifecyclePolicy is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:025-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:WorkMessage",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:WorkMessage is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:026-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:Command",
+      "target_node": "rwo:WorkMessage",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:Command is a project-local subtype of rwo:WorkMessage.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:027-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:Event",
+      "target_node": "rwo:WorkMessage",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:Event is a project-local subtype of rwo:WorkMessage.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:028-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:EventClassification",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:EventClassification is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:029-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:WorkProtocol",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:WorkProtocol is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:030-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:Journal",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:Journal is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:031-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:OrchestratorKernel",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:OrchestratorKernel is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:032-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:OrchestrationCursor",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:OrchestrationCursor is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:033-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:StatusProjection",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:StatusProjection is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:034-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:ExecutorAdapter",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:ExecutorAdapter is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:035-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:AuthorityReference",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:AuthorityReference is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:036-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:DomainState",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:DomainState is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:037-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:ConfirmationState",
+      "target_node": "rwo:DomainState",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:ConfirmationState is a project-local subtype of rwo:DomainState.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:038-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:ArchitectureProfile",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:ArchitectureProfile is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:039-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:ObservationProjection",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:ObservationProjection is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:040-specializes",
+      "predicate": "specializes",
+      "relation_kind": "structural",
+      "source_node": "rwo:PropertyFinding",
+      "target_node": "rwo:ArchitectureElement",
+      "direction": "directed",
+      "owner_route": "RWO source owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "designed",
+      "properties": {
+        "transitive_within_type_hierarchy": true
+      },
+      "description": "rwo:PropertyFinding is a project-local subtype of rwo:ArchitectureElement.",
+      "forbidden_inferences": [
+        "Local subtype structure does not promote either term or imply runtime realization."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:041-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.dispatch-definition",
+      "target_node": "rwo:WorkDefinition",
+      "direction": "directed",
+      "owner_route": "RWO contract owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I01",
+        "finding_status": "indeterminate",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "description": "rwo:finding.current.dispatch-definition evaluates rwo:WorkDefinition without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:042-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.dispatch-definition",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.dispatch-definition.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:043-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.dispatch-definition",
+      "target_node": "rwo:residue.023",
+      "direction": "directed",
+      "owner_route": "protocol compilation, confirmation, and Dispatch owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.dispatch-definition cannot advance beyond its claim ceiling until rwo:residue.023 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:044-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.dispatch-definition",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.dispatch-definition cannot advance beyond its claim ceiling until rwo:residue.028 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:045-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.dispatch-definition",
+      "target_node": "rwo:precedent:confirmed-dispatch-row",
+      "direction": "directed",
+      "owner_route": "RWO contract owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.dispatch-definition records the bounded observation represented by rwo:precedent:confirmed-dispatch-row.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:046-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:confirmed-dispatch-row",
+      "target_node": "rwo:WorkDefinition",
+      "direction": "directed",
+      "owner_route": "RWO contract owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "partial-analogue",
+        "finding_status": "indeterminate",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:confirmed-dispatch-row has partial-analogue correspondence to rwo:WorkDefinition.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:047-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.run-identity",
+      "target_node": "rwo:WorkRun",
+      "direction": "directed",
+      "owner_route": "identity and runtime-domain owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I01",
+        "finding_status": "indeterminate",
+        "proof_status": "observed",
+        "correspondence": "precedent"
+      },
+      "description": "rwo:finding.current.run-identity evaluates rwo:WorkRun without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:048-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.run-identity",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.run-identity.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:049-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.run-identity",
+      "target_node": "rwo:residue.017",
+      "direction": "directed",
+      "owner_route": "identity and runtime-domain owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.run-identity cannot advance beyond its claim ceiling until rwo:residue.017 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:050-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.run-identity",
+      "target_node": "rwo:precedent:bound-address",
+      "direction": "directed",
+      "owner_route": "identity and runtime-domain owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.run-identity records the bounded observation represented by rwo:precedent:bound-address.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:051-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:bound-address",
+      "target_node": "rwo:WorkRun",
+      "direction": "directed",
+      "owner_route": "identity and runtime-domain owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "precedent",
+        "finding_status": "indeterminate",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:bound-address has precedent correspondence to rwo:WorkRun.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:052-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.leaf-adapter",
+      "target_node": "rwo:ExecutorAdapter",
+      "direction": "directed",
+      "owner_route": "host binding and RWO adapter owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I09",
+        "finding_status": "indeterminate",
+        "proof_status": "execution-unverified",
+        "correspondence": "partial-analogue"
+      },
+      "description": "rwo:finding.current.leaf-adapter evaluates rwo:ExecutorAdapter without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:053-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.leaf-adapter",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.leaf-adapter.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:054-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.leaf-adapter",
+      "target_node": "rwo:residue.013",
+      "direction": "directed",
+      "owner_route": "ontology source owner then adapter owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.leaf-adapter cannot advance beyond its claim ceiling until rwo:residue.013 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:055-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.leaf-adapter",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.leaf-adapter cannot advance beyond its claim ceiling until rwo:residue.028 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:056-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.leaf-adapter",
+      "target_node": "rwo:precedent:host-hook-translation",
+      "direction": "directed",
+      "owner_route": "host binding and RWO adapter owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:finding.current.leaf-adapter records the bounded observation represented by rwo:precedent:host-hook-translation.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:057-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:host-hook-translation",
+      "target_node": "rwo:ExecutorAdapter",
+      "direction": "directed",
+      "owner_route": "host binding and RWO adapter owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "correspondence": "partial-analogue",
+        "finding_status": "indeterminate",
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:precedent:host-hook-translation has partial-analogue correspondence to rwo:ExecutorAdapter.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:058-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.graph-expansion",
+      "target_node": "rwo:WorkGraph",
+      "direction": "directed",
+      "owner_route": "RWO graph compiler owner",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I02",
+        "finding_status": "unsupported",
+        "proof_status": "observed",
+        "correspondence": "gap"
+      },
+      "description": "rwo:finding.current.graph-expansion evaluates rwo:WorkGraph without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:059-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.graph-expansion",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.graph-expansion.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:060-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e2",
+      "target_node": "rwo:finding.current.graph-expansion",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e2 supports the bounded finding rwo:finding.current.graph-expansion.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:061-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.graph-expansion",
+      "target_node": "rwo:residue.002",
+      "direction": "directed",
+      "owner_route": "confirmation and Dispatch authority owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.graph-expansion cannot advance beyond its claim ceiling until rwo:residue.002 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:062-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.graph-expansion",
+      "target_node": "rwo:residue.008",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.graph-expansion cannot advance beyond its claim ceiling until rwo:residue.008 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:063-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.graph-expansion",
+      "target_node": "rwo:residue.023",
+      "direction": "directed",
+      "owner_route": "protocol compilation, confirmation, and Dispatch owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.graph-expansion cannot advance beyond its claim ceiling until rwo:residue.023 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:064-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.graph-expansion",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.graph-expansion cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:065-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.graph-expansion",
+      "target_node": "rwo:precedent:dispatch-launch-plan",
+      "direction": "directed",
+      "owner_route": "RWO graph compiler owner",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.graph-expansion records the bounded observation represented by rwo:precedent:dispatch-launch-plan.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:066-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:dispatch-launch-plan",
+      "target_node": "rwo:WorkGraph",
+      "direction": "directed",
+      "owner_route": "RWO graph compiler owner",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "gap",
+        "finding_status": "unsupported",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:dispatch-launch-plan has gap correspondence to rwo:WorkGraph.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:067-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.sequence",
+      "target_node": "rwo:Sequence",
+      "direction": "directed",
+      "owner_route": "workflow routing owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I03",
+        "finding_status": "indeterminate",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "description": "rwo:finding.current.sequence evaluates rwo:Sequence without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:068-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.sequence",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.sequence.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:069-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.sequence",
+      "target_node": "rwo:residue.023",
+      "direction": "directed",
+      "owner_route": "protocol compilation, confirmation, and Dispatch owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.sequence cannot advance beyond its claim ceiling until rwo:residue.023 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:070-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.sequence",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.sequence cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:071-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.sequence",
+      "target_node": "rwo:precedent:declared-handoff",
+      "direction": "directed",
+      "owner_route": "workflow routing owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.sequence records the bounded observation represented by rwo:precedent:declared-handoff.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:072-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:declared-handoff",
+      "target_node": "rwo:Sequence",
+      "direction": "directed",
+      "owner_route": "workflow routing owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "partial-analogue",
+        "finding_status": "indeterminate",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:declared-handoff has partial-analogue correspondence to rwo:Sequence.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:073-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.fan-out",
+      "target_node": "rwo:FanOut",
+      "direction": "directed",
+      "owner_route": "workflow routing owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I03",
+        "finding_status": "indeterminate",
+        "proof_status": "execution-unverified",
+        "correspondence": "precedent"
+      },
+      "description": "rwo:finding.current.fan-out evaluates rwo:FanOut without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:074-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.fan-out",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.fan-out.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:075-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.fan-out",
+      "target_node": "rwo:residue.020",
+      "direction": "directed",
+      "owner_route": "group and coordination owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.fan-out cannot advance beyond its claim ceiling until rwo:residue.020 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:076-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.fan-out",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.fan-out cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:077-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.fan-out",
+      "target_node": "rwo:precedent:finite-three-seat-launch",
+      "direction": "directed",
+      "owner_route": "workflow routing owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:finding.current.fan-out records the bounded observation represented by rwo:precedent:finite-three-seat-launch.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:078-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:finite-three-seat-launch",
+      "target_node": "rwo:FanOut",
+      "direction": "directed",
+      "owner_route": "workflow routing owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "correspondence": "precedent",
+        "finding_status": "indeterminate",
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:precedent:finite-three-seat-launch has precedent correspondence to rwo:FanOut.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:079-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.fan-in",
+      "target_node": "rwo:FanIn",
+      "direction": "directed",
+      "owner_route": "coordination and semantic-governance owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I05",
+        "finding_status": "unsupported",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "description": "rwo:finding.current.fan-in evaluates rwo:FanIn without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:080-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.fan-in",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.fan-in.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:081-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.fan-in",
+      "target_node": "rwo:residue.005",
+      "direction": "directed",
+      "owner_route": "coordination and semantic-governance owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.fan-in cannot advance beyond its claim ceiling until rwo:residue.005 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:082-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.fan-in",
+      "target_node": "rwo:residue.020",
+      "direction": "directed",
+      "owner_route": "group and coordination owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.fan-in cannot advance beyond its claim ceiling until rwo:residue.020 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:083-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.fan-in",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.fan-in cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:084-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.fan-in",
+      "target_node": "rwo:precedent:declared-join",
+      "direction": "directed",
+      "owner_route": "coordination and semantic-governance owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.fan-in records the bounded observation represented by rwo:precedent:declared-join.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:085-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:declared-join",
+      "target_node": "rwo:FanIn",
+      "direction": "directed",
+      "owner_route": "coordination and semantic-governance owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "partial-analogue",
+        "finding_status": "unsupported",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:declared-join has partial-analogue correspondence to rwo:FanIn.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:086-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.gate-route",
+      "target_node": "rwo:Gate",
+      "direction": "directed",
+      "owner_route": "gate-work and workflow routing owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I04",
+        "finding_status": "indeterminate",
+        "proof_status": "observed",
+        "correspondence": "precedent"
+      },
+      "description": "rwo:finding.current.gate-route evaluates rwo:Gate without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:087-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.gate-route",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.gate-route.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:088-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.gate-route",
+      "target_node": "rwo:residue.005",
+      "direction": "directed",
+      "owner_route": "coordination and semantic-governance owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.gate-route cannot advance beyond its claim ceiling until rwo:residue.005 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:089-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.gate-route",
+      "target_node": "rwo:residue.025",
+      "direction": "directed",
+      "owner_route": "reasoning-entry and dispatch authority owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.gate-route cannot advance beyond its claim ceiling until rwo:residue.025 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:090-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.gate-route",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.gate-route cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:091-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.gate-route",
+      "target_node": "rwo:precedent:typed-handoff-label",
+      "direction": "directed",
+      "owner_route": "gate-work and workflow routing owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.gate-route records the bounded observation represented by rwo:precedent:typed-handoff-label.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:092-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:typed-handoff-label",
+      "target_node": "rwo:Gate",
+      "direction": "directed",
+      "owner_route": "gate-work and workflow routing owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "precedent",
+        "finding_status": "indeterminate",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:typed-handoff-label has precedent correspondence to rwo:Gate.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:093-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.sidecar",
+      "target_node": "rwo:Sidecar",
+      "direction": "directed",
+      "owner_route": "projection and RWO lifecycle owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I08",
+        "finding_status": "unsupported",
+        "proof_status": "execution-unverified",
+        "correspondence": "gap"
+      },
+      "description": "rwo:finding.current.sidecar evaluates rwo:Sidecar without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:094-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.sidecar",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.sidecar.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:095-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.sidecar",
+      "target_node": "rwo:residue.004",
+      "direction": "directed",
+      "owner_route": "work-policy owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.sidecar cannot advance beyond its claim ceiling until rwo:residue.004 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:096-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.sidecar",
+      "target_node": "rwo:residue.013",
+      "direction": "directed",
+      "owner_route": "ontology source owner then adapter owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.sidecar cannot advance beyond its claim ceiling until rwo:residue.013 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:097-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.sidecar",
+      "target_node": "rwo:residue.024",
+      "direction": "directed",
+      "owner_route": "projection, UI, and telemetry owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.sidecar cannot advance beyond its claim ceiling until rwo:residue.024 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:098-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.sidecar",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.sidecar cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:099-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.sidecar",
+      "target_node": "rwo:precedent:apt-ui-projection",
+      "direction": "directed",
+      "owner_route": "projection and RWO lifecycle owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:finding.current.sidecar records the bounded observation represented by rwo:precedent:apt-ui-projection.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:100-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:apt-ui-projection",
+      "target_node": "rwo:Sidecar",
+      "direction": "directed",
+      "owner_route": "projection and RWO lifecycle owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "correspondence": "gap",
+        "finding_status": "unsupported",
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:precedent:apt-ui-projection has gap correspondence to rwo:Sidecar.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:101-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.bounded-repeat",
+      "target_node": "rwo:BoundedRepeat",
+      "direction": "directed",
+      "owner_route": "workflow state and retry owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I06",
+        "finding_status": "unsupported",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "description": "rwo:finding.current.bounded-repeat evaluates rwo:BoundedRepeat without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:102-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.bounded-repeat",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.bounded-repeat.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:103-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.bounded-repeat",
+      "target_node": "rwo:residue.004",
+      "direction": "directed",
+      "owner_route": "work-policy owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.bounded-repeat cannot advance beyond its claim ceiling until rwo:residue.004 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:104-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.bounded-repeat",
+      "target_node": "rwo:residue.022",
+      "direction": "directed",
+      "owner_route": "workflow-state and retry owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.bounded-repeat cannot advance beyond its claim ceiling until rwo:residue.022 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:105-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.bounded-repeat",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.bounded-repeat cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:106-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.bounded-repeat",
+      "target_node": "rwo:precedent:declared-follow-up",
+      "direction": "directed",
+      "owner_route": "workflow state and retry owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.bounded-repeat records the bounded observation represented by rwo:precedent:declared-follow-up.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:107-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:declared-follow-up",
+      "target_node": "rwo:BoundedRepeat",
+      "direction": "directed",
+      "owner_route": "workflow state and retry owner",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "partial-analogue",
+        "finding_status": "unsupported",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:declared-follow-up has partial-analogue correspondence to rwo:BoundedRepeat.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:108-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.protocol",
+      "target_node": "rwo:WorkProtocol",
+      "direction": "directed",
+      "owner_route": "protocol and ACI owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "freshly-executed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I12",
+        "finding_status": "indeterminate",
+        "proof_status": "freshly-executed",
+        "correspondence": "precedent"
+      },
+      "description": "rwo:finding.current.protocol evaluates rwo:WorkProtocol without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:109-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.protocol",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "freshly-executed",
+      "properties": {
+        "proof_status": "freshly-executed"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.protocol.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:110-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.protocol",
+      "target_node": "rwo:residue.003",
+      "direction": "directed",
+      "owner_route": "protocol, adapter, and storage owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.protocol cannot advance beyond its claim ceiling until rwo:residue.003 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:111-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.protocol",
+      "target_node": "rwo:residue.006",
+      "direction": "directed",
+      "owner_route": "versioning and replay owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.protocol cannot advance beyond its claim ceiling until rwo:residue.006 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:112-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.protocol",
+      "target_node": "rwo:residue.018",
+      "direction": "directed",
+      "owner_route": "protocol and workflow-schema owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.protocol cannot advance beyond its claim ceiling until rwo:residue.018 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:113-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.protocol",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.protocol cannot advance beyond its claim ceiling until rwo:residue.028 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:114-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.protocol",
+      "target_node": "rwo:precedent:aci-command-event-lanes",
+      "direction": "directed",
+      "owner_route": "protocol and ACI owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "freshly-executed",
+      "properties": {
+        "proof_status": "freshly-executed"
+      },
+      "description": "rwo:finding.current.protocol records the bounded observation represented by rwo:precedent:aci-command-event-lanes.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:115-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:aci-command-event-lanes",
+      "target_node": "rwo:WorkProtocol",
+      "direction": "directed",
+      "owner_route": "protocol and ACI owners",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "freshly-executed",
+      "properties": {
+        "correspondence": "precedent",
+        "finding_status": "indeterminate",
+        "proof_status": "freshly-executed"
+      },
+      "description": "rwo:precedent:aci-command-event-lanes has precedent correspondence to rwo:WorkProtocol.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:116-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.journal",
+      "target_node": "rwo:Journal",
+      "direction": "directed",
+      "owner_route": "ACI journal and RWO projection owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I11",
+        "finding_status": "indeterminate",
+        "proof_status": "execution-unverified",
+        "correspondence": "precedent"
+      },
+      "description": "rwo:finding.current.journal evaluates rwo:Journal without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:117-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e1",
+      "target_node": "rwo:finding.current.journal",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:source:e1 supports the bounded finding rwo:finding.current.journal.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:118-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:finding.current.journal",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:source:k1 supports the bounded finding rwo:finding.current.journal.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:119-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.journal",
+      "target_node": "rwo:residue.001",
+      "direction": "directed",
+      "owner_route": "RWO work-state and journal owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.journal cannot advance beyond its claim ceiling until rwo:residue.001 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:120-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.journal",
+      "target_node": "rwo:residue.006",
+      "direction": "directed",
+      "owner_route": "versioning and replay owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.journal cannot advance beyond its claim ceiling until rwo:residue.006 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:121-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.journal",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.journal cannot advance beyond its claim ceiling until rwo:residue.028 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:122-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.journal",
+      "target_node": "rwo:precedent:aci-journal",
+      "direction": "directed",
+      "owner_route": "ACI journal and RWO projection owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:finding.current.journal records the bounded observation represented by rwo:precedent:aci-journal.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:123-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:aci-journal",
+      "target_node": "rwo:Journal",
+      "direction": "directed",
+      "owner_route": "ACI journal and RWO projection owners",
+      "evidence_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "execution-unverified",
+      "properties": {
+        "correspondence": "precedent",
+        "finding_status": "indeterminate",
+        "proof_status": "execution-unverified"
+      },
+      "description": "rwo:precedent:aci-journal has precedent correspondence to rwo:Journal.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:124-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.effect-adapter",
+      "target_node": "rwo:ExecutorAdapter",
+      "direction": "directed",
+      "owner_route": "exact-effect, ACI, and adapter owners",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I10",
+        "finding_status": "unsupported",
+        "proof_status": "observed",
+        "correspondence": "gap"
+      },
+      "description": "rwo:finding.current.effect-adapter evaluates rwo:ExecutorAdapter without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:125-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e3",
+      "target_node": "rwo:finding.current.effect-adapter",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:e3 supports the bounded finding rwo:finding.current.effect-adapter.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:126-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.effect-adapter",
+      "target_node": "rwo:residue.007",
+      "direction": "directed",
+      "owner_route": "authorization and effect-boundary owners",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.effect-adapter cannot advance beyond its claim ceiling until rwo:residue.007 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:127-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.effect-adapter",
+      "target_node": "rwo:residue.027",
+      "direction": "directed",
+      "owner_route": "exact-effect and authorization owners",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.effect-adapter cannot advance beyond its claim ceiling until rwo:residue.027 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:128-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.effect-adapter",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.effect-adapter cannot advance beyond its claim ceiling until rwo:residue.028 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:129-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.current.effect-adapter",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.current.effect-adapter cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:130-observes",
+      "predicate": "observes",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.current.effect-adapter",
+      "target_node": "rwo:precedent:fixed-effect-double",
+      "direction": "directed",
+      "owner_route": "exact-effect, ACI, and adapter owners",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:finding.current.effect-adapter records the bounded observation represented by rwo:precedent:fixed-effect-double.",
+      "forbidden_inferences": [
+        "The observed precedent is not automatically an RWO implementation."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:131-corresponds-to",
+      "predicate": "corresponds-to",
+      "relation_kind": "finding",
+      "source_node": "rwo:precedent:fixed-effect-double",
+      "target_node": "rwo:ExecutorAdapter",
+      "direction": "directed",
+      "owner_route": "exact-effect, ACI, and adapter owners",
+      "evidence_refs": [
+        "rwo:source:e3"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "correspondence": "gap",
+        "finding_status": "unsupported",
+        "proof_status": "observed"
+      },
+      "description": "rwo:precedent:fixed-effect-double has gap correspondence to rwo:ExecutorAdapter.",
+      "forbidden_inferences": [
+        "Correspondence weaker than direct realization cannot be reported as implementation conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:132-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.proposal.implementation-status",
+      "target_node": "rwo:OrchestratorKernel",
+      "direction": "directed",
+      "owner_route": "RWO source and promotion owners",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I02",
+        "finding_status": "unsupported",
+        "proof_status": "proposal",
+        "correspondence": "gap"
+      },
+      "description": "rwo:finding.proposal.implementation-status evaluates rwo:OrchestratorKernel without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:133-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e2",
+      "target_node": "rwo:finding.proposal.implementation-status",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "proof_status": "proposal"
+      },
+      "description": "rwo:source:e2 supports the bounded finding rwo:finding.proposal.implementation-status.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:134-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.proposal.implementation-status",
+      "target_node": "rwo:residue.008",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.proposal.implementation-status cannot advance beyond its claim ceiling until rwo:residue.008 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:135-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.proposal.implementation-status",
+      "target_node": "rwo:residue.010",
+      "direction": "directed",
+      "owner_route": "canonical-definition and promotion owners",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.proposal.implementation-status cannot advance beyond its claim ceiling until rwo:residue.010 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:136-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.proposal.implementation-status",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:e2"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.proposal.implementation-status cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:137-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:WorkNode",
+      "direction": "directed",
+      "owner_route": "workflow taxonomy and identity owners",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "rwo:f.no-parent-authority-inheritance",
+        "finding_status": "indeterminate",
+        "proof_status": "hypothesis",
+        "correspondence": "gap"
+      },
+      "description": "rwo:finding.hypothesis.agent-node-collapse evaluates rwo:WorkNode without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:138-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:e2-wg",
+      "target_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "proof_status": "hypothesis"
+      },
+      "description": "rwo:source:e2-wg supports the bounded finding rwo:finding.hypothesis.agent-node-collapse.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:139-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.015",
+      "direction": "directed",
+      "owner_route": "workflow-graph discovery owner",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.015 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:140-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.016",
+      "direction": "directed",
+      "owner_route": "workflow taxonomy owner",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.016 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:141-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.017",
+      "direction": "directed",
+      "owner_route": "identity and runtime-domain owner",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.017 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:142-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.018",
+      "direction": "directed",
+      "owner_route": "protocol and workflow-schema owners",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.018 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:143-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.019",
+      "direction": "directed",
+      "owner_route": "workflow and Bus Contracts owners",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.019 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:144-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.020",
+      "direction": "directed",
+      "owner_route": "group and coordination owner",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.020 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:145-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.021",
+      "direction": "directed",
+      "owner_route": "Run, audit, and closure owners",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.021 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:146-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.022",
+      "direction": "directed",
+      "owner_route": "workflow-state and retry owner",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.022 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:147-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.023",
+      "direction": "directed",
+      "owner_route": "protocol compilation, confirmation, and Dispatch owners",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.023 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:148-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:residue.024",
+      "direction": "directed",
+      "owner_route": "projection, UI, and telemetry owners",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.hypothesis.agent-node-collapse cannot advance beyond its claim ceiling until rwo:residue.024 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:149-evaluates",
+      "predicate": "evaluates",
+      "relation_kind": "finding",
+      "source_node": "rwo:finding.bridge.no-second-control-plane",
+      "target_node": "rwo:Journal",
+      "direction": "directed",
+      "owner_route": "ACI and exact-effect authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "rwo:f.no-cross-owner-bridge-authority",
+        "finding_status": "pass",
+        "proof_status": "observed",
+        "correspondence": "forbidden"
+      },
+      "description": "rwo:finding.bridge.no-second-control-plane evaluates rwo:Journal without claiming direct realization.",
+      "forbidden_inferences": [
+        "A finding relation does not promote, implement, or authorize its subject."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:150-supports",
+      "predicate": "supports",
+      "relation_kind": "evidence",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:finding.bridge.no-second-control-plane",
+      "direction": "directed",
+      "owner_route": "accepted-research-evidence-closure",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "observed",
+      "properties": {
+        "proof_status": "observed"
+      },
+      "description": "rwo:source:k1 supports the bounded finding rwo:finding.bridge.no-second-control-plane.",
+      "forbidden_inferences": [
+        "Evidence support is not authority, promotion, or later-stage conformance."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:151-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.bridge.no-second-control-plane",
+      "target_node": "rwo:residue.025",
+      "direction": "directed",
+      "owner_route": "reasoning-entry and dispatch authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.bridge.no-second-control-plane cannot advance beyond its claim ceiling until rwo:residue.025 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:152-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.bridge.no-second-control-plane",
+      "target_node": "rwo:residue.026",
+      "direction": "directed",
+      "owner_route": "artifact-admission owner",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.bridge.no-second-control-plane cannot advance beyond its claim ceiling until rwo:residue.026 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:153-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.bridge.no-second-control-plane",
+      "target_node": "rwo:residue.027",
+      "direction": "directed",
+      "owner_route": "exact-effect and authorization owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.bridge.no-second-control-plane cannot advance beyond its claim ceiling until rwo:residue.027 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:154-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.bridge.no-second-control-plane",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.bridge.no-second-control-plane cannot advance beyond its claim ceiling until rwo:residue.028 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:155-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:finding.bridge.no-second-control-plane",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:finding.bridge.no-second-control-plane cannot advance beyond its claim ceiling until rwo:residue.029 is resolved by its owner.",
+      "forbidden_inferences": [
+        "The ontology cannot resolve or assign the blocking owner."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:156-challenges",
+      "predicate": "challenges",
+      "relation_kind": "contradiction",
+      "source_node": "rwo:finding.hypothesis.agent-node-collapse",
+      "target_node": "rwo:hypothesis:every-graph-node-agent",
+      "direction": "directed",
+      "owner_route": "workflow taxonomy and identity owners",
+      "evidence_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "resolution_status": "unresolved"
+      },
+      "description": "The accepted finding preserves the unresolved conflict between WorkNode and the every-node-is-AgentNode hypothesis.",
+      "forbidden_inferences": [
+        "Recording the contradiction does not choose either taxonomy."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:157-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:entry",
+      "target_node": "rwo:stage:command-acceptance",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:entry must complete its own gate before rwo:stage:command-acceptance may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:158-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:command-acceptance",
+      "target_node": "rwo:stage:history",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:command-acceptance must complete its own gate before rwo:stage:history may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:159-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:history",
+      "target_node": "rwo:stage:observation-admission",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:history must complete its own gate before rwo:stage:observation-admission may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:160-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:observation-admission",
+      "target_node": "rwo:stage:l0-semantics",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:observation-admission must complete its own gate before rwo:stage:l0-semantics may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:161-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:l0-semantics",
+      "target_node": "rwo:stage:artifact-admission",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:l0-semantics must complete its own gate before rwo:stage:artifact-admission may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:162-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:artifact-admission",
+      "target_node": "rwo:stage:exact-effect",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:artifact-admission must complete its own gate before rwo:stage:exact-effect may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:163-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:exact-effect",
+      "target_node": "rwo:stage:effect-lifecycle",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:exact-effect must complete its own gate before rwo:stage:effect-lifecycle may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:164-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:effect-lifecycle",
+      "target_node": "rwo:stage:replay",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:effect-lifecycle must complete its own gate before rwo:stage:replay may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:165-precedes",
+      "predicate": "precedes",
+      "relation_kind": "integration",
+      "source_node": "rwo:stage:replay",
+      "target_node": "rwo:stage:revalidation",
+      "direction": "directed",
+      "owner_route": "cross-owner integration contract",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "deferred",
+      "properties": {
+        "documentation_only": true
+      },
+      "description": "rwo:stage:replay must complete its own gate before rwo:stage:revalidation may be considered.",
+      "forbidden_inferences": [
+        "Precedence does not transfer a pass, authority, acceptance, or effect permission to the next stage."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:166-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:entry",
+      "target_node": "rwo:gate:entry",
+      "direction": "directed",
+      "owner_route": "owner-selection-required:reasoning-entry-verdict",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:entry depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:167-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:entry",
+      "target_node": "rwo:residue.025",
+      "direction": "directed",
+      "owner_route": "reasoning-entry and dispatch authority owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:entry remains non-executable while rwo:residue.025 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:168-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:entry",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:entry remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:169-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:entry",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:entry remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:170-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:command-acceptance",
+      "target_node": "rwo:gate:aci-lifecycle",
+      "direction": "directed",
+      "owner_route": "ACI lifecycle and journal owner",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:command-acceptance depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:171-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:command-acceptance",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:command-acceptance remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:172-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:command-acceptance",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:command-acceptance remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:173-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:history",
+      "target_node": "rwo:gate:aci-lifecycle",
+      "direction": "directed",
+      "owner_route": "ACI lifecycle and journal owner",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:history depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:174-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:history",
+      "target_node": "rwo:residue.001",
+      "direction": "directed",
+      "owner_route": "RWO work-state and journal owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:history remains non-executable while rwo:residue.001 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:175-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:history",
+      "target_node": "rwo:residue.006",
+      "direction": "directed",
+      "owner_route": "versioning and replay owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:history remains non-executable while rwo:residue.006 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:176-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:history",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:history remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:177-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:history",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:history remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:178-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:observation-admission",
+      "target_node": "rwo:gate:observation-admission",
+      "direction": "directed",
+      "owner_route": "owner-selection-required:observation-admission",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:observation-admission depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:179-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:observation-admission",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:observation-admission remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:180-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:observation-admission",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:observation-admission remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:181-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:l0-semantics",
+      "target_node": "rwo:gate:semantic-evaluator",
+      "direction": "directed",
+      "owner_route": "Agent Reasoning Engine route",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:l0-semantics depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:182-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:l0-semantics",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:l0-semantics remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:183-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:l0-semantics",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:l0-semantics remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:184-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:artifact-admission",
+      "target_node": "rwo:gate:artifact-admission",
+      "direction": "directed",
+      "owner_route": "owner-selection-required:artifact-admission",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:artifact-admission depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:185-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:artifact-admission",
+      "target_node": "rwo:residue.026",
+      "direction": "directed",
+      "owner_route": "artifact-admission owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:artifact-admission remains non-executable while rwo:residue.026 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:186-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:artifact-admission",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:artifact-admission remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:187-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:artifact-admission",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:artifact-admission remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:188-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:exact-effect",
+      "target_node": "rwo:gate:exact-effect",
+      "direction": "directed",
+      "owner_route": "owner-selection-required:exact-effect",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:exact-effect depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:189-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:exact-effect",
+      "target_node": "rwo:residue.027",
+      "direction": "directed",
+      "owner_route": "exact-effect and authorization owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:exact-effect remains non-executable while rwo:residue.027 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:190-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:exact-effect",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:exact-effect remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:191-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:exact-effect",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:exact-effect remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:192-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:effect-lifecycle",
+      "target_node": "rwo:gate:aci-lifecycle",
+      "direction": "directed",
+      "owner_route": "ACI lifecycle and journal owner",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:effect-lifecycle depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:193-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:effect-lifecycle",
+      "target_node": "rwo:gate:effect-adapter",
+      "direction": "directed",
+      "owner_route": "owner-selection-required:effect-adapter",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:effect-lifecycle depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:194-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:effect-lifecycle",
+      "target_node": "rwo:residue.027",
+      "direction": "directed",
+      "owner_route": "exact-effect and authorization owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:effect-lifecycle remains non-executable while rwo:residue.027 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:195-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:effect-lifecycle",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:effect-lifecycle remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:196-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:effect-lifecycle",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:effect-lifecycle remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:197-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:replay",
+      "target_node": "rwo:gate:aci-lifecycle",
+      "direction": "directed",
+      "owner_route": "ACI lifecycle and journal owner",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:replay depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:198-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:replay",
+      "target_node": "rwo:gate:semantic-evaluator",
+      "direction": "directed",
+      "owner_route": "Agent Reasoning Engine route",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:replay depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:199-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:replay",
+      "target_node": "rwo:residue.006",
+      "direction": "directed",
+      "owner_route": "versioning and replay owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:replay remains non-executable while rwo:residue.006 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:200-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:replay",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:replay remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:201-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:replay",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:replay remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:202-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:revalidation",
+      "target_node": "rwo:gate:entry",
+      "direction": "directed",
+      "owner_route": "owner-selection-required:reasoning-entry-verdict",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:revalidation depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:203-requires-owner-gate",
+      "predicate": "requires-owner-gate",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:revalidation",
+      "target_node": "rwo:gate:semantic-evaluator",
+      "direction": "directed",
+      "owner_route": "Agent Reasoning Engine route",
+      "evidence_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {
+        "owner_selection_effect": "none"
+      },
+      "description": "rwo:stage:revalidation depends on a separately owned gate boundary.",
+      "forbidden_inferences": [
+        "The relation does not select the owner or treat a proposed gate as a recorded verdict."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:204-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:revalidation",
+      "target_node": "rwo:residue.025",
+      "direction": "directed",
+      "owner_route": "reasoning-entry and dispatch authority owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:revalidation remains non-executable while rwo:residue.025 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:205-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:revalidation",
+      "target_node": "rwo:residue.028",
+      "direction": "directed",
+      "owner_route": "cross-repository contract owners",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:revalidation remains non-executable while rwo:residue.028 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:206-blocked-by",
+      "predicate": "blocked-by",
+      "relation_kind": "governance",
+      "source_node": "rwo:stage:revalidation",
+      "target_node": "rwo:residue.029",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "blocked",
+      "properties": {},
+      "description": "rwo:stage:revalidation remains non-executable while rwo:residue.029 is open.",
+      "forbidden_inferences": [
+        "The graph cannot close cross-owner residue by adjacency or naming similarity."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:207-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:stage:command-acceptance",
+      "target_node": "rwo:witness:f1",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:stage:command-acceptance requires F1 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:208-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:WorkGraph",
+      "target_node": "rwo:witness:f2",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:WorkGraph requires F2 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:209-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:FanIn",
+      "target_node": "rwo:witness:f3",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:FanIn requires F3 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:210-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:Sidecar",
+      "target_node": "rwo:witness:f4",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:Sidecar requires F4 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:211-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:stage:entry",
+      "target_node": "rwo:witness:f5",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:stage:entry requires F5 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:212-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:stage:exact-effect",
+      "target_node": "rwo:witness:f6",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:stage:exact-effect requires F6 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:213-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:stage:replay",
+      "target_node": "rwo:witness:f7",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:stage:replay requires F7 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:214-requires-witness",
+      "predicate": "requires-witness",
+      "relation_kind": "validation",
+      "source_node": "rwo:stage:entry",
+      "target_node": "rwo:witness:f8",
+      "direction": "directed",
+      "owner_route": "validation and evidence owner",
+      "evidence_refs": [
+        "rwo:source:c1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "acyclic",
+      "runtime_posture": "absent",
+      "properties": {
+        "current_status": "unexecuted"
+      },
+      "description": "rwo:stage:entry requires F8 before the associated conformance claim may advance.",
+      "forbidden_inferences": [
+        "Requiring a witness does not execute or satisfy it."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:215-prohibits",
+      "predicate": "prohibits",
+      "relation_kind": "prohibition",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:forbidden:second-scheduler",
+      "direction": "directed",
+      "owner_route": "ACI and exact-effect authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "not-applicable",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "disposition": "killed"
+      },
+      "description": "K1 records second scheduler as a forbidden integration topology.",
+      "forbidden_inferences": [
+        "A prohibition node is not evidence that every implementation path enforces the constraint."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:216-prohibits",
+      "predicate": "prohibits",
+      "relation_kind": "prohibition",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:forbidden:second-integrated-journal",
+      "direction": "directed",
+      "owner_route": "ACI and exact-effect authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "not-applicable",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "disposition": "killed"
+      },
+      "description": "K1 records second integrated journal as a forbidden integration topology.",
+      "forbidden_inferences": [
+        "A prohibition node is not evidence that every implementation path enforces the constraint."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:217-prohibits",
+      "predicate": "prohibits",
+      "relation_kind": "prohibition",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:forbidden:orchestrator-owned-semantic-judgment",
+      "direction": "directed",
+      "owner_route": "ACI and exact-effect authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "not-applicable",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "disposition": "killed"
+      },
+      "description": "K1 records orchestrator-owned semantic judgment as a forbidden integration topology.",
+      "forbidden_inferences": [
+        "A prohibition node is not evidence that every implementation path enforces the constraint."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:218-prohibits",
+      "predicate": "prohibits",
+      "relation_kind": "prohibition",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:forbidden:evaluator-owned-effect-authority",
+      "direction": "directed",
+      "owner_route": "ACI and exact-effect authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "not-applicable",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "disposition": "killed"
+      },
+      "description": "K1 records evaluator-owned effect authority as a forbidden integration topology.",
+      "forbidden_inferences": [
+        "A prohibition node is not evidence that every implementation path enforces the constraint."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:219-prohibits",
+      "predicate": "prohibits",
+      "relation_kind": "prohibition",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:forbidden:routing-as-reasoning",
+      "direction": "directed",
+      "owner_route": "ACI and exact-effect authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "not-applicable",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "disposition": "killed"
+      },
+      "description": "K1 records routing-as-reasoning as a forbidden integration topology.",
+      "forbidden_inferences": [
+        "A prohibition node is not evidence that every implementation path enforces the constraint."
+      ]
+    },
+    {
+      "relation_id": "rwo:relation:220-prohibits",
+      "predicate": "prohibits",
+      "relation_kind": "prohibition",
+      "source_node": "rwo:source:k1",
+      "target_node": "rwo:forbidden:result-as-authorization",
+      "direction": "directed",
+      "owner_route": "ACI and exact-effect authority owners",
+      "evidence_refs": [
+        "rwo:source:k1"
+      ],
+      "authority_effect": "none",
+      "cycle_policy": "not-applicable",
+      "runtime_posture": "not-applicable",
+      "properties": {
+        "disposition": "killed"
+      },
+      "description": "K1 records result-as-authorization as a forbidden integration topology.",
+      "forbidden_inferences": [
+        "A prohibition node is not evidence that every implementation path enforces the constraint."
+      ]
+    }
+  ]
+}

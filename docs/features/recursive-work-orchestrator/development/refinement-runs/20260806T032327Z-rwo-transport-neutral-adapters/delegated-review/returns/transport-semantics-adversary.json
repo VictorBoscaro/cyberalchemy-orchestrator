@@ -1,0 +1,38 @@
+{
+  "role_id": "transport-semantics-adversary",
+  "agent_id": "/root/transport_semantics_adversary_spawn_0002",
+  "action_id": "spawn-0002",
+  "scope_reviewed": ["DESIGN.md", "REFINE-SEED-PROPOSAL.md", "../20260805T184601Z-rwo-domain-recovery-model/stages/08-distill-repair.md"],
+  "target_verdict": "FIX",
+  "transport_matrix": [
+    {"transport": "gRPC unary/streaming", "truthful": ["request-response correlation", "status", "flow control when exposed"], "not_inherent": ["durability", "broker redelivery", "replay", "fan-out", "exactly-once effect"]},
+    {"transport": "reconnecting socket", "truthful": ["connection-local reads/writes", "disconnect", "application frames"], "not_inherent": ["remote acceptance", "crash durability", "cross-reconnect ordering", "exactly-once effect"]},
+    {"transport": "Redis Streams consumer group", "truthful": ["entry identity", "pending entries", "acknowledgement", "claim observations"], "not_inherent": ["global ordering", "business-effect atomicity", "broadcast to every consumer"]},
+    {"transport": "managed event bus", "truthful": ["provider submission", "declared retry/retention/dead-letter behavior"], "not_inherent": ["consumer acceptance", "journal acceptance", "uniform ordering/replay"]},
+    {"transport": "in-memory", "truthful": ["process-local enqueue/dequeue", "bounded buffer", "handler observation"], "not_inherent": ["crash durability", "cross-process delivery", "restart replay", "durable acknowledgement"]}
+  ],
+  "scenario_count": 16,
+  "representative_failure_scenarios": [
+    {"id": "FS-01", "case": "gRPC fails before response headers", "observation": "acceptance outcome unknown", "forbidden_inference": "server rejected or a new Work Attempt is safe"},
+    {"id": "FS-03", "case": "stream writes buffered before failure", "observation": "per-message reach/acceptance unknown", "forbidden_inference": "write completion equals remote acceptance"},
+    {"id": "FS-05", "case": "socket acknowledgement lost after peer acceptance", "observation": "acceptance outcome unknown", "forbidden_inference": "effect did not occur"},
+    {"id": "FS-07", "case": "Redis pending entry redelivered after consumer crash", "observation": "same entry delivered again", "forbidden_inference": "new Work Attempt or effect-safe retry"},
+    {"id": "FS-11", "case": "managed-bus submission accepted, target later duplicates/reorders", "observation": "provider acceptance only", "forbidden_inference": "target or journal acceptance"},
+    {"id": "FS-15", "case": "in-memory process crashes", "observation": "pre-crash volatile operations only", "forbidden_inference": "durable at-least-once or replay"}
+  ],
+  "findings": [
+    {"severity": "high", "code": "TS-UNIVERSAL-ATLEASTONCE", "repair": "replace unconditional guarantee with mandatory core plus explicit transport profiles"},
+    {"severity": "high", "code": "TS-ACCEPTANCE-LAYERS-COLLAPSED", "repair": "separate local send, provider accept, remote application accept, journal accept, and unknown"},
+    {"severity": "high", "code": "TS-PORT-OWNERSHIP-ABSENT", "repair": "split command delivery, event ingress, and journal/outbox/inbox boundaries"},
+    {"severity": "high", "code": "TS-UNKNOWN-OUTCOME-GUARD", "repair": "require stable identity, byte equality, convergence evidence, current fence, and budget before same-message redelivery"},
+    {"severity": "medium", "code": "TS-ORDERING-SCOPE", "repair": "parameterize ordering scope; never derive it from envelope sequence"},
+    {"severity": "medium", "code": "TS-FANOUT-MISMATCH", "repair": "distinguish competing consumers from broadcast and record per-target posture"},
+    {"severity": "medium", "code": "TS-BACKPRESSURE-UNDECLARED", "repair": "declare signal, buffer bound, overflow behavior, and observation fidelity"}
+  ],
+  "blockers": [],
+  "residue": ["No transport implementation or conformance suite was inspected.", "Guarantees must be pinned per implementation and configuration, not transport family name."],
+  "reroute": "refine-parent-repair",
+  "handoff_note": "Treat every transport signal as scoped evidence; DeliveryCase, ExecutionCase, and EffectCase remain distinct.",
+  "mutation_statement": "Read-only; no files or external systems were modified.",
+  "capture_kind": "parent-normalized from terminal host return"
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": "refine.final-receipt.v1",
+  "run_id": "20260806T032327Z-rwo-transport-neutral-adapters",
+  "dispatch_id": "refine-20260806T032327Z-rwo-transport-neutral-adapters",
+  "completed_at": "2026-08-06T04:25:28Z",
+  "status": "complete",
+  "verdict": "candidate-pass-runtime-blocked",
+  "selected_candidate": "TransportNeutralWorkProtocolAdapterContract@candidate-2",
+  "claim_level": "candidate design and non-executed validation-first plan",
+  "validation_artifact": "FINAL-VALIDATION.md",
+  "stage_receipts": [
+    "receipts/s01-context-builder.json",
+    "receipts/s02-invoke-define.json",
+    "receipts/s03-interrogation-refine-review.json",
+    "receipts/s04-research-decision.json",
+    "receipts/s05-distill.json",
+    "receipts/s06-invoke-design.json",
+    "receipts/s07-interrogation-design-review.json",
+    "receipts/s08-distill-repair.json",
+    "receipts/s09-invoke-plan.json",
+    "receipts/s10-final-interrogation.json"
+  ],
+  "dispatch_review": {
+    "ledger_dispatch_id": "2026-08-06-rwo-adapter-boundary-review",
+    "opening_rows": 1,
+    "close_rows": 1,
+    "action_gate": "pass",
+    "target_verdicts": ["FIX", "FIX", "BLOCK"],
+    "lifecycle": "closed"
+  },
+  "validation": {
+    "stage_count": 10,
+    "scenario_count": 30,
+    "scenario_pass_count": 30,
+    "runtime_execution_count": 0,
+    "json_parse": "pass-36-files",
+    "dispatch_spec": "pass",
+    "orchestrate_evidence": "pass",
+    "workspace_whitespace": "pass-scoped; markdown two-space hard breaks allowed"
+  },
+  "external_owner_gates": [
+    "G1 journal/domain truth ownership",
+    "G2 exact-effect contracts",
+    "G3 ARE/ACI executable conformance",
+    "G4 ontology promotion",
+    "G5 adapter implementation/configuration conformance"
+  ],
+  "implementation_effect": "none",
+  "authority_effect": "none",
+  "ontology_effect": "none",
+  "next_safe_action": "separately authorize SWU-01 closed candidate schemas"
+}

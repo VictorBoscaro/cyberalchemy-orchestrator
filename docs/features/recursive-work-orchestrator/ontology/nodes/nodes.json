@@ -1,0 +1,4114 @@
+{
+  "schema": "../schemas/node.schema.json",
+  "package_id": "rwo.current-state-graph@0.1.0",
+  "ontology_ref": "rwo-architecture@0.2.0",
+  "generated_from": [
+    "../ONTOLOGY.md",
+    "../evidence/CURRENT-STATE-2026-08-05.json",
+    "cyberAlchemy-v2:development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"
+  ],
+  "authority_effect": "none",
+  "nodes": [
+    {
+      "node_id": "rwo:source:e1",
+      "label": "E1 — tracked-current-implementation",
+      "node_kind": "evidence-source",
+      "branch": "system",
+      "description": "directly observed; protocol compiler 13/13 freshly executed; FastAPI-dependent suites execution-unverified",
+      "source_refs": [],
+      "owner_route": "accepted-research-evidence-closure",
+      "candidate_status": "accepted-evidence",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "id": "E1",
+        "kind": "tracked-current-implementation",
+        "identity": "git:b42228fcf4a5a6dadefbbfb53dfaa3c3edb28108",
+        "proof_status": "directly observed; protocol compiler 13/13 freshly executed; FastAPI-dependent suites execution-unverified",
+        "disposition": "bound"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Observed implementation precedent is not RWO realization, host adoption, production operation, or semantic authority."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:source:e2",
+      "label": "E2 — untracked-proposal",
+      "node_kind": "evidence-source",
+      "branch": "system",
+      "description": "proposal/research only; no tracked implementation or promotion",
+      "source_refs": [],
+      "owner_route": "accepted-research-evidence-closure",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "id": "E2",
+        "kind": "untracked-proposal",
+        "identity_at_research": "sha256:DESIGN=28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419;ONTOLOGY=1c6d417c4f0cdfc73c7c42f016c05fd6f8fbccd738a35bf7454472d3cee3b920;VIEW=3b1de2f21406e2a265012bc3ca0dd540817aa0f6a3fa66d04217cd0d6ac4b568",
+        "proof_status": "proposal/research only; no tracked implementation or promotion",
+        "disposition": "deferred",
+        "note": "The ontology hash identifies v0.1.0 before this evidence-ingestion update."
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Proposal bytes are not implementation, runtime conformance, canonical vocabulary, or promotion."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:source:e2-wg",
+      "label": "E2-WG — tracked-discovery-hypotheses",
+      "node_kind": "evidence-source",
+      "branch": "system",
+      "description": "draft hypothesis; unresolved tension with RWO WorkNode semantics",
+      "source_refs": [],
+      "owner_route": "accepted-research-evidence-closure",
+      "candidate_status": "hypothesis",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "id": "E2-WG",
+        "kind": "tracked-discovery-hypotheses",
+        "identity": "git-blob:workflow=f07c6d0d92d60ffb239a2ef733f43d20850140f4;autonomous-target=92584e7dd3b30b512994dcdf31cc9cd62dd7e619",
+        "proof_status": "draft hypothesis; unresolved tension with RWO WorkNode semantics",
+        "disposition": "deferred"
+      },
+      "residue_refs": [
+        "rwo:residue.015",
+        "rwo:residue.016",
+        "rwo:residue.017",
+        "rwo:residue.018",
+        "rwo:residue.019",
+        "rwo:residue.020",
+        "rwo:residue.021",
+        "rwo:residue.022",
+        "rwo:residue.023",
+        "rwo:residue.024"
+      ],
+      "forbidden_inferences": [
+        "A tracked hypothesis does not select workflow taxonomy or collapse WorkNode into AgentNode."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:source:e3",
+      "label": "E3 — private-architecture-and-bounded-witness",
+      "node_kind": "evidence-source",
+      "branch": "bridge",
+      "description": "direct bytes observed; bounded local L0 only; cross-repository runtime integration unwitnessed",
+      "source_refs": [],
+      "owner_route": "accepted-research-evidence-closure",
+      "candidate_status": "accepted-evidence",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "id": "E3",
+        "kind": "private-architecture-and-bounded-witness",
+        "identity": "sha256:ARE=1958758a104c19af9966fd1460097c18fbf919e480da45e5c8dcc0b5f4ffe0de;ACI=02eaede41676bcf19e45cb8cf9b7130bddf297d6ae786d81fdb67ee456bb2c8c;execute=72de12f61b8450dc28bce29ce592787c912e99cb2eb781a9481f71998ddc03b5;reducer=e2a50b3db67ec47476a0a5bf14179535bfff3073a9228894439658b4b602fcaf",
+        "proof_status": "direct bytes observed; bounded local L0 only; cross-repository runtime integration unwitnessed",
+        "disposition": "bound-local-only"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Private local ARE evidence does not prove cross-repository compatibility or integrated runtime conformance."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:source:c1",
+      "label": "C1 — conditional-integration-contract",
+      "node_kind": "evidence-source",
+      "branch": "bridge",
+      "description": "reviewed documentation only; owners, conformance, compatibility, executable fixture evidence absent",
+      "source_refs": [],
+      "owner_route": "accepted-research-evidence-closure",
+      "candidate_status": "deferred",
+      "runtime_posture": "designed",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "id": "C1",
+        "kind": "conditional-integration-contract",
+        "identity": "sha256:synthesis-revision-2=400d601aea76eb38cf2f9646a337c3ec597c34f2fd577fc6d5cc0b21bcdc8066",
+        "proof_status": "reviewed documentation only; owners, conformance, compatibility, executable fixture evidence absent",
+        "disposition": "deferred"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A reviewed documentation contract does not select owners, accept schemas, or authorize implementation."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:source:k1",
+      "label": "K1 — forbidden-topology",
+      "node_kind": "evidence-source",
+      "branch": "bridge",
+      "description": "architecturally rejected by owner and non-collapse constraints",
+      "source_refs": [],
+      "owner_route": "accepted-research-evidence-closure",
+      "candidate_status": "killed",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "id": "K1",
+        "kind": "forbidden-topology",
+        "identity": "research.md#topology-verdicts-with-finite-witnessescounterexamples",
+        "proof_status": "architecturally rejected by owner and non-collapse constraints",
+        "disposition": "killed"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A documented topology prohibition does not prove runtime enforcement by itself."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:ArchitectureElement",
+      "label": "Architecture Element",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Any typed element in this local architecture model.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": null,
+        "source_selector": "DESIGN §4–§8"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:WorkDefinition",
+      "label": "Work Definition",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Immutable, versioned outer contract that can describe a leaf or composite.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.1"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:LeafWorkDefinition",
+      "label": "Leaf Work Definition",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Work definition whose body binds to an executor adapter.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:WorkDefinition",
+        "source_selector": "DESIGN §4.3"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:CompositeWorkDefinition",
+      "label": "Composite Work Definition",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Work definition whose body is a work graph and whose boundary remains substitutable for a leaf.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:WorkDefinition",
+        "source_selector": "DESIGN §4.4"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:WorkRun",
+      "label": "Work Run",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "One invocation of one immutable work definition.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.2"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:Attempt",
+      "label": "Attempt",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "One execution attempt belonging to a work run.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.2"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:WorkGraph",
+      "label": "Work Graph",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Typed graph that composes addressed work nodes through event-triggered edges.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.4, §5.7"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:WorkNode",
+      "label": "Work Node",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Structural position in a graph that references one work definition.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.2, §5"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:EventTriggeredEdge",
+      "label": "Event-Triggered Edge",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Routing rule from a source event selector to one target invocation and input mapping.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §5"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:EventSelector",
+      "label": "Event Selector",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Versioned matcher over an event type and structural classification.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §5, §6.3"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:InputMapping",
+      "label": "Input Mapping",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Declared transformation from selected source data to a target input contract.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.4, §8"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:OutputProjection",
+      "label": "Output Projection",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Declared mapping from selected child outputs into a composite boundary output.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.4"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:WorkContract",
+      "label": "Work Contract",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Input, output, command, event, authority, and limit declarations for a work definition.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.1"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:EventContract",
+      "label": "Event Contract",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Declares event types, schemas, and structural classifications a work may emit.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:WorkContract",
+        "source_selector": "DESIGN §4.1, §6.3"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:CommandContract",
+      "label": "Command Contract",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Declares addressed commands a work may receive.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:WorkContract",
+        "source_selector": "DESIGN §4.1, §6"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:CompositionForm",
+      "label": "Composition Form",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Declarative graph pattern compiled into event-triggered edges.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §5"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:Sequence",
+      "label": "Sequence",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Releases a successor from a declared predecessor event.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:CompositionForm",
+        "source_selector": "DESIGN §5.1"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:FanOut",
+      "label": "Fan-Out",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Releases multiple explicitly mapped branches from one declared event.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:CompositionForm",
+        "source_selector": "DESIGN §5.2"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:FanIn",
+      "label": "Fan-In",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Waits for a structural release condition and invokes a join work.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:CompositionForm",
+        "source_selector": "DESIGN §5.3"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:Gate",
+      "label": "Gate",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Routes one decision-work label to exactly one declared outgoing edge.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:CompositionForm",
+        "source_selector": "DESIGN §5.4"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:Sidecar",
+      "label": "Sidecar",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Attaches ordinary work to a primary under a declared lifecycle policy.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:CompositionForm",
+        "source_selector": "DESIGN §5.5"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:BoundedRepeat",
+      "label": "Bounded Repeat",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Repeats a graph under a decision work, bound, and exhaustion route.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:CompositionForm",
+        "source_selector": "DESIGN §5.6"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:ExplicitComposition",
+      "label": "Explicit Composition",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Direct typed graph form underlying the convenience operators.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:CompositionForm",
+        "source_selector": "DESIGN §5.7"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:ReleasePolicy",
+      "label": "Release Policy",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Structural readiness rule such as all, any, or bounded quorum.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §5.3"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:SidecarLifecyclePolicy",
+      "label": "Sidecar Lifecycle Policy",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Declares start, observation, termination, and output contribution behavior for a sidecar.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §5.5"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:WorkMessage",
+      "label": "Work Message",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Versioned message in the common work-protocol envelope.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §6.1"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:Command",
+      "label": "Command",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Addressed request that a target or authority adapter may reject.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:WorkMessage",
+        "source_selector": "DESIGN §6"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:Event",
+      "label": "Event",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Accepted fact emitted by a work unit or trusted runtime adapter.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:WorkMessage",
+        "source_selector": "DESIGN §6"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:EventClassification",
+      "label": "Event Classification",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Structural event role: progress, release, terminal, or diagnostic.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §6.3"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:WorkProtocol",
+      "label": "Work Protocol",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Logical command/event delivery boundary; not itself a decision-maker or executor.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §6"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:Journal",
+      "label": "Journal",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Append-only accepted message history used for replay and audit.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §6.2, §7"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:OrchestratorKernel",
+      "label": "Orchestrator Kernel",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Root graph interpreter that validates, expands, observes, and issues declared commands.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §2, §8"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:OrchestrationCursor",
+      "label": "Orchestration Cursor",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Rebuildable control projection of deliveries, satisfied edges, and enabled nodes.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §7"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:StatusProjection",
+      "label": "Status Projection",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Rebuildable user or operator view over accepted child events.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §7"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:ExecutorAdapter",
+      "label": "Executor Adapter",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Boundary that translates the work protocol to an external executor and reports events.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.3"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:AuthorityReference",
+      "label": "Authority Reference",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Reference to accepted authority evidence required for command delivery or an external effect.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §4.1, §10"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:DomainState",
+      "label": "Domain State",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Work-owned meaning and lifecycle state that remains opaque to the orchestrator.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §3, §7"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:ConfirmationState",
+      "label": "Confirmation State",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Confirmation meaning and state owned by an individual gate or work unit.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:DomainState",
+        "source_selector": "DESIGN §3, §5.4"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:ArchitectureProfile",
+      "label": "Architecture Profile",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Named set of constraints evaluated over this ontology.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §10"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:ObservationProjection",
+      "label": "Observation Projection",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Typed transformation of source, graph, journal, runtime, or audit evidence into observed facts.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "DESIGN §10, §13"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:PropertyFinding",
+      "label": "Property Finding",
+      "node_kind": "architecture-element",
+      "branch": "system",
+      "description": "Explainable result containing subject, expectation, observation, profile, evidence, and owner route.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source owner",
+      "candidate_status": "proposal",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "low",
+        "commitment_confidence": "candidate"
+      },
+      "properties": {
+        "parent_type": "rwo:ArchitectureElement",
+        "source_selector": "Ontology Vault architecture-property contract"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A candidate architecture element is not implementation, runtime conformance, or canonical vocabulary."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.001",
+      "label": "Residue 001",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-001` journal versus work-owned source of state — ownership and reconciliation relations remain unsettled",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO work-state and journal owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-001` journal versus work-owned source of state",
+        "impact_or_status": "ownership and reconciliation relations remain unsettled",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.002",
+      "label": "Residue 002",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-002` dynamic graph extension and confirmation — graph version and authority relations remain incomplete",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "confirmation and Dispatch authority owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-002` dynamic graph extension and confirmation",
+        "impact_or_status": "graph version and authority relations remain incomplete",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.003",
+      "label": "Residue 003",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-003` cross-host delivery guarantees — protocol properties remain candidate",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "protocol, adapter, and storage owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-003` cross-host delivery guarantees",
+        "impact_or_status": "protocol properties remain candidate",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.004",
+      "label": "Residue 004",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-004` standard cancellation/compensation forms — composition catalog may need extension",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "work-policy owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-004` standard cancellation/compensation forms",
+        "impact_or_status": "composition catalog may need extension",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.005",
+      "label": "Residue 005",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-005` structural versus decision-work quorum — release-policy semantic boundary remains open",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "coordination and semantic-governance owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-005` structural versus decision-work quorum",
+        "impact_or_status": "release-policy semantic boundary remains open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.006",
+      "label": "Residue 006",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-006` schema/reducer migration — version and replay relations remain incomplete",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "versioning and replay owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-006` schema/reducer migration",
+        "impact_or_status": "version and replay relations remain incomplete",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.007",
+      "label": "Residue 007",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-007` minimal authority reference — effect-boundary property remains incomplete",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "authorization and effect-boundary owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-007` minimal authority reference",
+        "impact_or_status": "effect-boundary property remains incomplete",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.008",
+      "label": "Residue 008",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-008` counterexample suite — bounded expressiveness claim remains unsupported",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-008` counterexample suite",
+        "impact_or_status": "bounded expressiveness claim remains unsupported",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.009",
+      "label": "Residue 009",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-009` long-lived streams — uniform `Work` closure remains unproven",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "Work-contract owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-009` long-lived streams",
+        "impact_or_status": "uniform `Work` closure remains unproven",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.010",
+      "label": "Residue 010",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "RWO-OQ-010` promotion owner — ontology remains proposal-only",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "canonical-definition and promotion owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "RWO-OQ-010` promotion owner",
+        "impact_or_status": "ontology remains proposal-only",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.011",
+      "label": "Residue 011",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "Is `EventClassification` metadata on an event contract, an independent controlled vocabulary, or both? — open",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "ontology source owner then event-contract owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "Is `EventClassification` metadata on an event contract, an independent controlled vocabulary, or both?",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.012",
+      "label": "Residue 012",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "Should `InputMapping` be pure and deterministic, or may it invoke a mapping work unit? — open",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "ontology source owner then mapping-contract owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "Should `InputMapping` be pure and deterministic, or may it invoke a mapping work unit?",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.013",
+      "label": "Residue 013",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "Is an executor adapter a work-owned component or an independently governed runtime boundary? — open",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "ontology source owner then adapter owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "Is an executor adapter a work-owned component or an independently governed runtime boundary?",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.014",
+      "label": "Residue 014",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "Which relation types, if any, may compose transitively beyond local subtype relations? — open",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "ontology source owner then relation-contract owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "Which relation types, if any, may compose transitively beyond local subtype relations?",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.015",
+      "label": "Residue 015",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-1` graph/state structure count — canonical lifecycle and state partition remains unsettled",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "workflow-graph discovery owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-1` graph/state structure count",
+        "impact_or_status": "canonical lifecycle and state partition remains unsettled",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.016",
+      "label": "Residue 016",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-2` meaning of a workflow node — WorkNode` cannot be collapsed into `AgentNode",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "workflow taxonomy owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-2` meaning of a workflow node",
+        "impact_or_status": "WorkNode` cannot be collapsed into `AgentNode",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.017",
+      "label": "Residue 017",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-3` node/agent/seat/attempt cardinalities — retry, reuse, and identity relations remain incomplete",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "identity and runtime-domain owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-3` node/agent/seat/attempt cardinalities",
+        "impact_or_status": "retry, reuse, and identity relations remain incomplete",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.018",
+      "label": "Residue 018",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-4` node and edge taxonomy — executable closed schemas are not selected",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "protocol and workflow-schema owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-4` node and edge taxonomy",
+        "impact_or_status": "executable closed schemas are not selected",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.019",
+      "label": "Residue 019",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-5` workflow versus communication — routing and permission ownership remain separate and unsettled",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "workflow and Bus Contracts owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-5` workflow versus communication",
+        "impact_or_status": "routing and permission ownership remain separate and unsettled",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.020",
+      "label": "Residue 020",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-6` collective coordination — quorum, dissent, budgets, and collective result semantics are unowned",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "group and coordination owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-6` collective coordination",
+        "impact_or_status": "quorum, dissent, budgets, and collective result semantics are unowned",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.021",
+      "label": "Residue 021",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-7` completion model — attempt end, outcome, terminal fact, and audit close remain distinct candidates",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "Run, audit, and closure owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-7` completion model",
+        "impact_or_status": "attempt end, outcome, terminal fact, and audit close remain distinct candidates",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.022",
+      "label": "Residue 022",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-8` rework under a DAG — bounded loop, generation, and replay semantics remain unsettled",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "workflow-state and retry owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-8` rework under a DAG",
+        "impact_or_status": "bounded loop, generation, and replay semantics remain unsettled",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.023",
+      "label": "Residue 023",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-9` compilation and confirmation — total mapping, lineage, and fail-closed authority remain unproven",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "protocol compilation, confirmation, and Dispatch owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-9` compilation and confirmation",
+        "impact_or_status": "total mapping, lineage, and fail-closed authority remain unproven",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.024",
+      "label": "Residue 024",
+      "node_kind": "residue",
+      "branch": "system",
+      "description": "WGQ-10` simplified views — projections must remain derivable and non-authoritative",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "projection, UI, and telemetry owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "WGQ-10` simplified views",
+        "impact_or_status": "projections must remain derivable and non-authoritative",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.025",
+      "label": "Residue 025",
+      "node_kind": "residue",
+      "branch": "bridge",
+      "description": "reasoning-entry owner and typed verdict contract are unselected — open",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "reasoning-entry and dispatch authority owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "reasoning-entry owner and typed verdict contract are unselected",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.026",
+      "label": "Residue 026",
+      "node_kind": "residue",
+      "branch": "bridge",
+      "description": "artifact-admission owner and contract are absent (`GAP-ARE-ART-001`) — blocked",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "artifact-admission owner",
+      "candidate_status": "blocked",
+      "runtime_posture": "blocked",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "blocked"
+      },
+      "properties": {
+        "statement": "artifact-admission owner and contract are absent (`GAP-ARE-ART-001`)",
+        "impact_or_status": "blocked",
+        "state": "blocked"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.027",
+      "label": "Residue 027",
+      "node_kind": "residue",
+      "branch": "bridge",
+      "description": "exact-effect owner, accepted effect schema, and effect evidence are absent — open",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "exact-effect and authorization owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "exact-effect owner, accepted effect schema, and effect evidence are absent",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.028",
+      "label": "Residue 028",
+      "node_kind": "residue",
+      "branch": "bridge",
+      "description": "cross-repository command, cut, artifact, effect, and compatibility schemas lack owner receipts and conformance evidence — open",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "cross-repository contract owners",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "cross-repository command, cut, artifact, effect, and compatibility schemas lack owner receipts and conformance evidence",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:residue.029",
+      "label": "Residue 029",
+      "node_kind": "residue",
+      "branch": "bridge",
+      "description": "discriminating witnesses F1–F8 are planned but unexecuted — open",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "statement": "discriminating witnesses F1–F8 are planned but unexecuted",
+        "impact_or_status": "open",
+        "state": "open"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "Open residue is not a closed decision, an assigned owner, or an implementation defect by default."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.dispatch-definition",
+      "label": "INDETERMINATE — rwo:WorkDefinition",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "The confirmed dispatch row and bound launch-plan compiler provide a specialized contract precedent, but not an accepted generic WorkDefinition schema.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "RWO contract owner",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I01",
+        "expected": "An immutable accepted WorkDefinition contract distinct from confirmation and registration.",
+        "observed": "The confirmed dispatch row and bound launch-plan compiler provide a specialized contract precedent, but not an accepted generic WorkDefinition schema.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:confirmed-dispatch-row-and-compiler"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.023",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "dispatch confirmation is WorkDefinition acceptance",
+        "compilation grants dispatch authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:confirmed-dispatch-row",
+      "label": "Confirmed dispatch row and compiler",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "The confirmed dispatch row and bound launch-plan compiler provide a specialized contract precedent, but not an accepted generic WorkDefinition schema.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "RWO contract owner",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.dispatch-definition",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "residue_refs": [
+        "rwo:residue.023",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "dispatch confirmation is WorkDefinition acceptance",
+        "compilation grants dispatch authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.run-identity",
+      "label": "INDETERMINATE — rwo:WorkRun",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "dispatch_id, group_id, seat_index, turn_ordinal, and attempt_id form a useful bound-address identity precedent.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "identity and runtime-domain owner",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I01",
+        "expected": "One addressed run identity that remains separate from status and authority.",
+        "observed": "dispatch_id, group_id, seat_index, turn_ordinal, and attempt_id form a useful bound-address identity precedent.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "precedent",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:bound-address"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.017"
+      ],
+      "forbidden_inferences": [
+        "address proves semantic state",
+        "address carries authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:bound-address",
+      "label": "Bound dispatch address",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "dispatch_id, group_id, seat_index, turn_ordinal, and attempt_id form a useful bound-address identity precedent.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "identity and runtime-domain owner",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.run-identity",
+        "proof_status": "observed",
+        "correspondence": "precedent"
+      },
+      "residue_refs": [
+        "rwo:residue.017"
+      ],
+      "forbidden_inferences": [
+        "address proves semantic state",
+        "address carries authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.leaf-adapter",
+      "label": "INDETERMINATE — rwo:ExecutorAdapter",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "Host-hook translation is a narrow adapter analogue; target conformance is absent and a host binding is not permission to invoke.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "host binding and RWO adapter owners",
+      "candidate_status": "projected",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I09",
+        "expected": "A leaf adapter conforms to an explicit Work protocol without inheriting invocation authority.",
+        "observed": "Host-hook translation is a narrow adapter analogue; target conformance is absent and a host binding is not permission to invoke.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "execution-unverified",
+        "correspondence": "partial-analogue",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:host-hook-translation"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.013",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "host binding authorizes invocation",
+        "translation proves RWO conformance"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:host-hook-translation",
+      "label": "Host-hook translation",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "Host-hook translation is a narrow adapter analogue; target conformance is absent and a host binding is not permission to invoke.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "host binding and RWO adapter owners",
+      "candidate_status": "observed",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.leaf-adapter",
+        "proof_status": "execution-unverified",
+        "correspondence": "partial-analogue"
+      },
+      "residue_refs": [
+        "rwo:residue.013",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "host binding authorizes invocation",
+        "translation proves RWO conformance"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.graph-expansion",
+      "label": "UNSUPPORTED — rwo:WorkGraph",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "Dispatch groups and launch plans exist, but no generic recursive flattening, boundary projection, or event-edge compiler was found.",
+      "source_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO graph compiler owner",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I02",
+        "expected": "Recursive composite definitions flatten into one validated root run graph with boundary projections.",
+        "observed": "Dispatch groups and launch plans exist, but no generic recursive flattening, boundary projection, or event-edge compiler was found.",
+        "finding_status": "unsupported",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "gap",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:dispatch-groups-launch-plan"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.002",
+        "rwo:residue.008",
+        "rwo:residue.023",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "a specialized launch plan is recursive graph expansion"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:dispatch-launch-plan",
+      "label": "Dispatch groups and launch plan",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "Dispatch groups and launch plans exist, but no generic recursive flattening, boundary projection, or event-edge compiler was found.",
+      "source_refs": [
+        "rwo:source:e1",
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO graph compiler owner",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.graph-expansion",
+        "proof_status": "observed",
+        "correspondence": "gap"
+      },
+      "residue_refs": [
+        "rwo:residue.002",
+        "rwo:residue.008",
+        "rwo:residue.023",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "a specialized launch plan is recursive graph expansion"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.sequence",
+      "label": "INDETERMINATE — rwo:Sequence",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "Declared handoffs are a narrow sequence analogue; artifact presence alone is not a typed readiness verdict.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "workflow routing owner",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I03",
+        "expected": "A typed readiness event releases the declared successor through a complete routing edge.",
+        "observed": "Declared handoffs are a narrow sequence analogue; artifact presence alone is not a typed readiness verdict.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:declared-handoff"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.023",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "artifact presence is readiness",
+        "a declared connection proves execution"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:declared-handoff",
+      "label": "Declared handoff",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "Declared handoffs are a narrow sequence analogue; artifact presence alone is not a typed readiness verdict.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "workflow routing owner",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.sequence",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "residue_refs": [
+        "rwo:residue.023",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "artifact presence is readiness",
+        "a declared connection proves execution"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.fan-out",
+      "label": "INDETERMINATE — rwo:FanOut",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "Three seats under a parent provide a finite fan-out shape precedent.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "workflow routing owner",
+      "candidate_status": "projected",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I03",
+        "expected": "One declared release maps to multiple addressed branches without sharing authority.",
+        "observed": "Three seats under a parent provide a finite fan-out shape precedent.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "execution-unverified",
+        "correspondence": "precedent",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:three-seats-under-a-parent"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.020",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "parallel launch is RWO fan-out conformance",
+        "parallel branches have equal judgment or shared authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:finite-three-seat-launch",
+      "label": "Finite three-seat launch",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "Three seats under a parent provide a finite fan-out shape precedent.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "workflow routing owner",
+      "candidate_status": "observed",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.fan-out",
+        "proof_status": "execution-unverified",
+        "correspondence": "precedent"
+      },
+      "residue_refs": [
+        "rwo:residue.020",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "parallel launch is RWO fan-out conformance",
+        "parallel branches have equal judgment or shared authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.fan-in",
+      "label": "UNSUPPORTED — rwo:FanIn",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "Declared joins provide a partial analogue; typed reconciliation ownership and negative fixtures are absent.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "coordination and semantic-governance owners",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I05",
+        "expected": "A declared release policy and reconciliation owner govern a canonical join input.",
+        "observed": "Declared joins provide a partial analogue; typed reconciliation ownership and negative fixtures are absent.",
+        "finding_status": "unsupported",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:declared-joins"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.005",
+        "rwo:residue.020",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "arrival or quorum is reconciliation",
+        "join completion proves semantic agreement"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:declared-join",
+      "label": "Declared join",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "Declared joins provide a partial analogue; typed reconciliation ownership and negative fixtures are absent.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "coordination and semantic-governance owners",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.fan-in",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "residue_refs": [
+        "rwo:residue.005",
+        "rwo:residue.020",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "arrival or quorum is reconciliation",
+        "join completion proves semantic agreement"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.gate-route",
+      "label": "INDETERMINATE — rwo:Gate",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "Typed handoff labels provide a routing precedent; the router does not make the verdict.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "gate-work and workflow routing owners",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I04",
+        "expected": "A typed verdict label routes to exactly one declared outgoing edge while the router remains non-semantic.",
+        "observed": "Typed handoff labels provide a routing precedent; the router does not make the verdict.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "precedent",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:typed-handoff-label"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.005",
+        "rwo:residue.025",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "routing is semantic judgment",
+        "a route label is an authorization"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:typed-handoff-label",
+      "label": "Typed handoff label",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "Typed handoff labels provide a routing precedent; the router does not make the verdict.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "gate-work and workflow routing owners",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.gate-route",
+        "proof_status": "observed",
+        "correspondence": "precedent"
+      },
+      "residue_refs": [
+        "rwo:residue.005",
+        "rwo:residue.025",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "routing is semantic judgment",
+        "a route label is an authorization"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.sidecar",
+      "label": "UNSUPPORTED — rwo:Sidecar",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "APT and UI projections are observational precedents only; no generic sidecar lifecycle contract was found.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "projection and RWO lifecycle owners",
+      "candidate_status": "projected",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I08",
+        "expected": "Sidecar lifecycle and output contribution are explicit and remain unable to control the primary implicitly.",
+        "observed": "APT and UI projections are observational precedents only; no generic sidecar lifecycle contract was found.",
+        "finding_status": "unsupported",
+        "evidence_stage": "source",
+        "proof_status": "execution-unverified",
+        "correspondence": "gap",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:apt-ui-projections"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.004",
+        "rwo:residue.013",
+        "rwo:residue.024",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "projection owns lifecycle or status",
+        "projection is route authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:apt-ui-projection",
+      "label": "APT and UI projection",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "APT and UI projections are observational precedents only; no generic sidecar lifecycle contract was found.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "projection and RWO lifecycle owners",
+      "candidate_status": "observed",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.sidecar",
+        "proof_status": "execution-unverified",
+        "correspondence": "gap"
+      },
+      "residue_refs": [
+        "rwo:residue.004",
+        "rwo:residue.013",
+        "rwo:residue.024",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "projection owns lifecycle or status",
+        "projection is route authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.bounded-repeat",
+      "label": "UNSUPPORTED — rwo:BoundedRepeat",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "Declared follow-up is a narrow repeat analogue; it does not establish bounded generic cycle semantics.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "workflow state and retry owner",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I06",
+        "expected": "A new bounded repeat is distinct from idempotent redelivery and carries an explicit exhaustion route.",
+        "observed": "Declared follow-up is a narrow repeat analogue; it does not establish bounded generic cycle semantics.",
+        "finding_status": "unsupported",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:declared-follow-up"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.004",
+        "rwo:residue.022",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "redelivery is a new attempt",
+        "follow-up silently changes scope or topology"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:declared-follow-up",
+      "label": "Declared follow-up",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "Declared follow-up is a narrow repeat analogue; it does not establish bounded generic cycle semantics.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "workflow state and retry owner",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.bounded-repeat",
+        "proof_status": "observed",
+        "correspondence": "partial-analogue"
+      },
+      "residue_refs": [
+        "rwo:residue.004",
+        "rwo:residue.022",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "redelivery is a new attempt",
+        "follow-up silently changes scope or topology"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.protocol",
+      "label": "INDETERMINATE — rwo:WorkProtocol",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "ACI command/event lanes are a protocol precedent; the protocol compiler PC1-PC12 plus its golden test passed 13/13 in the accepted research run.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "protocol and ACI owners",
+      "candidate_status": "projected",
+      "runtime_posture": "freshly-executed",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I12",
+        "expected": "Closed-schema command and event lanes deliver addressed messages without owning semantic decisions.",
+        "observed": "ACI command/event lanes are a protocol precedent; the protocol compiler PC1-PC12 plus its golden test passed 13/13 in the accepted research run.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "test",
+        "proof_status": "freshly-executed",
+        "correspondence": "precedent",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#tracked-implemented-state:protocol-compiler",
+          "findings.md#exact-implementation--recursive-work-matrix:aci-command-event-lanes"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.003",
+        "rwo:residue.006",
+        "rwo:residue.018",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "transport or persistence is semantic decision",
+        "compiler success is RWO runtime conformance"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:aci-command-event-lanes",
+      "label": "ACI command and event lanes",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "ACI command/event lanes are a protocol precedent; the protocol compiler PC1-PC12 plus its golden test passed 13/13 in the accepted research run.",
+      "source_refs": [
+        "rwo:source:e1"
+      ],
+      "owner_route": "protocol and ACI owners",
+      "candidate_status": "observed",
+      "runtime_posture": "freshly-executed",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.protocol",
+        "proof_status": "freshly-executed",
+        "correspondence": "precedent"
+      },
+      "residue_refs": [
+        "rwo:residue.003",
+        "rwo:residue.006",
+        "rwo:residue.018",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "transport or persistence is semantic decision",
+        "compiler success is RWO runtime conformance"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.journal",
+      "label": "INDETERMINATE — rwo:Journal",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "The current ACI journal is the selected single-owner precedent; semantic replay and a generic RWO cursor remain unverified.",
+      "source_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI journal and RWO projection owners",
+      "candidate_status": "projected",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I11",
+        "expected": "One accepted integrated history owner supports replay while derived cursors remain non-authoritative.",
+        "observed": "The current ACI journal is the selected single-owner precedent; semantic replay and a generic RWO cursor remain unverified.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "execution-unverified",
+        "correspondence": "precedent",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:current-journal"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.001",
+        "rwo:residue.006",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "accepted history is domain state",
+        "RWO or ARE may open a second integrated journal"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:aci-journal",
+      "label": "ACI accepted journal",
+      "node_kind": "implementation-precedent",
+      "branch": "system",
+      "description": "The current ACI journal is the selected single-owner precedent; semantic replay and a generic RWO cursor remain unverified.",
+      "source_refs": [
+        "rwo:source:e1",
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI journal and RWO projection owners",
+      "candidate_status": "observed",
+      "runtime_posture": "execution-unverified",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.journal",
+        "proof_status": "execution-unverified",
+        "correspondence": "precedent"
+      },
+      "residue_refs": [
+        "rwo:residue.001",
+        "rwo:residue.006",
+        "rwo:residue.028"
+      ],
+      "forbidden_inferences": [
+        "accepted history is domain state",
+        "RWO or ARE may open a second integrated journal"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.current.effect-adapter",
+      "label": "UNSUPPORTED — rwo:ExecutorAdapter",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "A fixed-double witness exists in private ARE evidence, but it was not freshly executed in the accepted research and is not a real effect adapter.",
+      "source_refs": [
+        "rwo:source:e3"
+      ],
+      "owner_route": "exact-effect, ACI, and adapter owners",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I10",
+        "expected": "An exact-effect owner, accepted ACI intent, adapter receipt, and honest-unknown outcome evidence remain distinct.",
+        "observed": "A fixed-double witness exists in private ARE evidence, but it was not freshly executed in the accepted research and is not a real effect adapter.",
+        "finding_status": "unsupported",
+        "evidence_stage": "test",
+        "proof_status": "observed",
+        "correspondence": "gap",
+        "source_posture": "private-evidence",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#exact-implementation--recursive-work-matrix:effect-test-double"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.007",
+        "rwo:residue.027",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "a test double is a real effect adapter",
+        "semantic recommendation authorizes an effect",
+        "prior execution is fresh execution"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:precedent:fixed-effect-double",
+      "label": "ARE fixed effect double",
+      "node_kind": "implementation-precedent",
+      "branch": "bridge",
+      "description": "A fixed-double witness exists in private ARE evidence, but it was not freshly executed in the accepted research and is not a real effect adapter.",
+      "source_refs": [
+        "rwo:source:e3"
+      ],
+      "owner_route": "exact-effect, ACI, and adapter owners",
+      "candidate_status": "observed",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "finding_ref": "rwo:finding.current.effect-adapter",
+        "proof_status": "observed",
+        "correspondence": "gap"
+      },
+      "residue_refs": [
+        "rwo:residue.007",
+        "rwo:residue.027",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "a test double is a real effect adapter",
+        "semantic recommendation authorizes an effect",
+        "prior execution is fresh execution"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.proposal.implementation-status",
+      "label": "UNSUPPORTED — rwo:OrchestratorKernel",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "RWO remains an untracked proposal with no RWO runtime or promotion evidence.",
+      "source_refs": [
+        "rwo:source:e2"
+      ],
+      "owner_route": "RWO source and promotion owners",
+      "candidate_status": "projected",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "RWO-I02",
+        "expected": "An executable RWO kernel, recursive compiler, reducer, fixtures, and conformance receipts would be required for an implementation claim.",
+        "observed": "RWO remains an untracked proposal with no RWO runtime or promotion evidence.",
+        "finding_status": "unsupported",
+        "evidence_stage": "source",
+        "proof_status": "proposal",
+        "correspondence": "gap",
+        "source_posture": "untracked-proposal",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#proposal-only-rwo-and-tracked-hypotheses"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.008",
+        "rwo:residue.010",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "proposal is implementation",
+        "ontology is runtime schema",
+        "research is promotion"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.hypothesis.agent-node-collapse",
+      "label": "INDETERMINATE — rwo:WorkNode",
+      "node_kind": "property-finding",
+      "branch": "system",
+      "description": "The tracked every-graph-node-is-AgentNode hypothesis conflicts with RWO WorkNode semantics; no source selects the owning layer.",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "workflow taxonomy and identity owners",
+      "candidate_status": "projected",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "rwo:f.no-parent-authority-inheritance",
+        "expected": "A WorkNode may denote a structural position, gate, join, operation, or reusable work reference independently of agent identity.",
+        "observed": "The tracked every-graph-node-is-AgentNode hypothesis conflicts with RWO WorkNode semantics; no source selects the owning layer.",
+        "finding_status": "indeterminate",
+        "evidence_stage": "source",
+        "proof_status": "hypothesis",
+        "correspondence": "gap",
+        "source_posture": "tracked",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#proposal-only-rwo-and-tracked-hypotheses"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.015",
+        "rwo:residue.016",
+        "rwo:residue.017",
+        "rwo:residue.018",
+        "rwo:residue.019",
+        "rwo:residue.020",
+        "rwo:residue.021",
+        "rwo:residue.022",
+        "rwo:residue.023",
+        "rwo:residue.024"
+      ],
+      "forbidden_inferences": [
+        "every WorkNode is an AgentNode",
+        "node containment assigns agent authority"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:finding.bridge.no-second-control-plane",
+      "label": "PASS — rwo:Journal",
+      "node_kind": "property-finding",
+      "branch": "bridge",
+      "description": "The accepted research explicitly kills those topologies and retains one ACI lifecycle owner.",
+      "source_refs": [
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI and exact-effect authority owners",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "accepted-research"
+      },
+      "properties": {
+        "profile_ref": "rwo:profile.current-state-evidence-v0",
+        "constraint_ref": "rwo:f.no-cross-owner-bridge-authority",
+        "expected": "RWO and ARE remain subordinate to the selected ACI journal and do not create another integrated scheduler, journal, semantic authority, or effect authority.",
+        "observed": "The accepted research explicitly kills those topologies and retains one ACI lifecycle owner.",
+        "finding_status": "pass",
+        "evidence_stage": "source",
+        "proof_status": "observed",
+        "correspondence": "forbidden",
+        "source_posture": "private-evidence",
+        "promotion_effect": "none",
+        "evidence_selectors": [
+          "findings.md#integration-topology-verdicts"
+        ]
+      },
+      "residue_refs": [
+        "rwo:residue.025",
+        "rwo:residue.026",
+        "rwo:residue.027",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "the ontology itself enforces the prohibition at runtime",
+        "a bridge document assigns the unresolved owners"
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:hypothesis:every-graph-node-agent",
+      "label": "Every workflow graph node is an AgentNode",
+      "node_kind": "hypothesis",
+      "branch": "system",
+      "description": "Tracked discovery hypothesis that conflicts with an RWO WorkNode which may be a gate, join, operation, or structural position.",
+      "source_refs": [
+        "rwo:source:e2-wg"
+      ],
+      "owner_route": "workflow taxonomy and identity owners",
+      "candidate_status": "hypothesis",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "resolution_status": "unresolved",
+        "conflicting_subject": "rwo:WorkNode"
+      },
+      "residue_refs": [
+        "rwo:residue.015",
+        "rwo:residue.016",
+        "rwo:residue.017",
+        "rwo:residue.018",
+        "rwo:residue.019",
+        "rwo:residue.020",
+        "rwo:residue.021",
+        "rwo:residue.022",
+        "rwo:residue.023",
+        "rwo:residue.024"
+      ],
+      "forbidden_inferences": [
+        "The hypothesis cannot redefine WorkNode or assign agent identity and authority to every graph position."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:entry",
+      "label": "entry",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "confirmed dispatch plus bound seat -> ReasoningEntryVerdict` persisted before mapping -> reasoning command mapper",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "entry-gate owner remains distinct from ACI and ARE",
+      "candidate_status": "projected",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "confirmed dispatch plus bound seat",
+        "typed_boundary": "ReasoningEntryVerdict` persisted before mapping",
+        "consumer": "reasoning command mapper",
+        "owner_boundary": "entry-gate owner remains distinct from ACI and ARE",
+        "fail_closed_condition": "missing, stale, mismatched, or non-pass verdict produces no mapper, ACI, actor, evaluator, artifact, or effect call",
+        "evidence_status": "documentation candidate"
+      },
+      "residue_refs": [
+        "rwo:residue.025",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:command-acceptance",
+      "label": "command acceptance",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "mapper -> proposed lifecycle command plus exact digest -> ACI acceptance boundary",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "ACI alone accepts or rejects and owns canonical lifecycle identity",
+      "candidate_status": "projected",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "mapper",
+        "typed_boundary": "proposed lifecycle command plus exact digest",
+        "consumer": "ACI acceptance boundary",
+        "owner_boundary": "ACI alone accepts or rejects and owns canonical lifecycle identity",
+        "fail_closed_condition": "unknown schema/digest or cross-run substitution rejects",
+        "evidence_status": "documentation candidate"
+      },
+      "residue_refs": [
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:history",
+      "label": "history",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "ACI acceptance boundary -> accepted lifecycle record plus verified journal cut -> observation-admission boundary",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "ACI owns the one integrated journal",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "ACI acceptance boundary",
+        "typed_boundary": "accepted lifecycle record plus verified journal cut",
+        "consumer": "observation-admission boundary",
+        "owner_boundary": "ACI owns the one integrated journal",
+        "fail_closed_condition": "unverified cut or missing lineage blocks admission",
+        "evidence_status": "source boundary observed; integrated conformance absent"
+      },
+      "residue_refs": [
+        "rwo:residue.001",
+        "rwo:residue.006",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:observation-admission",
+      "label": "observation admission",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "verified journal cut and external source adapters -> admission verdict plus immutable admitted observations -> bounded semantic evaluator",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "observation-admission owner is not the journal, projection, or evaluator",
+      "candidate_status": "projected",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "verified journal cut and external source adapters",
+        "typed_boundary": "admission verdict plus immutable admitted observations",
+        "consumer": "bounded semantic evaluator",
+        "owner_boundary": "observation-admission owner is not the journal, projection, or evaluator",
+        "fail_closed_condition": "lifecycle history is never admitted automatically; missing owner blocks",
+        "evidence_status": "documentation candidate"
+      },
+      "residue_refs": [
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:l0-semantics",
+      "label": "L0 semantics",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "frozen admitted inputs, authority snapshot, and finite catalog -> semantic result plus derivation and residue -> receipt assembler",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "evaluator owns deterministic derivation, not lifecycle or effect authority",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "frozen admitted inputs, authority snapshot, and finite catalog",
+        "typed_boundary": "semantic result plus derivation and residue",
+        "consumer": "receipt assembler",
+        "owner_boundary": "evaluator owns deterministic derivation, not lifecycle or effect authority",
+        "fail_closed_condition": "unresolved required inputs or non-pass entry yields no evaluation",
+        "evidence_status": "bounded local witness previously executed; not freshly executed in the accepted research"
+      },
+      "residue_refs": [
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:artifact-admission",
+      "label": "artifact admission",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "semantic receipt assembler -> immutable semantic artifact plus digest -> artifact-admission boundary",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "artifact owner is unresolved; ACI may retain only accepted references and lifecycle facts",
+      "candidate_status": "blocked",
+      "runtime_posture": "blocked",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "blocked"
+      },
+      "properties": {
+        "producer": "semantic receipt assembler",
+        "typed_boundary": "immutable semantic artifact plus digest",
+        "consumer": "artifact-admission boundary",
+        "owner_boundary": "artifact owner is unresolved; ACI may retain only accepted references and lifecycle facts",
+        "fail_closed_condition": "absent owner or contract blocks (`GAP-ARE-ART-001`)",
+        "evidence_status": "blocked"
+      },
+      "residue_refs": [
+        "rwo:residue.026",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:exact-effect",
+      "label": "exact effect",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "exact requested envelope plus admitted semantic artifact -> distinct exact-effect verdict -> effect-command mapper",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "effect-gate owner is separate from evaluator, router, and ACI acceptance",
+      "candidate_status": "projected",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "exact requested envelope plus admitted semantic artifact",
+        "typed_boundary": "distinct exact-effect verdict",
+        "consumer": "effect-command mapper",
+        "owner_boundary": "effect-gate owner is separate from evaluator, router, and ACI acceptance",
+        "fail_closed_condition": "non-pass, stale, mismatched, or broadened envelope produces no effect intent",
+        "evidence_status": "documentation candidate"
+      },
+      "residue_refs": [
+        "rwo:residue.027",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:effect-lifecycle",
+      "label": "effect lifecycle",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "effect-command mapper -> proposed ACI effect intent -> ACI acceptance then effect adapter",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "ACI owns intent acceptance; adapter owns attempt evidence; neither invents authority",
+      "candidate_status": "projected",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "effect-command mapper",
+        "typed_boundary": "proposed ACI effect intent",
+        "consumer": "ACI acceptance then effect adapter",
+        "owner_boundary": "ACI owns intent acceptance; adapter owns attempt evidence; neither invents authority",
+        "fail_closed_condition": "rejection produces no attempt; unknown outcome remains honest unknown",
+        "evidence_status": "deferred"
+      },
+      "residue_refs": [
+        "rwo:residue.027",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:replay",
+      "label": "replay",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "verified ACI cut plus retained immutable semantic artifacts -> reproduced semantic outcome -> audit consumer",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "replay reads ACI facts and deterministic artifacts; it does not own current truth",
+      "candidate_status": "projected",
+      "runtime_posture": "observed",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "verified ACI cut plus retained immutable semantic artifacts",
+        "typed_boundary": "reproduced semantic outcome",
+        "consumer": "audit consumer",
+        "owner_boundary": "replay reads ACI facts and deterministic artifacts; it does not own current truth",
+        "fail_closed_condition": "any mutable, provider, tool, or effect call invalidates historical replay",
+        "evidence_status": "bounded local witness previously executed; integrated bridge deferred"
+      },
+      "residue_refs": [
+        "rwo:residue.006",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:stage:revalidation",
+      "label": "revalidation",
+      "node_kind": "integration-stage",
+      "branch": "bridge",
+      "description": "current source handles and a new admitted run context -> new run identity and fresh receipts -> ordinary entry path",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "current owners decide applicability and authorization again",
+      "candidate_status": "projected",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "producer": "current source handles and a new admitted run context",
+        "typed_boundary": "new run identity and fresh receipts",
+        "consumer": "ordinary entry path",
+        "owner_boundary": "current owners decide applicability and authorization again",
+        "fail_closed_condition": "reuse of a historical receipt as current permission rejects",
+        "evidence_status": "documentation candidate"
+      },
+      "residue_refs": [
+        "rwo:residue.025",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A documented integration stage does not select its unresolved owner, accept its schema, or prove executable compatibility."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:gate:entry",
+      "label": "Reasoning entry owner gate",
+      "node_kind": "owner-gate",
+      "branch": "bridge",
+      "description": "Who owns and versions ReasoningEntryVerdict?",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "owner-selection-required:reasoning-entry-verdict",
+      "candidate_status": "deferred",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "selection_status": "unresolved",
+        "blocking_question": "Who owns and versions ReasoningEntryVerdict?"
+      },
+      "residue_refs": [
+        "rwo:residue.025",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "An ontology gate node cannot select, impersonate, or authorize the named owner."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:gate:aci-lifecycle",
+      "label": "ACI lifecycle acceptance gate",
+      "node_kind": "owner-gate",
+      "branch": "bridge",
+      "description": "Which exact ACI schemas and conformance receipts admit the cross-repository command and journal cut?",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "ACI lifecycle and journal owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "selection_status": "source-boundary-selected-runtime-conformance-absent",
+        "blocking_question": "Which exact ACI schemas and conformance receipts admit the cross-repository command and journal cut?"
+      },
+      "residue_refs": [
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "An ontology gate node cannot select, impersonate, or authorize the named owner."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:gate:observation-admission",
+      "label": "Observation admission owner gate",
+      "node_kind": "owner-gate",
+      "branch": "bridge",
+      "description": "Who admits lifecycle and external observations into the semantic evaluator?",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "owner-selection-required:observation-admission",
+      "candidate_status": "deferred",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "selection_status": "unresolved",
+        "blocking_question": "Who admits lifecycle and external observations into the semantic evaluator?"
+      },
+      "residue_refs": [
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "An ontology gate node cannot select, impersonate, or authorize the named owner."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:gate:semantic-evaluator",
+      "label": "Semantic evaluator boundary",
+      "node_kind": "owner-gate",
+      "branch": "bridge",
+      "description": "Which catalog-applicability, precedence, and challenge-closure owners govern integrated L0 inputs?",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "Agent Reasoning Engine route",
+      "candidate_status": "deferred",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "selection_status": "local-L0-only-integrated-conformance-absent",
+        "blocking_question": "Which catalog-applicability, precedence, and challenge-closure owners govern integrated L0 inputs?"
+      },
+      "residue_refs": [
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "An ontology gate node cannot select, impersonate, or authorize the named owner."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:gate:artifact-admission",
+      "label": "Artifact admission owner gate",
+      "node_kind": "owner-gate",
+      "branch": "bridge",
+      "description": "Who admits semantic artifact bytes and which immutable schema is accepted?",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "owner-selection-required:artifact-admission",
+      "candidate_status": "blocked",
+      "runtime_posture": "blocked",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "blocked"
+      },
+      "properties": {
+        "selection_status": "blocked",
+        "blocking_question": "Who admits semantic artifact bytes and which immutable schema is accepted?"
+      },
+      "residue_refs": [
+        "rwo:residue.026",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "An ontology gate node cannot select, impersonate, or authorize the named owner."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:gate:exact-effect",
+      "label": "Exact-effect owner gate",
+      "node_kind": "owner-gate",
+      "branch": "bridge",
+      "description": "Who owns the exact-effect verdict and exact effect envelope?",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "owner-selection-required:exact-effect",
+      "candidate_status": "deferred",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "selection_status": "unresolved",
+        "blocking_question": "Who owns the exact-effect verdict and exact effect envelope?"
+      },
+      "residue_refs": [
+        "rwo:residue.027",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "An ontology gate node cannot select, impersonate, or authorize the named owner."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:gate:effect-adapter",
+      "label": "Effect adapter boundary",
+      "node_kind": "owner-gate",
+      "branch": "bridge",
+      "description": "Which adapter owns attempt evidence and honest-unknown outcomes after ACI intent acceptance?",
+      "source_refs": [
+        "rwo:source:e3",
+        "rwo:source:c1"
+      ],
+      "owner_route": "owner-selection-required:effect-adapter",
+      "candidate_status": "deferred",
+      "runtime_posture": "deferred",
+      "confidence": {
+        "evidence_confidence": "medium",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "selection_status": "unresolved",
+        "blocking_question": "Which adapter owns attempt evidence and honest-unknown outcomes after ACI intent acceptance?"
+      },
+      "residue_refs": [
+        "rwo:residue.027",
+        "rwo:residue.028",
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "An ontology gate node cannot select, impersonate, or authorize the named owner."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f1",
+      "label": "F1",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "dependency-complete confirmation to binding to journal-verification lifecycle",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "dependency-complete confirmation to binding to journal-verification lifecycle",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f2",
+      "label": "F2",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "recursive A to readiness to B path with wrong and missing artifact negatives",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "recursive A to readiness to B path with wrong and missing artifact negatives",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f3",
+      "label": "F3",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "semantic fan-in reconciliation distinct from arrival or quorum",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "semantic fan-in reconciliation distinct from arrival or quorum",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f4",
+      "label": "F4",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "sidecar failure and completion cannot control the primary without declared policy",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "sidecar failure and completion cannot control the primary without declared policy",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f5",
+      "label": "F5",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "entry non-pass makes zero downstream calls and only the valid owner may write its receipt",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "entry non-pass makes zero downstream calls and only the valid owner may write its receipt",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f6",
+      "label": "F6",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "L0 positive result plus effect non-pass and ACI rejection paths remain distinct",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "L0 positive result plus effect non-pass and ACI rejection paths remain distinct",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f7",
+      "label": "F7",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "historical replay makes zero mutable or external calls; current revalidation creates a new run",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "historical replay makes zero mutable or external calls; current revalidation creates a new run",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:witness:f8",
+      "label": "F8",
+      "node_kind": "validation-witness",
+      "branch": "bridge",
+      "description": "missing or substituted owner receipts, schemas, digests, and run identities fail closed",
+      "source_refs": [
+        "rwo:source:c1"
+      ],
+      "owner_route": "validation and evidence owner",
+      "candidate_status": "deferred",
+      "runtime_posture": "absent",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "deferred"
+      },
+      "properties": {
+        "required_discrimination": "missing or substituted owner receipts, schemas, digests, and run identities fail closed",
+        "current_status": "unexecuted"
+      },
+      "residue_refs": [
+        "rwo:residue.029"
+      ],
+      "forbidden_inferences": [
+        "A planned witness is not an executed test, conformance receipt, or passing result."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:forbidden:second-scheduler",
+      "label": "second scheduler",
+      "node_kind": "forbidden-topology",
+      "branch": "bridge",
+      "description": "Killed integration topology: second scheduler.",
+      "source_refs": [
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI and exact-effect authority owners",
+      "candidate_status": "killed",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "killed"
+      },
+      "properties": {
+        "disposition": "killed"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A killed topology must not be reintroduced by naming it as a convenience adapter or projection.",
+        "The ontology record alone is not runtime enforcement."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:forbidden:second-integrated-journal",
+      "label": "second integrated journal",
+      "node_kind": "forbidden-topology",
+      "branch": "bridge",
+      "description": "Killed integration topology: second integrated journal.",
+      "source_refs": [
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI and exact-effect authority owners",
+      "candidate_status": "killed",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "killed"
+      },
+      "properties": {
+        "disposition": "killed"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A killed topology must not be reintroduced by naming it as a convenience adapter or projection.",
+        "The ontology record alone is not runtime enforcement."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:forbidden:orchestrator-owned-semantic-judgment",
+      "label": "orchestrator-owned semantic judgment",
+      "node_kind": "forbidden-topology",
+      "branch": "bridge",
+      "description": "Killed integration topology: orchestrator-owned semantic judgment.",
+      "source_refs": [
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI and exact-effect authority owners",
+      "candidate_status": "killed",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "killed"
+      },
+      "properties": {
+        "disposition": "killed"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A killed topology must not be reintroduced by naming it as a convenience adapter or projection.",
+        "The ontology record alone is not runtime enforcement."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:forbidden:evaluator-owned-effect-authority",
+      "label": "evaluator-owned effect authority",
+      "node_kind": "forbidden-topology",
+      "branch": "bridge",
+      "description": "Killed integration topology: evaluator-owned effect authority.",
+      "source_refs": [
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI and exact-effect authority owners",
+      "candidate_status": "killed",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "killed"
+      },
+      "properties": {
+        "disposition": "killed"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A killed topology must not be reintroduced by naming it as a convenience adapter or projection.",
+        "The ontology record alone is not runtime enforcement."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:forbidden:routing-as-reasoning",
+      "label": "routing-as-reasoning",
+      "node_kind": "forbidden-topology",
+      "branch": "bridge",
+      "description": "Killed integration topology: routing-as-reasoning.",
+      "source_refs": [
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI and exact-effect authority owners",
+      "candidate_status": "killed",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "killed"
+      },
+      "properties": {
+        "disposition": "killed"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A killed topology must not be reintroduced by naming it as a convenience adapter or projection.",
+        "The ontology record alone is not runtime enforcement."
+      ],
+      "authority_effect": "none"
+    },
+    {
+      "node_id": "rwo:forbidden:result-as-authorization",
+      "label": "result-as-authorization",
+      "node_kind": "forbidden-topology",
+      "branch": "bridge",
+      "description": "Killed integration topology: result-as-authorization.",
+      "source_refs": [
+        "rwo:source:k1"
+      ],
+      "owner_route": "ACI and exact-effect authority owners",
+      "candidate_status": "killed",
+      "runtime_posture": "not-applicable",
+      "confidence": {
+        "evidence_confidence": "high",
+        "commitment_confidence": "killed"
+      },
+      "properties": {
+        "disposition": "killed"
+      },
+      "residue_refs": [],
+      "forbidden_inferences": [
+        "A killed topology must not be reintroduced by naming it as a convenience adapter or projection.",
+        "The ontology record alone is not runtime enforcement."
+      ],
+      "authority_effect": "none"
+    }
+  ]
+}

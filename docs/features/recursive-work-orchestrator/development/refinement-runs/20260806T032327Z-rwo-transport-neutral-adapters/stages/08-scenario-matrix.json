@@ -1,0 +1,255 @@
+{
+  "candidate": "TransportNeutralWorkProtocolAdapterContract@candidate-2",
+  "claim_level": "design-scenario",
+  "status": "pass",
+  "decision_cardinality": "exactly-one-per-scenario",
+  "scenarios": [
+    {
+      "id": "S01-IDENTICAL-DUPLICATE",
+      "arrangement": "any",
+      "condition": "same logical_message_id and canonical_digest arrive again",
+      "expected_decision": "JournalAcceptancePort returns IdenticalDuplicateRef; no second domain reduction",
+      "forbidden_inference": "new Work Attempt",
+      "result": "pass"
+    },
+    {
+      "id": "S02-DIVERGENT-DUPLICATE",
+      "arrangement": "any",
+      "condition": "same logical_message_id arrives with a different canonical_digest",
+      "expected_decision": "JournalAcceptancePort returns Conflict and fails closed",
+      "forbidden_inference": "latest payload wins",
+      "result": "pass"
+    },
+    {
+      "id": "S03-GRPC-LOCAL-BUFFER",
+      "arrangement": "grpc-stream",
+      "condition": "client write is accepted into a local/runtime buffer",
+      "expected_decision": "emit submitted_local scoped to the client/runtime",
+      "forbidden_inference": "peer or journal acceptance",
+      "result": "pass"
+    },
+    {
+      "id": "S04-GRPC-KNOWN-REJECT",
+      "arrangement": "grpc-unary",
+      "condition": "peer returns an explicit non-retryable rejection before application acceptance",
+      "expected_decision": "emit rejected_known scoped to the peer RPC boundary",
+      "forbidden_inference": "Work failure or retry selection",
+      "result": "pass"
+    },
+    {
+      "id": "S05-GRPC-UNKNOWN-AFTER-SEND",
+      "arrangement": "grpc-unary",
+      "condition": "connection ends after bytes may have reached an effectful peer and no explicit application receipt exists",
+      "expected_decision": "emit outcome_unknown and route to effect reconciliation",
+      "forbidden_inference": "automatic same-command retry",
+      "result": "pass"
+    },
+    {
+      "id": "S06-GRPC-APP-RECEIPT",
+      "arrangement": "grpc-unary",
+      "condition": "declared peer application receipt is verified",
+      "expected_decision": "emit accepted_by_peer_application scoped to that peer",
+      "forbidden_inference": "journal acceptance or business-effect success",
+      "result": "pass"
+    },
+    {
+      "id": "S07-SOCKET-DISCONNECT",
+      "arrangement": "framed-socket",
+      "condition": "socket disconnects after local send and before application acknowledgement",
+      "expected_decision": "emit disconnected plus outcome_unknown",
+      "forbidden_inference": "remote rejection or acceptance",
+      "result": "pass"
+    },
+    {
+      "id": "S08-SOCKET-RECONNECT",
+      "arrangement": "framed-socket",
+      "condition": "adapter reconnects with a new connection epoch",
+      "expected_decision": "continue under a new connection epoch without changing Work identity",
+      "forbidden_inference": "new Work Attempt",
+      "result": "pass"
+    },
+    {
+      "id": "S09-SOCKET-APP-ACK",
+      "arrangement": "framed-socket",
+      "condition": "application-level acknowledgement binds the logical ID and digest",
+      "expected_decision": "emit accepted_by_peer_application for the declared peer scope",
+      "forbidden_inference": "journal acceptance",
+      "result": "pass"
+    },
+    {
+      "id": "S10-REDIS-PENDING",
+      "arrangement": "redis-streams",
+      "condition": "entry is delivered to a consumer group and remains pending",
+      "expected_decision": "record consumer delivery metadata and await journal acceptance/settlement policy",
+      "forbidden_inference": "accepted Work history",
+      "result": "pass"
+    },
+    {
+      "id": "S11-REDIS-REDELIVERY",
+      "arrangement": "redis-streams",
+      "condition": "pending entry is delivered again with the same logical ID and digest",
+      "expected_decision": "emit redelivered with a new delivery-attempt ID; journal deduplicates",
+      "forbidden_inference": "new logical message",
+      "result": "pass"
+    },
+    {
+      "id": "S12-REDIS-XACK-LOST",
+      "arrangement": "redis-streams",
+      "condition": "consumer settlement outcome is unknown and the entry may be redelivered",
+      "expected_decision": "preserve logical identity and treat later delivery as redelivery",
+      "forbidden_inference": "effect retry or journal rollback",
+      "result": "pass"
+    },
+    {
+      "id": "S13-REDIS-CONCURRENT-CLAIM",
+      "arrangement": "redis-streams",
+      "condition": "two consumers race to claim/process the same canonical message",
+      "expected_decision": "journal accepts at most one canonical record and returns identical duplicate to the other",
+      "forbidden_inference": "two Work successes",
+      "result": "pass"
+    },
+    {
+      "id": "S14-REDIS-XACK",
+      "arrangement": "redis-streams",
+      "condition": "XACK succeeds",
+      "expected_decision": "emit consumer-settlement evidence scoped to the Redis group",
+      "forbidden_inference": "journal acceptance or exact effect",
+      "result": "pass"
+    },
+    {
+      "id": "S15-BUS-PROVIDER-ACCEPT",
+      "arrangement": "managed-event-bus",
+      "condition": "provider accepts the publication",
+      "expected_decision": "emit accepted_by_transport scoped to the provider",
+      "forbidden_inference": "target, consumer, or journal acceptance",
+      "result": "pass"
+    },
+    {
+      "id": "S16-BUS-PROVIDER-RETRY",
+      "arrangement": "managed-event-bus",
+      "condition": "provider retries delivery to a target",
+      "expected_decision": "emit redelivered for a new per-target delivery attempt",
+      "forbidden_inference": "new logical message or Work Attempt",
+      "result": "pass"
+    },
+    {
+      "id": "S17-BUS-DEAD-LETTER",
+      "arrangement": "managed-event-bus",
+      "condition": "delivery exhausts configured provider policy and enters a DLQ",
+      "expected_decision": "emit dead_lettered with target and locator; RWO awaits an accepted recovery decision",
+      "forbidden_inference": "automatic Work failure",
+      "result": "pass"
+    },
+    {
+      "id": "S18-BUS-PARTIAL-FANOUT",
+      "arrangement": "managed-event-bus",
+      "condition": "one target accepts and another remains unknown",
+      "expected_decision": "record independent per-target observations",
+      "forbidden_inference": "global delivery success or failure",
+      "result": "pass"
+    },
+    {
+      "id": "S19-MEMORY-ENQUEUE",
+      "arrangement": "in-memory",
+      "condition": "message enters an in-process queue",
+      "expected_decision": "emit submitted_local scoped to the process and buffer",
+      "forbidden_inference": "durability or peer acceptance",
+      "result": "pass"
+    },
+    {
+      "id": "S20-MEMORY-CRASH",
+      "arrangement": "in-memory",
+      "condition": "process terminates with buffered messages",
+      "expected_decision": "treat buffered deliveries as lost under durability none/process_lifetime",
+      "forbidden_inference": "restart replay",
+      "result": "pass"
+    },
+    {
+      "id": "S21-FLOW-CONTROL",
+      "arrangement": "any",
+      "condition": "declared buffer or credit limit is reached",
+      "expected_decision": "emit flow_controlled or rejected_known exactly as the admitted overflow policy declares",
+      "forbidden_inference": "unbounded buffering or silent drop",
+      "result": "pass"
+    },
+    {
+      "id": "S22-ORDERING-SCOPE-MISMATCH",
+      "arrangement": "any",
+      "condition": "route requires per-work ordering but manifest proves only per-connection ordering",
+      "expected_decision": "AdapterAdmissionVerdict is block",
+      "forbidden_inference": "stronger ordering from envelope sequence",
+      "result": "pass"
+    },
+    {
+      "id": "S23-UNSUPPORTED-CAPABILITY",
+      "arrangement": "any",
+      "condition": "requirement names durability or settlement absent from the manifest",
+      "expected_decision": "AdapterAdmissionVerdict is block",
+      "forbidden_inference": "profile fallback or best effort",
+      "result": "pass"
+    },
+    {
+      "id": "S24-STALE-CONFORMANCE",
+      "arrangement": "any",
+      "condition": "receipt does not bind current implementation/configuration digest or validity epoch",
+      "expected_decision": "AdapterAdmissionVerdict is block",
+      "forbidden_inference": "transport family name proves conformance",
+      "result": "pass"
+    },
+    {
+      "id": "S25-JOURNAL-SUBSTITUTION",
+      "arrangement": "any",
+      "condition": "adapter presents provider ack, offset, or settlement as accepted sequence",
+      "expected_decision": "reject the evidence as a journal acceptance substitute",
+      "forbidden_inference": "advance replay cursor or route",
+      "result": "pass"
+    },
+    {
+      "id": "S26-REPLAY",
+      "arrangement": "journal",
+      "condition": "RWO reconstructs state from accepted records",
+      "expected_decision": "run route-free reducer reconstruction with zero external calls",
+      "forbidden_inference": "transport redelivery, model call, allocation, or effect",
+      "result": "pass"
+    },
+    {
+      "id": "S27-AUTHORITY-EXPIRED",
+      "arrangement": "any-effectful-route",
+      "condition": "authority evidence referenced by the message is stale at the governed boundary",
+      "expected_decision": "block and request current owner validation",
+      "forbidden_inference": "authority_evidence_ref acts as bearer authorization",
+      "result": "pass"
+    },
+    {
+      "id": "S28-UNKNOWN-EFFECT",
+      "arrangement": "any-effectful-route",
+      "condition": "transport outcome is unknown after an external effect may have committed",
+      "expected_decision": "route to effect-owner reconciliation",
+      "forbidden_inference": "automatic retry",
+      "result": "pass"
+    },
+    {
+      "id": "S29-KNOWN-PRE-ACCEPT-FAILURE",
+      "arrangement": "any",
+      "condition": "failure is proven before peer/effect acceptance and retry prerequisites are current",
+      "expected_decision": "RWO may select same-message retry within admitted scope, fence, and budget",
+      "forbidden_inference": "adapter independently retries or creates a Work Attempt",
+      "result": "pass"
+    },
+    {
+      "id": "S30-WORK-ATTEMPT-SEPARATION",
+      "arrangement": "any",
+      "condition": "delivery redelivers multiple times during one Work execution attempt",
+      "expected_decision": "change only transport_delivery_attempt_id until an accepted RWO decision creates a new Work Attempt",
+      "forbidden_inference": "delivery count equals Work attempt number",
+      "result": "pass"
+    }
+  ],
+  "summary": {
+    "scenario_count": 30,
+    "pass_count": 30,
+    "fail_count": 0,
+    "runtime_execution_count": 0,
+    "claim": "candidate decisions are internally single-valued; no transport implementation was exercised"
+  }
+}
