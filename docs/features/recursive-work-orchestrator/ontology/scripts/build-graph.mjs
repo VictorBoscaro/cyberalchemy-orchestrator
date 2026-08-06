@@ -4,10 +4,13 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ONTOLOGY_ROOT = path.resolve(fileURLToPath(new URL("../", import.meta.url)));
 const TARGET_ROOT = path.resolve(ONTOLOGY_ROOT, "../../../..");
+const UMBRELLA_ROOT = process.env.RWO_UMBRELLA_ROOT
+  ? path.resolve(process.env.RWO_UMBRELLA_ROOT)
+  : path.resolve(TARGET_ROOT, "../..");
 const FILES = {
   ontology: path.join(ONTOLOGY_ROOT, "ONTOLOGY.md"),
   evidence: path.join(ONTOLOGY_ROOT, "evidence/CURRENT-STATE-2026-08-05.json"),
-  bridge: path.resolve(TARGET_ROOT, "../../cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"),
+  bridge: path.join(UMBRELLA_ROOT, "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"),
   nodes: path.join(ONTOLOGY_ROOT, "nodes/nodes.json"),
   relations: path.join(ONTOLOGY_ROOT, "relations/relations.json"),
   view: path.join(ONTOLOGY_ROOT, "views/current-state.json")

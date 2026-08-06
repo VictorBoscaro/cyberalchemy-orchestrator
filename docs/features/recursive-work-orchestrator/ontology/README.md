@@ -66,10 +66,15 @@ From this directory:
 
 ```bash
 node scripts/validate.mjs
+node scripts/validate-graph.mjs
 ```
 
-The command exits non-zero on a structural or traceability violation. A passing run means only that
-the candidate package is internally coherent against its pinned proposal sources.
+The commands exit non-zero on a structural or traceability violation. `validate-graph.mjs` always
+checks the tracked graph package. Cross-repository source hashes and generated-output freshness are
+also checked when the private umbrella evidence checkout is available. Set `RWO_UMBRELLA_ROOT` to
+that checkout root when it is not located at the historical sibling path; unavailable external
+sources are reported as skipped rather than assumed valid. A passing local run means only that the
+candidate package is internally coherent against the tracked evidence available in this checkout.
 
 ## Current proof ceiling
 

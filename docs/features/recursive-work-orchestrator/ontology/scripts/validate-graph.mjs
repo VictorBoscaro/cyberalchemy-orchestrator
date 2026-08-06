@@ -6,7 +6,13 @@ import { buildGraph } from "./build-graph.mjs";
 
 const ONTOLOGY_ROOT = path.resolve(fileURLToPath(new URL("../", import.meta.url)));
 const TARGET_ROOT = path.resolve(ONTOLOGY_ROOT, "../../../..");
-const UMBRELLA_ROOT = path.resolve(TARGET_ROOT, "../..");
+const UMBRELLA_ROOT = process.env.RWO_UMBRELLA_ROOT
+  ? path.resolve(process.env.RWO_UMBRELLA_ROOT)
+  : path.resolve(TARGET_ROOT, "../..");
+const BRIDGE_PATH = path.join(
+  UMBRELLA_ROOT,
+  "cyberAlchemy-v2/development/agent-reasoning-engine/design/rwo-integration/ONTOLOGY-BRIDGE.md"
+);
 const FILES = {
   ontology: "ONTOLOGY.md",
   evidence: "evidence/CURRENT-STATE-2026-08-05.json",
@@ -25,6 +31,15 @@ const serialize = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const unique = (values) => values.length === new Set(values).size;
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const push = (errors, at, message) => errors.push(`${at}: ${message}`);
+const canRead = async (filePath) => {
+  try {
+    await readFile(filePath);
+    return true;
+  } catch (error) {
+    if (error.code === "ENOENT") return false;
+    throw error;
+  }
+};
 
 const validateClosedSchema = (value, schema, at, errors) => {
   if (schema.const !== undefined && value !== schema.const) {
@@ -94,7 +109,7 @@ const validateSourceHashes = async (errors) => {
     {
       at: "sources.rwo-design",
       path: path.join(TARGET_ROOT, "docs/features/recursive-work-orchestrator/DESIGN.md"),
-      expected: "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419"
+      expected: "457cea208211395cd957236f1bbca6cdf49a0d1aaba257d3c7721e4579afcfef"
     },
     {
       at: "sources.are-architecture",
@@ -122,10 +137,18 @@ const validateSourceHashes = async (errors) => {
       expected: "bcf7b4d97eea7e126454bc84e1946dac7518dca7bfa51ac8b6652e7b347a1050"
     }
   ];
+  let checked = 0;
+  const skipped = [];
   for (const check of checks) {
+    if (!(await canRead(check.path))) {
+      skipped.push(check.at);
+      continue;
+    }
     const actual = sha256(await readFile(check.path));
+    checked += 1;
     if (actual !== check.expected) push(errors, check.at, `hash mismatch: ${actual}`);
   }
+  return { checked, skipped };
 };
 
 export const validateGraph = async () => {
@@ -142,10 +165,14 @@ export const validateGraph = async () => {
     readJson(FILES.invalidEndpoint)
   ]);
 
-  const built = await buildGraph();
-  if (serialize(nodesDocument) !== serialize(built.nodesDocument)) push(errors, "nodes", "generated output is stale");
-  if (serialize(relationsDocument) !== serialize(built.relationsDocument)) push(errors, "relations", "generated output is stale");
-  if (serialize(view) !== serialize(built.viewDocument)) push(errors, "view", "generated output is stale");
+  let generatedFreshness = "skipped-external-bridge-unavailable";
+  if (await canRead(BRIDGE_PATH)) {
+    const built = await buildGraph();
+    generatedFreshness = "checked";
+    if (serialize(nodesDocument) !== serialize(built.nodesDocument)) push(errors, "nodes", "generated output is stale");
+    if (serialize(relationsDocument) !== serialize(built.relationsDocument)) push(errors, "relations", "generated output is stale");
+    if (serialize(view) !== serialize(built.viewDocument)) push(errors, "view", "generated output is stale");
+  }
 
   for (const [documentName, document] of [["nodes", nodesDocument], ["relations", relationsDocument]]) {
     if (document.package_id !== "rwo.current-state-graph@0.1.0") push(errors, `${documentName}.package_id`, "unexpected package ID");
@@ -260,7 +287,7 @@ export const validateGraph = async () => {
   validateEndpoint(invalidEndpoint, nodeIdSet, invalidEndpointErrors, "fixture.invalid-endpoint");
   if (invalidEndpointErrors.length === 0) push(errors, "fixtures.invalid-endpoint", "negative fixture unexpectedly passed");
 
-  await validateSourceHashes(errors);
+  const sourceHashes = await validateSourceHashes(errors);
   const result = {
     status: errors.length === 0 ? "pass" : "fail",
     package_id: nodesDocument.package_id,
@@ -274,7 +301,9 @@ export const validateGraph = async () => {
     residue_nodes: residueNodeSet.size,
     direct_realization_relations: relationsDocument.relations.filter((relation) => relation.properties?.correspondence === "direct-realization").length,
     negative_fixtures: 2,
-    source_hash_checks: 6,
+    generated_freshness: generatedFreshness,
+    source_hash_checks: sourceHashes.checked,
+    source_hash_checks_skipped: sourceHashes.skipped,
     errors
   };
   return result;

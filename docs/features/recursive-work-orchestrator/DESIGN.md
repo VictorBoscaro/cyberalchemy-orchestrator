@@ -16,6 +16,10 @@ authority: proposal-only
 
 # Thin Recursive Work Orchestrator — Design
 
+“RWO” is shorthand for **Recursive Work Orchestrator**: a candidate runtime kernel that composes
+bounded units of work into executable pipelines. “Recursive” describes composition—a composed
+pipeline remains usable as a work unit—not recursive scheduler or authority creation.
+
 ## Status and claim ceiling
 
 This document proposes a domain-independent orchestration kernel. It is a design, not an
@@ -414,6 +418,39 @@ This proposal narrows and connects existing candidate ideas rather than replacin
 - The external DomainSpec Agent Execution Orchestrator remains a DomainSpec-specific policy and
   lifecycle composition. Its branch, retry, cancellation, sandbox, and telemetry semantics should
   become adapters or work units over this kernel rather than kernel responsibilities.
+
+### 12.1 Repository concept alignment
+
+This proposal is one candidate answer to the repository's
+[`Workflow Graph` discovery](../../discovery/workflow-graph/README.md), not a silent selection of a
+universal graph or a replacement for confirmed runtime authorities. The intended compilation and
+runtime relationship is:
+
+```text
+SkillExecutionProfile + ProtocolRecipe + invocation
+  -> DispatchCandidate
+  -> confirmation and capability resolution
+  -> DispatchSpec referencing one root WorkDefinition / WorkGraph
+  -> one authoritative Run, which is the root WorkRun
+  -> addressed node operations
+  -> zero or more physical Attempts / AgentInvocationPlans
+```
+
+The mapping remains proposal-only and must preserve these boundaries:
+
+| RWO concept | Existing repository concept | Boundary |
+|---|---|---|
+| `WorkDefinition` | Compiled executable contract derived from profile, recipe, invocation, schemas, and confirmed resolution | It is not confirmation, a capability grant, or a mutable run. |
+| `WorkGraph` | Candidate executable-topology portion eventually frozen by `DispatchSpec.group_graph` or its successor | It does not own communication permission, participant visibility, confirmation, or runtime state. |
+| root `WorkRun` | ACI `Run` for one `ConfirmedDispatch` | Exactly one root runtime authority; the naming and identity mapping must be closed before schema promotion. |
+| addressed child work | `operation_id` plus structural `node_path` inside the root run | Nested composition creates no child ACI `Run` and no second scheduler. |
+| RWO `Attempt` | ACI `Attempt` and, for agent leaves, `AgentInvocationPlan` | Retry creates a physical attempt without changing definition or silently granting authority. |
+| command/event lanes | Work Bus and accepted journal boundaries | Delivery evidence is not journal acceptance, domain truth, or effect success. |
+
+`ProtocolRecipe` is therefore the closest current reusable-topology precursor to `WorkGraph`, while
+`DispatchCandidate` is still pre-authority and `DispatchSpec` is the confirmed executable boundary.
+A workflow dependency edge never implies that two agents may communicate; communication
+authorization and collective-coordination policy remain separately owned and explicitly bound.
 
 ## 13. What “any pipeline” can honestly mean
 

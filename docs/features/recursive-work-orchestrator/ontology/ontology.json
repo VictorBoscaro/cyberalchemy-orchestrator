@@ -26,7 +26,7 @@
     {
       "id": "source:design",
       "path": "../DESIGN.md",
-      "sha256": "28b6fca81693a5c6bd10dbe2e74df816312d9e1955e076c950eacd49a86a9419",
+      "sha256": "457cea208211395cd957236f1bbca6cdf49a0d1aaba257d3c7721e4579afcfef",
       "kind": "candidate-architecture-design",
       "posture": "proposal-only",
       "role": "primary-semantic-source",
@@ -36,7 +36,7 @@
     {
       "id": "source:candidate-ontology",
       "path": "ONTOLOGY.md",
-      "sha256": "1c6d417c4f0cdfc73c7c42f016c05fd6f8fbccd738a35bf7454472d3cee3b920",
+      "sha256": "b0b83ea540c0f805208b93e068816c45cb928d4f08eea50eca8ba4178843d9e1",
       "kind": "candidate-structured-mapping",
       "posture": "proposal-only",
       "role": "human-readable-ontology-source",

@@ -92,6 +92,10 @@ Relevant semantics currently exist in several places:
   `group_graph` typed only as `object`; it does not yet close the executable graph schema.
 - [`AgentInvocationPlan`](../../features/agents-communication-infra/specs/domain.md#agentinvocationplan)
   binds runtime execution to a `seat_id`, role/task references, budget, sandbox and authority fence.
+- [`Recursive Work Orchestrator`](../../features/recursive-work-orchestrator/DESIGN.md) proposes
+  `WorkDefinition`, `WorkGraph` and `WorkRun` as a uniform executable composition model. It is a
+  proposal-only candidate input to this discovery: it does not select the repository-wide graph
+  model, replace `DispatchSpec` or `Run`, or make workflow edges communication grants.
 - [Bus Contracts](../../features/agents-communication-infra/discovery/bus-contracts/README.md)
   investigates candidate contracts within the existing Work Bus routing/message boundary; as a
   draft discovery, it does not itself own or promote routing, visibility, reveal or delivery
