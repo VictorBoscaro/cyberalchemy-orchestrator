@@ -1,0 +1,38 @@
+{
+  "admissibleOptionIds": [
+    "OCCURRENCE-COMPILE-ONLY",
+    "OCCURRENCE-DEFER",
+    "OCCURRENCE-OMIT-USE-SOURCE-PATH",
+    "OCCURRENCE-STOP"
+  ],
+  "decisionGateRequired": true,
+  "decisionId": "DG-RWO-CFM-006",
+  "directOptionId": null,
+  "ownerGate": null,
+  "presentedOptionIds": [
+    "OCCURRENCE-COMPILE-ONLY",
+    "OCCURRENCE-DEFER",
+    "OCCURRENCE-OMIT-USE-SOURCE-PATH",
+    "OCCURRENCE-STOP"
+  ],
+  "reasons": [],
+  "rejectedOptions": [
+    {
+      "optionId": "OCCURRENCE-RUNTIME-INSTANCE",
+      "reasons": [
+        "A runtime form instance duplicates or collapses WorkNode, WorkRun, Attempt, repeat-round, and journal identities.",
+        "No runtime or authority owner gate permits a source diagnostic identity to acquire execution state or lifecycle."
+      ]
+    },
+    {
+      "optionId": "OCCURRENCE-WORKNODE-ALIAS",
+      "reasons": [
+        "Aliasing source occurrence with output graph identity makes rejection diagnostics impossible when no WorkGraph exists.",
+        "One authored form occurrence may compile into multiple WorkNodes, while explicit source paths and graph-node paths occupy different identity domains."
+      ]
+    }
+  ],
+  "requestDigest": "b7c27daf0074ce19546355defaec506747616fce4b11ae5b7c740b3464a27d13",
+  "routeOutcome": "gate",
+  "schemaVersion": "1.0.0"
+}

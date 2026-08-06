@@ -1,0 +1,40 @@
+{
+  "admissibleOptionIds": [
+    "ONTOLOGY-DEFER",
+    "ONTOLOGY-DUAL-VERSION-MIGRATION",
+    "ONTOLOGY-ROLLBACK-0.1",
+    "ONTOLOGY-ROLLFORWARD-0.2",
+    "ONTOLOGY-STOP"
+  ],
+  "decisionGateRequired": true,
+  "decisionId": "DG-RWO-CFM-004",
+  "directOptionId": null,
+  "ownerGate": null,
+  "presentedOptionIds": [
+    "ONTOLOGY-DEFER",
+    "ONTOLOGY-DUAL-VERSION-MIGRATION",
+    "ONTOLOGY-ROLLBACK-0.1",
+    "ONTOLOGY-ROLLFORWARD-0.2",
+    "ONTOLOGY-STOP"
+  ],
+  "reasons": [],
+  "rejectedOptions": [
+    {
+      "optionId": "ONTOLOGY-AUTO-ALIAS",
+      "reasons": [
+        "Aliasing distinct version identities silently reinterprets old source bytes, generated projections, fixtures, and receipts.",
+        "No promotion owner gate authorizes identity collapse or evidence rebinding."
+      ]
+    },
+    {
+      "optionId": "ONTOLOGY-PATCH-DIGEST-ONLY",
+      "reasons": [
+        "A new pinned digest would make package validation pass while preserving the unresolved 0.1.0 versus 0.2.0 semantic identity contradiction.",
+        "Digest repair is generated/provenance synchronization, not an ontology identity decision or promotion receipt."
+      ]
+    }
+  ],
+  "requestDigest": "5e301cd7d7eb3d5da149079252474f24c7c62845f0406372022a755ba2df48da",
+  "routeOutcome": "gate",
+  "schemaVersion": "1.0.0"
+}

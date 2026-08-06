@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-004",
+  "candidates": [
+    {
+      "optionId": "ONTOLOGY-ROLLFORWARD-0.2",
+      "label": "Make 0.2.0 canonical and roll machine projections forward",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "promotion",
+      "ownerGate": "RWO ontology identity and promotion owner",
+      "evidence": [
+        "ONTOLOGY.md explicitly declares candidate identity rwo-architecture@0.2.0 and explains that 0.2.0 adds the current-state evidence model.",
+        "The generated current-state graph package already binds ontology_ref rwo-architecture@0.2.0.",
+        "ontology.json remains at 0.1.0 and the main validator currently fails its pinned candidate-ontology source digest, indicating projection/source drift rather than evidence that 0.1.0 is the intended current semantic source."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "ONTOLOGY-ROLLBACK-0.1",
+      "label": "Restore 0.1.0 as canonical and roll newer sources back",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "promotion",
+      "ownerGate": "RWO ontology identity and promotion owner",
+      "evidence": [
+        "ontology.json currently declares rwo-architecture@0.1.0 and retains the older machine-addressable package identity.",
+        "A rollback can preserve the last machine identity if the ontology owner determines that 0.2.0 semantic changes were never admitted.",
+        "This requires an explicit reverse migration for Markdown, graph references, source digests, fixtures, and receipts rather than silently relabeling them."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "ONTOLOGY-DUAL-VERSION-MIGRATION",
+      "label": "Freeze 0.1.0 as legacy and admit 0.2.0 through an explicit migration",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "promotion",
+      "ownerGate": "RWO ontology identity and promotion owner",
+      "evidence": [
+        "Both version identities exist in current artifacts and can remain distinguishable if neither is aliased or silently reinterpreted.",
+        "A migration manifest can bind legacy 0.1.0 inputs, 0.2.0 semantic source, generated projections, source digests, compatibility limits, roll-forward, and rollback evidence.",
+        "This option is appropriate only when actual 0.1.0 consumers or receipts must remain addressable as a supported legacy line."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "ONTOLOGY-AUTO-ALIAS",
+      "label": "Treat 0.1.0 and 0.2.0 as interchangeable aliases",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "irreversible",
+      "hazardClass": "promotion",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "Aliasing distinct version identities silently reinterprets old source bytes, generated projections, fixtures, and receipts.",
+        "No promotion owner gate authorizes identity collapse or evidence rebinding."
+      ]
+    },
+    {
+      "optionId": "ONTOLOGY-PATCH-DIGEST-ONLY",
+      "label": "Patch the failing digest without reconciling ontology identity",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "promotion",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "A new pinned digest would make package validation pass while preserving the unresolved 0.1.0 versus 0.2.0 semantic identity contradiction.",
+        "Digest repair is generated/provenance synchronization, not an ontology identity decision or promotion receipt."
+      ]
+    },
+    {
+      "optionId": "ONTOLOGY-DEFER",
+      "label": "Defer ontology identity reconciliation",
+      "optionKind": "defer",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Deferral preserves all current bytes but keeps ontology validation, candidate delta, generated projection, and migration work blocked."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "ONTOLOGY-STOP",
+      "label": "Stop the composition-form Decision Gate",
+      "optionKind": "stop",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Stopping preserves current source and candidate bytes and authorizes no downstream mutation."
+      ],
+      "rejectionReasons": []
+    }
+  ]
+}

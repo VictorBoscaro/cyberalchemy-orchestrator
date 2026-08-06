@@ -1,0 +1,51 @@
+{
+  "schema_version": "arcanum.native-dispatch-runner.run-plan.v0.1",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "state": "wave_ready",
+  "validation_status": "pass",
+  "selected_wave": {
+    "wave_id": "auditor",
+    "role_ids": ["auditor"],
+    "parallel": false,
+    "join_policy": "all",
+    "depends_on_waves": ["writer"],
+    "gate_after": "g-audit",
+    "on_incomplete": "block"
+  },
+  "action_artifacts": ["actions/spawn-0009.json"],
+  "actions": [
+    {
+      "action": "spawn",
+      "action_id": "spawn-0009",
+      "agent_count": 1,
+      "agent_ordinal": 0,
+      "applies_to_steps": ["s04e"],
+      "capability_ref": "research",
+      "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+      "forbidden_write_scopes": [
+        "projects/cyberalchemy-orchestrator/",
+        "cyberAlchemy-v2/",
+        "telemetry/agents/",
+        ".arcanum/",
+        ".git/"
+      ],
+      "input_refs": [
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/findings.md",
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/writer.json"
+      ],
+      "mode": "audit",
+      "mutation_policy": "read-only",
+      "output_refs": [
+        "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/audit.json"
+      ],
+      "role": "auditor",
+      "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+      "schema_version": "arcanum.native-dispatch-runner.action.v0.1",
+      "step_id": "s04e",
+      "target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#auditor",
+      "wave_id": "auditor",
+      "write_scope": []
+    }
+  ]
+}

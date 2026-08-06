@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-002",
+  "candidates": [
+    {
+      "optionId": "QUORUM-RWO-STRUCTURAL",
+      "label": "RWO owns structural quorum counting",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO composition-form owner plus journal-acceptance owner",
+      "evidence": [
+        "DESIGN.md#5.3 explicitly lists quorum(n) as a structural FanIn release condition and assigns semantic reconciliation to the join Work.",
+        "The refined findings reuse ReleasePolicy and permit RWO to fold eligible structural arrivals while keeping quality, consensus, truth, and approval outside the kernel.",
+        "The audited fixture contract defines zero, above-count, lower-positive, and upper-positive quorum boundaries after owner closure."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "QUORUM-DECISION-WORK",
+      "label": "A Decision Work owns quorum release",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO composition-form owner plus Decision Work domain owner",
+      "evidence": [
+        "The existing Gate boundary allows a Work to own a decision and emit one opaque route label that RWO matches exactly.",
+        "Moving quorum to a Decision Work prevents RWO from owning even count-based release but requires explicit decision execution and evidence.",
+        "The refined findings identify Decision Work as the alternative when structural quorum is not RWO-owned."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "QUORUM-TRANSPORT-COUNT",
+      "label": "Count transport deliveries toward quorum",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "Transport delivery is not journal acceptance and redelivery must not create a second logical arrival.",
+        "The adapter boundary explicitly forbids transport acknowledgement or delivery from becoming journal truth or recovery."
+      ]
+    },
+    {
+      "optionId": "QUORUM-WEIGHTED-KERNEL",
+      "label": "Let RWO evaluate weighted or qualified quorum",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "authority",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "Weight, qualification, approval, quality, or agreement introduces domain meaning rather than structural counting.",
+        "No named semantic or authority owner gate permits the RWO kernel to evaluate those predicates."
+      ]
+    },
+    {
+      "optionId": "QUORUM-DEFER",
+      "label": "Defer quorum ownership",
+      "optionKind": "defer",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Deferral preserves the candidate but keeps quorum-bearing FanIn schemas, fixtures, and runtime schedules blocked."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "QUORUM-STOP",
+      "label": "Stop the composition-form Decision Gate",
+      "optionKind": "stop",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Stopping preserves current source and candidate bytes and authorizes no downstream mutation."
+      ],
+      "rejectionReasons": []
+    }
+  ]
+}

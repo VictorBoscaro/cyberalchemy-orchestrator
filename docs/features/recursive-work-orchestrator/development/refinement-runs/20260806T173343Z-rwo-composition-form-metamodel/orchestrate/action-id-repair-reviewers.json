@@ -1,0 +1,14 @@
+{
+  "schema_version": "rwo.orchestrate.action-id-repair.v0.1",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "source_gate": "orchestrate/reduced/synthesis/gate-decision.json",
+  "reason": "The coordinator allocates the next wave from the current run-plan action count and generated run-global collisions with earlier actions. Preserve generated evidence and allocate collision-free IDs without retrying or changing the wave semantics.",
+  "mapping": {
+    "generated-reviewer-precedent-spawn-0002": "spawn-0005",
+    "generated-reviewer-non-vacuity-spawn-0003": "spawn-0006",
+    "generated-reviewer-definitional-spawn-0004": "spawn-0007"
+  },
+  "semantic_change": false,
+  "authority_effect": "none"
+}

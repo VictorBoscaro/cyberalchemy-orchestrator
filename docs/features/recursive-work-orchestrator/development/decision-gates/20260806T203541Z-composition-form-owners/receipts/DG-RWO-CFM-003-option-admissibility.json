@@ -1,0 +1,40 @@
+{
+  "admissibleOptionIds": [
+    "LATE-DEFER",
+    "LATE-QUARANTINE",
+    "LATE-REJECT-AT-JOURNAL",
+    "LATE-RETAIN-NONCONTRIBUTING",
+    "LATE-STOP"
+  ],
+  "decisionGateRequired": true,
+  "decisionId": "DG-RWO-CFM-003",
+  "directOptionId": null,
+  "ownerGate": null,
+  "presentedOptionIds": [
+    "LATE-DEFER",
+    "LATE-QUARANTINE",
+    "LATE-REJECT-AT-JOURNAL",
+    "LATE-RETAIN-NONCONTRIBUTING",
+    "LATE-STOP"
+  ],
+  "reasons": [],
+  "rejectedOptions": [
+    {
+      "optionId": "LATE-REOPEN-FANIN",
+      "reasons": [
+        "It makes replay depend on later arrival timing and risks duplicate or divergent downstream effects.",
+        "Reopening violates the refined frozen-manifest and exactly-one join-command invariants."
+      ]
+    },
+    {
+      "optionId": "LATE-SILENT-DROP",
+      "reasons": [
+        "It prevents audit, deduplication, reconciliation, and reproducible replay of the observed arrival.",
+        "Silent discard irreversibly destroys evidence and has no named destructive owner gate."
+      ]
+    }
+  ],
+  "requestDigest": "bcd7bd90cff622ef4a65893f29a669e009c5170938ae7baa47ae6e3a2bcb7d19",
+  "routeOutcome": "gate",
+  "schemaVersion": "1.0.0"
+}

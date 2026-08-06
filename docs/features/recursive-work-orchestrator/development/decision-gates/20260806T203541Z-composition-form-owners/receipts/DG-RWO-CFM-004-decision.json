@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-004",
+  "status": "selected-owner-route-required",
+  "selectedOptionId": "ONTOLOGY-ROLLFORWARD-0.2",
+  "selectedAt": "2026-08-06T21:04:07Z",
+  "decisionSource": "repository owner selected option 1 in the active chat Decision Gate",
+  "admissibilityReceipt": "receipts/DG-RWO-CFM-004-option-admissibility.json",
+  "requestDigest": "5e301cd7d7eb3d5da149079252474f24c7c62845f0406372022a755ba2df48da",
+  "ownerGate": "RWO ontology identity and promotion owner",
+  "ownerGateReceipt": null,
+  "protectedHazard": "promotion",
+  "selectedDirection": "Generate a staged rwo-architecture@0.2.0 machine projection from the 0.2.0 semantic source, preserve 0.1.0 receipts as historical evidence, validate migration and projections, and replace canonical machine bytes only after the ontology owner admits the route.",
+  "authorityEffect": "direction-selection-only",
+  "remainingDecisionBlockers": 2,
+  "remainingProtectedOwnerBlockers": 1,
+  "consequentialMutationAuthorized": false
+}

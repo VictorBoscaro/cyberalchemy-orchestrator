@@ -1,0 +1,16 @@
+{
+  "authorization_status": "approved",
+  "blockers": [],
+  "completed_wave_ids": [],
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "eligible_action_ids": [
+    "spawn-0001",
+    "spawn-0002",
+    "spawn-0003"
+  ],
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "schema_version": "arcanum.native-dispatch-runner.state.v0.1",
+  "selected_wave_id": "explorers",
+  "state": "wave_ready",
+  "validation_status": "pass"
+}

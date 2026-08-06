@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-006",
+  "status": "accepted",
+  "selectedOptionId": "OCCURRENCE-OMIT-USE-SOURCE-PATH",
+  "selectedAt": "2026-08-06T21:24:20Z",
+  "decisionSource": "repository owner selected option 1 in the active chat Decision Gate",
+  "admissibilityReceipt": "receipts/DG-RWO-CFM-006-option-admissibility.json",
+  "requestDigest": "b7c27daf0074ce19546355defaec506747616fce4b11ae5b7c740b3464a27d13",
+  "decisionArtifact": "../../../../../../decisions/rwo-form-occurrence-omission.md",
+  "authorityEffect": "source-occurrence-representation-choice-only",
+  "remainingDecisionBlockers": 0,
+  "remainingProtectedOwnerBlockers": 1,
+  "consequentialMutationAuthorized": false
+}

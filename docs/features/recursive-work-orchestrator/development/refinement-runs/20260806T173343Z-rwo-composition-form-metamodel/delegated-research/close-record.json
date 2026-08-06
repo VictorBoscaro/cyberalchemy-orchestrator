@@ -1,0 +1,21 @@
+{
+  "close_of": "2026-08-06-rwo-composition-form-metamodel",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 9,
+    "tree": {
+      "explorer": 3,
+      "synthesizer": 1,
+      "skeptic": 3,
+      "writer": 1,
+      "auditor": 1,
+      "helpers": 0
+    },
+    "loops_used": 2
+  },
+  "feedback_prompts": [
+    "Required revision: (1) Kill generic ConditionBinding, condition subtypes, and generic evaluated-by; reuse EventSelector, ReleasePolicy, existing lifecycle policies, exact route behavior, definition limits, and typed external owner references. (2) Replace the current FormInstance with an optional compile-time FormOccurrence only if source occurrence identity is necessary; never duplicate WorkNode, WorkRun, Attempt, or round identity. (3) Treat an authored form definition as a concrete, immutable instance of the existing CompositionForm taxonomy, enclosed by CompositeWorkDefinition; avoid an ornamental parallel type. (4) Close operand roles per form and remove the universal target union. (5) Repair existing compiles-to into a disjoint CompilationSuccess/CompilationRejection lineage from source form definition to output WorkGraph; ExplicitComposition remains source syntax. (6) Restrict defects to compiler-owned structural defects and separate runtime/journal/external-owner results. (7) Use typed owner references; references never perform acceptance or grant authority. (8) Freeze sidecar cancellation direction and the repeat/redelivery/retry/replay/effect non-collapse rules. (9) Reclassify witness material honestly: the scenario list is a planned fixture contract, not finite/executed non-vacuity evidence. Split ambiguous defects and mutation boundaries. (10) Preserve unresolved Sequence cardinality, quorum, late-arrival, ontology identity/migration, journal truth, authority/admission, ARE/ACI, and exact-effect gates. The revised package may be evidence-closed only as a repaired candidate architecture plus validation-first plan input. It must remain blocked for adoption, ontology migration, compiler/runtime conformance, promotion, deployment, release, or production.",
+    "Execute the one permitted auditor-to-writer feedback loop (1/1) for the confirmed Refine run. Read only delegated-research/audit-return.md, delegated-research/AUDIT-REVISION-REQUEST.md, the planned fixture section of delegated-research/findings.md, and reviewer evidence directly linked there if needed. Modify only delegated-research/findings.md, only its Planned fixture contract - explicitly unexecuted section. Add all six omitted discriminating groups: (1) quorum schedules for zero, above-count, and positive boundaries after owner closure; (2) separate domain-rework-round and recovery-decision fixtures; (3) distinct forbidden-owner-predicate structural defects; (4) split stale-version defects; (5) split digest defects; (6) exact owner/admission missing-reference schemas. Each case/group must stay planned/unexecuted, name owner-gate dependencies, have exactly one expected result, and state allowed and forbidden mutations. Preserve every other findings byte and the claim ceiling. Use apply_patch. Return the revised SHA-256, a concise byte-scope confirmation, and a suggested revision receipt body; do not edit any receipt or other file."
+  ],
+  "project_dir": "/home/vrondelli/projects/domainspec-core"
+}

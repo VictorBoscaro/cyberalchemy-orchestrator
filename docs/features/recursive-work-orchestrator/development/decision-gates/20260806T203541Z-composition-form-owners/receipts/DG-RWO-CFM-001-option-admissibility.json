@@ -1,0 +1,38 @@
+{
+  "admissibleOptionIds": [
+    "SEQ-BINARY-EXACT2",
+    "SEQ-DEFER",
+    "SEQ-NARY-MIN2",
+    "SEQ-STOP"
+  ],
+  "decisionGateRequired": true,
+  "decisionId": "DG-RWO-CFM-001",
+  "directOptionId": null,
+  "ownerGate": null,
+  "presentedOptionIds": [
+    "SEQ-BINARY-EXACT2",
+    "SEQ-DEFER",
+    "SEQ-NARY-MIN2",
+    "SEQ-STOP"
+  ],
+  "reasons": [],
+  "rejectedOptions": [
+    {
+      "optionId": "SEQ-EMPTY",
+      "reasons": [
+        "No current owner source defines an empty composite or unit Work.",
+        "There is no source, target, release event, Work node, or output contract from which to compile the required graph."
+      ]
+    },
+    {
+      "optionId": "SEQ-NARY-MIN1",
+      "reasons": [
+        "A singleton emits no predecessor-to-successor connection, conflicting with the current description of Sequence as a release relation.",
+        "No current owner source defines singleton Sequence identity semantics."
+      ]
+    }
+  ],
+  "requestDigest": "e4339dfe465171bc24c6358470087a1ca9e25ea08d53679d09c36fd797285c17",
+  "routeOutcome": "gate",
+  "schemaVersion": "1.0.0"
+}

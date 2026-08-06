@@ -1,0 +1,23 @@
+{
+  "admitted_receipt_action_ids": [
+    "spawn-0001",
+    "spawn-0002",
+    "spawn-0003"
+  ],
+  "blockers": [
+    "action 'spawn-0003': receipt declares blockers"
+  ],
+  "decision": "gate_block",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "gate_id": "g-explorers",
+  "next_action_ids": [],
+  "next_wave_id": null,
+  "required_action_ids": [
+    "spawn-0001",
+    "spawn-0002",
+    "spawn-0003"
+  ],
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "schema_version": "arcanum.native-dispatch-runner.gate-decision.v0.1",
+  "wave_id": "explorers"
+}

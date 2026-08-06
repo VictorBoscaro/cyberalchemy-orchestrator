@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-001",
+  "status": "accepted",
+  "selectedOptionId": "SEQ-NARY-MIN2",
+  "selectedAt": "2026-08-06T20:47:45Z",
+  "decisionSource": "repository owner selected option 1 in the active chat Decision Gate",
+  "admissibilityReceipt": "receipts/DG-RWO-CFM-001-option-admissibility.json",
+  "requestDigest": "e4339dfe465171bc24c6358470087a1ca9e25ea08d53679d09c36fd797285c17",
+  "decisionArtifact": "../../../../../../decisions/rwo-sequence-cardinality.md",
+  "authorityEffect": "sequence-cardinality-choice-only",
+  "remainingDecisionBlockers": 5,
+  "consequentialMutationAuthorized": false
+}

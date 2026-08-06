@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "lookup_readiness": "partial",
+  "inventory_role": "discovery_only",
+  "roots": [
+    {
+      "path": ".arcanum/inventory/index.json",
+      "status": "ready",
+      "generated_at": "2026-08-05T21:01:37.586Z",
+      "entry_count": 295,
+      "warnings": ["146 non-blocking tag warnings"]
+    },
+    {
+      "path": "projects/cyberalchemy-orchestrator/.arcanum/inventory/index.json",
+      "status": "blocked",
+      "generated_at": "2026-08-04T00:00:00Z",
+      "entry_count": 0,
+      "warnings": ["source_coverage conformance failure; no entries"]
+    }
+  ],
+  "selected_entries": [
+    {
+      "id": "cyberalchemy-orchestrator-rwo-are-current-state-research-strategy-result-synthesis",
+      "path": ".arcanum/inventory/queries/2026-08-04-cyberalchemy-orchestrator-rwo-are-current-state-research-strategy.md",
+      "use": "source lead for owner separation, proposal status, and open hypotheses"
+    },
+    {
+      "id": "cyberalchemy-orchestrator-rwo-are-current-state-research-result-synthesis",
+      "path": ".arcanum/inventory/queries/2026-08-05-cyberalchemy-orchestrator-rwo-are-current-state-research-result.md",
+      "use": "source lead for current implementation and RWO/ARE/ACI claim ceilings"
+    }
+  ],
+  "selected_consequences": [
+    "Verify current DESIGN and ontology bytes directly.",
+    "Keep composition structure, domain meaning, route selection, lifecycle coupling, recovery, reasoning evidence, and effect authority under distinct owners.",
+    "Treat existing forms as proposal-level vocabulary with partial conformance evidence, not as an executable metamodel.",
+    "Require exact selectors and finite positive and negative witnesses for every retained candidate."
+  ],
+  "excluded_as_proof": [
+    "Inventory summaries",
+    "generated ontology projections without their source",
+    "previous refinement validation as proof of this new candidate",
+    "implementation correspondence as promotion or runtime conformance"
+  ],
+  "residue": [
+    "The child Inventory cannot supply local discovery entries until its source coverage is repaired by its owner."
+  ]
+}

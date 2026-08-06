@@ -1,0 +1,23 @@
+{
+  "schema_version": "refine.dispatch-validation.v1",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "research_sheet": {
+    "status": "pass",
+    "schema_version": "0.8.0",
+    "sha256": "e0919f7f1f2352d0a0cbce95b94b3ded73584e1ee3c15bf0d5315d334155106e"
+  },
+  "tension": {
+    "status": "pass",
+    "handles": [
+      "rwo-tension-e0919f7f-7b827951c9b94b81",
+      "rwo-form-tension-independent-e0919f7f1f23"
+    ]
+  },
+  "refine_dispatch": {
+    "status": "pass",
+    "validator": "arcanum/formulae/dispatch-spec/scripts/validate-dispatch.py"
+  },
+  "human_confirmation": "confirmed",
+  "ledger_mutation": "none",
+  "research_agents_spawned": 0
+}

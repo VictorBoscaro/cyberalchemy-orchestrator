@@ -1,0 +1,23 @@
+{
+  "schema_version": "refine.evidence-index.v1",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "status": "complete-constrained",
+  "authority_effect": "none",
+  "entries": [
+    {"id": "seed", "path": "REFINE-SEED-PROPOSAL.md", "status": "candidate"},
+    {"id": "inventory", "path": "strategy-inventory-packet.json", "status": "discovery-only"},
+    {"id": "dispatch-sheet", "path": "delegated-research/dispatch-sheet.json", "status": "confirmed-and-executed"},
+    {"id": "refine-dispatch", "path": "REFINE-DISPATCH.json", "status": "validated-and-executed"},
+    {"id": "research-findings", "path": "delegated-research/findings.md", "status": "parent-approved-findings-only"},
+    {"id": "audit", "path": "delegated-research/receipts/audit.json", "status": "revision-request-closed"},
+    {"id": "writer-revision", "path": "delegated-research/receipts/writer-revision-1.json", "status": "pass"},
+    {"id": "parent-approval", "path": "delegated-research/receipts/parent-final-approval.json", "status": "pass-constrained"},
+    {"id": "orchestrate-evidence", "path": "orchestrate/evidence-validation-receipt.json", "status": "pass"},
+    {"id": "scenario-matrix", "path": "stages/08-scenario-matrix.json", "status": "planned-unexecuted"},
+    {"id": "work-pack", "path": "plan/WORK-PACK.md", "status": "non-executed-handoff-blocked"},
+    {"id": "stage-10", "path": "stages/10-final-interrogation.md", "status": "pass-constrained"},
+    {"id": "validation", "path": "FINAL-VALIDATION.md", "status": "run-pass-current-ontology-blocked"},
+    {"id": "result", "path": "RESULT.md", "status": "complete-constrained"},
+    {"id": "final-receipt", "path": "FINAL-RECEIPT.json", "status": "complete-constrained"}
+  ]
+}

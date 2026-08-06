@@ -1,0 +1,31 @@
+{
+  "schema_version": "domainspec.dispatch-close.v1",
+  "dispatch_id": "2026-08-06-rwo-composition-form-metamodel",
+  "status": "closed",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 9,
+    "tree": {
+      "explorer": 3,
+      "synthesizer": 1,
+      "skeptic": 3,
+      "writer": 1,
+      "auditor": 1,
+      "helpers": 0
+    },
+    "loops_used": 2
+  },
+  "ledger_path": "telemetry/agents/subagents-dispatch.yaml",
+  "ledger_sha256_before_close": "485626a5df3103870095dab5847c05a31f7e1bbab726f184fe8ed35c91e55127",
+  "ledger_sha256_after_close": "34c6246e98d9a406a49caddafdcab26e2385c124cccdee7557446fe0dfc90fbc",
+  "append_count_for_this_dispatch": 2,
+  "close_row_count": 1,
+  "artifacts": [
+    "delegated-research/findings.md",
+    "delegated-research/receipts/audit.json",
+    "delegated-research/receipts/writer-revision-1.json",
+    "delegated-research/receipts/parent-final-approval.json",
+    "RESULT.md"
+  ],
+  "claim_ceiling": "Resolved means the confirmed research dispatch and Refine synthesis closed. It grants no implementation, ontology migration, conformance, promotion, release, deployment, or production authority."
+}

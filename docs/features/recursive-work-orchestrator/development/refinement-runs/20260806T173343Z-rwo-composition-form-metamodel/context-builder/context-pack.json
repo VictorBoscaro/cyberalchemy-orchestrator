@@ -1,0 +1,32 @@
+{
+  "schema_version": "context-builder.runtime-handoff.v1",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "task": "Refine the RWO composition-form conditions, metamodel, architecture, model, ontology delta, and implementation plan",
+  "mode": "standard",
+  "strict": true,
+  "handoff": "runtime",
+  "obligation_count": 12,
+  "covered": 12,
+  "blocked": 0,
+  "claim_ceiling": "candidate research, design, ontology delta, and non-executed plan",
+  "selected_sources": [
+    {"path": "../../../DESIGN.md", "selectors": ["Purpose", "Non-goals", "4-11", "RWO-I01-RWO-I12", "open-questions"], "obligations": ["O1", "O2", "O4", "O5", "O7", "O8", "O9"]},
+    {"path": "../../../ontology/ONTOLOGY.md", "selectors": ["1", "3", "5", "6", "12", "13"], "obligations": ["O3", "O9", "O10", "O11"]},
+    {"path": "../../../ontology/ontology.json", "selectors": ["ontology", "types", "properties", "relations", "constraints"], "obligations": ["O3", "O9", "O10", "O11"]},
+    {"path": "../20260805T184601Z-rwo-domain-recovery-model/RESULT.md", "selectors": ["architecture", "treatments", "identity", "concurrency", "domain-and-ARE", "claim-ceiling"], "obligations": ["O4", "O5", "O6", "O8"]},
+    {"path": "../20260806T032327Z-rwo-transport-neutral-adapters/RESULT.md", "selectors": ["architecture", "identity", "observations", "retry-and-recovery", "evidence"], "obligations": ["O4", "O5", "O6", "O7"]},
+    {"path": "../REFINE-SEED-PROPOSAL.md", "selectors": ["problem", "candidate", "conditions", "forms", "outputs", "claim-ceiling"], "obligations": ["O1-O12"]}
+  ],
+  "owner_gaps": [
+    "sequence-surface-cardinality",
+    "structural-quorum-owner",
+    "late-arrival-policy-owner",
+    "journal-truth-owner",
+    "minimal-authority-reference",
+    "condition-classification-representation",
+    "reasoning-entry-artifact-admission-exact-effect-owners",
+    "ontology-identity-migration"
+  ],
+  "write_scope": ["this refinement run folder", "append-only dispatch close row"],
+  "strict_coverage": "pass"
+}

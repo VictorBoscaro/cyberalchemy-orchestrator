@@ -1,0 +1,17 @@
+{
+  "admitted_receipt_action_ids": [
+    "spawn-0009"
+  ],
+  "blockers": [],
+  "decision": "gate_pass",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "gate_id": "g-audit",
+  "next_action_ids": [],
+  "next_wave_id": null,
+  "required_action_ids": [
+    "spawn-0009"
+  ],
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "schema_version": "arcanum.native-dispatch-runner.gate-decision.v0.1",
+  "wave_id": "auditor"
+}

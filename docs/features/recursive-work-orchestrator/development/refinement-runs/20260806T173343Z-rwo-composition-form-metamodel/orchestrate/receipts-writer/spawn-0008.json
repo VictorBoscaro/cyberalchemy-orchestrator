@@ -1,0 +1,17 @@
+{
+  "schema_version": "arcanum.native-dispatch-runner.receipt.v0.1",
+  "action_id": "spawn-0008",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "wave_id": "writer",
+  "step_id": "s04d",
+  "role": "writer",
+  "capability_ref": "research",
+  "agent_id": "/root/rwo_forms_writer_0008",
+  "status": "pass",
+  "artifacts": ["delegated-research/findings.md", "delegated-research/receipts/writer.json"],
+  "validation": "pass",
+  "blockers": [],
+  "started_at": "host-not-reported",
+  "finished_at": "2026-08-06T19:32:08Z"
+}

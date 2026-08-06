@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-005",
+  "candidates": [
+    {
+      "optionId": "PROVENANCE-EMBEDDED-SELECTORS",
+      "label": "Embed immutable source selectors in each authored form",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO source-schema and provenance owner",
+      "evidence": [
+        "The refined authored-form envelope already requires provenance as NonEmpty<ImmutableSourceSelector>.",
+        "Embedded selectors keep each form self-contained and allow offline validation without resolving another ontology or registry object.",
+        "The thin-kernel and precedent reviews reject ornamental concepts that do not alter compilation or validation."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "PROVENANCE-CANONICAL-RECORD-REF",
+      "label": "Reference one immutable canonical provenance record",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO provenance-record owner",
+      "evidence": [
+        "A separately versioned immutable record can deduplicate a source-selector set shared by many authored forms.",
+        "The record can bind exact source identities, selectors, byte domains, sizes, digests, and producer receipt once.",
+        "This option requires a new record identity, resolver, lifecycle, schema, and validation owner before forms remain self-contained by reference."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "PROVENANCE-INLINE-AND-REF",
+      "label": "Store both inline selectors and a provenance reference as co-authoritative",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "Two co-authoritative provenance representations introduce disagreement and precedence ambiguity.",
+        "No current owner rule defines which bytes win when the inline selectors and referenced record diverge."
+      ]
+    },
+    {
+      "optionId": "PROVENANCE-DIGEST-ONLY",
+      "label": "Store only a provenance digest",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "A digest without source identity, selector, byte domain, size, and version is not reproducibly resolvable.",
+        "Digest equality alone does not establish source ownership, semantics, admission, or authority."
+      ]
+    },
+    {
+      "optionId": "PROVENANCE-DEFER",
+      "label": "Defer canonical provenance representation",
+      "optionKind": "defer",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Deferral preserves the candidate but keeps exact authored-form schemas, fixture digests, and ontology source-binding obligations blocked."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "PROVENANCE-STOP",
+      "label": "Stop the composition-form Decision Gate",
+      "optionKind": "stop",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Stopping preserves current source and candidate bytes and authorizes no downstream mutation."
+      ],
+      "rejectionReasons": []
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "admissibleOptionIds": [
+    "PROVENANCE-CANONICAL-RECORD-REF",
+    "PROVENANCE-DEFER",
+    "PROVENANCE-EMBEDDED-SELECTORS",
+    "PROVENANCE-STOP"
+  ],
+  "decisionGateRequired": true,
+  "decisionId": "DG-RWO-CFM-005",
+  "directOptionId": null,
+  "ownerGate": null,
+  "presentedOptionIds": [
+    "PROVENANCE-CANONICAL-RECORD-REF",
+    "PROVENANCE-DEFER",
+    "PROVENANCE-EMBEDDED-SELECTORS",
+    "PROVENANCE-STOP"
+  ],
+  "reasons": [],
+  "rejectedOptions": [
+    {
+      "optionId": "PROVENANCE-DIGEST-ONLY",
+      "reasons": [
+        "A digest without source identity, selector, byte domain, size, and version is not reproducibly resolvable.",
+        "Digest equality alone does not establish source ownership, semantics, admission, or authority."
+      ]
+    },
+    {
+      "optionId": "PROVENANCE-INLINE-AND-REF",
+      "reasons": [
+        "No current owner rule defines which bytes win when the inline selectors and referenced record diverge.",
+        "Two co-authoritative provenance representations introduce disagreement and precedence ambiguity."
+      ]
+    }
+  ],
+  "requestDigest": "8e16eb893ea4b865b8758d38cc5c1b539605e529f204a53d93f9b39144db8bd6",
+  "routeOutcome": "gate",
+  "schemaVersion": "1.0.0"
+}

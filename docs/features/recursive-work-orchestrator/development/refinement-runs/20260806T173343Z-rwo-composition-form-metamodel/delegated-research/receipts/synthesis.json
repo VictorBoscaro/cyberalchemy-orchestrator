@@ -1,0 +1,38 @@
+{
+  "action_id": "spawn-0004",
+  "agent": {
+    "identity": "Mac Lane, Saunders",
+    "native_agent_id": "/root/rwo_forms_synthesizer_0004"
+  },
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "wave_id": "synthesis",
+  "step_id": "s04b",
+  "role_id": "synthesizer",
+  "capability_ref": "research",
+  "capability_mode": "synthesize",
+  "mutation_policy": "read-only",
+  "write_scope": [],
+  "status": "pass",
+  "artifacts": [
+    "delegated-research/synthesis.md"
+  ],
+  "validation_result": "pass",
+  "observer_status": "not_requested",
+  "blockers": [],
+  "residue": [
+    "Ontology identity diverges between 0.1.0 and 0.2.0 surfaces.",
+    "Structural quorum ownership remains open.",
+    "Exact late-arrival policy and owner remain open.",
+    "Sequence ordered-list versus binary ontology cardinality requires owner confirmation.",
+    "Schema and reducer migration remain open.",
+    "Journal truth, minimal authority reference, condition classification, reasoning-entry, artifact-admission, and exact-effect owners remain open.",
+    "No compiler, schema, fixture, runtime, or promotion conformance has been implemented or executed."
+  ],
+  "reroute": {
+    "next_wave": "reviewers",
+    "recommended_gate": "g-synthesis"
+  },
+  "handoff_note": "Send the candidate package to the three declared reviewers and preserve all open owner gates.",
+  "mutation_statement": "Read-only synthesis; parent persisted this return in the authorized run folder."
+}

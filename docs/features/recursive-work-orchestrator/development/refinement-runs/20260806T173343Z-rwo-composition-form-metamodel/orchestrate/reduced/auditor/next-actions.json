@@ -1,0 +1,10 @@
+{
+  "actions": [],
+  "decision": "gate_pass",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "next_wave_id": null,
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "schema_version": "arcanum.native-dispatch-runner.action-set.v0.1",
+  "source_gate_id": "g-audit",
+  "source_wave_id": "auditor"
+}

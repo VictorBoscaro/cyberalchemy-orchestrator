@@ -1,0 +1,420 @@
+{
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "parent_dispatch_id": null,
+  "intent": {
+    "raw": "refine the conditions and metamodel for RWO composition forms and show how the exact architecture, model, and ontology fit",
+    "objective": "Produce CompositionFormMetaModel@candidate-1 with exact form schemas, condition families and owners, deterministic compilation, ontology delta, validation witnesses, and a non-executed Work Pack.",
+    "target_artifact": "RESULT.md",
+    "arcanum_vocabulary": ["refine", "context-builder", "invoke", "interrogation", "research", "distill", "dispatch-spec", "orchestrate"],
+    "operator_sentence": "Refine the RWO composition-form model without implementing or promoting it."
+  },
+  "mode": "sequence",
+  "techniques": ["sequence", "frame_handoff", "handle_handoff", "dialectic", "validation_loop", "owner_boundary_check", "residue_ledger", "execution_receipt_handoff", "approval_checkpoint"],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "A new cross-cutting candidate needs three independent expert corpora plus distinct synthesis, falsification, writing, and audit stages.",
+    "explanation": "The exact live research pipeline preserves conflicts among form algebra, condition ownership, and ontology architecture and blocks evidence-free synthesis.",
+    "context": [
+      "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/REFINE-SEED-PROPOSAL.md",
+      "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/strategy-inventory-packet.json",
+      "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json"
+    ],
+    "binding_mode": "capability-bound",
+    "execution_owner": "orchestrate",
+    "roles": [
+      {
+        "role_id": "explorer-form-semantics",
+        "purpose": "Derive the common envelope, per-form schemas, algebraic laws, and deterministic compiler contract.",
+        "owns": "Read-only explorer return and normalized receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#explorers-agent-0",
+        "capability_mode": "explore",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/strategy-inventory-packet.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-form-semantics.json"],
+        "applies_to_steps": ["s04a"]
+      },
+      {
+        "role_id": "explorer-condition-boundaries",
+        "purpose": "Attack condition categories, evaluator ownership, concurrency, recovery, and authority collapse.",
+        "owns": "Read-only explorer return and normalized receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#explorers-agent-1",
+        "capability_mode": "explore",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/strategy-inventory-packet.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-condition-boundaries.json"],
+        "applies_to_steps": ["s04a"]
+      },
+      {
+        "role_id": "explorer-ontology-validation",
+        "purpose": "Model the candidate ontology, graph constraints, queries, fixtures, and projection boundaries.",
+        "owns": "Read-only explorer return and normalized receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#explorers-agent-2",
+        "capability_mode": "explore",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/strategy-inventory-packet.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-ontology-validation.json"],
+        "applies_to_steps": ["s04a"]
+      },
+      {
+        "role_id": "synthesizer",
+        "purpose": "Reconcile all explorer returns into an exact candidate package with evidence bindings.",
+        "owns": "Read-only synthesis return and normalized receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#synthesizer",
+        "capability_mode": "synthesize",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "depends_on_roles": ["explorer-form-semantics", "explorer-condition-boundaries", "explorer-ontology-validation"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-form-semantics.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-condition-boundaries.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-ontology-validation.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/research.md"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"],
+        "applies_to_steps": ["s04b"]
+      },
+      {
+        "role_id": "skeptic-precedent",
+        "purpose": "Locate existing owners and reject duplicate or ornamental concepts.",
+        "owns": "Precedent verdict receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#reviewers-agent-0",
+        "capability_mode": "review",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "depends_on_roles": ["synthesizer"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-precedent.json"],
+        "applies_to_steps": ["s04c"]
+      },
+      {
+        "role_id": "skeptic-non-vacuity",
+        "purpose": "Require finite positive and discriminating negative witnesses for every retained candidate.",
+        "owns": "Non-vacuity verdict receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#reviewers-agent-1",
+        "capability_mode": "review",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "depends_on_roles": ["synthesizer"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-non-vacuity.json"],
+        "applies_to_steps": ["s04c"]
+      },
+      {
+        "role_id": "skeptic-definitional",
+        "purpose": "Reject semantic, lifecycle, recovery, reasoning, authority, and ontology-state collapse.",
+        "owns": "Definitional-soundness verdict receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#reviewers-agent-2",
+        "capability_mode": "review",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "depends_on_roles": ["synthesizer"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-definitional.json"],
+        "applies_to_steps": ["s04c"]
+      },
+      {
+        "role_id": "writer",
+        "purpose": "Persist the evidence-closed research findings.",
+        "owns": "delegated-research/findings.md and normalized writer receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#writer",
+        "capability_mode": "write",
+        "agent_count": 1,
+        "mutation_policy": "artifact-only",
+        "write_scope": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/findings.md"],
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/DESIGN.md", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/ontology/", "projects/cyberalchemy-orchestrator/implementations/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "depends_on_roles": ["skeptic-precedent", "skeptic-non-vacuity", "skeptic-definitional"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-precedent.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-non-vacuity.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-definitional.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/evidence-closure.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/writer.json"],
+        "applies_to_steps": ["s04d"]
+      },
+      {
+        "role_id": "auditor",
+        "purpose": "Audit the evidence-closed findings against the confirmed goal and claim ceiling.",
+        "owns": "Audit verdict receipt only.",
+        "capability_ref": "research",
+        "capability_target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#auditor",
+        "capability_mode": "audit",
+        "agent_count": 1,
+        "mutation_policy": "read-only",
+        "forbidden_write_scopes": ["projects/cyberalchemy-orchestrator/", "cyberAlchemy-v2/", "telemetry/agents/", ".arcanum/", ".git/"],
+        "depends_on_roles": ["writer"],
+        "input_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/findings.md", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/writer.json"],
+        "output_refs": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/audit.json"],
+        "applies_to_steps": ["s04e"]
+      }
+    ],
+    "execution_waves": [
+      {"wave_id": "explorers", "role_ids": ["explorer-form-semantics", "explorer-condition-boundaries", "explorer-ontology-validation"], "parallel": true, "join_policy": "all", "gate_after": "g-explorers", "on_incomplete": "block"},
+      {"wave_id": "synthesis", "role_ids": ["synthesizer"], "parallel": false, "join_policy": "all", "depends_on_waves": ["explorers"], "gate_after": "g-synthesis", "on_incomplete": "block"},
+      {"wave_id": "reviewers", "role_ids": ["skeptic-precedent", "skeptic-non-vacuity", "skeptic-definitional"], "parallel": true, "join_policy": "all", "depends_on_waves": ["synthesis"], "gate_after": "g-evidence-closure", "on_incomplete": "block"},
+      {"wave_id": "writer", "role_ids": ["writer"], "parallel": false, "join_policy": "all", "depends_on_waves": ["reviewers"], "gate_after": "g-writer", "on_incomplete": "block"},
+      {"wave_id": "auditor", "role_ids": ["auditor"], "parallel": false, "join_policy": "all", "depends_on_waves": ["writer"], "gate_after": "g-audit", "on_incomplete": "block"}
+    ],
+    "parallelism": "mixed",
+    "join_policy": "parent_synthesis",
+    "authorization": "approved",
+    "permission_prompt": "Confirmed in chat for the corrected nine-agent research pipeline.",
+    "receipt_requirements": ["agent_id", "role_id", "spawn_status", "join_status", "close_status", "dispatch_id", "step_id", "capability_ref", "capability_target", "capability_mode", "wave_id", "write_scope", "receipt_artifact", "status", "artifacts", "validation", "validation_result", "observer_status", "blockers", "residue", "reroute", "handoff_note"]
+  },
+  "subagent_lifecycle": {"status": "none", "agents": []},
+  "steps": [
+    {
+      "step_id": "s01",
+      "name": "Context Builder — exact source and obligation frame",
+      "capability_ref": "context-builder",
+      "mode": "standard",
+      "pattern": "xray",
+      "techniques": ["frame_handoff", "handle_handoff", "owner_boundary_check"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/REFINE-SEED-PROPOSAL.md"}],
+      "outputs": [{"kind": "frame", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/context-builder/context-pack.json"}, {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/01-context-builder.md"}],
+      "stop_conditions": ["Block if direct owner sources or claim ceilings cannot be represented exactly."]
+    },
+    {
+      "step_id": "s02",
+      "name": "Invoke Define — problem and candidate vocabulary",
+      "capability_ref": "invoke",
+      "mode": "define",
+      "pattern": "sequential",
+      "depends_on_steps": ["s01"],
+      "techniques": ["sequence", "owner_boundary_check"],
+      "inputs": [{"kind": "frame", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/context-builder/context-pack.json"}],
+      "outputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/02-invoke-define.md"}],
+      "stop_conditions": ["Block if form structure, domain meaning, recovery, and authority are collapsed."]
+    },
+    {
+      "step_id": "s03",
+      "name": "Interrogation refine-review — discriminate model gaps",
+      "capability_ref": "interrogation",
+      "mode": "refine-review",
+      "pattern": "dialectic",
+      "depends_on_steps": ["s02"],
+      "techniques": ["dialectic", "residue_ledger", "owner_boundary_check"],
+      "roles": ["common-model advocate", "owner-boundary adversary", "validation witness"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/02-invoke-define.md"}],
+      "outputs": [{"kind": "ledger", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/03-interrogation-refine-review.md"}],
+      "convergence_criteria": ["Every ambiguity has a discriminating question and named owner.", "The research need is bounded to exact missing evidence."],
+      "stop_conditions": ["Block if no finite distinction separates candidate alternatives."]
+    },
+    {
+      "step_id": "s04a",
+      "name": "Research explorers — three exact-binding lenses",
+      "capability_ref": "research",
+      "capability_status": "local-extension",
+      "mode": "explore",
+      "pattern": "fanout",
+      "parallel": true,
+      "join_policy": "all",
+      "depends_on_steps": ["s03"],
+      "techniques": ["execution_receipt_handoff", "owner_boundary_check"],
+      "inputs": [
+        {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json"},
+        {"kind": "external_context", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/strategy-inventory-packet.json"}
+      ],
+      "outputs": [
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-form-semantics.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-condition-boundaries.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-ontology-validation.json"},
+        {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/research.md"}
+      ],
+      "stop_conditions": ["Any missing explorer receipt blocks synthesis."]
+    },
+    {
+      "step_id": "s04b",
+      "name": "Research synthesis — exact candidate package",
+      "capability_ref": "research",
+      "capability_status": "local-extension",
+      "mode": "synthesize",
+      "pattern": "synthesis",
+      "depends_on_steps": ["s04a"],
+      "techniques": ["owner_boundary_check", "residue_ledger"],
+      "inputs": [
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-form-semantics.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-condition-boundaries.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-ontology-validation.json"},
+        {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/research.md"}
+      ],
+      "outputs": [{"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"}],
+      "stop_conditions": ["Contradictory owner or source claims remain explicit residue."]
+    },
+    {
+      "step_id": "s04c",
+      "name": "Research reviewers — three rejection gates and evidence closure",
+      "capability_ref": "research",
+      "capability_status": "local-extension",
+      "mode": "review",
+      "pattern": "dialectic",
+      "parallel": true,
+      "join_policy": "all",
+      "depends_on_steps": ["s04b"],
+      "techniques": ["dialectic", "validation_loop", "owner_boundary_check", "execution_receipt_handoff"],
+      "roles": ["precedent", "non-vacuity", "definitional-soundness"],
+      "inputs": [{"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"}],
+      "outputs": [
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-precedent.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-non-vacuity.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-definitional.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/evidence-closure.json"}
+      ],
+      "convergence_criteria": ["Every retained candidate has an owner verdict, finite witness, sound definition, and exact binding."],
+      "stop_conditions": ["Unresolved exact evidence blocks the writer.", "Terminal KILLs remain typed negatives."]
+    },
+    {
+      "step_id": "s04d",
+      "name": "Research writer — persist evidence-closed findings",
+      "capability_ref": "research",
+      "capability_status": "local-extension",
+      "mode": "write",
+      "pattern": "handoff",
+      "depends_on_steps": ["s04c"],
+      "techniques": ["execution_receipt_handoff"],
+      "inputs": [
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-precedent.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-non-vacuity.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-definitional.json"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/evidence-closure.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/findings.md"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/writer.json"}
+      ],
+      "stop_conditions": ["Writer remains blocked until evidence closure is ready."]
+    },
+    {
+      "step_id": "s04e",
+      "name": "Research auditor — findings-only approval",
+      "capability_ref": "research",
+      "capability_status": "local-extension",
+      "mode": "audit",
+      "pattern": "validation",
+      "depends_on_steps": ["s04d"],
+      "techniques": ["validation_loop", "approval_checkpoint"],
+      "inputs": [
+        {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/findings.md"},
+        {"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/writer.json"}
+      ],
+      "outputs": [{"kind": "receipt", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/audit.json"}],
+      "evidence_artifact": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/audit.json",
+      "stop_conditions": ["Any unclosed citation, owner, witness, or authority defect blocks parent synthesis."]
+    },
+    {
+      "step_id": "s05",
+      "name": "Distill — select the smallest coherent candidate",
+      "capability_ref": "distill",
+      "mode": "architecture",
+      "pattern": "distill",
+      "depends_on_steps": ["s04e"],
+      "techniques": ["owner_boundary_check", "residue_ledger"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/findings.md"}],
+      "outputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/05-distill.md"}],
+      "stop_conditions": ["Block if candidate parts cannot recompose without owner collapse."]
+    },
+    {
+      "step_id": "s06",
+      "name": "Invoke Design — exact metamodel and ontology delta",
+      "capability_ref": "invoke",
+      "mode": "design",
+      "pattern": "sequential",
+      "depends_on_steps": ["s05"],
+      "techniques": ["sequence", "owner_boundary_check"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/05-distill.md"}],
+      "outputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/06-invoke-design.md"}],
+      "stop_conditions": ["Block if any form, condition, evaluator, receipt, or relation lacks an owner and validation rule."]
+    },
+    {
+      "step_id": "s07",
+      "name": "Interrogation design review — finite counterexamples",
+      "capability_ref": "interrogation",
+      "mode": "refine-design-review",
+      "pattern": "dialectic",
+      "depends_on_steps": ["s06"],
+      "techniques": ["dialectic", "validation_loop", "owner_boundary_check"],
+      "roles": ["compiler critic", "condition critic", "ontology critic"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/06-invoke-design.md"}],
+      "outputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/07-interrogation-design-review.md"}],
+      "convergence_criteria": ["Every accepted claim survives a concrete positive and negative witness.", "All rejected combinations have deterministic defects."],
+      "stop_conditions": ["Block if an ambiguous scenario can mutate state or route work."]
+    },
+    {
+      "step_id": "s08",
+      "name": "Distill repair — Candidate-1 and scenario matrix",
+      "capability_ref": "distill",
+      "mode": "repair",
+      "pattern": "distill",
+      "depends_on_steps": ["s07"],
+      "techniques": ["validation_loop", "residue_ledger"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/07-interrogation-design-review.md"}],
+      "outputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/08-distill-repair.md"}, {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/08-scenario-matrix.json"}],
+      "stop_conditions": ["Block if scenario outputs are not single-valued and fail-closed."]
+    },
+    {
+      "step_id": "s09",
+      "name": "Invoke Plan — non-executed Work Pack",
+      "capability_ref": "invoke",
+      "mode": "plan",
+      "pattern": "sequential",
+      "depends_on_steps": ["s08"],
+      "techniques": ["sequence", "execution_receipt_handoff"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/08-distill-repair.md"}],
+      "outputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/09-invoke-plan.md"}, {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/plan/WORK-PACK.md"}],
+      "stop_conditions": ["Block if any SWU mixes semantic source, generated projection, runtime implementation, or promotion authority."]
+    },
+    {
+      "step_id": "s10",
+      "name": "Final Interrogation and Refine synthesis",
+      "capability_ref": "interrogation",
+      "mode": "final-review",
+      "pattern": "validation",
+      "depends_on_steps": ["s09"],
+      "techniques": ["validation_loop", "approval_checkpoint", "residue_ledger"],
+      "inputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/plan/WORK-PACK.md"}],
+      "outputs": [{"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/stages/10-final-interrogation.md"}, {"kind": "artifact", "ref": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/RESULT.md"}],
+      "evidence_artifact": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/FINAL-RECEIPT.json",
+      "stop_conditions": ["Do not report pass while any required agent, binding, scenario, or claim audit is unresolved."]
+    }
+  ],
+  "gates": [
+    {"gate_id": "g-explorers", "kind": "validation", "owner": "orchestrate", "condition": "All three explorer agents return exact-binding receipts and are joined and closed.", "applies_after_wave": "explorers", "requires_role_receipts": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-form-semantics.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-condition-boundaries.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-ontology-validation.json"], "on_fail": "block"},
+    {"gate_id": "g-synthesis", "kind": "quality", "owner": "research", "condition": "The synthesis preserves all evidence ceilings, conflicts, selectors, and candidate identities.", "applies_after_wave": "synthesis", "requires_role_receipts": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/synthesis.json"], "on_fail": "block"},
+    {"gate_id": "g-evidence-closure", "kind": "validation", "owner": "research", "condition": "Every positive candidate row is bound, deferred, or killed under exact-binding.", "applies_after_wave": "reviewers", "requires_role_receipts": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-precedent.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-non-vacuity.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/skeptic-definitional.json", "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/evidence-closure.json"], "on_fail": "reroute"},
+    {"gate_id": "g-writer", "kind": "quality", "owner": "research", "condition": "findings.md is the only writer-owned artifact and satisfies exact-binding and the verdict matrix.", "applies_after_wave": "writer", "requires_role_receipts": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/writer.json"], "on_fail": "block"},
+    {"gate_id": "g-audit", "kind": "validation", "owner": "research", "condition": "The auditor approves the evidence-closed findings or requests one bounded writer revision.", "applies_after_wave": "auditor", "requires_role_receipts": ["projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/audit.json"], "on_fail": "reroute"},
+    {"gate_id": "g-parent-approval", "kind": "human_approval", "owner": "parent", "condition": "The parent accepts only the candidate-local result and claim ceiling.", "on_fail": "ask"},
+    {"gate_id": "g-promotion-guardrail", "kind": "promotion_guardrail", "owner": "parent", "condition": "No research, receipt, validation, or plan mutates or promotes design, ontology, implementation, authority, deployment, release, or production state.", "on_fail": "block"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "trace_events": ["route_validated", "authorization_confirmed", "dispatch_registered", "wave_started", "agent_spawned", "agent_joined", "agent_closed", "gate_passed", "evidence_closure_decided", "writer_completed", "audit_completed", "parent_approved", "dispatch_closed"],
+    "signal_grouping": "dispatch_id, wave_id, role_id, action_id, gate_id"
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {"boundary_id": "b-research-read-only", "kind": "evidence_return", "from_owner": "orchestrate", "to_owner": "research roles", "applies_to_steps": ["s04a", "s04b", "s04c", "s04e"], "contract": "All roles except writer are read-only and may only return bounded evidence.", "on_violation": "block"},
+      {"boundary_id": "b-writer-artifact", "kind": "state_write", "from_owner": "research evidence closure", "to_owner": "writer", "applies_to_steps": ["s04d"], "contract": "Writer may write findings.md only after exact-binding closure is ready.", "on_violation": "block"}
+    ],
+    "receipts": [
+      {"receipt_id": "r-research-lifecycle", "producer": "orchestrate and research roles", "applies_to_steps": ["s04a", "s04b", "s04c", "s04d", "s04e", "s09"], "required_fields": ["dispatch_id", "step_id", "status", "artifacts", "validation", "blockers", "residue"], "on_missing": "block"}
+    ],
+    "authority": {
+      "lifecycle": "domainspec-subagents-strategy and research type owner",
+      "execution": "orchestrate",
+      "validation": "dispatch-spec, register-dispatch, check-tension, evidence closure, auditor, and parent",
+      "evidence": "direct source selectors and normalized role receipts",
+      "inventory": "discovery-only",
+      "promotion": "none"
+    }
+  }
+}

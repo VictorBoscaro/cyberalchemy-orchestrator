@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-006",
+  "candidates": [
+    {
+      "optionId": "OCCURRENCE-OMIT-USE-SOURCE-PATH",
+      "label": "Omit FormOccurrence and carry canonical source paths on diagnostics",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO source-schema and compiler-result owner",
+      "evidence": [
+        "The refined candidate makes FormOccurrence optional and explicitly permits source_path to remain embedded in compiler diagnostics.",
+        "No serialized fixture or implementation currently demonstrates a query or diagnostic that requires an independently addressable occurrence node.",
+        "The precedent and non-vacuity reviews reject ornamental identities and require a finite need before adding a new concept."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "OCCURRENCE-COMPILE-ONLY",
+      "label": "Add an immutable compile-only FormOccurrence identity",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO source-schema and compiler-result owner",
+      "evidence": [
+        "The refined candidate permits FormOccurrence when one authored form is reused at multiple nested source paths and diagnostics need addressable occurrences.",
+        "Its closed shape is authored_form_ref plus canonical source_path, with no runtime state, operands, lifecycle, authority, or Work identity.",
+        "Materialization can simplify cross-reference queries when multiple defects and compilation results refer to the same reused occurrence."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "OCCURRENCE-RUNTIME-INSTANCE",
+      "label": "Promote FormOccurrence into a runtime form instance",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "authority",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "A runtime form instance duplicates or collapses WorkNode, WorkRun, Attempt, repeat-round, and journal identities.",
+        "No runtime or authority owner gate permits a source diagnostic identity to acquire execution state or lifecycle."
+      ]
+    },
+    {
+      "optionId": "OCCURRENCE-WORKNODE-ALIAS",
+      "label": "Use WorkNode identity as the authored form occurrence",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "One authored form occurrence may compile into multiple WorkNodes, while explicit source paths and graph-node paths occupy different identity domains.",
+        "Aliasing source occurrence with output graph identity makes rejection diagnostics impossible when no WorkGraph exists."
+      ]
+    },
+    {
+      "optionId": "OCCURRENCE-DEFER",
+      "label": "Defer the FormOccurrence decision",
+      "optionKind": "defer",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Deferral preserves the optional candidate but prevents the exact compiler-result and ontology schemas from closing."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "OCCURRENCE-STOP",
+      "label": "Stop the composition-form Decision Gate",
+      "optionKind": "stop",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Stopping preserves current source and candidate bytes and authorizes no downstream mutation."
+      ],
+      "rejectionReasons": []
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "action": "spawn",
+  "action_id": "spawn-0001",
+  "agent_count": 1,
+  "agent_ordinal": 0,
+  "applies_to_steps": [
+    "s04a"
+  ],
+  "capability_ref": "research",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "forbidden_write_scopes": [
+    "projects/cyberalchemy-orchestrator/",
+    "cyberAlchemy-v2/",
+    "telemetry/agents/",
+    ".arcanum/",
+    ".git/"
+  ],
+  "input_refs": [
+    "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json",
+    "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/strategy-inventory-packet.json"
+  ],
+  "mode": "explore",
+  "mutation_policy": "read-only",
+  "output_refs": [
+    "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/receipts/explorer-form-semantics.json"
+  ],
+  "role": "explorer-form-semantics",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "schema_version": "arcanum.native-dispatch-runner.action.v0.1",
+  "step_id": "s04a",
+  "target": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json#explorers-agent-0",
+  "wave_id": "explorers",
+  "write_scope": []
+}

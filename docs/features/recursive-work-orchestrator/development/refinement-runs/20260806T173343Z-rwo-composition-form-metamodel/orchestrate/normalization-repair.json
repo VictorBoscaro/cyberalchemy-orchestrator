@@ -1,0 +1,12 @@
+{
+  "schema_version": "arcanum.native-dispatch-runner.normalization-repair.v1",
+  "action_id": "spawn-0003",
+  "original_reducer_result": "reduced/explorers/gate-decision.json",
+  "original_decision": "gate_block",
+  "defect": "Parent normalization copied candidate-level downstream gates into the action-execution blockers field even though the child explicitly returned status pass, validation_result pass, mutation pass, and reroute not required.",
+  "repair": "Preserve every candidate gate in the delegated detailed receipt and research transcript; normalize action-execution blockers to an empty array in a new receipt set.",
+  "agent_retry": false,
+  "host_action_retry": false,
+  "result_discarded": false,
+  "authority_effect": "none"
+}

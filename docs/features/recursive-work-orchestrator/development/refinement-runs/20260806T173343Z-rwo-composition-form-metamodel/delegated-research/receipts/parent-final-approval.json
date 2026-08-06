@@ -1,0 +1,21 @@
+{
+  "schema_version": "domainspec.research-parent-approval.v1",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "status": "pass",
+  "verdict": "APPROVE_FINDINGS_AND_VALIDATION_FIRST_PLANNING_ONLY",
+  "artifact": "delegated-research/findings.md",
+  "artifact_sha256": "67fad84f9058751cbe9b254777a2bf47d2b0f1c7c14e4576d45535939c042b6d",
+  "audited_revision_of_sha256": "a4597a3f86573487041f5200b9d52de6ad0568dd9938b020706f98950474311c",
+  "revision_validation": {
+    "audit_scope_respected": true,
+    "six_required_fixture_groups_present": true,
+    "each_case_has_one_expected_result": true,
+    "owner_gate_dependencies_present": true,
+    "allowed_and_forbidden_mutations_present": true,
+    "planned_unexecuted_status_preserved": true,
+    "claim_ceiling_preserved": true
+  },
+  "claim_ceiling": "Candidate findings and validation-first planning only. Adoption, ontology migration, implementation, conformance, promotion, deployment, release, and production remain blocked, unsupported, or unauthorized.",
+  "mutation_statement": "Parent approval records evidence closure only and grants no downstream authority."
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "targetScope": "RWO CompositionFormSourceContract candidate-2 owner decisions",
+  "result": "BLOCK",
+  "completedAt": "2026-08-06T21:24:20Z",
+  "decisionsPresented": 6,
+  "decisionsResolved": 6,
+  "decisionBlockersRemaining": 0,
+  "protectedOwnerBlockersRemaining": 1,
+  "admissibleRouting": "gate",
+  "overrideReceipt": null,
+  "overrideVerdict": "not-requested",
+  "resolvedDecisions": [
+    {"decisionId": "DG-RWO-CFM-001", "selectedOptionId": "SEQ-NARY-MIN2", "status": "accepted"},
+    {"decisionId": "DG-RWO-CFM-002", "selectedOptionId": "QUORUM-RWO-STRUCTURAL", "status": "accepted"},
+    {"decisionId": "DG-RWO-CFM-003", "selectedOptionId": "LATE-RETAIN-NONCONTRIBUTING", "status": "accepted"},
+    {"decisionId": "DG-RWO-CFM-004", "selectedOptionId": "ONTOLOGY-ROLLFORWARD-0.2", "status": "selected-owner-route-required"},
+    {"decisionId": "DG-RWO-CFM-005", "selectedOptionId": "PROVENANCE-EMBEDDED-SELECTORS", "status": "accepted"},
+    {"decisionId": "DG-RWO-CFM-006", "selectedOptionId": "OCCURRENCE-OMIT-USE-SOURCE-PATH", "status": "accepted"}
+  ],
+  "remainingBlockers": [
+    {
+      "id": "RWO-ONTOLOGY-OWNER-ROUTE",
+      "hazardClass": "promotion",
+      "ownerGate": "RWO ontology identity and promotion owner",
+      "selectedDirection": "ONTOLOGY-ROLLFORWARD-0.2",
+      "request": "ONTOLOGY-OWNER-ROUTE-REQUEST.md"
+    }
+  ],
+  "deferredDecisions": [],
+  "assumptions": [],
+  "decisionArtifact": "DECISION-GATE-RESULT.md",
+  "authorityEffect": "decision-selection-only",
+  "consequentialMutationAuthorized": false,
+  "nextStep": "obtain the protected ontology-owner receipt, then refresh planning against all accepted decisions and remaining direct owner prerequisites"
+}

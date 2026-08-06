@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-003",
+  "status": "accepted",
+  "selectedOptionId": "LATE-RETAIN-NONCONTRIBUTING",
+  "selectedAt": "2026-08-06T20:59:08Z",
+  "decisionSource": "repository owner selected option 1 in the active chat Decision Gate",
+  "admissibilityReceipt": "receipts/DG-RWO-CFM-003-option-admissibility.json",
+  "requestDigest": "bcd7bd90cff622ef4a65893f29a669e009c5170938ae7baa47ae6e3a2bcb7d19",
+  "decisionArtifact": "../../../../../../decisions/rwo-fanin-late-arrival.md",
+  "authorityEffect": "late-arrival-disposition-choice-only",
+  "remainingDecisionBlockers": 3,
+  "consequentialMutationAuthorized": false
+}

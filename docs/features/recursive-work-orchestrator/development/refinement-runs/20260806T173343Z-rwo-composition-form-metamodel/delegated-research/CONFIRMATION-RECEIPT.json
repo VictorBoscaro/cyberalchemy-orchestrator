@@ -1,0 +1,13 @@
+{
+  "schema_version": "domainspec.dispatch-confirmation.v1",
+  "dispatch_id": "2026-08-06-rwo-composition-form-metamodel",
+  "status": "confirmed",
+  "confirmation_handle": "chat-confirmed-e0919f7f1f23-20260806",
+  "sheet_path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/dispatch-sheet.json",
+  "sheet_sha256": "e0919f7f1f2352d0a0cbce95b94b3ded73584e1ee3c15bf0d5315d334155106e",
+  "material_projection_path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/material-strategy-projection.json",
+  "material_sha256": "e16bddbbe8b9954c35ef729d81cf1def5e3ca7ef029d3276b0a3024d97b566a2",
+  "confirmed": true,
+  "confirmation_source": "user chat reply: confirmed",
+  "scope": "Exact persisted nine-agent research sheet after readiness and double-PASS tension gates."
+}

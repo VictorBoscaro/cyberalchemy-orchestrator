@@ -1,0 +1,20 @@
+{
+  "action_id": "spawn-0007",
+  "agent": {"identity": "Meadows, Donella H.", "native_agent_id": "/root/rwo_forms_reviewer_definitional_0007"},
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "wave_id": "reviewers",
+  "step_id": "s04c",
+  "role_id": "skeptic-definitional",
+  "capability_ref": "research",
+  "capability_mode": "review",
+  "mutation_policy": "read-only",
+  "write_scope": [],
+  "action_status": "pass",
+  "target_verdict": "BLOCK_REPAIRABLE",
+  "artifacts": ["delegated-research/review-definitional.md"],
+  "blockers": ["source/graph/runtime identity collapse", "generic condition/evaluator seam", "defect-owner collapse", "late-arrival/quorum open", "generic reference collapse", "ontology identity divergence"],
+  "residue": ["kill generic condition nodes", "replace FormInstance with source occurrence if needed", "repair compilation result and typed references"],
+  "claim_ceiling": "candidate-local definitional review only",
+  "mutation_statement": "read-only"
+}

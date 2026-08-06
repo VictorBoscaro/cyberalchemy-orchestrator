@@ -1,0 +1,20 @@
+{
+  "action_id": "spawn-0006",
+  "agent": {"identity": "Capucci, Matteo", "native_agent_id": "/root/rwo_forms_reviewer_nonvacuity_0006"},
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "wave_id": "reviewers",
+  "step_id": "s04c",
+  "role_id": "skeptic-non-vacuity",
+  "capability_ref": "research",
+  "capability_mode": "review",
+  "mutation_policy": "read-only",
+  "write_scope": [],
+  "action_status": "pass",
+  "target_verdict": "BLOCK",
+  "artifacts": ["delegated-research/review-non-vacuity.md"],
+  "blockers": ["no serialized nested fixture", "no deterministic recompilation receipt", "ambiguous negatives", "open quorum/late-arrival owners", "ontology identity divergence", "no executed conformance"],
+  "residue": ["materialize exact validation-first witness corpus"],
+  "claim_ceiling": "candidate research only",
+  "mutation_statement": "read-only"
+}

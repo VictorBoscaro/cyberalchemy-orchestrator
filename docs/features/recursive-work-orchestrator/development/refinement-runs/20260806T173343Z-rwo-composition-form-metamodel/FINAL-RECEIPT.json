@@ -1,0 +1,103 @@
+{
+  "schema_version": "refine.final-receipt.v1",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "research_dispatch_id": "2026-08-06-rwo-composition-form-metamodel",
+  "created_at": "2026-08-06T19:54:03Z",
+  "status": "complete-constrained",
+  "route": {
+    "capability": "refine",
+    "preset": "standard",
+    "stages_declared": 10,
+    "stages_completed": 10,
+    "dispatch_spec_validation": "pass"
+  },
+  "research": {
+    "status": "closed",
+    "agents_declared": 9,
+    "agents_joined": 9,
+    "synthesis_feedback_loops_used": 1,
+    "auditor_writer_feedback_loops_used": 1,
+    "parent_approval": "APPROVE_FINDINGS_AND_VALIDATION_FIRST_PLANNING_ONLY",
+    "orchestrate_state": "complete",
+    "orchestrate_evidence_validation": "pass"
+  },
+  "verdict": {
+    "definition_design_candidate": "pass",
+    "findings": "ready",
+    "validation_first_plan": "ready-non-executed",
+    "execution_entry": "flag-blocked",
+    "ontology_delta": "candidate-not-applied",
+    "compiler_runtime_conformance": "unsupported",
+    "adoption_promotion_release_deployment_production": "blocked-or-not-authorized"
+  },
+  "artifacts": [
+    {
+      "path": "RESULT.md",
+      "sha256": "3f2e21bdc17842339501f7c9f7b87c81f98ed0e06b133b32b7b0115ffd3f48f5"
+    },
+    {
+      "path": "FINAL-VALIDATION.md",
+      "sha256": "ce5af81a5b91d7045eeac3ca173b9208f127be2e77bb0c143ac83e2ebad34fed"
+    },
+    {
+      "path": "delegated-research/findings.md",
+      "sha256": "67fad84f9058751cbe9b254777a2bf47d2b0f1c7c14e4576d45535939c042b6d"
+    },
+    {
+      "path": "delegated-research/receipts/parent-final-approval.json",
+      "sha256": "c1cf459effd148642f002bf12022f3755791ea6eb01a29b622d038e7bd44fe2a"
+    },
+    {
+      "path": "plan/WORK-PACK.md",
+      "sha256": "1999fa14d314df2cd15c056cf3c15317baac5d9b7d86b9ba8cc02a74a332985b"
+    },
+    {
+      "path": "stages/08-scenario-matrix.json",
+      "sha256": "f6404c2044127d04e88734e3e3559cc226d638ac494c99ed819a3e4fb1e8950e"
+    },
+    {
+      "path": "stages/10-final-interrogation.md",
+      "sha256": "2b3270142c5caa881bc99747368860b0332aeb4c9a82f0618d5642034f86c45b"
+    },
+    {
+      "path": "orchestrate/evidence-validation-receipt.json",
+      "sha256": "be982554effbf0bf0a7c434ac27f6c7043f6cd573df0e6a8344ca68eb08a873e"
+    },
+    {
+      "path": "delegated-research/CLOSE-RECEIPT.json",
+      "sha256": "fce4574d3daaee984d5560738bb05954b1c7c2b3d20ef052a1e38a2c902fd4ae"
+    }
+  ],
+  "validation": {
+    "sheet_readiness": "pass",
+    "material_equivalence": "same",
+    "dispatch_spec": "pass",
+    "run_json_parse": "pass",
+    "scenario_matrix": "pass-planned-unexecuted",
+    "scoped_diff_check": "pass",
+    "current_graph_package": "pass",
+    "current_ontology_package": "fail-source-digest-mismatch"
+  },
+  "known_blocker": {
+    "id": "CURRENT_ONTOLOGY_SOURCE_DIGEST_MISMATCH",
+    "source": "source:candidate-ontology",
+    "expected_sha256": "1c6d417c4f0cdfc73c7c42f016c05fd6f8fbccd738a35bf7454472d3cee3b920",
+    "observed_sha256": "b0b83ea540c0f805208b93e068816c45cb928d4f08eea50eca8ba4178843d9e1",
+    "disposition": "retained for ontology owner; not repaired or waived"
+  },
+  "protocol_residue": [
+    "REFINE-SEED-PROPOSAL.md did not serialize a preset field; the Refine default standard preset is recorded at closeout rather than represented as contemporaneous seed evidence.",
+    "The native dispatch coordinator reused action identifiers in dependent waves; original generated artifacts were preserved and explicit repair artifacts bind actual run-global IDs spawn-0005 through spawn-0009."
+  ],
+  "dispatch_ledger": {
+    "append_count": 2,
+    "close_row_count": 1,
+    "exit_reason": "resolved"
+  },
+  "inventory_post_result_hook": "skipped-forbidden-scope",
+  "authority_effect": "none",
+  "git_effect": "no commit or push requested or performed",
+  "workspace_posture": "unrelated dirty state preserved",
+  "claim_ceiling": "This receipt proves completion of the confirmed Refine and research route at findings and validation-first planning level only."
+}

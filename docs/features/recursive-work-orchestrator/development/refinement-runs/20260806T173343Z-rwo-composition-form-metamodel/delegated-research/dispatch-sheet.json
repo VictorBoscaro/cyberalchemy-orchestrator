@@ -1,0 +1,150 @@
+{
+  "dispatch_id": "2026-08-06-rwo-composition-form-metamodel",
+  "schema_version": "0.8.0",
+  "dispatch_type": "research",
+  "goal": "Define and adversarially validate the smallest exact RWO composition-form metamodel: common form envelope, per-form operands and conditions, condition families and evaluator ownership, deterministic compilation, validation defects, ontology delta, and implementation-ready but non-executed acceptance witnesses.",
+  "context": "Current proposal-only RWO sources name seven forms and partial policies but do not close their common metamodel, condition algebra, evaluator ownership, compiler receipt, or negative controls. Research is local-first and exact-binding. Existing DESIGN.md, ontology, recovery Candidate-2, and adapter Candidate-2 are read-only sources. Inventory is discovery-only; the child Inventory is empty and blocked. The result authorizes no implementation, design adoption, ontology mutation or promotion, authority change, publication, deployment, release, or production claim.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_global": "common abstraction economy versus per-form semantic fidelity, owner non-collapse, finite witnesses, and ontology integrity",
+  "working_folder": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/",
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 3,
+      "anti_bias": "methodology plus source-corpus: formal composition and compiler modeling, adversarial condition/owner analysis, and ontology/schema/validation modeling",
+      "predicted_disagreements": [
+        {
+          "pair": [0, 1],
+          "statement": "Agent 0 minimizes the common form and compiler model while agent 1 attacks any common predicate or policy surface that could absorb domain decisions, recovery treatments, lifecycle ownership, or authority; a bias toward elegant uniformity is exposed by owner-collapse counterexamples, while a bias toward separation is exposed when identical structural mechanics cannot be compiled or validated consistently."
+        },
+        {
+          "pair": [0, 2],
+          "statement": "Agent 0 models algebraic desugaring and form laws while agent 2 requires addressable ontology nodes, closed relations, cardinalities, versioning, provenance, and finite graph fixtures; a bias toward prose-level algebra is exposed by machine-addressability gaps, while ontology over-modeling is exposed by concepts that do not affect compilation or validation."
+        },
+        {
+          "pair": [1, 2],
+          "statement": "Agent 1 prioritizes evaluator and authority boundaries while agent 2 prioritizes a complete condition taxonomy and queryable ontology; a bias toward adding types for every distinction is exposed if types imply forbidden evaluation or authority, while defensive under-modeling is exposed if forbidden combinations cannot be expressed and rejected."
+        }
+      ],
+      "agents": [
+        {
+          "agent_name": "Eilenberg, Samuel",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "Formal composition-form semantics, common envelope, operand roles, algebraic laws, deterministic desugaring, canonicalization, versioning, and compiler receipt.",
+          "initial_prompt": "Act as the composition-form semantics explorer for dispatch 2026-08-06-rwo-composition-form-metamodel. Work read-only and local-first. Read the exact target DESIGN.md, ontology/ONTOLOGY.md, ontology.json form/property/relation/constraint sections, all-operators.pipeline.json, ontology validators, the seed, and the recovery/adapter refinement RESULTS. Establish the current versus missing model. Compare a universal expression tree, seven unrelated schemas, and a common envelope with closed discriminated families. Derive exact common fields, operand roles, per-form schemas, algebraic laws, deterministic desugaring to ExplicitComposition, canonical ordering and identity rules, compilation receipt, version and extension rules, defects, and fixtures. Test nested forms and demonstrate that compilation adds no domain, recovery, reasoning, or authority semantics. Every load-bearing row must cite immutable source identity, exact path plus selector, evidence scope, and observed or unverified status. Return a structured EXPLORER RETURN and JSON receipt payload. Do not edit files, browse, infer promotion, or claim runtime proof."
+        },
+        {
+          "agent_name": "Hewitt, Carl",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "Adversarial condition-family and evaluator-ownership analysis across event selection, structural readiness, domain decisions, routing, lifecycle, boundedness, recovery, admission, and effects.",
+          "initial_prompt": "Act as the condition-boundary adversary for dispatch 2026-08-06-rwo-composition-form-metamodel. Work read-only and local-first. Read the exact target DESIGN.md sections on forms, protocol, state, flow, invariants, and recovery; ontology condition-adjacent types and residue; the seed; RecoveryDecisionContract Candidate-2; and TransportNeutralWorkProtocolAdapterContract Candidate-2. Build an owner/evaluator/state table for every proposed condition family. Attack boolean-expression and generic-policy models with counterexamples: approval labels, terminal events, any/quorum, late arrivals, cancellation, sidecar failure, delivery redelivery, new Work Attempt, repeat round, stale attempts, uncertain effects, admission failure, and ARE/ACI evidence. Decide which objects are evaluable predicates, accepted-decision references, selectors, policies, limits, or prohibitions. Produce an admissible-family-by-form-and-phase matrix, deterministic failure vocabulary, concurrency rules, and positive/negative traces. Every claim must carry exact selector and proof status. Return a structured EXPLORER RETURN and JSON receipt payload. Do not edit files, browse, or assign authority to RWO."
+        },
+        {
+          "agent_name": "Riehl, Emily",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "angle": "Ontology, schema, graph, validation, query, migration, and evidence architecture for candidate-local composition forms and conditions.",
+          "initial_prompt": "Act as the ontology and validation architect for dispatch 2026-08-06-rwo-composition-form-metamodel. Work read-only and local-first. Read the target ontology source, ontology.json schema-bearing sections, node/relation generator and validator, graph examples and views, current-state evidence, seed, and current DESIGN form clauses. Propose the smallest candidate ontology delta needed to make forms, operands, conditions, policies, evaluators, compiler receipts, defects, and prohibitions addressable and queryable. Separate semantic source, generated nodes/relations/views, validation evidence, and promotion authority. Provide node types, relation types, cardinalities, cycle policies, allowed-domain/range, prohibited relations, integrity constraints, compatibility/migration rules, graph queries, fixtures, negative controls, and source-digest obligations. Reject ornamental nodes and any relation that turns structural readiness into domain meaning, recovery, reasoning approval, or authority. Every claim must carry exact selectors and proof status. Return a structured EXPLORER RETURN and JSON receipt payload. Do not edit files, browse, regenerate projections, or promote the ontology."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Mac Lane, Saunders",
+          "role": "synthesizer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 8000,
+          "initial_prompt": "Synthesize all three complete explorer returns for dispatch 2026-08-06-rwo-composition-form-metamodel. Work read-only. Preserve disagreements and evidence ceilings. Produce one exact candidate package: current/missing baseline; selected candidate and rejected alternatives; common FormDefinition/FormInstance and OperandBinding model; closed condition taxonomy distinguishing predicates, selectors, policies, limits, accepted-decision references, and prohibitions; evaluator/state/authority owner table; admissible-condition matrix by form and compile/runtime phase; exact schemas for all seven forms; deterministic desugaring and canonical compilation receipt; identity, nesting, versioning, extension, late-arrival and concurrency rules; error vocabulary; ontology node/relation/constraint/query delta; positive fixtures, discriminating negative controls, and scenario matrix; compatibility and migration; open owner gates; and a candidate verdict matrix. Every load-bearing row must bind to an explorer return and exact direct-source selector with observed or unverified status. Do not edit files or claim implementation, promotion, or authority. Return SYNTHESIS RETURN and a JSON receipt payload."
+        }
+      ]
+    },
+    {
+      "group_id": "reviewers",
+      "n": 3,
+      "anti_bias": "attack-vector: precedent/owner placement, finite non-vacuity, and definitional/authority non-collapse",
+      "predicted_disagreements": [
+        {
+          "pair": [0, 1],
+          "statement": "Agent 0 attacks duplicated owners and re-skinned existing types while agent 1 requires finite compiler and runtime witnesses; a bias toward reuse is exposed when existing types cannot reject a concrete invalid form, while a bias toward new machinery is exposed when an owned selector, policy, decision, or receipt already supplies the behavior."
+        },
+        {
+          "pair": [0, 2],
+          "statement": "Agent 0 locates existing owners while agent 2 attacks semantic and authority collapse; a bias toward colocating behavior in RWO is exposed when the existing owner is domain, recovery, ARE/ACI, journal, or effect infrastructure, while a bias toward taxonomy purity is exposed when a structural compiler concept is genuinely RWO-owned."
+        },
+        {
+          "pair": [1, 2],
+          "statement": "Agent 1 accepts only candidates with finite positive and negative witnesses while agent 2 accepts only non-collapsing definitions; a testable but semantically wrong universal evaluator is exposed by agent 2, while precise but operationally empty ontology distinctions are exposed by agent 1."
+        }
+      ],
+      "agents": [
+        {
+          "agent_name": "Tetlock, Philip",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "angle": "Precedent and existing-owner gate.",
+          "initial_prompt": "Review the synthesis for dispatch 2026-08-06-rwo-composition-form-metamodel under the precedent gate. Work read-only. For every candidate type, relation, evaluator, receipt, policy, defect, and validation owner, locate the current direct owner in DESIGN, ontology, recovery Candidate-2, adapter Candidate-2, journal/authority/ARE/ACI boundaries, or classify precedent-clean after an exact local search. A found owner is build-from-owned or already-deployed, never KILL. Reject duplicate EventSelector, InputMapping, ReleasePolicy, lifecycle, recovery, admission, authority, or evidence owners and ornamental aliases. Return candidate IDs, exact selectors, owner verdicts, proof status, and repairs as REVIEW RETURN plus JSON receipt payload. Do not edit files."
+        },
+        {
+          "agent_name": "Capucci, Matteo",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "angle": "Non-vacuity gate requiring finite compilation, routing, concurrency, and failure witnesses.",
+          "initial_prompt": "Review the synthesis for dispatch 2026-08-06-rwo-composition-form-metamodel under the non-vacuity gate. Work read-only. Require every retained candidate to produce a finite positive witness and discriminating negative: one nested all-forms compilation, deterministic recompile, sequence wrong event, fan-out empty/duplicate branch, fan-in quorum bounds and late arrival, gate zero/multiple match, sidecar implicit control, repeat zero/unbounded/exhausted and retry confusion, explicit graph cycle, forbidden domain/recovery/authority predicate, stale version, divergent digest, and missing owner/admission reference. Require expected defect codes and state-mutation boundaries. KILL candidates that cannot produce a finite witness or closed negative. Return candidate IDs and verdicts as REVIEW RETURN plus JSON receipt payload. Do not edit files."
+        },
+        {
+          "agent_name": "Meadows, Donella H.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "angle": "Definitional-soundness and system-boundary gate.",
+          "initial_prompt": "Review the synthesis for dispatch 2026-08-06-rwo-composition-form-metamodel under the definitional-soundness gate. Work read-only. Attack collapse among FormDefinition and FormInstance; form, graph, edge, selector, condition, policy, limit, decision receipt, and compiler receipt; compile-time and runtime evaluation; release and domain success; gate route and approval; sidecar lifecycle and cancellation authority; bounded repeat, redelivery, Work retry, rework round, replay, and effect reconciliation; structural acceptance, ARE evidence, ACI admission, and effect permission; source ontology, generated graph, validation, and promotion. Identify tautologies, re-skinned owners, and any extension mechanism that becomes a universal policy engine. Return exact candidate IDs, collapse tests, KILL/repair verdicts, and source selectors as REVIEW RETURN plus JSON receipt payload. Do not edit files."
+        }
+      ]
+    },
+    {
+      "group_id": "writer",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Shannon, Claude",
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 9000,
+          "initial_prompt": "Only after the strategist provides exact-binding evidence closure READY for dispatch 2026-08-06-rwo-composition-form-metamodel, write only projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/delegated-research/findings.md. Use the evidence-closed synthesis and all reviewer verdicts. Include a plain-language answer, current/missing model, selected and rejected candidates, exact common and per-form model, condition/evaluator owner matrix, compilation semantics and receipt, validation/error/fixture model, ontology delta, compatibility/migration, verdict matrix, open gates, and claim ceiling. Cite each load-bearing claim to explorer return and exact direct selector and preserve observed versus designed status. Do not write research.md, receipts, source design, ontology, Inventory, telemetry, Git, or any other file."
+        }
+      ]
+    },
+    {
+      "group_id": "auditor",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Brandenburg, Martin",
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "initial_prompt": "Audit only the evidence-closed delegated-research/findings.md for dispatch 2026-08-06-rwo-composition-form-metamodel against the confirmed goal. Work read-only. Check exact source bindings, current-versus-candidate labels, rejected alternatives, common/per-form schema completeness, condition and evaluator ownership, retry/recovery/authority non-collapse, deterministic desugaring, versioning, all finite positive and negative fixtures, ontology node/relation/constraint/query completeness, verdict matrix, open owner gates, and claim ceiling. Return APPROVE or one bounded evidence-supported writer revision request as AUDIT RETURN plus JSON receipt payload. Do not edit files or infer implementation, promotion, deployment, release, or production readiness."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "explorers", "to": "synthesizer", "type": "sequential"},
+    {"from": "synthesizer", "to": "reviewers", "type": "zig-zag", "loop_cap": 1},
+    {"from": "synthesizer", "to": "explorers", "type": "feedback", "loop_cap": 1},
+    {"from": "reviewers", "to": "writer", "type": "sequential"},
+    {"from": "writer", "to": "auditor", "type": "sequential"},
+    {"from": "auditor", "to": "writer", "type": "feedback", "loop_cap": 1}
+  ]
+}

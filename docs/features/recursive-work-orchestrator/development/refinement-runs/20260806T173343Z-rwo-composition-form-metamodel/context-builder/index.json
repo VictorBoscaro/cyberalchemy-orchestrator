@@ -1,0 +1,8 @@
+{
+  "schema_version": "context-builder.index.v1",
+  "markdown": "context-pack.md",
+  "json": "context-pack.json",
+  "obligation_coverage": "12/12",
+  "noise_ratio": 0.0,
+  "status": "pass"
+}

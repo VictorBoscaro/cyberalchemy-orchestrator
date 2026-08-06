@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-001",
+  "candidates": [
+    {
+      "optionId": "SEQ-NARY-MIN2",
+      "label": "N-ary sequence with at least two steps",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO composition-form schema owner decision",
+      "evidence": [
+        "DESIGN.md#5 exposes sequence(work...) as a variadic public composition API.",
+        "DESIGN.md#5.1 defines the primitive adjacent release sequence(A, B).",
+        "findings.md#seven-closed-payloads models steps as OrderedList and adjacent transitions by index while leaving only minimum cardinality open."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "SEQ-BINARY-EXACT2",
+      "label": "Exactly two steps per authored Sequence",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "RWO composition-form schema owner decision",
+      "evidence": [
+        "DESIGN.md#5.1 explicitly specifies sequence(A, B) as predecessor-to-successor release.",
+        "Longer chains can remain expressible through nesting or ExplicitComposition without changing the primitive edge model.",
+        "findings.md states that binary versus n-ary source semantics must be an explicit owner decision."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "SEQ-NARY-MIN1",
+      "label": "Allow a singleton Sequence as identity",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "No current owner source defines singleton Sequence identity semantics.",
+        "A singleton emits no predecessor-to-successor connection, conflicting with the current description of Sequence as a release relation."
+      ]
+    },
+    {
+      "optionId": "SEQ-EMPTY",
+      "label": "Allow an empty Sequence",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "No current owner source defines an empty composite or unit Work.",
+        "There is no source, target, release event, Work node, or output contract from which to compile the required graph."
+      ]
+    },
+    {
+      "optionId": "SEQ-DEFER",
+      "label": "Defer Sequence cardinality",
+      "optionKind": "defer",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "The completed Refine result explicitly permits deferral by keeping Sequence schemas and fixtures blocked on this owner decision."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "SEQ-STOP",
+      "label": "Stop the composition-form Decision Gate",
+      "optionKind": "stop",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Stopping preserves all current candidate and source bytes and authorizes no downstream work."
+      ],
+      "rejectionReasons": []
+    }
+  ]
+}

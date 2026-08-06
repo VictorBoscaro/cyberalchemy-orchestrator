@@ -1,0 +1,14 @@
+{
+  "authorization_status": "approved",
+  "blockers": [
+    "action 'spawn-0003': receipt declares blockers"
+  ],
+  "completed_wave_ids": [],
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "eligible_action_ids": [],
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "schema_version": "arcanum.native-dispatch-runner.state.v0.1",
+  "selected_wave_id": "explorers",
+  "state": "gate_block",
+  "validation_status": "pass"
+}

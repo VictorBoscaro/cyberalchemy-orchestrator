@@ -1,0 +1,21 @@
+{
+  "action_id": "spawn-0009",
+  "agent": {"identity": "Brandenburg, Martin", "native_agent_id": "/root/rwo_forms_auditor_0009"},
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "wave_id": "auditor",
+  "step_id": "s04e",
+  "role_id": "auditor",
+  "capability_ref": "research",
+  "capability_mode": "audit-findings",
+  "action_status": "pass",
+  "audit_verdict": "REVISION_REQUIRED",
+  "validation_result": "revision_required",
+  "artifact": "delegated-research/findings.md",
+  "artifact_sha256": "a4597a3f86573487041f5200b9d52de6ad0568dd9938b020706f98950474311c",
+  "revision_scope": "planned fixture corpus only",
+  "evidence": ["delegated-research/findings.md#planned-fixture-contract-explicitly-unexecuted", "delegated-research/review-non-vacuity.md#witness-repairs"],
+  "write_scope_compliance": "pass",
+  "claim_ceiling": "findings and validation-first planning only",
+  "mutation_statement": "Read-only audit."
+}

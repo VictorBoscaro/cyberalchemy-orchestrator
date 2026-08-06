@@ -1,0 +1,38 @@
+{
+  "admissibleOptionIds": [
+    "QUORUM-DECISION-WORK",
+    "QUORUM-DEFER",
+    "QUORUM-RWO-STRUCTURAL",
+    "QUORUM-STOP"
+  ],
+  "decisionGateRequired": true,
+  "decisionId": "DG-RWO-CFM-002",
+  "directOptionId": null,
+  "ownerGate": null,
+  "presentedOptionIds": [
+    "QUORUM-DECISION-WORK",
+    "QUORUM-DEFER",
+    "QUORUM-RWO-STRUCTURAL",
+    "QUORUM-STOP"
+  ],
+  "reasons": [],
+  "rejectedOptions": [
+    {
+      "optionId": "QUORUM-TRANSPORT-COUNT",
+      "reasons": [
+        "The adapter boundary explicitly forbids transport acknowledgement or delivery from becoming journal truth or recovery.",
+        "Transport delivery is not journal acceptance and redelivery must not create a second logical arrival."
+      ]
+    },
+    {
+      "optionId": "QUORUM-WEIGHTED-KERNEL",
+      "reasons": [
+        "No named semantic or authority owner gate permits the RWO kernel to evaluate those predicates.",
+        "Weight, qualification, approval, quality, or agreement introduces domain meaning rather than structural counting."
+      ]
+    }
+  ],
+  "requestDigest": "4c025b3f6a9454c14f3fc83130b078b8a3f738a2cd92aa06a5a39c6245460d71",
+  "routeOutcome": "gate",
+  "schemaVersion": "1.0.0"
+}

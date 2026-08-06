@@ -1,0 +1,15 @@
+{
+  "schema_version": "domainspec.dispatch-registration.v1",
+  "dispatch_id": "2026-08-06-rwo-composition-form-metamodel",
+  "status": "closed",
+  "schema_version_registered": "0.8.0",
+  "agents_declared": 9,
+  "groups_declared": 5,
+  "sheet_sha256": "e0919f7f1f2352d0a0cbce95b94b3ded73584e1ee3c15bf0d5315d334155106e",
+  "ledger_path": "telemetry/agents/subagents-dispatch.yaml",
+  "ledger_sha256_before": "7be1251531c6c69102ff5dcaef65796937f359ff6fcb166e01e793183a63620d",
+  "ledger_sha256_after": "d53c6015fd80bf02ec759c35f3035a0861d4099226b5b2b32a722b615e1753ca",
+  "append_count_for_this_dispatch": 2,
+  "close_row_status": "resolved",
+  "close_receipt": "delegated-research/CLOSE-RECEIPT.json"
+}

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-003",
+  "candidates": [
+    {
+      "optionId": "LATE-RETAIN-NONCONTRIBUTING",
+      "label": "Retain accepted late evidence without reopening FanIn",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "Journal acceptance owner plus RWO FanIn reducer owner",
+      "evidence": [
+        "DESIGN.md#6.2 requires append-only accepted history and replayable versioned reducers.",
+        "The refined findings distinguish retained late arrival from compiler defects and prohibit frozen-manifest rewrite.",
+        "The audited fixture contract permits evidence append but forbids changing the frozen quorum set, manifest, or join command."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "LATE-REJECT-AT-JOURNAL",
+      "label": "Reject otherwise valid arrivals after FanIn release",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "Journal acceptance owner plus RWO FanIn reducer owner",
+      "evidence": [
+        "A closed journal acceptance contract may classify post-release arrivals as ineligible and reject them before reducer mutation.",
+        "This preserves the frozen manifest and single-command invariant but sacrifices accepted-history visibility for otherwise valid late evidence."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "LATE-QUARANTINE",
+      "label": "Quarantine late arrivals outside accepted history",
+      "optionKind": "action",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": "Journal quarantine owner plus RWO FanIn reducer owner",
+      "evidence": [
+        "The journal boundary already distinguishes retained evidence from quarantine for evidence that must not affect the current reducer state.",
+        "A quarantine route preserves bytes for diagnosis while keeping accepted history and the frozen release projection unchanged."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "LATE-REOPEN-FANIN",
+      "label": "Reopen the released FanIn and revise its manifest",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "Reopening violates the refined frozen-manifest and exactly-one join-command invariants.",
+        "It makes replay depend on later arrival timing and risks duplicate or divergent downstream effects."
+      ]
+    },
+    {
+      "optionId": "LATE-SILENT-DROP",
+      "label": "Silently discard late arrival bytes",
+      "optionKind": "action",
+      "structuralStatus": "inadmissible",
+      "reversibility": "irreversible",
+      "hazardClass": "destructive",
+      "ownerGate": null,
+      "evidence": [],
+      "rejectionReasons": [
+        "Silent discard irreversibly destroys evidence and has no named destructive owner gate.",
+        "It prevents audit, deduplication, reconciliation, and reproducible replay of the observed arrival."
+      ]
+    },
+    {
+      "optionId": "LATE-DEFER",
+      "label": "Defer late-arrival disposition",
+      "optionKind": "defer",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Deferral preserves the candidate but keeps FanIn runtime schedules, reducer contracts, and late-arrival fixtures blocked."
+      ],
+      "rejectionReasons": []
+    },
+    {
+      "optionId": "LATE-STOP",
+      "label": "Stop the composition-form Decision Gate",
+      "optionKind": "stop",
+      "structuralStatus": "admissible",
+      "reversibility": "reversible",
+      "hazardClass": "reversible",
+      "ownerGate": null,
+      "evidence": [
+        "Stopping preserves current source and candidate bytes and authorizes no downstream mutation."
+      ],
+      "rejectionReasons": []
+    }
+  ]
+}

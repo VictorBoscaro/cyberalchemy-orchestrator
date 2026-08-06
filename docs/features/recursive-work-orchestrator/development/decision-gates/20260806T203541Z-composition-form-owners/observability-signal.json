@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "decision-gate.observability.v1",
+  "target": "RWO CompositionFormSourceContract candidate-2",
+  "decisionCount": 6,
+  "blockerCount": 1,
+  "unresolvedDecisionBlockerCount": 0,
+  "protectedOwnerBlockerCount": 1,
+  "result": "BLOCK",
+  "outputPath": "DECISION-GATE-RESULT.md",
+  "userOverride": null,
+  "reflectionTrigger": "Review after the ontology identity and promotion owner returns a typed disposition."
+}

@@ -1,0 +1,21 @@
+{
+  "admitted_receipt_action_ids": [
+    "spawn-0004"
+  ],
+  "blockers": [],
+  "decision": "gate_pass",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "gate_id": "g-synthesis",
+  "next_action_ids": [
+    "spawn-0002",
+    "spawn-0003",
+    "spawn-0004"
+  ],
+  "next_wave_id": "reviewers",
+  "required_action_ids": [
+    "spawn-0004"
+  ],
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "schema_version": "arcanum.native-dispatch-runner.gate-decision.v0.1",
+  "wave_id": "synthesis"
+}

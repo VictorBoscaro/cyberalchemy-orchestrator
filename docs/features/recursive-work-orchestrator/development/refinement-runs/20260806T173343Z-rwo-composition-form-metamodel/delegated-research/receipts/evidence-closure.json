@@ -1,0 +1,45 @@
+{
+  "schema_version": "domainspec.research.evidence-closure.v1",
+  "dispatch_id": "2026-08-06-rwo-composition-form-metamodel",
+  "refine_dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "status": "ready",
+  "closure_scope": "findings-and-validation-first-planning-only",
+  "exact_bindings": [
+    {"path": "delegated-research/synthesis-revised.md", "sha256": "bc1f4b75e7f20b2f23d55ecb65f2e05de2671fead70e8d70698e5cd47cd058e4"},
+    {"path": "delegated-research/review-precedent.md", "sha256": "46505e6dc4def1d7a21209b0d26166505da96925aa27d5dc95e2d4b575effaa8"},
+    {"path": "delegated-research/review-non-vacuity.md", "sha256": "1a62c5da47c41aeaaccfc1904dbb4502c4016a19919edfc10433a327d0c3c1d0"},
+    {"path": "delegated-research/review-definitional.md", "sha256": "ec76c8610feebcce82ebadb2497452730df88eac0e88898de2299fffb7d78e73"},
+    {"path": "delegated-research/receipts/synthesis-feedback-1.json", "sha256": "1d59be3117e152236ef6d6c4d8b60fd5262f7e05faee7c8e7c2f05b01b5eb54c"},
+    {"path": "delegated-research/receipts/skeptic-precedent.json", "sha256": "8e65971aad34402b48b9a24a09cb7a5c89a6f0e0a1e4105e191c89673ab20dae"},
+    {"path": "delegated-research/receipts/skeptic-non-vacuity.json", "sha256": "fd03518d92320fe0f916cfabbf99493c1e11d4da116dfe24908079a7b2767394"},
+    {"path": "delegated-research/receipts/skeptic-definitional.json", "sha256": "40b2d3d2e8e2a03d9d1e98f26877c3008eb9a703d41a8c3451226bbe01b62140"}
+  ],
+  "feedback_loop": {"used": 1, "cap": 1, "exhausted": true},
+  "repairs_closed": [
+    "generic condition and evaluator layer killed",
+    "source, graph, and runtime identities separated",
+    "per-form operands closed without universal target union",
+    "compilation success and rejection disjoint",
+    "ExplicitComposition retained as source syntax",
+    "defects split by owner and phase",
+    "typed external references retained as non-authorizing references only",
+    "sidecar and retry-repeat-replay-effect non-collapse rules frozen",
+    "scenario list reclassified as planned fixtures"
+  ],
+  "blocking_gates_preserved": [
+    "Sequence cardinality",
+    "structural quorum ownership",
+    "late-arrival owner and behavior",
+    "ontology identity and migration",
+    "journal truth and reducer migration",
+    "typed authority and admission contracts",
+    "ARE ACI and artifact-admission owners",
+    "exact-effect owner and conformance",
+    "serialized and executed fixture corpus",
+    "compiler and runtime conformance"
+  ],
+  "writer_instruction": "Write the evidence-closed repaired candidate and its validation-first plan posture. Preserve every blocking gate and do not present planned fixtures as witnesses.",
+  "forbidden_claims": ["adoption", "ontology migration", "implementation", "compiler conformance", "runtime conformance", "authority", "promotion", "deployment", "release", "production"],
+  "authority_effect": "none"
+}

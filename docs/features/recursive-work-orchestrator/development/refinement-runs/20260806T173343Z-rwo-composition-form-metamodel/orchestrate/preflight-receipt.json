@@ -1,0 +1,18 @@
+{
+  "command": "orchestrate execute projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260806T173343Z-rwo-composition-form-metamodel/REFINE-DISPATCH.json",
+  "dispatch_id": "refine-20260806T173343Z-rwo-composition-form-metamodel",
+  "run_id": "20260806T173343Z-rwo-composition-form-metamodel",
+  "status": "pass",
+  "state": "wave_ready",
+  "validation_status": "pass",
+  "authorization_status": "approved",
+  "host_id": "codex",
+  "required_native_operations": ["collaboration.spawn_agent", "collaboration.wait_agent", "collaboration.interrupt_agent", "collaboration.list_agents"],
+  "available_native_operations": ["collaboration.spawn_agent", "collaboration.wait_agent", "collaboration.interrupt_agent", "collaboration.list_agents", "collaboration.send_message"],
+  "missing_native_operations": [],
+  "action_count": 3,
+  "run_plan_emitted": true,
+  "run_plan": "orchestrate/run-plan.json",
+  "spawn_attempt_count": 0,
+  "blockers": []
+}

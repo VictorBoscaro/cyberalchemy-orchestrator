@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisionId": "DG-RWO-CFM-002",
+  "status": "accepted",
+  "selectedOptionId": "QUORUM-RWO-STRUCTURAL",
+  "selectedAt": "2026-08-06T20:52:39Z",
+  "decisionSource": "repository owner selected option 1 in the active chat Decision Gate",
+  "admissibilityReceipt": "receipts/DG-RWO-CFM-002-option-admissibility.json",
+  "requestDigest": "4c025b3f6a9454c14f3fc83130b078b8a3f738a2cd92aa06a5a39c6245460d71",
+  "decisionArtifact": "../../../../../../decisions/rwo-structural-quorum-ownership.md",
+  "authorityEffect": "structural-quorum-choice-only",
+  "remainingDecisionBlockers": 4,
+  "consequentialMutationAuthorized": false
+}
