@@ -1,0 +1,69 @@
+{
+  "dispatch_id": "2026-08-04-swi-prompt-context-transfer",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Determine the minimum boundaries for prompt, request, response-contract, context-projection, effective-configuration, confirmation-binding, and runtime-evidence identities without selecting a service or schema.",
+  "context": "This dispatch re-executes and adapts source research for the clean-slate Subagent Work Infrastructure repository. The target initial definitions are authoritative only as an informational baseline; source mechanisms remain precedents. The repository owner explicitly authorized autonomous orchestration without per-sheet reconfirmation, which is recorded as a deliberate deviation from the standard exact-sheet confirmation step rather than misreported as standard P2 confirmation.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "../subagent-work-infrastructure/research/prompt-and-context-control-plane",
+  "groups": [
+    {
+      "group_id": "prompt_explorers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Simon, Herbert",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "initial_prompt": "READ-ONLY research seat for the clean-slate Subagent Work Infrastructure repository, except for your single declared output file. Read C:/Users/victo/subagent-work-infrastructure/AGENTS.md first and obey it. Do not launch agents. Write your complete report only to C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/returns/explorer-target.md using apply_patch; edit no other file. Return a concise completion note to the parent.\n\nTOPIC: Prompt and Context Control Plane\nQUESTION: Determine the minimum boundaries for prompt, request, response-contract, context-projection, effective-configuration, confirmation-binding, and runtime-evidence identities without selecting a service or schema.\nYOUR INDEPENDENT LENS: target product and authority alignment: derive only what the target plan and definitions require, and test whether the source question reduces a real target decision\n\nCORPUS:\n- C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/prompt-control-plane-foundations/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/agent-event-prompted-requests/research-initial-definitions.md\n- C:/Users/victo/subagent-work-infrastructure/AGENTS.md\n- C:/Users/victo/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/plans/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/definitions/subagent-work-infrastructure/DEFINITIONS.md\n\nTreat cyberalchemy-orchestrator material as precedent evidence at its declared authority, never as inherited target architecture. Separate target-confirmed constraints, source-backed precedents, inferences, and unresolved choices. Identify candidate conclusions, exact evidence paths, decisions reduced, source-specific assumptions to reject, and concrete failure cases. Do not read or anticipate another seat's return. End the report with a short recommendation and a list of claims that remain unsupported."
+        },
+        {
+          "agent_name": "Beer, Stafford",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "initial_prompt": "READ-ONLY research seat for the clean-slate Subagent Work Infrastructure repository, except for your single declared output file. Read C:/Users/victo/subagent-work-infrastructure/AGENTS.md first and obey it. Do not launch agents. Write your complete report only to C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/returns/explorer-assurance.md using apply_patch; edit no other file. Return a concise completion note to the parent.\n\nTOPIC: Prompt and Context Control Plane\nQUESTION: Determine the minimum boundaries for prompt, request, response-contract, context-projection, effective-configuration, confirmation-binding, and runtime-evidence identities without selecting a service or schema.\nYOUR INDEPENDENT LENS: systems assurance and failure boundaries: trace authority, lifecycle, evidence, recovery, and hidden coupling; quarantine source-specific mechanisms\n\nCORPUS:\n- C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/prompt-control-plane-foundations/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/agent-event-prompted-requests/research-initial-definitions.md\n- C:/Users/victo/subagent-work-infrastructure/AGENTS.md\n- C:/Users/victo/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/plans/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/definitions/subagent-work-infrastructure/DEFINITIONS.md\n\nTreat cyberalchemy-orchestrator material as precedent evidence at its declared authority, never as inherited target architecture. Separate target-confirmed constraints, source-backed precedents, inferences, and unresolved choices. Identify candidate conclusions, exact evidence paths, decisions reduced, source-specific assumptions to reject, and concrete failure cases. Do not read or anticipate another seat's return. End the report with a short recommendation and a list of claims that remain unsupported."
+        }
+      ]
+    },
+    {
+      "group_id": "prompt_reviewers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Popper, Karl",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "initial_prompt": "INDEPENDENT read-only skeptic for a research transfer into Subagent Work Infrastructure, except for your single declared output file. Read C:/Users/victo/subagent-work-infrastructure/AGENTS.md first. Do not launch agents. Write your complete report only to C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/returns/review-precedent.md using apply_patch; edit no other file. Return a concise completion note to the parent. Do not read any explorer or reviewer return.\n\nTOPIC: Prompt and Context Control Plane\nQUESTION: Determine the minimum boundaries for prompt, request, response-contract, context-projection, effective-configuration, confirmation-binding, and runtime-evidence identities without selecting a service or schema.\nGATE: precedent\nOwn only the precedent gate. Identify the exact owner and authority standing for every material candidate. Classify each as build-from-owned, already-deployed, or precedent-clean. Finding an owner is positive evidence, not a kill.\n\nCORPUS:\n- C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/prompt-control-plane-foundations/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/agent-event-prompted-requests/research-initial-definitions.md\n- C:/Users/victo/subagent-work-infrastructure/AGENTS.md\n- C:/Users/victo/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/plans/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/definitions/subagent-work-infrastructure/DEFINITIONS.md\n\nApply claim <= proof. Cite exact local paths and line numbers where possible. Keep source-repository mechanisms at precedent standing. Return in the file: candidates checked, evidence, gate result, required demotions, typed negatives if any, and a final PASS/FLAG/BLOCK for this gate."
+        },
+        {
+          "agent_name": "Deming, W. Edwards",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "initial_prompt": "INDEPENDENT read-only skeptic for a research transfer into Subagent Work Infrastructure, except for your single declared output file. Read C:/Users/victo/subagent-work-infrastructure/AGENTS.md first. Do not launch agents. Write your complete report only to C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/returns/review-non-vacuity.md using apply_patch; edit no other file. Return a concise completion note to the parent. Do not read any explorer or reviewer return.\n\nTOPIC: Prompt and Context Control Plane\nQUESTION: Determine the minimum boundaries for prompt, request, response-contract, context-projection, effective-configuration, confirmation-binding, and runtime-evidence identities without selecting a service or schema.\nGATE: non-vacuity\nOwn only the non-vacuity gate. Construct the smallest concrete witness and the smallest collapse case for each material candidate. A candidate fails only when it has no discriminating consequence or no possible witness.\n\nCORPUS:\n- C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/prompt-control-plane-foundations/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/agent-event-prompted-requests/research-initial-definitions.md\n- C:/Users/victo/subagent-work-infrastructure/AGENTS.md\n- C:/Users/victo/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/plans/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/definitions/subagent-work-infrastructure/DEFINITIONS.md\n\nApply claim <= proof. Cite exact local paths and line numbers where possible. Keep source-repository mechanisms at precedent standing. Return in the file: candidates checked, evidence, gate result, required demotions, typed negatives if any, and a final PASS/FLAG/BLOCK for this gate."
+        },
+        {
+          "agent_name": "Peirce, Charles Sanders",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "initial_prompt": "INDEPENDENT read-only skeptic for a research transfer into Subagent Work Infrastructure, except for your single declared output file. Read C:/Users/victo/subagent-work-infrastructure/AGENTS.md first. Do not launch agents. Write your complete report only to C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/returns/review-definitional-soundness.md using apply_patch; edit no other file. Return a concise completion note to the parent. Do not read any explorer or reviewer return.\n\nTOPIC: Prompt and Context Control Plane\nQUESTION: Determine the minimum boundaries for prompt, request, response-contract, context-projection, effective-configuration, confirmation-binding, and runtime-evidence identities without selecting a service or schema.\nGATE: definitional-soundness\nOwn only the definitional-soundness gate. Attack conflations, renamed existing concepts, overlapping identities, and boundaries that cannot stay distinct. A candidate fails only when it collapses tautologically into an already named concept.\n\nCORPUS:\n- C:/Users/victo/subagent-work-infrastructure/research/prompt-and-context-control-plane/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/prompt-control-plane-foundations/research-initial-definitions.md\n- C:/Users/victo/cyberalchemy-orchestrator/research/agent-event-prompted-requests/research-initial-definitions.md\n- C:/Users/victo/subagent-work-infrastructure/AGENTS.md\n- C:/Users/victo/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/plans/subagent-work-infrastructure/README.md\n- C:/Users/victo/subagent-work-infrastructure/definitions/subagent-work-infrastructure/DEFINITIONS.md\n\nApply claim <= proof. Cite exact local paths and line numbers where possible. Keep source-repository mechanisms at precedent standing. Return in the file: candidates checked, evidence, gate result, required demotions, typed negatives if any, and a final PASS/FLAG/BLOCK for this gate."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "prompt_explorers",
+      "to": "prompt_reviewers",
+      "type": "sequential"
+    }
+  ]
+}
