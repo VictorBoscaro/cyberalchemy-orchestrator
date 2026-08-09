@@ -19,7 +19,7 @@ indexes:
     BLK-TDE-COMMIT-DISCIPLINE-001: typed_items[3]
     BLK-TDE-GATE-HONESTY-001: typed_items[4]
     GAP-TDE-EMITTESTS-BODIES-001: gaps[0]
-    GAP-TDE-POSTCONDITION-IDS-001: gaps[1]
+    GAP-TDE-POSTCONDITION-IDS-001: gaps[2]
     ART-TDE-PACKAGE: artifacts[0]
     ART-TDE-SPEC: artifacts[1]
     ART-TDE-ARCH: artifacts[2]
@@ -32,6 +32,9 @@ indexes:
     ART-TDE-DSFEATURE: artifacts[9]
     ART-TDE-SMTFOL-TOWER: artifacts[10]
     CTX-TDE-SMTFOL: contexts[1]
+    DESC-TDE-20260808: descriptions[1]
+    ENA-TDE-VALIDATION-20260808: typed_items[5]
+    GAP-TDE-PROGRESSION-PROSE-001: gaps[1]
   open_decisions: []
   blocking_decisions: []
   active_blockers: []
@@ -41,17 +44,10 @@ indexes:
   next_moves:
     - context_id: CTX-TDE-ROOT
       next_move: >
-        Run task-session P1 (honesty foundation): add the negative-control gate
-        (INV-3) and split WF/QT/MT bucketing to per-row identity (INV-1) so the
-        round-trip is provably falsifiable BEFORE generalizing bridging
-        (BLK-TDE-GATE-HONESTY-001). Then P2 general bridging + NEW δ rules for
-        error/consumer-event obligations (BLK-TDE-AUTH-CONVENTION-001). See
-        development/refinement-runs/2026-06-21-c2-engine-to-evidence/RESULT.md.
-        UPDATE 2026-06-21: the engine is now also DEFINED+DESIGNED as a DomainSpec
-        feature (docs/features/test-derivation-engine/: SPEC + operations + interfaces,
-        operations+interfaces scope) so it is SELF-DERIVABLE — once P1+ build out, run
-        the engine on its own feature docs as a fixpoint determinism proof
-        (ART-TDE-DSFEATURE, DEC-TDE-DOMAINSPEC-FEATURE-001).
+        Run bounded corpus validation for the five committed id maps, record which
+        feature targets have executable source documents in this checkout, and
+        replace or retire the stale external evidence references before making a
+        corpus-generalization or self-derivation claim.
   artifacts_by_path:
     tools/test-derivation-engine/: ART-TDE-PACKAGE
     development/deterministic-test-derivation-engine/SPEC.md: ART-TDE-SPEC
@@ -59,8 +55,11 @@ indexes:
     development/deterministic-test-derivation-engine/GLOSSARY.md: ART-TDE-GLOSSARY
     development/deterministic-test-derivation-engine/WORK-PACK.md: ART-TDE-WORKPACK
     development/deterministic-test-derivation-engine/L0-ROUNDTRIP-REPORT.md: ART-TDE-L0-REPORT
+    development/refinement-runs/2026-06-12-test-derivation-c2-cluster/RESULT.md: ART-TDE-REFINE-RESULT
     tools/test-derivation-engine/.craft/ledger.yml: ART-TDE-CRAFT-LEDGER
     tools/test-derivation-engine/CRAFT.md: ART-TDE-CRAFT-VIEW
+    ../../docs/features/test-derivation-engine/: ART-TDE-DSFEATURE
+    "[repo-root] research/smt-fol-test-derivation/": ART-TDE-SMTFOL-TOWER
 
 contexts:
   - context_id: CTX-TDE-ROOT
@@ -72,9 +71,9 @@ contexts:
       graph G -> pure delta -> content-addressed obligation_key -> emit), making
       DomainSpec paper claim C2 (determinism) true by construction and yielding a
       shippable product that replaces the LLM-backed domainspec-generate-tests.
-    stage: implement
+    stage: validate
     gate: flag
-    next_move: >
+    historical_next_move_20260621: >
       ENGINE CORE FINISHED 2026-06-21 — P1 (honest injective+falsifiable gate, INV-1/INV-3),
       P2 (doc-derived dialect bridging, no feature-name branches + new δ rules for
       error/consumer-event obligations), P3 (corpus 6/7 PASS@scope, 0 genuine misses; tsc 0,
@@ -93,6 +92,11 @@ contexts:
       single biggest score sink. KEY NEXT LEVER (P4): give the engine a value-asserting makeup
       oracle. Results: docs/research/results/E3-results.md; data: docs/research/data/E3-run-2026-06-21.jsonl.
       E2 still human-blocked. Commit gated.
+    next_move: >
+      Run bounded corpus validation for the five committed id maps, record which
+      feature targets have executable source documents in this checkout, and
+      replace or retire the stale external evidence references before making a
+      corpus-generalization or self-derivation claim.
     owned_artifacts:
       - ART-TDE-PACKAGE
       - ART-TDE-SPEC
@@ -107,7 +111,10 @@ contexts:
       Root context created by /craft start. Scope = tools/test-derivation-engine/.craft.
       L0 falsification gate PASSES for financial-settlement (round-trip missing=0,
       byte-stable, 33/33 tests, tsc 0). L1 partial: emit_tests + linter done, 2nd
-      feature parses but auth round-trip FAILs on oracle-convention drift.
+      feature parses but auth round-trip FAILs on oracle-convention drift. Reconciled
+      2026-08-08 against this checkout: package committed; nested target resolution and
+      AEO/ACI/APT identity-map work landed in July; typecheck and 132/132 tests pass.
+      Historical external research/design paths listed below are absent here and are stale.
   - context_id: CTX-TDE-SMTFOL
     parent_id: CTX-TDE-ROOT
     title: SMT/FOL research tower (engine formal foundation)
@@ -139,8 +146,23 @@ descriptions:
       legitimate completeness extras, byte-identical across runs. Auth-access-control
       parses (108 obligations, 0 violations) but its round-trip FAILs (30 missing /
       25 extra) due to a different oracle dialect, not delta defects.
-    status: active
+    status: superseded
     evidence: ART-TDE-L0-REPORT
+
+  - description_id: DESC-TDE-20260808
+    context_id: CTX-TDE-ROOT
+    description: >
+      Status reconciled 2026-08-08. The committed TypeScript engine supports
+      deterministic parsing, derivation, stable human-id allocation, residue
+      receipts, TypeScript/Python test emission, nested feature-directory target
+      resolution, and committed id maps for financial-settlement,
+      test-derivation-engine, agent-execution-orchestrator,
+      agents-communication-infra, and agent-provenance-telemetry. Local validation
+      passes typecheck and all 132 tests. This proves package integrity at the tested
+      scope; it does not re-establish the historical E2/E3, corpus, SMT/FOL, or
+      self-derivation claims whose referenced artifacts are absent from this checkout.
+    status: active
+    evidence: ART-TDE-PACKAGE
 
 definitions:
   - definition_id: DEF-TDE-ENGINE-001
@@ -305,6 +327,29 @@ typed_items:
       dropping workflow steps 2–5 would still PASS. Honesty before generalization —
       this lands first (P1) or every later PASS is suspect.
 
+  - item_id: ENA-TDE-VALIDATION-20260808
+    kind: enabler
+    base_type: validation_enabler
+    context_type: tde.local_package_validation
+    primary_lane: validator
+    secondary_lanes:
+      - tech
+    source_id: ART-TDE-PACKAGE
+    target_id: CTX-TDE-ROOT
+    status: active
+    refinement_status: refined
+    default_role: validation_reviewer
+    delegation_route: task-session
+    closure_condition: >
+      Keep the committed package type-correct and its deterministic test suite green
+      while corpus evidence and stale external references are reconciled.
+    evidence: ART-TDE-PACKAGE
+    decision_ref: none
+    reason: >
+      On 2026-08-08 `npm.cmd run typecheck` passed and Vitest passed 132/132 tests
+      across 13 files, including negative control, nested target resolution, stable
+      identity, TypeScript/Python emission, and path containment.
+
 gaps:
   - gap_id: GAP-TDE-EMITTESTS-BODIES-001
     context_id: CTX-TDE-ROOT
@@ -449,43 +494,46 @@ artifacts:
     path: tools/test-derivation-engine/
     artifact_type: code-package
     status: active
-    notes: TypeScript engine (grammar/ir/rules/keys/emit/roundtrip + cli + tests). tsc 0, 33/33 tests. Uncommitted.
+    notes: >
+      Committed TypeScript engine (grammar/ir/rules/keys/emit/roundtrip + CLI + tests).
+      Revalidated 2026-08-08: typecheck passes and Vitest passes 132/132 tests in
+      13 files. July commits added nested feature targets and AEO/ACI/APT id-map work.
   - artifact_id: ART-TDE-SPEC
     owner_context_id: CTX-TDE-ROOT
     path: development/deterministic-test-derivation-engine/SPEC.md
     artifact_type: module-spec
-    status: active
-    notes: Define-mode spec (mission, capability map, concept model). Uncommitted.
+    status: stale
+    notes: Historical define-mode spec; path is absent from this checkout as of 2026-08-08.
   - artifact_id: ART-TDE-ARCH
     owner_context_id: CTX-TDE-ROOT
     path: development/deterministic-test-derivation-engine/ARCHITECTURE.md
     artifact_type: architecture
-    status: active
-    notes: Design-mode six-view architecture + decision log (D-001..D-004). Uncommitted.
+    status: stale
+    notes: Historical architecture; path is absent from this checkout as of 2026-08-08.
   - artifact_id: ART-TDE-GLOSSARY
     owner_context_id: CTX-TDE-ROOT
     path: development/deterministic-test-derivation-engine/GLOSSARY.md
     artifact_type: glossary
-    status: active
-    notes: 13-term glossary; determinism-vs-completeness distinction. Uncommitted.
+    status: stale
+    notes: Historical glossary; path is absent from this checkout as of 2026-08-08.
   - artifact_id: ART-TDE-WORKPACK
     owner_context_id: CTX-TDE-ROOT
     path: development/deterministic-test-derivation-engine/WORK-PACK.md
     artifact_type: work-pack
-    status: active
-    notes: Engine work-pack; SWU-ENG-000..007. L0 complete, L1 partial. Uncommitted.
+    status: stale
+    notes: Historical work-pack; path is absent from this checkout as of 2026-08-08.
   - artifact_id: ART-TDE-L0-REPORT
     owner_context_id: CTX-TDE-ROOT
     path: development/deterministic-test-derivation-engine/L0-ROUNDTRIP-REPORT.md
     artifact_type: validation-report
-    status: pass
-    notes: Round-trip evidence — financial PASS (missing=0), auth FAIL (convention drift). Uncommitted.
+    status: stale
+    notes: Historical round-trip report; path is absent from this checkout as of 2026-08-08.
   - artifact_id: ART-TDE-REFINE-RESULT
     owner_context_id: CTX-TDE-ROOT
     path: development/refinement-runs/2026-06-12-test-derivation-c2-cluster/RESULT.md
     artifact_type: refine-result
-    status: pass
-    notes: Refine result that produced the engine pivot + two-track plan. Committed (89ae887).
+    status: stale
+    notes: Historical refine result; path is absent from this checkout as of 2026-08-08.
   - artifact_id: ART-TDE-CRAFT-LEDGER
     owner_context_id: CTX-TDE-ROOT
     path: tools/test-derivation-engine/.craft/ledger.yml
@@ -502,11 +550,11 @@ artifacts:
     owner_context_id: CTX-TDE-ROOT
     path: ../../docs/features/test-derivation-engine/
     artifact_type: domainspec-feature
-    status: active
-    notes: The engine defined+designed as a DomainSpec feature (SPEC + operations + interfaces) in self-derivable canonical format; enables the self-derivation fixpoint. Uncommitted.
+    status: stale
+    notes: Historical self-derivation feature path; absent from this checkout as of 2026-08-08.
   - artifact_id: ART-TDE-SMTFOL-TOWER
     owner_context_id: CTX-TDE-SMTFOL
     path: "[repo-root] research/smt-fol-test-derivation/"
     artifact_type: research-tower
-    status: active
-    notes: SMT/FOL research tower (README, TOWER, sources, DEFINITIONS, DISTILLED-KNOWLEDGE, residue, _dispatch). Decidability map grounds the needs_formal boundary; opt-in SMT mode is a deferred bridge decision. Bounded research dispatch registered in telemetry. Uncommitted (umbrella-root repo).
+    status: stale
+    notes: Historical SMT/FOL tower; repo-root path is absent from this checkout as of 2026-08-08, so recomposition remains unverified.
