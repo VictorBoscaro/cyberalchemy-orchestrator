@@ -1,0 +1,54 @@
+{
+  "dispatch_id": "2026-08-09-resonantos-discord-initial-definitions-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Red-team the ResonantOS Discord community-intelligence initial definitions and return only verified change requests that materially improve its fidelity, boundary discipline, or operability.",
+  "context": "The user approved research/resonantos-discord-community-intelligence/research-initial-definitions.md as the informational precondition for a later governed research dispatch. The review target is frozen at SHA-256 38c6911b3f9ed976acbe38a14e263a714b803371acf297415e73ffcbc5d242d8. Attackers must remain read-only and findings must quote the target artifact; the governing reference is .agents/skills/research-initial-definitions/SKILL.md. Review output is inline and the human user is the final approver because the parent authored the target.",
+  "max_loops": 1,
+  "final_approver": "user",
+  "anti_bias_mode": "disabled",
+  "output_mode": "inline",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "agent_name": "Deming, W. Edwards",
+          "initial_prompt": "Attack the complete target research/resonantos-discord-community-intelligence/research-initial-definitions.md through the single fidelity/governance lens. Read the whole target and the governing .agents/skills/research-initial-definitions/SKILL.md. Hunt specifically for unconfirmed assumptions presented as confirmed constraints, research design leaking into informational definitions, evidence claims stronger than their basis, missing required sections, or wording that silently extends the user's stated objective. Do not edit any file. For each candidate finding provide the exact target quotation, severity under the review skill, why it violates the governing boundary, and a one-line proposed fix. If no finding survives your attacks, state each attack attempted and why the artifact survived."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "agent_name": "Engelbart, Douglas",
+          "initial_prompt": "Attack the complete target research/resonantos-discord-community-intelligence/research-initial-definitions.md through the single operability lens. Read the whole target and the governing .agents/skills/research-initial-definitions/SKILL.md. Hunt for ambiguity, scope instability, missing informational context, conflated terms, or gaps that would force a later research designer to invent product boundaries. Do not design the research, propose methods, or edit files. For each candidate finding provide the exact target quotation, severity under the review skill, the concrete downstream failure it could cause, and a one-line proposed fix. If no finding survives your attacks, state each attack attempted and why the artifact survived."
+        }
+      ]
+    },
+    {
+      "group_id": "verifier",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Act only as verifier for candidate findings received from the upstream attackers about research/resonantos-discord-community-intelligence/research-initial-definitions.md, frozen at SHA-256 38c6911b3f9ed976acbe38a14e263a714b803371acf297415e73ffcbc5d242d8. Read the whole target and .agents/skills/research-initial-definitions/SKILL.md. Refute every candidate not supported by the literal artifact or governing instruction; refuted findings must be dropped, not softened. For each surviving finding confirm the exact target quotation, calibrated severity, demonstrated failure, and minimal proposed fix. Check that both fidelity/governance and operability lenses attacked the entire target. Do not edit or persist files."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "attackers",
+      "to": "verifier",
+      "type": "sequential"
+    }
+  ]
+}
