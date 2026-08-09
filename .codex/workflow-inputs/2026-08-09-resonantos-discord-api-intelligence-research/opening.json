@@ -1,0 +1,88 @@
+{
+  "dispatch_id": "2026-08-09-resonantos-discord-api-intelligence-research",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Determine which useful ResonantOS community information can be responsibly obtained or derived through Discord's official interfaces, and recommend the smallest evidence-backed metric set for a community-intelligence hub v0.",
+  "context": "The informational precondition is research/resonantos-discord-community-intelligence/research-initial-definitions.md. The product concerns the ResonantOS community itself: basic growth, participation, integration, responsiveness, topics, and initiative signals. Every load-bearing Discord capability claim must cite a current official Discord source, and the result must distinguish direct data, derived metrics, recoverable history, and observations that require collection after installation without assuming that provisional distinction is exhaustive.",
+  "max_loops": 2,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/resonantos-discord-community-intelligence/discord-api-capability-map",
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "agent_name": "Hewitt, Carl",
+          "initial_prompt": "Research the Discord technical capability surface for the ResonantOS community-intelligence question. Read research/resonantos-discord-community-intelligence/research-initial-definitions.md completely. Use current primary official Discord sources only: developer documentation, API/Gateway references, official policy or support pages when directly authoritative. Map REST resources, Gateway events, guild/member/channel/message/thread/forum/scheduled-event/presence capabilities, OAuth2/bot permissions, privileged intents, pagination, message-history access, and rate limits. Distinguish data fetchable as a current snapshot, history that can be retrieved after installation, and events that must be observed prospectively. Do not claim that an endpoint exposes an aggregate when it only exposes primitives. Return a cited capability inventory with exact URLs, limitations, and explicit unknowns; do not write files."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "agent_name": "Deming, W. Edwards",
+          "initial_prompt": "Research the measurement perspective for a ResonantOS Discord community-intelligence hub. Read research/resonantos-discord-community-intelligence/research-initial-definitions.md completely. Starting from the product questions in that artifact, define candidate metric families for growth, participation, integration/onboarding, responsiveness, topics, and initiatives. For each, identify the smallest Discord primitives needed; whether the metric is directly available or derived; whether it can be reconstructed retroactively or needs prospective storage; denominator and bot/system-account pitfalls; and the concrete product decision it could support. Verify every Discord availability claim against current official Discord sources only and cite exact URLs. Clearly label product-value judgments and derived-metric designs as inferences. Return a metric-to-evidence matrix and a conservative v0 shortlist; do not write files."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "agent_name": "Engelbart, Douglas",
+          "initial_prompt": "Research the operational, privacy, and proportionality boundary for using Discord community data in a ResonantOS intelligence hub. Read research/resonantos-discord-community-intelligence/research-initial-definitions.md completely. Use current official Discord developer policies, terms, documentation, and other first-party Discord sources only for factual claims. Identify permissions/intents, user transparency, data minimization, retention/deletion, content-analysis, presence/member-data, restricted-space, bot/system-account, and access-boundary concerns that materially affect candidate metrics. Separate explicit Discord requirements from prudent product recommendations and from unresolved legal questions; do not give legal advice. Recommend which analyses belong in v0, should be deferred, or should be excluded absent stronger governance. Return citations and collapse conditions; do not write files."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 7500,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Synthesize all upstream explorer returns for the research question in research/resonantos-discord-community-intelligence/research-initial-definitions.md. Write exactly two research artifacts inside research/resonantos-discord-community-intelligence/discord-api-capability-map/: research.md containing the collected explorer returns without silently strengthening them, and findings.md containing the cited synthesis. findings.md must include: a one-line answer to the goal; source and scope notes; a capability matrix; a candidate metric matrix with product question, Discord primitives, direct/derived status, temporal availability, permissions/intents, limitations, privacy/proportionality, confidence, and v0 recommendation; and the research verdict matrix columns candidate, owner (precedent), witnessed?, sound?, verdict, use-mode. Use GO only for witnessed and sound candidates and KILL only for no-witness or tautological collapse. Mark inferences explicitly, resolve conflicts conservatively, preserve unknowns, and cite official Discord URLs near every load-bearing capability claim. Do not modify anything outside the working folder."
+        }
+      ]
+    },
+    {
+      "group_id": "reviewers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Run only the precedent gate over the synthesized research. Verify that every claim about Discord capability, permission, intent, historical access, rate limit, or policy has a current first-party Discord owner citation that directly supports it. Being owned is positive: label usable results build-from-owned, never KILL them for ownership. Reject unsupported novelty or availability claims, identify citations that do not entail their claims, and require explicit inference labels where metrics are designed rather than exposed. Return concrete corrections to the writer; do not modify files."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Meadows, Donella H.",
+          "initial_prompt": "Run only the non-vacuity gate over the synthesized research. For each recommended v0 metric, build the smallest concrete witness from named Discord primitives through collection and aggregation to the product question. Test denominators, bots/system accounts, missing history, permissions/intents, inaccessible spaces, deletions, and rate-limit effects. If no concrete witness exists, require a typed no-witness KILL; otherwise confirm the metric without inflating precision. Check that direct API fields are not confused with derived analytics and that prospective-only metrics are labeled. Return concrete corrections to the writer; do not modify files."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "explorers",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "synthesizer",
+      "to": "reviewers",
+      "type": "zig-zag",
+      "loop_cap": 1
+    }
+  ]
+}
