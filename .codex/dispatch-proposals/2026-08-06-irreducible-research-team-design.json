@@ -1,0 +1,28 @@
+{
+  "dispatch_id": "2026-08-06-irreducible-research-team-design",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Propose the smallest effective subagent team for researching candidate and hypothetical foundational problems across cyberalchemy-orchestrator and domainspec-core, without requiring proof of irreducibility or completeness.",
+  "context": "The owner explicitly relaxed the research objective: candidates and hypotheses are useful outputs, and the work need not first prove a minimal irreducible set. Existing exploration artifacts already contain candidate failure families, so this dispatch designs the next research team rather than repeating the research itself. The proposal must balance independent perspectives against coordination cost and preserve repository authority boundaries.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "meta": true,
+  "working_folder": "research/repository-irreducible-problem-inventory/team-design",
+  "groups": [
+    {
+      "group_id": "team_designer",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Simon, Herbert",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "Design a concrete subagent team for the next stage of the Repository Irreducible Problem Inventory research. Read AGENTS.md first and obey it. Read the complete research/repository-irreducible-problem-inventory/research-initial-definitions.md, research/repository-irreducible-problem-inventory/stages/exploration/research.md, research/repository-irreducible-problem-inventory/stages/exploration/findings.md, and sessions/2026-08-04-1730-repository-irreducible-problem-exploration.md. The owner has explicitly decided that the research may produce candidates and hypotheses; it does not need to prove irreducibility, minimality, or completeness before being useful. Do not perform the substantive research and do not launch agents. Propose the smallest effective team: each seat's role, distinct lens, exact corpus boundary, question, expected return, dependencies/topology, and a rough token budget. Identify what can be handled by the parent instead of a seat, prevent duplicated roles, and include a lean fallback. Write the complete proposal only to research/repository-irreducible-problem-inventory/team-design/findings.md using apply_patch; edit no other file. End with one recommended composition and the main trade-off."
+        }
+      ]
+    }
+  ]
+}

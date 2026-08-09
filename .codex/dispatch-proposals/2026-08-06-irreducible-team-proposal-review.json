@@ -1,0 +1,29 @@
+{
+  "dispatch_id": "2026-08-06-irreducible-team-proposal-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Review the proposed subagent composition for the candidate-and-hypothesis research and return verified change requests or a KEEP verdict.",
+  "context": "The target is the completed team-design proposal produced by dispatch 2026-08-06-irreducible-research-team-design. The owner wants useful candidates and hypotheses without requiring proof of irreducibility, minimality, or completeness. One independent reviewer will attack operability and role non-vacuity; the parent will verify quotations, coverage, and any surviving findings before acceptance.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "meta": true,
+  "parent_dispatch_id": "2026-08-06-irreducible-research-team-design",
+  "output_mode": "inline",
+  "groups": [
+    {
+      "group_id": "proposal_reviewer",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Popper, Karl",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "initial_prompt": "Independently review the existing proposal at research/repository-irreducible-problem-inventory/team-design/findings.md. Read AGENTS.md first and obey it. Read the proposal in full, then consult research/repository-irreducible-problem-inventory/research-initial-definitions.md and research/repository-irreducible-problem-inventory/stages/exploration/findings.md only as governing context. Do not edit or create files and do not launch agents. Attack through one lens: operability and role non-vacuity. Test whether every proposed seat has a distinct discriminating contribution, whether corpus boundaries and budgets are executable, whether dependencies and outputs are sufficient for parent synthesis, whether any hidden work is pushed onto the parent, and whether the plan honors the owner's relaxed candidate-and-hypothesis objective. Produce the complete inline review.md payload: Coverage, findings table with exact quotations from the proposal, severity, one-line proposed fix, per-artifact KEEP or FIX verdict, and ordered change requests. Drop speculative findings you cannot support from the literal artifact. If there are zero findings, state each attack attempted and why it survived."
+        }
+      ]
+    }
+  ]
+}
