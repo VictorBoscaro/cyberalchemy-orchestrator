@@ -41,6 +41,10 @@ artifacts bind to.
   2026-07-25. Which implementation boundary makes downstream host-agent inputs durable enough to
   run the planned multi-stage research topology. Option A is the selected option cited by the
   agent-reference-lineage implementation-layering workstream.
+- **[phase-a-output-evidence-and-implementation-baseline.md](phase-a-output-evidence-and-implementation-baseline.md)**:
+  `accepted`, updated 2026-08-10. Only the exact host-observed terminal response artifact may be
+  producer-attributed `binding-output`, and the bounded repair uses the current Python + SQLite
+  runtime baseline.
 - **[repository-leverage-priority.md](repository-leverage-priority.md)**: `accepted`, 2026-07-25.
   Sequences the two leading capabilities — first repair and ratify the Host Binding → BUS
   reveal/materialized-input dogfood seam, then prepare and implement ACI-005, the opening

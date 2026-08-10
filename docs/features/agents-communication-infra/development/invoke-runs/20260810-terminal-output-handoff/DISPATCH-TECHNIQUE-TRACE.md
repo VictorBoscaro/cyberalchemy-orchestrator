@@ -1,0 +1,2 @@
+# Dispatch technique trace
+No subagent dispatch was needed for this bounded design run: the owner decisions and source contracts were already closed. Applied techniques were sequential authority check, exact-path evidence binding, artifact-contract bridge, fail-closed boundary preservation, fixed-point selection validation, and planned negative witnesses. Protected-context promotion and external mutation were not used.

@@ -1,0 +1,18 @@
+{
+  "close_of": "2026-08-10-dispatch-defects-backlog-review",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 0,
+    "tree": {
+      "explorer": 0,
+      "writer": 0,
+      "skeptic": 0,
+      "auditor": 0,
+      "helpers": 0
+    },
+    "loops_used": 0
+  },
+  "feedback_prompts": [
+    "The generated bound task names attackers_0 and attackers_1 collided with completed seats from an earlier dispatch in the same parent thread. The lifecycle forbids renaming compiler-generated bindings or replacing them with unbound follow-up calls, so the dispatch failed closed before any seat launched."
+  ]
+}

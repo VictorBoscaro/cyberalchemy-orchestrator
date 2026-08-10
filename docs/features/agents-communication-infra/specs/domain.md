@@ -5,8 +5,8 @@ is_session: false
 layer: domain
 nature: [technical, reference]
 status: draft
-version: 0.4.0
-last_updated: 2026-07-25
+version: 0.4.1
+last_updated: 2026-08-10
 ---
 
 # Domain: Agents Communication Infra
@@ -199,6 +199,94 @@ events refer only to a finalized artifact whose digest, size and classification 
 | `size_bytes` | integer | yes | Validated non-negative byte count. |
 | `storage_ref` | string | yes | Opaque location controlled by the artifact boundary. |
 | `tombstoned_at` | timestamp | no | Payload removal marker; provenance survives. |
+
+### HostTerminalResponseArtifact
+
+The immutable producer-turn evidence record for exact terminal response bytes observed by the host.
+The bytes live in a separately content-addressed [Artifact](#artifact), so two turns may produce
+identical bytes without collapsing their attribution. It is the bounded compatibility evidence selected
+by the accepted Phase-A output decision; it is distinct from [RawProviderOutput](#rawprovideroutput),
+which preserves provider-native evidence, and from [GroupResult](#groupresult), which is a protocol
+commitment.
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `terminal_response_id` | string | yes | Stable evidence identity derived from the producer-turn tuple, not from payload bytes. |
+| `payload_artifact_id` | [ArtifactId](#artifactid) | yes | Content-addressed exact terminal response bytes. |
+| `dispatch_id` | string | yes | Parent dispatch from the verified [HostWorkflowBindingRef](#hostworkflowbindingref); it need not identify a `ConfirmedDispatch`. |
+| `group_id` | string | yes | Producing workflow group. |
+| `seat_id` | [SeatId](#seatid) | yes | Producing seat. |
+| `turn_ordinal` | integer | yes | Producing host workflow turn. |
+| `completion_kind` | string | yes | Host-observed terminal kind; only `completed` satisfies a success-required slot. |
+| `content_hash` | [ContentDigest](#contentdigest) | yes | SHA-256 of the exact host-observed bytes. |
+| `size_bytes` | integer | yes | Exact byte count. |
+| `committed_event_id` | string | yes | Accepted [`host_workflow.terminal_response_committed`](events.md#host_workflowterminal_response_committed) fact. |
+
+**Identity and authority:** at most one terminal-response evidence record exists per
+`(dispatch_id, group_id, seat_id, turn_ordinal)`. An identical retry returns its persisted receipt;
+different bytes or completion kind conflict. A caller-supplied path, a terminal-state row without
+this artifact, or a repository file attributed after completion cannot satisfy `binding-output`.
+
+### HostTerminalResponseReceipt
+
+The canonical verification value returned after the artifact bytes and their journal fact are both
+durable.
+
+| Field | Type | Constraint |
+|---|---|---|
+| `receipt_version` | string | Exactly `aci.host-terminal-response-receipt/v1`. |
+| `terminal_response_id` | string | Resolves to the matching [HostTerminalResponseArtifact](#hostterminalresponseartifact) evidence record. |
+| `payload_artifact_id` | [ArtifactId](#artifactid) | Resolves to exact content-addressed bytes. |
+| `dispatch_id`, `group_id`, `seat_id`, `turn_ordinal` | identity tuple | Exact producing turn identity. |
+| `completion_kind` | string | Equals the committed host terminal observation. |
+| `content_hash` | [ContentDigest](#contentdigest) | Equals both artifact metadata and exact bytes. |
+| `size_bytes` | integer | Equals artifact metadata and exact bytes. |
+| `event_id` | string | Matching accepted commit event. |
+| `journal_offset` | [JournalOffset](#journaloffset) | Durable event position. |
+
+The receipt is not self-authenticating: consumers verify it against evidence metadata, payload artifact bytes,
+the owning workflow turn and the accepted event.
+
+### HostWorkflowBindingRef
+
+Immutable authority reference produced by the Stage-F host binding bridge for one workflow turn.
+It binds `dispatch_id`, `group_id`, `seat_id`, `turn_ordinal`, prompt digest and manifest digest.
+Legacy-managed execution verifies this reference against the orchestration journal; it does not
+pretend that a `ConfirmedDispatch` or `Run` exists.
+
+### SourceToSlotMapping
+
+The mapping frozen at human confirmation that authorizes one completed producer turn to populate
+one required consumer slot in the L0/L1 sequential slice.
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `mapping_id`, `mapping_version` | string, integer | yes | Immutable mapping identity and CAS version. |
+| `dispatch_id` | string | yes | Shared verified parent binding scope. |
+| `connection_id` | string | yes | Declared topology edge; topology alone supplies no bytes. |
+| `source_group_id`, `source_seat_id` | string, [SeatId](#seatid) | yes | Exact producer selector for this slice. |
+| `target_group_id`, `target_seat_id`, `target_turn_ordinal` | string, [SeatId](#seatid), integer | yes | Exact consumer turn. |
+| `slot_name`, `slot_ordinal` | string, integer | yes | Required slot identity; L0 requires ordinal `0`. |
+| `required_completion_kind` | string | yes | L0 requires `completed`. |
+| `visibility_policy_ref` | [VersionedReference](#versionedreference) | yes | Authorizes this consumer to receive these exact bytes. |
+| `confirmed_binding_digest` | [ContentDigest](#contentdigest) | yes | Proves mapping/policy was frozen at confirmation. |
+
+**L0 cardinality:** exactly one mapping, producer and required slot per consumer turn. Fan-in,
+optional slots and non-success completion policies are deferred to L2.
+
+### WorkflowInputManifest
+
+The canonical ordered materialization for one host workflow consumer turn. L0 contains exactly one
+entry: mapping identity/version, verified terminal-response receipt identity, payload artifact ID,
+content hash, size, slot name/ordinal and visibility policy. `manifest_digest` hashes canonical
+manifest bytes.
+
+### HostWorkflowTurnBinding
+
+The launch authorization candidate binding one target [HostWorkflowBindingRef](#hostworkflowbindingref)
+to one [WorkflowInputManifest](#workflowinputmanifest). It carries `binding_id`, target tuple,
+mapping version, manifest digest, prerequisite journal heads and `binding_digest`. It becomes
+launchable only through [AuthorizeHostWorkflowTurnLaunch](operations.md#authorizehostworkflowturnlaunch).
 
 ### AgentReferenceDelivery
 

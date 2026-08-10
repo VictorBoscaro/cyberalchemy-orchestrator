@@ -4,7 +4,8 @@ feature: Agents Communication Infra
 type: interfaces
 title: "Agents Communication Infra — Interfaces"
 status: draft
-version: 0.3.0
+version: 0.3.1
+last_updated: 2026-08-10
 derived-from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 ---
 
@@ -322,10 +323,15 @@ is official only after exact-row verification is recorded back through the journ
 | Method | Input | Output | Contract |
 |---|---|---|---|
 | `commitArtifact` | bytes, media/schema type, classification | immutable artifact ID and content hash | validates size/hash/type before an event may reference it |
+| `commitHostTerminalResponse` | active host-turn binding, terminal kind, exact host-observed bytes, idempotency key | [HostTerminalResponseReceipt](domain.md#hostterminalresponsereceipt) | atomically commits exact bytes, artifact metadata, producer attribution, terminal turn state and accepted event; never accepts a caller path as the artifact source |
+| `verifyHostTerminalResponse` | receipt, expected parent/producer turn and optional required completion kind | verified [HostTerminalResponseArtifact](domain.md#hostterminalresponseartifact) or denial | resolves accepted event and exact bytes; rejects cross-dispatch, stale/superseded turn, digest/size/kind drift and missing bytes |
+| `verifyHostWorkflowBinding` | [HostWorkflowBindingRef](domain.md#hostworkflowbindingref), expected parent/turn | verified journal-backed binding or denial | supports the bounded legacy-managed bridge without inventing `ConfirmedDispatch` or `Run` |
+| `materializeHostWorkflowInput` | active [SourceToSlotMapping](domain.md#sourcetoslotmapping), verified terminal receipt, target binding | [WorkflowInputManifest](domain.md#workflowinputmanifest) and binding candidate | L0 admits exactly one completed producer and one required slot; verifies consumer visibility policy and canonical digest |
+| `authorizeHostWorkflowTurnLaunch` | manifest, [HostWorkflowTurnBinding](domain.md#hostworkflowturnbinding), prerequisite heads | accepted launch intent or CAS denial | atomically checks workflow/consumer/mapping/manifest/binding/cancellation/supersession heads; never launches from projection state |
 | `getAuthorized` | artifact ID + authenticated principal/action/phase | bytes or denial | applies the same sealing/redaction policy as API/SSE |
 | `tombstonePayload` | retention/crypto-erasure authority | tombstone retaining allowed provenance | cannot rewrite the originating event or claim payload availability |
 
-Effective inputs and raw outputs are sensitive immutable artifacts. Concrete retention periods,
+Effective inputs, raw outputs and host terminal responses are sensitive immutable artifacts. Concrete retention periods,
 key management and post-local-development encryption remain deferred under OQ-ACI9 and must be
 settled before Slice 1 exits.
 
@@ -347,6 +353,10 @@ settled before Slice 1 exits.
 | IF-ACI-12 | Adapter admission is evidence-gated | `real provider runnable -> ProviderAdapterAdmissionGate passed for adapter version and target host` |
 | IF-ACI-13 | Boundary validation is subordinate | language-native boundary schema cannot define canonical bytes, digest or acceptance identity |
 | IF-ACI-14 | Target-agent reference delivery is kernel-authorized and atomic | `reference_bundle in accepted input -> authenticatedDeliveryCapability and preallocated(delivery_id,target_event_id) and exactAcceptedSourceBinding and atomic(AgentReferenceDelivery,finalizedEffectiveInputMetadata,sealedRequestBinding,Attempt,reference_scout.bundle_delivered_to_agent@1,attempt.requested,launchEffectIntent)` |
+| IF-ACI-15 | Host terminal response attribution is not caller-authored | `binding-output(source) -> verifiedHostTerminalResponse(source) and sameDispatch(source,target) and sourceBytes = hostObservedBytes` |
+| IF-ACI-16 | Connected topology cannot launch with incomplete dynamic input | `dynamicRequiredSlots(target) and not completeVerifiedManifest(target) -> no launchEffectIntent` |
+| IF-ACI-17 | Content identity and producer attribution are separate | `payloadArtifactId = hash(bytes)` and `terminalResponseId = identity(producerTurn)` |
+| IF-ACI-18 | L0 dynamic input is visibility-authorized and single-source | `launchable(target) => exactlyOne(activeMapping) and authorized(mapping.visibilityPolicy,target,payload)` |
 
 ## Deferred Interface Decisions
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Emit Topic Tags"
+  short_description: "Produce grounded tags from an agent activation"
+  default_prompt: "Use $emit-topic-tags in produce mode; if exactly one activation record is not attached or unambiguously identified, ask for it before emitting tags."

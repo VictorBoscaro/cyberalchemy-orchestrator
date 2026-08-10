@@ -1,0 +1,10 @@
+{"witnesses":[
+  {"witness_id":"TOH-001","claim_id":"exact-terminal-response-persists","evidence_state":"authored-complete"},
+  {"witness_id":"TOH-002","claim_id":"arbitrary-path-rejected","evidence_state":"authored-complete"},
+  {"witness_id":"TOH-003","claim_id":"terminal-without-artifact-blocks","evidence_state":"authored-complete"},
+  {"witness_id":"TOH-004","claim_id":"digest-drift-rejected","evidence_state":"authored-complete"},
+  {"witness_id":"TOH-005","claim_id":"retry-idempotent","evidence_state":"authored-complete"},
+  {"witness_id":"TOH-006","claim_id":"restart-materializes-once","evidence_state":"authored-complete"},
+  {"witness_id":"TOH-007","claim_id":"downstream-not-launched-early","evidence_state":"authored-complete"},
+  {"witness_id":"TOH-008","claim_id":"single-producer-single-slot-launch","evidence_state":"authored-complete"}
+]}

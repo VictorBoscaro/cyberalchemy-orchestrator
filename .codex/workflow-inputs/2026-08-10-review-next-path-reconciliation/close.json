@@ -1,0 +1,15 @@
+{
+  "close_of": "2026-08-10-review-next-path-reconciliation",
+  "exit_reason": "error",
+  "agents_spawned": {
+    "total": 4,
+    "tree": {
+      "explorer": 2,
+      "writer": 1,
+      "skeptic": 1,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": []
+}

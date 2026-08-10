@@ -5,8 +5,8 @@ is_session: false
 layer: application
 nature: [technical, reference]
 status: draft
-version: 0.4.0
-last_updated: 2026-08-03
+version: 0.4.1
+last_updated: 2026-08-10
 derived_from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 additional_authority:
   - ../discovery/external-tool-adoption/external-tool-adoptions.md@0.1.0
@@ -124,6 +124,7 @@ flowchart LR
 | Authorized reference delivery | Bind one already lifecycle-delivered Scout bundle to one capability-derived target Attempt and its exact effective-input entry | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [DeliverReferenceScoutBundleToAgent](operations.md#internal-transition--deliverreferencescoutbundletoagent), [target-delivery event](events.md#reference_scoutbundle_delivered_to_agent1) | Specified; not implemented |
 | Receipt-gated publication | Accept agent content only after append and parent-side persisted-evidence verification | [PublishBusContribution](operations.md#publishbuscontribution), [VerifyPublicationReceipt](operations.md#verifypublicationreceipt), [bus_publish](interfaces.md#bus_publish) | Bounded local pilot |
 | Authorized peer-input materialization | Bind one accepted reveal to one preallocated local target attempt and immutable effective input without claiming a provider effect | [PeerInputDelivery](domain.md#peerinputdelivery), [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput), [`peer_input.materialized`](events.md#peer_inputmaterialized) | Implemented for exact bounded SWU |
+| Host terminal-output handoff | Persist exact host-observed completed response bytes as shared content plus producer-turn evidence, then materialize one authorized required downstream slot in L0 | [HostTerminalResponseArtifact](domain.md#hostterminalresponseartifact), [SourceToSlotMapping](domain.md#sourcetoslotmapping), [MaterializeHostWorkflowInput](operations.md#materializehostworkflowinput), [AuthorizeHostWorkflowTurnLaunch](operations.md#authorizehostworkflowturnlaunch) | Specified for 1 producer → 1 required slot; not implemented |
 | Sealed reveal and commitment | Freeze a collection, publish an authorized manifest, commit one result and hand it off | [GroupDeliberationWorkflow](workflows.md#groupdeliberationworkflow), [GroupLifecycle](states.md#grouplifecycle), [RevealManifest](domain.md#revealmanifest) | Specified; broader runtime gated |
 | Recovery and official closure | Recover local effects, reconcile cross-store rows and elect one audit close | [Persistence and replay](persistence-and-replay.md), [ExternalEffectReconciliationWorkflow](workflows.md#externaleffectreconciliationworkflow), [CancelRun](operations.md#cancelrun) | Mixed; cutover blocked |
 | Read and accountability | Rebuild cursor-addressable state and preserve immutable usage/evidence semantics | [GetRuntimeProjection](queries.md#getruntimeprojection), [RecordUsageObservation](operations.md#recordusageobservation), [Observability](observability.md) | Bounded local pilot |
@@ -274,6 +275,9 @@ IDs below are unique and authoritative for registry synchronization.
 | [PublicationCandidate](domain.md#publicationcandidate) | `agents-communication-infra.PublicationCandidate` | Entity |
 | [EffectIntent](domain.md#effectintent) | `agents-communication-infra.EffectIntent` | Entity |
 | [Artifact](domain.md#artifact) | `agents-communication-infra.Artifact` | Entity |
+| [HostTerminalResponseArtifact](domain.md#hostterminalresponseartifact) | `agents-communication-infra.HostTerminalResponseArtifact` | Entity |
+| [SourceToSlotMapping](domain.md#sourcetoslotmapping) | `agents-communication-infra.SourceToSlotMapping` | Entity |
+| [HostWorkflowTurnBinding](domain.md#hostworkflowturnbinding) | `agents-communication-infra.HostWorkflowTurnBinding` | Entity |
 | [SkillProtocolBinding](protocol-compilation.md#skillprotocolbinding) | `agents-communication-infra.SkillProtocolBinding` | Entity |
 | [AgentReferenceDelivery](domain.md#agentreferencedelivery) | `agents-communication-infra.AgentReferenceDelivery` | Entity |
 | [EffectiveInputArtifact](domain.md#effectiveinputartifact) | `agents-communication-infra.EffectiveInputArtifact` | Entity |
@@ -294,6 +298,9 @@ IDs below are unique and authoritative for registry synchronization.
 | [BusPublication](domain.md#buspublication) | `agents-communication-infra.BusPublication` | Value Object |
 | [PublicationReceipt](domain.md#publicationreceipt) | `agents-communication-infra.PublicationReceipt` | Value Object |
 | [PeerInputDeliveryReceipt](domain.md#peerinputdeliveryreceipt) | `agents-communication-infra.PeerInputDeliveryReceipt` | Value Object |
+| [HostTerminalResponseReceipt](domain.md#hostterminalresponsereceipt) | `agents-communication-infra.HostTerminalResponseReceipt` | Value Object |
+| [HostWorkflowBindingRef](domain.md#hostworkflowbindingref) | `agents-communication-infra.HostWorkflowBindingRef` | Value Object |
+| [WorkflowInputManifest](domain.md#workflowinputmanifest) | `agents-communication-infra.WorkflowInputManifest` | Value Object |
 | [AgentTerminalResult](domain.md#agentterminalresult) | `agents-communication-infra.AgentTerminalResult` | Value Object |
 | [EffectiveInputEntry](domain.md#effectiveinputentry) | `agents-communication-infra.EffectiveInputEntry` | Value Object |
 | [ResourceBudget](domain.md#resourcebudget) | `agents-communication-infra.ResourceBudget` | Value Object |
@@ -325,6 +332,10 @@ IDs below are unique and authoritative for registry synchronization.
 | [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput) | `agents-communication-infra.MaterializeAuthorizedPeerInput` | Operation |
 | [AuthorizeAgentInvocationPlan](operations.md#authorizeagentinvocationplan) | `agents-communication-infra.AuthorizeAgentInvocationPlan` | Operation |
 | [CommitGroupResult](operations.md#commitgroupresult) | `agents-communication-infra.CommitGroupResult` | Operation |
+| [CommitHostTerminalResponse](operations.md#commithostterminalresponse) | `agents-communication-infra.CommitHostTerminalResponse` | Operation |
+| [RecordHostWorkflowTerminalOutcome](operations.md#recordhostworkflowterminaloutcome) | `agents-communication-infra.RecordHostWorkflowTerminalOutcome` | Operation |
+| [MaterializeHostWorkflowInput](operations.md#materializehostworkflowinput) | `agents-communication-infra.MaterializeHostWorkflowInput` | Operation |
+| [AuthorizeHostWorkflowTurnLaunch](operations.md#authorizehostworkflowturnlaunch) | `agents-communication-infra.AuthorizeHostWorkflowTurnLaunch` | Operation |
 | [CancelRun](operations.md#cancelrun) | `agents-communication-infra.CancelRun` | Operation |
 | [RecordUsageObservation](operations.md#recordusageobservation) | `agents-communication-infra.RecordUsageObservation` | Operation |
 | [CompileDispatchCandidate](protocol-compilation.md#compiledispatchcandidate) | `agents-communication-infra.CompileDispatchCandidate` | Calculation |

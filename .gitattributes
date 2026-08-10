@@ -1,2 +1,21 @@
 docs/features/agents-communication-infra/specs/fixtures/protocol-compilation-v1/*.json text eol=lf
 docs/features/recursive-work-orchestrator/** text eol=lf
+
+# Runtime integrity checks hash raw bytes. Keep every Stage B/C/E receipt and
+# Stage-E manifest-bound source stable across Windows and POSIX checkouts.
+docs/features/agent-provenance-telemetry/integration/stage-b/execution-receipt.md text eol=lf
+docs/features/agent-provenance-telemetry/integration/stage-c/local-pilot-enablement.md text eol=lf
+docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json text eol=lf
+docs/features/agent-provenance-telemetry/integration/stage-f/host-hook-policy.json text eol=lf
+docs/features/agent-provenance-telemetry/integration/stage-a/profiles/*.json text eol=lf
+docs/features/agents-communication-infra/profiles/*.json text eol=lf
+docs/features/agents-communication-infra/reviews/2026-07-23-stage-a-freeze/profile-registry-manifest.json text eol=lf
+.claude/settings.json text eol=lf
+.claude/hooks/*.py text eol=lf
+.claude/skills/** text eol=lf
+.codex/hooks.json text eol=lf
+AGENTS.md text eol=lf
+CLAUDE.md text eol=lf
+implementations/contracts/dispatch-type-registry.v1.json text eol=lf
+implementations/server/runtime/** text eol=lf
+implementations/tests/runtime/** text eol=lf

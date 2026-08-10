@@ -269,3 +269,77 @@ idempotency, exceptions and overrides, deletion/retirement behavior, session own
 identity, resolution/reopening, and what happens when a document changes type.
 
 **Status.** TODO / required acceptance case for future rule, ontology and session design.
+
+---
+
+## BL-8 — Prevent line-ending conversion from invalidating integrity manifests
+
+**Tags:** integrity-manifests, line-endings, windows, source-hashes
+
+**Objective:** Make integrity checks produce the same result across supported hosts without requiring
+manual byte normalization or hash repair.
+
+**Description:** During the 2026-08-10 Craft-ledger work, checkout or working-tree CRLF conversion
+changed the bytes of manifest-bound sources. Stage A profile checks and Stage B/C/E source-manifest
+checks consequently disagreed with the repository content until LF rules were added, affected files
+were normalized, four Stage-E source hashes were refreshed, and the runtime's pinned Stage-E
+manifest digest was updated. This problem should not recur silently. Candidate follow-up work should
+identify which layer owns canonical-byte enforcement and add a cross-platform check that fails before
+integrity-bound files or pinned digests drift.
+
+**Status.** DEFECT / parked for a bounded fix.
+
+---
+
+## BL-9 — Preserve sequential dispatch inputs in compiled seat manifests
+
+**Tags:** agent-dispatch, workflow-inputs, dependency-handoffs, runtime
+
+**Objective:** Ensure every downstream seat receives the declared upstream results through its frozen
+input manifest.
+
+**Description:** The governed review dispatch opened and authorized six bound seats, but the compiled
+manifests for sequential consumers contained `slots: []`. The synthesizer, verifier, coverage auditor,
+and final approver therefore did not receive their declared upstream artifacts through the runtime
+contract; the parent had to relay working results manually. This broke evidence delivery and prevented
+mechanical approval even though substantive findings were recovered. Candidate follow-up work should
+reproduce the compilation path, locate where dependency edges fail to materialize as input slots, and
+add an end-to-end test covering attacker-to-synthesizer-to-verifier-to-approver delivery.
+
+**Status.** DEFECT / parked for a bounded fix.
+
+---
+
+## BL-10 — Enforce the review report and final-approval evidence contract before handoff
+
+**Tags:** review-dispatch, final-approval, evidence-packaging, report-validation
+
+**Objective:** Reject malformed review deliverables before they reach the dedicated final approver.
+
+**Description:** The same review reached final approval without exact frozen target path/hash pairs,
+used per-artifact sections that were not the required finding tables, and retained an explicit list of
+refuted findings even though the review contract requires refuted findings to be absent. The approver
+correctly rejected the package on mechanical grounds. Candidate follow-up work should validate the
+complete `review.md` shape and frozen-corpus evidence bundle at the synthesizer/verifier boundary so a
+known-invalid package cannot be dispatched to final approval.
+
+**Status.** DEFECT / parked for a bounded fix.
+
+---
+
+## BL-11 — Generate collision-safe bound seat task names
+
+**Tags:** agent-dispatch, task-names, host-binding, lifecycle
+
+**Objective:** Allow multiple governed dispatches in one parent thread without generated seat names
+colliding with completed agents from earlier dispatches.
+
+**Description:** The follow-up backlog review compiled bound seats named `attackers_0` and
+`attackers_1`, which already existed as completed agents from the preceding review. The host rejected
+the launches, while the governed lifecycle correctly prohibited renaming compiler-generated bindings
+or substituting unbound follow-up calls. The dispatch was therefore closed with `exit_reason: error`
+and zero agents spawned. Candidate follow-up work should make generated task names dispatch-scoped or
+otherwise prove uniqueness within the parent thread, with a regression test covering two consecutive
+dispatches that reuse the same group IDs.
+
+**Status.** DEFECT / parked for a bounded fix.

@@ -5,8 +5,8 @@ is_session: false
 layer: [application, infrastructure]
 nature: [technical, reference]
 status: draft
-version: 0.1.0
-last_updated: 2026-07-21
+version: 0.2.0
+last_updated: 2026-08-10
 ---
 
 # Persistence and Replay: Agents Communication Infra
@@ -126,6 +126,39 @@ An event can reference an artifact only after content finalization and metadata 
 uploads are not authoritative and may expire. Only the validated artifact-store writer may create
 or mutate authoritative artifact metadata; journal, adapter and projection implementations use its
 interface and never insert into `artifacts` directly.
+
+#### `host_terminal_responses`
+
+| Column | Constraint / meaning |
+|---|---|
+| `terminal_response_id` | Primary key; stable producer-turn evidence identity. |
+| `dispatch_id`, `group_id`, `seat_id`, `turn_ordinal` | Unique producer-turn tuple from a verified host binding. |
+| `payload_artifact_id` | FK to finalized `artifacts`; identical content may be referenced by many turns. |
+| `completion_kind` | Exactly `completed` in L0. |
+| `content_hash`, `size_bytes` | Must equal referenced artifact metadata and bytes. |
+| `committed_event_id`, `journal_offset` | Unique accepted terminal-response fact and position. |
+| `receipt_bytes`, `receipt_digest`, `idempotency_key` | Canonical receipt and scoped retry identity. |
+
+#### `host_source_slot_mappings`, `host_input_manifests`, `host_turn_bindings`
+
+L0 persists one active mapping per target turn, one required slot at ordinal zero, one immutable
+manifest and one binding candidate. Mapping rows carry source and target tuples, connection,
+version, required completion kind, visibility policy and confirmed binding digest. Manifest rows
+carry the exact mapping version, terminal-response evidence, payload artifact/hash/size and canonical
+digest. Binding rows carry target binding identity, manifest digest, prerequisite heads and status
+`materialized|launch_authorized|superseded`. Unique constraints prevent more than one active
+mapping, manifest or launch authorization per target turn; divergent retries conflict.
+
+#### Terminal-output artifact protocol
+
+1. Prepare and finalize exact bytes through ArtifactBoundary; an orphan is non-authoritative.
+2. Verify bytes/hash/size and, in one SQLite command transaction, insert producer-turn evidence,
+   receipt, terminal state and `host_workflow.terminal_response_committed`.
+3. Materialization separately verifies the active mapping and commits manifest/binding candidate.
+4. Launch authorization separately CAS-checks all prerequisite heads and commits one launch intent.
+
+No step infers success from filesystem presence. Cleanup may delete unreferenced orphan bytes but
+cannot synthesize evidence.
 
 #### `publication_candidates`
 
@@ -291,6 +324,11 @@ implementations must satisfy the atomic command/outcome obligations exposed by
 | Verification races abandonment | Candidate starts `active`; exactly one CAS can win. | Official winner creates the message/event pair; abandonment winner rejects late verification forever. |
 | After audit append, before journal acknowledgement | Audit row may exist while intent remains pending. | Compare identity and exact canonical row: identical => acknowledge; absent => append/verify; divergent => `reconciliation_required`. |
 | After `collection.closed`, before `reveal.published` | Frozen set exists; peer read remains denied. | Replay reconstitutes closed collection and later publishes/reconciles one manifest. |
+| After terminal payload finalize, before SQL evidence commit | Only an orphan payload exists. | Retry reuses verified content or cleanup expires it; no slot or launch becomes ready. |
+| After terminal evidence commit, before materialization | Producer evidence and receipt exist; consumer remains non-launchable. | Reducer deterministically retries the active mapping. |
+| After materialization commit, before launch authorization | One manifest and binding candidate exist; no launch intent exists. | Scheduler re-verifies prerequisite heads and authorizes once or blocks on drift. |
+| After launch authorization commit, before effect claim | One unclaimed launch intent exists. | Effect reconciliation claims the same intent; replay creates none. |
+| Cancellation or supersession races launch authorization | Exactly one prerequisite-head CAS can win. | Losing launch is rejected; late producer evidence cannot revive the target. |
 
 Database corruption, an unknown migration checksum or a non-contiguous aggregate stream fails closed;
 it is not handled by skipping events as a lenient UI reader would.

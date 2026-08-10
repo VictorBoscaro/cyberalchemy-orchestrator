@@ -117,6 +117,13 @@ def compile_bound_launch_plan(
         raise ValidationError("dispatch_id is required")
     if not isinstance(groups, list) or not groups:
         raise ValidationError("groups must be a non-empty array")
+    connections = record.get("connections", [])
+    if connections:
+        raise GateBlockedError(
+            "legacy-managed workflow compilation does not materialize connection "
+            "handoffs; refuse connected topology until governed downstream input "
+            "materialization is available"
+        )
     target_dir = _relative_output(root, output_dir)
     launches: list[dict[str, Any]] = []
     seen_groups: set[str] = set()

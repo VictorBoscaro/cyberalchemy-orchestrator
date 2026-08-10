@@ -395,6 +395,29 @@ it does not introduce or claim a new discovery decision.
 
 **Checked by:** [TEST-SPEC T-ACI-R22](../TEST-SPEC.md#t-aci-r22--reference-bundle-target-delivery).
 
+## ACI-R20 — Host terminal output is producer-bound, visibility-authorized and launch-atomic
+
+**Rule:** Content-addressed response bytes and producer-turn evidence have separate identities.
+An L0 consumer becomes launchable only from exactly one active confirmed mapping, a completed
+producer receipt, an authorized visibility policy, one canonical manifest entry and a binding whose
+workflow, consumer, mapping, manifest, cancellation and supersession heads all match atomically.
+
+```text
+launch_authorized(target) =>
+  exactly_one(active SourceToSlotMapping for target)
+  AND verified(HostWorkflowBindingRef(source,target))
+  AND verified(HostTerminalResponseReceipt(source))
+  AND HostTerminalResponseArtifact.payload_artifact_id = Artifact.artifact_id
+  AND authorized(mapping.visibility_policy_ref,target,Artifact)
+  AND exactly_one(WorkflowInputManifest.entry)
+  AND verified(HostWorkflowTurnBinding)
+  AND all(prerequisite_heads_match)
+  AND atomic(host_workflow.turn_launch_authorized, launch_effect_intent)
+```
+
+Failed, cancelled and unknown producer outcomes carry no L0 response receipt and cannot satisfy the
+required slot. Fan-in, optional slots and non-success completion policies require a later version.
+
 ## OQ dispositions
 
 | Question | Disposition | Rule coverage |

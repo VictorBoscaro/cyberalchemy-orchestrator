@@ -1,8 +1,8 @@
 ---
 feature: agents-communication-infra
-version: 0.4.0
+version: 0.4.1
 status: draft
-updatedAt: 2026-08-03
+updatedAt: 2026-08-10
 docType: glossary
 ---
 
@@ -40,6 +40,12 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | PublicationCandidate | `agents-communication-infra.PublicationCandidate` | Entity | Durable publication evidence awaiting parent receipt verification and official acceptance. | [Domain](domain.md#publicationcandidate) |
 | EffectIntent | `agents-communication-infra.EffectIntent` | Entity | Durable request for work outside the journal transaction. | [Domain](domain.md#effectintent) |
 | Artifact | `agents-communication-infra.Artifact` | Entity | Immutable content-addressed evidence metadata. | [Domain](domain.md#artifact) |
+| HostTerminalResponseArtifact | `agents-communication-infra.HostTerminalResponseArtifact` | Entity | Exact terminal response bytes observed and attributed by the host to one workflow turn. | [Domain](domain.md#hostterminalresponseartifact) |
+| HostTerminalResponseReceipt | `agents-communication-infra.HostTerminalResponseReceipt` | Value Object | Verifiable receipt binding terminal bytes and artifact metadata to one host workflow turn. | [Domain](domain.md#hostterminalresponsereceipt) |
+| HostWorkflowBindingRef | `agents-communication-infra.HostWorkflowBindingRef` | Value Object | Journal-verifiable Stage-F authority reference for one legacy-managed workflow turn. | [Domain](domain.md#hostworkflowbindingref) |
+| SourceToSlotMapping | `agents-communication-infra.SourceToSlotMapping` | Entity | Confirmed authorization mapping one producer turn to one required consumer slot in L0. | [Domain](domain.md#sourcetoslotmapping) |
+| WorkflowInputManifest | `agents-communication-infra.WorkflowInputManifest` | Value Object | Canonical ordered dynamic input materialization for one consumer turn. | [Domain](domain.md#workflowinputmanifest) |
+| HostWorkflowTurnBinding | `agents-communication-infra.HostWorkflowTurnBinding` | Entity | Candidate launch binding between a consumer turn and its verified manifest. | [Domain](domain.md#hostworkflowturnbinding) |
 | AgentReferenceDelivery | `agents-communication-infra.AgentReferenceDelivery` | Entity | **Specified / not implemented:** immutable source-bound acceptance record proving inclusion of one exact Scout bundle entry in one target Attempt's effective input, never access, declared use or claim support. | [Domain](domain.md#agentreferencedelivery) |
 | PeerInputDelivery | `agents-communication-infra.PeerInputDelivery` | Entity | Immutable delivery record binding one authorized reveal to one preallocated local target attempt and its effective input. | [Domain](domain.md#peerinputdelivery) |
 | EffectiveInputArtifact | `agents-communication-infra.EffectiveInputArtifact` | Entity | Ordered manifest of observable input presented to an attempt. | [Domain](domain.md#effectiveinputartifact) |
@@ -93,6 +99,10 @@ Plain-language definitions for every entry in the [SPEC Concept Registry](SPEC.m
 | CompileDispatchCandidate | `agents-communication-infra.CompileDispatchCandidate` | Calculation | Pure deterministic calculation that maps exact immutable skill-protocol inputs to a non-authoritative candidate result and performs no persistence or runtime action. | [Protocol compilation](protocol-compilation.md#compiledispatchcandidate) |
 | AuthorizeAgentInvocationPlan | `agents-communication-infra.AuthorizeAgentInvocationPlan` | Operation | Validates and freezes the authorized invocation plan before local materialization. | [Operations](operations.md#authorizeagentinvocationplan) |
 | MaterializeAuthorizedPeerInput | `agents-communication-infra.MaterializeAuthorizedPeerInput` | Operation | Materializes one authorized reveal into immutable effective input for the preallocated local target attempt. | [Operations](operations.md#materializeauthorizedpeerinput) |
+| CommitHostTerminalResponse | `agents-communication-infra.CommitHostTerminalResponse` | Operation | Atomically persists exact host-observed terminal response bytes and their producer-owned receipt. | [Operations](operations.md#commithostterminalresponse) |
+| RecordHostWorkflowTerminalOutcome | `agents-communication-infra.RecordHostWorkflowTerminalOutcome` | Operation | Records a non-byte-bearing failed, cancelled or unknown host turn. | [Operations](operations.md#recordhostworkflowterminaloutcome) |
+| MaterializeHostWorkflowInput | `agents-communication-infra.MaterializeHostWorkflowInput` | Operation | Materializes one confirmed completed producer into one authorized required L0 slot. | [Operations](operations.md#materializehostworkflowinput) |
+| AuthorizeHostWorkflowTurnLaunch | `agents-communication-infra.AuthorizeHostWorkflowTurnLaunch` | Operation | CAS-authorizes exactly one launch intent from verified mapping, manifest and binding heads. | [Operations](operations.md#authorizehostworkflowturnlaunch) |
 | GetRuntimeProjection | `agents-communication-infra.GetRuntimeProjection` | Query | Rebuilds a snapshot plus ordered cursor deltas. | [Queries](queries.md#getruntimeprojection) |
 | GetRunStatus | `agents-communication-infra.GetRunStatus` | Query | Reads latest committed run projection and source lag. | [Queries](queries.md#getrunstatus) |
 | GetVisibleGroupMessages | `agents-communication-infra.GetVisibleGroupMessages` | Query | Returns only messages authorized by persisted phase/manifest policy. | [Queries](queries.md#getvisiblegroupmessages) |
