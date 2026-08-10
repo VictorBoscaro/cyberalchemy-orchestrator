@@ -1,0 +1,158 @@
+ledger_id: craft.cyberalchemy_orchestrator
+schema_ref: ../.claude/skills/craft/templates/ledger.schema.yml
+schema_version: 0.3.0
+status: candidate-local
+source_of_truth: .craft/ledger.yml
+human_view: CRAFT.md
+notes:
+  - Root Craft workspace initialized from AGENTS.md, README.md, OBLIGATIONS.md, and BACKLOG.md.
+  - Nested ledgers remain authoritative only for their own scopes and were not imported.
+
+indexes:
+  by_id:
+    CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT: contexts[0]
+    DESC-CYBERALCHEMY-ORCHESTRATOR-001: descriptions[0]
+    DEF-GOVERNED-AGENT-WORK-001: definitions[0]
+    GAP-WRITE-SIDE-CUTOVER-001: gaps[0]
+    GAP-ORCH-CATEGORY-PROOF-001: gaps[1]
+    ART-CRAFT-LEDGER: artifacts[0]
+    ART-CRAFT-VIEW: artifacts[1]
+    ART-REPOSITORY-POLICY: artifacts[2]
+    ART-PROJECT-README: artifacts[3]
+    ART-PROJECT-OBLIGATIONS: artifacts[4]
+    ART-PROJECT-BACKLOG: artifacts[5]
+  open_decisions: []
+  blocking_decisions: []
+  active_blockers: []
+  active_gaps:
+    - GAP-WRITE-SIDE-CUTOVER-001
+    - GAP-ORCH-CATEGORY-PROOF-001
+  next_moves:
+    - context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+      next_move: Review this initial Craft baseline, then select one active gap or explicit workstream as the next child context.
+  artifacts_by_path:
+    .craft/ledger.yml: ART-CRAFT-LEDGER
+    CRAFT.md: ART-CRAFT-VIEW
+    AGENTS.md: ART-REPOSITORY-POLICY
+    README.md: ART-PROJECT-README
+    OBLIGATIONS.md: ART-PROJECT-OBLIGATIONS
+    BACKLOG.md: ART-PROJECT-BACKLOG
+
+contexts:
+  - context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    parent_id: root
+    title: Cyberalchemy Orchestrator
+    purpose: Keep agent work connected to the objectives, decisions, assumptions, actions, and evidence that make it reliable.
+    stage: define
+    gate: flag
+    next_move: Review this initial Craft baseline, then select one active gap or explicit workstream as the next child context.
+    owned_artifacts:
+      - ART-CRAFT-LEDGER
+      - ART-CRAFT-VIEW
+      - ART-REPOSITORY-POLICY
+      - ART-PROJECT-README
+      - ART-PROJECT-OBLIGATIONS
+      - ART-PROJECT-BACKLOG
+    links:
+      - label: Write-side cutover gap
+        target: GAP-WRITE-SIDE-CUTOVER-001
+        kind: row-id
+      - label: Category proof gap
+        target: GAP-ORCH-CATEGORY-PROOF-001
+        kind: row-id
+    notes: Initial root context; status remains flag until the operator confirms this baseline and chooses a bounded next context.
+
+artifacts:
+  - artifact_id: ART-CRAFT-LEDGER
+    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    path: .craft/ledger.yml
+    artifact_type: ledger-source
+    status: active
+    notes: Authoritative structured Craft state for the repository root.
+  - artifact_id: ART-CRAFT-VIEW
+    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    path: CRAFT.md
+    artifact_type: human-view
+    status: active
+    notes: Derived, linked navigation view of the root Craft ledger.
+  - artifact_id: ART-REPOSITORY-POLICY
+    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    path: AGENTS.md
+    artifact_type: governance-policy
+    status: active
+    notes: Repository agent policy and project objective boundary.
+  - artifact_id: ART-PROJECT-README
+    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    path: README.md
+    artifact_type: project-map
+    status: active
+    notes: Current claims, implemented surfaces, limitations, and operating map.
+  - artifact_id: ART-PROJECT-OBLIGATIONS
+    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    path: OBLIGATIONS.md
+    artifact_type: obligation-register
+    status: active
+    notes: Falsifiable targets; explicitly states that none are discharged.
+  - artifact_id: ART-PROJECT-BACKLOG
+    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    path: BACKLOG.md
+    artifact_type: parked-candidates
+    status: active
+    notes: Candidate work not treated as committed or active by this ledger.
+
+descriptions:
+  - description_id: DESC-CYBERALCHEMY-ORCHESTRATOR-001
+    context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    description: The repository provides a working read-side control plane, append-only dispatch ledger, agent-pool selection, operational skills, mandatory launch hooks, and an opt-in local ACI/APT pilot; its confirm-gated write path is built but not cut over, while broader typing and knowledge-system claims remain candidate work.
+    status: active
+    evidence: ART-PROJECT-README
+    links:
+      - label: Project map
+        target: ART-PROJECT-README
+        kind: artifact-id
+
+definitions:
+  - definition_id: DEF-GOVERNED-AGENT-WORK-001
+    scope_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    term: governed agent work
+    statement: Agent work whose objective, authorization, assumptions, actions, and supporting evidence remain explicitly connected and reviewable across decomposition and handoff.
+    status: candidate
+    evidence: ART-REPOSITORY-POLICY
+    links:
+      - label: Repository policy
+        target: ART-REPOSITORY-POLICY
+        kind: artifact-id
+
+typed_items: []
+decisions: []
+
+gaps:
+  - gap_id: GAP-WRITE-SIDE-CUTOVER-001
+    scope_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    summary: The confirm-gated write path is built but production cutover, sole-writer proof, generic provider launch, and related materialization remain incomplete.
+    severity: flag
+    treatment: plan
+    owner: operations
+    status: active
+    evidence: ART-PROJECT-README
+    links:
+      - label: Current implementation status
+        target: ART-PROJECT-README
+        kind: artifact-id
+  - gap_id: GAP-ORCH-CATEGORY-PROOF-001
+    scope_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    summary: OBL-E3 remains open; the orchestration language has not been proven to form the claimed category, and the claim may narrow to its sequential fragment.
+    severity: flag
+    treatment: defer
+    owner: research
+    status: active
+    evidence: ART-PROJECT-OBLIGATIONS
+    links:
+      - label: OBL-E3
+        target: ART-PROJECT-OBLIGATIONS
+        kind: artifact-id
+
+route_handoffs: []
+receipts: []
+relations: []
+recomposition: []
