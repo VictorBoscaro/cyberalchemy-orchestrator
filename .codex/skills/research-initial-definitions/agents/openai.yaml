@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Initial Definitions"
+  short_description: "Prepare context before governed research"
+  default_prompt: "Use $research-initial-definitions to prepare the initial context for this research topic."

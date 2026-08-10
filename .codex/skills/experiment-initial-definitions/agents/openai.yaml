@@ -1,0 +1,4 @@
+interface:
+  display_name: "Experiment Initial Definitions"
+  short_description: "Prepare context before an experiment"
+  default_prompt: "Use $experiment-initial-definitions to prepare the initial context for this experiment."

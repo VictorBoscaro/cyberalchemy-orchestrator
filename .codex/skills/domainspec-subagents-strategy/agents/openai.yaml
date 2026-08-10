@@ -1,0 +1,4 @@
+interface:
+  display_name: "DomainSpec Subagent Strategy"
+  short_description: "Route governed subagent work into the infrastructure"
+  default_prompt: "Use $domainspec-subagents-strategy to route this work through the governed subagent infrastructure."

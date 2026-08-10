@@ -1,0 +1,4 @@
+interface:
+  display_name: "Subagent Dispatch Lifecycle"
+  short_description: "Open, bind, verify, and close a governed dispatch"
+  default_prompt: "Use $subagents-dispatch-lifecycle to execute this routed dispatch through registration, bound launches, and close."
