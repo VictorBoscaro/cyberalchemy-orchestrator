@@ -1,0 +1,3 @@
+[submodule "Arcanum"]
+	path = Arcanum
+	url = https://github.com/cyberAlchemyAI/Arcanum.git
