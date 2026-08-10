@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0.0",
+  "manifest_id": "terminal-output-handoff-design-scope-20260810",
+  "target_id": "bounded-terminal-output-handoff",
+  "target_footprint": {
+    "roots": [{"path": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md", "digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8"}],
+    "inclusions": [
+      {"selector": "accepted bounded host binding decision", "path": "docs/decisions/host-agent-dispatch-input-binding.md", "digest": "e072df56f066ddb19e42c9cf11537a1ffa9ee639d25ca5cdcc564510fec7670d"},
+      {"selector": "host manifest contract", "path": "docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md", "digest": "3a20f4749ee5fd0eb85ddae3b923d14d040a752691c487812857dc462d67f931"},
+      {"selector": "binding receipt invariants", "path": "docs/features/agent-provenance-telemetry/integration/stage-f/host-workflow-binding-receipt.md", "digest": "380d5b74566d826256d1edda7a2bbee14e6b356d4b1c9715d2968cf16dabcfe3"},
+      {"selector": "ACI feature registry", "path": "docs/features/agents-communication-infra/specs/SPEC.md", "digest": "664d99fb7c1cbf5a2838c6c9968316a728e172bb23834573c218adc8a6933f1c"},
+      {"selector": "terminal output domain contracts", "path": "docs/features/agents-communication-infra/specs/domain.md", "digest": "36510d07ffe24ca2960fa58e8aa97540eb04436423bbbb893c2614cf90c820ad"},
+      {"selector": "ACI lifecycle operations", "path": "docs/features/agents-communication-infra/specs/operations.md", "digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083"},
+      {"selector": "host workflow turn lifecycle", "path": "docs/features/agents-communication-infra/specs/states.md", "digest": "002d019350b35ab667e969defa6186f4bcba3c48db692e8c5af440e60ff0692c"},
+      {"selector": "terminal response event contract", "path": "docs/features/agents-communication-infra/specs/events.md", "digest": "abf55c22ea122c75308becb07f73eb59047b10eeb9b9b467c68c5a8de27c9330"},
+      {"selector": "artifact boundary methods", "path": "docs/features/agents-communication-infra/specs/interfaces.md", "digest": "5ba53588eda61350a3a1d571db2a75b684fb7a01a5a910730cfaecab3aabe227"},
+      {"selector": "terminal-output persistence and recovery", "path": "docs/features/agents-communication-infra/specs/persistence-and-replay.md", "digest": "f7d9cba600978b6797ff342042741b8b0a1bd948cb15e5c6fcff7b3463fae0ff"},
+      {"selector": "terminal-output invariant", "path": "docs/features/agents-communication-infra/specs/rules.md", "digest": "84b64da3b27e1ab977c1d19900959c6df92afd999717c852fb9580108c685d6d"},
+      {"selector": "current runtime persistence boundary", "path": "implementations/server/runtime/service.py", "digest": "a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f"},
+      {"selector": "legacy compiler safety fence", "path": "implementations/server/runtime/dispatch_workflow.py", "digest": "d5ebba43dfd296ee5fdcff4a886e550a431403ed3acc7143c8c7e4961f4a6449"}
+    ],
+    "exclusions": [
+      {"selector": "provider-complete effective input", "reason": "D1 accepts only exact host-observed terminal response evidence for the bounded bridge.", "evidence_ref": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md"},
+      {"selector": "general workflow graph semantics", "reason": "Connections, fan-in, zig-zag, and feedback remain owned by the broader workflow discovery and ACI work.", "evidence_ref": "docs/discovery/workflow-graph/workflow-graph.md"},
+      {"selector": "implementation mutation", "reason": "Invoke Design cannot author work-pack tasks or implementation changes.", "evidence_ref": "Arcanum/spells/invoke/design.md"}
+    ]
+  },
+  "source_contracts": [
+    {"source_id": "phase-a-baseline-decision", "selector": "accepted D1 and D2", "path": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md", "digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8"},
+    {"source_id": "host-binding-decision", "selector": "bounded bridge authority", "path": "docs/decisions/host-agent-dispatch-input-binding.md", "digest": "e072df56f066ddb19e42c9cf11537a1ffa9ee639d25ca5cdcc564510fec7670d"},
+    {"source_id": "host-wrapper-contract", "selector": "manifest slots and binding-output", "path": "docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md", "digest": "3a20f4749ee5fd0eb85ddae3b923d14d040a752691c487812857dc462d67f931"},
+    {"source_id": "binding-receipt-contract", "selector": "producer, parent, digest, and retry invariants", "path": "docs/features/agent-provenance-telemetry/integration/stage-f/host-workflow-binding-receipt.md", "digest": "380d5b74566d826256d1edda7a2bbee14e6b356d4b1c9715d2968cf16dabcfe3"},
+    {"source_id": "aci-spec", "selector": "canonical concept and capability registry", "path": "docs/features/agents-communication-infra/specs/SPEC.md", "digest": "664d99fb7c1cbf5a2838c6c9968316a728e172bb23834573c218adc8a6933f1c"},
+    {"source_id": "aci-domain", "selector": "terminal evidence, mapping, manifest and binding contracts", "path": "docs/features/agents-communication-infra/specs/domain.md", "digest": "36510d07ffe24ca2960fa58e8aa97540eb04436423bbbb893c2614cf90c820ad"},
+    {"source_id": "aci-operations", "selector": "terminal commit, materialization and launch authorization", "path": "docs/features/agents-communication-infra/specs/operations.md", "digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083"},
+    {"source_id": "aci-states", "selector": "host workflow turn lifecycle", "path": "docs/features/agents-communication-infra/specs/states.md", "digest": "002d019350b35ab667e969defa6186f4bcba3c48db692e8c5af440e60ff0692c"},
+    {"source_id": "aci-events", "selector": "terminal, materialization and launch facts", "path": "docs/features/agents-communication-infra/specs/events.md", "digest": "abf55c22ea122c75308becb07f73eb59047b10eeb9b9b467c68c5a8de27c9330"},
+    {"source_id": "aci-interfaces", "selector": "artifact, materialization and launch boundaries", "path": "docs/features/agents-communication-infra/specs/interfaces.md", "digest": "5ba53588eda61350a3a1d571db2a75b684fb7a01a5a910730cfaecab3aabe227"},
+    {"source_id": "aci-persistence", "selector": "storage, crash and replay contract", "path": "docs/features/agents-communication-infra/specs/persistence-and-replay.md", "digest": "f7d9cba600978b6797ff342042741b8b0a1bd948cb15e5c6fcff7b3463fae0ff"},
+    {"source_id": "aci-rules", "selector": "host terminal output invariant", "path": "docs/features/agents-communication-infra/specs/rules.md", "digest": "84b64da3b27e1ab977c1d19900959c6df92afd999717c852fb9580108c685d6d"},
+    {"source_id": "runtime-service", "selector": "current Python SQLite host workflow state", "path": "implementations/server/runtime/service.py", "digest": "a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f"},
+    {"source_id": "legacy-compiler", "selector": "connected topology fail-closed boundary", "path": "implementations/server/runtime/dispatch_workflow.py", "digest": "d5ebba43dfd296ee5fdcff4a886e550a431403ed3acc7143c8c7e4961f4a6449"}
+  ],
+  "human_actors": [],
+  "rendered_surfaces": [],
+  "interfaces": [
+    {"interface_id": "host-terminal-response", "kind": "authenticated-host-observation-contract", "peer": "host-runtime", "direction": "inbound", "contract_ref": "HostTerminalResponseArtifact@1", "source_selector": "docs/features/agents-communication-infra/specs/interfaces.md", "source_digest": "5ba53588eda61350a3a1d571db2a75b684fb7a01a5a910730cfaecab3aabe227"},
+    {"interface_id": "downstream-workflow-input", "kind": "versioned-materialized-input-contract", "peer": "consumer-seat", "direction": "outbound", "contract_ref": "WorkflowInputManifest@1", "source_selector": "docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md", "source_digest": "3a20f4749ee5fd0eb85ddae3b923d14d040a752691c487812857dc462d67f931"}
+  ],
+  "stores": [
+    {"store_id": "terminal-response-artifact-store", "authority": "host workflow runtime", "data_classes": ["content-addressed-response-bytes", "producer-turn-evidence", "source-to-slot-mapping", "manifest", "binding"], "writers": ["terminal-response-committer"], "source_selector": "docs/features/agents-communication-infra/specs/domain.md", "source_digest": "36510d07ffe24ca2960fa58e8aa97540eb04436423bbbb893c2614cf90c820ad"},
+    {"store_id": "host-workflow-journal", "authority": "current Python SQLite runtime", "data_classes": ["turn-state", "artifact-receipt", "binding", "delivery-state"], "writers": ["host-workflow-service"], "source_selector": "implementations/server/runtime/service.py", "source_digest": "a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f"}
+  ],
+  "queues": [],
+  "writers": [
+    {"writer_id": "terminal-response-committer", "targets": ["terminal-response-artifact-store", "host-workflow-journal"], "concurrency": "idempotent by producer turn and digest; divergent duplicate is rejected", "source_selector": "docs/features/agents-communication-infra/specs/operations.md", "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083"},
+    {"writer_id": "host-workflow-service", "targets": ["host-workflow-journal"], "concurrency": "SQLite transaction boundary and existing binding uniqueness constraints", "source_selector": "implementations/server/runtime/service.py", "source_digest": "a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f"}
+  ],
+  "normative_rules": [
+    {"rule_id": "exact-response-only", "verb": "authorizes", "subject": "accepted-terminal-response-artifact", "object": "binding-output-source", "enforcement_hint": "reject arbitrary paths and artifacts not committed for the producer turn", "source_selector": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md", "source_digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8"},
+    {"rule_id": "downstream-launch-after-materialization", "verb": "requires-terminal-state", "subject": "downstream-consumer-launch", "object": "verified-input-manifest", "enforcement_hint": "do not create a launchable binding before producer artifact acceptance", "source_selector": "docs/features/agents-communication-infra/specs/operations.md", "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083"}
+  ],
+  "effects": [{"effect_id": "launch-downstream-seat", "reversible": false, "external": false, "privileged": true, "source_selector": "docs/features/agents-communication-infra/specs/operations.md", "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083"}],
+  "data_and_log_sinks": [],
+  "deployment_targets": [],
+  "compatibility_boundaries": [{"boundary_id": "path-binding-to-owned-artifact", "old_contract": "terminal producer plus caller-supplied path and digest", "new_contract": "host-committed exact terminal response artifact reference", "source_selector": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md", "source_digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8"}],
+  "quality_claims": [{"claim_id": "restart-safe-materialization", "source_kind": "accepted-design-requirement", "threshold_or_tradeoff": "replay yields one producer evidence record, one binding, and the same digests without duplicate launch", "required": true, "source_selector": "docs/features/agents-communication-infra/specs/operations.md", "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083"}],
+  "acceptance_and_readiness_claims": [{"claim_id": "owner-decisions-accepted", "selector": "D1 Option A and D2 Option A", "evidence_state": "authored-complete", "source_selector": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md", "source_digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8"}],
+  "unknowns": [],
+  "input_digest": "df6bc9fa9de945ad12d5fd3cb4e75c27aac139ff6c95329642f2db4ebd04e82c",
+  "authored_by": "invoke-design-author-terminal-output-handoff"
+}

@@ -124,6 +124,44 @@ class DispatchWorkflowTests(unittest.TestCase):
                 output_dir=Path("workflow"),
             )
 
+    def test_compile_rejects_connected_topology_before_writing(self) -> None:
+        connected = {
+            **self.record,
+            "groups": [
+                self.record["groups"][0],
+                {
+                    "group_id": "verification",
+                    "agents": [
+                        {
+                            "role": "skeptic",
+                            "model": "gpt-5.6",
+                            "token_budget": 1000,
+                            "initial_prompt": "Verify the upstream review result.",
+                        }
+                    ],
+                },
+            ],
+            "connections": [
+                {
+                    "from": "reviewers",
+                    "to": "verification",
+                    "type": "sequential",
+                }
+            ],
+        }
+        output = Path("workflow-connected")
+        with self.assertRaisesRegex(
+            GateBlockedError,
+            "does not materialize connection handoffs",
+        ):
+            compile_bound_launch_plan(
+                repo_root=self.project,
+                record=connected,
+                capability_ref="review",
+                output_dir=output,
+            )
+        self.assertFalse((self.project / output).exists())
+
     def test_compile_rejects_invalid_opening_before_writing(self) -> None:
         invalid_records = [
             {key: value for key, value in self.record.items() if key != "anti_bias_mode"},

@@ -1,0 +1,58 @@
+{
+  "dispatch_id": "2026-08-10-terminal-output-spec-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Verificar adversarialmente se a spec de terminal-output handoff cobre as capacidades, melhorias de usabilidade e problemas resolvidos que foram apresentados ao owner.",
+  "context": "O corpus foi alterado por Invoke Define para normatizar HostTerminalResponseArtifact, receipt, commit atomico, evento, lifecycle e verificacao de downstream. A revisao deve separar rigorosamente garantia normativa, design candidato, implementacao ausente e capacidades posteriores. Targets: docs/decisions/phase-a-output-evidence-and-implementation-baseline.md; docs/features/agents-communication-infra/specs/SPEC.md, domain.md, operations.md, states.md, events.md, interfaces.md, glossary.md, persistence-and-replay.md e rules.md; docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/ARCHITECTURE.md e DESIGN-TRANSPORT.md; implementations/server/runtime/dispatch_workflow.py; implementations/tests/runtime/test_dispatch_workflow.py.",
+  "max_loops": 1,
+  "final_approver": "user",
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3200,
+          "agent_name": "Liskov, Barbara",
+          "initial_prompt": "Leia integralmente o corpus congelado indicado no contexto. Ataque-o somente pela lente de fidelidade e governanca. Verifique se a spec realmente sustenta, sem extrapolacao: pipelines automaticos como attackers -> writer -> skeptic; persistencia da resposta terminal exata observada pelo host; atribuicao ao dispatch, grupo, seat e turno corretos; materializacao automatica de slots downstream; eliminacao da necessidade de agentes copiarem arquivos; bloqueio de consumidores com slots incompletos; restart/retry sem duplicacao; proveniencia verificavel entre estagios; e separacao entre connection, dependencia de dados, visibilidade e autoridade de lancamento. Diferencie explicitamente o que esta normativamente garantido, apenas desenhado, dependente de contrato ausente ou prometido alem da evidencia. Cada finding deve citar arquivo e trecho literal, receber CRITICAL/MAJOR/MINOR e propor correcao de uma linha. Nao modifique arquivos. Se nao houver findings, diga o que atacou e por que cada tentativa falhou."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3200,
+          "agent_name": "Wirth, Niklaus",
+          "initial_prompt": "Leia integralmente o mesmo corpus congelado. Ataque-o somente pela lente de mecanica, operabilidade e abuso. Simule: upstream termina -> host persiste resposta -> handoff e publicado -> slots sao materializados -> binding e verificado -> downstream e lancado. Procure operacao ou transicao sem owner; schema, identidade ou cardinalidade ausente; lacunas entre HostTerminalResponseArtifact, receipt, connection handoff e manifest; atomicidade incompleta; crash windows; retry divergente; fan-in parcial; producer failed/cancelled/unknown; consumidor cancelado/superseded; ordem canonica; order-only confundido com dados; caminho arbitrario, receipt forjado, cross-dispatch, digest/size drift, dupla publicacao/lancamento; e divergencia spec-runtime. Diga se um implementador consegue construir sem inventar contratos. Cada finding deve citar arquivo e trecho literal, receber CRITICAL/MAJOR/MINOR e propor correcao de uma linha. Nao modifique arquivos. Se nao houver findings, registre os ataques tentados."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesis",
+      "agents": [{
+        "role": "writer",
+        "model": "gpt-5.6-sol",
+        "token_budget": 3600,
+        "agent_name": "van Lamsweerde, Axel",
+        "initial_prompt": "Receba integralmente os dois ataques independentes. Deduplicate e confronte cada promessa de capacidade/usabilidade com a cobertura literal do corpus congelado. Produza o candidato ao unico review.md inline na forma da skill review: Coverage; matriz promessa -> contrato normativo -> status; findings por artefato com citacao literal, severidade e correcao; veredito KEEP/FIX; change requests. Nao preserve transcritos. Nao trate ausencia de implementacao como defeito da spec, salvo quando a spec nao fornece contrato suficiente para implementar."
+      }]
+    },
+    {
+      "group_id": "verification",
+      "agents": [{
+        "role": "skeptic",
+        "model": "gpt-5.6-sol",
+        "token_budget": 2800,
+        "agent_name": "Capucci, Matteo",
+        "initial_prompt": "Tente refutar individualmente todos os findings da sintese usando somente o corpus congelado. Confirme citacoes, procure contrato em outros aspectos, teste severidade e rejeite promessas sustentadas apenas por design ou implementacao futura. Exija distincao entre o recorte inicial e fan-in, loops, feedback e provider-complete evidence. Findings refutados devem ser removidos, nunca suavizados. Aprove somente quando todos os findings sobreviventes tenham evidencia literal e Coverage prove que todas as promessas foram atacadas pelas duas lentes. Nao modifique arquivos."
+      }]
+    }
+  ],
+  "connections": [
+    {"from": "attackers", "to": "synthesis", "type": "sequential"},
+    {"from": "synthesis", "to": "verification", "type": "zig-zag", "loop_cap": 1}
+  ]
+}

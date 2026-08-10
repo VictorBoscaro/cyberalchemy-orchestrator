@@ -1,6 +1,7 @@
 ---
-status: pending-owner-decision
+status: accepted
 date: 2026-07-26
+last_updated: 2026-08-10
 scope: phase-a-host-binding-bus-repair
 ---
 
@@ -57,6 +58,19 @@ Reject the source kind and require every file to be declared as an unattributed 
 - Choose when: rapid fail-closed closure is more important than preserving the workflow capability.
 - Downstream impact: no output-evidence persistence, but a material loss of orchestration leverage.
 
+### D1 decision
+
+**Selected: Option A — Exact terminal response artifact.**
+
+The repository owner explicitly selected Option A on 2026-08-10. The host-observed terminal
+response must be persisted as a content-addressed artifact, and only that exact artifact may be
+consumed as `binding-output`. Repository files remain unattributed `repository` sources until a
+separate write-observation contract is accepted and implemented.
+
+This decision authorizes planning and implementation of terminal-response evidence and downstream
+manifest materialization. It does not promote path-based producer attribution, establish complete
+provider input capture, or resolve D2.
+
 ## D2 — Which implementation baseline should govern the bounded repair?
 
 The repository already implements a layered Python runtime and SQLite journal, but the current
@@ -92,9 +106,26 @@ Name another architecture/data-layer package and migrate or bind the repair to i
 - Cost/risk: unresolved until the exact package and migration boundary are supplied.
 - Choose when: neither the current runtime nor canonical pack is the intended target.
 
-## Pending decision
+### D2 decision
 
-No option is selected yet. Source of the eventual decision must be an explicit owner response.
+**Selected: Option A — Ratify the current runtime + SQLite baseline.**
+
+The repository owner explicitly selected Option A on 2026-08-10. The bounded repair must use the
+existing `implementations/server/runtime/` layering, SQLite journal/migrations, immutable artifact
+store, host-workflow binding service, and current test surfaces. It must not introduce a platform
+migration or a parallel architecture/database package as part of this repair.
+
+This decision authorizes specification amendment, test-obligation derivation, and work-pack
+planning against the current runtime baseline. It does not authorize code implementation before
+that work pack passes readiness.
+
+## Decision summary
+
+D1 is resolved as Option A from the repository owner's explicit response on 2026-08-10.
+
+D2 is resolved as Option A from the repository owner's explicit response on 2026-08-10.
+
+No blocker-level decision remains in this gate.
 
 ## Validation
 

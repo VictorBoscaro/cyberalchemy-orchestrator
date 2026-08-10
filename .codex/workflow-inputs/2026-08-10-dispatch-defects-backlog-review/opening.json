@@ -1,0 +1,69 @@
+{
+  "dispatch_id": "2026-08-10-dispatch-defects-backlog-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Review BACKLOG.md entries BL-8 through BL-10 for factual fidelity, non-duplication, and sufficient problem definition without converting them into approved work.",
+  "context": "The entries record defects observed during the 2026-08-10 Craft ledger and governed review run. Attack only BL-8 through BL-10, using repository integrity manifests, dispatch runtime/compiler code, the prior workflow inputs, and the review skill as evidence. Do not edit BACKLOG.md or design the fixes.",
+  "max_loops": 1,
+  "final_approver": "Boehm, Barry",
+  "anti_bias_mode": "disabled",
+  "output_mode": "inline",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "initial_prompt": "Read all of BACKLOG.md, focusing findings on BL-8 through BL-10. Attack from the fidelity/governance lens. Verify each stated incident against repository artifacts from the 2026-08-10 integrity repair and review dispatch. Find exaggeration, unsupported causality, status promotion, or violations of the backlog contract. Read-only. Every finding must quote BACKLOG.md and cite the defeating repository evidence."
+        },
+        {
+          "agent_name": "Wirth, Niklaus",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "initial_prompt": "Read all of BACKLOG.md, focusing findings on BL-8 through BL-10. Attack from mechanics/reference-integrity lens. Check duplicates, identifiers, exact runtime/report-contract terminology, and whether the problem descriptions are sufficient to reproduce later without prescribing a fix. Read-only. Every finding must quote BACKLOG.md and cite repository evidence."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "agents": [{
+        "agent_name": "van Lamsweerde, Axel",
+        "role": "writer",
+        "model": "gpt-5.6-sol",
+        "token_budget": 2200,
+        "initial_prompt": "Produce the single inline review.md in the exact review-skill table shape. Deduplicate attacker findings, drop unsupported claims, include exact frozen target path/hash pairs, and never list refuted findings. Do not write files."
+      }]
+    },
+    {
+      "group_id": "verifier",
+      "agents": [{
+        "agent_name": "Dijkstra, Edsger W.",
+        "role": "skeptic",
+        "model": "gpt-5.6-sol",
+        "token_budget": 1800,
+        "initial_prompt": "Verify every proposed finding literally against BACKLOG.md and cited repository evidence. Drop refuted findings. Require the exact review report tables, Coverage section, target path/hash pair, and change-request list."
+      }]
+    },
+    {
+      "group_id": "final_approval",
+      "agents": [{
+        "agent_name": "Boehm, Barry",
+        "role": "auditor",
+        "model": "gpt-5.6-terra",
+        "token_budget": 1000,
+        "initial_prompt": "Act only as dedicated final approver. Accept only if review.md follows the exact contract, includes the frozen BACKLOG.md path/hash, quotes every surviving finding, omits all refuted findings, and records coverage."
+      }]
+    }
+  ],
+  "connections": [
+    {"from": "attackers", "to": "synthesizer", "type": "sequential"},
+    {"from": "synthesizer", "to": "verifier", "type": "zig-zag", "loop_cap": 1},
+    {"from": "verifier", "to": "final_approval", "type": "sequential"}
+  ]
+}

@@ -1,35 +1,101 @@
 ledger_id: craft.cyberalchemy_orchestrator
-schema_ref: ../.claude/skills/craft/templates/ledger.schema.yml
+schema_ref: ../.codex/skills/craft/templates/ledger.schema.yml
 schema_version: 0.3.0
 status: candidate-local
 source_of_truth: .craft/ledger.yml
 human_view: CRAFT.md
 notes:
-  - Root Craft workspace initialized from AGENTS.md, README.md, OBLIGATIONS.md, and BACKLOG.md.
-  - Nested ledgers remain authoritative only for their own scopes and were not imported.
+  - Root Craft workspace refreshed from repository authority and status surfaces on 2026-08-10.
+  - Nested Craft ledgers remain authoritative only for their own scopes and are not imported.
+  - Draft and discovery feature packages are evidence surfaces, not automatically active execution contexts.
 
 indexes:
   by_id:
     CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT: contexts[0]
-    DESC-CYBERALCHEMY-ORCHESTRATOR-001: descriptions[0]
+    CTX-GAWI-PROGRAM: contexts[1]
+    CTX-ARL-L0-REVIEW: contexts[2]
+    CTX-BROKERED-LAUNCHER: contexts[3]
+    CTX-HOST-BUS-PHASE-A: contexts[4]
+    CTX-ACI-PROTOCOL-GOVERNANCE: contexts[5]
+    DESC-ROOT-002: descriptions[0]
+    DESC-GAWI-001: descriptions[1]
+    DESC-ARL-001: descriptions[2]
+    DESC-BROKERED-001: descriptions[3]
+    DESC-HOST-BUS-001: descriptions[4]
+    DESC-PROTOCOL-GOV-001: descriptions[5]
     DEF-GOVERNED-AGENT-WORK-001: definitions[0]
+    BLK-BROKERED-AUTHORITY-001: typed_items[0]
+    BLK-PHASE-A-OWNER-DECISION-001: typed_items[1]
+    ENA-HOST-BINDING-001: typed_items[2]
+    DEC-CUTOVER-GATE-001: decisions[0]
+    DEC-ACI-PROTOCOL-OWNERSHIP-001: decisions[1]
+    DEC-HOST-INPUT-BINDING-001: decisions[2]
+    DEC-REPOSITORY-LEVERAGE-001: decisions[3]
+    DEC-SKILL-CONTROL-PHASE1-001: decisions[4]
+    DEC-WORKER-B-SEQUENCE-001: decisions[5]
+    DEC-PHASE-A-BASELINE-001: decisions[6]
     GAP-WRITE-SIDE-CUTOVER-001: gaps[0]
     GAP-ORCH-CATEGORY-PROOF-001: gaps[1]
+    GAP-EG1-SOLE-WRITER-001: gaps[2]
+    GAP-D9-AUTHORITY-001: gaps[3]
+    GAP-T0-AUTOMATION-001: gaps[4]
     ART-CRAFT-LEDGER: artifacts[0]
     ART-CRAFT-VIEW: artifacts[1]
     ART-REPOSITORY-POLICY: artifacts[2]
     ART-PROJECT-README: artifacts[3]
     ART-PROJECT-OBLIGATIONS: artifacts[4]
     ART-PROJECT-BACKLOG: artifacts[5]
-  open_decisions: []
-  blocking_decisions: []
-  active_blockers: []
+    ART-GAWI-PLAN: artifacts[6]
+    ART-GAWI-WORKSTREAMS: artifacts[7]
+    ART-DECISIONS-INDEX: artifacts[8]
+    ART-ENUM-DRIFT-AUDIT: artifacts[9]
+    ART-PHASE2-SESSION: artifacts[10]
+    ART-ARL-WORK-PACK: artifacts[11]
+    ART-BROKERED-WORKSTREAM: artifacts[12]
+    ART-HOST-BUS-ROUTE: artifacts[13]
+    ART-PHASE-A-DECISION: artifacts[14]
+    ART-PROTOCOL-OWNERSHIP: artifacts[15]
+    ART-HOST-BINDING-DECISION: artifacts[16]
+    ART-LEVERAGE-DECISION: artifacts[17]
+    ART-SKILL-CONTROL-DECISION: artifacts[18]
+    ART-WORKER-B-DECISION: artifacts[19]
+    REL-ROOT-CONTAINS-GAWI: relations[0]
+    REL-GAWI-CONTAINS-ARL: relations[1]
+    REL-GAWI-CONTAINS-BROKERED: relations[2]
+    REL-GAWI-CONTAINS-HOST-BUS: relations[3]
+    REL-GAWI-CONTAINS-PROTOCOL: relations[4]
+    REL-BROKERED-BLOCKS-CONTEXT: relations[5]
+    REL-PHASE-A-DECISION-BLOCKS: relations[6]
+    REL-HOST-BINDING-ENABLES-ARL: relations[7]
+    REL-EG1-INFORMS-CUTOVER: relations[8]
+  open_decisions:
+    - DEC-CUTOVER-GATE-001
+    - DEC-PHASE-A-BASELINE-001
+  blocking_decisions:
+    - DEC-CUTOVER-GATE-001
+    - DEC-PHASE-A-BASELINE-001
+  active_blockers:
+    - BLK-BROKERED-AUTHORITY-001
+    - BLK-PHASE-A-OWNER-DECISION-001
   active_gaps:
     - GAP-WRITE-SIDE-CUTOVER-001
     - GAP-ORCH-CATEGORY-PROOF-001
+    - GAP-EG1-SOLE-WRITER-001
+    - GAP-D9-AUTHORITY-001
+    - GAP-T0-AUTOMATION-001
   next_moves:
     - context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-      next_move: Review this initial Craft baseline, then select one active gap or explicit workstream as the next child context.
+      next_move: Resolve DEC-CUTOVER-GATE-001 and keep the root status synchronized with the active infrastructure Plan.
+    - context_id: CTX-GAWI-PROGRAM
+      next_move: Advance only the child route whose authority and readiness gate are explicit; keep proposal-only fronts below implementation claims.
+    - context_id: CTX-ARL-L0-REVIEW
+      next_move: Run the pending independent review of the implementation-complete L0 work pack and record its receipt.
+    - context_id: CTX-BROKERED-LAUNCHER
+      next_move: Resolve governing authority before treating this active proposal as a binding execution route.
+    - context_id: CTX-HOST-BUS-PHASE-A
+      next_move: Obtain the owner decision in DEC-PHASE-A-BASELINE-001 before consequential Phase-A repair work proceeds.
+    - context_id: CTX-ACI-PROTOCOL-GOVERNANCE
+      next_move: Keep implementation claims gated behind specification, tests, and their own readiness evidence.
   artifacts_by_path:
     .craft/ledger.yml: ART-CRAFT-LEDGER
     CRAFT.md: ART-CRAFT-VIEW
@@ -37,6 +103,20 @@ indexes:
     README.md: ART-PROJECT-README
     OBLIGATIONS.md: ART-PROJECT-OBLIGATIONS
     BACKLOG.md: ART-PROJECT-BACKLOG
+    plans/governed-agent-work-infrastructure/PLAN.md: ART-GAWI-PLAN
+    plans/governed-agent-work-infrastructure/workstreams/README.md: ART-GAWI-WORKSTREAMS
+    docs/decisions/README.md: ART-DECISIONS-INDEX
+    vault/audit/ledger-enum-drift-finding.md: ART-ENUM-DRIFT-AUDIT
+    sessions/2026-07-22-1315-phase2-confirm-handoff.md: ART-PHASE2-SESSION
+    plans/governed-agent-work-infrastructure/workstreams/agent-reference-lineage-l0-work-pack.md: ART-ARL-WORK-PACK
+    plans/governed-agent-work-infrastructure/workstreams/brokered-agent-launcher-capability-bootstrap.md: ART-BROKERED-WORKSTREAM
+    plans/governed-agent-work-infrastructure/workstreams/host-bus-aci005-dispatch-route.md: ART-HOST-BUS-ROUTE
+    docs/decisions/phase-a-output-evidence-and-implementation-baseline.md: ART-PHASE-A-DECISION
+    docs/decisions/aci-protocol-governance-ownership.md: ART-PROTOCOL-OWNERSHIP
+    docs/decisions/host-agent-dispatch-input-binding.md: ART-HOST-BINDING-DECISION
+    docs/decisions/repository-leverage-priority.md: ART-LEVERAGE-DECISION
+    docs/decisions/skill-control-center-phase-1-scope.md: ART-SKILL-CONTROL-DECISION
+    docs/decisions/worker-b-execution-sequence.md: ART-WORKER-B-DECISION
 
 contexts:
   - context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
@@ -45,71 +125,90 @@ contexts:
     purpose: Keep agent work connected to the objectives, decisions, assumptions, actions, and evidence that make it reliable.
     stage: define
     gate: flag
-    next_move: Review this initial Craft baseline, then select one active gap or explicit workstream as the next child context.
-    owned_artifacts:
-      - ART-CRAFT-LEDGER
-      - ART-CRAFT-VIEW
-      - ART-REPOSITORY-POLICY
-      - ART-PROJECT-README
-      - ART-PROJECT-OBLIGATIONS
-      - ART-PROJECT-BACKLOG
+    next_move: Resolve DEC-CUTOVER-GATE-001 and keep the root status synchronized with the active infrastructure Plan.
+    owned_artifacts: [ART-CRAFT-LEDGER, ART-CRAFT-VIEW, ART-REPOSITORY-POLICY, ART-PROJECT-README, ART-PROJECT-OBLIGATIONS, ART-PROJECT-BACKLOG]
     links:
-      - label: Write-side cutover gap
-        target: GAP-WRITE-SIDE-CUTOVER-001
-        kind: row-id
-      - label: Category proof gap
-        target: GAP-ORCH-CATEGORY-PROOF-001
-        kind: row-id
-    notes: Initial root context; status remains flag until the operator confirms this baseline and chooses a bounded next context.
+      - {label: Active infrastructure program, target: CTX-GAWI-PROGRAM, kind: row-id}
+      - {label: Cutover gate decision, target: DEC-CUTOVER-GATE-001, kind: row-id}
+  - context_id: CTX-GAWI-PROGRAM
+    parent_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    title: Governed Agent Work Infrastructure
+    purpose: Coordinate the repository's decision-hygiene, agent-language, runtime, observability, control-center, and bounded implementation work under one active proposal-only Plan.
+    stage: plan
+    gate: flag
+    next_move: Advance only the child route whose authority and readiness gate are explicit; keep proposal-only fronts below implementation claims.
+    owned_artifacts: [ART-GAWI-PLAN, ART-GAWI-WORKSTREAMS, ART-DECISIONS-INDEX]
+    links:
+      - {label: ARL review, target: CTX-ARL-L0-REVIEW, kind: row-id}
+      - {label: Brokered launcher, target: CTX-BROKERED-LAUNCHER, kind: row-id}
+      - {label: Host BUS Phase A, target: CTX-HOST-BUS-PHASE-A, kind: row-id}
+      - {label: Protocol governance, target: CTX-ACI-PROTOCOL-GOVERNANCE, kind: row-id}
+  - context_id: CTX-ARL-L0-REVIEW
+    parent_id: CTX-GAWI-PROGRAM
+    title: Agent Reference Lineage L0 Review
+    purpose: Close the independent review still pending on the implementation-complete L0 work pack.
+    stage: review-audit
+    gate: flag
+    next_move: Run the pending independent review of the implementation-complete L0 work pack and record its receipt.
+    owned_artifacts: [ART-ARL-WORK-PACK, ART-HOST-BINDING-DECISION]
+  - context_id: CTX-BROKERED-LAUNCHER
+    parent_id: CTX-GAWI-PROGRAM
+    title: Brokered Agent Launcher Capability Bootstrap
+    purpose: Preserve the active proposal while its missing durable governing authority is resolved.
+    stage: blocked
+    gate: block
+    next_move: Resolve governing authority before treating this active proposal as a binding execution route.
+    owned_artifacts: [ART-BROKERED-WORKSTREAM]
+    links:
+      - {label: Authority blocker, target: BLK-BROKERED-AUTHORITY-001, kind: row-id}
+  - context_id: CTX-HOST-BUS-PHASE-A
+    parent_id: CTX-GAWI-PROGRAM
+    title: Host Binding to BUS Phase A
+    purpose: Govern closing review, output-evidence, implementation-baseline, and sequencing decisions for the Host Binding to BUS seam.
+    stage: review-audit
+    gate: block
+    next_move: Obtain the owner decision in DEC-PHASE-A-BASELINE-001 before consequential Phase-A repair work proceeds.
+    owned_artifacts: [ART-HOST-BUS-ROUTE, ART-PHASE-A-DECISION, ART-LEVERAGE-DECISION, ART-WORKER-B-DECISION]
+    links:
+      - {label: Pending owner decision, target: DEC-PHASE-A-BASELINE-001, kind: row-id}
+  - context_id: CTX-ACI-PROTOCOL-GOVERNANCE
+    parent_id: CTX-GAWI-PROGRAM
+    title: ACI Protocol Governance
+    purpose: Preserve the accepted ownership boundary for reusable protocol compilation without implying execution authority or implementation completion.
+    stage: design
+    gate: flag
+    next_move: Keep implementation claims gated behind specification, tests, and their own readiness evidence.
+    owned_artifacts: [ART-PROTOCOL-OWNERSHIP]
 
 artifacts:
-  - artifact_id: ART-CRAFT-LEDGER
-    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    path: .craft/ledger.yml
-    artifact_type: ledger-source
-    status: active
-    notes: Authoritative structured Craft state for the repository root.
-  - artifact_id: ART-CRAFT-VIEW
-    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    path: CRAFT.md
-    artifact_type: human-view
-    status: active
-    notes: Derived, linked navigation view of the root Craft ledger.
-  - artifact_id: ART-REPOSITORY-POLICY
-    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    path: AGENTS.md
-    artifact_type: governance-policy
-    status: active
-    notes: Repository agent policy and project objective boundary.
-  - artifact_id: ART-PROJECT-README
-    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    path: README.md
-    artifact_type: project-map
-    status: active
-    notes: Current claims, implemented surfaces, limitations, and operating map.
-  - artifact_id: ART-PROJECT-OBLIGATIONS
-    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    path: OBLIGATIONS.md
-    artifact_type: obligation-register
-    status: active
-    notes: Falsifiable targets; explicitly states that none are discharged.
-  - artifact_id: ART-PROJECT-BACKLOG
-    owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    path: BACKLOG.md
-    artifact_type: parked-candidates
-    status: active
-    notes: Candidate work not treated as committed or active by this ledger.
+  - {artifact_id: ART-CRAFT-LEDGER, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: .craft/ledger.yml, artifact_type: ledger-source, status: active}
+  - {artifact_id: ART-CRAFT-VIEW, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: CRAFT.md, artifact_type: human-view, status: active}
+  - {artifact_id: ART-REPOSITORY-POLICY, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: AGENTS.md, artifact_type: governance-policy, status: active}
+  - {artifact_id: ART-PROJECT-README, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: README.md, artifact_type: project-map, status: active}
+  - {artifact_id: ART-PROJECT-OBLIGATIONS, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: OBLIGATIONS.md, artifact_type: obligation-register, status: active}
+  - {artifact_id: ART-PROJECT-BACKLOG, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: BACKLOG.md, artifact_type: parked-candidates, status: active, notes: Artifact is available; its candidate contents remain parked rather than active work.}
+  - {artifact_id: ART-GAWI-PLAN, owner_context_id: CTX-GAWI-PROGRAM, path: plans/governed-agent-work-infrastructure/PLAN.md, artifact_type: root-plan, status: active}
+  - {artifact_id: ART-GAWI-WORKSTREAMS, owner_context_id: CTX-GAWI-PROGRAM, path: plans/governed-agent-work-infrastructure/workstreams/README.md, artifact_type: workstream-index, status: active}
+  - {artifact_id: ART-DECISIONS-INDEX, owner_context_id: CTX-GAWI-PROGRAM, path: docs/decisions/README.md, artifact_type: decision-index, status: active}
+  - {artifact_id: ART-ENUM-DRIFT-AUDIT, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: vault/audit/ledger-enum-drift-finding.md, artifact_type: audit, status: flag}
+  - {artifact_id: ART-PHASE2-SESSION, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: sessions/2026-07-22-1315-phase2-confirm-handoff.md, artifact_type: session-evidence, status: pass}
+  - {artifact_id: ART-ARL-WORK-PACK, owner_context_id: CTX-ARL-L0-REVIEW, path: plans/governed-agent-work-infrastructure/workstreams/agent-reference-lineage-l0-work-pack.md, artifact_type: work-pack, status: flag, notes: Implementation complete; independent review pending.}
+  - {artifact_id: ART-BROKERED-WORKSTREAM, owner_context_id: CTX-BROKERED-LAUNCHER, path: plans/governed-agent-work-infrastructure/workstreams/brokered-agent-launcher-capability-bootstrap.md, artifact_type: plan-workstream, status: blocked, notes: Active proposal but inert as binding route because authority is unknown.}
+  - {artifact_id: ART-HOST-BUS-ROUTE, owner_context_id: CTX-HOST-BUS-PHASE-A, path: plans/governed-agent-work-infrastructure/workstreams/host-bus-aci005-dispatch-route.md, artifact_type: operating-route, status: active}
+  - {artifact_id: ART-PHASE-A-DECISION, owner_context_id: CTX-HOST-BUS-PHASE-A, path: docs/decisions/phase-a-output-evidence-and-implementation-baseline.md, artifact_type: decision-record, status: block}
+  - {artifact_id: ART-PROTOCOL-OWNERSHIP, owner_context_id: CTX-ACI-PROTOCOL-GOVERNANCE, path: docs/decisions/aci-protocol-governance-ownership.md, artifact_type: decision-record, status: pass}
+  - {artifact_id: ART-HOST-BINDING-DECISION, owner_context_id: CTX-ARL-L0-REVIEW, path: docs/decisions/host-agent-dispatch-input-binding.md, artifact_type: decision-record, status: pass}
+  - {artifact_id: ART-LEVERAGE-DECISION, owner_context_id: CTX-HOST-BUS-PHASE-A, path: docs/decisions/repository-leverage-priority.md, artifact_type: decision-record, status: pass}
+  - {artifact_id: ART-SKILL-CONTROL-DECISION, owner_context_id: CTX-GAWI-PROGRAM, path: docs/decisions/skill-control-center-phase-1-scope.md, artifact_type: decision-record, status: pass}
+  - {artifact_id: ART-WORKER-B-DECISION, owner_context_id: CTX-HOST-BUS-PHASE-A, path: docs/decisions/worker-b-execution-sequence.md, artifact_type: decision-record, status: pass}
 
 descriptions:
-  - description_id: DESC-CYBERALCHEMY-ORCHESTRATOR-001
-    context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    description: The repository provides a working read-side control plane, append-only dispatch ledger, agent-pool selection, operational skills, mandatory launch hooks, and an opt-in local ACI/APT pilot; its confirm-gated write path is built but not cut over, while broader typing and knowledge-system claims remain candidate work.
-    status: active
-    evidence: ART-PROJECT-README
-    links:
-      - label: Project map
-        target: ART-PROJECT-README
-        kind: artifact-id
+  - {description_id: DESC-ROOT-002, context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, description: The repository has working read-side and governed-dispatch infrastructure, while production cutover, authority ownership, sole-writer proof, and broader formal claims remain bounded residue., status: active, evidence: ART-PROJECT-README}
+  - {description_id: DESC-GAWI-001, context_id: CTX-GAWI-PROGRAM, description: The active proposal-only root Plan is the single parent for agent-language research, runtime and ACI work, observability, control-center work, and bounded implementation slices., status: active, evidence: ART-GAWI-PLAN}
+  - {description_id: DESC-ARL-001, context_id: CTX-ARL-L0-REVIEW, description: The L0 work pack reports implementation complete but explicitly remains review pending., status: active, evidence: ART-ARL-WORK-PACK}
+  - {description_id: DESC-BROKERED-001, context_id: CTX-BROKERED-LAUNCHER, description: The launcher workstream is active proposal-only but cannot bind execution because durable governing authority was not found., status: active, evidence: ART-BROKERED-WORKSTREAM}
+  - {description_id: DESC-HOST-BUS-001, context_id: CTX-HOST-BUS-PHASE-A, description: Phase A has accepted sequencing and binding decisions but remains blocked on its output-evidence and implementation-baseline owner decision., status: active, evidence: ART-PHASE-A-DECISION}
+  - {description_id: DESC-PROTOCOL-GOV-001, context_id: CTX-ACI-PROTOCOL-GOVERNANCE, description: Ownership is accepted, while schemas, operations, implementation, and tests retain separate gates., status: active, evidence: ART-PROTOCOL-OWNERSHIP}
 
 definitions:
   - definition_id: DEF-GOVERNED-AGENT-WORK-001
@@ -118,41 +217,113 @@ definitions:
     statement: Agent work whose objective, authorization, assumptions, actions, and supporting evidence remain explicitly connected and reviewable across decomposition and handoff.
     status: candidate
     evidence: ART-REPOSITORY-POLICY
-    links:
-      - label: Repository policy
-        target: ART-REPOSITORY-POLICY
-        kind: artifact-id
 
-typed_items: []
-decisions: []
+typed_items:
+  - item_id: BLK-BROKERED-AUTHORITY-001
+    kind: blocker
+    base_type: authority_blocker
+    primary_lane: governance
+    source_id: ART-BROKERED-WORKSTREAM
+    target_id: CTX-BROKERED-LAUNCHER
+    status: active
+    refinement_status: refined
+    default_role: repository-owner
+    allowed_roles: [repository-owner, governance-reviewer]
+    delegation_route: decision-gate
+    requires_human: true
+    role_confidence: candidate
+    owner_ref: unresolved
+    role_notes: The source explicitly records unknown authority; a human owner decision is required.
+    closure_condition: A durable governing-authority decision or receipt names the owner and permitted binding scope.
+    evidence: ART-BROKERED-WORKSTREAM
+    decision_ref: none
+    reason: Active proposal status does not authorize execution.
+  - item_id: BLK-PHASE-A-OWNER-DECISION-001
+    kind: blocker
+    base_type: decision_blocker
+    primary_lane: governance
+    source_id: DEC-PHASE-A-BASELINE-001
+    target_id: CTX-HOST-BUS-PHASE-A
+    status: active
+    refinement_status: refined
+    default_role: repository-owner
+    allowed_roles: [repository-owner]
+    delegation_route: decision-gate
+    requires_human: true
+    role_confidence: active-local
+    owner_ref: DEC-PHASE-A-BASELINE-001
+    role_notes: The decision record explicitly blocks consequential F2 and F4-F6 work pending owner selection.
+    closure_condition: The repository owner selects output-evidence and implementation-baseline options with rationale.
+    evidence: ART-PHASE-A-DECISION
+    decision_ref: DEC-PHASE-A-BASELINE-001
+    reason: Consequential Phase-A work is explicitly blocked by the pending owner decision.
+  - item_id: ENA-HOST-BINDING-001
+    kind: enabler
+    base_type: authority_enabler
+    primary_lane: architecture
+    source_id: DEC-HOST-INPUT-BINDING-001
+    target_id: CTX-ARL-L0-REVIEW
+    status: pass
+    evidence: ART-HOST-BINDING-DECISION
+    reason: Accepted Option A authorizes the bounded host-workflow binding bridge used by the L0 lineage work.
+
+decisions:
+  - decision_id: DEC-CUTOVER-GATE-001
+    scope_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
+    decision_type: blocker
+    question: What evidence actually gates production write-side cutover?
+    description: README and the enum-drift audit frame EG-1 as a cutover keystone, while the Phase-2 session re-scopes it as blocking a veracity label rather than operation.
+    options: [EG-1-closure-gates-cutover, EG-1-only-gates-veracity, compose-separate-cutover-gate]
+    default_option: compose-separate-cutover-gate
+    selected: unresolved
+    rationale: The repository explicitly labels the conflict unresolved.
+    evidence: ART-PROJECT-README
+    status: active
+    blocking: true
+    impact: Production cutover remains disabled; read-only and already bounded work are not globally blocked.
+    owner: repository-owner
+    links:
+      - {label: Contradicting audit, target: ART-ENUM-DRIFT-AUDIT, kind: artifact-id}
+      - {label: Re-scoping session, target: ART-PHASE2-SESSION, kind: artifact-id}
+  - {decision_id: DEC-ACI-PROTOCOL-OWNERSHIP-001, scope_id: CTX-ACI-PROTOCOL-GOVERNANCE, decision_type: selection, question: "Which owner governs reusable ACI protocol compilation?", selected: ACI-Protocol-Governance, rationale: Preserves skill intent and confirmation/runtime authority boundaries while assigning deterministic compilation ownership., evidence: ART-PROTOCOL-OWNERSHIP, status: closed, blocking: false, impact: Ownership is settled; implementation remains separately gated., owner: repository-owner}
+  - {decision_id: DEC-HOST-INPUT-BINDING-001, scope_id: CTX-ARL-L0-REVIEW, decision_type: selection, question: "Which boundary makes downstream host-agent inputs durable enough for multi-stage topology?", selected: bounded-host-workflow-binding-bridge, rationale: Supplies the immediate host-observable binding without claiming complete provider input capture., evidence: ART-HOST-BINDING-DECISION, status: closed, blocking: false, impact: Authorizes the bounded local bridge and its explicit non-goals., owner: repository-owner}
+  - {decision_id: DEC-REPOSITORY-LEVERAGE-001, scope_id: CTX-HOST-BUS-PHASE-A, decision_type: selection, question: "Which high-leverage capabilities advance and in what order?", selected: host-binding-bus-then-ACI-005, rationale: Sequential work preserves shared authority and identity boundaries while obtaining executable feedback first., evidence: ART-LEVERAGE-DECISION, status: closed, blocking: false, impact: Phase-A closure precedes ACI-005 readiness and implementation., owner: repository-owner}
+  - {decision_id: DEC-SKILL-CONTROL-PHASE1-001, scope_id: CTX-GAWI-PROGRAM, decision_type: approval, question: "What scope is authorized for Skill Control Center Phase 1?", selected: read-only-draft-only, rationale: Delivers the bounded experiment without creating authoritative apply or benchmark-promotion power., evidence: ART-SKILL-CONTROL-DECISION, status: closed, blocking: false, impact: Read/draft Phase 1 may proceed; authoritative mutation remains deferred., owner: repository-owner}
+  - {decision_id: DEC-WORKER-B-SEQUENCE-001, scope_id: CTX-HOST-BUS-PHASE-A, decision_type: selection, question: "Which bounded unit follows BUS reveal proof without bypassing authority?", selected: close-Phase-A-then-ACI-005-then-SWU-ACI-008, rationale: Preserves opening barriers and uses a deterministic fake worker before real provider admission., evidence: ART-WORKER-B-DECISION, status: closed, blocking: false, impact: Provider CLI work remains deferred behind Phase A, ACI-005, and fake-worker proof., owner: repository-owner}
+  - decision_id: DEC-PHASE-A-BASELINE-001
+    scope_id: CTX-HOST-BUS-PHASE-A
+    decision_type: blocker
+    question: What counts as binding-output, and which implementation baseline governs the Phase-A repair?
+    description: The decision gate blocks F2 normative work and F4-F6 brownfield dispatch until the repository owner chooses both dimensions.
+    options: [terminal-response-plus-current-runtime, produced-file-receipt-plus-current-runtime, disable-binding-output, bootstrap-new-architecture-baseline]
+    default_option: terminal-response-plus-current-runtime
+    selected: unresolved
+    rationale: Recommended options exist, but the source status remains pending-owner-decision.
+    evidence: ART-PHASE-A-DECISION
+    status: active
+    blocking: true
+    impact: Consequential Phase-A repairs remain blocked; read-only inspection and proposal preparation may continue.
+    owner: repository-owner
 
 gaps:
-  - gap_id: GAP-WRITE-SIDE-CUTOVER-001
-    scope_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    summary: The confirm-gated write path is built but production cutover, sole-writer proof, generic provider launch, and related materialization remain incomplete.
-    severity: flag
-    treatment: plan
-    owner: operations
-    status: active
-    evidence: ART-PROJECT-README
-    links:
-      - label: Current implementation status
-        target: ART-PROJECT-README
-        kind: artifact-id
-  - gap_id: GAP-ORCH-CATEGORY-PROOF-001
-    scope_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    summary: OBL-E3 remains open; the orchestration language has not been proven to form the claimed category, and the claim may narrow to its sequential fragment.
-    severity: flag
-    treatment: defer
-    owner: research
-    status: active
-    evidence: ART-PROJECT-OBLIGATIONS
-    links:
-      - label: OBL-E3
-        target: ART-PROJECT-OBLIGATIONS
-        kind: artifact-id
+  - {gap_id: GAP-WRITE-SIDE-CUTOVER-001, scope_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, summary: Production write-side cutover and associated sole-writer/provider/materializer proof remain incomplete., severity: flag, treatment: plan, owner: operations, status: active, evidence: ART-PROJECT-README, links: [{label: Governing open decision, target: DEC-CUTOVER-GATE-001, kind: row-id}]}
+  - {gap_id: GAP-ORCH-CATEGORY-PROOF-001, scope_id: CTX-GAWI-PROGRAM, summary: OBL-E3 remains open; the orchestration language has not been proven to form the claimed category and may narrow to the sequential fragment., severity: flag, treatment: defer, owner: research, status: active, evidence: ART-PROJECT-OBLIGATIONS}
+  - {gap_id: GAP-EG1-SOLE-WRITER-001, scope_id: DEC-CUTOVER-GATE-001, summary: Two post-vocabulary close rows demonstrate an unaccounted write path, leaving EG-1 promotion-blocked and sole-writer proof incomplete., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-ENUM-DRIFT-AUDIT, links: [{label: Cutover interpretation decision, target: DEC-CUTOVER-GATE-001, kind: row-id}]}
+  - {gap_id: GAP-D9-AUTHORITY-001, scope_id: CTX-GAWI-PROGRAM, summary: Macro-to-micro work-context authority ownership remains CRITICAL with no repository gate., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-PROJECT-README}
+  - {gap_id: GAP-T0-AUTOMATION-001, scope_id: CTX-GAWI-PROGRAM, summary: The claim-probe-survival discipline runs manually, but its automated knowledge-machine loop is not built., severity: deferred, treatment: defer, owner: product, status: active, evidence: ART-GAWI-PLAN}
 
 route_handoffs: []
 receipts: []
-relations: []
+
+relations:
+  - {relation_id: REL-ROOT-CONTAINS-GAWI, source_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, target_id: CTX-GAWI-PROGRAM, type: contains, status: active, reason: Repository-owner authority places the work under one infrastructure Plan., evidence: ART-GAWI-PLAN}
+  - {relation_id: REL-GAWI-CONTAINS-ARL, source_id: CTX-GAWI-PROGRAM, target_id: CTX-ARL-L0-REVIEW, type: contains, status: active, reason: Workstream index places the L0 chain under the root Plan., evidence: ART-GAWI-WORKSTREAMS}
+  - {relation_id: REL-GAWI-CONTAINS-BROKERED, source_id: CTX-GAWI-PROGRAM, target_id: CTX-BROKERED-LAUNCHER, type: contains, status: active, reason: Root Plan directly indexes the brokered launcher workstream., evidence: ART-GAWI-PLAN}
+  - {relation_id: REL-GAWI-CONTAINS-HOST-BUS, source_id: CTX-GAWI-PROGRAM, target_id: CTX-HOST-BUS-PHASE-A, type: contains, status: active, reason: Workstream index records the active Host BUS route and Phase-A evidence., evidence: ART-GAWI-WORKSTREAMS}
+  - {relation_id: REL-GAWI-CONTAINS-PROTOCOL, source_id: CTX-GAWI-PROGRAM, target_id: CTX-ACI-PROTOCOL-GOVERNANCE, type: contains, status: active, reason: Accepted protocol ownership belongs to the infrastructure program., evidence: ART-PROTOCOL-OWNERSHIP}
+  - {relation_id: REL-BROKERED-BLOCKS-CONTEXT, source_id: BLK-BROKERED-AUTHORITY-001, target_id: CTX-BROKERED-LAUNCHER, type: blocks, status: active, reason: Missing governing authority keeps the route inert., evidence: ART-BROKERED-WORKSTREAM}
+  - {relation_id: REL-PHASE-A-DECISION-BLOCKS, source_id: BLK-PHASE-A-OWNER-DECISION-001, target_id: CTX-HOST-BUS-PHASE-A, type: blocks, status: active, reason: Source decision gate blocks consequential repair work., evidence: ART-PHASE-A-DECISION}
+  - {relation_id: REL-HOST-BINDING-ENABLES-ARL, source_id: DEC-HOST-INPUT-BINDING-001, target_id: CTX-ARL-L0-REVIEW, type: enables, status: resolved, reason: Accepted binding Option A supplies the authority boundary used by the L0 chain., evidence: ART-HOST-BINDING-DECISION}
+  - {relation_id: REL-EG1-INFORMS-CUTOVER, source_id: GAP-EG1-SOLE-WRITER-001, target_id: DEC-CUTOVER-GATE-001, type: informs, status: active, reason: EG-1 evidence is one side of the unresolved cutover interpretation., evidence: ART-ENUM-DRIFT-AUDIT}
+
 recomposition: []

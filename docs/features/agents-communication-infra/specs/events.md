@@ -621,6 +621,67 @@ worker epoch. Completion alone does not prove an official bus publication.
 
 **Consumers:** Attempt reducer; parent receipt verifier; retry policy.
 
+## host_workflow.terminal_response_committed
+
+**Wire name:** `host_workflow.terminal_response_committed`
+**Produced by:** [CommitHostTerminalResponse](operations.md#commithostterminalresponse)
+**Transition:** bound host workflow turn `running -> completed|failed|cancelled|unknown`
+
+**Payload:** `dispatch_id`, `group_id`, `seat_id`, `turn_ordinal`, `completion_kind`,
+`artifact_id`, `content_hash`, `size_bytes`, receipt version, scoped idempotency key and current
+binding identity. The artifact metadata and exact bytes are durable before this event is
+acknowledged.
+
+**Invariants:** the producer tuple resolves to the same confirmed parent dispatch and active turn;
+the artifact is a [HostTerminalResponseArtifact](domain.md#hostterminalresponseartifact); an
+identical retry returns the original event/receipt; identity, completion-kind, digest or size drift
+conflicts. This event does not by itself grant a consumer visibility or launch authority.
+
+**Consumers:** host workflow reducer; connection handoff workflow; downstream input materializer;
+artifact/receipt verifier.
+
+## host_workflow.terminal_outcome_recorded
+
+**Wire name:** `host_workflow.terminal_outcome_recorded`
+**Produced by:** [RecordHostWorkflowTerminalOutcome](operations.md#recordhostworkflowterminaloutcome)
+
+**Payload:** bound producer tuple, one of `failed|cancelled|unknown`, reason/evidence reference and
+current binding identity. It carries no response artifact and cannot satisfy an L0 required slot.
+
+## host_workflow.input_materialized
+
+**Wire name:** `host_workflow.input_materialized`
+**Produced by:** [MaterializeHostWorkflowInput](operations.md#materializehostworkflowinput)
+
+**Payload:** dispatch and target-turn tuple, mapping ID/version, source terminal-response ID,
+payload artifact ID/hash/size, slot name/ordinal, visibility-policy reference, canonical manifest
+digest and binding candidate digest. Unique by `(mapping_id,mapping_version,target_turn)`.
+
+**Consumers:** host workflow scheduler; binding verifier; restart reducer.
+
+## host_workflow.turn_launch_authorized
+
+**Wire name:** `host_workflow.turn_launch_authorized`
+**Produced by:** [AuthorizeHostWorkflowTurnLaunch](operations.md#authorizehostworkflowturnlaunch)
+
+**Payload:** target turn, mapping/manifest/binding identities and digests, verified prerequisite
+heads and unique launch-intent ID. It commits atomically with the unclaimed launch intent and is
+unique per target turn. Reconciliation may claim the intent once; replay never creates another.
+
+## host_workflow.turn_started
+
+**Wire name:** `host_workflow.turn_started`
+
+Accepted only as the observation of the unique authorized launch intent for the same target turn
+and binding digest. It cannot exist without `host_workflow.turn_launch_authorized`.
+
+## host_workflow.turn_superseded
+
+**Wire name:** `host_workflow.turn_superseded`
+
+Records authorized replacement of a nonterminal consumer turn or its confirmed mapping. It advances
+the supersession head, invalidates stale materializations and prevents their launch CAS.
+
 ## attempt.failed
 
 **Wire name:** `attempt.failed`  

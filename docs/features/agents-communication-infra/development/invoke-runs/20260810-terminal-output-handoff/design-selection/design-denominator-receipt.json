@@ -1,0 +1,273 @@
+{
+  "authored_concern_ids": [
+    "authored:authority-trust",
+    "authored:failure-compensation",
+    "authored:integration-versioning",
+    "authored:migration-rollout",
+    "authored:persistence-concurrency",
+    "authored:security-abuse",
+    "authored:state-event",
+    "authored:validation"
+  ],
+  "denominator_signal_ids": [
+    "authored:authority-trust",
+    "authored:failure-compensation",
+    "authored:integration-versioning",
+    "authored:migration-rollout",
+    "authored:persistence-concurrency",
+    "authored:security-abuse",
+    "authored:state-event",
+    "authored:validation",
+    "signal:acceptance-readiness-claim:owner-decisions-accepted",
+    "signal:compatibility:path-binding-to-owned-artifact",
+    "signal:effect:launch-downstream-seat",
+    "signal:interface:downstream-workflow-input",
+    "signal:interface:host-terminal-response",
+    "signal:normative-rule:downstream-launch-after-materialization",
+    "signal:normative-rule:exact-response-only",
+    "signal:quality-claim:restart-safe-materialization",
+    "signal:store:host-workflow-journal",
+    "signal:store:terminal-response-artifact-store",
+    "signal:writer:host-workflow-service",
+    "signal:writer:terminal-response-committer"
+  ],
+  "detector_id": "invoke-design-scope-extractor",
+  "detector_owner": "spellcraft",
+  "detector_version": "1.0.0",
+  "diagnostics": [],
+  "extracted_signals": [
+    {
+      "attributes": {
+        "evidence_state": "authored-complete",
+        "selector": "D1 Option A and D2 Option A"
+      },
+      "signal_class": "acceptance-readiness-claim",
+      "signal_id": "signal:acceptance-readiness-claim:owner-decisions-accepted",
+      "source_digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8",
+      "source_selector": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md"
+    },
+    {
+      "attributes": {
+        "new_contract": "host-committed exact terminal response artifact reference",
+        "old_contract": "terminal producer plus caller-supplied path and digest"
+      },
+      "signal_class": "compatibility",
+      "signal_id": "signal:compatibility:path-binding-to-owned-artifact",
+      "source_digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8",
+      "source_selector": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md"
+    },
+    {
+      "attributes": {
+        "external": false,
+        "privileged": true,
+        "reversible": false
+      },
+      "signal_class": "effect",
+      "signal_id": "signal:effect:launch-downstream-seat",
+      "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083",
+      "source_selector": "docs/features/agents-communication-infra/specs/operations.md"
+    },
+    {
+      "attributes": {
+        "contract_ref": "WorkflowInputManifest@1",
+        "direction": "outbound",
+        "kind": "versioned-materialized-input-contract",
+        "peer": "consumer-seat"
+      },
+      "signal_class": "interface",
+      "signal_id": "signal:interface:downstream-workflow-input",
+      "source_digest": "3a20f4749ee5fd0eb85ddae3b923d14d040a752691c487812857dc462d67f931",
+      "source_selector": "docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md"
+    },
+    {
+      "attributes": {
+        "contract_ref": "HostTerminalResponseArtifact@1",
+        "direction": "inbound",
+        "kind": "authenticated-host-observation-contract",
+        "peer": "host-runtime"
+      },
+      "signal_class": "interface",
+      "signal_id": "signal:interface:host-terminal-response",
+      "source_digest": "5ba53588eda61350a3a1d571db2a75b684fb7a01a5a910730cfaecab3aabe227",
+      "source_selector": "docs/features/agents-communication-infra/specs/interfaces.md"
+    },
+    {
+      "attributes": {
+        "enforcement_hint": "do not create a launchable binding before producer artifact acceptance",
+        "object": "verified-input-manifest",
+        "subject": "downstream-consumer-launch",
+        "verb": "requires-terminal-state"
+      },
+      "signal_class": "normative-rule",
+      "signal_id": "signal:normative-rule:downstream-launch-after-materialization",
+      "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083",
+      "source_selector": "docs/features/agents-communication-infra/specs/operations.md"
+    },
+    {
+      "attributes": {
+        "enforcement_hint": "reject arbitrary paths and artifacts not committed for the producer turn",
+        "object": "binding-output-source",
+        "subject": "accepted-terminal-response-artifact",
+        "verb": "authorizes"
+      },
+      "signal_class": "normative-rule",
+      "signal_id": "signal:normative-rule:exact-response-only",
+      "source_digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8",
+      "source_selector": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md"
+    },
+    {
+      "attributes": {
+        "required": true,
+        "source_kind": "accepted-design-requirement",
+        "threshold_or_tradeoff": "replay yields one producer evidence record, one binding, and the same digests without duplicate launch"
+      },
+      "signal_class": "quality-claim",
+      "signal_id": "signal:quality-claim:restart-safe-materialization",
+      "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083",
+      "source_selector": "docs/features/agents-communication-infra/specs/operations.md"
+    },
+    {
+      "attributes": {
+        "authority": "current Python SQLite runtime",
+        "data_classes": [
+          "turn-state",
+          "artifact-receipt",
+          "binding",
+          "delivery-state"
+        ],
+        "writers": [
+          "host-workflow-service"
+        ]
+      },
+      "signal_class": "store",
+      "signal_id": "signal:store:host-workflow-journal",
+      "source_digest": "a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f",
+      "source_selector": "implementations/server/runtime/service.py"
+    },
+    {
+      "attributes": {
+        "authority": "host workflow runtime",
+        "data_classes": [
+          "content-addressed-response-bytes",
+          "producer-turn-evidence",
+          "source-to-slot-mapping",
+          "manifest",
+          "binding"
+        ],
+        "writers": [
+          "terminal-response-committer"
+        ]
+      },
+      "signal_class": "store",
+      "signal_id": "signal:store:terminal-response-artifact-store",
+      "source_digest": "36510d07ffe24ca2960fa58e8aa97540eb04436423bbbb893c2614cf90c820ad",
+      "source_selector": "docs/features/agents-communication-infra/specs/domain.md"
+    },
+    {
+      "attributes": {
+        "concurrency": "SQLite transaction boundary and existing binding uniqueness constraints",
+        "targets": [
+          "host-workflow-journal"
+        ]
+      },
+      "signal_class": "writer",
+      "signal_id": "signal:writer:host-workflow-service",
+      "source_digest": "a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f",
+      "source_selector": "implementations/server/runtime/service.py"
+    },
+    {
+      "attributes": {
+        "concurrency": "idempotent by producer turn and digest; divergent duplicate is rejected",
+        "targets": [
+          "terminal-response-artifact-store",
+          "host-workflow-journal"
+        ]
+      },
+      "signal_class": "writer",
+      "signal_id": "signal:writer:terminal-response-committer",
+      "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083",
+      "source_selector": "docs/features/agents-communication-infra/specs/operations.md"
+    }
+  ],
+  "inspected_selectors": [
+    {
+      "path": "docs/decisions/host-agent-dispatch-input-binding.md",
+      "selector": "docs/decisions/host-agent-dispatch-input-binding.md",
+      "source_digest": "e072df56f066ddb19e42c9cf11537a1ffa9ee639d25ca5cdcc564510fec7670d"
+    },
+    {
+      "path": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md",
+      "selector": "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md",
+      "source_digest": "a03b381b4d9aba3a36449a942a276ff05a72a698713a0a5b520e23b5e229d8d8"
+    },
+    {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-f/host-workflow-binding-receipt.md",
+      "selector": "docs/features/agent-provenance-telemetry/integration/stage-f/host-workflow-binding-receipt.md",
+      "source_digest": "380d5b74566d826256d1edda7a2bbee14e6b356d4b1c9715d2968cf16dabcfe3"
+    },
+    {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md",
+      "selector": "docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md",
+      "source_digest": "3a20f4749ee5fd0eb85ddae3b923d14d040a752691c487812857dc462d67f931"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/SPEC.md",
+      "selector": "docs/features/agents-communication-infra/specs/SPEC.md",
+      "source_digest": "664d99fb7c1cbf5a2838c6c9968316a728e172bb23834573c218adc8a6933f1c"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/domain.md",
+      "selector": "docs/features/agents-communication-infra/specs/domain.md",
+      "source_digest": "36510d07ffe24ca2960fa58e8aa97540eb04436423bbbb893c2614cf90c820ad"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/events.md",
+      "selector": "docs/features/agents-communication-infra/specs/events.md",
+      "source_digest": "abf55c22ea122c75308becb07f73eb59047b10eeb9b9b467c68c5a8de27c9330"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/interfaces.md",
+      "selector": "docs/features/agents-communication-infra/specs/interfaces.md",
+      "source_digest": "5ba53588eda61350a3a1d571db2a75b684fb7a01a5a910730cfaecab3aabe227"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/operations.md",
+      "selector": "docs/features/agents-communication-infra/specs/operations.md",
+      "source_digest": "1ec4ba4c1cdb24cabfb9df8cb7c005a430ebf7fa841d67b32256c31742c3a083"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/persistence-and-replay.md",
+      "selector": "docs/features/agents-communication-infra/specs/persistence-and-replay.md",
+      "source_digest": "f7d9cba600978b6797ff342042741b8b0a1bd948cb15e5c6fcff7b3463fae0ff"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/rules.md",
+      "selector": "docs/features/agents-communication-infra/specs/rules.md",
+      "source_digest": "84b64da3b27e1ab977c1d19900959c6df92afd999717c852fb9580108c685d6d"
+    },
+    {
+      "path": "docs/features/agents-communication-infra/specs/states.md",
+      "selector": "docs/features/agents-communication-infra/specs/states.md",
+      "source_digest": "002d019350b35ab667e969defa6186f4bcba3c48db692e8c5af440e60ff0692c"
+    },
+    {
+      "path": "implementations/server/runtime/dispatch_workflow.py",
+      "selector": "implementations/server/runtime/dispatch_workflow.py",
+      "source_digest": "d5ebba43dfd296ee5fdcff4a886e550a431403ed3acc7143c8c7e4961f4a6449"
+    },
+    {
+      "path": "implementations/server/runtime/service.py",
+      "selector": "implementations/server/runtime/service.py",
+      "source_digest": "a80574d71191d871013387cfb35f883ae28229dad6f2f9c43309a0c1efcbf11f"
+    }
+  ],
+  "manifest_authored_by": "invoke-design-author-terminal-output-handoff",
+  "manifest_id": "terminal-output-handoff-design-scope-20260810",
+  "manifest_input_digest": "df6bc9fa9de945ad12d5fd3cb4e75c27aac139ff6c95329642f2db4ebd04e82c",
+  "missing_detector_inputs": [],
+  "receipt_digest": "995b9e05df80f39290dfdde21e37cd4d00d8840dc5410422d8142833c4d0a2bb",
+  "schema_version": "1.0.0",
+  "unbound_signal_ids": [],
+  "validator_owner": "invoke-design-selection-validator",
+  "verdict": "pass"
+}

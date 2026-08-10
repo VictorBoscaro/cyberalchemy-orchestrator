@@ -240,6 +240,33 @@ stateDiagram-v2
 | ATT-I9 | Adapter translation/observation cannot directly accept state. | `adapterOutput => commandInput; journalWriterOnly(transition)` |
 | ATT-I10 | Start eligibility is protected against concurrent close/cancel by prerequisite heads. | `startAccepted => all prerequisiteHeads matched atomically` |
 
+## HostWorkflowTurnLifecycle
+
+This bounded lifecycle governs host-managed workflow turns that produce inputs for later seats. It
+does not replace [AttemptLifecycle](#attemptlifecycle).
+
+```mermaid
+stateDiagram-v2
+    [*] --> bound
+    bound --> running : host_workflow.turn_started
+    running --> completed : host_workflow.terminal_response_committed
+    running --> failed : host_workflow.terminal_outcome_recorded [failed]
+    running --> cancelled : host_workflow.terminal_outcome_recorded [cancelled]
+    running --> unknown : host_workflow.terminal_outcome_recorded [unknown]
+    bound --> superseded : host_workflow.turn_superseded
+    running --> superseded : host_workflow.turn_superseded
+```
+
+| ID | Invariant | Formal |
+|---|---|---|
+| HWT-I1 | A completed turn has exactly one producer-turn evidence record and receipt; other terminals have none unless separately observed bytes are modeled by a later version. | `completed(turn) => count(HostTerminalResponseArtifact(turn)) = 1; failed|cancelled|unknown => count = 0` |
+| HWT-I2 | Completed state and response-evidence acceptance commit together; other terminal states commit with their outcome fact. | `completed <=> terminalResponseCommit; otherTerminal <=> terminalOutcomeRecorded` |
+| HWT-I3 | A required downstream slot is not satisfied by terminality alone. | `slotSatisfied(sourceTurn) => verified(HostTerminalResponseReceipt(sourceTurn))` |
+| HWT-I4 | A consumer remains non-launchable until its complete ordered manifest and binding verify. | `launchable(consumerTurn) => complete(requiredSlots) and verified(manifest,binding)` |
+| HWT-I5 | Late output cannot revive a cancelled or superseded consumer. | `terminal(consumer) or superseded(consumer) => not launchable(consumer)` |
+| HWT-I6 | L0 launch requires one active mapping, one verified manifest entry and one binding for the target turn. | `launchable(target) => cardinality(mapping,slot,manifestEntry,binding)=1` |
+| HWT-I7 | Launch acceptance checks current workflow, consumer, mapping, manifest, binding, cancellation and supersession heads. | `launchAuthorized => prerequisiteHeadsMatch` |
+
 ## Deferred lifecycle extensions
 
 Detailed pause/human gate, replacement, abstention, sealed voting, multiple deliberation rounds and

@@ -1,0 +1,296 @@
+{
+  "concerns": [
+    {
+      "concern_id": "concern:authority",
+      "disposition": "required",
+      "output_id": "architecture:authority-trust",
+      "ownership": {
+        "accountable_owner": "host-workflow-authority-owner",
+        "artifact_owner": "invoke-design-author",
+        "contributing_owners": [
+          "aci-lifecycle-owner",
+          "runtime-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md",
+          "docs/features/agents-communication-infra/specs/operations.md",
+          "phase-a-output-evidence-and-implementation-baseline.md#decision-d1"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "authority",
+      "rationale": "Only host-owned accepted terminal bytes may establish producer attribution.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:authority-trust",
+        "signal:effect:launch-downstream-seat",
+        "signal:normative-rule:exact-response-only"
+      ]
+    },
+    {
+      "concern_id": "concern:security",
+      "disposition": "required",
+      "output_id": "architecture:security-abuse",
+      "ownership": {
+        "accountable_owner": "security-risk-owner",
+        "artifact_owner": "invoke-design-author",
+        "contributing_owners": [
+          "runtime-owner",
+          "host-workflow-authority-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "docs/features/agents-communication-infra/specs/interfaces.md",
+          "host-workflow-binding-receipt.md"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "security",
+      "rationale": "Caller-supplied paths, forged producer identity, and digest substitution are explicit negative cases.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:security-abuse",
+        "signal:interface:host-terminal-response"
+      ]
+    },
+    {
+      "concern_id": "concern:state-event",
+      "disposition": "required",
+      "output_id": "architecture:state-event",
+      "ownership": {
+        "accountable_owner": "aci-lifecycle-owner",
+        "artifact_owner": "invoke-design-author",
+        "contributing_owners": [
+          "runtime-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "docs/features/agents-communication-infra/specs/operations.md",
+          "specs/operations.md"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "state-event",
+      "rationale": "Artifact acceptance, handoff publication, delivery, and downstream readiness form a guarded lifecycle.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:state-event",
+        "signal:normative-rule:downstream-launch-after-materialization"
+      ]
+    },
+    {
+      "concern_id": "concern:persistence",
+      "disposition": "required",
+      "output_id": "architecture:persistence-concurrency",
+      "ownership": {
+        "accountable_owner": "runtime-persistence-owner",
+        "artifact_owner": "invoke-design-author",
+        "contributing_owners": [
+          "aci-lifecycle-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "docs/features/agents-communication-infra/specs/domain.md",
+          "docs/features/agents-communication-infra/specs/operations.md",
+          "implementations/server/runtime/service.py"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "persistence",
+      "rationale": "Bytes, receipts, bindings, and delivery state must commit atomically and replay idempotently.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:persistence-concurrency",
+        "signal:store:host-workflow-journal",
+        "signal:store:terminal-response-artifact-store",
+        "signal:writer:host-workflow-service",
+        "signal:writer:terminal-response-committer"
+      ]
+    },
+    {
+      "concern_id": "concern:failure",
+      "disposition": "required",
+      "output_id": "architecture:failure-compensation",
+      "ownership": {
+        "accountable_owner": "host-workflow-owner",
+        "artifact_owner": "invoke-design-author",
+        "contributing_owners": [
+          "runtime-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "specs/operations.md"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "failure",
+      "rationale": "Crash boundaries and partial publication must fail closed without duplicate downstream launch.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:failure-compensation"
+      ]
+    },
+    {
+      "concern_id": "concern:integration",
+      "disposition": "required",
+      "output_id": "architecture:integration-versioning",
+      "ownership": {
+        "accountable_owner": "host-binding-interface-owner",
+        "artifact_owner": "invoke-design-author",
+        "contributing_owners": [
+          "runtime-owner",
+          "aci-lifecycle-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md",
+          "docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md",
+          "mandatory-host-wrapper.md",
+          "specs/operations.md"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "integration",
+      "rationale": "The bounded Stage F bridge and future ACI materializer must share a versioned artifact reference without claiming equivalence.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:integration-versioning",
+        "signal:compatibility:path-binding-to-owned-artifact",
+        "signal:interface:downstream-workflow-input"
+      ]
+    },
+    {
+      "concern_id": "concern:migration",
+      "disposition": "required",
+      "output_id": "architecture:migration-rollout",
+      "ownership": {
+        "accountable_owner": "runtime-migration-owner",
+        "artifact_owner": "invoke-design-author",
+        "contributing_owners": [
+          "host-binding-interface-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "phase-a-output-evidence-and-implementation-baseline.md"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "migration",
+      "rationale": "Existing path-based binding-output acceptance must be fenced and replaced without silently admitting legacy artifacts.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:migration-rollout"
+      ]
+    },
+    {
+      "concern_id": "concern:performance",
+      "disposition": "required",
+      "output_id": "architecture:quality",
+      "ownership": {
+        "accountable_owner": "service-owner",
+        "artifact_owner": "architecture-owner",
+        "contributing_owners": [
+          "architecture-owner",
+          "plan-work-pack-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "docs/features/agents-communication-infra/specs/operations.md"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "performance",
+      "rationale": "performance disposition follows normalized extracted signals",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "signal:quality-claim:restart-safe-materialization"
+      ]
+    },
+    {
+      "concern_id": "concern:validation",
+      "disposition": "required",
+      "output_id": "validation-contracts",
+      "ownership": {
+        "accountable_owner": "design-validation-owner",
+        "artifact_owner": "plan-work-pack-owner",
+        "contributing_owners": [
+          "runtime-owner",
+          "aci-lifecycle-owner"
+        ],
+        "validator_owner": "invoke-design-selection-validator"
+      },
+      "predicate_evidence": {
+        "detector_negative": false,
+        "evidence_selectors": [
+          "docs/decisions/phase-a-output-evidence-and-implementation-baseline.md",
+          "phase-a-output-evidence-and-implementation-baseline.md"
+        ],
+        "required_predicate": true
+      },
+      "primary_class": "validation",
+      "rationale": "Positive replay and negative attribution witnesses are required before implementation acceptance.",
+      "revisit_condition": null,
+      "selected": true,
+      "signal_ids": [
+        "authored:validation",
+        "signal:acceptance-readiness-claim:owner-decisions-accepted"
+      ]
+    }
+  ],
+  "denominator_receipt_digest": "995b9e05df80f39290dfdde21e37cd4d00d8840dc5410422d8142833c4d0a2bb",
+  "diagnostics": [],
+  "evidence_state": "design-validator-pass",
+  "fixed_point": true,
+  "manifest_id": "terminal-output-handoff-design-scope-20260810",
+  "manifest_input_digest": "df6bc9fa9de945ad12d5fd3cb4e75c27aac139ff6c95329642f2db4ebd04e82c",
+  "pass_1_digest": "115c25fa07c1a29d8d7f968519a32318af22094dc85cdf3b4c2a0e6e1509a90a",
+  "pass_2_digest": "115c25fa07c1a29d8d7f968519a32318af22094dc85cdf3b4c2a0e6e1509a90a",
+  "result_digest": "6edca5f401752ee7d9f6f417ec77b42bf8e6fe95345fb97510959ef7b2184588",
+  "schema_version": "1.0.0",
+  "selected_outputs": [
+    "architecture",
+    "architecture:authority-trust",
+    "architecture:failure-compensation",
+    "architecture:integration-versioning",
+    "architecture:migration-rollout",
+    "architecture:persistence-concurrency",
+    "architecture:quality",
+    "architecture:security-abuse",
+    "architecture:state-event",
+    "validation-contracts"
+  ],
+  "verdict": "pass"
+}

@@ -1,0 +1,91 @@
+{
+  "dispatch_id": "2026-08-10-review-next-path-reconciliation",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Revisar adversarialmente se reconciliar a linguagem legacy, ACI/APT e RWO é o melhor próximo passo antes de planejar o fechamento de OBL-E3 ou a implementação do RWO.",
+  "context": "A proposta sob revisão recomenda uma discovery delimitada que inventarie os três modelos, estabeleça seus mapeamentos, audite o que o sibling Lean já prova e selecione o modelo canônico antes de criar um plano. O corpus também contém uma prioridade anteriormente aceita para Host Binding/BUS e ACI-005, uma OBL-E3 ainda declarada como principal alvo formal e um RWO proposal-only. A revisão deve determinar se a reconciliação é necessária, proporcional e realmente anterior às alternativas.",
+  "max_loops": 1,
+  "final_approver": "Parnas, David",
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "agent_name": "Bénabou, Jean",
+          "initial_prompt": "Ataque a proposta de reconciliação primeiro pela lente exclusiva de fidelidade formal e governança. Leia integralmente OBLIGATIONS.md, lean-formalization/README.md, docs/features/recursive-work-orchestrator/DESIGN.md, docs/discovery/workflow-graph/README.md, docs/decisions/repository-leverage-priority.md, README.md e plans/governed-agent-work-infrastructure/PLAN.md. Verifique se a proposta descreve corretamente o que já foi provado, se inventa uma decisão desnecessária, se confunde modelos ou níveis e se contradiz autoridades vigentes. Para cada finding, cite arquivo e trecho literal, atribua severidade e proponha uma correção curta. Não altere arquivos."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "agent_name": "Lamport, Leslie",
+          "initial_prompt": "Ataque a proposta de reconciliação primeiro pela lente exclusiva de operabilidade, prioridade e custo de oportunidade. Leia integralmente OBLIGATIONS.md, lean-formalization/README.md, docs/features/recursive-work-orchestrator/DESIGN.md, docs/discovery/workflow-graph/README.md, docs/decisions/repository-leverage-priority.md, README.md e plans/governed-agent-work-infrastructure/PLAN.md. Teste se a discovery proposta possui decisão, escopo, saída e critério de parada suficientes; compare-a com formalização imediata e avanço do produto; procure trabalho duplicado, análise sem consequência e conflito com prioridades aceitas. Para cada finding, cite arquivo e trecho literal, atribua severidade e proponha uma correção curta. Não altere arquivos."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesis",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "agent_name": "Boehm, Barry",
+          "initial_prompt": "Receba os ataques independentes, confronte-os com todo o corpus e produza o único review.md inline. Elimine duplicações, ordene findings por severidade e mantenha somente change requests sustentados por citações literais. Além dos findings por artefato, escreva a seção Coverage, verificando que ambos os ataques cobriram todo o corpus pelas lentes declaradas. Conclua se a proposta deve ser KEEP ou FIX e diga qual caminho de ação sobreviveu melhor à revisão. Não persista arquivos nem aplique correções."
+        }
+      ]
+    },
+    {
+      "group_id": "verification",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Capucci, Matteo",
+          "initial_prompt": "Verifique adversarialmente cada finding da síntese contra o corpus literal. Refute findings que extrapolem a evidência, confundam prova matemática com implementação, tratem proposal-only como decisão ou ignorem a prioridade aceita existente. Findings refutados devem ser removidos, não suavizados. Exija arquivo, citação literal, severidade defensável e correção proporcional. Não altere arquivos."
+        }
+      ]
+    },
+    {
+      "group_id": "approval",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1200,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Atue exclusivamente como aprovador independente. Não gere novos findings e não reescreva o relatório. Aprove somente se todo finding sobrevivente citar o artefato, os findings refutados tiverem sido removidos, a Coverage cobrir todos os alvos e lentes, e a conclusão responder se reconciliação primeiro é realmente o melhor próximo passo. Caso contrário, rejeite indicando a condição exata que falhou."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "attackers",
+      "to": "synthesis",
+      "type": "sequential"
+    },
+    {
+      "from": "synthesis",
+      "to": "verification",
+      "type": "zig-zag",
+      "loop_cap": 2
+    },
+    {
+      "from": "verification",
+      "to": "approval",
+      "type": "sequential"
+    }
+  ]
+}

@@ -9,7 +9,9 @@ durable effect intents and is never repeated by replay.
 The canonical operation registry for this feature is limited to
 `ConfirmRuntimeDispatch`, `AcceptRuntimeCommand`, `StartAgentAttempt`,
 `PublishBusContribution`, `VerifyPublicationReceipt`, `CloseCollection`, `PublishRevealManifest`,
-`MaterializeAuthorizedPeerInput`, `CommitGroupResult`, `CancelRun`, and
+`MaterializeAuthorizedPeerInput`, `CommitGroupResult`, `CommitHostTerminalResponse`,
+`RecordHostWorkflowTerminalOutcome`, `MaterializeHostWorkflowInput`,
+`AuthorizeHostWorkflowTurnLaunch`, `CancelRun`, and
 `RecordUsageObservation`. Named “internal transition” sections below decompose
 those operations for testability; they are not additional registry operations.
 
@@ -772,6 +774,82 @@ outside this rule and require separately versioned confirmed profiles.
 - Explicit dissent remains a valid committed group result; its run-level classification is decided
   only by the internal `ElectRunTerminal` transition.
 
+## CommitHostTerminalResponse
+
+**Type:** Operation (mutation)
+**Actor:** Host workflow runtime
+**Triggers:** The host observes response bytes for a successfully completed authenticated bound workflow turn
+
+### Input
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `dispatch_id`, `group_id`, `seat_id`, `turn_ordinal` | identity tuple | yes | Derived from the active host binding; never accepted from agent prose. |
+| `completion_kind` | string | yes | Exactly `completed` in L0. Other terminal outcomes use `RecordHostWorkflowTerminalOutcome`. |
+| `response_bytes` | bytes | yes | Exact terminal response bytes observed by the host. |
+| `idempotency_key` | string | yes | Scoped to the producer turn. |
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-HTR-1 | Artifact bytes and producer attribution are host-derived. | `producer = activeBinding(turn) and bytes = hostObservedTerminalResponse` |
+| O-HTR-2 | Finalized payload bytes precede one SQL acceptance that binds evidence, terminal transition and event; an orphan payload grants no authority. | `finalized(payloadArtifact) and atomic(HostTerminalResponseArtifact,turnTerminal,event)` |
+| O-HTR-3 | Identical retries return one receipt; divergent retries conflict. | `same(identity,key,bytes,kind) => same(receipt); drift => conflict` |
+| O-HTR-4 | No path supplied by an agent or caller can substitute for committed response bytes. | `binding-output => verified(HostTerminalResponseReceipt)` |
+
+### Postconditions
+
+- [`host_workflow.terminal_response_committed`](events.md#host_workflowterminal_response_committed)
+  and one [HostTerminalResponseReceipt](domain.md#hostterminalresponsereceipt) exist.
+- A completed artifact may become a source for a pre-confirmed downstream slot mapping; it does not
+  itself grant visibility or launch authority.
+
+## RecordHostWorkflowTerminalOutcome
+
+**Type:** Operation (mutation)
+**Actor:** Host workflow runtime
+**Triggers:** The host observes `failed`, `cancelled` or `unknown` without terminal response bytes
+
+This operation atomically records the terminal outcome and
+[`host_workflow.terminal_outcome_recorded`](events.md#host_workflowterminal_outcome_recorded), but
+creates no terminal-response artifact or receipt. In L0 these outcomes cannot satisfy a required
+downstream slot and leave its consumer non-launchable.
+
+## MaterializeHostWorkflowInput
+
+**Type:** Operation (mutation)
+**Actor:** Host workflow materializer
+**Triggers:** One accepted completed terminal-response receipt matches one active confirmed mapping
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-HWI-1 | L0 admits exactly one producer mapping and one required slot at ordinal zero. | `count(mapping,targetTurn)=1 and slotOrdinal=0` |
+| O-HWI-2 | Receipt, mapping and target binding share `dispatch_id`; producer and consumer tuples match exactly. | `sameDispatch and exactSource and exactTarget` |
+| O-HWI-3 | Visibility policy is current and authorizes the exact consumer, phase and payload artifact. | `authorize(policy,targetTurn,payloadArtifact)` |
+| O-HWI-4 | Canonical manifest bytes include mapping version, receipt/evidence identity, artifact ID, hash, size, slot and policy. | `manifestDigest=sha256(canonicalManifest)` |
+| O-HWI-5 | Retry is idempotent by `(mapping_id,mapping_version,targetTurn)`; any source or digest drift conflicts. | `sameKeySameBytes=>sameManifest; drift=>conflict` |
+
+The operation commits the manifest, binding candidate and
+[`host_workflow.input_materialized`](events.md#host_workflowinput_materialized) in one SQL command
+acceptance after verifying finalized artifact bytes. It does not launch the consumer.
+
+## AuthorizeHostWorkflowTurnLaunch
+
+**Type:** Operation (mutation)
+**Actor:** Host workflow scheduler
+**Triggers:** A materialized input binding is ready
+
+The universal [AcceptRuntimeCommand](#acceptruntimecommand) envelope supplies expected versions and
+prerequisite heads. For this operation those heads MUST include parent workflow, consumer turn,
+mapping version, manifest, binding, cancellation and supersession heads. The transaction verifies
+all heads, complete L0 cardinality, receipt and visibility policy, then commits exactly one
+[`host_workflow.turn_launch_authorized`](events.md#host_workflowturn_launch_authorized) and one
+unclaimed launch intent. Cancellation, replacement or supersession before commit causes CAS failure;
+late evidence never revives the consumer.
+
 ### Internal transition — PublishConnectionHandoff
 
 **Type:** Operation (mutation)  
@@ -785,12 +863,19 @@ outside this rule and require separately versioned confirmed profiles.
 | O-HAND-1 | Delivery is deduplicated by source aggregate and connection identity. | `unique(source_aggregate_id, connection_id)` |
 | O-HAND-2 | Handoff carries result, dissent and provenance, not narrative alone. | `payload includes result_ref, dissent_refs, provenance_refs` |
 | O-HAND-3 | The downstream snapshot is immutable and content-addressed. | `target_snapshot_ref = hash(materializedHandoff)` |
+| O-HAND-4 | A connection is topology only; dynamic input requires a pre-confirmed source-to-slot mapping. | `connection and not slotMapping => noInputMaterialization` |
+| O-HAND-5 | A `binding-output` source resolves only through a verified terminal-response receipt and active confirmed mapping from the same dispatch. | `bindingOutput(source) => verified(HostTerminalResponseReceipt(source)) and active(SourceToSlotMapping) and sameDispatch(source,target)` |
+| O-HAND-6 | Every required slot is present before a downstream binding or launch is admitted. | `launchable(target) => completeAndOrdered(requiredSlots(target))` |
 
 ### Postconditions
 
 - [`handoff.published`](events.md#handoffpublished) and
   [`handoff.delivered`](events.md#handoffdelivered) make the downstream dependency observable.
-- Delivery may enable the internal `StartGroup` transition; it never exposes a source group's internal bus.
+- Delivery may enable the internal `StartGroup` transition only after required input slots are
+  materialized and their manifest/binding verify; it never exposes a source group's internal bus.
+- In L0, `PublishConnectionHandoff` for host terminal output is keyed by
+  `(terminal_response_id, mapping_id, mapping_version)` and references the exact target slot. The
+  older `(source_aggregate_id, connection_id)` identity remains the `GroupResult` handoff identity.
 
 ## CancelRun
 
