@@ -1,13 +1,14 @@
 ---
 name: robot-talks
-description: Run a multi-agent parallel investigation to identify cross-layer tensions
+description: Run and preserve a direct multi-agent investigation of cross-layer tensions. Use when a problem spans multiple concerns, independent evidence is needed before action, and the human must validate contradictions before any implementation; not for local bugs or already-specified work.
 ---
 
 # Robot-Talks: Multi-Agent Investigation Skill
 
 Auditing tool for cross-layer tension discovery. Does NOT implement fixes.
 
-**Full rationale & templates:** `docs/vault/constitution/robot-talks-constitution.md`
+This skill is self-contained. Do not depend on an external constitution or template that is not
+present in the repository.
 
 ## Invocation Checklist (All must be YES)
 
@@ -17,10 +18,10 @@ Auditing tool for cross-layer tension discovery. Does NOT implement fixes.
 - [ ] Cost of misunderstanding exceeds cost of ~90 min investigation
 
 **If any box is empty:**
-- Single-file bug → `systematic-debugging`
-- "How does X work?" → `gitnexus-exploring`
-- Refactor in one module → `gitnexus-impact-analysis`
-- Well-specified feature → implement directly
+- Single-file bug → use the repository's available debugging workflow.
+- "How does X work?" → inspect the owning artifacts directly.
+- Refactor in one module → use the repository's available impact-analysis workflow.
+- Well-specified feature → implement directly.
 
 ## Phase 1: Setup (~15 min)
 
@@ -38,7 +39,7 @@ Do NOT proceed until the user has stated both. Ask if missing.
 
 Agents do NOT spawn until the user evaluates and approves the approach.
 
-Rules: decompose by **concerns**, not files. No two agents investigate the same question. Evidence overlap is fine. See constitution R2 for scope template.
+Rules: decompose by **concerns**, not files. No two agents investigate the same question. Evidence overlap is fine.
 
 ## Phase 2: Exploration (~15 min per agent, parallel)
 
@@ -58,7 +59,7 @@ Identify **tensions** (contradictions between layers), not summaries. A tension 
 - Finding contradicts documented contract
 - Frontend assumes Y, backend implements NOT-Y
 
-Each tension needs: what Layer A holds, what Layer B actually does, impact severity, and evidence from specific agent findings. See constitution R4 for tension template.
+Each tension needs: what Layer A holds, what Layer B actually does, impact severity, and evidence from specific agent findings.
 
 ## Phase 4: Human Gate
 
@@ -66,10 +67,36 @@ No action without human validation. Present tensions, human decides:
 - Real + actionable → implementation plan (separate session)
 - Real + deferred → backlog item
 - Misinterpretation → close with explanation
-- Uncertain → targeted follow-up (see constitution R6)
+- Uncertain → targeted follow-up
 
 ## Session Preservation
 
-Create `claude/current_conversations/YYYY-MM-DD-HHMM-UNIQUEID-<topic>.md` (`node_type: agent-dialogue`) containing: scope definition, all agent reports, synthesis with tensions, human gate notes, follow-up action links.
+Persist each investigation beside the context that owns its question:
+
+```text
+<owning-context>/robot-talks/<YYYY-MM-DD-topic-slug>/
+├── dialogue.md
+├── findings.md
+└── reports/
+    └── <NN-role>.md
+```
+
+When there is no clear owning context, use
+`<repo-root>/robot-talks/<YYYY-MM-DD-topic-slug>/`. Do not use a generic conversations directory.
+
+Create `dialogue.md` immediately after the user approves the strategy and before any agent is
+spawned. Give it frontmatter with `node_type: agent-dialogue`, `status`, `date`, and `topic`. Update
+it after exploration, synthesis, and the human gate. It preserves the scope, central question,
+assumptions challenged, chosen and rejected decompositions, agent prompts, conversation protocol,
+cross-agent dialogue when used, synthesis, gate notes, and follow-up links.
+
+Each agent writes one independent report under `reports/` using the mandatory Phase 2 shape.
+`findings.md` contains the evidence-backed cross-layer tensions and the human disposition of each
+tension. A `ring/` directory for challenges and responses is optional when direct confrontation is
+needed. `dispatch.json`, receipts, and governed runtime records are not required.
+
+This preserved session is not a governed dispatch or ledger entry. Robot-Talks may run directly
+when the user authorizes it; do not imply that dispatch infrastructure was used. Existing sessions
+remain valid at their original paths and are migrated only by an explicit, separate request.
 
 Recommended agent count: 3-5. Heartbeat timeout: 30 min per agent.
