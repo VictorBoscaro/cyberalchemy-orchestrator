@@ -1,0 +1,85 @@
+{
+  "dispatch_id": "2026-08-08-resonantos-minimal-meeting-ontology",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Produce six independent attempts at the smallest useful ResonantOS meeting ontology, using two repetitions of three distinct perspectives, then summarize their convergences, divergences, and smallest defensible common core.",
+  "context": "The existing ResonantOS meeting documents contain a broad candidate vocabulary that has not been validated. The user wants fewer concepts, tentative definitions only for small bounded things, and independent attempts rather than premature consensus. Treat all existing meeting-model vocabulary as candidate evidence, not as a required starting schema.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/resonantos-meetings/minimal-ontology-exploration",
+  "groups": [
+    {
+      "group_id": "independent_attempts_a",
+      "n": 3,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Weick, Karl E.",
+          "initial_prompt": "Work independently from the participant/newcomer perspective. Read only research/resonantos-meetings/research-initial-definitions.md, research-plan.md, ontology-view.md, system-view.md, engineer-view.md, and paired-views-report.md. Do not read minimal-ontology-exploration or any other agent output. Ask: what is the smallest ontology a participant or newcomer needs to understand what a meeting is and how to relate to it? Use no minimum and at most five concepts. For every concept give a one-sentence tentative definition, why it is irreducible, and the exact loss caused by removing it. Distinguish concepts from attributes, values, relations, labels, and mechanics. Include only necessary typed relations. End with small optional proposals and deliberate omissions. Existing vocabulary is candidate evidence, not required structure. Make no novelty claim and use no web sources. Write only research/resonantos-meetings/minimal-ontology-exploration/attempts/a-participant.md, then return a concise handoff."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Simon, Herbert",
+          "initial_prompt": "Work independently from the organizer/operation perspective. Read only research/resonantos-meetings/research-initial-definitions.md, research-plan.md, ontology-view.md, system-view.md, engineer-view.md, and paired-views-report.md. Do not read minimal-ontology-exploration or any other agent output. Ask: what is the smallest ontology an organizer needs to convene, run, and preserve the useful result of a meeting? Use no minimum and at most five concepts. For every concept give a one-sentence tentative definition, why it is irreducible, and the exact loss caused by removing it. Distinguish concepts from attributes, values, relations, labels, and mechanics. Include only necessary typed relations. End with small optional proposals and deliberate omissions. Existing vocabulary is candidate evidence, not required structure. Make no novelty claim and use no web sources. Write only research/resonantos-meetings/minimal-ontology-exploration/attempts/a-operation.md, then return a concise handoff."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Beer, Stafford",
+          "initial_prompt": "Work independently from the authority/boundaries perspective. Read only research/resonantos-meetings/research-initial-definitions.md, research-plan.md, ontology-view.md, system-view.md, engineer-view.md, and paired-views-report.md. Do not read minimal-ontology-exploration or any other agent output. Ask: what is the smallest ontology needed to prevent presence, participation, recommendation, and decision from being confused? Use no minimum and at most five concepts. For every concept give a one-sentence tentative definition, why it is irreducible, and the exact loss caused by removing it. Distinguish concepts from attributes, values, relations, labels, and mechanics. Include only necessary typed relations. End with small optional proposals and deliberate omissions. Existing vocabulary is candidate evidence, not required structure. Make no novelty claim and use no web sources. Write only research/resonantos-meetings/minimal-ontology-exploration/attempts/a-authority.md, then return a concise handoff."
+        }
+      ]
+    },
+    {
+      "group_id": "independent_attempts_b",
+      "n": 3,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Senge, Peter",
+          "initial_prompt": "Work independently from the participant/newcomer perspective. Read only research/resonantos-meetings/research-initial-definitions.md, research-plan.md, ontology-view.md, system-view.md, engineer-view.md, and paired-views-report.md. Do not read minimal-ontology-exploration or any other agent output. Ask: what is the smallest ontology a participant or newcomer needs to understand what a meeting is and how to relate to it? Use no minimum and at most five concepts. For every concept give a one-sentence tentative definition, why it is irreducible, and the exact loss caused by removing it. Distinguish concepts from attributes, values, relations, labels, and mechanics. Include only necessary typed relations. End with small optional proposals and deliberate omissions. Existing vocabulary is candidate evidence, not required structure. Make no novelty claim and use no web sources. Write only research/resonantos-meetings/minimal-ontology-exploration/attempts/b-participant.md, then return a concise handoff."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Ries, Eric",
+          "initial_prompt": "Work independently from the organizer/operation perspective. Read only research/resonantos-meetings/research-initial-definitions.md, research-plan.md, ontology-view.md, system-view.md, engineer-view.md, and paired-views-report.md. Do not read minimal-ontology-exploration or any other agent output. Ask: what is the smallest ontology an organizer needs to convene, run, and preserve the useful result of a meeting? Use no minimum and at most five concepts. For every concept give a one-sentence tentative definition, why it is irreducible, and the exact loss caused by removing it. Distinguish concepts from attributes, values, relations, labels, and mechanics. Include only necessary typed relations. End with small optional proposals and deliberate omissions. Existing vocabulary is candidate evidence, not required structure. Make no novelty claim and use no web sources. Write only research/resonantos-meetings/minimal-ontology-exploration/attempts/b-operation.md, then return a concise handoff."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Follett, Mary Parker",
+          "initial_prompt": "Work independently from the authority/boundaries perspective. Read only research/resonantos-meetings/research-initial-definitions.md, research-plan.md, ontology-view.md, system-view.md, engineer-view.md, and paired-views-report.md. Do not read minimal-ontology-exploration or any other agent output. Ask: what is the smallest ontology needed to prevent presence, participation, recommendation, and decision from being confused? Use no minimum and at most five concepts. For every concept give a one-sentence tentative definition, why it is irreducible, and the exact loss caused by removing it. Distinguish concepts from attributes, values, relations, labels, and mechanics. Include only necessary typed relations. End with small optional proposals and deliberate omissions. Existing vocabulary is candidate evidence, not required structure. Make no novelty claim and use no web sources. Write only research/resonantos-meetings/minimal-ontology-exploration/attempts/b-authority.md, then return a concise handoff."
+        }
+      ]
+    },
+    {
+      "group_id": "findings_synthesis",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Act only after all six independent attempt files exist under research/resonantos-meetings/minimal-ontology-exploration/attempts. Read those six files plus research/resonantos-meetings/research-initial-definitions.md. Do not expand the corpus or conduct new research. Preserve each attempt verbatim in research/resonantos-meetings/minimal-ontology-exploration/research.md with clear provenance. Then write research/resonantos-meetings/minimal-ontology-exploration/findings.md summarizing: concepts proposed by each attempt; genuine semantic convergences despite naming differences; disagreements; concepts that appear to be attributes or mechanics rather than ontology; the smallest defensible common core; perspective-specific additions; and unresolved questions. Do not force consensus, ratify definitions, or claim community validation. Every synthesis claim must cite the attempt file(s) supporting it. End with a one-line answer to the dispatch goal. Write only research.md and findings.md in the working folder, then return a concise handoff."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "independent_attempts_a", "to": "findings_synthesis", "type": "sequential"},
+    {"from": "independent_attempts_b", "to": "findings_synthesis", "type": "sequential"}
+  ],
+  "project_dir": "C:/Users/victo/cyberalchemy-orchestrator"
+}
