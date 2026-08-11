@@ -1,0 +1,272 @@
+{
+  "dispatch_id": "superinterviewer-foundation-v0.1",
+  "intent": {
+    "raw": "Create a clean repository, develop a proposal for how the question game should be thought about, and review it.",
+    "objective": "Produce a provenance-preserving, explicitly provisional foundation for the Superinterviewer and independently attack its framing before human ratification.",
+    "target_artifact": "C:\\Users\\victo\\superinterviewer"
+  },
+  "mode": "mixed",
+  "techniques": ["sequence", "residue_ledger", "owner_boundary_check", "observability_grouping"],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "The proposal requires structurally different synthesis and adversarial perspectives.",
+    "explanation": "Independent research, authorship, and critique reduce correlated framing errors.",
+    "context": [
+      "The user explicitly authorized subagent orchestration.",
+      "The framing is provisional and must remain contestable."
+    ],
+    "roles": [
+      {"role_id": "transition-researcher", "purpose": "Develop the auditable-transition hypothesis and its limits.", "owns": "research lane receipt", "applies_to_steps": ["S2"]},
+      {"role_id": "game-researcher", "purpose": "Develop the cooperative investigation-game framing and question-selection criteria.", "owns": "research lane receipt", "applies_to_steps": ["S2"]},
+      {"role_id": "governance-researcher", "purpose": "Attack agency, framing-power, authority, and provenance assumptions.", "owns": "research lane receipt", "applies_to_steps": ["S2"]},
+      {"role_id": "foundation-writer", "purpose": "Join evidence into one bounded proposal corpus.", "owns": "proposal artifacts", "applies_to_steps": ["S3"]},
+      {"role_id": "reviewer", "purpose": "Red-team the frozen proposal.", "owns": "review findings", "applies_to_steps": ["S4"]},
+      {"role_id": "fidelity-governance-attacker", "purpose": "Attack fidelity and governance across the frozen corpus.", "owns": "ephemeral attacker return", "applies_to_steps": ["S4"]},
+      {"role_id": "operability-nonvacuity-attacker", "purpose": "Attack operability and non-vacuity across the frozen corpus.", "owns": "ephemeral attacker return", "applies_to_steps": ["S4"]},
+      {"role_id": "ownership-reference-attacker", "purpose": "Attack ownership and reference integrity across the frozen corpus.", "owns": "ephemeral attacker return", "applies_to_steps": ["S4"]},
+      {"role_id": "verifier-a", "purpose": "Attempt to refute consolidated findings against literal artifacts.", "owns": "ephemeral verification return", "applies_to_steps": ["S4"]},
+      {"role_id": "verifier-b", "purpose": "Independently attempt to refute assigned findings.", "owns": "ephemeral verification return", "applies_to_steps": ["S4"]}
+    ],
+    "parallelism": "mixed",
+    "join_policy": "parent_synthesis",
+    "authorization": "approved",
+    "permission_prompt": "Approved by the user in the conversation before execution.",
+    "receipt_requirements": [
+      "dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "handoff_note",
+      "agent_id", "role_id", "spawn_status", "join_status", "close_status", "residue", "reroute",
+      "claims", "evidence", "counterexamples", "recommended handoff"
+    ]
+  },
+  "subagent_lifecycle": {
+    "status": "pass",
+    "agents": [
+      {
+        "agent_id": "dispatch_skill_router",
+        "role_id": "transition-researcher",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "research/foundation-game-framing/lanes/01-auditable-transition.md",
+        "close_status": "closed",
+        "residue": "Fundamental-unit and comparative-value claims remain unvalidated.",
+        "reroute": "S3 synthesis, then WS2/WS4/WS6 testing."
+      },
+      {
+        "agent_id": "game_framing_architect",
+        "role_id": "game-researcher",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "research/foundation-game-framing/lanes/02-cooperative-investigation-game.md",
+        "close_status": "closed",
+        "residue": "No independent corpus or comparator; move taxonomy remains provisional.",
+        "reroute": "S3 synthesis and later discriminating study."
+      },
+      {
+        "agent_id": "repo_artifact_architect",
+        "role_id": "governance-researcher",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "research/foundation-game-framing/lanes/03-agency-governance.md",
+        "close_status": "closed",
+        "residue": "Normative, causal, privacy, authority, temporal, multi-party, safety, and relational questions remain open.",
+        "reroute": "S3 preserves residues; S5 human ratification owns binding choices."
+      },
+      {
+        "agent_id": "foundation_writer",
+        "role_id": "foundation-writer",
+        "spawn_status": "spawned",
+        "join_status": "closed_without_result",
+        "close_status": "closed",
+        "residue": "Seat remained active without emitting any artifact or blocker and was interrupted after repeated bounded waits.",
+        "reroute": "Parent executed the unchanged S3 authoring contract locally from the persisted context pack."
+      },
+      {
+        "agent_id": "foundation_writer",
+        "role_id": "fidelity-governance-attacker",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "reviews/foundation-v0.1/review.md#coverage",
+        "close_status": "closed",
+        "residue": "Working return intentionally not persisted; review conflict-free on target authorship.",
+        "reroute": "S4 synthesis and independent verification."
+      },
+      {
+        "agent_id": "dispatch_skill_router",
+        "role_id": "operability-nonvacuity-attacker",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "reviews/foundation-v0.1/review.md#coverage",
+        "close_status": "closed",
+        "residue": "Agent authored lane 01; conflict declared and no self-origin finding accepted without other verification.",
+        "reroute": "S4 synthesis and independent verification."
+      },
+      {
+        "agent_id": "repo_artifact_architect",
+        "role_id": "ownership-reference-attacker",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "reviews/foundation-v0.1/review.md#coverage",
+        "close_status": "closed",
+        "residue": "Agent authored lane 03; conflict declared and its substantive lane claims were excluded from independent verification.",
+        "reroute": "S4 synthesis and independent verification."
+      },
+      {
+        "agent_id": "game_framing_architect",
+        "role_id": "verifier-a",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "reviews/foundation-v0.1/review.md#verified-findings",
+        "close_status": "closed",
+        "residue": "Authored lane 02; did not verify its substantive content.",
+        "reroute": "Human approval gate."
+      },
+      {
+        "agent_id": "foundation_writer",
+        "role_id": "verifier-b",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "reviews/foundation-v0.1/review.md#verified-findings",
+        "close_status": "closed",
+        "residue": "Did not verify findings it raised as attacker.",
+        "reroute": "Human approval gate."
+      }
+    ]
+  },
+  "native_stage_receipts": [
+    {
+      "dispatch_id": "superinterviewer-foundation-v0.1",
+      "step_id": "S1",
+      "capability_ref": "task-session",
+      "receipt_kind": "native-stage",
+      "status": "pass",
+      "artifacts": ["session-evidence/repo-bootstrap-receipt.md"],
+      "validation": ["Git work tree true", "branch master", "zero remotes", "empty status"],
+      "observer_status": "persisted receipt",
+      "blockers": [],
+      "residue": "Canonical transfer deferred.",
+      "handoff_note": "S2 research fanout"
+    },
+    {
+      "dispatch_id": "superinterviewer-foundation-v0.1",
+      "step_id": "S2",
+      "capability_ref": "research",
+      "receipt_kind": "native-stage",
+      "status": "pass",
+      "artifacts": ["research/foundation-game-framing/lanes/01-auditable-transition.md", "research/foundation-game-framing/lanes/02-cooperative-investigation-game.md", "research/foundation-game-framing/lanes/03-agency-governance.md"],
+      "validation": ["three bound seats joined", "authority labels present", "residue preserved"],
+      "observer_status": "subagent lifecycle pass",
+      "blockers": [],
+      "residue": "No external literature or independent corpus.",
+      "handoff_note": "S3 provisional synthesis"
+    },
+    {
+      "dispatch_id": "superinterviewer-foundation-v0.1",
+      "step_id": "S3",
+      "capability_ref": "task-session",
+      "receipt_kind": "native-stage",
+      "status": "pass",
+      "artifacts": ["session-evidence/foundation-authoring-receipt.md"],
+      "validation": ["17 files", "required artifacts present", "relative links resolve", "no runtime or code"],
+      "observer_status": "writer seat closed without result; local fallback persisted",
+      "blockers": [],
+      "residue": "Corpus remains proposed and unreviewed.",
+      "handoff_note": "Freeze digest and run S4 review"
+    },
+    {
+      "dispatch_id": "superinterviewer-foundation-v0.1",
+      "step_id": "S4",
+      "capability_ref": "review",
+      "receipt_kind": "native-stage",
+      "status": "pass",
+      "artifacts": ["reviews/foundation-v0.1/review.md"],
+      "validation": ["17/17 frozen target hashes match", "one review artifact only", "three lenses covered", "two verifiers attempted refutation", "unsupported findings dropped"],
+      "observer_status": "persisted review and terminal lifecycle ledger",
+      "blockers": ["Human disposition required before correction or ratification."],
+      "residue": "Corpus verdict FIX; conceptual framing survived; provenance and authority defects remain.",
+      "handoff_note": "S5 human decision gate"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "S1",
+      "name": "Initialize local working repository",
+      "capability_ref": "task-session",
+      "pattern": "sequential",
+      "techniques": ["sequence", "observability_grouping"],
+      "parallel": false,
+      "inputs": [{"kind": "decision", "ref": "decisions/repository-creation.md"}],
+      "outputs": [{"kind": "artifact", "ref": "session-evidence/repo-bootstrap-receipt.md"}],
+      "stop_conditions": ["Path collision", "unexpected remote", "scope would imply canonical transfer"]
+    },
+    {
+      "step_id": "S2",
+      "name": "Independent foundation research",
+      "capability_ref": "research",
+      "capability_status": "candidate",
+      "pattern": "fanout",
+      "techniques": ["residue_ledger", "observability_grouping"],
+      "parallel": true,
+      "roles": ["transition-researcher", "game-researcher", "governance-researcher"],
+      "inputs": [{"kind": "artifact", "ref": "S1:session-evidence/repo-bootstrap-receipt.md"}],
+      "outputs": [{"kind": "ledger", "ref": "research/foundation-game-framing/lanes/"}],
+      "join_policy": "all",
+      "stop_conditions": ["No observable witness", "framing becomes tautological", "authority boundary cannot be stated"]
+    },
+    {
+      "step_id": "S3",
+      "name": "Synthesize provisional foundation",
+      "capability_ref": "task-session",
+      "pattern": "synthesis",
+      "techniques": ["sequence", "owner_boundary_check"],
+      "parallel": false,
+      "roles": ["foundation-writer"],
+      "inputs": [{"kind": "ledger", "ref": "S2:research/foundation-game-framing/lanes/"}],
+      "outputs": [{"kind": "artifact", "ref": "docs/game/THINKING-THE-GAME.md"}, {"kind": "artifact", "ref": "docs/game/QUESTION-LANDSCAPE.md"}],
+      "join_policy": "parent_synthesis",
+      "stop_conditions": ["Proposal implies implementation architecture", "claims exceed evidence"]
+    },
+    {
+      "step_id": "S4",
+      "name": "Independent red-team review",
+      "capability_ref": "review",
+      "capability_status": "candidate",
+      "pattern": "validation",
+      "techniques": ["validation_loop", "owner_boundary_check"],
+      "parallel": true,
+      "roles": ["reviewer"],
+      "inputs": [{"kind": "artifact", "ref": "S3:foundation corpus"}],
+      "outputs": [{"kind": "artifact", "ref": "reviews/foundation-v0.1/review.md"}],
+      "join_policy": "all",
+      "evidence_artifact": "reviews/foundation-v0.1/review.md",
+      "stop_conditions": ["Frozen corpus digest missing", "reviewer authored target corpus"]
+    },
+    {
+      "step_id": "S5",
+      "name": "Human ratification gate",
+      "capability_ref": "decision-gate",
+      "capability_status": "candidate",
+      "pattern": "decision",
+      "techniques": ["owner_boundary_check", "residue_ledger"],
+      "parallel": false,
+      "inputs": [{"kind": "artifact", "ref": "S4:reviews/foundation-v0.1/review.md"}],
+      "outputs": [{"kind": "decision", "ref": "decisions/foundation-ratification.md"}],
+      "join_policy": "human_gate",
+      "stop_conditions": ["Human decision absent"]
+    }
+  ],
+  "gates": [
+    {"gate_id": "G1", "kind": "decision", "owner": "human owner", "condition": "Repository path and local-only scope are explicit.", "on_fail": "block"},
+    {"gate_id": "G2", "kind": "quality", "owner": "orchestrator", "condition": "Every material claim is marked as evidence, inference, proposal, or residue.", "on_fail": "block"},
+    {"gate_id": "G3", "kind": "promotion_guardrail", "owner": "human owner", "condition": "Research and review cannot promote themselves to product authority.", "on_fail": "block"},
+    {"gate_id": "G4", "kind": "human_approval", "owner": "human owner", "condition": "The frozen foundation is explicitly accepted, revised, deferred, or rejected.", "on_fail": "ask"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "trace_events": ["dispatch_opened", "step_started", "artifact_emitted", "step_closed", "residue_recorded", "human_gate_requested"],
+    "signal_grouping": "superinterviewer-foundation-v0.1"
+  },
+  "promotion_guardrails": [
+    "No research lane may mutate product authority.",
+    "No review finding may silently rewrite the reviewed corpus.",
+    "No runtime or architecture commitment is introduced in foundation v0.1."
+  ]
+}

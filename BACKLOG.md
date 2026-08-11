@@ -343,3 +343,27 @@ otherwise prove uniqueness within the parent thread, with a regression test cove
 dispatches that reuse the same group IDs.
 
 **Status.** DEFECT / parked for a bounded fix.
+
+---
+
+## BL-12 — Governed research-plan artifact and authoring capability
+
+**Tags:** research-planning, research-governance, evidence, workstreams, decision-support
+
+**Objective:** Define a reusable `research-plan` artifact and authoring capability that turns an
+accepted research context into a revisable, evidence-linked program of investigation without
+collapsing initial definitions, dispatch mechanics, findings, or implementation planning into one
+document.
+
+**Description:** The current research lifecycle requires `research-initial-definitions.md` and
+produces `research.md` plus `findings.md`, but it does not own the persistent plan needed for a large,
+multi-repository and literature-backed program such as the Superinterviewer. Candidate work should
+define the minimum contract for a `research-plan.md`: refinable questions, workstreams, dependencies,
+evidence gaps, decision gates, sequencing or waves, stopping and reframing conditions, expected
+decision impact, and links to governed dispatches and resulting evidence. The plan must remain
+distinct from initial informational context, runtime dispatch topology, project-management status,
+and claims of completed research. It should support revision as findings change the question rather
+than silently preserving an obsolete decomposition.
+
+**Status.** IDEA / parked candidate; the Superinterviewer bootstrap may provide the first worked
+example, but does not by itself establish a general contract.
