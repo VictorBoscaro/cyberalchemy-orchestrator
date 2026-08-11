@@ -1,0 +1,35 @@
+{
+  "dispatch_id": "2026-08-11-review-minimal-knowledge-kernel",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Revisar adversarialmente se a hipótese do kernel mínimo deve entrar no caderno editorial e, em caso afirmativo, sob quais ressalvas, testes e arquitetura conceitual.",
+  "context": "O alvo persistente é docs/temps/operational-knowledge-language/README.md no SHA-256 F8B98D634ED939B13A0DAEB1B372D682E46300AEBA407E7C028D15BDAFFBE360. A proposta conversacional separa linguagem/kernel (orientação, distinção, transformação e composição), domínio (aquilo que resiste), enriquecimentos (tempo, probabilidade, causalidade, agência, normatividade, lógica, modalidade e geometria) e sugere o ciclo kernel -> aplicação ao domínio -> resíduo -> enriquecimento mínimo. Ela também propõe lente como instanciação contextual do kernel e a seção tardia 'Em busca do kernel mínimo'. A revisão deve testar dependências ocultas, especialmente contato, observação, expectativa e julgamento; a relação entre relação e transformação; o caráter reativo ou proativo do enriquecimento; e se termos derivados são realmente reconstruíveis. A saída aprovada será incorporada ao caderno como hipótese de trabalho, não como teoria ratificada nem como plano formal.",
+  "max_loops": 1,
+  "final_approver": "Victor Boscaro",
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "token_budget": 2400,
+          "agent_name": "Kernel fidelity reviewer",
+          "initial_prompt": "Ataque primeiro a proposta pela lente exclusiva de fidelidade conceitual e parcimônia. Leia integralmente o caderno-alvo e use a proposta no contexto deste dispatch. Teste se orientação, distinção, transformação e composição bastam; se relação foi colapsada cedo demais; se domínio como resistência é circular; se contato, interpretação, observação, expectativa ou julgamento foram escondidos; e se probe, sinal, evidência, resíduo, lente, analogia, schema e instanciação realmente emergem. Para cada finding, cite a seção do caderno, dê severidade e uma correção mínima. Não altere arquivos. Não trate a hipótese como ratificada.",
+          "model": "gpt-5.6-sol"
+        },
+        {
+          "role": "explorer",
+          "token_budget": 2400,
+          "agent_name": "Kernel operability reviewer",
+          "initial_prompt": "Ataque primeiro a proposta pela lente exclusiva de operabilidade editorial e testabilidade. Leia integralmente o caderno-alvo e use a proposta no contexto deste dispatch. Teste se o ciclo kernel -> domínio -> resíduo -> enriquecimento mínimo é executável sem regras de contato e readout; se enriquecimento apenas reativo basta; se há regra de de-enriquecimento; se a formulação distingue compressão boa de perda arbitrária; e quais experimentos poderiam falsificar o kernel. Avalie a posição editorial da seção 'Em busca do kernel mínimo'. Para cada finding, cite a seção do caderno, dê severidade e uma correção mínima. Não altere arquivos. Não proponha uma teoria de tudo.",
+          "model": "gpt-5.6-sol"
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

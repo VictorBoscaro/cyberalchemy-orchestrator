@@ -5,8 +5,8 @@ is_session: false
 layer: [architecture, application]
 nature: reference
 status: active
-version: 0.1.0
-last_updated: 2026-07-25
+version: 0.1.1
+last_updated: 2026-08-11
 ---
 
 # docs/temps
@@ -38,6 +38,10 @@ abandoned.
 - **`agent-dispatch-protocol/`**: Design notebook for compiling a reusable per-skill protocol into
   a concrete, deterministically executable multi-agent dispatch. Started 2026-07-25; explicitly
   not ratified. See its own [README](agent-dispatch-protocol/README.md).
+- **`operational-knowledge-language/`**: Editorial and conceptual notebook for the provisional
+  Linguagem Operacional do Conhecimento, its candidate typing map, kernel hypothesis, corrections,
+  and falsification agenda. Started 2026-08-11; explicitly not ratified. See its own
+  [README](operational-knowledge-language/README.md).
 
 ## Connections
 
