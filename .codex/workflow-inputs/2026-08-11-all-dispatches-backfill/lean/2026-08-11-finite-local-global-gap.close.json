@@ -1,0 +1,19 @@
+{
+  "close_of": "2026-08-11-finite-local-global-gap",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 4,
+    "tree": {
+      "explorer": 2,
+      "synthesizer": 0,
+      "skeptic": 0,
+      "writer": 0,
+      "auditor": 1,
+      "planner": 0,
+      "coder": 1,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": []
+}

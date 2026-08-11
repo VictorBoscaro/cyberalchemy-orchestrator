@@ -1,0 +1,45 @@
+{
+  "dispatch_id": "2026-08-11-observed-revision-build",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-observed-revision-build.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_builder_observed_revision",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/builder_observed_revision; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-58-34-019feef8-dd50-7003-98a7-967e0fe65e7f.jsonl; rollout_sha256=12bc869666bced80123a470a51337db1c7b0906f350640c2bda17f238dd1c9a5; encrypted_payload_sha256=b8519079af3652eafdf66ec570d102b218dc3632f4002c56f08171b7af4becee]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_builder_adaptive_nonseparation",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/builder_adaptive_nonseparation; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-58-41-019feef8-f7d7-7041-af77-a7866eea2b71.jsonl; rollout_sha256=4ed5406af33dbd489aea577a2d9961a2db2b5b65635b1670588e46a5499c2155; encrypted_payload_sha256=76df281545015d97e40e97a2608450b9627623627742b6c3bba311144ba29598]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_builder_observed_revision",
+      "to": "observed_002_builder_adaptive_nonseparation",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

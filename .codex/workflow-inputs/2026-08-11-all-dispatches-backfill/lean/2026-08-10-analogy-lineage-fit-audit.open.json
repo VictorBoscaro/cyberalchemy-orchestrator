@@ -1,0 +1,154 @@
+{
+  "dispatch_id": "2026-08-10-analogy-lineage-fit-audit",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-analogy-lineage-fit-audit.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_fit_gentner",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_gentner; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-49-16-019fee4b-8d40-78b2-9474-e101b322caad.jsonl; rollout_sha256=f68e1ee3b1fe16d1d507b203078ba6b55a0b1270d04c94a53ffd3a5e2300367a; encrypted_payload_sha256=934fb45bd092642e12f48ac38382314ddacd0062ade8551131d6d137aa258c7f]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_fit_goguen",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_goguen; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-49-45-019fee4b-ff3b-77e3-89bc-b3caf1cbdcd9.jsonl; rollout_sha256=68a99884720fea77e847284528aa009463a20a03d644006d71eb189178dc9d01; encrypted_payload_sha256=3fed2fd0fb9d6864e67799c9ba2abe1eb6c2d3d55651357e3eb5eef7c3bbc74d]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_fit_neyman",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_neyman; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-50-00-019fee4c-3883-7fb3-b0c2-cef272527855.jsonl; rollout_sha256=075084dbf3ebde798240df888196f8840500d965fcb8e748da64a9cbeb5d8261; encrypted_payload_sha256=c73b7da8ec0f625cd99fc7684095014542392a6c582bb5ffd0d86224d493c817]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_fit_schon",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_schon; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-52-28-019fee4e-79a4-7b62-8622-14bc680f5d25.jsonl; rollout_sha256=65868a705f8e26d6f29e617ab421acd2933bdb8a5a3ecbe0fda0f52299f723e6; encrypted_payload_sha256=2cf8ff38004f04fad16f6eb1b0721052102e2efbc4765777e4dd504e59d33f7c]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_005_fit_popper",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_popper; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-53-55-019fee4f-cde2-76b3-ac4d-d80d911ec8b6.jsonl; rollout_sha256=6a0e8681f725f0653c53252b1fa63850154092a0550b32b79579beaf98ed74a4; encrypted_payload_sha256=97555d71e6942e26bcb04778a7da357d79d95512af2018fb8d5ee9dbcb692c39]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_006_fit_lakatos",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_lakatos; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-54-34-019fee50-6787-71f2-ab3b-9e0c121e4055.jsonl; rollout_sha256=23f8437049e31a0b95e5c870680833d4ca5a5605693b828a02c8f0fdeeca2d2c; encrypted_payload_sha256=282c08b65cfa544ebbf59880c30a62c5815e972e7375a2e157d8a0ed99169102]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_007_fit_dijkstra",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_dijkstra; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-54-46-019fee50-9423-7b83-b669-7ec49b1783b0.jsonl; rollout_sha256=b5f389369bdd7897abec4948f886da50ee0567be9ff49759b3e78e9d4ac97656; encrypted_payload_sha256=ab4de601151b81a10dfbe919b5b1440c7d70d7e3af2bd74ac15924385890397b]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_008_fit_hofstede",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fit_hofstede; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-01-26-019fee56-ae1b-7081-aa32-fc8b440ab99a.jsonl; rollout_sha256=a2681c7036ab8df6de9b3d7c5840a43dccfb926939a49c5e83947b12ead07119; encrypted_payload_sha256=4f4a069d75b5f6e08c6b27e95661fda724266c61b7f93ebaccfaba2be70fce6a]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_fit_gentner",
+      "to": "observed_002_fit_goguen",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_fit_goguen",
+      "to": "observed_003_fit_neyman",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_fit_neyman",
+      "to": "observed_004_fit_schon",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_004_fit_schon",
+      "to": "observed_005_fit_popper",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_005_fit_popper",
+      "to": "observed_006_fit_lakatos",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_006_fit_lakatos",
+      "to": "observed_007_fit_dijkstra",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_007_fit_dijkstra",
+      "to": "observed_008_fit_hofstede",
+      "type": "sequential"
+    }
+  ],
+  "working_folder": "research/yoneda-selmer-local-global-framing/analogy-lineage-fit-audit",
+  "anti_bias_mode": "disabled"
+}

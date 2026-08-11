@@ -1,0 +1,117 @@
+{
+  "dispatch_id": "2026-08-10-superinterviewer-authority-foundation",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-superinterviewer-authority-foundation.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_lean_robot_talks_pattern",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/lean_robot_talks_pattern; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-49-50-019fee15-2370-73d3-b7e8-43035730e36a.jsonl; rollout_sha256=91fbb4f56617881b9c6a4e6c96f5265d77beadfb3b9351e0ea0e5272fe19d72a; encrypted_payload_sha256=7096fc68bd574d4534a844068bf04ca472603cf443362b34ffac8fd02e69ae07]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_robot_talks_crossrepo",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/robot_talks_crossrepo; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-49-57-019fee15-3c98-78a3-a490-38037616ccf4.jsonl; rollout_sha256=1f68526f258a18c32d8b14d2679ddaa009bb4511c1b6518e66a35c1bbeebe4df; encrypted_payload_sha256=07a4b6193eb5681f19993a0e3c109ba2151b10da86172c5172cc66738a15de62]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_robot_talks_skill_boundary",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/robot_talks_skill_boundary; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-50-02-019fee15-510a-78b2-a569-eac5e41f40b4.jsonl; rollout_sha256=04f4a33be14ec02f2120048dafc3196d6f9d0beea3da3d90c89ece7e69c223e8; encrypted_payload_sha256=214377fd31be2ea36092848aaed81d534974c195a2f0efd22561a770fd88fb61]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_si_product_authority",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/si_product_authority; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-56-19-019fee1b-1274-7bf0-8fb9-a66c3535e6df.jsonl; rollout_sha256=c527d5acfaa66bd762fb3b09d844c23c40922e9393889942c7b865feb119d2e9; encrypted_payload_sha256=c8f50801d3fcb7d9bb71186fea624946e798ce9d5f499c9bb8c70f175d6326db]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_005_si_authority_scaffold",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/si_authority_scaffold; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-56-29-019fee1b-3aa1-7902-97e5-e8dcd5eb38c2.jsonl; rollout_sha256=359ff966c8878378d380920e88565a8cab25c4b71ccdee1fe6a255152ad0c287; encrypted_payload_sha256=13afb1bcdbebe26e0daf831604aca72a5bbdd0325094f79fc55fceb1ba853b42]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_006_si_integration_boundary",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/si_integration_boundary; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-56-40-019fee1b-6336-72e3-be42-bd00a714dc53.jsonl; rollout_sha256=640af20b33f309353eb2192452fdf91d255d970006bbb2187d1a0a35f9bb8edb; encrypted_payload_sha256=1e050a2ec623f017ca615748611743054530ea2b6dfddf3fb12857b668aa4557]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_lean_robot_talks_pattern",
+      "to": "observed_002_robot_talks_crossrepo",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_robot_talks_crossrepo",
+      "to": "observed_003_robot_talks_skill_boundary",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_robot_talks_skill_boundary",
+      "to": "observed_004_si_product_authority",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_004_si_product_authority",
+      "to": "observed_005_si_authority_scaffold",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_005_si_authority_scaffold",
+      "to": "observed_006_si_integration_boundary",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

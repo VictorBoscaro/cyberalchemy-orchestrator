@@ -1,0 +1,81 @@
+{
+  "dispatch_id": "2026-08-11-finite-local-global-gap",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-finite-local-global-gap.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_builder_finite_local_global",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/builder_finite_local_global; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-01-45-019fef32-b20f-7f92-8014-9e8f8e9707b5.jsonl; rollout_sha256=cc2bf414c348e402062f9ed3fec710e2576908e450ae7c0855b6dd72cd120491; encrypted_payload_sha256=6d30492a84127050bc2e5e20baf393457a5583bb4fb1e97343362aca9445d444]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_wp5_review_math",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/wp5_review_math; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-43-06-019fef58-8e2b-70d0-be47-6b49953988c0.jsonl; rollout_sha256=933e4f87256509c3c4eb71b804e0803d4ee9a173e1faabbce959b4a6a516b3f7; encrypted_payload_sha256=e8c86ec96fe5d571fc92ba3a871d41ed3dd1e0ab515989fd35910164a0351ffc]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_wp5_review_claims",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/wp5_review_claims; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-43-21-019fef58-cb50-7b41-95c2-c93a490b0289.jsonl; rollout_sha256=33102dabcdb2a9b0b4c353a401d72686c96cdc46ec763e6748673c72988d56bf; encrypted_payload_sha256=5399bee0989205ddfc0d5e99961bbdb1155729887cc7fd97750d8d1165b43339]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_wp5_review_verifier",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/wp5_review_verifier; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-57-37-019fef65-d8dc-7ad2-8c03-8e1ba6da9ba4.jsonl; rollout_sha256=5475067bfe8441ca4f45a1bd25d17f82d45cc0ee44096010bcafc6994d9d8ce4; encrypted_payload_sha256=10b5c91cf7bc0b6b0a7135b8c923bfcd29c6a39a6c4257e81bb0f81c6f811a5d]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_builder_finite_local_global",
+      "to": "observed_002_wp5_review_math",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_wp5_review_math",
+      "to": "observed_003_wp5_review_claims",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_wp5_review_claims",
+      "to": "observed_004_wp5_review_verifier",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

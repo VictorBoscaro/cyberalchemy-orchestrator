@@ -1,0 +1,63 @@
+{
+  "dispatch_id": "2026-08-10-coextension-architecture-witness",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-coextension-architecture-witness.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_coextension_architect",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/coextension_architect; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-44-57-019fee7e-85ac-76c0-9d8d-2a180b9da726.jsonl; rollout_sha256=f1bcc823fcd78ecf5a76cfae6bd5bbf9f1f6e9c54b748bfc575bc3cd05028d10; encrypted_payload_sha256=ae43a6bcf5fb7625ef7b68b37d327cfc3259016d0ece2c38f72b5c88ed62e578]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_coextension_witness",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/coextension_witness; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-45-05-019fee7e-a600-7ba1-abbe-cb5842f7a10a.jsonl; rollout_sha256=7c0089458028effc4fe71340d33d5e3ff12ab1260af8ff17595970f761abf78e; encrypted_payload_sha256=43b93e82e65147d5cdb575e411afec031ff2b0d25c74334562bcef365e2ea857]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_coextension_reviewer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/coextension_reviewer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-48-13-019fee81-820e-7e51-815c-636e3db6ad58.jsonl; rollout_sha256=89e0273f51f58352ec3991c4cda3794b437e06f81267ed70cddaa3cfb834a635; encrypted_payload_sha256=6ff894d1ad17bac83100cb0e17d3062e9ccd02788fa43803b886e69fc9d00498]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_coextension_architect",
+      "to": "observed_002_coextension_witness",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_coextension_witness",
+      "to": "observed_003_coextension_reviewer",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

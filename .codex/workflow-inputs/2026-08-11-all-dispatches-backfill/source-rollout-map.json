@@ -1,0 +1,3001 @@
+{
+  "2026-08-09-permguard-pep-integration-review": [
+    {
+      "group_id": "observed_001_review_pep_mechanics",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_pep_mechanics",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-53-52-019fe84d-ab77-7de1-8bf4-62f497528203.jsonl",
+      "rollout_sha256": "60b38485b616e9cc0bd10849d05940bf79d338ab4ed0ffa425a329ce489e7af7",
+      "encrypted_payload_sha256": "2c09941f73251ed98a1f2e3570b5faf84131c101bd92e918690e9de4c8c570ea"
+    },
+    {
+      "group_id": "observed_002_review_pep_governance",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_pep_governance",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-54-01-019fe84d-ceec-7920-9cc4-7afaea891932.jsonl",
+      "rollout_sha256": "c0d9cb32882a66b3a37fe9c2aa02367da26567fd1c9d6a85eceae868d3f14567",
+      "encrypted_payload_sha256": "6d2c950930ab428c2187cc4a63ce64247e0fec19ff9f00a2c4cf7c3a8410cbee"
+    }
+  ],
+  "2026-08-10-core-update-precedent-triad": [
+    {
+      "group_id": "observed_001_core_precedent",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/core_precedent",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T16-36-02-019fed2c-c4e9-7c90-ad55-ad2f18a75daa.jsonl",
+      "rollout_sha256": "5c7db5a779ad0cbaf431af990963f9f49dbaa16c6ab2551eaf28da9fab52155c",
+      "encrypted_payload_sha256": "763bb19fe9f925499c88d5e21c89dfb77e4c1cd78c4e0f7b41c5b525e736632b"
+    },
+    {
+      "group_id": "observed_002_core_refuter",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/core_refuter",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T16-36-09-019fed2c-e39c-7e83-a853-2fc477e867f6.jsonl",
+      "rollout_sha256": "4e4088bcb630776030aa6c9d9c7331c252b51fe0ac4e340bc7a8df2143683aeb",
+      "encrypted_payload_sha256": "82cecb7eba74b65236982cf6f55c0c61585025a718c6421fd04774f412df0a78"
+    },
+    {
+      "group_id": "observed_003_arcanum_mechanisms",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/arcanum_mechanisms",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T16-36-17-019fed2d-002a-7262-8922-fbadc164c578.jsonl",
+      "rollout_sha256": "5c3e10895a87ddbf43ca97d5d297762a1376036c06a96f1b8b84ff1b1a86044d",
+      "encrypted_payload_sha256": "c2d062328a5268d1c3357818037013a02dd1be36bd19887b99dbc9a52f72e1f9"
+    }
+  ],
+  "2026-08-10-superinterviewer-authority-foundation": [
+    {
+      "group_id": "observed_001_lean_robot_talks_pattern",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/lean_robot_talks_pattern",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-49-50-019fee15-2370-73d3-b7e8-43035730e36a.jsonl",
+      "rollout_sha256": "91fbb4f56617881b9c6a4e6c96f5265d77beadfb3b9351e0ea0e5272fe19d72a",
+      "encrypted_payload_sha256": "7096fc68bd574d4534a844068bf04ca472603cf443362b34ffac8fd02e69ae07"
+    },
+    {
+      "group_id": "observed_002_robot_talks_crossrepo",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/robot_talks_crossrepo",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-49-57-019fee15-3c98-78a3-a490-38037616ccf4.jsonl",
+      "rollout_sha256": "1f68526f258a18c32d8b14d2679ddaa009bb4511c1b6518e66a35c1bbeebe4df",
+      "encrypted_payload_sha256": "07a4b6193eb5681f19993a0e3c109ba2151b10da86172c5172cc66738a15de62"
+    },
+    {
+      "group_id": "observed_003_robot_talks_skill_boundary",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/robot_talks_skill_boundary",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-50-02-019fee15-510a-78b2-a569-eac5e41f40b4.jsonl",
+      "rollout_sha256": "04f4a33be14ec02f2120048dafc3196d6f9d0beea3da3d90c89ece7e69c223e8",
+      "encrypted_payload_sha256": "214377fd31be2ea36092848aaed81d534974c195a2f0efd22561a770fd88fb61"
+    },
+    {
+      "group_id": "observed_004_si_product_authority",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/si_product_authority",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-56-19-019fee1b-1274-7bf0-8fb9-a66c3535e6df.jsonl",
+      "rollout_sha256": "c527d5acfaa66bd762fb3b09d844c23c40922e9393889942c7b865feb119d2e9",
+      "encrypted_payload_sha256": "c8f50801d3fcb7d9bb71186fea624946e798ce9d5f499c9bb8c70f175d6326db"
+    },
+    {
+      "group_id": "observed_005_si_authority_scaffold",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/si_authority_scaffold",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-56-29-019fee1b-3aa1-7902-97e5-e8dcd5eb38c2.jsonl",
+      "rollout_sha256": "359ff966c8878378d380920e88565a8cab25c4b71ccdee1fe6a255152ad0c287",
+      "encrypted_payload_sha256": "13afb1bcdbebe26e0daf831604aca72a5bbdd0325094f79fc55fceb1ba853b42"
+    },
+    {
+      "group_id": "observed_006_si_integration_boundary",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/si_integration_boundary",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-56-40-019fee1b-6336-72e3-be42-bd00a714dc53.jsonl",
+      "rollout_sha256": "640af20b33f309353eb2192452fdf91d255d970006bbb2187d1a0a35f9bb8edb",
+      "encrypted_payload_sha256": "1e050a2ec623f017ca615748611743054530ea2b6dfddf3fb12857b668aa4557"
+    }
+  ],
+  "2026-08-10-superinterviewer-bootstrap-program": [
+    {
+      "group_id": "observed_001_si_research_program_planner",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/si_research_program_planner",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-13-04-019fee2a-6918-7011-ba02-ea8ce6ab3997.jsonl",
+      "rollout_sha256": "3fb647b24878d0e4bf59e2491df38feda5572ae5f25f4370b447445ee37ad001",
+      "encrypted_payload_sha256": "c12aefe37a6dd4b799a3a46933c9b63444f73ea9366c4dcbe5f00e3624168261"
+    },
+    {
+      "group_id": "observed_002_si_bootstrap_planner",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/si_bootstrap_planner",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-13-11-019fee2a-8453-75c2-a5f7-9a0fb9b42ee7.jsonl",
+      "rollout_sha256": "b8f26cbc3e90b2c16690f516585330ef63ee870afeae5b61a2f9e1d846343cc1",
+      "encrypted_payload_sha256": "665f2523e370d2614dd44831b5ad119551c45c75ae6551fa1178583b46758645"
+    },
+    {
+      "group_id": "observed_003_si_plan_adversary",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/si_plan_adversary",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-13-20-019fee2a-a519-77e3-a4ef-d5851f81404d.jsonl",
+      "rollout_sha256": "7b89955dffe2d9538fae8871020787d871ae6f68e1925d38b8c13106eecf71d6",
+      "encrypted_payload_sha256": "32afd5113b03103dfbf7eedfd7feb90b0817bc4dedb125383a12d5e75fe3c309"
+    }
+  ],
+  "2026-08-10-superinterviewer-foundation-v01": [
+    {
+      "group_id": "observed_001_foundation_writer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/foundation_writer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-33-04-019fee73-a79d-7603-94aa-e72011135828.jsonl",
+      "rollout_sha256": "891d1f89117f1c39bd118a9e2033560fa7124d0c57aa9568a137f331d325267f",
+      "encrypted_payload_sha256": "949ba7800fe88294fb7a9f94b68a1460c7ba753597601e89c85219fa59e64647"
+    },
+    {
+      "group_id": "observed_002_review_governance",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_governance",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-44-59-019fee7e-9069-7782-b6ad-aea0fdabd340.jsonl",
+      "rollout_sha256": "24b0beb7cdbae4f6da4f7f71e30f08f160a1c87cc986d53c38debeec39f838aa",
+      "encrypted_payload_sha256": "6e922514bb9e07f55ccdc8b870c50151232139de3825af09934cde5c0cd09a80"
+    },
+    {
+      "group_id": "observed_003_review_operability",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_operability",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-45-24-019fee7e-ebae-7e23-8bd8-38f1bef8dcad.jsonl",
+      "rollout_sha256": "c6c76580b3d20bba69758301601cf3096d12c5785c9d0ac9537e310c43d51416",
+      "encrypted_payload_sha256": "da5e857a7a798f1b609ac19120755c1bbd902c6b9698ffc3bf6cd37632ad0056"
+    },
+    {
+      "group_id": "observed_004_review_ownership_abuse",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/review_ownership_abuse",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-46-01-019fee7f-7de7-7d71-9710-52b72582697a.jsonl",
+      "rollout_sha256": "50d9663d321543950de2119c789c07521e9277df93a382d1694ea1280d6faae2",
+      "encrypted_payload_sha256": "575bd38fe6be70508e3cbc320a3b9fbe077cd750bd54694cd2a332bf78d9c24e"
+    },
+    {
+      "group_id": "observed_005_review_synthesizer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/review_synthesizer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-53-02-019fee85-ec15-7402-b9ae-a42737b91c22.jsonl",
+      "rollout_sha256": "6b25af98e9036b0b992b78a2c66f74098b3a5f6e8e7a7958ecf4f2c068195acf",
+      "encrypted_payload_sha256": "289dfb90ee86b2d40d158dc49c1f13be1b3aa546a8328bb0c651f48ac02853e4"
+    },
+    {
+      "group_id": "observed_006_review_verifier_authority",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_verifier_authority",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-01-20-019fee8d-8583-7e93-a750-050f26b17174.jsonl",
+      "rollout_sha256": "057aae1c8a51d3cc021663ec5905dbc09120a383800d8d7781dbdfafec75fa72",
+      "encrypted_payload_sha256": "3b72b0e560fe4d9c3290b4e1bee8cea1872625e3786cf83ba9d2c7215bb36c86"
+    },
+    {
+      "group_id": "observed_007_review_verifier_agency",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_verifier_agency",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-05-52-019fee91-ac1c-7021-aef8-2676f3e4034a.jsonl",
+      "rollout_sha256": "4dfcade9cd2f8b7a1ebaaa53ee3c457aa4d4fe512f9cec645a9f0a1be43f624a",
+      "encrypted_payload_sha256": "69b421313db52203119a1d41e040e5de3bed38156ff1a8990e2d1f8561ae4f13"
+    }
+  ],
+  "2026-08-10-superinterviewer-repository-routing": [
+    {
+      "group_id": "observed_001_game_framing_architect",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/game_framing_architect",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-07-21-019fee5c-1af4-7e22-b1a6-07cdee8989c0.jsonl",
+      "rollout_sha256": "1bd0f850177bf4d01a303a8dcdc0bf2f5f19a28a8c2a34ca894a6f5d6a7c268d",
+      "encrypted_payload_sha256": "af70f633466093bf6fc6cdd60fe422241ca543580efa6110f6a9902cba286b97"
+    },
+    {
+      "group_id": "observed_002_repo_artifact_architect",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/repo_artifact_architect",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-07-30-019fee5c-3de8-7fc1-9049-346f0d92ddc3.jsonl",
+      "rollout_sha256": "224c02dfacd79200e44d0f96acf553025460775907d7abc059518b8dfc8a3b70",
+      "encrypted_payload_sha256": "c6ce297f1c0fef78ab827c55ecadaed424dbd4cd05143dd3acf985574737fe06"
+    },
+    {
+      "group_id": "observed_003_dispatch_skill_router",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/dispatch_skill_router",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-07-38-019fee5c-5e36-7941-ac46-c1516bdbf989.jsonl",
+      "rollout_sha256": "a3a8f9ad98f78ba0e5a851c76655f18e2b30acca72f21c3bd52aa065c9634390",
+      "encrypted_payload_sha256": "fc55b1188a3e15a2300b77e1c1a751dc6ecc919bf8afa8227168ff80a385801e"
+    }
+  ],
+  "2026-08-10-yoneda-selmer-crossrepo-scout": [
+    {
+      "group_id": "observed_001_yoneda_selmer_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/yoneda_selmer_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T19-47-59-019feddc-8293-7c71-b660-8104bf6b882a.jsonl",
+      "rollout_sha256": "05f7f02f4f4ee10d20b1c864bc0649b20916255acfbc7e08307b0ef888a357db",
+      "encrypted_payload_sha256": "fd45354858b1e1e27c54a5c59a975c1248d7d8fc5437e9c885a82607a496545b"
+    },
+    {
+      "group_id": "observed_002_yoneda_selmer_refuter",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/yoneda_selmer_refuter",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T19-48-10-019feddc-ae2c-7061-8454-7bed19ee3f45.jsonl",
+      "rollout_sha256": "29385733a4db6981e168b76cd48ded79adfba5e4549c9822fe694c1b6ad78d3f",
+      "encrypted_payload_sha256": "e0bed4da3cba5a324aa4990e0a9fd91b01e10c1951fc3800beb2024c61964f34"
+    }
+  ],
+  "2026-08-11-entre-sistemas-v02-production": [
+    {
+      "group_id": "observed_001_same_text_editorial_mapper",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/same_text_editorial_mapper",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-11-33-019fef3b-aac4-7293-a403-17946cb548a1.jsonl",
+      "rollout_sha256": "5722ebde4ec15bcbe7dfe14b2337bd191639687f7fc45c9b9340fd746fa9e25d",
+      "encrypted_payload_sha256": "86d37974c7f7ea53f2e434c35abb7a44b28f94fffd90015600d3199659f63270"
+    },
+    {
+      "group_id": "observed_002_same_text_layout_mapper",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/same_text_layout_mapper",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-13-16-019fef3d-3fb3-75a2-82c6-a8d3450cf83e.jsonl",
+      "rollout_sha256": "6be955f8581a66387b72445b73e5359ba8a08a18f63022d05abe32e9b952f75f",
+      "encrypted_payload_sha256": "24d545c6387a1fd5687f74dd4526b4ac6e59ef3c15bdfe1bead1df403bde642e"
+    },
+    {
+      "group_id": "observed_003_same_text_pdf_executor",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/same_text_pdf_executor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-23-56-019fef47-0219-75e1-995b-f0ca631fd8ce.jsonl",
+      "rollout_sha256": "1efd025e8e835f81c55cebac526fda7f770bade642b4a1f84acdd22e4bcd5996",
+      "encrypted_payload_sha256": "a3224d9b611d1d18d8f77609e6c59217df7aa25b12ba99c696c770b3a5d2efa0"
+    }
+  ],
+  "2026-08-11-entre-sistemas-v02-review": [
+    {
+      "group_id": "observed_001_v02_review_fidelity",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/v02_review_fidelity",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-03-40-019fef6b-607a-7161-963b-fbcd63b7c722.jsonl",
+      "rollout_sha256": "d7cd06b57caadd278bd34e54d77ac1646da3aa12199dcb6c4d389a62b501e0d0",
+      "encrypted_payload_sha256": "03222cec381ee1933cf751bf32e00b0580f435578a4a1e32530c261863aee847"
+    },
+    {
+      "group_id": "observed_002_v02_review_mechanics",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/v02_review_mechanics",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-03-59-019fef6b-ac2d-7533-9e02-94fcf2c63a7f.jsonl",
+      "rollout_sha256": "2cf4223606ab015c5176ce4c39e1f53321e979f8923a1fd052cc35349f4570dd",
+      "encrypted_payload_sha256": "61190499286b97275edd0d3374d241ba65873ed4c333ebecd1ffc3543d972468"
+    },
+    {
+      "group_id": "observed_003_v02_review_synthesizer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/v02_review_synthesizer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-17-45-019fef78-4838-7c31-afd4-374b464d698f.jsonl",
+      "rollout_sha256": "a8bb2b1a96b600b4b120172a2d1e5e4f81506d5f581a0f381de5ce32b6bf5d90",
+      "encrypted_payload_sha256": "e8764e86394adc4f2972383a8e2cbecf335e2fe4c93ccde59a0e1fa3c2d34ce5"
+    },
+    {
+      "group_id": "observed_004_v02_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/v02_review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-24-11-019fef7e-2a71-79d3-93f1-34aaad2db9b8.jsonl",
+      "rollout_sha256": "b51b6122a6fc4d968ae4e40dbd2e8c3976c850b03bc2301d3aeb46791722be05",
+      "encrypted_payload_sha256": "778e76075209606e9479246d7a783bdf9d842fa08804335ca3ee527c5e21ea07"
+    },
+    {
+      "group_id": "observed_005_v02_review_coverage_auditor",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/v02_review_coverage_auditor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-33-08-019fef86-5c7c-7233-8711-712cc2e20b62.jsonl",
+      "rollout_sha256": "0e19e3f568835b896f698e2b657b9ee1ffe569b75450643395fab43523562b43",
+      "encrypted_payload_sha256": "b9c80df03677e357ea46b1ea37c218a963c46ffe466beb869d972b25a79cfb9c"
+    },
+    {
+      "group_id": "observed_006_v02_review_final_approver",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v02_review_final_approver",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-35-58-019fef88-f525-7c30-9888-b0751dddeb5a.jsonl",
+      "rollout_sha256": "40881af3c26b57443a8223dd938ce169297c2151ca91785d87c8dd640312af33",
+      "encrypted_payload_sha256": "e9332507290d89544d55288057a6e2fcbc5f38e88cd6d53ddbdff48c0343c99b"
+    }
+  ],
+  "2026-08-11-minimal-knowledge-kernel-direct-review": [
+    {
+      "group_id": "observed_001_artifact_placement",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/artifact_placement",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-09-01-019fef02-6c44-7f00-ae8d-519fee408347.jsonl",
+      "rollout_sha256": "9c7c34a6317e18020cf04ecb407f020d97890376fac9ba575e8fbbf5a1cafae7",
+      "encrypted_payload_sha256": "dbbca04514b6660aafab60353fae0a9b9f115fa128fb43022f24e9d2ff6a8231"
+    },
+    {
+      "group_id": "observed_002_editorial_architecture",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/editorial_architecture",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-09-07-019fef02-836d-7c90-b2e2-a201f2fb5477.jsonl",
+      "rollout_sha256": "d8865762bbb99141abc067d82d1eeef2d2a2f76bb42927eb359cce2242aee98c",
+      "encrypted_payload_sha256": "94c7d9e6e792016b241df61d91943384d8a6feed851d764543e255f4e22dc60a"
+    },
+    {
+      "group_id": "observed_003_crystallization_risk",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/crystallization_risk",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-09-12-019fef02-999d-7761-bf5f-f9e77addffbb.jsonl",
+      "rollout_sha256": "d4072b58f504a52be5e66b5b5cf4448822ec43901ac5a9a8bf360b4705fb69d3",
+      "encrypted_payload_sha256": "255c8ffa555eb181c85214831fd7437f4612dbed81c3666fda201306e6269686"
+    },
+    {
+      "group_id": "observed_004_notebook_fidelity_review",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/notebook_fidelity_review",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-12-30-019fef05-9d65-7493-89d9-3d00e8cb1abc.jsonl",
+      "rollout_sha256": "f7a0e836dacafe062848c73da955d0e3e5475dad94ff7b06a1a768db72d987a4",
+      "encrypted_payload_sha256": "a75958a4b422f1150402293b858c8b11b75761a7583c8cf31da199b302e4b6b9"
+    },
+    {
+      "group_id": "observed_005_notebook_integrity_review",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/notebook_integrity_review",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-12-38-019fef05-bb76-7001-b9ab-9426427384e1.jsonl",
+      "rollout_sha256": "ed14ad3f34408d083553e5f64765163462a9d23a0eaef38820b8eee6caa7fa70",
+      "encrypted_payload_sha256": "77004eb9ee21d0a9fb08c72744a799c0820b5a68f8ce37b8b07738f067e1d500"
+    },
+    {
+      "group_id": "observed_006_notebook_fidelity_r2",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/notebook_fidelity_r2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-15-19-019fef08-3035-7250-a35c-447cf99ec173.jsonl",
+      "rollout_sha256": "cff75114a23acbf42df78356662fcfb8294dcf024a6f65dde7fc740f2385b5dd",
+      "encrypted_payload_sha256": "77cbb02df3408131fc60738812c7f732576f59e9732912e138d234f1ad42b679"
+    },
+    {
+      "group_id": "observed_007_notebook_integrity_r2",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/notebook_integrity_r2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-15-26-019fef08-4d55-7773-a2c4-ceb1c4203ac6.jsonl",
+      "rollout_sha256": "e619f77274759b0ecab8de88331e07308697d46551626641d6fcd98eacbf8a22",
+      "encrypted_payload_sha256": "5308a4bdf9594531e1e5ed024c58b4d95a5588f27c8fed4850c10fd76b135b93"
+    },
+    {
+      "group_id": "observed_008_kernel_fidelity_review",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/kernel_fidelity_review",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-30-36-019fef16-2dac-7b40-9aa1-02c8db3b9add.jsonl",
+      "rollout_sha256": "cf8d543ff5496148aaaf0b084f97dac1a7dbc2b377d54cb8e8741f59cbcf14dd",
+      "encrypted_payload_sha256": "d7f37a42de481b0c113435986eb0291f754151b187ec3fddda302d89c6bfc381"
+    },
+    {
+      "group_id": "observed_009_kernel_operability_review",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/kernel_operability_review",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-30-57-019fef16-813b-7373-957a-262422288dcf.jsonl",
+      "rollout_sha256": "7cc8cf30ffd217555dd46c9465d19a7f032f4913c75afe17b5152d61c9ac8a2a",
+      "encrypted_payload_sha256": "8d7647fa761c52b7af888df3d4e9b5147b39a51c859f07624a65da100529662f"
+    },
+    {
+      "group_id": "observed_010_kernel_material_inventory",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/kernel_material_inventory",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-33-09-019fef18-865e-7a32-8a42-921ff1798252.jsonl",
+      "rollout_sha256": "3f0434b9a05cfa3941903c1653e9cafe3100920afc9874cf9aae4f5a4346e2b8",
+      "encrypted_payload_sha256": "8098227fe48e4d6cbd2f3d66b0402022de8a932852392309ce25609851ddce6e"
+    },
+    {
+      "group_id": "observed_011_kernel_notebook_editor",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/kernel_notebook_editor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-36-04-019fef1b-303c-7990-af7f-76fb9e1a58a6.jsonl",
+      "rollout_sha256": "ba6c8047df4f49d3b092cb532e78e6cc77f0a913acb218aa45ddc2f77b52fc00",
+      "encrypted_payload_sha256": "cc59b8a347612ee6ac4c4888417e16b5d0e459fc59b12fda8c7d6dca1a7d092a"
+    },
+    {
+      "group_id": "observed_012_kernel_notebook_integrity",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/kernel_notebook_integrity",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-41-05-019fef1f-c8e6-7172-b722-5248a94cbd14.jsonl",
+      "rollout_sha256": "46f16ceb136e0285dde5fa7e4f1550a8a7482912f274c44c03a627925153d6d9",
+      "encrypted_payload_sha256": "aed55096ab4c96f966c022d283ae3914e6921382af689c2b596029e000c09e35"
+    }
+  ],
+  "2026-08-11-predictive-epistemic-grammar-research": [
+    {
+      "group_id": "observed_001_predictive_grammar_initial_defs",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/predictive_grammar_initial_defs",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-02-49-019fefa1-8c68-73d1-b691-ae1587684499.jsonl",
+      "rollout_sha256": "1c3238ed98ae844e42073c1675be0d38a75161bcb275f10af8afb63b239a115e",
+      "encrypted_payload_sha256": "5cb765d51ebe4b5a304e2e26b61fab334c7c811b096c69fca77a5304c8957f50"
+    },
+    {
+      "group_id": "observed_002_predictive_grammar_explorer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/predictive_grammar_explorer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-05-12-019fefa3-b97b-7a51-9cfb-aaf7b960c1c4.jsonl",
+      "rollout_sha256": "af51dc1ca718528df84eda9a5f575a870f25e4ce20b1112daa7349a9dcd8b530",
+      "encrypted_payload_sha256": "4f88a70b3744142470110765961ff39bccfd03a9c5eb51bcf0e5bf26eefb98c3"
+    },
+    {
+      "group_id": "observed_003_predictive_grammar_precedent",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/predictive_grammar_precedent",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-05-20-019fefa3-d836-7e13-b91b-eb37b697a4f7.jsonl",
+      "rollout_sha256": "1201adc3d5203171554a03b51d47cf492ada2246a1456cae5b2129e37cb9c846",
+      "encrypted_payload_sha256": "766a114d51ec03ebade8c8f1f78d0260fe78f7592d7eb2ba6c8c266ed2ef91f1"
+    },
+    {
+      "group_id": "observed_004_predictive_grammar_synthesizer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/predictive_grammar_synthesizer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-11-16-019fefa9-4601-73d2-a310-bdd78b9ba339.jsonl",
+      "rollout_sha256": "b28f096c1f2ba024142e17430f96a0552d417e4c6b124ad6e7d7e05a203170a3",
+      "encrypted_payload_sha256": "c7469cc350ee8e12c9705ebeaa05ab692148202b551498060094d539e6673610"
+    },
+    {
+      "group_id": "observed_005_predictive_grammar_nonvacuity",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/predictive_grammar_nonvacuity",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-22-36-019fefb3-a9a1-7090-b505-f441ed055565.jsonl",
+      "rollout_sha256": "ef64549871ebc62cf569111ed9be2fcb060beb83dcaddd34e6b54dff925903c7",
+      "encrypted_payload_sha256": "698d719f5645f53cefa4f64cef1a25f8b2203458d2972cf6aec041b80bb750e8"
+    },
+    {
+      "group_id": "observed_006_predictive_grammar_definitional",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/predictive_grammar_definitional",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-22-49-019fefb3-dbc6-7df3-8b24-cf989bdc96ea.jsonl",
+      "rollout_sha256": "6e2d7a7468aa2743e5d5f51490c5cbdb6c1514828774a6d7c3b7a5a41867625c",
+      "encrypted_payload_sha256": "2475962ad3f08c36108d45623bf8d384e138994371f20dfd8077f9e9b3cd2e23"
+    },
+    {
+      "group_id": "observed_007_predictive_grammar_auditor",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/predictive_grammar_auditor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-33-53-019fefbd-fe3e-7322-b380-2e27e0d192bf.jsonl",
+      "rollout_sha256": "54e2d2eab0c53a62269fef295f8fd4f0a2c49d758844e3244fe825cdfbf5c2c6",
+      "encrypted_payload_sha256": "a414bbf0c58391227b67e2082a883b7596a908fdd8137847de5b53126d270bc6"
+    },
+    {
+      "group_id": "observed_008_predictive_grammar_notebook_editor",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/predictive_grammar_notebook_editor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-47-21-019fefca-5007-70e3-a8ac-79b0368075f8.jsonl",
+      "rollout_sha256": "f39bb85b9b597df232e287123ce33ecd024975d8060708baeb8ac30cc41cd885",
+      "encrypted_payload_sha256": "69e63afcfc8191e89e3fe466241dea079197c49d9a876691f7e2ba0c2d7458b0"
+    },
+    {
+      "group_id": "observed_009_predictive_grammar_notebook_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/predictive_grammar_notebook_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-51-35-019fefce-2f10-7da0-9933-5423905f8211.jsonl",
+      "rollout_sha256": "f527ad670bfea178d53fa127d9d0f9eb2ff4b57f233ffaaf61f3a86298709c1a",
+      "encrypted_payload_sha256": "4ebf1d12417995d180b130ee49a6da0250cba5d0b8655d0bc8f3fbeee1ba471a"
+    }
+  ],
+  "2026-08-09-category-theory-craft-proofs-v3-review-repair": [
+    {
+      "group_id": "observed_001_initial_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/initial_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-40-55-019fe766-0f7f-77d1-ab57-8f28ee825dd2.jsonl",
+      "rollout_sha256": "5d0df30c41067f912cbfcd8a6112748c9af1a51adce4d56fcabb9921f9bab51a",
+      "encrypted_payload_sha256": "648a28085e56e211eeba41f995a540421546b84d67108834ffa2111ce3bcbebb"
+    },
+    {
+      "group_id": "observed_002_initial_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/initial_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-41-11-019fe766-5339-78f3-bf91-d6dbc5c277d2.jsonl",
+      "rollout_sha256": "32149509ecc843d584572dffdaa76f1f6583e479cb8c3a43a3fdb74f5585dd71",
+      "encrypted_payload_sha256": "d72c69173738b9a5973f1b2da9d951a8a133ff9513e7f813e26732c09bde523a"
+    },
+    {
+      "group_id": "observed_003_initial_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/initial_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-41-22-019fe766-7f0e-72a0-bf3e-e6d5769261ae.jsonl",
+      "rollout_sha256": "d7e5c143096db12e399a2dc183fd6c96cb4b3ed70a0b02d4a27d234a4dae2676",
+      "encrypted_payload_sha256": "f11ac235afd0f65341a34c9230bb5998ad8d329f289d8e234f7801ffa789812d"
+    },
+    {
+      "group_id": "observed_004_verify_initial_review",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_initial_review",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-48-19-019fe76c-b604-7af3-933b-f69c272f9dd1.jsonl",
+      "rollout_sha256": "8a45514fab3eca31f01a36555a65163dd34110907c99339478f70592a3ca3573",
+      "encrypted_payload_sha256": "7440ee45f35a54bcdad1f7527883eacb0fe42cc7d2dd8f5da486f8291c51e447"
+    },
+    {
+      "group_id": "observed_005_implement_v3_round1",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round1",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-59-19-019fe776-d31d-71f2-9d05-a7b6726f520d.jsonl",
+      "rollout_sha256": "dcea636df25c51b78c27b0258e460c776c427af44f5cee8552db11296ca3e72f",
+      "encrypted_payload_sha256": "4568a1c18ef690a837664588b4aae38d3a2d61f300064349380c8571683638b8"
+    },
+    {
+      "group_id": "observed_006_v3_r1_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r1_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-14-15-019fe784-8c9f-76b1-9c1b-9a1684be31e6.jsonl",
+      "rollout_sha256": "c5af3419b43ef26bcae26182d4c3066d0b14a14fe4f055a1046954f123ca1770",
+      "encrypted_payload_sha256": "a7ea77617ea46266bdcdd44324963c2a3d0b3662ff46c7c3579e82433635587b"
+    },
+    {
+      "group_id": "observed_007_v3_r1_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r1_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-14-42-019fe784-fbd2-7172-a537-587ae013def0.jsonl",
+      "rollout_sha256": "b116ab6d8b2129e77130acfe32533115d796d3da45d6149921b692784c034e80",
+      "encrypted_payload_sha256": "2b111e6a062eebf5397ee362999bd322b3687ffe7171506c8c5f43089f87bb0f"
+    },
+    {
+      "group_id": "observed_008_v3_r1_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r1_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-16-00-019fe786-2806-7bd3-9273-dc441c34a9bd.jsonl",
+      "rollout_sha256": "fe6b901fbfc74db7360a0fbcce5af35f9ce4f08e8b58130d7fb84dbe8fab98c0",
+      "encrypted_payload_sha256": "4bc27a5c3410100ca497189ae79f15c463727345ec692ccd8c05e5c6f5679589"
+    },
+    {
+      "group_id": "observed_009_verify_v3_r1",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r1",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-26-56-019fe790-3918-7651-b3f3-208d6ec77d1a.jsonl",
+      "rollout_sha256": "f7b835d91847ad343c90eb886dcf7b6720bb88821389cdf98bc05621701eb4ca",
+      "encrypted_payload_sha256": "9d08adb8182c803cea99998c9fb2a4c517bf2f53470dbb8613cdced8d7c85bf6"
+    },
+    {
+      "group_id": "observed_010_implement_v3_round2",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-30-39-019fe793-9d3d-78d1-bf4a-7a9845da0b8f.jsonl",
+      "rollout_sha256": "82ce6317f50b84467d0b097dc18b340444bd358c55115f835ff010732f835cd2",
+      "encrypted_payload_sha256": "7768ad20c937f8bbb911e86319b94213cc0a7c21430784eb88e4e9d1df09de3a"
+    },
+    {
+      "group_id": "observed_011_v3_r2_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r2_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-41-29-019fe79d-8a18-71a3-b886-b8d260c33f21.jsonl",
+      "rollout_sha256": "b7b94aa4b75a3a0bc71ac1db75fe00be96a3298d36462acbbda105dcafbc61bc",
+      "encrypted_payload_sha256": "d5b94d21333091dc182360195db67a1da78b438efe0dcc505175a53791a498f7"
+    },
+    {
+      "group_id": "observed_012_v3_r2_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r2_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-41-41-019fe79d-b8ae-7a70-a8ea-55446e37c926.jsonl",
+      "rollout_sha256": "4912d3e33790ac9fbf34d467830c46dee6bea9b993873796d212b206f72e6167",
+      "encrypted_payload_sha256": "d1d5bf59a9ed074cf419d39af9e79ecbe883311b3444696eb08382d9f1fbc183"
+    },
+    {
+      "group_id": "observed_013_v3_r2_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r2_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-41-56-019fe79d-ee09-7ec2-9647-d55481b50d5f.jsonl",
+      "rollout_sha256": "b3257c540ac2b9927cf7991520e6393a3c474ba99f9ad74a6ce735e106792dbf",
+      "encrypted_payload_sha256": "042959eae1be30be78c6688b5efbe784531aea052fedd79b9374e357b8479d74"
+    },
+    {
+      "group_id": "observed_014_verify_v3_r2",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-49-33-019fe7a4-e5c3-7770-b800-731b77bfe82c.jsonl",
+      "rollout_sha256": "a2713ca6ee22f4cae23bcc16413a3c3038e07025fbdc3d3d85db04d0270332c3",
+      "encrypted_payload_sha256": "3a221134dc5bd146c1728351884369dadfe9c6c1b8ffd9bf89813be600ddbc8d"
+    },
+    {
+      "group_id": "observed_015_implement_v3_round3",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round3",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-53-07-019fe7a8-30c1-7ba0-953b-b101075bcc1e.jsonl",
+      "rollout_sha256": "44d022c6316d2174d7920a99b9567aaaa50936f3894b2fcb6df4ffa88843acbe",
+      "encrypted_payload_sha256": "8158259066ff7027e151ef464142d32d9a188e8482d6a57ab3f2056fc9270b2d"
+    },
+    {
+      "group_id": "observed_016_v3_r3_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r3_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-05-42-019fe7b3-b15a-7112-8a16-6d723847f0ad.jsonl",
+      "rollout_sha256": "c81aec2972dff5aeeba334eaf7c26450ec14ae3a2da5841e995af43ebb623676",
+      "encrypted_payload_sha256": "b6c981c13d6b842ae681f6b799b5b03180d11d2829543df7902120c3f146e159"
+    },
+    {
+      "group_id": "observed_017_v3_r3_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r3_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-05-59-019fe7b3-f8f5-79c3-8726-1f8e56a93c7d.jsonl",
+      "rollout_sha256": "9278b2e7a1d3c9f74161cbe97e524205ab0d1e8df894c116a430827257a3db12",
+      "encrypted_payload_sha256": "1e30f675016645505190a9ad68285af505ac129c9ed0793dddd13be9ac110044"
+    },
+    {
+      "group_id": "observed_018_v3_r3_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r3_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-06-13-019fe7b4-2d86-77d3-b9b4-395aaf3a0314.jsonl",
+      "rollout_sha256": "16005d583ce5e6b305b317687092f29c0e8380008fd83c38eddc6c77f85e6c6b",
+      "encrypted_payload_sha256": "97bcd90bc5846da55786051e58fbe213a7a8c57ad89da503826b86e94e576d6a"
+    },
+    {
+      "group_id": "observed_019_verify_v3_r3",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r3",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-11-37-019fe7b9-2006-7591-b367-6e8af0b3b577.jsonl",
+      "rollout_sha256": "73204c0a69fba7e70d439d571912fd0b4f98f04aaad1d58c12432e7ef075c315",
+      "encrypted_payload_sha256": "409797b65a97b6f2ab48c63972fe5765f1b2fbb1f040fec0a3a22e7babb33a29"
+    },
+    {
+      "group_id": "observed_020_implement_v3_round4",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round4",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-15-23-019fe7bc-92f8-7b61-80e0-04105516358f.jsonl",
+      "rollout_sha256": "3cd7fe306fc3e9d141d2b17182afdcde66c0b56d5908803705b6a10b6e5f47d1",
+      "encrypted_payload_sha256": "9e1c2f3c1e017864914f042a719a0b4c708e08dd42525981e22b758608af3fde"
+    },
+    {
+      "group_id": "observed_021_v3_r4_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r4_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-24-10-019fe7c4-a04a-7e41-848a-0dff1334d849.jsonl",
+      "rollout_sha256": "f36615656bbb8f019e60b54fc389e3b955f45f38ba7bd9001bb5d4ef52c417e4",
+      "encrypted_payload_sha256": "5604437359ee08cbf5297fd9d2101f9b0a8b7963dbda632912ba796ef8942eec"
+    },
+    {
+      "group_id": "observed_022_v3_r4_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r4_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-24-17-019fe7c4-b7a0-7211-afc6-09b2ab60ab10.jsonl",
+      "rollout_sha256": "fb3820f9e4f1d6ebf9e341c54c8ae4c7bc2d921a397971ea94e2776f07ca5e1a",
+      "encrypted_payload_sha256": "79427323ce36bb1f9e4a83036a8bf633ec6957dd71de94d17ddcc37781f6e35c"
+    },
+    {
+      "group_id": "observed_023_v3_r4_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r4_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-24-23-019fe7c4-cf42-73a0-acae-9b32ff01dc85.jsonl",
+      "rollout_sha256": "c44fa842b1cc52242f6f621160bccf08e00e5b266c166ee7f4bfd413c5855ad5",
+      "encrypted_payload_sha256": "919b9536cd4b4c8e5d58386699a73bf03923d4d42185ed68803a374614ae62db"
+    },
+    {
+      "group_id": "observed_024_verify_v3_r4",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r4",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-29-35-019fe7c9-9384-77b2-996a-38dbf732ad4b.jsonl",
+      "rollout_sha256": "1c5133a2d71ddab7ad107e805293067977f17140ae0fb07db65756d311a3b7ac",
+      "encrypted_payload_sha256": "f6cb135aff2b4c32c4b7e403add797d2df4348a0500c637f067f49858927ed3b"
+    },
+    {
+      "group_id": "observed_025_implement_v3_round5",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round5",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-31-49-019fe7cb-9d87-7a02-a2c4-4594d335a2a7.jsonl",
+      "rollout_sha256": "d2f64007a9b3ddca04ab3a601e61d33d9d628df56a1c18676422e283daa44cf6",
+      "encrypted_payload_sha256": "c4092b2232d34204dffe3dfd7084027a809479fa7e0973c854ae848a18daac4d"
+    },
+    {
+      "group_id": "observed_026_v3_r5_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r5_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-38-51-019fe7d2-0eab-7392-8e48-bbaced444468.jsonl",
+      "rollout_sha256": "3cc2c690a0eb98434983ec45ecacdac031ee7eb9ce8a039e304f2793069ea165",
+      "encrypted_payload_sha256": "bc961cdf047eaeab313c996ba2043543d8601d35d446a2260d736f52e6c39862"
+    },
+    {
+      "group_id": "observed_027_v3_r5_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r5_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-38-57-019fe7d2-26a3-7aa0-a666-2ba59aaaaa28.jsonl",
+      "rollout_sha256": "16ffbfe974b3a062190721888e000cd837b0f4ba3b3a1e8c99b5910612e16161",
+      "encrypted_payload_sha256": "9d84823c4e8a0cd8f32a4dccca2bb8f884c9b19ece0b54258d3554833acea534"
+    },
+    {
+      "group_id": "observed_028_v3_r5_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r5_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-39-03-019fe7d2-3cb2-7750-b4a6-aa51ca74ce7d.jsonl",
+      "rollout_sha256": "98d76ca69c4455f4191e4b3216fc14c9d8f3116af5a2e03128f217c7363ea73f",
+      "encrypted_payload_sha256": "f2f803e9cfabe08cecbcc28e39d0381a8ba32a0654b8637905bc7c2f6cc2f06d"
+    },
+    {
+      "group_id": "observed_029_verify_v3_r5",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r5",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-43-14-019fe7d6-1430-7213-91e0-916a7df12e66.jsonl",
+      "rollout_sha256": "6fbaec1136a5b68d205c3bbcd4927c1ff33670d559aebb8fa80079338e5adac7",
+      "encrypted_payload_sha256": "0d21edceb88e9686483ceb4fbb80db7d7368879a4b16c300a19a8045be713e3e"
+    },
+    {
+      "group_id": "observed_030_implement_v3_round6",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round6",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-46-18-019fe7d8-e2df-7542-8b26-20b0bbb75c4b.jsonl",
+      "rollout_sha256": "1106ec759d692cb92cf1c965a3d5db18f0dc86db3662dfa1d656de8c2a7704c8",
+      "encrypted_payload_sha256": "d5b7201d6a683e5d9f4f1f19e54faa6843d2e5c77fee556f1553c3112ef232db"
+    },
+    {
+      "group_id": "observed_031_v3_r6_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r6_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-50-43-019fe7dc-ec65-7470-adfc-c672389a0fa8.jsonl",
+      "rollout_sha256": "1fc20eef9510409e2ce863533c0f3374458368f67f3fb2185a0074d5dee65521",
+      "encrypted_payload_sha256": "f1192ac30de83d57a61aa6f3c9eb69826c8f3bfe8f71069ac20903c1f6ec5019"
+    },
+    {
+      "group_id": "observed_032_v3_r6_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r6_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-50-52-019fe7dd-0e5d-7570-8f79-f9d045345994.jsonl",
+      "rollout_sha256": "84715cad9674acfdb705ab870589f792e710f90e7b2dc29f0fb6806f5823ce36",
+      "encrypted_payload_sha256": "cdbf25ee96e01df6ff76260aabb6d9cdd279677c06cbdcff01963970bbdebd07"
+    },
+    {
+      "group_id": "observed_033_v3_r6_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r6_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-50-57-019fe7dd-2103-70e3-8c39-856fc1368b39.jsonl",
+      "rollout_sha256": "b8c84c07c02e429ad32fb5916eed2dc7ed18ac20ee3976dc02552839b5026e5c",
+      "encrypted_payload_sha256": "495aaf86a8c87af51e79316e1f624e5faa6c939f0975634db5f2ab534c528a2e"
+    },
+    {
+      "group_id": "observed_034_verify_v3_r6",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r6",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-55-12-019fe7e1-0942-7341-b4e8-3d07120711a9.jsonl",
+      "rollout_sha256": "9d2c26b507deaf38881d27a2af475afe2843315fbb4bebbed21f0e64421d2e20",
+      "encrypted_payload_sha256": "d454cfa2bd675694a0bfa30d56823f26081c37975e0e90d82894012e827d0935"
+    },
+    {
+      "group_id": "observed_035_implement_v3_round7",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round7",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-57-09-019fe7e2-d167-79a3-b6b6-18384eef31b6.jsonl",
+      "rollout_sha256": "3378511c2df343f49ab8c419af50cb95e5e60b8a9ba564ab777023fe9e3140d8",
+      "encrypted_payload_sha256": "16606418c2aa14da08ff8e59bac9ef556108e5579a884875c8f5e5ff4de9a345"
+    },
+    {
+      "group_id": "observed_036_v3_r7_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r7_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-04-20-019fe7e9-61fe-7b52-952a-7a94f00cc7d4.jsonl",
+      "rollout_sha256": "1d443c47c5b44734babe36336f136f4e6e6948926bbbc836de92a8a2280756dd",
+      "encrypted_payload_sha256": "5c9ca836f108a28d6b5e321059ead586f03638d49fb4b3d137ccfac504d06f6b"
+    },
+    {
+      "group_id": "observed_037_v3_r7_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r7_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-04-25-019fe7e9-7815-71b0-9037-743d63a8cf88.jsonl",
+      "rollout_sha256": "e5dd7269f93fab2b0a1a6bf40c8ef39f7ff2e14a809bd1b79d3b2a1430b2c201",
+      "encrypted_payload_sha256": "5795681c708345411f2e47797907e360cc6fee74c8845de7d5cbc762c7592151"
+    },
+    {
+      "group_id": "observed_038_v3_r7_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r7_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-04-30-019fe7e9-8c3c-7802-8f02-404c24b03a07.jsonl",
+      "rollout_sha256": "a0e83198fd29e1deaacfdf2316e915af4797882adf0cd33d77b9451c1bf4a131",
+      "encrypted_payload_sha256": "2f2b07a3cd0b85fca398a6660dc2fb7e1548f987c9089adf291f21bb095fb26f"
+    },
+    {
+      "group_id": "observed_039_verify_v3_r7",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r7",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-09-40-019fe7ee-475b-7e51-9ba1-73e5ad2a63f5.jsonl",
+      "rollout_sha256": "5ecac472157d59d8e1a98bb9f2a8efc907cf9dcea276335fb2037a7f957e9307",
+      "encrypted_payload_sha256": "858c91de15eaab92e69628805a46347357fb55c0253e5a33bdc618e490395498"
+    },
+    {
+      "group_id": "observed_040_implement_v3_round8",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round8",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-12-21-019fe7f0-bb60-7550-ae06-03373833706e.jsonl",
+      "rollout_sha256": "8cf34d2236e377326adff46252165b969ed0312e52793b9f5b13f711453cae33",
+      "encrypted_payload_sha256": "801e726b7a40632469aac57a7b7cccb65a87483d985153c9b1548084b06e4623"
+    },
+    {
+      "group_id": "observed_041_v3_r8_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r8_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-19-13-019fe7f7-034f-7110-809b-86c6a2c79ed6.jsonl",
+      "rollout_sha256": "cbe5a8173c4a2393f8a7b7fa096960885715f4c4d3ff3c9116c8a060bb376175",
+      "encrypted_payload_sha256": "43829da0dff74f5cc73a87eddc52a7c042c2ffbdae08a568e7457f062eb1d62e"
+    },
+    {
+      "group_id": "observed_042_v3_r8_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r8_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-19-19-019fe7f7-1cc0-7b42-b0f3-91d3b743f067.jsonl",
+      "rollout_sha256": "dd8e1c560287c7dbf452aaa29c72801e94ec1d70fd505191cafdce696cd18d5d",
+      "encrypted_payload_sha256": "e9b920ef86e3fd6cc5507f29620100e20923f0ab099ace27c65e83fc1be3138c"
+    },
+    {
+      "group_id": "observed_043_v3_r8_review_statistical_retry",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r8_review_statistical_retry",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-24-15-019fe7fb-a114-7362-8de3-ebbda779ffa8.jsonl",
+      "rollout_sha256": "6cf5f2223e198268f9e630c04602af811af6cba048ad56049a7dfeaa8a8b5f6d",
+      "encrypted_payload_sha256": "b493e0f6ddb0d4f47960948e41252abc52e2df1753e4f1e3964a4bdba308fc7e"
+    },
+    {
+      "group_id": "observed_044_verify_v3_r8",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r8",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-29-00-019fe7ff-fafc-7fb3-807b-db0f3debc7ea.jsonl",
+      "rollout_sha256": "f301853b2c0b973993f92321bea76ba3d9076b7049e1e56a1df5d748dd4231da",
+      "encrypted_payload_sha256": "b221b64e7e8612516290eaaa292356606dcccc718e7341f5ed189c157e55abd5"
+    },
+    {
+      "group_id": "observed_045_implement_v3_round9",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round9",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-30-47-019fe801-9a3a-7181-bcf4-36f32391e8a2.jsonl",
+      "rollout_sha256": "4d006a1de7cb38b16d33ba07b81e01d95aba4a5a86f221f48b729e7ecc3a4888",
+      "encrypted_payload_sha256": "8abf63edfbfebcd37b4222dfbd618e3f236595759f26a5ae0af33856325d21af"
+    },
+    {
+      "group_id": "observed_046_v3_r9_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r9_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-37-20-019fe807-9b43-7143-8980-322b62b56afb.jsonl",
+      "rollout_sha256": "9093d711a096d25a850e26b832ffbbfd68c60a9b2eaa0f5a35d0e5f64b0933c3",
+      "encrypted_payload_sha256": "c460024eb4a7aee3308ae29f9ba4280066bab3c579dad1f92391c7f9e592dc47"
+    },
+    {
+      "group_id": "observed_047_v3_r9_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r9_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-37-30-019fe807-c306-7b91-983e-15ea72616c63.jsonl",
+      "rollout_sha256": "01e5d65f7378d7b16a019fa8d507388353bb5325afd0a07125cb0d587c9666f8",
+      "encrypted_payload_sha256": "45eb9db9db5799072d0b33bc9a5a6d6229d1311fbc6cbe797b838b80cbb58995"
+    },
+    {
+      "group_id": "observed_048_v3_r9_review_statistical_retry",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r9_review_statistical_retry",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-41-55-019fe80b-cc78-7931-927d-6749b99c6ab9.jsonl",
+      "rollout_sha256": "92e37f8a934a4969ff7ecaed9d68bb94a2b28f15f60b0817f63e80a92122f7eb",
+      "encrypted_payload_sha256": "b99ed7a1f16981923149892cf4134d76f9c26353ce1917ce968652f5006319e9"
+    },
+    {
+      "group_id": "observed_049_verify_v3_r9",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r9",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-45-58-019fe80f-83db-7662-96db-2ca4b25cfa09.jsonl",
+      "rollout_sha256": "60b482cd947e7d17f6b299016ca3ab08b9a18f86a0b212c7a4d463ac12171945",
+      "encrypted_payload_sha256": "32497624bf6c2f241897db098a06efe772b90590c1f784f3625f0efbdfd86e8a"
+    },
+    {
+      "group_id": "observed_050_implement_v3_round10",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round10",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-48-14-019fe811-9758-7370-8938-fcacf0743fbe.jsonl",
+      "rollout_sha256": "29c01c6f34e7dbd633e6c6f2773b2e2676e82060a0c40e4f350fb9e6e63f1af5",
+      "encrypted_payload_sha256": "3584e0fd9fac2e6cb8f062323a10b914c4aa495c46d57d085f1c268d3e747be9"
+    },
+    {
+      "group_id": "observed_051_v3_r10_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r10_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-56-16-019fe818-f1cb-78e0-99fe-df3da87b2b57.jsonl",
+      "rollout_sha256": "53ceaa4ac3c4ffce1f7b1bb309a890d868961f66ab8725fc3b657c90afb28c1b",
+      "encrypted_payload_sha256": "3d111617ef874d124913b2adeaea2561c5a8bcf34a815298043269c64dd0570f"
+    },
+    {
+      "group_id": "observed_052_v3_r10_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r10_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T16-56-21-019fe819-0582-7e73-9cb5-901a74eff96f.jsonl",
+      "rollout_sha256": "aa1ffda82ab457eeab32453160cc52a9df6eda3cee75f1b27bd56e34b8b0711b",
+      "encrypted_payload_sha256": "3cf2e3ab8af845c90f30344bccb69b2cd8350945a90bbf102888d19a88c242e8"
+    },
+    {
+      "group_id": "observed_053_v3_r10_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r10_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-00-42-019fe81c-fdaa-71d0-b928-6ba9d3a7c27d.jsonl",
+      "rollout_sha256": "3cac5305fbdc978cfeeac2fee5a3514ae053e35d7da662a9e5117dbcc8ca0bec",
+      "encrypted_payload_sha256": "56339ffd0b08f0b7ad961b865ed1e86c3b0bd16446243edffc1750fd3cd0d87a"
+    },
+    {
+      "group_id": "observed_054_verify_v3_r10",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r10",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-05-29-019fe821-5e99-76f0-92a2-276eca898b4e.jsonl",
+      "rollout_sha256": "0794c86cad2a1c2cadb923050335cc9a843fc18b04a44516c01ea5924aef6765",
+      "encrypted_payload_sha256": "7508b48f1316b5e0b1c032e893a20e1bd34de856aed1e9034400460a61abd5dd"
+    },
+    {
+      "group_id": "observed_055_implement_v3_round11",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round11",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-07-43-019fe823-6aab-7d81-8a65-cbc643bfc932.jsonl",
+      "rollout_sha256": "d23a31acfd2c09b3ad06786a2290c50eff71c62e8081a6c4b35ef6c010f4adec",
+      "encrypted_payload_sha256": "9db4bb943746eaff43aabafd7dd7c3bed5c4d5982ff2664d8cd6037a3655ad46"
+    },
+    {
+      "group_id": "observed_056_v3_r11_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r11_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-17-20-019fe82c-381a-7ca3-9b4f-d8d52d870efe.jsonl",
+      "rollout_sha256": "fee945155c9913306cdba369205a508563234dd15db2d9e7a682f7878e4d972c",
+      "encrypted_payload_sha256": "7487984171cc76b86e3586807e1ee5cf2e49ae0b4f63f3eb9569d2ee29a7ccf0"
+    },
+    {
+      "group_id": "observed_057_v3_r11_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r11_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-17-29-019fe82c-5e06-75f0-aac4-f6abbb88ed6e.jsonl",
+      "rollout_sha256": "3d0a35bedbdd882c4d2aa3eed64812256b69b1b5aaa71b4efff16eb5478340e5",
+      "encrypted_payload_sha256": "e603a837657883ea3b46aaf060a614d230160992732179c02fd3c4a61b2b15f1"
+    },
+    {
+      "group_id": "observed_058_v3_r11_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r11_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-25-05-019fe833-527f-7063-9ac4-ba4d91d68ab8.jsonl",
+      "rollout_sha256": "f2ecec5270774e5610199a06a595755acd15be815c5c8406422a9312bc1f502d",
+      "encrypted_payload_sha256": "c816005a206c96f515f1ab2a599728d82605604b6f47f20454b078d6712c0080"
+    },
+    {
+      "group_id": "observed_059_verify_v3_r11",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r11",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-28-27-019fe836-65b8-7c83-b0f1-4fe34019fc44.jsonl",
+      "rollout_sha256": "65f49ce4f14a2af53dd96dd2e8b5c8289cdf7b6f78ba68d809d42570c089f22e",
+      "encrypted_payload_sha256": "cc656355067f09f6a55648cfd96fa842bb5d5312a85d0d6ba0217739f4b83f18"
+    },
+    {
+      "group_id": "observed_060_implement_v3_round12",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round12",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-30-06-019fe837-e992-7b20-8b5d-150755e62369.jsonl",
+      "rollout_sha256": "767190741cb52080dc9661714ab29ecf76080738057c5e9353cde95389bc5ebd",
+      "encrypted_payload_sha256": "3df75f51092a984c0070e7241b1a34ab770b600f75cdf8c5e974387cfc793473"
+    },
+    {
+      "group_id": "observed_061_v3_r12_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r12_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-39-16-019fe840-4d50-7b80-bc10-0f6984658f1c.jsonl",
+      "rollout_sha256": "a1624b39fbf3caf2c25c3bf1fa558cbbd02f1a05acc3d718f5e908e54325b67a",
+      "encrypted_payload_sha256": "f6f1957fa8c90be2e1a214f41d9ae0eff45a4d39a7664d48eeb3cd3152954d32"
+    },
+    {
+      "group_id": "observed_062_v3_r12_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r12_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-39-23-019fe840-664f-7ba0-b7c5-db6b80bba743.jsonl",
+      "rollout_sha256": "d4cccba368f2fc4177680dece13cd7d413f30fda0e41b16694621e3a371c1a0f",
+      "encrypted_payload_sha256": "faa20571bf43a4d3725e7b225c442cdd6ed37e41bc9a27abbb3ae85e8fc49fc1"
+    },
+    {
+      "group_id": "observed_063_v3_r12_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r12_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-43-52-019fe844-827b-7f62-ae8f-e66c87a81c24.jsonl",
+      "rollout_sha256": "e1fa6407e318c4cc40dda62a6d7185b01a134f0f5684ce2933f7c28786462ccc",
+      "encrypted_payload_sha256": "1050496f94bf8a4abb18204580ddaa7538e612b0783def26046c5f2a0042aa11"
+    },
+    {
+      "group_id": "observed_064_verify_v3_r12",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r12",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-48-19-019fe848-98dc-7a20-b90d-bc2ec30640f8.jsonl",
+      "rollout_sha256": "d2bf13b26dd498dca1914746be9144e42b6bf3e7e753b483080fabbfedf44661",
+      "encrypted_payload_sha256": "eef7a435d82e263bdd95dc5b55a06d4b5f85fcf165e8d59303cc825636a56a4b"
+    },
+    {
+      "group_id": "observed_065_implement_v3_round13",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round13",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-50-51-019fe84a-e876-7f70-828e-9b23451da6e3.jsonl",
+      "rollout_sha256": "a5b6e8b1243f84a3322f780bdf7976ad7e330580f69f5f959da7e10a65eb2a18",
+      "encrypted_payload_sha256": "26ec21c75af18ee083e0c1611ddbe0acce6260350034113a7418679fba3b7646"
+    },
+    {
+      "group_id": "observed_066_v3_r13_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r13_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-58-24-019fe851-d373-7a41-9f32-f15413fe8c60.jsonl",
+      "rollout_sha256": "bc381b03b0084e7ab308981bccf0fc9a9a12869356979a4dab948382fb051e07",
+      "encrypted_payload_sha256": "10c575f9014ff9e61320dc267aab5256dcbe3452d94045dde44ef086f509055c"
+    },
+    {
+      "group_id": "observed_067_v3_r13_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r13_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-58-29-019fe851-e7a9-7000-9f3f-bbd7970c8b56.jsonl",
+      "rollout_sha256": "d09bf4efce7804f7d90676946d5f9db64715ba255b53589e8f7bd8222540d80c",
+      "encrypted_payload_sha256": "a78157645369636dddc2c4f6803f78b28ce411dab7f5e6373f56447d5b4597cc"
+    },
+    {
+      "group_id": "observed_068_v3_r13_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r13_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-02-57-019fe855-fc6e-73b2-8b30-1188b8e97b19.jsonl",
+      "rollout_sha256": "c504685cb933c284eca30a9c49967968c0c8364555fd8951c4b6d588937f3108",
+      "encrypted_payload_sha256": "0aca436674f8c324db47e88cd10a4f83359754fe99dadfa90a661cef9596caea"
+    },
+    {
+      "group_id": "observed_069_verify_v3_r13",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r13",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-06-29-019fe859-389a-73c0-8126-e29ea3c2cc43.jsonl",
+      "rollout_sha256": "2d4e09bce028ece48ddb1df8a407ae7e8c35d17bc62d16a2660bf1e8bff80662",
+      "encrypted_payload_sha256": "f78e6ef599b2bb5e412ea04ca0fbee6e609f1db40f875498571e33e7653d8839"
+    },
+    {
+      "group_id": "observed_070_implement_v3_round14",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round14",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-08-06-019fe85a-b586-76e3-95b6-65ec7249abbc.jsonl",
+      "rollout_sha256": "e6a7bf981f4dc5c3ad2004b446784a423864d7b371170e1ea11cea754c307ff6",
+      "encrypted_payload_sha256": "10e454b23d8f6cd412958deefe6ac0002dba5abc85b0bcccf0c45ef762a28868"
+    },
+    {
+      "group_id": "observed_071_v3_r14_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r14_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-13-13-019fe85f-64d6-7940-8d5f-bf94730b9916.jsonl",
+      "rollout_sha256": "e5ce9fa20d3fa37c3815de306e172d71aefdd7f70221e0d914968303ba81a4e7",
+      "encrypted_payload_sha256": "b2d372e395ee423c71f342722f48a0662f1b1ea120bf8a3591b3a170339876bb"
+    },
+    {
+      "group_id": "observed_072_v3_r14_review_formal",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r14_review_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-13-20-019fe85f-7f11-7362-91e4-4532e0db4a29.jsonl",
+      "rollout_sha256": "8355dff2c105f4d8a4caf147d4a0266f5e03b589e7d7af2dee3def18034f5198",
+      "encrypted_payload_sha256": "ef91443d040e2b350773622e63faf7e1ebc8799448657bd0e20c411ecaee0117"
+    },
+    {
+      "group_id": "observed_073_v3_r14_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r14_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-19-00-019fe864-ad4a-7c10-9896-071fe58038d3.jsonl",
+      "rollout_sha256": "86c67b18ac572e1d0d64df55bdf5ce6e80dc4e5e4040d90d4829a78b61a8d614",
+      "encrypted_payload_sha256": "4f0ac4a5865b5c27b2f9b33482182a0c6de32272d40e6d3d9ee9d1f08d8fd6d9"
+    },
+    {
+      "group_id": "observed_074_verify_v3_r14",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_v3_r14",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-22-42-019fe868-114a-7901-bd81-ffa9a4aff3c0.jsonl",
+      "rollout_sha256": "8a9869478ed49b855878752d4a4ae39f3e00660f9a5ad748d41cb5ab51acf630",
+      "encrypted_payload_sha256": "64ddff293eedf30482a6da6eefd0fc6d0b9d9587c64030835e87bcfca8dd90b8"
+    },
+    {
+      "group_id": "observed_075_implement_v3_round15",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/implement_v3_round15",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-25-14-019fe86a-6455-73b2-ab0d-149fe844361b.jsonl",
+      "rollout_sha256": "7fa0f2d7d062857eb4d9beaf4ab6aa7f172be22d6995c1a9ffdad902ec334700",
+      "encrypted_payload_sha256": "da205cc74cb32d4237a0924d7b4718075d123b95e9b2a10c7e88de158be38fd9"
+    },
+    {
+      "group_id": "observed_076_v3_r15_review_semantic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r15_review_semantic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-32-17-019fe870-d7eb-78d1-aca0-8bac05a80dff.jsonl",
+      "rollout_sha256": "9689060228f8be233395bced3eb8f0c311ec207b4511550a949a50359458a245",
+      "encrypted_payload_sha256": "94a934185ff85116e94b7291d63d4ea66c0fdeb0e4bf105f1077737760f233bb"
+    },
+    {
+      "group_id": "observed_077_v3_r15_review_formal_retry",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r15_review_formal_retry",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-35-49-019fe874-1627-7b10-9b48-e71ee2324158.jsonl",
+      "rollout_sha256": "c7ef1fea6e11e5379778f3abaa8da511b98ee9479071fc585df18989f8c98296",
+      "encrypted_payload_sha256": "bb939c63d8858ad53a88809e4d52f02b5253ce90c6eb4ceae27fac2d30ad1606"
+    },
+    {
+      "group_id": "observed_078_v3_r15_review_statistical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/v3_r15_review_statistical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-38-53-019fe876-e331-74f3-b529-9297cb8f85d9.jsonl",
+      "rollout_sha256": "ab7f78284087eb00170f3b0bc54e0a8af1ba9701ea32ee212c715c0c4b58931b",
+      "encrypted_payload_sha256": "91084aee19d5eccc32001af785b1eedb63daa910579dce15fd7394711a306353"
+    }
+  ],
+  "2026-08-09-multi-repository-commit-sweep": [
+    {
+      "group_id": "observed_001_commit_root_repo",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/commit_root_repo",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-42-19-019fe87a-07db-7862-b113-7bb85b92b5e0.jsonl",
+      "rollout_sha256": "08b9da6194969631438f6defe049c2ecc68cef0b49dd21eecbc2a804373b3169",
+      "encrypted_payload_sha256": "f60e91f0f7c3a011ac3c4bee20274556d31a30be5854f1328eaad70dea32e8e8"
+    },
+    {
+      "group_id": "observed_002_commit_resonantos",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/commit_resonantos",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-42-29-019fe87a-2ed9-7423-ab1c-de6d08cb3c06.jsonl",
+      "rollout_sha256": "e29ffd27f1933af8c33714d9b80fb01e55b95c3ccef3053910ca67bc8c2af21c",
+      "encrypted_payload_sha256": "0c31e17b7008425db1831331a5e99eaa13f642eafb948c46fb2ff31e7b9e5134"
+    },
+    {
+      "group_id": "observed_003_repo_cyberalchemy_orchestrator",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_cyberalchemy_orchestrator",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-58-29-019fe888-d2b7-7d20-8a73-7620239d4b75.jsonl",
+      "rollout_sha256": "00876edc96852ca9e38ea5fca34353f9d98ba2bbbe54744c7f18cff0c1f6fcf3",
+      "encrypted_payload_sha256": "6355a1f9892974fc6468a26bb3cd3f008c90a875e8981f12944f4ff486df1eea"
+    },
+    {
+      "group_id": "observed_004_repo_arcanum",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_arcanum",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-58-39-019fe888-f8ad-7770-9f74-7e1c1d22571c.jsonl",
+      "rollout_sha256": "9edb23e529e7c5fc6212d79458450fc2d2826b2354bc01541adbd397befac1c1",
+      "encrypted_payload_sha256": "748faa195445c5855fa8040c66f333192162e0ba5306929a4afbaf35ae57edce"
+    },
+    {
+      "group_id": "observed_005_repo_domainspec_core",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_domainspec_core",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T18-58-51-019fe889-2ad0-7d52-bd7f-a840ecf72a06.jsonl",
+      "rollout_sha256": "7355a6f1b77610d2f3b52a57863a23f2676c3b1f5683a002d3a471e788d51a3c",
+      "encrypted_payload_sha256": "a21568dd1c51c375e104f764c0bda9d29d84b7306eb6932b4dfdf4b91dc8755d"
+    },
+    {
+      "group_id": "observed_006_repo_domainspec",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_domainspec",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-04-40-019fe88e-7e9f-7963-a61b-69b6851ac218.jsonl",
+      "rollout_sha256": "f1c6e2d6a9ad68b77c376d4c1d2ac04ccdc2ed09b63f7816d63cdecbd1126fc8",
+      "encrypted_payload_sha256": "a005c834476eda91c08053690a11bc7aafd6c696caccbe06dd371b38803b83ae"
+    },
+    {
+      "group_id": "observed_007_repo_business_philosopher",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_business_philosopher",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-06-07-019fe88f-d11d-7a61-bb94-6eeecb9ab977.jsonl",
+      "rollout_sha256": "99757ab9fc9c4cff61f437d2c01ea78b4fa932ce64cb9b35e33c9179dfa57923",
+      "encrypted_payload_sha256": "f6feb5a43091fe719722d3a6ce2b7efaa8acbd8127ae42e6dc3674e10770d342"
+    },
+    {
+      "group_id": "observed_008_repo_domainspec_test",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_domainspec_test",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-07-06-019fe890-b8ba-7ae1-ac5e-271c7076a808.jsonl",
+      "rollout_sha256": "b4a5c9c80b517fc9acf7e43c0a2fa0da70b2beccfc3dafb74a70c95aa8455ebe",
+      "encrypted_payload_sha256": "e4da59e99033fb4533386d74574f8b63fdbb9dd3509b104ee79669197c09d118"
+    },
+    {
+      "group_id": "observed_009_repo_dual_residue",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_dual_residue",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-08-22-019fe891-e018-7c93-9f28-c1c6450feebb.jsonl",
+      "rollout_sha256": "9cd8a95335ca7436b669f070b7ecb53825f382a75597982e629d8bb7c59bf73c",
+      "encrypted_payload_sha256": "5302a448810051ad60632dd433d7c7c21ec9e16527c596aec53ce3d858af9561"
+    },
+    {
+      "group_id": "observed_010_repo_fermat_last",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_fermat_last",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-09-31-019fe892-ee80-7c12-8c6b-b5fd4f06b3ea.jsonl",
+      "rollout_sha256": "8a2560c69b871717ab04d3f2ef2404c2eed54075b16d86a5a6c4a05d32f67faf",
+      "encrypted_payload_sha256": "152d3611a25dcfc61d35e2917594cd501d4e34e58bde7f52720a0206c6f55951"
+    },
+    {
+      "group_id": "observed_011_repo_fermat_series",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_fermat_series",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-10-16-019fe893-9da1-7c72-8d14-7c421b80152f.jsonl",
+      "rollout_sha256": "349eea3b88ebe3faeb268ed64ba19efb845fba2454b50f5d76a5764dad70933d",
+      "encrypted_payload_sha256": "e410824c6f80be90bea2a3ce16fff9f203a3cbf3e4e7b7161f4cefb296d5dfc3"
+    },
+    {
+      "group_id": "observed_012_repo_goldenquill",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_goldenquill",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-11-05-019fe894-5e88-74e3-9c02-d3c2a4edc29f.jsonl",
+      "rollout_sha256": "fb148d25049b376f99675ce055bc25e6e105d970aeecb95021f93bc2cb415a03",
+      "encrypted_payload_sha256": "164a7f5ae7a910418534e809c78b5f2ae6db35b6eb4108655636f5fa99b068a3"
+    },
+    {
+      "group_id": "observed_013_repo_house_project",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_house_project",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-11-44-019fe894-f599-73b0-a544-021ff4a41927.jsonl",
+      "rollout_sha256": "c7aa93061702a2cb1fe5d307806675b9ac85d628fdf829fb92d1f67f2929f0fd",
+      "encrypted_payload_sha256": "14547ad292c718287e3f2c0dda344fc0c594eb3c29e3b2694655db7d1214dd1c"
+    },
+    {
+      "group_id": "observed_014_repo_house_project_1",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_house_project_1",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-13-01-019fe896-22b2-7332-ba9d-5e96e964c900.jsonl",
+      "rollout_sha256": "9a5b2bef93e6feecd25bea94d743952f15c8c988a4c8a1cc1b7bea1e29990af3",
+      "encrypted_payload_sha256": "094983a2ba5f19e5170f91e345afafd6c4113e83b9ca6e580196942a8b2c168c"
+    },
+    {
+      "group_id": "observed_015_repo_maestro_trama",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_maestro_trama",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-13-18-019fe896-64da-7c02-910e-e4b62c9c5c57.jsonl",
+      "rollout_sha256": "974fefb9dc762ab90a6f686a2ff02716439fd9000e413676ee5a23f8a26986db",
+      "encrypted_payload_sha256": "841fe0b25a6576f5e2faf65b51a92ee4603e2e0a3d2c7b5f4f1a43503c1123a8"
+    },
+    {
+      "group_id": "observed_016_repo_maestro_trama_1",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_maestro_trama_1",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-13-59-019fe897-0489-7de2-aecc-f4df70caea8c.jsonl",
+      "rollout_sha256": "e446b635f454bab0518bc93cffa0f5fd37d252027e3bab973060a4b340a69f01",
+      "encrypted_payload_sha256": "96a8edbf41e1dabc1654d70406dfd75e706d01d444fa8947f4d2e5e50ba88825"
+    },
+    {
+      "group_id": "observed_017_repo_maestro_trama_clone",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_maestro_trama_clone",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-14-17-019fe897-4b7a-7a11-b89e-c685e4f45361.jsonl",
+      "rollout_sha256": "a7f9321c0fdfb765fc51528097e0e7adcae75668051cc5faa9e769f0c2362c46",
+      "encrypted_payload_sha256": "02d95690b9182463467c6385433db60b6dde135bbefd95987a4777bcfe7e5a8a"
+    },
+    {
+      "group_id": "observed_018_repo_projeto_rede",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_projeto_rede",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-14-43-019fe897-b047-7ea0-8056-864d605b38c8.jsonl",
+      "rollout_sha256": "a6e2bd360d3dfbe5c80e0b26bf56774ea59217a7514390319060109cc2910ae8",
+      "encrypted_payload_sha256": "a05d702e7a4acedeafd90328c2153b8d0b6f8005ac8551d8853868facb6c6e39"
+    },
+    {
+      "group_id": "observed_019_repo_schema_inquiry",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_schema_inquiry",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-15-14-019fe898-2825-72d2-b15b-e14db0978632.jsonl",
+      "rollout_sha256": "59b9c8c18e7f0d8364c617913e8ce7beb4d2f142d960abcea620ccfb26259062",
+      "encrypted_payload_sha256": "84c383eb6d9b5f3402f9e8209f1e464cfc7f50d8972c07d14165408a781005f4"
+    },
+    {
+      "group_id": "observed_020_repo_subagent_infra",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_subagent_infra",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-15-29-019fe898-6305-7c80-aac7-63edad01fffe.jsonl",
+      "rollout_sha256": "dca73c2cfd92b91ecf63b083c78c500caf1dee53c8087ad387539934b0661906",
+      "encrypted_payload_sha256": "7a73547be391d2f5af2102039df0f4e40961d1ceb6f2fb65c8db7ca959d5dcc3"
+    },
+    {
+      "group_id": "observed_021_repo_ui_evolution",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_ui_evolution",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-15-38-019fe898-8898-75b1-9e47-7dd01ffabb6a.jsonl",
+      "rollout_sha256": "355cc7fa781974672f0a00229745bc0a03b13d9c2404ff703d209f581e91bdd6",
+      "encrypted_payload_sha256": "cc622d6e7b6a9c34e8456adbdd77900341578ad393f21a26ab26e5471059a00c"
+    },
+    {
+      "group_id": "observed_022_repo_yoneda_walls",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_yoneda_walls",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-18-50-019fe89b-7463-7691-a79a-42ec0e1b0eb6.jsonl",
+      "rollout_sha256": "610aebcb78c5bdd7e9a4b0ee442faf9e3fa17230d766ecb4ba471a5d91690ea3",
+      "encrypted_payload_sha256": "449aa265473b604806cbddd5734d1a576d3c5c4bfd6203e07cb8950ac39a680d"
+    },
+    {
+      "group_id": "observed_023_repo_zagr",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_zagr",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-19-41-019fe89c-3e3a-7880-8c69-551c41e68c2b.jsonl",
+      "rollout_sha256": "82216f49bb4ad54e59a9988a4ee6969e03e84411b369e2d5995538782e2912c4",
+      "encrypted_payload_sha256": "4dc72feb8a8775aa3f542a898dfa3056f063e4426a917a5003a73c68b1f0011e"
+    },
+    {
+      "group_id": "observed_024_repo_zefrahub",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_zefrahub",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-20-11-019fe89c-b1e9-7d32-8ecd-46230f0cd618.jsonl",
+      "rollout_sha256": "250134b515889eb73779e486dab92d07111613cb3f167168aac9a8b2feb9f499",
+      "encrypted_payload_sha256": "fcf3c77d777f935b62f4762b0c150800f63672384b65ebdca451c8c9f50e1fec"
+    },
+    {
+      "group_id": "observed_025_repo_resonantos_discord",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/repo_resonantos_discord",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T19-25-12-019fe8a1-48d6-7050-8809-bd4dc79811b9.jsonl",
+      "rollout_sha256": "766ac3f8a7085e060d64fa2e03617dfc01b773ba738fefa47df51df78f51a62f",
+      "encrypted_payload_sha256": "9433efb8258fa7d8d0417b14aa01ea9579501faa240bb0d71318012cd82225d8"
+    }
+  ],
+  "2026-08-09-permguard-proof-carrying-boundaries": [
+    {
+      "group_id": "observed_001_review_lean_mechanics",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_lean_mechanics",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-01-26-019fe741-f217-7761-9d68-5cc3220650a4.jsonl",
+      "rollout_sha256": "f3d3357607d50459abef5430dbd1b680dfbee11cf4819741d93dda00f4fb34d2",
+      "encrypted_payload_sha256": "c2814730df8832aa1299c1f801c94a983e91e44b398a07c0fd1f9fe69e39e325"
+    },
+    {
+      "group_id": "observed_002_review_assurance_abuse",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/review_assurance_abuse",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-01-34-019fe742-1028-7e60-a69c-f24b49741721.jsonl",
+      "rollout_sha256": "7402c36e7d7927b24aed9893d373e427c87843b7c4699b6cbb7d95bb946c3f18",
+      "encrypted_payload_sha256": "89f788315a37872f5b096285a32888c460bafc2b1e2139adcff413690a43f9ce"
+    },
+    {
+      "group_id": "observed_003_impl_permguard_boundary",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_permguard_boundary",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-19-32-019fe752-81f3-7a13-886d-0ea2931ae013.jsonl",
+      "rollout_sha256": "d86c5bb7fe9357c1c4c78aba567ace28225d39e87377996c55150ef201d91772",
+      "encrypted_payload_sha256": "31627d1796f294bcc04ce5744907353d0ab6127eca0b69bec54f28d260806ac4"
+    },
+    {
+      "group_id": "observed_004_impl_checked_trace",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_checked_trace",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-19-47-019fe752-b248-70a0-a58f-dc01db454ab7.jsonl",
+      "rollout_sha256": "56ad823c89e94ba86ee642bc89ef2e2c09fb2d983439969964019b2414aa575d",
+      "encrypted_payload_sha256": "8af0c88c169983d91a832a3fb5a3f7fe1dd4f56fdb78513763ab0f7304354d05"
+    },
+    {
+      "group_id": "observed_005_impl_enforcement_semantics",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_enforcement_semantics",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-20-02-019fe752-ecb0-7df2-8612-6ee42b2bf9d6.jsonl",
+      "rollout_sha256": "b2b1a514781ebec628655d8485dc40cb4cf513b50e3785866970afa42cfb1427",
+      "encrypted_payload_sha256": "7660e51f1443c3623f8cf11c46bdcb75745ed685e37406d363203fbe1d3eb985"
+    },
+    {
+      "group_id": "observed_006_impl_requirement_dsl_integration",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_requirement_dsl_integration",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T13-34-23-019fe760-16d9-7480-aabf-eb95c56435ba.jsonl",
+      "rollout_sha256": "1f2cdadf15bf8347027410f9ccd4b27ce57f8959874170978b2432af0b6b3a0f",
+      "encrypted_payload_sha256": "25c2624e20b965c2b9413e25282ef4008d26eebf333c21d69caf0b6e93226606"
+    },
+    {
+      "group_id": "observed_007_postreview_lean_correctness",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/postreview_lean_correctness",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-34-30-019fe797-26bc-73f3-addc-6a31b3451245.jsonl",
+      "rollout_sha256": "6163594fae65e28318611ea9afc00c2cf73c844454ea76e1adc8fd778582e22a",
+      "encrypted_payload_sha256": "fb72f057473df91fa945799b2c7427a3cd6d28cb305b79b4f9dfea98cbe10972"
+    },
+    {
+      "group_id": "observed_008_postreview_assurance_scope",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/postreview_assurance_scope",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-34-52-019fe797-7ce5-7721-b90c-afde05ed82a9.jsonl",
+      "rollout_sha256": "30ea61477860b88c023b3943f7397dceb7a6bd1dc0d1aba451c0815b36b3f54f",
+      "encrypted_payload_sha256": "b43976857b84a07c8e31feca79aa2c140b504c78a55a73b5f614eac9d790d2fa"
+    },
+    {
+      "group_id": "observed_009_fix_trace_runtime_scope",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/fix_trace_runtime_scope",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-40-35-019fe79c-b642-7fa1-b38e-6f3e4149adad.jsonl",
+      "rollout_sha256": "11f5381671a0a35ba9510e715d313bc485e6f0be4aefa6f858db54050fc50805",
+      "encrypted_payload_sha256": "39ff740adc74d372ae903104f9802a0cbde6a95670d86d494b3601f5970b8ac9"
+    },
+    {
+      "group_id": "observed_010_fix_enforcement_name",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/fix_enforcement_name",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-40-50-019fe79c-f03f-7782-a9c3-3d5666e3b76b.jsonl",
+      "rollout_sha256": "8e7d89f157831cd1cc42811f58d0622b43b7283cc938669930453a0777f19143",
+      "encrypted_payload_sha256": "c1a44f248e99493225a1bf2fefc2f3fbb53e65a6600a7ff11380ac03058561c0"
+    },
+    {
+      "group_id": "observed_011_fix_trace_fixtures",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/fix_trace_fixtures",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T15-03-21-019fe7b1-8fba-7ec0-9883-21b9d8268e25.jsonl",
+      "rollout_sha256": "6cf0847a8b12682eaa840499a353cd2861ee2eb5e122df40062dc21bd80ffbd2",
+      "encrypted_payload_sha256": "5210d087efff9b36b95f28e2d731c558189a73eb6b8d3a57e0aaae2d9da1337b"
+    }
+  ],
+  "2026-08-09-task-relative-property-role-reversal": [
+    {
+      "group_id": "observed_001_precedent_search",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/precedent_search",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-46-05-019fe7a1-bf41-76e1-9c1b-fb6956a0013f.jsonl",
+      "rollout_sha256": "1ab80ff44e6f0d17191ab434d8a3cdf39fa337bbae5d23d60e3329be356b4d0a",
+      "encrypted_payload_sha256": "64047993d5e4d766822ac349292ee4072e23aa81cd7867ef7b8b94279d435430"
+    },
+    {
+      "group_id": "observed_002_formal_design",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/formal_design",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-46-14-019fe7a1-e3ff-7d71-b754-2e0a61d18d30.jsonl",
+      "rollout_sha256": "2b0e5582f93b71e31cfdc30b5cc4f26b4cae7346f2610a605e7404b13f4123f3",
+      "encrypted_payload_sha256": "f169eca505c0b47510a858c77c9b4bc992051da19b08d185494995c0ae760325"
+    },
+    {
+      "group_id": "observed_003_adversarial_review",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/adversarial_review",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T14-46-21-019fe7a1-fce7-7403-9ea1-687ddfe0dc0d.jsonl",
+      "rollout_sha256": "bbcca22b7b4914f6c4c4fd69ac5f8d5246becd36364893e4950842401025b9aa",
+      "encrypted_payload_sha256": "6a3b1c967797c0d9f653f5f01fbe9377b88d6abb03b4cf7c7e9ad0ecffe1679f"
+    }
+  ],
+  "2026-08-10-analogy-architecture-witness": [
+    {
+      "group_id": "observed_001_analogy_architect",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/analogy_architect",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-22-35-019fee6a-0b25-7262-aff6-a6503ca5d1e6.jsonl",
+      "rollout_sha256": "a36ed5e115cc2797a5ec0bb37beee1931350ee43ec787a5a80100f2b7c048c9d",
+      "encrypted_payload_sha256": "b9c73ebf1df713e1fca5a2a15b713555fca9e630a03c7356a57b9060c88caacb"
+    },
+    {
+      "group_id": "observed_002_analogy_witness",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/analogy_witness",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-22-41-019fee6a-253c-7033-ad00-5b4609b6c54c.jsonl",
+      "rollout_sha256": "46e893b3d2c36f4101f7eb06e2f08ba1a06a589b02acf6d7a27efed10849c1db",
+      "encrypted_payload_sha256": "9de656ee7eca30d1da493452ca75cd275d57d96d13348a8c65419d256bedd0f5"
+    },
+    {
+      "group_id": "observed_003_analogy_reviewer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/analogy_reviewer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-26-44-019fee6d-d7d3-7b60-91c3-0177600488a1.jsonl",
+      "rollout_sha256": "9d8bf8e050131233c17d221f5c9f1536b685a49a73c2426fa4a7ba6dae900361",
+      "encrypted_payload_sha256": "ae773fbe7b858665f745bb2173dbf15dac369285b9ef1e2291f3440e8c03e65c"
+    }
+  ],
+  "2026-08-10-analogy-lineage-fit-audit": [
+    {
+      "group_id": "observed_001_fit_gentner",
+      "model": "gpt-5.6-terra",
+      "role": "explorer",
+      "agent_path": "/root/fit_gentner",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-49-16-019fee4b-8d40-78b2-9474-e101b322caad.jsonl",
+      "rollout_sha256": "f68e1ee3b1fe16d1d507b203078ba6b55a0b1270d04c94a53ffd3a5e2300367a",
+      "encrypted_payload_sha256": "934fb45bd092642e12f48ac38382314ddacd0062ade8551131d6d137aa258c7f"
+    },
+    {
+      "group_id": "observed_002_fit_goguen",
+      "model": "gpt-5.6-terra",
+      "role": "explorer",
+      "agent_path": "/root/fit_goguen",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-49-45-019fee4b-ff3b-77e3-89bc-b3caf1cbdcd9.jsonl",
+      "rollout_sha256": "68a99884720fea77e847284528aa009463a20a03d644006d71eb189178dc9d01",
+      "encrypted_payload_sha256": "3fed2fd0fb9d6864e67799c9ba2abe1eb6c2d3d55651357e3eb5eef7c3bbc74d"
+    },
+    {
+      "group_id": "observed_003_fit_neyman",
+      "model": "gpt-5.6-terra",
+      "role": "explorer",
+      "agent_path": "/root/fit_neyman",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-50-00-019fee4c-3883-7fb3-b0c2-cef272527855.jsonl",
+      "rollout_sha256": "075084dbf3ebde798240df888196f8840500d965fcb8e748da64a9cbeb5d8261",
+      "encrypted_payload_sha256": "c73b7da8ec0f625cd99fc7684095014542392a6c582bb5ffd0d86224d493c817"
+    },
+    {
+      "group_id": "observed_004_fit_schon",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/fit_schon",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-52-28-019fee4e-79a4-7b62-8622-14bc680f5d25.jsonl",
+      "rollout_sha256": "65868a705f8e26d6f29e617ab421acd2933bdb8a5a3ecbe0fda0f52299f723e6",
+      "encrypted_payload_sha256": "2cf8ff38004f04fad16f6eb1b0721052102e2efbc4765777e4dd504e59d33f7c"
+    },
+    {
+      "group_id": "observed_005_fit_popper",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/fit_popper",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-53-55-019fee4f-cde2-76b3-ac4d-d80d911ec8b6.jsonl",
+      "rollout_sha256": "6a0e8681f725f0653c53252b1fa63850154092a0550b32b79579beaf98ed74a4",
+      "encrypted_payload_sha256": "97555d71e6942e26bcb04778a7da357d79d95512af2018fb8d5ee9dbcb692c39"
+    },
+    {
+      "group_id": "observed_006_fit_lakatos",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/fit_lakatos",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-54-34-019fee50-6787-71f2-ab3b-9e0c121e4055.jsonl",
+      "rollout_sha256": "23f8437049e31a0b95e5c870680833d4ca5a5605693b828a02c8f0fdeeca2d2c",
+      "encrypted_payload_sha256": "282c08b65cfa544ebbf59880c30a62c5815e972e7375a2e157d8a0ed99169102"
+    },
+    {
+      "group_id": "observed_007_fit_dijkstra",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/fit_dijkstra",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-54-46-019fee50-9423-7b83-b669-7ec49b1783b0.jsonl",
+      "rollout_sha256": "b5f389369bdd7897abec4948f886da50ee0567be9ff49759b3e78e9d4ac97656",
+      "encrypted_payload_sha256": "ab4de601151b81a10dfbe919b5b1440c7d70d7e3af2bd74ac15924385890397b"
+    },
+    {
+      "group_id": "observed_008_fit_hofstede",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/fit_hofstede",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-01-26-019fee56-ae1b-7081-aa32-fc8b440ab99a.jsonl",
+      "rollout_sha256": "a2681c7036ab8df6de9b3d7c5840a43dccfb926939a49c5e83947b12ead07119",
+      "encrypted_payload_sha256": "4f4a069d75b5f6e08c6b27e95661fda724266c61b7f93ebaccfaba2be70fce6a"
+    }
+  ],
+  "2026-08-10-analogy-relevance-scout": [
+    {
+      "group_id": "observed_001_scout_math",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/scout_math",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-48-00-019fee4a-6208-7b30-9713-363525fecacb.jsonl",
+      "rollout_sha256": "cbc71f975e85e5dc1e1a31489ad03e40dca74d3ddea5a216fb901a1b8635c35e",
+      "encrypted_payload_sha256": "946a9d190368a2ed53996f2cdc91fd4b0f598a7bc3b2ae9529372b69f2af385f"
+    },
+    {
+      "group_id": "observed_002_scout_strategy",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/scout_strategy",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-48-07-019fee4a-7d26-7763-9e91-2b254c3667ab.jsonl",
+      "rollout_sha256": "fd1b34b1e9b6895a18fdae7837f35700cfe133413f542d5bc116afa5899c7a2e",
+      "encrypted_payload_sha256": "6e4e2ab2167a18e3e2f50b95f447eccccfe474c9445fe1daa7c7f766ea06f09d"
+    },
+    {
+      "group_id": "observed_003_review_math_scout",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/scout_math/review_math_scout",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-49-00-019fee4b-4eef-7903-aa25-621f9d5c09be.jsonl",
+      "rollout_sha256": "c4a30b96b073f193bb5250dd99c87bbf24d4e092df032ded0c58844003508bf5",
+      "encrypted_payload_sha256": "0e2acc448348f2d09a05a37620ade1a0039a986ec41358f1aeb12d3eaa428ecd"
+    },
+    {
+      "group_id": "observed_004_reviewer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/scout_strategy/reviewer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-51-40-019fee4d-bea8-71e1-89f6-1e58b82671af.jsonl",
+      "rollout_sha256": "3afb54296ece9033bb647b00e36ef2977a2be403e98c05a071f0b4effacc85b5",
+      "encrypted_payload_sha256": "9250393c2b89aa0b687dfc4acc0015f0e135a0d34825ccc6304df754ed3092e2"
+    }
+  ],
+  "2026-08-10-coextension-architecture-witness": [
+    {
+      "group_id": "observed_001_coextension_architect",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/coextension_architect",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-44-57-019fee7e-85ac-76c0-9d8d-2a180b9da726.jsonl",
+      "rollout_sha256": "f1bcc823fcd78ecf5a76cfae6bd5bbf9f1f6e9c54b748bfc575bc3cd05028d10",
+      "encrypted_payload_sha256": "ae43a6bcf5fb7625ef7b68b37d327cfc3259016d0ece2c38f72b5c88ed62e578"
+    },
+    {
+      "group_id": "observed_002_coextension_witness",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/coextension_witness",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-45-05-019fee7e-a600-7ba1-abbe-cb5842f7a10a.jsonl",
+      "rollout_sha256": "7c0089458028effc4fe71340d33d5e3ff12ab1260af8ff17595970f761abf78e",
+      "encrypted_payload_sha256": "43b93e82e65147d5cdb575e411afec031ff2b0d25c74334562bcef365e2ea857"
+    },
+    {
+      "group_id": "observed_003_coextension_reviewer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/coextension_reviewer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-48-13-019fee81-820e-7e51-815c-636e3db6ad58.jsonl",
+      "rollout_sha256": "89e0273f51f58352ec3991c4cda3794b437e06f81267ed70cddaa3cfb834a635",
+      "encrypted_payload_sha256": "6ff894d1ad17bac83100cb0e17d3062e9ccd02788fa43803b886e69fc9d00498"
+    }
+  ],
+  "2026-08-10-fundamental-ideas-repo-map": [
+    {
+      "group_id": "observed_001_lean_core",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/lean_core",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-15-50-019fee2c-ef01-75e3-8741-c29d4ae6f09c.jsonl",
+      "rollout_sha256": "75f096a8fe8d8f819d8a14d4fa289011fa798c5582b81832c119177ffe5eaf61",
+      "encrypted_payload_sha256": "7ca9ebea914079d43fc24d9fc49ac0dc6b0c8f928c11b4bf0cd1e34dfdd587e1"
+    },
+    {
+      "group_id": "observed_002_architecture",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/architecture",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-15-54-019fee2c-ff21-7ff2-81e9-16163c382d9e.jsonl",
+      "rollout_sha256": "b06872bd3db7466aacba4df39883c764d90a3566671cba16bdd2f6c5a272ff3e",
+      "encrypted_payload_sha256": "3f5f23879313694c7a123537a00241fd9fe7e6742bbcc39b65d5fa3d6c6a235f"
+    },
+    {
+      "group_id": "observed_003_skeptic",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/skeptic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-15-58-019fee2d-10f7-7cc2-9798-4726e5e0ed0b.jsonl",
+      "rollout_sha256": "f02e684c79bb98ac752397d31306d445949325bc9a72d64feaf94b19686b960c",
+      "encrypted_payload_sha256": "759c7ba63022054db6239991f9353586314ae5c883f3bac7fabc6388cfb276b3"
+    }
+  ],
+  "2026-08-10-minimalism-composition-initial-wave": [
+    {
+      "group_id": "observed_001_gentner_explorer",
+      "model": "gpt-5.6-terra",
+      "role": "explorer",
+      "agent_path": "/root/gentner_explorer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-55-42-019fee51-6fcd-74f2-8c66-aa58656dfffd.jsonl",
+      "rollout_sha256": "d80075b2214f92f91b451a21d8337cac7ac6dfc8c7da7c6115aac25ecf23a96b",
+      "encrypted_payload_sha256": "8c21b930402210c7a2a88210e985a912ee8fe3afdc0989c9cec75544161d9b87"
+    },
+    {
+      "group_id": "observed_002_spivak_explorer",
+      "model": "gpt-5.6-terra",
+      "role": "explorer",
+      "agent_path": "/root/spivak_explorer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-55-53-019fee51-9c49-7b22-ae90-f8b920a8aa3b.jsonl",
+      "rollout_sha256": "f172e3198df965cdc729d2c0b5aedbacbbdc2a8464847f7ecb7235755c58f083",
+      "encrypted_payload_sha256": "2e8899ba90f457d2e6247fcff9bec518b9bd4717fe6a72b257f4820e533f9bb4"
+    },
+    {
+      "group_id": "observed_003_maclane_writer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/maclane_writer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-57-36-019fee53-2c34-7ed1-9ec4-f891681dc6ab.jsonl",
+      "rollout_sha256": "cda9f7170a74dce73e50ba595a1c99e719bc63500b4da3ac16c2a0af84a44293",
+      "encrypted_payload_sha256": "1303b3395ce6c5c0a392fa3cda376a48bdf826dc278d3c3f8179397789d0a46f"
+    },
+    {
+      "group_id": "observed_004_maclane_writer_fast",
+      "model": "gpt-5.6-terra",
+      "role": "writer",
+      "agent_path": "/root/maclane_writer_fast",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-02-01-019fee57-37eb-72b1-bee7-6d42af8398af.jsonl",
+      "rollout_sha256": "0263a0e59db4630e5c7ac30146141d5d1d2a15e1dd2dc4cd28bf81ca0f5de2a2",
+      "encrypted_payload_sha256": "cc2b9188a1c37e5bb2b184adf00a396bb7ed01bebc7c46b88fc005aa4e09fc06"
+    },
+    {
+      "group_id": "observed_005_popper_skeptic",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/popper_skeptic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-04-21-019fee59-5c5c-7cc0-be40-ed49f4abe360.jsonl",
+      "rollout_sha256": "bc798c76391dccff79c78ee58ec9fbb087c4d8b665f9b5b1d2ea7ce444bda8e2",
+      "encrypted_payload_sha256": "7dd0bd54d7db303eafaae26e2cf9c9ca156f9df584937e85d244af7df842db0c"
+    },
+    {
+      "group_id": "observed_006_lakatos_skeptic",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/lakatos_skeptic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-04-31-019fee59-820e-79a2-a51a-037a4b2edf5b.jsonl",
+      "rollout_sha256": "dceac8a4af00b1f6454916a8876bf6e4388227659c2154339ee13cf3883f6f35",
+      "encrypted_payload_sha256": "2db36d34c31d7ce60d74b12ec6d1089307e1545fe984662591a5f3848bb6fe1b"
+    },
+    {
+      "group_id": "observed_007_carnap_skeptic",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/carnap_skeptic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-04-38-019fee59-9c3b-7fb1-a7ef-392e69b0c36d.jsonl",
+      "rollout_sha256": "e9698360277800f402646569942c60d57e514e6772fa6f6867f337c59017e81b",
+      "encrypted_payload_sha256": "927c9d7d3af6c827761f1e05fc9179ff5726b604b5be4f27715ceab79bd9b585"
+    },
+    {
+      "group_id": "observed_008_bourbaki_auditor",
+      "model": "gpt-5.6-terra",
+      "role": "auditor",
+      "agent_path": "/root/bourbaki_auditor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-06-41-019fee5b-7d1c-7e90-b7a2-e68d9a7264b0.jsonl",
+      "rollout_sha256": "68de5a80e1aef43db25c498547867fc5b97e0dbc1e49f482be238c441d7c7da0",
+      "encrypted_payload_sha256": "abf5388738d9fbcde0cfb26a8d9c9e13927c35aab64778c3856f5870a01028eb"
+    },
+    {
+      "group_id": "observed_009_initial_definitions",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/initial_definitions",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-11-26-019fee5f-d6e4-7033-8652-5d45698f7b7d.jsonl",
+      "rollout_sha256": "3692f066b7d8b77356ffa5e41dc8ffa61c4c5aebeec1d490544acfaa29aac0cb",
+      "encrypted_payload_sha256": "c748d8b6541d9e4f6be0c412e0f6e9acb9585fce01579c5e8cc081295eacb354"
+    },
+    {
+      "group_id": "observed_010_register_research",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/register_research",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-14-20-019fee62-7f48-7702-84b6-0ba5f64ca484.jsonl",
+      "rollout_sha256": "f72efc0ca6435e9e48efbbfcac9f40638c8b80c7145424aaef3ac82ce034147a",
+      "encrypted_payload_sha256": "bff6758be7f98da7ad187568d995619dc5bf39c97ded22bc1ae2de885ed96800"
+    }
+  ],
+  "2026-08-10-minimalism-composition-research": [
+    {
+      "group_id": "observed_001_benabou_explorer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/benabou_explorer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-15-28-019fee63-8a91-7d50-92e7-648c982ae530.jsonl",
+      "rollout_sha256": "c2406cadccd808a96dd5507471238780d03a32b202ceab23ccdcb7380c5dff1b",
+      "encrypted_payload_sha256": "fdcca952bfb1fff1854d37cb97da0844931c2357a80127493cc8d74f691facd1"
+    },
+    {
+      "group_id": "observed_002_fisher_explorer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/fisher_explorer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-15-37-019fee63-abb9-7040-9432-2465bd68591c.jsonl",
+      "rollout_sha256": "033719acca24a841df0c745a892ef9a4d2aa347a6ceee7002e797771e5420bb2",
+      "encrypted_payload_sha256": "3349e0e3f290c233998ec82ab16646d75af0ca1bebfa2df426b7f5b14f32d019"
+    },
+    {
+      "group_id": "observed_003_lawvere_explorer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/lawvere_explorer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-18-00-019fee65-dc18-7f51-bdf3-83471f2b6de7.jsonl",
+      "rollout_sha256": "15da6b03a80e42b8605001c36257765906fe0e3860ba86189a2524f49f1e13ec",
+      "encrypted_payload_sha256": "5698186a2044b96b43f2a0a8d99019a904ca64e7306ae3ac0265cae1d26c7004"
+    },
+    {
+      "group_id": "observed_004_mac_lane_writer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/mac_lane_writer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-23-47-019fee6b-26af-79b3-a28e-e6376caf8817.jsonl",
+      "rollout_sha256": "54ae6d7f0b5f585e9dcc62a969facbd90db4f55b208c02759539875bbd3ba159",
+      "encrypted_payload_sha256": "adab86325aef178acfed80f926a4cd2b4aa9d95d337c0a5e6e2dc65277fa3631"
+    },
+    {
+      "group_id": "observed_005_capucci_skeptic",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/capucci_skeptic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-26-01-019fee6d-31d6-7be0-b087-d2590bf07db3.jsonl",
+      "rollout_sha256": "8e962eb62b163e919ccec27c650a0922f2b1fe1297fcfc3f391e8e63d601d700",
+      "encrypted_payload_sha256": "4f7491db8b8fa0c96a4d3236c94a14ed55d549f51b622894e493bb259418132d"
+    },
+    {
+      "group_id": "observed_006_carnap_skeptic2",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/carnap_skeptic2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-26-07-019fee6d-49ed-7431-a58d-0213ffe8e071.jsonl",
+      "rollout_sha256": "93c4c1616cc795685a11e6aff74a9d4511dad7172a0bfc94695cc7b7c96dcca4",
+      "encrypted_payload_sha256": "3bdbe4e84370616d2a0ba2061a78cbbfe55d6d8bd89f9c791b62dd68720ce27d"
+    }
+  ],
+  "2026-08-10-minimalism-composition-review": [
+    {
+      "group_id": "observed_001_review_fidelity",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_fidelity",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-39-05-019fee79-2733-76f1-a992-b174566f4d63.jsonl",
+      "rollout_sha256": "3c0ee9edf63ea94d0a42304aa8d38c2529c56ceb1472778b583329743eb580e3",
+      "encrypted_payload_sha256": "2ebc479c55e5b1524512caa534752409d7eca8b9b58f76b35995b796c65aa015"
+    },
+    {
+      "group_id": "observed_002_review_mechanics",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_mechanics",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-39-22-019fee79-6912-7900-828a-b60de079ac25.jsonl",
+      "rollout_sha256": "0fe1b6a5f85b69f7f06c56ced8f46302e17215d6570a04653be9a3f4826028fd",
+      "encrypted_payload_sha256": "4287579599253533fa2559dfd7180cecaec9839bdf6ccf5c1511ac7f12634003"
+    },
+    {
+      "group_id": "observed_003_review_abuse",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/review_abuse",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-42-34-019fee7c-58a3-7012-b454-1d525e1ae917.jsonl",
+      "rollout_sha256": "bca794c1fc7d51e211d9ffaff8912379ac7c247dc44281a4cd67f56781b1c5cb",
+      "encrypted_payload_sha256": "6bbc052fee41c9d8c31536a8c405b5140094730f8f60fed063b5a30d4b8c8697"
+    },
+    {
+      "group_id": "observed_004_review_synthesizer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/review_synthesizer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-54-23-019fee87-28e2-72e2-8167-a51f83523dae.jsonl",
+      "rollout_sha256": "8678fe75b21b70099a587b72d236ac3937f5ddeacc4428c8dea9f8d5e41478f4",
+      "encrypted_payload_sha256": "44225ea17d467f690d48fe6b11b834aff8fcd251591145b6d74690d8b36aa24e"
+    },
+    {
+      "group_id": "observed_005_review_verifier_formal",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_verifier_formal",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-00-33-019fee8c-cd53-72a3-a405-932d3cc4f4af.jsonl",
+      "rollout_sha256": "2244899b395f73f795341155fa5047170fa44ba58ad1cd3cf8777cdeb8df00c1",
+      "encrypted_payload_sha256": "a0fc7ff2e75ccdf554b02e0c6ba89776f0ad4bffa164d2de840e3aa61a79b379"
+    },
+    {
+      "group_id": "observed_006_review_verifier_scope",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_verifier_scope",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-00-43-019fee8c-f6ed-7c73-8bf3-3e1e0f1c3102.jsonl",
+      "rollout_sha256": "be9baf37ad320566cd41d4ed5d4b3c09722ed9ec6d06edaea307f5a866100e6b",
+      "encrypted_payload_sha256": "3a134d77ceef85fad8c600cd7a33d9819afe1469370286a387dfb9d089b8febf"
+    },
+    {
+      "group_id": "observed_007_review_coverage_auditor",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_coverage_auditor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-09-06-019fee94-a2d6-70d2-8fa8-cc8752b90536.jsonl",
+      "rollout_sha256": "1a016e45c5b0601a92a266dfdd6faf0b4645f30b7170f88b74ecc4bafb9fec8e",
+      "encrypted_payload_sha256": "a856266cd831d518775ab8cdc597215a2f247d8cb3140620d557767e0709b937"
+    },
+    {
+      "group_id": "observed_008_review_final_approver",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_final_approver",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-17-21-019fee9c-32a0-7731-b19f-aa225a6230c4.jsonl",
+      "rollout_sha256": "fcc058f7d9feb3eda95dc5a5dccc086e0503c6ff8eb385193b998cc2c1ee523a",
+      "encrypted_payload_sha256": "f27d9ebd3880ae90b460390ef9b0c4d3885b2d68c7586ecb0ff12cdd3d554fd6"
+    }
+  ],
+  "2026-08-10-minimalism-composition-spec-v1": [
+    {
+      "group_id": "observed_001_spec_drafter_fast",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/spec_drafter_fast",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-33-06-019feeaa-9cfe-7d31-9083-823ba42e41c0.jsonl",
+      "rollout_sha256": "82337b0723df8efb97693cdd57785678c0fe90c80fd92f864a2ae9080ab5a44c",
+      "encrypted_payload_sha256": "534e9174fd499898973e9fd8a081c5c22542a6534c43f4e702196f649d948fc2"
+    },
+    {
+      "group_id": "observed_002_spec_validator",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/spec_validator",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-36-31-019feead-bb63-7502-98a8-6a9174d20766.jsonl",
+      "rollout_sha256": "1b28f3583c351518a76078e97563e47c74b6802d8a6043e1f4ee6c3a2f1e2c27",
+      "encrypted_payload_sha256": "56f3b432d9684d6e26f71a8eb55026c8b4a5261ca91aa655655bc4718dceda4c"
+    },
+    {
+      "group_id": "observed_003_executive_summary",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/executive_summary",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-56-53-019feec0-641d-7561-b237-41c6b3c77865.jsonl",
+      "rollout_sha256": "0a335aa16989372e6dc33e398b47876dca7860cac416eac1a95ab9451467e4e9",
+      "encrypted_payload_sha256": "3e6e9fc88c4573d68db7b2fe571d6ca91090e99e4d6c975d3050cfe4b5f31b43"
+    }
+  ],
+  "2026-08-10-ownership-comparator-map": [
+    {
+      "group_id": "observed_001_map_gentner",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/map_gentner",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-21-14-019fee68-d0bb-79b2-b6cf-4780018b1edb.jsonl",
+      "rollout_sha256": "8019acb1f99ce146f2b7e916e28f74ba2136afbe7f60b47ccbd4fd4636833e4f",
+      "encrypted_payload_sha256": "33bc5c6359e98ace826c1d7ec55431b03d9d21065a19f80ccd5d59e5223fe02d"
+    },
+    {
+      "group_id": "observed_002_map_spivak",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/map_spivak",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-21-25-019fee68-f9cd-74b2-ba19-e862aa68cd00.jsonl",
+      "rollout_sha256": "3d0447da356e3b603832321bf4e2038ac4623668142dac7a39ca698710fa481e",
+      "encrypted_payload_sha256": "6bcc603c2bb30029765e2fe5878ee18ed30bf5c77c79d65a8bb916fdc29ffa38"
+    },
+    {
+      "group_id": "observed_003_map_maclane",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/map_maclane",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-23-56-019fee6b-4a2b-7f71-a415-6b86c6c164bc.jsonl",
+      "rollout_sha256": "146120f36707411cd7786414841c549083077d40e3b45fb31e42536ec9768a43",
+      "encrypted_payload_sha256": "08116256b6155be0c608c6c7540e49810e6edd4cffae56dd97311e4b5fa5c0c4"
+    },
+    {
+      "group_id": "observed_004_map_popper",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/map_popper",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-31-16-019fee72-014f-70d1-b25d-b04fe7ba44fd.jsonl",
+      "rollout_sha256": "15d2b54023e2335e633a3298748c649c420fd7c960ce05453f2c380b3de946d2",
+      "encrypted_payload_sha256": "a3fae88bcfc6336e02f6d76b4f44b4d8f613cda2a40267d64c22cdc6d2fa1abb"
+    },
+    {
+      "group_id": "observed_005_map_lakatos",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/map_lakatos",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-31-35-019fee72-4991-74f0-ac9b-f6fc1ec5cb96.jsonl",
+      "rollout_sha256": "490f679a1dddb1f1aa2dcb065279c9b4ba464084b53d19a71ec21b34b87b1a42",
+      "encrypted_payload_sha256": "f9c051ca1cd041e4fb4afaa9c948b7b1e35f5ee143c4e18eb7f14bef929f68c8"
+    },
+    {
+      "group_id": "observed_006_map_carnap",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/map_carnap",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-31-49-019fee72-8272-78b2-9a85-755e74ec13aa.jsonl",
+      "rollout_sha256": "c77ba919ceef5f5351d6ae2ca0fd309b2ba354c354dc29578525c7f3a1bf0bd6",
+      "encrypted_payload_sha256": "d079341c5761af0b92de131d8a375ba0ee16b7d869d3d481a2a47df0640b97e0"
+    },
+    {
+      "group_id": "observed_007_map_bourbaki",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/map_bourbaki",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-38-19-019fee78-7301-7720-92f3-9db8f7dc09f9.jsonl",
+      "rollout_sha256": "19ddac550fa99c2e606b8b1a44663a9bf77362700b6392a9c31bf0654382bfa6",
+      "encrypted_payload_sha256": "dbcc578b84d41cd3d64e22cad454aba24503cd1633487309dc84069f8aa05371"
+    }
+  ],
+  "2026-08-10-yoneda-selmer-framing": [
+    {
+      "group_id": "observed_001_selmer_fidelity",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/selmer_fidelity",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-29-34-019fee02-934b-78f0-b740-cf05f7f5194c.jsonl",
+      "rollout_sha256": "82e65f2c431e8671f52ebfdf7b9db3550da2fea8e2d8785a070b8d1e6ab3befa",
+      "encrypted_payload_sha256": "d022c9893e124e97c861d6d8a022a6a979394eef457428faec62893d2bc9652c"
+    },
+    {
+      "group_id": "observed_002_operational_semantics",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/operational_semantics",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-29-42-019fee02-b43b-7801-82ef-0463c21a84af.jsonl",
+      "rollout_sha256": "13cf4f340bf950d4abde24e380796c26ce8e3f26758b218b3c2abf36baab40be",
+      "encrypted_payload_sha256": "2941f32d4b89525593b115a123e0e60627524e0b65db2051361690e30bace678"
+    },
+    {
+      "group_id": "observed_003_repo_strategy",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/repo_strategy",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-29-53-019fee02-df71-7650-98ab-a72eae81cb5b.jsonl",
+      "rollout_sha256": "f485ad845127b20b560c575faee9ce17af8f82a8d656c9754746db902e5837cb",
+      "encrypted_payload_sha256": "394891ef5a862000cd2eb2e486e111eda791f87116f3b1a2578bf6ed058e8903"
+    }
+  ],
+  "2026-08-10-yoneda-selmer-precedent-triad": [
+    {
+      "group_id": "observed_001_precedent_categorical",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/precedent_categorical",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-58-46-019feec2-1a43-75a2-8f39-f85391f985b5.jsonl",
+      "rollout_sha256": "ca377ea1984ba1d1f215a9863069fdc4237a3577ac495735ce35a3bf3fd60239",
+      "encrypted_payload_sha256": "3734e4a57f56b7cbbe8d31ec69a07e72688de44035970d542c96f4ff544c0423"
+    },
+    {
+      "group_id": "observed_002_precedent_arithmetic",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/precedent_arithmetic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-58-52-019feec2-32c7-7e33-8feb-f5cf08d3d963.jsonl",
+      "rollout_sha256": "f5099905d741473ceefaadcd84f17628a194f8bdc782a980631f52bc0804f474",
+      "encrypted_payload_sha256": "72730deecc81fa71a7532047302a118ea3602f40dfaabcf19ca5c5e9ceb2f8f6"
+    },
+    {
+      "group_id": "observed_003_precedent_skeptic",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/precedent_skeptic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-58-57-019feec2-4875-7602-a15e-1f343f6a73be.jsonl",
+      "rollout_sha256": "6eadb5400e6751056e2e6ca1ece62c8013633ff132e25feb1beaaa7e9f10d9dd",
+      "encrypted_payload_sha256": "f7084be3acdfe330a18539b1733adcdcc2331f7abe81a932cc1991c3f87865dd"
+    }
+  ],
+  "2026-08-10-yoneda-selmer-review-r1": [
+    {
+      "group_id": "observed_001_review_dolan",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_dolan",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-45-09-019fee10-da65-79a3-a77b-592e1616b7af.jsonl",
+      "rollout_sha256": "d54e33239d0c33079e7a93347af8f140a057a9f27ba56d865c97ab2eecfc3d7a",
+      "encrypted_payload_sha256": "ada33dc0c78a9bebccbb74509a905915167c800f19d963317f8f1ed1dc74d55f"
+    },
+    {
+      "group_id": "observed_002_review_grothendieck",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_grothendieck",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-45-18-019fee10-faab-7ce0-aaa7-fd88226786b8.jsonl",
+      "rollout_sha256": "702b35c264d7fb39a595ed93b79ad848b7ad60b292e7b317a34b0df6a89838af",
+      "encrypted_payload_sha256": "98c074527abb70a6b292d1444d59b62b909b64faea478abbe485cd9389b389f0"
+    },
+    {
+      "group_id": "observed_003_review_capucci",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_capucci",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-45-26-019fee11-19cc-7ca1-8bc5-fd59b8c84f59.jsonl",
+      "rollout_sha256": "3d619e23a8e1b44d3a93911aec25d6464446aec00f081615da0a0e97e62941b9",
+      "encrypted_payload_sha256": "d74e81626c26b8725ea64db577a9611306d034fc2a45d84e902ce6c57c7c4959"
+    },
+    {
+      "group_id": "observed_004_folder_provenance",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/folder_provenance",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-50-11-019fee15-7553-7d63-942d-c46a9f2a3ce5.jsonl",
+      "rollout_sha256": "aa367e9a499c0b9e8b34039beb747a2bac7b02c3f61d6855937811cda3b1142b",
+      "encrypted_payload_sha256": "67bd1ea3102c1d3cdb24557c423a6dabee2e8c277c7dd6a97e3b36d793575748"
+    },
+    {
+      "group_id": "observed_005_review_synthesizer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/review_synthesizer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-55-48-019fee1a-98c0-7473-bf5e-8131147ca872.jsonl",
+      "rollout_sha256": "a571c6e4602fc6d5109360ed3282411e3c1c90d1b20559f955f451b32ac12a1e",
+      "encrypted_payload_sha256": "9b1492a70e332984bcc95cd55be6daa1ddaee3b21938e9f1af38695a5332d154"
+    },
+    {
+      "group_id": "observed_006_verify_sattler",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_sattler",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-00-14-019fee1e-a991-7dd0-b66b-3a3017a48cc4.jsonl",
+      "rollout_sha256": "3a1d24b2b376589545e019a41df62bfa4b0c165bd29c4539f10b05203750b65d",
+      "encrypted_payload_sha256": "218e01cda62242ec9cc121ff9b363e271c518a3a99ccf1c27895791594ba64fd"
+    },
+    {
+      "group_id": "observed_007_verify_hacking",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_hacking",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-00-28-019fee1e-de07-7f32-a489-2147515bbb46.jsonl",
+      "rollout_sha256": "a32cd60acf8ad3e36f0348b7ff74470c63e60069555f833a4e58ba8727830873",
+      "encrypted_payload_sha256": "6b25d82845d72f979483d4c42d2565722218ecc34922d019ba1c04015185cc35"
+    },
+    {
+      "group_id": "observed_008_audit_brandenburg",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/audit_brandenburg",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-04-35-019fee22-a4a8-7ce0-9d02-a6911e6db435.jsonl",
+      "rollout_sha256": "bb73f709fe7aab7f461026b59a4199080f7fda75e7e75881bb2d1a698ded8586",
+      "encrypted_payload_sha256": "ed9ac2768a2ae1ddadf76fe57b96302ea32fb97721709d4cbcf7aecc5369f3ba"
+    },
+    {
+      "group_id": "observed_009_advisor_patch",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/advisor_patch",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-07-43-019fee25-8235-75b0-bfa2-428e8ccf8056.jsonl",
+      "rollout_sha256": "cfe96a4da1549d7055d37415ff3f8edc5636fcf24d2b177ab984e26e69abefdd",
+      "encrypted_payload_sha256": "d8b26d03003e5bd5e431b3c476cdc1d1e62f07d9469d5e18fd447066d7ae8938"
+    },
+    {
+      "group_id": "observed_010_fix_initial",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/fix_initial",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-10-39-019fee28-322d-7940-b036-1c4e0e9b6898.jsonl",
+      "rollout_sha256": "eaa3443c2ebc292cb668ae8f4ed4c0b760749f13fe69146ef2689cd65b3f8643",
+      "encrypted_payload_sha256": "22ca8e1f0c2f1dc13eef7182a2c0e41ec4d41406c3dc63e7df65d8ad007be1c4"
+    },
+    {
+      "group_id": "observed_011_fix_routing",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/fix_routing",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-10-54-019fee28-6d07-7723-b452-040a8901829c.jsonl",
+      "rollout_sha256": "84dd1e9fc97453967fe860af21dce068f25f878742466f3980156ffa89d0d6b4",
+      "encrypted_payload_sha256": "72a6e397f73bcf521503d2f48b24902fc197aedd7a58c7f7e650c458ae78de68"
+    }
+  ],
+  "2026-08-10-yoneda-selmer-review-r2": [
+    {
+      "group_id": "observed_001_review_riehl",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_riehl",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-14-44-019fee2b-ecb7-72e1-a3d3-ccf12a77b5b7.jsonl",
+      "rollout_sha256": "3a44d55bb12fa2a500adfced794c41a793881bf774ed73795fd07f14ebc4434d",
+      "encrypted_payload_sha256": "8dd7e9d8e903bf7534cf74e818a523af1994a279cc8b050d2568f5db23e2821b"
+    },
+    {
+      "group_id": "observed_002_review_tate",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_tate",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-14-53-019fee2c-119b-7333-bfe2-d7313cb3f4b2.jsonl",
+      "rollout_sha256": "e6bf445cdc138d037d666cbbcfffa1a4bcb7adee2139d723713016b3dff1cc85",
+      "encrypted_payload_sha256": "aefbb80726c897a4058208ff41763cb493c976a22e7d0066bf1e9675f60c45fe"
+    },
+    {
+      "group_id": "observed_003_review_ostrom",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/review_ostrom",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-14-59-019fee2c-2a94-73a3-88b5-706f525c2e5c.jsonl",
+      "rollout_sha256": "e181eaab36450ad88bde6a55598288ae0c4f5b91fb8abade570024b3e028d367",
+      "encrypted_payload_sha256": "30d37effa3213a7a2280f6673bfd092417fb6f0dc7972c3a928397f24cb0a6da"
+    },
+    {
+      "group_id": "observed_004_review_synth2",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/review_synth2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-17-59-019fee2e-e620-7a10-9978-ea094d9a760b.jsonl",
+      "rollout_sha256": "3dfdfbdb3f939c1ec7acc7b5e46c56916cf27b3785396a1364a3fa517a782db9",
+      "encrypted_payload_sha256": "0e0619330a5353a4db6fbe09ed276df821afe7e2eddb987ea446e8a7cd11d205"
+    },
+    {
+      "group_id": "observed_005_verify_lurie",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_lurie",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-19-39-019fee30-6ef3-7bf3-8523-a65ffc1cec44.jsonl",
+      "rollout_sha256": "dacd93c05402e0666bff39874d59c178ab433b6686a7a91c75fd76127db1602d",
+      "encrypted_payload_sha256": "5bade609da1b75c1e037d746eaf24eba39cb802af21eb4057fdb85e29f732a4b"
+    },
+    {
+      "group_id": "observed_006_verify_mayo",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/verify_mayo",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-19-48-019fee30-921b-7ba1-abcf-e25ca255340d.jsonl",
+      "rollout_sha256": "5b4a5ce523345019fe0b32d58d88381abf521e56787137017aa2964ec2b149bc",
+      "encrypted_payload_sha256": "baccc503bae672db7dc165b2eab967c28bc097542af34adf6d14429f6c8b3158"
+    },
+    {
+      "group_id": "observed_007_audit_final_atiyah",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/audit_final_atiyah",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-28-49-019fee38-d51b-7353-b824-bd26c0b91cab.jsonl",
+      "rollout_sha256": "6d1dc34c4d3441841ff8add8dc62d88f8781daec3a1c1a6008f70cf78310a784",
+      "encrypted_payload_sha256": "f574148b8c62d50037b83d33ee7d2a8d395d6ef73f441aded7558f6a8dc4c964"
+    }
+  ],
+  "2026-08-11-coextendability-chain-failure": [
+    {
+      "group_id": "observed_001_builder_coextend_chain",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/builder_coextend_chain",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-24-51-019fef10-ec8f-7050-b702-904da7338b91.jsonl",
+      "rollout_sha256": "4cf52ce870eb862c693c2f3e176341b313e8325207ed2ca25881b1a0fe062361",
+      "encrypted_payload_sha256": "03294b7656566fa5ffa82fdb0aca0f716c0651b018fcc8c9266c4c2b7d8d4484"
+    },
+    {
+      "group_id": "observed_002_chain_review_math",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/chain_review_math",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-38-01-019fef1c-f901-73f2-8326-f4c41e0f494a.jsonl",
+      "rollout_sha256": "750f0ac24d460aca4f9fa1ef36f50efb94ca100f2d5777c674df21c386e2ad2f",
+      "encrypted_payload_sha256": "f741799072a3a7e5a740f9b67f047cad950cb1ef88a9035305bfaadfe1fa59a6"
+    },
+    {
+      "group_id": "observed_003_chain_review_claims",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/chain_review_claims",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-38-11-019fef1d-2232-72d3-b8b0-9f7ce8d2d4e6.jsonl",
+      "rollout_sha256": "ba20281484acf190912904475d1d2e28134ba8054dcd68b3e9bc1581b1ffe070",
+      "encrypted_payload_sha256": "3da0a5d4e23f962dfcbcea371df057e0d9dc1b7614294ced2f1bed1760c7d2d0"
+    },
+    {
+      "group_id": "observed_004_chain_review_writer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/chain_review_writer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-42-58-019fef21-81d4-7a03-b049-ccf2d840c313.jsonl",
+      "rollout_sha256": "9952bfd2755173fddff3b509c94b0b6c000eb7bcc092c9db13e72f2b01ac2b3e",
+      "encrypted_payload_sha256": "4b306e7f6a9d0008028d1c9e258a46f54a281812142fc4e3fb50dcfc88ad7990"
+    },
+    {
+      "group_id": "observed_005_chain_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/chain_review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-45-00-019fef23-5db7-7190-9a4a-88983ae3f6a5.jsonl",
+      "rollout_sha256": "15a730844baf79040824360b5b57c24e325927606179f23463d7733ceefa48d0",
+      "encrypted_payload_sha256": "a8d15d284285449fd9b829456b9a9dd77ff2e73343d4af7753f018fd9e00a62f"
+    },
+    {
+      "group_id": "observed_006_wp3_governing_fix",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/wp3_governing_fix",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-49-52-019fef27-d2f9-74e1-9749-152b23cf7b43.jsonl",
+      "rollout_sha256": "f0f4a8bc735a29b5310958d44c42346477501eef5f531cd4f9aae43df1dc04f2",
+      "encrypted_payload_sha256": "2a996b280af142a90a45619aa9c42f51c958d73a93513146a5244fed93e395a6"
+    },
+    {
+      "group_id": "observed_007_lean_target_registrar",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/lean_target_registrar",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-54-31-019fef2c-146d-7e01-9514-7084bcdd58a4.jsonl",
+      "rollout_sha256": "c526ff28dafdf959e20244942a2ffa2c5f1d5fcab9493b7b062899cc3daa2c51",
+      "encrypted_payload_sha256": "75da204322f93c309a4141ffebcd728ad005552e558ce17661fe24b453a0f0da"
+    },
+    {
+      "group_id": "observed_008_residue_cause_advisor",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/residue_cause_advisor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-55-05-019fef2c-9af2-7592-ba0c-ab53b138e7ab.jsonl",
+      "rollout_sha256": "3bebddb4feda85aceb1d7481f0a019b28d50e5e13a12e911c9e9fc7db344f21b",
+      "encrypted_payload_sha256": "174079e97016e611ad169e2fbefaf708991b8575938299ae1eeb6ab73d8c5431"
+    },
+    {
+      "group_id": "observed_009_independent_lean_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/independent_lean_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-01-36-019fef32-8f94-7791-8157-bc9647cfe7ea.jsonl",
+      "rollout_sha256": "c4606c72e6ec8c591e749b24f666981f6b14f9735a346b906efdf9d561878de3",
+      "encrypted_payload_sha256": "e4ba9a783bf1957c3b405050c066c362af1f8d65abd76ba4866720e4563e75e5"
+    }
+  ],
+  "2026-08-11-constraint-generativity-resistance": [
+    {
+      "group_id": "observed_001_cgr_explorer_alexander",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/cgr_explorer_alexander",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-47-36-019fef25-c0c4-7ff1-a864-e40f776b6352.jsonl",
+      "rollout_sha256": "3efd0083c65b741f312030338aefc6e3ece7ea2cc4d18e886fd4fcaf83f22e67",
+      "encrypted_payload_sha256": "49a35673a5008dc7cec7dd6f8227cf6ccf351c8652dcdb63817703d7553306ce"
+    },
+    {
+      "group_id": "observed_002_cgr_explorer_shannon",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/cgr_explorer_shannon",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-47-45-019fef25-e240-7151-a752-ff367772ee7e.jsonl",
+      "rollout_sha256": "255d83d2eca3accca8016256d362bf5911a9ab8ce0100324f3865a197f0265b4",
+      "encrypted_payload_sha256": "91352894b1c814744dc9158a851acb281ba27c7cccf8123d117f69030d7dbe36"
+    },
+    {
+      "group_id": "observed_003_cgr_writer_maclane",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/cgr_writer_maclane",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-50-34-019fef28-7771-7470-a9ac-50365b95b190.jsonl",
+      "rollout_sha256": "8608b88de518a5c3787284ffc562ab55039883a8fbb9a3521a2d84f60fb565e0",
+      "encrypted_payload_sha256": "9ba1027dd8d3f114a301d2b0fefdd202d2c33f72294fb3a400551ab44908f6b9"
+    },
+    {
+      "group_id": "observed_004_cgr_skeptic_popper",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/cgr_skeptic_popper",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-53-02-019fef2a-ba3c-7521-bd08-6cd624c3a3ee.jsonl",
+      "rollout_sha256": "d87df1581441cd8e77cfb85d94ea19dff4722ed6dcbf712ca92b9045a5b75a46",
+      "encrypted_payload_sha256": "358ba9d9cbbf83002ae0c781c9b1caa9cca3f7b4bf128e9f54ef6a3cec8a8999"
+    },
+    {
+      "group_id": "observed_005_cgr_skeptic_lakatos",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/cgr_skeptic_lakatos",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-53-10-019fef2a-d922-7d50-8b29-db2f1f4ca4c2.jsonl",
+      "rollout_sha256": "abefc61437974b04af24737bb1dbdf3c6a041f5251ff59b2860b97556605d9e1",
+      "encrypted_payload_sha256": "8a9150b99b541927d084d0396d90087943e6e3aaceb47aff1d4cf83014b2314c"
+    },
+    {
+      "group_id": "observed_006_cgr_skeptic_wittgenstein",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/cgr_skeptic_wittgenstein",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-53-18-019fef2a-f692-7a62-9cf5-b0d5f6dde4b9.jsonl",
+      "rollout_sha256": "e69a6a3215cbd5ad492fc87c3c8336ba5210020d83eec5e4bcdf488066c17e1f",
+      "encrypted_payload_sha256": "78e5e0ca72703edd5a03f29b8e133765f416b105c1c8990edbd155fb3e4c8a4c"
+    },
+    {
+      "group_id": "observed_007_cgr_auditor_bourbaki",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/cgr_auditor_bourbaki",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-58-24-019fef2f-a302-7011-ba05-fb2dd633b3f7.jsonl",
+      "rollout_sha256": "7cce262215a46d96e9ceab6778f2f0d7463cb5c38a81a6f4d61495af6d399504",
+      "encrypted_payload_sha256": "58559c5ed6fec7000937569757ba61409bc998c79739ff67a878d2abdbcfc980"
+    }
+  ],
+  "2026-08-11-epistemic-test-design": [
+    {
+      "group_id": "observed_001_kuhn_designer",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/kuhn_designer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-10-57-019feecd-41ee-7730-961d-6d1ae141657e.jsonl",
+      "rollout_sha256": "3e707e63305391780bdefd225d1467e6a7c97480115e28212a59d48411024d74",
+      "encrypted_payload_sha256": "9dc43c370573a410df7a843926c2cdb32075830871f16435a3f03e951b986a51"
+    },
+    {
+      "group_id": "observed_002_popper_skeptic",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/popper_skeptic",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-12-24-019feece-98b2-7e50-b151-97470a8f0e66.jsonl",
+      "rollout_sha256": "90f9ac578630e7013844f5fb681807b6a9b4fe795da7bae236b1b056624caf1a",
+      "encrypted_payload_sha256": "0262b91fbebd25a15da8f7528f3e8cc792ebb80123afca1d6eb2a8bce7b88d76"
+    },
+    {
+      "group_id": "observed_003_advisor_refutation",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/advisor_refutation",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-38-45-019feee6-b690-7820-abb7-e3492d15e1cb.jsonl",
+      "rollout_sha256": "37f96f98e2ffa799b34e7c52de6aff67a394bcc5a6b774f475905ff3d34317e7",
+      "encrypted_payload_sha256": "1b4660849a609f392e23906b273c19c806e09cf64bd4fbdae5f87d328ea2c87c"
+    }
+  ],
+  "2026-08-11-final-lean-hygiene": [
+    {
+      "group_id": "observed_001_final_naming_audit",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/final_naming_audit",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-52-02-019fef97-abab-7d11-9edb-75dac837dbc6.jsonl",
+      "rollout_sha256": "78dd5922741886422a7c491f982109890bc9e5ca112d049f80f9d8dc93e76da1",
+      "encrypted_payload_sha256": "7ceb5af54edadd9b946361c2e776afaafa4bfaf7250b45ef3dbebf040cf6cf70"
+    },
+    {
+      "group_id": "observed_002_final_import_audit",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/final_import_audit",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-52-10-019fef97-ccae-7ba2-bbf5-4a94b2820a52.jsonl",
+      "rollout_sha256": "164fd766c7f526be552ca2a2bddd0113540bf0f672bc77a986890da7f6b2cf69",
+      "encrypted_payload_sha256": "468b6365fc4605ce509bee53c0d5ffd02f3fc98489eb29e9a62f5811e4a1e7ab"
+    },
+    {
+      "group_id": "observed_003_hygiene_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/hygiene_review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-05-11-019fefa3-b5d9-72d0-b861-6b88a2bfeee8.jsonl",
+      "rollout_sha256": "9b81403aa8b99445d1b863253da7d5db833486c4c15a31fa38d5cccedf72b6ca",
+      "encrypted_payload_sha256": "4afe9969ead467636b0d6579fbae063cab437ab2695287c47cf3687253badc37"
+    },
+    {
+      "group_id": "observed_004_final_import_fixer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/final_import_fixer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-17-48-019fefaf-43d4-7a20-8039-410e3e2f3d3c.jsonl",
+      "rollout_sha256": "e26c9458cca07cbc27257e52310ddf9a8ca7211a4ccf24308376ae6d80985595",
+      "encrypted_payload_sha256": "7b0147886ae8b9bfbdb6bc20e51ebefa46d9a9e38117d9d7263c7ab1e4a0c33c"
+    }
+  ],
+  "2026-08-11-final-post-fix-claim-review": [
+    {
+      "group_id": "observed_001_final_claim_attacker_math",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/final_claim_attacker_math",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-25-10-019fefb6-010b-7672-be08-d058421059cb.jsonl",
+      "rollout_sha256": "ef71874f15e86abd663c046963f595e78ae72db7af601bdaf2e90e751f50b158",
+      "encrypted_payload_sha256": "8a240341db4d67ae582c2009c999a935479c65fa40f1c35a1adea480c72fb978"
+    },
+    {
+      "group_id": "observed_002_final_claim_attacker_narrative",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/final_claim_attacker_narrative",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-25-17-019fefb6-1b7f-7642-9340-64821569badd.jsonl",
+      "rollout_sha256": "f11a31414a4aca1ebdef4353f80fbce403f86bdb1f90f345958ff8d7824cabd0",
+      "encrypted_payload_sha256": "1318f63e19fe16a21bce68114ef6ba3f80906771c706cdb0485214ea35c334d9"
+    },
+    {
+      "group_id": "observed_003_final_claim_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/final_claim_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-31-36-019fefbb-e470-79e2-bbca-12541d41e999.jsonl",
+      "rollout_sha256": "06f7b6629b635803c46cc7cd690dae548b68baeaab7965fa504f1491fa275758",
+      "encrypted_payload_sha256": "1baa00b5b3dd7078a716c18d170d308a7aa4e197cfb678b19db302dd8a8987be"
+    },
+    {
+      "group_id": "observed_004_observation_budget_doc_fix",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/observation_budget_doc_fix",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-35-55-019fefbf-da0c-7cc1-8a4e-fd5eaf47e359.jsonl",
+      "rollout_sha256": "3622fa8cf5ae7724218dd49efbf9f83e8e4845495912d9091ea5d59d5f1e50a0",
+      "encrypted_payload_sha256": "7d22d9c448b96119e2c95afc71fda9f77f874391d0ff9e93e7bc9592144829c9"
+    }
+  ],
+  "2026-08-11-finite-local-global-gap": [
+    {
+      "group_id": "observed_001_builder_finite_local_global",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/builder_finite_local_global",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-01-45-019fef32-b20f-7f92-8014-9e8f8e9707b5.jsonl",
+      "rollout_sha256": "cc2bf414c348e402062f9ed3fec710e2576908e450ae7c0855b6dd72cd120491",
+      "encrypted_payload_sha256": "6d30492a84127050bc2e5e20baf393457a5583bb4fb1e97343362aca9445d444"
+    },
+    {
+      "group_id": "observed_002_wp5_review_math",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/wp5_review_math",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-43-06-019fef58-8e2b-70d0-be47-6b49953988c0.jsonl",
+      "rollout_sha256": "933e4f87256509c3c4eb71b804e0803d4ee9a173e1faabbce959b4a6a516b3f7",
+      "encrypted_payload_sha256": "e8c86ec96fe5d571fc92ba3a871d41ed3dd1e0ab515989fd35910164a0351ffc"
+    },
+    {
+      "group_id": "observed_003_wp5_review_claims",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/wp5_review_claims",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-43-21-019fef58-cb50-7b41-95c2-c93a490b0289.jsonl",
+      "rollout_sha256": "33102dabcdb2a9b0b4c353a401d72686c96cdc46ec763e6748673c72988d56bf",
+      "encrypted_payload_sha256": "5399bee0989205ddfc0d5e99961bbdb1155729887cc7fd97750d8d1165b43339"
+    },
+    {
+      "group_id": "observed_004_wp5_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/wp5_review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-57-37-019fef65-d8dc-7ad2-8c03-8e1ba6da9ba4.jsonl",
+      "rollout_sha256": "5475067bfe8441ca4f45a1bd25d17f82d45cc0ee44096010bcafc6994d9d8ce4",
+      "encrypted_payload_sha256": "10b5c91cf7bc0b6b0a7135b8c923bfcd29c6a39a6c4257e81bb0f81c6f811a5d"
+    }
+  ],
+  "2026-08-11-formal-stress-review": [
+    {
+      "group_id": "observed_001_attacker_fidelity",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/attacker_fidelity",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-38-52-019feee6-d340-7f22-b105-1aa02fd6d04a.jsonl",
+      "rollout_sha256": "9832adfd474521558cc24db001a8474d5aefa0f3d88fb2f78e741e73aefe0637",
+      "encrypted_payload_sha256": "e5f5d6e9405a4cd0b8a8e45194222ad44154dc98abcb30cf00a6d2c1159eb1d3"
+    },
+    {
+      "group_id": "observed_002_attacker_mechanics",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/attacker_mechanics",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-38-59-019feee6-ed9f-7f33-8aa0-29901563e7e6.jsonl",
+      "rollout_sha256": "c812aff7f36c6a499cdd3453d9e7b1cd09bd8e7fcfa9e317a1a35aef1e8430bc",
+      "encrypted_payload_sha256": "9f67a8b5b5d728c6f81666b4948b6e518952f6016067932e746f366cefd2653f"
+    },
+    {
+      "group_id": "observed_003_review_synthesizer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/review_synthesizer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-46-29-019feeed-cd02-7cf3-82e8-4ea8c15e68ac.jsonl",
+      "rollout_sha256": "992e2c801453f0594e6b8f5bfe8f8ebf2dccfdbbbbe417a9e63c0f9c03bb0076",
+      "encrypted_payload_sha256": "6ea747f14ef29c61a8bb724a3cf653bf3470448e1672682e3c0dadfb66e0a2ea"
+    },
+    {
+      "group_id": "observed_004_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-51-14-019feef2-26aa-7d71-9f89-420a13053a56.jsonl",
+      "rollout_sha256": "4e52c76814a41958d81f5998ce8bf924847ec2b6418f754a035e3f6d2fb8d95e",
+      "encrypted_payload_sha256": "a80c9402f60210871e13976b0173743cd66873f6052524a1c7340fe3108e01ee"
+    }
+  ],
+  "2026-08-11-generativity-profile-admissibility": [
+    {
+      "group_id": "observed_001_g_profile_formalist",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/g_profile_formalist",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-36-20-019fef52-5d81-7121-954a-5154a092acb4.jsonl",
+      "rollout_sha256": "c3f0e0931e471c5cd6185e12fdaf471c874475228eda91ffba8842bdc9554456",
+      "encrypted_payload_sha256": "e38bb8256a9806477bfd1a8160cce0df896003cd5ee2872bf1bf20fbd91ee1b4"
+    },
+    {
+      "group_id": "observed_002_g_profile_reviewer",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/g_profile_reviewer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-36-28-019fef52-7d54-77d3-bdca-48fe03d9b632.jsonl",
+      "rollout_sha256": "28fd5d0f67ee4eb51cd246ab0d17c7e3b25001b9826e48946e0684be48139488",
+      "encrypted_payload_sha256": "6a685a5657d2a8bd10b915117cb0f2e7a986ca079f11703488cf2f75b7af089b"
+    },
+    {
+      "group_id": "observed_003_g_profile_repo_scout",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/g_profile_repo_scout",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-36-38-019fef52-9ba4-7120-aa93-afa9d42f533d.jsonl",
+      "rollout_sha256": "de3a5d71768552d84c1fc457744c8f864842611dc0977c82e45abe3100eeb2e5",
+      "encrypted_payload_sha256": "c55b3e73b83482b4fb36908f37a008988350a9da940d5144970f8d0bf843b06a"
+    }
+  ],
+  "2026-08-11-knowledge-loop-underdetermination": [
+    {
+      "group_id": "observed_001_loop_review_math",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/loop_review_math",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-36-32-019fef89-7a7c-7ba0-ba27-8cf29ec77427.jsonl",
+      "rollout_sha256": "711b3a9d05387ecfca490f87c80038687d2c0c9d71cb9a8923f3db53bf151c04",
+      "encrypted_payload_sha256": "1af4838387539810ada9735c39533d13bb5830aba7cd7d42fb6434c19597d895"
+    },
+    {
+      "group_id": "observed_002_loop_review_gaming",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/loop_review_gaming",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-36-41-019fef89-9d7c-7283-8443-d67548f6eea2.jsonl",
+      "rollout_sha256": "4d1fedf2bd124d11c7fb2bed9c30d50a9ef45bd19baa8f6f875feba2142858c1",
+      "encrypted_payload_sha256": "2f955cca891e6296112bfdaf7e43608e87d3e8987ff4185e4d95d8abb3ae9a80"
+    },
+    {
+      "group_id": "observed_003_loop_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/loop_review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-41-53-019fef8e-61b4-7f11-80cd-3f9cc93d233b.jsonl",
+      "rollout_sha256": "267838f60990764d2a6bc5f858aa34a7926799d3875fcbda819073fe53badb84",
+      "encrypted_payload_sha256": "a7f431d783f7f8a0fafd55b979e532dd92350efd9957b5edccc12288880bda69"
+    },
+    {
+      "group_id": "observed_004_knowledge_loop_doc_fix",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/knowledge_loop_doc_fix",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-47-40-019fef93-aaa3-7fe0-b190-bc4ef37a2df3.jsonl",
+      "rollout_sha256": "1b09e1caaa12d411e153526335489776df11edeec918bd16c6996c93bb05ca33",
+      "encrypted_payload_sha256": "18411e81edda70fdb775ef3096c1d258d7aebe12bcc3dc9b9538289cf8c0214b"
+    }
+  ],
+  "2026-08-11-minimalism-composition-spec-v2": [
+    {
+      "group_id": "observed_001_spec_drafter_v2",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/spec_drafter_v2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-57-56-019fef2f-3613-7211-a155-308383577494.jsonl",
+      "rollout_sha256": "74afea6cc27faf66f2d82f4a8ab4c9c68909bbe5a5ca6f7b5722dc205071605d",
+      "encrypted_payload_sha256": "d37a61430d4a2672656e74a037389625cd6594430f02a2f41f76b4769281aacb"
+    },
+    {
+      "group_id": "observed_002_spec_validator_v2",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/spec_validator_v2",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-03-04-019fef33-e424-73f3-a56f-8cd13b842d21.jsonl",
+      "rollout_sha256": "cfa8f3a59249177f2ba811968c2ca528b801bc02a5a7e4f9eb7bb44949346cb2",
+      "encrypted_payload_sha256": "98879e30d35154e6470639c816663e52ab44038ff9adf617b0354cb25a7dbc6b"
+    }
+  ],
+  "2026-08-11-minimalism-composition-spec-v3": [
+    {
+      "group_id": "observed_001_spec_finalizer_v3",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/spec_finalizer_v3",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-30-59-019fef4d-75d5-7dd2-b46d-53038420de8e.jsonl",
+      "rollout_sha256": "b66feb04f30ca28f59a5ef688980b2d7ba6f05cb44072ff5951ba9ebfc648aa0",
+      "encrypted_payload_sha256": "c87477a7cdb04b4494721af398ba629907ec737bd282c4adead6b9b26faa9af5"
+    },
+    {
+      "group_id": "observed_002_spec_validator_v3",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/spec_validator_v3",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-34-01-019fef50-3b11-7913-8cd5-3409b3c3dafb.jsonl",
+      "rollout_sha256": "a4bae30a74f4e113a0e3c3a6ba9c1bf27540e798f42b3c9c64f14dfc8316c145",
+      "encrypted_payload_sha256": "cf161981ca79113d5cb78372c7195bd7f2e37b76b038b42bfb320c3653721a19"
+    }
+  ],
+  "2026-08-11-minimalism-layered-assessment": [
+    {
+      "group_id": "observed_001_snapshot_capture",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/snapshot_capture",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-42-51-019fef58-53b2-7373-a4df-d899800b4de1.jsonl",
+      "rollout_sha256": "62600b06adfabc6d6aea93d0642aaf7feafc0f43abcf4bf5f5063f66e775524e",
+      "encrypted_payload_sha256": "bcd46a8b4986e0b68f0f574f921cb1b44c2d8c9ea2ce90046f15cdb0ba415b84"
+    },
+    {
+      "group_id": "observed_002_l1_benabou",
+      "model": "gpt-5.6-terra",
+      "role": "explorer",
+      "agent_path": "/root/l1_benabou",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-44-49-019fef5a-2150-73d3-ae95-9bc1cec8df5c.jsonl",
+      "rollout_sha256": "e277945908ebb614365f02c5f4cb981f6dabc06ecd40b5d772144f906f74eeba",
+      "encrypted_payload_sha256": "3422020083775bdc1e6168b800f1873b0df46acf50413bdaf2bd58c281a713c1"
+    },
+    {
+      "group_id": "observed_003_l1_fisher",
+      "model": "gpt-5.6-terra",
+      "role": "explorer",
+      "agent_path": "/root/l1_fisher",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-45-10-019fef5a-66af-75f2-a682-3f094742c56a.jsonl",
+      "rollout_sha256": "a450e0d348a834ec8f249b01123f675bf89a617a732bdf632912e69d0ff6389c",
+      "encrypted_payload_sha256": "8df799fb7dfdb000d0990403304150ec531c3566a26c1753e6a92e6a1cefe99b"
+    },
+    {
+      "group_id": "observed_004_l1_lawvere",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/l1_lawvere",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-51-24-019fef60-2484-7561-8665-803051161982.jsonl",
+      "rollout_sha256": "380f0168a43b08b3b7202d1f59f505658dfbdcc194e05fea26f8bbb2c05f9bcd",
+      "encrypted_payload_sha256": "c4d5699abf1a461e319a0107a91eeb4eda9a7d61b1759c2d76dcb0b51ae1403e"
+    },
+    {
+      "group_id": "observed_005_l2_writer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/l2_writer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-55-48-019fef64-2a6d-7de2-88a3-0a67f0d2ac01.jsonl",
+      "rollout_sha256": "e31280545d273aa47395f4950f46a5fb4912cbd1b2b494ab60bb3c8ba838c8df",
+      "encrypted_payload_sha256": "ce4b19c09837e3b4a6b5b0c19f872a544977e16ce54ebf6d6580c203e8c015f6"
+    },
+    {
+      "group_id": "observed_006_l3_dolan",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/l3_dolan",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-18-02-019fef78-88dc-7f43-9c2d-39ba9e9a8cfb.jsonl",
+      "rollout_sha256": "4af7e5b933478ed87fc8c7999c32ca1384419a2191312d6f0ed932d7f73fe30e",
+      "encrypted_payload_sha256": "5582bf01173bf7b6d33eaa193052ec5419f28e3f33a0f245e8118567c31929e7"
+    },
+    {
+      "group_id": "observed_007_l3_capucci",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/l3_capucci",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-18-12-019fef78-b319-7e93-be89-dfefd8493425.jsonl",
+      "rollout_sha256": "4cf06f28e8ef1e82e9444059dfb3577aa5742b0f477c250d67f228ec9603331c",
+      "encrypted_payload_sha256": "5fae2bfc233b947ea4dbdca53b88f7e1f7c3786df95fad6b68a0a7e0af7d5bfe"
+    },
+    {
+      "group_id": "observed_008_l3_carnap",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/l3_carnap",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-25-30-019fef7f-61ac-71c0-b252-ccf1aa4c63f9.jsonl",
+      "rollout_sha256": "12147fb2d9e78bcc1d39a6e589e2780c01c10f12e8ed6b07e36925da877eb019",
+      "encrypted_payload_sha256": "0f0f372ece4b677581965b84f0ee9944a6a6d9e1f55949b073e2c4c072cde522"
+    },
+    {
+      "group_id": "observed_009_l4_auditor",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/l4_auditor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-32-29-019fef85-c662-71c3-8146-ced921227de6.jsonl",
+      "rollout_sha256": "77bf29d739f5a962d37036b46c449ae4abef2a7a108bcd9c26d3434646ff7bb6",
+      "encrypted_payload_sha256": "0e5b8f241f8a7ad42619cc753a4a745e0cf308864369c2a54ab9c31def55fa7f"
+    },
+    {
+      "group_id": "observed_010_final_progress_assessor",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/final_progress_assessor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-53-02-019fef98-95d1-79b2-a098-7f28bce05a2b.jsonl",
+      "rollout_sha256": "ee2526049975efcdeadf503e888c8cda22edaec334ef4f5e6a522a44e89cb691",
+      "encrypted_payload_sha256": "a3d142f18dd7b427c4abbe31c87f9e6865b838794b4a5f26cec27832cfc2c221"
+    }
+  ],
+  "2026-08-11-object-partial-functor-initial-definitions": [
+    {
+      "group_id": "observed_001_initial_defs_baseline",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/initial_defs_baseline",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-02-34-019feec5-971d-7e32-8eb7-b2f190f0e490.jsonl",
+      "rollout_sha256": "cae664bbd7a0b9fe95a9b9a86046c593d45886a12e491ad77339ff5f399db349",
+      "encrypted_payload_sha256": "5e9ddcee90ef5eb6974875ef5974063ba3d4550dbd543b7205f875a2799eef48"
+    },
+    {
+      "group_id": "observed_002_initial_defs_scope",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/initial_defs_scope",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-02-40-019feec5-ac6d-7d13-9406-a139d39e2c9c.jsonl",
+      "rollout_sha256": "eccf9726bc9e54c986cea343a75ef21ed50654549c9e995c1615552159016d5f",
+      "encrypted_payload_sha256": "a76df61d38cfc7c1c8596e10eba23a779020ee29a980d357aae4094055c99036"
+    }
+  ],
+  "2026-08-11-observed-revision-build": [
+    {
+      "group_id": "observed_001_builder_observed_revision",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/builder_observed_revision",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-58-34-019feef8-dd50-7003-98a7-967e0fe65e7f.jsonl",
+      "rollout_sha256": "12bc869666bced80123a470a51337db1c7b0906f350640c2bda17f238dd1c9a5",
+      "encrypted_payload_sha256": "b8519079af3652eafdf66ec570d102b218dc3632f4002c56f08171b7af4becee"
+    },
+    {
+      "group_id": "observed_002_builder_adaptive_nonseparation",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/builder_adaptive_nonseparation",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-58-41-019feef8-f7d7-7041-af77-a7866eea2b71.jsonl",
+      "rollout_sha256": "4ed5406af33dbd489aea577a2d9961a2db2b5b65635b1670588e46a5499c2155",
+      "encrypted_payload_sha256": "76df281545015d97e40e97a2608450b9627623627742b6c3bba311144ba29598"
+    }
+  ],
+  "2026-08-11-observed-revision-review": [
+    {
+      "group_id": "observed_001_impl_attacker_math",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_attacker_math",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-05-22-019feeff-1400-7610-a0e4-18e626a8855b.jsonl",
+      "rollout_sha256": "dfb8e8ea6d78b82091a99078f0ddd958a729ca8eaa3ed38e21c7b1449910c9eb",
+      "encrypted_payload_sha256": "7eccc0685349c3a2322ba839dac63bf56c58c65f49873915fdf8514d05da1bbe"
+    },
+    {
+      "group_id": "observed_002_impl_attacker_claims",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_attacker_claims",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-05-27-019feeff-299e-77d1-8437-c56131ee4ef3.jsonl",
+      "rollout_sha256": "4c20a4ff5dbe9f9cd11324cdace800ced7e65005a4536e6d7b1ebd3c149e4839",
+      "encrypted_payload_sha256": "8689b7ee8b4f4071889adc0d9287db2fa69b95e372b801467847b711bf137b36"
+    },
+    {
+      "group_id": "observed_003_impl_review_writer",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_review_writer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-09-23-019fef02-c40a-7f02-9f57-7a1fa0a56c4b.jsonl",
+      "rollout_sha256": "e2a61fc60bd34a954e8b222f1c54b4ba2bd8dc1b90ef6894f6b8b33155366bd0",
+      "encrypted_payload_sha256": "603f3cfdcb36b17ae894fb57b76a69579a1b51cde0b669c0d06e666b84ebb7c1"
+    },
+    {
+      "group_id": "observed_004_impl_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/impl_review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-11-49-019fef04-fd82-7f21-9b35-ef41c78fd764.jsonl",
+      "rollout_sha256": "7bcb54da514cfc0ca6bf2d5c7716d48d71c3c7d26662624800d7a90ca101d66b",
+      "encrypted_payload_sha256": "95e6554c7f621e0d3269eee7f11fcfbd09a80094f81d39b4e2e1f49f5c55f0de"
+    }
+  ],
+  "2026-08-11-prefunctor-composition-failure": [
+    {
+      "group_id": "observed_001_builder_prefunctor_failure",
+      "model": "gpt-5.6-sol",
+      "role": "coder",
+      "agent_path": "/root/builder_prefunctor_failure",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-17-44-019fef0a-6854-70b0-8f91-235407a633eb.jsonl",
+      "rollout_sha256": "738fabd4ce37f1a92072a872350f8abc0cee71fa92872749d321ec6f62bc264e",
+      "encrypted_payload_sha256": "1600deed3bbc4c1cf0ce753adf772a10e97e1c4a50760f22727501badf3e5784"
+    },
+    {
+      "group_id": "observed_002_prefunctor_review_math",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/prefunctor_review_math",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-24-35-019fef10-aee9-7003-af96-8cb7a720b988.jsonl",
+      "rollout_sha256": "9f3eec5aa4aaf8d80e614bdf7abbb4df80147c8fabfd89f8c3649fca1e743820",
+      "encrypted_payload_sha256": "e96db9e3c56526ec2972586a3b35dda22c8c9cbd35ad8184cfcd8e98991166bf"
+    },
+    {
+      "group_id": "observed_003_prefunctor_review_gaming",
+      "model": "gpt-5.6-sol",
+      "role": "skeptic",
+      "agent_path": "/root/prefunctor_review_gaming",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-24-44-019fef10-d069-7fd3-94a5-cff4e0623184.jsonl",
+      "rollout_sha256": "70118236d8f1a4adf4c72191ddc4db11e1e21ec93d4b288e62520cdba6c956fc",
+      "encrypted_payload_sha256": "828056ce6c1f305d4f1af24e40ca93466705e30f217bdc3180f0a7d3339db85c"
+    },
+    {
+      "group_id": "observed_004_prefunctor_review_writer",
+      "model": "gpt-5.6-sol",
+      "role": "writer",
+      "agent_path": "/root/prefunctor_review_writer",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-37-53-019fef1c-dbb9-7043-a8f6-a191d6410992.jsonl",
+      "rollout_sha256": "a08daa363c462a97b2eccded3423e2adbfd616a10f3a8e8d17210aaecd71663a",
+      "encrypted_payload_sha256": "8daf7187b737ed3e440431021c9d0f7297836860dd7a92c16cdd1c792b6895ba"
+    },
+    {
+      "group_id": "observed_005_prefunctor_review_verifier",
+      "model": "gpt-5.6-sol",
+      "role": "auditor",
+      "agent_path": "/root/prefunctor_review_verifier",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-39-57-019fef1e-bcd3-7aa2-9c54-d8f807026a84.jsonl",
+      "rollout_sha256": "eb49288d7772b62e7235a508cbf562119ac4ed66cb3719a0a4e8543e2f23b4fd",
+      "encrypted_payload_sha256": "b0df9da09a9d4b2cff6dd9f7f3d73ff7ae72b3530b26ca7349fc03a95cda35ca"
+    }
+  ],
+  "2026-08-11-reflection-tower-reconciliation": [
+    {
+      "group_id": "observed_001_reflection_tower_mapper",
+      "model": "gpt-5.6-sol",
+      "role": "explorer",
+      "agent_path": "/root/reflection_tower_mapper",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-48-44-019fefcb-952b-7833-912f-cd360a387f8d.jsonl",
+      "rollout_sha256": "f17b159f578c689256ce43a59bc5e3bef03275414e72c150e6b2958bb668b62f",
+      "encrypted_payload_sha256": "bbba402c9fed5a3387af520f44457df6c2ab6b60f631b218a9d3d558160d9303"
+    },
+    {
+      "group_id": "observed_002_reflection_tower_advisor",
+      "model": "gpt-5.6-sol",
+      "role": "planner",
+      "agent_path": "/root/reflection_tower_advisor",
+      "source_rollout": "C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-48-51-019fefcb-b04e-7942-803a-740f16ecebb1.jsonl",
+      "rollout_sha256": "3d3e239d3f901b180b3f1a54ac27e74c6f21aec6f16ba4545501e375fe18a4bc",
+      "encrypted_payload_sha256": "ed38435ddbeb9e7a524abae6e8baebc1e1b5852b4e2a9733b699d149467125f7"
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "dispatch_id": "2026-08-10-yoneda-selmer-review-r1",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-yoneda-selmer-review-r1.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_review_dolan",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_dolan; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-45-09-019fee10-da65-79a3-a77b-592e1616b7af.jsonl; rollout_sha256=d54e33239d0c33079e7a93347af8f140a057a9f27ba56d865c97ab2eecfc3d7a; encrypted_payload_sha256=ada33dc0c78a9bebccbb74509a905915167c800f19d963317f8f1ed1dc74d55f]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_review_grothendieck",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_grothendieck; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-45-18-019fee10-faab-7ce0-aaa7-fd88226786b8.jsonl; rollout_sha256=702b35c264d7fb39a595ed93b79ad848b7ad60b292e7b317a34b0df6a89838af; encrypted_payload_sha256=98c074527abb70a6b292d1444d59b62b909b64faea478abbe485cd9389b389f0]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_review_capucci",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_capucci; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-45-26-019fee11-19cc-7ca1-8bc5-fd59b8c84f59.jsonl; rollout_sha256=3d619e23a8e1b44d3a93911aec25d6464446aec00f081615da0a0e97e62941b9; encrypted_payload_sha256=d74e81626c26b8725ea64db577a9611306d034fc2a45d84e902ce6c57c7c4959]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_folder_provenance",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/folder_provenance; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-50-11-019fee15-7553-7d63-942d-c46a9f2a3ce5.jsonl; rollout_sha256=aa367e9a499c0b9e8b34039beb747a2bac7b02c3f61d6855937811cda3b1142b; encrypted_payload_sha256=67bd1ea3102c1d3cdb24557c423a6dabee2e8c277c7dd6a97e3b36d793575748]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_005_review_synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_synthesizer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-55-48-019fee1a-98c0-7473-bf5e-8131147ca872.jsonl; rollout_sha256=a571c6e4602fc6d5109360ed3282411e3c1c90d1b20559f955f451b32ac12a1e; encrypted_payload_sha256=9b1492a70e332984bcc95cd55be6daa1ddaee3b21938e9f1af38695a5332d154]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_006_verify_sattler",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/verify_sattler; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-00-14-019fee1e-a991-7dd0-b66b-3a3017a48cc4.jsonl; rollout_sha256=3a1d24b2b376589545e019a41df62bfa4b0c165bd29c4539f10b05203750b65d; encrypted_payload_sha256=218e01cda62242ec9cc121ff9b363e271c518a3a99ccf1c27895791594ba64fd]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_007_verify_hacking",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/verify_hacking; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-00-28-019fee1e-de07-7f32-a489-2147515bbb46.jsonl; rollout_sha256=a32cd60acf8ad3e36f0348b7ff74470c63e60069555f833a4e58ba8727830873; encrypted_payload_sha256=6b25d82845d72f979483d4c42d2565722218ecc34922d019ba1c04015185cc35]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_008_audit_brandenburg",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/audit_brandenburg; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-04-35-019fee22-a4a8-7ce0-9d02-a6911e6db435.jsonl; rollout_sha256=bb73f709fe7aab7f461026b59a4199080f7fda75e7e75881bb2d1a698ded8586; encrypted_payload_sha256=ed9ac2768a2ae1ddadf76fe57b96302ea32fb97721709d4cbcf7aecc5369f3ba]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_009_advisor_patch",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/advisor_patch; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-07-43-019fee25-8235-75b0-bfa2-428e8ccf8056.jsonl; rollout_sha256=cfe96a4da1549d7055d37415ff3f8edc5636fcf24d2b177ab984e26e69abefdd; encrypted_payload_sha256=d8b26d03003e5bd5e431b3c476cdc1d1e62f07d9469d5e18fd447066d7ae8938]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_010_fix_initial",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fix_initial; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-10-39-019fee28-322d-7940-b036-1c4e0e9b6898.jsonl; rollout_sha256=eaa3443c2ebc292cb668ae8f4ed4c0b760749f13fe69146ef2689cd65b3f8643; encrypted_payload_sha256=22ca8e1f0c2f1dc13eef7182a2c0e41ec4d41406c3dc63e7df65d8ad007be1c4]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_011_fix_routing",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/fix_routing; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-10-54-019fee28-6d07-7723-b452-040a8901829c.jsonl; rollout_sha256=84dd1e9fc97453967fe860af21dce068f25f878742466f3980156ffa89d0d6b4; encrypted_payload_sha256=72a6e397f73bcf521503d2f48b24902fc197aedd7a58c7f7e650c458ae78de68]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_review_dolan",
+      "to": "observed_002_review_grothendieck",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_review_grothendieck",
+      "to": "observed_003_review_capucci",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_review_capucci",
+      "to": "observed_004_folder_provenance",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_004_folder_provenance",
+      "to": "observed_005_review_synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_005_review_synthesizer",
+      "to": "observed_006_verify_sattler",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_006_verify_sattler",
+      "to": "observed_007_verify_hacking",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_007_verify_hacking",
+      "to": "observed_008_audit_brandenburg",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_008_audit_brandenburg",
+      "to": "observed_009_advisor_patch",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_009_advisor_patch",
+      "to": "observed_010_fix_initial",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_010_fix_initial",
+      "to": "observed_011_fix_routing",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

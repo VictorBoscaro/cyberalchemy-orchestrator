@@ -1,0 +1,19 @@
+{
+  "close_of": "2026-08-11-minimal-knowledge-kernel-direct-review",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 12,
+    "tree": {
+      "explorer": 4,
+      "synthesizer": 0,
+      "skeptic": 0,
+      "writer": 0,
+      "auditor": 6,
+      "planner": 0,
+      "coder": 2,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": []
+}

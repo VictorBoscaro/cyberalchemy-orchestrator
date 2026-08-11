@@ -1,0 +1,88 @@
+{
+  "dispatch_id": "2026-08-10-craft-root-ledger-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Review the root Craft ledger and human view for completeness, fidelity to repository evidence, reference integrity, and compliance with the Craft contract before expanding them.",
+  "context": "The current .craft/ledger.yml and CRAFT.md are structurally valid but acknowledged to be only a minimal bootstrap. Review them against AGENTS.md, README.md, OBLIGATIONS.md, BACKLOG.md, and the installed Craft contract. Produce verified change requests for a comprehensive repository-state ledger without treating parked candidates as active work or importing nested Craft ledgers.",
+  "max_loops": 2,
+  "final_approver": "Boehm, Barry",
+  "anti_bias_mode": "disabled",
+  "output_mode": "inline",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "initial_prompt": "Read the complete target corpus: .craft/ledger.yml and CRAFT.md. Also read AGENTS.md, README.md, OBLIGATIONS.md, BACKLOG.md, and .codex/skills/craft/SKILL.md as governing evidence. Attack from the fidelity/governance lens: find omissions, unsupported claims, incorrect status promotion, workspace-boundary violations, and Craft-contract violations. Read-only. Every proposed finding must quote the target artifact and cite the governing evidence that defeats it."
+        },
+        {
+          "agent_name": "Wirth, Niklaus",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "initial_prompt": "Read the complete target corpus: .craft/ledger.yml and CRAFT.md. Also inspect authoritative repository status surfaces referenced by README.md, including active plans, feature status/index documents, decisions, and obligations only where required to test completeness. Attack from the coverage/reference-integrity lens: find missing active contexts, decisions, blockers, evidence, broken links, stale status, and missing pending-by-node information. Read-only. Every proposed finding must quote the target artifact and cite repository evidence."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "agents": [
+        {
+          "agent_name": "van Lamsweerde, Axel",
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "initial_prompt": "Synthesize the independent attacks into the single inline review.md required by the review skill. Deduplicate, severity-rank, and retain only findings grounded in quotations from .craft/ledger.yml or CRAFT.md plus repository evidence. Do not write files and do not include attacker transcripts."
+        }
+      ]
+    },
+    {
+      "group_id": "verifier",
+      "agents": [
+        {
+          "agent_name": "Dijkstra, Edsger W.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "initial_prompt": "Verify every proposed finding against the literal target and cited repository evidence. Refute false positives, unsupported completeness demands, and claims that confuse parked work with active state. Require each surviving finding to include file, quotation, severity, and one-line proposed fix."
+        }
+      ]
+    },
+    {
+      "group_id": "coverage_auditor",
+      "agents": [
+        {
+          "agent_name": "Parnas, David",
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1400,
+          "initial_prompt": "Audit that both target files were attacked under both declared lenses, that no refuted finding survived, and that the Coverage section records lens and target coverage. Fire the zero-findings red flag if applicable. Do not perform final approval."
+        }
+      ]
+    },
+    {
+      "group_id": "final_approval",
+      "agents": [
+        {
+          "agent_name": "Boehm, Barry",
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 900,
+          "initial_prompt": "Act only as dedicated final approver. Check the complete inline review.md and frozen target corpus. Accept only if every surviving finding quotes its target, every refuted finding is absent, the coverage audit is present, and the change-request list follows the review contract. Do no attack, synthesis, or coverage work."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "attackers", "to": "synthesizer", "type": "sequential"},
+    {"from": "synthesizer", "to": "verifier", "type": "zig-zag", "loop_cap": 2},
+    {"from": "verifier", "to": "coverage_auditor", "type": "sequential"},
+    {"from": "coverage_auditor", "to": "final_approval", "type": "sequential"}
+  ]
+}

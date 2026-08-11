@@ -1,0 +1,99 @@
+{
+  "dispatch_id": "2026-08-11-prefunctor-composition-failure",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-prefunctor-composition-failure.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_builder_prefunctor_failure",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/builder_prefunctor_failure; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-17-44-019fef0a-6854-70b0-8f91-235407a633eb.jsonl; rollout_sha256=738fabd4ce37f1a92072a872350f8abc0cee71fa92872749d321ec6f62bc264e; encrypted_payload_sha256=1600deed3bbc4c1cf0ce753adf772a10e97e1c4a50760f22727501badf3e5784]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_prefunctor_review_math",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/prefunctor_review_math; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-24-35-019fef10-aee9-7003-af96-8cb7a720b988.jsonl; rollout_sha256=9f3eec5aa4aaf8d80e614bdf7abbb4df80147c8fabfd89f8c3649fca1e743820; encrypted_payload_sha256=e96db9e3c56526ec2972586a3b35dda22c8c9cbd35ad8184cfcd8e98991166bf]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_prefunctor_review_gaming",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/prefunctor_review_gaming; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-24-44-019fef10-d069-7fd3-94a5-cff4e0623184.jsonl; rollout_sha256=70118236d8f1a4adf4c72191ddc4db11e1e21ec93d4b288e62520cdba6c956fc; encrypted_payload_sha256=828056ce6c1f305d4f1af24e40ca93466705e30f217bdc3180f0a7d3339db85c]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_prefunctor_review_writer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/prefunctor_review_writer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-37-53-019fef1c-dbb9-7043-a8f6-a191d6410992.jsonl; rollout_sha256=a08daa363c462a97b2eccded3423e2adbfd616a10f3a8e8d17210aaecd71663a; encrypted_payload_sha256=8daf7187b737ed3e440431021c9d0f7297836860dd7a92c16cdd1c792b6895ba]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_005_prefunctor_review_verifier",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/prefunctor_review_verifier; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-39-57-019fef1e-bcd3-7aa2-9c54-d8f807026a84.jsonl; rollout_sha256=eb49288d7772b62e7235a508cbf562119ac4ed66cb3719a0a4e8543e2f23b4fd; encrypted_payload_sha256=b0df9da09a9d4b2cff6dd9f7f3d73ff7ae72b3530b26ca7349fc03a95cda35ca]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_builder_prefunctor_failure",
+      "to": "observed_002_prefunctor_review_math",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_prefunctor_review_math",
+      "to": "observed_003_prefunctor_review_gaming",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_prefunctor_review_gaming",
+      "to": "observed_004_prefunctor_review_writer",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_004_prefunctor_review_writer",
+      "to": "observed_005_prefunctor_review_verifier",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

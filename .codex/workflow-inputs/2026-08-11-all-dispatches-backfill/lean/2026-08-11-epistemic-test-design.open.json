@@ -1,0 +1,63 @@
+{
+  "dispatch_id": "2026-08-11-epistemic-test-design",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-epistemic-test-design.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_kuhn_designer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/kuhn_designer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-10-57-019feecd-41ee-7730-961d-6d1ae141657e.jsonl; rollout_sha256=3e707e63305391780bdefd225d1467e6a7c97480115e28212a59d48411024d74; encrypted_payload_sha256=9dc43c370573a410df7a843926c2cdb32075830871f16435a3f03e951b986a51]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_popper_skeptic",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/popper_skeptic; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-12-24-019feece-98b2-7e50-b151-97470a8f0e66.jsonl; rollout_sha256=90f9ac578630e7013844f5fb681807b6a9b4fe795da7bae236b1b056624caf1a; encrypted_payload_sha256=0262b91fbebd25a15da8f7528f3e8cc792ebb80123afca1d6eb2a8bce7b88d76]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_advisor_refutation",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/advisor_refutation; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T00-38-45-019feee6-b690-7820-abb7-e3492d15e1cb.jsonl; rollout_sha256=37f96f98e2ffa799b34e7c52de6aff67a394bcc5a6b774f475905ff3d34317e7; encrypted_payload_sha256=1b4660849a609f392e23906b273c19c806e09cf64bd4fbdae5f87d328ea2c87c]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_kuhn_designer",
+      "to": "observed_002_popper_skeptic",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_popper_skeptic",
+      "to": "observed_003_advisor_refutation",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

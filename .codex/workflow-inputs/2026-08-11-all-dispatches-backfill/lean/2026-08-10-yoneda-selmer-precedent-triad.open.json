@@ -1,0 +1,63 @@
+{
+  "dispatch_id": "2026-08-10-yoneda-selmer-precedent-triad",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-yoneda-selmer-precedent-triad.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_precedent_categorical",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/precedent_categorical; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-58-46-019feec2-1a43-75a2-8f39-f85391f985b5.jsonl; rollout_sha256=ca377ea1984ba1d1f215a9863069fdc4237a3577ac495735ce35a3bf3fd60239; encrypted_payload_sha256=3734e4a57f56b7cbbe8d31ec69a07e72688de44035970d542c96f4ff544c0423]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_precedent_arithmetic",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/precedent_arithmetic; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-58-52-019feec2-32c7-7e33-8feb-f5cf08d3d963.jsonl; rollout_sha256=f5099905d741473ceefaadcd84f17628a194f8bdc782a980631f52bc0804f474; encrypted_payload_sha256=72730deecc81fa71a7532047302a118ea3602f40dfaabcf19ca5c5e9ceb2f8f6]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_precedent_skeptic",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/precedent_skeptic; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-58-57-019feec2-4875-7602-a15e-1f343f6a73be.jsonl; rollout_sha256=6eadb5400e6751056e2e6ca1ece62c8013633ff132e25feb1beaaa7e9f10d9dd; encrypted_payload_sha256=f7084be3acdfe330a18539b1733adcdcc2331f7abe81a932cc1991c3f87865dd]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_precedent_categorical",
+      "to": "observed_002_precedent_arithmetic",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_precedent_arithmetic",
+      "to": "observed_003_precedent_skeptic",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

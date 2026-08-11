@@ -1,0 +1,155 @@
+{
+  "dispatch_id": "2026-08-10-minimalism-composition-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-minimalism-composition-review.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_review_fidelity",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_fidelity; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-39-05-019fee79-2733-76f1-a992-b174566f4d63.jsonl; rollout_sha256=3c0ee9edf63ea94d0a42304aa8d38c2529c56ceb1472778b583329743eb580e3; encrypted_payload_sha256=2ebc479c55e5b1524512caa534752409d7eca8b9b58f76b35995b796c65aa015]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_review_mechanics",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_mechanics; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-39-22-019fee79-6912-7900-828a-b60de079ac25.jsonl; rollout_sha256=0fe1b6a5f85b69f7f06c56ced8f46302e17215d6570a04653be9a3f4826028fd; encrypted_payload_sha256=4287579599253533fa2559dfd7180cecaec9839bdf6ccf5c1511ac7f12634003]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_review_abuse",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_abuse; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-42-34-019fee7c-58a3-7012-b454-1d525e1ae917.jsonl; rollout_sha256=bca794c1fc7d51e211d9ffaff8912379ac7c247dc44281a4cd67f56781b1c5cb; encrypted_payload_sha256=6bbc052fee41c9d8c31536a8c405b5140094730f8f60fed063b5a30d4b8c8697]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_review_synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_synthesizer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-54-23-019fee87-28e2-72e2-8167-a51f83523dae.jsonl; rollout_sha256=8678fe75b21b70099a587b72d236ac3937f5ddeacc4428c8dea9f8d5e41478f4; encrypted_payload_sha256=44225ea17d467f690d48fe6b11b834aff8fcd251591145b6d74690d8b36aa24e]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_005_review_verifier_formal",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_verifier_formal; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-00-33-019fee8c-cd53-72a3-a405-932d3cc4f4af.jsonl; rollout_sha256=2244899b395f73f795341155fa5047170fa44ba58ad1cd3cf8777cdeb8df00c1; encrypted_payload_sha256=a0fc7ff2e75ccdf554b02e0c6ba89776f0ad4bffa164d2de840e3aa61a79b379]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_006_review_verifier_scope",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_verifier_scope; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-00-43-019fee8c-f6ed-7c73-8bf3-3e1e0f1c3102.jsonl; rollout_sha256=be9baf37ad320566cd41d4ed5d4b3c09722ed9ec6d06edaea307f5a866100e6b; encrypted_payload_sha256=3a134d77ceef85fad8c600cd7a33d9819afe1469370286a387dfb9d089b8febf]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_007_review_coverage_auditor",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_coverage_auditor; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-09-06-019fee94-a2d6-70d2-8fa8-cc8752b90536.jsonl; rollout_sha256=1a016e45c5b0601a92a266dfdd6faf0b4645f30b7170f88b74ecc4bafb9fec8e; encrypted_payload_sha256=a856266cd831d518775ab8cdc597215a2f247d8cb3140620d557767e0709b937]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_008_review_final_approver",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_final_approver; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-17-21-019fee9c-32a0-7731-b19f-aa225a6230c4.jsonl; rollout_sha256=fcc058f7d9feb3eda95dc5a5dccc086e0503c6ff8eb385193b998cc2c1ee523a; encrypted_payload_sha256=f27d9ebd3880ae90b460390ef9b0c4d3885b2d68c7586ecb0ff12cdd3d554fd6]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_review_fidelity",
+      "to": "observed_002_review_mechanics",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_review_mechanics",
+      "to": "observed_003_review_abuse",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_review_abuse",
+      "to": "observed_004_review_synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_004_review_synthesizer",
+      "to": "observed_005_review_verifier_formal",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_005_review_verifier_formal",
+      "to": "observed_006_review_verifier_scope",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_006_review_verifier_scope",
+      "to": "observed_007_review_coverage_auditor",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_007_review_coverage_auditor",
+      "to": "observed_008_review_final_approver",
+      "type": "sequential"
+    }
+  ],
+  "output_mode": "persisted",
+  "working_folder": "research/audits/minimalism-composition-generativity-analogy-limits-2026-08-10",
+  "anti_bias_mode": "disabled"
+}

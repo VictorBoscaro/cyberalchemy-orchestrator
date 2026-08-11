@@ -1,0 +1,81 @@
+{
+  "dispatch_id": "2026-08-10-analogy-relevance-scout",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-analogy-relevance-scout.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_scout_math",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/scout_math; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-48-00-019fee4a-6208-7b30-9713-363525fecacb.jsonl; rollout_sha256=cbc71f975e85e5dc1e1a31489ad03e40dca74d3ddea5a216fb901a1b8635c35e; encrypted_payload_sha256=946a9d190368a2ed53996f2cdc91fd4b0f598a7bc3b2ae9529372b69f2af385f]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_scout_strategy",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/scout_strategy; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-48-07-019fee4a-7d26-7763-9e91-2b254c3667ab.jsonl; rollout_sha256=fd1b34b1e9b6895a18fdae7837f35700cfe133413f542d5bc116afa5899c7a2e; encrypted_payload_sha256=6e4e2ab2167a18e3e2f50b95f447eccccfe474c9445fe1daa7c7f766ea06f09d]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_review_math_scout",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/scout_math/review_math_scout; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-49-00-019fee4b-4eef-7903-aa25-621f9d5c09be.jsonl; rollout_sha256=c4a30b96b073f193bb5250dd99c87bbf24d4e092df032ded0c58844003508bf5; encrypted_payload_sha256=0e2acc448348f2d09a05a37620ade1a0039a986ec41358f1aeb12d3eaa428ecd]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_reviewer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/scout_strategy/reviewer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-51-40-019fee4d-bea8-71e1-89f6-1e58b82671af.jsonl; rollout_sha256=3afb54296ece9033bb647b00e36ef2977a2be403e98c05a071f0b4effacc85b5; encrypted_payload_sha256=9250393c2b89aa0b687dfc4acc0015f0e135a0d34825ccc6304df754ed3092e2]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_scout_math",
+      "to": "observed_002_scout_strategy",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_scout_strategy",
+      "to": "observed_003_review_math_scout",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_review_math_scout",
+      "to": "observed_004_reviewer",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

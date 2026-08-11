@@ -1,0 +1,19 @@
+{
+  "close_of": "2026-08-11-reflection-tower-reconciliation",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 2,
+    "tree": {
+      "explorer": 1,
+      "synthesizer": 0,
+      "skeptic": 0,
+      "writer": 0,
+      "auditor": 0,
+      "planner": 1,
+      "coder": 0,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": []
+}

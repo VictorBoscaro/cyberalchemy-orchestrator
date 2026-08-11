@@ -1,0 +1,64 @@
+{
+  "dispatch_id": "2026-08-10-yoneda-selmer-framing",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-yoneda-selmer-framing.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_selmer_fidelity",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/selmer_fidelity; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-29-34-019fee02-934b-78f0-b740-cf05f7f5194c.jsonl; rollout_sha256=82e65f2c431e8671f52ebfdf7b9db3550da2fea8e2d8785a070b8d1e6ab3befa; encrypted_payload_sha256=d022c9893e124e97c861d6d8a022a6a979394eef457428faec62893d2bc9652c]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_operational_semantics",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/operational_semantics; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-29-42-019fee02-b43b-7801-82ef-0463c21a84af.jsonl; rollout_sha256=13cf4f340bf950d4abde24e380796c26ce8e3f26758b218b3c2abf36baab40be; encrypted_payload_sha256=2941f32d4b89525593b115a123e0e60627524e0b65db2051361690e30bace678]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_repo_strategy",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/repo_strategy; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T20-29-53-019fee02-df71-7650-98ab-a72eae81cb5b.jsonl; rollout_sha256=f485ad845127b20b560c575faee9ce17af8f82a8d656c9754746db902e5837cb; encrypted_payload_sha256=394891ef5a862000cd2eb2e486e111eda791f87116f3b1a2578bf6ed058e8903]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_selmer_fidelity",
+      "to": "observed_002_operational_semantics",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_operational_semantics",
+      "to": "observed_003_repo_strategy",
+      "type": "sequential"
+    }
+  ],
+  "working_folder": "research/yoneda-selmer-local-global-framing",
+  "anti_bias_mode": "disabled"
+}

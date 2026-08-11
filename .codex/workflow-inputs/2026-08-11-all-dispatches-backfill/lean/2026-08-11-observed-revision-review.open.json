@@ -1,0 +1,83 @@
+{
+  "dispatch_id": "2026-08-11-observed-revision-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-observed-revision-review.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_impl_attacker_math",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/impl_attacker_math; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-05-22-019feeff-1400-7610-a0e4-18e626a8855b.jsonl; rollout_sha256=dfb8e8ea6d78b82091a99078f0ddd958a729ca8eaa3ed38e21c7b1449910c9eb; encrypted_payload_sha256=7eccc0685349c3a2322ba839dac63bf56c58c65f49873915fdf8514d05da1bbe]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_impl_attacker_claims",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/impl_attacker_claims; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-05-27-019feeff-299e-77d1-8437-c56131ee4ef3.jsonl; rollout_sha256=4c20a4ff5dbe9f9cd11324cdace800ced7e65005a4536e6d7b1ebd3c149e4839; encrypted_payload_sha256=8689b7ee8b4f4071889adc0d9287db2fa69b95e372b801467847b711bf137b36]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_impl_review_writer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/impl_review_writer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-09-23-019fef02-c40a-7f02-9f57-7a1fa0a56c4b.jsonl; rollout_sha256=e2a61fc60bd34a954e8b222f1c54b4ba2bd8dc1b90ef6894f6b8b33155366bd0; encrypted_payload_sha256=603f3cfdcb36b17ae894fb57b76a69579a1b51cde0b669c0d06e666b84ebb7c1]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_impl_review_verifier",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/impl_review_verifier; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T01-11-49-019fef04-fd82-7f21-9b35-ef41c78fd764.jsonl; rollout_sha256=7bcb54da514cfc0ca6bf2d5c7716d48d71c3c7d26662624800d7a90ca101d66b; encrypted_payload_sha256=95e6554c7f621e0d3269eee7f11fcfbd09a80094f81d39b4e2e1f49f5c55f0de]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_impl_attacker_math",
+      "to": "observed_002_impl_attacker_claims",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_impl_attacker_claims",
+      "to": "observed_003_impl_review_writer",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_impl_review_writer",
+      "to": "observed_004_impl_review_verifier",
+      "type": "sequential"
+    }
+  ],
+  "output_mode": "persisted",
+  "working_folder": "research/audits/observed-revision-adaptive-nonseparation-2026-08-11",
+  "anti_bias_mode": "disabled"
+}

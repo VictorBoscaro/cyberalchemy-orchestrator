@@ -1,0 +1,190 @@
+{
+  "dispatch_id": "2026-08-10-minimalism-composition-initial-wave",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-minimalism-composition-initial-wave.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_gentner_explorer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/gentner_explorer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-55-42-019fee51-6fcd-74f2-8c66-aa58656dfffd.jsonl; rollout_sha256=d80075b2214f92f91b451a21d8337cac7ac6dfc8c7da7c6115aac25ecf23a96b; encrypted_payload_sha256=8c21b930402210c7a2a88210e985a912ee8fe3afdc0989c9cec75544161d9b87]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_spivak_explorer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/spivak_explorer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-55-53-019fee51-9c49-7b22-ae90-f8b920a8aa3b.jsonl; rollout_sha256=f172e3198df965cdc729d2c0b5aedbacbbdc2a8464847f7ecb7235755c58f083; encrypted_payload_sha256=2e8899ba90f457d2e6247fcff9bec518b9bd4717fe6a72b257f4820e533f9bb4]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_maclane_writer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/maclane_writer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-57-36-019fee53-2c34-7ed1-9ec4-f891681dc6ab.jsonl; rollout_sha256=cda9f7170a74dce73e50ba595a1c99e719bc63500b4da3ac16c2a0af84a44293; encrypted_payload_sha256=1303b3395ce6c5c0a392fa3cda376a48bdf826dc278d3c3f8179397789d0a46f]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_maclane_writer_fast",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/maclane_writer_fast; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-02-01-019fee57-37eb-72b1-bee7-6d42af8398af.jsonl; rollout_sha256=0263a0e59db4630e5c7ac30146141d5d1d2a15e1dd2dc4cd28bf81ca0f5de2a2; encrypted_payload_sha256=cc2b9188a1c37e5bb2b184adf00a396bb7ed01bebc7c46b88fc005aa4e09fc06]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_005_popper_skeptic",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/popper_skeptic; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-04-21-019fee59-5c5c-7cc0-be40-ed49f4abe360.jsonl; rollout_sha256=bc798c76391dccff79c78ee58ec9fbb087c4d8b665f9b5b1d2ea7ce444bda8e2; encrypted_payload_sha256=7dd0bd54d7db303eafaae26e2cf9c9ca156f9df584937e85d244af7df842db0c]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_006_lakatos_skeptic",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/lakatos_skeptic; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-04-31-019fee59-820e-79a2-a51a-037a4b2edf5b.jsonl; rollout_sha256=dceac8a4af00b1f6454916a8876bf6e4388227659c2154339ee13cf3883f6f35; encrypted_payload_sha256=2db36d34c31d7ce60d74b12ec6d1089307e1545fe984662591a5f3848bb6fe1b]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_007_carnap_skeptic",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/carnap_skeptic; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-04-38-019fee59-9c3b-7fb1-a7ef-392e69b0c36d.jsonl; rollout_sha256=e9698360277800f402646569942c60d57e514e6772fa6f6867f337c59017e81b; encrypted_payload_sha256=927c9d7d3af6c827761f1e05fc9179ff5726b604b5be4f27715ceab79bd9b585]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_008_bourbaki_auditor",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/bourbaki_auditor; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-06-41-019fee5b-7d1c-7e90-b7a2-e68d9a7264b0.jsonl; rollout_sha256=68de5a80e1aef43db25c498547867fc5b97e0dbc1e49f482be238c441d7c7da0; encrypted_payload_sha256=abf5388738d9fbcde0cfb26a8d9c9e13927c35aab64778c3856f5870a01028eb]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_009_initial_definitions",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/initial_definitions; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-11-26-019fee5f-d6e4-7033-8652-5d45698f7b7d.jsonl; rollout_sha256=3692f066b7d8b77356ffa5e41dc8ffa61c4c5aebeec1d490544acfaa29aac0cb; encrypted_payload_sha256=c748d8b6541d9e4f6be0c412e0f6e9acb9585fce01579c5e8cc081295eacb354]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_010_register_research",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/register_research; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-14-20-019fee62-7f48-7702-84b6-0ba5f64ca484.jsonl; rollout_sha256=f72efc0ca6435e9e48efbbfcac9f40638c8b80c7145424aaef3ac82ce034147a; encrypted_payload_sha256=bff6758be7f98da7ad187568d995619dc5bf39c97ded22bc1ae2de885ed96800]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_gentner_explorer",
+      "to": "observed_002_spivak_explorer",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_spivak_explorer",
+      "to": "observed_003_maclane_writer",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_maclane_writer",
+      "to": "observed_004_maclane_writer_fast",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_004_maclane_writer_fast",
+      "to": "observed_005_popper_skeptic",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_005_popper_skeptic",
+      "to": "observed_006_lakatos_skeptic",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_006_lakatos_skeptic",
+      "to": "observed_007_carnap_skeptic",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_007_carnap_skeptic",
+      "to": "observed_008_bourbaki_auditor",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_008_bourbaki_auditor",
+      "to": "observed_009_initial_definitions",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_009_initial_definitions",
+      "to": "observed_010_register_research",
+      "type": "sequential"
+    }
+  ],
+  "working_folder": "research/audits/minimalism-composition-generativity-analogy-limits-2026-08-10",
+  "anti_bias_mode": "disabled"
+}

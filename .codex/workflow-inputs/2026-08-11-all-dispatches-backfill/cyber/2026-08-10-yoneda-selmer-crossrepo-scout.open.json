@@ -1,0 +1,45 @@
+{
+  "dispatch_id": "2026-08-10-yoneda-selmer-crossrepo-scout",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-yoneda-selmer-crossrepo-scout.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_yoneda_selmer_formal",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/yoneda_selmer_formal; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T19-47-59-019feddc-8293-7c71-b660-8104bf6b882a.jsonl; rollout_sha256=05f7f02f4f4ee10d20b1c864bc0649b20916255acfbc7e08307b0ef888a357db; encrypted_payload_sha256=fd45354858b1e1e27c54a5c59a975c1248d7d8fc5437e9c885a82607a496545b]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_yoneda_selmer_refuter",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/yoneda_selmer_refuter; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T19-48-10-019feddc-ae2c-7061-8454-7bed19ee3f45.jsonl; rollout_sha256=29385733a4db6981e168b76cd48ded79adfba5e4549c9822fe694c1b6ad78d3f; encrypted_payload_sha256=e0bed4da3cba5a324aa4990e0a9fd91b01e10c1951fc3800beb2024c61964f34]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_yoneda_selmer_formal",
+      "to": "observed_002_yoneda_selmer_refuter",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

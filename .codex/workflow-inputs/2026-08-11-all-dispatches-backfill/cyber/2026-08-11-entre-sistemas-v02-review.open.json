@@ -1,0 +1,118 @@
+{
+  "dispatch_id": "2026-08-11-entre-sistemas-v02-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-entre-sistemas-v02-review.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_v02_review_fidelity",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/v02_review_fidelity; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-03-40-019fef6b-607a-7161-963b-fbcd63b7c722.jsonl; rollout_sha256=d7cd06b57caadd278bd34e54d77ac1646da3aa12199dcb6c4d389a62b501e0d0; encrypted_payload_sha256=03222cec381ee1933cf751bf32e00b0580f435578a4a1e32530c261863aee847]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_v02_review_mechanics",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/v02_review_mechanics; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-03-59-019fef6b-ac2d-7533-9e02-94fcf2c63a7f.jsonl; rollout_sha256=2cf4223606ab015c5176ce4c39e1f53321e979f8923a1fd052cc35349f4570dd; encrypted_payload_sha256=61190499286b97275edd0d3374d241ba65873ed4c333ebecd1ffc3543d972468]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_v02_review_synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/v02_review_synthesizer; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-17-45-019fef78-4838-7c31-afd4-374b464d698f.jsonl; rollout_sha256=a8bb2b1a96b600b4b120172a2d1e5e4f81506d5f581a0f381de5ce32b6bf5d90; encrypted_payload_sha256=e8764e86394adc4f2972383a8e2cbecf335e2fe4c93ccde59a0e1fa3c2d34ce5]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_v02_review_verifier",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/v02_review_verifier; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-24-11-019fef7e-2a71-79d3-93f1-34aaad2db9b8.jsonl; rollout_sha256=b51b6122a6fc4d968ae4e40dbd2e8c3976c850b03bc2301d3aeb46791722be05; encrypted_payload_sha256=778e76075209606e9479246d7a783bdf9d842fa08804335ca3ee527c5e21ea07]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_005_v02_review_coverage_auditor",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/v02_review_coverage_auditor; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-33-08-019fef86-5c7c-7233-8711-712cc2e20b62.jsonl; rollout_sha256=0e19e3f568835b896f698e2b657b9ee1ffe569b75450643395fab43523562b43; encrypted_payload_sha256=b9c80df03677e357ea46b1ea37c218a963c46ffe466beb869d972b25a79cfb9c]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_006_v02_review_final_approver",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/v02_review_final_approver; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T03-35-58-019fef88-f525-7c30-9888-b0751dddeb5a.jsonl; rollout_sha256=40881af3c26b57443a8223dd938ce169297c2151ca91785d87c8dd640312af33; encrypted_payload_sha256=e9332507290d89544d55288057a6e2fcbc5f38e88cd6d53ddbdff48c0343c99b]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_v02_review_fidelity",
+      "to": "observed_002_v02_review_mechanics",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_v02_review_mechanics",
+      "to": "observed_003_v02_review_synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_v02_review_synthesizer",
+      "to": "observed_004_v02_review_verifier",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_004_v02_review_verifier",
+      "to": "observed_005_v02_review_coverage_auditor",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_005_v02_review_coverage_auditor",
+      "to": "observed_006_v02_review_final_approver",
+      "type": "sequential"
+    }
+  ],
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled"
+}

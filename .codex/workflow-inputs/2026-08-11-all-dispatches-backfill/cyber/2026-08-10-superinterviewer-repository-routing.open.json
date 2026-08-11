@@ -1,0 +1,63 @@
+{
+  "dispatch_id": "2026-08-10-superinterviewer-repository-routing",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-superinterviewer-repository-routing.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_game_framing_architect",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/game_framing_architect; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-07-21-019fee5c-1af4-7e22-b1a6-07cdee8989c0.jsonl; rollout_sha256=1bd0f850177bf4d01a303a8dcdc0bf2f5f19a28a8c2a34ca894a6f5d6a7c268d; encrypted_payload_sha256=af70f633466093bf6fc6cdd60fe422241ca543580efa6110f6a9902cba286b97]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_repo_artifact_architect",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/repo_artifact_architect; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-07-30-019fee5c-3de8-7fc1-9049-346f0d92ddc3.jsonl; rollout_sha256=224c02dfacd79200e44d0f96acf553025460775907d7abc059518b8dfc8a3b70; encrypted_payload_sha256=c6ce297f1c0fef78ab827c55ecadaed424dbd4cd05143dd3acf985574737fe06]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_dispatch_skill_router",
+      "n": 1,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/dispatch_skill_router; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-07-38-019fee5c-5e36-7941-ac46-c1516bdbf989.jsonl; rollout_sha256=a3a8f9ad98f78ba0e5a851c76655f18e2b30acca72f21c3bd52aa065c9634390; encrypted_payload_sha256=fc55b1188a3e15a2300b77e1c1a751dc6ecc919bf8afa8227168ff80a385801e]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_game_framing_architect",
+      "to": "observed_002_repo_artifact_architect",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_repo_artifact_architect",
+      "to": "observed_003_dispatch_skill_router",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

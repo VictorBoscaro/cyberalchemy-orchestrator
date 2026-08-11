@@ -1,0 +1,46 @@
+{
+  "dispatch_id": "2026-08-09-permguard-pep-integration-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-09-permguard-pep-integration-review.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_review_pep_mechanics",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_pep_mechanics; source_rollout=C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-53-52-019fe84d-ab77-7de1-8bf4-62f497528203.jsonl; rollout_sha256=60b38485b616e9cc0bd10849d05940bf79d338ab4ed0ffa425a329ce489e7af7; encrypted_payload_sha256=2c09941f73251ed98a1f2e3570b5faf84131c101bd92e918690e9de4c8c570ea]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_review_pep_governance",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/review_pep_governance; source_rollout=C:/Users/victo/.codex/sessions/2026/08/09/rollout-2026-08-09T17-54-01-019fe84d-ceec-7920-9cc4-7afaea891932.jsonl; rollout_sha256=c0d9cb32882a66b3a37fe9c2aa02367da26567fd1c9d6a85eceae868d3f14567; encrypted_payload_sha256=6d2c950930ab428c2187cc4a63ce64247e0fec19ff9f00a2c4cf7c3a8410cbee]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_review_pep_mechanics",
+      "to": "observed_002_review_pep_governance",
+      "type": "sequential"
+    }
+  ],
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled"
+}

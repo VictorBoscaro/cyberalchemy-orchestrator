@@ -1,0 +1,63 @@
+{
+  "dispatch_id": "2026-08-10-superinterviewer-bootstrap-program",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-10-superinterviewer-bootstrap-program.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_si_research_program_planner",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/si_research_program_planner; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-13-04-019fee2a-6918-7011-ba02-ea8ce6ab3997.jsonl; rollout_sha256=3fb647b24878d0e4bf59e2491df38feda5572ae5f25f4370b447445ee37ad001; encrypted_payload_sha256=c12aefe37a6dd4b799a3a46933c9b63444f73ea9366c4dcbe5f00e3624168261]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_si_bootstrap_planner",
+      "n": 1,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/si_bootstrap_planner; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-13-11-019fee2a-8453-75c2-a5f7-9a0fb9b42ee7.jsonl; rollout_sha256=b8f26cbc3e90b2c16690f516585330ef63ee870afeae5b61a2f9e1d846343cc1; encrypted_payload_sha256=665f2523e370d2614dd44831b5ad119551c45c75ae6551fa1178583b46758645]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_si_plan_adversary",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/si_plan_adversary; source_rollout=C:/Users/victo/.codex/sessions/2026/08/10/rollout-2026-08-10T21-13-20-019fee2a-a519-77e3-a4ef-d5851f81404d.jsonl; rollout_sha256=7b89955dffe2d9538fae8871020787d871ae6f68e1925d38b8c13106eecf71d6; encrypted_payload_sha256=32afd5113b03103dfbf7eedfd7feb90b0817bc4dedb125383a12d5e75fe3c309]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_si_research_program_planner",
+      "to": "observed_002_si_bootstrap_planner",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_si_bootstrap_planner",
+      "to": "observed_003_si_plan_adversary",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

@@ -1,0 +1,19 @@
+{
+  "close_of": "2026-08-09-multi-repository-commit-sweep",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 25,
+    "tree": {
+      "explorer": 25,
+      "synthesizer": 0,
+      "skeptic": 0,
+      "writer": 0,
+      "auditor": 0,
+      "planner": 0,
+      "coder": 0,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": []
+}

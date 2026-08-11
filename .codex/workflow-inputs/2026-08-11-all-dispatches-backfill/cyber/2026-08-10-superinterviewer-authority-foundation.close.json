@@ -1,0 +1,19 @@
+{
+  "close_of": "2026-08-10-superinterviewer-authority-foundation",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 6,
+    "tree": {
+      "explorer": 5,
+      "synthesizer": 0,
+      "skeptic": 0,
+      "writer": 0,
+      "auditor": 0,
+      "planner": 0,
+      "coder": 1,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": []
+}

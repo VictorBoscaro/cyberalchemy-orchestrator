@@ -1,0 +1,45 @@
+{
+  "dispatch_id": "2026-08-11-minimalism-composition-spec-v3",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-minimalism-composition-spec-v3.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_spec_finalizer_v3",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/spec_finalizer_v3; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-30-59-019fef4d-75d5-7dd2-b46d-53038420de8e.jsonl; rollout_sha256=b66feb04f30ca28f59a5ef688980b2d7ba6f05cb44072ff5951ba9ebfc648aa0; encrypted_payload_sha256=c87477a7cdb04b4494721af398ba629907ec737bd282c4adead6b9b26faa9af5]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_spec_validator_v3",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/spec_validator_v3; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T02-34-01-019fef50-3b11-7913-8cd5-3409b3c3dafb.jsonl; rollout_sha256=a4bae30a74f4e113a0e3c3a6ba9c1bf27540e798f42b3c9c64f14dfc8316c145; encrypted_payload_sha256=cf161981ca79113d5cb78372c7195bd7f2e37b76b038b42bfb320c3653721a19]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_spec_finalizer_v3",
+      "to": "observed_002_spec_validator_v3",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}

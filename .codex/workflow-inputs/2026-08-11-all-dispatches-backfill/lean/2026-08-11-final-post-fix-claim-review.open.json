@@ -1,0 +1,81 @@
+{
+  "dispatch_id": "2026-08-11-final-post-fix-claim-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Retrospectively record the observed direct subagent work for 2026-08-11-final-post-fix-claim-review.",
+  "context": "Retrospective standalone compatibility record for a direct, unbound subagent execution; no governed ACI binding or seat receipt is claimed. The 4000 token_budget on every seat is a compatibility envelope value, not observed execution budget. Each initial_prompt field is an explicit unavailable marker carrying the observed agent path plus source-rollout and encrypted-payload hashes; it is not represented as the original prompt. Agent roles are compatibility classifications inferred from observed task names, and sequential connections encode observed launch order only; neither claims a governed dependency or binding.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "groups": [
+    {
+      "group_id": "observed_001_final_claim_attacker_math",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/final_claim_attacker_math; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-25-10-019fefb6-010b-7672-be08-d058421059cb.jsonl; rollout_sha256=ef71874f15e86abd663c046963f595e78ae72db7af601bdaf2e90e751f50b158; encrypted_payload_sha256=8a240341db4d67ae582c2009c999a935479c65fa40f1c35a1adea480c72fb978]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_002_final_claim_attacker_narrative",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/final_claim_attacker_narrative; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-25-17-019fefb6-1b7f-7642-9340-64821569badd.jsonl; rollout_sha256=f11a31414a4aca1ebdef4353f80fbce403f86bdb1f90f345958ff8d7824cabd0; encrypted_payload_sha256=1318f63e19fe16a21bce68114ef6ba3f80906771c706cdb0485214ea35c334d9]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_003_final_claim_verifier",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/final_claim_verifier; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-31-36-019fefbb-e470-79e2-bbca-12541d41e999.jsonl; rollout_sha256=06f7b6629b635803c46cc7cd690dae548b68baeaab7965fa504f1491fa275758; encrypted_payload_sha256=1baa00b5b3dd7078a716c18d170d308a7aa4e197cfb678b19db302dd8a8987be]",
+          "agent_name": null
+        }
+      ]
+    },
+    {
+      "group_id": "observed_004_observation_budget_doc_fix",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "[retrospective compatibility record: original initial_prompt unavailable because source rollout payload is encrypted; agent_path=/root/observation_budget_doc_fix; source_rollout=C:/Users/victo/.codex/sessions/2026/08/11/rollout-2026-08-11T04-35-55-019fefbf-da0c-7cc1-8a4e-fd5eaf47e359.jsonl; rollout_sha256=3622fa8cf5ae7724218dd49efbf9f83e8e4845495912d9091ea5d59d5f1e50a0; encrypted_payload_sha256=7d22d9c448b96119e2c95afc71fda9f77f874391d0ff9e93e7bc9592144829c9]",
+          "agent_name": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "observed_001_final_claim_attacker_math",
+      "to": "observed_002_final_claim_attacker_narrative",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_002_final_claim_attacker_narrative",
+      "to": "observed_003_final_claim_verifier",
+      "type": "sequential"
+    },
+    {
+      "from": "observed_003_final_claim_verifier",
+      "to": "observed_004_observation_budget_doc_fix",
+      "type": "sequential"
+    }
+  ],
+  "anti_bias_mode": "disabled"
+}
