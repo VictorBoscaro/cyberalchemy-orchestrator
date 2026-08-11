@@ -41,6 +41,14 @@ not-on-a-zig-zag/feedback-endpoint corollary.
 
 ### Top level
 
+`anti_bias_mode` is required and must be `enabled` or `disabled`. With `enabled`,
+every group containing at least two agents must declare a non-empty `anti_bias`,
+every agent in that group must declare a distinct non-empty `angle`, and
+`anti_bias_pairs` must cover every unordered pair of agent indices exactly once.
+`anti_bias_global` is additionally required when at least two groups each contain
+at least two agents. With `disabled`, `anti_bias_global`, every group-level
+`anti_bias`/`anti_bias_pairs`, and every agent-level `angle` are forbidden.
+
 | Field | Required | Meaning / constraint |
 |-------|----------|----------------------|
 | `dispatch_id` | ✅ | Unique id, `YYYY-MM-DD-<slug>` (§5). Dedup key — re-registering the same id is a no-op. |
@@ -62,6 +70,14 @@ not-on-a-zig-zag/feedback-endpoint corollary.
 | `created` | stamped | ISO timestamp **stamped by the appender** — supplying it is rejected (removed by v0.5.2). |
 
 ### Each object in `groups`
+
+For an enabled fan-out group, `anti_bias_pairs` contains exactly `n*(n-1)/2`
+objects. Each object has exactly `left_index`, `right_index`, `question`,
+`left_position`, `right_position`, and `evidence`. Indices must satisfy
+`0 <= left_index < right_index < agents.length`; positions must equal the
+corresponding agents' `angle`; `question`, both positions, and `evidence` must be
+non-empty strings. Duplicate or missing pairs are rejected. These conditional
+fields are forbidden on singleton groups.
 
 | Key | Required | Meaning / constraint |
 |-----|----------|----------------------|
