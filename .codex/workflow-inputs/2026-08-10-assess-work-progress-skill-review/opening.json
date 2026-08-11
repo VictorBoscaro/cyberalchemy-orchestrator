@@ -1,0 +1,88 @@
+{
+  "dispatch_id": "2026-08-10-assess-work-progress-skill-review",
+  "schema_version": "0.6.3",
+  "dispatch_type": "review",
+  "goal": "Red-team the assess-work-progress skill and produce verified change requests for any material problems.",
+  "context": "The skill assesses a bounded body of work and reports what was done, supported conclusions, implications, review need, and prioritized next steps. Review both SKILL.md and agents/openai.yaml as one frozen corpus. Check that the skill is distinct from conversation-context and yesterday, operational for a fresh agent, and disciplined about evidence and review recommendations.",
+  "max_loops": 2,
+  "final_approver": "Hoare, C. A. R.",
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Deming, W. Edwards",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3200,
+          "initial_prompt": "Read the complete frozen assess-work-progress skill corpus. Attack it from the operability lens: determine whether a fresh Codex instance can identify evidence, distinguish work from conclusions and implications, decide review need consistently, and produce useful high-level next steps without inventing missing context. Return only artifact-grounded candidate findings with exact quotations, severity, and proposed fix. Do not modify the targets."
+        },
+        {
+          "agent_name": "Lamport, Leslie",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3200,
+          "initial_prompt": "Read the complete frozen assess-work-progress skill corpus. Attack it from the fidelity and correctness lens: check trigger overlap with neighboring skills, internal consistency, status and evidence semantics, review-decision rules, output contract, and metadata alignment. Return only artifact-grounded candidate findings with exact quotations, severity, and proposed fix. Do not modify the targets."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "agents": [
+        {
+          "agent_name": "Fowler, Martin",
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "initial_prompt": "Synthesize the independent attacks into one inline review.md. Deduplicate findings, preserve exact artifact quotations, apply the review severity taxonomy, and drop unsupported claims. Do not modify the targets."
+        }
+      ]
+    },
+    {
+      "group_id": "verifiers",
+      "agents": [
+        {
+          "agent_name": "Dijkstra, Edsger W.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "initial_prompt": "Verify every proposed finding against the complete frozen target corpus. Refute false positives rather than softening them, confirm severity, and require an exact artifact quotation and actionable fix for every surviving finding."
+        }
+      ]
+    },
+    {
+      "group_id": "coverage",
+      "agents": [
+        {
+          "agent_name": "Parnas, David",
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1800,
+          "initial_prompt": "Audit whether both frozen target files were attacked under both declared lenses, whether refuted findings were removed, and whether zero-finding returns contain a real defence. Author the Coverage section of the inline review.md."
+        }
+      ]
+    },
+    {
+      "group_id": "approval",
+      "agents": [
+        {
+          "agent_name": "Hoare, C. A. R.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1200,
+          "initial_prompt": "Act only as final approver. Accept the inline review.md only if every surviving finding quotes the frozen artifact, every refuted finding was dropped, coverage is complete, and verdicts follow the review contract."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "attackers", "to": "synthesizer", "type": "sequential"},
+    {"from": "synthesizer", "to": "verifiers", "type": "zig-zag", "loop_cap": 2},
+    {"from": "verifiers", "to": "coverage", "type": "sequential"},
+    {"from": "coverage", "to": "approval", "type": "sequential"}
+  ]
+}
