@@ -5,8 +5,8 @@ is_session: false
 layer: [architecture, ontology]
 nature: reference
 status: active
-version: 0.2.0
-last_updated: 2026-08-12
+version: 0.2.1
+last_updated: 2026-08-13
 owning_plan: plans/governed-agent-work-infrastructure/PLAN.md
 authority: proposal-only
 ---
@@ -15,9 +15,9 @@ authority: proposal-only
 
 ## 1. What is this?
 
-This directory contains a concise overview and the long-form system views for this Plan. They
-explain the shape and stakes of the proposed system to a reader who does not yet have its
-vocabulary. They argue for a design; they do not ratify one.
+This directory contains a concise overview, focused concept essays and the long-form system views
+for this Plan. They explain the shape and stakes of the proposed system to a reader who does not
+yet have its vocabulary. They argue for a design; they do not ratify one.
 
 ## 2. Business Context
 
@@ -52,6 +52,10 @@ its length is a deliberate outcome rather than an unfinished edit.
   "A System for Organizing Work" — the concise entry point for a
   non-specialist reader. It explains the Work–Knowledge loop, the role of agents, the initial
   software focus, and what remains proposed rather than built.
+- **[ephemeral-agent-work-infrastructure.md](ephemeral-agent-work-infrastructure.md)**:
+  a focused explanation of the proposal to provision temporary operational environments for
+  bounded agent work while preserving authorization, history, evidence, provenance and accepted
+  knowledge.
 - **`agent-language-system-view/`**: "A Composable Language for Governed Agent Work" — the
   high-level system view. `node_type: system-view`, `status: draft`, v0.8.1,
   `authority: proposal-only`, `root_plan: plans/governed-agent-work-infrastructure/PLAN.md`.
