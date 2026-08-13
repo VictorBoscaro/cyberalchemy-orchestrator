@@ -12,6 +12,10 @@ from unittest.mock import MagicMock, patch
 
 from implementations.server.runtime.canonical import canonical_digest
 from implementations.server.runtime.errors import GateBlockedError
+from implementations.server.runtime.dispatch_types import (
+    load_dispatch_type_registry,
+    resolve_dispatch_capability,
+)
 from implementations.server.runtime.dispatch_workflow import compile_bound_launch_plan
 from implementations.server.runtime.host_dispatch_hook import HostDispatchHook, run
 
@@ -164,10 +168,17 @@ class HostDispatchHookTests(unittest.TestCase):
         hook = self.hook("codex")
         dispatch_id = "2026-08-03-integrated-bound-review"
         prompt = "Review the integrated governed dispatch path."
+        registry = load_dispatch_type_registry(self.root)
+        route = resolve_dispatch_capability(
+            self.root,
+            capability_ref="review",
+            authority_mode="legacy-managed",
+        )
         opening = {
             "dispatch_id": dispatch_id,
-            "schema_version": "0.6.3",
+            "schema_version": registry["ledger_schema_version"],
             "dispatch_type": "review",
+            "capability_route": route,
             "goal": "Prove one parent-bound host dispatch.",
             "context": "The compiled launch must bind one reviewer to one parent row.",
             "max_loops": 1,
@@ -235,6 +246,7 @@ class HostDispatchHookTests(unittest.TestCase):
                 "tree": {"auditor": 1, "helpers": 0},
                 "loops_used": 1,
             },
+            "capability_route_digest": route["route_digest"],
         }
         closed = hook.close_parent_dispatch(
             record=closing,

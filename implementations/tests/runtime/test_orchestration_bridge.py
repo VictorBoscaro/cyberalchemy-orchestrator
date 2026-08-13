@@ -12,6 +12,7 @@ from unittest.mock import patch
 from implementations.server.runtime.canonical import canonical_digest
 from implementations.server.runtime.cli import run as runtime_run
 from implementations.server.runtime.errors import AuthorizationError, GateBlockedError
+from implementations.server.runtime.dispatch_types import resolve_dispatch_capability
 from implementations.server.runtime.orchestration_bridge import (
     LocalOrchestrationLoggingBridge,
     run as bridge_run,
@@ -29,6 +30,17 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
         self._stage_dispatch_type_registry(self.project)
+        registry = json.loads(
+            (
+                self.project
+                / "implementations/contracts/dispatch-type-registry.v1.json"
+            ).read_text(encoding="utf-8")
+        )
+        review_route = resolve_dispatch_capability(
+            self.project,
+            capability_ref="review",
+            authority_mode="legacy-managed",
+        )
         self.ledger = self.project / "telemetry/agents/subagents-dispatch.yaml"
         self.database = self.project / "telemetry/runtime/bridge.sqlite3"
         self.runtime = RuntimeService(
@@ -46,8 +58,9 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         )
         self.opening = {
             "dispatch_id": "2026-07-24-bridge-review",
-            "schema_version": "0.6.3",
+            "schema_version": registry["ledger_schema_version"],
             "dispatch_type": "review",
+            "capability_route": review_route,
             "goal": "Review the local orchestration logging bridge.",
             "context": (
                 "The bridge must append through the validated appender and accept "
@@ -81,13 +94,14 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
                 "tree": {"auditor": 1, "helpers": 0},
                 "loops_used": 1,
             },
+            "capability_route_digest": review_route["route_digest"],
         }
 
     @staticmethod
     def _stage_dispatch_type_registry(root: Path) -> None:
         registry_relative = "implementations/contracts/dispatch-type-registry.v1.json"
         registry = json.loads((REPO / registry_relative).read_text(encoding="utf-8"))
-        paths = [registry_relative]
+        paths = [registry_relative, ".claude/skills/register-dispatch/SKILL.md"]
         paths.extend(
             entry["capability_path"]
             for entry in registry["types"]
@@ -339,6 +353,11 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
 
     def code_record(self, *, readiness_status: str = "PASS") -> dict:
         record = {**self.opening, "dispatch_type": "code"}
+        record["capability_route"] = resolve_dispatch_capability(
+            self.project,
+            capability_ref="domainspec-implement",
+            authority_mode="legacy-managed",
+        )
         record.pop("output_mode")
         pinned = [
             ".claude/skills/domainspec-implement/SKILL.md",
@@ -454,11 +473,16 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         self.assertEqual(opened["dispatch_id"], record["dispatch_id"])
         self.assertTrue(self.ledger.exists())
 
-    def test_others_dispatch_type_is_live(self) -> None:
+    def test_canonical_other_dispatch_type_is_live(self) -> None:
         record = {
             **self.opening,
             "dispatch_id": "2026-07-25-bridge-document-authoring",
-            "dispatch_type": "others",
+            "dispatch_type": "other",
+            "capability_route": resolve_dispatch_capability(
+                self.project,
+                capability_ref="register-dispatch",
+                authority_mode="legacy-managed",
+            ),
         }
         record.pop("output_mode")
         opened = self.bridge.open_dispatch(
@@ -474,6 +498,12 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         )
         self.assertEqual(opened["status"], "launch-authorized")
         self.assertEqual(opened["dispatch_id"], record["dispatch_id"])
+        self.assertEqual(
+            record["capability_route"]["ledger_dispatch_type"], "other"
+        )
+        self.assertEqual(
+            record["capability_route"]["capability_ref"], "register-dispatch"
+        )
         self.assertTrue(self.ledger.exists())
 
     def test_reserved_dispatch_type_fails_before_yaml_or_dispatch_acceptance(self) -> None:

@@ -1,6 +1,15 @@
 {
   "schema": "aci-dispatch-type-registry/v1",
-  "ledger_schema_version": "0.6.3",
+  "ledger_schema_version": "0.6.4",
+  "generic_fallback": {
+    "id": "other",
+    "status": "live",
+    "ledger_value": "other",
+    "api_aliases": ["others"],
+    "capability_roots": [".claude/skills"],
+    "authority_modes": ["legacy-managed"],
+    "tool_profile_ref": "host/inherited@1"
+  },
   "types": [
     {
       "id": "research",
@@ -31,16 +40,6 @@
       "authority_modes": ["legacy-managed"],
       "tool_profile_ref": "host/inherited@1",
       "ledger_value": "review"
-    },
-    {
-      "id": "others",
-      "status": "live",
-      "routable": false,
-      "capability_ref": null,
-      "capability_path": null,
-      "authority_modes": ["legacy-managed"],
-      "tool_profile_ref": "host/inherited@1",
-      "ledger_value": "others"
     },
     {
       "id": "plan",

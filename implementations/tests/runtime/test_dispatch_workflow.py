@@ -38,10 +38,16 @@ class DispatchWorkflowTests(unittest.TestCase):
             destination = self.project / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(REPO / relative, destination)
+        route = resolve_dispatch_capability(
+            self.project,
+            capability_ref="review",
+            authority_mode="legacy-managed",
+        )
         self.record = {
             "dispatch_id": "2026-08-03-workflow-review",
-            "schema_version": "0.6.3",
+            "schema_version": registry["ledger_schema_version"],
             "dispatch_type": "review",
+            "capability_route": route,
             "goal": "Review the dispatch workflow.",
             "context": "One bound reviewer checks the compiled workflow.",
             "max_loops": 1,
@@ -89,6 +95,7 @@ class DispatchWorkflowTests(unittest.TestCase):
             capability_ref="review",
             output_dir=Path(".codex/workflow-inputs/workflow-review"),
         )
+        self.assertEqual(compiled["route"], self.record["capability_route"])
         self.assertEqual(len(compiled["launches"]), 1)
         launch = compiled["launches"][0]
         message = launch["spawn_arguments"]["message"]
@@ -107,24 +114,23 @@ class DispatchWorkflowTests(unittest.TestCase):
             digest_bytes(manifest_path.read_bytes()),
         )
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            manifest["route_digest"],
+            self.record["capability_route"]["route_digest"],
+        )
         self.assertEqual(manifest["target"]["seat_index"], 0)
         self.assertEqual(manifest["slots"], [])
 
     def test_compile_rejects_capability_type_mismatch(self) -> None:
-        mismatched = {
-            key: value
-            for key, value in {**self.record, "dispatch_type": "others"}.items()
-            if key != "output_mode"
-        }
-        with self.assertRaisesRegex(ValidationError, "type differs"):
+        with self.assertRaisesRegex(ValidationError, "capability route differs"):
             compile_bound_launch_plan(
                 repo_root=self.project,
-                record=mismatched,
-                capability_ref="review",
+                record=self.record,
+                capability_ref="research",
                 output_dir=Path("workflow"),
             )
 
-    def test_compile_rejects_connected_topology_before_writing(self) -> None:
+    def test_compile_rejects_connected_topology_without_route_receipt(self) -> None:
         connected = {
             **self.record,
             "groups": [
@@ -152,7 +158,7 @@ class DispatchWorkflowTests(unittest.TestCase):
         output = Path("workflow-connected")
         with self.assertRaisesRegex(
             GateBlockedError,
-            "does not materialize connection handoffs",
+            "sequential receipt.*unavailable",
         ):
             compile_bound_launch_plan(
                 repo_root=self.project,
@@ -160,7 +166,7 @@ class DispatchWorkflowTests(unittest.TestCase):
                 capability_ref="review",
                 output_dir=output,
             )
-        self.assertFalse((self.project / output).exists())
+        self.assertEqual(list((self.project / output).glob("*.json")), [])
 
     def test_compile_rejects_invalid_opening_before_writing(self) -> None:
         invalid_records = [

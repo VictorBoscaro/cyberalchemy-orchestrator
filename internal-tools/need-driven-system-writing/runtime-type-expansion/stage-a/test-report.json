@@ -1,0 +1,169 @@
+{
+  "schema": "runtime-type-expansion-stage-a-test-report/v1",
+  "contract_id": "2026-08-13-runtime-type-expansion-bootstrap-a",
+  "contract_sha256": "0F5F0B55380D12367050982EE72D8E871099F5A6A29CFFA2DDC12FF624563EBF",
+  "role_id": "a_test_implementer",
+  "authority_kind": "explicit-user-authorized-direct-subagent",
+  "aci_bound": false,
+  "recorded_at_utc": "2026-08-13T16:31:30.0328267Z",
+  "pre_resume_hash_verification": {
+    "result": "PASS",
+    "files": {
+      "implementations/tests/runtime/test_runtime_type_bootstrap.py": "sha256:321b2c257742d4dd01d6551009240dd004f9a7e589795c0e7fbd5c08e969252b",
+      "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": "sha256:f67e7ed3528a8d47f258e46d29ddd7d38d28c969273d25788ce0f6a9bd4bdd42"
+    },
+    "statement": "Both exclusive test hashes matched the a_test_implementer's prior terminal bytes before the resumed amendments."
+  },
+  "exclusive_test_changes": [
+    "Added a direct automatic host-opening assertion for registry-derived schema/capability route and preservation of role, model, prompt, anti-bias, compatibility dispatch type, and output mode.",
+    "Added direct orchestration-service manifest acceptance at the exact immutable route digest and rejection for missing, malformed, stale, and cross-route digests.",
+    "Added the explicit legacy opening boundary: 0.6.1 through 0.6.4 accepted; missing, malformed, 0.6.5, 1.0.0, and arbitrary unknown versions rejected before lifecycle use."
+  ],
+  "final_exclusive_test_hashes": {
+    "implementations/tests/runtime/test_runtime_type_bootstrap.py": "sha256:ef6f1c5f910939f7be84f43e8efed8da754ce04d59d442103688248b2a55dc52",
+    "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": "sha256:a5bc1cc8e2a41790d60983ef52ccbf4938eb5ee11c500b274c7dce081bbe9748"
+  },
+  "commands": [
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap -v",
+      "exit_code": 0,
+      "duration_ms": 2178,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "955820d6deb5874cbd88c8a853ba429bad0de501cd5a4ed4eaa5c92f4c7afcec",
+      "stdout_bytes": 0,
+      "stderr_bytes": 2254,
+      "cases": "10 positive schema, route, historical aggregation, code readiness/topology, appender/open/close, compiler/binding, sequential handoff, host synthesis, and service route-digest cases",
+      "result": "PASS"
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap_abuse -v",
+      "exit_code": 0,
+      "duration_ms": 2378,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "79b56675a9f12be24439eb714ae1b849c0148c7f820113cf1d1474faae87ac10",
+      "stdout_bytes": 0,
+      "stderr_bytes": 2005,
+      "cases": "8 fail-closed identity, authority, route forgery/swap, handoff tamper, unsupported edge, code fallback/readiness/topology, registry tamper, legacy versions, and service route-digest cases",
+      "result": "PASS"
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_dispatch_workflow -v",
+      "exit_code": 0,
+      "duration_ms": 1910,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e6a6905294c36dd3dc75de0586221d2e74797cac9c4b1978554a7535b91e256d",
+      "stdout_bytes": 0,
+      "stderr_bytes": 1215,
+      "cases": "6 workflow resolver/compiler/current-schema/route-digest/topology cases",
+      "result": "PASS"
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+      "exit_code": 1,
+      "duration_ms": 12542,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c6d149bf2c389af809b65d3d27617fd92177116b83cd519d52dfc5c927ad4177",
+      "stdout_bytes": 0,
+      "stderr_bytes": 6229,
+      "cases": "18 bridge/appender/open/close/code/current-other/CLI cases; 16 passed, one error and one dependent assertion failure",
+      "result": "BLOCK",
+      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch; the dependent missing-token assertion is reached only after integrity preflight."
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_host_dispatch_hook -v",
+      "exit_code": 1,
+      "duration_ms": 7563,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "6b4469e1178c85c1d267f0484d441720937586d6f98c43ce3e19a8f001816624",
+      "stdout_bytes": 0,
+      "stderr_bytes": 15202,
+      "cases": "11 host binding/open/close/role/lifecycle/configuration cases; 4 passed and 7 integrity-gated cases errored",
+      "result": "BLOCK",
+      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch."
+    },
+    {
+      "command": "python implementations/tests/test_ledger.py",
+      "exit_code": 0,
+      "duration_ms": 2017,
+      "stdout_sha256": "7b5f10f0d75e151c8b1f5d3195ef6ac3b11d0a6a84887f2ce9481cfa62fa539a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 7858,
+      "stderr_bytes": 0,
+      "cases": "Complete ledger parser/join/grandfathering/aggregation/UI-series/cache/real-repository contract",
+      "result": "PASS"
+    },
+    {
+      "command": "python -c \"from pathlib import Path; from implementations.server.runtime.local_pilot import _verify_source_manifest; _verify_source_manifest(Path.cwd())\"",
+      "exit_code": 1,
+      "duration_ms": 1089,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a00586b0c97284134e53a0005897813cdb54ce728f3ef45021aa03106fd3209f",
+      "stdout_bytes": 0,
+      "stderr_bytes": 619,
+      "cases": "Repository-local Stage-E source-manifest verification using the pinned local-pilot verifier",
+      "result": "BLOCK",
+      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch."
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_stage_c -v",
+      "exit_code": 1,
+      "duration_ms": 889,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "0323285fb6343e45d5e59b131fd9e590b2671c94a0a75aa503173d4e246b3f51",
+      "stdout_bytes": 0,
+      "stderr_bytes": 4759,
+      "cases": "8 local-pilot opt-in, receipt, loopback, database, source-manifest, and profile-integrity cases; 6 passed and 2 integrity-gated cases errored",
+      "result": "BLOCK",
+      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch."
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_aci_traceability -v",
+      "exit_code": 0,
+      "duration_ms": 401,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "aab3747f2e5c453c6dc1687aa2e5d021fbf153f007b8854cc4f053838cf56a2c",
+      "stdout_bytes": 0,
+      "stderr_bytes": 321,
+      "cases": "ACI traceability manifest references and selectors",
+      "result": "PASS"
+    }
+  ],
+  "supplemental_commands": [
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+      "exit_code": 1,
+      "duration_ms": 4035,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9a12d02dee96acc159644cd76c48c5ad57f6a254297fba2bbb30486c9221ba43",
+      "stdout_bytes": 0,
+      "stderr_bytes": 9475,
+      "cases": "5 broader host-workflow lifecycle cases",
+      "result": "BLOCK",
+      "failure": "All five fixtures still submit schema_version 0.6.3 without capability_route and are rejected by the canonical 0.6.4 appender. This file is outside the resumed a_test_implementer and three-file fixture-migrator write scopes."
+    }
+  ],
+  "integrity_state": {
+    "source_manifest_sha256": "sha256:a2fab83e67b6957d0a5482191d5ff941125f6e3e7825eb042032cad46102e277",
+    "local_pilot_source_manifest_pin": "sha256:a2fab83e67b6957d0a5482191d5ff941125f6e3e7825eb042032cad46102e277",
+    "stale_entries": {
+      "implementations/tests/runtime/test_runtime_type_bootstrap.py": {
+        "manifest": "sha256:321b2c257742d4dd01d6551009240dd004f9a7e589795c0e7fbd5c08e969252b",
+        "actual": "sha256:ef6f1c5f910939f7be84f43e8efed8da754ce04d59d442103688248b2a55dc52"
+      },
+      "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": {
+        "manifest": "sha256:f67e7ed3528a8d47f258e46d29ddd7d38d28c969273d25788ce0f6a9bd4bdd42",
+        "actual": "sha256:a5bc1cc8e2a41790d60983ef52ccbf4938eb5ee11c500b274c7dce081bbe9748"
+      }
+    },
+    "expected_pin_owner_action": "Regenerate the two changed exclusive-test entries in the Stage-E source manifest, then regenerate the local-pilot source-manifest pin because the manifest bytes will change."
+  },
+  "validation_helpers": {
+    "python_compile": "PASS",
+    "git_diff_check_exclusive_tests": "PASS"
+  },
+  "final_result": "BLOCK",
+  "blockers": [
+    "The serialized integrity owner has not regenerated the two exclusive-test source-manifest entries or the consequent local-pilot manifest pin.",
+    "The supplemental host-workflow-binding fixtures remain stale outside this role's authorized write scope."
+  ]
+}

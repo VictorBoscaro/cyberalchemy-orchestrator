@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from implementations.server.runtime.dispatch_types import resolve_dispatch_capability
 from implementations.server.runtime.legacy import StrictLegacySnapshotResolver
 
 
@@ -22,6 +23,14 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
         destination = self.root / REGISTRY
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(REPO / REGISTRY, destination)
+        registry = json.loads(destination.read_text(encoding="utf-8"))
+        for entry in registry["types"]:
+            capability_path = entry.get("capability_path")
+            if capability_path is None:
+                continue
+            capability = self.root / capability_path
+            capability.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(REPO / capability_path, capability)
 
     def tearDown(self) -> None:
         self.temp.cleanup()
@@ -29,8 +38,13 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
     def _record(self, *, mode: str | None) -> dict:
         record = {
             "dispatch_id": "2026-08-03-anti-bias-mode-test",
-            "schema_version": "0.6.3",
+            "schema_version": "0.6.4",
             "dispatch_type": "review",
+            "capability_route": resolve_dispatch_capability(
+                self.root,
+                capability_ref="review",
+                authority_mode="legacy-managed",
+            ),
             "goal": "Verify explicit anti-bias mode enforcement.",
             "context": "Two reviewers exercise the appender boundary.",
             "max_loops": 1,
@@ -91,7 +105,7 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
         ]
         return record
 
-    def test_mode_is_required_in_v063(self) -> None:
+    def test_mode_is_required_in_v064(self) -> None:
         result = self._append(self._record(mode=None))
         self.assertEqual(result.returncode, 2)
         self.assertIn("anti_bias_mode is required", result.stderr)
@@ -174,7 +188,7 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("left_index < right_index", result.stderr)
 
-    def test_reader_preserves_v061_v062_and_accepts_v063(self) -> None:
+    def test_reader_preserves_v061_v062_v063_and_accepts_v064(self) -> None:
         historical = (
             REPO
             / "docs/features/agents-communication-infra/adrs/fixtures/"
@@ -191,7 +205,7 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
             self.root / "telemetry/agents/subagents-dispatch.yaml",
             "2026-08-03-anti-bias-mode-test",
         )
-        self.assertEqual(current.contract_version, "0.6.3")
+        self.assertEqual(current.contract_version, "0.6.4")
 
         historical_062 = (
             REPO

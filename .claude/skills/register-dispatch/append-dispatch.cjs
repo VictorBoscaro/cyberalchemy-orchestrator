@@ -120,16 +120,30 @@ function loadDispatchTypeRegistry(root) {
     ids.add(entry.id);
     ledgerValues.add(entry.ledger_value);
   }
+  const generic = registry.generic_fallback;
+  if (!isObj(generic) || generic.status !== 'live' || !isNonEmptyStr(generic.id) ||
+      !isNonEmptyStr(generic.ledger_value) || !Array.isArray(generic.api_aliases) ||
+      generic.api_aliases.some((v) => !isNonEmptyStr(v)) ||
+      !Array.isArray(generic.capability_roots) || !generic.capability_roots.length ||
+      generic.capability_roots.some((v) => !isNonEmptyStr(v)) ||
+      !Array.isArray(generic.authority_modes) ||
+      generic.authority_modes.some((v) => !['legacy-managed', 'runtime-managed'].includes(v)) ||
+      !isNonEmptyStr(generic.tool_profile_ref) || ids.has(generic.id) ||
+      ledgerValues.has(generic.ledger_value) || generic.api_aliases.includes(generic.ledger_value)) {
+    console.error('canonical generic dispatch fallback is invalid'); process.exit(2);
+  }
   return registry;
 }
 
 // ---------------------------------------------------------------- schema
 const DISPATCH_TYPE_REGISTRY = loadDispatchTypeRegistry(projectDir);
 const SCHEMA_VERSION = DISPATCH_TYPE_REGISTRY.ledger_schema_version;
-const DISPATCH_TYPES = DISPATCH_TYPE_REGISTRY.types.map((entry) => entry.ledger_value);
+const DISPATCH_TYPES = DISPATCH_TYPE_REGISTRY.types.map((entry) => entry.ledger_value)
+  .concat([DISPATCH_TYPE_REGISTRY.generic_fallback.ledger_value]);
 const LIVE_TYPES = new Set(DISPATCH_TYPE_REGISTRY.types
   .filter((entry) => entry.status === 'live')
   .map((entry) => entry.ledger_value));
+LIVE_TYPES.add(DISPATCH_TYPE_REGISTRY.generic_fallback.ledger_value);
 // working_folder is REQUIRED only for the artifact-producing LIVE types. `review`
 // went inline 2026-06-16 (owner decision): its findings are delivered in chat by
 // default, so it requires no working_folder. A review MAY still set one (optional)
@@ -149,12 +163,14 @@ const DISPATCH_KEYS = new Set([
   'meta', 'parent_dispatch_id', 'anti_bias_global', 'working_folder',
   'output_mode',                                                 // optional (review-only, §14)
   'code_contract',                                               // required for code
+  'capability_route',                                            // immutable route binding
   'invoked_by', 'connections',                                   // optional
   'project_dir',                                                 // control key, not emitted
 ]);
 const CLOSE_KEYS = new Set([
   'close_of', 'exit_reason', 'agents_spawned',                   // required
   'feedback_prompts', 'invoked_by',                              // optional
+  'capability_route_digest',                                     // exact opening route
   'project_dir',                                                 // control key, not emitted
 ]);
 // Keys in constitution §7's removed table — rejected with an explicit
@@ -179,6 +195,129 @@ const CODE_CONTRACT_KEYS = new Set([
   'verification_group_id',
 ]);
 const SHA256_RE = /^sha256:[0-9a-f]{64}$/;
+const CAPABILITY_ID_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const CAPABILITY_ROUTE_KEYS = new Set([
+  'schema', 'registry_schema', 'registry_digest', 'dispatch_type_ref',
+  'ledger_dispatch_type', 'capability_ref', 'capability_path',
+  'capability_digest', 'execution_authority_mode', 'tool_profile_ref',
+  'route_digest',
+]);
+
+function stableValue(value) {
+  if (Array.isArray(value)) return value.map(stableValue);
+  if (isObj(value)) {
+    const result = {};
+    for (const key of Object.keys(value).sort()) result[key] = stableValue(value[key]);
+    return result;
+  }
+  return value;
+}
+function canonicalDigest(value) {
+  return 'sha256:' + crypto.createHash('sha256')
+    .update(JSON.stringify(stableValue(value)), 'utf8').digest('hex');
+}
+function fileDigest(file) {
+  return 'sha256:' + crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+}
+
+function validateCapabilityRoute(rec, errs) {
+  const route = rec.capability_route;
+  if (!isObj(route)) {
+    errs.push('capability_route is required and must be an immutable route object');
+    return;
+  }
+  for (const key of Object.keys(route)) if (!CAPABILITY_ROUTE_KEYS.has(key)) errs.push(`capability_route: unknown key "${key}"`);
+  for (const key of CAPABILITY_ROUTE_KEYS) if (!isNonEmptyStr(route[key])) errs.push(`capability_route.${key} is required and must be a non-empty string`);
+  if (route.schema !== 'aci-capability-route/v1') errs.push('capability_route.schema must be "aci-capability-route/v1"');
+  if (route.registry_schema !== DISPATCH_TYPE_REGISTRY.schema) errs.push('capability_route.registry_schema differs from the canonical registry');
+  const registryPath = path.join(projectDir, 'implementations', 'contracts', 'dispatch-type-registry.v1.json');
+  if (route.registry_digest !== fileDigest(registryPath)) errs.push('capability_route.registry_digest differs from the canonical registry bytes');
+  if (!CAPABILITY_ID_RE.test(route.capability_ref || '')) errs.push('capability_route.capability_ref must be an exact installed capability id');
+  if (route.ledger_dispatch_type !== rec.dispatch_type) errs.push('capability_route.ledger_dispatch_type must equal dispatch_type');
+  const body = {...route}; delete body.route_digest;
+  if (route.route_digest !== canonicalDigest(body)) errs.push('capability_route.route_digest is invalid');
+  const specialized = DISPATCH_TYPE_REGISTRY.types.find((entry) => entry.capability_ref === route.capability_ref);
+  if (specialized) {
+    if (route.dispatch_type_ref !== specialized.id || route.ledger_dispatch_type !== specialized.ledger_value ||
+        route.capability_path !== specialized.capability_path || route.tool_profile_ref !== specialized.tool_profile_ref ||
+        !specialized.authority_modes.includes(route.execution_authority_mode)) {
+      errs.push('capability_route does not match the specialized canonical mapping');
+    }
+  } else {
+    const generic = DISPATCH_TYPE_REGISTRY.generic_fallback;
+    if (route.dispatch_type_ref !== generic.id || route.ledger_dispatch_type !== generic.ledger_value ||
+        route.tool_profile_ref !== generic.tool_profile_ref || !generic.authority_modes.includes(route.execution_authority_mode)) {
+      errs.push('capability_route does not match the canonical generic fallback');
+    }
+    const candidates = generic.capability_roots.map((root) => path.resolve(projectDir, root, route.capability_ref, 'SKILL.md'))
+      .filter((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
+    if (candidates.length !== 1) errs.push('capability_route generic capability is not uniquely installed in canonical roots');
+    else {
+      const expected = path.relative(projectDir, candidates[0]).split(path.sep).join('/');
+      if (route.capability_path !== expected) errs.push('capability_route.capability_path does not match the exact installed skill');
+      const match = fs.readFileSync(candidates[0], 'utf8').match(/^name:\s*["']?([^\s"']+)["']?\s*$/m);
+      if (!match || match[1] !== route.capability_ref) errs.push('installed capability name does not match capability_route.capability_ref');
+    }
+  }
+  const capabilityFile = path.resolve(projectDir, route.capability_path || '');
+  if (!fs.existsSync(capabilityFile) || !fs.statSync(capabilityFile).isFile() || route.capability_digest !== fileDigest(capabilityFile)) {
+    errs.push('capability_route.capability_digest differs from the installed capability bytes');
+  }
+}
+
+const HISTORICAL_PRE_ROUTE_SCHEMAS = new Set(['0.6.1', '0.6.2', '0.6.3']);
+
+function resolveOpeningForClose(dispatchId) {
+  const ledger = path.join(projectDir, 'telemetry', 'agents', 'subagents-dispatch.yaml');
+  if (!fs.existsSync(ledger)) return { error: 'referenced opening ledger is absent' };
+  const matches = [];
+  let row = null;
+  let rowInvalid = null;
+  const finish = () => {
+    if (row && row.dispatch_id === dispatchId) matches.push({ row, error: rowInvalid });
+    row = null;
+    rowInvalid = null;
+  };
+  for (const line of fs.readFileSync(ledger, 'utf8').split(/\r?\n/)) {
+    const field = /^(  - |    )([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/.exec(line);
+    if (!field) continue;
+    if (field[1] === '  - ') {
+      finish();
+      if (field[2] !== 'dispatch_id') continue;
+      row = {};
+    }
+    if (!row) continue;
+    if (Object.prototype.hasOwnProperty.call(row, field[2])) {
+      rowInvalid = `referenced opening contains duplicate field ${field[2]}`;
+      continue;
+    }
+    try { row[field[2]] = JSON.parse(field[3]); }
+    catch (_) {
+      rowInvalid = `referenced opening field ${field[2]} is not valid JSON`;
+    }
+  }
+  finish();
+  if (matches.length === 0) return { error: 'referenced opening does not exist' };
+  if (matches.length !== 1) return { error: 'referenced opening is not unique' };
+  if (matches[0].error) return { error: matches[0].error };
+  const opening = matches[0].row;
+  if (!isNonEmptyStr(opening.schema_version)) return { error: 'referenced opening schema_version is missing or malformed' };
+  const route = opening.capability_route;
+  if (HISTORICAL_PRE_ROUTE_SCHEMAS.has(opening.schema_version) && route === undefined) {
+    return { kind: 'historical-pre-route', schemaVersion: opening.schema_version };
+  }
+  if (opening.schema_version !== SCHEMA_VERSION && !HISTORICAL_PRE_ROUTE_SCHEMAS.has(opening.schema_version)) {
+    return { error: `referenced opening schema_version ${J(opening.schema_version)} is unsupported` };
+  }
+  if (!isObj(route) || !SHA256_RE.test(route.route_digest || '')) {
+    return { error: 'referenced opening capability_route is missing or malformed' };
+  }
+  const routeBody = {...route}; delete routeBody.route_digest;
+  if (route.route_digest !== canonicalDigest(routeBody) || route.ledger_dispatch_type !== opening.dispatch_type) {
+    return { error: 'referenced opening capability_route is unverifiable' };
+  }
+  return { kind: 'routed', routeDigest: route.route_digest, schemaVersion: opening.schema_version };
+}
 
 function verifyPinnedRepoFile(projectDir, ref, digest, label, errs) {
   if (!isNonEmptyStr(ref)) {
@@ -261,6 +400,7 @@ function validateDispatch(rec) {
   if (rec.anti_bias_global !== undefined && !isNonEmptyStr(rec.anti_bias_global)) errs.push('anti_bias_global, when present, must be a non-empty string');
   if (rec.invoked_by !== undefined && !isNonEmptyStr(rec.invoked_by)) errs.push('invoked_by, when present, must be a non-empty string (email)');
   if (rec.project_dir !== undefined && !isNonEmptyStr(rec.project_dir)) errs.push('project_dir, when present, must be a non-empty string');
+  validateCapabilityRoute(rec, errs);
 
   if (WORKING_FOLDER_TYPES.has(rec.dispatch_type) && rec.working_folder === undefined) {
     errs.push(`working_folder is required when dispatch_type is "${rec.dispatch_type}" (§5)`);
@@ -521,6 +661,19 @@ function validateClose(rec) {
   }
   if (rec.invoked_by !== undefined && !isNonEmptyStr(rec.invoked_by)) errs.push('invoked_by, when present, must be a non-empty string (email)');
   if (rec.project_dir !== undefined && !isNonEmptyStr(rec.project_dir)) errs.push('project_dir, when present, must be a non-empty string');
+  if (rec.capability_route_digest !== undefined && !SHA256_RE.test(rec.capability_route_digest)) {
+    errs.push('capability_route_digest, when present, must be a lowercase sha256:<64-hex> digest');
+  }
+  if (isNonEmptyStr(rec.close_of)) {
+    const opening = resolveOpeningForClose(rec.close_of);
+    if (opening.error) {
+      errs.push(opening.error);
+    } else if (opening.kind === 'routed' && rec.capability_route_digest !== opening.routeDigest) {
+      errs.push('capability_route_digest is required and must match the immutable opening route');
+    } else if (opening.kind === 'historical-pre-route' && rec.capability_route_digest !== undefined) {
+      errs.push('capability_route_digest cannot be verified for a historical pre-route opening and must be omitted');
+    }
+  }
   return errs;
 }
 
@@ -641,7 +794,8 @@ if (isClose) {
     process.exit(0);
   }
   if (!dispatchIds.has(rec.close_of)) {
-    console.log('warning: no dispatch row found for', rec.close_of, '— appending close row anyway.');
+    console.error('refusing orphan close: no dispatch row found for', rec.close_of);
+    process.exit(2);
   }
   const lines = [
     '  - close_of: ' + J(rec.close_of),
@@ -651,6 +805,7 @@ if (isClose) {
     '    agents_spawned: ' + J(rec.agents_spawned),
   ];
   if (rec.feedback_prompts !== undefined) lines.push('    feedback_prompts: ' + J(rec.feedback_prompts));
+  if (rec.capability_route_digest !== undefined) lines.push('    capability_route_digest: ' + J(rec.capability_route_digest));
   fs.appendFileSync(file, NL + lines.join('\n') + '\n');
   console.log('closed dispatch', rec.close_of, '->', file);
   process.exit(0);
@@ -680,6 +835,7 @@ if (rec.anti_bias_global != null)     lines.push('    anti_bias_global: ' + J(re
 if (rec.working_folder != null)       lines.push('    working_folder: ' + J(rec.working_folder));
 if (rec.output_mode != null)          lines.push('    output_mode: ' + J(rec.output_mode));
 if (rec.code_contract != null)        lines.push('    code_contract: ' + J(rec.code_contract));
+lines.push('    capability_route: ' + J(rec.capability_route));
 lines.push('    groups: ' + J(rec.groups));
 if (rec.connections !== undefined)    lines.push('    connections: ' + J(rec.connections));
 

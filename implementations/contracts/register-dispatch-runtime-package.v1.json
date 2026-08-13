@@ -1,9 +1,9 @@
 {
   "schema": "register-dispatch-runtime-package/v1",
   "canonical_source": "cyberalchemy-orchestrator",
-  "package_version": "0.6.3",
+  "package_version": "0.6.4",
   "registry_schema": "aci-dispatch-type-registry/v1",
-  "ledger_schema_version": "0.6.3",
+  "ledger_schema_version": "0.6.4",
   "files": [
     {
       "path": ".claude/skills/register-dispatch/SKILL.md",
@@ -11,7 +11,7 @@
     },
     {
       "path": ".claude/skills/register-dispatch/append-dispatch.cjs",
-      "sha256": "930B9DE8EA3AAFA597E9A325D47BAFA794F6F37E665BB38E63E775CCC3503372"
+      "sha256": "4BA0607107BCA00ED88977284E51B59D400820F9A686F9C7D61193D13E57AE04"
     },
     {
       "path": ".claude/skills/register-dispatch/agents/openai.yaml",
@@ -19,7 +19,7 @@
     },
     {
       "path": "implementations/contracts/dispatch-type-registry.v1.json",
-      "sha256": "FBDA655B9904F67845E42F28D851193037D1B6EC4D6CEFC5F1133B7695267C95"
+      "sha256": "F79876A6D63DCC33DA9D9E2468432AB6049A825DD73F8DA17A56095EC472B9DE"
     }
   ]
 }

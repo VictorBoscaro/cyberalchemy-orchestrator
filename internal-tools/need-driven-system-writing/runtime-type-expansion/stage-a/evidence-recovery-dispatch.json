@@ -1,0 +1,590 @@
+{
+  "schema": "https://arcanum.local/formulae/dispatch-spec/dispatch.schema.yml",
+  "contract_schema": "runtime-type-expansion-stage-a-evidence-recovery/v1",
+  "dispatch_id": "2026-08-13-runtime-type-expansion-stage-a-evidence-recovery-01",
+  "parent_dispatch_id": "2026-08-13-runtime-type-expansion-bootstrap-a",
+  "status": "DRAFT_BLOCKED_BEFORE_INDEPENDENT_REVIEW_PASS",
+  "intent": {
+    "raw": "Create a forward-only successor recovery route for the four defects recorded by the terminal P3 correction-set BLOCK, without changing, retrying, waiving, or retroactively passing the predecessor route.",
+    "objective": "Obtain four fresh bounded evidence receipts, independently review the complete preserved-plus-recovery evidence set, run one newly defined finite recovery pre-integrity gate, and only on PASS continue the already accepted Stage-A repair/test/integrity/review/closeout behavior and Stage-B handoff.",
+    "target_artifact": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/evidence-recovery-dispatch.json",
+    "operator_sentence": "Preserve the old BLOCK; establish new forward authority; correct evidence only; fail closed."
+  },
+  "mode": "mixed",
+  "techniques": [
+    "delegation_boundary",
+    "execution_receipt_handoff",
+    "state_namespace_boundary"
+  ],
+  "authority": {
+    "kind": "explicit-user-authorized-direct-successor-dispatch",
+    "execution_model": "root-orchestration-only; every execution, validation, review, approval, and closeout role is a subagent",
+    "root_may": [
+      "launch an independently reviewed seat",
+      "join and close subagents",
+      "verify immutable receipts and gate results",
+      "stop or route the next already-authorized seat"
+    ],
+    "root_must_not": [
+      "author a work, evidence, validation, review, approval, or closeout result",
+      "edit the predecessor contract or any predecessor receipt",
+      "treat this successor as a retry, amendment, waiver, or retroactive cure of the predecessor",
+      "launch any execution seat before successor_dispatch_review is PASS"
+    ],
+    "scope": "Forward authority begins at this successor only. The predecessor remains terminally BLOCKED under its own finite-attempt rules."
+  },
+  "predecessor": {
+    "contract": {
+      "path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/bootstrap-contract.json",
+      "sha256": "AA7B402E8A445199570A7E99EAF1B05F31978A0906DF15257090ACC1B1764855",
+      "contract_id": "2026-08-13-runtime-type-expansion-bootstrap-a"
+    },
+    "approved_amendment_review": {
+      "path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/p3-evidence-amendment.review.md",
+      "sha256": "2B398264D6D340EC2D5CDD5846D4D5051F079F442D6FB6CAE4C93066E311EF9B",
+      "verdict": "PASS"
+    },
+    "terminal_correction_set_review": {
+      "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_p3_receipt_set_reviewer/p3_receipt_set_reviewer/correction-set-review-01.json",
+      "sha256": "C2A640BF9F86E97D66BD761624B91FBAC4E4E6B2D84B51283E86FE4C2BFD2966",
+      "verdict": "BLOCK",
+      "preservation": "Immutable terminal history. This successor does not alter its verdict, denominator, residue, or authority boundary."
+    },
+    "attempt_1_block": {
+      "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_receipt_lifecycle_finalizer/cycle2_receipt_finalizer/pre-integrity-01.json",
+      "sha256": "9536BD8637B0D3736688CC56D33BBE7E9C6ABCB6BB260A3669CC497684B2EC63",
+      "preservation": "Immutable BLOCK residue."
+    },
+    "legal_transition": "The predecessor forbids another correction-set retry or PRE_INTEGRITY retry under predecessor authority. This document creates a separately reviewed successor route with a new namespace, new identities, a new evidence denominator, and one new finite recovery gate. It neither satisfies nor reopens predecessor gate PRE_INTEGRITY_RETRY."
+  },
+  "non_goals": [
+    "No edit to bootstrap-contract.json, old receipts, production code, tests, fixtures, or integrity artifacts during the four-receipt recovery step.",
+    "No claim that the predecessor BLOCK was wrong, replaced, resolved retroactively, or omitted from the evidence graph.",
+    "No denominator reduction, evidence waiver, field alias, nested substitute, backdating, or invented lifecycle.",
+    "No Stage B work before the successor terminal Stage-A gates PASS."
+  ],
+  "recovery_namespace": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01",
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "The operator requires root orchestration-only, independent review, and all work by subagents; the evidence defects need disjoint authorship and a joined review.",
+    "explanation": "A bounded map producer freezes downstream assignments, four bounded authors create fresh evidence, two independent reviewers validate the map and receipt set, and thirteen explicit downstream seats preserve the predecessor's separation of duties.",
+    "context": [
+      "The predecessor correction-set review is immutable BLOCK.",
+      "The four authorized defects are P3-RS-01 through P3-RS-04 only.",
+      "The old contract exhausted its retry authority."
+    ],
+    "roles": [
+      {"role_id":"successor_dispatch_reviewer","purpose":"Review this successor before execution.","owns":"dispatch-contract-review-01.json","applies_to_steps":["s0_successor_dispatch_review"]},
+      {"role_id":"continuation_assignment_map_producer","purpose":"Materialize the exact downstream assignment map from this reviewed dispatch and frozen parent scopes.","owns":"continuation-assignment-map.json and its author receipt","applies_to_steps":["s1a_continuation_assignment_map"]},
+      {"role_id":"recovery_legacy_auditor","purpose":"Create a fresh receipt-level PASS/BLOCK audit covering both old adoption-owner receipts and the bounded legacy intent.","owns":"legacy-audit-replacement-01.json","applies_to_steps":["s1_four_receipt_recovery"]},
+      {"role_id":"recovery_host_auditor","purpose":"Create a fresh receipt-level PASS/BLOCK audit covering both old adoption-owner receipts and the bounded host intent.","owns":"host-audit-replacement-01.json","applies_to_steps":["s1_four_receipt_recovery"]},
+      {"role_id":"recovery_service_reaffirmer","purpose":"Create a fresh no-mutation service receipt with the two exact omitted fields.","owns":"service-reaffirmation-03.json","applies_to_steps":["s1_four_receipt_recovery"]},
+      {"role_id":"recovery_fixture_reaffirmer","purpose":"Create a fresh no-mutation fixture receipt with the nine exact omitted fields.","owns":"fixture-reaffirmation-03.json","applies_to_steps":["s1_four_receipt_recovery"]},
+      {"role_id":"continuation_assignment_map_reviewer","purpose":"Independently verify map schema, source hashes, all concrete identities, outputs, receipts, dependencies, and map SHA-256.","owns":"assignment-map-review-01.json","applies_to_steps":["s2a_continuation_assignment_map_review"]},
+      {"role_id":"recovery_receipt_set_reviewer","purpose":"Independently review canonical denominator ordinals 1 through 28, excluding only its own ordinal 29 receipt.","owns":"recovery-receipt-set-review-01.json","applies_to_steps":["s2b_recovery_receipt_set_review"]},
+      {"role_id":"recovery_pre_integrity_finalizer","purpose":"Run the one finite successor pre-integrity gate.","owns":"lifecycle-manifest.recovery-pre-integrity.json and its external receipt","applies_to_steps":["s3_recovery_pre_integrity_gate"]},
+      {"role_id":"successor_p4_integrity_owner","purpose":"Run P4 preliminary repin only.","owns":"P4 outputs and receipt","applies_to_steps":["s4_p4_preliminary_integrity"]},
+      {"role_id":"successor_t1_test_owner","purpose":"Run T1 terminal test only.","owns":"terminal test report and receipt","applies_to_steps":["s4_t1_terminal_test"]},
+      {"role_id":"successor_t2_integrity_owner","purpose":"Run T2 terminal pins with an identity distinct from P4.","owns":"final integrity outputs and receipt","applies_to_steps":["s4_t2_terminal_integrity"]},
+      {"role_id":"successor_t3_freeze_finalizer","purpose":"Freeze the pre-review target corpus with atomic self-exclusion.","owns":"recovery pre-approval manifest and external author receipt","applies_to_steps":["s5_t3_target_freeze"]},
+      {"role_id":"successor_fidelity_attacker","purpose":"Apply the fidelity lens to the frozen corpus.","owns":"external attacker receipt only","applies_to_steps":["s5_t4_attacker_fanout"]},
+      {"role_id":"successor_correctness_attacker","purpose":"Apply the correctness lens to the frozen corpus.","owns":"external attacker receipt only","applies_to_steps":["s5_t4_attacker_fanout"]},
+      {"role_id":"successor_abuse_attacker","purpose":"Apply the abuse lens to the frozen corpus.","owns":"external attacker receipt only","applies_to_steps":["s5_t4_attacker_fanout"]},
+      {"role_id":"successor_review_writer","purpose":"Synthesize surviving findings into the successor review.","owns":"review.md except Coverage and external receipt","applies_to_steps":["s5_t4_writer_skeptic"]},
+      {"role_id":"successor_review_skeptic","purpose":"Challenge the review writer without owning review bytes.","owns":"external skeptic receipt only","applies_to_steps":["s5_t4_writer_skeptic"]},
+      {"role_id":"successor_coverage_auditor","purpose":"Audit target-by-lens coverage and survivor discipline.","owns":"Coverage section and external receipt","applies_to_steps":["s5_t4_coverage"]},
+      {"role_id":"successor_final_approver","purpose":"Approve the exact successor evidence package.","owns":"approval.json and external receipt","applies_to_steps":["s5_t5_approval"]},
+      {"role_id":"successor_closeout_owner","purpose":"Perform mechanical post-approval closeout with self-exclusion.","owns":"recovery closeout manifest, completion artifact, and external receipt","applies_to_steps":["s5_c1_closeout"]},
+      {"role_id":"successor_terminal_verifier","purpose":"Independently verify P4-C2 order, identities, scopes, loops, approval, closeout, and self-exclusion before emitting the Stage-B handoff.","owns":"terminal verification receipt and conditional Stage-B handoff","applies_to_steps":["s5_c2_terminal_verify"]}
+    ],
+    "parallelism": "mixed",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Already supplied by the operator: proceed through subagents, review before execution, then close the session.",
+    "receipt_requirements": [
+      "dispatch_id",
+      "step_id",
+      "capability_ref",
+      "status",
+      "artifacts",
+      "validation",
+      "observer_status",
+      "blockers",
+      "handoff_note",
+      "agent_id",
+      "role_id",
+      "spawn_status",
+      "join_status",
+      "close_status",
+      "residue",
+      "reroute"
+    ]
+  },
+  "subagent_lifecycle": {
+    "status": "none",
+    "agents": []
+  },
+  "identity_and_path_assignments": {
+    "review_before_execution": {
+      "role_id": "successor_dispatch_reviewer",
+      "agent_id": "evidence_recovery_dispatch_reviewer_01",
+      "attempt_id": "dispatch-review-01",
+      "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/reviews/successor_dispatch_reviewer/evidence_recovery_dispatch_reviewer_01/dispatch-review-01.json"
+    },
+    "continuation_assignment_map": {
+      "schema": "runtime-type-expansion-stage-a-continuation-assignment-map/v1",
+      "producer_role_id": "continuation_assignment_map_producer",
+      "producer_agent_id": "evidence_recovery_assignment_map_producer_01",
+      "attempt_id": "assignment-map-author-01",
+      "artifact_path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/continuation/continuation-assignment-map.json",
+      "receipt_path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/continuation_assignment_map_producer/evidence_recovery_assignment_map_producer_01/assignment-map-author-01.json",
+      "hash_contract": "The author receipt records assignment_map_sha256 computed from the final UTF-8 artifact bytes; the map does not contain its own digest.",
+      "source_inputs": [
+        "this successor dispatch at the exact SHA-256 approved by review_before_execution",
+        "bootstrap-contract.json at AA7B402E8A445199570A7E99EAF1B05F31978A0906DF15257090ACC1B1764855",
+        "terminal correction-set BLOCK at C2A640BF9F86E97D66BD761624B91FBAC4E4E6B2D84B51283E86FE4C2BFD2966",
+        "identity_and_path_assignments.downstream_seats",
+        "continuation_identity_contract"
+      ],
+      "required_fields": ["schema","dispatch_id","dispatch_sha256","parent_contract_ref_and_sha256","terminal_block_ref_and_sha256","generated_by_role_id","generated_by_agent_id","generated_at_utc","downstream_seats","repair_policy","dependency_edges","artifact_sha256_basis"],
+      "review": {
+        "role_id": "continuation_assignment_map_reviewer",
+        "agent_id": "evidence_recovery_assignment_map_reviewer_01",
+        "attempt_id": "assignment-map-review-01",
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/reviews/continuation_assignment_map_reviewer/evidence_recovery_assignment_map_reviewer_01/assignment-map-review-01.json",
+        "required_fields": ["assignment_map_path","assignment_map_sha256","author_receipt_ref_and_sha256","source_hashes_verified","thirteen_required_seats_present","role_agent_attempt_path_uniqueness","output_paths_exact","parent_scope_references_resolve","dependency_order_valid","repair_policy_fail_closed","self_exclusion_valid","review_result","verdict"]
+      }
+    },
+    "four_recovery_receipts": [
+      {
+        "defect_ids": ["P3-RS-01", "P3-RS-02"],
+        "role_id": "recovery_legacy_auditor",
+        "agent_id": "evidence_recovery_legacy_auditor_01",
+        "attempt_id": "legacy-audit-replacement-01",
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/recovery_legacy_auditor/evidence_recovery_legacy_auditor_01/legacy-audit-replacement-01.json"
+      },
+      {
+        "defect_ids": ["P3-RS-01", "P3-RS-02"],
+        "role_id": "recovery_host_auditor",
+        "agent_id": "evidence_recovery_host_auditor_01",
+        "attempt_id": "host-audit-replacement-01",
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/recovery_host_auditor/evidence_recovery_host_auditor_01/host-audit-replacement-01.json"
+      },
+      {
+        "defect_ids": ["P3-RS-03"],
+        "role_id": "recovery_service_reaffirmer",
+        "agent_id": "evidence_recovery_service_reaffirmer_01",
+        "attempt_id": "service-reaffirmation-03",
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/recovery_service_reaffirmer/evidence_recovery_service_reaffirmer_01/service-reaffirmation-03.json"
+      },
+      {
+        "defect_ids": ["P3-RS-04"],
+        "role_id": "recovery_fixture_reaffirmer",
+        "agent_id": "evidence_recovery_fixture_reaffirmer_01",
+        "attempt_id": "fixture-reaffirmation-03",
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/recovery_fixture_reaffirmer/evidence_recovery_fixture_reaffirmer_01/fixture-reaffirmation-03.json"
+      }
+    ],
+    "receipt_set_review": {
+      "role_id": "recovery_receipt_set_reviewer",
+      "agent_id": "evidence_recovery_receipt_set_reviewer_01",
+      "attempt_id": "recovery-set-review-01",
+      "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/reviews/recovery_receipt_set_reviewer/evidence_recovery_receipt_set_reviewer_01/recovery-set-review-01.json"
+    },
+    "recovery_pre_integrity_gate": {
+      "role_id": "recovery_pre_integrity_finalizer",
+      "agent_id": "evidence_recovery_pre_integrity_finalizer_01",
+      "attempt_id": "recovery-pre-integrity-01",
+      "manifest_path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/lifecycle-manifest.recovery-pre-integrity.json",
+      "receipt_path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/recovery_pre_integrity_finalizer/evidence_recovery_pre_integrity_finalizer_01/recovery-pre-integrity-01.json",
+      "attempt_limit": 1
+    },
+    "downstream_seats": [
+      {"phase":"P4","role_id":"successor_p4_integrity_owner","agent_id":"evidence_recovery_p4_integrity_owner_01","attempt_id":"p4-preliminary-integrity-01","parent_role":"a_integrity_owner","parent_scope_ref":"bootstrap-contract.json#/roles/a_integrity_owner and #/cycle_2_execution/authoritative_order/P4","outputs":["docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json","implementations/server/runtime/local_pilot.py"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_p4_integrity_owner/evidence_recovery_p4_integrity_owner_01/p4-preliminary-integrity-01.json"},
+      {"phase":"T1","role_id":"successor_t1_test_owner","agent_id":"evidence_recovery_t1_test_owner_01","attempt_id":"t1-terminal-test-01","parent_role":"a_test_implementer","parent_scope_ref":"bootstrap-contract.json#/roles/a_test_implementer and #/cycle_2_execution/authoritative_order/T1","outputs":["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/test-report.json"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_t1_test_owner/evidence_recovery_t1_test_owner_01/t1-terminal-test-01.json"},
+      {"phase":"T2","role_id":"successor_t2_integrity_owner","agent_id":"evidence_recovery_t2_integrity_owner_01","attempt_id":"t2-terminal-integrity-01","parent_role":"a_integrity_owner","parent_scope_ref":"bootstrap-contract.json#/roles/a_integrity_owner and #/cycle_2_execution/authoritative_order/T2","outputs":["docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json","implementations/server/runtime/local_pilot.py","internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/final-hash-manifest.json"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_t2_integrity_owner/evidence_recovery_t2_integrity_owner_01/t2-terminal-integrity-01.json"},
+      {"phase":"T3","role_id":"successor_t3_freeze_finalizer","agent_id":"evidence_recovery_t3_freeze_finalizer_01","attempt_id":"t3-target-freeze-01","parent_role":"a_receipt_lifecycle_finalizer","parent_scope_ref":"bootstrap-contract.json#/roles/a_receipt_lifecycle_finalizer and #/cycle_2_execution/authoritative_order/T3","outputs":[".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/lifecycle-manifest.pre-approval.json"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_t3_freeze_finalizer/evidence_recovery_t3_freeze_finalizer_01/t3-target-freeze-01.json","self_exclusion":"manifest excludes this external author receipt from content and hash"},
+      {"phase":"T4","role_id":"successor_fidelity_attacker","agent_id":"evidence_recovery_fidelity_attacker_01","attempt_id":"t4-fidelity-01","parent_role":"a_fidelity_attacker","parent_scope_ref":"bootstrap-contract.json#/roles/a_fidelity_attacker and #/review_contract","outputs":[],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_fidelity_attacker/evidence_recovery_fidelity_attacker_01/t4-fidelity-01.json"},
+      {"phase":"T4","role_id":"successor_correctness_attacker","agent_id":"evidence_recovery_correctness_attacker_01","attempt_id":"t4-correctness-01","parent_role":"a_correctness_attacker","parent_scope_ref":"bootstrap-contract.json#/roles/a_correctness_attacker and #/review_contract","outputs":[],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_correctness_attacker/evidence_recovery_correctness_attacker_01/t4-correctness-01.json"},
+      {"phase":"T4","role_id":"successor_abuse_attacker","agent_id":"evidence_recovery_abuse_attacker_01","attempt_id":"t4-abuse-01","parent_role":"a_abuse_attacker","parent_scope_ref":"bootstrap-contract.json#/roles/a_abuse_attacker and #/review_contract","outputs":[],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_abuse_attacker/evidence_recovery_abuse_attacker_01/t4-abuse-01.json"},
+      {"phase":"T4","role_id":"successor_review_writer","agent_id":"evidence_recovery_review_writer_01","attempt_id":"t4-review-write-01","parent_role":"a_review_writer","parent_scope_ref":"bootstrap-contract.json#/roles/a_review_writer and #/review_contract","outputs":["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/review.md except Coverage"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_review_writer/evidence_recovery_review_writer_01/t4-review-write-01.json"},
+      {"phase":"T4","role_id":"successor_review_skeptic","agent_id":"evidence_recovery_review_skeptic_01","attempt_id":"t4-review-skeptic-01","parent_role":"a_review_skeptic","parent_scope_ref":"bootstrap-contract.json#/roles/a_review_skeptic and #/review_contract","outputs":[],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_review_skeptic/evidence_recovery_review_skeptic_01/t4-review-skeptic-01.json"},
+      {"phase":"T4","role_id":"successor_coverage_auditor","agent_id":"evidence_recovery_coverage_auditor_01","attempt_id":"t4-coverage-01","parent_role":"a_coverage_auditor","parent_scope_ref":"bootstrap-contract.json#/roles/a_coverage_auditor and #/review_contract","outputs":["Coverage section of internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/review.md"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_coverage_auditor/evidence_recovery_coverage_auditor_01/t4-coverage-01.json"},
+      {"phase":"T5","role_id":"successor_final_approver","agent_id":"evidence_recovery_final_approver_01","attempt_id":"t5-approval-01","parent_role":"a_final_approver","parent_scope_ref":"bootstrap-contract.json#/roles/a_final_approver and #/cycle_2_execution/authoritative_order/T5","outputs":["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/approval.json"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_final_approver/evidence_recovery_final_approver_01/t5-approval-01.json","self_exclusion":"approval artifact and receipt are external to the frozen attacker corpus and approval artifact excludes itself"},
+      {"phase":"C1","role_id":"successor_closeout_owner","agent_id":"evidence_recovery_closeout_owner_01","attempt_id":"c1-closeout-01","parent_role":"a_post_approval_closeout_owner","parent_scope_ref":"bootstrap-contract.json#/roles/a_post_approval_closeout_owner and #/cycle_2_execution/authoritative_order/C1","outputs":[".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/lifecycle-manifest.closeout.json",".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/recovery-completion.json"],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_closeout_owner/evidence_recovery_closeout_owner_01/c1-closeout-01.json","self_exclusion":"both closeout outputs exclude the external closeout-owner receipt from content and hash; the receipt hashes both outputs"},
+      {"phase":"C2","role_id":"successor_terminal_verifier","agent_id":"evidence_recovery_terminal_verifier_01","attempt_id":"c2-terminal-verify-01","parent_role":"a_cycle_2_terminal_verifier","parent_scope_ref":"bootstrap-contract.json#/roles/a_cycle_2_terminal_verifier and #/cycle_2_execution/authoritative_order/C2","outputs":[],"receipt_path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_terminal_verifier/evidence_recovery_terminal_verifier_01/c2-terminal-verify-01.json","self_exclusion":"verifier receipt is external and neither includes nor approves itself"}
+    ],
+    "downstream_fixed_seat_count": 13
+  },
+  "recovery_gate_denominator": {
+    "schema": "runtime-type-expansion-stage-a-recovery-denominator/v1",
+    "total_receipt_count": 29,
+    "ordered_receipts": [
+      {"ordinal":1,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_baseline_repair_owner/cycle2_reaffirm_baseline/reaffirm-01.json","sha256":"A20FA138EE666E433BE64AA2E02342EE7FFFCCBF44790637C64ECC5150328F6B"},
+      {"ordinal":2,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_baseline_repair_owner/p3_reaffirm_group1/reaffirm-02.json","sha256":"9BCA181C0CFABF1F06A70E1DA86E3F702672571CC443C5B9D6AF24754CAA9453"},
+      {"ordinal":3,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_binding_output_test_owner/cycle2_binding_test_owner/a004-a005-tests-01.json","sha256":"AEE5DE245C286D2C34FE4E5F9FB4B3580652AA3F2D23C5E6D39FF74A52109DF2"},
+      {"ordinal":4,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_binding_output_test_owner/p3_reaffirm_bindingtest/reaffirm-02.json","sha256":"0C3687A0381B77C33AABCC003B5EB671116BCF55B04855B094BC6C33DC741E52"},
+      {"ordinal":5,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_compiler_implementer/cycle2_compiler_owner/a004-repair-01.json","sha256":"9E98B5EF42D30700A960457CADB1CD7FCE56DBB1D3920CBF2EFB3844A8B75438"},
+      {"ordinal":6,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_compiler_implementer/p3_reaffirm_compiler/reaffirm-02.json","sha256":"9F2E70780952A26D50E445CA51A296DC257FD196D49D61AECC90161FD51BEC52"},
+      {"ordinal":7,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_host_hook_adoption_auditor/p3_host_auditor/reaudit-01.json","sha256":"3B40DC74594452A2DEEB22059B9F79891E16D4DFDD942DA7C8E2C8D5CFF9BD65"},
+      {"ordinal":8,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_host_hook_adoption_owner/cycle2_host_adoption_reaffirm_02/reaffirm-02.json","sha256":"07CEE0F957E984502FDA92C1E681A3AAE2222DC920B576E5AFC5360AE2604451"},
+      {"ordinal":9,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_host_hook_adoption_owner/cycle2_reaffirm_adoptions/reaffirm-01.json","sha256":"E452ACB2AA423754D36A88EC6A0194A555D987EEF641638DEF635CC2A4620E2A"},
+      {"ordinal":10,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_legacy_adoption_auditor/p3_legacy_auditor/reaudit-01.json","sha256":"089F8531C16E1E2D24175D5DAD89B2A2D9BC2E9BCDF7949AB2FFCE24FD37222F"},
+      {"ordinal":11,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_legacy_adoption_owner/cycle2_legacy_adoption_reaffirm_02/reaffirm-02.json","sha256":"7E1D6D9E2C686F92204D3EF42EDBAFEC8E8B8133C8582D0BBEF640CE31D40C81"},
+      {"ordinal":12,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_legacy_adoption_owner/cycle2_reaffirm_adoptions/reaffirm-01.json","sha256":"3FEE82BF192F764D663B57A7231170D03DB35DB323BE2F0A94A49902695DB02B"},
+      {"ordinal":13,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_legacy_fixture_migrator/cycle2_fixture_reaffirm_02/reaffirm-02.json","sha256":"A48AA982E5ED069601D5C1AE743CE3861DFB6F1F875C4DD9E242C48D5D16182B"},
+      {"ordinal":14,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_legacy_fixture_migrator/cycle2_reaffirm_fixture/reaffirm-01.json","sha256":"C1C2BA2EAE4849D7F80A544707CD7FB8B508A5550A62313D05656DD0D991A2A5"},
+      {"ordinal":15,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_manifest_service_implementer/cycle2_service_owner/a004-repair-01.json","sha256":"29E6A283D435B8DCCE9F59C92E6CD57DAE8F46433C8951CF0628D7F689C4446E"},
+      {"ordinal":16,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_manifest_service_implementer/p3_reaffirm_service/reaffirm-02.json","sha256":"D04EEE31F8355825019DBF9D258D114B83A92CD5AF7C11D323348A3D058D160D"},
+      {"ordinal":17,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_receipt_lifecycle_finalizer/cycle2_receipt_finalizer/pre-integrity-01.json","sha256":"9536BD8637B0D3736688CC56D33BBE7E9C6ABCB6BB260A3669CC497684B2EC63"},
+      {"ordinal":18,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_runtime_implementer/runtime_dispatch_architect/a005-repair-01.json","sha256":"C23E5000513839405DD988319E716BE5EE8685A20763652B3E3236CAB44DD05A"},
+      {"ordinal":19,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_test_implementer/cycle2_test_preliminary/preliminary-01.json","sha256":"2F622FFC9E56AFA48F7393123CE2FCC4B05569EA138C611FB8B370BC91DAE0CC"},
+      {"ordinal":20,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_test_implementer/cycle2_test_reaffirm_02/preliminary-reaffirm-02.json","sha256":"D7584BB9772FFF38DFA0078F6897F079D342A63008D4C470D4E3432A1E86973A"},
+      {"ordinal":21,"class":"predecessor_immutable","path":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_p3_receipt_set_reviewer/p3_receipt_set_reviewer/correction-set-review-01.json","sha256":"C2A640BF9F86E97D66BD761624B91FBAC4E4E6B2D84B51283E86FE4C2BFD2966"},
+      {"ordinal":22,"class":"successor_dispatch_review","path_ref":"identity_and_path_assignments.review_before_execution.path","sha256_source":"receipt bytes recomputed from disk"},
+      {"ordinal":23,"class":"assignment_map_author_receipt","path_ref":"identity_and_path_assignments.continuation_assignment_map.receipt_path","sha256_source":"receipt bytes recomputed from disk"},
+      {"ordinal":24,"class":"assignment_map_review_receipt","path_ref":"identity_and_path_assignments.continuation_assignment_map.review.path","sha256_source":"receipt bytes recomputed from disk"},
+      {"ordinal":25,"class":"recovery_receipt","path_ref":"identity_and_path_assignments.four_recovery_receipts[0].path","sha256_source":"receipt bytes recomputed from disk"},
+      {"ordinal":26,"class":"recovery_receipt","path_ref":"identity_and_path_assignments.four_recovery_receipts[1].path","sha256_source":"receipt bytes recomputed from disk"},
+      {"ordinal":27,"class":"recovery_receipt","path_ref":"identity_and_path_assignments.four_recovery_receipts[2].path","sha256_source":"receipt bytes recomputed from disk"},
+      {"ordinal":28,"class":"recovery_receipt","path_ref":"identity_and_path_assignments.four_recovery_receipts[3].path","sha256_source":"receipt bytes recomputed from disk"},
+      {"ordinal":29,"class":"receipt_set_review","path_ref":"identity_and_path_assignments.receipt_set_review.path","sha256_source":"receipt bytes recomputed from disk"}
+    ],
+    "receipt_set_review_projection": {
+      "input_ordinals": "1-28",
+      "input_receipt_count": 28,
+      "self_exclusion": "Ordinal 29 is the reviewer's own output and is excluded from that review."
+    },
+    "recovery_pre_integrity_projection": {
+      "input_ordinals": "1-29",
+      "input_receipt_count": 29,
+      "external_check": "The distinct recovery_pre_integrity_finalizer recomputes every path and SHA-256, including ordinal 29, before deciding RECOVERY_PRE_INTEGRITY_01. Its own manifest and receipt are outputs and are not denominator inputs."
+    }
+  },
+  "receipt_field_contract": {
+    "all_four_receipts": [
+      "schema",
+      "recovery_dispatch_id",
+      "recovery_dispatch_sha256",
+      "predecessor_contract_ref_and_sha256",
+      "terminal_block_ref_and_sha256",
+      "authority_kind",
+      "role_id",
+      "agent_id",
+      "attempt_id",
+      "global_attempt_identity",
+      "prompt_digest",
+      "prompt_digest_basis",
+      "spawn_status",
+      "join_status",
+      "close_status",
+      "recorded_at_utc",
+      "accepted_responsibility_from_utc",
+      "no_backdating_or_invented_lifecycle",
+      "supersedes_nothing",
+      "prior_attempt_refs",
+      "before_hashes",
+      "after_hashes",
+      "validation",
+      "artifacts",
+      "blockers",
+      "residue",
+      "reroute",
+      "mutation_false",
+      "review_result",
+      "verdict"
+    ],
+    "auditor_receipts": {
+      "required_fields": [
+        "receipt_level_verdict",
+        "bounded_disposition",
+        "both_preserved_owner_receipts_read",
+        "preserved_legacy_owner_receipt_ref_and_sha256",
+        "preserved_host_owner_receipt_ref_and_sha256",
+        "approved_intent_reference",
+        "approved_exclusions_reference",
+        "last_verified_clean_bytes_reference",
+        "current_file_sha256",
+        "frozen_diff_digest",
+        "line_by_line_findings",
+        "unrelated_hunks_preserved"
+      ],
+      "literal_semantics": "Top-level verdict, review_result, and receipt_level_verdict must each be exactly PASS or BLOCK. ADOPT or REIMPLEMENT is allowed only in bounded_disposition. PASS requires evidence that this auditor personally read both preserved owner receipts and audited only its named production file against the predecessor's approved intent/exclusions and verified clean-byte/frozen-diff bounds.",
+      "preserved_legacy_owner": {
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_legacy_adoption_owner/cycle2_reaffirm_adoptions/reaffirm-01.json",
+        "sha256": "3FEE82BF192F764D663B57A7231170D03DB35DB323BE2F0A94A49902695DB02B"
+      },
+      "preserved_host_owner": {
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_host_hook_adoption_owner/cycle2_reaffirm_adoptions/reaffirm-01.json",
+        "sha256": "E452ACB2AA423754D36A88EC6A0194A555D987EEF641638DEF635CC2A4620E2A"
+      },
+      "legacy_scope": "implementations/server/runtime/legacy.py only; read-only",
+      "host_scope": "implementations/server/runtime/host_dispatch_hook.py only; read-only"
+    },
+    "service_receipt": {
+      "prior_receipt": {
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_manifest_service_implementer/p3_reaffirm_service/reaffirm-02.json",
+        "sha256": "D04EEE31F8355825019DBF9D258D114B83A92CD5AF7C11D323348A3D058D160D"
+      },
+      "required_exact_fields": [
+        "historical_terminal_receipt_retained_unless_explicitly_resumed",
+        "if_resumed_prior_receipt_ref_and_verified_reconciled_input_hash"
+      ],
+      "semantics": "Fresh no-mutation reaffirmation of current service evidence. Both exact top-level keys are mandatory; aliases, prose, or nested substitutes fail. The receipt must preserve and link the prior BLOCKed-field receipt rather than overwrite it."
+    },
+    "fixture_receipt": {
+      "prior_receipt": {
+        "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_legacy_fixture_migrator/cycle2_fixture_reaffirm_02/reaffirm-02.json",
+        "sha256": "A48AA982E5ED069601D5C1AE743CE3861DFB6F1F875C4DD9E242C48D5D16182B"
+      },
+      "required_exact_fields": [
+        "historical_terminal_receipt_retained_or_linked_resume_receipt",
+        "if_resumed_verified_reconciled_input_hash_per_file",
+        "before_hash_and_diff_digest_per_file",
+        "new_openings_migrated_to_registry_schema",
+        "new_openings_carry_capability_route",
+        "new_other_uses_singular_value",
+        "historical_0_6_3_plural_fixtures_preserved",
+        "after_hash_per_file",
+        "unrelated_hunks_preserved"
+      ],
+      "semantics": "Fresh no-mutation reaffirmation of current fixture evidence. All nine exact top-level keys are mandatory; aliases, prose, or nested substitutes fail. The retained preliminary BLOCK remains BLOCK-eligible only under the predecessor's bounded stale-pin rule and is never converted to PASS."
+    }
+  },
+  "steps": [
+    {
+      "step_id": "s0_successor_dispatch_review",
+      "name": "Independent successor-contract review",
+      "capability_ref": "review",
+      "capability_status": "candidate",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["successor_dispatch_reviewer"],
+      "inputs": [
+        {"kind":"intent","ref":"intent.objective"},
+        {"kind":"artifact","ref":"internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/evidence-recovery-dispatch.json"},
+        {"kind":"artifact","ref":"predecessor.terminal_correction_set_review.path"}
+      ],
+      "outputs": [
+        {"kind":"artifact","ref":"identity_and_path_assignments.review_before_execution.path"},
+        {"kind":"decision","ref":"successor_dispatch_review_PASS_or_BLOCK"}
+      ],
+      "evidence_artifact": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/reviews/successor_dispatch_reviewer/evidence_recovery_dispatch_reviewer_01/dispatch-review-01.json",
+      "stop_conditions": ["Any ambiguity, old-history rewrite, implicit waiver, identity collision, path collision, unbounded retry, or missing field contract BLOCKs before execution."]
+    },
+    {
+      "step_id": "s1a_continuation_assignment_map",
+      "name": "Materialize the exact continuation assignment map",
+      "capability_ref": "task-session",
+      "pattern": "sequential",
+      "parallel": false,
+      "roles": ["continuation_assignment_map_producer"],
+      "inputs": [
+        {"kind":"decision","ref":"successor_dispatch_review_PASS"},
+        {"kind":"artifact","ref":"this successor dispatch at its independently approved SHA-256"},
+        {"kind":"artifact","ref":"predecessor contract and terminal correction-set BLOCK"},
+        {"kind":"frame","ref":"identity_and_path_assignments.downstream_seats and continuation_identity_contract"}
+      ],
+      "outputs": [
+        {"kind":"artifact","ref":"identity_and_path_assignments.continuation_assignment_map.artifact_path"},
+        {"kind":"artifact","ref":"identity_and_path_assignments.continuation_assignment_map.receipt_path"},
+        {"kind":"handle","ref":"assignment_map_sha256 from author receipt"}
+      ],
+      "stop_conditions": ["Any source hash mismatch, omitted seat, unresolved parent scope, non-exact output/receipt path, or root-authored map BLOCKs."]
+    },
+    {
+      "step_id": "s1_four_receipt_recovery",
+      "name": "Create exactly four fresh bounded recovery receipts",
+      "capability_ref": "task-session",
+      "pattern": "fanout",
+      "techniques": ["delegation_boundary", "execution_receipt_handoff", "state_namespace_boundary"],
+      "parallel": true,
+      "join_policy": "all",
+      "roles": ["recovery_legacy_auditor","recovery_host_auditor","recovery_service_reaffirmer","recovery_fixture_reaffirmer"],
+      "inputs": [
+        {"kind":"decision","ref":"successor_dispatch_review_PASS"},
+        {"kind":"artifact","ref":"predecessor preserved receipt graph"},
+        {"kind":"artifact","ref":"receipt_field_contract"}
+      ],
+      "outputs": [
+        {"kind":"ledger","ref":"exactly_four_unique_recovery_receipts"}
+      ],
+      "stop_conditions": [
+        "Review-before-execution is not PASS.",
+        "Any source hash changed.",
+        "Any role mutates code, tests, fixtures, integrity, predecessor contracts, or old receipts.",
+        "Any exact field is absent or semantically false."
+      ]
+    },
+    {
+      "step_id": "s2a_continuation_assignment_map_review",
+      "name": "Independently review the continuation assignment map",
+      "capability_ref": "review",
+      "capability_status": "candidate",
+      "pattern": "validation",
+      "parallel": true,
+      "join_policy": "all",
+      "roles": ["continuation_assignment_map_reviewer"],
+      "inputs": [
+        {"kind":"artifact","ref":"identity_and_path_assignments.continuation_assignment_map.artifact_path"},
+        {"kind":"artifact","ref":"identity_and_path_assignments.continuation_assignment_map.receipt_path"},
+        {"kind":"handle","ref":"assignment_map_sha256"},
+        {"kind":"artifact","ref":"this successor dispatch and frozen predecessor contract"}
+      ],
+      "outputs": [
+        {"kind":"artifact","ref":"identity_and_path_assignments.continuation_assignment_map.review.path"},
+        {"kind":"decision","ref":"continuation_assignment_map_review_PASS_or_BLOCK"}
+      ],
+      "evidence_artifact": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/reviews/continuation_assignment_map_reviewer/evidence_recovery_assignment_map_reviewer_01/assignment-map-review-01.json",
+      "stop_conditions": ["Anything other than literal PASS stops before s3."]
+    },
+    {
+      "step_id": "s2b_recovery_receipt_set_review",
+      "name": "Independent preserved-plus-recovery evidence review",
+      "capability_ref": "review",
+      "capability_status": "candidate",
+      "pattern": "validation",
+      "techniques": ["execution_receipt_handoff"],
+      "parallel": true,
+      "join_policy": "all",
+      "roles": ["recovery_receipt_set_reviewer"],
+      "inputs": [
+        {"kind":"ledger","ref":"recovery_gate_denominator.receipt_set_review_projection: exact ordinals 1-28, count 28"}
+      ],
+      "outputs": [
+        {"kind":"artifact","ref":"identity_and_path_assignments.receipt_set_review.path"},
+        {"kind":"decision","ref":"recovery_receipt_set_review_PASS_or_BLOCK"}
+      ],
+      "evidence_artifact": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/reviews/recovery_receipt_set_reviewer/evidence_recovery_receipt_set_reviewer_01/recovery-set-review-01.json",
+      "stop_conditions": ["Anything other than literal PASS stops before s3."]
+    },
+    {
+      "step_id": "s3_recovery_pre_integrity_gate",
+      "name": "One finite successor pre-integrity gate",
+      "capability_ref": "task-session",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["recovery_pre_integrity_finalizer"],
+      "inputs": [
+        {"kind":"decision","ref":"recovery_receipt_set_review_PASS"},
+        {"kind":"decision","ref":"continuation_assignment_map_review_PASS"},
+        {"kind":"artifact","ref":"reviewed continuation assignment map and its verified SHA-256"},
+        {"kind":"ledger","ref":"recovery_gate_denominator.recovery_pre_integrity_projection: exact ordinals 1-29, count 29"}
+      ],
+      "outputs": [
+        {"kind":"artifact","ref":"identity_and_path_assignments.recovery_pre_integrity_gate.manifest_path"},
+        {"kind":"artifact","ref":"identity_and_path_assignments.recovery_pre_integrity_gate.receipt_path"},
+        {"kind":"decision","ref":"RECOVERY_PRE_INTEGRITY_01_PASS_or_BLOCK"}
+      ],
+      "evidence_artifact": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/lifecycle-manifest.recovery-pre-integrity.json",
+      "stop_conditions": [
+        "This single attempt returns BLOCK.",
+        "Any receipt or source hash mismatch occurs.",
+        "Any retained preliminary BLOCK fails the unchanged bounded preliminary-pre-pin eligibility rule."
+      ]
+    },
+    {"step_id":"s4_p4_preliminary_integrity","name":"P4 preliminary integrity","capability_ref":"task-session","pattern":"sequential","parallel":false,"roles":["successor_p4_integrity_owner"],"inputs":[{"kind":"decision","ref":"RECOVERY_PRE_INTEGRITY_01_PASS"},{"kind":"artifact","ref":"reviewed assignment map"},{"kind":"external_context","ref":"bootstrap-contract.json P4 and a_integrity_owner exact scope"}],"outputs":[{"kind":"artifact","ref":"P4 outputs and assigned receipt"},{"kind":"decision","ref":"P4_PASS_or_BLOCK"}],"stop_conditions":["Any non-stale-pin mutation, scope escape, or failure BLOCKs before T1."]},
+    {"step_id":"s4_t1_terminal_test","name":"T1 terminal test","capability_ref":"task-session","pattern":"sequential","parallel":false,"roles":["successor_t1_test_owner"],"inputs":[{"kind":"decision","ref":"P4_PASS"},{"kind":"artifact","ref":"reviewed assignment map"},{"kind":"external_context","ref":"bootstrap-contract.json T1 and complete test_contract"}],"outputs":[{"kind":"artifact","ref":"test-report.json and assigned T1 receipt"},{"kind":"decision","ref":"T1_PASS_or_BLOCK"}],"stop_conditions":["Any mandatory command is not PASS."]},
+    {"step_id":"s4_t2_terminal_integrity","name":"T2 terminal pins","capability_ref":"task-session","pattern":"sequential","parallel":false,"roles":["successor_t2_integrity_owner"],"inputs":[{"kind":"decision","ref":"T1_PASS"},{"kind":"artifact","ref":"exact terminal report"},{"kind":"external_context","ref":"bootstrap-contract.json T2 and a_integrity_owner exact scope"}],"outputs":[{"kind":"artifact","ref":"final-hash-manifest.json, final integrity PASS, and assigned T2 receipt"}],"stop_conditions":["T2 agent equals P4 agent, claims exceed persisted evidence, or final integrity is not PASS."]},
+    {"step_id":"s5_t3_target_freeze","name":"T3 pre-review target freeze","capability_ref":"task-session","pattern":"sequential","parallel":false,"roles":["successor_t3_freeze_finalizer"],"inputs":[{"kind":"artifact","ref":"T2 final integrity PASS and complete receipt corpus through T2"},{"kind":"external_context","ref":"bootstrap-contract.json T3 frozen-target and atomic self-exclusion semantics, with successor outputs relocated to recovery_namespace"}],"outputs":[{"kind":"artifact","ref":"identity_and_path_assignments.downstream_seats[phase=T3].outputs[0]"},{"kind":"artifact","ref":"identity_and_path_assignments.downstream_seats[phase=T3].receipt_path"}],"stop_conditions":["Manifest includes its own receipt, omits a target, changes a target hash, or writes outside recovery_namespace."]},
+    {"step_id":"s5_t4_attacker_fanout","name":"T4 independent attacker fanout","capability_ref":"review","capability_status":"candidate","pattern":"fanout","parallel":true,"join_policy":"all","roles":["successor_fidelity_attacker","successor_correctness_attacker","successor_abuse_attacker"],"inputs":[{"kind":"artifact","ref":"immutable T3 frozen target corpus"},{"kind":"external_context","ref":"bootstrap-contract.json review_contract lenses and finding rule"}],"outputs":[{"kind":"ledger","ref":"three independent attacker returns and external receipts"}],"stop_conditions":["Any attacker targets review deliverables, shares identity, or leaves lifecycle nonterminal."]},
+    {"step_id":"s5_t4_writer_skeptic","name":"T4 writer-skeptic convergence","capability_ref":"review","capability_status":"candidate","pattern":"dialectic","parallel":false,"roles":["successor_review_writer","successor_review_skeptic"],"inputs":[{"kind":"ledger","ref":"three independent attacker returns"}],"outputs":[{"kind":"artifact","ref":"review.md except Coverage"},{"kind":"ledger","ref":"writer and skeptic external receipts"}],"convergence_criteria":["At most three exchanges.","Every surviving finding quotes a frozen target and has defensible severity and bounded fix.","Refuted findings and transcripts are not persisted."],"stop_conditions":["No convergence after three exchanges."]},
+    {"step_id":"s5_t4_coverage","name":"T4 coverage audit","capability_ref":"review","capability_status":"candidate","pattern":"validation","parallel":false,"roles":["successor_coverage_auditor"],"inputs":[{"kind":"artifact","ref":"frozen target corpus"},{"kind":"artifact","ref":"review.md without Coverage"},{"kind":"ledger","ref":"three attacker receipts and writer-skeptic receipts"}],"outputs":[{"kind":"artifact","ref":"Coverage section of review.md"},{"kind":"artifact","ref":"coverage receipt"}],"evidence_artifact":"internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/review.md","stop_conditions":["Any target-by-lens cell or survivor/refutation accounting is missing."]},
+    {"step_id":"s5_t5_approval","name":"T5 approval boundary","capability_ref":"task-session","pattern":"decision","parallel":false,"roles":["successor_final_approver"],"inputs":[{"kind":"artifact","ref":"unchanged frozen target corpus"},{"kind":"artifact","ref":"final review.md and Coverage"},{"kind":"ledger","ref":"external review-role receipts and T3 author receipt"}],"outputs":[{"kind":"artifact","ref":"approval.json and external approver receipt"},{"kind":"decision","ref":"APPROVAL_PASS_or_TERMINAL_BLOCK"}],"stop_conditions":["Any approval result other than literal PASS is terminal BLOCK for this successor; no repair round is authorized."]},
+    {"step_id":"s5_c1_closeout","name":"C1 mechanical post-approval closeout","capability_ref":"task-session","pattern":"sequential","parallel":false,"roles":["successor_closeout_owner"],"inputs":[{"kind":"decision","ref":"APPROVAL_PASS"},{"kind":"artifact","ref":"exact approval package and external approver receipt"}],"outputs":[{"kind":"artifact","ref":"identity_and_path_assignments.downstream_seats[phase=C1].outputs: exact two recovery_namespace paths"},{"kind":"artifact","ref":"identity_and_path_assignments.downstream_seats[phase=C1].receipt_path"}],"stop_conditions":["Closeout changes approval substance, violates self-exclusion, does not preserve corpus digest, or writes outside recovery_namespace."]},
+    {"step_id":"s5_c2_terminal_verify","name":"C2 independent terminal close and Stage-B handoff","capability_ref":"task-session","pattern":"handoff","parallel":false,"roles":["successor_terminal_verifier"],"inputs":[{"kind":"artifact","ref":"reviewed assignment map and complete P4-C2 evidence chain"},{"kind":"artifact","ref":"approval artifact and external approver receipt"},{"kind":"artifact","ref":"identity_and_path_assignments.downstream_seats[phase=C1].outputs and receipt_path"},{"kind":"artifact","ref":"identity_and_path_assignments.downstream_seats[phase=T3].outputs and receipt_path plus frozen target and approval package boundaries"},{"kind":"external_context","ref":"bootstrap-contract.json P4-C2 order and semantics with T3/C1 successor writes relocated to recovery_namespace, no-repair terminal policy, terminal conditions, and Stage-B gate"}],"outputs":[{"kind":"artifact","ref":"external C2 terminal verifier receipt"},{"kind":"decision","ref":"C2_PASS_or_BLOCK"},{"kind":"handoff","ref":"Stage B may begin only on C2 PASS with approval PASS"}],"evidence_artifact":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_terminal_verifier/evidence_recovery_terminal_verifier_01/c2-terminal-verify-01.json","stop_conditions":["Any role collapse, reused identity, order violation, missing receipt, predecessor-namespace write, other scope escape, repair attempt, hash mismatch, or self-inclusion BLOCKs Stage B."]}
+  ],
+  "continuation_identity_contract": {
+    "rule": "After successor-dispatch review PASS, continuation_assignment_map_producer materializes the exact map; continuation_assignment_map_reviewer independently PASSes its path, schema, digest, sources, thirteen seats, outputs, receipts, and dependencies before s3. Root only launches, joins, and closes these assignments.",
+    "required_roles": [
+      "successor_p4_integrity_owner",
+      "successor_t1_test_owner",
+      "successor_t2_integrity_owner",
+      "successor_t3_freeze_finalizer",
+      "successor_fidelity_attacker",
+      "successor_correctness_attacker",
+      "successor_abuse_attacker",
+      "successor_review_writer",
+      "successor_review_skeptic",
+      "successor_coverage_auditor",
+      "successor_final_approver",
+      "successor_closeout_owner",
+      "successor_terminal_verifier"
+    ],
+    "required_dependency_order": [
+      "s3 PASS -> P4 -> T1 -> T2 -> T3",
+      "T3 -> fidelity/correctness/abuse fanout -> writer/skeptic convergence (maximum three exchanges) -> coverage -> approval",
+      "approval PASS -> C1 -> C2 -> conditional Stage-B handoff",
+      "any approval result other than literal PASS -> terminal BLOCK; no repair round or rerun is authorized"
+    ],
+    "repair_policy": {
+      "mode": "disabled_fail_closed",
+      "maximum_rounds": 0,
+      "rule": "This successor predeclares no repair seats, paths, reruns, or dynamic assignments. Any non-PASS approval terminates this successor as BLOCK. A future repair requires a new independently reviewed successor dispatch with fresh authority."
+    },
+    "behavior_source": "The predecessor contract remains the accepted source for downstream behavior, tests, review lenses, approval package semantics, closeout semantics, and Stage-B terminal conditions. This successor's exact path assignments override predecessor write locations only for successor-created artifacts: T3 and C1 outputs and all successor receipts stay in recovery_namespace. The predecessor cycle-2 tree is fully read-only. Only the exhausted predecessor P3/PRE_INTEGRITY gate identity is not imported.",
+    "review_requirement": "The successor dispatch reviewer must PASS this mechanism before s1a; the distinct continuation_assignment_map_reviewer must PASS the concrete map and recorded SHA-256 before s3."
+  },
+  "gates": [
+    {"gate_id":"g0_review_before_execution","kind":"quality","owner":"successor_dispatch_reviewer","condition":"Independent review receipt is literal PASS at the exact successor-dispatch hash before any recovery seat launches.","on_fail":"block"},
+    {"gate_id":"g1_exactly_four_forward_receipts","kind":"validation","owner":"recovery_receipt_set_reviewer","condition":"Review canonical recovery_gate_denominator ordinals 1-28, exactly 28 inputs: 21 immutable predecessor receipts, successor-dispatch review, assignment-map author receipt, assignment-map review receipt, and exactly four recovery receipts. Ordinal 29 is self-excluded because it is this review's output. All paths, hashes, exact fields, and semantics pass; no extra correction scope exists.","on_fail":"block"},
+    {"gate_id":"g2_one_finite_recovery_pre_integrity","kind":"validation","owner":"recovery_pre_integrity_finalizer","condition":"RECOVERY_PRE_INTEGRITY_01 runs once over canonical recovery_gate_denominator ordinals 1-29, exactly 29 inputs, including the externally checked ordinal 29 receipt-set review. The finalizer recomputes all paths and hashes. Its own manifest and receipt are outputs, never denominator inputs. PASS writes only those two recovery_namespace outputs; BLOCK is terminal for this successor.","on_fail":"block"},
+    {"gate_id":"g3_downstream_behavior_preserved","kind":"policy","owner":"successor_terminal_verifier","condition":"Independent C2 verification confirms all thirteen reviewed assignments, P4-C2 order, distinct P4/T2 identities, exact parent scopes/outputs, the no-repair fail-closed policy, frozen corpus, self-exclusion, and terminal evidence.","on_fail":"block"},
+    {"gate_id":"g4_stage_b","kind":"promotion_guardrail","owner":"successor_terminal_verifier","condition":"Stage B remains blocked until approval.json PASS and the independent C2 terminal receipt PASS both verify against the complete preserved evidence chain.","on_fail":"block"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": "2026-08-13-runtime-type-expansion-bootstrap-a",
+    "trace_events": [
+      "successor_dispatch_reviewed",
+      "recovery_seat_spawned",
+      "recovery_seat_joined",
+      "recovery_seat_closed",
+      "four_receipt_join_completed",
+      "recovery_receipt_set_reviewed",
+      "recovery_pre_integrity_completed",
+      "p4_c2_explicit_role_chain_completed",
+      "stage_b_handoff_verified",
+      "dispatch_blocked"
+    ],
+    "signal_grouping": "dispatch_id, step_id, role_id, agent_id, attempt_id, predecessor_block_sha256"
+  },
+  "boundary_evidence": {
+    "authority": {
+      "lifecycle": "root orchestrates only; each subagent owns its actual lifecycle receipt",
+      "execution": "only the exact assigned subagent for the active step",
+      "validation": "independent reviewer/finalizer identities",
+      "evidence": "append-only recovery namespace; predecessor graph read-only",
+      "memory": "none",
+      "promotion": "no knowledge promotion; Stage B handoff only after g4 PASS"
+    },
+    "boundaries": [
+      {"boundary_id":"immutable_predecessor","kind":"artifact_import","from_owner":"predecessor contract","to_owner":"all successor roles","applies_to_steps":["s0_successor_dispatch_review","s1a_continuation_assignment_map","s1_four_receipt_recovery","s2a_continuation_assignment_map_review","s2b_recovery_receipt_set_review","s3_recovery_pre_integrity_gate","s4_p4_preliminary_integrity","s4_t1_terminal_test","s4_t2_terminal_integrity","s5_t3_target_freeze","s5_t4_attacker_fanout","s5_t4_writer_skeptic","s5_t4_coverage","s5_t5_approval","s5_c1_closeout","s5_c2_terminal_verify"],"contract":"Read and hash-check predecessor artifacts; never edit, overwrite, relabel, omit, or claim retroactive correction.","on_violation":"block"},
+      {"boundary_id":"four_receipt_write_boundary","kind":"state_write","from_owner":"root orchestrator","to_owner":"four recovery receipt authors","applies_to_steps":["s1_four_receipt_recovery"],"contract":"Each author writes exactly its one assigned receipt path and no other file.","on_violation":"block"},
+      {"boundary_id":"review_independence","kind":"evidence_return","from_owner":"recovery receipt authors","to_owner":"recovery_receipt_set_reviewer","applies_to_steps":["s2b_recovery_receipt_set_review"],"contract":"Reviewer is distinct from every author and recomputes hashes and exact field semantics from disk.","on_violation":"block"},
+      {"boundary_id":"successor_gate_not_retry","kind":"capability_handoff","from_owner":"recovery_receipt_set_reviewer","to_owner":"recovery_pre_integrity_finalizer","applies_to_steps":["s3_recovery_pre_integrity_gate"],"contract":"Run RECOVERY_PRE_INTEGRITY_01 in the new namespace; never write or claim predecessor PRE_INTEGRITY_RETRY attempt 2.","on_violation":"block"}
+    ],
+    "receipts": [
+      {"receipt_id":"four_recovery_receipts","producer":"the four exact s1 subagents","required_fields":["dispatch_id","step_id","capability_ref","status","artifacts","validation","observer_status","blockers","residue","handoff_note","audit_reference"],"stores":["recovery_namespace exact assigned seat paths"],"on_missing":"block"},
+      {"receipt_id":"recovery_receipt_set_review","producer":"recovery_receipt_set_reviewer","required_fields":["dispatch_id","step_id","capability_ref","status","artifacts","validation","observer_status","blockers","residue","handoff_note","audit_reference"],"stores":["identity_and_path_assignments.receipt_set_review.path"],"on_missing":"block"},
+      {"receipt_id":"recovery_pre_integrity_receipt","producer":"recovery_pre_integrity_finalizer","required_fields":["dispatch_id","step_id","capability_ref","status","artifacts","validation","observer_status","blockers","residue","handoff_note","audit_reference"],"stores":["identity_and_path_assignments.recovery_pre_integrity_gate.receipt_path"],"on_missing":"block"}
+    ],
+    "state_namespaces": [
+      {"namespace":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2","owner":"predecessor","write_policy":"read-only immutable historical evidence for this recovery"},
+      {"namespace":".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01","owner":"successor subagents by exact path assignment","write_policy":"append-only, unique path per role/agent/attempt; no overwrite"}
+    ]
+  },
+  "stop_conditions": [
+    "Any predecessor hash differs from the declared hash.",
+    "The successor dispatch review is not PASS.",
+    "Any recovery author changes anything except its assigned new receipt.",
+    "Any of the four new receipts or their independent review is not literal PASS.",
+    "RECOVERY_PRE_INTEGRITY_01 is not PASS; no retry is authorized.",
+    "Any continuation or Stage-B terminal gate fails."
+  ],
+  "promotion_guardrails": [
+    "This dispatch cannot promote, amend, or erase predecessor evidence.",
+    "A successor PASS proves only the successor's forward evidence chain, never that the predecessor route passed.",
+    "No commit, release, or Stage-B execution is authorized by this artifact alone."
+  ]
+}

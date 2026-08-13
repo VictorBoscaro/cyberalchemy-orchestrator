@@ -5288,6 +5288,7 @@ class RuntimeService:
         *,
         raw: bytes,
         expected_digest: str,
+        opened_dispatch_route_digest: str,
         dispatch_id: str,
         group_id: str,
         seat_index: int,
@@ -5298,7 +5299,7 @@ class RuntimeService:
             raise IntegrityError("workflow manifest digest mismatch")
         manifest = self._require_exact_fields(
             parse_strict_json(raw),
-            {"schema", "dispatch_id", "target", "slots"},
+            {"schema", "dispatch_id", "route_digest", "target", "slots"},
             "WorkflowInputManifest",
         )
         if (
@@ -5306,6 +5307,18 @@ class RuntimeService:
             or manifest["dispatch_id"] != dispatch_id
         ):
             raise IntegrityError("workflow manifest identity mismatch")
+        manifest_route_digest = manifest["route_digest"]
+        if (
+            not isinstance(manifest_route_digest, str)
+            or not manifest_route_digest.startswith("sha256:")
+            or len(manifest_route_digest) != 71
+            or any(
+                character not in "0123456789abcdef"
+                for character in manifest_route_digest[7:]
+            )
+            or manifest_route_digest != opened_dispatch_route_digest
+        ):
+            raise IntegrityError("workflow manifest route digest mismatch")
         target = self._require_exact_fields(
             manifest["target"],
             {"group_id", "seat_index", "turn_ordinal", "attempt_id"},
@@ -5366,58 +5379,140 @@ class RuntimeService:
                 raise IntegrityError("workflow manifest source cardinality is invalid")
             total = 0
             for source in sources:
-                source = self._require_exact_fields(
-                    source,
-                    {
-                        "source_kind",
-                        "producer_binding_id",
-                        "path",
-                        "sha256",
-                        "size_bytes",
-                    },
-                    "WorkflowInputManifest source",
-                )
-                if source["source_kind"] not in {"repository", "binding-output"}:
+                if not isinstance(source, dict):
+                    raise IntegrityError("WorkflowInputManifest source must be an object")
+                source_kind = source.get("source_kind")
+                if source_kind not in {"repository", "binding-output"}:
                     raise IntegrityError("workflow manifest source kind is invalid")
-                _, body, actual_digest = self._host_workflow_source(source["path"])
-                if (
-                    source["sha256"] != actual_digest
-                    or source["size_bytes"] != len(body)
-                ):
-                    raise IntegrityError("workflow source bytes differ from manifest")
-                total += len(body)
-                producer_id = source["producer_binding_id"]
-                if source["source_kind"] == "repository":
-                    if producer_id is not None:
+                if source_kind == "repository":
+                    source_classification = "sensitive-input"
+                    source = self._require_exact_fields(
+                        source,
+                        {
+                            "source_kind",
+                            "producer_binding_id",
+                            "path",
+                            "sha256",
+                            "size_bytes",
+                        },
+                        "WorkflowInputManifest repository source",
+                    )
+                    _, body, actual_digest = self._host_workflow_source(source["path"])
+                    if (
+                        source["sha256"] != actual_digest
+                        or source["size_bytes"] != len(body)
+                    ):
+                        raise IntegrityError("workflow source bytes differ from manifest")
+                    if source["producer_binding_id"] is not None:
                         raise IntegrityError(
                             "repository source cannot claim a producer"
                         )
                 else:
-                    if not isinstance(producer_id, str) or not producer_id:
-                        raise IntegrityError("binding output requires a producer")
+                    source_classification = "sensitive-output"
+                    source = self._require_exact_fields(
+                        source,
+                        {"source_kind", "producer_output_receipt"},
+                        "WorkflowInputManifest binding-output source",
+                    )
+                    output = self._require_exact_fields(
+                        source["producer_output_receipt"],
+                        {
+                            "schema",
+                            "dispatch_id",
+                            "producer_binding_id",
+                            "producer_agent_id",
+                            "artifact_id",
+                            "path",
+                            "data_schema_ref",
+                            "sha256",
+                            "size_bytes",
+                            "route_digest",
+                            "receipt_digest",
+                        },
+                        "producer-output receipt",
+                    )
+                    receipt_body = dict(output)
+                    receipt_digest = receipt_body.pop("receipt_digest")
+                    if (
+                        output["schema"]
+                        != "aci-host-workflow-producer-output/v1"
+                        or output["dispatch_id"] != dispatch_id
+                        or output["route_digest"] != opened_dispatch_route_digest
+                        or output["data_schema_ref"] != slot["data_schema_ref"]
+                        or any(
+                            not isinstance(output[field], str) or not output[field]
+                            for field in (
+                                "producer_binding_id",
+                                "producer_agent_id",
+                                "artifact_id",
+                                "path",
+                                "data_schema_ref",
+                                "sha256",
+                                "receipt_digest",
+                            )
+                        )
+                        or isinstance(output["size_bytes"], bool)
+                        or not isinstance(output["size_bytes"], int)
+                        or output["size_bytes"] < 0
+                        or canonical_digest(receipt_body) != receipt_digest
+                    ):
+                        raise IntegrityError("producer-output receipt is invalid")
+                    producer_id = output["producer_binding_id"]
                     with self.database.connect() as conn:
                         producer = conn.execute(
                             """
-                            SELECT dispatch_id,state FROM host_workflow_turn_bindings
-                            WHERE binding_id=?
+                            SELECT b.dispatch_id,b.state,b.agent_id,
+                                   r.result_receipt_json
+                            FROM host_workflow_turn_bindings b
+                            LEFT JOIN command_receipts r
+                              ON r.scope_key='aci.host-workflow-turn:'||b.binding_id
+                             AND r.idempotency_key='terminal'
+                            WHERE b.binding_id=?
                             """,
                             (producer_id,),
                         ).fetchone()
                     if (
                         not producer
                         or producer["dispatch_id"] != dispatch_id
-                        or producer["state"]
-                        not in {"resolved", "error", "cancelled"}
+                        or producer["state"] != "resolved"
+                        or producer["agent_id"] != output["producer_agent_id"]
+                        or producer["result_receipt_json"] is None
                     ):
                         raise ConflictError(
-                            "workflow source producer is absent or non-terminal"
+                            "workflow source producer is absent or lacks a resolved identity"
                         )
+                    terminal_result = parse_strict_json(
+                        producer["result_receipt_json"].encode("utf-8")
+                    )
+                    if (
+                        not isinstance(terminal_result, dict)
+                        or terminal_result.get("binding_id") != producer_id
+                        or terminal_result.get("dispatch_id") != dispatch_id
+                        or terminal_result.get("state") != "resolved"
+                        or terminal_result.get("agent_id")
+                        != output["producer_agent_id"]
+                        or terminal_result.get("producer_output_receipt") != output
+                    ):
+                        raise IntegrityError(
+                            "workflow source differs from registered producer output"
+                        )
+                    _, body, actual_digest = self._host_workflow_source(output["path"])
+                    if (
+                        output["sha256"] != actual_digest
+                        or output["size_bytes"] != len(body)
+                        or output["artifact_id"]
+                        != "art_" + actual_digest.removeprefix("sha256:")[:32]
+                    ):
+                        raise IntegrityError(
+                            "producer-output bytes differ from immutable receipt"
+                        )
+                total += len(body)
                 source_artifacts.append(
                     self.artifacts.prepare(
                         body,
                         media_type="application/octet-stream",
                         schema_ref=slot["data_schema_ref"],
-                        classification="sensitive-input",
+                        classification=source_classification,
                     )
                 )
             if total > slot["max_bytes"]:
@@ -5481,6 +5576,24 @@ class RuntimeService:
         if not link or link["row_digest"] != snapshot.row_digest:
             raise IntegrityError("parent Dispatch link is absent or stale")
         row = parse_strict_json(link["row_json"])
+        capability_route = row.get("capability_route")
+        if not isinstance(capability_route, dict):
+            raise IntegrityError("parent Dispatch capability route is unavailable")
+        opened_dispatch_route_digest = capability_route.get("route_digest")
+        capability_route_body = dict(capability_route)
+        capability_route_body.pop("route_digest", None)
+        if (
+            not isinstance(opened_dispatch_route_digest, str)
+            or not opened_dispatch_route_digest.startswith("sha256:")
+            or len(opened_dispatch_route_digest) != 71
+            or any(
+                character not in "0123456789abcdef"
+                for character in opened_dispatch_route_digest[7:]
+            )
+            or canonical_digest(capability_route_body)
+            != opened_dispatch_route_digest
+        ):
+            raise IntegrityError("parent Dispatch capability route is invalid")
         groups = row.get("groups")
         group = (
             next(
@@ -5564,6 +5677,7 @@ class RuntimeService:
         _, source_artifacts = self._validate_workflow_manifest(
             raw=manifest_bytes,
             expected_digest=workflow_manifest_digest,
+            opened_dispatch_route_digest=opened_dispatch_route_digest,
             dispatch_id=dispatch_id,
             group_id=group_id,
             seat_index=seat_index,
@@ -5740,6 +5854,7 @@ class RuntimeService:
         state: str,
         agent_id: str | None,
         actor_ref: str,
+        producer_output: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         if state not in {"resolved", "error", "cancelled"}:
             raise ValidationError("host workflow terminal state is invalid")
@@ -5758,9 +5873,81 @@ class RuntimeService:
             ).fetchone()
         if not binding:
             raise NotFoundError("host workflow binding not found")
+        prepared_output: PreparedArtifact | None = None
+        producer_output_receipt: dict[str, Any] | None = None
+        if producer_output is not None:
+            output = self._require_exact_fields(
+                producer_output,
+                {"path", "data_schema_ref"},
+                "host workflow producer output",
+            )
+            if (
+                state != "resolved"
+                or not isinstance(agent_id, str)
+                or not agent_id
+                or not isinstance(output["data_schema_ref"], str)
+                or not output["data_schema_ref"]
+            ):
+                raise ValidationError(
+                    "producer output requires a resolved turn, agent, and data schema"
+                )
+            resolved_output, output_body, output_digest = self._host_workflow_source(
+                output["path"]
+            )
+            canonical_path = resolved_output.relative_to(
+                self.settings.repo_root.resolve()
+            ).as_posix()
+            if output["path"] != canonical_path:
+                raise ValidationError("producer output path must be canonical")
+            with self.database.connect() as conn:
+                link = conn.execute(
+                    "SELECT row_digest,row_json FROM dispatch_links WHERE dispatch_id=?",
+                    (binding["dispatch_id"],),
+                ).fetchone()
+            if not link or link["row_digest"] != binding["parent_row_digest"]:
+                raise IntegrityError("producer output parent Dispatch is absent or stale")
+            dispatch_row = parse_strict_json(link["row_json"])
+            capability_route = dispatch_row.get("capability_route")
+            if not isinstance(capability_route, dict):
+                raise IntegrityError("producer output capability route is unavailable")
+            route_digest = capability_route.get("route_digest")
+            route_body = dict(capability_route)
+            route_body.pop("route_digest", None)
+            if (
+                not isinstance(route_digest, str)
+                or canonical_digest(route_body) != route_digest
+            ):
+                raise IntegrityError("producer output capability route is invalid")
+            prepared_output = self.artifacts.prepare(
+                output_body,
+                media_type="application/octet-stream",
+                schema_ref=output["data_schema_ref"],
+                classification="sensitive-output",
+            )
+            receipt_body = {
+                "schema": "aci-host-workflow-producer-output/v1",
+                "dispatch_id": binding["dispatch_id"],
+                "producer_binding_id": binding_id,
+                "producer_agent_id": agent_id,
+                "artifact_id": prepared_output.artifact_id,
+                "path": canonical_path,
+                "data_schema_ref": output["data_schema_ref"],
+                "sha256": output_digest,
+                "size_bytes": len(output_body),
+                "route_digest": route_digest,
+            }
+            producer_output_receipt = {
+                **receipt_body,
+                "receipt_digest": canonical_digest(receipt_body),
+            }
         if prior:
             result = json.loads(prior["result_receipt_json"])
-            if result.get("state") != state or result.get("agent_id") != agent_id:
+            if (
+                result.get("state") != state
+                or result.get("agent_id") != agent_id
+                or result.get("producer_output_receipt")
+                != producer_output_receipt
+            ):
                 raise IdempotencyConflict(
                     "host workflow terminal retry differs from accepted result"
                 )
@@ -5816,12 +6003,14 @@ class RuntimeService:
                 "state": state,
                 "agent_id": agent_id,
                 "terminal_event_id": records[0].event_id,
+                "producer_output_receipt": producer_output_receipt,
             }
 
         return self.journal.accept(
             command,
             [event],
             next_state=payload,
+            additional_artifacts=((prepared_output,) if prepared_output else ()),
             result_builder=result,
             mutate=mutate,
         )

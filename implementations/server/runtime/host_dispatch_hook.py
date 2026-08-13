@@ -13,7 +13,11 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from .canonical import canonical_digest, canonical_text
-from .dispatch_types import live_dispatch_type_values
+from .dispatch_types import (
+    live_dispatch_type_values,
+    load_dispatch_type_registry,
+    resolve_dispatch_capability,
+)
 from .errors import GateBlockedError, ValidationError
 from .local_pilot import preflight_local_pilot
 from .orchestration_bridge import (
@@ -384,10 +388,28 @@ class HostDispatchHook:
             model = f"{self.host}-default"
         role = self._role(f"{label}\n{prompt}")
         agent_name = _safe_part(label)
+        registry = load_dispatch_type_registry(self.root)
+        compatibility_type = self.policy["compatibility_dispatch_type"]
+        compatibility_entry = next(
+            (
+                entry
+                for entry in registry["types"]
+                if entry["ledger_value"] == compatibility_type
+            ),
+            None,
+        )
+        if compatibility_entry is None or not compatibility_entry.get("capability_ref"):
+            raise GateBlockedError("compatibility dispatch type is not canonically routable")
+        capability_route = resolve_dispatch_capability(
+            self.root,
+            capability_ref=compatibility_entry["capability_ref"],
+            authority_mode="legacy-managed",
+        )
         record = {
             "dispatch_id": dispatch_id,
-            "schema_version": "0.6.3",
-            "dispatch_type": self.policy["compatibility_dispatch_type"],
+            "schema_version": registry["ledger_schema_version"],
+            "dispatch_type": compatibility_type,
+            "capability_route": capability_route,
             "goal": f"Automatically supervise host agent call: {label[:240]}",
             "context": (
                 f"Mandatory {self.host} host hook captured this Agent tool call "
@@ -610,6 +632,9 @@ class HostDispatchHook:
         record = {
             "close_of": state["dispatch_id"],
             "exit_reason": exit_reason,
+            "capability_route_digest": state["record"]["capability_route"][
+                "route_digest"
+            ],
             "agents_spawned": {
                 "total": 1,
                 "tree": {state["role"]: 1, "helpers": 0},

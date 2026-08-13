@@ -1,0 +1,100 @@
+{
+  "schema": "runtime-type-expansion-stage-a-final-hash-manifest/v1",
+  "contract_id": "2026-08-13-runtime-type-expansion-bootstrap-a",
+  "role_id": "a_integrity_owner",
+  "authority_kind": "explicit-user-authorized-direct-subagent",
+  "aci_bound": false,
+  "recorded_at_utc": "2026-08-13T16:37:32.4915930Z",
+  "governing_evidence": {
+    "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/bootstrap-contract.json": {
+      "sha256": "0f5f0b55380d12367050982ee72d8e871099f5a6a29cffa2ddc12ff624563ebf",
+      "bytes": 54045
+    },
+    "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/baseline.json": {
+      "sha256": "77d33113ca7eb867fbe2ee0c068c9bdea8d421e28b7ac1c82d48ffc9c12beec0",
+      "bytes": 115248,
+      "repaired_baseline_consumability": "PASS"
+    },
+    "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/test-report.json": {
+      "sha256": "30aa036867407590ac3ad456220b35390cc7245ac59ef28cf1f5cd94b2c67791",
+      "bytes": 9568,
+      "status_at_capture": "BLOCK_ONLY_ON_EXPECTED_PRE_INTEGRITY_STALE_PINS",
+      "post_integrity_fixed_contract": "PASS"
+    }
+  },
+  "final_targets": {
+    "implementations/contracts/dispatch-type-registry.v1.json": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "implementations/server/runtime/dispatch_types.py": "sha256:a3c057aa883e09c5553a8db2d30d9758a50ac7ab839d7e7131a4b5970d66b62b",
+    "implementations/server/runtime/capability_routes.py": "sha256:875683c1b4946f03738fd6badb079126120814f1717d3cbd56696e379157860d",
+    ".claude/skills/register-dispatch/append-dispatch.cjs": "sha256:4ba0607107bca00ed88977284e51b59d400820f9a686f9c7d61193d13e57ae04",
+    "implementations/server/runtime/dispatch_workflow.py": "sha256:daf4dd906fca116c0e8b33eb75db476d12ef465f1e7535f46ddd55086671c53f",
+    "implementations/server/runtime/service.py": "sha256:cc176a22414f27547153ea87e90bb673eb2274e1e8b2fee8f4247cd806ddc6e4",
+    "implementations/server/runtime/legacy.py": "sha256:0ef6c4ee96199ce9ea73102ee9922de35db79af1a7e9ea5495743329ab1f8728",
+    "implementations/server/runtime/host_dispatch_hook.py": "sha256:9448a3259149f08ec3f32d7428a2cbfe0413faa4c5d816504de42442a81fa5b0",
+    "implementations/tests/runtime/test_dispatch_workflow.py": "sha256:42a7e835f53706845e9e3310fa6600c6adc4697a7604e8f9fc3ca14946197076",
+    "implementations/tests/runtime/test_orchestration_bridge.py": "sha256:69eeee57c89e51441828a2c09da8529224aa21ca8d321115a40c51e51eb1caff",
+    "implementations/tests/runtime/test_host_dispatch_hook.py": "sha256:e6a904946b621d6485b9564e0096a06efc27c4d5ef22c4581c1c8ce916c8c2ab",
+    "implementations/tests/runtime/test_runtime_type_bootstrap.py": "sha256:ef6f1c5f910939f7be84f43e8efed8da754ce04d59d442103688248b2a55dc52",
+    "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": "sha256:a5bc1cc8e2a41790d60983ef52ccbf4938eb5ee11c500b274c7dce081bbe9748",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json": "sha256:84254dcdabae07cdcc48faead22cd63632c78fe793a73a57fbe5d5a4828dabf3",
+    "implementations/server/runtime/local_pilot.py": "sha256:5fd02a50a3352927a4ad46187554cdcdf2f329f659b3cbd68ec7ded3b2356505"
+  },
+  "integrity_changes": {
+    "manifest_before_sha256": "a2fab83e67b6957d0a5482191d5ff941125f6e3e7825eb042032cad46102e277",
+    "manifest_before_diff_utf8_sha256": "be36c74fa27f9815a72d328ccb9edff3ba73365adb94a118e1a5a3ad50462d0e",
+    "manifest_after_sha256": "84254dcdabae07cdcc48faead22cd63632c78fe793a73a57fbe5d5a4828dabf3",
+    "manifest_after_diff_utf8_sha256": "d60648f72f1c59d3650f72824abf056d52cf7bfd88156ca24629039fcf662bf5",
+    "local_pilot_before_sha256": "e506c1cc316163abe1a1df44e034d894d7ebf57e5041e40e2153b28ae869ec1b",
+    "local_pilot_before_diff_utf8_sha256": "f2870b9e1b6ff46a77a6a9c7c0b189df9dfce41441768dea886258a5797165b3",
+    "local_pilot_after_sha256": "5fd02a50a3352927a4ad46187554cdcdf2f329f659b3cbd68ec7ded3b2356505",
+    "local_pilot_after_diff_utf8_sha256": "b923747c1bf96d2ce01713cf102f18f72e81fadd621344d282cb1a291a361762",
+    "diff_digest_basis": "git diff --no-ext-diff --binary -- <path>, PowerShell Out-String, UTF-8 SHA-256; pre-edit digests reconstructed from captured exact pre-edit bytes and recorded git index IDs",
+    "changed_pin_map": {
+      "implementations/tests/runtime/test_runtime_type_bootstrap.py": {
+        "before": "sha256:321b2c257742d4dd01d6551009240dd004f9a7e589795c0e7fbd5c08e969252b",
+        "after": "sha256:ef6f1c5f910939f7be84f43e8efed8da754ce04d59d442103688248b2a55dc52"
+      },
+      "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": {
+        "before": "sha256:f67e7ed3528a8d47f258e46d29ddd7d38d28c969273d25788ce0f6a9bd4bdd42",
+        "after": "sha256:a5bc1cc8e2a41790d60983ef52ccbf4938eb5ee11c500b274c7dce081bbe9748"
+      },
+      "implementations/server/runtime/local_pilot.py#STAGE_E_SOURCE_MANIFEST_SHA256": {
+        "before": "sha256:a2fab83e67b6957d0a5482191d5ff941125f6e3e7825eb042032cad46102e277",
+        "after": "sha256:84254dcdabae07cdcc48faead22cd63632c78fe793a73a57fbe5d5a4828dabf3"
+      }
+    }
+  },
+  "provenance": {
+    "reference_kind": "host-delivered terminal agent identity; not a durable filesystem receipt",
+    "baseline_repair": "/root/runtime_stage_operator/baseline_repair_owner",
+    "runtime": "/root/runtime_dispatch_architect",
+    "compiler": "/root/runtime_stage_operator/stage_a_compiler",
+    "service": "/root/runtime_stage_operator/stage_a_service",
+    "fixtures": "/root/runtime_stage_operator/stage_a_fixture_migrator",
+    "legacy_adoption": "/root/runtime_stage_operator/legacy_adoption_owner",
+    "host_adoption": "/root/runtime_stage_operator/host_adoption_owner",
+    "tests": "/root/runtime_stage_operator/stage_a_tests",
+    "contract_author_artifact": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/bootstrap-contract.json",
+    "contract_review_artifact": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/postchange-amendment.review.md",
+    "post_adoption_review": "PASS reported by the serialized Stage-A operator before integrity launch; no separate durable filesystem receipt was provided to this role"
+  },
+  "preservation": {
+    "original_baseline_manifest_hunks": "PASS; every pre-existing entry change remains byte-for-byte unchanged except the two required exclusive-test digest tokens",
+    "original_baseline_local_pilot_hunks": "PASS; the existing source-manifest pin hunk remains structurally unchanged and only its required digest token changed",
+    "independently_attributed_user_hunks": "PASS; none overlapped",
+    "stage_a_producer_hunks": "PASS; retained unchanged and mapped to the named host-delivered terminal agent identities above",
+    "semantic_overlap": false
+  },
+  "fixed_test_contract": [
+    {"command": "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap -v", "result": "PASS", "cases": 10},
+    {"command": "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap_abuse -v", "result": "PASS", "cases": 8},
+    {"command": "python -m unittest implementations.tests.runtime.test_dispatch_workflow -v", "result": "PASS", "cases": 6},
+    {"command": "python -m unittest implementations.tests.runtime.test_orchestration_bridge -v", "result": "PASS", "cases": 18},
+    {"command": "python -m unittest implementations.tests.runtime.test_host_dispatch_hook -v", "result": "PASS", "cases": 11},
+    {"command": "python implementations/tests/test_ledger.py", "result": "PASS"},
+    {"command": "python -c \"from pathlib import Path; from implementations.server.runtime.local_pilot import _verify_source_manifest; _verify_source_manifest(Path.cwd())\"", "result": "PASS"},
+    {"command": "python -m unittest implementations.tests.runtime.test_stage_c -v", "result": "PASS", "cases": 8}
+  ],
+  "result": "PASS",
+  "blockers": []
+}

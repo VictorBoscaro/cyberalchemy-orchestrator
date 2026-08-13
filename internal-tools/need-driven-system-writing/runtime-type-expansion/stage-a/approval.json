@@ -1,0 +1,132 @@
+{
+  "schema": "runtime-type-expansion-stage-a-approval/v1",
+  "contract_id": "2026-08-13-runtime-type-expansion-bootstrap-a",
+  "approved_parent_sha256": "2D9C9C3B3ACD66D0A0C11DF69F2BC9265B45A3384BB7C317D7F76F78CB342051",
+  "recorded_at_utc": "2026-08-13T17:05:12.7989361Z",
+  "role_id": "a_final_approver",
+  "authority_kind_explicit_direct_subagent": true,
+  "authority_kind": "explicit-user-authorized-direct-subagent",
+  "aci_claim_false": true,
+  "ledger_governed_claim_false": true,
+  "authority_disclosure": "Direct non-ACI Stage-A bootstrap approval. This receipt makes no ACI binding, compile authorization, open authorization, governed-seat, governed-dispatch, or ledger-governed claim.",
+  "repair_cycle": {
+    "current": 1,
+    "maximum": 3,
+    "result": "BLOCK"
+  },
+  "all_role_identities_distinct": false,
+  "identity_evidence": "Not establishable: the contract-required durable per-seat receipt namespace is absent.",
+  "all_attempted_agents_terminal": false,
+  "host_tree_snapshot": {
+    "source": "available host tree at approval decision",
+    "agents": [
+      {
+        "agent_id": "/root",
+        "role_id": "root-controller",
+        "status": "running"
+      },
+      {
+        "agent_id": "/root/runtime_stage_operator",
+        "role_id": "stage-a-operator",
+        "status": "running"
+      },
+      {
+        "agent_id": "/root/runtime_stage_operator/stage_a_approver",
+        "role_id": "a_final_approver",
+        "status": "running"
+      },
+      {
+        "agent_id": "/root/runtime_stage_operator/stage_a_review_writer",
+        "role_id": "a_review_writer",
+        "status": "completed",
+        "terminal_report": "Updated review SHA-256: 3881EBEBE49212C3B45DBD6B40955176123774A00AE34484AF2E60283CB9B194"
+      }
+    ],
+    "receipt_namespace": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a",
+    "receipt_namespace_exists": false
+  },
+  "final_hash_manifest_path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/final-hash-manifest.json",
+  "final_hash_manifest_sha256": "4DB6986BDE286F6E84E2C92D9AA9CC256C297769E0DBA0AF0C62DF2B7B07E862",
+  "final_hashes_unchanged": true,
+  "final_target_hash_check": {
+    "matched": 15,
+    "denominator": 15,
+    "result": "PASS"
+  },
+  "test_report_path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/test-report.json",
+  "test_report_sha256": "30AA036867407590AC3AD456220B35390CC7245AC59EF28CF1F5CD94B2C67791",
+  "test_evidence": {
+    "final_result": "BLOCK",
+    "pass_commands": 5,
+    "block_commands": 4,
+    "supplemental_block_commands": 1,
+    "blocked_required_commands": [
+      "python -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+      "python -m unittest implementations.tests.runtime.test_host_dispatch_hook -v",
+      "python -c \"from pathlib import Path; from implementations.server.runtime.local_pilot import _verify_source_manifest; _verify_source_manifest(Path.cwd())\"",
+      "python -m unittest implementations.tests.runtime.test_stage_c -v"
+    ],
+    "deterministic_pass": false,
+    "reason": "The pinned report is terminal BLOCK while final-hash-manifest.json asserts PASS for the same required commands and overall result."
+  },
+  "review_path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/review.md",
+  "review_sha256": "3881EBEBE49212C3B45DBD6B40955176123774A00AE34484AF2E60283CB9B194",
+  "coverage_complete": true,
+  "coverage": {
+    "covered_cells": 54,
+    "required_cells": 54,
+    "targets": 18,
+    "lenses": 3,
+    "result": "PASS"
+  },
+  "critical_count": 3,
+  "major_count": 1,
+  "surviving_findings": [
+    {
+      "id": "A-001",
+      "severity": "CRITICAL",
+      "repair_roles": ["a_test_implementer", "a_integrity_owner"],
+      "repair": "Produce a terminal fixed-command test-report after final pins are valid, then regenerate the report pin and manifest claims only from that persisted terminal evidence."
+    },
+    {
+      "id": "A-002",
+      "severity": "CRITICAL",
+      "repair_roles": ["all-original-stage-a-seat-owners", "a_final_approver"],
+      "repair": "Persist contract-complete per-seat lifecycle/adoption receipts in the named namespace; the next approver must verify distinct identities and terminal spawn/join/close evidence for every attempted seat."
+    },
+    {
+      "id": "A-004",
+      "severity": "MAJOR",
+      "repair_roles": ["a_compiler_implementer", "a_manifest_service_implementer"],
+      "repair": "Register each terminal binding's exact output path, digest, size, and artifact identity, and require binding-output validation to match that registered output."
+    },
+    {
+      "id": "A-005",
+      "severity": "CRITICAL",
+      "repair_roles": ["a_runtime_implementer"],
+      "repair": "Reject absent or malformed referenced openings and require the exact route digest for current-schema closes, allowing omission only for a verified historical route-less opening."
+    }
+  ],
+  "additional_review_repair": {
+    "role_id": "a_review_writer",
+    "repair": "Replace stale pending-convergence wording with the skeptic's terminal converged dispositions before refreezing review.md."
+  },
+  "repair_routing_order": [
+    "Route A-004 to a_compiler_implementer and a_manifest_service_implementer, and A-005 to a_runtime_implementer, within their existing exact scopes.",
+    "Route A-002 to every original Stage-A seat owner for contract-complete durable receipts; do not substitute manifest prose or host-delivered identity summaries.",
+    "Run a_test_implementer over the complete fixed command contract and persist a terminal report.",
+    "Run a_integrity_owner only after terminal test evidence; regenerate final-hash-manifest.json from persisted evidence.",
+    "Rerun all three attackers, writer-skeptic convergence, a_coverage_auditor, then a_review_writer's convergence-wording correction and refreeze the review.",
+    "Rerun a_final_approver for cycle 2 only after every attempted Stage-A agent has terminal join/close evidence."
+  ],
+  "dirty_hunks_preserved": false,
+  "dirty_hunks_preservation_evidence": "The manifest asserts preservation, but A-002 prevents independent approval-grade verification because the required attributable durable receipts do not exist.",
+  "blockers": [
+    "Pinned test-report final_result is BLOCK and contradicts manifest PASS claims.",
+    "Required durable lifecycle and adoption receipts are absent.",
+    "Three CRITICAL and one MAJOR findings survive skeptic convergence.",
+    "All attempted agents are not terminal in the available host tree.",
+    "Review finding bodies retain stale pending-convergence wording."
+  ],
+  "verdict": "BLOCK"
+}

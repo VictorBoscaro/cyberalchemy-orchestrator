@@ -4,7 +4,9 @@ import json
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
+from unittest.mock import patch
 
 from implementations.server.runtime.canonical import (
     canonical_digest,
@@ -16,6 +18,10 @@ from implementations.server.runtime.errors import (
     ConflictError,
     IdempotencyConflict,
     IntegrityError,
+    ValidationError,
+)
+from implementations.server.runtime.dispatch_types import (
+    resolve_dispatch_capability,
 )
 from implementations.server.runtime.orchestration_bridge import (
     LocalOrchestrationLoggingBridge,
@@ -49,6 +55,11 @@ class HostWorkflowBindingTests(unittest.TestCase):
             destination = self.project / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(REPO / relative, destination)
+        capability_route = resolve_dispatch_capability(
+            self.project,
+            capability_ref="research",
+            authority_mode="legacy-managed",
+        )
         registry_relative = (
             "docs/features/agents-communication-infra/reviews/"
             "2026-07-23-stage-a-freeze/profile-registry-manifest.json"
@@ -104,8 +115,9 @@ class HostWorkflowBindingTests(unittest.TestCase):
         }
         self.opening = {
             "dispatch_id": "2026-07-25-foundational-research",
-            "schema_version": "0.6.3",
+            "schema_version": dispatch_registry["ledger_schema_version"],
             "dispatch_type": "research",
+            "capability_route": capability_route,
             "goal": "Research a deterministic foundational kernel.",
             "context": (
                 "Three independent researchers examine kernel invariants, Lean "
@@ -205,6 +217,7 @@ class HostWorkflowBindingTests(unittest.TestCase):
             {
                 "schema": "aci-workflow-input-manifest/v1",
                 "dispatch_id": self.opening["dispatch_id"],
+                "route_digest": self.opening["capability_route"]["route_digest"],
                 "target": {
                     "group_id": group_id,
                     "seat_index": 0,
@@ -258,6 +271,66 @@ class HostWorkflowBindingTests(unittest.TestCase):
             workflow_manifest_digest=manifest_digest,
             actor_ref="operator:test",
         )
+
+    @staticmethod
+    def _binding_output_slot(receipt: dict) -> dict:
+        return {
+            "name": "kernel-result",
+            "data_schema_ref": receipt["data_schema_ref"],
+            "cardinality": {"min": 1, "max": 1},
+            "max_bytes": 1024,
+            "purpose": "Consume the exact registered upstream result.",
+            "sources": [
+                {
+                    "source_kind": "binding-output",
+                    "producer_output_receipt": receipt,
+                }
+            ],
+        }
+
+    @staticmethod
+    def _redigest_receipt(receipt: dict) -> dict:
+        body = dict(receipt)
+        body.pop("receipt_digest", None)
+        return {**body, "receipt_digest": canonical_digest(body)}
+
+    def _fabricated_output_receipt(
+        self,
+        *,
+        binding: dict,
+        agent_id: str,
+        path: str,
+        data_schema_ref: str = "text/markdown",
+    ) -> dict:
+        body = (self.project / path).read_bytes()
+        sha256 = digest_bytes(body)
+        return self._redigest_receipt(
+            {
+                "schema": "aci-host-workflow-producer-output/v1",
+                "dispatch_id": self.opening["dispatch_id"],
+                "producer_binding_id": binding["binding_id"],
+                "producer_agent_id": agent_id,
+                "artifact_id": "art_" + sha256.removeprefix("sha256:")[:32],
+                "path": path,
+                "data_schema_ref": data_schema_ref,
+                "sha256": sha256,
+                "size_bytes": len(body),
+                "route_digest": self.opening["capability_route"]["route_digest"],
+            }
+        )
+
+    def _assert_output_rejected(
+        self,
+        receipt: dict,
+        expected_error: type[Exception] = IntegrityError,
+    ) -> None:
+        with self.assertRaises(expected_error):
+            self._bind(
+                group_id="runtime",
+                attempt_id="attempt-runtime",
+                tool_use_id="tool-runtime",
+                slots=[self._binding_output_slot(receipt)],
+            )
 
     def test_three_seats_share_one_parent_dispatch(self) -> None:
         bindings = [
@@ -315,6 +388,9 @@ class HostWorkflowBindingTests(unittest.TestCase):
                 "tree": {"explorer": 1, "helpers": 0},
                 "loops_used": 1,
             },
+            "capability_route_digest": self.opening["capability_route"][
+                "route_digest"
+            ],
         }
         with self.assertRaises(ConflictError):
             self.bridge.close_dispatch(
@@ -380,7 +456,7 @@ class HostWorkflowBindingTests(unittest.TestCase):
         )
         self.assertEqual(followed["turn_ordinal"], 1)
 
-    def test_binding_output_requires_terminal_producer_and_exact_bytes(self) -> None:
+    def test_binding_output_accepts_exact_registered_producer_output(self) -> None:
         producer = self._bind(
             group_id="kernel",
             attempt_id="attempt-kernel",
@@ -389,40 +465,39 @@ class HostWorkflowBindingTests(unittest.TestCase):
         output = self.project / "workflow/kernel-output.md"
         output.write_text("kernel evidence", encoding="utf-8")
         output_body = output.read_bytes()
-        slot = {
-            "name": "kernel-result",
-            "data_schema_ref": "text/markdown",
-            "cardinality": {"min": 1, "max": 1},
-            "max_bytes": 1024,
-            "purpose": "Consume the upstream research result.",
-            "sources": [
-                {
-                    "source_kind": "binding-output",
-                    "producer_binding_id": producer["binding_id"],
-                    "path": "workflow/kernel-output.md",
-                    "sha256": digest_bytes(output_body),
-                    "size_bytes": len(output_body),
-                }
-            ],
-        }
-        with self.assertRaises(ConflictError):
-            self._bind(
-                group_id="runtime",
-                attempt_id="attempt-runtime",
-                tool_use_id="tool-runtime",
-                slots=[slot],
-            )
-        self.runtime.complete_host_workflow_turn(
+        terminal = self.runtime.complete_host_workflow_turn(
             binding_id=producer["binding_id"],
             state="resolved",
             agent_id="agent-kernel",
             actor_ref="operator:test",
+            producer_output={
+                "path": "workflow/kernel-output.md",
+                "data_schema_ref": "text/markdown",
+            },
         )
+        receipt = terminal["producer_output_receipt"]
+        self.assertEqual(
+            set(receipt),
+            {
+                "schema",
+                "dispatch_id",
+                "producer_binding_id",
+                "producer_agent_id",
+                "artifact_id",
+                "path",
+                "data_schema_ref",
+                "sha256",
+                "size_bytes",
+                "route_digest",
+                "receipt_digest",
+            },
+        )
+        self.assertEqual(receipt["schema"], "aci-host-workflow-producer-output/v1")
         bound = self._bind(
             group_id="runtime",
             attempt_id="attempt-runtime",
             tool_use_id="tool-runtime",
-            slots=[slot],
+            slots=[self._binding_output_slot(receipt)],
         )
         self.assertEqual(bound["status"], "launch-authorized")
         persisted = self.runtime.get_host_workflow_binding(bound["binding_id"])
@@ -434,14 +509,129 @@ class HostWorkflowBindingTests(unittest.TestCase):
                 (source_ids[0],),
             ).fetchone()
         self.assertEqual(artifact["content_hash"], digest_bytes(output_body))
-        slot["sources"][0]["sha256"] = digest_bytes(b"tampered")
-        with self.assertRaises(IntegrityError):
-            self._bind(
-                group_id="lean",
-                attempt_id="attempt-lean",
-                tool_use_id="tool-lean",
-                slots=[slot],
+
+    def test_binding_output_rejects_unregistered_and_inexact_sources(self) -> None:
+        producer = self._bind(
+            group_id="kernel",
+            attempt_id="attempt-kernel",
+            tool_use_id="tool-kernel",
+        )
+        output = self.project / "workflow/kernel-output.md"
+        output.write_text("kernel evidence", encoding="utf-8")
+        terminal = self.runtime.complete_host_workflow_turn(
+            binding_id=producer["binding_id"],
+            state="resolved",
+            agent_id="agent-kernel",
+            actor_ref="operator:test",
+            producer_output={
+                "path": "workflow/kernel-output.md",
+                "data_schema_ref": "text/markdown",
+            },
+        )
+        registered = terminal["producer_output_receipt"]
+
+        pending = self._bind(
+            group_id="lean",
+            attempt_id="attempt-lean",
+            tool_use_id="tool-lean",
+        )
+        caller_path = self.project / "workflow/caller-created.md"
+        caller_path.write_text("caller-created evidence", encoding="utf-8")
+        fabricated = self._fabricated_output_receipt(
+            binding=pending,
+            agent_id="agent-lean",
+            path="workflow/caller-created.md",
+        )
+        with self.subTest(case="nonterminal producer"):
+            self._assert_output_rejected(fabricated, ConflictError)
+        self.runtime.complete_host_workflow_turn(
+            binding_id=pending["binding_id"],
+            state="resolved",
+            agent_id="agent-lean",
+            actor_ref="operator:test",
+        )
+        with self.subTest(case="missing output receipt"):
+            self._assert_output_rejected(fabricated)
+
+        with self.subTest(case="arbitrary caller-created path"):
+            arbitrary = self._fabricated_output_receipt(
+                binding=producer,
+                agent_id="agent-kernel",
+                path="workflow/caller-created.md",
             )
+            self._assert_output_rejected(arbitrary)
+
+        mutations = {
+            "wrong schema": ({"schema": "wrong-schema/v1"}, IntegrityError),
+            "wrong dispatch": (
+                {"dispatch_id": "different-dispatch"},
+                IntegrityError,
+            ),
+            "wrong binding": (
+                {"producer_binding_id": pending["binding_id"]},
+                ConflictError,
+            ),
+            "wrong producer agent": (
+                {"producer_agent_id": "different-agent"},
+                ConflictError,
+            ),
+            "wrong artifact": (
+                {"artifact_id": "art_" + "0" * 32},
+                IntegrityError,
+            ),
+            "wrong data schema": (
+                {"data_schema_ref": "application/json"},
+                IntegrityError,
+            ),
+            "wrong sha256": (
+                {"sha256": "sha256:" + "0" * 64},
+                IntegrityError,
+            ),
+            "wrong byte count": (
+                {"size_bytes": registered["size_bytes"] + 1},
+                IntegrityError,
+            ),
+            "wrong route": (
+                {"route_digest": "sha256:" + "0" * 64},
+                IntegrityError,
+            ),
+        }
+        for case, (changes, expected_error) in mutations.items():
+            with self.subTest(case=case):
+                changed = deepcopy(registered)
+                changed.update(changes)
+                self._assert_output_rejected(
+                    self._redigest_receipt(changed), expected_error
+                )
+
+        with self.subTest(case="wrong receipt digest"):
+            changed = deepcopy(registered)
+            changed["receipt_digest"] = "sha256:" + "0" * 64
+            self._assert_output_rejected(changed)
+
+        with self.subTest(case="cross-output substitution"):
+            substituted_path = self.project / "workflow/substituted-output.md"
+            substituted_path.write_text("different output", encoding="utf-8")
+            substituted = self._fabricated_output_receipt(
+                binding=producer,
+                agent_id="agent-kernel",
+                path="workflow/substituted-output.md",
+            )
+            self._assert_output_rejected(substituted)
+
+        with self.subTest(case="post-registration mutation"):
+            output.write_text("mutated after registration", encoding="utf-8")
+            self._assert_output_rejected(registered)
+            output.write_text("kernel evidence", encoding="utf-8")
+
+        with self.subTest(case="symlink substitution"):
+            original_is_symlink = Path.is_symlink
+
+            def reports_output_symlink(candidate: Path) -> bool:
+                return candidate == output or original_is_symlink(candidate)
+
+            with patch.object(Path, "is_symlink", reports_output_symlink):
+                self._assert_output_rejected(registered, ValidationError)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

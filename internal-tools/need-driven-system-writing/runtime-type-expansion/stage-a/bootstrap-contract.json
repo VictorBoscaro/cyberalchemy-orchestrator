@@ -1,0 +1,866 @@
+{
+  "schema": "runtime-type-expansion-stage-a-bootstrap-contract/v1",
+  "contract_id": "2026-08-13-runtime-type-expansion-bootstrap-a",
+  "status": "cycle-2-review-repair-authorized-blocked-until-pass",
+  "cycle_2_p3_evidence_repair": {
+    "status": "authorized-pending-independent-amendment-review",
+    "source_contract_sha256": "BEF303F71CD8C6A69C12B0B00528EEF63C705657BAFB9751B9F31E2308FE3CCA",
+    "source_contract_review": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/cycle2-amendment.review.md",
+    "source_contract_review_verdict": "PASS",
+    "blocked_finalizer_receipt": {
+      "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_receipt_lifecycle_finalizer/cycle2_receipt_finalizer/pre-integrity-01.json",
+      "sha256": "9536BD8637B0D3736688CC56D33BBE7E9C6ABCB6BB260A3669CC497684B2EC63",
+      "verdict": "BLOCK",
+      "preservation": "Immutable attempt 1 and permanent residue; never edit, replace, omit, or relabel."
+    },
+    "observed_receipt_set": {
+      "seat_receipt_count": 9,
+      "blocked_finalizer_excluded_from_denominator": true,
+      "ordered_set_digest_reported_by_attempt_1": "DA0C5D84BEAFB2659943765146D036F9953D06EC6E0263761BAD0E3DC689F578",
+      "frozen_receipts": [
+        {"role_id": "a_baseline_repair_owner", "sha256": "A20FA138EE666E433BE64AA2E02342EE7FFFCCBF44790637C64ECC5150328F6B"},
+        {"role_id": "a_binding_output_test_owner", "sha256": "AEE5DE245C286D2C34FE4E5F9FB4B3580652AA3F2D23C5E6D39FF74A52109DF2"},
+        {"role_id": "a_compiler_implementer", "sha256": "9E98B5EF42D30700A960457CADB1CD7FCE56DBB1D3920CBF2EFB3844A8B75438"},
+        {"role_id": "a_host_hook_adoption_owner", "sha256": "E452ACB2AA423754D36A88EC6A0194A555D987EEF641638DEF635CC2A4620E2A"},
+        {"role_id": "a_legacy_adoption_owner", "sha256": "3FEE82BF192F764D663B57A7231170D03DB35DB323BE2F0A94A49902695DB02B"},
+        {"role_id": "a_legacy_fixture_migrator", "sha256": "C1C2BA2EAE4849D7F80A544707CD7FB8B508A5550A62313D05656DD0D991A2A5"},
+        {"role_id": "a_manifest_service_implementer", "sha256": "29E6A283D435B8DCCE9F59C92E6CD57DAE8F46433C8951CF0628D7F689C4446E"},
+        {"role_id": "a_runtime_implementer", "sha256": "C23E5000513839405DD988319E716BE5EE8685A20763652B3E3236CAB44DD05A"},
+        {"role_id": "a_test_implementer", "sha256": "2F622FFC9E56AFA48F7393123CE2FCC4B05569EA138C611FB8B370BC91DAE0CC"}
+      ],
+      "rule": "All nine receipts and the BLOCK finalizer receipt remain byte-for-byte preserved. Corrections are later linked receipts only."
+    },
+    "authorized_corrections": {
+      "distinct_adoption_owner_identities": "Fresh agent ids are mandatory and different across branches: cycle2_legacy_adoption_reaffirm_02 for a_legacy_adoption_owner and cycle2_host_adoption_reaffirm_02 for a_host_hook_adoption_owner. Neither may equal cycle2_reaffirm_adoptions or either auditor identity.",
+      "corrected_predecessor": "The new host adoption-owner reaffirmation must reference the new legacy adoption-owner receipt by its actual post-write SHA-256. It must also disclose that old host receipt E452ACB2AA423754D36A88EC6A0194A555D987EEF641638DEF635CC2A4620E2A contained stale expected digest 8CFDC80CC0346999A235ADB2C18797258D339B041B4E9C4D3D9751B2F131D628 while the old legacy receipt actual digest was 3FEE82BF192F764D663B57A7231170D03DB35DB323BE2F0A94A49902695DB02B. Never edit either old receipt.",
+      "fixture_reaffirmation": "a_legacy_fixture_migrator uses fresh agent id cycle2_fixture_reaffirm_02 and new attempt reaffirm-02. It links old receipt C1C2BA2EAE4849D7F80A544707CD7FB8B508A5550A62313D05656DD0D991A2A5, supplies every generic field including validation, correct approved parent and explicit contract hash, verifies current fixture hashes, preserves expected preliminary integrity BLOCK honestly, and does not edit fixtures.",
+      "test_reaffirmation": "a_test_implementer uses fresh agent id cycle2_test_reaffirm_02 and new attempt preliminary-reaffirm-02. It links old receipt 2F622FFC9E56AFA48F7393123CE2FCC4B05569EA138C611FB8B370BC91DAE0CC, supplies before_hashes, after_hashes, validation, reroute, correct approved parent and explicit contract hash, verifies current test/report hashes, preserves expected preliminary BLOCK honestly, and does not run or claim the later terminal test.",
+      "parent_contract_link_reaffirmations": "a_baseline_repair_owner, a_binding_output_test_owner, a_compiler_implementer, and a_manifest_service_implementer each write one new no-mutation reaffirmation receipt with a fresh unique agent id/attempt id, old receipt path+hash, approved_parent_sha256 2D9C9C3B3ACD66D0A0C11DF69F2BC9265B45A3384BB7C317D7F76F78CB342051, explicit amended contract_sha256, current artifact hashes, complete generic fields, validation rerun, responsibility starting now, and no invented prior lifecycle.",
+      "durable_adoption_audits": "Fresh distinct a_legacy_adoption_auditor and a_host_hook_adoption_auditor agents independently re-read current bytes, last verified clean bytes, approved intent, old ephemeral summary residue, and both old owner receipts; each performs a bounded line-by-line re-audit and writes its own new durable audit receipt. They never adopt, edit, or infer past authorship.",
+      "adoption_owner_reaffirmations": "Only after its branch's durable auditor PASS may each fresh adoption owner write a new no-mutation reaffirmation receipt linking old owner receipt and new auditor receipt. The host branch additionally follows the actual new legacy-owner digest as its sequential predecessor."
+    },
+    "prohibitions": [
+      "Do not edit any existing seat or finalizer receipt.",
+      "Do not turn an old BLOCK into PASS or suppress preliminary integrity staleness.",
+      "Do not backdate recorded_at_utc, accepted_responsibility_from_utc, spawn, join, close, audit, or predecessor evidence.",
+      "Do not synthesize an auditor receipt from an ephemeral summary; rerun the bounded audit with a fresh identity.",
+      "Do not launch P4 until amendment review, correction-set review, and PRE_INTEGRITY_RETRY PASS and every retained preliminary BLOCK satisfies the bounded preliminary_pre_pin_eligibility_rule."
+    ]
+  },
+  "cycle_2_review_repair": {
+    "source_review": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/review.md",
+    "source_approval": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/approval.json",
+    "source_approval_sha256": "3C2CE4041963799AD35E6B05163253E46DCE06D5EB5B5F29FE29F841F1D58C0F",
+    "source_verdict": "BLOCK",
+    "authorized_findings": ["A-001", "A-002", "A-004", "A-005"],
+    "scope_rule": "Only exact original-owner production repairs, their disjoint tests, future durable receipt reconstruction by rerun/reaffirmation, serialized integrity repins, and the complete cycle-2 review are authorized. Do not invent, backdate, or infer missing past receipts.",
+    "frozen_evidence": {
+      "blocked_test_report": {"sha256": "30AA036867407590AC3AD456220B35390CC7245AC59EF28CF1F5CD94B2C67791", "result": "BLOCK"},
+      "contradictory_final_hash_manifest": {"sha256": "4DB6986BDE286F6E84E2C92D9AA9CC256C297769E0DBA0AF0C62DF2B7B07E862", "claimed_result": "PASS", "classification": "invalid_terminal_evidence_preserved_as_cycle-1 residue"},
+      "appender": {"path": ".claude/skills/register-dispatch/append-dispatch.cjs", "sha256": "4BA0607107BCA00ED88977284E51B59D400820F9A686F9C7D61193D13E57AE04", "bytes": 48554},
+      "compiler": {"path": "implementations/server/runtime/dispatch_workflow.py", "sha256": "DAF4DD906FCA116C0E8B33EB75DB476D12EF465F1E7535F46DDD55086671C53F", "bytes": 19278},
+      "service": {"path": "implementations/server/runtime/service.py", "sha256": "CC176A22414F27547153EA87E90BB673EB2274E1E8B2FEE8F4247CD806DDC6E4", "bytes": 265912},
+      "host_workflow_binding_fixture": {"path": "implementations/tests/runtime/test_host_workflow_binding.py", "sha256": "25DA0B9387D8491E8A43ACEB4B882649BFD1A8924D76B7140C32495586E46B78", "bytes": 16244}
+    },
+    "finding_repairs": {
+      "A-001": "Preserve the cycle-1 BLOCK report. After preliminary integrity pins are current, a_test_implementer reruns the complete fixed and A-004 supplemental command set and writes a new terminal report containing command, start/end timestamps, duration, exit code, stdout/stderr byte counts and SHA-256 digests, cases, result, tested source-manifest/local-pilot hashes, receipt-set digest, final PASS/BLOCK, and blockers. Then a_integrity_owner repins that exact report and derives every manifest claim from it.",
+      "A-002": "Every required seat creates a unique durable cycle-2 receipt by actual rerun or present-byte reaffirmation. A reaffirmation states that no past receipt exists, verifies current before/after/final hashes and prior residue, reruns its validation, accepts responsibility only from the reaffirmation timestamp, and records spawn/join/close lifecycle. A receipt finalizer validates uniqueness/completeness and writes a lifecycle manifest; it never synthesizes a seat receipt.",
+      "A-004": "The compiler and service must bind every sequential binding-output source to the exact registered producer-output receipt: same dispatch, producer binding id, terminal producer identity, output artifact id, repository-relative canonical path, schema, SHA-256, byte count, route digest, and immutable producer-output receipt digest. Caller assertions or terminal binding state alone are insufficient.",
+      "A-005": "The appender must resolve exactly one referenced opening before accepting close. Current-schema close requires the exact immutable opening route digest. Missing, duplicate, malformed, or route-unverifiable opening and orphan close fail closed. Omission is allowed only when an existing, uniquely resolved historical opening is itself verified as a pre-route schema row; validate-only receives no broader grandfathering."
+    },
+    "host_workflow_binding_disposition": "INCLUDE only as the verified A-004 reproduction and negative-test surface. Update its stale opening fixture to canonical 0.6.4 capability_route only as mechanically required to reach the binding-output assertions; no supplemental production behavior or broader host-workflow redesign."
+  },
+  "amendment": {
+    "id": "stage-a-route-digest-consumer-legacy-schema-host-hook-and-fixture-repair-3",
+    "reason": "Compiler repair evidence added route_digest to workflow manifests, while exact failing validator and lifecycle fixtures exposed one unowned manifest consumer, one production host-hook synthesizer still creating 0.6.3 openings without capability_route, and stale 0.6.3/missing-capability_route fixtures.",
+    "scope": "Retain the route-digest service, legacy-schema, and fixture owners; repair the baseline evidence chronology and add only one disjoint owner for the production host-hook synthesizer plus its exact test, ordering, receipt, and integrity consequences.",
+    "service_before_sha256": "A80574D71191D871013387CFB35F883AE28229DAD6F2F9C43309A0C1EFCBF11F",
+    "evidence": [
+      "The compiler repair now emits workflow manifests containing route_digest and rejects handoff receipts whose route_digest differs from the resolved route.",
+      "implementations/server/runtime/service.py is the downstream workflow-manifest consumer named by the failing validator and lacks an owned exact route_digest validation repair.",
+      "implementations/tests/runtime/test_dispatch_workflow.py still contains schema_version 0.6.3 and a plural others mismatch fixture shaped as a new opening.",
+      "implementations/tests/runtime/test_orchestration_bridge.py still contains schema_version 0.6.3 and a test asserting new plural others is live.",
+      "implementations/tests/runtime/test_host_dispatch_hook.py still synthesizes schema_version 0.6.3 workflow/opening fixtures without the new immutable capability_route and route_digest boundary.",
+      "The existing Stage-A exclusive tests already cover new route behavior and historical 0.6.3/plural compatibility; migration must preserve that distinction rather than deleting legacy coverage."
+      ,"implementations/server/runtime/legacy.py declares SUPPORTED_OPENING_CONTRACTS as exactly 0.6.1, 0.6.2, and 0.6.3 and rejects any other opening schema, so canonical 0.6.4 rows cannot enter the legacy lifecycle until that exact compatibility boundary is amended."
+      ,"The original baseline predates the amended contract and does not contain observations for the amended contract itself, implementations/server/runtime/service.py, implementations/server/runtime/legacy.py, implementations/server/runtime/host_dispatch_hook.py, or the three fixture-migration files."
+      ,"implementations/server/runtime/host_dispatch_hook.py exists at that exact path with observed SHA-256 390BA016210EF03D4077E5F9C76FDF2C42340397C643200470BE92DD608F9DD8 and synthesizes new openings with hard-coded schema_version 0.6.3 and no capability_route."
+      ,"Reconciliation occurs after existing runtime, compiler, service, and fixture producers may already have changed bytes. Their amendment-era observations are post-existing-producer state, not retroactive before-state. Only legacy.py and host_dispatch_hook.py receive separately timestamped pre-new-owner observations before their newly authorized owners run."
+    ],
+    "non_goals": [
+      "No new dispatch-type behavior, compiler semantics, bridge production behavior, host-hook behavior beyond current-schema verified-route opening synthesis, UI behavior, legacy parsing semantics beyond the exact opening-schema whitelist/error, or unrelated service scope.",
+      "No weakening of route_digest, capability_route, strict code readiness, singular other, historical others compatibility, or fail-closed behavior."
+    ]
+  },
+  "interrupted_state_recovery": {
+    "classification": "unattributed-interrupted-state-evidence",
+    "authorship_rule": "No actor or prior production owner is inferred from filesystem state. Neither production diff is adopted implementation until a fresh adoption auditor and its disjoint adoption owner complete the required receipts.",
+    "operator_block_evidence": [
+      "The first reconciler created baseline.json at reported SHA-256 C73851B09299151CABBB0A0C62572EC62D0694AAED18F0BE3B022C3809E31EFA, then timed out and was interrupted after reporting incomplete full_diff arrays for the contract (146 of 466 lines) and appender (98 of 188 lines).",
+      "A fresh mechanical finalizer attempted bounded repair, observed both protected production files change during finalization, and blocked. Its incorrect occurrence targeting left baseline.json non-consumable; finalizer-reported and independently verified current SHA-256 is 199D8E12D5365831D9148FE69A70C2616DFA7D11FBDB4B1F7730A843423579DC.",
+      "The operator did not launch the legacy or host-hook owners and has no actor attribution or attributable production receipt for either current diff."
+    ],
+    "frozen_current_state": [
+      {
+        "path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/baseline.json",
+        "state": "untracked-non-consumable-interrupted-reconciliation",
+        "sha256": "199D8E12D5365831D9148FE69A70C2616DFA7D11FBDB4B1F7730A843423579DC",
+        "bytes": 106001,
+        "full_untracked_diff_utf8_sha256": "217148D33F02692C3FFD9B98C5E9FA6BA6DDE8F0F3624F6848A49261B6D2F674",
+        "diff_basis": "git diff --no-index --binary -- /dev/null <path>, PowerShell Out-String, UTF-8 SHA-256; 109719 characters",
+        "validity": "JSON parses, but evidence is invalid/non-consumable because interrupted partial arrays and the finalizer's incorrect occurrence repair cannot establish complete append-only provenance."
+      },
+      {
+        "path": "implementations/server/runtime/legacy.py",
+        "state": "modified-unattributed",
+        "last_verified_clean_sha256": "DD98D05F0A7CD2A8355A804675F2AECD3482D5A4D61C2FD4C5560316CF7C8AEC",
+        "current_sha256": "0EF6C4EE96199CE9EA73102EE9922DE35DB79AF1A7E9EA5495743329AB1F8728",
+        "current_bytes": 5431,
+        "full_diff_utf8_sha256": "6B7143BE7546A556696F0F4A4DBD6FFA0DD875504904138250CA566D40BC796B",
+        "diff_basis": "git diff --no-ext-diff --binary -- <path>, PowerShell Out-String, UTF-8 SHA-256; 1054 characters",
+        "exact_hunks": ["SUPPORTED_OPENING_CONTRACTS adds 0.6.4", "the adjacent supported-version error adds 0.6.4"],
+        "approved_intent_boundary": "Exactly the whitelist and adjacent rejection message necessary to accept 0.6.1 through 0.6.4 while rejecting unsupported versions; no broader legacy semantics."
+      },
+      {
+        "path": "implementations/server/runtime/host_dispatch_hook.py",
+        "state": "modified-unattributed",
+        "last_verified_clean_sha256": "390BA016210EF03D4077E5F9C76FDF2C42340397C643200470BE92DD608F9DD8",
+        "current_sha256": "9448A3259149F08EC3F32D7428A2CBFE0413FAA4C5D816504DE42442A81FA5B0",
+        "current_bytes": 33135,
+        "full_diff_utf8_sha256": "C6D8CB52FA6780FDF62F31D0130C6CB479F9A1357C182A1597D532C1961F2447",
+        "diff_basis": "git diff --no-ext-diff --binary -- <path>, PowerShell Out-String, UTF-8 SHA-256; 2656 characters",
+        "exact_hunks": ["import load_dispatch_type_registry and resolve_dispatch_capability", "derive registry, compatibility entry, and capability_route before opening synthesis", "replace hard-coded 0.6.3 with registry ledger_schema_version and attach capability_route", "add capability_route_digest to automatic close record"],
+        "approved_intent_boundary": "Current-schema verified capability_route synthesis for the exact compatibility capability with route-digest continuity and preservation of all unrelated host-hook behavior."
+      }
+    ],
+    "residue": {
+      "first_reconciler": "timed_out_then_interrupted; incomplete diff arrays; no valid terminal receipt",
+      "finalizer": "blocked_after_concurrent_protected-file changes; incorrect occurrence targeting residue in baseline; no adoption authority",
+      "production": "two exact unattributed diffs remain frozen in place pending independent adoption adjudication",
+      "launch_gate": "Tests, integrity, and ordinary final review remain blocked until baseline repair, both adoption paths, and independent post-adoption review PASS."
+    }
+  },
+  "approved_parent": {
+    "path": "internal-tools/need-driven-system-writing/runtime-type-expansion-dispatch.json",
+    "sha256": "2D9C9C3B3ACD66D0A0C11DF69F2BC9265B45A3384BB7C317D7F76F78CB342051",
+    "review_path": "internal-tools/need-driven-system-writing/runtime-type-expansion-dispatch.review.md",
+    "review_verdict": "PASS",
+    "review_scope": "Contract approval only; not evidence that Stage A or Stage B executed."
+  },
+  "objective": "Install only the minimum runtime support needed for a later separately generated and reviewed governed Stage-B parent/child route to classify exact installed unmapped capabilities as canonical other, preserve strict code, bind capability identity durably, migrate historical plural others safely, and compile canonical sequential connected inputs.",
+  "relationship_to_stage_b": "Stage A is an external prerequisite. It is not a step, seat, child dispatch, or governed execution of Stage B. Stage B remains blocked until this contract's terminal approval receipt is PASS and its final hashes verify.",
+  "authority": {
+    "kind": "explicit-user-authorized-direct-subagent",
+    "source": "The user explicitly authorized necessary skills and subagents, required root to perform no substantive work, and instructed the team to proceed.",
+    "aci_status": "not-ACI-bound",
+    "ledger_status": "not-registered-as-governed-dispatch",
+    "required_disclosure": "Every Stage-A prompt and receipt states that the work is direct subagent bootstrap work and makes no ACI, compile authorization, open authorization, governed-seat, or governed-dispatch claim.",
+    "prohibitions": [
+      "Do not prepend or synthesize ACI-WORKFLOW-BINDING-V1.",
+      "Do not append a governed dispatch row or claim a runtime session/open receipt.",
+      "Do not persist or fabricate orchestration-bridge stdout.",
+      "Do not route code work through other or weaken code readiness.",
+      "Do not commit, stage, push, reset, checkout, clean, or modify unrelated files."
+    ]
+  },
+  "contract_author": {
+    "role_id": "bootstrap_contract_author",
+    "owns": ["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/bootstrap-contract.json"],
+    "excludes": ["baseline", "implementation", "testing", "review", "repair", "approval", "reporting"],
+    "identity_rule": "The contract author cannot occupy any Stage-A execution or review role."
+  },
+  "roles": [
+    {
+      "role_id": "a_baseline",
+      "identity_rule": "Distinct from the contract author and every other Stage-A role.",
+      "purpose": "Record the exact pre-execution worktree, in-scope hashes, and dirty diffs without mutation.",
+      "status": "historical-completed-no-current-write-authority",
+      "write_scope": [],
+      "read_scope": ["git status", "all exact Stage-A production/test/integrity paths", "existing dirty diffs"]
+    },
+    {
+      "role_id": "a_baseline_reconciler",
+      "identity_rule": "Mechanical evidence role distinct from contract author, original baseline owner, all implementers, fixture/test owners, integrity, and reviewers.",
+      "purpose": "Preserve the original baseline as a historical observation, append explicitly timestamped post-existing-producer state for paths whose owners may already have run, and separately freeze pre-new-owner state for legacy.py and host_dispatch_hook.py without making implementation judgment or inventing history.",
+      "status": "interrupted-superseded-no-write-authority",
+      "write_scope": [],
+      "read_scope": [
+        "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/bootstrap-contract.json",
+        "implementations/contracts/dispatch-type-registry.v1.json",
+        "implementations/server/runtime/dispatch_types.py",
+        "implementations/server/runtime/capability_routes.py",
+        ".claude/skills/register-dispatch/append-dispatch.cjs",
+        "implementations/server/runtime/dispatch_workflow.py",
+        "implementations/server/runtime/service.py",
+        "implementations/server/runtime/legacy.py",
+        "implementations/server/runtime/host_dispatch_hook.py",
+        "implementations/tests/runtime/test_dispatch_workflow.py",
+        "implementations/tests/runtime/test_orchestration_bridge.py",
+        "implementations/tests/runtime/test_host_dispatch_hook.py",
+        "git status and exact diffs for those paths"
+      ],
+      "mechanical_contract": "Preserve every existing key and observation in baseline.json, including its original capture time and source. Append one reconciliation object with prior baseline hash, final amended contract hash, repository HEAD/status, and two non-interchangeable evidence groups: (1) post_existing_producer_state with per-path state/hash/bytes/full diff, captured_at, source, and named prior producer receipt for registry, dispatch_types, capability_routes, appender, compiler, service, and the three fixture/test paths; and (2) pre_new_owner_state with per-path state/hash/bytes/full diff, captured_at, and source for legacy.py and host_dispatch_hook.py before either new owner launches. Never label group (1) as before-state, infer an earlier state from current bytes, or reclassify Stage-A producer diffs as user work. Mutate no production or test file. Block if the prior baseline, final amended contract hash, legacy.py, or host_dispatch_hook.py changes during capture."
+    },
+    {
+      "role_id": "a_baseline_repair_owner",
+      "identity_rule": "Fresh identity distinct from both interrupted reconcilers/finalizer, contract author, every production/adoption owner, every adoption auditor, tests, integrity, and review.",
+      "purpose": "Replace only the invalid reconciliation portion of baseline.json with valid, complete, append-only evidence while retaining the original baseline verbatim and recording the interrupted artifacts as residue rather than provenance.",
+      "write_scope": ["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/baseline.json"],
+      "read_scope": ["the frozen current-state evidence in this contract", "current exact bytes/diffs for every reconciliation path", "original baseline observations", "operator and finalizer BLOCK evidence", "named durable producer receipts where they exist"],
+      "mechanical_contract": "Begin only if this amended contract hash and all three frozen current hashes/diff digests verify. Preserve the original baseline section byte-for-byte. Remove or quarantine only the invalid interrupted reconciliation object, recording its current hash, timeout/interruption residue, incomplete arrays, finalizer error, and lack of provenance. Reconstruct complete per-path evidence from current bytes with timestamps and sources. Attribute only independently verified receipts; label the two production diffs unattributed_interrupted_state pending adoption. Never infer authorship, retrofit a receipt, or mutate production/test files. Block on any changing protected byte."
+    },
+    {
+      "role_id": "a_legacy_adoption_auditor",
+      "identity_rule": "Fresh read-only identity distinct from old legacy authorization, legacy adoption owner, host adoption roles, baseline repair, tests, integrity, and all later reviewers.",
+      "purpose": "Independently compare the frozen legacy.py diff, line by line, with the approved legacy intent and preservation boundary; issue ADOPT or REIMPLEMENT, never edit.",
+      "write_scope": ["immutable adoption-audit receipt only"],
+      "read_scope": ["implementations/server/runtime/legacy.py", "last verified clean legacy bytes", "frozen diff/hash", "approved legacy intent and exclusions"]
+    },
+    {
+      "role_id": "a_legacy_adoption_owner",
+      "identity_rule": "Fresh identity distinct from the unknown actor, old legacy authorization, legacy adoption auditor, every host/baseline/test/integrity/review role.",
+      "purpose": "Create attributable legacy implementation state from the auditor verdict without claiming authorship of the interrupted diff.",
+      "write_scope": ["implementations/server/runtime/legacy.py"],
+      "adoption_contract": "If the auditor returns ADOPT and the frozen current hash/diff still match, make no byte change and issue a new adoption receipt accepting responsibility for those exact bytes. If the auditor returns REIMPLEMENT, restore only the frozen unattributed hunks to the last verified clean bytes, preserve every other user/producer hunk, then implement only approved intent and issue a new implementation receipt. Block on mismatch, ambiguous overlap, or incomplete clean-byte recovery."
+    },
+    {
+      "role_id": "a_host_hook_adoption_auditor",
+      "identity_rule": "Fresh read-only identity distinct from old host authorization, host adoption owner, legacy adoption roles, baseline repair, tests, integrity, and all later reviewers.",
+      "purpose": "Independently compare the frozen host_dispatch_hook.py diff, line by line, with approved route-synthesis intent, fail-closed requirements, and behavior-preservation boundary; issue ADOPT or REIMPLEMENT, never edit.",
+      "write_scope": ["immutable adoption-audit receipt only"],
+      "read_scope": ["implementations/server/runtime/host_dispatch_hook.py", "last verified clean host-hook bytes", "frozen diff/hash", "approved host-hook intent, tests, and exclusions"]
+    },
+    {
+      "role_id": "a_host_hook_adoption_owner",
+      "identity_rule": "Fresh identity distinct from the unknown actor, old host authorization, host adoption auditor, every legacy/baseline/test/integrity/review role.",
+      "purpose": "Create attributable host-hook implementation state from the auditor verdict without claiming authorship of the interrupted diff.",
+      "write_scope": ["implementations/server/runtime/host_dispatch_hook.py"],
+      "adoption_contract": "If the auditor returns ADOPT and the frozen current hash/diff still match, make no byte change and issue a new adoption receipt accepting responsibility for those exact bytes. If the auditor returns REIMPLEMENT, restore only the frozen unattributed hunks to the last verified clean bytes, preserve every other user/producer hunk, then implement only approved intent and issue a new implementation receipt. Block on mismatch, ambiguous overlap, or incomplete clean-byte recovery."
+    },
+    {
+      "role_id": "a_post_adoption_reviewer",
+      "identity_rule": "Fresh independent read-only identity distinct from all auditors, adoption owners, prior owners, baseline repair, tests, integrity, attackers, writer, skeptic, coverage auditor, and approver.",
+      "purpose": "Before any tests or integrity work, verify repaired baseline consumability, both adoption decisions and receipts, exact approved-intent conformance, clean-byte recovery where used, unrelated-work preservation, and absence of fabricated provenance.",
+      "write_scope": ["immutable post-adoption review receipt only"],
+      "pass_rule": "PASS only if baseline evidence is complete and append-only, each production byte is attributable through a fresh adoption/implementation receipt, all frozen/intervening bytes are accounted for, and no user or other producer hunk was changed."
+    },
+    {
+      "role_id": "a_runtime_implementer",
+      "identity_rule": "Distinct from baseline, compiler, tests, integrity, attackers, writer, skeptic, auditor, and approver.",
+      "purpose": "Implement specialized-first generic routing, strict code preservation, durable capability-route binding, and singular/plural schema migration.",
+      "write_scope": [
+        "implementations/contracts/dispatch-type-registry.v1.json",
+        "implementations/server/runtime/dispatch_types.py",
+        "implementations/server/runtime/capability_routes.py",
+        ".claude/skills/register-dispatch/append-dispatch.cjs"
+      ],
+      "scope_note": "For cycle 2 this original owner may edit only .claude/skills/register-dispatch/append-dispatch.cjs for A-005. Registry, dispatch_types.py, and capability_routes.py are read-only. Preserve all prior/user hunks and verify the frozen appender hash/diff before repair."
+    },
+    {
+      "role_id": "a_compiler_implementer",
+      "identity_rule": "Distinct from runtime, tests, integrity, and all review roles.",
+      "purpose": "Implement canonical sequential handoff and digest-bound dynamic-input manifest compilation only.",
+      "write_scope": ["implementations/server/runtime/dispatch_workflow.py"],
+      "cycle_2_scope": "A-004 only: require the immutable producer-output receipt and exact binding/output identity, path, schema, hash, bytes, artifact, route, and receipt digest. Do not change topology or unrelated opening/compilation semantics."
+    },
+    {
+      "role_id": "a_manifest_service_implementer",
+      "identity_rule": "Distinct from runtime, compiler, fixture migration, tests, integrity, and every review role.",
+      "purpose": "Make the orchestration service validate the exact workflow-manifest route_digest against the expected immutable capability route before any manifest is accepted or consumed; fail closed on missing, malformed, stale, cross-route, or mismatched digests.",
+      "write_scope": ["implementations/server/runtime/service.py"],
+      "scope_note": "No other service behavior or orchestration production file is in scope. Frozen before SHA-256 is A80574D71191D871013387CFB35F883AE28229DAD6F2F9C43309A0C1EFCBF11F. This owner is historically completed; if explicitly resumed, it must first verify the reconciled current hash, preserve its prior producer receipt as provenance, and attribute each intervening hunk either to a named Stage-A producer receipt or to independent user evidence. Only original-baseline or independently attributed user hunks are user-owned and must be preserved exactly.",
+      "validation_contract": "Resolve the expected digest exclusively from the opened dispatch row's verified capability_route.route_digest. Compare the consumed workflow manifest's route_digest to that value before accepting any slot, artifact, or dependency. Never accept a digest supplied only by the manifest, prompt, caller assertion, or an unrelated route receipt."
+      ,"cycle_2_scope": "A-004 only: complete_host_workflow_turn registers one immutable producer-output receipt containing producer binding/agent identity, dispatch, artifact id, canonical repository-relative path, data schema, sha256, bytes, route digest, and receipt digest; downstream validation requires exact equality to that registered receipt before consumption. Preserve all unrelated service and database behavior and verify the frozen current hash/diff before repair."
+    },
+    {
+      "role_id": "a_binding_output_test_owner",
+      "identity_rule": "Distinct from runtime, compiler, service, fixture migration, test implementer, receipt, integrity, and every review role.",
+      "purpose": "Own only A-004/A-005 production-facing regression fixtures outside the exclusive Stage-A test files.",
+      "write_scope": ["implementations/tests/runtime/test_host_workflow_binding.py"],
+      "scope_note": "The supplemental file is included solely because review.md identifies it as the literal A-004 laundering reproduction. Mechanically migrate its opening to canonical 0.6.4 capability_route, then assert registered-output success and arbitrary path, wrong artifact, wrong schema/hash/bytes, wrong binding/dispatch/route/receipt digest, missing output receipt, nonterminal producer, symlink, and post-registration mutation rejection. Do not edit production or other tests."
+    },
+    {
+      "role_id": "a_receipt_lifecycle_finalizer",
+      "identity_rule": "Distinct from every seat whose receipt it validates, every production/test/integrity owner, and every review/approval role.",
+      "purpose": "Validate future cycle-2 per-seat receipts and write only the durable lifecycle manifest; never create, repair, infer, or backdate another seat's receipt.",
+      "write_scope": [
+        ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/lifecycle-manifest.pre-integrity.json",
+        ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/lifecycle-manifest.pre-approval.json"
+      ],
+      "validation_contract": "Exactly three finite named attempts exist. Attempt 1 PRE_INTEGRITY is the immutable BLOCK receipt 9536BD8637B0D3736688CC56D33BBE7E9C6ABCB6BB260A3669CC497684B2EC63 and wrote no manifest. After authorized correction receipts and independent receipt-set review PASS, attempt 2 PRE_INTEGRITY_RETRY uses a fresh finalizer agent id and attempt id pre-integrity-retry-02; it validates old receipts as residue plus only the new linked correction/audit receipts and writes lifecycle-manifest.pre-integrity.json only on PASS. No additional PRE_INTEGRITY retry is allowed. Attempt 3 PRE_REVIEW_FREEZE runs once after terminal pins, writes lifecycle-manifest.pre-approval.json, and follows the existing atomic self-receipt exclusion rule. Any BLOCK in attempt 2 or 3 ends Stage A for coordination; no fourth attempt."
+    },
+    {
+      "role_id": "a_p3_amendment_reviewer",
+      "identity_rule": "Fresh independent read-only identity distinct from contract author, every old/new receipt author, both adoption auditors/owners, finalizer, integrity, and later review roles.",
+      "purpose": "Review this P3 evidence-repair amendment before any correction receipt or re-audit launches.",
+      "write_scope": ["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/p3-evidence-repair.amendment-review.md"],
+      "pass_rule": "PASS only if corrections are forward-only, exact, disjoint, non-backdated, preserve every old/BLOCK receipt, bind parent and amended contract distinctly, require real re-audits, and preserve finite finalizer attempts and the P4 gate."
+    },
+    {
+      "role_id": "a_p3_receipt_set_reviewer",
+      "identity_rule": "Fresh independent read-only identity distinct from amendment reviewer, all receipt/audit/reaffirmation authors, lifecycle finalizer, integrity, and later review roles.",
+      "purpose": "After all correction receipts exist and before PRE_INTEGRITY_RETRY, independently validate the complete old-plus-new receipt graph.",
+      "write_scope": ["immutable P3 correction-set review receipt only"],
+      "pass_rule": "PASS only if all original receipts and attempt-1 BLOCK hashes remain unchanged; every correction is a new unique path/identity/attempt; all mandatory fields, approved-parent and amended-contract links verify; old-to-new links and the actual host sequential predecessor digest verify; two fresh durable auditor receipts are independent; preliminary BLOCK states remain honest; and no receipt is backdated or invented."
+    },
+    {
+      "role_id": "a_post_approval_closeout_owner",
+      "identity_rule": "Mechanical identity distinct from approver, receipt lifecycle finalizer, terminal close verifier, and every production/test/integrity/review role.",
+      "purpose": "After approver PASS and its external receipt exist, close lifecycle accounting without modifying or retroactively enlarging the approved corpus.",
+      "write_scope": [
+        ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/lifecycle-manifest.closeout.json",
+        "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/cycle-2-completion.json"
+      ],
+      "mechanical_contract": "Hash and reference the immutable frozen attacker-target corpus, complete ordered approval evidence package, approver PASS artifact, approver external receipt, and already-existing post-approval residue. Atomically write lifecycle-manifest.closeout.json, cycle-2-completion.json, and one separate immutable closeout-owner seat receipt. The manifest and completion never contain or hash that owner receipt; the owner receipt hashes both completed artifacts and is external evidence for the terminal verifier. Never change reviewed artifacts, deliverables, receipts, approval, findings, or verdict, and never require its own output or receipt to have existed at approval time."
+    },
+    {
+      "role_id": "a_cycle_2_terminal_verifier",
+      "identity_rule": "Fresh read-only verifier distinct from every production, test, receipt, integrity, review, and approval role.",
+      "purpose": "Read-only verification after mechanical closeout; verify both evidence boundaries without reopening substantive review or requiring self-inclusion.",
+      "write_scope": ["immutable terminal-close-verification receipt only"],
+      "pass_rule": "PASS only if approval.json is cycle-2 PASS and hashes the exact ordered evidence package; the frozen attacker targets remain unchanged; review/Coverage are separately hashed deliverables; the approver external receipt is terminal; lifecycle-manifest.closeout.json and cycle-2-completion.json match; the separate external closeout-owner receipt hashes both closeout artifacts; and nothing is retroactively included. The verifier emits a separate external receipt only after deciding; its own receipt is neither input nor approved evidence for its verdict."
+    },
+    {
+      "role_id": "a_legacy_schema_implementer",
+      "identity_rule": "Distinct from runtime routing, compiler, service, fixture migration, tests, integrity, baseline roles, and every review role.",
+      "purpose": "Extend only the legacy opening-contract compatibility gate to accept canonical 0.6.4 rows while preserving 0.6.1-0.6.3 historical compatibility and rejecting higher, malformed, missing, and unknown versions fail closed.",
+      "status": "unlaunched-superseded-by-adoption-owner",
+      "write_scope": [],
+      "scope_note": "Only SUPPORTED_OPENING_CONTRACTS and its exact rejection message/branch may change unless a directly adjacent constant is mechanically required. Do not alter ledger parsing, row projection, close resolution, aggregation, dispatch types, or historical bytes. Verify the reconciled pre-new-owner hash/diff before mutation and preserve every unrelated hunk; classify a hunk as user-owned only when it appears in the original baseline or has independent user-attribution evidence."
+    },
+    {
+      "role_id": "a_host_hook_implementer",
+      "identity_rule": "Distinct from runtime routing, compiler, service, legacy schema, fixture migration, tests, integrity, baseline roles, and every review role.",
+      "purpose": "Update only automatic host-hook opening synthesis to emit the canonical registry schema_version 0.6.4 and the canonical resolver's verified capability_route for the exact compatibility dispatch type, while preserving existing role, model, prompt, anti-bias, output-mode, binding, and lifecycle behavior.",
+      "status": "unlaunched-superseded-by-adoption-owner",
+      "write_scope": [],
+      "scope_note": "The observed pre-new-owner SHA-256 is 390BA016210EF03D4077E5F9C76FDF2C42340397C643200470BE92DD608F9DD8; the reconciler must verify it or record any timestamped intervening diff with independently evidenced actor attribution before launch. Derive schema_version from the canonical registry and capability_route from the canonical resolver for the policy's exact installed compatibility capability; dispatch_type must equal capability_route.dispatch_type and route_digest must remain identical through host binding, open, and close. Never fabricate or genericize a route. Change no test, bridge, compiler, service, appender, registry, resolver, or unrelated host-hook behavior, preserve every unrelated hunk, and classify user ownership only from the original baseline or independent user-attribution evidence."
+    },
+    {
+      "role_id": "a_legacy_fixture_migrator",
+      "identity_rule": "Distinct from every production owner, a_test_implementer, integrity, and every review role.",
+      "purpose": "Migrate only stale workflow, orchestration-bridge, and host-hook fixtures/tests from hard-coded 0.6.3, missing capability_route, or new-row plural others assumptions to registry-derived 0.6.4 canonical openings with exact route receipts, while retaining explicit historical 0.6.3/plural fixtures where legacy compatibility is the behavior under test.",
+      "write_scope": [
+        "implementations/tests/runtime/test_dispatch_workflow.py",
+        "implementations/tests/runtime/test_orchestration_bridge.py",
+        "implementations/tests/runtime/test_host_dispatch_hook.py"
+      ],
+      "scope_note": "This owner is historically completed and changes fixtures and assertions only. It cannot edit bridge, host-hook, compiler, appender, service, registry, resolver, integrity, or Stage-A exclusive test files. If explicitly resumed after a new-owner change requires fixture repair, it first verifies each reconciled current hash, retains its prior producer receipt, emits a linked resume receipt, and preserves every unrelated hunk; user ownership applies only to original-baseline or independently attributed user hunks, while prior Stage-A fixture diffs remain attributed to this owner."
+    },
+    {
+      "role_id": "a_test_implementer",
+      "identity_rule": "Distinct from every production owner, a_legacy_fixture_migrator, and review role.",
+      "purpose": "Implement deterministic positive, negative, migration, topology, and abuse coverage; run the complete fixed test contract.",
+      "write_scope": [
+        "implementations/tests/runtime/test_runtime_type_bootstrap.py",
+        "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py",
+        "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/test-report.json"
+      ],
+      "exclusivity": "These two test files are Stage-A-owned by a_test_implementer and read-only to a_legacy_fixture_migrator and Stage B. No production or fixture-migration owner may edit them."
+    },
+    {
+      "role_id": "a_integrity_owner",
+      "identity_rule": "Distinct from every producer whose bytes it hashes and from all review roles.",
+      "purpose": "After every production and test byte is final, preserve original-baseline and independently attributed user hunks, retain named provenance for Stage-A producer diffs, and regenerate only required integrity pins.",
+      "write_scope": [
+        "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+        "implementations/server/runtime/local_pilot.py",
+        "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/final-hash-manifest.json"
+      ],
+      "scope_note": "Cycle 2 pins the repaired appender, compiler, service, test_host_workflow_binding.py, every changed existing Stage-A path, terminal test report, and pre-review receipt evidence wherever the manifest contract permits. review.md, Coverage evidence, approval, and post-approval closeout do not yet exist at target freeze and are never retroactively pinned as attacker targets. It performs a preliminary production/test/receipt repin, then a final terminal-report repin."
+    },
+    {
+      "role_id": "a_fidelity_attacker",
+      "identity_rule": "Distinct; one lens only; never verifies or edits.",
+      "purpose": "Attack the complete frozen corpus through fidelity/governance.",
+      "write_scope": ["immutable lifecycle receipt only; no finding transcript"]
+    },
+    {
+      "role_id": "a_correctness_attacker",
+      "identity_rule": "Distinct; one lens only; never verifies or edits.",
+      "purpose": "Attack the complete frozen corpus through mechanics/correctness.",
+      "write_scope": ["immutable lifecycle receipt only; no finding transcript"]
+    },
+    {
+      "role_id": "a_abuse_attacker",
+      "identity_rule": "Distinct; one lens only; never verifies or edits.",
+      "purpose": "Attack the complete frozen corpus through abuse/gaming.",
+      "write_scope": ["immutable lifecycle receipt only; no finding transcript"]
+    },
+    {
+      "role_id": "a_review_writer",
+      "identity_rule": "Distinct from attackers, skeptic, auditor, approver, and all implementers.",
+      "purpose": "Deduplicate candidate findings and persist only supported survivors.",
+      "write_scope": ["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/review.md except Coverage"]
+    },
+    {
+      "role_id": "a_review_skeptic",
+      "identity_rule": "Distinct from writer and all other roles; stable across at most three exchanges.",
+      "purpose": "Refute unsupported findings; never edit targets or review.md.",
+      "write_scope": ["immutable lifecycle receipt only; objections remain ephemeral"]
+    },
+    {
+      "role_id": "a_coverage_auditor",
+      "identity_rule": "Distinct from attackers, writer, skeptic, approver, and implementers.",
+      "purpose": "Prove every target-by-lens cell and trigger the all-zero-findings flag.",
+      "write_scope": ["Coverage section of internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/review.md"]
+    },
+    {
+      "role_id": "a_final_approver",
+      "identity_rule": "Distinct from every author, implementer, tester, attacker, writer, skeptic, and auditor; performs approval only.",
+      "purpose": "Approve only the exact evidence package formed from the immutable frozen attacker-target corpus plus final review.md, Coverage evidence, and the external target-freeze author receipt, with deterministic PASS and no CRITICAL or MAJOR finding.",
+      "write_scope": ["internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/approval.json", "its unique external per-seat receipt under the cycle-2 receipt namespace"],
+      "boundary_contract": "Hash separately the frozen target corpus, final review.md, Coverage evidence, review-role receipts, and external target-freeze author receipt, then hash their ordered package before decision. Write approval.json and then a unique approver receipt citing every component digest and package digest. Both outputs are outside attacker targets and must not be inserted retroactively. The approver does not approve its own receipt or any future closeout artifact."
+    }
+  ],
+  "required_behavior": [
+    "Specialized mappings win before generic resolution; domainspec-implement remains code.",
+    "An exact installed capability without a specialized mapping resolves to canonical other while retaining capability id, skill path, skill digest, explicit authority mode, and tool profile in an immutable route receipt.",
+    "Missing, malformed, slash-qualified pseudo-capability, mismatched skill name/path, unavailable authority, missing route, forged route, and post-confirmation route swaps fail closed.",
+    "Malformed or failed code never degrades to other; every code opening retains the complete existing code_contract, readiness, write-scope, validation, group, and topology gates.",
+    "New canonical other rows use a bumped ledger schema version. API alias others normalizes new requests to other. Historical plural rows remain byte-for-byte readable, closable, and aggregatable without rewrite.",
+    "Appender validation, compile, open, host binding, and close verify the same capability-route digest.",
+    "Canonical sequential connections materialize ordered digest-bound downstream input manifests. Missing, stale, tampered, cross-capability, and unsupported connection inputs fail explicitly.",
+    "implementations/server/runtime/service.py accepts a workflow manifest only when route_digest is a valid sha256 digest equal to the opened dispatch row's capability_route.route_digest; absent, malformed, stale, cross-route, and mismatched values fail closed before artifact or dependency consumption.",
+    "implementations/server/runtime/legacy.py accepts opening schema versions 0.6.1, 0.6.2, 0.6.3, and canonical 0.6.4; preserves historical row bytes and behavior; and rejects missing, malformed, unknown, and higher versions with one explicit fail-closed supported-version error.",
+    "implementations/server/runtime/host_dispatch_hook.py synthesizes new automatic openings with registry-derived schema 0.6.4 and the canonical resolver's verified capability_route for the exact compatibility capability; dispatch_type and route digest agree through host binding, open, and close without changing existing role, model, prompt, anti-bias, or output-mode behavior.",
+    "New lifecycle fixtures use the registry's current schema, canonical singular other, and complete capability_route. Historical compatibility fixtures deliberately retain schema 0.6.3 and plural others and remain byte-stable/readable/closable rather than being silently modernized."
+  ],
+  "execution_state": {
+    "historical_completed_producers": [
+      "a_runtime_implementer",
+      "a_compiler_implementer",
+      "a_manifest_service_implementer",
+      "a_legacy_fixture_migrator"
+    ],
+    "historical_provenance_rule": "Their existing receipts remain the authoritative producer provenance for their diffs. Reconciliation observes their current output after execution; it does not relaunch them, move them downstream of the reconciler, or convert their changes into user-owned work.",
+    "pending_recovery_owners": [
+      "a_baseline_repair_owner",
+      "a_legacy_adoption_auditor",
+      "a_legacy_adoption_owner",
+      "a_host_hook_adoption_auditor",
+      "a_host_hook_adoption_owner",
+      "a_post_adoption_reviewer"
+    ],
+    "resume_rule": "A historical producer resumes only when a bounded verified finding requires its exact scope. Before mutation it verifies the reconciled current hash, preserves its original producer receipt, and emits a linked resume receipt that attributes all retained and new hunks."
+  },
+  "execution_graph_status": "SUPERSEDED_FOR_CYCLE_2: retained only as historical Stage-A topology; it has no launch, ordering, repair, review, approval, or closeout authority after this amendment.",
+  "execution_graph": [
+    {"from": "bootstrap_contract_author", "to": "a_baseline_repair_owner", "type": "sequential-recovery"},
+    {"from": "a_baseline_repair_owner", "to": "a_legacy_adoption_auditor", "type": "fanout"},
+    {"from": "a_baseline_repair_owner", "to": "a_host_hook_adoption_auditor", "type": "fanout"},
+    {"from": "a_legacy_adoption_auditor", "to": "a_legacy_adoption_owner", "type": "sequential"},
+    {"from": "a_host_hook_adoption_auditor", "to": "a_host_hook_adoption_owner", "type": "sequential"},
+    {"from": "a_legacy_adoption_owner", "to": "a_post_adoption_reviewer", "type": "join"},
+    {"from": "a_host_hook_adoption_owner", "to": "a_post_adoption_reviewer", "type": "join"},
+    {"from": "a_baseline_repair_owner", "to": "a_post_adoption_reviewer", "type": "join"},
+    {"from": "a_post_adoption_reviewer", "to": "a_legacy_fixture_migrator", "type": "conditional-resume"},
+    {"from": "a_legacy_fixture_migrator", "to": "a_test_implementer", "type": "resume-join-if-triggered"},
+    {"from": "a_post_adoption_reviewer", "to": "a_test_implementer", "type": "sequential-if-no-fixture-resume"},
+    {"from": "a_test_implementer", "to": "a_integrity_owner", "type": "sequential"},
+    {"from": "a_integrity_owner", "to": "a_fidelity_attacker", "type": "fanout"},
+    {"from": "a_integrity_owner", "to": "a_correctness_attacker", "type": "fanout"},
+    {"from": "a_integrity_owner", "to": "a_abuse_attacker", "type": "fanout"},
+    {"from": "a_fidelity_attacker", "to": "a_review_writer", "type": "sequential"},
+    {"from": "a_correctness_attacker", "to": "a_review_writer", "type": "sequential"},
+    {"from": "a_abuse_attacker", "to": "a_review_writer", "type": "sequential"},
+    {"from": "a_review_writer", "to": "a_review_skeptic", "type": "zig-zag", "loop_cap": 3},
+    {"from": "a_review_skeptic", "to": "a_review_writer", "type": "feedback", "loop_cap": 3},
+    {"from": "a_review_skeptic", "to": "a_coverage_auditor", "type": "sequential"},
+    {"from": "a_coverage_auditor", "to": "a_final_approver", "type": "sequential"},
+    {"from": "a_final_approver", "to": "original_file_owner", "type": "feedback", "loop_cap": 3},
+    {"from": "original_file_owner", "to": "a_legacy_fixture_migrator", "type": "sequential"},
+    {"from": "a_integrity_owner", "to": "a_fidelity_attacker", "type": "feedback", "loop_cap": 3}
+  ],
+  "cycle_2_execution": {
+    "authority": "SOLE_AUTHORITATIVE_CYCLE_2_ORDER; supersedes execution_graph and repair_contract.order in full for every remaining action.",
+    "authoritative_order": [
+      "P1 PRELIMINARY REPAIR: original owners repair A-004/A-005 in parallel only within accepted exact scopes; disjoint test owners add the accepted cases.",
+      "P2 PRELIMINARY TEST: a_test_implementer runs the complete command set, persists a preliminary attempt receipt, and makes no terminal A-001 claim.",
+      "P3 PRELIMINARY RECEIPTS AND ONE RETRY: preserve PRE_INTEGRITY attempt 1 BLOCK; independently review this amendment; run both fresh bounded adoption re-audits; write all new linked correction/reaffirmation receipts with fresh identities; independently review the complete old-plus-new receipt graph; then and only then run the single PRE_INTEGRITY_RETRY attempt 2, which writes lifecycle-manifest.pre-integrity.json only on PASS.",
+      "P4 PRELIMINARY INTEGRITY: BLOCKED until PRE_INTEGRITY_RETRY attempt 2 PASS and the bounded pre-pin eligibility rule verifies. Then a_integrity_owner repins only the proven stale frozen integrity entries for repaired production/tests and accepted preliminary receipt evidence, including consequential local_pilot changes. Any functional failure or unexplained BLOCK fails closed before mutation.",
+      "T1 TERMINAL TEST: with preliminary integrity valid, a_test_implementer reruns the complete fixed and supplemental commands and atomically writes the full post-integrity terminal test report.",
+      "T2 TERMINAL PINS: a_integrity_owner pins the exact terminal report, derives final-hash-manifest claims only from persisted evidence, and reruns integrity to PASS; any report change returns to T2.",
+      "T3 PRE-REVIEW TARGET FREEZE: a_receipt_lifecycle_finalizer performs its second and last pre-approval attempt, atomically writes lifecycle-manifest.pre-approval.json plus a separate external author receipt, and freezes the complete attacker target corpus. The manifest excludes its own author receipt from content and hash.",
+      "T4 TERMINAL REVIEW DELIVERABLES: fresh fidelity/correctness/abuse attackers review only that frozen target corpus; writer and skeptic converge into review.md; coverage auditor audits target-by-lens coverage and survivor discipline. review.md and Coverage are downstream deliverables, not prior attacker targets.",
+      "T5 APPROVAL BOUNDARY: a_final_approver hashes the unchanged frozen target corpus plus final review.md, Coverage evidence, and the external target-freeze author receipt as one approval evidence package; writes approval.json, then a unique external approver receipt. None becomes an attacker target retroactively.",
+      "C1 POST-APPROVAL CLOSEOUT: a_post_approval_closeout_owner atomically writes lifecycle-manifest.closeout.json, cycle-2-completion.json, and a separate external owner receipt. The two closeout artifacts exclude that receipt from content/hash; the receipt hashes both artifacts. No substantive approval decision occurs.",
+      "C2 TERMINAL CLOSE: a_cycle_2_terminal_verifier checks the frozen target/package boundary, approver receipt, both closeout artifacts, and external closeout-owner receipt, then emits its own external PASS/BLOCK receipt. It neither includes nor approves itself."
+    ],
+    "dependencies": [
+      {"from": "a_runtime_implementer", "to": "a_test_implementer", "type": "repair-join"},
+      {"from": "a_compiler_implementer", "to": "a_binding_output_test_owner", "type": "repair-join"},
+      {"from": "a_manifest_service_implementer", "to": "a_binding_output_test_owner", "type": "repair-join"},
+      {"from": "a_binding_output_test_owner", "to": "a_test_implementer", "type": "test-join"},
+      {"from": "preliminary_repair_and_test_seats", "to": "a_receipt_lifecycle_finalizer", "type": "pre-integrity-receipt-join"},
+      {"from": "a_receipt_lifecycle_finalizer", "to": "a_integrity_owner", "type": "preliminary-integrity"},
+      {"from": "a_integrity_owner", "to": "a_test_implementer", "type": "post-integrity-terminal-test"},
+      {"from": "a_test_implementer", "to": "a_integrity_owner", "type": "terminal-report-repin"},
+      {"from": "a_integrity_owner", "to": "a_receipt_lifecycle_finalizer", "type": "pre-review-target-freeze"},
+      {"from": "a_receipt_lifecycle_finalizer", "to": "cycle_2_full_review", "type": "frozen-target-corpus"},
+      {"from": "a_coverage_auditor", "to": "a_final_approver", "type": "approval-evidence-package"},
+      {"from": "a_final_approver", "to": "a_post_approval_closeout_owner", "type": "post-approval-closeout"},
+      {"from": "a_post_approval_closeout_owner", "to": "a_cycle_2_terminal_verifier", "type": "terminal-close"}
+    ],
+    "receipt_before_integrity_rule": "Preliminary production/test receipts and lifecycle-manifest.pre-integrity precede preliminary integrity. The finite lifecycle-manifest.pre-approval contains only receipts already extant before attackers, through terminal integrity, and excludes its own atomic author receipt. Attacker, writer, skeptic, and coverage receipts are later external approval evidence; they are never backdated or inserted into either lifecycle manifest. Nothing overwrites preliminary evidence.",
+    "preliminary_pre_pin_eligibility_rule": {
+      "functional_requirement": "Every functional assertion and command that is not prevented by a frozen integrity-pin preflight must PASS. Tests reached before or outside the integrity gate must show no functional failure, error, timeout, unexpected skip, or contradictory result.",
+      "sole_staleness_exception": "A preliminary receipt may remain BLOCK and still be eligible for P4 only when every blocked command/failure is proven solely caused by stale frozen integrity pins. For each stale pin, evidence must name the manifest/pin artifact, exact pinned path, expected SHA-256, actual SHA-256, command and failure boundary, and demonstrate that execution stopped at integrity preflight before the guarded functional assertion. No other blocker may be present.",
+      "proof_owners": "a_test_implementer and any affected fixture/test reaffirmation owner record command-level proof; PRE_INTEGRITY_RETRY independently checks it; a_integrity_owner recomputes every expected/actual hash before changing any pin.",
+      "p4_action": "P4 may update only the exact stale pins proven by this rule and their mechanically consequent parent pin. It may not waive, reinterpret, delete, or convert the preliminary BLOCK receipt to PASS.",
+      "fail_closed": "Any functional failure, mixed cause, missing expected/actual hash, execution beyond the claimed preflight boundary, unexplained BLOCK, receipt inconsistency, or changed artifact blocks P4 and requires coordination; no additional retry or broader repin is authorized.",
+      "terminal_requirement": "After preliminary repin, T1 must rerun the mandatory complete command set from the beginning and write the full terminal report with every command PASS. T2 must pin that exact terminal report, rerun final integrity to PASS, and only then may pre-review freeze/review begin. Preliminary eligibility is never terminal test or Stage-A PASS evidence."
+    },
+    "p3_evidence_repair_order": [
+      "E1 Freeze and preserve all nine original seat receipts plus PRE_INTEGRITY attempt 1 BLOCK; verify their listed hashes before proceeding.",
+      "E2 a_p3_amendment_reviewer independently PASSes the amended contract hash; correction work is blocked before this PASS.",
+      "E3 Fresh legacy and host adoption auditors run independently in parallel and write distinct durable re-audit receipts.",
+      "E4 Fresh legacy adoption owner writes its new linked reaffirmation after legacy audit PASS; fresh host adoption owner writes after host audit PASS and after the legacy receipt exists, using that receipt's actual digest as sequential predecessor.",
+      "E5 Baseline, binding-test, compiler, service, fixture, and preliminary-test roles write only their authorized new linked reaffirmation/correction receipts with fresh unique identities; old receipts remain unchanged.",
+      "E6 a_p3_receipt_set_reviewer validates the complete old-plus-new graph and writes PASS/BLOCK external evidence.",
+      "E7 A fresh a_receipt_lifecycle_finalizer runs PRE_INTEGRITY_RETRY attempt 2 exactly once. PASS writes lifecycle-manifest.pre-integrity.json and its separate atomic receipt; BLOCK writes only its immutable BLOCK receipt and stops before P4.",
+      "E8 After P4 and terminal pins, the separately authorized PRE_REVIEW_FREEZE attempt 3 runs once under the already accepted target-freeze rules."
+    ],
+    "p3_retry_gate": {
+      "p4_state": "BLOCKED",
+      "unlock_requirements": [
+        "p3-evidence-repair.amendment-review.md PASS at this amended contract SHA-256",
+        "both fresh durable adoption-auditor re-audit receipts PASS",
+        "all authorized fresh linked correction/reaffirmation receipts present",
+        "a_p3_receipt_set_reviewer correction-set review PASS",
+        "PRE_INTEGRITY_RETRY attempt 2 PASS, lifecycle-manifest.pre-integrity.json written, and preliminary_pre_pin_eligibility_rule proven for every retained preliminary BLOCK"
+      ],
+      "retry_denominator": "Attempt 2 validates all nine immutable old seat receipts, immutable attempt-1 BLOCK, both new auditor receipts, every new correction/reaffirmation receipt, amendment-review hash, and correction-set-review receipt. Old defects remain recorded as corrected-by links rather than disappearing.",
+      "failure": "If amendment review, correction-set review, attempt 2, or the bounded preliminary pre-pin eligibility check is BLOCK, stop before P4. No second retry, receipt edit, denominator reduction, waiver, expanded exception, or silent omission is authorized."
+    },
+    "evidence_boundaries": {
+      "frozen_attacker_targets": "Complete before attackers: repairs, tests, durable seat receipts through terminal integrity, preliminary and terminal integrity evidence, post-integrity terminal test report, final pins, and lifecycle-manifest.pre-approval.json. The manifest's own atomic author receipt is external evidence, not manifest content or attacker target.",
+      "review_deliverables": "Attackers and verifier/skeptic work produce final review.md; Coverage audits frozen target-by-lens coverage and survivor discipline. review.md, Coverage evidence, and their receipts are not attacker targets.",
+      "approval": "The approver hashes an approval evidence package consisting of the unchanged frozen attacker-target corpus plus final review.md, Coverage evidence, and the external target-freeze author receipt. Its approval artifact and receipt are external outputs referencing those exact component digests.",
+      "post_approval": "Mechanical closeout atomically adds lifecycle-manifest.closeout.json, cycle-2-completion.json, and a separate external closeout-owner receipt excluded from both artifacts' content/hash. Terminal verification checks those plus the approver receipt, then emits a self-excluded external verdict receipt. None modifies or joins targets/package retroactively."
+    },
+    "success_rule": "Stage A cycle 2 succeeds only when a_final_approver returns PASS over the exact approval evidence package and a_cycle_2_terminal_verifier independently returns PASS over the immutable approval boundary plus mechanical closeout.",
+    "stage_b_gate": "Stage B remains blocked until both required PASS results exist and verify; cycle-2-completion alone, approval alone, or terminal-close verification alone is insufficient."
+  },
+  "repair_contract": {
+    "order_status": "SUPERSEDED_FOR_CYCLE_2: repair_contract.order is historical recovery context only and must not be executed or used to resolve ordering.",
+    "maximum_cycles": 3,
+    "superseded_order": [
+      "a_baseline_repair_owner first reconstructs consumable evidence and freezes every current path without attributing interrupted residue. No auditor or production adoption owner starts from the invalid baseline.",
+      "Each fresh adoption auditor independently returns ADOPT or REIMPLEMENT for only its production diff. Its disjoint adoption owner either accepts the exact frozen bytes under a new receipt without mutation, or restores only unattributed hunks to last verified clean bytes and implements approved intent. Neither path may disturb user or other producer work.",
+      "a_post_adoption_reviewer independently PASSes repaired evidence, both decisions, both attributable receipts, implementation intent, and preservation before any fixture resume, test, or integrity action.",
+      "After post-adoption PASS, evaluate whether the historically completed a_legacy_fixture_migrator requires a bounded resume. If not, retain its prior terminal receipt; if so, verify reconciled hashes, link the resume receipt to prior provenance, update only its three exact fixture/test files, and preserve explicit historical 0.6.3/plural fixtures.",
+      "After the fixture resume decision is terminal, a_test_implementer updates only its two exclusive Stage-A files when required and runs the full fixed test contract across Stage-A, workflow, bridge, host-hook, ledger, service-validator, and integrity suites.",
+      "a_integrity_owner runs only after all repaired production and test bytes are final.",
+      "a_integrity_owner freezes one new final-hash manifest.",
+      "All three attackers, writer-skeptic convergence, coverage audit, and final approval rerun over exactly that manifest."
+    ],
+    "failure": "Block after three unsuccessful cycles, any ownership collision, changed frozen recovery input, ambiguous actor attribution, inability to recover last verified clean bytes, scope expansion, dirty-hunk loss, or inability to preserve code readiness. Timeout or interruption records residue and leaves the affected seat non-terminal; it never transfers authorship or permits downstream launch."
+  },
+  "dirty_overlap_policy": {
+    "known_dirty_paths": [
+      "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+      "implementations/server/runtime/local_pilot.py"
+    ],
+    "baseline_requirement": "a_baseline records full pre-existing diffs and hashes for both paths before any Stage-A mutation.",
+    "amendment_baseline_requirement": "The interrupted reconciliation is invalid evidence, not provenance. a_baseline_repair_owner alone reconstructs it from the unchanged original baseline, the frozen interrupted artifact, current exact bytes/diffs, and independently verified durable receipts. The two production diffs remain explicitly unattributed until fresh adoption receipts exist. No earlier state, actor, or receipt may be inferred or invented. Only hunks present in the original baseline or supported by independent user-attribution evidence are user-owned; named Stage-A producer diffs retain their receipts.",
+    "mutation_rule": "Only a_integrity_owner may touch the known dirty integrity paths, only after baseline recovery, both adoption paths, independent post-adoption review, every triggered historical-producer resume, and the test owner are terminal, and only for the minimum manifest/pin changes required by final hashes.",
+    "preservation_rule": "Every original-baseline or independently attributed user hunk must remain semantically and textually preserved except exact hash/pin tokens that necessarily change. Every Stage-A producer hunk retains its named receipt provenance across reconciliation, resume, and integrity work. Record before/after hashes, attribution, and a hunk-by-hunk preservation check.",
+    "block_rule": "If a service, fixture, test, manifest, or pin edit overlaps semantically with an original-baseline or independently attributed user hunk, conflicts with a named Stage-A producer receipt, or cannot preserve attribution unambiguously, stop for coordination; do not overwrite, absorb, revert, normalize, reclassify, or silently modernize the dirty work."
+    ,"cycle_2_repair_rule": "Before A-004/A-005 mutation, each original owner records the frozen current hash and complete existing diff for its exact file. Preserve every hunk outside the finding's bounded repair; retain original-baseline user attribution and named/reaffirmed producer attribution. test_host_workflow_binding.py begins clean at its frozen hash and may change only canonical opening setup plus A-004 assertions. Receipt and integrity owners never rewrite production/test hunks. Block on an intervening hash, ambiguous overlap, or missing attribution rather than reset, checkout, normalize, or reconstruct the file."
+  },
+  "test_contract": {
+    "owner": "a_test_implementer",
+    "fixed_test_files": [
+      "implementations/tests/runtime/test_runtime_type_bootstrap.py",
+      "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py"
+    ],
+    "required_cases": [
+      "Registry schema bump and canonical singular other for new rows.",
+      "API compatibility alias others normalizes to other without rewriting historical ledger bytes.",
+      "Mixed-version historical plural read, close, ledger aggregation, and UI aggregation.",
+      "Several exact installed unmapped capabilities resolve independently to other with retained identity/path/digest/authority/tool fields.",
+      "Specialized research, review, experiment, and code retain their specialized mappings.",
+      "Unknown capability, slash-qualified pseudo-capability, mismatched skill identity/path, unavailable authority, missing route, forged route, and post-confirmation capability swap fail closed.",
+      "Valid code passes only with its complete readiness fixture and canonical topology.",
+      "Missing/failing code readiness, write-scope escape, topology inflation, mixed code/other record, and code fallback attempt fail closed.",
+      "Appender, resolver, compile, open, bridge, host binding, and close verify the same route digest.",
+      "The orchestration service rejects a workflow manifest before consumption when route_digest is absent, malformed, stale, cross-route, or unequal to the expected immutable route digest, and accepts the exact matching digest.",
+      "Canonical sequential upstream output is materialized into the exact digest-bound downstream manifest.",
+      "Missing upstream output, stale/tampered manifest, cross-capability handoff, feedback, zig-zag, and unsupported edge semantics fail explicitly.",
+      "New workflow, bridge, and host-hook fixtures derive schema_version from the canonical registry, carry the resolved capability_route, use singular other for new openings, and preserve route_digest through compile/open/close.",
+      "Automatic production host-hook synthesis derives schema_version 0.6.4 from the canonical registry, resolves the exact installed compatibility capability, emits its complete capability_route, and requires opening dispatch_type to equal capability_route.dispatch_type.",
+      "Automatic production host-hook synthesis is accepted by the appender only with the verified route; missing, forged, mismatched, or post-resolution swapped capability_route and route_digest fail closed across host binding, open, and close.",
+      "Host-hook role, model, prompt, anti-bias, compatibility policy, output_mode, and existing binding/lifecycle behavior remain unchanged apart from the current schema and verified route attachment.",
+      "Dedicated historical fixtures remain schema 0.6.3/plural others, remain byte-for-byte historical, and prove read/close/aggregation compatibility without being accepted as new canonical openings.",
+      "Legacy opening resolution accepts canonical 0.6.4 and historical 0.6.1-0.6.3 rows, while missing schema_version, malformed values, 0.6.5, 1.0.0, and arbitrary unknown versions fail with the explicit supported-version error before lifecycle use.",
+      "A-004 positive: a sequential binding-output is accepted only when its canonical path, artifact id, data schema, sha256, bytes, producer binding/agent, dispatch, route digest, and producer-output receipt digest exactly equal the immutable output registered at terminal completion.",
+      "A-004 negative: arbitrary repository path, caller-created file, missing output receipt, nonterminal producer, wrong binding/agent/dispatch/artifact/schema/hash/bytes/route/receipt digest, symlink, cross-output substitution, and mutation after registration fail before manifest consumption.",
+      "A-005 positive: a current 0.6.4 close with exactly one valid opening and matching capability_route_digest succeeds; a uniquely resolved historical pre-route opening may close without that digest only under the explicit historical schema predicate.",
+      "A-005 negative: orphan close, absent ledger/opening, duplicate opening, malformed opening route, missing or malformed current route digest, mismatched/swapped digest, fake historical assertion, and validate-only orphan fixture fail closed without append.",
+      "A-001/A-002 evidence: terminal test report is created only after preliminary integrity is valid, contains the complete required metadata and PASS/BLOCK truth, and the final manifest pins that exact report plus the validated ordered lifecycle receipt-set digest.",
+      "Stage-E source-manifest and local-pilot integrity suites pass after final pins include every changed production and fixture/test file required by the manifest contract."
+    ],
+    "required_commands": [
+      "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap -v",
+      "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap_abuse -v",
+      "python -m unittest implementations.tests.runtime.test_dispatch_workflow -v",
+      "python -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+      "python -m unittest implementations.tests.runtime.test_host_dispatch_hook -v",
+      "python -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+      "python implementations/tests/test_ledger.py",
+      "repository-local Stage-E source-manifest integrity validation command discovered from the pinned manifest's existing test contract",
+      "repository-local local-pilot integrity validation command discovered from the existing local_pilot test contract"
+    ],
+    "evidence": "The terminal test-report.json is a post-preliminary-integrity artifact and records for each exact command: started_at_utc, completed_at_utc, duration_ms, exit code, stdout/stderr byte counts and SHA-256 digests, cases covered, tested source-manifest and local-pilot hashes, lifecycle receipt-set digest, result, blockers, and final PASS/BLOCK. Preliminary runs remain separate immutable receipts and cannot replace it."
+  },
+  "review_contract": {
+    "cycle": 2,
+    "frozen_target_corpus": [
+      "all Stage-A production paths changed within exact write scopes",
+      "implementations/server/runtime/service.py",
+      "implementations/server/runtime/legacy.py",
+      "implementations/server/runtime/host_dispatch_hook.py",
+      "the three migrated workflow/bridge/host-hook fixture-test files",
+      "both exclusive Stage-A test files",
+      "test-report.json",
+      "the minimally merged stage-E source manifest",
+      "the minimally merged local_pilot.py",
+      "final-hash-manifest.json",
+      ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/lifecycle-manifest.pre-integrity.json",
+      ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/lifecycle-manifest.pre-approval.json",
+      "all unique durable cycle-2 seat receipts that exist through terminal integrity and no attacker/writer/skeptic/coverage/later receipt",
+      "implementations/tests/runtime/test_host_workflow_binding.py",
+      "this bootstrap-contract.json"
+    ],
+    "external_evidence_available_to_attackers": ["the atomic a_receipt_lifecycle_finalizer author receipt for lifecycle-manifest.pre-approval.json, which hashes the manifest but is excluded from that manifest's content/hash and is not itself a target"],
+    "boundary_exclusions": ["review.md as a prior target", "Coverage evidence as a prior target", "attacker/writer/skeptic/coverage receipts", "approval.json", "a_final_approver receipt", "lifecycle-manifest.closeout.json", "cycle-2-completion.json", "a_post_approval_closeout_owner receipt", "a_cycle_2_terminal_verifier receipt"],
+    "topology": "Cycle 2 uses fresh identities. Three one-lens attackers review the already-complete frozen target corpus and feed the review writer; writer and stable skeptic exchange at most three times to create final review.md; coverage auditor proves every frozen target-by-lens cell and audits survivor/refutation discipline in the produced review. Neither review.md nor Coverage is treated as a pre-existing attacker target. The approver later consumes them as approval evidence deliverables.",
+    "finding_rule": "Every survivor quotes a target, has defensible severity and bounded fix. Refuted findings and transcripts are not persisted. Zero findings requires explicit target-by-lens defense.",
+    "pass_rule": "No CRITICAL or MAJOR finding remains; A-001/A-002/A-004/A-005 each have exact closure evidence; coverage is complete; terminal post-integrity tests, lifecycle receipts, and final integrity PASS; manifest claims agree with persisted evidence; and target hashes equal final-hash-manifest.json."
+  },
+  "receipts": {
+    "namespace": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2",
+    "unique_path_rule": "Each attempted seat writes only `<namespace>/seats/<role_id>/<agent_id>/<attempt_id>.json`; role_id, agent_id, and attempt_id are filesystem-safe and the tuple is globally unique. Reaffirmations and post-integrity reruns use new attempt ids and link, never overwrite, prior attempts.",
+    "p3_correction_receipt_contract": {
+      "amended_contract_binding": "Every new receipt uses the SHA-256 of this evidence-repair amendment after independent amendment review PASS, not source hash BEF303...; approved_parent_sha256 remains exactly 2D9C9C3B3ACD66D0A0C11DF69F2BC9265B45A3384BB7C317D7F76F78CB342051. Both fields are mandatory and semantically distinct.",
+      "mandatory_forward_link_fields": ["supersedes_nothing", "corrects_receipt_path", "corrects_receipt_sha256", "correction_reasons", "old_receipt_preserved_true", "recorded_at_utc", "accepted_responsibility_from_utc", "before_hashes", "after_hashes", "validation", "blockers", "residue", "reroute"],
+      "fresh_identity_paths": [
+        "<namespace>/seats/a_legacy_adoption_auditor/<fresh-legacy-auditor-agent>/reaudit-01.json",
+        "<namespace>/seats/a_host_hook_adoption_auditor/<fresh-host-auditor-agent>/reaudit-01.json",
+        "<namespace>/seats/a_legacy_adoption_owner/cycle2_legacy_adoption_reaffirm_02/reaffirm-02.json",
+        "<namespace>/seats/a_host_hook_adoption_owner/cycle2_host_adoption_reaffirm_02/reaffirm-02.json",
+        "<namespace>/seats/a_legacy_fixture_migrator/cycle2_fixture_reaffirm_02/reaffirm-02.json",
+        "<namespace>/seats/a_test_implementer/cycle2_test_reaffirm_02/preliminary-reaffirm-02.json",
+        "one fresh unique reaffirm-02 path each for a_baseline_repair_owner, a_binding_output_test_owner, a_compiler_implementer, and a_manifest_service_implementer",
+        "<namespace>/seats/a_p3_receipt_set_reviewer/<fresh-agent>/correction-set-review-01.json",
+        "<namespace>/seats/a_receipt_lifecycle_finalizer/<fresh-agent>/pre-integrity-retry-02.json"
+      ],
+      "auditor_receipt_fields": ["branch", "fresh_agent_identity", "current_bytes_hash", "last_verified_clean_hash", "approved_intent_digest", "line_by_line_diff_adjudication", "excluded_semantics_check", "old_ephemeral_summary_classified_as_residue", "mutation_false", "verdict"],
+      "fixture_test_required_fields": "The fixture and preliminary-test reaffirmations must satisfy every global per_seat_required_fields entry plus the role-specific amendment requirements. A retained preliminary BLOCK is eligible for P4 only under preliminary_pre_pin_eligibility_rule: all ungated functional assertions/commands PASS and every remaining failure is exclusively a named stale frozen pin with expected/actual SHA-256 and proven preflight boundary. It remains BLOCK and is never converted to PASS.",
+      "predecessor_rule": "The new host owner receipt is created strictly after the new legacy owner receipt. It stores legacy receipt path and exact SHA-256 in sequential_predecessor and receipt-link validation recomputes that digest from disk.",
+      "immutability": "No new correction receipt may share an agent_id with another role, reuse an old path/attempt, overwrite bytes, claim supersession/deletion, or omit the old receipt from the complete retry denominator."
+    },
+    "required_frozen_target_receipt_seats": ["a_runtime_implementer", "a_compiler_implementer", "a_manifest_service_implementer", "a_binding_output_test_owner", "a_test_implementer", "a_receipt_lifecycle_finalizer PRE_INTEGRITY attempt", "a_integrity_owner", "every recovery/adoption seat whose bytes remain in the frozen corpus"],
+    "required_review_deliverable_receipt_seats": ["a_receipt_lifecycle_finalizer PRE_REVIEW_FREEZE author receipt external to its manifest", "a_fidelity_attacker", "a_correctness_attacker", "a_abuse_attacker", "a_review_writer", "a_review_skeptic", "a_coverage_auditor"],
+    "external_boundary_seats": ["a_final_approver", "a_post_approval_closeout_owner", "a_cycle_2_terminal_verifier"],
+    "historical_producer_receipt_rule": "Existing terminal receipts for runtime, compiler, service, and fixture producers remain authoritative and are not regenerated by reconciliation. If one is explicitly resumed, its new receipt must cite the prior receipt, verified reconciled input hash, retained-hunk attribution, new changes, and terminal output hash; absence of a resume retains the historical receipt unchanged.",
+    "interruption_receipt_rule": "Record the first reconciler timeout/interruption and finalizer BLOCK as residue with attempted agent id, observed hashes, incomplete work, timeout/interruption status, and no-authorship/no-adoption declaration. An interrupted or timed-out receipt is never terminal PASS and cannot authorize downstream work.",
+    "per_seat_required_fields": [
+      "contract_id",
+      "approved_parent_sha256",
+      "authority_kind",
+      "aci_bound_false",
+      "role_id",
+      "agent_id",
+      "prompt_digest",
+      "spawn_status",
+      "join_status",
+      "close_status",
+      "before_hashes",
+      "after_hashes",
+      "artifacts",
+      "validation",
+      "blockers",
+      "residue",
+      "reroute"
+      ,"attempt_id"
+      ,"rerun_or_reaffirm"
+      ,"recorded_at_utc"
+      ,"prior_attempt_refs"
+      ,"accepted_responsibility_from_utc"
+    ],
+    "cycle_2_receipt_requirements": {
+      "production_repair_owners": ["finding_ids", "frozen_input_hash_and_existing_diff", "exact_changed_hunks", "preserved_hunk_map", "positive_and_negative_validation", "after_hash", "A-004_or_A-005_closed"],
+      "test_owner_preliminary_attempt": ["all_required_commands", "complete_command_metadata", "preliminary_result", "integrity_staleness_if_any", "no_terminal_A-001_claim"],
+      "reaffirmed_seat": ["no_past_durable_receipt_disclosure", "current_artifact_hashes", "current_validation_rerun", "residue_and_prior_host_summary_refs", "responsibility_begins_at_reaffirmation", "no_backdating_or_invented_lifecycle"],
+      "receipt_lifecycle_finalizer": ["mode_pre_integrity_or_pre_approval", "ordered_unique_receipt_paths_within_that_boundary", "attempted_seat_denominator_through_boundary", "spawn_join_close_terminality", "identity_uniqueness", "missing_or_interrupted_attempts", "canonical_receipt_set_digest", "lifecycle_manifest_after_hash", "future_approver_and_closeout_excluded"],
+      "post_approval_closeout_owner": ["exact_frozen_attacker_target_corpus_digest", "ordered_approval_evidence_package_digest", "approval_PASS_hash", "approver_external_receipt_hash", "already_existing_post_approval_residue", "no_target_or_deliverable_mutation", "atomic_lifecycle_closeout_hash", "atomic_completion_hash", "separate_external_owner_receipt_hashes_both_artifacts", "owner_receipt_excluded_from_both_artifact_content_and_hash"],
+      "terminal_close_verifier": ["approval_PASS", "approved_evidence_package_digest_match", "external_approver_receipt_terminal", "lifecycle_closeout_and_completion_hashes_match", "external_closeout_owner_receipt_hashes_both", "no_retroactive_inclusion", "verdict_PASS_or_BLOCK", "self_receipt_created_after_verdict_and_not_input_or_self_approved"],
+      "test_owner_terminal_attempt": ["preliminary_integrity_PASS_ref", "all_required_commands_post_integrity", "complete_command_metadata", "tested_integrity_hashes", "receipt_set_digest", "terminal_report_hash", "final_result_and_blockers"],
+      "integrity_owner_final_attempt": ["terminal_test_report_PASS_and_hash", "receipt_set_and_lifecycle_manifest_digest", "exact_pin_changes", "claims_derived_only_from_persisted_evidence", "integrity_commands_PASS_after_final_repin", "final_hash_manifest_hash"],
+      "cycle_2_review_roles": ["cycle_2_attempt_id", "final_manifest_hash", "terminal_report_hash", "lifecycle_manifest_hash", "frozen_target_denominator", "lens_or_role_result", "terminal_join_close"]
+    },
+    "amendment_receipt_requirements": {
+      "a_baseline_repair_owner": [
+        "invalid_baseline_before_hash_bytes_and_full_untracked_diff_digest",
+        "first_reconciler_timeout_and_incomplete_array_residue",
+        "finalizer_block_and_incorrect_occurrence_targeting_residue",
+        "original_baseline_preserved_verbatim",
+        "complete_current_state_per_path_with_timestamp_and_source",
+        "durable_receipt_attribution_or_explicit_unattributed_label_per_diff",
+        "both_production_diffs_frozen_as_unattributed_interrupted_state",
+        "no_invented_provenance",
+        "repaired_baseline_after_hash_and_consumability_validation",
+        "production_and_test_mutation_false"
+      ],
+      "a_legacy_adoption_auditor": [
+        "frozen_legacy_hash_bytes_and_diff_digest_verified",
+        "line_by_line_approved_intent_comparison",
+        "excluded_legacy_semantics_unchanged",
+        "unrelated_hunk_attribution_map",
+        "verdict_ADOPT_or_REIMPLEMENT_with_reasons",
+        "mutation_false"
+      ],
+      "a_legacy_adoption_owner": [
+        "auditor_receipt_ref_and_verdict",
+        "frozen_input_hash_and_diff_verified",
+        "path_ADOPT_no_mutation_or_REIMPLEMENT_clean_restore",
+        "restored_only_unattributed_hunks_if_reimplemented",
+        "approved_legacy_intent_implemented",
+        "new_attributable_adoption_or_implementation_receipt",
+        "user_and_other_producer_hunks_preserved",
+        "legacy_after_hash_and_diff"
+      ],
+      "a_host_hook_adoption_auditor": [
+        "frozen_host_hook_hash_bytes_and_diff_digest_verified",
+        "line_by_line_approved_intent_comparison",
+        "route_digest_and_fail_closed_analysis",
+        "behavior_preservation_and_unrelated_hunk_attribution_map",
+        "verdict_ADOPT_or_REIMPLEMENT_with_reasons",
+        "mutation_false"
+      ],
+      "a_host_hook_adoption_owner": [
+        "auditor_receipt_ref_and_verdict",
+        "frozen_input_hash_and_diff_verified",
+        "path_ADOPT_no_mutation_or_REIMPLEMENT_clean_restore",
+        "restored_only_unattributed_hunks_if_reimplemented",
+        "approved_host_hook_intent_implemented",
+        "new_attributable_adoption_or_implementation_receipt",
+        "user_and_other_producer_hunks_preserved",
+        "host_hook_after_hash_and_diff"
+      ],
+      "a_post_adoption_reviewer": [
+        "repaired_baseline_hash_and_consumability_PASS",
+        "both_auditor_receipts_independent_and_terminal",
+        "both_adoption_owner_receipts_attributable_and_terminal",
+        "approved_intent_and_exclusion_conformance",
+        "all_intervening_hunks_accounted_for",
+        "user_and_other_producer_work_preserved",
+        "no_fabricated_authorship_or_provenance",
+        "verdict_PASS_before_test_or_integrity_launch"
+      ],
+      "a_manifest_service_implementer": [
+        "historical_terminal_receipt_retained_unless_explicitly_resumed",
+        "if_resumed_prior_receipt_ref_and_verified_reconciled_input_hash",
+        "service_before_hash",
+        "service_existing_diff_digest",
+        "expected_route_digest_source_opened_row_capability_route_route_digest",
+        "accepted_matching_fixture",
+        "rejected_missing_fixture",
+        "rejected_malformed_fixture",
+        "rejected_stale_fixture",
+        "rejected_cross_route_fixture",
+        "service_after_hash",
+        "unrelated_hunks_preserved"
+      ],
+      "a_baseline_reconciler": [
+        "interrupted_superseded_no_write_or_PASS_receipt_authority",
+        "timeout_and_partial_diff_residue_retained",
+        "replacement_role_a_baseline_repair_owner"
+      ],
+      "a_legacy_schema_implementer": [
+        "superseded_unlaunched_no_write_or_receipt_authority",
+        "replacement_role_a_legacy_adoption_owner"
+      ],
+      "a_host_hook_implementer": [
+        "superseded_unlaunched_no_write_or_receipt_authority",
+        "replacement_role_a_host_hook_adoption_owner"
+      ],
+      "a_legacy_fixture_migrator": [
+        "historical_terminal_receipt_retained_or_linked_resume_receipt",
+        "if_resumed_verified_reconciled_input_hash_per_file",
+        "before_hash_and_diff_digest_per_file",
+        "new_openings_migrated_to_registry_schema",
+        "new_openings_carry_capability_route",
+        "new_other_uses_singular_value",
+        "historical_0_6_3_plural_fixtures_preserved",
+        "after_hash_per_file",
+        "unrelated_hunks_preserved"
+      ],
+      "a_integrity_owner": [
+        "baseline_repair_and_post_adoption_review_PASS_before_pin_regeneration",
+        "both_fresh_adoption_or_implementation_receipts_terminal_before_pin_regeneration",
+        "all_historical_producer_receipts_or_linked_resume_receipts_terminal_before_pin_regeneration",
+        "all_non_integrity_pin_gated_functional_assertions_and_commands_PASS_before_preliminary_repin",
+        "every_retained_preliminary_BLOCK_proven_solely_stale_frozen_integrity_pins_with_expected_and_actual_hashes",
+        "no_functional_mixed_unexplained_or_post_preflight_failure_before_preliminary_repin",
+        "PRE_INTEGRITY_RETRY_PASS_before_preliminary_repin",
+        "preliminary_repin_limited_to_proven_stale_pins_and_mechanical_parent_pin",
+        "mandatory_full_terminal_rerun_and_report_PASS_before_final_repin",
+        "manifest_before_hash_and_diff_digest",
+        "local_pilot_before_hash_and_diff_digest",
+        "changed_pin_map",
+        "original_baseline_and_independently_attributed_user_hunks_preserved",
+        "stage_a_producer_hunks_mapped_to_named_receipts",
+        "final_manifest_hash",
+        "final_local_pilot_hash"
+      ]
+    },
+    "terminal_approval_path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/approval.json",
+    "terminal_approval_required_fields": [
+      "contract_id",
+      "approved_parent_sha256",
+      "authority_kind_explicit_direct_subagent",
+      "aci_claim_false",
+      "ledger_governed_claim_false",
+      "all_role_identities_distinct",
+      "all_attempted_pre_approval_agents_terminal",
+      "frozen_attacker_target_corpus_manifest_path",
+      "frozen_attacker_target_corpus_sha256",
+      "pre_approval_lifecycle_manifest_sha256",
+      "final_review_sha256",
+      "coverage_evidence_sha256",
+      "review_role_receipt_set_sha256",
+      "target_freeze_author_receipt_sha256",
+      "ordered_approval_evidence_package_sha256",
+      "approver_and_post_approval_artifacts_excluded_from_corpus",
+      "final_hash_manifest_path",
+      "final_hash_manifest_sha256",
+      "test_report_path",
+      "test_report_sha256",
+      "review_path",
+      "review_sha256",
+      "coverage_complete",
+      "critical_count",
+      "major_count",
+      "dirty_hunks_preserved",
+      "A_001_A_002_A_004_A_005_closed",
+      "verdict"
+    ],
+    "pass_condition": "At the approval boundary: cycle is 2; approver verdict is PASS over the ordered evidence package; A-001/A-002/A-004/A-005 are closed; critical_count and major_count are zero; frozen-target receipts are terminal and validated by the finite pre-review lifecycle manifest; target-freeze author receipt is external and valid; review/coverage receipts are separately terminal; terminal report follows preliminary integrity; final repin follows terminal report; and all target hashes, tests, integrity, review coverage, authority disclosures, and dirty-hunk preservation checks verify. Overall success additionally requires later terminal-close verifier PASS.",
+    "stage_b_handoff": "Stage B remains prohibited until both a_final_approver PASS over the ordered evidence package and a_cycle_2_terminal_verifier PASS independently verify. Post-approval closeout evidence remains external and never becomes an attacker target or approval-package member retroactively."
+  },
+  "terminal_conditions": [
+    "Minimum runtime support is installed only within the exact scopes.",
+    "All fixed tests and integrity commands pass.",
+    "The complete post-integrity terminal test report is pinned by a later final integrity manifest whose claims match it exactly.",
+    "Every frozen-target seat has a unique durable receipt or explicit non-PASS interruption residue before target freeze; later review, approval, closeout, and verifier seats use external receipts at their actual times; none is backdated into an earlier manifest and no past receipt is invented.",
+    "A-004 producer-output provenance and A-005 orphan-close fail-closed behavior pass their exact negative cases.",
+    "Every direct Stage-A seat is honestly labeled non-ACI and has terminal join/close evidence.",
+    "The complete frozen corpus passes the canonical multi-lens review graph.",
+    "approval.json is PASS and hashes the unchanged frozen attacker-target corpus plus separately produced final review, Coverage evidence, review-role receipts, and target-freeze author receipt as one ordered approval package, without including itself or later closeout artifacts.",
+    "Mechanical post-approval closeout preserves that corpus digest, and the independent terminal close verifier is PASS without requiring self-inclusion.",
+    "No commit or promotion occurred."
+  ]
+}
