@@ -246,7 +246,10 @@ figure svg {
 .view-trace,
 .view-field,
 .record-axis,
-.alignment-plane {
+.alignment-plane,
+.relation-route,
+.relation-branch,
+.relation-link {
   fill: none;
   stroke: var(--clay);
   stroke-width: 1;
@@ -266,7 +269,8 @@ figure svg {
 .aperture-boundary--accent,
 .projection-plane--accent,
 .view-field--accent,
-.alignment-plane--accent {
+.alignment-plane--accent,
+.relation-branch--accent {
   stroke: var(--red);
   opacity: .49;
 }
@@ -285,7 +289,8 @@ figure svg {
 }
 
 .projection-trace,
-.view-trace {
+.view-trace,
+.relation-link {
   stroke-dasharray: 3 4;
   opacity: .25;
 }
@@ -300,7 +305,8 @@ figure svg {
 .projection-node,
 .history-node,
 .view-node,
-.alignment-node {
+.alignment-node,
+.relation-node {
   fill: var(--paper);
   stroke: var(--red);
   stroke-width: 1.1;
@@ -316,6 +322,20 @@ figure svg {
 .projection-anchor {
   fill: var(--ink);
   opacity: .68;
+}
+
+.relation-anchor {
+  fill: var(--ink);
+  opacity: .74;
+}
+
+.relation-route {
+  stroke: var(--ink);
+  opacity: .38;
+}
+
+.relation-branch--quiet {
+  opacity: .19;
 }
 
 .history-mark {
@@ -394,7 +414,7 @@ figure svg {
   <div class="family">Work context infrastructure / field notes 01</div>
   <h1>A small atlas<br>of contextual forms</h1>
   <div class="rule"></div>
-  <p class="subtitle">Nine quiet drawings about memory, authority, evidence, and the paths that keep local work connected to a larger purpose.</p>
+  <p class="subtitle">Ten quiet drawings about memory, authority, evidence, and the paths that keep local work connected to a larger purpose.</p>
   <figure aria-hidden="true">
     <svg viewBox="0 0 580 172">
       <path class="view-field view-field--accent" d="M40 24L172 13L221 35 M221 35L89 54L40 24"/>
@@ -663,6 +683,41 @@ figure svg {
     <p class="note"><b>Function in the whole</b>Alignment allows the architecture to evolve in layers. Each layer can specialize without losing the ability to explain how its objects correspond to the others.</p>
   </div>
   <div class="folio">10 / planes aligned through one record</div>
+</section>
+
+<section class="page">
+  <i class="corner tl"></i><i class="corner br"></i>
+  <div class="family">User relation / one</div>
+  <h2>One relation, variable depth</h2>
+  <div class="symbol-field">
+    <figure class="wide-form" style="height:52mm;top:12mm" aria-hidden="true">
+      <svg viewBox="0 0 580 172">
+        <path class="relation-route" d="M42 86C88 86 132 86 190 86"/>
+        <path class="relation-branch relation-branch--quiet" d="M190 86C255 35 341 24 512 38"/>
+        <path class="relation-branch relation-branch--accent" d="M190 86C276 68 361 64 488 72"/>
+        <path class="relation-branch" d="M190 86C270 105 350 111 470 104"/>
+        <path class="relation-branch relation-branch--quiet" d="M190 86C250 139 339 148 520 132"/>
+        <path class="relation-link" d="M325 42C350 61 354 90 337 115M410 68C432 85 437 109 426 135"/>
+        <circle class="relation-node" cx="42" cy="86" r="4.2"/>
+        <circle class="relation-anchor" cx="190" cy="86" r="5.2"/>
+        <circle class="relation-node" cx="512" cy="38" r="3.2"/>
+        <circle class="relation-node" cx="488" cy="72" r="3.6"/>
+        <circle class="relation-node" cx="470" cy="104" r="3.2"/>
+        <circle class="relation-node" cx="520" cy="132" r="3.2"/>
+        <circle class="relation-node" cx="325" cy="42" r="2.7"/>
+        <circle class="relation-node" cx="337" cy="115" r="2.7"/>
+        <circle class="relation-node" cx="410" cy="68" r="2.7"/>
+        <circle class="relation-node" cx="426" cy="135" r="2.7"/>
+      </svg>
+    </figure>
+  </div>
+  <div class="notes">
+    <p class="note"><b>Context</b>As a system becomes more capable, work can unfold at many levels and in many places. Requiring the user to coordinate all of it would transfer the system's burden back to the person it serves.</p>
+    <p class="note"><b>Idea</b>One quiet route reaches a dark hinge. Beyond it, several depths remain available, while only the path relevant now is accented. Simplicity is selective attention, not erasure.</p>
+    <p class="note"><b>Into the system</b>The orchestrator maintains a continuous point of relation. It can present a result, expose active work, recover a decision, or open a local intervention without making the user navigate the internal topology first.</p>
+    <p class="note"><b>Function in the whole</b>Capacity can grow without cognitive burden growing at the same rate. The user stays near the objective while retaining a path into the work whenever greater depth becomes necessary.</p>
+  </div>
+  <div class="folio">11 / one relation, variable depth</div>
 </section>
 
 </body>
