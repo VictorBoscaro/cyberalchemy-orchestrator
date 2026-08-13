@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/inventory-bootstrap/audit-barrier.schema.json",
+  "title": "D1 terminal audit barrier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_kind", "run_id", "sheet_producer_attempt", "writer_attempt", "audit_attempt", "terminal_state", "correction_count", "exit_reason", "audit_artifact"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "artifact_kind": { "const": "inventory-bootstrap-audit-barrier" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "sheet_producer_attempt": { "type": "integer", "minimum": 1 },
+    "writer_attempt": { "type": "integer", "minimum": 1, "maximum": 2 },
+    "audit_attempt": { "type": "integer", "minimum": 1, "maximum": 2 },
+    "terminal_state": { "enum": ["PASS", "BOUNDED_CORRECTIONS", "BLOCK"] },
+    "correction_count": { "type": "integer", "minimum": 0 },
+    "exit_reason": { "type": "string", "minLength": 1 },
+    "audit_artifact": { "$ref": "#/$defs/artifact" }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

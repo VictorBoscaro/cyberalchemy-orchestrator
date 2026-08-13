@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/inventory-bootstrap/telemetry-events.schema.json",
+  "title": "D1 Inventory bootstrap telemetry event",
+  "oneOf": [
+    { "$ref": "#/$defs/preAudit" },
+    { "$ref": "#/$defs/terminal" }
+  ],
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "preAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "event_kind", "emitted_at", "run_id", "sheet_producer_attempt", "writer_attempt", "mode", "source_count", "created_entries", "updated_entries", "contradictions", "lint_gaps", "validation", "downstream_lookup_count", "filed_synthesis_count", "corpus_digest", "profile_version"],
+      "properties": {
+        "schema_version": { "const": "1.0.0" },
+        "event_kind": { "const": "inventory-bootstrap-pre-audit" },
+        "emitted_at": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "sheet_producer_attempt": { "type": "integer", "minimum": 1 },
+        "writer_attempt": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "mode": { "const": "backfill-validate-lint" },
+        "source_count": { "type": "integer", "minimum": 0 },
+        "created_entries": { "type": "integer", "minimum": 0 },
+        "updated_entries": { "type": "integer", "minimum": 0 },
+        "contradictions": { "type": "integer", "minimum": 0 },
+        "lint_gaps": { "type": "integer", "minimum": 0 },
+        "validation": { "enum": ["pass", "fail", "blocked"] },
+        "downstream_lookup_count": { "type": "integer", "minimum": 0 },
+        "filed_synthesis_count": { "type": "integer", "minimum": 0 },
+        "corpus_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "profile_version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "terminal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "event_kind", "emitted_at", "run_id", "sheet_producer_attempt", "audit_attempt", "consumed_writer_attempt", "auditor_verdict", "correction_count", "exit_reason", "audit_artifact"],
+      "properties": {
+        "schema_version": { "const": "1.0.0" },
+        "event_kind": { "const": "inventory-bootstrap-terminal" },
+        "emitted_at": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "sheet_producer_attempt": { "type": "integer", "minimum": 1 },
+        "audit_attempt": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "consumed_writer_attempt": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "auditor_verdict": { "enum": ["PASS", "BOUNDED_CORRECTIONS", "BLOCK"] },
+        "correction_count": { "type": "integer", "minimum": 0 },
+        "exit_reason": { "type": "string", "minLength": 1 },
+        "audit_artifact": { "$ref": "#/$defs/artifact" }
+      }
+    }
+  }
+}

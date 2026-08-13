@@ -1,0 +1,93 @@
+{
+  "dispatch_id": "2026-08-13-repository-lens-inventory-extraction",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Produce a reproducible raw inventory of candidate occurrences in a bounded internal corpus, without deciding whether any occurrence is a lens or a composition and without claiming compositional effect.",
+  "context": "Composition Lab is investigating how distinguishable viewpoints are represented and related before authorizing a canonical definition, causal theory, product interface, schema, runtime, migration, or extraction. This D1a record is restricted to literal extraction, identity resolution, internal provenance, negative controls, and evidence boundaries in the frozen corpus. It preregisters that zero demonstrated compositions is a valid result and that absence in this bounded corpus is not absence from the repository.",
+  "max_loops": 2,
+  "final_approver": "Parnas, David",
+  "anti_bias_mode": "disabled",
+  "working_folder": "internal-tools/composition-lab/research/milestone-1/01-repository-inventory",
+  "invoked_by": "victorboscaro@outlook.com",
+  "groups": [
+    {
+      "group_id": "extractors",
+      "n": 4,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Liskov, Barbara",
+          "initial_prompt": "Read the complete local research-initial-definitions.md and the Frozen corpus plus seat matrix in internal-tools/composition-lab/orchestration/milestone-1-strategy/d1-readiness/record/d1-dispatch-sheet.md. Verify the commit and every listed SHA-256 before relying on a file. Own only occurrence identity and literal dispatch/configuration extraction: transcribe target, groups, role, angle, initial_prompt differences, connections, loops, approver, working folder, schema/date, referenced outputs, and exact path:line; link proposal, manifest, ledger opening, close, and output references that represent one event. Record missing or incompatible fields and unresolved identity. Do not define lens/composition, decide whether a candidate is composition, use a compositional codebook, infer execution/effect, or read outside the frozen corpus. Return a structured report to the writer; write no files and modify no source."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Read the complete local research-initial-definitions.md and the Frozen corpus plus seat matrix in internal-tools/composition-lab/orchestration/milestone-1-strategy/d1-readiness/record/d1-dispatch-sheet.md. Verify the commit and every listed SHA-256 before relying on a file. Own only literal traces preserved in the two sampled Robot-Talks instances and linked artifacts: inputs visibly available, ordering, messages/handoffs, per-seat outputs, before/after versions, challenges/responses, concatenation, selection, synthesis, divergence, residue, and mentioned-but-absent outputs. Attach each trace to an occurrence identity supplied by the source or mark identity-unresolved. Do not infer an event from a plan, effect from resolved closure, or composition from synthesis/multiplicity; do not classify candidates or read outside the frozen corpus. Return a structured report to the writer; write no files and modify no source."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Lamport, Leslie",
+          "initial_prompt": "Read the complete local research-initial-definitions.md and the Frozen corpus plus seat matrix in internal-tools/composition-lab/orchestration/milestone-1-strategy/d1-readiness/record/d1-dispatch-sheet.md. Verify the commit and every listed SHA-256 before relying on a file. Own only literal normative/provenance extraction from the active skills and provenance artifacts: record status, version/date, declared inputs, steps, independence, reveal, feedback, outputs, checks, and explicit links to bounded instances. Separate active rule, proposal, preregistration, result, and example. Do not treat a prescribed mechanism as executed, normalize local terms into a theory, classify candidates, infer effect, or read outside the frozen corpus. Return a structured report to the writer; write no files and modify no source."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Peirce, Charles Sanders",
+          "initial_prompt": "Read the complete local research-initial-definitions.md and the Frozen corpus plus seat matrix in internal-tools/composition-lab/orchestration/milestone-1-strategy/d1-readiness/record/d1-dispatch-sheet.md. Verify the commit and every listed SHA-256 before relying on a file. Own only the preregistered negative/control search across the same fixed occurrence identities: division only by files/sources; nominally different instructions requesting equivalent judgment; isolated use of lens language; returns merely concatenated; proposal never executed; close without output showing relation; one event duplicated across proposal/manifest/ledger/report; and prescribed mechanism without a demonstrably linked instance. Also report outliers and candidates that fit none of these searches. Describe literal structure and path:line evidence; do not label a control as non-composition, classify candidates, infer effect, or read outside the frozen corpus. Return a structured report to the writer; write no files and modify no source."
+        }
+      ]
+    },
+    {
+      "group_id": "raw_inventory_writer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 10500,
+          "agent_name": "Knuth, Donald",
+          "initial_prompt": "You are the sole filesystem owner for internal-tools/composition-lab/research/milestone-1/01-repository-inventory/research.md and findings.md. Read the complete local research-initial-definitions.md, frozen corpus/commit/hashes, seat matrix, and all four extractor returns supplied through governed handoffs. Preserve those returns verbatim in research.md with seat identity. In findings.md publish only a reproducible raw inventory: exact corpus manifest and source-type boundary; occurrence identity/provenance keys; deduplication decisions; literal tables keyed by occurrence ID; structural counts; broken references and drift; all eight preregistered controls with a concrete witness or not-observed; outliers; unresolved identities; missing evidence; and an explicit statement that zero demonstrated compositions remains possible. The merge rule is: configuration fields belong to Liskov, preserved-event traces to Nonaka, normative status to Lamport, and control challenges to Peirce; attach control challenges to the shared occurrence ID without overwriting the owning raw field, and preserve conflict as unresolved. Do not classify any row as mention, work-partition, plurality, candidate composition, or effect; do not define lens/composition, infer execution from plan, infer effect from closure/frequency, search externally, alter source/telemetry, or propose product/schema/runtime/migration. Every aggregate statement must cite the verbatim return in research.md and frozen source path:line."
+        }
+      ]
+    },
+    {
+      "group_id": "coverage_audit",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "agent_name": "Hamming, Richard",
+          "initial_prompt": "Audit only the D1a raw bundle after the writer completes. Check commit and all hashes, exact 22-file boundary, occurrence/provenance identity, deduplication, literal path:line support, separation of normative/context files from occurrence witnesses, preservation of all extractor returns, absence of conceptual classification in raw rows, all eight controls with witness or not-observed, unresolved identity/drift, and the explicit zero-demonstrated-compositions possibility. Treat an internal owner as provenance, never as proof of execution or effect. Return PASS or a bounded correction list to the writer; write no files, do not classify candidates, and do not approve the dispatch."
+        }
+      ]
+    },
+    {
+      "group_id": "approver",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Act only as dedicated final approver after the writer and coverage auditor are terminal. Read the frozen manifest, research.md, findings.md, and coverage-audit return. Accept only if the corpus is reproducible, raw returns are verbatim, identities prevent double counting, source ownership is non-overlapping with conflicts preserved, every raw claim has path:line support, normative/context material is not counted automatically as an occurrence, all eight controls are present as witnessed or not-observed, no classification or causal claim leaked into D1a, and zero demonstrated compositions remains an allowed result. Return ACCEPT or RETURN with exact unmet checks. Write no files and perform no research, synthesis, coverage work, or classification."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "extractors", "to": "raw_inventory_writer", "type": "sequential"},
+    {"from": "raw_inventory_writer", "to": "coverage_audit", "type": "feedback", "loop_cap": 2},
+    {"from": "coverage_audit", "to": "approver", "type": "sequential"}
+  ]
+}

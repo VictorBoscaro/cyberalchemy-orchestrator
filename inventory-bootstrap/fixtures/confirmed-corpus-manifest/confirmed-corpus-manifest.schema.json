@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/schemas/confirmed-corpus-manifest-v1.json",
+  "title": "ConfirmedCorpusManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "confirmed_manifest_path",
+    "repository_revision",
+    "semantic_authority",
+    "external_row_source",
+    "sources",
+    "controls"
+  ],
+  "properties": {
+    "schema_version": { "const": "confirmed-corpus-manifest@1" },
+    "confirmed_manifest_path": { "$ref": "#/$defs/repositoryPath" },
+    "repository_revision": { "$ref": "#/$defs/revision" },
+    "semantic_authority": { "$ref": "#/$defs/fileIdentity" },
+    "external_row_source": { "$ref": "#/$defs/fileIdentity" },
+    "sources": {
+      "type": "array",
+      "minItems": 22,
+      "maxItems": 22,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/control" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "fileIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size", "revision"],
+      "properties": {
+        "path": { "$ref": "#/$defs/repositoryPath" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size": { "type": "integer", "minimum": 0 },
+        "revision": { "$ref": "#/$defs/revision" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ordinal", "path", "selector", "sha256", "size", "revision"],
+      "properties": {
+        "ordinal": { "type": "integer", "minimum": 1, "maximum": 22 },
+        "path": { "$ref": "#/$defs/repositoryPath" },
+        "selector": { "const": "entire-file" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size": { "type": "integer", "minimum": 0 },
+        "revision": { "$ref": "#/$defs/revision" }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^C[1-8]$" },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

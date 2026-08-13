@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/inventory-bootstrap/post-audit-check.schema.json",
+  "title": "D1 post-audit telemetry check",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_kind", "run_id", "sheet_producer_attempt", "audit_attempt", "inputs", "matches", "result", "failures"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "artifact_kind": { "const": "inventory-bootstrap-post-audit-telemetry-check" },
+    "run_id": { "type": ["string", "null"] },
+    "sheet_producer_attempt": { "type": ["integer", "null"] },
+    "audit_attempt": { "type": ["integer", "null"] },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audit_barrier", "signal_jsonl"],
+      "properties": {
+        "audit_barrier": { "oneOf": [{ "$ref": "#/$defs/input" }, { "type": "null" }] },
+        "signal_jsonl": { "oneOf": [{ "$ref": "#/$defs/input" }, { "type": "null" }] }
+      }
+    },
+    "matches": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_audit_line_number", "terminal_line_number"],
+      "properties": {
+        "pre_audit_line_number": { "type": ["integer", "null"], "minimum": 1 },
+        "terminal_line_number": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+    "result": { "enum": ["TELEMETRY_VERIFIED", "BLOCK/OBSERVABILITY_GAP"] },
+    "failures": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  },
+  "$defs": {
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

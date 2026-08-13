@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/schemas/d1-lens-use-corpus-manifest-v1.json",
+  "title": "D1 lens-use Inventory corpus manifest projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_manifest", "repository_revision", "sources", "controls", "denominator"],
+  "properties": {
+    "schema_version": { "const": "d1-lens-use-corpus-manifest@1" },
+    "source_manifest": { "$ref": "#/$defs/fileIdentity" },
+    "repository_revision": { "$ref": "#/$defs/revision" },
+    "sources": {
+      "type": "array", "minItems": 22, "maxItems": 22,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "controls": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "items": { "$ref": "#/$defs/control" }
+    },
+    "denominator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_count", "control_count", "cell_count"],
+      "properties": {
+        "source_count": { "const": 22 },
+        "control_count": { "const": 8 },
+        "cell_count": { "const": 176 }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "repositoryPath": {
+      "type": "string", "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "fileIdentity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "size", "revision"],
+      "properties": {
+        "path": { "$ref": "#/$defs/repositoryPath" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size": { "type": "integer", "minimum": 0 },
+        "revision": { "$ref": "#/$defs/revision" }
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ordinal", "path", "selector", "sha256", "size", "revision"],
+      "properties": {
+        "ordinal": { "type": "integer", "minimum": 1, "maximum": 22 },
+        "path": { "$ref": "#/$defs/repositoryPath" },
+        "selector": { "const": "entire-file" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size": { "type": "integer", "minimum": 0 },
+        "revision": { "$ref": "#/$defs/revision" }
+      }
+    },
+    "control": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "description"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^C[1-8]$" },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
