@@ -1,0 +1,89 @@
+{
+  "dispatch_id": "2026-08-13-local-global-continuous-discrete",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Determine what the repository already contains about local-global reasoning and representation-induced optimization, what follows from that evidence, what remains open, what practical leverage it offers, and the first precise point where the analogy breaks.",
+  "context": "Cyberalchemy Orchestrator governs how locally bounded agent work remains connected to global objectives, decisions, assumptions, actions, and evidence. A user-supplied hypothesis proposes a cycle of local exploration, compression or discretization, structural globalization, residue or obstruction, and refinement; treat it as a candidate to test, not as evidence. Continuous-discrete and local-global are independent axes unless repository evidence supports a narrower relation, and Selmer-like language must identify concrete candidates, local conditions, compatibility, lifting, and obstruction to count as more than metaphor.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/local-global-continuous-discrete",
+  "groups": [
+    {
+      "group_id": "language_architecture_pair",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1100,
+          "agent_name": "Mac Lane, Saunders",
+          "initial_prompt": "Read research/local-global-continuous-discrete/research-initial-definitions.md and the user attachment at C:/Users/victo/.codex/attachments/fe26d5a7-8315-4c32-8dae-7a8f196e02ff/pasted-text.txt. Search the repository read-only for explicit and implicit structures bearing on local/global reasoning, composition, coherence, objectives, lenses, compression, quotient/equivalence, residue, obstruction, witness, and refinement. Return a compact evidence table with exact repo paths and line numbers, separating literal matches, operational analogues, defensible inference, and relevant absence. State one strongest supported connection and its first limit. Do not edit files."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-terra",
+          "token_budget": 900,
+          "agent_name": "Lakatos, Imre",
+          "initial_prompt": "Apply only the definitional-soundness gate to the candidate hypothesis in research/local-global-continuous-discrete/research-initial-definitions.md and C:/Users/victo/.codex/attachments/fe26d5a7-8315-4c32-8dae-7a8f196e02ff/pasted-text.txt. Search the repository read-only for already-owned vocabulary and mechanisms that would make local-global, continuous-discrete, compression, residue, obstruction, or refinement a relabeling rather than a new structure. Cite exact paths and lines. Identify which terms are distinct, which collapse, and the exact fact that would make the whole proposal tautological. Do not edit files."
+        }
+      ]
+    },
+    {
+      "group_id": "mathematical_formal_pair",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1200,
+          "agent_name": "Grothendieck, Alexander",
+          "initial_prompt": "Read the initial definitions and supplied attachment for this dispatch. Search the repository read-only for Selmer, local-global principles, compatibility, lifting, obstruction, sheaf or descent-like structures, continuous/discrete representation, optimization, quotienting, and global witnesses. Reconstruct only what repository artifacts actually support, with exact paths and line numbers. Propose the smallest typed/formal skeleton linking X, q:X->D, local projections r_i, acceptable sets S_i, compatibility, global witness, residue, and refinement; mark every element not grounded in the repo as an open research obligation. State the first mathematical counterexample to the naive analogy. Do not edit files."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1000,
+          "agent_name": "Capucci, Matteo",
+          "initial_prompt": "Apply only the non-vacuity gate to the proposed representation-induced optimization idea. Using repository evidence, try to construct one smallest concrete witness in which local exploration, a representation change, global compatibility checking, a residue or obstruction, and refinement are all individually identifiable. Then construct the smallest closed negative showing where the pattern fails. Distinguish feasibility, compatibility, liftability, and optimality. Cite exact paths and lines for every repo-dependent premise; label invented structure explicitly. Do not edit files."
+        }
+      ]
+    },
+    {
+      "group_id": "operational_system_pair",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1100,
+          "agent_name": "Simon, Herbert",
+          "initial_prompt": "Map the candidate cycle local exploration -> compression/discretization -> globalization/compatibility -> residue/obstruction -> refinement onto actual Cyberalchemy Orchestrator mechanisms. Inspect dispatch decomposition, bindings, evidence flow, synthesis, approvals, feedback, observability, and reconnection to objectives. For each proposed mapping, cite exact files and lines and classify it as deployed mechanism, partial analogue, or unsupported metaphor. Identify what operational decision this model could improve and one measurable success signal. Do not edit files."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-terra",
+          "token_budget": 900,
+          "agent_name": "Rumelt, Richard",
+          "initial_prompt": "Apply only the precedent gate inside this repository. Find the artifact or mechanism that already owns each useful part of the proposed cycle: local work, aggregation or compatibility, global objective preservation, residue or dissent, feedback, and refinement. Determine whether the candidate is already deployed, build-from-owned, or precedent-clean; ownership is not a kill. Cite exact paths and lines, name gaps between documentation and execution, and refuse novelty claims unsupported by the bounded corpus. Do not edit files."
+        }
+      ]
+    },
+    {
+      "group_id": "recent_changes",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1000,
+          "agent_name": "March, James G.",
+          "initial_prompt": "Inspect recent Git history and diffs read-only for changes bearing on local/global coordination, representation, compression, compatibility, residue, obstruction, feedback, refinement, or preservation of objectives. Focus on the latest meaningful changes rather than raw keyword counts. Cite commit hashes, dates, changed paths, and the exact diff evidence. Separate genuine architectural movement from verbal resemblance, and report whether recent changes strengthen, weaken, or leave the candidate hypothesis unchanged. Do not edit files."
+        }
+      ]
+    }
+  ]
+}
