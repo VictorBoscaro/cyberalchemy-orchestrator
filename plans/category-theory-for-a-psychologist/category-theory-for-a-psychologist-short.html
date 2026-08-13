@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Uma primeira visão da teoria das categorias</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #eee5d8; }
+    body { color: #241c18; font-family: Georgia, "Times New Roman", serif; }
+    .page {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      padding: 25mm 24mm 22mm;
+      overflow: hidden;
+      page-break-after: always;
+      background: #f5ead9;
+    }
+    .page:last-child { page-break-after: auto; }
+    .page::before {
+      content: "";
+      position: absolute;
+      width: 112mm;
+      height: 112mm;
+      left: 49mm;
+      top: 92mm;
+      border: 8mm solid rgba(169, 67, 43, .018);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .corner { position: absolute; width: 7mm; height: 7mm; opacity: .28; }
+    .tl { left: 8mm; top: 8mm; border-left: .25mm solid #a79178; border-top: .25mm solid #a79178; }
+    .tr { right: 8mm; top: 8mm; border-right: .25mm solid #a79178; border-top: .25mm solid #a79178; }
+    .bl { left: 8mm; bottom: 8mm; border-left: .25mm solid #a79178; border-bottom: .25mm solid #a79178; }
+    .br { right: 8mm; bottom: 8mm; border-right: .25mm solid #a79178; border-bottom: .25mm solid #a79178; }
+    .accent { width: 37mm; height: 3.3mm; border-radius: 3mm; background: #bd472d; margin-bottom: 10mm; }
+    h1 { margin: 0 0 13mm; max-width: 150mm; font-size: 30pt; line-height: 1.07; letter-spacing: -.35pt; }
+    h2 {
+      margin: 6mm 0 4.3mm;
+      padding-top: 4mm;
+      border-top: .3mm solid #ae654e;
+      color: #7e281d;
+      font-size: 19pt;
+      line-height: 1.1;
+    }
+    p { margin: 0 0 4.2mm; font-size: 11.35pt; line-height: 1.48; }
+    strong { color: #6f251b; }
+    code { font-family: "Consolas", monospace; font-size: .92em; color: #7e281d; }
+    .lead { font-size: 11.7pt; }
+    .diagram {
+      margin: 8mm auto 8mm;
+      width: 146mm;
+      height: 39mm;
+      display: block;
+    }
+    .folio {
+      position: absolute;
+      right: 24mm;
+      bottom: 12mm;
+      color: #9a8672;
+      font: 8pt Arial, sans-serif;
+      letter-spacing: 2.3pt;
+      text-transform: uppercase;
+    }
+    .continuation { margin-top: 0; }
+    .closing {
+      margin-top: 8mm;
+      padding: 6mm 7mm;
+      border-left: 1.3mm solid #bd472d;
+      background: rgba(255,255,255,.24);
+    }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div class="accent"></div>
+    <h1>Uma primeira visão da teoria das categorias</h1>
+
+    <h2>1. Quando as descrições não bastam</h2>
+    <p class="lead">Imagine uma cena inventada. Antes de falar numa reunião, uma pessoa percebe o peito apertado, as palavras difíceis de organizar e a vontade de deixar o momento passar. Por enquanto, não há explicação. Há uma experiência tal como se apresenta: sensações, hesitação e silêncio formando uma situação reconhecível.</p>
+    <p>Numa conversa clínica, essa situação pode adquirir outro contorno. O silêncio daquela reunião pode ser reconhecido como parte de algo que também apareceu em outros momentos de exposição. A experiência inicial não foi descartada; ela foi retomada sob uma descrição que permite perceber uma recorrência.</p>
+    <p>Essa recorrência pode, por sua vez, abrir uma pergunta: se, dentro dessa formulação, o silêncio oferece alguma proteção diante da exposição, haveria outra maneira de se proteger sem deixar de falar? A pergunta não é apenas uma terceira frase colocada ao lado das anteriores. Ela se tornou possível porque a experiência foi primeiro reconhecida e depois reconsiderada como parte de um padrão.</p>
+    <p>Temos, portanto, um movimento entre descrições. Uma preserva algo da anterior, reorganiza o que pode ser percebido e torna possível uma pergunta que antes não estava disponível. Se apagamos essas passagens e guardamos somente as três frases finais, perdemos parte do que as torna inteligíveis.</p>
+    <p>A teoria das categorias começa quando isolamos essa forma relacional do conteúdo particular da cena. Podemos representar cada descrição por um ponto e cada passagem dirigida entre descrições por uma seta. Isso não transforma o desenho num mapa da mente nem numa teoria sobre como a terapia funciona. Ele registra apenas as relações que escolhemos incluir neste pequeno modelo.</p>
+    <p>Na linguagem categorial, os pontos são chamados de <strong>objetos</strong> e as setas, de <strong>morfismos</strong>. Os nomes são deliberadamente amplos: um objeto não precisa ser uma coisa material, e um morfismo não precisa representar tempo, causa, melhora ou intervenção. O que importa, por enquanto, é que cada seta tenha uma origem e um destino.</p>
+    <div class="folio">Teoria das categorias · 01</div>
+  </section>
+
+  <section class="page">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <h2 class="continuation">2. Quando duas setas formam um percurso</h2>
+    <p>Suponha que uma seta vá de uma descrição <code>A</code> a uma descrição <code>B</code>, e outra vá de <code>B</code> a <code>C</code>. As duas se encaixam: o destino da primeira é a origem da segunda.</p>
+    <p>Mas o desenho ainda deixa uma pergunta em aberto. Se podemos percorrer <code>A → B</code> e depois <code>B → C</code>, como registramos o percurso inteiro de <code>A</code> a <code>C</code>?</p>
+
+    <svg class="diagram" viewBox="0 0 680 180" role="img" aria-label="Duas setas de A a B e de B a C, com uma seta composta de A a C">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#a99580"/></marker>
+        <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#b5452d"/></marker>
+      </defs>
+      <path d="M90 92 Q220 18 340 92" fill="none" stroke="#a99580" stroke-width="3" marker-end="url(#arrow)"/>
+      <path d="M340 92 Q465 165 590 92" fill="none" stroke="#a99580" stroke-width="3" marker-end="url(#arrow)"/>
+      <path d="M90 112 Q340 205 590 112" fill="none" stroke="#b5452d" stroke-width="4" marker-end="url(#arrow-red)"/>
+      <path d="M72 76 C42 25 126 20 105 75" fill="none" stroke="#cf8b75" stroke-width="2.5" stroke-dasharray="6 7" marker-end="url(#arrow-red)"/>
+      <path d="M575 75 C555 20 636 25 607 76" fill="none" stroke="#cf8b75" stroke-width="2.5" stroke-dasharray="6 7" marker-end="url(#arrow-red)"/>
+      <circle cx="90" cy="92" r="11" fill="#f5ead9" stroke="#8c271c" stroke-width="3"/>
+      <circle cx="340" cy="92" r="13" fill="#241c18"/>
+      <circle cx="590" cy="92" r="11" fill="#f5ead9" stroke="#8c271c" stroke-width="3"/>
+      <text x="82" y="145" font-family="Arial" font-size="18" fill="#7e281d">A</text>
+      <text x="334" y="55" font-family="Arial" font-size="18" fill="#7e281d">B</text>
+      <text x="584" y="145" font-family="Arial" font-size="18" fill="#7e281d">C</text>
+    </svg>
+
+    <p>A teoria das categorias exige que esse percurso também possa ser tratado como uma seta. Ela é a <strong>composta</strong> das duas anteriores. Compor não significa afirmar que dois processos psicológicos reais podem ser fundidos sem perda, nem que duas etapas clínicas equivalem empiricamente a uma. Significa apenas que, dentro do modelo, relações compatíveis podem formar uma nova relação.</p>
+    <p>É aqui que o desenho deixa de ser somente uma rede. As setas não estão apenas próximas: elas obedecem a uma regra que permite construir percursos.</p>
+
+    <h2>3. Quando os percursos permanecem coerentes</h2>
+    <p>Permitir composição ainda não é suficiente. Se percursos maiores puderem mudar de resultado apenas porque os agrupamos de maneiras diferentes, o sistema se tornará ambíguo.</p>
+    <p>Imagine três setas consecutivas. Podemos compor primeiro as duas iniciais e depois a terceira, ou começar pelas duas finais e depois compor a primeira. A <strong>associatividade</strong> exige que essas duas maneiras de agrupar produzam a mesma seta final. Isso não quer dizer que a ordem seja indiferente. Mudar a ordem pode mudar tudo; o que não altera o resultado é apenas mudar os parênteses de um mesmo percurso.</p>
+    <div class="folio">Teoria das categorias · 02</div>
+  </section>
+
+  <section class="page">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <h2 class="continuation">3. Quando os percursos permanecem coerentes</h2>
+    <p>Cada objeto também recebe uma seta especial: sua <strong>identidade</strong>. Quando uma seta identidade é composta antes ou depois de qualquer seta compatível, ela não altera essa seta. No exemplo psicológico, podemos imaginá-la como “permanecer nesta descrição”, mas somente como auxílio visual. Identidade, aqui, cumpre um papel formal no modelo; não significa estabilidade psíquica.</p>
+    <p>Quando temos objetos, morfismos, composições, identidades neutras e composição associativa, temos uma <strong>categoria</strong>.</p>
+    <p>Essa mudança de perspectiva é pequena, mas precisa. Em vez de perguntar apenas quais coisas existem, passamos a perguntar quais relações têm origem e destino, quais podem ser encadeadas e se os percursos resultantes permanecem coerentes.</p>
+    <p>Uma categoria, portanto, não é somente uma coleção de coisas. Também não é qualquer rede de relações. É uma organização na qual as setas podem ser compostas segundo leis explícitas.</p>
+    <div class="closing">
+      <p>Isso abre uma pergunta seguinte. Se temos duas categorias, como podemos traduzir uma na outra sem quebrar seus percursos? A teoria das categorias dá um nome a esse tipo de tradução: <strong>funtor</strong>. Mas essa já é a entrada para um segundo caminho.</p>
+    </div>
+    <div class="folio">Teoria das categorias · 03</div>
+  </section>
+</body>
+</html>

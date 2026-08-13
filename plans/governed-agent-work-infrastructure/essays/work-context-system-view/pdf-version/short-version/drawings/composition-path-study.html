@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>O percurso que também conta</title>
+<style>
+@font-face {
+  font-family: "Ink Free Local";
+  src: url("file:///C:/Windows/Fonts/Inkfree.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@page { size: A4 portrait; margin: 0; }
+
+:root {
+  --paper: #f4eadc;
+  --ink: #231a16;
+  --red: #9b321f;
+  --clay: #9b7965;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body { font-family: "Ink Free Local", "Lucida Handwriting", cursive; }
+
+.page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  padding: 20mm 21mm 18mm;
+  background:
+    radial-gradient(circle at 75% 21%, rgba(155, 50, 31, .025), transparent 29%),
+    linear-gradient(112deg, transparent 0 64%, rgba(155, 121, 101, .018) 64% 65%, transparent 65%),
+    var(--paper);
+}
+
+.corner {
+  position: absolute;
+  width: 7mm;
+  height: 7mm;
+  opacity: .24;
+}
+
+.corner.tl {
+  top: 10mm;
+  left: 10mm;
+  border-top: .35pt solid var(--clay);
+  border-left: .35pt solid var(--clay);
+}
+
+.corner.br {
+  right: 10mm;
+  bottom: 10mm;
+  border-right: .35pt solid var(--clay);
+  border-bottom: .35pt solid var(--clay);
+}
+
+.family {
+  font-family: Arial, sans-serif;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 1.8pt;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+h1, p { margin: 0; }
+
+h1 {
+  max-width: 150mm;
+  font-size: 31pt;
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: .15pt;
+}
+
+.symbol-field {
+  position: relative;
+  height: 82mm;
+  margin-top: 8mm;
+}
+
+.symbol-field::before {
+  content: "";
+  position: absolute;
+  width: 104mm;
+  height: 51mm;
+  left: 30mm;
+  top: 13mm;
+  border: .35pt solid rgba(155, 121, 101, .14);
+  border-radius: 50%;
+  transform: rotate(-4deg);
+}
+
+figure {
+  position: absolute;
+  width: 150mm;
+  height: 58mm;
+  left: 6mm;
+  top: 8mm;
+  margin: 0;
+  mix-blend-mode: multiply;
+}
+
+figure svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.local-arrow,
+.composite-arrow {
+  fill: none;
+  stroke: var(--clay);
+  stroke-width: 1.25;
+  opacity: .64;
+}
+
+.composite-arrow {
+  stroke: var(--red);
+  stroke-width: 1.55;
+  opacity: .88;
+}
+
+.endpoint {
+  fill: var(--paper);
+  stroke: var(--red);
+  stroke-width: 1.4;
+}
+
+.hinge {
+  fill: var(--ink);
+  stroke: var(--ink);
+  opacity: .96;
+}
+
+.notes {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8mm 14mm;
+  margin-top: 1mm;
+}
+
+.note {
+  position: relative;
+  padding-top: 3mm;
+  font-size: 11.2pt;
+  line-height: 1.43;
+}
+
+.note:nth-child(2) { transform: translateY(4mm); }
+.note:nth-child(3) { transform: translateX(5mm); }
+.note:nth-child(4) { transform: translate(1mm, 4mm); }
+
+.note::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 21mm;
+  border-top: .55pt solid rgba(155, 50, 31, .62);
+}
+
+.note b {
+  display: block;
+  margin-bottom: 1.5mm;
+  font-family: Arial, sans-serif;
+  font-size: 6.8pt;
+  letter-spacing: 1.35pt;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.folio {
+  position: absolute;
+  right: 16mm;
+  bottom: 10mm;
+  font-family: Arial, sans-serif;
+  font-size: 6.5pt;
+  letter-spacing: 1.3pt;
+  text-transform: uppercase;
+  color: rgba(35, 26, 22, .45);
+}
+</style>
+</head>
+<body>
+<section class="page">
+  <i class="corner tl"></i><i class="corner br"></i>
+  <div class="family">Teoria das categorias / um</div>
+  <h1>O percurso que também conta</h1>
+
+  <div class="symbol-field">
+    <figure aria-label="Duas setas componíveis e o percurso composto">
+      <svg viewBox="0 0 580 172" role="img">
+        <defs>
+          <marker id="quiet-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#9b7965" opacity=".64"/>
+          </marker>
+          <marker id="red-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#9b321f" opacity=".88"/>
+          </marker>
+        </defs>
+        <path class="local-arrow" marker-end="url(#quiet-arrow)" d="M76 76 C154 20 226 20 286 76"/>
+        <path class="local-arrow" marker-end="url(#quiet-arrow)" d="M302 76 C366 132 438 132 504 76"/>
+        <path class="composite-arrow" marker-end="url(#red-arrow)" d="M76 91 C178 164 402 164 504 91"/>
+        <circle class="endpoint" cx="68" cy="76" r="7"/>
+        <circle class="hinge" cx="294" cy="76" r="9"/>
+        <circle class="endpoint" cx="512" cy="76" r="7"/>
+      </svg>
+    </figure>
+  </div>
+
+  <div class="notes">
+    <p class="note"><b>Contexto</b>Duas relações podem se encaixar: a primeira termina onde a segunda começa. Ainda assim, vê-las lado a lado não registra o percurso inteiro.</p>
+    <p class="note"><b>Ideia</b>Os dois arcos discretos mostram passos locais. A curva em ferrugem torna visível a relação composta, que vai do primeiro ponto ao último passando pelo encaixe central.</p>
+    <p class="note"><b>Na teoria</b>Se há uma seta de A para B e outra de B para C, uma categoria inclui sua composta de A para C. A figura mostra uma regra formal do modelo, não um processo mental ou uma lei clínica.</p>
+    <p class="note"><b>Função no todo</b>O símbolo acompanha a primeira mudança de perspectiva do texto: relações não apenas existem, elas podem formar percursos. Identidade e associatividade completarão essa organização.</p>
+  </div>
+
+  <div class="folio">01 / o percurso que também conta</div>
+</section>
+</body>
+</html>
