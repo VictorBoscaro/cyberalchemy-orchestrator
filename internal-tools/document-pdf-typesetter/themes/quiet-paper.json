@@ -1,0 +1,122 @@
+{
+  "page": {
+    "size": "A4",
+    "background": "paper",
+    "margins_mm": { "left": 22, "right": 22, "top": 17, "bottom": 20 },
+    "lead_in_mm": 4
+  },
+
+  "palette": {
+    "paper": "#f4eadc",
+    "paper_light": "#f8f0e4",
+    "ink": "#160f0c",
+    "muted": "#5b4a40",
+    "accent": "#a93622",
+    "accent_dark": "#792719",
+    "hairline": "#b89b84",
+    "wash": "#b54026",
+    "highlight": "#ffffff"
+  },
+
+  "fonts": {
+    "search_dirs": [
+      "C:/Windows/Fonts",
+      "/usr/share/fonts",
+      "/usr/local/share/fonts",
+      "~/.fonts",
+      "~/.local/share/fonts",
+      "~/Library/Fonts"
+    ],
+    "roles": {
+      "serif":       { "files": ["pala.ttf"],     "fallback": "Times-Roman" },
+      "serif_bold":  { "files": ["palab.ttf"],    "fallback": "Times-Bold" },
+      "text":        { "files": ["constan.ttf"],  "fallback": "Times-Roman" },
+      "text_bold":   { "files": ["constanb.ttf"], "fallback": "Times-Bold" },
+      "text_italic": { "files": ["constani.ttf"], "fallback": "Times-Italic" }
+    },
+    "families": [
+      { "normal": "text", "bold": "text_bold", "italic": "text_italic", "bold_italic": "text_bold" },
+      { "normal": "serif", "bold": "serif_bold", "italic": "serif", "bold_italic": "serif_bold" }
+    ]
+  },
+
+  "type": {
+    "title":      { "font": "serif_bold", "size": 29,  "leading": 31,   "color": "ink",         "space_after_mm": 2.4 },
+    "subtitle":   { "font": "text",       "size": 10,  "leading": 12,   "color": "accent_dark", "space_after_mm": 8.4 },
+    "heading":    { "font": "serif_bold", "size": 16,  "leading": 18,   "color": "accent_dark", "space_before_mm": 2.5, "space_after_mm": 2.3, "keep_with_next": true },
+    "body":       { "font": "text",       "size": 11,  "leading": 16,   "color": "ink",         "space_after_mm": 4.2, "align": "left" },
+    "bullet":     { "font": "text",       "size": 11,  "leading": 16,   "color": "ink",         "space_after_mm": 1.5, "left_indent_mm": 5 },
+    "band_label": { "font": "text_bold",  "size": 8.5, "leading": 10.2, "color": "accent_dark", "space_after_mm": 0.7 },
+    "band_text":  { "font": "text",       "size": 8.3, "leading": 11.2, "color": "muted" }
+  },
+
+  "band": {
+    "columns": null,
+    "label_style": "band_label",
+    "text_style": "band_text",
+    "label_transform": "upper",
+    "label_strip_trailing": ":",
+    "text_strip_trailing": ".",
+    "background": "paper_light",
+    "box_width": 0.55,
+    "box_color": "hairline",
+    "rule_above_width": 1.4,
+    "rule_above_color": "accent",
+    "padding_mm": { "left": 2.5, "right": 2.5, "top": 2.4, "bottom": 2.5 },
+    "space_after_mm": 4
+  },
+
+  "bullets": {
+    "marker": "\u2014",
+    "space_after_mm": 2
+  },
+
+  "sections": {
+    "default_list_style": "band",
+    "overrides": {},
+    "subtitle_transform": "upper",
+    "subtitle_separator": "  /  "
+  },
+
+  "ornaments": {
+    "shapes": [
+      { "type": "circle", "cx_rel": 0.77, "cy_rel": 0.22, "radius_mm": 72, "color": "wash",      "alpha": 0.025 },
+      { "type": "circle", "cx_rel": 0.82, "cy_rel": 0.89, "radius_mm": 46, "color": "highlight", "alpha": 0.10 }
+    ]
+  },
+
+  "corner_marks": {
+    "enabled": true,
+    "inset_mm": 10,
+    "arm_mm": 7,
+    "color": "#5e4a3d",
+    "alpha": 0.28,
+    "line_width": 0.6
+  },
+
+  "footer": {
+    "rule": {
+      "enabled": true,
+      "y_mm": 15.5,
+      "inset_mm": 22,
+      "color": "#782114",
+      "alpha": 0.45,
+      "line_width": 0.55
+    },
+    "text": {
+      "font": "text",
+      "size": 7.5,
+      "color": "muted",
+      "y_mm": 10.7,
+      "inset_mm": 22,
+      "left": "",
+      "right": ""
+    }
+  },
+
+  "metadata": {
+    "title": null,
+    "author": null,
+    "subject": null
+  }
+}
