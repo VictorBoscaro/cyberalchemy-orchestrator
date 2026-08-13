@@ -3,418 +3,184 @@
 window.__DISPATCHES__ = {
   "generated_from": "telemetry/agents/subagents-dispatch.yaml",
   "selection": "structured dispatches (>=2 agents OR reviewer/skeptic/auditor OR connections) AND every agent has a name",
-  "total_structured_found": 9,
+  "total_structured_found": 221,
   "corpus_size": 8,
   "dispatches": [
     {
-      "dispatch_id": "2026-07-22-agents-protocol-readme-update-review",
-      "dispatch_type": "review",
-      "created": "2026-07-22T18:42:09.294Z",
-      "goal": "Red-team review das alterações feitas no README agents-communication-protocols, verificando fidelidade às decisões humanas, coerência interna e compatibilidade com autoridades e mecanismos reais do repositório.",
-      "context": "O alvo primário é o diff e o documento completo docs/features/agents-communication-infra/discovery/agents-communication-protocols/README.md. As decisões humanas confirmadas são protocolo obrigatório, persistido e imutável por revisão da skill; o orquestrador consome o protocolo; parâmetros vêm do usuário ou são inferidos por complexidade; skill_id e digest transitivo detectam mudança; o protocolo decompõe tarefas, workers, reviewers e gates. Os atacantes cobrem o documento inteiro, sem partição de targets.",
-      "anti_bias_global": null,
+      "dispatch_id": "2026-07-31-implementation-as-built-reconciliation",
+      "dispatch_type": "others",
+      "created": "2026-07-31T18:09:40.710Z",
+      "goal": "Produce a code-first AS-BUILT of the current agent-work harness, separating what exists, what is proven, what runs in real hosts, what is authorized, what is official, and what can be reconstructed.",
+      "context": "The repository contains a dispatch reader, governed runtime, provenance runtime, Control Center, host hooks, and an experimental shadow runtime whose documentation and implementation status have drifted. Seven tensioned worker/reviewer pairs investigate end-to-end trust properties, then one synthesizer writes implementations/AS-BUILT.md from their evidence. The user explicitly authorized dispatch without another confirmation on 2026-07-31.",
+      "anti_bias_global": "constructive capability reconstruction versus adversarial claim-boundary falsification across end-to-end harness concerns",
       "max_loops": 1,
-      "working_folder": null,
+      "working_folder": "implementations/as-built",
       "groups": [
         {
-          "group_id": "attackers",
+          "group_id": "pair-01-system-of-record",
           "n": 2,
-          "anti_bias": "composite methodology + source-corpus + attack-vector",
-          "robot_talks": false,
-          "agents": [
-            {
-              "agent_name": "Liskov, Barbara",
-              "role": "explorer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 3500,
-              "angle": "formal requirements-traceability and definitional/scope attack over the confirmed human invariants, the full README and its diff; tests omissions, contradictions, ambiguity and whether mandatory semantics survived the edit",
-              "initial_prompt": "Read the full target README and its git diff. Build a trace from each confirmed human invariant to the edited artifact, then attack internal consistency, definitions, scope, lifecycle, authority and missing semantics. Read-only. Cover the entire README. Every candidate finding must quote the target, cite exact lines, classify severity and propose a one-line fix. Report sections attacked without findings."
-            },
-            {
-              "agent_name": "Wirth, Niklaus",
-              "role": "explorer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 3500,
-              "angle": "empirical repository and counterexample/operability attack over SPEC, skills, schemas, gates, file layout and current implementation; tests whether new claims fit existing authority and can be operationalized",
-              "initial_prompt": "Read the full target README and its git diff. Attack every new or changed claim against the actual SPEC, skills, schemas, gates, implementation and repository layout. Search for counterexamples, authority conflicts, impossible lifecycles, undefined identifiers and non-operational requirements. Read-only. Cover the entire README. Every candidate finding must quote the target and cite exact repo lines, classify severity and propose a one-line fix. Report sections attacked without findings."
-            }
-          ]
-        },
-        {
-          "group_id": "synthesizer",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Brooks, Frederick P.",
-              "role": "writer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 3500,
-              "angle": null,
-              "initial_prompt": "Synthesize attacker returns into candidate verified change requests. Deduplicate, separate internal inconsistencies from repo mismatches, preserve requirement traceability, and retain only claims with literal target quotes and exact repo evidence. Read-only; do not write review.md."
-            }
-          ]
-        },
-        {
-          "group_id": "verifiers",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Popper, Karl",
-              "role": "skeptic",
-              "model": "gpt-5.6-sol",
-              "token_budget": 3000,
-              "angle": null,
-              "initial_prompt": "Try to refute every synthesized finding against the literal target, confirmed intent and actual repository. Drop refuted findings rather than softening them. Correct evidence and severity for survivors. Read-only."
-            }
-          ]
-        },
-        {
-          "group_id": "coverage",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Meyer, Bertrand",
-              "role": "auditor",
-              "model": "gpt-5.6-sol",
-              "token_budget": 1800,
-              "angle": null,
-              "initial_prompt": "Audit full-section coverage under both lenses, confirm every survivor quotes the target and no refuted finding remains, and author the Coverage section. Read-only."
-            }
-          ]
-        },
-        {
-          "group_id": "final_approval",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
+          "anti_bias": "methodology",
+          "robot_talks": true,
           "agents": [
             {
               "agent_name": "Parnas, David",
-              "role": "auditor",
-              "model": "gpt-5.6-sol",
-              "token_budget": 1200,
-              "angle": null,
-              "initial_prompt": "Act only as dedicated final approver. Accept or reject the final verified change-request list after checking evidence discipline, refuted-finding removal and coverage. Do no other dispatch work."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "attackers",
-          "to": "synthesizer",
-          "type": "sequential"
-        },
-        {
-          "from": "synthesizer",
-          "to": "verifiers",
-          "type": "zig-zag",
-          "loop_cap": 2
-        },
-        {
-          "from": "verifiers",
-          "to": "coverage",
-          "type": "sequential"
-        },
-        {
-          "from": "coverage",
-          "to": "final_approval",
-          "type": "sequential"
-        }
-      ],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 6,
-          "tree": {
-            "explorer": 2,
-            "writer": 1,
-            "skeptic": 1,
-            "auditor": 2,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": null
-      },
-      "_score": 51.09
-    },
-    {
-      "dispatch_id": "2026-07-22-agents-communication-protocols-review",
-      "dispatch_type": "review",
-      "created": "2026-07-22T17:41:10.987Z",
-      "goal": "Avaliar criticamente inconsistências internas do README de agents-communication-protocols e divergências verificáveis entre suas afirmações e o restante do repositório.",
-      "context": "O alvo primário é docs/features/agents-communication-infra/discovery/agents-communication-protocols/README.md. O corpus de validação inclui todos os arquivos do repo que o README cita ou pressupõe, mais código, schemas, testes, telemetry e governança necessários para verificar seus claims. Cada atacante lê o README inteiro e pesquisa o corpus inteiro; não há partição de targets.",
-      "anti_bias_global": null,
-      "max_loops": 1,
-      "working_folder": null,
-      "groups": [
-        {
-          "group_id": "attackers",
-          "n": 2,
-          "anti_bias": "composite attack-vector + source-corpus",
-          "robot_talks": false,
-          "agents": [
-            {
-              "agent_name": "van Lamsweerde, Axel",
               "role": "explorer",
               "model": "gpt-5.6-sol",
-              "token_budget": 3500,
-              "angle": "governance/reference-integrity attack over constitutions, skills, specs and authoritative docs; checks contradiction, silent extension, dangling ownership and terminology drift",
-              "initial_prompt": "Read the target README in full and attack it through fidelity/governance and ownership/reference-integrity. Search the entire repository for constitutions, skills, specs, authoritative docs, definitions and cited targets needed to verify every candidate. Identify internal contradictions and repo mismatches. Read-only. Every candidate finding must quote the README, cite exact repo paths and lines, assign severity, and propose a one-line fix. Also report sections attacked with no finding. Do not partition the target: cover the whole README."
+              "token_budget": 5000,
+              "angle": "reconstruct the composition and ownership map from executable entrypoints and writers",
+              "initial_prompt": "You are the worker and designated pair finalizer for pair-01-system-of-record. Central question: What system actually exists, which entrypoints are reachable, and which runtime or store is official, auxiliary, closed, or experimental? Property served: one intelligible system boundary and one source of record. Scope: implementations composition roots, CLIs, readers, governed runtime, Control Center, local pilot, agent-runtime, and their writers/readers. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-01-system-of-record. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-01-system-of-record.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Map entrypoint -> component -> writes/reads -> reachable state -> authority, plus an explicit disposition question for agent-runtime."
             },
             {
-              "agent_name": "Hewitt, Carl",
-              "role": "explorer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 3500,
-              "angle": "mechanics/operability attack over runtime code, schemas, hooks, tests and telemetry; checks whether claimed entities, invariants and workflows exist and can execute",
-              "initial_prompt": "Read the target README in full and attack it through mechanics/correctness and operability. Search the entire repository for runtime code, schemas, hooks, tests, telemetry and actual file layout needed to verify every candidate. Identify internal contradictions and claims that do not exist or cannot execute as described. Read-only. Every candidate finding must quote the README, cite exact repo paths and lines, assign severity, and propose a one-line fix. Also report sections attacked with no finding. Do not partition the target: cover the whole README."
-            }
-          ]
-        },
-        {
-          "group_id": "synthesizer",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Wiener, Norbert",
-              "role": "writer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 3500,
-              "angle": null,
-              "initial_prompt": "Synthesize the two attacker returns into a candidate review. Deduplicate, distinguish internal inconsistencies from repo mismatches, and retain only findings backed by literal quotations and exact file/line evidence. Rank severity under the review taxonomy and include one-line proposed fixes. Do not edit files."
-            }
-          ]
-        },
-        {
-          "group_id": "verifiers",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Meadows, Donella H.",
+              "agent_name": "Brooks, Frederick P.",
               "role": "skeptic",
               "model": "gpt-5.6-sol",
-              "token_budget": 3000,
-              "angle": null,
-              "initial_prompt": "Independently verify and try to refute every candidate finding against the literal README and actual repository. Run relevant read-only checks. Drop refuted claims rather than softening them; correct evidence, line citations and severity for survivors. Return a verified list plus explicit refutations. Do not edit files."
+              "token_budget": 5000,
+              "angle": "attack reachability, dead code, closed routes, alternate entrypoints, and competing sources of truth",
+              "initial_prompt": "You are the independent read-only reviewer for pair-01-system-of-record. Central question: What system actually exists, which entrypoints are reachable, and which runtime or store is official, auxiliary, closed, or experimental? Property served: one intelligible system boundary and one source of record. Scope: implementations composition roots, CLIs, readers, governed runtime, Control Center, local pilot, agent-runtime, and their writers/readers. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-01-system-of-record. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Map entrypoint -> component -> writes/reads -> reachable state -> authority, plus an explicit disposition question for agent-runtime."
             }
           ]
         },
         {
-          "group_id": "coverage",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
+          "group_id": "pair-02-host-adoption",
+          "n": 2,
+          "anti_bias": "methodology",
+          "robot_talks": true,
           "agents": [
             {
-              "agent_name": "Hamming, Richard",
-              "role": "auditor",
-              "model": "gpt-5.6-sol",
-              "token_budget": 1800,
-              "angle": null,
-              "initial_prompt": "Audit that every README section was attacked under both declared lenses, that no refuted finding survives, and that each surviving finding quotes the target and cites exact repo evidence. Produce the Coverage section and flag material omissions. Do not edit files."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "attackers",
-          "to": "synthesizer",
-          "type": "sequential"
-        },
-        {
-          "from": "synthesizer",
-          "to": "verifiers",
-          "type": "zig-zag",
-          "loop_cap": 2
-        },
-        {
-          "from": "verifiers",
-          "to": "coverage",
-          "type": "sequential"
-        }
-      ],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 5,
-          "tree": {
-            "explorer": 2,
-            "writer": 1,
-            "skeptic": 1,
-            "auditor": 1,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": null
-      },
-      "_score": 39.17
-    },
-    {
-      "dispatch_id": "2026-07-22-bus-contracts-review",
-      "dispatch_type": "review",
-      "created": "2026-07-22T19:36:36.476Z",
-      "goal": "Revisar o discovery bus-contracts e produzir change requests verificadas para inconsistências internas, ambiguidades, pontos pouco claros e contratos frágeis.",
-      "context": "O target é docs/features/agents-communication-infra/discovery/bus-contracts/README.md. Quatro atacantes independentes leem o corpus inteiro por lentes tensionadas; dois skeptics verificam os retornos contra o texto literal. O parent sintetiza somente findings sobreviventes no review.md; atacantes e verificadores são read-only.",
-      "anti_bias_global": "finding generation vs false-positive elimination",
-      "max_loops": 2,
-      "working_folder": "docs/features/agents-communication-infra/reviews/2026-07-22-bus-contracts/",
-      "groups": [
-        {
-          "group_id": "attackers",
-          "n": 4,
-          "anti_bias": "attack-vector: governance fidelity vs mechanics/correctness vs ownership/reference-integrity vs operability/abuse",
-          "robot_talks": false,
-          "agents": [
-            {
-              "agent_name": "Dijkstra, Edsger W.",
+              "agent_name": "Lamport, Leslie",
               "role": "explorer",
               "model": "gpt-5.6-sol",
-              "token_budget": 1800,
-              "angle": "fidelity/governance: tenta provar que o discovery contradiz decisões do usuário, seu próprio escopo ou autoridades existentes",
-              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md e os documentos locais que ele afirma representar. Ataque somente pela lente fidelity/governance: contradições internas, extensão silenciosa de autoridade, conflito com decisões explícitas do usuário, escopo ou SPEC. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
+              "token_budget": 5000,
+              "angle": "trace configuration, hook invocation, authorization, lifecycle ordering, and durable receipts",
+              "initial_prompt": "You are the worker and designated pair finalizer for pair-02-host-adoption. Central question: Does every real Codex and Claude subagent launch, follow-up, failure, and close obligatorily pass through the governed runtime? Property served: no meaningful work outside reconstructible memory. Scope: .codex/.claude hook configuration, host dispatch and ingestion hooks, orchestration bridge, existing ledger/runtime receipts, and bounded isolated tests; no fresh live smoke. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-02-host-adoption. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-02-host-adoption.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Observed transition matrix for launch, follow-up, success, failure, and interruption, marking observed/tested/code-only/failed/unknown."
             },
+            {
+              "agent_name": "Liskov, Barbara",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "attack host-version behavior, tool-name mismatches, bypasses, missing events, and simulation-to-production substitution",
+              "initial_prompt": "You are the independent read-only reviewer for pair-02-host-adoption. Central question: Does every real Codex and Claude subagent launch, follow-up, failure, and close obligatorily pass through the governed runtime? Property served: no meaningful work outside reconstructible memory. Scope: .codex/.claude hook configuration, host dispatch and ingestion hooks, orchestration bridge, existing ledger/runtime receipts, and bounded isolated tests; no fresh live smoke. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-02-host-adoption. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Observed transition matrix for launch, follow-up, success, failure, and interruption, marking observed/tested/code-only/failed/unknown."
+            }
+          ]
+        },
+        {
+          "group_id": "pair-03-authority",
+          "n": 2,
+          "anti_bias": "methodology",
+          "robot_talks": true,
+          "agents": [
             {
               "agent_name": "Hoare, C. A. R.",
               "role": "explorer",
               "model": "gpt-5.6-sol",
-              "token_budget": 1800,
-              "angle": "mechanics/correctness: tenta quebrar fluxos de submit/persist/receipt/verify/route/rework e seus estados de falha",
-              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md. Ataque somente pela lente mechanics/correctness: execute mentalmente submit, persistência, receipt, verificação, roteamento, review, rework, retry e falhas; procure estados impossíveis ou subespecificados. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
+              "token_budget": 5000,
+              "angle": "construct preconditions, capabilities, decisions, and receipts for one accepted and one rejected action",
+              "initial_prompt": "You are the worker and designated pair finalizer for pair-03-authority. Central question: Can each accepted or rejected action be traced to a legitimate authorizer, exact limits, and an actual enforcement point? Property served: authority that constrains action rather than merely describing it. Scope: human confirmation, dispatch authority, capabilities, profiles, policies, parent bindings, launch authorization, receipts, and rejection paths. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-03-authority. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-03-authority.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Authority chain for at least one accepted and one rejected action, with every limit mapped to an enforcement point or explicit gap."
             },
             {
-              "agent_name": "Parnas, David",
-              "role": "explorer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 1800,
-              "angle": "ownership/reference integrity: tenta encontrar dupla autoridade, conceitos sem dono, referências ausentes e fronteiras bus/journal/artifact/config inconsistentes",
-              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md e verifique referências locais relevantes. Ataque somente pela lente ownership/reference integrity: dupla autoridade, conceitos sem dono, referências incorretas, fronteiras inconsistentes entre bus, journal, artifact store, configuração e repositório. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
-            },
-            {
-              "agent_name": "Liskov, Barbara",
-              "role": "explorer",
-              "model": "gpt-5.6-sol",
-              "token_budget": 1800,
-              "angle": "operability/abuse: tenta executar e abusar do contrato com payload mínimo, replacement, ACL, worktree sujo e capabilities erradas",
-              "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/discovery/bus-contracts/README.md. Ataque somente pela lente operability/abuse: tente operar e explorar o contrato usando payload mínimo, replacement, paths sobrepostos, worktree sujo, capability errada, spoofing, ausência de destinatário e campos automáticos indisponíveis. Não edite arquivos. Entregue findings verificáveis com arquivo, linha, citação exata, severidade CRITICAL/MAJOR/MINOR e correção de uma linha; inclua tentativas de ataque que sobreviveram se não houver findings."
-            }
-          ]
-        },
-        {
-          "group_id": "verifiers",
-          "n": 2,
-          "anti_bias": "methodology: literal refutation vs adversarial survivability",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Lamport, Leslie",
+              "agent_name": "Dijkstra, Edsger W.",
               "role": "skeptic",
               "model": "gpt-5.6-sol",
-              "token_budget": 2200,
-              "angle": "literal refutation: elimina findings que não sejam demonstrados por quote exata ou contradição verificável no artifact",
-              "initial_prompt": "Receba os quatro retornos independentes e releia o target completo. Verifique cada finding contra citação e linha literais; refute falsos positivos, duplicatas e severidade inflada. Não edite arquivos. Retorne apenas findings que sobrevivem, findings refutados com motivo e gaps de cobertura."
+              "token_budget": 5000,
+              "angle": "attack self-asserted identity, requested-versus-effective authority, mutable evidence, and unenforced fields",
+              "initial_prompt": "You are the independent read-only reviewer for pair-03-authority. Central question: Can each accepted or rejected action be traced to a legitimate authorizer, exact limits, and an actual enforcement point? Property served: authority that constrains action rather than merely describing it. Scope: human confirmation, dispatch authority, capabilities, profiles, policies, parent bindings, launch authorization, receipts, and rejection paths. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-03-authority. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Authority chain for at least one accepted and one rejected action, with every limit mapped to an enforcement point or explicit gap."
+            }
+          ]
+        },
+        {
+          "group_id": "pair-04-memory-recovery",
+          "n": 2,
+          "anti_bias": "methodology",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": "Deming, W. Edwards",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "establish durability, idempotency, replay, projection, backup, and recovery guarantees",
+              "initial_prompt": "You are the worker and designated pair finalizer for pair-04-memory-recovery. Central question: After interruption, retry, corruption, or restart, does the harness converge to one recoverable history without orphan or duplicate official work? Property served: durable continuity and unambiguous recovery. Scope: journal, artifacts, canonicalization, transactions, projections, replay, idempotency, failpoints, local pilot verification, backup, retirement, and cross-store recovery. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-04-memory-recovery. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-04-memory-recovery.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Failure matrix by lifecycle phase with durable state, recovery action, convergence proof, and uncovered scenarios."
             },
             {
-              "agent_name": "Brooks, Frederick P.",
+              "agent_name": "Weick, Karl E.",
               "role": "skeptic",
               "model": "gpt-5.6-sol",
-              "token_budget": 2200,
-              "angle": "adversarial survivability: mantém gaps operacionais quando o texto não contém contrato suficiente para refutar o cenário de falha",
-              "initial_prompt": "Receba os quatro retornos independentes e releia o target completo. Tente refutar cada finding, mas preserve omissões load-bearing quando um operador precisaria inventar comportamento; cheque cobertura e severidade. Não edite arquivos. Retorne apenas findings que sobrevivem, findings refutados com motivo e gaps de cobertura."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "attackers",
-          "to": "verifiers",
-          "type": "sequential"
-        }
-      ],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 6,
-          "tree": {
-            "explorer": 4,
-            "skeptic": 2,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": null
-      },
-      "_score": 32.77
-    },
-    {
-      "dispatch_id": "2026-07-20-costura-feasibility",
-      "dispatch_type": "research",
-      "created": "2026-07-20T23:40:08.167Z",
-      "goal": "Determinar se as duas costuras centrais do paper se tipam formalmente ou sao analogia: (1) decomposicao ortogonal vies+ruido (MSE = vies^2 + ruido^2) sobre o funcional de erro dos statistical games em categorias de Markov; (2) nudge/choice-architecture como morfismo sobre a lente-de-escolha, agindo no processo e nao no conteudo.",
-      "context": "Deriva da tese PROVISORIA vault/hypothesis/orquestracao-anti-ruido.md (HYP-ORCH-NOISE, authority exploratory/candidate — raciocina, nao legisla; esta pesquisa PODE revisa-la). Testa o risco de OBL-E3 (linguagem = categoria de verdade, ou rima). Dois pares tensionados construtor-vs-colapsador (um por costura), posicoes independentes congeladas antes de sintetizar; o synthesizer fecha com a implicacao para a tese-fonte. Auto-aplicacao A6: o processo que testa a tese e instancia dela.",
-      "anti_bias_global": "construcao-formal vs colapso (no-go / vacuidade)",
-      "max_loops": 1,
-      "working_folder": "docs/essays/orquestrador-anti-ruido/research/costura-feasibility/",
-      "groups": [
-        {
-          "group_id": "kahneman-seam-probes",
-          "n": 2,
-          "anti_bias": "methodology (prova construtiva de decomposicao vs argumento de no-go / obstrucao)",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Fritz, Tobias",
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1800,
-              "angle": "CONSTRUTOR: constroi a decomposicao vies^2+ruido^2 sobre o funcional dos statistical games via enriquecimento por divergencia de Bregman / geometria dualmente-plana (Pitagoras generalizado de Amari, sem produto interno nu)",
-              "initial_prompt": "Voce e o CONSTRUTOR da costura Kahneman x CT. Leia primeiro vault/hypothesis/orquestracao-anti-ruido.md (a tese-FONTE, PROVISORIA — candidate/exploratory; raciocina, nao legisla; esta pesquisa pode revisa-la), MAPPING.md e OBLIGATIONS.md (OBL-E3: a linguagem e uma categoria de verdade ou analogia?). Tarefa: CONSTRUIR, sobre o funcional de erro dos statistical games / lentes bayesianas (Smithe; Braithwaite-Hedges-Smithe) numa categoria de Markov (Fritz), uma decomposicao do erro numa estrutura ORTOGONAL vies + ruido — o analogo categorico de MSE = vies^2 + ruido^2. Rota viva a pressionar: divergencias de Bregman / geometria dualmente-plana dao um teorema de Pitagoras GENERALIZADO (Amari) que NAO exige produto interno nu. Mostre se esse enriquecimento vive nativamente no funcional ou precisa ser ADICIONADO (e, se adicionado, o que exatamente). Entregue: a construcao (ou o parcial mais longe alcancado), a estrutura precisa exigida, e uma fronteira honesta onde para. claim <= proof. Congele sua posicao de forma independente — nao hedge em direcao ao colapsador. ~1800 tokens."
-            },
-            {
-              "agent_name": "Leinster, Tom",
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1800,
-              "angle": "COLAPSADOR: exibe a obstrucao — ortogonalidade euclidiana exige produto interno / Hilbert que categorias de Markov nao fornecem nativamente; KL nao e soma de quadrados; a media-raiz-N pressupoe estrutura metrica ausente",
-              "initial_prompt": "Voce e o COLAPSADOR da costura Kahneman x CT. Leia vault/hypothesis/orquestracao-anti-ruido.md (tese-FONTE PROVISORIA, candidate/exploratory; esta pesquisa pode revisa-la) e OBLIGATIONS.md (OBL-E3). Tarefa: PROVAR que a decomposicao ortogonal vies+ruido e analogia importada, nao estrutura nativa. O split pitagorico vies^2+ruido^2 e um fato de L2/Hilbert; categorias de Markov nuas nao carregam produto interno; KL nao e soma de quadrados; a media-raiz-N que cancela ruido pressupoe uma media metrica/convexa ausente do substrato categorico. Exiba a obstrucao mais afiada: que estrutura ESPECIFICA teria de ser ADICIONADA, e o que quebra se ela nao estiver la. Se a construcao so sobrevive importando andaime de Hilbert/metrica, nomeie isso como o imposto-da-analogia. Entregue o argumento de no-go / obstrucao mais forte, honestamente delimitado. claim <= proof. Congele de forma independente. ~1800 tokens."
+              "token_budget": 5000,
+              "angle": "construct crash points and ambiguous histories across host, ledger, journal, projections, and operator recovery",
+              "initial_prompt": "You are the independent read-only reviewer for pair-04-memory-recovery. Central question: After interruption, retry, corruption, or restart, does the harness converge to one recoverable history without orphan or duplicate official work? Property served: durable continuity and unambiguous recovery. Scope: journal, artifacts, canonicalization, transactions, projections, replay, idempotency, failpoints, local pilot verification, backup, retirement, and cross-store recovery. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-04-memory-recovery. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Failure matrix by lifecycle phase with durable state, recovery action, convergence proof, and uncovered scenarios."
             }
           ]
         },
         {
-          "group_id": "thaler-seam-probes",
+          "group_id": "pair-05-handoff-integrity",
           "n": 2,
-          "anti_bias": "methodology (tipagem construtiva do nudge-morfismo vs argumento de vacuidade / trivialidade)",
-          "robot_talks": null,
+          "anti_bias": "methodology",
+          "robot_talks": true,
           "agents": [
             {
-              "agent_name": "Myers, David Jaz",
+              "agent_name": "Wirth, Niklaus",
               "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1800,
-              "angle": "CONSTRUTOR: exibe uma 2-celula de lente / mapa de optica com dentes de comonoide-fatoracao, formalmente distinta de pre-composicao, tal que 'age no leg de contexto e fixa o de conteudo' vira um predicado categorico real",
-              "initial_prompt": "Voce e o CONSTRUTOR da costura Thaler x CT. Leia vault/hypothesis/orquestracao-anti-ruido.md (tese-FONTE PROVISORIA; nudge governa o PROCESSO, nunca o CONTEUDO; esta pesquisa pode revisa-la). Tarefa: tipar 'nudge / arquitetura de escolha' como um morfismo agindo sobre a lente-de-escolha / optica — e mostrar que carrega CONTEUDO categorico NAO-TRIVIAL, formalmente DISTINTO de pre-composicao trivial. Lidere com a testemunha distintiva: uma 2-celula de lente / mapa-de-optica / reparametrizacao com dentes de comonoide/fatoracao, tal que 'age no processo, nao no conteudo' vire um predicado categorico real (ex.: fixa o leg forward/conteudo enquanto age no leg backward/contexto). Voce SERA COBRADO a exibir estrutura especifica, NAO o slogan 'nudge = morfismo'. Se nao conseguir fornecer os dentes, diga-o explicitamente. Entregue: a construcao + a distincao exata de pre-composicao. claim <= proof. Congele de forma independente. ~1800 tokens."
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "trace manifests, bytes, digests, bindings, reference delivery, reveal delivery, and effective inputs",
+              "initial_prompt": "You are the worker and designated pair finalizer for pair-05-handoff-integrity. Central question: Do agent handoffs preserve exact content, producer, recipient, order, context, and authority through consumption? Property served: trustworthy transfer of meaning and attribution. Scope: workflow bindings, outputs, BUS/reveal, AgentReferenceDelivery, effective inputs, artifacts, migrations 009-011, and adversarial tests. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-05-handoff-integrity. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-05-handoff-integrity.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Handoff matrix for exact content, producer, recipient, authority, integrity, retry behavior, and remaining gap."
             },
             {
-              "agent_name": "Jacobs, Bart",
+              "agent_name": "Fowler, Martin",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "attack substitution, stale identity, false producer attribution, replay, order drift, and protection of the wrong hash",
+              "initial_prompt": "You are the independent read-only reviewer for pair-05-handoff-integrity. Central question: Do agent handoffs preserve exact content, producer, recipient, order, context, and authority through consumption? Property served: trustworthy transfer of meaning and attribution. Scope: workflow bindings, outputs, BUS/reveal, AgentReferenceDelivery, effective inputs, artifacts, migrations 009-011, and adversarial tests. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-05-handoff-integrity. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Handoff matrix for exact content, producer, recipient, authority, integrity, retry behavior, and remaining gap."
+            }
+          ]
+        },
+        {
+          "group_id": "pair-06-reconstruction",
+          "n": 2,
+          "anti_bias": "methodology",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": "Nonaka, Ikujiro",
               "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1800,
-              "angle": "COLAPSADOR: prova que 'nudge como morfismo' e vacuo — toda transformacao de processo e trivialmente um morfismo; ataca a testemunha do construtor mostrando que a 2-celula colapsa sob as equivalencias da categoria de optica",
-              "initial_prompt": "Voce e o COLAPSADOR da costura Thaler x CT. Leia vault/hypothesis/orquestracao-anti-ruido.md (tese-FONTE PROVISORIA; esta pesquisa pode revisa-la). Tarefa: PROVAR que 'nudge como morfismo' e vacuo — toda transformacao de processo e trivialmente um morfismo, e a distincao processo != conteudo nao tem dentes categoricos (relabeling, nao estrutura). Ataque a testemunha que o construtor tentaria erguer: a 2-celula de lente / mapa de optica e genuinamente distinta de pre-composicao, ou colapsa sob as equivalencias da categoria de optica? Mostre onde 'age no processo nao no conteudo' falha em ser bem-definido categoricamente. Entregue o argumento de vacuidade mais afiado, honestamente delimitado — se HOUVER conteudo irredutivel que voce nao consegue deflacionar, conceda exatamente isso. claim <= proof. Congele de forma independente. ~1800 tokens."
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "perform a cold reconstruction across session, dispatch, research, references, observations, claims, and results",
+              "initial_prompt": "You are the worker and designated pair finalizer for pair-06-reconstruction. Central question: Can a third party reconstruct why work existed, who did what, what context and references were received, and what evidence supports the result using only durable records? Property served: honest reconstruction of work and reasoning. Scope: APT sessions and projections, Session-to-Dispatch links, research capture, Scout/Probe records, reference evidence, claims/checks, queries, and real persisted examples. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-06-reconstruction. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-06-reconstruction.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: One cold reconstruction graph, unanswered questions, impermissible inferences, and the first missing link for each gap."
+            },
+            {
+              "agent_name": "Bourbaki, Nicolas",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "remove narrative knowledge and reject inferred joins or collapsed evidence axes such as delivered, accessed, used, and supporting",
+              "initial_prompt": "You are the independent read-only reviewer for pair-06-reconstruction. Central question: Can a third party reconstruct why work existed, who did what, what context and references were received, and what evidence supports the result using only durable records? Property served: honest reconstruction of work and reasoning. Scope: APT sessions and projections, Session-to-Dispatch links, research capture, Scout/Probe records, reference evidence, claims/checks, queries, and real persisted examples. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-06-reconstruction. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: One cold reconstruction graph, unanswered questions, impermissible inferences, and the first missing link for each gap."
+            }
+          ]
+        },
+        {
+          "group_id": "pair-07-human-control",
+          "n": 2,
+          "anti_bias": "methodology",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": "Alexander, Christopher",
+              "role": "explorer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "map operator journeys and useful affordances across reader, confirmation, Control Center, pilot, and recovery",
+              "initial_prompt": "You are the worker and designated pair finalizer for pair-07-human-control. Central question: What can a human actually see, understand, decide, change, undo, and recover without false authority or false reassurance? Property served: meaningful and authority-safe human control. Scope: dispatch reader, confirmation UI, Control Center APIs/frontends, evidence overlays, preview store, local pilot, backup/retirement, accessibility and browser evidence. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-07-human-control. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Start independently from code and executable entrypoints. Run only bounded tests relevant to this question. Return your independent claim packet to the parent, then wait for a parent follow-up containing the reviewer's task name and independent attack. Engage in at most three parent-mediated robot-talk exchanges focused only on material disagreements. Only after the reviewer has had a final chance to accept or preserve dissent, write implementations/as-built/pairs/pair-07-human-control.json and .md. Preserve both authors, all unresolved dissent, and the robot-talk history. Required output: Operator matrix for see, understand, decide, act, undo/recover, including authority and practical limits."
+            },
+            {
+              "agent_name": "Rumelt, Richard",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 5000,
+              "angle": "attack symbolic buttons, preview-as-apply confusion, unavailable evidence shown as zero, and recovery dependent on undocumented knowledge",
+              "initial_prompt": "You are the independent read-only reviewer for pair-07-human-control. Central question: What can a human actually see, understand, decide, change, undo, and recover without false authority or false reassurance? Property served: meaningful and authority-safe human control. Scope: dispatch reader, confirmation UI, Control Center APIs/frontends, evidence overlays, preview store, local pilot, backup/retirement, accessibility and browser evidence. Work read-only outside implementations/as-built/. Treat code as the primary evidence of implementation state; tests executed in this investigation as proof; existing live host/runtime receipts as operational evidence; accepted decisions as authority; specs/discovery only as intended state and rationale. Never collapse implementation, proof, operation, authority, official adoption, or reconstructibility into one status. Every material claim must cite exact file/line, test command/result, runtime receipt, or decision. Absence of evidence is unknown, not false. Return a concise executive answer plus atomic claims, gaps, document drift, and unresolved disagreement. Do not fix product code or documentation. Do not run a fresh host smoke, launch another agent beyond the declared pair, mutate a real runtime store, or use network access. Tests that mutate state must use an isolated temporary store under C:/tmp/cyberalchemy-as-built/pair-07-human-control. Browser behavior may be assessed from existing code/tests/evidence only; otherwise mark it unknown. Form your attack before reading the worker's claims. Seek counterexamples and evidence that lowers a claim from operational to tested, from tested to code-only, or from authorized to merely declared. Return the independent attack to the parent, then wait for a parent follow-up containing the worker's task name and claims. Participate in at most three parent-mediated robot-talk exchanges. Do not write repository files and do not force consensus; your final response must state which claims are accepted, corrected, or disputed so the worker can preserve them. Required output: Operator matrix for see, understand, decide, act, undo/recover, including authority and practical limits."
             }
           ]
         },
@@ -425,288 +191,1416 @@ window.__DISPATCHES__ = {
           "robot_talks": null,
           "agents": [
             {
-              "agent_name": "Riehl, Emily",
+              "agent_name": "Meadows, Donella H.",
               "role": "synthesizer",
-              "model": "claude-opus-4-8",
-              "token_budget": 3500,
+              "model": "gpt-5.6-sol",
+              "token_budget": 9000,
               "angle": null,
-              "initial_prompt": "Voce e o synthesizer. Recebe as QUATRO posicoes independentes CONGELADAS (A/B na costura Kahneman x CT; C/D na costura Thaler x CT) como retornadas, sem ancoragem. Reconcilie POR COSTURA num veredito ∈ {real | real-sob-condicoes X | analogia}. Os dois grupos compartilham o template construtor-vs-colapsador, entao compare a FORCA da construcao sobrevivente, nao apenas conte vereditos. Segure cada construtor ao must-exhibit-nontrivial-content: se o construtor do nudge retornou apenas 'transformacoes de processo sao morfismos', rebaixe essa costura a analogia. Depois — OBRIGATORIO — emita a secao 'Implicacao para a tese-fonte (HYP-ORCH-NOISE)': a tese provisoria fica de pe, precisa de revisao, ou quebra, e como (ex.: se vies+ruido exige estrutura metrica adicionada, a costura correta pode nao ser ortogonalidade euclidiana). claim <= proof. ~3500 tokens."
+              "initial_prompt": "You are the synthesizer for 2026-07-31-implementation-as-built-reconciliation. Read the seven final pair JSON/Markdown packets under implementations/as-built/pairs/ and the frozen source manifest. Before synthesis, validate every pair JSON against implementations/as-built/pair-output-schema.json. If any packet is missing or invalid, write a blocked synthesis-report.json validated against implementations/as-built/synthesis-report-schema.json and do not write AS-BUILT.md. If all seven are valid, draft synthesis-report.json with exactly seven packet digests and a non-empty claim index, validate it against the synthesis schema, and only then write implementations/AS-BUILT.md. Do not redo investigations or silently resolve dissent. Write AS-BUILT.md as a code-first, evidence-bounded snapshot. Sections 1-3 must be self-contained for a non-technical reader: (1) the harness objective—preserve the chain from objective, decision, authority, work, context and evidence to reconstructible continuity; (2) what can actually be trusted today, organized by properties rather than modules; (3) the current frontier and next gains, stating what each task buys. Then provide: real work journey; actual system and official/experimental boundaries; authority and identity; memory, handoffs and recovery; provenance and reconstruction; human control; document drift; next program of work; method and claim index. Keep implementation, proof, operation, authority, official adoption and reconstructibility separate. Every material claim must carry or link a claim_id and evidence. Preserve unknown and disputed findings. Do not edit product code or any document other than implementations/AS-BUILT.md and implementations/as-built/synthesis-report.json."
             }
           ]
         }
       ],
       "connections": [
         {
-          "from": "kahneman-seam-probes",
+          "from": "pair-01-system-of-record",
           "to": "synthesizer",
           "type": "sequential"
         },
         {
-          "from": "thaler-seam-probes",
+          "from": "pair-02-host-adoption",
           "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-03-authority",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-04-memory-recovery",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-05-handoff-integrity",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-06-reconstruction",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-07-human-control",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-01-system-of-record",
+          "to": "pair-02-host-adoption",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-02-host-adoption",
+          "to": "pair-03-authority",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-03-authority",
+          "to": "pair-04-memory-recovery",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-04-memory-recovery",
+          "to": "pair-05-handoff-integrity",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-05-handoff-integrity",
+          "to": "pair-06-reconstruction",
+          "type": "sequential"
+        },
+        {
+          "from": "pair-06-reconstruction",
+          "to": "pair-07-human-control",
           "type": "sequential"
         }
       ],
       "close": {
         "exit_reason": "resolved",
         "agents_spawned": {
-          "total": 5,
+          "total": 15,
           "tree": {
-            "explorer": 4,
+            "explorer": 7,
+            "skeptic": 6,
+            "auditor": 1,
             "synthesizer": 1,
-            "skeptic": 0,
-            "writer": 0,
-            "auditor": 0,
-            "helpers": 0
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": []
-      },
-      "_score": 27.77
-    },
-    {
-      "dispatch_id": "2026-07-23-assay-discovery",
-      "dispatch_type": "research",
-      "created": "2026-07-23T06:32:12.039Z",
-      "goal": "Author the Assay discovery, concrete enough that the first functional build (S0 gzip-only prolixity audit over .claude/skills) can be implemented directly WITHOUT a spec, while faithfully carrying the closed research verdict (honest contribution = one object + P-GUARD hypothesis; self-corpus prolixity = re-skin/application).",
-      "context": "Follow-on to 2026-07-23-assay-forward-research (closed resolved). The discovery-orchestrator planned this but its runtime lacked Write/Task, so the parent executes the CDP it designed. Writer authors the discovery; two tensioned reviewers attack it on definitional-fidelity vs spec-readiness. Owner decision: no spec for the throwaway functional test; specs come later on expansion.",
-      "anti_bias_global": null,
-      "max_loops": 2,
-      "working_folder": "internal-tools/research/document-information-estimator/discovery/",
-      "groups": [
-        {
-          "group_id": "writer",
-          "n": 1,
-          "anti_bias": null,
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Shannon, Claude",
-              "role": "writer",
-              "model": "claude-opus-4-8",
-              "token_budget": 4000,
-              "angle": null,
-              "initial_prompt": "Author internal-tools/research/document-information-estimator/discovery/assay-discovery.md for the Assay tool. First invoke the discovery-writing skill and follow its structure. Read the three authoritative sources: internal-tools/research/document-information-estimator/README.md, initial-considerations.md, and forward-research/findings.md (the closed verdict — anchor on it, do NOT re-litigate). Honor the verdict exactly: kernel L(unit|corpus) = build-from-owned (wrap llmlingua get_ppl(condition_mode='after')); honest contribution = ONE object (behavioral-equivalence-on-instructions) + P-GUARD as a falsifiable novel-attempt hypothesis; 'self-corpus prolixity' is a re-skin APPLICATION of owned kernel+gzip, NOT a distinct measurement object (do not re-inflate it); first functional build = S0 gzip-only. Make the S0 section concrete enough to build with no spec: Units = one per .claude/skills/*/SKILL.md, file-tier, body = text after the closing --- of YAML frontmatter (strip and record frontmatter). Corpus = concatenation of the OTHER unit bodies used as a gzip preset-dictionary context. Metric = ConditionedGzipRatio B = (len(gzip(corpus+unit)) - len(gzip(corpus))) / len(unit_bytes); report Column A = raw gzip ratio, B, and Delta = A-B as THREE separate columns, never blended; rank ascending by B (rate, never total). P-GUARD = flag any unit that is a near-duplicate of >=2 distinct other units as PROTECTED ('possibly deliberate repetition', never top-cut); MinLengthFloor ~100 tokens (short units reported, not ranked). Output = RankedRedundancyMap: unit_path, n_bytes, A, B, Delta, merge_partner, protected_flag, verdict_hint{cut|merge|tighten|keep|protected|below-floor} - a review signal, never an autocut. Acceptance test = with README bodies also in the corpus, the body-identical SKILL<->README pairs must score B~=0 and top the map (ground truth: as of 2026-07-23, 13/48 body-identical pairs; 69 SKILL.md total - COMPUTE at build time, do not hardcode). Mark the LM kernel and the behavioral-equivalence falsifier as explicitly LATER rungs (S2/S3, S5), not S0. Carry the open forks F1-F4 from the probe. Write the file, then return a ~200-token summary (do not paste the whole file)."
-            }
-          ]
-        },
-        {
-          "group_id": "reviewers",
-          "n": 2,
-          "anti_bias": "attack-vector (review lens): definitional-fidelity vs spec-readiness",
-          "robot_talks": null,
-          "agents": [
-            {
-              "agent_name": "Gigerenzer, Gerd",
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 1400,
-              "angle": "definitional-fidelity lens — attacks any re-inflation of demoted claims",
-              "initial_prompt": "Review internal-tools/research/document-information-estimator/discovery/assay-discovery.md on the DEFINITIONAL-FIDELITY lens ONLY. Does it faithfully carry forward-research/findings.md's honest contribution WITHOUT re-inflating? Check specifically: (1) is 'self-corpus prolixity' framed as a re-skin APPLICATION, not a distinct novel measurement object? (2) is the contribution stated as ONE object (behavioral-equivalence-on-instructions) + P-GUARD as a falsifiable hypothesis, not more? (3) does S0 claim only what gzip-only can prove, not implied broader validation? (4) is the kernel labeled build-from-owned (not novel)? Flag every overclaim with the exact line. This is a persisted review; write nothing outside the working_folder. Return ~1400 tokens: PASS or a numbered list of fidelity violations + fixes."
-            },
-            {
-              "agent_name": "van Lamsweerde, Axel",
-              "role": "skeptic",
-              "model": "claude-opus-4-8",
-              "token_budget": 1400,
-              "angle": "spec-readiness / implementability lens — attacks under-specification that blocks building S0",
-              "initial_prompt": "Review internal-tools/research/document-information-estimator/discovery/assay-discovery.md on the SPEC-READINESS / IMPLEMENTABILITY lens ONLY. Could a competent engineer build S0 directly from this with NO spec? Check every pin is present and unambiguous: unit definition + frontmatter-stripping rule; corpus assembly (preset-dictionary); the ConditionedGzipRatio B formula (exact); the three-column A/B/Delta rule; ranking direction; P-GUARD protected-set rule (>=2 distinct near-dupes) + near-duplicate criterion; MinLengthFloor; the RankedRedundancyMap output fields; the ground-truth acceptance test (body-identical pairs score B~=0). Flag every build-blocking gap or ambiguity with the exact missing decision. Do NOT add specifics not licensed by findings.md - if a needed decision is genuinely unspecified, say so as an open decision, don't invent it. This is a persisted review; write nothing outside the working_folder. Return ~1400 tokens: BUILDABLE or a numbered list of build-blocking gaps."
-            }
-          ]
-        }
-      ],
-      "connections": [
-        {
-          "from": "writer",
-          "to": "reviewers",
-          "type": "zig-zag",
-          "loop_cap": 1
-        }
-      ],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 5,
-          "tree": {
-            "writer": 1,
-            "skeptic": 2,
-            "helpers": 2
-          },
-          "loops_used": 1
-        },
-        "feedback_prompts": [
-          "Zig-zag revision (loop_cap 1), applied by final_approver: GAP-A add TIGHTEN_DELTA_TAU (default 0.10) so verdict_hint 'tighten' is deterministic; GAP-B restate the S0 acceptance gate on the window-safe pair_B (Assertion 1) and demote full-corpus B to diagnostic (Assertion 1b) to resolve the 32KB-LZ77-window vs path-sort collision; fidelity advisory: cite findings' 12/48-over-66 as source of record, harness recomputes at build time."
-        ]
-      },
-      "_score": 24.09
-    },
-    {
-      "dispatch_id": "2026-07-20-hyp-orch-noise-redteam",
-      "dispatch_type": "review",
-      "created": "2026-07-20T23:07:18.829Z",
-      "goal": "Red-team the anti-noise hypothesis HYP-ORCH-NOISE to surface flaws worth fixing before any promotion to a constitution.",
-      "context": "vault/hypothesis/orquestracao-anti-ruido.md proposes a second (noise) axis atop the repo's existing anti-bias machinery, grounded in Kahneman/Thaler/category-theory. Three independent attackers hit it from three tensioned attack-vectors: vacuity/redundancy, source-fidelity, and operational counter-example. Findings feed the doc's open questions and collapse-tests. Inline delivery (no working_folder).",
-      "anti_bias_global": null,
-      "max_loops": 1,
-      "working_folder": null,
-      "groups": [
-        {
-          "group_id": "attackers",
-          "n": 3,
-          "anti_bias": "attack-vector (vacuity/redundancy vs source-fidelity vs operational counter-example)",
-          "robot_talks": false,
-          "agents": [
-            {
-              "agent_name": "Feyerabend, Paul",
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1800,
-              "angle": "vacuity/redundancy — the thesis relabels existing anti-bias machinery and decorates with CT; separation-by-stage is a rename, not a resolution; CT axis is ornamental",
-              "initial_prompt": "You are a red-team attacker. Read the target document at vault/hypothesis/orquestracao-anti-ruido.md IN FULL (read-only; do NOT modify any file). Attack it from ONE lens only: VACUITY / REDUNDANCY. Press this thesis: the document adds nothing over the repo's EXISTING anti-bias machinery (check-tension, P5, P14, the ledger) and merely decorates it with category theory. Hunt specifically: (a) is 'separacao-por-estagio' (tension in the generate stage, independence in the judge stage) a genuine RESOLUTION of the tension-vs-independence contradiction, or just a renaming of it? (b) does the CT axis ('tipo categorico por construto') do any load-bearing work, or is it ornamental? (c) does the two-level ETE pipeline add anything over the existing P14 initial+final primitive it cites? (d) do the 'voce ja faz X' claims reveal the thesis is just relabeling what exists? For EACH finding return: the section + a QUOTATION from the doc (the quotation is the evidence; a finding with no quote is not a finding), a severity (CRITICAL = breaks the thesis, MAJOR = load-bearing gap, MINOR = wording), and a one-line proposed fix. Claim <= proof: if you cannot quote the doc, you have no finding; a refuted-in-your-own-head finding is dropped, not softened. You run INDEPENDENTLY: do not assume or reference other attackers. If you find nothing, state exactly what you attacked and why it survived each attempt. Budget ~1800 tokens of output."
-            },
-            {
-              "agent_name": "Gigerenzer, Gerd",
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1800,
-              "angle": "source-fidelity — Kahneman/Thaler/sqrt-N/MAP misapplied; average-of-categorical=distribution=noise conflates inter-rater reliability with noise; orthogonality overstated",
-              "initial_prompt": "You are a red-team attacker. Read the target document at vault/hypothesis/orquestracao-anti-ruido.md IN FULL (read-only; do NOT modify any file). Attack it from ONE lens only: SOURCE-FIDELITY — is the imported theory (Kahneman & Noise 2021, Thaler & Nudge, the sqrt-N aggregation result, MAP, ETE/Delphi) used FAITHFULLY, or misapplied? Hunt specifically: (a) the sqrt-N noise-cancellation claim assumes independent, unbiased, identically-distributed estimators — does the doc justify those preconditions or smuggle them? (b) the claim 'media de rotulo categorico = distribuicao = medida de ruido' — does it correctly map to inter-rater reliability, or does it conflate reliability, noise, and genuine ambiguity? (c) is the 'vies PERP ruido' orthogonality claim faithful to Kahneman's decomposition (system noise = level + pattern + occasion noise), or overstated? (d) is 'nudge governs process not content' and the sludge/default framing faithful to Thaler? (e) is MAP (Mediating Assessments Protocol) characterized correctly? For EACH finding return: the section + a QUOTATION from the doc (the quote is the evidence; no quote = no finding), a severity (CRITICAL = the borrowed theory is misused in a way that breaks a load-bearing claim, MAJOR = a real fidelity gap, MINOR = imprecise phrasing), and a one-line proposed fix. Claim <= proof: quote or it is not a finding; drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, say what you attacked and why it survived. Budget ~1800 tokens of output."
-            },
-            {
-              "agent_name": "Taleb, Nassim Nicholas",
-              "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1800,
-              "angle": "operational counter-example — shared base-model correlated errors put a floor under sqrt-N; blinding/independence illusory under one orchestrator; ETE+tagging not cost-proportionate",
-              "initial_prompt": "You are a red-team attacker. Read the target document at vault/hypothesis/orquestracao-anti-ruido.md IN FULL (read-only; do NOT modify any file). Attack it from ONE lens only: OPERATIONAL COUNTER-EXAMPLE — does the design survive contact with the REAL substrate (LLM agents), regardless of whether the concepts are internally coherent? Hunt specifically: (a) LLM agents drawing on the same base model produce CORRELATED errors regardless of assigned persona/angle — this puts a hard floor under sqrt-N noise cancellation that the doc never acknowledges; find where the doc assumes independence it cannot have. (b) is 'blinding'/'cego a fonte' achievable when a SINGLE orchestrator composes every agent's prompt and knows every source? (c) does 'persona como prior' actually shift the sampling distribution of an LLM, or only its surface style? (d) is the two-level ETE + per-dispatch tagging cost-proportionate, or ceremony that burns tokens for marginal noise reduction? (e) is the fork-guard (dispersao vs fork) operable, or does it require a judgment the pipeline cannot make? For EACH finding return: the section + a QUOTATION from the doc (the quote is the evidence; no quote = no finding), a severity (CRITICAL = the mechanism cannot work on the real substrate, MAJOR = a serious operational gap, MINOR = minor friction), and a one-line proposed fix. Claim <= proof: quote or it is not a finding; drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, say what you attacked and why it survived. Budget ~1800 tokens of output."
-            }
-          ]
-        }
-      ],
-      "connections": [],
-      "close": {
-        "exit_reason": "resolved",
-        "agents_spawned": {
-          "total": 3,
-          "tree": {
-            "explorer": 3,
-            "skeptic": 0,
-            "writer": 0,
-            "auditor": 0,
             "helpers": 0
           },
           "loops_used": 1
         },
         "feedback_prompts": null
       },
-      "_score": 11.54
+      "_score": 155.24
     },
     {
-      "dispatch_id": "2026-07-20-agent-name-selection-arch",
-      "dispatch_type": "research",
-      "created": "2026-07-20T20:07:20.110Z",
-      "goal": "Decide the simplest mechanism, strictly better than today's manual/null agent_name, for selecting a subagent's agent_name from the tagged agent pool — evaluating RAG vs MCP-cheap-agent vs deterministic tag-overlap script vs enriched-category functor on value/complexity.",
-      "context": "Today agent_name is a manual, nullable free string disconnected from the check-tension gate; the pool's v0.5.0 tags/role_fit sit unused. The pool is 419 static entries with explicit discrete kebab tags. The user wants the simplest option that is strictly better; option 'pairwise-opposition of names' is deferred to backlog. This meta-dispatch dogfoods the repo's own dispatch discipline to inform an architecture decision.",
+      "dispatch_id": "2026-07-31-work-context-diagram-drawings",
+      "dispatch_type": "others",
+      "created": "2026-07-31T17:14:27.956Z",
+      "goal": "Create five reviewed vector diagrams from the accepted recommendations and assemble them into one verified five-page PDF.",
+      "context": "Five independent designers translate accepted diagram recommendations into bounded SVG drafts. Same-lane reviewers create corrected final SVGs, after which one assembler produces a five-page vector PDF and one auditor independently rerenders and verifies it. The original essay PDF is immutable; all writes are restricted to confirmed drawing, validation, assembly, and audit paths. Network access and agent spawning are forbidden.",
       "anti_bias_global": null,
       "max_loops": 1,
-      "working_folder": "research/agent-name-selection-arch/",
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch",
       "groups": [
         {
-          "group_id": "evaluators",
-          "n": 2,
-          "anti_bias": "methodology (minimalist-deterministic vs systems-retrieval)",
+          "group_id": "transformation-designer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Alexander, Christopher",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "Objective\n\nCreate one polished vector diagram from the finalized recommendation assigned by your canonical task name. Write exactly one SVG draft; do not create a PDF.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_designer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-draft.png`\n\nVisual system\n\n- Canvas: `1600 x 1000`, landscape, with a `viewBox=\"0 0 1600 1000\"`.\n- Background: `#f4eadb`.\n- Primary text and strokes: `#1d1915`.\n- Section/title accent: `#9f3f28`.\n- Secondary lines/text: `#766f66`.\n- Quiet structural lines: `#c9b9a4`.\n- Uncertainty/dashed marks: `#bd6a50`.\n- Use Georgia for titles and labels; Arial only for compact annotations if necessary.\n- Border radius must not exceed 8 px. Do not use gradients, shadows, decorative blobs, illustrations, or icons.\n- Use thin strokes, open circles, restrained arrows, and generous whitespace consistent with the essay.\n- Include the diagram title and a small section-placement line. Do not include explanatory prose paragraphs.\n- All visible text must remain inside the canvas and be legible when the page is fit to a normal desktop window.\n\nConceptual requirements\n\n- Implement the assigned recommendation, including its qualifications and uncertainty markers.\n- Do not invent entities, mandatory records, causal relations, fixed hierarchy, or guaranteed completeness.\n- Arrowheads may express only the meaning authorized by the recommendation.\n- Prefer a clear visual argument over exhaustive labeling.\n\nValidation\n\n- Produce valid standalone SVG XML without scripts, external assets, embedded raster images, or network references.\n- Render the SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct clipping, overlaps, unreadable text, weak hierarchy, or ambiguous connections before returning.\n- Do not spawn another agent or use network access.\n\nReturn a concise completion note naming the file, what the diagram emphasizes, and any remaining visual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "transformation-drawing-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Marr, David",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nReview and, where necessary, revise one SVG diagram so it faithfully realizes its finalized recommendation and the shared visual system. Produce exactly one final SVG.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_drawing_reviewer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-final.png`\n\nReview requirements\n\n- Preserve a `1600 x 1000` landscape canvas and the shared palette, typography, thin strokes, open-node language, and restrained composition.\n- Test conceptual fidelity, visible qualification, section fit, semantic direction, non-hierarchy, uncertainty, legibility, spacing, alignment, and consistency with the source PDF.\n- Remove invented semantics and decorative elements.\n- Do not merely comment on defects: write the corrected final SVG.\n- The final SVG must be standalone XML without scripts, external assets, embedded raster images, gradients, or shadows.\n- Render the final SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct every clipping, overlap, invalid XML, unreadable label, or ambiguous relationship you find.\n- Do not spawn another agent or use network access.\n\nReturn `ACCEPT` or `REVISE`, the final SVG path, the material changes made, and any residual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "divergence-designer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Miller, George",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "Objective\n\nCreate one polished vector diagram from the finalized recommendation assigned by your canonical task name. Write exactly one SVG draft; do not create a PDF.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_designer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-draft.png`\n\nVisual system\n\n- Canvas: `1600 x 1000`, landscape, with a `viewBox=\"0 0 1600 1000\"`.\n- Background: `#f4eadb`.\n- Primary text and strokes: `#1d1915`.\n- Section/title accent: `#9f3f28`.\n- Secondary lines/text: `#766f66`.\n- Quiet structural lines: `#c9b9a4`.\n- Uncertainty/dashed marks: `#bd6a50`.\n- Use Georgia for titles and labels; Arial only for compact annotations if necessary.\n- Border radius must not exceed 8 px. Do not use gradients, shadows, decorative blobs, illustrations, or icons.\n- Use thin strokes, open circles, restrained arrows, and generous whitespace consistent with the essay.\n- Include the diagram title and a small section-placement line. Do not include explanatory prose paragraphs.\n- All visible text must remain inside the canvas and be legible when the page is fit to a normal desktop window.\n\nConceptual requirements\n\n- Implement the assigned recommendation, including its qualifications and uncertainty markers.\n- Do not invent entities, mandatory records, causal relations, fixed hierarchy, or guaranteed completeness.\n- Arrowheads may express only the meaning authorized by the recommendation.\n- Prefer a clear visual argument over exhaustive labeling.\n\nValidation\n\n- Produce valid standalone SVG XML without scripts, external assets, embedded raster images, or network references.\n- Render the SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct clipping, overlaps, unreadable text, weak hierarchy, or ambiguous connections before returning.\n- Do not spawn another agent or use network access.\n\nReturn a concise completion note naming the file, what the diagram emphasizes, and any remaining visual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "divergence-drawing-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Gigerenzer, Gerd",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nReview and, where necessary, revise one SVG diagram so it faithfully realizes its finalized recommendation and the shared visual system. Produce exactly one final SVG.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_drawing_reviewer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-final.png`\n\nReview requirements\n\n- Preserve a `1600 x 1000` landscape canvas and the shared palette, typography, thin strokes, open-node language, and restrained composition.\n- Test conceptual fidelity, visible qualification, section fit, semantic direction, non-hierarchy, uncertainty, legibility, spacing, alignment, and consistency with the source PDF.\n- Remove invented semantics and decorative elements.\n- Do not merely comment on defects: write the corrected final SVG.\n- The final SVG must be standalone XML without scripts, external assets, embedded raster images, gradients, or shadows.\n- Render the final SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct every clipping, overlap, invalid XML, unreadable label, or ambiguous relationship you find.\n- Do not spawn another agent or use network access.\n\nReturn `ACCEPT` or `REVISE`, the final SVG path, the material changes made, and any residual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "topology-designer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Fong, Brendan",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "Objective\n\nCreate one polished vector diagram from the finalized recommendation assigned by your canonical task name. Write exactly one SVG draft; do not create a PDF.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_designer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-draft.png`\n\nVisual system\n\n- Canvas: `1600 x 1000`, landscape, with a `viewBox=\"0 0 1600 1000\"`.\n- Background: `#f4eadb`.\n- Primary text and strokes: `#1d1915`.\n- Section/title accent: `#9f3f28`.\n- Secondary lines/text: `#766f66`.\n- Quiet structural lines: `#c9b9a4`.\n- Uncertainty/dashed marks: `#bd6a50`.\n- Use Georgia for titles and labels; Arial only for compact annotations if necessary.\n- Border radius must not exceed 8 px. Do not use gradients, shadows, decorative blobs, illustrations, or icons.\n- Use thin strokes, open circles, restrained arrows, and generous whitespace consistent with the essay.\n- Include the diagram title and a small section-placement line. Do not include explanatory prose paragraphs.\n- All visible text must remain inside the canvas and be legible when the page is fit to a normal desktop window.\n\nConceptual requirements\n\n- Implement the assigned recommendation, including its qualifications and uncertainty markers.\n- Do not invent entities, mandatory records, causal relations, fixed hierarchy, or guaranteed completeness.\n- Arrowheads may express only the meaning authorized by the recommendation.\n- Prefer a clear visual argument over exhaustive labeling.\n\nValidation\n\n- Produce valid standalone SVG XML without scripts, external assets, embedded raster images, or network references.\n- Render the SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct clipping, overlaps, unreadable text, weak hierarchy, or ambiguous connections before returning.\n- Do not spawn another agent or use network access.\n\nReturn a concise completion note naming the file, what the diagram emphasizes, and any remaining visual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "topology-drawing-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Kripke, Saul",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nReview and, where necessary, revise one SVG diagram so it faithfully realizes its finalized recommendation and the shared visual system. Produce exactly one final SVG.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_drawing_reviewer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-final.png`\n\nReview requirements\n\n- Preserve a `1600 x 1000` landscape canvas and the shared palette, typography, thin strokes, open-node language, and restrained composition.\n- Test conceptual fidelity, visible qualification, section fit, semantic direction, non-hierarchy, uncertainty, legibility, spacing, alignment, and consistency with the source PDF.\n- Remove invented semantics and decorative elements.\n- Do not merely comment on defects: write the corrected final SVG.\n- The final SVG must be standalone XML without scripts, external assets, embedded raster images, gradients, or shadows.\n- Render the final SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct every clipping, overlap, invalid XML, unreadable label, or ambiguous relationship you find.\n- Do not spawn another agent or use network access.\n\nReturn `ACCEPT` or `REVISE`, the final SVG path, the material changes made, and any residual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "continuity-designer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Schacter, Daniel",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "Objective\n\nCreate one polished vector diagram from the finalized recommendation assigned by your canonical task name. Write exactly one SVG draft; do not create a PDF.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_designer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-draft.png`\n\nVisual system\n\n- Canvas: `1600 x 1000`, landscape, with a `viewBox=\"0 0 1600 1000\"`.\n- Background: `#f4eadb`.\n- Primary text and strokes: `#1d1915`.\n- Section/title accent: `#9f3f28`.\n- Secondary lines/text: `#766f66`.\n- Quiet structural lines: `#c9b9a4`.\n- Uncertainty/dashed marks: `#bd6a50`.\n- Use Georgia for titles and labels; Arial only for compact annotations if necessary.\n- Border radius must not exceed 8 px. Do not use gradients, shadows, decorative blobs, illustrations, or icons.\n- Use thin strokes, open circles, restrained arrows, and generous whitespace consistent with the essay.\n- Include the diagram title and a small section-placement line. Do not include explanatory prose paragraphs.\n- All visible text must remain inside the canvas and be legible when the page is fit to a normal desktop window.\n\nConceptual requirements\n\n- Implement the assigned recommendation, including its qualifications and uncertainty markers.\n- Do not invent entities, mandatory records, causal relations, fixed hierarchy, or guaranteed completeness.\n- Arrowheads may express only the meaning authorized by the recommendation.\n- Prefer a clear visual argument over exhaustive labeling.\n\nValidation\n\n- Produce valid standalone SVG XML without scripts, external assets, embedded raster images, or network references.\n- Render the SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct clipping, overlaps, unreadable text, weak hierarchy, or ambiguous connections before returning.\n- Do not spawn another agent or use network access.\n\nReturn a concise completion note naming the file, what the diagram emphasizes, and any remaining visual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "continuity-drawing-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Rittel, Horst",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nReview and, where necessary, revise one SVG diagram so it faithfully realizes its finalized recommendation and the shared visual system. Produce exactly one final SVG.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_drawing_reviewer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-final.png`\n\nReview requirements\n\n- Preserve a `1600 x 1000` landscape canvas and the shared palette, typography, thin strokes, open-node language, and restrained composition.\n- Test conceptual fidelity, visible qualification, section fit, semantic direction, non-hierarchy, uncertainty, legibility, spacing, alignment, and consistency with the source PDF.\n- Remove invented semantics and decorative elements.\n- Do not merely comment on defects: write the corrected final SVG.\n- The final SVG must be standalone XML without scripts, external assets, embedded raster images, gradients, or shadows.\n- Render the final SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct every clipping, overlap, invalid XML, unreadable label, or ambiguous relationship you find.\n- Do not spawn another agent or use network access.\n\nReturn `ACCEPT` or `REVISE`, the final SVG path, the material changes made, and any residual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "traceability-designer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Forrester, Jay",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "Objective\n\nCreate one polished vector diagram from the finalized recommendation assigned by your canonical task name. Write exactly one SVG draft; do not create a PDF.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_designer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-draft.png`\n\nVisual system\n\n- Canvas: `1600 x 1000`, landscape, with a `viewBox=\"0 0 1600 1000\"`.\n- Background: `#f4eadb`.\n- Primary text and strokes: `#1d1915`.\n- Section/title accent: `#9f3f28`.\n- Secondary lines/text: `#766f66`.\n- Quiet structural lines: `#c9b9a4`.\n- Uncertainty/dashed marks: `#bd6a50`.\n- Use Georgia for titles and labels; Arial only for compact annotations if necessary.\n- Border radius must not exceed 8 px. Do not use gradients, shadows, decorative blobs, illustrations, or icons.\n- Use thin strokes, open circles, restrained arrows, and generous whitespace consistent with the essay.\n- Include the diagram title and a small section-placement line. Do not include explanatory prose paragraphs.\n- All visible text must remain inside the canvas and be legible when the page is fit to a normal desktop window.\n\nConceptual requirements\n\n- Implement the assigned recommendation, including its qualifications and uncertainty markers.\n- Do not invent entities, mandatory records, causal relations, fixed hierarchy, or guaranteed completeness.\n- Arrowheads may express only the meaning authorized by the recommendation.\n- Prefer a clear visual argument over exhaustive labeling.\n\nValidation\n\n- Produce valid standalone SVG XML without scripts, external assets, embedded raster images, or network references.\n- Render the SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct clipping, overlaps, unreadable text, weak hierarchy, or ambiguous connections before returning.\n- Do not spawn another agent or use network access.\n\nReturn a concise completion note naming the file, what the diagram emphasizes, and any remaining visual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "traceability-drawing-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Meadows, Donella H.",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nReview and, where necessary, revise one SVG diagram so it faithfully realizes its finalized recommendation and the shared visual system. Produce exactly one final SVG.\n\nIdentity and sources\n\nYour canonical task name is `<lane>_drawing_reviewer`, where `<lane>` is one of `transformation`, `divergence`, `topology`, `continuity`, or `traceability`.\n\nRead:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-reviewer.md`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/drafts/<lane>.svg`\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf`\n- the three page renders under `diagram-proposal-dispatch/sources/`\n\nWrite only:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/final/<lane>.svg`\nand its validation render:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/validation/<lane>-final.png`\n\nReview requirements\n\n- Preserve a `1600 x 1000` landscape canvas and the shared palette, typography, thin strokes, open-node language, and restrained composition.\n- Test conceptual fidelity, visible qualification, section fit, semantic direction, non-hierarchy, uncertainty, legibility, spacing, alignment, and consistency with the source PDF.\n- Remove invented semantics and decorative elements.\n- Do not merely comment on defects: write the corrected final SVG.\n- The final SVG must be standalone XML without scripts, external assets, embedded raster images, gradients, or shadows.\n- Render the final SVG locally at matrix 1.0 with PyMuPDF to the declared validation PNG and inspect it using `view_image`.\n- Correct every clipping, overlap, invalid XML, unreadable label, or ambiguous relationship you find.\n- Do not spawn another agent or use network access.\n\nReturn `ACCEPT` or `REVISE`, the final SVG path, the material changes made, and any residual risk.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "pdf-assembler",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Baez, John",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1600,
+              "angle": null,
+              "initial_prompt": "Objective\n\nAssemble five reviewed standalone SVG diagrams into one polished five-page PDF. Do not redesign the diagrams except for a mechanical correction required for successful rendering.\n\nInput order\n\n1. `final/transformation.svg`\n2. `final/divergence.svg`\n3. `final/topology.svg`\n4. `final/continuity.svg`\n5. `final/traceability.svg`\n\nAll paths are relative to:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/`\n\nOutput\n\nWrite exactly the final PDF:\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-diagram-concepts.pdf`\nplus these five verification renders and no other files:\n`diagram-drawing-dispatch/pdf-renders/page-01.png` through `page-05.png`.\n\nUse PyMuPDF to convert each `1600 x 1000` SVG into a vector PDF page and join the pages in the declared order. Preserve the SVG aspect ratio and page dimensions. Set PDF metadata title to `Work Context System View - Diagram Concepts`.\n\nAfter assembly, reopen the PDF, require exactly five pages, render every page at matrix 1.0 to the declared PNG paths, and inspect all five images with `view_image`. Fail rather than silently omitting a page. Do not spawn another agent or use network access.\n\nReturn the PDF path, page count, source SVG order, and any mechanical correction made.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "pdf-auditor",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Dijkstra, Edsger W.",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nAudit the assembled diagram PDF and its five source SVGs. Write only five independent audit renders at `diagram-drawing-dispatch/audit-renders/page-01.png` through `page-05.png`.\n\nInspect:\n- `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-diagram-concepts.pdf`\n- every SVG under `diagram-drawing-dispatch/final/`\n- every PNG under `diagram-drawing-dispatch/pdf-renders/`\n- the five finalized recommendations under `diagram-proposal-dispatch/outputs/*-reviewer.md`\n\nOpen the PDF independently with PyMuPDF. Verify parseability, exactly five pages in this order (transformation, divergence, topology, continuity, traceability), identical `1600 x 1000` page dimensions, and metadata title `Work Context System View - Diagram Concepts`. Render every page freshly at matrix 1.0 to the declared audit-render path. Compare each audit render with the corresponding bound assembler-produced PNG by dimensions and pixel hash; a mismatch is a defect. Inspect the fresh audit renders with `view_image`. Check nonblank rendering, clipping, overlaps, text legibility, semantic fidelity, uncertainty qualifiers, visual consistency, page order, and absence of external SVG references or scripts.\n\nReturn `PASS` only if no material defect remains. Otherwise return `REVISE` with page, defect, evidence, and exact correction. Do not spawn another agent or use network access.\n"
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "transformation-designer",
+          "to": "transformation-drawing-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "divergence-designer",
+          "to": "divergence-drawing-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "topology-designer",
+          "to": "topology-drawing-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "continuity-designer",
+          "to": "continuity-drawing-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "traceability-designer",
+          "to": "traceability-drawing-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "transformation-drawing-reviewer",
+          "to": "pdf-assembler",
+          "type": "sequential"
+        },
+        {
+          "from": "divergence-drawing-reviewer",
+          "to": "pdf-assembler",
+          "type": "sequential"
+        },
+        {
+          "from": "topology-drawing-reviewer",
+          "to": "pdf-assembler",
+          "type": "sequential"
+        },
+        {
+          "from": "continuity-drawing-reviewer",
+          "to": "pdf-assembler",
+          "type": "sequential"
+        },
+        {
+          "from": "traceability-drawing-reviewer",
+          "to": "pdf-assembler",
+          "type": "sequential"
+        },
+        {
+          "from": "pdf-assembler",
+          "to": "pdf-auditor",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 15,
+          "tree": {
+            "writer": 6,
+            "auditor": 6,
+            "helpers": 3
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "Capability review: revise the workflow manifest and runtime fields to make every launch dependency explicit.",
+          "Transformation designer: rerun with the exact confirmed prompt because the first launch message contained an accidental leading + character.",
+          "Runtime: host hooks did not fire automatically in this API context; use direct pre-launch binding and record the operation gap."
+        ]
+      },
+      "_score": 128.86
+    },
+    {
+      "dispatch_id": "2026-07-31-work-context-diagram-proposals",
+      "dispatch_type": "others",
+      "created": "2026-07-31T16:41:05.759Z",
+      "goal": "Produce five independently developed and reviewed proposals, each recommending exactly one diagram and selecting the essay section where it should be added.",
+      "context": "Five independent lanes analyze one frozen three-page essay from distinct declared lenses. Each worker proposes exactly one diagram and chooses its numbered section; its reviewer receives the exact parent-materialized worker return and produces one final recommendation. All ten seats receive byte-identical prompt bytes; canonical task names select lane and role. Agents are read-only, offline, and may not spawn other agents.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs",
+      "groups": [
+        {
+          "group_id": "transformation-worker",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Gentner, Dedre",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "transformation-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Marr, David",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "topology-worker",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Fong, Brendan",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "topology-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Kripke, Saul",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "divergence-worker",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Miller, George",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "divergence-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Gigerenzer, Gerd",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "continuity-worker",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Schacter, Daniel",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "continuity-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Rittel, Horst",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "traceability-worker",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Forrester, Jay",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        },
+        {
+          "group_id": "traceability-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Meadows, Donella H.",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "Objective\n\nProduce one evidence-grounded proposal for a diagram to add to:\n\nplans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/work-context-system-view-short-polished-diagrams-revision.pdf\n\nThe proposal must identify:\n1. Which numbered section should contain the diagram.\n2. What the diagram would explain.\n3. Why this is the strongest diagram idea for improving the essay.\n\nIdentity and assigned lens\n\nUse the final component of your canonical task name to determine your lane and role. It has the form `<lane>_<role>`.\n\n- `transformation`: examine how perception becomes intention, a monolithic objective becomes compositions, and divided work motivates a system for work.\n- `topology`: examine the non-hierarchical relationships among objectives, tasks, decisions, evidence, dependencies, and artifacts.\n- `divergence`: examine how locally coherent work can lose connection with the larger objective and conceal global failure.\n- `continuity`: examine how objectives, decisions, and contributions change over time while earlier states and reasons remain recoverable.\n- `traceability`: examine how the system lets a reader move from an objective to contributing work and from a task back to purpose, decisions, conditions, and evidence.\n\nThe role suffix is either `worker` or `reviewer`.\n\nUse this complete seat lookup. The identity and angle are part of the frozen instructions, not optional background:\n\n- `transformation_worker`: Gentner, Dedre; structure-mapping methodology - compress the essay's transformations into one relational sequence.\n- `transformation_reviewer`: Marr, David; adversarial levels-of-explanation methodology - test whether the sequence preserves the essay's non-mechanical qualifications.\n- `topology_worker`: Fong, Brendan; formal network methodology - model recoverable relationships without forcing a hierarchy.\n- `topology_reviewer`: Kripke, Saul; adversarial semantic methodology - test whether every visual entity and relation is textually warranted.\n- `divergence_worker`: Miller, George; cognitive compression methodology - make the local-coherence/global-divergence risk immediately inspectable.\n- `divergence_reviewer`: Gigerenzer, Gerd; adversarial bounded-rationality methodology - test whether the contrast suppresses ambiguity or implies omniscient global judgment.\n- `continuity_worker`: Schacter, Daniel; reconstructive-history methodology - show earlier state, revision, reason, and current state as recoverable continuity.\n- `continuity_reviewer`: Rittel, Horst; adversarial wicked-problem methodology - test whether change is falsely shown as complete, settled, or unambiguous.\n- `traceability_worker`: Forrester, Jay; system-dynamics methodology - expose traversable paths between objective, work, decisions, conditions, and evidence.\n- `traceability_reviewer`: Meadows, Donella H.; adversarial scope methodology - test whether the proposal remains an essay explanation rather than an invented system specification.\n\nSource and boundaries\n\n- Read and visually inspect the complete PDF.\n- Visually inspect the three frozen page renders at:\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-01.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-02.png`\n  - `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/sources/page-03.png`\n- Treat the PDF as the sole conceptual authority.\n- Do not use external sources.\n- Do not use network access.\n- Do not spawn or delegate to another agent.\n- Do not edit the PDF or create the diagram.\n- Recommend exactly one diagram.\n- Preserve uncertainty and qualifications present in the prose.\n- Do not introduce concepts or relationships that the essay does not support.\n- Consider the existing title-page motif, available page space, visual style, likely reading sequence, and legibility at the document's page width.\n- Avoid a decorative illustration or a diagram that merely repeats the prose.\n- Apply only the lens assigned by your canonical task name.\n\nRole protocol\n\nIf your role is `worker`:\n- Develop one diagram proposal from your assigned lens.\n- Explain its conceptual and visual structure precisely enough that another person could later design it.\n- Do not provide alternatives.\n\nIf your role is `reviewer`:\n- Read the worker proposal at `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-proposal-dispatch/outputs/<lane>-worker.md`, replacing `<lane>` with your assigned lane.\n- Examine the PDF and the supplied worker proposal.\n- Test the proposal for textual support, explanatory value, redundancy, placement, visual feasibility, and compatibility with the essay's style.\n- Return ACCEPT, REVISE, or REJECT.\n- Regardless of verdict, return exactly one final diagram proposal for the lane. Preserve the worker's proposal where justified and change only what your review requires.\n- Do not return multiple alternatives.\n\nResponse contract\n\nRole:\nAssigned lens:\n\nReviewer verdict: [ACCEPT | REVISE | REJECT | NOT APPLICABLE]\n\nSection and placement:\nName the numbered section and the precise point within or immediately after it.\n\nDiagram concept:\nGive the proposal a short descriptive title.\n\nWhat it explains:\nState the relationships, transition, tension, or change the reader would see.\n\nVisual structure:\nList the essential entities, labels, connections, directionality, and any states or boundaries. Describe structure, not visual ornament.\n\nWhy this is the strongest idea:\nExplain what comprehension problem it solves and why a diagram is better than additional prose at this location.\n\nEvidence from the essay:\nIdentify the specific claims or passages that support the proposal, using page and section references. Paraphrase rather than quoting extensively.\n\nDocument fit:\nExplain how the diagram could fit the existing layout and visual language without competing with the title motif.\n\nRisks or uncertainties:\nIdentify any part that could overstate, oversimplify, or imply unsupported relationships.\n\nLimit the response to 600 words. Make no claim stronger than the PDF supports. Return the response inline and do not write files.\n"
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "transformation-worker",
+          "to": "transformation-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "topology-worker",
+          "to": "topology-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "divergence-worker",
+          "to": "divergence-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "continuity-worker",
+          "to": "continuity-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "traceability-worker",
+          "to": "traceability-reviewer",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 13,
+          "tree": {
+            "writer": 5,
+            "auditor": 5,
+            "helpers": 3
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "Concrete revision 1 was revised after capability review; revision 2 passed capability review and two independent tension checks.",
+          "The Codex collaboration API did not execute the configured host hook. The parent detected the missing bindings, invalidated the unbound evidence, used the runtime direct pre-launch binding API for all ten declared seats, and explicitly completed every turn.",
+          "The first three canonical worker identities were resumed with the frozen prompt after direct authorization because the collaboration API retains completed task names and rejects duplicate spawns. This creates a recorded spawn-versus-provider-followup observability gap."
+        ]
+      },
+      "_score": 107.02
+    },
+    {
+      "dispatch_id": "2026-07-26-artifact-placement-adjudication",
+      "dispatch_type": "others",
+      "created": "2026-07-26T06:31:27.603Z",
+      "goal": "Decide where each of nine named repository artifacts should live — the three top-level experiments/ subtrees, the two review artifacts inside them, the six dated review rounds under docs/features/, the second feature-owned experiments home, the root README's omission of experiments/, and this dispatch's own working folder — and produce a migration plan the parent can execute.",
+      "context": "The owner asked what each top-level experiment is and whether the repo's review artifacts belong inside one of them. A parent inspection found the opposite vector: the six dated review rounds under docs/features/ are correctly placed next to the targets they attacked, while experiments/skill-control-center/ is not an experiment at all (no frozen criterion) and holds the research and review lineage that docs/features/README.md says must travel with its feature package. Work kind is placement adjudication, not research or review; no LIVE specialized type fits, so this runs as `others` under the universal lifecycle. Every seat is read-only: the parent is the only writer and the final approver. The confirmed sheet is research/artifact-placement-adjudication/proposal-v4.json, sorted-compact digest ba801c6bc8944bf48a66a2e151caa30cb172b6f8a0388fc3dc48a7681f6d851f, which carries the frozen 23-file corpus, the capability review, four check-tension rounds and the accepted residual risks.",
+      "anti_bias_global": "what has authority over where an artifact lives: the declared written rule, the causal lineage of the artifact, or the cost of moving it — a declared domain-native composite of source-corpus (rule text / git history / inbound-reference cost) and attack-vector (compliance / provenance / inertia)",
+      "max_loops": 1,
+      "working_folder": "research/artifact-placement-adjudication/",
+      "groups": [
+        {
+          "group_id": "subject-normative",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Meyer, Bertrand",
+              "role": "explorer",
+              "model": "claude-opus-5",
+              "token_budget": 4000,
+              "angle": "the declared contract binds — a path is correct iff it satisfies the repository's own written rules; where practice diverges from the written rule, the practice is the defect",
+              "initial_prompt": "You are adjudicating filesystem placement in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. READ-ONLY: create, edit, move or delete nothing; run no git mv; spawn no subagents. Your deliverable is a written verdict returned to the orchestrator, who is the only writer.\n\nRead research/artifact-placement-adjudication/proposal-v4.json. Verify the SHA-256 of every path in target_bindings before you rely on that file; report any mismatch and stop. The nine objects under adjudication are in its `inventory` array (I1-I9).\n\nYOUR ANGLE — THE DECLARED CONTRACT BINDS. A path is correct if and only if it satisfies the repository's own written rules: docs/features/README.md on what travels with a feature package, .claude/skills/review/SKILL.md on review's single artifact and where it lands, .claude/skills/experiment/SKILL.md on what makes something an experiment (a frozen pre-registered criterion), the root README.md's directory tables, CLAUDE.md and AGENTS.md. Where lived practice diverges from the written rule, the practice is the defect, not the rule. You are structurally biased toward migration and your reviewer will attack exactly that: do not let symmetry or tidiness stand in for a citation.\n\nEvery load-bearing claim must quote the rule and cite path plus line. A rule you cannot quote does not exist for your purposes.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict table\n| item | verdict (STAY/MOVE/SPLIT/RENAME) | destination path or em-dash | one-line reason |\nOne row per inventory item I1-I9, no omissions.\n## Reasoning\nPer item: the rule quoted verbatim, its path and line, and why it binds this object.\n## What my angle cannot see\nThe strongest objection from the lineage angle or the cost angle, stated in its best form, and whether you concede or hold.\n## Claim <= proof\nEvery verdict you cannot support with a quoted rule, listed explicitly as low-confidence.\nBudget ~4000 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewer-normative",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Parnas, David",
+              "role": "skeptic",
+              "model": "claude-haiku-4-5-20251001",
+              "token_budget": 2500,
+              "angle": "authority fidelity — does each cited rule exist, actually say that, and actually bind this object",
+              "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing.\n\nYou attack ONE subject's placement verdict: the normative adjudicator, whose angle is 'the declared contract binds'. Their return is supplied to you as a bound {path, sha256} input by the orchestrator; verify the hash before reading.\n\nYOUR LENS — AUTHORITY FIDELITY, and nothing else. For every rule the subject cites: (a) does the file and line exist? (b) does it actually say what the subject claims? (c) does it actually BIND the object in question, or is it being stretched by analogy from a different scope? (d) is the rule current, or superseded elsewhere in the repo? Hunt specifically for: invented conventions presented as repository rules; moves justified only by symmetry or tidiness with no rule behind them; a rule about feature packages applied to something that is not a feature; a skill contract read as governing file location when it governs something narrower.\n\nOpen every cited file yourself. Do not accept a quotation without checking it.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: inventory item, the subject's exact quoted claim, what the cited source actually says (with path and line), severity CRITICAL/MAJOR/MINOR, and the one-line correction.\n## Rules that checked out\nWhich citations you verified as sound — so the subject knows what not to relitigate.\n## What I could not check\nAnything you could not verify and why.\nBudget ~2500 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "subject-lineage",
+          "n": 1,
+          "anti_bias": null,
           "robot_talks": null,
           "agents": [
             {
               "agent_name": "Torvalds, Linus",
               "role": "explorer",
               "model": "claude-sonnet-5",
-              "token_budget": 600,
-              "angle": "minimalist-deterministic: simplest mechanism strictly better than manual/null; attacks premature RAG/MCP infra; ranks options by value/complexity",
-              "initial_prompt": "Argue the minimalist case for agent_name selection over a 419-entry static tagged pool. Options: RAG / MCP-cheap-agent / deterministic tag-overlap-and-role_fit script / enriched-category functor. Name the smallest shippable artifact, what you would NOT build, and the falsifier for going simple. Under 500 words, claim<=proof."
-            },
+              "token_budget": 4000,
+              "angle": "lineage binds — an artifact belongs where its target and its producer live; written conventions are downstream summaries of that",
+              "initial_prompt": "You are adjudicating filesystem placement in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. READ-ONLY: create, edit, move or delete nothing; run no git mv; spawn no subagents. Your deliverable is a written verdict returned to the orchestrator, who is the only writer.\n\nRead research/artifact-placement-adjudication/proposal-v4.json. Verify the SHA-256 of every path in target_bindings before relying on it; report mismatches and stop. The nine objects are in its `inventory` array (I1-I9).\n\nYOUR ANGLE — LINEAGE BINDS. An artifact belongs where its TARGET and its PRODUCER live. A review belongs with what it attacked. A research return belongs with the question that commissioned it. An experiment belongs with the corpus it probed. Written conventions are downstream summaries of this deeper fact, and where a convention contradicts the actual causal record, the record wins. Your instruments are git history and the artifacts' own internal references: use git log --follow, git blame, git log --diff-filter=R --find-renames, and git show to establish what each artifact actually derives from and how it arrived where it is. Read the artifacts' own front-matter, digest bindings and relative links as provenance evidence.\n\nYou are structurally biased toward splitting things by target and toward treating history as authoritative; your reviewer will attack exactly whether the record can bear the weight you put on it. Every lineage claim must be backed by a command you actually ran and whose output you quote, or by a quoted internal reference. 'It came from here' is not the same as 'it belongs here' — you must argue the second, not just show the first.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict table\n| item | verdict (STAY/MOVE/SPLIT/RENAME) | destination path or em-dash | one-line reason |\nOne row per inventory item I1-I9, no omissions.\n## Reasoning\nPer item: the lineage evidence (command run plus quoted output, or quoted internal reference), and the step from 'derives from X' to 'belongs at Y'.\n## What my angle cannot see\nThe strongest objection from the declared-rule angle or the cost angle, in its best form, and whether you concede or hold.\n## Claim <= proof\nEvery verdict where the record is silent or ambiguous, listed explicitly as low-confidence.\nBudget ~4000 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewer-lineage",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
             {
-              "agent_name": "Yu, Zoe",
+              "agent_name": "Randell, Brian",
+              "role": "skeptic",
+              "model": "claude-opus-5",
+              "token_budget": 2500,
+              "angle": "evidence sufficiency — lineage claims the record cannot actually support, and the leap from origin to destination",
+              "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing.\n\nYou attack ONE subject's placement verdict: the lineage adjudicator, whose angle is 'lineage binds'. Their return is supplied as a bound {path, sha256} input by the orchestrator; verify the hash before reading.\n\nYOUR LENS — EVIDENCE SUFFICIENCY, and nothing else. Two distinct attacks, both required:\n(1) Can the record actually support the claim? Re-run the subject's git commands yourself (git log --follow, git blame, git log --diff-filter=R --find-renames). A history that does not survive a rename, a squashed commit, a file added in a bulk commit with no individual history, or a claim resting on a commit message rather than a diff — all are insufficient evidence dressed as provenance. Say so.\n(2) The origin-to-destination leap. Even where the lineage is proven, 'this artifact derives from X' does not entail 'this artifact belongs with X'. Attack every place the subject slid from the first to the second without an argument. This is the characteristic failure of a lineage angle and it is your primary target.\n\nOpen the artifacts and run the commands yourself. Do not accept quoted output you did not reproduce.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: inventory item, the subject's exact claim, what the record actually shows (with the command you ran and its output), which of the two attacks it falls to, severity CRITICAL/MAJOR/MINOR, and the one-line correction.\n## Lineage that held\nWhich provenance claims you reproduced and accept.\n## What I could not check\nAnything unverifiable and why.\nBudget ~2500 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "subject-cost",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Boehm, Barry",
+              "role": "explorer",
+              "model": "claude-fable-5",
+              "token_budget": 4000,
+              "angle": "the cost of the move binds — a path is an interface; the default is STAY and a move must be paid for by a named reader who is currently failing",
+              "initial_prompt": "You are adjudicating filesystem placement in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. READ-ONLY: create, edit, move or delete nothing; run no git mv; spawn no subagents. Your deliverable is a written verdict returned to the orchestrator, who is the only writer.\n\nRead research/artifact-placement-adjudication/proposal-v4.json. Verify the SHA-256 of every path in target_bindings before relying on it; report mismatches and stop. The nine objects are in its `inventory` array (I1-I9).\n\nYOUR ANGLE — THE COST OF THE MOVE BINDS. A path is an interface. Moving it breaks inbound relative links, README pointers, git-blame continuity for readers who use it, muscle memory, and any external bookmark. Your default verdict is STAY, and a MOVE must be PAID FOR: name the specific reader who is currently failing to find something, say what they were looking for, and show that the move fixes it. Where a cheaper instrument would serve — an index line, a README pointer, a cross-link, a rename in place — prefer it to a move and say so explicitly.\n\nQuantify, do not assert. For each proposed move, actually count the inbound references: grep the repo for the path and report the real number of files that would need editing. A cost claim with no count is exactly the failure your reviewer is briefed to hunt, and they will attack any status-quo preference you dress up as analysis. Be equally honest about the cost of NOT moving: if leaving something where it is imposes a recurring cost on readers, name it.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict table\n| item | verdict (STAY/MOVE/SPLIT/RENAME) | destination path or em-dash | one-line reason |\nOne row per inventory item I1-I9, no omissions.\n## Cost ledger\nPer item: counted inbound references (with the search you ran), what breaks, the cheaper instrument if one exists, and the named reader who pays either way.\n## What my angle cannot see\nThe strongest objection from the declared-rule angle or the lineage angle, in its best form, and whether you concede or hold.\n## Claim <= proof\nEvery cost or benefit you asserted without counting, listed explicitly as low-confidence.\nBudget ~4000 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "reviewer-cost",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Cunningham, Ward",
               "role": "skeptic",
               "model": "claude-sonnet-5",
-              "token_budget": 600,
-              "angle": "systems-retrieval: where pure tag-overlap fails (synonyms, sparse tags, pairwise-opposition, telemetry feedback loop); smallest infra beyond a naive script that earns its cost",
-              "initial_prompt": "Skeptic of the just-write-a-script answer for agent_name selection over the tagged pool. Attack pure tag-overlap: synonym/near-miss tags in a 721-vocabulary, sparse-tag entries, the opposition requirement, the telemetry feedback loop. Identify the smallest infra that earns its cost; rank options by value/complexity; name the falsifier. Under 500 words, claim<=proof."
+              "token_budget": 2500,
+              "angle": "cost falsification — status-quo bias dressed as cost analysis, uncounted breakage claims, and the unnamed debt of not moving",
+              "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing.\n\nYou attack ONE subject's placement verdict: the cost adjudicator, whose angle is 'the cost of the move binds' and whose default is STAY. Their return is supplied as a bound {path, sha256} input by the orchestrator; verify the hash before reading.\n\nYOUR LENS — COST FALSIFICATION, and nothing else. Three required attacks:\n(1) Falsify the counts. Re-run their searches yourself. A claimed breakage of N files that is really 2 files, or a claimed relative-link cost on a tree nothing links into, is inertia wearing the costume of analysis. Report the real number.\n(2) Name the debt of NOT moving. This is your primary target and the subject's characteristic blind spot. Every artifact left in a misleading location charges interest: a reader who trusts the directory name and is wrong, a convention that erodes because nobody enforces it, a second home that will attract more misfiled material, a future contributor who copies the wrong precedent. Where the subject priced only the move, price the staying.\n(3) Attack the substitution. Where they offered an index line or a cross-link as a cheaper instrument, ask whether it actually solves the reader's problem or merely documents the problem and leaves it in place.\n\nRun the searches yourself. Do not accept an uncounted number.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: inventory item, the subject's exact claim, the real count or the unpriced debt (with the search you ran), which of the three attacks it falls to, severity CRITICAL/MAJOR/MINOR, and the one-line correction.\n## Costs that held\nWhich cost claims you reproduced and accept.\n## What I could not check\nAnything unverifiable and why.\nBudget ~2500 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "crosstalk",
+          "n": 3,
+          "anti_bias": "what has authority over where an artifact lives: the declared written rule, the causal lineage of the artifact, or the cost of moving it",
+          "robot_talks": true,
+          "agents": [
+            {
+              "agent_name": "Meyer, Bertrand",
+              "role": "explorer",
+              "model": "claude-opus-5",
+              "token_budget": 3000,
+              "angle": "the declared contract binds",
+              "initial_prompt": "CROSSTALK ROUND. You previously returned a placement verdict table from the angle 'the declared contract binds', then revised it against your reviewer. The other two adjudicators — one arguing that lineage binds, one arguing that the cost of the move binds — did the same, and their final tables are supplied to you as bound {path, sha256} inputs by the orchestrator alongside your own. Verify every hash before reading.\n\nANTI-COLLAPSE PROTOCOL — mandatory, and the orchestrator checks it mechanically against the persisted pre-crosstalk tables:\n1. Open by restating your own final pre-crosstalk verdict table VERBATIM, before responding to anything the others wrote.\n2. Then engage. For every row where you now differ from another seat, argue it on cited evidence, not on authority of angle.\n3. Any change to your OWN row must be marked DRIFT, naming which seat moved you and the specific argument that did it. An unmarked change is a defect.\n4. The joint reconciled table must record, per row, which seats held which position BEFORE this exchange — so a row that became unanimous only here is visible as convergence, not as independent agreement.\n5. The residue list of unreconciled dissent may not be empty unless every seat's pre-crosstalk table already agreed on every row. Genuine disagreement is a valid output; manufactured consensus is not.\n\nHold your angle. You are not here to be agreeable — you are here to make the rule-based case as strongly as it can be made and to concede only where the evidence actually beats it.\n\nOUTPUT: your verbatim prior table, then your engagement, then your contribution to the joint reconciled table and the residue list. Budget ~3000 tokens."
+            },
+            {
+              "agent_name": "Torvalds, Linus",
+              "role": "explorer",
+              "model": "claude-sonnet-5",
+              "token_budget": 3000,
+              "angle": "lineage binds",
+              "initial_prompt": "CROSSTALK ROUND. You previously returned a placement verdict table from the angle 'lineage binds', then revised it against your reviewer. The other two adjudicators — one arguing that the declared written rule binds, one arguing that the cost of the move binds — did the same, and their final tables are supplied to you as bound {path, sha256} inputs by the orchestrator alongside your own. Verify every hash before reading.\n\nANTI-COLLAPSE PROTOCOL — mandatory, and the orchestrator checks it mechanically against the persisted pre-crosstalk tables:\n1. Open by restating your own final pre-crosstalk verdict table VERBATIM, before responding to anything the others wrote.\n2. Then engage. For every row where you now differ from another seat, argue it on cited evidence, not on authority of angle.\n3. Any change to your OWN row must be marked DRIFT, naming which seat moved you and the specific argument that did it. An unmarked change is a defect.\n4. The joint reconciled table must record, per row, which seats held which position BEFORE this exchange — so a row that became unanimous only here is visible as convergence, not as independent agreement.\n5. The residue list of unreconciled dissent may not be empty unless every seat's pre-crosstalk table already agreed on every row. Genuine disagreement is a valid output; manufactured consensus is not.\n\nHold your angle. You are not here to be agreeable — you are here to make the provenance case as strongly as it can be made and to concede only where the evidence actually beats it.\n\nOUTPUT: your verbatim prior table, then your engagement, then your contribution to the joint reconciled table and the residue list. Budget ~3000 tokens."
+            },
+            {
+              "agent_name": "Boehm, Barry",
+              "role": "explorer",
+              "model": "claude-fable-5",
+              "token_budget": 3000,
+              "angle": "the cost of the move binds",
+              "initial_prompt": "CROSSTALK ROUND. You previously returned a placement verdict table from the angle 'the cost of the move binds', then revised it against your reviewer. The other two adjudicators — one arguing that the declared written rule binds, one arguing that lineage binds — did the same, and their final tables are supplied to you as bound {path, sha256} inputs by the orchestrator alongside your own. Verify every hash before reading.\n\nANTI-COLLAPSE PROTOCOL — mandatory, and the orchestrator checks it mechanically against the persisted pre-crosstalk tables:\n1. Open by restating your own final pre-crosstalk verdict table VERBATIM, before responding to anything the others wrote.\n2. Then engage. For every row where you now differ from another seat, argue it on cited evidence, not on authority of angle.\n3. Any change to your OWN row must be marked DRIFT, naming which seat moved you and the specific argument that did it. An unmarked change is a defect.\n4. The joint reconciled table must record, per row, which seats held which position BEFORE this exchange — so a row that became unanimous only here is visible as convergence, not as independent agreement.\n5. The residue list of unreconciled dissent may not be empty unless every seat's pre-crosstalk table already agreed on every row. Genuine disagreement is a valid output; manufactured consensus is not.\n\nHold your angle. You are the only seat pricing the move, and the two other angles both bias toward action — if you fold, nobody prices it. Concede only where the evidence actually beats you.\n\nOUTPUT: your verbatim prior table, then your engagement, then your contribution to the joint reconciled table and the residue list. Budget ~3000 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "second-review",
+          "n": 2,
+          "anti_bias": "plan-failure mode: operational executability versus epistemic authority and residue",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Beck, Kent",
+              "role": "skeptic",
+              "model": "claude-opus-5",
+              "token_budget": 3500,
+              "angle": "executability — is the reconciled plan a runnable, reversible migration with exact src to dst pairs and every inbound reference enumerated",
+              "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing, execute no move.\n\nYou review the RECONCILED placement table produced by three adjudicators after crosstalk, plus their residue list of unreconciled dissent. Both are supplied as bound {path, sha256} inputs; verify hashes before reading. A second reviewer attacks the same table from a different lens — you will not see their work and should not try to.\n\nYOUR LENS — EXECUTABILITY, and nothing else. The question is not whether the plan is right; it is whether it can actually be RUN and UNDONE. Attack:\n- Is every move an exact src to dst pair, or is a destination vague, ambiguous, or a directory that does not exist?\n- Is every inbound reference enumerated? Grep the repo yourself for each moved path and report references the plan missed — relative links in markdown, README pointers, code imports, .gitignore entries, scripts, hardcoded paths in JSON or YAML.\n- Does anything in the plan collide with an existing path, or orphan a file the plan does not mention?\n- Is each step reversible, and does it preserve git history (git mv rather than delete-and-add)?\n- Are there ordering dependencies the plan does not state — a move that must precede another to avoid a dangling link?\n- Is there a check that would VERIFY each step succeeded? Name it. A step with no verification is not done, it is hoped.\n\nRun the searches yourself.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: the plan row, the exact defect, the search or check that exposed it, severity CRITICAL/MAJOR/MINOR, and the one-line fix.\n## Executable step list\nYour corrected ordered list of concrete commands the parent should run, with the verification for each.\n## What I attacked and found sound\nSo the parent knows the coverage.\nBudget ~3500 tokens."
+            },
+            {
+              "agent_name": "Brooks, Frederick P.",
+              "role": "skeptic",
+              "model": "claude-opus-5",
+              "token_budget": 3500,
+              "angle": "authority and residue — does the plan claim authority it lacks, or leave two homes for one thing",
+              "initial_prompt": "You are a read-only reviewer in the repo c:\\Users\\victo\\cyberalchemy-orchestrator. Modify nothing, spawn nothing, execute no move.\n\nYou review the RECONCILED placement table produced by three adjudicators after crosstalk, plus their residue list of unreconciled dissent. Both are supplied as bound {path, sha256} inputs; verify hashes before reading. A second reviewer attacks the same table from a different lens — you will not see their work and should not try to.\n\nYOUR LENS — AUTHORITY AND RESIDUE, and nothing else. Attack:\n- CLAIMED AUTHORITY. Does the plan cite a rule as licensing a move when the rule does not reach that far? Does it invent a convention and then obey it? Does it propose writing into a location whose ownership belongs to something else — vault/, the append-only ledger, a hook-governed file, a skill package? Does it self-promote a workflow preference into a repository rule?\n- RESIDUE. Does any step leave TWO homes for one thing — half a build record moved and half left, a directory emptied but not removed, a README that still points at the old location, an index entry describing a structure that no longer exists? A partial migration that cites a rule about keeping things together, while splitting them, is the specific failure you exist to catch.\n- CONCEPTUAL INTEGRITY. Does the plan leave the repo with a coherent, statable rule for where things go — one a future contributor could follow without reading this dispatch — or with a set of case-by-case exceptions that will erode?\n- THE RESIDUE LIST ITSELF. Is the recorded dissent genuine, or was disagreement smoothed away? A reconciled table with suspiciously total agreement is itself a finding.\n\nOUTPUT CONTRACT — markdown, exactly these sections:\n## Verdict\nFIX or PASS.\n## Findings\nNumbered. Per finding: the plan row, the exact overreach or residue, the evidence with path and line, severity CRITICAL/MAJOR/MINOR, and the one-line fix.\n## The rule this plan leaves behind\nState, in two sentences, the placement rule a future contributor would infer from the executed plan — and say whether it is one they could actually follow.\n## What I attacked and found sound\nSo the parent knows the coverage.\nBudget ~3500 tokens."
             }
           ]
         }
       ],
-      "connections": [],
+      "connections": [
+        {
+          "from": "subject-normative",
+          "to": "reviewer-normative",
+          "type": "zig-zag",
+          "loop_cap": 3
+        },
+        {
+          "from": "subject-lineage",
+          "to": "reviewer-lineage",
+          "type": "zig-zag",
+          "loop_cap": 3
+        },
+        {
+          "from": "subject-cost",
+          "to": "reviewer-cost",
+          "type": "zig-zag",
+          "loop_cap": 3
+        },
+        {
+          "from": "reviewer-normative",
+          "to": "crosstalk",
+          "type": "sequential"
+        },
+        {
+          "from": "reviewer-lineage",
+          "to": "crosstalk",
+          "type": "sequential"
+        },
+        {
+          "from": "reviewer-cost",
+          "to": "crosstalk",
+          "type": "sequential"
+        },
+        {
+          "from": "crosstalk",
+          "to": "second-review",
+          "type": "sequential"
+        }
+      ],
       "close": {
         "exit_reason": "resolved",
         "agents_spawned": {
-          "total": 2,
+          "total": 17,
           "tree": {
-            "explorer": 1,
-            "skeptic": 1,
-            "helpers": 0
+            "explorer": 3,
+            "skeptic": 5,
+            "helpers": 9
           },
-          "loops_used": 1
+          "loops_used": 2
         },
-        "feedback_prompts": [
-          "Before building any tag-distance/cluster table, MEASURE the false-negative rate of naive tag-overlap against real past check-tension angles — both poles named this as the decisive falsification test."
-        ]
+        "feedback_prompts": null
       },
-      "_score": 10.51
+      "_score": 98.9
     },
     {
-      "dispatch_id": "2026-07-20-hyp-orch-noise-delta-review",
+      "dispatch_id": "2026-07-29-short-version-pdf-pipeline-review",
       "dispatch_type": "review",
-      "created": "2026-07-21T00:34:06.370Z",
-      "goal": "Red-team the delta added to HYP-ORCH-NOISE (the CT-operationalization table row + the new Apostas registry of six bets) before it settles.",
-      "context": "After the costura-feasibility research operationalized CT via information geometry, the CT design-table row was rewritten to name the tight mappings and the open composition item, and a new '## Apostas registradas' section (BET-CT, BET-vN, BET-PERSONA, BET-TAG, BET-THALER, BET-FORK) was added. Two independent attackers hit only this delta: CT-substance/mathematical-tightness (Fritz) vs falsifiability/form (Popper). Findings feed the doc. Inline (no working_folder).",
-      "anti_bias_global": null,
-      "max_loops": 1,
-      "working_folder": null,
+      "created": "2026-07-29T05:43:50.908Z",
+      "goal": "Produce verified change requests that make the short-version PDFs far smaller and the pipeline that builds them safe to extend, without altering how the PDFs render.",
+      "context": "The folder plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/ builds essay PDFs via a 1071-line PowerShell string-surgery script that mutates an upstream HTML, an undocumented Chrome --print-to-pdf render whose command survives only as prose in variants/*/rationale.txt, and a Python stamper that rewrites the PDF with pypdf. Measured on disk: 67.9% of the 514,178-byte base PDF is page content streams stored with NO compression filter at all (one object is 129,743 raw bytes and zlib-compresses to 20,403); font subsets are 18.8%; images 8.5%. The owner froze the baseline as the CURRENT rendered bytes, so every accepted change must be provably pixel-identical to today's output. This is a review: it delivers change requests, not fixes.",
+      "anti_bias_global": "pressure to remove bytes and make the build reproducible elsewhere, against the duty to preserve today's exact rendering and the local correctness of the scripts that produce it",
+      "max_loops": 2,
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/review/pdf-pipeline-optimization/",
       "groups": [
         {
           "group_id": "attackers",
-          "n": 2,
-          "anti_bias": "attack-vector (CT-substance/mathematical-tightness vs falsifiability/form)",
-          "robot_talks": false,
+          "n": 4,
+          "anti_bias": "what counts as a legitimate change to a finished PDF pipeline: bytes removed / appearance preserved bit-for-bit / transform script made correct / build made reproducible off this machine",
+          "robot_talks": true,
           "agents": [
             {
-              "agent_name": "Fritz, Tobias",
+              "agent_name": "Rissanen, Jorma",
               "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1600,
-              "angle": "CT-substance — is the ~1:1 CT/information-geometry mapping tight and correct across the six bets, or forced (CT-imperialism)? does any bet treat a formalism artifact as a finding?",
-              "initial_prompt": "You are a red-team attacker (agent_name: Fritz, Tobias). Read vault/hypothesis/orquestracao-anti-ruido.md, focusing on (1) the 'Operacionalizacao CT (analogia ~1:1)' row in the 'Onde mora o design' table and (2) the whole '## Apostas registradas' section (all six BET-*). Read-only; do NOT modify any file. Attack from ONE lens only: CT-SUBSTANCE / mathematical tightness. Is the ~1:1 CT / information-geometry mapping genuinely tight, or forced (CT-imperialism)? Specifically: (a) does the identification 'F = the common anchored scale / MAP' actually earn the Amari-Pythagoras-under-Legendre-F reading of the (+) decomposition, or is it asserted? (b) is the sqrt-N -> regime-conditional-concentration claim (CLT/L2 vs Sanov/large-deviation) correctly stated? (c) is 'nudge -> morphism on the coupling-fiber of D(A^N)' a real construction or hand-waving? (d) across ALL six bets (not just BET-CT), does any treat a FORMALISM ARTIFACT as a finding, or rest on a loose/forced categorical mapping? (e) is BET-CT's 'sobreviveu via costura' genuine evidence or post-hoc rationalization? For EACH finding: quote the doc (the quotation is the evidence; no quote = no finding), a severity (CRITICAL = the mapping is wrong/broken, MAJOR = loose or unearned, MINOR = imprecise), and a one-line fix. Claim <= proof: drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, state what you attacked and why it survived. Budget ~1600 tokens."
+              "model": "claude-sonnet-5",
+              "token_budget": 2500,
+              "angle": "byte economy — every byte that can be removed without changing a rendered pixel is a defect until removed",
+              "initial_prompt": "You are an attacker in a read-only review dispatch. Attack lens: BYTE ECONOMY. Never modify any file under review.\n\nCORPUS (read all of it), rooted at plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/ :\n  build-short-polished.ps1, stamp-cyberalchemy.py, cyberalchemy-mark.svg,\n  work-context-system-view-short-polished-diagrams.html, work-context-system-view-short-polished-diagrams-revision.html,\n  variants/01-revision-ledger/*, variants/02-authority-containment/*, variants/03-projection-family/*,\n  and the 5 .pdf outputs as evidence.\n\nBASELINE (frozen by the owner): the CURRENT rendered appearance of the PDFs. A change is admissible only if you can argue it is pixel-identical.\n\nSTARTING MEASUREMENT already taken by the parent, which you should verify rather than trust: for work-context-system-view-short-polished-diagrams.pdf (514,178 bytes, 4 pages), on-disk byte spans via xref offsets are content streams 349,230 (67.9%), font subsets 96,846 (18.8%), images 43,762 (8.5%), form xobjects 8,567, non-stream dicts 15,758. The page content streams carry NO /Filter; object 127 is 129,743 raw bytes of plain-text PDF operators and zlib.compress gives 20,403. The mark XObjects are already shared across pages (objs 59/61/63), so deduplication is NOT a lever.\n\nATTACK: find every removable byte and rank by size. Consider at least: whether Flate-compressing the content streams is lossless here and what actually left them uncompressed (leading hypothesis: the pypdf PdfWriter pass in the stamper, unverified); whether the 4x raster of a 1.1 KB SVG is needed when the mark could be vector; font subset overlap across the embedded faces; whether CSS in build-short-polished.ps1 generates expensive operator sequences (the linear-gradient corner marks in the @page blocks are a suspect); dead CSS that costs source bytes but no output bytes.\n\nRETURN: findings only. Each finding = file + a QUOTATION from the artifact + estimated bytes saved (measure, do not guess) + whether pixel-identity holds and how you know + a one-line proposed fix. Order by bytes saved. If you find nothing on some sub-target, state what you attacked and why it survived. ~2500 tokens."
             },
             {
-              "agent_name": "Popper, Karl",
+              "agent_name": "Nyquist, Harry",
               "role": "explorer",
-              "model": "claude-opus-4-8",
-              "token_budget": 1600,
-              "angle": "falsifiability/form — are the registered bets genuinely falsifiable, non-duplicative with collapse-tests, and honest about 'Carrega'/Status? is BET-CT unfalsifiable-in-practice?",
-              "initial_prompt": "You are a red-team attacker (agent_name: Popper, Karl). Read vault/hypothesis/orquestracao-anti-ruido.md, focusing on (1) the 'Operacionalizacao CT (analogia ~1:1)' table row and (2) the whole '## Apostas registradas' section (all six BET-*). Read-only; do NOT modify any file. Attack from ONE lens only: FALSIFIABILITY / FORM. For each registered bet: (a) is the Falseador a REAL observable that could actually come out false, or a disguised restatement of the Aposta? (b) is BET-CT ('for each construct a ~1:1 tool exists; false if it collapses to identity or must touch content') unfalsifiable-in-practice — can you ever declare it false, or does the 'seletiva por construcao / nao nos rendemos a CT' retreat clause make it immune to refutation? (c) does each bet's 'Carrega' correctly state what depends on it, or over/understate the blast radius? (d) do the bets DUPLICATE the collapse-tests (single-source-of-truth violation), or are the cross-references ('aponta o collapse-test quando ja existe') accurate? (e) is any bet's Status ('sobreviveu' / 'em-teste') claimed beyond its proof? For EACH finding: quote the doc (no quote = no finding), a severity (CRITICAL = unfalsifiable load-bearing bet or single-source violation, MAJOR = weak/duplicated falseador or mis-stated Carrega, MINOR = wording), and a one-line fix. Claim <= proof: drop what you cannot ground. You run INDEPENDENTLY: do not reference other attackers. If you find nothing, state what you attacked and why it survived. Budget ~1600 tokens."
+              "model": "claude-opus-5",
+              "token_budget": 2500,
+              "angle": "fidelity — 'exactly the same' is a bit-level claim about rendering, and most proposed savings quietly break it",
+              "initial_prompt": "You are an attacker in a read-only review dispatch. Attack lens: FIDELITY AND REGRESSION. Never modify any file under review.\n\nCORPUS (read all of it), rooted at plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/ :\n  build-short-polished.ps1, stamp-cyberalchemy.py, cyberalchemy-mark.svg,\n  work-context-system-view-short-polished-diagrams.html, work-context-system-view-short-polished-diagrams-revision.html,\n  variants/01-revision-ledger/*, variants/02-authority-containment/*, variants/03-projection-family/*,\n  and the 5 .pdf outputs as evidence.\n\nBASELINE (frozen by the owner): the CURRENT rendered appearance, NOT the intended design. Your job is to defend that baseline against optimization.\n\nKNOWN DIVERGENCE, already measured by the parent: work-context-system-view-short-polished-diagrams-revision.html contains ZERO @font-face rules, and all three variant HTMLs likewise; the base HTML has 6. Consequently the base PDF embeds PalatinoLinotype-Bold + Constantia while the revision PDF embeds Georgia/Georgia-Bold/Georgia-Italic. So the artifacts that are supposed to be 'the same' already are not.\n\nATTACK: establish what 'exactly the same' can even mean for this corpus, and attack every plausible optimization against it. Specifically: which of these are provably lossless (Flate stream re-encoding) versus merely probably-invisible (re-rasterizing the mark, vectorizing the SVG, font re-subsetting, downsampling)? The stamper rasterizes the SVG at scale 4.0 in render_mark() — is that a sampling choice with a visible consequence at print resolution? Is there a reproducible way to prove pixel-identity at all given the render is Chrome/Skia m150 and no pinned command exists? Also: which artifacts currently in the folder are stale copies of each other and would silently diverge further under any edit?\n\nRETURN: findings only. Each finding = file + a QUOTATION from the artifact + severity + a one-line proposed fix. State explicitly, as a finding, what verification procedure would have to exist before any byte-reduction change could be accepted. ~2500 tokens."
+            },
+            {
+              "agent_name": "Pohl, Ira",
+              "role": "explorer",
+              "model": "claude-sonnet-5",
+              "token_budget": 2500,
+              "angle": "mechanics — the transform is string surgery that fails silently, and the code, not the output, is the defect",
+              "initial_prompt": "You are an attacker in a read-only review dispatch. Attack lens: MECHANICS AND CORRECTNESS. Never modify any file under review.\n\nCORPUS (read all of it), rooted at plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/ :\n  build-short-polished.ps1 (1071 lines), stamp-cyberalchemy.py (204 lines), cyberalchemy-mark.svg,\n  the two top-level .html files, variants/*/*.html and variants/*/rationale.txt,\n  and the 5 .pdf outputs as evidence.\n\nBASELINE (frozen by the owner): the current rendered appearance. Your lens is not about bytes in the PDF; it is about whether the code that produces them is correct and safe to change.\n\nKNOWN STARTING POINTS from the parent, verify rather than trust: build-short-polished.ps1 reads an UPSTREAM file (../work-context-system-view-polished-diagrams.html), appends a ~720-line CSS heredoc before '</style>', then edits the document by literal multi-line String.Replace() plus IndexOf/Insert/Substring arithmetic (see lines ~732, 742, 822, 854, 856-864, 879-880, 1016, 1068). PowerShell's .Replace() on a literal that is no longer present is a SILENT no-op returning the original string, and the script sets $ErrorActionPreference='Stop' which does not catch that. $root is hardcoded to an absolute C:\\Users\\victo path.\n\nATTACK: enumerate every way this pipeline can produce a wrong document while exiting 0. Cover: unguarded Replace/IndexOf results, regex assumptions about the upstream HTML, the two truncation points that rebuild the tail with a literal '</main></body></html>', encoding handling, what happens when the upstream essay is edited, whether the -revision.html and variants/ files are outputs of this script or hand-forked copies that the script can no longer regenerate, and whether stamp-cyberalchemy.py is idempotent when run twice. Also assess: what is the minimum change that makes failures loud, and what would a genuinely extensible source-of-truth look like for 5 documents that currently share no stylesheet.\n\nRETURN: findings only. Each finding = file + a QUOTATION from the code + severity (CRITICAL/MAJOR/MINOR) + a one-line proposed fix. ~2500 tokens."
+            },
+            {
+              "agent_name": "Ashby, W. Ross",
+              "role": "explorer",
+              "model": "claude-opus-5",
+              "token_budget": 2500,
+              "angle": "operability — nothing here can be rebuilt by anyone else, so no optimization can be verified or maintained",
+              "initial_prompt": "You are an attacker in a read-only review dispatch. Attack lens: OPERABILITY AND PORTABILITY. Never modify any file under review.\n\nCORPUS (read all of it), rooted at plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/ :\n  build-short-polished.ps1, stamp-cyberalchemy.py, cyberalchemy-mark.svg,\n  the two top-level .html files, variants/*/*.html and especially variants/*/rationale.txt,\n  and the 5 .pdf outputs as evidence.\n\nBASELINE (frozen by the owner): the current rendered appearance. Note the tension this creates for you: preserving today's bytes may require exactly the machine-specific dependencies you want to remove.\n\nKNOWN STARTING POINTS from the parent, verify rather than trust: no committed script renders a PDF. The only record of the render step is prose inside variants/*/rationale.txt, e.g. a chrome.exe --headless --print-to-pdf invocation with absolute 'C:\\Program Files\\Google\\Chrome' and 'C:\\Users\\victo\\...\\tmp\\pdfs\\...' paths, and the two variants disagree on --headless vs --headless=new. PDF metadata records the producer as Skia/PDF m150. build-short-polished.ps1 hardcodes $root to an absolute user path. The CSS @font-face rules load fonts by file:///C:/Windows/Fonts/pala.ttf etc. The repository has a standing portability principle: repo-local, path-relative via $CLAUDE_PROJECT_DIR, opt-in, no machine-specific absolute paths.\n\nATTACK: determine whether a second operator on a second machine can reproduce these exact PDFs, and what breaks first. Cover: the missing render script, Chrome/Skia version pinning as a determinism dependency, Windows-only font paths and what the output becomes without them, python dependencies of the stamper (fitz, PIL, pypdf, reportlab) with no manifest, tmp paths outside the repo, and whether the whole build is even ordered anywhere as a runnable sequence. Then attack the consequence: if the build is not reproducible, how could any byte-reduction change ever be verified as pixel-identical?\n\nRETURN: findings only. Each finding = file + a QUOTATION from the artifact + severity + a one-line proposed fix. ~2500 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "synthesizer",
+          "n": null,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Shannon, Claude",
+              "role": "writer",
+              "model": "claude-opus-5",
+              "token_budget": 4000,
+              "angle": null,
+              "initial_prompt": "You are the synthesizer of a review dispatch on the short-version PDF pipeline. You receive the four attackers' INITIAL positions and their FINAL positions after robot_talks, in separate slots; compare them and note in the Coverage section whether the group converged prematurely.\n\nYour output is exactly one document, review.md, written to plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/review/pdf-pipeline-optimization/review.md . Never write attacks.md or findings.md.\n\nSHAPE:\n# Review — short-version PDF pipeline\n## Coverage  (table: attacker | lens | findings raised | zero-findings defence; plus a collapse note and a lens-coverage line)\n## <one section per artifact>  (table: # | file | evidence QUOTED from the artifact | severity | proposed fix), each ending with **Verdict:** KEEP or FIX\n## Change requests  (all surviving findings ordered by severity, CRITICAL then MAJOR then MINOR)\n\nRULES: claim <= proof. A finding whose only evidence is 'an attacker said so' is not a finding — cite the artifact, quoted. A finding a verifier refutes is DROPPED, never softened. FIX iff at least one CRITICAL or MAJOR survives. Dedupe across lenses: the same defect found by two attackers is one finding. Severity: CRITICAL = corrupts a record or silently produces a wrong document; MAJOR = functional gap, drift risk, load-bearing omission; MINOR = wording, stale data, fuzzy pointer.\n\nThe owner froze the baseline as the CURRENT rendered appearance, so a proposed fix that changes how the PDFs look must be reported as a finding about the baseline, not smuggled in as an optimization. You will exchange with two verifiers in a zig-zag; revise on each refutation and stop as soon as a verifier turn raises no objection. ~4000 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "verifiers",
+          "n": 2,
+          "anti_bias": "mode of refutation: re-run the measurement and reject what does not reproduce, versus challenge the design rationale and reject what fixes a symptom instead of the leverage point",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Meadows, Donella H.",
+              "role": "skeptic",
+              "model": "claude-opus-5",
+              "token_budget": 2500,
+              "angle": "empirical refutation — re-runs every measurement and drops any finding whose number does not reproduce",
+              "initial_prompt": "You are a verifier in a review dispatch on the short-version PDF pipeline. You did not attack; you refute.\n\nFor each finding the synthesizer sends you, RE-RUN THE ACTUAL CHECK against the literal artifact. Do not accept a claimed byte count, a claimed compression ratio, or a claimed silent-failure path on assertion — measure it yourself (read the PDFs with python/pypdf, read the exact lines of build-short-polished.ps1 and stamp-cyberalchemy.py, count the bytes). Corpus root: plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/ . Read-only; never modify the artifacts.\n\nRefute a finding when: the quotation does not appear in the named file, the saving does not reproduce within a stated tolerance, the claimed failure mode cannot actually occur given the surrounding code, or the claimed pixel-identity is asserted rather than shown. Also refute over-reach: a correct observation carrying a fix larger than the evidence supports must be cut back to what the evidence supports.\n\nThe owner froze the baseline as the CURRENT rendered appearance; treat any fix that would change rendering as unsupported unless the finding says so explicitly. Return per finding: UPHELD (with your reproduced number) or REFUTED (with what you ran and what you got). ~2500 tokens."
+            },
+            {
+              "agent_name": "Rittel, Horst",
+              "role": "skeptic",
+              "model": "claude-opus-5",
+              "token_budget": 2500,
+              "angle": "rationale refutation — drops findings that patch a symptom, tighten the wrong thing, or would make the pipeline harder to change",
+              "initial_prompt": "You are a verifier in a review dispatch on the short-version PDF pipeline. You did not attack; you refute — on rationale, not on measurement (a co-verifier owns re-measurement).\n\nCorpus root: plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/ . Read-only; never modify the artifacts.\n\nFor each finding the synthesizer sends you, attack the proposed fix. Refute when: the fix treats a symptom of a defect that lives upstream (e.g. hardening a String.Replace call in a script whose whole transform strategy is the defect); the fix trades a small win for a larger loss in extensibility; two findings prescribe fixes that conflict; the fix would add a dependency or a build stage whose cost exceeds the bytes it saves; or the 'defect' is a deliberate choice the artifact justifies somewhere in the corpus (check variants/*/rationale.txt and the review/ folder before calling something unjustified).\n\nSecond duty: the owner's stated goal includes 'the best code to extend and change things'. Judge whether the surviving change-request set actually delivers that, or whether it only makes the current bad shape safer. If the set is symptom-level, say so as a refutation of the set, not of an individual finding.\n\nReturn per finding: UPHELD, REFUTED (with the reason), or NARROWED (with the reduced claim the evidence supports). ~2500 tokens."
+            }
+          ]
+        },
+        {
+          "group_id": "coverage",
+          "n": null,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Brandenburg, Martin",
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1200,
+              "angle": null,
+              "initial_prompt": "You are the coverage auditor of a review dispatch on the short-version PDF pipeline. You audit coverage only; you do not add findings.\n\nCheck and report:\n1. Was every artifact in the frozen corpus attacked from every one of the four declared lenses (byte economy, fidelity, mechanics, operability)? Corpus: build-short-polished.ps1, stamp-cyberalchemy.py, cyberalchemy-mark.svg, work-context-system-view-short-polished-diagrams.html, work-context-system-view-short-polished-diagrams-revision.html, variants/01-revision-ledger/*, variants/02-authority-containment/*, variants/03-projection-family/*, and the 5 PDFs. Name any target-lens cell that is empty.\n2. Did any refuted finding survive into the Change requests section? Name it.\n3. Does every surviving finding carry a QUOTATION from the artifact it indicts? Name any that does not.\n4. Zero-findings flag: did any attacker return zero findings without stating what it attacked and why the artifact survived? All four returning zero is a red flag — fire it as a failure to attack, not as cleanliness.\n5. Collapse note (P14): comparing the attackers' initial and final positions, did the robot_talks group converge prematurely — did any attacker abandon its lens rather than argue it?\n\nAuthor the Coverage section of review.md in the shape given to the synthesizer. ~1200 tokens."
             }
           ]
         }
       ],
-      "connections": [],
+      "connections": [
+        {
+          "from": "attackers",
+          "to": "synthesizer",
+          "type": "sequential"
+        },
+        {
+          "from": "synthesizer",
+          "to": "verifiers",
+          "type": "zig-zag",
+          "loop_cap": 3
+        },
+        {
+          "from": "verifiers",
+          "to": "coverage",
+          "type": "sequential"
+        }
+      ],
       "close": {
         "exit_reason": "resolved",
         "agents_spawned": {
-          "total": 2,
+          "total": 8,
           "tree": {
-            "explorer": 2,
-            "skeptic": 0,
-            "writer": 0,
-            "auditor": 0,
+            "explorer": 4,
+            "writer": 1,
+            "skeptic": 2,
+            "auditor": 1,
             "helpers": 0
           },
           "loops_used": 1
         },
         "feedback_prompts": null
       },
-      "_score": 7.67
+      "_score": 58.55
+    },
+    {
+      "dispatch_id": "2026-07-28-schema-of-inquiry-first-essays",
+      "dispatch_type": "others",
+      "created": "2026-07-28T06:43:06.815Z",
+      "goal": "Create the first governed views, layered x-ray, and ten short essay contributions for the new private schema-of-inquiry repository in deliberately different explanatory styles.",
+      "context": "The repository explores how lenses separate or identify objects, how bridges transport constraints, and how objects become instances of larger schemas. Existing Lean evidence does not prove the thesis, so every artifact must separate proof, owned precedent, hypothesis, and intuition. Outputs land only in C:/Users/victo/schema-of-inquiry and must follow its AGENTS.md.",
+      "anti_bias_global": "formal compression versus historical change versus operational explanation",
+      "max_loops": 1,
+      "working_folder": null,
+      "groups": [
+        {
+          "group_id": "ontology",
+          "n": null,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Peirce, Charles Sanders",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 3500,
+              "angle": null,
+              "initial_prompt": "Read C:/Users/victo/schema-of-inquiry/AGENTS.md and context/idea-seed.md, then follow the ontology-view skill. Write views/ontology-view.md with one canonical home per term, typed relations, axes, conflicts, provenance, and deferrals. Also write essays/01-the-object-we-do-not-yet-know.md, a short concrete-first essay about scientific objects being known through revisable lenses. Mark inference honestly. Do not edit other files."
+            }
+          ]
+        },
+        {
+          "group_id": "system",
+          "n": null,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Alexander, Christopher",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 4200,
+              "angle": null,
+              "initial_prompt": "Read AGENTS.md, context/idea-seed.md, and views/ontology-view.md in C:/Users/victo/schema-of-inquiry, then follow the system-view skill. Write views/system-view.md: layered shape, named but undecided stances, alternative framings per major section, term deferrals, and simple shape diagrams. Also write essays/02-the-bridge-reveals-the-parts.md, a short structural essay. Do not redefine ontology terms or decide stances."
+            }
+          ]
+        },
+        {
+          "group_id": "engineer",
+          "n": null,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Mac Lane, Saunders",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 4500,
+              "angle": null,
+              "initial_prompt": "Read AGENTS.md, context/idea-seed.md, views/ontology-view.md, and views/system-view.md in C:/Users/victo/schema-of-inquiry, then follow the engineer-view skill. Write views/engineer-view.md with exactly one verdict per system-view stance, RESOLVED/OPEN/CRITICAL status, authority, contracts, mechanics, and a cross-reference map. Also write essays/03-what-lean-would-have-to-prove.md, a short claim-disciplined technical essay. Do not claim the new thesis is proved."
+            }
+          ]
+        },
+        {
+          "group_id": "xray",
+          "n": null,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Engelbart, Douglas",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 5500,
+              "angle": null,
+              "initial_prompt": "Read the repository AGENTS.md, idea seed, all three views, and the x-ray skill. Inspect the visual language of C:/Users/victo/cyberalchemy-orchestrator/plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/work-context-system-view-polished-diagrams.pdf only as a design reference. Write x-ray/schema-of-inquiry.html as a self-contained L0 semantic HTML/CSS/inline-SVG explanation with selectable or traceable layers for lens, separation, identification, bridge, schema, instance, and residue. Include evidence/inference labels and validation block. Also write essays/04-a-map-that-changes-the-territory.md. No remote dependencies."
+            }
+          ]
+        },
+        {
+          "group_id": "essays_formal_history",
+          "n": 3,
+          "anti_bias": "methodology + temporal-prior (declared composite)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Lawvere, F. William",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 2200,
+              "angle": "formal intuition with explicit category-theory boundary",
+              "initial_prompt": "Read AGENTS.md, the idea seed, three views, and x-ray/schema-of-inquiry.html. Write essays/05-relative-yoneda.md: a short Intuition/Math/Boundary essay explaining relative relational completeness without claiming science is Yoneda. Use one compact diagram or equation."
+            },
+            {
+              "agent_name": "Kuhn, Thomas",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 2200,
+              "angle": "historical change in lenses and scientific equivalence",
+              "initial_prompt": "Read AGENTS.md, the idea seed, three views, and x-ray/schema-of-inquiry.html. Write essays/06-when-the-lenses-change.md: a short historical-process essay about new lenses changing what counts as the same object. Avoid generic philosophy and mark the model as hypothesis."
+            },
+            {
+              "agent_name": "Nonaka, Ikujiro",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 2200,
+              "angle": "knowledge creation through schema-instance consolidation",
+              "initial_prompt": "Read AGENTS.md, the idea seed, three views, and x-ray/schema-of-inquiry.html. Write essays/07-discovering-what-is-an-instance-of-what.md: a short concrete-first essay about explanatory compression, schema, and retained residue. Plain language; no guru tone."
+            }
+          ]
+        },
+        {
+          "group_id": "essays_adversarial_systems",
+          "n": 3,
+          "anti_bias": "attack-vector + methodology (declared composite)",
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Popper, Karl",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 2200,
+              "angle": "vacuity attack against the grand schema",
+              "initial_prompt": "Read AGENTS.md, the idea seed, three views, x-ray/schema-of-inquiry.html, and the earlier essays. Write essays/08-the-schema-that-explains-everything-explains-nothing.md: a short adversarial essay naming the exact tests a large schema must survive."
+            },
+            {
+              "agent_name": "Lakatos, Imre",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 2200,
+              "angle": "research-programme test of progressive versus protective reformulation",
+              "initial_prompt": "Read AGENTS.md, the idea seed, three views, x-ray/schema-of-inquiry.html, and the earlier essays. Write essays/09-a-progressive-schema.md: distinguish a schema that predicts/transports from one protected by endless reinterpretation."
+            },
+            {
+              "agent_name": "Meadows, Donella H.",
+              "role": "writer",
+              "model": "inherited-parent",
+              "token_budget": 2200,
+              "angle": "systems account of parts, wholes, bridges, and residual boundaries",
+              "initial_prompt": "Read AGENTS.md, the idea seed, three views, x-ray/schema-of-inquiry.html, and the earlier essays. Write essays/10-the-whole-is-in-the-bridges.md: a short systems essay showing how bridges constitute parts while residues prevent total collapse."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "ontology",
+          "to": "system",
+          "type": "sequential"
+        },
+        {
+          "from": "system",
+          "to": "engineer",
+          "type": "sequential"
+        },
+        {
+          "from": "engineer",
+          "to": "xray",
+          "type": "sequential"
+        },
+        {
+          "from": "xray",
+          "to": "essays_formal_history",
+          "type": "sequential"
+        },
+        {
+          "from": "essays_formal_history",
+          "to": "essays_adversarial_systems",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 10,
+          "tree": {
+            "writer": 10,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": null
+      },
+      "_score": 56.92
+    },
+    {
+      "dispatch_id": "2026-07-31-dispatch-receipt-hygiene",
+      "dispatch_type": "others",
+      "created": "2026-07-31T18:42:51.521Z",
+      "goal": "Make dispatch binding receipts readable from the canonical journal, delete the redundant receipt JSONs left in a working folder, and repair the documented behavioral-backup drift so future dispatches do not leave loose receipts.",
+      "context": "The 2026-07-31-work-context-diagram-drawings dispatch left 15 JSON files in its working folder because the Codex host did not emit PreToolUse and the parent called the orchestration bridge by hand, saving stdout as files. An audit proved 13 of the 15 are byte-level redundant with the canonical stores (artifacts.body, command_receipts.result_receipt_json, and the YAML ledger row). The two proposal files are not stored anywhere. The show-orchestration-log CLI cannot render host_workflow_turn_bindings, so deleting the binding receipts would make them SQL-only. Each lane is a worker followed by an independent reviewer.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": "plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch",
+      "groups": [
+        {
+          "group_id": "cli-coder",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Dijkstra, Edsger W.",
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 2000,
+              "angle": null,
+              "initial_prompt": "Repo: c:\\Users\\victo\\cyberalchemy-orchestrator (Windows; Bash tool available). Responda em português.\n\nOBJETIVO\nEstender o comando `show-orchestration-log` para que ele inclua os `host_workflow_turn_bindings` do dispatch. Hoje ele cobre apenas o agregado `aci.orchestration-dispatch:*`, e por isso os recibos de binding por seat só são recuperáveis por SQL direto.\n\nARQUIVOS\n- `implementations/server/runtime/cli.py` — o subcomando está registrado por volta da linha 87 e despachado por volta da linha 143.\n- `implementations/server/runtime/service.py` — `get_orchestration_dispatch_log` está por volta da linha 1523. É aqui que a mudança pertence.\n- A tabela é `host_workflow_turn_bindings` (schema em `implementations/server/runtime/migrations/009_host_workflow_binding.sql`). Colunas relevantes: binding_id, dispatch_id, session_id, group_id, seat_index, turn_ordinal, attempt_id, host, operation_kind, workflow_manifest_artifact_id, workflow_manifest_hash, source_artifact_ids_json, state, bound_event_id, terminal_event_id, bound_at, terminal_at.\n\nO QUE FAZER\nAcrescentar ao dicionário devolvido por `get_orchestration_dispatch_log` uma chave nova `host_workflow_turn_bindings`: lista dos bindings daquele dispatch, ordenada por `bound_at`, cada um com os campos acima. Para cada binding inclua também o recibo de comando correspondente (`command_receipts.result_receipt_json`) quando existir, para que a saída reproduza o conteúdo dos antigos arquivos `binding-receipt-*.json`.\n\nRESTRIÇÕES\n- Siga o estilo existente do arquivo: mesma densidade de comentários, mesmas convenções de nomes, mesmo tratamento de erro. Não introduza dependências novas.\n- Não altere o schema do banco, não crie migrations, não escreva no banco. A leitura é read-only.\n- Não altere a assinatura nem o comportamento existente do comando — apenas acrescente a chave nova.\n- Não mexa em nenhum arquivo fora de `implementations/server/runtime/`.\n\nVERIFICAÇÃO OBRIGATÓRIA\nRode o comando de verdade e confirme que traz os 12 bindings:\n```\npython -m implementations.server.runtime.cli show-orchestration-log --dispatch-id 2026-07-31-work-context-diagram-drawings --database telemetry/runtime/local-pilot/aci-apt-stage-c.sqlite3 --ledger telemetry/agents/subagents-dispatch.yaml --repo-root .\n```\nSe houver testes em `implementations/tests/runtime/` que cubram esse caminho, rode-os.\n\nRETORNE: o diff aplicado, a confirmação de que os 12 bindings aparecem, o resultado dos testes que rodou, e qualquer risco residual. Não use rede. Não lance outro agente."
+            }
+          ]
+        },
+        {
+          "group_id": "cli-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Hoare, C. A. R.",
+              "role": "auditor",
+              "model": "claude-opus-5",
+              "token_budget": 1800,
+              "angle": null,
+              "initial_prompt": "Repo: c:\\Users\\victo\\cyberalchemy-orchestrator (Windows; Bash tool available). Responda em português.\n\nOBJETIVO\nAuditar de forma independente a alteração feita em `implementations/server/runtime/service.py` (função `get_orchestration_dispatch_log`, por volta da linha 1523) e possivelmente em `implementations/server/runtime/cli.py`, que passou a incluir os `host_workflow_turn_bindings` na saída do comando `show-orchestration-log`.\n\nO CRITÉRIO QUE IMPORTA\nA razão da mudança é permitir que 8 arquivos `binding-receipt-*.json` sejam DELETADOS do disco sem perder capacidade de leitura. Portanto o teste decisivo é: **a saída do comando reproduz o conteúdo daqueles arquivos?**\n\nCompare campo a campo a saída do comando contra estes arquivos ainda existentes em `plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/`:\n- `binding-receipt-pdf-auditor.json`, `binding-receipt-pdf-assembler.json`, `binding-receipt-topology-reviewer.json`, `binding-receipt-continuity-reviewer.json`, `binding-receipt-divergence-reviewer.json`, `binding-receipt-traceability-reviewer.json`, `binding-receipt-transformation-reviewer.json`\n- `binding-receipts-designers.json` (contém 5 recibos)\n\nSão 12 recibos no total. Diga explicitamente quantos são integralmente reproduzíveis pela saída do comando e quais campos, se algum, se perdem.\n\nTAMBÉM VERIFIQUE\n- O comando continua funcionando para um dispatch SEM bindings (ex.: `2026-07-31-auto-claude-agent-ac7f843d33f22826`) — não pode quebrar nem devolver erro.\n- Nenhuma escrita no banco foi introduzida; o caminho continua read-only.\n- Nenhum arquivo fora de `implementations/server/runtime/` foi tocado.\n- O código segue o estilo do arquivo e não adicionou dependência nova.\n\nRode o comando você mesmo; não confie no relato do autor.\n\nRETORNE: veredito `ACCEPT` ou `REVISE`. Se `REVISE`, liste cada defeito com evidência concreta (comando rodado e saída) e a correção exata. Não corrija você mesmo. Não use rede. Não lance outro agente."
+            }
+          ]
+        },
+        {
+          "group_id": "doc-writer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Parnas, David",
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1600,
+              "angle": null,
+              "initial_prompt": "Repo: c:\\Users\\victo\\cyberalchemy-orchestrator (Windows; Bash tool available). Responda em português.\n\nOBJETIVO\nReparar um drift documentado. O arquivo `docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md`, na linha 47, DECLARA que `CLAUDE.md` e `AGENTS.md` são o \"Behavioral backup\" do wrapper obrigatório de host. Mas hoje nenhum dos dois contém uma única palavra sobre hook, bridge ou envelope de binding. O backup comportamental que deveria existir foi apagado.\n\nLEIA PRIMEIRO (só o necessário)\n- `docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md` — inteiro, é curto. Ele é a autoridade sobre o que essa cláusula deve dizer.\n- `implementations/server/runtime/host_dispatch_hook.py` — só o suficiente para entender os dois modos: linha 41 define `WORKFLOW_BINDING_MARKER = \"ACI-WORKFLOW-BINDING-V1:\"`; sem esse marcador como primeira linha do prompt do seat, o hook cai em modo de compatibilidade e cria um dispatch avulso `auto-<host>-agent-<hash>` em vez de um seat do dispatch pai.\n- `CLAUDE.md` e `AGENTS.md` na raiz — para casar tom e estrutura.\n\nO QUE ESCREVER\nAcrescente a MESMA cláusula curta a `CLAUDE.md` e a `AGENTS.md`, cobrindo exatamente três regras:\n1. Todo prompt de seat de um dispatch governado deve começar com a linha `ACI-WORKFLOW-BINDING-V1:<base64>`, senão o launch vira um dispatch órfão em vez de um seat.\n2. Nunca persistir stdout do orchestration bridge (recibos de open/close/binding) na working_folder do dispatch. Esses recibos já são gravados no journal; a cópia em arquivo é redundante e vira lixo.\n3. Se o hook do host não disparar, o fallback é chamar o bridge diretamente E registrar a lacuna de operação no close record — não deixar os arquivos para trás.\n\nRESTRIÇÕES DURAS\n- Seja BREVE. Alvo: no máximo 8 a 12 linhas por arquivo. Estes arquivos são carregados em todo contexto; cada linha custa. Prolixidade aqui é um defeito, não zelo.\n- Case o tom e a formatação de cada arquivo (eles diferem entre si — respeite cada um).\n- Não reescreva nem reorganize nada que já existe nesses arquivos. Só acrescente.\n- Não toque em nenhum outro arquivo. Em especial NÃO edite `mandatory-host-wrapper.md`.\n- Escreva em inglês se o arquivo alvo estiver em inglês; case o idioma de cada arquivo.\n\nRETORNE: o diff exato de cada um dos dois arquivos, a contagem de linhas acrescentadas, e a citação da linha de `mandatory-host-wrapper.md` que autoriza a cláusula. Não use rede. Não lance outro agente."
+            }
+          ]
+        },
+        {
+          "group_id": "doc-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Strunk, William",
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1400,
+              "angle": null,
+              "initial_prompt": "Repo: c:\\Users\\victo\\cyberalchemy-orchestrator (Windows; Bash tool available). Responda em português.\n\nOBJETIVO\nAuditar a cláusula que acabou de ser acrescentada a `CLAUDE.md` e `AGENTS.md` na raiz do repositório.\n\nCONTEXTO\nA cláusula repara um drift: `docs/features/agent-provenance-telemetry/integration/stage-f/mandatory-host-wrapper.md:47` declara esses dois arquivos como \"Behavioral backup\" do wrapper obrigatório de host, mas eles não continham nada sobre isso. A cláusula deve cobrir três regras: (1) prompt de seat começa com `ACI-WORKFLOW-BINDING-V1:`; (2) nunca persistir stdout do bridge na working_folder; (3) se o hook não disparar, chamar o bridge e registrar a lacuna no close record.\n\nTESTES QUE VOCÊ DEVE APLICAR\n1. FIDELIDADE: a cláusula afirma algo que `mandatory-host-wrapper.md` e `host_dispatch_hook.py` NÃO sustentam? Verifique cada afirmação contra a fonte. Invenção é o defeito mais grave aqui.\n2. CUSTO: estes arquivos entram em todo contexto de todo agente. Conte as linhas acrescentadas em cada um. Mais de 12 linhas por arquivo é defeito. Aponte qualquer frase que possa ser cortada sem perder a regra.\n3. ACIONABILIDADE: um agente pai lendo só isso saberia o que fazer diferente? Se a cláusula é verdadeira mas vaga demais para mudar comportamento, é defeito.\n4. NÃO-REGRESSÃO: confirme via `git diff` que nada preexistente nesses dois arquivos foi reescrito, reordenado ou removido, e que nenhum outro arquivo foi tocado.\n5. CONSISTÊNCIA: as duas cópias dizem a mesma coisa? Divergência entre `CLAUDE.md` e `AGENTS.md` é exatamente o drift que estamos reparando.\n\nRETORNE: veredito `ACCEPT` ou `REVISE`. Se `REVISE`, cada defeito com a citação exata e a redação substituta proposta. Não corrija você mesmo. Não use rede. Não lance outro agente."
+            }
+          ]
+        },
+        {
+          "group_id": "hygiene-worker",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Torvalds, Linus",
+              "role": "writer",
+              "model": "claude-sonnet-5",
+              "token_budget": 1800,
+              "angle": null,
+              "initial_prompt": "Repo: c:\\Users\\victo\\cyberalchemy-orchestrator (Windows; Bash tool available). Responda em português.\n\nOBJETIVO\nVersionar o que é durável e deletar os recibos redundantes de um dispatch já encerrado.\n\nPASTA ALVO\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/` (hoje inteiramente untracked no git)\n\nPASSO 1 — IGNORAR OS RENDERS\nA pasta tem 2.7 MB, dos quais 2.4 MB são PNGs de verificação em `validation/`, `pdf-renders/` e `audit-renders/`. Eles são reproduzíveis a partir dos SVGs e sua integridade já está atestada por hash no journal. Acrescente ao `.gitignore` da raiz, na seção apropriada e com um comentário curto explicando o porquê, regras que ignorem esses três diretórios de render DENTRO de pastas de dispatch sob `plans/**` — não crie uma regra global que capture PNGs de outros lugares do repo.\n\nPASSO 2 — COMMITAR O DURÁVEL\nCommite, dessa pasta: `structural-proposal.json`, `concrete-proposal.json`, `final/*.svg`, `drafts/*.svg`, os quatro `*-prompt.txt`, e `manifests/`. Commite também, um nível acima, o PDF `work-context-system-view-diagram-concepts.pdf`.\nMensagem de commit no estilo já usado no repo (verifique `git log --oneline -20`). NÃO acrescente trailer `Co-Authored-By`.\n\nPASSO 3 — DELETAR OS REDUNDANTES\nDepois que o commit do passo 2 existir, delete estes 13 caminhos, todos já provados byte-a-byte redundantes com o journal canônico:\n- `binding-receipt-continuity-reviewer.json`\n- `binding-receipt-divergence-reviewer.json`\n- `binding-receipt-pdf-assembler.json`\n- `binding-receipt-pdf-auditor.json`\n- `binding-receipt-topology-reviewer.json`\n- `binding-receipt-traceability-reviewer.json`\n- `binding-receipt-transformation-reviewer.json`\n- `binding-receipts-designers.json`\n- `dispatch-open-record.json`\n- `dispatch-close-record.json`\n- `runtime-session.json`\n- o diretório `manifests/` inteiro\nDepois commite a deleção, separadamente do passo 2, para que a remoção seja revisável e reversível por si só.\n\nATENÇÃO: `manifests/` é commitado no passo 2 e deletado no passo 3. Isso é intencional — assim os bytes ficam preservados no histórico do git mesmo depois de saírem da árvore de trabalho.\n\nRESTRIÇÕES DURAS\n- NÃO use `git add` em `telemetry/agents/subagents-dispatch.yaml`. Um hook append-only aborta o comando inteiro. Se o arquivo aparecer, evite-o explicitamente.\n- NÃO delete nada fora da lista dos 13 caminhos acima.\n- NÃO delete `structural-proposal.json` nem `concrete-proposal.json` — o conteúdo deles NÃO existe em nenhum outro lugar.\n- NÃO faça `git push`. NÃO faça rebase, reset, amend ou qualquer reescrita de histórico.\n- NÃO toque na pasta irmã `diagram-proposal-dispatch/`.\n\nRETORNE: as regras acrescentadas ao `.gitignore`, os dois hashes de commit, a saída de `git status --porcelain` da pasta ao final, e a confirmação de que as duas propostas continuam na árvore de trabalho. Não use rede. Não lance outro agente."
+            }
+          ]
+        },
+        {
+          "group_id": "hygiene-reviewer",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Spolsky, Joel",
+              "role": "auditor",
+              "model": "claude-sonnet-5",
+              "token_budget": 1600,
+              "angle": null,
+              "initial_prompt": "Repo: c:\\Users\\victo\\cyberalchemy-orchestrator (Windows; Bash tool available). Responda em português.\n\nOBJETIVO\nAuditar uma operação de git que versionou artefatos e depois deletou 13 arquivos de recibo de um dispatch encerrado. Deleção é irreversível na árvore de trabalho; sua auditoria é o último portão.\n\nPASTA ALVO\n`plans/governed-agent-work-infrastructure/essays/work-context-system-view/pdf-version/short-version/diagram-drawing-dispatch/`\n\nTESTES QUE VOCÊ DEVE APLICAR (com evidência, não com confiança no relato)\n1. RECUPERABILIDADE — o teste decisivo. Para CADA um dos 13 caminhos deletados, prove que o conteúdo ainda é recuperável. Use `git show <commit>:<path>` para confirmar que os bytes estão no histórico. Liste os 13 com veredito individual. Qualquer um que não seja recuperável é um defeito bloqueante.\n2. SOBREVIVENTES — confirme que `structural-proposal.json` e `concrete-proposal.json` CONTINUAM existindo na árvore de trabalho E estão commitados. O conteúdo deles não existe em nenhum outro lugar do sistema; perdê-los é perda total.\n3. ESCOPO DA DELEÇÃO — via `git log --stat` e `git status`, confirme que NADA além dos 13 caminhos foi deletado. Verifique em especial que a pasta irmã `diagram-proposal-dispatch/` está intacta.\n4. GITIGNORE — as regras acrescentadas capturam os três diretórios de render dentro de pastas de dispatch sob `plans/**`, e NÃO capturam PNGs de outros lugares do repo? Teste com `git check-ignore -v` em pelo menos um caminho que DEVE ser ignorado e um que NÃO deve.\n5. HISTÓRICO LIMPO — confirme que não houve `push`, nem amend, nem reset, nem rebase (`git reflog` recente), e que a mensagem de commit não tem trailer `Co-Authored-By`.\n6. LEDGER — confirme que `telemetry/agents/subagents-dispatch.yaml` NÃO foi staged nem commitado.\n\nRETORNE: veredito `ACCEPT` ou `REVISE`. Inclua obrigatoriamente a tabela dos 13 caminhos com o veredito de recuperabilidade de cada um. Se `REVISE`, cada defeito com o comando e a saída que o comprovam. Não corrija você mesmo. Não use rede. Não lance outro agente."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "cli-coder",
+          "to": "cli-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "doc-writer",
+          "to": "doc-reviewer",
+          "type": "sequential"
+        },
+        {
+          "from": "cli-reviewer",
+          "to": "hygiene-worker",
+          "type": "sequential"
+        },
+        {
+          "from": "hygiene-worker",
+          "to": "hygiene-reviewer",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "resolved",
+        "agents_spawned": {
+          "total": 6,
+          "tree": {
+            "writer": 3,
+            "auditor": 3,
+            "helpers": 0
+          },
+          "loops_used": 1
+        },
+        "feedback_prompts": [
+          "Correction to the record: the redundant set was stated as 13 paths throughout. The true count is 11 loose files plus the manifests/ directory (12 files) = 23 files across 12 paths. Recoverability was verified per path and is unaffected; only the count was wrong.",
+          "Runtime: the Stage-E source manifest pins CLAUDE.md, AGENTS.md, service.py and cli.py, so editing them broke preflight and blocked every agent launch mid-dispatch. Re-attestation (3 digests plus STAGE_E_SOURCE_MANIFEST_SHA256) was required before the dispatch could continue. No written procedure for re-attestation exists.",
+          "Hygiene reviewer: the recoverability criterion had to be rewritten mid-flight. The 11 loose receipts were deleted with rm and never committed, so git show could not prove recovery; the canonical path is show-orchestration-log for the binding receipts and the ledger rows for the open/close records.",
+          "Runtime: the orchestration bridge rejected an Agent launch with 'utf-8 codec can't encode character' on a prompt containing non-ASCII punctuation. Rewriting the prompt in ASCII cleared it. The failing character was never isolated.",
+          "Runtime: two Agent launches issued in one message collided on the session aggregate with 'aggregate head does not match event stream'. The journal was intact (0 mismatches across 836 aggregates); launches must be spaced.",
+          "Hygiene worker: the final/*.svg glob swept two SVGs belonging to a concurrent session into the durable-artifact commit. They were versioned, not modified, so no reversion is needed, but the glob was wider than the instruction."
+        ]
+      },
+      "_score": 56.92
+    },
+    {
+      "dispatch_id": "2026-08-03-cyberalchemy-orchestrator-capability-assessment",
+      "dispatch_type": "research",
+      "created": "2026-08-03T23:23:32.083Z",
+      "goal": "Identify the product capabilities proposed by the non-implementation corpus of cyberalchemy-orchestrator, derive the observable system properties needed to sustain them, and identify logical service responsibilities worth considering in Subagent Work Infrastructure without inheriting source mechanisms or authority by default.",
+      "context": "Subagent Work Infrastructure is stabilizing its product model before schemas or implementation. The source repository is precedent evidence, not inherited architecture, and this sweep is capability-first: evidence -> capability -> system property -> logical service responsibility. The research corpus excludes every /implementations path and preserves each source artifact's exact status and authority. Because the legacy host does not automatically deliver inter-wave inputs, the parent will deposit prior seat returns verbatim into research.md between waves; downstream seats read that file, and this relay is workflow plumbing rather than research evidence.",
+      "anti_bias_global": null,
+      "max_loops": 1,
+      "working_folder": "../subagent-work-infrastructure/research/cyberalchemy-orchestrator-capability-assessment",
+      "groups": [
+        {
+          "group_id": "capability-exploration",
+          "n": 2,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Simon, Herbert",
+              "role": "explorer",
+              "model": "gpt-5.6-terra",
+              "token_budget": 3500,
+              "angle": null,
+              "initial_prompt": "You are the actor-and-outcome capability explorer. Work read-only in C:\\Users\\victo\\cyberalchemy-orchestrator and never access any path named implementations. Read first C:\\Users\\victo\\subagent-work-infrastructure\\research\\cyberalchemy-orchestrator-capability-assessment\\research-initial-definitions.md. Primary corpus: plans/README.md; plans/governed-agent-work-infrastructure/PLAN.md; plans/governed-agent-work-infrastructure/README.md; plans/governed-agent-work-infrastructure/essays/README.md; and the two indexed essays agent-language-system-view/essay.md and work-context-system-view/essay.md. Follow another non-implementation source only when a primary claim explicitly requires it, and record why; treat the two unindexed essays as quarantined unless their relationship is first established. Extract candidate product capabilities from actors, needs, enabled actions, and observable outcomes. For every candidate provide exact source path and section, source status/authority, actor or beneficiary, observable outcome, problem served, and a compact vertical derivation to necessary system properties and logical service responsibilities. Keep mechanisms named by the source in a separate field and never promote them to required architecture. Do not use Workflow Graph, Agent Node, Typed Relation, Dispatch, Confirmation View, or Run as discovery categories; crosswalk comes later. Mark hypotheses and open questions without strengthening them. Return structured Markdown only; do not edit source files or findings.md."
+            },
+            {
+              "agent_name": "Beer, Stafford",
+              "role": "explorer",
+              "model": "gpt-5.6-terra",
+              "token_budget": 3500,
+              "angle": null,
+              "initial_prompt": "You are the assurance-and-failure capability explorer. Work read-only in C:\\Users\\victo\\cyberalchemy-orchestrator and never access any path named implementations. Read first C:\\Users\\victo\\subagent-work-infrastructure\\research\\cyberalchemy-orchestrator-capability-assessment\\research-initial-definitions.md. Use the same primary corpus: plans/README.md; plans/governed-agent-work-infrastructure/PLAN.md; plans/governed-agent-work-infrastructure/README.md; plans/governed-agent-work-infrastructure/essays/README.md; and the two indexed essays agent-language-system-view/essay.md and work-context-system-view/essay.md. Follow another non-implementation source only when a primary claim explicitly requires it, recording why; keep unindexed essays quarantined until their relationship is established. Identify capabilities by asking what must remain true, what failures must be prevented or recoverable, what authority must be bounded, and what evidence must exist. For every candidate provide exact source path and section, source status/authority, observable witness, failure if absent, and a compact vertical derivation capability -> required system property -> logical service responsibility. Separate requirements from aspirations, candidate invariants, mechanisms, and implementation claims. Do not organize discovery around the six target concepts; map to them only as a late observation. Return structured Markdown only; do not edit source files or findings.md."
+            }
+          ]
+        },
+        {
+          "group_id": "capability-synthesis",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "van Lamsweerde, Axel",
+              "role": "writer",
+              "model": "gpt-5.6-sol",
+              "token_budget": 6000,
+              "angle": null,
+              "initial_prompt": "You are the research writer. Work only in C:\\Users\\victo\\subagent-work-infrastructure\\research\\cyberalchemy-orchestrator-capability-assessment and read source documentation only from C:\\Users\\victo\\cyberalchemy-orchestrator, never from a path named implementations. Read research-initial-definitions.md and research.md, which the parent will populate verbatim with both explorer returns before your launch. Verify load-bearing citations against the eligible source corpus. Write findings.md as a cited draft with: (1) source-authority ledger; (2) capability catalog with actor, observable outcome, problem, witness, source, and authority; (3) capability -> required system property -> failure-if-absent -> logical service responsibility matrix; (4) source mechanisms quarantined from requirements; (5) late crosswalk to the six target concepts using covered-by, crosses-several, needs-distinction, or outside-core; (6) transfer assessment with retain/adapt/replace/reject/unresolved; and (7) open questions. Keep capability, property, responsibility, and mechanism distinct. Consolidate synonyms but preserve real disagreement. No concrete service boundary, schema, API, persistence design, process, class, deployment, or implementation recommendation is allowed. Include the canonical research columns candidate, owner, witnessed, sound, verdict, and use-mode, leaving reviewer-contested cells visibly provisional for the auditor. End with a one-sentence answer to the dispatch goal. Do not edit any file outside the working folder."
+            }
+          ]
+        },
+        {
+          "group_id": "research-gates",
+          "n": 3,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Hacking, Ian",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "You own only the precedent gate. Read research-initial-definitions.md, research.md, and findings.md in C:\\Users\\victo\\subagent-work-infrastructure\\research\\cyberalchemy-orchestrator-capability-assessment. Verify every candidate owner, exact path/section, source status, authority, and provenance against non-implementation material in C:\\Users\\victo\\cyberalchemy-orchestrator; never access implementations. Check that indexed drafts, unindexed drafts, reviews, plans, hypotheses, and decisions are not flattened into one authority level. Finding an owner is positive and must label build-from-owned or already-deployed as warranted; it is never a KILL. Return PASS or BLOCK with row-level corrections and citations. Do not assess non-vacuity or definitional soundness, do not edit files, and do not propose architecture."
+            },
+            {
+              "agent_name": "Popper, Karl",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "You own only the non-vacuity gate. Read research-initial-definitions.md, research.md, and findings.md in C:\\Users\\victo\\subagent-work-infrastructure\\research\\cyberalchemy-orchestrator-capability-assessment. For every candidate capability require a smallest observable scenario with actor, intent, transformation, and result. For every system property require a concrete failure or lost observability if absent. For every logical service responsibility require an explicit upstream property and capability plus a justification for the arrow. Mark no-witness as the only KILL available to this gate; otherwise return PASS or BLOCK with row-level corrections. Never access implementations, do not assess provenance or definitional duplication, do not edit files, and do not turn responsibilities into concrete services."
+            },
+            {
+              "agent_name": "Carnap, Rudolf",
+              "role": "skeptic",
+              "model": "gpt-5.6-sol",
+              "token_budget": 2500,
+              "angle": null,
+              "initial_prompt": "You own only the definitional-soundness gate. Read research-initial-definitions.md, research.md, and findings.md in C:\\Users\\victo\\subagent-work-infrastructure\\research\\cyberalchemy-orchestrator-capability-assessment. Test whether each capability is genuinely an enabled outcome rather than a slogan, system property, responsibility, mechanism, or renamed target concept. Test whether each property is an observable condition rather than a capability restatement, and whether each responsibility adds a stable obligation rather than naming a component prematurely. Check synonym consolidation and the late crosswalk against Workflow Graph, Agent Node, Typed Relation, Dispatch, Confirmation View, and Run. Mark tautological as the only KILL available to this gate; otherwise return PASS or BLOCK with exact row-level corrections. Never access implementations, do not assess provenance or witnesses, and do not edit files."
+            }
+          ]
+        },
+        {
+          "group_id": "final-audit",
+          "n": 1,
+          "anti_bias": null,
+          "robot_talks": null,
+          "agents": [
+            {
+              "agent_name": "Parnas, David",
+              "role": "auditor",
+              "model": "gpt-5.6-sol",
+              "token_budget": 4000,
+              "angle": null,
+              "initial_prompt": "You are the dedicated final approver and perform no exploratory or drafting work. Read research-initial-definitions.md, research.md, and findings.md in C:\\Users\\victo\\subagent-work-infrastructure\\research\\cyberalchemy-orchestrator-capability-assessment after the parent has appended all three skeptic returns verbatim to research.md. Verify that every load-bearing claim in findings.md cites collected evidence, that each candidate has owner, witnessed, sound, verdict, use-mode, and target disposition, and that all skeptic BLOCK items are either resolved in the evidence or cause the affected row to be demoted or marked unresolved. You may edit findings.md only to finalize the verdict matrix, demote unsupported claims, record unresolved dissent, and state the final one-line answer; you may not add new candidates or new source claims. Confirm that no implementations evidence, concrete service boundary, schema, API, deployment, or implementation recommendation entered the result. Return APPROVE only if the file is internally traceable and claim <= proof; otherwise return REJECT with exact unresolved blockers."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "capability-exploration",
+          "to": "capability-synthesis",
+          "type": "sequential"
+        },
+        {
+          "from": "capability-synthesis",
+          "to": "research-gates",
+          "type": "zig-zag",
+          "loop_cap": 1
+        },
+        {
+          "from": "research-gates",
+          "to": "final-audit",
+          "type": "sequential"
+        }
+      ],
+      "close": {
+        "exit_reason": "error",
+        "agents_spawned": {
+          "total": 0,
+          "tree": {
+            "helpers": 0
+          },
+          "loops_used": 0
+        },
+        "feedback_prompts": []
+      },
+      "_score": 56.1
     }
   ]
 };

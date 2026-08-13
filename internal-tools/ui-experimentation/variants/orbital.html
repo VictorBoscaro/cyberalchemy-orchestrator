@@ -20,38 +20,19 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{position:relative;z-index:20;padding:12px 20px 10px;display:flex;flex-direction:column;gap:7px}
-.sh-idle{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-.sh-idle[hidden],.sh-live[hidden]{display:none}
-.sh-idle-mark{font-size:15px;line-height:1}
-.sh-live{display:flex;flex-direction:column;gap:7px;min-width:0}
-.sh-row-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.sh-type{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:3px 11px;border-radius:3px;white-space:nowrap}
-.sh-chips{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}
-.sh-chip{display:flex;flex-direction:column;align-items:center;line-height:1;padding:4px 9px;border-radius:6px;min-width:44px}
-.sh-chip-n{font-size:14px;font-weight:700}
-.sh-chip-k{font-size:8px;letter-spacing:.1em;margin-top:3px;opacity:.75}
-.sh-headline{margin:0;font-size:14px;font-weight:600;line-height:1.3}
-.sh-sub{display:block;font-size:10.5px;font-weight:400;opacity:.55;letter-spacing:.02em;margin-top:2px;word-break:break-word}
-.sh-fields{display:flex;flex-wrap:wrap;gap:5px 16px;font-size:10.5px}
-.sh-field{display:inline-flex;align-items:baseline;gap:6px;max-width:100%}
-.sh-fl{text-transform:uppercase;letter-spacing:.1em;font-size:8.5px;opacity:.6;white-space:nowrap}
-.sh-fv{font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sh-ctx-toggle{align-self:flex-start;font:inherit;font-size:10px;text-transform:uppercase;letter-spacing:.12em;padding:2px 0;background:none;border:0;cursor:pointer}
-.sh-ctx-toggle::before{content:"▸ ";font-size:8px}
-.sh-ctx-toggle.on::before{content:"▾ "}
-.sh-ctx{position:absolute;top:100%;left:14px;right:14px;z-index:5;margin-top:2px;padding:13px 16px;font-size:12.5px;line-height:1.6;border-radius:8px;max-height:46vh;overflow:auto;white-space:pre-wrap;word-break:break-word}
+#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
+#stage-title{font-size:14px;font-weight:600}
+#stage-meta{font-size:11px;opacity:.6}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
-#stage-empty[hidden]{display:none}
 #edges{position:absolute;inset:0;width:100%;height:100%}
 .edge{stroke-width:1.6px;opacity:.85}
 #nodes{position:absolute;inset:0}
 .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
 .node.agent{cursor:pointer}
-.node .g-label{display:block;font-size:10.5px;letter-spacing:.03em;max-width:130px;line-height:1.2;white-space:normal;overflow-wrap:anywhere}
-.node .n-role{display:block;font-size:8.5px;text-transform:uppercase;opacity:.7;letter-spacing:.06em}
-.node .n-name{display:block;font-size:10.5px;line-height:1.18;max-width:116px;white-space:normal;overflow-wrap:break-word;margin:0 auto}
+.node .g-label{font-size:11px;letter-spacing:.04em}
+.node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
+.node .n-name{display:block;font-size:11px;line-height:1.1}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 #legend .mark{margin-left:auto;opacity:.5}
@@ -83,37 +64,12 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
 .ditem{border:1px solid #1b2350;border-radius:10px;background:rgba(14,18,44,.6)}
 .ditem:hover,.ditem.sel{border-color:#6f8bff;background:rgba(28,36,86,.7)}
 .dtype{color:#8ea2ff}
-/* stage head — HUD readout strip */
-#stage-head{border-bottom:1px solid #1b2350;background:linear-gradient(180deg,rgba(16,22,58,.6),rgba(8,10,26,0))}
-.sh-idle{color:#8ea2ff;opacity:.75}
-.sh-idle-mark{color:#9fb4ff;text-shadow:0 0 12px rgba(150,180,255,.85)}
-.sh-type{color:#05060f;background:linear-gradient(120deg,#9fb4ff,#6f8bff);box-shadow:0 0 16px rgba(120,150,255,.5)}
-.sh-type[data-kind="review"]{background:linear-gradient(120deg,#e6b24e,#c07a1e);box-shadow:0 0 16px rgba(230,178,78,.45)}
-.sh-type[data-kind="research"]{background:linear-gradient(120deg,#7fd0ff,#4a8ad0);box-shadow:0 0 16px rgba(127,208,255,.4)}
-.sh-type[data-kind="experiment"]{background:linear-gradient(120deg,#b98cff,#7a4ad0);box-shadow:0 0 16px rgba(185,140,255,.4)}
-.sh-type[data-kind="code"]{background:linear-gradient(120deg,#6fe0b0,#2f9a7a);box-shadow:0 0 16px rgba(111,224,176,.4)}
-.sh-type[data-kind="plan"]{background:linear-gradient(120deg,#ff9fb4,#d04a6f);box-shadow:0 0 16px rgba(255,159,180,.4)}
-.sh-type[data-kind="suggestion"]{background:linear-gradient(120deg,#d7c8ff,#8f7ad0)}
-.sh-headline{color:#eef2ff}
-.sh-chip{background:rgba(14,18,44,.7);border:1px solid #2a3468}
-.sh-chip-n{color:#aeb9ff;text-shadow:0 0 8px rgba(120,150,255,.4)}
-.sh-fl{color:#8ea2ff}
-.sh-fv{color:#cfd7ff}
-.sh-field.is-out .sh-fv{color:#9fe6c0}
-.sh-field.is-open .sh-fv{color:#e6b24e}
-.sh-ctx-toggle{color:#8ea2ff}
-.sh-ctx-toggle:hover,.sh-ctx-toggle.on{color:#cdd7ff;text-shadow:0 0 8px rgba(150,180,255,.6)}
-.sh-ctx{background:rgba(8,10,26,.97);border:1px solid #4a5aa8;color:#cfd7ff;box-shadow:0 12px 40px rgba(0,0,0,.55)}
-.node.group{padding:4px 11px;border-radius:13px;border:1px solid #6f83d8;background:rgba(12,16,42,.94);color:#cdd7ff;max-width:150px;box-shadow:0 0 18px rgba(120,150,255,.35),inset 0 0 10px rgba(90,120,255,.25);font-weight:600}
-.node.agent{width:auto;max-width:132px;padding:8px 12px;border-radius:22px;background:radial-gradient(circle at 35% 30%,#3b4da0,#141a44);border:1px solid #5a6cc0;box-shadow:0 0 16px rgba(90,120,255,.35)}
+#stage-wrap::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 24px 8px rgba(150,180,255,.6)}
+.node.group{padding:3px 9px;border-radius:14px;border:1px solid #4a5aa8;background:rgba(10,14,36,.85);color:#aeb9ff}
+.node.agent{width:auto;padding:8px 11px;border-radius:50px;background:radial-gradient(circle at 35% 30%,#3b4da0,#141a44);border:1px solid #5a6cc0;box-shadow:0 0 16px rgba(90,120,255,.35)}
 .node.agent:hover,.node.agent.active{box-shadow:0 0 26px rgba(140,170,255,.7);border-color:#cdd7ff}
 .node.agent.rev{background:radial-gradient(circle at 35% 30%,#a06a1e,#3a2708);border-color:#e6b24e;box-shadow:0 0 20px rgba(230,178,78,.5)}
-.node.agent.rev .n-role{opacity:.9;color:#ffdd9e}
-.orbit-ring{fill:none;stroke:rgba(120,150,255,.14);stroke-width:1px}
-.edge{fill:none;stroke:#7f95e6;stroke-width:1.6px;opacity:.72}
-.edge-zig-zag{stroke-dasharray:7 4}
-.edge-feedback{stroke-dasharray:2 5;stroke-linecap:round}
-.edge-arrow{fill:#8ea6ff}
+.edge{stroke:#5a6cc0;stroke-width:1.2px;opacity:.6}
 #legend .dot.rev{background:#e6b24e}
 #panel{background:rgba(8,10,26,.9);border-left:1px solid #4a5aa8;color:#dfe6ff}
 #p-name{color:#aeb9ff}
@@ -141,21 +97,9 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
   </aside>
 
   <main id="main">
-    <div id="stage-head" data-state="idle">
-      <div id="sh-idle" class="sh-idle">
-        <span class="sh-idle-mark" aria-hidden="true">&#9677;</span>
-        <span class="sh-idle-txt">standby &middot; aguardando seleção de dispatch</span>
-      </div>
-      <div id="sh-live" class="sh-live" hidden>
-        <div class="sh-row-top">
-          <span id="sh-type" class="sh-type" data-tip="tipo do dispatch">&mdash;</span>
-          <div id="sh-chips" class="sh-chips"></div>
-        </div>
-        <h2 id="sh-headline" class="sh-headline"></h2>
-        <div id="sh-fields" class="sh-fields"></div>
-        <button id="sh-ctx-toggle" class="sh-ctx-toggle" type="button" aria-expanded="false" aria-controls="sh-ctx" hidden>contexto</button>
-      </div>
-      <div id="sh-ctx" class="sh-ctx" role="region" aria-label="Contexto do dispatch" hidden></div>
+    <div id="stage-head">
+      <span id="stage-title">Selecione um dispatch</span>
+      <span id="stage-meta"></span>
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
@@ -266,270 +210,107 @@ body{font-family:"Space Grotesk","Inter",system-ui,sans-serif;color:#dfe6ff;back
     renderGraph(state.current);
   }
 
-  // ---- geometry (ORBITAL, pixel-space) -----------------------------------
-  // LEGIBLE FLOW layout. The connections form a directed pipeline, so the group
-  // hubs are laid out along a left→right spine in TOPOLOGICAL order (Kahn), and
-  // each group is a tiny "solar system": its hub is the star and its agents orbit
-  // it CLOSE (biased above/below so the horizontal arrow lane between hubs stays
-  // clear → no tangle). Directed hub→hub arrows follow the flow. The concentric
-  // sky-rings are gone as a skeleton; the only rings drawn are the small per-hub
-  // orbits (decorative but meaningful — agents orbit their group). If there are
-  // more hubs than fit on one row the spine serpentines and the row-turn edge
-  // bows OUTWARD to skirt the stacked bodies.
-  // Works in device pixels (W,H) so orbits stay circular and never clip.
-  // returns {cx,cy, rings:[{cx,cy,r}...], nodes:[{id,type,x,y,label,agent,group,rev,tip}],
-  //          edges:[{x1,y1,x2,y2,qx,qy,type,tip}]}
+  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
+  function geometry(d) {
+    var groups = d.groups || [], G = groups.length;
+    var nodes = [], gpos = {}, i, j;
+    var lay = V.layout;
 
-  // topological (flow) order of the groups from the connection DAG; ties and any
-  // unreachable/cyclic remainder fall back to the declared order.
-  function flowOrder(groups, conns) {
-    var idx = {}, i;
-    for (i = 0; i < groups.length; i++) idx[groups[i].group_id] = i;
-    var indeg = {}, adj = {};
-    groups.forEach(function (g) { indeg[g.group_id] = 0; adj[g.group_id] = []; });
-    (conns || []).forEach(function (c) {
-      if (adj[c.from] && indeg[c.to] != null) { adj[c.from].push(c.to); indeg[c.to]++; }
-    });
-    var order = [], placed = {};
-    var queue = groups.filter(function (g) { return indeg[g.group_id] === 0; })
-                      .map(function (g) { return g.group_id; });
-    while (queue.length) {
-      queue.sort(function (a, b) { return idx[a] - idx[b]; });
-      var id = queue.shift();
-      if (placed[id]) continue;
-      placed[id] = 1; order.push(id);
-      adj[id].forEach(function (t) { if (--indeg[t] === 0) queue.push(t); });
+    function place(gi, group) {
+      var agents = group.agents || [], n = agents.length;
+      var gx, gy, cx, cy;
+      if (lay === "columns") {
+        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
+        });
+      } else if (lay === "rows") {
+        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
+        });
+      } else if (lay === "radial") {
+        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
+        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var aa = ai / Math.max(1, n) * 2 * Math.PI;
+          var r = n === 1 ? 0 : 11;
+          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
+        });
+      } else if (lay === "orbit") {
+        var rad = 10 + gi * (40 / Math.max(1, G));
+        cx = 50; cy = 50 - rad;
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
+          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
+        });
+      } else if (lay === "timeline") {
+        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
+        nodes.push(gnode(group, gx, 50));
+        agents.forEach(function (a, ai) {
+          var side = ai % 2 ? 1 : -1;
+          var step = Math.floor(ai / 2) + 1;
+          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
+        });
+      } else { // scatter — use unsigned shifts so positions never go negative
+        var h = hash(group.group_id + gi);
+        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var hh = hash((a.agent_name || "") + group.group_id + ai);
+          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
+        });
+      }
+      gpos[group.group_id] = { x: cx, y: cy };
     }
-    groups.forEach(function (g) { if (!placed[g.group_id]) { placed[g.group_id] = 1; order.push(g.group_id); } });
-    return order.map(function (id) { return groups[idx[id]]; });
-  }
-
-  function geometry(d, W, H) {
-    var groups = flowOrder(d.groups || [], d.connections), G = groups.length;
-    var nodes = [], hub = {}, rings = [], i;
-    var cx = W / 2, cy = H / 2;
-
-    var rOrb = 70;                                   // per-hub orbit radius (px)
-    var marginX = Math.max(96, W * 0.085);
-    var marginY = Math.max(rOrb + 56, H * 0.14);     // room for agent above/below hub
-    var availW = W - 2 * marginX, availH = H - 2 * marginY;
-
-    // how many hubs fit per row (min ~190px per hub cell), then balance the rows
-    var maxPerRow = Math.max(1, Math.floor(W / 190));
-    var rows = Math.max(1, Math.ceil(G / maxPerRow));
-    var perRow = Math.max(1, Math.ceil(G / rows));
-    function colX(c) { return perRow === 1 ? cx : marginX + availW * (c / (perRow - 1)); }
-    function rowY(r) { return rows === 1 ? cy : marginY + availH * (r / (rows - 1)); }
-
     function gnode(group, x, y) {
       return { id: "g:" + group.group_id, type: "group", x: x, y: y,
         label: group.group_id, group: group,
-        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias)
-          : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
+        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
     }
     function anode(a, group, x, y) {
       nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
-        x: x, y: y, label: nameOf(a), agent: a, group: group, rev: isRev(a),
+        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
         tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
     }
+    for (i = 0; i < G; i++) place(i, groups[i]);
 
-    // ---- place hubs along the (serpentine) spine + orbit their agents ----
-    for (i = 0; i < G; i++) {
-      var group = groups[i], agents = group.agents || [], n = agents.length;
-      var r = Math.floor(i / perRow), iInRow = i - r * perRow;
-      var c = (r % 2 === 0) ? iInRow : (perRow - 1 - iInRow);   // serpentine turn
-      var hx = colX(c), hy = rowY(r);
-      hub[group.group_id] = { x: hx, y: hy };
-      nodes.push(gnode(group, hx, hy));
-      if (n > 0) rings.push({ cx: hx, cy: hy, r: rOrb });
-      // agents orbit the hub, first below then spread — vertical bias keeps the
-      // horizontal arrow lane (at hub height) clear of bodies.
-      for (var ai = 0; ai < n; ai++) {
-        var ang = Math.PI / 2 + ai * (2 * Math.PI / n);
-        anode(agents[ai], group, hx + rOrb * Math.cos(ang), hy + rOrb * Math.sin(ang));
-      }
-    }
-
-    // ---- directed edges: group hub → group hub, following the flow ----
-    // Horizontal (same-row) edges run near-straight through the clear lane; a
-    // vertical row-turn bows OUTWARD (away from stage centre) to skirt the
-    // above/below bodies of the two stacked hubs.
     var edges = [];
     (d.connections || []).forEach(function (c) {
-      var f = hub[c.from], t = hub[c.to];
-      if (!f || !t) return;
-      var mx = (f.x + t.x) / 2, my = (f.y + t.y) / 2;
-      var dx = t.x - f.x, dy = t.y - f.y, chord = Math.hypot(dx, dy) || 1;
-      var px = -dy / chord, py = dx / chord;              // perpendicular unit
-      var vertical = Math.abs(dy) > Math.abs(dx);
-      var mag = vertical ? (rOrb + 44) : 10;
-      var bx = px * mag, by = py * mag;
-      if (vertical) { if (bx * (mx - cx) < 0) { bx = -bx; by = -by; } }
-      else { if (by * (my - cy) < 0) { bx = -bx; by = -by; } }
-      edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y,
-        qx: mx + bx, qy: my + by, type: c.type || "",
-        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
+      var f = gpos[c.from], t = gpos[c.to];
+      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
     });
-    return { cx: cx, cy: cy, rings: rings, nodes: nodes, edges: edges };
+    return { nodes: nodes, edges: edges };
   }
-
-  // ---- context header (HUD readout strip) --------------------------------
-  // Fills #stage-head when a dispatch is picked. Reads only the dispatch object
-  // (never the graph). FE-7: counts + created are DECLARED with their referent
-  // (UTC). FE-1/FE-6: the long framing paragraph (d.context) stays collapsed and
-  // is summoned per selection, resetting to closed on every pick. FE-5: nulls
-  // (anti_bias_global, working_folder, close) are omitted or shown as an honest
-  // "em aberto" — never a blank slot. FE-2: fine qualifiers ride the #tt tooltip.
-  function populateHead(d) {
-    var head = $("stage-head");
-    head.setAttribute("data-state", "live");
-    $("sh-idle").hidden = true;
-    $("sh-live").hidden = false;
-
-    function attr(s) { return esc(s).replace(/"/g, "&quot;"); }
-    function shField(label, value, opts) {
-      opts = opts || {};
-      var tip = opts.tip ? ' data-tip="' + attr(opts.tip) + '"' : "";
-      var cls = opts.cls ? " " + opts.cls : "";
-      return '<span class="sh-field' + cls + '"' + tip + '>' +
-        '<span class="sh-fl">' + esc(label) + "</span>" +
-        '<span class="sh-fv">' + esc(value) + "</span></span>";
-    }
-
-    var ags = agentsOf(d);
-    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
-
-    // TYPE readout — the "coding / research / review…" answer, prominent
-    var kind = d.dispatch_type || "others";
-    var typeEl = $("sh-type");
-    typeEl.textContent = kind;
-    typeEl.setAttribute("data-kind", kind);
-    typeEl.setAttribute("data-tip", "tipo do dispatch · o que este trabalho é");
-
-    // headline (goal) + secondary subtitle (dispatch_id)
-    $("sh-headline").innerHTML = esc(d.goal || "(sem objetivo declarado)") +
-      '<span class="sh-sub">' + esc(d.dispatch_id) + "</span>";
-
-    // telemetry stat chips — counts, referents declared in label + tooltip
-    var chips = [
-      ["AGENTES", ags.length, "total de agentes somados sobre os grupos"],
-      ["GRUPOS", (d.groups || []).length, "grupos de agentes neste dispatch"],
-      ["LIGAÇÕES", (d.connections || []).length, "arestas grupo→grupo (connections)"],
-      ["REVISORES", revs, "agentes com papel cético / auditor / revisor"],
-      ["LOOPS", d.max_loops, "teto de loops (max_loops)"]
-    ];
-    $("sh-chips").innerHTML = chips.map(function (c) {
-      if (c[1] == null) return "";
-      return '<span class="sh-chip" data-tip="' + attr(c[2]) + '">' +
-        '<span class="sh-chip-n">' + esc(c[1]) + "</span>" +
-        '<span class="sh-chip-k">' + esc(c[0]) + "</span></span>";
-    }).join("");
-
-    // luminous field strip — created (UTC declared), outcome, axis, folder
-    var out = "";
-    var created = d.created || "";
-    if (created) {
-      out += shField("CRIADO", created.slice(0, 10) + " " + created.slice(11, 16) + " UTC",
-        { tip: "carimbo de criação · fuso declarado UTC (FE-7)" });
-    }
-    if (d.close) {                                   // dispatch WITH close → outcome
-      var sp = d.close.agents_spawned || {}, lu = sp.loops_used;
-      var desf = d.close.exit_reason || "fechado";
-      if (lu != null) desf += " · " + lu + " loop" + (lu === 1 ? "" : "s");
-      out += shField("DESFECHO", desf, { cls: "is-out", tip: "exit_reason + loops usados no fechamento" });
-    } else {                                         // dispatch WITHOUT close → honest state
-      out += shField("DESFECHO", "em aberto", { cls: "is-open", tip: "sem fechamento (close) registrado" });
-    }
-    if (d.anti_bias_global) {                        // FE-5: null → omitted
-      out += shField("ANTI-VIÉS", shorten(d.anti_bias_global, 46), { tip: d.anti_bias_global });
-    }
-    if (d.working_folder) {                          // FE-5: null → omitted
-      out += shField("PASTA", shorten(d.working_folder, 40), { tip: d.working_folder });
-    }
-    $("sh-fields").innerHTML = out;
-
-    // FE-1 opt-in: the longer framing paragraph is collapsed, summoned on click;
-    // reset to closed on every pick (FE-6 single focus in the head).
-    var tog = $("sh-ctx-toggle"), panel = $("sh-ctx");
-    panel.hidden = true;
-    tog.setAttribute("aria-expanded", "false");
-    tog.classList.remove("on");
-    if (d.context) {
-      tog.hidden = false;
-      tog.textContent = "contexto";
-      panel.textContent = d.context;
-      if (!tog.__wired) {                            // wire once; self-contained to the head
-        tog.__wired = true;
-        tog.addEventListener("click", function () {
-          var open = panel.hidden;
-          panel.hidden = !open;
-          this.setAttribute("aria-expanded", String(open));
-          this.classList.toggle("on", open);
-        });
-      }
-    } else {
-      tog.hidden = true;
-      panel.textContent = "";
-    }
-  }
+  function clamp(v) { return Math.max(6, Math.min(94, v)); }
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
 
   // ---- render graph ------------------------------------------------------
-  var SVGNS = "http://www.w3.org/2000/svg";
-  function svgEl(name, attrs) {
-    var e = document.createElementNS(SVGNS, name);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
-    return e;
-  }
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    populateHead(d);   // themed context header (touches only #stage-head)
-
-    // measure the stage in device pixels AFTER layout so rings stay circular
-    var wrap = $("stage-wrap");
-    var W = wrap.clientWidth || 800, H = wrap.clientHeight || 600;
-    var geo = geometry(d, W, H);
-
-    // 1:1 viewBox (user unit == px) → arcs/arrowheads never distort
-    var svg = $("edges");
-    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-    svg.setAttribute("preserveAspectRatio", "none");
-    svg.innerHTML = "";
-
-    // arrowhead marker (px-sized, auto-oriented to the flow direction)
-    var defs = svgEl("defs", {});
-    var mk = svgEl("marker", { id: "orb-arrow", viewBox: "0 0 10 10", refX: "8.5",
-      refY: "5", markerWidth: "8", markerHeight: "8", orient: "auto-start-reverse",
-      markerUnits: "userSpaceOnUse" });
-    mk.appendChild(svgEl("path", { d: "M0 0 L10 5 L0 10 L3 5 Z", class: "edge-arrow" }));
-    defs.appendChild(mk); svg.appendChild(defs);
-
-    // per-hub orbit rings (small, drawn faint — each group is its own little system)
-    geo.rings.forEach(function (r) {
-      svg.appendChild(svgEl("circle", { class: "orbit-ring", cx: r.cx, cy: r.cy, r: r.r }));
-    });
-
-    // directed typed edges: group hub → group hub, arrowhead at the target
+    $("stage-title").textContent = d.dispatch_id;
+    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    var geo = geometry(d);
+    var svg = $("edges"); svg.innerHTML = "";
     geo.edges.forEach(function (e) {
-      // pull both ends back toward the control point so the arrow lands on the
-      // hub's rim (not its centre) and the tail leaves the source cleanly
-      var d1 = Math.hypot(e.qx - e.x1, e.qy - e.y1) || 1;
-      var d2 = Math.hypot(e.qx - e.x2, e.qy - e.y2) || 1;
-      var sx = e.x1 + (e.qx - e.x1) / d1 * 34, sy = e.y1 + (e.qy - e.y1) / d1 * 34;
-      var ex = e.x2 + (e.qx - e.x2) / d2 * 36, ey = e.y2 + (e.qy - e.y2) / d2 * 36;
-      var p = svgEl("path", {
-        d: "M" + sx + " " + sy + " Q " + e.qx + " " + e.qy + " " + ex + " " + ey,
-        class: "edge edge-" + (e.type || "x").replace(/[^a-z0-9-]/gi, ""),
-        "marker-end": "url(#orb-arrow)"
-      });
-      p.setAttribute("data-tip", e.tip);        // FE-2: type lives in the tooltip
+      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
+      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
+      p.setAttribute("class", "edge edge-" + (e.type || "x"));
+      p.setAttribute("fill", "none");
+      p.setAttribute("vector-effect", "non-scaling-stroke");
+      p.setAttribute("data-tip", e.tip);
       svg.appendChild(p);
     });
-
     var host = $("nodes"); host.innerHTML = "";
     geo.nodes.forEach(function (nd) {
       var el = document.createElement("div");
       el.className = "node " + nd.type + (nd.rev ? " rev" : "");
-      el.style.left = nd.x + "px"; el.style.top = nd.y + "px";
+      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
       el.setAttribute("data-tip", nd.tip);
       el.setAttribute("data-explain", nd.type === "group"
         ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."

@@ -20,17 +20,18 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{padding:12px 20px}
+#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
+#stage-title{font-size:14px;font-weight:600}
+#stage-meta{font-size:11px;opacity:.6}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
-#stage-empty[hidden]{display:none}
 #edges{position:absolute;inset:0;width:100%;height:100%}
 .edge{stroke-width:1.6px;opacity:.85}
 #nodes{position:absolute;inset:0}
 .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
 .node.agent{cursor:pointer}
 .node .g-label{font-size:11px;letter-spacing:.04em}
-.node .n-role{display:block;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.92}
+.node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
 .node .n-name{display:block;font-size:11px;line-height:1.1}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
@@ -67,8 +68,7 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
 .node.agent{padding:6px 10px;border:1px solid #2a4046;background:#0d191d;box-shadow:inset 0 0 0 1px rgba(55,214,196,.12)}
 .node.agent:hover,.node.agent.active{border-color:#37d6c4;box-shadow:0 0 14px rgba(55,214,196,.4)}
 .node.agent.rev{border-color:#f0a93b;color:#ffce7a;box-shadow:0 0 14px rgba(240,169,59,.3)}
-.node .n-role{color:#9db8b2}
-.node.agent.rev .n-role{color:#f0a93b}
+.node .n-role{color:#f0a93b}
 .edge{stroke:#37d6c4;opacity:.6}
 #legend .dot.rev{background:#f0a93b}
 #panel{background:#0e161a;border-left:1px solid #2a4046;color:#c9d6d3}
@@ -77,54 +77,6 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
 .p-meta dt{color:#5f7a7a}
 .p-prompt button{border:1px solid #2a4046;background:#0c1a1e;color:#c9d6d3}
 #tt{background:#06100f;border:1px solid #37d6c4}
-
-/* ---- mission graph legibility ---- */
-#edges{z-index:1}
-#nodes{z-index:2}
-#stage-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle at 50% 46%,rgba(55,214,196,.06),transparent 60%)}
-.edge{fill:none;stroke:#37d6c4;opacity:.85;stroke-width:2.2px}
-.edge-zig-zag{stroke-dasharray:7 5}
-.edge-feedback{stroke-dasharray:2 5}
-#edges marker path{fill:#37d6c4}
-.hub-ring{fill:none;stroke:#37d6c4;opacity:.16;stroke-width:1px}
-.hub-dot{fill:#37d6c4;opacity:.5}
-.node.agent{max-width:154px}
-.node.group{max-width:230px;text-transform:uppercase}
-.node .n-name{overflow-wrap:anywhere}
-.node .g-label{white-space:nowrap;display:inline-block}
-
-/* ---- mission status banner (context header, amber+teal HUD) ---- */
-#stage-head{border-bottom:1px solid #16262b;background:linear-gradient(180deg,#0c1519,#0b1114);position:relative}
-#stage-head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(#f0a93b,#37d6c4);opacity:.7}
-#stage-head::after{content:"";position:absolute;right:0;top:0;width:10px;height:10px;border-top:1px solid #2a4046;border-right:1px solid #2a4046;opacity:.6}
-#mc-rest{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8aa0a0}
-#mc-rest[hidden]{display:none}
-#mc-rest .mc-rest-glyph{color:#f0a93b}
-#mc-rest .mc-rest-sub{text-transform:none;letter-spacing:.02em;opacity:.6}
-
-.mc-line{display:flex;align-items:baseline;gap:12px}
-.mc-type{flex:none;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border:1px solid #f0a93b;color:#f0a93b;background:rgba(240,169,59,.08);white-space:nowrap}
-#stage-title.mc-headline{flex:1;min-width:0;font-size:13.5px;font-weight:600;line-height:1.35;color:#dcebe7;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.mc-outcome{flex:none;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1px solid #2a4046;color:#7fe4d8;white-space:nowrap}
-.mc-outcome[data-outcome="open"]{color:#f0a93b;border-color:#5a4326}
-
-.mc-sub{margin-top:5px;font-size:10.5px;letter-spacing:.03em;color:#6f8888;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.mc-sub .mc-id{color:#8aa0a0}
-.mc-sub .mc-sep{opacity:.4}
-.mc-sub .mc-when{color:#37d6c4;opacity:.85}
-
-.mc-stats{margin-top:9px;display:flex;flex-wrap:wrap;gap:6px}
-.mc-stat{display:inline-flex;align-items:baseline;gap:5px;font-size:10px;letter-spacing:.06em;padding:2px 8px;border:1px solid #16262b;background:#0c171b}
-.mc-stat .mc-k{color:#5f7a7a;text-transform:uppercase}
-.mc-stat .mc-v{color:#c9d6d3;font-weight:600}
-.mc-stat.is-rev{border-color:#5a4326}
-.mc-stat.is-rev .mc-v{color:#ffce7a}
-
-.mc-ctx{margin-top:8px}
-.mc-ctx-toggle{font:inherit;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8aa0a0;background:none;border:0;padding:2px 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.mc-ctx-toggle:hover{color:#37d6c4}
-.mc-ctx-toggle .mc-ctx-caret{color:#f0a93b}
-.mc-ctx-body{margin:7px 0 2px;font-size:12px;line-height:1.6;color:#aebfbc;max-width:78ch;border-left:1px solid #2a4046;padding-left:11px}
 
 </style>
 </head><body>
@@ -147,27 +99,10 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
   </aside>
 
   <main id="main">
-    <header id="stage-head" data-mc="idle">
-      <div id="mc-rest">
-        <span class="mc-rest-glyph">&#9670;</span> STANDBY &middot; nenhum dispatch em foco
-        <span class="mc-rest-sub">selecione um alvo no painel a esquerda</span>
-      </div>
-      <div id="mc-banner" hidden>
-        <div class="mc-line">
-          <span id="mc-type" class="mc-type"></span>
-          <span id="stage-title" class="mc-headline"></span>
-          <span id="mc-outcome" class="mc-outcome" hidden></span>
-        </div>
-        <div id="stage-meta" class="mc-sub"></div>
-        <div id="mc-stats" class="mc-stats"></div>
-        <div id="mc-ctx" class="mc-ctx" hidden>
-          <button id="mc-ctx-toggle" type="button" class="mc-ctx-toggle" aria-expanded="false" aria-controls="mc-ctx-body">
-            <span class="mc-ctx-caret">&#9656;</span> contexto
-          </button>
-          <p id="mc-ctx-body" class="mc-ctx-body" hidden></p>
-        </div>
-      </div>
-    </header>
+    <div id="stage-head">
+      <span id="stage-title">Selecione um dispatch</span>
+      <span id="stage-meta"></span>
+    </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
       <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -242,19 +177,6 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
   function nameOf(a) { return a.agent_name || "(sem nome)"; }
-  // FE-7: render an ISO stamp as a readable date and DECLARE its zone (UTC) on-screen.
-  function fmtUTC(iso) {
-    if (!iso) return "data desconhecida";
-    var t = new Date(iso);
-    if (isNaN(t.getTime())) return String(iso);
-    var p = function (n) { return (n < 10 ? "0" : "") + n; };
-    return t.getUTCFullYear() + "-" + p(t.getUTCMonth() + 1) + "-" + p(t.getUTCDate())
-      + " " + p(t.getUTCHours()) + ":" + p(t.getUTCMinutes()) + " UTC";
-  }
-  function shortFolder(f) {
-    var parts = String(f).replace(/\/+$/, "").split("/");
-    return parts[parts.length - 1] || String(f);
-  }
 
   // ---- dispatch list -----------------------------------------------------
   function renderList() {
@@ -290,285 +212,114 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
     renderGraph(state.current);
   }
 
-  // ---- geometry (mission-control flow rail): pixel-space layout ----------
-  // Groups are a left→right line of "stations" (an obvious entry at the left,
-  // exit at the right); each station is a nameplate with its agents clustered
-  // in a compact column directly beneath it, and directed group→group arrows
-  // follow the flow. A faint radar sits centred BEHIND as pure decoration —
-  // never the layout skeleton.
-  // Returns {nodes:[{id,type,x,y,label,agent,group,rev,tip}], grects:{gid:{x,y,hw,hh}},
-  //          edges:[{from,to,type,tip}], hub:{x,y,r}|null}. All coords in px.
-  function geometry(d, W, H) {
+  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
+  function geometry(d) {
     var groups = d.groups || [], G = groups.length;
-    var pad = 26;                                 // stage padding
-    var nodes = [], grects = {}, hub = null, i;
+    var nodes = [], gpos = {}, i, j;
+    var lay = V.layout;
 
-    // base metrics (unscaled px)
-    var AW0 = 150, AH0 = 50, GW0 = 168, GH0 = 28;
-    var gy0 = 12, nameGap0 = 14, colGap0 = 16;
-    var usableW = W - 2 * pad, usableH = H - 2 * pad;
-    var minGap0 = 40;                             // desired min horizontal gap between stations
-
-    // agents stack in ONE column so a station stays ~1 agent wide (many fit L→R);
-    // only a large group spills into a 2nd column to bound its height (R2)
-    function colsOf(n) { return n <= 3 ? 1 : 2; }
-    function blockOf(g, AW, AH, gy, colGap) {
-      var n = (g.agents || []).length || 1, c = colsOf(n), rows = Math.ceil(n / c);
-      return { n: n, cols: c, rows: rows,
-        bw: c * AW + (c - 1) * colGap, bh: rows * AH + (rows - 1) * gy };
-    }
-    // one uniform scale so the whole rail (station widths + gaps) and the tallest
-    // station both fit the stage (R5)
-    function fitScale() {
-      var s = 1, sumW = 0, maxUH = 0, k;
-      for (k = 0; k < G; k++) {
-        var b = blockOf(groups[k], AW0, AH0, gy0, colGap0);
-        sumW += Math.max(b.bw, GW0);
-        maxUH = Math.max(maxUH, GH0 + nameGap0 + b.bh);
+    function place(gi, group) {
+      var agents = group.agents || [], n = agents.length;
+      var gx, gy, cx, cy;
+      if (lay === "columns") {
+        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
+        });
+      } else if (lay === "rows") {
+        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
+        });
+      } else if (lay === "radial") {
+        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
+        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var aa = ai / Math.max(1, n) * 2 * Math.PI;
+          var r = n === 1 ? 0 : 11;
+          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
+        });
+      } else if (lay === "orbit") {
+        var rad = 10 + gi * (40 / Math.max(1, G));
+        cx = 50; cy = 50 - rad;
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
+          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
+        });
+      } else if (lay === "timeline") {
+        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
+        nodes.push(gnode(group, gx, 50));
+        agents.forEach(function (a, ai) {
+          var side = ai % 2 ? 1 : -1;
+          var step = Math.floor(ai / 2) + 1;
+          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
+        });
+      } else { // scatter — use unsigned shifts so positions never go negative
+        var h = hash(group.group_id + gi);
+        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var hh = hash((a.agent_name || "") + group.group_id + ai);
+          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
+        });
       }
-      var needW = sumW + minGap0 * Math.max(0, G - 1);
-      if (needW > usableW) s = Math.min(s, usableW / needW);
-      if (maxUH > usableH) s = Math.min(s, usableH / maxUH);
-      return Math.max(0.6, s);
+      gpos[group.group_id] = { x: cx, y: cy };
     }
-    var scale = fitScale();
-    var AW = AW0 * scale, AH = AH0 * scale, GW = GW0 * scale, GH = GH0 * scale;
-    var gy = gy0 * scale, nameGap = nameGap0 * scale, colGap = colGap0 * scale;
-
-    function cl(v, lo, hi) { return hi < lo ? (lo + hi) / 2 : Math.max(lo, Math.min(hi, v)); }
-    function gnode(g, x, y) {
-      nodes.push({ id: "g:" + g.group_id, type: "group",
-        x: cl(x, pad + GW / 2, W - pad - GW / 2), y: cl(y, pad + GH / 2, H - pad - GH / 2),
-        label: g.group_id, group: g,
-        tip: g.anti_bias ? ("anti-vies: " + g.anti_bias)
-                         : ("estacao · " + (g.n || (g.agents || []).length) + " agente(s)") });
+    function gnode(group, x, y) {
+      return { id: "g:" + group.group_id, type: "group", x: x, y: y,
+        label: group.group_id, group: group,
+        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
     }
-    function anode(a, g, x, y) {
-      nodes.push({ id: "a:" + g.group_id + ":" + nodes.length, type: "agent",
-        x: cl(x, pad + AW / 2, W - pad - AW / 2), y: cl(y, pad + AH / 2, H - pad - AH / 2),
-        label: nameOf(a), agent: a, group: g, rev: isRev(a),
+    function anode(a, group, x, y) {
+      nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
+        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
         tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
     }
-    // one station: nameplate at (scx, npY); agents in a grid directly below it,
-    // so the label↔agent clearance is constant everywhere (R1)
-    function placeStation(g, scx, npY) {
-      var b = blockOf(g, AW, AH, gy, colGap);
-      gnode(g, scx, npY);
-      var gridTop = npY + GH / 2 + nameGap + AH / 2;   // centre-y of the first agent row
-      (g.agents || []).forEach(function (a, j) {
-        var col = j % b.cols, row = Math.floor(j / b.cols);
-        var rowCount = row === b.rows - 1 ? (b.n - row * b.cols) : b.cols;
-        anode(a, g, scx + (col - (rowCount - 1) / 2) * (AW + colGap), gridTop + row * (AH + gy));
-      });
-    }
-
-    // station widths + tallest unit (drives horizontal spread & vertical centring)
-    var sw = [], maxUnitH = 0;
-    for (i = 0; i < G; i++) {
-      var bi = blockOf(groups[i], AW, AH, gy, colGap);
-      sw.push(Math.max(bi.bw, GW));
-      maxUnitH = Math.max(maxUnitH, GH + nameGap + bi.bh);
-    }
-    var totalW = sw.reduce(function (a, b) { return a + b; }, 0);
-    // even gaps, capped so few stations don't fling to the stage edges (R5)
-    var gap = 0;
-    if (G > 1) {
-      gap = (usableW - totalW) / (G - 1);
-      gap = Math.max(40 * scale, Math.min(gap, 150 * scale));
-    }
-    var rowW = totalW + gap * Math.max(0, G - 1);
-    var startX = pad + Math.max(0, (usableW - rowW) / 2);        // centre the rail
-    var railY = pad + Math.max(0, (usableH - maxUnitH) / 2) + GH / 2;  // vertically centred
-
-    // nameplates ride ONE flat rail so the directed arrows are colinear and read
-    // as a single left→right flow spine (entry at far left, exit at far right)
-    var cursor = startX;
-    for (i = 0; i < G; i++) {
-      var scx = cursor + sw[i] / 2;
-      placeStation(groups[i], scx, railY);
-      cursor += sw[i] + gap;
-    }
-    // decorative radar hub, centred behind the flow (pure decoration, R-decor)
-    hub = { x: W / 2, y: railY + maxUnitH * 0.42,
-      r: Math.max(30, Math.min(usableH, usableW) * 0.16) };
-
-    // edge anchors = the STATION NAMEPLATE rects (on the rail), so directed
-    // group→group arrows run header-to-header as a legible flow spine above the
-    // agent clusters (R3) rather than getting buried in the tall unit boxes
-    nodes.forEach(function (nd) {
-      if (nd.type !== "group") return;
-      grects[nd.group.group_id] = { x: nd.x, y: nd.y, hw: GW / 2, hh: GH / 2 };
-    });
+    for (i = 0; i < G; i++) place(i, groups[i]);
 
     var edges = [];
     (d.connections || []).forEach(function (c) {
-      if (grects[c.from] && grects[c.to])
-        edges.push({ from: c.from, to: c.to, type: c.type,
-          tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
+      var f = gpos[c.from], t = gpos[c.to];
+      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
     });
-    return { nodes: nodes, grects: grects, edges: edges, hub: hub, scale: scale };
+    return { nodes: nodes, edges: edges };
   }
-  // boundary point of a rect from its centre along direction (dx,dy)
-  function rayRect(R, dx, dy) {
-    var tx = dx !== 0 ? R.hw / Math.abs(dx) : Infinity;
-    var ty = dy !== 0 ? R.hh / Math.abs(dy) : Infinity;
-    var t = Math.min(tx, ty);
-    return { x: R.x + dx * t, y: R.y + dy * t };
-  }
-
-  // ---- mission status banner (context header, NONE of this needs the graph)
-  // FE-1: context is opt-in (collapsed disclosure) · FE-2: qualifiers ride #tt ·
-  // FE-5: nulls omitted/handled · FE-7: UTC + counts declared on-screen.
-  function populateHead(d) {
-    $("stage-head").setAttribute("data-mc", "active");
-    $("mc-rest").hidden = true;
-    $("mc-banner").hidden = false;
-
-    // KIND — prominent TYPE status ("coding, research, review…")
-    var type = d.dispatch_type || "others";
-    var tEl = $("mc-type");
-    tEl.textContent = type;
-    tEl.setAttribute("data-tip", "KIND do dispatch (dispatch_type): " + type);
-
-    // HEADLINE — the objective; dispatch_id drops to the secondary subtitle line
-    var title = $("stage-title");
-    title.textContent = d.goal || "(sem objetivo declarado)";
-    title.setAttribute("data-tip", d.goal || "(sem objetivo declarado)");
-
-    // computed counts (summed off the dispatch object, not the rendered graph)
-    var ags = agentsOf(d);
-    var total = ags.length;
-    var grp = (d.groups || []).length;
-    var conns = (d.connections || []).length;
-    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
-
-    // secondary line: dispatch_id + created, zone DECLARED as UTC (FE-7)
-    $("stage-meta").innerHTML =
-      '<span class="mc-id">' + esc(d.dispatch_id) + '</span>' +
-      '<span class="mc-sep">&middot;</span>' +
-      '<span class="mc-when" data-tip="carimbo de criacao (created), fuso declarado UTC — FE-7">'
-        + esc(fmtUTC(d.created)) + '</span>';
-
-    // OUTCOME — from close (may be null → declare "em curso"); loops_used qualifier
-    var oc = $("mc-outcome");
-    oc.hidden = false;
-    if (d.close && d.close.exit_reason) {
-      var loops = d.close.agents_spawned && d.close.agents_spawned.loops_used;
-      oc.textContent = "▮ " + d.close.exit_reason + (loops != null ? " · " + loops + "L" : "");
-      oc.setAttribute("data-outcome", "closed");
-      oc.setAttribute("data-tip", "OUTCOME de fechamento (close.exit_reason): " + d.close.exit_reason
-        + (loops != null ? " · loops_used=" + loops : ""));
-    } else {
-      oc.textContent = "▮ em curso";
-      oc.setAttribute("data-outcome", "open");
-      oc.setAttribute("data-tip", "sem registro de fechamento (close ausente)");
-    }
-
-    // telemetry stat fields — compact readouts, full detail rides #tt (FE-2)
-    var stats = [
-      { k: "AG", v: total, tip: total + " agente(s), somados sobre os grupos" },
-      { k: "GRP", v: grp, tip: grp + " grupo(s) / estacao(oes)" },
-      { k: "LIG", v: conns, tip: conns + " ligacao(oes) tipada(s) entre grupos" },
-      { k: "REV", v: revs, cls: revs ? "is-rev" : "", tip: revs + " revisor(es): papel skeptic/auditor/reviewer" },
-      { k: "LOOP", v: d.max_loops != null ? d.max_loops : "—",
-        tip: "max_loops = " + (d.max_loops != null ? d.max_loops : "nao declarado") }
-    ];
-    // FE-5: null anti_bias_global / working_folder are OMITTED, not shown empty
-    if (d.anti_bias_global)
-      stats.push({ k: "ANTI-VIES", v: "✓", cls: "is-rev",
-        tip: "eixo anti-vies global: " + d.anti_bias_global });
-    if (d.working_folder)
-      stats.push({ k: "PASTA", v: shortFolder(d.working_folder),
-        tip: "working_folder: " + d.working_folder });
-    $("mc-stats").innerHTML = stats.map(function (s) {
-      return '<span class="mc-stat' + (s.cls ? " " + s.cls : "") + '"'
-        + (s.tip ? ' data-tip="' + esc(s.tip) + '"' : "") + '>'
-        + '<span class="mc-k">' + esc(s.k) + '</span>'
-        + '<span class="mc-v">' + esc(s.v) + '</span></span>';
-    }).join("");
-
-    // FE-1: framing paragraph stays collapsed; revealed only via the "contexto" disclosure
-    var ctx = $("mc-ctx"), body = $("mc-ctx-body"), tog = $("mc-ctx-toggle");
-    if (d.context) {
-      ctx.hidden = false;
-      body.textContent = d.context;
-      body.hidden = true;
-      tog.setAttribute("aria-expanded", "false");
-      tog.querySelector(".mc-ctx-caret").textContent = "▸";
-    } else {
-      ctx.hidden = true;
-    }
-  }
+  function clamp(v) { return Math.max(6, Math.min(94, v)); }
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
 
   // ---- render graph ------------------------------------------------------
-  var SVGNS = "http://www.w3.org/2000/svg";
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    populateHead(d);   // themed context header (touches only #stage-head, not the graph body)
-    var host = $("nodes"); host.innerHTML = "";
+    $("stage-title").textContent = d.dispatch_id;
+    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
+    var geo = geometry(d);
     var svg = $("edges"); svg.innerHTML = "";
-    // measure the stage in pixels so the SVG user unit == 1px (no aspect distortion, R5)
-    var r = host.getBoundingClientRect();
-    var W = Math.round(r.width) || host.clientWidth || 600;
-    var H = Math.round(r.height) || host.clientHeight || 400;
-    var geo = geometry(d, W, H);
-
-    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-    svg.setAttribute("preserveAspectRatio", "none"); // viewBox matches px size 1:1 → undistorted
-    var defs = document.createElementNS(SVGNS, "defs");
-    defs.innerHTML = '<marker id="mc-arrow" markerWidth="15" markerHeight="12" refX="11" refY="4" '
-      + 'orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,4 L0,8 Z"></path></marker>';
-    svg.appendChild(defs);
-
-    // decorative mission hub (non-interactive)
-    if (geo.hub) {
-      var h = geo.hub;
-      [h.r, h.r * 0.6].forEach(function (rr) {
-        var c = document.createElementNS(SVGNS, "circle");
-        c.setAttribute("cx", h.x); c.setAttribute("cy", h.y); c.setAttribute("r", rr);
-        c.setAttribute("class", "hub-ring"); svg.appendChild(c);
-      });
-      var dot = document.createElementNS(SVGNS, "circle");
-      dot.setAttribute("cx", h.x); dot.setAttribute("cy", h.y); dot.setAttribute("r", 3);
-      dot.setAttribute("class", "hub-dot"); svg.appendChild(dot);
-    }
-
-    // directed, typed group→group connectors, boundary-to-boundary (R3)
     geo.edges.forEach(function (e) {
-      var A = geo.grects[e.from], B = geo.grects[e.to]; if (!A || !B) return;
-      var dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1; dx /= L; dy /= L;
-      var s = rayRect(A, dx, dy), en = rayRect(B, -dx, -dy);
-      var gap = 5, arrow = 12, sx, sy, ex, ey;
-      var seg = (en.x - s.x) * dx + (en.y - s.y) * dy;   // signed boundary gap along d
-      if (seg < arrow + 8) {                             // near/overlapping rects: minimal stub into B
-        ex = en.x; ey = en.y; sx = en.x - dx * (arrow + 8); sy = en.y - dy * (arrow + 8);
-      } else {
-        sx = s.x + dx * gap; sy = s.y + dy * gap;
-        ex = en.x - dx * (gap + arrow); ey = en.y - dy * (gap + arrow);
-      }
-      var ml = Math.hypot(ex - sx, ey - sy), off = Math.min(ml * 0.14, 26);
-      var mx = (sx + ex) / 2 + (-dy) * off, my = (sy + ey) / 2 + dx * off;
-      var p = document.createElementNS(SVGNS, "path");
-      p.setAttribute("d", "M" + sx.toFixed(1) + " " + sy.toFixed(1) + " Q "
-        + mx.toFixed(1) + " " + my.toFixed(1) + " " + ex.toFixed(1) + " " + ey.toFixed(1));
+      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
+      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
       p.setAttribute("class", "edge edge-" + (e.type || "x"));
-      p.setAttribute("marker-end", "url(#mc-arrow)");
+      p.setAttribute("fill", "none");
+      p.setAttribute("vector-effect", "non-scaling-stroke");
       p.setAttribute("data-tip", e.tip);
       svg.appendChild(p);
     });
-
+    var host = $("nodes"); host.innerHTML = "";
     geo.nodes.forEach(function (nd) {
       var el = document.createElement("div");
       el.className = "node " + nd.type + (nd.rev ? " rev" : "");
-      el.style.left = nd.x + "px"; el.style.top = nd.y + "px";
-      if (geo.scale < 1) el.style.transform = "translate(-50%,-50%) scale(" + geo.scale.toFixed(3) + ")";
+      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
       el.setAttribute("data-tip", nd.tip);
       el.setAttribute("data-explain", nd.type === "group"
-        ? "Estacao de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
+        ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
         : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
       el.innerHTML = nd.type === "group"
         ? '<span class="g-label">' + esc(nd.label) + "</span>"
-        : '<span class="n-role">' + esc(nd.agent.role || "?") + "</span>" +
+        : '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
           '<span class="n-name">' + esc(nd.label) + "</span>";
       if (nd.type === "agent") {
         el.tabIndex = 0;
@@ -646,12 +397,6 @@ body{font-family:"Roboto Mono","IBM Plex Mono",monospace;color:#c9d6d3;backgroun
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
-    });
-    $("mc-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in: reveal framing paragraph
-      var b = $("mc-ctx-body"), open = b.hidden;
-      b.hidden = !open;
-      this.setAttribute("aria-expanded", String(open));
-      this.querySelector(".mc-ctx-caret").textContent = open ? "▾" : "▸";
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");

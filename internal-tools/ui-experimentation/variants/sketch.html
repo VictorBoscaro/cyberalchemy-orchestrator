@@ -20,34 +20,19 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{position:relative;flex:0 0 auto;padding:12px 20px 10px}
-#stage-head .sh-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.sh-type{font-size:10px;text-transform:uppercase;letter-spacing:.14em;padding:3px 10px}
-.sh-outcome{font-size:10px;text-transform:uppercase;letter-spacing:.1em;padding:2px 9px}
-.sh-goal{margin:8px 0 2px;font-size:16px;line-height:1.28;font-weight:700}
-.sh-id{margin:0;font-size:10.5px;opacity:.55;letter-spacing:.02em;word-break:break-all}
-.sh-stats{display:flex;flex-wrap:wrap;gap:5px 8px;margin:8px 0 0}
-.sh-stats:empty{display:none}
-.sh-scrib{font-size:10.5px;letter-spacing:.02em;padding:1px 8px;cursor:default}
-.sh-foot{display:flex;align-items:center;gap:12px;margin:8px 0 0;flex-wrap:wrap}
-.sh-when{font-size:10.5px;opacity:.6}
-.sh-ctx-toggle{font:inherit;font-size:11px;cursor:pointer;background:none;border:0;padding:2px 4px}
-.sh-ctx{position:absolute;left:16px;right:16px;top:100%;z-index:20;margin-top:-2px;max-height:42vh;overflow:auto;padding:14px 16px;font-size:12.5px;line-height:1.55}
-#stage-head[data-empty] .sh-goal{opacity:.55;font-weight:400}
+#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
+#stage-title{font-size:14px;font-weight:600}
+#stage-meta{font-size:11px;opacity:.6}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
-#stage-empty[hidden]{display:none}
-#edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#edges{position:absolute;inset:0;width:100%;height:100%}
 .edge{stroke-width:1.6px;opacity:.85}
-.edge-hit{fill:none;stroke:transparent;stroke-width:16px;pointer-events:stroke}
-#nodes{position:absolute;inset:0;display:flex;flex-wrap:wrap;align-items:center;align-content:center;justify-content:center;gap:22px 32px;padding:26px 30px;pointer-events:none}
-.grp-enclosure{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;padding:12px 14px 14px;pointer-events:none}
-.grp-agents{display:flex;flex-direction:column;gap:9px;align-items:stretch;width:100%}
-.node{position:relative;cursor:default;user-select:none;text-align:center;pointer-events:auto;max-width:152px}
+#nodes{position:absolute;inset:0}
+.node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
 .node.agent{cursor:pointer}
 .node .g-label{font-size:11px;letter-spacing:.04em}
-.node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7;letter-spacing:.06em}
-.node .n-name{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11px;line-height:1.15;word-break:break-word}
+.node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
+.node .n-name{display:block;font-size:11px;line-height:1.1}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 #legend .mark{margin-left:auto;opacity:.5}
@@ -79,29 +64,11 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
 .ditem{border:2px solid #2b2b2b;border-radius:14px 8px 16px 6px;background:#fff}
 .ditem:hover,.ditem.sel{background:#fff6c9;transform:rotate(-.4deg)}
 .dtype{color:#c0392b}
-/* context header — hand-drawn index card / header note */
-#stage-head{border-bottom:2px dashed #2b2b2b}
-.sh-type{border:2px solid #c0392b;color:#c0392b;background:#fff;border-radius:12px 6px 14px 5px;font-weight:700;transform:rotate(-1.5deg)}
-.sh-outcome{border:2px solid #2b7a3f;color:#2b7a3f;background:#fff;border-radius:10px 16px 8px 14px;font-weight:700;transform:rotate(1.3deg)}
-.sh-outcome[data-open]{border-color:#b06a00;color:#b06a00}
-.sh-goal{color:#2b2b2b}
-.sh-scrib{border:1.5px solid #2b2b2b;border-radius:9px 5px 11px 6px;background:#fffdf2}
-.sh-scrib:nth-child(even){transform:rotate(-.7deg)}
-.sh-scrib:nth-child(odd){transform:rotate(.6deg)}
-.sh-ctx-toggle{color:#2b6cb0;text-decoration:underline wavy;text-underline-offset:3px}
-.sh-ctx-toggle:hover{color:#c0392b}
-.sh-ctx{border:2px solid #2b2b2b;border-radius:16px 8px 18px 10px;background:#fffef7;box-shadow:3px 4px 0 rgba(43,43,43,.2);
-  background-image:repeating-linear-gradient(#fffef7,#fffef7 21px,#e4ecf5 22px)}
 .node.group{padding:3px 10px;border:2px solid #2b2b2b;border-radius:20px 8px 22px 9px;background:#fff;font-weight:700}
 .node.agent{padding:7px 12px;border:2px solid #2b2b2b;border-radius:14px 20px 10px 18px;background:#fff;box-shadow:2px 3px 0 rgba(43,43,43,.25)}
 .node.agent:hover,.node.agent.active{background:#d7f0ff;transform:rotate(.6deg)}
 .node.agent.rev{background:#ffe0b3;border-style:dashed}
-.grp-enclosure{border:2px solid #2b2b2b;border-radius:38px 22px 42px 20px;background:rgba(255,253,240,.5)}
-.grp-enclosure.rev-grp{border-style:dashed;background:rgba(255,238,208,.45)}
-.edge{fill:none;stroke:#2b2b2b;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5 4}
-.edge.edge-sequential{stroke-dasharray:6 5}
-.edge.edge-zig-zag{stroke-dasharray:2 5}
-.edge-arrow{fill:#2b2b2b;stroke:none}
+.edge{stroke:#2b2b2b;stroke-width:2px;stroke-linecap:round;stroke-dasharray:1 5}
 #legend .dot.rev{background:#e08a1e}
 #panel{background:#fffdf2;border-left:2px solid #2b2b2b;color:#2b2b2b}
 #p-name{font-weight:700}
@@ -130,20 +97,10 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
   </aside>
 
   <main id="main">
-    <header id="stage-head" data-empty="1" aria-label="Cabecalho do dispatch">
-      <div class="sh-top">
-        <span id="sh-type" class="sh-type">—</span>
-        <span id="sh-outcome" class="sh-outcome" hidden></span>
-      </div>
-      <h2 id="sh-goal" class="sh-goal">Selecione um dispatch</h2>
-      <p id="sh-id" class="sh-id"></p>
-      <div id="sh-stats" class="sh-stats"></div>
-      <div class="sh-foot">
-        <span id="sh-when" class="sh-when"></span>
-        <button id="sh-ctx-toggle" class="sh-ctx-toggle" type="button" aria-expanded="false" aria-controls="sh-ctx" hidden>contexto</button>
-      </div>
-      <div id="sh-ctx" class="sh-ctx" role="region" aria-label="Contexto do dispatch" hidden></div>
-    </header>
+    <div id="stage-head">
+      <span id="stage-title">Selecione um dispatch</span>
+      <span id="stage-meta"></span>
+    </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
       <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -244,70 +201,6 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
   }
   function shorten(s, n) { s = s || ""; return s.length > n ? s.slice(0, n - 1) + "…" : s; }
 
-  // ---- context header (FE-1 opt-in context · FE-2 qualifiers · FE-7 UTC/counts) ----
-  // Enriches #stage-head from the picked dispatch object alone — needs no graph.
-  var MONTHS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-  function fmtUTC(iso) {                              // FE-7: zone declared explicitly, not implied
-    if (!iso) return "";
-    var t = new Date(iso); if (isNaN(t.getTime())) return String(iso);
-    var p = function (n) { return n < 10 ? "0" + n : "" + n; };
-    return t.getUTCDate() + " " + MONTHS[t.getUTCMonth()] + " " + t.getUTCFullYear() +
-      ", " + p(t.getUTCHours()) + ":" + p(t.getUTCMinutes()) + " UTC";
-  }
-  function scrib(txt, tip) {                          // FE-2: full value stays in the #tt tooltip
-    return '<span class="sh-scrib"' + (tip ? ' data-tip="' + esc(tip) + '"' : "") +
-      ">" + esc(txt) + "</span>";
-  }
-  function fillHead(d) {
-    var head = $("stage-head");
-    head.removeAttribute("data-empty");
-    var ags = agentsOf(d);
-    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
-
-    $("sh-type").textContent = d.dispatch_type || "outros";     // KIND — prominent TYPE tag
-    $("sh-type").className = "sh-type t-" + esc(d.dispatch_type || "others");
-    $("sh-goal").textContent = d.goal || "(sem objetivo registrado)";  // HEADLINE
-    $("sh-id").textContent = d.dispatch_id || "";               // secondary subtitle
-
-    // OUTCOME stamp — FE-5: null close renders an honest "em aberto", never a blank
-    var out = $("sh-outcome");
-    if (d.close && d.close.exit_reason) {
-      var loops = d.close.agents_spawned && d.close.agents_spawned.loops_used;
-      out.hidden = false; out.removeAttribute("data-open");
-      out.textContent = d.close.exit_reason;
-      out.setAttribute("data-tip", "encerrado" + (loops != null ? " · " + loops + " loop(s) usados" : ""));
-    } else {
-      out.hidden = false; out.setAttribute("data-open", "1");
-      out.textContent = "em aberto";
-      out.setAttribute("data-tip", "dispatch sem registro de encerramento");
-    }
-
-    // stat scribbles — compact band (FE-7 counts), not a wall
-    var stats = [
-      scrib(ags.length + " ag", "agentes no total"),
-      scrib(d.groups.length + " grp", "grupos"),
-      scrib(((d.connections || []).length) + " liga", "ligacoes entre grupos"),
-      scrib(revs + " rev", "revisor / cetico / auditor")
-    ];
-    if (d.max_loops != null) stats.push(scrib("max " + d.max_loops + " loop", "teto de loops"));
-    if (d.anti_bias_global) stats.push(scrib("anti-vies", "eixo anti-vies: " + d.anti_bias_global)); // FE-5: null omitted
-    if (d.working_folder) stats.push(scrib("pasta", "working_folder: " + d.working_folder));         // FE-5: null omitted
-    $("sh-stats").innerHTML = stats.join("");
-
-    $("sh-when").textContent = fmtUTC(d.created);
-
-    // context — FE-1: collapsed by default, summoned on click; toggle hidden when absent
-    var ctx = $("sh-ctx"), tog = $("sh-ctx-toggle");
-    if (d.context) {
-      tog.hidden = false;
-      ctx.textContent = d.context;
-      ctx.hidden = true; tog.setAttribute("aria-expanded", "false");
-      tog.textContent = "contexto";
-    } else {
-      tog.hidden = true; ctx.hidden = true; ctx.textContent = "";
-    }
-  }
-
   function pick(i, li) {
     state.current = state.data[i];
     var prev = document.querySelector(".ditem.sel");
@@ -317,159 +210,125 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
     renderGraph(state.current);
   }
 
-  // ---- geometry: logical clustered model -------------------------------
-  // Groups become drawn enclosures (flex-flowed by renderGraph); agents live
-  // INSIDE their enclosure; edges stay group->group and are drawn in pixel
-  // space after layout (see drawEdges) so nothing distorts.
+  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
   function geometry(d) {
-    var groups = (d.groups || []).map(function (group) {
-      var agents = (group.agents || []).map(function (a) {
-        return {
-          agent: a, group: group, name: nameOf(a), role: a.role || "?", rev: isRev(a),
-          tip: (a.role || "agente") + (a.model ? (" · " + a.model) : ""),
-          explain: isRev(a)
-            ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta."
-            : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."
-        };
-      });
-      return {
-        id: group.group_id, label: group.group_id, group: group, agents: agents,
-        rev: agents.some(function (x) { return x.rev; }),
-        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias)
-          : ("grupo · " + (group.n || agents.length) + " agente(s)"),
-        explain: "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
-      };
+    var groups = d.groups || [], G = groups.length;
+    var nodes = [], gpos = {}, i, j;
+    var lay = V.layout;
+
+    function place(gi, group) {
+      var agents = group.agents || [], n = agents.length;
+      var gx, gy, cx, cy;
+      if (lay === "columns") {
+        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
+        });
+      } else if (lay === "rows") {
+        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
+        });
+      } else if (lay === "radial") {
+        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
+        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var aa = ai / Math.max(1, n) * 2 * Math.PI;
+          var r = n === 1 ? 0 : 11;
+          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
+        });
+      } else if (lay === "orbit") {
+        var rad = 10 + gi * (40 / Math.max(1, G));
+        cx = 50; cy = 50 - rad;
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
+          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
+        });
+      } else if (lay === "timeline") {
+        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
+        nodes.push(gnode(group, gx, 50));
+        agents.forEach(function (a, ai) {
+          var side = ai % 2 ? 1 : -1;
+          var step = Math.floor(ai / 2) + 1;
+          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
+        });
+      } else { // scatter — use unsigned shifts so positions never go negative
+        var h = hash(group.group_id + gi);
+        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var hh = hash((a.agent_name || "") + group.group_id + ai);
+          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
+        });
+      }
+      gpos[group.group_id] = { x: cx, y: cy };
+    }
+    function gnode(group, x, y) {
+      return { id: "g:" + group.group_id, type: "group", x: x, y: y,
+        label: group.group_id, group: group,
+        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
+    }
+    function anode(a, group, x, y) {
+      nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
+        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
+        tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
+    }
+    for (i = 0; i < G; i++) place(i, groups[i]);
+
+    var edges = [];
+    (d.connections || []).forEach(function (c) {
+      var f = gpos[c.from], t = gpos[c.to];
+      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
     });
-    var have = {};
-    groups.forEach(function (g) { have[g.id] = true; });
-    var edges = (d.connections || []).filter(function (c) {
-      return have[c.from] && have[c.to] && c.from !== c.to;
-    }).map(function (c) {
-      return { from: c.from, to: c.to, type: c.type || "x",
-        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to };
-    });
-    return { groups: groups, edges: edges };
+    return { nodes: nodes, edges: edges };
   }
+  function clamp(v) { return Math.max(6, Math.min(94, v)); }
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
 
-  // ---- render graph: clustered enclosures + pixel-space wobbly arrows ----
+  // ---- render graph ------------------------------------------------------
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-    fillHead(d);
+    $("stage-title").textContent = d.dispatch_id;
+    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
     var geo = geometry(d);
+    var svg = $("edges"); svg.innerHTML = "";
+    geo.edges.forEach(function (e) {
+      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
+      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
+      p.setAttribute("class", "edge edge-" + (e.type || "x"));
+      p.setAttribute("fill", "none");
+      p.setAttribute("vector-effect", "non-scaling-stroke");
+      p.setAttribute("data-tip", e.tip);
+      svg.appendChild(p);
+    });
     var host = $("nodes"); host.innerHTML = "";
-    $("edges").innerHTML = "";
-    var boxes = {};
-
-    geo.groups.forEach(function (gp) {
-      var box = document.createElement("div");
-      box.className = "grp-enclosure" + (gp.rev ? " rev-grp" : "");
-      var rot = ((hash(gp.id) % 22) / 10) - 1.1; // -1.1..1.0 deg sketch tilt
-      box.style.transform = "rotate(" + rot.toFixed(2) + "deg)";
-
-      var title = document.createElement("div");
-      title.className = "node group";
-      title.setAttribute("data-tip", gp.tip);
-      title.setAttribute("data-explain", gp.explain);
-      title.innerHTML = '<span class="g-label">' + esc(gp.label) + "</span>";
-      box.appendChild(title);
-
-      var agWrap = document.createElement("div");
-      agWrap.className = "grp-agents";
-      gp.agents.forEach(function (nd) {
-        var el = document.createElement("div");
-        el.className = "node agent" + (nd.rev ? " rev" : "");
-        el.setAttribute("data-tip", nd.tip);
-        el.setAttribute("data-explain", nd.explain);
-        el.innerHTML = '<span class="n-role">' + esc(nd.role) + "</span>" +
-          '<span class="n-name">' + esc(nd.name) + "</span>";
+    geo.nodes.forEach(function (nd) {
+      var el = document.createElement("div");
+      el.className = "node " + nd.type + (nd.rev ? " rev" : "");
+      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
+      el.setAttribute("data-tip", nd.tip);
+      el.setAttribute("data-explain", nd.type === "group"
+        ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
+        : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
+      el.innerHTML = nd.type === "group"
+        ? '<span class="g-label">' + esc(nd.label) + "</span>"
+        : '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
+          '<span class="n-name">' + esc(nd.label) + "</span>";
+      if (nd.type === "agent") {
         el.tabIndex = 0;
         el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
         el.addEventListener("keydown", function (e) {
           if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
         });
-        agWrap.appendChild(el);
-      });
-      box.appendChild(agWrap);
-      host.appendChild(box);
-      boxes[gp.id] = box;
-    });
-
-    drawEdges(geo, boxes);
-  }
-
-  // ---- edges: measured in pixels, viewBox == pixel box (no aspect distortion)
-  var SVGNS = "http://www.w3.org/2000/svg";
-  function drawEdges(geo, boxes) {
-    var svg = $("edges");
-    var wrap = $("stage-wrap").getBoundingClientRect();
-    var W = Math.max(1, Math.round(wrap.width)), H = Math.max(1, Math.round(wrap.height));
-    svg.setAttribute("viewBox", "0 0 " + W + " " + H); // matches pixel box 1:1
-    svg.setAttribute("preserveAspectRatio", "none");   // harmless: box == viewBox
-
-    // hand-drawn arrowhead marker (constant pixel size)
-    var defs = document.createElementNS(SVGNS, "defs");
-    var mk = document.createElementNS(SVGNS, "marker");
-    mk.setAttribute("id", "sk-arrow");
-    mk.setAttribute("viewBox", "0 0 12 12");
-    mk.setAttribute("refX", "9"); mk.setAttribute("refY", "6");
-    mk.setAttribute("markerWidth", "11"); mk.setAttribute("markerHeight", "11");
-    mk.setAttribute("markerUnits", "userSpaceOnUse");
-    mk.setAttribute("orient", "auto");
-    var mp = document.createElementNS(SVGNS, "path");
-    mp.setAttribute("class", "edge-arrow");
-    mp.setAttribute("d", "M1 1 L11 6 L1 11 L4 6 Z"); // slightly irregular head
-    mk.appendChild(mp); defs.appendChild(mk); svg.appendChild(defs);
-
-    function rectOf(el) {
-      var r = el.getBoundingClientRect();
-      return { cx: (r.left + r.right) / 2 - wrap.left, cy: (r.top + r.bottom) / 2 - wrap.top,
-        hw: r.width / 2, hh: r.height / 2 };
-    }
-    geo.edges.forEach(function (e) {
-      var A = boxes[e.from], B = boxes[e.to]; if (!A || !B) return;
-      var ra = rectOf(A), rb = rectOf(B);
-      var dx = rb.cx - ra.cx, dy = rb.cy - ra.cy;
-      if (dx === 0 && dy === 0) return;
-      var p1 = exitPoint(ra, dx, dy, 6);        // leave source border
-      var p2 = exitPoint(rb, -dx, -dy, 10);     // stop short so arrowhead meets target
-      var dPath = wobblePath(p1, p2, e.from + "->" + e.to);
-
-      var hit = document.createElementNS(SVGNS, "path"); // wide invisible hover target (FE-2)
-      hit.setAttribute("d", dPath); hit.setAttribute("class", "edge-hit");
-      hit.setAttribute("data-tip", e.tip);
-      svg.appendChild(hit);
-
-      var p = document.createElementNS(SVGNS, "path");
-      p.setAttribute("d", dPath);
-      p.setAttribute("class", "edge edge-" + e.type);
-      p.setAttribute("vector-effect", "non-scaling-stroke");
-      p.setAttribute("marker-end", "url(#sk-arrow)");
-      p.setAttribute("data-tip", e.tip);
-      svg.appendChild(p);
+      }
+      host.appendChild(el);
     });
   }
-  function exitPoint(r, dx, dy, pad) {
-    var adx = Math.abs(dx), ady = Math.abs(dy);
-    var tx = adx > 1e-6 ? (r.hw + pad) / adx : 1e9;
-    var ty = ady > 1e-6 ? (r.hh + pad) / ady : 1e9;
-    var t = Math.min(tx, ty);
-    return { x: r.cx + dx * t, y: r.cy + dy * t };
-  }
-  function wobblePath(p1, p2, seed) {
-    var dx = p2.x - p1.x, dy = p2.y - p1.y;
-    var len = Math.sqrt(dx * dx + dy * dy) || 1;
-    var nx = -dy / len, ny = dx / len; // unit perpendicular
-    var h = hash(seed);
-    var amp = Math.min(9, 3 + len * 0.045);
-    var s1 = ((h % 100) / 100 - 0.5) * 2 * amp;
-    var s2 = (((h >>> 7) % 100) / 100 - 0.5) * 2 * amp;
-    var c1 = { x: p1.x + dx * 0.33 + nx * s1, y: p1.y + dy * 0.33 + ny * s1 };
-    var c2 = { x: p1.x + dx * 0.66 + nx * s2, y: p1.y + dy * 0.66 + ny * s2 };
-    return "M" + f(p1.x) + " " + f(p1.y) + " C " + f(c1.x) + " " + f(c1.y) +
-      " " + f(c2.x) + " " + f(c2.y) + " " + f(p2.x) + " " + f(p2.y);
-  }
-  function f(n) { return Math.round(n * 10) / 10; }
 
   // ---- agent panel (FE-1 opt-in prompt, FE-6 single focus) --------------
   function openPanel(a, g, el) {
@@ -537,20 +396,11 @@ body{font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;color:#2b2
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
     });
-    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in context (header)
-      var c = $("sh-ctx"), open = c.hidden;
-      c.hidden = !open;
-      this.setAttribute("aria-expanded", String(open));
-      this.textContent = open ? "ocultar contexto" : "contexto";
-    });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");
       this.setAttribute("aria-pressed", String(on));
     });
     initTooltip();
-    var rz; window.addEventListener("resize", function () { // keep pixel-measured edges aligned
-      clearTimeout(rz); rz = setTimeout(function () { if (state.current) renderGraph(state.current); }, 120);
-    });
     load();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

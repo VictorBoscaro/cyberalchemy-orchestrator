@@ -20,45 +20,19 @@ html,body{height:100%;margin:0}
 .dgoal{font-size:13px;line-height:1.35}
 .dstat{font-size:10.5px;opacity:.62;letter-spacing:.03em}
 #main{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-#stage-head{padding:15px 20px 11px;flex:0 0 auto}
-#sh-rest{margin:0;font-size:14px;font-weight:600;opacity:.5}
-#sh-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
-#sh-kind{font-size:11px;text-transform:uppercase;letter-spacing:.2em;font-weight:600}
-#sh-outcome{font-size:9.5px;text-transform:uppercase;letter-spacing:.11em;opacity:.6;white-space:nowrap}
-#sh-headline{margin:6px 0 3px;font-size:15px;font-weight:500;line-height:1.34;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-#sh-sub{margin:0;font-size:11px;letter-spacing:.02em;opacity:.5;overflow-wrap:anywhere}
-#sh-rule{height:1px;margin:10px 0 9px}
-#sh-metrics{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 24px}
-#sh-stats{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0}
-.sh-stat{display:inline-flex;align-items:baseline;gap:7px}
-.sh-stat dt,.sh-stat dd{margin:0}
-.sh-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;opacity:.5}
-.sh-val{font-size:13px;font-weight:500}
-#sh-facts{display:flex;flex-wrap:wrap;gap:6px 18px}
-#sh-facts[hidden]{display:none}
-.sh-fact{display:inline-flex;align-items:baseline;gap:7px;min-width:0}
-.sh-fval{font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
-#sh-ctx{margin-top:10px}
-#sh-ctx-toggle{padding:1px 0;border:0;background:none;font:inherit;font-size:10px;text-transform:uppercase;letter-spacing:.14em;cursor:pointer;opacity:.55}
-#sh-ctx-toggle:hover,#sh-ctx-toggle:focus-visible{opacity:.9}
-#sh-ctx-toggle::before{content:"+ "}
-#sh-ctx-toggle[aria-expanded="true"]::before{content:"\2013 "}
-#sh-ctx-body{margin:9px 0 2px;font-size:12.5px;line-height:1.6;max-width:74ch;max-height:30vh;overflow:auto}
+#stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 20px}
+#stage-title{font-size:14px;font-weight:600}
+#stage-meta{font-size:11px;opacity:.6}
 #stage-wrap{position:relative;flex:1;margin:0 18px 18px;overflow:hidden}
 #stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:14px;opacity:.6}
-#stage-empty[hidden]{display:none}
-#edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.edge{fill:none;stroke-width:1.4px;opacity:.9}
-.edge-zig-zag{stroke-dasharray:5 4}
-.edge-feedback{stroke-dasharray:1.5 4;stroke-linecap:round}
-.connector{stroke:#d7d7d7;stroke-width:1px;fill:none}
+#edges{position:absolute;inset:0;width:100%;height:100%}
+.edge{stroke-width:1.6px;opacity:.85}
 #nodes{position:absolute;inset:0}
 .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;text-align:center}
-.node.agent{cursor:pointer;max-width:160px}
-.node.group{max-width:160px}
-.node .g-label{display:block;font-size:11px;letter-spacing:.04em;overflow-wrap:anywhere}
+.node.agent{cursor:pointer}
+.node .g-label{font-size:11px;letter-spacing:.04em}
 .node .n-role{display:block;font-size:9px;text-transform:uppercase;opacity:.7}
-.node .n-name{display:block;font-size:11px;line-height:1.2;overflow-wrap:anywhere}
+.node .n-name{display:block;font-size:11px;line-height:1.1}
 #legend{position:absolute;left:10px;bottom:8px;font-size:10.5px;opacity:.6;display:flex;align-items:center;gap:6px}
 #legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 #legend .mark{margin-left:auto;opacity:.5}
@@ -96,26 +70,13 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
 .node.agent:hover,.node.agent.active{border-color:#1b1b1b}
 .node.agent.rev{border-left:3px solid #1b1b1b}
 .node .n-role{color:#aaa}
-.edge{stroke:#bdbdbd;stroke-width:1.4px}
+.edge{stroke:#c2c2c2;stroke-width:1px}
 #legend .dot.rev{background:#1b1b1b}
 #panel{background:#fff;border-left:1px solid #e6e6e6;color:#1b1b1b}
 #p-name{font-weight:500}
 .p-role{color:#999}
 .p-prompt button{border:1px solid #d8d8d8;background:#fafafa;color:#1b1b1b}
 #tt{background:#1b1b1b}
-#stage-head{border-bottom:1px solid #ededed}
-#sh-kind{color:#1b1b1b}
-#sh-outcome{color:#7a7a7a}
-#sh-outcome[data-open]{color:#1b1b1b;opacity:.85}
-#sh-headline{color:#1b1b1b}
-#sh-sub{color:#8a8a8a}
-#sh-rule{background:#ececec}
-.sh-lbl{color:#9a9a9a}
-.sh-val{color:#1b1b1b}
-.sh-stat.rev .sh-lbl{color:#1b1b1b;opacity:.6}
-.sh-fval{color:#555}
-#sh-ctx-toggle{color:#1b1b1b}
-#sh-ctx-body{color:#3a3a3a;border-left:2px solid #e4e4e4;padding-left:12px}
 
 </style>
 </head><body>
@@ -139,28 +100,12 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
 
   <main id="main">
     <div id="stage-head">
-      <p id="sh-rest">Selecione um dispatch</p>
-      <div id="sh-body" hidden>
-        <div id="sh-top">
-          <span id="sh-kind"></span>
-          <span id="sh-outcome"></span>
-        </div>
-        <h2 id="sh-headline"></h2>
-        <p id="sh-sub"></p>
-        <div id="sh-rule" aria-hidden="true"></div>
-        <div id="sh-metrics">
-          <dl id="sh-stats"></dl>
-          <div id="sh-facts" hidden></div>
-        </div>
-        <div id="sh-ctx" hidden>
-          <button id="sh-ctx-toggle" type="button" aria-expanded="false" data-tip="Enquadramento estendido — clique para abrir">contexto</button>
-          <p id="sh-ctx-body" hidden></p>
-        </div>
-      </div>
+      <span id="stage-title">Selecione um dispatch</span>
+      <span id="stage-meta"></span>
     </div>
     <div id="stage-wrap">
       <div id="stage-empty">Escolha um dispatch a esquerda para ver o grafo dos agentes.</div>
-      <svg id="edges" aria-hidden="true"></svg>
+      <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
       <div id="nodes"></div>
       <div id="legend"><span class="dot rev"></span>revisor / cetico / auditor<span class="mark">?</span></div>
     </div>
@@ -264,256 +209,127 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
     if (prev) prev.classList.remove("sel");
     if (li) li.classList.add("sel");
     closePanel();
-    renderHeader(state.current);   // populate the context header before measuring the stage
     renderGraph(state.current);
   }
 
-  // ---- geometry: logical column model (pixels are resolved in renderGraph)
-  //   returns { cols:[{group,gid,tip,agents:[{agent,group,rev,label,tip}]}], idx, edges }
-  //   MONO "columns": one quiet labeled column per group, agents stacked; edges GROUP→GROUP.
+  // ---- geometry: returns {nodes:[{id,type,x,y,label,agent,group,rev}], edges:[{x1,y1,x2,y2,tip}]}
   function geometry(d) {
-    var groups = d.groups || [];
-    var cols = groups.map(function (g) {
-      return {
-        group: g,
-        gid: g.group_id,
-        tip: g.anti_bias
-          ? ("anti-vies: " + g.anti_bias)
-          : ("grupo · " + (g.n || (g.agents || []).length) + " agente(s)"),
-        agents: (g.agents || []).map(function (a) {
-          return { agent: a, group: g, rev: isRev(a), label: nameOf(a),
-            tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") };
-        })
-      };
-    });
-    var idx = {};
-    cols.forEach(function (c, i) { idx[c.gid] = i; });
+    var groups = d.groups || [], G = groups.length;
+    var nodes = [], gpos = {}, i, j;
+    var lay = V.layout;
+
+    function place(gi, group) {
+      var agents = group.agents || [], n = agents.length;
+      var gx, gy, cx, cy;
+      if (lay === "columns") {
+        gx = (gi + 1) / (G + 1) * 100; gy = 9; cx = gx; cy = 55;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ay = 24 + (ai + 0.5) / n * 70; anode(a, group, gx, ay);
+        });
+      } else if (lay === "rows") {
+        gy = (gi + 1) / (G + 1) * 100; gx = 8; cx = 55; cy = gy;
+        nodes.push(gnode(group, gx, gy));
+        agents.forEach(function (a, ai) {
+          var ax = 22 + (ai + 0.5) / n * 74; anode(a, group, ax, gy);
+        });
+      } else if (lay === "radial") {
+        var ang = gi / G * 2 * Math.PI - Math.PI / 2;
+        cx = 50 + 33 * Math.cos(ang); cy = 50 + 33 * Math.sin(ang);
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var aa = ai / Math.max(1, n) * 2 * Math.PI;
+          var r = n === 1 ? 0 : 11;
+          anode(a, group, cx + r * Math.cos(aa), cy + r * Math.sin(aa));
+        });
+      } else if (lay === "orbit") {
+        var rad = 10 + gi * (40 / Math.max(1, G));
+        cx = 50; cy = 50 - rad;
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var oa = (ai + 0.5) / n * 2 * Math.PI - Math.PI / 2;
+          anode(a, group, 50 + rad * Math.cos(oa), 50 + rad * Math.sin(oa));
+        });
+      } else if (lay === "timeline") {
+        gx = (gi + 1) / (G + 1) * 100; cx = gx; cy = 50;
+        nodes.push(gnode(group, gx, 50));
+        agents.forEach(function (a, ai) {
+          var side = ai % 2 ? 1 : -1;
+          var step = Math.floor(ai / 2) + 1;
+          anode(a, group, gx, 50 + side * step * (34 / (Math.floor(n / 2) + 1)));
+        });
+      } else { // scatter — use unsigned shifts so positions never go negative
+        var h = hash(group.group_id + gi);
+        cx = clamp(18 + (h % 64)); cy = clamp(16 + ((h >>> 3) % 62));
+        nodes.push(gnode(group, cx, cy));
+        agents.forEach(function (a, ai) {
+          var hh = hash((a.agent_name || "") + group.group_id + ai);
+          anode(a, group, clamp(cx + ((hh % 24) - 12)), clamp(cy + (((hh >>> 4) % 24) - 12)));
+        });
+      }
+      gpos[group.group_id] = { x: cx, y: cy };
+    }
+    function gnode(group, x, y) {
+      return { id: "g:" + group.group_id, type: "group", x: x, y: y,
+        label: group.group_id, group: group,
+        tip: group.anti_bias ? ("anti-vies: " + group.anti_bias) : ("grupo · " + (group.n || (group.agents || []).length) + " agente(s)") };
+    }
+    function anode(a, group, x, y) {
+      nodes.push({ id: "a:" + group.group_id + ":" + nodes.length, type: "agent",
+        x: clamp(x), y: clamp(y), label: nameOf(a), agent: a, group: group, rev: isRev(a),
+        tip: (a.role || "agente") + (a.model ? (" · " + a.model) : "") });
+    }
+    for (i = 0; i < G; i++) place(i, groups[i]);
+
     var edges = [];
     (d.connections || []).forEach(function (c) {
-      if (idx[c.from] == null || idx[c.to] == null) return;
-      edges.push({ from: c.from, to: c.to, type: c.type || "",
-        tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to });
+      var f = gpos[c.from], t = gpos[c.to];
+      if (f && t) edges.push({ x1: f.x, y1: f.y, x2: t.x, y2: t.y, tip: "aresta " + (c.type || "?") + ": " + c.from + " → " + c.to, type: c.type });
     });
-    return { cols: cols, idx: idx, edges: edges };
+    return { nodes: nodes, edges: edges };
   }
+  function clamp(v) { return Math.max(6, Math.min(94, v)); }
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
 
-  var SVGNS = "http://www.w3.org/2000/svg";
-
-  function makeAgentNode(nd) {
-    var el = document.createElement("div");
-    el.className = "node agent" + (nd.rev ? " rev" : "");
-    el.setAttribute("data-tip", nd.tip);
-    el.setAttribute("data-explain", nd.rev
-      ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta."
-      : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento.");
-    el.innerHTML =
-      '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
-      '<span class="n-name">' + esc(nd.label) + "</span>";
-    el.tabIndex = 0;
-    el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
-    el.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
-    });
-    return el;
-  }
-  function makeGroupNode(col) {
-    var el = document.createElement("div");
-    el.className = "node group";
-    el.setAttribute("data-tip", col.tip);
-    el.setAttribute("data-explain", "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado.");
-    el.innerHTML = '<span class="g-label">' + esc(col.gid) + "</span>";
-    return el;
-  }
-  function arrowDefs(svg) {
-    var defs = document.createElementNS(SVGNS, "defs");
-    var m = document.createElementNS(SVGNS, "marker");
-    m.setAttribute("id", "mono-arrow");
-    m.setAttribute("viewBox", "0 0 10 10");
-    m.setAttribute("refX", "8.5"); m.setAttribute("refY", "5");
-    m.setAttribute("markerWidth", "7"); m.setAttribute("markerHeight", "7");
-    m.setAttribute("orient", "auto-start-reverse");
-    m.setAttribute("markerUnits", "userSpaceOnUse");
-    var p = document.createElementNS(SVGNS, "path");
-    p.setAttribute("d", "M0 0 L10 5 L0 10 z");
-    p.setAttribute("fill", "#9a9a9a");
-    m.appendChild(p); defs.appendChild(m); svg.appendChild(defs);
-  }
-  function drawConnector(svg, x, y1, y2) {
-    // quiet vertical hairline tying a group label down through its agent stack
-    var ln = document.createElementNS(SVGNS, "line");
-    ln.setAttribute("x1", x); ln.setAttribute("y1", y1);
-    ln.setAttribute("x2", x); ln.setAttribute("y2", y2);
-    ln.setAttribute("class", "connector");
-    svg.appendChild(ln);
-  }
-  function drawEdge(svg, s, t, e, span) {
-    var rightward = t.x >= s.x;
-    var x1 = rightward ? s.x + s.gEl.offsetWidth / 2 : s.x - s.gEl.offsetWidth / 2;
-    var x2 = rightward ? t.x - t.gEl.offsetWidth / 2 : t.x + t.gEl.offsetWidth / 2;
-    var y1 = s.gy, y2 = t.gy;
-    // bow up into the reserved top band; more for skip-edges so the arc clears
-    // any intermediate group headers. capped so it never leaves the stage.
-    var bow = Math.min(Math.min(y1, y2) - 12, 22 + 16 * (Math.abs(span) - 1));
-    if (!(bow > 0)) bow = 8;
-    var mx = (x1 + x2) / 2, my = Math.min(y1, y2) - bow;
-    var p = document.createElementNS(SVGNS, "path");
-    p.setAttribute("d", "M" + x1 + " " + y1 + " Q " + mx + " " + my + " " + x2 + " " + y2);
-    p.setAttribute("class", "edge edge-" + (e.type || "x"));
-    p.setAttribute("marker-end", "url(#mono-arrow)");
-    p.setAttribute("data-tip", e.tip);
-    svg.appendChild(p);
-  }
-
-  // ---- context header: quiet stage-head band, populated from the dispatch --
-  //   FE-1: context is opt-in (collapsed). FE-5: nulls omitted. FE-7: time and
-  //   counts declared in UTC. Touches only #stage-head — never the graph body.
-  function fmtUTC(iso) {
-    if (!iso) return "";
-    var s = String(iso), day = s.slice(0, 10), tm = s.slice(11, 16);
-    return day + (tm ? (" · " + tm) : "") + " UTC";
-  }
-  function renderHeader(d) {
-    $("sh-rest").hidden = true;
-    $("sh-body").hidden = false;
-
-    $("sh-kind").textContent = d.dispatch_type || "—";
-
-    var oc = $("sh-outcome"), cl = d.close;
-    if (cl && cl.exit_reason) {                          // OUTCOME from close
-      var lu = cl.agents_spawned && cl.agents_spawned.loops_used;
-      oc.textContent = cl.exit_reason + (lu != null ? (" · " + lu + " loop" + (lu === 1 ? "" : "s")) : "");
-      oc.removeAttribute("data-open");
-    } else {                                             // FE-5: close === null
-      oc.textContent = "em aberto";
-      oc.setAttribute("data-open", "1");
-    }
-
-    $("sh-headline").textContent = d.goal || "(sem objetivo declarado)";
-    $("sh-sub").textContent = d.dispatch_id + " · " + fmtUTC(d.created);
-
-    var ags = agentsOf(d);
-    var revs = ags.filter(function (x) { return isRev(x.a); }).length;
-    var stats = [["agentes", ags.length], ["grupos", (d.groups || []).length],
-                 ["ligações", (d.connections || []).length], ["revisores", revs]];
-    var sl = $("sh-stats"); sl.innerHTML = "";
-    stats.forEach(function (kv) {
-      sl.innerHTML += '<div class="sh-stat' + (kv[0] === "revisores" ? " rev" : "") +
-        '"><dt class="sh-lbl">' + esc(kv[0]) + '</dt><dd class="sh-val">' + kv[1] + "</dd></div>";
-    });
-
-    var facts = [];                                      // FE-5: nullable facts omitted
-    if (d.max_loops != null) facts.push(["max loops", esc(d.max_loops), null]);
-    if (d.anti_bias_global) facts.push(["eixo anti-viés", esc(d.anti_bias_global), d.anti_bias_global]);
-    if (d.working_folder) facts.push(["pasta", esc(shorten(d.working_folder, 40)), d.working_folder]);
-    var fl = $("sh-facts"); fl.innerHTML = "";
-    facts.forEach(function (f) {
-      var tip = f[2] ? (' data-tip="' + esc(f[2]) + '"') : "";   // FE-2: full value on hover
-      fl.innerHTML += '<span class="sh-fact"' + tip + '><span class="sh-lbl">' +
-        esc(f[0]) + '</span><span class="sh-fval">' + f[1] + "</span></span>";
-    });
-    fl.hidden = !facts.length;
-
-    var wrap = $("sh-ctx"), body = $("sh-ctx-body"), tog = $("sh-ctx-toggle");
-    if (d.context) {                                     // FE-1: opt-in, collapsed
-      wrap.hidden = false;
-      body.textContent = d.context;
-      body.hidden = true;
-      tog.setAttribute("aria-expanded", "false");
-    } else {
-      wrap.hidden = true;
-    }
-  }
-
-  // ---- render graph: pixel-space column layout (measure heights, then place)
+  // ---- render graph ------------------------------------------------------
   function renderGraph(d) {
     $("stage-empty").hidden = true;
-
+    $("stage-title").textContent = d.dispatch_id;
+    $("stage-meta").textContent = d.dispatch_type + " · " + (d.created ? d.created.slice(0, 10) : "");
     var geo = geometry(d);
-    var G = geo.cols.length;
-    var host = $("nodes"); host.innerHTML = "";
     var svg = $("edges"); svg.innerHTML = "";
-    if (!G) return;
-
-    var rect = $("stage-wrap").getBoundingClientRect();
-    var W = rect.width, H = rect.height;
-    var hasEdges = geo.edges.length > 0;
-    var padX = 26, bottomPad = 24, topPad = hasEdges ? 48 : 30;
-    var gap = 18;                        // vertical gap between stacked agents
-    var connGap = 30;                    // label→first-agent gap; the hairline connector spans it
-    var colStep = (W - 2 * padX) / G;
-    var nodeMaxW = Math.max(96, Math.min(160, colStep - 18));
-
-    // pass 1: create header + agent nodes, set x + max-width so wrapping settles;
-    // measure once, place vertically afterwards.
-    geo.cols.forEach(function (col, ci) {
-      var xc = padX + colStep * (ci + 0.5);
-      col.x = xc;
-
-      var gEl = makeGroupNode(col);
-      gEl.style.maxWidth = nodeMaxW + "px";
-      gEl.style.left = xc + "px";
-      host.appendChild(gEl);
-      col.gEl = gEl;
-
-      col.els = col.agents.map(function (nd) {
-        var el = makeAgentNode(nd);
-        el.style.maxWidth = nodeMaxW + "px";
-        el.style.left = xc + "px";
-        host.appendChild(el);
-        return el;
-      });
-      col.heights = col.els.map(function (el) { return el.offsetHeight; });
+    geo.edges.forEach(function (e) {
+      var mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2 - 8;
+      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", "M" + e.x1 + " " + e.y1 + " Q " + mx + " " + my + " " + e.x2 + " " + e.y2);
+      p.setAttribute("class", "edge edge-" + (e.type || "x"));
+      p.setAttribute("fill", "none");
+      p.setAttribute("vector-effect", "non-scaling-stroke");
+      p.setAttribute("data-tip", e.tip);
+      svg.appendChild(p);
     });
-
-    // measure the label row + tallest agent stack, then center the whole cluster
-    // and lengthen the connector so labels crown their agents and the graph fills
-    // the stage — instead of a top label-rail disconnected from a mid-floating row.
-    var labelH = 0;
-    geo.cols.forEach(function (col) { labelH = Math.max(labelH, col.gEl.offsetHeight); });
-    function stackHeight(col) {
-      var n = col.els.length; if (!n) return 0;
-      var sum = col.heights.reduce(function (a, b) { return a + b; }, 0);
-      return sum + gap * (n - 1);
-    }
-    var maxStack = 0;
-    geo.cols.forEach(function (col) { maxStack = Math.max(maxStack, stackHeight(col)); });
-
-    var avail = (H - bottomPad) - topPad;
-    var natural = labelH + connGap + maxStack;
-    if (avail > natural) connGap += Math.min((avail - natural) * 0.62, 210); // fill the vertical
-    var clusterH = labelH + connGap + maxStack;
-    var headerY = topPad + Math.max(0, (avail - clusterH) / 2);
-    var agentsTop = headerY + labelH + connGap;
-
-    geo.cols.forEach(function (col) { col.gy = headerY; col.gEl.style.top = headerY + "px"; });
-
-    // pass 2: hang each column's agents directly beneath its label (top-aligned so
-    // every label crowns its own stack and all connectors read at one length)
-    geo.cols.forEach(function (col) {
-      var n = col.els.length; if (!n) return;
-      var cursor = agentsTop;
-      col.els.forEach(function (el, i) {
-        el.style.top = (cursor + col.heights[i] / 2) + "px";
-        cursor += col.heights[i] + gap;
-      });
-      col.stackBottom = cursor - gap;
+    var host = $("nodes"); host.innerHTML = "";
+    geo.nodes.forEach(function (nd) {
+      var el = document.createElement("div");
+      el.className = "node " + nd.type + (nd.rev ? " rev" : "");
+      el.style.left = nd.x + "%"; el.style.top = nd.y + "%";
+      el.setAttribute("data-tip", nd.tip);
+      el.setAttribute("data-explain", nd.type === "group"
+        ? "Grupo de agentes. O eixo anti-vies opoe os angulos para cancelar erro correlacionado."
+        : (nd.rev ? "No de revisor/cetico/auditor: julga o trabalho ligado por aresta." : "Agente. Clique para ver prompt, angulo, papel, modelo e orcamento."));
+      el.innerHTML = nd.type === "group"
+        ? '<span class="g-label">' + esc(nd.label) + "</span>"
+        : '<span class="n-role">' + esc((nd.agent.role || "?")).slice(0, 3) + "</span>" +
+          '<span class="n-name">' + esc(nd.label) + "</span>";
+      if (nd.type === "agent") {
+        el.tabIndex = 0;
+        el.addEventListener("click", function () { openPanel(nd.agent, nd.group, el); });
+        el.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPanel(nd.agent, nd.group, el); }
+        });
+      }
+      host.appendChild(el);
     });
-
-    // pass 2b: quiet hairline connectors — label down through its agent stack, so a
-    // group and its agents read as one unit rather than two disconnected rows
-    geo.cols.forEach(function (col) {
-      if (!col.els.length) return;
-      drawConnector(svg, col.x, headerY + labelH / 2, col.stackBottom);
-    });
-
-    // pass 3: directed group→group edges, boundary-to-boundary, arrowheads
-    if (hasEdges) {
-      arrowDefs(svg);
-      geo.edges.forEach(function (e) {
-        var s = geo.cols[geo.idx[e.from]], t = geo.cols[geo.idx[e.to]];
-        if (s && t) drawEdge(svg, s, t, e, geo.idx[e.to] - geo.idx[e.from]);
-      });
-    }
   }
 
   // ---- agent panel (FE-1 opt-in prompt, FE-6 single focus) --------------
@@ -581,12 +397,6 @@ body{font-family:"Inter",system-ui,sans-serif;color:#1b1b1b;background:#fafafa;f
       b.hidden = !open;
       this.setAttribute("aria-expanded", String(open));
       this.textContent = open ? "Ocultar prompt inicial" : "Revelar prompt inicial completo";
-    });
-    $("sh-ctx-toggle").addEventListener("click", function () {    // FE-1 opt-in header context
-      var b = $("sh-ctx-body"), open = b.hidden;
-      b.hidden = !open;
-      this.setAttribute("aria-expanded", String(open));
-      if (state.current) renderGraph(state.current);   // reflow graph to the resized stage
     });
     $("explain").addEventListener("click", function () {          // FE-9 discreet explain-mode
       var on = document.body.classList.toggle("explain");
