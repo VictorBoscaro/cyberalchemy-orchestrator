@@ -1,0 +1,490 @@
+dispatch_id: 2026-08-13-knowledge-formation
+category: documents
+node_type: audit
+goal: >
+  Determine which experiential, cognitive, practical, social, and epistemic phenomena are supported as relevant to knowledge formation, reconstruct how the two target repositories represent them, and identify which relations, disagreements, and possible expository entry families survive cross-corpus comparison without imposing a universal sequence, subject, or definition of knowledge.
+success_metric:
+  type: coverage
+  threshold: >
+    Eight independent evidence-bearing briefing returns cover external scholarship, domainspec-lean-formalization, and cyberalchemy-orchestrator; a frozen descriptive synthesis preserves native vocabularies and claim types; a separate derivation produces zero to three candidate expository entry families; three distinct skeptic gates adjudicate every candidate or the typed no-candidate decision; and the final auditor confirms coverage, dissent, citations, repository anchors, Lean declarations, commensurability decisions, and collapse-tests.
+max_loops: 2
+novelty_is_success: false
+validated: accept
+category_extension_note: >
+  The research constitution was written for research-* corpora. This dispatch applies its stricter document-research discipline to the local cyberalchemy-orchestrator write target rather than weakening the route because the folder is named research/.
+corpus: research-knowledge-formation
+corpus_root: research/knowledge-formation
+primary_write_root: C:/Users/victo/cyberalchemy-orchestrator/research/knowledge-formation
+relative_path_base: C:/Users/victo/cyberalchemy-orchestrator
+read_corpora:
+  - {id: cyberalchemy-orchestrator, root: C:/Users/victo/cyberalchemy-orchestrator}
+  - {id: domainspec-lean-formalization, root: C:/Users/victo/domainspec-lean-formalization}
+initial_definitions: research/knowledge-formation/research-initial-definitions.md
+research_boundary: >
+  This dispatch researches knowledge independently; it does not draft the essay, choose its opening paragraph, connect knowledge to work, design infrastructure, or produce the visual edition.
+
+runtime:
+  max_active_children: 3
+  scheduling: >
+    Launch only complete ready layers; L1A through L1D are logically independent and report-blind but are scheduled in waves to respect the host limit. No explorer may read another explorer's return or R12 record before all eight briefing returns are frozen.
+  model_policy: >
+    Constitutional labels sonnet, opus, and haiku are normative quality tiers. On this host all seats inherit the parent model; prompts, role separation, and verification provide the required depth. No unavailable Claude model identifier is passed to the runtime.
+  external_phase_context_policy: >
+    External explorers are launched with fork_turns none and receive only the boundary-only brief below plus the external-source protocol. They do not receive conversation history, repository evidence, filenames, internal baseline, repository reports, or the candidate vocabulary from initial definitions during phase A.
+
+external_boundary_only_brief: >
+  Research, from within your assigned scholarly domain, how phenomena that are sometimes called knowing or knowledge arise, change, persist, become attributable, or fail to do so. Construct the domain's own problem map and terminology; preserve disagreements and possible absence of a common object. Do not assume a universal origin, sequence, subject, definition, or unified formation process. Do not draft an essay or optimize for an opening.
+
+external_source_protocol:
+  repository_blind_phase: >
+    Each external explorer first constructs a literature-native problem map, terminology, exclusions, countertraditions, and search vocabulary from the boundary-only brief. The parent persists and hashes that phase-A map before a phase-B follow-up may expose the complete initial definitions for boundary comparison. The phase-A map cannot be revised after exposure.
+  active_search_required: true
+  record:
+    - databases_catalogues_and_search_engines_used
+    - exact_queries_and_search_languages
+    - backward_and_forward_citation_chains
+    - inclusion_and_exclusion_rationale
+    - counterposition_and_disconfirming_searches
+    - stopping_or_saturation_rationale
+  citation_contract:
+    - complete_bibliographic_citation
+    - DOI_or_stable_URL_when_available
+    - source_type: "primary | review | authoritative-reference | interpretation"
+    - claim_to_source_mapping
+    - no_search_snippet_as_evidence
+  shared_coverage_obligations:
+    - established_positions_and_owners
+    - disagreements_and_countertraditions
+    - concepts_that_resist_local_translation
+    - justified_exclusions
+    - whether_knowledge_formation_is_a_coherent_unit_in_this_corpus
+
+repository_evidence_protocol:
+  snapshot_owner: parent
+  snapshot_timing: >
+    Capture both repository baselines once after dispatch specification/review and before any seat launch; persist them in the parent-owned research/knowledge-formation/research/dispatch-state.md and pass the identical snapshot to all repository explorers. Record known dispatch-created files separately from pre-existing dirty-tree state. L3B cites this immutable state in LEDGER.md.
+  snapshot_at_start:
+    - absolute_root
+    - branch
+    - commit
+    - dirty_tree_status
+  every_claim_requires:
+    - exact_path
+    - heading_or_Lean_declaration
+    - evidence_excerpt_or_precise_summary
+    - state: "implemented | proved | interpreted | proposed | aspirational | retracted-or-stale"
+  stale_claim_rule: >
+    Verify current-tree state before repeating any register, audit, session, or roadmap claim.
+  Lean_rule: >
+    Every formal claim cites a Lean file and declaration; theorem, model, interpretation, conjecture, and metaphor remain distinct.
+
+composition:
+  - layer: L1A
+    layer_id: external-history-social
+    role: explorer
+    model_tier: sonnet
+    mode: task-fan-out
+    N: 2
+    report_blind: true
+    predicted_disagreement:
+      question: >
+        Are the relevant forms of knowing best reconstructed through historically changing problems of inquiry and justification, or through language, tradition, testimony, practices, and institutions that partly constitute what can be known?
+      positions:
+        - Peirce: problem genealogy and inquiry explain the distinctions before any unified social constitution claim.
+        - Gadamer: inquiry already inhabits language, tradition, practices, and dependencies, so an individual-problem genealogy is incomplete.
+    agents:
+      - seq: "01"
+        agent_id: KF-L1A-E1
+        name: "Peirce, Charles Sanders"
+        angle: historical problem genealogy versus constitutive sociality
+        phase_A_domain: historical-philosophical
+        phase_B_task: >
+          Build a repository-blind map of the historical problems and disagreements surrounding knowing, inquiry, doubt, belief, experience, justification, knowing-how, and acquaintance. Search beyond the supplied vocabulary, name owners, track semantic change, and include countertraditions. Do not organize history as progress toward repository language.
+      - seq: "02"
+        agent_id: KF-L1A-E2
+        name: "Gadamer, Hans-Georg"
+        angle: constitutive language and social practices versus individual inquiry
+        phase_A_domain: social-comparative
+        phase_B_task: >
+          Build a repository-blind map covering testimony, language, tradition, shared practices, institutions, instruments, collective or distributed cognition, trust, authority, epistemic dependence, anthropology or sociology of knowledge, STS, comparative traditions, preservation, and loss. Record exclusions where coverage cannot be responsibly achieved. Do not treat acceptance, recording, or authority as sufficient for knowledge.
+
+  - layer: L1B
+    layer_id: external-cognition-learning
+    role: explorer
+    model_tier: sonnet
+    mode: task-fan-out
+    N: 2
+    report_blind: true
+    predicted_disagreement:
+      question: >
+        Is knowledge-relevant change best understood through embodied and enactive organization in situated activity, or through developmental and educational transformations that can be studied across learning trajectories?
+      positions:
+        - Thompson: embodied, affective, and enactive organization resists stage-first accounts.
+        - Piaget: developmental change and construction expose transformations not captured by synchronic embodiment alone.
+    agents:
+      - seq: "03"
+        agent_id: KF-L1B-E1
+        name: "Thompson, Evan"
+        angle: embodied-enactive organization versus developmental staging
+        phase_A_domain: embodied-cognitive
+        phase_B_task: >
+          Build a repository-blind map of perception, attention, embodied skill, affect, memory, recognition, enaction, prior orientation, and conceptual change. Separate empirical findings, phenomenological descriptions, and epistemological interpretations. Search counterpositions and do not reduce knowledge to an individual brain state.
+      - seq: "04"
+        agent_id: KF-L1B-E2
+        name: "Piaget, Jean"
+        angle: developmental and educational transformation versus synchronic embodiment
+        phase_A_domain: developmental-educational
+        phase_B_task: >
+          Build a repository-blind map of learning and development across genetic epistemology, developmental psychology, education, skill acquisition, conceptual change, participation, and situated learning. Attack universal stage narratives and include contemporary critiques and alternative developmental accounts.
+
+  - layer: L1C
+    layer_id: domainspec-formal-conceptual
+    role: explorer
+    model_tier: sonnet
+    mode: task-fan-out
+    N: 2
+    report_blind: true
+    predicted_disagreement:
+      question: >
+        Should the repository's contribution to a knowledge account be bounded by its machine-checked formal results, or by the conceptual genealogy and unresolved questions that motivated and exceed those results?
+      positions:
+        - Abramsky: only typed, declaration-anchored structure constrains general claims.
+        - Ashby: formalization omits conceptual movement and residue that remain necessary evidence.
+    agents:
+      - seq: "05"
+        agent_id: KF-L1C-E1
+        name: "Abramsky, Samson"
+        angle: formal proof boundary versus conceptual surplus
+        task: >
+          Determine what domainspec-lean-formalization actually defines or proves concerning observation, lenses, schemas, instances, residues, reflection, preservation, local-global relations, provenance, and related epistemic interpretations. Apply the repository evidence protocol and anchor every formal claim to a Lean file and declaration.
+      - seq: "06"
+        agent_id: KF-L1C-E2
+        name: "Ashby, W. Ross"
+        angle: conceptual genealogy and residue versus formal containment
+        task: >
+          Reconstruct how knowledge, lens, probe, representation, residue, observer, learning, and reflection arose and changed across domainspec-lean-formalization. Surface demotions, alternatives, contradictions, and conceptual residue not contained by formal artifacts. Apply the repository evidence protocol.
+
+  - layer: L1D
+    layer_id: orchestrator-operational-editorial
+    role: explorer
+    model_tier: sonnet
+    mode: task-fan-out
+    N: 2
+    report_blind: true
+    predicted_disagreement:
+      question: >
+        Does the orchestrator's strongest contribution lie in its governable operational lifecycle for accepted understanding, or in tacit, experiential, and editorial accounts that expose what operational records omit?
+      positions:
+        - Shannon: operational distinctions make reuse, authority, state, and provenance inspectable.
+        - Polanyi: recordability systematically omits tacit capacities and transformations that matter to knowing.
+    agents:
+      - seq: "07"
+        agent_id: KF-L1D-E1
+        name: "Shannon, Claude"
+        angle: operational governance versus tacit remainder
+        task: >
+          Reconstruct cyberalchemy-orchestrator's operational uses of information, assertion, evidence, review, acceptance, authority, provenance, version, scope, state, supersession, revocation, and reusable understanding. Separate implementation, proposal, aspiration, and stale claims; identify what the operational model cannot represent.
+      - seq: "08"
+        agent_id: KF-L1D-E2
+        name: "Polanyi, Michael"
+        angle: tacit and editorial genealogy versus operational containment
+        task: >
+          Reconstruct implicit accounts of knowing, learning, skill, tacit understanding, inquiry, observation, interpretation, and transmission across cyberalchemy-orchestrator essays and exploratory artifacts. Identify drift and where architecture silently governs experiential claims. Do not use the work essay as conceptual evidence for knowledge.
+
+  - layer: L3A
+    layer_id: descriptive-synthesis
+    role: writer
+    model_tier: opus
+    mode: single
+    N: 1
+    agents:
+      - seq: "09"
+        agent_id: KF-L3A-W1
+        name: "Aristotle"
+        task: >
+          After all eight briefing returns are persisted and frozen, produce a draft descriptive-synthesis.md preserving native terminology, sources, claim types, quoted cross-return contradictions, dissent, and non-comparability. Populate the commensurability gate before any cross-corpus agreement or incompatibility claim. Respond to L3C's independent row decisions, revise or preserve unresolved objections, and only then submit the artifact for parent freeze and hash. Do not propose expository entries or write essay prose.
+
+  - layer: L3C
+    layer_id: commensurability-review
+    role: skeptic
+    model_tier: opus
+    mode: single
+    N: 1
+    agents:
+      - seq: "10"
+        agent_id: KF-L3C-S1
+        name: "Quine, Willard Van Orman"
+        attack_vector: definitional-soundness
+        task: >
+          Independently adjudicate every draft commensurability row labeled agreement or incompatibility before descriptive-synthesis.md is frozen. Check object, claim type, scale, subject or unit, warrant, preserved structure, and translation loss against cited sources. Return confirm, demote, or unresolved per row. Do not propose expository entries.
+
+  - layer: L3B
+    layer_id: expository-derivation
+    role: writer
+    model_tier: opus
+    mode: single
+    N: 1
+    agents:
+      - seq: "11"
+        agent_id: KF-L3B-W1
+        name: "Spivak, David"
+        task: >
+          Read the frozen descriptive-synthesis.md and its hash without modifying it. Derive zero to three candidate expository entry families, each with a candidate_id and concrete collapse-test. If no family is justified, create candidate_id NO-CANDIDATE and state the evidence for withholding one. Author and revise findings.md and LEDGER.md through the skeptic zig-zag. Do not write essay prose.
+
+  - layer: L2
+    layer_id: skeptic-gates
+    role: skeptic
+    model_tier: opus
+    mode: task-fan-out
+    N: 3
+    agents:
+      - seq: "12"
+        agent_id: KF-L2-S1
+        name: "Hacking, Ian"
+        attack_vector: precedent
+        attack: >
+          For every candidate_id, including NO-CANDIDATE, verify ownership, source quality, countertraditions, omitted precedent, and evidential adequacy. Return one typed precedent gate row per candidate. Owned is build-from-owned, not a kill by itself.
+      - seq: "13"
+        agent_id: KF-L2-S2
+        name: "Tetlock, Philip"
+        attack_vector: non-vacuity
+        attack: >
+          For every candidate_id, including NO-CANDIDATE, test whether it discriminates, adds more than parallel inventories, and names evidence that would make the decision unsuitable. Return one typed non-vacuity gate row per candidate.
+      - seq: "14"
+        agent_id: KF-L2-S3
+        name: "Wittgenstein, Ludwig"
+        attack_vector: definitional-soundness
+        attack: >
+          For every candidate_id, including NO-CANDIDATE, attack silent identifications, narrative order presented as epistemology, and translation without residue. Verify that L3B relies only on the frozen, independently adjudicated descriptive synthesis. Return typed definitional gate rows.
+
+  - layer: L4
+    layer_id: final-audit
+    role: auditor
+    model_tier: opus
+    mode: single
+    N: 1
+    agents:
+      - seq: "15"
+        agent_id: KF-L4-A1
+        name: "Brandenburg, Martin"
+        task: >
+          Execute the deterministic audit checklist over all R12 records, frozen briefing returns, synthesis versions, response matrices, skeptic confirmations, citations, repository anchors, Lean declarations, claim typing, dissent, commensurability decisions, collapse-tests, false-consensus handling, and prohibited-content boundaries. Reject missing evidence; do not repair another agent's record.
+
+connections:
+  - {from: L1A, to: L3A, type: sequential}
+  - {from: L1B, to: L3A, type: sequential}
+  - {from: L1C, to: L3A, type: sequential}
+  - {from: L1D, to: L3A, type: sequential}
+  - {from: L3A, to: L3C, type: zig-zag, scheduler: descriptive_review_protocol}
+  - {from: L3C, to: L3B, type: sequential, after: descriptive_synthesis_revised_frozen_and_hashed}
+  - {from: L3B, to: L2, type: zig-zag, scheduler: zig_zag_protocol}
+  - {from: L2, to: L4, type: sequential, after: zig_zag_converged_or_typed_exit}
+
+scheduler_authority: >
+  Connections declare readiness boundaries. descriptive_review_protocol is authoritative for L3A-L3C revision before freeze. For L3B and L2, zig_zag_protocol is the sole authoritative scheduler and includes both directions, revision, and re-confirmation; the graph must not advance to L4 before its terminal condition.
+
+descriptive_review_protocol:
+  sequence: >
+    L3A drafts the commensurability matrix; L3C independently decides every agreement or incompatibility row; L3A responds in a row matrix and revises; L3C confirms dispositions; unresolved objections remain verbatim; the parent then freezes and hashes descriptive-synthesis.md. L3B cannot begin earlier.
+  result_vocabulary: "confirm | demote | unresolved"
+
+zig_zag_protocol:
+  count_definition: >
+    One loop is L3B writer draft, three independent L2 skeptic gate reports, L3B writer response matrix and revision, followed by the original L2 skeptics confirming disputed responses.
+  writer_response_matrix_fields:
+    - candidate_id
+    - skeptic_id
+    - objection
+    - response_status: "accepted | refuted-with-evidence | unresolved"
+    - evidence
+    - resulting_change
+  unresolved_rule: >
+    Unresolved objections survive verbatim into the findings and may force readiness MORE RESEARCH REQUIRED or exit_reason dissent_irreconcilable.
+  convergence: >
+    The loop converges only when all three original skeptics confirm the disposition of every row; silence is not confirmation.
+
+global_loop_ledger:
+  owner: parent
+  maximum: 2
+  fields: [loop_number, triggering_layer, trigger, remediation, result, remaining]
+  precedence: >
+    Explorer false-consensus validation occurs before L3A. Every explorer rerun or L3B-L2 zig-zag increments the same loops_used counter. Remaining loops alone are available downstream. Exhaustion immediately preserves unresolved material and exits loop_cap_reached.
+
+commensurability_gate:
+  required_before: cross-corpus-agreement
+  fields:
+    - source_items
+    - object_or_phenomenon
+    - claim_type
+    - scale
+    - subject_or_unit
+    - warrant
+    - preserved_structure
+    - translation_loss
+    - relation: "agreement | incompatibility | partial-overlap | analogy | possible-constraint | reuse | non-comparable"
+  rule: >
+    Agreement is allowed only when object, claim type, scale, subject or unit, and warrant are sufficiently aligned; resemblance alone is classified as analogy, partial overlap, possible constraint, reuse, or non-comparable.
+  field_alignment: >
+    Each field is marked aligned, partially-aligned, divergent, or unknown with quoted evidence. Every agreement or incompatibility row requires independent confirmation by KF-L3C-S1 before freeze; otherwise it is demoted or preserved as unresolved.
+
+false_consensus_protocol:
+  material_dissent_fields:
+    - strongest_claim_expected_to_conflict_and_why
+    - evidence_that_would_reverse_the_position
+    - synthesis_move_rejected
+  consequence: >
+    Zero dissent triggers an audit, not automatic failure. Each explorer must document the strongest seriously attempted counterposition and why it survived, failed, or proved non-comparable. Rerun occurs only if the auditor finds no serious counterposition was attempted. Evidence-backed convergence, asymmetric relevance, or non-comparability may pass. The N=3 skeptic layer retains the constitutional zero-dissent red flag. After explorer returns freeze, L3A builds an actual contradiction, convergence, or non-comparability matrix quoting both sides.
+
+anti_bias:
+  sibling_pairs:
+    - {layer: L1A, pair: [KF-L1A-E1, KF-L1A-E2], question_ref: composition.L1A.predicted_disagreement}
+    - {layer: L1B, pair: [KF-L1B-E1, KF-L1B-E2], question_ref: composition.L1B.predicted_disagreement}
+    - {layer: L1C, pair: [KF-L1C-E1, KF-L1C-E2], question_ref: composition.L1C.predicted_disagreement}
+    - {layer: L1D, pair: [KF-L1D-E1, KF-L1D-E2], question_ref: composition.L1D.predicted_disagreement}
+    - {layer: L2, pair: [KF-L2-S1, KF-L2-S2], intrinsic_tension: precedent-versus-non-vacuity}
+    - {layer: L2, pair: [KF-L2-S1, KF-L2-S3], intrinsic_tension: precedent-versus-definitional-soundness}
+    - {layer: L2, pair: [KF-L2-S2, KF-L2-S3], intrinsic_tension: non-vacuity-versus-definitional-soundness}
+  cross_layer_challenge_matrix:
+    - {pair: [L1A, L1B], question: "Do historically inherited inquiry problems or embodied-developmental transformations supply the better unit of explanation, or are they non-comparable?"}
+    - {pair: [L1A, L1C], question: "Can formal structures constrain historical and social accounts without converting interpretation into theorem?"}
+    - {pair: [L1A, L1D], question: "Do operational acceptance lifecycles preserve or erase the historically and socially variable conditions of knowing?"}
+    - {pair: [L1B, L1C], question: "Can formal observation and preservation structures constrain embodied-developmental evidence at the same scale?"}
+    - {pair: [L1B, L1D], question: "Can operational records represent embodied skill and developmental change, or only their outputs?"}
+    - {pair: [L1C, L1D], question: "Does formal proof constrain operational knowledge governance, or are the relevant claims typed at different levels?"}
+  cross_layer_rule: >
+    These are synthesis-time challenge questions, not permission for explorers to read one another. L3A must resolve each with quoted evidence as contradiction, partial overlap, possible constraint, or non-comparable.
+
+records:
+  R12_path_template: research/knowledge-formation/agents/<seq>-<role>-<surname>.md
+  R12_authorship: >
+    Each seat authors its own record; the parent never silently repairs it.
+  R12_frontmatter:
+    required:
+      - agent_id
+      - agent_name
+      - layer_id
+      - dispatch_id
+      - role
+      - model
+      - decision
+      - rationale
+      - files_created
+      - files_modified
+      - references_consulted
+      - dissent
+      - closure_mark
+    body_max_words: 200
+  detailed_briefing_return:
+    persistence: >
+      Before L3A, the parent persists all eight verbatim returns in research/knowledge-formation/research/briefing-returns.md, labeled by agent_id, phase, timestamp, and SHA-256 content hash. External phase-A maps are separately labeled and hashed before phase B. L3A, L3C, L3B, L2, and L4 cite these durable sections and hashes.
+    explorer_schema:
+      - native_problem_map
+      - search_or_repository_protocol_record
+      - key_findings_with_evidence
+      - owners_and_source_types
+      - gaps_and_inconsistencies
+      - tensions_and_translation_failures
+      - knowledge_formation_coherence_test
+      - material_dissent_fields
+    skeptic_schema:
+      - one_gate_row_per_candidate
+      - surviving_dissent
+      - confirmation_of_writer_response_rows
+
+output_contract:
+  descriptive_writer:
+    - descriptive_synthesis_path: research/knowledge-formation/research/descriptive-synthesis.md
+    - parent_recorded_SHA256_before_L3B
+    - native_vocabulary_crosswalk_with_status: "equivalent | partial-overlap | contested-translation | non-comparable"
+    - external_position_and_owner_map
+    - domainspec_conceptual_genealogy
+    - domainspec_proof_interpretation_boundary
+    - orchestrator_operational_and_editorial_genealogy
+    - commensurability_matrix
+    - quoted_cross_return_contradiction_or_noncomparability_matrix
+  derivation_writer:
+    - frozen_descriptive_synthesis_hash_citation
+    - zero_to_three_candidate_entry_families_or_NO_CANDIDATE_with_candidate_ids_and_collapse_tests
+    - writer_response_matrix_per_loop
+    - questions_that_must_remain_open
+  skeptic_gate_row:
+    - candidate_id
+    - gate
+    - evidence
+    - result: "gate-typed; see gate_result_vocabularies"
+    - requested_correction
+    - surviving_dissent
+  gate_result_vocabularies:
+    precedent: "pass | revise | build-from-owned | already-deployed | unresolved"
+    non_vacuity: "pass | revise | no-witness | unresolved"
+    definitional_soundness: "pass | revise | tautological | unresolved"
+  auditor_checklist:
+    - all_15_R12_records_valid
+    - all_8_briefing_returns_frozen_and_transmitted
+    - literature_search_protocol_complete
+    - repository_snapshot_and_anchors_complete
+    - Lean_declaration_anchors_complete
+    - native_vocabulary_preserved
+      - commensurability_gate_complete
+      - independent_commensurability_review_complete_before_freeze
+    - every_candidate_touched_by_every_skeptic_gate
+    - zig_zag_response_and_confirmation_complete
+    - material_dissent_and_false_consensus_checked
+    - collapse_tests_present
+    - prohibited_outputs_absent
+  final_findings:
+    path: research/knowledge-formation/research/findings.md
+    required:
+      - descriptive_synthesis
+      - candidate_gate_matrix
+      - owner_and_use_mode_per_candidate
+      - one_line_dispatch_answer
+      - readiness: "READY FOR ROBOT-TALKS ON OPENING | MORE RESEARCH REQUIRED"
+      - exit_reason: "success | loop_cap_reached | validator_rejected_twice | reviewer_rejected_twice | dissent_irreconcilable | user_abort | unrecoverable_error"
+      - exit_context_1_to_2_sentences
+    terminal_metadata_owner: parent
+    terminal_metadata_block: >
+      After L4, the parent may append only readiness, exit_reason, and exit context inside a clearly delimited Terminal Metadata block. The parent may not alter substantive findings.
+  LEDGER:
+    path: research/knowledge-formation/LEDGER.md
+    required:
+      - agent_names_and_record_paths
+      - frozen_briefing_return_identities
+      - dissent_verbatim
+      - synthesis_and_revision_versions
+      - global_loop_ledger
+      - citation_to_parent_owned_dispatch_state
+      - exit_reason_and_context
+
+  dispatch_state:
+    path: research/knowledge-formation/research/dispatch-state.md
+    owner: parent
+    immutable_after_launch: true
+    required:
+      - repository_baseline_snapshots
+      - dispatch_created_dirtiness_boundary
+      - launch_timestamp
+      - dispatch_yaml_SHA256
+
+R12_default_closure_mark:
+  during_execution: needs-review
+  after_successful_audit: open
+
+artifact_ownership:
+  parent:
+    - capture_repository_baselines_before_dispatch_writes
+    - persist_and_hash_briefing_returns
+    - freeze_and_hash_descriptive_synthesis
+    - maintain_global_loop_ledger
+    - select_and_report_typed_exit_reason_after_audit
+    - append_delimited_terminal_metadata_block_only
+  KF-L3A-W1:
+    - author_research/descriptive-synthesis.md_only
+    - respond_to_KF-L3C-S1_before_freeze
+  KF-L3C-S1:
+    - adjudicate_commensurability_rows_without_editing_descriptive_synthesis
+  KF-L3B-W1:
+    - author_and_revise_research/findings.md
+    - author_and_revise_LEDGER.md
+  KF-L4-A1:
+    - emit_pass_fail_evidence_without_editing_other_agents_artifacts
