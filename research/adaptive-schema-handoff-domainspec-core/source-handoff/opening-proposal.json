@@ -1,0 +1,59 @@
+{
+  "dispatch_id": "2026-08-13-adaptive-schema-source-handoff-scout",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Determine the actual local handoff contract and the smallest obligation-linked Cyberalchemy Orchestrator evidence packet that can be sent to Vlad for the adaptive-schema discussion.",
+  "context": "This is a read-only source-side pass for the first cross-repository handoff. The installed Invoke skill references a missing handoff.md companion, while its session-handoff templates and Context Builder contract remain present. The result must identify the real usable contract, expose the missing-contract gap, and select only evidence that serves the user's stated obligations.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/adaptive-schema-handoff-domainspec-core/source-handoff",
+  "groups": [
+    {
+      "group_id": "source-scout",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4500,
+          "agent_name": "Ashby, W. Ross",
+          "initial_prompt": "Act as the source-repository scout. Begin with AGENTS.md and research/adaptive-schema-handoff-domainspec-core/research-initial-definitions.md. Inspect the smallest relevant evidence set for the local handoff machinery and reusable content: .codex/skills/invoke/SKILL.md, its session-handoff templates, .codex/skills/context-builder/SKILL.md, dispatch governance relevant to permission/risk proportionality, and only those project artifacts that concretely support minimal schema, progressive maturation, categories, or extension points. Verify whether the referenced invoke handoff.md exists anywhere and report broken or candidate authority accurately. For every included source, cite a path plus selector and map it to a user obligation; list tempting but excluded material with a reason. Do not use the network, mutate Git, edit source artifacts, or write files; return a proposed lean context inventory and contract-gap report to the parent."
+        }
+      ]
+    },
+    {
+      "group_id": "handoff-nonvacuity-check",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Dijkstra, Edsger W.",
+          "initial_prompt": "Act as the non-vacuity skeptic for the local handoff. Begin with AGENTS.md and research/adaptive-schema-handoff-domainspec-core/research-initial-definitions.md. Test one gate only: can the present Invoke templates, Context Builder contract, and repository evidence instantiate a smallest concrete handoff packet for Vlad without relying on the missing handoff.md or vague extensibility language? Construct the packet shape as a witness, with required fields, obligation-to-source mappings, risk/permission declaration, explicit non-goals, open-extension handling, and the evidence needed before any later mutation. Cite every required source with path plus selector; if no coherent witness exists, name the exact missing fact that zeros it. Do not use the network, mutate Git, edit source artifacts, or write files; return the witness or typed negative to the parent."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "source-scout",
+      "to": "handoff-nonvacuity-check",
+      "type": "sequential"
+    }
+  ]
+}

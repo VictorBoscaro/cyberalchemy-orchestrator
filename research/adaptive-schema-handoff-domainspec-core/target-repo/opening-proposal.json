@@ -1,0 +1,59 @@
+{
+  "dispatch_id": "2026-08-13-adaptive-schema-target-scout",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Determine which existing domainspec-core artifacts and conventions can support a risk-proportionate handoff in which an object starts from a minimal schema, can mature toward category-level treatment, and remains open to later extensions.",
+  "context": "This is a read-only repository-grounding pass for the first handoff to Vlad in ../domainspec-core. The user requires adaptive permission and evidence expectations, minimum viable representation, progressive maturation, and explicit extension room. Claims must distinguish accepted or implemented mechanisms from proposals and must not infer authority from file presence alone.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/adaptive-schema-handoff-domainspec-core/target-repo",
+  "groups": [
+    {
+      "group_id": "target-scout",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4500,
+          "agent_name": "Evans, Eric",
+          "initial_prompt": "Act as the target-repository scout. Begin by reading research/adaptive-schema-handoff-domainspec-core/research-initial-definitions.md and ../domainspec-core/AGENTS.md, then inspect only the smallest relevant evidence set in ../domainspec-core. Locate concrete artifacts, schemas, vocabulary, tests, plans, or handoff conventions concerning minimal representations, progressive refinement or maturity, categories, extensibility (including tags/other/open fields), permission or risk levels, and Vlad-specific ownership. For each load-bearing claim cite a repo-relative path plus heading, symbol, or line. Classify each source as authoritative, implemented, proposed, historical, or unclear. Record what can be reused, what conflicts, and what remains missing. Do not use the network, run scripts in ../domainspec-core, mutate Git, edit either source tree, or write files; return the report to the parent. End with a compact candidate map for the first handoff, without presenting it as an approved design."
+        }
+      ]
+    },
+    {
+      "group_id": "target-precedent-check",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Act as the precedent skeptic for the target repository. Independently read research/adaptive-schema-handoff-domainspec-core/research-initial-definitions.md and ../domainspec-core/AGENTS.md, then test one gate only: precedent/ownership. Search the smallest relevant corpus in ../domainspec-core to decide which parts of the proposed adaptive-schema handoff are already owned by named artifacts or conventions, which are already deployed, and which have no repository witness. Cite every finding with path plus heading, symbol, or line and preserve artifact standing. Being owned is positive evidence, never a kill. Do not judge implementation feasibility or invent a solution. Do not use the network, run sibling-repository scripts, mutate Git, edit either source tree, or write files; return the report to the parent."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "target-scout",
+      "to": "target-precedent-check",
+      "type": "sequential"
+    }
+  ]
+}
