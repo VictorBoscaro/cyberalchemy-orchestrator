@@ -1,0 +1,18 @@
+{
+  "close_of": "2026-08-13-local-global-continuous-discrete",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 7,
+    "tree": {
+      "explorer": 4,
+      "skeptic": 3,
+      "writer": 0,
+      "auditor": 0,
+      "synthesizer": 0,
+      "planner": 0,
+      "coder": 0,
+      "helpers": 0
+    },
+    "loops_used": 1
+  }
+}
