@@ -1,24 +1,31 @@
-# Anton
+# Anton's Skills
 
-**Document Capture & Integration Engineer / ABBYY FlexiCapture, C#, Local AI**
+All my skills have limitations. Therefore, I will write about the skill I have, and the limitations of that skill.
 
-## How I got here
+## Skills:
 
-I came to software through document capture. I worked at expert level with ABBYY FlexiCapture, a system that recognizes documents and extracts the attributes a business needs, from designing recognition templates to writing .NET C# libraries that integrate it with other automated systems. Those libraries run in high-load production at the largest bank in the Russian Federation.
+1. Everything related to the ABBYY FlexiCapture product.
+This is a system for recognizing and extracting required attributes from documents.
+My knowledge of it is at an expert level. In all aspects. From developing recognition templates to writing various libraries in .Net C# for integration with other automated systems.
 
-I am self-taught rather than a formally trained programmer, so I treat my code as improvable, not finished. ABBYY has left the country and I have not worked hands-on with its products for the last four years; the engineering judgment the work required stayed with me.
+2. Accordingly, the second skill is C# programming.
 
-## What I do
+## Limitations for these two skills:
 
-I make document and integration systems work in production, and I find out why they stop working.
+1. ABBYY left our country. Therefore, I haven't touched ABBYY products for the last four years.
 
-- **Capture:** Design recognition templates that extract the attributes the business actually needs.
-- **Integrate:** Write .NET C# libraries that connect capture to the surrounding automated systems.
-- **Deliver:** Ship with Ansible and Jenkins, mostly adapting existing pipelines rather than authoring them.
-- **Diagnose:** Debug, read logs, and analyze a failing situation as far as it takes to solve it.
+2. Although my libraries work at the largest bank in the Russian Federation in very high-load solutions, I am not a professional programmer. I am self-taught. Therefore, I understand perfectly well that my code is far from perfect.
 
-## What I am building now
+3. DevOPS. I used Ansible in Jenkins.
+But I mostly reused existing solutions.
+Some things I wrote myself. So, I understand the overall structure. I could probably write something from scratch, but I'm far from an expert.
 
-I build and optimize local model inference on my own hardware, on both Linux and Windows: compiling llama.cpp from source, producing a working distribution, and running the server with a model for writing code or driving a general agent such as Hermes.
+4. AI. I built and optimized inference with a local model for my hardware. On Linux and Windows. But here it's at a high level: downloading the llama.cpp source code, building a distribution from it. And using a running server with a model. For example, for writing code. Or for a shared agent, like hermes.
 
-AI is where I want to go next, and I am explicit about the gap. So far I have used ready-made agents and have not built one myself; closing that distance, from running someone else's agent to designing my own, is the work I want. Programming is the part I enjoy most, and agents are where I want to spend it.
+5. Technical support. This is related to points 1 and 2 in my skills. Troubleshooting problems that arise during work. Debugging. Searching for information in logs. Thorough analysis of the situation, as much as possible, to solve problems.
+
+## In terms of my preferences, what I like:
+
+1. Programming.
+
+2. I'm very interested in the AI field. For example, creating agents. But I haven't created a single agent myself yet. I use ready-made ones.
