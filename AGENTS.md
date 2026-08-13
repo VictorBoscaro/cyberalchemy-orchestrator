@@ -10,6 +10,13 @@ Before using tools or changing files, state the task route (for example: review,
 
 Read only the documentation required for that route. Do not load the repository's documentation into context indiscriminately.
 
+## Essay writing route
+
+When creating or materially restructuring a reader-facing essay, read and use
+`.codex/skills/write-need-driven-documents/SKILL.md` before writing. This route applies by artifact
+type, regardless of where the essay lives. Do not invoke it for surface copyediting, routine
+summaries, specifications, research reports, plans, or reference documentation.
+
 ## Project context
 
 This project develops infrastructure that keeps agent work connected to the objectives, decisions, assumptions, actions, and evidence that give it meaning. Local correctness is insufficient when the work no longer serves its larger purpose.

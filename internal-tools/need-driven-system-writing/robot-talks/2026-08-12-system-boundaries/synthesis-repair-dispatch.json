@@ -1,0 +1,809 @@
+{
+  "dispatch_id": "robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1",
+  "parent_dispatch_id": "robot-talks-2026-08-12-system-boundaries-synthesis-v1",
+  "intent": {
+    "raw": "Repair only the independently rejected T-07 synthesis material, re-run the same independent reviewer over the complete synthesis, then use a separate mechanical agent for lifecycle closeout and human-gate logging.",
+    "objective": "Apply the five exact repairs required by reports/05-synthesis.review.md without changing surviving tensions, obtain complete independent re-verification, close all delegated lifecycle records, and stop after the reviewed human gate is presented.",
+    "target_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md",
+    "operator_sentence": "A new synthesis agent repairs T-07 only; the same independent reviewer re-verifies all findings; a third agent performs mechanical closeout and session logging; root only orchestrates and relays the frozen gate packet."
+  },
+  "mode": "mixed",
+  "status": "approved-repair-route-not-run",
+  "route_sequence": "r01 exact T-07 repair -> r02 complete independent re-verification -> r03 mechanical closeout and frozen packet preparation -> r04 root verbatim relay -> r05 same-logger observed presentation log",
+  "boundaries": {
+    "in_scope": [
+      "The five exact T-07 repairs under reports/05-synthesis.review.md#Exact required repairs",
+      "Complete re-verification of T-01 through T-06, the repaired coverage ledger, findings status, and dialogue history",
+      "Append-only repair verification, repair receipts, terminal lifecycle closeout, and mechanical human-gate logging",
+      "Presentation of the independently verified T-01 through T-06 human disposition gate"
+    ],
+    "out_of_scope": [
+      "Changing any byte of the T-01 through T-06 sections or any coverage mapping other than the three authorized 03.2, 03.3, and 04.5 cells",
+      "Creating a replacement T-07 or moving 04.5 into another tension",
+      "Adding evidence, recommendations, architecture decisions, schemas, skills, research, automation, promotion, or code",
+      "Changing the four investigator reports, their reviews, or the blocking review's historical content",
+      "Recording or acting on a human disposition"
+    ],
+    "root_role": "Root may validate this route, launch the three named seats, relay frozen artifacts and receipts, join and close agents, and present the closeout agent's verbatim human-gate packet. Root must not repair findings, select wording, verify claims, author the review addendum, alter lifecycle evidence, summarize tensions beyond the verified packet, or decide a disposition.",
+    "no_implementation_stop": "This dispatch stops after the human gate is mechanically logged and presented. It grants no implementation or promotion authority. Any human answer or follow-up requires a separate authorized dispatch."
+  },
+  "source_artifacts": {
+    "repair_contract": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md",
+      "sha256": "CC322DF2BE89C8F169269509FED26A7905AEE63EBFE3831670EBA5121C4DD061"
+    },
+    "parent_dispatch": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/synthesis-dispatch.json",
+      "sha256": "2B836B29068FBE263C978722C4676F32185E2D242C555CB8B35E41087B5B8DBC"
+    },
+    "blocked_findings": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md",
+      "sha256": "B1F9B8290573B78F167A6DDAD66963E68B22EC82974A953A82202B54A8488B11"
+    },
+    "pre_repair_dialogue": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md",
+      "sha256": "E10CDCB2FA8DE7239804EEBBFA5D048838072689C9BEA407AC6D1B390A079BAA"
+    },
+    "parent_receipts": [
+      {
+        "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-v1/r01-synthesis-subagent.json",
+        "sha256": "7A6AD6DF94D85632379E7ABD6E77F890E53C01BEC3CA01C5153F191655A86DEA",
+        "state": "synthesis writer completed and closed"
+      },
+      {
+        "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-v1/r02-independent-review-subagent.json",
+        "sha256": "F97A59AAA80C8C1DE30439828244F353B2A3EC399167EBA9342A83137F3CA916",
+        "state": "independent review completed with BLOCK; close pending; rerouted here"
+      }
+    ],
+    "review_owned_eligible_sources": [
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/01-author-sovereignty.review.md#Eligible for synthesis",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/02-shared-principles.review.md#Eligible for synthesis",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/03-operational-architecture.review.md#Eligible for synthesis",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/04-formalization-automation.review.md#Eligible for synthesis"
+    ]
+  },
+  "techniques": [
+    "sequence",
+    "owner_boundary_check",
+    "observability_grouping",
+    "residue_ledger",
+    "delegation_boundary",
+    "execution_receipt_handoff",
+    "concrete_path_evidence",
+    "artifact_contract_bridge",
+    "approval_semantics_map"
+  ],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "The parent synthesis is blocked on one precisely reviewed defect, every substantive repair must be subagent-authored, re-verification must preserve reviewer identity and independence, and lifecycle/gate logging must have a separate mechanical owner.",
+    "explanation": "Three sequential owners prevent repair, judgment, and closeout from collapsing into one authority. The repair writer changes only authorized content; the same independent reviewer rechecks the complete result; the closeout logger records lifecycle facts and prepares the human gate without interpreting findings.",
+    "context": [
+      "reports/05-synthesis.review.md passes T-01 through T-06 and fails only T-07.",
+      "The parent r02 receipt requires a new synthesis-writer repair followed by new independent review.",
+      "Root is restricted to orchestration and verbatim relay."
+    ],
+    "roles": [
+      {
+        "role_id": "t07_repair_writer",
+        "purpose": "Apply only the five exact repairs required by the blocking review and write the repair receipt.",
+        "owns": "Step r01; authorized edits to findings.md and dialogue.md; repair receipt r01.",
+        "applies_to_steps": [
+          "r01-apply-exact-t07-repair"
+        ],
+        "identity_constraint": "Must not be /root/shared_principles, /root/formalization_automation, root, or the mechanical closeout agent."
+      },
+      {
+        "role_id": "same_independent_reviewer",
+        "purpose": "Re-verify the complete frozen synthesis after repair and append the repair-verification result without editing synthesis artifacts.",
+        "owns": "Step r02; repair-verification addendum to reports/05-synthesis.review.md; verification receipt r02.",
+        "applies_to_steps": [
+          "r02-reverify-complete-synthesis"
+        ],
+        "identity_constraint": "Must be the same reviewer recorded by the parent r02 receipt: agent_id /root/formalization_automation."
+      },
+      {
+        "role_id": "mechanical_closeout_logger",
+        "purpose": "Verify terminal lifecycle receipts, append only lifecycle/review/gate facts to dialogue.md, and produce the frozen human-gate packet and closeout receipt.",
+        "owns": "Steps r03 and r05; closeout preparation; frozen human-gate packet; observed-presentation dialogue append; lifecycle ledger; closeout receipt r03.",
+        "applies_to_steps": [
+          "r03-prepare-closeout-and-gate",
+          "r05-log-observed-human-gate"
+        ],
+        "identity_constraint": "Must differ from root, t07_repair_writer, /root/shared_principles, and /root/formalization_automation."
+      }
+    ],
+    "parallelism": "mixed",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Approved repair scope: new writer applies only T-07 removals, the same independent reviewer re-verifies everything, and a third agent mechanically closes and logs the human gate.",
+    "receipt_requirements": [
+      "dispatch_id",
+      "step_id",
+      "capability_ref",
+      "status",
+      "artifacts",
+      "validation",
+      "observer_status",
+      "blockers",
+      "residue",
+      "handoff_note",
+      "agent_id",
+      "role_id",
+      "spawn_status",
+      "join_status",
+      "close_status",
+      "receipt_artifact",
+      "reroute"
+    ]
+  },
+  "subagent_lifecycle": {
+    "status": "none",
+    "agents": [],
+    "instruction": "Populate at runtime for all three roles from their receipts. A completed join requires receipt_artifact. Before root presents the human gate, r01 and r02 must have terminal completed joins and closed/already_closed states, while r03 must have a terminal join and close or explicit handed_off state. Any blocked, timed-out, or handed-off path requires residue and reroute. No pending state may be reported as success."
+  },
+  "lifecycle_receipts": [
+    {
+      "receipt_id": "r01-t07-repair-writer",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r01-t07-repair-writer.json",
+      "producer": "t07_repair_writer",
+      "required_fields": [
+        "dispatch_id",
+        "step_id",
+        "capability_ref",
+        "status",
+        "artifacts",
+        "validation",
+        "observer_status",
+        "blockers",
+        "residue",
+        "handoff_note",
+        "agent_id",
+        "role_id",
+        "spawn_status",
+        "join_status",
+        "close_status",
+        "receipt_artifact",
+        "reroute"
+      ],
+      "conditional_contract": "receipt_artifact is required for join_status=completed; non-happy terminal states require residue and reroute.",
+      "validation_requirements": "Record comparisons proving agent_id differs from /root/shared_principles, /root/formalization_automation, and root before mutation; record pass/fail plus per-section and per-unaffected-row before/after hashes."
+    },
+    {
+      "receipt_id": "r02-repair-independent-review",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r02-repair-independent-review.json",
+      "producer": "same_independent_reviewer",
+      "required_fields": [
+        "dispatch_id",
+        "step_id",
+        "capability_ref",
+        "status",
+        "artifacts",
+        "validation",
+        "observer_status",
+        "blockers",
+        "residue",
+        "handoff_note",
+        "audit_reference",
+        "agent_id",
+        "role_id",
+        "spawn_status",
+        "join_status",
+        "close_status",
+        "receipt_artifact",
+        "reroute"
+      ],
+      "conditional_contract": "PASS is valid only after complete re-verification; receipt_artifact is required for join_status=completed; non-happy terminal states require residue and reroute.",
+      "validation_requirements": "Record agent_id equality with /root/formalization_automation, complete six-tension verification, frozen section/row hash checks, and the authoritative event that closes or explicitly supersedes the same agent's parent pending review attempt."
+    },
+    {
+      "receipt_id": "r03-mechanical-closeout",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r03-mechanical-closeout.json",
+      "producer": "mechanical_closeout_logger",
+      "required_fields": [
+        "dispatch_id",
+        "step_id",
+        "capability_ref",
+        "status",
+        "artifacts",
+        "validation",
+        "observer_status",
+        "blockers",
+        "residue",
+        "handoff_note",
+        "agent_id",
+        "role_id",
+        "spawn_status",
+        "join_status",
+        "close_status",
+        "receipt_artifact",
+        "reroute",
+        "approval_record"
+      ],
+      "conditional_contract": "The receipt must list the verified terminal states of r01 and r02 and its own terminal or handed-off state; presentation logging may occur only after consuming an authoritative relay event with actual timestamp and packet hash; human disposition remains pending.",
+      "validation_requirements": "Record comparisons proving agent_id differs from root, actual r01.agent_id, /root/shared_principles, and /root/formalization_automation; record parent r01/r02 reconciliation, frozen packet hash, relay-event hash/timestamp, and all terminal lifecycle states."
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "r01-apply-exact-t07-repair",
+      "name": "Apply the exact independently required T-07 repair",
+      "capability_ref": "robot-talks/synthesis-repair",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "robot-talks",
+        "contract": "reports/05-synthesis.review.md#Exact required repairs"
+      },
+      "mode": "bounded-repair",
+      "pattern": "sequential",
+      "parallel": false,
+      "roles": [
+        "t07_repair_writer"
+      ],
+      "techniques": [
+        "owner_boundary_check",
+        "concrete_path_evidence",
+        "artifact_contract_bridge",
+        "residue_ledger"
+      ],
+      "inputs": [
+        {
+          "kind": "artifact",
+          "ref": "source_artifacts.repair_contract"
+        },
+        {
+          "kind": "artifact",
+          "ref": "source_artifacts.blocked_findings"
+        },
+        {
+          "kind": "artifact",
+          "ref": "source_artifacts.pre_repair_dialogue"
+        },
+        {
+          "kind": "ledger",
+          "ref": "source_artifacts.parent_receipts"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r01-t07-repair-writer.json"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "t07_repair_authored"
+        }
+      ],
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Verify all frozen input hashes before editing; a mismatch blocks the repair rather than being reconciled by inference.",
+        "Before any mutation, require r01.agent_id != /root/shared_principles, r01.agent_id != /root/formalization_automation, and r01.agent_id != root. Root must reject the spawn before mutation if any comparison fails.",
+        "Remove the complete T-07 section from findings.md.",
+        "Change coverage-ledger use for 03.2 from 'T-05, T-07' to 'T-05' and for 03.3 from 'T-03, T-07' to 'T-03'.",
+        "Replace 04.5 use 'T-07' with: 'Not used — supplies a compatible evidence guardrail, not a cross-layer tension.'",
+        "Change synthesis status from seven tensions to six and preserve pending human dispositions for T-01 through T-06.",
+        "Append, without rewriting prior history, a dialogue.md repair note that removes T-07 from the current unresolved set, records six tensions pending re-review, links reports/05-synthesis.review.md, and repeats the no-implementation boundary.",
+        "Preserve every byte of the T-01 through T-06 sections and every coverage mapping unrelated to the authorized 03.2, 03.3, and 04.5 cells. There is no citation-consistency exception in this route.",
+        "Record before/after SHA-256 hashes for each T-01 through T-06 section and for every unaffected coverage row. Any mismatch returns BLOCK and requires a new dispatch; it cannot be approved or repaired inside this route.",
+        "Do not move 04.5 into another tension, add evidence, create recommendations, or implement anything.",
+        "The repair receipt validation must record the compared runtime identities and pass/fail result, before/after hashes, each of the five repair checks, per-section and per-unaffected-row preservation checks, dialogue append preservation, and no-implementation compliance."
+      ],
+      "stop_conditions": [
+        "Stop if any requested change exceeds the five exact repairs.",
+        "Stop if preserving T-01 through T-06 appears impossible without substantive change.",
+        "Stop after repaired artifacts and r01 receipt are written; do not review or present the human gate."
+      ]
+    },
+    {
+      "step_id": "r02-reverify-complete-synthesis",
+      "name": "Re-verify the complete repaired synthesis with the same independent reviewer",
+      "capability_ref": "robot-talks/review",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "robot-talks",
+        "contract": "reports/05-synthesis.review.md plus dialogue.md conversation protocol"
+      },
+      "mode": "repair-independent-verification",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": [
+        "same_independent_reviewer"
+      ],
+      "techniques": [
+        "validation_loop",
+        "concrete_path_evidence",
+        "owner_boundary_check",
+        "execution_receipt_handoff"
+      ],
+      "inputs": [
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r01-t07-repair-writer.json"
+        },
+        {
+          "kind": "external_context",
+          "ref": "source_artifacts.review_owned_eligible_sources"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md#Repair verification addendum"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r02-repair-independent-review.json"
+        },
+        {
+          "kind": "decision",
+          "ref": "repair-verification-verdict"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "complete_synthesis_reverified"
+        }
+      ],
+      "join_policy": "none",
+      "evidence_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md#Repair verification addendum",
+      "evidence_expectations": [
+        "The agent_id must equal /root/formalization_automation, matching the parent independent-review receipt; any other reviewer blocks the route.",
+        "The repair-review r02 receipt must state whether this same agent's terminal repair-review attempt supersedes and closes the parent review attempt identified by parent dispatch robot-talks-2026-08-12-system-boundaries-synthesis-v1 and .arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-v1/r02-independent-review-subagent.json. It must cite the authoritative runtime close or supersession event; it must not rewrite the parent receipt.",
+        "Independently reconstruct all 18 eligible formulations from the four review-owned Eligible sections; do not treat the repair writer's receipt or mapping as evidence authority.",
+        "Re-verify T-01 through T-06 completely, not only the T-07 deletion, including evidence handles, cross-layer shape, classification, severity, uncertainty, citations, and human questions.",
+        "Verify T-07 is absent; 03.2 maps only to T-05; 03.3 maps only to T-03; 04.5 carries the exact compatible-guardrail non-use explanation; status is six tensions with all dispositions pending.",
+        "Verify each T-01 through T-06 section hash and every unaffected coverage-row hash against the frozen parent findings artifact. Any byte change returns BLOCK; there is no citation-consistency exception.",
+        "Verify dialogue.md is append-preserving, links the blocking review, records six tensions pending re-review, and authorizes no implementation.",
+        "Append a dated 'Repair verification addendum' to reports/05-synthesis.review.md without changing the historical BLOCK review. The addendum must return PASS or BLOCK, list all checks and hashes, and cite every failure.",
+        "Write r02 with the addendum path, verdict, complete verification counts, hashes, lifecycle fields, blockers, residue, and reroute. Do not edit findings.md or dialogue.md."
+      ],
+      "stop_conditions": [
+        "BLOCK stops before lifecycle closeout and human-gate presentation and reroutes to a new repair dispatch.",
+        "PASS requires the entire six-tension synthesis, ledger, and dialogue repair to survive.",
+        "Do not silently repair any artifact or implement any recommendation."
+      ]
+    },
+    {
+      "step_id": "r03-prepare-closeout-and-gate",
+      "name": "Mechanically reconcile lifecycle and prepare the frozen human-gate packet",
+      "capability_ref": "task-session",
+      "mode": "mechanical-closeout-prepare",
+      "pattern": "handoff",
+      "parallel": false,
+      "roles": [
+        "mechanical_closeout_logger"
+      ],
+      "techniques": [
+        "approval_semantics_map",
+        "execution_receipt_handoff",
+        "residue_ledger",
+        "observability_grouping",
+        "artifact_contract_bridge"
+      ],
+      "inputs": [
+        {
+          "kind": "decision",
+          "ref": "repair-verification-verdict:PASS"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r01-t07-repair-writer.json"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r02-repair-independent-review.json"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-v1/r01-synthesis-subagent.json"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-v1/r02-independent-review-subagent.json"
+        },
+        {
+          "kind": "ledger",
+          "ref": "runtime-terminal-lifecycle-snapshot"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "frame",
+          "ref": "mechanical-closeout-preparation:presentation-pending"
+        },
+        {
+          "kind": "handle",
+          "ref": "verified-human-gate-packet"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "human_gate_packet_prepared"
+        }
+      ],
+      "join_policy": "none",
+      "evidence_expectations": [
+        "The agent must be independent of both repair and review and perform no synthesis or evidence judgment.",
+        "Require the logger receipt agent_id to differ from root, the actual r01.agent_id, /root/shared_principles, and /root/formalization_automation. Record every compared identity and pass/fail result under r03.validation.",
+        "Verify r01 and r02 belong to this dispatch, match their role IDs, have completed joins, terminal closed/already_closed states, receipt artifacts, and no unresolved blockers. PASS review is mandatory.",
+        "Reconcile parent lifecycle explicitly: parent r01 is terminal; parent r02 must be terminally closed by a named authoritative runtime close event or explicitly superseded by the same agent's terminal repair-review r02 receipt. A stale pending state without a later authoritative event blocks. Do not rewrite either parent receipt.",
+        "Record the parent-lifecycle reconciliation in the closeout preparation and later in r03.validation and the terminal lifecycle ledger.",
+        "Prepare a verbatim human-gate packet containing only T-01 through T-06, their independently verified evidence handles, and the four allowed dispositions: real and actionable, real and deferred, misinterpretation, or uncertain and targeted follow-up.",
+        "Hash the frozen gate packet and record presentation: pending. Do not append a presentation timestamp to dialogue.md and do not emit human_gate_logged in this phase.",
+        "Keep this same logger available for r05. If the runtime cannot do so, prepare a hash-bound mechanical dialogue append whose exact bytes root may apply only after relay; root may not author or alter it. Otherwise return BLOCK.",
+        "Do not change findings or tension wording, interpret evidence, record a presentation that has not occurred, record a disposition, or initiate follow-up."
+      ],
+      "stop_conditions": [
+        "Stop if repair/review lifecycle is pending, any runtime identity comparison fails, parent review lifecycle cannot be reconciled, or the review addendum is not PASS.",
+        "Stop this phase after packet preparation with presentation pending; do not log presentation.",
+        "No implementation or promotion is permitted."
+      ]
+    },
+    {
+      "step_id": "r04-root-verbatim-relay",
+      "name": "Relay the frozen human-gate packet verbatim",
+      "capability_ref": "task-session",
+      "mode": "root-verbatim-relay",
+      "pattern": "handoff",
+      "parallel": false,
+      "roles": [
+        "root_orchestrator"
+      ],
+      "techniques": [
+        "approval_semantics_map",
+        "handle_handoff",
+        "observability_grouping"
+      ],
+      "inputs": [
+        {
+          "kind": "handle",
+          "ref": "verified-human-gate-packet"
+        },
+        {
+          "kind": "frame",
+          "ref": "mechanical-closeout-preparation:presentation-pending"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "ledger",
+          "ref": "authoritative-human-gate-presentation-event"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "human_gate_packet_relayed"
+        }
+      ],
+      "join_policy": "human_gate",
+      "evidence_expectations": [
+        "Root relays the frozen packet verbatim without summary, amendment, interpretation, or disposition.",
+        "The authoritative presentation event records the actual presentation timestamp and SHA-256 hash of the exact relayed packet.",
+        "Root immediately hands the event to the still-active mechanical logger; root does not write dialogue.md or the lifecycle conclusion."
+      ],
+      "stop_conditions": [
+        "If verbatim relay fails, emit no successful presentation event and reroute to BLOCK.",
+        "Do not consume or act on a human answer.",
+        "No implementation or promotion is permitted."
+      ]
+    },
+    {
+      "step_id": "r05-log-observed-human-gate",
+      "name": "Log the observed human-gate presentation and complete lifecycle closeout",
+      "capability_ref": "task-session",
+      "mode": "mechanical-closeout-log",
+      "pattern": "sequential",
+      "parallel": false,
+      "roles": [
+        "mechanical_closeout_logger"
+      ],
+      "techniques": [
+        "approval_semantics_map",
+        "execution_receipt_handoff",
+        "residue_ledger",
+        "observability_grouping",
+        "artifact_contract_bridge"
+      ],
+      "inputs": [
+        {
+          "kind": "frame",
+          "ref": "mechanical-closeout-preparation:presentation-pending"
+        },
+        {
+          "kind": "ledger",
+          "ref": "authoritative-human-gate-presentation-event"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "ledger",
+          "ref": "subagent_lifecycle.agents:terminal"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r03-mechanical-closeout.json"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "repair_lifecycle_closed"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "human_gate_logged"
+        }
+      ],
+      "join_policy": "none",
+      "evidence_expectations": [
+        "The same mechanical logger from r03 consumes the authoritative event and verifies its packet hash equals the prepared frozen packet hash.",
+        "Append only mechanical facts to dialogue.md: repair receipt path, PASS addendum, parent-lifecycle reconciliation, terminal lifecycle states for all three repair-route agents, six tensions, the actual presentation timestamp, and 'human disposition: pending'. Preserve all prior history.",
+        "Complete the lifecycle ledger and r03 receipt. r03.validation must contain all runtime identity comparisons, parent-lifecycle reconciliation, packet hash comparison, actual timestamp, and terminal or explicitly handed-off lifecycle states.",
+        "If the logger was not kept active, root may apply only the logger-authored hash-bound append prepared in r03 after verifying exact bytes against the presentation event; root must not author or alter it. Otherwise return BLOCK.",
+        "Do not consume a human answer, change findings, interpret evidence, or initiate follow-up."
+      ],
+      "stop_conditions": [
+        "Stop if the presentation event is absent, timestamp is missing, packet hashes differ, or lifecycle remains pending.",
+        "Stop after the mechanical append and terminal receipt; do not consume or act on a human answer.",
+        "No implementation or promotion is permitted."
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "g01-exact-repair-only",
+      "kind": "policy",
+      "owner": "same_independent_reviewer",
+      "condition": "Before mutation, r01.agent_id differs from /root/shared_principles, /root/formalization_automation, and root, with comparisons recorded in receipt validation. The repair then contains exactly the five changes required by reports/05-synthesis.review.md, preserves every byte of T-01 through T-06 and every unaffected coverage row, creates no replacement tension, and adds no evidence or recommendation.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g02-same-independent-reviewer",
+      "kind": "validation",
+      "owner": "same_independent_reviewer",
+      "condition": "The reviewer agent_id is /root/formalization_automation and a Repair verification addendum independently returns PASS for the complete six-tension synthesis, coverage ledger, citations, dialogue history, and authority boundary.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g03-terminal-lifecycle",
+      "kind": "quality",
+      "owner": "mechanical_closeout_logger",
+      "condition": "All three role receipts contain required identity, artifact, validation, join, close, residue, and reroute fields; r02.agent_id equals /root/formalization_automation; r01.agent_id satisfies all exclusions; r03.agent_id differs from root, actual r01.agent_id, /root/shared_principles, and /root/formalization_automation; parent r01 is terminal; parent r02 is authoritatively closed or explicitly superseded by the same reviewer's terminal repair receipt; and no successful handoff contains a pending lifecycle state.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g04-mechanical-logging-only",
+      "kind": "policy",
+      "owner": "mechanical_closeout_logger",
+      "condition": "The same closeout agent prepares the packet with presentation pending, logs no presentation before relay, then consumes an authoritative root relay event, verifies timestamp and packet hash, and only afterward appends verified lifecycle, review, gate timestamp, tension count, and pending-disposition facts without altering or interpreting findings.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g05-root-orchestration-only",
+      "kind": "policy",
+      "owner": "root_orchestrator",
+      "condition": "Root launches, relays frozen handles, joins and closes seats, presents the closeout agent's packet verbatim, and emits the authoritative timestamp-plus-packet-hash presentation event; root authors no repair, review, lifecycle conclusion, dialogue content, or tension summary. If the logger cannot remain active, root may apply only a logger-authored hash-bound append after relay without changing a byte.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g06-no-implementation",
+      "kind": "promotion_guardrail",
+      "owner": "root_orchestrator",
+      "condition": "This route repairs and verifies investigation records and stops at the human gate; it grants no implementation, promotion, schema, skill, research, automation, or code authority.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g07-human-disposition",
+      "kind": "human_approval",
+      "owner": "human",
+      "condition": "The human alone dispositions T-01 through T-06 after the verified gate packet is presented. The answer is not consumed by this dispatch.",
+      "on_fail": "ask"
+    }
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": "robot-talks-2026-08-12-system-boundaries-synthesis-v1",
+    "trace_events": [
+      "repair_dispatch_validated",
+      "t07_repair_writer_spawned",
+      "t07_repair_authored",
+      "t07_repair_writer_joined_and_closed",
+      "same_independent_reviewer_spawned",
+      "complete_synthesis_reverified",
+      "same_independent_reviewer_joined_and_closed",
+      "mechanical_closeout_logger_spawned",
+      "human_gate_packet_prepared",
+      "human_gate_packet_relayed",
+      "repair_lifecycle_closed",
+      "human_gate_logged",
+      "mechanical_closeout_logger_handed_off_and_closed",
+      "repair_dispatch_stopped_at_human_gate"
+    ],
+    "signal_grouping": "Group every event and receipt by repair dispatch_id, parent_dispatch_id, step_id, agent_id, and role_id. Preserve artifact hashes, verdicts, terminal lifecycle states, blockers, residue, reroutes, and approval status. Do not persist orchestration-bridge stdout in the Robot-Talks folder."
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {
+        "boundary_id": "b01-review-to-repair",
+        "kind": "artifact_import",
+        "from_owner": "same_independent_reviewer",
+        "to_owner": "t07_repair_writer",
+        "applies_to_steps": [
+          "r01-apply-exact-t07-repair"
+        ],
+        "contract": "The blocking review's five exact repairs are the complete mutation authority. No other report or source may enlarge the repair.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b02-repair-write-scope",
+        "kind": "state_write",
+        "from_owner": "t07_repair_writer",
+        "to_owner": "robot-talks-session",
+        "applies_to_steps": [
+          "r01-apply-exact-t07-repair"
+        ],
+        "contract": "Writer may remove T-07, update only the 03.2, 03.3, and 04.5 coverage cells and synthesis count, and append the prescribed repair note to dialogue.md. Every byte of T-01 through T-06 and every unaffected coverage row is immutable. Any mismatch blocks and requires a new dispatch; there is no citation-consistency exception.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b03-repair-to-independent-review",
+        "kind": "evidence_return",
+        "from_owner": "t07_repair_writer",
+        "to_owner": "same_independent_reviewer",
+        "applies_to_steps": [
+          "r02-reverify-complete-synthesis"
+        ],
+        "contract": "Reviewer receives frozen repaired artifacts and receipt but reconstructs eligible evidence independently. Reviewer appends only the verification addendum and receipt and never repairs synthesis artifacts.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b04-review-to-closeout",
+        "kind": "capability_handoff",
+        "from_owner": "same_independent_reviewer",
+        "to_owner": "mechanical_closeout_logger",
+        "applies_to_steps": [
+          "r03-prepare-closeout-and-gate"
+        ],
+        "contract": "Only a PASS addendum and terminal r01/r02 receipts permit mechanical closeout. The closeout agent may not reinterpret the review.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b05-mechanical-session-log",
+        "kind": "state_write",
+        "from_owner": "mechanical_closeout_logger",
+        "to_owner": "robot-talks-session",
+        "applies_to_steps": [
+          "r05-log-observed-human-gate"
+        ],
+        "contract": "After consuming the authoritative relay event and verifying the frozen packet hash, append only repair receipt, PASS addendum, parent-lifecycle reconciliation, terminal lifecycle, six-tension count, actual presentation timestamp, and pending-disposition facts. Findings, tension wording, prior history, and actual disposition are immutable here.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b06-human-gate",
+        "kind": "human_approval",
+        "from_owner": "mechanical_closeout_logger",
+        "to_owner": "human",
+        "applies_to_steps": [
+          "r04-root-verbatim-relay"
+        ],
+        "contract": "Root relays the closeout agent's frozen packet verbatim and emits an authoritative timestamp-plus-packet-hash event. Prior approval is not a disposition, silence is not consent, and the route does not consume the answer.",
+        "on_violation": "block"
+      }
+    ],
+    "authority": {
+      "lifecycle": "mechanical_closeout_logger verifies and records terminal state; runtime/root only supplies authoritative spawn, join, close, and presentation events",
+      "execution": "t07_repair_writer for r01; same_independent_reviewer for r02; mechanical_closeout_logger for r03; root orchestration and verbatim relay only",
+      "validation": "same_independent_reviewer",
+      "evidence": "four review-owned Eligible sections and the historical blocking review",
+      "memory": "findings.md and dialogue.md remain Robot-Talks session records; receipts remain in .arcanum observability",
+      "promotion": "human disposition remains pending; no promotion or implementation authority exists"
+    },
+    "receipts": [
+      {
+        "receipt_id": "repair-evidence-handoff",
+        "producer": "t07_repair_writer",
+        "required_fields": [
+          "dispatch_id",
+          "step_id",
+          "capability_ref",
+          "status",
+          "artifacts",
+          "validation",
+          "observer_status",
+          "blockers",
+          "residue",
+          "handoff_note"
+        ],
+        "stores": [
+          ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r01-t07-repair-writer.json"
+        ],
+        "on_missing": "block"
+      },
+      {
+        "receipt_id": "review-evidence-handoff",
+        "producer": "same_independent_reviewer",
+        "required_fields": [
+          "dispatch_id",
+          "step_id",
+          "capability_ref",
+          "status",
+          "artifacts",
+          "validation",
+          "observer_status",
+          "blockers",
+          "residue",
+          "handoff_note",
+          "audit_reference"
+        ],
+        "stores": [
+          ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r02-repair-independent-review.json"
+        ],
+        "on_missing": "block"
+      },
+      {
+        "receipt_id": "closeout-evidence-handoff",
+        "producer": "mechanical_closeout_logger",
+        "required_fields": [
+          "dispatch_id",
+          "step_id",
+          "capability_ref",
+          "status",
+          "artifacts",
+          "validation",
+          "observer_status",
+          "blockers",
+          "residue",
+          "handoff_note",
+          "approval_record"
+        ],
+        "stores": [
+          ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1/r03-mechanical-closeout.json"
+        ],
+        "on_missing": "block"
+      }
+    ]
+  },
+  "promotion_guardrails": [
+    "The BLOCK review authorizes only removal and bookkeeping for T-07; it does not authorize a replacement finding or recommendation.",
+    "T-01 through T-06 remain investigation findings pending human disposition, not ratified principles or implementation requirements.",
+    "Repair, review, and lifecycle receipts are execution evidence and cannot directly promote inventory, ontology, glossary, sigil, spell, profile, principle, schema, or skill knowledge.",
+    "Any human disposition or follow-up research, design, planning, or implementation requires a separate authorized dispatch."
+  ],
+  "stop_conditions": [
+    "Stop if frozen input hashes do not match.",
+    "Stop if the repair exceeds the five exact changes, changes any byte of T-01 through T-06, or changes any unaffected coverage row.",
+    "Stop before closeout if complete independent re-verification is not PASS.",
+    "Stop if any delegated lifecycle state remains pending or unreceipted.",
+    "Stop if the parent pending reviewer lifecycle cannot be authoritatively closed or superseded without rewriting history.",
+    "Stop if presentation logging would occur before a successful verbatim relay event with timestamp and packet hash.",
+    "Stop after the verified human gate is presented and then logged; do not consume the human answer.",
+    "Never proceed to implementation or promotion."
+  ]
+}

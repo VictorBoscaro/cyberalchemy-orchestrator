@@ -1,0 +1,672 @@
+{
+  "dispatch_id": "need-driven-system-writing-implementation-v1",
+  "parent_dispatch_id": "robot-talks-2026-08-12-system-boundaries-decision-gate-v1",
+  "status": "authored-not-executed",
+  "authored_by": {
+    "agent_id": "/root/decision_analyst",
+    "role_id": "dispatch_architect",
+    "authority": "route design only; no decision, architecture, implementation, review, or close-session authority"
+  },
+  "intent": {
+    "raw": "pode fazer tudo que voce precisa fazer, use subagentes para te ajudar e para fazer, depois rode close-session",
+    "objective": "Use delegated operational judgment to resolve the reviewed writing-system boundary choices, define and implement only the smallest evidence-justified internal-tool artifact set, verify and repair it independently, and close the session with a reviewed session node.",
+    "target_artifact": "A reviewed, validated need-driven-system-writing internal tool plus a reviewed session node; exact product files are selected only by the approved artifact plan.",
+    "operator_sentence": "Root only launches, joins, closes, reroutes, and reports exact agent receipts; every substantive judgment and mutation is owned by a downstream seat of this dispatch.",
+    "authorization_interpretation": "The user's statement delegates operational judgment and execution. It is not fabricated as a direct human selection of D-01, D-02, D-04, or D-06. A delegated decision seat must select only reviewed real options and record delegated authority as the source."
+  },
+  "mode": "mixed",
+  "route_sequence": [
+    "s00-freeze-worktree-baseline",
+    "d01-select-reviewed-options-under-delegation",
+    "d02-independent-decision-review",
+    "d03-mechanical-decision-record-and-gate",
+    "a01-independent-definition-analysis",
+    "a02-synthesize-minimal-definition-and-plan",
+    "a03-independent-architecture-review",
+    "a04-architecture-repair-and-rereview",
+    "i01-implement-approved-artifact-plan",
+    "v01-deterministic-validation",
+    "r01-persisted-multi-lens-final-review",
+    "r02-owner-repair-validation-and-rereview",
+    "c01-close-session",
+    "c02-review-and-repair-session-node",
+    "x01-terminal-lifecycle-reconciliation"
+  ],
+  "source_artifacts": {
+    "governance": [
+      {"path": "AGENTS.md", "sha256": "12BAE8441F0269FC61827A575FB09069A6F20E1FFEFE7369C9F10411B180DD63"},
+      {"path": ".agents/skills/orchestrate/SKILL.md", "sha256": "4B90CF9086A80B66CA1890847A3F4EEB203D0589F25982E1D2C3B4B6C359F694"},
+      {"path": ".agents/skills/decision-gate/SKILL.md", "sha256": "A2977A1A9CD19D94312C2CA7D9EB30A1BA9689831C15F148296DF885809FB871"},
+      {"path": ".agents/skills/review/SKILL.md", "sha256": "60DBCB97707949AA7FE102479DBCD712E491BB833362F54B285A536365ABD4BE"},
+      {"path": ".agents/skills/close-session/SKILL.md", "sha256": "A2766CCCF66F7201C0AC424C1A41027FBFE71962807430DFB1C38548F48DDC99"},
+      {"path": ".agents/skills/dispatch-spec/SKILL.md", "sha256": "A724E135FE62F52C877A67DA2F644C9D2AD93379265612A401FE49E815E77616"},
+      {"path": ".claude/skills/custom/frontmatter.md", "sha256": "F1B70537675F4813CA3EBBEA352DF9BAB7D64F337E72DD85B2B6FB9D123F3EF7"}
+    ],
+    "current_operational_state": [
+      {"path": "internal-tools/need-driven-system-writing/README.md", "sha256": "566C220256C369A203435C84786A035E98CC6BFAC4CF9E2EAD9004C1634E9538"},
+      {"path": ".codex/skills/write-need-driven-documents/SKILL.md", "sha256": "15D7BEA094E6CA8BA4CF65B6E10952E0C3A2A9A050731C29DECDA547084BBD97"},
+      {"path": ".agents/skills/write-need-driven-documents/SKILL.md", "sha256": "15D7BEA094E6CA8BA4CF65B6E10952E0C3A2A9A050731C29DECDA547084BBD97"}
+    ],
+    "reviewed_decision_inputs": [
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-gate-dispatch.json", "sha256": "37A4E9F2A8B4E3770CB9D0F84437ECB082895A76569127AF39E5382A87022031"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-gate-dispatch.review.md", "sha256": "C1F730BC86E8A7DF10DFAB06502057C4AE941173C0C40BBE698B1473DFD708F4"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-recommendations.md", "sha256": "0F4B345E13585A28E5B53BE4C870F9CFBBC7258FC02CB39F44E8690D6E9AE94B"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-gate-packet.md", "sha256": "D6803D9D798148188FB6187FBA03A4F71EAAD32E3A2A7E0E0838BDCA9CF52947"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/06-decision-gate.review.md", "sha256": "C4056B44F05CB88809D96FA71E56226C4C8F4333FE9EB75ABFE9C4F8F3282813"}
+    ],
+    "completed_robot_talks": [
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md", "sha256": "601ED38425EE0335F616FCBB795CDA818169036A09AC57FD2729E61B8A3CC825"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md", "sha256": "30B1C14D7F53D1A9251A4CDFA3597751F80AF5160EC6D8323D4F105718591B37"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/human-gate-packet.md", "sha256": "84373E0445B3E1683EC3D32AC7E6C12613FF800AB0EA83BB0417F3D197A869BD"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/01-author-sovereignty.md", "sha256": "6EF9FB9AA75F272EDD5D5D4DED3CA29E6CC219219388DB2510202C720E147E27"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/01-author-sovereignty.review.md", "sha256": "6F3AA8F11DF6420103FED42F038A57C53EC697CFD11C4B10E9A854D529219EA1"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/02-shared-principles.md", "sha256": "2D73F389B461BD5E85D97D7FB563E95E45C5446E63A50929BC7663F9B249CBCA"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/02-shared-principles.review.md", "sha256": "7735B3CE7E0AA521831ACFC218ECD7DCD5F00A6A712785EDDE9378358357653E"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/03-operational-architecture.md", "sha256": "B523010C796FDBBE232AB883A8654D8E42D284FDE081D7462C223F44D276075D"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/03-operational-architecture.review.md", "sha256": "9270F3E55CAD417451C6A8399ADFBAFD329D7283EFA52AD3A7C3361B7A9E4E3E"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/04-formalization-automation.md", "sha256": "59151403C82ED5036AFAE7B7EB0BCE4F8A8953665F34F25554D4C8186F457318"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/04-formalization-automation.review.md", "sha256": "22F7BF64B2ACAB7F2670D711F5E62081D4FD3E58DAE60C8743E950B95D03E5BB"},
+      {"path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md", "sha256": "CC64CDB3040C69F8891F9D655CAD71E77CA4A5FB8137D919D8C320DEC6D8C8C4"}
+    ],
+    "authorization_context": {
+      "kind": "external_context",
+      "date": "2026-08-13",
+      "statement": "pode fazer tudo que voce precisa fazer, use subagentes para te ajudar e para fazer, depois rode close-session",
+      "meaning": "Delegated operational judgment and execution within the existing objective; not a fabricated direct answer to the frozen decision packet."
+    }
+  },
+  "execution_contract": {
+    "root_role": "orchestration-only: validate frozen dispatch, launch seats with governed ACI binding, join, close, reroute exact owner repairs, and report receipts; root authors and edits no substantive artifact",
+    "governed_seat_binding": "Every seat prompt must begin with ACI-WORKFLOW-BINDING-V1:<base64>. If the host hook fails, call the bridge directly and record the gap in the seat receipt. Never persist bridge stdout in a working folder.",
+    "filesystem_policy": "Preserve all pre-existing user-owned changes and unrelated hunks. Use apply_patch for manual edits. No destructive reset, checkout, broad delete, or overwrite.",
+    "git_policy": "No commits, pushes, branches, rebases, resets, checkouts, staging, or cleanup of user changes.",
+    "evidence_policy": "Claims may use only frozen sources, the baseline ledger, explicit delegated decisions, and artifacts produced and reviewed in this dispatch. Uncertainty remains visible.",
+    "component_policy": "No essay, interviewer, profile, schema, skill edit, research program, automation, code, test harness, or new specialization is presumed necessary. The architecture plan must disposition every candidate as build-now, retain-existing, defer, or reject, with evidence and owner.",
+    "worktree_policy": "s00 records the complete initial git status and hashes of every in-scope existing file. Later validators compare changes against that ledger and block unrelated mutation.",
+    "concurrency_limit": 4,
+    "repair_ceiling": 3,
+    "seat_receipt_contract": "Every attempted seat and every iteration owns one immutable receipt at .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/{role_id}.json. No two role_id/iteration_id pairs share a receipt. A not-needed role gets a non-spawn lifecycle entry only, not a fabricated completed receipt.",
+    "receipt_index_policy": "Step-level indexes, when useful, are mechanical lists of seat receipt path/hash/status tuples owned by baseline_steward for s00 and terminal_reconciler for pre-terminal inspection; they never replace seat receipts or synthesize model judgment."
+  },
+  "techniques": [
+    "sequence",
+    "validation_loop",
+    "residue_ledger",
+    "owner_boundary_check",
+    "execution_receipt_handoff",
+    "concrete_path_evidence",
+    "approval_semantics_map",
+    "artifact_contract_bridge"
+  ],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "The user explicitly requires all substantive work to be performed through subagents and asks for implementation, final review, and close-session.",
+    "explanation": "Separate decision, architecture, implementation, validation, attack, verification, repair, and closure owners prevent delegated authority from becoming fabricated human consent or self-approval.",
+    "context": [
+      "Four reviewed blocker decisions remain unresolved by a direct human option selection.",
+      "The user now delegates operational judgment but requires root to do no substantive work.",
+      "Existing internal-tool and skill files are user-owned working-tree additions and must be preserved unless explicitly assigned by the approved artifact plan.",
+      "The final review must follow the review skill's attacker/verifier/writer/auditor topology and persist only review.md."
+    ],
+    "parallelism": "mixed",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Already authorized by the user's 2026-08-13 instruction to do all necessary work through subagents and then run close-session.",
+    "receipt_requirements": [
+      "dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation",
+      "observer_status", "blockers", "residue", "handoff_note", "agent_id", "role_id",
+      "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "iteration_id"
+    ],
+    "roles": [
+      {"role_id": "baseline_steward", "purpose": "Freeze initial worktree state without mutation.", "owns": "s00 baseline artifact and receipt only.", "applies_to_steps": ["s00-freeze-worktree-baseline"], "identity_constraint": "Distinct from every decision, architecture, implementation, review, and closing owner."},
+      {"role_id": "delegated_decision_seat", "purpose": "Select only reviewed real options under explicitly delegated operational authority.", "owns": "delegated-decision-proposal.md and receipt only.", "applies_to_steps": ["d01-select-reviewed-options-under-delegation"], "identity_constraint": "Not root, prior analyst, decision reviewer, recorder, or later architect."},
+      {"role_id": "independent_decision_reviewer", "purpose": "Verify delegated source semantics, option validity, and rationale without choosing or repairing.", "owns": "delegated-decision.review.md and receipt only.", "applies_to_steps": ["d02-independent-decision-review"], "identity_constraint": "Distinct from delegated decider, recorder, root, and all downstream architecture owners."},
+      {"role_id": "mechanical_decision_recorder", "purpose": "Record PASS-reviewed delegated selections and compute gate status mechanically.", "owns": "decision-record.md, append-only dialogue Decision Gate entry, and receipt.", "applies_to_steps": ["d03-mechanical-decision-record-and-gate"], "identity_constraint": "Distinct from decider, reviewer, root, and architects; no interpretation authority."},
+      {"role_id": "definition_minimalist", "purpose": "Argue for the smallest defensible artifact set and explicit non-build choices.", "owns": "definition-analysis/minimalist.md and receipt.", "applies_to_steps": ["a01-independent-definition-analysis"], "identity_constraint": "Distinct from definition operator and synthesizer."},
+      {"role_id": "definition_operator", "purpose": "Test whether a fresh operator could use the proposed system and identify necessary responsibility boundaries.", "owns": "definition-analysis/operator.md and receipt.", "applies_to_steps": ["a01-independent-definition-analysis"], "identity_constraint": "Distinct from definition minimalist and synthesizer."},
+      {"role_id": "definition_synthesizer", "purpose": "Synthesize evidence and delegated decisions into a minimal definition and exact artifact plan.", "owns": "architecture-definition.md, artifact-plan.json, architecture repair iterations, and receipt.", "applies_to_steps": ["a02-synthesize-minimal-definition-and-plan", "a04-architecture-repair-and-rereview"], "identity_constraint": "Distinct from definition analysts, architecture reviewer, and implementation owners."},
+      {"role_id": "independent_architecture_reviewer", "purpose": "Gate evidence fidelity, minimality, operability, exclusions, and ownership disjointness.", "owns": "architecture-review.md and review receipts only.", "applies_to_steps": ["a03-independent-architecture-review", "a04-architecture-repair-and-rereview"], "identity_constraint": "Stable identity across architecture reviews; never edits architecture artifacts."},
+      {"role_id": "product_documentation_implementer", "purpose": "Implement only approved prose/laboratory artifacts in its namespace.", "owns": "Only the existing internal-tools/need-driven-system-writing/README.md plus exact additional product-prose paths assigned to this role by the PASS-reviewed artifact plan.", "applies_to_steps": ["i01-implement-approved-artifact-plan", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Explicitly excludes internal-tools/need-driven-system-writing/definition/**, robot-talks/**, implementation-review/**, schemas/**, scripts/**, tests/**, implementation-dispatch.json, implementation-dispatch.review.md, all sessions/** paths, .codex/skills/write-need-driven-documents/**, and .agents/skills/write-need-driven-documents/**. No exact path may be assigned to more than one owner."},
+      {"role_id": "skill_runtime_implementer", "purpose": "Implement only approved operational-skill changes and keep canonical/mirror bytes synchronized.", "owns": ".codex/skills/write-need-driven-documents/** and .agents/skills/write-need-driven-documents/** only.", "applies_to_steps": ["i01-implement-approved-artifact-plan", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "No internal-tool prose, automation, Robot-Talks, review, or session files."},
+      {"role_id": "automation_implementer", "purpose": "Implement approved schemas, deterministic scripts, and tests only if the plan justifies them.", "owns": "internal-tools/need-driven-system-writing/schemas/**, scripts/**, and tests/** only.", "applies_to_steps": ["i01-implement-approved-artifact-plan", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "No README, skill/runtime, Robot-Talks, review, or session files."},
+      {"role_id": "deterministic_validator", "purpose": "Run exact structural, syntax, mirror, link, ownership, and plan-declared tests without repairing.", "owns": "validation-report.md and validation receipts only.", "applies_to_steps": ["v01-deterministic-validation", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Distinct from all implementation owners."},
+      {"role_id": "review_attacker_governance", "purpose": "Attack the whole final corpus through exactly one lens: fidelity/governance.", "owns": "Runtime return only; whole-corpus read-only attack; no persisted transcript.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Never verifies its own findings, edits targets, or takes a second lens."},
+      {"role_id": "review_attacker_mechanics", "purpose": "Attack the whole final corpus through exactly one lens: mechanics/correctness.", "owns": "Runtime return only; whole-corpus read-only attack; no persisted transcript.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Never verifies its own findings, edits targets, or takes a second lens."},
+      {"role_id": "review_attacker_operability", "purpose": "Attack the whole final corpus through exactly one lens: operability.", "owns": "Runtime return only; whole-corpus read-only attack; no persisted transcript.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Never verifies its own findings, edits targets, or takes a second lens."},
+      {"role_id": "review_attacker_abuse", "purpose": "Attack the whole final corpus through exactly one lens: abuse/gaming.", "owns": "Runtime return only; whole-corpus read-only attack; no persisted transcript.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Distinct from all other attackers; never verifies its own findings, edits targets, or takes a second lens."},
+      {"role_id": "review_writer", "purpose": "Deduplicate and severity-rank only verified findings into the single persisted review.md.", "owns": "implementation-review/review.md except Coverage section, plus receipt.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Distinct from attackers, verifiers, auditor, implementers, and root."},
+      {"role_id": "review_verifier", "purpose": "Refute candidate findings against literal targets and deterministic evidence.", "owns": "Runtime verification return only; no target or review edits.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Distinct from every attacker and writer; stable across repair iterations."},
+      {"role_id": "review_coverage_auditor", "purpose": "Verify every target was attacked from every declared lens, fire zero-findings guard, and author Coverage.", "owns": "Coverage section of implementation-review/review.md and audit receipt only.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Does no approval and differs from writer/verifier/attackers."},
+      {"role_id": "dedicated_final_approver", "purpose": "Approve or block the frozen review change-request list without other work.", "owns": "Final approval receipt only.", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "identity_constraint": "Does no attack, verification, writing, auditing, repair, implementation, or root orchestration."},
+      {"role_id": "session_closing_agent", "purpose": "Execute close-session and author the session node and forward registers.", "owns": "One sessions/YYYY-MM-DD-HHMM-need-driven-writing-system.md node and close receipt.", "applies_to_steps": ["c01-close-session", "c02-review-and-repair-session-node"], "identity_constraint": "Distinct from root and final small reviewer; owns session repairs."},
+      {"role_id": "session_node_reviewer", "purpose": "Check frontmatter, summary arc, connections, registers, files touched, and line cap.", "owns": "Session-review receipt only; never edits the node.", "applies_to_steps": ["c02-review-and-repair-session-node"], "identity_constraint": "One stable small-agent identity, distinct from closing agent, for up to three passes."},
+      {"role_id": "terminal_reconciler", "purpose": "Pre-terminally verify all earlier-seat lifecycle receipts, substantive gates, no commits, review PASS, and session-review PASS.", "owns": "Its own immutable pre-terminal receipt only; it never claims its future join or close.", "applies_to_steps": ["x01-terminal-lifecycle-reconciliation"], "identity_constraint": "Distinct from root and all artifact authors; excludes itself from the earlier-seat terminality claim."}
+    ]
+  },
+  "subagent_lifecycle": {
+    "status": "none",
+    "agents": [],
+    "instruction": "Populate one entry for every attempted seat and iteration. Success requires terminal join and close plus receipt_artifact for every spawned agent. Timeout, block, cap, handoff, or supersession requires residue and an exact reroute. Root may not synthesize missing work."
+  },
+  "working_paths": {
+    "run_root": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1",
+    "definition_root": "internal-tools/need-driven-system-writing/definition",
+    "review_root": "internal-tools/need-driven-system-writing/implementation-review",
+    "decision_root": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries",
+    "session_path_contract": "sessions/{runtime YYYY-MM-DD-HHMM}-need-driven-writing-system.md"
+  },
+  "steps": [
+    {
+      "step_id": "s00-freeze-worktree-baseline",
+      "name": "Freeze user-owned worktree and in-scope hashes",
+      "capability_ref": "task-session/baseline-ledger",
+      "capability_status": "local-extension",
+      "pattern": "sequential",
+      "parallel": false,
+      "roles": ["baseline_steward"],
+      "inputs": [{"kind": "intent", "ref": "intent.objective"}, {"kind": "external_context", "ref": "source_artifacts.authorization_context"}],
+      "outputs": [
+        {"kind": "ledger", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/worktree-baseline.json"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/s00-freeze-worktree-baseline/initial/baseline_steward.json"},
+        {"kind": "trace_event", "ref": "worktree_baseline_frozen"}
+      ],
+      "evidence_expectations": ["Record git status --short without changing index or worktree.", "Hash every existing in-scope file and list pre-existing untracked/modified paths.", "Verify every source_artifacts hash and implementation-dispatch hash before downstream work."],
+      "stop_conditions": ["BLOCK on any frozen-source mismatch, missing dispatch review authorization, or inability to distinguish pre-existing changes."]
+    },
+    {
+      "step_id": "d01-select-reviewed-options-under-delegation",
+      "name": "Select reviewed decision options under delegated operational authority",
+      "capability_ref": "decision-gate/delegated-decision-seat",
+      "capability_status": "local-extension",
+      "pattern": "decision",
+      "parallel": false,
+      "roles": ["delegated_decision_seat"],
+      "inputs": [
+        {"kind": "ledger", "ref": "s00-freeze-worktree-baseline.worktree-baseline.json"},
+        {"kind": "artifact", "ref": "source_artifacts.reviewed_decision_inputs"},
+        {"kind": "external_context", "ref": "source_artifacts.authorization_context"}
+      ],
+      "outputs": [
+        {"kind": "decision", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/delegated-decision-proposal.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/d01-select-reviewed-options-under-delegation/{iteration_id}/delegated_decision_seat.json"},
+        {"kind": "trace_event", "ref": "delegated_options_selected"}
+      ],
+      "evidence_expectations": [
+        "Select exactly one of A/B for each of D-01, D-02, D-04, and D-06; no new or merged option.",
+        "Record each option, rationale, reviewed evidence, downstream constraints, timestamp, and decision source exactly as delegated_operational_authority from the 2026-08-13 user statement.",
+        "Record D-03-A and D-05-A only as reviewed reversible deferrals, not direct human selections.",
+        "Never say the human selected an option; delegation authorizes the seat to exercise judgment."
+      ],
+      "stop_conditions": ["BLOCK if a choice requires an unreviewed option or if delegated authority is represented as direct human selection."]
+    },
+    {
+      "step_id": "d02-independent-decision-review",
+      "name": "Independently review delegated option selection",
+      "capability_ref": "decision-gate/independent-review",
+      "capability_status": "local-extension",
+      "capability_metadata": {"owner": "decision-gate", "contract": ".agents/skills/decision-gate/SKILL.md#quality-bar"},
+      "pattern": "validation",
+      "parallel": false,
+      "techniques": ["owner_boundary_check", "concrete_path_evidence"],
+      "roles": ["independent_decision_reviewer"],
+      "inputs": [
+        {"kind": "decision", "ref": "d01-select-reviewed-options-under-delegation.delegated-decision-proposal.md"},
+        {"kind": "artifact", "ref": "source_artifacts.reviewed_decision_inputs"},
+        {"kind": "external_context", "ref": "source_artifacts.authorization_context"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/07-delegated-decision.review.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/d02-independent-decision-review/{iteration_id}/independent_decision_reviewer.json"},
+        {"kind": "decision", "ref": "delegated_decision_review_PASS_or_BLOCK"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/07-delegated-decision.review.md",
+      "evidence_expectations": ["Reconstruct all available options from the frozen PASS-reviewed packet.", "Verify source semantics, rationale sufficiency, compatibility across four choices, and absence of fabricated direct consent or architecture.", "Reviewer never edits the proposal."],
+      "stop_conditions": ["On BLOCK, reroute exact defects only to the delegated decision seat; maximum three reviewed attempts.", "No decision recording or architecture on BLOCK."]
+    },
+    {
+      "step_id": "d03-mechanical-decision-record-and-gate",
+      "name": "Mechanically record delegated decisions and close Decision Gate",
+      "capability_ref": "decision-gate/recorder",
+      "capability_status": "local-extension",
+      "pattern": "handoff",
+      "parallel": false,
+      "roles": ["mechanical_decision_recorder"],
+      "inputs": [
+        {"kind": "decision", "ref": "d01-select-reviewed-options-under-delegation.delegated-decision-proposal.md"},
+        {"kind": "decision", "ref": "d02-independent-decision-review.PASS"},
+        {"kind": "artifact", "ref": "source_artifacts.reviewed_decision_inputs"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-record.md"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md#Delegated Decision Gate update"},
+        {"kind": "decision", "ref": "decision_gate_PASS_or_BLOCK"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/d03-mechanical-decision-record-and-gate/initial/mechanical_decision_recorder.json"}
+      ],
+      "evidence_expectations": ["Copy only PASS-reviewed selections and rationale; record source as delegated operational authority, never direct human choice.", "Preserve all considered options, D-03/D-05 deferrals, timestamp, remaining blockers, and no-implementation boundary.", "Append to dialogue without rewriting history.", "PASS only when four real reviewed options are recorded and review is PASS."],
+      "stop_conditions": ["BLOCK if any selection, source attribution, or rationale differs from the reviewed proposal.", "Architecture remains blocked unless computed gate is PASS."]
+    },
+    {
+      "step_id": "a01-independent-definition-analysis",
+      "name": "Independently test minimal system boundaries and operability",
+      "capability_ref": "system-view/minimal-definition-analysis",
+      "capability_status": "local-extension",
+      "pattern": "fanout",
+      "parallel": true,
+      "join_policy": "all",
+      "roles": ["definition_minimalist", "definition_operator"],
+      "inputs": [
+        {"kind": "decision", "ref": "d03-mechanical-decision-record-and-gate.PASS"},
+        {"kind": "artifact", "ref": "source_artifacts.completed_robot_talks"},
+        {"kind": "artifact", "ref": "source_artifacts.current_operational_state"},
+        {"kind": "ledger", "ref": "s00-freeze-worktree-baseline.worktree-baseline.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/analysis/minimalist.md"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/analysis/operator.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/a01-independent-definition-analysis/initial/definition_minimalist.json"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/a01-independent-definition-analysis/initial/definition_operator.json"}
+      ],
+      "evidence_expectations": [
+        "Both agents read the whole frozen evidence corpus and current operational state, not partitioned subsets.",
+        "Minimalist challenges every candidate component and identifies what can remain existing, deferred, or rejected.",
+        "Operator traces concrete entry, interview/intake if justified, composition, review, learning, correction, and authority handoffs without inventing implementation.",
+        "Both explicitly evaluate essay, interviewer, profile, shared-core representation, schema, specialized skills, evaluation, research, automation, and code; none is presumed necessary."
+      ],
+      "stop_conditions": ["BLOCK if either analysis promotes research residue or recommendation into operating authority."]
+    },
+    {
+      "step_id": "a02-synthesize-minimal-definition-and-plan",
+      "name": "Define the smallest justified internal-tool artifact set",
+      "capability_ref": "system-view/artifact-plan",
+      "capability_status": "local-extension",
+      "pattern": "synthesis",
+      "parallel": false,
+      "roles": ["definition_synthesizer"],
+      "inputs": [
+        {"kind": "artifact", "ref": "a01-independent-definition-analysis.minimalist.md"},
+        {"kind": "artifact", "ref": "a01-independent-definition-analysis.operator.md"},
+        {"kind": "decision", "ref": "d03-mechanical-decision-record-and-gate.decision-record.md"},
+        {"kind": "artifact", "ref": "source_artifacts.current_operational_state"},
+        {"kind": "ledger", "ref": "s00-freeze-worktree-baseline.worktree-baseline.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/architecture-definition.md"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/artifact-plan.json"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/a02-synthesize-minimal-definition-and-plan/initial/definition_synthesizer.json"}
+      ],
+      "evidence_expectations": [
+        "Architecture definition states objective, non-goals, authority boundaries, responsibility relations, flows, failure modes, and unresolved evidence; it does not use components as the organizing premise.",
+        "Artifact plan gives every candidate build-now, retain-existing, defer, or reject status; evidence; exact path if build-now; owner role; consumer; validation; and removal/reconsideration trigger.",
+        "Build-now requires demonstrated need, a distinct owner/consumer contract, and a validation method. Absence of a component is valid.",
+        "Plan contains a disjoint ownership map and declares an exact final target corpus for review.",
+        "No external research is executed in this dispatch. Missing evidence that blocks safe implementation returns BLOCK and a targeted future-research residue rather than invented certainty."
+      ],
+      "stop_conditions": ["BLOCK rather than create a component lacking evidence, consumer, owner, or validation.", "BLOCK if file ownership overlaps or touches robot-talks history, implementation-review, sessions, or unrelated user changes."]
+    },
+    {
+      "step_id": "a03-independent-architecture-review",
+      "name": "Independently gate minimality, evidence, and ownership",
+      "capability_ref": "review/architecture-gate",
+      "capability_status": "local-extension",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["independent_architecture_reviewer"],
+      "inputs": [
+        {"kind": "artifact", "ref": "a02-synthesize-minimal-definition-and-plan.architecture-definition.md"},
+        {"kind": "artifact", "ref": "a02-synthesize-minimal-definition-and-plan.artifact-plan.json"},
+        {"kind": "artifact", "ref": "a01-independent-definition-analysis"},
+        {"kind": "decision", "ref": "d03-mechanical-decision-record-and-gate.decision-record.md"},
+        {"kind": "artifact", "ref": "source_artifacts.completed_robot_talks"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/architecture-review.md"},
+        {"kind": "decision", "ref": "architecture_gate_PASS_or_BLOCK"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/a03-independent-architecture-review/{iteration_id}/independent_architecture_reviewer.json"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/definition/architecture-review.md",
+      "evidence_expectations": ["Independently reconstruct requirements from decisions and eligible evidence.", "Verify no component is justified by availability alone, every build-now path is exact, ownership is disjoint, exclusions are explicit, and fresh-operator flow is coherent.", "Return PASS/BLOCK with quoted evidence and exact owner repairs; never edit architecture artifacts."],
+      "stop_conditions": ["Implementation is blocked until PASS."]
+    },
+    {
+      "step_id": "a04-architecture-repair-and-rereview",
+      "name": "Repair only verified architecture defects and obtain PASS",
+      "capability_ref": "review/repair-loop",
+      "capability_status": "local-extension",
+      "pattern": "validation",
+      "parallel": false,
+      "techniques": ["validation_loop", "residue_ledger", "owner_boundary_check"],
+      "roles": ["definition_synthesizer", "independent_architecture_reviewer"],
+      "inputs": [
+        {"kind": "decision", "ref": "a03-independent-architecture-review.architecture_gate_PASS_or_BLOCK"},
+        {"kind": "artifact", "ref": "a03-independent-architecture-review.architecture-review.md"},
+        {"kind": "artifact", "ref": "a02-synthesize-minimal-definition-and-plan"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/architecture-definition.md"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/artifact-plan.json"},
+        {"kind": "decision", "ref": "verified_architecture_gate_PASS_or_BLOCK"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/a04-architecture-repair-and-rereview/{iteration_id}/definition_synthesizer.json"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/a04-architecture-repair-and-rereview/{iteration_id}/independent_architecture_reviewer.json"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/definition/architecture-review.md",
+      "evidence_expectations": ["If initial PASS, record no-op terminal pass.", "On BLOCK, synthesizer repairs only cited defects; same independent reviewer rechecks frozen full artifacts.", "Maximum three repair passes; every pass has distinct hashes and receipts."],
+      "stop_conditions": ["BLOCK dispatch after three non-PASS reviews or any required new evidence outside frozen boundary."]
+    },
+    {
+      "step_id": "i01-implement-approved-artifact-plan",
+      "name": "Implement only approved paths with non-overlapping ownership",
+      "capability_ref": "task-session/owned-implementation",
+      "capability_status": "local-extension",
+      "pattern": "fanout",
+      "parallel": true,
+      "join_policy": "all",
+      "roles": ["product_documentation_implementer", "skill_runtime_implementer", "automation_implementer"],
+      "inputs": [
+        {"kind": "decision", "ref": "a04-architecture-repair-and-rereview.PASS"},
+        {"kind": "artifact", "ref": "a04-architecture-repair-and-rereview.artifact-plan.json"},
+        {"kind": "artifact", "ref": "a04-architecture-repair-and-rereview.architecture-definition.md"},
+        {"kind": "ledger", "ref": "s00-freeze-worktree-baseline.worktree-baseline.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "exact build-now paths assigned to product_documentation_implementer in artifact-plan.json"},
+        {"kind": "artifact", "ref": "exact build-now paths assigned to skill_runtime_implementer in artifact-plan.json"},
+        {"kind": "artifact", "ref": "exact build-now paths assigned to automation_implementer in artifact-plan.json"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/i01-implement-approved-artifact-plan/initial/product_documentation_implementer.json when spawned"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/i01-implement-approved-artifact-plan/initial/skill_runtime_implementer.json when spawned"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/i01-implement-approved-artifact-plan/initial/automation_implementer.json when spawned"}
+      ],
+      "evidence_expectations": [
+        "Spawn a role only if artifact-plan assigns at least one build-now file to it; otherwise write a not-needed lifecycle entry without spawning.",
+        "Each agent verifies its exact allowlist before mutation, preserves baseline user changes and unrelated hunks, and writes no path owned by another role.",
+        "The skill owner preserves canonical/mirror exact byte equality whenever either copy changes.",
+        "The automation owner creates no code/schema/test merely to fill its namespace; every file must be build-now in the approved plan.",
+        "Each spawned implementer's unique receipt records before/after hashes, owner, evidence, validation command, and whether each path was pre-existing; no shared implementation receipt or model-synthesized group ledger is written."
+      ],
+      "stop_conditions": ["BLOCK on unplanned path, ownership overlap, unrelated modification, missing baseline, or failed implementation-owned check."]
+    },
+    {
+      "step_id": "v01-deterministic-validation",
+      "name": "Run deterministic validation and tests",
+      "capability_ref": "task-session/deterministic-validation",
+      "capability_status": "local-extension",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["deterministic_validator"],
+      "inputs": [
+        {"kind": "ledger", "ref": "i01-implement-approved-artifact-plan.unique seat receipts and non-spawn lifecycle entries"},
+        {"kind": "artifact", "ref": "a04-architecture-repair-and-rereview.artifact-plan.json"},
+        {"kind": "ledger", "ref": "s00-freeze-worktree-baseline.worktree-baseline.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/validation-report.md"},
+        {"kind": "decision", "ref": "deterministic_validation_PASS_or_BLOCK"},
+        {"kind": "ledger", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/implementation-manifest.json"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/v01-deterministic-validation/{iteration_id}/deterministic_validator.json"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/definition/validation-report.md",
+      "evidence_expectations": [
+        "Mechanically build implementation-manifest.json only from the exact unique implementation seat receipts, artifact plan, and baseline; it contains referenced receipt paths/hashes and file facts, not synthesized model judgment, and the deterministic_validator is its sole owner.",
+        "Parse every JSON artifact produced by the route.",
+        "Verify current git diff contains only baseline-existing changes plus dispatch-approved file mutations and no index/commit change.",
+        "Verify every artifact-plan exact path exists or is correctly marked retain/defer/reject, every owner matches, and all Markdown local links introduced by this dispatch resolve.",
+        "If either skill copy changed, verify SHA-256 equality and validate required frontmatter fields name and description.",
+        "Run every exact deterministic command declared in artifact-plan.json for built scripts, schemas, and tests; capture command, exit code, and relevant output.",
+        "Validate implementation-dispatch.json with `.agents/skills/dispatch-spec/scripts/validate-dispatch.py`.",
+        "Do not repair."
+      ],
+      "stop_conditions": ["Final review is blocked on deterministic BLOCK."]
+    },
+    {
+      "step_id": "r01-persisted-multi-lens-final-review",
+      "name": "Run persisted final red-team review",
+      "capability_ref": "review",
+      "capability_status": "local-extension",
+      "capability_metadata": {"owner": "review", "contract": ".agents/skills/review/SKILL.md"},
+      "pattern": "dialectic",
+      "parallel": false,
+      "techniques": ["concrete_path_evidence", "owner_boundary_check"],
+      "roles": ["review_attacker_governance", "review_attacker_mechanics", "review_attacker_operability", "review_attacker_abuse", "review_writer", "review_verifier", "review_coverage_auditor", "dedicated_final_approver"],
+      "inputs": [
+        {"kind": "decision", "ref": "v01-deterministic-validation.PASS"},
+        {"kind": "artifact", "ref": "a04-architecture-repair-and-rereview.artifact-plan.json#final_target_corpus"},
+        {"kind": "ledger", "ref": "v01-deterministic-validation.implementation-manifest.json"},
+        {"kind": "artifact", "ref": "v01-deterministic-validation.validation-report.md"},
+        {"kind": "decision", "ref": "d03-mechanical-decision-record-and-gate.decision-record.md"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/implementation-review/review.md"},
+        {"kind": "decision", "ref": "final_review_KEEP_or_FIX"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/r01-persisted-multi-lens-final-review/{iteration_id}/{role_id}.json for each of the eight spawned review roles"}
+      ],
+      "join_policy": "all",
+      "convergence_criteria": [
+        "Four attackers fan out together, each independently reads the whole frozen target corpus, and each takes exactly one lens: fidelity/governance, mechanics/correctness, operability, or abuse/gaming. Writer, verifier, coverage auditor, and dedicated approver remain downstream in that order.",
+        "Review writer and stable verifier zig-zag until the verifier raises no objection or three exchanges are exhausted.",
+        "Refuted findings are dropped; every survivor quotes the target artifact, states CRITICAL/MAJOR/MINOR, and gives one-line fix.",
+        "Coverage auditor checks target-by-lens coverage and fires the all-zero-findings red flag; dedicated approver only approves or blocks the frozen list.",
+        "Persist exactly one review artifact, review.md; never persist attacker/verifier transcripts, rejected or refuted finding content, attacks.md, or findings.md. Unique receipts may contain lifecycle, lens/target coverage, counts, hashes, convergence state, and final approval only."
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/implementation-review/review.md",
+      "review_contract": {"output_mode": "persisted", "working_folder": "internal-tools/need-driven-system-writing/implementation-review", "per_artifact_verdict": "KEEP iff no verified CRITICAL or MAJOR; otherwise FIX"},
+      "stop_conditions": ["BLOCK if target corpus is not exact/frozen, any target lacks lens coverage, approver has another role, or review topology identities overlap."]
+    },
+    {
+      "step_id": "r02-owner-repair-validation-and-rereview",
+      "name": "Repair verified major findings through owners and re-review",
+      "capability_ref": "review/verified-repair-loop",
+      "capability_status": "local-extension",
+      "pattern": "validation",
+      "parallel": false,
+      "techniques": ["validation_loop", "residue_ledger", "owner_boundary_check", "execution_receipt_handoff"],
+      "roles": ["product_documentation_implementer", "skill_runtime_implementer", "automation_implementer", "deterministic_validator", "review_attacker_governance", "review_attacker_mechanics", "review_attacker_operability", "review_attacker_abuse", "review_writer", "review_verifier", "review_coverage_auditor", "dedicated_final_approver"],
+      "inputs": [
+        {"kind": "decision", "ref": "r01-persisted-multi-lens-final-review.final_review_KEEP_or_FIX"},
+        {"kind": "artifact", "ref": "r01-persisted-multi-lens-final-review.review.md"},
+        {"kind": "ledger", "ref": "v01-deterministic-validation.implementation-manifest.json"},
+        {"kind": "artifact", "ref": "a04-architecture-repair-and-rereview.artifact-plan.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "owner-assigned target repairs listed in review.md"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/definition/validation-report.md"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/implementation-review/review.md"},
+        {"kind": "decision", "ref": "verified_final_review_PASS_or_BLOCK"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/r02-owner-repair-validation-and-rereview/{iteration_id}/{role_id}.json for each spawned repair, validation, and review role"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/implementation-review/review.md",
+      "evidence_expectations": [
+        "If review verdict is KEEP, emit a no-op pass receipt and preserve frozen targets.",
+        "If FIX, route each verified CRITICAL/MAJOR only to the original file owner; reviewer and root never repair.",
+        "After each repair pass, deterministic validator reruns the complete validation contract, then the same review topology re-attacks the full corpus and rewrites the single review.md with current quoted evidence and Coverage.",
+        "MINOR findings may remain as explicit residue and do not force repair unless they obstruct correctness.",
+        "Maximum three repair passes; preserve iteration artifact hashes, unique seat receipts, counts, convergence state, final approval, and owner assignments. Dropped/refuted finding content and all attacker/verifier working returns remain ephemeral and are never persisted. The current review.md contains only Coverage, verified surviving change requests with quoted target evidence, per-artifact verdicts, and required report fields."
+      ],
+      "stop_conditions": ["BLOCK after three passes if any verified CRITICAL/MAJOR remains, deterministic validation fails, or ownership cannot be proven."]
+    },
+    {
+      "step_id": "c01-close-session",
+      "name": "Execute close-session after verified completion",
+      "capability_ref": "close-session",
+      "capability_status": "local-extension",
+      "capability_metadata": {"owner": "close-session", "contract": ".agents/skills/close-session/SKILL.md"},
+      "pattern": "handoff",
+      "parallel": false,
+      "roles": ["session_closing_agent"],
+      "inputs": [
+        {"kind": "decision", "ref": "r02-owner-repair-validation-and-rereview.PASS"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/implementation-review/review.md"},
+        {"kind": "ledger", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/implementation-manifest.json"},
+        {"kind": "artifact", "ref": ".claude/skills/custom/frontmatter.md"},
+        {"kind": "artifact", "ref": ".agents/skills/close-session/SKILL.md"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "sessions/{runtime YYYY-MM-DD-HHMM}-need-driven-writing-system.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/c01-close-session/initial/session_closing_agent.json"},
+        {"kind": "trace_event", "ref": "session_node_authored"}
+      ],
+      "session_contract": [
+        "Closing agent reads frontmatter.md directly, chooses topical tags and exactly one layer, and does not delegate those judgments.",
+        "Summary has at most 10 sentences, no subheadings, and explains repo objective, session objective, decisions, work, review, and remaining questions as one comprehensible arc.",
+        "Connections use only supported real targets and typed relations; files touched do not mechanically become edges.",
+        "Open questions, next steps, and recommendation remain distinct; body is at most 200 lines.",
+        "Files touched is derived from implementation manifest plus dispatch/review/decision/session artifacts, not from every file read.",
+        "Receipt resolves the exact runtime path, timestamp, hash, line count, and frontmatter parse result."
+      ],
+      "stop_conditions": ["Do not close session before final review PASS."]
+    },
+    {
+      "step_id": "c02-review-and-repair-session-node",
+      "name": "Review session node with one small stable reviewer",
+      "capability_ref": "close-session/small-review-loop",
+      "capability_status": "local-extension",
+      "pattern": "validation",
+      "parallel": false,
+      "techniques": ["validation_loop", "residue_ledger", "owner_boundary_check"],
+      "roles": ["session_node_reviewer", "session_closing_agent"],
+      "inputs": [
+        {"kind": "artifact", "ref": "c01-close-session.resolved_session_path"},
+        {"kind": "artifact", "ref": ".agents/skills/close-session/SKILL.md"},
+        {"kind": "artifact", "ref": ".claude/skills/custom/frontmatter.md"},
+        {"kind": "ledger", "ref": "v01-deterministic-validation.implementation-manifest.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "c01-close-session.resolved_session_path"},
+        {"kind": "decision", "ref": "session_node_review_PASS_or_BLOCK"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/c02-review-and-repair-session-node/{iteration_id}/session_node_reviewer.json"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/c02-review-and-repair-session-node/{iteration_id}/session_closing_agent.json when a repair is required"}
+      ],
+      "evidence_artifact": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/c02-review-and-repair-session-node/{iteration_id}/session_node_reviewer.json",
+      "evidence_expectations": ["Same small reviewer checks exact node each pass and returns concrete comments only.", "Closing agent, not reviewer or root, repairs cited defects.", "Stop immediately on no comments; otherwise maximum three repair passes.", "Final receipt records per-pass hash, comments, repairs, frontmatter validity, supported Connections, register separation, summary sentence count, and body line count."],
+      "stop_conditions": ["BLOCK after three passes if reviewer still has comments or deterministic node checks fail."]
+    },
+    {
+      "step_id": "x01-terminal-lifecycle-reconciliation",
+      "name": "Pre-terminally verify all earlier seats, substantive gates, and no commits",
+      "capability_ref": "task-session/terminal-reconciliation",
+      "capability_status": "local-extension",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["terminal_reconciler"],
+      "inputs": [
+        {"kind": "decision", "ref": "c02-review-and-repair-session-node.PASS"},
+        {"kind": "ledger", "ref": "all unique lifecycle receipts for earlier steps s00 through c02; excludes x01 itself"},
+        {"kind": "ledger", "ref": "s00-freeze-worktree-baseline.worktree-baseline.json"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/implementation-review/review.md"}
+      ],
+      "outputs": [
+        {"kind": "decision", "ref": "preterminal_reconciliation_PASS_or_BLOCK"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/x01-terminal-lifecycle-reconciliation/initial/terminal_reconciler.json"},
+        {"kind": "trace_event", "ref": "preterminal_reconciliation_completed"}
+      ],
+      "evidence_artifact": ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/x01-terminal-lifecycle-reconciliation/initial/terminal_reconciler.json",
+      "evidence_expectations": ["Verify every attempted seat from s00 through c02 has terminal join/close and a unique immutable receipt, with residue/reroute for every non-happy path; explicitly exclude this running x01 seat from that claim.", "Verify decision gate PASS, architecture PASS, deterministic validation PASS, final review PASS with no CRITICAL/MAJOR, and session review PASS.", "Verify no commit/index mutation and no changes beyond baseline plus approved manifest and session/receipt artifacts.", "Record exact final artifact paths and hashes; do not write or repair them.", "Its receipt records only current work and never claims its own future join_status or close_status. After root joins and closes x01, root mechanically checks the host runtime or ACI journal for x01 terminal join/close and that no dispatch seat remains live; root writes no judgment artifact or seat receipt and never persists orchestration-bridge stdout in a working folder."],
+      "stop_conditions": ["Return BLOCK on any open earlier-seat lifecycle, missing unique receipt, unresolved major finding, invalid session, commit/index change, or scope mutation."]
+    }
+  ],
+  "repair_loops": {
+    "delegated_decision": {"owner": "delegated_decision_seat", "reviewer": "independent_decision_reviewer", "max_passes": 3, "rule": "Repair only reviewer-cited source, option, compatibility, or rationale defects."},
+    "architecture": {"owner": "definition_synthesizer", "reviewer": "independent_architecture_reviewer", "max_passes": 3, "rule": "Repair only cited evidence, minimality, operability, exclusion, or ownership defects; no new evidence."},
+    "implementation_review": {"owners": ["product_documentation_implementer", "skill_runtime_implementer", "automation_implementer"], "reviewer_topology": "four stable one-lens attackers (governance, mechanics, operability, abuse) -> writer <-> verifier -> coverage auditor -> dedicated approver", "max_passes": 3, "rule": "Repair verified CRITICAL/MAJOR findings only through the original file owner, rerun all deterministic checks, then re-review full corpus. Refuted content remains ephemeral."},
+    "session_node": {"owner": "session_closing_agent", "reviewer": "one stable small session_node_reviewer", "max_passes": 3, "rule": "Reviewer comments; closing agent repairs; stop early when no comments remain."}
+  },
+  "gates": [
+    {"gate_id": "g00-dispatch-and-baseline", "kind": "policy", "owner": "baseline_steward", "condition": "This dispatch is PASS-validated, frozen inputs match, ACI bindings are used, and initial user-owned worktree state is recorded without mutation.", "on_fail": "block"},
+    {"gate_id": "g01-delegated-authority-semantics", "kind": "decision", "owner": "independent_decision_reviewer", "condition": "Exactly one reviewed real option is selected for D-01/D-02/D-04/D-06 under delegated operational authority, not fabricated direct human selection; D-03/D-05 remain reversible deferrals.", "on_fail": "reroute"},
+    {"gate_id": "g02-decision-record", "kind": "validation", "owner": "mechanical_decision_recorder", "condition": "PASS-reviewed selections and source are copied exactly, four blockers are resolved, dialogue is append-preserved, and computed Decision Gate status is PASS.", "on_fail": "block"},
+    {"gate_id": "g03-minimal-architecture", "kind": "quality", "owner": "independent_architecture_reviewer", "condition": "The artifact set is evidence-justified, no component is presumed, non-build choices and exclusions are explicit, ownership is disjoint, and definition is operable.", "on_fail": "reroute"},
+    {"gate_id": "g04-plan-bound-implementation", "kind": "policy", "owner": "deterministic_validator", "condition": "Every mutated product path is build-now in the PASS-reviewed plan, owned by exactly one implementer, preserves baseline user changes, and has validation evidence.", "on_fail": "block"},
+    {"gate_id": "g05-deterministic-validation", "kind": "validation", "owner": "deterministic_validator", "condition": "All plan-declared tests plus JSON, link, mirror, ownership, worktree, dispatch, and no-commit checks pass.", "on_fail": "reroute"},
+    {"gate_id": "g06-final-review", "kind": "quality", "owner": "dedicated_final_approver", "condition": "Persisted review.md follows the required topology and report shape; full target-by-lens coverage is proven; no verified CRITICAL or MAJOR remains after at most three owner repair passes.", "on_fail": "reroute"},
+    {"gate_id": "g07-session-close", "kind": "validation", "owner": "session_node_reviewer", "condition": "A close-session node exists at the resolved runtime path and passes frontmatter, narrative, Connections, registers, files-touched, sentence, and line-cap checks after at most three passes.", "on_fail": "reroute"},
+    {"gate_id": "g08-terminal-lifecycle", "kind": "quality", "owner": "root_orchestrator", "condition": "The terminal_reconciler first PASS-verifies every earlier seat and substantive gate without claiming its own future state; after root joins and closes x01, root mechanically verifies the host runtime or ACI journal records x01 terminal and no dispatch seat remains live. Completion evidence is the frozen x01 receipt plus host-owned join/close record; root authors no judgment artifact or seat receipt and persists no bridge stdout.", "on_fail": "block"},
+    {"gate_id": "g09-no-silent-promotion", "kind": "promotion_guardrail", "owner": "terminal_reconciler", "condition": "Research residue, inferred preferences, candidate principles, form observations, review findings, and validation results are not promoted beyond explicit delegated decisions and the approved artifact plan.", "on_fail": "block"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": "robot-talks-2026-08-12-system-boundaries-decision-gate-v1",
+    "trace_events": [
+      "implementation_dispatch_validated", "worktree_baseline_frozen", "delegated_decider_spawned",
+      "delegated_options_selected", "delegated_decisions_reviewed", "decision_gate_recorded",
+      "definition_agents_spawned", "definition_analyses_joined", "minimal_artifact_plan_authored",
+      "architecture_reviewed", "implementation_owners_spawned", "implementation_joined",
+      "deterministic_validation_completed", "final_review_attackers_spawned", "final_review_abuse_attacker_spawned", "final_review_verified",
+      "owner_repair_iteration_completed", "final_review_approved", "close_session_spawned",
+      "session_node_authored", "session_node_reviewed", "preterminal_reconciliation_completed", "x01_joined_and_closed_by_root", "implementation_dispatch_closed"
+    ],
+    "signal_grouping": "Group by dispatch_id, parent_dispatch_id, step_id, iteration_id, agent_id, role_id, ACI binding receipt, artifact path/hash, decision source, selected option, gate result, test command/exit, review lens, finding severity, owner, repair pass, join/close state, residue, reroute, session path/hash, and git HEAD/index/worktree state. Never persist orchestration-bridge stdout in working folders."
+  },
+  "boundary_evidence": {
+    "authority": {
+      "lifecycle": "terminal_reconciler verifies every earlier seat; root then mechanically verifies x01 host-owned join/close and absence of live dispatch seats",
+      "execution": "only plan-assigned implementation owners",
+      "validation": "deterministic_validator plus independent reviewers",
+      "evidence": "frozen Robot-Talks sources, delegated decision record, baseline, owned artifacts, tests, and quoted review targets",
+      "decision": "delegated_decision_seat under user-delegated operational authority; reviewer checks; recorder copies mechanically",
+      "architecture": "definition_synthesizer proposes; independent_architecture_reviewer gates",
+      "review": "review topology owns only review judgment and review.md",
+      "session": "session_closing_agent authors; session_node_reviewer checks",
+      "promotion": "none beyond explicit reviewed decision and artifact-plan scopes"
+    },
+    "boundaries": [
+      {"boundary_id": "b01-user-delegation-to-seat", "kind": "external_context", "from_owner": "human", "to_owner": "delegated_decision_seat", "applies_to_steps": ["d01-select-reviewed-options-under-delegation", "d02-independent-decision-review", "d03-mechanical-decision-record-and-gate"], "contract": "Delegation authorizes operational selection among frozen reviewed real options but is never recorded as the human directly choosing an option.", "on_violation": "block"},
+      {"boundary_id": "b02-decisions-to-definition", "kind": "capability_handoff", "from_owner": "mechanical_decision_recorder", "to_owner": "definition agents", "applies_to_steps": ["a01-independent-definition-analysis", "a02-synthesize-minimal-definition-and-plan"], "contract": "Only a mechanically recorded PASS decision record constrains definition; recommendations are not decisions.", "on_violation": "block"},
+      {"boundary_id": "b03-evidence-to-artifact-plan", "kind": "artifact_import", "from_owner": "Robot-Talks and current operational state", "to_owner": "definition_synthesizer", "applies_to_steps": ["a02-synthesize-minimal-definition-and-plan"], "contract": "Every build-now component cites existing evidence, distinct owner/consumer contract, and validation; availability is not necessity.", "on_violation": "block"},
+      {"boundary_id": "b04-plan-to-file-owners", "kind": "state_write", "from_owner": "PASS-reviewed artifact plan", "to_owner": "implementation owners", "applies_to_steps": ["i01-implement-approved-artifact-plan", "r02-owner-repair-validation-and-rereview"], "contract": "Each exact product path has one owner; agents mutate only allowlisted paths and preserve baseline user changes.", "on_violation": "block"},
+      {"boundary_id": "b05-implementation-to-validation", "kind": "evidence_return", "from_owner": "implementation owners", "to_owner": "deterministic_validator", "applies_to_steps": ["v01-deterministic-validation", "r02-owner-repair-validation-and-rereview"], "contract": "Manifest supplies before/after hashes, ownership, tests, and exact paths; validator repairs nothing.", "on_violation": "block"},
+      {"boundary_id": "b06-targets-to-review", "kind": "capability_handoff", "from_owner": "implementation and validator", "to_owner": "review topology", "applies_to_steps": ["r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview"], "contract": "Four independent attackers each take exactly one lens over the whole corpus; attackers are read-only, verifier refutes against literal targets, rejected/refuted content and working returns remain ephemeral, review persists only review.md, and repair returns to original file owners.", "on_violation": "block"},
+      {"boundary_id": "b07-review-to-close-session", "kind": "capability_handoff", "from_owner": "dedicated_final_approver", "to_owner": "session_closing_agent", "applies_to_steps": ["c01-close-session", "c02-review-and-repair-session-node"], "contract": "close-session begins only after verified review PASS with no CRITICAL/MAJOR; session node records rather than promotes the work.", "on_violation": "block"},
+      {"boundary_id": "b08-root-orchestration-only", "kind": "state_write", "from_owner": "root", "to_owner": "all artifact owners", "applies_to_steps": ["s00-freeze-worktree-baseline", "d01-select-reviewed-options-under-delegation", "d02-independent-decision-review", "d03-mechanical-decision-record-and-gate", "a01-independent-definition-analysis", "a02-synthesize-minimal-definition-and-plan", "a03-independent-architecture-review", "a04-architecture-repair-and-rereview", "i01-implement-approved-artifact-plan", "v01-deterministic-validation", "r01-persisted-multi-lens-final-review", "r02-owner-repair-validation-and-rereview", "c01-close-session", "c02-review-and-repair-session-node", "x01-terminal-lifecycle-reconciliation"], "contract": "Root authors no decision, definition, implementation, test, review, repair, session, receipt synthesis, or terminal judgment; it only orchestrates exact seat work. After joining and closing x01, its sole final duty is a host-owned mechanical terminal-state check without altering any artifact or seat receipt.", "on_violation": "block"}
+    ],
+    "receipts": [
+      {"receipt_id": "unique-seat-receipt", "producer": "every spawned role for every iteration", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "approval_record", "audit_reference"], "stores": [".arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/{role_id}.json"], "uniqueness_contract": "Exactly one immutable path per attempted agent_id/role_id/iteration_id. Conditional not-needed roles receive only non-spawn lifecycle entries. No shared receipt substitutes for any seat receipt.", "content_contract": "Review-seat receipts may store lifecycle, lens/target coverage, counts, hashes, convergence state, and final approval but never attacker/verifier transcripts or rejected/refuted finding content.", "on_missing": "block"},
+      {"receipt_id": "mechanical-implementation-manifest", "producer": "deterministic_validator", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [".arcanum/observability/runs/need-driven-system-writing-implementation-v1/implementation-manifest.json"], "contract": "Mechanical path/hash/status index derived from unique implementation seat receipts, artifact plan, and baseline; never replaces receipts or synthesizes judgment.", "on_missing": "block"},
+      {"receipt_id": "root-x01-host-close-evidence", "producer": "root_orchestrator using host runtime or ACI journal", "required_fields": ["dispatch_id", "step_id", "status", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [], "contract": "After x01 is joined and closed, root mechanically verifies host-owned terminal join/close and no live dispatch seats. This evidence is not a seat receipt, contains no substantive judgment, and orchestration-bridge stdout is not persisted in a working folder.", "on_missing": "block"}
+    ]
+  },
+  "promotion_guardrails": [
+    "The user authorization delegates operational judgment but is never rewritten as a direct selection of reviewed decision options.",
+    "A delegated decision PASS authorizes only the boundaries explicitly selected and recorded; architecture still requires independent definition and review.",
+    "No candidate component becomes necessary because a seat or namespace exists; conditional seats may be not-needed.",
+    "Robot-Talks reports, research residue, inferred preferences, candidate principles, and form observations remain evidence or residue unless explicitly admitted by the reviewed artifact plan within delegated boundaries.",
+    "Deterministic checks establish only their explicit predicates and never semantic textual quality.",
+    "Review findings authorize only owner-scoped repairs, not new product scope.",
+    "The session node records outcomes and open questions; it does not promote candidates or authorize future work.",
+    "No commit or external publication is authorized."
+  ],
+  "completion_definition": {
+    "result": "PASS only if every condition below is proven by terminal receipts",
+    "conditions": [
+      "The implementation dispatch itself has a PASS dispatch-spec review before any seat launches.",
+      "Initial worktree and all frozen sources are verified and user-owned changes remain preserved.",
+      "D-01, D-02, D-04, and D-06 have one reviewed delegated selection each, accurately sourced; D-03 and D-05 remain explicit reversible deferrals unless separately authorized.",
+      "The mechanical decision record computes Decision Gate PASS and append-preserves dialogue history.",
+      "A PASS-reviewed architecture definition and artifact plan identify the smallest justified set, explicitly disposition every candidate component, and prove disjoint ownership.",
+      "Every build-now path is implemented by exactly one owner; every non-needed seat is explicitly not spawned; no unrelated path changes.",
+      "All deterministic validations and plan-declared tests pass with captured evidence.",
+      "The persisted final review uses the required attacker/verifier/writer/auditor topology, has complete coverage, is approved by a dedicated no-other-work approver, and contains no surviving CRITICAL or MAJOR after at most three owner repair passes.",
+      "close-session creates one valid session node, and one stable small reviewer returns no comments after at most three closing-agent repair passes.",
+      "The terminal reconciler PASS-verifies every earlier attempted seat with a unique receipt; root subsequently joins/closes x01 and mechanically verifies its host-owned terminal record and absence of live dispatch seats. No pending lifecycle, unresolved blocker, unauthorized promotion, commit, index mutation, or unowned worktree change remains."
+    ],
+    "terminal_artifacts": [
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-record.md",
+      "internal-tools/need-driven-system-writing/definition/architecture-definition.md",
+      "internal-tools/need-driven-system-writing/definition/artifact-plan.json",
+      "exact build-now product files from artifact-plan.json",
+      "internal-tools/need-driven-system-writing/definition/validation-report.md",
+      "internal-tools/need-driven-system-writing/implementation-review/review.md",
+      "sessions/{resolved runtime timestamp}-need-driven-writing-system.md",
+      ".arcanum/observability/runs/need-driven-system-writing-implementation-v1/x01-terminal-lifecycle-reconciliation/initial/terminal_reconciler.json",
+      "host runtime or ACI journal evidence that x01 was joined/closed and no dispatch seat remains live (not persisted bridge stdout)"
+    ]
+  },
+  "stop_conditions": [
+    "Stop before execution unless an independent dispatch reviewer returns PASS on this exact dispatch hash.",
+    "Stop on any frozen-source mismatch, missing ACI binding, unprovable identity separation, or baseline ambiguity.",
+    "Stop before architecture unless the delegated Decision Gate record is independently supported and mechanically PASS.",
+    "Stop before implementation unless architecture review is PASS and artifact-plan ownership is exact and disjoint.",
+    "Stop rather than invent a component, claim, owner, schema, interview flow, validation, or evidence absent from reviewed sources.",
+    "Stop on mutation outside an owner's exact plan allowlist, damage to pre-existing user work, or any commit/index operation.",
+    "Stop final review unless deterministic validation is PASS; stop close-session unless final review is PASS with no CRITICAL/MAJOR.",
+    "Stop after three repair passes at any capped loop and record BLOCK plus exact residue; root never repairs.",
+    "Stop completion if any spawned agent remains pending, unjoined, unclosed, unreceipted, or lacks reroute/residue for a non-happy path."
+  ]
+}

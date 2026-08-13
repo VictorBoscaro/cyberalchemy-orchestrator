@@ -1,0 +1,315 @@
+{
+  "dispatch_id": "need-driven-system-writing-implementation-v1",
+  "schema_version": "0.6.3",
+  "dispatch_type": "others",
+  "goal": "Execute the PASS-reviewed need-driven-system-writing implementation dispatch through delegated decisions, minimal evidence-gated definition, owner-disjoint implementation, deterministic validation, multi-lens review and repair, close-session, and non-recursive terminal reconciliation, while root remains orchestration-only.",
+  "context": "Canonical source: internal-tools/need-driven-system-writing/implementation-dispatch.json at SHA-256 A8F4D0546B4732EA0A299552873439FD9DADF4ED75177B7FAE72885F6B7A4A1E. Independent PASS review: internal-tools/need-driven-system-writing/implementation-dispatch.review.md at SHA-256 AF3F4F2A37B01BEF083BCDA32910A8E0CAA8F35B3867C820AA6763F1F956567D, controlling section Repair verification. Preserve every frozen source path/hash, authority boundary, stop condition, ownership exclusion, conditional not-needed rule, and maximum three-pass repair ceiling from those artifacts. The user's 2026-08-13 statement delegates operational judgment but is never represented as direct option selection. Every governed seat receives a compiler-generated ACI-WORKFLOW-BINDING-V1 first line, writes only its owned artifacts and unique immutable receipt under .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/{role_id}.json, cites its binding/session evidence without persisting bridge stdout, preserves existing user changes, and performs no commit, staging, push, reset, checkout, rebase, branch, or cleanup. Connections define readiness and phase order; conditional seats are not launched when their prerequisite or build-now assignment is absent, and receive a non-spawn lifecycle entry rather than a fabricated completed receipt.",
+  "max_loops": 3,
+  "final_approver": "Dedicated Final Approver",
+  "anti_bias_mode": "disabled",
+  "working_folder": "internal-tools/need-driven-system-writing",
+  "groups": [
+    {
+      "group_id": "s00_baseline",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Baseline Steward",
+          "initial_prompt": "Execute only s00-freeze-worktree-baseline from the frozen implementation dispatch. First verify the dispatch SHA-256 A8F4D0546B4732EA0A299552873439FD9DADF4ED75177B7FAE72885F6B7A4A1E and PASS-review SHA-256 AF3F4F2A37B01BEF083BCDA32910A8E0CAA8F35B3867C820AA6763F1F956567D, then verify every source_artifacts path/hash. Read no extra repository documentation. Record git status and in-scope existing-file hashes without changing the worktree or index. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/worktree-baseline.json and your unique receipt at .arcanum/observability/runs/need-driven-system-writing-implementation-v1/s00-freeze-worktree-baseline/initial/baseline_steward.json. Receipt must include the dispatch-required identity, status, artifact, validation, blocker, residue, handoff, iteration, and ACI binding/session references; never copy bridge stdout. BLOCK on mismatch or baseline ambiguity. Do not commit or modify product artifacts."
+        }
+      ]
+    },
+    {
+      "group_id": "d01_delegated_decision",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "planner",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "agent_name": "Delegated Decision Seat",
+          "initial_prompt": "Execute only d01-select-reviewed-options-under-delegation after a PASS baseline. Read the frozen dispatch, decision-recommendations.md, decision-gate-packet.md, reports/06-decision-gate.review.md, and the exact authorization context named by the dispatch. Select exactly one reviewed A/B option for each D-01, D-02, D-04, and D-06; add no option and record the source as delegated_operational_authority, never as direct human selection. Preserve D-03-A and D-05-A only as reversible deferrals. Own only robot-talks/2026-08-12-system-boundaries/delegated-decision-proposal.md and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/d01-select-reviewed-options-under-delegation/{iteration_id}/delegated_decision_seat.json. Include rationale, reviewed evidence, downstream constraints, timestamp, full receipt fields, and ACI binding/session references without bridge stdout. On a reviewer repair iteration, change only cited defects. Do not implement, edit other files, or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "d02_decision_review",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Independent Decision Reviewer",
+          "initial_prompt": "Execute only d02-independent-decision-review after receiving the exact delegated proposal and its unique receipt. Independently reconstruct D-01/D-02/D-04/D-06 options from the frozen reviewed packet; verify delegated-source semantics, option validity, rationale, compatibility, D-03/D-05 deferrals, and absence of fabricated consent or architecture. Never choose, repair, or edit the proposal. Own only robot-talks/2026-08-12-system-boundaries/reports/07-delegated-decision.review.md and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/d02-independent-decision-review/{iteration_id}/independent_decision_reviewer.json. Return PASS or BLOCK with exact owner repairs and complete receipt plus ACI binding/session references; persist no bridge stdout. Maximum three reviewed iterations. Do not commit."
+        }
+      ]
+    },
+    {
+      "group_id": "d03_decision_record",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Mechanical Decision Recorder",
+          "initial_prompt": "Execute only d03-mechanical-decision-record-and-gate after d02 PASS. Mechanically copy the reviewed selections, rationale, considered options, deferrals, timestamp, and source attribution; never reinterpret or call them direct human choices. Own only robot-talks/2026-08-12-system-boundaries/decision-record.md, an append-only Delegated Decision Gate update to dialogue.md, and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/d03-mechanical-decision-record-and-gate/initial/mechanical_decision_recorder.json. Compute PASS only if all four reviewed real options are present and source fidelity holds. Preserve dialogue history byte-for-byte before the append. Include complete receipt and ACI binding/session references without bridge stdout. Do not design, implement, or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "a01_definition_analysis",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2800,
+          "agent_name": "Definition Minimalist",
+          "initial_prompt": "Execute only the definition_minimalist seat of a01 after a mechanically recorded Decision Gate PASS. Read the complete frozen Robot-Talks evidence, decision record, current README/skill state, and baseline named by the dispatch. Challenge every candidate component: essay, interviewer, profile, core representation, schema, specialized skills, evaluation, research, automation, code, and tests. Classify what can remain existing, deferred, or rejected; do not presume a deliverable. Own only internal-tools/need-driven-system-writing/definition/analysis/minimalist.md and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/a01-independent-definition-analysis/initial/definition_minimalist.json. Cite concrete evidence; do not promote residue, edit other files, or commit. Include full receipt and ACI binding/session references; never persist bridge stdout."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2800,
+          "agent_name": "Definition Operator",
+          "initial_prompt": "Execute only the definition_operator seat of a01 after a mechanically recorded Decision Gate PASS. Read the same complete frozen evidence, decision record, current state, and baseline as the minimalist. Test whether a fresh operator could traverse entry, justified intake/interview, composition, review, learning, correction, and authority handoffs without inventing steps. Evaluate every candidate component but presume none. Own only internal-tools/need-driven-system-writing/definition/analysis/operator.md and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/a01-independent-definition-analysis/initial/definition_operator.json. Cite concrete evidence, preserve uncertainty, edit no other path, and do not commit. Include full receipt and ACI binding/session references without bridge stdout."
+        }
+      ]
+    },
+    {
+      "group_id": "a02_definition_synthesis",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3400,
+          "agent_name": "Definition Synthesizer",
+          "initial_prompt": "Execute a02-synthesize-minimal-definition-and-plan only after both a01 analyses join, or an a04 repair iteration only after an exact architecture BLOCK. Synthesize the frozen evidence and decision record into the smallest defensible system definition; components are not the organizing premise. Own only internal-tools/need-driven-system-writing/definition/architecture-definition.md, definition/artifact-plan.json, and your unique receipt at .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/definition_synthesizer.json. The plan must disposition every candidate build-now, retain-existing, defer, or reject; build-now requires evidence, distinct owner/consumer, exact path, validation, and one disjoint owner. Declare the exact final target corpus and all exclusions. On repair, alter only cited defects, maximum three passes. BLOCK rather than invent evidence. Include complete receipt and ACI binding/session references without bridge stdout. Do not implement or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "a03_architecture_review",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "agent_name": "Independent Architecture Reviewer",
+          "initial_prompt": "Execute a03/a04 independent architecture review only after receiving frozen definition artifacts and unique upstream receipts. Reconstruct requirements from the decision record and eligible evidence. Verify minimality, evidence fidelity, fresh-operator flow, explicit non-build choices, exact build-now paths, validation, exclusions, and disjoint ownership. Never edit definition artifacts. Own only internal-tools/need-driven-system-writing/definition/architecture-review.md and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/independent_architecture_reviewer.json. Return PASS or BLOCK with quoted evidence and exact synthesizer repairs; same identity reviews up to three iterations. Include complete receipt and ACI binding/session references without bridge stdout. Do not commit."
+        }
+      ]
+    },
+    {
+      "group_id": "i01_implementation",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3200,
+          "agent_name": "Product Documentation Implementer",
+          "initial_prompt": "CONDITIONAL SEAT: launch only after architecture PASS and only if artifact-plan.json assigns at least one build-now path to product_documentation_implementer; otherwise do not spawn and record a non-spawn not-needed lifecycle entry. Execute i01 or owner repair only for exact assigned paths. Fixed namespace is the existing internal-tools/need-driven-system-writing/README.md plus exact additional product-prose paths in the plan; exclude definition/**, robot-talks/**, implementation-review/**, schemas/**, scripts/**, tests/**, both implementation-dispatch files, sessions/**, and both skill trees. Preserve baseline user hunks and use apply_patch. Own .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/product_documentation_implementer.json. Record before/after hashes and validation; include ACI binding/session references without bridge stdout. No unplanned file and no commit."
+        },
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3200,
+          "agent_name": "Skill Runtime Implementer",
+          "initial_prompt": "CONDITIONAL SEAT: launch only after architecture PASS and only if artifact-plan.json assigns a build-now change to skill_runtime_implementer; otherwise do not spawn and record a non-spawn not-needed lifecycle entry. Own only .codex/skills/write-need-driven-documents/** and .agents/skills/write-need-driven-documents/** exact plan paths. Preserve baseline changes and canonical/mirror byte equality. On review repair, change only verified CRITICAL/MAJOR findings assigned to your paths. Own .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/skill_runtime_implementer.json with before/after hashes, checks, and ACI binding/session references; never bridge stdout. No internal-tool, review, session, or automation paths. Use apply_patch and do not commit."
+        },
+        {
+          "role": "coder",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3200,
+          "agent_name": "Automation Implementer",
+          "initial_prompt": "CONDITIONAL SEAT: launch only after architecture PASS and only if artifact-plan.json assigns at least one build-now path to automation_implementer; otherwise do not spawn and record a non-spawn not-needed lifecycle entry. Own only exact plan paths under internal-tools/need-driven-system-writing/schemas/**, scripts/**, or tests/**. Do not create code, schema, or tests merely to fill the namespace. Preserve baseline changes; on repair change only verified CRITICAL/MAJOR findings assigned to you. Own .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/automation_implementer.json with hashes, exact tests, and ACI binding/session references; never bridge stdout. No README, skill, definition, Robot-Talks, review, or session paths. Use apply_patch and do not commit."
+        }
+      ]
+    },
+    {
+      "group_id": "v01_validation",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 2600,
+          "agent_name": "Deterministic Validator",
+          "initial_prompt": "Execute v01 after all required implementation seats join, and repeat after each owner repair. Read unique implementation receipts, artifact plan, and baseline. Mechanically build .arcanum/observability/runs/need-driven-system-writing-implementation-v1/implementation-manifest.json from path/hash/status facts only. Own definition/validation-report.md and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/v01-deterministic-validation/{iteration_id}/deterministic_validator.json. Parse JSON; check exact plan paths/owners, links, worktree versus baseline, no index/commit change, skill mirror/frontmatter when applicable, dispatch-spec, and every plan-declared command with exit evidence. Repair nothing. Include complete receipt and ACI binding/session references without bridge stdout. BLOCK on failure and do not commit."
+        }
+      ]
+    },
+    {
+      "group_id": "r01_attackers",
+      "n": 4,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Governance Attacker",
+          "initial_prompt": "Execute only the review_attacker_governance seat after deterministic PASS. Read the entire exact frozen final_target_corpus, not a partition, through exactly one lens: fidelity/governance. Work read-only. Return candidate findings ephemerally to the review writer; each needs target quote, severity, and one-line fix. Persist no transcript or rejected/refuted content. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/review_attacker_governance.json containing lifecycle, lens/target coverage, counts, hashes, and ACI binding/session references—not finding content or bridge stdout. Defend zero findings per target. Never verify or repair. Do not commit."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Mechanics Attacker",
+          "initial_prompt": "Execute only the review_attacker_mechanics seat after deterministic PASS. Read the entire exact frozen final_target_corpus through exactly one lens: mechanics/correctness. Run only safe read-only or plan-declared checks. Return candidate findings ephemerally; persist no transcript or rejected/refuted content. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/review_attacker_mechanics.json with lifecycle, coverage, counts, hashes, and ACI binding/session references, never findings or bridge stdout. Defend zero findings. Never verify, repair, or commit."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Operability Attacker",
+          "initial_prompt": "Execute only the review_attacker_operability seat after deterministic PASS. Read the entire exact frozen final_target_corpus through exactly one lens: operability for a fresh operator. Return candidate findings ephemerally; persist no transcript or rejected/refuted content. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/review_attacker_operability.json with lifecycle, coverage, counts, hashes, and ACI binding/session references, never findings or bridge stdout. Defend zero findings. Never verify, repair, take another lens, or commit."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Abuse Attacker",
+          "initial_prompt": "Execute only the review_attacker_abuse seat after deterministic PASS. Read the entire exact frozen final_target_corpus through exactly one lens: abuse/gaming—ways rules can pass in letter while failing in purpose. Return candidate findings ephemerally; persist no transcript or rejected/refuted content. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/review_attacker_abuse.json with lifecycle, coverage, counts, hashes, and ACI binding/session references, never findings or bridge stdout. Defend zero findings. Never verify, repair, take another lens, or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "r01_review_writer",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2800,
+          "agent_name": "Review Writer",
+          "initial_prompt": "Execute only review_writer after all four one-lens attacker returns are available, and repeat within the governed repair loop. Deduplicate and severity-rank candidate findings; exchange with the stable verifier up to three turns. Persist exactly one review artifact: internal-tools/need-driven-system-writing/implementation-review/review.md, excluding the Coverage section owned by the auditor. Include only verified surviving target-quoted change requests, CRITICAL/MAJOR/MINOR, per-artifact KEEP/FIX, and required report fields. Refuted findings are dropped; persist no transcript or rejected content. Own .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/review_writer.json containing lifecycle, counts, hashes, convergence, and ACI binding/session references only; never bridge stdout. Do not edit targets, repair, approve, or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "r01_review_verifier",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2400,
+          "agent_name": "Review Verifier",
+          "initial_prompt": "Execute only review_verifier against the writer's current candidate list and literal frozen target corpus. Refute extrapolated or unsupported findings; refuted findings must be removed, not softened. Require target quote, defensible severity, and proportional fix for every survivor. Return objections ephemerally and repeat with the writer until none or three exchanges. Persist no finding/transcript content. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/review_verifier.json with lifecycle, counts, hashes, convergence state, and ACI binding/session references; never bridge stdout. Do not edit review.md, targets, repairs, or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "r01_coverage",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Review Coverage Auditor",
+          "initial_prompt": "Execute only review_coverage_auditor downstream of verifier convergence. Verify every target was attacked from each of four declared lenses and no refuted finding survived; fire the all-zero-findings red flag when applicable. Own only the Coverage section of implementation-review/review.md and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/review_coverage_auditor.json. Receipt may contain lifecycle, lens/target coverage, counts, hashes, and ACI binding/session references but no attack/verifier transcript or rejected finding content and no bridge stdout. Do not approve, repair targets, or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "r01_approval",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1600,
+          "agent_name": "Dedicated Final Approver",
+          "initial_prompt": "Act only as dedicated_final_approver after review.md and Coverage are frozen. Do no attack, verification, writing, auditing, repair, implementation, or orchestration. Approve only if topology identities are separated, all target/lens coverage is proven, each survivor quotes the target with defensible severity/fix, refuted findings are absent, and no CRITICAL/MAJOR remains after permitted repairs. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/{step_id}/{iteration_id}/dedicated_final_approver.json with final approval, artifact hashes, lifecycle, and ACI binding/session references; never bridge stdout or finding transcripts. On FIX, route exact surviving CRITICAL/MAJOR to original file owners. Do not commit."
+        }
+      ]
+    },
+    {
+      "group_id": "c01_session_close",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 2200,
+          "agent_name": "Session Closing Agent",
+          "initial_prompt": "Execute close-session only after dedicated final approval PASS with no CRITICAL/MAJOR. Read .agents/skills/close-session/SKILL.md and .claude/skills/custom/frontmatter.md directly. You alone choose topical tags, exactly one layer, summary arc, supported Connections, forward registers, and files touched from the manifest. Own one sessions/{runtime YYYY-MM-DD-HHMM}-need-driven-writing-system.md node and .arcanum/observability/runs/need-driven-system-writing-implementation-v1/c01-close-session/initial/session_closing_agent.json; on c02 feedback, you alone repair the same node at .arcanum/observability/runs/need-driven-system-writing-implementation-v1/c02-review-and-repair-session-node/{iteration_id}/session_closing_agent.json. Enforce 10-sentence summary and 200-line body caps. Include ACI binding/session references without bridge stdout. Do not edit product/review files or commit."
+        }
+      ]
+    },
+    {
+      "group_id": "c02_session_review",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1400,
+          "agent_name": "Session Node Reviewer",
+          "initial_prompt": "Execute only session_node_reviewer using one stable identity for at most three passes. Check the exact session node against close-session and frontmatter contracts: valid frontmatter, summary arc and sentence cap, supported typed Connections, files-touched not converted to edges, distinct open questions/next steps/recommendation, and body line cap. Return concrete comments; never edit the node. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/c02-review-and-repair-session-node/{iteration_id}/session_node_reviewer.json with node hash, comments/counts, validation, lifecycle, and ACI binding/session references; never bridge stdout. Stop immediately with PASS when there are no comments. Do not commit."
+        }
+      ]
+    },
+    {
+      "group_id": "x01_preterminal",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Terminal Reconciler",
+          "initial_prompt": "Execute only x01 pre-terminal reconciliation after session review PASS. Verify every earlier attempted seat s00 through c02 has a unique immutable receipt and terminal host-owned join/close evidence or exact non-spawn entry, with residue/reroute for non-happy paths. Verify Decision Gate, architecture, deterministic validation, final review, and session review PASS; no commit/index mutation; and no unowned worktree change. Own only .arcanum/observability/runs/need-driven-system-writing-implementation-v1/x01-terminal-lifecycle-reconciliation/initial/terminal_reconciler.json. Explicitly exclude this running x01 seat from earlier-seat terminality and never claim your own future join or close. Include current ACI binding/session reference but no bridge stdout. Repair nothing and do not commit. Root will join/close you and mechanically verify the host journal afterward."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "s00_baseline", "to": "d01_delegated_decision", "type": "sequential"},
+    {"from": "d01_delegated_decision", "to": "d02_decision_review", "type": "sequential"},
+    {"from": "d02_decision_review", "to": "d01_delegated_decision", "type": "feedback", "loop_cap": 3},
+    {"from": "d02_decision_review", "to": "d03_decision_record", "type": "sequential"},
+    {"from": "d03_decision_record", "to": "a01_definition_analysis", "type": "sequential"},
+    {"from": "a01_definition_analysis", "to": "a02_definition_synthesis", "type": "sequential"},
+    {"from": "a02_definition_synthesis", "to": "a03_architecture_review", "type": "sequential"},
+    {"from": "a03_architecture_review", "to": "a02_definition_synthesis", "type": "feedback", "loop_cap": 3},
+    {"from": "a03_architecture_review", "to": "i01_implementation", "type": "sequential"},
+    {"from": "i01_implementation", "to": "v01_validation", "type": "sequential"},
+    {"from": "v01_validation", "to": "r01_attackers", "type": "sequential"},
+    {"from": "r01_attackers", "to": "r01_review_writer", "type": "sequential"},
+    {"from": "r01_review_writer", "to": "r01_review_verifier", "type": "zig-zag", "loop_cap": 3},
+    {"from": "r01_review_verifier", "to": "r01_coverage", "type": "sequential"},
+    {"from": "r01_coverage", "to": "r01_approval", "type": "sequential"},
+    {"from": "r01_approval", "to": "i01_implementation", "type": "feedback", "loop_cap": 3},
+    {"from": "r01_approval", "to": "c01_session_close", "type": "sequential"},
+    {"from": "c01_session_close", "to": "c02_session_review", "type": "sequential"},
+    {"from": "c02_session_review", "to": "c01_session_close", "type": "feedback", "loop_cap": 3},
+    {"from": "c02_session_review", "to": "x01_preterminal", "type": "sequential"}
+  ]
+}

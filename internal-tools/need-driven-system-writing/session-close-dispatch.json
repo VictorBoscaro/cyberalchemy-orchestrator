@@ -1,0 +1,360 @@
+{
+  "schema": "direct-subagent-close-session-contract/v1",
+  "dispatch_id": "need-driven-system-writing-blocked-session-close-v1",
+  "status": "authored-not-executed",
+  "dispatch_class": "standalone-blocked-session-closeout",
+  "authored_by": {
+    "agent_id": "/root/decision_analyst",
+    "role_id": "dispatch_architect",
+    "authority": "contract authorship only; no session-node authorship, review, repair, product implementation, or execution authority"
+  },
+  "objective": "Close the blocked need-driven-system-writing session truthfully with exactly one independently reviewed session node, without representing the failed implementation route as executed or producing any product implementation.",
+  "authorization": {
+    "source": "The user explicitly authorized subagent execution, required root to remain orchestration-only, required a final review, and authorized this standalone close-session reroute after the larger governed route failed closed.",
+    "scope": "Direct subagent authorship and independent review of one session node plus the unique closeout receipts declared here.",
+    "excludes": [
+      "execution or repair of need-driven-system-writing-implementation-v1",
+      "selection of D-01, D-02, D-04, or D-06",
+      "architecture, schema, skill, automation, code, test, essay, interviewer, profile, or product-documentation implementation",
+      "claims of governed legacy execution, ACI binding, or host-journal proof for this standalone closeout",
+      "commit, staging, push, branch, rebase, reset, checkout, cleanup, or modification of pre-existing user work"
+    ]
+  },
+  "governance_boundary": {
+    "governed_legacy_dispatch": false,
+    "aci_binding_required": false,
+    "claim_allowed": "This is a user-authorized direct subagent task contract created after a governed route failed before seat launch.",
+    "claim_forbidden": "Do not call this an ACI-governed, registered, compiled, or legacy-managed dispatch, and do not treat its receipts as host-owned ACI lifecycle evidence.",
+    "dispatch_spec_applicability": {
+      "status": "not-applicable",
+      "reason": "The repository Dispatch Spec and workflow compiler validate governed legacy dispatches and registered routable dispatch types. This artifact intentionally uses a separate direct-subagent close-session schema because the canonical `others` opening cannot be routed by the current registry. Submitting this file to that validator would falsely imply governed execution rather than strengthen this closeout."
+    }
+  },
+  "frozen_inputs": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "D7A597A3FA60EDB57645CD2A242EAD1466E92EE98AE263093631EBF24A085ADA",
+      "purpose": "repository policy and root orchestration boundary"
+    },
+    {
+      "path": ".agents/skills/close-session/SKILL.md",
+      "sha256": "A2766CCCF66F7201C0AC424C1A41027FBFE71962807430DFB1C38548F48DDC99",
+      "purpose": "session-node authorship and review contract"
+    },
+    {
+      "path": ".claude/skills/custom/frontmatter.md",
+      "sha256": "F1B70537675F4813CA3EBBEA352DF9BAB7D64F337E72DD85B2B6FB9D123F3EF7",
+      "purpose": "frontmatter and typed-Connections contract"
+    },
+    {
+      "path": "internal-tools/need-driven-system-writing/implementation-dispatch.json",
+      "sha256": "A8F4D0546B4732EA0A299552873439FD9DADF4ED75177B7FAE72885F6B7A4A1E",
+      "purpose": "PASS-reviewed but unexecuted intended implementation route"
+    },
+    {
+      "path": "internal-tools/need-driven-system-writing/implementation-dispatch.review.md",
+      "sha256": "AF3F4F2A37B01BEF083BCDA32910A8E0CAA8F35B3867C820AA6763F1F956567D",
+      "purpose": "independent PASS authorization for the repaired dispatch hash, not evidence of execution"
+    },
+    {
+      "path": ".codex/dispatch-proposals/need-driven-system-writing-implementation-v1-opening.json",
+      "sha256": "EE0DAA027D61A68853C57F5166D98A4094550847107D46EDBF549C07C4CC5056",
+      "purpose": "canonical opening record that passed ledger-schema validation but could not compile"
+    },
+    {
+      "path": "implementations/contracts/dispatch-type-registry.v1.json",
+      "sha256": "FBDA655B9904F67845E42F28D851193037D1B6EC4D6CEFC5F1133B7695267C95",
+      "purpose": "durable corroboration that dispatch type `others` is live but not routable and has no capability_ref"
+    },
+    {
+      "path": "implementations/server/runtime/dispatch_workflow.py",
+      "sha256": "D5EBBA43DFD296EE5FDCFF4A886E550A431403ED3ACC7143C8C7E4961F4A6449",
+      "purpose": "workflow compile entry point used by the failed operator attempt"
+    },
+    {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md",
+      "sha256": "601ED38425EE0335F616FCBB795CDA818169036A09AC57FD2729E61B8A3CC825",
+      "purpose": "Robot-Talks objective, authority history, and unresolved-decision status"
+    },
+    {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-recommendations.md",
+      "sha256": "0F4B345E13585A28E5B53BE4C870F9CFBBC7258FC02CB39F44E8690D6E9AE94B",
+      "purpose": "reviewed recommendations that remain non-binding"
+    },
+    {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-gate-packet.md",
+      "sha256": "D6803D9D798148188FB6187FBA03A4F71EAAD32E3A2A7E0E0838BDCA9CF52947",
+      "purpose": "frozen real options and deferrals; no selection is inferred"
+    },
+    {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/06-decision-gate.review.md",
+      "sha256": "C4056B44F05CB88809D96FA71E56226C4C8F4333FE9EB75ABFE9C4F8F3282813",
+      "purpose": "independent verification of recommendations and decision packet"
+    }
+  ],
+  "verified_state": {
+    "implementation_dispatch": {
+      "review_status": "PASS for exact SHA-256 A8F4D0546B4732EA0A299552873439FD9DADF4ED75177B7FAE72885F6B7A4A1E",
+      "execution_status": "not executed",
+      "subagent_lifecycle_in_dispatch": "none",
+      "seat_launches": 0,
+      "product_implementation_under_dispatch": 0,
+      "decision_selections_under_dispatch": 0
+    },
+    "opening_record": {
+      "ledger_schema_validation": "PASS: valid dispatch record (schema v0.6.3)",
+      "workflow_compile": "BLOCK",
+      "compile_command": "python -m implementations.server.runtime.dispatch_workflow --project-dir . compile --record .codex/dispatch-proposals/need-driven-system-writing-implementation-v1-opening.json --capability-ref orchestrate --authority-mode legacy-managed --output-dir <empty-system-temp-directory>",
+      "operator_reported_exit_code": 1,
+      "operator_reported_output_items": 0,
+      "operator_reported_error": "ValidationError: capability 'orchestrate' has no routable dispatch type",
+      "durable_corroboration": "dispatch-type-registry.v1.json declares `others` live, routable=false, capability_ref=null under legacy-managed authority",
+      "evidence_calibration": "The command result is direct operator evidence from the parent thread; the registry is the durable repository corroboration. No host-owned governed run receipt exists."
+    },
+    "reroute": {
+      "status": "authorized",
+      "meaning": "Close the blocked session through direct subagents only; preserve the failed implementation as open infrastructure work rather than bypass it.",
+      "does_not_mean": "authorization to execute product work outside governance or to represent recommendations as selected decisions"
+    }
+  },
+  "root_contract": {
+    "role": "orchestration-only",
+    "may": [
+      "verify frozen input hashes mechanically",
+      "launch the named closing agent and one stable independent reviewer directly",
+      "relay exact reviewer comments to the original closing agent",
+      "join and close subagents",
+      "verify declared output paths, hashes, parse results, line counts, and receipt presence",
+      "report the exact PASS or BLOCK result"
+    ],
+    "must_not": [
+      "write or edit the session node",
+      "choose tags, layer, summary arc, Connections, registers, recommendation, or files-touched entries",
+      "write review comments or repair prose",
+      "edit product, decision, Robot-Talks, implementation-dispatch, review, opening, skill, frontmatter, or repository-governance artifacts",
+      "claim ACI binding or governed execution",
+      "commit or mutate the git index"
+    ]
+  },
+  "identities": [
+    {
+      "role_id": "session_closing_agent",
+      "agent_name": "Blocked Session Closing Agent",
+      "model_profile": "capable writing agent",
+      "stable_identity": true,
+      "owns": [
+        "exactly one sessions/{runtime YYYY-MM-DD-HHMM}-need-driven-writing-system-blocked.md",
+        ".arcanum/observability/runs/need-driven-system-writing-blocked-session-close-v1/c01-close-session/initial/session_closing_agent.json",
+        ".arcanum/observability/runs/need-driven-system-writing-blocked-session-close-v1/c02-review-repair/{iteration_id}/session_closing_agent.json only when that iteration repairs reviewer comments"
+      ],
+      "excludes": "all other paths and all review authority"
+    },
+    {
+      "role_id": "session_node_reviewer",
+      "agent_name": "Independent Small Session Reviewer",
+      "model_profile": "small independent reviewer",
+      "stable_identity": true,
+      "identity_constraint": "Must be a different agent from the closing agent and root for every review pass.",
+      "owns": [
+        ".arcanum/observability/runs/need-driven-system-writing-blocked-session-close-v1/c02-review-repair/{iteration_id}/session_node_reviewer.json"
+      ],
+      "excludes": "session-node edits, product work, decision selection, and root orchestration"
+    }
+  ],
+  "node_contract": {
+    "path": "sessions/{runtime YYYY-MM-DD-HHMM}-need-driven-writing-system-blocked.md",
+    "cardinality": "exactly one new session node",
+    "required_read_before_authorship": [
+      ".agents/skills/close-session/SKILL.md",
+      ".claude/skills/custom/frontmatter.md",
+      "all frozen inputs above"
+    ],
+    "author_judgments_not_preselected_by_dispatch": [
+      "concrete topical tags",
+      "exactly one primary layer",
+      "title and summary composition",
+      "supported typed Connections or the explicit no-real-connection statement",
+      "Open questions",
+      "Next steps",
+      "Recommendation",
+      "verified Files touched list"
+    ],
+    "required_truths": [
+      "State the repository objective and this session's objective in language understandable without the conversation.",
+      "Distinguish artifacts that were authored and independently reviewed from work that was merely planned.",
+      "State that the repaired implementation dispatch received PASS for its exact hash but remained pre-run and launched no implementation seat.",
+      "State that the canonical opening passed ledger-schema validation but workflow compile stopped before launch because capability `orchestrate` has no routable dispatch type.",
+      "State that the failed attempt produced zero compiled output items and zero product implementation under the implementation dispatch.",
+      "State that D-01, D-02, D-04, and D-06 were not selected by the failed route; recommendations remain non-binding, while D-03 and D-05 remain reversible deferrals.",
+      "Record the standalone close-session reroute as a containment action, not a substitute implementation path.",
+      "Keep repair of the `others`/`orchestrate` routing and connected-topology runtime limitation as open infrastructure work.",
+      "Describe uncertainty and evidence provenance: operator-reported compile result plus durable registry corroboration, with no governed run receipt."
+    ],
+    "required_structure": {
+      "artifact_kind": "session",
+      "summary_sentence_max": 10,
+      "body_line_max": 200,
+      "connections_required": true,
+      "files_touched_format": "flat bullets with paths only",
+      "frontmatter": "valid under .claude/skills/custom/frontmatter.md and the close-session template, including exactly one layer, RFC 3339 America/Sao_Paulo timestamps, and expires equal to created_at calendar date plus 60 days"
+    },
+    "connections_rule": "The closing agent must choose only evidence-supported real relationships. Files read, mentioned, or touched do not become edges automatically. The implementation dispatch, its review, the opening record, and Robot-Talks artifacts are candidates only; the agent must justify any selected type and target. Do not edit a target merely to add an inverse edge because target mutation is outside this closeout.",
+    "register_rule": "Open questions are unresolved knowledge or authority gaps; Next steps are already-decided labor; Recommendation only ranks an existing open question or next step and asserts nothing new.",
+    "files_touched_rule": "Include only paths with trustworthy evidence that this bounded session created or modified them. At minimum evaluate the implementation dispatch, its review, the canonical opening record, this close-dispatch, the new session node, and closeout receipts. Do not copy the dirty worktree or the frozen input list wholesale, and do not classify read-only Robot-Talks sources as touched."
+  },
+  "steps": [
+    {
+      "step_id": "c01-close-blocked-session",
+      "owner": "session_closing_agent",
+      "inputs": [
+        "frozen_inputs",
+        "verified_state",
+        "node_contract",
+        "current read-only git status for files-touched discrimination"
+      ],
+      "actions": [
+        "Verify every frozen path and SHA-256 before writing; BLOCK on mismatch.",
+        "Read close-session and frontmatter instructions directly.",
+        "Choose all authorial metadata, narrative, Connections, and forward registers personally.",
+        "Create exactly one node at the resolved runtime path using apply_patch.",
+        "Validate YAML/frontmatter structure, summary sentence count, body line count, links, Connections, register separation, and files-touched evidence.",
+        "Write the unique initial receipt; do not claim host join/close or ACI binding."
+      ],
+      "outputs": [
+        "one resolved sessions/YYYY-MM-DD-HHMM-need-driven-writing-system-blocked.md",
+        ".arcanum/observability/runs/need-driven-system-writing-blocked-session-close-v1/c01-close-session/initial/session_closing_agent.json"
+      ],
+      "completion": "Node and receipt exist, parse, satisfy deterministic limits, and contain no unsupported completion or implementation claim."
+    },
+    {
+      "step_id": "c02-independent-review-and-owner-repair",
+      "review_owner": "session_node_reviewer",
+      "repair_owner": "session_closing_agent",
+      "max_repair_passes": 3,
+      "inputs": [
+        "the exact resolved node path and SHA-256 from c01",
+        "the c01 receipt",
+        ".agents/skills/close-session/SKILL.md",
+        ".claude/skills/custom/frontmatter.md",
+        "frozen_inputs and verified_state for factual checks"
+      ],
+      "review_checks": [
+        "valid frontmatter, artifact_kind=session, topical tags, exactly one layer, timestamps, and 60-day expiry",
+        "summary communicates repository objective, session objective, decisions, artifacts, blocker, reroute, and remaining work in at most 10 sentences",
+        "body below frontmatter is at most 200 lines",
+        "implementation PASS review is not misrepresented as execution and zero product implementation under the dispatch is explicit",
+        "operator evidence, durable corroboration, and absence of a governed run receipt are distinguished",
+        "no decision option or consent is fabricated",
+        "Connections have real targets and supported types, or use the required explicit no-connection statement",
+        "Files touched are evidence-based and are not mechanically converted into Connections",
+        "Open questions, Next steps, and Recommendation have distinct semantics",
+        "no product, source, review, dispatch, skill, governance, or unrelated user file was mutated"
+      ],
+      "loop": [
+        "The stable reviewer returns PASS with no comments or BLOCK with concrete, bounded comments and writes its unique iteration receipt.",
+        "On BLOCK, root relays comments verbatim to the original closing agent.",
+        "Only the original closing agent edits the same session node and writes a unique repair receipt for that iteration.",
+        "The same reviewer rechecks the complete node.",
+        "Stop immediately on PASS; after three repair passes without PASS, stop BLOCKED."
+      ],
+      "outputs": [
+        ".arcanum/observability/runs/need-driven-system-writing-blocked-session-close-v1/c02-review-repair/{iteration_id}/session_node_reviewer.json for every review",
+        ".arcanum/observability/runs/need-driven-system-writing-blocked-session-close-v1/c02-review-repair/{iteration_id}/session_closing_agent.json for every repair",
+        "the same resolved session node, repaired only by its original author",
+        "final reviewer verdict PASS or BLOCKED"
+      ],
+      "completion": "Independent reviewer returns PASS with zero comments against the final node hash."
+    }
+  ],
+  "connections": [
+    {
+      "from": "c01-close-blocked-session",
+      "to": "c02-independent-review-and-owner-repair",
+      "type": "sequential"
+    },
+    {
+      "from": "c02-independent-review-and-owner-repair",
+      "to": "c01-close-blocked-session",
+      "type": "feedback",
+      "condition": "reviewer BLOCK with concrete comments",
+      "loop_cap": 3
+    }
+  ],
+  "receipt_contract": {
+    "nature": "direct subagent evidence, not governed ACI or host-journal evidence",
+    "immutability": "one unique path per role and iteration; never overwrite a prior iteration",
+    "required_fields": [
+      "dispatch_id",
+      "step_id",
+      "iteration_id",
+      "agent_id",
+      "role_id",
+      "status",
+      "inputs_with_hashes",
+      "artifacts_with_hashes",
+      "validation",
+      "comments_or_repairs",
+      "blockers",
+      "residue",
+      "handoff_note",
+      "timestamp"
+    ],
+    "forbidden_fields_or_claims": [
+      "fabricated ACI binding",
+      "fabricated host join or close status",
+      "governed legacy execution",
+      "implementation-dispatch completion",
+      "direct human decision selections that did not occur"
+    ]
+  },
+  "completion_contract": [
+    "All frozen hashes matched before authorship.",
+    "Exactly one new session node exists at the resolved path.",
+    "The final node meets close-session, frontmatter, sentence, line, Connections, register, and files-touched requirements.",
+    "The final node truthfully records the blocked governed route, zero seats launched, zero product implementation under that route, and the open infrastructure repair.",
+    "The independent stable reviewer returned PASS with zero comments against the final node hash.",
+    "Every attempted author/reviewer iteration has its unique direct-subagent receipt.",
+    "No path outside the resolved session node and declared closeout receipt paths changed during execution.",
+    "Root reports the exact node path/hash, reviewer PASS receipt path/hash, iteration count, and any residue without authoring a completion artifact."
+  ],
+  "stop_conditions": [
+    "BLOCK before writing on any frozen input mismatch or missing required input.",
+    "BLOCK if current evidence contradicts the declared zero-seat or zero-product-implementation state; do not repair the history by inference.",
+    "BLOCK if a distinct stable reviewer cannot be maintained.",
+    "BLOCK if any requested repair would require product work, a decision selection, an unsupported Connection, or mutation outside the session node and declared receipts.",
+    "BLOCK after three owner repair passes without reviewer PASS.",
+    "Never fall back to root-authored prose or self-review.",
+    "Never commit."
+  ],
+  "structural_validation_contract": {
+    "parser": "strict JSON parse",
+    "required_top_level_fields": [
+      "schema",
+      "dispatch_id",
+      "status",
+      "dispatch_class",
+      "objective",
+      "authorization",
+      "governance_boundary",
+      "frozen_inputs",
+      "verified_state",
+      "root_contract",
+      "identities",
+      "node_contract",
+      "steps",
+      "connections",
+      "receipt_contract",
+      "completion_contract",
+      "stop_conditions"
+    ],
+    "invariants": [
+      "exactly two identities with distinct role_id and agent_name",
+      "exactly one node path contract",
+      "exactly two steps with one sequential and one capped feedback connection",
+      "max_repair_passes equals feedback loop_cap and is at most 3",
+      "all connection endpoints name declared step_id values",
+      "all frozen SHA-256 values are 64 uppercase hexadecimal characters",
+      "no governed, compiled, registered, ACI, product-implementation, or commit success claim"
+    ]
+  }
+}

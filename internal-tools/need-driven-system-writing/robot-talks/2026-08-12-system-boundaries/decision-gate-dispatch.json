@@ -1,0 +1,624 @@
+{
+  "dispatch_id": "robot-talks-2026-08-12-system-boundaries-decision-gate-v1",
+  "parent_dispatch_id": "robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1",
+  "intent": {
+    "raw": "Prepare independently reviewed, evidence-bounded recommendations and concrete options for human disposition of T-01 through T-06; present them without choosing for the user; then persist and independently verify the user's actual choices and resulting gate status.",
+    "objective": "Resolve or explicitly defer every blocker-level decision through a human-owned Decision Gate while preserving evidence, review, and authority boundaries.",
+    "target_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-record.md",
+    "operator_sentence": "Agents analyze, review, present, record, and review again; root only orchestrates and relays exact frozen bytes; no architecture or implementation is authorized."
+  },
+  "mode": "mixed",
+  "status": "approved-for-agent-execution",
+  "route_sequence": [
+    "d01-analyze-decisions",
+    "d02-review-recommendations",
+    "d03-freeze-decision-packet",
+    "d04-review-frozen-packet",
+    "root-verbatim-relay-and-human-answer",
+    "d05-record-human-decisions",
+    "d06-review-decision-record"
+  ],
+  "boundaries": {
+    "objective_served": "Resolve or explicitly defer the six verified Robot-Talks tensions before any consequential architecture, planning, schema, skill, research, automation, promotion, or code work proceeds.",
+    "user_authorization": "The user authorized continuation through agents, required root to perform no substantive work, required every dispatch to be authored by a subagent, and required final work to receive independent review.",
+    "in_scope": [
+      "Classify each T-01 through T-06 as a true blocker, deferrable decision, or explicit assumption for the next consequential stage.",
+      "Prepare concrete disposition options and a clearly labeled evidence-bounded recommendation for each tension without selecting it for the user.",
+      "State benefits, costs or risks, when to choose, reversibility, downstream effects, and related decisions for every real option.",
+      "Offer Explain / more context as a non-committal path for every blocker question and repeat the same real options after explanation.",
+      "Independently review recommendations, the frozen presentation packet, and the final decision record.",
+      "Persist only the user's explicit choices, rationale if supplied, unresolved blockers, deferred decisions, assumptions, and PASS or BLOCK gate status."
+    ],
+    "out_of_scope": [
+      "Choosing a disposition or option for the user.",
+      "Treating silence, ambiguity, an explanation request, or failure to answer as consent.",
+      "Architecture design, implementation planning, schema design, skill changes, research execution, experiments, automation, promotion, or code.",
+      "Editing findings.md, the completed final review, existing synthesis receipts, or historical dialogue text.",
+      "Adding evidence beyond the frozen Robot-Talks synthesis and its completed independent review.",
+      "Root-authored analysis, recommendation, summary, repair, presentation content, decision interpretation, or record content."
+    ],
+    "success_evidence": [
+      "Every T-01 through T-06 has an evidence-traceable classification, real options, one non-binding recommendation, meaningful tradeoffs, and an Explain / more-context path.",
+      "An independent reviewer returns PASS before root relays any packet.",
+      "Root relays only the review-approved frozen packet verbatim and records the exact human answer as an authoritative event.",
+      "A mechanical recorder persists only explicit human choices and computes PASS only when no blocker remains unresolved.",
+      "The same independent reviewer returns PASS on the final decision record and gate status before this dispatch reports completion."
+    ]
+  },
+  "source_artifacts": {
+    "completed_dialogue": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md",
+      "sha256": "601ED38425EE0335F616FCBB795CDA818169036A09AC57FD2729E61B8A3CC825"
+    },
+    "verified_findings": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md",
+      "sha256": "30B1C14D7F53D1A9251A4CDFA3597751F80AF5160EC6D8323D4F105718591B37"
+    },
+    "completed_final_review": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md",
+      "sha256": "CC64CDB3040C69F8891F9D655CAD71E77CA4A5FB8137D919D8C320DEC6D8C8C4",
+      "controlling_section": "Repair verification addendum — 2026-08-12; Verdict PASS"
+    },
+    "prior_human_gate_packet": {
+      "path": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/human-gate-packet.md",
+      "sha256": "84373E0445B3E1683EC3D32AC7E6C12613FF800AB0EA83BB0417F3D197A869BD",
+      "use": "Provenance and completeness check only. It is not the recommendation packet and must not be relayed as a substitute."
+    },
+    "authorization_context": {
+      "kind": "external_context",
+      "ref": "user-latest-authorization",
+      "statement": "Continue through agents; root does no substantive work; every dispatch is authored by a subagent; final work is reviewed."
+    }
+  },
+  "techniques": [
+    "sequence",
+    "validation_loop",
+    "owner_boundary_check",
+    "concrete_path_evidence",
+    "artifact_contract_bridge",
+    "residue_ledger",
+    "execution_receipt_handoff",
+    "approval_semantics_map"
+  ],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "The six verified tensions require consequential human choices, evidence-bounded recommendations, independent review, mechanical presentation, and durable recording while root is explicitly barred from substantive work.",
+    "explanation": "Role separation prevents the analyst from approving its own recommendations, prevents root from interpreting the gate, and prevents the recorder from silently changing a human answer or gate result.",
+    "context": [
+      "The completed Robot-Talks review verifies T-01 through T-06 but leaves every disposition pending.",
+      "The user requires continuation through agents, root orchestration-only, subagent-authored dispatches, and final review.",
+      "The completed synthesis grants no implementation authority."
+    ],
+    "roles": [
+      {
+        "role_id": "independent_decision_analyst",
+        "purpose": "Convert T-01 through T-06 into concrete, evidence-bounded recommended dispositions and options without deciding for the user.",
+        "owns": "d01 and any analyst-owned explanation or recommendation repair iteration; decision-recommendations.md and analyst receipts.",
+        "applies_to_steps": ["d01-analyze-decisions"],
+        "identity_constraint": "Must be a subagent and must differ from root, the independent decision reviewer, mechanical presenter, and mechanical decision recorder."
+      },
+      {
+        "role_id": "independent_decision_reviewer",
+        "purpose": "Independently verify evidence fidelity, option completeness, recommendation calibration, presentation fidelity, and final-record fidelity without authoring repairs.",
+        "owns": "d02, d04, and d06 review artifacts and receipts only.",
+        "applies_to_steps": ["d02-review-recommendations", "d04-review-frozen-packet", "d06-review-decision-record"],
+        "identity_constraint": "Must be one stable subagent identity across all review checkpoints and must differ from root, analyst, presenter, and recorder."
+      },
+      {
+        "role_id": "mechanical_decision_presenter",
+        "purpose": "Transform only PASS-reviewed recommendations into a concise frozen packet for verbatim root relay.",
+        "owns": "d03; decision-gate-packet.md and presenter receipt only.",
+        "applies_to_steps": ["d03-freeze-decision-packet"],
+        "identity_constraint": "Must be a subagent distinct from root, analyst, reviewer, and recorder; has no recommendation or decision authority."
+      },
+      {
+        "role_id": "mechanical_decision_recorder",
+        "purpose": "Persist exact explicit human choices and compute gate status mechanically after a verified root relay event.",
+        "owns": "d05; decision-record.md, append-only dialogue gate-status entry, and recorder receipt only.",
+        "applies_to_steps": ["d05-record-human-decisions"],
+        "identity_constraint": "Must be a subagent distinct from root, analyst, reviewer, and presenter; has no interpretation, recommendation, architecture, or implementation authority."
+      }
+    ],
+    "parallelism": "mixed",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Already authorized by the user's latest instruction to continue through agents with root orchestration-only and final review.",
+    "receipt_requirements": [
+      "dispatch_id",
+      "step_id",
+      "capability_ref",
+      "status",
+      "artifacts",
+      "validation",
+      "observer_status",
+      "blockers",
+      "residue",
+      "handoff_note",
+      "agent_id",
+      "role_id",
+      "spawn_status",
+      "join_status",
+      "close_status",
+      "receipt_artifact",
+      "reroute",
+      "iteration_id"
+    ]
+  },
+  "subagent_lifecycle": {
+    "status": "none",
+    "agents": [],
+    "instruction": "Populate from runtime receipts for every attempted role and iteration. A completed join requires receipt_artifact. Success requires terminal joins and closes for every spawned agent; blocked, timed-out, capped, handed-off, or superseded attempts require residue and a concrete reroute."
+  },
+  "lifecycle_receipts": [
+    {
+      "receipt_id": "r01-decision-analysis",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r01-decision-analysis.json",
+      "producer": "independent_decision_analyst",
+      "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "agent_id", "role_id", "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "iteration_id"],
+      "conditional_contract": "Completed analysis requires all six tension IDs and recommendation checks. Repair or explanation iterations use a versioned receipt path under iterations/{iteration_id}/.",
+      "validation_requirements": "Record source hashes, runtime identity exclusions, six classifications, option counts, recommendation labels, tradeoff fields, Explain paths, and no-decision/no-architecture compliance."
+    },
+    {
+      "receipt_id": "r02-recommendation-review",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r02-recommendation-review.json",
+      "producer": "independent_decision_reviewer",
+      "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "audit_reference", "agent_id", "role_id", "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "iteration_id"],
+      "conditional_contract": "PASS requires independent reconstruction from frozen findings and final review. BLOCK names exact repairs and reroutes only to the analyst.",
+      "validation_requirements": "Record identity separation, evidence fidelity for T-01 through T-06, blocker/deferrable/assumption classification, viable options, recommendation calibration, Explain behavior, and absence of smuggled architecture."
+    },
+    {
+      "receipt_id": "r03-mechanical-presentation",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r03-mechanical-presentation.json",
+      "producer": "mechanical_decision_presenter",
+      "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "agent_id", "role_id", "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "iteration_id"],
+      "conditional_contract": "Packet remains presentation=pending until independent packet review PASS and an authoritative root relay event records its exact hash.",
+      "validation_requirements": "Record source recommendation-review PASS, packet hash, all blocker question IDs, exact option labels, recommendation labels, Explain options, and mechanical-only transformation."
+    },
+    {
+      "receipt_id": "r04-packet-review",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r04-packet-review.json",
+      "producer": "independent_decision_reviewer",
+      "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "audit_reference", "agent_id", "role_id", "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "iteration_id"],
+      "conditional_contract": "Only PASS authorizes root verbatim relay. BLOCK reroutes to the presenter with exact mechanical repairs.",
+      "validation_requirements": "Record same-reviewer identity, byte-level correspondence to approved recommendations, packet hash, concise completeness, no omitted real option, no altered recommendation, no decision claim, and no architecture."
+    },
+    {
+      "receipt_id": "r05-decision-recorder",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r05-decision-recorder.json",
+      "producer": "mechanical_decision_recorder",
+      "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "agent_id", "role_id", "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "iteration_id", "approval_record"],
+      "conditional_contract": "Recorder may run only after a verified root relay event and exact human answer event. Explain / more context never resolves a question. PASS is forbidden while any blocker remains unresolved.",
+      "validation_requirements": "Record packet hash, relay timestamp, exact answer-event hash, question-by-question mapping, unresolved blockers, deferred decisions, assumptions, user override if any, and computed PASS or BLOCK."
+    },
+    {
+      "receipt_id": "r06-final-record-review",
+      "path": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r06-final-record-review.json",
+      "producer": "independent_decision_reviewer",
+      "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "audit_reference", "agent_id", "role_id", "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "iteration_id"],
+      "conditional_contract": "The dispatch may report PASS or BLOCK only from a PASS review of the recorder's exact decision record. Review BLOCK reroutes only to the recorder.",
+      "validation_requirements": "Record same-reviewer identity, exact human-answer fidelity, rationale provenance, unresolved-blocker count, Explain non-consent, gate calculation, append-only dialogue preservation, and no implementation authorization."
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "d01-analyze-decisions",
+      "name": "Prepare evidence-bounded decision recommendations",
+      "capability_ref": "decision-gate/recommendation-analysis",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "decision-gate",
+        "contract": ".agents/skills/decision-gate/SKILL.md#process"
+      },
+      "mode": "recommendation",
+      "pattern": "decision",
+      "parallel": false,
+      "roles": ["independent_decision_analyst"],
+      "techniques": ["validation_loop", "owner_boundary_check", "concrete_path_evidence"],
+      "inputs": [
+        {"kind": "artifact", "ref": "source_artifacts.verified_findings"},
+        {"kind": "artifact", "ref": "source_artifacts.completed_final_review"},
+        {"kind": "artifact", "ref": "source_artifacts.completed_dialogue"},
+        {"kind": "external_context", "ref": "source_artifacts.authorization_context"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-recommendations.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r01-decision-analysis.json"},
+        {"kind": "trace_event", "ref": "decision_recommendations_authored"}
+      ],
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Verify every frozen input hash before analysis; mismatch returns BLOCK.",
+        "Address T-01 through T-06 individually and preserve their verified uncertainty and prospective status.",
+        "Classify each visible choice as blocker, deferrable, or assumption relative to a named next consequential stage; do not inflate reversible details into blockers.",
+        "For every blocker, provide at least two viable real options, a clearly labeled recommended option, benefit, cost or risk, when to choose, reversibility, downstream impact, related decisions, and a separate Explain / more context path.",
+        "For deferrable decisions and assumptions, state what may safely proceed, what remains prohibited, and what evidence or trigger requires reconsideration.",
+        "Use only evidence already present in verified findings and completed review. A recommendation is advice, not a user choice or architecture decision.",
+        "Do not bundle independent decisions merely to shorten the packet and do not preselect an option."
+      ],
+      "stop_conditions": [
+        "Stop with BLOCK if an option or recommendation requires evidence outside the frozen source boundary.",
+        "Stop after the recommendation artifact and receipt; do not present questions to the user."
+      ]
+    },
+    {
+      "step_id": "d02-review-recommendations",
+      "name": "Independently review recommendations and decision framing",
+      "capability_ref": "decision-gate/independent-review",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "decision-gate",
+        "contract": ".agents/skills/decision-gate/SKILL.md#quality-bar"
+      },
+      "mode": "read-only-review",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["independent_decision_reviewer"],
+      "techniques": ["owner_boundary_check", "concrete_path_evidence"],
+      "inputs": [
+        {"kind": "artifact", "ref": "d01-analyze-decisions.decision-recommendations.md"},
+        {"kind": "artifact", "ref": "source_artifacts.verified_findings"},
+        {"kind": "artifact", "ref": "source_artifacts.completed_final_review"},
+        {"kind": "ledger", "ref": "d01-analyze-decisions.r01-decision-analysis.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/06-decision-gate.review.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r02-recommendation-review.json"},
+        {"kind": "trace_event", "ref": "decision_recommendations_reviewed"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/06-decision-gate.review.md",
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Reconstruct T-01 through T-06 from the frozen findings rather than trusting the analyst's frame.",
+        "Return PASS or BLOCK for evidence fidelity, option viability, blocker classification, tradeoff completeness, recommendation calibration, Explain behavior, and no-smuggled-architecture compliance.",
+        "A reviewer may name exact repairs but may not edit recommendations or select an option."
+      ],
+      "stop_conditions": [
+        "On BLOCK, stop before packet preparation and reroute exact repairs to a new analyst iteration followed by this same reviewer.",
+        "On PASS, freeze reviewed artifact hashes for d03."
+      ]
+    },
+    {
+      "step_id": "d03-freeze-decision-packet",
+      "name": "Prepare concise frozen decision packet",
+      "capability_ref": "decision-gate/presenter",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "decision-gate",
+        "contract": ".agents/skills/decision-gate/SKILL.md#process and #context-option"
+      },
+      "mode": "mechanical",
+      "pattern": "handoff",
+      "parallel": false,
+      "roles": ["mechanical_decision_presenter"],
+      "techniques": ["validation_loop", "owner_boundary_check", "artifact_contract_bridge"],
+      "inputs": [
+        {"kind": "artifact", "ref": "d01-analyze-decisions.decision-recommendations.md"},
+        {"kind": "artifact", "ref": "d02-review-recommendations.06-decision-gate.review.md"},
+        {"kind": "ledger", "ref": "d02-review-recommendations.r02-recommendation-review.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-gate-packet.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r03-mechanical-presentation.json"},
+        {"kind": "handle", "ref": "frozen_decision_packet_sha256"},
+        {"kind": "trace_event", "ref": "decision_packet_prepared"}
+      ],
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Require d02 PASS and copy only its approved question, option, recommendation, tradeoff, and Explain content into a concise packet.",
+        "Preserve stable question and option IDs so exact human answers can be mapped mechanically.",
+        "Label recommendations as non-binding and Explain / more context as non-committal, never as a real answer.",
+        "Set presentation status to pending and compute the exact packet SHA-256."
+      ],
+      "stop_conditions": [
+        "Stop if concision would omit or alter a real option, recommendation, material tradeoff, uncertainty, or Explain path.",
+        "Stop before relay; presenter has no user-facing or decision authority."
+      ]
+    },
+    {
+      "step_id": "d04-review-frozen-packet",
+      "name": "Independently verify frozen packet before relay",
+      "capability_ref": "decision-gate/independent-review",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "decision-gate",
+        "contract": ".agents/skills/decision-gate/SKILL.md#quality-bar"
+      },
+      "mode": "read-only-review",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["independent_decision_reviewer"],
+      "techniques": ["owner_boundary_check", "artifact_contract_bridge"],
+      "inputs": [
+        {"kind": "artifact", "ref": "d03-freeze-decision-packet.decision-gate-packet.md"},
+        {"kind": "artifact", "ref": "d01-analyze-decisions.decision-recommendations.md"},
+        {"kind": "decision", "ref": "d02-review-recommendations.PASS"},
+        {"kind": "ledger", "ref": "d03-freeze-decision-packet.r03-mechanical-presentation.json"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/06-decision-gate.review.md#Packet verification addendum"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r04-packet-review.json"},
+        {"kind": "trace_event", "ref": "decision_packet_verified"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/06-decision-gate.review.md#Packet verification addendum",
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Return PASS only if the packet is concise but complete, byte-stable, faithful to the approved recommendations, and contains all real and Explain options.",
+        "Record the exact approved packet hash. No presentation may occur on BLOCK."
+      ],
+      "stop_conditions": [
+        "On BLOCK, reroute exact repairs only to the presenter and repeat d04 with the same reviewer.",
+        "On PASS, hand only the exact packet path and hash to root for verbatim relay."
+      ]
+    },
+    {
+      "step_id": "d05-record-human-decisions",
+      "name": "Mechanically persist human decisions and gate status",
+      "capability_ref": "decision-gate/recorder",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "decision-gate",
+        "contract": ".agents/skills/decision-gate/SKILL.md#process and #output-contract"
+      },
+      "mode": "mechanical",
+      "pattern": "decision",
+      "parallel": false,
+      "roles": ["mechanical_decision_recorder"],
+      "techniques": ["owner_boundary_check", "artifact_contract_bridge", "residue_ledger"],
+      "inputs": [
+        {"kind": "artifact", "ref": "d03-freeze-decision-packet.decision-gate-packet.md"},
+        {"kind": "decision", "ref": "d04-review-frozen-packet.PASS"},
+        {"kind": "external_context", "ref": "root_authoritative_relay_event_with_timestamp_and_packet_hash"},
+        {"kind": "human_answer", "ref": "exact_user_answer_event"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/decision-record.md"},
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md#Decision Gate update"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r05-decision-recorder.json"},
+        {"kind": "decision", "ref": "decision_gate_status_PASS_or_BLOCK"},
+        {"kind": "trace_event", "ref": "human_decisions_recorded"}
+      ],
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Verify the authoritative relay event hash equals the d04-approved packet hash and preserve the exact human answer event.",
+        "Map only explicit real-option selections to question IDs. Explain / more context, ambiguity, silence, questions, or uncertainty resolve nothing.",
+        "Record each decision question, all considered real options, selected option if explicit, rationale only if user-supplied, decision source, timestamp, remaining blockers, deferred decisions, assumptions, and any explicit override.",
+        "Compute PASS only when all blocker decisions have explicit real-option selections or the user has explicitly overridden or stopped under a named status; otherwise compute BLOCK.",
+        "Append gate status to dialogue.md without rewriting history and without authoring architecture or next-stage content."
+      ],
+      "stop_conditions": [
+        "If the user chooses Explain / more context, record it as unresolved and reroute the named question IDs to a new analyst explanation iteration; do not infer a decision.",
+        "If any blocker remains unresolved, return BLOCK and prepare no implementation handoff.",
+        "Stop after record and receipt; recorder does not present, recommend, plan, or implement."
+      ]
+    },
+    {
+      "step_id": "d06-review-decision-record",
+      "name": "Independently verify final decision record and gate calculation",
+      "capability_ref": "decision-gate/independent-review",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "decision-gate",
+        "contract": ".agents/skills/decision-gate/SKILL.md#quality-bar"
+      },
+      "mode": "read-only-review",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": ["independent_decision_reviewer"],
+      "techniques": ["validation_loop", "owner_boundary_check", "concrete_path_evidence", "residue_ledger"],
+      "inputs": [
+        {"kind": "artifact", "ref": "d05-record-human-decisions.decision-record.md"},
+        {"kind": "artifact", "ref": "d05-record-human-decisions.dialogue.md#Decision Gate update"},
+        {"kind": "ledger", "ref": "d05-record-human-decisions.r05-decision-recorder.json"},
+        {"kind": "human_answer", "ref": "exact_user_answer_event"},
+        {"kind": "artifact", "ref": "d03-freeze-decision-packet.decision-gate-packet.md"}
+      ],
+      "outputs": [
+        {"kind": "artifact", "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/07-decision-record.review.md"},
+        {"kind": "artifact", "ref": ".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r06-final-record-review.json"},
+        {"kind": "decision", "ref": "verified_decision_gate_status_PASS_or_BLOCK"},
+        {"kind": "trace_event", "ref": "decision_record_verified"}
+      ],
+      "evidence_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/07-decision-record.review.md",
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Use the exact answer event and approved packet to independently verify every recorded selection, rationale attribution, deferral, assumption, override, and unresolved blocker.",
+        "Return PASS on record fidelity separately from the decision-gate status. A faithful record may correctly contain gate status BLOCK.",
+        "Verify Explain requests were not treated as consent, dialogue history is append-preserved, and no architecture or implementation authority was added.",
+        "A review BLOCK names exact recorder repairs and reroutes only to a new recorder iteration followed by this same reviewer."
+      ],
+      "stop_conditions": [
+        "Stop with review BLOCK if the record differs from the human answer or gate calculation.",
+        "If record review PASS and gate status BLOCK, return to the Decision Gate interaction loop only; no consequential work proceeds.",
+        "If record review PASS and gate status PASS, stop this dispatch. Any architecture, plan, or implementation requires a separate user-authorized, subagent-authored dispatch."
+      ]
+    }
+  ],
+  "human_interaction_protocol": {
+    "precondition": "d04 PASS on an exact packet hash.",
+    "root_authority": "Root may relay the exact frozen packet verbatim, provide no substantive gloss, and emit an authoritative event containing timestamp, packet path, packet SHA-256, and the exact user answer. Root may launch, join, close, and relay only.",
+    "explain_loop": "An Explain / more context selection resolves no decision. Root launches a new independent_decision_analyst iteration restricted to the named question IDs; the analyst expands rationale, evidence, reversibility, cost, risk, downstream effects, and dependencies, names but does not choose the recommendation, and re-presents the same real options plus Explain. The explanation repeats d02, d03, and d04 before root relays it verbatim.",
+    "partial_answer_loop": "After any partial real-option answer, d05 and d06 persist and verify the partial record with gate status BLOCK. A new packet includes only unresolved blockers and repeats reviewed analysis, presentation, relay, recording, and final review.",
+    "terminal_rule": "Only a d06 PASS review of a record whose computed gate status is PASS closes the decision gate. An explicit user stop or deferral is recorded truthfully and leaves downstream consequential work blocked unless the user explicitly overrides that boundary."
+  },
+  "review_repair_loop": {
+    "recommendations": "d02 BLOCK -> new analyst iteration repairs only named defects -> same reviewer repeats d02.",
+    "presentation_packet": "d04 BLOCK -> same presenter role repairs only named mechanical defects -> same reviewer repeats d04.",
+    "decision_record": "d06 BLOCK -> same recorder role repairs only named fidelity or calculation defects -> same reviewer repeats d06.",
+    "constraints": [
+      "Reviewer never edits an owned artifact.",
+      "Root never repairs or summarizes.",
+      "Every iteration has a unique iteration_id, receipt, artifact hash, residue, and terminal lifecycle state.",
+      "No repair loop may add architecture, evidence, options not supported by the frozen sources, or implementation authority."
+    ]
+  },
+  "gates": [
+    {
+      "gate_id": "g01-frozen-inputs-and-authority",
+      "kind": "policy",
+      "owner": "independent_decision_reviewer",
+      "condition": "All artifact hashes match; the user authorization is preserved; root is orchestration-only; and all runtime identities satisfy their role exclusions.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g02-recommendation-quality",
+      "kind": "validation",
+      "owner": "independent_decision_reviewer",
+      "condition": "T-01 through T-06 are faithfully classified; every blocker has viable options, meaningful tradeoffs, one non-binding recommendation, and Explain / more context; no recommendation chooses for the user or smuggles architecture.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g03-packet-fidelity",
+      "kind": "validation",
+      "owner": "independent_decision_reviewer",
+      "condition": "The concise packet exactly preserves every approved question, real option, recommendation, material tradeoff, uncertainty, and Explain path; its SHA-256 is frozen before relay.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g04-verbatim-relay",
+      "kind": "policy",
+      "owner": "root_orchestrator",
+      "condition": "Root relays only the d04-PASS packet bytes verbatim and emits the authoritative timestamp, path, packet hash, and exact human-answer event without analysis or summary.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g05-human-choice",
+      "kind": "human_approval",
+      "owner": "human",
+      "condition": "The human alone selects real options, explicitly defers or stops, requests explanation, or explicitly overrides. Explain / more context, silence, ambiguity, and questions are never consent.",
+      "on_fail": "ask"
+    },
+    {
+      "gate_id": "g06-record-fidelity",
+      "kind": "validation",
+      "owner": "independent_decision_reviewer",
+      "condition": "The decision record and append-only dialogue update exactly preserve explicit user choices and rationale, list unresolved blockers, and compute PASS or BLOCK correctly. The final review itself returns PASS.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g07-terminal-lifecycle",
+      "kind": "quality",
+      "owner": "root_orchestrator",
+      "condition": "Every attempted agent iteration has a receipt, terminal join, terminal close or reviewed handoff, named residue and reroute where needed, and no successful path contains pending lifecycle state.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g08-no-implementation",
+      "kind": "promotion_guardrail",
+      "owner": "root_orchestrator",
+      "condition": "This dispatch ends with a reviewed decision record and PASS or BLOCK gate status. It grants no architecture, planning, implementation, schema, skill, research, experiment, automation, promotion, or code authority.",
+      "on_fail": "block"
+    }
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": "robot-talks-2026-08-12-system-boundaries-synthesis-repair-v1",
+    "trace_events": [
+      "decision_gate_dispatch_validated",
+      "decision_analyst_spawned",
+      "decision_recommendations_authored",
+      "decision_recommendations_reviewed",
+      "mechanical_presenter_spawned",
+      "decision_packet_prepared",
+      "decision_packet_verified",
+      "decision_packet_relayed",
+      "human_answer_observed",
+      "explanation_requested",
+      "mechanical_recorder_spawned",
+      "human_decisions_recorded",
+      "decision_record_verified",
+      "decision_gate_passed",
+      "decision_gate_blocked",
+      "decision_gate_dispatch_closed"
+    ],
+    "signal_grouping": "Group events by dispatch_id, parent_dispatch_id, iteration_id, step_id, agent_id, role_id, question_id, packet hash, exact answer-event hash, artifact hashes, verdict, gate status, blocker count, unresolved blocker count, deferred decisions, assumptions, user override, lifecycle state, residue, and reroute. Never persist orchestration-bridge stdout in the Robot-Talks working folder."
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {
+        "boundary_id": "b01-synthesis-to-analysis",
+        "kind": "artifact_import",
+        "from_owner": "robot_talks_synthesis",
+        "to_owner": "independent_decision_analyst",
+        "applies_to_steps": ["d01-analyze-decisions"],
+        "contract": "Only the hash-frozen six-tension findings, completed review, and dialogue may support decision recommendations.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b02-analysis-to-review",
+        "kind": "capability_handoff",
+        "from_owner": "independent_decision_analyst",
+        "to_owner": "independent_decision_reviewer",
+        "applies_to_steps": ["d02-review-recommendations"],
+        "contract": "Reviewer independently reconstructs evidence and never edits or adopts analyst authority.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b03-review-to-presentation",
+        "kind": "capability_handoff",
+        "from_owner": "independent_decision_reviewer",
+        "to_owner": "mechanical_decision_presenter",
+        "applies_to_steps": ["d03-freeze-decision-packet", "d04-review-frozen-packet"],
+        "contract": "Presenter may mechanically condense only PASS-reviewed content; reviewer verifies exact fidelity before relay.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b04-packet-to-human",
+        "kind": "human_approval",
+        "from_owner": "mechanical_decision_presenter",
+        "to_owner": "human",
+        "applies_to_steps": ["d04-review-frozen-packet"],
+        "contract": "Root is a byte-preserving relay; only the human owns selection, deferral, stop, explanation request, or override.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b05-human-to-record",
+        "kind": "human_approval",
+        "from_owner": "human",
+        "to_owner": "mechanical_decision_recorder",
+        "applies_to_steps": ["d05-record-human-decisions", "d06-review-decision-record"],
+        "contract": "Recorder maps only exact explicit answers; reviewer independently verifies the record and gate result.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b06-no-promotion",
+        "kind": "capability_handoff",
+        "from_owner": "decision_gate",
+        "to_owner": "future_consequential_work",
+        "applies_to_steps": ["d01-analyze-decisions", "d02-review-recommendations", "d03-freeze-decision-packet", "d04-review-frozen-packet", "d05-record-human-decisions", "d06-review-decision-record"],
+        "contract": "A reviewed decision record preserves authority but does not itself authorize architecture, planning, implementation, or promotion. A separate user-authorized subagent-authored dispatch is required.",
+        "on_violation": "block"
+      }
+    ],
+    "receipts": [
+      {"receipt_id": "r01-decision-analysis", "producer": "independent_decision_analyst", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r01-decision-analysis.json"], "on_missing": "block"},
+      {"receipt_id": "r02-recommendation-review", "producer": "independent_decision_reviewer", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r02-recommendation-review.json"], "on_missing": "block"},
+      {"receipt_id": "r03-mechanical-presentation", "producer": "mechanical_decision_presenter", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r03-mechanical-presentation.json"], "on_missing": "block"},
+      {"receipt_id": "r04-packet-review", "producer": "independent_decision_reviewer", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r04-packet-review.json"], "on_missing": "block"},
+      {"receipt_id": "r05-decision-recorder", "producer": "mechanical_decision_recorder", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r05-decision-recorder.json"], "on_missing": "block"},
+      {"receipt_id": "r06-final-record-review", "producer": "independent_decision_reviewer", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note"], "stores": [".arcanum/observability/runs/robot-talks-2026-08-12-system-boundaries-decision-gate-v1/r06-final-record-review.json"], "on_missing": "block"}
+    ],
+    "authority_owners": [
+      {"authority": "recommendation", "owner": "independent_decision_analyst", "limit": "non-binding and evidence-bounded"},
+      {"authority": "review", "owner": "independent_decision_reviewer", "limit": "PASS/BLOCK only; no repair or selection"},
+      {"authority": "presentation construction", "owner": "mechanical_decision_presenter", "limit": "mechanical transformation only"},
+      {"authority": "decision", "owner": "human", "limit": "explicit selections, deferral, stop, explanation request, or override"},
+      {"authority": "recording", "owner": "mechanical_decision_recorder", "limit": "exact mapping and status calculation only"},
+      {"authority": "orchestration", "owner": "root_orchestrator", "limit": "launch, join, close, verbatim relay, and authoritative event emission only"}
+    ]
+  },
+  "promotion_guardrails": [
+    "Recommendations never count as decisions.",
+    "A Decision Gate PASS means only that the six dispositions required for the next consequential stage are explicitly and faithfully recorded.",
+    "No decision is promoted into architecture, a plan, schema, skill, research task, experiment, automation, or code by this dispatch.",
+    "Any consequential follow-up requires explicit user authorization and a separate dispatch authored by a subagent and independently reviewed."
+  ],
+  "stop_conditions": [
+    "Stop before analysis if any frozen source hash mismatches.",
+    "Stop before relay unless recommendation review and packet review both return PASS.",
+    "Stop and explain through the governed loop when the human requests Explain / more context; never treat that request as consent.",
+    "Stop with gate status BLOCK while any blocker decision lacks an explicit real-option selection or explicit override.",
+    "Stop and reroute only to the artifact owner when any independent review returns BLOCK; root performs no repair.",
+    "Stop after d06 verifies the decision record and PASS or BLOCK status. Do not design architecture, plan implementation, mutate schemas or skills, conduct research, automate, promote, or write code.",
+    "Stop if any role identity separation, receipt, join, close, residue, reroute, packet-hash, relay-event, or exact-answer requirement cannot be proven."
+  ]
+}

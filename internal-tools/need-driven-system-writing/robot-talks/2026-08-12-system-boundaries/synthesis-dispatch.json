@@ -1,0 +1,636 @@
+{
+  "dispatch_id": "robot-talks-2026-08-12-system-boundaries-synthesis-v1",
+  "parent_dispatch_id": null,
+  "intent": {
+    "raw": "Proceed from the four independently reviewed Robot-Talks investigator reports to a bounded cross-layer synthesis, then an independent final review, and stop at the human gate without implementation.",
+    "objective": "Produce an evidence-traceable tension synthesis using only reviewer-approved formulations, independently verify it, preserve the session record, and present unresolved tensions for human disposition.",
+    "target_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md",
+    "arcanum_vocabulary": [
+      "Robot-Talks",
+      "eligible finding",
+      "cross-layer tension",
+      "independent review",
+      "human gate"
+    ],
+    "operator_sentence": "Root orchestrates only; a synthesis subagent authors the synthesis and dialogue update, a different subagent independently reviews them, and the route stops when the reviewed tensions are handed to the human."
+  },
+  "mode": "mixed",
+  "status": "approved-route-not-run",
+  "boundaries": {
+    "in_scope": [
+      "Extracting the exact Eligible for synthesis sections from all four review artifacts",
+      "Identifying cross-layer contradictions and tensions supported by eligible formulations",
+      "Writing findings.md and appending a synthesis-status record to dialogue.md",
+      "Independent final review of the synthesized artifact and its evidence trace",
+      "Presenting review-approved tensions to the human for disposition"
+    ],
+    "out_of_scope": [
+      "Implementing any architecture, schema, skill, profile, review flow, research program, automation, validator, or code",
+      "Editing investigator reports or their reviews",
+      "Promoting candidate principles, preferences, schemas, skills, ontology, glossary, sigils, or spells",
+      "Adding evidence from rejected or non-eligible report material",
+      "Resolving tensions on behalf of the human"
+    ],
+    "root_role": "Root may launch, join, close, reroute, relay artifacts or gate questions, and append the mechanical final-review and human-gate lifecycle record specified by s04. That append-only record is orchestration bookkeeping, not substantive authorship. Root must not extract findings, synthesize tensions, amend findings or tension wording, perform the independent review, or decide human-gate dispositions.",
+    "stop_condition": "Stop after an independent reviewer passes the synthesis and root presents the human gate. If source eligibility, synthesis quality, evidence traceability, reviewer independence, or lifecycle closeout fails, stop blocked before the human gate. Under no condition may this dispatch proceed to implementation."
+  },
+  "source_artifacts": {
+    "session_contract": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md",
+    "investigator_reports_for_provenance_only": [
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/01-author-sovereignty.md",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/02-shared-principles.md",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/03-operational-architecture.md",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/04-formalization-automation.md"
+    ],
+    "review_artifacts": [
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/01-author-sovereignty.review.md",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/02-shared-principles.review.md",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/03-operational-architecture.review.md",
+      "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/04-formalization-automation.review.md"
+    ],
+    "eligible_sections": [
+      "01-author-sovereignty.review.md#Eligible for synthesis",
+      "02-shared-principles.review.md#Eligible for synthesis",
+      "03-operational-architecture.review.md#Eligible for synthesis",
+      "04-formalization-automation.review.md#Eligible for synthesis"
+    ],
+    "eligibility_rule": "Only the numbered formulations under each review's final Eligible for synthesis heading may support a synthesized finding. Original reports and other review sections may be read for provenance and audit context but must not supply or strengthen a synthesis claim."
+  },
+  "techniques": [
+    "sequence",
+    "owner_boundary_check",
+    "observability_grouping",
+    "residue_ledger",
+    "delegation_boundary",
+    "execution_receipt_handoff",
+    "concrete_path_evidence",
+    "artifact_contract_bridge",
+    "approval_semantics_map"
+  ],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "The approved Robot-Talks protocol requires synthesis from independently reviewed reports, every substantive task must be subagent-authored, and the final synthesis must receive a separate independent review.",
+    "explanation": "Two sequential, role-separated subagents preserve authorship and verification independence: one synthesizes only reviewer-eligible material, and another attacks the resulting evidence trace without rewriting it.",
+    "context": [
+      "The user explicitly approved the concern-based Robot-Talks run.",
+      "dialogue.md requires synthesis to use only accepted or amended findings.",
+      "The user requires root to orchestrate rather than perform substantive synthesis or review."
+    ],
+    "roles": [
+      {
+        "role_id": "synthesis_writer",
+        "purpose": "Build the eligible-evidence frame, identify cross-layer tensions, author findings.md, and append the synthesis status and artifact links to dialogue.md.",
+        "owns": "Steps s01 and s02; findings.md content; synthesis-phase dialogue.md update.",
+        "applies_to_steps": [
+          "s01-build-eligible-frame",
+          "s02-synthesize-tensions"
+        ]
+      },
+      {
+        "role_id": "independent_final_reviewer",
+        "purpose": "Verify every synthesized tension against reviewer-eligible formulations and the Robot-Talks contract without editing or silently repairing the synthesis.",
+        "owns": "Step s03 and reports/05-synthesis.review.md only.",
+        "applies_to_steps": [
+          "s03-independent-final-review"
+        ]
+      }
+    ],
+    "parallelism": "mixed",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Approved: run the synthesis writer, then a distinct independent final reviewer, and stop at the human gate.",
+    "receipt_requirements": [
+      "dispatch_id",
+      "step_id",
+      "capability_ref",
+      "status",
+      "artifacts",
+      "validation",
+      "observer_status",
+      "blockers",
+      "residue",
+      "handoff_note",
+      "agent_id",
+      "role_id",
+      "spawn_status",
+      "join_status",
+      "close_status",
+      "receipt_artifact",
+      "reroute"
+    ]
+  },
+  "subagent_lifecycle": {
+    "status": "none",
+    "agents": [],
+    "instruction": "Populate only at runtime from the concrete lifecycle receipts. Before s04 or any success report, subagent_lifecycle.agents must contain both attempted roles. Every spawned agent must have a terminal join and close state. receipt_artifact is required when join_status=completed; blocked, timed-out, or handed-off states require named residue and a non-empty reroute. Do not change status from none before runtime."
+  },
+  "lifecycle_receipts": [
+    {
+      "receipt_id": "r01-synthesis-subagent",
+      "producer": "synthesis_writer",
+      "required_fields": [
+        "dispatch_id",
+        "step_id",
+        "capability_ref",
+        "status",
+        "artifacts",
+        "validation",
+        "observer_status",
+        "blockers",
+        "residue",
+        "handoff_note",
+        "agent_id",
+        "role_id",
+        "spawn_status",
+        "join_status",
+        "close_status",
+        "receipt_artifact",
+        "reroute"
+      ],
+      "conditional_contract": "receipt_artifact is required when join_status=completed; blocked, timed-out, or handed-off states require named residue and a non-empty reroute.",
+      "stores": [
+        "runtime lifecycle ledger; not the Robot-Talks working folder"
+      ],
+      "on_missing": "block"
+    },
+    {
+      "receipt_id": "r02-independent-review-subagent",
+      "producer": "independent_final_reviewer",
+      "required_fields": [
+        "dispatch_id",
+        "step_id",
+        "capability_ref",
+        "status",
+        "artifacts",
+        "validation",
+        "observer_status",
+        "blockers",
+        "residue",
+        "handoff_note",
+        "audit_reference",
+        "agent_id",
+        "role_id",
+        "spawn_status",
+        "join_status",
+        "close_status",
+        "receipt_artifact",
+        "reroute"
+      ],
+      "conditional_contract": "receipt_artifact is required when join_status=completed; blocked, timed-out, or handed-off states require named residue and a non-empty reroute.",
+      "stores": [
+        "runtime lifecycle ledger; review evidence remains reports/05-synthesis.review.md"
+      ],
+      "on_missing": "block"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "s01-build-eligible-frame",
+      "name": "Build the reviewer-eligible evidence frame",
+      "capability_ref": "context-builder",
+      "mode": "bounded-source-extraction",
+      "pattern": "sequential",
+      "parallel": false,
+      "roles": [
+        "synthesis_writer"
+      ],
+      "techniques": [
+        "concrete_path_evidence",
+        "owner_boundary_check",
+        "handle_handoff"
+      ],
+      "inputs": [
+        {
+          "kind": "intent",
+          "ref": "dispatch.intent"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "source_artifacts.review_artifacts"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "frame",
+          "ref": "eligible-evidence-frame"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "eligible_frame_built"
+        }
+      ],
+      "join_policy": "none",
+      "evidence_expectations": [
+        "Copy each numbered Eligible for synthesis formulation exactly enough to preserve its scope, caveats, and amended wording.",
+        "Assign stable handles 01.1 through 04.5 according to review number and eligible-item order.",
+        "For each handle record the exact review path and eligible item number; retain cited primary-source paths from the review as trace links without introducing a new claim.",
+        "Exclude rejected findings, unreviewed report claims, gaps, local tensions, and synthesis questions as evidence. They may not be smuggled into eligible formulations by paraphrase.",
+        "Record missing, malformed, or ambiguous Eligible sections as blocking residue rather than inferring eligibility."
+      ],
+      "stop_conditions": [
+        "Stop if any of the four review artifacts lacks a final Eligible for synthesis section.",
+        "Stop if an eligible formulation cannot be mapped to one exact review path and item number.",
+        "Do not write findings.md if source eligibility is incomplete."
+      ]
+    },
+    {
+      "step_id": "s02-synthesize-tensions",
+      "name": "Synthesize cross-layer tensions and update the session record",
+      "capability_ref": "robot-talks/synthesis",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "robot-talks",
+        "contract": ".agents/skills/robot-talks/SKILL.md#Phase 3: Synthesis"
+      },
+      "mode": "review-constrained-synthesis",
+      "pattern": "synthesis",
+      "parallel": false,
+      "roles": [
+        "synthesis_writer"
+      ],
+      "techniques": [
+        "dialectic",
+        "residue_ledger",
+        "artifact_contract_bridge",
+        "observability_grouping"
+      ],
+      "inputs": [
+        {
+          "kind": "frame",
+          "ref": "eligible-evidence-frame"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "synthesis_authored"
+        }
+      ],
+      "join_policy": "none",
+      "convergence_criteria": [
+        "Every synthesized tension is a contradiction, boundary conflict, or unresolved tradeoff between at least two eligible formulations from different investigator concerns.",
+        "No synthesized tension relies on rejected, non-eligible, or merely plausible material.",
+        "Each tension preserves uncertainty and does not turn an open question into a decision.",
+        "All eligible formulations are either used in a tension or listed in a coverage ledger with a concise reason they do not create a cross-layer tension."
+      ],
+      "evidence_expectations": [
+        "findings.md must identify, for every tension: stable tension ID; Layer or concern A; Layer or concern B; the exact contradiction or tradeoff; impact severity with rationale; eligible handles supporting each side; concrete review paths and item numbers; primary-source citations inherited from the reviews; uncertainty or missing evidence; and a human disposition question.",
+        "Distinguish a direct contradiction from a prospective risk, open ownership decision, or untested tradeoff. Do not label two compatible qualifications as a contradiction.",
+        "Do not concatenate investigator summaries. Synthesis must explain what one layer holds and what another layer holds, then state the consequence of their incompatibility or unresolved boundary.",
+        "findings.md must include an eligibility coverage ledger for all handles 01.1-01.4, 02.1-02.4, 03.1-03.5, and 04.1-04.5.",
+        "dialogue.md must be appended, not replaced, with synthesis date/status, findings.md link, eligible-source rule, subagent role, unresolved tensions, and pending independent-review state. It must not record human dispositions that have not occurred.",
+        "Recommendations, if any, must be explicitly provisional options for the human gate, never implementation authority."
+      ],
+      "stop_conditions": [
+        "Stop if no evidence-backed cross-layer tension survives; record that outcome without manufacturing one.",
+        "Stop if satisfying the output would require new research or a claim outside eligible formulations.",
+        "Stop after findings.md and the synthesis-phase dialogue update; do not implement, promote, or resolve any tension."
+      ]
+    },
+    {
+      "step_id": "s03-independent-final-review",
+      "name": "Independently review the synthesis",
+      "capability_ref": "robot-talks/review",
+      "capability_status": "local-extension",
+      "capability_metadata": {
+        "owner": "robot-talks",
+        "contract": "dialogue.md conversation protocol items 3-5 plus evidence verification"
+      },
+      "mode": "independent-evidence-review",
+      "pattern": "validation",
+      "parallel": false,
+      "roles": [
+        "independent_final_reviewer"
+      ],
+      "techniques": [
+        "validation_loop",
+        "concrete_path_evidence",
+        "owner_boundary_check",
+        "execution_receipt_handoff"
+      ],
+      "inputs": [
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "source_artifacts.review_artifacts"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md"
+        },
+        {
+          "kind": "decision",
+          "ref": "synthesis-review-verdict"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "independent_synthesis_review_completed"
+        }
+      ],
+      "join_policy": "none",
+      "evidence_artifact": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md",
+      "evidence_expectations": [
+        "The reviewer must be a different agent from synthesis_writer and must not edit findings.md or dialogue.md.",
+        "The reviewer must independently extract every numbered formulation from the final Eligible for synthesis section of each of the four review artifacts, accepting heading levels 1 through 6, and compare that independent extraction with the coverage ledger in findings.md.",
+        "The synthesis writer's eligible-evidence-frame is an internal s01-to-s02 handle only; it is neither review authority nor a required cross-agent handoff.",
+        "For every tension, verify both eligible handles against the exact Eligible for synthesis wording and confirm the primary-source citations are traceable through the review artifacts.",
+        "Verify that each tension is cross-layer, that its stated incompatibility follows from the evidence, that severity does not exceed demonstrated impact, and that prospective risks are not reported as observed contradictions.",
+        "Verify the complete eligibility coverage ledger and explicitly reject any claim derived from original reports, rejected findings, other review sections, or the reviewer's own architectural judgment.",
+        "Verify the synthesis contains no implementation, promotion, or human disposition and that dialogue.md preserves the prior record.",
+        "The review artifact must return PASS or BLOCK, list checks performed, and provide cited change requests for every failure. It must not silently amend or repair the synthesis."
+      ],
+      "stop_conditions": [
+        "A BLOCK verdict stops the route before the human gate and hands cited repairs back to a newly initiated synthesis subagent dispatch.",
+        "PASS requires every tension and every coverage entry to survive verification.",
+        "Do not perform implementation or resolve tensions during review."
+      ]
+    },
+    {
+      "step_id": "s04-human-gate-handoff",
+      "name": "Present reviewed tensions and stop at the human gate",
+      "capability_ref": "task-session",
+      "mode": "human-gate-handoff",
+      "pattern": "handoff",
+      "parallel": false,
+      "roles": [
+        "root_orchestrator"
+      ],
+      "techniques": [
+        "approval_semantics_map",
+        "frame_handoff",
+        "observability_grouping"
+      ],
+      "inputs": [
+        {
+          "kind": "decision",
+          "ref": "synthesis-review-verdict:PASS"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/findings.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/reports/05-synthesis.review.md"
+        },
+        {
+          "kind": "ledger",
+          "ref": "subagent_lifecycle.agents:terminal"
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "handoff",
+          "ref": "human-gate-request"
+        },
+        {
+          "kind": "artifact",
+          "ref": "internal-tools/need-driven-system-writing/robot-talks/2026-08-12-system-boundaries/dialogue.md"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "human_gate_presented"
+        },
+        {
+          "kind": "trace_event",
+          "ref": "dispatch_stopped_at_human_gate"
+        }
+      ],
+      "join_policy": "human_gate",
+      "evidence_expectations": [
+        "Root relays the independently reviewed tensions, their evidence handles, and the available dispositions: real and actionable, real and deferred, misinterpretation, or uncertain and requiring targeted follow-up.",
+        "Before presenting the gate, root verifies that both subagent lifecycle entries have terminal join and close states and then appends only a mechanical record to dialogue.md containing the final review path and PASS verdict, both agents' terminal lifecycle status, the gate-presentation date, and 'human disposition: pending'.",
+        "The dialogue append must not alter findings, tension wording, synthesis claims, prior session content, or record a human disposition before the human supplies one.",
+        "Root does not summarize beyond the reviewed artifact, choose a disposition, alter findings.md, or begin follow-up work.",
+        "The handoff explicitly states that any implementation plan or mutation requires a separate human-authorized route and a new subagent-authored dispatch."
+      ],
+      "stop_conditions": [
+        "Stop immediately after presenting the human gate.",
+        "Do not infer a human answer from silence or prior approval of the investigation.",
+        "Do not update dialogue.md with an actual gate disposition until the human supplies one under a subsequent authorized route; the s04 mechanical append must record only 'human disposition: pending'.",
+        "No implementation is permitted."
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "g01-eligible-evidence-only",
+      "kind": "policy",
+      "owner": "independent_final_reviewer",
+      "condition": "Every synthesis claim maps to one or more exact numbered formulations under the four reviews' final Eligible for synthesis headings; no rejected or non-eligible material supplies a premise.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g02-cross-layer-tension-quality",
+      "kind": "quality",
+      "owner": "independent_final_reviewer",
+      "condition": "Each reported tension states Layer A, Layer B, the incompatibility or unresolved tradeoff, impact severity and rationale, concrete eligible evidence for both sides, uncertainty, and a human disposition question.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g03-independent-final-review",
+      "kind": "validation",
+      "owner": "independent_final_reviewer",
+      "condition": "A reviewer distinct from the synthesis author returns PASS in reports/05-synthesis.review.md after verifying all tensions, coverage, citations, scope, and no-implementation compliance.",
+      "on_fail": "reroute"
+    },
+    {
+      "gate_id": "g04-root-orchestration-only",
+      "kind": "policy",
+      "owner": "root_orchestrator",
+      "condition": "Root performs scheduling, receipt handling, lifecycle closeout, verbatim gate presentation, and the append-only s04 record of final-review and gate lifecycle facts only. This mechanical logging is orchestration bookkeeping; all substantive synthesis, tension wording, and final review remain subagent-authored.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g05-no-implementation",
+      "kind": "promotion_guardrail",
+      "owner": "root_orchestrator",
+      "condition": "This dispatch produces investigation records and a human gate only. It grants no implementation, promotion, schema, skill, profile, research, automation, or code-change authority.",
+      "on_fail": "block"
+    },
+    {
+      "gate_id": "g06-human-disposition",
+      "kind": "human_approval",
+      "owner": "human",
+      "condition": "The human must disposition each independently reviewed tension before any follow-up architecture, schema, skill family, research program, automation, or code work is proposed or initiated.",
+      "on_fail": "ask"
+    }
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": null,
+    "trace_events": [
+      "dispatch_route_validated",
+      "synthesis_subagent_spawned",
+      "eligible_frame_built",
+      "synthesis_authored",
+      "synthesis_subagent_joined_and_closed",
+      "independent_reviewer_spawned",
+      "independent_synthesis_review_completed",
+      "independent_reviewer_joined_and_closed",
+      "human_gate_presented",
+      "dispatch_stopped_at_human_gate"
+    ],
+    "signal_grouping": "Group every event and receipt under dispatch_id and step_id; record agent role, artifact paths, verdict, blockers, residue, reroute, join state, and close state without copying bridge stdout into the session folder."
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {
+        "boundary_id": "b01-reviewed-source-import",
+        "kind": "artifact_import",
+        "from_owner": "investigator_reviewers",
+        "to_owner": "synthesis_writer",
+        "applies_to_steps": [
+          "s01-build-eligible-frame",
+          "s02-synthesize-tensions"
+        ],
+        "contract": "Import only exact Eligible for synthesis formulations as evidence; retain review paths and item numbers; original reports remain provenance context only.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b02-synthesis-delegation",
+        "kind": "capability_handoff",
+        "from_owner": "root_orchestrator",
+        "to_owner": "synthesis_writer",
+        "applies_to_steps": [
+          "s01-build-eligible-frame",
+          "s02-synthesize-tensions"
+        ],
+        "contract": "Root supplies the dispatch and source handles; synthesis_writer alone authors the evidence frame, findings.md, and synthesis-phase dialogue update.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b03-independent-review",
+        "kind": "evidence_return",
+        "from_owner": "synthesis_writer",
+        "to_owner": "independent_final_reviewer",
+        "applies_to_steps": [
+          "s03-independent-final-review"
+        ],
+        "contract": "The reviewer receives frozen findings.md, the synthesis-phase dialogue.md, and the four review artifacts. The reviewer independently extracts eligibility from those review-owned sources; the synthesis writer's internal eligible-evidence-frame is neither authority nor a required handoff. The reviewer writes only reports/05-synthesis.review.md and does not repair target artifacts.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b04-human-gate",
+        "kind": "human_approval",
+        "from_owner": "root_orchestrator",
+        "to_owner": "human",
+        "applies_to_steps": [
+          "s04-human-gate-handoff"
+        ],
+        "contract": "Only independently reviewed tensions are presented. Prior investigation approval is not a disposition. The route stops before acting on any answer.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b05-session-writes",
+        "kind": "state_write",
+        "from_owner": "synthesis_writer",
+        "to_owner": "robot-talks-session",
+        "applies_to_steps": [
+          "s02-synthesize-tensions"
+        ],
+        "contract": "Writes are limited to findings.md and an append-preserving synthesis update in dialogue.md; investigator reports, reviews, sources, schemas, skills, and code remain read-only.",
+        "on_violation": "block"
+      },
+      {
+        "boundary_id": "b06-mechanical-final-gate-log",
+        "kind": "state_write",
+        "from_owner": "root_orchestrator",
+        "to_owner": "robot-talks-session",
+        "applies_to_steps": [
+          "s04-human-gate-handoff"
+        ],
+        "contract": "Root may append to dialogue.md only the final review path and PASS verdict, both agents' terminal lifecycle status, the gate-presentation date, and 'human disposition: pending'. Root must not change findings, tension wording, synthesis claims, prior content, or record an actual disposition before the human supplies one.",
+        "on_violation": "block"
+      }
+    ],
+    "authority": {
+      "lifecycle": "root_orchestrator schedules and closes agents but authors no substantive result",
+      "execution": "synthesis_writer for s01-s02; independent_final_reviewer for s03; root relay plus mechanical final-review and gate-event logging only for s04",
+      "validation": "independent_final_reviewer",
+      "evidence": "review artifacts own eligibility; cited primary sources remain source owners",
+      "memory": "dialogue.md and findings.md remain Robot-Talks session records",
+      "promotion": "human gate only; this dispatch grants no promotion or implementation authority"
+    },
+    "receipts": [
+      {
+        "receipt_id": "r01-synthesis-evidence-handoff",
+        "producer": "synthesis_writer",
+        "required_fields": [
+          "dispatch_id",
+          "step_id",
+          "capability_ref",
+          "status",
+          "artifacts",
+          "validation",
+          "observer_status",
+          "blockers",
+          "residue",
+          "handoff_note"
+        ],
+        "stores": [
+          "runtime lifecycle ledger; not the Robot-Talks working folder"
+        ],
+        "on_missing": "block"
+      },
+      {
+        "receipt_id": "r02-independent-review-evidence-handoff",
+        "producer": "independent_final_reviewer",
+        "required_fields": [
+          "dispatch_id",
+          "step_id",
+          "capability_ref",
+          "status",
+          "artifacts",
+          "validation",
+          "observer_status",
+          "blockers",
+          "residue",
+          "handoff_note",
+          "audit_reference"
+        ],
+        "stores": [
+          "runtime lifecycle ledger; review evidence remains reports/05-synthesis.review.md"
+        ],
+        "on_missing": "block"
+      }
+    ]
+  },
+  "promotion_guardrails": [
+    "Eligible findings remain reviewed investigation evidence, not ratified principles or implementation requirements.",
+    "Synthesis may identify tensions and provisional options but cannot resolve, promote, or implement them.",
+    "Observed execution evidence and subagent receipts cannot directly promote inventory, ontology, glossary, sigil, spell, profile, principle, schema, or skill knowledge.",
+    "Any post-gate research, design, planning, or implementation requires a separate human-authorized route initiated by a new subagent-authored dispatch."
+  ],
+  "stop_conditions": [
+    "Stop blocked before synthesis if eligible evidence cannot be deterministically isolated.",
+    "Stop blocked before the human gate if independent review does not pass.",
+    "Stop after presenting the human gate even if the human has not yet answered.",
+    "Never proceed from this dispatch into implementation or promotion."
+  ]
+}

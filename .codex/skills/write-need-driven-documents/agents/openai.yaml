@@ -1,0 +1,7 @@
+interface:
+  display_name: "Need-Driven Documents"
+  short_description: "Compose unfamiliar ideas in a readable order"
+  default_prompt: "Use $write-need-driven-documents sparingly to compose this explanation around the reader's actual need."
+
+policy:
+  allow_implicit_invocation: false
