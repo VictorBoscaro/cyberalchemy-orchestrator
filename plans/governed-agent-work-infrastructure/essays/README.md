@@ -5,8 +5,8 @@ is_session: false
 layer: [architecture, ontology]
 nature: reference
 status: active
-version: 0.1.1
-last_updated: 2026-07-26
+version: 0.2.0
+last_updated: 2026-08-12
 owning_plan: plans/governed-agent-work-infrastructure/PLAN.md
 authority: proposal-only
 ---
@@ -15,15 +15,17 @@ authority: proposal-only
 
 ## 1. What is this?
 
-The system views for this Plan: long-form documents that explain the shape and stakes of the
-proposed system to a reader who does not yet have its vocabulary. Both are `status: draft` and
-`authority: proposal-only` — they argue for a design, they do not ratify one.
+This directory contains a concise overview and the long-form system views for this Plan. They
+explain the shape and stakes of the proposed system to a reader who does not yet have its
+vocabulary. They argue for a design; they do not ratify one.
 
 ## 2. Business Context
 
 This Plan proposes a common language for governed agent work, and that language cannot be
-specified before it can be described. The two essays split that job: the **agent-language**
-system view sets out the composable language itself and states plainly that its terms stay
+specified before it can be described. The **work-and-knowledge overview** provides the shortest
+entry point: it explains the system as a loop in which work uses and produces knowledge. The two
+longer essays split the deeper explanatory job: the **agent-language** system view sets out the
+composable language itself and states plainly that its terms stay
 provisional until an ontology view owns them and its load-bearing choices stay open until an
 engineer view owns their verdicts; the **work-context** companion carries the macro-to-micro
 context argument — objectives, work lineage, authority — into the same frame. Both name
@@ -46,6 +48,10 @@ its length is a deliberate outcome rather than an unfinished edit.
 
 ## 📁 Navigation
 
+- **[work-and-knowledge-system-overview.md](work-and-knowledge-system-overview.md)**:
+  "A System for Organizing Work" — the concise entry point for a
+  non-specialist reader. It explains the Work–Knowledge loop, the role of agents, the initial
+  software focus, and what remains proposed rather than built.
 - **`agent-language-system-view/`**: "A Composable Language for Governed Agent Work" — the
   high-level system view. `node_type: system-view`, `status: draft`, v0.8.1,
   `authority: proposal-only`, `root_plan: plans/governed-agent-work-infrastructure/PLAN.md`.
@@ -67,6 +73,7 @@ its length is a deliberate outcome rather than an unfinished edit.
 | Edge | Target |
 |---|---|
 | owned-by | [`../PLAN.md`](../PLAN.md) — the governing Plan |
+| overview-of | [`work-and-knowledge-system-overview.md`](work-and-knowledge-system-overview.md) — concise entry point connecting the two longer system views |
 | related-plan | [`../subplans/agent-work-language-research/PLAN.md`](../subplans/agent-work-language-research/PLAN.md) — both essays name it |
 | derives-from | [`../../../docs/essays/macro-to-micro-context.md`](../../../docs/essays/macro-to-micro-context.md), [`../../../docs/essays/from-context-to-governed-primitives.md`](../../../docs/essays/from-context-to-governed-primitives.md) — declared `predecessors` |
 | companion-of | [`agent-language-system-view/essay.md`](agent-language-system-view/essay.md) — the `companion_to` target of the work-context essay, repaired 2026-07-26 |
