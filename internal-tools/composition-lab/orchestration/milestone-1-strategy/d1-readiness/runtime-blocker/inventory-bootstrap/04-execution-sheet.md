@@ -21,7 +21,8 @@ Inventory, launch seats, register a dispatch, append a ledger row, or claim that
 ## Objective, boundary, and mode
 
 Use the installed `.arcanum/inventory/` as the sole Inventory to `backfill` candidate-level,
-source-linked descriptions of perspective-like configurations in a frozen 22-file D1 corpus, then
+source-linked descriptions of composition candidates in a frozen 35-file corpus (22 sources in
+this checkout plus 13 DomainSpec v2 sources in a revision-pinned sibling checkout), then
 run independent read-only `validate` plus bounded `lint`. Preserve ambiguity, conflicts, duplicate
 representations, and selector-bounded non-observations. Later Research may consume the result; this
 workflow does not define a lens or composition and does not validate causal effect.
@@ -32,8 +33,9 @@ not a new dispatch type, ACI connection scheduler, accepted-output receipt, or l
 
 ## Freeze protocol
 
-The proposed corpus below is unchanged from the prepared D1a corpus. At authoring, all 22 hashes
-matched and repository HEAD was the commit above. That observation expires at the human freeze.
+The current-checkout partition derives from the prepared D1a corpus; its 22 hashes were refreshed
+for this regenerated package. The sibling partition is the reviewed 13-row annex. At authoring,
+all 35 hashes matched their declared roots. Those observations expire at the human freeze.
 The table in this execution sheet is the semantic freeze authority. For mechanical extraction only,
 the proposed row source is `d1-readiness/record/d1-dispatch-sheet.md`, currently SHA-256
 `51e442ee7ccdc15122ee607d2fd3ac2ba8eae9d116ab8db695672d29bae2151e`, size `13063`, at repository
@@ -72,13 +74,13 @@ revised sheet and new human confirmation.
 Every selector is `entire-file`; extraction citations must narrow it to heading, line span, anchor,
 query, or fragment. D1 outputs are excluded and corpus expansion is forbidden.
 
-## Proposed frozen corpus manifest
+## Proposed frozen corpus manifest — current checkout (22 sources)
 
 | # | path | selector | SHA-256 |
 |---:|---|---|---|
-| 1 | `internal-tools/composition-lab/README.md` | entire-file | `1d2ef9cae7b41028e0a53bf9ec1efc3a3970385c75f2943f2a175a6a3266e806` |
-| 2 | `internal-tools/composition-lab/research/milestone-1/01-repository-inventory/research-initial-definitions.md` | entire-file | `2183ce096aa33224ef94cf00f56aa1c42e69ae2dc630cde4ecddae7eaf098932` |
-| 3 | `telemetry/agents/subagents-dispatch.yaml` | entire-file | `e28aad64545131ac684731213eefa38b865f4807f439578950514eb3f9b9062c` |
+| 1 | `internal-tools/composition-lab/README.md` | entire-file | `96c7cd1a9e110b16b54692ed6d26d640796b27c8ad2157d22c67c1d9bb3d3d55` |
+| 2 | `internal-tools/composition-lab/research/milestone-1/01-repository-inventory/research-initial-definitions.md` | entire-file | `eae0be17cdf4a6a27bfd2b7eb4d8604a50de03b729560a1d417017360fd22918` |
+| 3 | `telemetry/agents/subagents-dispatch.yaml` | entire-file | `648946f7f7424fb0d539da4902544fd94021debf1b51f1df8b64149cefb726b8` |
 | 4 | `.claude/skills/domainspec-subagents-strategy/SKILL.md` | entire-file | `335987a8684f4672d644054ad3def4ef107d616a689edd84fe30e9652e73eb91` |
 | 5 | `.claude/skills/research/SKILL.md` | entire-file | `56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9` |
 | 6 | `.claude/skills/review/SKILL.md` | entire-file | `60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be` |
@@ -98,6 +100,31 @@ query, or fragment. D1 outputs are excluded and corpus expansion is forbidden.
 | 20 | `docs/features/agent-provenance-telemetry/probes/APT-P007-emergent-lens.md` | entire-file | `d3d77c7a55d1a4bb38d689434e9c25f656cd10f5e4eb90a99a866e881f57e4ce` |
 | 21 | `docs/features/agent-provenance-telemetry/probes/lenses/README.md` | entire-file | `dd6a05eef436f97fbf412855de766350de99c380d41cb363b357314c7337763f` |
 | 22 | `docs/features/agent-provenance-telemetry/probes/lenses/agent-pool-scientist-tags@1.json` | entire-file | `3cd34692e30b06708e7f790c0bd83d009f969d02b651447105b44f4ba0116e0f` |
+
+### Revision-pinned sibling annex — `domainspec-core` (13 sources)
+
+The exact rows, sizes, roles and authority states are frozen by
+`internal-tools/composition-lab/orchestration/dispatch-proposals/internal/domainspec-v2/corpus-manifest.md`.
+They resolve relative to `C:/Users/victo/domainspec-core` at revision
+`9bfec22712e4675d39c4cf1c21b36dc66614136c`, never relative to this checkout. The host verifies
+revision, scoped clean status, path, size and SHA-256 before materialization. Sibling bytes are not
+copied into this repository.
+
+| global # | sibling repository-relative path | selector | SHA-256 | bytes |
+|---:|---|---|---|---:|
+| 23 | `projects/domainspec-v2/README.md` | entire-file | `ca5cfbc0a467e3f14e459236d373db4c046f428930c0fae7571246bfe0aeefff` | 6246 |
+| 24 | `projects/domainspec-v2/research/TWO-LANE-DISCIPLINE.md` | entire-file | `cb09d2412e53288ae891ad6d1f03ff5d56c10808824bf0d7e025fc233cd93557` | 2575 |
+| 25 | `projects/domainspec-v2/research/domainspec-v2-research-towers.dispatch.json` | entire-file | `83206a57f4ed8d05a1c623ede6db17ae058e74fcfdc184150d20f2f7096147fd` | 15381 |
+| 26 | `projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/lens-narrative.md` | entire-file | `8b58ef34e0ce95ee5dc76757a963bc3512f53fc97fadc6e460608d00bb23f11c` | 18694 |
+| 27 | `projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/lens-example.md` | entire-file | `d0885fe8899d245dcee081974d4551e9797f332b33afcfb399b031e3852ac20b` | 14843 |
+| 28 | `projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/lens-distillation.md` | entire-file | `c96a7366c8bf67d263def4ec1358feb08b55aa6acb5ded10535557f8a109eec5` | 20274 |
+| 29 | `projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/findings.md` | entire-file | `774c37b64ae35c9536ebb0fdc2442b052a578187f663f2ff39bece335639e3f4` | 7778 |
+| 30 | `projects/domainspec-v2/research/2026-07-01-composability-edges-taxonomy-synthesis.md` | entire-file | `bf2a5a45f7214e36eda2048251315571a6d8d27be7a1e59c1c8f0ce23963fc0d` | 10798 |
+| 31 | `projects/domainspec-v2/research/typed-artifacts-precedent/findings.md` | entire-file | `597bdf17b876b2d4ab68b91e6c748cdb849214cd36cec011d3e83b75dc59606f` | 9923 |
+| 32 | `projects/domainspec-v2/research/spec-ontology-unification/DESIGN.md` | entire-file | `e5410e893314d0c000d291e02a527b4535e5f689f9862ab0b1259e1d78138432` | 6410 |
+| 33 | `projects/domainspec-v2/development/ds-d1-improvement-plan/WORK-PACK.md` | entire-file | `c70bca7310ac0e3e06046f88a978e85edb82b6ba8fbe4d40f29f3f8526029d81` | 18242 |
+| 34 | `projects/domainspec-v2/impl/spec/meta-types/ui/component.schema.yml` | entire-file | `46540796103bac845fc78aee3deceb8fe905a85968b76f7edb7d987efc8deca0` | 1286 |
+| 35 | `projects/domainspec-v2/definitions/relationships/relationships.yml` | entire-file | `7757884f599bb18707f105add8b9de92fb2ea58d78e216d3aa228b0ad25ea013` | 27039 |
 
 Each manifest row also carries the human-confirmed commit and these control obligations:
 
@@ -241,7 +268,7 @@ folder.
 | T8 immutability | writer + auditor | row-authority equality, independent before/after hashes including initial-definitions, and target-escape negatives each writer_attempt | `BLOCK/SOURCE_DRIFT_OR_WRITE_ESCAPE` |
 | T9 minimal schema | canonical owner + auditor | canonical v0.2 validator and occurrence/absence/ambiguity/contradiction/duplicate fixtures before launch | `BLOCK/SCHEMA_OR_SEMANTIC_ESCAPE` |
 | T10 authority negatives | auditor | definition/causality/novelty/soundness/promotion/GO-KILL fixtures before launch and run check | `BLOCK/AUTHORITY_ESCAPE` |
-| T11 denominator | host materializes; human freezes; auditor checks | host ConfirmedCorpusManifest binds 22×8 obligations before write; Inventory projection equivalent; every cell resolved after | `BLOCK/DENOMINATOR_GAP` |
+| T11 denominator | host materializes; human freezes; auditor checks | host ConfirmedCorpusManifest binds 35×8 = 280 obligations before write; Inventory projection equivalent; every cell resolved after | `BLOCK/DENOMINATOR_GAP` |
 | T12 mechanical validity | auditor | JSON/schema/index/log/link/projection consistency after each writer attempt | `BLOCK/MECHANICAL_INVALID`; partial → human recovery |
 | T13 observability | runtime + auditor + host verifier | pre-audit signal fixture, terminal signal, then post-audit host check; exact JSONL only | `BLOCK/OBSERVABILITY_GAP` |
 | T14 conflict preservation | auditor | disagreement fixture before launch and no overwrite/normalization after write | `BLOCK/CONFLICT_LOSS` |

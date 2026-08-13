@@ -1,0 +1,9 @@
+{
+  "registry_schema": "aci-dispatch-type-registry/v1",
+  "dispatch_type_ref": "research",
+  "ledger_dispatch_type": "research",
+  "capability_ref": "research",
+  "capability_path": ".claude/skills/research/SKILL.md",
+  "execution_authority_mode": "legacy-managed",
+  "tool_profile_ref": "host/inherited@1"
+}

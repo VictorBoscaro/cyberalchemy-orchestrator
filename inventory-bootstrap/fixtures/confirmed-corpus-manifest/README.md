@@ -13,7 +13,8 @@ contains a normalized repository-relative `path`, lowercase SHA-256 `sha256`, by
 - its intended exact repository-relative output path;
 - the semantic authority (`04-execution-sheet.md`);
 - the mechanically extracted external row source (`d1-dispatch-sheet.md`);
-- the ordered 22-row corpus with `entire-file` selectors;
+- the ordered 35-row corpus with `entire-file` selectors: 22 current-checkout rows and 13
+  revision-pinned `domainspec-core` rows;
 - the ordered C1-C8 controls.
 
 The JSON serialization is UTF-8, key-sorted, compact, and newline-terminated. No timestamp or host
@@ -57,7 +58,8 @@ Success prints `CONFIRMED_CORPUS_MANIFEST_VERIFIED`. Any mismatch exits non-zero
 `d1-lens-use-corpus-manifest.schema.json` defines the distinct writer-owned projection intended for
 `.arcanum/inventory/raw/d1-lens-use-corpus.manifest.json`. The projection copies the verified,
 ordered `sources` and `controls`, binds the canonical host manifest by path/hash/size/revision, and
-adds the fixed denominator `{22 sources, 8 controls, 176 cells}`. It contains no interpretation.
+adds the fixed denominator `{35 sources, 8 controls, 280 cells}`. Each source carries a
+`repository_id`; the sibling rows retain their sibling revision. It contains no interpretation.
 Projection equivalence is exact field equality against a fresh deterministic projection of the
 verified physical host manifest.
 

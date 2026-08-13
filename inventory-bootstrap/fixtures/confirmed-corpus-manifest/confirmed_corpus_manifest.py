@@ -22,21 +22,32 @@ EXTERNAL_ROW_SOURCE = Path(
     "internal-tools/composition-lab/orchestration/milestone-1-strategy/"
     "d1-readiness/record/d1-dispatch-sheet.md"
 )
-EXPECTED_SEMANTIC_AUTHORITY_HASH = (
-    "2be8ed0276ea55d830907aad0f423db8b4b44f181134092aa44071163c6d4f07"
+SIBLING_ANNEX = Path(
+    "internal-tools/composition-lab/orchestration/dispatch-proposals/internal/"
+    "domainspec-v2/corpus-manifest.md"
 )
-EXPECTED_SEMANTIC_AUTHORITY_SIZE = 26176
+SIBLING_ROOT = Path("C:/Users/victo/domainspec-core")
+EXPECTED_SEMANTIC_AUTHORITY_HASH = (
+    "c078bdee5da9fb7620dd4196b8630826ed5c1867dcd07e28f32cbd9ed87a5e54"
+)
+EXPECTED_SEMANTIC_AUTHORITY_SIZE = 29358
 EXPECTED_EXTERNAL_HASH = (
-    "51e442ee7ccdc15122ee607d2fd3ac2ba8eae9d116ab8db695672d29bae2151e"
+    "ab89b5ffb22c4fa130414455b992a7fcc0f287ec5e51d5e387b2aa7ef9721d29"
 )
 EXPECTED_EXTERNAL_SIZE = 13063
-EXPECTED_REVISION = "6f9d7d860a3e3dd3c6e702fbb1117a3741b22930"
+EXPECTED_REVISION = "48d5f7b830fc52773da8ce5191131ec2e05274f4"
+EXPECTED_SIBLING_REVISION = "9bfec22712e4675d39c4cf1c21b36dc66614136c"
+EXPECTED_SIBLING_ANNEX_HASH = "cd9af19f84cdb8b924f386984cdbc7e0a320d03d9e60776c9193833fc139de7f"
+EXPECTED_SIBLING_ANNEX_SIZE = 7964
 
 TABLE_ROW = re.compile(
     r"^\|\s*(\d+)\s*\|\s*`([^`]+)`\s*\|\s*(entire-file)\s*\|\s*`([0-9a-f]{64})`\s*\|$"
 )
 EXTERNAL_ROW = re.compile(r"^([0-9a-f]{64})  (.+)$")
 CONTROL_LINE = re.compile(r"`(C[1-8])`\s*([^;]+?)(?:;|\.)")
+ANNEX_ROW = re.compile(
+    r"^\|\s*(\d+)\s*\|\s*`([^`]+)`\s*\|.*\|\s*`([0-9a-f]{64})`\s*\|\s*(\d+)\s*\|$"
+)
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -112,6 +123,18 @@ def parse_external_rows(text: str) -> list[dict[str, str]]:
     return rows
 
 
+def parse_sibling_annex(text: str) -> list[dict[str, Any]]:
+    rows = []
+    for line in text.splitlines():
+        match = ANNEX_ROW.match(line)
+        if match:
+            ordinal, path, sha256, size = match.groups()
+            rows.append({"ordinal": int(ordinal), "path": path, "selector": "entire-file", "sha256": sha256, "size": int(size)})
+    if len(rows) != 13 or [r["ordinal"] for r in rows] != list(range(1, 14)):
+        raise ManifestError("BLOCK/sibling-annex-cardinality-or-order")
+    return rows
+
+
 def parse_controls(text: str) -> list[dict[str, str]]:
     section = _section(text, "## Proposed frozen corpus manifest", "## Exact write set and ownership")
     controls: list[dict[str, str]] = []
@@ -161,8 +184,10 @@ def materialize(root: Path, manifest_path: str, revision: str | None = None) -> 
 
     authority = _identity(root, SEMANTIC_AUTHORITY, revision)
     external = _identity(root, EXTERNAL_ROW_SOURCE, revision)
+    annex = _identity(root, SIBLING_ANNEX, revision)
     _assert_identity(authority, EXPECTED_SEMANTIC_AUTHORITY_HASH, EXPECTED_SEMANTIC_AUTHORITY_SIZE)
     _assert_identity(external, EXPECTED_EXTERNAL_HASH, EXPECTED_EXTERNAL_SIZE)
+    _assert_identity(annex, EXPECTED_SIBLING_ANNEX_HASH, EXPECTED_SIBLING_ANNEX_SIZE)
 
     authority_text = _read_text(root / SEMANTIC_AUTHORITY)
     table_rows = parse_frozen_table(authority_text)
@@ -177,7 +202,19 @@ def materialize(root: Path, manifest_path: str, revision: str | None = None) -> 
         actual = _identity(root, Path(expected["path"]), revision)
         if actual["sha256"] != expected["sha256"]:
             raise ManifestError(f"BLOCK/source-drift:{expected['path']}")
-        sources.append({"ordinal": expected["ordinal"], "selector": expected["selector"], **actual})
+        sources.append({"ordinal": expected["ordinal"], "repository_id": "cyberalchemy-orchestrator", "selector": expected["selector"], **actual})
+
+    sibling_revision = repository_revision(SIBLING_ROOT)
+    if sibling_revision != EXPECTED_SIBLING_REVISION:
+        raise ManifestError("BLOCK/sibling-repository-revision-drift")
+    for expected in parse_sibling_annex(_read_text(root / SIBLING_ANNEX)):
+        actual = _identity(SIBLING_ROOT, Path(expected["path"]), sibling_revision)
+        if actual["sha256"] != expected["sha256"] or actual["size"] != expected["size"]:
+            raise ManifestError(f"BLOCK/sibling-source-drift:{expected['path']}")
+        actual["ordinal"] = len(sources) + 1
+        actual["repository_id"] = "domainspec-core"
+        actual["selector"] = "entire-file"
+        sources.append(actual)
 
     manifest = {
         "schema_version": SCHEMA_VERSION,
@@ -185,6 +222,11 @@ def materialize(root: Path, manifest_path: str, revision: str | None = None) -> 
         "repository_revision": revision,
         "semantic_authority": authority,
         "external_row_source": external,
+        "sibling_annex": annex,
+        "repositories": [
+            {"id": "cyberalchemy-orchestrator", "root_kind": "current-checkout", "revision": revision},
+            {"id": "domainspec-core", "root_kind": "revision-pinned-sibling", "revision": sibling_revision},
+        ],
         "sources": sources,
         "controls": parse_controls(authority_text),
     }
@@ -199,6 +241,8 @@ def validate_shape(manifest: Any) -> None:
         "repository_revision",
         "semantic_authority",
         "external_row_source",
+        "sibling_annex",
+        "repositories",
         "sources",
         "controls",
     }
@@ -210,9 +254,15 @@ def validate_shape(manifest: Any) -> None:
         raise ManifestError("BLOCK/manifest-path")
     if not HEX40.fullmatch(manifest.get("repository_revision", "")):
         raise ManifestError("BLOCK/manifest-revision")
+    repositories = manifest.get("repositories")
+    if not isinstance(repositories, list) or repositories != [
+        {"id": "cyberalchemy-orchestrator", "root_kind": "current-checkout", "revision": manifest["repository_revision"]},
+        {"id": "domainspec-core", "root_kind": "revision-pinned-sibling", "revision": EXPECTED_SIBLING_REVISION},
+    ]:
+        raise ManifestError("BLOCK/manifest-repositories")
 
     identity_keys = {"path", "sha256", "size", "revision"}
-    for name in ("semantic_authority", "external_row_source"):
+    for name in ("semantic_authority", "external_row_source", "sibling_annex"):
         value = manifest[name]
         if not isinstance(value, dict) or set(value) != identity_keys:
             raise ManifestError(f"BLOCK/{name}-shape")
@@ -222,9 +272,9 @@ def validate_shape(manifest: Any) -> None:
             raise ManifestError(f"BLOCK/{name}-revision")
 
     sources = manifest["sources"]
-    if not isinstance(sources, list) or len(sources) != 22:
+    if not isinstance(sources, list) or len(sources) != 35:
         raise ManifestError("BLOCK/manifest-source-cardinality")
-    source_keys = {"ordinal", "path", "selector", "sha256", "size", "revision"}
+    source_keys = {"ordinal", "repository_id", "path", "selector", "sha256", "size", "revision"}
     for index, source in enumerate(sources, start=1):
         if not isinstance(source, dict) or set(source) != source_keys:
             raise ManifestError("BLOCK/manifest-source-shape")
@@ -232,7 +282,8 @@ def validate_shape(manifest: Any) -> None:
             raise ManifestError("BLOCK/manifest-source-order-or-selector")
         if not HEX64.fullmatch(source.get("sha256", "")) or not isinstance(source.get("size"), int):
             raise ManifestError("BLOCK/manifest-source-identity")
-        if source.get("revision") != manifest["repository_revision"]:
+        expected_revision = manifest["repositories"][0 if source["repository_id"] == "cyberalchemy-orchestrator" else 1]["revision"]
+        if source.get("revision") != expected_revision:
             raise ManifestError("BLOCK/manifest-source-revision")
 
     controls = manifest["controls"]
@@ -280,9 +331,10 @@ def project_inventory_manifest(
             "revision": manifest["repository_revision"],
         },
         "repository_revision": manifest["repository_revision"],
+        "repositories": copy_json(manifest["repositories"]),
         "sources": copy_json(manifest["sources"]),
         "controls": copy_json(manifest["controls"]),
-        "denominator": {"source_count": 22, "control_count": 8, "cell_count": 176},
+        "denominator": {"source_count": 35, "control_count": 8, "cell_count": 280},
     }
 
 
@@ -296,6 +348,7 @@ def validate_projection_shape(projection: Any) -> None:
         "schema_version",
         "source_manifest",
         "repository_revision",
+        "repositories",
         "sources",
         "controls",
         "denominator",
@@ -310,9 +363,9 @@ def validate_projection_shape(projection: Any) -> None:
     }:
         raise ManifestError("BLOCK/inventory-projection-source-manifest")
     denominator = projection.get("denominator")
-    if denominator != {"source_count": 22, "control_count": 8, "cell_count": 176}:
+    if denominator != {"source_count": 35, "control_count": 8, "cell_count": 280}:
         raise ManifestError("BLOCK/inventory-projection-denominator")
-    if not isinstance(projection.get("sources"), list) or len(projection["sources"]) != 22:
+    if not isinstance(projection.get("sources"), list) or len(projection["sources"]) != 35:
         raise ManifestError("BLOCK/inventory-projection-sources")
     if not isinstance(projection.get("controls"), list) or len(projection["controls"]) != 8:
         raise ManifestError("BLOCK/inventory-projection-controls")

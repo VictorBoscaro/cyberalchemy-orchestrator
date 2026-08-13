@@ -39,9 +39,9 @@ Only these 22 internal files are in scope: 1,969,246 bytes at Git commit
 fail-closed condition; absence is recorded as evidence rather than silently substituted.
 
 ```text
-1d2ef9cae7b41028e0a53bf9ec1efc3a3970385c75f2943f2a175a6a3266e806  internal-tools/composition-lab/README.md
-2183ce096aa33224ef94cf00f56aa1c42e69ae2dc630cde4ecddae7eaf098932  internal-tools/composition-lab/research/milestone-1/01-repository-inventory/research-initial-definitions.md
-e28aad64545131ac684731213eefa38b865f4807f439578950514eb3f9b9062c  telemetry/agents/subagents-dispatch.yaml
+96c7cd1a9e110b16b54692ed6d26d640796b27c8ad2157d22c67c1d9bb3d3d55  internal-tools/composition-lab/README.md
+eae0be17cdf4a6a27bfd2b7eb4d8604a50de03b729560a1d417017360fd22918  internal-tools/composition-lab/research/milestone-1/01-repository-inventory/research-initial-definitions.md
+648946f7f7424fb0d539da4902544fd94021debf1b51f1df8b64149cefb726b8  telemetry/agents/subagents-dispatch.yaml
 335987a8684f4672d644054ad3def4ef107d616a689edd84fe30e9652e73eb91  .claude/skills/domainspec-subagents-strategy/SKILL.md
 56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9  .claude/skills/research/SKILL.md
 60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be  .claude/skills/review/SKILL.md

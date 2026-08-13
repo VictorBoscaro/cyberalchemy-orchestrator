@@ -1,0 +1,109 @@
+{
+  "dispatch_id": "2026-08-13-external-composition-precedents",
+  "schema_version": "0.6.3",
+  "dispatch_type": "research",
+  "goal": "Determine how materially different external traditions treat composition, distinguish it from neighboring phenomena, and delimit which distinctions could legitimately inform this project.",
+  "context": "Composition in general is the unresolved object of the Composition Lab; lens composition is only its first internal case. This external track must remain independent of the repository corpus during collection and must not produce a universal definition by stipulation. It should identify owned, citable distinctions, their concrete witnesses, collapse conditions, and limits of transfer to skills, interfaces, artifacts, knowledge, work, agents, and lenses.",
+  "max_loops": 2,
+  "final_approver": "Bourbaki, Nicolas",
+  "working_folder": "internal-tools/composition-lab/research/external-composition-precedents",
+  "anti_bias_mode": "disabled",
+  "invoked_by": "victorboscaro@outlook.com",
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 4,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Mac Lane, Saunders",
+          "initial_prompt": "Research the formal and structural treatment of composition in category theory and operads, type theory, algebraic specification, and process or compositional semantics. Use primary or authoritative sources and a bounded anchor set. Extract explicit operators, interfaces or types, identity and equivalence, order or associativity, closure, decomposition, nearest non-composition cases, observable obligations, and limits of transfer. Treat mathematical elegance as representation-local evidence, not as proof of a general empirical account. Preserve stable citations and a search/inclusion/exclusion log. Return a source-grounded report; do not inspect or classify the repository corpus and do not edit outside the working folder."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Simon, Herbert",
+          "initial_prompt": "Research composition through parts-wholes, transformation, emergence, and systems accounts, including mereology, philosophy of systems, and complex systems. Use primary or authoritative sources and a bounded anchor set. Determine whether parts pre-exist, persist, transform, or acquire identity; what makes a whole; the roles of environment, loss, emergence, failure, and decomposition; nearest non-composition cases; operational consequences; and transfer limits. Do not turn metaphysical or systems vocabulary into an operational claim without a witness. Preserve citations and a search/inclusion/exclusion log. Return a source-grounded report; do not inspect or classify the repository corpus and do not edit outside the working folder."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Research engineered composition in software component models, modular and systems design, workflow or dataflow systems, and end-user composition or HCI. Use primary papers, standards, specifications, or official technical documentation and a bounded anchor set. Extract contracts, compatibility, substitution, interfaces, orchestration versus composition, lifecycle, verification, failure modes, nearest non-composition cases, observable consequences, and transfer limits. Do not mistake implementation convention, configuration, or integration for a general theory. Preserve citations and a search/inclusion/exclusion log. Return a source-grounded report; do not inspect or classify the repository corpus and do not edit outside the working folder."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Schön, Donald",
+          "initial_prompt": "Research epistemic, social, situated, and creative composition in distributed or team cognition, collaborative design, perspective integration, and music or text where process evidence exists. Use primary or authoritative sources and a bounded anchor set. Extract purpose, order, interpretation, authorship, synthesis, preservation and loss, conflict, observer dependence, nearest non-composition cases, observable consequences, and transfer limits. Reject analogy-only uses and post-hoc narratives without process evidence. Preserve citations and a search/inclusion/exclusion log. Return a source-grounded report; do not inspect or classify the repository corpus and do not edit outside the working folder."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 8000,
+          "agent_name": "Weick, Karl E.",
+          "initial_prompt": "Consume all explorer returns only after they are complete. Preserve them verbatim in research.md with source boundaries. Produce findings.md as a comparative, cited synthesis organized around discriminating contrasts and transfer limits, not field summaries. Treat each transferable distinction or mechanism as a candidate and populate candidate, owner, witnessed, sound, verdict, and use-mode fields provisionally for reviewer adjudication. Keep disagreements and incommensurabilities visible. Do not import repository evidence or claim a universal definition. Write only research.md and findings.md in the declared working folder."
+        }
+      ]
+    },
+    {
+      "group_id": "skeptics",
+      "n": 3,
+      "robot_talks": true,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Popper, Karl",
+          "initial_prompt": "Run only the precedent gate over every candidate in findings.md. Verify the actual owner and provenance from the collected sources; distinguish already-deployed, build-from-owned, and precedent-clean. Owned is never KILL. Challenge novelty inflation and unsupported attribution, and return exact corrections with citations. Do not run the other skeptic gates and do not edit source-tree files."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Lakatos, Imre",
+          "initial_prompt": "Run only the non-vacuity gate over every candidate in findings.md. Require the smallest concrete positive witness and a closed negative or non-example that distinguishes composition from a named neighbor. Mark KILL only when no witness survives, banking the typed negative and the exact fact that zeroed the candidate. Do not run the other skeptic gates and do not edit source-tree files."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Wittgenstein, Ludwig",
+          "initial_prompt": "Run only the definitional-soundness gate over every candidate in findings.md. Test whether it collapses into aggregation, sequence, configuration, integration, coordination, selection, or retrospective interpretation, and whether its terms merely restate the desired conclusion. Mark KILL only for a demonstrated tautological or definitional collapse, banking the typed negative. Do not run the other skeptic gates and do not edit source-tree files."
+        }
+      ]
+    },
+    {
+      "group_id": "auditor",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Bourbaki, Nicolas",
+          "initial_prompt": "Act only as the dedicated final approver after all skeptic returns and any authorized feedback loop. Verify that every load-bearing finding cites collected research, every candidate has owner, witness, soundness, verdict, and use-mode, ownership was not treated as KILL, and transfer limits and unresolved differences remain explicit. Confirm or reject the final one-line answer to the dispatch goal. Do not generate new research or participate in a working group."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "explorers", "to": "synthesizer", "type": "sequential"},
+    {"from": "synthesizer", "to": "skeptics", "type": "zig-zag", "loop_cap": 2},
+    {"from": "skeptics", "to": "synthesizer", "type": "feedback", "loop_cap": 1},
+    {"from": "skeptics", "to": "auditor", "type": "sequential"}
+  ]
+}

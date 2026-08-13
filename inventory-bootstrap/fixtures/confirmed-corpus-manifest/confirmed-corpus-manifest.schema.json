@@ -10,6 +10,8 @@
     "repository_revision",
     "semantic_authority",
     "external_row_source",
+    "sibling_annex",
+    "repositories",
     "sources",
     "controls"
   ],
@@ -19,10 +21,12 @@
     "repository_revision": { "$ref": "#/$defs/revision" },
     "semantic_authority": { "$ref": "#/$defs/fileIdentity" },
     "external_row_source": { "$ref": "#/$defs/fileIdentity" },
+    "sibling_annex": { "$ref": "#/$defs/fileIdentity" },
+    "repositories": { "type": "array", "minItems": 2, "maxItems": 2 },
     "sources": {
       "type": "array",
-      "minItems": 22,
-      "maxItems": 22,
+      "minItems": 35,
+      "maxItems": 35,
       "items": { "$ref": "#/$defs/source" }
     },
     "controls": {
@@ -54,9 +58,10 @@
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["ordinal", "path", "selector", "sha256", "size", "revision"],
+      "required": ["ordinal", "repository_id", "path", "selector", "sha256", "size", "revision"],
       "properties": {
-        "ordinal": { "type": "integer", "minimum": 1, "maximum": 22 },
+        "ordinal": { "type": "integer", "minimum": 1, "maximum": 35 },
+        "repository_id": { "enum": ["cyberalchemy-orchestrator", "domainspec-core"] },
         "path": { "$ref": "#/$defs/repositoryPath" },
         "selector": { "const": "entire-file" },
         "sha256": { "$ref": "#/$defs/sha256" },

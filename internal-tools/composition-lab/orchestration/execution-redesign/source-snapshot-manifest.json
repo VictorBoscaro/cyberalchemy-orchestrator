@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "source_repository": "C:/Users/victo/domainspec-core",
+  "source_revision": "9bfec22712e4675d39c4cf1c21b36dc66614136c",
+  "source_tree": "8fec9a49d0314213380358dfa4a874f50b5fba1f",
+  "batches": {
+    "D1": [
+      {
+        "path": "projects/domainspec-v2/README.md",
+        "sha256": "ca5cfbc0a467e3f14e459236d373db4c046f428930c0fae7571246bfe0aeefff",
+        "bytes": 6246
+      },
+      {
+        "path": "projects/domainspec-v2/research/TWO-LANE-DISCIPLINE.md",
+        "sha256": "cb09d2412e53288ae891ad6d1f03ff5d56c10808824bf0d7e025fc233cd93557",
+        "bytes": 2575
+      },
+      {
+        "path": "projects/domainspec-v2/research/domainspec-v2-research-towers.dispatch.json",
+        "sha256": "83206a57f4ed8d05a1c623ede6db17ae058e74fcfdc184150d20f2f7096147fd",
+        "bytes": 15381
+      }
+    ],
+    "D3": [
+      {
+        "path": "projects/domainspec-v2/research/2026-07-01-composability-edges-taxonomy-synthesis.md",
+        "sha256": "bf2a5a45f7214e36eda2048251315571a6d8d27be7a1e59c1c8f0ce23963fc0d",
+        "bytes": 10798
+      },
+      {
+        "path": "projects/domainspec-v2/research/typed-artifacts-precedent/findings.md",
+        "sha256": "597bdf17b876b2d4ab68b91e6c748cdb849214cd36cec011d3e83b75dc59606f",
+        "bytes": 9923
+      },
+      {
+        "path": "projects/domainspec-v2/research/spec-ontology-unification/DESIGN.md",
+        "sha256": "e5410e893314d0c000d291e02a527b4535e5f689f9862ab0b1259e1d78138432",
+        "bytes": 6410
+      }
+    ],
+    "D4": [
+      {
+        "path": "projects/domainspec-v2/development/ds-d1-improvement-plan/WORK-PACK.md",
+        "sha256": "c70bca7310ac0e3e06046f88a978e85edb82b6ba8fbe4d40f29f3f8526029d81",
+        "bytes": 18242
+      },
+      {
+        "path": "projects/domainspec-v2/impl/spec/meta-types/ui/component.schema.yml",
+        "sha256": "46540796103bac845fc78aee3deceb8fe905a85968b76f7edb7d987efc8deca0",
+        "bytes": 1286
+      },
+      {
+        "path": "projects/domainspec-v2/definitions/relationships/relationships.yml",
+        "sha256": "7757884f599bb18707f105add8b9de92fb2ea58d78e216d3aa228b0ad25ea013",
+        "bytes": 27039
+      }
+    ]
+  }
+}

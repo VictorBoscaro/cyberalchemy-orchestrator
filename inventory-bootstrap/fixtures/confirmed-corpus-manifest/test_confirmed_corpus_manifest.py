@@ -39,6 +39,19 @@ GOLDEN_ROWS = [
     ("docs/features/agent-provenance-telemetry/probes/APT-P007-emergent-lens.md", "d3d77c7a55d1a4bb38d689434e9c25f656cd10f5e4eb90a99a866e881f57e4ce"),
     ("docs/features/agent-provenance-telemetry/probes/lenses/README.md", "dd6a05eef436f97fbf412855de766350de99c380d41cb363b357314c7337763f"),
     ("docs/features/agent-provenance-telemetry/probes/lenses/agent-pool-scientist-tags@1.json", "3cd34692e30b06708e7f790c0bd83d009f969d02b651447105b44f4ba0116e0f"),
+    ("projects/domainspec-v2/README.md", "ca5cfbc0a467e3f14e459236d373db4c046f428930c0fae7571246bfe0aeefff"),
+    ("projects/domainspec-v2/research/TWO-LANE-DISCIPLINE.md", "cb09d2412e53288ae891ad6d1f03ff5d56c10808824bf0d7e025fc233cd93557"),
+    ("projects/domainspec-v2/research/domainspec-v2-research-towers.dispatch.json", "83206a57f4ed8d05a1c623ede6db17ae058e74fcfdc184150d20f2f7096147fd"),
+    ("projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/lens-narrative.md", "8b58ef34e0ce95ee5dc76757a963bc3512f53fc97fadc6e460608d00bb23f11c"),
+    ("projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/lens-example.md", "d0885fe8899d245dcee081974d4551e9797f332b33afcfb399b031e3852ac20b"),
+    ("projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/lens-distillation.md", "c96a7366c8bf67d263def4ec1358feb08b55aa6acb5ded10535557f8a109eec5"),
+    ("projects/domainspec-v2/research/target-state/2026-07-02-comprehension-narrative-model/findings.md", "774c37b64ae35c9536ebb0fdc2442b052a578187f663f2ff39bece335639e3f4"),
+    ("projects/domainspec-v2/research/2026-07-01-composability-edges-taxonomy-synthesis.md", "bf2a5a45f7214e36eda2048251315571a6d8d27be7a1e59c1c8f0ce23963fc0d"),
+    ("projects/domainspec-v2/research/typed-artifacts-precedent/findings.md", "597bdf17b876b2d4ab68b91e6c748cdb849214cd36cec011d3e83b75dc59606f"),
+    ("projects/domainspec-v2/research/spec-ontology-unification/DESIGN.md", "e5410e893314d0c000d291e02a527b4535e5f689f9862ab0b1259e1d78138432"),
+    ("projects/domainspec-v2/development/ds-d1-improvement-plan/WORK-PACK.md", "c70bca7310ac0e3e06046f88a978e85edb82b6ba8fbe4d40f29f3f8526029d81"),
+    ("projects/domainspec-v2/impl/spec/meta-types/ui/component.schema.yml", "46540796103bac845fc78aee3deceb8fe905a85968b76f7edb7d987efc8deca0"),
+    ("projects/domainspec-v2/definitions/relationships/relationships.yml", "7757884f599bb18707f105add8b9de92fb2ea58d78e216d3aa228b0ad25ea013"),
 ]
 GOLDEN_CONTROLS = [
     ("C1", "file/source partition only"),
@@ -62,7 +75,7 @@ class ConfirmedCorpusManifestTests(unittest.TestCase):
         second = subject.canonical_json(subject.materialize(ROOT, MANIFEST_PATH))
         self.assertEqual(first, second)
         self.assertEqual(self.manifest["repository_revision"], subject.EXPECTED_REVISION)
-        self.assertEqual(len(self.manifest["sources"]), 22)
+        self.assertEqual(len(self.manifest["sources"]), 35)
         self.assertEqual(len(self.manifest["controls"]), 8)
 
     def test_materialization_matches_independent_literal_golden(self) -> None:
@@ -141,7 +154,7 @@ class ConfirmedCorpusManifestTests(unittest.TestCase):
         projection = subject.project_inventory_manifest(self.manifest, ROOT / MANIFEST_PATH, ROOT)
         second = subject.project_inventory_manifest(self.manifest, ROOT / MANIFEST_PATH, ROOT)
         self.assertEqual(subject.canonical_json(projection), subject.canonical_json(second))
-        self.assertEqual(projection["denominator"]["cell_count"], 176)
+        self.assertEqual(projection["denominator"]["cell_count"], 280)
         subject.verify_inventory_projection(self.manifest, ROOT / MANIFEST_PATH, projection, ROOT)
 
     def test_inventory_projection_omission_fails(self) -> None:
