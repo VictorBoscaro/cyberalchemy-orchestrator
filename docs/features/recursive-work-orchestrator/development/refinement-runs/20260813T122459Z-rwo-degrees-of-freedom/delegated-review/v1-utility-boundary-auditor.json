@@ -1,0 +1,21 @@
+{
+  "dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom",
+  "step_id": "s07",
+  "capability_ref": "interrogation",
+  "role_id": "v1-utility-boundary-auditor",
+  "agent_id": "/root/v1_utility_boundary_auditor",
+  "spawn_status": "spawned",
+  "join_status": "completed",
+  "close_status": "closed",
+  "status": "fix",
+  "artifacts": ["stages/05-distill.md", "stages/06-invoke-design.md"],
+  "validation": ["five utility witnesses preserved", "eight decision-usability repairs returned"],
+  "observer_status": "parent joined final return",
+  "blockers": [],
+  "residue": "Adapter-specific effect availability and current confinement stay evidence-bound",
+  "reroute": "s08-distill-repair",
+  "handoff_note": "Separate disposition axes, freeze scenario cards, distinguish V1 admissibility from current executability, and specialize relaxation ladders",
+  "claims": ["Universal read-only is too narrow for an orchestration V1", "External effects must depend on proven adapter fences"],
+  "counterexamples": ["root-only revocation is allowed but non-delegable", "code witness hypothetical sandbox versus current host", "approval without apply capability"],
+  "unresolved_decisions": ["which current route can claim confinement"]
+}

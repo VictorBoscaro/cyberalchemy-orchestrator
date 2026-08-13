@@ -1,0 +1,336 @@
+{
+  "dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom",
+  "parent_dispatch_id": null,
+  "intent": {
+    "raw": "Vamos refinar uma pesquisa sobre os graus de liberdade do sistema, os limites da V1 e a decisão de não tornar o orquestrador recursivamente orquestrável.",
+    "objective": "Produce a decision-ready V1 capability envelope and evidence-gated evolution path that distinguish expressivity, authority, capability, enforcement, and proof across users, the root orchestrator, composite work, delegated agents, tools, and effect adapters.",
+    "target_artifact": "RESULT.md",
+    "arcanum_vocabulary": ["refine", "context-builder", "invoke", "interrogation", "distill", "dispatch-spec"],
+    "operator_sentence": "Refine the research framing for system degrees of freedom."
+  },
+  "mode": "mixed",
+  "route_menu": {
+    "context_hint": "The repository contains a developed root-only authority direction, an unresolved nested-orchestrator alternative, and incomplete enforcement. A useful research must connect product freedom to executable authority boundaries.",
+    "items": [
+      {
+        "id": "decision-ready-capability-envelope",
+        "label": "Capability envelope",
+        "description": "Define actors, actions, phases, V1 permissions, enforcement evidence, non-delegable authority, counterexamples, and relaxation gates.",
+        "capability_ref": "refine",
+        "pattern": "canonical ten-stage sequence with dialectic review"
+      },
+      {
+        "id": "security-threat-model-only",
+        "label": "Threat model only",
+        "description": "Study abuse and authority amplification without deciding the useful product surface; rejected as incomplete.",
+        "capability_ref": "research",
+        "pattern": "bounded research"
+      },
+      {
+        "id": "feature-permission-checklist",
+        "label": "Permission checklist",
+        "description": "List controls per feature without separating expressivity, authority, capability, and enforcement; rejected as too shallow.",
+        "capability_ref": "invoke",
+        "pattern": "define"
+      }
+    ],
+    "selected_item_id": "decision-ready-capability-envelope"
+  },
+  "techniques": [
+    "sequence",
+    "frame_handoff",
+    "handle_handoff",
+    "validation_loop",
+    "owner_boundary_check",
+    "minimum_component_catalog",
+    "conditional_component",
+    "data_quality_completeness",
+    "dialectic",
+    "zig_zag",
+    "residue_ledger",
+    "x_ray",
+    "component_descriptor",
+    "memory_loop",
+    "data_quality_deduplication",
+    "toy_game",
+    "assessment_failure_reference",
+    "approval_checkpoint",
+    "recomposition_proof",
+    "authority_split_gate",
+    "protected_action_mapping",
+    "execution_receipt_handoff"
+  ],
+  "technique_overlays": [
+    {
+      "overlay_id": "baseline_sequence",
+      "trigger": "Refine requires ten owner-separated stages with explicit handoffs and validation evidence.",
+      "techniques": ["sequence", "frame_handoff", "handle_handoff", "validation_loop", "owner_boundary_check", "minimum_component_catalog", "conditional_component", "data_quality_completeness"],
+      "applies_to_steps": ["s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10"],
+      "validation_expectation": "Every stage consumes prior evidence and returns its owner-held artifact or an explicit blocked reason."
+    },
+    {
+      "overlay_id": "dialectic_for_authority_tension",
+      "trigger": "Root-only authority and bounded nested orchestration are documented competing positions, while usefulness and enforceability can pull in opposite directions.",
+      "techniques": ["dialectic", "zig_zag", "residue_ledger", "authority_split_gate"],
+      "applies_to_steps": ["s03", "s05", "s07", "s08", "s10"],
+      "validation_expectation": "Roles, counterclaims, convergence criteria, and stable disagreement are preserved; consensus is not manufactured."
+    },
+    {
+      "overlay_id": "xray_hidden_freedom_structure",
+      "trigger": "The phrase degrees of freedom hides multiple actors, resources, phases, authority owners, enforcement points, and evidence classes.",
+      "techniques": ["x_ray", "component_descriptor", "protected_action_mapping"],
+      "applies_to_steps": ["s01", "s02", "s06"],
+      "validation_expectation": "The output exposes an actor-action-phase matrix and separates declared limits from enforceable fences."
+    },
+    {
+      "overlay_id": "memory_residue_for_prior_decisions",
+      "trigger": "Prior research, design drafts, as-built audits, and a recent unresolved contradiction materially constrain the framing.",
+      "techniques": ["memory_loop", "residue_ledger", "data_quality_deduplication"],
+      "applies_to_steps": ["s01", "s03", "s04", "s10"],
+      "validation_expectation": "Existing decisions are cited rather than reinvented, and proposal-only material is not promoted by repetition."
+    },
+    {
+      "overlay_id": "toy_game_for_scope_amplification",
+      "trigger": "A proposed capability envelope can be cheaply falsified with concrete workflows and authority-amplification scenarios.",
+      "techniques": ["toy_game", "validation_loop", "assessment_failure_reference", "recomposition_proof"],
+      "applies_to_steps": ["s07", "s08"],
+      "validation_expectation": "The candidate V1 envelope admits representative useful workflows and rejects self-authorization, nested authority roots, and silent scope expansion."
+    }
+  ],
+  "subagent_strategy": {
+    "status": "required",
+    "trigger": "The selected dialectic and Distill roles require structurally different judgments, and the repository already records a material architectural contradiction.",
+    "explanation": "Three read-only sibling roles independently model the product envelope, attack authority amplification and enforcement claims, and test whether the V1 remains useful. Refine owns their join, decisions, repair, and final synthesis.",
+    "context": [
+      "REFINE-SEED-PROPOSAL.md",
+      "../../../DESIGN.md",
+      "../../skill-control-center/meta-orchestration/findings.md",
+      "../../../../../implementations/as-built/pairs/pair-03-authority.md",
+      "../../../../../plans/governed-agent-work-infrastructure/essays/robot-talks/2026-08-12-work-overview-composition/findings.md"
+    ],
+    "roles": [
+      {
+        "role_id": "capability-envelope-modeler",
+        "purpose": "Construct the smallest complete actor-action-phase model and candidate current/V1/later envelope.",
+        "owns": "Advisory model and evidence packet only; no product decision or canonical mutation.",
+        "applies_to_steps": ["s05", "s07"]
+      },
+      {
+        "role_id": "authority-amplification-skeptic",
+        "purpose": "Attack recursive authority, capability self-issuance, inherited scope, enforcement gaps, and permission claims stronger than their evidence.",
+        "owns": "Adversarial findings and counterexamples only; no authority decision.",
+        "applies_to_steps": ["s05", "s07"]
+      },
+      {
+        "role_id": "v1-utility-boundary-auditor",
+        "purpose": "Test whether the proposed V1 envelope still supports representative useful workflows and whether future relaxation gates are concrete.",
+        "owns": "Usefulness and evolution audit only; no roadmap or scope approval.",
+        "applies_to_steps": ["s07"]
+      }
+    ],
+    "parallelism": "dialectic",
+    "join_policy": "all",
+    "authorization": "approved",
+    "permission_prompt": "Confirm execution of the validated ten-stage Refine route, including three read-only subagents and local-first research?",
+    "receipt_requirements": ["agent_id", "role_id", "spawn_status", "join_status", "close_status", "receipt_artifact", "reroute", "dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue", "handoff_note", "claims", "evidence_paths", "counterexamples", "unresolved_decisions"]
+  },
+  "subagent_lifecycle": {
+    "status": "pass",
+    "agents": [
+      {"agent_id": "/root/capability_envelope_modeler", "role_id": "capability-envelope-modeler", "spawn_status": "spawned", "join_status": "completed", "receipt_artifact": "delegated-review/capability-envelope-modeler.json", "close_status": "closed", "residue": "FIX findings routed to s08", "reroute": "s08-distill-repair"},
+      {"agent_id": "/root/authority_amplification_skeptic", "role_id": "authority-amplification-skeptic", "spawn_status": "spawned", "join_status": "completed", "receipt_artifact": "delegated-review/authority-amplification-skeptic.json", "close_status": "closed", "residue": "FIX findings routed to s08", "reroute": "s08-distill-repair"},
+      {"agent_id": "/root/v1_utility_boundary_auditor", "role_id": "v1-utility-boundary-auditor", "spawn_status": "spawned", "join_status": "completed", "receipt_artifact": "delegated-review/v1-utility-boundary-auditor.json", "close_status": "closed", "residue": "FIX findings routed to s08", "reroute": "s08-distill-repair"}
+    ]
+  },
+  "native_stage_receipts": [
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s01", "capability_ref": "context-builder", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s01-context-builder.json", "stages/01-context-builder.md", "context-builder/context-pack.json"], "validation": ["10/10 obligations covered"], "observer_status": "not-configured", "blockers": [], "residue": "research gaps retained"},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s02", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s02-invoke-define.json", "stages/02-invoke-define.md"], "validation": ["problem and claim ceiling defined"], "observer_status": "not-configured", "blockers": []},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s03", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s03-interrogation-refine-review.json", "stages/03-interrogation-refine-review.md"], "validation": ["six discriminating checks"], "observer_status": "not-configured", "blockers": []},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s04", "capability_ref": "refine", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s04-research-decision.json", "stages/04-research-decision.md"], "validation": ["local-only decision recorded"], "observer_status": "not-configured", "blockers": [], "residue": "external pass requires separate permission"},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s05", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s05-distill.json", "stages/05-distill.md"], "validation": ["ATS selected and roles reconciled"], "observer_status": "parent-native subagents", "blockers": []},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s06", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s06-invoke-design.json", "stages/06-invoke-design.md"], "validation": ["research architecture complete"], "observer_status": "not-configured", "blockers": []},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s07", "capability_ref": "interrogation", "receipt_kind": "subagent", "status": "pass", "artifacts": ["receipts/s07-interrogation-design-review.json", "stages/07-interrogation-design-review.md", "delegated-review/capability-envelope-modeler.json", "delegated-review/authority-amplification-skeptic.json", "delegated-review/v1-utility-boundary-auditor.json"], "validation": ["3/3 joined and closed", "FIX/FIX/FIX routed"], "observer_status": "parent-native lifecycle complete", "blockers": []},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s08", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s08-distill-repair.json", "stages/08-distill-repair.md", "stages/08-scenario-matrix.json"], "validation": ["all review repairs incorporated", "scenario coverage pass"], "observer_status": "not-configured", "blockers": []},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s09", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s09-invoke-plan.json", "stages/09-invoke-plan.md", "plan/RESEARCH-PLAN.md"], "validation": ["non-executed six-phase plan"], "observer_status": "not-configured", "blockers": []},
+    {"dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom", "step_id": "s10", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["receipts/s10-final-interrogation.json", "stages/10-final-interrogation.md", "RESULT.md"], "validation": ["final claim and readiness audit pass"], "observer_status": "not-configured", "blockers": [], "residue": "owner decisions remain"}
+  ],
+  "steps": [
+    {
+      "step_id": "s01",
+      "name": "Context Builder evidence baseline",
+      "capability_ref": "context-builder",
+      "mode": "standard-strict-runtime-handoff",
+      "pattern": "xray",
+      "techniques": ["x_ray", "frame_handoff", "handle_handoff", "memory_loop", "data_quality_completeness", "concrete_path_evidence"],
+      "inputs": [{"kind": "intent", "ref": "intent.raw"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}],
+      "outputs": [{"kind": "frame", "ref": "context-builder/context-pack.json"}, {"kind": "artifact", "ref": "stages/01-context-builder.md"}],
+      "evidence_artifact": "stages/01-context-builder.md",
+      "stop_conditions": ["Block if the local evidence cannot distinguish accepted implementation, as-built evidence, formal decision, proposal, and unresolved contradiction."]
+    },
+    {
+      "step_id": "s02",
+      "name": "Invoke Define research problem",
+      "capability_ref": "invoke",
+      "mode": "define",
+      "pattern": "sequential",
+      "techniques": ["sequence", "frame_handoff", "minimum_component_catalog", "component_descriptor", "owner_boundary_check"],
+      "inputs": [{"kind": "frame", "ref": "context-builder/context-pack.json"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/02-invoke-define.md"}, {"kind": "handle", "ref": "degrees-of-freedom-definition"}],
+      "evidence_artifact": "stages/02-invoke-define.md",
+      "stop_conditions": ["Block if expressivity, authority, capability, enforcement, and evidence remain collapsed into one permission concept."]
+    },
+    {
+      "step_id": "s03",
+      "name": "Interrogation refine-review",
+      "capability_ref": "interrogation",
+      "mode": "refine-review",
+      "pattern": "dialectic",
+      "techniques": ["dialectic", "zig_zag", "residue_ledger", "authority_split_gate", "approval_semantics_map"],
+      "roles": ["capability-envelope-modeler", "authority-amplification-skeptic"],
+      "inputs": [{"kind": "artifact", "ref": "stages/02-invoke-define.md"}, {"kind": "frame", "ref": "context-builder/context-pack.json"}],
+      "outputs": [{"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"}, {"kind": "decision", "ref": "definition-readiness"}],
+      "convergence_criteria": ["The research question is answerable by named evidence and produces a decision-ready V1 envelope.", "Every disagreement is either resolved, assigned to research, or preserved as decision residue."],
+      "evidence_artifact": "stages/03-interrogation-refine-review.md",
+      "stop_conditions": ["Pause for exactly one operator question if a blocker choice would materially change the research target."]
+    },
+    {
+      "step_id": "s04",
+      "name": "Research decision",
+      "capability_ref": "refine",
+      "mode": "research-if-gap-appears",
+      "pattern": "decision",
+      "techniques": ["approval_checkpoint", "protected_context_flag", "data_quality_completeness", "residue_ledger"],
+      "inputs": [{"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}],
+      "outputs": [{"kind": "decision", "ref": "research-decision"}, {"kind": "artifact", "ref": "stages/04-research-decision.md"}],
+      "evidence_artifact": "stages/04-research-decision.md",
+      "stop_conditions": ["Do not use external research unless a named local evidence gap appears and the operator confirms the bounded pass."]
+    },
+    {
+      "step_id": "s05",
+      "name": "Distill smallest coherent research unit",
+      "capability_ref": "distill",
+      "mode": "standard",
+      "pattern": "distill",
+      "techniques": ["scu_swu_reduction", "recomposition_proof", "dialectic", "residue_ledger"],
+      "roles": ["capability-envelope-modeler", "authority-amplification-skeptic"],
+      "inputs": [{"kind": "artifact", "ref": "stages/02-invoke-define.md"}, {"kind": "ledger", "ref": "stages/03-interrogation-refine-review.md"}, {"kind": "decision", "ref": "research-decision"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/05-distill.md"}, {"kind": "handle", "ref": "selected-research-unit"}],
+      "convergence_criteria": ["The selected unit is sufficient to decide a V1 capability envelope and small enough to avoid designing a general IAM platform."],
+      "evidence_artifact": "stages/05-distill.md",
+      "stop_conditions": ["Block if the unit cannot recompose into product surface, authority, enforcement, and evolution decisions."]
+    },
+    {
+      "step_id": "s06",
+      "name": "Invoke Design research architecture",
+      "capability_ref": "invoke",
+      "mode": "design",
+      "pattern": "sequential",
+      "techniques": ["sequence", "x_ray", "component_descriptor", "authority_split_gate", "protected_action_mapping", "owner_boundary_check"],
+      "inputs": [{"kind": "artifact", "ref": "stages/05-distill.md"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/06-invoke-design.md"}, {"kind": "handle", "ref": "candidate-research-design"}],
+      "evidence_artifact": "stages/06-invoke-design.md",
+      "stop_conditions": ["Block if the design lacks an evidence matrix, scenario suite, claim ceiling, decision outputs, or owner boundaries."]
+    },
+    {
+      "step_id": "s07",
+      "name": "Independent design review and scenario attack",
+      "capability_ref": "interrogation",
+      "mode": "refine-design-review",
+      "pattern": "dialectic",
+      "parallel": true,
+      "join_policy": "all",
+      "techniques": ["dialectic", "toy_game", "validation_loop", "assessment_failure_reference", "authority_split_gate", "residue_ledger"],
+      "roles": ["capability-envelope-modeler", "authority-amplification-skeptic", "v1-utility-boundary-auditor"],
+      "inputs": [{"kind": "artifact", "ref": "stages/06-invoke-design.md"}, {"kind": "artifact", "ref": "REFINE-SEED-PROPOSAL.md"}],
+      "outputs": [{"kind": "artifact", "ref": "delegated-review/capability-envelope-modeler.json"}, {"kind": "artifact", "ref": "delegated-review/authority-amplification-skeptic.json"}, {"kind": "artifact", "ref": "delegated-review/v1-utility-boundary-auditor.json"}, {"kind": "ledger", "ref": "stages/07-interrogation-design-review.md"}],
+      "convergence_criteria": ["All three role receipts are present and closed.", "The candidate admits useful bounded composition while rejecting scope amplification.", "Unresolved architecture choices remain explicit rather than averaged."],
+      "evidence_artifact": "stages/07-interrogation-design-review.md",
+      "stop_conditions": ["Block on any missing receipt, write-boundary breach, unsupported enforcement claim, or unhandled authority-amplification counterexample."]
+    },
+    {
+      "step_id": "s08",
+      "name": "Distill Repair and scenario validation",
+      "capability_ref": "distill",
+      "mode": "validate",
+      "pattern": "toy_game",
+      "techniques": ["toy_game", "validation_loop", "assessment_failure_reference", "recomposition_proof", "residue_ledger"],
+      "inputs": [{"kind": "artifact", "ref": "stages/06-invoke-design.md"}, {"kind": "ledger", "ref": "stages/07-interrogation-design-review.md"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/08-distill-repair.md"}, {"kind": "artifact", "ref": "stages/08-scenario-matrix.json"}, {"kind": "handle", "ref": "repaired-research-design"}],
+      "evidence_artifact": "stages/08-scenario-matrix.json",
+      "stop_conditions": ["Block if the repaired envelope cannot classify a scenario uniquely or if permission is treated as sufficient without enforcement evidence."]
+    },
+    {
+      "step_id": "s09",
+      "name": "Invoke non-executed research plan",
+      "capability_ref": "invoke",
+      "mode": "plan",
+      "pattern": "sequential",
+      "techniques": ["sequence", "scu_swu_reduction", "recomposition_proof", "execution_receipt_handoff", "owner_boundary_check"],
+      "inputs": [{"kind": "artifact", "ref": "stages/08-distill-repair.md"}, {"kind": "artifact", "ref": "stages/08-scenario-matrix.json"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/09-invoke-plan.md"}, {"kind": "artifact", "ref": "plan/RESEARCH-PLAN.md"}],
+      "evidence_artifact": "stages/09-invoke-plan.md",
+      "stop_conditions": ["Do not execute the resulting research, mutate canonical decisions, or implement runtime controls as part of Refine."]
+    },
+    {
+      "step_id": "s10",
+      "name": "Final Interrogation and Refine synthesis",
+      "capability_ref": "interrogation",
+      "mode": "refine-final",
+      "pattern": "synthesis",
+      "techniques": ["validation_loop", "owner_boundary_check", "recomposition_proof", "residue_ledger", "approval_semantics_map"],
+      "roles": ["research-defender", "claim-ceiling-auditor"],
+      "inputs": [{"kind": "artifact", "ref": "stages/08-distill-repair.md"}, {"kind": "artifact", "ref": "stages/09-invoke-plan.md"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/10-final-interrogation.md"}, {"kind": "artifact", "ref": "RESULT.md"}, {"kind": "handoff", "ref": "recommended-next-route"}],
+      "convergence_criteria": ["The final result states what the research seeks, why it matters, what it excludes, how it can fail, and which decisions it will enable."],
+      "evidence_artifact": "RESULT.md",
+      "stop_conditions": ["Block final pass if the result claims a settled V1 decision, implemented enforcement, or universal future expressivity without evidence."]
+    }
+  ],
+  "gates": [
+    {"gate_id": "g01-strategy-approval", "kind": "human_approval", "owner": "operator", "condition": "The operator confirms the validated ten-stage route and the exact three-role read-only subagent strategy.", "on_fail": "ask"},
+    {"gate_id": "g02-research-expansion", "kind": "human_approval", "owner": "operator", "condition": "External research runs only after a named local evidence gap and explicit bounded-research confirmation.", "on_fail": "defer"},
+    {"gate_id": "g03-owner-boundaries", "kind": "policy", "owner": "refine", "condition": "Refine, stage capabilities, subagents, research sources, and later decision/spec owners retain distinct authority; no advisory result promotes itself.", "on_fail": "block"},
+    {"gate_id": "g04-claim-ceiling", "kind": "promotion_guardrail", "owner": "refine", "condition": "The result remains a refined research design and non-executed plan, not a product decision, security proof, implementation claim, or promotion authority.", "on_fail": "block"},
+    {"gate_id": "g05-scenario-discrimination", "kind": "quality", "owner": "distill", "condition": "The candidate envelope admits representative useful workflows, rejects authority amplification, and labels unknown enforcement honestly.", "on_fail": "block"},
+    {"gate_id": "g06-subagent-receipts", "kind": "validation", "owner": "refine", "condition": "Every spawned subagent has a terminal join and close receipt, with evidence, residue, and reroute fields.", "on_fail": "block"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": null,
+    "trace_events": ["refine.strategy.validated", "refine.strategy.confirmed", "refine.stage.started", "refine.stage.completed", "refine.subagent.spawned", "refine.subagent.joined", "refine.subagent.closed", "refine.research.decision", "refine.finalized"],
+    "signal_grouping": "dispatch_id, step_id, capability_ref, role_id, status, artifact, validation, blocker, residue, authorization"
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {"boundary_id": "b01-stage-handoff", "kind": "capability_handoff", "from_owner": "prior stage capability", "to_owner": "next stage capability", "applies_to_steps": ["s02", "s03", "s05", "s06", "s07", "s08", "s09", "s10"], "contract": "Consumers receive frames, handles, decisions, ledgers, and artifacts without taking lifecycle ownership from their producers.", "on_violation": "block"},
+      {"boundary_id": "b02-subagent-evidence", "kind": "evidence_return", "from_owner": "read-only subagent roles", "to_owner": "refine", "applies_to_steps": ["s07", "s08"], "contract": "Subagents return advisory evidence and counterexamples; Refine owns join, repair, synthesis, and unresolved residue.", "on_violation": "block"},
+      {"boundary_id": "b03-external-research", "kind": "external_context", "from_owner": "external primary sources", "to_owner": "refine research decision", "applies_to_steps": ["s04", "s05"], "contract": "External evidence may fill a named gap after approval but cannot override repository authority or become canonical by import.", "on_violation": "block"},
+      {"boundary_id": "b04-run-folder-write", "kind": "state_write", "from_owner": "refine loop", "to_owner": "run evidence folder", "applies_to_steps": ["s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10"], "contract": "All writes remain inside this refinement-run folder; canonical product and decision artifacts are read-only.", "on_violation": "block"}
+    ],
+    "authority": {
+      "lifecycle": "refine owns the refinement run",
+      "execution": "operator confirmation plus current parent-native runtime",
+      "validation": "dispatch-spec for route shape; each stage capability for its native artifact",
+      "evidence": "source owners and terminal stage/subagent receipts",
+      "memory": "run-local evidence only",
+      "promotion": "future RWO, ACI, security, and product decision owners outside this run"
+    },
+    "receipts": [
+      {"receipt_id": "native-stage-receipts", "producer": "parent-native stage capabilities", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue"], "on_missing": "block"},
+      {"receipt_id": "subagent-lifecycle-receipts", "producer": "refine parent", "required_fields": ["dispatch_id", "step_id", "status", "artifacts", "validation", "blockers", "residue"], "on_missing": "block"},
+      {"receipt_id": "strategy-approval", "producer": "operator", "required_fields": ["dispatch_id", "approval_record", "status"], "on_missing": "block"}
+    ],
+    "state_namespaces": [
+      {"namespace": "refinement-run/20260813T122459Z-rwo-degrees-of-freedom", "owner": "refine", "write_policy": "Only run-local evidence and stage artifacts may be written before a separately approved next route."}
+    ],
+    "promotion_splits": [
+      {"source": "refinement result", "target": "RWO/ACI/product decisions or specifications", "rule": "A separate owner-controlled decision or authoring route must review and accept the result; Refine cannot promote it.", "on_violation": "block"}
+    ]
+  },
+  "promotion_guardrails": [
+    "No V1 capability envelope becomes an accepted product decision in this run.",
+    "No declaration of permission is represented as physical enforcement proof.",
+    "No recursive-authority prohibition or allowance is promoted without its owner decision.",
+    "No runtime, capability, sandbox, scheduler, adapter, policy, or canonical specification is changed."
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "refine-evidence-index/v1",
+  "run_id": "20260813T122459Z-rwo-degrees-of-freedom",
+  "status": "complete",
+  "artifacts": [
+    {"path": "REFINE-SEED-PROPOSAL.md", "owner": "refine", "status": "present"},
+    {"path": "REFINE-DISPATCH.json", "owner": "dispatch-spec", "status": "validated-pass"},
+    {"path": "dispatch-validation.json", "owner": "dispatch-spec", "status": "present"},
+    {"path": "RUNTIME-HANDOFF.md", "owner": "refine", "status": "complete"},
+    {"path": "RUN-MANIFEST.md", "owner": "refine", "status": "present"},
+    {"path": "RESULT.md", "owner": "refine", "status": "pass"},
+    {"path": "plan/RESEARCH-PLAN.md", "owner": "invoke", "status": "present"},
+    {"path": "stages/08-scenario-matrix.json", "owner": "distill", "status": "validated-pass"}
+  ],
+  "stages": [
+    {"step_id": "s01", "status": "pass", "artifact": "stages/01-context-builder.md", "receipt": "receipts/s01-context-builder.json"},
+    {"step_id": "s02", "status": "pass", "artifact": "stages/02-invoke-define.md", "receipt": "receipts/s02-invoke-define.json"},
+    {"step_id": "s03", "status": "pass", "artifact": "stages/03-interrogation-refine-review.md", "receipt": "receipts/s03-interrogation-refine-review.json"},
+    {"step_id": "s04", "status": "pass", "artifact": "stages/04-research-decision.md", "receipt": "receipts/s04-research-decision.json"},
+    {"step_id": "s05", "status": "pass", "artifact": "stages/05-distill.md", "receipt": "receipts/s05-distill.json"},
+    {"step_id": "s06", "status": "pass", "artifact": "stages/06-invoke-design.md", "receipt": "receipts/s06-invoke-design.json"},
+    {"step_id": "s07", "status": "pass", "artifact": "stages/07-interrogation-design-review.md", "receipt": "receipts/s07-interrogation-design-review.json"},
+    {"step_id": "s08", "status": "pass", "artifact": "stages/08-distill-repair.md", "receipt": "receipts/s08-distill-repair.json"},
+    {"step_id": "s09", "status": "pass", "artifact": "stages/09-invoke-plan.md", "receipt": "receipts/s09-invoke-plan.json"},
+    {"step_id": "s10", "status": "pass", "artifact": "stages/10-final-interrogation.md", "receipt": "receipts/s10-final-interrogation.json"}
+  ]
+}

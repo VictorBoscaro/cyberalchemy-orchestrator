@@ -1,0 +1,21 @@
+{
+  "schema": "context-builder-runtime-handoff/v1",
+  "run_id": "20260813T122459Z-rwo-degrees-of-freedom",
+  "mode": "standard",
+  "strict": true,
+  "coverage": {"covered": 10, "total": 10, "percent": 100},
+  "selected_sources": [
+    {"path": "docs/features/recursive-work-orchestrator/DESIGN.md", "selectors": ["19-36", "54-89", "372-387", "440-465", "484-497"], "obligations": ["O1", "O2", "O3", "O10"]},
+    {"path": "research/agent-invocation-and-collaboration-topology/research-initial-definitions.md", "selectors": ["91-100", "193-202"], "obligations": ["O5"]},
+    {"path": "plans/governed-agent-work-infrastructure/essays/robot-talks/2026-08-12-work-overview-composition/findings.md", "selectors": ["77-90"], "obligations": ["O4"]},
+    {"path": "docs/features/agents-communication-infra/README.md", "selectors": ["746-783"], "obligations": ["O6"]},
+    {"path": "implementations/as-built/pairs/pair-03-authority.md", "selectors": ["Executive answer", "What the next work buys"], "obligations": ["O6"]},
+    {"path": "implementations/server/runtime/capabilities.py", "selectors": ["17-31", "60-148"], "obligations": ["O7"]},
+    {"path": "implementations/contracts/dispatch-type-registry.v1.json", "selectors": ["1-74"], "obligations": ["O7"]},
+    {"path": "docs/decisions/skill-control-center-phase-1-scope.md", "selectors": ["8-47"], "obligations": ["O8"]}
+  ],
+  "constraints": ["run-folder writes only", "local evidence first", "no implementation", "no authority promotion", "claim not stronger than evidence"],
+  "gaps": ["final V1 capability envelope undecided", "nested-orchestration contradiction unresolved", "physical enforcement incomplete", "external comparison not yet designed"],
+  "strict_coverage": "pass"
+}
+

@@ -1,0 +1,21 @@
+{
+  "dispatch_id": "refine-20260813T122459Z-rwo-degrees-of-freedom",
+  "step_id": "s07",
+  "capability_ref": "interrogation",
+  "role_id": "capability-envelope-modeler",
+  "agent_id": "/root/capability_envelope_modeler",
+  "spawn_status": "spawned",
+  "join_status": "completed",
+  "close_status": "closed",
+  "status": "fix",
+  "artifacts": ["stages/05-distill.md", "stages/06-invoke-design.md"],
+  "validation": ["ATS core accepted", "12 completeness and consistency findings returned"],
+  "observer_status": "parent joined final return",
+  "blockers": [],
+  "residue": "Owner, permanent nested-authority posture, and current confinement remain open",
+  "reroute": "s08-distill-repair",
+  "handoff_note": "Split current/V1/later, status axes, actor roles, comparators, and missing concurrent/data cases",
+  "claims": ["ATS is the correct core after widening it to protected operations", "Matrix completeness requires a closed coverage ledger"],
+  "counterexamples": ["effect exercise without authority mutation", "revocation in flight", "stale approval", "data egress", "concurrent quota spend"],
+  "unresolved_decisions": ["canonical owner", "nested authority permanent versus deferred"]
+}
