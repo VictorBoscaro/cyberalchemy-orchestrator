@@ -200,4 +200,81 @@ Boundary read: `research/knowledge-formation/research-initial-definitions.md` on
 
 ### Boundary-level conclusion
 
+## Source-type classification
+
+Types: `primary` advances the position or reports the focal inquiry; `review` synthesizes scholarship; `authoritative-reference` verifies/disambiguates through a curated reference, publisher, DOI, or catalogue; `interpretation` reconstructs a position or lineage.
+
+| source or source-group cited above | type | evidential use |
+|---|---|---|
+| Gadamer, *Truth and Method* | primary | effective history, prejudgment, understanding, horizon |
+| SEP “Hermeneutics” and “Hans-Georg Gadamer” | authoritative-reference | disambiguation and debate overview |
+| Dilthey/Heidegger → Gadamer | interpretation | lineage only |
+| Habermas/Ricoeur/Derrida responses | interpretation | mediated counterpositions and limits |
+| Mannheim, *Ideology and Utopia* | primary | social location and reflexivity |
+| Harding, *Whose Science? Whose Knowledge?* | primary | standpoint as critical achievement |
+| Fleck, *Genesis and Development of a Scientific Fact* | primary | thought collective/style and fact development |
+| Kuhn, *Structure of Scientific Revolutions* | primary | paradigms, normal science, rupture |
+| Bloor, *Knowledge and Social Imagery* | primary | symmetry and reflexivity |
+| Latour/Woolgar, *Laboratory Life* | primary | laboratory-construction chain; background only |
+| Hacking, *The Social Construction of What?* | primary | disaggregation of construction claims |
+| Boghossian, *Fear of Knowledge* | primary | anti-relativist counterposition |
+| Latour, “Why Has Critique Run out of Steam?” | primary | critique of indiscriminate debunking |
+| Lave/Wenger, *Situated Learning* | primary | legitimate peripheral participation |
+| Hutchins, *Cognition in the Wild* | primary | distributed cognitive systems |
+| Giere/Moffatt, “Distributed Cognition” | primary | cognitive/social boundary challenge |
+| Hardwig, “Epistemic Dependence” | primary | community knowledge and expert dependence |
+| Goldman, *Knowledge in a Social World* | primary | veritistic counterposition |
+| Longino, *Science as Social Knowledge*; *The Fate of Knowledge* | primary | critical contextual empiricism |
+| Knorr Cetina, *Epistemic Cultures* | primary | heterogeneous scientific arrangements |
+| Star/Griesemer, “Boundary Objects” | primary | cooperation without consensus |
+| Bowker/Star, *Sorting Things Out* | primary | classifications, visibility, residuality |
+| Bowker, *Memory Practices in the Sciences* | primary | infrastructural memory/forgetting |
+| Halbwachs, *On Collective Memory* | primary | collective reconstruction of memory |
+| Taylor, *The Archive and the Repertoire* | primary | embodied repertoire |
+| Merton, “Matthew Effect” | primary | cumulative advantage and credit |
+| Fricker, *Epistemic Injustice* | primary | testimonial/hermeneutical injustice |
+| Dotson, “Tracking Epistemic Violence” | primary | silencing and pernicious ignorance |
+| Sullivan/Tuana, eds., *Race and Epistemologies of Ignorance* | primary | organized ignorance |
+| Barth, “Anthropology of Knowledge” | primary | corpus/media/social-organization heuristic |
+| Verran, *Science and an African Logic* | primary | enacted numbering and certainty |
+| Smith, *Decolonizing Methodologies* | primary | colonial/decolonial research regimes |
+| Wilson, *Research Is Ceremony* | primary | relational accountability |
+| TallBear, *Native American DNA* | primary | technoscience, belonging, tribal authority |
+| de la Cadena, *Earth Beings* | primary | partial connections and ontological excess |
+| Viveiros de Castro, “Controlled Equivocation” | primary | comparison without assumed shared referents |
+| Hollis/Lukes, eds., *Rationality and Relativism* | primary | plural debate collection |
+| Evans-Pritchard/Winch; Sahlins–Obeyesekere chains | interpretation | rationality, voice, attribution lineage |
+| Publisher/DOI/JSTOR/library records | authoritative-reference | bibliographic verification, not substantive evidence alone |
+| Search snippets | authoritative-reference | discovery only; excluded from evidence |
+| `research-initial-definitions.md` | primary | internal boundary and baseline |
+
+No cited source carried a final claim as `review`; reviews found during search were orientation aids only.
+
+## Explicit claim-to-source mapping
+
+| claim | supporting source(s) | scope/limit |
+|---|---|---|
+| C1. Understanding lacks a neutral pre-interpretive beginning and may transform horizons. | Gadamer; SEP | hermeneutics, not all knowledge |
+| C2. Agreement may reproduce domination. | Habermas counterposition via SEP | interpreted challenge, not empirical universal |
+| C3. Thought/evidence are socially and historically situated. | Mannheim; Harding; Fleck | distinct senses of situatedness |
+| C4. Scientific change is not uniformly cumulative. | Kuhn; Fleck | historical-philosophical accounts |
+| C5. Social genesis does not settle truth or warrant. | Hacking; Boghossian; Goldman; Latour 2004 | separation claim, not one realism |
+| C6. Learning may be changed participation. | Lave/Wenger | practice-theory scope |
+| C7. Cognition can be distributed across people/artifacts. | Hutchins; Giere/Moffatt | ethnography plus theoretical extension |
+| C8. Dependence may exceed any individual's evidence. | Hardwig | philosophical argument |
+| C9. Objectivity may depend on organized criticism. | Longino | normative social epistemology |
+| C10. Sciences have heterogeneous epistemic arrangements. | Knorr Cetina | comparative ethnography |
+| C11. Cooperation need not require consensus. | Star/Griesemer | case-based limit on fusion |
+| C12. Classification/recording shape visibility and forgetting. | Bowker/Star; Bowker | infrastructural studies |
+| C13. Archive and repertoire preserve differently. | Taylor; Halbwachs | distinct media/frameworks |
+| C14. Attribution can diverge from contribution. | Merton; distributed/boundary cases | cross-source inference |
+| C15. Failure includes credibility deficits, silencing, and organized ignorance. | Fricker; Dotson; Sullivan/Tuana | philosophical accounts/collection |
+| C16. Comparative schemas may over-unify. | Barth tested against Wilson, Verran, de la Cadena, Viveiros de Castro | comparative inference |
+| C17. Translation may erase relational, political, or ontological conditions. | Smith; Wilson; TallBear; de la Cadena; Viveiros de Castro | no pan-Indigenous claim |
+| C18. “Knowledge formation” is only a provisional heading. | C1–C17 jointly | synthesis, no single owner |
+| C19. A universal DIKW-like sequence is unsupported. | Gadamer; Lave/Wenger; Fleck; Hutchins; Star/Griesemer; Taylor; Fricker/Dotson; Wilson | rejects universality only |
+| C20. Boundary confirms anti-origin/sequence/isolated-subject constraints. | boundary plus C1, C6–C8, C12–C13 | direct comparison |
+| C21. Boundary under-types power, credit, classification, repertoire, equivocation. | boundary gaps versus C11–C17 | omission, not denial |
+| C22. Recorded acceptance is governance-oriented, not knowledge simpliciter. | boundary's demotion; Goldman; Longino; Fricker; Hacking | comparative inference |
+
 The initial definitions are unusually careful and are largely confirmed. They already prevent the most damaging universal-sequence and isolated-subject errors. Their remaining weakness is not overt conflation but an under-typed umbrella: “formation,” “movement,” “subject or unit,” “conditions,” “transmission,” and “permanence” still gather mechanisms that the external corpus keeps separate. The correction is a comparison grammar, not a replacement master narrative.

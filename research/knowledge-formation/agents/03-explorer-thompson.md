@@ -1,12 +1,12 @@
 ---
 agent_id: KF-L1B-E1
-agent_name: Evan Thompson
+agent_name: Thompson, Evan
 layer_id: L1B
 dispatch_id: 2026-08-13-knowledge-formation
 role: explorer
 model: inherited
 decision: qualified-confirmation
-rationale: The initial definitions correctly block universal origins, sequences, definitions, and individual-only bearers, but their formation, movement, transmission, permanence, and operational-knowledge vocabulary requires typed correction.
+rationale: The initial definitions correctly block universal origins, sequences, definitions, and individual-only bearers. Their formation, movement, transmission, permanence, and operational-knowledge vocabulary nevertheless requires typed correction. The comparison therefore supports qualified confirmation rather than unreserved acceptance.
 files_created:
   - research/knowledge-formation/research/returns/03-thompson-phase-b.md
   - research/knowledge-formation/agents/03-explorer-thompson.md
@@ -30,4 +30,3 @@ The internal framing confirms the native map’s main constraint: no evidence su
 Required corrections are substantive. “Formation,” “movement,” “transmission,” and “permanence” currently span empirical, phenomenological, social, and epistemological registers. Each candidate must declare its bearer, evidence register, achievement norm, causal or constitutive role, diachrony, and attribution rule. The operational formula should be labeled governed reusable acceptance unless independent epistemic conditions are supplied.
 
 The framing omits attention, recognition, affordances, enactive sense-making, prior orientation, conceptual-change mechanisms, credibility, epistemic injustice, appropriation, and socially coordinated forgetting. Supplemental searches confirm that testimony involves recipient appraisal, understanding is not simply transferred, collective acceptance is not automatically collective knowledge, retained belief need not preserve justification, and social retrieval can coordinate forgetting.
-

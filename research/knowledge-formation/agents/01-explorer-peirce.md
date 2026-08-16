@@ -13,7 +13,7 @@ boundary_mode: phase-a-repository-blind_phase-b-single-boundary-read
 phase_a_status: frozen
 evidence_mode: primary-text_and_authoritative-scholarship
 decision: accept-with-corrections
-rationale: The boundary preserves Peircean anti-sequential and anti-individualist cautions but needs object-side constraint, future corrigibility, and sharper distinctions among acceptance, belief, warrant, and truth.
+rationale: The boundary preserves Peircean anti-sequential and anti-individualist cautions. It still needs object-side constraint, future corrigibility, and sharper distinctions among acceptance, belief, warrant, and truth.
 files_created:
   - research/knowledge-formation/agents/01-explorer-peirce.md
   - research/knowledge-formation/research/returns/01-peirce.md

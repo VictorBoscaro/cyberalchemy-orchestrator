@@ -1,12 +1,15 @@
 ---
 agent_id: KF-L1C-E1
 agent_name: "Abramsky, Samson"
-layer_id: domainspec-formal-conceptual
+layer_id: L1C
 dispatch_id: 2026-08-13-knowledge-formation
 role: explorer
 model: inherited
 decision: constraint-atlas-not-unified-formation
-rationale: "The repository proves many precise structural distinctions and counterexamples, but its epistemic identifications are stipulated, interpreted, proposed, or explicitly demoted; no typed adapter chain unifies observation, residue, update, preservation, local-global reconstruction, and provenance-authority."
+rationale: >-
+  The repository proves precise structural distinctions and counterexamples.
+  Its epistemic identifications are stipulated, interpreted, proposed, or explicitly demoted.
+  No typed adapter chain unifies observation, residue, update, preservation, local-global reconstruction, and provenance-authority.
 files_created:
   - research/knowledge-formation/research/returns/05-abramsky.md
   - research/knowledge-formation/agents/05-explorer-abramsky.md

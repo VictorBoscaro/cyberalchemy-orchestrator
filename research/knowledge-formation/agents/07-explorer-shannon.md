@@ -1,12 +1,12 @@
 ---
 agent_id: KF-L1D-E1
-agent_name: Claude Shannon
+agent_name: Shannon, Claude
 layer_id: L1D
 dispatch_id: 2026-08-13-knowledge-formation
 role: explorer
 model: inherited
 decision: needs-review
-rationale: The snapshot implements scoped admission, immutable capture, provenance, replay, and local supersession, but has no operational aggregate for accepting understanding for reusable, versioned, scoped, and revocable use.
+rationale: The fixed snapshot implements scoped admission, immutable capture, provenance, replay, and local supersession. It does not implement an aggregate that accepts understanding for reusable, versioned, scoped, and revocable use. The return therefore requires review at the boundary between attributable records and governed reusable understanding.
 files_created:
   - research/knowledge-formation/research/returns/07-shannon.md
   - research/knowledge-formation/agents/07-explorer-shannon.md

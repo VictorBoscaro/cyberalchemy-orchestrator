@@ -167,6 +167,62 @@ Rejected: **Peirce offers a universal cycle in which surprise causes abduction, 
 - Daniel J. McAuliffe, “Four Problems of Abduction: A Brief History,” *HOPOS* 1.2 (2011): 227–253, https://doi.org/10.1086/660746
 - “Why Peirce's Anti-Intuitionism Is Not Anti-Cartesian: The Diagnosis of a Pragmatist Dogma,” *International Journal of Philosophical Studies* 24.4 (2016), https://doi.org/10.1080/09672559.2016.1203981
 
+### Source-type classification
+
+The audit vocabulary is `primary | review | authoritative-reference | interpretation`. `Interpretation` includes specialist argumentative scholarship; `review` denotes synthetic historical survey; `authoritative-reference` denotes an editorial or reference work.
+
+| Source or cited group | Type |
+|---|---|
+| Peirce, “Questions Concerning Certain Faculties Claimed for Man” (1868) | primary |
+| Peirce, “Some Consequences of Four Incapacities” (1868) | primary |
+| Peirce, “The Fixation of Belief” (1877) | primary |
+| Peirce, “How to Make Our Ideas Clear” (1878) | primary |
+| Peirce, “Philosophy and the Conduct of Life” (1898) | primary |
+| Peirce, “Issues of Pragmaticism” (1905) | primary |
+| Peirce's mature letters to Lady Welby | primary |
+| Peirce Edition Project headnotes and manuscript/bibliographic records | authoritative-reference |
+| Albert Atkin, “Peirce's Theory of Signs,” SEP | authoritative-reference |
+| Daniel G. Campos, “Peirce's Semeiotic Model of the Mind” | interpretation |
+| Mats Bergman, “C. S. Peirce on Interpretation and Collateral Experience” | interpretation |
+| Christopher Hookway, *Truth, Rationality, and Pragmatism*, including its cited chapters | interpretation |
+| Cheryl Misak, “Truth, Reality, and Convergence” | interpretation |
+| Jeff Kasser, “Genuine Belief and Genuine Doubt in Peirce” | interpretation |
+| Douglas Walton, “Peirce Knew Why Abduction Isn't IBE” | interpretation |
+| Daniel J. McAuliffe, “Four Problems of Abduction” | review |
+| “Why Peirce's Anti-Intuitionism Is Not Anti-Cartesian” | interpretation |
+| Savan, Liszka, and T. L. Short interpretant/infinite-semiosis group | interpretation |
+| Burks, Frankfurt, Fann, and Anderson abduction-history group | interpretation |
+| Bellucci and Picardi, “Unconscious Inferences in Perception” | review |
+| Cheryl Misak, “C. S. Peirce: Meaning, Action, Habit” (2025) | interpretation |
+| `research-initial-definitions.md` boundary document | primary |
+
+### Explicit claim-to-source mapping
+
+| ID | Claim | Supporting source(s) |
+|---|---|---|
+| A1 | Peirce denies intuitive cognition, immediate introspection, signless thought, and the absolutely incognizable. | Peirce 1868, “Questions”; Peirce 1868, “Some Consequences” |
+| A2 | Thought and selfhood are diachronic sign-processes; persons and words reciprocally increase in information. | Peirce 1868, “Some Consequences”; Campos 2004 |
+| A3 | Genuine doubt disrupts an existing habit and inquiry seeks settlement. | Peirce 1877, “Fixation”; Kasser 2018 |
+| A4 | Tenacity, authority, a priori preference, and science can settle belief, but settlement does not entail truth. | Peirce 1877, “Fixation”; Hookway 2002 |
+| A5 | Scientific self-correction is a normative-methodological possibility, not automatic correction by every actual community. | Peirce 1898 lectures; Peirce Edition Project headnotes; Hookway 2002 |
+| A6 | Mature abduction proposes, deduction derives consequences, and induction tests; Peircean abduction is not simply IBE. | Peirce's mature logical texts as cited by Walton; Walton 2018; McAuliffe 2011; Burks/Frankfurt/Fann/Anderson group |
+| A7 | Perception is inferential, while collateral experience and the dynamical object constrain interpretation. | Peirce 1868 cognition series; Peirce's Lady Welby correspondence; Bergman 2010 |
+| A8 | Semiosis and information-growth are broader than knowledge or warrant; infinite semiosis is disputed historically. | Peirce 1868, “Some Consequences”; Atkin SEP; Savan/Liszka/Short group |
+| A9 | Peircean truth is not actual consensus; literal convergence faces buried secrets. | Peirce 1878, “How to Make”; Hookway 2002; Misak 2004 |
+| A10 | Belief, confidence, and scientific hope differ; the 1898 science/vital-matters position complicates the 1877 model. | Peirce 1877; Peirce 1898; Hookway 2002; Kasser 2018 |
+| A11 | Critical common-sensism supplies currently indubitable but fallible starting commitments. | Peirce 1905, “Issues”; Hookway 2002 |
+| A12 | Attribution is not exhausted by an isolated occurrent state, but neither is the indefinite community present-group consensus. | Peirce 1868, “Some Consequences”; Peirce 1878; Campos 2004; Hookway 2002 |
+| A13 | Reading Peircean anti-intuitionism as straightforward anti-Cartesianism is contested. | “Why Peirce's Anti-Intuitionism Is Not Anti-Cartesian” (2016) |
+| B1 | The boundary rejects universal origin, staged synonymy, and isolated-subject assumptions. | `research-initial-definitions.md` |
+| B2 | Architectural acceptance must not be equated with Peircean belief, confidence, warrant, or truth. | Boundary document; Peirce 1877; Hookway 2002; Kasser 2018 |
+| B3 | Statement transmission can fail to preserve interpretive or experiential conditions. | Boundary document; Bergman 2010; Atkin SEP |
+| B4 | Inferential perception supports testimony and anti-individualist readings but does not make memory or skill a master category. | Bellucci and Picardi 2023; Peirce 1868 cognition series |
+| B5 | `Formation`, `movement`, and `acquiring form` are boundary vocabulary, not stable Peircean technical terms. | Boundary document compared with the listed primary Peirce texts |
+
+### Frozen-byte provenance limitation
+
+The original Phase A completion is recoverable in this agent's runtime context as displayed prose, but its exact pre-exposure serialized bytes and completion timestamp are not available. A SHA over the original bytes therefore cannot be computed or honestly attested. No `01-peirce-phase-a-frozen.md` file was created: doing so would manufacture byte identity and provenance. The Phase A section above remains the previously disclosed faithful compression, not a byte-exact archival copy.
+
 ## Phase B — boundary comparison
 
 ### Permitted internal source

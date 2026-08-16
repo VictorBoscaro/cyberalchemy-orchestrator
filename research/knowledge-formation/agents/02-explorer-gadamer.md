@@ -10,15 +10,19 @@ domain: social-comparative
 mode: repository-blind-then-boundary-comparison
 status: complete
 decision: needs-review
-rationale: "The boundary is substantially confirmed but needs stronger typing of formation, bearer, authority, power, attribution, persistence, and translation."
+rationale: >-
+  The boundary is substantially confirmed because it rejects a universal sequence and isolated bearer.
+  It still needs stronger typing of formation, authority, power, attribution, persistence, and translation.
 closure_mark: needs-review
 source_scope: "external literature plus research-initial-definitions.md only"
 artifact: research/returns/02-gadamer.md
 files_created:
   - research/knowledge-formation/agents/02-explorer-gadamer.md
   - research/knowledge-formation/research/returns/02-gadamer.md
+  - research/knowledge-formation/research/returns/02-gadamer-phase-a-frozen.md
 files_modified:
   - research/knowledge-formation/agents/02-explorer-gadamer.md
+  - research/knowledge-formation/research/returns/02-gadamer.md
 references_consulted:
   - research/knowledge-formation/research-initial-definitions.md
   - "External social-comparative and hermeneutic literature documented in research/returns/02-gadamer.md"

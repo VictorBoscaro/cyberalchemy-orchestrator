@@ -2,6 +2,8 @@
 
 Launch state captured after dispatch specification and review, before any research seat launch.
 
+- Launch timestamp (first research seat runtime creation): `2026-08-13T19:13:32.402Z`
+
 ## Dispatch
 
 - Dispatch ID: `2026-08-13-knowledge-formation`
@@ -35,3 +37,11 @@ completion.
 Research seats may write only their declared R12 record. The parent owns collected briefing
 returns and dispatch state. Writers own only their declared synthesis artifacts. No seat may edit
 the source corpora during this dispatch.
+
+## Post-audit provenance recovery
+
+The first audit identified missing per-return timestamps and missing separately persisted pre-exposure
+Phase-A bytes for KF-L1A-E1 and KF-L1A-E2. The parent recovered both original `agent_message`
+payloads byte-for-byte from their runtime JSONL events and recorded their event timestamps and hashes
+in `research/knowledge-formation/research/briefing-returns-provenance.md`. This supplement does not
+mutate the briefing collation used by the frozen descriptive synthesis.

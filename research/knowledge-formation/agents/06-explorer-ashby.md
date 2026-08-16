@@ -1,7 +1,7 @@
 ---
 agent_id: KF-L1C-E2
 agent_name: "Ashby, W. Ross"
-layer_id: domainspec-formal-conceptual
+layer_id: L1C
 dispatch_id: 2026-08-13-knowledge-formation
 role: explorer
 model: inherited
