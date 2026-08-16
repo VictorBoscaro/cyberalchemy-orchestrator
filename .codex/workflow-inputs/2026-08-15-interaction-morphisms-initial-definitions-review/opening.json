@@ -1,0 +1,48 @@
+{
+  "dispatch_id": "2026-08-15-interaction-morphisms-initial-definitions-review",
+  "schema_version": "0.6.4",
+  "dispatch_type": "review",
+  "goal": "Revisar adversarialmente o research-initial-definitions de interaction-morphisms antes de desenhar a pesquisa governada.",
+  "context": "O alvo é docs/features/agents-communication-infra/research/interaction-morphisms/research-initial-definitions.md, congelado em SHA-256 C4897A1220E16A66FF6B252E00309399B05CB2C4B35C1B18C2A4DA12A7087A43. O documento deve enquadrar a pesquisa sem promover morfismos, primitivos, composicionalidade, objetos ou categoria formal a conclusões. Os revisores trabalham read-only e a saída será um único review.md entregue inline.",
+  "max_loops": 1,
+  "final_approver": "user",
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "agent_name": "Mac Lane, Saunders",
+          "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/research/interaction-morphisms/research-initial-definitions.md, cujo SHA-256 confirmado e C4897A1220E16A66FF6B252E00309399B05CB2C4B35C1B18C2A4DA12A7087A43, e .agents/skills/research-initial-definitions/SKILL.md. Ataque somente a fidelidade conceitual e de governanca: premissas promovidas a constraints, mistura entre evidencia e lacuna, morfismo tratado como fato, ownership excedido, claims mais fortes que suas fontes e conteudo proibido pela skill. Leia as fontes locais citadas quando necessario para verificar cada claim. Cada finding deve citar arquivo e trecho literal, receber CRITICAL, MAJOR ou MINOR e propor correcao de uma linha. Nao edite arquivos. Se nao houver findings, registre o que atacou e por que cada tentativa falhou. Retorne somente seu relatorio ao parent; nao crie review.md."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2600,
+          "agent_name": "Wirth, Niklaus",
+          "initial_prompt": "Leia integralmente docs/features/agents-communication-infra/research/interaction-morphisms/research-initial-definitions.md, cujo SHA-256 confirmado e C4897A1220E16A66FF6B252E00309399B05CB2C4B35C1B18C2A4DA12A7087A43, e .agents/skills/research-initial-definitions/SKILL.md. Leia tambem todas as fontes locais citadas pelo alvo. Ataque somente estrutura, mecanica documental, operabilidade e integridade de referencias: secoes obrigatorias incompletas, pergunta vaga ou enviesada, constraints nao confirmadas, baseline inexato, gaps que ja prescrevem solucao, referencias ou anchors inadequados, contradicoes internas e insuficiencia para orientar pesquisa posterior sem o pesquisador inventar o problema. Cada finding deve citar arquivo e trecho literal, receber CRITICAL, MAJOR ou MINOR e propor correcao de uma linha. Nao edite arquivos. Se nao houver findings, registre o que atacou e por que cada tentativa falhou. Retorne somente seu relatorio ao parent; nao crie review.md."
+        }
+      ]
+    }
+  ],
+  "connections": [],
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "review",
+    "ledger_dispatch_type": "review",
+    "capability_ref": "review",
+    "capability_path": ".claude/skills/review/SKILL.md",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f"
+  }
+}
