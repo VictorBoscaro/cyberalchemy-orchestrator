@@ -19,6 +19,13 @@ step — never by silent implementation. IDs are `BL-<n>`; they are stable once 
 
 ---
 
+## Connections
+
+Individual entries record their typed relationships to the repository artifacts that motivate or
+constrain them. No single external artifact governs the backlog as a whole.
+
+---
+
 ## BL-1 — Governed-extensible meta-type system *for the domain* ("v5")
 
 **The idea.** A meta-type system for this repo's domain (knowledge / orchestration itself): the
@@ -367,3 +374,30 @@ than silently preserving an obsolete decomposition.
 
 **Status.** IDEA / parked candidate; the Superinterviewer bootstrap may provide the first worked
 example, but does not by itself establish a general contract.
+
+---
+
+## BL-13 — Prompt-history recurrence detection and definition suggestions
+
+**Tags:** user-prompts, task-recurrence, definition-suggestions, privacy, schema-design
+
+**Objective:** Evaluate a privacy-respecting capability that can recognize recurring user requests
+and suggest when the user should create a reusable definition for the recurring work.
+
+**Description:** This is intentionally long-horizon candidate work. The motivating idea is to retain
+enough history from user prompts to identify repeated tasks, then surface a grounded suggestion to
+formalize the recurring intent as a definition. "Save every prompt" must not be treated as an
+accepted storage policy: future discovery should decide consent and scope boundaries, secret and
+personal-data handling, redaction, retention and deletion, tenant isolation, access control, and
+whether recurrence can be detected from a derived representation instead of durable raw prompt
+content. A candidate schema should cover stable record identity, user/workspace scope, source and
+time, the permitted prompt representation, recurrence features or signature, evidence linking a
+suggestion to prior occurrences, suggestion disposition, and any resulting definition. A dedicated
+backlog-oriented service is one architectural candidate, not yet a requirement; discovery should
+first determine whether an existing event, ledger, or definition service can own the capability
+without conflating operational traces, epistemic records, and product-facing task suggestions.
+
+**Connections:** Relates to BL-3's separation of the epistemic ledger from the operational trace and
+to [`definitions/DEFINITIONS.md`](definitions/DEFINITIONS.md) as the current definition vocabulary.
+
+**Status.** IDEA / long-horizon parked candidate. No service or schema design is scheduled.
