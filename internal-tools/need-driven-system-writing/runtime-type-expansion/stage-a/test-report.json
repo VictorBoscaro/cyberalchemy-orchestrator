@@ -1,169 +1,238 @@
 {
   "schema": "runtime-type-expansion-stage-a-test-report/v1",
   "contract_id": "2026-08-13-runtime-type-expansion-bootstrap-a",
-  "contract_sha256": "0F5F0B55380D12367050982EE72D8E871099F5A6A29CFFA2DDC12FF624563EBF",
-  "role_id": "a_test_implementer",
-  "authority_kind": "explicit-user-authorized-direct-subagent",
+  "dispatch_id": "2026-08-13-runtime-type-expansion-stage-a-evidence-recovery-01",
+  "step_id": "s4_t1_terminal_test",
+  "phase": "T1",
+  "capability_ref": "task-session",
+  "authority_kind": "explicit-user-authorized-direct-successor-seat",
   "aci_bound": false,
-  "recorded_at_utc": "2026-08-13T16:31:30.0328267Z",
-  "pre_resume_hash_verification": {
-    "result": "PASS",
-    "files": {
-      "implementations/tests/runtime/test_runtime_type_bootstrap.py": "sha256:321b2c257742d4dd01d6551009240dd004f9a7e589795c0e7fbd5c08e969252b",
-      "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": "sha256:f67e7ed3528a8d47f258e46d29ddd7d38d28c969273d25788ce0f6a9bd4bdd42"
-    },
-    "statement": "Both exclusive test hashes matched the a_test_implementer's prior terminal bytes before the resumed amendments."
+  "ledger_governed_claim": false,
+  "role_id": "successor_t1_test_owner",
+  "agent_id": "evidence_recovery_t1_test_owner_01",
+  "attempt_id": "t1-terminal-test-01",
+  "global_attempt_identity": "successor_t1_test_owner/evidence_recovery_t1_test_owner_01/t1-terminal-test-01",
+  "parent_role": "a_test_implementer",
+  "parent_scope_ref": "bootstrap-contract.json#/roles/a_test_implementer and #/cycle_2_execution/authoritative_order/T1",
+  "recorded_at_utc": "2026-08-13T20:16:29.4955424Z",
+  "gate_input": {
+    "assignment_map_path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/continuation/continuation-assignment-map.json",
+    "assignment_map_sha256": "F0B0368960CFD6A446C05C30A5563FF2CFC3DCE17D32D69B2BD5E260D8517B7E",
+    "p4_receipt_path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/seats/successor_p4_integrity_owner/evidence_recovery_p4_integrity_owner_01/p4-preliminary-integrity-01.json",
+    "p4_receipt_sha256": "C8810D07810FB5A3FE1696C6E11AD11081C70CB96F43A1240B35460F10D72C2A",
+    "p4_gate_result": "P4_PASS"
   },
-  "exclusive_test_changes": [
-    "Added a direct automatic host-opening assertion for registry-derived schema/capability route and preservation of role, model, prompt, anti-bias, compatibility dispatch type, and output mode.",
-    "Added direct orchestration-service manifest acceptance at the exact immutable route digest and rejection for missing, malformed, stale, and cross-route digests.",
-    "Added the explicit legacy opening boundary: 0.6.1 through 0.6.4 accepted; missing, malformed, 0.6.5, 1.0.0, and arbitrary unknown versions rejected before lifecycle use."
-  ],
-  "final_exclusive_test_hashes": {
-    "implementations/tests/runtime/test_runtime_type_bootstrap.py": "sha256:ef6f1c5f910939f7be84f43e8efed8da754ce04d59d442103688248b2a55dc52",
-    "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": "sha256:a5bc1cc8e2a41790d60983ef52ccbf4938eb5ee11c500b274c7dce081bbe9748"
+  "tested_integrity": {
+    "source_manifest": {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+      "sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "bytes": 8407
+    },
+    "local_pilot": {
+      "path": "implementations/server/runtime/local_pilot.py",
+      "sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "bytes": 8294,
+      "source_manifest_pin": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8"
+    },
+    "hashes_unchanged_across_complete_command_set": true
+  },
+  "lifecycle_receipt_set": {
+    "manifest_path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/evidence-recovery-01/lifecycle-manifest.recovery-pre-integrity.json",
+    "manifest_sha256": "510AEB5DE1A9B77DFC89DD79F04C5482598CB55EE328B9F87919BF5E86D77A6C",
+    "canonical_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+    "digest_basis": "UTF-8 SHA-256 of ordinal|class|path|sha256|bytes rows joined by LF in ordinal order 1-29; the recovery pre-integrity manifest and its external receipt are excluded",
+    "receipt_count": 29,
+    "result": "PASS"
   },
   "commands": [
     {
       "command": "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap -v",
+      "started_at_utc": "2026-08-13T20:15:02.556786Z",
+      "completed_at_utc": "2026-08-13T20:15:06.999805Z",
+      "duration_ms": 4443,
       "exit_code": 0,
-      "duration_ms": 2178,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "955820d6deb5874cbd88c8a853ba429bad0de501cd5a4ed4eaa5c92f4c7afcec",
       "stdout_bytes": 0,
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
       "stderr_bytes": 2254,
-      "cases": "10 positive schema, route, historical aggregation, code readiness/topology, appender/open/close, compiler/binding, sequential handoff, host synthesis, and service route-digest cases",
+      "stderr_sha256": "F4D8ABB2C71B5C98B7E96258A8A89931C2955FFC2779B10F29EB4220E0D24251",
+      "cases": 10,
+      "cases_covered": "runtime type bootstrap positive schema, route, lifecycle, compiler, host synthesis, and service cases",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
       "result": "PASS"
     },
     {
       "command": "python -m unittest implementations.tests.runtime.test_runtime_type_bootstrap_abuse -v",
+      "started_at_utc": "2026-08-13T20:15:07.000787Z",
+      "completed_at_utc": "2026-08-13T20:15:12.521312Z",
+      "duration_ms": 5520,
       "exit_code": 0,
-      "duration_ms": 2378,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "79b56675a9f12be24439eb714ae1b849c0148c7f820113cf1d1474faae87ac10",
       "stdout_bytes": 0,
-      "stderr_bytes": 2005,
-      "cases": "8 fail-closed identity, authority, route forgery/swap, handoff tamper, unsupported edge, code fallback/readiness/topology, registry tamper, legacy versions, and service route-digest cases",
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderr_bytes": 2240,
+      "stderr_sha256": "80206B4662CA589C33412F06537F873B62D1F0159F28B5132415ED9D39C9DE23",
+      "cases": 9,
+      "cases_covered": "fail-closed identity, authority, route forgery and swap, handoff tamper, unsupported edges, registry tamper, legacy versions, and service route-digest cases",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
       "result": "PASS"
     },
     {
       "command": "python -m unittest implementations.tests.runtime.test_dispatch_workflow -v",
+      "started_at_utc": "2026-08-13T20:15:12.523004Z",
+      "completed_at_utc": "2026-08-13T20:15:14.863026Z",
+      "duration_ms": 2341,
       "exit_code": 0,
-      "duration_ms": 1910,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "e6a6905294c36dd3dc75de0586221d2e74797cac9c4b1978554a7535b91e256d",
       "stdout_bytes": 0,
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
       "stderr_bytes": 1215,
-      "cases": "6 workflow resolver/compiler/current-schema/route-digest/topology cases",
+      "stderr_sha256": "A5C58B2E0926BB3689E9FD855E4FB76A8622C1C88E9F63143657B25DC5053F1D",
+      "cases": 6,
+      "cases_covered": "workflow resolver, compiler, current-schema, route-digest, and topology cases",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
       "result": "PASS"
     },
     {
       "command": "python -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
-      "exit_code": 1,
-      "duration_ms": 12542,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "c6d149bf2c389af809b65d3d27617fd92177116b83cd519d52dfc5c927ad4177",
+      "started_at_utc": "2026-08-13T20:15:14.864536Z",
+      "completed_at_utc": "2026-08-13T20:15:32.988052Z",
+      "duration_ms": 18123,
+      "exit_code": 0,
       "stdout_bytes": 0,
-      "stderr_bytes": 6229,
-      "cases": "18 bridge/appender/open/close/code/current-other/CLI cases; 16 passed, one error and one dependent assertion failure",
-      "result": "BLOCK",
-      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch; the dependent missing-token assertion is reached only after integrity preflight."
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderr_bytes": 3619,
+      "stderr_sha256": "50823CFCC4976CB227A66034BF567DB327DEB52FD9B9B519652B96A09733E8B1",
+      "cases": 18,
+      "cases_covered": "bridge, appender, open, close, code, current-other, and CLI cases",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
+      "result": "PASS"
     },
     {
       "command": "python -m unittest implementations.tests.runtime.test_host_dispatch_hook -v",
-      "exit_code": 1,
-      "duration_ms": 7563,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "6b4469e1178c85c1d267f0484d441720937586d6f98c43ce3e19a8f001816624",
+      "started_at_utc": "2026-08-13T20:15:32.990076Z",
+      "completed_at_utc": "2026-08-13T20:16:02.023029Z",
+      "duration_ms": 29033,
+      "exit_code": 0,
       "stdout_bytes": 0,
-      "stderr_bytes": 15202,
-      "cases": "11 host binding/open/close/role/lifecycle/configuration cases; 4 passed and 7 integrity-gated cases errored",
-      "result": "BLOCK",
-      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch."
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderr_bytes": 2133,
+      "stderr_sha256": "6DDE596CF7330E41BD9BAAFFE3ECC60451D8FD452704E9E4B097976864D01415",
+      "cases": 11,
+      "cases_covered": "host binding, open, close, role, lifecycle, and configuration cases",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
+      "result": "PASS"
+    },
+    {
+      "command": "python -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
+      "started_at_utc": "2026-08-13T20:16:02.026534Z",
+      "completed_at_utc": "2026-08-13T20:16:12.607839Z",
+      "duration_ms": 10582,
+      "exit_code": 0,
+      "stdout_bytes": 0,
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderr_bytes": 1319,
+      "stderr_sha256": "D90775D0317E7239F03A2CE83F8CEFDD4D8FD880384120A9E0928AEFC3AC0B0C",
+      "cases": 6,
+      "cases_covered": "canonical host-workflow binding-output and follow-up lifecycle cases, including A-004 negative surfaces",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
+      "result": "PASS"
     },
     {
       "command": "python implementations/tests/test_ledger.py",
+      "started_at_utc": "2026-08-13T20:16:12.609840Z",
+      "completed_at_utc": "2026-08-13T20:16:13.459598Z",
+      "duration_ms": 850,
       "exit_code": 0,
-      "duration_ms": 2017,
-      "stdout_sha256": "7b5f10f0d75e151c8b1f5d3195ef6ac3b11d0a6a84887f2ce9481cfa62fa539a",
-      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdout_bytes": 7858,
+      "stdout_sha256": "302EA1824329016F5D754037229DC3DC57B797AAE4E09AF624AAB84E34A72582",
       "stderr_bytes": 0,
-      "cases": "Complete ledger parser/join/grandfathering/aggregation/UI-series/cache/real-repository contract",
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "cases": "complete ledger contract; 1348 dispatches parsed",
+      "cases_covered": "ledger parser, join, grandfathering, aggregation, UI series, cache, and real-repository contract",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
       "result": "PASS"
     },
     {
       "command": "python -c \"from pathlib import Path; from implementations.server.runtime.local_pilot import _verify_source_manifest; _verify_source_manifest(Path.cwd())\"",
-      "exit_code": 1,
-      "duration_ms": 1089,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "a00586b0c97284134e53a0005897813cdb54ce728f3ef45021aa03106fd3209f",
+      "started_at_utc": "2026-08-13T20:16:13.459598Z",
+      "completed_at_utc": "2026-08-13T20:16:14.425587Z",
+      "duration_ms": 965,
+      "exit_code": 0,
       "stdout_bytes": 0,
-      "stderr_bytes": 619,
-      "cases": "Repository-local Stage-E source-manifest verification using the pinned local-pilot verifier",
-      "result": "BLOCK",
-      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch."
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "cases": 1,
+      "cases_covered": "repository-local Stage-E source-manifest verification using the pinned local-pilot verifier",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
+      "result": "PASS"
     },
     {
       "command": "python -m unittest implementations.tests.runtime.test_stage_c -v",
-      "exit_code": 1,
-      "duration_ms": 889,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "0323285fb6343e45d5e59b131fd9e590b2671c94a0a75aa503173d4e246b3f51",
-      "stdout_bytes": 0,
-      "stderr_bytes": 4759,
-      "cases": "8 local-pilot opt-in, receipt, loopback, database, source-manifest, and profile-integrity cases; 6 passed and 2 integrity-gated cases errored",
-      "result": "BLOCK",
-      "failure": "Stage-E source implementations/tests/runtime/test_runtime_type_bootstrap.py digest mismatch."
-    },
-    {
-      "command": "python -m unittest implementations.tests.runtime.test_aci_traceability -v",
+      "started_at_utc": "2026-08-13T20:16:14.426587Z",
+      "completed_at_utc": "2026-08-13T20:16:16.404896Z",
+      "duration_ms": 1979,
       "exit_code": 0,
-      "duration_ms": 401,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "aab3747f2e5c453c6dc1687aa2e5d021fbf153f007b8854cc4f053838cf56a2c",
       "stdout_bytes": 0,
-      "stderr_bytes": 321,
-      "cases": "ACI traceability manifest references and selectors",
+      "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderr_bytes": 1747,
+      "stderr_sha256": "DDC77A3408FA92A4CFB8F0094BC3DBF869E057DE99384DCC85DA5376FDACC6F1",
+      "cases": 8,
+      "cases_covered": "local-pilot opt-in, receipt, loopback, database, source-manifest, and profile-integrity cases",
+      "tested_source_manifest_sha256": "EF26FE46F84801038CB4D80599914225613D88C2F9EC122A2E18ABA501874FA8",
+      "tested_local_pilot_sha256": "95D86C5775EE916C2DFE86D2C47495FDC4C5AE07B941F41193D72321F1A13C77",
+      "lifecycle_receipt_set_sha256": "24590D5A6B09705D815C978D41AF5F33232751E747D4B117125F5F9A30BF60B1",
+      "integrity_hashes_unchanged": true,
       "result": "PASS"
     }
   ],
-  "supplemental_commands": [
+  "summary": {
+    "mandatory_command_count": 9,
+    "passed_command_count": 9,
+    "blocked_command_count": 0,
+    "unittest_cases_passed": 68,
+    "direct_integrity_checks_passed": 1,
+    "ledger_dispatches_parsed": 1348,
+    "complete_fixed_command_set_executed": true,
+    "host_workflow_binding_included": true
+  },
+  "residue": [
     {
-      "command": "python -m unittest implementations.tests.runtime.test_host_workflow_binding -v",
-      "exit_code": 1,
-      "duration_ms": 4035,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "9a12d02dee96acc159644cd76c48c5ad57f6a254297fba2bbb30486c9221ba43",
-      "stdout_bytes": 0,
-      "stderr_bytes": 9475,
-      "cases": "5 broader host-workflow lifecycle cases",
-      "result": "BLOCK",
-      "failure": "All five fixtures still submit schema_version 0.6.3 without capability_route and are rejected by the canonical 0.6.4 appender. This file is outside the resumed a_test_implementer and three-file fixture-migrator write scopes."
+      "path": "internal-tools/need-driven-system-writing/runtime-type-expansion/stage-a/test-report.json",
+      "sha256": "30AA036867407590AC3AD456220B35390CC7245AC59EF28CF1F5CD94B2C67791",
+      "bytes": 9568,
+      "historical_result": "BLOCK",
+      "preservation": "Cycle-1 report bytes were hashed before atomic replacement. This successor report does not reinterpret, erase, or retroactively pass that historical BLOCK; it preserves the exact prior hash and path as residue."
+    },
+    {
+      "path": ".arcanum/observability/runs/2026-08-13-runtime-type-expansion/stage-a/cycle-2/seats/a_receipt_lifecycle_finalizer/cycle2_receipt_finalizer/pre-integrity-01.json",
+      "sha256": "9536BD8637B0D3736688CC56D33BBE7E9C6ABCB6BB260A3669CC497684B2EC63",
+      "historical_result": "BLOCK",
+      "preservation": "Immutable predecessor residue; this T1 run is a fresh successor attempt."
     }
   ],
-  "integrity_state": {
-    "source_manifest_sha256": "sha256:a2fab83e67b6957d0a5482191d5ff941125f6e3e7825eb042032cad46102e277",
-    "local_pilot_source_manifest_pin": "sha256:a2fab83e67b6957d0a5482191d5ff941125f6e3e7825eb042032cad46102e277",
-    "stale_entries": {
-      "implementations/tests/runtime/test_runtime_type_bootstrap.py": {
-        "manifest": "sha256:321b2c257742d4dd01d6551009240dd004f9a7e589795c0e7fbd5c08e969252b",
-        "actual": "sha256:ef6f1c5f910939f7be84f43e8efed8da754ce04d59d442103688248b2a55dc52"
-      },
-      "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py": {
-        "manifest": "sha256:f67e7ed3528a8d47f258e46d29ddd7d38d28c969273d25788ce0f6a9bd4bdd42",
-        "actual": "sha256:a5bc1cc8e2a41790d60983ef52ccbf4938eb5ee11c500b274c7dce081bbe9748"
-      }
-    },
-    "expected_pin_owner_action": "Regenerate the two changed exclusive-test entries in the Stage-E source manifest, then regenerate the local-pilot source-manifest pin because the manifest bytes will change."
-  },
-  "validation_helpers": {
-    "python_compile": "PASS",
-    "git_diff_check_exclusive_tests": "PASS"
-  },
-  "final_result": "BLOCK",
-  "blockers": [
-    "The serialized integrity owner has not regenerated the two exclusive-test source-manifest entries or the consequent local-pilot manifest pin.",
-    "The supplemental host-workflow-binding fixtures remain stale outside this role's authorized write scope."
-  ]
+  "blockers": [],
+  "final_result": "PASS"
 }
