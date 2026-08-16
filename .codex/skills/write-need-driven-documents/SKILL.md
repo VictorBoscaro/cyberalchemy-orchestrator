@@ -1,110 +1,72 @@
 ---
 name: write-need-driven-documents
-description: Write or materially restructure a reader-facing overview or explanatory essay whose main difficulty is introducing unfamiliar ideas in a comprehensible order. Use explicitly and sparingly for conceptual composition, not for routine answers, summaries, specifications, research reports, plans, reference documents, or surface copyediting.
+description: Write or materially restructure reader-facing conceptual documents whose main difficulty is introducing unfamiliar ideas in a comprehensible order. Use sparingly for conceptual composition, not routine answers, summaries, specifications, reports, plans, reference documents, or surface editing.
 ---
 
 # Write Need-Driven Documents
 
 ## Purpose
 
-Conduct an intelligent reader from what they can understand now to the understanding, judgment, or
-decision the document exists to enable. Assume intelligence, not prior familiarity. Preserve
-necessary complexity while removing avoidable decoding work.
+Move an intelligent reader from what they can understand now to the understanding, judgment, or decision the document exists to enable. Preserve necessary complexity while minimizing avoidable decoding work.
 
-Apply only the guidance needed for the actual writing problem. Do not turn the skill into a visible
-template, checklist, or report about the writing process.
+Use these principles as writing guidance, not as a visible template or checklist.
 
-## Compose the reader's movement
+## MANDATORY DON´TS
 
-Establish the reader's starting point and the change the document should produce. Recover these
-from context when possible; ask only when a missing answer would materially change the document.
+- Don’t list several things in sequence when the relation between them is what matters.
+- Don’t introduce a concept or term before the reader has a reason to need it.
+- Don’t use structure—headings, bullets, tables, diagrams—as a substitute for explanation.
+- Don’t make a claim stronger or more settled than the evidence allows.
+- Don’t keep a passage just because it is correct or interesting; it must advance the reader’s understanding.
 
-When materially restructuring a draft, first recover its attempted movement: the reader's starting
-understanding, each successive change, and the intended destination. Locate the first unearned
-concept, inert transition, or restart, then revise from that break instead of polishing downstream
-prose.
+## Writing influence.
 
-Open with a condition, relation, or tension the reader can recognize that belongs specifically to
-this document's problem. Reject an opening that could introduce unrelated essays by substituting
-its main nouns. Introduce a distinction when it becomes necessary, show what it explains or
-enables, and only then give it a special name. Never depend on an idea the text has not prepared.
-Let technical density increase with the reader's accumulated understanding rather than with the
-author's desire to display the whole system.
+Take inspiration from Meadows in explaining systems through relations, constraints, feedback, and consequences rather than inventories of parts; and from Kahneman in building abstractions patiently from recognizable situations, examples, and contrasts. Favor calm, economical prose in which complexity emerges gradually as the reader becomes able to carry it.
 
-After each passage, identify privately what has changed in what the reader can understand or ask.
-Let that change earn the next passage. Remove, move, join, or rewrite a passage when its
-contribution to understanding, precision, trust, or progression cannot be named.
+## Build the reader's movement
 
-When a document belongs to a sequence, reconstruct the minimum causal premise needed to
-understand it alone, avoid redundant recap, and use it to advance the document's own movement.
-Name a predecessor only when that reference is itself necessary. Test the document both alone and
-after its predecessor.
+Determine the reader's starting point and the change the document should produce. Recover them from context whenever possible.
+
+When restructuring an existing draft, reconstruct its attempted movement and find the first point where the text asks for understanding it has not yet earned. Revise from there rather than polishing what follows.
+
+Begin with a condition, relation, or tension specific to the document's problem. Introduce a distinction when the reader needs it; show what it explains or enables before naming it. Never depend on an idea the text has not prepared.
+
+Let each passage change what the reader can understand, distinguish, or ask. That change should create the need for what follows. If a passage contributes no clear gain in understanding, precision, trust, or progression, remove, move, join, or rewrite it.
+
+Let technical density grow with the reader's accumulated understanding.
+
+For documents in a sequence, reconstruct only the prior context needed for the document to stand alone, then advance rather than recap.
 
 ## Explain relations, not collections
 
-Do not place several things in sequence merely to suggest breadth or completeness. This applies
-whether the sequence appears inside a sentence or is formatted as headings, a list, or a table.
-State the relation that makes the parts belong together. Show, for example, how one changes or
-constrains another or what becomes possible only through their composition.
+Do not place several concepts, capabilities, or objects together merely to imply completeness. Explain the relation that makes them belong together: what constrains what, what produces what, or what becomes possible through their composition.
 
-Use the reorder test. If the items can change order without changing the apparent meaning, the
-passage is probably a catalogue rather than an explanation. Recover the load-bearing relation or
-retain only the part needed at that point in the reader's movement.
+Use the reorder test: if several items can change order without materially changing the meaning, the passage may be a catalogue rather than an explanation. Recover the organizing relation or keep only what the reader needs at that point.
 
-Avoid lists by default. Use structured items only when they are genuinely independent and scanning
-or exact comparison is necessary. Assume the presentation system may render a list as a table, so
-each item must preserve enough local context to remain intelligible. Do not emit a list merely to
-obtain a table, and never use either form to replace a causal explanation.
+Avoid lists and tables unless the items are genuinely independent and scanning or exact comparison is useful. Structure must not replace causal explanation.
 
 ## Name and claim carefully
 
-Prefer visible actors and actions. Show their consequences before introducing internal vocabulary.
-Give a concept a name only when the name removes ambiguity or compresses a relation the reader
-already understands. Do not ask terminology to carry the explanation.
+Prefer visible actors, actions, and consequences before internal vocabulary. Name a concept only when the name compresses a distinction the reader already understands; terminology must not carry the explanation.
 
-Keep every material claim within its evidence and current status. Where a reader could mistake a
-proposal or inference for established fact, mark the difference locally. Replace ceremonial claims
-of importance with the consequence or evidence that makes the importance visible.
+Keep claims within their evidence and current status. Mark proposals, hypotheses, and inferences where they could be mistaken for established facts. Show why something matters through its consequence rather than declaring its importance.
 
-Use the simplest language that preserves the full meaning. Keep rhythm, warmth, and emphasis when
-they help comprehension; remove phrasing that attracts more attention than the idea.
-
-## Negative examples
-
-**Collection disguised as explanation**
-
-> The system defines objectives, divides work, distributes context, monitors dependencies, records
-> decisions, and preserves knowledge.
-
-The sentence names a surface area but explains no process. Recover a dependency: the objective
-constrains the division of work, which determines the context each participant needs.
-
-> A dispatch, an attempt, a result, evidence, and provenance form a verifiable execution.
-
-Objects do not compose a system by appearing together. State their bindings: the dispatch
-authorizes the attempt, which produces a result supported by specific evidence.
-
-**Terminology disguised as understanding**
-
-> The provenance layer projects accepted artifacts into the knowledge graph.
-
-If the reader has not yet encountered the practical distinctions expressed by those terms, the
-sentence only transfers decoding work to them. Show what must remain traceable and why before
-naming the mechanism.
-
-**Structure without a reading need**
-
-> Benefits: control, traceability, reuse.
-
-A heading followed by parallel labels does not show a consequence. Explain the relevant relation,
-such as how tracing a result back to its evidence lets a person decide whether it is safe to reuse.
+Use the simplest language that preserves the meaning. Keep emphasis only when it helps comprehension.
 
 ## Final read
 
-Read the document once as the reader's movement rather than as separate sections. Reapply the noun-
-substitution test to the opening. At each transition, verify what has changed in what the reader can
-understand or ask and how that change earns what follows. Require the ending to make the opening
-situation newly intelligible or judgeable rather than merely restating the route. Between them, let
-no concept arrive before its need, grouping hide its organizing relation, or claim outrun its
-status. Remove any demand on attention that produces no meaningful return. Revise the failing
-passage rather than reporting the test.
+Read the document as one movement, not as separate sections.
+
+Check that the opening could not introduce an unrelated essay by merely replacing its main nouns. At every transition, ask what the reader can now understand or ask that they could not before, and whether that earns what follows.
+
+The ending should make the opening situation newly intelligible or judgeable, not merely summarize the route.
+
+Remove any concept introduced before its need, grouping that hides its organizing relation, claim that outruns its status, or demand on attention that produces no meaningful return.
+
+## MANDATORY DON´TS
+
+- Don’t list several things in sequence when the relation between them is what matters.
+- Don’t introduce a concept or term before the reader has a reason to need it.
+- Don’t use structure—headings, bullets, tables, diagrams—as a substitute for explanation.
+- Don’t make a claim stronger or more settled than the evidence allows.
+- Don’t keep a passage just because it is correct or interesting; it must advance the reader’s understanding.
