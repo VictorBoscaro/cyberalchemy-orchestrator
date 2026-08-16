@@ -1,0 +1,69 @@
+{
+  "dispatch_id": "2026-08-15-cyberalchemy-minimum-product-capability-sweep",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Determinar o menor conjunto coerente de features e capacidades habilitadoras para a primeira jornada completa do CyberAlchemy, identificando o que já existe, quem possui cada capacidade, seu estado real e as lacunas que impedem uso integrado.",
+  "context": "O baseline autoritativo é projects/cyberalchemy-mvp-proposal/research/minimum-product/research-initial-definitions.md, versão 0.4.0, 118 linhas e SHA-256 6e8d36e550193e1d530a1a0ef98fb5326d8e745602f6e350330f5d8d0701b37b. A jornada candidata começa na criação de um repositório autossuficiente, passa por schemas, tipos e formação da spec, executa trabalho governado via Dispatch e termina com review, evidências e reconciliação com o objetivo maior. O corpus é local e limitado a cyberalchemy-orchestrator e ../domainspec-core; nenhum acesso externo está autorizado e o segundo repositório permanece integralmente read-only. A pesquisa deve distinguir feature visível, serviço compartilhado e mecanismo de runtime, e nunca inferir prontidão apenas da existência de uma skill, spec, pasta ou plano.",
+  "max_loops": 1,
+  "final_approver": "Victor Boscaro",
+  "anti_bias_mode": "disabled",
+  "working_folder": "projects/cyberalchemy-mvp-proposal/research/minimum-product/capability-sweep",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "groups": [
+    {
+      "group_id": "capability_explorers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Simon, Herbert",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "Antes de usar ferramentas, declare a rota como pesquisa de prontidão de capacidades e liste os caminhos que lerá. Trabalhe read-only em C:/Users/victo/cyberalchemy-orchestrator, exceto por seu único output: projects/cyberalchemy-mvp-proposal/research/minimum-product/capability-sweep/returns/explorer-orchestrator.md, escrito com apply_patch. Não altere fontes, não use internet e não lance agentes.\n\nLeia integralmente AGENTS.md, projects/cyberalchemy-mvp-proposal/research/minimum-product/research-initial-definitions.md e projects/cyberalchemy-mvp-proposal/README.md. Depois limite a descoberta a: projects/schema-service; projects/folder-schema-service; .agents/skills/arcanum-bootstrap; .agents/skills/mint; .agents/skills/craft; .agents/skills/inventory; .agents/skills/definitions-governance; .agents/skills/dispatch-spec; .agents/skills/domainspec-subagents-strategy; .agents/skills/research; .agents/skills/review; .agents/skills/domainspec-implement; .agents/skills/domainspec-spec-feature; .agents/skills/observability-setup; .agents/skills/observed-invocation-loop; docs/features/agents-communication-infra; docs/features/agent-provenance-telemetry; docs/features/skill-control-center; implementations/server/runtime; implementations/contracts; e os testes diretamente ligados aos símbolos encontrados. Expanda somente quando um link ou import nesses caminhos for necessário para verificar uma afirmação, registrando a expansão.\n\nReconstrua a menor jornada testemunhável: criar repo autossuficiente; instalar schemas e tipos iniciais; transformar intenção em spec; abrir Dispatch; implementar; revisar; registrar evidências e reconciliar estado/objetivo. Para cada candidato, registre: resultado para o usuário; classificação feature/serviço/mecanismo; owner; melhor evidência exata; estado implemented-with-receipt/tested/prototype/spec-or-skill-only/blocked/not-found; dependências; e se removê-lo quebra uma constraint confirmada ou apenas reduz qualidade. Diferencie Craft Ledger, Inventory, runtime journal e Dispatch Audit Ledger sem decidir suas fronteiras quando a evidência não decidir. Termine com capabilities reutilizáveis, lacunas e claims que permanecem sem prova."
+        },
+        {
+          "agent_name": "Nonaka, Ikujiro",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "Antes de usar ferramentas, declare a rota como entendimento de capacidades Arcanum/DomainSpec e liste os caminhos que lerá. Leia C:/Users/victo/domainspec-core/AGENTS.md primeiro e obedeça às fronteiras públicas e privadas. Trabalhe integralmente read-only em C:/Users/victo/domainspec-core; seu único output fica no repositório orchestrator em projects/cyberalchemy-mvp-proposal/research/minimum-product/capability-sweep/returns/explorer-domainspec-core.md, escrito com apply_patch. Não use internet, não altere qualquer fonte e não lance agentes. Não copie prosa privada de DomainSpec ou Saturn; faça paráfrases e cite apenas path e linhas quando necessário.\n\nLeia também o Initial Definitions em C:/Users/victo/cyberalchemy-orchestrator/projects/cyberalchemy-mvp-proposal/research/minimum-product/research-initial-definitions.md. Limite a descoberta em domainspec-core a: arcanum/README.md; arcanum/definitions; arcanum/arcana/craft; arcanum/arcana/inventory; arcanum/arcana/definitions-governance; arcanum/arcana/refine; arcanum/spells/arcanum-bootstrap; arcanum/spells/repository-harness; arcanum/formulae/dispatch-spec; implementation/domainspec/starter; implementation/domainspec/templates; implementation/domainspec/framework; implementation/domainspec/docs; implementation/domainspec/domainspec; implementation/domainspec/tools; projects/framework-unification/CONCEPT-MAP.md; cyberAlchemy-v2/SOURCE-MAP.md; cyberAlchemy-v2/authority/definitions/DEFINITIONS.md; cyberAlchemy-v2/ontology/AUTHORITY-KINDS.md; e validation/poker-team/domainspec apenas como evidência de instanciação. Expanda somente por link ou dependência necessária e registre a expansão.\n\nProcure capacidades possuídas para bootstrap de repo, schemas de artefatos e pastas, tipos canônicos, criação/extensão/promoção de tipos, formação e validação de specs, implementação orientada por spec, importação provenanceada, extração/autossuficiência e composição de protocolos de agentes. Para cada candidato, registre owner público ou privado, artefato canônico, evidência operacional, estado implemented-with-receipt/tested/prototype/spec-or-skill-only/blocked/not-found e restrições de portabilidade. Classifique como reutilizável diretamente, reutilizável por importação/adaptação ou apenas precedente. Não trate presença como integração. Termine com o que a primeira jornada pode construir de capacidades já possuídas e o que ainda precisaria nascer."
+        }
+      ]
+    },
+    {
+      "group_id": "capability_skeptics",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Coase, Ronald",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "initial_prompt": "Atue como skeptic independente do gate precedent/ownership. Antes de ferramentas, declare a rota e os caminhos. Não leia retornos de outros agentes. Trabalhe read-only nos dois repositórios, não use internet, não lance agentes e escreva somente projects/cyberalchemy-mvp-proposal/research/minimum-product/capability-sweep/returns/skeptic-precedent.md com apply_patch.\n\nLeia os AGENTS.md de C:/Users/victo/cyberalchemy-orchestrator e C:/Users/victo/domainspec-core, mais o Initial Definitions. Use somente os mesmos diretórios permitidos aos exploradores. Para cada capacidade material da jornada — bootstrap; schemas; tipos; spec creation; Craft/state; Inventory; Dispatch; Research; implementação; review; observabilidade/traceabilidade; contexto; autossuficiência/importação — encontre o owner real e a evidência mais forte ou marque precedent-clean. Separe owner de implementação, intenção de integração e autoridade de promoção. Classifique use-mode apenas como already-deployed, build-from-owned ou novel-attempt; encontrar owner é resultado positivo, nunca KILL. Sinalize ownership duplo, nomes que escondem a mesma capacidade e claims de integração sem witness. Cite paths e linhas; não copie prosa privada."
+        },
+        {
+          "agent_name": "Popper, Karl",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "initial_prompt": "Atue como skeptic independente do gate non-vacuity. Antes de ferramentas, declare a rota e os caminhos. Não leia retornos de outros agentes. Trabalhe read-only nos dois repositórios, não use internet, não lance agentes e escreva somente projects/cyberalchemy-mvp-proposal/research/minimum-product/capability-sweep/returns/skeptic-non-vacuity.md com apply_patch.\n\nLeia os AGENTS.md de C:/Users/victo/cyberalchemy-orchestrator e C:/Users/victo/domainspec-core, mais o Initial Definitions. Use somente os mesmos diretórios permitidos aos exploradores e validation/poker-team/domainspec para witnesses concretos. Tente construir a menor jornada ponta a ponta com artefatos existentes: repo extraível; schemas/tipos; spec formada; Dispatch observável; implementação; review; evidência ligada ao objetivo e retorno de estado ao chat. Para cada feature candidata, declare o menor witness e a condição de colapso. Se remover uma candidata não quebra uma constraint confirmada nem a jornada, classifique-a como habilitadora ou posterior, não como feature mínima. KILL somente por no-witness ou colapso definicional; ausência de implementação vira gap, não KILL. Cite paths e linhas, preserve claims abaixo da prova e não copie prosa privada."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

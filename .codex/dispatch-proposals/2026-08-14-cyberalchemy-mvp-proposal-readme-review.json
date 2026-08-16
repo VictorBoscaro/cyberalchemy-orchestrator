@@ -1,0 +1,86 @@
+{
+  "dispatch_id": "2026-08-14-cyberalchemy-mvp-proposal-readme-review",
+  "schema_version": "0.6.4",
+  "dispatch_type": "review",
+  "goal": "Revisar adversarialmente o README inicial do CyberAlchemy MVP Proposal e produzir somente change requests que sobrevivam à verificação literal do artefato.",
+  "context": "O alvo completo é projects/cyberalchemy-mvp-proposal/README.md, congelado com 188 linhas e SHA-256 80df6eaab8494fddeedbd5f8fb34c560afbaf66d0381bea15690cc9973c4f08a. O documento registra decisões conversacionais sobre Orchestrator, Coordination Runtime, Superinterviewer, Scouts, Dispatch, subagents-strategy, Craft, skills e preservação de contexto, distinguindo decisões confirmadas de questões abertas. Todos os assentos devem ler o alvo integralmente, permanecer read-only e sustentar cada finding com uma citação literal do README. A revisão é inline; nenhum review.md, transcript ou correção do alvo deve ser persistido.",
+  "max_loops": 1,
+  "final_approver": "Victor Boscaro",
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "review",
+    "ledger_dispatch_type": "review",
+    "capability_ref": "review",
+    "capability_path": ".claude/skills/review/SKILL.md",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f"
+  },
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2000,
+          "agent_name": "Follett, Mary Parker",
+          "initial_prompt": "Ataque o corpus inteiro exclusivamente pela lente de fidelidade e governança. Verifique se o README apresenta como confirmada alguma inferência, omite uma autoridade necessária, contradiz as decisões registradas na conversa ou permite que permissões e estados sejam confundidos. Para cada finding candidato, cite literalmente o README, classifique CRITICAL, MAJOR ou MINOR e proponha uma correção de uma linha. Não altere arquivos e não avalie operabilidade geral fora desta lente."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2000,
+          "agent_name": "Coase, Ronald",
+          "initial_prompt": "Ataque o corpus inteiro exclusivamente pela lente de ownership e operabilidade. Procure fronteiras inexequíveis ou duplamente possuídas entre Orchestrator, Coordination Runtime, skills, subagents-strategy, Dispatch, Scout, workers e Craft; identifique passos que um implementador teria de inventar. Para cada finding candidato, cite literalmente o README, classifique CRITICAL, MAJOR ou MINOR e proponha uma correção de uma linha. Não altere arquivos e não reavalie fidelidade conversacional fora desta lente."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2000,
+          "agent_name": "Weick, Karl E.",
+          "initial_prompt": "Receba os ataques independentes, releia integralmente o README congelado e produza um rascunho de review no contrato da skill review: Coverage, findings deduplicados por artefato, verdict e change requests ordenados por severidade. Retenha somente findings com citação literal do alvo; não persista o documento e não corrija o README. Preserve discordâncias materiais para o verifier."
+        }
+      ]
+    },
+    {
+      "group_id": "verifiers",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1600,
+          "agent_name": "Rumelt, Richard",
+          "initial_prompt": "Verifique adversarialmente cada finding sintetizado contra o README congelado e as citações literais fornecidas. Refute e descarte findings que dependam de conhecimento externo, preferências arquiteturais ou inferências não demonstradas pelo alvo; valide severidade somente quando o impacto estiver sustentado. Retorne a lista exata de findings sobreviventes e as razões de descarte. Não altere nem persista arquivos."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "attackers",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "synthesizer",
+      "to": "verifiers",
+      "type": "zig-zag",
+      "loop_cap": 2
+    }
+  ]
+}

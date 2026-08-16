@@ -1,0 +1,48 @@
+{
+  "dispatch_id": "2026-08-15-cyberalchemy-minimum-product-initial-definitions-review",
+  "schema_version": "0.6.4",
+  "dispatch_type": "review",
+  "goal": "Revisar adversarialmente o Initial Definitions da pesquisa sobre o produto mínimo CyberAlchemy com exatamente dois agentes independentes e produzir somente change requests sustentados pelo corpus congelado.",
+  "context": "O único alvo é projects/cyberalchemy-mvp-proposal/research/minimum-product/research-initial-definitions.md (116 linhas; SHA-256 f6c406ab29dab64d253a32fe2fe152c2ca51bdb46e7b73dedd0459932b65d4bd). Como contexto governante, os agentes devem ler integralmente projects/cyberalchemy-mvp-proposal/README.md (209 linhas; SHA-256 2e424b5ae684e8113c1087dcc877f92158279eb33ac5192d455cf10b1e067682) e sessions/2026-08-14-1756-cyberalchemy-mvp-proposal.md (53 linhas; SHA-256 32f7a0fd604fe2381b2adcb9c65bf7f7b63838af7b29fd9286fb429d57a30bfe). Os dois agentes permanecem read-only, não lançam subagentes e diferem por lente; o parent deduplica e verifica literalmente os findings, e Victor Boscaro aprova o review inline.",
+  "max_loops": 1,
+  "final_approver": "Victor Boscaro",
+  "meta": true,
+  "output_mode": "inline",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "review",
+    "ledger_dispatch_type": "review",
+    "capability_ref": "review",
+    "capability_path": ".claude/skills/review/SKILL.md",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f"
+  },
+  "groups": [
+    {
+      "group_id": "proposal_attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Follett, Mary Parker",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "initial_prompt": "Leia integralmente o Initial Definitions congelado e os dois documentos governantes listados no contexto. Ataque o alvo exclusivamente pela lente de fidelidade, governança e ownership. Verifique: constraints promovidas sem confirmação do usuário; omissões ou distorções das decisões registradas; confusão de autoridade entre Craft Ledger, Inventory, runtime journal e Dispatch Audit Ledger; formulação indevida de Research como modo de Dispatch; e mistura entre fatos confirmados, baseline de evidência e gaps conhecidos. Para cada finding candidato, cite literalmente o Initial Definitions, classifique CRITICAL, MAJOR ou MINOR, explique o impacto e proponha uma correção de uma linha. Não altere arquivos, não lance agentes e não avalie conveniência geral do MVP fora desta lente. Se não houver findings, enumere os ataques tentados e por que o texto sobreviveu a cada um."
+        },
+        {
+          "agent_name": "Ries, Eric",
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "initial_prompt": "Leia integralmente o Initial Definitions congelado e os dois documentos governantes listados no contexto. Ataque o alvo exclusivamente pela lente de não-vacuidade, cobertura do problema e recorte de produto mínimo. Verifique: se a pergunta permite descobrir o menor conjunto coerente sem pressupor a resposta; se a jornada começa na criação do repo e inclui formação da spec; se features, serviços internos e mecanismos de governança permanecem distinguíveis; e se observabilidade, rastreabilidade, ligação ao objetivo maior, schemas, tipos, modos de Dispatch, Inventory e ledgers aparecem com gaps pesquisáveis. Para cada finding candidato, cite literalmente o Initial Definitions, classifique CRITICAL, MAJOR ou MINOR, explique o impacto e proponha uma correção de uma linha. Não altere arquivos, não lance agentes e não reavalie regras de autoridade fora desta lente. Se não houver findings, enumere os ataques tentados e por que o texto sobreviveu a cada um."
+        }
+      ]
+    }
+  ]
+}
