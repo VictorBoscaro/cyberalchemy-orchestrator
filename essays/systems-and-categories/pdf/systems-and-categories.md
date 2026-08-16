@@ -13,38 +13,44 @@ ResonantOS
 
 ## 0. When a Domain Needs a Language
 
-A domain does not need a formal language for work to begin. It takes shape as people encounter recurring situations and learn, through their consequences, that some differences matter. What first appeared interchangeable may lead to different results. What once made sense within a shared situation may become difficult to carry beyond it.
+The objective of this document is to introduce a way of representing domains in natural language so that language-model agents can perform complex work within them. Complex work begins with an intention. The situation then reveals what must be understood before that intention can become action.
 
-At first, much of this structure can remain in practice. It is sustained by participation and corrected in use. A domain begins to need a language when that continuity is no longer enough—when an important distinction must remain available outside the situation in which it became clear.
+A company sees its revenue fall and asks an agent to investigate the cause. Revenue is an abstraction: it compresses many events into one measure. The investigation becomes concrete as it traces the decline back to what happened in the business. The cause determines which action becomes relevant.
 
-Making such structure explicit does not require the domain to describe itself completely or decide every relevant distinction in advance. A domain language can grow with the work, acquiring precision where ambiguity has consequences and stronger laws where relations must compose. Systems thinking and category theory provide different ways of investigating that growth. Their encounter is the path followed here.
+Practitioners move between these levels of abstraction through experience. They connect a high-level result to the situations that produced it. They also know which distinction changes the next question. An agent encounters this structure through language.
 
-## 1. The Common Problem: Representing Without Destroying
+Natural language carries the initial expression of the domain. People use it to describe events, explain causes and correct previous interpretations. An agent can use those expressions to move from an objective toward the concrete conditions that determine what should happen next.
 
-A company notices that sales are falling, and the first description of the problem may arrive almost automatically: acquisition has weakened. That description already changes what seems relevant because channel performance becomes a natural place to look and moving budget begins to look like a plausible intervention. Suppose the data then show that acquisition is healthy and customers simply are not returning; the same decline now appears as a retention problem, even though the underlying event has not changed.
+Systems thinking helps us understand a whole by examining how its parts relate to one another. Category theory helps us examine what must be preserved when the same situation is represented in different contexts. Together, they help develop languages through which humans and agents can move between an intention, the context it inhabits, and the work required to act on it.
 
-A further investigation may reveal that customers do not return because orders repeatedly arrive later than promised. What began as a problem of advertising is now better described as a relation between the promise made to customers and the operation expected to fulfill it. None of the earlier descriptions had to be meaningless for this change to occur. Each made some differences visible, each supported a particular family of questions, and each left other relations outside its boundary.
+## 1. How Representations Shape Action
 
-This is not a special feature of business problems. Any representation becomes useful by selecting, because a representation that preserved every available detail would fail to reduce the complexity that made representation necessary in the first place. The selection changes what can be distinguished and therefore changes what can be asked or done. A model is not merely a smaller copy of its object; it is a commitment about which differences will remain available inside the model.
+A company can represent the same problem from different perspectives. A decline in sales may first be represented as an acquisition problem. Analysis shows, however, that acquisition remains stable and that customers simply are not returning. A further investigation may reveal that customers are not returning because orders repeatedly arrive later than promised.
+
+What began as a problem of advertising is now better described as a relation between the promise made to customers and the operation expected to fulfill it. Each representation did more than change how the problem was described. It changed what became visible, which questions mattered, and which courses of action appeared possible.
+
+This is not a special feature of business problems. A representation becomes useful by keeping some differences visible while leaving others aside. Separating new from returning customers changes the investigation because it rules out one explanation. The selection changes what can be distinguished and therefore changes what can be asked or done. How a problem is represented helps determine which distinctions are relevant and which courses of action appear reasonable.
 
 > **CENTRAL QUESTION**  
-> *How can we reduce complexity without erasing the differences that matter?*
+> *Which representation, or combination of representations, is adequate to the situation and the task at hand?*
 
-The risk follows directly from the benefit. A difference that was safe to compress for one task may become decisive for another, and the representation does not necessarily announce that failure from inside its own vocabulary. A locally coherent description can therefore continue to produce sensible actions while the larger phenomenon is being misunderstood. The problem is not that abstraction exists, but that its boundary can become invisible once the abstraction is familiar.
+The same situation can support several coherent representations, each making different relations visible and opening a different path of investigation. A representation that was adequate at one stage may cease to be so as the problem changes. What matters, then, is not whether a local representation is coherent in isolation, but whether its explanation still holds when the relations outside its boundary are brought back into view.
 
 <!-- SYSTEMS AND CATEGORIES -->
 
-## 2. Two Languages of Structure
+## 2. Two Views About Structure
 
-Systems thinking begins from a recurring discomfort with local explanations. When an event keeps returning despite apparently reasonable interventions, the event may be less informative than the structure that keeps producing it. In the tradition of System Dynamics, this shifts attention toward behavior over time: what accumulates, what changes those accumulations, and how an action later alters the conditions under which another action will operate. Feedback and delay matter because the consequence of a local decision can return through the system after the decision itself has disappeared from view (Forrester, 1961; Sterman, 2000).
+Systems thinking begins where a locally coherent explanation stops being enough. When an event keeps returning despite apparently reasonable interventions, its recurrence may be produced by relations that lie outside the boundary of the original explanation. The event is then less informative than the structure that keeps producing it.
 
-The boundary of the model matters for the same reason. A department can improve its own measure while degrading the behavior of the larger organization if the cost of the improvement falls outside the local frame. Meadows' discussion of leverage points makes this visible at another level: changing a parameter is not the same kind of intervention as changing the rule or objective that organizes the system (Meadows, 1999; 2008). Systems thinking therefore keeps asking how apparently separate decisions participate in a behavior that belongs to their organization rather than to any isolated part.
+When a problem persists in this way, attention shifts from isolated events to the pattern they form over time. Understanding that pattern requires tracing what accumulates, what changes those accumulations, and how those changes reshape what happens next. Feedback and delay matter because consequences may return through the system long after the decisions that produced them have disappeared from view (Forrester, 1961; Sterman, 2000).
 
-That move creates a second difficulty. As descriptions become richer or move between teams, models, and software, we need to know whether they still preserve the structure that made the original explanation meaningful. Two representations may use different internal vocabularies and still be adequate to the same task, while two visually similar diagrams may collapse relations that should remain distinct. Saying that they are "basically the same" does not tell us what survived the change.
+The boundary of a model matters because it determines which consequences remain visible. A department can improve its own metric while making the larger organization perform worse. The kind of intervention matters as well: changing a parameter does not alter a system in the same way as changing a rule or the objective that organizes it. Systems thinking therefore asks both how local decisions participate in the behavior of a larger structure and which part of that structure an intervention actually impacts (Meadows, 1999; 2008).
 
-Category theory becomes useful at precisely this point because it treats relations and their composition as first-class structure. It asks what kinds of objects a representation distinguishes, which transformations are admissible between them, and what must remain true when those transformations are composed. Systems thinking helps us ask how structure produces behavior; category theory helps us ask what happens when structured descriptions themselves are moved, connected, or compared (Spivak, 2014; Fong & Spivak, 2019).
+Understanding the larger system reveals why the sales and fulfillment problems belong to the same explanation. But drawing a wider boundary around the problem, connecting sales and fulfullment, does not yet produce a model of how its parts work together. Building a common account requires an explicit interface between them and a rule for composing their structures. Systems thinking makes this connection necessary, but it does not, by itself, provide a general formal account of how models compose through their interfaces.
 
-The affinity is real, but it is not a global equivalence. A categorical description does not tell us which boundary of a real system was appropriate or whether a causal interpretation is empirically justified. A systems model does not automatically provide a rigorous notion of equivalence between its different representations. The bridge is useful because each tradition exposes an obligation that the other can leave implicit.
+Category theory becomes useful for this second problem because it provides a language for relations, transformations, and composition. Once each representation has been given an explicit structure, we can ask which mappings between them are admissible and what those mappings must preserve. Systems thinking helps us investigate how relations within a system produce behavior; category theory helps us make precise what is claimed when one structured description is translated into, connected with, or composed with another. (Spivak, 2014; Fong & Spivak, 2019).
+
+A categorical description does not tell us which boundary of a real system was appropriate or whether a causal interpretation is empirically justified. A systems model does not automatically provide a rigorous notion of equivalence between its different representations. The bridge is useful because each tradition exposes an obligation that the other can leave implicit.
 
 <!-- ANALOGY AND FORMAL TRANSLATION -->
 
@@ -184,8 +190,6 @@ The essay began with a company whose falling sales could become different proble
 There was also a quieter constraint on the argument. Whenever an analogy seemed capable of carrying more than it had earned, or a formal result invited a stronger conclusion, the investigation had to ask what was actually warranted. That restraint was epistemological: it governed what could responsibly be concluded from the representations already available.
 
 Seen retrospectively, systems thinking and category theory were doing more than supplying concepts. Each organized attention differently, bringing some distinctions forward while leaving others less visible. This is the limited sense in which the essay can now speak of lenses. Once that role becomes explicit, the direction of inquiry can reverse: the structures through which we investigate can themselves become objects of investigation.
-
-There was another lens at work throughout this investigation as well, one formed over years of conversation with Vladimir. Many distinctions that now appear almost obvious were once difficult to see at all; they took shape slowly, through problems revisited from different directions.
 
 <!-- APPENDIX -->
 
