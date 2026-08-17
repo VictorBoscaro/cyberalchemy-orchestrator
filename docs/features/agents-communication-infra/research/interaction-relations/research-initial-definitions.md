@@ -1,5 +1,5 @@
 ---
-tags: [agents-communication-infra, agent-interaction, workflow-relations, interaction-semantics]
+tags: [agents-communication-infra, agent-interaction, typed-graph, workflow-relations, interaction-semantics]
 node_type: research-initial-definitions
 is_session: false
 layer: [architecture, domain, application]
@@ -7,11 +7,11 @@ nature: [informational, reference]
 status: draft
 veracity: medium
 conviction: high
-version: 0.2.0
-last_updated: 2026-08-15
+version: 0.3.0
+last_updated: 2026-08-17
 ---
 
-# Interaction Relations — Research Initial Definitions
+# Typed Interaction Graph Relations — Research Initial Definitions
 
 ## Context
 
@@ -21,33 +21,33 @@ sentido. A feature `agents-communication-infra` concentra os contratos candidato
 parciais pelas quais estruturas confirmadas, protocolos reutilizáveis, mensagens, resultados e
 transições de execução podem permanecer relacionados sem depender implicitamente do agente do chat.
 
-Os workflows atuais expressam relações entre partes do trabalho por meio de `connections`, recipes,
-regras descritas em documentos e coordenação do parent. Ainda não há uma caracterização estável do
-que permanece semanticamente igual ou diferente entre essas relações. Isso dificulta saber se novos
-modos de interação podem compartilhar estruturas reutilizáveis ou se exigem famílias distintas,
-e aumenta o risco de misturar relação de domínio, coordenação, autoridade, política e efeito de
-runtime sob um mesmo rótulo.
+Os workflows atuais expressam relações entre partes do trabalho por meio de grafos, `connections`,
+recipes, regras descritas em documentos e coordenação do parent. O produto deve continuar sendo
+baseado em grafos, mas suas arestas precisam carregar relações tipadas cujos tipos expressem
+diferenças semânticas reais. Ainda não há uma caracterização estável da menor base de tipos capaz de
+representar os padrões de interação necessários sem transformar topologia, política, autoridade e
+efeito de runtime em rótulos de aresta indistintos.
 
 ## Purpose
 
 Este documento estabelece o contexto informacional para uma pesquisa governada que informará uma
-discovery posterior sobre relações de interação em workflows multiagente. A compreensão resultante
-deverá permitir avaliar se alguma abstração reutilizável é justificada, qual problema ela resolve e
-quais distinções e limites uma decisão arquitetural posterior precisaria preservar.
+discovery posterior sobre relações tipadas em grafos de trabalho multiagente. A compreensão
+resultante deverá permitir avaliar qual base reutilizável, se alguma, é suficiente para construir os
+padrões de interação relevantes, quais diferenças precisam permanecer distintas e quais limites uma
+decisão arquitetural posterior deverá preservar.
 
-Ele não seleciona elementos primitivos, não presume uma composição formal, não define um serviço,
-schema ou máquina de estados e não autoriza alteração do runtime. A pesquisa poderá concluir que não
-existe uma base única, que existem famílias incompatíveis ou que a abstração útil está em outro nível
-que não relações entre agentes concretos.
+Ele não seleciona antecipadamente os tipos de relação, não presume que padrões nomeados sejam
+primitivos, não define schema, serviço ou máquina de estados e não autoriza alteração do runtime. A
+pesquisa poderá concluir que existem famílias incompatíveis de relações ou que certos padrões só são
+representáveis como subgrafos compostos, e não como um único tipo de aresta.
 
 ## Research Question (Can be refined)
 
-Considerando as `connections` legadas, o grafo limitado de `ProtocolRecipe` V1, os
-bindings/follow-ups da lane `legacy-managed` e as relações previstas nos contratos do Work Bus, o
-que, se algo, permanece invariável entre essas superfícies e o que isso implica sobre a pertinência
-de estruturas reutilizáveis? Nesta pesquisa, uma diferença será semanticamente consequente quando
-alterar dependência entre trabalhos, fluxo de evidência, autoridade, coordenação ou efeito
-executável.
+Qual é, se existir, a menor base extensível de relações tipadas capaz de reconstruir em grafos os
+padrões de interação multiagente observados e relevantes — incluindo `sequential`, review,
+`zig-zag`, feedback e robot-talks — sem perder diferenças de dependência, fluxo de evidência,
+autoridade, coordenação, término, falha ou efeito executável? O que as soluções contemporâneas
+externas de comunicação de agentes e sistemas já demonstram sobre essa base e sobre seus limites?
 
 ## Confirmed Product Constraints
 
@@ -55,8 +55,20 @@ executável.
   `docs/features/agents-communication-infra/research/interaction-relations/` enquanto não houver
   evidência para um owner de feature independente.
 - O objetivo de produto confirmado é permitir que diferentes maneiras de relacionar trabalho
-  multiagente possam ser configuradas. Isso não determina se compartilharão implementação,
-  representação ou mecanismo de execução.
+  multiagente possam ser configuradas como grafos com relações tipadas. Cada tipo aceito precisa
+  corresponder a uma diferença semântica demonstrável; nomes diferentes não justificam tipos
+  diferentes por si só.
+- O grafo é a estrutura de composição confirmada. A pesquisa deve determinar os tipos de relação e
+  suas distinções, sem reabrir a decisão de representar o trabalho como grafo.
+- Padrões nomeados como `zig-zag`, feedback e robot-talks devem poder emergir como tipos primitivos,
+  subgrafos compostos ou famílias separadas conforme a evidência; o nome atual não decide sua
+  classificação.
+- A decisão posterior deve considerar soluções contemporâneas externas e seus contratos
+  executáveis, não apenas precedentes internos. Alegações de estado atual precisam ser verificadas
+  em fontes primárias vigentes no momento da pesquisa.
+- "Todos os tipos possíveis" é uma direção de expressividade, não uma alegação demonstrável sobre
+  um domínio aberto. A base precisa cobrir o corpus declarado, explicitar seus limites e admitir
+  extensão sem apagar as diferenças semânticas já preservadas.
 - ACI Protocol Governance possui `SkillExecutionProfile`, `SkillProtocolBinding`, recipe/DAG e a
   compilação determinística somente até um `DispatchCandidate` não autoritativo
   ([ACI-PG-001](../../../../decisions/aci-protocol-governance-ownership.md) e
@@ -105,30 +117,43 @@ executável.
   rótulo da conexão sozinho não contém o protocolo observado
   ([knowledge-formation dispatch](../../../../../research/knowledge-formation/dispatch.yaml) e
   [ledger](../../../../../research/knowledge-formation/LEDGER.md)).
+- Review, research, experiment e robot-talks fornecem outros padrões locais em que ordem,
+  independência, confronto, confirmação, síntese e autoridade não são redutíveis ao simples fato de
+  dois grupos estarem conectados. Esses padrões constituem evidência de produto a ser distinguida
+  das superfícies que atualmente os declaram ou executam
+  ([review](../../../../../.agents/skills/review/SKILL.md),
+  [research](../../../../../.agents/skills/research/SKILL.md),
+  [experiment](../../../../../.agents/skills/experiment/SKILL.md) e
+  [robot-talks](../../../../../.agents/skills/robot-talks/SKILL.md)).
 - A arquitetura candidata da feature mantém `feedback` e `zig-zag` fora dos primeiros slices e
   registra como aberta a semântica de `feedback`
   ([ACI README](../../README.md#fase-2--robustez-e-topologias)).
 
 ## Known Gaps
 
-- Não está estabelecido quais diferenças entre as relações observadas pertencem à semântica do
-  trabalho e quais pertencem à coordenação, autoridade, política ou execução.
-- Não está estabelecido se os nomes atuais designam classes estáveis ou agrupam comportamentos
-  diferentes por precedente histórico.
-- Não está estabelecido quais entidades são relacionadas: agentes, seats, papéis, grupos, turnos,
-  estados, artefatos, resultados ou outra unidade ainda não identificada.
-- Não há evidência de uma decomposição mínima, suficiente ou estável das interações observadas.
-- Não está estabelecido se as relações relevantes são composáveis, quais tipos restringem sua
-  composição nem quais propriedades formais, se alguma, são preservadas.
-- Não está estabelecido como representar relações iterativas ou de revisão limitada sem confundir
-  protocolo, ciclo de runtime e política de término.
-- Não há mapping demonstrado entre `ProtocolRecipe`, as `connections` legadas, a autoridade
-  confirmada e os bindings/follow-ups executados pelo runtime.
-- Não está estabelecido quais partes do protocolo `knowledge-formation` são reutilizáveis e quais
-  pertencem somente àquele dispatch.
-- Não está estabelecido se existe uma estrutura comum entre as relações observadas nem em qual
-  boundary ela poderia existir sem transferir responsabilidades de Protocol Governance, confirmação
-  ACI, Agent Tools, Delegated Supervision, runtime ou Work Bus.
+- Não está estabelecido quais tipos de relação são necessários para reconstruir os padrões locais
+  nem quais nomes atuais designam apenas topologias ou protocolos compostos.
+- Não está estabelecido quais diferenças pertencem à semântica da aresta e quais pertencem a
+  composição do grafo, política, coordenação, autoridade ou execução.
+- Não está estabelecido quais entidades uma relação tipada conecta: agentes, seats, papéis, grupos,
+  turnos, estados, artefatos, resultados ou outra unidade ainda não identificada.
+- Não há evidência de que uma base candidata seja mínima: nenhum tipo possui ainda um testemunho de
+  necessidade mostrando o que deixa de ser representável quando ele é removido.
+- Não há evidência de suficiência: `sequential`, review, `zig-zag`, feedback e robot-talks ainda não
+  foram reconstruídos sobre uma mesma base candidata com suas diferenças preservadas.
+- Não está estabelecido quais relações são composáveis, quais tipos restringem sua composição nem
+  quais propriedades precisam sobreviver à composição.
+- Não está estabelecido como representar iteração, convergência e revisão limitada sem confundir
+  relação tipada, subgrafo de protocolo, ciclo de runtime e política de término.
+- Não há mapping demonstrado entre os padrões de workflow, `ProtocolRecipe`, as `connections`
+  legadas, a autoridade confirmada, o Work Bus e os bindings/follow-ups executados pelo runtime.
+- Não há levantamento verificável das soluções contemporâneas externas, de suas primitivas, de suas
+  garantias executáveis, de sua maturidade ou das lacunas que deixam para este produto.
+- Não está estabelecido como estender a base para relações não presentes no corpus sem transformar
+  cada novo padrão em lógica especial nem enfraquecer os tipos existentes.
+- Não está estabelecido se existe uma base única ou famílias incompatíveis, nem em qual boundary
+  elas poderiam existir sem transferir responsabilidades de Protocol Governance, confirmação ACI,
+  Agent Tools, Delegated Supervision, runtime ou Work Bus.
 
 ## Connections
 

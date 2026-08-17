@@ -1,0 +1,132 @@
+{
+  "dispatch_id": "2026-08-17-typed-interaction-graph-basis-research",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Determine the smallest evidenced and extensible basis of typed graph relations that can reconstruct the repository's multi-agent interaction patterns, while comparing current external solutions and preserving semantic differences in authority, evidence, control, termination, failure, and runtime effect.",
+  "context": "Cyberalchemy Orchestrator has a confirmed graph-based direction for configuring multi-agent work, but its edges need typed relations whose names correspond to distinct semantics. Existing local patterns such as sequential, review, zig-zag, feedback, and robot-talks are currently split across schemas, recipes, prompts, parent coordination, and partial runtime mechanisms. This research must derive candidate relation types from observed behavior, distinguish primitive edge semantics from graph composition, policy, authority, and runtime effects, and compare them with current externally maintained solutions. Completeness claims must remain bounded to the declared corpus, with extensibility treated as a separate obligation.",
+  "max_loops": 1,
+  "final_approver": "Lamport, Leslie",
+  "anti_bias_mode": "disabled",
+  "working_folder": "docs/features/agents-communication-infra/research/interaction-relations",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 4,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 3000,
+          "agent_name": "Wirth, Niklaus",
+          "initial_prompt": "Read docs/features/agents-communication-infra/research/interaction-relations/research-initial-definitions.md and dispatch-proposal.md completely. Build the local as-built corpus for sequential, review, zig-zag, feedback, and robot-talks from repository workflows, skills, dispatch records, specifications, runtime code, and tests. For each pattern, reconstruct a minimal observable trace that names the related entities, source and target states, payload or evidence transferred, direction, cardinality, ordering or concurrency, authority before and after, guards, repetition, termination, failure, and actual runtime status. Separate declared label, documented protocol, manually coordinated behavior, compiled behavior, and executed behavior; do not infer execution from schema acceptance. Cite exact repository paths and line numbers for every load-bearing claim, preserve counterexamples and missing evidence, and return a compact corpus table plus the first place each current label fails to determine behavior. Do not edit source artifacts or propose the final type basis."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "agent_name": "Milner, Robin",
+          "initial_prompt": "Read the two interaction-relations documents completely and independently inspect the local evidence for sequential, review, zig-zag, feedback, and robot-talks. Seek the smallest candidate basis of typed graph relations and explicit graph-composition operators that can reconstruct those observed traces without treating a familiar workflow name as a primitive by default. For every candidate edge type, state admissible endpoint kinds, direction, payload or evidence, precondition, semantic effect, authority effect, terminal and failure behavior, and legal composition; classify ordering, parallelism, branching, fan-out/fan-in, repetition, quorum, convergence, retry, and cancellation as relation type, graph combinator, policy, or runtime effect only when evidence supports the classification. Reconstruct each named pattern from the candidates and perform a removal test: identify the observable behavior lost if a candidate type is removed, or demote it to a composition or alias when nothing is lost. Describe traces before introducing theoretical vocabulary, cite exact local evidence, state counterexamples, and do not claim universal completeness beyond the corpus. Do not edit files."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 2500,
+          "agent_name": "Follett, Mary Parker",
+          "initial_prompt": "Read the interaction-relations initial definitions and proposal completely. Investigate only the authority, evidence, visibility, and coordination semantics of candidate typed graph relations in the local patterns sequential, review, zig-zag, feedback, and robot-talks. For each observed transition, identify who may propose, send, receive, inspect, revise, confirm, decide, release, retry, cancel, and accept evidence; identify what remains immutable, what becomes visible, and which event changes authority rather than merely moving data. Construct at least two pairs of graph fragments with the same topology but different authority or evidence semantics to prove why topology alone is insufficient. Distinguish relation semantics from role assignment, policy, graph combinator, and runtime effect, cite exact repository paths and lines, mark missing authority explicitly, and return a boundary matrix suitable for testing the candidate basis. Do not select the final basis and do not edit files."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Simon, Herbert",
+          "initial_prompt": "Read the interaction-relations initial definitions and proposal completely, then conduct a current external-solutions sweep using primary official sources available at execution time. Cover at least five actively maintained agent-orchestration systems: OpenAI Agents SDK, LangGraph, Google ADK, Microsoft Agent Framework or AutoGen, and at least one comparable maintained implementation; count Microsoft Agent Framework and AutoGen separately only if current official evidence shows distinct maintained contracts. For every system, record official URL, version or access date, declared maturity, core primitives, graph or orchestration model, handoff and control-transfer semantics, sequential/parallel/conditional/loop support, shared or private state, termination, retry/checkpoint/recovery, human approval, type guarantees, observability, and extension mechanism. Distinguish documented capability from experimental status, code-level guarantee, production claim, and actual adoption; do not infer market adoption from vendor documentation. Map external primitives to behaviors rather than local names, identify what each leaves to application code, and return a cited comparison matrix plus cautious implications for the local typed-relation basis. Do not import a framework taxonomy as the answer and do not edit repository files."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Read the interaction-relations initial definitions and dispatch proposal completely. Proceed only when the exact four explorer returns and their source references are present in the governed input. Write docs/features/agents-communication-infra/research/interaction-relations/research.md with the four returns preserved verbatim and provenance intact, then write findings.md as a cited synthesis. Findings must answer the dispatch question in one line; catalog local traces and failures; compare at least five current external solutions with official source, version or date, and maturity; propose a candidate basis of typed relations with endpoints, payload/evidence, guards, semantic and authority effects, termination, and failure; separate graph combinators, policies, authority rules, and runtime effects; reconstruct sequential, review, zig-zag, feedback, and robot-talks as typed graphs; run necessity-by-removal and sufficiency-by-reconstruction tests; identify composite subgraphs and incompatible families; provide local/external crosswalks, ownership boundaries, an explicit extension rule, typed negatives, and the required candidate verdict matrix. Preserve disagreements instead of averaging them, label inference, make no schema or runtime proposal, and never claim completeness beyond the corpus. Write only inside the working folder."
+        }
+      ]
+    },
+    {
+      "group_id": "skeptics",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Apply only the precedent gate to the candidate basis in findings.md, using research.md and the cited primary sources. For every candidate relation, combinator, policy distinction, and extension mechanism, identify its exact internal or external owner and classify use as build-from-owned, already-deployed, or precedent-clean; ownership is a positive result and never a KILL. Verify that external sources are official, current enough for the claim, versioned or access-dated, and do not support unstated adoption claims. Reject vague similarity as ownership, preserve multiple owners when their contracts differ, and cite the exact source for every attribution. Write the complete gate report to docs/features/agents-communication-infra/research/interaction-relations/returns/precedent.md and return the same report; do not modify findings.md or other source artifacts."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Meadows, Donella H.",
+          "initial_prompt": "Apply only the non-vacuity gate to every candidate typed relation and to the claimed basis in findings.md. Using research.md and cited evidence, require one smallest observable witness for each type, one complete typed-graph reconstruction for every local pattern, and a removal test showing what becomes impossible or semantically erased without the candidate. Emit GO when witnessed; emit KILL only as no-witness, naming what the candidate would have contributed and the exact missing fact. Test extension claims with one pattern not used to derive the basis, but do not demand universal completeness. Write the complete gate report to docs/features/agents-communication-infra/research/interaction-relations/returns/non-vacuity.md and return the same report; do not assess precedent or definitional naming, and do not modify findings.md."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2200,
+          "agent_name": "Dijkstra, Edsger W.",
+          "initial_prompt": "Apply only the definitional-soundness gate to findings.md and its evidence. Attack every proposed edge type for collapsing into a graph combinator, workflow alias, role, policy, authority rule, state annotation, transport operation, or runtime effect; also attack cases where two types differ only by name or where one type secretly bundles a whole subgraph. Require each surviving type to have distinct admissible endpoints and an observable semantic effect that cannot be expressed by the remaining basis without loss. Emit KILL only as tautological and record the exact collapse; preserve incompatible families when unification would erase authority, evidence, termination, or failure. Write the complete gate report to docs/features/agents-communication-infra/research/interaction-relations/returns/definitional-soundness.md and return the same report; do not assess external ownership or general usefulness, and do not modify findings.md."
+        }
+      ]
+    },
+    {
+      "group_id": "final-audit",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1800,
+          "agent_name": "Lamport, Leslie",
+          "initial_prompt": "Act only as the dedicated final auditor and approver. Read the initial definitions, dispatch proposal, research.md, findings.md, the exact explorer returns, and all three skeptic reports. Verify coverage of the four internal representation surfaces, complete typed-graph treatment of sequential, review, zig-zag, feedback, and robot-talks, at least five current external systems supported by official versioned or access-dated sources, distinct observable semantics for every surviving edge type, necessity and sufficiency evidence, separation of relations from graph combinators/policies/authority/runtime effects, explicit corpus-bounded completeness and extension rule, ownership preservation, source-to-return traceability, resolution of every gate finding, and a complete candidate verdict matrix where KILL appears only for no-witness or tautological. Do not repair findings or introduce hypotheses. Mechanically append the three skeptic reports verbatim and your audit record to research.md so provenance is complete, write your audit to docs/features/agents-communication-infra/research/interaction-relations/returns/final-audit.md, and return APPROVE only if no BLOCK remains; otherwise return BLOCK with exact failed acceptance clauses. Write only inside the working folder."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "explorers",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "synthesizer",
+      "to": "skeptics",
+      "type": "sequential"
+    },
+    {
+      "from": "skeptics",
+      "to": "final-audit",
+      "type": "sequential"
+    }
+  ]
+}

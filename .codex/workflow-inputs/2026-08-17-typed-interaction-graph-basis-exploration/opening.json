@@ -1,0 +1,61 @@
+{
+  "dispatch_id": "2026-08-17-typed-interaction-graph-basis-exploration",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Produce four independent, evidence-backed foundations for the typed interaction graph research: the local as-built corpus, a candidate generative basis, authority and evidence semantics, and a current external-solutions comparison.",
+  "context": "This is the exploration stage authorized by docs/decisions/typed-interaction-graph-research-execution.md after the single-dispatch graph failed compilation on a pre-materialized sequential handoff. Cyberalchemy Orchestrator has a confirmed graph-based direction, but edge types must correspond to distinct observable semantics rather than workflow names alone. The four explorers work independently and write separate artifacts; the parent will preserve their exact returns in research.md and create a bounded findings.md before closing this stage. Completeness claims remain bounded to the declared local and external corpora.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "docs/features/agents-communication-infra/research/interaction-relations/stages/01-exploration",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 4,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 3000,
+          "agent_name": "Wirth, Niklaus",
+          "initial_prompt": "Read docs/features/agents-communication-infra/research/interaction-relations/research-initial-definitions.md, dispatch-proposal.md, and docs/decisions/typed-interaction-graph-research-execution.md completely. Build the local as-built corpus for sequential, review, zig-zag, feedback, and robot-talks from repository workflows, skills, dispatch records, specifications, runtime code, and tests. For each pattern, reconstruct a minimal observable trace that names the related entities, source and target states, payload or evidence transferred, direction, cardinality, ordering or concurrency, authority before and after, guards, repetition, termination, failure, and actual runtime status. Separate declared label, documented protocol, manually coordinated behavior, compiled behavior, and executed behavior; do not infer execution from schema acceptance. Cite exact repository paths and line numbers for every load-bearing claim, preserve counterexamples and missing evidence, and state the first place each current label fails to determine behavior. Write only docs/features/agents-communication-infra/research/interaction-relations/stages/01-exploration/local-as-built.md and return the same content. Do not propose the final type basis or edit any other file."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "agent_name": "Milner, Robin",
+          "initial_prompt": "Read the two interaction-relations documents and the staged-execution decision completely, then independently inspect the local evidence for sequential, review, zig-zag, feedback, and robot-talks. Seek the smallest candidate basis of typed graph relations and explicit graph-composition operators that can reconstruct those observed traces without treating a familiar workflow name as a primitive by default. For every candidate edge type, state admissible endpoint kinds, direction, payload or evidence, precondition, semantic effect, authority effect, terminal and failure behavior, and legal composition; classify ordering, parallelism, branching, fan-out/fan-in, repetition, quorum, convergence, retry, and cancellation as relation type, graph combinator, policy, or runtime effect only when evidence supports the classification. Reconstruct each named pattern from the candidates and perform a removal test: identify the observable behavior lost if a candidate type is removed, or demote it to a composition or alias when nothing is lost. Describe traces before theoretical vocabulary, cite exact local evidence, state counterexamples, and do not claim universal completeness. Write only docs/features/agents-communication-infra/research/interaction-relations/stages/01-exploration/generative-basis.md and return the same content. Do not edit any other file."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 2500,
+          "agent_name": "Follett, Mary Parker",
+          "initial_prompt": "Read the interaction-relations initial definitions, dispatch proposal, and staged-execution decision completely. Investigate only the authority, evidence, visibility, and coordination semantics of candidate typed graph relations in sequential, review, zig-zag, feedback, and robot-talks. For each observed transition, identify who may propose, send, receive, inspect, revise, confirm, decide, release, retry, cancel, and accept evidence; identify what remains immutable, what becomes visible, and which event changes authority rather than merely moving data. Construct at least two pairs of graph fragments with the same topology but different authority or evidence semantics to prove why topology alone is insufficient. Distinguish relation semantics from role assignment, policy, graph combinator, and runtime effect, cite exact repository paths and lines, and mark missing authority explicitly. Write only docs/features/agents-communication-infra/research/interaction-relations/stages/01-exploration/authority-evidence.md and return the same content. Do not select the final basis or edit any other file."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Simon, Herbert",
+          "initial_prompt": "Read the interaction-relations initial definitions, dispatch proposal, and staged-execution decision completely, then conduct a current external-solutions sweep using primary official sources available at execution time. Cover at least five actively maintained agent-orchestration systems: OpenAI Agents SDK, LangGraph, Google ADK, Microsoft Agent Framework or AutoGen, and at least one comparable maintained implementation; count Microsoft Agent Framework and AutoGen separately only if current official evidence shows distinct maintained contracts. For every system, record official URL, version or access date, declared maturity, core primitives, graph or orchestration model, handoff and control-transfer semantics, sequential/parallel/conditional/loop support, shared or private state, termination, retry/checkpoint/recovery, human approval, type guarantees, observability, and extension mechanism. Distinguish documented capability from experimental status, code-level guarantee, production claim, and actual adoption; do not infer market adoption from vendor documentation. Map external primitives to behaviors rather than local names, identify what each leaves to application code, and provide cautious implications for the local typed-relation basis. Write only docs/features/agents-communication-infra/research/interaction-relations/stages/01-exploration/current-solutions.md and return the same content. Do not import a framework taxonomy as the answer or edit any other file."
+        }
+      ]
+    }
+  ]
+}

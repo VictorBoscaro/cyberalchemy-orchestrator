@@ -1,0 +1,40 @@
+{
+  "dispatch_id": "2026-08-17-typed-interaction-graph-basis-synthesis",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Synthesize the four completed exploration returns into a bounded candidate basis of semantically typed graph relations, with explicit reconstruction and collapse tests for local interaction patterns and current external counterexamples.",
+  "context": "This is stage 2 of the staged execution authorized by docs/decisions/typed-interaction-graph-research-execution.md. Stage 1 is closed resolved and preserved verbatim in docs/features/agents-communication-infra/research/interaction-relations/stages/01-exploration/research.md, with preliminary findings in the adjacent findings.md. The confirmed substrate is a graph with relations whose types express distinct observable semantics. The synthesis must not confuse edge relation, topology, node role, payload schema, workflow recipe, policy, or runtime effect, and must not claim universality from the bounded corpus.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "docs/features/agents-communication-infra/research/interaction-relations",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "groups": [
+    {
+      "group_id": "writers",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Read completely: docs/features/agents-communication-infra/research/interaction-relations/research-initial-definitions.md; dispatch-proposal.md; docs/decisions/typed-interaction-graph-research-execution.md; and every Markdown file in docs/features/agents-communication-infra/research/interaction-relations/stages/01-exploration. Synthesize the four independent returns; do not conduct a replacement research sweep and do not erase disagreements or evidence boundaries. Produce docs/features/agents-communication-infra/research/interaction-relations/research.md as the evidence-preserving research record: identify the four bound source artifacts and their provenance, summarize their methods and material evidence with precise local citations and direct official-source links already collected, and point readers to the verbatim stage-1 research.md rather than duplicating all of it. Produce docs/features/agents-communication-infra/research/interaction-relations/findings.md as the decision-oriented synthesis. Start from observable traces and derive the smallest candidate basis supported by the examined corpus. For each admitted relation define endpoint kinds, direction, payload or evidence, precondition, semantic effect, authority effect, visibility, terminal and failure behavior, and legal composition. Explicitly separate relation types from graph combinators, node or agent roles, artifact schemas, workflow recipes, policies, and runtime effects. Reconstruct sequential, review, zig-zag, feedback, and robot-talks from the proposed primitives. Run and document removal and pairwise-collapse tests, especially for assessed_by, delegates, and transfers_control; state exactly what observable behavior is lost or demote the candidate when nothing is lost. Reconcile the local four-relation proposal with the external distinction between delegation-with-return and transfer-of-control. Include a compact mapping of OpenAI Agents SDK, LangGraph, Google ADK, Microsoft Agent Framework, CrewAI, and adjacent AutoGen to behaviors rather than importing their taxonomies. State current runtime gaps separately from the target model. Bound all completeness claims to the examined local patterns and external corpus, preserve counterexamples and unresolved questions, and finish with explicit hypotheses for the adversarial gates. Write only the two top-level files named above and return the findings.md content verbatim. Do not edit definitions, proposal, phase-1 artifacts, decisions, runtime code, schemas, or dispatch records."
+        }
+      ]
+    }
+  ]
+}

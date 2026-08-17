@@ -1,0 +1,54 @@
+{
+  "dispatch_id": "2026-08-17-typed-interaction-graph-basis-gates",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Independently attack the synthesized five-relation candidate basis through precedent, non-vacuity, and definitional-soundness gates before any final research conclusion is accepted.",
+  "context": "This is stage 3 of the staged execution authorized by docs/decisions/typed-interaction-graph-research-execution.md. Exploration and synthesis dispatches are closed resolved. The synthesis proposes requires, supplies, delegates, transfers_control, and gates, demotes assessed_by, and explicitly limits completeness to the examined corpus. Each skeptic must independently evaluate only its assigned gate, preserve counterexamples, and issue relation-level GO, KILL, or unresolved dispositions backed by exact evidence. Gate reports do not edit the synthesis; the parent will preserve them verbatim and consolidate their implications after all three return.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "docs/features/agents-communication-infra/research/interaction-relations/stages/03-gates",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "groups": [
+    {
+      "group_id": "skeptics",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "agent_name": "Popper, Karl",
+          "initial_prompt": "Read completely docs/features/agents-communication-infra/research/interaction-relations/research.md, findings.md, research-initial-definitions.md, dispatch-proposal.md, and every Markdown artifact in stages/01-exploration. Run only the precedent gate over requires, supplies, delegates, transfers_control, gates, and the demoted assessed_by. For each candidate identify the exact local owner or official external operational precedent, the concrete behavior witnessed, maturity/evidence limitations, and whether the synthesis claims more than that evidence proves. Verify external claims only against primary official sources already cited, following them when necessary; do not infer adoption, production fitness, or semantic completeness. Treat a named product feature as precedent only when its documented control, responsibility, evidence, or authority effect matches the proposed relation. Issue relation-level GO, KILL, or unresolved, with KILL only for no-witness or false-precedent cases, and explicitly test hypotheses P1-P3 from findings.md. Write only docs/features/agents-communication-infra/research/interaction-relations/stages/03-gates/precedent-gate.md and return the same content. Do not edit the synthesis or any other file."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3000,
+          "agent_name": "Quine, Willard Van Orman",
+          "initial_prompt": "Read completely docs/features/agents-communication-infra/research/interaction-relations/research.md, findings.md, research-initial-definitions.md, dispatch-proposal.md, and every Markdown artifact in stages/01-exploration. Run only the non-vacuity gate over requires, supplies, delegates, transfers_control, gates, and the demoted assessed_by. Demand for each retained relation a concrete before/after trace, admissible endpoints, observable payload or obligation, authority and visibility effect, terminal/failure difference, and a removal counterexample that cannot be recovered by the other relations plus graph combinators, typed occurrences, roles, schemas, policies, and runtime effects. Attack circular definitions, relabelled topology, role names disguised as relations, and distinctions that exist only because the prose repeats them. Explicitly test hypotheses N1-N5 and the claimed collapse of assessed_by. Issue relation-level GO, KILL, or unresolved; KILL only when the relation is tautological or its removal loses nothing under the declared model. Write only docs/features/agents-communication-infra/research/interaction-relations/stages/03-gates/non-vacuity-gate.md and return the same content. Do not edit the synthesis or any other file."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "agent_name": "Wittgenstein, Ludwig",
+          "initial_prompt": "Read completely docs/features/agents-communication-infra/research/interaction-relations/research.md, findings.md, research-initial-definitions.md, dispatch-proposal.md, and every Markdown artifact in stages/01-exploration. Run only the definitional-soundness gate. Try to collapse every pair among requires, supplies, delegates, transfers_control, and gates; identify duplicated fields, hidden assumptions, incompatible endpoint kinds, illegal cycles, missing composition rules, and any authority or visibility semantics smuggled into roles, schemas, recipes, policy, or runtime. Independently reconstruct sequential, review, zig-zag, feedback, and robot-talks and test whether each observable local trace survives without hidden prose. Test hypotheses D1-D5, including the demotion of assessed_by and the distinction between authorizing and performing control transfer. Distinguish a fixable contract ambiguity from evidence that a primitive should be killed. Issue relation-level and whole-basis GO, KILL, or unresolved, with exact local citations and bounded external references. Write only docs/features/agents-communication-infra/research/interaction-relations/stages/03-gates/definitional-soundness-gate.md and return the same content. Do not edit the synthesis or any other file."
+        }
+      ]
+    }
+  ]
+}

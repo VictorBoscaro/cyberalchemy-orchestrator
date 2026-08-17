@@ -52,6 +52,9 @@ artifacts bind to.
 - **[skill-control-center-phase-1-scope.md](skill-control-center-phase-1-scope.md)**: 2026-07-25,
   gate result `PASS`. Bounds Skill Control Center Phase 1 to read-only/draft-only. Cited as scope
   authority across the `skill-control-center` feature package.
+- **[typed-interaction-graph-research-execution.md](typed-interaction-graph-research-execution.md)**:
+  2026-08-17, `accepted`. Executes the typed-relation research as governed stages because the
+  current compiler cannot materialize downstream sequential handoffs before upstream agents run.
 
 ## Connections
 

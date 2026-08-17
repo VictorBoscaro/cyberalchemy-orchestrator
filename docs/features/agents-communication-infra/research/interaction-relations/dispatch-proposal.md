@@ -1,5 +1,5 @@
 ---
-tags: [agents-communication-infra, agent-interaction, workflow-relations, research-dispatch]
+tags: [agents-communication-infra, agent-interaction, typed-graph, workflow-relations, research-dispatch]
 node_type: research-dispatch-proposal
 is_session: false
 layer: [architecture, domain, application]
@@ -7,11 +7,11 @@ nature: [planning, informational]
 status: proposed
 veracity: medium
 conviction: high
-version: 0.1.0
-last_updated: 2026-08-15
+version: 0.2.0
+last_updated: 2026-08-17
 ---
 
-# Interaction Relations — Research Dispatch Proposal
+# Typed Interaction Graph Relations — Research Dispatch Proposal
 
 ## Decision requested
 
@@ -21,7 +21,7 @@ simplified, not abandoned.
 
 ## Dispatch identity
 
-- `dispatch_id`: `2026-08-15-interaction-relations-invariants-research`
+- `dispatch_id`: `2026-08-17-typed-interaction-graph-basis-research`
 - `dispatch_type`: `research`
 - `working_folder`: `docs/features/agents-communication-infra/research/interaction-relations/`
 - `execution_authority_mode`: `legacy-managed`
@@ -32,27 +32,27 @@ simplified, not abandoned.
 
 ## One question
 
-Nas quatro superfícies observadas — `connections` legadas, `ProtocolRecipe` V1,
-bindings/follow-ups `legacy-managed` e contratos do Work Bus — quais características são realmente
-invariantes, quais diferenças alteram dependência, evidência, autoridade, coordenação ou efeito
-executável, e que estruturas reutilizáveis, se alguma, podem representá-las sem transferir
-ownership nem antecipar mecanismo de runtime?
+Qual é, se existir, a menor base extensível de relações tipadas capaz de reconstruir em grafos os
+padrões locais e contemporâneos de interação multiagente, quais tipos são necessários em vez de
+meras conveniências nominais, e quais padrões precisam permanecer como subgrafos compostos ou
+famílias distintas para preservar dependência, evidência, autoridade, coordenação, término, falha e
+efeito executável?
 
 ## Research shape
 
 | Group | Agent | Role | Perspective or gate | Token budget |
 |---|---|---|---|---:|
-| `explorers` | Wirth, Niklaus | `explorer` | Inventário as-built: confrontar schema, specs, código e testes; separar rótulo declarado de comportamento executável. | 2,500 |
-| `explorers` | Milner, Robin | `explorer` | Semântica comportamental: construir traços mínimos e comparar direção, causalidade, ordenação, cardinalidade, iteração, término e falha sem impor um formalismo. | 2,500 |
-| `explorers` | Follett, Mary Parker | `explorer` | Autoridade e coordenação: mapear quem propõe, confirma, entrega, executa e aceita evidência; detectar transferência indevida de owner. | 2,500 |
-| `explorers` | Simon, Herbert | `explorer` | Utilidade de produto: encontrar cenários em que configurar relações muda uma decisão ou resultado e separar diferenças semânticas de aliases históricos. | 2,500 |
-| `synthesizer` | Nonaka, Ikujiro | `writer` | Preservar os retornos, reconciliar somente equivalências sustentadas e escrever `research.md` e `findings.md`. | 4,500 |
+| `explorers` | Wirth, Niklaus | `explorer` | Corpus local as-built: reconstruir traços observáveis de `sequential`, review, `zig-zag`, feedback e robot-talks a partir de workflows, código, testes e registros; separar protocolo vivido de sua projeção atual. | 3,000 |
+| `explorers` | Milner, Robin | `explorer` | Base gerativa do grafo: buscar relações tipadas e regras de composição capazes de reconstruir os traços locais; testar direção, causalidade, cardinalidade, iteração, término e falha sem presumir que padrões nomeados sejam primitivos. | 3,000 |
+| `explorers` | Follett, Mary Parker | `explorer` | Autoridade e evidência: testar, para cada tipo ou composição candidata, quem propõe, entrega, confirma, executa e aceita; impedir que igualdade topológica apague diferenças de autoridade, visibilidade ou prova. | 2,500 |
+| `explorers` | Simon, Herbert | `explorer` | Soluções contemporâneas externas e utilidade de produto: comparar implementações atuais em fontes oficiais, registrar versão/maturidade/garantias e mapear o que suas primitivas permitem construir ou deixam para código específico. | 4,000 |
+| `synthesizer` | Nonaka, Ikujiro | `writer` | Preservar os retornos, reconciliar somente equivalências sustentadas e escrever `research.md` e `findings.md`. | 5,000 |
 | `skeptics` | Parnas, David | `skeptic` | Gate `precedent`: atribuir owner local ou externo a cada estrutura candidata. Owned implica `build-from-owned` ou `already-deployed`, nunca KILL. | 2,200 |
 | `skeptics` | Meadows, Donella H. | `skeptic` | Gate `non-vacuity`: exigir um traço observável mínimo para cada invariância ou estrutura. O único KILL possível é `no-witness`. | 2,200 |
 | `skeptics` | Dijkstra, Edsger W. | `skeptic` | Gate `definitional-soundness`: impedir colapso entre relação, protocolo, política, coordenação e mecanismo. O único KILL possível é `tautological`. | 2,200 |
 | `final-audit` | Lamport, Leslie | `auditor` | Auditor dedicado: verificar rastreabilidade, owners, resolução de findings e a matriz de veredictos sem gerar novas hipóteses. | 1,800 |
 
-Total máximo previsto: 9 agentes e 22,900 tokens.
+Total máximo previsto: 9 agentes e 25,900 tokens.
 
 ## Executable topology
 
@@ -72,13 +72,23 @@ Essa topologia é uma concessão operacional, não uma conclusão sobre o domín
 ## Source policy
 
 Os explorers começam pelo
-[`research-initial-definitions.md`](research-initial-definitions.md) e pelas fontes diretamente
-citadas nele. Uma referência local adicional só deve ser seguida quando necessária para verificar
-um claim load-bearing, registrando o motivo.
+[`research-initial-definitions.md`](research-initial-definitions.md). O corpus local deve cobrir
+ocorrências executadas ou especificadas de `sequential`, review, `zig-zag`, feedback e robot-talks,
+além das superfícies que os representam: `connections`, `ProtocolRecipe`, bindings/follow-ups e
+Work Bus. Cada generalização deve distinguir o comportamento observado de sua projeção documental
+ou operacional.
 
-Somente o gate `precedent` amplia a busca para fontes externas primárias, e apenas para atribuir
-estruturas que já tenham emergido da evidência. Ele não deve importar uma taxonomia pronta nem usar
-precedente como KILL.
+A perspectiva de soluções contemporâneas deve cobrir pelo menos cinco sistemas ativamente mantidos
+no momento da execução. OpenAI Agents SDK, LangGraph, AutoGen ou Microsoft Agent Framework, Google
+ADK e outra implementação comparável formam o ponto de partida, não uma lista fechada. Para cada
+sistema, usar documentação, código, especificação ou release oficial vigente; registrar fonte,
+versão ou data de acesso, maturidade declarada, primitivas expostas, controle de fluxo, estado,
+handoff, loops, durabilidade e garantias executáveis. Material de marketing pode localizar uma
+solução, mas não sustenta claim sobre comportamento.
+
+O gate `precedent` verifica e atribui ownership das estruturas que emergirem dos dois corpora. Ele
+não deve importar uma taxonomia pronta, tratar popularidade como suficiência nem usar precedente
+como KILL.
 
 ## Required outputs
 
@@ -91,13 +101,21 @@ precedente como KILL.
 ### `findings.md`
 
 - resposta de uma linha à pergunta do dispatch;
-- matriz comparativa das quatro superfícies;
-- entidades relacionadas, direção, causalidade, temporalidade, autoridade, evidência, efeito,
-  término/falha e owner por superfície;
-- invariâncias testemunhadas e discriminadores semanticamente consequentes;
-- estruturas reutilizáveis candidatas sem promovê-las a elementos primitivos;
-- diferenças que precisam permanecer em famílias separadas;
-- crosswalk entre rótulos atuais e comportamentos observados;
+- catálogo de traços observáveis dos padrões locais e seus casos de falha;
+- matriz das soluções contemporâneas externas com fonte oficial, versão/data, maturidade,
+  primitivas, composição, estado, autoridade, término, recuperação e garantias;
+- base candidata de relações tipadas, declarando para cada tipo seus endpoints admissíveis,
+  direção, payload/evidência, efeito semântico, autoridade, guarda, término e falha;
+- regras de composição do grafo separadas dos tipos de relação, políticas e efeitos do runtime;
+- reconstruções de `sequential`, review, `zig-zag`, feedback e robot-talks como grafos tipados;
+- teste de necessidade por tipo: o comportamento que deixa de ser representável, ou a diferença
+  semântica que é apagada, quando o tipo é removido;
+- teste de suficiência por padrão: reconstruído integralmente, reconstruído com extensão explícita
+  ou não reconstruível pela base candidata;
+- diferenças que precisam permanecer em famílias separadas e padrões que são subgrafos compostos,
+  não tipos primitivos;
+- crosswalk entre rótulos locais, comportamentos observados e construções externas equivalentes;
+- mecanismo de extensão para novos tipos sem fallback silencioso para lógica especial;
 - matriz de boundaries e ownership;
 - matriz `candidate | owner | witnessed? | sound? | verdict | use-mode`;
 - typed negatives, dissensos e implicações para a discovery, sem propor serviço, schema ou runtime.
@@ -113,8 +131,16 @@ Encontrar precedente ou não encontrar uma estrutura comum não constitui falha.
 Lamport só pode retornar `APPROVE` quando:
 
 - as quatro superfícies estiverem cobertas ou sua indisponibilidade estiver registrada;
-- cada invariância tiver testemunho em pelo menos duas superfícies;
-- nenhuma diferença específica tiver sido promovida a invariância;
+- os cinco padrões locais estiverem reconstruídos como grafos tipados ou possuírem impossibilidade
+  explicitamente testemunhada;
+- pelo menos cinco soluções externas contemporâneas estiverem verificadas em fontes oficiais com
+  versão ou data de acesso e maturidade declarada;
+- cada tipo candidato corresponder a uma diferença semântica observável, não apenas a um nome;
+- cada tipo candidato possuir testemunho de necessidade, ou ser rebaixado a composição, política,
+  efeito de runtime ou alias;
+- composição do grafo, relação tipada, política, autoridade e efeito operacional permanecerem
+  distintos;
+- nenhuma alegação de completude exceder o corpus e existir uma regra explícita de extensão;
 - cada claim load-bearing apontar para um retorno e uma fonte verificável;
 - os owners arquiteturais permanecerem intactos;
 - cada candidato tiver owner, witness, soundness, verdict e use-mode;
@@ -123,12 +149,18 @@ Lamport só pode retornar `APPROVE` quando:
 
 ## Risks
 
+- A decisão confirmada de usar grafos pode levar a tratar toda diferença como tipo de aresta; cada
+  candidato deve provar que não é apenas topologia, política, estado ou efeito operacional.
 - A lente comportamental pode introduzir um formalismo antes da evidência; sua instrução deve
   exigir descrições observáveis antes de qualquer nome teórico.
 - O corpus as-built pode transformar limitações da lane `legacy-managed` em propriedades gerais;
   toda generalização deve registrar de qual superfície partiu.
-- A lente de produto pode favorecer exemplos desejados em vez de ocorrências demonstradas; cenários
-  prospectivos devem ser separados dos casos já observados.
+- O sweep externo pode confundir disponibilidade comercial, documentação e adoção real; a pesquisa
+  deve afirmar apenas o que fontes primárias sustentam e registrar maturidade explícita.
+- A busca por uma base mínima pode favorecer elegância sobre fidelidade; nenhuma redução é aceita se
+  apagar autoridade, evidência, término ou falha observáveis.
+- A expressão "todos os tipos possíveis" pode induzir uma universalidade não demonstrável; a
+  conclusão deve limitar suficiência ao corpus e avaliar separadamente a extensibilidade.
 - A ausência de feedback executável torna este primeiro run mais frágil: findings corrigíveis ainda
   causam rejeição e um segundo dispatch, em vez de revisão no mesmo grafo.
 
