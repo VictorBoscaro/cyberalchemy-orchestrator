@@ -1,0 +1,97 @@
+{
+  "dispatch_id": "invoke-plan-terminal-output-handoff-20260816",
+  "parent_dispatch_id": null,
+  "intent": {
+    "raw": "Correct the sequential dispatch lifecycle without weakening output authority.",
+    "objective": "Author and validate a staged implementation work-pack from exact host output capture through the research pilot.",
+    "target_artifact": "bounded-terminal-output-handoff work-pack"
+  },
+  "mode": "sequence",
+  "techniques": [
+    "sequence", "scu_swu_reduction", "recomposition_proof", "validation_loop",
+    "owner_boundary_check", "handle_handoff", "residue_ledger",
+    "execution_receipt_handoff", "authority_split_gate", "state_namespace_boundary"
+  ],
+  "subagent_strategy": {
+    "status": "none",
+    "explanation": "Plan authoring does not launch further implementation agents; prior read-only analyses are evidence inputs and SWU execution remains a later owner route.",
+    "authorization": "not_needed"
+  },
+  "subagent_lifecycle": {"status": "none", "agents": []},
+  "steps": [
+    {
+      "step_id": "bounded-context",
+      "name": "Select approved design and runtime evidence",
+      "capability_ref": "context-builder",
+      "mode": "lean",
+      "pattern": "route",
+      "inputs": [{"kind": "intent", "ref": "user:correct-lifecycle"}],
+      "outputs": [{"kind": "handle", "ref": "work-pack/shared/context.md"}],
+      "techniques": ["handle_handoff", "state_namespace_boundary"],
+      "stop_conditions": ["Approved design refs are missing or contradictory."]
+    },
+    {
+      "step_id": "author-plan",
+      "name": "Author layered work-pack and execution entry",
+      "capability_ref": "invoke",
+      "mode": "plan",
+      "pattern": "sequential",
+      "inputs": [{"kind": "handle", "ref": "work-pack/shared/context.md"}],
+      "outputs": [{"kind": "artifact", "ref": "WORK-PACK.md"}, {"kind": "ledger", "ref": "work-pack/shared/cross-task-gaps.md"}],
+      "techniques": ["scu_swu_reduction", "recomposition_proof", "owner_boundary_check", "residue_ledger"]
+    },
+    {
+      "step_id": "distill-plan",
+      "name": "Validate smallest units and recomposition",
+      "capability_ref": "distill",
+      "mode": "validate",
+      "pattern": "validation",
+      "inputs": [{"kind": "artifact", "ref": "WORK-PACK.md"}],
+      "outputs": [{"kind": "artifact", "ref": "DISTILL-VALIDATION.md"}],
+      "evidence_artifact": "DISTILL-VALIDATION.md",
+      "techniques": ["validation_loop", "recomposition_proof"]
+    },
+    {
+      "step_id": "readiness-handoff",
+      "name": "Validate execution entry and hand off the host preflight prerequisite",
+      "capability_ref": "implementation-readiness",
+      "capability_status": "local-extension",
+      "mode": "validate-entry",
+      "pattern": "handoff",
+      "inputs": [{"kind": "artifact", "ref": "EXECUTION-ENTRY.json"}, {"kind": "artifact", "ref": "DISTILL-VALIDATION.md"}],
+      "outputs": [{"kind": "handoff", "ref": "experiment:host-payload-preflight:SWU-ACI-HTR-000"}],
+      "techniques": ["execution_receipt_handoff", "authority_split_gate"]
+    }
+  ],
+  "gates": [
+    {"gate_id": "exact-output", "kind": "policy", "owner": "host-workflow-authority-owner", "condition": "No caller path can satisfy terminal binding-output.", "on_fail": "block"},
+    {"gate_id": "distill-pass", "kind": "validation", "owner": "distill", "condition": "Atomicity, first-unit narrowness and recomposition pass.", "on_fail": "block"},
+    {"gate_id": "entry-pass", "kind": "validation", "owner": "implementation-readiness", "condition": "Execution entry schema, route digest and effect vocabulary pass.", "on_fail": "block"},
+    {"gate_id": "promotion-guard", "kind": "promotion_guardrail", "owner": "invoke", "condition": "Planning grants no execution, authority, publication or deployment effect.", "on_fail": "block"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": null,
+    "trace_events": ["context-selected", "plan-authored", "distill-validated", "execution-entry-validated", "handoff-ready"],
+    "signal_grouping": "invoke-plan-terminal-output-handoff-20260816"
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {"boundary_id": "invoke-to-readiness", "kind": "capability_handoff", "from_owner": "invoke", "to_owner": "implementation-readiness/experiment", "applies_to_steps": ["readiness-handoff"], "contract": "Only the validated owner-prerequisite route may run HTR-000; Task Session selection remains blocked.", "on_violation": "block"},
+      {"boundary_id": "host-to-runtime", "kind": "evidence_return", "from_owner": "codex-host", "to_owner": "host-workflow-runtime", "applies_to_steps": ["author-plan"], "contract": "Only exact PostToolUse host response bytes may become terminal-response evidence.", "on_violation": "block"}
+    ],
+    "authority": {"lifecycle": "agents-communication-infra", "execution": "task-session", "validation": "runtime-test-owners", "evidence": "host-workflow-runtime", "memory": "none", "promotion": "repository-owner"},
+    "receipts": [
+      {"receipt_id": "task-session-receipt", "producer": "task-session", "required_fields": ["session_id", "artifacts", "validation_result", "status", "blockers"], "stores": ["plan/session-evidence/<SWU>/task-session-receipt.json"], "on_missing": "block"}
+    ],
+    "state_namespaces": [
+      {"namespace": "codex-host-tool-response", "owner": "codex-host", "write_policy": "host-produced only"},
+      {"namespace": "runtime-journal", "owner": "host-workflow-runtime", "write_policy": "atomic accepted facts"},
+      {"namespace": "plan-session-evidence", "owner": "task-session/invoke-refresh", "write_policy": "declared SWU targets only"}
+    ]
+  },
+  "promotion_guardrails": [
+    "Plan artifacts do not authorize source mutation.",
+    "Execution evidence does not promote inventory, ontology, glossary, sigil or spell knowledge."
+  ]
+}

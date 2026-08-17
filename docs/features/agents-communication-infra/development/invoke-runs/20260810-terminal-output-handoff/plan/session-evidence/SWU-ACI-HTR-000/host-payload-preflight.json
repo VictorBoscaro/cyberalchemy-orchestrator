@@ -1,0 +1,314 @@
+{
+  "schema_version": "aci.host-payload-preflight-receipt/v1",
+  "work_pack_id": "WP-ACI-TERMINAL-OUTPUT-HANDOFF-20260816",
+  "swu_id": "SWU-ACI-HTR-000",
+  "route_id": "preflight-htr-000",
+  "mode": "task-session:execute",
+  "recorded_at": "2026-08-17T11:51:53.9019258-03:00",
+  "outcome": {
+    "status": "pass",
+    "exit_reason": "resolved",
+    "htr000_fence_retained": false,
+    "permits_htr_001_selection": true,
+    "runtime_mutation_authorized": false,
+    "summary": "A corrected Codex CLI 0.146 matrix captured a real collaborationlist_agents PostToolUse event. Its tool_response is a JSON-encoded string; one uniquely named completed agent yielded exact UTF-8 bytes for a Unicode/newline fixture and for a predeclared 4,903-byte numbered fixture. Strict replay rejected unknown shape, wrong response type, ambiguous producer and syntactically truncated JSON. HTR-000 passes within the empirically verified 4,903-byte bound; HTR-001 still requires its normal refresh, selection and execution gates."
+  },
+  "decision_gate": {
+    "status": "pass",
+    "selected_option": "A — diagnostic ladder before implementation",
+    "selected_by": "repository owner",
+    "selection_source": "2026-08-17 user instruction: pode seguir",
+    "unresolved_decisions": 0
+  },
+  "context_pack": {
+    "mode": "lean",
+    "selected_source_count": 8,
+    "obligation_coverage_percent": 100,
+    "strict_coverage": "pass",
+    "controlling_constraints": [
+      "evidence-only prerequisite; no product runtime mutation",
+      "exact host-observed response is the only binding-output authority",
+      "no rollout scraping or agent-declared output-file substitution",
+      "HTR-001 remains unselected until normal downstream gates run"
+    ]
+  },
+  "host": {
+    "primary_product": "codex-cli",
+    "primary_version": "0.146.0-alpha.10.1",
+    "primary_binary_sha256": "f10ee07cfbcab9db4eabe53744f20f3bcdeb89e1ae4d5c2a586d36dd28cb8dd6",
+    "comparison_version": "0.147.0",
+    "comparison_binary_sha256": "935a1911ed2556e4ffcec995f4886ac2ac425863ba26fed264df62e30272ad9d",
+    "platform": "windows",
+    "probe_root": "C:/tmp/aci-htr000-matrix-20260817-1",
+    "product_runtime_modified": false,
+    "global_cli_updated": false,
+    "rollout_read_or_scraped": false
+  },
+  "probe_configuration": {
+    "project": "C:/tmp/aci-htr000-matrix-20260817-1/project",
+    "hook_matcher": ".*",
+    "hook_behavior": "inert binary stdin capture plus process metadata",
+    "hook_trust_bypass": true,
+    "capturer_sha256": "f5032279bcd780f96cebc80890e742b2574d3680a145ccb7176045837bce4b2b",
+    "effective_hooks_sha256": "bd3e0bed6efdf4124c9de75a4e2116afe4117718aebd1b7471473e49f211dfd5",
+    "captured_process_evidence": [
+      "argv",
+      "cwd",
+      "pid",
+      "raw stdin size",
+      "raw stdin SHA-256",
+      "event name",
+      "tool name"
+    ]
+  },
+  "diagnostic_matrix": [
+    {
+      "case": "0.146 session discovery",
+      "model": "gpt-5.6-sol",
+      "result": "pass",
+      "evidence": "SessionStart, UserPromptSubmit and Stop were captured by the disposable project hook."
+    },
+    {
+      "case": "0.146 ordinary direct function tool",
+      "model": "gpt-5.4-mini",
+      "tool": "Bash",
+      "result": "pass",
+      "evidence": "The shell command executed and matching PreToolUse and PostToolUse events were captured."
+    },
+    {
+      "case": "0.146 empty direct list_agents",
+      "model": "gpt-5.4-mini",
+      "tool": "collaborationlist_agents",
+      "result": "pass",
+      "evidence": "PreToolUse and PostToolUse were captured; tool_response contained the running root agent."
+    },
+    {
+      "case": "0.146 completed Unicode/newline fixture",
+      "model": "gpt-5.5",
+      "tool_sequence": [
+        "collaborationspawn_agent",
+        "collaborationwait_agent",
+        "collaborationlist_agents"
+      ],
+      "result": "pass",
+      "evidence": "All three direct function calls emitted matching Pre/Post events and the completed bytes matched the predeclared fixture."
+    },
+    {
+      "case": "0.146 repeated-character 1 KiB fixture",
+      "model": "gpt-5.4-mini",
+      "result": "invalid_fixture",
+      "evidence": "The child generated only 259 characters and omitted the suffix; this cannot distinguish producer-generation failure from transport truncation and is not admission evidence."
+    },
+    {
+      "case": "0.146 numbered large fixture",
+      "model": "gpt-5.5",
+      "result": "pass",
+      "evidence": "The predeclared 130-line, 4,903-byte response matched exactly through PostToolUse."
+    },
+    {
+      "case": "0.147 code-mode nested shell control",
+      "model": "gpt-5.6-sol",
+      "tool": "Bash",
+      "result": "pass",
+      "evidence": "The nested shell effect occurred and matching Pre/Post events were captured, disproving a general code-mode hook bypass."
+    },
+    {
+      "case": "0.147 forced code-mode collaboration call",
+      "model": "gpt-5.6-sol",
+      "result": "capability_unavailable",
+      "evidence": "The code-mode runtime returned TypeError because tools.collaboration was undefined; list_agents was not executed, so absence of its hook event is not a delivery failure."
+    }
+  ],
+  "actual_event_contract": {
+    "hook_event_name": "PostToolUse",
+    "hook_tool_name": "collaborationlist_agents",
+    "tool_input": {},
+    "tool_response_type": "string",
+    "tool_response_encoding": "UTF-8 JSON text",
+    "inner_response_shape": {
+      "agents": [
+        {
+          "agent_name": "string",
+          "agent_status": "running string or object containing completed"
+        }
+      ]
+    },
+    "extraction_rule": "UTF8(JSON.parse(event.tool_response).agents filtered to exactly one agent_name equal to the bound canonical task name [0].agent_status.completed)",
+    "correlation_rule": "Require exactly one agent entry whose canonical agent_name equals the bound target and whose agent_status is exactly an object with one string completed field.",
+    "strict_event_top_level_keys": [
+      "cwd",
+      "hook_event_name",
+      "model",
+      "permission_mode",
+      "session_id",
+      "tool_input",
+      "tool_name",
+      "tool_response",
+      "tool_use_id",
+      "transcript_path",
+      "turn_id"
+    ],
+    "important_matcher_correction": "The observed name is collaborationlist_agents with no dot or underscore. The current production matcher does not include list_agents and a future HTR-002 matcher must cover this exact spelling."
+  },
+  "short_fixture": {
+    "agent_name": "/root/htr000_unicode_fixture_v2",
+    "expected_completed_value": "ACI-HOST-PAYLOAD-PROBE-V3\nunicode=áβ中🙂\n\nline=two\nEND",
+    "raw_event_size_bytes": 734,
+    "raw_event_sha256": "68194010df3e678be27478731f8a1d3bb5dd37fbdcb730c92332e8d7d18661de",
+    "tool_response_string_size_bytes": 204,
+    "tool_response_string_sha256": "d4e302b6f3615fc853fdcedb86e47ac707fc9c10ec21c99f488128c37c62268c",
+    "completed_utf8_size_bytes": 59,
+    "completed_sha256": "426115cd06a66f0e6d937d1723d812caa6c3ade3fab5e89906e3390acfba238b",
+    "candidate_count": 1,
+    "matches_predeclared_value": true,
+    "unicode_preserved": true,
+    "blank_line_preserved": true
+  },
+  "large_fixture": {
+    "agent_name": "/root/htr000_large_numbered",
+    "generator": "BEGIN-LARGE-NUMBERED, then lines 0000 through 0127 formatted <index>|0123456789abcdef0123456789abcdef, then END-LARGE-NUMBERED",
+    "line_count": 130,
+    "raw_event_size_bytes": 5824,
+    "raw_event_sha256": "0ee0f9a4b67e226cf07838df31c05c3cfaf03fed00061ecaa7cd0901861bb9bb",
+    "tool_response_string_size_bytes": 5169,
+    "tool_response_string_sha256": "10b1002da55ad064dc828503d102721a70573f8f91fa01c8dd3f4e8a0f8d2be9",
+    "completed_utf8_size_bytes": 4903,
+    "completed_sha256": "de41fd21fde62f677e3ff3cd29f93ede32a4403ab66cb13828c6f35d7d6951ab",
+    "expected_utf8_size_bytes": 4903,
+    "expected_sha256": "de41fd21fde62f677e3ff3cd29f93ede32a4403ab66cb13828c6f35d7d6951ab",
+    "candidate_count": 1,
+    "matches_predeclared_value": true,
+    "empirical_complete_bound_bytes": 4903
+  },
+  "independent_replay": {
+    "status": "pass_with_documented_limit",
+    "implementation": "separate strict Python replay over captured raw stdin bytes",
+    "cases": [
+      {
+        "case": "short valid fixture",
+        "result": "pass",
+        "bytes": 59,
+        "sha256": "426115cd06a66f0e6d937d1723d812caa6c3ade3fab5e89906e3390acfba238b"
+      },
+      {
+        "case": "large valid fixture",
+        "result": "pass",
+        "bytes": 4903,
+        "sha256": "de41fd21fde62f677e3ff3cd29f93ede32a4403ab66cb13828c6f35d7d6951ab"
+      },
+      {
+        "case": "unknown response schema",
+        "result": "reject",
+        "reason": "response-schema"
+      },
+      {
+        "case": "tool_response is not a string",
+        "result": "reject",
+        "reason": "response-type"
+      },
+      {
+        "case": "duplicate bound producer",
+        "result": "reject",
+        "reason": "producer-ambiguity"
+      },
+      {
+        "case": "raw event JSON truncated",
+        "result": "reject",
+        "reason": "event-json"
+      },
+      {
+        "case": "inner tool_response JSON truncated",
+        "result": "reject",
+        "reason": "response-json"
+      },
+      {
+        "case": "completed text semantically shortened while schema remains valid",
+        "result": "accepted_by_structure",
+        "reason": "The payload exposes no independent truncation flag or expected digest; semantic shortening is not detectable from one event alone."
+      }
+    ]
+  },
+  "acceptance_matrix": [
+    {
+      "check": "real PostToolUse capture",
+      "result": "pass",
+      "evidence": "Raw 0.146 event captured for collaborationlist_agents."
+    },
+    {
+      "check": "deterministic byte extraction",
+      "result": "pass",
+      "evidence": "Strict selector reproduced the predeclared 53-byte and 4,903-byte values and digests."
+    },
+    {
+      "check": "unambiguous producer correlation",
+      "result": "pass",
+      "evidence": "Both accepted fixtures contained exactly one canonical target name."
+    },
+    {
+      "check": "Unicode and newline preservation",
+      "result": "pass",
+      "evidence": "The short fixture matched exact UTF-8 bytes including Unicode and one blank line."
+    },
+    {
+      "check": "large-output completeness",
+      "result": "pass_bounded",
+      "evidence": "A 4,903-byte, 130-line predeclared fixture matched exactly; larger sizes are not claimed."
+    },
+    {
+      "check": "unknown schema, ambiguity and syntactic truncation rejection",
+      "result": "pass",
+      "evidence": "Independent replay rejected each strict negative."
+    },
+    {
+      "check": "semantic truncation detection",
+      "result": "not_observable",
+      "evidence": "A valid shorter completed string has no truncation discriminator; downstream admission must remain within a bounded proven size and must not claim detection of silent semantic shortening."
+    }
+  ],
+  "downstream_constraints": [
+    "HTR-001 may now be considered for selection, but this receipt does not select it or authorize runtime mutation.",
+    "Until additional evidence exists, an HTR-001 oversized-response policy must not claim completeness above 4,903 UTF-8 bytes.",
+    "HTR-002 must match the exact hook name collaborationlist_agents and parse tool_response as JSON text before applying the strict selector.",
+    "HTR-002 must fail closed on unknown response shape, wrong type, ambiguous name, non-completed status or invalid UTF-8/JSON.",
+    "A gpt-5.6-sol code-mode session did not expose tools.collaboration; a live rollout using that model requires a separately proven direct collaboration surface or a reopened capture-seam decision."
+  ],
+  "superseded_claims": [
+    {
+      "claim": "Codex exec 0.146 does not dispatch PostToolUse",
+      "status": "retracted",
+      "reason": "The corrected matrix captured PostToolUse for Bash and collaborationlist_agents on the same 0.146 exec surface. The earlier probe did not preserve enough discovery/configuration evidence and produced a false negative."
+    },
+    {
+      "claim": "Upgrading to 0.147 is required for list_agents hooks",
+      "status": "rejected",
+      "reason": "The required direct function-tool event already works on the contracted 0.146 version."
+    }
+  ],
+  "prohibited_substitutions": {
+    "rollout_scraping_used": false,
+    "agent_declared_output_file_used": false,
+    "runtime_source_changed": false,
+    "product_hook_configuration_changed": false
+  },
+  "subagent_closeout": {
+    "status": "pass",
+    "planning_subagent": "/root/htr000_route_repair",
+    "spawned_in_this_execution_turn": 0,
+    "inherited_agents_open": 0,
+    "probe_children": [
+      {
+        "agent_name": "/root/htr000_unicode_fixture_v2",
+        "terminal_state": "completed"
+      },
+      {
+        "agent_name": "/root/htr000_large_numbered",
+        "terminal_state": "completed"
+      }
+    ]
+  },
+  "integrity": {
+    "format": "UTF-8 JSON",
+    "hashable": true,
+    "self_hash": "Compute SHA-256 over the complete receipt bytes; the digest is external to avoid recursive self-reference."
+  }
+}

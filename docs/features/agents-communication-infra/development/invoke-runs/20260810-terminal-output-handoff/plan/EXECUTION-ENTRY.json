@@ -1,0 +1,169 @@
+{
+  "schema_version": "arcanum.work-pack-execution-entry/v1",
+  "work_pack_id": "WP-ACI-TERMINAL-OUTPUT-HANDOFF-20260816",
+  "admission_timing": "selected-unit-at-task-session",
+  "frontier": [
+    "SWU-ACI-HTR-000",
+    "SWU-ACI-HTR-001",
+    "SWU-ACI-HTR-002",
+    "SWU-ACI-HTR-003"
+  ],
+  "execution_policy": {
+    "route_policy": "automatic-in-scope",
+    "allowed_routes": [
+      {
+        "route_id": "preflight-htr-000",
+        "frontier_swu": "SWU-ACI-HTR-000",
+        "capability": "task-session",
+        "mode": "execute",
+        "target": "SWU-ACI-HTR-000",
+        "write_scope": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-000/host-payload-preflight.json"
+        ],
+        "effect_class": "repository-local-reversible",
+        "required_inputs": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/tasks/TASK-HTR-CAPTURE.md#swu-aci-htr-000--host-payload-preflight"
+        ],
+        "expected_receipt": "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-000/host-payload-preflight.json"
+      },
+      {
+        "route_id": "execute-htr-001",
+        "frontier_swu": "SWU-ACI-HTR-001",
+        "capability": "task-session",
+        "mode": "execute",
+        "target": "SWU-ACI-HTR-001",
+        "write_scope": [
+          "implementations/server/runtime/service.py",
+          "implementations/tests/runtime/test_host_workflow_binding.py",
+          "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py",
+          "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+          "implementations/server/runtime/local_pilot.py",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-001/baseline.json",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-001/task-session-receipt.json"
+        ],
+        "effect_class": "repository-local-reversible",
+        "required_inputs": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/tasks/TASK-HTR-CAPTURE.md#swu-aci-htr-001--runtime-byte-commit",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-000/host-payload-preflight.json"
+        ],
+        "expected_receipt": "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-001/task-session-receipt.json"
+      },
+      {
+        "route_id": "closeout-htr-001",
+        "frontier_swu": "SWU-ACI-HTR-001",
+        "capability": "invoke",
+        "mode": "refresh-apply-approved",
+        "target": "SWU-ACI-HTR-001-closeout",
+        "write_scope": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/WORK-PACK.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/tasks/TASK-HTR-CAPTURE.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/waves/W0.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-001/owner-receipt.json"
+        ],
+        "effect_class": "repository-local-reversible",
+        "required_inputs": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-001/task-session-receipt.json"
+        ],
+        "expected_receipt": "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-001/owner-receipt.json"
+      },
+      {
+        "route_id": "execute-htr-002",
+        "frontier_swu": "SWU-ACI-HTR-002",
+        "capability": "task-session",
+        "mode": "execute",
+        "target": "SWU-ACI-HTR-002",
+        "write_scope": [
+          ".codex/hooks.json",
+          "implementations/server/runtime/host_dispatch_hook.py",
+          "implementations/tests/runtime/test_host_dispatch_hook.py",
+          "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+          "implementations/server/runtime/local_pilot.py",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-002/baseline.json",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-002/task-session-receipt.json"
+        ],
+        "effect_class": "repository-local-reversible",
+        "required_inputs": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/tasks/TASK-HTR-CAPTURE.md#swu-aci-htr-002--codex-host-capture",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-001/owner-receipt.json"
+        ],
+        "expected_receipt": "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-002/task-session-receipt.json"
+      },
+      {
+        "route_id": "closeout-htr-002",
+        "frontier_swu": "SWU-ACI-HTR-002",
+        "capability": "invoke",
+        "mode": "refresh-apply-approved",
+        "target": "SWU-ACI-HTR-002-closeout",
+        "write_scope": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/WORK-PACK.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/tasks/TASK-HTR-CAPTURE.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/waves/W0.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-002/owner-receipt.json"
+        ],
+        "effect_class": "repository-local-reversible",
+        "required_inputs": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-002/task-session-receipt.json"
+        ],
+        "expected_receipt": "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-002/owner-receipt.json"
+      },
+      {
+        "route_id": "execute-htr-003",
+        "frontier_swu": "SWU-ACI-HTR-003",
+        "capability": "task-session",
+        "mode": "execute",
+        "target": "SWU-ACI-HTR-003",
+        "write_scope": [
+          "implementations/server/runtime/dispatch_workflow.py",
+          "implementations/server/runtime/service.py",
+          "implementations/tests/runtime/test_dispatch_workflow.py",
+          "implementations/tests/runtime/test_runtime_type_bootstrap.py",
+          "implementations/tests/runtime/test_runtime_type_bootstrap_abuse.py",
+          "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+          "implementations/server/runtime/local_pilot.py",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-003/baseline.json",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-003/task-session-receipt.json"
+        ],
+        "effect_class": "repository-local-reversible",
+        "required_inputs": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/tasks/TASK-HTR-SEQUENTIAL.md#swu-aci-htr-003",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-002/owner-receipt.json"
+        ],
+        "expected_receipt": "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-003/task-session-receipt.json"
+      },
+      {
+        "route_id": "closeout-htr-003",
+        "frontier_swu": "SWU-ACI-HTR-003",
+        "capability": "invoke",
+        "mode": "refresh-apply-approved",
+        "target": "SWU-ACI-HTR-003-closeout",
+        "write_scope": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/WORK-PACK.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/tasks/TASK-HTR-SEQUENTIAL.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/work-pack/waves/W1.md",
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-003/owner-receipt.json"
+        ],
+        "effect_class": "repository-local-reversible",
+        "required_inputs": [
+          "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-003/task-session-receipt.json"
+        ],
+        "expected_receipt": "docs/features/agents-communication-infra/development/invoke-runs/20260810-terminal-output-handoff/plan/session-evidence/SWU-ACI-HTR-003/owner-receipt.json"
+      }
+    ],
+    "allowed_routes_digest": "50b1138103df318d8c34fff0645533f7cc0909df63f2a5e10dcfb00a3c07099d",
+    "digest_algorithm": "sha256 of RFC8785-compatible canonical JSON for allowed_routes",
+    "automatic_decisions": ["internal-tool-selection", "capability-owner-routing", "reversible-local-default", "declared-fallback", "declared-retry", "fresh-task-session-resumption"],
+    "stop_decisions": ["product-or-semantic-choice", "scope-expansion", "destructive-or-irreversible-effect", "credentials-or-secret-access", "external-message-or-network-effect", "cost-policy-or-risk-acceptance", "authority-promotion-publication-deployment", "failed-acceptance-critical-validation"],
+    "scope_source": "exact-work-pack-and-captured-frontier",
+    "validation_policy": "owner-gates-remain-mandatory",
+    "declared_retry": {"max": 1, "only_after": "REPAIRABLE_OWNER_CONDITION", "same_route_and_binding": true}
+  },
+  "execution_entry": {
+    "state": "owner-prerequisite",
+    "selected_unit": "SWU-ACI-HTR-000",
+    "route_id": "preflight-htr-000",
+    "next_owner": "task-session:execute"
+  },
+  "pre_execution_owner_prerequisite": null,
+  "continuation_rule": "A passing HTR-000 receipt permits reclassification to selection-ready for HTR-001; L2/L3 require a new normative plan and are not in this frontier.",
+  "authority_effect": "none"
+}
