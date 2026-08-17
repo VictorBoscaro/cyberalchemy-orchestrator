@@ -1,0 +1,147 @@
+{
+  "dispatch_id": "2026-08-17-experiment-recommendation-trigger",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Determine under what observable and governable conditions Cyberalchemy Orchestrator should recommend, without imposing, a bounded validation experiment after research appears to have advanced understanding without producing a constructed artifact. Distinguish what the current ledger can prove from what requires artifact inspection or new instrumentation.",
+  "context": "The user wants the system to recognize a productive transition from accumulated research to validation rather than trigger on an arbitrary research count. Three isolated repository corpora carry different evidence: domainspec-core contains transition precedents, superinterviewer contains intervention and autonomy constraints, and this repository contains the executable ledger and real histories. The research must separate 'several researches', 'advanced understanding', and 'nothing was built', preserve abstention and alternatives, and make no novelty claim stronger than the cited evidence.",
+  "max_loops": 2,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/experiment-recommendation-trigger/",
+  "groups": [
+    {
+      "group_id": "domainspec-core-scouts",
+      "n": 2,
+      "agents": [
+        {
+          "agent_name": "Nonaka, Ikujiro",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "initial_prompt": "Route: bounded read-only precedent research. Before tools, read and follow C:/Users/victo/domainspec-core/AGENTS.md and state the exact files or narrow file families you will inspect. Corpus boundary: C:/Users/victo/domainspec-core only; do not browse the web and do not mutate that repository. Find authoritative or historically influential contracts, templates, skills, decisions, and definitions governing transitions among research, experiment proposal, experiment execution, implementation, rescope, waiting, and stopping. Distinguish current authority from historical precedent and flag drift against the current orchestrator rather than importing old rules. For each usable precedent report: exact path and line, owner/status, transition condition, required decision owner, falsifier/disconfirming outcome, and recommended next action. Write only C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/scout-domainspec-authority.md. End with a compact precedent matrix and the strongest fact that would invalidate your interpretation. Claim <= proof."
+        },
+        {
+          "agent_name": "Argyris, Chris",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "initial_prompt": "Route: bounded read-only historical-case research. Before tools, read and follow C:/Users/victo/domainspec-core/AGENTS.md and state the exact files or narrow file families you will inspect. Corpus boundary: C:/Users/victo/domainspec-core only; do not browse the web and do not mutate that repository. Reconstruct concrete episodes or artifact chains where research led to an experiment proposal, implementation/build, further research, rescope, or no action. Prefer ledger/session evidence and linked artifacts over normative prose. For each episode record: originating objective, research sequence, evidence of actual epistemic advance (not just closure), next action, whether anything was built, linkage quality, and plausible counterinterpretation. Explicitly seek counterexamples to 'multiple resolved research dispatches plus no code dispatch means recommend experiment'. Write only C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/scout-domainspec-cases.md. End with 3-6 candidate transition signals ranked by evidential strength and the strongest fact that would invalidate each. Claim <= proof."
+        }
+      ]
+    },
+    {
+      "group_id": "superinterviewer-scouts",
+      "n": 2,
+      "agents": [
+        {
+          "agent_name": "Simon, Herbert",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "initial_prompt": "Route: bounded read-only interaction-policy research. Before tools, read and follow C:/Users/victo/superinterviewer/AGENTS.md and state the exact files or narrow file families you will inspect. Corpus boundary: C:/Users/victo/superinterviewer only; do not browse the web and do not mutate that repository. Determine when a suggestion to test is warranted relative to asking, informing, retrieving, reframing, waiting, advancing, stopping, or directly answering. Extract only evidenced constraints about intention, autonomy, reversibility, contestability, burden, missing distinctions, and who owns the needed signal. Separate ratified authority, proposed plan, internal synthesis, and open residue. Write only C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/scout-superinterviewer-policy.md. End with a decision table: observed condition | preferred move | why | abstain/suppress condition | citation, plus the strongest fact that would overturn the table. Claim <= proof."
+        },
+        {
+          "agent_name": "Blackwell, David",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "initial_prompt": "Route: bounded read-only evaluation research. Before tools, read and follow C:/Users/victo/superinterviewer/AGENTS.md and state the exact files or narrow file families you will inspect. Corpus boundary: C:/Users/victo/superinterviewer only; do not browse the web and do not mutate that repository. Find the strongest existing design for evaluating whether an experiment recommendation occurred at the right moment and caused useful learning rather than interruption, compliance, or silent reframing. Extract historical-episode requirements, baselines, discriminating low-commitment probes, result-to-action rules, inconclusive outcomes, burden/safety constraints, and causal alternative explanations. Do not design a product feature beyond what the corpus supports. Write only C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/scout-superinterviewer-evaluation.md. End with the minimum evaluable episode schema and a smallest credible validation protocol, each citing its owner/status and collapse-test. Claim <= proof."
+        }
+      ]
+    },
+    {
+      "group_id": "ledger-scouts",
+      "n": 2,
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "initial_prompt": "Route: bounded read-only ledger observability research. Before tools, read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md and state the exact code, schema, skill, and ledger files you will inspect. Corpus boundary: C:/Users/victo/cyberalchemy-orchestrator only; no web. Do not mutate source, ledger, or authority files. Map exactly what the current registry, opening rows, close rows, reader, APIs, parent links, timestamps, working folders, and artifact conventions can observe about: repeated related research, epistemic advance, surviving claims, absence of construction, unresolved decisions, and experiment readiness. Separate raw fields, safely derivable signals, artifact-dependent signals, and unavailable signals. Verify claims against executable schema/code and a bounded sample of real rows. Write only C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/scout-ledger-observability.md. End with a matrix signal | source | computable now? | confidence | missing evidence | collapse-test. Claim <= proof."
+        },
+        {
+          "agent_name": "Beck, Kent",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 1600,
+          "initial_prompt": "Route: bounded read-only empirical counterexample research. Before tools, read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md and state the exact ledger slices and linked artifact families you will inspect. Corpus boundary: C:/Users/victo/cyberalchemy-orchestrator only; no web. Do not mutate source, ledger, or authority files. Test candidate proxies against real historical sequences: multiple research dispatches, resolved closes, parent_dispatch_id, shared working folders or goals, absence of code/experiment dispatches, findings verdicts, and artifact presence. Seek false positives and false negatives, including unlogged/manual builds, cross-repo construction, intentionally foundational research, unresolved or killed findings, open work, and prior declined suggestions where observable. Do not infer semantic progress from exit_reason alone. Write only C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/scout-ledger-counterexamples.md. End with bounded cases and a confusion-oriented table proxy | supporting cases | countercases | safe use | unsafe inference. Claim <= proof."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "van Lamsweerde, Axel",
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2800,
+          "initial_prompt": "Route: research synthesis. Read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md, the complete research-initial-definitions.md, and the six exact scout reports in C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/. Do not inspect new corpora or browse the web; synthesize only the collected evidence and preserve disagreements. First write research.md containing the six scout returns verbatim with clear source headings. Then write findings.md answering the dispatch goal. Distinguish three predicates—related research sequence, evidenced epistemic advance, and absence of construction—and state which are ledger-observable, artifact-dependent, or unavailable. Produce: (1) candidate trigger rules with explicit abstention/suppression conditions; (2) an observability matrix; (3) a timing/intervention decision table; (4) the smallest validation protocol; and (5) minimal schema/instrumentation changes only if existing evidence proves they are needed. For every candidate include the required verdict row: candidate | owner (citation or precedent-clean) | witnessed? | sound? | verdict GO/KILL | use-mode. Ownership is not a kill; no novelty claim may ship without precedent evidence. A KILL is allowed only for no-witness or definitional collapse. Every load-bearing claim must cite a scout report and its underlying path/line. Put each keystone claim's collapse-test inline. Close with a one-line answer to the goal."
+        }
+      ]
+    },
+    {
+      "group_id": "reviewers",
+      "n": 2,
+      "agents": [
+        {
+          "agent_name": "Tetlock, Philip",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1200,
+          "initial_prompt": "Run the NON-VACUITY gate only. Read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md, research-initial-definitions.md, research.md, findings.md, and the six scout files in the working folder. Build the smallest concrete witness by applying every proposed trigger to bounded historical episodes already cited by the scouts. Check whether its inputs are truly observable and whether the same evidence supports the prescribed intervention; exit_reason or absence of code alone cannot count as progress or non-construction. For each trigger return WITNESSED or NO-WITNESS, the exact case and fields/artifacts used, false-positive/false-negative exposure, and the minimal correction. NO-WITNESS is a terminal typed negative: state what the trigger would have contributed and the exact missing fact that zeroes it. Write review-non-vacuity.md in the working folder and return a concise revision request to the writer. Do not run any other gate or inspect new corpora."
+        },
+        {
+          "agent_name": "Hacking, Ian",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 1200,
+          "initial_prompt": "Run the DEFINITIONAL-SOUNDNESS gate only. Read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md, research-initial-definitions.md, research.md, findings.md, and the six scout files in the working folder. Attack whether 'recommend a validation experiment after research advancement without construction' adds a discriminating decision rule or collapses into an existing generic next-step suggestion, experiment-readiness checklist, arbitrary count threshold, or restatement of artifact inspection. Subtract the owned DomainSpec experiment criteria and Superinterviewer suggestion policy; name the non-empty residue, if any. For each trigger return SOUND or TAUTOLOGICAL with exact evidence and correction. TAUTOLOGICAL is a terminal typed negative: state what the trigger would have contributed and the exact equivalence that zeroes it. Write review-definitional-soundness.md in the working folder and return a concise revision request to the writer. Do not run any other gate or inspect new corpora."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "domainspec-core-scouts",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "superinterviewer-scouts",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "ledger-scouts",
+      "to": "synthesizer",
+      "type": "sequential"
+    },
+    {
+      "from": "synthesizer",
+      "to": "reviewers",
+      "type": "zig-zag",
+      "loop_cap": 1
+    },
+    {
+      "from": "reviewers",
+      "to": "domainspec-core-scouts",
+      "type": "feedback",
+      "loop_cap": 1
+    },
+    {
+      "from": "reviewers",
+      "to": "superinterviewer-scouts",
+      "type": "feedback",
+      "loop_cap": 1
+    },
+    {
+      "from": "reviewers",
+      "to": "ledger-scouts",
+      "type": "feedback",
+      "loop_cap": 1
+    }
+  ]
+}
