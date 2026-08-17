@@ -14,7 +14,7 @@
     ".claude/skills/review/SKILL.md": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
     ".claude/skills/subagents-dispatch-lifecycle/SKILL.md": "sha256:db56136462d921c7f2be5b11e9078b1595f3d10d9004aec9c5f92f5eb864ee48",
     ".codex/hooks.json": "sha256:92c753bfd4501c87f07258b7c451de36ae6e0612d30158ea6129b690d133c385",
-    "AGENTS.md": "sha256:d7a597a3fa60edb57645cd2a242ead1466e92ee98ae263093631ebf24a085ada",
+    "AGENTS.md": "sha256:bd40abb0f76a092dd50d6a0b619eb0818ccb65cd081050772514b94fc8c43592",
     "CLAUDE.md": "sha256:12bae8441f0269fc61827a575fb09069a6f20e1ffefe7369c9f10411b180dd63",
     "docs/features/agent-provenance-telemetry/integration/stage-f/host-hook-policy.json": "sha256:1c7c3349222ddec734e989c99b2505cf72dc17a0651805c98cdbc33cfd47810b",
     "implementations/contracts/dispatch-type-registry.v1.json": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
