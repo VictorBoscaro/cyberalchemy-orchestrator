@@ -1,0 +1,13 @@
+{
+  "close_of": "2026-08-17-schema-domain-prior-art-scan",
+  "exit_reason": "resolved",
+  "capability_route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767",
+  "agents_spawned": {
+    "total": 1,
+    "tree": {
+      "explorer": 1,
+      "helpers": 0
+    },
+    "loops_used": 1
+  }
+}

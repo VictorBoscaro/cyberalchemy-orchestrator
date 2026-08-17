@@ -1,0 +1,113 @@
+{
+  "dispatch_id": "2026-08-16-artifact-schema-governance-landscape",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Identify contemporary systems, standards, and conceptual models that govern heterogeneous digital artifacts through extensible schemas or types while admitting artifacts without a specific established classification. Determine how those precedents characterize identity, classification, extension, validation, relations, provenance, and evolution without forcing a product decision or novelty claim.",
+  "context": "Schema Service is a bootstrap project for identifiable, interpretable, and progressively governable repository artifacts without centralizing every domain's semantics. The object of study is not yet known to be one established system category rather than a composition of mechanisms. The research begins from projects/schema-service/research/artifact-schema-governance-landscape/research-initial-definitions.md and must distinguish current maintained practice, standards, and theory.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "projects/schema-service/research/artifact-schema-governance-landscape",
+  "groups": [
+    {
+      "group_id": "landscape_explorers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Nonaka, Ikujiro",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 5500,
+          "initial_prompt": "Investigate the knowledge and classification lineage for Artifact Schema Governance Landscape. First read AGENTS.md, projects/schema-service/research/artifact-schema-governance-landscape/research-initial-definitions.md, and projects/schema-service/README.md. Search current primary literature, maintained standards, and official system documentation as of 2026-08-16 across knowledge management, knowledge organization, library and information science, controlled vocabularies, semantic web and ontology systems, and digital repositories. Look for systems that govern heterogeneous artifacts, admit items without a specific established class, preserve open descriptive vocabulary without automatically making it normative, and support later refinement or reclassification. Do not assume that one field owns the whole phenomenon. Identify 6 to 10 concrete candidates or candidate families. For each record: owner and established name; whether it is a theory, standard, maintained implementation, or ecosystem; governed unit; schema or type versus instance distinction; handling of broad or incomplete classification; extension and authority model; validation; identity and provenance; evolution or reclassification; what is integrated versus delegated; and exact primary-source URLs with publication or update dates when available. Use secondary sources only for orientation and never as sole support for a technical claim. Distinguish documented capability from inference and state what evidence would falsify each claimed fit. Do not modify source artifacts or write files. Return a structured, citation-rich report for downstream reviewers and synthesis."
+        },
+        {
+          "agent_name": "Goguen, Joseph",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "initial_prompt": "Investigate the formal schema and data-model lineage for Artifact Schema Governance Landscape. First read AGENTS.md, projects/schema-service/research/artifact-schema-governance-landscape/research-initial-definitions.md, and projects/schema-service/README.md. Search current primary literature, maintained standards, and official implementations as of 2026-08-16 across database schema theory, categorical databases and functorial data migration, algebraic specification and institutions, metamodeling such as MOF or Ecore, schema evolution, extensible data types, and validation languages. Include categorical databases because the local design discusses schema definitions, instances, mappings, relations, composition, and migration, but do not presume they explain the entire service. Identify 6 to 10 concrete candidates or candidate families. For each record: owner and established name; theory, standard, maintained implementation, or ecosystem status; governed unit; schema-instance semantics; treatment of partially or broadly classified instances; extension and authority; validation; identity and provenance if present; evolution and migration; operational witness; limitations; and exact primary-source URLs with publication or update dates when available. Use official specifications, project documentation, or original papers for technical claims. Clearly distinguish mathematical analogy from deployable mechanism, documented capability from inference, and current maintenance from historical precedent. State what evidence would falsify each claimed fit. Do not modify source artifacts or write files. Return a structured, citation-rich report for downstream reviewers and synthesis."
+        },
+        {
+          "agent_name": "Evans, Eric",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 5500,
+          "initial_prompt": "Investigate currently operated systems for Artifact Schema Governance Landscape. First read AGENTS.md, projects/schema-service/research/artifact-schema-governance-landscape/research-initial-definitions.md, and projects/schema-service/README.md. Search official documentation and primary technical sources current as of 2026-08-16 across schema registries, data contracts, data catalogs, metadata governance platforms, CMS content-type systems, document and digital-asset repositories, knowledge bases, artifact or package registries, and adjacent maintained tools. Seek concrete workflows rather than feature-name similarity: admitting an artifact before a specific domain type exists; preserving a stable identity; attaching broad and specific classifications; adding domain-owned types without editing a central enumeration; validating instances and relations; preserving provenance; and evolving or reclassifying instances. Identify 6 to 10 concrete systems or system families. For each record: owner; official name and category; maintained status; governed unit; type and instance model; fallback or incomplete-classification behavior; extension and authority model; validation and enforcement boundary; identity and provenance; evolution or reclassification; integration boundaries; and exact official URLs with update or release dates when available. Separate marketing claims from documented behavior and record missing evidence explicitly. State what evidence would falsify each claimed fit. Do not modify source artifacts or write files. Return a structured, citation-rich report for downstream reviewers and synthesis."
+        }
+      ]
+    },
+    {
+      "group_id": "landscape_reviewers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Parnas, David",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "Run only the precedent gate over the bound returns from all Artifact Schema Governance Landscape explorers. Read the initial definitions and inspect every cited primary source needed to verify ownership, official terminology, maintained status, and claimed capability. Do not conduct a new landscape sweep or score product desirability. For every candidate, classify the owner as a citable owner or precedent-clean only after a credible search; flag citations that are secondary, stale, circular, inaccessible, or do not support the claim; and distinguish an owned reusable mechanism from something already deployed in this repository. Finding an owner is a positive result, never a KILL. Return a precise gate report listing verified owners, unsupported attribution or capability claims, corrections required before synthesis, and the primary-source URL for every surviving ownership claim. Do not modify files."
+        },
+        {
+          "agent_name": "Wald, Abraham",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "Run only the non-vacuity gate over the bound returns from all Artifact Schema Governance Landscape explorers. Use this concrete witness: a Markdown artifact has stable identity and known representation but matches no current semantic subtype; it is admitted under a valid broad classification with optional descriptive vocabulary; later a domain-owned specific schema becomes available and the instance can be refined or reclassified without silently rewriting the artifact or losing prior provenance. For each candidate, determine from cited primary evidence which parts of that witness are actually supported, which require composition with another mechanism, and which are absent. Do not demand that one candidate solve the entire witness. Mark no-witness only when the claimed contribution itself has no concrete instance or operational path; otherwise preserve it with explicit scope. Return the witnessed contribution, exact collapse fact for any no-witness candidate, and corrections required before synthesis. Do not run the precedent or definitional-soundness gate and do not modify files."
+        },
+        {
+          "agent_name": "Hacking, Ian",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 3500,
+          "initial_prompt": "Run only the definitional-soundness gate over the bound returns from all Artifact Schema Governance Landscape explorers. Test whether proposed categories are established concepts, loose market labels, duplicates under different names, or mere redescriptions of the local Schema Service. Determine whether the combined phenomenon is owned by one established category or is more honestly described as a composition of separately owned mechanisms. Keep materially distinct mechanisms separate even when vendors bundle them, and collapse candidates only when their proposed contribution adds no distinction beyond an already named mechanism. For every tautological collapse, state what it would have contributed and the exact definitional fact that zeroes it. Return surviving category boundaries, collapsed aliases, ambiguous terms, and corrections required before synthesis. Do not run the precedent or non-vacuity gate and do not modify files."
+        }
+      ]
+    },
+    {
+      "group_id": "landscape_synthesis",
+      "n": 1,
+      "robot_talks": false,
+      "agents": [
+        {
+          "agent_name": "Spivak, David",
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 7500,
+          "initial_prompt": "Synthesize Artifact Schema Governance Landscape only after receiving the bound returns from all explorers and all three skeptic gates. Read AGENTS.md, projects/schema-service/research/artifact-schema-governance-landscape/research-initial-definitions.md, and projects/schema-service/README.md. Do not perform a new landscape sweep; open cited primary sources only when necessary to resolve a reviewer-identified ambiguity. Write exactly two artifacts inside projects/schema-service/research/artifact-schema-governance-landscape and edit no other file. First, create research.md containing the complete explorer and reviewer returns verbatim, separated by agent, role, perspective or gate, with clear provenance. Second, create findings.md as a cited synthesis. Every load-bearing synthesis claim must cite the relevant section of research.md and the underlying primary-source URL. Include: a one-paragraph direct answer to the research question; a map of established disciplinary and product families; a capability matrix covering governed unit, type-instance model, broad or incomplete classification, extension and authority, validation, relations, identity and provenance, evolution, and deployment status; an account of what is usually integrated versus composed across systems; terminology that is established, ambiguous, or misleading; limits and missing evidence; and the required verdict matrix with columns candidate, owner, witnessed, sound, verdict, and use-mode. An owned but unused mechanism is GO with build-from-owned, not a negative. Use KILL only for a verified no-witness or tautological collapse. Make no novelty claim and do not turn the landscape into product decisions. End with a one-line answer to the dispatch goal. Use apply_patch for both files and return a concise handoff naming them."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "landscape_explorers",
+      "to": "landscape_reviewers",
+      "type": "sequential"
+    },
+    {
+      "from": "landscape_explorers",
+      "to": "landscape_synthesis",
+      "type": "sequential"
+    },
+    {
+      "from": "landscape_reviewers",
+      "to": "landscape_synthesis",
+      "type": "sequential"
+    }
+  ]
+}

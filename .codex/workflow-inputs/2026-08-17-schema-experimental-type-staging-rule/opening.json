@@ -1,0 +1,46 @@
+{
+  "dispatch_id": "2026-08-17-schema-experimental-type-staging-rule",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Determinar uma regra provisória, verificável e sem vazamento de autoridade para armazenar e usar definições de tipos experimentais no experimentation-plan do Schema Service.",
+  "context": "O Schema Service está em bootstrap e o usuário propôs três experimentos sequenciais: analysis, skills e folders. O primeiro precisa usar um tipo ainda não publicado. A pesquisa deve decidir localização, estado, identidade, escopo de resolução e promoção, distinguindo uso experimental de publicação normativa. Leia projects/schema-service/research/experimental-type-staging-rule/research-initial-definitions.md antes de analisar.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "working_folder": "projects/schema-service/research/experimental-type-staging-rule",
+  "groups": [
+    {
+      "group_id": "rule_reviewers",
+      "n": 2,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 4500,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md e projects/schema-service/research/experimental-type-staging-rule/research-initial-definitions.md. Mapeie apenas precedentes locais necessários para responder onde e como guardar definições de tipos experimentais sem torná-las registry: projects/schema-service/README.md, experimentos existentes, candidate batches/fixtures e regras de promoção/resolução diretamente relacionadas. Diferencie precedente operacional, convenção local e proposta sua. Produza uma regra candidata com caminho, metadados mínimos, escopo de resolução, revisão, abandono e promoção. Teste-a contra analysis, skill e folder sem desenhar os três schemas. Cite caminhos e linhas para toda afirmação material. Escreva em português apenas projects/schema-service/research/experimental-type-staging-rule/reports/01-staging-precedents.md. Não altere outros arquivos, não use web e não implemente runtime."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md, projects/schema-service/research/experimental-type-staging-rule/research-initial-definitions.md e projects/schema-service/README.md. Faça uma revisão adversarial da hipótese: definições de tipo experimentais ficam confinadas ao diretório do experimento, são revision-exact e inelegíveis para resolução normativa até promoção explícita. Procure vazamentos de autoridade, colisões de identidade, referências ambíguas, mutação retroativa, candidatos órfãos e acoplamento indevido entre localização e identidade. Compare com precedentes locais de candidate/fixture/registry somente quando necessário. O collapse-test é: se um consumidor fora do experimento puder interpretar o candidato como norma sem uma decisão de publicação, a regra falha. Proponha o menor conjunto de guardrails que sobreviva ao ataque e diga quais decisões devem permanecer abertas. Cite caminhos e linhas para toda afirmação material. Escreva em português apenas projects/schema-service/research/experimental-type-staging-rule/reports/02-authority-leak-review.md. Não altere outros arquivos, não use web e não implemente runtime."
+        }
+      ]
+    }
+  ]
+}

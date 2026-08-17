@@ -16,9 +16,11 @@ those operations or guarantee portability during bootstrap.
 ## Operational model
 
 A governed folder references an existing folder schema; creating a folder does not create a new
-schema definition. Creation, movement, composition, and extraction are validation events. A new
-folder schema or field is introduced only when a concrete case cannot be classified or validated by
-the existing contracts.
+schema definition. Creation, movement, composition, and extraction are validation events. When no
+specific folder kind applies, the instance uses `folder/other@0`; this is valid fallback
+classification, not an unknown schema. A new folder schema or field is introduced only when a
+concrete conformance case demonstrates a distinction or behavior that the fallback and existing
+contracts cannot express or validate. Encountering a new label alone is not sufficient.
 
 ## Responsibilities
 

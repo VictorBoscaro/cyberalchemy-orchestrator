@@ -1,0 +1,59 @@
+{
+  "dispatch_id": "2026-08-17-schema-concrete-artifact-precedents",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Determinar como usos existentes em ontology-conventions e domainspec-core sustentam, contradizem ou refinam o modelo do Schema Service para documentos, skills, tools de agentes e pastas, usando schemas de código como evidência complementar.",
+  "context": "O Schema Service possui um modelo bootstrap que distingue Type, SchemaDefinitionRevision, Artifact, ManifestRevision, Representation e RepresentationSnapshot, mas ainda não foi validado contra casos concretos. O repositório atual contém vault/ontology-conventions.md e o repositório irmão ../domainspec-core contém definições de schema e usos ligados especialmente a código. A análise deve separar convenção documentada, uso efetivamente conectado, hipótese e lacuna.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "working_folder": "projects/schema-service/research/concrete-artifact-family-precedents",
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 2,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 5000,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Examine o precedente local C:/Users/victo/cyberalchemy-orchestrator/vault/ontology-conventions.md e somente suas referências diretas necessárias para verificar uso. Leia e cumpra o AGENTS.md do repositório. Para document, skill, agent tool e folder, identifique conceitos, identidade, schema ou contrato, representação, relações/composição, autoridade, lifecycle e validação observáveis. Diferencie regra normativa documentada, exemplo, uso efetivamente conectado e inferência sua. Compare cada achado com Type, SchemaDefinitionRevision, Artifact, ManifestRevision, Representation e RepresentationSnapshot do Schema Service, sem forçar equivalência terminológica. Cite caminhos e linhas para toda afirmação material. Escreva em português apenas projects/schema-service/research/concrete-artifact-family-precedents/reports/01-ontology-conventions.md. Não altere nenhum outro arquivo, não use web e não proponha implementação ainda."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Booch, Grady",
+          "initial_prompt": "Examine C:/Users/victo/domainspec-core como repositório somente leitura. Comece pelo AGENTS.md e localize as definições de schema e seus consumidores reais, priorizando schemas de código e buscando também evidência para document, skill, agent tool e folder. Mapeie identidade estável versus revisão, definição versus instância, carrier/representação, composição ou contenção, publicação/autoridade, validação e evolução. Verifique testes ou código consumidor quando necessário para não confundir arquivos declarativos com contratos efetivamente usados. Compare os achados com Type, SchemaDefinitionRevision, Artifact, ManifestRevision, Representation e RepresentationSnapshot do Schema Service; registre incompatibilidades e conceitos já possuídos pelo DomainSpec. Cite caminhos absolutos ou relativos ao repositório irmão e linhas para toda afirmação material. Escreva em português apenas C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/research/concrete-artifact-family-precedents/reports/02-domainspec-core.md. Não modifique domainspec-core, não use web e não implemente mudanças."
+        }
+      ]
+    },
+    {
+      "group_id": "non_vacuity_review",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Aplique somente o gate de non-vacuity ao modelo de projects/schema-service/README.md usando diretamente C:/Users/victo/cyberalchemy-orchestrator/vault/ontology-conventions.md, suas referências diretas necessárias e C:/Users/victo/domainspec-core, após ler o AGENTS.md aplicável em cada repositório. Para cada família — document, skill, agent tool e folder — construa o menor witness concreto que percorra identidade, contrato/schema, instância/manifesto, representação, mudança e validação; aceite N/A quando o corpus realmente não possuir um papel. Marque qualquer correspondência que dependa apenas de renomear conceitos, qualquer claim de universalidade não sustentado e qualquer evidência meramente documental confundida com uso. O collapse-test é: se nenhuma família puder ser percorrida sem inventar autoridade, identidade ou estado, o modelo permanece sem witness operacional. Cite caminhos e linhas para toda afirmação material. Escreva em português apenas projects/schema-service/research/concrete-artifact-family-precedents/reports/03-non-vacuity-review.md. Não altere fontes, não use web e não implemente mudanças."
+        }
+      ]
+    }
+  ]
+}

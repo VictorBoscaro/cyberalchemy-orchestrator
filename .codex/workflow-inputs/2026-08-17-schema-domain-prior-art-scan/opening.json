@@ -1,0 +1,39 @@
+{
+  "dispatch_id": "2026-08-17-schema-domain-prior-art-scan",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Determinar o que a pesquisa recente em research-domainspec já estabelece sobre schemas como conhecimento de domínio, representação de instâncias e regras relacionais ou composicionais, identificando o que pode ser reutilizado no Schema Service.",
+  "context": "Schema Service precisa esclarecer o papel de schemas em domínios como documentos, skills, dispatches, código e bancos de dados. O corpus research-domainspec do repositório irmão contém pesquisas recentes sobre ontologias, schemas, taxonomias, morfismos e relações. A síntese deve separar resultados sustentados, propostas e lacunas.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "working_folder": "projects/schema-service/research/artifact-schema-governance-landscape",
+  "groups": [
+    {
+      "group_id": "explorer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 5000,
+          "agent_name": "Baez, John",
+          "initial_prompt": "Investigue somente o corpus C:/Users/victo/domainspec-lean-formalization/research-domainspec, cumprindo o AGENTS.md do repositório irmão. Priorize ontologies-schemas-and-taxonomy, lendo integralmente research-initial-definitions.md, findings.md e, quando necessário para verificar sustentação, research.md ou retornos dos agentes e dispatch.yaml. Examine também morphisms-and-relations; verifique morphism-contracts apenas para confirmar se contém material relevante. Use como contexto C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/README.md e projects/schema-service/research/artifact-schema-governance-landscape/research-initial-definitions.md. Responda: (1) quais sentidos de domínio e schema a pesquisa estabelece; (2) se distingue schema de domínio, schema de tipo e instância concreta; (3) como trata tipos, relações, morfismos, composição, invariantes e regras; (4) como isso se relaciona à criação e evolução de conhecimento; (5) quais conclusões podem ser importadas para Schema Service; e (6) quais perguntas permanecem abertas. Cite arquivos e linhas para toda conclusão material. Distinga resultado sustentado, proposta, material histórico e inferência própria. Escreva a síntese em português apenas em projects/schema-service/research/artifact-schema-governance-landscape/findings.md. Não altere o repositório irmão, não use web e não implemente mudanças."
+        }
+      ]
+    }
+  ]
+}
