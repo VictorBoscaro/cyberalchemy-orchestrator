@@ -1,0 +1,17 @@
+{
+  "close_of": "2026-08-18-experiment-recommendation-review",
+  "capability_route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 3,
+    "tree": {
+      "explorer": 3,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": [
+    "Host-hook gap: collaboration.spawn_agent did not fire the automatic seat hooks; both exact compiled review seats were reconciled directly after terminal returns, preserving prompt and manifest digests but not prospective hook timing.",
+    "Relay correction: one unbound seat-1 launch was interrupted immediately after a copied binding envelope failed byte identity; its result was discarded, and the exact compiled seat was relaunched and is the only seat-1 result used in review.md."
+  ]
+}

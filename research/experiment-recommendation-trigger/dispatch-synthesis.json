@@ -1,0 +1,40 @@
+{
+  "dispatch_id": "2026-08-18-experiment-recommendation-synthesis",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Synthesize the six frozen scout reports into a cited answer about when to recommend a validation experiment, what the ledger can actually observe, when the system must abstain, and how the recommendation itself can be validated.",
+  "context": "This downstream stage begins only after the separately governed scout dispatch has produced six reports in the shared working folder. It performs no replacement sweep and introduces no external corpus. Its job is to preserve disagreements, distinguish ledger facts from artifact-dependent judgments, and produce the research record and verdict matrix that a later independent review will attack.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/experiment-recommendation-trigger/",
+  "groups": [
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "van Lamsweerde, Axel",
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2800,
+          "initial_prompt": "Route: research synthesis. Before tools, read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md and state the exact inputs you will read. Read the complete research-initial-definitions.md and these six frozen reports in C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/: scout-domainspec-authority.md, scout-domainspec-cases.md, scout-superinterviewer-policy.md, scout-superinterviewer-evaluation.md, scout-ledger-observability.md, and scout-ledger-counterexamples.md. Do not inspect new corpora or browse the web; synthesize only this evidence and preserve disagreements. First write research.md containing the six scout reports verbatim with clear source headings. Then write findings.md answering the dispatch goal. Distinguish three predicates—related research sequence, evidenced epistemic advance, and absence of construction—and state which are ledger-observable, artifact-dependent, or unavailable. Produce: (1) candidate trigger rules with explicit abstention/suppression conditions; (2) an observability matrix; (3) a timing/intervention decision table; (4) the smallest validation protocol; and (5) minimal schema/instrumentation changes only if existing evidence proves they are needed. For every candidate include candidate | owner (citation or precedent-clean) | witnessed? | sound? | verdict GO/KILL | use-mode. Ownership is not a kill; no novelty claim may ship without precedent evidence. A KILL is allowed only for no-witness or definitional collapse. Every load-bearing claim must cite a scout report and its underlying path/line. Put each keystone claim's collapse-test inline. Close with a one-line answer to the goal. Write only research.md and findings.md in the working folder."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

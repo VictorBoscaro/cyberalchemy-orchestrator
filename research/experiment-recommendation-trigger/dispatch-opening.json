@@ -1,10 +1,23 @@
 {
-  "dispatch_id": "2026-08-17-experiment-recommendation-trigger",
+  "dispatch_id": "2026-08-18-experiment-recommendation-scouts",
   "schema_version": "0.6.4",
   "dispatch_type": "research",
-  "goal": "Determine under what observable and governable conditions Cyberalchemy Orchestrator should recommend, without imposing, a bounded validation experiment after research appears to have advanced understanding without producing a constructed artifact. Distinguish what the current ledger can prove from what requires artifact inspection or new instrumentation.",
-  "context": "The user wants the system to recognize a productive transition from accumulated research to validation rather than trigger on an arbitrary research count. Three isolated repository corpora carry different evidence: domainspec-core contains transition precedents, superinterviewer contains intervention and autonomy constraints, and this repository contains the executable ledger and real histories. The research must separate 'several researches', 'advanced understanding', and 'nothing was built', preserve abstention and alternatives, and make no novelty claim stronger than the cited evidence.",
-  "max_loops": 2,
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Collect repository-grounded evidence for when Cyberalchemy Orchestrator could responsibly recommend a bounded validation experiment after research appears to have advanced without producing a constructed artifact. Keep transition precedent, interaction timing, and ledger observability as separate evidence lanes.",
+  "context": "This is the independent scout wave of a staged research program. domainspec-core contains transition precedents, superinterviewer contains intervention and autonomy constraints, and this repository contains the executable ledger and real histories. Each scout is read-only over one declared corpus and writes one uniquely named report into the shared research folder; synthesis and review occur in separately registered downstream dispatches because the current binding compiler does not execute workflow edges.",
+  "max_loops": 1,
   "final_approver": "parent",
   "anti_bias_mode": "disabled",
   "working_folder": "research/experiment-recommendation-trigger/",
@@ -68,80 +81,7 @@
           "initial_prompt": "Route: bounded read-only empirical counterexample research. Before tools, read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md and state the exact ledger slices and linked artifact families you will inspect. Corpus boundary: C:/Users/victo/cyberalchemy-orchestrator only; no web. Do not mutate source, ledger, or authority files. Test candidate proxies against real historical sequences: multiple research dispatches, resolved closes, parent_dispatch_id, shared working folders or goals, absence of code/experiment dispatches, findings verdicts, and artifact presence. Seek false positives and false negatives, including unlogged/manual builds, cross-repo construction, intentionally foundational research, unresolved or killed findings, open work, and prior declined suggestions where observable. Do not infer semantic progress from exit_reason alone. Write only C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/scout-ledger-counterexamples.md. End with bounded cases and a confusion-oriented table proxy | supporting cases | countercases | safe use | unsafe inference. Claim <= proof."
         }
       ]
-    },
-    {
-      "group_id": "synthesizer",
-      "n": 1,
-      "agents": [
-        {
-          "agent_name": "van Lamsweerde, Axel",
-          "role": "writer",
-          "model": "gpt-5.6-sol",
-          "token_budget": 2800,
-          "initial_prompt": "Route: research synthesis. Read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md, the complete research-initial-definitions.md, and the six exact scout reports in C:/Users/victo/cyberalchemy-orchestrator/research/experiment-recommendation-trigger/. Do not inspect new corpora or browse the web; synthesize only the collected evidence and preserve disagreements. First write research.md containing the six scout returns verbatim with clear source headings. Then write findings.md answering the dispatch goal. Distinguish three predicates—related research sequence, evidenced epistemic advance, and absence of construction—and state which are ledger-observable, artifact-dependent, or unavailable. Produce: (1) candidate trigger rules with explicit abstention/suppression conditions; (2) an observability matrix; (3) a timing/intervention decision table; (4) the smallest validation protocol; and (5) minimal schema/instrumentation changes only if existing evidence proves they are needed. For every candidate include the required verdict row: candidate | owner (citation or precedent-clean) | witnessed? | sound? | verdict GO/KILL | use-mode. Ownership is not a kill; no novelty claim may ship without precedent evidence. A KILL is allowed only for no-witness or definitional collapse. Every load-bearing claim must cite a scout report and its underlying path/line. Put each keystone claim's collapse-test inline. Close with a one-line answer to the goal."
-        }
-      ]
-    },
-    {
-      "group_id": "reviewers",
-      "n": 2,
-      "agents": [
-        {
-          "agent_name": "Tetlock, Philip",
-          "role": "skeptic",
-          "model": "gpt-5.6-sol",
-          "token_budget": 1200,
-          "initial_prompt": "Run the NON-VACUITY gate only. Read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md, research-initial-definitions.md, research.md, findings.md, and the six scout files in the working folder. Build the smallest concrete witness by applying every proposed trigger to bounded historical episodes already cited by the scouts. Check whether its inputs are truly observable and whether the same evidence supports the prescribed intervention; exit_reason or absence of code alone cannot count as progress or non-construction. For each trigger return WITNESSED or NO-WITNESS, the exact case and fields/artifacts used, false-positive/false-negative exposure, and the minimal correction. NO-WITNESS is a terminal typed negative: state what the trigger would have contributed and the exact missing fact that zeroes it. Write review-non-vacuity.md in the working folder and return a concise revision request to the writer. Do not run any other gate or inspect new corpora."
-        },
-        {
-          "agent_name": "Hacking, Ian",
-          "role": "skeptic",
-          "model": "gpt-5.6-sol",
-          "token_budget": 1200,
-          "initial_prompt": "Run the DEFINITIONAL-SOUNDNESS gate only. Read C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md, research-initial-definitions.md, research.md, findings.md, and the six scout files in the working folder. Attack whether 'recommend a validation experiment after research advancement without construction' adds a discriminating decision rule or collapses into an existing generic next-step suggestion, experiment-readiness checklist, arbitrary count threshold, or restatement of artifact inspection. Subtract the owned DomainSpec experiment criteria and Superinterviewer suggestion policy; name the non-empty residue, if any. For each trigger return SOUND or TAUTOLOGICAL with exact evidence and correction. TAUTOLOGICAL is a terminal typed negative: state what the trigger would have contributed and the exact equivalence that zeroes it. Write review-definitional-soundness.md in the working folder and return a concise revision request to the writer. Do not run any other gate or inspect new corpora."
-        }
-      ]
     }
   ],
-  "connections": [
-    {
-      "from": "domainspec-core-scouts",
-      "to": "synthesizer",
-      "type": "sequential"
-    },
-    {
-      "from": "superinterviewer-scouts",
-      "to": "synthesizer",
-      "type": "sequential"
-    },
-    {
-      "from": "ledger-scouts",
-      "to": "synthesizer",
-      "type": "sequential"
-    },
-    {
-      "from": "synthesizer",
-      "to": "reviewers",
-      "type": "zig-zag",
-      "loop_cap": 1
-    },
-    {
-      "from": "reviewers",
-      "to": "domainspec-core-scouts",
-      "type": "feedback",
-      "loop_cap": 1
-    },
-    {
-      "from": "reviewers",
-      "to": "superinterviewer-scouts",
-      "type": "feedback",
-      "loop_cap": 1
-    },
-    {
-      "from": "reviewers",
-      "to": "ledger-scouts",
-      "type": "feedback",
-      "loop_cap": 1
-    }
-  ]
+  "connections": []
 }
