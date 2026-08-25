@@ -15,8 +15,11 @@ last_updated: 2026-08-17
 
 ## Finding
 
-The smallest basis supported by the examined local and external traces has five directed relation
-types:
+The working basis currently supported by the examined local and external traces proposes five directed
+relation types (provisional, pending validation gates).
+
+These entries are proposals, not final acceptance decisions; they are constrained by the
+`Explicit hypotheses for the next gates` below.
 
 1. `requires` — one accepted state is a prerequisite for another occurrence or transition;
 2. `supplies` — exact evidence is made visible in a declared input slot;
@@ -25,11 +28,12 @@ types:
 4. `transfers_control` — the active responsibility for a control scope moves to a successor;
 5. `gates` — authoritative decision evidence selects, permits, denies, or terminates a transition.
 
-`assessed_by` is meaningful behavior but does not survive the minimality test as a primitive edge.
-It can be represented without observable loss by a typed assessment occurrence with an exact
-subject slot supplied to it, declared criteria and output schema, and separate independence and
-authority policies. Review, zig-zag, feedback, robot-talks, and `sequential` remain recipes or
-aliases over the basis plus graph combinators, roles, schemas, policies, and runtime effects.
+`assessed_by` is meaningful behavior but is proposed not to be treated as a primitive edge until
+the gates are completed. It can be represented without observable loss by a typed assessment
+occurrence with an exact subject slot supplied to it, declared criteria and output schema, and separate
+independence and authority policies. Review, zig-zag, feedback, robot-talks, and `sequential` remain
+recipes or aliases over the basis plus graph combinators, roles, schemas, policies, and runtime
+effects.
 
 This is a bounded candidate basis, not a universal algebra and not a statement of current runtime
 capability.
@@ -48,6 +52,7 @@ Relations connect logical, versioned endpoints rather than informal agent names:
 |---|---|
 | Occurrence | A versioned work, assessment, decision, or terminal occurrence. Its performer and role are bindings, not its identity. |
 | Evidence | Immutable, addressable output, message, dissent, assessment, or decision evidence with provenance. |
+| Control holding | An immutable `ControlHolding(scope, holder, epoch)` endpoint for a scoped control lineage point; source and successor holders are distinct endpoints. |
 | Slot or transition | A declared input position or a guarded change of workflow state. |
 | Control scope | The bounded responsibility whose active holder may delegate work or change. It may later compile to a dispatch, group, work item, thread, or another owned runtime identity. |
 
@@ -71,6 +76,8 @@ on that choice.
 
 ### `requires`
 
+- **Status:** currently provisional. No local trace currently demonstrates a pure prerequisite that does not also carry content visibility; gate `N1` is still unresolved. Treat as a hypothesis until that witness is added.
+
 - **Endpoints and direction:** accepted evidence or a completed/accepted occurrence state -> a
   dependent occurrence or transition.
 - **Payload/evidence:** the required identity and version, acceptance predicate, and any declared
@@ -93,6 +100,9 @@ the generic relation is not currently executed as specified here
 ([local-as-built: status inventory](stages/01-exploration/local-as-built.md#surfacestatus-crosswalk)).
 
 ### `supplies`
+
+- **Status:** currently provisional. Exact delivery is supported by narrow legacy witness, but filtered/redacted
+  views must be represented as typed projected evidence, not implicit payload variance.
 
 - **Endpoints and direction:** immutable evidence -> a declared input slot of an occurrence.
 - **Payload/evidence:** content-addressed reference, schema/media type, producer provenance,
@@ -132,9 +142,9 @@ sequential compiler
   permission to exceed the scope, or ownership of the parent continuation.
 - **Visibility:** the delegate sees only the explicitly supplied context, not automatically the
   delegator's full history.
-- **Terminal and failure behavior:** completion returns the contracted result; rejection, timeout,
-  cancellation, or failure returns a typed outcome to the delegator. None silently transfers
-  responsibility. Runtime retry remains a runtime policy.
+- **Terminal and failure behavior:** completion returns the contracted result through declared channels.
+  Rejection, timeout, and failure pathways are protocol-specific hypotheses until separately evidenced.
+  None silently transfers responsibility. Runtime retry remains a runtime policy.
 - **Legal composition:** nested delegation is legal only when the delegated scope permits it and
   each link remains auditable. Delegation is not transitive by default. A recipe normally combines
   it with `supplies` for context/result and `requires` for the manager's continuation.
@@ -147,21 +157,23 @@ This relation has no equivalent current local executable edge.
 
 ### `transfers_control`
 
-- **Endpoints and direction:** the current holder of a control scope -> the successor holder of
-  that same scoped responsibility.
-- **Payload/evidence:** control-scope identity/version, successor identity, continuation state,
-  context boundary, allowed-successor constraint, and transfer receipt.
-- **Precondition:** the source is the current authorized holder, the target is eligible to take
-  over, and any required gate has authorized the transfer.
-- **Semantic effect:** the target becomes the active owner of the scoped continuation; the source
-  ceases to be the active owner unless a separate oversight role or later transfer is declared.
+- **Status:** currently provisional. This relation is semantically distinct from delegation, but the
+  relation model is still tightening how control-holding endpoints are represented and versioned.
+
+- **Endpoints and direction:** source `ControlHolding(scope, holder, epoch)` -> target
+  `ControlHolding(scope, next_holder, next_epoch)` for the same scoped responsibility.
+- **Payload/evidence:** source and target control-holding IDs, control scope identity/version,
+  continuation state, context boundary, allowed-successor constraint, and transfer receipt.
+- **Precondition:** the source holding is active, the target holding is eligible to activate, and any
+  required gate has authorized the transfer.
+- **Semantic effect:** control-active state moves from the source holding to the target holding.
 - **Authority effect:** transfers only the control authority already held within the scope. It does
   not manufacture domain approval authority or widen permissions.
 - **Visibility:** the successor receives only the declared transferred context. Full-history and
   filtered handoffs are different payload policies under the same control effect.
-- **Terminal and failure behavior:** success requires an accepted transfer receipt and one new
-  active holder. If delivery or acceptance fails, control remains with the source; partial or
-  ownerless transfer is invalid. A return of control requires another explicit transfer.
+- **Terminal and failure behavior:** success requires an accepted transfer receipt and one new active
+  holder. Failure/rollback/atomicity semantics are protocol-specific hypotheses until separately
+  evidenced. A return of control requires another explicit transfer.
 - **Legal composition:** transfer chains are legal. Cycles require versioned occurrences and an
   explicit bound/termination policy. Parallel transfers of the same exclusive scope are invalid
   unless the scope itself declares multi-holder semantics.
@@ -172,6 +184,9 @@ OpenAI handoffs and Microsoft handoff orchestration independently witness the ow
 This is a target-model relation, not current local runtime behavior.
 
 ### `gates`
+
+- **Status:** currently provisional. It records decisive authority transition but does not by itself
+  establish atomicity, rollback, or full failure-containment guarantees.
 
 - **Endpoints and direction:** accepted decision evidence -> a guarded transition, branch, release,
   or terminal occurrence.
@@ -217,10 +232,12 @@ An assessment remains a first-class occurrence with:
 - output evidence supplied to synthesis or a decision occurrence;
 - a `gate` only when an authorized disposition may release or deny work.
 
-Under that contract, `subject assessed_by reviewer-occurrence` adds no observable fact. Subject
-identity is recoverable from the typed slot, the assessment obligation from the occurrence kind,
-criteria from its profile, authorship from its binding, and authority from a separate gate. Keeping
-the edge would duplicate those facts. This resolves the exploration disagreement by retaining the
+Under a fixed reduction budget in this draft, the edge is not retained when all observable facts are
+recoverable by (i) a typed assessment slot supplied by `supplies`, (ii) assessment occurrence
+contract fields, (iii) binding and policy declarations, and (iv) an explicit gate when authority is
+dispositional. Under that budget, `subject assessed_by reviewer-occurrence` adds no recoverable fact
+in addition to `supplies` + occurrence/profile/binding + policies + gates. Retaining the edge would be
+a duplicate encoding. This resolves the exploration disagreement by retaining the
 behavior proposed in
 [generative-basis.md](stages/01-exploration/generative-basis.md) while rejecting only its primitive
 edge status. If a later trace shows an assessment relation whose subject, obligation, or authority
@@ -267,14 +284,16 @@ action authority by itself.
 
 ## Removal tests and verdict matrix
 
+This table is a hypothesis set for the next gates, not a final acceptance.
+
 | Candidate | Owner or operational precedent | Witnessed? | Sound as primitive? | What removal loses | Verdict and use mode |
 |---|---|---|---|---|---|
-| `requires` | Local Protocol Governance `depends_on`; local sequential readiness | Yes, locally, with generic execution still absent | Yes, provisionally | A pure prerequisite with no content visibility becomes indistinguishable from delivery or must be hidden in scheduler code. | **GO — build from owned local precedent.** |
-| `supplies` | Local legacy-managed sequential compiler | Yes, narrowly deployed | Yes | Exact bytes, provenance, slot visibility, and conflicting-delivery behavior disappear into generic ordering. | **GO — already deployed narrowly; generalize from owned precedent.** |
-| `delegates` | OpenAI agent-as-tool; Microsoft agent-as-tool | Yes, in two official external contracts | Yes, for the examined corpus | A bounded specialist call with retained manager responsibility and mandatory return becomes indistinguishable from an independent dependency. | **GO — build from identified external precedents; no local implementation claim.** |
-| `transfers_control` | OpenAI handoff; Microsoft handoff orchestration | Yes, in two official external contracts | Yes, for the examined corpus | The identity of the active responsibility holder before and after a handoff is lost. | **GO — build from identified external precedents; no local implementation claim.** |
-| `gates` | Local Protocol Governance `gates`; review, skeptic, and human dispositions | Yes, locally, across several manually governed workflows | Yes, provisionally | Advice, assessment, and authoritative release become indistinguishable; authority must be inferred from topology or text. | **GO — build from owned local precedent.** |
-| `assessed_by` | Local `review_of`, review skill, and exploration proposal | Assessment behavior yes; irreducible edge no | No, under the mandatory assessment-occurrence contract | Nothing: exact subject, obligation, criteria, authorship, and authority remain recoverable from `supplies`, occurrence/profile/binding, policy, and optional `gates`. | **KILL as primitive — tautological; retain the assessment occurrence contract.** |
+| `requires` | Local Protocol Governance `depends_on`; local sequential readiness | Yes, locally, with generic execution still absent | Yes, provisionally | A pure prerequisite with no content visibility becomes indistinguishable from delivery or must be hidden in scheduler code. | **ADMIT as hypothesis (pending N1).** |
+| `supplies` | Local legacy-managed sequential compiler | Yes, narrowly deployed | Yes | Exact bytes, provenance, slot visibility, and conflicting-delivery behavior disappear into generic ordering. | **KEEP (provisional; generalization pending).** |
+| `delegates` | OpenAI agent-as-tool; Microsoft agent-as-tool | Yes, in two official external contracts | Yes, for the examined corpus | A bounded specialist call with retained manager responsibility and mandatory return becomes indistinguishable from an independent dependency. | **KEEP (provisional; no local implementation claim).** |
+| `transfers_control` | OpenAI handoff; Microsoft handoff orchestration | Yes, in two official external contracts | Yes, for the examined corpus | The identity of the active responsibility holder before and after a handoff is lost. | **KEEP (provisional; endpoint model under refinement).** |
+| `gates` | Local Protocol Governance `gates`; review, skeptic, and human dispositions | Yes, locally, across several manually governed workflows | Yes, provisionally | Advice, assessment, and authoritative release become indistinguishable; authority must be inferred from topology or text. | **KEEP (provisional; no rollback claim).** |
+| `assessed_by` | Local `review_of`, review skill, and exploration proposal | Assessment behavior yes; irreducible edge no | No, under the mandatory assessment-occurrence contract | Nothing: exact subject, obligation, criteria, authorship, and authority remain recoverable from `supplies`, occurrence/profile/binding, policy, and optional `gates`. | **DEFER as non-primitive (retest under reduction budget).** |
 
 “Owned external precedent” means an official, operationally described behavior from an identified
 system that can be built from; it does not mean local implementation or market adoption.
@@ -285,7 +304,7 @@ remain valuable recipe identities.
 
 ## Pairwise-collapse tests
 
-Every pair among the five admitted relations preserves at least one observed difference:
+With the current bounded evidence set, these pairs preserve at least one observed difference:
 
 | Pair | Why they do not collapse |
 |---|---|
@@ -405,14 +424,19 @@ layers.
 
 - **D1:** Each of the ten admitted relation pairs preserves at least one observable difference in
   the pairwise-collapse table.
-- **D2:** `assessed_by` adds no fact beyond the mandatory assessment-occurrence contract; if a
-  skeptic produces a non-recoverable subject, obligation, or authority fact, restore it as a
+- **D2:** `assessed_by` adds no fact beyond the mandatory assessment-occurrence contract under the fixed
+  reduction budget (`supplies` + occurrence/profile/binding + policy + explicit gates); if a skeptic
+  produces a non-recoverable subject, obligation, or authority fact, restore it as a
   candidate and rerun minimality.
 - **D3:** All five local named patterns reconstruct without hidden authority or visibility encoded
   only in prose.
 - **D4:** `gates` authorizes a transfer while `transfers_control` changes the holder; neither is
   allowed to impersonate the other.
-- **D5:** The layer boundary remains intact: relation semantics do not absorb roles, topology,
+- **D5:** Version/currentness and evidence lifecycle remain explicit: relation transitions must include
+  lineage or invalidation signals where required (e.g. supersession/revocation/retry).
+- **D6:** The extension/reduction substitution budget is explicit and bounded; a recipe cannot hide hard
+  semantics in schema, policy, or runtime special-casing and still count as a reduction.
+- **D7:** The layer boundary remains intact: relation semantics do not absorb roles, topology,
   quorum/convergence, or retry/checkpoint mechanisms.
 
 Failure of a hypothesis changes the candidate basis; it is not a documentation defect to be edited
