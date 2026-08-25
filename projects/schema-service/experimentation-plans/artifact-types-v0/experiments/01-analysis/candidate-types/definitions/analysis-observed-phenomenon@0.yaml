@@ -1,0 +1,26 @@
+record_kind: experimental-schema-definition
+authority: experiment_local_only
+experiment_ref: exp-schema-analysis-001
+candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-observed-phenomenon
+candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-observed-phenomenon@0
+proposed_type_id: analysis/observed-phenomenon
+name: Observed phenomenon analysis
+objective: Explain or characterize a phenomenon whose occurrence was first observed in the system.
+extends_candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis@0
+properties:
+  observation_refs:
+    meaning: The observations that triggered the analysis.
+  metric_changes:
+    meaning: Relevant metric variations, when the phenomenon is quantitative.
+  baseline_and_window:
+    meaning: Comparison baseline and observation period, when applicable.
+  candidate_explanations:
+    meaning: Plausible explanations considered without overstating causality.
+required_candidates:
+  - observation_refs
+  - candidate_explanations
+classification_boundary: Begins from a detected phenomenon; it may use observational methods without thereby becoming an observational study.
+open_questions:
+  - Is a non-metric observed phenomenon sufficient for this subtype?
+  - Which boundary distinguishes this subtype from an observational study?
+

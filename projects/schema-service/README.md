@@ -418,6 +418,14 @@ record status and authority; and preserve `supersedes` or resolution relationshi
 created yet because its owner, entry schema, append authority, and relationship to canonical source
 documents remain open.
 
+## Experiment program
+
+The current bootstrap is being exercised through the
+[`artifact-types-v0` experimentation plan](experimentation-plans/artifact-types-v0/experimentation-plan.md).
+It sequences three gated experiments — `analysis`, skill, then folder — and prepares only the first
+one. Candidate definitions in that package are experiment-local and non-normative; they do not
+constitute a registry or implementation of this service.
+
 ## Connections
 
 | Document | Type | Description |

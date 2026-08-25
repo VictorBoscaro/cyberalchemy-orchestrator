@@ -1,0 +1,22 @@
+record_kind: schema-service-experiment-manifest
+record_status: bootstrap_candidate
+experiment_ref: exp-schema-analysis-001
+owner_ref: project/schema-service
+objective_ref: objective/probe-schema-service-with-analysis
+lifecycle_state: preparing
+candidate_root: candidate-types
+resolution_mode: experimental_only
+normative_resolution_eligible: false
+criterion:
+  path: criterion.md
+  state: absent_pending_preregistration
+fixtures:
+  root: fixtures
+  state: blocked_until_criterion_freeze
+runs:
+  root: runs
+  state: not_started
+promotion:
+  state: not_requested
+  requires_authorized_publication: true
+

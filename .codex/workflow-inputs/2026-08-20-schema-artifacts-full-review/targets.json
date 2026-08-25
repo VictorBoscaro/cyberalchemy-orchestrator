@@ -1,0 +1,197 @@
+{
+  "manifest_kind": "review-target-corpus/v1",
+  "review_id": "2026-08-20-schema-artifacts-full-review",
+  "target_count": 46,
+  "targets": [
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-concrete-artifact-precedents/close.json",
+      "sha256": "53ddd0dad05cfa512eeaf78072b5c8ec5ff45d68df2569fbbda13175f8786493"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-concrete-artifact-precedents/explorers-0-turn-0.json",
+      "sha256": "ff02dc824212a9d28fb259b659ec57257f912f254580ed275449a414a67adaed"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-concrete-artifact-precedents/explorers-1-turn-0.json",
+      "sha256": "e6cc1a6f4057f848be0142daeb6da94ab8ecd1b71b8c3415ec113869f60e2318"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-concrete-artifact-precedents/launch-plan.json",
+      "sha256": "37d73ea2c137054a1b8d511a6fc320c8a08b93da47d1ffe78a300f956d7c930f"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-concrete-artifact-precedents/non_vacuity_review-0-turn-0.json",
+      "sha256": "719e3d24174dc2f863a227a194dc297a354d5d9ce4e404abbfa501f20e9e4061"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-concrete-artifact-precedents/opening.json",
+      "sha256": "391ab77e45ee71bbc936d6ce97c78ef4cd84fc4c6289228dc3f41a466e55e498"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-experimental-type-staging-rule/close.json",
+      "sha256": "b85653df18b37a7e9870c925010bc940564014bf64efcfcea8944cac140fcfa4"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-experimental-type-staging-rule/launch-plan.json",
+      "sha256": "083404037609e5782b691410ffd8389bcd2cc65843810e7e4077a5ae4037a128"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-experimental-type-staging-rule/opening.json",
+      "sha256": "dbfbdcda4cdd165da52e56a8776c11c75eb0d211dccbe9d4063eb621fc89cb7c"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-experimental-type-staging-rule/rule_reviewers-0-turn-0.json",
+      "sha256": "1679764b879f77dadc9aa532a15c75999244c7f29d86a94794f508a6f022b43f"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-08-17-schema-experimental-type-staging-rule/rule_reviewers-1-turn-0.json",
+      "sha256": "13343e62b9e3d17b919c127b887e31fd41129e2de0bbc65119017027eef2de82"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experimentation-plan.md",
+      "sha256": "614bd6de4000cf605a4b4332d51956b6ffbfa7a1e0c4867d6fcb8e13c2014581"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/candidate-types/catalog.yaml",
+      "sha256": "acfe21a84ec51b772bb86092f0d0fefe59eb3910afe1f6b80e9904da469ac223"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/candidate-types/definitions/analysis@0.yaml",
+      "sha256": "05ccd5dfe1dada3aa908616955eab5aa193dc16e91b70340608132b936a3f78f"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/candidate-types/definitions/analysis-ab-test-result@0.yaml",
+      "sha256": "806d0aa039428fe8d48c6654c506485b168a63e31749e8cb72e5588685a55498"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/candidate-types/definitions/analysis-general@0.yaml",
+      "sha256": "3f5c029cd25282f6720f0f2c27e44315df3115cd8b246cdc13ce474da86e1425"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/candidate-types/definitions/analysis-observational-study@0.yaml",
+      "sha256": "313cf53df9ae40461b08fd10dd33e4f5847d23ac11e3e8214d202c933718c655"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/candidate-types/definitions/analysis-observed-phenomenon@0.yaml",
+      "sha256": "37c87ec5f3a225eb1c93f666b7124f4b240628f04b6d88deb183fcdb8090bbd4"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/candidate-types/README.md",
+      "sha256": "4244f1c0fdb74bfcee6fb47a6567054fc224e2301b4f750c8d12b87ee93bb864"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/experiment-initial-definitions.md",
+      "sha256": "7a48bdc8b5290c342e309dc8728f74cb5752c1cefeb44044eae22452bf0f6ae8"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/experiment-manifest.yaml",
+      "sha256": "c6ecbffcad18a17267594b4536e16301e231d910b5f92495a5dd36a6160d8cde"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/fixtures/README.md",
+      "sha256": "a148200c720e986068471053d9a37b2b149e4e3c49d22012de9c3cf3cbfa2df3"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/README.md",
+      "sha256": "dfb17a51e7f2faf4958c97e728fadcfa1982bea4b89f266a454354034e69bb7e"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/runs/README.md",
+      "sha256": "72dc1e66e4386f359368f7a284ceec1393a5ff40ad8c571d6e055de8000e5953"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/02-skill/README.md",
+      "sha256": "457b5fa16b85a7ee0bd3ba6eb5c92684a1b1b96c8709850f0fd04d9cdaeaf99c"
+    },
+    {
+      "path": "projects/schema-service/experimentation-plans/artifact-types-v0/experiments/03-folder/README.md",
+      "sha256": "c1433858c2fc0b585a1eec9f8e62c9d228a6dabec7417a1458699cd3dcc9a0f1"
+    },
+    {
+      "path": "projects/schema-service/README.md",
+      "sha256": "406821fd254ee737d532aef5608fbd93d1b8e17337c75b6e6a772fa03ab86a33"
+    },
+    {
+      "path": "projects/schema-service/research/artifact-schema-governance-landscape/findings.md",
+      "sha256": "5abf6d76fd677426707a4e5d1dfe757f6954ee4c91fc694b4ef6daa7625a41b3"
+    },
+    {
+      "path": "projects/schema-service/research/artifact-schema-governance-landscape/research-initial-definitions.md",
+      "sha256": "f7a9eda5180437a85cce93e5419d01de3b717e0fa3989771754edcdcf293e1a9"
+    },
+    {
+      "path": "projects/schema-service/research/concrete-artifact-family-precedents/findings.md",
+      "sha256": "6380b5d091d4c6a38669478a2c6d8f937a79c28de68f8c1114d06de310dbcfaa"
+    },
+    {
+      "path": "projects/schema-service/research/concrete-artifact-family-precedents/reports/01-ontology-conventions.md",
+      "sha256": "fb1fe2905850f264462f4d40768d16eaac36b7c8775211609bcb7bb040fc53b0"
+    },
+    {
+      "path": "projects/schema-service/research/concrete-artifact-family-precedents/reports/02-domainspec-core.md",
+      "sha256": "26788f80b47f440c11007718bc0932ee8e00860e34b2045dcc0f54ff1132e268"
+    },
+    {
+      "path": "projects/schema-service/research/concrete-artifact-family-precedents/reports/03-non-vacuity-review.md",
+      "sha256": "54256be9da8c293faec3dadbb0abd4977f9ffc9de72861c35c1210e845dd914f"
+    },
+    {
+      "path": "projects/schema-service/research/concrete-artifact-family-precedents/research.md",
+      "sha256": "834f32c5b1a7156efdd7034fe3cbc57650d05164639ba2d3dd864101122f5e19"
+    },
+    {
+      "path": "projects/schema-service/research/concrete-artifact-family-precedents/research-initial-definitions.md",
+      "sha256": "076dfce3df280b7b4b41c9af73fd2f871591257ff4d68d5d6927a75df19db8c2"
+    },
+    {
+      "path": "projects/schema-service/research/concrete-artifact-family-precedents/verification.md",
+      "sha256": "107f616d72c69dd6493d49fffeca78852382226b04f0efc1a7287c5b528dc559"
+    },
+    {
+      "path": "projects/schema-service/research/experimental-type-staging-rule/findings.md",
+      "sha256": "2edef6c33db68d0c452f57ecae6bf89d9b2b97fc9598fd3a25429c8ebe18c4b8"
+    },
+    {
+      "path": "projects/schema-service/research/experimental-type-staging-rule/reports/01-staging-precedents.md",
+      "sha256": "ede1eae26510d6d46cb089fd46f81c480cd2b8c6dc0cef031f01318a88e83cc2"
+    },
+    {
+      "path": "projects/schema-service/research/experimental-type-staging-rule/reports/02-authority-leak-review.md",
+      "sha256": "e7e4f9b189c7f1615c69d48d6916a1a145caa950eca98b5330b302003f302989"
+    },
+    {
+      "path": "projects/schema-service/research/experimental-type-staging-rule/research.md",
+      "sha256": "ca7f4a9bfcdb7403138b647f28e4e821cabbfbfa0191a2250efaec5979ed3d40"
+    },
+    {
+      "path": "projects/schema-service/research/experimental-type-staging-rule/research-initial-definitions.md",
+      "sha256": "2292bb741a0f917445620904b1dfb04b975f843ba51361669ffdd6fe7f3ea8a6"
+    },
+    {
+      "path": "projects/schema-service/robot-talks/2026-08-17-universal-artifact-schema-role/dialogue.md",
+      "sha256": "bad1d7ab43050e11bebd6e70aed8cea64ae35b1087735b77b1b778bfd4df0971"
+    },
+    {
+      "path": "projects/schema-service/robot-talks/2026-08-17-universal-artifact-schema-role/findings.md",
+      "sha256": "b622cef57b811f323bebdac377f46f3b58bc447b718ce71affc5a1ef69d51337"
+    },
+    {
+      "path": "projects/schema-service/robot-talks/2026-08-17-universal-artifact-schema-role/reports/01-conceptual-model.md",
+      "sha256": "de14cc503348a3d7f780bf1a7caf601ab253994d0c3eabf0ec5e7e0e545875df"
+    },
+    {
+      "path": "projects/schema-service/robot-talks/2026-08-17-universal-artifact-schema-role/reports/02-admission-governance.md",
+      "sha256": "869d9f29fae04e1876b04be01e72d616a43bc4e0fbfd60fbb30952709d393ee4"
+    },
+    {
+      "path": "projects/schema-service/robot-talks/2026-08-17-universal-artifact-schema-role/reports/03-representation.md",
+      "sha256": "9598661a6dbc304b7e8aaa078c132986871346ea2a5305866d024c0706fbbe69"
+    }
+  ],
+  "reference_context": [
+    "sessions/2026-08-17-1400-schema-service-artifact-model.md",
+    "vault/ontology-conventions.md",
+    "C:/Users/victo/domainspec-core"
+  ],
+  "boundary": "reference_context may be inspected to verify claims but is not a target of change requests"
+}

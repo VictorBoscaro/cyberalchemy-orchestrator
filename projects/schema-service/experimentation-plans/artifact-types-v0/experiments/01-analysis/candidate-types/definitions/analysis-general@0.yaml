@@ -1,0 +1,18 @@
+record_kind: experimental-schema-definition
+authority: experiment_local_only
+experiment_ref: exp-schema-analysis-001
+candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-general
+candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-general@0
+proposed_type_id: analysis/general
+name: General analysis
+objective: Preserve structured reasoning that does not depend on a more specific analysis contract.
+extends_candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis@0
+properties:
+  reasoning_structure:
+    meaning: The principal steps connecting evidence to findings and conclusion.
+required_candidates:
+  - reasoning_structure
+classification_boundary: Use only when no more specific active analysis candidate applies or when ambiguity is intentionally preserved.
+open_questions:
+  - Is this a meaningful subtype or should it remain only a fallback classification?
+

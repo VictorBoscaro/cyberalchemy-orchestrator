@@ -1,0 +1,33 @@
+record_kind: experimental-type-catalog
+record_status: bootstrap_candidate
+experiment_ref: exp-schema-analysis-001
+owner_ref: project/schema-service
+lifecycle_state: active
+resolution_scope: experiment_local_only
+normative_resolution_eligible: false
+definitions:
+  - candidate_type_id: candidate:exp-schema-analysis-001:type:analysis
+    candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis@0
+    proposed_type_id: analysis
+    path: definitions/analysis@0.yaml
+    definition_digest: sha256:05ccd5dfe1dada3aa908616955eab5aa193dc16e91b70340608132b936a3f78f
+  - candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-general
+    candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-general@0
+    proposed_type_id: analysis/general
+    path: definitions/analysis-general@0.yaml
+    definition_digest: sha256:3f5c029cd25282f6720f0f2c27e44315df3115cd8b246cdc13ce474da86e1425
+  - candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-observed-phenomenon
+    candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-observed-phenomenon@0
+    proposed_type_id: analysis/observed-phenomenon
+    path: definitions/analysis-observed-phenomenon@0.yaml
+    definition_digest: sha256:37c87ec5f3a225eb1c93f666b7124f4b240628f04b6d88deb183fcdb8090bbd4
+  - candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-observational-study
+    candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-observational-study@0
+    proposed_type_id: analysis/observational-study
+    path: definitions/analysis-observational-study@0.yaml
+    definition_digest: sha256:313cf53df9ae40461b08fd10dd33e4f5847d23ac11e3e8214d202c933718c655
+  - candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-ab-test-result
+    candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-ab-test-result@0
+    proposed_type_id: analysis/ab-test-result
+    path: definitions/analysis-ab-test-result@0.yaml
+    definition_digest: sha256:806d0aa039428fe8d48c6654c506485b168a63e31749e8cb72e5588685a55498

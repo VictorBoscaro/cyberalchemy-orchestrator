@@ -1,0 +1,28 @@
+record_kind: experimental-schema-definition
+authority: experiment_local_only
+experiment_ref: exp-schema-analysis-001
+candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-observational-study
+candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-observational-study@0
+proposed_type_id: analysis/observational-study
+name: Observational study
+objective: Examine patterns or relationships using observations without controlled assignment.
+extends_candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis@0
+properties:
+  population_or_sample:
+    meaning: The observed units and the basis on which they entered the study.
+  observation_window:
+    meaning: The period during which observations were collected.
+  variables:
+    meaning: Variables or attributes compared or related.
+  confounders:
+    meaning: Known or plausible factors that limit causal interpretation.
+required_candidates:
+  - population_or_sample
+  - observation_window
+  - variables
+  - confounders
+classification_boundary: Defined by an observational study design, not merely by the presence of observed metrics.
+open_questions:
+  - May one artifact carry both this and observed-phenomenon classifications?
+  - When should a longitudinal operational investigation count as a study?
+

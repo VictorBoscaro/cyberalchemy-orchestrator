@@ -7,7 +7,7 @@ Human-readable view of [`.craft/ledger.yml`](.craft/ledger.yml). The ledger is t
 - Root next move: [resolve the production cutover gate](#decision-dec-cutover-gate-001).
 - Blocking decisions: [DEC-CUTOVER-GATE-001](#decision-dec-cutover-gate-001), [DEC-PHASE-A-BASELINE-001](#decision-dec-phase-a-baseline-001).
 - Active blockers: [BLK-BROKERED-AUTHORITY-001](#blocker-blk-brokered-authority-001), [BLK-PHASE-A-OWNER-DECISION-001](#blocker-blk-phase-a-owner-decision-001).
-- Active gaps: [write-side cutover](#gap-gap-write-side-cutover-001), [OBL-E3](#gap-gap-orch-category-proof-001), [EG-1](#gap-gap-eg1-sole-writer-001), [D9 authority](#gap-gap-d9-authority-001), [T0 automation](#gap-gap-t0-automation-001).
+- Active gaps: [write-side cutover](#gap-gap-write-side-cutover-001), [OBL-E3](#gap-gap-orch-category-proof-001), [EG-1](#gap-gap-eg1-sole-writer-001), [D9 authority](#gap-gap-d9-authority-001), [T0 automation](#gap-gap-t0-automation-001), and the four [Schema Service artifact-type gaps](#context-ctx-schema-service-artifact-types-v0).
 
 ## Contexts and pending work
 
@@ -47,6 +47,14 @@ Human-readable view of [`.craft/ledger.yml`](.craft/ledger.yml). The ledger is t
 - Stage / gate: `design` / `flag`
 - Accepted ownership does not claim completed schemas, operations, implementation, or tests.
 - Next move: retain separate readiness gates for those claims.
+
+### <a id="context-ctx-schema-service-artifact-types-v0"></a>CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0 — Schema Service Artifact Types v0
+
+- Stage / gate: `review-audit` / `block`
+- Scope: test the artifact model first with `analysis`, then conditionally with `skill` and `folder`, before implementing a universal registry or runtime.
+- Evidence: [experimentation plan](projects/schema-service/experimentation-plans/artifact-types-v0/experimentation-plan.md), [analysis package](projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/README.md), [accepted review report](projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md), and [session close](sessions/2026-08-25-0843-schema-service-artifact-experiments.md).
+- Pending: [candidate lifecycle](#gap-gap-schema-analysis-lifecycle-001), [base resolution](#gap-gap-schema-analysis-base-resolution-001), [revision immutability](#gap-gap-schema-analysis-immutability-001), and [successor-gate alignment](#gap-gap-schema-experiment-gate-alignment-001).
+- Next move: correct the four confirmed findings, then verify references and hashes before freezing `criterion.md`.
 
 ## Blockers
 
@@ -107,8 +115,25 @@ Macro-to-micro work-context authority ownership remains CRITICAL with no reposit
 
 The claim/probe/survival discipline runs manually, but its automated knowledge-machine loop is unbuilt. Evidence: [active Plan](plans/governed-agent-work-infrastructure/PLAN.md).
 
+### <a id="gap-gap-schema-analysis-lifecycle-001"></a>GAP-SCHEMA-ANALYSIS-LIFECYCLE-001
+
+Candidate lifecycle is promised per candidate but represented only by one global catalog state. Evidence: [review](projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md#f1--candidate-lifecycle-is-promised-but-cannot-be-represented-per-candidate).
+
+### <a id="gap-gap-schema-analysis-base-resolution-001"></a>GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001
+
+The unresolved `analysis@0` base leaves candidate resolution fail-closed even after criterion freeze. Evidence: [review](projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md#f2--the-stated-execution-gate-still-leaves-every-candidate-resolution-fail-closed).
+
+### <a id="gap-gap-schema-analysis-immutability-001"></a>GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001
+
+Candidate revision immutability begins too late to preserve revision identity from catalog admission. Evidence: [review](projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md#f3--candidate-revision-immutability-begins-too-late).
+
+### <a id="gap-gap-schema-experiment-gate-alignment-001"></a>GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001
+
+The `skill` and `folder` placeholders weaken the substantive successor gates in the main plan. Evidence: [review](projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md#f4--local-placeholders-weaken-the-programs-substantive-successor-gates).
+
 ## Boundary check
 
 - Nested ledgers under `Arcanum/`, `Arcanum/spells/goal/`, and `tools/test-derivation-engine/` were not imported or modified.
 - Draft/discovery feature packages were not promoted to active execution contexts solely from their directory status.
+- Schema Service candidates remain experiment-local and non-normative; no runtime, registry, resolver, criterion, fixture, or run was claimed complete.
 - `BACKLOG.md` remains an available artifact whose contents are parked candidates, not committed work.

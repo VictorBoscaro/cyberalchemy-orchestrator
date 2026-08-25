@@ -1,0 +1,102 @@
+{
+  "dispatch_id": "2026-08-20-schema-artifacts-full-review",
+  "schema_version": "0.6.4",
+  "dispatch_type": "review",
+  "goal": "Executar um red team integral sobre os artefatos produzidos para o Schema Service e o primeiro experimentation plan, emitindo somente change requests verificadas e verdictos KEEP/FIX por arquivo antes do prÃ©-registro do experimento analysis.",
+  "context": "O corpus congelado contÃ©m 46 arquivos: o README do Schema Service, Robot-Talks, trÃªs pacotes de pesquisa, o experimentation plan com o pacote analysis e os registros dos dois dispatches governados. A revisÃ£o deve verificar fidelidade Ã s evidÃªncias, separaÃ§Ã£o entre candidato e autoridade normativa, coerÃªncia entre identidades e lifecycle, correÃ§Ã£o mecÃ¢nica e prontidÃ£o operacional. A sessÃ£o original, ontology-conventions e domainspec-core sÃ£o fontes de verificaÃ§Ã£o, nÃ£o alvos de change requests. Execucao degradada explicitamente autorizada pelo usuario em 2026-08-20: nao ha handoffs entre grupos; os seis primeiros assentos fazem julgamentos independentes sobre o mesmo corpus, o parent reconcilia seus retornos no unico review.md e o aprovador dedicado e lancado somente depois da materializacao desse arquivo.",
+  "max_loops": 1,
+  "final_approver": "Vlachopulos, Ioannis",
+  "anti_bias_mode": "disabled",
+  "output_mode": "persisted",
+  "working_folder": "projects/schema-service/reviews/2026-08-20-artifacts-full-review",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "review",
+    "ledger_dispatch_type": "review",
+    "capability_ref": "review",
+    "capability_path": ".claude/skills/review/SKILL.md",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f"
+  },
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 3,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6500,
+          "agent_name": "Booch, Grady",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md e a skill de review aplicÃ¡vel. Ataque o corpus inteiro congelado em .codex/workflow-inputs/2026-08-20-schema-artifacts-full-review/targets.json pela lente Ãºnica fidelity/governance. Antes de analisar, confirme que todos os 46 paths existem e que seus SHA-256 ainda coincidem; qualquer drift bloqueia o retorno. Leia todos os alvos, nÃ£o os divida nem modifique. Verifique especialmente: claim <= proof; coerÃªncia do modelo Type/SchemaDefinitionRevision/Artifact/ManifestRevision/Representation/Snapshot; separaÃ§Ã£o entre label descritivo, candidato, publicaÃ§Ã£o e enforcement; compatibilidade entre README, pesquisas, experimentation plan e candidates; e se decisÃµes abertas foram transformadas silenciosamente em regra. Use a sessÃ£o, vault/ontology-conventions.md e C:/Users/victo/domainspec-core apenas para verificar claims citadas. Para cada finding candidato, forneÃ§a path, linhas, citaÃ§Ã£o literal curta, severidade CRITICAL/MAJOR/MINOR e fix mÃ­nimo. Se uma tentativa nÃ£o encontrar falha, registre o ataque e por que sobreviveu. Retorne apenas material de trabalho ao host; nÃ£o escreva arquivos."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Hamming, Richard",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md e a skill de review aplicÃ¡vel. Ataque o corpus inteiro congelado em .codex/workflow-inputs/2026-08-20-schema-artifacts-full-review/targets.json pela lente Ãºnica mechanics/reference-correctness. Antes de analisar, confirme os 46 paths e SHA-256; drift bloqueia o retorno. Leia todos os alvos e nÃ£o os modifique. Execute checks read-only proporcionais: parse de YAML/JSON/frontmatter, links locais, digests do catÃ¡logo, IDs e referÃªncias cruzadas, coerÃªncia entre opening/launch/close dos dispatches, caminhos relativos, estados declarados e evidÃªncia de testes. Verifique se o pacote pode ser reproduzido a partir de seus prÃ³prios arquivos e se algum documento afirma validaÃ§Ã£o mais forte que o check executado. Para cada finding candidato, forneÃ§a path, linhas, citaÃ§Ã£o literal curta, severidade e fix mÃ­nimo; um finding mecÃ¢nico deve incluir o check executado e o resultado. Registre ataques sobrevividos quando nÃ£o houver falha. Retorne apenas material de trabalho ao host; nÃ£o escreva arquivos."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6500,
+          "agent_name": "Deming, W. Edwards",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md e a skill de review aplicÃ¡vel. Ataque o corpus inteiro congelado em .codex/workflow-inputs/2026-08-20-schema-artifacts-full-review/targets.json pela lente Ãºnica operability/gaming-resistance. Antes de analisar, confirme paths e SHA-256; drift bloqueia o retorno. Leia todos os 46 alvos e nÃ£o os modifique. Tente operar o prÃ³ximo passo como mantenedor novo sem inventar regras: localizar o plan, distinguir experimentation-plan descritivo de candidate type, resolver experimental_schema_ref, interpretar lifecycle, preparar criterion.md e impedir fixtures/runs prematuros. Procure maneiras de satisfazer a letra enquanto vaza autoridade: lookup por label/path/digest/latest, promoÃ§Ã£o retroativa, dependÃªncia experimental exportada, general usado como catch-all normativo, anÃ¡lise A/B colapsada no experimento, pasta tratada como Artifact por presenÃ§a. Para cada finding candidato, forneÃ§a path, linhas, citaÃ§Ã£o literal curta, severidade e fix mÃ­nimo. Registre ataques sobrevividos e por quÃª. Retorne somente material de trabalho; nÃ£o escreva arquivos."
+        }
+      ]
+    },
+    {
+      "group_id": "verifiers",
+      "n": 2,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md e a skill de review aplicavel. Este review foi explicitamente degradado para uma onda sem handoffs. Inspecione independentemente todo o corpus congelado em .codex/workflow-inputs/2026-08-20-schema-artifacts-full-review/targets.json, confirme os 46 paths e SHA-256 e nao modifique alvos. Seu gate unico e boundary-and-authority correctness: procure e tente refutar problemas sobre ownership, identidade, schema experimental, publicacao, lifecycle, reclassificacao, dependencias e gates entre experimentos. Exija citacao literal e nexo causal suficiente para a severidade. Procure contradicoes materiais entre README, pesquisas, plan e candidates. Retorne ao host somente findings verificadas, hipoteses refutadas com razao, ataques sobrevividos e lacunas verificadas; nao escreva arquivos."
+        },
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "agent_name": "Dijkstra, Edsger W.",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md e a skill de review aplicavel. Este review foi explicitamente degradado para uma onda sem handoffs. Inspecione independentemente todo o corpus congelado em .codex/workflow-inputs/2026-08-20-schema-artifacts-full-review/targets.json, confirme os 46 paths e SHA-256 e nao modifique alvos. Seu gate unico e mechanical non-vacuity: reproduza checks read-only de hashes, YAML/JSON/frontmatter, links, catalogo/digests/IDs, dispatch opening-launch-close e alegacoes de validacao. Refute hipoteses que o artefato literal ou o check nao sustente e identifique checks alegados mas nao executaveis. Retorne ao host resultados concretos, findings verificadas, hipoteses refutadas e ataques sobrevividos; nao escreva arquivos."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesizer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 11000,
+          "agent_name": "Weick, Karl E.",
+          "initial_prompt": "Leia e cumpra C:/Users/victo/cyberalchemy-orchestrator/AGENTS.md e a skill de review aplicavel. Este review foi explicitamente degradado para uma onda sem handoffs. Inspecione independentemente todos os 46 alvos congelados em .codex/workflow-inputs/2026-08-20-schema-artifacts-full-review/targets.json e confirme paths e SHA-256 antes de analisar. Produza para o host uma proposta integral de review.md com: Coverage das tres lentes fidelity/governance, mechanics/reference-correctness e operability/gaming-resistance; inventario dos 46 targets com KEEP/FIX por arquivo; findings com path, linhas, citacao literal curta, severidade e fix minimo; hipoteses refutadas apenas como contagem; e change requests ordenadas por severidade. FIX somente se sobreviver ao menos um CRITICAL ou MAJOR. Execute o zero-findings red flag. Nao modifique alvos e nao escreva review.md, transcript, attacks.md ou findings.md; o parent reconciliara todos os retornos e escrevera o unico artefato."
+        }
+      ]
+    },
+    {
+      "group_id": "final_approval",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-terra",
+          "token_budget": 3500,
+          "agent_name": "Vlachopulos, Ioannis",
+          "initial_prompt": "VocÃª Ã© o aprovador dedicado e nÃ£o desempenha cobertura, ataque, verificaÃ§Ã£o nem escrita. Leia a versÃ£o final de projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md, o targets.json congelado e o corpus necessÃ¡rio apenas para confirmar o pacote. Aceite somente se: existe exatamente um review.md; todos os 46 targets tÃªm KEEP/FIX; toda finding sobrevivente cita literalmente o alvo, tem severidade e fix mÃ­nimo; findings refutadas nÃ£o permanecem; Coverage prova as trÃªs lentes e executa o zero-findings red flag; nenhum target foi modificado; e nÃ£o existem transcript, attacks.md ou findings.md. Retorne apenas ACCEPT ou REJECT com a lista exata de gates nÃ£o satisfeitos. NÃ£o edite arquivos."
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

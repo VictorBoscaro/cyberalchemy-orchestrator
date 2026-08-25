@@ -1,0 +1,38 @@
+record_kind: experimental-schema-definition
+authority: experiment_local_only
+experiment_ref: exp-schema-analysis-001
+candidate_type_id: candidate:exp-schema-analysis-001:type:analysis
+candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis@0
+proposed_type_id: analysis
+name: Analysis
+objective: Preserve a reasoned interpretation of evidence for a stated question or objective.
+proposed_base_type_id: document
+base_schema_ref: null
+base_status: unresolved_bootstrap_dependency
+properties:
+  question_or_objective:
+    meaning: The question answered or objective served by this analysis.
+  subject_scope:
+    meaning: The system, population, period or boundary to which the claims apply.
+  evidence_refs:
+    meaning: References to observations, measurements, sources or other evidence used.
+  method_summary:
+    meaning: How the evidence was selected and interpreted.
+  findings:
+    meaning: Claims directly supported by the analysis.
+  conclusion:
+    meaning: The answer or decision-relevant synthesis reached.
+  limitations:
+    meaning: Known constraints, uncertainty and plausible alternative explanations.
+required_candidates:
+  - question_or_objective
+  - subject_scope
+  - evidence_refs
+  - method_summary
+  - findings
+  - conclusion
+  - limitations
+open_questions:
+  - Which values are authored, inherited, observed, derived or generated?
+  - Is every analysis necessarily a document artifact?
+

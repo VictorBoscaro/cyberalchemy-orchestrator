@@ -1,0 +1,32 @@
+record_kind: experimental-schema-definition
+authority: experiment_local_only
+experiment_ref: exp-schema-analysis-001
+candidate_type_id: candidate:exp-schema-analysis-001:type:analysis-ab-test-result
+candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis-ab-test-result@0
+proposed_type_id: analysis/ab-test-result
+name: A/B test result analysis
+objective: Interpret evidence produced by a controlled A/B experiment without collapsing the experiment into its analysis.
+extends_candidate_revision_id: candidate:exp-schema-analysis-001:schema:analysis@0
+properties:
+  ab_experiment_ref:
+    meaning: Stable reference to the separate experiment artifact being analyzed.
+  variants:
+    meaning: Variants compared by the experiment.
+  assignment_method_ref:
+    meaning: Reference to the experiment's assignment or randomization method.
+  outcome_metrics:
+    meaning: Metrics evaluated and their observed results.
+  statistical_method:
+    meaning: Method used to estimate uncertainty or compare variants.
+  decision:
+    meaning: Decision taken or explicitly deferred from the evidence.
+required_candidates:
+  - ab_experiment_ref
+  - variants
+  - outcome_metrics
+  - statistical_method
+  - decision
+classification_boundary: This artifact analyzes a test result; it is not the test protocol, assignment event or experiment run.
+open_questions:
+  - Which experiment contract must exist before this reference can be validated?
+

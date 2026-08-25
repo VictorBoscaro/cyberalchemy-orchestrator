@@ -1,0 +1,17 @@
+{
+  "close_of": "2026-08-20-schema-artifacts-full-review",
+  "capability_route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f",
+  "exit_reason": "resolved",
+  "agents_spawned": {
+    "total": 7,
+    "tree": {
+      "attackers": 3,
+      "verifiers": 2,
+      "synthesizer": 1,
+      "final_approval": 1,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": []
+}
