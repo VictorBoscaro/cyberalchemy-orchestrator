@@ -1,0 +1,16 @@
+[package]
+name = "rwo-rust"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+base64 = "0.22.1"
+serde_json = "1.0.149"
+sha2 = "0.10.9"
+
+[lints.rust]
+# The pure kernel remains safe Rust by default.  The only exception is the
+# explicitly isolated ICU 74 bridge in `admission.rs`, where FFI calls are
+# narrowly allowed and documented because Unicode 15.1 is a contract input.
+unsafe_code = "deny"

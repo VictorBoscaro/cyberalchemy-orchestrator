@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "rwo.conformance-manifest-review/v1",
+  "reviewId": "RWO-CONFORMANCE-REPAIR-REVIEW-20260807T214631Z",
+  "reviewedAt": "2026-08-07T21:46:31Z",
+  "manifest": {
+    "path": "CONFORMANCE-MANIFEST.json",
+    "sha256": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c",
+    "sizeBytes": 34259
+  },
+  "producer": {
+    "identity": "invoke-refresh/candidate-materializer-v1",
+    "method": "manual declarative expansion of the frozen Refine matrix"
+  },
+  "reviewer": {
+    "identity": "rwo-governance-rebind-reviewer/python3-standalone-v1",
+    "implementationPath": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260807T173437Z-rwo-contract-kernel-refresh/refresh-runs/20260807T214631Z-rwo-contract-successor-repair-candidate/validator/validate-repair-candidate.py",
+    "implementationSha256": "2ea0d5f4755323908c42ddfdec36d99f56574f0480bc2fb41e9f4d3e0fb3dbdf",
+    "implementationSizeBytes": 14713,
+    "independenceMethod": "Standalone Python validation owned by the governance-defect sidecar; it is distinct from the original candidate materializer and fails closed on changed-byte scope, manifest references, schemas, fixtures, create-target whitespace, and lifecycle wording."
+  },
+  "comparison": {
+    "status": "pass",
+    "checks": [
+      "predecessor detached review was pass and remains immutable",
+      "exact 54-vector ID coverage is unchanged",
+      "normative contract body is byte-identical after the lifecycle-neutral header",
+      "only contract metadata changed in the manifest",
+      "all schemas, fixtures, vector inputs, and expected observations are unchanged",
+      "new manifest contract hash and size match the repaired contract",
+      "create/untracked target whitespace regression passes on every staged target",
+      "lifecycle wording is coherent before and after owner acceptance"
+    ],
+    "failures": []
+  },
+  "acceptedVectorIds": [
+    "ADM-001",
+    "ADM-002",
+    "ADM-003",
+    "ADM-004",
+    "ADM-005",
+    "ADM-006",
+    "ADM-007",
+    "ADM-008",
+    "ADM-009",
+    "ADM-010",
+    "ADM-011",
+    "ADM-012",
+    "ADM-013",
+    "CMD-001",
+    "CMD-002",
+    "CMP-001",
+    "CMP-002",
+    "CMP-003",
+    "DEC-001",
+    "DEC-002",
+    "DEC-003",
+    "DEF-001",
+    "DIG-001",
+    "DIG-002",
+    "DIG-003",
+    "FIX-001",
+    "FIX-002",
+    "FIX-003",
+    "FIX-004",
+    "FIX-005",
+    "FIX-006",
+    "NRM-001",
+    "NRM-002",
+    "NRM-003",
+    "RED-001",
+    "RED-002",
+    "RED-003",
+    "RED-004",
+    "RED-005",
+    "RED-006",
+    "RTY-001",
+    "RTY-002",
+    "RTY-003",
+    "RTY-004",
+    "RTY-005",
+    "RTY-006",
+    "RTY-007",
+    "RTY-008",
+    "RTY-009",
+    "RTY-010",
+    "RTY-011",
+    "RTY-012",
+    "VER-001",
+    "VER-002"
+  ],
+  "sourceRepairs": [
+    {
+      "id": "REPAIR-PAYLOAD-DERIVATION-001",
+      "reviewResult": "pass",
+      "finding": "The candidate closes command derivation with copy-event-payload and two inline closed payload schemas."
+    },
+    {
+      "id": "REPAIR-DIGEST-TUPLE-001",
+      "reviewResult": "pass",
+      "finding": "The s08 hashes are retained as superseded observations; the candidate hashes match the exact seven-field tuple and documented framing."
+    }
+  ],
+  "repairRebind": {
+    "repairIds": [
+      "REPAIR-GIT-WHITESPACE-001",
+      "REPAIR-OWNER-STATUS-001"
+    ],
+    "predecessorAcceptanceRequestSha256": "3f2aa03737e9c599c749c86a7718803f8095d51cea02f8b5abbc9117522ce72d",
+    "predecessorCandidateContentSha256": "0e01364490bd2efd10c63daddc77b7367286c63325cca106cb84117f2842930b",
+    "predecessorManifestSha256": "7a4912832a21c92e40f56b1228d8114e89aef317ff0aa687a005f6f975a45435",
+    "predecessorManifestSizeBytes": 34255,
+    "predecessorReviewSha256": "9c48673dc03a1095da3f5b20d8a7261c74a6c9a22fc3ce25595cc39236a50399",
+    "predecessorReviewSizeBytes": 3492,
+    "semanticVectorInputsChanged": false,
+    "changedCanonicalTargetPaths": [
+      "RWO-SEMANTIC-CONTRACT-1.0.0.md",
+      "vectors/CONFORMANCE-MANIFEST.json",
+      "vectors/CONFORMANCE-MANIFEST-REVIEW.json"
+    ]
+  },
+  "ownerDecision": {
+    "ownerGate": "RWO planning and design owner acceptance",
+    "reference": null,
+    "status": "renewed-acceptance-required"
+  },
+  "nonEffects": [
+    "No authority or ontology promotion.",
+    "No implementation or runtime conformance claim.",
+    "No Phase-B generation or apply."
+  ]
+}

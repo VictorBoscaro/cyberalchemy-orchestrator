@@ -1,0 +1,24 @@
+{
+  "schema_version": "rwo.seat-address-decision/v1",
+  "decision_id": "RWO-DECISION-SEAT-ADDRESS-002",
+  "decision_status": "selected-successor-candidate",
+  "selected_at": "2026-09-01T12:31:44Z",
+  "problem": "The adapter-local seatv1:sha256:<hex> address contains colon characters excluded by the accepted RWO identifier grammar.",
+  "selected_format": "seatv1/sha256/<64-lowercase-hex>",
+  "selected_pattern": "^seatv1/sha256/[0-9a-f]{64}$",
+  "rationale": "Preserve the accepted closed identifier grammar and narrow the repair to the adapter-owned content-address format instead of admitting colon into every semantic identifier.",
+  "supersedes_adapter_format": "seatv1:sha256:<64-lowercase-hex>",
+  "semantic_contract_change": false,
+  "implementation_targets": [
+    "implementations/rwo-sidecar-go/seat_material.go",
+    "implementations/rwo-sidecar-go/seat_material_test.go",
+    "implementations/rwo-sidecar-go/testdata/eve-one-seat/authorization-event.json"
+  ],
+  "deferred": [
+    "real Eve delivery",
+    "portable Unicode admission",
+    "multi-host recovery",
+    "hardware power-loss proof"
+  ],
+  "authority_effect": "adapter-contract-successor-candidate-only"
+}

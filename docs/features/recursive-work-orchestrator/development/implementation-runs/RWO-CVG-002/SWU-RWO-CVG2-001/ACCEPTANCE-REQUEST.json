@@ -1,0 +1,78 @@
+{
+  "schema_version": "rwo.source-closure-acceptance-request/v1",
+  "request_id": "RWO-CVG-002-ONE-SHOT:U01:source-acceptance",
+  "work_pack_id": "WP-RWO-CVG-002",
+  "unit_id": "U01",
+  "swu_id": "SWU-RWO-CVG2-001",
+  "candidate_id": "RWO-CVG-002-source-closure-candidate",
+  "candidate_digest": "255a54b16b168824b7534c611d172f189d33f55403edaf5a1ec6c908267a5f4b",
+  "candidate_digest_rule": "SHA-256 of canonical compact JSON over the UTF-8-bytewise sorted exact inventory rows",
+  "candidate_inventory": [
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/ADMISSION/POST-TERMINAL-VALIDATION.json",
+      "sha256": "1f045fac3d343cfe646c203fd838369780a4cdf9ef4dc61ae15c216216d21d0a",
+      "size_bytes": 828
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE-VALIDATION.json",
+      "sha256": "08ce052c799b842a95943566f93c40187d9bff357e3ca79e9aa3487b1ffff97a",
+      "size_bytes": 4226
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE.v2.json",
+      "sha256": "2eb14487e2802cf6edcba32223d9b71acb6227e818ba85e232c3782acb5a891e",
+      "size_bytes": 59723
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-SNAPSHOT-DELTA.json",
+      "sha256": "8e364d8616897fa316b0ed9dedd3d09dbce42b8e8e08d65421cf67fcf82415de",
+      "size_bytes": 80686
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/TERMINAL-RECEIPT.json",
+      "sha256": "4fb56232a53277e94fa6dc398814ef52e83d059a39a80a1209063c55d2b5579b",
+      "size_bytes": 3942
+    },
+    {
+      "path": "implementations/rwo_convergence/schemas/runner-source-closure-v2.schema.json",
+      "sha256": "a0420c95102335dd2309987e504c7ee2db19686cabb6d193c1ad2c5e3cf60a28",
+      "size_bytes": 6901
+    },
+    {
+      "path": "implementations/rwo_convergence/source_closure_v2.py",
+      "sha256": "6e583015356695664feb350215f2181573f1d9404db49969d37f0fcea6bb5cb4",
+      "size_bytes": 26541
+    },
+    {
+      "path": "implementations/tests/rwo_convergence/test_source_closure_v2.py",
+      "sha256": "fc0aa48a580eb443bd1b3b14aa91490356f2abc64c795de76de2b5b9e2993e1a",
+      "size_bytes": 12967
+    }
+  ],
+  "accepted_baseline": {
+    "lock_sha256": "411786168c6120f31d34696c01d4054895609ac7691d511048c92f2c1bbc94ca",
+    "tree_sha256": "e175a2d56f53d38c2ce88cd69830f400cee02564e23a21956398afd316c9699c",
+    "member_count": 85
+  },
+  "candidate_summary": {
+    "tree_sha256": "e8301aadf0fa2f070b7c36a9b55b1b8122e47912d907881df3d291b96f073e4e",
+    "member_count": 121,
+    "added_count": 36,
+    "removed_count": 0,
+    "byte_changed_count": 0,
+    "mode_only_changed_count": 85,
+    "product_runner_executed": false,
+    "toolchain_executed": false
+  },
+  "requested_acceptance": {
+    "class": "source-binding-candidate-only",
+    "binding": "255a54b16b168824b7534c611d172f189d33f55403edaf5a1ec6c908267a5f4b",
+    "suggested_statement": "I accept source-binding candidate only for acceptance binding 255a54b16b168824b7534c611d172f189d33f55403edaf5a1ec6c908267a5f4b."
+  },
+  "acceptance_status": "pending-explicit-owner-acceptance",
+  "successor_gate": "SWU-RWO-CVG2-002 remains impossible until this exact candidate is accepted, U01 closeout passes, selection is refreshed, and mutation admission is reverified.",
+  "controller_acceptance_reuse": "forbidden-chain-selection-only",
+  "authority_effect": "none",
+  "mutation_ready": false,
+  "successor_executed": false
+}

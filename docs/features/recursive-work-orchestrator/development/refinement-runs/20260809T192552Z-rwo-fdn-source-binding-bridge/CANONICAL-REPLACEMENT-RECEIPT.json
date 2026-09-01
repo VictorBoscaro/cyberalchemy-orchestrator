@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "rwo.fdn-source-binding-canonical-replacement/v1",
+  "receiptId": "CRR-RWO-FDN-001-SNAPSHOT-BRIDGE-20260809T192552Z",
+  "status": "pass",
+  "acceptedRequest": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/FINAL-ACCEPTANCE-REQUEST.json",
+    "sha256": "a2725c9259ded7839139d21a4cd5c52c6beaf37418a72e29d34af2ff39ae9b3f"
+  },
+  "canonicalReplacement": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+    "baseline": {
+      "sha256": "5c8801a0587fabfbdfbf12686f49b943dac986def111a66af9fff90daf71bf51",
+      "sizeBytes": 5093
+    },
+    "candidate": {
+      "sha256": "6dd223bd5b8e16b0db574d140d442f1b924cb7cb305fe47aed4bbafddedd9cdc",
+      "sizeBytes": 5093
+    },
+    "rollbackSnapshot": {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/rollback/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+      "sha256": "5c8801a0587fabfbdfbf12686f49b943dac986def111a66af9fff90daf71bf51"
+    }
+  },
+  "validation": {
+    "preApply": {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/PRE-APPLY-VALIDATION.json",
+      "sha256": "30ce8d707e813ac4d6241bceaf869d7287f23ae7abec17d813b7d01999e2e47d"
+    },
+    "postReplacement": {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/POST-REPLACEMENT-VALIDATION.json",
+      "sha256": "542ac3ebe29e332d9d95c84e33ffbfd4c924f212f92b85adba405ccf4b289aed"
+    },
+    "immutableManifestAndDetachedReview": "pass"
+  },
+  "nextRoute": "refresh the Work Pack so its L0 input is the accepted SOURCE-SNAPSHOT.json bridge, then run a fresh Work-Pack Readiness Audit.",
+  "nonEffects": [
+    "No Task Session, implementation, ontology, promotion, publication, commit, push, deployment, or external effect occurred.",
+    "The full manifest and detached-review rebind remains intentionally out of scope."
+  ]
+}

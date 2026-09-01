@@ -1,0 +1,73 @@
+{
+  "schema_version": "rwo.codex-contract-namespace/v0",
+  "members": [
+    {
+      "method": "initialize",
+      "direction": "client-to-server",
+      "kind": "request",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "method": "initialized",
+      "direction": "client-to-server",
+      "kind": "notification",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "method": "thread/start",
+      "direction": "client-to-server",
+      "kind": "request",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "method": "turn/start",
+      "direction": "client-to-server",
+      "kind": "request",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "method": "turn/completed",
+      "direction": "server-to-client",
+      "kind": "notification",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "method": "item/commandExecution/requestApproval",
+      "direction": "server-to-client",
+      "kind": "request",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "method": "turn/interrupt",
+      "direction": "client-to-server",
+      "kind": "request",
+      "owner": "codex-app-server-protocol"
+    }
+  ],
+  "field_owners": [
+    {
+      "pointer": "/error",
+      "owner": "json-rpc-envelope"
+    },
+    {
+      "pointer": "/id",
+      "owner": "json-rpc-envelope"
+    },
+    {
+      "pointer": "/jsonrpc",
+      "owner": "json-rpc-envelope"
+    },
+    {
+      "pointer": "/method",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "pointer": "/params",
+      "owner": "codex-app-server-protocol"
+    },
+    {
+      "pointer": "/result",
+      "owner": "json-rpc-envelope"
+    }
+  ]
+}

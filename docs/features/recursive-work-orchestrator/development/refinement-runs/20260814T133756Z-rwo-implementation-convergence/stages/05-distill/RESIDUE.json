@@ -1,0 +1,80 @@
+{
+  "schema_version": "rwo.distill-residue.v1",
+  "run_id": "20260814T133756Z-rwo-implementation-convergence",
+  "step_id": "s05",
+  "selected_unit": "RWO-CVG-001-executable-convergence-boundary",
+  "first_swu": "CVG-001-source-status-lock",
+  "rejected_or_routed_candidates": [
+    {
+      "candidate": "unified-multi-language-runtime",
+      "disposition": "rejected",
+      "reason": "collapses semantic, physical, launch, evidence, and lifecycle owners and requires hidden contracts"
+    },
+    {
+      "candidate": "dispatch-to-rwo-adapter-now",
+      "disposition": "rejected",
+      "reason": "current dispatch rows do not supply RWO graph edges, event acceptance, command mapping, or delivery ownership"
+    },
+    {
+      "candidate": "seat-address-repair-now",
+      "disposition": "routed",
+      "reason": "small but blocked on a semantic-contract owner choice"
+    },
+    {
+      "candidate": "drt001-lifecycle-adoption",
+      "disposition": "deferred",
+      "reason": "coherent existing continuation but does not answer current implementation convergence"
+    }
+  ],
+  "selected_swu_sequence": [
+    "CVG-001-source-status-lock",
+    "CVG-002-isolated-axis-runners",
+    "CVG-003-boundary-witnesses",
+    "CVG-004-report-and-claim-matrix"
+  ],
+  "stable_gaps": [
+    {
+      "id": "G-SEAT-SEMANTICS",
+      "owner": "semantic-contract owner",
+      "repair": "choose and accept a contract or implementation successor for colon-form seat material addresses",
+      "blocking_for_selected_unit": false,
+      "must_appear_as": "dual current-implementation and formal-conformance statuses"
+    },
+    {
+      "id": "G-DISPATCH-ADAPTER",
+      "owner": "integration-contract owner",
+      "repair": "define or reject a versioned lossless mapping with graph, accepted-event, and delivery ownership",
+      "blocking_for_selected_unit": false,
+      "must_appear_as": "adjacent-not-adapter"
+    },
+    {
+      "id": "G-EVE-COMPAT",
+      "owner": "future separately authorized compatibility route",
+      "repair": "bind current external facts and exercise the exact adapter contract against live Eve",
+      "blocking_for_selected_unit": false,
+      "must_appear_as": "not-run and unsupported"
+    },
+    {
+      "id": "G-UNICODE-PORTABILITY",
+      "owner": "future portability campaign",
+      "repair": "execute equivalent raw-admission vectors under independently pinned Unicode environments",
+      "blocking_for_selected_unit": false,
+      "must_appear_as": "host-pinned"
+    },
+    {
+      "id": "G-LIFECYCLE",
+      "owner": "existing DRT-001 continuation",
+      "repair": "select and admit exact evidence through the lifecycle route",
+      "blocking_for_selected_unit": false,
+      "must_appear_as": "candidate-local and incomplete"
+    },
+    {
+      "id": "G-PUBLICATION",
+      "owner": "Git/publication owner",
+      "repair": "perform a separate ownership inventory and narrow publication action",
+      "blocking_for_selected_unit": false,
+      "must_appear_as": "local-only"
+    }
+  ],
+  "claim_ceiling": "selected planning unit only; no implementation, semantic repair, adapter acceptance, lifecycle transition, publication, or production evidence"
+}

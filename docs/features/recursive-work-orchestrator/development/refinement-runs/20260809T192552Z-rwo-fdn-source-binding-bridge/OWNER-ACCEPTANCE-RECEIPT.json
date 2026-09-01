@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "rwo.fdn-source-binding-owner-acceptance/v1",
+  "receiptId": "OAR-RWO-FDN-001-SNAPSHOT-BRIDGE-20260809T192552Z",
+  "status": "accepted",
+  "acceptanceSource": "Direct user acceptance in this conversation on 2026-08-09.",
+  "request": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/FINAL-ACCEPTANCE-REQUEST.json",
+    "sha256": "a2725c9259ded7839139d21a4cd5c52c6beaf37418a72e29d34af2ff39ae9b3f"
+  },
+  "authorizedReplacement": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+    "baseline": {
+      "sha256": "5c8801a0587fabfbdfbf12686f49b943dac986def111a66af9fff90daf71bf51",
+      "sizeBytes": 5093
+    },
+    "candidate": {
+      "sha256": "6dd223bd5b8e16b0db574d140d442f1b924cb7cb305fe47aed4bbafddedd9cdc",
+      "sizeBytes": 5093
+    },
+    "changedPointers": [
+      "/contract/sha256",
+      "/contract/sizeBytes"
+    ]
+  },
+  "constraints": {
+    "sourceBindingMode": "snapshot-bridge",
+    "immutableManifestSha256": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c",
+    "immutableDetachedReviewSha256": "170f7cae649a18adcfcf5c8e4155e516782a1453df6a0590269f390d891c49f2",
+    "failureAction": "Restore the exact rollback snapshot and stop if post-replacement validation fails."
+  },
+  "nonEffects": [
+    "No Task Session, implementation, ontology, promotion, publication, commit, push, deployment, or external effect is authorized by this receipt.",
+    "A full manifest or detached-review rebind remains out of scope."
+  ]
+}

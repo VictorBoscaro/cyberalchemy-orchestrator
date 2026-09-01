@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/rwo/schemas/orchestration-cursor/1.0.0",
+  "title": "RWO OrchestrationCursor 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_id", "contract_version", "profile_id", "profile_version", "schema_id", "schema_version", "reducer_semantics_version", "graph_identity", "stream_id", "accepted_events", "satisfied_edge_ids", "emitted_commands"],
+  "properties": {
+    "contract_id": {"const": "RWO-SEMANTIC-CONTRACT"},
+    "contract_version": {"const": "1.0.0"},
+    "profile_id": {"const": "RWO-JCS-IJSON-SAFEINT"},
+    "profile_version": {"const": "1.0.0"},
+    "schema_id": {"const": "OrchestrationCursor"},
+    "schema_version": {"const": "1.0.0"},
+    "reducer_semantics_version": {"const": "1.0.0"},
+    "graph_identity": {"$ref": "#/$defs/digest"},
+    "stream_id": {"type": "string", "minLength": 1},
+    "accepted_events": {"type": "array", "items": {"$ref": "#/$defs/acceptedEvent"}},
+    "satisfied_edge_ids": {"type": "array", "items": {"$ref": "#/$defs/identifier"}},
+    "emitted_commands": {"type": "array", "items": {"$ref": "#/$defs/emittedCommand"}}
+  },
+  "$defs": {
+    "identifier": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"},
+    "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "acceptedEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accepted_event_identity", "event_payload_digest"],
+      "properties": {
+        "accepted_event_identity": {"$ref": "#/$defs/digest"},
+        "event_payload_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "emittedCommand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command_intent_identity", "command_payload_digest"],
+      "properties": {
+        "command_intent_identity": {"$ref": "#/$defs/digest"},
+        "command_payload_digest": {"$ref": "#/$defs/digest"}
+      }
+    }
+  },
+  "x-rwo-normalization": {
+    "accepted_events": {"elementType": "AcceptedEventObservation/1.0.0", "primaryKeyPaths": ["accepted_event_identity"], "duplicatePolicy": "reject"},
+    "satisfied_edge_ids": {"elementType": "EdgeId/1.0.0", "primaryKeyPaths": ["$"], "duplicatePolicy": "reject"},
+    "emitted_commands": {"elementType": "EmittedCommandObservation/1.0.0", "primaryKeyPaths": ["command_intent_identity"], "duplicatePolicy": "reject"}
+  },
+  "x-rwo-derived-fields-excluded": ["cursor_identity"]
+}

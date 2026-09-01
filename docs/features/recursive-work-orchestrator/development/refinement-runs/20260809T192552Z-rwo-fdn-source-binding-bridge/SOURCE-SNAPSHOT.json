@@ -1,0 +1,129 @@
+{
+  "baseline": {
+    "contract": {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/RWO-SEMANTIC-CONTRACT-1.0.0.md",
+      "role": "normative-semantic-contract",
+      "sha256": "8da8959770733ac4a3f0936f5cb2a8175a0786c909822a141f10670409610740",
+      "sizeBytes": 10363
+    },
+    "executionContext": [
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T070827Z-rwo-unified-development-campaign/stages/09-invoke-plan/WORK-PACK.md",
+        "role": "execution-context",
+        "sha256": "ec89795249ef6fb2db5afa3dc24404bdb58d779014e7e4ea8c29284d80f2d077",
+        "sizeBytes": 7435
+      },
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T070827Z-rwo-unified-development-campaign/stages/09-invoke-plan/SWU-MANIFEST.json",
+        "role": "execution-context",
+        "sha256": "e240019386ad44a9c049f45058c94e9105a42466ee9775ac52f9f3f694cf5bdd",
+        "sizeBytes": 1840
+      },
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T070827Z-rwo-unified-development-campaign/stages/09-invoke-plan/work-pack/shared/CLOSEOUT-CONTRACT.md",
+        "role": "execution-context",
+        "sha256": "4bc04adf03a8046dd77b0915eebdf5ecad9ca74a31473c70288ae47789cf9d4d",
+        "sizeBytes": 1022
+      }
+    ],
+    "manifest": {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST.json",
+      "role": "conformance-manifest",
+      "sha256": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c",
+      "sizeBytes": 34259
+    },
+    "registry": {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+      "role": "semantic-registry-baseline",
+      "sha256": "5c8801a0587fabfbdfbf12686f49b943dac986def111a66af9fff90daf71bf51",
+      "sizeBytes": 5093
+    },
+    "review": {
+      "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST-REVIEW.json",
+      "role": "conformance-manifest-review",
+      "sha256": "170f7cae649a18adcfcf5c8e4155e516782a1453df6a0590269f390d891c49f2",
+      "sizeBytes": 4406
+    },
+    "schemas": [
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/accepted-event-view.schema.json",
+        "role": "schema:AcceptedEventView",
+        "sha256": "ce145e24b6ef5cc2b64caff319d91645e54d50751bcb957302a4261f2f7671bf",
+        "sizeBytes": 1992
+      },
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/command-intent.schema.json",
+        "role": "schema:CommandIntent",
+        "sha256": "8b90599bfb8ae52ed8cc54b991335097004dbf09ef0acde8115089b8cb2d1b6b",
+        "sizeBytes": 2121
+      },
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/explicit-composition.schema.json",
+        "role": "schema:ExplicitComposition",
+        "sha256": "2cd4a56ac2b41eabbaf55f67b4f53a0b7e1a267a1bac4ea7749f45ef5bc76065",
+        "sizeBytes": 2549
+      },
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/orchestration-cursor.schema.json",
+        "role": "schema:OrchestrationCursor",
+        "sha256": "79e6cc13fd0da27c3f781685b96636146b132a985a26ddef3400240c716ddcad",
+        "sizeBytes": 2525
+      },
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/structural-defect.schema.json",
+        "role": "schema:StructuralDefect",
+        "sha256": "b34c0b8895d17d313850b96520c3a1eca5622bfb704e381e94bdbe0bbffaadde",
+        "sizeBytes": 1515
+      },
+      {
+        "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/work-graph.schema.json",
+        "role": "schema:WorkGraph",
+        "sha256": "e19eb2d8ba09b2f16e450e5a7a6779638c31b5f69259dab745480039f33644ca",
+        "sizeBytes": 2566
+      }
+    ]
+  },
+  "detachedReview": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/DETACHED-REVIEW.md",
+    "role": "detached-source-snapshot-review",
+    "sha256": "5fe6487f1b5a2a60fe2135149fb3144ecc55405084c986ed3f421445210c7997",
+    "sizeBytes": 3053
+  },
+  "nonEffects": [
+    "No canonical replacement.",
+    "No claim that baseline manifest and candidate registry are directly bound.",
+    "No Python, Rust, Go, adapter, ARE, inference, ontology, promotion, publication, commit, push, deployment, or runtime effect."
+  ],
+  "registryRepairCandidate": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/staging/projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+    "role": "registry-repair-candidate",
+    "sha256": "6dd223bd5b8e16b0db574d140d442f1b924cb7cb305fe47aed4bbafddedd9cdc",
+    "sizeBytes": 5093
+  },
+  "relations": {
+    "baselineManifestRegistryBinding": "pass against the immutable baseline registry",
+    "baselineRegistryContractBinding": "stale; explicit repair candidate required",
+    "baselineReviewManifestBinding": "pass against the immutable baseline manifest",
+    "bridgeRule": "The source snapshot, not the immutable manifest, is the re-bound L0 authority for a successor after exact owner acceptance. A consumer must not infer that the baseline manifest binds the candidate registry.",
+    "candidateRegistryContractBinding": "pass against the live semantic contract",
+    "manifestAndReviewMutation": "not proposed in this run; a full transitive rebind requires a separately expanded source-binding route"
+  },
+  "runId": "20260809T192552Z-rwo-fdn-source-binding-bridge",
+  "schemaVersion": "rwo.source-snapshot/v1",
+  "scope": "source-binding only; no runtime, implementation, adapter, ontology, Git, or external effect",
+  "snapshotId": "RWO-FDN-001-SOURCE-BINDING-BRIDGE-20260809T192552Z",
+  "stagingReceipt": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/STAGING-RECEIPT.json",
+    "role": "staging-receipt",
+    "sha256": "0d4fe7462e98b52f72beea38c36bc208834140ea2dd4217af4ea1a9dc2db0b8d",
+    "sizeBytes": 2133
+  },
+  "state": "candidate-staged-awaiting-owner-acceptance",
+  "successorRequirements": [
+    "exact owner acceptance of the bound candidate",
+    "Work Pack refresh that binds the accepted snapshot as the L0 input",
+    "fresh Work-Pack Readiness before selecting any implementation SWU"
+  ],
+  "swuId": "SWU-RWO-FDN-001",
+  "taskId": "TASK-RWO-FDN-001"
+}

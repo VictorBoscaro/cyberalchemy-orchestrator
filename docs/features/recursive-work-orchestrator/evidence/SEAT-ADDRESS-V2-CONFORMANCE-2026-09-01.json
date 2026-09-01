@@ -1,0 +1,41 @@
+{
+  "schema_version": "rwo.seat-address-conformance/v1",
+  "evidence_id": "RWO-SEAT-ADDRESS-V2-CONFORMANCE-20260901",
+  "status": "PASS",
+  "observed_at": "2026-09-01T12:31:44Z",
+  "decision_ref": {
+    "path": "docs/features/recursive-work-orchestrator/decisions/seat-address-v2.json",
+    "sha256": "0dafeefa4929e3302cc083f27603318871e548afe8c6123fa37040f8c0d5772b"
+  },
+  "selected_format": "seatv1/sha256/<64-lowercase-hex>",
+  "accepted_identifier_pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$",
+  "checks": [
+    {"check_id": "address-matches-adapter-pattern", "status": "PASS"},
+    {"check_id": "address-matches-accepted-identifier-grammar", "status": "PASS"},
+    {"check_id": "content-address-round-trip", "status": "PASS"},
+    {"check_id": "drift-and-substitution-rejection", "status": "PASS"},
+    {"check_id": "durable-sidecar-suite", "status": "PASS"}
+  ],
+  "validation": {
+    "command": "go test ./...",
+    "working_directory": "implementations/rwo-sidecar-go",
+    "exit_code": 0,
+    "packages": [
+      {"package": "cyberalchemy-orchestrator/implementations/rwo-sidecar-go", "status": "PASS"},
+      {"package": "cyberalchemy-orchestrator/implementations/rwo-sidecar-go/cmd/rwo-local-runtime", "status": "PASS-no-test-files"}
+    ]
+  },
+  "implementation_refs": [
+    {"path": "implementations/rwo-sidecar-go/seat_material.go", "sha256": "0aa25565803549f53bcab1e899bab947d383c73c82a2180978b46ed1b0fc4bcd"},
+    {"path": "implementations/rwo-sidecar-go/seat_material_test.go", "sha256": "578d983f5c05d20919bd1366eddeaf0c4ae283ec519f1b2f99f93adc37abd0b4"},
+    {"path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/authorization-event.json", "sha256": "a1c4288b8be82c36e16e5e0c0798bdcfcb546239d96c7b86441d8a06b479ea5a"}
+  ],
+  "deferred_production_gates": [
+    "real Eve delivery",
+    "portable Unicode admission",
+    "multi-host recovery",
+    "hardware power-loss testing"
+  ],
+  "authority_effect": "none",
+  "claim_ceiling": "Local adapter and sidecar conformance evidence only; no publication, deployment, real delivery, multi-host durability, or power-loss proof."
+}

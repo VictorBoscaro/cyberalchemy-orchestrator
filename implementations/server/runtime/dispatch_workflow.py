@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import json
 import os
 import re
@@ -12,14 +13,13 @@ import tempfile
 from pathlib import Path
 from typing import Any, Sequence
 
-from .canonical import canonical_text, digest_bytes, parse_strict_json
+from .canonical import canonical_text, digest_bytes
 from .dispatch_types import (
     load_dispatch_type_registry,
     live_dispatch_type_values,
     resolve_dispatch_capability,
 )
 from .errors import GateBlockedError, ValidationError
-from .host_dispatch_hook import HostDispatchHook
 
 
 BINDING_MARKER = "ACI-WORKFLOW-BINDING-V1:"
@@ -27,9 +27,14 @@ MANIFEST_SCHEMA = "aci-workflow-input-manifest/v1"
 ENVELOPE_SCHEMA = "aci-host-workflow-binding/v1"
 LAUNCH_PLAN_SCHEMA = "aci-bound-launch-plan/v1"
 APPENDER = Path(".claude/skills/register-dispatch/append-dispatch.cjs")
-HANDOFF_SCHEMA = "aci-workflow-sequential-handoff/v1"
-PRODUCER_OUTPUT_SCHEMA = "aci-host-workflow-producer-output/v1"
-_GROUP_ID = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$")
+ROOT_V080_APPENDER = Path(
+    "implementation/domainspec/internal_tools/subagents-dispatch-hooks/"
+    "skills/register-dispatch/append-dispatch.cjs"
+)
+ROOT_LEDGER = Path("telemetry/agents/subagents-dispatch.yaml")
+CHILD_RECORD_AUTHORITY = "child-ledger-v063"
+ROOT_V080_RECORD_AUTHORITY = "domainspec-root-v080"
+RECORD_AUTHORITIES = (CHILD_RECORD_AUTHORITY, ROOT_V080_RECORD_AUTHORITY)
 
 
 def _json_object(path: Path, label: str) -> dict[str, Any]:
@@ -62,160 +67,37 @@ def _relative_output(repo_root: Path, output_dir: Path) -> Path:
     return target
 
 
-def _repository_file(repo_root: Path, relative: str) -> tuple[bytes, str]:
-    if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
-        raise ValidationError("sequential handoff source path must be repository-relative")
-    root = Path(repo_root).resolve()
-    unresolved = root / relative
-    resolved = unresolved.resolve()
-    try:
-        resolved.relative_to(root)
-    except ValueError as exc:
-        raise ValidationError("sequential handoff source escapes the repository") from exc
-    cursor = unresolved
-    while cursor != root:
-        if cursor.is_symlink():
-            raise ValidationError("sequential handoff source symlinks are forbidden")
-        cursor = cursor.parent
-    if not resolved.is_file():
-        raise ValidationError("sequential handoff source is missing")
-    body = resolved.read_bytes()
-    return body, resolved.relative_to(root).as_posix()
-
-
-def _handoff_receipt(
+def _run_appender_validation(
     *,
-    repo_root: Path,
-    target_dir: Path,
-    dispatch_id: str,
-    route: dict[str, Any],
-    connection: dict[str, Any],
-    from_index: int,
-    to_index: int,
-    upstream_seat_count: int,
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    receipt_path = target_dir / f"handoff-{from_index}-{to_index}.json"
-    try:
-        raw = receipt_path.read_bytes()
-        receipt = parse_strict_json(raw)
-    except (OSError, ValidationError) as exc:
-        raise GateBlockedError(
-            "workflow compiler does not materialize connection handoffs when "
-            f"the sequential receipt for {connection['from']} -> "
-            f"{connection['to']} is unavailable or malformed"
-        ) from exc
-    expected_fields = {
-        "schema",
-        "dispatch_id",
-        "capability_ref",
-        "route_digest",
-        "connection",
-        "sources",
-    }
-    if not isinstance(receipt, dict) or set(receipt) != expected_fields:
-        raise ValidationError("sequential handoff receipt shape is invalid")
-    if (
-        receipt["schema"] != HANDOFF_SCHEMA
-        or receipt["dispatch_id"] != dispatch_id
-        or receipt["capability_ref"] != route["capability_ref"]
-        or receipt["route_digest"] != route["route_digest"]
-        or receipt["connection"] != connection
-    ):
-        raise ValidationError("sequential handoff identity or capability route differs")
-    sources = receipt["sources"]
-    if not isinstance(sources, list) or len(sources) != upstream_seat_count:
-        raise ValidationError("sequential handoff must contain one source per upstream seat")
-    manifested_sources: list[dict[str, Any]] = []
-    data_schema_ref: str | None = None
-    total_bytes = 0
-    for expected_seat, source in enumerate(sources):
-        fields = {"seat_index", "producer_output_receipt"}
-        if not isinstance(source, dict) or set(source) != fields:
-            raise ValidationError("sequential handoff source shape is invalid")
-        if source["seat_index"] != expected_seat:
-            raise ValidationError("sequential handoff sources must follow upstream seat order")
-        output = source["producer_output_receipt"]
-        output_fields = {
-            "schema",
-            "dispatch_id",
-            "producer_binding_id",
-            "producer_agent_id",
-            "artifact_id",
-            "path",
-            "data_schema_ref",
-            "sha256",
-            "size_bytes",
-            "route_digest",
-            "receipt_digest",
-        }
-        if not isinstance(output, dict) or set(output) != output_fields:
-            raise ValidationError("producer-output receipt shape is invalid")
-        if (
-            output["schema"] != PRODUCER_OUTPUT_SCHEMA
-            or output["dispatch_id"] != dispatch_id
-            or output["route_digest"] != route["route_digest"]
-            or any(
-                not isinstance(output[field], str) or not output[field]
-                for field in (
-                    "producer_binding_id",
-                    "producer_agent_id",
-                    "artifact_id",
-                    "path",
-                    "data_schema_ref",
-                    "sha256",
-                    "receipt_digest",
-                )
-            )
-            or isinstance(output["size_bytes"], bool)
-            or not isinstance(output["size_bytes"], int)
-            or output["size_bytes"] < 0
-        ):
-            raise ValidationError("producer-output receipt identity is invalid")
-        receipt_body = dict(output)
-        claimed_receipt_digest = receipt_body.pop("receipt_digest")
-        if digest_bytes(canonical_text(receipt_body).encode("utf-8")) != claimed_receipt_digest:
-            raise ValidationError("producer-output receipt digest is invalid")
-        body, normalized_path = _repository_file(repo_root, output["path"])
-        actual_digest = digest_bytes(body)
-        if normalized_path != output["path"]:
-            raise ValidationError("producer-output receipt path is not canonical")
-        if output["sha256"] != actual_digest or output["size_bytes"] != len(body):
-            raise ValidationError("producer-output bytes differ from immutable receipt")
-        if data_schema_ref is None:
-            data_schema_ref = output["data_schema_ref"]
-        elif output["data_schema_ref"] != data_schema_ref:
-            raise ValidationError("one sequential handoff cannot mix data schemas")
-        total_bytes += len(body)
-        manifested_sources.append(
-            {
-                "source_kind": "binding-output",
-                "producer_output_receipt": output,
-            }
-        )
-    slot = {
-        "name": f"sequential-{connection['from']}",
-        "data_schema_ref": data_schema_ref,
-        "cardinality": {"min": upstream_seat_count, "max": upstream_seat_count},
-        "max_bytes": total_bytes,
-        "purpose": f"Consume the exact terminal output of group {connection['from']}.",
-        "sources": manifested_sources,
-    }
-    receipt_ref = {
-        "from": connection["from"],
-        "to": connection["to"],
-        "path": receipt_path.relative_to(Path(repo_root).resolve()).as_posix(),
-        "digest": digest_bytes(raw),
-        "route_digest": route["route_digest"],
-    }
-    return slot, receipt_ref
-
-
-def validate_opening_record(repo_root: Path, record: dict[str, Any]) -> None:
-    """Run the canonical appender's complete opening validation without appending."""
-    root = Path(repo_root).resolve()
-    appender = root / APPENDER
+    validator_root: Path,
+    appender: Path,
+    arguments: list[str],
+    label: str,
+) -> None:
+    """Run a non-mutating registrar validation command and preserve its failure."""
     if not appender.is_file():
-        raise GateBlockedError("validated dispatch appender is unavailable")
+        raise GateBlockedError(f"{label} registrar is unavailable")
+    environment = dict(os.environ)
+    environment["CLAUDE_PROJECT_DIR"] = str(validator_root)
+    try:
+        result = subprocess.run(
+            ["node", str(appender), *arguments],
+            cwd=validator_root,
+            env=environment,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+    except OSError as exc:
+        raise GateBlockedError(f"{label} registrar could not run") from exc
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip()
+        raise ValidationError(f"{label} dispatch opening record is invalid: {detail}")
+
+
+def _validate_child_opening_record(root: Path, record: dict[str, Any]) -> None:
+    """Validate the child-owned legacy record without appending to its ledger."""
+    appender = root / APPENDER
     temporary: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(
@@ -223,24 +105,154 @@ def validate_opening_record(repo_root: Path, record: dict[str, Any]) -> None:
         ) as handle:
             handle.write(canonical_text(record))
             temporary = Path(handle.name)
-        environment = dict(os.environ)
-        environment["CLAUDE_PROJECT_DIR"] = str(root)
-        result = subprocess.run(
-            ["node", str(appender), str(temporary), "--validate-only"],
-            cwd=root,
-            env=environment,
-            text=True,
-            capture_output=True,
-            check=False,
+        _run_appender_validation(
+            validator_root=root,
+            appender=appender,
+            arguments=[str(temporary), "--validate-only"],
+            label="child-ledger-v063",
         )
-    except OSError as exc:
-        raise GateBlockedError("validated dispatch appender could not run") from exc
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
-    if result.returncode != 0:
-        detail = result.stderr.strip() or result.stdout.strip()
-        raise ValidationError(f"dispatch opening record is invalid: {detail}")
+
+
+def _repo_relative_file(root: Path, relative: object, label: str) -> Path:
+    if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
+        raise ValidationError(f"{label} must be a non-empty repository-relative file")
+    candidate = (root / relative).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise ValidationError(f"{label} escapes the governance root") from exc
+    if not candidate.is_file():
+        raise ValidationError(f"{label} is unavailable")
+    return candidate
+
+
+def _parse_root_ledger(path: Path) -> tuple[dict[str, dict[str, Any]], set[str]]:
+    """Parse the appender's JSON-scalar YAML dialect without accepting freeform YAML."""
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except OSError as exc:
+        raise GateBlockedError("root v0.8 dispatch ledger is unavailable") from exc
+    dispatches: dict[str, dict[str, Any]] = {}
+    closes: set[str] = set()
+    current: dict[str, Any] | None = None
+    saw_root = False
+    line_pattern = re.compile(r"^(  - |    )([A-Za-z_][A-Za-z0-9_]*): (.*)$")
+    for line_number, line in enumerate(lines, start=1):
+        if not line or line.startswith("#"):
+            continue
+        if line == "dispatches:":
+            if saw_root:
+                raise ValidationError("root v0.8 dispatch ledger repeats dispatches")
+            saw_root = True
+            continue
+        match = line_pattern.fullmatch(line)
+        if match is None or not saw_root:
+            raise ValidationError(
+                f"root v0.8 dispatch ledger has an unsupported line at {line_number}"
+            )
+        try:
+            value = json.loads(match.group(3))
+        except json.JSONDecodeError as exc:
+            raise ValidationError(
+                f"root v0.8 dispatch ledger has invalid JSON at {line_number}"
+            ) from exc
+        prefix, key = match.group(1), match.group(2)
+        if prefix == "  - ":
+            if key == "dispatch_id":
+                if not isinstance(value, str) or value in dispatches:
+                    raise ValidationError("root v0.8 dispatch ledger has duplicate dispatch identity")
+                current = {key: value}
+                dispatches[value] = current
+            elif key == "close_of":
+                if not isinstance(value, str) or value in closes:
+                    raise ValidationError("root v0.8 dispatch ledger has duplicate close identity")
+                closes.add(value)
+                current = {key: value}
+            else:
+                raise ValidationError("root v0.8 dispatch ledger row has no dispatch identity")
+        elif current is None or key in current:
+            raise ValidationError(
+                f"root v0.8 dispatch ledger has an invalid continuation at {line_number}"
+            )
+        else:
+            current[key] = value
+    if not saw_root:
+        raise ValidationError("root v0.8 dispatch ledger is missing dispatches")
+    return dispatches, closes
+
+
+def _validate_root_v080_opening_record(
+    governance_root: Path, record: dict[str, Any]
+) -> None:
+    """Verify an already-registered root v0.8 dispatch without touching either ledger."""
+    if record.get("schema_version") != "0.8.0":
+        raise ValidationError("domainspec-root-v080 requires schema_version 0.8.0")
+    binding = record.get("evidence_binding")
+    if not isinstance(binding, dict):
+        raise ValidationError("domainspec-root-v080 requires evidence_binding")
+    sheet = _repo_relative_file(
+        governance_root, binding.get("sheet_path"), "root v0.8 evidence sheet"
+    )
+    expected_digest = binding.get("sheet_sha256")
+    actual_digest = hashlib.sha256(sheet.read_bytes()).hexdigest()
+    if not isinstance(expected_digest, str) or actual_digest != expected_digest:
+        raise ValidationError("root v0.8 evidence sheet digest does not match")
+    sheet_value = _json_object(sheet, "root v0.8 evidence sheet")
+    expected_sheet = {key: value for key, value in record.items() if key != "evidence_binding"}
+    if sheet_value != expected_sheet:
+        raise ValidationError(
+            "root v0.8 evidence sheet must equal the registered record without evidence_binding"
+        )
+    _run_appender_validation(
+        validator_root=governance_root,
+        appender=governance_root / ROOT_V080_APPENDER,
+        arguments=["--validate-sheet", str(sheet)],
+        label="root-v0.8",
+    )
+    dispatches, closes = _parse_root_ledger(governance_root / ROOT_LEDGER)
+    dispatch_id = record.get("dispatch_id")
+    if not isinstance(dispatch_id, str) or not dispatch_id:
+        raise ValidationError("dispatch_id is required")
+    ledger_row = dispatches.get(dispatch_id)
+    if ledger_row is None:
+        raise ValidationError("root v0.8 dispatch is not registered")
+    if dispatch_id in closes:
+        raise GateBlockedError("root v0.8 dispatch is closed and cannot compile bound seats")
+    expected_row = {key: value for key, value in record.items() if key != "project_dir"}
+    observed_row = dict(ledger_row)
+    observed_row.pop("created", None)
+    if "invoked_by" not in expected_row:
+        observed_row.pop("invoked_by", None)
+    if observed_row != expected_row:
+        raise ValidationError("root v0.8 registered row differs from the submitted record")
+
+
+def validate_opening_record(
+    repo_root: Path,
+    record: dict[str, Any],
+    *,
+    record_authority: str = CHILD_RECORD_AUTHORITY,
+    governance_root: Path | None = None,
+) -> None:
+    """Validate the selected record authority before generating any bound seat bytes."""
+    root = Path(repo_root).resolve()
+    if record_authority == CHILD_RECORD_AUTHORITY:
+        registry = load_dispatch_type_registry(root)
+        if record.get("schema_version") != registry["ledger_schema_version"]:
+            raise ValidationError("dispatch row schema_version differs from the registry")
+        _validate_child_opening_record(root, record)
+        return
+    if record_authority == ROOT_V080_RECORD_AUTHORITY:
+        if governance_root is None:
+            raise GateBlockedError(
+                "domainspec-root-v080 requires an explicit governance root"
+            )
+        _validate_root_v080_opening_record(Path(governance_root).resolve(), record)
+        return
+    raise ValidationError(f"unknown record authority {record_authority!r}")
 
 
 def compile_bound_launch_plan(
@@ -250,19 +262,21 @@ def compile_bound_launch_plan(
     capability_ref: str,
     output_dir: Path,
     authority_mode: str = "legacy-managed",
+    record_authority: str = CHILD_RECORD_AUTHORITY,
+    governance_root: Path | None = None,
 ) -> dict[str, Any]:
     root = Path(repo_root).resolve()
-    validate_opening_record(root, record)
+    validate_opening_record(
+        root,
+        record,
+        record_authority=record_authority,
+        governance_root=governance_root,
+    )
     route = resolve_dispatch_capability(
         root,
         capability_ref=capability_ref,
         authority_mode=authority_mode,
     )
-    if record.get("capability_route") != route:
-        raise ValidationError("dispatch row capability route differs from resolved route")
-    registry = load_dispatch_type_registry(root)
-    if record.get("schema_version") != registry["ledger_schema_version"]:
-        raise ValidationError("dispatch row schema_version differs from the registry")
     if record.get("dispatch_type") != route["ledger_dispatch_type"]:
         raise ValidationError("dispatch row type differs from the resolved capability")
     dispatch_id = record.get("dispatch_id")
@@ -271,11 +285,8 @@ def compile_bound_launch_plan(
         raise ValidationError("dispatch_id is required")
     if not isinstance(groups, list) or not groups:
         raise ValidationError("groups must be a non-empty array")
-    connections = record.get("connections", [])
-    if not isinstance(connections, list):
-        raise ValidationError("connections must be an array")
     target_dir = _relative_output(root, output_dir)
-    prepared_groups: list[tuple[str, list[dict[str, Any]]]] = []
+    launches: list[dict[str, Any]] = []
     seen_groups: set[str] = set()
     for group in groups:
         if not isinstance(group, dict):
@@ -285,95 +296,29 @@ def compile_bound_launch_plan(
         if (
             not isinstance(group_id, str)
             or not group_id
-            or not _GROUP_ID.fullmatch(group_id)
             or group_id in seen_groups
             or not isinstance(agents, list)
             or not agents
         ):
             raise ValidationError("each group requires a unique id and non-empty agents")
         seen_groups.add(group_id)
-        prepared_agents: list[dict[str, Any]] = []
         for seat_index, agent in enumerate(agents):
             if not isinstance(agent, dict):
                 raise ValidationError("each agent must be an object")
             prompt = agent.get("initial_prompt")
             if not isinstance(prompt, str) or not prompt.strip():
                 raise ValidationError("each agent requires a non-empty initial_prompt")
-            prepared_agents.append(agent)
-        prepared_groups.append((group_id, prepared_agents))
-
-    group_indexes = {
-        group_id: index for index, (group_id, _) in enumerate(prepared_groups)
-    }
-    incoming_slots: dict[str, list[tuple[int, dict[str, Any]]]] = {
-        group_id: [] for group_id, _ in prepared_groups
-    }
-    handoff_refs: list[dict[str, Any]] = []
-    seen_edges: set[tuple[str, str]] = set()
-    prepared_connections: list[tuple[int, int, dict[str, Any]]] = []
-    for connection in connections:
-        if not isinstance(connection, dict):
-            raise ValidationError("each connection must be an object")
-        connection_type = connection.get("type")
-        if connection_type != "sequential":
-            raise GateBlockedError(
-                f"unsupported workflow connection semantics: {connection_type!r}"
-            )
-        if set(connection) != {"from", "to", "type"}:
-            raise ValidationError(
-                "sequential connections contain exactly from, to, and type"
-            )
-        source_group = connection.get("from")
-        target_group = connection.get("to")
-        if source_group not in group_indexes or target_group not in group_indexes:
-            raise ValidationError("sequential connection references an unknown group")
-        edge = (source_group, target_group)
-        if edge in seen_edges:
-            raise ValidationError("duplicate sequential connections are forbidden")
-        seen_edges.add(edge)
-        from_index = group_indexes[source_group]
-        to_index = group_indexes[target_group]
-        if from_index >= to_index:
-            raise GateBlockedError(
-                "sequential connections must follow canonical declared group order"
-            )
-        prepared_connections.append((from_index, to_index, connection))
-    for from_index, to_index, connection in sorted(prepared_connections):
-        source_group = connection["from"]
-        target_group = connection["to"]
-        slot, receipt_ref = _handoff_receipt(
-            repo_root=root,
-            target_dir=target_dir,
-            dispatch_id=dispatch_id,
-            route=route,
-            connection=connection,
-            from_index=from_index,
-            to_index=to_index,
-            upstream_seat_count=len(prepared_groups[from_index][1]),
-        )
-        incoming_slots[target_group].append((from_index, slot))
-        handoff_refs.append(receipt_ref)
-
-    launches: list[dict[str, Any]] = []
-    for group_id, agents in prepared_groups:
-        slots = [
-            slot
-            for _, slot in sorted(incoming_slots[group_id], key=lambda item: item[0])
-        ]
-        for seat_index, agent in enumerate(agents):
-            prompt = agent["initial_prompt"]
             attempt_id = f"attempt-{group_id}-{seat_index}-0"
             manifest = {
                 "schema": MANIFEST_SCHEMA,
                 "dispatch_id": dispatch_id,
-                "route_digest": route["route_digest"],
                 "target": {
                     "group_id": group_id,
                     "seat_index": seat_index,
                     "turn_ordinal": 0,
                     "attempt_id": attempt_id,
                 },
-                "slots": slots,
+                "slots": [],
             }
             manifest_path = target_dir / f"{group_id}-{seat_index}-turn-0.json"
             manifest_digest = _write_canonical(manifest_path, manifest)
@@ -413,8 +358,8 @@ def compile_bound_launch_plan(
         "schema": LAUNCH_PLAN_SCHEMA,
         "dispatch_id": dispatch_id,
         "execution_authority_mode": authority_mode,
+        "record_authority": record_authority,
         "route": route,
-        "handoffs": handoff_refs,
         "launches": launches,
     }
     plan_path = target_dir / "launch-plan.json"
@@ -438,6 +383,12 @@ def parser() -> argparse.ArgumentParser:
     compile_command.add_argument("--capability-ref", required=True)
     compile_command.add_argument("--output-dir", type=Path, required=True)
     compile_command.add_argument("--authority-mode", default="legacy-managed")
+    compile_command.add_argument(
+        "--record-authority",
+        choices=RECORD_AUTHORITIES,
+        default=CHILD_RECORD_AUTHORITY,
+    )
+    compile_command.add_argument("--governance-root", type=Path)
     opening = commands.add_parser("open")
     opening.add_argument("--record", type=Path, required=True)
     opening.add_argument("--host", choices=("codex", "claude"), required=True)
@@ -468,8 +419,12 @@ def run(argv: Sequence[str] | None = None) -> dict[str, Any]:
             capability_ref=args.capability_ref,
             output_dir=args.output_dir,
             authority_mode=args.authority_mode,
+            record_authority=args.record_authority,
+            governance_root=args.governance_root,
         )
     record = _json_object(args.record, "dispatch lifecycle record")
+    from .host_dispatch_hook import HostDispatchHook
+
     hook = HostDispatchHook(root=root, host=args.host)
     if args.command == "open":
         validate_opening_record(root, record)

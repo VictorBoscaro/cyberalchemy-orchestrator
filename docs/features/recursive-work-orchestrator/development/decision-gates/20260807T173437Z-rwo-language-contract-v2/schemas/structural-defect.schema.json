@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/rwo/schemas/structural-defect/1.0.0",
+  "title": "RWO StructuralDefect 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["phase", "path", "code", "detail_digest"],
+  "properties": {
+    "phase": {"enum": ["decode", "admission", "schema", "normalization", "compilation", "reduction"]},
+    "path": {"type": "array", "items": {"$ref": "#/$defs/pathSegment"}},
+    "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "detail_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}
+  },
+  "$defs": {
+    "pathSegment": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "name"],
+          "properties": {
+            "kind": {"const": "field"},
+            "name": {"type": "string", "minLength": 1}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "index"],
+          "properties": {
+            "kind": {"const": "index"},
+            "index": {"type": "integer", "minimum": 0}
+          }
+        }
+      ]
+    }
+  },
+  "x-rwo-phase-rank": {
+    "decode": 0,
+    "admission": 1,
+    "schema": 2,
+    "normalization": 3,
+    "compilation": 4,
+    "reduction": 5
+  },
+  "x-rwo-order": ["phase_rank", "path_segments", "code", "detail_digest"],
+  "x-rwo-duplicate-policy": "implementation-conformance-failure"
+}

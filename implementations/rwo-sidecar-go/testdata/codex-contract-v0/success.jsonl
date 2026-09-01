@@ -1,0 +1,8 @@
+{"sequence":1,"direction":"client-to-server","message":{"jsonrpc":"2.0","id":"initialize-1","method":"initialize","params":{"clientInfo":{"name":"rwo-contract-fixture","version":"0"},"capabilities":{"experimentalApi":false}}}}
+{"sequence":2,"direction":"server-to-client","message":{"jsonrpc":"2.0","id":"initialize-1","result":{"serverInfo":{"name":"codex-app-server","version":"fixture-v0"}}}}
+{"sequence":3,"direction":"client-to-server","message":{"jsonrpc":"2.0","method":"initialized","params":{}}}
+{"sequence":4,"direction":"client-to-server","message":{"jsonrpc":"2.0","id":"thread-1","method":"thread/start","params":{"cwd":"/workspace","approvalPolicy":"never","sandbox":"read-only"}}}
+{"sequence":5,"direction":"server-to-client","message":{"jsonrpc":"2.0","id":"thread-1","result":{"thread":{"id":"thread-fixture-1"}}}}
+{"sequence":6,"direction":"client-to-server","message":{"jsonrpc":"2.0","id":"turn-1","method":"turn/start","params":{"threadId":"thread-fixture-1","input":[{"type":"text","text":"inspect fixture only"}]}}}
+{"sequence":7,"direction":"server-to-client","message":{"jsonrpc":"2.0","id":"turn-1","result":{"turn":{"id":"turn-fixture-1","status":"inProgress"}}}}
+{"sequence":8,"direction":"server-to-client","message":{"jsonrpc":"2.0","method":"turn/completed","params":{"threadId":"thread-fixture-1","turn":{"id":"turn-fixture-1","status":"completed"}}}}

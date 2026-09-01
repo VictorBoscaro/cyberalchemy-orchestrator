@@ -1,0 +1,126 @@
+{
+  "schema_version": "rwo.branch-reachability-manifest/v1",
+  "manifest_id": "RWO-BRANCH-REACHABILITY-20260901",
+  "status": "successor-candidate-valid-acceptance-required",
+  "target_branch": "master",
+  "base_head": "cf50392089d235eb0139df89b2f77bff064a00fb",
+  "accepted_source_closure": {
+    "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE.v2.json",
+    "sha256": "2eb14487e2802cf6edcba32223d9b71acb6227e818ba85e232c3782acb5a891e",
+    "accepted_binding": "255a54b16b168824b7534c611d172f189d33f55403edaf5a1ec6c908267a5f4b",
+    "member_count": 121
+  },
+  "successor_delta": {
+    "changed": [
+      {
+        "path": "implementations/rwo-sidecar-go/seat_material.go",
+        "before_sha256": "4024b9146a28bfa74ea6614cb3c87c1a0a78b7bdcde10870e9b0e85995893688",
+        "after_sha256": "0aa25565803549f53bcab1e899bab947d383c73c82a2180978b46ed1b0fc4bcd"
+      },
+      {
+        "path": "implementations/rwo-sidecar-go/seat_material_test.go",
+        "before_sha256": "762dee78a5b7a868772ff5d7262ee5a1cf58a9601cf4d808ea61138774a38560",
+        "after_sha256": "578d983f5c05d20919bd1366eddeaf0c4ae283ec519f1b2f99f93adc37abd0b4"
+      },
+      {
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/authorization-event.json",
+        "before_sha256": "b6bd2d0844a5ed0c71d288a55d38ed5b97bc63cd60e78f6b96f2f6377e18bad8",
+        "after_sha256": "a1c4288b8be82c36e16e5e0c0798bdcfcb546239d96c7b86441d8a06b479ea5a"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/02-invoke-define/DEFINE.md",
+        "before_sha256": "9105ee2eaddd49c3a6c53bdd9594bd3d2098dc0e6b27795406f1207b046582a8",
+        "after_sha256": "a16216d78fbe3b132bceca856f53501fe72a8b69de06196b800cbd2741354119"
+      },
+      {
+        "path": "implementations/rwo_convergence/canonical.py",
+        "before_sha256": "613af55ce99ab18c65fd8b14d5c284acb4e101e7b181995fcb9057b26b22e407",
+        "after_sha256": "37dff825a5a96fd66099f6377259ff16ae3c038d51b7de495ee7423a3fb3418c"
+      }
+    ],
+    "added": [
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/OWNER-ACCEPTANCE-RECEIPT.json",
+        "sha256": "7322066746bdb294292a6a02f62d65003d1bbaaf38c388fe3c10cb94fa4d3ad7"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/decisions/seat-address-v2.json",
+        "sha256": "0dafeefa4929e3302cc083f27603318871e548afe8c6123fa37040f8c0d5772b"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/evidence/SEAT-ADDRESS-V2-CONFORMANCE-2026-09-01.json",
+        "sha256": "d32f707bca7aecb31d7016bd61abea35fd774069816aee4348d3f7353f1f45e6"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/selection/DESIGN-SCOPE-MANIFEST.json",
+        "sha256": "52274228a1639c5e48600f1eee55166b7a1f0a8f7ace5df92b624c0bc066ffde"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/ACCEPTANCE-REQUEST.json",
+        "sha256": "029ade0fe6888753a6a8faf26f60d07069267aeacc5ccf822ca25b5ab43d8afa"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/ADMISSION/POST-TERMINAL-VALIDATION.json",
+        "sha256": "1f045fac3d343cfe646c203fd838369780a4cdf9ef4dc61ae15c216216d21d0a"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE-VALIDATION.json",
+        "sha256": "08ce052c799b842a95943566f93c40187d9bff357e3ca79e9aa3487b1ffff97a"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE.v2.json",
+        "sha256": "2eb14487e2802cf6edcba32223d9b71acb6227e818ba85e232c3782acb5a891e"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-SNAPSHOT-DELTA.json",
+        "sha256": "8e364d8616897fa316b0ed9dedd3d09dbce42b8e8e08d65421cf67fcf82415de"
+      },
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/TERMINAL-RECEIPT.json",
+        "sha256": "4fb56232a53277e94fa6dc398814ef52e83d059a39a80a1209063c55d2b5579b"
+      },
+      {
+        "path": "implementations/rwo_convergence/schemas/runner-source-closure-v2.schema.json",
+        "sha256": "a0420c95102335dd2309987e504c7ee2db19686cabb6d193c1ad2c5e3cf60a28"
+      },
+      {
+        "path": "implementations/rwo_convergence/source_closure_v2.py",
+        "sha256": "6e583015356695664feb350215f2181573f1d9404db49969d37f0fcea6bb5cb4"
+      },
+      {
+        "path": "implementations/rwo_convergence/lock.py",
+        "sha256": "22b60c4fc3b182ad925a59afbcbce2f8062f97b8950c36603c430b2a4ab82555"
+      },
+      {
+        "path": "implementations/tests/rwo_convergence/test_source_closure_v2.py",
+        "sha256": "fc0aa48a580eb443bd1b3b14aa91490356f2abc64c795de76de2b5b9e2993e1a"
+      }
+    ],
+    "removed": []
+  },
+  "commit_material": {
+    "member_count_excluding_this_manifest": 135,
+    "material_digest_algorithm": "sorted-relative-path-nul-bytes-nul-sha256/v1",
+    "material_digest_excluding_this_manifest": "f1a9dad805069f27afadf4b01deaf57fdedc9d948ad7ee0f2a3f510984ff791c",
+    "path_selection_rule": "The 121 exact paths in accepted_source_closure.members plus the fourteen successor_delta.added paths plus this manifest path.",
+    "unrelated_dirty_paths": "excluded",
+    "index_preservation": {
+      "path": "implementations/tests/runtime/test_dispatch_workflow.py",
+      "accepted_sha256": "4b880deac5c5ac74605f7e82cf5f4e94126199af38295f114d101a76c24a1fef",
+      "accepted_blob_source_commit": "1e6fe340e51beaf87bbcc43000e22a9c53515dff",
+      "working_tree_bytes": "preserved-unstaged"
+    }
+  },
+  "validation": [
+    {"command": "git diff --cached --check", "working_directory": ".", "status": "PASS"},
+    {"command": "cargo test --manifest-path implementations/rwo-rust/Cargo.toml --offline --quiet", "working_directory": "staged-tree snapshot", "status": "PASS-build-only-no-test-modules-in-publication-corpus"},
+    {"command": "go test ./...", "working_directory": "staged-tree snapshot/implementations/rwo-sidecar-go", "status": "PASS"},
+    {"command": "python3 -m unittest discover -s implementations/tests/rwo -p test_*.py", "working_directory": "staged-tree snapshot", "status": "PASS-21"},
+    {"command": "python3 -m unittest implementations.tests.rwo_convergence.test_source_closure_v2", "working_directory": "staged-tree snapshot", "status": "PASS-11"},
+    {"command": "python3 -m unittest implementations.tests.rwo_convergence.test_process.ProcessSupervisorTests.test_unlisted_child_is_stopped_before_its_code_runs", "working_directory": "primary checkout isolated rerun", "status": "PASS-diagnostic-not-publication-corpus"}
+  ],
+  "git_effect": "none-before-exact-successor-acceptance",
+  "required_next_route": "CA2-ROUTE-PUBLISH",
+  "publication_authority": "pending-exact-successor-acceptance",
+  "authority_effect": "none"
+}

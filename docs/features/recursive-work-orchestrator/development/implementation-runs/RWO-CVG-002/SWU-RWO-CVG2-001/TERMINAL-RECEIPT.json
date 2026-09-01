@@ -1,0 +1,100 @@
+{
+  "schema_version": "rwo.cvg2.terminal-receipt/v1",
+  "receipt_id": "RWO-CVG-002-ONE-SHOT:U01:terminal",
+  "work_pack_id": "WP-RWO-CVG-002",
+  "unit_id": "U01",
+  "swu_id": "SWU-RWO-CVG2-001",
+  "task_id": "TASK-RWO-CVG2-SOURCE",
+  "result": "pass",
+  "terminal_mode": "candidate-valid-acceptance-required",
+  "validation": {
+    "status": "pass",
+    "command_results": [
+      {
+        "command_id": "U01-V01",
+        "status": "pass",
+        "evidence_ref": {
+          "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE-VALIDATION.json",
+          "sha256": "08ce052c799b842a95943566f93c40187d9bff357e3ca79e9aa3487b1ffff97a",
+          "size_bytes": 4226
+        }
+      },
+      {
+        "command_id": "U01-V02",
+        "status": "pass",
+        "evidence_ref": {
+          "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE.v2.json",
+          "sha256": "2eb14487e2802cf6edcba32223d9b71acb6227e818ba85e232c3782acb5a891e",
+          "size_bytes": 59723
+        }
+      },
+      {
+        "command_id": "U01-V03",
+        "status": "pass",
+        "evidence_ref": {
+          "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE-VALIDATION.json",
+          "sha256": "08ce052c799b842a95943566f93c40187d9bff357e3ca79e9aa3487b1ffff97a",
+          "size_bytes": 4226
+        }
+      },
+      {
+        "command_id": "U01-V04",
+        "status": "pass",
+        "evidence_ref": {
+          "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE-VALIDATION.json",
+          "sha256": "08ce052c799b842a95943566f93c40187d9bff357e3ca79e9aa3487b1ffff97a",
+          "size_bytes": 4226
+        }
+      },
+      {
+        "command_id": "U01-V05",
+        "status": "pass",
+        "evidence_ref": {
+          "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE-VALIDATION.json",
+          "sha256": "08ce052c799b842a95943566f93c40187d9bff357e3ca79e9aa3487b1ffff97a",
+          "size_bytes": 4226
+        }
+      }
+    ]
+  },
+  "evidence_refs": [
+    {
+      "path": "implementations/rwo_convergence/source_closure_v2.py",
+      "sha256": "6e583015356695664feb350215f2181573f1d9404db49969d37f0fcea6bb5cb4",
+      "size_bytes": 26541
+    },
+    {
+      "path": "implementations/rwo_convergence/schemas/runner-source-closure-v2.schema.json",
+      "sha256": "a0420c95102335dd2309987e504c7ee2db19686cabb6d193c1ad2c5e3cf60a28",
+      "size_bytes": 6901
+    },
+    {
+      "path": "implementations/tests/rwo_convergence/test_source_closure_v2.py",
+      "sha256": "fc0aa48a580eb443bd1b3b14aa91490356f2abc64c795de76de2b5b9e2993e1a",
+      "size_bytes": 12967
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE.v2.json",
+      "sha256": "2eb14487e2802cf6edcba32223d9b71acb6227e818ba85e232c3782acb5a891e",
+      "size_bytes": 59723
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-SNAPSHOT-DELTA.json",
+      "sha256": "8e364d8616897fa316b0ed9dedd3d09dbce42b8e8e08d65421cf67fcf82415de",
+      "size_bytes": 80686
+    },
+    {
+      "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE-VALIDATION.json",
+      "sha256": "08ce052c799b842a95943566f93c40187d9bff357e3ca79e9aa3487b1ffff97a",
+      "size_bytes": 4226
+    }
+  ],
+  "dependency_dispositions": [],
+  "blockers": [],
+  "successor": {
+    "unit_id": "SWU-RWO-CVG2-002",
+    "execution_started": false
+  },
+  "authority_effect": "none",
+  "mutation_ready": false
+}

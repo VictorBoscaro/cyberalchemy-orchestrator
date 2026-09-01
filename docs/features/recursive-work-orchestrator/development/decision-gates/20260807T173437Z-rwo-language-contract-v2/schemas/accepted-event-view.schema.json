@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/rwo/schemas/accepted-event-view/1.0.0",
+  "title": "RWO AcceptedEventView 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_id", "contract_version", "profile_id", "profile_version", "schema_id", "schema_version", "stream_id", "event_id", "event_type", "source_node_id", "payload"],
+  "properties": {
+    "contract_id": {"const": "RWO-SEMANTIC-CONTRACT"},
+    "contract_version": {"const": "1.0.0"},
+    "profile_id": {"const": "RWO-JCS-IJSON-SAFEINT"},
+    "profile_version": {"const": "1.0.0"},
+    "schema_id": {"const": "AcceptedEventView"},
+    "schema_version": {"const": "1.0.0"},
+    "stream_id": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "event_type": {"$ref": "#/$defs/identifier"},
+    "source_node_id": {"$ref": "#/$defs/identifier"},
+    "payload": {"$ref": "#/$defs/jsonObject"}
+  },
+  "$defs": {
+    "identifier": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"},
+    "jsonObject": {
+      "type": "object",
+      "description": "Validated against the exact event-specific closed schema declared by the accepted graph contract before digest derivation.",
+      "additionalProperties": {"$ref": "#/$defs/jsonValue"}
+    },
+    "jsonValue": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "boolean"},
+        {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
+        {"type": "string"},
+        {"type": "array", "items": {"$ref": "#/$defs/jsonValue"}},
+        {"type": "object", "additionalProperties": {"$ref": "#/$defs/jsonValue"}}
+      ]
+    }
+  },
+  "x-rwo-projections": {
+    "identity": ["stream_id", "event_id"],
+    "payload": ["event_type", "source_node_id", "payload"]
+  },
+  "x-rwo-excluded-transport-fields": ["delivery_id", "attempt", "wall_time", "trace_headers", "broker_offset", "adapter_metadata"]
+}

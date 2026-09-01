@@ -1,0 +1,33 @@
+{
+  "schema_version": "rwo.codex-contract-profile/v0",
+  "profile_id": "codex-app-server-observation-v0",
+  "transport": "stdio-jsonl",
+  "jsonrpc_version": "2.0",
+  "namespace_ref": "namespace.json",
+  "provider_launch": "forbidden",
+  "output_policy": "explicit-jsonrpc-result-or-error-only",
+  "unknown_member_policy": "reject",
+  "capabilities": [
+    "interrupt-observation",
+    "permission-observation",
+    "raw-wire-observation"
+  ],
+  "scenarios": [
+    {
+      "name": "interrupted",
+      "path": "interrupted.jsonl"
+    },
+    {
+      "name": "namespace",
+      "path": "namespace.json"
+    },
+    {
+      "name": "permission",
+      "path": "permission.jsonl"
+    },
+    {
+      "name": "success",
+      "path": "success.jsonl"
+    }
+  ]
+}

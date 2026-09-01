@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "id": "accepted-request-and-support-artifacts",
+      "status": "pass"
+    },
+    {
+      "id": "immutable-contract-manifest-and-review",
+      "status": "pass"
+    },
+    {
+      "id": "postapply-registry-target",
+      "status": "pass"
+    }
+  ],
+  "failures": [],
+  "mode": "postapply",
+  "nonEffects": [
+    "No file was written.",
+    "No manifest or vector review rebind was performed.",
+    "No Work Pack, Task Session, implementation, Git, or external effect is asserted."
+  ],
+  "schemaVersion": "rwo.fdn-source-binding-post-replacement-validation/v1",
+  "status": "pass",
+  "target": {
+    "path": "projects/cyberalchemy-orchestrator/docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+    "sha256": "6dd223bd5b8e16b0db574d140d442f1b924cb7cb305fe47aed4bbafddedd9cdc",
+    "sizeBytes": 5093
+  },
+  "targetIsCanonical": true
+}

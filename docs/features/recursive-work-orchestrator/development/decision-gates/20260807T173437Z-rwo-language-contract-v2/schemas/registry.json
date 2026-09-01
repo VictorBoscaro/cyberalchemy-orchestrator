@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "rwo.semantic-registry/v1",
+  "registryId": "RWO-SEMANTIC-REGISTRY/1.0.0",
+  "contract": {
+    "id": "RWO-SEMANTIC-CONTRACT",
+    "version": "1.0.0",
+    "path": "../RWO-SEMANTIC-CONTRACT-1.0.0.md",
+    "sha256": "8da8959770733ac4a3f0936f5cb2a8175a0786c909822a141f10670409610740",
+    "sizeBytes": 10363
+  },
+  "profile": {
+    "id": "RWO-JCS-IJSON-SAFEINT",
+    "version": "1.0.0",
+    "unicodeVersion": "15.1.0",
+    "canonicalPayload": "RFC8785-JCS",
+    "digestAlgorithm": "SHA-256",
+    "integerMinimum": -9007199254740991,
+    "integerMaximum": 9007199254740991,
+    "jsonIntegerTokenPattern": "0|-?[1-9][0-9]*",
+    "canonicalDecimalPattern": "(?:0|-?(?:[1-9][0-9]*)(?:\\.[0-9]*[1-9])?|-?0\\.[0-9]*[1-9])",
+    "unicodeAdmission": "NFC-reject-surrogate-noncharacter-unassigned",
+    "versionPolicy": "exact-registered-tuple-only"
+  },
+  "schemas": [
+    {
+      "schemaId": "AcceptedEventView",
+      "schemaVersion": "1.0.0",
+      "path": "accepted-event-view.schema.json",
+      "sha256": "ce145e24b6ef5cc2b64caff319d91645e54d50751bcb957302a4261f2f7671bf",
+      "sizeBytes": 1992,
+      "valueTypes": ["AcceptedEventIdentity", "AcceptedEventPayload", "AcceptedEventView"]
+    },
+    {
+      "schemaId": "CommandIntent",
+      "schemaVersion": "1.0.0",
+      "path": "command-intent.schema.json",
+      "sha256": "8b90599bfb8ae52ed8cc54b991335097004dbf09ef0acde8115089b8cb2d1b6b",
+      "sizeBytes": 2121,
+      "valueTypes": ["CommandIntentIdentity", "CommandIntentPayload", "CommandIntent"]
+    },
+    {
+      "schemaId": "ExplicitComposition",
+      "schemaVersion": "1.0.0",
+      "path": "explicit-composition.schema.json",
+      "sha256": "2cd4a56ac2b41eabbaf55f67b4f53a0b7e1a267a1bac4ea7749f45ef5bc76065",
+      "sizeBytes": 2549,
+      "valueTypes": ["ExplicitComposition"]
+    },
+    {
+      "schemaId": "OrchestrationCursor",
+      "schemaVersion": "1.0.0",
+      "path": "orchestration-cursor.schema.json",
+      "sha256": "79e6cc13fd0da27c3f781685b96636146b132a985a26ddef3400240c716ddcad",
+      "sizeBytes": 2525,
+      "valueTypes": ["OrchestrationCursor"]
+    },
+    {
+      "schemaId": "StructuralDefect",
+      "schemaVersion": "1.0.0",
+      "path": "structural-defect.schema.json",
+      "sha256": "b34c0b8895d17d313850b96520c3a1eca5622bfb704e381e94bdbe0bbffaadde",
+      "sizeBytes": 1515,
+      "valueTypes": ["StructuralDefect", "DefectDetail"]
+    },
+    {
+      "schemaId": "WorkGraph",
+      "schemaVersion": "1.0.0",
+      "path": "work-graph.schema.json",
+      "sha256": "e19eb2d8ba09b2f16e450e5a7a6779638c31b5f69259dab745480039f33644ca",
+      "sizeBytes": 2566,
+      "valueTypes": ["WorkGraph"]
+    }
+  ],
+  "inlinePayloadSchemas": [
+    {
+      "schemaId": "FixtureEventPayload",
+      "schemaVersion": "1.0.0",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["job_id"],
+        "properties": {
+          "job_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"}
+        }
+      }
+    },
+    {
+      "schemaId": "FixtureCommandPayload",
+      "schemaVersion": "1.0.0",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["job_id"],
+        "properties": {
+          "job_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"}
+        }
+      }
+    }
+  ],
+  "derivedFieldPolicy": "Derived digests never appear in their own preimage.",
+  "payloadSchemaPolicy": "AcceptedEventView and CommandIntent envelopes are closed; each payload is additionally validated against the exact closed payload schema declared by its accepted WorkGraph edge before digest derivation. The first conformance slice uses the two inline fixture schemas and copy-event-payload.",
+  "semanticCollections": [
+    {"schemaId": "ExplicitComposition", "path": "nodes", "elementType": "ExplicitNode/1.0.0", "primaryKeyPaths": ["node_id"], "duplicatePolicy": "reject"},
+    {"schemaId": "ExplicitComposition", "path": "edges", "elementType": "ExplicitEdge/1.0.0", "primaryKeyPaths": ["edge_id"], "duplicatePolicy": "reject"},
+    {"schemaId": "WorkGraph", "path": "nodes", "elementType": "WorkNode/1.0.0", "primaryKeyPaths": ["node_id"], "duplicatePolicy": "reject"},
+    {"schemaId": "WorkGraph", "path": "edges", "elementType": "WorkEdge/1.0.0", "primaryKeyPaths": ["edge_id"], "duplicatePolicy": "reject"},
+    {"schemaId": "OrchestrationCursor", "path": "accepted_events", "elementType": "AcceptedEventObservation/1.0.0", "primaryKeyPaths": ["accepted_event_identity"], "duplicatePolicy": "reject"},
+    {"schemaId": "OrchestrationCursor", "path": "satisfied_edge_ids", "elementType": "EdgeId/1.0.0", "primaryKeyPaths": ["$"], "duplicatePolicy": "reject"},
+    {"schemaId": "OrchestrationCursor", "path": "emitted_commands", "elementType": "EmittedCommandObservation/1.0.0", "primaryKeyPaths": ["command_intent_identity"], "duplicatePolicy": "reject"}
+  ]
+}

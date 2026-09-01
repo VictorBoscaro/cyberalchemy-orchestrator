@@ -1,0 +1,106 @@
+{
+  "schema_version": "rwo.runner-source-closure/v1",
+  "closure_id": "RWO-CVG-001-runner-source-closure",
+  "posture": "design-only-planned-unexecuted",
+  "global_rules": {
+    "execution_root": "byte-exact-read-only-snapshot",
+    "unlisted_child_processes": "forbidden",
+    "shell_commands": "forbidden",
+    "network": "forbidden",
+    "live_repository_execution": "forbidden",
+    "validate_prototype_py": "forbidden-because-it-nests-rust-and-masks-child-exit"
+  },
+  "runner_groups": [
+    {
+      "axis_id": "AX-PYTHON",
+      "runner_class": "exit-only",
+      "ordered_test_modules": [
+        "implementations.tests.rwo.test_contract_vectors",
+        "implementations.tests.rwo.test_kernel_vectors",
+        "implementations.tests.rwo.test_prototype"
+      ],
+      "excluded_test_modules": ["implementations.tests.rwo.test_cross_language_witness"],
+      "required_source_members": [
+        "implementations/rwo/canonical.py",
+        "implementations/rwo/contract.py",
+        "implementations/rwo/kernel.py",
+        "implementations/rwo/retry.py",
+        "implementations/rwo/source_binding.py",
+        "implementations/tests/rwo/test_contract_vectors.py",
+        "implementations/tests/rwo/test_kernel_vectors.py",
+        "implementations/tests/rwo/test_prototype.py",
+        "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/RWO-SEMANTIC-CONTRACT-1.0.0.md",
+        "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+        "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST.json",
+        "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST-REVIEW.json",
+        "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/SOURCE-SNAPSHOT.json",
+        "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/OWNER-ACCEPTANCE-RECEIPT.json",
+        "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/CANONICAL-REPLACEMENT-RECEIPT.json",
+        "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/POST-REPLACEMENT-VALIDATION.json"
+      ]
+    },
+    {
+      "axis_id": "AX-RUST",
+      "runner_class": "exit-only-plus-structured-observation",
+      "required_source_roots": ["implementations/rwo-rust/Cargo.toml", "implementations/rwo-rust/Cargo.lock", "implementations/rwo-rust/src"],
+      "structured_observation_producer": "implementations/rwo-rust/src/bin/rwo_fixture_observations.rs",
+      "required_expectation_binding": "EXP-FROZEN-CORPUS"
+    },
+    {
+      "axis_id": "AX-CROSS-LANGUAGE",
+      "runner_class": "structured-evidence",
+      "order_after": ["AX-PYTHON", "AX-RUST"],
+      "input_observations": ["python-observation/rwo.fixture-observations/v1", "rust-observation/rwo.fixture-observations/v1"],
+      "direct_use_of_test_cross_language_witness": "forbidden-because-it-spawns-cargo",
+      "implementation_requirement": "Provide a new pure comparator or refactor the current witness so it consumes two already-produced bound observation documents and cannot launch a child process."
+    },
+    {
+      "axis_id": "AX-GO",
+      "runner_class": "exit-only",
+      "cwd": "implementations/rwo-sidecar-go",
+      "required_source_roots": ["implementations/rwo-sidecar-go/go.mod", "implementations/rwo-sidecar-go/go.sum", "implementations/rwo-sidecar-go/*.go", "implementations/rwo-sidecar-go/testdata"],
+      "toolchain_binding": {
+        "status": "blocked-pending-accepted-binding",
+        "required_members": ["go executable", "go version stdout", "GOROOT member manifest", "GOTOOLDIR member manifest", "go.mod", "go.sum", "read-only module source/cache or vendor manifest"],
+        "required_environment": {"GOTOOLCHAIN": "local", "GOPROXY": "off"},
+        "task_local_outputs": ["GOCACHE", "runtime stores"],
+        "forbidden": ["automatic toolchain selection", "empty GOMODCACHE with dependency-bearing tests", "network-backed dependency resolution"]
+      }
+    },
+    {
+      "axis_id": "AX-SHARED-DISPATCH",
+      "runner_class": "exit-only",
+      "selected_test_ids": [
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_registry_resolves_one_canonical_type",
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_resolve_does_not_import_the_optional_http_host_hook",
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_compile_produces_exact_bound_prompt_and_manifest",
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_compile_rejects_capability_type_mismatch",
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_compile_rejects_invalid_opening_before_writing",
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_runtime_managed_route_is_not_advertised"
+      ],
+      "excluded_test_ids": [
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_compile_accepts_explicit_root_v080_authority_without_mutation",
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_compile_rejects_root_v080_without_explicit_authority",
+        "implementations.tests.runtime.test_dispatch_workflow.DispatchWorkflowTests.test_compile_rejects_stale_or_closed_root_v080_dispatch_before_writing"
+      ],
+      "required_source_members": [
+        "implementations/server/runtime/canonical.py",
+        "implementations/server/runtime/capability_routes.py",
+        "implementations/server/runtime/dispatch_types.py",
+        "implementations/server/runtime/dispatch_workflow.py",
+        "implementations/server/runtime/errors.py",
+        "implementations/tests/runtime/test_dispatch_workflow.py",
+        "implementations/contracts/dispatch-type-registry.v1.json",
+        ".claude/skills/register-dispatch/append-dispatch.cjs",
+        ".claude/skills/research/SKILL.md",
+        ".claude/skills/domainspec-implement/SKILL.md",
+        ".claude/skills/review/SKILL.md",
+        ".claude/skills/experiment/SKILL.md"
+      ],
+      "private_parent_dependency": "excluded-and-blocked-pending-separate-authorization-and-external-binding",
+      "claim_ceiling": "selected child-ledger and local launch compiler behavior; root-v080 authority is not evaluated"
+    }
+  ],
+  "snapshot_rule": "The implementation must expand every listed file/root/glob to a sorted exact path/type/mode/size/SHA-256 member manifest, copy only those bytes into a new read-only task snapshot, verify the snapshot tree before execution, execute every runner inside it, rehash it after each runner and before projection/publication, and invalidate the observation on any mismatch.",
+  "authority_effect": "none"
+}

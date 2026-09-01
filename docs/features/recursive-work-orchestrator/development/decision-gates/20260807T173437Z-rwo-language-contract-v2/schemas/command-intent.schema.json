@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.local/rwo/schemas/command-intent/1.0.0",
+  "title": "RWO CommandIntent 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_id", "contract_version", "profile_id", "profile_version", "schema_id", "schema_version", "graph_identity", "edge_id", "accepted_event_identity", "command_type", "target_node_id", "payload"],
+  "properties": {
+    "contract_id": {"const": "RWO-SEMANTIC-CONTRACT"},
+    "contract_version": {"const": "1.0.0"},
+    "profile_id": {"const": "RWO-JCS-IJSON-SAFEINT"},
+    "profile_version": {"const": "1.0.0"},
+    "schema_id": {"const": "CommandIntent"},
+    "schema_version": {"const": "1.0.0"},
+    "graph_identity": {"$ref": "#/$defs/digest"},
+    "edge_id": {"$ref": "#/$defs/identifier"},
+    "accepted_event_identity": {"$ref": "#/$defs/digest"},
+    "command_type": {"$ref": "#/$defs/identifier"},
+    "target_node_id": {"$ref": "#/$defs/identifier"},
+    "payload": {"$ref": "#/$defs/jsonObject"}
+  },
+  "$defs": {
+    "identifier": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"},
+    "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "jsonObject": {
+      "type": "object",
+      "description": "Validated against the edge's exact command-payload schema before digest derivation.",
+      "additionalProperties": {"$ref": "#/$defs/jsonValue"}
+    },
+    "jsonValue": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "boolean"},
+        {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
+        {"type": "string"},
+        {"type": "array", "items": {"$ref": "#/$defs/jsonValue"}},
+        {"type": "object", "additionalProperties": {"$ref": "#/$defs/jsonValue"}}
+      ]
+    }
+  },
+  "x-rwo-projections": {
+    "identity": ["graph_identity", "edge_id", "accepted_event_identity", "command_type", "target_node_id"],
+    "payload": ["command_type", "target_node_id", "payload"]
+  },
+  "x-rwo-derived-fields-excluded": ["command_intent_identity", "command_payload_digest"]
+}

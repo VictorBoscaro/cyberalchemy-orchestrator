@@ -1,0 +1,492 @@
+{
+  "schema_version": "1.0.0",
+  "manifest_id": "rwo.cvg.design.scope.20260814",
+  "target_id": "rwo.cvg.001",
+  "target_footprint": {
+    "roots": [
+      {
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+        "digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+      }
+    ],
+    "inclusions": [
+      {
+        "selector": "define.boundary",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/02-invoke-define/DEFINE.md",
+        "digest": "a16216d78fbe3b132bceca856f53501fe72a8b69de06196b800cbd2741354119"
+      },
+      {
+        "selector": "drift.obligations",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/03-interrogation-review/DRIFT-LEDGER.json",
+        "digest": "215412fc857e152d58fedf7bee9e24e0016034363dcdbf98f7f79b72c4797984"
+      },
+      {
+        "selector": "distill.unit",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+        "digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+      },
+      {
+        "selector": "distill.residue",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/RESIDUE.json",
+        "digest": "c72c59ebbfefb6f5f47d0e72bd847f042b38caa622095cd900a8e17e4e547f84"
+      },
+      {
+        "selector": "design.axis-claim-catalog",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/AXIS-CLAIM-CATALOG.json",
+        "digest": "4c33e01d3737bcd4ea5addee32e3a384115d8e2e98f9f8cbc768dac8d0b06e0d"
+      },
+      {
+        "selector": "design.expectation-bindings",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXPECTATION-BINDINGS.json",
+        "digest": "234e27b1abc929eab9f8eb2de77c11a04132ff0c996d70f2ab591d7dfc4cd591"
+      },
+      {
+        "selector": "design.runner-source-closure",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/RUNNER-SOURCE-CLOSURE.json",
+        "digest": "5f1738bcb8d3ca7b8d7eb2833fdee6fc830a9ad7aa3ee703234e96e651221caf"
+      },
+      {
+        "selector": "design.execution-state-machine",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXECUTION-STATE-MACHINE.md",
+        "digest": "a0e2b2877d3e21df2a90650aeb0a260308eec8dec02a533f95ee961c57a89cd4"
+      },
+      {
+        "selector": "design.canonicalization",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/CANONICALIZATION.md",
+        "digest": "25af5ad7f609836e99ab80d6af5d13557d3d1ac49db36347f99284673eb312b7"
+      }
+    ],
+    "exclusions": [
+      {
+        "selector": "implementations/rwo-rust/target",
+        "reason": "generated build output is not a source contract or review target",
+        "evidence_ref": "stages/05-distill/CONVERGENCE-DISTILL.md#hard-invariants"
+      },
+      {
+        "selector": "implementations/**/__pycache__",
+        "reason": "generated Python caches are not source evidence",
+        "evidence_ref": "stages/03-interrogation-review/REVIEW.md#binding-design-obligations"
+      },
+      {
+        "selector": "docs/features/recursive-work-orchestrator/**/staging/projects/cyberalchemy-orchestrator",
+        "reason": "nested candidate copies must not compete with direct current sources",
+        "evidence_ref": "stages/03-interrogation-review/REVIEW.md#binding-design-obligations"
+      },
+      {
+        "selector": "docs/features/recursive-work-orchestrator/**/rollback-baseline/projects/cyberalchemy-orchestrator",
+        "reason": "rollback copies are historical evidence, not current sources",
+        "evidence_ref": "stages/03-interrogation-review/REVIEW.md#binding-design-obligations"
+      },
+      {
+        "selector": "external/eve",
+        "reason": "live Eve is outside the confirmed local design",
+        "evidence_ref": "stages/04-research-decision/RESEARCH-DECISION.md"
+      }
+    ]
+  },
+  "source_contracts": [
+    {
+      "source_id": "sc.define",
+      "selector": "define.boundary",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/02-invoke-define/DEFINE.md",
+      "digest": "a16216d78fbe3b132bceca856f53501fe72a8b69de06196b800cbd2741354119"
+    },
+    {
+      "source_id": "sc.distill",
+      "selector": "distill.unit",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    },
+    {
+      "source_id": "sc.architecture",
+      "selector": "rwo.architecture",
+      "path": "docs/features/recursive-work-orchestrator/RWO-ARCHITECTURE-1.0.0.md",
+      "digest": "a7287282c9c84a490e22e633ada87696c4d67059b6c748f114a347035a459212"
+    },
+    {
+      "source_id": "sc.semantic.contract",
+      "selector": "rwo.semantic.contract",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/RWO-SEMANTIC-CONTRACT-1.0.0.md",
+      "digest": "8da8959770733ac4a3f0936f5cb2a8175a0786c909822a141f10670409610740"
+    },
+    {
+      "source_id": "sc.semantic.registry",
+      "selector": "rwo.semantic.registry",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+      "digest": "6dd223bd5b8e16b0db574d140d442f1b924cb7cb305fe47aed4bbafddedd9cdc"
+    },
+    {
+      "source_id": "sc.python.readme",
+      "selector": "python.boundary",
+      "path": "implementations/rwo/README.md",
+      "digest": "4759f9a25f52408cb56b6f958cdf3cbe17983a5681962f3b10965e7d6562a132"
+    },
+    {
+      "source_id": "sc.python.validator",
+      "selector": "python.validator",
+      "path": "implementations/rwo/validate_prototype.py",
+      "digest": "be7e3b68e0e45f069405e768e339611a89e03fd2852029807ad4bbcb843af65d"
+    },
+    {
+      "source_id": "sc.rust.readme",
+      "selector": "rust.boundary",
+      "path": "implementations/rwo-rust/README.md",
+      "digest": "7e3b282255b298e9880152dcbd72f025810a85c0293531dd74c1f5da410e0ff3"
+    },
+    {
+      "source_id": "sc.rust.manifest",
+      "selector": "rust.manifest",
+      "path": "implementations/rwo-rust/Cargo.toml",
+      "digest": "0987855f19aa87818757e5286899ea2576fae43a44190869bbb88eadb21a8f4e"
+    },
+    {
+      "source_id": "sc.go.readme",
+      "selector": "go.boundary",
+      "path": "implementations/rwo-sidecar-go/README.md",
+      "digest": "2774e205cffa0d4e9a18e09e956690f086e203c83f9159a0144d6936e28132af"
+    },
+    {
+      "source_id": "sc.go.manifest",
+      "selector": "go.manifest",
+      "path": "implementations/rwo-sidecar-go/go.mod",
+      "digest": "820193984951a866a33c7ca30ba2875b3bf54eecbbf3f9a97af4e7292dd1c53d"
+    },
+    {
+      "source_id": "sc.dispatch.source",
+      "selector": "dispatch.source",
+      "path": "implementations/server/runtime/dispatch_workflow.py",
+      "digest": "85f13889d01b56b7427ac2c883d71ef0577c9e4e7fcb2c45cda1db5f2d0654fd"
+    },
+    {
+      "source_id": "sc.dispatch.test",
+      "selector": "dispatch.test",
+      "path": "implementations/tests/runtime/test_dispatch_workflow.py",
+      "digest": "4b880deac5c5ac74605f7e82cf5f4e94126199af38295f114d101a76c24a1fef"
+    },
+    {
+      "source_id": "sc.definitions",
+      "selector": "definitions.candidate",
+      "path": "definitions/recursive-work-orchestrator/DEFINITIONS.md",
+      "digest": "bd37da0e3f151d129c1b3e831cb91152f34685bd03729cbb888d6c23ff3c35c1"
+    },
+    {
+      "source_id": "sc.ontology",
+      "selector": "ontology.proposal",
+      "path": "docs/features/recursive-work-orchestrator/ontology/ontology.json",
+      "digest": "7d691b4e287979e930a1fae8cae50dda46a6ab5a680c21a55773c23e956d607e"
+    },
+    {
+      "source_id": "sc.design.catalog",
+      "selector": "design.axis-claim-catalog",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/AXIS-CLAIM-CATALOG.json",
+      "digest": "4c33e01d3737bcd4ea5addee32e3a384115d8e2e98f9f8cbc768dac8d0b06e0d"
+    },
+    {
+      "source_id": "sc.design.expectations",
+      "selector": "design.expectation-bindings",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXPECTATION-BINDINGS.json",
+      "digest": "234e27b1abc929eab9f8eb2de77c11a04132ff0c996d70f2ab591d7dfc4cd591"
+    },
+    {
+      "source_id": "sc.design.source-closure",
+      "selector": "design.runner-source-closure",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/RUNNER-SOURCE-CLOSURE.json",
+      "digest": "5f1738bcb8d3ca7b8d7eb2833fdee6fc830a9ad7aa3ee703234e96e651221caf"
+    },
+    {
+      "source_id": "sc.design.state-machine",
+      "selector": "design.execution-state-machine",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXECUTION-STATE-MACHINE.md",
+      "digest": "a0e2b2877d3e21df2a90650aeb0a260308eec8dec02a533f95ee961c57a89cd4"
+    },
+    {
+      "source_id": "sc.design.canonicalization",
+      "selector": "design.canonicalization",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/CANONICALIZATION.md",
+      "digest": "25af5ad7f609836e99ab80d6af5d13557d3d1ac49db36347f99284673eb312b7"
+    },
+    {
+      "source_id": "sc.expectation.manifest",
+      "selector": "expectation.frozen-corpus",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST.json",
+      "digest": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c"
+    },
+    {
+      "source_id": "sc.expectation.review",
+      "selector": "expectation.detached-review",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST-REVIEW.json",
+      "digest": "170f7cae649a18adcfcf5c8e4155e516782a1453df6a0590269f390d891c49f2"
+    },
+    {
+      "source_id": "sc.python.source-binding",
+      "selector": "python.source-binding",
+      "path": "implementations/rwo/source_binding.py",
+      "digest": "151e479c81dc7618f3dae7723fbac18d4e6904e6e12a225b66cf6fd915e8167b"
+    },
+    {
+      "source_id": "sc.python.canonical",
+      "selector": "python.canonical",
+      "path": "implementations/rwo/canonical.py",
+      "digest": "2bbba4df9cf7be2391652f411c282161c93c3dfd4df8c8ac66a7ddb7be24b739"
+    },
+    {
+      "source_id": "sc.python.contract",
+      "selector": "python.contract",
+      "path": "implementations/rwo/contract.py",
+      "digest": "978f835ae9b78bfa2f34627a005d5246a9a6b01ba428140af7bf4b52ff2166dc"
+    },
+    {
+      "source_id": "sc.python.kernel",
+      "selector": "python.kernel",
+      "path": "implementations/rwo/kernel.py",
+      "digest": "478a44c6a63909696124dbee129faef0027a9bb4cc3776c2a0724f9e17b1ea14"
+    },
+    {
+      "source_id": "sc.python.retry",
+      "selector": "python.retry",
+      "path": "implementations/rwo/retry.py",
+      "digest": "f7009155d844f47cb64773f25713d93b00221910131eebe50ea9db17c6d55670"
+    },
+    {
+      "source_id": "sc.python.test-contract",
+      "selector": "python.test-contract",
+      "path": "implementations/tests/rwo/test_contract_vectors.py",
+      "digest": "097b15b5e685518155fb2bd3fa90ff6691c45eb45df48df4f6547abce48c8968"
+    },
+    {
+      "source_id": "sc.python.test-kernel",
+      "selector": "python.test-kernel",
+      "path": "implementations/tests/rwo/test_kernel_vectors.py",
+      "digest": "3188fd286e72d69152f43dbe0f011d69f927e7705b0f912a74d90246cc416a48"
+    },
+    {
+      "source_id": "sc.python.test-prototype",
+      "selector": "python.test-prototype",
+      "path": "implementations/tests/rwo/test_prototype.py",
+      "digest": "ca837e87b71227374a12249a49c6b83847392ff5b4b903fd3d9057ed5dac905f"
+    },
+    {
+      "source_id": "sc.python.cross-language-anchor",
+      "selector": "python.cross-language-anchor-not-runner",
+      "path": "implementations/tests/rwo/test_cross_language_witness.py",
+      "digest": "df17c1190314b30def4f3aa45337ed67fc14483a259d9641f8fbd78a9c2edf44"
+    },
+    {
+      "source_id": "sc.rust.observation-producer",
+      "selector": "rust.observation-producer",
+      "path": "implementations/rwo-rust/src/bin/rwo_fixture_observations.rs",
+      "digest": "9fa46db36b904ed1816fe9626e966a212adb37a14acfa998648f6878e3049af8"
+    },
+    {
+      "source_id": "sc.go.sum",
+      "selector": "go.sum",
+      "path": "implementations/rwo-sidecar-go/go.sum",
+      "digest": "a3f6dd274d6dfabe0fa21970f9aeaa78a64301b91c6467c1981c4ee84069f0af"
+    },
+    {
+      "source_id": "sc.dispatch.types",
+      "selector": "dispatch.types",
+      "path": "implementations/server/runtime/dispatch_types.py",
+      "digest": "a3c057aa883e09c5553a8db2d30d9758a50ac7ab839d7e7131a4b5970d66b62b"
+    },
+    {
+      "source_id": "sc.dispatch.capability-routes",
+      "selector": "dispatch.capability-routes",
+      "path": "implementations/server/runtime/capability_routes.py",
+      "digest": "875683c1b4946f03738fd6badb079126120814f1717d3cbd56696e379157860d"
+    },
+    {
+      "source_id": "sc.dispatch.canonical",
+      "selector": "dispatch.canonical",
+      "path": "implementations/server/runtime/canonical.py",
+      "digest": "db4eb8b3e3f8508e7004fa2ce4ab83cc4e863266d680f4c73cd05394b8889bfb"
+    },
+    {
+      "source_id": "sc.dispatch.errors",
+      "selector": "dispatch.errors",
+      "path": "implementations/server/runtime/errors.py",
+      "digest": "c0cc422a1a1a2fb452ec0d104665b9797c35965828157d4df0bb9a70062ca840"
+    },
+    {
+      "source_id": "sc.dispatch.registry",
+      "selector": "dispatch.registry",
+      "path": "implementations/contracts/dispatch-type-registry.v1.json",
+      "digest": "f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de"
+    },
+    {
+      "source_id": "sc.dispatch.appender",
+      "selector": "dispatch.child-appender",
+      "path": ".claude/skills/register-dispatch/append-dispatch.cjs",
+      "digest": "726e153b013abff9926d9b008cca1a855aa3d670650acf696729a5152c7fc919"
+    },
+    {
+      "source_id": "sc.dispatch.research-capability",
+      "selector": "dispatch.capability.research",
+      "path": ".claude/skills/research/SKILL.md",
+      "digest": "cfb38291654f3400e052fb796a7fe1c2580875c7d55cf4db54d7a9b53c6401b4"
+    },
+    {
+      "source_id": "sc.dispatch.implement-capability",
+      "selector": "dispatch.capability.domainspec-implement",
+      "path": ".claude/skills/domainspec-implement/SKILL.md",
+      "digest": "dee8cfbfa23a2acc3dbd81da18cef87f061301b668716c595bdefe4e81d3aacf"
+    },
+    {
+      "source_id": "sc.dispatch.review-capability",
+      "selector": "dispatch.capability.review",
+      "path": ".claude/skills/review/SKILL.md",
+      "digest": "60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be"
+    },
+    {
+      "source_id": "sc.dispatch.experiment-capability",
+      "selector": "dispatch.capability.experiment",
+      "path": ".claude/skills/experiment/SKILL.md",
+      "digest": "280275638564e6feed0bdc885f7732c6bd67f64eb01d0a58e0d7e6a5568885ad"
+    }
+  ],
+  "human_actors": [],
+  "rendered_surfaces": [],
+  "interfaces": [
+    {
+      "interface_id": "python.oracle",
+      "kind": "local.reference.observation",
+      "peer": "implementations/rwo",
+      "direction": "inbound",
+      "contract_ref": "candidate Python reference boundary",
+      "source_selector": "implementations/rwo/README.md",
+      "source_digest": "4759f9a25f52408cb56b6f958cdf3cbe17983a5681962f3b10965e7d6562a132"
+    },
+    {
+      "interface_id": "rust.kernel",
+      "kind": "local.semantic.child",
+      "peer": "implementations/rwo-rust",
+      "direction": "bidirectional",
+      "contract_ref": "RWO semantic contract tuple",
+      "source_selector": "implementations/rwo-rust/README.md",
+      "source_digest": "7e3b282255b298e9880152dcbd72f025810a85c0293531dd74c1f5da410e0ff3"
+    },
+    {
+      "interface_id": "go.host",
+      "kind": "local.physical.coordinator",
+      "peer": "implementations/rwo-sidecar-go",
+      "direction": "bidirectional",
+      "contract_ref": "candidate Go durable host boundary",
+      "source_selector": "implementations/rwo-sidecar-go/README.md",
+      "source_digest": "2774e205cffa0d4e9a18e09e956690f086e203c83f9159a0144d6936e28132af"
+    },
+    {
+      "interface_id": "shared.dispatch",
+      "kind": "adjacent.local.library.not.adapter",
+      "peer": "implementations/server/runtime/dispatch_workflow.py",
+      "direction": "inbound",
+      "contract_ref": "aci-bound-launch-plan/v1",
+      "source_selector": "implementations/server/runtime/dispatch_workflow.py",
+      "source_digest": "85f13889d01b56b7427ac2c883d71ef0577c9e4e7fcb2c45cda1db5f2d0654fd"
+    }
+  ],
+  "stores": [],
+  "queues": [],
+  "writers": [
+    {
+      "writer_id": "report.writer",
+      "targets": [
+        "rwo-claim-matrix/v1",
+        "rwo-convergence-report/v1"
+      ],
+      "concurrency": "single process temporary tree followed by atomic publication",
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    }
+  ],
+  "normative_rules": [
+    {
+      "rule_id": "lock.before.run",
+      "verb": "admit",
+      "subject": "convergence verifier",
+      "object": "only an exact source and status lock before any runner",
+      "enforcement_hint": "preflight digest and closed posture validation",
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    },
+    {
+      "rule_id": "axes.separate",
+      "verb": "preserve",
+      "subject": "convergence report",
+      "object": "separate claim axes with no aggregate conformance status",
+      "enforcement_hint": "closed report schema and negative aggregate-field fixture",
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    },
+    {
+      "rule_id": "oracle.independent",
+      "verb": "reject",
+      "subject": "convergence verifier",
+      "object": "expected observations generated by the implementation under review",
+      "enforcement_hint": "provenance allowlist and self-issued expectation negative fixture",
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    }
+  ],
+  "effects": [
+    {
+      "effect_id": "bounded.report.write",
+      "reversible": true,
+      "external": false,
+      "privileged": false,
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    }
+  ],
+  "data_and_log_sinks": [
+    {
+      "sink_id": "local.evidence.tree",
+      "data_classes": [
+        "command metadata",
+        "source digests",
+        "test receipts"
+      ],
+      "retention_hint": "local review artifact under task-owned output; no credentials or product payloads",
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    }
+  ],
+  "deployment_targets": [],
+  "compatibility_boundaries": [
+    {
+      "boundary_id": "semantic.to.runners",
+      "old_contract": "accepted RWO semantic tuple and frozen observations",
+      "new_contract": "language-specific runner observations",
+      "source_selector": "docs/features/recursive-work-orchestrator/RWO-ARCHITECTURE-1.0.0.md",
+      "source_digest": "a7287282c9c84a490e22e633ada87696c4d67059b6c748f114a347035a459212"
+    },
+    {
+      "boundary_id": "dispatch.to.rwo",
+      "old_contract": "aci-bound-launch-plan/v1",
+      "new_contract": "no versioned RWO adapter declaration",
+      "source_selector": "implementations/server/runtime/dispatch_workflow.py",
+      "source_digest": "85f13889d01b56b7427ac2c883d71ef0577c9e4e7fcb2c45cda1db5f2d0654fd"
+    }
+  ],
+  "quality_claims": [
+    {
+      "claim_id": "report.reproducibility",
+      "source_kind": "design invariant",
+      "threshold_or_tradeoff": "identical locked inputs and normalized receipts produce byte-identical report artifacts",
+      "required": true,
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    }
+  ],
+  "acceptance_and_readiness_claims": [
+    {
+      "claim_id": "design.material",
+      "selector": "RWO-CVG-001 authored design inputs",
+      "evidence_state": "authored-complete",
+      "source_selector": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+      "source_digest": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2"
+    }
+  ],
+  "unknowns": [],
+  "input_digest": "089c3646314e54d83ced18a2be342f92b0ffba64bdf08572da89224b03bc364a",
+  "authored_by": "codex.parent.refine"
+}

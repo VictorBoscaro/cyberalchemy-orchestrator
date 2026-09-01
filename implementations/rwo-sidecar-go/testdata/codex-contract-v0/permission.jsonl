@@ -1,0 +1,2 @@
+{"sequence":1,"direction":"server-to-client","message":{"jsonrpc":"2.0","id":"approval-1","method":"item/commandExecution/requestApproval","params":{"threadId":"thread-fixture-1","turnId":"turn-fixture-1","itemId":"item-fixture-1","reason":"fixture approval observation"}}}
+{"sequence":2,"direction":"client-to-server","message":{"jsonrpc":"2.0","id":"approval-1","result":{"decision":"decline"}}}

@@ -1,0 +1,114 @@
+{
+  "schema_version": "rwo.refine-drift-ledger.v1",
+  "run_id": "20260814T133756Z-rwo-implementation-convergence",
+  "step_id": "s03",
+  "status": "repair-and-proceed",
+  "questions_asked": 0,
+  "findings": [
+    {
+      "id": "DRIFT-001",
+      "class": "definition-acceptance-posture",
+      "severity": "high",
+      "observation": "The selected definitions file describes candidate content, while the README describes it as the normative owner only after accepted creation; no exact acceptance receipt is in the selected context.",
+      "affected_claim": "accepted canonical RWO vocabulary",
+      "owner": "definitions owner",
+      "required_route": "retain candidate posture or supply a fresh exact acceptance binding",
+      "design_obligations": ["BD-01", "BD-09"]
+    },
+    {
+      "id": "DRIFT-002",
+      "class": "seat-address-contract",
+      "severity": "critical",
+      "observation": "The frozen identifier grammar excludes colon, while candidate implementations use seatv1:sha256:<hex>.",
+      "affected_claim": "formal semantic-contract conformance for seat addresses",
+      "owner": "semantic-contract owner",
+      "required_route": "record a deterministic negative witness and obtain an explicit semantic repair decision before changing either side",
+      "design_obligations": ["BD-03", "BD-05", "BD-09"]
+    },
+    {
+      "id": "DRIFT-003",
+      "class": "shared-dispatch-integration",
+      "severity": "high",
+      "observation": "The shared dispatch compiler proves governance-record validation and launch-plan binding, not an RWO graph, cursor, accepted-event, or command mapping.",
+      "affected_claim": "shared dispatch is an RWO integration adapter",
+      "owner": "integration-contract owner",
+      "required_route": "keep separate or propose an explicit versioned lossless adapter contract",
+      "design_obligations": ["BD-04", "BD-09"]
+    },
+    {
+      "id": "DRIFT-004",
+      "class": "cross-language-evidence-asymmetry",
+      "severity": "high",
+      "observation": "Python, Rust, and Go validate different owner responsibilities; selected parity does not create a universal aggregate conformance result.",
+      "affected_claim": "the current multi-language implementation passes as one runtime",
+      "owner": "conformance-evidence owner",
+      "required_route": "preserve separate evidence axes and exact observation mappings",
+      "design_obligations": ["BD-02", "BD-05", "BD-09"]
+    },
+    {
+      "id": "DRIFT-005",
+      "class": "lifecycle-split",
+      "severity": "high",
+      "observation": "Candidate-local aggregate validation and staged DRT-001 prerequisites are not selected Task Session terminal receipts or governed closeout.",
+      "affected_claim": "governed implementation lifecycle completion",
+      "owner": "lifecycle owners",
+      "required_route": "later lifecycle adoption must consume exact evidence through its own selection and admission",
+      "design_obligations": ["BD-06", "BD-09"]
+    },
+    {
+      "id": "DRIFT-006",
+      "class": "portability",
+      "severity": "medium",
+      "observation": "Rust raw admission is bounded to the observed ICU 74 and Unicode 15.1 host environment.",
+      "affected_claim": "portable Unicode-normalization equivalence",
+      "owner": "semantic implementation owner",
+      "required_route": "pin the observed host or add separately governed portability evidence",
+      "design_obligations": ["BD-01", "BD-07", "BD-09"]
+    },
+    {
+      "id": "DRIFT-007",
+      "class": "external-Eve-compatibility",
+      "severity": "high",
+      "observation": "The current Go campaign uses a selected-shape in-process fake Eve leaf.",
+      "affected_claim": "compatibility with a live external Eve implementation",
+      "owner": "external integration owner",
+      "required_route": "a separately authorized live compatibility route with exact external facts",
+      "design_obligations": ["BD-09", "BD-10"]
+    },
+    {
+      "id": "DRIFT-008",
+      "class": "repository-publication-state",
+      "severity": "medium",
+      "observation": "Relevant local implementation and evidence surfaces include uncommitted or untracked bytes.",
+      "affected_claim": "published, released, or remotely reviewable current implementation state",
+      "owner": "Git/publication owner",
+      "required_route": "a separately authorized ownership inventory, narrow commit, and publication action",
+      "design_obligations": ["BD-01", "BD-08", "BD-09"]
+    },
+    {
+      "id": "DRIFT-009",
+      "class": "ontology-projection",
+      "severity": "medium",
+      "observation": "The bound ontology identifies itself as proposal-only-non-promoted with no authority and indeterminate runtime conformance.",
+      "affected_claim": "ontology promotion or runtime-conformance authority",
+      "owner": "ontology owner",
+      "required_route": "retain removable projection status until its independent lifecycle is satisfied",
+      "design_obligations": ["BD-01", "BD-09"]
+    }
+  ],
+  "binding_design_obligations": [
+    {"id": "BD-01", "name": "source-status-lock"},
+    {"id": "BD-02", "name": "separated-claim-axes"},
+    {"id": "BD-03", "name": "seat-mismatch-gate"},
+    {"id": "BD-04", "name": "explicit-integration-decision"},
+    {"id": "BD-05", "name": "independent-oracles"},
+    {"id": "BD-06", "name": "lifecycle-separation"},
+    {"id": "BD-07", "name": "exact-validation-runtime"},
+    {"id": "BD-08", "name": "source-inventory-hygiene"},
+    {"id": "BD-09", "name": "claim-matrix"},
+    {"id": "BD-10", "name": "external-boundary"}
+  ],
+  "operator_decision_required": false,
+  "next_step": "s04 research decision",
+  "claim_ceiling": "run-local planning evidence only"
+}

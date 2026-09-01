@@ -1,0 +1,95 @@
+{
+  "schema_version": "rwo.source-closure-validation/v1",
+  "validation_id": "RWO-CVG-002-ONE-SHOT:U01:validation",
+  "work_pack_id": "WP-RWO-CVG-002",
+  "unit_id": "U01",
+  "swu_id": "SWU-RWO-CVG2-001",
+  "candidate": {
+    "closure_id": "RWO-CVG-002-source-closure-candidate",
+    "member_count": 121,
+    "tree_sha256": "e8301aadf0fa2f070b7c36a9b55b1b8122e47912d907881df3d291b96f073e4e",
+    "accepted_member_count": 85,
+    "preserved_accepted_member_count": 85,
+    "added_count": 36,
+    "removed_count": 0,
+    "byte_changed_count": 0,
+    "mode_only_changed_count": 85
+  },
+  "accepted_snapshot_verification": {
+    "status": "pass",
+    "member_count": 85,
+    "tree_sha256": "e175a2d56f53d38c2ce88cd69830f400cee02564e23a21956398afd316c9699c",
+    "lock_sha256": "411786168c6120f31d34696c01d4054895609ac7691d511048c92f2c1bbc94ca",
+    "lock_reconstruction": "pass",
+    "mode_note": "The accepted task snapshot is physically read-only (0444) while all 85 accepted lock members reconstruct as 0644 and reproduce the exact accepted lock digest. The delta therefore reports 85 physical mode-only differences and zero accepted-byte changes."
+  },
+  "closure_checks": [
+    {"check_id": "closure-schema", "status": "pass"},
+    {"check_id": "closure-live-rehash", "status": "pass"},
+    {"check_id": "seven-source-binding-rehash", "status": "pass"},
+    {"check_id": "python-exact-26", "status": "pass"},
+    {"check_id": "rust-recursive-source-expansion", "status": "pass"},
+    {"check_id": "comparator-transitive-no-launch-audit", "status": "pass"},
+    {"check_id": "go-all-source-testdata-and-local-runtime-main", "status": "pass"},
+    {"check_id": "shared-exact-26-and-fourteen-omission-witnesses", "status": "pass"},
+    {"check_id": "go-child-executable-excluded-pending-separate-binding", "status": "pass"}
+  ],
+  "command_results": [
+    {
+      "command_id": "U01-V01",
+      "command": "python3 -m unittest implementations.tests.rwo_convergence.test_source_closure_v2",
+      "status": "pass",
+      "exit_code": 0,
+      "observed": "11 tests passed"
+    },
+    {
+      "command_id": "U01-V02",
+      "command": "python3 -m json.tool docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/SOURCE-CLOSURE.v2.json",
+      "status": "pass",
+      "exit_code": 0,
+      "observed": "candidate closure parsed as JSON"
+    },
+    {
+      "command_id": "U01-V03",
+      "command": "python3 -m json.tool docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/TERMINAL-RECEIPT.json",
+      "status": "pass",
+      "exit_code": null,
+      "observed": "the identical staged terminal candidate bytes were JSON-parsed and schema-validated before exclusive create; a separate post-terminal receipt must capture the frozen exact-path command immediately after create"
+    },
+    {
+      "command_id": "U01-V04",
+      "command": "python3 -m unittest discover -s implementations/tests/rwo_convergence -p 'test_*.py'",
+      "status": "pass",
+      "exit_code": 0,
+      "observed": "78 tests passed"
+    },
+    {
+      "command_id": "U01-V05",
+      "command": "git diff --check -- implementations/rwo_convergence/source_closure_v2.py implementations/rwo_convergence/schemas/runner-source-closure-v2.schema.json implementations/tests/rwo_convergence/test_source_closure_v2.py docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001",
+      "status": "pass",
+      "exit_code": 0,
+      "observed": "no whitespace errors"
+    }
+  ],
+  "negative_coverage": {
+    "deletion": "pass",
+    "mutation": "pass",
+    "unsafe_path_shape": "pass",
+    "dynamic_import": "pass",
+    "runner_launcher_import": "pass",
+    "fourteen_shared_omissions": "pass",
+    "missing_go_local_runtime_main": "pass",
+    "accepted_snapshot_drift": "pass",
+    "controlling_source_drift": "pass"
+  },
+  "execution_posture": {
+    "product_runner_executed": false,
+    "toolchain_executed": false,
+    "network_used": false,
+    "source_reads_only": true
+  },
+  "result": "pass",
+  "terminal_mode": "candidate-valid-acceptance-required",
+  "acceptance_status": "not-granted",
+  "authority_effect": "none"
+}

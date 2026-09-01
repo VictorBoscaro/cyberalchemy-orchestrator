@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberalchemy.dev/schemas/rwo/runner-source-closure/v2",
+  "title": "RWO Runner Source Closure v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "closure_id",
+    "posture",
+    "source_bindings",
+    "accepted_snapshot_binding",
+    "groups",
+    "preserved_accepted_member_count",
+    "member_count",
+    "members",
+    "tree_sha256",
+    "global_rules",
+    "validation_posture",
+    "authority_effect"
+  ],
+  "properties": {
+    "schema_version": {"const": "rwo.runner-source-closure/v2"},
+    "closure_id": {"type": "string", "minLength": 1},
+    "posture": {"const": "candidate-valid-acceptance-required"},
+    "source_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/sourceBinding"}
+    },
+    "accepted_snapshot_binding": {"$ref": "#/$defs/acceptedBinding"},
+    "groups": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/group"}
+    },
+    "preserved_accepted_member_count": {"type": "integer", "minimum": 0},
+    "member_count": {"type": "integer", "minimum": 1},
+    "members": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/member"}
+    },
+    "tree_sha256": {"$ref": "#/$defs/sha256"},
+    "global_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_root",
+        "network",
+        "shell_commands",
+        "product_runner_execution",
+        "unlisted_children",
+        "ambient_path_or_cache",
+        "member_order"
+      ],
+      "properties": {
+        "execution_root": {"const": "byte-exact-read-only-task-snapshot"},
+        "network": {"const": "forbidden"},
+        "shell_commands": {"const": "forbidden"},
+        "product_runner_execution": {"const": "forbidden-in-u01"},
+        "unlisted_children": {"const": "terminal-block"},
+        "ambient_path_or_cache": {"const": "forbidden"},
+        "member_order": {"const": "utf8-bytewise-path"}
+      }
+    },
+    "validation_posture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_reads_only",
+        "product_runner_executed",
+        "toolchain_executed",
+        "acceptance_required"
+      ],
+      "properties": {
+        "source_reads_only": {"const": true},
+        "product_runner_executed": {"const": false},
+        "toolchain_executed": {"const": false},
+        "acceptance_required": {"const": true}
+      }
+    },
+    "authority_effect": {"const": "none"}
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "safePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "path", "sha256", "size_bytes"],
+      "properties": {
+        "role": {"type": "string", "minLength": 1},
+        "path": {"$ref": "#/$defs/safePath"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "size_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "acceptedBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lock_sha256", "tree_sha256", "member_count", "snapshot_locator"],
+      "properties": {
+        "lock_sha256": {"$ref": "#/$defs/sha256"},
+        "tree_sha256": {"$ref": "#/$defs/sha256"},
+        "member_count": {"const": 85},
+        "snapshot_locator": {"type": "string", "minLength": 1, "pattern": "^[^/].*"}
+      }
+    },
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "type", "mode", "size_bytes", "sha256", "groups", "rationale"],
+      "properties": {
+        "path": {"$ref": "#/$defs/safePath"},
+        "type": {"const": "file"},
+        "mode": {"type": "string", "pattern": "^[0-7]{4}$"},
+        "size_bytes": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "groups": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["AX-PYTHON", "AX-RUST", "AX-CROSS-LANGUAGE", "AX-GO", "AX-SHARED-DISPATCH"]}
+        },
+        "rationale": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": {"$ref": "#/$defs/safePath"},
+        "to": {"$ref": "#/$defs/safePath"}
+      }
+    },
+    "comparatorAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry",
+        "transitive_local_imports",
+        "forbidden_capabilities",
+        "verdict",
+        "execution_attempted"
+      ],
+      "properties": {
+        "entry": {"$ref": "#/$defs/safePath"},
+        "transitive_local_imports": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/edge"}
+        },
+        "forbidden_capabilities": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "verdict": {"const": "source-audit-pass"},
+        "execution_attempted": {"const": false}
+      }
+    },
+    "omissionWitness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "status"],
+      "properties": {
+        "path": {"$ref": "#/$defs/safePath"},
+        "status": {"const": "required-and-present"}
+      }
+    },
+    "childDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {"const": "excluded-runtime-input"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["group_id", "member_count", "members", "rationale"],
+      "properties": {
+        "group_id": {"enum": ["AX-PYTHON", "AX-RUST", "AX-CROSS-LANGUAGE", "AX-GO", "AX-SHARED-DISPATCH"]},
+        "member_count": {"type": "integer", "minimum": 1},
+        "members": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/safePath"}
+        },
+        "rationale": {"type": "string", "minLength": 1},
+        "comparator_capability_audit": {"$ref": "#/$defs/comparatorAudit"},
+        "omission_witnesses": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "items": {"$ref": "#/$defs/omissionWitness"}
+        },
+        "child_executable_disposition": {"$ref": "#/$defs/childDisposition"}
+      }
+    }
+  }
+}

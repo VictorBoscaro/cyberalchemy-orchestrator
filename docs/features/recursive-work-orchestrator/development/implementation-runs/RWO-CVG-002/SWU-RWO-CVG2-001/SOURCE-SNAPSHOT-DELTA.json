@@ -1,0 +1,2483 @@
+{
+  "acceptance_effect": "none",
+  "accepted_snapshot_binding": {
+    "lock_sha256": "411786168c6120f31d34696c01d4054895609ac7691d511048c92f2c1bbc94ca",
+    "member_count": 85,
+    "snapshot_locator": "RWO-CVG-001-accepted-read-only-snapshot",
+    "tree_sha256": "e175a2d56f53d38c2ce88cd69830f400cee02564e23a21956398afd316c9699c"
+  },
+  "added": [
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/accepted-event-view.schema.json",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "ce145e24b6ef5cc2b64caff319d91645e54d50751bcb957302a4261f2f7671bf",
+      "size_bytes": 1992,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/command-intent.schema.json",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "8b90599bfb8ae52ed8cc54b991335097004dbf09ef0acde8115089b8cb2d1b6b",
+      "size_bytes": 2121,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/explicit-composition.schema.json",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "2cd4a56ac2b41eabbaf55f67b4f53a0b7e1a267a1bac4ea7749f45ef5bc76065",
+      "size_bytes": 2549,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/orchestration-cursor.schema.json",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "79e6cc13fd0da27c3f781685b96636146b132a985a26ddef3400240c716ddcad",
+      "size_bytes": 2525,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/structural-defect.schema.json",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "b34c0b8895d17d313850b96520c3a1eca5622bfb704e381e94bdbe0bbffaadde",
+      "size_bytes": 1515,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/work-graph.schema.json",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "e19eb2d8ba09b2f16e450e5a7a6779638c31b5f69259dab745480039f33644ca",
+      "size_bytes": 2566,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260807T173437Z-rwo-contract-kernel-refresh/refresh-runs/20260807T214631Z-rwo-contract-successor-repair-candidate/canonical-post-validation.json",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "98ae9aa2c3e7a0289e465a2c1c2b4d15223ed92234549cf728ec630aa5600bd7",
+      "size_bytes": 4023,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/cmd/rwo-local-runtime/main.go",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "344ef37f09d4cedece0e45162a5056d98dc126916afd56cc21e1f39f89dfa0a8",
+      "size_bytes": 5487,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/codex_contract_test.go",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "17e3c3006783880a39e320934908621fc7b11484d0caebdace77a52c074e45a9",
+      "size_bytes": 4580,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/codex_profile.go",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "c5f7a2b9ec372b01d52e6cae055f008ad3d6b9571559677a6ee3395448f463d1",
+      "size_bytes": 4995,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/codex_protocol.go",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "f1deb8c95cd05687bfcf8f69b3279df603bc5baf37ce3aad85d74ce2022e320f",
+      "size_bytes": 13116,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/testdata/codex-contract-v0/interrupted.jsonl",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "056b53223cc09207a682d7a242fbe73102486f10441ee1049a437c46afbfe6a3",
+      "size_bytes": 486,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/testdata/codex-contract-v0/namespace.json",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "b936cba9836112f8a1c70828e6d8973544adbd786ec36f98a2a020d47b72885e",
+      "size_bytes": 1667,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/testdata/codex-contract-v0/permission.jsonl",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "4f4850360f3bf8f92ee8f133bb3fa36e48e10dc4b3cfc6e09d436b0bccec2647",
+      "size_bytes": 398,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/testdata/codex-contract-v0/profile.json",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "9698e920b43a72174393c71ef315c8079e1b80fbca9a906591f657318154d76f",
+      "size_bytes": 754,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-GO"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo-sidecar-go/testdata/codex-contract-v0/success.jsonl",
+      "rationale": [
+        "AX-GO"
+      ],
+      "sha256": "aab4f53f8efe60cf89db4c1d72d58b3fdf63e7948ad406d44886cdbd1ed0062a",
+      "size_bytes": 1384,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo/__init__.py",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "f64c474a292da22e93bfc085432b2705801698194c6042c6118422c8d429c188",
+      "size_bytes": 640,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo/adapters.py",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "41956a98f5499fbaf9d416711db169bd919e70eb14b5484b1b3ce15f1c6973ff",
+      "size_bytes": 2456,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-PYTHON"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo/runtime.py",
+      "rationale": [
+        "AX-PYTHON"
+      ],
+      "sha256": "7af29b05c895cb236103de8511aa842a17d754d887f85278ef13b286e8aae1e7",
+      "size_bytes": 3260,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-CROSS-LANGUAGE"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo_convergence/canonical.py",
+      "rationale": [
+        "AX-CROSS-LANGUAGE"
+      ],
+      "sha256": "613af55ce99ab18c65fd8b14d5c284acb4e101e7b181995fcb9057b26b22e407",
+      "size_bytes": 6142,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-CROSS-LANGUAGE"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo_convergence/comparator.py",
+      "rationale": [
+        "AX-CROSS-LANGUAGE"
+      ],
+      "sha256": "4f5d745d10dcb0b92c76498357406c1954042916fe55713827af14a7a0001ac7",
+      "size_bytes": 6571,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-CROSS-LANGUAGE"
+      ],
+      "mode": "0644",
+      "path": "implementations/rwo_convergence/provenance.py",
+      "rationale": [
+        "AX-CROSS-LANGUAGE"
+      ],
+      "sha256": "96a3a1b22a9db66fdb35890738076a5dbe02252b228814708cda655317411792",
+      "size_bytes": 9633,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/__init__.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/__init__.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "3ecf83375cd41e8c51ca6e303f11f5f593cc85b6b36508abe2488f3ed98439fa",
+      "size_bytes": 314,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/artifacts.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "f75e049f36811bb4659308bb00757a6dc6a34f8cb20aedc6a9421ea7b3ed415d",
+      "size_bytes": 8311,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/capabilities.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "42120c43024c5f7c7f78c90ccbf03643b758471be6d8b3257439d231424fe0d2",
+      "size_bytes": 5390,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/database.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "841236ae5035e956198c4e1b6ff44c2b7f4435d6f24517943b4179a33ce7722a",
+      "size_bytes": 5642,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/journal.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "61a4ae62818abc333d613df610e6612744f30043c12002ae0c26ca22fbc17c5f",
+      "size_bytes": 24790,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/legacy.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "0ef6c4ee96199ce9ea73102ee9922de35db79af1a7e9ea5495743329ab1f8728",
+      "size_bytes": 5431,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/profiles.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "1ce328ef0e23879df3bee52097ef80e084d0e37cc7187a89cf7a299b4e46c664",
+      "size_bytes": 4221,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/projections.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "e1bac214144cc56a8234e581886dd93d82b9318ccd08bb73a0a813d58d1d2a0e",
+      "size_bytes": 30814,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/protocol_compilation.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "cb52746c2619de1dcece68c431745c06297ab94b28ce35b3898782abe8005262",
+      "size_bytes": 28440,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/reference_delivery.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "84e69cb1ec8054ff0661588a2d4afc8893007d6d2e3fb4fa699c4832221166ba",
+      "size_bytes": 8734,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/reveal_delivery.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "0b9b43a376883739271b7574626cb3f80d660f74508aaeeedfd7140c856046dc",
+      "size_bytes": 7513,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/server/runtime/service.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "301068ccb5fcddda8ced86d79b8a0dea1dc009ae46a91ea5ba16d3239388a909",
+      "size_bytes": 273879,
+      "type": "file"
+    },
+    {
+      "groups": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "mode": "0644",
+      "path": "implementations/tests/runtime/__init__.py",
+      "rationale": [
+        "AX-SHARED-DISPATCH"
+      ],
+      "sha256": "7ce7564925da3a8e45aea6f3553d9da453cccc5b650b5fb1d7a01a0d6643f261",
+      "size_bytes": 38,
+      "type": "file"
+    }
+  ],
+  "added_count": 36,
+  "authority_effect": "none",
+  "candidate_binding": {
+    "closure_id": "RWO-CVG-002-source-closure-candidate",
+    "member_count": 121,
+    "tree_sha256": "e8301aadf0fa2f070b7c36a9b55b1b8122e47912d907881df3d291b96f073e4e"
+  },
+  "changed": [
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": ".claude/skills/domainspec-implement/SKILL.md",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "dee8cfbfa23a2acc3dbd81da18cef87f061301b668716c595bdefe4e81d3aacf",
+        "size_bytes": 3823,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": ".claude/skills/domainspec-implement/SKILL.md",
+        "sha256": "dee8cfbfa23a2acc3dbd81da18cef87f061301b668716c595bdefe4e81d3aacf",
+        "size_bytes": 3823,
+        "type": "file"
+      },
+      "path": ".claude/skills/domainspec-implement/SKILL.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": ".claude/skills/experiment/SKILL.md",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "280275638564e6feed0bdc885f7732c6bd67f64eb01d0a58e0d7e6a5568885ad",
+        "size_bytes": 13012,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": ".claude/skills/experiment/SKILL.md",
+        "sha256": "280275638564e6feed0bdc885f7732c6bd67f64eb01d0a58e0d7e6a5568885ad",
+        "size_bytes": 13012,
+        "type": "file"
+      },
+      "path": ".claude/skills/experiment/SKILL.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": ".claude/skills/register-dispatch/append-dispatch.cjs",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "726e153b013abff9926d9b008cca1a855aa3d670650acf696729a5152c7fc919",
+        "size_bytes": 50184,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": ".claude/skills/register-dispatch/append-dispatch.cjs",
+        "sha256": "726e153b013abff9926d9b008cca1a855aa3d670650acf696729a5152c7fc919",
+        "size_bytes": 50184,
+        "type": "file"
+      },
+      "path": ".claude/skills/register-dispatch/append-dispatch.cjs"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": ".claude/skills/research/SKILL.md",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "cfb38291654f3400e052fb796a7fe1c2580875c7d55cf4db54d7a9b53c6401b4",
+        "size_bytes": 10950,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": ".claude/skills/research/SKILL.md",
+        "sha256": "cfb38291654f3400e052fb796a7fe1c2580875c7d55cf4db54d7a9b53c6401b4",
+        "size_bytes": 10950,
+        "type": "file"
+      },
+      "path": ".claude/skills/research/SKILL.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": ".claude/skills/review/SKILL.md",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+        "size_bytes": 13020,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": ".claude/skills/review/SKILL.md",
+        "sha256": "60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+        "size_bytes": 13020,
+        "type": "file"
+      },
+      "path": ".claude/skills/review/SKILL.md"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "definitions/recursive-work-orchestrator/DEFINITIONS.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "bd37da0e3f151d129c1b3e831cb91152f34685bd03729cbb888d6c23ff3c35c1",
+        "size_bytes": 10957,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "definitions/recursive-work-orchestrator/DEFINITIONS.md",
+        "sha256": "bd37da0e3f151d129c1b3e831cb91152f34685bd03729cbb888d6c23ff3c35c1",
+        "size_bytes": 10957,
+        "type": "file"
+      },
+      "path": "definitions/recursive-work-orchestrator/DEFINITIONS.md"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/RWO-ARCHITECTURE-1.0.0.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "a7287282c9c84a490e22e633ada87696c4d67059b6c748f114a347035a459212",
+        "size_bytes": 14303,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/RWO-ARCHITECTURE-1.0.0.md",
+        "sha256": "a7287282c9c84a490e22e633ada87696c4d67059b6c748f114a347035a459212",
+        "size_bytes": 14303,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/RWO-ARCHITECTURE-1.0.0.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/RWO-SEMANTIC-CONTRACT-1.0.0.md",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "8da8959770733ac4a3f0936f5cb2a8175a0786c909822a141f10670409610740",
+        "size_bytes": 10363,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/RWO-SEMANTIC-CONTRACT-1.0.0.md",
+        "sha256": "8da8959770733ac4a3f0936f5cb2a8175a0786c909822a141f10670409610740",
+        "size_bytes": 10363,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/RWO-SEMANTIC-CONTRACT-1.0.0.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "6dd223bd5b8e16b0db574d140d442f1b924cb7cb305fe47aed4bbafddedd9cdc",
+        "size_bytes": 5093,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json",
+        "sha256": "6dd223bd5b8e16b0db574d140d442f1b924cb7cb305fe47aed4bbafddedd9cdc",
+        "size_bytes": 5093,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/schemas/registry.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST-REVIEW.json",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "170f7cae649a18adcfcf5c8e4155e516782a1453df6a0590269f390d891c49f2",
+        "size_bytes": 4406,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST-REVIEW.json",
+        "sha256": "170f7cae649a18adcfcf5c8e4155e516782a1453df6a0590269f390d891c49f2",
+        "size_bytes": 4406,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST-REVIEW.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST.json",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c",
+        "size_bytes": 34259,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST.json",
+        "sha256": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c",
+        "size_bytes": 34259,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/CANONICAL-REPLACEMENT-RECEIPT.json",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "445f82e9e008f304454e7ba0e562fc92c115d55905de17d230c276c80fce1b46",
+        "size_bytes": 2486,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/CANONICAL-REPLACEMENT-RECEIPT.json",
+        "sha256": "445f82e9e008f304454e7ba0e562fc92c115d55905de17d230c276c80fce1b46",
+        "size_bytes": 2486,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/CANONICAL-REPLACEMENT-RECEIPT.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/OWNER-ACCEPTANCE-RECEIPT.json",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "6c2acf92ffce1d285bc6589caaf747256760c3412c759b641524f850b09bdd01",
+        "size_bytes": 1731,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/OWNER-ACCEPTANCE-RECEIPT.json",
+        "sha256": "6c2acf92ffce1d285bc6589caaf747256760c3412c759b641524f850b09bdd01",
+        "size_bytes": 1731,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/OWNER-ACCEPTANCE-RECEIPT.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/POST-REPLACEMENT-VALIDATION.json",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "542ac3ebe29e332d9d95c84e33ffbfd4c924f212f92b85adba405ccf4b289aed",
+        "size_bytes": 946,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/POST-REPLACEMENT-VALIDATION.json",
+        "sha256": "542ac3ebe29e332d9d95c84e33ffbfd4c924f212f92b85adba405ccf4b289aed",
+        "size_bytes": 946,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/POST-REPLACEMENT-VALIDATION.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/SOURCE-SNAPSHOT.json",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "754ee27b61c04a031164e19ddfb31d40e44d51cf268982caaa367993705e768e",
+        "size_bytes": 7830,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/SOURCE-SNAPSHOT.json",
+        "sha256": "754ee27b61c04a031164e19ddfb31d40e44d51cf268982caaa367993705e768e",
+        "size_bytes": 7830,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260809T192552Z-rwo-fdn-source-binding-bridge/SOURCE-SNAPSHOT.json"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/02-invoke-define/DEFINE.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "9105ee2eaddd49c3a6c53bdd9594bd3d2098dc0e6b27795406f1207b046582a8",
+        "size_bytes": 13057,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/02-invoke-define/DEFINE.md",
+        "sha256": "9105ee2eaddd49c3a6c53bdd9594bd3d2098dc0e6b27795406f1207b046582a8",
+        "size_bytes": 13057,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/02-invoke-define/DEFINE.md"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/03-interrogation-review/DRIFT-LEDGER.json",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "215412fc857e152d58fedf7bee9e24e0016034363dcdbf98f7f79b72c4797984",
+        "size_bytes": 5708,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/03-interrogation-review/DRIFT-LEDGER.json",
+        "sha256": "215412fc857e152d58fedf7bee9e24e0016034363dcdbf98f7f79b72c4797984",
+        "size_bytes": 5708,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/03-interrogation-review/DRIFT-LEDGER.json"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2",
+        "size_bytes": 14454,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md",
+        "sha256": "870a3064b080b3e0c5a0833a5eea524d5867e40256cc5ec9c3588f725fc89df2",
+        "size_bytes": 14454,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/CONVERGENCE-DISTILL.md"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/RESIDUE.json",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "c72c59ebbfefb6f5f47d0e72bd847f042b38caa622095cd900a8e17e4e547f84",
+        "size_bytes": 3185,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/RESIDUE.json",
+        "sha256": "c72c59ebbfefb6f5f47d0e72bd847f042b38caa622095cd900a8e17e4e547f84",
+        "size_bytes": 3185,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/05-distill/RESIDUE.json"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/AXIS-CLAIM-CATALOG.json",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "4c33e01d3737bcd4ea5addee32e3a384115d8e2e98f9f8cbc768dac8d0b06e0d",
+        "size_bytes": 8029,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/AXIS-CLAIM-CATALOG.json",
+        "sha256": "4c33e01d3737bcd4ea5addee32e3a384115d8e2e98f9f8cbc768dac8d0b06e0d",
+        "size_bytes": 8029,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/AXIS-CLAIM-CATALOG.json"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/CANONICALIZATION.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "25af5ad7f609836e99ab80d6af5d13557d3d1ac49db36347f99284673eb312b7",
+        "size_bytes": 2322,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/CANONICALIZATION.md",
+        "sha256": "25af5ad7f609836e99ab80d6af5d13557d3d1ac49db36347f99284673eb312b7",
+        "size_bytes": 2322,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/CANONICALIZATION.md"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXECUTION-STATE-MACHINE.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "a0e2b2877d3e21df2a90650aeb0a260308eec8dec02a533f95ee961c57a89cd4",
+        "size_bytes": 3569,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXECUTION-STATE-MACHINE.md",
+        "sha256": "a0e2b2877d3e21df2a90650aeb0a260308eec8dec02a533f95ee961c57a89cd4",
+        "size_bytes": 3569,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXECUTION-STATE-MACHINE.md"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXPECTATION-BINDINGS.json",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "234e27b1abc929eab9f8eb2de77c11a04132ff0c996d70f2ab591d7dfc4cd591",
+        "size_bytes": 3266,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXPECTATION-BINDINGS.json",
+        "sha256": "234e27b1abc929eab9f8eb2de77c11a04132ff0c996d70f2ab591d7dfc4cd591",
+        "size_bytes": 3266,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/EXPECTATION-BINDINGS.json"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/RUNNER-SOURCE-CLOSURE.json",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "5f1738bcb8d3ca7b8d7eb2833fdee6fc830a9ad7aa3ee703234e96e651221caf",
+        "size_bytes": 7210,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/RUNNER-SOURCE-CLOSURE.json",
+        "sha256": "5f1738bcb8d3ca7b8d7eb2833fdee6fc830a9ad7aa3ee703234e96e651221caf",
+        "size_bytes": 7210,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/development/refinement-runs/20260814T133756Z-rwo-implementation-convergence/stages/06-invoke-design/RUNNER-SOURCE-CLOSURE.json"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "docs/features/recursive-work-orchestrator/ontology/ontology.json",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "7d691b4e287979e930a1fae8cae50dda46a6ab5a680c21a55773c23e956d607e",
+        "size_bytes": 109666,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "docs/features/recursive-work-orchestrator/ontology/ontology.json",
+        "sha256": "7d691b4e287979e930a1fae8cae50dda46a6ab5a680c21a55773c23e956d607e",
+        "size_bytes": 109666,
+        "type": "file"
+      },
+      "path": "docs/features/recursive-work-orchestrator/ontology/ontology.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": "implementations/contracts/dispatch-type-registry.v1.json",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+        "size_bytes": 2087,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/contracts/dispatch-type-registry.v1.json",
+        "sha256": "f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+        "size_bytes": 2087,
+        "type": "file"
+      },
+      "path": "implementations/contracts/dispatch-type-registry.v1.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-RUST"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-rust/Cargo.lock",
+        "rationale": [
+          "AX-RUST",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "359167b3a8620b50b3e85e1820a4fe5f0c15cda8c2b1df86e6bed303b19bd355",
+        "size_bytes": 5062,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-rust/Cargo.lock",
+        "sha256": "359167b3a8620b50b3e85e1820a4fe5f0c15cda8c2b1df86e6bed303b19bd355",
+        "size_bytes": 5062,
+        "type": "file"
+      },
+      "path": "implementations/rwo-rust/Cargo.lock"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-RUST"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-rust/Cargo.toml",
+        "rationale": [
+          "AX-RUST",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "0987855f19aa87818757e5286899ea2576fae43a44190869bbb88eadb21a8f4e",
+        "size_bytes": 413,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-rust/Cargo.toml",
+        "sha256": "0987855f19aa87818757e5286899ea2576fae43a44190869bbb88eadb21a8f4e",
+        "size_bytes": 413,
+        "type": "file"
+      },
+      "path": "implementations/rwo-rust/Cargo.toml"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "implementations/rwo-rust/README.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "7e3b282255b298e9880152dcbd72f025810a85c0293531dd74c1f5da410e0ff3",
+        "size_bytes": 1881,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-rust/README.md",
+        "sha256": "7e3b282255b298e9880152dcbd72f025810a85c0293531dd74c1f5da410e0ff3",
+        "size_bytes": 1881,
+        "type": "file"
+      },
+      "path": "implementations/rwo-rust/README.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-RUST"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-rust/src/admission.rs",
+        "rationale": [
+          "AX-RUST",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "9567e293dd6225c6d5e218f613670411d7833ee553fed0bd16673359a0741c91",
+        "size_bytes": 28173,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-rust/src/admission.rs",
+        "sha256": "9567e293dd6225c6d5e218f613670411d7833ee553fed0bd16673359a0741c91",
+        "size_bytes": 28173,
+        "type": "file"
+      },
+      "path": "implementations/rwo-rust/src/admission.rs"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-RUST"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-rust/src/bin/rwo_fixture_observations.rs",
+        "rationale": [
+          "AX-RUST",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "9fa46db36b904ed1816fe9626e966a212adb37a14acfa998648f6878e3049af8",
+        "size_bytes": 16463,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-rust/src/bin/rwo_fixture_observations.rs",
+        "sha256": "9fa46db36b904ed1816fe9626e966a212adb37a14acfa998648f6878e3049af8",
+        "size_bytes": 16463,
+        "type": "file"
+      },
+      "path": "implementations/rwo-rust/src/bin/rwo_fixture_observations.rs"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-RUST"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-rust/src/bin/rwo_kernel_child.rs",
+        "rationale": [
+          "AX-RUST",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "d1ab5478d28d2bfd5b3a48c5574164334f457c5ec8da75cf52b32345d96c0220",
+        "size_bytes": 26180,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-rust/src/bin/rwo_kernel_child.rs",
+        "sha256": "d1ab5478d28d2bfd5b3a48c5574164334f457c5ec8da75cf52b32345d96c0220",
+        "size_bytes": 26180,
+        "type": "file"
+      },
+      "path": "implementations/rwo-rust/src/bin/rwo_kernel_child.rs"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-RUST"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-rust/src/lib.rs",
+        "rationale": [
+          "AX-RUST",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "2238aca34a165f36335084a476997993ff23af261c9cc8ebf72a3535d337110f",
+        "size_bytes": 45728,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-rust/src/lib.rs",
+        "sha256": "2238aca34a165f36335084a476997993ff23af261c9cc8ebf72a3535d337110f",
+        "size_bytes": 45728,
+        "type": "file"
+      },
+      "path": "implementations/rwo-rust/src/lib.rs"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/README.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "2774e205cffa0d4e9a18e09e956690f086e203c83f9159a0144d6936e28132af",
+        "size_bytes": 5346,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/README.md",
+        "sha256": "2774e205cffa0d4e9a18e09e956690f086e203c83f9159a0144d6936e28132af",
+        "size_bytes": 5346,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/README.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/attempts.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "d77bfb4779f7126e790236d1c43896bf5d19e0496d9e89ff022a2b7be51f0144",
+        "size_bytes": 38854,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/attempts.go",
+        "sha256": "d77bfb4779f7126e790236d1c43896bf5d19e0496d9e89ff022a2b7be51f0144",
+        "size_bytes": 38854,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/attempts.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/attempts_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "0a4798500b56475e264d0932ec7038d679ba4581c6aec40406520bd19b786100",
+        "size_bytes": 18794,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/attempts_test.go",
+        "sha256": "0a4798500b56475e264d0932ec7038d679ba4581c6aec40406520bd19b786100",
+        "size_bytes": 18794,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/attempts_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/benchmark_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "f0d4bb415e2861d64082804c5a28ed77c349ec648f06837cdba0aecf4c2dc0b7",
+        "size_bytes": 2109,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/benchmark_test.go",
+        "sha256": "f0d4bb415e2861d64082804c5a28ed77c349ec648f06837cdba0aecf4c2dc0b7",
+        "size_bytes": 2109,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/benchmark_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/child_kernel.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "dd5e3f0f24e6e3b9ef66c7e7ba471e051594affb529b049d44f0d7cb2a0d396b",
+        "size_bytes": 13776,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/child_kernel.go",
+        "sha256": "dd5e3f0f24e6e3b9ef66c7e7ba471e051594affb529b049d44f0d7cb2a0d396b",
+        "size_bytes": 13776,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/child_kernel.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/child_kernel_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "512360b270893d25ff646cf41ca1e9b1acd3e732689c002f928ffe7ff6d39eae",
+        "size_bytes": 4575,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/child_kernel_test.go",
+        "sha256": "512360b270893d25ff646cf41ca1e9b1acd3e732689c002f928ffe7ff6d39eae",
+        "size_bytes": 4575,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/child_kernel_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/durable_e2e_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "48edff41ecb8c41d86b7b52c1eef364a6323185c60a921033bb9448bf417272b",
+        "size_bytes": 19983,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/durable_e2e_test.go",
+        "sha256": "48edff41ecb8c41d86b7b52c1eef364a6323185c60a921033bb9448bf417272b",
+        "size_bytes": 19983,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/durable_e2e_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/durable_runtime.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "b40a401d1b0f5532049572671870880d425dc2674197d57835ac55a709251778",
+        "size_bytes": 17406,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/durable_runtime.go",
+        "sha256": "b40a401d1b0f5532049572671870880d425dc2674197d57835ac55a709251778",
+        "size_bytes": 17406,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/durable_runtime.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/durable_runtime_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "1fc1b4e7e116091e6df4d9298d5cc28d790ce30a684c89d90426edd4e9565f31",
+        "size_bytes": 16968,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/durable_runtime_test.go",
+        "sha256": "1fc1b4e7e116091e6df4d9298d5cc28d790ce30a684c89d90426edd4e9565f31",
+        "size_bytes": 16968,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/durable_runtime_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/durable_store.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "87fa9b90f5b19d9d798dbcbf20faa1025ba033967d428d4840d7dce7f932993f",
+        "size_bytes": 28152,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/durable_store.go",
+        "sha256": "87fa9b90f5b19d9d798dbcbf20faa1025ba033967d428d4840d7dce7f932993f",
+        "size_bytes": 28152,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/durable_store.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/durable_store_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "b03e3b89e6f579698c42c7fe305e2ff9e47aa4cd3388167ca39dcf2a486a9fa4",
+        "size_bytes": 15670,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/durable_store_test.go",
+        "sha256": "b03e3b89e6f579698c42c7fe305e2ff9e47aa4cd3388167ca39dcf2a486a9fa4",
+        "size_bytes": 15670,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/durable_store_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/eve_leaf.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "a5bbe6699bac0d3a8e26e74f6a092cead0c061f0feac82d6803c531212471845",
+        "size_bytes": 8229,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/eve_leaf.go",
+        "sha256": "a5bbe6699bac0d3a8e26e74f6a092cead0c061f0feac82d6803c531212471845",
+        "size_bytes": 8229,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/eve_leaf.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/eve_leaf_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "f9f5ac26c709d28c3520d6db97cf3bfbeea309531609ba1e7245ea658c2d81a2",
+        "size_bytes": 8531,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/eve_leaf_test.go",
+        "sha256": "f9f5ac26c709d28c3520d6db97cf3bfbeea309531609ba1e7245ea658c2d81a2",
+        "size_bytes": 8531,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/eve_leaf_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/failure_injection_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "5a370b5adf3c816408b6fae891ee6cf4342f2560687b3d740cf4fd668bc1f51c",
+        "size_bytes": 2852,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/failure_injection_test.go",
+        "sha256": "5a370b5adf3c816408b6fae891ee6cf4342f2560687b3d740cf4fd668bc1f51c",
+        "size_bytes": 2852,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/failure_injection_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/go.mod",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "820193984951a866a33c7ca30ba2875b3bf54eecbbf3f9a97af4e7292dd1c53d",
+        "size_bytes": 375,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/go.mod",
+        "sha256": "820193984951a866a33c7ca30ba2875b3bf54eecbbf3f9a97af4e7292dd1c53d",
+        "size_bytes": 375,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/go.mod"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/go.sum",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "a3f6dd274d6dfabe0fa21970f9aeaa78a64301b91c6467c1981c4ee84069f0af",
+        "size_bytes": 3297,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/go.sum",
+        "sha256": "a3f6dd274d6dfabe0fa21970f9aeaa78a64301b91c6467c1981c4ee84069f0af",
+        "size_bytes": 3297,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/go.sum"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/grpc.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "d3327e191e623afaf4d1473ab0f5deffa9f84ce73d6e805675eead0c8fcab435",
+        "size_bytes": 4656,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/grpc.go",
+        "sha256": "d3327e191e623afaf4d1473ab0f5deffa9f84ce73d6e805675eead0c8fcab435",
+        "size_bytes": 4656,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/grpc.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/grpc_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "594d6fd5f071755acdaffa46d290b6bf4b3f4aaa90e7006fb58cb5cc3c25da7f",
+        "size_bytes": 4465,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/grpc_test.go",
+        "sha256": "594d6fd5f071755acdaffa46d290b6bf4b3f4aaa90e7006fb58cb5cc3c25da7f",
+        "size_bytes": 4465,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/grpc_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/http.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "cf59024d59316130626971fa8e4aa85c0e2493adbfd27c8189bf62501c8c447d",
+        "size_bytes": 1298,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/http.go",
+        "sha256": "cf59024d59316130626971fa8e4aa85c0e2493adbfd27c8189bf62501c8c447d",
+        "size_bytes": 1298,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/http.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/local_runtime.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "53e9dd71e3a05b5600b93955f33c03f51c36202d4398a6000484331ff55b1ba8",
+        "size_bytes": 7618,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/local_runtime.go",
+        "sha256": "53e9dd71e3a05b5600b93955f33c03f51c36202d4398a6000484331ff55b1ba8",
+        "size_bytes": 7618,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/local_runtime.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/local_runtime_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "e7a7218a3a31538fa1c2731e903ca4579bb373fc223f6abe5f04d7732e47a170",
+        "size_bytes": 6069,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/local_runtime_test.go",
+        "sha256": "e7a7218a3a31538fa1c2731e903ca4579bb373fc223f6abe5f04d7732e47a170",
+        "size_bytes": 6069,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/local_runtime_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/runtime_grpc_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "d5bba9bd8507da300d52f70abe61fb831c71cc5ed50192dfef654ab5d4202bff",
+        "size_bytes": 8910,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/runtime_grpc_test.go",
+        "sha256": "d5bba9bd8507da300d52f70abe61fb831c71cc5ed50192dfef654ab5d4202bff",
+        "size_bytes": 8910,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/runtime_grpc_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/seat_material.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "4024b9146a28bfa74ea6614cb3c87c1a0a78b7bdcde10870e9b0e85995893688",
+        "size_bytes": 20736,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/seat_material.go",
+        "sha256": "4024b9146a28bfa74ea6614cb3c87c1a0a78b7bdcde10870e9b0e85995893688",
+        "size_bytes": 20736,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/seat_material.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/seat_material_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "762dee78a5b7a868772ff5d7262ee5a1cf58a9601cf4d808ea61138774a38560",
+        "size_bytes": 8490,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/seat_material_test.go",
+        "sha256": "762dee78a5b7a868772ff5d7262ee5a1cf58a9601cf4d808ea61138774a38560",
+        "size_bytes": 8490,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/seat_material_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/sidecar.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "cc9fe3f260a5e8e9eff33accbf34666b5d80c3833383508756ae2ceb4ffd9d50",
+        "size_bytes": 8778,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/sidecar.go",
+        "sha256": "cc9fe3f260a5e8e9eff33accbf34666b5d80c3833383508756ae2ceb4ffd9d50",
+        "size_bytes": 8778,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/sidecar.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/sidecar_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "3393b6bd10e034bc8c90bfe167403a2542c62cc8311bfee5fcf42cfde5fa6a5e",
+        "size_bytes": 4225,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/sidecar_test.go",
+        "sha256": "3393b6bd10e034bc8c90bfe167403a2542c62cc8311bfee5fcf42cfde5fa6a5e",
+        "size_bytes": 4225,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/sidecar_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/store_lock_linux.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "b7f4f478422288718d93873e3a744cb798eea846e450c9fd753e36609eb30f45",
+        "size_bytes": 709,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/store_lock_linux.go",
+        "sha256": "b7f4f478422288718d93873e3a744cb798eea846e450c9fd753e36609eb30f45",
+        "size_bytes": 709,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/store_lock_linux.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/store_lock_other.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "075f2d15373a9d0707fa3356f44a5ead6c8f5c0e036b1260450b417165f74466",
+        "size_bytes": 188,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/store_lock_other.go",
+        "sha256": "075f2d15373a9d0707fa3356f44a5ead6c8f5c0e036b1260450b417165f74466",
+        "size_bytes": 188,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/store_lock_other.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/terminal.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "4ad73df8c5064f056105646914d3e3d84187b16c6039c2d93f2a1c5701e80a27",
+        "size_bytes": 19672,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/terminal.go",
+        "sha256": "4ad73df8c5064f056105646914d3e3d84187b16c6039c2d93f2a1c5701e80a27",
+        "size_bytes": 19672,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/terminal.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/terminal_test.go",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "a591e8616e40334fbf660938f055f75a43249305d21ff770b72fb04d5e3587aa",
+        "size_bytes": 11358,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/terminal_test.go",
+        "sha256": "a591e8616e40334fbf660938f055f75a43249305d21ff770b72fb04d5e3587aa",
+        "size_bytes": 11358,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/terminal_test.go"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/authorization-event.json",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "b6bd2d0844a5ed0c71d288a55d38ed5b97bc63cd60e78f6b96f2f6377e18bad8",
+        "size_bytes": 403,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/authorization-event.json",
+        "sha256": "b6bd2d0844a5ed0c71d288a55d38ed5b97bc63cd60e78f6b96f2f6377e18bad8",
+        "size_bytes": 403,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/authorization-event.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/composition-tuple.json",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "8f42cea6395c1d8a7a73952a73cb00e53a40309373a7f209e8498412b1623aab",
+        "size_bytes": 224,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/composition-tuple.json",
+        "sha256": "8f42cea6395c1d8a7a73952a73cb00e53a40309373a7f209e8498412b1623aab",
+        "size_bytes": 224,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/composition-tuple.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/composition.json",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "0f8bb97262774eb7471563c503150a0501a72562948f1ede7e2b2c25f90a7c3b",
+        "size_bytes": 694,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/composition.json",
+        "sha256": "0f8bb97262774eb7471563c503150a0501a72562948f1ede7e2b2c25f90a7c3b",
+        "size_bytes": 694,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/composition.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/output-schema.json",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "c9c047a65cbe3a70021493137d28d94d8913ea06b6dc7b13ca4254a1909d07bb",
+        "size_bytes": 182,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/output-schema.json",
+        "sha256": "c9c047a65cbe3a70021493137d28d94d8913ea06b6dc7b13ca4254a1909d07bb",
+        "size_bytes": 182,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/output-schema.json"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-GO"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/seat-manifest.json",
+        "rationale": [
+          "AX-GO",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "7e792eba8811c01d1a2964207c86c30ab630d2f8afe6c7562d2f24fe24d50787",
+        "size_bytes": 883,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/seat-manifest.json",
+        "sha256": "7e792eba8811c01d1a2964207c86c30ab630d2f8afe6c7562d2f24fe24d50787",
+        "size_bytes": 883,
+        "type": "file"
+      },
+      "path": "implementations/rwo-sidecar-go/testdata/eve-one-seat/seat-manifest.json"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "implementations/rwo/README.md",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "4759f9a25f52408cb56b6f958cdf3cbe17983a5681962f3b10965e7d6562a132",
+        "size_bytes": 1714,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo/README.md",
+        "sha256": "4759f9a25f52408cb56b6f958cdf3cbe17983a5681962f3b10965e7d6562a132",
+        "size_bytes": 1714,
+        "type": "file"
+      },
+      "path": "implementations/rwo/README.md"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo/canonical.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "2bbba4df9cf7be2391652f411c282161c93c3dfd4df8c8ac66a7ddb7be24b739",
+        "size_bytes": 6357,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo/canonical.py",
+        "sha256": "2bbba4df9cf7be2391652f411c282161c93c3dfd4df8c8ac66a7ddb7be24b739",
+        "size_bytes": 6357,
+        "type": "file"
+      },
+      "path": "implementations/rwo/canonical.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo/contract.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "978f835ae9b78bfa2f34627a005d5246a9a6b01ba428140af7bf4b52ff2166dc",
+        "size_bytes": 13642,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo/contract.py",
+        "sha256": "978f835ae9b78bfa2f34627a005d5246a9a6b01ba428140af7bf4b52ff2166dc",
+        "size_bytes": 13642,
+        "type": "file"
+      },
+      "path": "implementations/rwo/contract.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo/kernel.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "478a44c6a63909696124dbee129faef0027a9bb4cc3776c2a0724f9e17b1ea14",
+        "size_bytes": 28025,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo/kernel.py",
+        "sha256": "478a44c6a63909696124dbee129faef0027a9bb4cc3776c2a0724f9e17b1ea14",
+        "size_bytes": 28025,
+        "type": "file"
+      },
+      "path": "implementations/rwo/kernel.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo/retry.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "f7009155d844f47cb64773f25713d93b00221910131eebe50ea9db17c6d55670",
+        "size_bytes": 3002,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo/retry.py",
+        "sha256": "f7009155d844f47cb64773f25713d93b00221910131eebe50ea9db17c6d55670",
+        "size_bytes": 3002,
+        "type": "file"
+      },
+      "path": "implementations/rwo/retry.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/rwo/source_binding.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "151e479c81dc7618f3dae7723fbac18d4e6904e6e12a225b66cf6fd915e8167b",
+        "size_bytes": 7381,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo/source_binding.py",
+        "sha256": "151e479c81dc7618f3dae7723fbac18d4e6904e6e12a225b66cf6fd915e8167b",
+        "size_bytes": 7381,
+        "type": "file"
+      },
+      "path": "implementations/rwo/source_binding.py"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "implementations/rwo/validate_prototype.py",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "be7e3b68e0e45f069405e768e339611a89e03fd2852029807ad4bbcb843af65d",
+        "size_bytes": 1792,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/rwo/validate_prototype.py",
+        "sha256": "be7e3b68e0e45f069405e768e339611a89e03fd2852029807ad4bbcb843af65d",
+        "size_bytes": 1792,
+        "type": "file"
+      },
+      "path": "implementations/rwo/validate_prototype.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": "implementations/server/runtime/canonical.py",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "db4eb8b3e3f8508e7004fa2ce4ab83cc4e863266d680f4c73cd05394b8889bfb",
+        "size_bytes": 7840,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/server/runtime/canonical.py",
+        "sha256": "db4eb8b3e3f8508e7004fa2ce4ab83cc4e863266d680f4c73cd05394b8889bfb",
+        "size_bytes": 7840,
+        "type": "file"
+      },
+      "path": "implementations/server/runtime/canonical.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": "implementations/server/runtime/capability_routes.py",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "875683c1b4946f03738fd6badb079126120814f1717d3cbd56696e379157860d",
+        "size_bytes": 2984,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/server/runtime/capability_routes.py",
+        "sha256": "875683c1b4946f03738fd6badb079126120814f1717d3cbd56696e379157860d",
+        "size_bytes": 2984,
+        "type": "file"
+      },
+      "path": "implementations/server/runtime/capability_routes.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": "implementations/server/runtime/dispatch_types.py",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "a3c057aa883e09c5553a8db2d30d9758a50ac7ab839d7e7131a4b5970d66b62b",
+        "size_bytes": 7953,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/server/runtime/dispatch_types.py",
+        "sha256": "a3c057aa883e09c5553a8db2d30d9758a50ac7ab839d7e7131a4b5970d66b62b",
+        "size_bytes": 7953,
+        "type": "file"
+      },
+      "path": "implementations/server/runtime/dispatch_types.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": "implementations/server/runtime/dispatch_workflow.py",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "85f13889d01b56b7427ac2c883d71ef0577c9e4e7fcb2c45cda1db5f2d0654fd",
+        "size_bytes": 18222,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/server/runtime/dispatch_workflow.py",
+        "sha256": "85f13889d01b56b7427ac2c883d71ef0577c9e4e7fcb2c45cda1db5f2d0654fd",
+        "size_bytes": 18222,
+        "type": "file"
+      },
+      "path": "implementations/server/runtime/dispatch_workflow.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": "implementations/server/runtime/errors.py",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "c0cc422a1a1a2fb452ec0d104665b9797c35965828157d4df0bb9a70062ca840",
+        "size_bytes": 756,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/server/runtime/errors.py",
+        "sha256": "c0cc422a1a1a2fb452ec0d104665b9797c35965828157d4df0bb9a70062ca840",
+        "size_bytes": 756,
+        "type": "file"
+      },
+      "path": "implementations/server/runtime/errors.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-SHARED-DISPATCH"
+        ],
+        "mode": "0644",
+        "path": "implementations/tests/runtime/test_dispatch_workflow.py",
+        "rationale": [
+          "AX-SHARED-DISPATCH",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "4b880deac5c5ac74605f7e82cf5f4e94126199af38295f114d101a76c24a1fef",
+        "size_bytes": 13784,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/tests/runtime/test_dispatch_workflow.py",
+        "sha256": "4b880deac5c5ac74605f7e82cf5f4e94126199af38295f114d101a76c24a1fef",
+        "size_bytes": 13784,
+        "type": "file"
+      },
+      "path": "implementations/tests/runtime/test_dispatch_workflow.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/tests/rwo/test_contract_vectors.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "097b15b5e685518155fb2bd3fa90ff6691c45eb45df48df4f6547abce48c8968",
+        "size_bytes": 13669,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/tests/rwo/test_contract_vectors.py",
+        "sha256": "097b15b5e685518155fb2bd3fa90ff6691c45eb45df48df4f6547abce48c8968",
+        "size_bytes": 13669,
+        "type": "file"
+      },
+      "path": "implementations/tests/rwo/test_contract_vectors.py"
+    },
+    {
+      "after": {
+        "groups": [],
+        "mode": "0644",
+        "path": "implementations/tests/rwo/test_cross_language_witness.py",
+        "rationale": [
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "df17c1190314b30def4f3aa45337ed67fc14483a259d9641f8fbd78a9c2edf44",
+        "size_bytes": 10055,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/tests/rwo/test_cross_language_witness.py",
+        "sha256": "df17c1190314b30def4f3aa45337ed67fc14483a259d9641f8fbd78a9c2edf44",
+        "size_bytes": 10055,
+        "type": "file"
+      },
+      "path": "implementations/tests/rwo/test_cross_language_witness.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/tests/rwo/test_kernel_vectors.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "3188fd286e72d69152f43dbe0f011d69f927e7705b0f912a74d90246cc416a48",
+        "size_bytes": 10453,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/tests/rwo/test_kernel_vectors.py",
+        "sha256": "3188fd286e72d69152f43dbe0f011d69f927e7705b0f912a74d90246cc416a48",
+        "size_bytes": 10453,
+        "type": "file"
+      },
+      "path": "implementations/tests/rwo/test_kernel_vectors.py"
+    },
+    {
+      "after": {
+        "groups": [
+          "AX-PYTHON"
+        ],
+        "mode": "0644",
+        "path": "implementations/tests/rwo/test_prototype.py",
+        "rationale": [
+          "AX-PYTHON",
+          "preserved-accepted-snapshot"
+        ],
+        "sha256": "ca837e87b71227374a12249a49c6b83847392ff5b4b903fd3d9057ed5dac905f",
+        "size_bytes": 3996,
+        "type": "file"
+      },
+      "before": {
+        "mode": "0444",
+        "path": "implementations/tests/rwo/test_prototype.py",
+        "sha256": "ca837e87b71227374a12249a49c6b83847392ff5b4b903fd3d9057ed5dac905f",
+        "size_bytes": 3996,
+        "type": "file"
+      },
+      "path": "implementations/tests/rwo/test_prototype.py"
+    }
+  ],
+  "changed_count": 85,
+  "delta_id": "RWO-CVG-002-source-closure-candidate-against-accepted",
+  "removed": [],
+  "removed_count": 0,
+  "schema_version": "rwo.runner-source-snapshot-delta/v1",
+  "unchanged_count": 0
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "task-session.post-terminal-validation/v1",
+  "receipt_id": "RWO-CVG-002-ONE-SHOT:U01:post-terminal-validation",
+  "work_pack_id": "WP-RWO-CVG-002",
+  "unit_id": "U01",
+  "swu_id": "SWU-RWO-CVG2-001",
+  "terminal_receipt_ref": {
+    "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/TERMINAL-RECEIPT.json",
+    "sha256": "4fb56232a53277e94fa6dc398814ef52e83d059a39a80a1209063c55d2b5579b",
+    "size_bytes": 3942
+  },
+  "command_id": "U01-V03",
+  "command": "python3 -m json.tool docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/TERMINAL-RECEIPT.json",
+  "status": "pass",
+  "exit_code": 0,
+  "semantic_validation": "pass",
+  "first_terminal_preserved": true,
+  "authority_effect": "none"
+}

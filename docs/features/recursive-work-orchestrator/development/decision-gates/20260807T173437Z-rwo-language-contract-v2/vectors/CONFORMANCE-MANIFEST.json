@@ -1,0 +1,649 @@
+{
+  "schemaVersion": "rwo.conformance-manifest/v1",
+  "vectorSetId": "RWO-SEMANTIC-CONTRACT-VECTORS",
+  "vectorSetVersion": "1.0.0",
+  "status": "candidate-unaccepted",
+  "producer": {
+    "identity": "invoke-refresh/candidate-materializer-v1",
+    "method": "manual declarative expansion of the frozen Refine matrix with independently reviewable literal inputs"
+  },
+  "contract": {
+    "id": "RWO-SEMANTIC-CONTRACT",
+    "version": "1.0.0",
+    "path": "../RWO-SEMANTIC-CONTRACT-1.0.0.md",
+      "sha256": "8da8959770733ac4a3f0936f5cb2a8175a0786c909822a141f10670409610740",
+      "sizeBytes": 10363
+  },
+  "profile": {
+    "id": "RWO-JCS-IJSON-SAFEINT",
+    "version": "1.0.0",
+    "unicodeVersion": "15.1.0"
+  },
+  "schemaRegistry": {
+    "id": "RWO-SEMANTIC-REGISTRY/1.0.0",
+    "path": "../schemas/registry.json",
+    "sha256": "5c8801a0587fabfbdfbf12686f49b943dac986def111a66af9fff90daf71bf51",
+    "sizeBytes": 5093
+  },
+  "digestTupleFixture": {
+    "contract_id": "RWO-SEMANTIC-CONTRACT",
+    "contract_version": "1.0.0",
+    "profile_id": "RWO-JCS-IJSON-SAFEINT",
+    "profile_version": "1.0.0",
+    "schema_id": "WorkGraph",
+    "schema_version": "1.0.0"
+  },
+  "fixtures": {
+    "explicitComposition": {
+      "contract_id": "RWO-SEMANTIC-CONTRACT",
+      "contract_version": "1.0.0",
+      "profile_id": "RWO-JCS-IJSON-SAFEINT",
+      "profile_version": "1.0.0",
+      "schema_id": "ExplicitComposition",
+      "schema_version": "1.0.0",
+      "composition_id": "fixture-single-edge",
+      "nodes": [
+        {"node_id": "source", "node_type": "FixtureSource"},
+        {"node_id": "worker", "node_type": "FixtureWorker"}
+      ],
+      "edges": [
+        {
+          "edge_id": "edge-start",
+          "source_node_id": "source",
+          "target_node_id": "worker",
+          "event_type": "WorkReady",
+          "event_payload_schema": {"schema_id": "FixtureEventPayload", "schema_version": "1.0.0"},
+          "command_type": "StartWork",
+          "command_payload_schema": {"schema_id": "FixtureCommandPayload", "schema_version": "1.0.0"},
+          "payload_derivation": "copy-event-payload"
+        }
+      ]
+    },
+    "compiledWorkGraph": {
+      "contract_id": "RWO-SEMANTIC-CONTRACT",
+      "contract_version": "1.0.0",
+      "profile_id": "RWO-JCS-IJSON-SAFEINT",
+      "profile_version": "1.0.0",
+      "schema_id": "WorkGraph",
+      "schema_version": "1.0.0",
+      "composition_id": "fixture-single-edge",
+      "nodes": [
+        {"node_id": "source", "node_type": "FixtureSource"},
+        {"node_id": "worker", "node_type": "FixtureWorker"}
+      ],
+      "edges": [
+        {
+          "edge_id": "edge-start",
+          "source_node_id": "source",
+          "target_node_id": "worker",
+          "event_type": "WorkReady",
+          "event_payload_schema": {"schema_id": "FixtureEventPayload", "schema_version": "1.0.0"},
+          "command_type": "StartWork",
+          "command_payload_schema": {"schema_id": "FixtureCommandPayload", "schema_version": "1.0.0"},
+          "payload_derivation": "copy-event-payload"
+        }
+      ]
+    },
+    "graphIdentity": "sha256:4f02829c60b0d79a206100f9977a044f5ae33ad1f0d3a2588a6acdb8591388d9",
+    "compiledGraphPayload": {
+      "base64": "eyJjb21wb3NpdGlvbl9pZCI6ImZpeHR1cmUtc2luZ2xlLWVkZ2UiLCJjb250cmFjdF9pZCI6IlJXTy1TRU1BTlRJQy1DT05UUkFDVCIsImNvbnRyYWN0X3ZlcnNpb24iOiIxLjAuMCIsImVkZ2VzIjpbeyJjb21tYW5kX3BheWxvYWRfc2NoZW1hIjp7InNjaGVtYV9pZCI6IkZpeHR1cmVDb21tYW5kUGF5bG9hZCIsInNjaGVtYV92ZXJzaW9uIjoiMS4wLjAifSwiY29tbWFuZF90eXBlIjoiU3RhcnRXb3JrIiwiZWRnZV9pZCI6ImVkZ2Utc3RhcnQiLCJldmVudF9wYXlsb2FkX3NjaGVtYSI6eyJzY2hlbWFfaWQiOiJGaXh0dXJlRXZlbnRQYXlsb2FkIiwic2NoZW1hX3ZlcnNpb24iOiIxLjAuMCJ9LCJldmVudF90eXBlIjoiV29ya1JlYWR5IiwicGF5bG9hZF9kZXJpdmF0aW9uIjoiY29weS1ldmVudC1wYXlsb2FkIiwic291cmNlX25vZGVfaWQiOiJzb3VyY2UiLCJ0YXJnZXRfbm9kZV9pZCI6IndvcmtlciJ9XSwibm9kZXMiOlt7Im5vZGVfaWQiOiJzb3VyY2UiLCJub2RlX3R5cGUiOiJGaXh0dXJlU291cmNlIn0seyJub2RlX2lkIjoid29ya2VyIiwibm9kZV90eXBlIjoiRml4dHVyZVdvcmtlciJ9XSwicHJvZmlsZV9pZCI6IlJXTy1KQ1MtSUpTT04tU0FGRUlOVCIsInByb2ZpbGVfdmVyc2lvbiI6IjEuMC4wIiwic2NoZW1hX2lkIjoiV29ya0dyYXBoIiwic2NoZW1hX3ZlcnNpb24iOiIxLjAuMCJ9",
+      "sizeBytes": 678,
+      "sha256": "036944a5335a7d42c868d56ceaccbd3ec8d87329341c0b492d7593a1377278bd"
+    },
+    "initialCursor": {
+      "contract_id": "RWO-SEMANTIC-CONTRACT",
+      "contract_version": "1.0.0",
+      "profile_id": "RWO-JCS-IJSON-SAFEINT",
+      "profile_version": "1.0.0",
+      "schema_id": "OrchestrationCursor",
+      "schema_version": "1.0.0",
+      "reducer_semantics_version": "1.0.0",
+      "graph_identity": "sha256:4f02829c60b0d79a206100f9977a044f5ae33ad1f0d3a2588a6acdb8591388d9",
+      "stream_id": "stream-1",
+      "accepted_events": [],
+      "satisfied_edge_ids": [],
+      "emitted_commands": []
+    },
+    "matchingEvent": {
+      "contract_id": "RWO-SEMANTIC-CONTRACT",
+      "contract_version": "1.0.0",
+      "profile_id": "RWO-JCS-IJSON-SAFEINT",
+      "profile_version": "1.0.0",
+      "schema_id": "AcceptedEventView",
+      "schema_version": "1.0.0",
+      "stream_id": "stream-1",
+      "event_id": "event-1",
+      "event_type": "WorkReady",
+      "source_node_id": "source",
+      "payload": {"job_id": "job-1"}
+    },
+    "expectedCommand": {
+      "contract_id": "RWO-SEMANTIC-CONTRACT",
+      "contract_version": "1.0.0",
+      "profile_id": "RWO-JCS-IJSON-SAFEINT",
+      "profile_version": "1.0.0",
+      "schema_id": "CommandIntent",
+      "schema_version": "1.0.0",
+      "graph_identity": "sha256:4f02829c60b0d79a206100f9977a044f5ae33ad1f0d3a2588a6acdb8591388d9",
+      "edge_id": "edge-start",
+      "accepted_event_identity": "sha256:94fd4c76859fb2b1a641f3b757f748e38e735c60ad14e71f39e2a7e2b485092f",
+      "command_type": "StartWork",
+      "target_node_id": "worker",
+      "payload": {"job_id": "job-1"}
+    },
+    "nextCursor": {
+      "contract_id": "RWO-SEMANTIC-CONTRACT",
+      "contract_version": "1.0.0",
+      "profile_id": "RWO-JCS-IJSON-SAFEINT",
+      "profile_version": "1.0.0",
+      "schema_id": "OrchestrationCursor",
+      "schema_version": "1.0.0",
+      "reducer_semantics_version": "1.0.0",
+      "graph_identity": "sha256:4f02829c60b0d79a206100f9977a044f5ae33ad1f0d3a2588a6acdb8591388d9",
+      "stream_id": "stream-1",
+      "accepted_events": [
+        {
+          "accepted_event_identity": "sha256:94fd4c76859fb2b1a641f3b757f748e38e735c60ad14e71f39e2a7e2b485092f",
+          "event_payload_digest": "sha256:7b622c0c80095bfe3c02699b4721576486cb79f43a27b51c86708641f6ff2d19"
+        }
+      ],
+      "satisfied_edge_ids": ["edge-start"],
+      "emitted_commands": [
+        {
+          "command_intent_identity": "sha256:6d4a77adbb9481b030f5ed392c90509fe9875b1b57eb3ff9b1ec0d9eab4a59e3",
+          "command_payload_digest": "sha256:86ed7ff2ea4a31b992af291238bfd8d7ee80a187818a68956d9545547c42b204"
+        }
+      ]
+    }
+  },
+  "vectors": [
+    {
+      "vectorId": "ADM-001",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "LTkwMDcxOTkyNTQ3NDA5OTE=", "expected": {"outcome": "Admitted", "payloadBase64": "LTkwMDcxOTkyNTQ3NDA5OTE=", "payloadSizeBytes": 17, "payloadSha256": "4c933a456bb8f2e9894b2d0b26480439cd72d52fb8a27cbf8fd7f323f22c7815"}}],
+      "provenance": "s08 ADM-001 expanded literally"
+    },
+    {
+      "vectorId": "ADM-002",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "OTAwNzE5OTI1NDc0MDk5MQ==", "expected": {"outcome": "Admitted", "payloadBase64": "OTAwNzE5OTI1NDc0MDk5MQ==", "payloadSizeBytes": 16, "payloadSha256": "f40b423c2dd95ff2b2f027e22208f438cf7242862e5e746860e697308c9add26"}}],
+      "provenance": "s08 ADM-002 expanded literally"
+    },
+    {
+      "vectorId": "ADM-003",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [
+        {"rawUtf8JsonBase64": "LTkwMDcxOTkyNTQ3NDA5OTI=", "expected": {"outcome": "Rejected", "defectCodes": ["INTEGER_OUT_OF_RANGE"]}},
+        {"rawUtf8JsonBase64": "OTAwNzE5OTI1NDc0MDk5Mg==", "expected": {"outcome": "Rejected", "defectCodes": ["INTEGER_OUT_OF_RANGE"]}}
+      ],
+      "provenance": "s08 ADM-003 expanded at both endpoints"
+    },
+    {
+      "vectorId": "ADM-004",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "MA==", "expected": {"outcome": "Admitted", "payloadBase64": "MA==", "payloadSizeBytes": 1, "payloadSha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"}}],
+      "provenance": "s08 ADM-004 expanded literally"
+    },
+    {
+      "vectorId": "ADM-005",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [
+        {"rawUtf8JsonBase64": "LTA=", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_INTEGER"]}},
+        {"rawUtf8JsonBase64": "LTAuMA==", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_INTEGER"]}},
+        {"rawUtf8JsonBase64": "MS4w", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_INTEGER"]}},
+        {"rawUtf8JsonBase64": "MWUw", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_INTEGER"]}}
+      ],
+      "provenance": "s08 ADM-005 expanded for every token"
+    },
+    {
+      "vectorId": "ADM-006",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "eyJhIjoxLCJcdTAwNjEiOjJ9", "expected": {"outcome": "Rejected", "defectCodes": ["DUPLICATE_OBJECT_NAME"], "beforeMapCollapse": true}}],
+      "provenance": "s08 ADM-006 exact escaped duplicate"
+    },
+    {
+      "vectorId": "ADM-007",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "IsOpIg==", "expected": {"outcome": "Admitted", "payloadBase64": "IsOpIg==", "payloadSizeBytes": 4, "payloadSha256": "f2886017e9c7abacf804b54d64787dce2b611c9544ba21f3affdd126a6e50086"}}],
+      "provenance": "s08 ADM-007 composed NFC"
+    },
+    {
+      "vectorId": "ADM-008",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "ImVcdTAzMDEi", "expected": {"outcome": "Rejected", "defectCodes": ["NON_NFC_TEXT"], "normalizationPerformed": false}}],
+      "provenance": "s08 ADM-008 decomposed equivalent"
+    },
+    {
+      "vectorId": "ADM-009",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "Ilx1RDgwMCI=", "expected": {"outcome": "Rejected", "defectCodes": ["INVALID_UNICODE_SCALAR"]}}],
+      "provenance": "s08 ADM-009 lone surrogate"
+    },
+    {
+      "vectorId": "ADM-010",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "Ilx1RkREMCI=", "expected": {"outcome": "Rejected", "defectCodes": ["UNICODE_NONCHARACTER"]}}],
+      "provenance": "s08 ADM-010 U+FDD0"
+    },
+    {
+      "vectorId": "ADM-011",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [{"rawUtf8JsonBase64": "Ilx1MDM3OCI=", "expected": {"outcome": "Rejected", "defectCodes": ["UNICODE_UNASSIGNED"], "unicodeVersion": "15.1.0", "scalar": "U+0378"}}],
+      "provenance": "s08 ADM-011 pinned unassigned scalar"
+    },
+    {
+      "vectorId": "ADM-012",
+      "vectorVersion": "1.0.0",
+      "operation": "canonical_payload_bytes",
+      "cases": [{"rawUtf8JsonBase64": "eyJcdUUwMDAiOjIsIlx1RDgwMFx1REMwMCI6MX0=", "expected": {"outcome": "Admitted", "payloadBase64": "eyLwkICAIjoxLCLugIAiOjJ9", "payloadSizeBytes": 18, "payloadSha256": "4045c21a23c8ae8f8d9add81f54bd506bee65885099876fb4afb378b1f2c3516", "firstKey": "U+10000"}}],
+      "provenance": "s08 ADM-012 unsigned UTF-16 key order"
+    },
+    {
+      "vectorId": "ADM-013",
+      "vectorVersion": "1.0.0",
+      "operation": "admit",
+      "cases": [
+        {"rawUtf8JsonBase64": "77u/e30=", "expected": {"outcome": "Rejected", "defectCodes": ["UTF8_BOM_FORBIDDEN"]}},
+        {"rawUtf8JsonBase64": "e310cnVl", "expected": {"outcome": "Rejected", "defectCodes": ["TRAILING_TOKEN"]}}
+      ],
+      "provenance": "s08 ADM-013 BOM and trailing token"
+    },
+    {
+      "vectorId": "DEC-001",
+      "vectorVersion": "1.0.0",
+      "operation": "admit_canonical_decimal",
+      "cases": [
+        {"rawUtf8JsonBase64": "IjAi", "expected": {"outcome": "Admitted", "payloadBase64": "IjAi"}},
+        {"rawUtf8JsonBase64": "Ii0xIg==", "expected": {"outcome": "Admitted", "payloadBase64": "Ii0xIg=="}},
+        {"rawUtf8JsonBase64": "IjAuNSI=", "expected": {"outcome": "Admitted", "payloadBase64": "IjAuNSI="}},
+        {"rawUtf8JsonBase64": "Ii0wLjUi", "expected": {"outcome": "Admitted", "payloadBase64": "Ii0wLjUi"}},
+        {"rawUtf8JsonBase64": "IjEuMjUi", "expected": {"outcome": "Admitted", "payloadBase64": "IjEuMjUi"}}
+      ],
+      "provenance": "s08 DEC-001 complete admitted set"
+    },
+    {
+      "vectorId": "DEC-002",
+      "vectorVersion": "1.0.0",
+      "operation": "admit_canonical_decimal",
+      "cases": [
+        {"rawUtf8JsonBase64": "Ii0wIg==", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_DECIMAL"]}},
+        {"rawUtf8JsonBase64": "IjAxIg==", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_DECIMAL"]}},
+        {"rawUtf8JsonBase64": "IisxIg==", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_DECIMAL"]}},
+        {"rawUtf8JsonBase64": "IjEuMCI=", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_DECIMAL"]}},
+        {"rawUtf8JsonBase64": "IjEuMDAi", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_DECIMAL"]}},
+        {"rawUtf8JsonBase64": "IjFlMCI=", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_DECIMAL"]}},
+        {"rawUtf8JsonBase64": "IjAuMCI=", "expected": {"outcome": "Rejected", "defectCodes": ["NON_CANONICAL_DECIMAL"]}}
+      ],
+      "provenance": "s08 DEC-002 complete rejected set"
+    },
+    {
+      "vectorId": "DEC-003",
+      "vectorVersion": "1.0.0",
+      "operation": "admit_ordinary_string",
+      "cases": [{"rawUtf8JsonBase64": "Im9yZGluYXJ5OjEuMCI=", "schemaFieldKind": "ordinary-string", "expected": {"outcome": "Admitted", "value": "ordinary:1.0"}}],
+      "provenance": "s08 DEC-003 schema-kind discrimination"
+    },
+    {
+      "vectorId": "NRM-001",
+      "vectorVersion": "1.0.0",
+      "operation": "normalize_semantics",
+      "typedInput": {"declaration": {"primaryKeyPaths": ["k"], "duplicatePolicy": "reject"}, "elements": [{"k": "x", "v": 2}, {"k": "x", "v": 1}]},
+      "expected": {"outcome": "Normalized", "elements": [{"k": "x", "v": 1}, {"k": "x", "v": 2}], "fallback": "canonical-payload-bytes"},
+      "provenance": "s08 NRM-001 exact tie-break input"
+    },
+    {
+      "vectorId": "NRM-002",
+      "vectorVersion": "1.0.0",
+      "operation": "normalize_semantics",
+      "typedInput": {"declaration": {"primaryKeyPaths": ["k"], "duplicatePolicy": "reject"}, "elements": [{"k": "x", "v": 1}, {"k": "x", "v": 1}]},
+      "expected": {"outcome": "Rejected", "defectCodes": ["DUPLICATE_SEMANTIC_IDENTITY"]},
+      "provenance": "s08 NRM-002 exact duplicate"
+    },
+    {
+      "vectorId": "NRM-003",
+      "vectorVersion": "1.0.0",
+      "operation": "normalize_semantics",
+      "typedInput": {"orderedCases": [[1, 2], [2, 1]]},
+      "expected": {"outcome": "Preserved", "payloadBase64Cases": ["WzEsMl0=", "WzIsMV0="], "equal": false},
+      "provenance": "s08 NRM-003 ordered-array distinction"
+    },
+    {
+      "vectorId": "DIG-001",
+      "vectorVersion": "1.0.0",
+      "operation": "semantic_digest",
+      "typedInput": {"tupleRef": "#/digestTupleFixture", "valueType": "WorkGraph", "payloadBase64": "e30=", "payloadSizeBytes": 2},
+      "expected": {"semanticDigest": "sha256:831bf15613b14f21177880372d043e7e535ecfd9864d17914e8f083a125e0579"},
+      "sourceMatrixObservation": {"digest": "sha256:9cf3550b5d682b978551493d16ad25cc25f15fe47f0f4f7231435bc6e27c8944", "disposition": "repaired-because-s08-did-not-bind-an-exact-schema-tuple-and-the-value-does-not-match-the-now-explicit-tuple"},
+      "provenance": "s08 DIG-001 repaired by exact-tuple derivation"
+    },
+    {
+      "vectorId": "DIG-002",
+      "vectorVersion": "1.0.0",
+      "operation": "semantic_digest",
+      "typedInput": {"tupleRef": "#/digestTupleFixture", "valueType": "OrchestrationCursor", "payloadBase64": "e30=", "payloadSizeBytes": 2},
+      "expected": {"semanticDigest": "sha256:b733172234d3eebdddb27ee9715512184a72a7b712936eb6d4b78a55294ce311", "differentFrom": "DIG-001"},
+      "sourceMatrixObservation": {"digest": "sha256:db1de031223ee0d3d3e6ba450bca7f1529989b12a8da6639d9759ae19fe896d6", "disposition": "repaired-because-s08-did-not-bind-an-exact-schema-tuple-and-the-value-does-not-match-the-now-explicit-tuple"},
+      "provenance": "s08 DIG-002 repaired by exact-tuple derivation"
+    },
+    {
+      "vectorId": "DIG-003",
+      "vectorVersion": "1.0.0",
+      "operation": "independent_semantic_digest_review",
+      "typedInput": {"vectorRef": "DIG-001", "requiredReviewerSeparation": true},
+      "expected": {"semanticDigest": "sha256:831bf15613b14f21177880372d043e7e535ecfd9864d17914e8f083a125e0579", "reviewerMustNotImportProducer": true},
+      "provenance": "s08 DIG-003 exact comparison contract"
+    },
+    {
+      "vectorId": "VER-001",
+      "vectorVersion": "1.0.0",
+      "operation": "admit_version_tuple",
+      "cases": [
+        {"typedInput": {"contract_version": "1.1.0"}, "expected": {"outcome": "Rejected", "defectCodes": ["VERSION_TUPLE_UNSUPPORTED"]}},
+        {"typedInput": {"schema_id": "UnknownSchema"}, "expected": {"outcome": "Rejected", "defectCodes": ["VERSION_TUPLE_UNSUPPORTED"]}},
+        {"typedInput": {"profile_version": "1.0.1"}, "expected": {"outcome": "Rejected", "defectCodes": ["VERSION_TUPLE_UNSUPPORTED"]}},
+        {"typedInput": {"value_type": "UnknownType"}, "expected": {"outcome": "Rejected", "defectCodes": ["VERSION_TUPLE_UNSUPPORTED"]}}
+      ],
+      "provenance": "s08 VER-001 exact mismatch set"
+    },
+    {
+      "vectorId": "VER-002",
+      "vectorVersion": "1.0.0",
+      "operation": "admit_version_tuple",
+      "typedInput": {"contract_id": "RWO-SEMANTIC-CONTRACT", "contract_version": "1.0.0", "profile_id": "RWO-JCS-IJSON-SAFEINT", "profile_version": "1.0.0", "schema_id": "WorkGraph", "schema_version": "1.0.0", "value_type": "WorkGraph"},
+      "expected": {"outcome": "Continue"},
+      "provenance": "s08 VER-002 exact registered tuple"
+    },
+    {
+      "vectorId": "CMP-001",
+      "vectorVersion": "1.0.0",
+      "operation": "compile",
+      "typedInput": {"fixtureRef": "#/fixtures/explicitComposition", "repeat": 2},
+      "expected": {"outcome": "Compiled", "graphFixtureRef": "#/fixtures/compiledWorkGraph", "graphPayloadRef": "#/fixtures/compiledGraphPayload", "graphIdentity": "sha256:4f02829c60b0d79a206100f9977a044f5ae33ad1f0d3a2588a6acdb8591388d9", "repeatByteIdentical": true},
+      "provenance": "s08 CMP-001 plus explicit copy-event-payload rule"
+    },
+    {
+      "vectorId": "CMP-002",
+      "vectorVersion": "1.0.0",
+      "operation": "compile",
+      "typedInput": {"fixtureRef": "#/fixtures/explicitComposition", "mutation": {"addField": {"path": [], "name": "unknown", "value": true}}},
+      "expected": {"outcome": "Rejected", "graph": null, "defectCodes": ["UNKNOWN_FIELD"]},
+      "provenance": "s08 CMP-002 exact unknown-field mutation"
+    },
+    {
+      "vectorId": "CMP-003",
+      "vectorVersion": "1.0.0",
+      "operation": "compile",
+      "typedInput": {"fixtureRef": "#/fixtures/explicitComposition", "mutation": {"replace": {"path": ["edges", 0, "target_node_id"], "value": "missing"}}},
+      "expected": {"outcome": "Rejected", "graph": null, "defectCodes": ["MISSING_ENDPOINT"]},
+      "provenance": "s08 CMP-003 exact missing endpoint"
+    },
+    {
+      "vectorId": "RED-001",
+      "vectorVersion": "1.0.0",
+      "operation": "reduce",
+      "typedInput": {"graphRef": "#/fixtures/compiledWorkGraph", "cursorRef": "#/fixtures/initialCursor", "eventRef": "#/fixtures/matchingEvent"},
+      "expected": {"outcome": "Applied", "cursorRef": "#/fixtures/nextCursor", "commandRef": "#/fixtures/expectedCommand", "acceptedEventIdentity": "sha256:94fd4c76859fb2b1a641f3b757f748e38e735c60ad14e71f39e2a7e2b485092f", "eventPayloadDigest": "sha256:7b622c0c80095bfe3c02699b4721576486cb79f43a27b51c86708641f6ff2d19", "commandIntentIdentity": "sha256:6d4a77adbb9481b030f5ed392c90509fe9875b1b57eb3ff9b1ec0d9eab4a59e3", "commandPayloadDigest": "sha256:86ed7ff2ea4a31b992af291238bfd8d7ee80a187818a68956d9545547c42b204"},
+      "provenance": "s08 RED-001 exact single-edge transition"
+    },
+    {
+      "vectorId": "RED-002",
+      "vectorVersion": "1.0.0",
+      "operation": "reduce",
+      "typedInput": {"graphRef": "#/fixtures/compiledWorkGraph", "cursorRef": "#/fixtures/nextCursor", "eventRef": "#/fixtures/matchingEvent"},
+      "expected": {"outcome": "Duplicate", "cursorByteIdentical": true, "command": null},
+      "provenance": "s08 RED-002 exact replay"
+    },
+    {
+      "vectorId": "RED-003",
+      "vectorVersion": "1.0.0",
+      "operation": "reduce",
+      "typedInput": {"graphRef": "#/fixtures/compiledWorkGraph", "cursorRef": "#/fixtures/nextCursor", "eventRef": "#/fixtures/matchingEvent", "mutation": {"replace": {"path": ["payload", "job_id"], "value": "job-2"}}},
+      "expected": {"outcome": "DivergentDuplicate", "defectCodes": ["DIVERGENT_DUPLICATE"], "cursorByteIdentical": true, "command": null},
+      "provenance": "s08 RED-003 exact divergent replay"
+    },
+    {
+      "vectorId": "RED-004",
+      "vectorVersion": "1.0.0",
+      "operation": "reduce",
+      "typedInput": {"graphRef": "#/fixtures/compiledWorkGraph", "cursorRef": "#/fixtures/initialCursor", "event": {"contract_id": "RWO-SEMANTIC-CONTRACT", "contract_version": "1.0.0", "profile_id": "RWO-JCS-IJSON-SAFEINT", "profile_version": "1.0.0", "schema_id": "AcceptedEventView", "schema_version": "1.0.0", "stream_id": "stream-1", "event_id": "event-2", "event_type": "NoMatch", "source_node_id": "source", "payload": {"job_id": "job-2"}}},
+      "expected": {"outcome": "Applied", "acceptedEventRecorded": true, "satisfiedEdgeIds": [], "command": null},
+      "provenance": "s08 RED-004 exact non-match"
+    },
+    {
+      "vectorId": "RED-005",
+      "vectorVersion": "1.0.0",
+      "operation": "reduce",
+      "cases": [
+        {"typedInput": {"cursorRef": "#/fixtures/initialCursor", "mutation": {"replace": {"path": ["graph_identity"], "value": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}}}, "expected": {"outcome": "Rejected", "defectCodes": ["GRAPH_IDENTITY_MISMATCH"], "cursorByteIdentical": true}},
+        {"typedInput": {"cursorRef": "#/fixtures/initialCursor", "mutation": {"replace": {"path": ["stream_id"], "value": "other-stream"}}}, "expected": {"outcome": "Rejected", "defectCodes": ["STREAM_ID_MISMATCH"], "cursorByteIdentical": true}},
+        {"typedInput": {"cursorRef": "#/fixtures/initialCursor", "mutation": {"replace": {"path": ["reducer_semantics_version"], "value": "1.1.0"}}}, "expected": {"outcome": "Rejected", "defectCodes": ["VERSION_TUPLE_UNSUPPORTED"], "cursorByteIdentical": true}}
+      ],
+      "provenance": "s08 RED-005 complete mismatch classes"
+    },
+    {
+      "vectorId": "RED-006",
+      "vectorVersion": "1.0.0",
+      "operation": "reduce",
+      "typedInput": {"graphRef": "#/fixtures/compiledWorkGraph", "graphMutation": {"appendEdge": {"edge_id": "edge-start-2", "source_node_id": "source", "target_node_id": "worker", "event_type": "WorkReady", "event_payload_schema": {"schema_id": "FixtureEventPayload", "schema_version": "1.0.0"}, "command_type": "StartWork", "command_payload_schema": {"schema_id": "FixtureCommandPayload", "schema_version": "1.0.0"}, "payload_derivation": "copy-event-payload"}}, "cursorRef": "#/fixtures/initialCursor", "eventRef": "#/fixtures/matchingEvent"},
+      "expected": {"outcome": "Rejected", "defectCodes": ["MULTIPLE_EDGE_MATCH"], "cursorByteIdentical": true},
+      "provenance": "s08 RED-006 exact ambiguous graph"
+    },
+    {
+      "vectorId": "CMD-001",
+      "vectorVersion": "1.0.0",
+      "operation": "derive_command_intent",
+      "typedInput": {"graphRef": "#/fixtures/compiledWorkGraph", "eventRef": "#/fixtures/matchingEvent", "repeat": 2},
+      "expected": {"commandRef": "#/fixtures/expectedCommand", "commandIntentIdentity": "sha256:6d4a77adbb9481b030f5ed392c90509fe9875b1b57eb3ff9b1ec0d9eab4a59e3", "commandPayloadDigest": "sha256:86ed7ff2ea4a31b992af291238bfd8d7ee80a187818a68956d9545547c42b204", "secondIntent": null},
+      "provenance": "s08 CMD-001 exact immutable repeat"
+    },
+    {
+      "vectorId": "CMD-002",
+      "vectorVersion": "1.0.0",
+      "operation": "reduce",
+      "typedInput": {"graphRef": "#/fixtures/compiledWorkGraph", "cursorRef": "#/fixtures/nextCursor", "eventRef": "#/fixtures/matchingEvent", "cursorMutation": {"replace": {"path": ["emitted_commands", 0, "command_payload_digest"], "value": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}}},
+      "expected": {"outcome": "Rejected", "defectCodes": ["DIVERGENT_COMMAND_INTENT"], "cursorByteIdentical": true},
+      "provenance": "s08 CMD-002 exact payload divergence"
+    },
+    {
+      "vectorId": "DEF-001",
+      "vectorVersion": "1.0.0",
+      "operation": "order_defects",
+      "typedInput": {
+        "discoveryOrder": [
+          {"phase": "reduction", "path": [{"kind": "field", "name": "accepted_events"}, {"kind": "index", "index": 0}], "code": "DIVERGENT_DUPLICATE", "detail_digest": "sha256:07fb0cb06ce13862314d2dcd9531f26e7efd1a685642a61b2f59d469117f8ada"},
+          {"phase": "schema", "path": [{"kind": "field", "name": "z"}], "code": "UNKNOWN_FIELD", "detail_digest": "sha256:b2d0077721e521fbdffc8161366b64b02248b24da4491b4bdbecc4d53ef4c271"},
+          {"phase": "decode", "path": [], "code": "TRAILING_TOKEN", "detail_digest": "sha256:e08de551d7c6d1cac89357cbfd50ebbf0aa7d964c69627b38bfdfc4470a36e25"},
+          {"phase": "compilation", "path": [{"kind": "field", "name": "edges"}, {"kind": "index", "index": 0}, {"kind": "field", "name": "target_node_id"}], "code": "MISSING_ENDPOINT", "detail_digest": "sha256:b314c4929147b6b21018b61761ededdffd209c02463fa95e9f1fb565e3e422d0"}
+        ]
+      },
+      "expected": {"orderedCodes": ["TRAILING_TOKEN", "UNKNOWN_FIELD", "MISSING_ENDPOINT", "DIVERGENT_DUPLICATE"], "duplicateDefectPolicy": "implementation-conformance-failure"},
+      "provenance": "s08 DEF-001 exact total-order example"
+    },
+    {
+      "vectorId": "RTY-001",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"kernelOutcome": "Rejected", "adapterCapabilities": []},
+      "expected": {"treatment": "DoNotRetry"},
+      "forbidden": ["RetrySame", "deadline-extension"],
+      "provenance": "s08 RTY-001"
+    },
+    {
+      "vectorId": "RTY-002",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"kernelOutcome": "Duplicate", "adapterCapabilities": ["acknowledge"]},
+      "expected": {"treatment": "DoNotRetry", "semanticDisposition": "acknowledge-convergence", "newCommand": false},
+      "forbidden": ["kernel-command-redelivery"],
+      "provenance": "s08 RTY-002"
+    },
+    {
+      "vectorId": "RTY-003",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"submissionState": "definitely-not-submitted", "budgetOpen": true, "adapterCapabilities": []},
+      "expected": {"treatment": "RetrySame", "identityAndPayloadUnchanged": true},
+      "forbidden": ["regenerate-command"],
+      "provenance": "s08 RTY-003"
+    },
+    {
+      "vectorId": "RTY-004",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"submissionState": "unknown", "adapterCapabilities": [], "endToEndIdempotency": false},
+      "expected": {"treatment": "Escalate", "reason": "AMBIGUOUS_DELIVERY"},
+      "forbidden": ["automatic-retry"],
+      "provenance": "s08 RTY-004"
+    },
+    {
+      "vectorId": "RTY-005",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"submissionState": "unknown", "adapterCapabilities": ["status-query", "journal-lookup"]},
+      "expected": {"treatment": "ReconcileThenDecide"},
+      "forbidden": ["blind-retry"],
+      "provenance": "s08 RTY-005"
+    },
+    {
+      "vectorId": "RTY-006",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"submissionState": "unknown", "adapterCapabilities": ["end-to-end-idempotency-key"], "policyAllows": true, "budgetOpen": true},
+      "expected": {"treatment": "RetrySame", "identityAndPayloadUnchanged": true},
+      "forbidden": ["new-semantic-identity"],
+      "provenance": "s08 RTY-006"
+    },
+    {
+      "vectorId": "RTY-007",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"adapterOutcome": "terminal-rejection", "commandValidity": "invalid", "adapterCapabilities": []},
+      "expected": {"treatment": "DoNotRetry", "nextPolicyRoute": ["DeadLetter", "Escalate"]},
+      "forbidden": ["transient-classification"],
+      "provenance": "s08 RTY-007"
+    },
+    {
+      "vectorId": "RTY-008",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"adapterOutcome": "rate-limited", "submissionState": "definitely-not-submitted", "budgetOpen": true, "adapterCapabilities": ["policy-backoff"]},
+      "expected": {"treatment": "RetrySame", "identityAndPayloadUnchanged": true},
+      "forbidden": ["payload-change", "semantic-key-change"],
+      "provenance": "s08 RTY-008"
+    },
+    {
+      "vectorId": "RTY-009",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"adapterOutcome": "deadline-after-submit", "submissionState": "unknown", "adapterCapabilities": ["status-query"]},
+      "expected": {"treatment": "ReconcileThenDecide", "classificationBasis": "submission-state-and-capability"},
+      "forbidden": ["error-name-only-retry"],
+      "provenance": "s08 RTY-009"
+    },
+    {
+      "vectorId": "RTY-010",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"attemptBudget": "exhausted", "frozenPolicy": "dead-letter"},
+      "expected": {"treatment": "DeadLetter"},
+      "forbidden": ["further-automatic-retry"],
+      "provenance": "s08 RTY-010"
+    },
+    {
+      "vectorId": "RTY-011",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "typedInput": {"leaseState": "ownership-lost", "adapterCapabilities": ["owner-recovery"]},
+      "expected": {"treatment": "ReconcileThenDecide", "localAttempts": "stop"},
+      "forbidden": ["stale-owner-concurrent-retry"],
+      "provenance": "s08 RTY-011"
+    },
+    {
+      "vectorId": "RTY-012",
+      "vectorVersion": "1.0.0",
+      "operation": "classify_retry",
+      "cases": [
+        {"typedInput": {"semanticVectorRef": "RED-002"}, "expected": {"treatment": "DoNotRetry", "semanticOutcome": "Duplicate"}},
+        {"typedInput": {"semanticVectorRef": "RED-003"}, "expected": {"treatment": "DoNotRetry", "semanticOutcome": "DivergentDuplicate"}}
+      ],
+      "forbidden": ["transport-error-hides-semantic-divergence"],
+      "provenance": "s08 RTY-012 exact semantic cross-reference"
+    },
+    {
+      "vectorId": "FIX-001",
+      "vectorVersion": "1.0.0",
+      "operation": "fixture_governance",
+      "typedInput": {"mode": "ordinary-test", "manifestAccess": "read-only"},
+      "expected": {"writes": [], "regenerationMode": false},
+      "provenance": "s08 FIX-001"
+    },
+    {
+      "vectorId": "FIX-002",
+      "vectorVersion": "1.0.0",
+      "operation": "fixture_governance",
+      "typedInput": {"mutation": "manifest-bytes-change"},
+      "expected": {"manifestDigestChanges": true, "priorReviewValid": false},
+      "provenance": "s08 FIX-002"
+    },
+    {
+      "vectorId": "FIX-003",
+      "vectorVersion": "1.0.0",
+      "operation": "fixture_governance",
+      "typedInput": {"mutation": "review-bytes-change-only"},
+      "expected": {"manifestDigestChanges": false, "reviewDigestChanges": true},
+      "provenance": "s08 FIX-003"
+    },
+    {
+      "vectorId": "FIX-004",
+      "vectorVersion": "1.0.0",
+      "operation": "fixture_governance",
+      "typedInput": {"producerMutation": {"vectorId": "DIG-001", "expectedDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}},
+      "expected": {"independentReview": "fail", "acceptedReviewProduced": false},
+      "provenance": "s08 FIX-004"
+    },
+    {
+      "vectorId": "FIX-005",
+      "vectorVersion": "1.0.0",
+      "operation": "fixture_governance",
+      "typedInput": {"producerIdentity": "same", "reviewerIdentity": "same"},
+      "expected": {"admission": "block", "reason": "PRODUCER_REVIEWER_IDENTITY_EQUAL"},
+      "provenance": "s08 FIX-005"
+    },
+    {
+      "vectorId": "FIX-006",
+      "vectorVersion": "1.0.0",
+      "operation": "fixture_governance",
+      "typedInput": {"ownerDecisionReference": null},
+      "expected": {"status": "candidate-unaccepted", "canonicalApplyAllowed": false},
+      "provenance": "s08 FIX-006"
+    }
+  ],
+  "sourceRepairs": [
+    {
+      "id": "REPAIR-PAYLOAD-DERIVATION-001",
+      "sourceGap": "The Refine contract said derive immutable CommandIntent without an exact payload derivation rule or closed fixture payload schemas.",
+      "candidateRule": "Each first-slice edge declares event and command payload schemas plus payload_derivation=copy-event-payload; both closed fixture schemas are inline in the registry."
+    },
+    {
+      "id": "REPAIR-DIGEST-TUPLE-001",
+      "sourceGap": "DIG-001 and DIG-002 named a test schema/type informally and their recorded hashes do not match the exact tuple now required by the framing contract.",
+      "candidateRule": "Bind schema_id=WorkGraph, schema_version=1.0.0 and independently derive corrected digests; retain the earlier values only as superseded source observations."
+    }
+  ],
+  "nonEffects": [
+    "No vector is accepted until the detached review and exact owner gate pass.",
+    "No executable Python, Rust, or Go conformance is proven.",
+    "No retry scheduler, transport adapter, journal, domain effect, deployment, publication, release, or production behavior is authorized."
+  ]
+}

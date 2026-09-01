@@ -1,0 +1,142 @@
+{
+  "authorityEffect": "none",
+  "canonicalMutationPerformed": true,
+  "checks": [
+    {
+      "evidence": {
+        "requestId": "FAR-RWO-LANG-CONTRACT-002-REPAIR-20260807T214631Z",
+        "sha256": "0386630300875198f4554e10387fff5444fb2b35d1df0236bbe34ae5e02ef98b"
+      },
+      "id": "exact-renewed-owner-request",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "candidateContentSha256": "c94cd00da90bbafab98eb8d5afa51f99ea816257e6fed6e412596be96057dcb3",
+        "mismatches": []
+      },
+      "id": "thirteen-target-repair-candidate",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "candidateValidationSha256": "63faaa1ab89e4f35c8a9f1db17946de08dc16e63780bc5819e8ee7b80723eee7",
+        "sidecarReceiptSha256": "5c9c89bee153301fec30cf56322a8fc9f88c5e549332a1c9a3168f426663d3aa"
+      },
+      "id": "repair-validation-and-sidecar-bindings",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "boundOutputCount": 14,
+        "sha256": "0a6ecc3b63cf9336f69b2b5a4284aa718108f19919480cf3449265485acc4d91"
+      },
+      "id": "renewed-owner-acceptance-receipt",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "actual": 14,
+        "extra": [],
+        "missing": []
+      },
+      "id": "fourteen-target-staging-denominator",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "outputMismatches": [],
+        "packageDigest": "84046a0be2db3e7b179c2211182f862d5266039f1264db848f4fb9d3c3102bb7",
+        "targetCount": 14
+      },
+      "id": "material-package-binding",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "mutationReady": true,
+        "patchVerdict": "pass"
+      },
+      "id": "material-and-handoff-receipts",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "checked": 14,
+        "expectedCleanCreateReturnCode": 1,
+        "failures": []
+      },
+      "id": "fourteen-create-target-git-diff-check",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "checked": 12,
+        "failures": []
+      },
+      "id": "staged-json-parse",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "checked": 6,
+        "failures": []
+      },
+      "id": "schema-meta-validation",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "contractSha256": "8da8959770733ac4a3f0936f5cb2a8175a0786c909822a141f10670409610740",
+        "manifestSha256": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c",
+        "reviewSha256": "170f7cae649a18adcfcf5c8e4155e516782a1453df6a0590269f390d891c49f2",
+        "vectorCount": 54
+      },
+      "id": "contract-manifest-review-binding",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "checked": 6,
+        "failures": []
+      },
+      "id": "fixture-schema-validation",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "header": [
+          "# RWO Semantic Contract 1.0.0",
+          "",
+          "Status: lifecycle-neutral contract content",
+          "Canonical creation: authorized only by an external exact owner-acceptance receipt",
+          "Admission: complete only after canonical byte creation and post-creation validation",
+          "Effects: authority none; promotion none; implementation none"
+        ]
+      },
+      "id": "post-acceptance-lifecycle-coherence",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "checked": 14,
+        "mismatches": [],
+        "phase": "post-apply"
+      },
+      "id": "canonical-target-state",
+      "status": "pass"
+    }
+  ],
+  "failures": [],
+  "implementationEffect": "none",
+  "packageDigest": "84046a0be2db3e7b179c2211182f862d5266039f1264db848f4fb9d3c3102bb7",
+  "packageId": "MP-RWO-CONTRACT-SUCCESSOR-REPAIR-001",
+  "phase": "post-apply",
+  "phaseBApplyAuthorized": false,
+  "promotionEffect": "none",
+  "publicationEffect": "none",
+  "runId": "20260807T214631Z-rwo-contract-successor-repair-candidate",
+  "schemaVersion": "rwo.contract-repair-material-validation/v1",
+  "status": "pass",
+  "targetCount": 14
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "rwo.source-closure-owner-acceptance/v1",
+  "receipt_id": "RWO-CVG-002:U01:OWNER-ACCEPTANCE-20260901T123144Z",
+  "work_pack_id": "WP-RWO-CVG-002",
+  "unit_id": "U01",
+  "swu_id": "SWU-RWO-CVG2-001",
+  "decision_status": "accepted",
+  "accepted_at": "2026-09-01T12:31:44Z",
+  "owner_route": "repository owner through explicit current-chat direction",
+  "selection_source": {
+    "kind": "current-chat",
+    "exact_user_direction": "Accept that exact source-closure digest.",
+    "resolved_digest_from_immediately-preceding-audit": "255a54b16b168824b7534c611d172f189d33f55403edaf5a1ec6c908267a5f4b"
+  },
+  "candidate_digest": "255a54b16b168824b7534c611d172f189d33f55403edaf5a1ec6c908267a5f4b",
+  "acceptance_class": "source-binding-candidate-only",
+  "acceptance_statement": "I accept source-binding candidate only for acceptance binding 255a54b16b168824b7534c611d172f189d33f55403edaf5a1ec6c908267a5f4b.",
+  "acceptance_request_ref": {
+    "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/ACCEPTANCE-REQUEST.json",
+    "sha256": "029ade0fe6888753a6a8faf26f60d07069267aeacc5ccf822ca25b5ab43d8afa",
+    "size_bytes": 3745
+  },
+  "terminal_receipt_ref": {
+    "path": "docs/features/recursive-work-orchestrator/development/implementation-runs/RWO-CVG-002/SWU-RWO-CVG2-001/TERMINAL-RECEIPT.json",
+    "sha256": "4fb56232a53277e94fa6dc398814ef52e83d059a39a80a1209063c55d2b5579b",
+    "size_bytes": 3942
+  },
+  "accepted_scope": [
+    "exact source inventory binding",
+    "eligibility for separately validated successor source repair"
+  ],
+  "excluded_effects": [
+    "acceptance of changed successor bytes",
+    "implementation conformance",
+    "publication",
+    "release",
+    "deployment",
+    "external effect"
+  ],
+  "authority_effect": "exact-source-binding-acceptance-only"
+}

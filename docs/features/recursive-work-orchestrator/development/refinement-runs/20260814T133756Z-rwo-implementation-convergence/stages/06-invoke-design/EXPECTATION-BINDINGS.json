@@ -1,0 +1,59 @@
+{
+  "schema_version": "rwo.expectation-bindings/v1",
+  "binding_set_id": "RWO-CVG-001-expectations",
+  "posture": "design-only-planned-unexecuted",
+  "bindings": [
+    {
+      "binding_id": "EXP-FROZEN-CORPUS",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST.json",
+      "sha256": "5fa9f516c88b4e7e85a1d7b7f751301e31f41493b51dd62bc0f0ea7a901d2b0c",
+      "size_bytes": 34259,
+      "producer": "invoke-refresh/candidate-materializer-v1",
+      "accountable_owner": "rwo-semantic-contract-owner",
+      "authority_posture": "frozen-candidate-expectation-corpus",
+      "allowed_consuming_axes": ["AX-PYTHON", "AX-RUST", "AX-CROSS-LANGUAGE"],
+      "forbidden_as_acceptance_evidence": true
+    },
+    {
+      "binding_id": "EXP-DETACHED-REVIEW",
+      "path": "docs/features/recursive-work-orchestrator/development/decision-gates/20260807T173437Z-rwo-language-contract-v2/vectors/CONFORMANCE-MANIFEST-REVIEW.json",
+      "sha256": "170f7cae649a18adcfcf5c8e4155e516782a1453df6a0590269f390d891c49f2",
+      "size_bytes": 4406,
+      "producer": "rwo-governance-rebind-reviewer/python3-standalone-v1",
+      "accountable_owner": "rwo-semantic-contract-owner",
+      "authority_posture": "detached-review-of-frozen-candidate",
+      "allowed_consuming_axes": ["AX-SEMANTIC-BINDING", "AX-PYTHON"],
+      "forbidden_as_acceptance_evidence": true
+    },
+    {
+      "binding_id": "EXP-PYTHON-PRODUCER",
+      "path": "implementations/tests/rwo/test_cross_language_witness.py",
+      "sha256": "df17c1190314b30def4f3aa45337ed67fc14483a259d9641f8fbd78a9c2edf44",
+      "size_bytes": 10055,
+      "producer": "python-reference-owner",
+      "accountable_owner": "python-reference-owner",
+      "authority_posture": "candidate-independent-observation-producer",
+      "allowed_consuming_axes": ["AX-CROSS-LANGUAGE"],
+      "implementation_under_review": "rust-semantic-owner",
+      "direct_runner_allowed": false
+    },
+    {
+      "binding_id": "OBS-RUST-PRODUCER",
+      "path": "implementations/rwo-rust/src/bin/rwo_fixture_observations.rs",
+      "sha256": "9fa46db36b904ed1816fe9626e966a212adb37a14acfa998648f6878e3049af8",
+      "size_bytes": 16463,
+      "producer": "rust-semantic-owner",
+      "accountable_owner": "rust-semantic-owner",
+      "authority_posture": "candidate-observation-producer",
+      "allowed_consuming_axes": ["AX-RUST", "AX-CROSS-LANGUAGE"],
+      "implementation_under_review": "rust-semantic-owner",
+      "may_issue_expectations": false
+    }
+  ],
+  "producer_disjointness_rule": "A comparison expectation must name a producer and accountable owner distinct from the implementation whose observation it judges. An implementation observation may never be relabeled as its expectation.",
+  "required_fixtures": [
+    {"fixture_id": "EXPECTATION-INDEPENDENT-POSITIVE", "expected_result": "pass", "condition": "expectation producer and implementation owner are distinct and all bindings match"},
+    {"fixture_id": "EXPECTATION-SELF-ISSUED-NEGATIVE", "expected_result": "fail", "condition": "expectation producer equals implementation owner or expectation is derived from the observation under review"}
+  ],
+  "authority_effect": "none"
+}
