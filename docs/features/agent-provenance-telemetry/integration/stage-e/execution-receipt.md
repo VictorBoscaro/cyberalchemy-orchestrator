@@ -423,3 +423,28 @@ Verification results:
 - complete runtime discovery: 200 tests, PASS in 79.787 seconds;
 - Python compileall: PASS;
 - `git diff --check`: PASS; line-ending conversion warnings only.
+
+## 2026-09-01 upstream RWO rebase integrity refresh
+
+Rebasing onto accepted upstream commit `2e373f7` changed the pinned dispatch-workflow source and
+test bytes. This refresh binds those exact upstream bytes in the Stage-E manifest and updates the
+local-pilot manifest pin. The two upstream paths have no branch-local diff from `origin/master`.
+
+This is integrity closure only. It does not claim behavioral compatibility between the upstream
+RWO workflow revision and the repository's existing ACI workflow fixtures or root-governance
+layout.
+
+| Evidence | SHA-256 |
+|---|---|
+| `implementations/server/runtime/dispatch_workflow.py` | `sha256:85f13889d01b56b7427ac2c883d71ef0577c9e4e7fcb2c45cda1db5f2d0654fd` |
+| `implementations/tests/runtime/test_dispatch_workflow.py` | `sha256:4b880deac5c5ac74605f7e82cf5f4e94126199af38295f114d101a76c24a1fef` |
+| Stage-E source manifest | `sha256:b2160ab37d0cf1648ba422123f6abe27323406313af25c8fc5524b70817b9d6f` |
+| Stage-C verifier `implementations/server/runtime/local_pilot.py` | `sha256:f9ec5b9efd7ba0cd56af4edaf2dff488220adf539e2d5e9b5f3daa0d04841f16` |
+
+Verification results:
+
+- bounded confirmation, continuation, heads, bus and policy suites: 108 tests, PASS;
+- Stage-C manifest and preflight suite: 8/8, PASS;
+- hook and bridge suites: 28/29, with one upstream workflow-manifest shape error;
+- complete runtime discovery: 267 tests, 7 failures and 15 errors, all retained as unresolved
+  upstream integration evidence rather than reported as passing.
