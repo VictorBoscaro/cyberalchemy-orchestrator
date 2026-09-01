@@ -446,5 +446,5 @@ Verification results:
 - bounded confirmation, continuation, heads, bus and policy suites: 108 tests, PASS;
 - Stage-C manifest and preflight suite: 8/8, PASS;
 - hook and bridge suites: 28/29, with one upstream workflow-manifest shape error;
-- complete runtime discovery: 267 tests, 7 failures and 15 errors, all retained as unresolved
+- complete runtime discovery: 267 tests, 6 failures and 6 errors, all retained as unresolved
   upstream integration evidence rather than reported as passing.
