@@ -1,0 +1,43 @@
+{
+  "schema": "aci.open-l0.discrepancy-report@1",
+  "authority": "none",
+  "non_authoritative": true,
+  "candidate_route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f",
+  "preserved": [
+    "canonical dispatch envelope fields",
+    "three-operation order through unique audit groups and ordered bindings",
+    "candidate route bytes and digest"
+  ],
+  "discrepancies": [
+    {
+      "id": "authority-mode",
+      "preserved": false,
+      "witness": "runtime-managed confirmation is not legacy-managed launch authority"
+    },
+    {
+      "id": "role-vocabulary",
+      "preserved": false,
+      "witness": "runtime author/reviewer are substituted by candidate legacy roles"
+    },
+    {
+      "id": "logical-group-reuse",
+      "preserved": false,
+      "witness": "group_authoring becomes two unique operation-scoped audit groups"
+    },
+    {
+      "id": "shared-seat-session",
+      "preserved": false,
+      "witness": "both author turns name seat_author but 0.6.4 has no Seat/session field"
+    },
+    {
+      "id": "continuation-key",
+      "preserved": false,
+      "witness": "0.6.4 carries no continuation identity between author turns"
+    },
+    {
+      "id": "reviewer-interposition",
+      "preserved": false,
+      "witness": "layers=2 repeats one group and cannot encode author-reviewer-author"
+    }
+  ]
+}

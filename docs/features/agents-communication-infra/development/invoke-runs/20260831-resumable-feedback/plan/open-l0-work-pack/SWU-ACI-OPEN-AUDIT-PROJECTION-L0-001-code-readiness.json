@@ -1,0 +1,31 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-OPEN-AUDIT-PROJECTION-L0-001",
+  "work_pack_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/open-l0-work-pack/SWU-ACI-OPEN-AUDIT-PROJECTION-L0-001.json",
+  "work_pack_digest": "sha256:d5e9a2446db74cf4eeaab6ea83abb42977017c649576dd2538ece07b87780839",
+  "test_spec_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/open-l0-work-pack/TASK-OPEN-L0-001.md",
+  "test_spec_digest": "sha256:d2810caa5eece5534a047dc41f3513667d6e7b47e469d5fa65df5d078e5231e3",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/experiments/aci_open_l0/projector.py",
+    "implementations/experiments/aci_open_l0/independent_oracle.py",
+    "implementations/experiments/aci_open_l0/fixtures/synthetic-input.json",
+    "implementations/experiments/aci_open_l0/fixtures/expected-unstamped-row.json",
+    "implementations/experiments/aci_open_l0/fixtures/expected-discrepancy-report.json",
+    "implementations/tests/experiments/test_aci_open_l0_projection.py"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.experiments.test_aci_open_l0_projection -v",
+    "python -B -m compileall implementations/experiments/aci_open_l0 implementations/tests/experiments/test_aci_open_l0_projection.py",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "git diff --check"
+  ],
+  "capability_profile": {
+    "filesystem": "task-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

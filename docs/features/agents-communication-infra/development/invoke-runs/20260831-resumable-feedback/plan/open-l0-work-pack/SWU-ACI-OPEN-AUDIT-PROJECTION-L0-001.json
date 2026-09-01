@@ -1,0 +1,146 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-OPEN-AUDIT-PROJECTION-L0-001",
+  "scope": "non-authoritative-synthetic-audit-opening-projection-oracle-l0",
+  "planner_preflight": "code-entry-ready",
+  "task_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/open-l0-work-pack/TASK-OPEN-L0-001.md",
+  "decision_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/TECH-OPEN-D0.md",
+  "claim_boundary": "pure synthetic projector, structurally independent comparator and discrepancy witnesses only; no canonical schema, confirmation change, registry/appender call or mutation, audit ledger row, OPEN evidence, Run/Group transition, effect, provider, worker or authority claim",
+  "entry_predicate": [
+    "tech-open-d0-exact-bytes-reviewed-pass",
+    "exact-open-l0-task-context-tests-and-descriptor-reviewed-pass",
+    "fresh-byte-matching-code-readiness-pass",
+    "all-source-pins-and-expected-absence-checks-match"
+  ],
+  "entry_gate_status": {
+    "technical_design": "reviewed-pass",
+    "work_pack": "independently-reviewed-pass",
+    "code_readiness": "pass-issued",
+    "abc_authority_decision": "blocked-for-l1-not-required-for-l0",
+    "product_pass": "blocked-not-required-for-l0"
+  },
+  "immutable_source_pins": {
+    "technical_design": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/TECH-OPEN-D0.md",
+      "sha256": "sha256:f538e31e2dd4743eebca5ded62bb1b40cafb37a79c1aabf7998f86576dcc324d"
+    },
+    "design_review": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/TECH-D0-REVIEW.md",
+      "sha256": "sha256:43ba27747ccaa54d6a4cc49ed3102ea582423f19f1ad6a69f5de7d6e5f291179"
+    },
+    "work_pack_review": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/open-l0-work-pack/REVIEW.md",
+      "sha256": "sha256:2ea96724e306bf21085a7e94d86f00c7ce8f4430c31760cbae12e86f7de7f3c4"
+    },
+    "task": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/open-l0-work-pack/TASK-OPEN-L0-001.md",
+      "sha256": "sha256:d2810caa5eece5534a047dc41f3513667d6e7b47e469d5fa65df5d078e5231e3"
+    },
+    "appender_mechanics": {
+      "path": ".claude/skills/register-dispatch/append-dispatch.cjs",
+      "sha256": "sha256:3a6825eb65d0d46c4261f0b898162aa19626adaf1a372a7f7432993039cfa6d0"
+    },
+    "dispatch_type_registry": {
+      "path": "implementations/contracts/dispatch-type-registry.v1.json",
+      "sha256": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de"
+    },
+    "confirmation_contract": {
+      "path": "docs/features/agents-communication-infra/specs/confirmation-authority.md",
+      "sha256": "sha256:4e9f92545c9ab35a9ab555efee0488e7c3aec9b849dad17f07a82e166018252c"
+    },
+    "confirmation_kernel": {
+      "path": "implementations/server/runtime/confirmation.py",
+      "sha256": "sha256:9340b1429f29e44512dd8a13688e2885e57ff82bc302f5bdff51a9538721850c"
+    },
+    "pending_fixture": {
+      "path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1/pending-sheet.json",
+      "sha256": "sha256:7b7ff10271cae9e657033e5d3dd61261cb651c6cb66500a4c63fd2d111e162fa"
+    },
+    "confirmed_graph_fixture": {
+      "path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1/confirmed-turn-graph.json",
+      "sha256": "sha256:a56237e28c1d297a4f12bfbb6851d0a54c30aba7e05b10adf9275ca4af38f2ba"
+    }
+  },
+  "expected_absent_paths": [
+    "implementations/experiments/aci_open_l0/projector.py",
+    "implementations/experiments/aci_open_l0/independent_oracle.py",
+    "implementations/experiments/aci_open_l0/fixtures/synthetic-input.json",
+    "implementations/experiments/aci_open_l0/fixtures/expected-unstamped-row.json",
+    "implementations/experiments/aci_open_l0/fixtures/expected-discrepancy-report.json",
+    "implementations/tests/experiments/test_aci_open_l0_projection.py"
+  ],
+  "write_scope": [
+    "implementations/experiments/aci_open_l0/projector.py",
+    "implementations/experiments/aci_open_l0/independent_oracle.py",
+    "implementations/experiments/aci_open_l0/fixtures/synthetic-input.json",
+    "implementations/experiments/aci_open_l0/fixtures/expected-unstamped-row.json",
+    "implementations/experiments/aci_open_l0/fixtures/expected-discrepancy-report.json",
+    "implementations/tests/experiments/test_aci_open_l0_projection.py"
+  ],
+  "write_scope_constraints": {
+    "projector": "pure closed validation and deterministic projection only; no filesystem, subprocess, network, SQLite, runtime, host tool, appender or mutation dependency",
+    "independent_oracle": "must not import projector or shared projection/canonicalization helpers; independently reproduce all three output byte domains",
+    "fixtures": "synthetic inputs and frozen expected bytes only; authority=none/non_authoritative=true; tests never rewrite them",
+    "tests": "own all mutation, drift, discrepancy and static reachability proofs; must not invoke append-dispatch even with validate-only",
+    "existing_files": "read-only; no traceability, manifest, ledger, plan, registry, appender, CONF, runtime or package-initializer edits"
+  },
+  "candidate_fixture_assumptions": {
+    "dispatch_type": "review",
+    "role_mapping": {
+      "author": "writer",
+      "reviewer": "auditor"
+    },
+    "operation_group_ids": [
+      "audit_author_turn_0",
+      "audit_reviewer_turn_0",
+      "audit_author_turn_1"
+    ],
+    "invoked_by": "synthetic@example.invalid",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f",
+    "authority": "none"
+  },
+  "required_test_ids": [
+    "OPEN-L0-T1",
+    "OPEN-L0-T2",
+    "OPEN-L0-T3",
+    "OPEN-L0-T4",
+    "OPEN-L0-T5",
+    "OPEN-L0-T6",
+    "OPEN-L0-T7",
+    "OPEN-L0-T8",
+    "OPEN-L0-T9"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.experiments.test_aci_open_l0_projection -v",
+    "python -B -m compileall implementations/experiments/aci_open_l0 implementations/tests/experiments/test_aci_open_l0_projection.py",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "git diff --check"
+  ],
+  "capability_profile": {
+    "filesystem": "task-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  },
+  "forbidden_changes": [
+    "canonical-schema-or-confirmed-authority-shape",
+    "confirmation-fixture-kernel-spec-or-digest",
+    "registry-appender-skill-or-telemetry-ledger",
+    "journal-service-api-effect-open-run-group-provider-worker-or-adapter",
+    "traceability-stage-e-central-plan-or-feature-ledger",
+    "abc-selection-product-default-or-authority-claim",
+    "network-commit-push-or-deploy"
+  ],
+  "stop_conditions": [
+    "immutable-source-or-expected-absence-drift",
+    "independent-work-pack-review-or-code-readiness-is-not-pass",
+    "exact-row-or-discrepancy-proof-requires-production-import-or-appender-call",
+    "projection-cannot-remain-explicitly-non-authoritative",
+    "write-outside-exact-scope-or-runtime-regression"
+  ],
+  "promotion_boundary": "return only to the unresolved A/B/C authority gate; L0 cannot authorize L1, audit append, OPEN or execution",
+  "implementation_status": "not-started-code-entry-ready-within-experiment-ceiling"
+}

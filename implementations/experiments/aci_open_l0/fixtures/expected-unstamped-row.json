@@ -1,0 +1,81 @@
+{
+  "dispatch_id": "synthetic-open-l0-projection-001",
+  "schema_version": "0.6.4",
+  "invoked_by": "synthetic@example.invalid",
+  "dispatch_type": "review",
+  "goal": "synthetic goal: measure audit-opening representational loss",
+  "context": "synthetic context: no production authority or execution",
+  "max_loops": 1,
+  "final_approver": "synthetic-approver",
+  "anti_bias_mode": "disabled",
+  "output_mode": "inline",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "review",
+    "ledger_dispatch_type": "review",
+    "capability_ref": "review",
+    "capability_path": ".claude/skills/review/SKILL.md",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f"
+  },
+  "groups": [
+    {
+      "group_id": "audit_author_turn_0",
+      "agents": [
+        {
+          "role": "writer",
+          "model": "synthetic-model-author",
+          "token_budget": 101,
+          "initial_prompt": "synthetic prompt: first author turn"
+        }
+      ],
+      "n": 1,
+      "robot_talks": false,
+      "layers": 1
+    },
+    {
+      "group_id": "audit_reviewer_turn_0",
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "synthetic-model-reviewer",
+          "token_budget": 102,
+          "initial_prompt": "synthetic prompt: reviewer turn"
+        }
+      ],
+      "n": 1,
+      "robot_talks": false,
+      "layers": 1
+    },
+    {
+      "group_id": "audit_author_turn_1",
+      "agents": [
+        {
+          "role": "writer",
+          "model": "synthetic-model-author",
+          "token_budget": 103,
+          "initial_prompt": "synthetic prompt: continued author turn"
+        }
+      ],
+      "n": 1,
+      "robot_talks": false,
+      "layers": 1
+    }
+  ],
+  "connections": [
+    {
+      "from": "audit_author_turn_0",
+      "to": "audit_reviewer_turn_0",
+      "type": "sequential"
+    },
+    {
+      "from": "audit_reviewer_turn_0",
+      "to": "audit_author_turn_1",
+      "type": "sequential"
+    }
+  ]
+}
