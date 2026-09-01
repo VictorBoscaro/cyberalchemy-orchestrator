@@ -5,7 +5,7 @@ with precision + carries its collapse-test. None is discharged. Not reviewed.*
 
 ---
 
-## OBL-E3 — Is the orchestration language a category? *(the test that decides everything)*
+## OBL-E3 — Is the orchestration language a category?
 
 **Claim to discharge.** There exists a category `ORCH` where:
 - **objects** = dispatch groups;
