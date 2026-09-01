@@ -1,0 +1,42 @@
+{
+  "schema": "aci.agent-continuation-lean-bridge@1",
+  "source": {
+    "repository": "domainspec-lean-formalization",
+    "base_revision": "bb0b801ed90a82ca423cdbd32b587871246526c7",
+    "source_state": "uncommitted",
+    "lean_toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "lifecycle_source": {
+      "path": "lean-engineer/cyberalchemy-orchestrator/continuation/AgentContinuationLifecycle.lean",
+      "sha256": "sha256:01012f314e5cd237c715aba76e5734f022dea5065ef7744e8caff1fb1a883620"
+    },
+    "emitter_source": {
+      "path": "lean-engineer/cyberalchemy-orchestrator/continuation/AgentContinuationManifest.lean",
+      "sha256": "sha256:c2dfe2e254e81309917d22e50326114ed61e5d9be7291032a1acabe3c114da86"
+    }
+  },
+  "manifest": {
+    "row_count": 19,
+    "sha256": "sha256:e2f48cbbf5b4af34d6664b8419dabc03372e2bde823ae9e076f77a89e9b88138",
+    "transitions": [
+      {"source": null, "event": "continuation.suspended", "target": "suspended"},
+      {"source": "suspended", "event": "continuation.resume_requested", "target": "resume_requested"},
+      {"source": "suspended", "event": "continuation.provider_lost", "target": "reconstruction_eligible"},
+      {"source": "suspended", "event": "continuation.cancel_requested", "target": "cancel_requested"},
+      {"source": "suspended", "event": "continuation.expired", "target": "expired"},
+      {"source": "resume_requested", "event": "continuation.resuming", "target": "resuming"},
+      {"source": "resume_requested", "event": "continuation.cancel_requested", "target": "cancel_requested"},
+      {"source": "resume_requested", "event": "continuation.expired", "target": "expired"},
+      {"source": "resuming", "event": "continuation.resumed", "target": "resumed"},
+      {"source": "resuming", "event": "continuation.resume_unknown", "target": "resume_unknown"},
+      {"source": "resuming", "event": "continuation.provider_lost", "target": "reconstruction_eligible"},
+      {"source": "resuming", "event": "continuation.cancel_requested", "target": "cancel_requested"},
+      {"source": "resume_unknown", "event": "continuation.resumed", "target": "resumed"},
+      {"source": "resume_unknown", "event": "continuation.provider_lost", "target": "reconstruction_eligible"},
+      {"source": "resume_unknown", "event": "continuation.cancel_requested", "target": "cancel_requested"},
+      {"source": "reconstruction_eligible", "event": "continuation.reconstruction_requested", "target": "resume_requested"},
+      {"source": "reconstruction_eligible", "event": "continuation.cancel_requested", "target": "cancel_requested"},
+      {"source": "reconstruction_eligible", "event": "continuation.expired", "target": "expired"},
+      {"source": "cancel_requested", "event": "continuation.cancelled", "target": "cancelled"}
+    ]
+  }
+}

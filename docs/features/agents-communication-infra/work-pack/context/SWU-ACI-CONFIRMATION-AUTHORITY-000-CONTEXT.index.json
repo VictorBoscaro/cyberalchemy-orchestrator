@@ -1,0 +1,27 @@
+{
+  "schema": "domainspec-context-index@1",
+  "task_id": "SWU-ACI-CONFIRMATION-AUTHORITY-000",
+  "mode": "lean",
+  "strict": true,
+  "files_selected": 2,
+  "obligations_total": 1,
+  "obligations_covered": 1,
+  "strict_coverage": "pass",
+  "execution_gate": "CLOSED",
+  "markdown_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-CONFIRMATION-AUTHORITY-000-CONTEXT.md",
+  "scaffold_ref": "docs/features/agents-communication-infra/work-pack/context/SWU-ACI-CONFIRMATION-AUTHORITY-000-SCAFFOLD.md",
+  "source_pins": [
+    {
+      "path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1/manifest.json",
+      "sha256": "sha256:919385d226240fa66621d7b660ef49b70ad7e3d3a379bee3d7c29729243acd0a",
+      "obligations": ["historical-closure"]
+    },
+    {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/evidence/CONF-000.md",
+      "sha256": "sha256:e412d43a671cb4c2c362ff62011a637474aeb237873c5c64a334b0120c07893a",
+      "obligations": ["historical-closure"]
+    }
+  ],
+  "blockers": [],
+  "successor_swu": "SWU-ACI-CONFIRMED-DISPATCH-001"
+}

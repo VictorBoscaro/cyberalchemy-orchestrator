@@ -1,0 +1,35 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-EXECUTION-POLICY-ORACLE-000",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-EXECUTION-POLICY-ORACLE-000.json",
+  "work_pack_digest": "sha256:a0d146a661358a82c2e49d98939e83f8061f992e0e70b63fa4a69bbb17708735",
+  "test_spec_ref": "docs/features/agents-communication-infra/specs/TEST-SPEC.md",
+  "test_spec_digest": "sha256:6bb27f65fe11c02c0b9f6ade6ad11b14b046a1c689b248e68c3902dcabdeeb51",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/server/runtime/execution_policy.py",
+    "implementations/tests/runtime/execution_policy_oracle_v1.json",
+    "implementations/tests/runtime/test_execution_policy.py"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_execution_policy -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check"
+  ],
+  "capability_profile": {
+    "filesystem": {
+      "mode": "write-exact-scope-only",
+      "paths": [
+        "implementations/server/runtime/execution_policy.py",
+        "implementations/tests/runtime/execution_policy_oracle_v1.json",
+        "implementations/tests/runtime/test_execution_policy.py"
+      ]
+    },
+    "network": false,
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

@@ -3,9 +3,9 @@
 | Gap | Blocks | State | Repair path |
 |---|---|---|---|
 | G-001: persistence/offset/transaction contract absent | named mutation SWU | repaired for Stage-A mutation entry | ADR-001 and the ADR-002/fixtures/profiles/storage/descriptor corpus passed digest-bound review. |
-| G-002: compatibility/terminal/snapshot W0 acceptance | named mutation SWU | closed | B-001/B-002 closed by the Stage-A receipt without enabling serving/cutover. |
-| G-003: target-host sole-writer proof | TASK-020/cutover | deferred blocker | W0 freezes schema/guard/tests; TASK-020 supplies process, ACL, inventory and negative bypass evidence. |
-| G-004: local pilot enablement | post implementation | blocker | Separate reviewer/root PASS after mutation tests; never inferred from test authorization. |
+| G-APT-002: compatibility/terminal/snapshot W0 acceptance | named mutation SWU | closed | B-001/B-002 closed by the Stage-A receipt without enabling serving/cutover. |
+| G-APT-003: target-host sole-writer proof | TASK-020/cutover | deferred blocker | W0 freezes schema/guard/tests; TASK-020 supplies process, ACL, inventory and negative bypass evidence. |
+| G-APT-004: local pilot enablement | post implementation | blocker | Separate reviewer/root PASS after mutation tests; never inferred from test authorization. |
 | G-002: initial decision and dissent semantics absent | fixed group protocol in W1 | blocker for 0E, not 0B-0D | TASK-000 protocol ADR |
 | G-003: terminal mapping across attempt/group/run absent | W1 | blocker | TASK-000 terminal ADR |
 | G-004: external-input snapshot boundary absent | 0E and real adapters | blocker for 0E | TASK-000 snapshot ADR |
@@ -32,5 +32,7 @@
 | G-CVR-009: concrete GUARD descriptor absent | five-entry packet assembly | repaired as non-authorizing proposal | `work-pack/descriptors/SWU-ACI-CVR-GUARD-001.json` now closes the descriptor-absence gap; guard code, owner acceptance and authorization remain absent. |
 | G-CVR-010: external authority trust contract absent | every executable CVR authorization | blocker | Supply a versioned trust policy/provider, authenticated stable principals/credentials and one-shot `AuthorityLaunchContext`; workspace refs and hashes alone do not authenticate. |
 | G-CVR-011: repository/time/nonce/CAS evidence absent | GUARD bootstrap | blocker | Freeze reproducible repository binding, trusted UTC and nonce sources, prove target-filesystem create-exclusive semantics, and bind authenticated executor/finalizer identities. |
+| G-ACI-PRODUCT-001: exact CONF v2 product authority absent | CONT-002, OPEN, positive Run transition, RESUME, WORKER, VERIFY and POLICY-003/L3 real attempted action | active blocker | Supply exact instruction/prompt bytes, references and digests; role/task/provider references; resource/sandbox/fence policies; complete canonical audit-opening 0.6.4 mapping; then derive a new dispatch identity and obtain a new explicit user confirmation through chat or a future UI using the same boundary. |
+| G-POL-002: bounded code-entry and independent review for POLICY-002 | POLICY-002/L2 closure only | closed | Exact task/descriptor/context/scaffold/readiness plus DomainSpec, persistence and layering reviews admitted mutation; the final implementation review records PASS/KEEP, 12/12 focused, 59/59 combined policy and 260/260 curated runtime tests across 27 modules excluding Lean. |
 
 No gap may be closed by implementation alone when its repair path requires an authority decision.

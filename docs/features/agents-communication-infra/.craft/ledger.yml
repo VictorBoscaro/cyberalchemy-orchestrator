@@ -1,0 +1,754 @@
+ledger_id: craft.agents_communication_infra
+schema_ref: ../../../../.agents/skills/craft/templates/ledger.schema.yml
+schema_version: 0.3.0
+status: candidate-local
+source_of_truth: .craft/ledger.yml
+human_view: CRAFT.md
+notes:
+  - Scoped Craft ledger for docs/features/agents-communication-infra; it does not replace the repository root ledger.
+  - Initialized from feature contracts, bounded implementation evidence and the resumable-feedback preflight on 2026-08-31.
+  - Schema Service is outside this scope by explicit owner direction.
+
+indexes:
+  by_id:
+    CTX-ACI-ROOT: contexts[0]
+    CTX-ACI-RUNTIME-BASELINE: contexts[1]
+    CTX-ACI-PROTOCOL-COMPILATION: contexts[2]
+    CTX-ACI-RESUMABLE-FEEDBACK: contexts[3]
+    CTX-ACI-EXECUTION-POLICY: contexts[4]
+    DESC-ACI-ROOT-001: descriptions[0]
+    DESC-ACI-RUNTIME-001: descriptions[1]
+    DESC-ACI-PROTOCOL-001: descriptions[2]
+    DESC-ACI-CONTINUATION-001: descriptions[3]
+    DESC-ACI-ROOT-002: descriptions[4]
+    DESC-ACI-CONTINUATION-002: descriptions[5]
+    DESC-ACI-ROOT-003: descriptions[6]
+    DESC-ACI-CONTINUATION-003: descriptions[7]
+    DESC-ACI-RUNTIME-002: descriptions[8]
+    DESC-ACI-ROOT-004: descriptions[9]
+    DESC-ACI-CONTINUATION-004: descriptions[10]
+    DESC-ACI-RUNTIME-003: descriptions[11]
+    DESC-ACI-ROOT-005: descriptions[12]
+    DESC-ACI-CONTINUATION-005: descriptions[13]
+    DESC-ACI-POLICY-001: descriptions[14]
+    DEF-ACI-DETERMINISTIC-DISPATCH-001: definitions[0]
+    DEF-ACI-OFFICIAL-CONTRIBUTION-001: definitions[1]
+    DEF-ACI-PARKED-CONTINUATION-001: definitions[2]
+    DEF-ACI-CONFIRMED-AUTHORITY-001: definitions[3]
+    DEF-ACI-CONFIRMATION-OBSERVATION-001: definitions[4]
+    BLK-ACI-CONFIRMATION-AUTHORITY-001: typed_items[0]
+    ENA-ACI-CONTINUATION-CONTRACT-001: typed_items[1]
+    ENA-ACI-SQLITE-RUNTIME-001: typed_items[2]
+    ENA-ACI-HOST-PROBE-001: typed_items[3]
+    BLK-ACI-PRODUCT-AUTHORITY-001: typed_items[4]
+    DEC-ACI-SCOPE-001: decisions[0]
+    DEC-ACI-CONTINUATION-001: decisions[1]
+    DEC-ACI-FAKE-FIRST-001: decisions[2]
+    DEC-ACI-CONFIRMATION-AUTHORITY-001: decisions[3]
+    DEC-ACI-CONFIRMATION-SURFACE-001: decisions[4]
+    DEC-ACI-CONFIRMATION-SEQUENCE-001: decisions[5]
+    DEC-ACI-WRITER-BOUNDARY-001: decisions[6]
+    DEC-ACI-LEGACY-FK-STAGING-001: decisions[7]
+    DEC-ACI-PRODUCT-PASS-001: decisions[8]
+    DEC-ACI-POLICY-LAYERING-001: decisions[9]
+    GAP-ACI-CONFIRMATION-WRITER-001: gaps[0]
+    GAP-ACI-RUNTIME-BASELINE-001: gaps[1]
+    GAP-ACI-LIVE-PROVIDER-001: gaps[2]
+    GAP-ACI-GENERALIZATION-001: gaps[3]
+    GAP-ACI-CONFIRMATION-CONTRACT-001: gaps[4]
+    GAP-ACI-LEGACY-DISPATCH-FK-001: gaps[5]
+    GAP-ACI-PRODUCT-AUTHORITY-001: gaps[6]
+    GAP-ACI-POLICY-002-CODE-ENTRY-001: gaps[7]
+    ART-ACI-LEDGER: artifacts[0]
+    ART-ACI-VIEW: artifacts[1]
+    ART-ACI-STATUS-SNAPSHOT: artifacts[2]
+    ART-ACI-README: artifacts[3]
+    ART-ACI-SPEC: artifacts[4]
+    ART-ACI-TEST-SPEC: artifacts[5]
+    ART-ACI-WORK-PACK: artifacts[6]
+    ART-ACI-PROTOCOL-DESCRIPTOR: artifacts[7]
+    ART-ACI-PROTOCOL-DECISION: artifacts[8]
+    ART-ACI-CONTINUATION-DECISION: artifacts[9]
+    ART-ACI-CONTINUATION-PLAN: artifacts[10]
+    ART-ACI-CONTINUATION-READINESS: artifacts[11]
+    ART-ACI-CONTINUATION-GATE: artifacts[12]
+    ART-ACI-RUNTIME-BASELINE: artifacts[13]
+    ART-ACI-HOST-PROBE: artifacts[14]
+    ART-ACI-RUNTIME-DATABASE: artifacts[15]
+    ART-ACI-RUNTIME-JOURNAL: artifacts[16]
+    ART-ACI-RUNTIME-SERVICE: artifacts[17]
+    ART-ACI-SESSION-20260831: artifacts[18]
+    ART-ACI-ROBOT-TALKS-DIALOGUE-001: artifacts[19]
+    ART-ACI-ROBOT-TALKS-FINDINGS-001: artifacts[20]
+    ART-ACI-CONF-001-EVIDENCE: artifacts[21]
+    ART-ACI-CONT-001-EVIDENCE: artifacts[22]
+    ART-ACI-HEADS-001-EVIDENCE: artifacts[23]
+    ART-ACI-BUS-001-EVIDENCE: artifacts[24]
+    ART-ACI-C2-ROBOT-TALKS-FINDINGS: artifacts[25]
+    ART-ACI-CONF-000-EVIDENCE: artifacts[26]
+    ART-ACI-POLICY-000-DOMAINSPEC-REVIEW: artifacts[27]
+    ART-ACI-POLICY-000-IMPLEMENTATION-REVIEW: artifacts[28]
+    ART-ACI-POLICY-001-DOMAINSPEC-REVIEW: artifacts[29]
+    ART-ACI-POLICY-001-IMPLEMENTATION-REVIEW: artifacts[30]
+    ART-ACI-POLICY-002-DOMAINSPEC-REVIEW: artifacts[31]
+    ART-ACI-POLICY-002-PERSISTENCE-INVENTORY: artifacts[32]
+    ART-ACI-POLICY-002-ALIGNMENT-AUDIT: artifacts[33]
+    ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW: artifacts[34]
+    ART-ACI-ROADMAP-CLOSURE-REVIEW: artifacts[35]
+    REL-ACI-CONTAINS-RUNTIME: relations[0]
+    REL-ACI-CONTAINS-PROTOCOL: relations[1]
+    REL-ACI-CONTAINS-CONTINUATION: relations[2]
+    REL-ACI-CONFIRMATION-BLOCKS-CONTINUATION: relations[3]
+    REL-ACI-WRITER-GAP-INFORMS-DECISION: relations[4]
+    REL-ACI-CONTRACT-ENABLES-CONTINUATION: relations[5]
+    REL-ACI-SQLITE-ENABLES-RUNTIME: relations[6]
+    REL-ACI-PROBE-INFORMS-CONTINUATION: relations[7]
+    REL-ACI-SESSION-INFORMS-ROOT: relations[8]
+    REL-ACI-SURFACE-INFORMS-AUTHORITY: relations[9]
+    REL-ACI-ROBOT-TALKS-INFORMS-CONFIRMATION: relations[10]
+    REL-ACI-CONTRACT-GAP-BLOCKS-WRITER: relations[11]
+    REL-ACI-SEQUENCE-INFORMS-CONTINUATION: relations[12]
+    REL-ACI-LEGACY-FK-INFORMS-CONTINUATION: relations[13]
+    REL-ACI-PRODUCT-GAP-BLOCKS-CONTINUATION: relations[14]
+    REL-ACI-PRODUCT-DECISION-GOVERNS-GAP: relations[15]
+    REL-ACI-CONTAINS-POLICY: relations[16]
+    REL-ACI-POLICY-LAYERING-GOVERNS-CONTEXT: relations[17]
+    REL-ACI-POLICY-CODE-ENTRY-BLOCKS-L2: relations[18]
+    REL-ACI-POLICY-EVIDENCE-INFORMS-RUNTIME: relations[19]
+  open_decisions:
+    - DEC-ACI-PRODUCT-PASS-001
+  blocking_decisions:
+    - DEC-ACI-PRODUCT-PASS-001
+  active_blockers:
+    - BLK-ACI-PRODUCT-AUTHORITY-001
+  active_gaps:
+    - GAP-ACI-LEGACY-DISPATCH-FK-001
+    - GAP-ACI-PRODUCT-AUTHORITY-001
+    - GAP-ACI-LIVE-PROVIDER-001
+    - GAP-ACI-GENERALIZATION-001
+  next_moves:
+    - context_id: CTX-ACI-ROOT
+      next_move: Resolve DEC-ACI-PRODUCT-PASS-001 with exact CONF v2 product authority; the candidate transversal closure review remains only planned and must be opened and registered before execution.
+    - context_id: CTX-ACI-RUNTIME-BASELINE
+      next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains product-gated.
+    - context_id: CTX-ACI-PROTOCOL-COMPILATION
+      next_move: Keep the compiled candidate non-authoritative until a separately accepted confirmation path consumes an exact DispatchSpec.
+    - context_id: CTX-ACI-RESUMABLE-FEEDBACK
+      next_move: Hold CONT-002 at PRODUCT-PASS until exact authority bytes, references, policies and canonical audit-opening 0.6.4 mapping form a new CONF v2 dispatch for user confirmation.
+    - context_id: CTX-ACI-EXECUTION-POLICY
+      next_move: Preserve the reviewed non-executable L0-L2 policy ladder; do not promote POLICY-003/L3, host enforcement or real attempted action without the product authority gate.
+  artifacts_by_path:
+    .craft/ledger.yml: ART-ACI-LEDGER
+    CRAFT.md: ART-ACI-VIEW
+    .craft/artifacts/progress-snapshot-2026-08-31.md: ART-ACI-STATUS-SNAPSHOT
+    README.md: ART-ACI-README
+    specs/SPEC.md: ART-ACI-SPEC
+    TEST-SPEC.md: ART-ACI-TEST-SPEC
+    WORK-PACK.md: ART-ACI-WORK-PACK
+    work-pack/descriptors/SWU-ACI-PROTOCOL-COMPILATION-001.json: ART-ACI-PROTOCOL-DESCRIPTOR
+    "[repo-root] docs/decisions/aci-protocol-governance-ownership.md": ART-ACI-PROTOCOL-DECISION
+    "[repo-root] docs/decisions/aci-resumable-agent-continuation.md": ART-ACI-CONTINUATION-DECISION
+    development/invoke-runs/20260831-resumable-feedback/plan/WORK-PACK.md: ART-ACI-CONTINUATION-PLAN
+    development/invoke-runs/20260831-resumable-feedback/plan/READINESS.md: ART-ACI-CONTINUATION-READINESS
+    development/invoke-runs/20260831-resumable-feedback/plan/DECISION-GATE.md: ART-ACI-CONTINUATION-GATE
+    development/invoke-runs/20260831-resumable-feedback/plan/BASELINE.md: ART-ACI-RUNTIME-BASELINE
+    development/invoke-runs/20260831-resumable-feedback/probes/host-continuation-probe.json: ART-ACI-HOST-PROBE
+    "[repo-root] implementations/server/runtime/database.py": ART-ACI-RUNTIME-DATABASE
+    "[repo-root] implementations/server/runtime/journal.py": ART-ACI-RUNTIME-JOURNAL
+    "[repo-root] implementations/server/runtime/service.py": ART-ACI-RUNTIME-SERVICE
+    "[repo-root] sessions/2026-08-31-2006-aci-dispatch-continuation-gate.md": ART-ACI-SESSION-20260831
+    robot-talks/2026-08-31-confirmed-dispatch-next-increment/dialogue.md: ART-ACI-ROBOT-TALKS-DIALOGUE-001
+    robot-talks/2026-08-31-confirmed-dispatch-next-increment/findings.md: ART-ACI-ROBOT-TALKS-FINDINGS-001
+    development/invoke-runs/20260831-resumable-feedback/evidence/CONF-001.md: ART-ACI-CONF-001-EVIDENCE
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-CONT-001.md: ART-ACI-CONT-001-EVIDENCE
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-HEADS-001.md: ART-ACI-HEADS-001-EVIDENCE
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-BUS-001.md: ART-ACI-BUS-001-EVIDENCE
+    robot-talks/2026-09-01-continuation-c2-split/findings.md: ART-ACI-C2-ROBOT-TALKS-FINDINGS
+    development/invoke-runs/20260831-resumable-feedback/evidence/CONF-000.md: ART-ACI-CONF-000-EVIDENCE
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-000-DOMAINSPEC-REVIEW.md: ART-ACI-POLICY-000-DOMAINSPEC-REVIEW
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-000-IMPLEMENTATION-REVIEW.md: ART-ACI-POLICY-000-IMPLEMENTATION-REVIEW
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-DOMAINSPEC-REVIEW.md: ART-ACI-POLICY-001-DOMAINSPEC-REVIEW
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-IMPLEMENTATION-REVIEW.md: ART-ACI-POLICY-001-IMPLEMENTATION-REVIEW
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-DOMAINSPEC-REVIEW.md: ART-ACI-POLICY-002-DOMAINSPEC-REVIEW
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-PERSISTENCE-PATTERN-INVENTORY.md: ART-ACI-POLICY-002-PERSISTENCE-INVENTORY
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-ALIGNMENT-LAYERING-AUDIT.md: ART-ACI-POLICY-002-ALIGNMENT-AUDIT
+    development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+    reviews/2026-09-01-aci-roadmap-closure-review/review.md: ART-ACI-ROADMAP-CLOSURE-REVIEW
+
+contexts:
+  - context_id: CTX-ACI-ROOT
+    parent_id: root
+    title: Agents Communication Infrastructure
+    purpose: Govern deterministic dispatch, mediated agent outputs, durable runtime state and evidence-backed handoffs without making the chat orchestrator an execution supervisor.
+    stage: validate
+    gate: block
+    next_move: Resolve DEC-ACI-PRODUCT-PASS-001 with exact CONF v2 product authority; the candidate transversal closure review remains only planned and must be opened and registered before execution.
+    owned_artifacts:
+      - ART-ACI-LEDGER
+      - ART-ACI-VIEW
+      - ART-ACI-STATUS-SNAPSHOT
+      - ART-ACI-README
+      - ART-ACI-SPEC
+      - ART-ACI-TEST-SPEC
+      - ART-ACI-WORK-PACK
+      - ART-ACI-ROADMAP-CLOSURE-REVIEW
+    links:
+      - {label: Selected authority decision, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
+      - {label: Confirmation surface decision, target: DEC-ACI-CONFIRMATION-SURFACE-001, kind: row-id}
+      - {label: Approved confirmation sequence, target: DEC-ACI-CONFIRMATION-SEQUENCE-001, kind: row-id}
+      - {label: Robot-Talks findings, target: ART-ACI-ROBOT-TALKS-FINDINGS-001, kind: artifact-id}
+      - {label: Current progress snapshot, target: ART-ACI-STATUS-SNAPSHOT, kind: artifact-id}
+      - {label: Planned transversal closure review, target: ART-ACI-ROADMAP-CLOSURE-REVIEW, kind: artifact-id}
+  - context_id: CTX-ACI-RUNTIME-BASELINE
+    parent_id: CTX-ACI-ROOT
+    title: Existing bounded runtime baseline
+    purpose: Preserve evidence for the implemented SQLite journal, command receipts, artifacts, host binding and bounded bus-delivery seams without claiming a complete autonomous runtime.
+    stage: validate
+    gate: pass
+    next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains product-gated.
+    owned_artifacts:
+      - ART-ACI-RUNTIME-DATABASE
+      - ART-ACI-RUNTIME-JOURNAL
+      - ART-ACI-RUNTIME-SERVICE
+      - ART-ACI-RUNTIME-BASELINE
+  - context_id: CTX-ACI-PROTOCOL-COMPILATION
+    parent_id: CTX-ACI-ROOT
+    title: Bounded protocol compilation
+    purpose: Compile one frozen skill/profile/binding/recipe invocation into a deterministic non-authoritative dispatch candidate.
+    stage: validate
+    gate: pass
+    next_move: Keep the compiled candidate non-authoritative until a separately accepted confirmation path consumes an exact DispatchSpec.
+    owned_artifacts:
+      - ART-ACI-PROTOCOL-DESCRIPTOR
+      - ART-ACI-PROTOCOL-DECISION
+    notes: Pass applies only to the exact bounded SWU and grants no confirmation or execution authority.
+  - context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    parent_id: CTX-ACI-ROOT
+    title: Bounded resumable feedback
+    purpose: Implement the finite author turn 0 to reviewer turn 0 to author turn 1 graph with journal-derived inputs and no chat-orchestrator supervision after confirmation.
+    stage: blocked
+    gate: block
+    next_move: Hold CONT-002 at PRODUCT-PASS until exact authority bytes, references, policies and canonical audit-opening 0.6.4 mapping form a new CONF v2 dispatch for user confirmation.
+    owned_artifacts:
+      - ART-ACI-CONTINUATION-DECISION
+      - ART-ACI-CONTINUATION-PLAN
+      - ART-ACI-CONTINUATION-READINESS
+      - ART-ACI-CONTINUATION-GATE
+      - ART-ACI-HOST-PROBE
+      - ART-ACI-ROBOT-TALKS-DIALOGUE-001
+      - ART-ACI-ROBOT-TALKS-FINDINGS-001
+      - ART-ACI-CONF-000-EVIDENCE
+      - ART-ACI-CONF-001-EVIDENCE
+      - ART-ACI-CONT-001-EVIDENCE
+      - ART-ACI-HEADS-001-EVIDENCE
+      - ART-ACI-BUS-001-EVIDENCE
+      - ART-ACI-C2-ROBOT-TALKS-FINDINGS
+    links:
+      - {label: Resolved authority decision, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
+      - {label: Active product authority gap, target: GAP-ACI-PRODUCT-AUTHORITY-001, kind: row-id}
+      - {label: Hard product decision, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+      - {label: Approved Robot-Talks findings, target: ART-ACI-ROBOT-TALKS-FINDINGS-001, kind: artifact-id}
+  - context_id: CTX-ACI-EXECUTION-POLICY
+    parent_id: CTX-ACI-ROOT
+    title: Bounded execution-policy evidence
+    purpose: Prove a staged non-executable policy ladder from pure denial through synthetic durable fake denial without granting production execution authority or attempting runtime or external action.
+    stage: validate
+    gate: pass
+    next_move: Preserve the reviewed non-executable L0-L2 policy ladder; do not promote POLICY-003/L3, host enforcement or real attempted action without the product authority gate.
+    owned_artifacts:
+      - ART-ACI-POLICY-000-DOMAINSPEC-REVIEW
+      - ART-ACI-POLICY-000-IMPLEMENTATION-REVIEW
+      - ART-ACI-POLICY-001-DOMAINSPEC-REVIEW
+      - ART-ACI-POLICY-001-IMPLEMENTATION-REVIEW
+      - ART-ACI-POLICY-002-DOMAINSPEC-REVIEW
+      - ART-ACI-POLICY-002-PERSISTENCE-INVENTORY
+      - ART-ACI-POLICY-002-ALIGNMENT-AUDIT
+      - ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+    links:
+      - {label: Layering decision, target: DEC-ACI-POLICY-LAYERING-001, kind: row-id}
+      - {label: Final L2 implementation review, target: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, kind: artifact-id}
+      - {label: Product gate for any real execution, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+
+artifacts:
+  - {artifact_id: ART-ACI-LEDGER, owner_context_id: CTX-ACI-ROOT, path: .craft/ledger.yml, artifact_type: ledger-source, status: active}
+  - {artifact_id: ART-ACI-VIEW, owner_context_id: CTX-ACI-ROOT, path: CRAFT.md, artifact_type: human-view, status: active}
+  - {artifact_id: ART-ACI-STATUS-SNAPSHOT, owner_context_id: CTX-ACI-ROOT, path: .craft/artifacts/progress-snapshot-2026-08-31.md, artifact_type: status-evidence, status: stale, notes: Predates the durable-authority selection and approved Robot-Talks CONF-000/CONF-001 sequence; retained as historical evidence.}
+  - {artifact_id: ART-ACI-README, owner_context_id: CTX-ACI-ROOT, path: README.md, artifact_type: architecture-proposal, status: active}
+  - {artifact_id: ART-ACI-SPEC, owner_context_id: CTX-ACI-ROOT, path: specs/SPEC.md, artifact_type: feature-spec, status: active}
+  - {artifact_id: ART-ACI-TEST-SPEC, owner_context_id: CTX-ACI-ROOT, path: TEST-SPEC.md, artifact_type: test-contract, status: active}
+  - {artifact_id: ART-ACI-WORK-PACK, owner_context_id: CTX-ACI-ROOT, path: WORK-PACK.md, artifact_type: bounded-work-pack, status: flag, notes: Contains implemented bounded SWUs and broader blocked runtime slices.}
+  - {artifact_id: ART-ACI-PROTOCOL-DESCRIPTOR, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: work-pack/descriptors/SWU-ACI-PROTOCOL-COMPILATION-001.json, artifact_type: swu-descriptor, status: pass, notes: Declares implemented-verified-bounded for the exact non-authoritative compiler slice.}
+  - {artifact_id: ART-ACI-PROTOCOL-DECISION, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: "[repo-root] docs/decisions/aci-protocol-governance-ownership.md", artifact_type: decision-record, status: pass}
+  - {artifact_id: ART-ACI-CONTINUATION-DECISION, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: "[repo-root] docs/decisions/aci-resumable-agent-continuation.md", artifact_type: decision-record, status: pass}
+  - {artifact_id: ART-ACI-CONTINUATION-PLAN, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/WORK-PACK.md, artifact_type: implementation-plan, status: block, notes: Current through BUS-001 PASS/KEEP; PRODUCT-PASS blocks all later continuation units.}
+  - {artifact_id: ART-ACI-CONTINUATION-READINESS, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/READINESS.md, artifact_type: readiness-gate, status: block, notes: HEADS and BUS are closed; no code-entry authority exists after the hard product gate.}
+  - {artifact_id: ART-ACI-CONTINUATION-GATE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/DECISION-GATE.md, artifact_type: decision-gate, status: block, notes: PRODUCT-PASS requires product-owned CONF v2 authority inputs and a new explicit user confirmation.}
+  - {artifact_id: ART-ACI-RUNTIME-BASELINE, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: development/invoke-runs/20260831-resumable-feedback/plan/BASELINE.md, artifact_type: test-baseline, status: pass, notes: Historical BUS closure baseline is 200/200 runtime tests and 36/36 canonical Control Center tests; later POLICY receipts report larger curated regressions and do not rewrite this baseline artifact.}
+  - {artifact_id: ART-ACI-HOST-PROBE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/probes/host-continuation-probe.json, artifact_type: host-probe, status: pass, notes: Proves same-agent-reference follow-up and active interruption only; restart durability is unproven.}
+  - {artifact_id: ART-ACI-RUNTIME-DATABASE, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: "[repo-root] implementations/server/runtime/database.py", artifact_type: runtime-source, status: active}
+  - {artifact_id: ART-ACI-RUNTIME-JOURNAL, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: "[repo-root] implementations/server/runtime/journal.py", artifact_type: runtime-source, status: active}
+  - {artifact_id: ART-ACI-RUNTIME-SERVICE, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: "[repo-root] implementations/server/runtime/service.py", artifact_type: runtime-source, status: active}
+  - {artifact_id: ART-ACI-SESSION-20260831, owner_context_id: CTX-ACI-ROOT, path: "[repo-root] sessions/2026-08-31-2006-aci-dispatch-continuation-gate.md", artifact_type: session-record, status: pass, notes: Closes the specification, planning, preflight and ledger session while preserving the confirmation-authority blocker.}
+  - {artifact_id: ART-ACI-ROBOT-TALKS-DIALOGUE-001, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: robot-talks/2026-08-31-confirmed-dispatch-next-increment/dialogue.md, artifact_type: agent-dialogue, status: closed, notes: Preserves the approved three-investigator strategy, synthesis and human gate.}
+  - {artifact_id: ART-ACI-ROBOT-TALKS-FINDINGS-001, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: robot-talks/2026-08-31-confirmed-dispatch-next-increment/findings.md, artifact_type: investigation-findings, status: pass, notes: Seven tensions received human disposition; the result authorizes CONF-000 planning, not runtime mutation.}
+  - {artifact_id: ART-ACI-CONF-001-EVIDENCE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/evidence/CONF-001.md, artifact_type: implementation-evidence, status: pass}
+  - {artifact_id: ART-ACI-CONT-001-EVIDENCE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-CONT-001.md, artifact_type: implementation-evidence, status: pass}
+  - {artifact_id: ART-ACI-HEADS-001-EVIDENCE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-HEADS-001.md, artifact_type: implementation-evidence, status: pass, notes: Preserves the repair incident lineage and final PASS/KEEP.}
+  - {artifact_id: ART-ACI-BUS-001-EVIDENCE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-BUS-001.md, artifact_type: implementation-evidence, status: pass, notes: Final BUS component result is implemented-reviewed-pass/PASS-KEEP.}
+  - {artifact_id: ART-ACI-C2-ROBOT-TALKS-FINDINGS, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: robot-talks/2026-09-01-continuation-c2-split/findings.md, artifact_type: investigation-findings, status: pass, notes: Separates autonomous technical foundations from product-owned CONF v2 authority.}
+  - {artifact_id: ART-ACI-CONF-000-EVIDENCE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/evidence/CONF-000.md, artifact_type: contract-evidence, status: pass, notes: Independently reviewed confirmation contract and golden-vector closure; sha256 e412d43a671cb4c2c362ff62011a637474aeb237873c5c64a334b0120c07893a.}
+  - {artifact_id: ART-ACI-POLICY-000-DOMAINSPEC-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-000-DOMAINSPEC-REVIEW.md, artifact_type: specification-review, status: pass, notes: Pure L0 policy-oracle contract review; sha256 71a4ac667b4aa55fc5487d36f8dddaa603899feebefb80c9c7dff356a931896c.}
+  - {artifact_id: ART-ACI-POLICY-000-IMPLEMENTATION-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-000-IMPLEMENTATION-REVIEW.md, artifact_type: implementation-evidence, status: pass, notes: Independently reviewed pure non-executable L0 policy oracle; sha256 76ed9cd9efd6794e7b1d4c40421635db16edc8a580e789f837b415d892b13c8c.}
+  - {artifact_id: ART-ACI-POLICY-001-DOMAINSPEC-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-DOMAINSPEC-REVIEW.md, artifact_type: specification-review, status: pass, notes: Synthetic file-backed L1 persistence contract review; sha256 4d05db37d0c1351ac2859b92dde001bc5932575c3b0d9549776b842109cf27ca.}
+  - {artifact_id: ART-ACI-POLICY-001-IMPLEMENTATION-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-IMPLEMENTATION-REVIEW.md, artifact_type: implementation-evidence, status: pass, notes: Independently reviewed test-only L1 persistence and reopen prerequisite; sha256 cbb9c03460ae755f39d194b58d0db2f8ca531bc8572f27ec4bf2949deeef885b.}
+  - {artifact_id: ART-ACI-POLICY-002-DOMAINSPEC-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-DOMAINSPEC-REVIEW.md, artifact_type: specification-review, status: pass, notes: Integrated exact L2 denial-vector review; sha256 1a758c0d0223f6a26b2408a32c2f7ba087a456a26b80c6e0fd38b7f053497ff9.}
+  - {artifact_id: ART-ACI-POLICY-002-PERSISTENCE-INVENTORY, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-PERSISTENCE-PATTERN-INVENTORY.md, artifact_type: implementation-inventory, status: pass, notes: File-backed SQLite and transaction pattern inventory; sha256 2319202dc75eb09306523e54623a2c20f60b4be35fd1e62c4538743116d3d869.}
+  - {artifact_id: ART-ACI-POLICY-002-ALIGNMENT-AUDIT, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-ALIGNMENT-LAYERING-AUDIT.md, artifact_type: alignment-audit, status: pass, notes: PASS for the bounded three-path work-pack layering; sha256 34ece0e88c7a67a4065285d476d8143a617a111a579daa0ba6713d5bf811e8a3.}
+  - {artifact_id: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md, artifact_type: implementation-evidence, status: pass, notes: Final implemented-reviewed-bounded PASS/KEEP for test-only L2 fake denial; focused 12/12, combined POL 59/59 and curated runtime 260/260 across 27 modules excluding Lean; sha256 0a44fa7e8058a57064acb30086f138c0c1da1340c7a081ab5e819b638d2b30a0.}
+  - {artifact_id: ART-ACI-ROADMAP-CLOSURE-REVIEW, owner_context_id: CTX-ACI-ROOT, path: reviews/2026-09-01-aci-roadmap-closure-review/review.md, artifact_type: review-proposal, status: planned, notes: "Candidate id 2026-09-01-aci-roadmap-closure-review; persisted output and eight-agent topology were proposed only. No dispatch was opened or registered, no agent was invoked, and this absent output is neither evidence nor a completed review."}
+
+descriptions:
+  - description_id: DESC-ACI-ROOT-001
+    context_id: CTX-ACI-ROOT
+    description: The feature has a working bounded journal/runtime foundation and a verified non-authoritative compiler slice, but autonomous confirmed dispatch remains incomplete and continuation code is blocked on its missing authority source.
+    status: superseded
+    evidence: ART-ACI-STATUS-SNAPSHOT
+  - description_id: DESC-ACI-RUNTIME-001
+    context_id: CTX-ACI-RUNTIME-BASELINE
+    description: SQLite migrations 001 through 011, atomic command/event/head receipts and bounded host/bus seams exist; they do not include a runtime-managed ConfirmedDispatch or confirmed continuation turn graph.
+    status: superseded
+    evidence: ART-ACI-RUNTIME-DATABASE
+  - description_id: DESC-ACI-PROTOCOL-001
+    context_id: CTX-ACI-PROTOCOL-COMPILATION
+    description: The exact protocol-compilation SWU is implemented and verified within its authority ceiling; its DispatchCandidate cannot confirm or execute a dispatch.
+    status: active
+    evidence: ART-ACI-PROTOCOL-DESCRIPTOR
+  - description_id: DESC-ACI-CONTINUATION-001
+    context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    description: Decision, DomainSpec, tests, host probe and sequential work pack exist, but no continuation runtime code was added because preflight found the missing confirmation writer.
+    status: superseded
+    evidence: ART-ACI-CONTINUATION-READINESS
+  - description_id: DESC-ACI-ROOT-002
+    context_id: CTX-ACI-ROOT
+    description: The repository owner selected durable runtime confirmation with chat as the initial human-confirmation surface and a future UI as an interchangeable ingress; autonomous confirmed dispatch remains blocked on implementing and accepting the writer and confirmed turn graph.
+    status: superseded
+    evidence: ART-ACI-LEDGER
+  - description_id: DESC-ACI-CONTINUATION-002
+    context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    description: The authority-source decision is closed in favor of a durable JSON-to-ConfirmedDispatch path. TASK-CONT-001 remains blocked until the prerequisite persists the exact user-approved DispatchSpec digest, Run and expanded turn graph and passes independent review.
+    status: superseded
+    evidence: ART-ACI-LEDGER
+  - description_id: DESC-ACI-ROOT-003
+    context_id: CTX-ACI-ROOT
+    description: "Robot-Talks and the repository owner selected a two-step prerequisite: CONF-000 closes and independently reviews the confirmation-observation, digest, deterministic identity and bounded graph contract; only then may CONF-001 implement the durable writer ending at opening_pending."
+    status: superseded
+    evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+  - description_id: DESC-ACI-CONTINUATION-003
+    context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    description: Continuation remains blocked. CONF-000 is the current work; CONF-001 will own migration 012, generic effect-intent creation and the durable writer. TASK-CONT-001 moves to migration 013 after writer acceptance, while legacy dispatch foreign-key decoupling remains staged.
+    status: superseded
+    evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+  - description_id: DESC-ACI-RUNTIME-002
+    context_id: CTX-ACI-RUNTIME-BASELINE
+    description: Migrations 001 through 015 and the bounded confirmation, continuation, Run/Group-head and official-publication components pass 200 runtime tests and 36 canonical Control Center tests; production opening/resume/provider reachability remains outside the claim.
+    status: superseded
+    evidence: ART-ACI-BUS-001-EVIDENCE
+  - description_id: DESC-ACI-ROOT-004
+    context_id: CTX-ACI-ROOT
+    description: CONF-000, CONF-001, CONT-001, HEADS-001 and BUS-001 are implemented or specified and independently reviewed within their bounded ceilings; the feature is stopped at the hard PRODUCT-PASS gate for a new CONF v2 authority package.
+    status: superseded
+    evidence: ART-ACI-BUS-001-EVIDENCE
+  - description_id: DESC-ACI-CONTINUATION-004
+    context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    description: HEADS and BUS close the component foundation without production reachability. PRODUCT-PASS must provide exact product-owned bytes, references, policies and canonical audit-opening 0.6.4 mapping before a new dispatch identity and explicit user confirmation can authorize OPEN onward.
+    status: superseded
+    evidence: ART-ACI-C2-ROBOT-TALKS-FINDINGS
+  - description_id: DESC-ACI-RUNTIME-003
+    context_id: CTX-ACI-RUNTIME-BASELINE
+    description: BUS-001 preserves the historical 200/200 runtime and 36/36 Control Center baseline. The final POLICY-002 review separately reports a curated 260/260 runtime regression across 27 modules with Lean explicitly excluded; neither result proves production opening, execution or provider reachability.
+    status: active
+    evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+  - description_id: DESC-ACI-ROOT-005
+    context_id: CTX-ACI-ROOT
+    description: CONF-000, CONF-001, CONT-001, HEADS-001, BUS-001 and the POLICY-000 through POLICY-002 non-executable ladder are independently reviewed within bounded ceilings. PRODUCT-PASS remains the hard authority gate for CONT-002, OPEN, POLICY-003/L3 and every real attempted action.
+    status: active
+    evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+  - description_id: DESC-ACI-CONTINUATION-005
+    context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    description: The independently reviewed policy ladder adds pure and synthetic denial evidence only. It neither promotes CONT-002 nor supplies the exact CONF v2 product bytes, references, policies, mapping or new user confirmation required for OPEN onward.
+    status: active
+    evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+  - description_id: DESC-ACI-POLICY-001
+    context_id: CTX-ACI-EXECUTION-POLICY
+    description: POLICY-000/L0 is pure, POLICY-001/L1 persists and reopens synthetic test-only inputs, and POLICY-002/L2 adds one deterministic durable fake-denial receipt over one exact L1 lineage. All remain non-executable; L3 real values, host enforcement and provider admission are product-gated and unimplemented.
+    status: active
+    evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+
+definitions:
+  - definition_id: DEF-ACI-DETERMINISTIC-DISPATCH-001
+    scope_id: CTX-ACI-ROOT
+    term: deterministic dispatch
+    statement: A confirmed immutable dispatch graph whose identities, dependencies, policies and allowed effects are interpreted by runtime code rather than supervised turn by turn by the chat agent.
+    status: active-local
+    evidence: ART-ACI-SPEC
+  - definition_id: DEF-ACI-OFFICIAL-CONTRIBUTION-001
+    scope_id: CTX-ACI-ROOT
+    term: official bus contribution
+    statement: A receipt-verified journal fact and immutable artifact accepted for an exact group, seat, operation, round and message type; raw provider output or a candidate alone is insufficient.
+    status: active-local
+    evidence: ART-ACI-SPEC
+  - definition_id: DEF-ACI-PARKED-CONTINUATION-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    term: parked continuation
+    statement: Durable runtime state created after a physical attempt becomes terminal; it holds exact reconstruction and dependency evidence without keeping an agent invocation running or polling the bus.
+    status: active-local
+    evidence: ART-ACI-CONTINUATION-DECISION
+  - definition_id: DEF-ACI-CONFIRMED-AUTHORITY-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    term: confirmed dispatch authority
+    statement: The immutable accepted DispatchSpec and expanded turn graph from which the runtime derives continuation, mapping and source-message identities; caller input and the legacy dispatch link are not substitutes.
+    status: active-local
+    evidence: ART-ACI-CONTINUATION-GATE
+  - definition_id: DEF-ACI-CONFIRMATION-OBSERVATION-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    term: confirmation observation
+    statement: Immutable host-issued evidence that binds an authenticated human principal and interaction channel to the exact presented dispatch revision and digest; it becomes execution authority only after ConfirmRuntimeDispatch accepts it into a ConfirmedDispatch.
+    status: active-local
+    evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+
+typed_items:
+  - item_id: BLK-ACI-CONFIRMATION-AUTHORITY-001
+    kind: blocker
+    base_type: authority_blocker
+    context_type: aci.confirmed_dispatch_authority
+    primary_lane: governance
+    secondary_lanes: [architecture, tech]
+    source_id: DEC-ACI-CONFIRMATION-AUTHORITY-001
+    target_id: CTX-ACI-RESUMABLE-FEEDBACK
+    status: resolved
+    refinement_status: resolved
+    default_role: repository-owner
+    allowed_roles: [repository-owner]
+    delegation_route: decision-gate
+    requires_human: true
+    role_confidence: active-local
+    owner_ref: DEC-ACI-CONFIRMATION-AUTHORITY-001
+    role_notes: The repository owner selected the real durable authority path and accepted chat as the initial human-confirmation surface; a UI may invoke the same operation later.
+    closure_condition: The repository owner selects durable runtime confirmation or a test-only seeded fixture, with the limitation recorded explicitly.
+    evidence: ART-ACI-LEDGER
+    decision_ref: DEC-ACI-CONFIRMATION-AUTHORITY-001
+    reason: Historical closure selected durable runtime confirmation; CONF-001 later implemented the writer and closed GAP-ACI-CONFIRMATION-WRITER-001. Current continuation work is blocked only at PRODUCT-PASS.
+  - item_id: ENA-ACI-CONTINUATION-CONTRACT-001
+    kind: enabler
+    base_type: design_enabler
+    primary_lane: architecture
+    source_id: ART-ACI-CONTINUATION-DECISION
+    target_id: CTX-ACI-RESUMABLE-FEEDBACK
+    status: pass
+    evidence: ART-ACI-CONTINUATION-PLAN
+    reason: The accepted decision and reviewed DomainSpec fix the bounded lifecycle, mappings, failure semantics and test matrix.
+  - item_id: ENA-ACI-SQLITE-RUNTIME-001
+    kind: enabler
+    base_type: dependency_enabler
+    primary_lane: tech
+    source_id: ART-ACI-RUNTIME-JOURNAL
+    target_id: CTX-ACI-RUNTIME-BASELINE
+    status: pass
+    evidence: ART-ACI-RUNTIME-DATABASE
+    reason: The existing SQLite migration and journal transaction boundaries provide the persistence seam for later accepted runtime work.
+  - item_id: ENA-ACI-HOST-PROBE-001
+    kind: enabler
+    base_type: validation_enabler
+    primary_lane: validator
+    source_id: ART-ACI-HOST-PROBE
+    target_id: CTX-ACI-RESUMABLE-FEEDBACK
+    status: pass
+    evidence: ART-ACI-HOST-PROBE
+    reason: The host surface demonstrated same-agent-reference follow-up and active interruption under the bounded probe conditions.
+  - item_id: BLK-ACI-PRODUCT-AUTHORITY-001
+    kind: blocker
+    base_type: authority_blocker
+    context_type: aci.confirmed_dispatch_v2_product_authority
+    primary_lane: product
+    secondary_lanes: [governance, architecture]
+    source_id: DEC-ACI-PRODUCT-PASS-001
+    target_id: CTX-ACI-RESUMABLE-FEEDBACK
+    status: active
+    refinement_status: refined
+    default_role: repository-owner
+    allowed_roles: [repository-owner, product-owner]
+    delegation_route: decision-gate
+    requires_human: true
+    role_confidence: active-local
+    owner_ref: DEC-ACI-PRODUCT-PASS-001
+    role_notes: The missing values are product authority, not reversible technical defaults.
+    closure_condition: Product supplies the exact CONF v2 authority package and the user explicitly confirms the new dispatch identity.
+    evidence: ART-ACI-CONTINUATION-GATE
+    decision_ref: DEC-ACI-PRODUCT-PASS-001
+    reason: Missing product-owned bytes, references, policies and canonical opening mapping change confirmed_authority_digest and block every real opening or execution step.
+
+decisions:
+  - decision_id: DEC-ACI-SCOPE-001
+    scope_id: CTX-ACI-ROOT
+    decision_type: selection
+    question: Which project surface is in scope for the current work?
+    description: The owner excluded Schema Service and directed work toward deterministic dispatch infrastructure.
+    options: [dispatch-infrastructure-only, schema-service, combined-scope]
+    default_option: dispatch-infrastructure-only
+    selected: dispatch-infrastructure-only
+    rationale: The active objective is to remove the chat orchestrator from post-confirmation execution and make dispatch progression runtime-owned.
+    evidence: ART-ACI-CONTINUATION-GATE
+    status: closed
+    blocking: false
+    impact: Current plans and implementation scopes exclude Schema Service.
+    owner: repository-owner
+  - decision_id: DEC-ACI-CONTINUATION-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: How should an author wait for reviewer feedback and continue?
+    description: A terminal turn is parked as durable state; exact official bus outputs are later materialized for a new turn, preferring same-session resume without relying on implicit provider memory.
+    options: [park-and-resume-with-reconstruction, keep-running-agent-onhold, reconstruct-only]
+    default_option: park-and-resume-with-reconstruction
+    selected: park-and-resume-with-reconstruction
+    rationale: It removes polling and long-lived invocation correctness while preserving same-session continuity when the provider supports it.
+    evidence: ART-ACI-CONTINUATION-DECISION
+    status: closed
+    blocking: false
+    impact: The bounded graph is author turn 0 to reviewer turn 0 to author turn 1 with exact frozen mappings.
+    owner: repository-owner
+  - decision_id: DEC-ACI-FAKE-FIRST-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: Which adapter should validate continuation semantics first?
+    description: Core persistence, atomicity and degraded modes must be proven before relying on a live provider's undocumented retention behavior.
+    options: [fake-adapter-first, live-codex-first]
+    default_option: fake-adapter-first
+    selected: fake-adapter-first
+    rationale: It isolates runtime correctness from provider behavior and keeps live-provider claims behind a later conformance gate.
+    evidence: ART-ACI-CONTINUATION-PLAN
+    status: closed
+    blocking: false
+    impact: L0 and L1 remain local SQLite/fake-adapter slices; real Codex admission is deferred.
+    owner: repository-owner
+  - decision_id: DEC-ACI-CONFIRMATION-AUTHORITY-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: blocker
+    question: Should the next prerequisite implement durable runtime confirmation or use a test-only seeded authority fixture?
+    description: Current migrations and services have no ConfirmedDispatch writer or confirmed turn graph. Suspension cannot prove preallocated continuation/mapping identities until an authority source exists.
+    options: [durable-runtime-confirmation, test-only-seeded-authority]
+    default_option: durable-runtime-confirmation
+    selected: durable-runtime-confirmation
+    rationale: The repository owner confirmed that execution authority comes from explicit user approval. The runtime must durably bind that approval to the exact frozen DispatchSpec and digest and derive ConfirmedDispatch, Run and the expanded turn graph instead of relying on a test-only fixture.
+    evidence: ART-ACI-LEDGER
+    status: closed
+    blocking: false
+    impact: Historical result authorized the durable writer path. CONF-001 and CONT-001 later reached implemented-reviewed-pass; the current blocker is the separate PRODUCT-PASS authority package for OPEN onward.
+    owner: repository-owner
+    links:
+      - {label: Confirmation surface decision, target: DEC-ACI-CONFIRMATION-SURFACE-001, kind: row-id}
+      - {label: Remaining implementation gap, target: GAP-ACI-CONFIRMATION-WRITER-001, kind: row-id}
+  - decision_id: DEC-ACI-CONFIRMATION-SURFACE-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: Which user interaction surface may carry the human confirmation that authorizes a runtime-managed dispatch?
+    description: Human approval is the authority; chat and a future UI are ingress surfaces for the same confirmation operation rather than different authority models.
+    options: [chat-now-ui-later, ui-required-before-runtime, chat-only]
+    default_option: chat-now-ui-later
+    selected: chat-now-ui-later
+    rationale: The repository owner authorized confirmation through the current chat and deferred a dedicated UI. Regardless of surface, the runtime must bind the observed approval to the exact frozen DispatchSpec bytes and digest, record the host-supplied user principal and confirmation observation, and persist the same ConfirmedDispatch authority.
+    evidence: ART-ACI-LEDGER
+    status: closed
+    blocking: false
+    impact: No confirmation UI is required for the first runtime slice. A later UI must call the same confirmation boundary and cannot weaken identity, digest, provenance or atomic persistence requirements.
+    owner: repository-owner
+    links:
+      - {label: Governing authority decision, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
+  - decision_id: DEC-ACI-CONFIRMATION-SEQUENCE-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: What work sequence must precede continuation code after durable confirmation was selected?
+    description: The writer is not code-ready until confirmation observation, digest taxonomy, deterministic identity derivation, bounded graph expansion and golden vectors are frozen and independently reviewed.
+    options: [conf-000-before-conf-001, combine-contract-and-code, implement-writer-directly]
+    default_option: conf-000-before-conf-001
+    selected: conf-000-before-conf-001
+    rationale: Independent investigators found cross-document ambiguity that could yield incompatible authority writers. The repository owner approved a non-code CONF-000 closure before the CONF-001 writer.
+    evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+    status: closed
+    blocking: false
+    impact: "Historical sequence completed: CONF-000 preceded CONF-001 on migration 012, and TASK-CONT-001 used isolated migration 013 without seeded authority or legacy mutation. Current work is stopped at PRODUCT-PASS."
+    owner: repository-owner
+    links:
+      - {label: Contract gap, target: GAP-ACI-CONFIRMATION-CONTRACT-001, kind: row-id}
+      - {label: Writer gap, target: GAP-ACI-CONFIRMATION-WRITER-001, kind: row-id}
+  - decision_id: DEC-ACI-WRITER-BOUNDARY-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: Where does the first durable confirmation writer stop and how does it represent external work?
+    description: The first writer must create authority and a durable opening request without mixing authority acceptance with external audit materialization.
+    options: [generic-effect-intent-ending-opening-pending, audit-specific-outbox, include-materializer]
+    default_option: generic-effect-intent-ending-opening-pending
+    selected: generic-effect-intent-ending-opening-pending
+    rationale: The repository owner approved the ratified generic effect-intent boundary and deferred claiming/materialization. This preserves one atomic writer while keeping cross-store reconciliation separate.
+    evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+    status: closed
+    blocking: false
+    impact: CONF-001 creates one unclaimed audit-opening effect intent and ends at opening_pending; it performs no provider, materializer, suspension or continuation effect.
+    owner: repository-owner
+  - decision_id: DEC-ACI-LEGACY-FK-STAGING-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: Must CONF-001 also decouple runtime attempts and host bindings from legacy dispatch_links foreign keys?
+    description: Existing foreign keys structurally retain a legacy dispatch row even though dispatch_links cannot act as runtime-managed confirmation authority.
+    options: [stage-decoupling-after-conf-001, include-decoupling-in-conf-001]
+    default_option: stage-decoupling-after-conf-001
+    selected: stage-decoupling-after-conf-001
+    rationale: The repository owner approved keeping CONF-001 bounded to authority creation. Legacy rows may remain only as explicitly non-authoritative compatibility dependencies until a separate decoupling increment.
+    evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+    status: closed
+    blocking: false
+    impact: The writer may be accepted without FK decoupling, but a complete runtime-managed execution claim remains blocked until the dependency is removed or explicitly remapped.
+    owner: repository-owner
+    links:
+      - {label: Staged compatibility gap, target: GAP-ACI-LEGACY-DISPATCH-FK-001, kind: row-id}
+  - decision_id: DEC-ACI-PRODUCT-PASS-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: blocker
+    question: Which exact product authority package should define the real resumable-feedback dispatch?
+    description: The bounded CONF v1 fixture cannot authorize real opening or execution because the missing product values are part of confirmed authority.
+    options: [supply-new-conf-v2-authority, defer-real-execution]
+    default_option: supply-new-conf-v2-authority
+    selected: unresolved
+    rationale: The exact CONF v2 package and product authority have not been supplied; this unresolved marker does not select or invent any product-owned value.
+    evidence: ART-ACI-CONTINUATION-GATE
+    status: active
+    blocking: true
+    impact: Product must supply revision-instruction and prompt bytes/refs/digests, role/task/provider references, concrete resource/sandbox/execution-fence policies and the complete canonical audit-opening 0.6.4 mapping. These values change confirmed_authority_digest, so a new dispatch identity, CONF v2 package and new explicit user confirmation are mandatory; CONF v1 remains a component fixture.
+    owner: repository-owner
+    links:
+      - {label: Product authority gap, target: GAP-ACI-PRODUCT-AUTHORITY-001, kind: row-id}
+      - {label: Decision record, target: ART-ACI-CONTINUATION-GATE, kind: artifact-id}
+  - decision_id: DEC-ACI-POLICY-LAYERING-001
+    scope_id: CTX-ACI-EXECUTION-POLICY
+    decision_type: selection
+    question: How far may execution-policy work advance without product authority for real execution?
+    description: Policy evidence advances through a pure L0 oracle, synthetic test-only L1 persistence and one durable non-executable L2 fake denial; it stops before real attempted action, production enforcement or provider admission.
+    options: [bounded-non-executable-l0-l2, promote-real-l3, fold-policy-into-worker]
+    default_option: bounded-non-executable-l0-l2
+    selected: bounded-non-executable-l0-l2
+    rationale: The staged ladder exercises canonical policy, persistence, replay and fail-closed denial mechanics without manufacturing product-owned execution authority or crossing an external-effect boundary.
+    evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+    status: closed
+    blocking: false
+    impact: POLICY-000, POLICY-001 and POLICY-002 are closed within their exact test-only ceilings; POLICY-003/L3, target-host enforcement and any real attempted action remain behind DEC-ACI-PRODUCT-PASS-001.
+    owner: runtime-architecture
+    links:
+      - {label: Product authority gate, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+      - {label: Final L2 review, target: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, kind: artifact-id}
+
+gaps:
+  - gap_id: GAP-ACI-CONFIRMATION-WRITER-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    summary: Before CONF-001, no runtime-managed ConfirmedDispatch writer or persisted expanded turn graph supplied preallocated continuation and mapping authority; the reviewed writer closed that bounded gap.
+    severity: block
+    treatment: plan
+    owner: runtime-architecture
+    status: resolved
+    evidence: ART-ACI-CONF-001-EVIDENCE
+    links:
+      - {label: Governing choice, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
+      - {label: Required sequence, target: DEC-ACI-CONFIRMATION-SEQUENCE-001, kind: row-id}
+      - {label: Writer exit boundary, target: DEC-ACI-WRITER-BOUNDARY-001, kind: row-id}
+  - gap_id: GAP-ACI-RUNTIME-BASELINE-001
+    scope_id: CTX-ACI-RUNTIME-BASELINE
+    summary: The initial pre-mutation full runtime suite had 1 failure and 26 errors from documented pre-existing Stage-E and fixture drift; subsequent bounded repair and BUS evidence closed the global baseline at 200/200 runtime and 36/36 Control Center tests.
+    severity: flag
+    treatment: plan
+    owner: runtime-maintenance
+    status: resolved
+    evidence: ART-ACI-BUS-001-EVIDENCE
+  - gap_id: GAP-ACI-LIVE-PROVIDER-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    summary: Restart survival, retention duration, durable cancellation and the project adapter's real Codex continuation support are unproven.
+    severity: deferred
+    treatment: defer
+    owner: adapter-conformance
+    status: active
+    evidence: ART-ACI-HOST-PROBE
+  - gap_id: GAP-ACI-GENERALIZATION-001
+    scope_id: CTX-ACI-ROOT
+    summary: General skill-profile support and whether dispatch_type remains in the long-term runtime contract are deferred beyond the bounded continuation slice.
+    severity: deferred
+    treatment: defer
+    owner: product-architecture
+    status: active
+    evidence: ART-ACI-CONTINUATION-GATE
+  - gap_id: GAP-ACI-CONFIRMATION-CONTRACT-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    summary: CONF-000 froze and independently reviewed the confirmation-observation schema, three digest meanings, admitted bounded DispatchSpec projection, deterministic identity derivation, atomic graph postconditions and golden vectors before CONF-001 code entry.
+    severity: block
+    treatment: plan
+    owner: runtime-architecture
+    status: resolved
+    evidence: ART-ACI-CONF-000-EVIDENCE
+    links:
+      - {label: Approved sequence, target: DEC-ACI-CONFIRMATION-SEQUENCE-001, kind: row-id}
+      - {label: Investigation evidence, target: ART-ACI-ROBOT-TALKS-FINDINGS-001, kind: artifact-id}
+  - gap_id: GAP-ACI-LEGACY-DISPATCH-FK-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    summary: Host workflow bindings and agent attempts still depend structurally on legacy dispatch_links rows, which may coexist only as non-authoritative compatibility data and cannot satisfy runtime confirmation or O-CONT-S5.
+    severity: flag
+    treatment: plan
+    owner: runtime-architecture
+    status: active
+    evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+    links:
+      - {label: Approved staging decision, target: DEC-ACI-LEGACY-FK-STAGING-001, kind: row-id}
+  - gap_id: GAP-ACI-PRODUCT-AUTHORITY-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    summary: Real execution lacks the exact revision-instruction and prompt bytes/refs/digests, role/task/provider references, resource/sandbox/fence policies and complete canonical audit-opening 0.6.4 mapping required for CONF v2 authority.
+    severity: block
+    treatment: delegate
+    owner: repository-owner
+    status: active
+    evidence: ART-ACI-CONTINUATION-GATE
+    links:
+      - {label: Blocking product decision, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+      - {label: Technical/product split, target: ART-ACI-C2-ROBOT-TALKS-FINDINGS, kind: artifact-id}
+  - gap_id: GAP-ACI-POLICY-002-CODE-ENTRY-001
+    scope_id: CTX-ACI-EXECUTION-POLICY
+    summary: POLICY-002 code entry historically depended on an exact bounded task, descriptor, context, scaffold, readiness receipt and independent DomainSpec, persistence and layering review before mutation.
+    severity: flag
+    treatment: plan
+    owner: runtime-architecture
+    status: resolved
+    evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+    links:
+      - {label: Final reviewed implementation, target: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, kind: artifact-id}
+      - {label: Governing layering decision, target: DEC-ACI-POLICY-LAYERING-001, kind: row-id}
+
+route_handoffs: []
+receipts: []
+
+relations:
+  - {relation_id: REL-ACI-CONTAINS-RUNTIME, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-RUNTIME-BASELINE, type: contains, status: active, reason: The bounded runtime is an implementation child of the ACI feature., evidence: ART-ACI-WORK-PACK}
+  - {relation_id: REL-ACI-CONTAINS-PROTOCOL, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-PROTOCOL-COMPILATION, type: contains, status: active, reason: Protocol compilation is a bounded non-authoritative ACI capability., evidence: ART-ACI-PROTOCOL-DECISION}
+  - {relation_id: REL-ACI-CONTAINS-CONTINUATION, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: contains, status: active, reason: Resumable feedback is the current bounded dispatch-runtime objective., evidence: ART-ACI-CONTINUATION-PLAN}
+  - {relation_id: REL-ACI-CONFIRMATION-BLOCKS-CONTINUATION, source_id: DEC-ACI-CONFIRMATION-AUTHORITY-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: resolved, reason: Historical authority-source blocker resolved through durable confirmation; CONF-001 and CONT-001 later passed, and PRODUCT-PASS is the current gate., evidence: ART-ACI-CONF-001-EVIDENCE}
+  - {relation_id: REL-ACI-WRITER-GAP-INFORMS-DECISION, source_id: GAP-ACI-CONFIRMATION-WRITER-001, target_id: DEC-ACI-CONFIRMATION-AUTHORITY-001, type: informs, status: resolved, reason: Historical missing-writer evidence reopened and resolved the authority gate; CONF-001 later closed the gap., evidence: ART-ACI-CONF-001-EVIDENCE}
+  - {relation_id: REL-ACI-CONTRACT-ENABLES-CONTINUATION, source_id: ENA-ACI-CONTINUATION-CONTRACT-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: enables, status: active, reason: Reviewed contracts define the work once authority is resolved., evidence: ART-ACI-CONTINUATION-PLAN}
+  - {relation_id: REL-ACI-SQLITE-ENABLES-RUNTIME, source_id: ENA-ACI-SQLITE-RUNTIME-001, target_id: CTX-ACI-RUNTIME-BASELINE, type: enables, status: resolved, reason: Existing journal and migration seams support bounded runtime persistence., evidence: ART-ACI-RUNTIME-DATABASE}
+  - {relation_id: REL-ACI-PROBE-INFORMS-CONTINUATION, source_id: ENA-ACI-HOST-PROBE-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: active, reason: The probe bounds what same-agent continuation can currently claim., evidence: ART-ACI-HOST-PROBE}
+  - {relation_id: REL-ACI-SESSION-INFORMS-ROOT, source_id: ART-ACI-SESSION-20260831, target_id: CTX-ACI-ROOT, type: informs, status: active, reason: The session record preserves the feature arc and the authority gate that was later resolved by repository-owner selection in this ledger., evidence: ART-ACI-SESSION-20260831}
+  - {relation_id: REL-ACI-SURFACE-INFORMS-AUTHORITY, source_id: DEC-ACI-CONFIRMATION-SURFACE-001, target_id: DEC-ACI-CONFIRMATION-AUTHORITY-001, type: informs, status: active, reason: Chat is the initial observation surface and a future UI may use the same boundary; both must produce the same durable authority record bound to the exact approved dispatch digest., evidence: ART-ACI-LEDGER}
+  - {relation_id: REL-ACI-ROBOT-TALKS-INFORMS-CONFIRMATION, source_id: ART-ACI-ROBOT-TALKS-FINDINGS-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: active, reason: Three independent investigations exposed and the repository owner disposed the contract, transaction, work-slicing and legacy-dependency tensions that govern the next confirmation work., evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001}
+  - {relation_id: REL-ACI-CONTRACT-GAP-BLOCKS-WRITER, source_id: GAP-ACI-CONFIRMATION-CONTRACT-001, target_id: GAP-ACI-CONFIRMATION-WRITER-001, type: blocks, status: resolved, reason: Historical CONF-000-before-CONF-001 dependency completed; both contract and writer gaps are closed., evidence: ART-ACI-CONF-000-EVIDENCE}
+  - {relation_id: REL-ACI-SEQUENCE-INFORMS-CONTINUATION, source_id: DEC-ACI-CONFIRMATION-SEQUENCE-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: resolved, reason: Historical CONF-000 -> CONF-001 -> CONT-001 sequence completed with reviewed PASS; PRODUCT-PASS now governs OPEN onward., evidence: ART-ACI-CONT-001-EVIDENCE}
+  - {relation_id: REL-ACI-LEGACY-FK-INFORMS-CONTINUATION, source_id: GAP-ACI-LEGACY-DISPATCH-FK-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: active, reason: Legacy foreign keys do not block CONF-001 but remain residue before a complete runtime-managed attempt and continuation claim., evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001}
+  - {relation_id: REL-ACI-PRODUCT-GAP-BLOCKS-CONTINUATION, source_id: GAP-ACI-PRODUCT-AUTHORITY-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: active, reason: The absent product authority changes confirmed_authority_digest and prevents real OPEN onward., evidence: ART-ACI-CONTINUATION-GATE}
+  - {relation_id: REL-ACI-PRODUCT-DECISION-GOVERNS-GAP, source_id: DEC-ACI-PRODUCT-PASS-001, target_id: GAP-ACI-PRODUCT-AUTHORITY-001, type: informs, status: active, reason: Only the product decision can supply or defer the missing CONF v2 authority package., evidence: ART-ACI-CONTINUATION-GATE}
+  - {relation_id: REL-ACI-CONTAINS-POLICY, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-EXECUTION-POLICY, type: contains, status: active, reason: The bounded non-executable policy ladder is an implementation child of the ACI feature., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
+  - {relation_id: REL-ACI-POLICY-LAYERING-GOVERNS-CONTEXT, source_id: DEC-ACI-POLICY-LAYERING-001, target_id: CTX-ACI-EXECUTION-POLICY, type: informs, status: active, reason: The selected ladder admits independently reviewed L0 through L2 evidence and stops before real attempted action or host enforcement., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
+  - {relation_id: REL-ACI-POLICY-CODE-ENTRY-BLOCKS-L2, source_id: GAP-ACI-POLICY-002-CODE-ENTRY-001, target_id: CTX-ACI-EXECUTION-POLICY, type: blocks, status: resolved, reason: The historical code-entry dependency was satisfied and POLICY-002 reached independently reviewed PASS/KEEP., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
+  - {relation_id: REL-ACI-POLICY-EVIDENCE-INFORMS-RUNTIME, source_id: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, target_id: CTX-ACI-RUNTIME-BASELINE, type: informs, status: active, reason: The final receipt adds a curated 260-test runtime regression while preserving the BUS 200-test baseline as its own historical closure point., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
+
+recomposition: []

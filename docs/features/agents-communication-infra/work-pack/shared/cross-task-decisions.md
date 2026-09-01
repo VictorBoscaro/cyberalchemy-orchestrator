@@ -21,6 +21,10 @@
 | D-PG-003 | The planning gate may pass while code readiness is stale. | Refresh pinned hashes and reissue `domainspec-code-readiness@1` before coder entry; prose cannot substitute for the receipt. |
 | D-102 | One monotonic journal offset per SQLite database and one contiguous aggregate version per aggregate. | Accepted by ADR-001 for the W0 decision scope; TASK-010 must prove executable conformance. |
 | D-103 | `same idempotency_key + same command digest` returns the original receipt; a different digest is a permanent conflict. | Accepted by ADR-001 with canonical vectors; TASK-010 must prove receipt and crash behavior. |
+| D-CONF-001 | Explicit user confirmation is execution authority; chat is accepted now and a future UI may invoke the same confirmation boundary. | Either surface must bind the authenticated user observation to the exact frozen `DispatchSpec` bytes and digest and persist the same `ConfirmedDispatch`; the surface itself grants no weaker or additional authority. |
+| D-CONF-002 | CONF-000 freezes and reviews the confirmation contract before CONF-001 implements its writer; the first writer ends at `opening_pending`. | CONF-001 creates one unclaimed audit-opening effect intent atomically and performs no claim, materialization, provider, suspension or continuation effect. |
+| D-POL-001 | Execution-policy evidence advances only through pure L0, synthetic test-only persistence at L1 and one durable non-executable fake denial at L2 without product authority. | POLICY-000/001/002 may close independently; POLICY-003/L3, host enforcement, provider admission and every real attempted action remain behind PRODUCT-PASS. |
+| D-POL-002 | POLICY-002 adds exactly one test-only table and one canonical denial row to caller-supplied temporary file-backed SQLite over one exact reopened L1 lineage. | It adds no production migration, runtime service/journal/effect path, authority record or external action; replay, corruption and source-race failures remain fail-closed. |
 
 ## Proposed in this plan; accept or amend in W0
 

@@ -5,8 +5,8 @@ is_session: false
 layer: application
 nature: [technical, reference]
 status: draft
-version: 0.3.0
-last_updated: 2026-07-25
+version: 0.5.1
+last_updated: 2026-09-01
 ---
 
 # Rules: Agents Communication Infra
@@ -272,15 +272,133 @@ versioned runtime-owned canonical projection serialized to canonical JSON bytes 
 SHA-256. Library serialization defaults never silently define omitted/null, Unicode, numeric or
 ordering semantics. W0 must pin the dependency and accept golden vectors before runtime work.
 
+For POLICY-000, [ResourceBudget](domain.md#resourcebudget),
+[SandboxPolicy](domain.md#sandboxpolicy), production
+[ExecutionAuthorityFence](domain.md#executionauthorityfence) and the separately typed
+[ExecutionAuthorityFenceHarness](domain.md#executionauthorityfenceharness) are recursively closed.
+Their exact schema literals and nested fields, plus exact target bytes and any target schema required
+by the reference owner's contract, are part of acceptance.
+Unknown, missing, duplicate or misspelled fields reject. Booleans are not integers; numeric strings,
+floats, negative values, nulls, non-finite values, overflow/wraparound representations and implicit
+coercion reject. No absence means unlimited, inherited, host-default or allowed.
+
+Every `ResourceBudget` ceiling and `SandboxPolicy.max_child_processes` is a closed int64 in
+`0..9223372036854775807`; zero is an explicit denial. Production and harness `cutover_epoch` are
+closed positive int64 values in `1..9223372036854775807`. Values outside those intervals reject
+without truncation, wraparound or coercion.
+
+Canonical bytes are exact `aci-cjson-1` bytes and every digest is qualified lowercase
+`sha256:<64-lowercase-hex>` over its declared byte domain. A
+[VersionedReference](domain.md#versionedreference) is accepted only when the caller supplies exact
+target bytes keyed to that reference and those bytes reproduce its digest. Budget-policy and
+sandbox-enforcement targets must also satisfy their specified closed schemas. Credential targets
+are verified under the reference owner's contract; POLICY-000 invents no universal credential-target
+schema. Missing bytes or a digest/schema mismatch reject, and the pure parser performs no
+filesystem, network, credential-store or other I/O. Production and harness fence preimages use
+their distinct exact schema literals; the production parser rejects the harness literal before
+evidence resolution. The embedded `fence_digest` binds only the corresponding preimage, while
+whole-value equality remains canonical-byte equality.
+
+POLICY-000 validates sandbox roots lexically only. A root must be a canonical relative `/` path and
+must contain no empty component, `.`, `..`, drive, UNC or wildcard syntax; `link_policy` is exactly
+`deny`. Physical symlink, junction/reparse-point and resolved-path containment checks require host
+observation and belong to POLICY-003/L3, never the pure L0 parser. `credential_refs` may be non-empty
+but must be duplicate-free opaque references; secret bytes remain forbidden in the policy value.
+
+Dispatch scheduling ceilings and one-[Attempt](domain.md#attempt) [ResourceBudget](domain.md#resourcebudget)
+are disjoint contracts. No parser or validator may derive, divide, copy or reset one from the
+other; unknown provider usage never becomes zero or fresh authority. The synthetic
+[ExecutionPolicyOracleFixture](domain.md#executionpolicyoraclefixture) and harness fence are accepted
+only by pure test-oracle parsers and never authorize confirmation, a plan/request, an effect or a
+process. POLICY-000 performs no persistence or operational enforcement; POLICY-001/L1 synthetic
+lineage, POLICY-002/L2 fake denial and POLICY-003/L3 target-host enforcement remain separate.
+
+POLICY-001 admits only the exact seven reviewed POLICY-000 members, in the ordinal/name order
+defined by [ExecutionPolicySyntheticLineageReceipt](domain.md#executionpolicysyntheticlineagereceipt).
+Before persistence, every member body and declared digest must pass the POLICY-000 parser/oracle
+checks. Addition, omission, rename, reorder, artifact substitution, reference-target or enclosing
+policy-body drift, swapped targets and harness preimage/fence/full-document digest-domain
+substitution reject before commit or conflict with an existing lineage unit.
+
+All seven artifacts are prepared before one file-backed `RuntimeDatabase.write()` transaction. The
+same transaction finalizes their artifact metadata and inserts one closed receipt plus seven
+contiguous ordered bindings; per-artifact `ArtifactStore.commit()` is forbidden. A failure after
+begin, after any artifact, after the receipt, after any binding or before commit must reopen to the
+complete unit or none. A committed response lost before delivery and an identical retry converge
+on the first receipt. Closing and reopening through fresh database/artifact handles must reproduce
+every exact member body/digest, binding and receipt field.
+
+`synthetic_key` and `lineage_identity` are independent uniqueness axes. Either one reused with the
+same `unit_digest` returns the first receipt; either one reused with a changed digest is a permanent
+conflict with no second unit. Persistence does not change authority type: production policy-
+document parsers still reject the combined oracle structurally, and the production fence parser
+rejects the harness schema before evidence resolution.
+
+POLICY-001 rows may exist only in finalized artifact metadata and its two test-only lineage tables.
+It creates no confirmation, Run/Group/Attempt, plan/request, command receipt, event/head, effect,
+publication or message row; invokes no runtime service, journal, audit appender, provider, launcher,
+tool, credential/policy resolver or external action; and creates no production migration, service,
+API, CLI or package export. Artifact persistence is the only admitted L1 mutation. POLICY-002/L2
+denial receipts or attempted actions and POLICY-003/L3 host enforcement remain excluded.
+The exact production tables asserted empty are `confirmed_dispatches`, `runs`,
+`confirmed_turn_graphs`, `agent_invocation_plans`, `agent_execution_requests`, `agent_attempts`,
+`command_receipts`, `events`, `aggregate_heads`, `effect_intents`, `sandbox_launch_effects`,
+`publication_candidates`, `publication_receipts` and `messages`.
+
+Product authority may select the exact `ResourceBudget`, `SandboxPolicy`, tool profile and opaque
+credential grants for a later confirmed dispatch. It cannot select or synthesize `cutover_epoch`
+or watcher-disable evidence: those are operational facts supplied by the cutover verifier from the
+target host. Neither product preference nor a test harness can substitute for them.
+
 **Formal:**
 ```text
 accepted_artifact(x) => pydantic_valid(x)
   AND bytes(x) = canonical_json(project(schema_version, x))
   AND digest(x) = sha256(bytes(x))
 pydantic_valid(x) != accepted_artifact(x)
+
+policy000_valid(x) => recursively_closed(x)
+  AND exact_schema_literal(x)
+  AND strict_json_primitives(x)
+  AND bytes(x) = aci_cjson_1(x)
+  AND resource_and_child_limits_in_closed_int64(x)
+  AND fence_epoch_in_positive_int64(x)
+  AND lexical_roots_only(x)
+  AND link_policy(x) = deny
+  AND every_reference_has_caller_supplied_bytes_and_verifies(x)
+policy000_parser_io = 0
+policy000_parser_effects = 0
+physical_link_resolution => policy003_l3
+missing_or_ambiguous_policy_field(x) => reject_before_effect(x)
+production_fence_parser(harness_fence) => reject_before_reference_resolution
+execution_policy_oracle_fixture => test_data AND NOT execution_authority
+dispatch_budget != attempt_resource_budget
+product_selected_policy_values != operational_fence_epoch_and_evidence
+
+policy001_valid(u) => policy000_valid(every_member(u))
+  AND members(u) = exact_ordered_policy000_members[0..6]
+  AND receipt_schema(u) = aci.execution-policy-synthetic-lineage-receipt@1
+  AND receipt_authority(u) = test-only-non-executable
+  AND unit_digest(u) = sha256(aci_cjson_1(lineage_unit_preimage(u)))
+policy001_commit(u) => atomic(seven_finalized_artifacts(u), receipt(u), seven_bindings(u))
+policy001_failure_before_commit(u) => policy001_rows(u) = empty
+same_key_or_identity_and_same_unit_digest(u) => first_receipt(u)
+same_key_or_identity_and_different_unit_digest(u) => permanent_conflict_without_write
+reopen(u) => exact_member_bodies_and_digests(u) AND exact_bindings(u) AND first_receipt(u)
+production_policy_parser(combined_oracle) => reject_structurally
+production_fence_parser(harness_fence) => reject_before_reference_resolution
+policy001_runtime_authority_rows = 0
+rows(confirmed_dispatches, runs, confirmed_turn_graphs,
+     agent_invocation_plans, agent_execution_requests, agent_attempts,
+     command_receipts, events, aggregate_heads, effect_intents,
+     sandbox_launch_effects, publication_candidates, publication_receipts, messages) = 0
+policy001_external_effects = 0
+policy001_l2_denial_behavior = 0
 ```
 
-**Checked by:** [TEST-SPEC T-ACI-ETA2](../TEST-SPEC.md#t-aci-eta2--canonical-python-contract-vectors).
+**Checked by:** [TEST-SPEC T-ACI-ETA2](../TEST-SPEC.md#t-aci-eta2--canonical-python-contract-vectors)
+and [T-ACI-POL0-1 through T-ACI-POL0-8](TEST-SPEC.md#policy-000-l0-test-matrix), plus
+[T-ACI-POL1-1 through T-ACI-POL1-8](TEST-SPEC.md#policy-001-l1-test-matrix).
 
 ## ACI-R17 — Derived boundary validation policy
 
@@ -418,6 +536,211 @@ launch_authorized(target) =>
 Failed, cancelled and unknown producer outcomes carry no L0 response receipt and cannot satisfy the
 required slot. Fan-in, optional slots and non-success completion policies require a later version.
 
+**Checked by:** [TEST-SPEC T-ACI-HOST1](../TEST-SPEC.md#t-aci-host1--producer-bound-host-output-and-atomic-launch).
+
+## ACI-R21 — Continuation is resumable state, never hidden authority
+
+**Rule:** A terminal agent turn may create one bounded continuation whose same-session handle is an
+optional adapter optimization. Resume authority derives only from the confirmed finite turn graph,
+complete continuation input mappings, current deadline and prerequisite heads. Every resume presents an
+exact immutable effective input. Definitive provider-handle loss may choose a preconfirmed
+reconstruction branch; an unknown resume effect may not.
+
+```text
+resume_authorized(c) =>
+  state(c) = suspended
+  AND terminal(sourceAttempt(c))
+  AND finalized(contextSnapshot(c))
+  AND completeAndOrdered(awaitedSlots(c))
+  AND deadlineCurrent(c)
+  AND all(prerequisiteHeadsMatch(c))
+  AND atomic(continuation.resume_requested,
+             EffectiveInputArtifact,
+             Attempt,
+             AgentExecutionRequest,
+             EffectIntent)
+
+same_session(c) => same(seat_id, agent_instance_id)
+reconstruct(c) => definitiveProviderLoss(c) AND same(seat_id) AND new(agent_instance_id)
+unknownResumeEffect(c) => noAutomaticReconstruction(c)
+providerLost(c) AND exists(targetAttempt(c)) => terminalFailedNoStart(targetAttempt(c))
+```
+
+The parked continuation exposes no bus read, listener or subscription. The scheduler reacts to
+journal facts, resolves only the two confirmation-frozen official contribution mappings, and
+materializes the declared outputs into a new attempt. The first admitted topology is exactly
+`author turn 0 -> reviewer turn 0 -> author turn 1`; confirmation expands it to an acyclic turn
+graph and freezes a loop ceiling of one.
+
+**Checked by:** [T-ACI-CONT1 through T-ACI-CONT9](../TEST-SPEC.md#bounded-resumable-feedback).
+
+## ACI-R22 — Runtime confirmation is presentation-bound, derived and atomic
+
+A `ConfirmedDispatch` exists only after an admitted issuer has observed an authenticated human
+approval for one exact dispatch revision and its displayed pending/spec digests, and the server has
+reproduced the same projection. The request cannot author its principal, issuer evidence,
+capability grant, expanded graph, mappings or runtime IDs.
+
+```text
+accepted(d) =>
+  observation.schema = aci.confirmation-observation@1 AND
+  matches(admittedIssuerContext,
+          observation.issuer_ref,
+          observation.issuer_evidence_ref,
+          observation.issuer_evidence_digest,
+          observation.human_principal_id,
+          observation.channel,
+          observation.action = approve_runtime_dispatch,
+          observation.observed_at,
+          observation.dispatch_id,
+          observation.dispatch_revision,
+          observation.presented_pending_sheet_digest,
+          observation.presented_dispatch_spec_digest) AND
+  issuerScopedImmutable(observation.observation_id, observation.issuer_ref) AND
+  request.mode = pending.mode = cutover.mode = runtime-managed AND
+  pending_sheet_digest = H(exactCanonicalPendingBytes) AND
+  dispatch_spec_digest = H(serverProject(pending, admittedCapabilityResolution)) AND
+  confirmation_observation_digest = H(exactCanonicalObservationBytes) AND
+  capability_resolution_digest = H(immutableAdmittedCapabilityResolution) AND
+  confirmed_turn_graph_digest = H(closedServerDerivedTurnGraph) AND
+  mapping_set_digest = H(closedOrderedMappingSet) AND
+  schema_versions = exactCompleteServerResolvedVersionMap AND
+  distinctByteDomains(pending_sheet_digest,
+                      dispatch_spec_digest,
+                      confirmed_authority_digest) AND
+  identity_derivation_digest = H(completeDerivationContract) AND
+  payload_schema_bundle_digest = H(closedConfirmationPayloadSchemaBundle) AND
+  confirmed_authority_digest = H(completeConfirmedAuthorityEnvelope) AND
+  graph = serverDerived(3 nodes, 2 edges, 1 continuation, 2 mappings) AND
+  everyRuntimeId = derive_id_v1(kind, coordinates) AND
+  derivationPreimage = {schema, kind, dispatch_id, dispatch_spec_digest, coordinates} AND
+  mappings.ordinals = [0,1] AND
+  everyMappingBindingDigest = H(closedBindingWithoutMappingIdOrVersion) AND
+  reject(callerSuppliedDerivedIdOrVersion) AND
+  atomic(pendingMetadata,
+         dispatchSpecMetadata,
+         confirmationObservationMetadata,
+         confirmedTurnGraphMetadata,
+         mappingSetMetadata,
+         confirmedAuthorityMetadata,
+         runCreatedPayloadMetadata,
+         auditOpeningRequestedPayloadMetadata,
+         auditOpeningEffectPayloadMetadata,
+         ConfirmationObservation,
+         ConfirmedDispatch,
+         Run,
+         graph,
+         continuationBinding,
+         twoOrderedMappings,
+         runCreatedV1,
+         auditOpeningRequestedV2,
+         version2OpeningPendingHead,
+         onePendingAuditOpeningIntent,
+         firstReceipt)
+
+same(commandScope, idempotencyKey, commandDigest) => firstReceipt
+same(commandScope, idempotencyKey, differentCommandDigest) => permanentKeyConflict
+same(dispatchId, confirmedAuthorityDigest) => firstReceipt
+same(dispatchId, differentConfirmedAuthorityDigest) => permanentConflict
+confirmationSuccess =>
+  opening_pending AND
+  exactlyOne(effect_type = audit_opening,
+             effect_id = derivedAuditOpeningEffectId,
+             command_id = acceptedCommand.command_id,
+             requested_event_id = auditOpeningRequestedV2.event_id,
+             payload_ref = auditOpeningEffectPayloadArtifactId,
+             payload_digest = H(exactCanonicalAuditOpeningEffectPayload),
+             payload.appender_contract_version = "0.6.4",
+             retry_class = retryable,
+             status = pending,
+             attempt_count = 0,
+             claimed_by = null,
+             claim_epoch = null,
+             outcome_event_id = null,
+             outcome_digest = null) AND
+  zero(auditAppend, provider, tool, attempt, suspension, resume, continuationAction)
+```
+
+All JSON objects in this boundary are closed and canonical. Raw pending bytes are admitted only
+when they already equal their strict `aci-cjson-1` encoding; whitespace, BOM, newline, duplicate
+keys or key-order drift reject before presentation rather than being silently normalized after the
+human decision. `matches(admittedIssuerContext, ...)` means exact equality with the host-derived
+tuple and exact presentation; it does not introduce an expiry policy. Key-level and identity-level
+replay are evaluated under the same single-writer
+transaction; an unlocked identity pre-read cannot establish convergence.
+Any drift in issuer evidence, principal, channel, action, observation time, dispatch/revision or
+either presented digest rejects before mutation. Each of the three digest domains verifies only
+its own canonical bytes and cannot substitute for another.
+
+**Checked by:** [T-ACI-AUTH1 through T-ACI-AUTH8](../TEST-SPEC.md#runtime-confirmation-authority-v1).
+
+## ACI-R23 — Synthetic fake denial is durable without attempted effect
+
+POLICY-002 accepts only the exact, reopened POLICY-001 lineage and the closed test selector corpus
+in [T-ACI-POL2-3](TEST-SPEC.md#t-aci-pol2-3--decision-reasons-and-attempt-labels-are-closed).
+Each selector routes through the same test-only admission decision and returns the first canonical
+[ExecutionPolicyFakeDenialReceipt](domain.md#executionpolicyfakedenialreceipt). A selector names the
+failure class exercised by a test; it is not an action, capability, request, effect or receipt field
+and can never authorize the named operation.
+
+Before the denial transaction, the harness must reopen the exact seven-member POLICY-001 unit,
+reproduce its receipt and member bytes/digests, and rerun the POLICY-000 parser/oracle checks. Every
+ResourceBudget ceiling remains zero; filesystem, network, process and credential grant lists remain
+empty; `max_child_processes=0`; and the combined oracle and harness fence remain rejected by their
+production boundaries. A positive ceiling, non-empty grant, missing/tampered member or digest-domain
+substitution falls outside the fake lane and rejects with no POLICY-002 row.
+
+The harness may create exactly one additional test-only denial-receipt table in the same temporary
+file-backed SQLite database as the POLICY-001 lineage. It resolves `denial_key` and
+`lineage_identity` replay/conflict inside one writer transaction, inserts the canonical receipt or
+nothing, and fires `after_commit` only after transaction exit. Same key or lineage identity plus the
+same `denial_digest` returns the byte-identical first receipt; changed evidence conflicts without a
+second row. Fresh-handle reopen reproduces the exact denial bytes and source-lineage binding.
+
+For each closed selector, every external boundary remains uncalled: workload filesystem, network,
+child process, credential, tool, provider, audit appender, journal, runtime service, clock and
+environment. Temporary SQLite persistence is the only admitted I/O. POLICY-001 artifact/receipt/
+member cardinalities remain unchanged; all production authority/runtime/effect tables remain empty.
+The fake port accepts no `AgentExecutionRequest`, `EffectIntent`, production fence or external
+callable and produces no runtime event, provider identity, verified opening, Run transition, host
+path observation or POLICY-003 evidence.
+
+**Formal:**
+
+```text
+policy002_source(u) => reopened_exact_policy001_lineage(u)
+  AND policy000_valid(every_member(u))
+  AND every_resource_budget_ceiling(u) = 0
+  AND sandbox_grants(u) = empty
+  AND max_child_processes(u) = 0
+
+fake_attempt_labels = {
+  filesystem.read, filesystem.write, network.connect, process.child.start,
+  credential.resolve, tool.call, resource.wall_time.consume_positive,
+  resource.input_tokens.consume_positive, resource.output_tokens.consume_positive,
+  resource.tool_calls.consume_positive, resource.payload_bytes.consume_positive,
+  resource.artifact_bytes.consume_positive
+}
+
+label in fake_attempt_labels =>
+  decision = denied
+  AND receipt = first_durable_fake_denial_receipt(policy002_source)
+  AND label NOT_IN denial_preimage
+  AND label NOT_IN receipt
+  AND external_calls = empty
+
+positive_budget_or_nonempty_grant OR invalid_lineage => reject_before_denial_transaction
+policy002_commit => atomic(one_test_only_denial_row)
+policy002_failure_before_commit => policy002_rows = empty
+same_key_or_lineage_and_same_denial_digest => first_receipt
+same_key_or_lineage_and_different_denial_digest => permanent_conflict_without_write
+reopen => exact_denial_receipt AND exact_source_lineage_binding
+policy002_production_rows = empty
+policy002_l3_evidence = empty
+```
+
+**Checked by:** [T-ACI-POL2-1 through T-ACI-POL2-8](TEST-SPEC.md#policy-002-l2-test-matrix).
+
 ## OQ dispositions
 
 | Question | Disposition | Rule coverage |
@@ -432,11 +755,15 @@ required slot. Fan-in, optional slots and non-success completion policies requir
 | OQ-ETA4 | **Disposed: no identified ACI Node consumer** | ACI-R17; do not add Zod now. |
 | OQ-ETA5 | **Deferred post-first-provider** | ACI-R18; no PydanticAI dependency now. |
 | OQ-ETA6 | **Disposed as non-blocking provenance maintenance** | [External-tool discovery](../discovery/external-tool-adoption/external-tool-adoptions.md). |
+| OQ-RESOURCE-LIMITS / OQ-SANDBOX | **POLICY-000 L0 grammar, POLICY-001 test-only lineage and POLICY-002 fake-denial behavior specified; product-selected values and POLICY-003/L3 remain deferred** | ACI-R16 and ACI-R23 plus [T-ACI-POL0-1 through T-ACI-POL2-8](TEST-SPEC.md#policy-000-l0-test-matrix). Product selects policy values; the cutover verifier supplies operational fence epoch/evidence. |
 
 ## Connections
 
 | Document | Type | Description |
 |---|---|---|
+| [TECH-POLICY-D0](../development/invoke-runs/20260831-resumable-feedback/plan/TECH-POLICY-D0.md) | `refines` | Reviewed POLICY-000 closed-schema, digest-domain, non-authority and layering contract. |
+| [Execution-policy capability](capabilities/execution-policy-authority.md) | `refines` | Bounded L0/L1/L2 contract surface, synthetic-lineage and fake-denial invariants, and authority firewall. |
+| [POLICY-001 persistence pattern inventory](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md) | `refines` | Digest-pinned one-transaction, replay/conflict, failpoint/reopen and zero-row pattern. |
 | [Domain model](domain.md) | `enforces` | Entities and value objects constrained here. |
 | [Persistence and replay](persistence-and-replay.md) | `implements-contract` | Candidate store constraints that make ACI-R5–R7 and ACI-R14 executable. |
 | [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Authority for decisions ACI-D1–ACI-D15 and OQ settlements. |

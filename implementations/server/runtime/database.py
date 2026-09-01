@@ -23,6 +23,10 @@ MIGRATION_NAMES = (
     "009_host_workflow_binding.sql",
     "010_agent_reference_delivery.sql",
     "011_bus_reveal_delivery.sql",
+    "012_runtime_confirmation.sql",
+    "013_agent_continuation.sql",
+    "014_runtime_run_group_heads.sql",
+    "015_runtime_attempt_result_bus.sql",
 )
 
 

@@ -5,14 +5,18 @@ is_session: false
 layer: application
 nature: [technical, reference]
 status: draft
-version: 0.4.1
-last_updated: 2026-08-10
+version: 0.6.4
+last_updated: 2026-09-01
 derived_from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 additional_authority:
   - ../discovery/external-tool-adoption/external-tool-adoptions.md@0.1.0
   - ../discovery/agent-tools-and-delegated-supervision.md@0.2.0
   - ../discovery/agents-communication-protocols/README.md@0.5.0
   - ../../../decisions/aci-protocol-governance-ownership.md
+  - ../../../decisions/aci-resumable-agent-continuation.md
+  - ../development/invoke-runs/20260831-resumable-feedback/plan/TECH-POLICY-D0.md
+  - ../development/invoke-runs/20260831-resumable-feedback/plan/evidence/TECH-D0-REVIEW.md
+  - ../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md
 specAuthoringGate: pass
 runtimeGate: block
 localPilotGate: pass
@@ -52,6 +56,9 @@ experimental shadow/compatibility probe, not a second authoritative runtime.
 | Reference Scout lifecycle and APT input-ingestion lineage | Operational local pilot | [Stage G receipt](../../agent-provenance-telemetry/integration/stage-g/execution-receipt.md) | Reference Scout commit/lifecycle delivery and APT ingestion only; ACI target-attempt delivery is not implemented. |
 | Reference Scout bundle delivery into one target Attempt | Specified; not implemented | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [mapping](mappings.md#referencescoutbundletoeffectiveinput) and [tests](../TEST-SPEC.md#t-aci-r22--reference-bundle-target-delivery) | Next bounded slice; inclusion evidence is not access, declared use or claim support. |
 | Protocol compilation candidate v1 | Specified; normative review accepted | [Protocol compilation](protocol-compilation.md), [review](../reviews/2026-08-03-protocol-compilation-spec-review/review.md) | Work-pack readiness and executable conformance remain required before implementation is claimed. |
+| POLICY-000 execution-policy contract oracle | Specified; implementation separately gated | [Execution-policy contract and synthetic lineage](capabilities/execution-policy-authority.md), [parser interface](interfaces.md#internal-executionpolicycontractparser), [tests](TEST-SPEC.md#policy-000-l0-test-matrix) | Pure strict parsing, canonicalization, digest and mutation vectors only; no implementation claim, DB, service, Run, plan/request, effect or product authority. |
+| POLICY-001 synthetic-authority lineage | Specified; implementation separately gated | [Execution-policy contract and synthetic lineage](capabilities/execution-policy-authority.md), [persistence inventory](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md) | Isolated test-only persistence and reopen proof; no production migration/service/API/journal/export, [ConfirmedDispatch](domain.md#confirmeddispatch), [Run](domain.md#run), [AgentInvocationPlan](domain.md#agentinvocationplan), [AgentExecutionRequest](domain.md#agentexecutionrequest), [RuntimeEventEnvelope](domain.md#runtimeeventenvelope), [EffectIntent](domain.md#effectintent) or L2 behavior. |
+| POLICY-002 fake deny-all | Specified; implementation separately gated | [Execution-policy capability](capabilities/execution-policy-authority.md#policy-002l2-fake-denial-invariants), [fake-denial interface](interfaces.md#internal-executionpolicyfakedenialharness-test-only), [tests](TEST-SPEC.md#policy-002-l2-test-matrix) | Test-only twelve-label denial and one durable receipt; no external callable/action, production row, provider, product grant, fence or POLICY-003/L3 evidence. |
 | General runtime, materializer, provider launch and cutover | Blocked | This SPEC's gate plus TASK-020/EG-1 evidence obligations | No production or portability claim. |
 
 `localPilotGate=pass` applies only to the exact bounded composition and receipts above.
@@ -59,9 +66,10 @@ experimental shadow/compatibility probe, not a second authoritative runtime.
 generic provider launch, administrator-enforced hook loading and cutover.
 
 The SPEC remains above the default 300-line capability-splitting threshold because its length is
-dominated by the authoritative Concept Registry and decision tables. The four inline capability
-paragraphs are intentionally retained as short routing summaries to existing aspect documents;
-creating duplicate capability files would not add contract detail.
+dominated by the authoritative Concept Registry and decision tables. Coherent detail is routed
+through dedicated [execution-policy](capabilities/execution-policy-authority.md) and
+[resumable-continuation](capabilities/resumable-agent-continuation.md) capability files; the inline
+entries below are indexes rather than duplicate specifications.
 
 ## Protocol Compilation Status
 
@@ -92,9 +100,10 @@ Accordingly:
 - the v1 compiler receives an exact active binding snapshot and one of two digest-pinned read-only
   cases in a single frozen built-in package as
   immutable inputs; it does not implement registry activation, supersession or revocation;
-- the pending sheet remains proposal evidence only. A future confirmation contract may accept the
-  exact displayed `dispatch_spec_digest`, but this amendment neither produces that digest nor
-  promotes the candidate-to-confirmation mapping;
+- the pending sheet remains proposal evidence only. The separate
+  [Runtime Confirmation Authority v1](confirmation-authority.md) accepts the exact displayed
+  `dispatch_spec_digest`; this protocol-candidate amendment neither produces that digest nor
+  promotes the still-deferred candidate-to-confirmation mapping;
 - arbitrary recipes, persistent registry lifecycle, candidate-to-`DispatchSpec` compilation,
   capability resolution, confirmation and execution require later promotion.
 
@@ -102,6 +111,12 @@ Accordingly:
 
 ```mermaid
 flowchart LR
+  EP[Exact execution-policy/reference bytes] --> EPP[Pure ExecutionPolicyContractParser]
+  EPP --> EPV[Typed non-authoritative policy/oracle values]
+  EPV -. test-only exact seven-member unit .-> EPL[Synthetic lineage harness]
+  EPL --> EPA[Finalized artifacts plus non-executable receipt]
+  EPA -. exact reopened lineage .-> EPD[Fake-denial harness]
+  EPD --> EPR[Durable denied receipt; zero external calls]
   K[Skill/profile/binding/recipe snapshots] --> D[Pure DispatchCandidate compilation]
   D -. proposal only .-> C
   C[Confirm authority] --> J[Journal acceptance]
@@ -110,6 +125,8 @@ flowchart LR
   S --> A
   A --> B[Receipt-gated bus]
   B --> R[Manifest reveal and result]
+  R --> Q[Bounded continuation resume]
+  Q --> A
   R --> X[Terminal election and audit close]
   J --> P[Replay, projection and telemetry]
 ```
@@ -119,12 +136,16 @@ flowchart LR
 | Capability | Outcome | Key contracts | Status |
 |---|---|---|---|
 | Pure protocol candidate compilation | Deterministically compile exact immutable inputs from one frozen built-in package into either a non-authoritative candidate or a closed required-unsupported result | [Protocol Compilation Candidate v1](protocol-compilation.md), [CompileDispatchCandidate](protocol-compilation.md#compiledispatchcandidate) | Specified; normative review accepted |
-| Confirmed runtime authority | Freeze one runtime-managed dispatch and verify official opening before effects | [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch), [RunLifecycle](states.md#runlifecycle), [AuditLedgerMaterializer](workflows.md#auditledgermaterializer) | Bounded local pilot |
+| [Closed execution-policy contract oracle](capabilities/execution-policy-authority.md) | Reject ambiguous resource, sandbox and fence documents and reproduce exact golden bytes/digests without creating execution authority | [ExecutionPolicyContractParser](interfaces.md#internal-executionpolicycontractparser), [ACI-R16](rules.md#aci-r16--canonical-contract-policy), [L0 tests](TEST-SPEC.md#policy-000-l0-test-matrix) | POLICY-000 L0 specified; implementation separately gated |
+| [Synthetic execution-policy lineage](capabilities/execution-policy-authority.md) | Persist and reopen the exact seven POLICY-000 members plus one closed non-executable receipt as one all-or-none synthetic unit | [ExecutionPolicySyntheticLineageReceipt](domain.md#executionpolicysyntheticlineagereceipt), [L1 rules, harness and tests](capabilities/execution-policy-authority.md#policy-001l1-lineage-invariants) | POLICY-001 L1 specified by this amendment; implementation separately descriptor/readiness/review-gated; L2 behavior is excluded from POLICY-001 and specified separately by POLICY-002; L3 deferred |
+| [Fake execution-policy denial](capabilities/execution-policy-authority.md) | Route twelve non-executable action-attempt labels over the exact reopened synthetic lineage to one durable `denied` receipt while every external-action spy remains zero | [ExecutionPolicyFakeDenialReceipt](domain.md#executionpolicyfakedenialreceipt), [ACI-R23](rules.md#aci-r23--synthetic-fake-denial-is-durable-without-attempted-effect), [L2 tests](TEST-SPEC.md#policy-002-l2-test-matrix) | POLICY-002 L2 specified; implementation separately descriptor/readiness/review-gated; product/provider/POLICY-003 deferred |
+| Confirmed runtime authority | Freeze one runtime-managed dispatch and request official opening before effects | [Runtime Confirmation Authority v1](confirmation-authority.md), [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch), [CONF-001 evidence](../development/invoke-runs/20260831-resumable-feedback/evidence/CONF-001.md) | CONF-000 specified; CONF-001 implemented-reviewed only through durable `opening_pending` |
 | Deterministic execution | Drive groups and physical attempts from facts without provider branches | [AcceptRuntimeCommand](operations.md#acceptruntimecommand), [StartAgentAttempt](operations.md#startagentattempt), [AgentAdapter](interfaces.md#internal-agentadapter) | Mixed; bounded pilot only |
 | Authorized reference delivery | Bind one already lifecycle-delivered Scout bundle to one capability-derived target Attempt and its exact effective-input entry | [AgentReferenceDelivery](domain.md#agentreferencedelivery), [DeliverReferenceScoutBundleToAgent](operations.md#internal-transition--deliverreferencescoutbundletoagent), [target-delivery event](events.md#reference_scoutbundle_delivered_to_agent1) | Specified; not implemented |
 | Receipt-gated publication | Accept agent content only after append and parent-side persisted-evidence verification | [PublishBusContribution](operations.md#publishbuscontribution), [VerifyPublicationReceipt](operations.md#verifypublicationreceipt), [bus_publish](interfaces.md#bus_publish) | Bounded local pilot |
 | Authorized peer-input materialization | Bind one accepted reveal to one preallocated local target attempt and immutable effective input without claiming a provider effect | [PeerInputDelivery](domain.md#peerinputdelivery), [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput), [`peer_input.materialized`](events.md#peer_inputmaterialized) | Implemented for exact bounded SWU |
 | Host terminal-output handoff | Persist exact host-observed completed response bytes as shared content plus producer-turn evidence, then materialize one authorized required downstream slot in L0 | [HostTerminalResponseArtifact](domain.md#hostterminalresponseartifact), [SourceToSlotMapping](domain.md#sourcetoslotmapping), [MaterializeHostWorkflowInput](operations.md#materializehostworkflowinput), [AuthorizeHostWorkflowTurnLaunch](operations.md#authorizehostworkflowturnlaunch) | Specified for 1 producer → 1 required slot; not implemented |
+| [Resumable agent continuation](capabilities/resumable-agent-continuation.md) | Park a terminal turn without polling, then resume the same provider session when possible or use an explicit reconstruction fallback | [AgentContinuation](domain.md#agentcontinuation), [AgentContinuationLifecycle](states.md#agentcontinuationlifecycle), [ResumableFeedbackWorkflow](workflows.md#resumablefeedbackworkflow) | Specified for one author-reviewer-author turn graph; not implemented |
 | Sealed reveal and commitment | Freeze a collection, publish an authorized manifest, commit one result and hand it off | [GroupDeliberationWorkflow](workflows.md#groupdeliberationworkflow), [GroupLifecycle](states.md#grouplifecycle), [RevealManifest](domain.md#revealmanifest) | Specified; broader runtime gated |
 | Recovery and official closure | Recover local effects, reconcile cross-store rows and elect one audit close | [Persistence and replay](persistence-and-replay.md), [ExternalEffectReconciliationWorkflow](workflows.md#externaleffectreconciliationworkflow), [CancelRun](operations.md#cancelrun) | Mixed; cutover blocked |
 | Read and accountability | Rebuild cursor-addressable state and preserve immutable usage/evidence semantics | [GetRuntimeProjection](queries.md#getruntimeprojection), [RecordUsageObservation](operations.md#recordusageobservation), [Observability](observability.md) | Bounded local pilot |
@@ -165,6 +186,7 @@ Provides cursor-addressable, rebuildable run views and immutable provider-attrib
 | ACI-D13 | Effective model input, raw provider output and accepted bus message are separate immutable records. | [ACI-R9](rules.md#aci-r9--input-output-and-accepted-message-are-distinct-evidence) |
 | ACI-D14 | Authenticated runtime context supplies authority identities; agent payloads cannot self-assert them. | [ACI-R2](rules.md#aci-r2--runtime-derived-authority) |
 | ACI-D15 | Provider-reported usage is immutable, nullable and aggregated without claiming billing equivalence. | [Usage and cost accountability](observability.md#usage-and-cost-accountability-oq-aci10) |
+| ACI-CONT-001 | Same-session continuation is preferred but reconstruction evidence is authoritative; the first feedback workflow is a finite author-reviewer-author turn graph. | [Accepted continuation decision](../../../decisions/aci-resumable-agent-continuation.md) |
 | ACI-PG-001 / ACPD-4 / ATD-9 | ACI Protocol Governance owns profile, binding, recipe/DAG and deterministic compilation only through non-authoritative `DispatchCandidate`; capability resolution, final `DispatchSpec`, confirmation and execution retain their existing owners. | [Protocol compilation candidate v1](protocol-compilation.md) |
 Candidate labels in the discovery are ratified as DomainSpec contracts by this baseline. The
 implementation matrix above identifies the subset with bounded local-pilot evidence; all other
@@ -207,6 +229,32 @@ provider launch, voting/commit, audit-ledger materialization, sole-writer eviden
 | Operation | [MaterializeAuthorizedPeerInput](operations.md#materializeauthorizedpeerinput) | Operation | Implemented for exact bounded SWU |
 | Event | [`peer_input.materialized`](events.md#peer_inputmaterialized) | Event | Implemented for exact bounded SWU |
 | Interface method | [DeliberationBus.materializeRevealInput](interfaces.md#internal-deliberationbus) | Interface method | Implemented for exact bounded SWU |
+
+### Bounded SPEC amendment: resumable feedback continuation
+
+This v0.5.0 amendment promotes only [ACI-CONT-001](../../../decisions/aci-resumable-agent-continuation.md):
+one terminal author turn may be parked without a running attempt and later resumed after one exact
+review output satisfies its confirmed slot. The same provider session is preferred, while an
+immutable reconstruction snapshot remains the correctness boundary.
+
+| Amendment element | Contract | DomainSpec type | Status |
+|---|---|---|---|
+| Capability | [Resumable agent continuation](capabilities/resumable-agent-continuation.md) | Capability | Specified; not implemented |
+| Entity | [AgentContinuation](domain.md#agentcontinuation) | Entity | Specified; not implemented |
+| Entity | [ContinuationInputMapping](domain.md#continuationinputmapping) | Entity | Specified; not implemented |
+| Mapping | [ContinuationContributionsToEffectiveInput](mappings.md#continuationcontributionstoeffectiveinput) | Mapping | Specified; not implemented |
+| State machine | [AgentContinuationLifecycle](states.md#agentcontinuationlifecycle) | State Machine | Specified; not implemented |
+| Operations | [Suspend](operations.md#suspendagentcontinuation), [Resume](operations.md#resumeagentcontinuation), [Reconstruct](operations.md#reconstructagentcontinuation), [Cancel](operations.md#cancelagentcontinuation) | Operations | Specified; not implemented |
+| Events | [`continuation.*`](events.md#continuationsuspended) | Events | Specified; not implemented |
+| Rule | [ACI-R21](rules.md#aci-r21--continuation-is-resumable-state-never-hidden-authority) | Rule | Specified; not implemented |
+| Workflow | [ResumableFeedbackWorkflow](workflows.md#resumablefeedbackworkflow) | Workflow | Specified; not implemented |
+| Interface | [AgentAdapter continuation methods](interfaces.md#internal-agentadapter) | Interface extension | Specified; not implemented |
+| Tests | [T-ACI-CONT1 through T-ACI-CONT9](../TEST-SPEC.md#bounded-resumable-feedback) | Test obligations | Specified; not implemented |
+
+The bounded graph is exactly `author:0 -> reviewer:0 -> author:1`. Confirmation freezes the two
+continuation input mappings, input order, deadline, resume policy, reconstruction permission and loop
+ceiling one. Arbitrary cycles, generic inboxes, provider-memory-only correctness and automatic
+fallback from an unknown resume effect remain excluded.
 
 ### Bounded SPEC amendment: protocol compilation candidate v1
 
@@ -260,6 +308,40 @@ in [protocol-compilation.md](protocol-compilation.md); this index does not dupli
 | OQ-ACP3 | **Still open beyond v1:** candidate-to-confirmation mapping is not promoted. Future confirmation accepts the exact displayed `dispatch_spec_digest`, never the candidate digest. |
 | OQ-ACP4 through OQ-ACP8 | **Unchanged / deferred:** mutating workflows, convergence, cancellation, assurance variants and runtime interaction semantics are not part of pure candidate compilation. |
 
+## Bounded SPEC amendment: runtime confirmation authority
+
+The human-approved CONF-000 contract is specified in
+[Runtime Confirmation Authority v1](confirmation-authority.md). It adds the immutable
+[ConfirmationObservation](domain.md#confirmationobservation), separates pending-sheet,
+`DispatchSpec` and complete-authority digests, and freezes the bounded
+[ConfirmedTurnGraph](domain.md#confirmedturngraph) plus its two continuation mappings. This is a
+contract/golden-vector amendment. CONF-001 subsequently implemented and independently reviewed
+migration `012` and the single-writer atomic acceptance unit only through durable
+`opening_pending`, with one pending/unclaimed audit-opening intent and zero external action. The
+bounded evidence is [CONF-001](../development/invoke-runs/20260831-resumable-feedback/evidence/CONF-001.md)
+at `sha256:62e5996089639baee17a2bc9959e8b0376c5978363865cd00cc3b484827fcd14`;
+it authorizes no audit materialization/verification, effect claim, provider/tool start, service/API
+surface or production cutover.
+
+## Bounded SPEC amendment: POLICY-000 execution-policy contracts
+
+The dedicated [execution-policy capability](capabilities/execution-policy-authority.md) owns the
+coherent L0 contract across its domain values, [ACI-R16](rules.md#aci-r16--canonical-contract-policy),
+pure [parser](interfaces.md#internal-executionpolicycontractparser),
+[T-ACI-POL0-1 through T-ACI-POL0-8](TEST-SPEC.md#policy-000-l0-test-matrix) and reviewed design
+evidence. Status remains specified with implementation separately gated: no product selection,
+persistence, runtime authority or effect is created.
+
+## Bounded SPEC amendment: POLICY-001 synthetic-authority lineage
+
+The same [execution-policy capability](capabilities/execution-policy-authority.md) owns the L1
+lineage invariants, test-only harness boundary and T-ACI-POL1-1 through T-ACI-POL1-8. The digest-pinned
+[persistence pattern](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md)
+(`sha256:d8eae9829069631caaef769635b3748b5440d5bfab4aacaf682f736eb546d84e`) governs transaction,
+replay/conflict, failpoint, reopen and lost-response mechanics. Status remains specified with
+implementation separately work-pack/readiness/review-gated; no production surface, runtime
+authority row, external action or POLICY-002/L2 behavior is authorized.
+
 ## Concept Registry
 
 IDs below are unique and authoritative for registry synchronization.
@@ -267,6 +349,7 @@ IDs below are unique and authoritative for registry synchronization.
 | Concept | ID | Type |
 |---|---|---|
 | [ConfirmedDispatch](domain.md#confirmeddispatch) | `agents-communication-infra.ConfirmedDispatch` | Entity |
+| [ConfirmedTurnGraph](domain.md#confirmedturngraph) | `agents-communication-infra.ConfirmedTurnGraph` | Entity |
 | [Run](domain.md#run) | `agents-communication-infra.Run` | Entity |
 | [Group](domain.md#group) | `agents-communication-infra.Group` | Entity |
 | [Seat](domain.md#seat) | `agents-communication-infra.Seat` | Entity |
@@ -275,6 +358,8 @@ IDs below are unique and authoritative for registry synchronization.
 | [PublicationCandidate](domain.md#publicationcandidate) | `agents-communication-infra.PublicationCandidate` | Entity |
 | [EffectIntent](domain.md#effectintent) | `agents-communication-infra.EffectIntent` | Entity |
 | [Artifact](domain.md#artifact) | `agents-communication-infra.Artifact` | Entity |
+| [ExecutionPolicySyntheticLineageReceipt](domain.md#executionpolicysyntheticlineagereceipt) | `agents-communication-infra.ExecutionPolicySyntheticLineageReceipt` | Entity |
+| [ExecutionPolicyFakeDenialReceipt](domain.md#executionpolicyfakedenialreceipt) | `agents-communication-infra.ExecutionPolicyFakeDenialReceipt` | Entity |
 | [HostTerminalResponseArtifact](domain.md#hostterminalresponseartifact) | `agents-communication-infra.HostTerminalResponseArtifact` | Entity |
 | [SourceToSlotMapping](domain.md#sourcetoslotmapping) | `agents-communication-infra.SourceToSlotMapping` | Entity |
 | [HostWorkflowTurnBinding](domain.md#hostworkflowturnbinding) | `agents-communication-infra.HostWorkflowTurnBinding` | Entity |
@@ -286,6 +371,9 @@ IDs below are unique and authoritative for registry synchronization.
 | [PeerInputDelivery](domain.md#peerinputdelivery) | `agents-communication-infra.PeerInputDelivery` | Entity |
 | [GroupResult](domain.md#groupresult) | `agents-communication-infra.GroupResult` | Entity |
 | [DispatchSpec](domain.md#dispatchspec) | `agents-communication-infra.DispatchSpec` | Value Object |
+| [ConfirmationObservation](domain.md#confirmationobservation) | `agents-communication-infra.ConfirmationObservation` | Entity |
+| [ConfirmedAuthorityEnvelope](domain.md#confirmedauthorityenvelope) | `agents-communication-infra.ConfirmedAuthorityEnvelope` | Value Object |
+| [ConfirmedDispatchIdentitySeed](domain.md#confirmeddispatchidentityseed) | `agents-communication-infra.ConfirmedDispatchIdentitySeed` | Value Object |
 | [SkillExecutionProfile](protocol-compilation.md#skillexecutionprofile) | `agents-communication-infra.SkillExecutionProfile` | Value Object |
 | [ProtocolRecipe](protocol-compilation.md#protocolrecipe) | `agents-communication-infra.ProtocolRecipe` | Entity |
 | [SkillProtocolInvocation](protocol-compilation.md#skillprotocolinvocation) | `agents-communication-infra.SkillProtocolInvocation` | Value Object |
@@ -306,6 +394,9 @@ IDs below are unique and authoritative for registry synchronization.
 | [ResourceBudget](domain.md#resourcebudget) | `agents-communication-infra.ResourceBudget` | Value Object |
 | [SandboxPolicy](domain.md#sandboxpolicy) | `agents-communication-infra.SandboxPolicy` | Value Object |
 | [ExecutionAuthorityFence](domain.md#executionauthorityfence) | `agents-communication-infra.ExecutionAuthorityFence` | Value Object |
+| [ExecutionAuthorityFenceHarness](domain.md#executionauthorityfenceharness) | `agents-communication-infra.ExecutionAuthorityFenceHarness` | Value Object |
+| [ExecutionPolicyOracleFixture](domain.md#executionpolicyoraclefixture) | `agents-communication-infra.ExecutionPolicyOracleFixture` | Value Object |
+| [ExecutionPolicySyntheticLineageMember](domain.md#executionpolicysyntheticlineagemember) | `agents-communication-infra.ExecutionPolicySyntheticLineageMember` | Value Object |
 | [RuntimeCommand](domain.md#runtimecommand) | `agents-communication-infra.RuntimeCommand` | Value Object |
 | [RuntimeEventEnvelope](domain.md#runtimeeventenvelope) | `agents-communication-infra.RuntimeEventEnvelope` | Value Object |
 | [AggregateVersion](domain.md#aggregateversion) | `agents-communication-infra.AggregateVersion` | Value Object |
@@ -316,6 +407,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [VersionedReference](domain.md#versionedreference) | `agents-communication-infra.VersionedReference` | Value Object |
 | [ManifestEntry](domain.md#manifestentry) | `agents-communication-infra.ManifestEntry` | Value Object |
 | [ExecutionAuthorityMode](domain.md#executionauthoritymode) | `agents-communication-infra.ExecutionAuthorityMode` | Enum / Type |
+| [ConfirmationChannel](domain.md#confirmationchannel) | `agents-communication-infra.ConfirmationChannel` | Enum / Type |
 | [ReconciliationState](domain.md#reconciliationstate) | `agents-communication-infra.ReconciliationState` | Enum / Type |
 | [RetryClass](domain.md#retryclass) | `agents-communication-infra.RetryClass` | Enum / Type |
 | [EffectStatus](domain.md#effectstatus) | `agents-communication-infra.EffectStatus` | Enum / Type |
@@ -351,6 +443,9 @@ IDs below are unique and authoritative for registry synchronization.
 | [RuntimeCommandAPI](interfaces.md#external-runtime-command-api-http-or-equivalent-command-transport) | `agents-communication-infra.RuntimeCommandAPI` | Interface |
 | [AgentToolGateway](interfaces.md#external-agent-tool-gateway-mcp-or-equivalent) | `agents-communication-infra.AgentToolGateway` | Interface |
 | [ArtifactBoundary](interfaces.md#internal-artifact-boundary) | `agents-communication-infra.ArtifactBoundary` | Interface |
+| [ExecutionPolicyContractParser](interfaces.md#internal-executionpolicycontractparser) | `agents-communication-infra.ExecutionPolicyContractParser` | Interface |
+| [ExecutionPolicySyntheticLineageHarness](capabilities/execution-policy-authority.md#executionpolicysyntheticlineageharness-test-only) | `agents-communication-infra.ExecutionPolicySyntheticLineageHarness` | Interface |
+| [ExecutionPolicyFakeDenialHarness](interfaces.md#internal-executionpolicyfakedenialharness-test-only) | `agents-communication-infra.ExecutionPolicyFakeDenialHarness` | Interface |
 | [SandboxLauncher](interfaces.md#internal-sandboxlauncher) | `agents-communication-infra.SandboxLauncher` | Interface |
 | [AuditLedgerAppenderPort](interfaces.md#internal-audit-ledger-appender-port) | `agents-communication-infra.AuditLedgerAppenderPort` | Interface |
 | [ProtocolCompiler](protocol-compilation.md#protocolcompiler) | `agents-communication-infra.ProtocolCompiler` | Interface |
@@ -363,6 +458,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [AgentInvocationPlanToMaterializedInvocation](mappings.md#agentinvocationplantomaterializedinvocation) | `agents-communication-infra.AgentInvocationPlanToMaterializedInvocation` | Mapping |
 | [RawProviderOutputToCanonicalObservations](mappings.md#rawprovideroutputtocanonicalobservations) | `agents-communication-infra.RawProviderOutputToCanonicalObservations` | Mapping |
 | [BusPublicationToContribution](mappings.md#buspublicationtocontribution) | `agents-communication-infra.BusPublicationToContribution` | Mapping |
+| [ContinuationContributionsToEffectiveInput](mappings.md#continuationcontributionstoeffectiveinput) | `agents-communication-infra.ContinuationContributionsToEffectiveInput` | Mapping |
 | [RevealManifestToEffectiveInput](mappings.md#revealmanifesttoeffectiveinput) | `agents-communication-infra.RevealManifestToEffectiveInput` | Mapping |
 | [ReferenceScoutBundleToEffectiveInput](mappings.md#referencescoutbundletoeffectiveinput) | `agents-communication-infra.ReferenceScoutBundleToEffectiveInput` | Mapping |
 | [FrozenAuthorityToAuditLedgerRow](mappings.md#frozenauthoritytoauditledgerrow) | `agents-communication-infra.FrozenAuthorityToAuditLedgerRow` | Mapping |
@@ -377,6 +473,7 @@ IDs below are unique and authoritative for registry synchronization.
 | [CostCalculation](persistence-and-replay.md#pricing_sources-usage_rollups-and-cost_calculations) | `agents-communication-infra.CostCalculation` | Calculation |
 | [ExternalToolAdoptionPolicy](rules.md#aci-r15--external-tool-adoption-policy) | `agents-communication-infra.ExternalToolAdoptionPolicy` | Policy |
 | [CanonicalContractPolicy](rules.md#aci-r16--canonical-contract-policy) | `agents-communication-infra.CanonicalContractPolicy` | Policy |
+| [ACI-R23 synthetic fake denial](rules.md#aci-r23--synthetic-fake-denial-is-durable-without-attempted-effect) | `agents-communication-infra.SyntheticFakeDenialRule` | Rule |
 | [BoundaryValidationPolicy](rules.md#aci-r17--derived-boundary-validation-policy) | `agents-communication-infra.BoundaryValidationPolicy` | Policy |
 | [ProviderAdapterAdmissionGate](rules.md#aci-r18--provider-adapter-admission-gate) | `agents-communication-infra.ProviderAdapterAdmissionGate` | Rule |
 | [ACI-R19 reference bundle delivery](rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic) | `agents-communication-infra.ReferenceBundleDeliveryRule` | Rule |
@@ -391,6 +488,17 @@ IDs below are unique and authoritative for registry synchronization.
 | [GetVaultArtifact](canonical-vault-reads.md#getvaultartifact) | `agents-communication-infra.GetVaultArtifact` | Query |
 | [ListLogicalVaultEdges](canonical-vault-reads.md#listlogicalvaultedges) | `agents-communication-infra.ListLogicalVaultEdges` | Query |
 | [GetLogicalVaultEdge](canonical-vault-reads.md#getlogicalvaultedge) | `agents-communication-infra.GetLogicalVaultEdge` | Query |
+| [AgentContinuation](domain.md#agentcontinuation) | `agents-communication-infra.AgentContinuation` | Entity |
+| [ContinuationInputMapping](domain.md#continuationinputmapping) | `agents-communication-infra.ContinuationInputMapping` | Entity |
+| [SuspendAgentContinuation](operations.md#suspendagentcontinuation) | `agents-communication-infra.SuspendAgentContinuation` | Operation |
+| [ResumeAgentContinuation](operations.md#resumeagentcontinuation) | `agents-communication-infra.ResumeAgentContinuation` | Operation |
+| [ReconstructAgentContinuation](operations.md#reconstructagentcontinuation) | `agents-communication-infra.ReconstructAgentContinuation` | Operation |
+| [CancelAgentContinuation](operations.md#cancelagentcontinuation) | `agents-communication-infra.CancelAgentContinuation` | Operation |
+| [AgentContinuationLifecycle](states.md#agentcontinuationlifecycle) | `agents-communication-infra.AgentContinuationLifecycle` | State Machine |
+| [ResumableFeedbackWorkflow](workflows.md#resumablefeedbackworkflow) | `agents-communication-infra.ResumableFeedbackWorkflow` | Workflow |
+| [ACI-R21 continuation rule](rules.md#aci-r21--continuation-is-resumable-state-never-hidden-authority) | `agents-communication-infra.AgentContinuationRule` | Rule |
+| [`continuation.resumed`](events.md#continuationresumed) | `agents-communication-infra.AgentContinuationResumed` | Event |
+| [`continuation.reconstruction_requested`](events.md#continuationreconstruction_requested) | `agents-communication-infra.AgentContinuationReconstructionRequested` | Event |
 
 Other `RuntimeEventType` wire values and explicitly labeled internal transitions in `operations.md`
 remain closed vocabularies/decompositions of registered contracts rather than independently owned
@@ -403,11 +511,31 @@ The registry is the canonical index of the entities, values, operations, queries
 interfaces, workflows, mappings and evidence records defined by the aspect documents. Behavioral
 detail remains authoritative in the linked aspect; this index supplies stable identity and type.
 
+| Concept | Type | Key Constraints |
+|---|---|---|
+| [ConfirmationObservation](domain.md#confirmationobservation) | Entity | Immutable issuer-scoped identity `(issuer_ref, observation_id)`; trusted host evidence binds principal, channel, revision and presented digests. |
+| [ConfirmedDispatch](domain.md#confirmeddispatch) | Entity | Separates pending-sheet, dispatch-spec and complete-authority digests; identity replay returns the first receipt and divergent authority conflicts. |
+| [ConfirmedTurnGraph](domain.md#confirmedturngraph) | Entity | Server-derived `3` nodes, `2` edges, `1` continuation and exactly `2` ordered mappings. |
+| [ContinuationInputMapping](domain.md#continuationinputmapping) | Entity | Confirmation-frozen, deterministically identified; exactly two mappings at slot ordinals `0` and `1`. |
+| [ConfirmedAuthorityEnvelope](domain.md#confirmedauthorityenvelope) | Value Object | Closed canonical authority bytes exclude transport attempt metadata and define `confirmed_authority_digest`. |
+| [DispatchSpec](domain.md#dispatchspec) | Value Object | Canonical server-compiled logical spec; contains no caller-supplied runtime IDs. |
+| [ConfirmationChannel](domain.md#confirmationchannel) | Enum | Admitted trusted-host surface; chat and future UI observations share the same authority contract. |
+| [ExecutionAuthorityMode](domain.md#executionauthoritymode) | Enum | `runtime-managed` is required for runtime confirmation; `legacy-managed` creates no runtime authority. |
+| [ResourceBudget](domain.md#resourcebudget) | Value Object | Closed `aci.resource-budget@1` one-Attempt ceilings; dispatch limits remain separate and cannot be inferred. |
+| [SandboxPolicy](domain.md#sandboxpolicy) | Value Object | Closed `aci.sandbox-policy@1`; recursively default-deny, explicit grants only and no coercion/defaults. |
+| [ExecutionAuthorityFence](domain.md#executionauthorityfence) | Value Object | Production preimage-bound target-host cutover fact; POLICY-000 validates shape only. |
+| [ExecutionAuthorityFenceHarness](domain.md#executionauthorityfenceharness) | Value Object | Separate test schema rejected by the production fence parser before evidence resolution. |
+| [ExecutionPolicyOracleFixture](domain.md#executionpolicyoraclefixture) | Value Object | Exact fake deny-all aggregate for parser/digest oracles; never executable authority. |
+| [ExecutionPolicySyntheticLineageReceipt](domain.md#executionpolicysyntheticlineagereceipt) | Entity | Closed test-only receipt with independent key/identity replay and one digest over exactly seven ordered content bindings. |
+| [ExecutionPolicySyntheticLineageMember](domain.md#executionpolicysyntheticlineagemember) | Value Object | Closed ordinal/name/artifact/digest binding; additions, removals, reordering or drift change the lineage unit. |
+| [ExecutionPolicyFakeDenialReceipt](domain.md#executionpolicyfakedenialreceipt) | Entity | Closed durable test-only denial over the exact reopened lineage; two digest domains and exact reasons, with no attempted effect or executable authority. |
+
 ## Cross-Feature Dependencies
 
 - Human confirmation and the pending-sheet UI supply immutable approved bytes but do not execute.
 - The pending sheet may display protocol-compilation proposal evidence, but it is not an authority
-  source; future confirmation must accept the exact separately produced `dispatch_spec_digest`.
+  source. [Runtime Confirmation Authority v1](confirmation-authority.md) accepts the exact
+  separately produced `dispatch_spec_digest`; candidate-to-confirmation mapping remains deferred.
 - The engine audit ledger and validated appender retain exclusive physical authority over official
   opening and close rows.
 - Provider CLIs/APIs and artifact storage are outbound dependencies behind `AgentAdapter`,
@@ -454,6 +582,10 @@ general-runtime, materializer, provider and cutover slices.
 - [Architecture](architecture.md)
 - [Feature-wide test specification](../TEST-SPEC.md)
 - [Protocol-compilation executable test detail](TEST-SPEC.md)
+- [Execution-policy D0](../development/invoke-runs/20260831-resumable-feedback/plan/TECH-POLICY-D0.md)
+- [Execution-policy D0 independent review](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/TECH-D0-REVIEW.md)
+- [Execution-policy contract and synthetic lineage](capabilities/execution-policy-authority.md)
+- [POLICY-001 persistence pattern inventory](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md)
 - [Work pack](../WORK-PACK.md)
 
 ## Decision Precedence
@@ -469,6 +601,15 @@ ACPD-4 and ATD-9 bind protocol-compilation ownership only through
 `DispatchCandidate`. The closed v1 schemas in this SPEC take precedence over proposal details in
 their discoveries for the bounded compiler slice; those discoveries remain proposal evidence for
 persistent registry lifecycle, candidate-to-confirmation mapping and runtime behavior.
+For execution policy, the closed [value shapes](domain.md#resourcebudget),
+[ACI-R16](rules.md#aci-r16--canonical-contract-policy), pure
+[ExecutionPolicyContractParser](interfaces.md#internal-executionpolicycontractparser) and
+[T-ACI-POL0-1 through T-ACI-POL0-8](TEST-SPEC.md#policy-000-l0-test-matrix) specify POLICY-000 L0.
+Implementation remains separately descriptor/readiness/review-gated. The digest-pinned POLICY-001
+amendment specifies only isolated test persistence, replay/conflict/failpoint/reopen and production-
+parser rejection. POLICY-002 adds only twelve non-executable test selectors, one fake-denial table
+and one canonical receipt over the exact reopened lineage. These contracts settle no product-owned
+values and authorize no external action, real provider, production authority or POLICY-003/L3 work.
 
 ## Feature Concept Graph
 
@@ -476,6 +617,12 @@ persistent registry lifecycle, candidate-to-confirmation mapping and runtime beh
 |---|---|---|---|
 | `agents-communication-infra.RunExecutionWorkflow` | orchestrates | `agents-communication-infra.ConfirmRuntimeDispatch` | [workflow](workflows.md#runexecutionworkflow) |
 | `agents-communication-infra.RunExecutionWorkflow` | orchestrates | `agents-communication-infra.StartAgentAttempt` | [workflow](workflows.md#runexecutionworkflow) |
+| `agents-communication-infra.ResumableFeedbackWorkflow` | orchestrates | `agents-communication-infra.SuspendAgentContinuation` | [workflow](workflows.md#resumablefeedbackworkflow) |
+| `agents-communication-infra.ResumableFeedbackWorkflow` | orchestrates | `agents-communication-infra.ResumeAgentContinuation` | [workflow](workflows.md#resumablefeedbackworkflow) |
+| `agents-communication-infra.ResumableFeedbackWorkflow` | orchestrates | `agents-communication-infra.ReconstructAgentContinuation` | [workflow](workflows.md#resumablefeedbackworkflow) |
+| `agents-communication-infra.AgentContinuationRule` | enforces | `agents-communication-infra.ResumeAgentContinuation` | [rule](rules.md#aci-r21--continuation-is-resumable-state-never-hidden-authority) |
+| `agents-communication-infra.ResumeAgentContinuation` | produces | `agents-communication-infra.AgentContinuationResumed` | [event](events.md#continuationresumed) |
+| `agents-communication-infra.ContinuationContributionsToEffectiveInput` | maps | `agents-communication-infra.EffectiveInputArtifact` | [mapping](mappings.md#continuationcontributionstoeffectiveinput) |
 | `agents-communication-infra.GroupDeliberationWorkflow` | orchestrates | `agents-communication-infra.PublishBusContribution` | [workflow](workflows.md#groupdeliberationworkflow) |
 | `agents-communication-infra.ReceiptGatedPublicationWorkflow` | orchestrates | `agents-communication-infra.VerifyPublicationReceipt` | [workflow](workflows.md#receiptgatedpublicationworkflow) |
 | `agents-communication-infra.RuntimeCommandAPI` | exposes | `agents-communication-infra.ConfirmRuntimeDispatch` | [interface](interfaces.md#post-dispatchesdispatch_idconfirm) |
@@ -491,25 +638,42 @@ persistent registry lifecycle, candidate-to-confirmation mapping and runtime beh
 | `agents-communication-infra.ExternalToolAdoptionPolicy` | applies | `agents-communication-infra.StartAgentAttempt` | [rule](rules.md#aci-r15--external-tool-adoption-policy) |
 | `agents-communication-infra.CanonicalContractPolicy` | applies | `agents-communication-infra.StartAgentAttempt` | [rule](rules.md#aci-r16--canonical-contract-policy) |
 | `agents-communication-infra.BoundaryValidationPolicy` | applies | `agents-communication-infra.AcceptRuntimeCommand` | [rule](rules.md#aci-r17--derived-boundary-validation-policy) |
+| `agents-communication-infra.ExecutionPolicySyntheticLineageReceipt` | contains | `agents-communication-infra.ExecutionPolicySyntheticLineageMember` | [domain](domain.md#executionpolicysyntheticlineagereceipt) |
 | `agents-communication-infra.ProviderAdapterAdmissionGate` | enforces | `agents-communication-infra.StartAgentAttempt` | [rule](rules.md#aci-r18--provider-adapter-admission-gate) |
 | `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.ListVaultArtifacts` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
 | `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.GetVaultArtifact` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
 | `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.ListLogicalVaultEdges` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
 | `agents-communication-infra.VaultReadAPI` | exposes | `agents-communication-infra.GetLogicalVaultEdge` | [vault reads](canonical-vault-reads.md#vaultreadapi) |
 
+The execution-policy capability connects exact bytes to its pure parser and test-only lineage
+harness. The canonical relationship taxonomy has no `Interface -> Value Object/Entity`
+parsing/persistence edge, so the Feature Concept Graph intentionally does not invent one. The
+contract relations are explicit here:
+
+| Interface | Contract relation (not a canonical graph edge) | Value contracts | Evidence |
+|---|---|---|---|
+| `agents-communication-infra.ExecutionPolicyContractParser` | strictly parses and validates exact supplied bytes without I/O or authority | `ResourceBudget`, `SandboxPolicy`, `ExecutionAuthorityFence`, `ExecutionAuthorityFenceHarness`, `ExecutionPolicyOracleFixture` | [interface](interfaces.md#internal-executionpolicycontractparser), [domain](domain.md#resourcebudget), [tests](TEST-SPEC.md#policy-000-l0-test-matrix) |
+| `agents-communication-infra.ExecutionPolicySyntheticLineageHarness` | persists and reopens one exact test-only seven-member unit without a production export or authority row | `ExecutionPolicySyntheticLineageReceipt`, `ExecutionPolicySyntheticLineageMember`, `Artifact` | [capability contract](capabilities/execution-policy-authority.md#policy-001l1-lineage-invariants), [persistence inventory](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md) |
+| `agents-communication-infra.ExecutionPolicyFakeDenialHarness` | reopens the exact lineage and routes closed test labels to one durable denied receipt without invoking the named action | `ExecutionPolicyFakeDenialReceipt`, `ExecutionPolicySyntheticLineageReceipt` | [interface](interfaces.md#internal-executionpolicyfakedenialharness-test-only), [rule](rules.md#aci-r23--synthetic-fake-denial-is-durable-without-attempted-effect), [tests](TEST-SPEC.md#policy-002-l2-test-matrix) |
+
+The existing canonical edge `CanonicalContractPolicy applies StartAgentAttempt` remains the later
+operational policy relation; it does not make the pure parser a launcher or expose that operation.
+
 ## Aspect Docs
 
 | Aspect | Contains |
 |---|---|
 | [Architecture](architecture.md) | Six views, boundaries, decisions, risks and implementation gate |
+| Capability specifications | [Execution-policy contract, synthetic lineage and fake denial](capabilities/execution-policy-authority.md); [resumable agent continuation](capabilities/resumable-agent-continuation.md) |
 | [Glossary](glossary.md) | Plain-language definitions for the registry |
 | [Domain](domain.md) | Entities, values and enums |
+| [Runtime confirmation authority](confirmation-authority.md) | Immutable observation, digest taxonomy, bounded projection, deterministic identities, atomic acceptance and golden vectors |
 | [Protocol compilation](protocol-compilation.md) | Bounded profile/binding/recipe/invocation schemas, pure candidate compilation, mapping, storage seam and tests |
 | [Canonical vault reads](canonical-vault-reads.md) | W0 stateless source snapshots, read projections, four queries and effect-free rules |
 | [Rules](rules.md) | Authority, replay, sealing, durability and evidence invariants |
 | [Persistence and replay](persistence-and-replay.md) | SQLite/WAL contract, tables, crash boundaries and replay proof |
 | [Operations](operations.md) | Mutation contracts |
-| [Interfaces](interfaces.md) | Command, agent-tool, journal, adapter, bus and artifact boundaries |
+| [Interfaces](interfaces.md) | Command, agent-tool, journal, adapter, bus, pure execution-policy parser and artifact boundaries |
 | [Queries](queries.md) | Rebuildable reads and visibility rules |
 | [Mappings](mappings.md) | Canonical transformations and rollups |
 | [Workflows](workflows.md) | Run, group, publication, materialization, recovery and cutover |
@@ -524,7 +688,7 @@ The feature depends on human confirmation, the current validated audit-ledger ap
 
 ## Gate Result
 
-- Spec authoring: **pass** — ACI-D1–D15, ETD-1–ETD-7 and ACPD-4/ATD-9 have traceable contracts; target-agent reference delivery and protocol compilation v1 are separately gated slices.
+- Spec authoring: **pass** — ACI-D1–D15, ETD-1–ETD-7, ACPD-4/ATD-9 and ACI-CONT-001 have traceable contracts; target-agent reference delivery, resumable feedback and protocol compilation v1 are separately gated slices.
 - Bounded local ACI/APT pilot: **pass** — Stages B–G provide execution evidence for the exact
   journal/profile/projection, loopback composition, bridge, project hook wrapper after host loading,
   Reference Scout, ingestion, replay and recovery slices listed in the implementation matrix. No
@@ -541,6 +705,34 @@ The feature depends on human confirmation, the current validated audit-ledger ap
 - Target-attempt Reference Scout delivery: **specified / not implemented** — ACI now owns the
   atomic delivery and effective-input contract, while access, declared use and claim support remain
   separate downstream evidence.
+- Resumable feedback continuation: **specified / not implemented** — the finite turn graph,
+  reconstruction invariant and adapter seam are ratified; planner/readiness, fake-adapter,
+  crash/replay and live restart-retention evidence remain blocking.
+- Runtime confirmation authority: **CONF-000 specified-reviewed; CONF-001 implemented-reviewed only
+  through durable `opening_pending`**. The writer evidence is
+  [CONF-001](../development/invoke-runs/20260831-resumable-feedback/evidence/CONF-001.md) at
+  `sha256:62e5996089639baee17a2bc9959e8b0376c5978363865cd00cc3b484827fcd14`.
+  One pending/unclaimed audit-opening intent and zero external action are the ceiling; audit
+  materialization/verification, effect claims, provider/tool execution, service/API and production
+  cutover remain unauthorized.
+- POLICY-000 execution-policy oracle: **specified / implementation separately gated** - the
+  [execution-policy capability](capabilities/execution-policy-authority.md),
+  [canonical rule](rules.md#aci-r16--canonical-contract-policy), [pure parser](interfaces.md#internal-executionpolicycontractparser) and
+  [L0 tests](TEST-SPEC.md#policy-000-l0-test-matrix) close the L0 specification. POLICY-000
+  authorizes no L2 behavior; POLICY-002 is specified separately below. Product values and L3
+  target-host enforcement remain deferred.
+- POLICY-001 synthetic-authority lineage: **specified / implementation separately gated** - the
+  [L1 invariants, harness and tests](capabilities/execution-policy-authority.md#policy-001l1-lineage-invariants) plus the digest-pinned
+  [persistence pattern](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md)
+  specify only isolated seven-member atomic persistence, replay/conflict/failpoint/reopen and
+  production-parser rejection. No production surface, runtime authority row, external action or L2
+  behavior is authorized.
+- POLICY-002 fake deny-all: **specified / implementation separately gated** - the exact reopened
+  POLICY-001 lineage, closed twelve-label corpus, canonical denial receipt, one-table atomic
+  persistence/replay/reopen and zero-action/production/L3 firewalls are defined by
+  [ACI-R23](rules.md#aci-r23--synthetic-fake-denial-is-durable-without-attempted-effect) and
+  [T-ACI-POL2-1 through T-ACI-POL2-8](TEST-SPEC.md#policy-002-l2-test-matrix). It authorizes no
+  product values, external callable/action, real provider, production fence or host enforcement.
 - `SWU-ACI-BUS-DELIVERY-001` specification/planner gate: **pass for local no-provider-effect
   mutation only** — deterministic adapter translation is limited to wrapper/materialized-invocation
   construction; provider adapters and effect claim/start, voting/commit, audit-ledger
@@ -551,6 +743,13 @@ The feature depends on human confirmation, the current validated audit-ledger ap
 
 | Version | Date | Change |
 |---|---|---|
+| 0.6.4 | 2026-09-01 | Specifies POLICY-002/L2 fake-only denial over the exact reopened POLICY-001 lineage, including twelve non-executable labels, one canonical durable receipt and zero external/production/L3 authority. |
+| 0.6.3 | 2026-09-01 | Routes POLICY-000/L0 and POLICY-001/L1 through one dedicated non-executable capability contract, including the L1 test-only harness and test obligations, without changing their implementation gates or L2-L3 exclusions. |
+| 0.6.2 | 2026-09-01 | Specifies POLICY-001 test-only seven-member synthetic lineage, receipt identity/digest, atomic persistence and reopen boundary; leaves implementation separately gated and L2-L3 deferred. |
+| 0.6.1 | 2026-09-01 | Registers the pure execution-policy parser and current L0 contract relations/status; aligns CONF-001 only to its digest-pinned durable `opening_pending` evidence ceiling. |
+| 0.6.0 | 2026-09-01 | Freezes POLICY-000 L0 closed execution-policy contracts and separate harness/oracle authority domains; leaves product values and L1-L3 operations deferred. |
+| 0.5.1 | 2026-08-31 | Adds the CONF-000 runtime-confirmation authority aspect and registers its observation, authority-envelope, identity-seed, confirmed-graph and channel concepts; runtime implementation remains separate. |
+| 0.5.0 | 2026-08-31 | Promotes ACI-CONT-001 for one finite author-reviewer-author turn graph with same-session-preferred continuation, exact reconstruction fallback, explicit cancel/expiry semantics and T-ACI-CONT1 through CONT9; implementation remains blocked pending planner/readiness. |
 | 0.4.0 | 2026-08-03 | Promotes ACPD-4/ATD-9 and specifies pure, deterministic, non-authoritative protocol compilation candidate v1 for one frozen package with compiled and required-unsupported read-only cases; confirmation and runtime effects remain blocked. |
 
 See [CHANGELOG.md](../CHANGELOG.md) for earlier feature-wide history.

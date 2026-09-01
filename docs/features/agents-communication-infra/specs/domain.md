@@ -5,8 +5,8 @@ is_session: false
 layer: domain
 nature: [technical, reference]
 status: draft
-version: 0.4.1
-last_updated: 2026-08-10
+version: 0.6.4
+last_updated: 2026-09-01
 ---
 
 # Domain: Agents Communication Infra
@@ -17,24 +17,113 @@ ledger co-owners of runtime state.
 
 ## Entities
 
+### ConfirmationObservation
+
+One immutable trusted-host entity proving that a human approved one presented dispatch revision.
+Chat and a future UI are equivalent transport surfaces: both must produce this same closed
+canonical value through an admitted issuer. Its persistent identity is the issuer-scoped pair
+`(issuer_ref, observation_id)`; its complete canonical bytes and digest are immutable integrity
+evidence rather than an alternate identity.
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `schema` | string | yes | Must equal `aci.confirmation-observation@1`. |
+| `observation_id` | string | yes | Stable issuer-scoped evidence identifier; retries reuse it. |
+| `action` | string | yes | Must equal `approve_runtime_dispatch`. |
+| `channel` | [ConfirmationChannel](#confirmationchannel) | yes | Surface on which the approval was observed. |
+| `issuer_ref` | [VersionedReference](#versionedreference) | yes | Admitted host adapter identity and digest. |
+| `issuer_evidence_ref` | [ArtifactId](#artifactid) | yes | Immutable evidence that the admitted issuer observed the interaction. |
+| `issuer_evidence_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 digest of the exact issuer-evidence bytes. |
+| `human_principal_id` | string | yes | Human principal derived from authenticated host context. |
+| `dispatch_id`, `dispatch_revision` | string | yes | Exact approved presentation. |
+| `presented_pending_sheet_digest` | [ContentDigest](#contentdigest) | yes | Digest of the exact canonical bytes shown for approval. |
+| `presented_dispatch_spec_digest` | [ContentDigest](#contentdigest) | yes | Digest produced by the trusted preview compilation shown before approval. |
+| `observed_at` | timestamp | yes | Issuer-recorded observation time; not event-ordering authority. |
+
+The command boundary dereferences the observation, verifies its artifact digest, issuer,
+authenticated principal, dispatch/revision and both presented digests, then recompiles the same
+pending bytes. A mismatched principal, scope or preview digest rejects before runtime authority
+exists.
+
+**Identity:** `(issuer_ref, observation_id)`; immutable after first acceptance. Equal identities
+with different canonical bytes are an integrity conflict.
+
+**Created by:** the admitted trusted-host confirmation issuer; accepted and persisted only by
+[ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch).
+
 ### ConfirmedDispatch
 
-The immutable authorization captured from the human-approved pending sheet. A rerun or material
-change creates another dispatch rather than mutating this entity.
+The immutable authorization accepted from one verified
+[ConfirmationObservation](#confirmationobservation). It names each authority layer explicitly;
+neither a pending sheet, a compiled spec, a compatibility marker nor a transport receipt is the
+whole authorization by itself. A rerun, new observation or material change creates another
+dispatch rather than mutating this entity.
 
 | Field | Type | Required | Description |
 |---|---|---:|---|
 | `dispatch_id` | string | yes | Stable audit identity. |
-| `source_bytes_artifact_id` | [ArtifactId](#artifactid) | yes | Exact approved bytes. |
-| `dispatch_spec` | [DispatchSpec](#dispatchspec) | yes | Compiled executable contract. |
-| `digest` | [ContentDigest](#contentdigest) | yes | Digest over the canonical frozen authority. |
-| `authority_mode` | [ExecutionAuthorityMode](#executionauthoritymode) | yes | Must equal `runtime-managed`; preserves the pre-confirmation cutover choice as accepted runtime evidence. |
+| `dispatch_revision` | string | yes | Exact revision presented to and approved by the human. |
+| `pending_sheet_artifact_id` | [ArtifactId](#artifactid) | yes | Exact approved source bytes. |
+| `pending_sheet_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of the exact approved canonical bytes; BOM, newline and insignificant transport whitespace are rejected rather than admitted or repaired. |
+| `dispatch_spec_artifact_id` | [ArtifactId](#artifactid) | yes | Canonical server-compiled [DispatchSpec](#dispatchspec) bytes. |
+| `dispatch_spec_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of those canonical spec bytes. |
+| `confirmation_observation_artifact_id` | [ArtifactId](#artifactid) | yes | Immutable [ConfirmationObservation](#confirmationobservation) bytes from an admitted issuer. |
+| `confirmation_observation_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of the canonical observation bytes. |
+| `capability_resolution_artifact_id` | [ArtifactId](#artifactid) | yes | Frozen effective semantic capability resolution. |
+| `capability_resolution_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of the canonical capability-resolution bytes. |
+| `confirmed_turn_graph_artifact_id` | [ArtifactId](#artifactid) | yes | Server-derived [ConfirmedTurnGraph](#confirmedturngraph) artifact. |
+| `confirmed_turn_graph_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of the canonical confirmed graph bytes. |
+| `continuation_mapping_set_artifact_id` | [ArtifactId](#artifactid) | yes | Canonical ordered set of the two confirmation-frozen continuation mappings. |
+| `continuation_mapping_set_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of that canonical mapping-set artifact. |
+| `confirmed_authority_artifact_id` | [ArtifactId](#artifactid) | yes | Canonical [ConfirmedAuthorityEnvelope](#confirmedauthorityenvelope) bytes. |
+| `confirmed_authority_digest` | [ContentDigest](#contentdigest) | yes | Identity-level digest of the complete frozen authority envelope. |
+| `execution_authority_mode` | [ExecutionAuthorityMode](#executionauthoritymode) | yes | Must equal `runtime-managed`; preserves the pre-confirmation cutover choice as accepted runtime evidence. |
 | `confirmed_by` | string | yes | Authenticated human principal. |
-| `confirmed_at` | timestamp | yes | Recorded confirmation observation. |
+| `confirmed_at` | timestamp | yes | Observation time copied from the verified observation for indexed query only. |
 
 **Identity:** `dispatch_id`; immutable after acceptance. An accepted
 [ConfirmedDispatch](#confirmeddispatch) creates exactly one [Run](#run); choosing
-`legacy-managed` routes the dispatch away from `ConfirmRuntimeDispatch` and creates neither entity.
+`legacy-managed` routes the dispatch away from
+[ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) and creates neither entity. The
+closed confirmation semantics are governed by
+[Runtime Confirmation Authority v1](confirmation-authority.md).
+
+**Identity and replay:** A deliberate rerun uses a new `dispatch_id`. A retry with the same
+`dispatch_id` and the same `confirmed_authority_digest` returns the byte-identical first receipt,
+including when it uses a new idempotency key, and creates no rows, events or effects. The same
+`dispatch_id` with a different authority digest is a permanent `confirmed_authority_conflict` with
+no mutation. Key/command-digest replay remains an additional transport-level check, not the
+identity of the confirmed authority.
+
+### ConfirmedTurnGraph
+
+The server-derived, finite expansion of the confirmed logical workflow. The first admitted graph is
+exactly `author:0 -> reviewer:0 -> author:1`: three turn identities, two ordered edges, one
+continuation binding, two source-message identities and exactly two ordered
+[ContinuationInputMapping](#continuationinputmapping) records. Callers may provide the logical
+pending workflow but never this expanded authority or its identities.
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `graph_id` | string | yes | Deterministically derived graph identity. |
+| `dispatch_id`, `run_id` | string | yes | Owning confirmed authority and run. |
+| `dispatch_spec_digest` | [ContentDigest](#contentdigest) | yes | Binds the projection to the exact confirmed canonical spec. |
+| `graph_artifact_id` | [ArtifactId](#artifactid) | yes | Canonical expanded graph bytes. |
+| `graph_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of the canonical graph bytes. |
+| `continuation_id` | string | yes | Sole preallocated author-turn continuation boundary. |
+| `mapping_set_artifact_id` | [ArtifactId](#artifactid) | yes | Canonical two-mapping set. |
+| `mapping_set_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of that mapping set. |
+| `node_count`, `edge_count`, `mapping_count` | integer | yes | Must equal `3`, `2` and `2`. |
+| `identity_derivation_ref` | [VersionedReference](#versionedreference) | yes | Exact algorithm contract used for all preallocated IDs. |
+
+For this bounded version, each declared `operation_id` is the stable turn identity and is paired
+with its seat, group, round, role and turn ordinal. The bound [DispatchSpec](#dispatchspec).`group_graph` contains
+`loop_ceiling=1`; any extra/missing node, edge, mapping or continuation binding rejects
+confirmation.
+
+**Identity:** `graph_id`; immutable after confirmation.
+
+**Created by:** [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch).
 
 ### Run
 
@@ -45,7 +134,7 @@ but not the official audit-ledger row.
 |---|---|---:|---|
 | `run_id` | string | yes | Runtime aggregate identity. |
 | `dispatch_id` | string | yes | Frozen authorization source. |
-| `spec_digest` | [ContentDigest](#contentdigest) | yes | Exact confirmed spec. |
+| `dispatch_spec_digest` | [ContentDigest](#contentdigest) | yes | Exact canonical confirmed spec. |
 | `aggregate_version` | [AggregateVersion](#aggregateversion) | yes | Current contiguous CAS version. |
 | `state_hash` | [ContentDigest](#contentdigest) | yes | Hash of canonical reduced state. |
 | `opening_state` | [ReconciliationState](#reconciliationstate) | yes | Cross-store opening status. |
@@ -120,6 +209,92 @@ it is never accepted from an agent-authored payload.
 
 **Lifecycle:** See [AttemptLifecycle](states.md#attemptlifecycle).
 
+### AgentContinuation
+
+One bounded opportunity to resume a terminal agent turn after declared input dependencies become
+satisfied. It preserves an exact reconstruction path whether or not the host retains a
+provider-native session. A continuation is not a running [Attempt](#attempt), a generic peer inbox,
+or authority for the agent to poll the bus.
+
+**Authority:** [ACI-CONT-001](../../../decisions/aci-resumable-agent-continuation.md).
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `continuation_id` | string | yes | Stable identity preallocated by the confirmed turn graph for one wait/resume boundary. |
+| `dispatch_id` | string | yes | Runtime-derived parent scope. |
+| `seat_id` | [SeatId](#seatid) | yes | Logical seat that may continue. |
+| `agent_instance_id` | string | yes | Instance eligible for same-session resume while its handle remains valid. |
+| `source_attempt_id` | string | yes | Terminal attempt whose work and context are being continued. |
+| `source_turn_ordinal` | integer | yes | Completed turn; non-negative. |
+| `target_turn_ordinal` | integer | yes | Exactly `source_turn_ordinal + 1` in the bounded slice. |
+| `input_mapping_ids` | ordered list<string> | yes | Exactly two confirmed [ContinuationInputMapping](#continuationinputmapping) identities: prior author output, then review output. |
+| `awaited_mapping_ids` | ordered list<string> | yes | Non-empty subset of `input_mapping_ids` whose official contributions were absent at suspension. |
+| `context_snapshot_ref` | [ArtifactId](#artifactid) | yes | Immutable reconstruction base accepted before suspension. |
+| `provider_continuation_ref` | string | no | Opaque, access-controlled adapter handle; never execution authority. |
+| `provider_continuation_ref_digest` | [ContentDigest](#contentdigest) | no | Equality/correlation digest without exposing the opaque handle. |
+| `resume_policy_ref` | [VersionedReference](#versionedreference) | yes | Bounded policy frozen at confirmation. |
+| `deadline` | timestamp | yes | Time after which no resume may be authorized. |
+| `state` | string | yes | Current [AgentContinuationLifecycle](states.md#agentcontinuationlifecycle) state. |
+| `resume_mode` | string | no | Set at authorization to `same_session` or `reconstruct`; absent before authorization. |
+| `version` | integer | yes | Aggregate compare-and-set version. |
+
+```text
+Attempt(source_attempt_id).dispatch_id = dispatch_id
+Attempt(source_attempt_id).seat_id = seat_id
+Attempt(source_attempt_id).agent_instance_id = agent_instance_id
+Attempt(source_attempt_id).state in {completed, failed, cancelled, unknown}
+target_turn_ordinal = source_turn_ordinal + 1
+resume_mode = same_session => provider_continuation_ref exists
+                            and target_attempt.agent_instance_id = agent_instance_id
+resume_mode = reconstruct => definitive_provider_continuation_loss_event exists
+                           and target_attempt.seat_id = seat_id
+                           and target_attempt.agent_instance_id != agent_instance_id
+unknown_resume_effect_outcome => no reconstruction_start_effect
+```
+
+The provider handle may improve continuity, but correctness derives from
+`context_snapshot_ref`, the confirmed continuation input mappings and the newly materialized
+[EffectiveInputArtifact](#effectiveinputartifact). Definitive handle loss may select the confirmed
+reconstruction branch. An unknown resume outcome cannot silently start a replacement because that
+could duplicate physical work.
+
+**Lifecycle:** [AgentContinuationLifecycle](states.md#agentcontinuationlifecycle).
+**Operations:** [SuspendAgentContinuation](operations.md#suspendagentcontinuation),
+[ResumeAgentContinuation](operations.md#resumeagentcontinuation),
+[ReconstructAgentContinuation](operations.md#reconstructagentcontinuation), and
+[CancelAgentContinuation](operations.md#cancelagentcontinuation).
+
+### ContinuationInputMapping
+
+One confirmation-frozen authorization for an official bus contribution from an exact producer turn
+to occupy one slot in a later continuation input. It is runtime-managed and is not a bus read grant
+for either agent.
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `mapping_id`, `mapping_version` | string, integer | yes | Immutable mapping identity and frozen schema/version marker; this slice fixes `mapping_version=1`. |
+| `dispatch_id`, `continuation_id` | string | yes | Exact parent and confirmation-preallocated continuation scope. |
+| `source_group_id`, `source_seat_id`, `source_operation_id` | string, [SeatId](#seatid), string | yes | Exact authenticated producer selector. |
+| `source_turn_ordinal`, `source_round_id` | integer, string | yes | Exact logical turn and protocol round bound to `source_operation_id` by the confirmed turn graph. |
+| `source_message_id`, `source_message_type` | string | yes | Deterministically preallocated logical publication identity and allowlisted official contribution type. |
+| `target_seat_id`, `target_turn_ordinal` | [SeatId](#seatid), integer | yes | Exact continuation consumer. |
+| `slot_name`, `slot_ordinal` | string, integer | yes | Canonical target slot; the bounded slice fixes author output before review output. |
+| `visibility_policy_ref` | [VersionedReference](#versionedreference) | yes | Authorizes delivery of the exact contribution artifact to the target turn. |
+| `confirmed_binding_digest` | [ContentDigest](#contentdigest) | yes | Proves selector, order and policy were frozen at confirmation. |
+
+The bounded workflow contains exactly two such mappings. The `continuation_id` and each
+`source_message_id` are deterministically preallocated at confirmation from the frozen dispatch and
+turn graph; suspension must consume that same continuation identity. Each message resolves only
+to the unique official [Contribution](#contribution) whose message, group, seat, operation, round and
+type all match. The same message's [PublicationCandidate](#publicationcandidate) identifies the
+owning attempt; that attempt must match the mapped operation/seat/dispatch and be terminal
+`completed`. Zero or multiple matching chains reject. A candidate, raw provider output, path or
+agent-supplied identifier cannot satisfy the mapping.
+
+**Identity:** `mapping_id`; immutable after confirmation.
+
+**Created by:** [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch).
+
 ### Contribution
 
 One receipt-verified message accepted as the official logical contribution for a seat, round and
@@ -178,11 +353,30 @@ never performs the effect directly.
 | Field | Type | Required | Description |
 |---|---|---:|---|
 | `effect_id` | string | yes | Stable effect identity. |
+| `command_id` | string | yes | Accepted command that requested the effect. |
+| `requested_event_id` | string | yes | Committed event that made the intent durable. |
 | `effect_type` | string | yes | Adapter, tool, audit materialization or other declared kind. |
+| `payload_ref` | [ArtifactId](#artifactid) | yes | Finalized immutable requested-input artifact. |
 | `payload_digest` | [ContentDigest](#contentdigest) | yes | Immutable requested input. |
 | `retry_class` | [RetryClass](#retryclass) | yes | Retry safety. |
-| `claim_epoch` | integer | no | Current single-host claim fence. |
 | `status` | [EffectStatus](#effectstatus) | yes | Durable outbox state. |
+| `attempt_count` | integer | yes | Starts at zero and advances only through the fenced claim/attempt protocol. |
+| `claimed_by` | nullable string | yes | Current worker identity; `null` means the intent has never been claimed. |
+| `claim_epoch` | nullable integer | yes | Current single-host claim fence; `null` means no claim epoch has been allocated. |
+| `outcome_event_id` | nullable string | yes | Terminal accepted outcome fact; `null` means no outcome has been accepted. |
+| `outcome_digest` | nullable [ContentDigest](#contentdigest) | yes | Immutable outcome comparison digest; `null` means no outcome has been accepted. |
+
+For the confirmation-opening intent, acceptance fixes `effect_type=audit_opening`,
+`retry_class=retryable`, `status=pending`, `attempt_count=0`, `claimed_by=null`,
+`claim_epoch=null`, `outcome_event_id=null` and `outcome_digest=null`. These required nullable fields
+make the closed initial projection explicit: `null` means never claimed and no accepted outcome. Its
+payload requests audit-appender contract `0.6.4`; the confirmation writer never claims or executes
+it.
+
+**Identity:** `effect_id`; immutable after acceptance.
+
+**Created by:** Operation-specific command acceptance. The confirmation-opening intent is created
+by [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch).
 
 ### Artifact
 
@@ -199,6 +393,106 @@ events refer only to a finalized artifact whose digest, size and classification 
 | `size_bytes` | integer | yes | Validated non-negative byte count. |
 | `storage_ref` | string | yes | Opaque location controlled by the artifact boundary. |
 | `tombstoned_at` | timestamp | no | Payload removal marker; provenance survives. |
+
+### ExecutionPolicySyntheticLineageReceipt
+
+The closed, test-only persistence receipt for the exact seven POLICY-000 oracle members. It proves
+only which non-executable synthetic unit committed with its ordered member content identities. The
+transactional tests and post-close reopen observations, not the receipt alone, prove all-or-none
+atomicity, durability and exact byte reproduction. It is not a [ConfirmedDispatch](#confirmeddispatch),
+[Run](#run), [AgentInvocationPlan](#agentinvocationplan),
+[AgentExecutionRequest](#agentexecutionrequest), [RuntimeEventEnvelope](#runtimeeventenvelope),
+[EffectIntent](#effectintent), provider, opening or current-fence fact and cannot satisfy any
+production authority parser or gate.
+
+Its exact schema literal is `aci.execution-policy-synthetic-lineage-receipt@1`, and it has only the
+fields below:
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `schema` | string | yes | Exactly `aci.execution-policy-synthetic-lineage-receipt@1`. |
+| `authority` | string | yes | Exactly `test-only-non-executable`. |
+| `synthetic_key` | string | yes | Caller-selected idempotency key scoped only to this isolated test seam. |
+| `lineage_identity` | string | yes | Immutable logical identity for the synthetic unit; never an execution identity. |
+| `members` | ordered list<[ExecutionPolicySyntheticLineageMember](#executionpolicysyntheticlineagemember)> | yes | Exactly seven closed bindings in the fixed order defined below. |
+| `unit_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of the exact canonical lineage-unit preimage defined below. |
+
+The member list is exactly:
+
+| Ordinal | Name | Exact POLICY-000 member |
+|---:|---|---|
+| 0 | `budget_policy` | `aci.budget-policy@1` reference target. |
+| 1 | `sandbox_enforcement_policy` | `aci.sandbox-enforcement-policy@1` reference target. |
+| 2 | `resource_budget` | [ResourceBudget](#resourcebudget). |
+| 3 | `sandbox_policy` | [SandboxPolicy](#sandboxpolicy). |
+| 4 | `combined_oracle` | [ExecutionPolicyOracleFixture](#executionpolicyoraclefixture). |
+| 5 | `harness_fence_preimage` | Exact `aci.execution-authority-fence-harness-preimage@1` bytes. |
+| 6 | `harness_fence_document` | [ExecutionAuthorityFenceHarness](#executionauthorityfenceharness). |
+
+The lineage-unit preimage is the closed object with exact schema
+`aci.execution-policy-synthetic-lineage-unit@1` and exactly `schema`, `authority`,
+`lineage_identity` and `members`. `unit_digest` is
+`sha256(aci-cjson-1(lineage_unit_preimage))`; `synthetic_key` is excluded so transport replay cannot
+redefine the persisted content identity. Every member's artifact bytes must reproduce its stored
+content digest before acceptance and after reopen.
+
+**Identity:** `lineage_identity`. `synthetic_key` and `lineage_identity` are separately unique.
+An identical key or identity with the same `unit_digest` converges on the first receipt; either one
+with a different `unit_digest` is a permanent conflict.
+
+**Created by:** only the isolated test-only synthetic-lineage harness. The receipt and its seven
+member bindings commit with the seven finalized artifacts in one SQLite transaction or none do.
+
+### ExecutionPolicyFakeDenialReceipt
+
+The closed, durable result of one POLICY-002 test-only launch-admission probe over an exact
+[ExecutionPolicySyntheticLineageReceipt](#executionpolicysyntheticlineagereceipt). It proves only
+that the reviewed all-zero [ResourceBudget](#resourcebudget) and deny-all
+[SandboxPolicy](#sandboxpolicy) produced the mandatory `denied` decision without crossing an
+external boundary. It is not an [EffectIntent](#effectintent), runtime event,
+[AgentExecutionRequest](#agentexecutionrequest), provider observation, production
+[ExecutionAuthorityFence](#executionauthorityfence) or host-enforcement result.
+
+Its exact schema literal is `aci.execution-policy-fake-denial-receipt@1`, and it has only these
+fields:
+
+| Field | Type | Required | Description |
+|---|---|---:|---|
+| `schema` | string | yes | Exactly `aci.execution-policy-fake-denial-receipt@1`. |
+| `authority` | string | yes | Exactly `test-only-non-executable`. |
+| `denial_key` | string | yes | Caller-selected transport idempotency key scoped only to the isolated test seam. |
+| `lineage_identity` | string | yes | Exact persisted POLICY-001 lineage identity; never a Run, Attempt or effect identity. |
+| `lineage_unit_digest` | [ContentDigest](#contentdigest) | yes | Exact `unit_digest` reproduced by reopening the persisted lineage. |
+| `resource_budget_digest` | [ContentDigest](#contentdigest) | yes | Exact all-zero POLICY-000 ResourceBudget digest. |
+| `sandbox_policy_digest` | [ContentDigest](#contentdigest) | yes | Exact deny-all POLICY-000 SandboxPolicy digest. |
+| `decision` | string | yes | Exactly `denied`; no success, unknown or attempted variant exists in v1. |
+| `reason_codes` | ordered list<string> | yes | Exactly `resource.max_wall_time_ms.zero`, then `sandbox.process.no-executable-grant`. |
+| `denial_digest` | [ContentDigest](#contentdigest) | yes | SHA-256 of the exact canonical denial preimage defined below. |
+
+The denial preimage has exact schema `aci.execution-policy-fake-denial@1` and every receipt field
+except `denial_key` and `denial_digest`. For the reviewed POLICY-001 fixture, its canonical bytes
+and digest are:
+
+```text
+{"authority":"test-only-non-executable","decision":"denied","lineage_identity":"policy-lineage-oracle-001","lineage_unit_digest":"sha256:f702b9d2954307a91039cd3ea92285cb464c2c997c2166c0d68c446513a2801d","reason_codes":["resource.max_wall_time_ms.zero","sandbox.process.no-executable-grant"],"resource_budget_digest":"sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836","sandbox_policy_digest":"sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a","schema":"aci.execution-policy-fake-denial@1"}
+sha256:bc8655ac88276258d8e320b8a9757a8b625c9e9249dc7255a5578d2eb7e65399
+```
+
+With `denial_key=policy-denial-command-001`, the complete canonical receipt bytes and content digest
+are:
+
+```text
+{"authority":"test-only-non-executable","decision":"denied","denial_digest":"sha256:bc8655ac88276258d8e320b8a9757a8b625c9e9249dc7255a5578d2eb7e65399","denial_key":"policy-denial-command-001","lineage_identity":"policy-lineage-oracle-001","lineage_unit_digest":"sha256:f702b9d2954307a91039cd3ea92285cb464c2c997c2166c0d68c446513a2801d","reason_codes":["resource.max_wall_time_ms.zero","sandbox.process.no-executable-grant"],"resource_budget_digest":"sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836","sandbox_policy_digest":"sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a","schema":"aci.execution-policy-fake-denial-receipt@1"}
+sha256:5ffde80fbfb897ceb4b90cb85bcdb019538777c91ae3525ac0f7e0ebc43a9b11
+```
+
+**Identity:** `lineage_identity`. `denial_key` and `lineage_identity` are independent uniqueness
+axes. Reuse with the same `denial_digest` returns the first persisted receipt; reuse with a changed
+digest is a permanent conflict with no second denial row.
+
+**Created by:** only the POLICY-002 test-only fake-denial harness after reopening and revalidating
+the exact POLICY-001 lineage. One canonical receipt row commits or none does; no artifact, runtime
+aggregate, event, effect or external action is created.
 
 ### HostTerminalResponseArtifact
 
@@ -537,6 +831,49 @@ The unique protocol commitment for one group version, separate from any narrativ
 
 ## Value Objects
 
+### ConfirmedAuthorityEnvelope
+
+The closed canonical value whose digest is the identity-level meaning of one accepted confirmation.
+It contains frozen semantic authority digests, not transport-attempt metadata; client idempotency
+keys, command IDs, aggregate versions, journal offsets, receipts and writer timestamps are excluded
+so a transport retry cannot redefine what the human approved.
+
+| Field | Type | Constraint |
+|---|---|---|
+| `schema` | string | Must equal `aci.confirmed-authority@1`. |
+| `dispatch_id`, `dispatch_revision` | string | Must match the verified presentation and observation. |
+| `execution_authority_mode` | [ExecutionAuthorityMode](#executionauthoritymode) | Must equal `runtime-managed`. |
+| `pending_sheet_digest` | [ContentDigest](#contentdigest) | Exact approved source bytes. |
+| `dispatch_spec_digest` | [ContentDigest](#contentdigest) | Canonical server-compiled spec bytes. |
+| `confirmation_observation_digest` | [ContentDigest](#contentdigest) | Verified human-approval observation bytes. |
+| `capability_resolution_digest` | [ContentDigest](#contentdigest) | Frozen semantic capability resolution bytes. |
+| `confirmed_turn_graph_digest` | [ContentDigest](#contentdigest) | Server-derived bounded graph bytes. |
+| `mapping_set_digest` | [ContentDigest](#contentdigest) | Ordered two-mapping-set bytes. |
+| `derivation_schema` | string | Must equal `aci.confirmed-dispatch-id-preimage@1`. |
+| `identity_derivation_digest` | [ContentDigest](#contentdigest) | Canonical digest of the complete `aci.confirmed-dispatch-identity-derivation-contract@1` document used to derive every runtime identity. |
+| `payload_schema_bundle_digest` | [ContentDigest](#contentdigest) | Canonical digest of the closed `aci.runtime-confirmation-payload-schemas@1` bundle containing the exact event, effect and stable-receipt schemas. |
+| `schema_versions` | map | Complete command/event/payload/recipe/identity version set. |
+
+**Equality:** canonical `aci-cjson-1` bytes and their SHA-256 digest are equal. All referenced
+artifacts verify before the envelope can be accepted.
+
+### ConfirmedDispatchIdentitySeed
+
+The acyclic input to the versioned ID derivation calculation. It is constructed after the pending
+source compiles to a verified spec and before graph, mapping, event, effect and receipt artifacts
+are built.
+
+| Field | Type | Constraint |
+|---|---|---|
+| `schema` | string | Must equal `aci.confirmed-dispatch-id-preimage@1`. |
+| `kind` | string | One closed derivation kind with a fixed output prefix. |
+| `dispatch_id` | string | Exact approved dispatch identity. |
+| `dispatch_spec_digest` | [ContentDigest](#contentdigest) | Canonical compiled spec bytes. |
+| `coordinates` | ordered list<string> | Closed kind-specific coordinates; integers use shortest base-10 strings. |
+
+**Equality:** canonical `aci-cjson-1` bytes. The seed never contains an ID it is being used to
+derive and never contains `confirmed_authority_digest`, which prevents a digest/identity cycle.
+
 ### DispatchSpec
 
 | Field | Type | Constraint |
@@ -703,31 +1040,188 @@ recommendation bundle as context; it is not a generic peer-read grant and create
 read any other bus payload or artifact. Its `visibility_policy_ref` equals the source delivery's
 capability-derived `visibility_policy_ref`.
 
-### ResourceBudget
+### ExecutionPolicySyntheticLineageMember
+
+One closed ordered content binding inside an
+[ExecutionPolicySyntheticLineageReceipt](#executionpolicysyntheticlineagereceipt). It has exactly
+`ordinal`, `name`, `artifact_id` and `content_digest`; no member carries authority, a producer,
+runtime coordinates or an effect claim.
 
 | Field | Type | Constraint |
 |---|---|---|
-| `max_wall_time_ms`, `max_input_tokens`, `max_output_tokens` | integer | Non-negative finite limits. |
-| `max_tool_calls`, `max_payload_bytes`, `max_artifact_bytes` | integer | Non-negative finite limits. |
-| `budget_policy_ref` | [VersionedReference](#versionedreference) | Frozen enforcement semantics. |
+| `ordinal` | integer | Exactly one value in `0..6`, contiguous and equal to the fixed member order on the receipt. |
+| `name` | string | Exact name assigned to that ordinal by the receipt's seven-member table. |
+| `artifact_id` | [ArtifactId](#artifactid) | Finalized content-addressed artifact in the isolated test database. |
+| `content_digest` | [ContentDigest](#contentdigest) | Digest reproduced from the exact artifact bytes. |
+
+**Equality:** all four fields compare by canonical value. Reordering, renaming, removal, addition,
+artifact substitution or byte/digest drift changes the containing lineage-unit preimage and must
+reject or conflict.
+
+### ResourceBudget
+
+The closed one-[Attempt](#attempt) resource document. Its exact schema literal is
+`aci.resource-budget@1`; no field is optional and no omitted value means unlimited, inherited or a
+host default.
+
+| Field | Type | Constraint |
+|---|---|---|
+| `schema` | string | Exactly `aci.resource-budget@1`. |
+| `max_wall_time_ms`, `max_input_tokens`, `max_output_tokens` | integer | Closed int64 range `0..9223372036854775807`. |
+| `max_tool_calls` | integer | Closed int64 range `0..9223372036854775807`; exactly `0` when the confirmed tool profile is `tool.none`. |
+| `max_payload_bytes`, `max_artifact_bytes` | integer | Closed int64 range `0..9223372036854775807`, attributable to this Attempt. |
+| `budget_policy_ref` | [VersionedReference](#versionedreference) | Exact enforcement and accounting semantics; referenced bytes must resolve and reproduce the digest. |
+
+The object is recursively closed: extra, missing, duplicate or misspelled fields reject. JSON
+booleans, numeric strings, floats, negative values, values above `9223372036854775807`, `null`,
+non-finite values, overflow/wraparound representations and implicit coercion reject for every integer. Zero is valid and means explicit
+denial. `resource_budget_digest = sha256(aci-cjson-1(resource_budget))`; the digest is metadata or an
+enclosing-contract field and is never inserted into this object.
+
+The referenced `aci.budget-policy@1` document is also closed and has exactly `schema`, `scope`,
+`exhaustion_action` and `unknown_usage_action`. The POLICY-000 oracle target is limited to
+`scope=attempt`, `exhaustion_action=deny-new-work` and `unknown_usage_action=deny-new-work`; it is a
+synthetic test reference, not a product selection.
+
+**Equality:** exact canonical `aci-cjson-1` bytes. The separately computed content digest names
+those complete bytes and is not a field of the value.
+
+The confirmed dispatch limits `max_attempts_per_turn`, `max_total_turns` and `wall_clock_seconds`
+govern [Run](#run) scheduling and are not [ResourceBudget](#resourcebudget) fields. The Run deadline
+is `confirmed_at + wall_clock_seconds`; each [Attempt](#attempt) has its own explicitly authorized budget and a
+deadline no later than that Run deadline. An implementation must not divide, copy or reinterpret a
+dispatch limit into an Attempt budget. Retry consumes dispatch ceilings, receives a separately
+authorized [Attempt](#attempt) budget and never resets the Run deadline. Missing provider counters are
+observations with unknown values, not zero usage or permission for more work.
 
 ### SandboxPolicy
 
+The closed launcher-isolation document. Its exact schema literal is `aci.sandbox-policy@1`; every
+nested scope is closed and all grants are explicit.
+
 | Field | Type | Constraint |
 |---|---|---|
-| `policy_ref` | [VersionedReference](#versionedreference) | Frozen launcher policy. |
-| `filesystem_scope`, `network_scope`, `process_scope` | object | Explicit allow/deny rules; default deny outside declared scope. |
-| `credential_refs` | list<[VersionedReference](#versionedreference)> | Opaque launcher-resolved grants; secrets never enter durable payloads. |
+| `schema` | string | Exactly `aci.sandbox-policy@1`. |
+| `policy_ref` | [VersionedReference](#versionedreference) | Exact launcher/enforcement semantics; referenced bytes must resolve and reproduce the digest. |
+| `filesystem_scope` | object | Exactly `default`, `read_roots`, `write_roots`, `link_policy`. |
+| `network_scope` | object | Exactly `default`, `allowed_endpoints`. |
+| `process_scope` | object | Exactly `default`, `allowed_executables`, `max_child_processes`. |
+| `credential_refs` | ordered list<[VersionedReference](#versionedreference)> | Duplicate-free opaque grants; the list may be non-empty, while secret bytes are forbidden. |
+
+The v1 nested grammar is exact:
+
+```json
+{
+  "filesystem_scope": {
+    "default": "deny",
+    "read_roots": [],
+    "write_roots": [],
+    "link_policy": "deny"
+  },
+  "network_scope": {
+    "default": "deny",
+    "allowed_endpoints": []
+  },
+  "process_scope": {
+    "default": "deny",
+    "allowed_executables": [],
+    "max_child_processes": 0
+  }
+}
+```
+
+All three `default` fields and `link_policy` are exactly `deny` in v1. POLICY-000 performs lexical root
+validation only: repository roots use canonical relative `/` paths and reject empty components,
+`.`, `..`, drives, UNC paths and wildcards. Physical symlink, junction/reparse-point and resolved-path
+containment checks are launcher/target-host enforcement obligations deferred to POLICY-003/L3.
+Non-empty endpoint or executable lists reject until a separate closed, digest-pinned entry definition
+is ratified. `max_child_processes` uses the closed int64 range `0..9223372036854775807` and the same
+strict JSON primitive rules as [ResourceBudget](#resourcebudget).
+
+Non-empty `credential_refs` remain valid L0 values. For every reference, the pure parser receives
+the exact target bytes keyed to that reference, performs no I/O, and verifies its digest under the
+reference owner's contract. POLICY-000 does not invent or require a universal credential-target
+schema. Whether a launcher can resolve and isolate the referenced credential is deferred to
+POLICY-003/L3. Unsupported host enforcement rejects before process creation; it never narrows or
+widens a policy silently.
+
+`sandbox_policy_digest = sha256(aci-cjson-1(sandbox_policy))`; the digest is outside the object.
+The referenced `aci.sandbox-enforcement-policy@1` document is closed and has exactly `schema`,
+`enforcement_mode` and `unsupported_control_action`. POLICY-000 admits only the synthetic
+`enforcement_mode=deny-all`, `unsupported_control_action=deny` reference target.
+
+**Equality:** exact canonical `aci-cjson-1` bytes. The separately computed content digest names
+those complete bytes and is not a field of the value.
 
 ### ExecutionAuthorityFence
 
+The production cutover fact accepted by effect claim and rechecked immediately before physical
+start. The exact schema literal is `aci.execution-authority-fence@1`.
+
 | Field | Type | Constraint |
 |---|---|---|
+| `schema` | string | Exactly `aci.execution-authority-fence@1`. |
 | `dispatch_id`, `run_id` | string | Exact runtime-owned execution. |
 | `authority_mode` | [ExecutionAuthorityMode](#executionauthoritymode) | Must equal `runtime-managed`. |
-| `cutover_epoch` | integer | Monotonic authority epoch. |
-| `legacy_watcher_disabled_evidence_ref` | [ArtifactId](#artifactid) | Concrete verified cutover evidence. |
-| `fence_digest` | [ContentDigest](#contentdigest) | Equality identity checked before every external start. |
+| `cutover_epoch` | integer | Closed int64 range `1..9223372036854775807`; current monotonic epoch for the target host. |
+| `legacy_watcher_disabled_evidence_ref` | [ArtifactId](#artifactid) | Finalized independently readable target-host evidence. |
+| `fence_digest` | [ContentDigest](#contentdigest) | Digest of the exact preimage below, checked at claim and start. |
+
+The fence is recursively closed. Its digest preimage contains the same fields except
+`fence_digest`, and changes `schema` to `aci.execution-authority-fence-preimage@1`:
+
+```text
+fence_digest = sha256(aci-cjson-1(fence_preimage))
+```
+
+Acceptance requires exact frozen dispatch, Run and authority mode; a current matching host cutover
+head; readable evidence that binds that host, epoch, disabled legacy watcher, writer inventory and
+configuration digests; independently verified audit opening, prerequisite heads and sandbox; and a
+launcher that can enforce every control. Drift, revocation, unreadable evidence or unsupported
+enforcement denies before process creation. Product input cannot supply the epoch or evidence.
+
+Product authority selects the exact [ResourceBudget](#resourcebudget),
+[SandboxPolicy](#sandboxpolicy), tool profile and any opaque credential grants presented for a later
+CONF v2. It does not select `cutover_epoch` or watcher-disable evidence. Those fence fields are
+operational facts supplied by the cutover verifier only after target-host evidence exists; their
+absence cannot be filled with a product preference or harness fixture.
+
+**Equality:** exact canonical `aci-cjson-1` bytes. The embedded `fence_digest` validates only the
+`aci.execution-authority-fence-preimage@1` bytes; equality of the complete fence remains whole-value
+canonical-byte equality.
+
+### ExecutionAuthorityFenceHarness
+
+A structurally parallel, test-only fence for POLICY-000 pure oracle tests. It uses exact schema
+`aci.execution-authority-fence-harness@1`; its preimage uses exact schema
+`aci.execution-authority-fence-harness-preimage@1`. All other fields and strict type rules match
+[ExecutionAuthorityFence](#executionauthorityfence), but the two values are different types and
+authority domains.
+
+The harness parser may validate harness structure and preimage digest. The production parser must
+reject the harness schema literal before resolving its synthetic evidence reference. A harness
+fence cannot satisfy confirmation, cutover, an invocation plan/request, an opening gate, an effect
+claim or a [Run](#run) transition.
+
+**Equality:** exact canonical `aci-cjson-1` bytes. Its embedded `fence_digest` validates only the
+harness-preimage bytes and never identifies a production preimage or the complete harness document.
+
+### ExecutionPolicyOracleFixture
+
+The test-only aggregate of one all-zero [ResourceBudget](#resourcebudget), one deny-all
+[SandboxPolicy](#sandboxpolicy) and their separately supplied content digests. It has exactly the
+fields `schema`, `resource_budget`, `resource_budget_digest`, `sandbox_policy` and
+`sandbox_policy_digest`, with schema literal `aci.execution-policy-oracle-fixture@1`.
+
+This value is oracle data, never executable authority. POLICY-000 may use it only to prove strict
+parsing, canonicalization, digest lineage, mutations and denial semantics. Production policy
+package parsers, confirmation, plan/request acceptance and effect workers reject this schema. The
+golden bytes and digests are fixed by the reviewed
+[TECH-POLICY-D0](../development/invoke-runs/20260831-resumable-feedback/plan/TECH-POLICY-D0.md#fake-deny-all-lane),
+not regenerated from host defaults.
+
+**Equality:** exact canonical `aci-cjson-1` bytes. The two member digests independently bind their
+complete member documents; they do not turn the combined fixture into authority.
 
 ### SoleWriterEvidenceBundle
 
@@ -764,12 +1258,16 @@ an import scan or lint result alone leaves EG-1 open.
 | Field | Type | Constraint |
 |---|---|---|
 | `event_id`, `event_type` | string | Immutable identity and past-tense type. |
-| `schema_ref`, `schema_digest` | [VersionedReference](#versionedreference), [ContentDigest](#contentdigest) | Exact payload contract. |
+| `schema_ref`, `schema_digest` | string, [ContentDigest](#contentdigest) | Exact versioned payload-schema identifier plus the digest of its closed definition; the two fields are separate journal columns. |
+| `aggregate_type` | string | Closed aggregate kind; confirmation events require `run`. |
 | `aggregate_id` | string | Owning stream. |
 | `aggregate_version` | [AggregateVersion](#aggregateversion) | Contiguous within aggregate. |
 | `journal_offset` | [JournalOffset](#journaloffset) | Globally increasing committed order. |
 | `recorded_at` | timestamp | Journal observation; governs ordering only through offset. |
-| `observed_at` | timestamp | Nullable external observation; never orders transitions. |
+| `observed_at` | timestamp | Optional/nullable external observation; never orders transitions. |
+| `run_id`, `dispatch_id` | string | Contextual runtime authority; both are required for the two confirmation events. |
+| `actor_principal_id` | string | Required authenticated actor; never copied from agent-authored payload. |
+| `command_id`, `idempotency_key` | string | Required accepted command and first transport-deduplication identities. |
 | `causation_id`, `correlation_id` | string | Provenance. |
 | `payload_ref`, `payload_hash` | [ArtifactId](#artifactid), [ContentDigest](#contentdigest) | Immutable payload evidence. |
 
@@ -803,6 +1301,14 @@ Opaque logical participation identity. Equality is exact string equality.
 | `version` | string | Explicit immutable version. |
 | `digest` | [ContentDigest](#contentdigest) | Required where executable behavior or schema is selected. |
 
+The object has exactly these three fields. A pure parser receives an exact target-byte map keyed to
+every reference and performs no filesystem, artifact-store, network or credential-provider I/O. A
+reference is accepted only when the supplied bytes reproduce `digest` under the reference owner's
+contract. Missing, extra, duplicate or misspelled fields, absent target bytes, a target that
+violates its owner's contract or a digest mismatch reject; there are no defaults or coercions. A
+reference owner may require a closed target schema, but POLICY-000 does not invent one universal
+schema for credential references.
+
 ### ManifestEntry
 
 | Field | Type | Constraint |
@@ -813,6 +1319,13 @@ Opaque logical participation identity. Equality is exact string equality.
 **Equality:** Ordered pair equality; manifests additionally compare canonical entry order and hash.
 
 ## Enums
+
+### ConfirmationChannel
+
+| Value | Description |
+|---|---|
+| `chat` | An admitted chat-host adapter observed the approval. |
+| `ui` | An admitted future UI adapter observed the same semantic approval contract. |
 
 ### ExecutionAuthorityMode
 
@@ -865,6 +1378,7 @@ Opaque logical participation identity. Equality is exact string equality.
 | OQ-ACI4 | **Ratified** | [DispatchSpec](#dispatchspec) freezes reproducibility inputs; external observations are events. |
 | OQ-ACI8 | **Ratified** | One content-addressed [EffectiveInputArtifact](#effectiveinputartifact) per [Attempt](#attempt) orders/hashes exact system, developer and user instructions, history, tool descriptions/schemas, response schema, context artifacts and adapter wrappers. Unobservable provider transformations remain named limitations. |
 | OQ-ACI9 | **Boundary ratified; parameters deferred** | [EffectiveInputArtifact](#effectiveinputartifact) and [RawProviderOutput](#rawprovideroutput) are sensitive immutable [Artifact](#artifact) records; runtime-operator access and audited break-glass are the default, secrets are forbidden in durable payloads, and encryption becomes mandatory beyond local development. Concrete TTL, crypto-erasure periods and key management remain blocked on Slice-1 retention/credential ADRs. |
+| OQ-RESOURCE-LIMITS / OQ-SANDBOX | **L0 grammar ratified; L1 synthetic-lineage contract specified by this amendment and implementation separately gated** | Product must select exact [ResourceBudget](#resourcebudget), [SandboxPolicy](#sandboxpolicy), tool and opaque credential-reference values. The cutover verifier separately supplies production [ExecutionAuthorityFence](#executionauthorityfence) epoch/evidence as operational facts. [ExecutionAuthorityFenceHarness](#executionauthorityfenceharness), [ExecutionPolicyOracleFixture](#executionpolicyoraclefixture) and [ExecutionPolicySyntheticLineageReceipt](#executionpolicysyntheticlineagereceipt) remain test-only. POLICY-000 proves pure parsing/canonicalization; POLICY-001 may prove only transactional synthetic lineage after the complete DomainSpec amendment, work-pack readiness and independent review pass. Physical link resolution and L2-L3 denial/target-host enforcement remain separate work. |
 
 ## Connections
 
@@ -873,3 +1387,5 @@ Opaque logical participation identity. Equality is exact string equality.
 | [Discovery v0.2.1](../discovery/feature-discovery/agents-communication-infra.md) | `derives-from` | Source decisions and OQ dispositions. |
 | [Rules](rules.md) | `governed-by` | Cross-entity invariants and authority rules. |
 | [Persistence and replay](persistence-and-replay.md) | `maps` | Candidate storage ownership and transaction contract. |
+| [TECH-POLICY-D0](../development/invoke-runs/20260831-resumable-feedback/plan/TECH-POLICY-D0.md) | `refines` | Reviewed closed POLICY-000 schema, digest-domain and layering source. |
+| [POLICY-001 persistence pattern inventory](../development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md) | `refines` | Digest-pinned (`sha256:d8eae9829069631caaef769635b3748b5440d5bfab4aacaf682f736eb546d84e`) test-only receipt identity, one-transaction persistence and reopen boundary for POLICY-001. |

@@ -1,0 +1,147 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-RUNTIME-ATTEMPT-RESULT-BUS-001",
+  "scope": "confirmed-attempt-result-to-official-bus-component-v1",
+  "planner_preflight": "code-entry-ready",
+  "task_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/work-pack/tasks/TASK-CONT-002.md",
+  "decision_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/C2-TECH-D0.md",
+  "claim_boundary": "component proof from confirmed mapping plus persisted candidate plus completed runtime attempt to official message and paired events; no production publisher, service/API, opening, resume, effect or adapter",
+  "entry_predicate": [
+    "heads-001-implemented-reviewed-pass",
+    "c2-tech-d0-pass",
+    "exact-confirmed-dispatch-v1-fixture-still-pinned",
+    "fresh-exact-swu-domainspec-code-readiness-pass",
+    "all-immutable-source-and-entry-baseline-pins-match"
+  ],
+  "entry_gate_status": {
+    "heads_001": "implemented-reviewed-pass",
+    "bus_001": "code-entry-ready",
+    "product_pass": "blocked",
+    "cont_002_umbrella": "not-promoted"
+  },
+  "immutable_source_pins": {
+    "heads_final_evidence": {"path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-HEADS-001.md", "sha256": "sha256:94239601f8ca915ee2f5e08dc29704437ea0698148e52502942eed6fa02d9111"},
+    "heads_repair_entry_descriptor": {"path": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-RUNTIME-RUN-GROUP-HEADS-001.json", "sha256": "sha256:bb3c7ffc4aa7039551b42accc3c9694b993187fccd9e53980f1e745b0123eecd"},
+    "heads_repair_readiness": {"path": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-RUNTIME-RUN-GROUP-HEADS-001-repair-closure-readiness.json", "sha256": "sha256:9328de32077ae6938bb22fc1117a58135a8d7bae17736cdec969ace1692018f2"},
+    "c2_tech_d0": {"path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/C2-TECH-D0.md", "sha256": "sha256:66bf274ae57852af0be4bc16a9f8030338186a85a87a1f804c6318c251d03562"},
+    "robot_talks_findings": {"path": "docs/features/agents-communication-infra/robot-talks/2026-09-01-continuation-c2-split/findings.md", "sha256": "sha256:7b58bce8aa82cb4580024eb4f89f6937d4e76b4e79e80dba833c2b9855cc3c80"},
+    "test_spec": {"path": "docs/features/agents-communication-infra/TEST-SPEC.md", "sha256": "sha256:1dba61d54e61538f95a3a383f18e55deddb152a7b210638bc2d8bf7b3b5a44ea"},
+    "domain_contract": {"path": "docs/features/agents-communication-infra/specs/domain.md", "sha256": "sha256:7768f69c6ced3621e6832389b1baf9f26206e06eb653bab7d70bb85817179ec4"},
+    "events_contract": {"path": "docs/features/agents-communication-infra/specs/events.md", "sha256": "sha256:bc92beb371a3f5b956645d421f24b41d32d8ff9f204e524965eabb1c37a3c5bb"},
+    "operations_contract": {"path": "docs/features/agents-communication-infra/specs/operations.md", "sha256": "sha256:9ae0bbb3fd18949891171d8af0f6c25e5d14227c473b7c41a7aa2fa45bbc8134"},
+    "mappings_contract": {"path": "docs/features/agents-communication-infra/specs/mappings.md", "sha256": "sha256:4c1accdbf40f29875c9b34ffd57af28761fb0eba79e571dcbb28b29e849accb6"},
+    "states_contract": {"path": "docs/features/agents-communication-infra/specs/states.md", "sha256": "sha256:9be347e6055b677661f6bc52cefa9cd9815450e3b884cf1d881dee6b5d60fc18"},
+    "confirmed_dispatch_manifest": {"path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1/manifest.json", "sha256": "sha256:919385d226240fa66621d7b660ef49b70ad7e3d3a379bee3d7c29729243acd0a"},
+    "base_bus_schema": {"path": "implementations/server/runtime/migrations/001_aci_slice0.sql", "sha256": "sha256:7ef0ca80cd8ef59f697a08938a7d2b757de50fd24bba438efb4aac59fe6e9889"},
+    "confirmation_migration": {"path": "implementations/server/runtime/migrations/012_runtime_confirmation.sql", "sha256": "sha256:de1fb043c7593219595a0f86c822a9a13cb7f01861fb2cf88db9f2b434d6a4e0"},
+    "continuation_migration": {"path": "implementations/server/runtime/migrations/013_agent_continuation.sql", "sha256": "sha256:80f32c1a389ee0e773d69342cb407542f87a2e6760c99f902b7c9d5cbbf828c9"},
+    "heads_migration": {"path": "implementations/server/runtime/migrations/014_runtime_run_group_heads.sql", "sha256": "sha256:44e17ec6cd9b9ed917a68142145ebb8f378aca02872758ed7d43a8f3b3d0ca93"},
+    "journal": {"path": "implementations/server/runtime/journal.py", "sha256": "sha256:cd6725b7d39fe8f92d041ee3b529bea0b6b7f47918e9ca3e8f5d83fa146ee86d"},
+    "continuation_kernel": {"path": "implementations/server/runtime/continuation.py", "sha256": "sha256:688a351ffcf1f19c9e948798de86ebc3f610fa69f8a25a0d0ba60ec28339ad89"},
+    "errors_vocabulary": {"path": "implementations/server/runtime/errors.py", "sha256": "sha256:ad4aef95054838e82d34913d37bcd4688fa997e28d463d741202ecd7bc432168"}
+  },
+  "pre_mutation_baseline_pins": {
+    "database": {"path": "implementations/server/runtime/database.py", "sha256": "sha256:a184d5dff427936d32cb18cb210741837be54e064679ac5da0bca90667de2c2c"},
+    "heads_regression_test": {"path": "implementations/tests/runtime/test_runtime_run_group_heads.py", "sha256": "sha256:4802bc36934825832a907b8006aa16126350f8e8d3e70a04d7b2245cdb977e7e"},
+    "confirmation_regression_test": {"path": "implementations/tests/runtime/test_runtime_confirmation.py", "sha256": "sha256:5831c280d36c4d446a1609be674a7a922dbe33633f7e84321604b4b848449918"},
+    "traceability_registry": {"path": "implementations/tests/runtime/aci-test-traceability.json", "sha256": "sha256:cada57580fba510e70d1bf579fea0f1542b7e826eb555296610579fb9ba0a30b"},
+    "traceability_test": {"path": "implementations/tests/runtime/test_aci_traceability.py", "sha256": "sha256:644cc5717ff5b47db1156bf684f3e77fa19e6515c753f8d6e6384c14fb8bd06d"},
+    "stage_e_source_manifest": {"path": "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json", "sha256": "sha256:8f188b4d619f0bf16c7b47dff6756b6e2ef6051fa89c643de8faf3a057fb027f"},
+    "local_pilot": {"path": "implementations/server/runtime/local_pilot.py", "sha256": "sha256:2d06ee178362c12006a6cfe390899ea3b9bed9eac8b2b7963beb2593eb177bad"},
+    "stage_e_execution_receipt": {"path": "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md", "sha256": "sha256:e86a9ea76be568facd13a17cafecc053021b1c14384d6c1e81d9f4626e67f2be"},
+    "stage_e_execution_receipt_digest_file": {"path": "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256", "sha256": "sha256:ce9eacfd971673a37303e8f1bb853a7760e19a0b20b0d1120078ed3407693a67"}
+  },
+  "expected_absent_paths": [
+    "implementations/server/runtime/migrations/015_runtime_attempt_result_bus.sql",
+    "implementations/server/runtime/confirmed_bus.py",
+    "implementations/tests/runtime/test_runtime_confirmed_bus.py"
+  ],
+  "write_scope": [
+    "implementations/server/runtime/migrations/015_runtime_attempt_result_bus.sql",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/confirmed_bus.py",
+    "implementations/tests/runtime/test_runtime_confirmed_bus.py",
+    "implementations/tests/runtime/test_runtime_run_group_heads.py",
+    "implementations/tests/runtime/test_runtime_confirmation.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/server/runtime/local_pilot.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256"
+  ],
+  "write_scope_constraints": {
+    "migration_015": "create only runtime_attempt_result_acceptances; no backfill or legacy schema mutation; direct references to exact confirmed mapping/source message, completed runtime attempt, active candidate and candidate receipt, official message, ordered event pair, confirmed run/graph and runtime_group_heads composite (graph_id,group_id,group_version)",
+    "database": "register ordered migration 015 only",
+    "confirmed_bus": "pure closed validation and deterministic projection/identity helpers only; no SQLite, journal, clock, environment, service, API, artifacts, provider or adapter dependency",
+    "focused_test": "own all generic RuntimeJournal command and mutation closures; create candidate, completed attempts and required Group phase/visibility only as labelled test prerequisites; execute official acceptance atomically and create zero effects",
+    "heads_regression_test": "change only the exact user_version/migration expectation needed for ordered migration 015; preserve all HEADS behavioral assertions",
+    "confirmation_regression_test": "change only migration version/name/checksum expectations from 14 to 15; preserve AUTH1-8 and all other behavior",
+    "traceability": "add real focused selectors for T-ACI-R5, T-ACI-R6, T-ACI-R8, T-ACI-R15, T-ACI-R16 and the bounded CONT integration; change the validator only if the registry shape requires it",
+    "stage_e": "add the three new BUS files, refresh modified in-scope pins, append bounded evidence and refresh the receipt sidecar; expected manifest cardinality is 75/75",
+    "errors": "reuse the existing closed generic error vocabulary; errors.py is pinned and outside write scope"
+  },
+  "group_aggregate_identity": {
+    "formula": "grp_ + first_32_lower_hex(sha256(aci-cjson-1({schema:'aci.runtime-group-aggregate-id-preimage@1',run_id,graph_id,group_id,group_version})))",
+    "group_version": 1,
+    "authoring_golden": "grp_d8d509256e173e4ea73eaab30cc26444",
+    "review_golden": "grp_a3dcb826909707df51d640c654835aaa",
+    "authority": "derive run_id and graph_id from confirmed_turn_graphs and local group_id/version from the exact confirmed mapping; caller input cannot override any coordinate"
+  },
+  "component_contract": {
+    "mapping": "resolve one continuation_input_mappings row and derive source_message_id, type, operation, seat, round, local group and dispatch exactly",
+    "attempt": "require runtime_agent_attempts.state=completed and exact dispatch, graph, operation, seat and turn; test prerequisite must be journal-backed",
+    "candidate": "require active publication_candidates row, exact persisted publication_receipts bytes/identity and exact derived source_message_id/group aggregate/attempt/operation/seat/round/type/payload",
+    "phase": "author.output requires the harness-owned authoring Group in collecting and emits position.accepted; reviewer.output requires the review Group in deliberating with reply visibility and emits critique.accepted",
+    "event_order": ["attempt.result_accepted", "message-type-specific-official-acceptance"],
+    "atomic_acceptance": "one journal transaction revalidates all parents, CASes candidate active to officially_accepted, inserts one official messages row and one runtime_attempt_result_acceptances row, advances the exact composite Group head and commits both ordered events or none",
+    "replay": "same derived scoped key and semantic digest returns the byte-identical stored receipt; drift conflicts; concurrent equal commands converge; distinct candidates/attempts for the same logical mapping have one winner",
+    "continuation": "candidate-only rows remain invisible; after both exact official contributions, existing CONT resolution sees the two confirmed facts without BUS changing service.py or continuation.py",
+    "external_action_count": 0,
+    "new_effect_count": 0,
+    "production_positive_writer": "none"
+  },
+  "required_test_ids": ["T-ACI-R5", "T-ACI-R6", "T-ACI-R8", "T-ACI-R15", "T-ACI-R16", "T-ACI-CONT1"],
+  "test_matrix": {
+    "migration": "apply/reopen idempotently; exactly one isolated table; user_version 15; exact parents/composite FK/uniqueness; zero backfill; legacy schema/rows unchanged",
+    "pure_projection": "closed inputs, both group aggregate goldens, source_message_id derivation, exact type-to-event mapping and field-by-field authority drift rejection",
+    "candidate_exclusion": "candidate plus receipt without official verification creates no messages/acceptance and remains invisible to continuation",
+    "official_pair": "author emits attempt.result_accepted then position.accepted; reviewer emits attempt.result_accepted then critique.accepted; exact source message IDs become official messages",
+    "cas_replay_races": "stable replay/reopen, semantic drift, stale candidate/Group head, equal concurrency convergence and distinct attempt/candidate one-winner behavior",
+    "atomicity": "fail after every event, candidate CAS, message, acceptance and Group-head boundary; reopen proves all-or-none and lost-response retry returns original receipt",
+    "authority_negatives": "wrong mapping/source message/run/graph/group/version/aggregate/attempt state/operation/seat/turn/candidate/receipt/payload/type/round/phase/reply visibility rejects with zero surface mutation",
+    "continuation_integration": "zero/one official sources remain unsatisfied; exact author+review pair is visible through existing CONT resolution; no effective input, resume or effect is created",
+    "surface": "no service.py, journal.py, API, __init__, confirmation, continuation, opening, effect, provider/tool/adapter or production publisher change"
+  },
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_runtime_confirmed_bus -v",
+    "python -B -m unittest implementations.tests.runtime.test_runtime_run_group_heads -v",
+    "python -B -m unittest implementations.tests.runtime.test_agent_continuation -v",
+    "python -B -m unittest implementations.tests.runtime.test_runtime_confirmation -v",
+    "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "python -B -m unittest implementations.tests.runtime.test_stage_c -v",
+    "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check"
+  ],
+  "forbidden_changes": [
+    "service.py-journal.py-api.py-__init__.py-or-existing-kernels",
+    "migration-001-through-014-or-confirmed-fixture/spec-contract-mutation",
+    "production-publisher-verifier-attempt-writer-opening-materializer-or-visibility-grant",
+    "effective-input-resume-effect-provider-tool-adapter-worker-or-external-action",
+    "PRODUCT-defaults-new-confirmed-authority-or-CONT-002-promotion",
+    "network-commit-push-deploy"
+  ],
+  "stop_conditions": [
+    "immutable-input-or-entry-baseline-drift",
+    "exact-source-message-cannot-be-derived-from-one-confirmed-mapping",
+    "graph-run-or-composite-group-parent-cannot-be-revalidated-in-the-journal-transaction",
+    "completed-attempt-candidate-receipt-message-or-event-pair-cannot-be-bound-exactly",
+    "official-acceptance-requires-service-journal-api-or-existing-schema-mutation",
+    "candidate-only-data-becomes-continuation-visible-or-any-effect-is-created",
+    "write-outside-exact-scope-or-runtime-regression-requires-wider-layer"
+  ],
+  "promotion_boundary": "BUS-001 may prove only the bounded component; after PASS stop at PRODUCT-PASS before opening, Run ready, effective input, resume, effects or adapters",
+  "implementation_status": "not-started-code-entry-ready"
+}

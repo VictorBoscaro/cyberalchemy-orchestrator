@@ -6,7 +6,7 @@ import secrets
 import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Callable
+from typing import Any, Callable
 
 from .canonical import canonical_digest, digest_bytes
 from .database import RuntimeDatabase
@@ -179,6 +179,22 @@ class ArtifactStore:
         action: str,
         authorizer: Callable[[str, str, str], bool],
     ) -> bytes:
+        body, _ = self.get_authorized_with_reference(
+            artifact_id,
+            principal_id=principal_id,
+            action=action,
+            authorizer=authorizer,
+        )
+        return body
+
+    def get_authorized_with_reference(
+        self,
+        artifact_id: str,
+        *,
+        principal_id: str,
+        action: str,
+        authorizer: Callable[[str, str, str], bool],
+    ) -> tuple[bytes, dict[str, Any]]:
         with self.database.connect() as conn:
             row = conn.execute(
                 "SELECT * FROM artifacts WHERE artifact_id=?", (artifact_id,)
@@ -192,7 +208,42 @@ class ArtifactStore:
         body = bytes(row["body"])
         if len(body) != row["size_bytes"] or digest_bytes(body) != row["content_hash"]:
             raise ConflictError("artifact integrity mismatch")
-        return body
+        required_metadata = (
+            "media_type",
+            "schema_ref",
+            "classification",
+            "redaction_policy_ref",
+            "retention_policy_ref",
+            "tombstone_policy_ref",
+            "authorization_policy_ref",
+            "policy_bundle_digest",
+            "finalization_receipt_ref",
+            "finalized_at",
+        )
+        if any(not isinstance(row[field], str) or not row[field] for field in required_metadata):
+            raise ConflictError("artifact metadata integrity mismatch")
+        expected_artifact_id = "art_" + row["content_hash"].removeprefix("sha256:")[:32]
+        if row["artifact_id"] != expected_artifact_id:
+            raise ConflictError("artifact identity integrity mismatch")
+        return body, self._complete_row_reference(row)
+
+    @staticmethod
+    def _complete_row_reference(row: sqlite3.Row) -> dict[str, Any]:
+        return {
+            "artifact_id": row["artifact_id"],
+            "content_hash": row["content_hash"],
+            "media_type": row["media_type"],
+            "schema_ref": row["schema_ref"],
+            "classification": row["classification"],
+            "size_bytes": row["size_bytes"],
+            "redaction_policy_ref": row["redaction_policy_ref"],
+            "retention_policy_ref": row["retention_policy_ref"],
+            "tombstone_policy_ref": row["tombstone_policy_ref"],
+            "authorization_policy_ref": row["authorization_policy_ref"],
+            "policy_bundle_digest": row["policy_bundle_digest"],
+            "finalization_receipt_ref": row["finalization_receipt_ref"],
+            "finalized_at": row["finalized_at"],
+        }
 
     @staticmethod
     def _row_reference(row: sqlite3.Row) -> dict[str, object]:

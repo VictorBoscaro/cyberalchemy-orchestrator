@@ -1,0 +1,43 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-CONFIRMED-DISPATCH-001",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-CONFIRMED-DISPATCH-001.json",
+  "work_pack_digest": "sha256:797e14af8e53832cab4d44385529dc75f477cf96cf7ccab02889b0642db0c0fc",
+  "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+  "test_spec_digest": "sha256:1dba61d54e61538f95a3a383f18e55deddb152a7b210638bc2d8bf7b3b5a44ea",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/server/runtime/migrations/012_runtime_confirmation.sql",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/errors.py",
+    "implementations/server/runtime/artifacts.py",
+    "implementations/server/runtime/confirmation.py",
+    "implementations/server/runtime/journal.py",
+    "implementations/server/runtime/service.py",
+    "implementations/tests/runtime/test_runtime_confirmation.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/server/runtime/local_pilot.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_runtime_confirmation -v",
+    "python -B -m unittest implementations.tests.runtime.test_apt_stage_b -v",
+    "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "python -B -m unittest implementations.tests.runtime.test_stage_c -v",
+    "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check"
+  ],
+  "capability_profile": {
+    "filesystem": "task-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

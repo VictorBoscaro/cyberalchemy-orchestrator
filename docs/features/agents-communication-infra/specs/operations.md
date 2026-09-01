@@ -9,7 +9,8 @@ durable effect intents and is never repeated by replay.
 The canonical operation registry for this feature is limited to
 `ConfirmRuntimeDispatch`, `AcceptRuntimeCommand`, `StartAgentAttempt`,
 `PublishBusContribution`, `VerifyPublicationReceipt`, `CloseCollection`, `PublishRevealManifest`,
-`MaterializeAuthorizedPeerInput`, `CommitGroupResult`, `CommitHostTerminalResponse`,
+`MaterializeAuthorizedPeerInput`, `SuspendAgentContinuation`, `ResumeAgentContinuation`,
+`ReconstructAgentContinuation`, `CancelAgentContinuation`, `CommitGroupResult`, `CommitHostTerminalResponse`,
 `RecordHostWorkflowTerminalOutcome`, `MaterializeHostWorkflowInput`,
 `AuthorizeHostWorkflowTurnLaunch`, `CancelRun`, and
 `RecordUsageObservation`. Named “internal transition” sections below decompose
@@ -61,23 +62,60 @@ therefore cannot pass validation using independently stale aggregate snapshots.
 
 | Field | Type | Required | Description |
 | --- | --- | ---: | --- |
-| `pending_sheet_bytes` | bytes | yes | Exact confirmed bytes; mutable source data is not reread during replay. |
+| `pending_sheet_bytes` | bytes | yes | Exact confirmed canonical bytes; mutable source data is not reread during replay and noncanonical containers reject. |
+| `pending_sheet_digest` | [ContentDigest](domain.md#contentdigest) | yes | Digest of those exact canonical bytes; BOM, newline and insignificant transport whitespace are rejected rather than repaired. |
 | `dispatch_id` | ID | yes | Official audit identity, unique for the confirmed version. |
-| `execution_authority_mode` | enum | yes | Must already equal `runtime-managed`. |
-| `dispatch_spec_ref` | artifact reference | yes | Immutable executable graph and participant/policy contract. |
-| `dispatch_spec_digest` | SHA-256 | yes | Digest of the confirmed spec. |
+| `dispatch_revision` | string | yes | Exact source revision presented to the human. |
+| `execution_authority_mode` | [ExecutionAuthorityMode](domain.md#executionauthoritymode) | yes | Must already equal `runtime-managed`. |
+| `dispatch_spec_ref` | [ArtifactId](domain.md#artifactid) | yes | Trusted-preview spec artifact that the server must reproduce from the finalized pending bytes and its own resolution. |
+| `dispatch_spec_digest` | [ContentDigest](domain.md#contentdigest) | yes | Digest of the confirmed canonical spec. |
+| `confirmation_observation_ref` | [ArtifactId](domain.md#artifactid) | yes | Canonical trusted-host [ConfirmationObservation](domain.md#confirmationobservation). |
+| `confirmation_observation_digest` | [ContentDigest](domain.md#contentdigest) | yes | Digest of the exact canonical observation bytes. |
 | `schema_versions` | map | yes | Frozen command, event, recipe and payload schema versions. |
-| `capability_resolution_ref` | artifact reference | yes | Exact accepted adapter/tool capability resolution. |
+| `capability_resolution_ref` | [ArtifactId](domain.md#artifactid) | yes | Trusted-preview resolution artifact that the server must independently reproduce. |
+| `capability_resolution_digest` | [ContentDigest](domain.md#contentdigest) | yes | Digest of that canonical capability-resolution artifact. |
+
+`dispatch_spec_ref` and `capability_resolution_ref` are preview evidence references, not caller
+grants. The server dereferences them, resolves capabilities again and requires
+`recompile(finalized_pending_bytes, server_resolution) = finalized(dispatch_spec_ref)` and the
+resulting digest to equal both `dispatch_spec_digest` and the observation's presented spec digest.
+Any caller-supplied effective grant, expanded graph or runtime ID rejects.
 
 ### Rules
 
 | ID | Rule | Formal |
 | --- | --- | --- |
 | O-CONF-1 | Authority mode is selected before confirmation. | `mode = runtime-managed` |
-| O-CONF-2 | An accepted runtime confirmation creates exactly one `ConfirmedDispatch` and one run; a legacy-selected proposal is rejected before either entity exists. | `acceptedConfirmRuntimeDispatch(d) => runtimeManaged(d) and existsUnique(confirmedDispatch(d)) and existsUnique(run(d))` |
+| O-CONF-2 | An accepted runtime confirmation creates exactly one [ConfirmedDispatch](domain.md#confirmeddispatch) and one [Run](domain.md#run); a legacy-selected proposal is rejected before either entity exists. | `acceptedConfirmRuntimeDispatch(d) => runtimeManaged(d) and existsUnique(confirmedDispatch(d)) and existsUnique(run(d))` |
 | O-CONF-3 | The sheet bytes, spec, versions, policies and capability resolution are immutable after acceptance. | `accepted(d) => digest(authority(d)) = constant` |
 | O-CONF-4 | The compatibility `.confirmed` marker has no execution authority for this run. | `runtimeManaged(d) => legacyWatcherMayExecute(d) = false` |
 | O-CONF-5 | During the MVP, rerun means a new confirmed dispatch and a new run. | `rerun => new(dispatch_id) and new(run_id)` |
+| O-CONF-6 | The closed observation must verify schema, admitted issuer/evidence, authenticated human, channel, action, observation time, dispatch/revision and both presented digests before authority exists. | `accepted(d) => verifiedObservation(schema,issuerRef,issuerEvidence,principal,channel,action,observedAt,dispatch,revision,pendingDigest,specDigest)` |
+| O-CONF-7 | The server verifies the complete digest-pinned derivation contract, then derives the bounded graph, one continuation, two ordered mappings and every runtime ID; caller-supplied expanded authority rejects. | `accepted(d) => H(derivationContract)=identityDerivationDigest and graph=(3 nodes,2 edges,1 continuation,2 mappings) and ids=derive_v1(contract,kind,dispatch_id,dispatch_spec_digest,coordinates)` |
+| O-CONF-8 | The three digest domains are distinct and verify their own bytes. | `pendingDigest=H(sourceBytes) and specDigest=H(canonicalSpec) and authorityDigest=H(canonicalAuthority)` |
+| O-CONF-9 | A new client key cannot create another unit for an existing dispatch authority. | `existing(dispatchId,authorityDigest)=>firstReceipt; existing(dispatchId,otherDigest)=>CONFIRMED_AUTHORITY_CONFLICT` |
+| O-CONF-10 | Acceptance is one local atomic unit ending at durable `opening_pending`; event/effect/receipt schemas come from the exact authority-bound payload-schema bundle. | `H(payloadSchemaBundle)=authority.payloadSchemaBundleDigest and atomic(pendingMetadata,specMetadata,observationMetadata,graphMetadata,mappingSetMetadata,authorityMetadata,eventV1PayloadMetadata,eventV2PayloadMetadata,effectPayloadMetadata,observationRecord,confirmedDispatch,run,graph,continuationBinding,twoMappings,eventV1,eventV2,headV2,pendingUnclaimedAuditOpeningEffect,firstReceipt)` |
+| O-CONF-11 | Confirmation time is projected only from the verified observation, never from the writer clock. | `confirmed_at = confirmation_observation.observed_at` |
+
+### Calculations
+
+| ID | Calculation | Formula |
+|---|---|---|
+| C-CONF-1 | Pending source digest | `pending_sheet_digest = sha256(exact_pending_sheet_bytes)` |
+| C-CONF-2 | Executable spec digest | `dispatch_spec_digest = sha256(aci-cjson-1(serverProject(pending,capabilities)))` |
+| C-CONF-3 | Derived runtime identity | Require `sha256(canonical complete derivation contract)=identity_derivation_digest`, then `id = prefix[kind] + first32hex(sha256(aci-cjson-1({schema,kind,dispatch_id,dispatch_spec_digest,coordinates})))`. |
+| C-CONF-4 | Mapping binding digest | `confirmed_binding_digest = sha256(aci-cjson-1(binding_without_mapping_id_or_version))` |
+| C-CONF-5 | Complete authority digest | `confirmed_authority_digest = sha256(aci-cjson-1(confirmedAuthorityEnvelope))` |
+| C-CONF-6 | Confirmation projection time | `confirmed_at = verified_confirmation_observation.observed_at` |
+
+The closed projection, allowed identity kinds/coordinates and golden bytes are normative in
+[Runtime Confirmation Authority v1](confirmation-authority.md). Logical `operation_id` values are
+the three bounded turn identities; confirmation does not invent a second turn-ID namespace.
+
+For aggregate creation, the command boundary derives `aggregate_id=run_id` and requires creation
+version `0`. Inside the same `BEGIN IMMEDIATE` transaction, key-level replay/conflict is evaluated
+first; a previously unseen key then evaluates dispatch-authority replay/conflict before the
+creation CAS. An unlocked identity pre-read is non-conformant.
 
 ### State transition
 
@@ -85,27 +123,62 @@ therefore cannot pass validation using independently stale aggregate snapshots.
 
 ### Postconditions
 
+- Exactly one verified [ConfirmationObservation](domain.md#confirmationobservation) record, one
+  [ConfirmedDispatch](domain.md#confirmeddispatch), one [Run](domain.md#run), one confirmed graph
+  with one continuation binding, exactly two ordered mappings, exactly two events, one version-2
+  run head, one pending/unclaimed opening effect and one first stable receipt commit all-or-none.
 - [`run.created`](events.md#runcreated) freezes the confirmed authority and establishes the 1:1
   MVP mapping between `dispatch_id` and `run_id`.
+- Exactly nine newly authoritative artifact-metadata members commit with the unit: pending sheet,
+  [DispatchSpec](domain.md#dispatchspec), confirmation observation, confirmed graph, ordered mapping
+  set, [ConfirmedAuthorityEnvelope](domain.md#confirmedauthorityenvelope), the `run.created` payload, the `audit_opening.requested` payload and the
+  `audit_opening` effect payload. The capability-resolution artifact is preview evidence already
+  finalized and verified; the static payload-schema bundle and identity-derivation contract are
+  digest-bound inputs rather than newly accepted metadata members.
+- [ConfirmedDispatch](domain.md#confirmeddispatch).`confirmed_by` and `.confirmed_at` are immutable projections of the verified
+  observation principal and `observed_at`; journal `recorded_at` remains separate writer metadata.
+- One [ConfirmedTurnGraph](domain.md#confirmedturngraph), its continuation binding and exactly two
+  [ContinuationInputMapping](domain.md#continuationinputmapping) rows exist before any suspension.
 - [`audit_opening.requested`](events.md#audit_openingrequested) and its effect intent commit in the
   same local transaction as the run facts.
+- The run head is aggregate version 2 in `opening_pending`; the sole generic `audit_opening` effect
+  intent is `pending` and unclaimed; the first stable receipt names exactly the two accepted events.
 - No provider, tool or agent-start effect is eligible before verified audit opening.
+- Confirmation performs no audit-row append, effect claim, provider/tool call, attempt creation,
+  suspension, resume or continuation transition.
 - Marker/sheet cleanup, if requested, is a retryable compatibility effect after opening verification.
 
 ### Error states
 
 | Condition | Result |
 | --- | --- |
-| Pre-confirmation routing choice is `legacy-managed` | Reject; preserve the legacy path and create no `ConfirmedDispatch`, runtime `Run`, journal fact or audit effect. |
-| Existing dispatch/run identity has identical digest | Return the stable original receipt. |
-| Existing identity has a different digest | Permanent identity conflict; no state change. |
+| Pre-confirmation routing choice is `legacy-managed` | `legacy_authority_mode`; preserve the legacy path and create no [ConfirmedDispatch](domain.md#confirmeddispatch), runtime [Run](domain.md#run), journal fact or audit effect. |
+| Observation issuer/evidence does not verify | `untrusted_confirmation_issuer`; no state change. |
+| Observation schema, principal, channel, action or time does not verify | `untrusted_confirmation_observation`; no state change. |
+| Existing `(issuer_ref, observation_id)` has identical canonical bytes | Return the first immutable observation; no new state. |
+| Existing `(issuer_ref, observation_id)` has different canonical bytes | `confirmation_observation_conflict`; permanent integrity conflict with no state change. |
+| Observation dispatch/revision scope differs | `confirmation_observation_scope_mismatch`; no state change. |
+| Pending source or presented pending digest differs | `pending_sheet_digest_mismatch`; no state change. |
+| Compiled or presented spec/capability digest differs | `dispatch_spec_digest_mismatch`; no state change. |
+| Bounded graph shape differs | `invalid_bounded_graph`; no state change. |
+| Mapping cardinality/order or server projection differs | `confirmation_projection_mismatch`; no state change. |
+| Identity-derivation contract/schema digest differs | `identity_derivation_mismatch`; no state change. |
+| Payload-schema member, bundle or bound bundle digest differs | `confirmation_payload_schema_mismatch`; no state change. |
+| The exact five-key server-resolved `schema_versions` map is missing, extra or drifted | `confirmation_schema_versions_mismatch`; no state change. |
+| Confirmation attempts materialization or any effect beyond one pending audit-opening intent | `forbidden_effect_boundary`; the accepted unit cannot be widened. |
+| Authority envelope bytes/digest differ | Typed authority-integrity rejection; no state change. |
+| Expanded graph or derived runtime identity is supplied or differs | `derived_identity_mismatch`; no state change. |
+| Existing command key has another command digest | `idempotency_conflict`; preserve the original receipt/unit. |
+| Creation CAS or a prerequisite head loses a race before identity convergence | `aggregate_version_conflict` or `prerequisite_head_conflict`; no partial state. |
+| Existing dispatch identity has identical `confirmed_authority_digest`, including under a new idempotency key | Return the first stable receipt without new facts or effects. |
+| Existing dispatch identity has a different `confirmed_authority_digest` | `confirmed_authority_conflict`; no state change. |
 | Capability combination changes semantics | Reject until a new spec version is explicitly reconfirmed. |
 
 ### OQ-ACI6 settlement
 
 **Ratified.** `ExecutionAuthorityMode` is assigned before confirmation. Runtime-managed confirmation
 freezes the source and makes the marker a compatibility projection ignored by legacy watchers;
-a legacy-selected proposal never creates a runtime `ConfirmedDispatch` or
+a legacy-selected proposal never creates a runtime [ConfirmedDispatch](domain.md#confirmeddispatch) or
 [`RunLifecycle`](states.md#runlifecycle). Routing to legacy is allowed only before runtime
 confirmation; after runtime confirmation, change requires an explicit terminal/repair path and must
 never transfer partial runtime state into a legacy success.
@@ -290,6 +363,143 @@ See the complete [`AttemptLifecycle`](states.md#attemptlifecycle).
 - The corresponding canonical attempt event is appended.
 - Raw provider output remains distinct from a `BusPublication`, even when
   it contains a schema-valid candidate.
+
+## SuspendAgentContinuation
+
+**Type:** Operation (mutation)
+**Actor:** Runtime scheduler
+**Triggers:** A completed author attempt has a preconfirmed later turn whose input dependencies are not yet complete
+
+### Input
+
+| Field | Source | Required contract |
+|---|---|---|
+| source attempt/turn, seat and agent instance | runtime | Existing completed author source with one ownership path. |
+| continuation identity | confirmed dispatch | Deterministically preallocated for this exact source/target turn boundary. |
+| two continuation input mappings and target turn | confirmed dispatch | Exact author-output then review-output mappings; finite and acyclic after turn expansion. |
+| context snapshot | materializer + artifact boundary | Finalized immutable reconstruction bytes/hash. |
+| provider continuation handle/digest | adapter observation | Optional; opaque and non-authoritative. |
+| resume policy and deadline | confirmed dispatch | L0 policy is same-session preferred with explicit reconstruction fallback. |
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-CONT-S1 | Suspension follows the completed author attempt and starts no effect. | `suspend => sourceAttempt=completed and sourceRole=author and newEffects=0` |
+| O-CONT-S2 | The reconstruction snapshot and awaited mappings are finalized before acceptance. | `suspend => finalized(snapshot) and frozen(awaitedMappings)` |
+| O-CONT-S3 | The handle cannot grant resume or reveal input. | `providerContinuationRef => correlationOnly` |
+| O-CONT-S4 | Retry is identical by source attempt, target turn, mappings and snapshot digest; drift conflicts. | `sameIdentitySameBytes=>sameReceipt; drift=>conflict` |
+| O-CONT-S5 | Suspension consumes the confirmation-preallocated continuation identity referenced by both input mappings. | `continuation_id = confirmedTurnGraph.continuation_id = forall mappings.continuation_id` |
+
+### Postconditions
+
+- [`continuation.suspended`](events.md#continuationsuspended), the
+  [AgentContinuation](domain.md#agentcontinuation) row and stable command receipt commit atomically.
+- No provider, tool, bus-read or launch effect is created.
+
+## ResumeAgentContinuation
+
+**Type:** Operation (mutation)
+**Actor:** Runtime scheduler
+**Triggers:** Every awaited input mapping for a suspended continuation has an accepted exact source receipt and the same-session handle remains available
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-CONT-R1 | Eligibility derives from complete declared slots, current deadline and prerequisite heads. | `resume => complete(awaitedSlots) and now<=deadline and prerequisiteHeadsMatch` |
+| O-CONT-R2 | The target effective input contains the reconstruction snapshot, source output and newly accepted feedback in declared order. | `targetInput = canonical(baseSnapshot,sourceOutput,feedback,newInstruction)` |
+| O-CONT-R3 | This operation admits only same-session mode, requires a valid handle and preserves the agent instance. | `resume => mode=same_session and validHandle and sameInstance` |
+| O-CONT-R4 | Unknown resume outcome never authorizes reconstruction. | `resumeEffect=unknown => no reconstructionStart` |
+| O-CONT-R5 | One command atomically accepts the resume event, finalized target input metadata, target attempt, materialized invocation, request binding, sealed request and one pending effect. | `atomic(resume_requested,inputMetadata,attempt,materializedInvocation,requestBinding,request,effect)` |
+| O-CONT-R6 | Identical retry returns the accepted unit; changed inputs, mode, target or digests conflict. | `sameCommandDigest=>sameReceipt; drift=>conflict` |
+
+### Runtime continuation input materialization contract
+
+The scheduler resolves exactly two confirmation-frozen
+[ContinuationInputMapping](domain.md#continuationinputmapping) records. Each preallocated source
+message must resolve through the journal to exactly one official [Contribution](domain.md#contribution),
+its verified publication receipt and, through the same message's publication candidate, one
+`completed` source attempt matching the mapped dispatch, operation and seat. Missing or ambiguous
+chains reject. The prior-author chain's attempt ID and turn must equal the continuation's
+`source_attempt_id` and `source_turn_ordinal`; a retry sibling's official output cannot be combined
+with another attempt's snapshot or handle. Candidates, raw provider output,
+paths and caller-selected artifacts do not satisfy a slot. The kernel constructs the target
+[EffectiveInputArtifact](domain.md#effectiveinputartifact) in this order: reconstruction base,
+author turn-0 official output, reviewer turn-0 official output, revision instruction. It validates
+each artifact/hash and visibility policy, then commits finalized input metadata only inside the
+complete resume acceptance unit with the target attempt, materialized invocation, request binding,
+sealed request, event and one unclaimed effect.
+There is no host binding, `WorkflowInputManifest`, agent bus-read call or independent partial write.
+
+### State transition
+
+[AgentContinuationLifecycle](states.md#agentcontinuationlifecycle): `suspended -> resume_requested`.
+Effect claim and adapter observation later produce `resuming -> resumed`.
+
+### Postconditions
+
+- [`continuation.resume_requested`](events.md#continuationresume_requested) and
+  [`attempt.requested`](events.md#attemptrequested) commit with one unclaimed effect.
+- The effect worker calls `AgentAdapter.resume` for same-session mode.
+- A definitive no-start response records [`continuation.provider_lost`](events.md#continuationprovider_lost),
+  terminalizes the current target attempt/effect when one exists, and enables only the separately
+  authorized reconstruction operation.
+
+## ReconstructAgentContinuation
+
+**Type:** Operation (mutation)
+**Actor:** Runtime scheduler
+**Triggers:** A continuation is `reconstruction_eligible` after definitive evidence that no provider work started
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-CONT-X1 | Reconstruction requires confirmed policy, exact definitive-loss fact, complete awaited slots, a current deadline and matching prerequisite heads. | `reconstruct => state=reconstruction_eligible and policyAllows and definitiveLossEventMatches and complete(awaitedSlots) and now<=deadline and prerequisiteHeadsMatch` |
+| O-CONT-X2 | Any claimed prior target is already terminal `failed(continuation_unavailable)`; unknown or active work rejects replacement. | `claimedPriorTarget => failed(noStart); unknownOrActive => reject` |
+| O-CONT-X3 | Replacement preserves dispatch, seat, target turn and effective-input semantics while creating a new agent instance and attempt. | `same(dispatch,seat,turn,inputSemantics) and new(instance,attempt)` |
+| O-CONT-X4 | At most one replacement is accepted for one continuation and loss event. | `unique(continuation_id,provider_lost_event_id)` |
+| O-CONT-X5 | Event, replacement instance, finalized input metadata, attempt, materialized invocation, request binding, sealed request and one pending ordinary start effect commit atomically. | `atomic(reconstruction_requested,instance,inputMetadata,attempt,materializedInvocation,requestBinding,request,effect)` |
+| O-CONT-X6 | Retry is byte-identical; changed loss, target, input, provider or digests conflict. | `sameCommandDigest=>sameReceipt; drift=>conflict` |
+
+### State transition
+
+[AgentContinuationLifecycle](states.md#agentcontinuationlifecycle):
+`reconstruction_eligible -> resume_requested`. The ordinary claimed start then produces
+`resuming`, and observable provider running produces `resumed`.
+
+### Postconditions
+
+- [`continuation.reconstruction_requested`](events.md#continuationreconstruction_requested) and
+  [`attempt.requested`](events.md#attemptrequested) commit with exactly one unclaimed start effect.
+- The old provider handle is never reused and the new agent instance receives the same canonical
+  provider-neutral input semantics.
+
+## CancelAgentContinuation
+
+**Type:** Operation (mutation)
+**Actor:** Authorized human or runtime policy
+**Triggers:** Explicit cancellation or owning run cancellation while continuation is nonterminal
+
+### Rules
+
+| ID | Rule | Formal |
+|---|---|---|
+| O-CONT-C1 | Cancellation targets the current continuation version and wins by aggregate CAS. | `expectedVersion=currentVersion and nonterminal` |
+| O-CONT-C2 | Suspended handles are disposed idempotently; an unclaimed resume atomically makes its effect unclaimable and requests local target cancellation; a claimed resume uses the target-attempt cancellation path. | `suspended=>dispose; pendingResume=>atomic(effect.failed(cancelled_before_claim),attempt.cancel_requested); claimedResume=>CancelRun(targetAttempt)` |
+| O-CONT-C3 | Resume, cancellation and expiry have one journal-ordered terminal winner. | `winner=minJournalOffset(validTerminalFacts)` |
+| O-CONT-C4 | A deadline after effect claim enters cancellation/reconciliation; it cannot declare `expired` while provider work may exist. | `claimed and deadlineObserved => cancel_requested` |
+
+### Postconditions
+
+- [`continuation.cancel_requested`](events.md#continuationcancel_requested) commits with at most one
+  pending cancel/disposal effect.
+- When cancellation wins from `resume_requested`, the still-pending resume/start effect becomes
+  terminal `failed(cancelled_before_claim)` in the same transaction and can never pass `claimEffect`;
+  the requested target enters `attempt.cancel_requested` and local no-start evidence may close it.
+- [`continuation.cancelled`](events.md#continuationcancelled) is accepted only from matching terminal
+  evidence; acknowledgement alone is not terminal.
 
 ### Internal transition — DeliverReferenceScoutBundleToAgent
 
@@ -1020,6 +1230,10 @@ retried execution; mixed-provider rollups must preserve each provider's semantic
 | [`AcceptRuntimeCommand`](#acceptruntimecommand) | Conditional append for opening/close verification, run/group start, attempt observations, deadlines, effects, handoffs and the unique run terminal |
 | [`ConfirmRuntimeDispatch`](#confirmruntimedispatch) | [`run.created`](events.md#runcreated), [`audit_opening.requested`](events.md#audit_openingrequested) |
 | [`StartAgentAttempt`](#startagentattempt) | [`attempt.requested`](events.md#attemptrequested), plus optional atomic target-agent delivery |
+| [`SuspendAgentContinuation`](#suspendagentcontinuation) | [`continuation.suspended`](events.md#continuationsuspended) |
+| [`ResumeAgentContinuation`](#resumeagentcontinuation) | [`continuation.resume_requested`](events.md#continuationresume_requested) plus co-committed [`attempt.requested`](events.md#attemptrequested) |
+| [`ReconstructAgentContinuation`](#reconstructagentcontinuation) | [`continuation.reconstruction_requested`](events.md#continuationreconstruction_requested) plus co-committed [`attempt.requested`](events.md#attemptrequested) |
+| [`CancelAgentContinuation`](#cancelagentcontinuation) | [`continuation.cancel_requested`](events.md#continuationcancel_requested) and eventual [`continuation.cancelled`](events.md#continuationcancelled) |
 | Internal [`DeliverReferenceScoutBundleToAgent`](#internal-transition--deliverreferencescoutbundletoagent) | [`reference_scout.bundle_delivered_to_agent@1`](events.md#referencescoutbundledeliveredtoagent), atomically within StartAgentAttempt |
 | [`PublishBusContribution`](#publishbuscontribution) | [`publication.persisted`](events.md#publicationpersisted) candidate only |
 | [`VerifyPublicationReceipt`](#verifypublicationreceipt) | [`attempt.result_accepted`](events.md#attemptresult_accepted) plus the message-type-specific official acceptance event |

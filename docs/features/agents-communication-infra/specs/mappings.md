@@ -4,11 +4,42 @@ feature: Agents Communication Infra
 type: mappings
 title: "Agents Communication Infra — Mappings"
 status: draft
-version: 0.3.0
+version: 0.4.0
 derived-from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 ---
 
 # Mappings: Agents Communication Infra
+
+## PendingRuntimeDispatchToConfirmedAuthority
+
+**From:** exact canonical `aci.pending-runtime-dispatch@1` bytes, one admitted
+[ConfirmationObservation](domain.md#confirmationobservation), and the server's immutable capability
+resolution
+**To:** [ConfirmedDispatch](domain.md#confirmeddispatch),
+[ConfirmedTurnGraph](domain.md#confirmedturngraph), exactly two
+[ContinuationInputMapping](domain.md#continuationinputmapping) records and one
+[Run](domain.md#run) in `opening_pending`
+**Direction:** inbound confirmation projection and local acceptance
+
+| Source | Target | Transform / rule |
+|---|---|---|
+| exact pending bytes | pending-sheet artifact/digest | Finalize the bytes without normalization or reread; `pending_sheet_digest = SHA-256(exact bytes)`. |
+| pending `recipe_ref`, ordered `schema_refs`, prompt refs and budgets | canonical `aci.dispatch-spec@1` | Project exactly after closed-shape validation; no default, clock, random value or environment discovery. |
+| pending logical requirements + server resolution | spec `capability_resolution` and immutable resolution artifact/digest | Resolve server-side; reject a caller-expanded effective grant or any difference from the trusted preview. |
+| pending `workflow` | spec `group_graph` | Replace only the schema label; preserve the exact ordered three nodes, two edges, workflow kind and loop ceiling. |
+| pending policy refs | spec `decision_policies` | Preserve exact pinned policy refs, freeze `same_session_preferred`, and freeze source types `[author.output, reviewer.output]`. |
+| trusted observation | observation artifact/digest plus `confirmed_by`/`confirmed_at` | Require exact issuer evidence, principal, channel, action, dispatch/revision and displayed pending/spec digests; project principal/time without a writer-clock replacement. |
+| verified spec graph + dispatch/spec digest | confirmed graph, continuation, source messages, events, effect and receipt IDs | Derive only through the manifest-pinned `aci.confirmed-dispatch-id-preimage@1` contract; supplied runtime IDs are invalid. |
+| the author and reviewer source selectors | two continuation mappings in slot order | Map author output to `prior_author_output` at ordinal `0` and reviewer output to `review_feedback` at ordinal `1`; both target author turn `1`. |
+| each closed `aci.continuation-input-binding@1` value | `confirmed_binding_digest` | Hash the complete canonical binding while excluding only `mapping_id` and `mapping_version`; then derive `mapping_id` independently. |
+| pending, spec, observation, capability, graph, mapping-set, complete identity-derivation-contract and closed payload-schema-bundle digests plus frozen versions/mode | canonical [ConfirmedAuthorityEnvelope](domain.md#confirmedauthorityenvelope) | Construct the exact closed `aci.confirmed-authority@1` value; hash it as `confirmed_authority_digest`; exclude command/key/offset/receipt/writer-clock transport data. |
+| confirmed authority + derived identities | accepted domain rows, two event payloads and one audit-opening effect payload | Finalize artifacts, then commit every CONF-000 acceptance member atomically; no audit row, external call, Attempt or continuation lifecycle transition is produced. |
+
+The normative source, target bytes, field-level projection, derivation inputs and expected IDs are
+frozen by [Runtime Confirmation Authority v1](confirmation-authority.md) and its
+[`confirmed-dispatch-v1`](fixtures/confirmed-dispatch-v1/manifest.json) package. A different source
+revision, observation or semantic resolution requires a new confirmation authority; it is never
+silently normalized into the old mapping.
 
 ## AgentInvocationPlanToMaterializedInvocation
 
@@ -67,6 +98,29 @@ then an official [Contribution](domain.md#contribution) only after parent verifi
 Candidate persistence and official acceptance are deliberately separate. Recovery resolves the
 same candidate and terminal result by `(attempt_id, operation_id, logical_message_key)`, repeats
 exact verification and returns the prior outcome without duplicating official events.
+
+## ContinuationContributionsToEffectiveInput
+
+**From:** exactly two confirmed [ContinuationInputMapping](domain.md#continuationinputmapping)
+records plus their official [Contribution](domain.md#contribution) artifacts
+**To:** one target-turn [EffectiveInputArtifact](domain.md#effectiveinputartifact)
+**Direction:** internal runtime materialization
+
+| Source | Target | Rule |
+|---|---|---|
+| reconstruction snapshot | base context entry | exact finalized artifact/hash from the suspended continuation |
+| author-turn mapping + official contribution | prior-output history entry | preallocated message, group, operation, seat, round, turn binding, type, dispatch, receipt and completed attempt must match uniquely |
+| reviewer-turn mapping + official contribution | review-feedback context entry | preallocated message, group, operation, seat, round, turn binding, type, dispatch, receipt and completed attempt must match uniquely |
+| confirmed revision task | final instruction entry | exact versioned task artifact/digest frozen at confirmation |
+| mapping order and visibility policies | complete manifest order and policy refs | canonical order is base, author output, review, revision instruction |
+
+The kernel resolves sources from accepted journal facts; no agent or host binding supplies a path or
+artifact selector. Finalization occurs only inside
+[ResumeAgentContinuation](operations.md#runtime-continuation-input-materialization-contract) or the
+corresponding [ReconstructAgentContinuation](operations.md#reconstructagentcontinuation)
+transaction, atomically with the target execution unit.
+Missing, candidate-only, raw, cross-dispatch, nonterminal, reordered or policy-invalid sources map
+to rejection and no authoritative write.
 
 ## RevealManifestToEffectiveInput
 

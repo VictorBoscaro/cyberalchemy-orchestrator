@@ -1,0 +1,146 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-CONFIRMED-DISPATCH-001",
+  "scope": "durable-confirmed-dispatch-writer-v1",
+  "planner_preflight": "closed-implemented-reviewed-pass",
+  "task_ref": "docs/features/agents-communication-infra/work-pack/tasks/TASK-CONF-001.md",
+  "entry_predicate": [
+    "conf-000-reviewed-golden-pass",
+    "brownfield-alignment-contradiction-resolved",
+    "brownfield-layering-audit-pass",
+    "fresh-exact-swu-domainspec-code-readiness-pass",
+    "all-source-and-fixture-pins-still-match"
+  ],
+  "entry_gate_status": {
+    "conf_000": "pass",
+    "alignment_audit": "pass_after_obsolete-package-reconciliation",
+    "layering_audit": "pass_with_encoded_constraints",
+    "code_readiness": "historical-entry-receipt-pass",
+    "mutation": "completed-reviewed-pass"
+  },
+  "entry_authorization": {
+    "descriptor_digest": "sha256:797e14af8e53832cab4d44385529dc75f477cf96cf7ccab02889b0642db0c0fc",
+    "readiness_ref": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-CONFIRMED-DISPATCH-001-code-readiness.json",
+    "readiness_digest": "sha256:15b2117b05e92d01cec4797b0ee7fd989c1f1fd8406753152eead13297f6d588",
+    "status": "historical-entry-receipt-not-repinned-after-implementation"
+  },
+  "readiness_authority_caveat": "The readiness receipt proves the exact pre-implementation descriptor, TEST-SPEC and scope self-consistency. This descriptor was promoted after implementation, so its current digest intentionally differs; the historical entry receipt must not be repinned to this status update.",
+  "source_pins": {
+    "fixture_manifest": {
+      "path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1/manifest.json",
+      "sha256": "sha256:919385d226240fa66621d7b660ef49b70ad7e3d3a379bee3d7c29729243acd0a"
+    },
+    "test_spec": {
+      "path": "docs/features/agents-communication-infra/TEST-SPEC.md",
+      "sha256": "sha256:1dba61d54e61538f95a3a383f18e55deddb152a7b210638bc2d8bf7b3b5a44ea"
+    },
+    "confirmation_authority": {
+      "path": "docs/features/agents-communication-infra/specs/confirmation-authority.md",
+      "sha256": "sha256:4e9f92545c9ab35a9ab555efee0488e7c3aec9b849dad17f07a82e166018252c"
+    },
+    "implementation_layering": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/confirmation-implementation-layering.md",
+      "sha256": "sha256:09c4550df27beefa796fba063aff8dea2d4ff25d0b96240809fa076e171ae875"
+    },
+    "conf_000_evidence": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/evidence/CONF-000.md",
+      "sha256": "sha256:e412d43a671cb4c2c362ff62011a637474aeb237873c5c64a334b0120c07893a"
+    }
+  },
+  "write_scope": [
+    "implementations/server/runtime/migrations/012_runtime_confirmation.sql",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/errors.py",
+    "implementations/server/runtime/artifacts.py",
+    "implementations/server/runtime/confirmation.py",
+    "implementations/server/runtime/journal.py",
+    "implementations/server/runtime/service.py",
+    "implementations/tests/runtime/test_runtime_confirmation.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/server/runtime/local_pilot.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256"
+  ],
+  "write_scope_constraints": {
+    "migration": "012 adds confirmation observations, confirmed dispatches, runs, confirmed graphs, continuation mappings and generic effect intents without a dispatch_links authority foreign key; command linkage must support the same atomic unit",
+    "database": "migration discovery and persistence policy only",
+    "errors": "task-specific fail-closed errors only",
+    "artifacts": "add a metadata-aware authorized read that returns and validates the complete artifact reference without breaking existing get_authorized callers",
+    "confirmation": "pure strict decode/verify/project/derive/build logic; no SQLite, clock, randomness, filesystem discovery, transport, legacy, appender, provider or worker dependencies",
+    "journal": "specialized accept_confirmed_dispatch sole writer; key replay then identity replay/conflict before CAS in one BEGIN IMMEDIATE; commits the entire accepted unit",
+    "service": "application authorization and preparation from trusted canonical document bytes plus the fixture-bound finalized capability-preview artifact reference; require artifact_id, content_hash, media_type, schema_ref, classification, policy references and finalization receipt; verify and reference the preview without re-finalizing it; no direct SQL",
+    "focused_test": "golden, 56 negatives, 21 failpoints, replay/conflict/concurrency/lost-response/reopen/migration, zero-external proof, existing get_authorized compatibility, and rejection of wrong preview schema_ref/media_type/classification/policy metadata",
+    "traceability": "map T-ACI-AUTH1 through T-ACI-AUTH8 to real focused-test selectors",
+    "stage_e": "preserve existing baseline repairs; bind final task-owned bytes, refresh manifest pin, append revalidation evidence and refresh companion digest only",
+    "single_writer": "one coder owns all listed paths until validation handoff"
+  },
+  "implementation_shape": {
+    "pure_domain_owner": "implementations/server/runtime/confirmation.py",
+    "application_owner": "implementations/server/runtime/service.py",
+    "transaction_owner": "implementations/server/runtime/journal.py",
+    "persistence_owner": "implementations/server/runtime/migrations/012_runtime_confirmation.sql",
+    "test_owner": "implementations/tests/runtime/test_runtime_confirmation.py",
+    "exit_state": "opening_pending",
+    "external_action_count": 0,
+    "new_authoritative_artifact_metadata_count": 9,
+    "capability_preview": "prefinalized input verified and referenced; excluded from the nine new artifact metadata members",
+    "event_count": 2,
+    "effect_intent_count": 1,
+    "effect_intent_status": "pending-unclaimed"
+  },
+  "required_changes": [
+    "strictly validate the canonical observation and finalized capability-resolution preview bytes plus full authorized artifact metadata before any write",
+    "reject wrong preview schema_ref, media_type, classification or policy metadata even when preview bytes and content hash are otherwise valid",
+    "derive pending, DispatchSpec, confirmed authority, all identities, graph, continuation and two ordered mappings without caller-selected expanded authority",
+    "atomically persist the immutable confirmation/domain/artifact/event/head/effect/receipt unit",
+    "perform idempotency-key replay and dispatch-plus-authority identity replay/conflict before expected-head CAS",
+    "return the first receipt after same-authority replay, concurrency or lost response after commit",
+    "leave zero partial state at every pre-commit failpoint and prove one identical unit after commit",
+    "preserve the opening fence and create no provider, tool, agent-start or external audit effect"
+  ],
+  "required_test_ids": [
+    "T-ACI-AUTH1",
+    "T-ACI-AUTH2",
+    "T-ACI-AUTH3",
+    "T-ACI-AUTH4",
+    "T-ACI-AUTH5",
+    "T-ACI-AUTH6",
+    "T-ACI-AUTH7",
+    "T-ACI-AUTH8"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_runtime_confirmation -v",
+    "python -B -m unittest implementations.tests.runtime.test_apt_stage_b -v",
+    "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "python -B -m unittest implementations.tests.runtime.test_stage_c -v",
+    "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check"
+  ],
+  "forbidden_changes": [
+    "api-endpoint-or-package-export",
+    "ui-cli-chat-hook-or-host-hook",
+    "audit-opening-effect-claim-or-ledger-materialization",
+    "audit-opening-verification-consumer",
+    "agent-start-provider-tool-scheduler-or-worker",
+    "continuation-suspension-or-migration-013",
+    "legacy-fk-decoupling-or-dispatch-links-authority",
+    "seeded-confirmation-authority",
+    "fixture-spec-golden-or-manifest-edit",
+    "production-network-credentials-deploy-or-cutover"
+  ],
+  "promotion_evidence": {
+    "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/evidence/CONF-001.md",
+    "stage_e_source_manifest_digest": "sha256:d29d7959fde52f6f7a67b50382dd2e7c52bc8ae395713cbcca9d095d2f6bbb92",
+    "stage_e_execution_receipt_digest": "sha256:c45c7362c9f243f9e33805913a9e60acf20b2f146abeb25b6af7967b7cd0cde8",
+    "focused_negatives": "56/56",
+    "focused_failpoints": "21/21",
+    "independent_red_team_assertions": "66/66",
+    "runtime_suite": "160/160",
+    "independent_reviewer": "PASS"
+  },
+  "implementation_status": "implemented-reviewed-pass"
+}

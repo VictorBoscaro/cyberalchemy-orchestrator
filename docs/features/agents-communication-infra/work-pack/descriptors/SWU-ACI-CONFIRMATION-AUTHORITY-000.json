@@ -1,0 +1,21 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-CONFIRMATION-AUTHORITY-000",
+  "scope": "historical-confirmation-authority-oracle-proposal",
+  "planner_preflight": "closed",
+  "implementation_status": "closed-not-implemented",
+  "disposition": "SUPERSEDED_BY_REVIEWED_GOLDEN",
+  "task_ref": "docs/features/agents-communication-infra/work-pack/tasks/TASK-CONF-000.md",
+  "successor_swu": "SWU-ACI-CONFIRMED-DISPATCH-001",
+  "closure_evidence": {
+    "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/evidence/CONF-000.md",
+    "sha256": "sha256:e412d43a671cb4c2c362ff62011a637474aeb237873c5c64a334b0120c07893a"
+  },
+  "final_fixture_manifest": {
+    "path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1/manifest.json",
+    "sha256": "sha256:919385d226240fa66621d7b660ef49b70ad7e3d3a379bee3d7c29729243acd0a"
+  },
+  "write_scope": [],
+  "validation_commands": [],
+  "closure_note": "The reviewed golden package and independent validation delivered the intended proof. No separate test-only oracle or readiness receipt remains required."
+}

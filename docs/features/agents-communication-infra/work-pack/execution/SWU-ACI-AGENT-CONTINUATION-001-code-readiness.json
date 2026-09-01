@@ -1,0 +1,43 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-AGENT-CONTINUATION-001",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-AGENT-CONTINUATION-001.json",
+  "work_pack_digest": "sha256:e440c54ee65aa4c90596aca12dbcbef9b86e3d919d869e7fd66babc4812ad620",
+  "test_spec_ref": "docs/features/agents-communication-infra/TEST-SPEC.md",
+  "test_spec_digest": "sha256:1dba61d54e61538f95a3a383f18e55deddb152a7b210638bc2d8bf7b3b5a44ea",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/server/runtime/migrations/013_agent_continuation.sql",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/continuation.py",
+    "implementations/server/runtime/service.py",
+    "implementations/server/runtime/errors.py",
+    "implementations/tests/runtime/test_agent_continuation.py",
+    "implementations/tests/runtime/test_runtime_confirmation.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/server/runtime/local_pilot.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_agent_continuation -v",
+    "python -B -m unittest implementations.tests.runtime.test_runtime_confirmation -v",
+    "python -B -m unittest implementations.tests.runtime.test_agent_reference_delivery -v",
+    "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "python -B -m unittest implementations.tests.runtime.test_stage_c -v",
+    "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check"
+  ],
+  "capability_profile": {
+    "filesystem": "task-scoped-write",
+    "network": "none",
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

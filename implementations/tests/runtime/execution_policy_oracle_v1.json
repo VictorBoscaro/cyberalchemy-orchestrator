@@ -1,0 +1,41 @@
+{
+  "schema": "aci.execution-policy-oracle-vectors@1",
+  "authority": "test-only-non-executable",
+  "vectors": [
+    {
+      "name": "budget_policy",
+      "canonical_json": "{\"exhaustion_action\":\"deny-new-work\",\"schema\":\"aci.budget-policy@1\",\"scope\":\"attempt\",\"unknown_usage_action\":\"deny-new-work\"}",
+      "digest": "sha256:08f3494d9e869053ee097e854840ade80afcda65cce75ef774038be5c6c242d2"
+    },
+    {
+      "name": "sandbox_enforcement_policy",
+      "canonical_json": "{\"enforcement_mode\":\"deny-all\",\"schema\":\"aci.sandbox-enforcement-policy@1\",\"unsupported_control_action\":\"deny\"}",
+      "digest": "sha256:88f400d1661b69ac6536b548216bb7f5a370042050df2ea7bae49e03952725ea"
+    },
+    {
+      "name": "resource_budget",
+      "canonical_json": "{\"budget_policy_ref\":{\"digest\":\"sha256:08f3494d9e869053ee097e854840ade80afcda65cce75ef774038be5c6c242d2\",\"name\":\"aci.budget-policy.fake-deny-all\",\"version\":\"1\"},\"max_artifact_bytes\":0,\"max_input_tokens\":0,\"max_output_tokens\":0,\"max_payload_bytes\":0,\"max_tool_calls\":0,\"max_wall_time_ms\":0,\"schema\":\"aci.resource-budget@1\"}",
+      "digest": "sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836"
+    },
+    {
+      "name": "sandbox_policy",
+      "canonical_json": "{\"credential_refs\":[],\"filesystem_scope\":{\"default\":\"deny\",\"link_policy\":\"deny\",\"read_roots\":[],\"write_roots\":[]},\"network_scope\":{\"allowed_endpoints\":[],\"default\":\"deny\"},\"policy_ref\":{\"digest\":\"sha256:88f400d1661b69ac6536b548216bb7f5a370042050df2ea7bae49e03952725ea\",\"name\":\"aci.sandbox-policy.fake-deny-all\",\"version\":\"1\"},\"process_scope\":{\"allowed_executables\":[],\"default\":\"deny\",\"max_child_processes\":0},\"schema\":\"aci.sandbox-policy@1\"}",
+      "digest": "sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a"
+    },
+    {
+      "name": "combined_oracle",
+      "canonical_json": "{\"resource_budget\":{\"budget_policy_ref\":{\"digest\":\"sha256:08f3494d9e869053ee097e854840ade80afcda65cce75ef774038be5c6c242d2\",\"name\":\"aci.budget-policy.fake-deny-all\",\"version\":\"1\"},\"max_artifact_bytes\":0,\"max_input_tokens\":0,\"max_output_tokens\":0,\"max_payload_bytes\":0,\"max_tool_calls\":0,\"max_wall_time_ms\":0,\"schema\":\"aci.resource-budget@1\"},\"resource_budget_digest\":\"sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836\",\"sandbox_policy\":{\"credential_refs\":[],\"filesystem_scope\":{\"default\":\"deny\",\"link_policy\":\"deny\",\"read_roots\":[],\"write_roots\":[]},\"network_scope\":{\"allowed_endpoints\":[],\"default\":\"deny\"},\"policy_ref\":{\"digest\":\"sha256:88f400d1661b69ac6536b548216bb7f5a370042050df2ea7bae49e03952725ea\",\"name\":\"aci.sandbox-policy.fake-deny-all\",\"version\":\"1\"},\"process_scope\":{\"allowed_executables\":[],\"default\":\"deny\",\"max_child_processes\":0},\"schema\":\"aci.sandbox-policy@1\"},\"sandbox_policy_digest\":\"sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a\",\"schema\":\"aci.execution-policy-oracle-fixture@1\"}",
+      "digest": "sha256:9abfb7e61f995a90e8a08a72dfa96dda2df956f63e4e4360e78eca22493641f6"
+    },
+    {
+      "name": "harness_fence_preimage",
+      "canonical_json": "{\"authority_mode\":\"runtime-managed\",\"cutover_epoch\":1,\"dispatch_id\":\"dispatch_policy_oracle_fixture\",\"legacy_watcher_disabled_evidence_ref\":\"art_policy_harness_watcher_disabled_fixture\",\"run_id\":\"run_policy_oracle_fixture\",\"schema\":\"aci.execution-authority-fence-harness-preimage@1\"}",
+      "digest": "sha256:124d06fa0b4c2e55eef48bc5b0c33ce19880d15ce82e0d3af9518a80536de70f"
+    },
+    {
+      "name": "harness_fence_document",
+      "canonical_json": "{\"authority_mode\":\"runtime-managed\",\"cutover_epoch\":1,\"dispatch_id\":\"dispatch_policy_oracle_fixture\",\"fence_digest\":\"sha256:124d06fa0b4c2e55eef48bc5b0c33ce19880d15ce82e0d3af9518a80536de70f\",\"legacy_watcher_disabled_evidence_ref\":\"art_policy_harness_watcher_disabled_fixture\",\"run_id\":\"run_policy_oracle_fixture\",\"schema\":\"aci.execution-authority-fence-harness@1\"}",
+      "digest": "sha256:4672e47ccc7fb906a14c0cd57de0bbd74271cfb7697d3a539dc97251bb864ba4"
+    }
+  ]
+}

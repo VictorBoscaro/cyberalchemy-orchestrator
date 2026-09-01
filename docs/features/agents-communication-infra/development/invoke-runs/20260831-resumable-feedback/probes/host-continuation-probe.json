@@ -1,0 +1,25 @@
+{
+  "schema": "aci-host-continuation-probe/v1",
+  "observed_at": "2026-08-31",
+  "host_surface": "codex-collaboration",
+  "probe_scope": "same-session follow-up and active interruption",
+  "continuation": {
+    "agent_ref": "/root/continuation_probe",
+    "first_turn_result": "READY:ACI-CONTINUATION-PROBE-20260831-7F3C",
+    "second_turn_result": "RESUMED:ACI-CONTINUATION-PROBE-20260831-7F3C",
+    "same_agent_ref": true,
+    "prior_turn_value_recalled": true
+  },
+  "cancellation": {
+    "agent_ref": "/root/cancellation_probe",
+    "status_before_interrupt": "running",
+    "interrupt_accepted": true
+  },
+  "supported_conclusion": "The observed Codex collaboration surface can resume an idle agent by the same agent reference and can interrupt an active agent.",
+  "unsupported_conclusions": [
+    "The provider session survives host or process restart.",
+    "An idle provider session is retained indefinitely.",
+    "The project runtime adapter already persists or resumes this host reference.",
+    "An interrupted provider reports a durable terminal cancellation without additional reconciliation."
+  ]
+}

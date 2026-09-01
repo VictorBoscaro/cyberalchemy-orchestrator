@@ -5,8 +5,8 @@ is_session: false
 layer: application
 nature: [procedural, technical]
 status: draft
-version: 0.6.0
-last_updated: 2026-08-03
+version: 0.7.2
+last_updated: 2026-09-01
 ---
 
 # Test Spec: Agents Communication Infra
@@ -39,6 +39,16 @@ This document specifies contract tests, not test code. Fixtures derive from [rul
 | [T-ACI-R20](#t-aci-r20--causal-start-prerequisites) | Start cannot race past close/cancel using stale dependency heads | [RuntimeCommand](specs/domain.md#runtimecommand) |
 | [T-ACI-R21](#t-aci-r21--candidate-abandonment-and-replacement) | Unknown orphan candidates release their key only through authorized audited CAS | [PublicationCandidate](specs/domain.md#publicationcandidate) |
 | [T-ACI-R22](#t-aci-r22--reference-bundle-target-delivery) | Scout bundle delivery to a target attempt is source-bound, unique, ordered and atomic | [ACI-R19](specs/rules.md#aci-r19--reference-bundle-delivery-is-source-bound-and-attempt-atomic) |
+| [T-ACI-HOST1](#t-aci-host1--producer-bound-host-output-and-atomic-launch) | One completed producer receipt and active authorized mapping materialize one exact consumer manifest and atomic launch authorization | [ACI-R20](specs/rules.md#aci-r20--host-terminal-output-is-producer-bound-visibility-authorized-and-launch-atomic) |
+| [T-ACI-CONT1](#bounded-resumable-feedback) | Suspending a terminal author turn persists reconstruction evidence and starts no effect | [SuspendAgentContinuation](specs/operations.md#suspendagentcontinuation) |
+| [T-ACI-CONT2](#bounded-resumable-feedback) | Accepted reviewer output alone, not a bus poll, satisfies the declared feedback slot | [ACI-R21](specs/rules.md#aci-r21--continuation-is-resumable-state-never-hidden-authority) |
+| [T-ACI-CONT3](#bounded-resumable-feedback) | Author turn 1 input contains base, two exact official bus outputs and revision instruction in canonical order | [Runtime continuation input materialization](specs/operations.md#runtime-continuation-input-materialization-contract) |
+| [T-ACI-CONT4](#bounded-resumable-feedback) | Same-session resume preserves seat and agent instance while creating a new attempt/turn | [AgentContinuationLifecycle](specs/states.md#agentcontinuationlifecycle) |
+| [T-ACI-CONT5](#bounded-resumable-feedback) | Definitive handle loss permits only one explicit reconstruction after the abandoned target is terminal | [ReconstructAgentContinuation](specs/operations.md#reconstructagentcontinuation) |
+| [T-ACI-CONT6](#bounded-resumable-feedback) | Unknown resume outcome never starts reconstruction automatically | [AgentAdapter](specs/interfaces.md#internal-agentadapter) |
+| [T-ACI-CONT7](#bounded-resumable-feedback) | Resume, cancellation and expiry races elect one terminal continuation outcome | [AgentContinuationLifecycle](specs/states.md#agentcontinuationlifecycle) |
+| [T-ACI-CONT8](#bounded-resumable-feedback) | Crash/retry across suspend, materialize, request and effect boundaries converges to one target attempt/effect | [ResumeAgentContinuation](specs/operations.md#resumeagentcontinuation) |
+| [T-ACI-CONT9](#bounded-resumable-feedback) | Every lifecycle state/event pair not listed by the transition table rejects without mutation | [AgentContinuationLifecycle](specs/states.md#agentcontinuationlifecycle) |
 | [T-ACI-PEER1](#bounded-authorized-peer-input-delivery) | Close freezes only official messages and grants no peer visibility | [CloseCollection](specs/operations.md#closecollection) |
 | [T-ACI-PEER2](#bounded-authorized-peer-input-delivery) | One reveal binds the frozen ordered message set and survives restart | [PublishRevealManifest](specs/operations.md#publishrevealmanifest) |
 | [T-ACI-PEER3](#bounded-authorized-peer-input-delivery) | Target identity and group are derived from the authenticated invocation plan | [MaterializeAuthorizedPeerInput](specs/operations.md#materializeauthorizedpeerinput) |
@@ -78,12 +88,19 @@ This document specifies contract tests, not test code. Fixtures derive from [rul
 | [T-CVR-AUTH4](#t-cvr-auth4--sole-terminal-authority) | Exactly one applicable finalizer creates the receipt: external bootstrap finalizer for GUARD, common guard for CVR-001/002 | [TASK-CVR](work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol) |
 | [T-CVR-AUTH5](#t-cvr-auth5--crash-and-cancellation-matrix) | Recovery is fail-closed and session-bound | [TASK-CVR](work-pack/tasks/TASK-CVR.md#future-append-only-authorization-protocol) |
 | [T-CVR-AUTH6](#t-cvr-auth6--cvr-002-predecessor-binding) | CVR-002 binds and revalidates CVR-001 evidence | [TASK-CVR](work-pack/tasks/TASK-CVR.md#swu-aci-cvr-002--edge-projection) |
-| [T-ACI-AUTH1](#t-aci-auth1--runtime-only-confirmed-dispatch) | Legacy routing creates no ACI runtime entity; runtime confirmation creates exactly one dispatch/run pair | [ConfirmRuntimeDispatch](specs/operations.md#confirmruntimedispatch) |
+| [T-ACI-AUTH1](#t-aci-auth1--runtime-only-confirmed-dispatch) | Legacy routing creates no ACI runtime entity; golden runtime confirmation creates the complete bounded atomic unit | [ACI-R22](specs/rules.md#aci-r22--runtime-confirmation-is-presentation-bound-derived-and-atomic) |
+| [T-ACI-AUTH2](#t-aci-auth2--canonical-authority-and-derived-identities) | Every golden document/digest and every derived ID independently reproduces, including the derivation-contract digest bound into authority | [CONF-R2](specs/confirmation-authority.md#conf-r2--digest-separation), [CONF-R4](specs/confirmation-authority.md#conf-r4--versioned-derived-identities) |
+| [T-ACI-AUTH3](#t-aci-auth3--trusted-observation-boundary) | Issuer, evidence, principal, channel, action, time, dispatch/revision and displayed-digest drift reject before mutation | [CONF-R1](specs/confirmation-authority.md#conf-r1--trusted-observation) |
+| [T-ACI-AUTH4](#t-aci-auth4--digest-domain-lineage) | Pending, spec and authority digests verify only their declared byte domains and invalidate the correct lineage | [CONF-R2](specs/confirmation-authority.md#conf-r2--digest-separation) |
+| [T-ACI-AUTH5](#t-aci-auth5--bounded-projection-and-mapping-closure) | Graph/ceiling/mapping/selector/identity drift rejects the entire confirmation | [CONF-R3](specs/confirmation-authority.md#conf-r3--bounded-deterministic-projection), [CONF-R4](specs/confirmation-authority.md#conf-r4--versioned-derived-identities), [CONF-R5](specs/confirmation-authority.md#conf-r5--complete-graph-binding) |
+| [T-ACI-AUTH6](#t-aci-auth6--two-layer-replay-and-conflict) | Key replay and dispatch-authority replay converge independently under one writer transaction | [CONF-R7](specs/confirmation-authority.md#conf-r7--two-layer-replay-and-conflict) |
+| [T-ACI-AUTH7](#t-aci-auth7--atomic-failure-and-reopen) | Every transaction failpoint is all-or-none; lost response and reopen return the first receipt | [CONF-R6](specs/confirmation-authority.md#conf-r6--atomic-local-acceptance) |
+| [T-ACI-AUTH8](#t-aci-auth8--confirmation-effect-ceiling) | Success stops at one unclaimed pending audit-opening intent with zero external or continuation action | [CONF-R8](specs/confirmation-authority.md#conf-r8--success-ceiling) |
 | [T-ACI-ARD1](#t-aci-ard1--exact-reference-bundle-delivery) | One accepted Scout bundle becomes one exact typed target-attempt input entry and target-delivery fact | [AgentReferenceDelivery](specs/domain.md#agentreferencedelivery) |
 | [T-ACI-ARD2](#t-aci-ard2--bundle-authority-and-integrity) | Commit plus immutable bytes, never lifecycle delivery, determine ordered recommendation membership | [ReferenceScoutBundleToEffectiveInput](specs/mappings.md#referencescoutbundletoeffectiveinput) |
 | [T-ACI-ARD3](#t-aci-ard3--recipient-and-dispatch-authority) | Capability-derived recipient and same-dispatch guards reject identity injection or cross-dispatch delivery | [DeliverReferenceScoutBundleToAgent](specs/operations.md#internal-transition--deliverreferencescoutbundletoagent) |
 | [T-ACI-ARD4](#t-aci-ard4--atomic-delivery-and-idempotency) | Preallocated identities, complete acceptance and retries yield one delivery or none | [IF-ACI-14](specs/interfaces.md#interface-invariants) |
-| [T-ACI-ARD5](#t-aci-ard5--delivery-evidence-boundary) | Accepted inclusion is never promoted to access, declared use or claim support | [`reference_scout.bundle_delivered_to_agent@1`](specs/events.md#reference_scoutbundledelivered_to_agent1) |
+| [T-ACI-ARD5](#t-aci-ard5--delivery-evidence-boundary) | Accepted inclusion is never promoted to access, declared use or claim support | [`reference_scout.bundle_delivered_to_agent@1`](specs/events.md#reference_scoutbundle_delivered_to_agent1) |
 | [T-ACI-PC1](#t-aci-pc1--closed-schema-validation) | Every protocol document and result is recursively closed and strict | [Protocol compilation](specs/protocol-compilation.md#canonical-contract-common-to-every-schema) |
 | [T-ACI-PC2](#t-aci-pc2--canonical-golden-vectors) | Exact canonical bytes and qualified digests are stable | [PC-R1](specs/protocol-compilation.md#rules-and-invariants) |
 | [T-ACI-PC3](#t-aci-pc3--digest-lineage-and-invalidation) | Every supplied digest verifies exact bytes and invalidates stale lineage | [PC-R2/R3/R11](specs/protocol-compilation.md#rules-and-invariants) |
@@ -234,6 +251,125 @@ idempotency key; each mutation fails closed. An identical retry returns the orig
 same source/target or scoped key with canonical drift conflicts. A lifecycle event carrying no
 membership remains valid source evidence; attempting to derive membership from it fails. Assert the
 accepted delivery alone creates no observed-access, declared-reference-use or claim-support fact.
+
+### T-ACI-HOST1 — Producer-bound host output and atomic launch
+
+Persist exact completed producer bytes as one content-addressed
+[Artifact](specs/domain.md#artifact), then persist the separately identified
+[HostTerminalResponseArtifact](specs/domain.md#hostterminalresponseartifact) and completed
+[HostTerminalResponseReceipt](specs/domain.md#hostterminalresponsereceipt). Prove equal content bytes
+from another producer turn reuse content identity without reusing producer attribution or receipt
+identity. Failed, cancelled and unknown producer outcomes carry no completed receipt and cannot
+satisfy the slot.
+
+For one L0 consumer, admit exactly one active confirmed
+[SourceToSlotMapping](specs/domain.md#sourcetoslotmapping), its authorized visibility policy and
+matching [HostWorkflowBindingRef](specs/domain.md#hostworkflowbindingref). Materialize exactly one
+canonical [WorkflowInputManifest](specs/domain.md#workflowinputmanifest) entry whose artifact ID,
+content hash, producer receipt and mapping identity match the source. Require the
+[HostWorkflowTurnBinding](specs/domain.md#hostworkflowturnbinding) to reproduce the same workflow,
+consumer, mapping, manifest, cancellation and supersession heads immediately before acceptance.
+
+Independently inject no mapping, two active mappings, wrong/unfinished receipt, unauthorized
+visibility, artifact/hash drift, missing/duplicate entry or noncanonical entry encoding/order, source or consumer
+identity drift and stale prerequisite heads. Every case rejects with no launch authorization or
+effect intent. Inject a crash around `host_workflow.turn_launch_authorized` and the one pending
+launch effect intent; a fresh connection observes both or neither, and no provider effect is
+claimed or started. Fan-in, optional slots and non-success completion policies remain outside this
+L0 obligation.
+
+### Bounded resumable feedback
+
+Use one frozen dispatch fixture expanded to `author:turn0 -> reviewer:turn0 -> author:turn1`, with
+one author continuation, two exact `ContinuationInputMapping` records, their official contribution
+receipts and a loop ceiling of one.
+
+#### T-ACI-CONT1 — Suspension is effect-free
+
+Complete author turn 0, finalize its reconstruction snapshot and suspend it while the review slot
+is absent. Assert one continuation/event/receipt unit, zero provider/tool/bus-read effects and no
+nonterminal author attempt. Retry byte-identically; mutate snapshot, mapping, target turn or handle
+digest and require conflict. Substitute a continuation identity not preallocated by the confirmed
+turn graph and require rejection with no write.
+
+#### T-ACI-CONT2 — Feedback eligibility is journal-derived
+
+Publish candidate review bytes without accepting the required producer receipt and assert no
+resume. Accept the exact reviewer terminal/output receipt and mapping, then assert eligibility.
+Agent polling, a caller-supplied artifact path and a cross-dispatch receipt remain ineffective.
+
+#### T-ACI-CONT3 — Canonical revision input
+
+Accept author and reviewer publication receipts through the bus and assert author turn 1 contains,
+in frozen order, base snapshot, author turn-0 official output, reviewer official output and revision
+instruction with exact artifact IDs/hashes/policies. Substitute a raw output, candidate, host
+terminal receipt, caller path or cross-dispatch contribution; each must reject before request
+acceptance. Omit or reorder an entry and require rejection or a different digest. Inject zero and
+multiple candidate/contribution chains for one preallocated message selector and require a closed
+ambiguity rejection with no authoritative write.
+
+#### T-ACI-CONT4 — Same-session identity
+
+With an available fake-adapter handle, accept one resume unit and observe provider running. Assert
+same seat and agent instance, new attempt and turn ordinal, exact effective input and one effect.
+
+#### T-ACI-CONT5 — Definitive-loss reconstruction
+
+Return `definitively_unavailable` before provider start. Assert the same-session target/effect is
+terminal `failed(continuation_unavailable)` and the continuation is `reconstruction_eligible`.
+When and only when reconstruction was confirmed, accept one separate replacement attempt with the
+same seat, new agent instance and same effective-input semantics. Retry returns the same unit;
+unknown/active prior work, a second replacement or absent permission rejects.
+Also cover a provider preconfirmed with `resume=unsupported`: matching immutable adapter capability,
+source attempt and terminal no-handle evidence may enter `reconstruction_eligible` without calling
+resume. Mutate the adapter/capability digest, source attempt or terminal observation, or omit prior
+confirmation, and require rejection/unknown with no reconstruction authority. Inject a crash
+between every reconstruction acceptance member and require all-or-none SQL authority for the
+stable command receipt, `continuation.reconstruction_requested`, `attempt.requested`, replacement
+instance, finalized input metadata, attempt, materialized invocation, request binding, sealed
+request and effect; prepared orphan bytes remain non-authoritative.
+
+#### T-ACI-CONT6 — Unknown is not unavailable
+
+Inject loss after resume invocation where provider outcome cannot be reconciled. Record
+`continuation.resume_unknown` and assert no replacement/start effect, even after restart or
+duplicate scheduler evaluation. Reconciliation may move the same target only to `resumed`,
+`reconstruction_eligible` with definitive no-start evidence, or the cancellation path.
+An absent handle without the exact preconfirmed unsupported capability and matching terminal
+no-handle evidence must remain unknown and create no replacement.
+
+#### T-ACI-CONT7 — Cancel/expire/resume race
+
+Race resume eligibility, authorized cancellation and journal-backed deadline commands at the same
+continuation version. Exactly one CAS path wins; late facts remain observable and cannot launch.
+After an effect claim, deadline handling must enter cancellation/reconciliation rather than mark
+the continuation expired while provider work may exist.
+When cancellation wins before claim, assert the pending resume/start effect atomically becomes
+`failed(cancelled_before_claim)`, `claimEffect` rejects it forever, and the target attempt follows
+the local no-start cancellation path without invoking the adapter.
+For suspended-handle disposal, assert `acknowledged` and `unknown` observations remain
+`cancel_requested`; only a correlated `disposed` observation produces `continuation.cancelled`.
+Mismatched command ID, handle digest, adapter cursor or worker epoch rejects without transition.
+
+#### T-ACI-CONT8 — Atomicity and replay
+
+Inject a crash around every member of suspension and resume acceptance. Finalized snapshot/input
+payload bytes prepared before SQL may remain as non-authoritative orphan artifacts and must be
+collectable; they grant no continuation or launch authority. Within each SQL acceptance boundary,
+require all or none of continuation/event, finalized artifact metadata, attempt, materialized
+invocation, request binding, sealed request and pending effect. For suspension require the stable
+command receipt plus `continuation.suspended`; for resume require the stable command receipt plus
+both `continuation.resume_requested` and `attempt.requested`. Reopen SQLite, replay and repeat
+scheduler evaluation; require zero new effects.
+
+#### T-ACI-CONT9 — Exhaustive invalid-transition rejection
+
+Parameterize the Cartesian product of every `AgentContinuationLifecycle` state, including no state
+and all three terminals, with every `continuation.*` lifecycle event. For every pair absent from the
+normative transition table, submit the event/command with otherwise valid syntax and assert typed
+invalid-transition rejection, unchanged aggregate version/state, no event append and no effect.
+This includes every terminal exit, `provider_lost` from unclaimed `resume_requested`, reconstruction
+outside `reconstruction_eligible`, direct expiry after a claim and resume from any terminal.
 
 ### Bounded authorized peer-input delivery
 
@@ -574,14 +710,136 @@ Mutate independently the CVR-001 PASS receipt, byte baseline, allowed delta and 
 hash. Every mismatch blocks before invocation. The accepted fixture reruns the complete CVR-001
 suite before CVR-002 tests and records both groups and the exact final delta.
 
+## Runtime confirmation authority v1
+
+The normative positive oracle is
+[`specs/fixtures/confirmed-dispatch-v1`](specs/fixtures/confirmed-dispatch-v1/manifest.json). Each
+test first strict-parses the package, requires every file byte sequence to already equal its
+`aci-cjson-1` encoding and verifies every manifest digest. Fixture issuer/evidence values and the
+capability resolution are explicit trusted test preconditions, not proof of production host
+authentication or provider availability; tests inject exact admitted configuration and prove that
+the runtime accepts no caller assertion as a substitute.
+
+**Evidence partition:** CONF-000 executes only the offline contract oracle: strict bytes, closed
+schemas, all manifest/member/authority digests, derivation preimages and IDs, graph/mapping closure,
+and the declared shape/classification of every negative scenario and failpoint. Endpoint, SQLite,
+migration, transactional failpoint, concurrent replay and effect-boundary spy results below are
+mandatory CONF-001 evidence and remain planned until the writer exists. A CONF-000 pass must never
+be reported as runtime proof for any AUTH test. It can satisfy AUTH2's offline oracle and the
+offline shape/coverage portions of AUTH1, AUTH4 and AUTH5; every endpoint rejection, zero-mutation
+claim, database count, replay/concurrency result, failpoint rollback and effect spy requires
+CONF-001 runtime evidence.
+
 ### T-ACI-AUTH1 — Runtime-only confirmed dispatch
 
 Submit the same valid pending proposal with each pre-confirmation routing choice. For
 `legacy-managed`, assert the runtime confirmation endpoint returns its typed rejection and creates
-zero `ConfirmedDispatch`, `Run`, journal fact and audit effect while preserving the legacy/session
-path. For `runtime-managed`, assert one accepted confirmation creates exactly one immutable
-`ConfirmedDispatch` and exactly one `Run`; identical replay returns the stable receipt and cannot
-create a second pair.
+zero `ConfirmationObservation`, `ConfirmedDispatch`, `Run`, graph, mapping, journal fact or effect
+while preserving the legacy/session path. For `runtime-managed`, compare the acceptance to the
+closed golden oracle: exact finalized artifacts, one immutable observation/dispatch/run, one graph,
+one preallocated continuation binding, two ordered mappings, `run.created@1`,
+`audit_opening.requested@2`, version-2 `opening_pending` head, one pending/unclaimed audit-opening
+intent and the first stable receipt. Assert no additional confirmation row exists.
+
+The complete positive unit contains exactly nine new artifact-metadata records: pending sheet,
+`DispatchSpec`, confirmation observation, confirmed graph, ordered mapping set, confirmed authority,
+two event payloads and one audit-opening effect payload. Capability resolution is prefinalized
+preview evidence; the payload-schema bundle and identity-derivation contract are digest-bound
+inputs, not new acceptance metadata. CONF-000 validates this shape offline; CONF-001 must prove the
+endpoint/database counts and all-or-none acceptance.
+
+### T-ACI-AUTH2 — Canonical authority and derived identities
+
+For every member named by `manifest.documents`, independently compare raw bytes, strict decoded
+value, re-encoded canonical bytes and the member digest declared by the manifest. Require
+`manifest.json` itself to equal its canonical encoding and report its computed digest; compare that
+digest with an external readiness/review pin when one exists, never with an impossible self-entry.
+Recompute the pending/spec/observation/capability/graph/mapping/derivation
+digests and require each embedded reference to match. Require
+`confirmed_authority.identity_derivation_digest` to equal the complete
+`identity-derivation.json` document digest, then recompute `confirmed_authority_digest`. Reimplement
+the closed derivation preimage independently and reproduce run, graph, continuation, both source
+messages, both mappings, effect, both events and receipt IDs. No production helper under test may
+serve as the expected-value oracle.
+Independently recompute every member definition digest in the closed payload-schema bundle, then
+the bundle digest and its `payload_schema_bundle_digest` binding into confirmed authority. Execute
+the exact `payload_schema_bundle_drift` vector and require
+`confirmation_payload_schema_mismatch` with zero mutation once CONF-001 exists.
+
+### T-ACI-AUTH3 — Trusted observation boundary
+
+Configure exactly the fixture issuer reference, issuer evidence reference/digest, observation
+action/time/presentation, human principal and allowed `chat` channel as one admitted host-context
+tuple. Apply each exact observation mutation from `negative-vectors.json`: missing/wrong
+`aci.confirmation-observation@1` schema, issuer reference, issuer evidence reference/digest,
+principal, channel, action, observed time, dispatch, revision, pending digest and spec digest.
+Replay the same `(issuer_ref, observation_id)` with byte-identical content and require the original
+observation; submit different canonical bytes under that same issuer-scoped identity and require a
+permanent integrity conflict with zero new state. Also inject each same
+value as a request-body authority assertion without matching trusted context. Every case must return
+the named typed rejection before any authoritative row, event, head, effect or receipt; the positive
+fixture must project `confirmed_by`/`confirmed_at` exactly from the verified observation.
+
+### T-ACI-AUTH4 — Digest-domain lineage
+
+Prove the normative pending, spec and authority byte sequences are pairwise distinct and each digest
+verifies only its declared bytes. Mutate one canonical pending byte, one admitted capability
+resolution field, one observation leaf, one graph leaf, one mapping binding and the complete
+identity-derivation contract. Assert the first applicable typed failure and zero mutation. Pending
+bytes containing BOM, terminal newline, whitespace, alternate key order, duplicate key or any
+strict-schema error reject before presentation; the runtime never parses and silently repairs them
+under the old human-approved digest.
+Mutate one payload-schema member and the bundle digest independently; neither may be accepted under
+the original authority digest. Remove, add and drift each key/value family in the exact closed
+five-key `schema_versions` map; every case rejects with zero mutation rather than inventing or
+defaulting a version.
+
+### T-ACI-AUTH5 — Bounded projection and mapping closure
+
+Execute every exact graph, mapping and identity mutation present in `negative-vectors.json`.
+Additionally generate deterministic parameterized mutations for add/remove/reorder of nodes and
+edges; source/target/slot selector drift; reverse/duplicate/add mapping; and supplied
+run/graph/continuation/message/mapping/effect/event/receipt IDs not already materialized as package cases. Package
+coverage and generated coverage must be reported separately. Every mutation rejects the complete
+confirmation. The positive oracle must contain
+exactly three logical operation identities, two edges, one continuation, two ordered source
+messages and two mappings whose closed binding preimages reproduce their digests.
+
+### T-ACI-AUTH6 — Two-layer replay and conflict
+
+Within the same single-writer transaction, exercise: same key/same command digest; same key/another
+command digest; new key/same `dispatch_id` and `confirmed_authority_digest`; new key/same dispatch
+and another authority digest; two equal concurrent confirmations for the same dispatch under
+distinct idempotency keys; and two divergent concurrent confirmations for that same dispatch under
+distinct keys. Equal cases return the byte-identical first receipt with no new rows/events/effects.
+Drift cases return their permanent typed conflict and preserve only the elected first unit. Add a
+barrier around the former unlocked-pre-read window to prove identity convergence is not performed
+outside `BEGIN IMMEDIATE`.
+
+### T-ACI-AUTH7 — Atomic failure and reopen
+
+Trigger every failpoint listed by `negative-vectors.json`, from artifact finalization through
+`before_commit`, then reopen the database. Before commit, every authoritative confirmation table,
+event/head, generic effect and receipt count is zero; prepared non-authoritative candidate bytes may
+remain outside authority. Trigger `after_commit` as a lost response, reopen, retry, and require the
+first receipt plus exactly two contiguous events, head version `2`, one graph/continuation, two
+ordered mappings and one pending effect. The post-reopen oracle must byte-compare the complete AUTH1
+unit: nine metadata records, Observation, ConfirmedDispatch, Run, graph/binding/two mappings, both
+events, head, effect and first receipt. Reopen must not reapply a migration or change its checksum.
+
+### T-ACI-AUTH8 — Confirmation effect ceiling
+
+Spy on audit appender/materializer, effect claimer, marker cleanup, provider, tool, scheduler/start,
+Attempt, suspension, resume, reconstruction and continuation-lifecycle boundaries. Successful confirmation invokes none of
+them. It finalizes only the declared local artifacts and leaves exactly one generic `audit_opening`
+intent with the derived `effect_id`, accepted `command_id`,
+`requested_event_id=audit_opening.requested.event_id`, exact immutable effect-payload ref/digest,
+`retry_class=retryable`, `status=pending`, `claim_epoch=null`, `claimed_by=null`, zero attempts and
+null outcome event/digest. The returned receipt proves local journal acceptance only; it must not claim opening
+verification, readiness, start, continuation creation or external delivery.
+Also attempt to widen the acceptance with an immediate materialization or any second effect; require
+the corpus result `forbidden_effect_boundary` and zero mutation, independently of the successful
+one-intent spy case.
 
 ### T-ACI-ARD1 — Exact reference-bundle delivery
 
@@ -798,6 +1056,8 @@ entity or external action is created.
 | `provider-admission@1` | Common adapter, sandbox, credential, cleanup, recovery, receipt and usage evidence |
 | `sole-writer-bundle@1` | Complete and component-missing host-scoped EG-1 evidence bundles |
 | `reference-bundle-delivery@1` | Accepted commit/lifecycle facts, immutable ordered bundle, capability-derived recipient, manifest, retry drift and atomic failpoints |
+| `resumable-feedback@1` | Author/reviewer/author finite turn graph, continuation handle modes, exact revision input, cancel/expiry races and crash failpoints |
+| [`confirmed-dispatch-v1@1`](specs/fixtures/confirmed-dispatch-v1/manifest.json) | Seventeen manifest-pinned authority/payload/receipt documents plus the manifest, 56 classified negative/replay scenarios and 21 named transaction failpoints; manifest cardinalities govern if this package is revised |
 | [`protocol-compilation-v1@1`](specs/fixtures/protocol-compilation-v1/manifest.json) | Golden closed package with exact admitted `compiled` and `required-unsupported` read-only cases, compiler/schema identity and exact outputs; PC1-PC12 mutations are generated deterministically in tests from these golden documents and are not additional admitted fixtures |
 
 ## Known Gaps
@@ -822,6 +1082,12 @@ entity or external action is created.
   or implementation-completeness claim is made by this document.
 - T-ACI-PC1 through T-ACI-PC12 specify the governed candidate compiler slice. They authorize no
   profile registry, confirmation, runtime-managed route, scheduler or provider implementation.
+- T-ACI-AUTH1 through T-ACI-AUTH8 have a CONF-000 offline contract oracle only. Runtime endpoint,
+  migration, SQLite atomicity, concurrent replay, reopen/failpoint and zero-effect spy evidence remain
+  unimplemented until CONF-001 and cannot be marked PASS from fixture validation alone.
+- T-ACI-CONT1 through T-ACI-CONT9 are specified by ACI-CONT-001 but have no implementation or live
+  restart-retention evidence yet. The host probe proves only same-agent follow-up and active
+  interruption on the observed Codex collaboration surface.
 
 ## Out of Scope
 

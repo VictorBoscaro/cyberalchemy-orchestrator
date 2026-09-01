@@ -1,0 +1,150 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-EXECUTION-POLICY-LINEAGE-001",
+  "scope": "synthetic-execution-policy-lineage-persistence-l1",
+  "planner_preflight": "pass",
+  "implementation_status": "not-started-ready",
+  "task_ref": "docs/features/agents-communication-infra/work-pack/tasks/TASK-POLICY-001.md",
+  "task_digest": "sha256:60a8351d70b5c38011fb08a45ecbe52757e4596156ee1dcd9fbece197fe4a543",
+  "decision_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/TECH-POLICY-D0.md",
+  "pattern_inventory_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md",
+  "review_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-DOMAINSPEC-REVIEW.md",
+  "claim_boundary": "test-only atomic persistence, replay/conflict and file-backed reopen of the exact seven-member POLICY-000 synthetic lineage; no production authority, L2 denial effect or external action",
+  "frozen_planning_pins": {
+    "tech_policy_d0": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/TECH-POLICY-D0.md",
+      "sha256": "sha256:522a8cac79335e6190fb4799cbea95c0f58621f4f9ea5f72add2437690b8130e"
+    },
+    "persistence_pattern_inventory": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-PERSISTENCE-PATTERN-INVENTORY.md",
+      "sha256": "sha256:d8eae9829069631caaef769635b3748b5440d5bfab4aacaf682f736eb546d84e"
+    }
+  },
+  "normative_authority_pins": {
+    "domain": {
+      "path": "docs/features/agents-communication-infra/specs/domain.md",
+      "sha256": "sha256:3d53d7c37c8f00ab31bd7450bc6fe9b1b66a32b055d02f9ba691355077b87136"
+    },
+    "spec": {
+      "path": "docs/features/agents-communication-infra/specs/SPEC.md",
+      "sha256": "sha256:6cfcccb5ca5eb8a0c80b53347231148d89344b681434889657f7e8094442e6ac"
+    },
+    "execution_policy_capability": {
+      "path": "docs/features/agents-communication-infra/specs/capabilities/execution-policy-authority.md",
+      "sha256": "sha256:eca9d978078b877c44595a3e20378bb7480be3355165d007eb14b601d68ee94e"
+    },
+    "test_spec": {
+      "path": "docs/features/agents-communication-infra/specs/TEST-SPEC.md",
+      "sha256": "sha256:fe6e5fb150e157fd54096771d3ec47036a02013b60d0928c3e4f09e87f8236a2"
+    },
+    "rules": {
+      "path": "docs/features/agents-communication-infra/specs/rules.md",
+      "sha256": "sha256:607351dd3c65d34dea46bc9f46b4584876a143928ae5c2ce455f8a0b2e0e4ad3"
+    },
+    "interfaces": {
+      "path": "docs/features/agents-communication-infra/specs/interfaces.md",
+      "sha256": "sha256:bcffa556cec71aae432f71f3f480d61a1e1188ff8e7147e9836ae13fbd002c2b"
+    },
+    "architecture": {
+      "path": "docs/features/agents-communication-infra/specs/architecture.md",
+      "sha256": "sha256:0fe05662e0017c0f30ccc6e5d31921672a6ef9168373404a13a711e5eabfd9fb"
+    },
+    "glossary": {
+      "path": "docs/features/agents-communication-infra/specs/glossary.md",
+      "sha256": "sha256:0c0c937b1fad9b4c176cbc2561e920662cc4db2cf161f9166dde6267dd8e516f"
+    },
+    "integrated_domainspec_review": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-DOMAINSPEC-REVIEW.md",
+      "sha256": "sha256:4d05db37d0c1351ac2859b92dde001bc5932575c3b0d9549776b842109cf27ca"
+    }
+  },
+  "policy000_implementation_pins": {
+    "implementation_review": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-000-IMPLEMENTATION-REVIEW.md",
+      "sha256": "sha256:76ed9cd9efd6794e7b1d4c40421635db16edc8a580e789f837b415d892b13c8c"
+    },
+    "parser": {
+      "path": "implementations/server/runtime/execution_policy.py",
+      "sha256": "sha256:405b990c49edb330227e14af4ecc65a6d39566a8a6a298433fd7aa40eaf0e357"
+    },
+    "fixture": {
+      "path": "implementations/tests/runtime/execution_policy_oracle_v1.json",
+      "sha256": "sha256:f6155aa8a615b00ec88b26cab480647eaeab871c02727781f7fd93db367caeac"
+    },
+    "test": {
+      "path": "implementations/tests/runtime/test_execution_policy.py",
+      "sha256": "sha256:2c01b5dfd6a752e1e1f397e715feadbad351997a3365b27c3591851db046d8f0"
+    }
+  },
+  "read_only_dependency_pins": {
+    "database": {
+      "path": "implementations/server/runtime/database.py",
+      "sha256": "sha256:4f04c889d4b0f7b4cf6f6a58d93c445dd3201c801e78fd22a83777fac9fcae66"
+    },
+    "artifacts": {
+      "path": "implementations/server/runtime/artifacts.py",
+      "sha256": "sha256:e1a02b2580498c1b6eeb2741cb4303b45570396519228c0b138135ec7d8f1354"
+    },
+    "canonical": {
+      "path": "implementations/server/runtime/canonical.py",
+      "sha256": "sha256:db4eb8b3e3f8508e7004fa2ce4ab83cc4e863266d680f4c73cd05394b8889bfb"
+    }
+  },
+  "entry_gate_status": {
+    "technical_design_and_persistence_seam": "pass-digest-pinned",
+    "normative_domain_spec_amendments": "pass-digest-pinned-integrated-review",
+    "policy000_source_implementation": "pass-digest-pinned-independent-review",
+    "code_entry": "pass-ready",
+    "product_pass": "not-required-for-l1-synthetic-lineage"
+  },
+  "expected_member_content_identities": {
+    "budget_policy": "sha256:08f3494d9e869053ee097e854840ade80afcda65cce75ef774038be5c6c242d2",
+    "sandbox_enforcement_policy": "sha256:88f400d1661b69ac6536b548216bb7f5a370042050df2ea7bae49e03952725ea",
+    "resource_budget": "sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836",
+    "sandbox_policy": "sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a",
+    "combined_oracle": "sha256:9abfb7e61f995a90e8a08a72dfa96dda2df956f63e4e4360e78eca22493641f6",
+    "harness_fence_preimage": "sha256:124d06fa0b4c2e55eef48bc5b0c33ce19880d15ce82e0d3af9518a80536de70f",
+    "harness_fence_document": "sha256:4672e47ccc7fb906a14c0cd57de0bbd74271cfb7697d3a539dc97251bb864ba4"
+  },
+  "current_write_scope": [
+    "implementations/tests/runtime/policy_lineage_harness.py",
+    "implementations/tests/runtime/execution_policy_lineage_oracle_v1.json",
+    "implementations/tests/runtime/test_execution_policy_lineage.py"
+  ],
+  "read_only_dependencies": [
+    "implementations/server/runtime/execution_policy.py",
+    "implementations/tests/runtime/execution_policy_oracle_v1.json",
+    "implementations/tests/runtime/test_execution_policy.py",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/artifacts.py",
+    "implementations/server/runtime/canonical.py"
+  ],
+  "l1_conformance_corpus": [
+    "exact-seven-member-order-names-bodies-artifact-identities-and-content-digests",
+    "closed-receipt-authority-lineage-identity-and-canonical-unit-digest",
+    "member-add-omit-rename-reorder-artifact-substitution-and-byte-digest-drift",
+    "reference-target-swap-combined-oracle-drift-and-harness-digest-domain-substitution",
+    "one-shared-transaction-with-after-begin-each-artifact-after-receipt-each-binding-and-before-commit-failpoints",
+    "same-key-and-same-lineage-identity-replay-versus-permanent-conflict",
+    "post-commit-lost-response-retry-through-fresh-harness",
+    "file-backed-close-reopen-exact-body-digest-binding-and-receipt-reproduction",
+    "production-parser-rejection-before-persistence-and-after-reopen",
+    "exact-zero-production-authority-runtime-event-effect-publication-message-rows-and-zero-external-effects"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_execution_policy_lineage -v",
+    "python -B -m unittest implementations.tests.runtime.test_execution_policy implementations.tests.runtime.test_execution_policy_lineage -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check -- implementations/tests/runtime/policy_lineage_harness.py implementations/tests/runtime/execution_policy_lineage_oracle_v1.json implementations/tests/runtime/test_execution_policy_lineage.py"
+  ],
+  "forbidden_changes": [
+    "production-migration-runtime-service-journal-api-cli-or-package-export",
+    "confirmed-dispatch-run-group-attempt-plan-request-command-event-effect-publication-or-message-write",
+    "policy002-l2-denial-receipt-provider-launcher-tool-filesystem-network-process-credential-or-other-external-action",
+    "product-policy-value-confirmation-v2-opening-or-production-fence-authority",
+    "network-credentials-production-destructive-action-commit-push-deploy"
+  ],
+  "blockers": [],
+  "promotion_boundary": "This PASS authorizes code entry only for the three current_write_scope L1 test-harness/fixture/test paths. It does not claim implementation, authorize POLICY-002/L2 or POLICY-003/L3, alter production runtime, or confer executable authority."
+}

@@ -1,0 +1,273 @@
+{
+  "descriptor_schema": "aci.named-swu-descriptor/v1",
+  "swu_id": "SWU-ACI-AGENT-CONTINUATION-001",
+  "scope": "confirmed-authority-continuation-consumer-v1",
+  "planner_preflight": "closed-implemented-reviewed-pass",
+  "task_ref": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/work-pack/tasks/TASK-CONT-001.md",
+  "context_ref": "docs/features/agents-communication-infra/work-pack/context/TASK-CONT-001-CONTEXT.md",
+  "scaffold_ref": "docs/features/agents-communication-infra/work-pack/context/TASK-CONT-001-SCAFFOLD.md",
+  "decision_ref": "docs/features/agents-communication-infra/robot-talks/2026-09-01-continuation-l2-d0/findings.md",
+  "claim_boundary": "component-consumer-only; no production attempt-writer or end-to-end execution claim",
+  "entry_predicate": [
+    "conf-001-implemented-reviewed-pass",
+    "brownfield-foreign-key-audit-resolved",
+    "brownfield-implementation-layering-audit-resolved",
+    "l2-d0-robot-talks-consensus-preserved",
+    "fresh-exact-swu-domainspec-code-readiness-pass",
+    "all-immutable-source-pins-still-match"
+  ],
+  "entry_gate_status": {
+    "conf_001": "pass",
+    "foreign_key_audit": "pass-with-isolated-runtime-parentage",
+    "layering_audit": "pass-with-component-claim-and-derived-command",
+    "decision_gate": "closed",
+    "code_readiness": "historical-entry-receipt-pass",
+    "mutation": "completed-reviewed-pass",
+    "independent_reviewer": "pass"
+  },
+  "entry_authorization": {
+    "descriptor_digest": "sha256:e440c54ee65aa4c90596aca12dbcbef9b86e3d919d869e7fd66babc4812ad620",
+    "readiness_ref": "docs/features/agents-communication-infra/work-pack/execution/SWU-ACI-AGENT-CONTINUATION-001-code-readiness.json",
+    "readiness_digest": "sha256:cc017802059b3a4a29f5af232c0bc0b05c023861cae139e39cc4b3db9e6ee6a0",
+    "status": "historical-entry-authorization-not-repinned-after-implementation"
+  },
+  "readiness_authority_caveat": "The readiness receipt authorizes the exact pre-implementation descriptor, TEST-SPEC, scope and commands. This descriptor is promoted after implementation, so its current digest intentionally differs; the historical receipt must not be repinned.",
+  "immutable_source_pins": {
+    "conf_001_evidence": {
+      "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/evidence/CONF-001.md",
+      "sha256": "sha256:62e5996089639baee17a2bc9959e8b0376c5978363865cd00cc3b484827fcd14"
+    },
+    "confirmed_dispatch_manifest": {
+      "path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1/manifest.json",
+      "sha256": "sha256:919385d226240fa66621d7b660ef49b70ad7e3d3a379bee3d7c29729243acd0a"
+    },
+    "test_spec": {
+      "path": "docs/features/agents-communication-infra/TEST-SPEC.md",
+      "sha256": "sha256:1dba61d54e61538f95a3a383f18e55deddb152a7b210638bc2d8bf7b3b5a44ea"
+    },
+    "confirmation_migration": {
+      "path": "implementations/server/runtime/migrations/012_runtime_confirmation.sql",
+      "sha256": "sha256:de1fb043c7593219595a0f86c822a9a13cb7f01861fb2cf88db9f2b434d6a4e0"
+    },
+    "artifact_store": {
+      "path": "implementations/server/runtime/artifacts.py",
+      "sha256": "sha256:e1a02b2580498c1b6eeb2741cb4303b45570396519228c0b138135ec7d8f1354"
+    },
+    "confirmation_kernel": {
+      "path": "implementations/server/runtime/confirmation.py",
+      "sha256": "sha256:9340b1429f29e44512dd8a13688e2885e57ff82bc302f5bdff51a9538721850c"
+    },
+    "journal": {
+      "path": "implementations/server/runtime/journal.py",
+      "sha256": "sha256:cd6725b7d39fe8f92d041ee3b529bea0b6b7f47918e9ca3e8f5d83fa146ee86d"
+    }
+  },
+  "pre_mutation_baseline_pins": {
+    "database": {
+      "path": "implementations/server/runtime/database.py",
+      "sha256": "sha256:4780da075e0453fe81665ea15ae8a7fef259f4a398b18b7951646dad977543f5"
+    },
+    "errors": {
+      "path": "implementations/server/runtime/errors.py",
+      "sha256": "sha256:4de30cb67cf13053cdd633e7ea4c9c161b40bf9350c56974989b182ea5e8f0d3"
+    },
+    "service": {
+      "path": "implementations/server/runtime/service.py",
+      "sha256": "sha256:9a5957495f0ab330af95a7e94dee27147d82476143675d73daa99033b034bb0c"
+    },
+    "confirmation_tests": {
+      "path": "implementations/tests/runtime/test_runtime_confirmation.py",
+      "sha256": "sha256:ba2678c819e0395d438780afff3d66e534cfbaaca4d9137f68680d35e70cda4f"
+    },
+    "traceability_registry": {
+      "path": "implementations/tests/runtime/aci-test-traceability.json",
+      "sha256": "sha256:3567375773651369ce034282516db9fd645ab97106622970a04b6b8a0b3a04d0"
+    },
+    "traceability_test": {
+      "path": "implementations/tests/runtime/test_aci_traceability.py",
+      "sha256": "sha256:e10a146875c40d6effeed6030a081f4a991c01d71804e957563f68343a13ced3"
+    },
+    "stage_e_source_manifest": {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+      "sha256": "sha256:d29d7959fde52f6f7a67b50382dd2e7c52bc8ae395713cbcca9d095d2f6bbb92"
+    },
+    "local_pilot": {
+      "path": "implementations/server/runtime/local_pilot.py",
+      "sha256": "sha256:e0a774822b45748c54801ea5d13fab50014d4858ad110662f76a8a1f38ee32b2"
+    },
+    "stage_e_execution_receipt": {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+      "sha256": "sha256:c45c7362c9f243f9e33805913a9e60acf20b2f146abeb25b6af7967b7cd0cde8"
+    },
+    "stage_e_execution_receipt_digest_file": {
+      "path": "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256",
+      "sha256": "sha256:52f28155287d69af16ee9163f98e397df01e9e683a9b01c135f411a0a869dd9f"
+    }
+  },
+  "write_scope": [
+    "implementations/server/runtime/migrations/013_agent_continuation.sql",
+    "implementations/server/runtime/database.py",
+    "implementations/server/runtime/continuation.py",
+    "implementations/server/runtime/service.py",
+    "implementations/server/runtime/errors.py",
+    "implementations/tests/runtime/test_agent_continuation.py",
+    "implementations/tests/runtime/test_runtime_confirmation.py",
+    "implementations/tests/runtime/aci-test-traceability.json",
+    "implementations/tests/runtime/test_aci_traceability.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
+    "implementations/server/runtime/local_pilot.py",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md",
+    "docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256"
+  ],
+  "write_scope_constraints": {
+    "migration_013": "create only runtime_agent_attempts, runtime_attempt_snapshot_bindings, agent_continuations and agent_continuation_mapping_members; direct parent relations to confirmed_dispatches, confirmed_turn_graphs and continuation_input_mappings; zero backfill; no legacy schema or row mutation",
+    "database": "register ordered migration 013 only; do not move service or repository methods into database.py",
+    "continuation": "pure strict projection, UTC deadline derivation, ordered mapping validation, semantic-intent construction and closed lifecycle reducer; no SQLite, journal, service, adapter, filesystem, clock or legacy import",
+    "service": "application authorization and orchestration; read-only SELECTs through database.connect(); mutation SQL only inside the connection supplied by RuntimeJournal.accept; no database.write(), commit, second transaction/writer, caller scope/key or repository relocation",
+    "errors": "bounded fail-closed vocabulary only, including continuation_mixed_source_state",
+    "focused_test": "owns the complete test-only AttemptLifecycle fixture and wires requested, starting, running and completed schemas/validators directly to RuntimeJournal.accept; no production attempt-writer symbol and no production ACI_SCHEMAS widening",
+    "confirmation_regression_test": "change only the post-migration expectation to PRAGMA user_version 13 and verify migration 013 name, checksum and reopen; preserve every AUTH1-8 and every other existing assertion",
+    "traceability": "map T-ACI-CONT1 and the L2/base T-ACI-CONT9 selectors to real focused tests; change test_aci_traceability.py only as required by registry shape",
+    "stage_e": "preserve CONF-001 and baseline repairs; bind final task-owned bytes, refresh manifest/local-pilot pin, append revalidation evidence and refresh the companion digest only",
+    "single_writer": "one coder owns all listed paths until independent validation handoff"
+  },
+  "migration_model": {
+    "version": 13,
+    "tables": [
+      "runtime_agent_attempts",
+      "runtime_attempt_snapshot_bindings",
+      "agent_continuations",
+      "agent_continuation_mapping_members"
+    ],
+    "snapshot_binding": "immutable attempt_id plus artifact_id/content_hash with terminal event and journal-offset linkage",
+    "authority_parents": [
+      "confirmed_dispatches",
+      "confirmed_turn_graphs",
+      "continuation_input_mappings"
+    ],
+    "backfill": "none",
+    "legacy": "schema, rows, foreign keys and behavior unchanged"
+  },
+  "attempt_prerequisite": {
+    "surface": "test-only",
+    "lifecycle": [
+      "requested",
+      "starting",
+      "running",
+      "completed"
+    ],
+    "acceptance": "every transition through RuntimeJournal.accept",
+    "snapshot": "finalized and immutably bound to the completed attempt terminal event/offset",
+    "production_symbols": "none",
+    "production_aci_schemas_change": "none"
+  },
+  "command_contract": {
+    "acceptor": "RuntimeJournal.accept",
+    "scope_key": "aci.agent-continuation:<continuation_id>",
+    "idempotency_key": "suspend@1",
+    "caller_controls_scope_or_key": false,
+    "expected_version": 0,
+    "event": "continuation.suspended",
+    "new_effect_count": 0
+  },
+  "acceptance_ordering": {
+    "existing_continuation": "reconstruct command, continuation.suspended event and semantic_intent from persisted bytes; invoke RuntimeJournal.accept for derived-key replay/drift before consulting current official facts",
+    "new_continuation_precheck": "read the exact two confirmed source_message facts and require zero-of-two",
+    "new_continuation_transaction_check": "inside the RuntimeJournal.accept mutation closure, requery the exact source_message facts and require zero-of-two before any insert",
+    "fact_after_commit": "byte-identical retry returns the first receipt without re-evaluating newer official facts",
+    "drift": "caller drift conflicts, including provider_continuation_ref_digest when supplied as part of the operation"
+  },
+  "semantic_intent_discriminants": [
+    "confirmed_authority_digest",
+    "continuation_id",
+    "dispatch_id",
+    "source_attempt_id",
+    "source_turn_ordinal",
+    "seat_id",
+    "agent_instance_id",
+    "ordered_input_mapping_ids",
+    "ordered_awaited_mapping_ids_exactly_both",
+    "context_snapshot_artifact_id",
+    "context_snapshot_content_hash",
+    "optional_provider_continuation_ref_digest",
+    "resume_policy_ref",
+    "deadline_utc"
+  ],
+  "deadline_contract": "deadline_utc = confirmed_at + wall_clock_seconds using UTC arithmetic; audit opening does not extend or replace confirmation authority",
+  "awaited_mapping_contract": {
+    "query_identity": "the exact two confirmed source_message_id values",
+    "zero_official_facts": "accept with both mapping IDs awaited in confirmed order",
+    "one_or_two_or_ambiguous_official_facts": "reject continuation_mixed_source_state with zero write; defer semantics to CONT-002"
+  },
+  "required_changes": [
+    "recognize persisted derived-key replay before current official-fact evaluation",
+    "reconstruct replay command, event and semantic intent from persisted continuation bytes",
+    "for create only, precheck and transactionally revalidate exact zero-of-two before inserts",
+    "preserve the first receipt when an official fact arrives after commit",
+    "conflict on drift in every semantic-intent discriminator, including an operation-supplied provider handle digest"
+  ],
+  "required_test_ids": [
+    "T-ACI-CONT1",
+    "T-ACI-CONT9-L2-BASE"
+  ],
+  "test_matrix": {
+    "migration": "apply/reopen idempotence, exact four isolated tables, direct CONF-001 parents, zero backfill and unchanged legacy schema/rows",
+    "prerequisite": "journal-backed full lifecycle, immutable terminal snapshot event/offset link, no seeded terminal row, no production writer/schema widening",
+    "authority": "CONF-001-derived identities plus caller, legacy, cross-dispatch, wrong-seat/instance/turn and target-exists negatives",
+    "awaited_facts": "zero, one, two, duplicate and ambiguous official-source cases; fact inserted between precheck and mutation closure rejects with zero write",
+    "deadline": "exact UTC addition plus invalid/timezone/overflow/opening-relative negatives",
+    "atomicity": "all failpoints leave all-or-none continuation, members, event, head and receipt; zero effects",
+    "replay": "existing continuation rebuilds persisted command/event/intent before fact reads; a fact accepted after commit does not invalidate retry; drift in every semantic discriminant, including supplied provider handle digest, conflicts",
+    "lifecycle": "T-ACI-CONT1 and L2/base T-ACI-CONT9 closed state/event matrix",
+    "regression": "CONF-001 with only the migration-13 expectation/name/checksum/reopen amendment and all AUTH1-8 assertions preserved; agent reference delivery, traceability, Stage-C, bridge, complete runtime discovery, compileall and diff check"
+  },
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_agent_continuation -v",
+    "python -B -m unittest implementations.tests.runtime.test_runtime_confirmation -v",
+    "python -B -m unittest implementations.tests.runtime.test_agent_reference_delivery -v",
+    "python -B -m unittest implementations.tests.runtime.test_aci_traceability -v",
+    "python -B -m unittest implementations.tests.runtime.test_stage_c -v",
+    "python -B -m unittest implementations.tests.runtime.test_orchestration_bridge -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check"
+  ],
+  "forbidden_changes": [
+    "journal.py-artifacts.py-api.py-__init__.py-confirmation.py-or-migration-012",
+    "legacy-schema-fk-row-semantics-or-backfill",
+    "production-attempt-writer-helper-symbol-or-ACI_SCHEMAS-widening",
+    "seeded-completed-attempt-or-unlinked-snapshot",
+    "caller-controlled-scope-or-idempotency-key",
+    "specialized-suspension-writer-or-second-transaction",
+    "effect-target-attempt-resume-reconstruction-cancel-adapter-provider-or-worker",
+    "official-contribution-resolution-or-mixed-source-state-acceptance",
+    "spec-fixture-golden-ledger-api-ui-cli-host-hook-network-deploy-commit-push"
+  ],
+  "stop_conditions": [
+    "immutable-input-drift",
+    "inconsistent-confirmed-authority-or-digest",
+    "source-attempt-absent-nonterminal-wrong-role-seat-instance-turn-or-not-full-journal-lifecycle",
+    "snapshot-absent-unfinalized-or-not-linked-to-terminal-event-offset",
+    "target-attempt-already-exists",
+    "official-source-facts-not-exact-zero-of-two",
+    "new-effect-or-CONF-001-legacy-mutation-required",
+    "caller-controlled-key-or-second-create-sharing-continuation-identity-required",
+    "write-outside-exact-scope",
+    "CONF-AUTH-or-runtime-baseline-regression-requiring-wider-layer"
+  ],
+  "promotion_evidence": {
+    "path": "docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-CONT-001.md",
+    "service_digest": "sha256:acf93c2555f4bd5d2d50f35f5e7f5fca26dd718fb6aff168eaa3d1f443ecb0d3",
+    "focused_test_digest": "sha256:4e60af0b51054a54e231604eddb5adeb3ebd6a81c7dafc6e98ba86cf5ef44ae6",
+    "stage_e_source_manifest_digest": "sha256:0f130e89cef8596883f4bb27ad38b31658e05c3e72a2480aedab2a35a387b0c7",
+    "local_pilot_digest": "sha256:68b1b21551e41c07744dfa89abdd6bf1364d32918f863defcc5cdf6ac0883981",
+    "stage_e_execution_receipt_digest": "sha256:f8564f24b0efe9bd3d2f3d101001001eec5a90b5c4b34c1f6f0cfe4a0d0d6dbe",
+    "focused_continuation": "9/9",
+    "required_regressions": "40/40",
+    "runtime_discovery": "169/169",
+    "control_center_canonical": "36/36",
+    "independent_reviewer": "PASS"
+  },
+  "implementation_status": "implemented-reviewed-pass",
+  "promotion_boundary": "this SWU permits CONT-002 planning only; it does not prove production attempt creation, official input resolution, resume, provider continuity or end-to-end execution"
+}

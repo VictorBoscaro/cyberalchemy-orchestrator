@@ -20,13 +20,31 @@ from .canonical import (
     parse_strict_json,
 )
 from .capabilities import CapabilityManager
+from .confirmation import (
+    AUDIT_OPENING_REQUESTED_SCHEMA_DIGEST,
+    RUN_CREATED_SCHEMA_DIGEST,
+    build_confirmation_batch,
+    decode_confirmation_command,
+    derive_id as derive_confirmation_id,
+    require_effect_ceiling,
+)
+from .continuation import (
+    SuspensionProjection,
+    project_suspension,
+    require_exact_zero_official_facts,
+    restore_suspension,
+)
 from .database import RuntimeDatabase
 from .errors import (
     AuthorizationError,
     ConflictError,
+    ContinuationAuthorityError,
+    ContinuationPrerequisiteError,
     IdempotencyConflict,
     IntegrityError,
     NotFoundError,
+    UntrustedConfirmationIssuer,
+    UntrustedConfirmationObservation,
     ValidationError,
 )
 from .journal import EventDraft, PrerequisiteHead, RuntimeCommand, RuntimeJournal
@@ -91,6 +109,19 @@ ACI_SCHEMAS = {
         "host_workflow.turn_terminal@1": "aci.host-workflow-turn-terminal@1",
     }.items()
 }
+ACI_SCHEMAS.update(
+    {
+        "run.created": ("aci.run-created@1", RUN_CREATED_SCHEMA_DIGEST),
+        "audit_opening.requested": (
+            "aci.audit-opening-requested@1",
+            AUDIT_OPENING_REQUESTED_SCHEMA_DIGEST,
+        ),
+        "continuation.suspended": (
+            "aci.continuation-suspended@1",
+            canonical_digest({"schema_ref": "aci.continuation-suspended@1"}),
+        ),
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -100,6 +131,33 @@ class RuntimeSettings:
     ledger_path: Path
     local_pilot_serve_enabled: bool = False
     repo_id: str = "cyberalchemy-orchestrator"
+    confirmation_issuer_ref: dict[str, Any] | None = None
+    confirmation_host_context: dict[str, Any] | None = None
+
+
+def _runtime_confirmation_command(value: dict[str, Any]) -> RuntimeCommand:
+    """Preserve the complete decoded command in its canonical replay digest."""
+
+    return RuntimeCommand(
+        command_id=value["command_id"],
+        scope_key=value["scope_key"],
+        idempotency_key=value["idempotency_key"],
+        aggregate_type=value["aggregate_type"],
+        aggregate_id=value["aggregate_id"],
+        expected_version=value["expected_version"],
+        causation_id=value["causation_id"],
+        correlation_id=value["correlation_id"],
+        authority_context=value["authority_context"],
+        semantic_intent=value["semantic_intent"],
+        prerequisites=tuple(
+            PrerequisiteHead(
+                aggregate_id=prerequisite["aggregate_id"],
+                expected_version=prerequisite["expected_version"],
+                state_hash=prerequisite["state_hash"],
+            )
+            for prerequisite in value["prerequisites"]
+        ),
+    )
 
 
 class RuntimeService:
@@ -192,6 +250,769 @@ class RuntimeService:
         except ConflictError as exc:
             raise ProtocolCompileFailure("artifact_content_conflict") from exc
         return {"compiled_result": result, "artifact_ref": artifact_ref}
+
+    def confirm_runtime_dispatch(
+        self,
+        *,
+        pending_sheet_bytes: bytes,
+        capability_resolution_bytes: bytes,
+        capability_resolution_artifact_id: str,
+        trusted_issuer_context_bytes: bytes,
+        confirmation_observation_bytes: bytes,
+        identity_derivation_bytes: bytes,
+        payload_schema_bundle_bytes: bytes,
+        command_bytes: bytes,
+        failpoint: Callable[[str], None] | None = None,
+    ) -> dict[str, Any]:
+        """Prepare and atomically accept the closed runtime confirmation v1 unit."""
+
+        command_value = decode_confirmation_command(command_bytes)
+        preliminary_command = _runtime_confirmation_command(command_value)
+        replay = self.journal.replay_confirmed_dispatch_key(preliminary_command)
+        if replay is not None:
+            return replay
+
+        trusted_context = parse_strict_json(trusted_issuer_context_bytes)
+        if not isinstance(trusted_context, dict):
+            raise UntrustedConfirmationIssuer("trusted issuer context must be an object")
+        if (
+            self.settings.confirmation_issuer_ref is None
+            or trusted_context.get("admitted_issuer_ref")
+            != self.settings.confirmation_issuer_ref
+        ):
+            raise UntrustedConfirmationIssuer("confirmation issuer is not configured")
+        if (
+            self.settings.confirmation_host_context is None
+            or trusted_context.get("authenticated_host_context")
+            != self.settings.confirmation_host_context
+        ):
+            raise UntrustedConfirmationObservation(
+                "confirmation host evidence is not the authenticated configured tuple"
+            )
+
+        preview, preview_ref = self.artifacts.get_authorized_with_reference(
+            capability_resolution_artifact_id,
+            principal_id="runtime-confirmation",
+            action="artifact.read",
+            authorizer=lambda _principal, _action, classification: (
+                classification == "runtime-internal"
+            ),
+        )
+        if preview != capability_resolution_bytes:
+            raise IntegrityError("finalized capability preview bytes differ")
+        expected_preview_id = "art_" + digest_bytes(preview).removeprefix("sha256:")[:32]
+        if capability_resolution_artifact_id != expected_preview_id:
+            raise IntegrityError("finalized capability preview reference differs")
+        preview_policy = {
+            "classification": "runtime-internal",
+            "redaction_policy_ref": "aci.redaction.none@1",
+            "retention_policy_ref": "aci.retention.local-proof@1",
+            "tombstone_policy_ref": "aci.tombstone.retain-digest@1",
+            "authorization_policy_ref": "aci.artifact.runtime-operator@1",
+        }
+        expected_preview_ref = {
+            "artifact_id": capability_resolution_artifact_id,
+            "content_hash": digest_bytes(capability_resolution_bytes),
+            "media_type": "application/json",
+            "schema_ref": "aci.capability-resolution@1",
+            "classification": "runtime-internal",
+            "size_bytes": len(capability_resolution_bytes),
+            **preview_policy,
+            "policy_bundle_digest": canonical_digest(preview_policy),
+        }
+        if any(
+            preview_ref.get(field) != expected
+            for field, expected in expected_preview_ref.items()
+        ):
+            raise IntegrityError("finalized capability preview metadata differs")
+        if not str(preview_ref.get("finalization_receipt_ref", "")).startswith("afr_"):
+            raise IntegrityError("finalized capability preview receipt differs")
+
+        batch = build_confirmation_batch(
+            pending_sheet_bytes=pending_sheet_bytes,
+            capability_resolution_bytes=capability_resolution_bytes,
+            capability_resolution_artifact_id=capability_resolution_artifact_id,
+            trusted_issuer_context_bytes=trusted_issuer_context_bytes,
+            confirmation_observation_bytes=confirmation_observation_bytes,
+            identity_derivation_bytes=identity_derivation_bytes,
+            payload_schema_bundle_bytes=payload_schema_bundle_bytes,
+            command_bytes=command_bytes,
+        )
+        prepared = tuple(
+            self.artifacts.prepare(
+                body,
+                media_type="application/json",
+                schema_ref=schema_ref,
+                classification="runtime-internal",
+            )
+            for _, schema_ref, body in batch.artifact_documents
+        )
+        prepared_by_schema = {artifact.schema_ref: artifact for artifact in prepared}
+        command_value = batch.command
+        command = _runtime_confirmation_command(command_value)
+        dispatch_id = batch.pending_sheet["dispatch_id"]
+        dispatch_spec_digest = canonical_digest(batch.dispatch_spec)
+        events = [
+            EventDraft(
+                event_id=derive_confirmation_id(
+                    "event",
+                    ["run.created", 1],
+                    dispatch_id=dispatch_id,
+                    dispatch_spec_digest=dispatch_spec_digest,
+                ),
+                event_type="run.created",
+                schema_ref="aci.run-created@1",
+                schema_digest=RUN_CREATED_SCHEMA_DIGEST,
+                payload=prepared_by_schema["aci.run-created@1"],
+            ),
+            EventDraft(
+                event_id=derive_confirmation_id(
+                    "event",
+                    ["audit_opening.requested", 2],
+                    dispatch_id=dispatch_id,
+                    dispatch_spec_digest=dispatch_spec_digest,
+                ),
+                event_type="audit_opening.requested",
+                schema_ref="aci.audit-opening-requested@1",
+                schema_digest=AUDIT_OPENING_REQUESTED_SCHEMA_DIGEST,
+                payload=prepared_by_schema["aci.audit-opening-requested@1"],
+            ),
+        ]
+        require_effect_ceiling([batch.effect_intent], batch.effect_intent)
+        return self.journal.accept_confirmed_dispatch(
+            command,
+            events,
+            batch=batch,
+            artifacts=prepared,
+            failpoint=failpoint,
+        )
+
+    @staticmethod
+    def _continuation_json_artifact(
+        conn: sqlite3.Connection,
+        *,
+        artifact_id: str,
+        content_hash: str,
+        schema_ref: str,
+    ) -> dict[str, Any]:
+        row = conn.execute(
+            "SELECT * FROM artifacts WHERE artifact_id=?", (artifact_id,)
+        ).fetchone()
+        if not row:
+            raise ContinuationAuthorityError("continuation authority artifact is absent")
+        body = bytes(row["body"])
+        if (
+            row["content_hash"] != content_hash
+            or digest_bytes(body) != content_hash
+            or row["schema_ref"] != schema_ref
+            or row["media_type"] != "application/json"
+            or row["classification"] != "runtime-internal"
+            or row["tombstoned_at"] is not None
+        ):
+            raise ContinuationAuthorityError("continuation authority artifact differs")
+        value = parse_strict_json(body)
+        if not isinstance(value, dict):
+            raise ContinuationAuthorityError("continuation authority artifact is not an object")
+        return value
+
+    @staticmethod
+    def _continuation_mapping_rows(
+        conn: sqlite3.Connection, continuation_id: str
+    ) -> list[dict[str, Any]]:
+        rows = [
+            dict(row)
+            for row in conn.execute(
+                """
+                SELECT * FROM continuation_input_mappings
+                WHERE continuation_id=? ORDER BY slot_ordinal
+                """,
+                (continuation_id,),
+            )
+        ]
+        for row in rows:
+            try:
+                row["visibility_policy_ref"] = json.loads(
+                    row.pop("visibility_policy_ref_json")
+                )
+            except (KeyError, json.JSONDecodeError) as exc:
+                raise ContinuationAuthorityError(
+                    "confirmed continuation mapping policy is invalid"
+                ) from exc
+        return rows
+
+    @staticmethod
+    def _continuation_official_facts(
+        conn: sqlite3.Connection, source_message_ids: tuple[str, str]
+    ) -> list[dict[str, Any]]:
+        return [
+            dict(row)
+            for row in conn.execute(
+                """
+                SELECT m.message_id,m.group_aggregate_id,m.seat_id,m.round_id,
+                       m.message_type,c.operation_id,c.candidate_id
+                FROM messages m
+                JOIN publication_candidates c
+                  ON c.candidate_id=m.source_candidate_id
+                WHERE m.message_id IN (?,?)
+                ORDER BY m.message_id,c.candidate_id
+                """,
+                source_message_ids,
+            )
+        ]
+
+    @staticmethod
+    def _require_attempt_journal_chain(
+        conn: sqlite3.Connection, attempt: dict[str, Any]
+    ) -> None:
+        rows = conn.execute(
+            """
+            SELECT e.event_type,e.aggregate_version,e.event_id,e.journal_offset,
+                   e.event_count,e.command_id,r.first_offset,r.last_offset,r.event_count
+                   AS receipt_event_count
+            FROM events e
+            JOIN command_receipts r ON r.command_id=e.command_id
+            WHERE e.aggregate_id=?
+            ORDER BY e.aggregate_version
+            """,
+            (attempt["aggregate_id"],),
+        ).fetchall()
+        if [row["event_type"] for row in rows] != [
+            "attempt.requested",
+            "attempt.starting",
+            "attempt.running",
+            "attempt.completed",
+        ]:
+            raise ContinuationPrerequisiteError(
+                "source attempt does not have the complete journal lifecycle"
+            )
+        for version, row in enumerate(rows, start=1):
+            if (
+                row["aggregate_version"] != version
+                or row["event_count"] != 1
+                or row["receipt_event_count"] != 1
+                or row["first_offset"] != row["journal_offset"]
+                or row["last_offset"] != row["journal_offset"]
+            ):
+                raise ContinuationPrerequisiteError(
+                    "source attempt lifecycle receipt is incomplete"
+                )
+        terminal = rows[-1]
+        if (
+            attempt["version"] != 4
+            or attempt["state"] != "completed"
+            or attempt["requested_event_id"] != rows[0]["event_id"]
+            or attempt["last_event_id"] != terminal["event_id"]
+            or attempt["last_offset"] != terminal["journal_offset"]
+        ):
+            raise ContinuationPrerequisiteError(
+                "source attempt terminal projection differs from the journal"
+            )
+
+    def _load_new_suspension_projection(
+        self,
+        conn: sqlite3.Connection,
+        *,
+        dispatch_id: str,
+        continuation_id: str,
+        provider_continuation_ref_digest: str | None,
+    ) -> tuple[
+        SuspensionProjection,
+        tuple[str, str],
+        str,
+        dict[str, Any],
+        dict[str, Any],
+        str,
+    ]:
+        authority = conn.execute(
+            """
+            SELECT d.*,g.graph_id,g.graph_artifact_id,g.graph_digest,g.continuation_id,
+                   g.source_operation_id,g.source_seat_id,g.source_turn_ordinal,
+                   g.target_operation_id,g.target_seat_id,g.target_turn_ordinal,
+                   g.source_messages_json,g.nodes_json,g.mapping_set_artifact_id,
+                   g.mapping_set_digest
+            FROM confirmed_dispatches d
+            JOIN confirmed_turn_graphs g ON g.dispatch_id=d.dispatch_id
+            WHERE d.dispatch_id=? AND g.continuation_id=?
+            """,
+            (dispatch_id, continuation_id),
+        ).fetchone()
+        if not authority or authority["execution_authority_mode"] != "runtime-managed":
+            raise ContinuationAuthorityError("confirmed continuation authority is absent")
+        authority = dict(authority)
+        dispatch_spec = self._continuation_json_artifact(
+            conn,
+            artifact_id=authority["dispatch_spec_artifact_id"],
+            content_hash=authority["dispatch_spec_digest"],
+            schema_ref="aci.dispatch-spec@1",
+        )
+        authority_document = self._continuation_json_artifact(
+            conn,
+            artifact_id=authority["confirmed_authority_artifact_id"],
+            content_hash=authority["confirmed_authority_digest"],
+            schema_ref="aci.confirmed-authority@1",
+        )
+        graph_document = self._continuation_json_artifact(
+            conn,
+            artifact_id=authority["graph_artifact_id"],
+            content_hash=authority["graph_digest"],
+            schema_ref="aci.confirmed-turn-graph@1",
+        )
+        mapping_document = self._continuation_json_artifact(
+            conn,
+            artifact_id=authority["mapping_set_artifact_id"],
+            content_hash=authority["mapping_set_digest"],
+            schema_ref="aci.continuation-input-mapping-set@1",
+        )
+        if (
+            authority_document.get("dispatch_id") != dispatch_id
+            or authority_document.get("confirmed_turn_graph_digest")
+            != authority["graph_digest"]
+            or authority_document.get("mapping_set_digest")
+            != authority["mapping_set_digest"]
+            or graph_document.get("dispatch_id") != dispatch_id
+            or graph_document.get("continuation_bindings", [{}])[0].get(
+                "continuation_id"
+            )
+            != continuation_id
+        ):
+            raise ContinuationAuthorityError("confirmed continuation documents disagree")
+
+        mappings = self._continuation_mapping_rows(conn, continuation_id)
+        if mapping_document.get("mappings") != mappings:
+            raise ContinuationAuthorityError("confirmed continuation mapping rows differ")
+        try:
+            source_messages = tuple(graph_document["source_messages"])
+            source_message_ids = tuple(
+                message["source_message_id"] for message in source_messages
+            )
+            nodes = tuple(graph_document["nodes"])
+        except (KeyError, TypeError) as exc:
+            raise ContinuationAuthorityError("confirmed turn graph is invalid") from exc
+        if (
+            len(source_message_ids) != 2
+            or len(set(source_message_ids)) != 2
+            or list(source_messages) != json.loads(authority["source_messages_json"])
+            or list(nodes) != json.loads(authority["nodes_json"])
+        ):
+            raise ContinuationAuthorityError("confirmed turn graph projection differs")
+        source_nodes = [
+            node
+            for node in nodes
+            if node.get("operation_id") == authority["source_operation_id"]
+        ]
+        target_nodes = [
+            node
+            for node in nodes
+            if node.get("operation_id") == authority["target_operation_id"]
+        ]
+        if (
+            len(source_nodes) != 1
+            or source_nodes[0].get("role") != "author"
+            or source_nodes[0].get("seat_id") != authority["source_seat_id"]
+            or source_nodes[0].get("turn_ordinal") != authority["source_turn_ordinal"]
+            or len(target_nodes) != 1
+            or target_nodes[0].get("role") != "author"
+            or target_nodes[0].get("seat_id") != authority["target_seat_id"]
+            or target_nodes[0].get("turn_ordinal") != authority["target_turn_ordinal"]
+        ):
+            raise ContinuationAuthorityError("confirmed author turn binding differs")
+
+        attempts = [
+            dict(row)
+            for row in conn.execute(
+                """
+                SELECT * FROM runtime_agent_attempts
+                WHERE dispatch_id=? AND graph_id=? AND operation_id=?
+                  AND seat_id=? AND turn_ordinal=?
+                """,
+                (
+                    dispatch_id,
+                    authority["graph_id"],
+                    authority["source_operation_id"],
+                    authority["source_seat_id"],
+                    authority["source_turn_ordinal"],
+                ),
+            )
+        ]
+        if len(attempts) != 1 or attempts[0]["state"] != "completed":
+            raise ContinuationPrerequisiteError(
+                "exactly one completed confirmed source attempt is required"
+            )
+        attempt = attempts[0]
+        self._require_attempt_journal_chain(conn, attempt)
+        target_count = conn.execute(
+            """
+            SELECT COUNT(*) FROM runtime_agent_attempts
+            WHERE dispatch_id=? AND graph_id=? AND operation_id=?
+              AND seat_id=? AND turn_ordinal=?
+            """,
+            (
+                dispatch_id,
+                authority["graph_id"],
+                authority["target_operation_id"],
+                authority["target_seat_id"],
+                authority["target_turn_ordinal"],
+            ),
+        ).fetchone()[0]
+        if target_count:
+            raise ContinuationPrerequisiteError("target attempt already exists")
+        snapshot = conn.execute(
+            """
+            SELECT b.*,a.body,a.schema_ref,a.classification,a.tombstoned_at
+            FROM runtime_attempt_snapshot_bindings b
+            JOIN artifacts a ON a.artifact_id=b.artifact_id
+            WHERE b.attempt_id=?
+            """,
+            (attempt["attempt_id"],),
+        ).fetchone()
+        if not snapshot:
+            raise ContinuationPrerequisiteError("source reconstruction snapshot is absent")
+        snapshot = dict(snapshot)
+        if (
+            snapshot["terminal_event_id"] != attempt["last_event_id"]
+            or snapshot["terminal_offset"] != attempt["last_offset"]
+            or digest_bytes(bytes(snapshot["body"])) != snapshot["content_hash"]
+            or snapshot["classification"] != "runtime-internal"
+            or snapshot["tombstoned_at"] is not None
+        ):
+            raise ContinuationPrerequisiteError(
+                "source reconstruction snapshot binding differs"
+            )
+        try:
+            resume_policy_ref = dispatch_spec["decision_policies"]["reconstruction"][
+                "policy_ref"
+            ]
+            wall_clock_seconds = dispatch_spec["budgets"]["wall_clock_seconds"]
+        except (KeyError, TypeError) as exc:
+            raise ContinuationAuthorityError(
+                "confirmed continuation policy or budget is absent"
+            ) from exc
+        projection = project_suspension(
+            confirmed_authority_digest=authority["confirmed_authority_digest"],
+            dispatch_id=dispatch_id,
+            continuation_id=continuation_id,
+            source_attempt_id=attempt["attempt_id"],
+            source_turn_ordinal=authority["source_turn_ordinal"],
+            target_turn_ordinal=authority["target_turn_ordinal"],
+            seat_id=authority["target_seat_id"],
+            agent_instance_id=attempt["agent_instance_id"],
+            mappings=mappings,
+            context_snapshot_artifact_id=snapshot["artifact_id"],
+            context_snapshot_content_hash=snapshot["content_hash"],
+            provider_continuation_ref_digest=provider_continuation_ref_digest,
+            resume_policy_ref=resume_policy_ref,
+            confirmed_at=authority["confirmed_at"],
+            wall_clock_seconds=wall_clock_seconds,
+        )
+        return (
+            projection,
+            source_message_ids,
+            authority["graph_id"],
+            attempt,
+            snapshot,
+            authority["target_operation_id"],
+        )
+
+    def _load_persisted_suspension_projection(
+        self,
+        conn: sqlite3.Connection,
+        *,
+        dispatch_id: str,
+        continuation_id: str,
+        provider_continuation_ref_digest: str | None,
+    ) -> tuple[SuspensionProjection, str] | None:
+        row = conn.execute(
+            """
+            SELECT c.*
+            FROM agent_continuations c
+            WHERE c.dispatch_id=? AND c.continuation_id=?
+            """,
+            (dispatch_id, continuation_id),
+        ).fetchone()
+        if not row:
+            return None
+        row = dict(row)
+        mappings = [
+            {
+                "mapping_id": mapping["mapping_id"],
+                "slot_ordinal": mapping["member_ordinal"],
+                "dispatch_id": row["dispatch_id"],
+                "continuation_id": row["continuation_id"],
+                "target_seat_id": row["seat_id"],
+                "target_turn_ordinal": row["target_turn_ordinal"],
+                "confirmed_binding_digest": mapping[
+                    "confirmed_binding_digest"
+                ],
+            }
+            for mapping in conn.execute(
+                """
+                SELECT mapping_id,member_ordinal,confirmed_binding_digest
+                FROM agent_continuation_mapping_members
+                WHERE continuation_id=?
+                ORDER BY member_ordinal
+                """,
+                (continuation_id,),
+            )
+        ]
+        projection = restore_suspension(
+            confirmed_authority_digest=row["confirmed_authority_digest"],
+            dispatch_id=row["dispatch_id"],
+            continuation_id=row["continuation_id"],
+            source_attempt_id=row["source_attempt_id"],
+            source_turn_ordinal=row["source_turn_ordinal"],
+            target_turn_ordinal=row["target_turn_ordinal"],
+            seat_id=row["seat_id"],
+            agent_instance_id=row["agent_instance_id"],
+            mappings=mappings,
+            context_snapshot_artifact_id=row["context_snapshot_artifact_id"],
+            context_snapshot_content_hash=row["context_snapshot_content_hash"],
+            provider_continuation_ref_digest=provider_continuation_ref_digest,
+            resume_policy_ref=json.loads(row["resume_policy_ref_json"]),
+            deadline_utc=row["deadline_utc"],
+        )
+        return projection, row["graph_id"]
+
+    def suspend_agent_continuation(
+        self,
+        *,
+        dispatch_id: str,
+        continuation_id: str,
+        provider_continuation_ref_digest: str | None = None,
+        failpoint: Callable[[str], None] | None = None,
+    ) -> dict[str, Any]:
+        """Accept one CONF-001-backed, effect-free continuation suspension."""
+
+        fp = failpoint or (lambda _name: None)
+        with self.database.connect() as conn:
+            persisted = self._load_persisted_suspension_projection(
+                conn,
+                dispatch_id=dispatch_id,
+                continuation_id=continuation_id,
+                provider_continuation_ref_digest=provider_continuation_ref_digest,
+            )
+            if persisted:
+                projection, graph_id = persisted
+                source_message_ids: tuple[str, str] | None = None
+                source_attempt_authority: dict[str, Any] | None = None
+                source_snapshot_authority: dict[str, Any] | None = None
+                target_operation_id: str | None = None
+            else:
+                (
+                    projection,
+                    source_message_ids,
+                    graph_id,
+                    source_attempt_authority,
+                    source_snapshot_authority,
+                    target_operation_id,
+                ) = (
+                    self._load_new_suspension_projection(
+                        conn,
+                        dispatch_id=dispatch_id,
+                        continuation_id=continuation_id,
+                        provider_continuation_ref_digest=(
+                            provider_continuation_ref_digest
+                        ),
+                    )
+                )
+                require_exact_zero_official_facts(
+                    self._continuation_official_facts(conn, source_message_ids),
+                    source_message_ids,
+                )
+        if source_message_ids is not None:
+            fp("continuation.after_official_precheck")
+
+        scope_key = f"aci.agent-continuation:{projection.continuation_id}"
+        command = self._command(
+            command_name="aci.suspend-agent-continuation@1",
+            scope_key=scope_key,
+            idempotency_key="suspend@1",
+            aggregate_type="aci.agent-continuation",
+            aggregate_id=scope_key,
+            expected_version=0,
+            authority={
+                "confirmed_authority_digest": projection.confirmed_authority_digest,
+                "dispatch_id": projection.dispatch_id,
+            },
+            intent=projection.semantic_intent(),
+        )
+        event = self._event(
+            "continuation.suspended",
+            projection.event_payload(),
+            event_id=self._stable_id(
+                "evt_", ["continuation.suspended", projection.continuation_id]
+            ),
+        )
+
+        def result_builder(records, base):
+            return {
+                **base,
+                "agent_instance_id": projection.agent_instance_id,
+                "confirmed_authority_digest": projection.confirmed_authority_digest,
+                "context_snapshot_artifact_id": (
+                    projection.context_snapshot_artifact_id
+                ),
+                "context_snapshot_content_hash": (
+                    projection.context_snapshot_content_hash
+                ),
+                "continuation_id": projection.continuation_id,
+                "deadline_utc": projection.deadline_utc,
+                "dispatch_id": projection.dispatch_id,
+                "ordered_awaited_mapping_ids": list(
+                    projection.ordered_mapping_ids
+                ),
+                "ordered_input_mapping_ids": list(projection.ordered_mapping_ids),
+                "provider_continuation_ref_digest": (
+                    projection.provider_continuation_ref_digest
+                ),
+                "resume_policy_ref": projection.resume_policy_ref,
+                "schema": "aci.continuation-suspension-receipt@1",
+                "seat_id": projection.seat_id,
+                "source_attempt_id": projection.source_attempt_id,
+                "source_turn_ordinal": projection.source_turn_ordinal,
+                "state": "suspended",
+                "target_turn_ordinal": projection.target_turn_ordinal,
+            }
+
+        def mutate(conn, records, _receipt):
+            if source_message_ids is None:
+                raise ContinuationAuthorityError(
+                    "persisted replay unexpectedly reached continuation mutation"
+                )
+            if (
+                source_attempt_authority is None
+                or source_snapshot_authority is None
+                or target_operation_id is None
+            ):
+                raise ContinuationAuthorityError(
+                    "source continuation authority was not frozen"
+                )
+            require_exact_zero_official_facts(
+                self._continuation_official_facts(conn, source_message_ids),
+                source_message_ids,
+            )
+            attempt_row = conn.execute(
+                """
+                SELECT * FROM runtime_agent_attempts
+                WHERE attempt_id=?
+                """,
+                (projection.source_attempt_id,),
+            ).fetchone()
+            snapshot_row = conn.execute(
+                """
+                SELECT b.*,a.body,a.schema_ref,a.classification,a.tombstoned_at
+                FROM runtime_attempt_snapshot_bindings b
+                JOIN artifacts a ON a.artifact_id=b.artifact_id
+                WHERE b.attempt_id=?
+                """,
+                (projection.source_attempt_id,),
+            ).fetchone()
+            if not attempt_row or not snapshot_row:
+                raise ContinuationPrerequisiteError(
+                    "source attempt or snapshot changed before acceptance"
+                )
+            attempt = dict(attempt_row)
+            snapshot = dict(snapshot_row)
+            if (
+                attempt != source_attempt_authority
+                or snapshot != source_snapshot_authority
+                or attempt["dispatch_id"] != projection.dispatch_id
+                or attempt["graph_id"] != graph_id
+                or attempt["agent_instance_id"] != projection.agent_instance_id
+                or attempt["turn_ordinal"] != projection.source_turn_ordinal
+                or snapshot["artifact_id"]
+                != projection.context_snapshot_artifact_id
+                or snapshot["content_hash"]
+                != projection.context_snapshot_content_hash
+            ):
+                raise ContinuationPrerequisiteError(
+                    "source attempt or snapshot authority drifted before acceptance"
+                )
+            self._require_attempt_journal_chain(conn, attempt)
+            if (
+                snapshot["terminal_event_id"] != attempt["last_event_id"]
+                or snapshot["terminal_offset"] != attempt["last_offset"]
+                or digest_bytes(bytes(snapshot["body"])) != snapshot["content_hash"]
+                or snapshot["classification"] != "runtime-internal"
+                or snapshot["tombstoned_at"] is not None
+            ):
+                raise ContinuationPrerequisiteError(
+                    "source snapshot terminal linkage drifted before acceptance"
+                )
+            target_count = conn.execute(
+                """
+                SELECT COUNT(*) FROM runtime_agent_attempts
+                WHERE dispatch_id=? AND graph_id=? AND operation_id=?
+                  AND seat_id=? AND turn_ordinal=?
+                """,
+                (
+                    projection.dispatch_id,
+                    graph_id,
+                    target_operation_id,
+                    projection.seat_id,
+                    projection.target_turn_ordinal,
+                ),
+            ).fetchone()[0]
+            if target_count:
+                raise ContinuationPrerequisiteError("target attempt already exists")
+            conn.execute(
+                """
+                INSERT INTO agent_continuations(
+                  continuation_id,dispatch_id,graph_id,confirmed_authority_digest,
+                  source_attempt_id,source_turn_ordinal,target_turn_ordinal,seat_id,
+                  agent_instance_id,context_snapshot_artifact_id,
+                  context_snapshot_content_hash,provider_continuation_ref_digest,
+                  resume_policy_ref_json,deadline_utc,state,version,
+                  suspended_event_id,suspended_offset
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """,
+                (
+                    projection.continuation_id,
+                    projection.dispatch_id,
+                    graph_id,
+                    projection.confirmed_authority_digest,
+                    projection.source_attempt_id,
+                    projection.source_turn_ordinal,
+                    projection.target_turn_ordinal,
+                    projection.seat_id,
+                    projection.agent_instance_id,
+                    projection.context_snapshot_artifact_id,
+                    projection.context_snapshot_content_hash,
+                    projection.provider_continuation_ref_digest,
+                    canonical_text(projection.resume_policy_ref),
+                    projection.deadline_utc,
+                    "suspended",
+                    1,
+                    records[0].event_id,
+                    records[0].journal_offset,
+                ),
+            )
+            fp("continuation.after_continuation")
+            for ordinal, mapping in enumerate(projection.ordered_mappings):
+                conn.execute(
+                    """
+                    INSERT INTO agent_continuation_mapping_members(
+                      continuation_id,mapping_id,member_ordinal,awaited,
+                      confirmed_binding_digest
+                    ) VALUES(?,?,?,?,?)
+                    """,
+                    (
+                        projection.continuation_id,
+                        mapping["mapping_id"],
+                        ordinal,
+                        1,
+                        mapping["confirmed_binding_digest"],
+                    ),
+                )
+                fp(f"continuation.after_mapping_{ordinal}")
+
+        return self.journal.accept(
+            command,
+            [event],
+            next_state=projection.next_state(),
+            result_builder=result_builder,
+            mutate=mutate,
+            failpoint=fp,
+        )
 
     @staticmethod
     def _require_exact_fields(

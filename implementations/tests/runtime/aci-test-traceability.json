@@ -17,7 +17,13 @@
       "coverage_level": "bounded",
       "selectors": [
         "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_publish_retry_is_byte_stable_and_changed_digest_conflicts",
-        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_logical_publication_race_has_one_winner"
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_logical_publication_race_has_one_winner",
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_exact_cas_replay_semantic_drift_and_stale_head_conflict",
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_concurrent_distinct_commands_have_one_runtime_head_winner",
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_group_identity_is_scoped_by_confirmed_graph_and_cas_reopens_independently",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_replay_and_reopen_return_identical_receipt",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_same_key_semantic_drift_conflicts",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_equal_concurrency_converges"
       ]
     },
     {
@@ -25,7 +31,10 @@
       "coverage_level": "bounded",
       "selectors": [
         "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_fail_before_commit_rolls_back_and_after_commit_retry_converges",
-        "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_two_event_group_rolls_back_inside_group_read"
+        "implementations/tests/runtime/test_stage_b.py::JournalArtifactApiTests::test_two_event_group_rolls_back_inside_group_read",
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_multi_head_failpoints_roll_back_both_and_reopen_replays",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_failpoints_roll_back_every_acceptance_boundary",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_lost_response_retry_returns_original"
       ]
     },
     {
@@ -36,11 +45,21 @@
       ]
     },
     {
+      "test_spec_id": "T-ACI-R8",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_distinct_attempt_candidate_race_has_one_confirmed_winner"
+      ]
+    },
+    {
       "test_spec_id": "T-ACI-R15",
       "coverage_level": "bounded",
       "selectors": [
         "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_full_flow_candidate_then_exactly_one_official_and_restart",
-        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_concurrent_parent_verification_converges_to_one_message"
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_concurrent_parent_verification_converges_to_one_message",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_candidate_only_is_not_official_or_continuation_visible",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_author_official_pair_and_zero_effects",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_reviewer_official_pair_requires_visible_author"
       ]
     },
     {
@@ -48,7 +67,20 @@
       "coverage_level": "bounded",
       "selectors": [
         "implementations/tests/runtime/test_stage_b.py::CanonicalMigrationTests::test_frozen_canonical_golden_vectors",
-        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_receipt_tampering_and_wrong_parent_scope_fail"
+        "implementations/tests/runtime/test_stage_b.py::PublicationFlowTests::test_receipt_tampering_and_wrong_parent_scope_fail",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_receipt_bytes_fields_scope_and_digest_fail_closed",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_immutable_publication_event_and_command_result_anchor_candidate",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_source_identity_and_event_type_derive_from_confirmed_mapping"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-R20",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_exact_cas_replay_semantic_drift_and_stale_head_conflict",
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_multi_head_failpoints_roll_back_both_and_reopen_replays",
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_harness_positive_setup_creates_no_effect_or_production_surface",
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_group_identity_is_scoped_by_confirmed_graph_and_cas_reopens_independently"
       ]
     },
     {
@@ -227,6 +259,69 @@
     {
       "test_spec_id": "T-ACI-PC12", "coverage_level": "bounded",
       "selectors": ["implementations/tests/runtime/test_protocol_compilation.py::ProtocolCompilationTests::test_pc12_candidate_is_not_runtime_authority"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH1", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth1_golden_runtime_unit_and_legacy_rejection"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH2", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth2_canonical_package_authority_and_identities"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH3", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth3_trusted_observation_boundary_and_identity"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH4", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth4_digest_domains_and_closed_schema_lineage"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH5", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth5_bounded_projection_mapping_and_derived_identity_rejection"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH6", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth6_key_identity_replay_conflict_and_concurrency"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH7", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth7_all_failpoints_lost_response_reopen_and_migration"]
+    },
+    {
+      "test_spec_id": "T-ACI-AUTH8", "coverage_level": "bounded",
+      "selectors": ["implementations/tests/runtime/test_runtime_confirmation.py::RuntimeConfirmationTests::test_auth8_effect_ceiling_and_zero_external_actions"]
+    },
+    {
+      "test_spec_id": "T-ACI-CONT1",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_continuation.py::AgentContinuationTests::test_cont1_effect_free_suspension_replay_and_reopen",
+        "implementations/tests/runtime/test_agent_continuation.py::AgentContinuationTests::test_create_rechecks_official_facts_and_replay_precedes_new_facts",
+        "implementations/tests/runtime/test_agent_continuation.py::AgentContinuationTests::test_every_suspension_failpoint_is_atomic_and_lost_response_replays",
+        "implementations/tests/runtime/test_runtime_confirmed_bus.py::ConfirmedBusComponentTests::test_continuation_sources_become_visible_only_as_exact_pair"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-CONT9",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_agent_continuation.py::AgentContinuationTests::test_cont9_l2_base_reducer_rejects_every_unlisted_pair"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-S1",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_run_reducer_is_total_terminal_mapping_and_fence_fail_closed"
+      ]
+    },
+    {
+      "test_spec_id": "T-ACI-S2",
+      "coverage_level": "bounded",
+      "selectors": [
+        "implementations/tests/runtime/test_runtime_run_group_heads.py::RuntimeRunGroupHeadsTests::test_group_reducer_is_total_fixed_two_seat_and_terminals_are_immutable"
+      ]
     }
   ]
 }

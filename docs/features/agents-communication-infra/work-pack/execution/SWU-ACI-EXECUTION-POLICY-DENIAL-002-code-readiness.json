@@ -1,0 +1,62 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-EXECUTION-POLICY-DENIAL-002",
+  "task_ref": "docs/features/agents-communication-infra/work-pack/tasks/TASK-POLICY-002.md",
+  "task_digest": "sha256:9e7d32981c028df50bb89c2f113e85cfb9121bbcbed38a8af10443627b1d7f80",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-EXECUTION-POLICY-DENIAL-002.json",
+  "work_pack_digest": "sha256:b6853f2026f4a3881fc08b253dd7c5a2f2ef81e4f018f151b0875df68725a73e",
+  "context_ref": "docs/features/agents-communication-infra/work-pack/context/TASK-POLICY-002-CONTEXT.md",
+  "context_digest": "sha256:90079f5cd0e4097ea96841ce45cd9719822f44172cf499635cbeeaaccdf4f930",
+  "scaffold_ref": "docs/features/agents-communication-infra/work-pack/context/TASK-POLICY-002-SCAFFOLD.md",
+  "scaffold_digest": "sha256:2ba68d1db86358371a423f8cac837995cd4585e7c64de0298ab010dd0b52607c",
+  "test_spec_ref": "docs/features/agents-communication-infra/specs/TEST-SPEC.md",
+  "test_spec_digest": "sha256:bfd080bc0ec4860d7c5b9f3f028b8bbd0560786e9e61a83ce51168b0d21b985d",
+  "brownfield": true,
+  "entry_checks": {
+    "descriptor_json": "pass",
+    "descriptor_pins_verified": 28,
+    "context_obligation_coverage": "pass",
+    "unresolved_blockers": 0,
+    "output_paths_absent": true,
+    "validation_surface_matches_descriptor": true,
+    "capability_denies_match_descriptor": true,
+    "lean_bridge": "excluded"
+  },
+  "write_scope": [
+    "implementations/tests/runtime/policy_denial_harness.py",
+    "implementations/tests/runtime/execution_policy_denial_oracle_v1.json",
+    "implementations/tests/runtime/test_execution_policy_denial.py"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_execution_policy_denial -v",
+    "python -B -m unittest implementations.tests.runtime.test_execution_policy implementations.tests.runtime.test_execution_policy_lineage implementations.tests.runtime.test_execution_policy_denial -v",
+    "$aciRuntimeModules = Get-ChildItem -LiteralPath implementations/tests/runtime -Filter 'test_*.py' | Where-Object { $_.Name -ne 'test_agent_continuation_lean_bridge.py' } | ForEach-Object { 'implementations.tests.runtime.' + $_.BaseName }; python -B -m unittest $aciRuntimeModules",
+    "python -B -m compileall implementations/tests/runtime/policy_denial_harness.py implementations/tests/runtime/test_execution_policy_denial.py",
+    "git diff --check -- implementations/tests/runtime/policy_denial_harness.py implementations/tests/runtime/execution_policy_denial_oracle_v1.json implementations/tests/runtime/test_execution_policy_denial.py"
+  ],
+  "capability_profile": {
+    "filesystem": {
+      "mode": "write-exact-repository-scope-only",
+      "paths": [
+        "implementations/tests/runtime/policy_denial_harness.py",
+        "implementations/tests/runtime/execution_policy_denial_oracle_v1.json",
+        "implementations/tests/runtime/test_execution_policy_denial.py"
+      ],
+      "temporary_storage": {
+        "allowed": true,
+        "kind": "file-backed-sqlite",
+        "scope": "test-temporary-directory-only",
+        "lifetime": "validation-only",
+        "repository_persistence": false
+      }
+    },
+    "network": false,
+    "credentials": false,
+    "production": false,
+    "destructive": false,
+    "external_tools": false,
+    "provider_or_workload_process_launch": false
+  },
+  "promotion_boundary": "This PASS authorizes code entry only for the three write_scope POLICY-002/L2 test-only paths while every pinned byte remains unchanged and every output path was absent at this gate. It grants no POLICY-003/L3, production runtime, external-action, commit, push or deploy authority."
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "aci.execution-policy-synthetic-lineage-oracle@1",
+  "authority": "test-only-non-executable",
+  "source_fixture": "execution_policy_oracle_v1.json",
+  "input": {
+    "synthetic_key": "policy-lineage-command-001",
+    "lineage_identity": "policy-lineage-oracle-001",
+    "ordered_member_names": [
+      "budget_policy",
+      "sandbox_enforcement_policy",
+      "resource_budget",
+      "sandbox_policy",
+      "combined_oracle",
+      "harness_fence_preimage",
+      "harness_fence_document"
+    ]
+  },
+  "expected_receipt": {
+    "schema": "aci.execution-policy-synthetic-lineage-receipt@1",
+    "authority": "test-only-non-executable",
+    "synthetic_key": "policy-lineage-command-001",
+    "lineage_identity": "policy-lineage-oracle-001",
+    "members": [
+      {
+        "ordinal": 0,
+        "name": "budget_policy",
+        "artifact_id": "art_08f3494d9e869053ee097e854840ade8",
+        "content_digest": "sha256:08f3494d9e869053ee097e854840ade80afcda65cce75ef774038be5c6c242d2"
+      },
+      {
+        "ordinal": 1,
+        "name": "sandbox_enforcement_policy",
+        "artifact_id": "art_88f400d1661b69ac6536b548216bb7f5",
+        "content_digest": "sha256:88f400d1661b69ac6536b548216bb7f5a370042050df2ea7bae49e03952725ea"
+      },
+      {
+        "ordinal": 2,
+        "name": "resource_budget",
+        "artifact_id": "art_e6e3a27b6fecf0ca8667ca722bb1e74a",
+        "content_digest": "sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836"
+      },
+      {
+        "ordinal": 3,
+        "name": "sandbox_policy",
+        "artifact_id": "art_d865e9f97c6b73afc4748e5bd6d58095",
+        "content_digest": "sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a"
+      },
+      {
+        "ordinal": 4,
+        "name": "combined_oracle",
+        "artifact_id": "art_9abfb7e61f995a90e8a08a72dfa96dda",
+        "content_digest": "sha256:9abfb7e61f995a90e8a08a72dfa96dda2df956f63e4e4360e78eca22493641f6"
+      },
+      {
+        "ordinal": 5,
+        "name": "harness_fence_preimage",
+        "artifact_id": "art_124d06fa0b4c2e55eef48bc5b0c33ce1",
+        "content_digest": "sha256:124d06fa0b4c2e55eef48bc5b0c33ce19880d15ce82e0d3af9518a80536de70f"
+      },
+      {
+        "ordinal": 6,
+        "name": "harness_fence_document",
+        "artifact_id": "art_4672e47ccc7fb906a14c0cd57de0bbd7",
+        "content_digest": "sha256:4672e47ccc7fb906a14c0cd57de0bbd74271cfb7697d3a539dc97251bb864ba4"
+      }
+    ],
+    "unit_digest": "sha256:f702b9d2954307a91039cd3ea92285cb464c2c997c2166c0d68c446513a2801d"
+  },
+  "failpoints": [
+    "policy_lineage.after_begin",
+    "policy_lineage.after_artifact.0",
+    "policy_lineage.after_artifact.1",
+    "policy_lineage.after_artifact.2",
+    "policy_lineage.after_artifact.3",
+    "policy_lineage.after_artifact.4",
+    "policy_lineage.after_artifact.5",
+    "policy_lineage.after_artifact.6",
+    "policy_lineage.after_receipt",
+    "policy_lineage.after_member.0",
+    "policy_lineage.after_member.1",
+    "policy_lineage.after_member.2",
+    "policy_lineage.after_member.3",
+    "policy_lineage.after_member.4",
+    "policy_lineage.after_member.5",
+    "policy_lineage.after_member.6",
+    "policy_lineage.before_commit",
+    "policy_lineage.after_commit"
+  ]
+}

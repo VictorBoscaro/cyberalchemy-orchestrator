@@ -1,0 +1,52 @@
+{
+  "schema": "aci.execution-policy-fake-denial-oracle@1",
+  "authority": "test-only-non-executable",
+  "source_fixture": "execution_policy_lineage_oracle_v1.json",
+  "input": {
+    "denial_key": "policy-denial-command-001",
+    "lineage_identity": "policy-lineage-oracle-001",
+    "action_attempt_labels": [
+      "filesystem.read",
+      "filesystem.write",
+      "network.connect",
+      "process.child.start",
+      "credential.resolve",
+      "tool.call",
+      "resource.wall_time.consume_positive",
+      "resource.input_tokens.consume_positive",
+      "resource.output_tokens.consume_positive",
+      "resource.tool_calls.consume_positive",
+      "resource.payload_bytes.consume_positive",
+      "resource.artifact_bytes.consume_positive"
+    ]
+  },
+  "denial_preimage": {
+    "canonical_json": "{\"authority\":\"test-only-non-executable\",\"decision\":\"denied\",\"lineage_identity\":\"policy-lineage-oracle-001\",\"lineage_unit_digest\":\"sha256:f702b9d2954307a91039cd3ea92285cb464c2c997c2166c0d68c446513a2801d\",\"reason_codes\":[\"resource.max_wall_time_ms.zero\",\"sandbox.process.no-executable-grant\"],\"resource_budget_digest\":\"sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836\",\"sandbox_policy_digest\":\"sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a\",\"schema\":\"aci.execution-policy-fake-denial@1\"}",
+    "digest": "sha256:bc8655ac88276258d8e320b8a9757a8b625c9e9249dc7255a5578d2eb7e65399"
+  },
+  "expected_receipt": {
+    "value": {
+      "schema": "aci.execution-policy-fake-denial-receipt@1",
+      "authority": "test-only-non-executable",
+      "denial_key": "policy-denial-command-001",
+      "lineage_identity": "policy-lineage-oracle-001",
+      "lineage_unit_digest": "sha256:f702b9d2954307a91039cd3ea92285cb464c2c997c2166c0d68c446513a2801d",
+      "resource_budget_digest": "sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836",
+      "sandbox_policy_digest": "sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a",
+      "decision": "denied",
+      "reason_codes": [
+        "resource.max_wall_time_ms.zero",
+        "sandbox.process.no-executable-grant"
+      ],
+      "denial_digest": "sha256:bc8655ac88276258d8e320b8a9757a8b625c9e9249dc7255a5578d2eb7e65399"
+    },
+    "canonical_json": "{\"authority\":\"test-only-non-executable\",\"decision\":\"denied\",\"denial_digest\":\"sha256:bc8655ac88276258d8e320b8a9757a8b625c9e9249dc7255a5578d2eb7e65399\",\"denial_key\":\"policy-denial-command-001\",\"lineage_identity\":\"policy-lineage-oracle-001\",\"lineage_unit_digest\":\"sha256:f702b9d2954307a91039cd3ea92285cb464c2c997c2166c0d68c446513a2801d\",\"reason_codes\":[\"resource.max_wall_time_ms.zero\",\"sandbox.process.no-executable-grant\"],\"resource_budget_digest\":\"sha256:e6e3a27b6fecf0ca8667ca722bb1e74a39e4d1f685da172f75a8077a67ba3836\",\"sandbox_policy_digest\":\"sha256:d865e9f97c6b73afc4748e5bd6d58095e471450d72cd45c3fb4a55a8185e3b1a\",\"schema\":\"aci.execution-policy-fake-denial-receipt@1\"}",
+    "content_digest": "sha256:5ffde80fbfb897ceb4b90cb85bcdb019538777c91ae3525ac0f7e0ebc43a9b11"
+  },
+  "failpoints": [
+    "policy_denial.after_begin",
+    "policy_denial.after_receipt",
+    "policy_denial.before_commit",
+    "policy_denial.after_commit"
+  ]
+}

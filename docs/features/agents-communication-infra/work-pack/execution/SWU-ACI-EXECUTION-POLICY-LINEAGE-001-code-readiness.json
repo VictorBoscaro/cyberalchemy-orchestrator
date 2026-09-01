@@ -1,0 +1,43 @@
+{
+  "schema": "domainspec-code-readiness@1",
+  "status": "PASS",
+  "task_id": "SWU-ACI-EXECUTION-POLICY-LINEAGE-001",
+  "work_pack_ref": "docs/features/agents-communication-infra/work-pack/descriptors/SWU-ACI-EXECUTION-POLICY-LINEAGE-001.json",
+  "work_pack_digest": "sha256:21a45e5cb7bc79afd1daaabfeb45dbae269be85015f09824327cbfdf49bee682",
+  "test_spec_ref": "docs/features/agents-communication-infra/specs/TEST-SPEC.md",
+  "test_spec_digest": "sha256:fe6e5fb150e157fd54096771d3ec47036a02013b60d0928c3e4f09e87f8236a2",
+  "brownfield": true,
+  "write_scope": [
+    "implementations/tests/runtime/policy_lineage_harness.py",
+    "implementations/tests/runtime/execution_policy_lineage_oracle_v1.json",
+    "implementations/tests/runtime/test_execution_policy_lineage.py"
+  ],
+  "validation_commands": [
+    "python -B -m unittest implementations.tests.runtime.test_execution_policy_lineage -v",
+    "python -B -m unittest implementations.tests.runtime.test_execution_policy implementations.tests.runtime.test_execution_policy_lineage -v",
+    "python -B -m unittest discover -s implementations/tests/runtime -t .",
+    "python -B -m compileall implementations/server/runtime implementations/tests/runtime",
+    "git diff --check -- implementations/tests/runtime/policy_lineage_harness.py implementations/tests/runtime/execution_policy_lineage_oracle_v1.json implementations/tests/runtime/test_execution_policy_lineage.py"
+  ],
+  "capability_profile": {
+    "filesystem": {
+      "mode": "write-exact-repository-scope-only",
+      "paths": [
+        "implementations/tests/runtime/policy_lineage_harness.py",
+        "implementations/tests/runtime/execution_policy_lineage_oracle_v1.json",
+        "implementations/tests/runtime/test_execution_policy_lineage.py"
+      ],
+      "temporary_storage": {
+        "allowed": true,
+        "kind": "file-backed-sqlite",
+        "scope": "test-temporary-directory-only",
+        "lifetime": "validation-only",
+        "repository_persistence": false
+      }
+    },
+    "network": false,
+    "credentials": false,
+    "production": false,
+    "destructive": false
+  }
+}

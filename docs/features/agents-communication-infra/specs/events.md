@@ -13,7 +13,7 @@ decompositions of registered operations, not additional registry Operations.
 | Field | Required | Contract |
 | --- | ---: | --- |
 | `event_id`, `event_type` | yes | Immutable fact identity and the exact wire name specified below. |
-| `schema_ref`, `schema_digest` | yes | Versioned payload contract and content digest. |
+| `schema_ref`, `schema_digest` | yes | Exact versioned payload-schema identifier string and the content digest of its closed definition; these are separate journal fields. |
 | `aggregate_type`, `aggregate_id`, `aggregate_version` | yes | Aggregate identity and contiguous CAS version allocated by the journal writer. |
 | `journal_offset` | yes | Global integer ordering position in the declared local journal. |
 | `recorded_at` | yes | Journal time; ordering authority remains `journal_offset`. |
@@ -41,12 +41,40 @@ context, not copied from agent payloads.
 **Produced by:** [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch)  
 **Transition:** [RunLifecycle](states.md#runlifecycle) `not_created -> confirmed`
 
-**Payload:** `run_id`, `dispatch_id`, `confirmed_dispatch_digest`, `dispatch_spec_ref/digest`,
-`execution_authority_mode=runtime-managed`, schema/recipe/policy versions, capability-resolution
-reference, and confirmation principal. The event freezes authority; it is not itself a complete
-audit-ledger opening row.
+**Payload schema:** `aci.run-created@1`, one exact member of the manifest-pinned
+`aci.runtime-confirmation-payload-schemas@1` bundle.
 
-**Consumers:** Run reducer; audit-opening materializer; runtime projection.
+| Field | Type | Required | Contract |
+|---|---|---:|---|
+| `schema` | string | yes | Exact `aci.run-created@1`. |
+| `run_id`, `dispatch_id`, `dispatch_revision` | string | yes | Exact server-derived run identity and verified presentation scope. |
+| `execution_authority_mode` | [ExecutionAuthorityMode](domain.md#executionauthoritymode) | yes | Exact literal `runtime-managed`. |
+| `pending_sheet_ref`, `dispatch_spec_ref`, `confirmation_observation_ref` | [ArtifactId](domain.md#artifactid) | yes | Finalized source, spec and trusted-host observation artifacts. |
+| `pending_sheet_digest`, `dispatch_spec_digest`, `confirmation_observation_digest` | [ContentDigest](domain.md#contentdigest) | yes | Digests of those three distinct byte domains. |
+| `capability_resolution_ref`, `confirmed_turn_graph_ref`, `continuation_mapping_set_ref`, `confirmed_authority_ref` | [ArtifactId](domain.md#artifactid) | yes | Finalized server resolution, bounded graph, ordered mapping set and complete authority artifacts. |
+| `capability_resolution_digest`, `confirmed_turn_graph_digest`, `continuation_mapping_set_digest`, `confirmed_authority_digest` | [ContentDigest](domain.md#contentdigest) | yes | Exact digest paired with each preceding artifact. |
+| `identity_derivation_ref` | [VersionedReference](domain.md#versionedreference) | yes | Exact complete identity-derivation contract. |
+| `identity_derivation_digest`, `payload_schema_bundle_digest` | [ContentDigest](domain.md#contentdigest) | yes | Canonical digests of the complete derivation contract and closed confirmation-payload-schema bundle. |
+| `graph_id`, `continuation_id` | string | yes | Server-derived graph and continuation identities. |
+| `mapping_ids`, `source_message_ids` | ordered list<string> | yes | Exactly two values each, in mapping/source-message order. |
+| `schema_versions` | closed map<string,string> | yes | Complete frozen command/event/payload/recipe/identity version map; unknown or missing keys reject. |
+| `confirmed_by` | string | yes | Authenticated human principal projected from the observation. |
+| `confirmed_at` | RFC3339 millisecond UTC timestamp | yes | Issuer observation time; no writer-clock substitution. |
+
+The payload contains exactly these fields. Unknown, missing, null or wrong-type values reject; list
+order is semantic. Its envelope has `aggregate_type=run`, `aggregate_id=run_id`,
+`aggregate_version=1`, `schema_ref=aci.run-created@1` and `schema_digest` equal to that member's
+definition digest in the frozen bundle.
+
+The event freezes the complete accepted authority; it is not itself a complete audit-ledger
+opening row. Its `event_id` is the CONF-000 derived `event` identity for coordinates
+`["run.created","1"]`, and its aggregate version is exactly `1`.
+
+| Consumer | Action |
+|---|---|
+| Run reducer | Establish version-1 `confirmed` state from the exact authority digests and derived run identity. |
+| Audit-opening materializer | Retain the frozen authority input but perform no append until the requested effect is claimed. |
+| Runtime projection | Expose the confirmed identity/digests without granting execution readiness. |
 
 ## audit_opening.requested
 
@@ -54,10 +82,49 @@ audit-ledger opening row.
 **Produced by:** [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch)  
 **Transition:** [RunLifecycle](states.md#runlifecycle) `confirmed -> opening_pending`
 
-**Payload:** `dispatch_id`, canonical row reference/digest, appender contract version and effect
-intent identity. It commits locally with the newly requested opening effect.
+**Payload schema:** `aci.audit-opening-requested@1`, one exact member of the manifest-pinned
+`aci.runtime-confirmation-payload-schemas@1` bundle.
 
-**Consumers:** Audit-ledger materializer; run reducer; effect outbox projection.
+| Field | Type | Required | Contract |
+|---|---|---:|---|
+| `schema` | string | yes | Exact `aci.audit-opening-requested@1`. |
+| `run_id`, `dispatch_id` | string | yes | Exact accepted run and audit-opening identity. |
+| `confirmed_authority_ref` | [ArtifactId](domain.md#artifactid) | yes | Frozen authority artifact from which the materializer later derives the candidate opening row. |
+| `confirmed_authority_digest` | [ContentDigest](domain.md#contentdigest) | yes | Digest of that exact authority artifact. |
+| `appender_contract_version` | string | yes | Exact literal `0.6.4`. |
+| `effect_id` | string | yes | CONF-000 server-derived effect identity. |
+| `effect_type` | string | yes | Exact literal `audit_opening`. |
+| `effect_payload_ref` | [ArtifactId](domain.md#artifactid) | yes | Finalized canonical `aci.audit-opening-effect@1` request. |
+| `effect_payload_digest` | [ContentDigest](domain.md#contentdigest) | yes | Digest of that effect-payload artifact. |
+
+The payload contains exactly these fields. Unknown, missing, null or wrong-type values reject. Its
+envelope has `aggregate_type=run`, `aggregate_id=run_id`, `aggregate_version=2`,
+`schema_ref=aci.audit-opening-requested@1` and `schema_digest` equal to that member's definition
+digest in the frozen bundle.
+
+The event and generic effect intent commit locally together. Confirmation does not pre-claim the
+intent, append YAML or assert that a canonical audit row already exists. Its `event_id` is the
+CONF-000 derived `event` identity for coordinates `["audit_opening.requested","2"]`, and its
+aggregate version is exactly `2`.
+
+The matching generic [EffectIntent](domain.md#effectintent) row is closed as:
+`effect_id` above; `command_id` equal to the accepted command; `requested_event_id` equal to this
+event; `effect_type=audit_opening`; exact payload ref/digest above; `retry_class=retryable`;
+`status=pending`; `claim_epoch=null`; `claimed_by=null`; `attempt_count=0`;
+`outcome_event_id=null`; and `outcome_digest=null`. The fixture uses the canonical domain name
+`effect_id`, never `effect_intent_id`.
+
+Both events, their two payload artifact-metadata records, the effect payload artifact metadata,
+version-2 head, pending/unclaimed effect and first receipt are members of the same
+[ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) transaction as the remaining six
+confirmation artifact-metadata records and authority rows. No event or payload becomes
+authoritative in a partial commit.
+
+| Consumer | Action |
+|---|---|
+| Audit-ledger materializer | When separately authorized to claim the effect, derive and reconcile a schema `0.6.4` opening row from the exact authority. |
+| Run reducer | Advance version-1 `confirmed` to version-2 `opening_pending`; never to `ready`. |
+| Effect outbox projection | Expose exactly one pending/unclaimed intent; projection does not claim or execute it. |
 
 ## audit_opening.verified
 
@@ -681,6 +748,105 @@ and binding digest. It cannot exist without `host_workflow.turn_launch_authorize
 
 Records authorized replacement of a nonterminal consumer turn or its confirmed mapping. It advances
 the supersession head, invalidates stale materializations and prevents their launch CAS.
+
+## continuation.suspended
+
+**Wire name:** `continuation.suspended`
+**Produced by:** [SuspendAgentContinuation](operations.md#suspendagentcontinuation)
+**Transition:** [AgentContinuationLifecycle](states.md#agentcontinuationlifecycle) `none -> suspended`
+
+**Payload:** continuation, dispatch, seat, agent instance, source attempt and turn, target turn,
+ordered awaited mapping IDs, reconstruction snapshot artifact/hash, optional opaque-handle digest,
+resume policy, deadline and aggregate version. The opaque handle itself is access-controlled adapter
+state and is never published in the event.
+
+## continuation.resume_requested
+
+**Wire name:** `continuation.resume_requested`
+**Produced by:** [ResumeAgentContinuation](operations.md#resumeagentcontinuation)
+**Transition:** `suspended -> resume_requested`
+
+**Payload:** continuation/version, `same_session` mode, complete source receipt
+set, target attempt/input/request/effect identities and digests, deadline and prerequisite heads.
+The event commits atomically with that target execution unit.
+
+## continuation.resuming
+
+**Wire name:** `continuation.resuming`
+**Produced by:** accepted effect claim
+**Transition:** `resume_requested -> resuming`
+
+**Payload:** continuation, target attempt, effect, worker epoch, adapter reference and selected mode.
+
+## continuation.resumed
+
+**Wire name:** `continuation.resumed`
+**Produced by:** adapter observation through [AcceptRuntimeCommand](operations.md#acceptruntimecommand)
+**Transition:** `resuming|resume_unknown -> resumed`
+
+**Payload:** continuation, target attempt, provider run identity, resulting agent instance, mode,
+adapter cursor and worker epoch. Same-session mode must preserve the source agent instance.
+
+## continuation.provider_lost
+
+**Wire name:** `continuation.provider_lost`
+**Produced by:** adapter reconciliation observation
+**Transition:** `suspended|resuming|resume_unknown -> reconstruction_eligible`
+
+**Payload:** continuation, optional failed-handle digest, typed definitive-no-start evidence
+(`handle_definitively_unavailable_no_start` or `capability_absent_no_handle`), immutable adapter
+capability reference/digest, source or target attempt, observation cursor when applicable, whether a
+target existed, and the matching target attempt/effect terminal disposition when applicable. The
+capability-absent form requires a preconfirmed `resume=unsupported` declaration and a matching
+terminal source observation with no handle. An unknown start/resume outcome or unexplained missing
+handle is not this event and cannot authorize reconstruction. Acceptance proves no provider work
+started.
+
+## continuation.resume_unknown
+
+**Wire name:** `continuation.resume_unknown`
+**Produced by:** adapter reconciliation observation
+**Transition:** `resuming -> resume_unknown`
+
+**Payload:** continuation, target attempt/effect, worker epoch, adapter cursor and typed uncertainty
+evidence. It preserves the current target identity and grants no reconstruction authority.
+
+## continuation.reconstruction_requested
+
+**Wire name:** `continuation.reconstruction_requested`
+**Produced by:** [ReconstructAgentContinuation](operations.md#reconstructagentcontinuation)
+**Transition:** `reconstruction_eligible -> resume_requested`
+
+**Payload:** continuation/version, `reconstruct` mode, definitive-loss event, failed claimed target when present,
+replacement agent instance/attempt/input/request/effect identities and digests, and prerequisite
+heads. The event commits atomically with the replacement execution unit.
+
+## continuation.cancel_requested
+
+**Wire name:** `continuation.cancel_requested`
+**Produced by:** [CancelAgentContinuation](operations.md#cancelagentcontinuation)
+**Transition:** `suspended|resume_requested|resuming|resume_unknown|reconstruction_eligible -> cancel_requested`
+
+**Payload:** continuation/version, command ID and optional cancel/disposal effect ID.
+
+## continuation.cancelled
+
+**Wire name:** `continuation.cancelled`
+**Produced by:** adapter/local disposal observation
+**Transition:** `cancel_requested -> cancelled`
+
+**Payload:** continuation, typed `disposed` or target-attempt terminal cancellation evidence,
+matching command ID, handle digest when applicable, adapter cursor and worker epoch. An
+`acknowledged` or `unknown` disposal observation remains nonterminal and cannot produce this event.
+
+## continuation.expired
+
+**Wire name:** `continuation.expired`
+**Produced by:** journal-backed deadline reactor
+**Transition:** `suspended|unclaimed resume_requested|reconstruction_eligible -> expired`
+
+**Payload:** continuation/version, confirmed deadline and deadline effect identity. Wall-clock
+observation proposes the command; journal order and aggregate CAS choose the winner.
 
 ## attempt.failed
 

@@ -10,8 +10,11 @@ from typing import Any, Callable
 
 from .artifacts import ArtifactStore, PreparedArtifact
 from .canonical import canonical_digest, canonical_text, digest_bytes, parse_strict_json
+from .confirmation import ConfirmationBatch
 from .database import RuntimeDatabase
 from .errors import (
+    ConfirmationObservationConflict,
+    ConfirmedAuthorityConflict,
     IdempotencyConflict,
     IntegrityError,
     VersionConflict,
@@ -353,6 +356,383 @@ class RuntimeJournal:
         fp("after_commit")
         assert committed_result is not None
         return committed_result
+
+    def accept_confirmed_dispatch(
+        self,
+        command: RuntimeCommand,
+        events: list[EventDraft],
+        *,
+        batch: ConfirmationBatch,
+        artifacts: tuple[PreparedArtifact, ...],
+        failpoint: Failpoint | None = None,
+    ) -> dict[str, Any]:
+        """Accept the closed confirmation unit with identity replay before creation CAS."""
+
+        if command.expected_version != 0 or command.aggregate_type != "run":
+            raise VersionConflict("confirmed dispatch must create a run at version zero")
+        if len(events) != 2 or [event.event_type for event in events] != [
+            "run.created",
+            "audit_opening.requested",
+        ]:
+            raise IntegrityError("confirmed dispatch must emit its exact two-event group")
+        if len(artifacts) != 9 or tuple(
+            (prepared.schema_ref, prepared.body)
+            for prepared in artifacts
+        ) != tuple(
+            (schema_ref, body)
+            for _, schema_ref, body in batch.artifact_documents
+        ):
+            raise IntegrityError("confirmed dispatch artifact batch is not the closed nine-member unit")
+
+        fp = failpoint or (lambda _: None)
+        fp("confirmation.before_begin")
+        committed_result: dict[str, Any] | None = None
+        with self.database.write() as conn:
+            fp("confirmation.after_begin")
+            existing_key = conn.execute(
+                """
+                SELECT command_digest,result_receipt_json
+                FROM command_receipts WHERE scope_key=? AND idempotency_key=?
+                """,
+                (command.scope_key, command.idempotency_key),
+            ).fetchone()
+            if existing_key:
+                if existing_key["command_digest"] != command.digest:
+                    raise IdempotencyConflict("idempotency key reused with different digest")
+                committed_result = json.loads(existing_key["result_receipt_json"])
+            else:
+                observation = batch.observation_record
+                existing_observation = conn.execute(
+                    """
+                    SELECT observation_digest FROM confirmation_observations
+                    WHERE issuer_ref_json=? AND observation_id=?
+                    """,
+                    (observation["issuer_ref_json"], observation["observation_id"]),
+                ).fetchone()
+                if (
+                    existing_observation
+                    and existing_observation["observation_digest"]
+                    != observation["observation_digest"]
+                ):
+                    raise ConfirmationObservationConflict(
+                        "issuer-scoped observation identity has different canonical bytes"
+                    )
+
+                dispatch = batch.confirmed_dispatch_record
+                existing_dispatch = conn.execute(
+                    """
+                    SELECT confirmed_authority_digest,accepted_command_id
+                    FROM confirmed_dispatches WHERE dispatch_id=?
+                    """,
+                    (dispatch["dispatch_id"],),
+                ).fetchone()
+                if existing_dispatch:
+                    if (
+                        existing_dispatch["confirmed_authority_digest"]
+                        != dispatch["confirmed_authority_digest"]
+                    ):
+                        raise ConfirmedAuthorityConflict(
+                            "dispatch identity already has another confirmed authority"
+                        )
+                    first = conn.execute(
+                        "SELECT result_receipt_json FROM command_receipts WHERE command_id=?",
+                        (existing_dispatch["accepted_command_id"],),
+                    ).fetchone()
+                    if not first:
+                        raise IntegrityError("confirmed dispatch first receipt is missing")
+                    committed_result = json.loads(first["result_receipt_json"])
+                else:
+                    self._verify_target(conn, command)
+                    self._verify_prerequisites(conn, command.prerequisites)
+                    self._verify_event_schemas(events)
+
+                    artifact_refs: list[dict[str, object]] = []
+                    for (name, _, _), prepared in zip(batch.artifact_documents, artifacts):
+                        artifact_refs.append(self.artifacts.finalize(conn, prepared))
+                        fp(f"confirmation.after_{name}_artifact")
+
+                    conn.execute(
+                        """
+                        INSERT INTO confirmation_observations(
+                          issuer_ref_json,observation_id,observation_artifact_id,
+                          observation_digest,issuer_evidence_ref,issuer_evidence_digest,
+                          human_principal_id,channel,observed_at,dispatch_id,
+                          dispatch_revision,presented_pending_sheet_digest,
+                          presented_dispatch_spec_digest,action
+                        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        """,
+                        (
+                            observation["issuer_ref_json"], observation["observation_id"],
+                            observation["observation_artifact_id"], observation["observation_digest"],
+                            observation["issuer_evidence_ref"], observation["issuer_evidence_digest"],
+                            observation["human_principal_id"], observation["channel"],
+                            observation["observed_at"], observation["dispatch_id"],
+                            observation["dispatch_revision"],
+                            observation["presented_pending_sheet_digest"],
+                            observation["presented_dispatch_spec_digest"], observation["action"],
+                        ),
+                    )
+                    fp("confirmation.after_confirmation_observation")
+
+                    conn.execute(
+                        """
+                        INSERT INTO confirmed_dispatches(
+                          dispatch_id,dispatch_revision,pending_sheet_artifact_id,
+                          pending_sheet_digest,dispatch_spec_artifact_id,dispatch_spec_digest,
+                          confirmation_observation_artifact_id,confirmation_observation_digest,
+                          capability_resolution_artifact_id,capability_resolution_digest,
+                          confirmed_turn_graph_artifact_id,confirmed_turn_graph_digest,
+                          continuation_mapping_set_artifact_id,continuation_mapping_set_digest,
+                          confirmed_authority_artifact_id,confirmed_authority_digest,
+                          execution_authority_mode,confirmed_by,confirmed_at,accepted_command_id
+                        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        """,
+                        tuple(
+                            dispatch[name]
+                            for name in (
+                                "dispatch_id", "dispatch_revision", "pending_sheet_artifact_id",
+                                "pending_sheet_digest", "dispatch_spec_artifact_id", "dispatch_spec_digest",
+                                "confirmation_observation_artifact_id", "confirmation_observation_digest",
+                                "capability_resolution_artifact_id", "capability_resolution_digest",
+                                "confirmed_turn_graph_artifact_id", "confirmed_turn_graph_digest",
+                                "continuation_mapping_set_artifact_id", "continuation_mapping_set_digest",
+                                "confirmed_authority_artifact_id", "confirmed_authority_digest",
+                                "execution_authority_mode", "confirmed_by", "confirmed_at",
+                                "accepted_command_id",
+                            )
+                        ),
+                    )
+                    fp("confirmation.after_confirmed_dispatch")
+
+                    run = batch.run_record
+                    conn.execute(
+                        """
+                        INSERT INTO runs(
+                          run_id,dispatch_id,dispatch_spec_digest,aggregate_version,
+                          state,state_hash,opening_state,terminal_event_id
+                        ) VALUES(?,?,?,?,?,?,?,?)
+                        """,
+                        tuple(
+                            run[name]
+                            for name in (
+                                "run_id", "dispatch_id", "dispatch_spec_digest", "aggregate_version",
+                                "state", "state_hash", "opening_state", "terminal_event_id",
+                            )
+                        ),
+                    )
+                    fp("confirmation.after_run")
+
+                    graph = batch.graph_record
+                    conn.execute(
+                        """
+                        INSERT INTO confirmed_turn_graphs(
+                          graph_id,dispatch_id,run_id,dispatch_spec_digest,graph_artifact_id,
+                          graph_digest,continuation_id,mapping_set_artifact_id,mapping_set_digest,
+                          node_count,edge_count,mapping_count,nodes_json,edges_json,
+                          source_messages_json,source_operation_id,source_seat_id,
+                          source_turn_ordinal,target_operation_id,target_seat_id,
+                          target_turn_ordinal,identity_derivation_ref_json
+                        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        """,
+                        tuple(
+                            graph[name]
+                            for name in (
+                                "graph_id", "dispatch_id", "run_id", "dispatch_spec_digest",
+                                "graph_artifact_id", "graph_digest", "continuation_id",
+                                "mapping_set_artifact_id", "mapping_set_digest", "node_count",
+                                "edge_count", "mapping_count", "nodes_json", "edges_json",
+                                "source_messages_json", "source_operation_id", "source_seat_id",
+                                "source_turn_ordinal", "target_operation_id", "target_seat_id",
+                                "target_turn_ordinal", "identity_derivation_ref_json",
+                            )
+                        ),
+                    )
+                    fp("confirmation.after_turn_graph")
+
+                    for index, mapping in enumerate(batch.mapping_records):
+                        conn.execute(
+                            """
+                            INSERT INTO continuation_input_mappings(
+                              mapping_id,mapping_version,dispatch_id,continuation_id,
+                              source_group_id,source_seat_id,source_operation_id,
+                              source_turn_ordinal,source_round_id,source_message_id,
+                              source_message_type,target_seat_id,target_turn_ordinal,
+                              slot_name,slot_ordinal,visibility_policy_ref_json,
+                              confirmed_binding_digest
+                            ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                            """,
+                            (
+                                mapping["mapping_id"], mapping["mapping_version"],
+                                mapping["dispatch_id"], mapping["continuation_id"],
+                                mapping["source_group_id"], mapping["source_seat_id"],
+                                mapping["source_operation_id"], mapping["source_turn_ordinal"],
+                                mapping["source_round_id"], mapping["source_message_id"],
+                                mapping["source_message_type"], mapping["target_seat_id"],
+                                mapping["target_turn_ordinal"], mapping["slot_name"],
+                                mapping["slot_ordinal"], canonical_text(mapping["visibility_policy_ref"]),
+                                mapping["confirmed_binding_digest"],
+                            ),
+                        )
+                        fp(f"confirmation.after_mapping_{index}")
+
+                    ordered_payload_digest = canonical_digest(
+                        [event.payload.content_hash for event in events]
+                    )
+                    authority_json = canonical_text(command.authority_context)
+                    authority_context_digest = digest_bytes(authority_json.encode("utf-8"))
+                    recorded_at = self._now().isoformat()
+                    records: list[CommittedEvent] = []
+                    for ordinal, event in enumerate(events):
+                        version = ordinal + 1
+                        cursor = conn.execute(
+                            """
+                            INSERT INTO events(
+                              event_id,aggregate_type,aggregate_id,aggregate_version,
+                              event_type,schema_ref,schema_digest,
+                              canonicalizer_profile_id,canonicalizer_profile_version,
+                              canonicalizer_profile_digest,command_id,event_ordinal,event_count,
+                              group_digest,causation_id,correlation_id,recorded_at,observed_at,
+                              payload_ref,payload_hash,authority_context_json,
+                              authority_context_digest
+                            ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                            """,
+                            (
+                                event.event_id, command.aggregate_type, command.aggregate_id,
+                                version, event.event_type, event.schema_ref, event.schema_digest,
+                                CANONICALIZER_PROFILE_ID, CANONICALIZER_PROFILE_VERSION,
+                                CANONICALIZER_PROFILE_DIGEST, command.command_id, ordinal, 2,
+                                ordered_payload_digest, command.causation_id,
+                                command.correlation_id, recorded_at, event.observed_at,
+                                event.payload.artifact_id, event.payload.content_hash,
+                                authority_json, authority_context_digest,
+                            ),
+                        )
+                        records.append(
+                            CommittedEvent(
+                                journal_offset=int(cursor.lastrowid),
+                                event_id=event.event_id,
+                                aggregate_id=command.aggregate_id,
+                                aggregate_version=version,
+                                event_type=event.event_type,
+                                schema_ref=event.schema_ref,
+                                schema_digest=event.schema_digest,
+                                payload_ref=event.payload.artifact_id,
+                                payload_hash=event.payload.content_hash,
+                                command_id=command.command_id,
+                                event_ordinal=ordinal,
+                                event_count=2,
+                            )
+                        )
+                        fp(
+                            "confirmation.after_run_created_event"
+                            if ordinal == 0
+                            else "confirmation.after_audit_opening_requested_event"
+                        )
+
+                    state_hash = canonical_digest(batch.next_state)
+                    if state_hash != run["state_hash"]:
+                        raise IntegrityError("confirmed run state hash differs from reduced state")
+                    conn.execute(
+                        """
+                        INSERT INTO aggregate_heads(
+                          aggregate_id,aggregate_type,current_version,state_hash,
+                          last_event_id,last_offset,reducer_version
+                        ) VALUES(?,?,?,?,?,?,?)
+                        """,
+                        (
+                            command.aggregate_id, "run", 2, state_hash,
+                            records[1].event_id, records[1].journal_offset,
+                            "aci.confirmed-run-reducer@1",
+                        ),
+                    )
+                    fp("confirmation.after_run_head")
+
+                    effect = batch.effect_intent
+                    conn.execute(
+                        """
+                        INSERT INTO effect_intents(
+                          effect_id,command_id,requested_event_id,effect_type,payload_ref,
+                          payload_digest,retry_class,status,claim_epoch,claimed_by,
+                          attempt_count,outcome_event_id,outcome_digest
+                        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        """,
+                        tuple(
+                            effect[name]
+                            for name in (
+                                "effect_id", "command_id", "requested_event_id", "effect_type",
+                                "payload_ref", "payload_digest", "retry_class", "status",
+                                "claim_epoch", "claimed_by", "attempt_count", "outcome_event_id",
+                                "outcome_digest",
+                            )
+                        ),
+                    )
+                    fp("confirmation.after_effect_intent")
+
+                    receipt = {
+                        "artifact_ids": [ref["artifact_id"] for ref in artifact_refs],
+                        "command_digest": command.digest,
+                        "command_id": command.command_id,
+                        "confirmed_authority_digest": dispatch["confirmed_authority_digest"],
+                        "dispatch_id": dispatch["dispatch_id"],
+                        "event_count": 2,
+                        "first_offset": records[0].journal_offset,
+                        "head": {
+                            "aggregate_id": command.aggregate_id,
+                            "state_hash": state_hash,
+                            "version": 2,
+                        },
+                        "last_offset": records[1].journal_offset,
+                        "ordered_event_ids": [record.event_id for record in records],
+                        "ordered_payload_digest": ordered_payload_digest,
+                        "receipt_id": batch.receipt_id,
+                        "recorded_at": recorded_at,
+                        "run_id": run["run_id"],
+                        "schema": "aci.confirmed-dispatch-receipt@1",
+                        "status": "accepted",
+                    }
+                    result_json = canonical_text(receipt)
+                    conn.execute(
+                        """
+                        INSERT INTO command_receipts(
+                          command_id,scope_key,idempotency_key,command_digest,aggregate_id,
+                          expected_version,status,result_receipt_json,first_offset,last_offset,
+                          event_count,ordered_event_ids_json,ordered_payload_digest,
+                          artifact_ids_json,recorded_at
+                        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        """,
+                        (
+                            command.command_id, command.scope_key, command.idempotency_key,
+                            command.digest, command.aggregate_id, 0, "accepted", result_json,
+                            records[0].journal_offset, records[1].journal_offset, 2,
+                            canonical_text(receipt["ordered_event_ids"]), ordered_payload_digest,
+                            canonical_text(receipt["artifact_ids"]), recorded_at,
+                        ),
+                    )
+                    fp("confirmation.after_receipt")
+                    committed_result = receipt
+            fp("confirmation.before_commit")
+        fp("confirmation.after_commit")
+        assert committed_result is not None
+        return committed_result
+
+    def replay_confirmed_dispatch_key(
+        self, command: RuntimeCommand
+    ) -> dict[str, Any] | None:
+        """Resolve an already-accepted confirmation key before expensive pure preparation."""
+
+        with self.database.write() as conn:
+            existing = conn.execute(
+                """
+                SELECT command_digest,result_receipt_json
+                FROM command_receipts WHERE scope_key=? AND idempotency_key=?
+                """,
+                (command.scope_key, command.idempotency_key),
+            ).fetchone()
+            if not existing:
+                return None
+            if existing["command_digest"] != command.digest:
+                raise IdempotencyConflict("idempotency key reused with different digest")
+            return json.loads(existing["result_receipt_json"])
 
     def _verify_target(self, conn: sqlite3.Connection, command: RuntimeCommand) -> None:
         row = conn.execute(

@@ -16,6 +16,7 @@ from implementations.server.runtime.errors import (
     IdempotencyConflict,
     IntegrityError,
 )
+from implementations.server.runtime.dispatch_types import resolve_dispatch_capability
 from implementations.server.runtime.orchestration_bridge import (
     LocalOrchestrationLoggingBridge,
 )
@@ -78,10 +79,16 @@ class ReferenceDeliveryFixture:
         )
         self.dispatch_id = "2026-07-25-reference-delivery-test"
         self.prompt = "Consume the governed reference bundle."
+        capability_route = resolve_dispatch_capability(
+            self.project,
+            capability_ref="review",
+            authority_mode="legacy-managed",
+        )
         self.opening = {
             "dispatch_id": self.dispatch_id,
-            "schema_version": "0.6.3",
+            "schema_version": "0.6.4",
             "dispatch_type": "review",
+            "capability_route": capability_route,
             "goal": "Exercise target-agent reference delivery.",
             "context": "Bounded local contract fixture.",
             "max_loops": 1,
@@ -146,6 +153,7 @@ class ReferenceDeliveryFixture:
         manifest = {
             "schema": "aci-workflow-input-manifest/v1",
             "dispatch_id": self.dispatch_id,
+            "route_digest": self.opening["capability_route"]["route_digest"],
             "target": {
                 "group_id": "target",
                 "seat_index": 0,

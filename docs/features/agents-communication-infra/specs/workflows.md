@@ -10,34 +10,88 @@ derived-from: ../discovery/feature-discovery/agents-communication-infra.md@0.2.1
 
 # Workflows: Agents Communication Infra
 
-## RunExecutionWorkflow
+## RuntimeDispatchConfirmationWorkflow
 
-**Type:** Workflow  
-**Triggers:** accepted [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch)  
-**Orchestrates:** [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch),
-[AcceptRuntimeCommand](operations.md#acceptruntimecommand), [StartAgentAttempt](operations.md#startagentattempt),
-[CommitGroupResult](operations.md#commitgroupresult), [CancelRun](operations.md#cancelrun)  
-**Compensation Strategy:** durable reconciliation; never roll back accepted facts  
-**Idempotency:** conditional on identical command digest and expected aggregate version
+**Type:** Workflow
+**Triggers:** authenticated user asks an admitted chat or UI host to present one pending dispatch
+**Orchestrates:** [Trusted confirmation observation issuer](interfaces.md#external-dependency-trusted-confirmation-observation-issuer),
+[ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch)
+**Compensation Strategy:** reject before authority; accepted facts are immutable and never rolled back
+into legacy execution
+**Idempotency:** key replay plus dispatch/authority identity convergence inside the single writer
 
 ### Steps
 
-1. After [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) accepts the already selected
-   `runtime-managed` mode, freeze the approved bytes, digest, policy/schema/recipe versions and that
-   mode into [ConfirmedDispatch](domain.md#confirmeddispatch).
-2. Atomically append run creation/opening intent, aggregate head and stable command receipt.
-3. Run [AuditLedgerMaterializer](#auditledgermaterializer); do not start an adapter before exact
-   opening verification is journaled.
-4. Materialize each [AgentInvocationPlan](domain.md#agentinvocationplan), seal its
-   [AgentExecutionRequest](domain.md#agentexecutionrequest), and launch only through the enforced
+1. The admitted issuer requests an effect-free preview. The runtime command boundary reads exact
+   canonical pending bytes, validates the closed bounded shape, resolves capabilities server-side,
+   compiles the canonical `DispatchSpec` and returns the dispatch/revision plus pending/spec
+   digests. No runtime authority or effect exists yet.
+2. The issuer displays that exact presentation. An affirmative authenticated user decision may
+   arrive through chat or a future UI; free-form message fields do not author principal, channel,
+   dispatch identity or digests.
+3. The issuer emits one immutable
+   [ConfirmationObservation](domain.md#confirmationobservation) binding its admitted identity and
+   evidence to the principal, channel, time, dispatch/revision and both displayed digests.
+4. The confirmation request submits the source and observation references/digests. The server
+   dereferences both, revalidates the observation, recompiles from the finalized source with a
+   fresh server-side resolution and requires byte/digest equality with the presentation.
+5. The server derives the bounded graph, continuation, mappings and every runtime ID, constructs
+   the complete confirmed-authority envelope and evaluates key replay followed by dispatch-authority
+   replay under the same `BEGIN IMMEDIATE` transaction.
+6. A new authority commits the complete local unit atomically and returns its first stable receipt;
+   success ends at run version `2`, `opening_pending`, with one unclaimed `audit_opening` intent and
+   zero external effects.
+
+| ID | Invariant | Formal |
+|---|---|---|
+| WF-CONF-01 | Human approval is presentation-bound | `accepted => observed(dispatch,revision,pendingDigest,specDigest,principal)` |
+| WF-CONF-02 | Transport does not own semantics | `chatApproval` and `uiApproval` require the same canonical observation and operation checks |
+| WF-CONF-03 | Preview is not authority | `previewed and not accepted => zero(ConfirmedDispatch,Run,event,effect)` |
+| WF-CONF-04 | Expanded authority is server-derived | `accepted => graph,mappings,ids = derive(serverProjection)` |
+| WF-CONF-05 | Identity replay is writer-serialized | `same(dispatch,authority) => firstReceipt`; `same(dispatch,differentAuthority) => permanentConflict` |
+| WF-CONF-06 | Confirmation has a hard effect ceiling | `success => opening_pending and onePendingAuditOpeningIntent and zeroExternalCalls` |
+
+## RunExecutionWorkflow
+
+**Type:** Workflow  
+**Triggers:** accepted [RuntimeDispatchConfirmationWorkflow](#runtimedispatchconfirmationworkflow)
+**Orchestrates:** [AcceptRuntimeCommand](operations.md#acceptruntimecommand),
+[StartRun](operations.md#internal-transition--startrun), [StartGroup](operations.md#internal-transition--startgroup),
+[StartAgentAttempt](operations.md#startagentattempt),
+[CommitGroupResult](operations.md#commitgroupresult), [CancelRun](operations.md#cancelrun)  
+**Compensation Strategy:** durable reconciliation; never roll back accepted facts  
+**Idempotency:** the confirmation step converges by both command key/digest and dispatch/authority
+identity; later commands use their declared scoped key/digest and expected aggregate version
+
+### Steps
+
+1. [ConfirmRuntimeDispatch](operations.md#confirmruntimedispatch) has already frozen the approved
+   source, spec, observation, capability resolution, graph, mappings, versions and
+   `runtime-managed` mode in [ConfirmedDispatch](domain.md#confirmeddispatch).
+2. The same acceptance transaction has already appended `run.created`,
+   `audit_opening.requested`, the version-2 head, one pending audit-opening effect and the stable
+   receipt. No audit row has been claimed or appended yet.
+3. Run [AuditLedgerMaterializer](#auditledgermaterializer); derive the candidate opening row only
+   from the frozen authority. Exact append/reconciliation appends `audit_opening.verified` and
+   moves the run `opening_pending -> ready`. An existing divergent row appends
+   `audit_opening.reconciliation_required` and moves to `reconciliation_required`; an absent row
+   followed by a failed or unknown appender outcome remains blocked without a verification event,
+   normally in `opening_pending` with the effect marked `failed` or `unknown`.
+4. [StartRun](operations.md#internal-transition--startrun) appends `run.started` and moves the run
+   `ready -> running` before any Group or Attempt becomes eligible.
+5. For each dependency-eligible [Group](domain.md#group),
+   [StartGroup](operations.md#internal-transition--startgroup) appends `group.started` and moves the
+   group `pending -> collecting`. Only then execute
+   [GroupDeliberationWorkflow](#groupdeliberationworkflow), materialize each
+   [AgentInvocationPlan](domain.md#agentinvocationplan), seal its
+   [AgentExecutionRequest](domain.md#agentexecutionrequest), and launch through the enforced
    sandbox with a current [ExecutionAuthorityFence](domain.md#executionauthorityfence).
-5. Execute each [Group](domain.md#group) through [GroupDeliberationWorkflow](#groupdeliberationworkflow).
 6. Select one run terminal fact by journal order and policy; late observations remain auditable.
 7. Materialize and exactly verify the close row; only then project `closed`.
 
 | ID | Invariant | Formal |
 |---|---|---|
-| WF-RUN-01 | No effect before opening | `StartAgentAttempt -> opening_verified` |
+| WF-RUN-01 | Attempts require the ordered opening, run and phase-eligible group heads | `StartAgentAttempt(operation_id) -> opening_verified and runHead.state=running and groupHead.state=eligible_phase(operation_id) and prerequisite_heads=exact(runHead,groupHead)` |
 | WF-RUN-02 | One run terminal | `count(accepted run terminal events) = 1` |
 | WF-RUN-03 | Execution terminal differs from official close | `execution_terminal != closed` until close verification event |
 | WF-RUN-04 | Replay is pure | `replay(events) -> state` and invokes no provider/tool/appender |
@@ -114,6 +168,61 @@ writer CASes the active candidate to `abandoned` with
 `publication.candidate_abandoned`; only then may another attempt reserve that logical key. The
 existing official event pair is returned if already committed; candidate-only or abandoned evidence
 never counts toward close or quorum, and a late terminal cannot revive an abandoned candidate.
+
+## ResumableFeedbackWorkflow
+
+**Type:** Workflow
+**Triggers:** confirmed finite turn graph containing one bounded feedback edge
+**Orchestrates:** [StartAgentAttempt](operations.md#startagentattempt),
+[SuspendAgentContinuation](operations.md#suspendagentcontinuation),
+[PublishBusContribution](operations.md#publishbuscontribution),
+[VerifyPublicationReceipt](operations.md#verifypublicationreceipt),
+[ResumeAgentContinuation](operations.md#resumeagentcontinuation),
+[ReconstructAgentContinuation](operations.md#reconstructagentcontinuation), and
+[CancelAgentContinuation](operations.md#cancelagentcontinuation)
+**Compensation Strategy:** journal-ordered cancel/expiry; reconstruct only after definitive
+pre-start continuation loss and explicit policy
+**Idempotency:** stable continuation, mapping, target-turn, request and effect identities
+
+```mermaid
+flowchart LR
+  A0[author seat / turn 0] --> OA[accepted author output]
+  OA --> B0[reviewer seat / turn 0]
+  A0 --> S[author continuation suspended]
+  B0 --> OR[accepted review output]
+  OA --> M[runtime materializes author turn 1 input]
+  OR --> M
+  S --> M
+  M --> R{continuation capability}
+  R -->|handle available| RS[same-session effect]
+  RS -->|provider running| A1[same agent instance / turn 1]
+  RS -->|definitive no-start| F[original target failed]
+  R -->|preconfirmed unsupported + no handle| F
+  F --> XR[explicit reconstruction command]
+  XR --> A1R[replacement instance / same seat / turn 1]
+  RS -->|unknown| U[blocked: reconcile or cancel]
+```
+
+The author turn-0 attempt is terminal before suspension. Both author output and reviewer feedback
+become official bus contributions through receipt verification. The author does not remain as a
+running collector and cannot poll the bus. The scheduler observes the two exact mapped receipts in
+the journal and applies the
+[runtime continuation input materialization contract](operations.md#runtime-continuation-input-materialization-contract),
+then accepts one current target attempt and effect. A definitive no-start result may terminalize
+that target before one explicit replacement is accepted; there is never more than one claimable
+effect at a time. Same-session resume and reconstruction consume the same provider-neutral input
+contract. Unknown outcome blocks replacement and waits only for reconciliation or cancellation.
+
+| ID | Invariant | Formal |
+|---|---|---|
+| WF-CONT-01 | Expanded turn graph has exactly the declared dependencies and no others. | `nodes={author:0,reviewer:0,author:1} and executionEdges={(author:0,reviewer:0),(reviewer:0,author:1)} and DAG(executionEdges)` |
+| WF-CONT-02 | Suspension creates no listener or running attempt. | `suspended(author:0) => noBusRead and noActiveAttempt(author)` |
+| WF-CONT-03 | Review feedback is exact declared input. | `author:1.review = verifiedOutput(reviewer:0)` |
+| WF-CONT-04 | At most one author-turn-1 effect is claimable at a time; one failed no-start effect may precede one reconstruction effect. | `count(claimableEffect(author:1)) <= 1 and count(reconstructionEffect(author:1)) <= 1 and count(historicalEffect(author:1)) <= 2` |
+| WF-CONT-05 | Provider handle loss cannot erase reconstruction evidence. | `lost(handle) => retained(contextSnapshot,sourceReceipts)` |
+| WF-CONT-06 | Unknown physical outcome blocks replacement. | `resumeEffect=unknown => noAutomaticReplacement` |
+| WF-CONT-07 | Continuation input comes from two exact official bus contributions, not host-bound output. | `sources=[official(author:0),official(reviewer:0)]` |
+| WF-CONT-08 | Author-turn-1 input has the exact declared order. | `input(author:1)=[reconstructionBase,official(author:0),official(reviewer:0),revisionInstruction]` |
 
 ## AuditLedgerMaterializer
 

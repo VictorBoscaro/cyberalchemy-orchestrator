@@ -240,6 +240,83 @@ stateDiagram-v2
 | ATT-I9 | Adapter translation/observation cannot directly accept state. | `adapterOutput => commandInput; journalWriterOnly(transition)` |
 | ATT-I10 | Start eligibility is protected against concurrent close/cancel by prerequisite heads. | `startAccepted => all prerequisiteHeads matched atomically` |
 
+## AgentContinuationLifecycle
+
+This lifecycle governs a parked continuation between physical attempts. It never keeps an
+[Attempt](domain.md#attempt) running while waiting for peer input and never reuses `waiting_tool`.
+
+**Authority:** [ACI-CONT-001](../../../decisions/aci-resumable-agent-continuation.md).
+
+```mermaid
+stateDiagram-v2
+    [*] --> suspended : continuation.suspended
+    suspended --> resume_requested : continuation.resume_requested
+    resume_requested --> resuming : continuation.resuming
+    resuming --> resumed : continuation.resumed
+    resuming --> resume_unknown : continuation.resume_unknown
+    resume_unknown --> resumed : continuation.resumed [reconciled running]
+    suspended --> reconstruction_eligible : continuation.provider_lost
+    resuming --> reconstruction_eligible : continuation.provider_lost
+    resume_unknown --> reconstruction_eligible : continuation.provider_lost [reconciled no start]
+    reconstruction_eligible --> resume_requested : continuation.reconstruction_requested
+    suspended --> cancel_requested : continuation.cancel_requested
+    resume_requested --> cancel_requested : continuation.cancel_requested
+    resuming --> cancel_requested : continuation.cancel_requested
+    resume_unknown --> cancel_requested : continuation.cancel_requested
+    reconstruction_eligible --> cancel_requested : continuation.cancel_requested
+    cancel_requested --> cancelled : continuation.cancelled
+    suspended --> expired : continuation.expired
+    resume_requested --> expired : continuation.expired
+    reconstruction_eligible --> expired : continuation.expired
+```
+
+### States
+
+| State | Terminal? | Description |
+|---|---:|---|
+| `suspended` | no | Source attempt is terminal, reconstruction snapshot is finalized and dependencies are incomplete. |
+| `resume_requested` | no | Dependencies are complete and one new target attempt/request/effect unit is accepted. |
+| `resuming` | no | Current worker epoch claimed the same-session or reconstruction effect. |
+| `resume_unknown` | no | Claimed resume outcome is unresolved; replacement is forbidden pending reconciliation or cancellation. |
+| `reconstruction_eligible` | no | Definitive evidence proves no provider work started; confirmed policy may authorize one replacement. |
+| `resumed` | yes | The target attempt reached an observed provider running state. |
+| `cancel_requested` | no | Cancellation won the aggregate CAS before resume became terminal. |
+| `cancelled` | yes | Adapter/local cancellation or disposal is observed. |
+| `expired` | yes | The confirmed deadline won before a resume terminal. |
+
+### Transition table
+
+| From | Event | To | Guard | Effect |
+|---|---|---|---|---|
+| none | [`continuation.suspended`](events.md#continuationsuspended) | `suspended` | Source attempt terminal; snapshot and awaited mappings finalized | Persist continuation; start no provider/tool effect |
+| `suspended` | [`continuation.resume_requested`](events.md#continuationresume_requested) | `resume_requested` | All awaited slots satisfied; deadline current; prerequisite heads match | Atomically accept target input, attempt, request and one pending resume/start effect |
+| `resume_requested` | [`continuation.resuming`](events.md#continuationresuming) | `resuming` | Worker wins current effect epoch | Invoke adapter through sandbox |
+| `resuming` | [`continuation.resumed`](events.md#continuationresumed) | `resumed` | Matching target attempt is observably running | Preserve same agent instance only for successful same-session mode |
+| `resuming` | [`continuation.resume_unknown`](events.md#continuationresume_unknown) | `resume_unknown` | Claimed effect outcome cannot be reconciled | Preserve target identity and forbid replacement |
+| `resume_unknown` | [`continuation.resumed`](events.md#continuationresumed) | `resumed` | Reconciliation proves matching target attempt is running | Close continuation as resumed without another start |
+| `suspended`, `resuming`, or `resume_unknown` | [`continuation.provider_lost`](events.md#continuationprovider_lost) | `reconstruction_eligible` | Adapter proves no provider work started and confirmed reconstruction is allowed | Clear handle; if a claimed target exists, atomically fail that `starting` attempt/effect as `continuation_unavailable` |
+| `reconstruction_eligible` | [`continuation.reconstruction_requested`](events.md#continuationreconstruction_requested) | `resume_requested` | All awaited slots complete; deadline current; prerequisite heads match; authorized command wins version; no replacement exists | Atomically accept one replacement instance, attempt, sealed request and start effect |
+| `suspended`, `resume_requested`, `resuming`, `resume_unknown`, or `reconstruction_eligible` | [`continuation.cancel_requested`](events.md#continuationcancel_requested) | `cancel_requested` | Authorized command wins current version | Dispose an unclaimed handle or cancel/reconcile the current target attempt |
+| `cancel_requested` | [`continuation.cancelled`](events.md#continuationcancelled) | `cancelled` | Matching terminal cancellation/disposal observation | Close continuation |
+| `suspended`, unclaimed `resume_requested`, or `reconstruction_eligible` | [`continuation.expired`](events.md#continuationexpired) | `expired` | Journal-observed deadline wins current version before provider invocation | Prevent later resume |
+
+Every transition not listed above is rejected without changing authoritative state. In particular,
+terminal states have no exits; reconstruction is rejected without `reconstruction_eligible`; and a
+deadline observed after the effect is claimed proposes `CancelAgentContinuation` rather than an
+`expired` terminal that could conceal running provider work.
+
+### Invariants
+
+| ID | Invariant | Formal |
+|---|---|---|
+| CONT-I1 | Waiting continuation has no running physical attempt. | `state=suspended => terminal(sourceAttempt) and not exists(activeTargetAttempt)` |
+| CONT-I2 | Resume eligibility is entirely runtime-derived. | `resume_requested => complete(awaitedSlots) and prerequisiteHeadsMatch` |
+| CONT-I3 | Same-session continuity never replaces exact effective input. | `same_session => exists(EffectiveInputArtifact(targetAttempt))` |
+| CONT-I4 | Definitive loss and unknown effect outcome differ. | `provider_lost(definitive) != effect_unknown; effect_unknown => no automatic fallback` |
+| CONT-I5 | A continuation has at most one terminal; a terminal continuation has exactly one. | `count(resumed|cancelled|expired) <= 1 and terminal(c) => count(...) = 1` |
+| CONT-I6 | Reconstruction preserves seat and explicitly replaces instance. | `reconstruct => same(seat) and new(agent_instance_id)` |
+| CONT-I7 | Definitive loss terminalizes any claimed abandoned target before replacement. | `provider_lost and exists(startingTargetAttempt) => targetAttempt=failed(continuation_unavailable) before reconstruct` |
+
 ## HostWorkflowTurnLifecycle
 
 This bounded lifecycle governs host-managed workflow turns that produce inputs for later seats. It
