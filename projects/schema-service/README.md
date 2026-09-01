@@ -414,9 +414,10 @@ service to dogfood.
 Such a ledger must not duplicate the global subagent-dispatch ledger, runtime telemetry, the schema
 registry, or the full content of research reports. Its candidate responsibility would be to assign
 stable identifiers to project-local decisions, assumptions, open questions, and evidence links;
-record status and authority; and preserve `supersedes` or resolution relationships. No ledger is
-created yet because its owner, entry schema, append authority, and relationship to canonical source
-documents remain open.
+record status and authority; and preserve `supersedes` or resolution relationships. The project now
+has a local [Craft operational ledger](CRAFT.md) for recursive work state. That ledger does not
+implement this candidate append-only knowledge ledger: its owner, entry schema, append authority,
+and relationship to canonical source documents remain open.
 
 ## Experiment program
 

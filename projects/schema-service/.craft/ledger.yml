@@ -1,0 +1,80 @@
+ledger_id: craft.schema_service
+schema_ref: ../../../.codex/skills/craft/templates/ledger.schema.yml
+schema_version: 0.3.0
+status: candidate-local
+source_of_truth: .craft/ledger.yml
+human_view: CRAFT.md
+notes:
+  - Created on 2026-08-31 from Schema Service rows moved out of the repository-root Craft ledger.
+  - The ten portable Schema Service-owned rows preserved their existing IDs so prior references remain identifiable.
+  - The root-owned connector REL-ROOT-CONTAINS-SCHEMA-ARTIFACT-TYPES was retired during the split because its endpoints now belong to different Craft scopes; parent_id root preserves the local hierarchy.
+  - This Craft ledger governs recursive project work; it is not the candidate append-only knowledge ledger described in README.md.
+
+indexes:
+  by_id:
+    CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0: contexts[0]
+    DESC-SCHEMA-SERVICE-ARTIFACT-TYPES-001: descriptions[0]
+    GAP-SCHEMA-ANALYSIS-LIFECYCLE-001: gaps[0]
+    GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001: gaps[1]
+    GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001: gaps[2]
+    GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001: gaps[3]
+    ART-SCHEMA-ARTIFACT-TYPES-PLAN: artifacts[0]
+    ART-SCHEMA-ANALYSIS-PACKAGE: artifacts[1]
+    ART-SCHEMA-ARTIFACT-TYPES-REVIEW: artifacts[2]
+    ART-SCHEMA-ARTIFACT-TYPES-SESSION: artifacts[3]
+  open_decisions: []
+  blocking_decisions: []
+  active_blockers: []
+  active_gaps:
+    - GAP-SCHEMA-ANALYSIS-LIFECYCLE-001
+    - GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001
+    - GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001
+    - GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001
+  next_moves:
+    - context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0
+      next_move: Correct the four confirmed review findings, then verify references and hashes before freezing criterion.md.
+  artifacts_by_path:
+    experimentation-plans/artifact-types-v0/experimentation-plan.md: ART-SCHEMA-ARTIFACT-TYPES-PLAN
+    experimentation-plans/artifact-types-v0/experiments/01-analysis/README.md: ART-SCHEMA-ANALYSIS-PACKAGE
+    reviews/2026-08-20-artifacts-full-review/review.md: ART-SCHEMA-ARTIFACT-TYPES-REVIEW
+    "[repo-root] sessions/2026-08-25-0843-schema-service-artifact-experiments.md": ART-SCHEMA-ARTIFACT-TYPES-SESSION
+
+contexts:
+  - context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0
+    parent_id: root
+    title: Schema Service Artifact Types v0
+    purpose: Test the proposed Schema Service artifact model against analysis, skill, and folder families before building a universal registry or runtime.
+    stage: review-audit
+    gate: block
+    next_move: Correct the four confirmed review findings, then verify references and hashes before freezing criterion.md.
+    owned_artifacts: [ART-SCHEMA-ARTIFACT-TYPES-PLAN, ART-SCHEMA-ANALYSIS-PACKAGE, ART-SCHEMA-ARTIFACT-TYPES-REVIEW, ART-SCHEMA-ARTIFACT-TYPES-SESSION]
+    links:
+      - {label: Review result, target: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, kind: artifact-id}
+      - {label: Lifecycle gap, target: GAP-SCHEMA-ANALYSIS-LIFECYCLE-001, kind: row-id}
+      - {label: Base resolution gap, target: GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001, kind: row-id}
+      - {label: Immutability gap, target: GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001, kind: row-id}
+      - {label: Successor gate gap, target: GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001, kind: row-id}
+
+artifacts:
+  - {artifact_id: ART-SCHEMA-ARTIFACT-TYPES-PLAN, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: experimentation-plans/artifact-types-v0/experimentation-plan.md, artifact_type: plan, status: active}
+  - {artifact_id: ART-SCHEMA-ANALYSIS-PACKAGE, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: experimentation-plans/artifact-types-v0/experiments/01-analysis/README.md, artifact_type: experiment-package, status: flag, notes: Preparing only; criterion, fixtures, run, and verdict do not yet exist.}
+  - {artifact_id: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: reviews/2026-08-20-artifacts-full-review/review.md, artifact_type: audit, status: flag, notes: Dedicated approver accepted the report package; its substantive verdict is FIX with four MAJOR findings.}
+  - {artifact_id: ART-SCHEMA-ARTIFACT-TYPES-SESSION, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: "[repo-root] sessions/2026-08-25-0843-schema-service-artifact-experiments.md", artifact_type: session-evidence, status: pass}
+
+descriptions:
+  - {description_id: DESC-SCHEMA-SERVICE-ARTIFACT-TYPES-001, context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, description: The analysis-first experimentation package preserves experimental versus normative authority boundaries, but its degraded full review returned FIX and blocks preregistration or runs until four confirmed gaps are repaired., status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW}
+
+definitions: []
+typed_items: []
+decisions: []
+
+gaps:
+  - {gap_id: GAP-SCHEMA-ANALYSIS-LIFECYCLE-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: Candidate lifecycle is promised per candidate but the catalog represents only one global active state., severity: block, treatment: plan, owner: architecture, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Candidate package, target: ART-SCHEMA-ANALYSIS-PACKAGE, kind: artifact-id}]}
+  - {gap_id: GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: The analysis root has an unresolved base that leaves every candidate resolution fail-closed even after criterion freeze., severity: block, treatment: plan, owner: architecture, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Experiment plan, target: ART-SCHEMA-ARTIFACT-TYPES-PLAN, kind: artifact-id}]}
+  - {gap_id: GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: Candidate revision immutability begins only after first frozen-run use rather than at catalog admission., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Candidate package, target: ART-SCHEMA-ANALYSIS-PACKAGE, kind: artifact-id}]}
+  - {gap_id: GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: Skill and folder placeholders weaken the substantive successor gates and explicit plan-revision requirement., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Governing plan, target: ART-SCHEMA-ARTIFACT-TYPES-PLAN, kind: artifact-id}]}
+
+route_handoffs: []
+receipts: []
+relations: []
+recomposition: []

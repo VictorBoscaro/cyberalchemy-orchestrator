@@ -17,14 +17,12 @@ indexes:
     CTX-BROKERED-LAUNCHER: contexts[3]
     CTX-HOST-BUS-PHASE-A: contexts[4]
     CTX-ACI-PROTOCOL-GOVERNANCE: contexts[5]
-    CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0: contexts[6]
     DESC-ROOT-002: descriptions[0]
     DESC-GAWI-001: descriptions[1]
     DESC-ARL-001: descriptions[2]
     DESC-BROKERED-001: descriptions[3]
     DESC-HOST-BUS-001: descriptions[4]
     DESC-PROTOCOL-GOV-001: descriptions[5]
-    DESC-SCHEMA-SERVICE-ARTIFACT-TYPES-001: descriptions[6]
     DEF-GOVERNED-AGENT-WORK-001: definitions[0]
     BLK-BROKERED-AUTHORITY-001: typed_items[0]
     BLK-PHASE-A-OWNER-DECISION-001: typed_items[1]
@@ -41,10 +39,6 @@ indexes:
     GAP-EG1-SOLE-WRITER-001: gaps[2]
     GAP-D9-AUTHORITY-001: gaps[3]
     GAP-T0-AUTOMATION-001: gaps[4]
-    GAP-SCHEMA-ANALYSIS-LIFECYCLE-001: gaps[5]
-    GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001: gaps[6]
-    GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001: gaps[7]
-    GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001: gaps[8]
     ART-CRAFT-LEDGER: artifacts[0]
     ART-CRAFT-VIEW: artifacts[1]
     ART-REPOSITORY-POLICY: artifacts[2]
@@ -65,10 +59,6 @@ indexes:
     ART-LEVERAGE-DECISION: artifacts[17]
     ART-SKILL-CONTROL-DECISION: artifacts[18]
     ART-WORKER-B-DECISION: artifacts[19]
-    ART-SCHEMA-ARTIFACT-TYPES-PLAN: artifacts[20]
-    ART-SCHEMA-ANALYSIS-PACKAGE: artifacts[21]
-    ART-SCHEMA-ARTIFACT-TYPES-REVIEW: artifacts[22]
-    ART-SCHEMA-ARTIFACT-TYPES-SESSION: artifacts[23]
     REL-ROOT-CONTAINS-GAWI: relations[0]
     REL-GAWI-CONTAINS-ARL: relations[1]
     REL-GAWI-CONTAINS-BROKERED: relations[2]
@@ -78,7 +68,6 @@ indexes:
     REL-PHASE-A-DECISION-BLOCKS: relations[6]
     REL-HOST-BINDING-ENABLES-ARL: relations[7]
     REL-EG1-INFORMS-CUTOVER: relations[8]
-    REL-ROOT-CONTAINS-SCHEMA-ARTIFACT-TYPES: relations[9]
   open_decisions:
     - DEC-CUTOVER-GATE-001
     - DEC-PHASE-A-BASELINE-001
@@ -94,10 +83,6 @@ indexes:
     - GAP-EG1-SOLE-WRITER-001
     - GAP-D9-AUTHORITY-001
     - GAP-T0-AUTOMATION-001
-    - GAP-SCHEMA-ANALYSIS-LIFECYCLE-001
-    - GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001
-    - GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001
-    - GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001
   next_moves:
     - context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
       next_move: Resolve DEC-CUTOVER-GATE-001 and keep the root status synchronized with the active infrastructure Plan.
@@ -111,8 +96,6 @@ indexes:
       next_move: Obtain the owner decision in DEC-PHASE-A-BASELINE-001 before consequential Phase-A repair work proceeds.
     - context_id: CTX-ACI-PROTOCOL-GOVERNANCE
       next_move: Keep implementation claims gated behind specification, tests, and their own readiness evidence.
-    - context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0
-      next_move: Correct the four confirmed review findings, then verify references and hashes before freezing criterion.md.
   artifacts_by_path:
     .craft/ledger.yml: ART-CRAFT-LEDGER
     CRAFT.md: ART-CRAFT-VIEW
@@ -134,10 +117,6 @@ indexes:
     docs/decisions/repository-leverage-priority.md: ART-LEVERAGE-DECISION
     docs/decisions/skill-control-center-phase-1-scope.md: ART-SKILL-CONTROL-DECISION
     docs/decisions/worker-b-execution-sequence.md: ART-WORKER-B-DECISION
-    projects/schema-service/experimentation-plans/artifact-types-v0/experimentation-plan.md: ART-SCHEMA-ARTIFACT-TYPES-PLAN
-    projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/README.md: ART-SCHEMA-ANALYSIS-PACKAGE
-    projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md: ART-SCHEMA-ARTIFACT-TYPES-REVIEW
-    sessions/2026-08-25-0843-schema-service-artifact-experiments.md: ART-SCHEMA-ARTIFACT-TYPES-SESSION
 
 contexts:
   - context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
@@ -151,7 +130,6 @@ contexts:
     links:
       - {label: Active infrastructure program, target: CTX-GAWI-PROGRAM, kind: row-id}
       - {label: Cutover gate decision, target: DEC-CUTOVER-GATE-001, kind: row-id}
-      - {label: Schema Service artifact experiments, target: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, kind: row-id}
   - context_id: CTX-GAWI-PROGRAM
     parent_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
     title: Governed Agent Work Infrastructure
@@ -201,20 +179,6 @@ contexts:
     gate: flag
     next_move: Keep implementation claims gated behind specification, tests, and their own readiness evidence.
     owned_artifacts: [ART-PROTOCOL-OWNERSHIP]
-  - context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0
-    parent_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT
-    title: Schema Service Artifact Types v0
-    purpose: Test the proposed Schema Service artifact model against analysis, skill, and folder families before building a universal registry or runtime.
-    stage: review-audit
-    gate: block
-    next_move: Correct the four confirmed review findings, then verify references and hashes before freezing criterion.md.
-    owned_artifacts: [ART-SCHEMA-ARTIFACT-TYPES-PLAN, ART-SCHEMA-ANALYSIS-PACKAGE, ART-SCHEMA-ARTIFACT-TYPES-REVIEW, ART-SCHEMA-ARTIFACT-TYPES-SESSION]
-    links:
-      - {label: Review result, target: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, kind: artifact-id}
-      - {label: Lifecycle gap, target: GAP-SCHEMA-ANALYSIS-LIFECYCLE-001, kind: row-id}
-      - {label: Base resolution gap, target: GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001, kind: row-id}
-      - {label: Immutability gap, target: GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001, kind: row-id}
-      - {label: Successor gate gap, target: GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001, kind: row-id}
 
 artifacts:
   - {artifact_id: ART-CRAFT-LEDGER, owner_context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, path: .craft/ledger.yml, artifact_type: ledger-source, status: active}
@@ -237,10 +201,6 @@ artifacts:
   - {artifact_id: ART-LEVERAGE-DECISION, owner_context_id: CTX-HOST-BUS-PHASE-A, path: docs/decisions/repository-leverage-priority.md, artifact_type: decision-record, status: pass}
   - {artifact_id: ART-SKILL-CONTROL-DECISION, owner_context_id: CTX-GAWI-PROGRAM, path: docs/decisions/skill-control-center-phase-1-scope.md, artifact_type: decision-record, status: pass}
   - {artifact_id: ART-WORKER-B-DECISION, owner_context_id: CTX-HOST-BUS-PHASE-A, path: docs/decisions/worker-b-execution-sequence.md, artifact_type: decision-record, status: pass}
-  - {artifact_id: ART-SCHEMA-ARTIFACT-TYPES-PLAN, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: projects/schema-service/experimentation-plans/artifact-types-v0/experimentation-plan.md, artifact_type: plan, status: active}
-  - {artifact_id: ART-SCHEMA-ANALYSIS-PACKAGE, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: projects/schema-service/experimentation-plans/artifact-types-v0/experiments/01-analysis/README.md, artifact_type: experiment-package, status: flag, notes: Preparing only; criterion, fixtures, run, and verdict do not yet exist.}
-  - {artifact_id: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: projects/schema-service/reviews/2026-08-20-artifacts-full-review/review.md, artifact_type: audit, status: flag, notes: Dedicated approver accepted the report package; its substantive verdict is FIX with four MAJOR findings.}
-  - {artifact_id: ART-SCHEMA-ARTIFACT-TYPES-SESSION, owner_context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, path: sessions/2026-08-25-0843-schema-service-artifact-experiments.md, artifact_type: session-evidence, status: pass}
 
 descriptions:
   - {description_id: DESC-ROOT-002, context_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, description: The repository has working read-side and governed-dispatch infrastructure, while production cutover, authority ownership, sole-writer proof, and broader formal claims remain bounded residue., status: active, evidence: ART-PROJECT-README}
@@ -249,7 +209,6 @@ descriptions:
   - {description_id: DESC-BROKERED-001, context_id: CTX-BROKERED-LAUNCHER, description: The launcher workstream is active proposal-only but cannot bind execution because durable governing authority was not found., status: active, evidence: ART-BROKERED-WORKSTREAM}
   - {description_id: DESC-HOST-BUS-001, context_id: CTX-HOST-BUS-PHASE-A, description: Phase A has accepted sequencing and binding decisions but remains blocked on its output-evidence and implementation-baseline owner decision., status: active, evidence: ART-PHASE-A-DECISION}
   - {description_id: DESC-PROTOCOL-GOV-001, context_id: CTX-ACI-PROTOCOL-GOVERNANCE, description: Ownership is accepted, while schemas, operations, implementation, and tests retain separate gates., status: active, evidence: ART-PROTOCOL-OWNERSHIP}
-  - {description_id: DESC-SCHEMA-SERVICE-ARTIFACT-TYPES-001, context_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, description: The analysis-first experimentation package preserves experimental versus normative authority boundaries, but its degraded full review returned FIX and blocks preregistration or runs until four confirmed gaps are repaired., status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW}
 
 definitions:
   - definition_id: DEF-GOVERNED-AGENT-WORK-001
@@ -352,10 +311,6 @@ gaps:
   - {gap_id: GAP-EG1-SOLE-WRITER-001, scope_id: DEC-CUTOVER-GATE-001, summary: Two post-vocabulary close rows demonstrate an unaccounted write path, leaving EG-1 promotion-blocked and sole-writer proof incomplete., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-ENUM-DRIFT-AUDIT, links: [{label: Cutover interpretation decision, target: DEC-CUTOVER-GATE-001, kind: row-id}]}
   - {gap_id: GAP-D9-AUTHORITY-001, scope_id: CTX-GAWI-PROGRAM, summary: Macro-to-micro work-context authority ownership remains CRITICAL with no repository gate., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-PROJECT-README}
   - {gap_id: GAP-T0-AUTOMATION-001, scope_id: CTX-GAWI-PROGRAM, summary: The claim-probe-survival discipline runs manually, but its automated knowledge-machine loop is not built., severity: deferred, treatment: defer, owner: product, status: active, evidence: ART-GAWI-PLAN}
-  - {gap_id: GAP-SCHEMA-ANALYSIS-LIFECYCLE-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: Candidate lifecycle is promised per candidate but the catalog represents only one global active state., severity: block, treatment: plan, owner: architecture, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Candidate package, target: ART-SCHEMA-ANALYSIS-PACKAGE, kind: artifact-id}]}
-  - {gap_id: GAP-SCHEMA-ANALYSIS-BASE-RESOLUTION-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: The analysis root has an unresolved base that leaves every candidate resolution fail-closed even after criterion freeze., severity: block, treatment: plan, owner: architecture, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Experiment plan, target: ART-SCHEMA-ARTIFACT-TYPES-PLAN, kind: artifact-id}]}
-  - {gap_id: GAP-SCHEMA-ANALYSIS-IMMUTABILITY-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: Candidate revision immutability begins only after first frozen-run use rather than at catalog admission., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Candidate package, target: ART-SCHEMA-ANALYSIS-PACKAGE, kind: artifact-id}]}
-  - {gap_id: GAP-SCHEMA-EXPERIMENT-GATE-ALIGNMENT-001, scope_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, summary: Skill and folder placeholders weaken the substantive successor gates and explicit plan-revision requirement., severity: block, treatment: plan, owner: governance, status: active, evidence: ART-SCHEMA-ARTIFACT-TYPES-REVIEW, links: [{label: Governing plan, target: ART-SCHEMA-ARTIFACT-TYPES-PLAN, kind: artifact-id}]}
 
 route_handoffs: []
 receipts: []
@@ -370,6 +325,5 @@ relations:
   - {relation_id: REL-PHASE-A-DECISION-BLOCKS, source_id: BLK-PHASE-A-OWNER-DECISION-001, target_id: CTX-HOST-BUS-PHASE-A, type: blocks, status: active, reason: Source decision gate blocks consequential repair work., evidence: ART-PHASE-A-DECISION}
   - {relation_id: REL-HOST-BINDING-ENABLES-ARL, source_id: DEC-HOST-INPUT-BINDING-001, target_id: CTX-ARL-L0-REVIEW, type: enables, status: resolved, reason: Accepted binding Option A supplies the authority boundary used by the L0 chain., evidence: ART-HOST-BINDING-DECISION}
   - {relation_id: REL-EG1-INFORMS-CUTOVER, source_id: GAP-EG1-SOLE-WRITER-001, target_id: DEC-CUTOVER-GATE-001, type: informs, status: active, reason: EG-1 evidence is one side of the unresolved cutover interpretation., evidence: ART-ENUM-DRIFT-AUDIT}
-  - {relation_id: REL-ROOT-CONTAINS-SCHEMA-ARTIFACT-TYPES, source_id: CTX-CYBERALCHEMY-ORCHESTRATOR-ROOT, target_id: CTX-SCHEMA-SERVICE-ARTIFACT-TYPES-V0, type: contains, status: active, reason: The Schema Service experimentation plan is a repository project context that tests the artifact-governance model before implementation., evidence: ART-SCHEMA-ARTIFACT-TYPES-PLAN}
 
 recomposition: []

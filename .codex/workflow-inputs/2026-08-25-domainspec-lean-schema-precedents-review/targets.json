@@ -1,0 +1,17 @@
+{
+  "schema": "frozen-review-targets/v1",
+  "review_id": "2026-08-25-domainspec-lean-schema-precedents-review",
+  "targets": [
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/research-initial-definitions.md", "sha256": "c8870ee6e2f668414e182a34ab6fe7cd3ba7db55b2cbcb5b9e44389ce9e819ea"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/research.md", "sha256": "5196f1ad0d6b22c42af7a5da17dca113a8eef8270643b1bcfe7bab8a3ed3cd67"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/findings.md", "sha256": "ebd87cd18fe287960e10c38c959768cf45dbc228517045b618195f1a898f826f"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/reports/01-schema-metaschema.md", "sha256": "58dd98e5c014a622f74fb4499860af913c3890436769a89c46b45fbb1e0bc2cc"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/reports/02-artifact-representation.md", "sha256": "0e796ed51580e63777a6a0f32c2ec422da8b784f91802b5094814095e6097f13"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/reports/03-literature-multilevel-metamodeling.md", "sha256": "127a2147987f6e9c3ceb40398eab63d0dd1aa6062675c4c356136dcf89fa50f9"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/robot-talks/2026-08-25-relational-metaschema-research-design/dialogue.md", "sha256": "e2b45ddf478d84359965ad05d76c74dc30d9deb91c6cd8e2f83718368e55f55c"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/robot-talks/2026-08-25-relational-metaschema-research-design/findings.md", "sha256": "d6e630444f245e4e5c5af374bdbcfe1d591842088fde1bc833e2f862769b4b55"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/robot-talks/2026-08-25-relational-metaschema-research-design/reports/01-formal-soundness.md", "sha256": "16992b99fee0db0ab1bfdfe9e4040c1c5f4d3bda857fa4f55db053a932ad8f04"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/robot-talks/2026-08-25-relational-metaschema-research-design/reports/02-operational-architecture.md", "sha256": "4fae473b6eed4deaad1b906602b7d82c66b49ab7b3274ee9c2e8316f23fa9783"},
+    {"path": "projects/schema-service/research/domainspec-lean-schema-precedents/robot-talks/2026-08-25-relational-metaschema-research-design/reports/03-evidence-framing.md", "sha256": "43f2972989543ed806945a8dc61e1b5bf0fdf2510478b305d9fbe23fa2204d86"}
+  ]
+}

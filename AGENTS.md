@@ -29,6 +29,31 @@ The goal is not to maximize the number of agents, but to improve collective judg
 
 Before consequential changes, identify the objective served, the assumption or decision involved, and the evidence that would demonstrate success.
 
+## Schema terminology guardrail
+
+Until a more specific governing document replaces this section, use David Spivak's functorial data
+model as the default meaning of `schema` and `instance` in Schema Service work:
+
+- A schema `S` is a small or finitely presented category: objects are types, arrows are aspects or
+  relationships, and path equations are constraints.
+- An instance on `S` is the whole structure-preserving functor `I: S -> Set`, not one artifact or
+  record. A concrete research revision `r` is an element such as
+  `r ∈ I(ResearchRevision)`—a row/instance of that type inside `I`.
+- Distinguish a schema `S` from data that represents its definition. If a meta-schema `M` is used,
+  an instance `J: M -> Set` may encode a presentation of `S`, but `J` and `S` are not identical
+  without an explicit interpretation that constructs the schema from that representation.
+- A meta-schema defines how schema definitions are represented. It does not, by that fact, identify
+  the project, environment, or information system to which a schema belongs. Express those through
+  explicit data relations or schema mappings such as a functor `F: S -> E`.
+- `objective`, publication state, provenance, and tags are repository governance metadata, not
+  intrinsic components of Spivak's categorical definition of schema. State explicitly which
+  governed artifact carries them. Do not make tags universal without a separate product decision.
+
+Do not write “artifact X is an instance of schema S” when `X` is only a row in one set assigned by
+an `S`-instance. Name the type/object, the functorial instance, and the element separately. Likewise,
+do not collapse schema reference, validation evidence, conformance conclusions, or authority into a
+single `conformsTo` relation.
+
 ## Host wrapper binding
 
 A seat prompt under a governed dispatch must open with `ACI-WORKFLOW-BINDING-V1:<base64>` as its first line, or the launch becomes an orphaned dispatch instead of a seat of the parent.

@@ -1,0 +1,53 @@
+{
+  "dispatch_id": "2026-08-25-domainspec-lean-schema-precedents",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "goal": "Reconstruir o que domainspec-lean-formalization e a literatura primária já estabeleceram, propuseram, contestaram ou deixaram aberto sobre schemas, metaschemas, artefatos, representations e classificação multinível, e identificar o que pode informar com segurança o Schema Service e seu primeiro experimento skill-first.",
+  "context": "O Schema Service distingue Type, SchemaDefinitionRevision, Artifact, ManifestRevision, Representation e RepresentationSnapshot, mas o metaschema, o envelope universal e o schema de skill ainda não estão fechados. O repositório irmão C:/Users/victo/domainspec-lean-formalization contém formalizações, schemas, pesquisas e registros históricos relevantes; a literatura de metamodelagem contém arquiteturas concorrentes que não devem ser reduzidas antecipadamente a clabjects. A pesquisa deve separar prova formal, contrato executável, decisão aceita, proposta, exemplo, hipótese abandonada e analogia bibliográfica; nenhuma correspondência terminológica deve ser tratada como equivalência sem evidência.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "working_folder": "projects/schema-service/research/domainspec-lean-schema-precedents",
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 3,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Booch, Grady",
+          "initial_prompt": "Trabalhe como explorador de arquitetura no repositório C:/Users/victo/domainspec-lean-formalization, que é somente leitura. Leia primeiro os AGENTS.md aplicáveis em C:/Users/victo/cyberalchemy-orchestrator e no repositório-alvo. Localize discussões, schemas, definições Lean, decisões, pesquisas e consumidores reais relacionados a schema, metaschema, schema de schemas, Type, instância e validação. Reconstrua as distinções efetivamente sustentadas: identidade semântica versus revisão, definição versus instância, objetivo do schema versus objetivo do artefato, herança/base, propriedades, relações, constraints, publicação e autoridade. Para cada afirmação, classifique a força da evidência como prova Lean, contrato executável/testado, decisão documentada, proposta, exemplo ou histórico superseded; cite caminhos e linhas. Compare somente ao final com C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/README.md e marque compatibilidades, contradições e lacunas sem forçar equivalências. Escreva em português apenas C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/research/domainspec-lean-schema-precedents/reports/01-schema-metaschema.md. Não modifique o repositório-alvo, não use web e não altere nenhum outro arquivo."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Liskov, Barbara",
+          "initial_prompt": "Trabalhe como explorador de abstração e representação no repositório C:/Users/victo/domainspec-lean-formalization, que é somente leitura. Leia primeiro os AGENTS.md aplicáveis em C:/Users/victo/cyberalchemy-orchestrator e no repositório-alvo. Investigue artifact, instance, manifest, representation, carrier, snapshot, observation, path, digest, identity, version/revision, serialization e validation. Procure definições Lean, schemas, código consumidor, testes, documentos de arquitetura, decisões e reversões. Determine quais entidades são distintas por contrato, quais são apenas nomes em prose e quais colapsam operacionalmente. Dê atenção especial a como uma skill, definição, pacote, instalação, ferramenta, invocação e receipt poderiam ou não encaixar nas estruturas existentes. Classifique a força da evidência e cite caminhos e linhas para toda afirmação material. Compare ao final com C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/README.md, sem transformar analogia em equivalência. Escreva em português apenas C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/research/domainspec-lean-schema-precedents/reports/02-artifact-representation.md. Não modifique o repositório-alvo, não use web e não altere nenhum outro arquivo."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6500,
+          "agent_name": "Nonaka, Ikujiro",
+          "initial_prompt": "Trabalhe como explorador da literatura primária de multilevel modeling e metamodeling. Leia primeiro o AGENTS.md de C:/Users/victo/cyberalchemy-orchestrator, projects/schema-service/research/domainspec-lean-schema-precedents/research-initial-definitions.md e projects/schema-service/robot-talks/2026-08-25-relational-metaschema-research-design/findings.md. Use busca web, mas sustente claims técnicos apenas em fontes primárias: papers originais, proceedings ou versões dos autores; use páginas editoriais somente para metadados. Compare, sem pressupor vencedor: strict/adjacent-level metamodeling e two-level schemas-as-data; linguistic versus ontological classification e Orthogonal Classification Architecture; clabject/class-object duality; deep instantiation e variantes de potency; powertype e Type Object; reflective, self-describing e meta-circular metamodels. Verifique autoria, ano, venue e conteúdo exato dos títulos sugeridos pelo usuário, incluindo The Essence of Multilevel Metamodeling, Rearchitecting the UML Infrastructure, Model-Driven Development: A Metamodeling Foundation e Multi-Level Modeling: Cornerstones of a Rationale. Para cada abordagem, extraia o problema resolvido, entidades/relações, garantias, limites/críticas e um collapse-test de relevância para Schema Service. Investigue separadamente se schema transformation/residue e data migration integrity aparecem como problemas distintos; não importe o termo schema residue sem fonte. Cite links diretos e páginas/seções quando disponíveis, sem longas citações. Escreva em português apenas C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/research/domainspec-lean-schema-precedents/reports/03-literature-multilevel-metamodeling.md. Não altere nenhum outro arquivo e não proponha adoção antes da comparação."
+        }
+      ]
+    }
+  ]
+}

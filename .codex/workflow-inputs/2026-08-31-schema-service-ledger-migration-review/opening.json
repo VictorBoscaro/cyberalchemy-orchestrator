@@ -1,0 +1,96 @@
+{
+  "dispatch_id": "2026-08-31-schema-service-ledger-migration-review",
+  "schema_version": "0.6.4",
+  "dispatch_type": "review",
+  "goal": "Verify that every Schema Service Craft ledger entry was moved from the repository-root workspace into projects/schema-service without loss, duplication, semantic drift, dangling references, or unrelated changes.",
+  "context": "The parent created the current migration and therefore cannot approve its own work. Review the six frozen targets against the pre-migration root files available through git HEAD, the Craft storage and linking contracts, and the current filesystem. Targets are read-only; produce verified change requests, not fixes. The report is inline and must distinguish structural migration correctness from the Schema Service context's existing blocked readiness.",
+  "max_loops": 2,
+  "final_approver": "Lynch, Nancy",
+  "anti_bias_mode": "disabled",
+  "output_mode": "inline",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "review",
+    "ledger_dispatch_type": "review",
+    "capability_ref": "review",
+    "capability_path": ".claude/skills/review/SKILL.md",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f"
+  },
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "layers": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "agent_name": "Liskov, Barbara",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "Act as the mechanics/correctness attacker. Read the entire frozen target corpus, not a partition. Compare the root ledger and CRAFT.md with their git HEAD versions to reconstruct the source rows, then compare those rows with the new project ledger and view. Verify exact ID preservation, absence of loss or duplication, intentional parent/path rebasing, YAML parsing, schema_ref resolution, by_id selectors, required indexes, row references, artifact paths, Markdown anchors and links, storage-contract files, and absence of Schema Service residue in the root. Confirm that no unrelated root-ledger rows changed. Targets are read-only. For every candidate finding provide file, exact artifact quotation, severity, and one-line proposed fix. If no finding survives your attacks, state every check attempted and why it passed."
+        },
+        {
+          "role": "explorer",
+          "agent_name": "Evans, Eric",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "Act as the ownership/reference-integrity attacker. Read the entire frozen target corpus, not a partition. Test whether projects/schema-service is now the sole authoritative Craft workspace for the migrated context; whether all former Schema Service context, description, gap, artifact, index, next-move, root-link, and relation information was either preserved locally or deliberately retired with a valid reason; whether cross-scope paths and evidence remain resolvable; whether the human views faithfully project the machine ledgers; and whether README.md correctly distinguishes the operational Craft ledger from the still-unresolved append-only knowledge-ledger proposal. Look for dangling ownership, double ownership, accidental governance decisions, and claims stronger than the evidence. Targets are read-only. Every candidate finding must include file, exact artifact quotation, severity, and one-line proposed fix. If no finding survives, document each attack and its evidence."
+        }
+      ]
+    },
+    {
+      "group_id": "synthesis",
+      "n": 1,
+      "layers": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "agent_name": "Fowler, Martin",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "initial_prompt": "Synthesize the independent attacker returns into the single inline review.md required by the review capability. Inspect the frozen targets yourself before accepting any claim. Deduplicate findings, drop unsupported claims, severity-rank surviving findings, and give each target a KEEP or FIX verdict. Every surviving finding must quote the attacked artifact and include file, severity, and one-line proposed fix. You also own the Coverage section because there is no separate coverage-auditor seat: show that every frozen target was attacked under both declared lenses and record any zero-findings defence. Distinguish migration correctness from the pre-existing blocked project state. Do not write files or apply fixes."
+        }
+      ]
+    },
+    {
+      "group_id": "verification",
+      "n": 1,
+      "layers": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "agent_name": "Parnas, David",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "initial_prompt": "Verify the synthesized review against the literal frozen targets, git HEAD source state, Craft contract, and reproducible read-only checks. Attempt to refute every proposed finding. Drop rather than soften refuted findings. Check for missed loss, duplication, semantic drift, stale root references, invalid indexes, broken paths or anchors, false README implications, and unrelated changes. Return precise objections or explicit acceptance for every finding and verdict. If revisions are needed, send them through the zig-zag to the writer; do not modify target files."
+        }
+      ]
+    },
+    {
+      "group_id": "final-approval",
+      "n": 1,
+      "layers": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "agent_name": "Lynch, Nancy",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "initial_prompt": "Act only as the dedicated final approver; do not attack, synthesize, author findings, or perform the Coverage role. Receive the terminal review, verifier disposition, and frozen target corpus. Approve only if every target was covered by both lenses, every surviving finding quotes its artifact, refuted findings were removed, severities and KEEP/FIX verdicts follow the review contract, the report distinguishes migration correctness from project readiness, and the target hashes match. Reject with an exact reason otherwise. Any surviving recommendation to revert the parent's migration must be escalated to the human."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {"from": "attackers", "to": "synthesis", "type": "sequential"},
+    {"from": "synthesis", "to": "verification", "type": "sequential"},
+    {"from": "synthesis", "to": "final-approval", "type": "sequential"},
+    {"from": "verification", "to": "final-approval", "type": "sequential"}
+  ]
+}

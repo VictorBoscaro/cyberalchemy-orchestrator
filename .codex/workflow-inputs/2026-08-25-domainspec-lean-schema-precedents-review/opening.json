@@ -1,0 +1,74 @@
+{
+  "dispatch_id": "2026-08-25-domainspec-lean-schema-precedents-review",
+  "schema_version": "0.6.4",
+  "dispatch_type": "review",
+  "goal": "Atacar e verificar o pacote de Robot-Talks e pesquisa sobre schemas, metaschemas, representations e multilevel modeling, produzindo change requests citáveis antes que qualquer conclusão altere o contrato do Schema Service.",
+  "context": "O corpus congelado contém 11 artifacts e seus SHA-256 em .codex/workflow-inputs/2026-08-25-domainspec-lean-schema-precedents-review/targets.json. O review deve verificar fidelidade ao modelo vigente, integridade de citações e força epistêmica, com atenção a clabject, OCA, potency, schemas-as-data, fechamento reflexivo, schema residue, objective e tags. O runtime não demonstrou handoffs sequenciais canônicos nesta sessão; atacantes e verificador trabalharão em ondas independentes, o parent sintetizará review.md e um approver separado decidirá sobre o relatório final.",
+  "max_loops": 1,
+  "final_approver": "Parnas, David",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "review",
+    "ledger_dispatch_type": "review",
+    "capability_ref": "review",
+    "capability_path": ".claude/skills/review/SKILL.md",
+    "capability_digest": "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:49334d6deaaa9e92ca15861faedae5495fad1f005cbe01711f881a18dd572c1f"
+  },
+  "output_mode": "persisted",
+  "working_folder": "projects/schema-service/reviews/2026-08-25-domainspec-lean-schema-precedents",
+  "groups": [
+    {
+      "group_id": "attackers",
+      "n": 2,
+      "robot_talks": false,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Booch, Grady",
+          "initial_prompt": "Ataque o corpus congelado inteiro listado em C:/Users/victo/cyberalchemy-orchestrator/.codex/workflow-inputs/2026-08-25-domainspec-lean-schema-precedents-review/targets.json pela lente exclusiva fidelity/governance. Leia o AGENTS.md aplicável, verifique primeiro 11/11 paths e hashes e leia integralmente cada target. Procure: conclusões mais fortes que reports/fontes; hipóteses promovidas a constraints; conflito com skill-first; colapso de referência, validação, autoridade ou kinds; uso indevido de GO/KILL; baseline schemas-as-data tratada como adoção; e links ou disposições do Robot-Talks que contradigam o corpus. Cada finding candidato deve citar arquivo, linha e trecho literal, severidade e fix mínimo. Findings sem citação literal são descartados. Não modifique arquivos e não escreva transcript; retorne em chat uma tabela de findings candidatos e uma defesa explícita para targets que sobreviveram."
+        },
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Liskov, Barbara",
+          "initial_prompt": "Ataque o corpus congelado inteiro listado em C:/Users/victo/cyberalchemy-orchestrator/.codex/workflow-inputs/2026-08-25-domainspec-lean-schema-precedents-review/targets.json pela lente exclusiva ownership/reference integrity. Leia o AGENTS.md aplicável, verifique primeiro 11/11 paths e hashes e leia integralmente cada target. Verifique links locais, duplicação verbatim de research.md, citações primárias, autoria/ano/título, claims que não chegam ao findings, hashes, provenance, evidence boundaries e se ausência no corpus vira indevidamente inexistência. Cada finding candidato deve citar arquivo, linha e trecho literal, severidade e fix mínimo. Findings sem citação literal são descartados. Não modifique arquivos e não escreva transcript; retorne em chat uma tabela de findings candidatos e uma defesa explícita para targets que sobreviveram."
+        }
+      ]
+    },
+    {
+      "group_id": "verifiers",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "agent_name": "Dijkstra, Edsger W.",
+          "initial_prompt": "Faça uma verificação independente e literal do corpus congelado inteiro em C:/Users/victo/cyberalchemy-orchestrator/.codex/workflow-inputs/2026-08-25-domainspec-lean-schema-precedents-review/targets.json. Leia AGENTS.md, confirme 11/11 hashes e tente refutar as conclusões load-bearing do findings.md diretamente contra reports, fontes locais citadas e links primários: schemas-as-data como baseline, KILL atual de clabject/OCA/potency/self-hosting, ausência de MetaSchema geral no sibling, rejeição de type+objective+tags universal, separação schema evolution/instance migration e localização do Robot-Talks. Registre somente contradições que sobrevivem leitura literal, com arquivo, linha, citação, severidade e fix mínimo; liste também hipóteses plausíveis que você refutou. Não modifique arquivos e não escreva transcript; retorne em chat."
+        }
+      ]
+    },
+    {
+      "group_id": "final_approval",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 2500,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Atue somente como final approver, sem produzir findings novos. Depois que existir C:/Users/victo/cyberalchemy-orchestrator/projects/schema-service/reviews/2026-08-25-domainspec-lean-schema-precedents/review.md, leia-o integralmente junto com targets.json e confirme: cada finding sobrevivente cita literalmente um target congelado; findings refutados não sobreviveram; Coverage declara o modo degradado e cobre 11/11 targets por ambas as lentes; severidades e KEEP/FIX seguem o contrato; nenhum repair foi aplicado ao corpus. Retorne apenas APPROVE ou REJECT com razões citáveis. Não modifique arquivos."
+        }
+      ]
+    }
+  ]
+}
