@@ -1,0 +1,71 @@
+{
+  "dispatch_id": "2026-09-02-deterministic-json-dispatch-host-gap",
+  "schema_version": "0.7.0",
+  "agent_role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v2",
+    "registry_digest": "sha256:4fc9fa8c0092fb2833ffa634b291453c09c525d586067c97eea8f5c9618477d3",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:8929f727df4315eedbc5b0cd627a7fc9beb1e08f671c88fb838553fdcb899974"
+  },
+  "goal": "Identify with executable local evidence the smallest remaining gap between the accepted deterministic local JSON-to-terminal runtime and a real host-bound subagent dispatch initiated by that JSON, then define one bounded implementation task that closes only that gap.",
+  "context": "The accepted KEEP baseline proves 9 manifested JSON inputs through compilation, exact local acceptance, SQLite scheduling, ScriptedLocalAdapter execution, and terminal evidence, but explicitly excludes a real host launch. This short research uses only the local repository and must distinguish observed behavior from inference, without claiming canonical aci.execution-graph@2, ConfirmRuntimeDispatch@2, production authentication, provider/tool/credential execution, or external effects. The user explicitly authorized continuing bounded dispatches toward deterministic JSON dispatch without repeated scope confirmation; that authorization does not expand this research beyond the stated local host-bound gap.",
+  "max_loops": 2,
+  "final_approver": "parent",
+  "working_folder": "docs/features/agents-communication-infra/research/deterministic-json-dispatch",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "host_gap_explorer",
+      "n": 1,
+      "agents": [
+        {
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "agent_name": "Abramsky, Samson",
+          "initial_prompt": "Research route, read-only over source/runtime/tests/evidence. Read AGENTS.md, .agents/skills/research/SKILL.md, and docs/features/agents-communication-infra/research/deterministic-json-dispatch/research-initial-definitions.md in full. Treat its KEEP SHA-256 56039AD49883D94B5F4AC65D2D1DEDFCF527F95C90B598ADEA927267BA2D0B61 and the accepted runtime review it cites as the baseline, but independently inspect and execute only the smallest local source/tests needed. Determine the narrowest observed gap between the current path (9 JSONs -> compiler -> proposed ExecutionGraph -> exact local acceptance -> SQLite/state machine -> ScriptedLocalAdapter -> terminal) and an actual host-bound subagent launch initiated by JSON. Build the smallest concrete witness of the current flow and identify the first missing or non-consuming boundary. For every proposed gap, cite an executable observation, source consumer, or explicit accepted exclusion; mark inference as inference. Classify existing owners as already-deployed or build-from-owned, with no novelty claim. Do not alter source code. Write research.md as your complete return verbatim and findings.md as the cited synthesis with the required verdict matrix and a final one-line answer. The bounded follow-up implementation task must close only the first observed gap and must not pretend canonical-v2, ConfirmRuntimeDispatch@2, production, provider/tool/credential, or external-effect support."
+        }
+      ]
+    },
+    {
+      "group_id": "non_vacuity_skeptic",
+      "n": 1,
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4000,
+          "agent_name": "Gödel, Kurt",
+          "initial_prompt": "Act only as the non-vacuity skeptic for the deterministic JSON dispatch research. Read AGENTS.md, .agents/skills/research/SKILL.md, the initial definitions, research.md, findings.md, and the exact local source/tests/evidence cited by the explorer. Force the smallest concrete witness from governed JSON through the accepted local terminal path and locate the first host-bound step that is absent, simulated, unconsumed, or unsupported. Reject any gap stated only by inference, any key without a demonstrated consumer, and any task broader than the first observed missing boundary. Verify that findings.md contains the required candidate matrix; owner attribution; witnessed/sound/verdict/use-mode values; inline collapse-tests for keystone claims; citations to research.md; and a one-line answer. Verify research.md preserves the explorer return verbatim. Write skeptic-review.md with KEEP or FIX and precise evidence. If FIX, give one bounded correction request; do not edit source code or silently approve missing evidence."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "host_gap_explorer",
+      "to": "non_vacuity_skeptic",
+      "type": "sequential"
+    },
+    {
+      "from": "non_vacuity_skeptic",
+      "to": "host_gap_explorer",
+      "type": "feedback",
+      "loop_cap": 1
+    }
+  ],
+  "invoked_by": "victorboscaro@gmail.com"
+}

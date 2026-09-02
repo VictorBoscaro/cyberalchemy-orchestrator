@@ -1,0 +1,1 @@
+{"dispatch_id":"2026-09-02-craft-ledger-json-dispatch-update","route_digest":"sha256:d3181166e9564a6dd3445cb9568fd16121cdbab79c21e8b304e5e532bde657ca","schema":"aci-workflow-input-manifest/v1","slots":[],"target":{"attempt_id":"attempt-craft_ledger_updater-0-0","group_id":"craft_ledger_updater","seat_index":0,"turn_ordinal":0}}

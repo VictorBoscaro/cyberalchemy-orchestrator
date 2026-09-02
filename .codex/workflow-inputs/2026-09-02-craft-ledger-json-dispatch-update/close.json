@@ -1,0 +1,20 @@
+{
+  "close_of": "2026-09-02-craft-ledger-json-dispatch-update",
+  "exit_reason": "error",
+  "schema_version": "0.7.0",
+  "agent_role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
+  "agents_spawned": {
+    "total": 1,
+    "tree": {
+      "writer": 1,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "capability_route_digest": "sha256:d3181166e9564a6dd3445cb9568fd16121cdbab79c21e8b304e5e532bde657ca",
+  "invoked_by": "victorboscaro@gmail.com"
+}

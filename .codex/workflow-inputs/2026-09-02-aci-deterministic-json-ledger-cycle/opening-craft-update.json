@@ -1,0 +1,46 @@
+{
+  "dispatch_id": "2026-09-02-aci-deterministic-json-ledger-update",
+  "schema_version": "0.7.0",
+  "agent_role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
+  "dispatch_type": "other",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v2",
+    "registry_digest": "sha256:4fc9fa8c0092fb2833ffa634b291453c09c525d586067c97eea8f5c9618477d3",
+    "dispatch_type_ref": "other",
+    "ledger_dispatch_type": "other",
+    "capability_ref": "craft",
+    "capability_path": ".claude/skills/craft/SKILL.md",
+    "capability_digest": "sha256:6edb22bd4caa7ff6c8058b8e836817cfa0841522e6f042068d11cca47d075451",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:d3181166e9564a6dd3445cb9568fd16121cdbab79c21e8b304e5e532bde657ca"
+  },
+  "goal": "Update the authoritative Agents Communication Infrastructure Craft ledger with the proven local runtime result, the blocked host-gap research lifecycle, and the user's bounded task-session fallback decision without claiming that JSON-to-host execution works.",
+  "context": "Workspace resolution found four Craft ledgers and bound this work uniquely to docs/features/agents-communication-infra/.craft/ledger.yml because that ledger owns CTX-ACI-ROOT, deterministic dispatch, the compiler/runtime artifacts, and the canonical graph gap. The accepted local ceiling is nine manifested JSON inputs through compiler, proposed ExecutionGraph, exact local acceptance, SQLite state machine, ScriptedLocalAdapter, and terminal state; it excludes a host-live launch, canonical v2, ConfirmRuntimeDispatch@2, production authentication, provider/tool/credential execution, and external effects. A confirmed research opening could not compile because sequential handoff receipts are required before the plan that would launch their producer, and feedback plus loop_cap is not executable. The user authorized a bounded task-session fallback for that code repair, still using subagents with one independent reviewer per worker.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "working_folder": "docs/features/agents-communication-infra/.craft/artifacts/2026-09-02-deterministic-json-dispatch-ledger-update",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "craft_ledger_updater",
+      "n": 1,
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 7000,
+          "agent_name": "Lampson, Butler",
+          "initial_prompt": "Craft update route. Read AGENTS.md and .agents/skills/craft/SKILL.md in full before acting. Resolve every .craft/ledger.yml again and bind only if docs/features/agents-communication-infra/.craft/ledger.yml remains the unique owner of CTX-ACI-ROOT and DEF-ACI-DETERMINISTIC-DISPATCH-001; otherwise stop BLOCK without editing. Treat that ledger as source and docs/features/agents-communication-infra/CRAFT.md as its generated human view. Preserve all unrelated dirty-tree changes and existing row IDs. Before any target mutation, compute SHA-256 and require exact matches for `.codex/workflow-inputs/2026-09-02-aci-deterministic-json-ledger-cycle/PROPOSAL.md` = C21CAF952A74D1CE3C2A9050028DF7760C644C64ECB652A31E6614B24CEC0518, `docs/features/agents-communication-infra/.craft/ledger.yml` = 4CD03CC9376CE607710C5E1F52D04B7A72AA627BA4445E0B765C408E8C51A492, and `docs/features/agents-communication-infra/CRAFT.md` = E15F4FD0357A8EB10B966C45270D3A27B6C18E91316584565411D5E9FF928B1C. On any mismatch, return BLOCK with zero target edits. Verify the exact evidence bytes before recording facts: local runtime review SHA-256 8B5F152CD04AE9BBE44BC868802241432C779ACAE5FA3C01E0828937EB8F9DFF; research initial definitions 56039AD49883D94B5F4AC65D2D1DEDFCF527F95C90B598ADEA927267BA2D0B61; initial-definitions review 20FC0888D1DE91AD5AA25176528C89696B2C6774C7CC67161175D188DBA6DECC; confirmed opening C4A4EE6409548DA652AA1182F1B6CFDACF16F4EDEB559EBBF867DE925306702C; lifecycle BLOCK review 9173AB80B3C7FE1F1B2FC6017B97021F9CBD440262A3E3A4DB05C97B5A785F9B. Apply only the row-by-row changes frozen in that exact PROPOSAL.md: update the stale local-runtime artifact and context descriptions; repair every stale identity/runtime-review reference listed there; add distinct evidence artifacts for the final runtime review, research definitions/review, confirmed opening, and blocked lifecycle review; add one active host sequential-handoff gap; record the user's selected task-session-with-independent-review fallback decision; add the minimal relations; refresh all four specified context next moves; rebuild all indexes; validate; and export CRAFT.md. Do not close the broader canonical-v2 gap, do not invent execution evidence, and do not claim JSON-to-host. Write update-report.md in the declared working_folder with before/after path hashes, exact IDs touched, structural validation result, readiness residue, and the post-update SHA-256 of ledger.yml and CRAFT.md for the downstream independent validator. Do not change runtime/source/spec files. No commit or push."
+        }
+      ]
+    }
+  ],
+  "connections": [],
+  "invoked_by": "victorboscaro@gmail.com"
+}

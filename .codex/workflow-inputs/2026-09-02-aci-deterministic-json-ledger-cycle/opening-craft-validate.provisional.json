@@ -1,0 +1,46 @@
+{
+  "dispatch_id": "2026-09-02-aci-deterministic-json-ledger-validate",
+  "schema_version": "0.7.0",
+  "agent_role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
+  "dispatch_type": "other",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v2",
+    "registry_digest": "sha256:4fc9fa8c0092fb2833ffa634b291453c09c525d586067c97eea8f5c9618477d3",
+    "dispatch_type_ref": "other",
+    "ledger_dispatch_type": "other",
+    "capability_ref": "craft",
+    "capability_path": ".claude/skills/craft/SKILL.md",
+    "capability_digest": "sha256:6edb22bd4caa7ff6c8058b8e836817cfa0841522e6f042068d11cca47d075451",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:d3181166e9564a6dd3445cb9568fd16121cdbab79c21e8b304e5e532bde657ca"
+  },
+  "goal": "Independently validate the completed deterministic-JSON-dispatch Craft ledger update against its pinned post-update bytes, row contract, indexes, evidence hashes, human export, and claim ceiling.",
+  "context": "This is the independent reviewer for the single-seat Craft updater, implemented as a separate single-seat Craft validate dispatch because the canonical review capability requires a multi-group topology that the current sequential-handoff compiler cannot bootstrap. It may return pass, flag, or block under Craft; it does not emit a canonical review KEEP/FIX verdict. Before this provisional opening can be frozen or confirmed, the lifecycle must bind an exact aci-workflow-input-manifest/v1 to the proposal at SHA-256 C21CAF952A74D1CE3C2A9050028DF7760C644C64ECB652A31E6614B24CEC0518, the updater's terminal update-report.md, and its declared post-update ledger.yml and CRAFT.md digests. The validator is read-only over the ledger and view and writes only its validation report.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "working_folder": "docs/features/agents-communication-infra/.craft/artifacts/2026-09-02-deterministic-json-dispatch-ledger-validation",
+  "anti_bias_mode": "disabled",
+  "groups": [
+    {
+      "group_id": "craft_independent_validator",
+      "n": 1,
+      "agents": [
+        {
+          "role": "auditor",
+          "model": "gpt-5.6-sol",
+          "token_budget": 6000,
+          "agent_name": "Parnas, David",
+          "initial_prompt": "Independent Craft validation route; do not modify the target ledger or CRAFT.md. Read AGENTS.md and .agents/skills/craft/SKILL.md in full. Proceed only if the runtime-bound input manifest names `.codex/workflow-inputs/2026-09-02-aci-deterministic-json-ledger-cycle/PROPOSAL.md` at SHA-256 C21CAF952A74D1CE3C2A9050028DF7760C644C64ECB652A31E6614B24CEC0518, the updater's terminal update-report.md, `docs/features/agents-communication-infra/.craft/ledger.yml`, and `docs/features/agents-communication-infra/CRAFT.md` with exact post-update SHA-256 values, and every actual byte sequence matches; otherwise return BLOCK. Re-run workspace resolution and confirm the feature ledger is still the unique owner. Audit the exact row-by-row contract in that pinned PROPOSAL.md: stable unique IDs; all references resolvable; local runtime marked KEEP only within the nine-JSON/compiler/proposed-ExecutionGraph/exact-local-acceptance/SQLite/ScriptedLocalAdapter/terminal ceiling; all four stale identity/runtime-review references repaired; research definitions and lifecycle BLOCK hashes exact; zero plan/open/ledger/session/seat/binding/output/close recorded for the failed research opening; one active sequential-handoff/feedback execution gap; task-session fallback decision records only the user's authorization and requires an independent reviewer; broader canonical-v2, ConfirmRuntimeDispatch@2, host-live, production and external effects remain unproven. Verify every required index from ledger source, artifacts_by_path, next_moves including CTX-ACI-PROTOCOL-COMPILATION, active gaps, and the linked CRAFT.md quick links. Detect any duplicate or invented ID, unsupported status change, evidence/hash mismatch, stale claim, source/view inversion, or unrelated mutation. Write only validation-report.md in the declared working_folder with pass, flag, or block; exact commands and results; target hashes; row coverage; findings; residue; and next move. This result is the updater's independent reviewer but is not a canonical review verdict. No commit or push."
+        }
+      ]
+    }
+  ],
+  "connections": [],
+  "invoked_by": "victorboscaro@gmail.com"
+}

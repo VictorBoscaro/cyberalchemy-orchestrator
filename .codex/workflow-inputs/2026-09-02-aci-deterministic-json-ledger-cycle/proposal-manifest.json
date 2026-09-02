@@ -1,0 +1,47 @@
+{
+  "schema": "aci-dispatch-proposal-manifest/v1",
+  "proposal_id": "2026-09-02-aci-deterministic-json-ledger-cycle",
+  "state": "pre-confirmation",
+  "files": [
+    {
+      "path": ".codex/workflow-inputs/2026-09-02-aci-deterministic-json-ledger-cycle/opening-craft-update.json",
+      "sha256": "40d95bb399d7c51b977139a9eea610fb2d70c1038c59873fe84a39c1592e32d0",
+      "freeze_state": "frozen-for-confirmation"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-09-02-aci-deterministic-json-ledger-cycle/opening-craft-validate.provisional.json",
+      "sha256": "a23a220c2fd5af3af7c5611a44d46555bd7c40f1887698ee51d54a4782a31ce3",
+      "freeze_state": "provisional-until-post-update-input-manifest"
+    },
+    {
+      "path": ".codex/workflow-inputs/2026-09-02-aci-deterministic-json-ledger-cycle/PROPOSAL.md",
+      "sha256": "c21caf952a74d1ce3c2a9050028df7760c644c64ecb652a31e6614b24cec0518",
+      "freeze_state": "proposal"
+    }
+  ],
+  "validation": {
+    "json_parse": "pass",
+    "appender_validate_only": {
+      "opening_craft_update": "valid dispatch record (schema v0.7.0)",
+      "opening_craft_validate_provisional": "valid dispatch record (schema v0.7.0)"
+    },
+    "runtime_validate_opening_record": {
+      "opening_craft_update": "pass",
+      "opening_craft_validate_provisional": "pass"
+    },
+    "frozen_pre_update_inputs": {
+      "ledger_sha256": "4cd03cc9376ce607710c5e1f52d04b7a72aa627ba4445e0b765c408e8c51a492",
+      "craft_view_sha256": "e15f4fd0357a8eb10b966c45270d3a27b6c18e91316584565411d5e9ff928b1c",
+      "proposal_sha256": "c21caf952a74d1ce3c2a9050028df7760c644c64ecb652a31e6614b24cec0518"
+    },
+    "compile": "not_run",
+    "open": "not_run",
+    "append": "not_run",
+    "launch": "not_run",
+    "close": "not_run"
+  },
+  "routes": {
+    "craft_route_digest": "sha256:d3181166e9564a6dd3445cb9568fd16121cdbab79c21e8b304e5e532bde657ca",
+    "canonical_review_route_digest_blocked_for_this_cycle": "sha256:34013d06ac00aaf69c8b2553eb7456930e9dce730e62da8deb71186bdcb7ec66"
+  }
+}

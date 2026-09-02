@@ -35,6 +35,9 @@ indexes:
     DESC-ACI-ROOT-006: descriptions[15]
     DESC-ACI-CONTINUATION-006: descriptions[16]
     DESC-ACI-GENERIC-STAGE-HANDOFF-001: descriptions[17]
+    DESC-ACI-ROOT-007: descriptions[18]
+    DESC-ACI-CONTINUATION-007: descriptions[19]
+    DESC-ACI-RUNTIME-004: descriptions[20]
     DEF-ACI-DETERMINISTIC-DISPATCH-001: definitions[0]
     DEF-ACI-OFFICIAL-CONTRIBUTION-001: definitions[1]
     DEF-ACI-PARKED-CONTINUATION-001: definitions[2]
@@ -59,6 +62,7 @@ indexes:
     DEC-ACI-CANONICAL-EXECUTION-GRAPH-001: decisions[10]
     DEC-ACI-AGENT-IDENTITY-ROLE-001: decisions[11]
     DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001: decisions[12]
+    DEC-ACI-JSON-DISPATCH-IMPLEMENTATION-ROUTE-001: decisions[13]
     GAP-ACI-CONFIRMATION-WRITER-001: gaps[0]
     GAP-ACI-RUNTIME-BASELINE-001: gaps[1]
     GAP-ACI-LIVE-PROVIDER-001: gaps[2]
@@ -69,6 +73,7 @@ indexes:
     GAP-ACI-POLICY-002-CODE-ENTRY-001: gaps[7]
     GAP-ACI-CANONICAL-GRAPH-CONTRACT-001: gaps[8]
     GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001: gaps[9]
+    GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001: gaps[10]
     ART-ACI-LEDGER: artifacts[0]
     ART-ACI-VIEW: artifacts[1]
     ART-ACI-STATUS-SNAPSHOT: artifacts[2]
@@ -110,6 +115,12 @@ indexes:
     ART-ACI-GSH-CAPABILITY-SPEC: artifacts[38]
     ART-ACI-GSH-ARCH-DECISION: artifacts[39]
     ART-ACI-GSH-SESSION-20260901: artifacts[40]
+    ART-ACI-AGENT-IDENTITY-ROLE-IMPL: artifacts[41]
+    ART-ACI-LOCAL-EXECUTION-RUNTIME-IMPL: artifacts[42]
+    ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW: artifacts[43]
+    ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW: artifacts[44]
+    ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW: artifacts[45]
+    ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE: artifacts[46]
     REL-ACI-CONTAINS-RUNTIME: relations[0]
     REL-ACI-CONTAINS-PROTOCOL: relations[1]
     REL-ACI-CONTAINS-CONTINUATION: relations[2]
@@ -135,6 +146,11 @@ indexes:
     REL-ACI-IDENTITY-ROLE-DECISION-INFORMS-GAP: relations[22]
     REL-ACI-CONTAINS-GENERIC-STAGE-HANDOFF: relations[23]
     REL-ACI-GSH-DECISION-INFORMS-PROMOTION-GAP: relations[24]
+    REL-ACI-JSON-DISPATCH-ROUTE-GOVERNS-HOST-GAP: relations[25]
+    REL-ACI-LOCAL-RUNTIME-REVIEW-INFORMS-HOST-GAP: relations[26]
+    REL-ACI-HOST-GAP-REVIEW-EVIDENCES-HOST-GAP: relations[27]
+    REL-ACI-STAGE-E-REPAIR-INFORMS-HOST-GAP: relations[28]
+    REL-ACI-FAILED-CRAFT-LIFECYCLE-EVIDENCES-HOST-GAP: relations[29]
   open_decisions: []
   blocking_decisions: []
   active_blockers: []
@@ -144,15 +160,16 @@ indexes:
     - GAP-ACI-LEGACY-DISPATCH-FK-001
     - GAP-ACI-CANONICAL-GRAPH-CONTRACT-001
     - GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001
+    - GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001
   next_moves:
     - context_id: CTX-ACI-ROOT
-      next_move: Independently recheck the repaired agent-identity/role delta, adapt and review the stale DraftGraph compiler, then continue the canonical ExecutionGraph v2 projection, confirmation and runtime-ingestion contract sequence.
+      next_move: Repair and independently review the single-seat host binding first; only after KEEP, implement incremental handoff/feedback with a separate worker/reviewer pair and prove the JSON-to-host-bound-seat path end to end.
     - context_id: CTX-ACI-RUNTIME-BASELINE
-      next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains gated by the v2 graph contract.
+      next_move: Independently recheck the locally green optional-topology compatibility line, then repair the missing single-seat host binding through a paired task-session; do not add live provider, tool, credential or external effects.
     - context_id: CTX-ACI-PROTOCOL-COMPILATION
-      next_move: Recheck repaired SPEC-ACI-AGENT-IDENTITY-ROLE-001, then implement its strict pool loader, signed assignments and pinned role registry without adding runtime execution.
+      next_move: Preserve identity/role implementation Recheck KEEP E67819A7896AF0B58599233600853D0A70E8586F4594E5FDCDABC8F5CA4AE7DB while the bounded host-launch implementation proceeds.
     - context_id: CTX-ACI-RESUMABLE-FEEDBACK
-      next_move: Hold CONT-002, OPEN and real execution until the ExecutionGraph v2 contract, fixture, confirmation projections and runtime-ingestion boundary are specified and independently reviewed.
+      next_move: First repair the host hook so one generated binding becomes one terminal parent-bound seat under independent review; then implement incremental handoff/feedback in a separate paired task-session and run byte-bound end-to-end JSON evidence.
     - context_id: CTX-ACI-EXECUTION-POLICY
       next_move: Preserve the reviewed non-executable L0-L2 policy ladder; do not promote POLICY-003/L3, host enforcement or real attempted action before the canonical ExecutionGraph v2 contract and confirmation path are reviewed.
     - context_id: CTX-ACI-GENERIC-STAGE-HANDOFF
@@ -195,6 +212,12 @@ indexes:
     development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
     reviews/2026-09-01-aci-roadmap-closure-review/review.md: ART-ACI-ROADMAP-CLOSURE-REVIEW
     development/refinement-runs/2026-09-01-execution-graph-authority/followups/SPEC-ACI-AGENT-IDENTITY-ROLE-001/DECISION.md: ART-ACI-AGENT-IDENTITY-ROLE-SPEC
+    development/refinement-runs/2026-09-01-execution-graph-authority/followups/IMPL-ACI-AGENT-IDENTITY-ROLE-001/VALIDATION.md: ART-ACI-AGENT-IDENTITY-ROLE-IMPL
+    development/refinement-runs/2026-09-01-execution-graph-authority/followups/IMPL-ACI-EXECUTION-RUNTIME-001/VALIDATION.md: ART-ACI-LOCAL-EXECUTION-RUNTIME-IMPL
+    development/refinement-runs/2026-09-01-execution-graph-authority/followups/IMPL-ACI-EXECUTION-RUNTIME-001/review.md: ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW
+    research/deterministic-json-dispatch/review-research-lifecycle.md: ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW
+    "[repo-root] .codex/workflow-inputs/2026-09-02-stage-e-manifest-repair/review.md": ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW
+    "[repo-root] .codex/workflow-inputs/2026-09-02-craft-ledger-json-dispatch-update/lifecycle-residue.md": ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE
     discovery/generic-stage-handoff.md: ART-ACI-GSH-DISCOVERY
     specs/capabilities/generic-stage-handoff.md: ART-ACI-GSH-CAPABILITY-SPEC
     "[repo-root] docs/decisions/aci-generic-stage-handoff-architecture.md": ART-ACI-GSH-ARCH-DECISION
@@ -207,7 +230,7 @@ contexts:
     purpose: Govern deterministic dispatch, mediated agent outputs, durable runtime state and evidence-backed handoffs without making the chat orchestrator an execution supervisor.
     stage: validate
     gate: block
-    next_move: Independently recheck the repaired agent-identity/role delta, adapt and review the stale DraftGraph compiler, then continue the canonical ExecutionGraph v2 projection, confirmation and runtime-ingestion contract sequence.
+    next_move: Repair and independently review the single-seat host binding first; only after KEEP, implement incremental handoff/feedback with a separate worker/reviewer pair and prove the JSON-to-host-bound-seat path end to end.
     owned_artifacts:
       - ART-ACI-LEDGER
       - ART-ACI-VIEW
@@ -218,6 +241,11 @@ contexts:
       - ART-ACI-WORK-PACK
       - ART-ACI-ROADMAP-CLOSURE-REVIEW
       - ART-ACI-AGENT-IDENTITY-ROLE-SPEC
+      - ART-ACI-AGENT-IDENTITY-ROLE-IMPL
+      - ART-ACI-LOCAL-EXECUTION-RUNTIME-IMPL
+      - ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW
+      - ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW
+      - ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE
     links:
       - {label: Selected authority decision, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
       - {label: Confirmation surface decision, target: DEC-ACI-CONFIRMATION-SURFACE-001, kind: row-id}
@@ -225,6 +253,8 @@ contexts:
       - {label: Canonical execution graph decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
       - {label: Agent identity and role decision, target: DEC-ACI-AGENT-IDENTITY-ROLE-001, kind: row-id}
       - {label: Canonical graph contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
+      - {label: Host launch gap, target: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, kind: row-id}
+      - {label: Selected bounded implementation route, target: DEC-ACI-JSON-DISPATCH-IMPLEMENTATION-ROUTE-001, kind: row-id}
       - {label: Robot-Talks findings, target: ART-ACI-ROBOT-TALKS-FINDINGS-001, kind: artifact-id}
       - {label: Current progress snapshot, target: ART-ACI-STATUS-SNAPSHOT, kind: artifact-id}
       - {label: Planned transversal closure review, target: ART-ACI-ROADMAP-CLOSURE-REVIEW, kind: artifact-id}
@@ -234,31 +264,35 @@ contexts:
     purpose: Preserve evidence for the implemented SQLite journal, command receipts, artifacts, host binding and bounded bus-delivery seams without claiming a complete autonomous runtime.
     stage: validate
     gate: pass
-    next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains gated by the v2 graph contract.
+    next_move: Independently recheck the locally green optional-topology compatibility line, then repair the missing single-seat host binding through a paired task-session; do not add live provider, tool, credential or external effects.
     owned_artifacts:
       - ART-ACI-RUNTIME-DATABASE
       - ART-ACI-RUNTIME-JOURNAL
       - ART-ACI-RUNTIME-SERVICE
       - ART-ACI-RUNTIME-BASELINE
+      - ART-ACI-LOCAL-EXECUTION-RUNTIME-IMPL
+      - ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW
+      - ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW
   - context_id: CTX-ACI-PROTOCOL-COMPILATION
     parent_id: CTX-ACI-ROOT
     title: Bounded protocol compilation
     purpose: Compile one frozen skill/profile/binding/recipe invocation into a deterministic non-authoritative dispatch candidate.
     stage: validate
     gate: pass
-    next_move: Recheck the repaired agent identity/role delta, then adapt the stale DraftGraph compiler and its fixtures before broader v2 or runtime work.
+    next_move: Preserve identity/role implementation Recheck KEEP E67819A7896AF0B58599233600853D0A70E8586F4594E5FDCDABC8F5CA4AE7DB while the bounded host-launch implementation proceeds.
     owned_artifacts:
       - ART-ACI-PROTOCOL-DESCRIPTOR
       - ART-ACI-PROTOCOL-DECISION
       - ART-ACI-AGENT-IDENTITY-ROLE-SPEC
-    notes: The earlier bounded compiler pass is stale for agent identity/role. The independent review and two rechecks returned FIX; the repaired candidate awaits another recheck and grants no confirmation or execution authority.
+      - ART-ACI-AGENT-IDENTITY-ROLE-IMPL
+    notes: SPEC Recheck 3 and implementation forward-repair recheck returned KEEP. The premature promotion chronology remains recorded; the accepted identity change grants no confirmation or provider execution authority.
   - context_id: CTX-ACI-RESUMABLE-FEEDBACK
     parent_id: CTX-ACI-ROOT
     title: Bounded resumable feedback
     purpose: Implement the finite author turn 0 to reviewer turn 0 to author turn 1 graph with journal-derived inputs and no chat-orchestrator supervision after confirmation.
     stage: blocked
     gate: block
-    next_move: Hold CONT-002, OPEN and real execution until the ExecutionGraph v2 contract, fixture, confirmation projections and runtime-ingestion boundary are specified and independently reviewed.
+    next_move: First repair the host hook so one generated binding becomes one terminal parent-bound seat under independent review; then implement incremental handoff/feedback in a separate paired task-session and run byte-bound end-to-end JSON evidence.
     owned_artifacts:
       - ART-ACI-CONTINUATION-DECISION
       - ART-ACI-CONTINUATION-PLAN
@@ -273,10 +307,14 @@ contexts:
       - ART-ACI-HEADS-001-EVIDENCE
       - ART-ACI-BUS-001-EVIDENCE
       - ART-ACI-C2-ROBOT-TALKS-FINDINGS
+      - ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW
+      - ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE
     links:
       - {label: Resolved authority decision, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
       - {label: Selected canonical graph decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
       - {label: Active canonical graph contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
+      - {label: Active JSON-to-host launch gap, target: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, kind: row-id}
+      - {label: Selected bounded implementation route, target: DEC-ACI-JSON-DISPATCH-IMPLEMENTATION-ROUTE-001, kind: row-id}
       - {label: Approved Robot-Talks findings, target: ART-ACI-ROBOT-TALKS-FINDINGS-001, kind: artifact-id}
   - context_id: CTX-ACI-EXECUTION-POLICY
     parent_id: CTX-ACI-ROOT
@@ -351,11 +389,17 @@ artifacts:
   - {artifact_id: ART-ACI-POLICY-002-ALIGNMENT-AUDIT, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-ALIGNMENT-LAYERING-AUDIT.md, artifact_type: alignment-audit, status: pass, notes: PASS for the bounded three-path work-pack layering; sha256 34ece0e88c7a67a4065285d476d8143a617a111a579daa0ba6713d5bf811e8a3.}
   - {artifact_id: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md, artifact_type: implementation-evidence, status: pass, notes: Final implemented-reviewed-bounded PASS/KEEP for test-only L2 fake denial; focused 12/12, combined POL 59/59 and curated runtime 260/260 across 27 modules excluding Lean; sha256 0a44fa7e8058a57064acb30086f138c0c1da1340c7a081ab5e819b638d2b30a0.}
   - {artifact_id: ART-ACI-ROADMAP-CLOSURE-REVIEW, owner_context_id: CTX-ACI-ROOT, path: reviews/2026-09-01-aci-roadmap-closure-review/review.md, artifact_type: review-proposal, status: planned, notes: "Candidate id 2026-09-01-aci-roadmap-closure-review; persisted output and eight-agent topology were proposed only. No dispatch was opened or registered, no agent was invoked, and this absent output is neither evidence nor a completed review."}
-  - {artifact_id: ART-ACI-AGENT-IDENTITY-ROLE-SPEC, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: development/refinement-runs/2026-09-01-execution-graph-authority/followups/SPEC-ACI-AGENT-IDENTITY-ROLE-001/DECISION.md, artifact_type: specification-delta, status: candidate, notes: Owner-selected display-name provenance and closed-role decision with proposed schemas, fixtures and 41 negative vectors; the independent review and two rechecks returned FIX, and another recheck plus code adaptation remain pending.}
+  - {artifact_id: ART-ACI-AGENT-IDENTITY-ROLE-SPEC, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: development/refinement-runs/2026-09-01-execution-graph-authority/followups/SPEC-ACI-AGENT-IDENTITY-ROLE-001/DECISION.md, artifact_type: specification-delta, status: pass, notes: Owner-selected display-name provenance and closed-role decision with schemas, fixtures and 41 negative vectors; SPEC Recheck 3 returned KEEP.}
   - {artifact_id: ART-ACI-GSH-DISCOVERY, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: discovery/generic-stage-handoff.md, artifact_type: discovery, status: pass, notes: Reviewed source boundary; accepted digest sha256:328139a23aff2d391d51f85869c36b8a943aaf4833547fe9afdeaa9acfc8b6ec.}
   - {artifact_id: ART-ACI-GSH-CAPABILITY-SPEC, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: specs/capabilities/generic-stage-handoff.md, artifact_type: capability-spec, status: pass, notes: Version 0.2.0 passed the final same-reviewer document check; sha256:cb150f5dfd3518b610fd5d6d40baee2613dbbb4bdab0dda665b9bde6a22d6064. Aggregate promotion and implementation remain blocked.}
   - {artifact_id: ART-ACI-GSH-ARCH-DECISION, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: "[repo-root] docs/decisions/aci-generic-stage-handoff-architecture.md", artifact_type: decision-record, status: pass, notes: ACI-GSH-001 selects the staged host-workflow extension while preserving all five facts and reopening a standalone aggregate if any collapse test fails; sha256:e0303e89bd279b949df27de9f768877bf0db252f11db617ebec6afc9d0ad8a91.}
   - {artifact_id: ART-ACI-GSH-SESSION-20260901, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: "[repo-root] sessions/2026-09-01-2235-generic-stage-handoff-spec.md", artifact_type: session-record, status: pass, notes: Closes discovery approval, capability specification, architecture selection and ledger registration without claiming aggregate promotion or runtime implementation.}
+  - {artifact_id: ART-ACI-AGENT-IDENTITY-ROLE-IMPL, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: development/refinement-runs/2026-09-01-execution-graph-authority/followups/IMPL-ACI-AGENT-IDENTITY-ROLE-001/VALIDATION.md, artifact_type: implementation-evidence, status: pass, notes: Forward-only implementation repair received independent KEEP; review SHA-256 E67819A7896AF0B58599233600853D0A70E8586F4594E5FDCDABC8F5CA4AE7DB. The earlier premature promotion incident remains historical process residue.}
+  - {artifact_id: ART-ACI-LOCAL-EXECUTION-RUNTIME-IMPL, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: development/refinement-runs/2026-09-01-execution-graph-authority/followups/IMPL-ACI-EXECUTION-RUNTIME-001/VALIDATION.md, artifact_type: implementation-evidence, status: candidate-local, notes: Final same-reviewer Recheck 2 returned KEEP for the predecessor bytes after F1-F5 and R1-R2 repairs; review SHA-256 8B5F152CD04AE9BBE44BC868802241432C779ACAE5FA3C01E0828937EB8F9DFF. Commit integration later defaulted an omitted optional connections property to an empty topology; host 11/11, combined identity/runtime 161/161 and Stage-C 8/8 pass locally, but exact-byte independent re-review is pending. The ceiling remains local fake only and grants no canonical promotion, confirmation, live-adapter or external-effect authority.}
+  - {artifact_id: ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: development/refinement-runs/2026-09-01-execution-graph-authority/followups/IMPL-ACI-EXECUTION-RUNTIME-001/review.md, artifact_type: implementation-review, status: pass, notes: Final Recheck 2 KEEP with 95/95 exact seven-module suite, nine manifested inputs, failed-closed acceptance forgery and graph-tamper attacks; sha256 8B5F152CD04AE9BBE44BC868802241432C779ACAE5FA3C01E0828937EB8F9DFF. The KEEP explicitly excludes canonical v2 promotion, ConfirmRuntimeDispatch@2, production authentication, live adapters, external effects and production readiness.}
+  - {artifact_id: ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: research/deterministic-json-dispatch/review-research-lifecycle.md, artifact_type: research-lifecycle-review, status: block, notes: Independently reproduced that the confirmed research topology cannot bootstrap because compile requires the producer-output receipt before the producer can launch and rejects the feedback edge with loop_cap; sha256 9173AB80B3C7FE1F1B2FC6017B97021F9CBD440262A3E3A4DB05C97B5A785F9B. That research dispatch created no launch, append, seat, close or host-live evidence.}
+  - {artifact_id: ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: "[repo-root] .codex/workflow-inputs/2026-09-02-stage-e-manifest-repair/review.md", artifact_type: implementation-review, status: superseded, notes: Independent KEEP for the predecessor Stage-E integrity cascade; sha256 4076878260B43E714AD9C79E525DF6705AC9D5A8D8DC1278BF32E4E4FB9BB71C. A later one-line optional-topology repair required a new manifest pin; the refreshed 84-member manifest and Stage-C 8/8 pass locally, but exact-byte independent re-review remains pending. Neither state proves an open, binding or seat.}
+  - {artifact_id: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: "[repo-root] .codex/workflow-inputs/2026-09-02-craft-ledger-json-dispatch-update/lifecycle-residue.md", artifact_type: lifecycle-residue, status: block, notes: Session ses_87e29f91b9d29b273730af26b0c9b37e opened after Stage-E repair, but the generated seat launch produced zero host_workflow_turn_bindings rows and therefore remained orphaned. The seat was deliberately interrupted without terminal mailbox or frozen manifest and the dispatch closed with exit_reason error at evt_03d42c9a639768c5ddab0085d7b78983. Partial files are not execution success.}
 
 descriptions:
   - description_id: DESC-ACI-ROOT-001
@@ -431,23 +475,38 @@ descriptions:
   - description_id: DESC-ACI-POLICY-001
     context_id: CTX-ACI-EXECUTION-POLICY
     description: POLICY-000/L0 is pure, POLICY-001/L1 persists and reopens synthetic test-only inputs, and POLICY-002/L2 adds one deterministic durable fake-denial receipt over one exact L1 lineage. All remain non-executable; L3 real values, host enforcement and provider admission are product-gated and unimplemented.
-    status: active
+    status: superseded
     evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
   - description_id: DESC-ACI-ROOT-006
     context_id: CTX-ACI-ROOT
     description: The repository owner selected an agent-compiled, single canonical ExecutionGraph JSON as the complete pre-execution authority. The user may inspect topology, basic or full projections in chat, but every projection represents the same complete bytes and confirmation binds the full graph digest. Runtime support remains blocked on a new v2 specification and evidence; no real execution is authorized.
-    status: active
+    status: superseded
     evidence: ART-ACI-LEDGER
   - description_id: DESC-ACI-CONTINUATION-006
     context_id: CTX-ACI-RESUMABLE-FEEDBACK
     description: "The former PRODUCT-PASS ambiguity about who supplies authority fields is resolved: the agent compiles intent into one complete graph and the user confirms it. CONT-002 and OPEN remain blocked by the missing ExecutionGraph v2 schema, canonicalization, presentation projections, fixture, confirmation observation and runtime-ingestion contract."
-    status: active
+    status: superseded
     evidence: ART-ACI-LEDGER
   - description_id: DESC-ACI-GENERIC-STAGE-HANDOFF-001
     context_id: CTX-ACI-GENERIC-STAGE-HANDOFF
     description: The reviewed discovery is approved, capability spec 0.2.0 is accepted, and ACI-GSH-001 selects an extension of the bounded host-workflow pipeline. SourceToSlotMapping remains preconfirmed topology and visibility intent rather than publication authorization; separate post-commitment authorization, publication, delivery and consumer-admission facts must be promoted before implementation.
     status: active
     evidence: ART-ACI-GSH-CAPABILITY-SPEC
+  - description_id: DESC-ACI-ROOT-007
+    context_id: CTX-ACI-ROOT
+    description: The compiler and bounded local fake ExecutionGraph runtime have independent KEEP evidence for a byte-bound nine-JSON-to-terminal path, and Stage-E preflight integrity is repaired and reviewed KEEP. A later single-seat Craft attempt opened session ses_87e29f91b9d29b273730af26b0c9b37e but produced zero host binding rows, was interrupted without a terminal manifest and closed error. The next paired task-session must repair this single-seat binding before a separate paired increment addresses sequential handoff and feedback; canonical v2 confirmation, production authentication and external execution remain excluded.
+    status: active
+    evidence: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE
+  - description_id: DESC-ACI-CONTINUATION-007
+    context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    description: Local fake graph admission and scheduling are accepted, but the first real single-seat lifecycle attempt remained orphaned with zero durable binding rows. After that binding seam is repaired and independently reviewed, a separate paired task-session must let the initial ready group launch before downstream receipts exist and implement governed feedback. Neither partial attempt is host execution success.
+    status: active
+    evidence: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE
+  - description_id: DESC-ACI-RUNTIME-004
+    context_id: CTX-ACI-RUNTIME-BASELINE
+    description: The bounded local ExecutionGraph predecessor has final KEEP for 95/95 tests and nine byte-manifested JSON inputs through ScriptedLocalAdapter terminal state. A later optional-topology compatibility line and refreshed 84-member Stage-E pin pass locally at 161/161 plus Stage-C 8/8 but await exact-byte re-review. These facts permit local preflight validation but do not prove a durable host binding, terminal host seat, live adapter or external execution.
+    status: active
+    evidence: ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW
 
 definitions:
   - definition_id: DEF-ACI-DETERMINISTIC-DISPATCH-001
@@ -746,7 +805,7 @@ decisions:
     evidence: ART-ACI-AGENT-IDENTITY-ROLE-SPEC
     status: closed
     blocking: false
-    impact: The existing DraftGraph compiler and fixtures are stale for identity/role. They cannot be promoted until the real pool and all consumers migrate atomically from legacy name, the compiler is adapted, and independent review passes. Runtime integration remains blocked.
+    impact: Commit f981397 was promoted before review; the forward-only repair later received independent KEEP. That chronology remains process residue, while canonical v2 and host-bound launch remain separately blocked.
     owner: repository-owner
     links:
       - {label: Governing canonical graph decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
@@ -769,6 +828,25 @@ decisions:
       - {label: Reviewed discovery, target: ART-ACI-GSH-DISCOVERY, kind: artifact-id}
       - {label: Accepted capability specification, target: ART-ACI-GSH-CAPABILITY-SPEC, kind: artifact-id}
       - {label: Remaining promotion gap, target: GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001, kind: row-id}
+  - decision_id: DEC-ACI-JSON-DISPATCH-IMPLEMENTATION-ROUTE-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: Which bounded route may implement the missing JSON-to-host incremental launch and governed feedback behavior when domainspec-implement is unavailable?
+    description: The implementation-axioms prerequisite required by domainspec-implement is absent, while the owner requires continued implementation through subagents with one independent reviewer per worker.
+    options: [bounded-task-session-with-paired-review, wait-for-implementation-axioms, ungoverned-direct-edit]
+    default_option: bounded-task-session-with-paired-review
+    selected: bounded-task-session-with-paired-review
+    rationale: The repository owner explicitly authorized the task-session fallback while retaining the full worker/reviewer cycle and the existing authority ceilings.
+    evidence: ART-ACI-LEDGER
+    status: closed
+    blocking: false
+    impact: "Use two ordered bounded task-sessions, each with its own worker and independent reviewer: first repair and prove one terminal parent-bound single seat, then implement incremental initial-ready-group handoff and governed feedback. End-to-end JSON-to-host-bound-seat evidence remains required without promoting canonical aci.execution-graph@2, ConfirmRuntimeDispatch@2, production authentication, live provider/tool/credential execution, external effects or production readiness."
+    owner: repository-owner
+    links:
+      - {label: Host launch blocker evidence, target: ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW, kind: artifact-id}
+      - {label: Local runtime ceiling evidence, target: ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW, kind: artifact-id}
+      - {label: Governed implementation gap, target: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, kind: row-id}
+      - {label: Failed single-seat lifecycle residue, target: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE, kind: artifact-id}
 
 gaps:
   - gap_id: GAP-ACI-CONFIRMATION-WRITER-001
@@ -852,7 +930,7 @@ gaps:
       - {label: Governing layering decision, target: DEC-ACI-POLICY-LAYERING-001, kind: row-id}
   - gap_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001
     scope_id: CTX-ACI-RESUMABLE-FEEDBACK
-    summary: No accepted v2 contract yet defines the single canonical ExecutionGraph JSON, reviewed agent-identity/role compilation and code adaptation, per-node execution fields, canonical bytes/digest, topology/basic/full presentation projections, confirmation observation, runtime-derived facts, CONF v1 compatibility or runtime ingestion.
+    summary: The reviewed compiler/identity path and final-KEEP bounded local fake executor now exist. Its exact local acceptance-digest allowlist is neither a signature nor a substitute for accepted canonical v2 promotion, the topology/basic/full projection package, ConfirmRuntimeDispatch@2 observation/envelope, CONF v1 cutover, production host authentication or a live provider/tool/credential execution boundary.
     severity: block
     treatment: plan
     owner: runtime-architecture
@@ -863,6 +941,7 @@ gaps:
       - {label: Canonical graph definition, target: DEF-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
       - {label: Historical CONF v1 contract, target: ART-ACI-CONF-000-EVIDENCE, kind: artifact-id}
       - {label: Candidate identity and role delta, target: ART-ACI-AGENT-IDENTITY-ROLE-SPEC, kind: artifact-id}
+      - {label: Final-KEEP local fake execution evidence, target: ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW, kind: artifact-id}
   - gap_id: GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001
     scope_id: CTX-ACI-GENERIC-STAGE-HANDOFF
     summary: The accepted generic-stage-handoff capability and architecture have not yet been promoted into concrete aggregate aspects, durable operations, mappings, workflow constraints or conformance fixtures; no runtime implementation claim is authorized.
@@ -874,6 +953,21 @@ gaps:
     links:
       - {label: Governing architecture decision, target: DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001, kind: row-id}
       - {label: Accepted capability specification, target: ART-ACI-GSH-CAPABILITY-SPEC, kind: artifact-id}
+  - gap_id: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    summary: A manifested JSON bundle deterministically reaches terminal state only through ScriptedLocalAdapter. Stage-E preflight is repaired, but the first single-seat Craft attempt opened a session and then produced zero durable host binding rows, leaving an orphaned seat that was interrupted and closed error. Beyond that first missing seam, multi-seat compilation still requires downstream producer-output receipts before launching the initial producer and rejects feedback with loop_cap.
+    severity: block
+    treatment: plan
+    owner: runtime-architecture
+    status: active
+    evidence: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE
+    links:
+      - {label: Selected bounded implementation route, target: DEC-ACI-JSON-DISPATCH-IMPLEMENTATION-ROUTE-001, kind: row-id}
+      - {label: Reproduced host lifecycle gap, target: ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW, kind: artifact-id}
+      - {label: Accepted local runtime ceiling, target: ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW, kind: artifact-id}
+      - {label: Stage-E preflight repair KEEP, target: ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW, kind: artifact-id}
+      - {label: Failed single-seat lifecycle residue, target: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE, kind: artifact-id}
+      - {label: Separate canonical v2 contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
 
 route_handoffs: []
 receipts: []
@@ -901,8 +995,13 @@ relations:
   - {relation_id: REL-ACI-POLICY-EVIDENCE-INFORMS-RUNTIME, source_id: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, target_id: CTX-ACI-RUNTIME-BASELINE, type: informs, status: active, reason: The final receipt adds a curated 260-test runtime regression while preserving the BUS 200-test baseline as its own historical closure point., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
   - {relation_id: REL-ACI-CANONICAL-GRAPH-GAP-BLOCKS-CONTINUATION, source_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: active, reason: OPEN and real execution cannot advance until one reviewed v2 graph contract defines the complete confirmed authority and runtime ingestion boundary., evidence: ART-ACI-LEDGER}
   - {relation_id: REL-ACI-CANONICAL-GRAPH-DECISION-INFORMS-GAP, source_id: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, target_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, type: informs, status: active, reason: The owner-selected single-JSON and full-digest confirmation model defines the missing specification work without proving its implementation., evidence: ART-ACI-LEDGER}
-  - {relation_id: REL-ACI-IDENTITY-ROLE-DECISION-INFORMS-GAP, source_id: DEC-ACI-AGENT-IDENTITY-ROLE-001, target_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, type: informs, status: active, reason: The owner-selected YAML identity provenance and pinned role registry narrow the compiler boundary while leaving independent review, code adaptation and runtime ingestion unproven., evidence: ART-ACI-AGENT-IDENTITY-ROLE-SPEC}
+  - {relation_id: REL-ACI-IDENTITY-ROLE-DECISION-INFORMS-GAP, source_id: DEC-ACI-AGENT-IDENTITY-ROLE-001, target_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, type: informs, status: active, reason: The owner-selected YAML identity provenance and pinned role registry narrow the compiler boundary; their independent KEEP and the local runtime KEEP do not prove canonical v2 confirmation or host-bound execution., evidence: ART-ACI-AGENT-IDENTITY-ROLE-SPEC}
   - {relation_id: REL-ACI-CONTAINS-GENERIC-STAGE-HANDOFF, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-GENERIC-STAGE-HANDOFF, type: contains, status: active, reason: Generic stage handoff is a bounded capability child of the ACI feature., evidence: ART-ACI-GSH-CAPABILITY-SPEC}
   - {relation_id: REL-ACI-GSH-DECISION-INFORMS-PROMOTION-GAP, source_id: DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001, target_id: GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001, type: informs, status: active, reason: The staged-extension decision fixes the promotion direction while leaving concrete aggregate aspects and runtime contracts unimplemented., evidence: ART-ACI-GSH-ARCH-DECISION}
+  - {relation_id: REL-ACI-JSON-DISPATCH-ROUTE-GOVERNS-HOST-GAP, source_id: DEC-ACI-JSON-DISPATCH-IMPLEMENTATION-ROUTE-001, target_id: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, type: governs, status: active, reason: The owner-authorized bounded task-session with paired worker and independent reviewer is the implementation route for the reproduced host-launch gap., evidence: ART-ACI-LEDGER}
+  - {relation_id: REL-ACI-LOCAL-RUNTIME-REVIEW-INFORMS-HOST-GAP, source_id: ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW, target_id: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, type: informs, status: active, reason: Final KEEP proves deterministic local fake graph execution and fixes the capability ceiling below host-bound seat launch., evidence: ART-ACI-LOCAL-EXECUTION-RUNTIME-REVIEW}
+  - {relation_id: REL-ACI-HOST-GAP-REVIEW-EVIDENCES-HOST-GAP, source_id: ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW, target_id: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, type: evidences, status: active, reason: The reviewed research lifecycle reproduced both the pre-launch sequential receipt dependency and the unsupported feedback edge without fabricating receipts or launching a seat., evidence: ART-ACI-JSON-DISPATCH-HOST-GAP-REVIEW}
+  - {relation_id: REL-ACI-STAGE-E-REPAIR-INFORMS-HOST-GAP, source_id: ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW, target_id: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, type: informs, status: active, reason: Stage-E KEEP removes source-integrity preflight as the current first blocker but does not prove host binding or seat completion., evidence: ART-ACI-STAGE-E-MANIFEST-REPAIR-REVIEW}
+  - {relation_id: REL-ACI-FAILED-CRAFT-LIFECYCLE-EVIDENCES-HOST-GAP, source_id: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE, target_id: GAP-ACI-JSON-DISPATCH-HOST-LAUNCH-001, type: evidences, status: active, reason: The opened single-seat attempt produced zero durable binding rows and closed error after deliberate interruption without a terminal manifest., evidence: ART-ACI-CRAFT-JSON-DISPATCH-LIFECYCLE-RESIDUE}
 
 recomposition: []
