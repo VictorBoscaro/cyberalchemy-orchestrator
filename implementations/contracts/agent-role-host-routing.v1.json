@@ -1,0 +1,17 @@
+{
+  "schema": "aci.agent-role-host-routing@1",
+  "role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
+  "fallback_role": "explorer",
+  "routes": [
+    {"role": "auditor", "keywords": ["review", "audit", "security", "critic", "verify"]},
+    {"role": "planner", "keywords": ["plan", "architect", "design", "strategy"]},
+    {"role": "coder", "keywords": ["code", "implement", "fix", "build", "refactor", "test"]},
+    {"role": "writer", "keywords": ["write", "draft", "document"]},
+    {"role": "skeptic", "keywords": ["skeptic", "falsif", "challenge", "red team"]},
+    {"role": "synthesizer", "keywords": ["synth", "merge", "integrat"]}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "aci.role-registry-authority@1",
+  "accepted": [
+    {
+      "name": "aci.agent-roles",
+      "version": "1",
+      "digest": "sha256:76709aaeadd321f492ab6c2da67ea7b27cdf278718fa42604d443ce294c8ae6b"
+    }
+  ]
+}

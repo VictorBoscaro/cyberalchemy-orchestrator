@@ -1,0 +1,9 @@
+{
+  "schema": "aci.allocator-evidence-fixture@2",
+  "evidence_id": "evidence:aci.fixture:review_correct_verify:r1",
+  "key_id": "aci-fixture-allocator-ed25519-1",
+  "context_digest": "sha256:800106beddbf8c9572e32a0b818594c661956fbebcf3f748baa3f848747be791",
+  "is_latest": true,
+  "pair_is_unbound": true,
+  "signature": "MzgwdQhOrTy3OruiQrC8EGTNsZIC3JMF+/nw97YHrBZsudMEML2l+CPQmVy2YMkvmmCG2Zd7yVpX9oNvmwVQDg=="
+}

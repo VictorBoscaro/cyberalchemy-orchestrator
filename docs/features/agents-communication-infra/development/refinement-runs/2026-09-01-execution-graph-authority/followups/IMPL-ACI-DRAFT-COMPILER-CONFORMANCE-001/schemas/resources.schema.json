@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aci.compilation-resource-fixture@1.schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "resources"],
+  "properties": {
+    "schema": {"const": "aci.compilation-resource-fixture@1"},
+    "resources": {"type": "array", "items": {"$ref": "#/$defs/inlineResource"}}
+  },
+  "$defs": {
+    "key": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "inlineResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resource_key", "kind", "media_type", "encoding", "content", "digest"],
+      "properties": {
+        "resource_key": {"$ref": "#/$defs/key"},
+        "kind": {"enum": ["context", "schema", "policy", "input"]},
+        "media_type": {"type": "string", "minLength": 1},
+        "encoding": {"enum": ["utf-8", "base64"]},
+        "content": {"type": "string"},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    }
+  }
+}

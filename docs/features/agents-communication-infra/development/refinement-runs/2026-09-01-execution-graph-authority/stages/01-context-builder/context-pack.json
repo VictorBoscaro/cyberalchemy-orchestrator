@@ -1,0 +1,22 @@
+{
+  "schema": "aci.refine-context-pack@1",
+  "run_id": "2026-09-01-execution-graph-authority",
+  "mode": "standard-strict",
+  "objective": "Define and test the single canonical pre-execution ExecutionGraph authority boundary.",
+  "fixed_decisions": [
+    "agent_compiles",
+    "one_canonical_json",
+    "three_views_one_digest",
+    "material_change_requires_reconfirmation"
+  ],
+  "selected_evidence": [
+    {"path": "docs/features/agents-communication-infra/.craft/ledger.yml", "selectors": ["DEC-ACI-CANONICAL-EXECUTION-GRAPH-001", "DEF-ACI-CANONICAL-EXECUTION-GRAPH-001", "GAP-ACI-CANONICAL-GRAPH-CONTRACT-001"]},
+    {"path": "docs/features/agents-communication-infra/specs/confirmation-authority.md", "selectors": ["Ownership and trust boundary", "Canonical byte contract", "Digest taxonomy", "Bounded pending sheet and DispatchSpec projection", "Atomic acceptance and success boundary"]},
+    {"path": "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1", "selectors": ["pending-sheet.json", "capability-resolution.json", "dispatch-spec.json", "confirmed-turn-graph.json", "confirmation-observation.json", "confirmed-authority.json"]},
+    {"path": "implementations/server/runtime/confirmation.py", "selectors": ["project_dispatch_spec", "build_confirmation_batch"]},
+    {"path": "implementations/server/runtime/service.py", "selectors": ["confirm_runtime_dispatch"]}
+  ],
+  "authority_rule": "Include every pre-execution value whose mutation can change allowed behavior, information flow, resources, effects or stopping; exclude evidence and operational facts created by confirmation or execution.",
+  "research_gap": null,
+  "write_scope": "this refinement-run folder only"
+}

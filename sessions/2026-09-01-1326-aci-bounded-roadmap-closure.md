@@ -4,7 +4,7 @@ artifact_kind: session
 layer: feature
 version: 0.1.0
 created_at: 2026-09-01T13:26:40-03:00
-updated_at: 2026-09-01T13:28:45-03:00
+updated_at: 2026-09-01T15:24:00-03:00
 expires: 2026-10-31
 decisions_made: true
 contradictions_found: false
@@ -31,6 +31,7 @@ The repository objective is to keep delegated agent work bound to explicit objec
 | [ACI dispatch continuation and confirmation gate](2026-08-31-2006-aci-dispatch-continuation-gate.md) | `derives-from` | This node closes the bounded implementation arc opened by the earlier continuation and authority gate. |
 | [Agents Communication Infrastructure Craft ledger](../docs/features/agents-communication-infra/CRAFT.md) | `contextualizes` | This session supplies the narrative context for the completed increments, current blocker, residue and planned review recorded by the feature ledger. |
 | [POLICY-002 implementation review](../docs/features/agents-communication-infra/development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md) | `derives-from` | The closing claims about POLICY-002 and its validation boundary are grounded in this final PASS/KEEP evidence. |
+| [ExecutionGraph authority refinement and compiler boundary](2026-09-01-1524-aci-execution-graph-refinement.md) | `grounds` | This session's unresolved product-authority question and technical graph gap became the starting evidence for the later refinement. |
 
 ## Open questions
 

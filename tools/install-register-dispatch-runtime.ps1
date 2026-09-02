@@ -18,7 +18,9 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Target,
 
-    [switch]$Check
+    [switch]$Check,
+
+    [switch]$LegacyVerification
 )
 
 $ErrorActionPreference = 'Stop'
@@ -80,7 +82,14 @@ function Assert-NoReparsePoints {
 
 $sourceRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\', '/')
 $targetRoot = [System.IO.Path]::GetFullPath($Target).TrimEnd('\', '/')
-$manifestRelative = 'implementations/contracts/register-dispatch-runtime-package.v1.json'
+$manifestRelative = if ($LegacyVerification) {
+    if (-not $Check) {
+        throw 'Legacy v1 is verification-only; use -LegacyVerification together with -Check.'
+    }
+    'implementations/contracts/register-dispatch-runtime-package.v1.json'
+} else {
+    'implementations/contracts/register-dispatch-runtime-package.v2.json'
+}
 $manifestPath = Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot $manifestRelative) -Label 'manifest source'
 
 Assert-NoReparsePoints -Path $sourceRoot -Label 'source root'
@@ -96,9 +105,14 @@ if (-not (Test-Path -LiteralPath $gitMarker)) {
 }
 
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
-$manifestKeys = @('schema', 'canonical_source', 'package_version', 'registry_schema', 'ledger_schema_version', 'files')
+$manifestKeys = if ($LegacyVerification) {
+    @('schema', 'canonical_source', 'package_version', 'registry_schema', 'ledger_schema_version', 'files')
+} else {
+    @('schema', 'canonical_source', 'package_version', 'registry_schema', 'ledger_schema_version', 'agent_role_registry_ref', 'files')
+}
 Assert-ExactProperties -Object $manifest -Expected $manifestKeys -Label 'package manifest'
-if ($manifest.schema -ne 'register-dispatch-runtime-package/v1') {
+$expectedPackageSchema = if ($LegacyVerification) { 'register-dispatch-runtime-package/v1' } else { 'register-dispatch-runtime-package/v2' }
+if ($manifest.schema -ne $expectedPackageSchema) {
     throw "Unsupported package manifest schema: $($manifest.schema)"
 }
 if ($manifest.canonical_source -ne 'cyberalchemy-orchestrator') {
@@ -111,7 +125,8 @@ if ($manifest.package_version -notmatch '^\d+\.\d+\.\d+$') {
 if ($manifest.package_version -ne $manifest.ledger_schema_version) {
     throw 'package_version must exactly equal ledger_schema_version.'
 }
-if ($manifest.registry_schema -ne 'aci-dispatch-type-registry/v1') {
+$expectedRegistrySchema = if ($LegacyVerification) { 'aci-dispatch-type-registry/v1' } else { 'aci-dispatch-type-registry/v2' }
+if ($manifest.registry_schema -ne $expectedRegistrySchema) {
     throw "Unsupported registry_schema: $($manifest.registry_schema)"
 }
 if ($manifest.files -isnot [System.Array] -or $manifest.files.Count -eq 0) {
@@ -121,9 +136,19 @@ if ($manifest.files -isnot [System.Array] -or $manifest.files.Count -eq 0) {
 $requiredFiles = @(
     '.claude/skills/register-dispatch/SKILL.md',
     '.claude/skills/register-dispatch/append-dispatch.cjs',
-    '.claude/skills/register-dispatch/agents/openai.yaml',
-    'implementations/contracts/dispatch-type-registry.v1.json'
+    '.claude/skills/register-dispatch/agents/openai.yaml'
 )
+$requiredFiles += if ($LegacyVerification) {
+    @('implementations/contracts/dispatch-type-registry.v1.json')
+} else {
+    @(
+        'implementations/contracts/dispatch-type-registry.v2.json',
+        'implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json',
+        'implementations/contracts/agent-role-registry.v1.json',
+        'implementations/contracts/agent-role-registry-authority.v1.json',
+        'implementations/contracts/agent-role-host-routing.v1.json'
+    )
+}
 $seenPaths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
 foreach ($entry in $manifest.files) {
     Assert-ExactProperties -Object $entry -Expected @('path', 'sha256') -Label 'package file entry'
@@ -144,15 +169,26 @@ if ($fileSetDifference.Count -gt 0) {
     throw 'Package manifest must declare exactly the required register-dispatch runtime files.'
 }
 
-$registryEntry = $manifest.files | Where-Object {
-    $_.path -eq 'implementations/contracts/dispatch-type-registry.v1.json'
+$registryPath = if ($LegacyVerification) {
+    'implementations/contracts/dispatch-type-registry.v1.json'
+} else {
+    'implementations/contracts/dispatch-type-registry.v2.json'
 }
+$registryEntry = $manifest.files | Where-Object { $_.path -eq $registryPath }
 $registrySource = Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot $registryEntry.path) -Label 'registry source'
 Assert-NoReparsePoints -Path $registrySource -Label 'registry source'
 $registry = Get-Content -LiteralPath $registrySource -Raw | ConvertFrom-Json
 if ($registry.schema -ne $manifest.registry_schema -or
     $registry.ledger_schema_version -ne $manifest.ledger_schema_version) {
     throw 'Package version does not match the canonical registry schema/version.'
+}
+if (-not $LegacyVerification) {
+    Assert-ExactProperties -Object $manifest.agent_role_registry_ref -Expected @('name', 'version', 'digest') -Label 'package agent_role_registry_ref'
+    Assert-ExactProperties -Object $registry.agent_role_registry_ref -Expected @('name', 'version', 'digest') -Label 'registry agent_role_registry_ref'
+    if (($manifest.agent_role_registry_ref | ConvertTo-Json -Compress) -ne
+        ($registry.agent_role_registry_ref | ConvertTo-Json -Compress)) {
+        throw 'Package role registry ref does not match the dispatch registry.'
+    }
 }
 
 $failures = [System.Collections.Generic.List[string]]::new()

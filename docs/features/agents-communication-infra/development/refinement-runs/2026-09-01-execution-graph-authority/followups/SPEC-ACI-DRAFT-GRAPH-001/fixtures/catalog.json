@@ -1,0 +1,74 @@
+{
+  "schema": "aci.compilation-catalog-fixture@1",
+  "semantics": [
+    {
+      "key": "execution_graph_v2",
+      "ref": {"name": "aci.execution-graph-semantics", "version": "2", "digest": "sha256:40f3d717159e1d0eb77479d53474ff8f14f4bde7706edf42629a8f146a404fc7"},
+      "digest_source": "fixture:semantics:aci.execution-graph-semantics@2"
+    }
+  ],
+  "providers": [
+    {
+      "key": "openai_fixture",
+      "ref": {"name": "openai", "version": "2026-09", "digest": "sha256:6444659beabb3dbdf99bb59782d8b67035b779e175a8b83e6dfffba3722fdd63"},
+      "digest_source": "fixture:provider:openai@2026-09"
+    }
+  ],
+  "models": [
+    {
+      "key": "gpt_5_6_fixture",
+      "provider_key": "openai_fixture",
+      "ref": {"name": "gpt-5.6", "version": "2026-09", "digest": "sha256:951a0d328e2112a4598601c50024b75eeb9bffd06cbac9e593324567789d80f4"},
+      "digest_source": "fixture:model:gpt-5.6@2026-09"
+    }
+  ],
+  "profiles": [
+    {
+      "key": "read_only_reviewer",
+      "provider_key": "openai_fixture",
+      "model_key": "gpt_5_6_fixture",
+      "ref": {"name": "aci.read-only-reviewer", "version": "1", "digest": "sha256:301a4279e233a7ed845a72eb00b94c56c6cbae13a56c7cf7ff29b8c0bffa1b91"},
+      "digest_source": "fixture:profile:aci.read-only-reviewer@1"
+    },
+    {
+      "key": "bounded_corrector",
+      "provider_key": "openai_fixture",
+      "model_key": "gpt_5_6_fixture",
+      "ref": {"name": "aci.bounded-corrector", "version": "1", "digest": "sha256:f136048da6c4b36c93bfaba34b5e62d797703f4c4d37026159b2a0953065dac2"},
+      "digest_source": "fixture:profile:aci.bounded-corrector@1"
+    },
+    {
+      "key": "read_only_verifier",
+      "provider_key": "openai_fixture",
+      "model_key": "gpt_5_6_fixture",
+      "ref": {"name": "aci.read-only-verifier", "version": "1", "digest": "sha256:2db4735aba487bdd3db641e4500447a1577e3a4e26580da4105ab384e4a8b3c7"},
+      "digest_source": "fixture:profile:aci.read-only-verifier@1"
+    }
+  ],
+  "capabilities": [
+    {
+      "key": "workspace_files",
+      "operations": ["patch", "read"],
+      "tool_ref": {"name": "workspace.files", "version": "1", "digest": "sha256:cf3e3a396e0496e01dcd7660e7b3237b387217751cda47d40109a993e9c430e8"},
+      "digest_source": "fixture:tool:workspace.files@1"
+    }
+  ],
+  "validators": [
+    {
+      "key": "schema_and_citation",
+      "ref": {"name": "aci.schema-and-citation-validator", "version": "1", "digest": "sha256:274b90e8d398efa40fc2c12a1bc0b4a99ec24a694c689a269287d1b25558823e"},
+      "digest_source": "fixture:validator:aci.schema-and-citation-validator@1"
+    },
+    {
+      "key": "schema",
+      "ref": {"name": "aci.schema-validator", "version": "1", "digest": "sha256:f016338fd2a0f7a423cce239a57300f26ba7150c3831a8690b2512298c4e8e04"},
+      "digest_source": "fixture:validator:aci.schema-validator@1"
+    },
+    {
+      "key": "schema_and_evidence",
+      "ref": {"name": "aci.schema-and-evidence-validator", "version": "1", "digest": "sha256:d1d331d6b9186ff7abbbabdcdb48ae1a5f2dbae004f322c8a534fcb9c8ffe653"},
+      "digest_source": "fixture:validator:aci.schema-and-evidence-validator@1"
+    }
+  ],
+  "credentials": []
+}

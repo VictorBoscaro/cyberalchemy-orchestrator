@@ -1,0 +1,140 @@
+{
+  "schema": "aci.execution-graph@2",
+  "dispatch_id": "dispatch:aci.fixture:review_correct_verify",
+  "revision": "r1",
+  "objective": {
+    "statement": "Revisar o resultado X, produzir uma correção e verificar a correção.",
+    "done_when": ["A correção existe e a verificação independente retorna pass."]
+  },
+  "semantics_ref": {"name": "aci.execution-graph-semantics", "version": "2", "digest": "sha256:40f3d717159e1d0eb77479d53474ff8f14f4bde7706edf42629a8f146a404fc7"},
+  "content_members": [
+    {"member_id": "member:result_x", "kind": "input", "media_type": "text/plain", "encoding": "utf-8", "content": "Resultado X a revisar.", "digest": "sha256:44d90d18d91d79fbae7e1ca43c47a1657f6e0a644e9fe9ae63119f79c2f20186"},
+    {"member_id": "member:review_report_schema", "kind": "schema", "media_type": "application/schema+json", "encoding": "utf-8", "content": "{\"type\":\"object\",\"required\":[\"findings\"],\"properties\":{\"findings\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}", "digest": "sha256:40184ddadfbe797e460872fb8c0040d10257528fba1aed3aee885724f649bb60"},
+    {"member_id": "member:correction_schema", "kind": "schema", "media_type": "application/schema+json", "encoding": "utf-8", "content": "{\"type\":\"object\",\"required\":[\"patch\",\"coverage\"],\"properties\":{\"patch\":{\"type\":\"string\"},\"coverage\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}", "digest": "sha256:a01c7539a622acae730428c7f54ed0e4c75e37019ad5d8ae8520c19c3a3074c2"},
+    {"member_id": "member:verification_schema", "kind": "schema", "media_type": "application/schema+json", "encoding": "utf-8", "content": "{\"type\":\"object\",\"required\":[\"verdict\",\"evidence\"],\"properties\":{\"verdict\":{\"enum\":[\"pass\",\"flag\",\"block\"]},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}", "digest": "sha256:eaac2832bf0c48808dcbb30a218d607b3079e8ccbcea5948b3b48431f31c2ef5"},
+    {"member_id": "member:receipt_schema", "kind": "schema", "media_type": "application/schema+json", "encoding": "utf-8", "content": "{\"type\":\"object\",\"required\":[\"status\"],\"properties\":{\"status\":{\"enum\":[\"pass\",\"flag\",\"block\"]}},\"additionalProperties\":false}", "digest": "sha256:afcdfaaae32fc49c8b207158547b6b2cf34606f165350fe3fd165c3683d6ad38"}
+  ],
+  "global_limits": {"max_attempts": 5, "max_tokens": 24000, "wall_clock_seconds": 1200},
+  "nodes": [
+    {
+      "node_id": "node:review",
+      "objective": "Encontrar defeitos verificáveis no resultado X.",
+      "instructions": "Revise somente o resultado X fornecido. Liste defeitos com evidência e critérios objetivos para a correção. Não altere arquivos.",
+      "agent": {
+        "display_name": "Reviewer",
+        "role": "independent_reviewer",
+        "provider_ref": {"name": "openai", "version": "2026-09", "digest": "sha256:6444659beabb3dbdf99bb59782d8b67035b779e175a8b83e6dfffba3722fdd63"},
+        "model_ref": {"name": "gpt-5.6", "version": "2026-09", "digest": "sha256:951a0d328e2112a4598601c50024b75eeb9bffd06cbac9e593324567789d80f4"},
+        "profile_ref": {"name": "aci.read-only-reviewer", "version": "1", "digest": "sha256:301a4279e233a7ed845a72eb00b94c56c6cbae13a56c7cf7ff29b8c0bffa1b91"},
+        "credential_ref": null
+      },
+      "tools": [],
+      "inputs": [{"input_id": "input:target", "required": true, "source": {"kind": "content_member", "member_id": "member:result_x", "selector": "$"}}],
+      "outputs": [{"output_id": "output:review_report", "schema_member_id": "member:review_report_schema", "required": true}],
+      "limits": {"max_attempts": 1, "max_tokens": 6000, "wall_clock_seconds": 300},
+      "isolation": {
+        "read_paths": ["workspace:/input/result-x"],
+        "write_paths": [],
+        "network": {"mode": "deny", "allow": []},
+        "commands": {"mode": "deny", "grants": []},
+        "external_effects": {"mode": "deny", "allow": []},
+        "version_control": {"commit": false, "push": false}
+      },
+      "start_when": "roots_ready",
+      "validation": [{"rule_id": "rule:review_has_evidence", "validator_ref": {"name": "aci.schema-and-citation-validator", "version": "1", "digest": "sha256:274b90e8d398efa40fc2c12a1bc0b4a99ec24a694c689a269287d1b25558823e"}, "configuration_member_id": null, "on_fail": "stop_graph"}],
+      "success_condition": {"kind": "output_present", "output_id": "output:review_report"},
+      "stop_conditions": [{"when": {"kind": "input_unavailable", "input_id": "input:target"}, "action": "stop_graph", "reason_code": "target_unavailable"}]
+    },
+    {
+      "node_id": "node:correct",
+      "objective": "Produzir uma correção limitada aos defeitos confirmados.",
+      "instructions": "Use o review_report como obrigação. Produza a correção mínima e registre como cada defeito foi tratado. Pare após validar localmente.",
+      "agent": {
+        "display_name": "Corrector",
+        "role": "implementer",
+        "provider_ref": {"name": "openai", "version": "2026-09", "digest": "sha256:6444659beabb3dbdf99bb59782d8b67035b779e175a8b83e6dfffba3722fdd63"},
+        "model_ref": {"name": "gpt-5.6", "version": "2026-09", "digest": "sha256:951a0d328e2112a4598601c50024b75eeb9bffd06cbac9e593324567789d80f4"},
+        "profile_ref": {"name": "aci.bounded-corrector", "version": "1", "digest": "sha256:f136048da6c4b36c93bfaba34b5e62d797703f4c4d37026159b2a0953065dac2"},
+        "credential_ref": null
+      },
+      "tools": [{"tool_ref": {"name": "workspace.files", "version": "1", "digest": "sha256:cf3e3a396e0496e01dcd7660e7b3237b387217751cda47d40109a993e9c430e8"}, "allowed_operations": ["read", "patch"]}],
+      "inputs": [
+        {"input_id": "input:target", "required": true, "source": {"kind": "content_member", "member_id": "member:result_x", "selector": "$"}},
+        {"input_id": "input:review_findings", "required": true, "source": {"kind": "node_output", "node_id": "node:review", "output_id": "output:review_report"}}
+      ],
+      "outputs": [{"output_id": "output:correction", "schema_member_id": "member:correction_schema", "required": true}],
+      "limits": {"max_attempts": 2, "max_tokens": 12000, "wall_clock_seconds": 600},
+      "isolation": {
+        "read_paths": ["workspace:/input", "workspace:/target"],
+        "write_paths": ["workspace:/target"],
+        "network": {"mode": "deny", "allow": []},
+        "commands": {"mode": "deny", "grants": []},
+        "external_effects": {"mode": "deny", "allow": []},
+        "version_control": {"commit": false, "push": false}
+      },
+      "start_when": "all_predecessors_succeeded",
+      "validation": [{"rule_id": "rule:correction_contract", "validator_ref": {"name": "aci.schema-validator", "version": "1", "digest": "sha256:f016338fd2a0f7a423cce239a57300f26ba7150c3831a8690b2512298c4e8e04"}, "configuration_member_id": "member:correction_schema", "on_fail": "retry"}],
+      "success_condition": {"kind": "output_present", "output_id": "output:correction"},
+      "stop_conditions": [
+        {"when": {"kind": "attempts_exhausted"}, "action": "fail_graph", "reason_code": "correction_attempts_exhausted"},
+        {"when": {"kind": "input_unavailable", "input_id": "input:target"}, "action": "stop_graph", "reason_code": "target_unavailable"}
+      ]
+    },
+    {
+      "node_id": "node:verify",
+      "objective": "Verificar independentemente se a correção resolve os defeitos sem regressão.",
+      "instructions": "Compare a correção com o review_report e o resultado original. Retorne pass, flag ou block com evidência. Não altere arquivos.",
+      "agent": {
+        "display_name": "Verifier",
+        "role": "independent_verifier",
+        "provider_ref": {"name": "openai", "version": "2026-09", "digest": "sha256:6444659beabb3dbdf99bb59782d8b67035b779e175a8b83e6dfffba3722fdd63"},
+        "model_ref": {"name": "gpt-5.6", "version": "2026-09", "digest": "sha256:951a0d328e2112a4598601c50024b75eeb9bffd06cbac9e593324567789d80f4"},
+        "profile_ref": {"name": "aci.read-only-verifier", "version": "1", "digest": "sha256:2db4735aba487bdd3db641e4500447a1577e3a4e26580da4105ab384e4a8b3c7"},
+        "credential_ref": null
+      },
+      "tools": [{"tool_ref": {"name": "workspace.files", "version": "1", "digest": "sha256:cf3e3a396e0496e01dcd7660e7b3237b387217751cda47d40109a993e9c430e8"}, "allowed_operations": ["read"]}],
+      "inputs": [
+        {"input_id": "input:target", "required": true, "source": {"kind": "content_member", "member_id": "member:result_x", "selector": "$"}},
+        {"input_id": "input:review_findings", "required": true, "source": {"kind": "node_output", "node_id": "node:review", "output_id": "output:review_report"}},
+        {"input_id": "input:candidate_correction", "required": true, "source": {"kind": "node_output", "node_id": "node:correct", "output_id": "output:correction"}}
+      ],
+      "outputs": [{"output_id": "output:verification", "schema_member_id": "member:verification_schema", "required": true}],
+      "limits": {"max_attempts": 1, "max_tokens": 6000, "wall_clock_seconds": 300},
+      "isolation": {
+        "read_paths": ["workspace:/input", "workspace:/target"],
+        "write_paths": [],
+        "network": {"mode": "deny", "allow": []},
+        "commands": {"mode": "deny", "grants": []},
+        "external_effects": {"mode": "deny", "allow": []},
+        "version_control": {"commit": false, "push": false}
+      },
+      "start_when": "all_predecessors_succeeded",
+      "validation": [{"rule_id": "rule:verification_evidence", "validator_ref": {"name": "aci.schema-and-evidence-validator", "version": "1", "digest": "sha256:d1d331d6b9186ff7abbbabdcdb48ae1a5f2dbae004f322c8a534fcb9c8ffe653"}, "configuration_member_id": "member:verification_schema", "on_fail": "stop_graph"}],
+      "success_condition": {"kind": "output_field_equals", "output_id": "output:verification", "json_pointer": "/verdict", "value": "pass"},
+      "stop_conditions": [
+        {"when": {"kind": "output_field_equals", "output_id": "output:verification", "json_pointer": "/verdict", "value": "flag"}, "action": "stop_graph", "reason_code": "verification_flag"},
+        {"when": {"kind": "output_field_equals", "output_id": "output:verification", "json_pointer": "/verdict", "value": "block"}, "action": "fail_graph", "reason_code": "verification_block"}
+      ]
+    }
+  ],
+  "edges": [
+    {"edge_id": "edge:review:correct:data", "from_node_id": "node:review", "to_node_id": "node:correct", "kind": "data", "condition": "on_success"},
+    {"edge_id": "edge:review:verify:data", "from_node_id": "node:review", "to_node_id": "node:verify", "kind": "data", "condition": "on_success"},
+    {"edge_id": "edge:correct:verify:data", "from_node_id": "node:correct", "to_node_id": "node:verify", "kind": "data", "condition": "on_success"}
+  ],
+  "lifecycle": {
+    "entry_nodes": ["node:review"],
+    "terminal_nodes": ["node:verify"],
+    "completion": "all_terminal_succeeded",
+    "failure": "fail_fast",
+    "cancellation": "cancel_running_nodes",
+    "max_parallel_nodes": 1
+  },
+  "audit_requirements": {
+    "record_objective": true,
+    "record_agents": true,
+    "record_route": true,
+    "record_results": true,
+    "receipt_schema_member_id": "member:receipt_schema"
+  }
+}

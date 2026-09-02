@@ -1,0 +1,8 @@
+{
+  "schema": "aci.execution-agent-identity-projection@1",
+  "nodes": [
+    {"node_id": "node:review", "display_name": "Popper, Karl", "role": "skeptic"},
+    {"node_id": "node:correct", "display_name": "Dijkstra, Edsger W.", "role": "coder"},
+    {"node_id": "node:verify", "display_name": "Lamport, Leslie", "role": "auditor"}
+  ]
+}

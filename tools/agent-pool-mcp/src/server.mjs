@@ -8,7 +8,10 @@ import { checkVocab, searchPool } from "./select.mjs";
 import { recommendAgents } from "./adjudicate.mjs";
 import { loadPool, POOL_PATH } from "./pool.mjs";
 
-const ROLE = z.enum(["explorer", "synthesizer", "skeptic", "writer", "auditor", "planner", "coder"]);
+const acceptedRoles = [...loadPool().roleRegistry.roles];
+const ROLE = z.string().refine((value) => acceptedRoles.includes(value), {
+  message: `role must be one of ${acceptedRoles.join(" | ")}`,
+});
 const server = new McpServer({ name: "agent-pool", version: "0.1.0" });
 
 server.tool(

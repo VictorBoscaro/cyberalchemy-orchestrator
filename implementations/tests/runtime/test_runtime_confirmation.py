@@ -30,7 +30,7 @@ from implementations.server.runtime.service import RuntimeService, RuntimeSettin
 REPO = Path(__file__).resolve().parents[3]
 FIXTURE = (
     REPO
-    / "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1"
+    / "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v2"
 )
 FIXED_NOW = datetime(2026, 8, 31, 20, 6, tzinfo=timezone.utc)
 
@@ -200,7 +200,7 @@ class RuntimeConfirmationTests(unittest.TestCase):
         }
 
     def _pure_batch(self, overrides: dict[str, bytes] | None = None):
-        return build_confirmation_batch(**self._kwargs(overrides))
+        return build_confirmation_batch(repo_root=REPO, **self._kwargs(overrides))
 
     def _patched_bytes(self, case_id: str) -> tuple[str, bytes]:
         case = self.document_cases[case_id]

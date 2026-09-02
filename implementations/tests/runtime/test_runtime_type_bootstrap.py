@@ -34,9 +34,16 @@ class RuntimeTypeBootstrapTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
-        registry_rel = Path("implementations/contracts/dispatch-type-registry.v1.json")
+        registry_rel = Path("implementations/contracts/dispatch-type-registry.v2.json")
         registry = json.loads((REPO / registry_rel).read_text(encoding="utf-8"))
-        paths = [registry_rel, Path(".claude/skills/register-dispatch/append-dispatch.cjs")]
+        paths = [
+            registry_rel,
+            Path("implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json"),
+            Path("implementations/contracts/agent-role-registry.v1.json"),
+            Path("implementations/contracts/agent-role-registry-authority.v1.json"),
+            Path("implementations/contracts/agent-role-host-routing.v1.json"),
+            Path(".claude/skills/register-dispatch/append-dispatch.cjs"),
+        ]
         paths.append(Path("docs/features/agent-provenance-telemetry/integration/stage-f/host-hook-policy.json"))
         paths.extend(
             Path(entry["capability_path"])
@@ -65,6 +72,7 @@ class RuntimeTypeBootstrapTests(unittest.TestCase):
         value = {
             "dispatch_id": f"2026-08-13-{capability}-bootstrap-test",
             "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "dispatch_type": route["ledger_dispatch_type"],
             "goal": "Exercise the frozen Stage-A runtime contract.",
             "context": "A deterministic isolated fixture verifies routing and binding.",
@@ -98,7 +106,7 @@ class RuntimeTypeBootstrapTests(unittest.TestCase):
 
     def test_registry_bump_alias_and_canonical_new_row(self) -> None:
         registry = load_dispatch_type_registry(self.root)
-        self.assertEqual(registry["ledger_schema_version"], "0.6.4")
+        self.assertEqual(registry["ledger_schema_version"], "0.7.0")
         self.assertEqual(registry["generic_fallback"]["ledger_value"], "other")
         self.assertNotIn("others", live_dispatch_type_values(self.root))
         self.assertIn("other", live_dispatch_type_values(self.root))
@@ -152,11 +160,11 @@ class RuntimeTypeBootstrapTests(unittest.TestCase):
             "agents_spawned": {"total": 1, "tree": {"worker": 1}, "loops_used": 1},
         }
         result = self.appender(close, validate_only=False)
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertTrue(ledger_path.read_bytes().startswith(original))
+        self.assertNotEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(ledger_path.read_bytes(), original)
         summary = ledger.summarize_repo(self.root, today="2026-08-13", pending=[])
         self.assertEqual(summary["by_type"]["others"], 1)
-        self.assertEqual(summary["closed"], 1)
+        self.assertEqual(summary["closed"], 0)
         series = ledger.daily_series(ledger.load_repo_rows(self.root).rows)
         self.assertIn("others", series["series"])
 
@@ -214,6 +222,8 @@ class RuntimeTypeBootstrapTests(unittest.TestCase):
         self.assertEqual(opened.returncode, 0, opened.stderr)
         close = {
             "close_of": record["dispatch_id"], "exit_reason": "resolved",
+            "schema_version": record["schema_version"],
+            "agent_role_registry_ref": record["agent_role_registry_ref"],
             "agents_spawned": {"total": 1, "tree": {"auditor": 1}, "loops_used": 1},
             "capability_route_digest": record["capability_route"]["route_digest"],
         }

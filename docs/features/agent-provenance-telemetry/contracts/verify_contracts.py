@@ -13,11 +13,14 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
-
 HERE = Path(__file__).resolve().parent
 FIXTURE_PATH = HERE / "fixtures" / "conformance-vectors.json"
 CANDIDATE_PATH = HERE / "fixtures" / "seed-registry-candidates-v01.json"
 REPO_ROOT = HERE.parents[3]
+sys.path.insert(0, str(REPO_ROOT))
+
+from implementations.server.runtime.agent_pool import load_agent_pool  # noqa: E402
+
 POOL_PATH = REPO_ROOT / "telemetry" / "agents" / "agent-pool.yaml"
 ACI_VECTOR_PATH = (
     HERE.parent.parent
@@ -321,6 +324,9 @@ def _pool_usage() -> tuple[Counter[str], dict[str, Counter[str]]]:
 
 def validate_candidate_batch() -> int:
     batch = json.loads(CANDIDATE_PATH.read_text(encoding="utf-8"))
+    pool = load_agent_pool(REPO_ROOT)
+    if len(pool.value["agents"]) != 414:
+        raise ContractError("CANDIDATE_POOL_CARDINALITY_DRIFT", str(len(pool.value["agents"])))
     actual_pool_digest = "sha256:" + hashlib.sha256(POOL_PATH.read_bytes()).hexdigest()
     if batch["pool_snapshot"] != actual_pool_digest:
         raise ContractError(

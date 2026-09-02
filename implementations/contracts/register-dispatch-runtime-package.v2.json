@@ -1,0 +1,46 @@
+{
+  "schema": "register-dispatch-runtime-package/v2",
+  "canonical_source": "cyberalchemy-orchestrator",
+  "package_version": "0.7.0",
+  "registry_schema": "aci-dispatch-type-registry/v2",
+  "ledger_schema_version": "0.7.0",
+  "agent_role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
+  "files": [
+    {
+      "path": ".claude/skills/register-dispatch/SKILL.md",
+      "sha256": "94FF36C6E4C3EF33FD7570C1476AD050EB101DBD9BF328C858B5CD7CB5505C6B"
+    },
+    {
+      "path": ".claude/skills/register-dispatch/append-dispatch.cjs",
+      "sha256": "7FF42DC07BBB51E4CEE51B0295C86E278F4631CA5D7308A1715FB7066E63D0C4"
+    },
+    {
+      "path": ".claude/skills/register-dispatch/agents/openai.yaml",
+      "sha256": "8F6DC021415F4B0C7F86FE850D796B243F29256F89E56C8B84A70FAE15ED89F1"
+    },
+    {
+      "path": "implementations/contracts/dispatch-type-registry.v2.json",
+      "sha256": "4FC9FA8C0092FB2833FFA634B291453C09C525D586067C97EEA8F5C9618477D3"
+    },
+    {
+      "path": "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+      "sha256": "97F5AF30174885E9F531AAA82557FDF4B418D13EB25F16FE04FEE33266B93467"
+    },
+    {
+      "path": "implementations/contracts/agent-role-registry.v1.json",
+      "sha256": "39B378FA3A10CB64C2488AF9B7C96F89E409AA699B2E22885F83A755AC33F4AA"
+    },
+    {
+      "path": "implementations/contracts/agent-role-registry-authority.v1.json",
+      "sha256": "10B8220A018A190CD8B88E28ECA572F3BB5E604746C72341CFBDD2352AD1EFE9"
+    },
+    {
+      "path": "implementations/contracts/agent-role-host-routing.v1.json",
+      "sha256": "8D0CDD5D9E58114A1DE3A8C2146221CFD8D974139B1DBD35B74DD5BA396BA5CA"
+    }
+  ]
+}

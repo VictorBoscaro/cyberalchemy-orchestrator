@@ -52,7 +52,8 @@ at least two agents. With `disabled`, `anti_bias_global`, every group-level
 | Field | Required | Meaning / constraint |
 |-------|----------|----------------------|
 | `dispatch_id` | ✅ | Unique id, `YYYY-MM-DD-<slug>` (§5). Dedup key — re-registering the same id is a no-op. |
-| `schema_version` | ✅ | Must equal `ledger_schema_version` from `implementations/contracts/dispatch-type-registry.v1.json`. |
+| `schema_version` | ✅ | Must equal `ledger_schema_version` (`0.7.0`) from `implementations/contracts/dispatch-type-registry.v2.json`. |
+| `agent_role_registry_ref` | ✅ | Must exactly equal the accepted ref selected by dispatch-type registry v2. |
 | `dispatch_type` | ✅ | Must equal the resolved `ledger_dispatch_type` from the canonical registry. The appender rejects unknown and RESERVED values. This skill does not enumerate or route types. |
 | `goal` | ✅ | Non-empty string — the human's objective, one or two sentences. |
 | `context` | ✅ | Non-empty string — 2–4 sentences of framing; the only channel subagents get (§5). |
@@ -91,7 +92,7 @@ fields are forbidden on singleton groups.
 
 | Key | Required | Meaning / constraint |
 |-----|----------|----------------------|
-| `role` | ✅ | `explorer \| synthesizer \| skeptic \| writer \| auditor \| planner \| coder`. |
+| `role` | ✅ | One enabled ID from the pinned agent-role registry v1 (currently `explorer \| synthesizer \| skeptic \| writer \| auditor \| planner \| coder \| other`). |
 | `model` | ✅ | Non-empty string — concrete model id, picked by difficulty. |
 | `token_budget` | ✅ | Positive integer — declared output-length target; **no unlimited default** (§5). |
 | `initial_prompt` | ✅ | Non-empty string — the full briefing the agent receives at launch. Newlines are fine: JSON.stringify escapes them into the single-line JSON column. |
@@ -156,7 +157,9 @@ instead of `dispatch_id`:
 |-------|----------|----------------------|
 | `close_of` | ✅ | The `dispatch_id` being closed. Dedup key — re-closing the same id is a no-op. Warns (but still appends) if no matching dispatch row exists — an orphan close row indicates a Principle-3 breach upstream (the dispatch row should have been written at dispatch). |
 | `exit_reason` | ✅ | Closed vocabulary: `resolved \| loop_ceiling_reached \| dissent_irreconcilable \| user_abort \| error`. Precedence when several apply: §5. |
-| `agents_spawned` | ✅ | **JSON column** — object with numeric `total`, object `tree` (keyed by **agent** role — `explorer \| synthesizer \| skeptic \| writer \| auditor \| planner \| coder` — plus a `helpers` bucket), and **required** non-negative integer `loops_used` (constitution §5 lists loop iterations used as a component of `agents_spawned`, not optional). |
+| `schema_version` | ✅ | Must be `0.7.0` for every new close. |
+| `agent_role_registry_ref` | ✅ | Must exactly repeat the opening ref. |
+| `agents_spawned` | ✅ | **JSON column** — object with numeric `total`, object `tree` keyed by an accepted agent role (plus a `helpers` bucket), and required non-negative integer `loops_used`. |
 | `feedback_prompts` | – | **JSON column** — array of strings: each `feedback`-edge ask, recorded **verbatim** in the close row (Principle 3 / §5 `feedback` semantics). |
 | `invoked_by` | – | As on the dispatch row: record value, else `git config user.email`, else `null` with a warning. Tooling-level extension, not in constitution §5 (owner-directed 2026-06-12), pending a one-line constitutional amendment. |
 | `project_dir` | – | Control key: repo-root fallback when `CLAUDE_PROJECT_DIR` is unset. Accepted by the appender, never emitted to the ledger. |

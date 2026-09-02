@@ -5,9 +5,17 @@ truth; this page is only a linked navigation and status view.
 
 ## Quick links
 
-- Blocking decision: [DEC-ACI-PRODUCT-PASS-001](#decision-dec-aci-product-pass-001)
-- Active blocker: [BLK-ACI-PRODUCT-AUTHORITY-001](#blocker-blk-aci-product-authority-001)
-- Active product gap: [GAP-ACI-PRODUCT-AUTHORITY-001](#gap-gap-aci-product-authority-001)
+- Selected authority decision:
+  [DEC-ACI-CANONICAL-EXECUTION-GRAPH-001](#decision-dec-aci-canonical-execution-graph-001)
+- Selected identity/role decision:
+  [DEC-ACI-AGENT-IDENTITY-ROLE-001](#decision-dec-aci-agent-identity-role-001)
+- Selected generic handoff architecture:
+  [DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001](#decision-dec-aci-generic-stage-handoff-arch-001)
+- Active technical gap:
+  [GAP-ACI-CANONICAL-GRAPH-CONTRACT-001](#gap-gap-aci-canonical-graph-contract-001)
+- Active generic handoff promotion gap:
+  [GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001](#gap-gap-aci-generic-stage-handoff-promotion-001)
+- Open blocking decisions: none. Active human/product blockers: none.
 - [HEADS final evidence](development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-HEADS-001.md)
 - [BUS final evidence](development/invoke-runs/20260831-resumable-feedback/plan/evidence/TASK-BUS-001.md)
 - [CONF-000 contract evidence](development/invoke-runs/20260831-resumable-feedback/evidence/CONF-000.md)
@@ -16,8 +24,8 @@ truth; this page is only a linked navigation and status view.
 - [Current readiness](development/invoke-runs/20260831-resumable-feedback/plan/READINESS.md)
 - Pending artifact: [ART-ACI-ROADMAP-CLOSURE-REVIEW](#artifact-art-aci-roadmap-closure-review),
   proposed only and not run.
-- Next move: supply the exact CONF v2 product authority package and obtain a new explicit user
-  confirmation before OPEN onward.
+- Next move: independently recheck the repaired agent-identity/role delta, then adapt the stale
+  DraftGraph compiler before broader `ExecutionGraph v2` or runtime work.
 
 ## Current state
 
@@ -27,11 +35,21 @@ truth; this page is only a linked navigation and status view.
 - Scope: deterministic dispatch infrastructure; Schema Service excluded.
 - Closed bounded increments: CONF-000, CONF-001, CONT-001, HEADS-001, BUS-001 and the
   non-executable POLICY-000 through POLICY-002 ladder.
-- Current boundary: PRODUCT-PASS blocks CONT-002, OPEN, positive Run transition, RESUME, WORKER,
-  VERIFY and POLICY-003/L3 real attempted action.
+- Owner decision: the agent compiles one complete canonical `ExecutionGraph` JSON from user intent;
+  the user may inspect topology, basic or full views, but confirmation binds the full graph digest.
+- Current boundary: the missing v2 contract blocks CONT-002, OPEN, positive Run transition, RESUME,
+  WORKER, VERIFY and POLICY-003/L3 real attempted action.
+- Identity/role refinement: the owner kept final `display_name`, required it to come from a YAML
+  canonical `agent_name` pool through a signed allocator assignment, and closed initial roles as
+  `explorer|synthesizer|skeptic|writer|auditor|planner|coder|other`. The proposed delta, schemas,
+  fixture and 41 negative vectors have received an independent review and two rechecks, all `FIX`;
+  the repaired candidate is ready for another independent recheck. Current compiler code is
+  stale for this dimension and remains blocked from promotion until adaptation plus review.
 - Review residue: `2026-09-01-aci-roadmap-closure-review` is only a proposed transversal review;
   it has not been opened, registered or executed and supplies no closure evidence.
-- Next move: resolve [DEC-ACI-PRODUCT-PASS-001](#decision-dec-aci-product-pass-001).
+- Next move: close the active
+  [canonical graph contract gap](#gap-gap-aci-canonical-graph-contract-001) through specification,
+  fixtures and independent review.
 
 ### <a id="context-ctx-aci-runtime-baseline"></a>CTX-ACI-RUNTIME-BASELINE — Existing bounded runtime
 
@@ -51,6 +69,7 @@ truth; this page is only a linked navigation and status view.
 - Stage / gate: `validate` / `pass`.
 - The exact compiler SWU remains non-authoritative; its `DispatchCandidate` cannot confirm or
   execute a dispatch.
+- It does not yet compile the owner-selected single complete `ExecutionGraph v2` authority.
 
 ### <a id="context-ctx-aci-resumable-feedback"></a>CTX-ACI-RESUMABLE-FEEDBACK — Bounded resumable feedback
 
@@ -63,7 +82,8 @@ truth; this page is only a linked navigation and status view.
   Attempt stream; official `attempt.result_accepted` and typed position/critique acceptance live on
   the Group stream. The Attempt link is non-transitioning; Group advances exactly `+2`, and Attempt
   remains unchanged.
-- CONT-002 is not promoted. The next move is PRODUCT-PASS, not another technical mutation.
+- CONT-002 is not promoted. Product responsibility is decided; the next move is the v2 graph
+  contract and its evidence, not runtime code.
 
 ### <a id="context-ctx-aci-execution-policy"></a>CTX-ACI-EXECUTION-POLICY â€” Bounded execution policy
 
@@ -75,33 +95,70 @@ truth; this page is only a linked navigation and status view.
 - Boundary: no `ConfirmedDispatch`, Run, Group, Attempt, execution request, provider call, host
   enforcement or real attempted action is created. POLICY-003/L3 remains product-gated.
 
-## <a id="blocker-blk-aci-product-authority-001"></a>Active blocker — BLK-ACI-PRODUCT-AUTHORITY-001
+### <a id="context-ctx-aci-generic-stage-handoff"></a>CTX-ACI-GENERIC-STAGE-HANDOFF — Generic stage handoff
 
-- Type / lane: `authority_blocker` / `product`.
-- Status: active, refined; human/product authority required.
-- Missing: the exact product values that form confirmed execution authority.
-- Closure: supply the CONF v2 authority package and explicitly confirm its new dispatch identity.
+- Stage / gate: `design` / `block`.
+- The reviewed discovery, capability spec 0.2.0 and architecture selection ACI-GSH-001 are accepted.
+- The selected design extends the bounded host-workflow pipeline and preserves commitment,
+  authorization, publication, delivery and acceptance as separate durable facts.
+- `SourceToSlotMapping` supplies preconfirmed topology and visibility intent; it is not the
+  post-commitment publication authorization for exact producer bytes.
+- Next move: promote the capability into aggregate domain, operation, mapping and workflow
+  contracts, then independently red-team the result before implementation.
+
+## Resolved product blocker
+
+`BLK-ACI-PRODUCT-AUTHORITY-001` is resolved. The owner decided that the agent, not the user,
+compiles every execution-relevant value into one canonical graph. The user confirms that proposed
+authority. Remaining work is a technical contract gap, not a request for the user to populate
+fields manually.
 
 ## Decisions
 
+### <a id="decision-dec-aci-generic-stage-handoff-arch-001"></a>DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001
+
+- Status: `closed`; selected by the repository owner.
+- Selected: extend the existing staged host-workflow pipeline rather than create a standalone
+  aggregate in this version.
+- Both candidates can satisfy the nine collapse tests; the staged extension was chosen to reuse
+  verified producer, materialization and launch seams with less duplicate authority machinery.
+- Failure to preserve any collapse-test separation reopens the standalone-aggregate alternative.
+- Evidence: [ACI-GSH-001](../../../decisions/aci-generic-stage-handoff-architecture.md) and the
+  [accepted capability](specs/capabilities/generic-stage-handoff.md).
+
+### <a id="decision-dec-aci-canonical-execution-graph-001"></a>DEC-ACI-CANONICAL-EXECUTION-GRAPH-001
+
+- Status: `closed`; selected by the repository owner.
+- The agent compiles user intent into one canonical JSON containing the complete execution graph
+  and every execution-relevant value.
+- Chat may show topology, basic or full projections. These are presentations of the same complete
+  authority, not separate authority levels.
+- Confirmation always binds the digest of the complete canonical graph. Any material change
+  requires a new digest and confirmation.
+- `pending-sheet` and `capability-resolution` may remain internal compilation concepts or normalized
+  evidence, but they are not separate user-confirmed authority documents in v2.
+- CONF v1 remains immutable historical/component evidence; this decision does not rewrite it or
+  prove v2 runtime support.
+
 ### <a id="decision-dec-aci-product-pass-001"></a>DEC-ACI-PRODUCT-PASS-001
 
-- Question: which exact product authority package should define the real resumable-feedback
-  dispatch?
-- Status: `active`, blocking.
-- Options: supply a new CONF v2 authority package, or defer real execution.
-- Required package:
+- Status: `superseded`, non-blocking.
+- Its premise that the owner would manually supply every prompt, reference and policy was replaced
+  by the agent-compiled canonical graph decision above.
+- No concrete CONF v2 graph has yet been specified, confirmed or executed.
 
-  - revision-instruction bytes, reference and digest;
-  - actual prompt bytes, references and digests;
-  - role and task references;
-  - `provider_ref` if distinct;
-  - concrete resource-budget, sandbox and execution/authority-fence policies; and
-  - complete canonical audit-opening 0.6.4 mapping, including dispatch type/route, goal, context,
-    approver, agents and every remaining required field.
+### <a id="decision-dec-aci-agent-identity-role-001"></a>DEC-ACI-AGENT-IDENTITY-ROLE-001
 
-- Impact: these values change `confirmed_authority_digest`. Real execution requires a new dispatch
-  identity, CONF v2 and new explicit user confirmation. CONF v1 remains a component fixture.
+- Status: `closed`; selected by the repository owner; implementation remains gated.
+- Final `display_name` is retained, but the DraftGraph does not author it. Canonical pool v0.7 uses
+  only YAML `agent_name`; the boundary loader normalizes it, and the trusted allocator freezes one
+  distinct node-to-agent assignment in the signed compilation context. `agent-name` is rejected,
+  not a permanent alias.
+- `role` remains DraftGraph-authored against a versioned, digest-pinned allowlist. Initial roles are
+  `explorer`, `synthesizer`, `skeptic`, `writer`, `auditor`, `planner`, `coder` and singular `other`.
+- The real legacy pool still uses `name`; migration must be atomic with all known consumers/tests in
+  the code SWU. `name` cannot become an unversioned permanent alias.
+- Evidence: [identity/role follow-up](development/refinement-runs/2026-09-01-execution-graph-authority/followups/SPEC-ACI-AGENT-IDENTITY-ROLE-001/DECISION.md).
 
 Previously closed authority decisions remain in the source ledger: explicit user confirmation is
 authority; chat is sufficient now and a future UI must use the same digest-bound confirmation
@@ -111,10 +168,21 @@ provider admission.
 
 ## Active gaps
 
-### <a id="gap-gap-aci-product-authority-001"></a>GAP-ACI-PRODUCT-AUTHORITY-001
+### <a id="gap-gap-aci-generic-stage-handoff-promotion-001"></a>GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001
 
-- Severity: `block`; treatment: `delegate` to the repository/product owner.
-- Missing: the exact CONF v2 product authority listed above.
+- Severity: `block`; treatment: `plan`; owner: domain architecture.
+- Missing: concrete aggregate aspects, durable operations/events, mappings, workflow guards and
+  conformance fixtures for all five accepted handoff facts.
+- Consequence: the capability and architecture are accepted, but no aggregate or runtime
+  implementation claim is authorized.
+
+### <a id="gap-gap-aci-canonical-graph-contract-001"></a>GAP-ACI-CANONICAL-GRAPH-CONTRACT-001
+
+- Severity: `block`; treatment: `plan`; owner: runtime architecture.
+- Missing: the closed `ExecutionGraph v2` schema, canonical bytes/digest, agent compiler ownership,
+  reviewed identity/role compiler adaptation, per-node execution fields, data-flow semantics,
+  topology/basic/full projections, confirmation
+  observation, runtime-derived facts, CONF v1 compatibility and runtime-ingestion boundary.
 - Consequence: OPEN, positive Run transition, RESUME, WORKER and VERIFY cannot begin.
 
 ### <a id="gap-gap-aci-legacy-dispatch-fk-001"></a>GAP-ACI-LEGACY-DISPATCH-FK-001
@@ -130,8 +198,8 @@ Other active deferred gaps:
 - `GAP-ACI-GENERALIZATION-001`: general skill-profile support and long-term `dispatch_type` remain
   beyond the bounded slice.
 
-Closed gaps retained historically in the ledger: confirmation contract, durable writer, global
-runtime-baseline drift and POLICY-002 code entry/review.
+Closed gaps retained historically in the ledger: product-authority responsibility, confirmation
+contract, durable writer, global runtime-baseline drift and POLICY-002 code entry/review.
 
 ## Key artifacts
 
@@ -152,6 +220,11 @@ runtime-baseline drift and POLICY-002 code entry/review.
 - [POLICY-001 implementation review](development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-001-IMPLEMENTATION-REVIEW.md)
 - [POLICY-002 implementation review](development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md)
 - [C2 Robot Talks findings](robot-talks/2026-09-01-continuation-c2-split/findings.md)
+- [Agent identity/role proposed delta](development/refinement-runs/2026-09-01-execution-graph-authority/followups/SPEC-ACI-AGENT-IDENTITY-ROLE-001/DECISION.md)
+- [Generic stage handoff discovery](discovery/generic-stage-handoff.md)
+- [Generic stage handoff capability](specs/capabilities/generic-stage-handoff.md)
+- [Generic stage handoff architecture decision](../../../decisions/aci-generic-stage-handoff-architecture.md)
+- [Generic stage handoff closing session](../../../sessions/2026-09-01-2235-generic-stage-handoff-spec.md)
 - [Session record](../../../sessions/2026-08-31-2006-aci-dispatch-continuation-gate.md)
 
 ## Boundary check
@@ -161,5 +234,11 @@ runtime-baseline drift and POLICY-002 code entry/review.
 - Historical descriptor/readiness entry digests were not altered.
 - Component PASS, including POLICY-002/L2, does not promote CONT-002, OPEN or POLICY-003/L3 and
   does not authorize product defaults, external actions, provider/tool use, commit, push or deploy.
-- The planned closure review does not alter `DEC-ACI-PRODUCT-PASS-001` and cannot authorize any
-  blocked execution slice.
+- The single-graph decision resolves product responsibility but does not prove a v2 schema,
+  compiler, confirmation adapter, persistence path or runtime execution.
+- The identity/role follow-up supersedes earlier identity/consumer claims only; it does not erase
+  historical `KEEP` reviews. Its schemas and fixture validator do not prove the required code
+  migration, production YAML loader, allocator signature, projector or runtime consumer.
+- The planned closure review remains unexecuted and cannot authorize any blocked execution slice.
+- Generic-stage-handoff architecture selection and capability review do not prove aggregate
+  promotion, durable runtime facts, conformance fixtures or implementation.

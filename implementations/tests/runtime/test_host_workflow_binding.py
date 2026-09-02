@@ -40,12 +40,17 @@ class HostWorkflowBindingTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
         dispatch_registry_relative = (
-            "implementations/contracts/dispatch-type-registry.v1.json"
+            "implementations/contracts/dispatch-type-registry.v2.json"
         )
         dispatch_registry = json.loads(
             (REPO / dispatch_registry_relative).read_text(encoding="utf-8")
         )
-        dispatch_paths = [dispatch_registry_relative]
+        dispatch_paths = [
+            dispatch_registry_relative,
+            "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+            "implementations/contracts/agent-role-registry.v1.json",
+            "implementations/contracts/agent-role-registry-authority.v1.json",
+        ]
         dispatch_paths.extend(
             entry["capability_path"]
             for entry in dispatch_registry["types"]
@@ -116,6 +121,7 @@ class HostWorkflowBindingTests(unittest.TestCase):
         self.opening = {
             "dispatch_id": "2026-07-25-foundational-research",
             "schema_version": dispatch_registry["ledger_schema_version"],
+            "agent_role_registry_ref": dispatch_registry["agent_role_registry_ref"],
             "dispatch_type": "research",
             "capability_route": capability_route,
             "goal": "Research a deterministic foundational kernel.",
@@ -382,6 +388,8 @@ class HostWorkflowBindingTests(unittest.TestCase):
         )
         closing = {
             "close_of": self.opening["dispatch_id"],
+            "schema_version": self.opening["schema_version"],
+            "agent_role_registry_ref": self.opening["agent_role_registry_ref"],
             "exit_reason": "resolved",
             "agents_spawned": {
                 "total": 1,

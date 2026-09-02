@@ -1,0 +1,23 @@
+{
+  "schema": "aci.refine-evidence-index@1",
+  "run_id": "2026-09-01-execution-graph-authority",
+  "status": "complete",
+  "artifacts": [
+    {"kind": "seed", "path": "REFINE-SEED-PROPOSAL.md", "status": "present"},
+    {"kind": "dispatch", "path": "REFINE-DISPATCH.json", "status": "validation_pass"},
+    {"kind": "runtime_handoff", "path": "RUNTIME-HANDOFF.md", "status": "operator_confirmed"},
+    {"kind": "result", "path": "RESULT.md", "status": "pass_for_specification"}
+  ],
+  "stages": [
+    {"step_id": "context", "status": "pass", "receipt": "stages/01-context-builder/RECEIPT.md", "artifacts": ["stages/01-context-builder/context-pack.md", "stages/01-context-builder/context-pack.json"]},
+    {"step_id": "define", "status": "pass", "receipt": "stages/02-invoke-define/RECEIPT.md", "artifacts": ["stages/02-invoke-define/DEFINITION.md", "stages/02-invoke-define/TECHNIQUE-TRACE.md"]},
+    {"step_id": "review_define", "status": "flag", "receipt": "stages/03-interrogation-review/RECEIPT.md", "artifacts": ["stages/03-interrogation-review/DIALECTIC-REVIEW.md"]},
+    {"step_id": "research_decision", "status": "pass", "receipt": "stages/04-research-decision/RECEIPT.md", "artifacts": ["stages/04-research-decision/DECISION.md"]},
+    {"step_id": "distill", "status": "pass", "receipt": "stages/05-distill/RECEIPT.md", "artifacts": ["stages/05-distill/SELECTION.md"]},
+    {"step_id": "design", "status": "pass", "receipt": "stages/06-invoke-design/RECEIPT.md", "artifacts": ["stages/06-invoke-design/ARCHITECTURE.md", "stages/06-invoke-design/execution-graph-v2.proposed.schema.json"]},
+    {"step_id": "review_design", "status": "pass", "receipt": "stages/07-interrogation-design-review/RECEIPT.md", "artifacts": ["stages/07-interrogation-design-review/DESIGN-REVIEW.md", "stages/07-interrogation-design-review/review-correct-verify-toy-graph.json", "stages/07-interrogation-design-review/topology-view.json", "stages/07-interrogation-design-review/basic-view.json", "stages/07-interrogation-design-review/PROJECTOR-CONTRACT.md"]},
+    {"step_id": "repair", "status": "pass", "receipt": "stages/08-distill-repair/RECEIPT.md", "artifacts": ["stages/08-distill-repair/validation.md"]},
+    {"step_id": "plan", "status": "pass", "receipt": "stages/09-invoke-plan/RECEIPT.md", "artifacts": ["stages/09-invoke-plan/implementation-layering.md", "stages/09-invoke-plan/WORK-PACK.md", "stages/09-invoke-plan/PLAN-VALIDATION.md", "stages/09-invoke-plan/TECHNIQUE-TRACE.md"]},
+    {"step_id": "final_synthesis", "status": "pass", "receipt": "stages/10-final-interrogation/RECEIPT.md", "artifacts": ["stages/10-final-interrogation/FINAL-INTERROGATION.md", "RESULT.md"]}
+  ]
+}

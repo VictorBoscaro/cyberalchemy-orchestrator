@@ -1,0 +1,21 @@
+{
+  "schema": "aci.execution-graph-view@2",
+  "view_kind": "topology",
+  "projector_ref": {"name": "aci.execution-graph-projector", "version": "2", "digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"},
+  "dispatch_id": "dispatch_review_x_v2",
+  "revision": "r2",
+  "execution_graph_digest": "sha256:4a38e63293f630930cb624830433dea147bdb018f3ceb7eef949dafe052cd275",
+  "projection": {
+    "nodes": [
+      {"node_id": "review", "display_name": "Reviewer", "role": "independent_reviewer"},
+      {"node_id": "correct", "display_name": "Corrector", "role": "implementer"},
+      {"node_id": "verify", "display_name": "Verifier", "role": "independent_verifier"}
+    ],
+    "edges": [
+      {"edge_id": "review_to_correct", "from_node_id": "review", "to_node_id": "correct", "kind": "data", "condition": "on_success"},
+      {"edge_id": "review_to_verify", "from_node_id": "review", "to_node_id": "verify", "kind": "data", "condition": "on_success"},
+      {"edge_id": "correct_to_verify", "from_node_id": "correct", "to_node_id": "verify", "kind": "data", "condition": "on_success"}
+    ],
+    "lifecycle": {"entry_nodes": ["review"], "terminal_nodes": ["verify"], "completion": "all_terminal_succeeded", "failure": "fail_fast", "max_parallel_nodes": 1}
+  }
+}

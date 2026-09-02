@@ -14,16 +14,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from server import config as config_module  # noqa: E402
 from server import ledger  # noqa: E402
+from server.runtime.agent_roles import load_accepted_role_registry  # noqa: E402
+from server.runtime.dispatch_types import live_dispatch_type_values  # noqa: E402
 
 EXIT_REASONS = {"resolved", "loop_ceiling_reached", "dissent_irreconcilable", "user_abort", "error"}
-DISPATCH_TYPES = {"research", "code", "review", "plan", "suggestion", "experiment"}
-AGENT_ROLES = {"explorer", "synthesizer", "skeptic", "writer", "auditor", "planner", "coder"}
 CONNECTION_TYPES = {"sequential", "zig-zag", "feedback"}
 OUTPUT_MODES = {"inline", "persisted"}
 
 
 def main() -> int:
     cfg = config_module.load()
+    repo_root = Path(__file__).resolve().parents[2]
+    agent_roles = set(load_accepted_role_registry(repo_root).roles)
+    dispatch_types = live_dispatch_type_values(repo_root)
     exits: Counter[str] = Counter()
     types: Counter[str] = Counter()
     roles: Counter[str] = Counter()
@@ -40,7 +43,7 @@ def main() -> int:
             dt = row.get("dispatch_type")
             if dt is not None:
                 types[dt] += 1
-                if dt not in DISPATCH_TYPES:
+                if dt not in dispatch_types:
                     offenders.append(f"{repo.name}/{row['dispatch_id']}: dispatch_type={dt!r}")
 
             output_mode = row.get("output_mode")
@@ -63,7 +66,7 @@ def main() -> int:
                     if isinstance(agent, dict):
                         r = agent.get("role")
                         roles[r] += 1
-                        if r not in AGENT_ROLES:
+                        if r not in agent_roles:
                             offenders.append(f"{repo.name}/{row['dispatch_id']}: role={r!r}")
 
             for conn in row.get("connections") or []:
@@ -79,9 +82,9 @@ def main() -> int:
             mark = "  " if value in allowed else "<-- OUTSIDE THE ENUM"
             print(f"  {str(value):<28} {n:>5}  {mark}")
 
-    show("dispatch_type", types, DISPATCH_TYPES)
+    show("dispatch_type", types, dispatch_types)
     show("exit_reason", exits, EXIT_REASONS)
-    show("role (agents)", roles, AGENT_ROLES)
+    show("role (agents)", roles, agent_roles)
     show("connections.type", conns, CONNECTION_TYPES)
     show("output_mode", output_modes, OUTPUT_MODES)
 

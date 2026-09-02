@@ -16,6 +16,7 @@ indexes:
     CTX-ACI-PROTOCOL-COMPILATION: contexts[2]
     CTX-ACI-RESUMABLE-FEEDBACK: contexts[3]
     CTX-ACI-EXECUTION-POLICY: contexts[4]
+    CTX-ACI-GENERIC-STAGE-HANDOFF: contexts[5]
     DESC-ACI-ROOT-001: descriptions[0]
     DESC-ACI-RUNTIME-001: descriptions[1]
     DESC-ACI-PROTOCOL-001: descriptions[2]
@@ -31,11 +32,15 @@ indexes:
     DESC-ACI-ROOT-005: descriptions[12]
     DESC-ACI-CONTINUATION-005: descriptions[13]
     DESC-ACI-POLICY-001: descriptions[14]
+    DESC-ACI-ROOT-006: descriptions[15]
+    DESC-ACI-CONTINUATION-006: descriptions[16]
+    DESC-ACI-GENERIC-STAGE-HANDOFF-001: descriptions[17]
     DEF-ACI-DETERMINISTIC-DISPATCH-001: definitions[0]
     DEF-ACI-OFFICIAL-CONTRIBUTION-001: definitions[1]
     DEF-ACI-PARKED-CONTINUATION-001: definitions[2]
     DEF-ACI-CONFIRMED-AUTHORITY-001: definitions[3]
     DEF-ACI-CONFIRMATION-OBSERVATION-001: definitions[4]
+    DEF-ACI-CANONICAL-EXECUTION-GRAPH-001: definitions[5]
     BLK-ACI-CONFIRMATION-AUTHORITY-001: typed_items[0]
     ENA-ACI-CONTINUATION-CONTRACT-001: typed_items[1]
     ENA-ACI-SQLITE-RUNTIME-001: typed_items[2]
@@ -51,6 +56,9 @@ indexes:
     DEC-ACI-LEGACY-FK-STAGING-001: decisions[7]
     DEC-ACI-PRODUCT-PASS-001: decisions[8]
     DEC-ACI-POLICY-LAYERING-001: decisions[9]
+    DEC-ACI-CANONICAL-EXECUTION-GRAPH-001: decisions[10]
+    DEC-ACI-AGENT-IDENTITY-ROLE-001: decisions[11]
+    DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001: decisions[12]
     GAP-ACI-CONFIRMATION-WRITER-001: gaps[0]
     GAP-ACI-RUNTIME-BASELINE-001: gaps[1]
     GAP-ACI-LIVE-PROVIDER-001: gaps[2]
@@ -59,6 +67,8 @@ indexes:
     GAP-ACI-LEGACY-DISPATCH-FK-001: gaps[5]
     GAP-ACI-PRODUCT-AUTHORITY-001: gaps[6]
     GAP-ACI-POLICY-002-CODE-ENTRY-001: gaps[7]
+    GAP-ACI-CANONICAL-GRAPH-CONTRACT-001: gaps[8]
+    GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001: gaps[9]
     ART-ACI-LEDGER: artifacts[0]
     ART-ACI-VIEW: artifacts[1]
     ART-ACI-STATUS-SNAPSHOT: artifacts[2]
@@ -95,6 +105,11 @@ indexes:
     ART-ACI-POLICY-002-ALIGNMENT-AUDIT: artifacts[33]
     ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW: artifacts[34]
     ART-ACI-ROADMAP-CLOSURE-REVIEW: artifacts[35]
+    ART-ACI-AGENT-IDENTITY-ROLE-SPEC: artifacts[36]
+    ART-ACI-GSH-DISCOVERY: artifacts[37]
+    ART-ACI-GSH-CAPABILITY-SPEC: artifacts[38]
+    ART-ACI-GSH-ARCH-DECISION: artifacts[39]
+    ART-ACI-GSH-SESSION-20260901: artifacts[40]
     REL-ACI-CONTAINS-RUNTIME: relations[0]
     REL-ACI-CONTAINS-PROTOCOL: relations[1]
     REL-ACI-CONTAINS-CONTINUATION: relations[2]
@@ -115,28 +130,33 @@ indexes:
     REL-ACI-POLICY-LAYERING-GOVERNS-CONTEXT: relations[17]
     REL-ACI-POLICY-CODE-ENTRY-BLOCKS-L2: relations[18]
     REL-ACI-POLICY-EVIDENCE-INFORMS-RUNTIME: relations[19]
-  open_decisions:
-    - DEC-ACI-PRODUCT-PASS-001
-  blocking_decisions:
-    - DEC-ACI-PRODUCT-PASS-001
-  active_blockers:
-    - BLK-ACI-PRODUCT-AUTHORITY-001
+    REL-ACI-CANONICAL-GRAPH-GAP-BLOCKS-CONTINUATION: relations[20]
+    REL-ACI-CANONICAL-GRAPH-DECISION-INFORMS-GAP: relations[21]
+    REL-ACI-IDENTITY-ROLE-DECISION-INFORMS-GAP: relations[22]
+    REL-ACI-CONTAINS-GENERIC-STAGE-HANDOFF: relations[23]
+    REL-ACI-GSH-DECISION-INFORMS-PROMOTION-GAP: relations[24]
+  open_decisions: []
+  blocking_decisions: []
+  active_blockers: []
   active_gaps:
-    - GAP-ACI-LEGACY-DISPATCH-FK-001
-    - GAP-ACI-PRODUCT-AUTHORITY-001
     - GAP-ACI-LIVE-PROVIDER-001
     - GAP-ACI-GENERALIZATION-001
+    - GAP-ACI-LEGACY-DISPATCH-FK-001
+    - GAP-ACI-CANONICAL-GRAPH-CONTRACT-001
+    - GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001
   next_moves:
     - context_id: CTX-ACI-ROOT
-      next_move: Resolve DEC-ACI-PRODUCT-PASS-001 with exact CONF v2 product authority; the candidate transversal closure review remains only planned and must be opened and registered before execution.
+      next_move: Independently recheck the repaired agent-identity/role delta, adapt and review the stale DraftGraph compiler, then continue the canonical ExecutionGraph v2 projection, confirmation and runtime-ingestion contract sequence.
     - context_id: CTX-ACI-RUNTIME-BASELINE
-      next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains product-gated.
+      next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains gated by the v2 graph contract.
     - context_id: CTX-ACI-PROTOCOL-COMPILATION
-      next_move: Keep the compiled candidate non-authoritative until a separately accepted confirmation path consumes an exact DispatchSpec.
+      next_move: Recheck repaired SPEC-ACI-AGENT-IDENTITY-ROLE-001, then implement its strict pool loader, signed assignments and pinned role registry without adding runtime execution.
     - context_id: CTX-ACI-RESUMABLE-FEEDBACK
-      next_move: Hold CONT-002 at PRODUCT-PASS until exact authority bytes, references, policies and canonical audit-opening 0.6.4 mapping form a new CONF v2 dispatch for user confirmation.
+      next_move: Hold CONT-002, OPEN and real execution until the ExecutionGraph v2 contract, fixture, confirmation projections and runtime-ingestion boundary are specified and independently reviewed.
     - context_id: CTX-ACI-EXECUTION-POLICY
-      next_move: Preserve the reviewed non-executable L0-L2 policy ladder; do not promote POLICY-003/L3, host enforcement or real attempted action without the product authority gate.
+      next_move: Preserve the reviewed non-executable L0-L2 policy ladder; do not promote POLICY-003/L3, host enforcement or real attempted action before the canonical ExecutionGraph v2 contract and confirmation path are reviewed.
+    - context_id: CTX-ACI-GENERIC-STAGE-HANDOFF
+      next_move: Promote the accepted generic handoff capability into the ACI aggregate domain, operation, mapping and workflow contracts, then independently red-team the promoted contract before implementation.
   artifacts_by_path:
     .craft/ledger.yml: ART-ACI-LEDGER
     CRAFT.md: ART-ACI-VIEW
@@ -174,6 +194,11 @@ indexes:
     development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-ALIGNMENT-LAYERING-AUDIT.md: ART-ACI-POLICY-002-ALIGNMENT-AUDIT
     development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
     reviews/2026-09-01-aci-roadmap-closure-review/review.md: ART-ACI-ROADMAP-CLOSURE-REVIEW
+    development/refinement-runs/2026-09-01-execution-graph-authority/followups/SPEC-ACI-AGENT-IDENTITY-ROLE-001/DECISION.md: ART-ACI-AGENT-IDENTITY-ROLE-SPEC
+    discovery/generic-stage-handoff.md: ART-ACI-GSH-DISCOVERY
+    specs/capabilities/generic-stage-handoff.md: ART-ACI-GSH-CAPABILITY-SPEC
+    "[repo-root] docs/decisions/aci-generic-stage-handoff-architecture.md": ART-ACI-GSH-ARCH-DECISION
+    "[repo-root] sessions/2026-09-01-2235-generic-stage-handoff-spec.md": ART-ACI-GSH-SESSION-20260901
 
 contexts:
   - context_id: CTX-ACI-ROOT
@@ -182,7 +207,7 @@ contexts:
     purpose: Govern deterministic dispatch, mediated agent outputs, durable runtime state and evidence-backed handoffs without making the chat orchestrator an execution supervisor.
     stage: validate
     gate: block
-    next_move: Resolve DEC-ACI-PRODUCT-PASS-001 with exact CONF v2 product authority; the candidate transversal closure review remains only planned and must be opened and registered before execution.
+    next_move: Independently recheck the repaired agent-identity/role delta, adapt and review the stale DraftGraph compiler, then continue the canonical ExecutionGraph v2 projection, confirmation and runtime-ingestion contract sequence.
     owned_artifacts:
       - ART-ACI-LEDGER
       - ART-ACI-VIEW
@@ -192,10 +217,14 @@ contexts:
       - ART-ACI-TEST-SPEC
       - ART-ACI-WORK-PACK
       - ART-ACI-ROADMAP-CLOSURE-REVIEW
+      - ART-ACI-AGENT-IDENTITY-ROLE-SPEC
     links:
       - {label: Selected authority decision, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
       - {label: Confirmation surface decision, target: DEC-ACI-CONFIRMATION-SURFACE-001, kind: row-id}
       - {label: Approved confirmation sequence, target: DEC-ACI-CONFIRMATION-SEQUENCE-001, kind: row-id}
+      - {label: Canonical execution graph decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
+      - {label: Agent identity and role decision, target: DEC-ACI-AGENT-IDENTITY-ROLE-001, kind: row-id}
+      - {label: Canonical graph contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
       - {label: Robot-Talks findings, target: ART-ACI-ROBOT-TALKS-FINDINGS-001, kind: artifact-id}
       - {label: Current progress snapshot, target: ART-ACI-STATUS-SNAPSHOT, kind: artifact-id}
       - {label: Planned transversal closure review, target: ART-ACI-ROADMAP-CLOSURE-REVIEW, kind: artifact-id}
@@ -205,7 +234,7 @@ contexts:
     purpose: Preserve evidence for the implemented SQLite journal, command receipts, artifacts, host binding and bounded bus-delivery seams without claiming a complete autonomous runtime.
     stage: validate
     gate: pass
-    next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains product-gated.
+    next_move: Preserve the historical BUS 200/200 runtime and 36/36 Control Center baseline plus the final POLICY-002 curated 260/260 regression while later real-execution work remains gated by the v2 graph contract.
     owned_artifacts:
       - ART-ACI-RUNTIME-DATABASE
       - ART-ACI-RUNTIME-JOURNAL
@@ -217,18 +246,19 @@ contexts:
     purpose: Compile one frozen skill/profile/binding/recipe invocation into a deterministic non-authoritative dispatch candidate.
     stage: validate
     gate: pass
-    next_move: Keep the compiled candidate non-authoritative until a separately accepted confirmation path consumes an exact DispatchSpec.
+    next_move: Recheck the repaired agent identity/role delta, then adapt the stale DraftGraph compiler and its fixtures before broader v2 or runtime work.
     owned_artifacts:
       - ART-ACI-PROTOCOL-DESCRIPTOR
       - ART-ACI-PROTOCOL-DECISION
-    notes: Pass applies only to the exact bounded SWU and grants no confirmation or execution authority.
+      - ART-ACI-AGENT-IDENTITY-ROLE-SPEC
+    notes: The earlier bounded compiler pass is stale for agent identity/role. The independent review and two rechecks returned FIX; the repaired candidate awaits another recheck and grants no confirmation or execution authority.
   - context_id: CTX-ACI-RESUMABLE-FEEDBACK
     parent_id: CTX-ACI-ROOT
     title: Bounded resumable feedback
     purpose: Implement the finite author turn 0 to reviewer turn 0 to author turn 1 graph with journal-derived inputs and no chat-orchestrator supervision after confirmation.
     stage: blocked
     gate: block
-    next_move: Hold CONT-002 at PRODUCT-PASS until exact authority bytes, references, policies and canonical audit-opening 0.6.4 mapping form a new CONF v2 dispatch for user confirmation.
+    next_move: Hold CONT-002, OPEN and real execution until the ExecutionGraph v2 contract, fixture, confirmation projections and runtime-ingestion boundary are specified and independently reviewed.
     owned_artifacts:
       - ART-ACI-CONTINUATION-DECISION
       - ART-ACI-CONTINUATION-PLAN
@@ -245,8 +275,8 @@ contexts:
       - ART-ACI-C2-ROBOT-TALKS-FINDINGS
     links:
       - {label: Resolved authority decision, target: DEC-ACI-CONFIRMATION-AUTHORITY-001, kind: row-id}
-      - {label: Active product authority gap, target: GAP-ACI-PRODUCT-AUTHORITY-001, kind: row-id}
-      - {label: Hard product decision, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+      - {label: Selected canonical graph decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
+      - {label: Active canonical graph contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
       - {label: Approved Robot-Talks findings, target: ART-ACI-ROBOT-TALKS-FINDINGS-001, kind: artifact-id}
   - context_id: CTX-ACI-EXECUTION-POLICY
     parent_id: CTX-ACI-ROOT
@@ -254,7 +284,7 @@ contexts:
     purpose: Prove a staged non-executable policy ladder from pure denial through synthetic durable fake denial without granting production execution authority or attempting runtime or external action.
     stage: validate
     gate: pass
-    next_move: Preserve the reviewed non-executable L0-L2 policy ladder; do not promote POLICY-003/L3, host enforcement or real attempted action without the product authority gate.
+    next_move: Preserve the reviewed non-executable L0-L2 policy ladder; do not promote POLICY-003/L3, host enforcement or real attempted action before the canonical ExecutionGraph v2 contract and confirmation path are reviewed.
     owned_artifacts:
       - ART-ACI-POLICY-000-DOMAINSPEC-REVIEW
       - ART-ACI-POLICY-000-IMPLEMENTATION-REVIEW
@@ -267,22 +297,37 @@ contexts:
     links:
       - {label: Layering decision, target: DEC-ACI-POLICY-LAYERING-001, kind: row-id}
       - {label: Final L2 implementation review, target: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, kind: artifact-id}
-      - {label: Product gate for any real execution, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+      - {label: Canonical graph contract gap for any real execution, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
+  - context_id: CTX-ACI-GENERIC-STAGE-HANDOFF
+    parent_id: CTX-ACI-ROOT
+    title: Generic stage handoff
+    purpose: Preserve exact producer-result commitment, publication authority, publication occurrence, immutable delivery and consumer acceptance as independently evidenced facts across staged ACI work.
+    stage: design
+    gate: block
+    next_move: Promote the accepted generic handoff capability into the ACI aggregate domain, operation, mapping and workflow contracts, then independently red-team the promoted contract before implementation.
+    owned_artifacts:
+      - ART-ACI-GSH-DISCOVERY
+      - ART-ACI-GSH-CAPABILITY-SPEC
+      - ART-ACI-GSH-ARCH-DECISION
+      - ART-ACI-GSH-SESSION-20260901
+    links:
+      - {label: Selected architecture, target: DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001, kind: row-id}
+      - {label: Remaining promotion gap, target: GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001, kind: row-id}
 
 artifacts:
   - {artifact_id: ART-ACI-LEDGER, owner_context_id: CTX-ACI-ROOT, path: .craft/ledger.yml, artifact_type: ledger-source, status: active}
   - {artifact_id: ART-ACI-VIEW, owner_context_id: CTX-ACI-ROOT, path: CRAFT.md, artifact_type: human-view, status: active}
   - {artifact_id: ART-ACI-STATUS-SNAPSHOT, owner_context_id: CTX-ACI-ROOT, path: .craft/artifacts/progress-snapshot-2026-08-31.md, artifact_type: status-evidence, status: stale, notes: Predates the durable-authority selection and approved Robot-Talks CONF-000/CONF-001 sequence; retained as historical evidence.}
   - {artifact_id: ART-ACI-README, owner_context_id: CTX-ACI-ROOT, path: README.md, artifact_type: architecture-proposal, status: active}
-  - {artifact_id: ART-ACI-SPEC, owner_context_id: CTX-ACI-ROOT, path: specs/SPEC.md, artifact_type: feature-spec, status: active}
-  - {artifact_id: ART-ACI-TEST-SPEC, owner_context_id: CTX-ACI-ROOT, path: TEST-SPEC.md, artifact_type: test-contract, status: active}
+  - {artifact_id: ART-ACI-SPEC, owner_context_id: CTX-ACI-ROOT, path: specs/SPEC.md, artifact_type: feature-spec, status: flag, notes: Current bounded contracts do not yet define the owner-selected single canonical ExecutionGraph v2 authority.}
+  - {artifact_id: ART-ACI-TEST-SPEC, owner_context_id: CTX-ACI-ROOT, path: TEST-SPEC.md, artifact_type: test-contract, status: flag, notes: Existing tests preserve CONF v1 and bounded components; v2 graph, projection and confirmation obligations are not yet specified.}
   - {artifact_id: ART-ACI-WORK-PACK, owner_context_id: CTX-ACI-ROOT, path: WORK-PACK.md, artifact_type: bounded-work-pack, status: flag, notes: Contains implemented bounded SWUs and broader blocked runtime slices.}
   - {artifact_id: ART-ACI-PROTOCOL-DESCRIPTOR, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: work-pack/descriptors/SWU-ACI-PROTOCOL-COMPILATION-001.json, artifact_type: swu-descriptor, status: pass, notes: Declares implemented-verified-bounded for the exact non-authoritative compiler slice.}
   - {artifact_id: ART-ACI-PROTOCOL-DECISION, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: "[repo-root] docs/decisions/aci-protocol-governance-ownership.md", artifact_type: decision-record, status: pass}
   - {artifact_id: ART-ACI-CONTINUATION-DECISION, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: "[repo-root] docs/decisions/aci-resumable-agent-continuation.md", artifact_type: decision-record, status: pass}
-  - {artifact_id: ART-ACI-CONTINUATION-PLAN, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/WORK-PACK.md, artifact_type: implementation-plan, status: block, notes: Current through BUS-001 PASS/KEEP; PRODUCT-PASS blocks all later continuation units.}
-  - {artifact_id: ART-ACI-CONTINUATION-READINESS, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/READINESS.md, artifact_type: readiness-gate, status: block, notes: HEADS and BUS are closed; no code-entry authority exists after the hard product gate.}
-  - {artifact_id: ART-ACI-CONTINUATION-GATE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/DECISION-GATE.md, artifact_type: decision-gate, status: block, notes: PRODUCT-PASS requires product-owned CONF v2 authority inputs and a new explicit user confirmation.}
+  - {artifact_id: ART-ACI-CONTINUATION-PLAN, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/WORK-PACK.md, artifact_type: implementation-plan, status: block, notes: Current through BUS-001 PASS/KEEP; the missing canonical ExecutionGraph v2 contract blocks all later continuation units.}
+  - {artifact_id: ART-ACI-CONTINUATION-READINESS, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/READINESS.md, artifact_type: readiness-gate, status: block, notes: HEADS and BUS are closed; no code-entry authority exists for v2 graph ingestion or real execution.}
+  - {artifact_id: ART-ACI-CONTINUATION-GATE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/plan/DECISION-GATE.md, artifact_type: decision-gate, status: superseded, notes: Retained as historical PRODUCT-PASS evidence; DEC-ACI-CANONICAL-EXECUTION-GRAPH-001 now governs product responsibility and GAP-ACI-CANONICAL-GRAPH-CONTRACT-001 governs remaining work.}
   - {artifact_id: ART-ACI-RUNTIME-BASELINE, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: development/invoke-runs/20260831-resumable-feedback/plan/BASELINE.md, artifact_type: test-baseline, status: pass, notes: Historical BUS closure baseline is 200/200 runtime tests and 36/36 canonical Control Center tests; later POLICY receipts report larger curated regressions and do not rewrite this baseline artifact.}
   - {artifact_id: ART-ACI-HOST-PROBE, owner_context_id: CTX-ACI-RESUMABLE-FEEDBACK, path: development/invoke-runs/20260831-resumable-feedback/probes/host-continuation-probe.json, artifact_type: host-probe, status: pass, notes: Proves same-agent-reference follow-up and active interruption only; restart durability is unproven.}
   - {artifact_id: ART-ACI-RUNTIME-DATABASE, owner_context_id: CTX-ACI-RUNTIME-BASELINE, path: "[repo-root] implementations/server/runtime/database.py", artifact_type: runtime-source, status: active}
@@ -306,6 +351,11 @@ artifacts:
   - {artifact_id: ART-ACI-POLICY-002-ALIGNMENT-AUDIT, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-ALIGNMENT-LAYERING-AUDIT.md, artifact_type: alignment-audit, status: pass, notes: PASS for the bounded three-path work-pack layering; sha256 34ece0e88c7a67a4065285d476d8143a617a111a579daa0ba6713d5bf811e8a3.}
   - {artifact_id: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, owner_context_id: CTX-ACI-EXECUTION-POLICY, path: development/invoke-runs/20260831-resumable-feedback/plan/evidence/POLICY-002-IMPLEMENTATION-REVIEW.md, artifact_type: implementation-evidence, status: pass, notes: Final implemented-reviewed-bounded PASS/KEEP for test-only L2 fake denial; focused 12/12, combined POL 59/59 and curated runtime 260/260 across 27 modules excluding Lean; sha256 0a44fa7e8058a57064acb30086f138c0c1da1340c7a081ab5e819b638d2b30a0.}
   - {artifact_id: ART-ACI-ROADMAP-CLOSURE-REVIEW, owner_context_id: CTX-ACI-ROOT, path: reviews/2026-09-01-aci-roadmap-closure-review/review.md, artifact_type: review-proposal, status: planned, notes: "Candidate id 2026-09-01-aci-roadmap-closure-review; persisted output and eight-agent topology were proposed only. No dispatch was opened or registered, no agent was invoked, and this absent output is neither evidence nor a completed review."}
+  - {artifact_id: ART-ACI-AGENT-IDENTITY-ROLE-SPEC, owner_context_id: CTX-ACI-PROTOCOL-COMPILATION, path: development/refinement-runs/2026-09-01-execution-graph-authority/followups/SPEC-ACI-AGENT-IDENTITY-ROLE-001/DECISION.md, artifact_type: specification-delta, status: candidate, notes: Owner-selected display-name provenance and closed-role decision with proposed schemas, fixtures and 41 negative vectors; the independent review and two rechecks returned FIX, and another recheck plus code adaptation remain pending.}
+  - {artifact_id: ART-ACI-GSH-DISCOVERY, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: discovery/generic-stage-handoff.md, artifact_type: discovery, status: pass, notes: Reviewed source boundary; accepted digest sha256:328139a23aff2d391d51f85869c36b8a943aaf4833547fe9afdeaa9acfc8b6ec.}
+  - {artifact_id: ART-ACI-GSH-CAPABILITY-SPEC, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: specs/capabilities/generic-stage-handoff.md, artifact_type: capability-spec, status: pass, notes: Version 0.2.0 passed the final same-reviewer document check; sha256:cb150f5dfd3518b610fd5d6d40baee2613dbbb4bdab0dda665b9bde6a22d6064. Aggregate promotion and implementation remain blocked.}
+  - {artifact_id: ART-ACI-GSH-ARCH-DECISION, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: "[repo-root] docs/decisions/aci-generic-stage-handoff-architecture.md", artifact_type: decision-record, status: pass, notes: ACI-GSH-001 selects the staged host-workflow extension while preserving all five facts and reopening a standalone aggregate if any collapse test fails; sha256:e0303e89bd279b949df27de9f768877bf0db252f11db617ebec6afc9d0ad8a91.}
+  - {artifact_id: ART-ACI-GSH-SESSION-20260901, owner_context_id: CTX-ACI-GENERIC-STAGE-HANDOFF, path: "[repo-root] sessions/2026-09-01-2235-generic-stage-handoff-spec.md", artifact_type: session-record, status: pass, notes: Closes discovery approval, capability specification, architecture selection and ledger registration without claiming aggregate promotion or runtime implementation.}
 
 descriptions:
   - description_id: DESC-ACI-ROOT-001
@@ -371,18 +421,33 @@ descriptions:
   - description_id: DESC-ACI-ROOT-005
     context_id: CTX-ACI-ROOT
     description: CONF-000, CONF-001, CONT-001, HEADS-001, BUS-001 and the POLICY-000 through POLICY-002 non-executable ladder are independently reviewed within bounded ceilings. PRODUCT-PASS remains the hard authority gate for CONT-002, OPEN, POLICY-003/L3 and every real attempted action.
-    status: active
+    status: superseded
     evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
   - description_id: DESC-ACI-CONTINUATION-005
     context_id: CTX-ACI-RESUMABLE-FEEDBACK
     description: The independently reviewed policy ladder adds pure and synthetic denial evidence only. It neither promotes CONT-002 nor supplies the exact CONF v2 product bytes, references, policies, mapping or new user confirmation required for OPEN onward.
-    status: active
+    status: superseded
     evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
   - description_id: DESC-ACI-POLICY-001
     context_id: CTX-ACI-EXECUTION-POLICY
     description: POLICY-000/L0 is pure, POLICY-001/L1 persists and reopens synthetic test-only inputs, and POLICY-002/L2 adds one deterministic durable fake-denial receipt over one exact L1 lineage. All remain non-executable; L3 real values, host enforcement and provider admission are product-gated and unimplemented.
     status: active
     evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
+  - description_id: DESC-ACI-ROOT-006
+    context_id: CTX-ACI-ROOT
+    description: The repository owner selected an agent-compiled, single canonical ExecutionGraph JSON as the complete pre-execution authority. The user may inspect topology, basic or full projections in chat, but every projection represents the same complete bytes and confirmation binds the full graph digest. Runtime support remains blocked on a new v2 specification and evidence; no real execution is authorized.
+    status: active
+    evidence: ART-ACI-LEDGER
+  - description_id: DESC-ACI-CONTINUATION-006
+    context_id: CTX-ACI-RESUMABLE-FEEDBACK
+    description: "The former PRODUCT-PASS ambiguity about who supplies authority fields is resolved: the agent compiles intent into one complete graph and the user confirms it. CONT-002 and OPEN remain blocked by the missing ExecutionGraph v2 schema, canonicalization, presentation projections, fixture, confirmation observation and runtime-ingestion contract."
+    status: active
+    evidence: ART-ACI-LEDGER
+  - description_id: DESC-ACI-GENERIC-STAGE-HANDOFF-001
+    context_id: CTX-ACI-GENERIC-STAGE-HANDOFF
+    description: The reviewed discovery is approved, capability spec 0.2.0 is accepted, and ACI-GSH-001 selects an extension of the bounded host-workflow pipeline. SourceToSlotMapping remains preconfirmed topology and visibility intent rather than publication authorization; separate post-commitment authorization, publication, delivery and consumer-admission facts must be promoted before implementation.
+    status: active
+    evidence: ART-ACI-GSH-CAPABILITY-SPEC
 
 definitions:
   - definition_id: DEF-ACI-DETERMINISTIC-DISPATCH-001
@@ -407,7 +472,7 @@ definitions:
     scope_id: CTX-ACI-RESUMABLE-FEEDBACK
     term: confirmed dispatch authority
     statement: The immutable accepted DispatchSpec and expanded turn graph from which the runtime derives continuation, mapping and source-message identities; caller input and the legacy dispatch link are not substitutes.
-    status: active-local
+    status: superseded
     evidence: ART-ACI-CONTINUATION-GATE
   - definition_id: DEF-ACI-CONFIRMATION-OBSERVATION-001
     scope_id: CTX-ACI-RESUMABLE-FEEDBACK
@@ -415,6 +480,12 @@ definitions:
     statement: Immutable host-issued evidence that binds an authenticated human principal and interaction channel to the exact presented dispatch revision and digest; it becomes execution authority only after ConfirmRuntimeDispatch accepts it into a ConfirmedDispatch.
     status: active-local
     evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
+  - definition_id: DEF-ACI-CANONICAL-EXECUTION-GRAPH-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    term: canonical execution graph
+    statement: The single canonical JSON compiled by the agent from user intent before confirmation. It contains topology and every execution-relevant value, including per-node names, objectives, exact prompts, context selection, provider/model/tools, budgets, sandbox/effects, data-flow and termination rules. Topology, basic and full chat presentations are deterministic views of the same complete graph; confirmation binds its full digest, and any material change requires a new digest and confirmation.
+    status: active-local
+    evidence: ART-ACI-LEDGER
 
 typed_items:
   - item_id: BLK-ACI-CONFIRMATION-AUTHORITY-001
@@ -437,7 +508,7 @@ typed_items:
     closure_condition: The repository owner selects durable runtime confirmation or a test-only seeded fixture, with the limitation recorded explicitly.
     evidence: ART-ACI-LEDGER
     decision_ref: DEC-ACI-CONFIRMATION-AUTHORITY-001
-    reason: Historical closure selected durable runtime confirmation; CONF-001 later implemented the writer and closed GAP-ACI-CONFIRMATION-WRITER-001. Current continuation work is blocked only at PRODUCT-PASS.
+    reason: Historical closure selected durable runtime confirmation; CONF-001 later implemented the writer and closed GAP-ACI-CONFIRMATION-WRITER-001. Current continuation work is blocked by GAP-ACI-CANONICAL-GRAPH-CONTRACT-001.
   - item_id: ENA-ACI-CONTINUATION-CONTRACT-001
     kind: enabler
     base_type: design_enabler
@@ -471,21 +542,21 @@ typed_items:
     context_type: aci.confirmed_dispatch_v2_product_authority
     primary_lane: product
     secondary_lanes: [governance, architecture]
-    source_id: DEC-ACI-PRODUCT-PASS-001
+    source_id: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001
     target_id: CTX-ACI-RESUMABLE-FEEDBACK
-    status: active
-    refinement_status: refined
+    status: resolved
+    refinement_status: resolved
     default_role: repository-owner
     allowed_roles: [repository-owner, product-owner]
     delegation_route: decision-gate
     requires_human: true
     role_confidence: active-local
-    owner_ref: DEC-ACI-PRODUCT-PASS-001
-    role_notes: The missing values are product authority, not reversible technical defaults.
-    closure_condition: Product supplies the exact CONF v2 authority package and the user explicitly confirms the new dispatch identity.
-    evidence: ART-ACI-CONTINUATION-GATE
-    decision_ref: DEC-ACI-PRODUCT-PASS-001
-    reason: Missing product-owned bytes, references, policies and canonical opening mapping change confirmed_authority_digest and block every real opening or execution step.
+    owner_ref: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001
+    role_notes: The repository owner decided that the agent compiles every execution-relevant value into one canonical graph and the user confirms that complete authority through a selected presentation view.
+    closure_condition: Product decides who authors the executable authority, which artifact is canonical, what the user confirms and when reconfirmation is required.
+    evidence: ART-ACI-LEDGER
+    decision_ref: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001
+    reason: Owner direction resolved the product-authority responsibility and confirmation-scope ambiguity. The remaining blocker is technical contract work recorded as GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, not missing user-authored fields.
 
 decisions:
   - decision_id: DEC-ACI-SCOPE-001
@@ -542,7 +613,7 @@ decisions:
     evidence: ART-ACI-LEDGER
     status: closed
     blocking: false
-    impact: Historical result authorized the durable writer path. CONF-001 and CONT-001 later reached implemented-reviewed-pass; the current blocker is the separate PRODUCT-PASS authority package for OPEN onward.
+    impact: Historical result authorized the durable writer path. CONF-001 and CONT-001 later reached implemented-reviewed-pass; OPEN onward is now blocked by the separate canonical ExecutionGraph v2 contract gap.
     owner: repository-owner
     links:
       - {label: Confirmation surface decision, target: DEC-ACI-CONFIRMATION-SURFACE-001, kind: row-id}
@@ -575,7 +646,7 @@ decisions:
     evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001
     status: closed
     blocking: false
-    impact: "Historical sequence completed: CONF-000 preceded CONF-001 on migration 012, and TASK-CONT-001 used isolated migration 013 without seeded authority or legacy mutation. Current work is stopped at PRODUCT-PASS."
+    impact: "Historical sequence completed: CONF-000 preceded CONF-001 on migration 012, and TASK-CONT-001 used isolated migration 013 without seeded authority or legacy mutation. Current work is stopped at the canonical ExecutionGraph v2 contract gap."
     owner: repository-owner
     links:
       - {label: Contract gap, target: GAP-ACI-CONFIRMATION-CONTRACT-001, kind: row-id}
@@ -615,18 +686,19 @@ decisions:
     decision_type: blocker
     question: Which exact product authority package should define the real resumable-feedback dispatch?
     description: The bounded CONF v1 fixture cannot authorize real opening or execution because the missing product values are part of confirmed authority.
-    options: [supply-new-conf-v2-authority, defer-real-execution]
+    options: [supply-new-conf-v2-authority, defer-real-execution, superseded-by-agent-compiled-canonical-graph]
     default_option: supply-new-conf-v2-authority
-    selected: unresolved
-    rationale: The exact CONF v2 package and product authority have not been supplied; this unresolved marker does not select or invent any product-owned value.
-    evidence: ART-ACI-CONTINUATION-GATE
-    status: active
-    blocking: true
-    impact: Product must supply revision-instruction and prompt bytes/refs/digests, role/task/provider references, concrete resource/sandbox/execution-fence policies and the complete canonical audit-opening 0.6.4 mapping. These values change confirmed_authority_digest, so a new dispatch identity, CONF v2 package and new explicit user confirmation are mandatory; CONF v1 remains a component fixture.
+    selected: superseded-by-agent-compiled-canonical-graph
+    rationale: The repository owner rejected the premise that the user or product owner manually supplies every execution field. The agent will compile the complete authority from user intent and present it for explicit confirmation under DEC-ACI-CANONICAL-EXECUTION-GRAPH-001.
+    evidence: ART-ACI-LEDGER
+    status: superseded
+    blocking: false
+    impact: This row no longer blocks on manually supplied product bytes. It does not assert that a concrete CONF v2 graph exists or that the runtime accepts it; those missing technical contracts are tracked separately.
     owner: repository-owner
     links:
       - {label: Product authority gap, target: GAP-ACI-PRODUCT-AUTHORITY-001, kind: row-id}
       - {label: Decision record, target: ART-ACI-CONTINUATION-GATE, kind: artifact-id}
+      - {label: Superseding canonical graph decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
   - decision_id: DEC-ACI-POLICY-LAYERING-001
     scope_id: CTX-ACI-EXECUTION-POLICY
     decision_type: selection
@@ -639,11 +711,64 @@ decisions:
     evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW
     status: closed
     blocking: false
-    impact: POLICY-000, POLICY-001 and POLICY-002 are closed within their exact test-only ceilings; POLICY-003/L3, target-host enforcement and any real attempted action remain behind DEC-ACI-PRODUCT-PASS-001.
+    impact: POLICY-000, POLICY-001 and POLICY-002 are closed within their exact test-only ceilings; POLICY-003/L3, target-host enforcement and any real attempted action remain behind GAP-ACI-CANONICAL-GRAPH-CONTRACT-001.
     owner: runtime-architecture
     links:
-      - {label: Product authority gate, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+      - {label: Canonical graph contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
       - {label: Final L2 review, target: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, kind: artifact-id}
+  - decision_id: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    decision_type: selection
+    question: What single artifact does the agent compile, what does the user confirm, and how may that authority be presented in chat?
+    description: The confirmation flow needs one complete pre-execution authority without requiring the user to author technical fields or creating different authorities for different presentation depths.
+    options: [agent-compiled-single-canonical-json-full-digest-confirmation, multiple-authority-documents, confirmation-scope-varies-by-view]
+    default_option: agent-compiled-single-canonical-json-full-digest-confirmation
+    selected: agent-compiled-single-canonical-json-full-digest-confirmation
+    rationale: The repository owner directed that the agent compile one JSON containing the complete execution graph and all execution-relevant information. The user chooses topology, basic or full presentation in chat, but these are views of the same complete authority; confirmation binds the full graph digest, and a material change requires a new digest and confirmation.
+    evidence: ART-ACI-LEDGER
+    status: closed
+    blocking: false
+    impact: Pending-sheet and capability-resolution may survive as internal compilation concepts or normalized evidence, but they are not separate user-confirmed authority documents in v2. CONF v1 remains immutable historical evidence. A reviewed v2 schema, fixture, presentation projection and runtime-ingestion contract are required before code or OPEN.
+    owner: repository-owner
+    links:
+      - {label: Canonical graph definition, target: DEF-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
+      - {label: Remaining technical contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
+      - {label: Superseded product-pass question, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
+  - decision_id: DEC-ACI-AGENT-IDENTITY-ROLE-001
+    scope_id: CTX-ACI-PROTOCOL-COMPILATION
+    decision_type: selection
+    question: Where does final agent display identity come from, and how are roles closed without hardcoding them forever?
+    description: The final ExecutionGraph keeps display_name, but the LLM must not invent it; role must be closed today and extensible through governed configuration later.
+    options: [signed-pool-assignment-plus-pinned-role-registry, llm-authored-display-name, free-form-role-string]
+    default_option: signed-pool-assignment-plus-pinned-role-registry
+    selected: signed-pool-assignment-plus-pinned-role-registry
+    rationale: The repository owner selected canonical YAML agent_name as the sole v0.7 display-name source, with agent-name rejected rather than retained as an alias, an allocator-owned signed node assignment, and a small role allowlist with singular other plus versioned digest-pinned extension.
+    evidence: ART-ACI-AGENT-IDENTITY-ROLE-SPEC
+    status: closed
+    blocking: false
+    impact: The existing DraftGraph compiler and fixtures are stale for identity/role. They cannot be promoted until the real pool and all consumers migrate atomically from legacy name, the compiler is adapted, and independent review passes. Runtime integration remains blocked.
+    owner: repository-owner
+    links:
+      - {label: Governing canonical graph decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
+      - {label: Remaining technical contract gap, target: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, kind: row-id}
+  - decision_id: DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001
+    scope_id: CTX-ACI-GENERIC-STAGE-HANDOFF
+    decision_type: selection
+    question: Should generic stage handoff extend the existing bounded host-workflow pipeline or introduce a standalone aggregate?
+    description: The capability needs five independently evidenced facts without duplicating authority and persistence seams unnecessarily.
+    options: [extend-staged-host-workflow-pipeline, standalone-generic-handoff-aggregate]
+    default_option: extend-staged-host-workflow-pipeline
+    selected: extend-staged-host-workflow-pipeline
+    rationale: Both candidates can preserve the nine collapse-test separations, but the staged extension reuses existing verified producer, materialization and launch seams with less duplicate machinery. A standalone aggregate must be reconsidered if promotion or implementation collapses any fact or authority boundary.
+    evidence: ART-ACI-GSH-ARCH-DECISION
+    status: closed
+    blocking: false
+    impact: Architecture selection is closed; aggregate aspect allocation and implementation remain blocked until the accepted capability is promoted into domain, operation, mapping and workflow contracts and independently reviewed.
+    owner: repository-owner
+    links:
+      - {label: Reviewed discovery, target: ART-ACI-GSH-DISCOVERY, kind: artifact-id}
+      - {label: Accepted capability specification, target: ART-ACI-GSH-CAPABILITY-SPEC, kind: artifact-id}
+      - {label: Remaining promotion gap, target: GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001, kind: row-id}
 
 gaps:
   - gap_id: GAP-ACI-CONFIRMATION-WRITER-001
@@ -705,12 +830,12 @@ gaps:
       - {label: Approved staging decision, target: DEC-ACI-LEGACY-FK-STAGING-001, kind: row-id}
   - gap_id: GAP-ACI-PRODUCT-AUTHORITY-001
     scope_id: CTX-ACI-RESUMABLE-FEEDBACK
-    summary: Real execution lacks the exact revision-instruction and prompt bytes/refs/digests, role/task/provider references, resource/sandbox/fence policies and complete canonical audit-opening 0.6.4 mapping required for CONF v2 authority.
+    summary: Historical PRODUCT-PASS gap assumed the repository owner would manually supply every CONF v2 authority value; DEC-ACI-CANONICAL-EXECUTION-GRAPH-001 superseded that premise with agent compilation and full-digest user confirmation.
     severity: block
-    treatment: delegate
+    treatment: plan
     owner: repository-owner
-    status: active
-    evidence: ART-ACI-CONTINUATION-GATE
+    status: resolved
+    evidence: ART-ACI-LEDGER
     links:
       - {label: Blocking product decision, target: DEC-ACI-PRODUCT-PASS-001, kind: row-id}
       - {label: Technical/product split, target: ART-ACI-C2-ROBOT-TALKS-FINDINGS, kind: artifact-id}
@@ -725,6 +850,30 @@ gaps:
     links:
       - {label: Final reviewed implementation, target: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, kind: artifact-id}
       - {label: Governing layering decision, target: DEC-ACI-POLICY-LAYERING-001, kind: row-id}
+  - gap_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001
+    scope_id: CTX-ACI-RESUMABLE-FEEDBACK
+    summary: No accepted v2 contract yet defines the single canonical ExecutionGraph JSON, reviewed agent-identity/role compilation and code adaptation, per-node execution fields, canonical bytes/digest, topology/basic/full presentation projections, confirmation observation, runtime-derived facts, CONF v1 compatibility or runtime ingestion.
+    severity: block
+    treatment: plan
+    owner: runtime-architecture
+    status: active
+    evidence: ART-ACI-LEDGER
+    links:
+      - {label: Governing owner decision, target: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
+      - {label: Canonical graph definition, target: DEF-ACI-CANONICAL-EXECUTION-GRAPH-001, kind: row-id}
+      - {label: Historical CONF v1 contract, target: ART-ACI-CONF-000-EVIDENCE, kind: artifact-id}
+      - {label: Candidate identity and role delta, target: ART-ACI-AGENT-IDENTITY-ROLE-SPEC, kind: artifact-id}
+  - gap_id: GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001
+    scope_id: CTX-ACI-GENERIC-STAGE-HANDOFF
+    summary: The accepted generic-stage-handoff capability and architecture have not yet been promoted into concrete aggregate aspects, durable operations, mappings, workflow constraints or conformance fixtures; no runtime implementation claim is authorized.
+    severity: block
+    treatment: plan
+    owner: domain-architecture
+    status: active
+    evidence: ART-ACI-GSH-CAPABILITY-SPEC
+    links:
+      - {label: Governing architecture decision, target: DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001, kind: row-id}
+      - {label: Accepted capability specification, target: ART-ACI-GSH-CAPABILITY-SPEC, kind: artifact-id}
 
 route_handoffs: []
 receipts: []
@@ -733,7 +882,7 @@ relations:
   - {relation_id: REL-ACI-CONTAINS-RUNTIME, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-RUNTIME-BASELINE, type: contains, status: active, reason: The bounded runtime is an implementation child of the ACI feature., evidence: ART-ACI-WORK-PACK}
   - {relation_id: REL-ACI-CONTAINS-PROTOCOL, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-PROTOCOL-COMPILATION, type: contains, status: active, reason: Protocol compilation is a bounded non-authoritative ACI capability., evidence: ART-ACI-PROTOCOL-DECISION}
   - {relation_id: REL-ACI-CONTAINS-CONTINUATION, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: contains, status: active, reason: Resumable feedback is the current bounded dispatch-runtime objective., evidence: ART-ACI-CONTINUATION-PLAN}
-  - {relation_id: REL-ACI-CONFIRMATION-BLOCKS-CONTINUATION, source_id: DEC-ACI-CONFIRMATION-AUTHORITY-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: resolved, reason: Historical authority-source blocker resolved through durable confirmation; CONF-001 and CONT-001 later passed, and PRODUCT-PASS is the current gate., evidence: ART-ACI-CONF-001-EVIDENCE}
+  - {relation_id: REL-ACI-CONFIRMATION-BLOCKS-CONTINUATION, source_id: DEC-ACI-CONFIRMATION-AUTHORITY-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: resolved, reason: Historical authority-source blocker resolved through durable confirmation; CONF-001 and CONT-001 later passed, and the canonical graph contract gap is the current gate., evidence: ART-ACI-CONF-001-EVIDENCE}
   - {relation_id: REL-ACI-WRITER-GAP-INFORMS-DECISION, source_id: GAP-ACI-CONFIRMATION-WRITER-001, target_id: DEC-ACI-CONFIRMATION-AUTHORITY-001, type: informs, status: resolved, reason: Historical missing-writer evidence reopened and resolved the authority gate; CONF-001 later closed the gap., evidence: ART-ACI-CONF-001-EVIDENCE}
   - {relation_id: REL-ACI-CONTRACT-ENABLES-CONTINUATION, source_id: ENA-ACI-CONTINUATION-CONTRACT-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: enables, status: active, reason: Reviewed contracts define the work once authority is resolved., evidence: ART-ACI-CONTINUATION-PLAN}
   - {relation_id: REL-ACI-SQLITE-ENABLES-RUNTIME, source_id: ENA-ACI-SQLITE-RUNTIME-001, target_id: CTX-ACI-RUNTIME-BASELINE, type: enables, status: resolved, reason: Existing journal and migration seams support bounded runtime persistence., evidence: ART-ACI-RUNTIME-DATABASE}
@@ -742,13 +891,18 @@ relations:
   - {relation_id: REL-ACI-SURFACE-INFORMS-AUTHORITY, source_id: DEC-ACI-CONFIRMATION-SURFACE-001, target_id: DEC-ACI-CONFIRMATION-AUTHORITY-001, type: informs, status: active, reason: Chat is the initial observation surface and a future UI may use the same boundary; both must produce the same durable authority record bound to the exact approved dispatch digest., evidence: ART-ACI-LEDGER}
   - {relation_id: REL-ACI-ROBOT-TALKS-INFORMS-CONFIRMATION, source_id: ART-ACI-ROBOT-TALKS-FINDINGS-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: active, reason: Three independent investigations exposed and the repository owner disposed the contract, transaction, work-slicing and legacy-dependency tensions that govern the next confirmation work., evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001}
   - {relation_id: REL-ACI-CONTRACT-GAP-BLOCKS-WRITER, source_id: GAP-ACI-CONFIRMATION-CONTRACT-001, target_id: GAP-ACI-CONFIRMATION-WRITER-001, type: blocks, status: resolved, reason: Historical CONF-000-before-CONF-001 dependency completed; both contract and writer gaps are closed., evidence: ART-ACI-CONF-000-EVIDENCE}
-  - {relation_id: REL-ACI-SEQUENCE-INFORMS-CONTINUATION, source_id: DEC-ACI-CONFIRMATION-SEQUENCE-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: resolved, reason: Historical CONF-000 -> CONF-001 -> CONT-001 sequence completed with reviewed PASS; PRODUCT-PASS now governs OPEN onward., evidence: ART-ACI-CONT-001-EVIDENCE}
+  - {relation_id: REL-ACI-SEQUENCE-INFORMS-CONTINUATION, source_id: DEC-ACI-CONFIRMATION-SEQUENCE-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: resolved, reason: Historical CONF-000 -> CONF-001 -> CONT-001 sequence completed with reviewed PASS; the canonical graph contract now governs OPEN onward., evidence: ART-ACI-CONT-001-EVIDENCE}
   - {relation_id: REL-ACI-LEGACY-FK-INFORMS-CONTINUATION, source_id: GAP-ACI-LEGACY-DISPATCH-FK-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: informs, status: active, reason: Legacy foreign keys do not block CONF-001 but remain residue before a complete runtime-managed attempt and continuation claim., evidence: ART-ACI-ROBOT-TALKS-FINDINGS-001}
-  - {relation_id: REL-ACI-PRODUCT-GAP-BLOCKS-CONTINUATION, source_id: GAP-ACI-PRODUCT-AUTHORITY-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: active, reason: The absent product authority changes confirmed_authority_digest and prevents real OPEN onward., evidence: ART-ACI-CONTINUATION-GATE}
-  - {relation_id: REL-ACI-PRODUCT-DECISION-GOVERNS-GAP, source_id: DEC-ACI-PRODUCT-PASS-001, target_id: GAP-ACI-PRODUCT-AUTHORITY-001, type: informs, status: active, reason: Only the product decision can supply or defer the missing CONF v2 authority package., evidence: ART-ACI-CONTINUATION-GATE}
+  - {relation_id: REL-ACI-PRODUCT-GAP-BLOCKS-CONTINUATION, source_id: GAP-ACI-PRODUCT-AUTHORITY-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: resolved, reason: Owner direction superseded the manual product-field premise; the remaining v2 contract work moved to GAP-ACI-CANONICAL-GRAPH-CONTRACT-001., evidence: ART-ACI-LEDGER}
+  - {relation_id: REL-ACI-PRODUCT-DECISION-GOVERNS-GAP, source_id: DEC-ACI-PRODUCT-PASS-001, target_id: GAP-ACI-PRODUCT-AUTHORITY-001, type: informs, status: resolved, reason: Both the historical decision and its product-authority gap were superseded by the single canonical graph decision., evidence: ART-ACI-LEDGER}
   - {relation_id: REL-ACI-CONTAINS-POLICY, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-EXECUTION-POLICY, type: contains, status: active, reason: The bounded non-executable policy ladder is an implementation child of the ACI feature., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
   - {relation_id: REL-ACI-POLICY-LAYERING-GOVERNS-CONTEXT, source_id: DEC-ACI-POLICY-LAYERING-001, target_id: CTX-ACI-EXECUTION-POLICY, type: informs, status: active, reason: The selected ladder admits independently reviewed L0 through L2 evidence and stops before real attempted action or host enforcement., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
   - {relation_id: REL-ACI-POLICY-CODE-ENTRY-BLOCKS-L2, source_id: GAP-ACI-POLICY-002-CODE-ENTRY-001, target_id: CTX-ACI-EXECUTION-POLICY, type: blocks, status: resolved, reason: The historical code-entry dependency was satisfied and POLICY-002 reached independently reviewed PASS/KEEP., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
   - {relation_id: REL-ACI-POLICY-EVIDENCE-INFORMS-RUNTIME, source_id: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW, target_id: CTX-ACI-RUNTIME-BASELINE, type: informs, status: active, reason: The final receipt adds a curated 260-test runtime regression while preserving the BUS 200-test baseline as its own historical closure point., evidence: ART-ACI-POLICY-002-IMPLEMENTATION-REVIEW}
+  - {relation_id: REL-ACI-CANONICAL-GRAPH-GAP-BLOCKS-CONTINUATION, source_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, target_id: CTX-ACI-RESUMABLE-FEEDBACK, type: blocks, status: active, reason: OPEN and real execution cannot advance until one reviewed v2 graph contract defines the complete confirmed authority and runtime ingestion boundary., evidence: ART-ACI-LEDGER}
+  - {relation_id: REL-ACI-CANONICAL-GRAPH-DECISION-INFORMS-GAP, source_id: DEC-ACI-CANONICAL-EXECUTION-GRAPH-001, target_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, type: informs, status: active, reason: The owner-selected single-JSON and full-digest confirmation model defines the missing specification work without proving its implementation., evidence: ART-ACI-LEDGER}
+  - {relation_id: REL-ACI-IDENTITY-ROLE-DECISION-INFORMS-GAP, source_id: DEC-ACI-AGENT-IDENTITY-ROLE-001, target_id: GAP-ACI-CANONICAL-GRAPH-CONTRACT-001, type: informs, status: active, reason: The owner-selected YAML identity provenance and pinned role registry narrow the compiler boundary while leaving independent review, code adaptation and runtime ingestion unproven., evidence: ART-ACI-AGENT-IDENTITY-ROLE-SPEC}
+  - {relation_id: REL-ACI-CONTAINS-GENERIC-STAGE-HANDOFF, source_id: CTX-ACI-ROOT, target_id: CTX-ACI-GENERIC-STAGE-HANDOFF, type: contains, status: active, reason: Generic stage handoff is a bounded capability child of the ACI feature., evidence: ART-ACI-GSH-CAPABILITY-SPEC}
+  - {relation_id: REL-ACI-GSH-DECISION-INFORMS-PROMOTION-GAP, source_id: DEC-ACI-GENERIC-STAGE-HANDOFF-ARCH-001, target_id: GAP-ACI-GENERIC-STAGE-HANDOFF-PROMOTION-001, type: informs, status: active, reason: The staged-extension decision fixes the promotion direction while leaving concrete aggregate aspects and runtime contracts unimplemented., evidence: ART-ACI-GSH-ARCH-DECISION}
 
 recomposition: []

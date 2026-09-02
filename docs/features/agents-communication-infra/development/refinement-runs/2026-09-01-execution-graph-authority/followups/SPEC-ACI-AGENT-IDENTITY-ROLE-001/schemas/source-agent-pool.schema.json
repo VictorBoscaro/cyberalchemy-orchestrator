@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aci.source-agent-pool-stream@2.schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["documents"],
+  "properties": {
+    "documents": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        {"$ref": "#/$defs/metadata"},
+        {"$ref": "#/$defs/roster"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "name", "description", "node_type", "layer", "nature", "status", "version", "last_updated", "source", "notes"],
+      "properties": {
+        "profile": {"const": "subagents-strategy"},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "node_type": {"const": "agent-pool"},
+        "layer": {"const": "meta"},
+        "nature": {"const": "reference"},
+        "status": {"const": "active"},
+        "version": {"enum": ["0.6.0", "0.7.0"]},
+        "last_updated": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "source": {"type": "string", "minLength": 1},
+        "notes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]{0,63}$"
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "era", "role_fit", "cited", "tags"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "agent_name": {"type": "string", "minLength": 1},
+        "agent-name": {"type": "string", "minLength": 1},
+        "field": {"type": "string", "minLength": 1},
+        "era": {"type": "string", "minLength": 1},
+        "role_fit": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/role"}},
+        "cited": {"type": "boolean"},
+        "tags": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "note": {"type": "string", "minLength": 1}
+      },
+      "anyOf": [
+        {"required": ["name"]},
+        {"required": ["agent_name"]},
+        {"required": ["agent-name"]}
+      ]
+    },
+    "roster": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scientists"],
+      "properties": {
+        "scientists": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/entry"}}
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+profile: subagents-strategy
+name: Agent pool fixture — review, correct, verify
+description: Canonical v0.7 two-document pool fixture for the identity/role contract.
+node_type: agent-pool
+layer: meta
+nature: reference
+status: active
+version: "0.7.0"
+last_updated: "2026-09-01"
+source: SPEC-ACI-AGENT-IDENTITY-ROLE-001
+notes:
+  - Canonical entries use agent_name; all other roster fields survive the v0.6 migration.
+---
+scientists:
+  - agent_name: "Popper, Karl"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [falsification, epistemology]
+  - agent_name: "Dijkstra, Edsger W."
+    field: cs
+    era: modern
+    role_fit: [skeptic, auditor]
+    cited: true
+    tags: [algorithms, formal-methods]
+    note: Explicit coder override is exercised by the signed assignment fixture.
+  - agent_name: "Lamport, Leslie"
+    field: cs
+    era: modern
+    role_fit: [auditor, explorer]
+    cited: true
+    tags: [distributed-systems, formal-methods]

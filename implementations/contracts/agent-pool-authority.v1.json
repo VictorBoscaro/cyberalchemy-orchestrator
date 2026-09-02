@@ -1,0 +1,11 @@
+{
+  "schema": "aci.agent-pool-authority@1",
+  "source_path": "telemetry/agents/agent-pool.yaml",
+  "source_raw_digest": "sha256:10291fe7385cbab70f62c98a0a6b7ae1060fec0dab870acc6df4a3b1892f6df4",
+  "entry_count": 414,
+  "agent_pool_ref": {
+    "name": "Agent pool — scientists, philosophers, thinkers for agent dispatch",
+    "version": "0.7.0",
+    "digest": "sha256:a14b7f56e25528f6de77621d5cbde81407c2cb515abcfc55d81832531a7e8bd4"
+  }
+}

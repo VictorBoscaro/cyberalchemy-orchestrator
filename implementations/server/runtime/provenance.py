@@ -539,6 +539,7 @@ class ProvenanceService:
                 "row_kind": dispatch_snapshot.row_kind,
                 "appender_identity": dispatch_snapshot.appender_identity,
                 "contract_version": dispatch_snapshot.contract_version,
+                "agent_role_registry_ref": dispatch_snapshot.agent_role_registry_ref,
             },
             "row_digest": _digest_object(link["row_digest"]),
         }

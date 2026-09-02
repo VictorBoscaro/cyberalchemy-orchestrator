@@ -1,0 +1,8 @@
+{
+  "schema": "aci.compilation-context-fixture@1",
+  "dispatch_id": "dispatch:aci.fixture:review_correct_verify",
+  "revision": "r1",
+  "allocation_id": "allocation:aci.fixture:review_correct_verify:r1",
+  "allocation_status": "reserved",
+  "prior_accepted_graph_digest": null
+}

@@ -32,12 +32,17 @@ class ReferenceDeliveryFixture:
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
         dispatch_registry_relative = (
-            "implementations/contracts/dispatch-type-registry.v1.json"
+            "implementations/contracts/dispatch-type-registry.v2.json"
         )
         dispatch_registry = json.loads(
             (REPO / dispatch_registry_relative).read_text(encoding="utf-8")
         )
-        dispatch_paths = [dispatch_registry_relative]
+        dispatch_paths = [
+            dispatch_registry_relative,
+            "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+            "implementations/contracts/agent-role-registry.v1.json",
+            "implementations/contracts/agent-role-registry-authority.v1.json",
+        ]
         dispatch_paths.extend(
             entry["capability_path"]
             for entry in dispatch_registry["types"]
@@ -86,7 +91,8 @@ class ReferenceDeliveryFixture:
         )
         self.opening = {
             "dispatch_id": self.dispatch_id,
-            "schema_version": "0.6.4",
+            "schema_version": dispatch_registry["ledger_schema_version"],
+            "agent_role_registry_ref": dispatch_registry["agent_role_registry_ref"],
             "dispatch_type": "review",
             "capability_route": capability_route,
             "goal": "Exercise target-agent reference delivery.",

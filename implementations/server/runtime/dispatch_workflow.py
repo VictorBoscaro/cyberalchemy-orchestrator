@@ -312,6 +312,7 @@ def compile_bound_launch_plan(
             manifest = {
                 "schema": MANIFEST_SCHEMA,
                 "dispatch_id": dispatch_id,
+                "route_digest": route["route_digest"],
                 "target": {
                     "group_id": group_id,
                     "seat_index": seat_index,

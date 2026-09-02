@@ -25,9 +25,16 @@ class RuntimeTypeBootstrapAbuseTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
-        registry_rel = Path("implementations/contracts/dispatch-type-registry.v1.json")
+        registry_rel = Path("implementations/contracts/dispatch-type-registry.v2.json")
         registry = json.loads((REPO / registry_rel).read_text())
-        paths = [registry_rel, Path(".claude/skills/register-dispatch/append-dispatch.cjs")]
+        paths = [
+            registry_rel,
+            Path("implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json"),
+            Path("implementations/contracts/agent-role-registry.v1.json"),
+            Path("implementations/contracts/agent-role-registry-authority.v1.json"),
+            Path("implementations/contracts/agent-role-host-routing.v1.json"),
+            Path(".claude/skills/register-dispatch/append-dispatch.cjs"),
+        ]
         paths.extend(Path(e["capability_path"]) for e in registry["types"] if e["capability_path"])
         paths.append(Path(".claude/skills/backlog/SKILL.md"))
         for rel in paths:
@@ -44,8 +51,10 @@ class RuntimeTypeBootstrapAbuseTests(unittest.TestCase):
 
     def review_record(self) -> dict:
         route = resolve_dispatch_capability(self.root, capability_ref="review", authority_mode="legacy-managed")
+        registry = load_dispatch_type_registry(self.root)
         return {
-            "dispatch_id": "2026-08-13-bootstrap-abuse", "schema_version": "0.6.4",
+            "dispatch_id": "2026-08-13-bootstrap-abuse", "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "dispatch_type": "review", "goal": "Test fail-closed behavior.",
             "context": "All mutations are isolated in a temporary repository.", "max_loops": 1,
             "final_approver": "parent", "anti_bias_mode": "disabled", "output_mode": "inline",
@@ -151,6 +160,8 @@ class RuntimeTypeBootstrapAbuseTests(unittest.TestCase):
         record = self.review_record()
         close = {
             "close_of": record["dispatch_id"],
+            "schema_version": record["schema_version"],
+            "agent_role_registry_ref": record["agent_role_registry_ref"],
             "exit_reason": "resolved",
             "agents_spawned": {"total": 1, "tree": {"auditor": 1}, "loops_used": 1},
             "capability_route_digest": record["capability_route"]["route_digest"],
@@ -236,7 +247,7 @@ class RuntimeTypeBootstrapAbuseTests(unittest.TestCase):
             self.compile(inflated, capability="domainspec-implement", output="code-inflated")
 
     def test_registry_tamper_and_duplicate_installed_identity_fail_closed(self) -> None:
-        registry_path = self.root / "implementations/contracts/dispatch-type-registry.v1.json"
+        registry_path = self.root / "implementations/contracts/dispatch-type-registry.v2.json"
         registry = json.loads(registry_path.read_text())
         registry["generic_fallback"]["ledger_value"] = "others"
         registry["generic_fallback"]["api_aliases"] = ["others"]
@@ -263,7 +274,7 @@ class RuntimeTypeBootstrapAbuseTests(unittest.TestCase):
                 row += f"    schema_version: {json.dumps(value)}\n"
             ledger.write_text(row, encoding="utf-8")
             with self.subTest(value=value), self.assertRaisesRegex(
-                IntegrityError, "supported 0.6.1, 0.6.2, 0.6.3, or 0.6.4 contract"
+                IntegrityError, "supported 0.6.1, 0.6.2, 0.6.3, 0.6.4, or 0.7.0 contract"
             ):
                 resolver.resolve(ledger, dispatch_id)
 

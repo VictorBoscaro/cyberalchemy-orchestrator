@@ -1,0 +1,338 @@
+{
+  "dispatch_id": "refine-2026-09-01-execution-graph-authority",
+  "parent_dispatch_id": null,
+  "intent": {
+    "raw": "Use invoke refine to test whether one canonical ExecutionGraph JSON is the best ACI authority decision.",
+    "objective": "Produce a reviewed non-executed definition, design and plan for the single canonical ExecutionGraph authority boundary without changing runtime code.",
+    "target_artifact": "docs/features/agents-communication-infra ExecutionGraph v2 contract",
+    "operator_sentence": "Voce acha que essa é a melhor decisão? Quer fazer um invoke refine?",
+    "arcanum_vocabulary": ["invoke", "refine", "dispatch-spec", "ExecutionGraph", "ConfirmedDispatch"]
+  },
+  "mode": "mixed",
+  "route_menu": {
+    "context_hint": "The owner decision exists, but the exact schema and authority/operational boundary are unresolved.",
+    "items": [
+      {
+        "id": "standard-local-refine",
+        "label": "Standard local refine",
+        "description": "Run the canonical ten stages over local CONF v1, runtime and ledger evidence; use external research only if a named gap appears.",
+        "capability_ref": "refine",
+        "pattern": "sequence"
+      },
+      {
+        "id": "compact-inline-review",
+        "label": "Compact inline review",
+        "description": "Review the decision without producing the full definition/design/plan evidence chain.",
+        "capability_ref": "review",
+        "pattern": "validation"
+      }
+    ],
+    "selected_item_id": "standard-local-refine"
+  },
+  "techniques": [
+    "sequence",
+    "frame_handoff",
+    "handle_handoff",
+    "validation_loop",
+    "owner_boundary_check",
+    "observability_grouping",
+    "minimum_component_catalog",
+    "conditional_component",
+    "data_quality_completeness",
+    "dialectic",
+    "zig_zag",
+    "residue_ledger",
+    "tournament",
+    "pareto_gate",
+    "recomposition_proof",
+    "x_ray",
+    "component_descriptor",
+    "entity_component_reference",
+    "toy_game",
+    "assessment_failure_reference",
+    "authority_split_gate",
+    "approval_semantics_map",
+    "artifact_contract_bridge",
+    "concrete_path_evidence",
+    "state_namespace_boundary"
+  ],
+  "technique_overlays": [
+    {
+      "overlay_id": "baseline_sequence",
+      "trigger": "Refine requires a ten-stage auditable authoring and critique sequence.",
+      "techniques": ["sequence", "frame_handoff", "handle_handoff", "validation_loop", "owner_boundary_check", "observability_grouping", "minimum_component_catalog", "conditional_component", "data_quality_completeness"],
+      "applies_to_steps": ["context", "define", "review_define", "research_decision", "distill", "design", "review_design", "repair", "plan", "final_synthesis"],
+      "validation_expectation": "Every stage consumes a named prior output and returns a native receipt or explicit blocked reason."
+    },
+    {
+      "overlay_id": "dialectic_for_tension",
+      "trigger": "One canonical pre-execution authority must coexist with separate confirmation evidence and post-confirmation operational facts.",
+      "techniques": ["dialectic", "zig_zag", "residue_ledger", "authority_split_gate"],
+      "applies_to_steps": ["review_define", "design", "review_design", "final_synthesis"],
+      "validation_expectation": "Single-authority and runtime-boundary roles remain distinct until synthesis; unresolved authority ownership blocks a pass verdict."
+    },
+    {
+      "overlay_id": "tournament_for_alternatives",
+      "trigger": "Several plausible internal boundaries can satisfy one user-confirmed JSON while differing on embedded versus runtime-derived facts.",
+      "techniques": ["tournament", "pareto_gate", "recomposition_proof"],
+      "applies_to_steps": ["distill", "design", "repair"],
+      "validation_expectation": "Alternatives are compared on authority integrity, user comprehension, determinism, runtime feasibility and CONF v1 migration; rejected alternatives and trade-offs are retained."
+    },
+    {
+      "overlay_id": "xray_and_toy_game",
+      "trigger": "CONF v1 hides the authority across pending sheet, capability resolution, DispatchSpec, turn graph, mappings and runtime-derived artifacts.",
+      "techniques": ["x_ray", "component_descriptor", "entity_component_reference", "toy_game", "assessment_failure_reference", "concrete_path_evidence"],
+      "applies_to_steps": ["context", "define", "review_design", "repair"],
+      "validation_expectation": "A concrete review-correct-verify example demonstrates field completeness, projection stability, material-change detection and the pre/post-confirmation boundary."
+    }
+  ],
+  "subagent_strategy": {
+    "status": "recommended",
+    "trigger": "The schema decision has two load-bearing perspectives that benefit from independent challenge before synthesis.",
+    "explanation": "Two read-only sibling roles reduce the risk that a convenient single-document design either fragments authority again or incorrectly absorbs post-confirmation evidence.",
+    "context": [
+      "CONF v1 currently separates pending input, resolved capabilities, DispatchSpec, confirmed graph, mappings and authority envelope.",
+      "The owner requires one canonical pre-execution authority JSON and three views of the same digest.",
+      "Confirmation observations, receipts, attempts and results occur after the graph is proposed."
+    ],
+    "roles": [
+      {
+        "role_id": "single_authority_advocate",
+        "purpose": "Derive the smallest complete single-JSON authority that faithfully implements the owner decision.",
+        "owns": "Completeness, canonicalization, user-visible projections and reconfirmation criteria.",
+        "applies_to_steps": ["review_define", "design", "review_design"]
+      },
+      {
+        "role_id": "runtime_boundary_skeptic",
+        "purpose": "Attack fields and claims that cannot exist before confirmation or should remain runtime-derived evidence.",
+        "owns": "Authority/evidence separation, persistence feasibility, migration and failure boundaries.",
+        "applies_to_steps": ["review_define", "design", "review_design"]
+      }
+    ],
+    "parallelism": "dialectic",
+    "join_policy": "parent_synthesis",
+    "authorization": "approved",
+    "permission_prompt": "Confirm the standard local Refine run, including two read-only dialectic subagents and no external research unless separately authorized?",
+    "receipt_requirements": ["dispatch_id", "step_id", "capability_ref", "status", "agent_id", "role_id", "spawn_status", "join_status", "close_status", "artifacts", "validation", "observer_status", "blockers", "handoff_note", "residue", "reroute"]
+  },
+  "subagent_lifecycle": {
+    "status": "pass",
+    "agents": [
+      {
+        "agent_id": "/root/single_authority_advocate",
+        "role_id": "single_authority_advocate",
+        "lane_name": "authority completeness and projection",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "stages/07-interrogation-design-review/DESIGN-REVIEW.md",
+        "close_status": "closed",
+        "residue": "Placeholder production refs remain for the future specification fixture.",
+        "reroute": "SPEC-ACI-EXECUTION-GRAPH-V2-001"
+      },
+      {
+        "agent_id": "/root/runtime_boundary_skeptic",
+        "role_id": "runtime_boundary_skeptic",
+        "lane_name": "confirmation and runtime-derived boundary",
+        "spawn_status": "spawned",
+        "join_status": "completed",
+        "receipt_artifact": "stages/07-interrogation-design-review/DESIGN-REVIEW.md",
+        "close_status": "closed",
+        "residue": "The @2 acceptance adapter is proposed but not specified or implemented.",
+        "reroute": "SPEC-ACI-EXECUTION-GRAPH-V2-001"
+      }
+    ]
+  },
+  "native_stage_receipts": [
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "context", "capability_ref": "context-builder", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/01-context-builder/context-pack.md", "stages/01-context-builder/context-pack.json"], "validation": ["strict bounded evidence pack emitted in both formats"], "observer_status": "complete", "blockers": [], "residue": "embedded versus pinned content routed to design"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "define", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/02-invoke-define/DEFINITION.md"], "validation": ["need, actors, boundary, invariants and success tests present"], "observer_status": "complete", "blockers": [], "residue": "missing installed invoke define mode file"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "review_define", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "flag", "artifacts": ["stages/03-interrogation-review/DIALECTIC-REVIEW.md"], "validation": ["two independent roles converged on logical-authority versus evidence/state boundary"], "observer_status": "repaired downstream", "blockers": [], "residue": "required design repairs carried to steps design and repair"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "research_decision", "capability_ref": "refine", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/04-research-decision/DECISION.md"], "validation": ["all gaps were local contract decisions"], "observer_status": "external research not started", "blockers": [], "residue": "none"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "distill", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/05-distill/SELECTION.md"], "validation": ["tournament, Pareto gate and recomposition proof select one authority JSON with external evidence/state"], "observer_status": "complete", "blockers": [], "residue": "exact contract moved to design"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "design", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/06-invoke-design/ARCHITECTURE.md", "stages/06-invoke-design/execution-graph-v2.proposed.schema.json"], "validation": ["six views and valid closed Draft 2020-12 proposal"], "observer_status": "repaired and reviewed", "blockers": [], "residue": "missing installed invoke design mode file"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "review_design", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/07-interrogation-design-review/DESIGN-REVIEW.md", "stages/07-interrogation-design-review/review-correct-verify-toy-graph.json", "stages/07-interrogation-design-review/topology-view.json", "stages/07-interrogation-design-review/basic-view.json"], "validation": ["both approved roles returned PASS after r2 repair", "three projections bind one digest"], "observer_status": "complete", "blockers": [], "residue": "toy refs are placeholders, not production golden artifacts"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "repair", "capability_ref": "distill", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/08-distill-repair/validation.md"], "validation": ["schema, semantic refs, content hashes, output witnesses and projections pass"], "observer_status": "complete", "blockers": [], "residue": "promotion contracts remain future spec work"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "plan", "capability_ref": "invoke", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/09-invoke-plan/implementation-layering.md", "stages/09-invoke-plan/WORK-PACK.md", "stages/09-invoke-plan/PLAN-VALIDATION.md"], "validation": ["SCU/SWU, recomposition, evidence and authority checks pass"], "observer_status": "complete", "blockers": [], "residue": "missing installed invoke plan mode file; code entry remains gated"},
+    {"dispatch_id": "refine-2026-09-01-execution-graph-authority", "step_id": "final_synthesis", "capability_ref": "interrogation", "receipt_kind": "native-stage", "status": "pass", "artifacts": ["stages/10-final-interrogation/FINAL-INTERROGATION.md", "RESULT.md"], "validation": ["claim audit, boundary conclusion and next action are explicit"], "observer_status": "complete", "blockers": [], "residue": "proposal is not yet canonical specification or implementation"}
+  ],
+  "steps": [
+    {
+      "step_id": "context",
+      "name": "Context Builder evidence baseline",
+      "capability_ref": "context-builder",
+      "mode": "standard --strict --emit both --handoff runtime",
+      "pattern": "xray",
+      "parallel": false,
+      "techniques": ["x_ray", "concrete_path_evidence", "state_namespace_boundary"],
+      "inputs": [{"kind": "intent", "ref": "REFINE-SEED-PROPOSAL.md"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/01-context-builder/"}],
+      "stop_conditions": ["Required local sources cannot be read or bounded without importing unrelated repository context."]
+    },
+    {
+      "step_id": "define",
+      "name": "Invoke Define",
+      "capability_ref": "invoke",
+      "mode": "define",
+      "pattern": "sequential",
+      "parallel": false,
+      "techniques": ["sequence", "frame_handoff", "minimum_component_catalog"],
+      "inputs": [{"kind": "frame", "ref": "stages/01-context-builder/context-pack"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/02-invoke-define/"}],
+      "stop_conditions": ["The target cannot be defined without reopening a fixed owner decision."]
+    },
+    {
+      "step_id": "review_define",
+      "name": "Interrogation refine-review",
+      "capability_ref": "interrogation",
+      "mode": "refine-review",
+      "pattern": "dialectic",
+      "parallel": true,
+      "join_policy": "parent_synthesis",
+      "roles": ["single_authority_advocate", "runtime_boundary_skeptic"],
+      "techniques": ["dialectic", "zig_zag", "authority_split_gate", "residue_ledger"],
+      "inputs": [{"kind": "artifact", "ref": "stages/02-invoke-define/"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/03-interrogation-review/"}],
+      "convergence_criteria": ["Both roles agree on the pre-confirmation authority boundary or record a blocker-level owner question.", "Every surviving objection cites a local contract or runtime surface."],
+      "stop_conditions": ["Authority ownership remains contradictory after one critique exchange."]
+    },
+    {
+      "step_id": "research_decision",
+      "name": "Research decision",
+      "capability_ref": "refine",
+      "mode": "research-if-gap-appears",
+      "pattern": "decision",
+      "parallel": false,
+      "techniques": ["approval_checkpoint", "residue_ledger"],
+      "inputs": [{"kind": "artifact", "ref": "stages/03-interrogation-review/"}],
+      "outputs": [{"kind": "decision", "ref": "stages/04-research-decision.md"}],
+      "stop_conditions": ["External research is indicated but has not received separate user confirmation."]
+    },
+    {
+      "step_id": "distill",
+      "name": "Distill coherent authority unit",
+      "capability_ref": "distill",
+      "mode": "standard",
+      "pattern": "tournament",
+      "parallel": false,
+      "join_policy": "pareto",
+      "roles": ["single_authority_candidate", "authority-envelope-candidate", "runtime-projection-candidate"],
+      "techniques": ["tournament", "pareto_gate", "scu_swu_reduction", "recomposition_proof"],
+      "inputs": [{"kind": "artifact", "ref": "stages/02-invoke-define/"}, {"kind": "artifact", "ref": "stages/03-interrogation-review/"}, {"kind": "decision", "ref": "stages/04-research-decision.md"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/05-distill/"}],
+      "convergence_criteria": ["Select the smallest candidate that preserves one user-confirmed JSON and a truthful pre/post-confirmation boundary.", "Record rejected alternatives and recomposition obligations."],
+      "stop_conditions": ["No candidate preserves the fixed owner decisions without an authority contradiction."]
+    },
+    {
+      "step_id": "design",
+      "name": "Invoke Redefine and Design",
+      "capability_ref": "invoke",
+      "mode": "design",
+      "pattern": "sequential",
+      "parallel": false,
+      "techniques": ["sequence", "artifact_contract_bridge", "owner_boundary_check"],
+      "inputs": [{"kind": "artifact", "ref": "stages/05-distill/"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/06-invoke-design/"}],
+      "stop_conditions": ["The design introduces a second pre-execution authority document or hides execution-relevant values from the full graph."]
+    },
+    {
+      "step_id": "review_design",
+      "name": "Interrogation refine-design-review",
+      "capability_ref": "interrogation",
+      "mode": "refine-design-review",
+      "pattern": "toy_game",
+      "parallel": true,
+      "join_policy": "all",
+      "roles": ["single_authority_advocate", "runtime_boundary_skeptic"],
+      "techniques": ["toy_game", "validation_loop", "assessment_failure_reference", "dialectic"],
+      "inputs": [{"kind": "artifact", "ref": "stages/06-invoke-design/"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/07-interrogation-design-review/"}],
+      "evidence_artifact": "stages/07-interrogation-design-review/review-correct-verify-toy-graph.json",
+      "convergence_criteria": ["The toy graph yields stable topology, basic and full views tied to one digest.", "Every material mutation requires reconfirmation and post-confirmation facts remain outside the graph."],
+      "stop_conditions": ["The toy graph exposes an unowned executable field or inconsistent projection."]
+    },
+    {
+      "step_id": "repair",
+      "name": "Distill repair and validation",
+      "capability_ref": "distill",
+      "mode": "validate",
+      "pattern": "validation",
+      "parallel": false,
+      "techniques": ["validation_loop", "recomposition_proof", "data_quality_completeness"],
+      "inputs": [{"kind": "artifact", "ref": "stages/06-invoke-design/"}, {"kind": "artifact", "ref": "stages/07-interrogation-design-review/"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/08-distill-repair/"}],
+      "evidence_artifact": "stages/08-distill-repair/validation.md",
+      "stop_conditions": ["A blocker survives repair or the selected unit no longer recomposes into the owner decision."]
+    },
+    {
+      "step_id": "plan",
+      "name": "Invoke Plan",
+      "capability_ref": "invoke",
+      "mode": "plan",
+      "pattern": "sequential",
+      "parallel": false,
+      "techniques": ["sequence", "scu_swu_reduction", "recomposition_proof", "execution_receipt_handoff"],
+      "inputs": [{"kind": "artifact", "ref": "stages/08-distill-repair/"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/09-invoke-plan/"}],
+      "stop_conditions": ["The plan attempts runtime mutation before an accepted v2 spec, fixture and independent review."]
+    },
+    {
+      "step_id": "final_synthesis",
+      "name": "Final Interrogation and Refine synthesis",
+      "capability_ref": "interrogation",
+      "mode": "refine-final",
+      "pattern": "synthesis",
+      "parallel": false,
+      "techniques": ["owner_boundary_check", "residue_ledger", "artifact_contract_bridge"],
+      "inputs": [{"kind": "artifact", "ref": "stages/09-invoke-plan/"}, {"kind": "artifact", "ref": "stages/08-distill-repair/"}],
+      "outputs": [{"kind": "artifact", "ref": "stages/10-final-interrogation/"}, {"kind": "artifact", "ref": "RESULT.md"}],
+      "stop_conditions": ["Stage receipts or required artifacts are missing.", "The result claims implementation or execution evidence not produced by this run."]
+    }
+  ],
+  "gates": [
+    {"gate_id": "dispatch-valid", "kind": "validation", "owner": "dispatch-spec", "condition": "REFINE-DISPATCH.json passes the deterministic validator before runtime-backed work.", "on_fail": "block"},
+    {"gate_id": "strategy-approved", "kind": "human_approval", "owner": "repository-owner", "condition": "The operator explicitly approves the displayed strategy and read-only subagent roles.", "on_fail": "block"},
+    {"gate_id": "research-approved", "kind": "human_approval", "owner": "repository-owner", "condition": "Any external research identified by a named gap receives separate explicit approval.", "on_fail": "ask"},
+    {"gate_id": "native-receipts", "kind": "quality", "owner": "refine", "condition": "Every selected runtime-backed stage has a native receipt or explicit blocked reason.", "on_fail": "block"},
+    {"gate_id": "artifact-existence", "kind": "validation", "owner": "refine", "condition": "Every stage marked pass points to an existing artifact.", "on_fail": "block"},
+    {"gate_id": "authority-boundary", "kind": "policy", "owner": "repository-owner", "condition": "The run does not silently replace one canonical pre-execution authority or treat operational evidence as user-authored plan data.", "on_fail": "ask"},
+    {"gate_id": "no-code", "kind": "promotion_guardrail", "owner": "runtime-architecture", "condition": "The run produces a non-executed plan and does not modify feature specs, fixtures, migrations or runtime code.", "on_fail": "block"},
+    {"gate_id": "final-ready", "kind": "quality", "owner": "refine", "condition": "Final synthesis cites stage evidence, retains residue and distinguishes proposed, specified, validated and implemented claims.", "on_fail": "block"}
+  ],
+  "observability": {
+    "dispatch_id_required": true,
+    "parent_dispatch_id": null,
+    "trace_events": ["refine.strategy_prepared", "refine.strategy_confirmed", "refine.stage_started", "refine.stage_completed", "refine.stage_blocked", "refine.subagent_joined", "refine.result_synthesized"],
+    "signal_grouping": "refine-2026-09-01-execution-graph-authority"
+  },
+  "boundary_evidence": {
+    "boundaries": [
+      {"boundary_id": "operator-approval", "kind": "human_approval", "from_owner": "refine", "to_owner": "repository-owner", "applies_to_steps": ["context", "define", "review_define", "research_decision", "distill", "design", "review_design", "repair", "plan", "final_synthesis"], "contract": "No runtime-backed stage or subagent starts before explicit strategy approval.", "on_violation": "block"},
+      {"boundary_id": "stage-artifact-ownership", "kind": "capability_handoff", "from_owner": "refine", "to_owner": "stage-capabilities", "applies_to_steps": ["context", "define", "review_define", "distill", "design", "review_design", "repair", "plan", "final_synthesis"], "contract": "Each capability owns its native artifact; Refine indexes and synthesizes without redefining it.", "on_violation": "block"},
+      {"boundary_id": "target-write-scope", "kind": "state_write", "from_owner": "refine", "to_owner": "aci-feature", "applies_to_steps": ["context", "define", "review_define", "research_decision", "distill", "design", "review_design", "repair", "plan", "final_synthesis"], "contract": "Writes remain inside this refinement-run folder; target specs, fixtures, ledger and code are read-only.", "on_violation": "block"}
+    ],
+    "authority": {
+      "lifecycle": "refine",
+      "execution": "parent native runtime after operator approval",
+      "validation": "dispatch-spec plus stage-native validators",
+      "evidence": "stage capability owners with Refine index",
+      "memory": "ACI Craft ledger owner",
+      "promotion": "repository-owner; this run grants none"
+    },
+    "receipts": [
+      {"receipt_id": "native-stage-receipt", "producer": "each selected stage capability", "required_fields": ["dispatch_id", "step_id", "capability_ref", "status", "artifacts", "validation", "observer_status", "blockers", "residue"], "stores": ["RUN-MANIFEST.md", "evidence-index.json"], "on_missing": "block"},
+      {"receipt_id": "strategy-approval", "producer": "repository-owner", "required_fields": ["dispatch_id", "approval_record"], "stores": ["RUNTIME-HANDOFF.md"], "on_missing": "block"}
+    ],
+    "state_namespaces": [
+      {"namespace": "refinement-run", "owner": "refine", "write_policy": "Writable only inside development/refinement-runs/2026-09-01-execution-graph-authority/."},
+      {"namespace": "aci-target", "owner": "ACI feature lifecycle", "write_policy": "Read-only during this refine run."}
+    ],
+    "promotion_splits": [
+      {"source": "RESULT.md", "target": "ACI canonical specs or runtime", "rule": "Refine output is proposal and plan evidence only; a separate approved authoring or task route owns any mutation.", "on_violation": "block"}
+    ]
+  },
+  "promotion_guardrails": [
+    "Do not mutate ACI specs, fixtures, ledger, migrations or runtime code during this run.",
+    "Do not treat a schema proposal as accepted, implemented or deployed.",
+    "Do not interpret strategy approval as external research approval or runtime execution authority.",
+    "Return any contradiction with fixed owner decisions to an explicit owner gate."
+  ]
+}

@@ -48,6 +48,9 @@ from implementations.tests.runtime.policy_lineage_harness import (
 )
 
 
+REPO = Path(__file__).resolve().parents[3]
+
+
 HERE = Path(__file__).parent
 SOURCE_FIXTURE = HERE / "execution_policy_oracle_v1.json"
 DENIAL_FIXTURE = HERE / "execution_policy_denial_oracle_v1.json"
@@ -632,6 +635,7 @@ class ExecutionPolicyDenialTests(unittest.TestCase):
             validate_invocation_plan(receipt)
         with self.assertRaises(RuntimeContractError):
             build_confirmation_batch(
+                repo_root=REPO,
                 pending_sheet_bytes=raw,
                 capability_resolution_bytes=raw,
                 capability_resolution_artifact_id="art_invalid",

@@ -1,0 +1,30 @@
+{
+  "schema": "aci-dispatch-type-registry/v2",
+  "ledger_schema_version": "0.7.0",
+  "ledger_schema_ref": {
+    "path": "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+    "digest": "sha256:97f5af30174885e9f531aaa82557fdf4b418d13eb25f16fe04fee33266b93467"
+  },
+  "agent_role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
+  "generic_fallback": {
+    "id": "other",
+    "status": "live",
+    "ledger_value": "other",
+    "api_aliases": ["others"],
+    "capability_roots": [".claude/skills"],
+    "authority_modes": ["legacy-managed"],
+    "tool_profile_ref": "host/inherited@1"
+  },
+  "types": [
+    {"id":"research","status":"live","routable":true,"capability_ref":"research","capability_path":".claude/skills/research/SKILL.md","authority_modes":["legacy-managed"],"tool_profile_ref":"host/inherited@1","ledger_value":"research"},
+    {"id":"code","status":"live","routable":true,"capability_ref":"domainspec-implement","capability_path":".claude/skills/domainspec-implement/SKILL.md","authority_modes":["legacy-managed"],"tool_profile_ref":"host/inherited@1","ledger_value":"code"},
+    {"id":"review","status":"live","routable":true,"capability_ref":"review","capability_path":".claude/skills/review/SKILL.md","authority_modes":["legacy-managed"],"tool_profile_ref":"host/inherited@1","ledger_value":"review"},
+    {"id":"plan","status":"reserved","routable":false,"capability_ref":null,"capability_path":null,"authority_modes":[],"tool_profile_ref":null,"ledger_value":"plan"},
+    {"id":"suggestion","status":"reserved","routable":false,"capability_ref":null,"capability_path":null,"authority_modes":[],"tool_profile_ref":null,"ledger_value":"suggestion"},
+    {"id":"experiment","status":"live","routable":true,"capability_ref":"experiment","capability_path":".claude/skills/experiment/SKILL.md","authority_modes":["legacy-managed"],"tool_profile_ref":"host/inherited@1","ledger_value":"experiment"}
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aci.draft-graph@1.proposed.identity-role-r1",
+  "title": "ACI DraftGraph v1 identity/role revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "objective", "resources", "requested_global_limits", "nodes", "edges", "lifecycle"],
+  "properties": {
+    "schema": {"const": "aci.draft-graph@1"},
+    "objective": {"$ref": "#/$defs/objective"},
+    "resources": {"type": "array", "items": {"$ref": "#/$defs/resourceBinding"}},
+    "requested_global_limits": {"$ref": "#/$defs/limits"},
+    "nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+    "lifecycle": {"$ref": "#/$defs/lifecycle"}
+  },
+  "$defs": {
+    "nonEmpty": {"type": "string", "minLength": 1},
+    "key": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$"},
+    "path": {"type": "string", "pattern": "^workspace:/[^\\r\\n]*$"},
+    "objective": {
+      "type": "object", "additionalProperties": false,
+      "required": ["statement", "done_when"],
+      "properties": {
+        "statement": {"$ref": "#/$defs/nonEmpty"},
+        "done_when": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonEmpty"}}
+      }
+    },
+    "resourceBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["alias", "resource_key"],
+      "properties": {"alias": {"$ref": "#/$defs/key"}, "resource_key": {"$ref": "#/$defs/key"}}
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_attempts", "max_tokens", "wall_clock_seconds"],
+      "properties": {
+        "max_attempts": {"type": "integer", "minimum": 1},
+        "max_tokens": {"type": "integer", "minimum": 1},
+        "wall_clock_seconds": {"type": "integer", "minimum": 1}
+      }
+    },
+    "agentRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "provider_key", "model_key", "profile_key", "credential_key"],
+      "properties": {
+        "role": {"$ref": "#/$defs/key"},
+        "provider_key": {"$ref": "#/$defs/key"},
+        "model_key": {"$ref": "#/$defs/key"},
+        "profile_key": {"$ref": "#/$defs/key"},
+        "credential_key": {"oneOf": [{"$ref": "#/$defs/key"}, {"type": "null"}]}
+      }
+    },
+    "capabilityRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["capability_key", "operations"],
+      "properties": {
+        "capability_key": {"$ref": "#/$defs/key"},
+        "operations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/key"}}
+      }
+    },
+    "input": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "required", "source"],
+      "properties": {
+        "key": {"$ref": "#/$defs/key"}, "required": {"type": "boolean"},
+        "source": {"oneOf": [
+          {
+            "type": "object", "additionalProperties": false,
+            "required": ["kind", "resource_alias", "selector"],
+            "properties": {
+              "kind": {"const": "resource"}, "resource_alias": {"$ref": "#/$defs/key"},
+              "selector": {"$ref": "#/$defs/nonEmpty"}
+            }
+          },
+          {
+            "type": "object", "additionalProperties": false,
+            "required": ["kind", "node_key", "output_key"],
+            "properties": {
+              "kind": {"const": "node_output"}, "node_key": {"$ref": "#/$defs/key"},
+              "output_key": {"$ref": "#/$defs/key"}
+            }
+          }
+        ]}
+      }
+    },
+    "output": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "contract_resource_alias", "required"],
+      "properties": {
+        "key": {"$ref": "#/$defs/key"}, "contract_resource_alias": {"$ref": "#/$defs/key"},
+        "required": {"type": "boolean"}
+      }
+    },
+    "allowRequest": {
+      "type": "object", "additionalProperties": false, "required": ["mode", "allow"],
+      "properties": {
+        "mode": {"enum": ["deny", "allowlist"]},
+        "allow": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}}
+      }
+    },
+    "accessRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["read_paths", "write_paths", "network", "commands", "external_effects", "version_control"],
+      "properties": {
+        "read_paths": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/path"}},
+        "write_paths": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/path"}},
+        "network": {"$ref": "#/$defs/allowRequest"},
+        "commands": {
+          "type": "object", "additionalProperties": false, "required": ["mode", "grants"],
+          "properties": {"mode": {"const": "deny"}, "grants": {"type": "array", "maxItems": 0}}
+        },
+        "external_effects": {"$ref": "#/$defs/allowRequest"},
+        "version_control": {
+          "type": "object", "additionalProperties": false, "required": ["commit", "push"],
+          "properties": {"commit": {"type": "boolean"}, "push": {"type": "boolean"}}
+        }
+      }
+    },
+    "successPredicate": {"oneOf": [
+      {
+        "type": "object", "additionalProperties": false, "required": ["kind", "output_key"],
+        "properties": {"kind": {"const": "output_present"}, "output_key": {"$ref": "#/$defs/key"}}
+      },
+      {
+        "type": "object", "additionalProperties": false,
+        "required": ["kind", "output_key", "json_pointer", "value"],
+        "properties": {
+          "kind": {"const": "output_field_equals"}, "output_key": {"$ref": "#/$defs/key"},
+          "json_pointer": {"type": "string", "pattern": "^/"},
+          "value": {"type": ["string", "integer", "boolean", "null"]}
+        }
+      }
+    ]},
+    "stopPredicate": {"oneOf": [
+      {
+        "type": "object", "additionalProperties": false, "required": ["kind", "output_key"],
+        "properties": {"kind": {"const": "output_present"}, "output_key": {"$ref": "#/$defs/key"}}
+      },
+      {
+        "type": "object", "additionalProperties": false,
+        "required": ["kind", "output_key", "json_pointer", "value"],
+        "properties": {
+          "kind": {"const": "output_field_equals"}, "output_key": {"$ref": "#/$defs/key"},
+          "json_pointer": {"type": "string", "pattern": "^/"},
+          "value": {"type": ["string", "integer", "boolean", "null"]}
+        }
+      },
+      {
+        "type": "object", "additionalProperties": false, "required": ["kind", "input_key"],
+        "properties": {"kind": {"const": "input_unavailable"}, "input_key": {"$ref": "#/$defs/key"}}
+      },
+      {
+        "type": "object", "additionalProperties": false, "required": ["kind"],
+        "properties": {"kind": {"const": "attempts_exhausted"}}
+      }
+    ]},
+    "validationRule": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "validator_key", "configuration_resource_alias", "on_fail"],
+      "properties": {
+        "key": {"$ref": "#/$defs/key"}, "validator_key": {"$ref": "#/$defs/key"},
+        "configuration_resource_alias": {"oneOf": [{"$ref": "#/$defs/key"}, {"type": "null"}]},
+        "on_fail": {"enum": ["retry", "stop_node", "stop_graph"]}
+      }
+    },
+    "stopCondition": {
+      "type": "object", "additionalProperties": false, "required": ["when", "action", "reason_code"],
+      "properties": {
+        "when": {"$ref": "#/$defs/stopPredicate"},
+        "action": {"enum": ["stop_node", "stop_graph", "fail_graph"]},
+        "reason_code": {"$ref": "#/$defs/key"}
+      }
+    },
+    "node": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "objective", "instructions", "agent_request", "capability_requests", "inputs", "outputs", "requested_limits", "access_request", "start_when", "validation", "success_condition", "stop_conditions"],
+      "properties": {
+        "key": {"$ref": "#/$defs/key"}, "objective": {"$ref": "#/$defs/nonEmpty"},
+        "instructions": {"$ref": "#/$defs/nonEmpty"}, "agent_request": {"$ref": "#/$defs/agentRequest"},
+        "capability_requests": {"type": "array", "items": {"$ref": "#/$defs/capabilityRequest"}},
+        "inputs": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+        "outputs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/output"}},
+        "requested_limits": {"$ref": "#/$defs/limits"}, "access_request": {"$ref": "#/$defs/accessRequest"},
+        "start_when": {"enum": ["roots_ready", "all_predecessors_succeeded", "any_predecessor_succeeded"]},
+        "validation": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/validationRule"}},
+        "success_condition": {"$ref": "#/$defs/successPredicate"},
+        "stop_conditions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/stopCondition"}}
+      }
+    },
+    "edge": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "from_node_key", "to_node_key", "kind", "condition"],
+      "properties": {
+        "key": {"$ref": "#/$defs/key"}, "from_node_key": {"$ref": "#/$defs/key"},
+        "to_node_key": {"$ref": "#/$defs/key"}, "kind": {"enum": ["control", "feedback"]},
+        "condition": {"enum": ["always", "on_success", "on_failure"]}
+      }
+    },
+    "lifecycle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entry_node_keys", "terminal_node_keys", "completion", "failure", "cancellation", "max_parallel_nodes"],
+      "properties": {
+        "entry_node_keys": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
+        "terminal_node_keys": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
+        "completion": {"enum": ["all_terminal_succeeded", "any_terminal_succeeded"]},
+        "failure": {"enum": ["fail_fast", "complete_independent_branches"]},
+        "cancellation": {"enum": ["cancel_running_nodes", "allow_running_nodes_to_stop"]},
+        "max_parallel_nodes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

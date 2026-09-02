@@ -32,9 +32,15 @@ class DispatchWorkflowTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
-        registry_relative = "implementations/contracts/dispatch-type-registry.v1.json"
+        registry_relative = "implementations/contracts/dispatch-type-registry.v2.json"
         registry = json.loads((REPO / registry_relative).read_text(encoding="utf-8"))
-        paths = [registry_relative, ".claude/skills/register-dispatch/append-dispatch.cjs"]
+        paths = [
+            registry_relative,
+            "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+            "implementations/contracts/agent-role-registry.v1.json",
+            "implementations/contracts/agent-role-registry-authority.v1.json",
+            ".claude/skills/register-dispatch/append-dispatch.cjs",
+        ]
         paths.extend(
             entry["capability_path"]
             for entry in registry["types"]
@@ -46,8 +52,12 @@ class DispatchWorkflowTests(unittest.TestCase):
             shutil.copyfile(REPO / relative, destination)
         self.record = {
             "dispatch_id": "2026-08-03-workflow-review",
-            "schema_version": "0.6.3",
+            "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "dispatch_type": "review",
+            "capability_route": resolve_dispatch_capability(
+                self.project, capability_ref="review", authority_mode="legacy-managed"
+            ),
             "goal": "Review the dispatch workflow.",
             "context": "One bound reviewer checks the compiled workflow.",
             "max_loops": 1,
@@ -81,7 +91,15 @@ class DispatchWorkflowTests(unittest.TestCase):
         shutil.copyfile(ROOT_APPENDER, appender)
         pool = governance_root / "telemetry/agents/agent-pool.yaml"
         pool.parent.mkdir(parents=True, exist_ok=True)
-        pool.write_text('scientists:\n  - name: "Fixture, Reviewer"\n', encoding="utf-8")
+        pool.write_text(
+            'schema_version: "0.7"\nversion: "fixture"\nlast_updated: "2026-09-01"\n'
+            'sources: []\nnotes: "fixture"\n---\nscientists:\n'
+            '  - agent_name: "Fixture, Reviewer"\n    field: testing\n'
+            '    subfield: workflow\n    historical_period: present\n'
+            '    geographical_focus: global\n    role_fit: [auditor]\n'
+            '    tags: [testing]\n    prompt_style: fixture\n',
+            encoding="utf-8",
+        )
         record: dict[str, object] = {
             "dispatch_id": "2026-08-10-root-v080-review",
             "schema_version": "0.8.0",
@@ -224,7 +242,7 @@ class DispatchWorkflowTests(unittest.TestCase):
             for key, value in {**self.record, "dispatch_type": "others"}.items()
             if key != "output_mode"
         }
-        with self.assertRaisesRegex(ValidationError, "type differs"):
+        with self.assertRaisesRegex(ValidationError, "dispatch_type must be"):
             compile_bound_launch_plan(
                 repo_root=self.project,
                 record=mismatched,

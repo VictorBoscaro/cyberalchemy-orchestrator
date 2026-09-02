@@ -41,9 +41,9 @@ export function searchPool({ tags = [], role = null, exclude = [], k = 10 }) {
   const q = new Set(tags);
   const ex = new Set(exclude);
   return tagged
-    .filter((e) => (!role || (e.role_fit || []).includes(role)) && !ex.has(e.name))
+    .filter((e) => (!role || (e.role_fit || []).includes(role)) && !ex.has(e.agent_name))
     .map((e) => ({
-      name: e.name,
+      agent_name: e.agent_name,
       overlap: e.tags.filter((t) => q.has(t)).length,
       tags: e.tags,
       role_fit: e.role_fit || [],
@@ -56,7 +56,7 @@ export function searchPool({ tags = [], role = null, exclude = [], k = 10 }) {
         b.overlap - a.overlap || // more shared tags
         a.role_rank - b.role_rank || // role as a primary fit wins
         (b.cited === a.cited ? 0 : b.cited ? 1 : -1) || // cited before proposed
-        a.name.localeCompare(b.name), // stable final tiebreak
+        a.agent_name.localeCompare(b.agent_name), // stable final tiebreak
     )
     .slice(0, k);
 }
@@ -70,9 +70,9 @@ export function prefilter({ tags = [], role = null, exclude = [], cap = 40 }) {
   const ex = new Set(exclude);
 
   const candidates = tagged
-    .filter((e) => !ex.has(e.name) && e.tags.some((t) => q.has(t)))
+    .filter((e) => !ex.has(e.agent_name) && e.tags.some((t) => q.has(t)))
     .map((e) => ({
-      name: e.name,
+      agent_name: e.agent_name,
       overlap: e.tags.filter((t) => q.has(t)).length,
       tags: e.tags,
       role_fit: e.role_fit || [],
@@ -83,7 +83,7 @@ export function prefilter({ tags = [], role = null, exclude = [], cap = 40 }) {
       (a, b) =>
         Number(b.role_hint) - Number(a.role_hint) ||
         b.overlap - a.overlap ||
-        a.name.localeCompare(b.name),
+        a.agent_name.localeCompare(b.agent_name),
     )
     .slice(0, cap);
 

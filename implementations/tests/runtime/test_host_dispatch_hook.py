@@ -39,6 +39,11 @@ class HostDispatchHookTests(unittest.TestCase):
         )
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         required = list(manifest["files"]) + [
+            "implementations/contracts/dispatch-type-registry.v2.json",
+            "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+            "implementations/contracts/agent-role-registry.v1.json",
+            "implementations/contracts/agent-role-registry-authority.v1.json",
+            "implementations/contracts/agent-role-host-routing.v1.json",
             "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
             "docs/features/agent-provenance-telemetry/integration/stage-b/execution-receipt.md",
             "docs/features/agent-provenance-telemetry/integration/stage-c/local-pilot-enablement.md",
@@ -177,6 +182,7 @@ class HostDispatchHookTests(unittest.TestCase):
         opening = {
             "dispatch_id": dispatch_id,
             "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "dispatch_type": "review",
             "capability_route": route,
             "goal": "Prove one parent-bound host dispatch.",
@@ -240,6 +246,8 @@ class HostDispatchHookTests(unittest.TestCase):
         )
         closing = {
             "close_of": dispatch_id,
+            "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "exit_reason": "resolved",
             "agents_spawned": {
                 "total": 1,

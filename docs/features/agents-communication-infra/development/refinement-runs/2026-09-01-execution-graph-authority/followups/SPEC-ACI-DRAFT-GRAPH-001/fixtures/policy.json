@@ -1,0 +1,33 @@
+{
+  "schema": "aci.compilation-policy-fixture@1",
+  "semantics_key": "execution_graph_v2",
+  "unknown_key_action": "reject",
+  "numeric_limit_excess_action": "restrict",
+  "permission_excess_action": "reject",
+  "global_limit_ceiling": {"max_attempts": 5, "max_tokens": 24000, "wall_clock_seconds": 1200},
+  "node_limit_ceiling": {"max_attempts": 2, "max_tokens": 12000, "wall_clock_seconds": 600},
+  "allowed_agent_bindings": [
+    {"role": "independent_reviewer", "provider_key": "openai_fixture", "model_key": "gpt_5_6_fixture", "profile_key": "read_only_reviewer", "credential_key": null},
+    {"role": "implementer", "provider_key": "openai_fixture", "model_key": "gpt_5_6_fixture", "profile_key": "bounded_corrector", "credential_key": null},
+    {"role": "independent_verifier", "provider_key": "openai_fixture", "model_key": "gpt_5_6_fixture", "profile_key": "read_only_verifier", "credential_key": null}
+  ],
+  "capability_grants": [
+    {"capability_key": "workspace_files", "allowed_operations": ["patch", "read"]}
+  ],
+  "allowed_validator_keys": ["schema", "schema_and_citation", "schema_and_evidence"],
+  "access_ceiling": {
+    "read_paths": ["workspace:/input", "workspace:/input/result-x", "workspace:/target"],
+    "write_paths": ["workspace:/target"],
+    "network": {"mode": "deny", "allow": []},
+    "commands": {"mode": "deny", "command_keys": []},
+    "external_effects": {"mode": "deny", "allow": []},
+    "version_control": {"commit": false, "push": false}
+  },
+  "audit_requirements": {
+    "record_objective": true,
+    "record_agents": true,
+    "record_route": true,
+    "record_results": true,
+    "receipt_schema_resource_key": "receipt_schema"
+  }
+}

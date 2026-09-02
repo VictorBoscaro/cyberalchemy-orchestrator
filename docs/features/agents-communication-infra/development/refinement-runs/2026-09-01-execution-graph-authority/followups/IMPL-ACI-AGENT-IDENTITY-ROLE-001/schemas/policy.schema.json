@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aci.compilation-policy-fixture@1.schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "semantics_key", "unknown_key_action", "numeric_limit_excess_action", "permission_excess_action", "global_limit_ceiling", "node_limit_ceiling", "allowed_agent_bindings", "capability_grants", "allowed_validator_keys", "access_ceiling", "audit_requirements"],
+  "properties": {
+    "schema": {"const": "aci.compilation-policy-fixture@1"},
+    "semantics_key": {"$ref": "#/$defs/key"},
+    "unknown_key_action": {"const": "reject"},
+    "numeric_limit_excess_action": {"enum": ["restrict", "reject"]},
+    "permission_excess_action": {"const": "reject"},
+    "global_limit_ceiling": {"$ref": "#/$defs/limits"},
+    "node_limit_ceiling": {"$ref": "#/$defs/limits"},
+    "allowed_agent_bindings": {"type": "array", "items": {"$ref": "#/$defs/agentBinding"}},
+    "capability_grants": {"type": "array", "items": {"$ref": "#/$defs/capabilityGrant"}},
+    "allowed_validator_keys": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
+    "access_ceiling": {"$ref": "#/$defs/access"},
+    "audit_requirements": {"$ref": "#/$defs/audit"}
+  },
+  "$defs": {
+    "key": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$"},
+    "limits": {"type": "object", "additionalProperties": false, "required": ["max_attempts", "max_tokens", "wall_clock_seconds"], "properties": {"max_attempts": {"type": "integer", "minimum": 1}, "max_tokens": {"type": "integer", "minimum": 1}, "wall_clock_seconds": {"type": "integer", "minimum": 1}}},
+    "agentBinding": {"type": "object", "additionalProperties": false, "required": ["role", "provider_key", "model_key", "profile_key", "credential_key"], "properties": {"role": {"$ref": "#/$defs/key"}, "provider_key": {"$ref": "#/$defs/key"}, "model_key": {"$ref": "#/$defs/key"}, "profile_key": {"$ref": "#/$defs/key"}, "credential_key": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/key"}]}}},
+    "capabilityGrant": {"type": "object", "additionalProperties": false, "required": ["capability_key", "allowed_operations"], "properties": {"capability_key": {"$ref": "#/$defs/key"}, "allowed_operations": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}}}},
+    "allow": {"type": "object", "additionalProperties": false, "required": ["mode", "allow"], "properties": {"mode": {"enum": ["deny", "allowlist"]}, "allow": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}}},
+    "access": {"type": "object", "additionalProperties": false, "required": ["read_paths", "write_paths", "network", "commands", "external_effects", "version_control"], "properties": {"read_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^workspace:/[^\\r\\n]*$"}}, "write_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^workspace:/[^\\r\\n]*$"}}, "network": {"$ref": "#/$defs/allow"}, "commands": {"type": "object", "additionalProperties": false, "required": ["mode", "command_keys"], "properties": {"mode": {"const": "deny"}, "command_keys": {"type": "array", "maxItems": 0}}}, "external_effects": {"$ref": "#/$defs/allow"}, "version_control": {"type": "object", "additionalProperties": false, "required": ["commit", "push"], "properties": {"commit": {"type": "boolean"}, "push": {"type": "boolean"}}}}},
+    "audit": {"type": "object", "additionalProperties": false, "required": ["record_objective", "record_agents", "record_route", "record_results", "receipt_schema_resource_key"], "properties": {"record_objective": {"const": true}, "record_agents": {"const": true}, "record_route": {"const": true}, "record_results": {"const": true}, "receipt_schema_resource_key": {"$ref": "#/$defs/key"}}}
+  }
+}

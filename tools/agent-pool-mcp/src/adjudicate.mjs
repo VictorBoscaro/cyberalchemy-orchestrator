@@ -20,7 +20,7 @@ export async function recommendAgents({ objective, tags = [], role = null, exclu
       mode: "deterministic-fallback",
       reason: "ANTHROPIC_API_KEY not set — returning top deterministic candidates without LLM adjudication.",
       vocab: vocabCheck,
-      names: candidates.slice(0, n).map((c) => c.name),
+      names: candidates.slice(0, n).map((c) => c.agent_name),
     };
   }
 
@@ -39,7 +39,7 @@ export async function recommendAgents({ objective, tags = [], role = null, exclu
     role: role || "any",
     vocab_check: vocabCheck,
     vocabulary_neighborhood: neighborhood,
-    candidates: candidates.map((c) => ({ name: c.name, tags: c.tags, role_fit: c.role_fit })),
+    candidates: candidates.map((c) => ({ agent_name: c.agent_name, tags: c.tags, role_fit: c.role_fit })),
     n,
   });
 
@@ -62,7 +62,7 @@ export async function recommendAgents({ objective, tags = [], role = null, exclu
     return {
       mode: "llm-parse-error",
       raw: text,
-      names: candidates.slice(0, n).map((c) => c.name),
+      names: candidates.slice(0, n).map((c) => c.agent_name),
       vocab: vocabCheck,
     };
   }

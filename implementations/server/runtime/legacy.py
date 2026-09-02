@@ -11,7 +11,7 @@ from .canonical import canonical_digest, digest_bytes, parse_strict_json
 from .errors import IntegrityError, NotFoundError
 
 ROW_RE = re.compile(rb"^(  - |    )([A-Za-z_][A-Za-z0-9_]*): (.*)$")
-SUPPORTED_OPENING_CONTRACTS = {"0.6.1", "0.6.2", "0.6.3", "0.6.4"}
+SUPPORTED_OPENING_CONTRACTS = {"0.6.1", "0.6.2", "0.6.3", "0.6.4", "0.7.0"}
 
 
 @dataclass(frozen=True)
@@ -25,6 +25,7 @@ class LegacyDispatchSnapshot:
     appender_identity: str = "register-dispatch/append-dispatch.cjs"
     contract_version: str = "0.6.1"
     row_kind: str = "opening"
+    agent_role_registry_ref: dict[str, str] | None = None
 
 
 class StrictLegacySnapshotResolver:
@@ -94,6 +95,18 @@ class StrictLegacySnapshotResolver:
             raise IntegrityError(f"ambiguous duplicate dispatch {row_kind}")
         row, row_bytes = matches[0]
         contract_version = self._opening_contract_version(row, row_kind=row_kind)
+        role_ref = row.get("agent_role_registry_ref")
+        if contract_version == "0.7.0":
+            if (
+                not isinstance(role_ref, dict)
+                or set(role_ref) != {"name", "version", "digest"}
+                or any(not isinstance(role_ref.get(key), str) or not role_ref[key] for key in ("name", "version"))
+                or not isinstance(role_ref.get("digest"), str)
+                or not re.fullmatch(r"sha256:[0-9a-f]{64}", role_ref["digest"])
+            ):
+                raise IntegrityError("0.7.0 dispatch row has no valid agent role registry ref")
+        elif role_ref is not None:
+            raise IntegrityError("legacy dispatch row must not retrofit an agent role registry ref")
         return LegacyDispatchSnapshot(
             dispatch_id=dispatch_id,
             ledger_path=str(path),
@@ -103,16 +116,22 @@ class StrictLegacySnapshotResolver:
             row=row,
             contract_version=contract_version,
             row_kind=row_kind,
+            agent_role_registry_ref=role_ref,
         )
 
     @staticmethod
     def _opening_contract_version(row: dict[str, Any], *, row_kind: str) -> str:
         if row_kind != "opening":
-            return "0.6.1"
+            contract_version = row.get("schema_version")
+            if contract_version is None:
+                return "0.6.1"
+            if contract_version != "0.7.0":
+                raise IntegrityError("dispatch close is neither legacy nor supported 0.7.0")
+            return contract_version
         contract_version = row.get("schema_version")
         if contract_version not in SUPPORTED_OPENING_CONTRACTS:
             raise IntegrityError(
-                "dispatch opening is not a supported 0.6.1, 0.6.2, 0.6.3, or 0.6.4 contract"
+                "dispatch opening is not a supported 0.6.1, 0.6.2, 0.6.3, 0.6.4, or 0.7.0 contract"
             )
         return contract_version
 
@@ -125,12 +144,19 @@ class StrictLegacySnapshotResolver:
         )
 
     def resolve_close(self, path: Path, dispatch_id: str) -> LegacyDispatchSnapshot:
-        return self._resolve(
+        closing = self._resolve(
             path,
             dispatch_id,
             identity_field="close_of",
             row_kind="close",
         )
+        opening = self.resolve(path, dispatch_id)
+        if "0.7.0" in {opening.contract_version, closing.contract_version}:
+            if opening.contract_version != closing.contract_version:
+                raise IntegrityError("mixed legacy/0.7.0 opening and close are forbidden")
+            if opening.agent_role_registry_ref != closing.agent_role_registry_ref:
+                raise IntegrityError("opening/close agent role registry refs differ")
+        return closing
 
     def verify_unchanged(self, snapshot: LegacyDispatchSnapshot) -> None:
         current = Path(snapshot.ledger_path).read_bytes()

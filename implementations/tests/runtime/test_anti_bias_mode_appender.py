@@ -7,13 +7,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from implementations.server.runtime.dispatch_types import resolve_dispatch_capability
+from implementations.server.runtime.dispatch_types import load_dispatch_type_registry, resolve_dispatch_capability
 from implementations.server.runtime.legacy import StrictLegacySnapshotResolver
 
 
 REPO = Path(__file__).resolve().parents[3]
 APPENDER = REPO / ".claude/skills/register-dispatch/append-dispatch.cjs"
-REGISTRY = Path("implementations/contracts/dispatch-type-registry.v1.json")
+REGISTRY = Path("implementations/contracts/dispatch-type-registry.v2.json")
 
 
 class AntiBiasModeAppenderTests(unittest.TestCase):
@@ -24,6 +24,14 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(REPO / REGISTRY, destination)
         registry = json.loads(destination.read_text(encoding="utf-8"))
+        for relative in (
+            "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+            "implementations/contracts/agent-role-registry.v1.json",
+            "implementations/contracts/agent-role-registry-authority.v1.json",
+        ):
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(REPO / relative, target)
         for entry in registry["types"]:
             capability_path = entry.get("capability_path")
             if capability_path is None:
@@ -36,9 +44,11 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
         self.temp.cleanup()
 
     def _record(self, *, mode: str | None) -> dict:
+        registry = load_dispatch_type_registry(self.root)
         record = {
             "dispatch_id": "2026-08-03-anti-bias-mode-test",
-            "schema_version": "0.6.4",
+            "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "dispatch_type": "review",
             "capability_route": resolve_dispatch_capability(
                 self.root,
@@ -205,7 +215,7 @@ class AntiBiasModeAppenderTests(unittest.TestCase):
             self.root / "telemetry/agents/subagents-dispatch.yaml",
             "2026-08-03-anti-bias-mode-test",
         )
-        self.assertEqual(current.contract_version, "0.6.4")
+        self.assertEqual(current.contract_version, "0.7.0")
 
         historical_062 = (
             REPO

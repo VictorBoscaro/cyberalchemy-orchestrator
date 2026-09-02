@@ -37,7 +37,7 @@ from implementations.server.runtime.service import RuntimeService, RuntimeSettin
 
 
 REPO = Path(__file__).resolve().parents[3]
-FIXTURE = REPO / "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1"
+FIXTURE = REPO / "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v2"
 HARNESS_EVENT = "test.run-group.harness-only-transition"
 HARNESS_SCHEMA = "aci.test-run-group-harness-only-transition@1"
 HARNESS_SCHEMA_DIGEST = canonical_digest({"schema_ref": HARNESS_SCHEMA})

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aci.allocator-evidence-fixture@1.schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "key_id", "context_digest", "is_latest", "pair_is_unbound", "signature"],
+  "properties": {
+    "schema": {"const": "aci.allocator-evidence-fixture@1"},
+    "key_id": {"const": "aci-fixture-allocator-ed25519-1"},
+    "context_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "is_latest": {"type": "boolean"},
+    "pair_is_unbound": {"type": "boolean"},
+    "signature": {"type": "string", "minLength": 1}
+  }
+}

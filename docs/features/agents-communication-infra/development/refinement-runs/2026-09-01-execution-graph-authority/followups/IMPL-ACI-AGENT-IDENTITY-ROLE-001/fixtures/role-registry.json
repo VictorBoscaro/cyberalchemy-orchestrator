@@ -1,0 +1,15 @@
+{
+  "schema": "aci.role-registry@1",
+  "name": "aci.agent-roles",
+  "version": "1",
+  "roles": [
+    {"role_id": "explorer", "enabled": true, "purpose": "Investigate a bounded question or evidence surface."},
+    {"role_id": "synthesizer", "enabled": true, "purpose": "Integrate bounded findings into one supported result."},
+    {"role_id": "skeptic", "enabled": true, "purpose": "Attempt to falsify claims or designs using evidence."},
+    {"role_id": "writer", "enabled": true, "purpose": "Produce a bounded reader-facing or specification artifact."},
+    {"role_id": "auditor", "enabled": true, "purpose": "Verify conformance, evidence and claimed completion independently."},
+    {"role_id": "planner", "enabled": true, "purpose": "Decompose a bounded objective into governed work."},
+    {"role_id": "coder", "enabled": true, "purpose": "Implement a bounded code change and its validation."},
+    {"role_id": "other", "enabled": true, "purpose": "Explicit closed escape when no named role describes the responsibility."}
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "aci.compilation-resource-fixture@1",
+  "resources": [
+    {
+      "resource_key": "result_x",
+      "kind": "input",
+      "media_type": "text/plain",
+      "encoding": "utf-8",
+      "content": "Resultado X a revisar.",
+      "digest": "sha256:44d90d18d91d79fbae7e1ca43c47a1657f6e0a644e9fe9ae63119f79c2f20186"
+    },
+    {
+      "resource_key": "review_report_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"type\":\"object\",\"required\":[\"findings\"],\"properties\":{\"findings\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}",
+      "digest": "sha256:40184ddadfbe797e460872fb8c0040d10257528fba1aed3aee885724f649bb60"
+    },
+    {
+      "resource_key": "correction_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"type\":\"object\",\"required\":[\"patch\",\"coverage\"],\"properties\":{\"patch\":{\"type\":\"string\"},\"coverage\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}",
+      "digest": "sha256:a01c7539a622acae730428c7f54ed0e4c75e37019ad5d8ae8520c19c3a3074c2"
+    },
+    {
+      "resource_key": "verification_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"type\":\"object\",\"required\":[\"verdict\",\"evidence\"],\"properties\":{\"verdict\":{\"enum\":[\"pass\",\"flag\",\"block\"]},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}",
+      "digest": "sha256:eaac2832bf0c48808dcbb30a218d607b3079e8ccbcea5948b3b48431f31c2ef5"
+    },
+    {
+      "resource_key": "receipt_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"type\":\"object\",\"required\":[\"status\"],\"properties\":{\"status\":{\"enum\":[\"pass\",\"flag\",\"block\"]}},\"additionalProperties\":false}",
+      "digest": "sha256:afcdfaaae32fc49c8b207158547b6b2cf34606f165350fe3fd165c3683d6ad38"
+    }
+  ]
+}

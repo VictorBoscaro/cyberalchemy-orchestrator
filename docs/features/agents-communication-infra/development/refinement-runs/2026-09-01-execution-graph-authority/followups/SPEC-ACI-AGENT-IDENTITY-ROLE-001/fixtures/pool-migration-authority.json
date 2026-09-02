@@ -1,0 +1,15 @@
+{
+  "schema": "aci.pool-migration-authority@1",
+  "source_path": "telemetry/agents/agent-pool.yaml",
+  "source_version": "0.6.0",
+  "target_version": "0.7.0",
+  "canonical_name_key": "agent_name",
+  "source_raw_digest": "sha256:5c7b9745a336670ecb55df1276912166954a0d7960443f0df787405564099eba",
+  "source_metadata_digest": "sha256:85ed11d738f56c888ea5daabcf7d4ccdb4923684b5b5ae738443ce22c12095bc",
+  "source_entry_count": 414,
+  "metadata_changes": {
+    "version": "0.7.0",
+    "last_updated": "2026-09-01",
+    "prepend_note": "v0.7.0 (2026-09-01): canonical identity key migrated from name to agent_name; all other roster fields and order preserved."
+  }
+}

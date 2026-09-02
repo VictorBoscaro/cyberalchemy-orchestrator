@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aci.execution-graph@2.proposed",
+  "title": "ACI ExecutionGraph v2 proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "dispatch_id", "revision", "objective", "semantics_ref", "content_members", "global_limits", "nodes", "edges", "lifecycle", "audit_requirements"],
+  "properties": {
+    "schema": {"const": "aci.execution-graph@2"},
+    "dispatch_id": {"$ref": "#/$defs/nonEmpty"},
+    "revision": {"$ref": "#/$defs/nonEmpty"},
+    "objective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement", "done_when"],
+      "properties": {
+        "statement": {"$ref": "#/$defs/nonEmpty"},
+        "done_when": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonEmpty"}}
+      }
+    },
+    "semantics_ref": {"$ref": "#/$defs/versionedRef"},
+    "content_members": {"type": "array", "items": {"$ref": "#/$defs/contentMember"}},
+    "global_limits": {"$ref": "#/$defs/limits"},
+    "nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+    "lifecycle": {"$ref": "#/$defs/lifecycle"},
+    "audit_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_objective", "record_agents", "record_route", "record_results", "receipt_schema_member_id"],
+      "properties": {
+        "record_objective": {"const": true},
+        "record_agents": {"const": true},
+        "record_route": {"const": true},
+        "record_results": {"const": true},
+        "receipt_schema_member_id": {"$ref": "#/$defs/nonEmpty"}
+      }
+    }
+  },
+  "$defs": {
+    "nonEmpty": {"type": "string", "minLength": 1},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "versionedRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "digest"],
+      "properties": {
+        "name": {"$ref": "#/$defs/nonEmpty"},
+        "version": {"$ref": "#/$defs/nonEmpty"},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "contentMember": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["member_id", "kind", "media_type", "encoding", "content", "digest"],
+          "properties": {
+            "member_id": {"$ref": "#/$defs/nonEmpty"},
+            "kind": {"enum": ["context", "schema", "policy", "input"]},
+            "media_type": {"$ref": "#/$defs/nonEmpty"},
+            "encoding": {"enum": ["utf-8", "base64"]},
+            "content": {"type": "string"},
+            "digest": {"$ref": "#/$defs/digest"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["member_id", "kind", "media_type", "immutable_uri", "digest"],
+          "properties": {
+            "member_id": {"$ref": "#/$defs/nonEmpty"},
+            "kind": {"enum": ["context", "schema", "policy", "input"]},
+            "media_type": {"$ref": "#/$defs/nonEmpty"},
+            "immutable_uri": {"$ref": "#/$defs/nonEmpty"},
+            "digest": {"$ref": "#/$defs/digest"}
+          }
+        }
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_attempts", "max_tokens", "wall_clock_seconds"],
+      "properties": {
+        "max_attempts": {"type": "integer", "minimum": 1},
+        "max_tokens": {"type": "integer", "minimum": 1},
+        "wall_clock_seconds": {"type": "integer", "minimum": 1}
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name", "role", "provider_ref", "model_ref", "profile_ref", "credential_ref"],
+      "properties": {
+        "display_name": {"$ref": "#/$defs/nonEmpty"},
+        "role": {"$ref": "#/$defs/nonEmpty"},
+        "provider_ref": {"$ref": "#/$defs/versionedRef"},
+        "model_ref": {"$ref": "#/$defs/versionedRef"},
+        "profile_ref": {"$ref": "#/$defs/versionedRef"},
+        "credential_ref": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["handle", "resolver_ref", "contract_version", "scope_digest"],
+          "properties": {
+            "handle": {"$ref": "#/$defs/nonEmpty"},
+            "resolver_ref": {"$ref": "#/$defs/versionedRef"},
+            "contract_version": {"$ref": "#/$defs/nonEmpty"},
+            "scope_digest": {"$ref": "#/$defs/digest"}
+          }
+        }
+      }
+    },
+    "toolGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_ref", "allowed_operations"],
+      "properties": {
+        "tool_ref": {"$ref": "#/$defs/versionedRef"},
+        "allowed_operations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonEmpty"}}
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_id", "required", "source"],
+      "properties": {
+        "input_id": {"$ref": "#/$defs/nonEmpty"},
+        "required": {"type": "boolean"},
+        "source": {
+          "oneOf": [
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["kind", "member_id", "selector"],
+              "properties": {"kind": {"const": "content_member"}, "member_id": {"$ref": "#/$defs/nonEmpty"}, "selector": {"$ref": "#/$defs/nonEmpty"}}
+            },
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["kind", "node_id", "output_id"],
+              "properties": {"kind": {"const": "node_output"}, "node_id": {"$ref": "#/$defs/nonEmpty"}, "output_id": {"$ref": "#/$defs/nonEmpty"}}
+            }
+          ]
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "schema_member_id", "required"],
+      "properties": {
+        "output_id": {"$ref": "#/$defs/nonEmpty"},
+        "schema_member_id": {"$ref": "#/$defs/nonEmpty"},
+        "required": {"type": "boolean"}
+      }
+    },
+    "isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["read_paths", "write_paths", "network", "commands", "external_effects", "version_control"],
+      "properties": {
+        "read_paths": {"type": "array", "items": {"$ref": "#/$defs/nonEmpty"}},
+        "write_paths": {"type": "array", "items": {"$ref": "#/$defs/nonEmpty"}},
+        "network": {"$ref": "#/$defs/allowPolicy"},
+        "commands": {"$ref": "#/$defs/commandPolicy"},
+        "external_effects": {"$ref": "#/$defs/allowPolicy"},
+        "version_control": {
+          "type": "object", "additionalProperties": false,
+          "required": ["commit", "push"],
+          "properties": {"commit": {"type": "boolean"}, "push": {"type": "boolean"}}
+        }
+      }
+    },
+    "allowPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "allow"],
+      "properties": {
+        "mode": {"enum": ["deny", "allowlist"]},
+        "allow": {"type": "array", "items": {"$ref": "#/$defs/nonEmpty"}}
+      }
+    },
+    "commandPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "grants"],
+      "properties": {
+        "mode": {"enum": ["deny", "allowlist"]},
+        "grants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["command_ref", "argv", "cwd", "environment_member_id"],
+            "properties": {
+              "command_ref": {"$ref": "#/$defs/versionedRef"},
+              "argv": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+              "cwd": {"$ref": "#/$defs/nonEmpty"},
+              "environment_member_id": {"type": ["string", "null"], "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "predicate": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "output_id"],
+          "properties": {"kind": {"const": "output_present"}, "output_id": {"$ref": "#/$defs/nonEmpty"}}
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "output_id", "json_pointer", "value"],
+          "properties": {"kind": {"const": "output_field_equals"}, "output_id": {"$ref": "#/$defs/nonEmpty"}, "json_pointer": {"$ref": "#/$defs/nonEmpty"}, "value": {"type": ["string", "integer", "boolean", "null"]}}
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "input_id"],
+          "properties": {"kind": {"const": "input_unavailable"}, "input_id": {"$ref": "#/$defs/nonEmpty"}}
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {"kind": {"const": "attempts_exhausted"}}
+        }
+      ]
+    },
+    "validationRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "validator_ref", "configuration_member_id", "on_fail"],
+      "properties": {
+        "rule_id": {"$ref": "#/$defs/nonEmpty"},
+        "validator_ref": {"$ref": "#/$defs/versionedRef"},
+        "configuration_member_id": {"type": ["string", "null"], "minLength": 1},
+        "on_fail": {"enum": ["retry", "stop_node", "stop_graph"]}
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "objective", "instructions", "agent", "tools", "inputs", "outputs", "limits", "isolation", "start_when", "validation", "success_condition", "stop_conditions"],
+      "properties": {
+        "node_id": {"$ref": "#/$defs/nonEmpty"},
+        "objective": {"$ref": "#/$defs/nonEmpty"},
+        "instructions": {"$ref": "#/$defs/nonEmpty"},
+        "agent": {"$ref": "#/$defs/agent"},
+        "tools": {"type": "array", "items": {"$ref": "#/$defs/toolGrant"}},
+        "inputs": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+        "outputs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/output"}},
+        "limits": {"$ref": "#/$defs/limits"},
+        "isolation": {"$ref": "#/$defs/isolation"},
+        "start_when": {"enum": ["roots_ready", "all_predecessors_succeeded", "any_predecessor_succeeded"]},
+        "validation": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/validationRule"}},
+        "success_condition": {"$ref": "#/$defs/predicate"},
+        "stop_conditions": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["when", "action", "reason_code"],
+            "properties": {
+              "when": {"$ref": "#/$defs/predicate"},
+              "action": {"enum": ["stop_node", "stop_graph", "fail_graph"]},
+              "reason_code": {"$ref": "#/$defs/nonEmpty"}
+            }
+          }
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edge_id", "from_node_id", "to_node_id", "kind", "condition"],
+      "properties": {
+        "edge_id": {"$ref": "#/$defs/nonEmpty"},
+        "from_node_id": {"$ref": "#/$defs/nonEmpty"},
+        "to_node_id": {"$ref": "#/$defs/nonEmpty"},
+        "kind": {"enum": ["control", "data", "feedback"]},
+        "condition": {"enum": ["always", "on_success", "on_failure"]}
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entry_nodes", "terminal_nodes", "completion", "failure", "cancellation", "max_parallel_nodes"],
+      "properties": {
+        "entry_nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonEmpty"}},
+        "terminal_nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonEmpty"}},
+        "completion": {"enum": ["all_terminal_succeeded", "any_terminal_succeeded"]},
+        "failure": {"enum": ["fail_fast", "complete_independent_branches"]},
+        "cancellation": {"enum": ["cancel_running_nodes", "allow_running_nodes_to_stop"]},
+        "max_parallel_nodes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

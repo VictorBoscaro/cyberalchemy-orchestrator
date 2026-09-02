@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aci.role-registry@1.schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "name", "version", "roles"],
+  "properties": {
+    "schema": {"const": "aci.role-registry@1"},
+    "name": {"const": "aci.agent-roles"},
+    "version": {"const": "1"},
+    "roles": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        {"$ref": "#/$defs/explorer"},
+        {"$ref": "#/$defs/synthesizer"},
+        {"$ref": "#/$defs/skeptic"},
+        {"$ref": "#/$defs/writer"},
+        {"$ref": "#/$defs/auditor"},
+        {"$ref": "#/$defs/planner"},
+        {"$ref": "#/$defs/coder"},
+        {"$ref": "#/$defs/other"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "common": {
+      "type": "object",
+      "required": ["role_id", "enabled", "purpose"],
+      "properties": {
+        "enabled": {"const": true},
+        "purpose": {"type": "string", "minLength": 1}
+      }
+    },
+    "explorer": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "explorer"}}}]},
+    "synthesizer": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "synthesizer"}}}]},
+    "skeptic": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "skeptic"}}}]},
+    "writer": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "writer"}}}]},
+    "auditor": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "auditor"}}}]},
+    "planner": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "planner"}}}]},
+    "coder": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "coder"}}}]},
+    "other": {"unevaluatedProperties": false, "allOf": [{"$ref": "#/$defs/common"}, {"properties": {"role_id": {"const": "other"}}}]}
+  }
+}

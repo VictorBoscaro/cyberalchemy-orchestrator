@@ -33,7 +33,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         registry = json.loads(
             (
                 self.project
-                / "implementations/contracts/dispatch-type-registry.v1.json"
+                / "implementations/contracts/dispatch-type-registry.v2.json"
             ).read_text(encoding="utf-8")
         )
         review_route = resolve_dispatch_capability(
@@ -59,6 +59,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         self.opening = {
             "dispatch_id": "2026-07-24-bridge-review",
             "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "dispatch_type": "review",
             "capability_route": review_route,
             "goal": "Review the local orchestration logging bridge.",
@@ -88,6 +89,8 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
         }
         self.closing = {
             "close_of": self.opening["dispatch_id"],
+            "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "exit_reason": "resolved",
             "agents_spawned": {
                 "total": 1,
@@ -99,9 +102,15 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
 
     @staticmethod
     def _stage_dispatch_type_registry(root: Path) -> None:
-        registry_relative = "implementations/contracts/dispatch-type-registry.v1.json"
+        registry_relative = "implementations/contracts/dispatch-type-registry.v2.json"
         registry = json.loads((REPO / registry_relative).read_text(encoding="utf-8"))
-        paths = [registry_relative, ".claude/skills/register-dispatch/SKILL.md"]
+        paths = [
+            registry_relative,
+            "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
+            "implementations/contracts/agent-role-registry.v1.json",
+            "implementations/contracts/agent-role-registry-authority.v1.json",
+            ".claude/skills/register-dispatch/SKILL.md",
+        ]
         paths.extend(
             entry["capability_path"]
             for entry in registry["types"]

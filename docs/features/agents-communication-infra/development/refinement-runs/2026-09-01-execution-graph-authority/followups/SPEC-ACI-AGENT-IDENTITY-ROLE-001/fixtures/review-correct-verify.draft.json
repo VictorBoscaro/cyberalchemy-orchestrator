@@ -1,0 +1,133 @@
+{
+  "schema": "aci.draft-graph@1",
+  "objective": {
+    "statement": "Revisar o resultado X, produzir uma correção e verificar a correção.",
+    "done_when": ["A correção existe e a verificação independente retorna pass."]
+  },
+  "resources": [
+    {"alias": "result_x", "resource_key": "result_x"},
+    {"alias": "review_report_schema", "resource_key": "review_report_schema"},
+    {"alias": "correction_schema", "resource_key": "correction_schema"},
+    {"alias": "verification_schema", "resource_key": "verification_schema"}
+  ],
+  "requested_global_limits": {"max_attempts": 5, "max_tokens": 24000, "wall_clock_seconds": 1200},
+  "nodes": [
+    {
+      "key": "review",
+      "objective": "Encontrar defeitos verificáveis no resultado X.",
+      "instructions": "Revise somente o resultado X fornecido. Liste defeitos com evidência e critérios objetivos para a correção. Não altere arquivos.",
+      "agent_request": {
+        "role": "skeptic",
+        "provider_key": "openai_fixture",
+        "model_key": "gpt_5_6_fixture",
+        "profile_key": "read_only_reviewer",
+        "credential_key": null
+      },
+      "capability_requests": [],
+      "inputs": [
+        {"key": "target", "required": true, "source": {"kind": "resource", "resource_alias": "result_x", "selector": "$"}}
+      ],
+      "outputs": [
+        {"key": "review_report", "contract_resource_alias": "review_report_schema", "required": true}
+      ],
+      "requested_limits": {"max_attempts": 1, "max_tokens": 6000, "wall_clock_seconds": 300},
+      "access_request": {
+        "read_paths": ["workspace:/input/result-x"], "write_paths": [],
+        "network": {"mode": "deny", "allow": []}, "commands": {"mode": "deny", "grants": []},
+        "external_effects": {"mode": "deny", "allow": []},
+        "version_control": {"commit": false, "push": false}
+      },
+      "start_when": "roots_ready",
+      "validation": [
+        {"key": "review_has_evidence", "validator_key": "schema_and_citation", "configuration_resource_alias": null, "on_fail": "stop_graph"}
+      ],
+      "success_condition": {"kind": "output_present", "output_key": "review_report"},
+      "stop_conditions": [
+        {"when": {"kind": "input_unavailable", "input_key": "target"}, "action": "stop_graph", "reason_code": "target_unavailable"}
+      ]
+    },
+    {
+      "key": "correct",
+      "objective": "Produzir uma correção limitada aos defeitos confirmados.",
+      "instructions": "Use o review_report como obrigação. Produza a correção mínima e registre como cada defeito foi tratado. Pare após validar localmente.",
+      "agent_request": {
+        "role": "coder",
+        "provider_key": "openai_fixture",
+        "model_key": "gpt_5_6_fixture",
+        "profile_key": "bounded_corrector",
+        "credential_key": null
+      },
+      "capability_requests": [
+        {"capability_key": "workspace_files", "operations": ["read", "patch"]}
+      ],
+      "inputs": [
+        {"key": "target", "required": true, "source": {"kind": "resource", "resource_alias": "result_x", "selector": "$"}},
+        {"key": "review_findings", "required": true, "source": {"kind": "node_output", "node_key": "review", "output_key": "review_report"}}
+      ],
+      "outputs": [
+        {"key": "correction", "contract_resource_alias": "correction_schema", "required": true}
+      ],
+      "requested_limits": {"max_attempts": 2, "max_tokens": 12000, "wall_clock_seconds": 600},
+      "access_request": {
+        "read_paths": ["workspace:/input", "workspace:/target"], "write_paths": ["workspace:/target"],
+        "network": {"mode": "deny", "allow": []}, "commands": {"mode": "deny", "grants": []},
+        "external_effects": {"mode": "deny", "allow": []},
+        "version_control": {"commit": false, "push": false}
+      },
+      "start_when": "all_predecessors_succeeded",
+      "validation": [
+        {"key": "correction_contract", "validator_key": "schema", "configuration_resource_alias": "correction_schema", "on_fail": "retry"}
+      ],
+      "success_condition": {"kind": "output_present", "output_key": "correction"},
+      "stop_conditions": [
+        {"when": {"kind": "attempts_exhausted"}, "action": "fail_graph", "reason_code": "correction_attempts_exhausted"},
+        {"when": {"kind": "input_unavailable", "input_key": "target"}, "action": "stop_graph", "reason_code": "target_unavailable"}
+      ]
+    },
+    {
+      "key": "verify",
+      "objective": "Verificar independentemente se a correção resolve os defeitos sem regressão.",
+      "instructions": "Compare a correção com o review_report e o resultado original. Retorne pass, flag ou block com evidência. Não altere arquivos.",
+      "agent_request": {
+        "role": "auditor",
+        "provider_key": "openai_fixture",
+        "model_key": "gpt_5_6_fixture",
+        "profile_key": "read_only_verifier",
+        "credential_key": null
+      },
+      "capability_requests": [
+        {"capability_key": "workspace_files", "operations": ["read"]}
+      ],
+      "inputs": [
+        {"key": "target", "required": true, "source": {"kind": "resource", "resource_alias": "result_x", "selector": "$"}},
+        {"key": "review_findings", "required": true, "source": {"kind": "node_output", "node_key": "review", "output_key": "review_report"}},
+        {"key": "candidate_correction", "required": true, "source": {"kind": "node_output", "node_key": "correct", "output_key": "correction"}}
+      ],
+      "outputs": [
+        {"key": "verification", "contract_resource_alias": "verification_schema", "required": true}
+      ],
+      "requested_limits": {"max_attempts": 1, "max_tokens": 6000, "wall_clock_seconds": 300},
+      "access_request": {
+        "read_paths": ["workspace:/input", "workspace:/target"], "write_paths": [],
+        "network": {"mode": "deny", "allow": []}, "commands": {"mode": "deny", "grants": []},
+        "external_effects": {"mode": "deny", "allow": []},
+        "version_control": {"commit": false, "push": false}
+      },
+      "start_when": "all_predecessors_succeeded",
+      "validation": [
+        {"key": "verification_evidence", "validator_key": "schema_and_evidence", "configuration_resource_alias": "verification_schema", "on_fail": "stop_graph"}
+      ],
+      "success_condition": {"kind": "output_field_equals", "output_key": "verification", "json_pointer": "/verdict", "value": "pass"},
+      "stop_conditions": [
+        {"when": {"kind": "output_field_equals", "output_key": "verification", "json_pointer": "/verdict", "value": "flag"}, "action": "stop_graph", "reason_code": "verification_flag"},
+        {"when": {"kind": "output_field_equals", "output_key": "verification", "json_pointer": "/verdict", "value": "block"}, "action": "fail_graph", "reason_code": "verification_block"}
+      ]
+    }
+  ],
+  "edges": [],
+  "lifecycle": {
+    "entry_node_keys": ["review"], "terminal_node_keys": ["verify"],
+    "completion": "all_terminal_succeeded", "failure": "fail_fast",
+    "cancellation": "cancel_running_nodes", "max_parallel_nodes": 1
+  }
+}

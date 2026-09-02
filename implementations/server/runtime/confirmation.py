@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from .canonical import canonical_bytes, canonical_digest, canonical_text, digest_bytes, parse_strict_json
@@ -22,13 +23,14 @@ from .errors import (
     UntrustedConfirmationIssuer,
     UntrustedConfirmationObservation,
 )
+from .dispatch_types import load_dispatch_type_registry
 
 
 IDENTITY_DERIVATION_DIGEST = (
     "sha256:e1d77f8e2e7eed4a94140d17ef05f10b227cba22727ed67d970244c8b910a3b5"
 )
 PAYLOAD_SCHEMA_BUNDLE_DIGEST = (
-    "sha256:44fbe7dd415bdcafd91c8f766f44b936e3e640234576f51aab399e5b2c565f33"
+    "sha256:11e139bae3b1b6f8c9f21ac3d08f59f20828f61eb273604eb067b59ad53abe26"
 )
 PAYLOAD_SCHEMA_DIALECT_DIGEST = (
     "sha256:1fde625dc38238b2de389f1472ad993c580a076dcddf471e0066b54cc4a7ad26"
@@ -37,10 +39,10 @@ RUN_CREATED_SCHEMA_DIGEST = (
     "sha256:fcea3b5eb5942d744dc76fc9d8e0c36b9315063ae4fbcf9265dad1235985aacb"
 )
 AUDIT_OPENING_REQUESTED_SCHEMA_DIGEST = (
-    "sha256:b21dab976da95bc9b653c624b73a197895f42c1623a4beb95c58f7849734e120"
+    "sha256:e5de962abcc0926d29858bc502c82af046c88a463726b55b45c6d8d02e5ca514"
 )
 AUDIT_OPENING_EFFECT_SCHEMA_DIGEST = (
-    "sha256:a3943113ba9fe253f7a7ba2cf3f99fd2f24d5ac559a2c0389a67dd15503c5e98"
+    "sha256:bf3f56e03ca37db52ecd9049b36fa1a2c8e9af0af9c8d948f6f171e844fa6b98"
 )
 CONFIRMATION_RECEIPT_SCHEMA_DIGEST = (
     "sha256:996d5f440b8d2515484b6369d0f0b55c371bb6f3332940a284993479a12b2021"
@@ -529,6 +531,7 @@ def _binding_digest(mapping: dict[str, Any]) -> str:
 
 def build_confirmation_batch(
     *,
+    repo_root: Path,
     pending_sheet_bytes: bytes,
     capability_resolution_bytes: bytes,
     capability_resolution_artifact_id: str,
@@ -538,6 +541,9 @@ def build_confirmation_batch(
     payload_schema_bundle_bytes: bytes,
     command_bytes: bytes,
 ) -> ConfirmationBatch:
+    dispatch_registry = load_dispatch_type_registry(repo_root)
+    appender_contract_version = dispatch_registry["ledger_schema_version"]
+    agent_role_registry_ref = dispatch_registry["agent_role_registry_ref"]
     pending = _decode(pending_sheet_bytes, error=InvalidBoundedGraph)
     _validate_pending(pending)
     pending_digest = digest_bytes(pending_sheet_bytes)
@@ -671,7 +677,8 @@ def build_confirmation_batch(
     receipt_id = derive_id("receipt", ["confirmation"], dispatch_id=dispatch_id, dispatch_spec_digest=dispatch_spec_digest)
     authority_ref = artifact_id(authority_digest)
     effect_payload = {
-        "appender_contract_version": "0.6.4",
+        "agent_role_registry_ref": agent_role_registry_ref,
+        "appender_contract_version": appender_contract_version,
         "confirmed_authority_digest": authority_digest,
         "confirmed_authority_ref": authority_ref,
         "dispatch_id": dispatch_id,
@@ -719,7 +726,8 @@ def build_confirmation_batch(
     run_payload_bytes = canonical_bytes(run_created_payload)
     run_payload_digest = digest_bytes(run_payload_bytes)
     audit_payload = {
-        "appender_contract_version": "0.6.4",
+        "agent_role_registry_ref": agent_role_registry_ref,
+        "appender_contract_version": appender_contract_version,
         "confirmed_authority_digest": authority_digest,
         "confirmed_authority_ref": authority_ref,
         "dispatch_id": dispatch_id,

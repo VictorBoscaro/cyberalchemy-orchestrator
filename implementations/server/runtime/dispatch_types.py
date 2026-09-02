@@ -9,10 +9,13 @@ from typing import Any
 
 from .errors import GateBlockedError, ValidationError
 from .capability_routes import build_route_receipt, installed_capability
+from .agent_roles import load_accepted_role_registry, validate_ref
 
 
-REGISTRY = Path("implementations/contracts/dispatch-type-registry.v1.json")
-REGISTRY_SCHEMA = "aci-dispatch-type-registry/v1"
+REGISTRY = Path("implementations/contracts/dispatch-type-registry.v2.json")
+LEGACY_REGISTRY = Path("implementations/contracts/dispatch-type-registry.v1.json")
+REGISTRY_SCHEMA = "aci-dispatch-type-registry/v2"
+LEGACY_REGISTRY_SCHEMA = "aci-dispatch-type-registry/v1"
 ENTRY_FIELDS = {
     "id",
     "status",
@@ -34,8 +37,10 @@ GENERIC_FIELDS = {
 }
 
 
-def load_dispatch_type_registry(repo_root: Path) -> dict[str, Any]:
-    path = (Path(repo_root).resolve() / REGISTRY).resolve()
+def load_dispatch_type_registry(repo_root: Path, *, legacy: bool = False) -> dict[str, Any]:
+    registry_path = LEGACY_REGISTRY if legacy else REGISTRY
+    registry_schema = LEGACY_REGISTRY_SCHEMA if legacy else REGISTRY_SCHEMA
+    path = (Path(repo_root).resolve() / registry_path).resolve()
     try:
         path.relative_to(Path(repo_root).resolve())
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -43,13 +48,33 @@ def load_dispatch_type_registry(repo_root: Path) -> dict[str, Any]:
         raise GateBlockedError("canonical dispatch-type registry is unavailable") from exc
     if (
         not isinstance(value, dict)
-        or set(value) != {"schema", "ledger_schema_version", "generic_fallback", "types"}
-        or value.get("schema") != REGISTRY_SCHEMA
+        or set(value) != ({"schema", "ledger_schema_version", "generic_fallback", "types"} if legacy else {"schema", "ledger_schema_version", "ledger_schema_ref", "agent_role_registry_ref", "generic_fallback", "types"})
+        or value.get("schema") != registry_schema
         or not isinstance(value.get("ledger_schema_version"), str)
         or not isinstance(value.get("types"), list)
         or not value["types"]
     ):
         raise GateBlockedError("canonical dispatch-type registry shape is invalid")
+    if legacy:
+        if value["ledger_schema_version"] != "0.6.4":
+            raise GateBlockedError("legacy dispatch-type registry version is invalid")
+    else:
+        if value["ledger_schema_version"] != "0.7.0":
+            raise GateBlockedError("current dispatch-type registry version is invalid")
+        role_registry = load_accepted_role_registry(repo_root)
+        if validate_ref(value["agent_role_registry_ref"]) != role_registry.ref:
+            raise GateBlockedError("dispatch-type registry role authority differs")
+        schema_ref = value["ledger_schema_ref"]
+        if not isinstance(schema_ref, dict) or set(schema_ref) != {"path", "digest"}:
+            raise GateBlockedError("dispatch ledger schema ref is invalid")
+        schema_path = (Path(repo_root).resolve() / schema_ref.get("path", "")).resolve()
+        try:
+            schema_path.relative_to(Path(repo_root).resolve())
+            actual_schema_digest = "sha256:" + hashlib.sha256(schema_path.read_bytes()).hexdigest()
+        except (OSError, ValueError) as exc:
+            raise GateBlockedError("dispatch ledger schema is unavailable") from exc
+        if actual_schema_digest != schema_ref.get("digest"):
+            raise GateBlockedError("dispatch ledger schema digest differs")
     generic = value.get("generic_fallback")
     if (
         not isinstance(generic, dict)
@@ -149,8 +174,9 @@ def resolve_dispatch_capability(
     *,
     capability_ref: str,
     authority_mode: str,
+    legacy: bool = False,
 ) -> dict[str, Any]:
-    registry = load_dispatch_type_registry(repo_root)
+    registry = load_dispatch_type_registry(repo_root, legacy=legacy)
     matches = [
         entry
         for entry in registry["types"]
@@ -184,8 +210,8 @@ def resolve_dispatch_capability(
         tool_profile_ref = generic["tool_profile_ref"]
     return build_route_receipt(
         repo_root=Path(repo_root),
-        registry_path=REGISTRY,
-        registry_schema=REGISTRY_SCHEMA,
+        registry_path=LEGACY_REGISTRY if legacy else REGISTRY,
+        registry_schema=LEGACY_REGISTRY_SCHEMA if legacy else REGISTRY_SCHEMA,
         dispatch_type_ref=dispatch_type_ref,
         ledger_dispatch_type=ledger_dispatch_type,
         capability_ref=capability_ref,

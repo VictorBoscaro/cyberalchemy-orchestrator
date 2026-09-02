@@ -62,8 +62,9 @@ would diverge from the rows' `_day` by a few hours every day. Derive the day fro
 
 ### A dispatch
 
-The current writer emits schema `0.6.3`. The reader remains deliberately
-compatible with historical `0.6.0`, `0.6.1`, and `0.6.2` rows and does not rewrite ledger data.
+The current writer emits schema `0.7.0` and pins `agent_role_registry_ref` to the accepted
+[`aci.agent-roles@1`](contracts/agent-role-registry.v1.json) authority. The reader remains
+deliberately compatible with historical `0.6.x` rows and does not rewrite ledger data.
 The current golden coverage is bound by
 [`SWU-ACI-002-GOLDEN-MANIFEST-v0.6.3.json`](../docs/features/agents-communication-infra/adrs/fixtures/SWU-ACI-002-GOLDEN-MANIFEST-v0.6.3.json);
 the unversioned manifest remains the immutable Stage-A baseline.
@@ -71,7 +72,11 @@ the unversioned manifest remains the immutable Stage-A baseline.
 ```jsonc
 {
   "dispatch_id": "2026-06-12-residue-precedent-sweep",
-  "schema_version": "0.6.3",
+  "schema_version": "0.7.0",
+  "agent_role_registry_ref": {
+    "name": "aci.agent-roles", "version": "1",
+    "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"
+  },
   "created": "2026-06-12T18:00:00.000Z",
   "invoked_by": "victorboscaro@gmail.com",
   "dispatch_type": "review",          // research|code|review|plan|suggestion|experiment
@@ -95,8 +100,8 @@ the unversioned manifest remains the immutable Stage-A baseline.
       "layers": 1,                     // optional
       "agents": [
         {
-          "agent_name": "Abramsky, Samson",   // can be null
-          "role": "explorer",                 // explorer|synthesizer|skeptic|writer|auditor|planner|coder
+          "display_name": "Abramsky, Samson", // allocated from telemetry agent-pool agent_name
+          "role": "explorer",                 // member of the pinned role registry; includes singular other
           "model": "claude-sonnet-5",
           "token_budget": 800,
           "angle": "takes the side of the formal literature",

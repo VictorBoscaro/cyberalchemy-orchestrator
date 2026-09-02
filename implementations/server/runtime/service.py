@@ -329,6 +329,7 @@ class RuntimeService:
             raise IntegrityError("finalized capability preview receipt differs")
 
         batch = build_confirmation_batch(
+            repo_root=self.settings.repo_root,
             pending_sheet_bytes=pending_sheet_bytes,
             capability_resolution_bytes=capability_resolution_bytes,
             capability_resolution_artifact_id=capability_resolution_artifact_id,
@@ -1133,6 +1134,7 @@ class RuntimeService:
                 "row_kind",
                 "appender_identity",
                 "contract_version",
+                "agent_role_registry_ref",
             },
             "LegacyLedgerRowIdentity",
         )
@@ -1141,6 +1143,12 @@ class RuntimeService:
         for field in ("row_kind", "appender_identity", "contract_version"):
             if not isinstance(identity[field], str) or not identity[field]:
                 raise IntegrityError(f"legacy ledger identity {field} is malformed")
+        role_ref = identity["agent_role_registry_ref"]
+        if identity["contract_version"] == "0.7.0":
+            if not isinstance(role_ref, dict) or set(role_ref) != {"name", "version", "digest"}:
+                raise IntegrityError("0.7.0 ledger identity role registry ref is malformed")
+        elif role_ref is not None:
+            raise IntegrityError("legacy ledger identity cannot retrofit a role registry ref")
         digest = snapshot["row_digest"]
         if not (
             isinstance(digest, str)
@@ -2027,6 +2035,7 @@ class RuntimeService:
                     "row_kind": snapshot.row_kind,
                     "appender_identity": snapshot.appender_identity,
                     "contract_version": snapshot.contract_version,
+                    "agent_role_registry_ref": snapshot.agent_role_registry_ref,
                 },
                 "row_digest": snapshot.row_digest,
         }

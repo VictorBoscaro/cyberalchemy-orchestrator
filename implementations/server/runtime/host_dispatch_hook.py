@@ -19,6 +19,7 @@ from .dispatch_types import (
     resolve_dispatch_capability,
 )
 from .errors import GateBlockedError, ValidationError
+from .agent_roles import load_accepted_role_registry, load_host_role_routing
 from .local_pilot import preflight_local_pilot
 from .orchestration_bridge import (
     LEDGER,
@@ -57,16 +58,6 @@ WORKFLOW_ENVELOPE_FIELDS = {
     "workflow_manifest_digest",
 }
 RUNNING_STATUSES = {"running", "pending", "in_progress"}
-ROLE_WORDS = (
-    ("auditor", ("review", "audit", "security", "critic", "verify")),
-    ("planner", ("plan", "architect", "design", "strategy")),
-    ("coder", ("code", "implement", "fix", "build", "refactor", "test")),
-    ("writer", ("write", "draft", "document")),
-    ("skeptic", ("skeptic", "falsif", "challenge", "red team")),
-    ("synthesizer", ("synth", "merge", "integrat")),
-)
-
-
 def _strict_object(value: Any, fields: set[str], label: str) -> dict[str, Any]:
     if not isinstance(value, dict) or set(value) != fields:
         raise GateBlockedError(f"{label} shape is invalid")
@@ -114,6 +105,8 @@ class HostDispatchHook:
         self.host = host
         self.now = now or (lambda: datetime.now(timezone.utc))
         self.policy = self._load_policy()
+        self.agent_role_registry = load_accepted_role_registry(self.root)
+        self.agent_role_routing = load_host_role_routing(self.root, self.agent_role_registry)
         database = (self.root / self.policy["database"]).resolve()
         ledger = (self.root / self.policy["ledger"]).resolve()
         if ledger != (self.root / LEDGER).resolve():
@@ -347,13 +340,12 @@ class HostDispatchHook:
             raise GateBlockedError("workflow binding schema is unsupported")
         return envelope, prompt_body
 
-    @staticmethod
-    def _role(text: str) -> str:
+    def _role(self, text: str) -> str:
         lowered = text.lower()
-        for role, words in ROLE_WORDS:
-            if any(word in lowered for word in words):
-                return role
-        return "explorer"
+        for route in self.agent_role_routing["routes"]:
+            if any(word in lowered for word in route["keywords"]):
+                return route["role"]
+        return self.agent_role_routing["fallback_role"]
 
     def _opening_record(
         self, event: dict[str, Any]
@@ -408,6 +400,7 @@ class HostDispatchHook:
         record = {
             "dispatch_id": dispatch_id,
             "schema_version": registry["ledger_schema_version"],
+            "agent_role_registry_ref": registry["agent_role_registry_ref"],
             "dispatch_type": compatibility_type,
             "capability_route": capability_route,
             "goal": f"Automatically supervise host agent call: {label[:240]}",
@@ -631,6 +624,8 @@ class HostDispatchHook:
             return state
         record = {
             "close_of": state["dispatch_id"],
+            "schema_version": state["record"]["schema_version"],
+            "agent_role_registry_ref": state["record"]["agent_role_registry_ref"],
             "exit_reason": exit_reason,
             "capability_route_digest": state["record"]["capability_route"][
                 "route_digest"

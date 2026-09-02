@@ -1,0 +1,10 @@
+{
+  "schema": "aci.normalized-agent-pool@1",
+  "name": "Agent pool fixture — review, correct, verify",
+  "version": "0.7.0",
+  "agents": [
+    {"display_name": "Popper, Karl", "role_fit": ["skeptic", "writer"]},
+    {"display_name": "Dijkstra, Edsger W.", "role_fit": ["skeptic", "auditor"]},
+    {"display_name": "Lamport, Leslie", "role_fit": ["auditor", "explorer"]}
+  ]
+}

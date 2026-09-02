@@ -27,7 +27,7 @@ from implementations.server.runtime.service import RuntimeService, RuntimeSettin
 REPO = Path(__file__).resolve().parents[3]
 FIXTURE = (
     REPO
-    / "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v1"
+    / "docs/features/agents-communication-infra/specs/fixtures/confirmed-dispatch-v2"
 )
 
 

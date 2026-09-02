@@ -1,0 +1,23 @@
+{
+  "schema": "aci.compilation-context-fixture@1",
+  "dispatch_id": "dispatch:aci.fixture:review_correct_verify",
+  "revision": "r1",
+  "allocation_id": "allocation:aci.fixture:review_correct_verify:r1",
+  "allocation_status": "reserved",
+  "prior_accepted_graph_digest": null,
+  "role_registry_ref": {
+    "name": "aci.agent-roles",
+    "version": "1",
+    "digest": "sha256:76709aaeadd321f492ab6c2da67ea7b27cdf278718fa42604d443ce294c8ae6b"
+  },
+  "agent_pool_ref": {
+    "name": "Agent pool fixture — review, correct, verify",
+    "version": "0.7.0",
+    "digest": "sha256:61834290a48f357524dcaff62f008aade6a8f27660e86e0815b3e6cec4f0f085"
+  },
+  "agent_assignments": [
+    {"node_key": "review", "display_name": "Popper, Karl", "role_fit_override": false, "role_fit_override_reason": null},
+    {"node_key": "correct", "display_name": "Dijkstra, Edsger W.", "role_fit_override": true, "role_fit_override_reason": "The fixture exercises the existing pool contract's explicit role-fit override for a bounded coder assignment."},
+    {"node_key": "verify", "display_name": "Lamport, Leslie", "role_fit_override": false, "role_fit_override_reason": null}
+  ]
+}

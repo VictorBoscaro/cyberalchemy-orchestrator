@@ -1,7 +1,7 @@
 {
   "batch_id": "apt-seed-registry-candidates-v01",
   "status": "candidate_batch_not_registry",
-  "pool_snapshot": "sha256:5c7b9745a336670ecb55df1276912166954a0d7960443f0df787405564099eba",
+  "pool_snapshot": "sha256:10291fe7385cbab70f62c98a0a6b7ae1060fec0dab870acc6df4a3b1892f6df4",
   "selection_method": "purposive_8_pool_present_plus_8_exact_runtime_residue_before_probe_fixture_selection",
   "candidates": [
     {"tag_id": "candidate:software-engineering", "canonical_label": "software-engineering", "origin": "pool_present", "pool_usage_count": 20, "field_distribution": {"cs": 20}, "status": "candidate", "resolution_eligible": false, "definition_status": "missing"},
