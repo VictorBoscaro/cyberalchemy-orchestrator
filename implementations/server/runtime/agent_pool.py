@@ -88,6 +88,15 @@ class NormalizedAgentPool:
 
 
 def normalize_pool_documents(docs: list[Any], registry: AcceptedRoleRegistry) -> NormalizedAgentPool:
+    if not isinstance(docs, list) or len(docs) != 2:
+        _fail("DG_POOL_DOCUMENT_COUNT", "$.documents")
+    if (
+        not isinstance(docs[0], dict)
+        or not isinstance(docs[1], dict)
+        or "profile" not in docs[0]
+        or set(docs[1]) != {"scientists"}
+    ):
+        _fail("DG_POOL_DOCUMENT_ORDER", "$.documents")
     metadata, roster = docs
     if set(metadata) != METADATA_FIELDS:
         _fail("DG_POOL_METADATA_DRIFT", "$.documents[0]")
@@ -189,11 +198,13 @@ def load_agent_pool(repo_root: Path, registry: AcceptedRoleRegistry | None = Non
 
 
 def migrate_legacy_pool(raw: bytes, authority: dict[str, Any], registry: AcceptedRoleRegistry) -> list[Any]:
+    docs = parse_pool_stream(raw)
+    metadata, roster = docs
+    if _canonical_digest(metadata) != authority.get("source_metadata_digest"):
+        _fail("DG_POOL_METADATA_DRIFT", "$.documents[0]")
     actual = "sha256:" + hashlib.sha256(raw).hexdigest()
     if actual != authority.get("source_raw_digest"):
         _fail("DG_POOL_SOURCE_SUBSTITUTION", "$.yaml")
-    docs = parse_pool_stream(raw)
-    metadata, roster = docs
     if metadata.get("version") != authority.get("source_version") or len(roster.get("scientists", [])) != authority.get("source_entry_count"):
         _fail("DG_POOL_METADATA_DRIFT", "$.documents[0]")
     migrated = copy.deepcopy(docs)

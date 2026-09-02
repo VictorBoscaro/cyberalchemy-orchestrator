@@ -137,10 +137,23 @@ function loadDispatchTypeRegistry(root) {
 }
 
 function loadAgentRoleRegistry(root, expectedRef) {
-  const registryPath = path.join(root, 'implementations', 'contracts', 'agent-role-registry.v1.json');
-  const authorityPath = path.join(root, 'implementations', 'contracts', 'agent-role-registry-authority.v1.json');
-  let registry, authority;
+  const selectionPath = path.join(root, 'implementations', 'contracts', 'agent-role-registry-selection.json');
+  let selection, registry, authority, registryPath, authorityPath;
   try {
+    selection = JSON.parse(fs.readFileSync(selectionPath, 'utf8'));
+    if (!isObj(selection) || selection.schema !== 'aci.role-registry-selection@1' ||
+        !isObj(selection.selected_ref) || !isNonEmptyStr(selection.registry_path) ||
+        !isNonEmptyStr(selection.authority_path) || !isNonEmptyStr(selection.host_routing_path)) {
+      throw new Error('selection shape is invalid');
+    }
+    const resolveSelected = (relative) => {
+      const selected = path.resolve(root, relative);
+      const prefix = root.endsWith(path.sep) ? root : root + path.sep;
+      if (!selected.startsWith(prefix)) throw new Error('selected path escapes repository root');
+      return selected;
+    };
+    registryPath = resolveSelected(selection.registry_path);
+    authorityPath = resolveSelected(selection.authority_path);
     registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
     authority = JSON.parse(fs.readFileSync(authorityPath, 'utf8'));
   } catch (e) { console.error('agent role registry authority is unavailable:', e.message); process.exit(2); }
@@ -151,7 +164,7 @@ function loadAgentRoleRegistry(root, expectedRef) {
   const rows = registry?.roles;
   const roles = Array.isArray(rows) ? rows.map((row) => row?.role_id) : [];
   if (registry?.schema !== 'aci.role-registry@1' || authority?.schema !== 'aci.role-registry-authority@1' ||
-      accepted.length !== 1 || accepted[0].digest !== ref.digest || J(expectedRef) !== J(ref) ||
+      accepted.length !== 1 || accepted[0].digest !== ref.digest || J(selection.selected_ref) !== J(ref) || J(expectedRef) !== J(ref) ||
       roles.length === 0 || new Set(roles).size !== roles.length ||
       rows.some((row) => !isObj(row) || row.enabled !== true || !isNonEmptyStr(row.purpose))) {
     console.error('agent role registry is invalid, substituted, or differs from dispatch authority'); process.exit(2);

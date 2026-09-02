@@ -109,6 +109,7 @@ class OrchestrationLoggingBridgeTests(unittest.TestCase):
             "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
             "implementations/contracts/agent-role-registry.v1.json",
             "implementations/contracts/agent-role-registry-authority.v1.json",
+            "implementations/contracts/agent-role-registry-selection.json",
             ".claude/skills/register-dispatch/SKILL.md",
         ]
         paths.extend(

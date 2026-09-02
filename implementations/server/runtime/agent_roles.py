@@ -12,9 +12,7 @@ from typing import Any
 from .errors import GateBlockedError, ValidationError
 
 
-REGISTRY_PATH = Path("implementations/contracts/agent-role-registry.v1.json")
-AUTHORITY_PATH = Path("implementations/contracts/agent-role-registry-authority.v1.json")
-HOST_ROUTING_PATH = Path("implementations/contracts/agent-role-host-routing.v1.json")
+SELECTION_PATH = Path("implementations/contracts/agent-role-registry-selection.json")
 ROLE_ID_RE = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
 REF_FIELDS = {"name", "version", "digest"}
 
@@ -57,6 +55,27 @@ def digest_bytes(raw: bytes) -> str:
     return "sha256:" + hashlib.sha256(raw).hexdigest()
 
 
+def _contained(root: Path, relative: object, path: str) -> Path:
+    if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
+        _fail("DG_ROLE_REGISTRY_SELECTION_INVALID", path)
+    candidate = (root / relative).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        _fail("DG_ROLE_REGISTRY_SELECTION_INVALID", path)
+    return candidate
+
+
+def _load_selection(root: Path) -> dict[str, Any]:
+    selection, _ = _load(root / SELECTION_PATH, "DG_ROLE_REGISTRY_SELECTION_INVALID")
+    if set(selection) != {"schema", "selected_ref", "registry_path", "authority_path", "host_routing_path"} or selection.get("schema") != "aci.role-registry-selection@1":
+        _fail("DG_ROLE_REGISTRY_SELECTION_INVALID", "$")
+    selection["selected_ref"] = validate_ref(selection.get("selected_ref"), "$.selected_ref")
+    for field in ("registry_path", "authority_path", "host_routing_path"):
+        _contained(root, selection.get(field), f"$.{field}")
+    return selection
+
+
 def validate_ref(value: Any, path: str = "agent_role_registry_ref") -> dict[str, str]:
     if not isinstance(value, dict) or set(value) != REF_FIELDS:
         _fail("DG_ROLE_REGISTRY_REF_INVALID", path, "closed name/version/digest object required")
@@ -82,12 +101,15 @@ class AcceptedRoleRegistry:
 def load_accepted_role_registry(
     repo_root: Path,
     *,
-    registry_path: Path = REGISTRY_PATH,
-    authority_path: Path = AUTHORITY_PATH,
+    expected_ref: Any | None = None,
 ) -> AcceptedRoleRegistry:
     root = Path(repo_root).resolve()
-    registry, raw = _load((root / registry_path).resolve(), "DG_ROLE_REGISTRY_SCHEMA_INVALID")
-    authority, _ = _load((root / authority_path).resolve(), "DG_ROLE_REGISTRY_AUTHORITY_INVALID")
+    selection = _load_selection(root)
+    selected_ref = selection["selected_ref"]
+    if expected_ref is not None and validate_ref(expected_ref) != selected_ref:
+        _fail("DG_ROLE_REGISTRY_REF_DRIFT", "agent_role_registry_ref")
+    registry, raw = _load(_contained(root, selection["registry_path"], "$.registry_path"), "DG_ROLE_REGISTRY_SCHEMA_INVALID")
+    authority, _ = _load(_contained(root, selection["authority_path"], "$.authority_path"), "DG_ROLE_REGISTRY_AUTHORITY_INVALID")
     if set(registry) != {"schema", "name", "version", "roles"} or registry.get("schema") != "aci.role-registry@1":
         _fail("DG_ROLE_REGISTRY_SCHEMA_INVALID", "$")
     roles = registry.get("roles")
@@ -116,13 +138,16 @@ def load_accepted_role_registry(
         _fail("DG_ROLE_REGISTRY_UNTRUSTED", "$.name")
     if matches[0].get("digest") != actual["digest"]:
         _fail("DG_ROLE_REGISTRY_SUBSTITUTED", "$.digest")
+    if actual != selected_ref:
+        _fail("DG_ROLE_REGISTRY_SELECTION_DRIFT", "$.selected_ref")
     return AcceptedRoleRegistry(registry, actual, frozenset(ids))
 
 
 def load_host_role_routing(repo_root: Path, registry: AcceptedRoleRegistry | None = None) -> dict[str, Any]:
     root = Path(repo_root).resolve()
     accepted = registry or load_accepted_role_registry(root)
-    value, _ = _load(root / HOST_ROUTING_PATH, "DG_ROLE_ROUTING_INVALID")
+    selection = _load_selection(root)
+    value, _ = _load(_contained(root, selection["host_routing_path"], "$.host_routing_path"), "DG_ROLE_ROUTING_INVALID")
     if set(value) != {"schema", "role_registry_ref", "fallback_role", "routes"} or value.get("schema") != "aci.agent-role-host-routing@1":
         _fail("DG_ROLE_ROUTING_INVALID", "$")
     if validate_ref(value.get("role_registry_ref")) != accepted.ref:

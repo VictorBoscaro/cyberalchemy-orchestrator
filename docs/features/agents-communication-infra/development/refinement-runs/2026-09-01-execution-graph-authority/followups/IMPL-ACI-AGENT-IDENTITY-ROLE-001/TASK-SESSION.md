@@ -1,6 +1,6 @@
 # Task session — IMPL-ACI-AGENT-IDENTITY-ROLE-001
 
-Status: `ready_for_review`; worker evidence, not approval.
+Status: `ready_for_recheck`; forward-only worker evidence, not approval.
 
 ## Route and gate
 
@@ -11,7 +11,7 @@ Status: `ready_for_review`; worker evidence, not approval.
   consumers without adding scheduling/provider/tool execution.
 - Formal `domainspec-implement` readiness is not claimed because the routed
   implementation-axioms prerequisite is unavailable.
-- Worker has a separate reviewer and will stop at `ready_for_review`.
+- Worker has a separate reviewer and stops at `ready_for_recheck`.
 
 ## Context pack
 
@@ -47,8 +47,11 @@ Evidence that this did not discard a pre-existing user pool edit:
   `telemetry/agents/agent-pool.yaml`; therefore the worktree pool equaled the tracked baseline;
 - the source authority digest is the accepted v0.6 digest
   `sha256:5c7b9745a336670ecb55df1276912166954a0d7960443f0df787405564099eba`;
+- the accepted v0.6 bytes are now a frozen fixture at
+  `../SPEC-ACI-AGENT-IDENTITY-ROLE-001/fixtures/agent-pool.v0.6.yaml`, so the proof is independent
+  of `HEAD`, `HEAD^` and later commits;
 - the repaired file parses to exactly the same two-document value as the production migration
-  function applied to `git show HEAD:telemetry/agents/agent-pool.yaml`;
+  function applied to that digest-pinned fixture;
 - the comparison covers row order and every non-identity field for all 414 rows, not only counts.
 
 The malformed intermediate bytes were not preserved because they had no valid identities and were
@@ -57,8 +60,9 @@ never an authority candidate. This incident must remain visible to independent r
 ## Implemented result
 
 - The accepted role registry contains exactly the eight owner-selected roles and is digest-pinned;
-  host keyword routing is separate pinned data, and a synthetic future role revision loads without
-  a Python/JavaScript enum edit.
+  host keyword routing is separate pinned data. A stable selection document chooses versioned
+  registry/authority/routing siblings by path plus exact ref, and a synthetic v2 revision loads
+  without overwriting v1 or editing Python/JavaScript filenames.
 - The real two-document pool is canonical v0.7 with 414 unique `agent_name` rows. Python and MCP
   steady-state loaders reject legacy/dual/malformed identity and role drift.
 - DraftGraph no longer authors names. A signed, fresh allocator context supplies exact node-to-name
@@ -69,8 +73,20 @@ never an authority candidate. This incident must remain visible to independent r
   confirmed-dispatch fixture remain immutable compatibility evidence.
 - The field-to-consumer proof is in `FIELD-CONSUMERS.md`; no new identity field is decorative.
 
+## Review chronology and forward repair
+
+Commit `f981397` was already `HEAD`, `master` and `origin/master` before the implementation reviewer
+returned `FIX`. This record does not attribute authorship for that commit and does not treat its
+presence on the branch as approval. The review identified five repair classes: non-durable v0.6
+migration evidence, an unverifiable legacy package, hardcoded role-registry v1 paths, stale
+Craft/evidence state, and no semantic drift check across the three installed copies.
+
+The forward-only repair adds the frozen v0.6 fixture, an archived v1 projection with its own
+verified bytes/manifest, data-selected role revisions, clean v1/v2 installer tests including
+anti-mix rejection, a runtime runner for all 41 AIR vectors, and deterministic copy-drift tests.
+The original v1 manifest and the review file remain unchanged. Runtime readiness remains blocked.
+
 ## Review boundary
 
-This worker does not approve the SWU. The dedicated reviewer must inspect the pool-recovery proof,
-authority digests, strict failure paths, fixture migration and test residue before returning
-`KEEP`, `REPAIR` or `REJECT`.
+This worker does not approve the SWU. The dedicated reviewer must recheck AIR-I1 through AIR-I5 and
+the separately classified handoff residue before returning `KEEP`, `FIX` or `REJECT`.

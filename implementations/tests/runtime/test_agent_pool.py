@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import subprocess
 import unittest
 from pathlib import Path
 
@@ -30,13 +29,22 @@ class AgentPoolTests(unittest.TestCase):
         self.assertNotIn("\n  - name:", raw)
         self.assertNotIn("\n  - agent-name:", raw)
 
-    def test_tracked_v06_migrates_exactly_to_current_value(self) -> None:
-        raw = subprocess.check_output(["git", "show", "HEAD:telemetry/agents/agent-pool.yaml"], cwd=REPO)
+    def test_frozen_v06_migrates_exactly_to_current_value(self) -> None:
         authority = json.loads((SPEC / "fixtures/pool-migration-authority.json").read_text(encoding="utf-8"))
+        source = SPEC / authority["source_fixture_path"]
+        raw = source.read_bytes()
         registry = load_accepted_role_registry(REPO)
         expected = migrate_legacy_pool(raw, authority, registry)
         actual = parse_pool_stream((REPO / "telemetry/agents/agent-pool.yaml").read_bytes())
         self.assertEqual(actual, expected)
+        legacy = parse_pool_stream(raw)
+        self.assertEqual(len(legacy[1]["scientists"]), len(actual[1]["scientists"]))
+        for old, new in zip(legacy[1]["scientists"], actual[1]["scientists"], strict=True):
+            self.assertEqual(new["agent_name"], old["name"])
+            self.assertEqual(
+                {key: value for key, value in new.items() if key != "agent_name"},
+                {key: value for key, value in old.items() if key != "name"},
+            )
 
     def test_name_spellings_duplicate_keys_and_unknown_roles_fail_typed(self) -> None:
         registry = load_accepted_role_registry(REPO)

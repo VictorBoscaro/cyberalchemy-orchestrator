@@ -50,6 +50,7 @@ class HostWorkflowBindingTests(unittest.TestCase):
             "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
             "implementations/contracts/agent-role-registry.v1.json",
             "implementations/contracts/agent-role-registry-authority.v1.json",
+            "implementations/contracts/agent-role-registry-selection.json",
         ]
         dispatch_paths.extend(
             entry["capability_path"]

@@ -13,8 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // src/ -> agent-pool-mcp/ -> tools/ -> <repo root>
 const DEFAULT_POOL = path.resolve(__dirname, "../../../telemetry/agents/agent-pool.yaml");
 const REPO_ROOT = path.resolve(__dirname, "../../..");
-const ROLE_REGISTRY_PATH = path.join(REPO_ROOT, "implementations/contracts/agent-role-registry.v1.json");
-const ROLE_AUTHORITY_PATH = path.join(REPO_ROOT, "implementations/contracts/agent-role-registry-authority.v1.json");
+const ROLE_SELECTION_PATH = path.join(REPO_ROOT, "implementations/contracts/agent-role-registry-selection.json");
 const POOL_AUTHORITY_PATH = path.join(REPO_ROOT, "implementations/contracts/agent-pool-authority.v1.json");
 
 export const POOL_PATH = process.env.AGENT_POOL_PATH
@@ -36,9 +35,22 @@ function stable(value) {
 }
 
 function loadRoleRegistry() {
-  const raw = fs.readFileSync(ROLE_REGISTRY_PATH);
+  const selection = JSON.parse(fs.readFileSync(ROLE_SELECTION_PATH, "utf8"));
+  if (!selection || selection.schema !== "aci.role-registry-selection@1" || !selection.selected_ref ||
+      typeof selection.registry_path !== "string" || typeof selection.authority_path !== "string") {
+    throw new Error("agent role registry selection is malformed");
+  }
+  const resolveSelected = (relative) => {
+    const selected = path.resolve(REPO_ROOT, relative);
+    const prefix = REPO_ROOT.endsWith(path.sep) ? REPO_ROOT : REPO_ROOT + path.sep;
+    if (!selected.startsWith(prefix)) throw new Error("agent role registry selection escapes repository root");
+    return selected;
+  };
+  const registryPath = resolveSelected(selection.registry_path);
+  const authorityPath = resolveSelected(selection.authority_path);
+  const raw = fs.readFileSync(registryPath);
   const registry = JSON.parse(raw.toString("utf8"));
-  const authority = JSON.parse(fs.readFileSync(ROLE_AUTHORITY_PATH, "utf8"));
+  const authority = JSON.parse(fs.readFileSync(authorityPath, "utf8"));
   if (!registry || registry.schema !== "aci.role-registry@1" || registry.name !== "aci.agent-roles" ||
       !Array.isArray(registry.roles) || registry.roles.length === 0 || !authority ||
       authority.schema !== "aci.role-registry-authority@1" || !Array.isArray(authority.accepted)) {
@@ -46,7 +58,7 @@ function loadRoleRegistry() {
   }
   const ref = { name: registry.name, version: registry.version, digest: sha256(raw) };
   const accepted = authority.accepted.filter((row) => row && row.name === ref.name && row.version === ref.version);
-  if (accepted.length !== 1 || accepted[0].digest !== ref.digest) throw new Error("agent role registry is not the accepted immutable revision");
+  if (accepted.length !== 1 || accepted[0].digest !== ref.digest || JSON.stringify(selection.selected_ref) !== JSON.stringify(ref)) throw new Error("agent role registry is not the selected accepted immutable revision");
   const roleIds = registry.roles.map((row) => row?.role_id);
   if (new Set(roleIds).size !== roleIds.length || registry.roles.some((row) => !row || row.enabled !== true || typeof row.purpose !== "string" || !row.purpose.trim())) {
     throw new Error("agent role registry rows are invalid");

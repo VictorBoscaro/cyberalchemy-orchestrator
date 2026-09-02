@@ -1,15 +1,15 @@
 # Validation receipt
 
-Status: `ready_for_recheck`, not self-approved.
+Status: SPEC Recheck 3 `KEEP`; this receipt does not approve the separate implementation SWU.
 
 ## Checks
 
 ```text
 python validate_artifacts.py
 PASS: schemas, positive identity projection, Ed25519 evidence, singular other, and structural future role
-PASS: real two-document pool v0.6 verified and losslessly projected to canonical v0.7 shape (414 entries)
+PASS: frozen two-document pool v0.6 fixture verified and losslessly projected to current canonical v0.7 (414 ordered entries)
 PASS: 41/41 typed negative vectors with exact paths
-LIMIT: specification fixtures only; production pool, consumers, registrar, compiler, and telemetry are unchanged
+LIMIT: this validator checks SPEC fixtures and compares the frozen v0.6 fixture with the current production pool; other production consumers, compiler behavior, registrar, and telemetry require separate implementation evidence
 
 python -m py_compile validate_artifacts.py
 PASS
@@ -17,8 +17,8 @@ PASS
 repaired-target whitespace/final-newline audit (excluding immutable review.md)
 PASS
 
-feature Craft ledger parse/index audit
-PASS: 114/114 index targets resolve
+feature Craft ledger parse/index audit at SPEC Recheck 3
+PASS: 114/114 then-current index targets resolved; the later implementation ledger has separate validation evidence
 
 git diff --check -- <feature CRAFT> <feature ledger>
 PASS (Git emitted only its LF/CRLF working-copy warning)
@@ -29,8 +29,8 @@ PASS: no superseded vector-count or pre-review status wording outside immutable 
 bounded migration-surface scan
 PASS: 28 selector/version files, 13 broad role-literal files and 7 governed-pool files classified
 
-immutable review.md SHA-256 after Recheck 2
-PASS: FF27533D10B5D0DDD3190C3E5D0928185470182D3ED7F708B3BA416DCD8F68A1
+immutable review.md SHA-256 after SPEC Recheck 3 KEEP
+PASS: 285B4636739DE898607A9F49A898649D754D525ED809DC68597207357CE4BA1F
 ```
 
 Draft 2020-12 meta-validation runs for every loaded schema. YAML uses a SafeLoader variant that
@@ -41,7 +41,8 @@ sorted-key compact UTF-8 JSON for this bounded fixture profile, not a general RF
 
 ## What is proven
 
-- the real pool authority bytes parse as the actual two-document/414-row v0.6 stream;
+- the frozen v0.6 source fixture parses as the exact two-document/414-row stream pinned by the
+  migration authority;
 - the deterministic migration projection preserves all non-identity roster data/order and produces
   canonical v0.7 `agent_name` rows;
 - role registry v1 is exactly eight enabled roles and a same-version byte change fails against its
@@ -59,12 +60,13 @@ sorted-key compact UTF-8 JSON for this bounded fixture profile, not a general RF
 
 ## Residue
 
-- Independent recheck has not yet returned `KEEP`.
-- The production pool is still v0.6 `name`; direct consumers and registrar still use stale shapes,
-  ledger schema `0.6.4` and hard-coded seven-role enums. No dispatch-type registry v2 or telemetry
-  row `0.7.0` exists; `other` therefore is not yet production-valid.
-- No production migration, loader, allocator key service, compiler integration, telemetry schema
-  bump, runtime launch or downstream ExecutionGraph consumption is proven.
-- Recheck 2 reports a selected 19-test production suite with 5 failures and 1 error. This repair did
-  not rerun or diagnose that suite. It remains an unresolved validation limit; there is no claim
-  that those outcomes pre-existed this work or were caused by this specification package.
+- SPEC Recheck 3 returned `KEEP`; implementation approval is a separate gate.
+- This validator alone does not prove the production consumers, registrar, compiler or telemetry.
+  Separate IMPL evidence reports the current v0.7 pool, v2 dispatch/ledger package, data-selected
+  role registry, compiler integration and telemetry consumers; that implementation remains gated
+  on its own independent recheck.
+- No allocator key service, runtime graph ingestion/launch, scheduler, provider/tool execution or
+  downstream autonomous ExecutionGraph execution is proven by this SPEC or the bounded IMPL SWU.
+- The implementation re-ran the 19 bootstrap/handoff tests: 14 pass and five cases remain red
+  (four assertion failures and one empty-slot error), classified as handoff residue rather than
+  identity/role conformance.

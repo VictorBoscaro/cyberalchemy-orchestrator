@@ -1,0 +1,3185 @@
+---
+profile: subagents-strategy
+name: Agent pool — scientists, philosophers, thinkers for agent dispatch
+description: "Allowed-names pool for subagent dispatch. Each spawned agent gets an `agent_name` from this list, ideally matched to a dispatch angle by `tags` (topical expertise) and to a stage by `role` (explorer / skeptic / writer / auditor). The companion to domainspec-subagents-strategy-constitution.md — the pool the constitution's `agent_name` field draws from. `cited: true` = the person is cited in the source repo; `cited: false` = a proposed foundational figure. Project authors (Boscaro, Rondelli) excluded by construction."
+node_type: agent-pool
+layer: meta
+nature: reference
+status: active
+version: 0.6.0
+last_updated: 2026-07-21
+source: ported from domainspec-lean-formalization/theorem/agents-strategy/agent-pool.yaml (v0.6.0); originally subagent-extracted over domainspec-theorem, then batch-expanded and tagged in-repo there
+notes:
+  - "v0.6.0 (2026-07-21): re-synced entries from upstream domainspec-lean-formalization v0.6.0 — 8 name-identity fixes (Crossley->Michael, Glorioso->Paolo, Cancedda->Nicola, Mansfield->Shane, Pohl->Ira, Conant->Roger C., Roff->Emily, Puca->Caterina), new `management` field value (32 entries moved off economics; 15 economists stay), Tetlock ai-ml->psychology, Solomonoff dropped one tag, and 5 unverifiable/fabricated entries removed (Merlin, Pavlov, Gu, Bhattacharya, Yu): 419->414. Header kept in the subagents-strategy framing; entries carried verbatim from upstream."
+  - "v0.5.0 (2026-07-20): re-ported from upstream v0.5.0 into cyberalchemy-orchestrator/telemetry/agents/ (alongside the dispatch ledger) as the allowed-names pool the subagents-strategy constitution's `agent_name` field draws from. Header re-framed to subagents-strategy; entries carried verbatim. `cited`/`tags` and canonical-vocabulary paths point at the source repo and are kept for provenance, not as local links."
+  - role_fit is a default suggestion; the dispatch may override per-agent.
+  - "v0.5.0 (2026-07-20): SCHEMA CHANGE. `where_cited` (provenance paths) replaced by `cited` (bool) + `tags` (topical expertise for dispatch matching). All 419 entries carry >=3 kebab-case tags except 7 roster-flagged stubs. The 721-tag canonical vocabulary lives in research/pool-tagging/canonical-vocabulary.md (regenerated from usage); merge synonyms into it, do not coin free tags. Built via dispatches 2026-07-20-pool-tagging-math-pilot (math, full tagger+reviewer+robot-talk loop) and 2026-07-20-pool-tagging-rollout (other 10 fields, tagger-per-field + one cross-field reviewer)."
+  - "(pre-v0.5.0) Where a person appears in many files, only top-3 were listed in where_cited."
+  - 'Two known issues to revisit: "Newt, Isaac" corrected to "Newton, Isaac"; duplicate Bekenstein entries deduped; "KCBS" (acronym, not person) removed.'
+  - "v0.2.0: role_fit promoted to ordered list (primary, secondary, tertiary) — many scientists wear multiple hats."
+  - "v0.4.0 (2026-07-20): added a large batch grouped under the '=== v0.4.0 additions ===' banner below. Two provenance kinds: CITED (where_cited holds a real in-repo path, surfaced by the cited-but-unpooled sweep) and PROPOSED-FOUNDATIONAL (where_cited: [], gap-fillers for software-development/business/statistics/ai-ml not yet cited — same modality as the v0.3.0 curated additions). Dedupe criterion changed from surname to FULL NAME: this recovers surname-homonyms previously blocked — Penrose, Edith (vs Roger); Booch, Grady (vs Ryan Grady); Bell, C. Gordon (vs John S. Bell); Johnson, Ralph (vs Mark Johnson); Yanovski, Lior (vs Noson Yanofsky, distinct spelling). Generators must therefore disambiguate agent_name by full name, not surname."
+---
+
+scientists:
+
+  # MATH
+  - name: "Abramsky, Samson"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [categorical-quantum-mechanics, game-semantics, categorical-semantics, denotational-semantics, applied-category-theory]
+
+  - name: "Adámek, Jiří"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [category-theory, coalgebra, locally-presentable-categories, universal-algebra, automata-theory]
+
+  - name: "Artin, Emil"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [number-theory, class-field-theory, galois-theory, representation-theory]
+
+  - name: "Baez, John"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [applied-category-theory, higher-category-theory, categorification, monoidal-categories, mathematical-physics]
+
+  - name: "Banach, Stefan"
+    field: math
+    era: 20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [functional-analysis, fixed-point-theory, banach-spaces, measure-theory]
+
+  - name: "Bénabou, Jean"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [category-theory, 2-categories, fibrations, profunctors, monoidal-categories]
+
+  - name: "Bourbaki, Nicolas"
+    field: math
+    era: 20c
+    role_fit: [writer, auditor]
+    cited: true
+    tags: [foundations-of-mathematics, abstract-algebra, point-set-topology, set-theory]
+
+  - name: "Brandenburg, Martin"
+    field: math
+    era: modern
+    role_fit: [auditor]
+    cited: true
+    tags: [category-theory, monoidal-categories, tannaka-duality, algebraic-geometry]
+
+  - name: "Bubenik, Peter"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [topological-data-analysis, persistent-homology, algebraic-topology, applied-category-theory]
+
+  - name: "Burroni, Albert"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, higher-category-theory, rewriting-theory, polygraphs]
+
+  - name: "Cantor, Georg"
+    field: math
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [set-theory, transfinite-numbers, mathematical-logic]
+
+  - name: "Capucci, Matteo"
+    field: math
+    era: modern
+    role_fit: [skeptic, explorer]
+    cited: true
+    tags: [applied-category-theory, open-games, categorical-optics, categorical-cybernetics]
+
+  - name: "Carlsson, Gunnar"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [topological-data-analysis, persistent-homology, algebraic-topology]
+
+  - name: "Cartan, Henri"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [homological-algebra, sheaf-theory, complex-analysis, algebraic-topology]
+
+  - name: "Costello, Kevin"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [mathematical-physics, factorization-algebras, quantum-field-theory, derived-geometry, homological-algebra]
+
+  - name: "Day, Brian"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, monoidal-categories, enriched-categories, day-convolution]
+
+  - name: "Deligne, Pierre"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [algebraic-geometry, tannaka-duality, number-theory, hodge-theory, motives]
+
+  - name: "Dotto, Emanuele"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-k-theory, homotopy-theory, equivariant-homotopy-theory, homological-algebra]
+
+  - name: "Eckmann, Beno"
+    field: math
+    era: mid-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-topology, homological-algebra, group-cohomology, homotopy-theory]
+
+  - name: "Efimov, Alexander"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-k-theory, noncommutative-geometry, higher-category-theory, derived-geometry]
+
+  - name: "Eilenberg, Samuel"
+    field: math
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [category-theory, homological-algebra, algebraic-topology, automata-theory]
+
+  - name: "Elmendorf, Anthony"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [equivariant-homotopy-theory, stable-homotopy-theory, algebraic-topology, homotopy-theory]
+
+  - name: "Euler, Leonhard"
+    field: math
+    era: 18c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [number-theory, graph-theory, combinatorics, mathematical-analysis]
+
+  - name: "Fiorenza, Domenico"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [homotopy-theory, higher-category-theory, mathematical-physics, differential-cohomology]
+
+  - name: "Fong, Brendan"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [applied-category-theory, monoidal-categories, cospans, network-theory]
+
+  - name: "Fourier, Joseph"
+    field: math
+    era: 18c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [fourier-analysis, harmonic-analysis, partial-differential-equations, mathematical-physics]
+
+  - name: "Fritz, Tobias"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [markov-categories, categorical-probability, applied-category-theory, resource-theories, information-theory]
+
+  - name: "Frobenius, Ferdinand Georg"
+    field: math
+    era: 19c
+    role_fit: [explorer]
+    cited: true
+    tags: [representation-theory, group-theory, frobenius-algebras, character-theory]
+
+  - name: "Gabriel, Pierre"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [category-theory, abelian-categories, locally-presentable-categories, representation-theory, localization]
+
+  - name: "Gambino, Nicola"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [type-theory, homotopy-type-theory, operads, category-theory, polynomial-functors]
+
+  - name: "Garner, Richard"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, weak-factorization-systems, monads, homotopy-theory, higher-category-theory]
+
+  - name: "Grady, Ryan"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [mathematical-physics, factorization-algebras, derived-geometry, quantum-field-theory]
+
+  - name: "Grothendieck, Alexander"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [algebraic-geometry, topos-theory, category-theory, homological-algebra, fibrations, motives]
+
+  - name: "Guillou, Bertrand"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [equivariant-homotopy-theory, stable-homotopy-theory, algebraic-topology, homotopy-theory]
+
+  - name: "Guitart, René"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, categorical-logic, kan-extensions]
+
+  - name: "Gwilliam, Owen"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [mathematical-physics, factorization-algebras, quantum-field-theory, homological-algebra]
+
+  - name: "Hamilton, William Rowan"
+    field: math
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [classical-mechanics, hamiltonian-mechanics, quaternions, calculus-of-variations]
+
+  - name: "Hausdorff, Felix"
+    field: math
+    era: 19c
+    role_fit: [explorer]
+    cited: true
+    tags: [point-set-topology, set-theory, measure-theory, dimension-theory]
+
+  - name: "Hepworth, Richard"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [magnitude, algebraic-topology, category-theory, graph-theory]
+
+  - name: "Hermida, Claudio"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, fibrations, categorical-logic, higher-category-theory]
+
+  - name: "Hilton, Peter"
+    field: math
+    era: 20c
+    role_fit: [explorer]
+    cited: true
+    tags: [homological-algebra, homotopy-theory, algebraic-topology, group-theory]
+
+  - name: "Hoyois, Marc"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [motivic-homotopy-theory, higher-category-theory, algebraic-k-theory, homotopy-theory]
+
+  - name: "Hutchinson, John E."
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [fractal-geometry, iterated-function-systems, geometric-measure-theory, measure-theory]
+
+  - name: "Iglesias-Zemmour, Patrick"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [diffeology, differential-geometry, category-theory, mathematical-physics]
+
+  - name: "Johnson, Mark"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [homotopy-theory, operads, model-categories, algebraic-topology]
+
+  - name: "Joyal, André"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [higher-category-theory, topos-theory, combinatorial-species, category-theory, homotopy-theory]
+
+  - name: "Kauffman, Louis"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [knot-theory, low-dimensional-topology, mathematical-physics, combinatorics]
+
+  - name: "Kelly, Max"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [enriched-categories, category-theory, monoidal-categories, monads, 2-categories]
+
+  - name: "Kilp, Mati"
+    field: math
+    era: modern
+    role_fit: [writer]
+    cited: true
+    tags: [semigroup-theory, monoid-acts, category-theory]
+
+  - name: "Kock, Anders"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [synthetic-differential-geometry, topos-theory, category-theory, monads, differential-geometry]
+
+  - name: "Koubek, Václav"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, universal-algebra, automata-theory, graph-theory]
+
+  - name: "Kuratowski, Kazimierz"
+    field: math
+    era: 20c
+    role_fit: [explorer]
+    cited: true
+    tags: [point-set-topology, set-theory, graph-theory, mathematical-logic]
+
+  - name: "Lack, Stephen"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [category-theory, 2-categories, monads, higher-category-theory, monoidal-categories]
+
+  - name: "Lagrange, Joseph-Louis"
+    field: math
+    era: 18c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [classical-mechanics, calculus-of-variations, number-theory, group-theory]
+
+  - name: "Lambek, Jim"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [categorical-logic, lambda-calculus, cartesian-closed-categories, category-theory, type-theory]
+
+  - name: "Laplace, Pierre-Simon"
+    field: math
+    era: 18c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [probability-theory, mathematical-analysis, classical-mechanics]
+
+  - name: "Lawvere, F. William"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [categorical-logic, topos-theory, functorial-semantics, algebraic-theories, category-theory]
+
+  - name: "Lebesgue, Henri"
+    field: math
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [measure-theory, real-analysis, integration-theory, functional-analysis]
+
+  - name: "Leinster, Tom"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [magnitude, enriched-categories, category-theory, operads, entropy]
+
+  - name: "Linton, Fred"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [category-theory, monads, algebraic-theories, universal-algebra]
+
+  - name: "Loday, Jean-Louis"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [operads, homological-algebra, cyclic-homology, algebraic-k-theory]
+
+  - name: "Loregian, Fosco"
+    field: math
+    era: modern
+    role_fit: [auditor, writer]
+    cited: true
+    tags: [category-theory, coend-calculus, kan-extensions, enriched-categories, higher-category-theory]
+
+  - name: "Lurie, Jacob"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [higher-category-theory, derived-geometry, topos-theory, algebraic-geometry, homotopy-theory]
+
+  - name: "Mac Lane, Saunders"
+    field: math
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [category-theory, homological-algebra, monoidal-categories, foundations-of-mathematics]
+
+  - name: "Maltsiniotis, Georges"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [higher-category-theory, homotopy-theory, category-theory, derivators]
+
+  - name: "Mandelbrot, Benoit"
+    field: math
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [fractal-geometry, dimension-theory, geometric-measure-theory]
+
+  - name: "Markov, Andrey"
+    field: math
+    era: early-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [probability-theory, markov-chains, stochastic-processes]
+
+  - name: "May, Peter"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [stable-homotopy-theory, operads, equivariant-homotopy-theory, algebraic-topology, homotopy-theory]
+
+  - name: "Memoli, Facundo"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [topological-data-analysis, metric-geometry, persistent-homology, optimal-transport]
+
+  - name: "Merling, Mona"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [equivariant-homotopy-theory, algebraic-k-theory, homotopy-theory, algebraic-topology]
+
+  - name: "Montgomery, Susan"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [hopf-algebras, representation-theory, noncommutative-algebra]
+
+  - name: "Moore, Gregory"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [mathematical-physics, topological-field-theory, string-theory, conformal-field-theory]
+
+  - name: "Myers, David Jaz"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [applied-category-theory, categorical-systems-theory, topos-theory, dynamical-systems]
+
+  - name: "Noether, Emmy"
+    field: math
+    era: early-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [abstract-algebra, commutative-algebra, invariant-theory, representation-theory]
+
+  - name: "Power, John"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, 2-categories, monads, algebraic-theories, computational-effects]
+
+  - name: "Quillen, Daniel"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [model-categories, homotopy-theory, algebraic-k-theory, homological-algebra]
+
+  - name: "Riehl, Emily"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [higher-category-theory, model-categories, category-theory, homotopy-theory]
+
+  - name: "Riemann, Bernhard"
+    field: math
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [complex-analysis, differential-geometry, number-theory, riemann-surfaces]
+
+  - name: "Rogers, Chris"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [mathematical-physics, higher-category-theory, symplectic-geometry, differential-geometry]
+
+  - name: "Roff, Emily"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [magnitude, enriched-categories, metric-geometry, category-theory]
+
+  - name: "Rosický, Jiří"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [locally-presentable-categories, category-theory, model-categories, homotopy-theory]
+
+  - name: "Saavedra Rivano, Abelardo"
+    field: math
+    era: mid-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [tannaka-duality, monoidal-categories, category-theory, algebraic-geometry]
+
+  - name: "Sattler, Christian"
+    field: math
+    era: modern
+    role_fit: [skeptic]
+    cited: true
+    tags: [homotopy-type-theory, type-theory, model-categories, higher-category-theory]
+
+  - name: "Schäppi, Daniel"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [tannaka-duality, monoidal-categories, category-theory, algebraic-geometry]
+
+  - name: "Schreiber, Urs"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [higher-category-theory, topos-theory, mathematical-physics, differential-cohomology, higher-gauge-theory]
+
+  - name: "Schultz, Patrick"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [applied-category-theory, topos-theory, dynamical-systems, sheaf-theory]
+
+  - name: "Serre, Jean-Pierre"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [algebraic-geometry, number-theory, homological-algebra, sheaf-theory, representation-theory]
+
+  - name: "Sichler, Jiří"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [universal-algebra, category-theory, graph-theory, semigroup-theory]
+
+  - name: "Souriau, Jean-Marie"
+    field: physics
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [symplectic-geometry, classical-mechanics, geometric-quantization, moment-maps, mathematical-physics]
+
+  - name: "Street, Ross"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [category-theory, 2-categories, monoidal-categories, monads, higher-category-theory]
+
+  - name: "Takesaki, Masamichi"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [operator-algebras, von-neumann-algebras, functional-analysis, modular-theory]
+
+  - name: "Tychonoff, Andrey"
+    field: math
+    era: 20c
+    role_fit: [explorer]
+    cited: true
+    tags: [point-set-topology, partial-differential-equations, functional-analysis]
+
+  - name: "Urysohn, Pavel"
+    field: math
+    era: 20c
+    role_fit: [explorer]
+    cited: true
+    tags: [point-set-topology, dimension-theory, real-analysis]
+
+  - name: "Vallette, Bruno"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [operads, homological-algebra, koszul-duality, homotopy-theory]
+
+  - name: "Vasilakopoulou, Christina"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [applied-category-theory, enriched-categories, monoidal-categories, category-theory]
+
+  - name: "Verity, Dominic"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [higher-category-theory, category-theory, homotopy-theory, simplicial-sets]
+
+  - name: "Vigneaux, Juan Pablo"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [information-theory, information-cohomology, entropy, category-theory]
+
+  - name: "Vlachopulos, Ioannis"
+    field: math
+    era: modern
+    role_fit: [auditor]
+    cited: true
+    tags: [category-theory]
+
+  - name: "Willerton, Simon"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [magnitude, enriched-categories, category-theory, mathematical-physics]
+
+  - name: "Yau, Shing-Tung"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [differential-geometry, geometric-analysis, complex-geometry, mathematical-physics]
+
+  - name: "Yoneda, Nobuo"
+    field: math
+    era: mid-20c
+    role_fit: [writer]
+    cited: true
+    tags: [category-theory, yoneda-lemma, homological-algebra]
+
+  - name: "Zisman, Michel"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [homotopy-theory, simplicial-sets, localization, algebraic-topology]
+
+  # PHYSICS
+  - name: "Barbero, Andrea"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [mathematical-physics, classical-mechanics, gauge-theory]
+
+  - name: "Bekenstein, Jacob"
+    field: physics
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [black-hole-thermodynamics, general-relativity, holography, entropy, quantum-gravity]
+
+  - name: "Bell, John S."
+    field: physics
+    era: late-20c
+    role_fit: [skeptic, explorer]
+    cited: true
+    tags: [quantum-foundations, bell-nonlocality, quantum-mechanics, quantum-entanglement]
+
+  - name: "Boltzmann, Ludwig"
+    field: physics
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [statistical-mechanics, thermodynamics, entropy, kinetic-theory]
+
+  - name: "Bousso, Raphael"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [holography, black-hole-thermodynamics, cosmology, general-relativity, entropy]
+
+  - name: "Brunetti, Romeo"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-quantum-field-theory, quantum-field-theory, general-relativity, mathematical-physics]
+
+  - name: "Cabello, Adán"
+    field: physics
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [quantum-contextuality, quantum-foundations, bell-nonlocality, quantum-information]
+
+  - name: "Crossley, Michael"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [nonequilibrium-thermodynamics, quantum-field-theory, hydrodynamics]
+
+  - name: "Dirac, Paul"
+    field: physics
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [quantum-mechanics, quantum-field-theory, quantum-electrodynamics, particle-physics]
+
+  - name: "Doering, Andreas"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [topos-quantum-theory, quantum-foundations, topos-theory, quantum-mechanics]
+
+  - name: "Dvali, Gia"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [particle-physics, black-hole-thermodynamics, cosmology, quantum-gravity]
+
+  - name: "Feynman, Richard"
+    field: physics
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [quantum-electrodynamics, path-integrals, quantum-mechanics, particle-physics]
+
+  - name: "Fredenhagen, Klaus"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-quantum-field-theory, quantum-field-theory, mathematical-physics]
+
+  - name: "Gibbs, Josiah Willard"
+    field: physics
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [statistical-mechanics, thermodynamics, entropy, chemical-thermodynamics]
+
+  - name: "Glorioso, Paolo"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [nonequilibrium-thermodynamics, quantum-field-theory, hydrodynamics, statistical-mechanics]
+
+  - name: "Hawking, Stephen"
+    field: physics
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [black-hole-thermodynamics, general-relativity, cosmology, quantum-gravity, entropy]
+
+  - name: "Heisenberg, Werner"
+    field: physics
+    era: mid-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [quantum-mechanics, quantum-foundations, particle-physics]
+
+  - name: "Kochen, Simon"
+    field: physics
+    era: late-20c
+    role_fit: [skeptic, explorer]
+    cited: true
+    tags: [quantum-contextuality, quantum-foundations, quantum-mechanics]
+
+  - name: "Kribs, David"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [quantum-information, quantum-error-correction, operator-algebras, quantum-computing]
+
+  - name: "Landauer, Rolf"
+    field: physics
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [landauer-principle, thermodynamics-of-computation, information-theory, thermodynamics]
+
+  - name: "Landsman, Klaas"
+    field: physics
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [mathematical-physics, operator-algebras, quantum-foundations, quantization]
+
+  - name: "Marle, Charles-Michel"
+    field: physics
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [symplectic-geometry, classical-mechanics, moment-maps, mathematical-physics]
+
+  - name: "Newton, Isaac"
+    field: physics
+    era: 17c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [classical-mechanics, gravitation, optics, calculus]
+
+  - name: "Penrose, Roger"
+    field: physics
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [general-relativity, twistor-theory, cosmology, quantum-foundations, mathematical-physics]
+
+  - name: "Pestun, Vasily"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [quantum-field-theory, gauge-theory, supersymmetry, mathematical-physics]
+
+  - name: "Rejzner, Kasia"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-quantum-field-theory, quantum-field-theory, mathematical-physics]
+
+  - name: "Ryu, Shinsei"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [entanglement-entropy, holography, condensed-matter-physics, quantum-information]
+
+  - name: "Schrödinger, Erwin"
+    field: physics
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [quantum-mechanics, quantum-foundations, wave-mechanics, negentropy]
+
+  - name: "Spekkens, Robert"
+    field: physics
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [quantum-foundations, quantum-contextuality, quantum-information, resource-theories]
+
+  - name: "Susskind, Leonard"
+    field: physics
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [string-theory, holography, black-hole-thermodynamics, quantum-gravity]
+
+  - name: "Takayanagi, Tadashi"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [entanglement-entropy, holography, quantum-gravity, conformal-field-theory]
+
+  - name: "Thorne, Kip"
+    field: physics
+    era: modern
+    role_fit: [writer]
+    cited: true
+    tags: [general-relativity, gravitational-waves, astrophysics, black-hole-thermodynamics]
+
+  - name: "Verch, Rainer"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-quantum-field-theory, quantum-field-theory, general-relativity, mathematical-physics]
+
+  # LOGIC
+  - name: "Church, Alonzo"
+    field: logic
+    era: 20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [lambda-calculus, computability-theory, type-theory, undecidability, mathematical-logic]
+
+  - name: "Curry, Haskell"
+    field: logic
+    era: 20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [combinatory-logic, lambda-calculus, type-theory, curry-howard-correspondence, proof-theory]
+
+  - name: "Gödel, Kurt"
+    field: logic
+    era: 20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [incompleteness, proof-theory, set-theory, computability-theory, mathematical-logic]
+
+  - name: "Kleene, Stephen Cole"
+    field: logic
+    era: 20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [computability-theory, realizability, lambda-calculus, mathematical-logic]
+
+  - name: "Rathjen, Michael"
+    field: logic
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [proof-theory, ordinal-analysis, constructive-mathematics, reverse-mathematics, mathematical-logic]
+
+  - name: "Russell, Bertrand"
+    field: logic
+    era: early-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [type-theory, set-theory, logicism, foundations-of-mathematics, mathematical-logic]
+
+  - name: "Tarski, Alfred"
+    field: logic
+    era: 20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [model-theory, semantic-theory-of-truth, set-theory, universal-algebra, mathematical-logic]
+
+  - name: "Yanofsky, Noson"
+    field: logic
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [self-reference, diagonalization, computability-theory, category-theory, mathematical-logic]
+
+  # PHILOSOPHY
+  - name: "Bedau, Mark A."
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [weak-emergence, emergence, philosophy-of-biology, artificial-life, philosophy-of-mind]
+
+  - name: "Chalmers, David"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [philosophy-of-mind, consciousness, hard-problem-of-consciousness, property-dualism, extended-mind]
+
+  - name: "Dennett, Daniel"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [philosophy-of-mind, consciousness, intentional-stance, functionalism, philosophy-of-biology]
+
+  - name: "Fodor, Jerry"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [philosophy-of-mind, language-of-thought, computational-theory-of-mind, modularity-of-mind, mental-representation]
+
+  - name: "Gadamer, Hans-Georg"
+    field: philosophy
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [hermeneutics, phenomenology, aesthetics, philosophy-of-language]
+
+  - name: "Hacking, Ian"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [philosophy-of-science, philosophy-of-experiment, social-construction, historical-ontology, philosophy-of-probability]
+
+  - name: "Heidegger, Martin"
+    field: philosophy
+    era: 20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [phenomenology, existentialism, ontology, hermeneutics, philosophy-of-technology]
+
+  - name: "Hofstadter, Douglas"
+    field: philosophy
+    era: modern
+    role_fit: [writer]
+    cited: true
+    tags: [strange-loops, self-reference, consciousness, cognitive-science, philosophy-of-mind]
+
+  - name: "Kant, Immanuel"
+    field: philosophy
+    era: 18c
+    role_fit: [writer]
+    cited: true
+    tags: [epistemology, metaphysics, transcendental-idealism, ethics, aesthetics]
+
+  - name: "Peirce, Charles Sanders"
+    field: philosophy
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [semiotics, pragmatism, abduction, philosophy-of-logic, epistemology]
+
+  - name: "Polanyi, Michael"
+    field: philosophy
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [tacit-knowledge, epistemology, philosophy-of-science, philosophy-of-mind]
+
+  - name: "Searle, John"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [philosophy-of-mind, intentionality, speech-act-theory, social-ontology, consciousness]
+
+  - name: "Thompson, Evan"
+    field: philosophy
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [enactivism, phenomenology, philosophy-of-mind, embodied-cognition, consciousness]
+
+  - name: "Whitehead, Alfred North"
+    field: philosophy
+    era: early-20c
+    role_fit: [writer]
+    cited: true
+    tags: [process-philosophy, metaphysics, philosophy-of-science, philosophy-of-organism, cosmology]
+
+  - name: "Wittgenstein, Ludwig"
+    field: philosophy
+    era: 20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [philosophy-of-language, philosophy-of-logic, language-games, philosophy-of-mind, ordinary-language-philosophy]
+
+  # CS / AI-ML
+  - name: "Ashby, W. Ross"
+    field: cs
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [cybernetics, requisite-variety, good-regulator-theorem, self-organization, systems-theory]
+
+  - name: "Bednarczyk, Marek"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [concurrency-theory, transition-systems, category-theory, automata-theory]
+
+  - name: "Cancedda, Nicola"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [machine-learning, natural-language-processing]
+
+  - name: "Coecke, Bob"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [categorical-quantum-mechanics, monoidal-categories, string-diagrams, quantum-computing, categorical-linguistics]
+
+  - name: "Conant, Roger C."
+    field: cs
+    era: late-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [cybernetics, good-regulator-theorem, systems-theory]
+
+  - name: "Duan, Yuxuan"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [machine-learning, quantum-computing, applied-category-theory]
+
+  - name: "Ellerman, David"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [partition-logic, logical-entropy, information-theory, category-theory]
+
+  - name: "Elmer, Jonathan"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, applied-category-theory]
+
+  - name: "Friston, Karl"
+    field: ai-ml
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [active-inference, free-energy-principle, predictive-coding, bayesian-inference, computational-neuroscience]
+
+  - name: "Goertzel, Ben"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [artificial-general-intelligence, cognitive-architecture, symbolic-ai, neural-symbolic-integration, machine-learning]
+
+  - name: "Halford, Graeme"
+    field: psychology
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [relational-complexity, cognitive-development, working-memory, capacity-limits, analogical-reasoning]
+
+  - name: "Hasuo, Ichiro"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [coalgebra, coinduction, categorical-semantics, formal-verification, monads]
+
+  - name: "Heunen, Chris"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [categorical-quantum-mechanics, monoidal-categories, quantum-programming-languages, category-theory]
+
+  - name: "Imieliński, Tomasz"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [database-theory, incomplete-information, relational-model, data-mining]
+
+  - name: "Jacobs, Bart"
+    field: cs
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [coalgebra, categorical-logic, type-theory, categorical-probability, monads]
+
+  - name: "Kutz, Nathan"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [dynamical-systems, data-driven-modeling, machine-learning, reduced-order-modeling]
+
+  - name: "Lipski, Wlodek"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [database-theory, incomplete-information, relational-model, combinatorics]
+
+  - name: "Liu, Nelson"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [natural-language-processing, interpretability, machine-learning]
+
+  - name: "Mansfield, Shane"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [quantum-contextuality, quantum-computing, applied-category-theory, sheaf-theory]
+
+  - name: "Milius, Stefan"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [coalgebra, coinduction, universal-algebra, algebraic-theories, category-theory]
+
+  - name: "Moss, Lawrence S."
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [coalgebra, coalgebraic-logic, modal-logic, automata-theory, category-theory]
+
+  - name: "Niqui, Milad"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [coalgebra, coinduction, formal-verification, exact-real-arithmetic]
+
+  - name: "Nyquist, Harry"
+    field: cs
+    era: 20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [signal-processing, sampling-theory, information-theory, control-theory]
+
+  - name: "Pavlović, Duško"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [category-theory, coalgebra, categorical-logic, monoidal-categories]
+
+  - name: "Phillips, David"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [machine-learning, learning-dynamics]
+
+  - name: "Pohl, Ira"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [algorithms, heuristic-search]
+
+  - name: "Puca, Caterina"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [applied-category-theory, category-theory]
+
+  - name: "Rittel, Horst"
+    field: cs
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [wicked-problems, design-theory, planning-theory]
+
+  - name: "Robertson, Sam"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [decision-theory, machine-learning]
+
+  - name: "Saxe, Andrew"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [deep-learning-theory, neural-networks, learning-dynamics, machine-learning]
+
+  - name: "Schön, Donald"
+    field: cs
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [reflective-practice, design-theory, professional-epistemology]
+
+  - name: "Shannon, Claude"
+    field: cs
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [information-theory, entropy, coding-theory, cryptography]
+
+  - name: "Smithe, Toby"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [applied-category-theory, active-inference, categorical-cybernetics, categorical-probability, dynamical-systems]
+
+  - name: "Spitters, Bas"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [type-theory, homotopy-type-theory, formal-verification, constructive-mathematics]
+
+  - name: "Spivak, David"
+    field: cs
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [applied-category-theory, polynomial-functors, categorical-systems-theory, operads, database-theory]
+
+  - name: "Tetlock, Philip"
+    field: psychology
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [forecasting, superforecasting, calibration, decision-theory, expert-judgment]
+
+  - name: "Tull, Toby"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [applied-category-theory, active-inference, categorical-probability]
+
+  - name: "Turing, Alan"
+    field: cs
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [computability-theory, automata-theory, cryptography, artificial-intelligence]
+
+  - name: "van Lamsweerde, Axel"
+    field: cs
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [requirements-engineering, goal-modeling, formal-specification, software-engineering]
+
+  - name: "Wallace, Mark"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [constraint-programming, logic-programming, combinatorial-optimization]
+
+  - name: "Webber, Melvin"
+    field: cs
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [wicked-problems, planning-theory, design-theory]
+
+  - name: "Wiener, Norbert"
+    field: cs
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [cybernetics, control-theory, stochastic-processes, signal-processing]
+
+  - name: "Wisnesky, Ryan"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [applied-category-theory, database-theory, functorial-semantics, category-theory]
+
+  - name: "Xiao, Guangxuan"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [large-language-models, model-quantization, machine-learning-systems]
+
+  # BIOLOGY
+  - name: "Maturana, Humberto"
+    field: biology
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [autopoiesis, biology-of-cognition, second-order-cybernetics, structural-coupling, theoretical-biology]
+
+  - name: "Varela, Francisco"
+    field: biology
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [autopoiesis, enactivism, neurophenomenology, biology-of-cognition, theoretical-immunology]
+
+  # PSYCHOLOGY (added v0.3.0 from business-philosopher repo + user request)
+  - name: "Ariely, Dan"
+    field: psychology
+    era: modern
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [behavioral-economics, judgment-and-decision-making, heuristics-and-biases, irrationality]
+    note: "foundational figure in behavioral economics; not directly cited but pool-eligible"
+
+  - name: "Baars, Bernard"
+    field: psychology
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [consciousness, global-workspace-theory, cognitive-architecture, attention]
+
+  - name: "Gigerenzer, Gerd"
+    field: psychology
+    era: modern
+    role_fit: [skeptic, explorer]
+    cited: false
+    tags: [bounded-rationality, ecological-rationality, fast-and-frugal-heuristics, risk-literacy, judgment-and-decision-making]
+    note: "foundational figure in bounded rationality / risk literacy"
+
+  - name: "Kahneman, Daniel"
+    field: psychology
+    era: modern
+    role_fit: [skeptic, explorer]
+    cited: true
+    tags: [dual-process-theory, prospect-theory, heuristics-and-biases, judgment-and-decision-making, behavioral-economics]
+
+  - name: "Tversky, Amos"
+    field: psychology
+    era: late-20c
+    role_fit: [skeptic, explorer]
+    cited: true
+    tags: [heuristics-and-biases, prospect-theory, judgment-and-decision-making, behavioral-economics]
+
+  # ECONOMICS (added v0.3.0 from business-philosopher repo + user request)
+  - name: "Acemoglu, Daron"
+    field: economics
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [institutional-economics, economic-growth, political-economy, development-economics]
+
+  - name: "Christensen, Clayton"
+    field: management
+    era: modern
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [disruptive-innovation, innovation-management, jobs-to-be-done, technology-strategy]
+    note: "foundational in disruption theory"
+
+  - name: "Drucker, Peter"
+    field: management
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [management-theory, management-by-objectives, knowledge-work, executive-effectiveness]
+    note: "foundational in management theory"
+
+  - name: "Goldratt, Eliyahu"
+    field: management
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [theory-of-constraints, operations-management, bottleneck-analysis, throughput-accounting]
+
+  - name: "Grove, Andrew"
+    field: management
+    era: modern
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [strategic-management, objectives-and-key-results, high-output-management, strategic-inflection-points]
+    note: "foundational in strategic management (Intel, High Output Management)"
+
+  - name: "Porter, Michael"
+    field: economics
+    era: modern
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [competitive-strategy, five-forces, value-chain, competitive-advantage, industry-analysis]
+    note: "foundational in competitive strategy"
+
+  - name: "Sunstein, Cass"
+    field: economics
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [behavioral-economics, nudge-theory, choice-architecture, libertarian-paternalism, law-and-economics]
+
+  - name: "Taleb, Nassim Nicholas"
+    field: economics
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [risk-management, black-swan-theory, antifragility, tail-risk, uncertainty]
+
+  - name: "Thaler, Richard"
+    field: economics
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [behavioral-economics, nudge-theory, mental-accounting, behavioral-finance, choice-architecture]
+
+  # SYSTEMS (added v0.3.0 from business-philosopher repo + user request)
+  - name: "Bateson, Gregory"
+    field: systems
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [cybernetics, double-bind-theory, ecology-of-mind, communication-theory, systems-theory]
+    note: "foundational figure in cybernetics, double-bind, ecology of mind"
+
+  - name: "Beer, Stafford"
+    field: systems
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [management-cybernetics, viable-system-model, cybernetics, operational-research, organizational-theory]
+
+  - name: "Bertalanffy, Ludwig von"
+    field: systems
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [systems-theory, open-systems, systems-biology]
+    note: "foundational in general systems theory"
+
+  - name: "Forrester, Jay"
+    field: systems
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [system-dynamics, feedback-loops, stock-and-flow-modeling, industrial-dynamics, systems-thinking]
+    note: "foundational in system dynamics"
+
+  - name: "Meadows, Donella H."
+    field: systems
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [systems-thinking, leverage-points, system-dynamics, limits-to-growth, feedback-loops]
+
+  - name: "Rosen, Robert"
+    field: systems
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [relational-biology, anticipatory-systems, m-r-systems, theoretical-biology, category-theory]
+
+  - name: "Senge, Peter"
+    field: systems
+    era: modern
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [learning-organizations, systems-thinking, organizational-learning, mental-models, system-dynamics]
+    note: "foundational in learning organizations"
+
+  # PHILOSOPHY additions (v0.3.0)
+  - name: "Aristotle"
+    field: philosophy
+    era: ancient
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [metaphysics, philosophy-of-logic, ethics, natural-philosophy, epistemology]
+    note: "foundational; not directly cited but pool-eligible"
+
+  - name: "Feyerabend, Paul"
+    field: philosophy
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [philosophy-of-science, epistemological-anarchism, incommensurability, scientific-pluralism, epistemology]
+    note: "foundational in philosophy of science (Against Method)"
+
+  - name: "Hume, David"
+    field: philosophy
+    era: 18c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [empiricism, problem-of-induction, causation, epistemology, ethics]
+    note: "foundational empiricism / problem of induction"
+
+  - name: "Kuhn, Thomas"
+    field: philosophy
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [philosophy-of-science, paradigm-shift, incommensurability, scientific-revolutions, history-of-science]
+    note: "foundational (Structure of Scientific Revolutions)"
+
+  - name: "Lakatos, Imre"
+    field: philosophy
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [philosophy-of-science, research-programmes, falsificationism, philosophy-of-mathematics, epistemology]
+    note: "research programmes / refinement of falsificationism"
+
+  - name: "MacIntyre, Alasdair"
+    field: philosophy
+    era: modern
+    role_fit: [writer, skeptic]
+    cited: false
+    tags: [virtue-ethics, ethics, philosophy-of-tradition, political-philosophy]
+    note: "virtue ethics / After Virtue"
+
+  - name: "Nietzsche, Friedrich"
+    field: philosophy
+    era: 19c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [perspectivism, genealogy, ethics, nihilism]
+    note: "perspectivism / genealogy of morals"
+
+  - name: "Popper, Karl"
+    field: philosophy
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [falsificationism, philosophy-of-science, critical-rationalism, demarcation-problem, epistemology]
+
+  - name: "Quine, Willard Van Orman"
+    field: philosophy
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [epistemology, philosophy-of-language, confirmation-holism, naturalized-epistemology, ontological-relativity]
+    note: "holism / underdetermination of theories"
+
+  # CS additions (v0.3.0)
+  - name: "Hewitt, Carl"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [actor-model, concurrency-theory, distributed-systems, logic-programming]
+    note: "actor model"
+
+  - name: "Simon, Herbert"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [bounded-rationality, artificial-intelligence, decision-theory, heuristic-search]
+    note: "bounded rationality, AI foundations"
+
+  # PHYSICS additions (v0.3.0)
+  - name: "Anderson, Philip"
+    field: physics
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [condensed-matter-physics, emergence, symmetry-breaking, statistical-mechanics]
+    note: "more-is-different / emergence"
+
+  # OTHER (interdisciplinary) additions (v0.3.0)
+  - name: "Ahrens, Sönke"
+    field: other
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [zettelkasten, note-taking, personal-knowledge-management, academic-writing, learning-theory]
+    note: "How to Take Smart Notes / Zettelkasten"
+
+  - name: "Alexander, Christopher"
+    field: other
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [pattern-language, architectural-design, design-patterns, design-theory, generative-systems, wholeness-theory]
+    note: "pattern language / A Pattern Language"
+
+  - name: "Harari, Yuval Noah"
+    field: other
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [big-history, macrohistory, human-evolution, futurism, shared-fictions, popular-science]
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # === v0.4.0 additions (2026-07-20) ===
+  # CITED = surfaced by the in-repo cited-but-unpooled sweep (where_cited holds
+  #   a real repo path). PROPOSED = foundational gap-filler, where_cited: [].
+  # ═══════════════════════════════════════════════════════════════════════
+
+  # ── AI / ML / learning theory (CITED — fills the ai-ml gap; repo leans on
+  #    the compression-as-learning and RL/alignment crowd) ───────────────
+  - name: "Solomonoff, Ray"
+    field: ai-ml
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [algorithmic-probability, algorithmic-information-theory, inductive-inference, bayesian-inference]
+    note: "algorithmic probability / universal inductive inference"
+
+  - name: "Hutter, Marcus"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [universal-artificial-intelligence, reinforcement-learning, algorithmic-probability, algorithmic-information-theory, decision-theory]
+    note: "AIXI — universal artificial intelligence from compression"
+
+  - name: "Legg, Shane"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [universal-artificial-intelligence, artificial-general-intelligence, intelligence-measurement, reinforcement-learning, algorithmic-information-theory]
+    note: "universal intelligence measure; compression-as-intelligence"
+
+  - name: "Schmidhuber, Jürgen"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [deep-learning, recurrent-neural-networks, meta-learning, reinforcement-learning, curiosity-driven-learning, neural-networks]
+    note: "compression progress as curiosity; LSTM, meta-learning"
+
+  - name: "LeCun, Yann"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [deep-learning, convolutional-neural-networks, energy-based-models, self-supervised-learning, neural-networks]
+    note: "convolutional nets; energy-based models; self-supervised learning"
+
+  - name: "Sutton, Richard"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [reinforcement-learning, temporal-difference-learning, policy-gradient-methods, value-function-approximation, machine-learning]
+    note: "reinforcement learning; temporal-difference; the bitter lesson"
+
+  - name: "Tishby, Naftali"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [information-bottleneck, deep-learning, information-theory, rate-distortion-theory, representation-learning]
+    note: "information bottleneck; deep-learning as relevant-compression"
+
+  # ── Algorithmic information / coding theory (CITED) ─────────────────────
+  - name: "Chaitin, Gregory"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [algorithmic-information-theory, kolmogorov-complexity, mathematical-logic, computability-theory]
+    note: "algorithmic information theory; Chaitin's Ω, incompleteness-via-complexity"
+
+  - name: "Rissanen, Jorma"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [minimum-description-length, information-theory, algorithmic-information-theory, coding-theory, statistics]
+    note: "minimum description length (MDL) principle"
+
+  - name: "Grünwald, Peter"
+    field: cs
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [minimum-description-length, information-theory, statistics, machine-learning]
+    note: "modern MDL; the safe/robust-Bayes program"
+
+  - name: "Vitányi, Paul"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [algorithmic-information-theory, kolmogorov-complexity, information-theory, computability-theory]
+    note: "Kolmogorov complexity textbook; normalized information distance"
+
+  # ── Theoretical CS / semantics (CITED, foundational — beyond the pool's
+  #    existing categorical-CS names) ─────────────────────────────────────
+  - name: "Goguen, Joseph"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [algebraic-specification, institutions, universal-algebra, category-theory, sheaf-theory]
+    note: "institutions; algebraic specification; the theory of the situation"
+
+  - name: "Burstall, Rod"
+    field: cs
+    era: late-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [algebraic-specification, institutions, denotational-semantics, type-theory]
+    note: "structured specification; institutions (with Goguen); ML roots"
+
+  - name: "Rutten, Jan"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [coalgebra, coinduction, automata-theory, stream-processing, category-theory]
+    note: "universal coalgebra; the coalgebraic theory of systems and streams"
+
+  # ── Statistics / decision theory (CITED — fills the ~zero-statistician gap;
+  #    load-bearing for the count-wall / garbling work) ───────────────────
+  - name: "Blackwell, David"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [statistics, decision-theory, comparison-of-experiments, probability-theory, game-theory]
+    note: "statistician; Blackwell's theorem — comparison/garbling of experiments"
+
+  - name: "Le Cam, Lucien"
+    field: math
+    era: late-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [statistics, decision-theory, comparison-of-experiments, asymptotic-statistics]
+    note: "statistician; deficiency distance, comparison of statistical experiments"
+
+  - name: "Feller, William"
+    field: math
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [probability-theory, stochastic-processes, semigroup-theory, markov-chains]
+    note: "probabilist; the canonical probability-theory treatise; semigroup methods"
+
+  # ── Physics (CITED, foundational omissions) ─────────────────────────────
+  - name: "Jaynes, E.T."
+    field: physics
+    era: mid-20c
+    role_fit: [writer, skeptic]
+    cited: true
+    tags: [maximum-entropy, statistical-mechanics, bayesian-inference, information-theory]
+    note: "maximum-entropy inference; the information-theoretic reading of statistical mechanics"
+
+  - name: "Clausius, Rudolf"
+    field: physics
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [thermodynamics, entropy, kinetic-theory]
+    note: "coined entropy; the second law in its classical form"
+
+  - name: "Carnot, Sadi"
+    field: physics
+    era: 19c
+    role_fit: [explorer]
+    cited: true
+    tags: [thermodynamics, heat-engines, entropy]
+    note: "the Carnot cycle; the founding limit theorem of thermodynamics"
+
+  - name: "Prigogine, Ilya"
+    field: physics
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [nonequilibrium-thermodynamics, dissipative-structures, self-organization, statistical-mechanics]
+    note: "dissipative structures; far-from-equilibrium self-organization"
+
+  - name: "Wilson, Kenneth"
+    field: physics
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [renormalization-group, critical-phenomena, statistical-mechanics, quantum-field-theory]
+    note: "the renormalization group; scaling and critical phenomena"
+
+  - name: "Kadanoff, Leo"
+    field: physics
+    era: late-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [renormalization-group, critical-phenomena, statistical-mechanics, condensed-matter-physics]
+    note: "block-spin coarse-graining; scaling near criticality"
+
+  - name: "Wheeler, John"
+    field: physics
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [general-relativity, quantum-gravity, black-hole-thermodynamics, foundations-of-physics]
+    note: "it-from-bit; geometrodynamics; information-theoretic physics"
+
+  - name: "Rovelli, Carlo"
+    field: physics
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [loop-quantum-gravity, relational-quantum-mechanics, quantum-gravity, quantum-foundations]
+    note: "relational quantum mechanics; loop quantum gravity"
+
+  - name: "'t Hooft, Gerard"
+    field: physics
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [gauge-theory, particle-physics, holography, quantum-gravity]
+    note: "the holographic principle; gauge-theory renormalizability"
+
+  - name: "Witten, Edward"
+    field: physics
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [string-theory, topological-field-theory, quantum-field-theory, supersymmetry, mathematical-physics]
+    note: "topological QFT; the physics–geometry bridge"
+
+  - name: "Verlinde, Erik"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [entropic-gravity, holography, quantum-gravity, string-theory]
+    note: "entropic gravity — gravity as an emergent information-theoretic force"
+
+  - name: "Zurek, Wojciech"
+    field: physics
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [decoherence, quantum-foundations, quantum-information, algorithmic-information-theory]
+    note: "decoherence; einselection; quantum Darwinism; physical entropy = algorithmic + Shannon"
+
+  - name: "Szilard, Leó"
+    field: physics
+    era: early-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [maxwells-demon, thermodynamics-of-computation, information-theory, statistical-mechanics]
+    note: "Szilard's engine — information↔work; the exorcism of Maxwell's demon"
+
+  - name: "Brillouin, Léon"
+    field: physics
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [negentropy, information-theory, thermodynamics-of-computation, statistical-mechanics]
+    note: "negentropy principle of information; the physical cost of measurement"
+
+  - name: "von Neumann, John"
+    field: physics
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [quantum-foundations, von-neumann-algebras, quantum-mechanics, entropy]
+    note: "von Neumann algebras / entropy; foundations of QM and computing (cited via operator algebras)"
+
+  # ── Mathematics (CITED, foundational omissions — the pool is well-stocked
+  #    here, these are the high-recognition gaps) ─────────────────────────
+  - name: "Kolmogorov, Andrey"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [probability-theory, measure-theory, algorithmic-information-theory, dynamical-systems]
+    note: "measure-theoretic probability; algorithmic complexity; K-complexity"
+
+  - name: "Atiyah, Michael"
+    field: math
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [topological-k-theory, index-theory, algebraic-topology, mathematical-physics, differential-geometry]
+    note: "index theory; K-theory; the geometry–physics interface"
+
+  - name: "Kontsevich, Maxim"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [mathematical-physics, homological-algebra, algebraic-geometry, deformation-quantization, mirror-symmetry]
+    note: "deformation quantization; homological mirror symmetry"
+
+  - name: "Scholze, Peter"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [arithmetic-geometry, number-theory, condensed-mathematics, algebraic-geometry, p-adic-geometry]
+    note: "perfectoid spaces; condensed mathematics"
+
+  - name: "Arnold, Vladimir"
+    field: math
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [classical-mechanics, dynamical-systems, singularity-theory, symplectic-geometry]
+    note: "KAM theory; singularity/catastrophe theory; classical mechanics"
+
+  - name: "Thom, René"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [singularity-theory, differential-topology, cobordism, algebraic-topology]
+    note: "catastrophe theory; cobordism"
+
+  - name: "Weyl, Hermann"
+    field: math
+    era: early-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [representation-theory, lie-groups, gauge-theory, mathematical-physics, differential-geometry]
+    note: "symmetry; representation theory; gauge principle"
+
+  - name: "Connes, Alain"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [noncommutative-geometry, operator-algebras, von-neumann-algebras, cyclic-homology]
+    note: "noncommutative geometry; the classification of von Neumann algebras"
+
+  - name: "Freyd, Peter"
+    field: math
+    era: late-20c
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [category-theory, abelian-categories, adjunctions, allegories, homological-algebra]
+    note: "adjoint functor theorem; abelian categories; allegories"
+
+  - name: "Milnor, John"
+    field: math
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [differential-topology, algebraic-k-theory, algebraic-topology, characteristic-classes]
+    note: "exotic spheres; K-theory; characteristic classes"
+
+  - name: "Mazur, Barry"
+    field: math
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [number-theory, arithmetic-geometry, galois-representations, deformation-theory]
+    note: "torsion in modular curves; deformation theory of Galois representations"
+
+  - name: "Awodey, Steve"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [categorical-logic, homotopy-type-theory, topos-theory, category-theory]
+    note: "categorical logic; homotopy type theory foundations"
+
+  - name: "Johnstone, Peter"
+    field: math
+    era: modern
+    role_fit: [writer, auditor]
+    cited: true
+    tags: [topos-theory, category-theory, stone-duality, categorical-logic, locale-theory]
+    note: "topos theory (the Elephant); Stone duality"
+
+  - name: "Hyland, Martin"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [topos-theory, realizability, game-semantics, categorical-logic, category-theory]
+    note: "the effective topos; realizability; game semantics"
+
+  - name: "Kan, Daniel"
+    field: math
+    era: late-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [kan-extensions, simplicial-sets, homotopy-theory, adjunctions, algebraic-topology]
+    note: "Kan extensions; simplicial homotopy; the adjunction that names the pool's own residue lever"
+
+  - name: "Segal, Graeme"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [topological-field-theory, conformal-field-theory, topological-k-theory, mathematical-physics, homotopy-theory]
+    note: "the Segal categories; the functorial axioms for conformal/topological field theory"
+
+  - name: "Pólya, George"
+    field: math
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [combinatorics, enumerative-combinatorics, probability-theory, mathematical-heuristics]
+    note: "heuristic; How to Solve It; enumeration (Pólya counting)"
+
+  - name: "Brown, Ronald"
+    field: math
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [algebraic-topology, groupoids, higher-category-theory, group-theory, homotopy-theory]
+    note: "higher-dimensional group theory; groupoids in topology"
+
+  - name: "Bradley, Tai-Danae"
+    field: math
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [applied-category-theory, enriched-categories, entropy, categorical-linguistics, information-theory]
+    note: "categorical approaches to language/entropy; enriched-category expositions"
+
+  - name: "Yanovski, Lior"
+    field: math
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [chromatic-homotopy-theory, higher-category-theory, stable-homotopy-theory, homotopy-theory]
+    note: "chromatic homotopy; higher semiadditivity (distinct from Noson Yanofsky, logic)"
+
+  # ── Psychology / cognition (CITED — the pool has only 6) ────────────────
+  - name: "Piaget, Jean"
+    field: psychology
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [cognitive-development, genetic-epistemology, developmental-psychology, constructivism]
+    note: "genetic epistemology; stages of cognitive development"
+
+  - name: "Miller, George"
+    field: psychology
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [working-memory, information-theory, cognitive-revolution, psycholinguistics]
+    note: "the magical number seven; the cognitive-revolution founding"
+
+  - name: "Marr, David"
+    field: psychology
+    era: late-20c
+    role_fit: [explorer, auditor]
+    cited: true
+    tags: [levels-of-analysis, computational-neuroscience, vision, perception]
+    note: "the three levels of analysis (computational/algorithmic/implementational); vision"
+
+  - name: "Gentner, Dedre"
+    field: psychology
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [structure-mapping, analogical-reasoning, cognitive-science, relational-reasoning]
+    note: "structure-mapping theory of analogy"
+
+  - name: "Klein, Gary"
+    field: psychology
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [naturalistic-decision-making, recognition-primed-decision, expertise, judgment-and-decision-making]
+    note: "naturalistic decision-making; recognition-primed decision"
+
+  - name: "Schacter, Daniel"
+    field: psychology
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [reconstructive-memory, memory, cognitive-neuroscience, false-memory]
+    note: "memory reconstruction; the seven sins of memory"
+
+  - name: "Helmholtz, Hermann von"
+    field: psychology
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [unconscious-inference, perception, psychophysics, predictive-coding]
+    note: "unconscious inference in perception (the ancestor of predictive processing)"
+
+  # ── Philosophy (CITED, beyond the pool's existing 24) ───────────────────
+  - name: "Bergson, Henri"
+    field: philosophy
+    era: early-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [philosophy-of-time, duration, process-philosophy, metaphysics, vitalism]
+    note: "duration; time-as-lived vs time-as-measured"
+
+  - name: "Spinoza, Baruch"
+    field: philosophy
+    era: 17c
+    role_fit: [writer]
+    cited: true
+    tags: [metaphysics, substance-monism, rationalism, ethics, determinism]
+    note: "substance monism; the geometric method in ethics"
+
+  - name: "Eco, Umberto"
+    field: philosophy
+    era: late-20c
+    role_fit: [writer, skeptic]
+    cited: true
+    tags: [semiotics, philosophy-of-language, hermeneutics, aesthetics]
+    note: "semiotics; the open work; interpretation and its limits"
+
+  - name: "Carnap, Rudolf"
+    field: philosophy
+    era: mid-20c
+    role_fit: [writer, skeptic]
+    cited: true
+    tags: [logical-empiricism, philosophy-of-science, explication, philosophy-of-logic, verificationism]
+    note: "logical empiricism; explication; the logical structure of the world"
+
+  - name: "Kripke, Saul"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [philosophy-of-language, modal-logic, possible-world-semantics, rigid-designation, metaphysics]
+    note: "naming and necessity; possible-world semantics; rigid designation"
+
+  - name: "Korzybski, Alfred"
+    field: philosophy
+    era: early-20c
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [general-semantics, philosophy-of-language, map-territory-relation, epistemology]
+    note: "general semantics; 'the map is not the territory'"
+
+  - name: "Ladyman, James"
+    field: philosophy
+    era: modern
+    role_fit: [skeptic, writer]
+    cited: true
+    tags: [structural-realism, ontic-structural-realism, philosophy-of-science, naturalized-metaphysics, philosophy-of-physics]
+    note: "ontic structural realism; every thing must go"
+
+  # ── Biology (CITED — the pool had only 2) ───────────────────────────────
+  - name: "Crick, Francis"
+    field: biology
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [molecular-biology, dna-structure, central-dogma, genetics, consciousness]
+    note: "DNA structure; the central dogma; the astonishing hypothesis"
+
+  - name: "Waddington, Conrad"
+    field: biology
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [developmental-biology, epigenetics, canalization, evo-devo, theoretical-biology]
+    note: "the epigenetic landscape; canalization"
+
+  - name: "Anfinsen, Christian"
+    field: biology
+    era: late-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [protein-folding, biochemistry, molecular-biology, structural-biology]
+    note: "the thermodynamic hypothesis — sequence determines protein fold"
+
+  - name: "Wagner, Günter"
+    field: biology
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [evo-devo, homology, modularity, developmental-biology, gene-regulatory-networks]
+    note: "the biological homology concept; character identity / modularity in evo-devo"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # SOFTWARE ENGINEERING / SOFTWARE PRACTICE (PROPOSED foundational —
+  #   where_cited: [] except the three the sweep found already cited)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  # -- Programming-language design --
+  - name: "Dijkstra, Edsger W."
+    field: cs
+    era: mid-20c
+    role_fit: [skeptic, auditor]
+    cited: false
+    tags: [structured-programming, concurrency-theory, formal-methods, program-verification, algorithms]
+    note: "structured programming, semaphores, program correctness as a discipline"
+
+  - name: "McCarthy, John"
+    field: cs
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [programming-language-design, artificial-intelligence, symbolic-computation, lambda-calculus, formal-methods]
+    note: "Lisp, garbage collection, symbolic computation as a language substrate"
+
+  - name: "Backus, John"
+    field: cs
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [programming-language-design, compiler-design, formal-grammars, functional-programming]
+    note: "Fortran, BNF grammar notation, function-level programming"
+
+  - name: "Hoare, C. A. R."
+    field: cs
+    era: mid-20c
+    role_fit: [skeptic, auditor]
+    cited: false
+    tags: [program-verification, concurrency-theory, formal-methods, process-calculi, algorithms]
+    note: "Hoare logic, CSP, quicksort, the 'null-reference' self-critique"
+
+  - name: "Wirth, Niklaus"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [programming-language-design, compiler-design, structured-programming, software-engineering]
+    note: "Pascal/Modula/Oberon, minimalist language design"
+
+  - name: "Milner, Robin"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, auditor]
+    cited: false
+    tags: [type-theory, process-calculi, concurrency-theory, programming-language-design, formal-verification]
+    note: "ML, Hindley–Milner type inference, CCS and the pi-calculus"
+
+  - name: "Liskov, Barbara"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, auditor]
+    cited: false
+    tags: [data-abstraction, object-oriented-programming, programming-language-design, distributed-systems, software-engineering]
+    note: "data abstraction, CLU, the substitution principle"
+
+  - name: "Kay, Alan"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [object-oriented-programming, programming-language-design, human-computer-interaction, software-engineering]
+    note: "Smalltalk, message-passing OOP, the personal-computing vision"
+
+  - name: "Hopper, Grace"
+    field: cs
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [compiler-design, programming-language-design, software-engineering]
+    note: "first compilers, COBOL, machine-independent programming languages"
+
+  - name: "Stroustrup, Bjarne"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: false
+    tags: [programming-language-design, object-oriented-programming, systems-programming, software-engineering]
+    note: "C++, zero-overhead abstraction, systems-scale OOP"
+
+  # -- Operating systems / systems building --
+  - name: "Thompson, Ken"
+    field: cs
+    era: late-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [operating-systems, programming-language-design, systems-programming, automata-theory]
+    note: "Unix, B, regex matching, UTF-8, Go (distinct from Evan Thompson, philosophy)"
+
+  - name: "Ritchie, Dennis"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [operating-systems, programming-language-design, systems-programming]
+    note: "C, Unix, the portable-systems-language paradigm"
+
+  - name: "Corbató, Fernando"
+    field: cs
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [operating-systems, time-sharing, systems-programming]
+    note: "time-sharing, CTSS and Multics, the password"
+
+  - name: "Lampson, Butler"
+    field: cs
+    era: late-20c
+    role_fit: [writer, auditor]
+    cited: false
+    tags: [operating-systems, computer-security, distributed-systems, systems-design]
+    note: "'Hints for Computer System Design', PARC systems, capability security"
+
+  - name: "Torvalds, Linus"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: false
+    tags: [operating-systems, version-control, systems-programming, software-engineering]
+    note: "Linux kernel and Git — load-bearing infrastructure of modern software practice"
+
+  # -- Software-engineering method --
+  - name: "Brooks, Frederick P."
+    field: cs
+    era: late-20c
+    role_fit: [writer, skeptic]
+    cited: true
+    tags: [software-engineering, software-project-management, software-economics]
+    note: "'The Mythical Man-Month', 'No Silver Bullet', OS/360 lessons (also cited in-repo)"
+
+  - name: "Parnas, David"
+    field: cs
+    era: late-20c
+    role_fit: [auditor, skeptic]
+    cited: false
+    tags: [modularity, software-architecture, software-engineering, formal-specification]
+    note: "information hiding and modular decomposition"
+
+  - name: "Naur, Peter"
+    field: cs
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [programming-language-design, formal-grammars, software-engineering]
+    note: "Algol 60 report, 'Programming as Theory Building'"
+
+  - name: "Boehm, Barry"
+    field: cs
+    era: late-20c
+    role_fit: [auditor, writer]
+    cited: false
+    tags: [software-engineering, software-economics, software-project-management, cost-estimation]
+    note: "software economics, the spiral model, COCOMO estimation"
+
+  - name: "Weinberg, Gerald M."
+    field: cs
+    era: late-20c
+    role_fit: [writer]
+    cited: false
+    tags: [software-engineering, software-psychology, systems-theory]
+    note: "'The Psychology of Computer Programming', egoless programming"
+
+  - name: "Randell, Brian"
+    field: cs
+    era: late-20c
+    role_fit: [auditor]
+    cited: false
+    tags: [fault-tolerance, dependability, distributed-systems, software-engineering]
+    note: "fault-tolerant systems, recovery blocks, the NATO SE founding conferences"
+
+  # -- Architecture, patterns & craft --
+  - name: "Gamma, Erich"
+    field: cs
+    era: modern
+    role_fit: [writer]
+    cited: false
+    tags: [design-patterns, object-oriented-programming, software-architecture, software-engineering]
+    note: "design patterns (GoF), reusable object-oriented design vocabulary"
+
+  - name: "Booch, Grady"
+    field: cs
+    era: modern
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [object-oriented-programming, software-architecture, unified-modeling-language, software-engineering]
+    note: "object-oriented analysis/design, UML (distinct from Ryan Grady, math)"
+
+  - name: "Johnson, Ralph"
+    field: cs
+    era: modern
+    role_fit: [writer]
+    cited: false
+    tags: [design-patterns, object-oriented-programming, refactoring, software-architecture]
+    note: "design patterns (GoF), refactoring, frameworks (distinct from Mark Johnson, math)"
+
+  - name: "Meyer, Bertrand"
+    field: cs
+    era: modern
+    role_fit: [auditor, writer]
+    cited: false
+    tags: [design-by-contract, object-oriented-programming, programming-language-design, software-engineering]
+    note: "Design by Contract, Eiffel, 'Object-Oriented Software Construction'"
+
+  - name: "Fowler, Martin"
+    field: cs
+    era: modern
+    role_fit: [writer]
+    cited: true
+    tags: [refactoring, software-architecture, design-patterns, software-engineering]
+    note: "refactoring, enterprise patterns, evolutionary design (also cited in-repo)"
+
+  - name: "Beck, Kent"
+    field: cs
+    era: modern
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [agile-methods, test-driven-development, design-patterns, software-engineering]
+    note: "Extreme Programming, test-driven development, software patterns"
+
+  - name: "Cunningham, Ward"
+    field: cs
+    era: modern
+    role_fit: [explorer]
+    cited: false
+    tags: [technical-debt, design-patterns, agile-methods, software-engineering]
+    note: "the wiki, the technical-debt metaphor, pattern languages"
+
+  - name: "Evans, Eric"
+    field: cs
+    era: modern
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [domain-driven-design, software-architecture, software-engineering]
+    note: "domain-driven design; the ubiquitous language (cited in-repo)"
+
+  - name: "Knuth, Donald"
+    field: cs
+    era: late-20c
+    role_fit: [writer, auditor]
+    cited: false
+    tags: [analysis-of-algorithms, algorithms, literate-programming, combinatorics]
+    note: "'The Art of Computer Programming', literate programming, TeX"
+
+  # -- Distributed systems, reliability & data --
+  - name: "Lamport, Leslie"
+    field: cs
+    era: modern
+    role_fit: [auditor, explorer]
+    cited: false
+    tags: [distributed-systems, distributed-consensus, formal-specification, concurrency-theory]
+    note: "logical clocks, Paxos, Byzantine agreement, TLA+ specification"
+
+  - name: "Gray, Jim"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, auditor]
+    cited: false
+    tags: [database-theory, transaction-processing, fault-tolerance, distributed-systems]
+    note: "database transactions, the ACID properties, fault-tolerance economics"
+
+  - name: "Codd, Edgar F."
+    field: cs
+    era: late-20c
+    role_fit: [auditor, explorer]
+    cited: false
+    tags: [database-theory, relational-model, relational-algebra, data-normalization]
+    note: "the relational model, normalization, declarative data access"
+
+  - name: "Lynch, Nancy"
+    field: cs
+    era: modern
+    role_fit: [auditor]
+    cited: false
+    tags: [distributed-systems, distributed-algorithms, automata-theory, formal-verification]
+    note: "distributed algorithms, the FLP impossibility result"
+
+  - name: "Brewer, Eric"
+    field: cs
+    era: modern
+    role_fit: [skeptic]
+    cited: false
+    tags: [distributed-systems, cap-theorem, scalability]
+    note: "the CAP theorem, consistency/availability trade-offs at scale"
+
+  - name: "Bell, C. Gordon"
+    field: cs
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [computer-architecture, systems-design, hardware-design]
+    note: "computer architecture (DEC PDP/VAX), Bell's law of computer classes (distinct from John S. Bell, physics)"
+
+  # -- HCI / interaction driving software practice --
+  - name: "Engelbart, Douglas"
+    field: cs
+    era: late-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [human-computer-interaction, hypertext, interactive-computing]
+    note: "augmenting human intellect, NLS, interactive computing"
+
+  - name: "Sutherland, Ivan"
+    field: cs
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [human-computer-interaction, computer-graphics, interactive-computing]
+    note: "Sketchpad, interactive graphics, the GUI lineage"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # BUSINESS (PROPOSED foundational — where_cited: [] except Nonaka, found
+  #   already cited by the sweep)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  # -- management & leadership foundations --
+  - name: "Taylor, Frederick Winslow"
+    field: management
+    era: early-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [scientific-management, time-and-motion-study, work-standardization, industrial-efficiency]
+    note: "scientific management — time-and-motion decomposition of work"
+
+  - name: "Fayol, Henri"
+    field: management
+    era: early-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [administrative-management, organizational-structure, management-theory]
+    note: "administrative management — the classical functions of the manager"
+
+  - name: "Follett, Mary Parker"
+    field: management
+    era: early-20c
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [organizational-behavior, conflict-resolution, participative-management, leadership-theory]
+    note: "integrative conflict resolution; power-with; proto-participative organization"
+
+  - name: "Barnard, Chester"
+    field: management
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [organizational-theory, executive-function, authority-acceptance-theory, cooperative-systems]
+    note: "the executive as authority-by-acceptance in a cooperative system"
+
+  - name: "Sloan, Alfred P."
+    field: management
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [corporate-strategy, organizational-structure, decentralization, multidivisional-form]
+    note: "the decentralized multidivisional (M-form) corporation"
+
+  - name: "Mintzberg, Henry"
+    field: management
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [strategic-management, managerial-roles, emergent-strategy, organizational-design]
+    note: "the empirical nature of managerial work; the case against formal strategic planning"
+
+  # -- competitive strategy --
+  - name: "Chandler, Alfred D."
+    field: management
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [business-history, corporate-strategy, organizational-structure, managerial-capitalism]
+    note: "business historian — 'structure follows strategy'"
+
+  - name: "Ansoff, Igor"
+    field: management
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [strategic-management, corporate-strategy, growth-strategy, product-market-matrix]
+    note: "strategic management as a discipline; the product/market growth matrix"
+
+  - name: "Rumelt, Richard"
+    field: management
+    era: late-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [strategic-management, competitive-strategy, strategy-diagnosis, corporate-strategy]
+    note: "strategy as diagnosis; good vs. bad strategy"
+
+  - name: "Barney, Jay"
+    field: management
+    era: late-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [resource-based-view, competitive-advantage, strategic-management, sustainable-advantage]
+    note: "the resource-based view — advantage from VRIN resources"
+
+  - name: "Prahalad, C.K."
+    field: management
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [core-competence, strategic-management, strategic-intent, bottom-of-pyramid]
+    note: "core competence; strategic intent; bottom-of-pyramid markets"
+
+  - name: "Teece, David"
+    field: management
+    era: late-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [dynamic-capabilities, strategic-management, innovation-management, competitive-advantage]
+    note: "dynamic capabilities — sensing/seizing/reconfiguring"
+
+  - name: "Penrose, Edith"
+    field: economics
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [theory-of-the-firm, resource-based-view, firm-growth, managerial-economics]
+    note: "the theory of the growth of the firm — origin of the resource-based view (distinct from Roger Penrose, physics)"
+
+  # -- entrepreneurship & startups --
+  - name: "Schumpeter, Joseph"
+    field: economics
+    era: early-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [creative-destruction, innovation-economics, entrepreneurship, business-cycles, evolutionary-economics]
+    note: "creative destruction; the entrepreneur as engine of innovation"
+
+  - name: "Knight, Frank"
+    field: economics
+    era: early-20c
+    role_fit: [skeptic, explorer]
+    cited: false
+    tags: [uncertainty, risk-management, entrepreneurship, profit-theory]
+    note: "risk vs. true uncertainty — profit as reward for the non-measurable"
+
+  - name: "Kirzner, Israel"
+    field: economics
+    era: late-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [austrian-economics, entrepreneurship, market-process, entrepreneurial-alertness]
+    note: "entrepreneurship as alertness to disequilibrium (Austrian)"
+
+  - name: "Sarasvathy, Saras"
+    field: management
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [effectuation, entrepreneurship, entrepreneurial-cognition, uncertainty]
+    note: "effectuation — expert entrepreneurs reason from means, not predicted ends"
+
+  - name: "Ries, Eric"
+    field: management
+    era: modern
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [lean-startup, entrepreneurship, minimum-viable-product, validated-learning]
+    note: "lean startup — build-measure-learn, validated learning, MVP"
+
+  - name: "Moore, Geoffrey A."
+    field: management
+    era: late-20c
+    role_fit: [writer]
+    cited: false
+    tags: [technology-adoption, innovation-management, marketing-strategy, product-marketing]
+    note: "technology-adoption chasm (distinct from Gregory Moore, math)"
+
+  # -- operations & quality (TPS / lean) --
+  - name: "Deming, W. Edwards"
+    field: management
+    era: mid-20c
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [quality-management, statistical-process-control, continuous-improvement]
+    note: "statistical quality; profound knowledge; variation is a system property"
+
+  - name: "Shewhart, Walter"
+    field: management
+    era: early-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [statistical-process-control, quality-management, control-charts, statistics]
+    note: "statistical process control; the control chart; the PDCA cycle's origin"
+
+  - name: "Juran, Joseph"
+    field: management
+    era: mid-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [quality-management, pareto-principle, continuous-improvement]
+    note: "quality as management; fitness for use; the vital-few principle"
+
+  - name: "Ohno, Taiichi"
+    field: management
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [lean-manufacturing, toyota-production-system, just-in-time, operations-management]
+    note: "the Toyota Production System — just-in-time, waste elimination"
+
+  - name: "Ishikawa, Kaoru"
+    field: management
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [quality-management, quality-circles, cause-effect-analysis]
+    note: "the fishbone diagram; company-wide quality control; quality circles"
+
+  - name: "Womack, James P."
+    field: management
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: false
+    tags: [lean-manufacturing, value-stream-mapping, operations-management]
+    note: "codified and popularized 'lean' for the West (term coined by John Krafcik, 1988)"
+
+  # -- marketing --
+  - name: "Kotler, Philip"
+    field: management
+    era: late-20c
+    role_fit: [writer]
+    cited: false
+    tags: [marketing-management, marketing-mix, market-segmentation, brand-management]
+    note: "systematized marketing management (the 4Ps canon)"
+
+  - name: "Levitt, Theodore"
+    field: management
+    era: mid-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [marketing-strategy, marketing-myopia, customer-orientation, marketing-management]
+    note: "'Marketing Myopia' — define the business by customer need"
+
+  - name: "Trout, Jack"
+    field: management
+    era: late-20c
+    role_fit: [writer]
+    cited: false
+    tags: [marketing-strategy, positioning, brand-management, marketing-management]
+    note: "positioning — competition is fought in the prospect's mind"
+
+  - name: "Ogilvy, David"
+    field: management
+    era: mid-20c
+    role_fit: [writer]
+    cited: false
+    tags: [advertising, brand-management, marketing-management]
+    note: "research-grounded advertising craft; the brand-image school"
+
+  # -- corporate finance & valuation --
+  - name: "Graham, Benjamin"
+    field: economics
+    era: mid-20c
+    role_fit: [skeptic, writer]
+    cited: false
+    tags: [value-investing, security-analysis, fundamental-analysis, margin-of-safety]
+    note: "security analysis; value investing; margin of safety"
+
+  - name: "Markowitz, Harry"
+    field: economics
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [portfolio-theory, mean-variance-optimization, risk-management, financial-economics]
+    note: "modern portfolio theory — mean-variance optimization"
+
+  - name: "Modigliani, Franco"
+    field: economics
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [corporate-finance, capital-structure, financial-economics, valuation-theory]
+    note: "capital-structure irrelevance (M&M theorems)"
+
+  - name: "Jensen, Michael C."
+    field: economics
+    era: late-20c
+    role_fit: [skeptic, explorer]
+    cited: false
+    tags: [agency-theory, corporate-governance, corporate-finance, theory-of-the-firm]
+    note: "agency theory of the firm; the free-cash-flow problem"
+
+  # -- organizational behavior, culture & theory of the firm --
+  - name: "Coase, Ronald"
+    field: economics
+    era: mid-20c
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [transaction-cost-economics, theory-of-the-firm, new-institutional-economics, law-and-economics]
+    note: "why firms exist — transaction costs set the market/hierarchy boundary"
+
+  - name: "Williamson, Oliver"
+    field: economics
+    era: late-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [transaction-cost-economics, new-institutional-economics, theory-of-the-firm, corporate-governance]
+    note: "transaction cost economics — asset specificity governs make-vs-buy"
+
+  - name: "March, James G."
+    field: systems
+    era: late-20c
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [organizational-theory, behavioral-theory-of-the-firm, exploration-exploitation, organizational-decision-making, bounded-rationality]
+    note: "behavioral theory of the firm; exploration vs. exploitation (flagged: org-systems, not pure economics)"
+
+  - name: "Weick, Karl E."
+    field: systems
+    era: late-20c
+    role_fit: [writer, skeptic]
+    cited: false
+    tags: [sensemaking, organizational-theory, loose-coupling, high-reliability-organizations, organizing-as-process]
+    note: "sensemaking; organizing-as-process (flagged: org-systems)"
+
+  - name: "Nonaka, Ikujiro"
+    field: management
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [knowledge-management, organizational-learning, tacit-knowledge, knowledge-creation]
+    note: "the knowledge-creating company; tacit/explicit conversion (SECI) — germane to this repo's program; cited in-repo"
+
+  - name: "Schein, Edgar"
+    field: management
+    era: late-20c
+    role_fit: [writer]
+    cited: false
+    tags: [organizational-culture, organizational-development, organizational-behavior, leadership-theory]
+    note: "the three-level model of organizational culture"
+
+  - name: "Argyris, Chris"
+    field: systems
+    era: late-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [organizational-learning, double-loop-learning, defensive-routines, action-science, theory-of-action]
+    note: "single- vs. double-loop learning; defensive routines (flagged: org-systems)"
+
+  - name: "Hofstede, Geert"
+    field: management
+    era: late-20c
+    role_fit: [auditor, explorer]
+    cited: false
+    tags: [organizational-culture, cross-cultural-management, cultural-dimensions, organizational-behavior]
+    note: "empirical cross-cultural dimensions of organizations"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # === v0.4.1 additions (2026-07-20) ===
+  # Review-surfaced second batch: the statistics/decision founders left out of
+  # v0.4.0, plus repo-thematic omissions (decategorification, info-geometry,
+  # stochastic thermodynamics). CITED where_cited paths were re-verified.
+  # ═══════════════════════════════════════════════════════════════════════
+
+  # ── Statistics / decision theory (CITED + founders — completes the gap) ──
+  - name: "Fisher, Ronald A."
+    field: math
+    era: early-20c
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [statistics, maximum-likelihood-estimation, design-of-experiments, information-geometry, probability-theory]
+    note: "founder of modern statistics — MLE, sufficiency, design of experiments; the Fisher–Rao metric is load-bearing in-repo"
+
+  - name: "Bayes, Thomas"
+    field: math
+    era: 18c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [probability-theory, bayesian-inference, statistics]
+    note: "Bayes' theorem; the foundation of Bayesian inference (already used informally as an agent name)"
+
+  - name: "Neyman, Jerzy"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, auditor]
+    cited: false
+    tags: [statistics, hypothesis-testing, decision-theory, probability-theory]
+    note: "hypothesis testing, confidence intervals — the Neyman–Pearson framework"
+
+  - name: "Wald, Abraham"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [statistics, decision-theory, sequential-analysis, game-theory]
+    note: "statistical decision theory; sequential analysis — literally the 'decision theory' the gap names"
+
+  - name: "Savage, Leonard J."
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [decision-theory, bayesian-inference, statistics, expected-utility]
+    note: "the foundations of statistics; subjective expected utility"
+
+  - name: "Pearson, Karl"
+    field: math
+    era: early-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [statistics, correlation, hypothesis-testing, probability-theory]
+    note: "correlation, the chi-square test — a founder of mathematical statistics"
+
+  - name: "Nash, John"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [game-theory, differential-geometry, partial-differential-equations]
+    note: "Nash equilibrium — the anchor of noncooperative game theory / multi-agent strategy"
+
+  # ── Category theory / decategorification (CITED — repo spine) ───────────
+  - name: "Dolan, James"
+    field: math
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: true
+    tags: [higher-category-theory, categorification, category-theory, operads]
+    note: "coined decategorification with Baez; the Baez–Dolan stuff/structure/property hierarchy — the repo's FF/EssSurj floor"
+
+  - name: "Barr, Michael"
+    field: math
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [category-theory, monads, star-autonomous-categories, topos-theory, coalgebra]
+    note: "monads/triples; *-autonomous categories; 'Toposes, Triples and Theories'"
+
+  - name: "Ehresmann, Charles"
+    field: math
+    era: mid-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [category-theory, fibrations, groupoids, differential-geometry, sketches]
+    note: "fibrations, groupoids, sketches (distinct from Andrée Ehresmann, memory-evolutive-systems, also repo-cited)"
+
+  # ── Information geometry & information theory (CITED + founders) ─────────
+  - name: "Chentsov, Nikolai"
+    field: math
+    era: mid-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [information-geometry, statistics, decision-theory, differential-geometry]
+    note: "uniqueness of the Fisher–Rao metric — the 'only-a-scalar-survives' leg of the count-wall/garbling result"
+
+  - name: "Amari, Shun'ichi"
+    field: math
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [information-geometry, differential-geometry, statistics, neural-networks]
+    note: "information geometry — dually-flat manifolds, the natural gradient"
+
+  - name: "Rényi, Alfréd"
+    field: math
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [information-theory, entropy, probability-theory, statistics]
+    note: "Rényi entropy/divergence — the {F_α} family behind the thermo-majorization register work"
+
+  - name: "Kullback, Solomon"
+    field: math
+    era: mid-20c
+    role_fit: [explorer]
+    cited: false
+    tags: [information-theory, entropy, statistics]
+    note: "Kullback–Leibler divergence (relative entropy) — the klDiv/DPI machinery is load-bearing in the Lean thermo files"
+
+  - name: "Cover, Thomas M."
+    field: cs
+    era: late-20c
+    role_fit: [writer, explorer]
+    cited: true
+    tags: [information-theory, coding-theory, entropy, statistics]
+    note: "'Elements of Information Theory' (Cover & Thomas) — the canonical modern info-theory text"
+
+  - name: "Hamming, Richard"
+    field: cs
+    era: mid-20c
+    role_fit: [explorer, auditor]
+    cited: false
+    tags: [coding-theory, error-correction, information-theory, numerical-analysis]
+    note: "error-correcting codes; the Hamming distance/bound"
+
+  # ── AI / ML canon (founders still absent from the ai-ml roster) ─────────
+  - name: "Hinton, Geoffrey"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [deep-learning, backpropagation, boltzmann-machines, neural-networks, representation-learning]
+    note: "backpropagation, Boltzmann machines — a founder of deep learning"
+
+  - name: "Vapnik, Vladimir"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, skeptic]
+    cited: false
+    tags: [statistical-learning-theory, vc-dimension, support-vector-machines, empirical-risk-minimization, machine-learning]
+    note: "statistical learning theory, VC dimension, support vector machines"
+
+  - name: "Valiant, Leslie"
+    field: cs
+    era: modern
+    role_fit: [explorer, auditor]
+    cited: false
+    tags: [computational-learning-theory, pac-learning, computational-complexity, machine-learning]
+    note: "PAC learning — the formal model of what is efficiently learnable"
+
+  - name: "Pearl, Judea"
+    field: ai-ml
+    era: modern
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [causal-inference, bayesian-networks, do-calculus, probabilistic-graphical-models, structural-causal-models]
+    note: "Bayesian networks; the do-calculus of causal inference"
+
+  - name: "Minsky, Marvin"
+    field: ai-ml
+    era: late-20c
+    role_fit: [explorer, writer]
+    cited: false
+    tags: [symbolic-ai, cognitive-architecture, artificial-general-intelligence, perceptrons, knowledge-representation]
+    note: "a founder of AI; Society of Mind; Perceptrons"
+
+  # ── Thermodynamics / stochastic thermodynamics (CITED) ──────────────────
+  - name: "Maxwell, James Clerk"
+    field: physics
+    era: 19c
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [electromagnetism, maxwells-demon, statistical-mechanics, kinetic-theory]
+    note: "electromagnetism; Maxwell's demon — the origin of the information↔thermodynamics lineage"
+
+  - name: "Jarzynski, Christopher"
+    field: physics
+    era: modern
+    role_fit: [explorer]
+    cited: true
+    tags: [fluctuation-theorems, nonequilibrium-thermodynamics, stochastic-thermodynamics, statistical-mechanics]
+    note: "the Jarzynski equality — the nonequilibrium work/free-energy fluctuation theorem"
+
+  - name: "Onsager, Lars"
+    field: physics
+    era: mid-20c
+    role_fit: [explorer]
+    cited: true
+    tags: [nonequilibrium-thermodynamics, statistical-mechanics, critical-phenomena, thermodynamics]
+    note: "the reciprocal relations — foundation of irreversible thermodynamics"
+
+  - name: "Seifert, Udo"
+    field: physics
+    era: modern
+    role_fit: [explorer, writer]
+    cited: true
+    tags: [stochastic-thermodynamics, fluctuation-theorems, nonequilibrium-thermodynamics, statistical-mechanics]
+    note: "stochastic thermodynamics — trajectory-level entropy production"

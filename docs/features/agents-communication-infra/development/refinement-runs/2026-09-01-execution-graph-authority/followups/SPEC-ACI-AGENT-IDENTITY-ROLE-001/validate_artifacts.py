@@ -463,7 +463,7 @@ def validate_vector(
             load_yaml_stream_text("profile: one\nprofile: two\n---\nscientists: []\n")
         elif vector["operation"] == "real_pool_raw_substitution":
             verify_and_migrate_real_pool(
-                REAL_POOL.read_bytes() + b"\n# raw-only substitution\n",
+                (ROOT / migration_authority["source_fixture_path"]).read_bytes() + b"\n# raw-only substitution\n",
                 migration_authority,
                 set(ROLE_IDS),
             )
@@ -538,21 +538,34 @@ def main() -> None:
     future_normalized = normalize_canonical_pool(future_source, set(illustrative_ids))
     assert future_normalized["agents"][0]["role_fit"][0] == "researcher"
 
-    real_raw = REAL_POOL.read_bytes()
-    migrated = verify_and_migrate_real_pool(real_raw, migration_authority, set(ROLE_IDS))
+    source_fixture = ROOT / migration_authority["source_fixture_path"]
+    legacy_raw = source_fixture.read_bytes()
+    migrated = verify_and_migrate_real_pool(legacy_raw, migration_authority, set(ROLE_IDS))
     assert migrated["documents"][0]["version"] == "0.7.0"
     assert len(migrated["documents"][1]["scientists"]) == 414
     assert all("agent_name" in row and "name" not in row for row in migrated["documents"][1]["scientists"])
+    real_raw = REAL_POOL.read_bytes()
     real_stream = load_yaml_stream_text(real_raw.decode("utf-8"))
+    assert migrated == real_stream
+    legacy_stream = load_yaml_stream_text(legacy_raw.decode("utf-8"))
+    for old, new in zip(
+        legacy_stream["documents"][1]["scientists"],
+        real_stream["documents"][1]["scientists"],
+        strict=True,
+    ):
+        assert old["name"] == new["agent_name"]
+        assert {key: value for key, value in old.items() if key != "name"} == {
+            key: value for key, value in new.items() if key != "agent_name"
+        }
 
     vectors = load_json(FIXTURES / "negative-vectors.json")["vectors"]
     for vector in vectors:
-        validate_vector(vector, base, real_stream, migration_authority)
+        validate_vector(vector, base, legacy_stream, migration_authority)
 
     print("PASS: schemas, positive identity projection, Ed25519 evidence, singular other, and structural future role")
-    print("PASS: real two-document pool v0.6 verified and losslessly projected to canonical v0.7 shape (414 entries)")
+    print("PASS: frozen two-document pool v0.6 verified and losslessly projected to current canonical v0.7 (414 ordered entries)")
     print(f"PASS: {len(vectors)}/{len(vectors)} typed negative vectors with exact paths")
-    print("LIMIT: specification fixtures only; production pool, consumers, registrar, compiler, and telemetry are unchanged")
+    print("LIMIT: this validator checks SPEC fixtures and compares the frozen v0.6 fixture with the current production pool; other production consumers, compiler behavior, registrar, and telemetry require separate implementation evidence")
 
 
 if __name__ == "__main__":

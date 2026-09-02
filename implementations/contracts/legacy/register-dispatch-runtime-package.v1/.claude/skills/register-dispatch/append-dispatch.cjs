@@ -19,7 +19,7 @@
  *     dispatch_type, goal, context, max_loops (1..5), anti_bias_mode
  *     (enabled|disabled),
  *     final_approver, groups[] (each group: group_id, agents[] — NO group
- *     `role` field; each agent role is loaded from the pinned agent-role registry, plus model,
+ *     `role` field; each agent: role explorer|synthesizer|skeptic|writer|auditor|planner|coder, model,
  *     token_budget, initial_prompt). Optional: meta (true), parent_dispatch_id,
  *     anti_bias_global, working_folder (REQUIRED for research/experiment; optional for review — inline since 2026-06-16; never vault/),
  *     output_mode (review only: inline|persisted — where review.md lands; §14),
@@ -101,13 +101,12 @@ const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const projectDir = path.resolve(process.env.CLAUDE_PROJECT_DIR || rec.project_dir || process.cwd());
 
 function loadDispatchTypeRegistry(root) {
-  const registryPath = path.join(root, 'implementations', 'contracts', 'dispatch-type-registry.v2.json');
+  const registryPath = path.join(root, 'implementations', 'contracts', 'dispatch-type-registry.v1.json');
   let registry;
   try { registry = JSON.parse(fs.readFileSync(registryPath, 'utf8')); }
   catch (e) { console.error('canonical dispatch-type registry is unavailable:', e.message); process.exit(2); }
-  if (!isObj(registry) || registry.schema !== 'aci-dispatch-type-registry/v2' ||
-      registry.ledger_schema_version !== '0.7.0' || !isObj(registry.agent_role_registry_ref) ||
-      !Array.isArray(registry.types) || !registry.types.length) {
+  if (!isObj(registry) || registry.schema !== 'aci-dispatch-type-registry/v1' ||
+      !isNonEmptyStr(registry.ledger_schema_version) || !Array.isArray(registry.types) || !registry.types.length) {
     console.error('canonical dispatch-type registry shape is invalid'); process.exit(2);
   }
   const ids = new Set();
@@ -136,46 +135,9 @@ function loadDispatchTypeRegistry(root) {
   return registry;
 }
 
-function loadAgentRoleRegistry(root, expectedRef) {
-  const selectionPath = path.join(root, 'implementations', 'contracts', 'agent-role-registry-selection.json');
-  let selection, registry, authority, registryPath, authorityPath;
-  try {
-    selection = JSON.parse(fs.readFileSync(selectionPath, 'utf8'));
-    if (!isObj(selection) || selection.schema !== 'aci.role-registry-selection@1' ||
-        !isObj(selection.selected_ref) || !isNonEmptyStr(selection.registry_path) ||
-        !isNonEmptyStr(selection.authority_path) || !isNonEmptyStr(selection.host_routing_path)) {
-      throw new Error('selection shape is invalid');
-    }
-    const resolveSelected = (relative) => {
-      const selected = path.resolve(root, relative);
-      const prefix = root.endsWith(path.sep) ? root : root + path.sep;
-      if (!selected.startsWith(prefix)) throw new Error('selected path escapes repository root');
-      return selected;
-    };
-    registryPath = resolveSelected(selection.registry_path);
-    authorityPath = resolveSelected(selection.authority_path);
-    registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-    authority = JSON.parse(fs.readFileSync(authorityPath, 'utf8'));
-  } catch (e) { console.error('agent role registry authority is unavailable:', e.message); process.exit(2); }
-  const ref = { name: registry?.name, version: registry?.version, digest: fileDigest(registryPath) };
-  const accepted = Array.isArray(authority?.accepted)
-    ? authority.accepted.filter((row) => isObj(row) && row.name === ref.name && row.version === ref.version)
-    : [];
-  const rows = registry?.roles;
-  const roles = Array.isArray(rows) ? rows.map((row) => row?.role_id) : [];
-  if (registry?.schema !== 'aci.role-registry@1' || authority?.schema !== 'aci.role-registry-authority@1' ||
-      accepted.length !== 1 || accepted[0].digest !== ref.digest || J(selection.selected_ref) !== J(ref) || J(expectedRef) !== J(ref) ||
-      roles.length === 0 || new Set(roles).size !== roles.length ||
-      rows.some((row) => !isObj(row) || row.enabled !== true || !isNonEmptyStr(row.purpose))) {
-    console.error('agent role registry is invalid, substituted, or differs from dispatch authority'); process.exit(2);
-  }
-  return { ref, roles };
-}
-
 // ---------------------------------------------------------------- schema
 const DISPATCH_TYPE_REGISTRY = loadDispatchTypeRegistry(projectDir);
 const SCHEMA_VERSION = DISPATCH_TYPE_REGISTRY.ledger_schema_version;
-const AGENT_ROLE_REGISTRY = loadAgentRoleRegistry(projectDir, DISPATCH_TYPE_REGISTRY.agent_role_registry_ref);
 const DISPATCH_TYPES = DISPATCH_TYPE_REGISTRY.types.map((entry) => entry.ledger_value)
   .concat([DISPATCH_TYPE_REGISTRY.generic_fallback.ledger_value]);
 const LIVE_TYPES = new Set(DISPATCH_TYPE_REGISTRY.types
@@ -189,14 +151,14 @@ LIVE_TYPES.add(DISPATCH_TYPE_REGISTRY.generic_fallback.ledger_value);
 const WORKING_FOLDER_TYPES = new Set(['research', 'experiment']);
 // Group `role` was removed from the row schema at v0.6.0 (constitution §11 / CR-2): a group's
 // function is read off its agents' roles, its workflow position off its connections.
-const AGENT_ROLES = AGENT_ROLE_REGISTRY.roles;
+const AGENT_ROLES = ['explorer', 'synthesizer', 'skeptic', 'writer', 'auditor', 'planner', 'coder'];
 const CONNECTION_TYPES = ['sequential', 'zig-zag', 'feedback'];
 const EXIT_REASONS = ['resolved', 'loop_ceiling_reached', 'dissent_irreconcilable', 'user_abort', 'error'];
 const OUTPUT_MODES = ['inline', 'persisted'];   // review-only row field (§14): where review.md lands
 const ANTI_BIAS_MODES = ['enabled', 'disabled'];
 
 const DISPATCH_KEYS = new Set([
-  'dispatch_id', 'schema_version', 'agent_role_registry_ref', 'dispatch_type', 'goal', 'context',
+  'dispatch_id', 'schema_version', 'dispatch_type', 'goal', 'context',
   'max_loops', 'final_approver', 'anti_bias_mode', 'groups',     // required
   'meta', 'parent_dispatch_id', 'anti_bias_global', 'working_folder',
   'output_mode',                                                 // optional (review-only, §14)
@@ -206,7 +168,7 @@ const DISPATCH_KEYS = new Set([
   'project_dir',                                                 // control key, not emitted
 ]);
 const CLOSE_KEYS = new Set([
-  'close_of', 'schema_version', 'agent_role_registry_ref', 'exit_reason', 'agents_spawned',
+  'close_of', 'exit_reason', 'agents_spawned',                   // required
   'feedback_prompts', 'invoked_by',                              // optional
   'capability_route_digest',                                     // exact opening route
   'project_dir',                                                 // control key, not emitted
@@ -254,15 +216,6 @@ function canonicalDigest(value) {
   return 'sha256:' + crypto.createHash('sha256')
     .update(JSON.stringify(stableValue(value)), 'utf8').digest('hex');
 }
-
-function validateAgentRoleRegistryRef(value, label, errs) {
-  if (!isObj(value) || Object.keys(value).sort().join('|') !== 'digest|name|version' ||
-      !isNonEmptyStr(value.name) || !isNonEmptyStr(value.version) || !SHA256_RE.test(value.digest || '')) {
-    errs.push(`${label} must be the closed accepted {name,version,digest} object`);
-  } else if (canonicalDigest(value) !== canonicalDigest(AGENT_ROLE_REGISTRY.ref)) {
-    errs.push(`${label} differs from the accepted agent role registry`);
-  }
-}
 function fileDigest(file) {
   return 'sha256:' + crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 }
@@ -277,7 +230,7 @@ function validateCapabilityRoute(rec, errs) {
   for (const key of CAPABILITY_ROUTE_KEYS) if (!isNonEmptyStr(route[key])) errs.push(`capability_route.${key} is required and must be a non-empty string`);
   if (route.schema !== 'aci-capability-route/v1') errs.push('capability_route.schema must be "aci-capability-route/v1"');
   if (route.registry_schema !== DISPATCH_TYPE_REGISTRY.schema) errs.push('capability_route.registry_schema differs from the canonical registry');
-  const registryPath = path.join(projectDir, 'implementations', 'contracts', 'dispatch-type-registry.v2.json');
+  const registryPath = path.join(projectDir, 'implementations', 'contracts', 'dispatch-type-registry.v1.json');
   if (route.registry_digest !== fileDigest(registryPath)) errs.push('capability_route.registry_digest differs from the canonical registry bytes');
   if (!CAPABILITY_ID_RE.test(route.capability_ref || '')) errs.push('capability_route.capability_ref must be an exact installed capability id');
   if (route.ledger_dispatch_type !== rec.dispatch_type) errs.push('capability_route.ledger_dispatch_type must equal dispatch_type');
@@ -313,7 +266,6 @@ function validateCapabilityRoute(rec, errs) {
 }
 
 const HISTORICAL_PRE_ROUTE_SCHEMAS = new Set(['0.6.1', '0.6.2', '0.6.3']);
-const LEGACY_OPENING_SCHEMAS = new Set(['0.6.1', '0.6.2', '0.6.3', '0.6.4']);
 
 function resolveOpeningForClose(dispatchId) {
   const ledger = path.join(projectDir, 'telemetry', 'agents', 'subagents-dispatch.yaml');
@@ -354,7 +306,7 @@ function resolveOpeningForClose(dispatchId) {
   if (HISTORICAL_PRE_ROUTE_SCHEMAS.has(opening.schema_version) && route === undefined) {
     return { kind: 'historical-pre-route', schemaVersion: opening.schema_version };
   }
-  if (opening.schema_version !== SCHEMA_VERSION && !LEGACY_OPENING_SCHEMAS.has(opening.schema_version)) {
+  if (opening.schema_version !== SCHEMA_VERSION && !HISTORICAL_PRE_ROUTE_SCHEMAS.has(opening.schema_version)) {
     return { error: `referenced opening schema_version ${J(opening.schema_version)} is unsupported` };
   }
   if (!isObj(route) || !SHA256_RE.test(route.route_digest || '')) {
@@ -364,14 +316,7 @@ function resolveOpeningForClose(dispatchId) {
   if (route.route_digest !== canonicalDigest(routeBody) || route.ledger_dispatch_type !== opening.dispatch_type) {
     return { error: 'referenced opening capability_route is unverifiable' };
   }
-  if (opening.schema_version === SCHEMA_VERSION) {
-    const ref = opening.agent_role_registry_ref;
-    if (!isObj(ref) || J(ref) !== J(AGENT_ROLE_REGISTRY.ref)) {
-      return { error: 'referenced 0.7.0 opening agent role registry ref is missing or mismatched' };
-    }
-    return { kind: 'current', routeDigest: route.route_digest, schemaVersion: opening.schema_version, roleRegistryRef: ref };
-  }
-  return { kind: 'legacy-routed', routeDigest: route.route_digest, schemaVersion: opening.schema_version };
+  return { kind: 'routed', routeDigest: route.route_digest, schemaVersion: opening.schema_version };
 }
 
 function verifyPinnedRepoFile(projectDir, ref, digest, label, errs) {
@@ -443,7 +388,6 @@ function validateDispatch(rec) {
   }
   if (!isNonEmptyStr(rec.dispatch_id)) errs.push('dispatch_id is required and must be a non-empty string');
   if (rec.schema_version !== SCHEMA_VERSION) errs.push(`schema_version must be exactly "${SCHEMA_VERSION}" (got ${J(rec.schema_version)})`);
-  validateAgentRoleRegistryRef(rec.agent_role_registry_ref, 'agent_role_registry_ref', errs);
   if (!DISPATCH_TYPES.includes(rec.dispatch_type)) errs.push(`dispatch_type must be one of ${DISPATCH_TYPES.join(' | ')} (got ${J(rec.dispatch_type)})`);
   else if (!LIVE_TYPES.has(rec.dispatch_type)) errs.push(`dispatch_type ${J(rec.dispatch_type)} is RESERVED in the canonical registry`);
   if (!isNonEmptyStr(rec.goal)) errs.push('goal is required and must be a non-empty string');
@@ -702,8 +646,6 @@ function validateClose(rec) {
     else errs.push(`unknown key "${k}" on a close record`);
   }
   if (!isNonEmptyStr(rec.close_of)) errs.push('close_of must be a non-empty string');
-  if (rec.schema_version !== SCHEMA_VERSION) errs.push(`close schema_version must be exactly "${SCHEMA_VERSION}" (got ${J(rec.schema_version)})`);
-  validateAgentRoleRegistryRef(rec.agent_role_registry_ref, 'agent_role_registry_ref', errs);
   if (!EXIT_REASONS.includes(rec.exit_reason)) errs.push(`exit_reason must be one of ${EXIT_REASONS.join(' | ')} (got ${J(rec.exit_reason)})`);
   const s = rec.agents_spawned;
   if (!isObj(s)) {
@@ -726,12 +668,10 @@ function validateClose(rec) {
     const opening = resolveOpeningForClose(rec.close_of);
     if (opening.error) {
       errs.push(opening.error);
-    } else if (opening.kind === 'current' && rec.capability_route_digest !== opening.routeDigest) {
+    } else if (opening.kind === 'routed' && rec.capability_route_digest !== opening.routeDigest) {
       errs.push('capability_route_digest is required and must match the immutable opening route');
-    } else if (opening.kind === 'current' && (!isObj(rec.agent_role_registry_ref) || canonicalDigest(rec.agent_role_registry_ref) !== canonicalDigest(opening.roleRegistryRef))) {
-      errs.push('agent_role_registry_ref must exactly match the 0.7.0 opening');
-    } else if (opening.kind !== 'current') {
-      errs.push('the current appender cannot emit a legacy or mixed-version close');
+    } else if (opening.kind === 'historical-pre-route' && rec.capability_route_digest !== undefined) {
+      errs.push('capability_route_digest cannot be verified for a historical pre-route opening and must be omitted');
     }
   }
   return errs;
@@ -859,8 +799,6 @@ if (isClose) {
   }
   const lines = [
     '  - close_of: ' + J(rec.close_of),
-    '    schema_version: ' + J(rec.schema_version),
-    '    agent_role_registry_ref: ' + J(rec.agent_role_registry_ref),
     '    closed: ' + J(new Date().toISOString()),
     '    invoked_by: ' + J(resolveInvokedBy()),
     '    exit_reason: ' + J(rec.exit_reason),
@@ -882,7 +820,6 @@ if (dispatchIds.has(rec.dispatch_id)) {
 const lines = [
   '  - dispatch_id: ' + J(rec.dispatch_id),
   '    schema_version: ' + J(rec.schema_version),
-  '    agent_role_registry_ref: ' + J(rec.agent_role_registry_ref),
   '    created: ' + J(new Date().toISOString()),
   '    invoked_by: ' + J(resolveInvokedBy()),
   '    dispatch_type: ' + J(rec.dispatch_type),

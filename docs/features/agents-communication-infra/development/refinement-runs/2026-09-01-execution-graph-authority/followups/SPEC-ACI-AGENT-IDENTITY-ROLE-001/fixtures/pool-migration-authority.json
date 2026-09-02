@@ -1,6 +1,7 @@
 {
   "schema": "aci.pool-migration-authority@1",
   "source_path": "telemetry/agents/agent-pool.yaml",
+  "source_fixture_path": "fixtures/agent-pool.v0.6.yaml",
   "source_version": "0.6.0",
   "target_version": "0.7.0",
   "canonical_name_key": "agent_name",

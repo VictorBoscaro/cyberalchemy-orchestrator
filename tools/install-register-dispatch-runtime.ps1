@@ -82,15 +82,19 @@ function Assert-NoReparsePoints {
 
 $sourceRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\', '/')
 $targetRoot = [System.IO.Path]::GetFullPath($Target).TrimEnd('\', '/')
-$manifestRelative = if ($LegacyVerification) {
+$manifestSourceRelative = if ($LegacyVerification) {
     if (-not $Check) {
         throw 'Legacy v1 is verification-only; use -LegacyVerification together with -Check.'
     }
-    'implementations/contracts/register-dispatch-runtime-package.v1.json'
+    'implementations/contracts/legacy/register-dispatch-runtime-package.v1/register-dispatch-runtime-package.v1.json'
 } else {
     'implementations/contracts/register-dispatch-runtime-package.v2.json'
 }
-$manifestPath = Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot $manifestRelative) -Label 'manifest source'
+$manifestDestinationRelative = if ($LegacyVerification) { 'implementations/contracts/register-dispatch-runtime-package.v1.json' } else { $manifestSourceRelative }
+$packageSourceRoot = if ($LegacyVerification) {
+    Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot 'implementations/contracts/legacy/register-dispatch-runtime-package.v1') -Label 'legacy package source root'
+} else { $sourceRoot }
+$manifestPath = Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot $manifestSourceRelative) -Label 'manifest source'
 
 Assert-NoReparsePoints -Path $sourceRoot -Label 'source root'
 Assert-NoReparsePoints -Path $manifestPath -Label 'manifest source'
@@ -141,12 +145,18 @@ $requiredFiles = @(
 $requiredFiles += if ($LegacyVerification) {
     @('implementations/contracts/dispatch-type-registry.v1.json')
 } else {
+    $roleSelectionRelative = 'implementations/contracts/agent-role-registry-selection.json'
+    $roleSelectionPath = Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot $roleSelectionRelative) -Label 'role registry selection source'
+    $roleSelection = Get-Content -LiteralPath $roleSelectionPath -Raw | ConvertFrom-Json
+    Assert-ExactProperties -Object $roleSelection -Expected @('schema', 'selected_ref', 'registry_path', 'authority_path', 'host_routing_path') -Label 'role registry selection'
+    if ($roleSelection.schema -ne 'aci.role-registry-selection@1') { throw 'Unsupported role registry selection schema.' }
     @(
         'implementations/contracts/dispatch-type-registry.v2.json',
         'implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json',
-        'implementations/contracts/agent-role-registry.v1.json',
-        'implementations/contracts/agent-role-registry-authority.v1.json',
-        'implementations/contracts/agent-role-host-routing.v1.json'
+        $roleSelectionRelative,
+        [string]$roleSelection.registry_path,
+        [string]$roleSelection.authority_path,
+        [string]$roleSelection.host_routing_path
     )
 }
 $seenPaths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
@@ -175,7 +185,7 @@ $registryPath = if ($LegacyVerification) {
     'implementations/contracts/dispatch-type-registry.v2.json'
 }
 $registryEntry = $manifest.files | Where-Object { $_.path -eq $registryPath }
-$registrySource = Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot $registryEntry.path) -Label 'registry source'
+$registrySource = Assert-ContainedPath -Root $packageSourceRoot -Path (Join-Path $packageSourceRoot $registryEntry.path) -Label 'registry source'
 Assert-NoReparsePoints -Path $registrySource -Label 'registry source'
 $registry = Get-Content -LiteralPath $registrySource -Raw | ConvertFrom-Json
 if ($registry.schema -ne $manifest.registry_schema -or
@@ -189,12 +199,16 @@ if (-not $LegacyVerification) {
         ($registry.agent_role_registry_ref | ConvertTo-Json -Compress)) {
         throw 'Package role registry ref does not match the dispatch registry.'
     }
+    if (($manifest.agent_role_registry_ref | ConvertTo-Json -Compress) -ne
+        ($roleSelection.selected_ref | ConvertTo-Json -Compress)) {
+        throw 'Package role registry ref does not match the selected role registry revision.'
+    }
 }
 
 $failures = [System.Collections.Generic.List[string]]::new()
 foreach ($entry in $manifest.files) {
     $relative = [string]$entry.path
-    $source = Assert-ContainedPath -Root $sourceRoot -Path (Join-Path $sourceRoot $relative) -Label "source $relative"
+    $source = Assert-ContainedPath -Root $packageSourceRoot -Path (Join-Path $packageSourceRoot $relative) -Label "source $relative"
     $destination = Assert-ContainedPath -Root $targetRoot -Path (Join-Path $targetRoot $relative) -Label "destination $relative"
     Assert-NoReparsePoints -Path $source -Label "source $relative"
     Assert-NoReparsePoints -Path $destination -Label "destination $relative"
@@ -231,20 +245,24 @@ foreach ($entry in $manifest.files) {
     Write-Output "installed $relative $installedHash"
 }
 
-$manifestDestination = Assert-ContainedPath -Root $targetRoot -Path (Join-Path $targetRoot $manifestRelative) -Label 'manifest destination'
+$manifestDestination = Assert-ContainedPath -Root $targetRoot -Path (Join-Path $targetRoot $manifestDestinationRelative) -Label 'manifest destination'
 Assert-NoReparsePoints -Path $manifestDestination -Label 'manifest destination'
 if ($Check) {
     if (-not (Test-Path -LiteralPath $manifestDestination -PathType Leaf)) {
-        $failures.Add("missing: $manifestRelative")
+        $failures.Add("missing: $manifestDestinationRelative")
     } elseif ((Get-FileHash -LiteralPath $manifestDestination -Algorithm SHA256).Hash -ne
               (Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash) {
-        $failures.Add("digest mismatch: $manifestRelative")
+        $failures.Add("digest mismatch: $manifestDestinationRelative")
     }
     if ($failures.Count -gt 0) {
         $failures | ForEach-Object { [Console]::Error.WriteLine($_) }
         exit 2
     }
-    Write-Output "verified register-dispatch runtime $($manifest.package_version) at $targetRoot"
+    if ($LegacyVerification) {
+        Write-Output "verified frozen recoverable v1 projection $($manifest.package_version) at $targetRoot; original root-v1 manifest authority is not verified or reconstructed"
+    } else {
+        Write-Output "verified register-dispatch runtime $($manifest.package_version) at $targetRoot"
+    }
     exit 0
 }
 
@@ -257,5 +275,5 @@ $manifestHash = (Get-FileHash -LiteralPath $manifestDestination -Algorithm SHA25
 if ($manifestHash -ne (Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash) {
     throw 'Installed package manifest digest mismatch.'
 }
-Write-Output "installed $manifestRelative $manifestHash"
+Write-Output "installed $manifestDestinationRelative $manifestHash"
 Write-Output "installed register-dispatch runtime $($manifest.package_version) at $targetRoot"

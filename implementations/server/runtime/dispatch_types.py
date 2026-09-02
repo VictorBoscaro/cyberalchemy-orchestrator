@@ -61,7 +61,7 @@ def load_dispatch_type_registry(repo_root: Path, *, legacy: bool = False) -> dic
     else:
         if value["ledger_schema_version"] != "0.7.0":
             raise GateBlockedError("current dispatch-type registry version is invalid")
-        role_registry = load_accepted_role_registry(repo_root)
+        role_registry = load_accepted_role_registry(repo_root, expected_ref=value["agent_role_registry_ref"])
         if validate_ref(value["agent_role_registry_ref"]) != role_registry.ref:
             raise GateBlockedError("dispatch-type registry role authority differs")
         schema_ref = value["ledger_schema_ref"]

@@ -1,0 +1,75 @@
+{
+  "schema": "aci-dispatch-type-registry/v1",
+  "ledger_schema_version": "0.6.4",
+  "generic_fallback": {
+    "id": "other",
+    "status": "live",
+    "ledger_value": "other",
+    "api_aliases": ["others"],
+    "capability_roots": [".claude/skills"],
+    "authority_modes": ["legacy-managed"],
+    "tool_profile_ref": "host/inherited@1"
+  },
+  "types": [
+    {
+      "id": "research",
+      "status": "live",
+      "routable": true,
+      "capability_ref": "research",
+      "capability_path": ".claude/skills/research/SKILL.md",
+      "authority_modes": ["legacy-managed"],
+      "tool_profile_ref": "host/inherited@1",
+      "ledger_value": "research"
+    },
+    {
+      "id": "code",
+      "status": "live",
+      "routable": true,
+      "capability_ref": "domainspec-implement",
+      "capability_path": ".claude/skills/domainspec-implement/SKILL.md",
+      "authority_modes": ["legacy-managed"],
+      "tool_profile_ref": "host/inherited@1",
+      "ledger_value": "code"
+    },
+    {
+      "id": "review",
+      "status": "live",
+      "routable": true,
+      "capability_ref": "review",
+      "capability_path": ".claude/skills/review/SKILL.md",
+      "authority_modes": ["legacy-managed"],
+      "tool_profile_ref": "host/inherited@1",
+      "ledger_value": "review"
+    },
+    {
+      "id": "plan",
+      "status": "reserved",
+      "routable": false,
+      "capability_ref": null,
+      "capability_path": null,
+      "authority_modes": [],
+      "tool_profile_ref": null,
+      "ledger_value": "plan"
+    },
+    {
+      "id": "suggestion",
+      "status": "reserved",
+      "routable": false,
+      "capability_ref": null,
+      "capability_path": null,
+      "authority_modes": [],
+      "tool_profile_ref": null,
+      "ledger_value": "suggestion"
+    },
+    {
+      "id": "experiment",
+      "status": "live",
+      "routable": true,
+      "capability_ref": "experiment",
+      "capability_path": ".claude/skills/experiment/SKILL.md",
+      "authority_modes": ["legacy-managed"],
+      "tool_profile_ref": "host/inherited@1",
+      "ledger_value": "experiment"
+    }
+  ]
+}

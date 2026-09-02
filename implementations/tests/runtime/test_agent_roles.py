@@ -34,7 +34,7 @@ class AgentRoleRegistryTests(unittest.TestCase):
             root = Path(tmp)
             contracts = root / "implementations/contracts"
             contracts.mkdir(parents=True)
-            for name in ("agent-role-registry.v1.json", "agent-role-registry-authority.v1.json"):
+            for name in ("agent-role-registry.v1.json", "agent-role-registry-authority.v1.json", "agent-role-host-routing.v1.json", "agent-role-registry-selection.json"):
                 (contracts / name).write_bytes((REPO / "implementations/contracts" / name).read_bytes())
             value = json.loads((contracts / "agent-role-registry.v1.json").read_text(encoding="utf-8"))
             value["roles"][0]["purpose"] += " substituted"
@@ -54,17 +54,46 @@ class AgentRoleRegistryTests(unittest.TestCase):
             root = Path(tmp)
             contracts = root / "implementations/contracts"
             contracts.mkdir(parents=True)
+            for name in ("agent-role-registry.v1.json", "agent-role-registry-authority.v1.json", "agent-role-host-routing.v1.json"):
+                (contracts / name).write_bytes((REPO / "implementations/contracts" / name).read_bytes())
+            v1_digest = hashlib.sha256((contracts / "agent-role-registry.v1.json").read_bytes()).hexdigest()
             value = json.loads(
                 (REPO / "implementations/contracts/agent-role-registry.v1.json").read_text(encoding="utf-8")
             )
             value["version"] = "2"
             value["roles"].append({"role_id": "facilitator", "enabled": True, "purpose": "Facilitate a future configured workflow."})
             raw = json.dumps(value, ensure_ascii=False, indent=2).encode("utf-8") + b"\n"
-            (contracts / "agent-role-registry.v1.json").write_bytes(raw)
+            (contracts / "agent-role-registry.v2.json").write_bytes(raw)
             ref = {"name": value["name"], "version": "2", "digest": "sha256:" + hashlib.sha256(raw).hexdigest()}
             authority = {"schema": "aci.role-registry-authority@1", "accepted": [ref]}
-            (contracts / "agent-role-registry-authority.v1.json").write_text(json.dumps(authority), encoding="utf-8")
+            (contracts / "agent-role-registry-authority.v2.json").write_text(json.dumps(authority), encoding="utf-8")
+            routing = json.loads((REPO / "implementations/contracts/agent-role-host-routing.v1.json").read_text(encoding="utf-8"))
+            routing["role_registry_ref"] = ref
+            (contracts / "agent-role-host-routing.v2.json").write_text(json.dumps(routing), encoding="utf-8")
+            selection = {
+                "schema": "aci.role-registry-selection@1",
+                "selected_ref": ref,
+                "registry_path": "implementations/contracts/agent-role-registry.v2.json",
+                "authority_path": "implementations/contracts/agent-role-registry-authority.v2.json",
+                "host_routing_path": "implementations/contracts/agent-role-host-routing.v2.json",
+            }
+            (contracts / "agent-role-registry-selection.json").write_text(json.dumps(selection), encoding="utf-8")
+            self.assertEqual(hashlib.sha256((contracts / "agent-role-registry.v1.json").read_bytes()).hexdigest(), v1_digest)
             self.assertEqual(load_accepted_role_registry(root).require("facilitator"), "facilitator")
+
+    def test_unpinned_or_unknown_selection_fails_closed(self) -> None:
+        for selected_ref in ({"name": "aci.agent-roles", "version": "1"}, {"name": "aci.agent-roles", "version": "99", "digest": "sha256:" + "0" * 64}):
+            with self.subTest(selected_ref=selected_ref), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                contracts = root / "implementations/contracts"
+                contracts.mkdir(parents=True)
+                for name in ("agent-role-registry.v1.json", "agent-role-registry-authority.v1.json", "agent-role-host-routing.v1.json", "agent-role-registry-selection.json"):
+                    (contracts / name).write_bytes((REPO / "implementations/contracts" / name).read_bytes())
+                selection = json.loads((contracts / "agent-role-registry-selection.json").read_text(encoding="utf-8"))
+                selection["selected_ref"] = selected_ref
+                (contracts / "agent-role-registry-selection.json").write_text(json.dumps(selection), encoding="utf-8")
+                with self.assertRaises(AgentRoleError):
+                    load_accepted_role_registry(root)
 
 
 if __name__ == "__main__":

@@ -41,6 +41,7 @@ class RuntimeTypeBootstrapTests(unittest.TestCase):
             Path("implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json"),
             Path("implementations/contracts/agent-role-registry.v1.json"),
             Path("implementations/contracts/agent-role-registry-authority.v1.json"),
+            Path("implementations/contracts/agent-role-registry-selection.json"),
             Path("implementations/contracts/agent-role-host-routing.v1.json"),
             Path(".claude/skills/register-dispatch/append-dispatch.cjs"),
         ]

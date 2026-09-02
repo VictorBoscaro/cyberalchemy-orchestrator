@@ -43,6 +43,7 @@ class HostDispatchHookTests(unittest.TestCase):
             "implementations/contracts/dispatch-ledger-row.v0.7.0.schema.json",
             "implementations/contracts/agent-role-registry.v1.json",
             "implementations/contracts/agent-role-registry-authority.v1.json",
+            "implementations/contracts/agent-role-registry-selection.json",
             "implementations/contracts/agent-role-host-routing.v1.json",
             "docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json",
             "docs/features/agent-provenance-telemetry/integration/stage-b/execution-receipt.md",

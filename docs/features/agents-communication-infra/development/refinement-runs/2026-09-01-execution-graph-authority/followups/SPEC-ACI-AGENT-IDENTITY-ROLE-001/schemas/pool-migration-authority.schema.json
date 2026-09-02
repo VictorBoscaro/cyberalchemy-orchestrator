@@ -3,10 +3,11 @@
   "$id": "aci.pool-migration-authority@1.schema",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "source_path", "source_version", "target_version", "canonical_name_key", "source_raw_digest", "source_metadata_digest", "source_entry_count", "metadata_changes"],
+  "required": ["schema", "source_path", "source_fixture_path", "source_version", "target_version", "canonical_name_key", "source_raw_digest", "source_metadata_digest", "source_entry_count", "metadata_changes"],
   "properties": {
     "schema": {"const": "aci.pool-migration-authority@1"},
     "source_path": {"const": "telemetry/agents/agent-pool.yaml"},
+    "source_fixture_path": {"const": "fixtures/agent-pool.v0.6.yaml"},
     "source_version": {"const": "0.6.0"},
     "target_version": {"const": "0.7.0"},
     "canonical_name_key": {"const": "agent_name"},
