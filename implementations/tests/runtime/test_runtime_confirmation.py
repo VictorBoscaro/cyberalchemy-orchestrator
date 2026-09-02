@@ -1363,7 +1363,7 @@ class RuntimeConfirmationTests(unittest.TestCase):
         recovered = reopened.confirm_runtime_dispatch(**self._kwargs())
         self.assertEqual(recovered, self.values["confirmation-receipt.json"])
         with reopened.database.connect() as conn:
-            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 15)
+            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 16)
             migration = dict(
                 conn.execute(
                     "SELECT name,checksum FROM schema_migrations WHERE version=15"

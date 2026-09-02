@@ -1,0 +1,24 @@
+{
+  "schema": "aci.local-execution-fixture-manifest@1",
+  "inputs": {
+    "compilation_context": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/compilation-context.json", "digest": "sha256:8c6c38cc2c33aaf5bee9574ea40b59715caa6ce358fa0e9e2a0da8681c8a62aa"},
+    "allocator_evidence": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/allocator-evidence.json", "digest": "sha256:83f4ce5cec523638d2553fafbdbb08c2e06eb94328b76062ecddba0e222b8d86"},
+    "allocator_trust": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/allocator-trust.json", "digest": "sha256:089da960cd7593433bd7f4a59b5b5f180eec0115646b9239ed66482d11eb41ce"},
+    "draft_graph": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/review-correct-verify.draft.json", "digest": "sha256:39fc94f28e0ffe5b8efd3c7287bd8c0da000a3b190d4f776e04e09d162202177"},
+    "policy": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/policy.json", "digest": "sha256:ef2f15cb4fe36d90401ac5403b161e2a72d72eb786568d933ba7159a1091324d"},
+    "catalog": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/catalog.json", "digest": "sha256:ef278d91804a786b549abc3d8e6681ab667d19f2811afa0dbc3db9e89afd589b"},
+    "resources": {"path": "resources.json", "digest": "sha256:e90f2fa4995c184feee127a2439cc59ef1088606b9d00ba3f9c47ede063511d2"},
+    "role_registry": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/role-registry.json", "digest": "sha256:39b378fa3a10cb64c2488af9b7c96f89e409aa699b2e22885f83a755ac33f4aa"},
+    "agent_pool": {"path": "../../../IMPL-ACI-AGENT-IDENTITY-ROLE-001/fixtures/normalized-agent-pool.json", "digest": "sha256:ca971e44919b3688f873252b17a0224627d2efe3b886a9b81300bc72fd83b8dd"}
+  },
+  "issuer_evidence": {"path": "issuer-evidence.json", "digest": "sha256:777dd8c0ba26cc1ab4c390421d8944ceed0e794077db8153202528b8e3ebbc50"},
+  "acceptance_trust": {"path": "acceptance-trust.json", "digest": "sha256:1b86109aa902b7449bad06fb22a413fbbbebf6320da4945ed2cd95b814042648"},
+  "acceptance": {
+    "canonical_base64": "eyJhY2NlcHRlZF9ieSI6InByaW5jaXBhbDpmaXh0dXJlLXJldmlld2VyIiwiYWxsb2NhdGlvbl9pZCI6ImFsbG9jYXRpb246YWNpLmZpeHR1cmU6cmV2aWV3X2NvcnJlY3RfdmVyaWZ5OnIxIiwiYXV0aG9yaXR5X2NlaWxpbmciOiJwcm9wb3NlZC1leGVjdXRpb24tZ3JhcGgtbG9jYWwtZmFrZS1vbmx5IiwiY29tcGlsYXRpb25fYXV0aG9yaXR5X2RpZ2VzdCI6InNoYTI1Njo4NDc3MTE5OTc3ZjUwYWE0YmYyOTcxYTQ3YWRiYTJiNjc0MGQxY2M3NDQ4M2EwZjg2ZWU1OTU0MGFlOTcyOGEwIiwiZGVjaXNpb24iOiJhY2NlcHRlZCIsImRpc3BhdGNoX2lkIjoiZGlzcGF0Y2g6YWNpLmZpeHR1cmU6cmV2aWV3X2NvcnJlY3RfdmVyaWZ5IiwiZ3JhcGhfZGlnZXN0Ijoic2hhMjU2OmQzZTFkZTA0OTM5ZWMwMmI2NDlkOTkzZTNmNDUzY2E5NGZlNzk1NTMyMmEwNzQ1NDYzNDM5YjM2OTkxNWE2ZTQiLCJpc3N1ZXJfZXZpZGVuY2VfZGlnZXN0Ijoic2hhMjU2Ojc3N2RkOGMwYmEyNmNjMWFiNGMzOTA0MjFkODk0NGNlZWQwZTc5NDA3N2RiODE1MzIwMjUyOGI4ZTNlYmJjNTAiLCJpc3N1ZXJfcmVmIjp7Im5hbWUiOiJhY2kuZml4dHVyZS1sb2NhbC1hY2NlcHRvciIsInZlcnNpb24iOiIxIn0sInJldmlzaW9uIjoicjEiLCJzY2hlbWEiOiJhY2kubG9jYWwtZXhlY3V0aW9uLWFjY2VwdGFuY2VAMSJ9",
+    "digest": "sha256:5b7b06941ed18876cfb1256ff23768acfab037ff3115ebc4fc57ef6b26ad077d"
+  },
+  "expected_candidate": {
+    "graph_digest": "sha256:d3e1de04939ec02b649d993e3f453ca94fe7955322a0745463439b369915a6e4",
+    "compilation_authority_digest": "sha256:8477119977f50aa4bf2971a47adba2b6740d1cc74483a0f86ee59540ae9728a0"
+  }
+}

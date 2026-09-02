@@ -503,7 +503,7 @@ class RuntimeRunGroupHeadsTests(unittest.TestCase):
 
     def test_migration_014_isolated_reopens_and_has_direct_confirmed_parents(self) -> None:
         with self.database.connect() as conn:
-            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 15)
+            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 16)
             self.assertEqual(
                 {
                     row[0]

@@ -27,6 +27,7 @@ MIGRATION_NAMES = (
     "013_agent_continuation.sql",
     "014_runtime_run_group_heads.sql",
     "015_runtime_attempt_result_bus.sql",
+    "016_local_execution_graph_runtime.sql",
 )
 
 

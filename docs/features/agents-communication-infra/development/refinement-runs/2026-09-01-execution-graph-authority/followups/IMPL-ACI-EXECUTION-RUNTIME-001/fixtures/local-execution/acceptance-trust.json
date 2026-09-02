@@ -1,0 +1,11 @@
+{
+  "schema": "aci.local-execution-acceptance-trust@1",
+  "issuer_ref": {
+    "name": "aci.fixture-local-acceptor",
+    "version": "1"
+  },
+  "issuer_evidence_path": "issuer-evidence.json",
+  "issuer_evidence_digest": "sha256:777dd8c0ba26cc1ab4c390421d8944ceed0e794077db8153202528b8e3ebbc50",
+  "accepted_acceptance_digest": "sha256:5b7b06941ed18876cfb1256ff23768acfab037ff3115ebc4fc57ef6b26ad077d",
+  "authority_ceiling": "local-test-only"
+}

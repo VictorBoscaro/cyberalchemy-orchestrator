@@ -939,7 +939,7 @@ class ConfirmedBusComponentTests(unittest.TestCase):
             proof.close()
 
         with self.service.database.connect() as conn:
-            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 15)
+            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 16)
             foreign_keys = {
                 (row["from"], row["table"], row["to"])
                 for row in conn.execute(

@@ -1,0 +1,45 @@
+{
+  "schema": "aci.compilation-resource-fixture@1",
+  "resources": [
+    {
+      "resource_key": "result_x",
+      "kind": "input",
+      "media_type": "text/plain",
+      "encoding": "utf-8",
+      "content": "Resultado X a revisar.",
+      "digest": "sha256:44d90d18d91d79fbae7e1ca43c47a1657f6e0a644e9fe9ae63119f79c2f20186"
+    },
+    {
+      "resource_key": "review_report_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"type\":\"object\",\"required\":[\"findings\"],\"properties\":{\"findings\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}",
+      "digest": "sha256:40184ddadfbe797e460872fb8c0040d10257528fba1aed3aee885724f649bb60"
+    },
+    {
+      "resource_key": "correction_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"type\":\"object\",\"required\":[\"patch\",\"coverage\"],\"properties\":{\"patch\":{\"type\":\"string\"},\"coverage\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}",
+      "digest": "sha256:a01c7539a622acae730428c7f54ed0e4c75e37019ad5d8ae8520c19c3a3074c2"
+    },
+    {
+      "resource_key": "verification_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"type\":\"object\",\"required\":[\"verdict\",\"evidence\"],\"properties\":{\"verdict\":{\"enum\":[\"pass\",\"flag\",\"block\"]},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"additionalProperties\":false}",
+      "digest": "sha256:eaac2832bf0c48808dcbb30a218d607b3079e8ccbcea5948b3b48431f31c2ef5"
+    },
+    {
+      "resource_key": "receipt_schema",
+      "kind": "schema",
+      "media_type": "application/schema+json",
+      "encoding": "utf-8",
+      "content": "{\"additionalProperties\":false,\"properties\":{\"attempt_id\":{\"type\":[\"string\",\"null\"]},\"audit\":{\"additionalProperties\":false,\"properties\":{\"agent_json\":{\"type\":\"string\"},\"objective_json\":{\"type\":\"string\"},\"result_json\":{\"type\":\"string\"},\"route_json\":{\"type\":\"string\"}},\"required\":[\"objective_json\",\"agent_json\",\"route_json\",\"result_json\"],\"type\":\"object\"},\"graph_digest\":{\"type\":\"string\"},\"kind\":{\"type\":\"string\"},\"node_id\":{\"type\":[\"string\",\"null\"]},\"payload_json\":{\"type\":\"string\"},\"run_id\":{\"type\":\"string\"},\"schema\":{\"const\":\"aci.local-execution-receipt@1\"},\"sequence\":{\"minimum\":0,\"type\":\"integer\"}},\"required\":[\"schema\",\"run_id\",\"sequence\",\"kind\",\"graph_digest\",\"node_id\",\"attempt_id\",\"payload_json\",\"audit\"],\"type\":\"object\"}",
+      "digest": "sha256:ee744f30f26a306b2c9e022b19818b23211dc559966aada64dd00bfebe9fe6c8"
+    }
+  ]
+}

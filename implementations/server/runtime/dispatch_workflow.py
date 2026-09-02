@@ -255,6 +255,172 @@ def validate_opening_record(
     raise ValidationError(f"unknown record authority {record_authority!r}")
 
 
+def _sequential_handoffs(
+    *,
+    root: Path,
+    target_dir: Path,
+    record: dict[str, Any],
+    capability_ref: str,
+    route_digest: str,
+) -> tuple[list[dict[str, Any]], dict[str, list[dict[str, Any]]]]:
+    """Validate declared topology and materialize immutable producer outputs by target."""
+    groups = record["groups"]
+    group_index = {group["group_id"]: index for index, group in enumerate(groups)}
+    connections = record.get("connections", [])
+    if not isinstance(connections, list):
+        raise ValidationError("connections must be an ordered array")
+    handoffs: list[dict[str, Any]] = []
+    slots_by_target: dict[str, list[dict[str, Any]]] = {
+        group_id: [] for group_id in group_index
+    }
+    seen_pairs: set[tuple[str, str]] = set()
+    for connection in connections:
+        if not isinstance(connection, dict):
+            raise ValidationError("each connection must be an object")
+        if set(connection) != {"from", "to", "type"}:
+            raise ValidationError("only closed sequential connection records are executable")
+        source_group = connection.get("from")
+        target_group = connection.get("to")
+        if (
+            not isinstance(source_group, str)
+            or not isinstance(target_group, str)
+            or source_group not in group_index
+            or target_group not in group_index
+        ):
+            raise ValidationError("connection endpoints must name declared groups")
+        if connection.get("type") != "sequential":
+            raise GateBlockedError("only sequential connection semantics are executable")
+        if group_index[source_group] >= group_index[target_group]:
+            raise GateBlockedError(
+                "sequential connections must follow canonical declared group order"
+            )
+        pair = (source_group, target_group)
+        if pair in seen_pairs:
+            raise ValidationError("duplicate sequential connection")
+        seen_pairs.add(pair)
+
+        receipt_path = target_dir / (
+            f"handoff-{group_index[source_group]}-{group_index[target_group]}.json"
+        )
+        if not receipt_path.is_file():
+            raise GateBlockedError("required sequential handoff receipt is unavailable")
+        receipt = _json_object(receipt_path, "sequential handoff receipt")
+        if set(receipt) != {
+            "schema",
+            "dispatch_id",
+            "capability_ref",
+            "route_digest",
+            "connection",
+            "sources",
+        }:
+            raise ValidationError("sequential handoff receipt shape is invalid")
+        if (
+            receipt["schema"] != "aci-workflow-sequential-handoff/v1"
+            or receipt["dispatch_id"] != record["dispatch_id"]
+            or receipt["capability_ref"] != capability_ref
+            or receipt["route_digest"] != route_digest
+            or receipt["connection"] != connection
+        ):
+            raise ValidationError("sequential handoff identity or capability route differs")
+        raw_sources = receipt["sources"]
+        producer_agents = groups[group_index[source_group]]["agents"]
+        if not isinstance(raw_sources, list) or len(raw_sources) != len(producer_agents):
+            raise ValidationError("sequential handoff must cover every producer seat exactly once")
+        normalized_sources: list[dict[str, Any]] = []
+        schema_ref: str | None = None
+        total_bytes = 0
+        for expected_seat, source in enumerate(raw_sources):
+            if (
+                not isinstance(source, dict)
+                or set(source) != {"seat_index", "producer_output_receipt"}
+                or source.get("seat_index") != expected_seat
+            ):
+                raise ValidationError("sequential handoff producer seats are not canonical")
+            output = source.get("producer_output_receipt")
+            output_fields = {
+                "schema",
+                "dispatch_id",
+                "producer_binding_id",
+                "producer_agent_id",
+                "artifact_id",
+                "path",
+                "data_schema_ref",
+                "sha256",
+                "size_bytes",
+                "route_digest",
+                "receipt_digest",
+            }
+            if not isinstance(output, dict) or set(output) != output_fields:
+                raise ValidationError("producer-output receipt shape is invalid")
+            body_without_digest = dict(output)
+            receipt_digest = body_without_digest.pop("receipt_digest")
+            calculated_receipt_digest = digest_bytes(
+                canonical_text(body_without_digest).encode("utf-8")
+            )
+            if (
+                output["schema"] != "aci-host-workflow-producer-output/v1"
+                or output["dispatch_id"] != record["dispatch_id"]
+                or output["route_digest"] != route_digest
+                or not isinstance(output["data_schema_ref"], str)
+                or not output["data_schema_ref"]
+                or not isinstance(output["size_bytes"], int)
+                or isinstance(output["size_bytes"], bool)
+                or output["size_bytes"] < 0
+                or calculated_receipt_digest != receipt_digest
+            ):
+                raise ValidationError("producer-output receipt is invalid")
+            relative = output["path"]
+            if (
+                not isinstance(relative, str)
+                or not relative
+                or Path(relative).is_absolute()
+                or "\\" in relative
+                or ".." in Path(relative).parts
+            ):
+                raise ValidationError("producer-output path is invalid")
+            output_path = (root / relative).resolve()
+            try:
+                output_path.relative_to(root)
+                cursor = root / relative
+                while cursor != root:
+                    if cursor.is_symlink():
+                        raise ValidationError("producer-output symlinks are forbidden")
+                    cursor = cursor.parent
+                body = output_path.read_bytes()
+            except (OSError, ValueError) as exc:
+                raise ValidationError("producer-output bytes are unavailable") from exc
+            actual_digest = digest_bytes(body)
+            if (
+                output["sha256"] != actual_digest
+                or output["size_bytes"] != len(body)
+                or output["artifact_id"]
+                != "art_" + actual_digest.removeprefix("sha256:")[:32]
+            ):
+                raise ValidationError("producer-output bytes differ from immutable receipt")
+            if schema_ref is None:
+                schema_ref = output["data_schema_ref"]
+            elif schema_ref != output["data_schema_ref"]:
+                raise ValidationError("sequential producer outputs use different schemas")
+            total_bytes += len(body)
+            normalized_sources.append(
+                {"source_kind": "binding-output", "producer_output_receipt": output}
+            )
+        if schema_ref is None:
+            raise IntegrityError("sequential handoff has no producer schema")
+        slots_by_target[target_group].append(
+            {
+                "name": f"sequential:{source_group}:{target_group}",
+                "data_schema_ref": schema_ref,
+                "cardinality": {"min": len(normalized_sources), "max": len(normalized_sources)},
+                "max_bytes": total_bytes,
+                "purpose": f"Exact ordered outputs from {source_group}.",
+                "sources": normalized_sources,
+            }
+        )
+        handoffs.append(receipt)
+    return handoffs, slots_by_target
+
+
 def compile_bound_launch_plan(
     *,
     repo_root: Path,
@@ -302,6 +468,16 @@ def compile_bound_launch_plan(
         ):
             raise ValidationError("each group requires a unique id and non-empty agents")
         seen_groups.add(group_id)
+    handoffs, slots_by_target = _sequential_handoffs(
+        root=root,
+        target_dir=target_dir,
+        record=record,
+        capability_ref=capability_ref,
+        route_digest=route["route_digest"],
+    )
+    for group in groups:
+        group_id = group.get("group_id")
+        agents = group.get("agents")
         for seat_index, agent in enumerate(agents):
             if not isinstance(agent, dict):
                 raise ValidationError("each agent must be an object")
@@ -319,7 +495,7 @@ def compile_bound_launch_plan(
                     "turn_ordinal": 0,
                     "attempt_id": attempt_id,
                 },
-                "slots": [],
+                "slots": slots_by_target[group_id],
             }
             manifest_path = target_dir / f"{group_id}-{seat_index}-turn-0.json"
             manifest_digest = _write_canonical(manifest_path, manifest)
@@ -361,6 +537,7 @@ def compile_bound_launch_plan(
         "execution_authority_mode": authority_mode,
         "record_authority": record_authority,
         "route": route,
+        "handoffs": handoffs,
         "launches": launches,
     }
     plan_path = target_dir / "launch-plan.json"

@@ -1,0 +1,9 @@
+{
+  "schema": "aci.local-acceptance-issuer-evidence@1",
+  "issuer_ref": {
+    "name": "aci.fixture-local-acceptor",
+    "version": "1"
+  },
+  "integration": "fixture-exact-acceptance-digest",
+  "scope": "local-test-only"
+}
