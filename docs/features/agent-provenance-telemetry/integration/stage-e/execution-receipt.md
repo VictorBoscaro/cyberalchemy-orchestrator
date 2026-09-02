@@ -448,3 +448,73 @@ Verification results:
 - hook and bridge suites: 28/29, with one upstream workflow-manifest shape error;
 - complete runtime discovery: 267 tests, 6 failures and 6 errors, all retained as unresolved
   upstream integration evidence rather than reported as passing.
+
+## 2026-09-02 accepted execution-runtime integrity refresh
+
+The accepted local ExecutionGraph implementation added migration 016, registered it in
+`database.py`, repaired deterministic sequential-handoff bootstrap behavior in
+`dispatch_workflow.py`, and updated three adjacent tests to expect schema version 16. The same
+reviewer accepted those exact behaviors and the integrated 95-test matrix in
+`IMPL-ACI-EXECUTION-RUNTIME-001/review.md`; that review is pinned below.
+
+Before this refresh, the Stage-E manifest contained 83 paths with zero missing files and five
+digest mismatches: `database.py`, `dispatch_workflow.py`, and the three adjacent runtime tests. The
+refresh updates exactly those accepted member bytes, adds the migration file loaded by
+`database.py`, and preserves the remaining inventory. No repository-local Stage-E manifest
+generator was found in the bounded owner/source/test/tool search, so the manifest was regenerated
+deterministically as canonical sorted compact JSON from its prior inventory plus migration 016.
+
+| Evidence | SHA-256 |
+|---|---|
+| `implementations/server/runtime/database.py` | `sha256:623771651c603057b206ab1859f6cb8633dfeca7b4179585a9349838b2a3273a` |
+| `implementations/server/runtime/migrations/016_local_execution_graph_runtime.sql` | `sha256:2540b3249ce1da5fa3a6e5bef154efe9cea5ae7607be14b4221ad456ad76b2e8` |
+| `implementations/server/runtime/dispatch_workflow.py` | `sha256:c3522e41506c950d2d4e8233858128c546ecfebb85b8ce8631b90e97ee51a996` |
+| `implementations/tests/runtime/test_runtime_confirmation.py` | `sha256:c9c001ddd5fb926d75d5cea1b0d7530ff61528ceb8ea9c84078d9304820e65c2` |
+| `implementations/tests/runtime/test_runtime_confirmed_bus.py` | `sha256:7e1d4b4c462aa87bc839f3d090c895d44fb66bab263b80e22fd74025028b25f8` |
+| `implementations/tests/runtime/test_runtime_run_group_heads.py` | `sha256:ca96736094c4856734ae1cce265b34e15ce97626d817e0a3fef39c9eb3455f6e` |
+| accepted execution-runtime review | `sha256:8b5f152cd04ae9bbe44bc868802241432c779acae5fa3c01e0828937eb8f9dff` |
+| Stage-E source manifest (84 members) | `sha256:88cb809196e7a42affd2f4f9533f7bbb263ac1122f3bdb0cd805f61c88bbfbc1` |
+| Stage-C verifier `implementations/server/runtime/local_pilot.py` | `sha256:a85681373790ddbd89688ecdb172ef495c3d7cd5ae26b783dbb21aa21608f830` |
+
+Verification results:
+
+- complete Stage-E member verification: 84/84, zero missing and zero digest mismatches;
+- direct Stage-E verifier: PASS;
+- Stage-C preflight suite: 8/8, PASS;
+- accepted execution-runtime integrated matrix: 95/95, PASS;
+- provenance contracts: 6 ACI vectors, 5 positive, 8 rejection and 16 candidate cases, PASS;
+- register-dispatch clean installer and copy-drift suites: 6/6, PASS;
+- no-effects open-path probe: the exact confirmed opening digest and validation passed, its
+  `HostDispatchHook` runtime bridge reached ready state at migration 16 using a temporary database,
+  and execution stopped before authority issuance or `open_dispatch`; telemetry ledger and workflow
+  directory bytes/listing remained unchanged.
+
+This refresh closes only the Stage-E integrity drift. It does not claim that an open, append,
+session, seat launch, provider/tool call, external effect, commit, or push occurred.
+
+## 2026-09-02 optional-topology compatibility refresh
+
+Commit-time integration ran a broader 161-test identity/runtime matrix and found one valid
+single-group host opening that omitted the optional `connections` property. The new handoff
+compiler rejected that omission before the existing host lifecycle test could run. The
+dispatch-ledger schema permits omission, so `dispatch_workflow.py` now defaults only a missing
+property to the empty ordered topology; explicit non-array values still fail validation.
+
+| Evidence | SHA-256 |
+|---|---|
+| `implementations/server/runtime/dispatch_workflow.py` | `sha256:101dbb6a84f32a1b3745616a3bffafeba0f6df6334a289bf46e915af625fb458` |
+| Stage-E source manifest (84 members) | `sha256:f271272a7463e05d1268a94ab8cf081b1b35f91987e6e428cf683376ed40d4a1` |
+| Stage-C verifier `implementations/server/runtime/local_pilot.py` | `sha256:2cafae325d8e918b4195ecd6eaa05ca3cfdd2493b2166f4403179e88ec8d58b1` |
+
+Verification results:
+
+- focused host-dispatch hook suite: 11/11, PASS;
+- combined identity/runtime matrix: 161/161, PASS in 335.760s;
+- Stage-C preflight suite: 8/8, PASS;
+- identity specification vectors: 41/41, PASS;
+- provenance contracts, MCP smoke/RPC and current package self-check: PASS.
+
+The preceding independent `KEEP` remains frozen evidence for the exact bytes it reviewed. It does
+not independently approve this later one-line compatibility repair. This refresh records local
+commit-time validation only; exact-byte independent re-review remains pending. No open, append,
+session, seat launch, provider/tool call, external effect, commit, or push is claimed here.
