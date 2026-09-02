@@ -323,9 +323,9 @@ contract, durable writer, global runtime-baseline drift and POLICY-002 code entr
 - The later Craft lifecycle proves that Stage-E preflight and open can pass, but its zero-binding
   orphan attempt closed `error`; partial ledger files and updater checkpoints are not execution
   success.
-- The identity/role follow-up supersedes earlier identity/consumer claims only and its code repair
-  now has `KEEP`; it does not erase historical reviews or prove projector/confirmation/live-adapter
-  authority.
+- The identity/role behavior repair has independent `KEEP`; the later checkout-portability
+  metadata/test repair passes locally but awaits exact-byte re-review. Neither state erases
+  historical reviews or proves projector/confirmation/live-adapter authority.
 - The planned closure review remains unexecuted and cannot authorize any blocked execution slice.
 - Generic-stage-handoff architecture selection and capability review do not prove aggregate
   promotion, durable runtime facts, conformance fixtures or implementation.

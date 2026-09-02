@@ -12,8 +12,11 @@ class RegisterDispatchCopyDriftTests(unittest.TestCase):
     def read(self, host: str, skill: str, file: str = "SKILL.md") -> bytes:
         return (REPO / f".{host}/skills/{skill}/{file}").read_bytes()
 
-    def test_appenders_are_byte_identical(self) -> None:
-        copies = [self.read(host, "register-dispatch", "append-dispatch.cjs") for host in ("claude", "agents", "codex")]
+    def test_appenders_are_text_identical_across_host_line_endings(self) -> None:
+        copies = [
+            self.read(host, "register-dispatch", "append-dispatch.cjs").replace(b"\r\n", b"\n")
+            for host in ("claude", "agents", "codex")
+        ]
         self.assertEqual(copies[1:], copies[:1] * 2)
 
     def test_register_skill_migration_contract_is_semantically_equal(self) -> None:

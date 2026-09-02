@@ -97,3 +97,20 @@ The Stage-E member digest and verifier pin were refreshed to the repaired bytes.
 passed 11/11, the combined matrix passed 161/161 in 335.760s, and Stage-C passed 8/8. Independent
 exact-byte re-review of this post-review repair was not run during commit integration and remains
 pending.
+
+## Post-rebase checkout-portability addendum
+
+Rebase replay exposed that the prior manifest/package digest for the appender came from the
+ignored host `.agents` copy with mixed line endings, not the canonical tracked `.claude` LF blob.
+The selected-registry JSON and frozen-v1 archive also needed explicit LF attributes to reproduce
+their committed digests under Windows `core.autocrlf=true`.
+
+A subsequent full manifest-to-`HEAD` blob proof found three older mixed-line-ending pins for the
+`experiment`, `register-dispatch`, and `research` skill documents. Each already declared LF, so the
+manifest was repinned to its existing committed blob without changing skill content.
+
+The tracked appender and Stage-E pins now bind committed checkout bytes. Copy-drift normalizes only
+line-ending representation before comparing content. Stage-C passed 8/8, copy-drift/installer
+passed 6/6, the v2 package self-check passed, and all four frozen-v1 members matched their existing
+manifest. This locally green portability repair is not covered by the earlier exact-byte review;
+independent re-review remains pending.

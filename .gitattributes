@@ -5,6 +5,8 @@ docs/features/recursive-work-orchestrator/** text eol=lf
 # Stage-E manifest-bound source stable across Windows and POSIX checkouts.
 docs/features/agent-provenance-telemetry/integration/stage-b/execution-receipt.md text eol=lf
 docs/features/agent-provenance-telemetry/integration/stage-c/local-pilot-enablement.md text eol=lf
+docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.md text eol=lf
+docs/features/agent-provenance-telemetry/integration/stage-e/execution-receipt.sha256 text eol=lf
 docs/features/agent-provenance-telemetry/integration/stage-e/source-manifest.json text eol=lf
 docs/features/agent-provenance-telemetry/integration/stage-f/host-hook-policy.json text eol=lf
 docs/features/agent-provenance-telemetry/integration/stage-a/profiles/*.json text eol=lf
@@ -17,5 +19,7 @@ docs/features/agents-communication-infra/reviews/2026-07-23-stage-a-freeze/profi
 AGENTS.md text eol=lf
 CLAUDE.md text eol=lf
 implementations/contracts/dispatch-type-registry.v1.json text eol=lf
+implementations/contracts/agent-role-registry-selection.json text eol=lf
+implementations/contracts/legacy/register-dispatch-runtime-package.v1/** text eol=lf
 implementations/server/runtime/** text eol=lf
 implementations/tests/runtime/** text eol=lf

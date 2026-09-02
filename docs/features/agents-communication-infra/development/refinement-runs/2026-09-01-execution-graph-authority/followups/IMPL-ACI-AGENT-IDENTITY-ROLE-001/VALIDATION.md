@@ -65,6 +65,19 @@ Craft validation: `PASS`, YAML parses, all 125 `by_id` pointers resolve, and art
 as its ledger row records.
 `git diff --check`: `PASS` (line-ending conversion warnings only).
 
+## 2026-09-02 committed-checkout portability addendum
+
+Push preparation rebased the work and exposed that package/integrity metadata had pinned an
+ignored host appender copy with mixed line endings rather than the canonical tracked LF blob. The
+repair adds explicit LF attributes for the selected-registry contract and frozen-v1 archive,
+repins the current v2 package to the tracked appender, and normalizes only CRLF/LF representation
+in the three-host copy-drift assertion.
+
+Copy-drift and installer suites pass 6/6, the current v2 package self-check passes, all four
+frozen-v1 members match their existing manifest, and Stage-C passes 8/8. The prior independent
+`KEEP` remains evidence for its reviewed behavior, but does not independently approve these later
+portability metadata/test bytes; exact-byte re-review remains pending.
+
 ## Explicit regression residue
 
 `test_runtime_type_bootstrap` plus its abuse module still pass 14/19. The five remaining cases

@@ -518,3 +518,38 @@ The preceding independent `KEEP` remains frozen evidence for the exact bytes it 
 not independently approve this later one-line compatibility repair. This refresh records local
 commit-time validation only; exact-byte independent re-review remains pending. No open, append,
 session, seat launch, provider/tool call, external effect, commit, or push is claimed here.
+
+## 2026-09-02 committed-checkout portability refresh
+
+After rebasing onto the current remote, Git replayed tracked files according to repository
+attributes and exposed pre-stage host-byte pins. The Stage-E manifest and v2 package had pinned the
+ignored `.agents` appender copy's mixed line endings instead of the canonical tracked `.claude` LF
+blob. The selected-registry JSON also lacked an explicit LF attribute. A full manifest-to-`HEAD`
+blob proof then found three older mixed-line-ending pins for the `experiment`, `register-dispatch`,
+and `research` skill documents; all three already declared canonical LF.
+
+The repair pins the tracked appender SHA-256, marks the selected-registry contract and frozen-v1
+archive as LF, and makes the three-host copy-drift assertion normalize only CRLF/LF representation
+before comparing content bytes. The frozen-v1 manifest already named the committed LF member
+digests, so its authority values did not change.
+
+| Evidence | SHA-256 |
+|---|---|
+| tracked `.claude/skills/register-dispatch/append-dispatch.cjs` | `sha256:0f982d4022f049054b7c3a8e2837b7dda272f1d7c63db9ee81689906bd9fc9f2` |
+| tracked `.claude/skills/experiment/SKILL.md` | `sha256:280275638564e6feed0bdc885f7732c6bd67f64eb01d0a58e0d7e6a5568885ad` |
+| tracked `.claude/skills/register-dispatch/SKILL.md` | `sha256:2622fd9b134dae5469be94a1b05c4b36e2db79c078f83fbed6bf5d5a280a590c` |
+| tracked `.claude/skills/research/SKILL.md` | `sha256:cfb38291654f3400e052fb796a7fe1c2580875c7d55cf4db54d7a9b53c6401b4` |
+| Stage-E source manifest (84 members) | `sha256:0bc9c9acc44b081c44e80ff54e078ac663f84670fd0ccedb12d9112990cbbb81` |
+| Stage-C verifier `implementations/server/runtime/local_pilot.py` | `sha256:2361edb376c5f329197470050f2e83a4533d12f96f60fc37928d92d2fe787f69` |
+
+Verification results:
+
+- complete committed-checkout Stage-E member scan: 84/84, PASS;
+- Stage-C preflight suite: 8/8, PASS;
+- copy-drift and installer suites: 6/6, PASS;
+- current v2 package self-check: PASS;
+- frozen-v1 archive member digests: 4/4, PASS.
+
+This is a local portability repair discovered during push preparation. It is not covered by the
+earlier independent exact-byte review, so re-review remains pending. No open, append, session, seat
+launch, provider/tool call, external effect, commit, or push is claimed here.
