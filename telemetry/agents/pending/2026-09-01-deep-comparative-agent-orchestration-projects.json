@@ -1,0 +1,60 @@
+{
+  "dispatch_id": "2026-09-01-deep-comparative-agent-orchestration-projects",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Collect evidence-grounded comparative dossiers for eight adjacent agent-orchestration repositories against Cyberalchemy. This first pipeline stage supplies frozen primary-source evidence to a separately governed synthesis stage.",
+  "context": "The governing questions and claim discipline are defined in research/agent-orchestration-project-comparison/research-initial-definitions.md. Research must distinguish documentation assertions, implementation witnesses, tests, and executed behavior; absence claims remain bounded to inspected surfaces. Explorer returns will be frozen by the parent before any synthesis dispatch is compiled, preventing unmanifested runtime handoffs.",
+  "max_loops": 2,
+  "final_approver": "Meyer, Bertrand",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/agent-orchestration-project-comparison/",
+  "groups": [
+    {
+      "group_id": "explorers",
+      "n": 4,
+      "agents": [
+        {
+          "agent_name": "Liskov, Barbara",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md in full. Deeply inspect builderz-labs/mission-control and boundflow/boundflow at a pinned commit or release, recording repository URL, SHA, inspection date, license, and bounded activity indicators. Use primary GitHub evidence: documentation, source, configuration, tests, releases, issues or discussions only when needed. For every load-bearing claim, label evidence as documentation assertion, implementation witness, test witness, or executed observation and provide a stable permalink or exact path plus SHA; README text alone is not implementation proof. Answer RQ2-RQ4 for each repository and contribute evidence to RQ5-RQ13 by comparing against Cyberalchemy's local research definitions and cited project surfaces. Return: repository fact sheets; architecture and workflow reconstruction; capability/evidence matrix; what each has that Cyberalchemy does not propose; what Cyberalchemy has that each lacks on inspected surfaces; reusable mechanisms with concrete source witnesses, dependencies, license constraints, fit risks, and adopt/adapt/reject/investigate candidates; contrary evidence, unresolved questions, and bounded negative claims. Do not modify project artifacts; return a source-ready report to the synthesis stage. Do not recommend implementation or claim novelty."
+        },
+        {
+          "agent_name": "Hewitt, Carl",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md in full. Deeply inspect open-multi-agent/open-multi-agent and OrlojHQ/orloj at a pinned commit or release, recording repository URL, SHA, inspection date, license, and bounded activity indicators. Use primary GitHub evidence: documentation, source, configuration, tests, releases, issues or discussions only when needed. For every load-bearing claim, label evidence as documentation assertion, implementation witness, test witness, or executed observation and provide a stable permalink or exact path plus SHA; README text alone is not implementation proof. Answer RQ2-RQ4 for each repository and contribute evidence to RQ5-RQ13 by comparing against Cyberalchemy's local research definitions and cited project surfaces. Return: repository fact sheets; architecture and workflow reconstruction; capability/evidence matrix; what each has that Cyberalchemy does not propose; what Cyberalchemy has that each lacks on inspected surfaces; reusable mechanisms with concrete source witnesses, dependencies, license constraints, fit risks, and adopt/adapt/reject/investigate candidates; contrary evidence, unresolved questions, and bounded negative claims. Do not modify project artifacts; return a source-ready report to the synthesis stage. Do not recommend implementation or claim novelty."
+        },
+        {
+          "agent_name": "Gray, Jim",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md in full. Deeply inspect temporal-community/temporal-agent-harness and LF-Decentralized-Trust-labs/gitmesh at a pinned commit or release, recording repository URL, SHA, inspection date, license, and bounded activity indicators. Use primary GitHub evidence: documentation, source, configuration, tests, releases, issues or discussions only when needed. For every load-bearing claim, label evidence as documentation assertion, implementation witness, test witness, or executed observation and provide a stable permalink or exact path plus SHA; README text alone is not implementation proof. Answer RQ2-RQ4 for each repository and contribute evidence to RQ5-RQ13 by comparing against Cyberalchemy's local research definitions and cited project surfaces. Return: repository fact sheets; architecture and workflow reconstruction; capability/evidence matrix; what each has that Cyberalchemy does not propose; what Cyberalchemy has that each lacks on inspected surfaces; reusable mechanisms with concrete source witnesses, dependencies, license constraints, fit risks, and adopt/adapt/reject/investigate candidates; contrary evidence, unresolved questions, and bounded negative claims. Do not modify project artifacts; return a source-ready report to the synthesis stage. Do not recommend implementation or claim novelty."
+        },
+        {
+          "agent_name": "Kay, Alan",
+          "role": "explorer",
+          "model": "gpt-5.6-terra",
+          "token_budget": 6000,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md in full. Deeply inspect Chorus-AIDLC/Chorus and chankov/agent-fleet at a pinned commit or release, recording repository URL, SHA, inspection date, license, and bounded activity indicators. Use primary GitHub evidence: documentation, source, configuration, tests, releases, issues or discussions only when needed. For every load-bearing claim, label evidence as documentation assertion, implementation witness, test witness, or executed observation and provide a stable permalink or exact path plus SHA; README text alone is not implementation proof. Answer RQ2-RQ4 for each repository and contribute evidence to RQ5-RQ13 by comparing against Cyberalchemy's local research definitions and cited project surfaces. Return: repository fact sheets; architecture and workflow reconstruction; capability/evidence matrix; what each has that Cyberalchemy does not propose; what Cyberalchemy has that each lacks on inspected surfaces; reusable mechanisms with concrete source witnesses, dependencies, license constraints, fit risks, and adopt/adapt/reject/investigate candidates; contrary evidence, unresolved questions, and bounded negative claims. Do not modify project artifacts; return a source-ready report to the synthesis stage. Do not recommend implementation or claim novelty."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "dispatch_id": "2026-09-01-deep-comparative-agent-orchestration-review",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Independently gate the completed comparative research for precedent ownership, non-vacuity and definitional soundness before final acceptance.",
+  "context": "The frozen evidence, full synthesis and findings are in research/agent-orchestration-project-comparison/. Each skeptic owns exactly one gate and may return corrections but must not edit files or perform another gate. The parent will apply only traceable corrections and retain unresolved dissent before the independent final approval decision.",
+  "max_loops": 1,
+  "final_approver": "Meyer, Bertrand",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/agent-orchestration-project-comparison/",
+  "parent_dispatch_id": "2026-09-01-deep-comparative-agent-orchestration-synthesis",
+  "groups": [
+    {
+      "group_id": "reviewers",
+      "n": 3,
+      "agents": [
+        {
+          "agent_name": "Popper, Karl",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md, explorer-evidence.md, research.md and findings.md. Apply only the precedent gate. Attack ownership, provenance and originality implications: separate mechanisms owned by a named repository from generic framework patterns, upstream mechanisms and mere usage; reject novelty inferences unsupported by primary evidence. Check every reuse-candidate owner and any claim that Cyberalchemy is distinctive. Return a claim-by-claim PASS, REVISE or REJECT table with exact file section and source citation, corrected owner labels, retained uncertainty and one bounded correction list for the parent. Do not perform non-vacuity or definitional-soundness review and do not edit files."
+        },
+        {
+          "agent_name": "Dijkstra, Edsger W.",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md, explorer-evidence.md, research.md and findings.md. Apply only the non-vacuity gate. For every asserted strength, gap, differentiator and reuse candidate, demand a concrete job plus implementation, test, configuration or executed witness appropriate to its strength. Downgrade README-only, category-only and generic-practice claims; convert missing witnesses into explicit unknowns or typed negatives. Return a claim-by-claim PASS, REVISE or REJECT table naming the missing or sufficient witness, plus one bounded correction list for the parent. Do not perform precedent or definitional-soundness review and do not edit files."
+        },
+        {
+          "agent_name": "Parnas, David",
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 4500,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md, explorer-evidence.md, research.md and findings.md. Apply only the definitional-soundness gate. Test whether compared concepts occupy the same system layer and semantics, whether categories are mistaken for mechanisms, whether relabeling dissolves claimed differences, and whether negative claims use the correct typed-negative class. Check especially dispatch, workflow, agent, schema, instance, governance metadata, provenance, approval, evidence, observability, authority and product boundary. Return a claim-by-claim PASS, REVISE or REJECT table, precise relabelings and one bounded correction list for the parent. Do not perform precedent or non-vacuity review and do not edit files."
+        }
+      ]
+    }
+  ]
+}

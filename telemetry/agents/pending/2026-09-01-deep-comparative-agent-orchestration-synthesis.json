@@ -1,0 +1,40 @@
+{
+  "dispatch_id": "2026-09-01-deep-comparative-agent-orchestration-synthesis",
+  "schema_version": "0.6.4",
+  "dispatch_type": "research",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "research",
+    "ledger_dispatch_type": "research",
+    "capability_ref": "research",
+    "capability_path": ".claude/skills/research/SKILL.md",
+    "capability_digest": "sha256:56ce56d0b8ac779455ee6f76b999f9c84e7bce0a3af14791b575f17b5ee6f4a9",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:455b246eb9c0da49ee27d42ef6a5ecedd4a9bd7b9046bc6f5ad0ed57183e6767"
+  },
+  "goal": "Synthesize the frozen eight-repository evidence into a full comparative research report and compact findings surface, preserving uncertainty, contrary evidence, source ownership and Cyberalchemy product boundaries.",
+  "context": "The source dispatch is closed and its frozen evidence is at research/agent-orchestration-project-comparison/explorer-evidence.md. The governing questions and claim rules are in research-initial-definitions.md. This stage may write only research.md and findings.md in that working folder and has no authority to adopt code, change the target model, or erase unresolved disagreement.",
+  "max_loops": 1,
+  "final_approver": "Meyer, Bertrand",
+  "anti_bias_mode": "disabled",
+  "working_folder": "research/agent-orchestration-project-comparison/",
+  "parent_dispatch_id": "2026-09-01-deep-comparative-agent-orchestration-projects",
+  "groups": [
+    {
+      "group_id": "synthesis",
+      "n": 1,
+      "agents": [
+        {
+          "agent_name": "Evans, Eric",
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 12000,
+          "initial_prompt": "Read research/agent-orchestration-project-comparison/research-initial-definitions.md and research/agent-orchestration-project-comparison/explorer-evidence.md in full. Treat the latter as the frozen return of four governed explorers over eight pinned repositories; preserve its evidence labels, permalinks, temporal bounds, contrary evidence and license caveats. Inspect local Cyberalchemy source only where the definitions require verification, and do not silently strengthen explorer claims. Write research/agent-orchestration-project-comparison/research.md as the full evidence-bearing answer to RQ0-RQ14 and findings.md as a compact decision surface. Include: RQ coverage/status table; eight fact sheets; system-layer classification; cross-repository capability matrix; documentation-versus-implementation divergences; what each external project has that Cyberalchemy does not propose; what Cyberalchemy evidences that each lacks on inspected surfaces; gap versus deliberate/undecided boundary classifications; and a reuse matrix with candidate, actual owner or prior-art qualification, concrete witness, evidence mode, definitional soundness, boundary fit, dependencies/license, uncertainty, verdict and use mode. A repository that uses a generic framework is not automatically its owner. Keep implementation witnesses distinct from tests and executed observations; bound every absence claim; record unresolved questions and retained dissent. Research findings are not implementation or adoption authority."
+        }
+      ]
+    }
+  ]
+}
