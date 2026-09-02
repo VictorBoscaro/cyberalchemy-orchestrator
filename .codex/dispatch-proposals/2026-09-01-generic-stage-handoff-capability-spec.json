@@ -1,0 +1,57 @@
+{
+  "dispatch_id": "2026-09-01-generic-stage-handoff-capability-spec",
+  "schema_version": "0.6.4",
+  "dispatch_type": "other",
+  "goal": "Create and independently check the bounded semantic capability specification for one generic producer-to-consumer stage handoff in ACI.",
+  "context": "The reviewed discovery digest sha256:328139a23aff2d391d51f85869c36b8a943aaf4833547fe9afdeaa9acfc8b6ec separates result commitment, publication authorization, publication occurrence, immutable delivery, consumer acceptance, and downstream evidence. This dispatch creates only the new capability document and must preserve every evidence and authority boundary. The compiler-extension versus new-primitive choice remains unresolved and must be recorded as an implementation blocker rather than silently selected.",
+  "max_loops": 1,
+  "final_approver": "parent",
+  "anti_bias_mode": "disabled",
+  "capability_route": {
+    "schema": "aci-capability-route/v1",
+    "registry_schema": "aci-dispatch-type-registry/v1",
+    "registry_digest": "sha256:f79876a6d63dcc33da9d9e2468432ab6049a825dd73f8da17a56095ec472b9de",
+    "dispatch_type_ref": "other",
+    "ledger_dispatch_type": "other",
+    "capability_ref": "domainspec-spec-feature",
+    "capability_path": ".claude/skills/domainspec-spec-feature/SKILL.md",
+    "capability_digest": "sha256:4382346ff5d2f35756ced8fded2c15329039589e9910b05fbca8d239e6e3cee6",
+    "execution_authority_mode": "legacy-managed",
+    "tool_profile_ref": "host/inherited@1",
+    "route_digest": "sha256:cc5893e752d25bade8508762ed6ebacbca011660ac79cd349a31f3e72ed83a85"
+  },
+  "groups": [
+    {
+      "group_id": "spec-writer",
+      "agents": [
+        {
+          "role": "writer",
+          "model": "gpt-5.6-sol",
+          "token_budget": 8000,
+          "agent_name": "van Lamsweerde, Axel",
+          "initial_prompt": "Work as the bounded DomainSpec writer for ACI generic stage handoff. Read AGENTS.md, .claude/skills/domainspec-spec-feature/SKILL.md, domainspec/TAXONOMY.md, domainspec/RELATIONSHIPS.md, docs/features/agents-communication-infra/discovery/generic-stage-handoff.md, the existing ACI aggregate and aspect specs, confirmation authority, and the resumable-agent-continuation capability precedent. Verify the discovery digest is sha256:328139a23aff2d391d51f85869c36b8a943aaf4833547fe9afdeaa9acfc8b6ec. Create exactly docs/features/agents-communication-infra/specs/capabilities/generic-stage-handoff.md and no other product document. Translate GSHD-1 through GSHD-5 into normative, testable semantic rules; keep commitment, authorization, occurred publication, delivery, acceptance, access, use, reliance, and claim support distinct. Preserve authority, identity, receipt, retry, recovery, uncertainty, and collapse-test boundaries. Keep the compiler-extension versus new-primitive decision explicitly unresolved and mark implementation/aggregate promotion blocked on that decision. Do not claim implementation, runtime enforcement, or owner approval stronger than the sources prove. Respect the repository schema/instance terminology guardrail. Do not spawn additional agents; the declared document-reviewer seat is the single helper. Return the written path, SHA-256, source trace, validations run, and unresolved items."
+        }
+      ]
+    },
+    {
+      "group_id": "document-reviewer",
+      "agents": [
+        {
+          "role": "skeptic",
+          "model": "gpt-5.6-sol",
+          "token_budget": 5000,
+          "agent_name": "Dijkstra, Edsger W.",
+          "initial_prompt": "Act as the single adversarial document-check helper required by domainspec-spec-feature. After the writer produces docs/features/agents-communication-infra/specs/capabilities/generic-stage-handoff.md, read that exact file, its SHA-256, the governing discovery digest sha256:328139a23aff2d391d51f85869c36b8a943aaf4833547fe9afdeaa9acfc8b6ec, .claude/skills/domainspec-spec-feature/SKILL.md, domainspec/TAXONOMY.md, domainspec/RELATIONSHIPS.md, and the cited ACI contracts. Do not edit files. In one pass assess template/convention fit, taxonomy meta-type fit, cross-link and anchor integrity, authority trace for every normative claim, formal-rule testability, fidelity to GSHD-1 through GSHD-5, and whether any wording collapses authorization, occurrence, delivery, acceptance, access, use, reliance, or support. Adversarially challenge your own findings under claim <= proof. Return only verdict pass or fix, the exact reviewed digest, and a concrete evidence-cited fix list. On the single re-check, verify only the corrected exact digest and return pass or the remaining disagreement."
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "spec-writer",
+      "to": "document-reviewer",
+      "type": "zig-zag",
+      "loop_cap": 1
+    }
+  ]
+}

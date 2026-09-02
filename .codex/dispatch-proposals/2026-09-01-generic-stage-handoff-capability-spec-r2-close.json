@@ -1,0 +1,18 @@
+{
+  "close_of": "2026-09-01-generic-stage-handoff-capability-spec-r2",
+  "capability_route_digest": "sha256:cc5893e752d25bade8508762ed6ebacbca011660ac79cd349a31f3e72ed83a85",
+  "exit_reason": "dissent_irreconcilable",
+  "agents_spawned": {
+    "total": 2,
+    "tree": {
+      "writer": 1,
+      "skeptic": 1,
+      "helpers": 0
+    },
+    "loops_used": 1
+  },
+  "feedback_prompts": [
+    "Aplique uma única rodada de correção em docs/features/agents-communication-infra/specs/capabilities/generic-stage-handoff.md, sem tocar outros arquivos. Preserve o restante. Achados verificados do reviewer sobre digest sha256:b44b507f2932cff712dca61919ae571af79646511cc330d9bd74c8f969cdca76: (1) Corrija a contradição de implicação: diferencie verificação de pré-requisito de inferência proibida; fato anterior não estabelece transição posterior e evidência downstream/out-of-chain não estabelece retroativamente fato ausente. (2) Remova ou adie requisitos de concorrência e a cláusula de T-ACI-GSH7; o discovery autoriza retry idêntico/divergente, não atomicidade concorrente nem first-receipt winner. (3) Corrija HandoffUncertainty: não classifique normativamente vocabulário aberto como Enum/Type finito; marque meta-type como candidato/deferred, salvo fechar valores — prefira deferred para não inventar decisão. (4) Complete authority trace: GSHD-3 deve mapear §§4.1, 4.2 e 4.3; GSHD-4 deve mapear §§5.1, 5.2 e 5.3; acrescente mapeamento explícito de GSH-R6, R7 e R8 aos anchors exatos. Rode novamente links/anchors, unicidade de IDs e whitespace. Retorne novo SHA-256, resumo das mudanças e validações. Não faça outras mudanças.",
+    "Faça a única rechecagem permitida do mesmo documento, agora no digest sha256:0372e95c47b3034800897e8e99842fa6a363438bb9ba931726eb67c66fade139. Verifique somente se os quatro fixes anteriores foram resolvidos sem regressão: implicação/pré-requisito; remoção da concorrência sem autoridade; HandoffUncertainty Deferred; traces GSHD-3/GSHD-4 e GSH-R6–R8. Não edite arquivos. Retorne apenas pass ou os desacordos remanescentes, com o digest efetivamente lido."
+  ]
+}

@@ -45,7 +45,8 @@ python -m implementations.server.runtime.dispatch_workflow --project-dir <repo-r
 Treat the returned route as one unit. It contains `dispatch_type_ref`, its ledger projection,
 `capability_ref`, `execution_authority_mode`, and `tool_profile_ref`. Do not author, copy, or repair
 those values manually. The sole type definition and LIVE/RESERVED status live in
-`implementations/contracts/dispatch-type-registry.v1.json`.
+`implementations/contracts/dispatch-type-registry.v2.json` for all new writes. The immutable v1
+registry is available only for explicit historical verification and never authorizes a new row.
 
 Only routes returned successfully by this command are executable. `runtime-managed` is unavailable
 until the registry advertises it and the corresponding runtime command surface exists. Never fall

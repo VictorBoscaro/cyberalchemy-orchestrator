@@ -1,0 +1,300 @@
+{
+  "projection_schema_version": "DiscoveryBootstrapBundle.v2",
+  "structural_proposal": {
+    "projection_schema_version": "DiscoveryBootstrapStructuralProposal.v2",
+    "target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md",
+    "owner": "@victorboscaro",
+    "objective": "Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support.",
+    "boundaries": [
+      "no compiler-vs-primitive decision",
+      "no implementation",
+      "no fan-in or fan-out",
+      "no remote runtime",
+      "no external interfaces",
+      "no product or scope expansion"
+    ],
+    "confirmation_mode": "final_only",
+    "final_approver": {"kind": "human", "owner": "@victorboscaro"},
+    "runtime": {
+      "requested_provider": "inherited",
+      "requested_model": "inherited",
+      "requested_adapter": "inherited",
+      "effective_enforcement": "non_observable",
+      "robot_talks": false,
+      "probes": 0,
+      "reporting": "final_only",
+      "registration_state": "unregistered_bootstrap",
+      "remediation_review_round_limit": 2,
+      "technical_attempt_limit_per_task": 2
+    },
+    "actors": {
+      "writer": {"count": 1, "identity": "Evans, Eric", "seat_id": "evans"},
+      "reviewers": [
+        {"identity": "Dijkstra, Edsger W.", "lens": "content/fidelity", "seat_id": "dijkstra"},
+        {"identity": "Parnas, David", "lens": "form/operability/reference", "seat_id": "parnas"}
+      ]
+    },
+    "topology": ["w1", "barrier[r1d,r1p]", "w2?", "same-seat-barrier[r2d,r2p]?", "human-final-approval"],
+    "budgets": {
+      "writer": {"max_tokens": 14000, "max_tool_calls": 32},
+      "reviewer_per_seat": {"max_tokens": 7000, "max_tool_calls": 24},
+      "review_rounds": 2,
+      "technical_attempts_per_task": 2
+    },
+    "source_boundary": {
+      "allowed": ["framing", "source_basis", "governing_inputs", "current candidate and authorized prior-round responses"],
+      "frozen_hashes_required": true,
+      "network": "denied",
+      "scope_expansion": "denied"
+    },
+    "mutation_boundary": {
+      "writer": ["docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"],
+      "reviewers": [],
+      "runtime_or_production": "denied",
+      "destructive_commands": "denied"
+    },
+    "frozen_inputs": {
+      "framing": [
+        ["docs/features/agents-communication-infra/discovery/generic-stage-handoff-intention.md", "sha256:b214ca285f751f19c597f013b48f84deed9251a9ef49f4d8969a0e431ff6fec4"]
+      ],
+      "source_basis": [
+        ["research/agent-orchestration-project-comparison/findings.md", "sha256:d74c1b557d3c7d51dac3a8c6c88d9099b0eeb341f403b6f4a0221f7b1ee50392"],
+        ["research/agent-orchestration-project-comparison/research.md", "sha256:459249a3e05d21a0b91f00aa8e6de3fa6a2dd60c9423d4681bbeec23029f7646"],
+        ["implementations/AS-BUILT.md", "sha256:be6f30add466248749d2d18460060e1e3b7bf38419626a34d648bd44bb91023e"],
+        ["implementations/as-built/pairs/pair-05-handoff-integrity.json", "sha256:84b1d9c2d3188f33094d4e87e3c84813d606715eb4ed6b4bc67aea3fdaf74958"],
+        ["docs/features/agents-communication-infra/specs/SPEC.md", "sha256:452f7b38e99f05de0da4c951079c4d7d605044cbbd996a370ae120362d1e7569"],
+        ["docs/features/agents-communication-infra/specs/capabilities/resumable-agent-continuation.md", "sha256:a87c96df6dbfbda3fae71faccb99cd5a485cbb15533d1258eddc9196b9cffa6c"],
+        ["docs/features/agents-communication-infra/specs/confirmation-authority.md", "sha256:ebffeb92a21021d79ec081894363677d24f449b34796ec29727806f7f7c5af3e"],
+        ["docs/features/agents-communication-infra/BACKLOG.md", "sha256:37ce20a6983ff9faa235541d49a5091ef5e70f4ff358bc9defdbffdbec567089"],
+        ["docs/features/agents-communication-infra/specs/domain.md", "sha256:d0ee78f34653a3a02339267647515b841ce35e655668f4a230d8557b9dab1e17"],
+        ["docs/features/agents-communication-infra/specs/states.md", "sha256:8fb043eba154e689a6d0522015fb7b9f27d5ab9f888b00b5a8ec18fdbe6c8a54"],
+        ["docs/features/agents-communication-infra/specs/events.md", "sha256:533dc35c07086714731724c23a027ef15530cf22cb712558c0adff2580036043"],
+        ["docs/features/agents-communication-infra/specs/operations.md", "sha256:7b2c4f06dd4c8fcf6ed105d7080a85752e292292215ef8f4a2d6a775fa442281"],
+        ["docs/features/agents-communication-infra/specs/mappings.md", "sha256:dd7b2fc4ad5792aa91dc8bb87cd52992d775a650bef142e12e9b65b7196dd173"],
+        ["docs/features/agents-communication-infra/specs/workflows.md", "sha256:bf89b1e34df4cad8dd172a869ad31f7a3745fb18055b5b0687832c58bc02c3af"]
+      ],
+      "governing_inputs": [
+        ["README.md", "sha256:20cba178de50517ca5dff02238e7e8b34df5ca1c27c96b3e0129fd91ba139065"],
+        ["domainspec/TAXONOMY.md", "sha256:f681506be8dff4ffd16cf39f793f7b98cca6a5c6163b20d63fdf9fb4f2cd6129"],
+        ["domainspec/RELATIONSHIPS.md", "sha256:6d94239f0388d9b289bcc417a1654dc77a127e280e0f56e64f28e15a343aff1d"],
+        [".agents/skills/discovery-writing/SKILL.md", "sha256:fad0f97f416737012189a9b18d82d66a85ce2a281df6468eb537357d46c38208"],
+        [".claude/skills/review/SKILL.md", "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be"],
+        [".agents/skills/discovery-writing/scripts/validate-discovery.py", "sha256:fa05338fd7700f9e90db04e4c1fcdc5207e7ec0bc9e224a189f20271839185bb"],
+        [".agents/skills/discovery-intention/scripts/validate-discovery-intention.py", "sha256:a48dd648ed1b029bcf77b2009c27931f463fd60db2e9398da66511061fec7368"]
+      ]
+    },
+    "validation_command": "python .agents/skills/discovery-writing/scripts/validate-discovery.py docs/features/agents-communication-infra/discovery/generic-stage-handoff.md --provenance-mode basis --source-basis research/agent-orchestration-project-comparison/findings.md=sha256:d74c1b557d3c7d51dac3a8c6c88d9099b0eeb341f403b6f4a0221f7b1ee50392 --source-basis research/agent-orchestration-project-comparison/research.md=sha256:459249a3e05d21a0b91f00aa8e6de3fa6a2dd60c9423d4681bbeec23029f7646 --source-basis implementations/AS-BUILT.md=sha256:be6f30add466248749d2d18460060e1e3b7bf38419626a34d648bd44bb91023e --source-basis implementations/as-built/pairs/pair-05-handoff-integrity.json=sha256:84b1d9c2d3188f33094d4e87e3c84813d606715eb4ed6b4bc67aea3fdaf74958 --source-basis docs/features/agents-communication-infra/specs/SPEC.md=sha256:452f7b38e99f05de0da4c951079c4d7d605044cbbd996a370ae120362d1e7569 --source-basis docs/features/agents-communication-infra/specs/capabilities/resumable-agent-continuation.md=sha256:a87c96df6dbfbda3fae71faccb99cd5a485cbb15533d1258eddc9196b9cffa6c --source-basis docs/features/agents-communication-infra/specs/confirmation-authority.md=sha256:ebffeb92a21021d79ec081894363677d24f449b34796ec29727806f7f7c5af3e --source-basis docs/features/agents-communication-infra/BACKLOG.md=sha256:37ce20a6983ff9faa235541d49a5091ef5e70f4ff358bc9defdbffdbec567089 --source-basis docs/features/agents-communication-infra/specs/domain.md=sha256:d0ee78f34653a3a02339267647515b841ce35e655668f4a230d8557b9dab1e17 --source-basis docs/features/agents-communication-infra/specs/states.md=sha256:8fb043eba154e689a6d0522015fb7b9f27d5ab9f888b00b5a8ec18fdbe6c8a54 --source-basis docs/features/agents-communication-infra/specs/events.md=sha256:533dc35c07086714731724c23a027ef15530cf22cb712558c0adff2580036043 --source-basis docs/features/agents-communication-infra/specs/operations.md=sha256:7b2c4f06dd4c8fcf6ed105d7080a85752e292292215ef8f4a2d6a775fa442281 --source-basis docs/features/agents-communication-infra/specs/mappings.md=sha256:dd7b2fc4ad5792aa91dc8bb87cd52992d775a650bef142e12e9b65b7196dd173 --source-basis docs/features/agents-communication-infra/specs/workflows.md=sha256:bf89b1e34df4cad8dd172a869ad31f7a3745fb18055b5b0687832c58bc02c3af --intention-mode required",
+    "slot_contracts": {
+      "framing": {"authorized_producer": "orchestrator", "type_schema": "FrozenPathHashArray.v1", "cardinality": 1, "byte_ceiling": 65536, "token_ceiling": 16000, "purpose": "confirmed intention", "source_schema": "FrozenInput.v1", "response_schema": "none"},
+      "source_basis": {"authorized_producer": "orchestrator", "type_schema": "FrozenPathHashArray.v1", "cardinality": 14, "byte_ceiling": 2000000, "token_ceiling": 300000, "purpose": "exclusive evidence", "source_schema": "FrozenInput.v1", "response_schema": "none"},
+      "governing_inputs": {"authorized_producer": "orchestrator", "type_schema": "FrozenPathHashArray.v1", "cardinality": 7, "byte_ceiling": 1000000, "token_ceiling": 150000, "purpose": "governance", "source_schema": "FrozenInput.v1", "response_schema": "none"},
+      "candidate_r1": {"authorized_producer": "Evans, Eric", "type_schema": "WriterHandoff.v1", "cardinality": 1, "byte_ceiling": 262144, "token_ceiling": 40000, "purpose": "round-1 review", "source_schema": "WriterTask.v1", "response_schema": "ReviewerResponse.v1"},
+      "review_r1_dijkstra": {"authorized_producer": "Dijkstra, Edsger W.", "type_schema": "ReviewerResponse.v1", "cardinality": 1, "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Dijkstra round-1 content/fidelity review", "source_schema": "ReviewerTask.v1", "response_schema": "WriterHandoff.v1"},
+      "review_r1_parnas": {"authorized_producer": "Parnas, David", "type_schema": "ReviewerResponse.v1", "cardinality": 1, "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Parnas round-1 form/operability/reference review", "source_schema": "ReviewerTask.v1", "response_schema": "WriterHandoff.v1"},
+      "candidate_r2": {"authorized_producer": "Evans, Eric", "type_schema": "WriterHandoff.v1", "cardinality": "0..1", "byte_ceiling": 262144, "token_ceiling": 40000, "purpose": "same-seat recheck", "source_schema": "WriterTask.v1", "response_schema": "ReviewerResponse.v1"},
+      "review_r2_dijkstra": {"authorized_producer": "Dijkstra, Edsger W.", "type_schema": "ReviewerResponse.v1", "cardinality": "0..1", "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Dijkstra same-seat release recheck", "source_schema": "ReviewerTask.v1", "response_schema": "FinalResult.v1"},
+      "review_r2_parnas": {"authorized_producer": "Parnas, David", "type_schema": "ReviewerResponse.v1", "cardinality": "0..1", "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Parnas same-seat release recheck", "source_schema": "ReviewerTask.v1", "response_schema": "FinalResult.v1"}
+    },
+    "output_contracts": {
+      "WriterHandoff": {"schema": "WriterHandoff.v1", "required": ["round", "target", "candidate_digest", "validation_status", "source_basis_digest", "changed", "summary"], "candidate_digest": "sha256 of exact target bytes", "validation_status": ["PASS", "FAIL"]},
+      "ReviewerResponse": {"schema": "ReviewerResponse.v1", "required": ["round", "reviewer", "lens", "candidate_digest", "disposition", "findings"], "disposition": ["NO_OBJECTION", "OBJECTION", "INSUFFICIENT_REVIEW"], "rule": "both reviewers in a barrier must bind the same WriterHandoff candidate_digest; invalid, mismatched, unauthorized, or insufficient review yields INSUFFICIENT_REVIEW"},
+      "FinalResult": {"schema": "FinalResult.v1", "required": ["target", "candidate_digest", "rounds", "reviewer_responses", "validation_status", "unresolved", "human_confirmation_required"], "release": "validation PASS and both same-digest reviewers NO_OBJECTION, followed by human final approval"}
+    },
+    "retry_and_instantiation": {"technical_attempt_limit_per_task": 2, "remediation_review_round_limit": 2, "remediation": "one optional writer pass after round-1 OBJECTION", "same_seat_recheck": true, "barrier": "two valid responses bound to one candidate digest", "human_gate": "mandatory after machine release", "abort": ["invalid slot/hash/producer/ceiling", "INSUFFICIENT_REVIEW after technical attempts", "round-2 OBJECTION"]},
+    "resolution_provenance": {
+      "/target": {"kind": "user_set", "source_ref_or_digest": "user instruction", "reason": "requested target"},
+      "/owner": {"kind": "user_set", "source_ref_or_digest": "confirmed intention", "reason": "confirmed owner"},
+      "/objective": {"kind": "user_set", "source_ref_or_digest": "sha256:b214ca285f751f19c597f013b48f84deed9251a9ef49f4d8969a0e431ff6fec4", "reason": "confirmed purpose"},
+      "/boundaries": {"kind": "user_set", "source_ref_or_digest": "user task", "reason": "explicit exclusions"},
+      "/confirmation_mode": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "approval gate"},
+      "/final_approver": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "human authority"},
+      "/runtime": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "runtime and attempt/round constraints"},
+      "/actors": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "canonical identities"},
+      "/frozen_inputs/framing": {"kind": "orchestrator_inferred", "source_ref_or_digest": "sha256:b214ca285f751f19c597f013b48f84deed9251a9ef49f4d8969a0e431ff6fec4", "reason": "frozen intention"},
+      "/frozen_inputs/source_basis": {"kind": "orchestrator_inferred", "source_ref_or_digest": "supplied source hashes", "reason": "frozen evidence"},
+      "/frozen_inputs/governing_inputs": {"kind": "orchestrator_inferred", "source_ref_or_digest": "supplied governing hashes", "reason": "frozen governance"},
+      "/validation_command": {"kind": "skill_constraint", "source_ref_or_digest": "sha256:fa05338fd7700f9e90db04e4c1fcdc5207e7ec0bc9e224a189f20271839185bb", "reason": "prescribed validator"},
+      "/slot_contracts": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "typed bounded slots"},
+      "/output_contracts": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "digest-bound outputs"},
+      "/retry_and_instantiation": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "attempt and round separation"},
+      "/canonicalization": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "duplicate rejection and digest policy"}
+    },
+    "canonicalization": {"algorithm": "local-python-json-sort_keys-utf8", "duplicate_keys": "reject", "portable": false, "durable": false},
+    "structural_proposal_digest": {"revision": 4, "algorithm": "sha256-canonical-json-sort_keys-compact-utf8", "scope": "structural_proposal recursively excluding structural_proposal_digest, workflow_evidence, and keys ending in _digest", "digest": "sha256:b8a11a0a102ddc8162b7672c490729759f8bef949b8cf3217cef4b1b7c563603"}
+  },
+  "concrete_proposal": {
+    "projection_schema_version": "DiscoveryBootstrapConcreteProposal.v2",
+    "target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md",
+    "owner": "@victorboscaro",
+    "objective": "Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support.",
+    "boundaries": ["no compiler-vs-primitive decision", "no implementation", "no fan-in or fan-out", "no remote runtime", "no external interfaces", "no product or scope expansion"],
+    "confirmation_mode": "final_only",
+    "final_approver": {"kind": "human", "owner": "@victorboscaro"},
+    "runtime": {"requested_provider": "inherited", "requested_model": "inherited", "requested_adapter": "inherited", "effective_enforcement": "non_observable", "robot_talks": false, "probes": 0, "reporting": "final_only", "registration_state": "unregistered_bootstrap", "remediation_review_round_limit": 2, "technical_attempt_limit_per_task": 2},
+    "budgets": {
+      "writer": {"max_tokens": 14000, "max_tool_calls": 32},
+      "reviewer_per_seat": {"max_tokens": 7000, "max_tool_calls": 24},
+      "review_rounds": 2,
+      "technical_attempts_per_task": 2
+    },
+    "source_boundary": {
+      "allowed_slots": ["framing", "source_basis", "governing_inputs", "candidate_r1", "review_r1_dijkstra", "review_r1_parnas", "candidate_r2", "review_r2_dijkstra", "review_r2_parnas"],
+      "frozen_hashes_required": true,
+      "network": "denied",
+      "scope_expansion": "denied"
+    },
+    "mutation_boundary": {
+      "writer": ["docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"],
+      "reviewers": [],
+      "runtime_or_production": "denied",
+      "destructive_commands": "denied"
+    },
+    "frozen_inputs": {
+      "framing": [["docs/features/agents-communication-infra/discovery/generic-stage-handoff-intention.md", "sha256:b214ca285f751f19c597f013b48f84deed9251a9ef49f4d8969a0e431ff6fec4"]],
+      "source_basis": [
+        ["research/agent-orchestration-project-comparison/findings.md", "sha256:d74c1b557d3c7d51dac3a8c6c88d9099b0eeb341f403b6f4a0221f7b1ee50392"], ["research/agent-orchestration-project-comparison/research.md", "sha256:459249a3e05d21a0b91f00aa8e6de3fa6a2dd60c9423d4681bbeec23029f7646"], ["implementations/AS-BUILT.md", "sha256:be6f30add466248749d2d18460060e1e3b7bf38419626a34d648bd44bb91023e"], ["implementations/as-built/pairs/pair-05-handoff-integrity.json", "sha256:84b1d9c2d3188f33094d4e87e3c84813d606715eb4ed6b4bc67aea3fdaf74958"], ["docs/features/agents-communication-infra/specs/SPEC.md", "sha256:452f7b38e99f05de0da4c951079c4d7d605044cbbd996a370ae120362d1e7569"], ["docs/features/agents-communication-infra/specs/capabilities/resumable-agent-continuation.md", "sha256:a87c96df6dbfbda3fae71faccb99cd5a485cbb15533d1258eddc9196b9cffa6c"], ["docs/features/agents-communication-infra/specs/confirmation-authority.md", "sha256:ebffeb92a21021d79ec081894363677d24f449b34796ec29727806f7f7c5af3e"], ["docs/features/agents-communication-infra/BACKLOG.md", "sha256:37ce20a6983ff9faa235541d49a5091ef5e70f4ff358bc9defdbffdbec567089"], ["docs/features/agents-communication-infra/specs/domain.md", "sha256:d0ee78f34653a3a02339267647515b841ce35e655668f4a230d8557b9dab1e17"], ["docs/features/agents-communication-infra/specs/states.md", "sha256:8fb043eba154e689a6d0522015fb7b9f27d5ab9f888b00b5a8ec18fdbe6c8a54"], ["docs/features/agents-communication-infra/specs/events.md", "sha256:533dc35c07086714731724c23a027ef15530cf22cb712558c0adff2580036043"], ["docs/features/agents-communication-infra/specs/operations.md", "sha256:7b2c4f06dd4c8fcf6ed105d7080a85752e292292215ef8f4a2d6a775fa442281"], ["docs/features/agents-communication-infra/specs/mappings.md", "sha256:dd7b2fc4ad5792aa91dc8bb87cd52992d775a650bef142e12e9b65b7196dd173"], ["docs/features/agents-communication-infra/specs/workflows.md", "sha256:bf89b1e34df4cad8dd172a869ad31f7a3745fb18055b5b0687832c58bc02c3af"]
+      ],
+      "governing_inputs": [["README.md", "sha256:20cba178de50517ca5dff02238e7e8b34df5ca1c27c96b3e0129fd91ba139065"], ["domainspec/TAXONOMY.md", "sha256:f681506be8dff4ffd16cf39f793f7b98cca6a5c6163b20d63fdf9fb4f2cd6129"], ["domainspec/RELATIONSHIPS.md", "sha256:6d94239f0388d9b289bcc417a1654dc77a127e280e0f56e64f28e15a343aff1d"], [".agents/skills/discovery-writing/SKILL.md", "sha256:fad0f97f416737012189a9b18d82d66a85ce2a281df6468eb537357d46c38208"], [".claude/skills/review/SKILL.md", "sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be"], [".agents/skills/discovery-writing/scripts/validate-discovery.py", "sha256:fa05338fd7700f9e90db04e4c1fcdc5207e7ec0bc9e224a189f20271839185bb"], [".agents/skills/discovery-intention/scripts/validate-discovery-intention.py", "sha256:a48dd648ed1b029bcf77b2009c27931f463fd60db2e9398da66511061fec7368"]]
+    },
+    "validation_command": "python .agents/skills/discovery-writing/scripts/validate-discovery.py docs/features/agents-communication-infra/discovery/generic-stage-handoff.md --provenance-mode basis --source-basis research/agent-orchestration-project-comparison/findings.md=sha256:d74c1b557d3c7d51dac3a8c6c88d9099b0eeb341f403b6f4a0221f7b1ee50392 --source-basis research/agent-orchestration-project-comparison/research.md=sha256:459249a3e05d21a0b91f00aa8e6de3fa6a2dd60c9423d4681bbeec23029f7646 --source-basis implementations/AS-BUILT.md=sha256:be6f30add466248749d2d18460060e1e3b7bf38419626a34d648bd44bb91023e --source-basis implementations/as-built/pairs/pair-05-handoff-integrity.json=sha256:84b1d9c2d3188f33094d4e87e3c84813d606715eb4ed6b4bc67aea3fdaf74958 --source-basis docs/features/agents-communication-infra/specs/SPEC.md=sha256:452f7b38e99f05de0da4c951079c4d7d605044cbbd996a370ae120362d1e7569 --source-basis docs/features/agents-communication-infra/specs/capabilities/resumable-agent-continuation.md=sha256:a87c96df6dbfbda3fae71faccb99cd5a485cbb15533d1258eddc9196b9cffa6c --source-basis docs/features/agents-communication-infra/specs/confirmation-authority.md=sha256:ebffeb92a21021d79ec081894363677d24f449b34796ec29727806f7f7c5af3e --source-basis docs/features/agents-communication-infra/BACKLOG.md=sha256:37ce20a6983ff9faa235541d49a5091ef5e70f4ff358bc9defdbffdbec567089 --source-basis docs/features/agents-communication-infra/specs/domain.md=sha256:d0ee78f34653a3a02339267647515b841ce35e655668f4a230d8557b9dab1e17 --source-basis docs/features/agents-communication-infra/specs/states.md=sha256:8fb043eba154e689a6d0522015fb7b9f27d5ab9f888b00b5a8ec18fdbe6c8a54 --source-basis docs/features/agents-communication-infra/specs/events.md=sha256:533dc35c07086714731724c23a027ef15530cf22cb712558c0adff2580036043 --source-basis docs/features/agents-communication-infra/specs/operations.md=sha256:7b2c4f06dd4c8fcf6ed105d7080a85752e292292215ef8f4a2d6a775fa442281 --source-basis docs/features/agents-communication-infra/specs/mappings.md=sha256:dd7b2fc4ad5792aa91dc8bb87cd52992d775a650bef142e12e9b65b7196dd173 --source-basis docs/features/agents-communication-infra/specs/workflows.md=sha256:bf89b1e34df4cad8dd172a869ad31f7a3745fb18055b5b0687832c58bc02c3af --intention-mode required",
+    "slot_contracts": {
+      "framing": {"authorized_producer": "orchestrator", "type_schema": "FrozenPathHashArray.v1", "cardinality": 1, "byte_ceiling": 65536, "token_ceiling": 16000, "purpose": "confirmed intention", "source_schema": "FrozenInput.v1", "response_schema": "none"},
+      "source_basis": {"authorized_producer": "orchestrator", "type_schema": "FrozenPathHashArray.v1", "cardinality": 14, "byte_ceiling": 2000000, "token_ceiling": 300000, "purpose": "exclusive evidence", "source_schema": "FrozenInput.v1", "response_schema": "none"},
+      "governing_inputs": {"authorized_producer": "orchestrator", "type_schema": "FrozenPathHashArray.v1", "cardinality": 7, "byte_ceiling": 1000000, "token_ceiling": 150000, "purpose": "governance", "source_schema": "FrozenInput.v1", "response_schema": "none"},
+      "candidate_r1": {"authorized_producer": "Evans, Eric", "type_schema": "WriterHandoff.v1", "cardinality": 1, "byte_ceiling": 262144, "token_ceiling": 40000, "purpose": "round-1 review", "source_schema": "WriterTask.v1", "response_schema": "ReviewerResponse.v1"},
+      "review_r1_dijkstra": {"authorized_producer": "Dijkstra, Edsger W.", "type_schema": "ReviewerResponse.v1", "cardinality": 1, "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Dijkstra round-1 content/fidelity review", "source_schema": "ReviewerTask.v1", "response_schema": "WriterHandoff.v1"},
+      "review_r1_parnas": {"authorized_producer": "Parnas, David", "type_schema": "ReviewerResponse.v1", "cardinality": 1, "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Parnas round-1 form/operability/reference review", "source_schema": "ReviewerTask.v1", "response_schema": "WriterHandoff.v1"},
+      "candidate_r2": {"authorized_producer": "Evans, Eric", "type_schema": "WriterHandoff.v1", "cardinality": "0..1", "byte_ceiling": 262144, "token_ceiling": 40000, "purpose": "same-seat recheck", "source_schema": "WriterTask.v1", "response_schema": "ReviewerResponse.v1"},
+      "review_r2_dijkstra": {"authorized_producer": "Dijkstra, Edsger W.", "type_schema": "ReviewerResponse.v1", "cardinality": "0..1", "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Dijkstra same-seat release recheck", "source_schema": "ReviewerTask.v1", "response_schema": "FinalResult.v1"},
+      "review_r2_parnas": {"authorized_producer": "Parnas, David", "type_schema": "ReviewerResponse.v1", "cardinality": "0..1", "byte_ceiling": 65536, "token_ceiling": 7000, "purpose": "Parnas same-seat release recheck", "source_schema": "ReviewerTask.v1", "response_schema": "FinalResult.v1"}
+    },
+    "output_contracts": {
+      "WriterHandoff": {"schema": "WriterHandoff.v1", "required": ["round", "target", "candidate_digest", "validation_status", "source_basis_digest", "changed", "summary"], "candidate_digest": "sha256 of exact target bytes"},
+      "ReviewerResponse": {"schema": "ReviewerResponse.v1", "required": ["round", "reviewer", "lens", "candidate_digest", "disposition", "findings"], "disposition": ["NO_OBJECTION", "OBJECTION", "INSUFFICIENT_REVIEW"], "rule": "both reviewers bind the same candidate digest; invalid review yields INSUFFICIENT_REVIEW"},
+      "FinalResult": {"schema": "FinalResult.v1", "release": "validation PASS and both same-digest reviewers NO_OBJECTION, then human approval"}
+    },
+    "prompt_templates": {
+      "w1": "You are Evans, Eric, sole writer. Objective: Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support. Owner: @victorboscaro. Target: docs/features/agents-communication-infra/discovery/generic-stage-handoff.md. Read only framing, source_basis, governing_inputs; write only the target; execute only the immutable validation_command in this proposal. No network, credentials, runtime/production mutation, destructive commands, or spawn. Preserve all boundaries; return only WriterHandoff.v1.",
+      "w2": "You are Evans, Eric, the same sole writer. Objective: Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support. Owner: @victorboscaro. Target: docs/features/agents-communication-infra/discovery/generic-stage-handoff.md. Read only framing, source_basis, governing_inputs, candidate_r1, review_r1_dijkstra, and review_r1_parnas; remediate evidence-supported objections; write only the exact target; execute only the immutable validation_command. No network, credentials, runtime/production mutation, destructive commands, or spawn. Preserve all boundaries; return only WriterHandoff.v1 round 2.",
+      "d1": "You are Dijkstra, Edsger W., content/fidelity reviewer, round 1. Objective: Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support. Target: docs/features/agents-communication-infra/discovery/generic-stage-handoff.md. Read only exact profile scope; use only allowed read-only commands; never write. No network, credentials, runtime/production mutation, destructive commands, or spawn. Review candidate_r1 and return only ReviewerResponse.v1 bound to its candidate_digest.",
+      "d2": "You are Dijkstra, Edsger W., the same content/fidelity reviewer, round 2. Objective: Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support. Target: docs/features/agents-communication-infra/discovery/generic-stage-handoff.md. Read only framing, source_basis, governing_inputs, candidate_r2, and your own review_r1_dijkstra; use only allowed read-only commands; never write. No network, credentials, runtime/production mutation, destructive commands, or spawn. Recheck candidate_r2 and return only ReviewerResponse.v1 bound to its candidate_digest.",
+      "p1": "You are Parnas, David, form/operability/reference reviewer, round 1. Objective: Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support. Target: docs/features/agents-communication-infra/discovery/generic-stage-handoff.md. Read only exact profile scope; use only allowed read-only commands; never write. No network, credentials, runtime/production mutation, destructive commands, or spawn. Review candidate_r1 and return only ReviewerResponse.v1 bound to its candidate_digest.",
+      "p2": "You are Parnas, David, the same form/operability/reference reviewer, round 2. Objective: Establish evidence-bounded conceptual clarity for one governed producer-to-consumer stage handoff, preserving distinctions among commitment, publication, immutable delivery, acceptance, access, use, reliance, and claim support. Target: docs/features/agents-communication-infra/discovery/generic-stage-handoff.md. Read only framing, source_basis, governing_inputs, candidate_r2, and your own review_r1_parnas; use only allowed read-only commands; never write. No network, credentials, runtime/production mutation, destructive commands, or spawn. Recheck candidate_r2 and return only ReviewerResponse.v1 bound to its candidate_digest."
+    },
+    "exact_read_scope": [
+      "docs/features/agents-communication-infra/discovery/generic-stage-handoff-intention.md",
+      "research/agent-orchestration-project-comparison/findings.md",
+      "research/agent-orchestration-project-comparison/research.md",
+      "implementations/AS-BUILT.md",
+      "implementations/as-built/pairs/pair-05-handoff-integrity.json",
+      "docs/features/agents-communication-infra/specs/SPEC.md",
+      "docs/features/agents-communication-infra/specs/capabilities/resumable-agent-continuation.md",
+      "docs/features/agents-communication-infra/specs/confirmation-authority.md",
+      "docs/features/agents-communication-infra/BACKLOG.md",
+      "docs/features/agents-communication-infra/specs/domain.md",
+      "docs/features/agents-communication-infra/specs/states.md",
+      "docs/features/agents-communication-infra/specs/events.md",
+      "docs/features/agents-communication-infra/specs/operations.md",
+      "docs/features/agents-communication-infra/specs/mappings.md",
+      "docs/features/agents-communication-infra/specs/workflows.md",
+      "README.md",
+      "domainspec/TAXONOMY.md",
+      "domainspec/RELATIONSHIPS.md",
+      ".agents/skills/discovery-writing/SKILL.md",
+      ".claude/skills/review/SKILL.md",
+      ".agents/skills/discovery-writing/scripts/validate-discovery.py",
+      ".agents/skills/discovery-intention/scripts/validate-discovery-intention.py",
+      "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"
+    ],
+    "profiles": {
+      "writer": {"identity": "Evans, Eric", "logical_capabilities": ["author", "remediate", "validate"], "tools": ["apply_patch", "shell_command"], "skills": ["discovery-writing"], "read_scope_binding": "concrete_proposal.exact_read_scope", "writes": ["docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"], "commands": [{"class": "read_file", "executable": "Get-Content", "fixed_arguments": ["-Raw", "-LiteralPath"], "path_constraint": "each path must be an exact member of concrete_proposal.exact_read_scope"}, {"class": "apply_patch", "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"}, {"class": "validate_discovery", "exact_command_binding": "concrete_proposal.validation_command", "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md", "path_constraint": "every command path must be an exact member of concrete_proposal.exact_read_scope"}], "deny": ["network", "credentials", "runtime_or_production_mutation", "destructive_commands", "spawn_subagents", "write_unlisted", "shell_commands_outside_commands"], "budget": {"max_tokens": 14000, "max_tool_calls": 32}, "profile_digest": "sha256:dbc93c13db51770041152dece6d360eaaeab9305a2cb9f331f9ae4180330bdf3"},
+      "dijkstra": {"identity": "Dijkstra, Edsger W.", "logical_capabilities": ["content_fidelity_review", "same_seat_recheck"], "tools": ["shell_command"], "skills": ["review"], "read_scope_binding": "concrete_proposal.exact_read_scope", "writes": [], "commands": [{"class": "read_file", "executable": "Get-Content", "fixed_arguments": ["-Raw", "-LiteralPath"], "path_constraint": "each path must be an exact member of concrete_proposal.exact_read_scope"}, {"class": "search_text", "executable": "rg", "path_constraint": "every explicit path must be an exact member of concrete_proposal.exact_read_scope"}, {"class": "validate_discovery", "exact_command_binding": "concrete_proposal.validation_command", "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md", "path_constraint": "every command path must be an exact member of concrete_proposal.exact_read_scope"}, {"class": "git_diff", "executable": "git", "fixed_arguments": ["diff", "--"], "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"}, {"class": "git_status", "executable": "git", "fixed_arguments": ["status", "--short", "--"], "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"}], "deny": ["all_writes", "network", "credentials", "runtime_or_production_mutation", "destructive_commands", "spawn_subagents", "shell_commands_outside_commands"], "budget": {"max_tokens": 7000, "max_tool_calls": 24}, "profile_digest": "sha256:f1593466a969f821d06f9af2e62001d414592100da042a936e2ec6b01266da9c"},
+      "parnas": {"identity": "Parnas, David", "logical_capabilities": ["form_operability_reference_review", "same_seat_recheck"], "tools": ["shell_command"], "skills": ["review"], "read_scope_binding": "concrete_proposal.exact_read_scope", "writes": [], "commands": [{"class": "read_file", "executable": "Get-Content", "fixed_arguments": ["-Raw", "-LiteralPath"], "path_constraint": "each path must be an exact member of concrete_proposal.exact_read_scope"}, {"class": "search_text", "executable": "rg", "path_constraint": "every explicit path must be an exact member of concrete_proposal.exact_read_scope"}, {"class": "validate_discovery", "exact_command_binding": "concrete_proposal.validation_command", "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md", "path_constraint": "every command path must be an exact member of concrete_proposal.exact_read_scope"}, {"class": "git_diff", "executable": "git", "fixed_arguments": ["diff", "--"], "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"}, {"class": "git_status", "executable": "git", "fixed_arguments": ["status", "--short", "--"], "exact_target": "docs/features/agents-communication-infra/discovery/generic-stage-handoff.md"}], "deny": ["all_writes", "network", "credentials", "runtime_or_production_mutation", "destructive_commands", "spawn_subagents", "shell_commands_outside_commands"], "budget": {"max_tokens": 7000, "max_tool_calls": 24}, "profile_digest": "sha256:190a611dc78dff7e8695239ef7c32eb45ca1cdb53ba5eb6b643607a56a9cfc3a"}
+    },
+    "profile_digest_map": {"writer": "sha256:dbc93c13db51770041152dece6d360eaaeab9305a2cb9f331f9ae4180330bdf3", "dijkstra": "sha256:f1593466a969f821d06f9af2e62001d414592100da042a936e2ec6b01266da9c", "parnas": "sha256:190a611dc78dff7e8695239ef7c32eb45ca1cdb53ba5eb6b643607a56a9cfc3a"},
+    "tasks": [
+      {"id": "w1", "actor": "Evans, Eric", "seat_id": "evans", "round": 1, "prompt_template_id": "w1", "data_slots": ["framing", "source_basis", "governing_inputs"], "profile": "writer", "profile_digest": "sha256:dbc93c13db51770041152dece6d360eaaeab9305a2cb9f331f9ae4180330bdf3", "technical_attempt_limit": 2, "when": "always", "output": "candidate_r1", "task_digest": "sha256:b7868d08326883799f3713080c4b4aea4f494c091c7a8cb9753f030fa3e4c55a"},
+      {"id": "r1d", "actor": "Dijkstra, Edsger W.", "seat_id": "dijkstra", "round": 1, "prompt_template_id": "d1", "data_slots": ["framing", "source_basis", "governing_inputs", "candidate_r1"], "profile": "dijkstra", "profile_digest": "sha256:f1593466a969f821d06f9af2e62001d414592100da042a936e2ec6b01266da9c", "technical_attempt_limit": 2, "when": "after valid candidate_r1", "output": "review_r1_dijkstra", "task_digest": "sha256:e19891ae1bc96689789948da3482d21e313eb4367d9e2c77fbb94849928e20cf"},
+      {"id": "r1p", "actor": "Parnas, David", "seat_id": "parnas", "round": 1, "prompt_template_id": "p1", "data_slots": ["framing", "source_basis", "governing_inputs", "candidate_r1"], "profile": "parnas", "profile_digest": "sha256:190a611dc78dff7e8695239ef7c32eb45ca1cdb53ba5eb6b643607a56a9cfc3a", "technical_attempt_limit": 2, "when": "after valid candidate_r1", "output": "review_r1_parnas", "task_digest": "sha256:af446e433e877a3f7ee4dd998131b9f2d3246ce87b6cda2bde65fd1c339a0f49"},
+      {"id": "w2", "actor": "Evans, Eric", "seat_id": "evans", "round": 2, "prompt_template_id": "w2", "data_slots": ["framing", "source_basis", "governing_inputs", "candidate_r1", "review_r1_dijkstra", "review_r1_parnas"], "profile": "writer", "profile_digest": "sha256:dbc93c13db51770041152dece6d360eaaeab9305a2cb9f331f9ae4180330bdf3", "technical_attempt_limit": 2, "when": "iff either round-1 reviewer returns OBJECTION", "output": "candidate_r2", "task_digest": "sha256:7ac3867b7ac50f1045e5f7c1a951fe4a85713303c2969c83771803cfec64b740"},
+      {"id": "r2d", "actor": "Dijkstra, Edsger W.", "seat_id": "dijkstra", "round": 2, "prompt_template_id": "d2", "data_slots": ["framing", "source_basis", "governing_inputs", "candidate_r2", "review_r1_dijkstra"], "profile": "dijkstra", "profile_digest": "sha256:f1593466a969f821d06f9af2e62001d414592100da042a936e2ec6b01266da9c", "technical_attempt_limit": 2, "when": "after valid candidate_r2", "output": "review_r2_dijkstra", "task_digest": "sha256:f2255a9858f918c12d686b739d6cd8ddfb7bf6980e8f9f5a216dc98b813bd134"},
+      {"id": "r2p", "actor": "Parnas, David", "seat_id": "parnas", "round": 2, "prompt_template_id": "p2", "data_slots": ["framing", "source_basis", "governing_inputs", "candidate_r2", "review_r1_parnas"], "profile": "parnas", "profile_digest": "sha256:190a611dc78dff7e8695239ef7c32eb45ca1cdb53ba5eb6b643607a56a9cfc3a", "technical_attempt_limit": 2, "when": "after valid candidate_r2", "output": "review_r2_parnas", "task_digest": "sha256:342e0ce60d78349ee3fef68426781068ef3b869ad43213f28ad173c2f643019a"}
+    ],
+    "task_digest_map": {"w1": "sha256:b7868d08326883799f3713080c4b4aea4f494c091c7a8cb9753f030fa3e4c55a", "r1d": "sha256:e19891ae1bc96689789948da3482d21e313eb4367d9e2c77fbb94849928e20cf", "r1p": "sha256:af446e433e877a3f7ee4dd998131b9f2d3246ce87b6cda2bde65fd1c339a0f49", "w2": "sha256:7ac3867b7ac50f1045e5f7c1a951fe4a85713303c2969c83771803cfec64b740", "r2d": "sha256:f2255a9858f918c12d686b739d6cd8ddfb7bf6980e8f9f5a216dc98b813bd134", "r2p": "sha256:342e0ce60d78349ee3fef68426781068ef3b869ad43213f28ad173c2f643019a"},
+    "capability_review": {
+      "verdict": "FIX",
+      "effective_enforcement": "non_observable",
+      "amendments": [
+        {"id": "F1", "definition": "Separate final-only reporting from mandatory human approval and bind approval to the concrete proposal digest.", "json_paths": ["/concrete_proposal/confirmation_mode", "/concrete_proposal/final_approver", "/confirmation_sheet/bound_concrete_proposal_digest"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F2", "definition": "Preserve the capability review and every accepted amendment in both review projections.", "json_paths": ["/concrete_proposal/capability_review", "/capability_review"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F3", "definition": "Use typed resolution provenance and real source references for inferred and skill-constrained choices.", "json_paths": ["/structural_proposal/resolution_provenance", "/concrete_proposal/resolution_provenance"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F4", "definition": "Keep literal prompts only in the concrete proposal and bind every task to one unique prompt id.", "json_paths": ["/concrete_proposal/prompt_templates", "/concrete_proposal/tasks"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F5", "definition": "Type and bound every slot, isolate reviewer outputs, and enumerate the exact readable paths.", "json_paths": ["/structural_proposal/slot_contracts", "/concrete_proposal/slot_contracts", "/concrete_proposal/exact_read_scope"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F6", "definition": "Bind writer and reviewer outputs to one exact candidate digest and keep the release barrier explicit.", "json_paths": ["/structural_proposal/output_contracts", "/concrete_proposal/output_contracts"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F7", "definition": "Use requested runtime keys and least-authority command profiles restricted to exact scope or target.", "json_paths": ["/concrete_proposal/runtime", "/concrete_proposal/profiles"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F8", "definition": "Use canonical participant names and stable seat ids consistently across actor, profile, and task projections.", "json_paths": ["/structural_proposal/actors", "/concrete_proposal/profiles", "/concrete_proposal/tasks"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F9", "definition": "Separate per-task technical attempts from the bounded remediation review rounds and declare budgets and boundaries concretely.", "json_paths": ["/structural_proposal/runtime", "/concrete_proposal/runtime", "/concrete_proposal/budgets", "/concrete_proposal/source_boundary", "/concrete_proposal/mutation_boundary", "/concrete_proposal/tasks"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+        {"id": "F10", "definition": "Reject duplicate keys and compute local canonical digests under explicit nonportable scopes without self-reference.", "json_paths": ["/canonicalization", "/structural_proposal/structural_proposal_digest", "/concrete_proposal/concrete_proposal_digest", "/confirmation_sheet/bound_concrete_proposal_digest"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"}
+      ],
+      "confirmed": ["frozen hashes", "source/governing split", "validator command", "same-seat recheck"],
+      "review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38"
+    },
+    "resolution_provenance": {
+      "/target": {"kind": "user_set", "source_ref_or_digest": "user instruction", "reason": "requested target"},
+      "/owner": {"kind": "user_set", "source_ref_or_digest": "confirmed intention", "reason": "confirmed owner"},
+      "/objective": {"kind": "user_set", "source_ref_or_digest": "sha256:b214ca285f751f19c597f013b48f84deed9251a9ef49f4d8969a0e431ff6fec4", "reason": "confirmed purpose"},
+      "/boundaries": {"kind": "user_set", "source_ref_or_digest": "user task", "reason": "explicit exclusions"},
+      "/confirmation_mode": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "approval gate"},
+      "/final_approver": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "human authority"},
+      "/runtime": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "runtime constraints"},
+      "/budgets": {"kind": "orchestrator_inferred", "source_ref_or_digest": "/structural_proposal/budgets", "reason": "concrete budgets instantiate the structural ceilings"},
+      "/source_boundary": {"kind": "orchestrator_inferred", "source_ref_or_digest": "/structural_proposal/source_boundary", "reason": "concrete source slots instantiate the structural source boundary"},
+      "/mutation_boundary": {"kind": "orchestrator_inferred", "source_ref_or_digest": "/structural_proposal/mutation_boundary", "reason": "concrete write authority instantiates the structural mutation boundary"},
+      "/frozen_inputs": {"kind": "orchestrator_inferred", "source_ref_or_digest": "supplied frozen hashes", "reason": "expanded immutable inputs"},
+      "/validation_command": {"kind": "skill_constraint", "source_ref_or_digest": "sha256:fa05338fd7700f9e90db04e4c1fcdc5207e7ec0bc9e224a189f20271839185bb", "reason": "prescribed validator"},
+      "/slot_contracts": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "typed bounded slots"},
+      "/output_contracts": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "digest-bound outputs"},
+      "/profiles/writer": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "writer authority"},
+      "/profiles/dijkstra": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "reviewer authority"},
+      "/profiles/parnas": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "reviewer authority"},
+      "/tasks/0": {"kind": "skill_constraint", "source_ref_or_digest": ".agents/skills/discovery-writing/SKILL.md=sha256:fad0f97f416737012189a9b18d82d66a85ce2a281df6468eb537357d46c38208", "reason": "discovery-writing supplies the writer contract"},
+      "/tasks/1": {"kind": "orchestrator_inferred", "source_ref_or_digest": "/structural_proposal/actors/reviewers/0", "reason": "the orchestrator assigns the content/fidelity seat declared in the actor plan"},
+      "/tasks/2": {"kind": "orchestrator_inferred", "source_ref_or_digest": "/structural_proposal/actors/reviewers/1", "reason": "the orchestrator assigns the form/operability/reference seat declared in the actor plan"},
+      "/tasks/3": {"kind": "orchestrator_inferred", "source_ref_or_digest": "/structural_proposal/retry_and_instantiation", "reason": "the optional same-writer remediation instantiates the declared retry policy"},
+      "/tasks/4": {"kind": "skill_constraint", "source_ref_or_digest": ".claude/skills/review/SKILL.md=sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be", "reason": "review contract plus declared same-seat policy constrain the recheck"},
+      "/tasks/5": {"kind": "skill_constraint", "source_ref_or_digest": ".claude/skills/review/SKILL.md=sha256:60dbcb97707949aa7fe102479dbcd712e491bb833362f54b285a536365abd4be", "reason": "review contract plus declared same-seat policy constrain the recheck"},
+      "/canonicalization": {"kind": "capability_reviewer_amendment", "source_ref_or_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "reason": "digest policy"}
+    },
+    "canonicalization": {"algorithm": "local-python-json-sort_keys-utf8", "duplicate_keys": "reject", "portable": false, "durable": false},
+    "concrete_proposal_digest": {"revision": 4, "algorithm": "sha256-canonical-json-sort_keys-compact-utf8", "scope": "concrete_proposal recursively excluding concrete_proposal_digest and workflow_evidence", "digest": "sha256:58a3d3aa0c48acfe172c3dd974ff06ccb75d91a14089fc8ba396f5f779278bcb"}
+  },
+  "capability_review": {
+    "verdict": "FIX",
+    "effective_enforcement": "non_observable",
+    "amendments": [
+      {"id": "F1", "definition": "Separate reporting from mandatory human approval bound to the concrete digest.", "json_paths": ["/concrete_proposal/confirmation_mode", "/concrete_proposal/final_approver", "/confirmation_sheet/bound_concrete_proposal_digest"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F2", "definition": "Preserve the complete accepted capability review in both projections.", "json_paths": ["/capability_review", "/concrete_proposal/capability_review"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F3", "definition": "Use typed resolution provenance with real internal or hashed sources.", "json_paths": ["/structural_proposal/resolution_provenance", "/concrete_proposal/resolution_provenance"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F4", "definition": "Keep prompts only in concrete and bind one unique prompt to each task.", "json_paths": ["/concrete_proposal/prompt_templates", "/concrete_proposal/tasks"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F5", "definition": "Bound and isolate every slot and enumerate exact read scope.", "json_paths": ["/structural_proposal/slot_contracts", "/concrete_proposal/slot_contracts", "/concrete_proposal/exact_read_scope"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F6", "definition": "Bind outputs and reviewer dispositions to an exact candidate digest.", "json_paths": ["/structural_proposal/output_contracts", "/concrete_proposal/output_contracts"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F7", "definition": "Restrict runtime profiles to exact scope, target, and declared commands.", "json_paths": ["/concrete_proposal/runtime", "/concrete_proposal/profiles"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F8", "definition": "Use canonical identities and stable seat ids consistently.", "json_paths": ["/structural_proposal/actors", "/concrete_proposal/profiles", "/concrete_proposal/tasks"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F9", "definition": "Separate technical attempts from review rounds and declare concrete budgets and boundaries.", "json_paths": ["/structural_proposal/budgets", "/concrete_proposal/budgets", "/concrete_proposal/source_boundary", "/concrete_proposal/mutation_boundary", "/concrete_proposal/tasks"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"},
+      {"id": "F10", "definition": "Reject duplicate keys and compute scoped canonical digests without self-reference.", "json_paths": ["/canonicalization", "/structural_proposal/structural_proposal_digest", "/concrete_proposal/concrete_proposal_digest", "/confirmation_sheet/bound_concrete_proposal_digest"], "evidence": {"review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38", "applied": true}, "disposition": "ACCEPT"}
+    ],
+    "confirmed": ["frozen hashes", "source/governing split", "validator command", "same-seat recheck"],
+    "review_digest": "sha256:f29188bf0738d92742243a7bd1e97b7c4f5a93ba2b0359870a6591aa4c911f38"
+  },
+  "confirmation_sheet": {
+    "all_fixes_incorporated": true,
+    "fixes": {"F1": "ACCEPT", "F2": "ACCEPT", "F3": "ACCEPT", "F4": "ACCEPT", "F5": "ACCEPT", "F6": "ACCEPT", "F7": "ACCEPT", "F8": "ACCEPT", "F9": "ACCEPT", "F10": "ACCEPT"},
+    "confirmation_mode": "final_only",
+    "final_approver": {"kind": "human", "owner": "@victorboscaro"},
+    "effective_enforcement": "non_observable",
+    "bound_concrete_proposal_digest": "sha256:58a3d3aa0c48acfe172c3dd974ff06ccb75d91a14089fc8ba396f5f779278bcb",
+    "binding_revision": 4,
+    "canonicalization": {"algorithm": "local-python-json-sort_keys-utf8", "duplicate_keys": "reject", "portable": false, "durable": false}
+  },
+  "canonicalization": {"algorithm": "local-python-json-sort_keys-utf8", "duplicate_keys": "reject", "portable": false, "durable": false}
+}

@@ -24,6 +24,7 @@ Read the selected skill in full. It owns roles, topology, evidence, artifacts, a
 | Intent | Capability |
 |---|---|
 | feature discovery authoring | `discovery-writing` |
+| feature specification authoring or evolution | `domainspec-spec-feature` |
 | establish or synthesize a claim | `research` |
 | attack an existing artifact | `review` |
 | preregister a falsifiable experiment | `experiment` |
@@ -45,11 +46,19 @@ python -m implementations.server.runtime.dispatch_workflow --project-dir <repo-r
 Treat the returned route as one unit. It contains `dispatch_type_ref`, its ledger projection,
 `capability_ref`, `execution_authority_mode`, and `tool_profile_ref`. Do not author, copy, or repair
 those values manually. The sole type definition and LIVE/RESERVED status live in
-`implementations/contracts/dispatch-type-registry.v1.json`.
+`implementations/contracts/dispatch-type-registry.v2.json` for all new writes. The immutable v1
+registry is available only for explicit historical verification and never authorizes a new row.
 
 Only routes returned successfully by this command are executable. `runtime-managed` is unavailable
 until the registry advertises it and the corresponding runtime command surface exists. Never fall
 back silently between authority modes.
+
+Feature specification authoring or evolution uses the registry's generic `other` fallback with
+`capability_ref: domainspec-spec-feature`. The resolved receipt must preserve that exact capability
+reference and return `dispatch_type_ref: other` plus `ledger_dispatch_type: other`; never relabel
+specification work as `code` or `review`. If the generic route does not resolve successfully, stop
+rather than bypassing the registry or treating the skill's internal writer/helper workflow as an
+unregistered launch.
 
 ## User-selected anti-bias overlay
 

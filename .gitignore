@@ -4,12 +4,12 @@ __pycache__/
 .server.*
 node_modules/
 
-# Local DomainSpec framework mount and shared skill junctions.
-# These mirror ../zagr-plataforma: framework code stays owned by ~/domainspec.
+# Local DomainSpec framework mount and remaining shared skill junctions.
+# The generic spec skill is vendored locally; the entries below stay owned by ~/domainspec.
 /domainspec
-/.claude/skills/domainspec-spec-feature
 /.claude/skills/domainspec-emit-signals
 /.claude/skills/domainspec-feature-glossary
+/.claude/skill-link-backups/
 
 # Local host-discovery mirror of .claude/{skills,agents} for Codex and other
 # hosts. Generated locally (copy or symlink); .claude/ stays the only source.
